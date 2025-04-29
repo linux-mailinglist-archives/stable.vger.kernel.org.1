@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-137182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF05AA1222
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F43AA13AA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAF5592587F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D35E984869
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B142472AA;
-	Tue, 29 Apr 2025 16:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434812512C0;
+	Tue, 29 Apr 2025 17:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/X6W2kY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBKNUbv0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC2E24113A;
-	Tue, 29 Apr 2025 16:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C88229B05;
+	Tue, 29 Apr 2025 17:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945309; cv=none; b=lxXCig9+EkJE5RsOK8caB0SIcBZDxjMsnHCeurwhu0daMZtyoeHFebaV1JIECmbcdoKXfIlOtFTHI3WXWKVKv2AL9UIcuzoOAiG2wN27QFbWsd1KwijWkBt0IcLKBi+9QAUL2xsqp/T/R9gQgEVK2cr5AaqntXBPZlnPQ/ZTrkg=
+	t=1745946158; cv=none; b=eBRMTRWXJPsSRrlCr8sCi2VuVAaczNXiHjM7sISSHi4sHW6dbV4fv6qQ5sWLChXOKKPTzptjj3cps1Xo9Ww3ZWmuVE0O6Vg9FgvpvVqDzCWo2gB3Z+JvNqR0cRPNGR9o6S+GQDgYnXK+KX4qL3iKMWNCB2itx+GbyJoxQ63Ie1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945309; c=relaxed/simple;
-	bh=N92rpo51WZ/QI1B0mtfQ93SAxvSYGFQSVqja7vuPC/w=;
+	s=arc-20240116; t=1745946158; c=relaxed/simple;
+	bh=IyGqhyrVj/0iXG12+0ADfoufjHPLSABZ+CZHMN+mYgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9XCBqZ93NyAJChry5Nc84xadb3OvxWBZatbbGNTzQKjO5t8KO+Yayh1qSM3iOEqnhyOlEZumLs7mzBq8T6tjKFX/7/PheNK/T5C5bvQyZEwDB3ehPc1wztvR/uSSRggUtkjeQxR33lmcGlL933wE63hcHBFxfjszCg6+5GVKxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/X6W2kY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E4BC4CEE3;
-	Tue, 29 Apr 2025 16:48:28 +0000 (UTC)
+	 MIME-Version; b=Y5O7bVYe6w9Mcc7cQHkIkgz8pgzxPbWWv/TXxo9Hdk8g5w5OzZCGRTzjrnpejlvKXgT1jP7o7EUuiN58N4ctJ2yavU6cqH5OsDVWRjaqKLti4jOZY2upnqFr1syiDA+ov99ZXootf15HgCgB/b0WUW1d7UjuHnBU7G63S4aSHns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBKNUbv0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80488C4CEE3;
+	Tue, 29 Apr 2025 17:02:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945309;
-	bh=N92rpo51WZ/QI1B0mtfQ93SAxvSYGFQSVqja7vuPC/w=;
+	s=korg; t=1745946157;
+	bh=IyGqhyrVj/0iXG12+0ADfoufjHPLSABZ+CZHMN+mYgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h/X6W2kYZu0GxPIAeFg0QL+1N6CMuP+TIQZZ+wsJOQ3iG8OIXRCOyizJAQOzpbdaF
-	 s8ZhU2bpO2XW7zTdg8pqU304j8aDx4e7sp4/86uy5CyDNDaSL36ZIXbKbsNFYpa+mQ
-	 aRyDZluvDeYjcgbmeVa7+WKzoCZTSILUW+QDyoMM=
+	b=GBKNUbv0qr2ICuH5/Yheiuu9kgtGQ6DbHOZC33zzqBRGAknC7+G3seGrL+AYugvF/
+	 XIGwruR7dyPzVoMfW/Kn8usM5/vfbeG7R/6RR89ejpQ8kdJSyupgDV/eYWoVjXIYIS
+	 PUZKm3tk4QDboyE3Y0R3s5SUoVSNu1CD/+SO2Dzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.4 070/179] crypto: ccp - Fix check for the primary ASP device
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.14 174/311] USB: wdm: close race between wdm_open and wdm_wwan_port_stop
 Date: Tue, 29 Apr 2025 18:40:11 +0200
-Message-ID: <20250429161052.250437115@linuxfoundation.org>
+Message-ID: <20250429161128.158707359@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 07bb097b92b987db518e72525b515d77904e966e upstream.
+commit c1846ed4eb527bdfe6b3b7dd2c78e2af4bf98f4f upstream.
 
-Currently, the ASP primary device check does not have support for PCI
-domains, and, as a result, when the system is configured with PCI domains
-(PCI segments) the wrong device can be selected as primary. This results
-in commands submitted to the device timing out and failing. The device
-check also relies on specific device and function assignments that may
-not hold in the future.
+Clearing WDM_WWAN_IN_USE must be the last action or
+we can open a chardev whose URBs are still poisoned
 
-Fix the primary ASP device check to include support for PCI domains and
-to perform proper checking of the Bus/Device/Function positions.
-
-Fixes: 2a6170dfe755 ("crypto: ccp: Add Platform Security Processor (PSP) device support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: cac6fb015f71 ("usb: class: cdc-wdm: WWAN framework integration")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250401084749.175246-3-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/ccp/sp-pci.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/usb/class/cdc-wdm.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/crypto/ccp/sp-pci.c
-+++ b/drivers/crypto/ccp/sp-pci.c
-@@ -118,14 +118,17 @@ static bool sp_pci_is_master(struct sp_d
- 	pdev_new = to_pci_dev(dev_new);
- 	pdev_cur = to_pci_dev(dev_cur);
- 
--	if (pdev_new->bus->number < pdev_cur->bus->number)
--		return true;
-+	if (pci_domain_nr(pdev_new->bus) != pci_domain_nr(pdev_cur->bus))
-+		return pci_domain_nr(pdev_new->bus) < pci_domain_nr(pdev_cur->bus);
- 
--	if (PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn))
--		return true;
-+	if (pdev_new->bus->number != pdev_cur->bus->number)
-+		return pdev_new->bus->number < pdev_cur->bus->number;
- 
--	if (PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn))
--		return true;
-+	if (PCI_SLOT(pdev_new->devfn) != PCI_SLOT(pdev_cur->devfn))
-+		return PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn);
-+
-+	if (PCI_FUNC(pdev_new->devfn) != PCI_FUNC(pdev_cur->devfn))
-+		return PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn);
- 
- 	return false;
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -726,7 +726,7 @@ static int wdm_open(struct inode *inode,
+ 		rv = -EBUSY;
+ 		goto out;
+ 	}
+-
++	smp_rmb(); /* ordered against wdm_wwan_port_stop() */
+ 	rv = usb_autopm_get_interface(desc->intf);
+ 	if (rv < 0) {
+ 		dev_err(&desc->intf->dev, "Error autopm - %d\n", rv);
+@@ -868,8 +868,10 @@ static void wdm_wwan_port_stop(struct ww
+ 	poison_urbs(desc);
+ 	desc->manage_power(desc->intf, 0);
+ 	clear_bit(WDM_READ, &desc->flags);
+-	clear_bit(WDM_WWAN_IN_USE, &desc->flags);
+ 	unpoison_urbs(desc);
++	smp_wmb(); /* ordered against wdm_open() */
++	/* this must be last lest we open a poisoned device */
++	clear_bit(WDM_WWAN_IN_USE, &desc->flags);
  }
+ 
+ static void wdm_wwan_port_tx_complete(struct urb *urb)
 
 
 
