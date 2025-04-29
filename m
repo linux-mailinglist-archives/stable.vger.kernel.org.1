@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-137994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8E3AA1616
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7156CAA1770
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 492BF163C1B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F59A4C2690
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23B224503E;
-	Tue, 29 Apr 2025 17:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42858251793;
+	Tue, 29 Apr 2025 17:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lr1MVXyw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thzv+z5h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEBB78F58;
-	Tue, 29 Apr 2025 17:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F360F21ABC1;
+	Tue, 29 Apr 2025 17:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947769; cv=none; b=CMHtHYUnkr7gzpxwZlflRP9B2AP3rfiLe9Rpi52t1R84sje2lkUdc2UvYruscEXfNtVNZmh8HEgVfvfiOS6YLSb+fd8AHnP/drwoYuvDotA9czLa/9eI7hmqpLhezBGSR8iCJx6DjkkBuin6Dpq+8M5nizt28TbzvQk8Vbp8aME=
+	t=1745948847; cv=none; b=F9JdopjxQxAQWjPebcJLZmcFtP9sXDSILEiL5MzRm5jug/0B7VWtaoy3bKuxfe/I5EYpN+62MB9d5tVOwePPrsB0x0kRBjH6CcQwOeaggFXPE3EEw07AvQquswDwxkzIf8IJ8F1DEa420gPwrJ11JRsK/XyTV1rqwF9zzpNRf4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947769; c=relaxed/simple;
-	bh=BTBsK2DVaKwCCzd/MnL7KiiEwxkLVBH536xApcG/7xw=;
+	s=arc-20240116; t=1745948847; c=relaxed/simple;
+	bh=0QAjXPaIYr7rFFgHPwB9t5NFtgrK5aW0KwWnx6QIIME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Drfw2/hTym1NePyJgH4G+1tHN6j8sFIievx1wDbMQ16X4vvep+lc2r44ugCZuKqML9sL/VSOOL+SX6YaHgMrJfl+5+N4TrSTQXbpLb4ZWmhk8/lAYIzbqzlwvmGqO3dkYi/XhMhwm4iWlUI3AZZLPKRUaarZM0ZvlYtU2/5Ln5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lr1MVXyw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20B1C4CEE9;
-	Tue, 29 Apr 2025 17:29:28 +0000 (UTC)
+	 MIME-Version; b=dAl3cC6702asTIsZ/JAAe3Pdg6e7MoO+EFGDNLIDPHBeBppQiRf7TPahLWcUjjgbjabAhaYeG+usgfHk7ja7gTUnEZdsH2na9PYuR1x6UJoFz8X8Vezo0/kx5bfXjv1adwux9mwcnCsU3wz5GUkja+jSQIPIOjCcUQ+VhbfU1CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thzv+z5h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849C8C4CEE3;
+	Tue, 29 Apr 2025 17:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947769;
-	bh=BTBsK2DVaKwCCzd/MnL7KiiEwxkLVBH536xApcG/7xw=;
+	s=korg; t=1745948846;
+	bh=0QAjXPaIYr7rFFgHPwB9t5NFtgrK5aW0KwWnx6QIIME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lr1MVXywnA6XCWtWk3RDJDU0QURH/FhwoFqGtxumY+LvommdyDQU02CozlA7EDry0
-	 5LpyzzLqgmRdQrrRFE2IWs/OxOIcWpzUVV37zCvqZk8cK7S9AU0xi0nNttRxP7E7be
-	 UphAwsix+qPCni0O7ABAuMmkrht/vs/9lB7JAoAA=
+	b=thzv+z5h8nyQgE3JvJLy6dZSOZx0lgbFrCdy1PjCMsX6kOIjaLr6dTW5ItOBx4OFR
+	 CiWfsp6Azo9snL0Y3L67Cqa1ZEEYoSSxbZT9E3IL6O7adzcQ3gbf3XtPUkuRpiw9sz
+	 T8KZqhC1fAZp7pZ53kgXkUW9uQZGu4eQmcMvDTwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ed60da8d686dc709164c@syzkaller.appspotmail.com,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/280] tipc: fix NULL pointer dereference in tipc_mon_reinit_self()
+Subject: [PATCH 5.15 136/373] Bluetooth: hci_event: Fix sending MGMT_EV_DEVICE_FOUND for invalid address
 Date: Tue, 29 Apr 2025 18:40:13 +0200
-Message-ID: <20250429161118.060635861@linuxfoundation.org>
+Message-ID: <20250429161128.759646464@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tung Nguyen <tung.quang.nguyen@est.tech>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit d63527e109e811ef11abb1c2985048fdb528b4cb ]
+[ Upstream commit eb73b5a9157221f405b4fe32751da84ee46b7a25 ]
 
-syzbot reported:
+This fixes sending MGMT_EV_DEVICE_FOUND for invalid address
+(00:00:00:00:00:00) which is a regression introduced by
+a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
+since in the attempt to skip storing data for extended advertisement it
+actually made the code to skip the entire if statement supposed to send
+MGMT_EV_DEVICE_FOUND without attempting to use the last_addr_adv which
+is garanteed to be invalid for extended advertisement since we never
+store anything on it.
 
-tipc: Node number set to 1055423674
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 3 UID: 0 PID: 6017 Comm: kworker/3:5 Not tainted 6.15.0-rc1-syzkaller-00246-g900241a5cc15 #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: events tipc_net_finalize_work
-RIP: 0010:tipc_mon_reinit_self+0x11c/0x210 net/tipc/monitor.c:719
-...
-RSP: 0018:ffffc9000356fb68 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000003ee87cba
-RDX: 0000000000000000 RSI: ffffffff8dbc56a7 RDI: ffff88804c2cc010
-RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000007
-R13: fffffbfff2111097 R14: ffff88804ead8000 R15: ffff88804ead9010
-FS:  0000000000000000(0000) GS:ffff888097ab9000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000f720eb00 CR3: 000000000e182000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- tipc_net_finalize+0x10b/0x180 net/tipc/net.c:140
- process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c2/0x780 kernel/kthread.c:464
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-...
-RIP: 0010:tipc_mon_reinit_self+0x11c/0x210 net/tipc/monitor.c:719
-...
-RSP: 0018:ffffc9000356fb68 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000003ee87cba
-RDX: 0000000000000000 RSI: ffffffff8dbc56a7 RDI: ffff88804c2cc010
-RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000007
-R13: fffffbfff2111097 R14: ffff88804ead8000 R15: ffff88804ead9010
-FS:  0000000000000000(0000) GS:ffff888097ab9000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000f720eb00 CR3: 000000000e182000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-There is a racing condition between workqueue created when enabling
-bearer and another thread created when disabling bearer right after
-that as follow:
-
-enabling_bearer                          | disabling_bearer
----------------                          | ----------------
-tipc_disc_timeout()                      |
-{                                        | bearer_disable()
- ...                                     | {
- schedule_work(&tn->work);               |  tipc_mon_delete()
- ...                                     |  {
-}                                        |   ...
-                                         |   write_lock_bh(&mon->lock);
-                                         |   mon->self = NULL;
-                                         |   write_unlock_bh(&mon->lock);
-                                         |   ...
-                                         |  }
-tipc_net_finalize_work()                 | }
-{                                        |
- ...                                     |
- tipc_net_finalize()                     |
- {                                       |
-  ...                                    |
-  tipc_mon_reinit_self()                 |
-  {                                      |
-   ...                                   |
-   write_lock_bh(&mon->lock);            |
-   mon->self->addr = tipc_own_addr(net); |
-   write_unlock_bh(&mon->lock);          |
-   ...                                   |
-  }                                      |
-  ...                                    |
- }                                       |
- ...                                     |
-}                                        |
-
-'mon->self' is set to NULL in disabling_bearer thread and dereferenced
-later in enabling_bearer thread.
-
-This commit fixes this issue by validating 'mon->self' before assigning
-node address to it.
-
-Reported-by: syzbot+ed60da8d686dc709164c@syzkaller.appspotmail.com
-Fixes: 46cb01eeeb86 ("tipc: update mon's self addr when node addr generated")
-Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250417074826.578115-1-tung.quang.nguyen@est.tech
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://github.com/bluez/bluez/issues/1157
+Link: https://github.com/bluez/bluez/issues/1149#issuecomment-2767215658
+Fixes: a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/monitor.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_event.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/tipc/monitor.c b/net/tipc/monitor.c
-index e2f19627e43d5..b45c5b91bc7af 100644
---- a/net/tipc/monitor.c
-+++ b/net/tipc/monitor.c
-@@ -716,7 +716,8 @@ void tipc_mon_reinit_self(struct net *net)
- 		if (!mon)
- 			continue;
- 		write_lock_bh(&mon->lock);
--		mon->self->addr = tipc_own_addr(net);
-+		if (mon->self)
-+			mon->self->addr = tipc_own_addr(net);
- 		write_unlock_bh(&mon->lock);
- 	}
- }
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 83af50c3838a9..84b07b27b3cf4 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -5777,11 +5777,12 @@ static void process_adv_report(struct hci_dev *hdev, u8 type, bdaddr_t *bdaddr,
+ 	 * event or send an immediate device found event if the data
+ 	 * should not be stored for later.
+ 	 */
+-	if (!ext_adv &&	!has_pending_adv_report(hdev)) {
++	if (!has_pending_adv_report(hdev)) {
+ 		/* If the report will trigger a SCAN_REQ store it for
+ 		 * later merging.
+ 		 */
+-		if (type == LE_ADV_IND || type == LE_ADV_SCAN_IND) {
++		if (!ext_adv && (type == LE_ADV_IND ||
++				 type == LE_ADV_SCAN_IND)) {
+ 			store_pending_adv_report(hdev, bdaddr, bdaddr_type,
+ 						 rssi, flags, data, len);
+ 			return;
 -- 
 2.39.5
 
