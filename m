@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-137807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFB4AA1518
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC720AA13EB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD3321BC21CC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0631982B0F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE2224466C;
-	Tue, 29 Apr 2025 17:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC9D23F413;
+	Tue, 29 Apr 2025 17:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7L+2q1q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtV6hpJw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24822206AA;
-	Tue, 29 Apr 2025 17:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E004282C60;
+	Tue, 29 Apr 2025 17:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947187; cv=none; b=IUVlnJpfjUe5wnd+HnhRHu+gpXBR6N+SLvIWhU+zB0qu1SziZ1JFndMfEPhEy9r1fpjjvqxLRdupfwSIzelvVTrzJo+MUDoN5wWM0LXg49pIhqLT0aggKfyFhnGPrlQu+Z+TGHbwvDTmcIJGbcxuptKmEogk7+oBeBY253GroIE=
+	t=1745946320; cv=none; b=qPqQzOpw5h0tzNjGfRaCl8qcWyIqciVddvmNzQOaxCqWWX+/mLHOq/fxjlNrKLwBgQakTnJA1NK+sYkOmaAiT3/Zn2TkslCdKWYfwEtzo9Iimh5SQmMoIO8WphWhVaVGn6j0Z45wwWYslYG/jHOx+MMzEXTpl9jBUUahLQpTyLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947187; c=relaxed/simple;
-	bh=TcG8tgpJ+bi3HZi5NQq0FNSQRcFuOWdfe+dmZSnkGsg=;
+	s=arc-20240116; t=1745946320; c=relaxed/simple;
+	bh=vr3aZq58ofh0Ec/0tI083IwPgarnRiDmLB3MiRtHISc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TeLalwNE98UyH0hvwFVt+vZGtVA0cruj5cbDEWHn1oRSv4SS8FZIq7SOZE3jaTuMDmrYp9ZJIKSGjCd56MgL0NiLESPUZ2TcdHIDEqznibIP2JEMdI0OnAh3P0VdBRAImGHYn4SEjTqCXqyS/8DLs011ljgTggDhVv8pHT3I7KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7L+2q1q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FE9C4CEE3;
-	Tue, 29 Apr 2025 17:19:47 +0000 (UTC)
+	 MIME-Version; b=fPqvyzXBWv1V9o1R2WLOcKtYosHW3E2IehWdIMSShIcMyUwNYqQafcPg5vRinj1oT+yVvfTlgGQy+ABRoa/2aUGQTfczJw5thMeqE12o/Ecqv45RzlQv/BKFFbu0DecEc2NVJX50mAmj1HG3Y5pCd7C6MessJjTKnBH1DDdKvlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtV6hpJw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A23C4CEE3;
+	Tue, 29 Apr 2025 17:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947187;
-	bh=TcG8tgpJ+bi3HZi5NQq0FNSQRcFuOWdfe+dmZSnkGsg=;
+	s=korg; t=1745946319;
+	bh=vr3aZq58ofh0Ec/0tI083IwPgarnRiDmLB3MiRtHISc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q7L+2q1qHHEwv7xDeSAwmBjTCg8Uk0lQAcC3i3z7VqyKN5hLgfJKlqVbXZmPgJ89K
-	 zz06ICKuemzcKc3UHyaHjyAvqPMKHtpyL5Oy6rFj+jm6DCLsec+u5STHDzF2hR47/h
-	 z0oLZ21713dH65nAV8HGtZRZ8o9Z3XxhBOUnzLSQ=
+	b=jtV6hpJwk/0b0HIjOjw8J1YszdRSCNAm7atyoGkUl29l0ewtW6zOzuHO3/g3anBb+
+	 bMiPduSrWZO9MRtXV5zseYXOqoRIz7XP9m7IhoS3XS467DErp6V0U9iiip51YbMOz9
+	 jFcZFUQ449nH8pz5M9mRccAEYRfQXspvrbAlqc/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 161/286] smb: client: fix potential UAF in cifs_debug_files_proc_show()
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jon Mason <jdmason@kudzu.us>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 228/311] ntb: reduce stack usage in idt_scan_mws
 Date: Tue, 29 Apr 2025 18:41:05 +0200
-Message-ID: <20250429161114.508796090@linuxfoundation.org>
+Message-ID: <20250429161130.373028836@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit ca545b7f0823f19db0f1148d59bc5e1a56634502 upstream.
+[ Upstream commit aff12700b8dd7422bfe2277696e192af4df9de8f ]
 
-Skip sessions that are being teared down (status == SES_EXITING) to
-avoid UAF.
+idt_scan_mws() puts a large fixed-size array on the stack and copies
+it into a smaller dynamically allocated array at the end. On 32-bit
+targets, the fixed size can easily exceed the warning limit for
+possible stack overflow:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ This patch removes lock/unlock operation in routine cifs_ses_exiting()
-  for ses_lock is not present in v5.10 and not ported yet. ses->status
-  is protected by a global lock, cifs_tcp_ses_lock, in v5.10. ]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/ntb/hw/idt/ntb_hw_idt.c:1041:27: error: stack frame size (1032) exceeds limit (1024) in 'idt_scan_mws' [-Werror,-Wframe-larger-than]
+
+Change it to instead just always use dynamic allocation for the
+array from the start. It's too big for the stack, but not actually
+all that much for a permanent allocation.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202205111109.PiKTruEj-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/cifs_debug.c |    2 ++
- fs/cifs/cifsglob.h   |    8 ++++++++
- 2 files changed, 10 insertions(+)
+ drivers/ntb/hw/idt/ntb_hw_idt.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
---- a/fs/cifs/cifs_debug.c
-+++ b/fs/cifs/cifs_debug.c
-@@ -183,6 +183,8 @@ static int cifs_debug_files_proc_show(st
- 				    tcp_ses_list);
- 		list_for_each(tmp, &server->smb_ses_list) {
- 			ses = list_entry(tmp, struct cifs_ses, smb_ses_list);
-+			if (cifs_ses_exiting(ses))
-+				continue;
- 			list_for_each(tmp1, &ses->tcon_list) {
- 				tcon = list_entry(tmp1, struct cifs_tcon, tcon_list);
- 				spin_lock(&tcon->open_file_lock);
---- a/fs/cifs/cifsglob.h
-+++ b/fs/cifs/cifsglob.h
-@@ -2115,4 +2115,12 @@ static inline struct scatterlist *cifs_s
- 	return sg;
+diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
+index 544d8a4d2af59..f27df8d7f3b97 100644
+--- a/drivers/ntb/hw/idt/ntb_hw_idt.c
++++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
+@@ -1041,7 +1041,7 @@ static inline char *idt_get_mw_name(enum idt_mw_type mw_type)
+ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 				       unsigned char *mw_cnt)
+ {
+-	struct idt_mw_cfg mws[IDT_MAX_NR_MWS], *ret_mws;
++	struct idt_mw_cfg *mws;
+ 	const struct idt_ntb_bar *bars;
+ 	enum idt_mw_type mw_type;
+ 	unsigned char widx, bidx, en_cnt;
+@@ -1049,6 +1049,11 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 	int aprt_size;
+ 	u32 data;
+ 
++	mws = devm_kcalloc(&ndev->ntb.pdev->dev, IDT_MAX_NR_MWS,
++			   sizeof(*mws), GFP_KERNEL);
++	if (!mws)
++		return ERR_PTR(-ENOMEM);
++
+ 	/* Retrieve the array of the BARs registers */
+ 	bars = portdata_tbl[port].bars;
+ 
+@@ -1103,16 +1108,7 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 		}
+ 	}
+ 
+-	/* Allocate memory for memory window descriptors */
+-	ret_mws = devm_kcalloc(&ndev->ntb.pdev->dev, *mw_cnt, sizeof(*ret_mws),
+-			       GFP_KERNEL);
+-	if (!ret_mws)
+-		return ERR_PTR(-ENOMEM);
+-
+-	/* Copy the info of detected memory windows */
+-	memcpy(ret_mws, mws, (*mw_cnt)*sizeof(*ret_mws));
+-
+-	return ret_mws;
++	return mws;
  }
  
-+static inline bool cifs_ses_exiting(struct cifs_ses *ses)
-+{
-+	bool ret;
-+
-+	ret = ses->status == CifsExiting;
-+	return ret;
-+}
-+
- #endif	/* _CIFS_GLOB_H */
+ /*
+-- 
+2.39.5
+
 
 
 
