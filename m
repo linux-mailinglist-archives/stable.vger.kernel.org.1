@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-138380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91EC0AA17C5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B64AA151A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF49B460573
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35FCF3BD4FE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55FD2512D8;
-	Tue, 29 Apr 2025 17:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FF12459E1;
+	Tue, 29 Apr 2025 17:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vf19NZJB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wO8eEGPw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8371F21ABC1;
-	Tue, 29 Apr 2025 17:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBEE251791;
+	Tue, 29 Apr 2025 17:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949062; cv=none; b=o4KHh0RXiIgCJdBOfR7pX0f05QS5SEvUwLg/Pkd+1tCuroTpSswSHsp6fT1ol8nunV7eZdXAXHGnZv2RAwsscRHYWHxTGk1ZuYlPrsZ7S9s4ajVNsTp36Pg1t6OeaGwWRYxPamVsYCudUHXHj73zFxaFrWhjYK3cjEud6X/HyOE=
+	t=1745947060; cv=none; b=ZYl95TT5tWri3++xsv5aD7tRBoXitFISgyk7A5vboJ+JpI6kbCwkiIFFZtXHScAcmeNjohBYozREM+0FOtjkCvf9qSpwFfGs1icEnc7X8EfKZwYObQOUNAFCfPpOzRQSvwpdsU+1TFgbVgcdGOKSRekO5TGXYNivoF0/ePJ/Kd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949062; c=relaxed/simple;
-	bh=sFe8QJOiN5/ONOr/xy3cZGoG8kNFRCrXn+8C7xndreM=;
+	s=arc-20240116; t=1745947060; c=relaxed/simple;
+	bh=RkqjY7VNQaa2eD4GsZMBceRMykMKJUgnVhXDyUG8Vzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCt68FH0gSYteBVTM0whZKvHhrhi7vBpnRDCmcrKXdS1AzmDKn/ZRmN7sbj84tDEVenK7Ej2Ek5REcKYleF8Tq4RRFIQnM7YY810mZaCWTcjMAcQVW2oV7HMxxcS9Cjsb8vB5CzGcp280oaczkPq8yLmyOHYybTfAhJCa6bAL1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vf19NZJB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8D2C4CEE3;
-	Tue, 29 Apr 2025 17:51:01 +0000 (UTC)
+	 MIME-Version; b=PlcAvBx7c6w6TfUIGJKDXqFRPs1dKe6cesEm9JRLmgkduSjLwqOr6lYIzNLunoxeHN+lZS51siVFa3RjWdiPBv+2bTbSrakp/Mx0gnsgIlKyo2oJKXdUR8kiuRFmLKTASh6yJ7XNGEtCKJNOYtTU0ZIs6fEmWudH7Ev1ST0qauE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wO8eEGPw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2023C4CEE3;
+	Tue, 29 Apr 2025 17:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949062;
-	bh=sFe8QJOiN5/ONOr/xy3cZGoG8kNFRCrXn+8C7xndreM=;
+	s=korg; t=1745947060;
+	bh=RkqjY7VNQaa2eD4GsZMBceRMykMKJUgnVhXDyUG8Vzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vf19NZJBhB2mh6pLhsldwY8c1WdKx+sOWxHpIj1HEezwKbXu4lmx7Mj6qegUfyCeC
-	 hO4siOpntek6dcq7jTxJH7M/3RmC4wq3cD6Iro17Vru+/AH6VKUu8qRApRj9O1FO7k
-	 5th1Z7g0Seki118NjnN7BrqcB1VJjY1wFHh2Ihc4=
+	b=wO8eEGPwXY7a+Z82bKgbbZXLkJxLN6SHEqqG4yx6NxipfAMIEqbhcSYIIChPUzZtg
+	 TTskviBp/NB6cv/NQ84qns1MwdsNoX90oLqoPlq+7d6wpikngly08nYptBXH8CkPYD
+	 71GZeEOb/TSOSCbm6hrqwl7+++YzP3um1uoHlfF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Rolf Eike Beer <eb@emlix.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Subject: [PATCH 5.15 185/373] drm/sti: remove duplicate object names
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.10 158/286] drm/amd/display: Stop amdgpu_dm initialize when link nums greater than max_links
 Date: Tue, 29 Apr 2025 18:41:02 +0200
-Message-ID: <20250429161130.770353280@linuxfoundation.org>
+Message-ID: <20250429161114.385496731@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +66,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rolf Eike Beer <eb@emlix.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-commit 7fb6afa9125fc111478615e24231943c4f76cc2e upstream.
+commit cf8b16857db702ceb8d52f9219a4613363e2b1cf upstream.
 
-When merging 2 drivers common object files were not deduplicated.
+[Why]
+Coverity report OVERRUN warning. There are
+only max_links elements within dc->links. link
+count could up to AMDGPU_DM_MAX_DISPLAY_INDEX 31.
 
-Fixes: dcec16efd677 ("drm/sti: Build monolithic driver")
-Cc: stable@kernel.org
-Signed-off-by: Rolf Eike Beer <eb@emlix.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/1920148.tdWV9SEqCh@devpool47.emlix.com
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+[How]
+Make sure link count less than max_links.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[Minor conflict resolved due to code context change. And the macro MAX_LINKS
+ is introduced by Commit 60df5628144b ("drm/amd/display: handle invalid
+ connector indices") after 6.10. So here we still use the original array
+ length MAX_PIPES * 2]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/sti/Makefile |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/sti/Makefile
-+++ b/drivers/gpu/drm/sti/Makefile
-@@ -7,8 +7,6 @@ sti-drm-y := \
- 	sti_compositor.o \
- 	sti_crtc.o \
- 	sti_plane.o \
--	sti_crtc.o \
--	sti_plane.o \
- 	sti_hdmi.o \
- 	sti_hdmi_tx3g4c28phy.o \
- 	sti_dvo.o \
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3397,17 +3397,17 @@ static int amdgpu_dm_initialize_drm_devi
+ 			goto fail;
+ 		}
+ 
++	if (link_cnt > (MAX_PIPES * 2)) {
++		DRM_ERROR(
++			"KMS: Cannot support more than %d display indexes\n",
++				MAX_PIPES * 2);
++		goto fail;
++	}
++
+ 	/* loops over all connectors on the board */
+ 	for (i = 0; i < link_cnt; i++) {
+ 		struct dc_link *link = NULL;
+ 
+-		if (i > AMDGPU_DM_MAX_DISPLAY_INDEX) {
+-			DRM_ERROR(
+-				"KMS: Cannot support more than %d display indexes\n",
+-					AMDGPU_DM_MAX_DISPLAY_INDEX);
+-			continue;
+-		}
+-
+ 		aconnector = kzalloc(sizeof(*aconnector), GFP_KERNEL);
+ 		if (!aconnector)
+ 			goto fail;
 
 
 
