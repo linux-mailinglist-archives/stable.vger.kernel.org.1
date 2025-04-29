@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-138511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8689CAA1864
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:59:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51438AA16DA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB5F517E45A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CEF718864A5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F2324DFF3;
-	Tue, 29 Apr 2025 17:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC1D244664;
+	Tue, 29 Apr 2025 17:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWMCJuBT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1N0kztw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502C22AE96;
-	Tue, 29 Apr 2025 17:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6481917E3;
+	Tue, 29 Apr 2025 17:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949484; cv=none; b=GjE6Pj09DveB73eSxEyWmQlvTnuwnH0XxjpJpgXFe3+74WC0kwI7KsKbmWbcRfZRAcPXMknMviIwLQJsJMkDFZhlyYkDpLyz6DVlZh5hW1Zk6rnev2X0cLyXsqK6BbXze9jdpLAV02LBjnZR5C1KPM61wMVVg9O2gtdSznzdumU=
+	t=1745948423; cv=none; b=Ln3jAclVZPjJrw1EBfhCy2E0BSkJQnOTL5Nj10z3Ja71qkkHnqblmUzbJLSF/clcXxtQ7oHMmkF/9zGqe46oNd6+GmYnMssKvf8X36x2/R1bUzNG1FFMz9xEZCOLyJgCrHLk0zffU0cXtIfIRdopTicLBRj27mrM8R86CVx9rws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949484; c=relaxed/simple;
-	bh=sOOr0jY1fo7G7qL6ESNeDi0kbuPDurIsSy/hXOVnqYU=;
+	s=arc-20240116; t=1745948423; c=relaxed/simple;
+	bh=AgHMfWP45GJNCtASSFK1N/ZOTLBuD8jKcUIj2qDfhBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPZ3k4JID0oosZx1A6omL+qcnkJ1dL9X4MkEQi20Q3r6vzG1N24yReifWWH8wVIOKwfRE9tFFD49kkdiDUZCuRdhWf/dSPRQOOhWMOb+2FZw28FP02eMlAgUEH8DDXFlGiDKW8smkgKLI4mK2ALsTh8jmRVW4uq6YjHXmlcFisE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWMCJuBT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2861C4CEE3;
-	Tue, 29 Apr 2025 17:58:03 +0000 (UTC)
+	 MIME-Version; b=U625K9Vuay+eng7vr9lh+XCLSaAeJCJxgqrVkp6YkYEbbRKO0RmtcRXwaI4hs4Rmd8Q5GQk6qZRvSxOdRFwpT2DMMDXNH0TE1cZlR89nb/UTEeEnrZyqiA1w7zsApvLYZSVedQwa8jHuZuArjmj1fP2drxS+UstvbH/RKGi7kck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1N0kztw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87658C4CEE3;
+	Tue, 29 Apr 2025 17:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949484;
-	bh=sOOr0jY1fo7G7qL6ESNeDi0kbuPDurIsSy/hXOVnqYU=;
+	s=korg; t=1745948422;
+	bh=AgHMfWP45GJNCtASSFK1N/ZOTLBuD8jKcUIj2qDfhBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZWMCJuBTu/cUbWL+Jo3UCy1R9XlTEwYl703O9z+W7bsu+/qZ9C9a6PmrhfC63y2ZI
-	 Yp71iAR48zKIj+VilX/5lhsPW+TgA5q4CVH9FGsc0DiwHF5CyWt6B5SAay5ASEjTF0
-	 X1u+X/rcgHzGx/LqnV3IIsvU7LHxvgJKCT/sgNaE=
+	b=g1N0kztwFazKdAzTvMkpNQfMDBGYH0oEtOiStW2PmcgIZwwsm2bDPVs+DEGO+Udvo
+	 ynm4o2MCDar82H4+eYOfVWaIKBUX3w6SbrUbesamoBTSCy5ZMdSKFTGt259hRvwDGS
+	 ntetT+nlPRUN4hfnCgJ1uhLlB3l1P2G4IsUXXrDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 333/373] dmaengine: dmatest: Fix dmatest waiting less when interrupted
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.12 269/280] iommu: Handle race with default domain setup
 Date: Tue, 29 Apr 2025 18:43:30 +0200
-Message-ID: <20250429161136.828594631@linuxfoundation.org>
+Message-ID: <20250429161126.143962569@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit e87ca16e99118ab4e130a41bdf12abbf6a87656c ]
+commit b46064a18810bad3aea089a79993ca5ea7a3d2b2 upstream.
 
-Change the "wait for operation finish" logic to take interrupts into
-account.
+It turns out that deferred default domain creation leaves a subtle
+race window during iommu_device_register() wherein a client driver may
+asynchronously probe in parallel and get as far as performing DMA API
+operations with dma-direct, only to be switched to iommu-dma underfoot
+once the default domain attachment finally happens, with obviously
+disastrous consequences. Even the wonky of_iommu_configure() path is at
+risk, since iommu_fwspec_init() will no longer defer client probe as the
+instance ops are (necessarily) already registered, and the "replay"
+iommu_probe_device() call can see dev->iommu_group already set and so
+think there's nothing to do either.
 
-When using dmatest with idxd DMA engine, it's possible that during
-longer tests, the interrupt notifying the finish of an operation
-happens during wait_event_freezable_timeout(), which causes dmatest to
-cleanup all the resources, some of which might still be in use.
+Fortunately we already have the right tool in the right place in the
+form of iommu_device_use_default_domain(), which just needs to ensure
+that said default domain is actually ready to *be* used. Deferring the
+client probe shouldn't have too much impact, given that this only
+happens while the IOMMU driver is probing, and thus due to kick the
+deferred probe list again once it finishes.
 
-This fix ensures that the wait logic correctly handles interrupts,
-preventing premature cleanup of resources.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202502171134.8c403348-lkp@intel.com
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20250305230007.590178-1-vinicius.gomes@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Fixes: 98ac73f99bc4 ("iommu: Require a default_domain for all iommu drivers")
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/e88b94c9b575034a2c98a48b3d383654cbda7902.1740753261.git.robin.murphy@arm.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dmatest.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iommu/iommu.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/dma/dmatest.c b/drivers/dma/dmatest.c
-index f696246f57fdb..0d8d01673010c 100644
---- a/drivers/dma/dmatest.c
-+++ b/drivers/dma/dmatest.c
-@@ -828,9 +828,9 @@ static int dmatest_func(void *data)
- 		} else {
- 			dma_async_issue_pending(chan);
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -3115,6 +3115,11 @@ int iommu_device_use_default_domain(stru
+ 		return 0;
  
--			wait_event_freezable_timeout(thread->done_wait,
--					done->done,
--					msecs_to_jiffies(params->timeout));
-+			wait_event_timeout(thread->done_wait,
-+					   done->done,
-+					   msecs_to_jiffies(params->timeout));
- 
- 			status = dma_async_is_tx_complete(chan, cookie, NULL,
- 							  NULL);
--- 
-2.39.5
-
+ 	mutex_lock(&group->mutex);
++	/* We may race against bus_iommu_probe() finalising groups here */
++	if (!group->default_domain) {
++		ret = -EPROBE_DEFER;
++		goto unlock_out;
++	}
+ 	if (group->owner_cnt) {
+ 		if (group->domain != group->default_domain || group->owner ||
+ 		    !xa_empty(&group->pasid_array)) {
 
 
 
