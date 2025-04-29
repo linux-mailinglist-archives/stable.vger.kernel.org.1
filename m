@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04DC9AA129D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF31AA1509
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D7C817ABDD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E3B616F9A3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1367250BFE;
-	Tue, 29 Apr 2025 16:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B7C24500A;
+	Tue, 29 Apr 2025 17:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIPuU56x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6KJ3Fqt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCA9215060;
-	Tue, 29 Apr 2025 16:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361D621ABDB;
+	Tue, 29 Apr 2025 17:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945622; cv=none; b=Yc7Yp5xpBZxrONlXZsBd3Ywl8SVfDtxmgTLlEtFRWYrNlvaq2UzBdDRugAWszNQ9aygTt/JuCtoeVAAwDZa7vSzNQkUKhAn9e378coLpxMSKlVM4UyOomaDwMYLgq3ek4P16kefab/PWd7O6OY7DDx+5psBEK5OPLRi6ePvRYxQ=
+	t=1745947224; cv=none; b=Xu2JcLExEyAnw6IUPusKymd+A0+wZkxzga2bVaB1aSg7+ejuxRNFauKlPuwJ9Ktdwvi0c5KGU9GdcJt7LLJB/mi/lNFzeSPce271JQFkipjrbT75uC2smXRwuJiTYljSsLB5yfNUQnn9DHO0aLdSYM0n7tyD3R3PsiCe16w+UQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945622; c=relaxed/simple;
-	bh=xCe8ujLChza/mR+vNxEDMa/LEYEnPJrEuAj1EJKjRUs=;
+	s=arc-20240116; t=1745947224; c=relaxed/simple;
+	bh=xRFzAemfhT31C46nOcecGl5+QhtqGmKQ27yl5wz5mOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVZqxUEfmjr/MEt0SyDOGqWFY2wsqFEER8ZgpGYHaRm7t7pQfBQ6Ew5S2mZg0JRtPl+/Qn6LEG1q0JJZTufJ9kQn9wbwtN0XyXI+CSpkiRjTU2nACT4D9WPzRqeWenAFJakfD3dpdrlus/6FrDupgsM5pw1mAeVTks1h8vU7YUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIPuU56x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C7AC4CEE3;
-	Tue, 29 Apr 2025 16:53:41 +0000 (UTC)
+	 MIME-Version; b=BIOpuVwsWIFzfTWA+oZgk/oytoLL/LNCm9z+U6X1ead/KiWdjuXg5tDcxFUsIRLL6/lmXYyyK5WeAsW4da0PB0u41nUvJPQx9tslUpbYpECAs3AJuRKsl5sGDJxk462C4d9U5M9h/+lhQI1989+VXACdE4Y6lh8SytwqT44WOqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6KJ3Fqt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35046C4CEE3;
+	Tue, 29 Apr 2025 17:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945622;
-	bh=xCe8ujLChza/mR+vNxEDMa/LEYEnPJrEuAj1EJKjRUs=;
+	s=korg; t=1745947223;
+	bh=xRFzAemfhT31C46nOcecGl5+QhtqGmKQ27yl5wz5mOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SIPuU56xn9T5rspsTJU1A3kq4xprOKsteAXCTI9OkfjIDRZF5wmetk+Ql1xd/UVDD
-	 DVC/tEezlg9YITHB1yJ0983Erq7rfB6i672uwprkDhIKj9jmGZ3BcIflKPybiOPDL4
-	 AVV3waBEgLbcUXV9IwLMWknOI+N8VEiu2+eAVH1o=
+	b=M6KJ3Fqt2I/SocFc3gph3oFLL9lTdDm9D72Lu1oW8YdIGRFGtamK440xwIcZN0KkN
+	 G4T2L7JcwK50FJe6S1D3V9MqpIJ88QejSXAdn+cuiErVAsjLRfiKW1YLgvTgGPgZHG
+	 paMV+YcQMZmtAc8VzqDwq9T4pN/ayqm7XfEAoRcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Salomon Dushimirimana <salomondush@google.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 174/179] scsi: pm80xx: Set phy_attached to zero when device is gone
-Date: Tue, 29 Apr 2025 18:41:55 +0200
-Message-ID: <20250429161056.434127842@linuxfoundation.org>
+Subject: [PATCH 5.10 212/286] soc: samsung: exynos-chipid: initialize later - with arch_initcall
+Date: Tue, 29 Apr 2025 18:41:56 +0200
+Message-ID: <20250429161116.671366305@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-[ Upstream commit f7b705c238d1483f0a766e2b20010f176e5c0fb7 ]
+[ Upstream commit 3b4c362e5ef102ca2d70d33f4e8cf0780053a7db ]
 
-When a fatal error occurs, a phy down event may not be received to set
-phy->phy_attached to zero.
+The Exynos ChipID driver on Exynos SoCs has only informational
+purpose - to expose the SoC device in sysfs.  No other drivers
+depend on it so there is really no benefit of initializing it early.
 
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
-Link: https://lore.kernel.org/r/20250319230305.3172920-1-salomondush@google.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Instead, initialize everything with arch_initcall which:
+1. Allows to use dev_info() as the SoC bus is present (since
+   core_initcall),
+2. Could speed things up because of execution in a SMP environment
+   (after bringing up secondary CPUs, unlike early_initcall),
+3. Reduces the amount of work to be done early, when the kernel has to
+   bring up critical devices.
+
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/20201202195955.128633-2-krzk@kernel.org
+Stable-dep-of: c8222ef6cf29 ("soc: samsung: exynos-chipid: Add NULL pointer check in exynos_chipid_probe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/pm8001/pm8001_sas.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/soc/samsung/exynos-chipid.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
-index 36f5bab09f73e..1215fc36862da 100644
---- a/drivers/scsi/pm8001/pm8001_sas.c
-+++ b/drivers/scsi/pm8001/pm8001_sas.c
-@@ -893,6 +893,7 @@ static void pm8001_dev_gone_notify(struct domain_device *dev)
- 			spin_lock_irqsave(&pm8001_ha->lock, flags);
- 		}
- 		PM8001_CHIP_DISP->dereg_dev_req(pm8001_ha, device_id);
-+		pm8001_ha->phy[pm8001_dev->attached_phy].phy_attached = 0;
- 		pm8001_free_dev(pm8001_dev);
- 	} else {
- 		PM8001_DISC_DBG(pm8001_ha,
+diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
+index 8d4d050869068..0f2de1b016a59 100644
+--- a/drivers/soc/samsung/exynos-chipid.c
++++ b/drivers/soc/samsung/exynos-chipid.c
+@@ -98,9 +98,9 @@ static int __init exynos_chipid_early_init(void)
+ 		goto err;
+ 	}
+ 
+-	/* it is too early to use dev_info() here (soc_dev is NULL) */
+-	pr_info("soc soc0: Exynos: CPU[%s] PRO_ID[0x%x] REV[0x%x] Detected\n",
+-		soc_dev_attr->soc_id, product_id, revision);
++	dev_info(soc_device_to_device(soc_dev),
++		 "Exynos: CPU[%s] PRO_ID[0x%x] REV[0x%x] Detected\n",
++		 soc_dev_attr->soc_id, product_id, revision);
+ 
+ 	return 0;
+ 
+@@ -110,4 +110,4 @@ static int __init exynos_chipid_early_init(void)
+ 	return ret;
+ }
+ 
+-early_initcall(exynos_chipid_early_init);
++arch_initcall(exynos_chipid_early_init);
 -- 
 2.39.5
 
