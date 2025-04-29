@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-137704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E10AA147D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:16:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE32AA1365
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02B6E1695F0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EB7C189998F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0664247280;
-	Tue, 29 Apr 2025 17:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24FA246326;
+	Tue, 29 Apr 2025 17:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLQA753s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNs32E07"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD2627453;
-	Tue, 29 Apr 2025 17:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B2382C60;
+	Tue, 29 Apr 2025 17:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946875; cv=none; b=iquGp2+nAyoBrhaOWiOsqYfFCrzC0U2WDp/4EKKMwhMIgXMiCRwAwbocsQiPdJVCJCWq2wsqXUf81DLfowc5MrHOIbdvu5jmGNr6slyO5bNpw/z6fozaknQnNGjwNXzddxoZa14sjxWYWHqyoFttu6x85zhhx+VlUuVtQlREOPI=
+	t=1745946038; cv=none; b=ftX4MQja/fITd+LvPxrMuw0Kr6VngdstynSnQMd5coxVi+bBtdZu5ORbXV9Wcjn69k03zHJWClzKhs/wUclH4SMibZb4xBx3tCBlhCgIzSgk1QslgkMQGo2s2b6WY0kFoT0lX6oH9xptplOFqAU1sU4MF6bBB31CYadS9vUVroQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946875; c=relaxed/simple;
-	bh=aEmLQdKKsJkPjhcFscwdp34P4aJ54gnxowfF/vyeUzY=;
+	s=arc-20240116; t=1745946038; c=relaxed/simple;
+	bh=Zqfzxi4jzU57WdXGFLGiupZEedwky3ydFtsxLecUViw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbs6LuR9I1UMjnu1B6dDSEuhPEQPlc2RBrF4xs7BOvIvJXfK65uOsIUni7mu25h9Ah6i/yKqcM9U0j+j6tbeVczOhLO/+UYQTzU4B5yz1Bv+tinmBhZqNu/YNpkqlGAFwkFegDTT0yJldL7NpqM1COW1M3OvndgAIw8BThShrxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLQA753s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD4EC4CEE3;
-	Tue, 29 Apr 2025 17:14:34 +0000 (UTC)
+	 MIME-Version; b=jjfAhj+XuuxR0KxnpgM7X7qM01ZZwr204PBQ0dMcABdI7OiXd5fKasUbEPmFeiKfrJH58WAnZ0LdFc8D4QHPZyxK0cJ/sJ/sO+2NCGmXBJk3OyxAGrX7Gwth9W6pj6Gkihs9qBaaWwwcyCJF/nezPm3COiy/CRv1V8E2/VBIVOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNs32E07; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819F9C4CEEE;
+	Tue, 29 Apr 2025 17:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946875;
-	bh=aEmLQdKKsJkPjhcFscwdp34P4aJ54gnxowfF/vyeUzY=;
+	s=korg; t=1745946037;
+	bh=Zqfzxi4jzU57WdXGFLGiupZEedwky3ydFtsxLecUViw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DLQA753shYVNoHgT0ElMIZY2PCc114cvRDAjCMvuEsjLPAahFEfLKDvCwiivF97jk
-	 1DzldkJUxiGZCR8gXHzWvT9x+AG8AhMtd5moBS+5lj355qQHP5p77CBTRLnrZuyHcP
-	 jugJnHAqkiOIqm/pbYr/Lx3zIzwXNIWF+SOjxw8I=
+	b=lNs32E07LBMSkJAmjADRq/5Kd2+JedjXjn6s0AdP8zKNdDyXyagsdy2WmF7OASs1Q
+	 Z0LNX+vJM/nYopIC10AmzmChwKpWmpe9pGZFLKtMk1f1oYuAyox9q91dJpQxqmLf4b
+	 VW1RelWsyN2IzxBEtoDCVOHxt2sZ+g04LpMlh4AY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 067/286] media: venus: hfi_parser: add check to avoid out of bound access
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.14 134/311] io_uring: fix sync handling of io_fallback_tw()
 Date: Tue, 29 Apr 2025 18:39:31 +0200
-Message-ID: <20250429161110.596892749@linuxfoundation.org>
+Message-ID: <20250429161126.529960348@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 172bf5a9ef70a399bb227809db78442dc01d9e48 upstream.
+commit edd43f4d6f50ec3de55a0c9e9df6348d1da51965 upstream.
 
-There is a possibility that init_codecs is invoked multiple times during
-manipulated payload from video firmware. In such case, if codecs_count
-can get incremented to value more than MAX_CODEC_NUM, there can be OOB
-access. Reset the count so that it always starts from beginning.
+A previous commit added a 'sync' parameter to io_fallback_tw(), which if
+true, means the caller wants to wait on the fallback thread handling it.
+But the logic is somewhat messed up, ensure that ctxs are swapped and
+flushed appropriately.
 
 Cc: stable@vger.kernel.org
-Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: dfbe5561ae93 ("io_uring: flush offloaded and delayed task_work on exit")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_parser.c |    2 ++
- 1 file changed, 2 insertions(+)
+ io_uring/io_uring.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -19,6 +19,8 @@ static void init_codecs(struct venus_cor
- 	struct venus_caps *caps = core->caps, *cap;
- 	unsigned long bit;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1080,21 +1080,22 @@ static __cold void __io_fallback_tw(stru
+ 	while (node) {
+ 		req = container_of(node, struct io_kiocb, io_task_work.node);
+ 		node = node->next;
+-		if (sync && last_ctx != req->ctx) {
++		if (last_ctx != req->ctx) {
+ 			if (last_ctx) {
+-				flush_delayed_work(&last_ctx->fallback_work);
++				if (sync)
++					flush_delayed_work(&last_ctx->fallback_work);
+ 				percpu_ref_put(&last_ctx->refs);
+ 			}
+ 			last_ctx = req->ctx;
+ 			percpu_ref_get(&last_ctx->refs);
+ 		}
+-		if (llist_add(&req->io_task_work.node,
+-			      &req->ctx->fallback_llist))
+-			schedule_delayed_work(&req->ctx->fallback_work, 1);
++		if (llist_add(&req->io_task_work.node, &last_ctx->fallback_llist))
++			schedule_delayed_work(&last_ctx->fallback_work, 1);
+ 	}
  
-+	core->codecs_count = 0;
-+
- 	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
- 		return;
- 
+ 	if (last_ctx) {
+-		flush_delayed_work(&last_ctx->fallback_work);
++		if (sync)
++			flush_delayed_work(&last_ctx->fallback_work);
+ 		percpu_ref_put(&last_ctx->refs);
+ 	}
+ }
 
 
 
