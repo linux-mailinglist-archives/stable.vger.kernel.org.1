@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-137380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7689FAA131A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E6AAA16E5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:41:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E36A16D306
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD88D188F0EF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1377251783;
-	Tue, 29 Apr 2025 16:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB098252284;
+	Tue, 29 Apr 2025 17:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ow5pySf3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/EofF6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF312512E8;
-	Tue, 29 Apr 2025 16:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869DE2459FA;
+	Tue, 29 Apr 2025 17:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945896; cv=none; b=W+xZXBBG1NqAPfw9Yf5FVFVVKn8JCawB/UEz7PsFjoHutx3Q0IGE8VDwMZAxC7XHArJc91hkcIBN1rNEZN1/M2c+xgpL0UNXyszS0tR8FYkpz+L+ttxqvyi74vN05W/JEBRW+VmopWtXSUqXfJGiKLzkc+y2NFh/wUwKa1esxVI=
+	t=1745948467; cv=none; b=nuAk3LXkApPGD7M6SfyZnF3twDv36WoUaItIYjpPlZqm32Jj+FuRKR1OSUBQPVqqpny443oTGa/pg6khDFNmvbq/M80CqLr1UZiBS3omikK5joN30KTFcqPZUusEKXPTJDzqmtwXX9PS9P47zKpokbRD5NoBFzWjjam7oPUQe9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945896; c=relaxed/simple;
-	bh=ma4wY5pYTEj0UmXrOfJ2XIU4GA7R12fmiMi7i6WchMQ=;
+	s=arc-20240116; t=1745948467; c=relaxed/simple;
+	bh=GCPhc83xKj1HGreIqWKwYNgJ8MWcPiKcBwDCD3swnoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PszxBGU2TF2SD3pIeu5X+9t+NkpmS5f/aE07/cC92rbE6qwOw65y+XcC0tWop2AMoVYs6pdhnWi5OR6rrTnza70lSDYazYzShD3y+l9cffdfciV1MSfJ7/nwL+TNs0TYnjpe8g2ivMwqpo2YnH2oTnn7xfU6C2q2Vb5h9YhLBmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ow5pySf3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF782C4CEE9;
-	Tue, 29 Apr 2025 16:58:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iybSfgL4HpmLAl5xvRIUgU1NX+xAzW05PY9zJfg/cgoYch1Co2PLr3WtNh3Jkpa4fgpjWQA43lXf+fVHNKajK6Yy3UibTyMvTZ+uAPgmDy8Kr3ReVw40vfWdF/2NG2jCfCS0C5XZLUDZLP3DsKewO7E1YFeZAImAAwLnZ3BYxVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/EofF6r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D49C4CEE3;
+	Tue, 29 Apr 2025 17:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945896;
-	bh=ma4wY5pYTEj0UmXrOfJ2XIU4GA7R12fmiMi7i6WchMQ=;
+	s=korg; t=1745948467;
+	bh=GCPhc83xKj1HGreIqWKwYNgJ8MWcPiKcBwDCD3swnoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ow5pySf3UWfJwTL4I36wd7Xo3OeoLUvfSRUOCbpCR/RbnTfEDgbpl6xNbLDpRjyEq
-	 3IcC6LYMwamZwHZTofIj0GfzKcc2bAuNSg0vpvKaygwBjQnFGW25bheN8w+7OTB1O2
-	 MpA8KjHrmQMlBgCzkqX5yuDDc/iq1eV4gnsRpf4s=
+	b=b/EofF6rSxwcsX5/YK5j6zbxqpZFSVKY1v/So85wGheWtBDLkcMVrsqHyzcrjm31K
+	 OFVzmRVMFTAFVBRUOWOt9ccg/31xEEJ6mqlcvWisdpOnFKO1hOABx43hh5eMgMN+VX
+	 /k9je5T8PE1N9sALUCmSOZRlE3TnBso8h/js7eZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlatko Markovikj <vlatko.markovikj@etas.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Makarenko Oleg <oleg@makarenk.ooo>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 056/311] net: enetc: fix frame corruption on bpf_xdp_adjust_head/tail() and XDP_PASS
-Date: Tue, 29 Apr 2025 18:38:13 +0200
-Message-ID: <20250429161123.336066509@linuxfoundation.org>
+Subject: [PATCH 5.15 017/373] HID: pidff: Convert infinite length from Linux API to PID standard
+Date: Tue, 29 Apr 2025 18:38:14 +0200
+Message-ID: <20250429161123.843548939@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,155 +65,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 020f0c8b3d396ec8190948f86063e1c45133f839 ]
+[ Upstream commit 37e0591fe44dce39d1ebc7a82d5b6e4dba1582eb ]
 
-Vlatko Markovikj reported that XDP programs attached to ENETC do not
-work well if they use bpf_xdp_adjust_head() or bpf_xdp_adjust_tail(),
-combined with the XDP_PASS verdict. A typical use case is to add or
-remove a VLAN tag.
+Software uses 0 as de-facto infinite lenght on Linux FF apis (SDL),
+Linux doesn't actually define anythi as of now, while USB PID defines
+NULL (0xffff). Most PID devices do not expect a 0-length effect and
+can't interpret it as infinite. This change fixes Force Feedback for
+most PID compliant devices.
 
-The resulting sk_buff passed to the stack is corrupted, because the
-algorithm used by the driver for XDP_PASS is to unwind the current
-buffer pointer in the RX ring and to re-process the current frame with
-enetc_build_skb() as if XDP hadn't run. That is incorrect because XDP
-may have modified the geometry of the buffer, which we then are
-completely unaware of. We are looking at a modified buffer with the
-original geometry.
+As most games depend on updating the values of already playing infinite
+effects, this is crucial to ensure they will actually work.
 
-The initial reaction, both from me and from Vlatko, was to shop around
-the kernel for code to steal that would calculate a delta between the
-old and the new XDP buffer geometry, and apply that to the sk_buff too.
-We noticed that veth and generic xdp have such code.
+Previously, users had to rely on third-party software to do this conversion
+and make their PID devices usable.
 
-The headroom adjustment is pretty uncontroversial, but what turned out
-severely problematic is the tailroom.
-
-veth has this snippet:
-
-		__skb_put(skb, off); /* positive on grow, negative on shrink */
-
-which on first sight looks decent enough, except __skb_put() takes an
-"unsigned int" for the second argument, and the arithmetic seems to only
-work correctly by coincidence. Second issue, __skb_put() contains a
-SKB_LINEAR_ASSERT(). It's not a great pattern to make more widespread.
-The skb may still be nonlinear at that point - it only becomes linear
-later when resetting skb->data_len to zero.
-
-To avoid the above, bpf_prog_run_generic_xdp() does this instead:
-
-		skb_set_tail_pointer(skb, xdp->data_end - xdp->data);
-		skb->len += off; /* positive on grow, negative on shrink */
-
-which is more open-coded, uses lower-level functions and is in general a
-bit too much to spread around in driver code.
-
-Then there is the snippet:
-
-	if (xdp_buff_has_frags(xdp))
-		skb->data_len = skb_shinfo(skb)->xdp_frags_size;
-	else
-		skb->data_len = 0;
-
-One would have expected __pskb_trim() to be the function of choice for
-this task. But it's not used in veth/xdpgeneric because the extraneous
-fragments were _already_ freed by bpf_xdp_adjust_tail() ->
-bpf_xdp_frags_shrink_tail() -> ... -> __xdp_return() - the backing
-memory for the skb frags and the xdp frags is the same, but they don't
-keep individual references.
-
-In fact, that is the biggest reason why this snippet cannot be reused
-as-is, because ENETC temporarily constructs an skb with the original len
-and the original number of frags. Because the extraneous frags are
-already freed by bpf_xdp_adjust_tail() and returned to the page
-allocator, it means the entire approach of using enetc_build_skb() is
-questionable for XDP_PASS. To avoid that, one would need to elevate the
-page refcount of all frags before calling bpf_prog_run_xdp() and drop it
-after XDP_PASS.
-
-There are other things that are missing in ENETC's handling of XDP_PASS,
-like for example updating skb_shinfo(skb)->meta_len.
-
-These are all handled correctly and cleanly in commit 539c1fba1ac7
-("xdp: add generic xdp_build_skb_from_buff()"), added to net-next in
-Dec 2024, and in addition might even be quicker that way. I have a very
-strong preference towards backporting that commit for "stable", and that
-is what is used to fix the handling bugs. It is way too messy to go
-this deep into the guts of an sk_buff from the code of a device driver.
-
-Fixes: d1b15102dd16 ("net: enetc: add support for XDP_DROP and XDP_PASS")
-Reported-by: Vlatko Markovikj <vlatko.markovikj@etas.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250417120005.3288549-4-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c | 26 +++++++++++---------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/hid/usbhid/hid-pidff.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 74721995cb1f9..3ee52f4b11660 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1878,11 +1878,10 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 3b4ee21cd8111..5fe4422bb5bad 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -21,6 +21,7 @@
+ #include "usbhid.h"
  
- 	while (likely(rx_frm_cnt < work_limit)) {
- 		union enetc_rx_bd *rxbd, *orig_rxbd;
--		int orig_i, orig_cleaned_cnt;
- 		struct xdp_buff xdp_buff;
- 		struct sk_buff *skb;
-+		int orig_i, err;
- 		u32 bd_status;
--		int err;
+ #define	PID_EFFECTS_MAX		64
++#define	PID_INFINITE		0xffff
  
- 		rxbd = enetc_rxbd(rx_ring, i);
- 		bd_status = le32_to_cpu(rxbd->r.lstatus);
-@@ -1897,7 +1896,6 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 			break;
+ /* Report usage table used to put reports into an array */
  
- 		orig_rxbd = rxbd;
--		orig_cleaned_cnt = cleaned_cnt;
- 		orig_i = i;
- 
- 		enetc_build_xdp_buff(rx_ring, bd_status, &rxbd, &i,
-@@ -1925,15 +1923,21 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 			rx_ring->stats.xdp_drops++;
- 			break;
- 		case XDP_PASS:
--			rxbd = orig_rxbd;
--			cleaned_cnt = orig_cleaned_cnt;
--			i = orig_i;
--
--			skb = enetc_build_skb(rx_ring, bd_status, &rxbd,
--					      &i, &cleaned_cnt,
--					      ENETC_RXB_DMA_SIZE_XDP);
--			if (unlikely(!skb))
-+			skb = xdp_build_skb_from_buff(&xdp_buff);
-+			/* Probably under memory pressure, stop NAPI */
-+			if (unlikely(!skb)) {
-+				enetc_xdp_drop(rx_ring, orig_i, i);
-+				rx_ring->stats.xdp_drops++;
- 				goto out;
-+			}
+@@ -301,7 +302,12 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
+ 		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
+ 	pidff->set_effect_type->value[0] =
+ 		pidff->create_new_effect_type->value[0];
+-	pidff->set_effect[PID_DURATION].value[0] = effect->replay.length;
 +
-+			enetc_get_offloads(rx_ring, orig_rxbd, skb);
++	/* Convert infinite length from Linux API (0)
++	   to PID standard (NULL) if needed */
++	pidff->set_effect[PID_DURATION].value[0] =
++		effect->replay.length == 0 ? PID_INFINITE : effect->replay.length;
 +
-+			/* These buffers are about to be owned by the stack.
-+			 * Update our buffer cache (the rx_swbd array elements)
-+			 * with their other page halves.
-+			 */
-+			enetc_bulk_flip_buff(rx_ring, orig_i, i);
- 
- 			napi_gro_receive(napi, skb);
- 			break;
+ 	pidff->set_effect[PID_TRIGGER_BUTTON].value[0] = effect->trigger.button;
+ 	pidff->set_effect[PID_TRIGGER_REPEAT_INT].value[0] =
+ 		effect->trigger.interval;
 -- 
 2.39.5
 
