@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-138026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6D4AA163F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C88AA13CC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9625818958CE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11CEE1BA74EF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6C52512D8;
-	Tue, 29 Apr 2025 17:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B1D1FE468;
+	Tue, 29 Apr 2025 17:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7ZnjHSa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3reGn59"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEF82528EC;
-	Tue, 29 Apr 2025 17:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816037E110;
+	Tue, 29 Apr 2025 17:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947881; cv=none; b=F3f2ypvRCVuE/EPSaiGjG8fLlguUnCLv56tK6zxApQk/jERhnCpSw/h5AV+ESdtgs/e8261uBlQomzrBOyolfIdp+CSo2jvtSBtlX5TnWmVcKWZ/gu2G4QCDes41aijL0tZHdXppv4iVJzESfXYxDAtBuL2Ru+63pvN+RqxJVyc=
+	t=1745946343; cv=none; b=TxW9deVv2kp6WYfIE6odaztXzg6e6aGe5y7FTHarpm6DgnGczBlcFyqJXm2S78tk4OnmeuhLiuH739ydsq4JfNpbwG6/j+FHX4WAJtNNmsgeTSD1TBnho5ae8cyZ4RGjterRbQXxn0vD44QfoZx2xKiYjg0ntReSLiG0fTNr5ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947881; c=relaxed/simple;
-	bh=4iVPUqiQSRt2ne+u8W5jW6QOsCqohMfuZxeM4K1qiFw=;
+	s=arc-20240116; t=1745946343; c=relaxed/simple;
+	bh=IPwAIzpCqiuzae+lF1XqVMKdw3VOyP3AHVEqb4OAVCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5wVdK14JvctC6t2LSngneZCblimEaW56VgRPEs49xliuVM6H7F3Ix5UTBjqa4U1olT9r6uO3yShNxlRDZAJdBmmRc3P2Cegyu34r27Sv9WuTkHo+eX8wCvASKQ5YQi2v9OBEbf4YsSZ4jllqKH6o4UYLikqKQqFsRP8asR/efw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7ZnjHSa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F9FC4CEE3;
-	Tue, 29 Apr 2025 17:31:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KjPSoHdh8zlXJKAw+vZu0TLvefcxioNI+VVPKNjUdTOulMVMdpe/LuzUVNN3fBGw8s6rzDrmJsi8dCMd+6DlV9D6tNeWBwLMpNlWvKW1JjkdvVSihFVg8+06TNRZBAUQeOn5/RpCXJxD9iwPZPLPCx76jjvkEacrognMdxwUvpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3reGn59; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36B1C4CEE3;
+	Tue, 29 Apr 2025 17:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947880;
-	bh=4iVPUqiQSRt2ne+u8W5jW6QOsCqohMfuZxeM4K1qiFw=;
+	s=korg; t=1745946343;
+	bh=IPwAIzpCqiuzae+lF1XqVMKdw3VOyP3AHVEqb4OAVCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7ZnjHSam5M1/hIsAp8xfvdJ6aCbfL2EKLWfCBNdKwC6vtplG77IlPxNhlnM4DWPx
-	 Vd5G8zrQe6cCAoUB0Sx9MneXj7qSDzZkqSpnhOyofYFST0eH6tQpFc8FJdt2U0zyMJ
-	 igGVD4tfno1yPbsfsEBfcPTmDZOaMefK0ty3w5rc=
+	b=K3reGn59XzMtWbx1X0Um0c021pHSOU2ff3Blix4Mga8zwDYY0k+JfirmVG9vWamEy
+	 De0XevRKhf2rjeG1eYuAQ/vgtdIhRy/BeNewOmjrCE8i9uOBlb76ZJnlM/R+TGzgc7
+	 +ng50FFCNgQ1xzaeB5lkNMtAulKL9vUwTljSK96c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.12 131/280] serial: msm: Configure correct working mode before starting earlycon
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Gary Guo <gary@garyguo.net>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 235/311] kbuild, rust: use -fremap-path-prefix to make paths relative
 Date: Tue, 29 Apr 2025 18:41:12 +0200
-Message-ID: <20250429161120.487128090@linuxfoundation.org>
+Message-ID: <20250429161130.652802824@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit 7094832b5ac861b0bd7ed8866c93cb15ef619996 upstream.
+[ Upstream commit dbdffaf50ff9cee3259a7cef8a7bd9e0f0ba9f13 ]
 
-The MSM UART DM controller supports different working modes, e.g. DMA or
-the "single-character mode", where all reads/writes operate on a single
-character rather than 4 chars (32-bit) at once. When using earlycon,
-__msm_console_write() always writes 4 characters at a time, but we don't
-know which mode the bootloader was using and we don't set the mode either.
+Remap source path prefixes in all output, including compiler
+diagnostics, debug information, macro expansions, etc.
+This removes a few absolute paths from the binary and also makes it
+possible to use core::panic::Location properly.
 
-This causes garbled output if the bootloader was using the single-character
-mode, because only every 4th character appears in the serial console, e.g.
+Equivalent to the same configuration done for C sources in
+commit 1d3730f0012f ("kbuild: support -fmacro-prefix-map for external
+modules") and commit a73619a845d5 ("kbuild: use -fmacro-prefix-map to
+make __FILE__ a relative path").
 
-  "[ 00oni pi  000xf0[ 00i s 5rm9(l)l s 1  1 SPMTA 7:C 5[ 00A ade k d[
-   00ano:ameoi .Q1B[ 00ac _idaM00080oo'"
-
-If the bootloader was using the DMA ("DM") mode, output would likely fail
-entirely. Later, when the full serial driver probes, the port is
-re-initialized and output works as expected.
-
-Fix this also for earlycon by clearing the DMEN register and
-reset+re-enable the transmitter to apply the change. This ensures the
-transmitter is in the expected state before writing any output.
-
-Cc: stable <stable@kernel.org>
-Fixes: 0efe72963409 ("tty: serial: msm: Add earlycon support")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250408-msm-serial-earlycon-v1-1-429080127530@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://doc.rust-lang.org/rustc/command-line-arguments.html#--remap-path-prefix-remap-source-names-in-output
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Tested-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/msm_serial.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/tty/serial/msm_serial.c
-+++ b/drivers/tty/serial/msm_serial.c
-@@ -1746,6 +1746,12 @@ msm_serial_early_console_setup_dm(struct
- 	if (!device->port.membase)
- 		return -ENODEV;
+diff --git a/Makefile b/Makefile
+index 0c1b99da2c1f2..65663244e2d5c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1070,6 +1070,7 @@ KBUILD_CFLAGS += -fno-builtin-wcslen
+ # change __FILE__ to the relative path to the source directory
+ ifdef building_out_of_srctree
+ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srcroot)/=)
++KBUILD_RUSTFLAGS += --remap-path-prefix=$(srcroot)/=
+ endif
  
-+	/* Disable DM / single-character modes */
-+	msm_write(&device->port, 0, UARTDM_DMEN);
-+	msm_write(&device->port, MSM_UART_CR_CMD_RESET_RX, MSM_UART_CR);
-+	msm_write(&device->port, MSM_UART_CR_CMD_RESET_TX, MSM_UART_CR);
-+	msm_write(&device->port, MSM_UART_CR_TX_ENABLE, MSM_UART_CR);
-+
- 	device->con->write = msm_serial_early_write_dm;
- 	return 0;
- }
+ # include additional Makefiles when needed
+-- 
+2.39.5
+
 
 
 
