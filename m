@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F01FAA1595
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:29:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7077AA1816
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40AB098631A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0799A1BC58EA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA9121ADC7;
-	Tue, 29 Apr 2025 17:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A7B253959;
+	Tue, 29 Apr 2025 17:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNNGdrGu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHsI+pB9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF5F245007;
-	Tue, 29 Apr 2025 17:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4083624DFF3;
+	Tue, 29 Apr 2025 17:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947338; cv=none; b=LD88wcOGBZpNu3LPAxvoFPGR99N9gpnbY6rzae/sKkH+5HDDi581nIPTknfN/pIfgc/JH6QTDomfGDx+wtPVdXsABVXm9CJLq32hazdT/eeGSg7qJOqMfnx5oACQuaQBbu/NrE5uu0sa55tmX9DYGdbHD/sau+1vNySCfvMbWBk=
+	t=1745949302; cv=none; b=Qmfb4hdSMXyYAHTJl/C4O7HWzwk1gxyIEHGLL5Ai+qmLCmBb/vvVZIoUlYc7nsu1DPjoj63tZczyVpk8XAUXbPCSMr/YqgZAP4pvu/MsqIPRJlLwjQfGgZ9NnNkUzNomWpKymnpUnQxJoOMZVfjz3NVNxKXXLLu9g4dCaSR9u/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947338; c=relaxed/simple;
-	bh=KE3js3AIHj8QeuqLux10Sex/EPhZy/nwgW88blMNauU=;
+	s=arc-20240116; t=1745949302; c=relaxed/simple;
+	bh=5f1KFwrmx6d3zNz+CUNCVc6bNzz3K4MJNFX6hPnXXzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxuk4s+c/YyZxjjrfCpYRdLo2WPMXm+XNzj/PBhaCRn67QopksGJk9pnAVS8VOWP3FkSUiPzidnbVwVYQdXKzzCGoBE4uW62fPlhOFaAyAPB2bVcDJ95C9wfvDjrDqwMkRlPqK7mA+7H6+pNjTdw+Qw9KIoyBCa/TmoWayfh+Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNNGdrGu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2FF7C4CEE9;
-	Tue, 29 Apr 2025 17:22:17 +0000 (UTC)
+	 MIME-Version; b=FOsacwpcmalof6AQq1bV1kEcShWAy+VRqb6c9RXEJlu1HAYdckHGr2+KBSHULy8/ykd2rvZAO2MrFx2/Hb1fzHVKU+p6z73Bd0BbXDgUV3oXPIt70BG9Mz4da6Ko4rY0m8BzDGOyLh264BuYydC+bSHAlsukqSdpMtY9NqYdWYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHsI+pB9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E75C4CEE3;
+	Tue, 29 Apr 2025 17:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947338;
-	bh=KE3js3AIHj8QeuqLux10Sex/EPhZy/nwgW88blMNauU=;
+	s=korg; t=1745949302;
+	bh=5f1KFwrmx6d3zNz+CUNCVc6bNzz3K4MJNFX6hPnXXzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNNGdrGu538GOjflibM6HiCdyj7CSBCdjpMv66sQjoZj/3Yr9bxw7JJY8yQCXzvPi
-	 N5AfFWiOD+U7DlNQDHrHMBANvZwTRowPRV6ATxXVTAzjpTJEU90+aoxS7ZC2YTEGFW
-	 Dd011MYnOYqA3aUn98bwkjJo+wVwilnNIfNJR22Q=
+	b=oHsI+pB9vPD3NHH5IhkCyE9Oru7syPhz2dHVBeidB12HNPDjCX3FUyvG2oT0UO4oR
+	 x1PN3P1pHymDpRHrH0+8d+XF2PX0C2SkEC+BzWCot5HESvDPs0War/p6YnksLZuqK2
+	 EyJUn4NKvucCfO9PBdUumoDaeYLOumr2c4vfJw78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Mingcong Bai <baimingcong@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 5.10 248/286] USB: OHCI: Add quirk for LS7A OHCI controller (rev 0x02)
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 275/373] PCI: Coalesce host bridge contiguous apertures
 Date: Tue, 29 Apr 2025 18:42:32 +0200
-Message-ID: <20250429161118.129506098@linuxfoundation.org>
+Message-ID: <20250429161134.437519046@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-commit bcb60d438547355b8f9ad48645909139b64d3482 upstream.
+[ Upstream commit 7c3855c423b17f6ca211858afb0cef20569914c7 ]
 
-The OHCI controller (rev 0x02) under LS7A PCI host has a hardware flaw.
-MMIO register with offset 0x60/0x64 is treated as legacy PS2-compatible
-keyboard/mouse interface, which confuse the OHCI controller. Since OHCI
-only use a 4KB BAR resource indeed, the LS7A OHCI controller's 32KB BAR
-is wrapped around (the second 4KB BAR space is the same as the first 4KB
-internally). So we can add an 4KB offset (0x1000) to the OHCI registers
-(from the PCI BAR resource) as a quirk.
+Built-in graphics at 07:00.0 on HP EliteDesk 805 G6 doesn't work because
+graphics can't get the BAR it needs.  The BIOS configuration is
+correct: BARs 0 and 2 both fit in the 00:08.1 bridge window.
 
-Cc: stable <stable@kernel.org>
+But that 00:08.1 window covers two host bridge apertures from _CRS.
+Previously we assumed this was illegal, so we clipped the window to fit
+into one aperture (see 0f7e7aee2f37 ("PCI: Add pci_bus_clip_resource() to
+clip to fit upstream window")).
+
+  pci_bus 0000:00: root bus resource [mem 0x10020200000-0x100303fffff window]
+  pci_bus 0000:00: root bus resource [mem 0x10030400000-0x100401fffff window]
+
+  pci 0000:00:08.1:   bridge window [mem 0x10030000000-0x100401fffff 64bit pref]
+  pci 0000:07:00.0: reg 0x10: [mem 0x10030000000-0x1003fffffff 64bit pref]
+  pci 0000:07:00.0: reg 0x18: [mem 0x10040000000-0x100401fffff 64bit pref]
+
+  pci 0000:00:08.1: can't claim BAR 15 [mem 0x10030000000-0x100401fffff 64bit pref]: no compatible bridge window
+  pci 0000:00:08.1: [mem 0x10030000000-0x100401fffff 64bit pref] clipped to [mem 0x10030000000-0x100303fffff 64bit pref]
+  pci 0000:00:08.1:   bridge window [mem 0x10030000000-0x100303fffff 64bit pref]
+
+  pci 0000:07:00.0: can't claim BAR 0 [mem 0x10030000000-0x1003fffffff 64bit pref]: no compatible bridge window
+  pci 0000:07:00.0: can't claim BAR 2 [mem 0x10040000000-0x100401fffff 64bit pref]: no compatible bridge window
+
+However, the host bridge apertures are contiguous, so there's no need to
+clip in this case.  Coalesce contiguous apertures so we can allocate from
+the entire contiguous region.
+
+Previous commit 65db04053efe ("PCI: Coalesce host bridge contiguous
+apertures") was similar but sorted the apertures, and Guenter Roeck
+reported a regression in ppc:sam460ex qemu emulation from nvme; see
+https://lore.kernel.org/all/20210709231529.GA3270116@roeck-us.net/
+
+[bhelgaas: commit log]
+Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=212013
 Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Tested-by: Mingcong Bai <baimingcong@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://lore.kernel.org/r/20250328040059.3672979-1-chenhuacai@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20210713125007.1260304-1-kai.heng.feng@canonical.com
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 804443c1f278 ("PCI: Fix reference leak in pci_register_host_bridge()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/ohci-pci.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/pci/probe.c | 31 +++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/host/ohci-pci.c
-+++ b/drivers/usb/host/ohci-pci.c
-@@ -165,6 +165,25 @@ static int ohci_quirk_amd700(struct usb_
- 	return 0;
- }
- 
-+static int ohci_quirk_loongson(struct usb_hcd *hcd)
-+{
-+	struct pci_dev *pdev = to_pci_dev(hcd->self.controller);
-+
-+	/*
-+	 * Loongson's LS7A OHCI controller (rev 0x02) has a
-+	 * flaw. MMIO register with offset 0x60/64 is treated
-+	 * as legacy PS2-compatible keyboard/mouse interface.
-+	 * Since OHCI only use 4KB BAR resource, LS7A OHCI's
-+	 * 32KB BAR is wrapped around (the 2nd 4KB BAR space
-+	 * is the same as the 1st 4KB internally). So add 4KB
-+	 * offset (0x1000) to the OHCI registers as a quirk.
-+	 */
-+	if (pdev->revision == 0x2)
-+		hcd->regs += SZ_4K;	/* SZ_4K = 0x1000 */
-+
-+	return 0;
-+}
-+
- static int ohci_quirk_qemu(struct usb_hcd *hcd)
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 3ad0b2839041c..3ed2eb893dcca 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -883,11 +883,11 @@ static void pci_set_bus_msi_domain(struct pci_bus *bus)
+ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
  {
- 	struct ohci_hcd *ohci = hcd_to_ohci(hcd);
-@@ -225,6 +244,10 @@ static const struct pci_device_id ohci_p
- 		.driver_data = (unsigned long)ohci_quirk_amd700,
- 	},
- 	{
-+		PCI_DEVICE(PCI_VENDOR_ID_LOONGSON, 0x7a24),
-+		.driver_data = (unsigned long)ohci_quirk_loongson,
-+	},
-+	{
- 		.vendor		= PCI_VENDOR_ID_APPLE,
- 		.device		= 0x003f,
- 		.subvendor	= PCI_SUBVENDOR_ID_REDHAT_QUMRANET,
+ 	struct device *parent = bridge->dev.parent;
+-	struct resource_entry *window, *n;
++	struct resource_entry *window, *next, *n;
+ 	struct pci_bus *bus, *b;
+-	resource_size_t offset;
++	resource_size_t offset, next_offset;
+ 	LIST_HEAD(resources);
+-	struct resource *res;
++	struct resource *res, *next_res;
+ 	char addr[64], *fmt;
+ 	const char *name;
+ 	int err;
+@@ -969,11 +969,34 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
+ 	if (nr_node_ids > 1 && pcibus_to_node(bus) == NUMA_NO_NODE)
+ 		dev_warn(&bus->dev, "Unknown NUMA node; performance will be reduced\n");
+ 
++	/* Coalesce contiguous windows */
++	resource_list_for_each_entry_safe(window, n, &resources) {
++		if (list_is_last(&window->node, &resources))
++			break;
++
++		next = list_next_entry(window, node);
++		offset = window->offset;
++		res = window->res;
++		next_offset = next->offset;
++		next_res = next->res;
++
++		if (res->flags != next_res->flags || offset != next_offset)
++			continue;
++
++		if (res->end + 1 == next_res->start) {
++			next_res->start = res->start;
++			res->flags = res->start = res->end = 0;
++		}
++	}
++
+ 	/* Add initial resources to the bus */
+ 	resource_list_for_each_entry_safe(window, n, &resources) {
+-		list_move_tail(&window->node, &bridge->windows);
+ 		offset = window->offset;
+ 		res = window->res;
++		if (!res->end)
++			continue;
++
++		list_move_tail(&window->node, &bridge->windows);
+ 
+ 		if (res->flags & IORESOURCE_BUS)
+ 			pci_bus_insert_busn_res(bus, bus->number, res->end);
+-- 
+2.39.5
+
 
 
 
