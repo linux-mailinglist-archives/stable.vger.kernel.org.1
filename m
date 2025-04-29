@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE967AA1690
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D923AA17CE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 566753B2A63
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB89317D116
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D973243958;
-	Tue, 29 Apr 2025 17:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219CB24C083;
+	Tue, 29 Apr 2025 17:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndvlOcsA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRVHHvck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07C97E110;
-	Tue, 29 Apr 2025 17:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30EB22AE68;
+	Tue, 29 Apr 2025 17:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947930; cv=none; b=FpBZ2S+9YBvu/oSPBeddzmchGNRgcUJ/YgSZaIW1uKYxtur+vPoC6TNkNaoA3PP1LfDQXaotoCvSGC2/EmM9xgfjUus4VQ+NdsAGftwbf/79SIeFSlcsOxvl/aOW/fcQTxX17KUWm+l5zqvL7HvFEh6c7e3GQ54EUYQsfhIEbk8=
+	t=1745949096; cv=none; b=RNksxpxBJvzE6+9fcgRvIfLirHtJ3+m5E+B5T5Hp0UWONlPoH2yz0ftoRSDw9t5EddTVHZlMG2PUZ5tjuqYq653WCLtwf/jIkQxwNmC5VpPfrMPSh4BQGqBro6mWijWh6GjlX+yza2hL+KtyRBrhjOHv5DnPxlyU85sz09X2EWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947930; c=relaxed/simple;
-	bh=2UhnSiXH3pIGkFp69ztW4pSWM03+hO8LS5ujWQ4B/Jk=;
+	s=arc-20240116; t=1745949096; c=relaxed/simple;
+	bh=jDU3XUbmvsU4WkVZcD9oahoOPlwxmJ2LchvHTEJdxo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FS4CDDe8Ti962B8LtrsJMZ9uf3YK9tRzrsBwKnj0HxFztZS0DFJwQBfSq59g1QeV2VHeTh71SdkU5/zBLadBYrP4CB3y7JFdqVfyRqXSev0nsF2rSJ/FBVJ93grMnmjNP9hYlN7+MI9hropuLP5VfwDtY4megQXbsZ/LltQYePM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndvlOcsA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438ECC4CEE3;
-	Tue, 29 Apr 2025 17:32:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lhmvaLTCSMGxY9T43msN13V3ftFsjr0dRprwmpEyD/5tBHrpo+nIpdGrxAmS1fA1TAJNu7rCko2x2vU6ogNS3uDpRivj/s9TVNB/8hkGZj/aeM0akAMvNPmJvguwxhApLe5XZbxyM+R8fO1VgZIRiD9neBB0jB6qwaI7LA+cr/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRVHHvck; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D68CC4CEE3;
+	Tue, 29 Apr 2025 17:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947930;
-	bh=2UhnSiXH3pIGkFp69ztW4pSWM03+hO8LS5ujWQ4B/Jk=;
+	s=korg; t=1745949096;
+	bh=jDU3XUbmvsU4WkVZcD9oahoOPlwxmJ2LchvHTEJdxo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ndvlOcsA3IOz4bGtKZYMlBsmXrfdH4K5pc1SlYzSl2GFItsVrvrgO5eeJ9G1zy3rM
-	 yo2l4idXlQAo8LYohukJ/dNbm+643W7RA5guCQslO66FqmY+Ys7D5Qrqij97aA6DJr
-	 +AZ4WdELj/ckmXfq6YRi2Sn1OwxnKEDEn4cSKrHs=
+	b=dRVHHvckPhCA/MQTTjiDO4VzmiO7kTg+vquS993GIUNSOyBgP+xU4btsDQhndtrsG
+	 0hXvrezMdeuAX0mZR5tQEIVYP38FB1CMBzaIZ5sx9hFIbaYXeOdNbfyIkWPLJ27Jrq
+	 CMUoN2VLNmpBUAKHFdLF3Tx+FtHjDLkDcB9x/s/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.12 148/280] USB: wdm: handle IO errors in wdm_wwan_port_start
+	Kang Yang <quic_kangyang@quicinc.com>,
+	David Ruth <druth@chromium.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 5.15 212/373] wifi: ath10k: avoid NULL pointer error during sdio remove
 Date: Tue, 29 Apr 2025 18:41:29 +0200
-Message-ID: <20250429161121.178907017@linuxfoundation.org>
+Message-ID: <20250429161131.881864116@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +61,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Kang Yang <quic_kangyang@quicinc.com>
 
-commit 9697f5efcf5fdea65b8390b5eb81bebe746ceedc upstream.
+commit 95c38953cb1ecf40399a676a1f85dfe2b5780a9a upstream.
 
-In case submitting the URB fails we must undo
-what we've done so far.
+When running 'rmmod ath10k', ath10k_sdio_remove() will free sdio
+workqueue by destroy_workqueue(). But if CONFIG_INIT_ON_FREE_DEFAULT_ON
+is set to yes, kernel panic will happen:
+Call trace:
+ destroy_workqueue+0x1c/0x258
+ ath10k_sdio_remove+0x84/0x94
+ sdio_bus_remove+0x50/0x16c
+ device_release_driver_internal+0x188/0x25c
+ device_driver_detach+0x20/0x2c
 
-Fixes: cac6fb015f71 ("usb: class: cdc-wdm: WWAN framework integration")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250401084749.175246-2-oneukum@suse.com
+This is because during 'rmmod ath10k', ath10k_sdio_remove() will call
+ath10k_core_destroy() before destroy_workqueue(). wiphy_dev_release()
+will finally be called in ath10k_core_destroy(). This function will free
+struct cfg80211_registered_device *rdev and all its members, including
+wiphy, dev and the pointer of sdio workqueue. Then the pointer of sdio
+workqueue will be set to NULL due to CONFIG_INIT_ON_FREE_DEFAULT_ON.
+
+After device release, destroy_workqueue() will use NULL pointer then the
+kernel panic happen.
+
+Call trace:
+ath10k_sdio_remove
+  ->ath10k_core_unregister
+    ……
+    ->ath10k_core_stop
+      ->ath10k_hif_stop
+        ->ath10k_sdio_irq_disable
+    ->ath10k_hif_power_down
+      ->del_timer_sync(&ar_sdio->sleep_timer)
+  ->ath10k_core_destroy
+    ->ath10k_mac_destroy
+      ->ieee80211_free_hw
+        ->wiphy_free
+    ……
+          ->wiphy_dev_release
+  ->destroy_workqueue
+
+Need to call destroy_workqueue() before ath10k_core_destroy(), free
+the work queue buffer first and then free pointer of work queue by
+ath10k_core_destroy(). This order matches the error path order in
+ath10k_sdio_probe().
+
+No work will be queued on sdio workqueue between it is destroyed and
+ath10k_core_destroy() is called. Based on the call_stack above, the
+reason is:
+Only ath10k_sdio_sleep_timer_handler(), ath10k_sdio_hif_tx_sg() and
+ath10k_sdio_irq_disable() will queue work on sdio workqueue.
+Sleep timer will be deleted before ath10k_core_destroy() in
+ath10k_hif_power_down().
+ath10k_sdio_irq_disable() only be called in ath10k_hif_stop().
+ath10k_core_unregister() will call ath10k_hif_power_down() to stop hif
+bus, so ath10k_sdio_hif_tx_sg() won't be called anymore.
+
+Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
+
+Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+Tested-by: David Ruth <druth@chromium.org>
+Reviewed-by: David Ruth <druth@chromium.org>
+Link: https://patch.msgid.link/20241008022246.1010-1-quic_kangyang@quicinc.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-wdm.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/sdio.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -829,6 +829,7 @@ static struct usb_class_driver wdm_class
- static int wdm_wwan_port_start(struct wwan_port *port)
- {
- 	struct wdm_device *desc = wwan_port_get_drvdata(port);
-+	int rv;
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -3,6 +3,7 @@
+  * Copyright (c) 2004-2011 Atheros Communications Inc.
+  * Copyright (c) 2011-2012,2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2016-2017 Erik Stromdahl <erik.stromdahl@gmail.com>
++ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
  
- 	/* The interface is both exposed via the WWAN framework and as a
- 	 * legacy usbmisc chardev. If chardev is already open, just fail
-@@ -848,7 +849,15 @@ static int wdm_wwan_port_start(struct ww
- 	wwan_port_txon(port);
+ #include <linux/module.h>
+@@ -2648,9 +2649,9 @@ static void ath10k_sdio_remove(struct sd
  
- 	/* Start getting events */
--	return usb_submit_urb(desc->validity, GFP_KERNEL);
-+	rv = usb_submit_urb(desc->validity, GFP_KERNEL);
-+	if (rv < 0) {
-+		wwan_port_txoff(port);
-+		desc->manage_power(desc->intf, 0);
-+		/* this must be last lest we race with chardev open */
-+		clear_bit(WDM_WWAN_IN_USE, &desc->flags);
-+	}
+ 	netif_napi_del(&ar->napi);
+ 
+-	ath10k_core_destroy(ar);
+-
+ 	destroy_workqueue(ar_sdio->workqueue);
 +
-+	return rv;
++	ath10k_core_destroy(ar);
  }
  
- static void wdm_wwan_port_stop(struct wwan_port *port)
+ static const struct sdio_device_id ath10k_sdio_devices[] = {
 
 
 
