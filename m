@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C59AA1693
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A87AA186D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:59:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 069397A5683
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:37:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B10B84A43F0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F2D244686;
-	Tue, 29 Apr 2025 17:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB5538FB0;
+	Tue, 29 Apr 2025 17:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUYdv4yL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZNj1om1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF73B22DF91;
-	Tue, 29 Apr 2025 17:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EDF2AE96;
+	Tue, 29 Apr 2025 17:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948323; cv=none; b=uscmJzl1jjC9+qvl0rA4tFkpdC3Vuo1ZYftmsYvWrsJ4+aAyXkCbKgRXaU60Nq6hDg3uwj+oBbehPeUibCls9HjioLjXbWLzfwkQc3MAYFXKKmqn9s34Nu68LmNbgmsejRhEkLHRfjEJAHsx4Ixgsry5ZPSAq+VcqEs4RZttP6I=
+	t=1745949528; cv=none; b=JvOdhm4NabIhaY2vyOxzp5i8kjTUic2P1Yk24B7JSPb9XLmXUpL/aVKHv8QV7oT4dXioJiXETL1rNaN9PaOgiFHnx+lW2SL+ZFiZsXp5U8i9FhXAzexeP0b4gAajH48/N+J1cUUt0xytLJDRFXvwNFp0xiorgxwIdtPi5SrVoiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948323; c=relaxed/simple;
-	bh=qXVj/JpcSXevtNgfxoCcbT0ldTXdN8oaUq8grEAxxPk=;
+	s=arc-20240116; t=1745949528; c=relaxed/simple;
+	bh=wGyj1LM8qw3KYvORZ1GYTe6AR+asS7KpV3HU3zpFyHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2d28B++LPG6yUKqyEdcrcy7FYDgJiebWNRWmdeewyqaPJQvH003k1y/ZivJBfSxW7pD4mVboWHGOGsYxKAM8OYWxLK6sgpSNA39zI09gAMnBNch5W/0CzhDi2mOzr/AHf/re13rWf96vytlgNpdm9ANfysZv02+4wKCLiLGjss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUYdv4yL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09FBC4CEE3;
-	Tue, 29 Apr 2025 17:38:41 +0000 (UTC)
+	 MIME-Version; b=g+dwVxPv7My1kO7pnZQ/v3w5YTFU2W9kaHwBr3/jDQIs8iHqz5FTeu6hqw+GjzyvsNG5rkkyV0agvm6bsU5U98pQjFSKXcbqr3G2A6VbciCvhTAHUchbQYEbPhi7OKdbeuYqUnjWgDaDfU89h8451GNlCWX2kFzUZW/EYrlm0Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZNj1om1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E04C4CEE3;
+	Tue, 29 Apr 2025 17:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948323;
-	bh=qXVj/JpcSXevtNgfxoCcbT0ldTXdN8oaUq8grEAxxPk=;
+	s=korg; t=1745949528;
+	bh=wGyj1LM8qw3KYvORZ1GYTe6AR+asS7KpV3HU3zpFyHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SUYdv4yLPqTNUuHmLFid/u43dmAAYf5O1pYSWmc/UqIUtiIdXTCDw8IeiRg+35nSP
-	 JDtvghHX2fcFZJ5T9faxMDG1XdmmtQosnqtbe8VzMlkYv0mb97mLAayXwhhmReNqCq
-	 oztdT2tjX32we/v4zn4I2HgEJkMgXAydTA9UVoxQ=
+	b=uZNj1om1j5+l/sl1d6xbeOris5dq46kDHe5cd9UEfINKb8agvCJBIwLnKD/6tQDxs
+	 exsW2TRVArfLlo5/k6nOBkPp2YbMg5pJ/O9GwO8ZYouZ4rWYc6n1TrGl0IzKSRbarf
+	 v7T2uYVVkluzyzDB0ExmfFTEv/BpnFN5E98ruIpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.12 253/280] xfs: rename xfs_iomap_swapfile_activate to xfs_vm_swap_activate
+	stable <stable@kernel.org>,
+	Miao Li <limiao@kylinos.cn>,
+	Lei Huang <huanglei@kylinos.cn>
+Subject: [PATCH 5.15 317/373] usb: quirks: Add delay init quirk for SanDisk 3.2Gen1 Flash Drive
 Date: Tue, 29 Apr 2025 18:43:14 +0200
-Message-ID: <20250429161125.475628018@linuxfoundation.org>
+Message-ID: <20250429161136.151970084@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Miao Li <limiao@kylinos.cn>
 
-Commit 3cd6a8056f5a2e794c42fc2114ee2611e358b357 upstream
+commit 37ffdbd695c02189dbf23d6e7d2385e0299587ca upstream.
 
-Match the method name and the naming convention or address_space
-operations.
+The SanDisk 3.2Gen1 Flash Drive, which VID:PID is in 0781:55a3,
+just like Silicon Motion Flash Drive:
+https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
+also needs the DELAY_INIT quirk, or it will randomly work incorrectly
+(e.g.: lsusb and can't list this device info) when connecting Huawei
+hisi platforms and doing thousand of reboot test circles.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miao Li <limiao@kylinos.cn>
+Signed-off-by: Lei Huang <huanglei@kylinos.cn>
+Link: https://lore.kernel.org/r/20250414062935.159024-1-limiao870622@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_aops.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-
---- a/fs/xfs/xfs_aops.c
-+++ b/fs/xfs/xfs_aops.c
-@@ -528,7 +528,7 @@ xfs_vm_readahead(
- }
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -366,6 +366,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0781, 0x5583), .driver_info = USB_QUIRK_NO_LPM },
+ 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
  
- static int
--xfs_iomap_swapfile_activate(
-+xfs_vm_swap_activate(
- 	struct swap_info_struct		*sis,
- 	struct file			*swap_file,
- 	sector_t			*span)
-@@ -549,11 +549,11 @@ const struct address_space_operations xf
- 	.migrate_folio		= filemap_migrate_folio,
- 	.is_partially_uptodate  = iomap_is_partially_uptodate,
- 	.error_remove_folio	= generic_error_remove_folio,
--	.swap_activate		= xfs_iomap_swapfile_activate,
-+	.swap_activate		= xfs_vm_swap_activate,
- };
++	/* SanDisk Corp. SanDisk 3.2Gen1 */
++	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
++
+ 	/* Realforce 87U Keyboard */
+ 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
  
- const struct address_space_operations xfs_dax_aops = {
- 	.writepages		= xfs_dax_writepages,
- 	.dirty_folio		= noop_dirty_folio,
--	.swap_activate		= xfs_iomap_swapfile_activate,
-+	.swap_activate		= xfs_vm_swap_activate,
- };
 
 
 
