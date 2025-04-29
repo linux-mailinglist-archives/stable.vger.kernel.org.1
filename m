@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A8CAA17C9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED95AA1533
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 709514C5B56
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E05FB9867B3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314E124BD02;
-	Tue, 29 Apr 2025 17:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA7E24291A;
+	Tue, 29 Apr 2025 17:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opazBSvC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nb8uGPNn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23FF2472B9;
-	Tue, 29 Apr 2025 17:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1B538FB0;
+	Tue, 29 Apr 2025 17:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949074; cv=none; b=SCxUcZ67JiO2J1D7lYQcD0k6BpnzhgzQNCjV1+WEt7j25eY8obcB/4J8Sxn/SewBOlm0o6pjz5h0U+txzzdfHKaeKILOah176UnUV2K/e14IJNx8ZF37qLW+JAAwcJ4nhRjejr0aKl04mHkuL3Tue5kj6i/zEqv1Npsy7bdbn/g=
+	t=1745947124; cv=none; b=LwUvkFzPvpbKhJ4q02K3G04+rhDz9gXRzJNnxd4VixcZesNOKZa4HAMAJh/dRmQ6Rj5ifKwp2z5Q/p1NApDfNXpIh258Ll2hIocSffkqidkw7AUeIb8tT8RixQgk+G/8zi7GdcJEFquvqTOE+/f9aWbgE/JDY/uRWWHjq3a05Qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949074; c=relaxed/simple;
-	bh=/gMo7YWm+7G4QqVktOch7ytkdK7VIpLhpqRSlTG+F3s=;
+	s=arc-20240116; t=1745947124; c=relaxed/simple;
+	bh=f9oKqdnRBW0iL1toUgTrf15ktaosC7zUGNPxHXBcgOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Iegw86tJVG3w3ZnPtEWEnCxPHNOv08bdMTX8K6NoLtrWglo31zcaMhDcE8FyP1byboRnsEQtUNH5GYj0pRy4RctaBgtoxW8EzCs15fOvfw14HNrPE6fA2pgpTRoPoXSi2Dbb/Us8Td8sC/6L3xG1fh+9NSSdqpzkuoeGBIx04fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opazBSvC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63804C4CEE3;
-	Tue, 29 Apr 2025 17:51:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WETm8q7itTp8mDvw6uvCLWR3aAY1m1wUVo5l8UCgFuvCL9U+GD/yPNdf7zhHnVTk9krCF51NKajCHi/pVp+m8fUYAPivjQqedNyM0kuGvmdAAGNO2iO51VCvtptoynDS3H/RVcy+MhSqeZDjKH9eEXwbLpZCAnb3hblmBUFAT/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nb8uGPNn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6C9C4CEE3;
+	Tue, 29 Apr 2025 17:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949073;
-	bh=/gMo7YWm+7G4QqVktOch7ytkdK7VIpLhpqRSlTG+F3s=;
+	s=korg; t=1745947124;
+	bh=f9oKqdnRBW0iL1toUgTrf15ktaosC7zUGNPxHXBcgOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opazBSvCZjM2iCzJcAsp5UzGS3CgZiZApZ2UsawZSKzU9Ug+BUpdiMxaYneks6gUh
-	 3IfYHjxthaa6J1/S0lm8n/mA+d5lqg2bNqxxF249ObBW9RxyovXEGjxb1wophOZ23n
-	 ZOuhTkXfXJSUfDqXFjqGy7QsoyIhqN7Xjv/zft9c=
+	b=Nb8uGPNnlvl6aQP/jDGWkJJF39TxsQljxeO3D9K2lmpxlwqvhJOSUuT/4oFBUZMHk
+	 aV4IRMQNYh4LlTvO6rm/MOsFog2x1pPCZMRJ36brr+CML4+TmQENvQdB0PYtImXzob
+	 pCLxrQU0ZSpu4E2mdfF28mAru+he3bSqUC12ILmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.15 206/373] phonet/pep: fix racy skb_queue_empty() use
-Date: Tue, 29 Apr 2025 18:41:23 +0200
-Message-ID: <20250429161131.638270468@linuxfoundation.org>
+	WangYuli <wangyuli@uniontech.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.10 180/286] MIPS: dec: Declare which_prom() as static
+Date: Tue, 29 Apr 2025 18:41:24 +0200
+Message-ID: <20250429161115.314637806@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +62,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rémi Denis-Courmont <courmisch@gmail.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 7d2a894d7f487dcb894df023e9d3014cf5b93fe5 ]
+commit 55fa5868519bc48a7344a4c070efa2f4468f2167 upstream.
 
-The receive queues are protected by their respective spin-lock, not
-the socket lock. This could lead to skb_peek() unexpectedly
-returning NULL or a pointer to an already dequeued socket buffer.
+Declare which_prom() as static to suppress gcc compiler warning that
+'missing-prototypes'. This function is not intended to be called
+from other parts.
 
-Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
-Signed-off-by: Rémi Denis-Courmont <courmisch@gmail.com>
-Link: https://lore.kernel.org/r/20240218081214.4806-2-remi@remlab.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[Harshit: backport to 5.15.y, clean cherrypick from 6.1.y commit]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Fix follow error with gcc-14 when -Werror:
+
+arch/mips/dec/prom/init.c:45:13: error: no previous prototype for ‘which_prom’ [-Werror=missing-prototypes]
+   45 | void __init which_prom(s32 magic, s32 *prom_vec)
+      |             ^~~~~~~~~~
+cc1: all warnings being treated as errors
+make[6]: *** [scripts/Makefile.build:207: arch/mips/dec/prom/init.o] Error 1
+make[5]: *** [scripts/Makefile.build:465: arch/mips/dec/prom] Error 2
+make[5]: *** Waiting for unfinished jobs....
+
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pep.c |   41 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 32 insertions(+), 9 deletions(-)
+ arch/mips/dec/prom/init.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/phonet/pep.c
-+++ b/net/phonet/pep.c
-@@ -916,6 +916,37 @@ static int pep_sock_enable(struct sock *
- 	return 0;
- }
- 
-+static unsigned int pep_first_packet_length(struct sock *sk)
-+{
-+	struct pep_sock *pn = pep_sk(sk);
-+	struct sk_buff_head *q;
-+	struct sk_buff *skb;
-+	unsigned int len = 0;
-+	bool found = false;
-+
-+	if (sock_flag(sk, SOCK_URGINLINE)) {
-+		q = &pn->ctrlreq_queue;
-+		spin_lock_bh(&q->lock);
-+		skb = skb_peek(q);
-+		if (skb) {
-+			len = skb->len;
-+			found = true;
-+		}
-+		spin_unlock_bh(&q->lock);
-+	}
-+
-+	if (likely(!found)) {
-+		q = &sk->sk_receive_queue;
-+		spin_lock_bh(&q->lock);
-+		skb = skb_peek(q);
-+		if (skb)
-+			len = skb->len;
-+		spin_unlock_bh(&q->lock);
-+	}
-+
-+	return len;
-+}
-+
- static int pep_ioctl(struct sock *sk, int cmd, unsigned long arg)
+--- a/arch/mips/dec/prom/init.c
++++ b/arch/mips/dec/prom/init.c
+@@ -42,7 +42,7 @@ int (*__pmax_close)(int);
+  * Detect which PROM the DECSTATION has, and set the callback vectors
+  * appropriately.
+  */
+-void __init which_prom(s32 magic, s32 *prom_vec)
++static void __init which_prom(s32 magic, s32 *prom_vec)
  {
- 	struct pep_sock *pn = pep_sk(sk);
-@@ -929,15 +960,7 @@ static int pep_ioctl(struct sock *sk, in
- 			break;
- 		}
- 
--		lock_sock(sk);
--		if (sock_flag(sk, SOCK_URGINLINE) &&
--		    !skb_queue_empty(&pn->ctrlreq_queue))
--			answ = skb_peek(&pn->ctrlreq_queue)->len;
--		else if (!skb_queue_empty(&sk->sk_receive_queue))
--			answ = skb_peek(&sk->sk_receive_queue)->len;
--		else
--			answ = 0;
--		release_sock(sk);
-+		answ = pep_first_packet_length(sk);
- 		ret = put_user(answ, (int __user *)arg);
- 		break;
- 
+ 	/*
+ 	 * No sign of the REX PROM's magic number means we assume a non-REX
 
 
 
