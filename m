@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-137894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D888AA1549
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C39CAAA16BD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A2BD7A655D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C5191B675CD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B6225333F;
-	Tue, 29 Apr 2025 17:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9B62475CF;
+	Tue, 29 Apr 2025 17:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEsZdQCq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4qJD36C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C77247280;
-	Tue, 29 Apr 2025 17:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1BF238C21;
+	Tue, 29 Apr 2025 17:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947457; cv=none; b=IHIaVh2Bk6An/hdcAdl5a5LX+zOfzcTWIr16aVeKFJ4UoCnZb789YaBJacTU9Iisu8ZJV88XIaDUpv4tZibXi1wnO8l1tjXEOxIQJDZo7amOHx/mNU01/ioSXctrqDV010MMpK1opt+LIifRGHrS+fTzYPUJ0cxgArCWFCuJoLk=
+	t=1745948305; cv=none; b=pUq58vxkGDI6Xu5n/RojCRKyyaxhD5uuCPuay5bo1KxWLKFUd69aer6BYsazkG7jUcjdtNHjWrKdfkshF/X+Xth96Rq4b3C7Gr0ndb9JVsLdji58S9Yu70b8hC4gLSjE7CuzNO+7EMqHrJX+xpIHuFUSCAE00hYK9G9asQX/YkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947457; c=relaxed/simple;
-	bh=pUhAbxFBNvVFKpeeY7PadJDHBxLVdnHDwpjMcMMauwI=;
+	s=arc-20240116; t=1745948305; c=relaxed/simple;
+	bh=00s9bJ56fVdVhvFckSSS+CU5gzisYRvvi/7sRBofP8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S5sZulgFInqBY/sQDawHd5epKq6m4a6te/24T7GtalSiXkdr+ccPdYpsb1Wh2YhFllHkZ7/v326yXUCDJsxZySFewxtIOlxG3wlO5gS987KRI5pLRfIJ7c9jVWMxKX9ug+6+BBeuuH3KG/huJtk10cNpJOHGcnFOx5o0iCyAEko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEsZdQCq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20597C4CEE3;
-	Tue, 29 Apr 2025 17:24:15 +0000 (UTC)
+	 MIME-Version; b=SCc3FH5gi0YQHRF3kaWH3FQAV7grW4uX5TuSulQ/qOmfq1awqGxVNz1J33jjCqUkmZDX01WsKi50T1gZWxpzRmAYg1m9g8/L+MKL7adPM9i3Gc2NncsJt7OXqwDlfG8Zawv1+yWh20T+uOQSUTi18XVDyZRU34OHQzZJVJ91pu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4qJD36C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7C0C4CEE3;
+	Tue, 29 Apr 2025 17:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947456;
-	bh=pUhAbxFBNvVFKpeeY7PadJDHBxLVdnHDwpjMcMMauwI=;
+	s=korg; t=1745948305;
+	bh=00s9bJ56fVdVhvFckSSS+CU5gzisYRvvi/7sRBofP8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XEsZdQCq+tiTfTfi9Fswi/0F0EYdWZjWT9VqdumJju6uyPMTqK4RhfhjseNCreQfz
-	 +hhiDkCTGVpPgZb3AtS4dpnCKrQL64e2L9aGY5a33GAvNpmlVmZJyBZaeRXIsbiT/3
-	 RzrzOMz45lHaX7HaOCNL/qzqs2gDSoo/dc0Fo3Tc=
+	b=V4qJD36CxH9bLSlazPGEqxslGJZXq5mNynjQc+g4uZVD3yqlgdqNEJ5Rmm7go4WC6
+	 XC/gXDg39tMF0lua1OpidRcTesdOlZLmoowQYUoU2ZXPcj9F6ZzzezPuuFf2k/hzR0
+	 Lf3X9grOWaILeq9bjDakGCOIInQoX13QrY5rzO1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.10 286/286] media: venus: hfi_parser: Check for instance after hfi platform get
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.12 249/280] driver core: introduce device_set_driver() helper
 Date: Tue, 29 Apr 2025 18:43:10 +0200
-Message-ID: <20250429161119.675569512@linuxfoundation.org>
+Message-ID: <20250429161125.309395631@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit 9b5d8fd580caa898c6e1b8605c774f2517f786ab upstream.
+commit 04d3e5461c1f5cf8eec964ab64948ebed826e95e upstream.
 
-The inst function argument is != NULL only for Venus v1 and
-we did not migrate v1 to a hfi_platform abstraction yet. So
-check for instance != NULL only after hfi_platform_get returns
-no error.
+In preparation to closing a race when reading driver pointer in
+dev_uevent() code, instead of setting device->driver pointer directly
+introduce device_set_driver() helper.
 
-Fixes: e29929266be1 ("media: venus: Get codecs and capabilities from hfi platform")
-Cc: stable@vger.kernel.org # v5.12
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20250311052417.1846985-2-dmitry.torokhov@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_parser.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/base/base.h |    6 ++++++
+ drivers/base/core.c |    2 +-
+ drivers/base/dd.c   |    7 +++----
+ 3 files changed, 10 insertions(+), 5 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -269,13 +269,13 @@ static int hfi_platform_parser(struct ve
- 	u32 enc_codecs, dec_codecs, count = 0;
- 	unsigned int entries;
+--- a/drivers/base/base.h
++++ b/drivers/base/base.h
+@@ -179,6 +179,12 @@ int driver_add_groups(const struct devic
+ void driver_remove_groups(const struct device_driver *drv, const struct attribute_group **groups);
+ void device_driver_detach(struct device *dev);
  
--	if (inst)
--		return 0;
--
- 	plat = hfi_platform_get(core->res->hfi_version);
- 	if (!plat)
- 		return -EINVAL;
- 
-+	if (inst)
-+		return 0;
++static inline void device_set_driver(struct device *dev, const struct device_driver *drv)
++{
++	// FIXME - this cast should not be needed "soon"
++	dev->driver = (struct device_driver *)drv;
++}
 +
- 	if (plat->codecs)
- 		plat->codecs(&enc_codecs, &dec_codecs, &count);
+ int devres_release_all(struct device *dev);
+ void device_block_probing(void);
+ void device_unblock_probing(void);
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3697,7 +3697,7 @@ done:
+ 	device_pm_remove(dev);
+ 	dpm_sysfs_remove(dev);
+  DPMError:
+-	dev->driver = NULL;
++	device_set_driver(dev, NULL);
+ 	bus_remove_device(dev);
+  BusError:
+ 	device_remove_attrs(dev);
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -550,7 +550,7 @@ static void device_unbind_cleanup(struct
+ 	arch_teardown_dma_ops(dev);
+ 	kfree(dev->dma_range_map);
+ 	dev->dma_range_map = NULL;
+-	dev->driver = NULL;
++	device_set_driver(dev, NULL);
+ 	dev_set_drvdata(dev, NULL);
+ 	if (dev->pm_domain && dev->pm_domain->dismiss)
+ 		dev->pm_domain->dismiss(dev);
+@@ -629,8 +629,7 @@ static int really_probe(struct device *d
+ 	}
  
+ re_probe:
+-	// FIXME - this cast should not be needed "soon"
+-	dev->driver = (struct device_driver *)drv;
++	device_set_driver(dev, drv);
+ 
+ 	/* If using pinctrl, bind pins now before probing */
+ 	ret = pinctrl_bind_pins(dev);
+@@ -1014,7 +1013,7 @@ static int __device_attach(struct device
+ 		if (ret == 0)
+ 			ret = 1;
+ 		else {
+-			dev->driver = NULL;
++			device_set_driver(dev, NULL);
+ 			ret = 0;
+ 		}
+ 	} else {
 
 
 
