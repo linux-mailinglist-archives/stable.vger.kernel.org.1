@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-138563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6748FAA18F0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0318FAA199A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 550189A5D8E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B50054E2F95
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6E1224222;
-	Tue, 29 Apr 2025 18:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE0D253321;
+	Tue, 29 Apr 2025 18:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yRAxHEXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbBXnWJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F80A3FFD;
-	Tue, 29 Apr 2025 18:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F24540C03;
+	Tue, 29 Apr 2025 18:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949649; cv=none; b=JeZM7zVnSR4mk2cBoEW3OeHia11hfw/TajAoPFQVtILhFW0OENgI94MV6b+yXI/jOuuQliLhfy+6XaBNb8mDP51VnQlAHe703fPJDTwH1vWSoBZexB+05ynKpSF3zE61PljTGHgzfTwktt2GusgHv1Uqq7vYEJtSS2chidSagFc=
+	t=1745950297; cv=none; b=NTzaxZlSh4PxFflA+vDJBv9J/2qwtQA0Qh5wUnx0EtOkjoNmXe1Vh0H87pH9kiymKn5E8BlLVy8G2x5ioR32LfCVab5c2wK786vVjBraj3dq33PoqQpM8yIirGs0/qzEUNsNHrNpDRW+9QPgeJoB8GeXSDPC0YOoHcMbvEaytWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949649; c=relaxed/simple;
-	bh=la7WDOD7vvPzUNDk4jNXuFEONQlFx40s+1Dod6MdQYg=;
+	s=arc-20240116; t=1745950297; c=relaxed/simple;
+	bh=TiSHjUaeG8JMbKWhnGRFqROyqoIE7Cl20IGhxdqngMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GNgIIUuqMQ4mgpvujCgucK1yTj93u7wp2NUQIje/HoKGcC38FxsF0DIBjAzy4QPgiY7yqzNuNK4ewGedFm+N4xQrZQRECqRAnd62R9omXMUuA4YOJp15coJGww6Y2u2AWoInBFIn+d53wVdLb7rPtc///rtgrY6ay55QHcqJ/0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yRAxHEXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91399C4CEE3;
-	Tue, 29 Apr 2025 18:00:48 +0000 (UTC)
+	 MIME-Version; b=baAoRSzzj6zxCxb7Wtlj8Q3u4pzb3+hyyX5d8bG+Vqs+Dm/XVpBtv36JGLokh44e4y+W5GYdTSK/DAOIaW10jp8wr7jplV9atpzM3FQxyNxtXfE8ROUQsVxfKTbYqIbXx34dHZ3U8CHbZZCtVsYfcPVlbXU8oilEfm6pGlINHM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbBXnWJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31BDC4CEE3;
+	Tue, 29 Apr 2025 18:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949649;
-	bh=la7WDOD7vvPzUNDk4jNXuFEONQlFx40s+1Dod6MdQYg=;
+	s=korg; t=1745950297;
+	bh=TiSHjUaeG8JMbKWhnGRFqROyqoIE7Cl20IGhxdqngMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yRAxHEXN5liO3apcQA40l0LAyf24JyzrRI7/AOkzWONquEKg7BWh+puAhxd/mtBIm
-	 UUBH/SxCV9HurVlfUh4bpbcT+Wmx0j+wCisB7d8CbvUX4s56Dqc+8dIQtQrorZxs9M
-	 PO6qRRTQD8oD/kVOnrJNzUKBK56mjTEfpBubIhxw=
+	b=EbBXnWJ8zaQcIjQjOVuxaRx7p/SjgCcUoD4ehBA66wpT0seG9nVmsEWWTLKRkCDo9
+	 J6IPwv01SGKpIlRmTKPvNGe+U1F8bkvmIo2IkMy1WqBcL64J7Sfyd1GoZYZau/AEvD
+	 hvD5sYMddU/otdYFpogpjwO5d6gd+Hu2fKhFYOjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Simon Horman <simon.horman@corigine.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/167] net: dsa: mv88e6xxx: move link forcing to mac_prepare/mac_finish
-Date: Tue, 29 Apr 2025 18:42:00 +0200
-Message-ID: <20250429161052.246916948@linuxfoundation.org>
+Subject: [PATCH 6.6 033/204] of: resolver: Simplify of_resolve_phandles() using __free()
+Date: Tue, 29 Apr 2025 18:42:01 +0200
+Message-ID: <20250429161100.766525691@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,142 +61,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-[ Upstream commit 267d7692f6cd5c9b8796324cdd54db594ca8d3e4 ]
+[ Upstream commit 5275e8b5293f65cc82a5ee5eab02dd573b911d6e ]
 
-Move the link forcing out of mac_config() and into the mac_prepare()
-and mac_finish() methods. This results in no change to the order in
-which these operations are performed, but does mean when we convert
-mv88e6xxx to phylink_pcs support, we will continue to preserve this
-ordering.
+Use the __free() cleanup to simplify of_resolve_phandles() and remove
+all the goto's.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 52fdc41c3278 ("net: dsa: mv88e6xxx: fix internal PHYs for 6320 family")
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Stable-dep-of: a46a0805635d ("of: resolver: Fix device node refcount leakage in of_resolve_phandles()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 65 ++++++++++++++++++++++----------
- 1 file changed, 45 insertions(+), 20 deletions(-)
+ drivers/of/resolver.c | 34 +++++++++++-----------------------
+ 1 file changed, 11 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 4c60f79ce2697..b3744f2ea0f48 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -848,29 +848,38 @@ static void mv88e6xxx_get_caps(struct dsa_switch *ds, int port,
- 	}
- }
- 
-+static int mv88e6xxx_mac_prepare(struct dsa_switch *ds, int port,
-+				 unsigned int mode, phy_interface_t interface)
-+{
-+	struct mv88e6xxx_chip *chip = ds->priv;
-+	int err = 0;
-+
-+	/* In inband mode, the link may come up at any time while the link
-+	 * is not forced down. Force the link down while we reconfigure the
-+	 * interface mode.
-+	 */
-+	if (mode == MLO_AN_INBAND &&
-+	    chip->ports[port].interface != interface &&
-+	    chip->info->ops->port_set_link) {
-+		mv88e6xxx_reg_lock(chip);
-+		err = chip->info->ops->port_set_link(chip, port,
-+						     LINK_FORCED_DOWN);
-+		mv88e6xxx_reg_unlock(chip);
-+	}
-+
-+	return err;
-+}
-+
- static void mv88e6xxx_mac_config(struct dsa_switch *ds, int port,
- 				 unsigned int mode,
- 				 const struct phylink_link_state *state)
+diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
+index b278ab4338ceb..2dd19dc6987c7 100644
+--- a/drivers/of/resolver.c
++++ b/drivers/of/resolver.c
+@@ -263,24 +263,20 @@ static int adjust_local_phandle_references(struct device_node *local_fixups,
+ int of_resolve_phandles(struct device_node *overlay)
  {
- 	struct mv88e6xxx_chip *chip = ds->priv;
--	struct mv88e6xxx_port *p;
- 	int err = 0;
+ 	struct device_node *child, *local_fixups, *refnode;
+-	struct device_node *tree_symbols, *overlay_fixups;
++	struct device_node *overlay_fixups;
+ 	struct property *prop;
+ 	const char *refpath;
+ 	phandle phandle, phandle_delta;
+ 	int err;
  
--	p = &chip->ports[port];
+-	tree_symbols = NULL;
 -
- 	mv88e6xxx_reg_lock(chip);
- 
- 	if (mode != MLO_AN_PHY || !mv88e6xxx_phy_is_internal(ds, port)) {
--		/* In inband mode, the link may come up at any time while the
--		 * link is not forced down. Force the link down while we
--		 * reconfigure the interface mode.
--		 */
--		if (mode == MLO_AN_INBAND &&
--		    p->interface != state->interface &&
--		    chip->info->ops->port_set_link)
--			chip->info->ops->port_set_link(chip, port,
--						       LINK_FORCED_DOWN);
--
- 		err = mv88e6xxx_port_config_interface(chip, port,
- 						      state->interface);
- 		if (err && err != -EOPNOTSUPP)
-@@ -887,24 +896,38 @@ static void mv88e6xxx_mac_config(struct dsa_switch *ds, int port,
- 			err = 0;
+ 	if (!overlay) {
+ 		pr_err("null overlay\n");
+-		err = -EINVAL;
+-		goto out;
++		return -EINVAL;
  	}
  
-+err_unlock:
-+	mv88e6xxx_reg_unlock(chip);
-+
-+	if (err && err != -EOPNOTSUPP)
-+		dev_err(ds->dev, "p%d: failed to configure MAC/PCS\n", port);
-+}
-+
-+static int mv88e6xxx_mac_finish(struct dsa_switch *ds, int port,
-+				unsigned int mode, phy_interface_t interface)
-+{
-+	struct mv88e6xxx_chip *chip = ds->priv;
-+	int err = 0;
-+
- 	/* Undo the forced down state above after completing configuration
- 	 * irrespective of its state on entry, which allows the link to come
- 	 * up in the in-band case where there is no separate SERDES. Also
- 	 * ensure that the link can come up if the PPU is in use and we are
- 	 * in PHY mode (we treat the PPU as an effective in-band mechanism.)
- 	 */
-+	mv88e6xxx_reg_lock(chip);
-+
- 	if (chip->info->ops->port_set_link &&
--	    ((mode == MLO_AN_INBAND && p->interface != state->interface) ||
-+	    ((mode == MLO_AN_INBAND &&
-+	      chip->ports[port].interface != interface) ||
- 	     (mode == MLO_AN_PHY && mv88e6xxx_port_ppu_updates(chip, port))))
--		chip->info->ops->port_set_link(chip, port, LINK_UNFORCED);
-+		err = chip->info->ops->port_set_link(chip, port, LINK_UNFORCED);
+ 	if (!of_node_check_flag(overlay, OF_DETACHED)) {
+ 		pr_err("overlay not detached\n");
+-		err = -EINVAL;
+-		goto out;
++		return -EINVAL;
+ 	}
  
--	p->interface = state->interface;
+ 	phandle_delta = live_tree_max_phandle() + 1;
+@@ -292,7 +288,7 @@ int of_resolve_phandles(struct device_node *overlay)
+ 
+ 	err = adjust_local_phandle_references(local_fixups, overlay, phandle_delta);
+ 	if (err)
+-		goto out;
++		return err;
+ 
+ 	overlay_fixups = NULL;
+ 
+@@ -301,16 +297,13 @@ int of_resolve_phandles(struct device_node *overlay)
+ 			overlay_fixups = child;
+ 	}
+ 
+-	if (!overlay_fixups) {
+-		err = 0;
+-		goto out;
+-	}
++	if (!overlay_fixups)
++		return 0;
+ 
+-	tree_symbols = of_find_node_by_path("/__symbols__");
++	struct device_node __free(device_node) *tree_symbols = of_find_node_by_path("/__symbols__");
+ 	if (!tree_symbols) {
+ 		pr_err("no symbols in root of device tree.\n");
+-		err = -EINVAL;
+-		goto out;
++		return -EINVAL;
+ 	}
+ 
+ 	for_each_property_of_node(overlay_fixups, prop) {
+@@ -324,14 +317,12 @@ int of_resolve_phandles(struct device_node *overlay)
+ 		if (err) {
+ 			pr_err("node label '%s' not found in live devicetree symbols table\n",
+ 			       prop->name);
+-			goto out;
++			return err;
+ 		}
+ 
+ 		refnode = of_find_node_by_path(refpath);
+-		if (!refnode) {
+-			err = -ENOENT;
+-			goto out;
+-		}
++		if (!refnode)
++			return -ENOENT;
+ 
+ 		phandle = refnode->phandle;
+ 		of_node_put(refnode);
+@@ -341,11 +332,8 @@ int of_resolve_phandles(struct device_node *overlay)
+ 			break;
+ 	}
+ 
+-out:
+ 	if (err)
+ 		pr_err("overlay phandle fixup failed: %d\n", err);
+-	of_node_put(tree_symbols);
 -
--err_unlock:
- 	mv88e6xxx_reg_unlock(chip);
- 
--	if (err && err != -EOPNOTSUPP)
--		dev_err(ds->dev, "p%d: failed to configure MAC/PCS\n", port);
-+	chip->ports[port].interface = interface;
-+
-+	return err;
+ 	return err;
  }
- 
- static void mv88e6xxx_mac_link_down(struct dsa_switch *ds, int port,
-@@ -7024,7 +7047,9 @@ static const struct dsa_switch_ops mv88e6xxx_switch_ops = {
- 	.port_teardown		= mv88e6xxx_port_teardown,
- 	.phylink_get_caps	= mv88e6xxx_get_caps,
- 	.phylink_mac_link_state	= mv88e6xxx_serdes_pcs_get_state,
-+	.phylink_mac_prepare	= mv88e6xxx_mac_prepare,
- 	.phylink_mac_config	= mv88e6xxx_mac_config,
-+	.phylink_mac_finish	= mv88e6xxx_mac_finish,
- 	.phylink_mac_an_restart	= mv88e6xxx_serdes_pcs_an_restart,
- 	.phylink_mac_link_down	= mv88e6xxx_mac_link_down,
- 	.phylink_mac_link_up	= mv88e6xxx_mac_link_up,
+ EXPORT_SYMBOL_GPL(of_resolve_phandles);
 -- 
 2.39.5
 
