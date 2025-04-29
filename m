@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-137919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0E3AA15EF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5101DAA15E6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6829E9A1D15
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C44A63BF6EE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584A72517AC;
-	Tue, 29 Apr 2025 17:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686B22517AF;
+	Tue, 29 Apr 2025 17:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDyx72m3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNQGtugI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157412459EA;
-	Tue, 29 Apr 2025 17:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F45D2459EA;
+	Tue, 29 Apr 2025 17:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947534; cv=none; b=r30bIgkFMYb3P3FkCwLeTgyvBPO6unBEoPBm2G6OoCqOC0/qCAl+pvIXFaD8XgR6u0nrjJCxmnkE70A4r2bC/CEEb8l6sYHOxN/nSk3WSoYy8RWjRkhgbZ+Gn+XswGkmKP7K65iQ8fFnoKvVnOeP76r9G/1iuPagusVXoy3L4c4=
+	t=1745947540; cv=none; b=P0V4oVWbLmtxW2uTw1ahSerePW1X7Wtqbg0QjyOxv8q5dlT6CIubRJgHB0Tcpu+U655vU30L0K9bwzCplLKn1vi8Mq2dO7lIuQpUfLoQ8KJtzRhGZ2mV4zAxXhd/h45SC7Wf0gvpAV3ExN5yxe7kZ/or9Z5v07L0546BuH2iMmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947534; c=relaxed/simple;
-	bh=11qJrq7XFR9MtHfpBjR+U0JXIUyHYmwDOTn5gXeghEo=;
+	s=arc-20240116; t=1745947540; c=relaxed/simple;
+	bh=fXHW/yQ+mFvPfHfeWErh3prKFBh6gpKxhWaH3jvb7Lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hLCEqqA+3jkzuaZiglOdc9aPtMALUOxA+rCEkERXSSWNYXXeJrqzPaD8AHjQwHJMlGy+1loozGi5AUOxJrqAEevbisnWktFLDmHCdMQvulCOvQYgQzCxyAXM+m6yWWNzxw8z8t8ezrrBpdTmci9EECIQnXDNcpUdXqMPP4NqYd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDyx72m3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7867BC4CEE3;
-	Tue, 29 Apr 2025 17:25:33 +0000 (UTC)
+	 MIME-Version; b=pyMLTdXAT55euQKXr7LCEUuNmEoFugTGRwCR+lF6kDTeOKnBOb5LpWXKF85EbHuDymU0THgIA05pOPEPT4DsDUR72fksFRfvlzKdRrIKxIgNTXWNmp4E5sXfYLSrsc7ZL+5FALn2cNpMoirDHcCmwLq1A7RFZaCKxTDKkRwtns0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNQGtugI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8630CC4CEE3;
+	Tue, 29 Apr 2025 17:25:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947534;
-	bh=11qJrq7XFR9MtHfpBjR+U0JXIUyHYmwDOTn5gXeghEo=;
+	s=korg; t=1745947540;
+	bh=fXHW/yQ+mFvPfHfeWErh3prKFBh6gpKxhWaH3jvb7Lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xDyx72m3wXd7Bj0SNWkxqIg8esjTDih1jCohXulLZ2mHJzwGb616GPh68bQ8MwxgF
-	 xo5hmiNoejp4vqAVkFE+qNF2grYYCdEc3U6VoIYR8AeJlVZLeAIOMQkYfJjTOPOcII
-	 48AZ8dqmR0u1kDGIhTwzwC9HNFYwv5oIkB/wPh5w=
+	b=zNQGtugITohX0svMCCMoPdDtbzQG22yyB9khLjtxElSyd7MWYQf4gggDwm/i9GsH2
+	 p92HbrIGDrsabOVrbtoSZ1NlQ6+9WN1WnDO4+FPbrnBYOGOXO/IHqRqWGKf2UVOrid
+	 WIs2PnlnNV4Eyl2uDbmSxeFEbmPDJsjjFICm6Jwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
 	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/280] of: resolver: Simplify of_resolve_phandles() using __free()
-Date: Tue, 29 Apr 2025 18:39:26 +0200
-Message-ID: <20250429161116.134873836@linuxfoundation.org>
+Subject: [PATCH 6.12 026/280] of: resolver: Fix device node refcount leakage in of_resolve_phandles()
+Date: Tue, 29 Apr 2025 18:39:27 +0200
+Message-ID: <20250429161116.175375301@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
 References: <20250429161115.008747050@linuxfoundation.org>
@@ -65,112 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 5275e8b5293f65cc82a5ee5eab02dd573b911d6e ]
+[ Upstream commit a46a0805635d07de50c2ac71588345323c13b2f9 ]
 
-Use the __free() cleanup to simplify of_resolve_phandles() and remove
-all the goto's.
+In of_resolve_phandles(), refcount of device node @local_fixups will be
+increased if the for_each_child_of_node() exits early, but nowhere to
+decrease the refcount, so cause refcount leakage for the node.
 
+Fix by using __free() on @local_fixups.
+
+Fixes: da56d04c806a ("of/resolver: Switch to new local fixups format.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-9-93e3a2659aa7@quicinc.com
+[robh: Use __free() instead]
 Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Stable-dep-of: a46a0805635d ("of: resolver: Fix device node refcount leakage in of_resolve_phandles()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/resolver.c | 34 +++++++++++-----------------------
- 1 file changed, 11 insertions(+), 23 deletions(-)
+ drivers/of/resolver.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
-index 5cf96776dd7d3..fce8bdac45f3e 100644
+index fce8bdac45f3e..7d935908b5431 100644
 --- a/drivers/of/resolver.c
 +++ b/drivers/of/resolver.c
-@@ -250,24 +250,20 @@ static int adjust_local_phandle_references(struct device_node *local_fixups,
+@@ -249,8 +249,9 @@ static int adjust_local_phandle_references(struct device_node *local_fixups,
+  */
  int of_resolve_phandles(struct device_node *overlay)
  {
- 	struct device_node *child, *local_fixups, *refnode;
--	struct device_node *tree_symbols, *overlay_fixups;
-+	struct device_node *overlay_fixups;
+-	struct device_node *child, *local_fixups, *refnode;
++	struct device_node *child, *refnode;
+ 	struct device_node *overlay_fixups;
++	struct device_node __free(device_node) *local_fixups = NULL;
  	struct property *prop;
  	const char *refpath;
  	phandle phandle, phandle_delta;
- 	int err;
- 
--	tree_symbols = NULL;
--
- 	if (!overlay) {
- 		pr_err("null overlay\n");
--		err = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	}
- 
- 	if (!of_node_check_flag(overlay, OF_DETACHED)) {
- 		pr_err("overlay not detached\n");
--		err = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	}
- 
- 	phandle_delta = live_tree_max_phandle() + 1;
-@@ -279,7 +275,7 @@ int of_resolve_phandles(struct device_node *overlay)
- 
- 	err = adjust_local_phandle_references(local_fixups, overlay, phandle_delta);
- 	if (err)
--		goto out;
-+		return err;
- 
- 	overlay_fixups = NULL;
- 
-@@ -288,16 +284,13 @@ int of_resolve_phandles(struct device_node *overlay)
- 			overlay_fixups = child;
- 	}
- 
--	if (!overlay_fixups) {
--		err = 0;
--		goto out;
--	}
-+	if (!overlay_fixups)
-+		return 0;
- 
--	tree_symbols = of_find_node_by_path("/__symbols__");
-+	struct device_node __free(device_node) *tree_symbols = of_find_node_by_path("/__symbols__");
- 	if (!tree_symbols) {
- 		pr_err("no symbols in root of device tree.\n");
--		err = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	}
- 
- 	for_each_property_of_node(overlay_fixups, prop) {
-@@ -311,14 +304,12 @@ int of_resolve_phandles(struct device_node *overlay)
- 		if (err) {
- 			pr_err("node label '%s' not found in live devicetree symbols table\n",
- 			       prop->name);
--			goto out;
-+			return err;
- 		}
- 
- 		refnode = of_find_node_by_path(refpath);
--		if (!refnode) {
--			err = -ENOENT;
--			goto out;
--		}
-+		if (!refnode)
-+			return -ENOENT;
- 
- 		phandle = refnode->phandle;
- 		of_node_put(refnode);
-@@ -328,11 +319,8 @@ int of_resolve_phandles(struct device_node *overlay)
- 			break;
- 	}
- 
--out:
- 	if (err)
- 		pr_err("overlay phandle fixup failed: %d\n", err);
--	of_node_put(tree_symbols);
--
- 	return err;
- }
- EXPORT_SYMBOL_GPL(of_resolve_phandles);
 -- 
 2.39.5
 
