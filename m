@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C41BAA143A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3080AA167D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 894BE3B1028
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:08:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2120B1887C3A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00EA2241664;
-	Tue, 29 Apr 2025 17:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27563242D94;
+	Tue, 29 Apr 2025 17:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNCMCyJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQuBjfc6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01F922A81D;
-	Tue, 29 Apr 2025 17:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF668215F7C;
+	Tue, 29 Apr 2025 17:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946509; cv=none; b=k5epSzflI13uL9xXqXdWEW+VC95tflcxuqyUZgAyHapbblhZdhDvVaZC0YusXR1VWGNRIEdt5KUYW6k4o29U8zVfE3A4xIecoVYpJc2IS62abEkgQypJEAK1opfFXM+ZD9+kHPbxTbc/II50yVCfsIWzGaM9hibEbedg3TbXhsI=
+	t=1745948089; cv=none; b=tRLRi+I7mOw1rm59uGthRFPhxm7dFGNT7a+mCoSh65v+cZbgc4NvyjplT1l5/KP0UMePG+a5GSX9mjBbNsVTHV4pUNEdX7UC+RizlrU9lSpWy9eix6IjKcaA/HIgES9FQWQY1+Qy6lRrsTpchW90igRZgtJ7zaZkmgnr0eGwaEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946509; c=relaxed/simple;
-	bh=fA7K3i3yR4SbPlleWumCys2LcIJ8hNfrkmo8BNZ7wGY=;
+	s=arc-20240116; t=1745948089; c=relaxed/simple;
+	bh=ctF9xn6qFbCHEJFmDYt3vUe+kW5WXbYkVxZRMd1D1hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MRQ9njwQrabIgDP/hh657yaSu9VTxXo7dLAqt7s1v40qSvA6jqLU7n1eEXw0CfzIlxL+nSqZWbNvBhU7Yt9ApXuu+Sqi1S02bKE6jh6emVxdp/JuwsByLTyOirTLjyWYtV9GChivD/XX4qAbnRekKed0AYwBNWpP09uORkuBa8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNCMCyJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A353C4CEE3;
-	Tue, 29 Apr 2025 17:08:28 +0000 (UTC)
+	 MIME-Version; b=RHEkrrkQctyHbfajELEUd/g4Hn0mgw8ytYE9y6bYvJQ4kyc1LOOGMZWAluzVf2lhTPI3pdOExpSmXtkH9PkUsT8INzjR6K6qRwj4gHFUBzb60wIfvHd3xI31s+lpo/zias/RvJVyWLQy/w2f9nITeUjaR12zy4yt/oROMxU0kUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQuBjfc6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE999C4CEE9;
+	Tue, 29 Apr 2025 17:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946509;
-	bh=fA7K3i3yR4SbPlleWumCys2LcIJ8hNfrkmo8BNZ7wGY=;
+	s=korg; t=1745948089;
+	bh=ctF9xn6qFbCHEJFmDYt3vUe+kW5WXbYkVxZRMd1D1hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uNCMCyJwkpmZO7JyGb076a7xV/43jJ1CvmNzDivqPmBmOb22VY7FR2JKwN+hh3oER
-	 ru/UidY1Es1kH26/ScZjM/zS1b3YL8k64HbjXwRrXClpm0K8Lw24/K+u2b8RUBs+Zx
-	 xiEUiLvuF4TwMxlZjLaUU3chrQfYVKVt1likg3TY=
+	b=DQuBjfc6cZoZlLdg9xf7vvUyew9ug4Refm+UvwvTpHiLSUDJkmWXCB4s97FW0QF5x
+	 6mXnHjVAnaRgUy68w8m6vlZKx9TZWfw4I04uS20hjHbHI+Mp3ON57Yh44rgKuT/0Bb
+	 orxVN1AyE1Iy2CIuoiJiYdZFq3DFleGoFovpjxho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 291/311] drm/amd: Forbid suspending into non-default suspend states
+Subject: [PATCH 6.12 187/280] objtool: Silence more KCOV warnings
 Date: Tue, 29 Apr 2025 18:42:08 +0200
-Message-ID: <20250429161132.921886211@linuxfoundation.org>
+Message-ID: <20250429161122.758862599@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 1657793def101dac7c9d3b2250391f6a3dd934ba ]
+[ Upstream commit 6b023c7842048c4bbeede802f3cf36b96c7a8b25 ]
 
-On systems that default to 'deep' some userspace software likes
-to try to suspend in 'deep' first.  If there is a failure for any
-reason (such as -ENOMEM) the failure is ignored and then it will
-try to use 's2idle' as a fallback. This fails, but more importantly
-it leads to graphical problems.
+In the past there were issues with KCOV triggering unreachable
+instruction warnings, which is why unreachable warnings are now disabled
+with CONFIG_KCOV.
 
-Forbid this behavior and only allow suspending in the last state
-supported by the system.
+Now some new KCOV warnings are showing up with GCC 14:
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4093
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20250408180957.4027643-1-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2aabd44aa8a3c08da3d43264c168370f6da5e81d)
+  vmlinux.o: warning: objtool: cpuset_write_resmask() falls through to next function cpuset_update_active_cpus.cold()
+  drivers/usb/core/driver.o: error: objtool: usb_deregister() falls through to next function usb_match_device()
+  sound/soc/codecs/snd-soc-wcd934x.o: warning: objtool: .text.wcd934x_slim_irq_handler: unexpected end of section
+
+All are caused by GCC KCOV not finishing an optimization, leaving behind
+a never-taken conditional branch to a basic block which falls through to
+the next function (or end of section).
+
+At a high level this is similar to the unreachable warnings mentioned
+above, in that KCOV isn't fully removing dead code.  Treat it the same
+way by adding these to the list of warnings to ignore with CONFIG_KCOV.
+
+Reported-by: Ingo Molnar <mingo@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/66a61a0b65d74e072d3dc02384e395edb2adc3c5.1742852846.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/Z9iTsI09AEBlxlHC@gmail.com
+Closes: https://lore.kernel.org/oe-kbuild-all/202503180044.oH9gyPeg-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu.h     |  1 +
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 14 +++++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ tools/objtool/check.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-index ab04d56b4fe36..98f0c12df12bc 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-@@ -1118,6 +1118,7 @@ struct amdgpu_device {
- 	bool				in_s3;
- 	bool				in_s4;
- 	bool				in_s0ix;
-+	suspend_state_t			last_suspend_state;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index ce3ea0c2de042..ff7e0622e9112 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -3634,6 +3634,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 			    !strncmp(func->name, "__pfx_", 6))
+ 				return 0;
  
- 	enum pp_mp1_state               mp1_state;
- 	struct amdgpu_doorbell_index doorbell_index;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index 24c255e05079e..f2d77bc04e4a9 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2515,8 +2515,20 @@ static int amdgpu_pmops_suspend(struct device *dev)
- 		adev->in_s0ix = true;
- 	else if (amdgpu_acpi_is_s3_active(adev))
- 		adev->in_s3 = true;
--	if (!adev->in_s0ix && !adev->in_s3)
-+	if (!adev->in_s0ix && !adev->in_s3) {
-+		/* don't allow going deep first time followed by s2idle the next time */
-+		if (adev->last_suspend_state != PM_SUSPEND_ON &&
-+		    adev->last_suspend_state != pm_suspend_target_state) {
-+			drm_err_once(drm_dev, "Unsupported suspend state %d\n",
-+				     pm_suspend_target_state);
-+			return -EINVAL;
-+		}
- 		return 0;
-+	}
++			if (file->ignore_unreachables)
++				return 0;
 +
-+	/* cache the state last used for suspend */
-+	adev->last_suspend_state = pm_suspend_target_state;
+ 			WARN("%s() falls through to next function %s()",
+ 			     func->name, insn_func(insn)->name);
+ 			return 1;
+@@ -3853,6 +3856,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 		if (!next_insn) {
+ 			if (state.cfi.cfa.base == CFI_UNDEFINED)
+ 				return 0;
++			if (file->ignore_unreachables)
++				return 0;
 +
- 	return amdgpu_device_suspend(drm_dev, true);
- }
- 
+ 			WARN("%s: unexpected end of section", sec->name);
+ 			return 1;
+ 		}
 -- 
 2.39.5
 
