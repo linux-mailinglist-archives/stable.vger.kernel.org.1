@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-137187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35197AA121B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4E3AA17D1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4247E1BA2DBE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2563F9A4C45
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42085244668;
-	Tue, 29 Apr 2025 16:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08092459C5;
+	Tue, 29 Apr 2025 17:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvf7B9Ax"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NC6xTV0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E3D24113C;
-	Tue, 29 Apr 2025 16:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAE421ABC1;
+	Tue, 29 Apr 2025 17:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945322; cv=none; b=MA95Cdqls6iTQz4aZ6LACYCy46v1C3hSXjo8JWovIaE2Xa9uvXSWRftuQxxFvnQexpnecgJYa7jtyfDpQlmd3Y0Hv7MQudgIRPa0Ca8JuuoBPCAY1epOxUC7cWkR/osj5+pDPeFDwNPZFPBz57fv/kGhegyPRxrsqpsjZGEQFt0=
+	t=1745948852; cv=none; b=sRHVH+Jy6lryM1HATuL/0M2nP775U2Qd7wS5cECGa8XH+W+t+AmsnaB1xMXEkQ61wD8B6nSGY/uSa17aNLrH19pnSYEmCxf1/8dJNcsGnBw6eIraGzgNAMornhF1OYRbwULN7NEWAB/xp6w1gQD66t7khF0X+0iFoCpxGVgJYt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945322; c=relaxed/simple;
-	bh=7ZrOzoZ4LDhb5kDrTAdOUEJ7NimO1uwk4zbgsU/hw4I=;
+	s=arc-20240116; t=1745948852; c=relaxed/simple;
+	bh=IudNP2nH8Mv6aRYABH4cp/MN3uRlLOpn0ut7PTDgsb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDxttxD761DbBw7gnLCfCCG50b322b1cxyPhYRb0s+Ku1k0iT4rRnl8BQXl+fC7zOUC0djqVtwGnA/LwCkvyvRCiJr7Fq2MkzfC6gDG9i1rPK/nJo/iL6Q5rMfOikfo73CCRfQKpcAXYptLqgyfC9+MKQ/a87hv37z2UTwT6wIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvf7B9Ax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA00C4CEE3;
-	Tue, 29 Apr 2025 16:48:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q7nSjlTt+VuYuK0wFCa6Bqn0dhPX9Wy7MubSrDcEFqk0YD62S9gLR5BKjTXugdzNZWg8nQz+bu2zQooTBC4fwExbFAB082/YugCrI5sB1JXapNUEuQqeiwukFRuxc2vavj8g455VGIAoDda1S1uwM5shrfK/xu6zVT8Q4eCfQCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NC6xTV0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E98C4CEE3;
+	Tue, 29 Apr 2025 17:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945321;
-	bh=7ZrOzoZ4LDhb5kDrTAdOUEJ7NimO1uwk4zbgsU/hw4I=;
+	s=korg; t=1745948852;
+	bh=IudNP2nH8Mv6aRYABH4cp/MN3uRlLOpn0ut7PTDgsb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hvf7B9Ax7KFXDw4BU5S4W2fPrOpPd1SVZzlHadUp6bZxbaYDCPZxe0j+aUPLm5Q4C
-	 R9Uf2i5UMgOX3wYl7aQNM9EvZvv7a1RARh7lfqz+uruKpVEo5ZPWKlHfa4+7gL9WJ1
-	 a+aXk0u8pMqDIj42pQRdcyoYVkeghjFdKcpBakAQ=
+	b=NC6xTV0rHpL1I2UR+dIRamQPAyWAu6HdEsiAtWa1yHo/AM0fknKNvXVpg175QKsTo
+	 nXeyviyXS+/okj9mJBxhWQMkcePnv5DTN4pWFSbO5qTIn5kxiS0avA7X7DhMS+ENwS
+	 QjZtWBYAtmwPVrf+3ReYdIvBQTWxg4PG23ivKBqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 5.4 073/179] gpio: zynq: Fix wakeup source leaks on device unbind
-Date: Tue, 29 Apr 2025 18:40:14 +0200
-Message-ID: <20250429161052.368991534@linuxfoundation.org>
+	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 138/373] Bluetooth: l2cap: Check encryption key size on incoming connection
+Date: Tue, 29 Apr 2025 18:40:15 +0200
+Message-ID: <20250429161128.846591292@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,38 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Frédéric Danis <frederic.danis@collabora.com>
 
-commit c5672e310ad971d408752fce7596ed27adc6008f upstream.
+[ Upstream commit 522e9ed157e3c21b4dd623c79967f72c21e45b78 ]
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.
+This is required for passing GAP/SEC/SEM/BI-04-C PTS test case:
+  Security Mode 4 Level 4, Responder - Invalid Encryption Key Size
+  - 128 bit
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250406202245.53854-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This tests the security key with size from 1 to 15 bytes while the
+Security Mode 4 Level 4 requests 16 bytes key size.
+
+Currently PTS fails with the following logs:
+- expected:Connection Response:
+    Code: [3 (0x03)] Code
+    Identifier: (lt)WildCard: Exists(gt)
+    Length: [8 (0x0008)]
+    Destination CID: (lt)WildCard: Exists(gt)
+    Source CID: [64 (0x0040)]
+    Result: [3 (0x0003)] Connection refused - Security block
+    Status: (lt)WildCard: Exists(gt),
+but received:Connection Response:
+    Code: [3 (0x03)] Code
+    Identifier: [1 (0x01)]
+    Length: [8 (0x0008)]
+    Destination CID: [64 (0x0040)]
+    Source CID: [64 (0x0040)]
+    Result: [0 (0x0000)] Connection Successful
+    Status: [0 (0x0000)] No further information available
+
+And HCI logs:
+< HCI Command: Read Encrypti.. (0x05|0x0008) plen 2
+        Handle: 14 Address: 00:1B:DC:F2:24:10 (Vencer Co., Ltd.)
+> HCI Event: Command Complete (0x0e) plen 7
+      Read Encryption Key Size (0x05|0x0008) ncmd 1
+        Status: Success (0x00)
+        Handle: 14 Address: 00:1B:DC:F2:24:10 (Vencer Co., Ltd.)
+        Key size: 7
+> ACL Data RX: Handle 14 flags 0x02 dlen 12
+      L2CAP: Connection Request (0x02) ident 1 len 4
+        PSM: 4097 (0x1001)
+        Source CID: 64
+< ACL Data TX: Handle 14 flags 0x00 dlen 16
+      L2CAP: Connection Response (0x03) ident 1 len 8
+        Destination CID: 64
+        Source CID: 64
+        Result: Connection successful (0x0000)
+        Status: No further information available (0x0000)
+
+Fixes: 288c06973daa ("Bluetooth: Enforce key size of 16 bytes on FIPS level")
+Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-zynq.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/l2cap_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-zynq.c
-+++ b/drivers/gpio/gpio-zynq.c
-@@ -943,6 +943,7 @@ static int zynq_gpio_remove(struct platf
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0)
- 		dev_warn(&pdev->dev, "pm_runtime_get_sync() Failed\n");
-+	device_init_wakeup(&pdev->dev, 0);
- 	gpiochip_remove(&gpio->chip);
- 	clk_disable_unprepare(gpio->clk);
- 	device_set_wakeup_capable(&pdev->dev, 0);
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 2d451009a6477..d34e161a30b37 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4162,7 +4162,8 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
+ 
+ 	/* Check if the ACL is secure enough (if not SDP) */
+ 	if (psm != cpu_to_le16(L2CAP_PSM_SDP) &&
+-	    !hci_conn_check_link_mode(conn->hcon)) {
++	    (!hci_conn_check_link_mode(conn->hcon) ||
++	    !l2cap_check_enc_key_size(conn->hcon))) {
+ 		conn->disc_reason = HCI_ERROR_AUTH_FAILURE;
+ 		result = L2CAP_CR_SEC_BLOCK;
+ 		goto response;
+-- 
+2.39.5
+
 
 
 
