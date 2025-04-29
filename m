@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36000AA14C1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:20:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44847AA13E4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0780188835E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90F2C982202
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA972512DD;
-	Tue, 29 Apr 2025 17:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A2C23F413;
+	Tue, 29 Apr 2025 17:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAUt6LAr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UH+8jUAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0BB24A07B;
-	Tue, 29 Apr 2025 17:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48431FE468;
+	Tue, 29 Apr 2025 17:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946951; cv=none; b=GXlGmrXUUoKQhZFcvF3fxZSZn4EzoJq37ewPjNAN2jPavTDuH6SIhtOiuO5fsQKrg5dciZsdvw/9e7qQ995btvpeVxXwETUbeaYrVI6O3tPI/QbcMhBJll8N3r5fXKrfzf+vjSIIhJebsY6qFq/UMVlexULKr/LVBrLuHakk3Uk=
+	t=1745946296; cv=none; b=OYMTvs04OTi9xAlrhlIOBFEVNg2wksaEG9lmYb+9ATIRp6WR26UIee+xGvcrRDnzYxLKKedxoNJ4voHmEMTonEqCVieUDG9vWEJEfUmqUyJMQBiD+wnqnbzbMbZmXS2YHeKjvTAP1Ib3ykbOyKOmYcBAulzh8mCoTu/HWKolIIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946951; c=relaxed/simple;
-	bh=wCSixmf0iDtqOJru3zJCt9kdUaerdL2Ra46dwNphzxI=;
+	s=arc-20240116; t=1745946296; c=relaxed/simple;
+	bh=PBIogwSgEm6mXvDBIdArn+Gw3It6q1MPL3rtvFv2x/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HB2O77T8I+Zzq+NfyvTBJSwGdOojk07GbAej4IxmL5H1FAPwKtVLOLl0VRL5lMUnzRWPSzmmhP1K454i9ZHcQrHAICU2fFOsHOaC2KvmCgDXypNh/ePr0fcf/I5yz44MxFkmyY/g729L1SaPhLBa3rKguQly5dbBAna9WpX5Y0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAUt6LAr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19EBC4CEE3;
-	Tue, 29 Apr 2025 17:15:50 +0000 (UTC)
+	 MIME-Version; b=lU3hcVSrKI9ptyVcxkZtNWLVaqBYs4xqXx9aFJhYIAqF4P+rtvJiKPvkyzHE537yg410VBtKb74z8+246prjMjvPsBLdAwql+o1KB9F7v6M1L4GbeyLTlKfJMdC392DuvSZEqd3U30adA820YIPJBga79pMZryWKV1VSupPYE10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UH+8jUAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE774C4CEE3;
+	Tue, 29 Apr 2025 17:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946951;
-	bh=wCSixmf0iDtqOJru3zJCt9kdUaerdL2Ra46dwNphzxI=;
+	s=korg; t=1745946295;
+	bh=PBIogwSgEm6mXvDBIdArn+Gw3It6q1MPL3rtvFv2x/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zAUt6LArtPJwUagv/6G+MwqkgryhwI1Xi15rtPZ6MerbPT9aMzd2xgolgmRvannQC
-	 rd4DHrIny3koFmZAdqXa9yRtEGwFP7P32Xan2eFSj1vPUqydh9Dr+bbln5bowKeQaD
-	 laHkGq8Q4w+1NoNdUv54kNqBMLHznZc/ilmNXgLE=
+	b=UH+8jUAuwhqY5/fIsMzH9H9OcnbdEhWSBm54lGEZeWaAHvSD6UVbJA10vVKMhXijd
+	 eUm2l4TvWspgIy1pZWskhI6t32/j8GMfFIsm4ehwvJ/xRE/EqgEV3vm9q+2rYrqsl+
+	 DRWMRt4WuMTuQXboa6Gb06olojRtPK647jDs+A3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 5.10 122/286] asus-laptop: Fix an uninitialized variable
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 189/311] s390/sclp: Add check for get_zeroed_page()
 Date: Tue, 29 Apr 2025 18:40:26 +0200
-Message-ID: <20250429161112.875397382@linuxfoundation.org>
+Message-ID: <20250429161128.758132733@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,61 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 6c683c6887e4addcd6bd1ddce08cafccb0a21e32 upstream.
+[ Upstream commit 3db42c75a921854a99db0a2775814fef97415bac ]
 
-The value returned by acpi_evaluate_integer() is not checked,
-but the result is not always successful, so it is necessary to
-add a check of the returned value.
+Add check for the return value of get_zeroed_page() in
+sclp_console_init() to prevent null pointer dereference.
+Furthermore, to solve the memory leak caused by the loop
+allocation, add a free helper to do the free job.
 
-If the result remains negative during three iterations of the loop,
-then the uninitialized variable 'val' will be used in the clamp_val()
-macro, so it must be initialized with the current value of the 'curr'
-variable.
-
-In this case, the algorithm should be less noisy.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: b23910c2194e ("asus-laptop: Pegatron Lucid accelerometer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Link: https://lore.kernel.org/r/20250403122603.18172-1-arefev@swemel.ru
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250218025216.2421548-1-haoxiang_li2024@163.com
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-laptop.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/s390/char/sclp_con.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/platform/x86/asus-laptop.c
-+++ b/drivers/platform/x86/asus-laptop.c
-@@ -427,11 +427,14 @@ static int asus_pega_lucid_set(struct as
+diff --git a/drivers/s390/char/sclp_con.c b/drivers/s390/char/sclp_con.c
+index e5d947c763ea5..6a030ba38bf36 100644
+--- a/drivers/s390/char/sclp_con.c
++++ b/drivers/s390/char/sclp_con.c
+@@ -263,6 +263,19 @@ static struct console sclp_console =
+ 	.index = 0 /* ttyS0 */
+ };
  
- static int pega_acc_axis(struct asus_laptop *asus, int curr, char *method)
- {
-+	unsigned long long val = (unsigned long long)curr;
-+	acpi_status status;
- 	int i, delta;
--	unsigned long long val;
--	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
--		acpi_evaluate_integer(asus->handle, method, NULL, &val);
- 
-+	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
-+		status = acpi_evaluate_integer(asus->handle, method, NULL, &val);
-+		if (ACPI_FAILURE(status))
-+			continue;
- 		/* The output is noisy.  From reading the ASL
- 		 * dissassembly, timeout errors are returned with 1's
- 		 * in the high word, and the lack of locking around
++/*
++ *  Release allocated pages.
++ */
++static void __init __sclp_console_free_pages(void)
++{
++	struct list_head *page, *p;
++
++	list_for_each_safe(page, p, &sclp_con_pages) {
++		list_del(page);
++		free_page((unsigned long)page);
++	}
++}
++
+ /*
+  * called by console_init() in drivers/char/tty_io.c at boot-time.
+  */
+@@ -282,6 +295,10 @@ sclp_console_init(void)
+ 	/* Allocate pages for output buffering */
+ 	for (i = 0; i < sclp_console_pages; i++) {
+ 		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
++		if (!page) {
++			__sclp_console_free_pages();
++			return -ENOMEM;
++		}
+ 		list_add_tail(page, &sclp_con_pages);
+ 	}
+ 	sclp_conbuf = NULL;
+-- 
+2.39.5
+
 
 
 
