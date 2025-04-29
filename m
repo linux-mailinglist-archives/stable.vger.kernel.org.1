@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52EEEAA1245
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2899AAA14AC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82E137B4931
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B8B84C4437
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F05624C098;
-	Tue, 29 Apr 2025 16:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BA522A4F4;
+	Tue, 29 Apr 2025 17:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAO/tout"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4KxeHI6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB7824BC04;
-	Tue, 29 Apr 2025 16:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB4E251791;
+	Tue, 29 Apr 2025 17:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945462; cv=none; b=El5d8bfBX+fE978nSIeUtdlwqZlDsEu3u5hb7AzCUOpgG+bMG2IC6ZItDHTLlKeEXi30R3B1OdL2ws4qhsziHPK5xSZd3LxrK7YOhVBv0zdlYEDf//dKAHKk/DiBrE8VaUPNMHrbLt5nVvBuyZeS4+x3mLFVYZns895HJcW3SLk=
+	t=1745946970; cv=none; b=Z+DZkBOdxi1YawO1dP4VqUO5/oyg9hIYPqTmULp0hsJASGf9V/xICyXm9fSuilgCmxFd2wi+exKd88oWp2OLt+jbHK8HM8QUMxBbI+pwp5zJJyxtmAgqmYQXfsc2aAXskJ6hCZOvPGa8sOt9uS8HMq99UYJF4hXo1oVMml7V3CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945462; c=relaxed/simple;
-	bh=bjoWJADaGYXpo0g/WL0wsjm0bUmIzwftRaVFijIKZEo=;
+	s=arc-20240116; t=1745946970; c=relaxed/simple;
+	bh=+oR1r3UWxu6qZU7dT81o8dtV59ITPS+6reaLdhTOhPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxEb7fP141sO9YM2l3zFaAKtdSAjO07jfs/u5jhOUxE+J0HLKTX8HQpvY3mOWgLqMYCcbc8nRR5hjbddmAXSD2pvPfEKZoy4d8TrnrtW9ZP6P9qwmucxggmP9dKBgU2ElWI9RDdijzbG98hx3Dw1YCUnPd8gQCdsDWQaAnHCfiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAO/tout; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B89C4CEE3;
-	Tue, 29 Apr 2025 16:51:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZqacWTo9Hc7U6r9j6u997huMI/tMI0h6d5pDWyv3JarJsj91meff/yqcLPHORGuhJkfFYp96S4lvdbhyNdTYBUL2KUX6dbujmkZL/Os/Aybn8gGN+CZqswXvWmUJ9e2IRuKDl7d9CJO/8fLD1ojuTgEhYUZFEfI0bUXjXaNoUdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4KxeHI6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44549C4CEE9;
+	Tue, 29 Apr 2025 17:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945461;
-	bh=bjoWJADaGYXpo0g/WL0wsjm0bUmIzwftRaVFijIKZEo=;
+	s=korg; t=1745946969;
+	bh=+oR1r3UWxu6qZU7dT81o8dtV59ITPS+6reaLdhTOhPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HAO/toutbmw/qUeZac1Uz0fpSQwaRefbHKk+1ilJOuuS9ebbpE00hEI16ftYit+o0
-	 XzDabC74DkQHhCnZzNeZfm7Ywlliv2qyqFnb6oZ3Wp8CtdBNFV8IUJYwUohOQlwi+f
-	 Ze0zBkUvYv2RfXnq7SeI6YqkynazO5xpBofqU550=
+	b=E4KxeHI6b0HP5qgWQLM1ccASy3af/Tu97XiHYfz/jFeq+/gSy/4TqByNjdqhBa4r4
+	 awxJW1JJxr23Q+fEy9zaO1H1gqi3WOat7wt1Vuu/DMBXyrjpriEMIUAXPP9MWQ5MYg
+	 ER/XJnYIrvbBisHUA682bbJufGDBP/hjCGmG9VHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 090/179] Bluetooth: btrtl: Prevent potential NULL dereference
+	Sean Anderson <sean.anderson@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>
+Subject: [PATCH 5.10 127/286] crypto: caam/qi - Fix drv_ctx refcount bug
 Date: Tue, 29 Apr 2025 18:40:31 +0200
-Message-ID: <20250429161053.046181346@linuxfoundation.org>
+Message-ID: <20250429161113.084053589@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 324dddea321078a6eeb535c2bff5257be74c9799 ]
+commit b7b39df7e710b0068356e4c696af07aa10e2cd3d upstream.
 
-The btrtl_initialize() function checks that rtl_load_file() either
-had an error or it loaded a zero length file.  However, if it loaded
-a zero length file then the error code is not set correctly.  It
-results in an error pointer vs NULL bug, followed by a NULL pointer
-dereference.  This was detected by Smatch:
+Ensure refcount is raised before request is enqueued since it could
+be dequeued before the call returns.
 
-drivers/bluetooth/btrtl.c:592 btrtl_initialize() warn: passing zero to 'ERR_PTR'
-
-Fixes: 26503ad25de8 ("Bluetooth: btrtl: split the device initialization into smaller parts")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Sean Anderson <sean.anderson@linux.dev>
+Cc: <stable@vger.kernel.org>
+Fixes: 11144416a755 ("crypto: caam/qi - optimize frame queue cleanup")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
+Tested-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btrtl.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/caam/qi.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
-index 0dfaf90a31b06..bdee7d2d88309 100644
---- a/drivers/bluetooth/btrtl.c
-+++ b/drivers/bluetooth/btrtl.c
-@@ -605,6 +605,8 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
- 			rtl_dev_err(hdev, "mandatory config file %s not found",
- 				    btrtl_dev->ic_info->cfg_name);
- 			ret = btrtl_dev->cfg_len;
-+			if (!ret)
-+				ret = -EINVAL;
- 			goto err_free;
- 		}
- 	}
--- 
-2.39.5
-
+--- a/drivers/crypto/caam/qi.c
++++ b/drivers/crypto/caam/qi.c
+@@ -115,12 +115,12 @@ int caam_qi_enqueue(struct device *qidev
+ 	qm_fd_addr_set64(&fd, addr);
+ 
+ 	do {
++		refcount_inc(&req->drv_ctx->refcnt);
+ 		ret = qman_enqueue(req->drv_ctx->req_fq, &fd);
+-		if (likely(!ret)) {
+-			refcount_inc(&req->drv_ctx->refcnt);
++		if (likely(!ret))
+ 			return 0;
+-		}
+ 
++		refcount_dec(&req->drv_ctx->refcnt);
+ 		if (ret != -EBUSY)
+ 			break;
+ 		num_retries++;
 
 
 
