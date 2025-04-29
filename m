@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-137666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F3BAA1449
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC62AA1211
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD86B16EE38
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4F321BA1242
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79B3244686;
-	Tue, 29 Apr 2025 17:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D77F247DF9;
+	Tue, 29 Apr 2025 16:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opRbe4gJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMBwj2iJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969EE24889B;
-	Tue, 29 Apr 2025 17:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B43E24113C;
+	Tue, 29 Apr 2025 16:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946756; cv=none; b=NL8nTAv6LuATXZfszKbux177+Pfo6pYXZU2lrh9cJdhCTbLw1JnMZpkzB+xz6v0IExRLMz3A+E47/a1JD1pd1REvyLU5Cv8l909e4NYwRgqAeGO6O1Ea+Sx5ZY7GwQicvozErk2apfw4SS37X3+691gvf1SCQ7mhVZxQlNcARxE=
+	t=1745945248; cv=none; b=Wd+gCd8czBQ/i2eY8xqugu5QwpfFJKYTAZabenXvNIiwc1v8LwV0GCWlyVhM2Tn106MKePKFceYpnCFkh6rCcQkmaeBSLQz9sd7bNU819x/YYX8t2Ly7RyAWcTZzXXM8o1jG0MMi/EuuMxuF5/58bB+w/AlreJmrzBZna0Bd8k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946756; c=relaxed/simple;
-	bh=AZateUT68CPhjS+kGwBsC+n7aawAXByHFaY2PYK422Y=;
+	s=arc-20240116; t=1745945248; c=relaxed/simple;
+	bh=W6zBwJrZByKaG7TFeIwKaS9XBUkQ3m0jHL03dDiabk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z1S/R/JDAJCye5XiMaE/r66/g/FVtDNw39OeDc/sdipaS4m3Zwm55d49wtdWACpfHkRDaKub6r2ZuHAe6inXz2Bfddhhs58vQoH0OrEvdzT6EAadI10IXikz20AGqeH7/npdw718KdKQ9Y10O2lb+kx/i/xoseXVIC8/iVCXUGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opRbe4gJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2300EC4CEE3;
-	Tue, 29 Apr 2025 17:12:35 +0000 (UTC)
+	 MIME-Version; b=qoop/nndf7IZxollLRc1b4D0dWKrvZGfok964X+2/QeaZn2tJ6aJckm6FY7PqQCgE3BoXMPwM7aBwsQNVJTHpEsn/MnwpZahrAD5Il43m4m2z3dY8KFBefXxyLXF4iC+yPxqW2C1NfNeI/lb/HREsambsJApb6HrxYpIGWCVLDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMBwj2iJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87D5C4CEED;
+	Tue, 29 Apr 2025 16:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946756;
-	bh=AZateUT68CPhjS+kGwBsC+n7aawAXByHFaY2PYK422Y=;
+	s=korg; t=1745945248;
+	bh=W6zBwJrZByKaG7TFeIwKaS9XBUkQ3m0jHL03dDiabk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opRbe4gJTYdmsPcKmbVK8st0teKV+MJ0g0C+TxbEaNSq5iEEkVAZSOFIqQKFNOkvt
-	 DpRE+zt8OErL6iiRNYbmsOvAvcZewA2EtuD9EIjzTtAHqyMHk/rQYwL6ZtJNW2c0KI
-	 mLNMcAktHwUmia71A9H86/oTuQIZE+IGuekF4LMU=
+	b=rMBwj2iJeoMxwaTHf0fG3uVCa6tyYLJ02MYEimzHGBJusWKxrgvHlD89KDJWpr4X2
+	 3eGfaxSpA7oUsID+4pGG3+2kVbUM/0dW0UYlqO503yV/3lVxKbWbRBRFZglvPYBlY8
+	 XTRtmxFaRiRjZYVAq9r238GC6NQCj+JGfgJAmZqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 5.10 059/286] arm64: cputype: Add MIDR_CORTEX_A76AE
+	Daniel Kral <d.kral@proxmox.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 022/179] ahci: add PCI ID for Marvell 88SE9215 SATA Controller
 Date: Tue, 29 Apr 2025 18:39:23 +0200
-Message-ID: <20250429161110.274553362@linuxfoundation.org>
+Message-ID: <20250429161050.309552963@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Daniel Kral <d.kral@proxmox.com>
 
-commit a9b5bd81b294d30a747edd125e9f6aef2def7c79 upstream.
+[ Upstream commit 885251dc35767b1c992f6909532ca366c830814a ]
 
->From the TRM, MIDR_CORTEX_A76AE has a partnum of 0xDOE and an
-implementor of 0x41 (ARM). Add the values.
+Add support for Marvell Technology Group Ltd. 88SE9215 SATA 6 Gb/s
+controller, which is e.g. used in the DAWICONTROL DC-614e RAID bus
+controller and was not automatically recognized before.
 
-Cc: stable@vger.kernel.org # dependency of the next fix in the series
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20250107120555.v4.4.I151f3b7ee323bcc3082179b8c60c3cd03308aa94@changeid
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested with a DAWICONTROL DC-614e RAID bus controller.
+
+Signed-off-by: Daniel Kral <d.kral@proxmox.com>
+Link: https://lore.kernel.org/r/20250304092030.37108-1-d.kral@proxmox.com
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
+ drivers/ata/ahci.c | 2 ++
  1 file changed, 2 insertions(+)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -74,6 +74,7 @@
- #define ARM_CPU_PART_CORTEX_A76		0xD0B
- #define ARM_CPU_PART_NEOVERSE_N1	0xD0C
- #define ARM_CPU_PART_CORTEX_A77		0xD0D
-+#define ARM_CPU_PART_CORTEX_A76AE	0xD0E
- #define ARM_CPU_PART_NEOVERSE_V1	0xD40
- #define ARM_CPU_PART_CORTEX_A78		0xD41
- #define ARM_CPU_PART_CORTEX_A78AE	0xD42
-@@ -137,6 +138,7 @@
- #define MIDR_CORTEX_A76	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A76)
- #define MIDR_NEOVERSE_N1 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N1)
- #define MIDR_CORTEX_A77	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A77)
-+#define MIDR_CORTEX_A76AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A76AE)
- #define MIDR_NEOVERSE_V1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V1)
- #define MIDR_CORTEX_A78	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78)
- #define MIDR_CORTEX_A78AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78AE)
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 2d2a070c1efcb..3c8fa08f5d970 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -558,6 +558,8 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x91a3),
+ 	  .driver_data = board_ahci_yes_fbs },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9215),
++	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9230),
+ 	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_TTI, 0x0642), /* highpoint rocketraid 642L */
+-- 
+2.39.5
+
 
 
 
