@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-138075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D98AA167C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC90AA1431
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 597F516F035
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 719251893156
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C09252284;
-	Tue, 29 Apr 2025 17:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A392459E1;
+	Tue, 29 Apr 2025 17:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJ7TH/OI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCrWIwCE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AB722A4F4;
-	Tue, 29 Apr 2025 17:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E0B221719;
+	Tue, 29 Apr 2025 17:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948059; cv=none; b=Jvgz7+0Ncn9HqBvSNiqb79/4+a23Z+Cq6C1ZLW+c8eUpswcF9BTBZduuTUdKVM8oiU2zLVg2uB6IwWrDXq1TI1abd8O8apea6Vdio0PANGTmqlQlHruT9rQkzbdUOQ0juz1AcJrre2aBltzQUpIUlf71grZenX7L+rZVa61lc4E=
+	t=1745946580; cv=none; b=TE8ox1wR4vaLlCcYF0q47NbzEWZpY0fG09TSRr7tP28/OQfknpErFjjzrMGkazndUn9kD5t9TcJUsqXdsOzP6BGOezelS9WiCL4xa51U+RD8NTTv3BcgSgeAZl9wSTMZNFXfX6khqjZ+BiDC/AJHqci1rp6YeSlZLOae4/dKTk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948059; c=relaxed/simple;
-	bh=Nl2zxHvNWzAPsl5fT0F0CUmqzywIAhm4rCqFjg4Z9zY=;
+	s=arc-20240116; t=1745946580; c=relaxed/simple;
+	bh=5gOaQtnGFt4VHW8VeHgSeWT/A95hHPxVWueUWBUt9HA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHb6RAHjwuHV7LAtOAQa3uQNyYkLeZOl1hhadZfhoMcTywosqpK2r+ihkcv/YEtCnzjawpyTIAAkF/41UYEA9IqhHS25SNYHkZx7PILkG9KSbP2KL6twugRAumKxjZ1n6u29lq8RKM7QN7fpNN+75L7nKI8G4LKWiaHKeiD57rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJ7TH/OI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838A5C4CEEA;
-	Tue, 29 Apr 2025 17:34:18 +0000 (UTC)
+	 MIME-Version; b=R11b4nRMKlFvOhEGbhKle72YP+fmYUHcQ/2OUhRY2f11Ek2A1slzbnsbo/vfZnK5qrW3qTL2gkcmNjiTlckKjxE7JXTayivqoyLOuOSL15bqu7hZ45a8dazElAnBAQs9Z5mFPaRQB2Z9kOumlPYkYcXKxkODJfSYZUKYstLfy48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCrWIwCE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A4FC4CEE3;
+	Tue, 29 Apr 2025 17:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948058;
-	bh=Nl2zxHvNWzAPsl5fT0F0CUmqzywIAhm4rCqFjg4Z9zY=;
+	s=korg; t=1745946580;
+	bh=5gOaQtnGFt4VHW8VeHgSeWT/A95hHPxVWueUWBUt9HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bJ7TH/OICYOC8RQ1weTrOUsMrHlqazBJ4yqMps0MeeRCWJWIc8KKYZt9TS+vyF14L
-	 2o+K0v0dktRwGq0oFAyp0zljD2fCZyVfxq8yrJeQJEiakx9vnp3GNSrqEsmAi9+cp8
-	 0wbfnHCboeqym4BtsKdK7drj0NNNRL26w8a+sQFk=
+	b=lCrWIwCEfCEGayJnCzukJH+gE+yIMhfEfXhHVIJ2f5Ol5D1xwqtT4rRgG6ICbh/Ws
+	 XMm6uGa9100Gxt8A1J99o/yD5zJNdUmXAeyGCe9ojVbwjoMmSppKy7xatJNaAfuM11
+	 1sEGftnXoDB3DAVdgw/rBZMG3aoNbzfGz+HtYiHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 180/280] dmaengine: dmatest: Fix dmatest waiting less when interrupted
+Subject: [PATCH 6.14 284/311] spi: tegra210-quad: use WARN_ON_ONCE instead of WARN_ON for timeouts
 Date: Tue, 29 Apr 2025 18:42:01 +0200
-Message-ID: <20250429161122.473300288@linuxfoundation.org>
+Message-ID: <20250429161132.642434080@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit e87ca16e99118ab4e130a41bdf12abbf6a87656c ]
+[ Upstream commit 41c721fc093938745d116c3a21326a0ee03bb491 ]
 
-Change the "wait for operation finish" logic to take interrupts into
-account.
+Some machines with tegra_qspi_combined_seq_xfer hardware issues generate
+excessive kernel warnings, severely polluting the logs:
 
-When using dmatest with idxd DMA engine, it's possible that during
-longer tests, the interrupt notifying the finish of an operation
-happens during wait_event_freezable_timeout(), which causes dmatest to
-cleanup all the resources, some of which might still be in use.
+    dmesg | grep -i "WARNING:.*tegra_qspi_transfer_one_message" | wc -l
+    94451
 
-This fix ensures that the wait logic correctly handles interrupts,
-preventing premature cleanup of resources.
+This patch replaces WARN_ON with WARN_ON_ONCE for timeout conditions to
+reduce log spam. The subsequent error message still prints on each
+occurrence, providing sufficient information about the failure, while
+the stack trace is only needed once for debugging purposes.
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202502171134.8c403348-lkp@intel.com
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20250305230007.590178-1-vinicius.gomes@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20250401-tegra-v2-1-126c293ec047@debian.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dmatest.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-tegra210-quad.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/dmatest.c b/drivers/dma/dmatest.c
-index 91b2fbc0b8647..d891dfca358e2 100644
---- a/drivers/dma/dmatest.c
-+++ b/drivers/dma/dmatest.c
-@@ -841,9 +841,9 @@ static int dmatest_func(void *data)
- 		} else {
- 			dma_async_issue_pending(chan);
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 08e49a8768943..2d320fbb8875f 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1117,7 +1117,7 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 					(&tqspi->xfer_completion,
+ 					QSPI_DMA_TIMEOUT);
  
--			wait_event_freezable_timeout(thread->done_wait,
--					done->done,
--					msecs_to_jiffies(params->timeout));
-+			wait_event_timeout(thread->done_wait,
-+					   done->done,
-+					   msecs_to_jiffies(params->timeout));
- 
- 			status = dma_async_is_tx_complete(chan, cookie, NULL,
- 							  NULL);
+-			if (WARN_ON(ret == 0)) {
++			if (WARN_ON_ONCE(ret == 0)) {
+ 				dev_err(tqspi->dev, "QSPI Transfer failed with timeout: %d\n",
+ 					ret);
+ 				if (tqspi->is_curr_dma_xfer &&
 -- 
 2.39.5
 
