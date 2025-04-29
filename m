@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035F5AA185E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:59:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0F5AA16DB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9BB816FE69
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ECD7165F57
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0AC4243964;
-	Tue, 29 Apr 2025 17:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4582024E000;
+	Tue, 29 Apr 2025 17:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZaGFphK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJRdfRPV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D149219A63;
-	Tue, 29 Apr 2025 17:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023E51917E3;
+	Tue, 29 Apr 2025 17:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949465; cv=none; b=GF6Db6ADtEOwgCGkcQn7sTcL/05KD8NwdGPhK+9kgKBKeNsSBtycBddsAWyuiz1B+ytrDYq4RIsbumuBoJbi0lQ5ikr3p3tRaLG48AJWiywlaxmL9owYsLnTbteyRk5Znp6d56fa8sON7TZg6r08QgHoR/+ZZScudsvgFGeiIfY=
+	t=1745948388; cv=none; b=QWFGKh2oADyNDVu9KKVhcpXWe8xNfbfdLxOpcn2ihyU3Z1wbg9fxHrNZ9P3gigvCFKp34hJjYvF9CK+mjsvG/DhZWy0IYBcwg9mG4kmNYQjRmYzut/Y0TGyGnByr43HeH3mCIx9PMqHbVP3jsN563NRONxUkNjAUjPfUZ85xqcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949465; c=relaxed/simple;
-	bh=aS+QxCVRwQRRzXaKAVQppsrHMHsnH6OxI5fAg42y8Ig=;
+	s=arc-20240116; t=1745948388; c=relaxed/simple;
+	bh=8fwSjdFQf5BlD+1L8tRuJmWnxUfheIzNs7y/wtD2fro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWKwmtrLt3uXqReuUPjcowkJkAutO0rML1eLHFcLA+xsKnjXuCZx88r87H/ed497ZLoQzsYTgwQfJRUvwa20F51GvUD4yNdxNxljS3f/Eu7wLdfEETv0Y3itLOQrJoV9IVybWFC3tsoMtMse/lcH1mQxmy3UvLBPIytt8p1ADnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZaGFphK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A67C4CEE3;
-	Tue, 29 Apr 2025 17:57:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b6M3Hez+6jWInDYs4cp/XeVAy8XeBmQ1u4RBhc+jpaoZSq8TBbLMmpqim2jrtVOLhlZeRxSq/e9F7c8uykM+GFxhwXnTjddPV38O1kJYaW2AUAPyAwmfEB2gg2zX+k+U5JtETvxILxcwOJC+NZwUbT0Rd3puOb6I9gNLyroC8eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJRdfRPV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826CEC4CEE3;
+	Tue, 29 Apr 2025 17:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949465;
-	bh=aS+QxCVRwQRRzXaKAVQppsrHMHsnH6OxI5fAg42y8Ig=;
+	s=korg; t=1745948387;
+	bh=8fwSjdFQf5BlD+1L8tRuJmWnxUfheIzNs7y/wtD2fro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PZaGFphKkv+vzbk+g5PmJF5zpymL2xzGFmj8f98mH8IbYsaxTyfdS2O6vEufUezpV
-	 hOTdgeiob9OzHUpv3xTwRDRPg+PJZocVnKMlOXEwaz/hKmitNSZ9BzSqBQKdghv8Ak
-	 tivEJKNsDStKRaBDh4rFsCPQlFhTU9EklnFMmOnQ=
+	b=cJRdfRPVXN0A2j8RBReh5D2bmvRLM1ki4q4KaGDXdV+AKQWWEDMoMat+vdyu47c+i
+	 j+9LM1Mt7bD9CnwDVrdOPDyz5BxSb3pMGWdR3SO9N9Bv4yKqeCk0I3GgnQnhrPVipS
+	 NbNOhzkWJHgvLCwealbtMqy+elCDvIXa347wtZrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	"stable@vger.kernel.org, Sasha Levin" <sashal@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 328/373] s390/tty: Fix a potential memory leak bug
-Date: Tue, 29 Apr 2025 18:43:25 +0200
-Message-ID: <20250429161136.625671006@linuxfoundation.org>
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 265/280] net: dsa: mv88e6xxx: fix atu_move_port_mask for 6341 family
+Date: Tue, 29 Apr 2025 18:43:26 +0200
+Message-ID: <20250429161125.974056947@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: "Marek Behún" <kabel@kernel.org>
 
-[ Upstream commit ad9bb8f049717d64c5e62b2a44954be9f681c65b ]
+commit 4ae01ec007716986e1a20f1285eb013cbf188830 upstream.
 
-The check for get_zeroed_page() leads to a direct return
-and overlooked the memory leak caused by loop allocation.
-Add a free helper to free spaces allocated by get_zeroed_page().
+The atu_move_port_mask for 6341 family (Topaz) is 0xf, not 0x1f. The
+PortVec field is 8 bits wide, not 11 as in 6390 family. Fix this.
 
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250218034104.2436469-1-haoxiang_li2024@163.com
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e606ca36bbf2 ("net: dsa: mv88e6xxx: rework ATU Remove")
+Signed-off-by: Marek BehÃºn <kabel@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250317173250.28780-3-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/char/sclp_tty.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/dsa/mv88e6xxx/chip.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/char/sclp_tty.c b/drivers/s390/char/sclp_tty.c
-index 971fbb52740bf..432dad2a22664 100644
---- a/drivers/s390/char/sclp_tty.c
-+++ b/drivers/s390/char/sclp_tty.c
-@@ -490,6 +490,17 @@ static const struct tty_operations sclp_ops = {
- 	.flush_buffer = sclp_tty_flush_buffer,
- };
- 
-+/* Release allocated pages. */
-+static void __init __sclp_tty_free_pages(void)
-+{
-+	struct list_head *page, *p;
-+
-+	list_for_each_safe(page, p, &sclp_tty_pages) {
-+		list_del(page);
-+		free_page((unsigned long)page);
-+	}
-+}
-+
- static int __init
- sclp_tty_init(void)
- {
-@@ -516,6 +527,7 @@ sclp_tty_init(void)
- 	for (i = 0; i < MAX_KMEM_PAGES; i++) {
- 		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 		if (page == NULL) {
-+			__sclp_tty_free_pages();
- 			tty_driver_kref_put(driver);
- 			return -ENOMEM;
- 		}
--- 
-2.39.5
-
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -5852,7 +5852,7 @@ static const struct mv88e6xxx_info mv88e
+ 		.global1_addr = 0x1b,
+ 		.global2_addr = 0x1c,
+ 		.age_time_coeff = 3750,
+-		.atu_move_port_mask = 0x1f,
++		.atu_move_port_mask = 0xf,
+ 		.g1_irqs = 9,
+ 		.g2_irqs = 10,
+ 		.pvt = true,
+@@ -6311,7 +6311,7 @@ static const struct mv88e6xxx_info mv88e
+ 		.global1_addr = 0x1b,
+ 		.global2_addr = 0x1c,
+ 		.age_time_coeff = 3750,
+-		.atu_move_port_mask = 0x1f,
++		.atu_move_port_mask = 0xf,
+ 		.g1_irqs = 9,
+ 		.g2_irqs = 10,
+ 		.pvt = true,
 
 
 
