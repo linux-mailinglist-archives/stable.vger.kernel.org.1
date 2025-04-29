@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-137598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61277AA141B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9018DAA1872
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D066188F2D6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC51C9C0B19
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569522472BC;
-	Tue, 29 Apr 2025 17:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32FF3253F22;
+	Tue, 29 Apr 2025 17:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07HjeJ7S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1sNUj5W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149F722A81D;
-	Tue, 29 Apr 2025 17:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35222528ED;
+	Tue, 29 Apr 2025 17:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946550; cv=none; b=OCDwmjFUBZwjOhCmskoTbFmlmn2LpUQH1FJ5xgwBMaToBfNzVKPOf5PR7MBG6Gq12E7NcUGiIeqoIa89CgOEw+WqqZvmLkPLz3AvaUknTHCtALPG7YnyS9w+3MJgJoC6SMqhzn4vj7bcNPuMBokPBLyJGR6Es55f8RTYzaBW7IU=
+	t=1745949263; cv=none; b=i/PWVbzl9CcN34AYwREvfJkhVNuBuTdvo2hRqjHVaV5JcI9CcPwhlV36/pS1F/reE/yaBwq86GZa8tkqVSAawn9JsWw9CHAlriYU5snACMPennPiF9PiRZQ5q6VI/Rz2NbdxvDNdg/+KxF/D3mh037dD7boaVZbJo7mhGsMN/sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946550; c=relaxed/simple;
-	bh=GHT2t/uo60a9BaQi2CvxZPerzjUNxym9JZZtbPKOps4=;
+	s=arc-20240116; t=1745949263; c=relaxed/simple;
+	bh=Sb6FUcSB6uMYVz+O1p94Zd1lceY/lJCl/3Dgw/p63Mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fR31A0tPl0uwGWNi7EXfjlBLljCAQgcEDRLn03jXB5ZOYhGmivVg5VmUeZWi1XR6E9RUnE1hM+M30dJhxp/RwD3XhZrCohBOcmyqZ2XZJvocOYEC0QfMNiyaU8I5iO8PpswK34D1g5VM04ZzTLCaFCh3r/nd4lrFCVDe36AbtAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07HjeJ7S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B63FC4CEE3;
-	Tue, 29 Apr 2025 17:09:09 +0000 (UTC)
+	 MIME-Version; b=Mja6bufRJ33V3o0BAKeye1WOkcmnWyRAMqsUeZCARtAzeBQbEn7xrxRw4hxwGkiTxXoOLmbuKCAhblbPppsdW6N84f2rnxkJVRB1iJQVPFpZx6hrJhCImAJIFR50DdZVStr5hEvprRuzRjM+qfRl8B97bLDKC/wZ+MkIeATC2TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1sNUj5W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522F7C4CEE3;
+	Tue, 29 Apr 2025 17:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946550;
-	bh=GHT2t/uo60a9BaQi2CvxZPerzjUNxym9JZZtbPKOps4=;
+	s=korg; t=1745949262;
+	bh=Sb6FUcSB6uMYVz+O1p94Zd1lceY/lJCl/3Dgw/p63Mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07HjeJ7SiLwU/kVjfWKulyaEXo80DBhE34ZkXXOxiUmfrBEaw5k44fOe8CX/QgHjB
-	 DbMZ2Nf1E+fafmzWyOVqpehRr15EO1u03yOJvvC46YpzXJ0UN98OBTwnYGVKVZCl8x
-	 q5g9kWNNqIhKvN6YRT9h24/CvuOHVm82bT4SuIjU=
+	b=R1sNUj5WQ0aivCT0tVZt4QYHH+ED9s5YFMiwB0+j7f+DW+mfavXVZw4EiQarvQKh8
+	 v7xeli8Y6xM3XozMQLvDbagzKrWaj4u2SjeIX+Zlp9en8sTk5jvlJHYw+vm50XKt0p
+	 Qjy4tPGI2IHLWZabY3FDZiWckvap3jSZPv47ViZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.14 303/311] MIPS: cm: Fix warning if MIPS_CM is disabled
+	Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+	Sylwester Nawrocki <snawrocki@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 263/373] soc: samsung: exynos-chipid: avoid soc_device_to_device()
 Date: Tue, 29 Apr 2025 18:42:20 +0200
-Message-ID: <20250429161133.410809673@linuxfoundation.org>
+Message-ID: <20250429161133.938560620@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,43 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 
-commit b73c3ccdca95c237750c981054997c71d33e09d7 upstream.
+[ Upstream commit d1141886c8d72ad77920e6e4b617d366e6e3ee8a ]
 
-Commit e27fbe16af5c ("MIPS: cm: Detect CM quirks from device tree")
-introduced
+soc_device_to_device() seems to be discouraged [1] so remove it in favor
+of printing info message with platform device.  This will only change
+the prefix in the info message from "soc soc0: " to "exynos-chipid
+10000000.chipid:".
 
-arch/mips/include/asm/mips-cm.h:119:13: error: ‘mips_cm_update_property’
-	defined but not used [-Werror=unused-function]
+[1] https://lore.kernel.org/lkml/20191111052741.GB3176397@kroah.com/
 
-Fix this by making empty function implementation inline
-
-Fixes: e27fbe16af5c ("MIPS: cm: Detect CM quirks from device tree")
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Reviewed-by: Sylwester Nawrocki <snawrocki@kernel.org>
+Tested-by: Sylwester Nawrocki <snawrocki@kernel.org>
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Tested-by: Alim Akhtar <alim.akhtar@samsung.com>
+Link: https://lore.kernel.org/r/20210919093114.35987-2-krzysztof.kozlowski@canonical.com
+Stable-dep-of: c8222ef6cf29 ("soc: samsung: exynos-chipid: Add NULL pointer check in exynos_chipid_probe()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mips-cm.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/samsung/exynos-chipid.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -116,7 +116,7 @@ static inline bool mips_cm_present(void)
- #ifdef CONFIG_MIPS_CM
- extern void mips_cm_update_property(void);
- #else
--static void mips_cm_update_property(void) {}
-+static inline void mips_cm_update_property(void) {}
- #endif
+diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
+index 5c1d0f97f7664..dcd9a08ce7065 100644
+--- a/drivers/soc/samsung/exynos-chipid.c
++++ b/drivers/soc/samsung/exynos-chipid.c
+@@ -104,8 +104,7 @@ static int exynos_chipid_probe(struct platform_device *pdev)
  
- /**
+ 	platform_set_drvdata(pdev, soc_dev);
+ 
+-	dev_info(soc_device_to_device(soc_dev),
+-		 "Exynos: CPU[%s] PRO_ID[0x%x] REV[0x%x] Detected\n",
++	dev_info(&pdev->dev, "Exynos: CPU[%s] PRO_ID[0x%x] REV[0x%x] Detected\n",
+ 		 soc_dev_attr->soc_id, product_id, revision);
+ 
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
