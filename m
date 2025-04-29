@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FAD5AA1557
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD32AA12AD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:57:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 467B51887465
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:22:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 059169822D7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70FC253328;
-	Tue, 29 Apr 2025 17:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722D2252905;
+	Tue, 29 Apr 2025 16:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wuU8DNog"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQB/ys//"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DC62517BE;
-	Tue, 29 Apr 2025 17:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0DB241667;
+	Tue, 29 Apr 2025 16:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947284; cv=none; b=i1i8I34mRcDMsZgE0uG700gFg99l7S/WC2UHZpY32D07sw4b6ZxKElBRUAmXpjNT5TysUES8uPQAjVUztmVR6R1E4UnSSMnP3SbXXY5u+ODGy9Ly2pAfq/X452/idBNdi0ULHaDe35WS7EsKZg2ED8i5hWFFnM1fbOug47Mpx9o=
+	t=1745945592; cv=none; b=M1q/BdPTJ2fdz25oFPVi1UWEZqw6yOo1USshM8ALeQV5f0tB5EfzqJLLBuQq0WIb2dMhnjPU+g7i8CTYokWGwKA6/+pXxsBh8KWsYy3vQNzNEbGgVhf5id7eezdr9vUh80cILwHRFqV2JFtUirCssKBr67Gn2fIJO/pNL+jn0AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947284; c=relaxed/simple;
-	bh=gYAJLio7FEFgbbNW5DYUlMaDP66THFlOJFF3u5c9t2c=;
+	s=arc-20240116; t=1745945592; c=relaxed/simple;
+	bh=DCpFpP5klCWdmj4hHlRG+a4OwMFvM4dn1isN4y48P44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQBpMk6LFkZUWOa8ztTr3eM1zGURzLPbW+RnRs5V5Lnv+8S8zoErLj4KJLu1KhFz/6N8ZdWWScCHFY+JL+UfCjfCLSQ82SHv90r7IzS4q9IUYBGnoM+WAD/XoJn9rRQO1j59k3VD758qNnvCdG0Rc047+o+uL94WEN+Q5wWsO5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wuU8DNog; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40F6C4CEE9;
-	Tue, 29 Apr 2025 17:21:23 +0000 (UTC)
+	 MIME-Version; b=U9EUiiNUmhFd5M51wpKBsh5nBgnoMCzRELjE+VSkslRMDH2msh80VnfyxE+1HuCTThwmTn/svObbpDepZNEPnYD5XVYyhGwIoI9VzmXiJ/MXmdxLP/1t8b+8O0OElPpv97nrNt+aCMnshmnkqtVCDdqIUmQlu4yhJ69j1rcCaOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQB/ys//; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C48C4CEE3;
+	Tue, 29 Apr 2025 16:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947284;
-	bh=gYAJLio7FEFgbbNW5DYUlMaDP66THFlOJFF3u5c9t2c=;
+	s=korg; t=1745945592;
+	bh=DCpFpP5klCWdmj4hHlRG+a4OwMFvM4dn1isN4y48P44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wuU8DNog22er+Oidb/ENEpIqEvASrDCW6O+MLrJDU+9aWErx3ECBYt2xCHDKrg+nr
-	 FMiKK9aWbUmq5M1ZA39xRTJn7xzE4a4Sgb/lkqNLLOtUEAq5EpUnoOn+yW10HAp9yp
-	 faFzHmzNzTvpW45/E86IcDmU8T8Q9Y3WH3KNkU4Y=
+	b=iQB/ys//iJid8nZPBL5WlnUhBkcbQsH3KHRpKy9PHrHqKz8IDxcWkKDqeq4uRz9Ca
+	 15afr+o7Lf9jw2nGsKfK7p80O3Hk175wsddEQ6QCt2TdKst5yviU0oOCk6RijfdA1l
+	 vgfEwl/bLH4e0FE02cfYfY3tfATs9PCJ2UXKPjxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fritz Koenig <frkoenig@chromium.org>,
-	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 202/286] media: venus: venc: Init the session only once in queue_setup
+Subject: [PATCH 5.4 165/179] usb: gadget: aspeed: Add NULL pointer check in ast_vhub_init_dev()
 Date: Tue, 29 Apr 2025 18:41:46 +0200
-Message-ID: <20250429161116.266019704@linuxfoundation.org>
+Message-ID: <20250429161056.056410339@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,189 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 5f2ca73dcca96c3de96a0e4d9ea24ebb46c55d2e ]
+[ Upstream commit 8c75f3e6a433d92084ad4e78b029ae680865420f ]
 
-Init the hfi session only once in queue_setup and also cover that
-with inst->lock.
+The variable d->name, returned by devm_kasprintf(), could be NULL.
+A pointer check is added to prevent potential NULL pointer dereference.
+This is similar to the fix in commit 3027e7b15b02
+("ice: Fix some null pointer dereference issues in ice_ptp.c").
 
-Tested-by: Fritz Koenig <frkoenig@chromium.org>
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 9edaaa8e3e15 ("media: venus: hfi_parser: refactor hfi packet parsing logic")
+This issue is found by our static analysis tool
+
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250311012705.1233829-1-chenyuan0y@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/venc.c | 85 ++++++++++++++++++------
- 1 file changed, 64 insertions(+), 21 deletions(-)
+ drivers/usb/gadget/udc/aspeed-vhub/dev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/platform/qcom/venus/venc.c b/drivers/media/platform/qcom/venus/venc.c
-index e2d0fd5eaf29a..18d20b4ca2cfd 100644
---- a/drivers/media/platform/qcom/venus/venc.c
-+++ b/drivers/media/platform/qcom/venus/venc.c
-@@ -727,7 +727,9 @@ static int venc_init_session(struct venus_inst *inst)
- 	int ret;
- 
- 	ret = hfi_session_init(inst, inst->fmt_cap->pixfmt);
--	if (ret)
-+	if (ret == -EINVAL)
-+		return 0;
-+	else if (ret)
- 		return ret;
- 
- 	ret = venus_helper_set_input_resolution(inst, inst->width,
-@@ -764,17 +766,13 @@ static int venc_out_num_buffers(struct venus_inst *inst, unsigned int *num)
- 	struct hfi_buffer_requirements bufreq;
- 	int ret;
- 
--	ret = venc_init_session(inst);
-+	ret = venus_helper_get_bufreq(inst, HFI_BUFFER_INPUT, &bufreq);
- 	if (ret)
- 		return ret;
- 
--	ret = venus_helper_get_bufreq(inst, HFI_BUFFER_INPUT, &bufreq);
--
- 	*num = bufreq.count_actual;
- 
--	hfi_session_deinit(inst);
--
--	return ret;
-+	return 0;
- }
- 
- static int venc_queue_setup(struct vb2_queue *q,
-@@ -783,7 +781,7 @@ static int venc_queue_setup(struct vb2_queue *q,
- {
- 	struct venus_inst *inst = vb2_get_drv_priv(q);
- 	unsigned int num, min = 4;
--	int ret = 0;
-+	int ret;
- 
- 	if (*num_planes) {
- 		if (q->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE &&
-@@ -805,6 +803,13 @@ static int venc_queue_setup(struct vb2_queue *q,
- 		return 0;
- 	}
- 
-+	mutex_lock(&inst->lock);
-+	ret = venc_init_session(inst);
-+	mutex_unlock(&inst->lock);
+diff --git a/drivers/usb/gadget/udc/aspeed-vhub/dev.c b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
+index 4008e7a511889..89d7d3b24718d 100644
+--- a/drivers/usb/gadget/udc/aspeed-vhub/dev.c
++++ b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
+@@ -542,6 +542,9 @@ int ast_vhub_init_dev(struct ast_vhub *vhub, unsigned int idx)
+ 	d->vhub = vhub;
+ 	d->index = idx;
+ 	d->name = devm_kasprintf(parent, GFP_KERNEL, "port%d", idx+1);
++	if (!d->name)
++		return -ENOMEM;
 +
-+	if (ret)
-+		return ret;
-+
- 	switch (q->type) {
- 	case V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE:
- 		*num_planes = inst->fmt_out->num_planes;
-@@ -840,6 +845,49 @@ static int venc_queue_setup(struct vb2_queue *q,
- 	return ret;
- }
+ 	d->regs = vhub->regs + 0x100 + 0x10 * idx;
  
-+static int venc_buf_init(struct vb2_buffer *vb)
-+{
-+	struct venus_inst *inst = vb2_get_drv_priv(vb->vb2_queue);
-+
-+	inst->buf_count++;
-+
-+	return venus_helper_vb2_buf_init(vb);
-+}
-+
-+static void venc_release_session(struct venus_inst *inst)
-+{
-+	int ret;
-+
-+	mutex_lock(&inst->lock);
-+
-+	ret = hfi_session_deinit(inst);
-+	if (ret || inst->session_error)
-+		hfi_session_abort(inst);
-+
-+	mutex_unlock(&inst->lock);
-+
-+	venus_pm_load_scale(inst);
-+	INIT_LIST_HEAD(&inst->registeredbufs);
-+	venus_pm_release_core(inst);
-+}
-+
-+static void venc_buf_cleanup(struct vb2_buffer *vb)
-+{
-+	struct venus_inst *inst = vb2_get_drv_priv(vb->vb2_queue);
-+	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
-+	struct venus_buffer *buf = to_venus_buffer(vbuf);
-+
-+	mutex_lock(&inst->lock);
-+	if (vb->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE)
-+		if (!list_empty(&inst->registeredbufs))
-+			list_del_init(&buf->reg_list);
-+	mutex_unlock(&inst->lock);
-+
-+	inst->buf_count--;
-+	if (!inst->buf_count)
-+		venc_release_session(inst);
-+}
-+
- static int venc_verify_conf(struct venus_inst *inst)
- {
- 	enum hfi_version ver = inst->core->res->hfi_version;
-@@ -890,38 +938,32 @@ static int venc_start_streaming(struct vb2_queue *q, unsigned int count)
- 	inst->sequence_cap = 0;
- 	inst->sequence_out = 0;
- 
--	ret = venc_init_session(inst);
--	if (ret)
--		goto bufs_done;
--
- 	ret = venus_pm_acquire_core(inst);
- 	if (ret)
--		goto deinit_sess;
-+		goto error;
- 
- 	ret = venc_set_properties(inst);
- 	if (ret)
--		goto deinit_sess;
-+		goto error;
- 
- 	ret = venc_verify_conf(inst);
- 	if (ret)
--		goto deinit_sess;
-+		goto error;
- 
- 	ret = venus_helper_set_num_bufs(inst, inst->num_input_bufs,
- 					inst->num_output_bufs, 0);
- 	if (ret)
--		goto deinit_sess;
-+		goto error;
- 
- 	ret = venus_helper_vb2_start_streaming(inst);
- 	if (ret)
--		goto deinit_sess;
-+		goto error;
- 
- 	mutex_unlock(&inst->lock);
- 
- 	return 0;
- 
--deinit_sess:
--	hfi_session_deinit(inst);
--bufs_done:
-+error:
- 	venus_helper_buffers_done(inst, q->type, VB2_BUF_STATE_QUEUED);
- 	if (q->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE)
- 		inst->streamon_out = 0;
-@@ -933,7 +975,8 @@ static int venc_start_streaming(struct vb2_queue *q, unsigned int count)
- 
- static const struct vb2_ops venc_vb2_ops = {
- 	.queue_setup = venc_queue_setup,
--	.buf_init = venus_helper_vb2_buf_init,
-+	.buf_init = venc_buf_init,
-+	.buf_cleanup = venc_buf_cleanup,
- 	.buf_prepare = venus_helper_vb2_buf_prepare,
- 	.start_streaming = venc_start_streaming,
- 	.stop_streaming = venus_helper_vb2_stop_streaming,
+ 	ast_vhub_init_ep0(vhub, &d->ep0, d);
 -- 
 2.39.5
 
