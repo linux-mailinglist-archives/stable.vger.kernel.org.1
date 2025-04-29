@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED08AA1450
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F27AA15A8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9ED847AEA99
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44C771BC56FC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D379221DA7;
-	Tue, 29 Apr 2025 17:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5F924EABF;
+	Tue, 29 Apr 2025 17:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+C+xW8d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cgz0gkFq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A05127453;
-	Tue, 29 Apr 2025 17:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F062472B4;
+	Tue, 29 Apr 2025 17:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946884; cv=none; b=DcDbdHx4Rp7XWhF9K2J8pxGITBiblaZCcuqOgG/WDcveqzKlw/qlVw/oXZ5GmhQmfJeyhSohEVHrLIQ9BOXHtSi1qhNx4B8GGE7GkX/KfCTcs2tBlPTidFiiLnB5o9xVK7rS7DBSwBbDZi+maM+5DO7WyO3C4zjkv0O3X3MZ2D4=
+	t=1745947561; cv=none; b=dQMVWBvWjHbyBRaU3wfi9yTy5O46zEZWJGrDTZxte4/dPYCayC4w2oJ0hWIcLoVyTQ/HZpdg0cztG7rS5Sa8GWdFF5917lXn6chKDepQKe51haldVAn8CmMzaCfw/1EmEh+5FgQdwlauG4JBIgzfz8bfTS97rOt+wKpxwwAqDs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946884; c=relaxed/simple;
-	bh=zFb/Oe4iQABbmPbaWW6LmsHm0ZBMF9nD0bvXj2A4WVY=;
+	s=arc-20240116; t=1745947561; c=relaxed/simple;
+	bh=oOxa3RHSm1m6XBLnziJuO+wqvVOdO9EqlhUNHpdUSko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kn4eX2y74V6zel14xubWAvmoZGhJIzkZ6gXbQdBwJqmqrRbD+oOCkpb/wLzYnDc7ySR1AWR/G4cDDh+ETt1al7yIg0s3v1bM4oFqCov/sKIOO+/MEG+EghAw0uLo1MI31m8zpm+XQEvlq9wnuxn7BgyNrMElqEJ7dA8Uak+YdZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+C+xW8d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CC4C4CEEA;
-	Tue, 29 Apr 2025 17:14:43 +0000 (UTC)
+	 MIME-Version; b=mVtp8ZJKDBGBslng1sPvxKKJ9WRzHTxKC5/Bq/DXiBrY12eejsza+qgzipZMOy+7IVdtBPkyLZ0EJMZrR5M06tJ15mijAP3RdJpRVONFYmRrfhWcY9DQLIZ8ZZb4oGPBgfGnAHrt+XF33lN6DpPR/nTHCowhmIt7esq2A8qChp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cgz0gkFq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADEDC4CEE3;
+	Tue, 29 Apr 2025 17:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946884;
-	bh=zFb/Oe4iQABbmPbaWW6LmsHm0ZBMF9nD0bvXj2A4WVY=;
+	s=korg; t=1745947560;
+	bh=oOxa3RHSm1m6XBLnziJuO+wqvVOdO9EqlhUNHpdUSko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+C+xW8dUOqttLiabt6wEoI9x0YuoVBruefNK7g3siPmYvDKaWewKp55eNEbhRevg
-	 cDf4PG544oxFM0D8E4zHAbi2LOiqUi9cXYXrnkSkAjElgJpM7Lkd7Viy6W7dVZlCfe
-	 QGNfptuH6tjfSAvMzyHDuoldJEKml/i25Ut7ckUc=
+	b=Cgz0gkFqLK27ImJq3aoG8hnKu7OMQguO4Ihscr8tpnske0iny4esmWwcL8CyI28iJ
+	 ivvvJ9tAuS4iMaoyztdJOJff6CTldvWIag4CfbupRBc02ftpuhp7q9Fal5yEmDXxPE
+	 /A+puF6xlk56R4XL4DXqR3EIq6YJCfPRonHDu7PY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 5.10 070/286] clocksource/drivers/stm32-lptimer: Use wakeup capable instead of init wakeup
+	Jonathan Currier <dullfire@yahoo.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 033/280] PCI/MSI: Add an option to write MSIX ENTRY_DATA before any reads
 Date: Tue, 29 Apr 2025 18:39:34 +0200
-Message-ID: <20250429161110.732129139@linuxfoundation.org>
+Message-ID: <20250429161116.476657228@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Torgue <alexandre.torgue@foss.st.com>
+From: Jonathan Currier <dullfire@yahoo.com>
 
-commit 96bf4b89a6ab22426ad83ef76e66c72a5a8daca0 upstream.
+[ Upstream commit cf761e3dacc6ad5f65a4886d00da1f9681e6805a ]
 
-"wakeup-source" property describes a device which has wakeup capability
-but should not force this device as a wakeup source.
+Commit 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries") introduced a
+readl() from ENTRY_VECTOR_CTRL before the writel() to ENTRY_DATA.
 
-Fixes: 48b41c5e2de6 ("clocksource: Add Low Power STM32 timers driver")
+This is correct, however some hardware, like the Sun Neptune chips, the NIU
+module, will cause an error and/or fatal trap if any MSIX table entry is
+read before the corresponding ENTRY_DATA field is written to.
+
+Add an optional early writel() in msix_prepare_msi_desc().
+
+Fixes: 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries")
+Signed-off-by: Jonathan Currier <dullfire@yahoo.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20250306083407.2374894-1-fabrice.gasnier%40foss.st.com
-Link: https://lore.kernel.org/r/20250306102501.2980153-1-fabrice.gasnier@foss.st.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/all/20241117234843.19236-2-dullfire@yahoo.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-stm32-lp.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/pci/msi/msi.c | 3 +++
+ include/linux/pci.h   | 2 ++
+ 2 files changed, 5 insertions(+)
 
---- a/drivers/clocksource/timer-stm32-lp.c
-+++ b/drivers/clocksource/timer-stm32-lp.c
-@@ -168,9 +168,7 @@ static int stm32_clkevent_lp_probe(struc
+diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
+index 6569ba3577fe6..8b88487886184 100644
+--- a/drivers/pci/msi/msi.c
++++ b/drivers/pci/msi/msi.c
+@@ -615,6 +615,9 @@ void msix_prepare_msi_desc(struct pci_dev *dev, struct msi_desc *desc)
+ 		void __iomem *addr = pci_msix_desc_addr(desc);
+ 
+ 		desc->pci.msi_attrib.can_mask = 1;
++		/* Workaround for SUN NIU insanity, which requires write before read */
++		if (dev->dev_flags & PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST)
++			writel(0, addr + PCI_MSIX_ENTRY_DATA);
+ 		desc->pci.msix_ctrl = readl(addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
  	}
+ }
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 74114acbb07fb..ade889ded4e1e 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -245,6 +245,8 @@ enum pci_dev_flags {
+ 	PCI_DEV_FLAGS_NO_RELAXED_ORDERING = (__force pci_dev_flags_t) (1 << 11),
+ 	/* Device does honor MSI masking despite saying otherwise */
+ 	PCI_DEV_FLAGS_HAS_MSI_MASKING = (__force pci_dev_flags_t) (1 << 12),
++	/* Device requires write to PCI_MSIX_ENTRY_DATA before any MSIX reads */
++	PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST = (__force pci_dev_flags_t) (1 << 13),
+ };
  
- 	if (of_property_read_bool(pdev->dev.parent->of_node, "wakeup-source")) {
--		ret = device_init_wakeup(&pdev->dev, true);
--		if (ret)
--			goto out_clk_disable;
-+		device_set_wakeup_capable(&pdev->dev, true);
- 
- 		ret = dev_pm_set_wake_irq(&pdev->dev, irq);
- 		if (ret)
+ enum pci_irq_reroute_variant {
+-- 
+2.39.5
+
 
 
 
