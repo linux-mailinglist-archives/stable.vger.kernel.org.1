@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6C0AA1952
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:10:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC82AA1A60
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:21:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64674A2AAE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E8A59C1B26
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A451221ABC6;
-	Tue, 29 Apr 2025 18:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D6F253B5F;
+	Tue, 29 Apr 2025 18:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2m4bvcaf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJB/obPn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4E340C03;
-	Tue, 29 Apr 2025 18:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2C8240611;
+	Tue, 29 Apr 2025 18:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950108; cv=none; b=dlzt6amxFMDh7VZ6oVl9gDId28VoJCcYf0SpzKx/EJmfLQ5NvQ54qEapYMBQxNjEhq/RAyrvrvxcwi41I9ST1JVlz2q6nA+3cA2w+ca6BcZ3jrzDqXddDm/9/Zr0xVX3JC5b/PKkM33e+bq1rJbQ4TajbGgghXcdrqp4JqTUfsY=
+	t=1745950612; cv=none; b=LHaKeyAUSErBUPIJr9TPRouvbBjbEP9J1xyZ2F5onMAsebrkfSwvBpgRm1jj/p40RFZSjTkPugLzID2SfZrbyskTNKBNxGAP2VvYdObVJI9B7u8kqAqnZWOFdXGgY/nDieqMgx5bGZ/NAL6Qte/jTa97fBQY+Kj3t/Hu5W4vBg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950108; c=relaxed/simple;
-	bh=1Ge8BQ5MjhRtE9K1YQBmEIemt2xBSbVRyiJYbPA04y4=;
+	s=arc-20240116; t=1745950612; c=relaxed/simple;
+	bh=EB4H8ZFqtrGGXM18LBxZLDYaP4eDz0Y8yIlXK0hbs8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nc9y19TEqf49++tdUJHh+3u97Mw1LmdyvFjkhhSkOg+XZfVSRiCoPdGvJz4Xy6nhlPPgqj1NZVIpHXroKSZVVInb47SuI1/ZUPmDka6vutbvokPcaX6PYHPuNjB+dkpjmRl3PvQFjiv9b2Ma7Dmz1Tes86mGzQOx9ONMSf5fzFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2m4bvcaf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37AEC4CEE3;
-	Tue, 29 Apr 2025 18:08:27 +0000 (UTC)
+	 MIME-Version; b=Te2zNP30Pnyjr6sBpy3g+OeZPSA4xxCWzDKv0Il8hSOBnJeXbD7NWoeFpUJVruyfzuYzxxyZoXeRhpXIN811SRKdSGXWcP/2zA6drgf9ZNwQtjyf2dmdhup3iyQwhKuPQRS443SxYRu96FKycDCsGm7wFK336lOs6MrbwoYEpGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJB/obPn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A553BC4CEE3;
+	Tue, 29 Apr 2025 18:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950108;
-	bh=1Ge8BQ5MjhRtE9K1YQBmEIemt2xBSbVRyiJYbPA04y4=;
+	s=korg; t=1745950612;
+	bh=EB4H8ZFqtrGGXM18LBxZLDYaP4eDz0Y8yIlXK0hbs8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2m4bvcafeDPX6bk7t/bWn7h8l+yNKou1mIZ3VFHLQxc8R9q3JpX4yhzFs+gbuy6jM
-	 mXhlmPny+wN0IK4WfRyyN7FqOzByQSHhg2bP0MOL89ykAHv9EUJxqsvK8OfTcjRObI
-	 h6vlbQzT9SDzQkzUrXZV2xdo/kwAruKWi/5uh3JM=
+	b=cJB/obPn8qMyTzOw6BRk5GpevDNKaWfvJCrOd1eKu2+pkcJWrfPQ6QVSGEWwcLoSu
+	 n+ybNE+DF0LE3GgzZQM1SsfrWI8ueXLAQaLWVE8gcHZAGAqi31yx2VgphqLhLml+a7
+	 yAPq6bLje5AQQuQ+s1RqlpsQLcgAikPGLFx7+EWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukas Stockmann <lukas.stockmann@siemens.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/167] ACPI: EC: Set ec_no_wakeup for Lenovo Go S
-Date: Tue, 29 Apr 2025 18:43:57 +0200
-Message-ID: <20250429161056.958289071@linuxfoundation.org>
+Subject: [PATCH 6.6 150/204] rtc: pcf85063: do a SW reset if POR failed
+Date: Tue, 29 Apr 2025 18:43:58 +0200
+Message-ID: <20250429161105.558978872@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Lukas Stockmann <lukas.stockmann@siemens.com>
 
-[ Upstream commit b988685388effd648150aab272533f833a2a70f0 ]
+[ Upstream commit 2b7cbd98495f6ee4cd6422fe77828a19e9edf87f ]
 
-When AC adapter is unplugged or plugged in EC wakes from HW sleep but
-APU doesn't enter back into HW sleep.
+Power-on Reset has a documented issue in PCF85063, refer to its datasheet,
+section "Software reset":
 
-The reason this happens is that, when the APU exits HW sleep, the power
-rails controlled by the EC will power up the TCON.  The TCON has a GPIO
-that will be toggled at this time.  The GPIO is not marked as a wakeup
-source, but the GPIO controller still has an unserviced interrupt.
-Unserviced interrupts will block entering HW sleep again. Clearing the
-GPIO doesn't help as the TCON continues to assert it until it's been
-initialized by i2c-hid.
+"There is a low probability that some devices will have corruption of the
+registers after the automatic power-on reset if the device is powered up
+with a residual VDD level. It is required that the VDD starts at zero volts
+at power up or upon power cycling to ensure that there is no corruption of
+the registers. If this is not possible, a reset must be initiated after
+power-up (i.e. when power is stable) with the software reset command"
 
-Fixing this would require TCON F/W changes and it's already broken in
-the wild on production hardware.
+Trigger SW reset if there is an indication that POR has failed.
 
-To avoid triggering this issue add a quirk to avoid letting EC wake
-up system at all.  The power button still works properly on this system.
-
-Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3929
-Link: https://github.com/bazzite-org/patchwork/commit/95b93b2852718ee1e808c72e6b1836da4a95fc63
-Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20250401133858.1892077-1-superm1@kernel.org
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://www.nxp.com/docs/en/data-sheet/PCF85063A.pdf
+Signed-off-by: Lukas Stockmann <lukas.stockmann@siemens.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://lore.kernel.org/r/20250120093451.30778-1-alexander.sverdlin@siemens.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/rtc/rtc-pcf85063.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 63803091f8b1e..5776987390907 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -2260,6 +2260,34 @@ static const struct dmi_system_id acpi_ec_no_wakeup[] = {
- 			DMI_MATCH(DMI_PRODUCT_FAMILY, "103C_5336AN HP ZHAN 66 Pro"),
- 		},
- 	},
-+	/*
-+	 * Lenovo Legion Go S; touchscreen blocks HW sleep when woken up from EC
-+	 * https://gitlab.freedesktop.org/drm/amd/-/issues/3929
-+	 */
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83L3"),
-+		}
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83N6"),
-+		}
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83Q2"),
-+		}
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
-+		}
-+	},
- 	{ },
- };
+diff --git a/drivers/rtc/rtc-pcf85063.c b/drivers/rtc/rtc-pcf85063.c
+index 905986c616559..73848f764559b 100644
+--- a/drivers/rtc/rtc-pcf85063.c
++++ b/drivers/rtc/rtc-pcf85063.c
+@@ -35,6 +35,7 @@
+ #define PCF85063_REG_CTRL1_CAP_SEL	BIT(0)
+ #define PCF85063_REG_CTRL1_STOP		BIT(5)
+ #define PCF85063_REG_CTRL1_EXT_TEST	BIT(7)
++#define PCF85063_REG_CTRL1_SWR		0x58
  
+ #define PCF85063_REG_CTRL2		0x01
+ #define PCF85063_CTRL2_AF		BIT(6)
+@@ -589,7 +590,7 @@ static int pcf85063_probe(struct i2c_client *client)
+ 
+ 	i2c_set_clientdata(client, pcf85063);
+ 
+-	err = regmap_read(pcf85063->regmap, PCF85063_REG_CTRL1, &tmp);
++	err = regmap_read(pcf85063->regmap, PCF85063_REG_SC, &tmp);
+ 	if (err) {
+ 		dev_err(&client->dev, "RTC chip is not present\n");
+ 		return err;
+@@ -599,6 +600,22 @@ static int pcf85063_probe(struct i2c_client *client)
+ 	if (IS_ERR(pcf85063->rtc))
+ 		return PTR_ERR(pcf85063->rtc);
+ 
++	/*
++	 * If a Power loss is detected, SW reset the device.
++	 * From PCF85063A datasheet:
++	 * There is a low probability that some devices will have corruption
++	 * of the registers after the automatic power-on reset...
++	 */
++	if (tmp & PCF85063_REG_SC_OS) {
++		dev_warn(&client->dev,
++			 "POR issue detected, sending a SW reset\n");
++		err = regmap_write(pcf85063->regmap, PCF85063_REG_CTRL1,
++				   PCF85063_REG_CTRL1_SWR);
++		if (err < 0)
++			dev_warn(&client->dev,
++				 "SW reset failed, trying to continue\n");
++	}
++
+ 	err = pcf85063_load_capacitance(pcf85063, client->dev.of_node,
+ 					config->force_cap_7000 ? 7000 : 0);
+ 	if (err < 0)
 -- 
 2.39.5
 
