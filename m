@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-138617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804D0AA18CE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:04:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D834DAA19BB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:15:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D01651BC77B2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1B774C0B9C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAAE2517AB;
-	Tue, 29 Apr 2025 18:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F55824111D;
+	Tue, 29 Apr 2025 18:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EuKYhdg8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZMAYMD2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773162522AB;
-	Tue, 29 Apr 2025 18:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA9A2AE72;
+	Tue, 29 Apr 2025 18:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949815; cv=none; b=lhR75xBnj8cVfyibZYdVG24dRAHYRJX/lB8n5pOuasQt5XFZlRVJQ7Cob56seD8UOai21WeBbnOZYfaTbkmIn3tNadMCD4a+MMMD7QQaArzCzQGlAmQCYvGpWQmQsvLr6sJEMak9ZH+kmUWy+yT8Lz79Ddq0IeogndiNEW1xfUE=
+	t=1745950381; cv=none; b=YoEYcWF6FjKSWNFH/axgpexN8IPDdZa2J2cxAOxZpY+SisfNp3mj82xxAR/tuKHFMiK1PHSGmOSNYLjpWBI6jnCGPRHs6mn0jUpliVv/18eQcKJ1b/VmJgEwrgg/wo+wZlJpx/I2IM51hERx30HFtqij2Z5YXgWbNjJgURNfyww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949815; c=relaxed/simple;
-	bh=0d0oDCnh6C2QHnYVFlETYS8X05J20Zgu+tfDwG5BZCE=;
+	s=arc-20240116; t=1745950381; c=relaxed/simple;
+	bh=S4CYA4iDjcl00tIBduB/w5LDtBLeDP7hsy7k4lGpe6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yqml/j4M3RA6hFHOunU+sGJPbwWg9Me6hbBfVoO/LPHd8gctLhEuVNbfXADpgKeKnF87BG1lUwyKbJwy08oeFHeXPUGe1AYTJh0exe8LlVsFH/QgiWCHf9dzn54KVEPmpYvA30Zqmi/5sVglU1hhL8OvabHt6VM7UCJ5ONb+6I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EuKYhdg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0FDC4CEE3;
-	Tue, 29 Apr 2025 18:03:34 +0000 (UTC)
+	 MIME-Version; b=HRXflzR9+NS5+HXnTez6CDhEZy+JV2+OYAtQ3mIP4j9WJqioc8bo1IFTZJ6ehxTVatUBHhDf5frrSlzEzqtxVI7ZgTayL9RGFgIB0Gt6Qid15yT/cgsE3sH9yKyjyM52KOdC5mmaE666QVCKlbpVnNJLGPo+1F/WvA7fQBh+zXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZMAYMD2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571C2C4CEE3;
+	Tue, 29 Apr 2025 18:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949815;
-	bh=0d0oDCnh6C2QHnYVFlETYS8X05J20Zgu+tfDwG5BZCE=;
+	s=korg; t=1745950380;
+	bh=S4CYA4iDjcl00tIBduB/w5LDtBLeDP7hsy7k4lGpe6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EuKYhdg8GBxq9OY7z4jZbVYDeXmVJdWbWttBpsqaRiXktdZoYxzYjbEe6lUWklSLf
-	 41RrdYHexUP8Dvx2eBKoYb7yGItNFd4bWB3gSqPcDOCZdAchwMdgyb/n3wzKykCYp8
-	 qM8Rd7Gs4WqQAiVfO7KW/itimD0jw7IBKz3ZWWbY=
+	b=iZMAYMD2YlNoFG04GWMCe4eUbTfJLKkM6YQqHIgzRiIMgIdjyy6nFUv6Z/dJ4Dk8g
+	 s/eJgPIjqBrA681erAQk5LvkFST1iZhIykAwgj8fM/RGBJpybCZxncbqZBJdM7GJ/b
+	 IAERtb/2/mnhWoXRldk/hZy68k4MA+omoXKkzFBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erpeng Xu <xuerpeng@uniontech.com>,
-	Yuli Wang <wangyuli@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/167] LoongArch: Select ARCH_USE_MEMTEST
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Roman Li <Roman.Li@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Mark Broadworth <mark.broadworth@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 078/204] drm/amd/display: Force full update in gpu reset
 Date: Tue, 29 Apr 2025 18:42:46 +0200
-Message-ID: <20250429161054.112558635@linuxfoundation.org>
+Message-ID: <20250429161102.613170174@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuli Wang <wangyuli@uniontech.com>
+From: Roman Li <Roman.Li@amd.com>
 
-[ Upstream commit fb8e9f59d6f292c3d9fea6c155c22ea5fc3053ab ]
+commit 67fe574651c73fe5cc176e35f28f2ec1ba498d14 upstream.
 
-As of commit dce44566192e ("mm/memtest: add ARCH_USE_MEMTEST"),
-architectures must select ARCH_USE_MEMTESET to enable CONFIG_MEMTEST.
+[Why]
+While system undergoing gpu reset always do full update
+to sync the dc state before and after reset.
 
-Commit 628c3bb40e9a ("LoongArch: Add boot and setup routines") added
-support for early_memtest but did not select ARCH_USE_MEMTESET.
+[How]
+Return true in should_reset_plane() if gpu reset detected
 
-Fixes: 628c3bb40e9a ("LoongArch: Add boot and setup routines")
-Tested-by: Erpeng Xu <xuerpeng@uniontech.com>
-Tested-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Roman Li <Roman.Li@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Mark Broadworth <mark.broadworth@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2ba8619b9a378ad218ad6c2e2ccaee8f531e08de)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index 0166d357069d9..6c55d85b1c767 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -51,6 +51,7 @@ config LOONGARCH
- 	select ARCH_SUPPORTS_NUMA_BALANCING
- 	select ARCH_USE_BUILTIN_BSWAP
- 	select ARCH_USE_CMPXCHG_LOCKREF
-+	select ARCH_USE_MEMTEST
- 	select ARCH_USE_QUEUED_RWLOCKS
- 	select ARCH_USE_QUEUED_SPINLOCKS
- 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -9590,6 +9590,9 @@ static bool should_reset_plane(struct dr
+ 	if (adev->ip_versions[DCE_HWIP][0] < IP_VERSION(3, 2, 0) && state->allow_modeset)
+ 		return true;
+ 
++	if (amdgpu_in_reset(adev) && state->allow_modeset)
++		return true;
++
+ 	/* Exit early if we know that we're adding or removing the plane. */
+ 	if (old_plane_state->crtc != new_plane_state->crtc)
+ 		return true;
 
 
 
