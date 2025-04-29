@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891E8AA1341
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6A3AA11F0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:47:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCA4D18914FA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93E6C3A969C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1C62512D7;
-	Tue, 29 Apr 2025 16:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C39B624C08D;
+	Tue, 29 Apr 2025 16:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8kyQehM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mh4wMkQo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E55229B05;
-	Tue, 29 Apr 2025 16:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C49C24466C;
+	Tue, 29 Apr 2025 16:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945966; cv=none; b=isH9xRdrdiCwvqs+MbrOPSUFYO+zTwwkBXzOmtDlZudTCbltjRC8VejUsjYBhdw7XvGNQ1Fmxtfc25oJ18twYHYusF1sD9zsqs+tZ51LkajuLnbrDOfO6bfX10RC2QPxXKo2YugLwHtrj6ZYFLXvb0OwE+DCKtTHHLW97HBo25M=
+	t=1745945161; cv=none; b=MR7KedJ9Ws3RvUqBsI/cx/Ff2xrH8qD7pgD2HQBSSAnZ5hjekvtukS2Lvwiv3aMA6u+TZKDUUvyEuOMNTdrndFwq+UkTZ3+BWG0rep3RHZP/f+SUOcmFdDKlcJG3C9HYbA7y7vGD2+odecq9bJ3QfIQ8WXKrVVu6P7UtaOwOhbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945966; c=relaxed/simple;
-	bh=U7sFRy2NK5Ek1fZ6AGxElDWOhkpnhrK8dj1gk1Lxayo=;
+	s=arc-20240116; t=1745945161; c=relaxed/simple;
+	bh=6lxiy2J1c7U81Z/+vkJ94a9xaDGjAQYnFQCubQbVKTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhm2vLkxI++2ilBhkLKPTX8CqRy0/l73hFMW3e90evNG1oheiEvq9JPezx2zACJdULbyLK1fRub/SFKPt8Po4H6W35vtuZFwJKivz4lTmKq+4olVEQwDyGVxK4TotsC9upBq7a2eBnYqE6QK6UBCI4jwM+RNF8bNKR08bWu131s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8kyQehM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DACC4CEE3;
-	Tue, 29 Apr 2025 16:59:25 +0000 (UTC)
+	 MIME-Version; b=sVFXYkOh7zxn3vy9kiAU2+JAqBHztbQfTsgEE4a7K1ru0ROR24cIeuSLdkpICUbyIHjG1QbyB3pjmFzKPnfdPEsHrx3t3rDLMsZRYCt7aosY7RsSGiD4Flx2BFRYAqYyLogrPXmuwWE2ws/CZ7fjmxIOAxmmb27NAgrvaEek2H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mh4wMkQo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92B1C4CEED;
+	Tue, 29 Apr 2025 16:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945966;
-	bh=U7sFRy2NK5Ek1fZ6AGxElDWOhkpnhrK8dj1gk1Lxayo=;
+	s=korg; t=1745945161;
+	bh=6lxiy2J1c7U81Z/+vkJ94a9xaDGjAQYnFQCubQbVKTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8kyQehMUJoPj1LNwFZ4hKDlLeXCRR4BNucKxRnImAU37VBVVPiNW8KY+hlvV6QYl
-	 nbPWDm23jJ6xd96NCwdg226O3BtvKgSBj3ji5amjb4K2Bp42lczWoxHHoJ2IAziL4l
-	 aqcDIigGtOAiw++mUP0RMybg6O4K1SuTLn0ZduZc=
+	b=mh4wMkQoDaXl8B2n6tvjnrYZPYInAQfRodw94w9vwr3lDri6cg1NpqOu21g5s8SNz
+	 uVz0wOZt31xnNo6iBElH8haK1t7S3xLV6N9Yyz61vX71B3/mXuUE69lhnpat59nnMv
+	 tocYfZ6v/SqSPDBf7LgqEpeqMDIwuUXs2VzoDaaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.14 109/311] netfilter: fib: avoid lookup if socket is available
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Niklas Cassel <cassel@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 005/179] ata: sata_sx4: Add error handling in pdc20621_i2c_read()
 Date: Tue, 29 Apr 2025 18:39:06 +0200
-Message-ID: <20250429161125.499190502@linuxfoundation.org>
+Message-ID: <20250429161049.609893150@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,141 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit eaaff9b6702e99be5d79135f2afa9fc48a0d59e0 upstream.
+[ Upstream commit 8d46a27085039158eb5e253ab8a35a0e33b5e864 ]
 
-In case the fib match is used from the input hook we can avoid the fib
-lookup if early demux assigned a socket for us: check that the input
-interface matches sk-cached one.
+The function pdc20621_prog_dimm0() calls the function pdc20621_i2c_read()
+but does not handle the error if the read fails. This could lead to
+process with invalid data. A proper implementation can be found in
+/source/drivers/ata/sata_sx4.c, pdc20621_prog_dimm_global(). As mentioned
+in its commit: bb44e154e25125bef31fa956785e90fccd24610b, the variable spd0
+might be used uninitialized when pdc20621_i2c_read() fails.
 
-Rework the existing 'lo bypass' logic to first check sk, then
-for loopback interface type to elide the fib lookup.
+Add error handling to pdc20621_i2c_read(). If a read operation fails,
+an error message is logged via dev_err(), and return a negative error
+code.
 
-This speeds up fib matching a little, before:
-93.08 GBit/s (no rules at all)
-75.1  GBit/s ("fib saddr . iif oif missing drop" in prerouting)
-75.62 GBit/s ("fib saddr . iif oif missing drop" in input)
+Add error handling to pdc20621_prog_dimm0() in pdc20621_dimm_init(), and
+return a negative error code if pdc20621_prog_dimm0() fails.
 
-After:
-92.48 GBit/s (no rules at all)
-75.62 GBit/s (fib rule in prerouting)
-90.37 GBit/s (fib rule in input).
-
-Numbers for the 'no rules' and 'prerouting' are expected to
-closely match in-between runs, the 3rd/input test case exercises the
-the 'avoid lookup if cached ifindex in sk matches' case.
-
-Test used iperf3 via veth interface, lo can't be used due to existing
-loopback test.
-
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4447d3515616 ("libata: convert the remaining SATA drivers to new init model")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nft_fib.h   |   21 +++++++++++++++++++++
- net/ipv4/netfilter/nft_fib_ipv4.c |   11 +++++------
- net/ipv6/netfilter/nft_fib_ipv6.c |   19 ++++++++++---------
- 3 files changed, 36 insertions(+), 15 deletions(-)
+ drivers/ata/sata_sx4.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/include/net/netfilter/nft_fib.h
-+++ b/include/net/netfilter/nft_fib.h
-@@ -18,6 +18,27 @@ nft_fib_is_loopback(const struct sk_buff
- 	return skb->pkt_type == PACKET_LOOPBACK || in->flags & IFF_LOOPBACK;
- }
+diff --git a/drivers/ata/sata_sx4.c b/drivers/ata/sata_sx4.c
+index 8ef45a35409a1..7566f21f110ed 100644
+--- a/drivers/ata/sata_sx4.c
++++ b/drivers/ata/sata_sx4.c
+@@ -1124,9 +1124,14 @@ static int pdc20621_prog_dimm0(struct ata_host *host)
+ 	mmio += PDC_CHIP0_OFS;
  
-+static inline bool nft_fib_can_skip(const struct nft_pktinfo *pkt)
-+{
-+	const struct net_device *indev = nft_in(pkt);
-+	const struct sock *sk;
-+
-+	switch (nft_hook(pkt)) {
-+	case NF_INET_PRE_ROUTING:
-+	case NF_INET_INGRESS:
-+	case NF_INET_LOCAL_IN:
-+		break;
-+	default:
-+		return false;
-+	}
-+
-+	sk = pkt->skb->sk;
-+	if (sk && sk_fullsock(sk))
-+	       return sk->sk_rx_dst_ifindex == indev->ifindex;
-+
-+	return nft_fib_is_loopback(pkt->skb, indev);
-+}
-+
- int nft_fib_dump(struct sk_buff *skb, const struct nft_expr *expr, bool reset);
- int nft_fib_init(const struct nft_ctx *ctx, const struct nft_expr *expr,
- 		 const struct nlattr * const tb[]);
---- a/net/ipv4/netfilter/nft_fib_ipv4.c
-+++ b/net/ipv4/netfilter/nft_fib_ipv4.c
-@@ -71,6 +71,11 @@ void nft_fib4_eval(const struct nft_expr
- 	const struct net_device *oif;
- 	const struct net_device *found;
+ 	for (i = 0; i < ARRAY_SIZE(pdc_i2c_read_data); i++)
+-		pdc20621_i2c_read(host, PDC_DIMM0_SPD_DEV_ADDRESS,
+-				  pdc_i2c_read_data[i].reg,
+-				  &spd0[pdc_i2c_read_data[i].ofs]);
++		if (!pdc20621_i2c_read(host, PDC_DIMM0_SPD_DEV_ADDRESS,
++				       pdc_i2c_read_data[i].reg,
++				       &spd0[pdc_i2c_read_data[i].ofs])) {
++			dev_err(host->dev,
++				"Failed in i2c read at index %d: device=%#x, reg=%#x\n",
++				i, PDC_DIMM0_SPD_DEV_ADDRESS, pdc_i2c_read_data[i].reg);
++			return -EIO;
++		}
  
-+	if (nft_fib_can_skip(pkt)) {
-+		nft_fib_store_result(dest, priv, nft_in(pkt));
-+		return;
-+	}
-+
- 	/*
- 	 * Do not set flowi4_oif, it restricts results (for example, asking
- 	 * for oif 3 will get RTN_UNICAST result even if the daddr exits
-@@ -85,12 +90,6 @@ void nft_fib4_eval(const struct nft_expr
- 	else
- 		oif = NULL;
+ 	data |= (spd0[4] - 8) | ((spd0[21] != 0) << 3) | ((spd0[3]-11) << 4);
+ 	data |= ((spd0[17] / 4) << 6) | ((spd0[5] / 2) << 7) |
+@@ -1290,6 +1295,8 @@ static unsigned int pdc20621_dimm_init(struct ata_host *host)
  
--	if (nft_hook(pkt) == NF_INET_PRE_ROUTING &&
--	    nft_fib_is_loopback(pkt->skb, nft_in(pkt))) {
--		nft_fib_store_result(dest, priv, nft_in(pkt));
--		return;
--	}
--
- 	iph = skb_header_pointer(pkt->skb, noff, sizeof(_iph), &_iph);
- 	if (!iph) {
- 		regs->verdict.code = NFT_BREAK;
---- a/net/ipv6/netfilter/nft_fib_ipv6.c
-+++ b/net/ipv6/netfilter/nft_fib_ipv6.c
-@@ -170,6 +170,11 @@ void nft_fib6_eval(const struct nft_expr
- 	struct rt6_info *rt;
- 	int lookup_flags;
+ 	/* Programming DIMM0 Module Control Register (index_CID0:80h) */
+ 	size = pdc20621_prog_dimm0(host);
++	if (size < 0)
++		return size;
+ 	dev_dbg(host->dev, "Local DIMM Size = %dMB\n", size);
  
-+	if (nft_fib_can_skip(pkt)) {
-+		nft_fib_store_result(dest, priv, nft_in(pkt));
-+		return;
-+	}
-+
- 	if (priv->flags & NFTA_FIB_F_IIF)
- 		oif = nft_in(pkt);
- 	else if (priv->flags & NFTA_FIB_F_OIF)
-@@ -181,17 +186,13 @@ void nft_fib6_eval(const struct nft_expr
- 		return;
- 	}
- 
--	lookup_flags = nft_fib6_flowi_init(&fl6, priv, pkt, oif, iph);
--
--	if (nft_hook(pkt) == NF_INET_PRE_ROUTING ||
--	    nft_hook(pkt) == NF_INET_INGRESS) {
--		if (nft_fib_is_loopback(pkt->skb, nft_in(pkt)) ||
--		    nft_fib_v6_skip_icmpv6(pkt->skb, pkt->tprot, iph)) {
--			nft_fib_store_result(dest, priv, nft_in(pkt));
--			return;
--		}
-+	if (nft_fib_v6_skip_icmpv6(pkt->skb, pkt->tprot, iph)) {
-+		nft_fib_store_result(dest, priv, nft_in(pkt));
-+		return;
- 	}
- 
-+	lookup_flags = nft_fib6_flowi_init(&fl6, priv, pkt, oif, iph);
-+
- 	*dest = 0;
- 	rt = (void *)ip6_route_lookup(nft_net(pkt), &fl6, pkt->skb,
- 				      lookup_flags);
+ 	/* Programming DIMM Module Global Control Register (index_CID0:88h) */
+-- 
+2.39.5
+
 
 
 
