@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584A7AA16B6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 622D1AA1568
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3DCB16B809
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:37:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E91991A83062
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75B222DF91;
-	Tue, 29 Apr 2025 17:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F07F244694;
+	Tue, 29 Apr 2025 17:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHgCBzTR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpIC9Bnn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DD2244668;
-	Tue, 29 Apr 2025 17:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE9E1C6B4;
+	Tue, 29 Apr 2025 17:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948261; cv=none; b=gqhtTZVNea5zzCHEZmt6AA6Zhj43yymKdUc8FY5iHnELDauCWqwLmHRT7hmonWZH+UrY6VCsiNVuqKBY01jIhV6tpRJovYC+578DjaHfcMBTvlfCzogUEmh2PVMpm+CCS/dZ3EfzElDdUpfZVYm0Mn1d3WK6TI1BnOww39u1vaE=
+	t=1745947320; cv=none; b=d4h400tFvygFSPsQlwnk5Ix3uT0pIeKVbioUNiRwFwgXtw2TOWpjRx1JMmVF8CknSXcYNdAfxKRGIeI1HEOLL2cWpcQWewqZmmrQNw1SjgObVBixvzFg+N9QmXFZP3wIxwP2v2VP0qB2cdY2Kr4Cpmk5M3OuOuc5w4q+flMmzXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948261; c=relaxed/simple;
-	bh=0xkIC7Ep52fkC48TIMC4kOA6CkTizslBfWJJMOFNqS8=;
+	s=arc-20240116; t=1745947320; c=relaxed/simple;
+	bh=eRvKyetvQURkbppJO/bGFE2XTxYU9pAsp21CqMyvfUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASCAUOSjTWC4f/oi3sk4gFWr1tzh0Rhivs3P+q+iCdfpJpRHF87Q2Wg1AwlMpKY1F+TmvBUODVoMSihdY4TDMAhI/04evmv6z26cS/lIih+YUh4HG5BZGksM3tLpohOxfSyd6UufRYrKvOaMDRbyQtNICx85rve6llHPEtBN85w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHgCBzTR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B0EC4CEE3;
-	Tue, 29 Apr 2025 17:37:40 +0000 (UTC)
+	 MIME-Version; b=GKldVeZzligcC0YOVyjGacTrRJGMMfh9gSHcrTvST2AlRdGxjkSty5b3DGri35uUp3+Q0wnUCRGyCGegODKhqn20MCWjqj29SzosMY3ElQUhgYD6UfbfvkQ4Ae7Dto/ny10hcSYAuQMGS6C+fFF6DUpgmy2WR92x3WumopGmzcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpIC9Bnn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE49C4CEE3;
+	Tue, 29 Apr 2025 17:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948261;
-	bh=0xkIC7Ep52fkC48TIMC4kOA6CkTizslBfWJJMOFNqS8=;
+	s=korg; t=1745947320;
+	bh=eRvKyetvQURkbppJO/bGFE2XTxYU9pAsp21CqMyvfUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHgCBzTRwh6jea47HLrT/M6jL3kcZULnZihpj5AqGZhzMhLv3miQ+qcLtKHl7euU5
-	 dEoYOXiE1fvOy6frrLCVjFIDWjKGoshOISIDbAbpWbKeLxy1aS72kWA3ykIrQYBNek
-	 MCe4cDj1IsjVvGppWOfp1Vdz06XS64cAnokh4KTI=
+	b=vpIC9Bnn+NJYp06e5UHc0GJhpOjcFYWS4TL9xxSQtWwfHVyIsYZQLGrUeXqXBZPEN
+	 9eGfgmQLIfOCalHGGRTNGj4UB4WOjFW18GbcLVSTxupBNT7KSzIJKTKb/08o/4sLNw
+	 jMcojKrbhjTItnN2F6qljw98Nya8/AZ1LAbluxzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	Juergen Gross <jgross@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 206/280] xen: Change xen-acpi-processor dom0 dependency
-Date: Tue, 29 Apr 2025 18:42:27 +0200
-Message-ID: <20250429161123.558907573@linuxfoundation.org>
+	Michael Ehrenreich <michideep@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 244/286] USB: serial: ftdi_sio: add support for Abacus Electrics Optical Probe
+Date: Tue, 29 Apr 2025 18:42:28 +0200
+Message-ID: <20250429161117.966839079@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: Michael Ehrenreich <michideep@gmail.com>
 
-[ Upstream commit 0f2946bb172632e122d4033e0b03f85230a29510 ]
+commit b399078f882b6e5d32da18b6c696cc84b12f90d5 upstream.
 
-xen-acpi-processor functions under a PVH dom0 with only a
-xen_initial_domain() runtime check.  Change the Kconfig dependency from
-PV dom0 to generic dom0 to reflect that.
+Abacus Electrics makes optical probes for interacting with smart meters
+over an optical interface.
 
-Suggested-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Tested-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250331172913.51240-1-jason.andryuk@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+At least one version uses an FT232B chip (as detected by ftdi_sio) with
+a custom USB PID, which needs to be added to the list to make the device
+work in a plug-and-play fashion.
+
+Signed-off-by: Michael Ehrenreich <michideep@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/ftdi_sio.c     |    2 ++
+ drivers/usb/serial/ftdi_sio_ids.h |    5 +++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/xen/Kconfig b/drivers/xen/Kconfig
-index f7d6f47971fdf..24f485827e039 100644
---- a/drivers/xen/Kconfig
-+++ b/drivers/xen/Kconfig
-@@ -278,7 +278,7 @@ config XEN_PRIVCMD_EVENTFD
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -1071,6 +1071,8 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 2) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 3) },
++	/* Abacus Electrics */
++	{ USB_DEVICE(FTDI_VID, ABACUS_OPTICAL_PROBE_PID) },
+ 	{ }					/* Terminating entry */
+ };
  
- config XEN_ACPI_PROCESSOR
- 	tristate "Xen ACPI processor"
--	depends on XEN && XEN_PV_DOM0 && X86 && ACPI_PROCESSOR && CPU_FREQ
-+	depends on XEN && XEN_DOM0 && X86 && ACPI_PROCESSOR && CPU_FREQ
- 	default m
- 	help
- 	  This ACPI processor uploads Power Management information to the Xen
--- 
-2.39.5
-
+--- a/drivers/usb/serial/ftdi_sio_ids.h
++++ b/drivers/usb/serial/ftdi_sio_ids.h
+@@ -436,6 +436,11 @@
+ #define LINX_FUTURE_2_PID   0xF44C	/* Linx future device */
+ 
+ /*
++ * Abacus Electrics
++ */
++#define ABACUS_OPTICAL_PROBE_PID	0xf458 /* ABACUS ELECTRICS Optical Probe */
++
++/*
+  * Oceanic product ids
+  */
+ #define FTDI_OCEANIC_PID	0xF460  /* Oceanic dive instrument */
 
 
 
