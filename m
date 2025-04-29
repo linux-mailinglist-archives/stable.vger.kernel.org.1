@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-138819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB0EAA19D3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:16:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DE55AA18CF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AE6D1BC6EDB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CA534A4293
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87537CA5A;
-	Tue, 29 Apr 2025 18:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEEC253949;
+	Tue, 29 Apr 2025 18:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJOuwegj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZe9HF2H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444A6227E95;
-	Tue, 29 Apr 2025 18:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6F9221D92;
+	Tue, 29 Apr 2025 18:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950450; cv=none; b=XbA8bwYyRp/9fzin5zLOTdP2l4VamLpUhqhOkWwngermnIYaS96T6bRlWHu/UzAb6Sm5oX5kTYinlpnJnLk5To2onVyuy/GvJiRQKYY8t5I0Mp/ppjhulD6dP4C7+xJFa/AJh4InE7sjtweqekJ0hjP1R+xiRlnjQ8zkPTe98hE=
+	t=1745949771; cv=none; b=SliM8T9VJAhMPi1JvuMA3ripV69fCplUWzIb/dU4R61CjemEe/iSTMWi+BQqrWnnMRD3Rwwhv71YMdhFOX8YXR8F/7x3PK2keGBQXernGYDX9/3KV0gF79faQF3ZKXDkJrVGMNbVGyaYeejCkQMc8GRcZ6O9fXNxbyRX3o3xeHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950450; c=relaxed/simple;
-	bh=61x824ZcWTCXzKT1V+iWVUrtPBIyo+/PecYAGsdntx0=;
+	s=arc-20240116; t=1745949771; c=relaxed/simple;
+	bh=nfKaIkEOTUD9A70knS7ZZWzgGAx0Te6NFptC4dafmjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k2mf1UEGjga5tGRwF3VLtjnppcvdmjbbpvox/f669oG7nBJ7ye3quzQcCHhKp73Dq0ftnlkmqzOB7ZbAY+3Sm6El9fad2FATG7JyqbbEF5VoN8zaBEv0ZsoplCZ9LxclN/pdYDTb2krAM0fiq6QqYr1Cp0Jx4pwRSH963Zdk8Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJOuwegj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69D9C4CEE3;
-	Tue, 29 Apr 2025 18:14:09 +0000 (UTC)
+	 MIME-Version; b=QV9WqqgMnvnWnaHYsZz9/hlkdP3ctqHXxzBN5r//VtdsNFE0qLwQ3hma7qIFdEFWS5uVG4rF4o+36R12YaLVPO8hCHYYtjhFEFaaHXzJcvO59AZTHnM+MBEIWW0CXp/u8zscXHxUpwkNQIa0pxSuPLA6OSkRb/xdCTGF+yuBvxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZe9HF2H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29790C4CEE3;
+	Tue, 29 Apr 2025 18:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950450;
-	bh=61x824ZcWTCXzKT1V+iWVUrtPBIyo+/PecYAGsdntx0=;
+	s=korg; t=1745949771;
+	bh=nfKaIkEOTUD9A70knS7ZZWzgGAx0Te6NFptC4dafmjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJOuwegjHIP1XWAmx0zqEQgq4pSHlyT3Wln5nm+1itpAM6cgBpE4J7pp4GYYVYsnS
-	 drDAwBeiDaonigUE158JXGWQ9Kk0DPYKMcVgah7MEusoXXQA+FlsCeKlEhEvsqXEgB
-	 YFI/V59+QKjBwtQQEMt4ROpP02kxcWR33QQxkKwg=
+	b=nZe9HF2HjlfWN8J+DckXAD2uySwiwBz7cOutFvMbgdMhb1RJliqtnZB6mCzfWmKks
+	 wQNomuUJM+s1qnGNCRr1/eJIpnUf4G4MpsPb0y+Q5KOO39/qVQ8or/6Nz1YkqnBAas
+	 qBkRnccpaid2dm/5hcbIf0HK/tok581yw8Gj8HaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	syzbot+ed60da8d686dc709164c@syzkaller.appspotmail.com,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/204] LoongArch: Make regs_irqs_disabled() more clear
-Date: Tue, 29 Apr 2025 18:42:38 +0200
-Message-ID: <20250429161102.292249177@linuxfoundation.org>
+Subject: [PATCH 6.1 051/167] tipc: fix NULL pointer dereference in tipc_mon_reinit_self()
+Date: Tue, 29 Apr 2025 18:42:39 +0200
+Message-ID: <20250429161053.829274110@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Tung Nguyen <tung.quang.nguyen@est.tech>
 
-[ Upstream commit bb0511d59db9b3e40c8d51f0d151ccd0fd44071d ]
+[ Upstream commit d63527e109e811ef11abb1c2985048fdb528b4cb ]
 
-In the current code, the definition of regs_irqs_disabled() is actually
-"!(regs->csr_prmd & CSR_CRMD_IE)" because arch_irqs_disabled_flags() is
-defined as "!(flags & CSR_CRMD_IE)", it looks a little strange.
+syzbot reported:
 
-Define regs_irqs_disabled() as !(regs->csr_prmd & CSR_PRMD_PIE) directly
-to make it more clear, no functional change.
+tipc: Node number set to 1055423674
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 3 UID: 0 PID: 6017 Comm: kworker/3:5 Not tainted 6.15.0-rc1-syzkaller-00246-g900241a5cc15 #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: events tipc_net_finalize_work
+RIP: 0010:tipc_mon_reinit_self+0x11c/0x210 net/tipc/monitor.c:719
+...
+RSP: 0018:ffffc9000356fb68 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000003ee87cba
+RDX: 0000000000000000 RSI: ffffffff8dbc56a7 RDI: ffff88804c2cc010
+RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000007
+R13: fffffbfff2111097 R14: ffff88804ead8000 R15: ffff88804ead9010
+FS:  0000000000000000(0000) GS:ffff888097ab9000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000f720eb00 CR3: 000000000e182000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ tipc_net_finalize+0x10b/0x180 net/tipc/net.c:140
+ process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
+ process_scheduled_works kernel/workqueue.c:3319 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
+ kthread+0x3c2/0x780 kernel/kthread.c:464
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+...
+RIP: 0010:tipc_mon_reinit_self+0x11c/0x210 net/tipc/monitor.c:719
+...
+RSP: 0018:ffffc9000356fb68 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000003ee87cba
+RDX: 0000000000000000 RSI: ffffffff8dbc56a7 RDI: ffff88804c2cc010
+RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000007
+R13: fffffbfff2111097 R14: ffff88804ead8000 R15: ffff88804ead9010
+FS:  0000000000000000(0000) GS:ffff888097ab9000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000f720eb00 CR3: 000000000e182000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
-While at it, the return value of regs_irqs_disabled() is true or false,
-so change its type to reflect that and also make it always inline.
+There is a racing condition between workqueue created when enabling
+bearer and another thread created when disabling bearer right after
+that as follow:
 
-Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+enabling_bearer                          | disabling_bearer
+---------------                          | ----------------
+tipc_disc_timeout()                      |
+{                                        | bearer_disable()
+ ...                                     | {
+ schedule_work(&tn->work);               |  tipc_mon_delete()
+ ...                                     |  {
+}                                        |   ...
+                                         |   write_lock_bh(&mon->lock);
+                                         |   mon->self = NULL;
+                                         |   write_unlock_bh(&mon->lock);
+                                         |   ...
+                                         |  }
+tipc_net_finalize_work()                 | }
+{                                        |
+ ...                                     |
+ tipc_net_finalize()                     |
+ {                                       |
+  ...                                    |
+  tipc_mon_reinit_self()                 |
+  {                                      |
+   ...                                   |
+   write_lock_bh(&mon->lock);            |
+   mon->self->addr = tipc_own_addr(net); |
+   write_unlock_bh(&mon->lock);          |
+   ...                                   |
+  }                                      |
+  ...                                    |
+ }                                       |
+ ...                                     |
+}                                        |
+
+'mon->self' is set to NULL in disabling_bearer thread and dereferenced
+later in enabling_bearer thread.
+
+This commit fixes this issue by validating 'mon->self' before assigning
+node address to it.
+
+Reported-by: syzbot+ed60da8d686dc709164c@syzkaller.appspotmail.com
+Fixes: 46cb01eeeb86 ("tipc: update mon's self addr when node addr generated")
+Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250417074826.578115-1-tung.quang.nguyen@est.tech
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/ptrace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/tipc/monitor.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/include/asm/ptrace.h b/arch/loongarch/include/asm/ptrace.h
-index f3ddaed9ef7f0..a5b63c84f8541 100644
---- a/arch/loongarch/include/asm/ptrace.h
-+++ b/arch/loongarch/include/asm/ptrace.h
-@@ -33,9 +33,9 @@ struct pt_regs {
- 	unsigned long __last[];
- } __aligned(8);
- 
--static inline int regs_irqs_disabled(struct pt_regs *regs)
-+static __always_inline bool regs_irqs_disabled(struct pt_regs *regs)
- {
--	return arch_irqs_disabled_flags(regs->csr_prmd);
-+	return !(regs->csr_prmd & CSR_PRMD_PIE);
+diff --git a/net/tipc/monitor.c b/net/tipc/monitor.c
+index 9618e4429f0fe..23efd35adaa35 100644
+--- a/net/tipc/monitor.c
++++ b/net/tipc/monitor.c
+@@ -716,7 +716,8 @@ void tipc_mon_reinit_self(struct net *net)
+ 		if (!mon)
+ 			continue;
+ 		write_lock_bh(&mon->lock);
+-		mon->self->addr = tipc_own_addr(net);
++		if (mon->self)
++			mon->self->addr = tipc_own_addr(net);
+ 		write_unlock_bh(&mon->lock);
+ 	}
  }
- 
- static inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
 -- 
 2.39.5
 
