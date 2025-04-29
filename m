@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-137965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D841DAA15D4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC5DAA11FE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E41B118910EF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C51941BA2887
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699D1247280;
-	Tue, 29 Apr 2025 17:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992532472AC;
+	Tue, 29 Apr 2025 16:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qf+PFeXL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUqUVw8p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262A7244694;
-	Tue, 29 Apr 2025 17:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BF522AE7C;
+	Tue, 29 Apr 2025 16:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947673; cv=none; b=QjCQfhUFNMM5UhrSVUB6PLH/huPlUktFr0Ri98a8wnNDZW2NLlbYMJZwGc443RUE0ZBjAvWn4cYD2UbuFRvZNKnOkVZVcYsCa+xjO8vZ24dORS3jCoV+DGYD3DEMtNk2N+uYjIrxodc15Cpu97raJ6ovGQ4g61Ntq7Ri5i7YK1k=
+	t=1745945223; cv=none; b=VySuedB+hBLr7PI5x511A2rKYKB8mC7Zz2nYNX3mi8+0Z46/IMDMvgSFowGIEe2KaT6KdPdTdKEKUH4k0yXTdtAR+5kWprZmjL4LdQu9FzNFeyAflLcK/vEwX93Hnf6SE/7AuxtnWStpMTs7PdCZRFjVX5DqQbBZCqFenYTXOtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947673; c=relaxed/simple;
-	bh=nfxLTBgaFr/6JZhAw+F2CVAjyECw45L20wsDn9qMcaQ=;
+	s=arc-20240116; t=1745945223; c=relaxed/simple;
+	bh=DjVcO0OFwA7u69d7quaCKgWlXan73TOy4ep1sA7ppUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZPH9q3UOmoRpGauQmgs83SQP+lJEaXny5/u6N85JW8tDZnAz6d2rWYEARk7vkJlp6MihOYTmmC+SwFyu2t6ty8LmLlX+a3N7IoFgMoT1wuSXrusYIYpMzEmgh38u3mDdzoGZfK653tR0NiJwCHzM/WqaQ92ayBlcbpWJVjbP4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qf+PFeXL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47471C4CEE3;
-	Tue, 29 Apr 2025 17:27:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iyy2CYPmyq2KghUIdUVg7CQZLUGHrycQ8r5wKhWfqbj9Hu2+ulCJqrNX3+jcgvaA/fTuLGnqm20Phr1n9nAM8cy3M+Yv9p5EeN2ULvWGWRm6In1F/3/1ou/sJP5XR3rE8/FHHVRya5veTp7axFxZ6MSzmiszykLUqnZxk6X85GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUqUVw8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F79C4CEE3;
+	Tue, 29 Apr 2025 16:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947672;
-	bh=nfxLTBgaFr/6JZhAw+F2CVAjyECw45L20wsDn9qMcaQ=;
+	s=korg; t=1745945223;
+	bh=DjVcO0OFwA7u69d7quaCKgWlXan73TOy4ep1sA7ppUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qf+PFeXLGdeUgTsBabVDoiKCsS74sOfAEZ/TBxbpiQaq8dlUMKQCRn+aFUqf5uAiY
-	 aSlck9EkO61qvD0ZatqtYiDlUrIU0EaZMPM9iSOOKAR5NddBgTHE/RToHVtzKkpYp4
-	 TuzA63VQVUIeJShXvlcCyHwUidcTigBhNRwdVNe8=
+	b=eUqUVw8pj4XnSTx55JJ0Qg6beFdTNu+XaHXz7cTWpKdSteqok25LkxgdrmUNC5eth
+	 3HJQzKUcmVyL+qKp7N0q8LnC033gZKaQ+z4hVcUytbzEB0QvXJBLiaLl/gLqfI1nSm
+	 Rd15G40i4gpAjVj2SQIk9u5tiRPYjrG8CbCaV1AE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Matt Moeller <moeller.matt@gmail.com>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/280] scsi: ufs: exynos: Remove superfluous function parameter
+Subject: [PATCH 5.4 041/179] bpf: support SKF_NET_OFF and SKF_LL_OFF on skb frags
 Date: Tue, 29 Apr 2025 18:39:42 +0200
-Message-ID: <20250429161116.804960977@linuxfoundation.org>
+Message-ID: <20250429161051.070890531@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,184 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit afd613ca2c60d0a970d434bc73e1ddcdb925c799 ]
+[ Upstream commit d4bac0288a2b444e468e6df9cb4ed69479ddf14a ]
 
-The pointer to device can be obtained from ufs->hba->dev, remove
-superfluous function parameter.
+Classic BPF socket filters with SKB_NET_OFF and SKB_LL_OFF fail to
+read when these offsets extend into frags.
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20241031150033.3440894-3-peter.griffin@linaro.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 68f5ef7eebf0 ("scsi: ufs: exynos: Move UFS shareability value to drvdata")
+This has been observed with iwlwifi and reproduced with tun with
+IFF_NAPI_FRAGS. The below straightforward socket filter on UDP port,
+applied to a RAW socket, will silently miss matching packets.
+
+    const int offset_proto = offsetof(struct ip6_hdr, ip6_nxt);
+    const int offset_dport = sizeof(struct ip6_hdr) + offsetof(struct udphdr, dest);
+    struct sock_filter filter_code[] = {
+            BPF_STMT(BPF_LD  + BPF_B   + BPF_ABS, SKF_AD_OFF + SKF_AD_PKTTYPE),
+            BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, PACKET_HOST, 0, 4),
+            BPF_STMT(BPF_LD  + BPF_B   + BPF_ABS, SKF_NET_OFF + offset_proto),
+            BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, IPPROTO_UDP, 0, 2),
+            BPF_STMT(BPF_LD  + BPF_H   + BPF_ABS, SKF_NET_OFF + offset_dport),
+
+This is unexpected behavior. Socket filter programs should be
+consistent regardless of environment. Silent misses are
+particularly concerning as hard to detect.
+
+Use skb_copy_bits for offsets outside linear, same as done for
+non-SKF_(LL|NET) offsets.
+
+Offset is always positive after subtracting the reference threshold
+SKB_(LL|NET)_OFF, so is always >= skb_(mac|network)_offset. The sum of
+the two is an offset against skb->data, and may be negative, but it
+cannot point before skb->head, as skb_(mac|network)_offset would too.
+
+This appears to go back to when frag support was introduced to
+sk_run_filter in linux-2.4.4, before the introduction of git.
+
+The amount of code change and 8/16/32 bit duplication are unfortunate.
+But any attempt I made to be smarter saved very few LoC while
+complicating the code.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://lore.kernel.org/netdev/20250122200402.3461154-1-maze@google.com/
+Link: https://elixir.bootlin.com/linux/2.4.4/source/net/core/filter.c#L244
+Reported-by: Matt Moeller <moeller.matt@gmail.com>
+Co-developed-by: Maciej Żenczykowski <maze@google.com>
+Signed-off-by: Maciej Żenczykowski <maze@google.com>
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://lore.kernel.org/r/20250408132833.195491-2-willemdebruijn.kernel@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-exynos.c | 4 ++--
- drivers/ufs/host/ufs-exynos.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ net/core/filter.c | 80 ++++++++++++++++++++++++++---------------------
+ 1 file changed, 44 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index 69fcfffb1c89d..8adf11f37c0d7 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -198,7 +198,7 @@ static inline void exynos_ufs_ungate_clks(struct exynos_ufs *ufs)
- 	exynos_ufs_ctrl_clkstop(ufs, false);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 4406009ee163b..e6ec6f013ec00 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -175,24 +175,36 @@ BPF_CALL_3(bpf_skb_get_nlattr_nest, struct sk_buff *, skb, u32, a, u32, x)
+ 	return 0;
  }
  
--static int exynosauto_ufs_drv_init(struct device *dev, struct exynos_ufs *ufs)
-+static int exynosauto_ufs_drv_init(struct exynos_ufs *ufs)
++static int bpf_skb_load_helper_convert_offset(const struct sk_buff *skb, int offset)
++{
++	if (likely(offset >= 0))
++		return offset;
++
++	if (offset >= SKF_NET_OFF)
++		return offset - SKF_NET_OFF + skb_network_offset(skb);
++
++	if (offset >= SKF_LL_OFF && skb_mac_header_was_set(skb))
++		return offset - SKF_LL_OFF + skb_mac_offset(skb);
++
++	return INT_MIN;
++}
++
+ BPF_CALL_4(bpf_skb_load_helper_8, const struct sk_buff *, skb, const void *,
+ 	   data, int, headlen, int, offset)
  {
- 	struct exynos_ufs_uic_attr *attr = ufs->drv_data->uic_attr;
+-	u8 tmp, *ptr;
++	u8 tmp;
+ 	const int len = sizeof(tmp);
  
-@@ -1433,7 +1433,7 @@ static int exynos_ufs_init(struct ufs_hba *hba)
- 	exynos_ufs_fmp_init(hba, ufs);
+-	if (offset >= 0) {
+-		if (headlen - offset >= len)
+-			return *(u8 *)(data + offset);
+-		if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
+-			return tmp;
+-	} else {
+-		ptr = bpf_internal_load_pointer_neg_helper(skb, offset, len);
+-		if (likely(ptr))
+-			return *(u8 *)ptr;
+-	}
++	offset = bpf_skb_load_helper_convert_offset(skb, offset);
++	if (offset == INT_MIN)
++		return -EFAULT;
  
- 	if (ufs->drv_data->drv_init) {
--		ret = ufs->drv_data->drv_init(dev, ufs);
-+		ret = ufs->drv_data->drv_init(ufs);
- 		if (ret) {
- 			dev_err(dev, "failed to init drv-data\n");
- 			goto out;
-diff --git a/drivers/ufs/host/ufs-exynos.h b/drivers/ufs/host/ufs-exynos.h
-index 1646c4a9bb088..9670dc138d1e4 100644
---- a/drivers/ufs/host/ufs-exynos.h
-+++ b/drivers/ufs/host/ufs-exynos.h
-@@ -182,7 +182,7 @@ struct exynos_ufs_drv_data {
- 	unsigned int quirks;
- 	unsigned int opts;
- 	/* SoC's specific operations */
--	int (*drv_init)(struct device *dev, struct exynos_ufs *ufs);
-+	int (*drv_init)(struct exynos_ufs *ufs);
- 	int (*pre_link)(struct exynos_ufs *ufs);
- 	int (*post_link)(struct exynos_ufs *ufs);
- 	int (*pre_pwr_change)(struct exynos_ufs *ufs,
+-	return -EFAULT;
++	if (headlen - offset >= len)
++		return *(u8 *)(data + offset);
++	if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
++		return tmp;
++	else
++		return -EFAULT;
+ }
+ 
+ BPF_CALL_2(bpf_skb_load_helper_8_no_cache, const struct sk_buff *, skb,
+@@ -205,21 +217,19 @@ BPF_CALL_2(bpf_skb_load_helper_8_no_cache, const struct sk_buff *, skb,
+ BPF_CALL_4(bpf_skb_load_helper_16, const struct sk_buff *, skb, const void *,
+ 	   data, int, headlen, int, offset)
+ {
+-	__be16 tmp, *ptr;
++	__be16 tmp;
+ 	const int len = sizeof(tmp);
+ 
+-	if (offset >= 0) {
+-		if (headlen - offset >= len)
+-			return get_unaligned_be16(data + offset);
+-		if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
+-			return be16_to_cpu(tmp);
+-	} else {
+-		ptr = bpf_internal_load_pointer_neg_helper(skb, offset, len);
+-		if (likely(ptr))
+-			return get_unaligned_be16(ptr);
+-	}
++	offset = bpf_skb_load_helper_convert_offset(skb, offset);
++	if (offset == INT_MIN)
++		return -EFAULT;
+ 
+-	return -EFAULT;
++	if (headlen - offset >= len)
++		return get_unaligned_be16(data + offset);
++	if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
++		return be16_to_cpu(tmp);
++	else
++		return -EFAULT;
+ }
+ 
+ BPF_CALL_2(bpf_skb_load_helper_16_no_cache, const struct sk_buff *, skb,
+@@ -232,21 +242,19 @@ BPF_CALL_2(bpf_skb_load_helper_16_no_cache, const struct sk_buff *, skb,
+ BPF_CALL_4(bpf_skb_load_helper_32, const struct sk_buff *, skb, const void *,
+ 	   data, int, headlen, int, offset)
+ {
+-	__be32 tmp, *ptr;
++	__be32 tmp;
+ 	const int len = sizeof(tmp);
+ 
+-	if (likely(offset >= 0)) {
+-		if (headlen - offset >= len)
+-			return get_unaligned_be32(data + offset);
+-		if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
+-			return be32_to_cpu(tmp);
+-	} else {
+-		ptr = bpf_internal_load_pointer_neg_helper(skb, offset, len);
+-		if (likely(ptr))
+-			return get_unaligned_be32(ptr);
+-	}
++	offset = bpf_skb_load_helper_convert_offset(skb, offset);
++	if (offset == INT_MIN)
++		return -EFAULT;
+ 
+-	return -EFAULT;
++	if (headlen - offset >= len)
++		return get_unaligned_be32(data + offset);
++	if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
++		return be32_to_cpu(tmp);
++	else
++		return -EFAULT;
+ }
+ 
+ BPF_CALL_2(bpf_skb_load_helper_32_no_cache, const struct sk_buff *, skb,
 -- 
 2.39.5
 
