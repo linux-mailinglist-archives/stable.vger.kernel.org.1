@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-137709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53732AA14BB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:19:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6587AA134D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DF5E3A5898
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D34E4A550E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BC6242D6E;
-	Tue, 29 Apr 2025 17:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BDEE2459C9;
+	Tue, 29 Apr 2025 17:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdJ/P9G/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHQXzI1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886FA27453;
-	Tue, 29 Apr 2025 17:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102F521A43D;
+	Tue, 29 Apr 2025 17:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946890; cv=none; b=iTtT63qx5fP+I0hUfCIudoJMFXRFASQepzYdmmjXsXCheN1YqJPZaggtb+lg3FbMj+0DSmTuPgsasPxRDPchuqB10xcS58GmQItzvpALKfRknL91dMRkK4d71B+M52Z6V1oojMygbZUIZKuHxLX4+YQe6CRl5uYPU+V+V5DmRr4=
+	t=1745946055; cv=none; b=lByxHySniWwS6VFCFQNCnh855zWOijfWjRKsHNO4sZyD2Jy5NUm21p28n8efJ484jKuqRBx1OG3GMb7BYT1QPlwxfo1loiRcI0i0xyWAN5+9xyQGwNkhYvoSALUI7OR+mrCIUVzT13Uw/5lRzaTSu7AVurRufPPH65K1wxb0w+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946890; c=relaxed/simple;
-	bh=y9XMNRsdd8V3ww4ZGKxwx13AcCyJR8OEg+zU9BABrSs=;
+	s=arc-20240116; t=1745946055; c=relaxed/simple;
+	bh=d/4DJxQSmQvK/teFunDOMt3QG5Oh8BPBkzmiS/Pc/dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CK0ECGSB49152tuJ00MiwKI/hCF/NPXyl/NcpI+Icu4qHsp+wsONwlHoGgexDax+FOLcTkgYKOAOiI7sJYwUmbp2xmEC6Ere2mPHJSfnBJV5lr4I/T9mzij1x8WH/0SPcw8QHCAU44+iD1qOWL9ZwbuNaappBCRit1ylt1CZiJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdJ/P9G/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02075C4CEE3;
-	Tue, 29 Apr 2025 17:14:49 +0000 (UTC)
+	 MIME-Version; b=QZj1MVz/2mh2t0eTvvL9ykDLDhB7h/tgs4BLv8FUS4tPJZD/uqaAwYpHOrbZqyxD8hWmb8YiDp/xB3OSUTYcAAfbwar3lwgt8O4O3kAGk+Sv9pantP9bL+/1wmvQ/1dvrVBxccjnH7Aw/n1CjMrUFAh4RZUDVkfAkrKwDgjCfqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHQXzI1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966EDC4CEE3;
+	Tue, 29 Apr 2025 17:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946890;
-	bh=y9XMNRsdd8V3ww4ZGKxwx13AcCyJR8OEg+zU9BABrSs=;
+	s=korg; t=1745946054;
+	bh=d/4DJxQSmQvK/teFunDOMt3QG5Oh8BPBkzmiS/Pc/dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdJ/P9G/JHNqQaivzJTTNYG/Z+ordUuAcENy8A8XQf1eCzzO7GrNIovcdzkF0f4yV
-	 p9joO2W0sJNE1h3wyM87kqL3iW3PzfHFVP8VK2g4KZHJx925wMfKBvsB6ro7K9K3Nv
-	 Wv6BvsiH21vzeRmH+8Pnn9mea4LvU4zfNq5mnGXI=
+	b=UHQXzI1W0eZxR5VzYrpJPtXDKw3i61DE8Geb6BHWaEDQh/53H7a1yEP3GnNZy7uz4
+	 4iIqnZugIQFUAKFQyc90Ni2NxTxEtNq+Q7tVBxfHvUnBp6mOxFVeb77V+A7vsgKu2x
+	 O6Ka66j7knKqBsCIrEZDrVpPKCDAdzjzUylEkkq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 072/286] ASoC: qdsp6: q6asm-dai: fix q6asm_dai_compr_set_params error path
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>
+Subject: [PATCH 6.14 139/311] ata: libata-scsi: Fix ata_mselect_control_ata_feature() return type
 Date: Tue, 29 Apr 2025 18:39:36 +0200
-Message-ID: <20250429161110.816790632@linuxfoundation.org>
+Message-ID: <20250429161126.729147667@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 7eccc86e90f04a0d758d16c08627a620ac59604d upstream.
+commit db91586b1e8f36122a9e5b8fbced11741488dd22 upstream.
 
-In case of attempts to compress playback something, for instance,
-when audio routing is not set up correctly, the audio DSP is left in
-inconsistent state because we are not doing the correct things in
-the error path of q6asm_dai_compr_set_params().
+The function ata_mselect_control_ata_feature() has a return type defined
+as unsigned int but this function may return negative error codes, which
+are correctly propagated up the call chain as integers.
 
-So, when routing is not set up and compress playback is attempted
-the following errors are present (simplified log):
+Fix ata_mselect_control_ata_feature() to have the correct int return
+type.
 
-q6routing routing: Routing not setup for MultiMedia-1 Session
-q6asm-dai dais: Stream reg failed ret:-22
-q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
-on 17300000.remoteproc:glink-edge:apr:service@7:dais
+While at it, also fix a typo in this function description comment.
 
-After setting the correct routing the compress playback will always fail:
-
-q6asm-dai dais: cmd = 0x10db3 returned error = 0x9
-q6asm-dai dais: DSP returned error[9]
-q6asm-dai dais: q6asm_open_write failed
-q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
-on 17300000.remoteproc:glink-edge:apr:service@7:dais
-
-0x9 here means "Operation is already processed". The CMD_OPEN here was
-sent the second time hence DSP responds that it was already done.
-
-Turns out the CMD_CLOSE should be sent after the q6asm_open_write()
-succeeded but something failed after that, for instance, routing
-setup.
-
-Fix this by slightly reworking the error path in
-q6asm_dai_compr_set_params().
-
-Tested on QRB5165 RB5 and SDM845 RB3 boards.
-
+Fixes: df60f9c64576 ("scsi: ata: libata: Add ATA feature control sub-page translation")
 Cc: stable@vger.kernel.org
-Fixes: 5b39363e54cc ("ASoC: q6asm-dai: prepare set params to accept profile change")
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: Vinod Koul <vkoul@kernel.org>
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://patch.msgid.link/20250327154650.337404-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/ata/libata-scsi.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -916,9 +916,7 @@ static int q6asm_dai_compr_set_params(st
- 
- 		if (ret < 0) {
- 			dev_err(dev, "q6asm_open_write failed\n");
--			q6asm_audio_client_free(prtd->audio_client);
--			prtd->audio_client = NULL;
--			return ret;
-+			goto open_err;
- 		}
- 	}
- 
-@@ -927,7 +925,7 @@ static int q6asm_dai_compr_set_params(st
- 			      prtd->session_id, dir);
- 	if (ret) {
- 		dev_err(dev, "Stream reg failed ret:%d\n", ret);
--		return ret;
-+		goto q6_err;
- 	}
- 
- 	ret = __q6asm_dai_compr_set_codec_params(component, stream,
-@@ -935,7 +933,7 @@ static int q6asm_dai_compr_set_params(st
- 						 prtd->stream_id);
- 	if (ret) {
- 		dev_err(dev, "codec param setup failed ret:%d\n", ret);
--		return ret;
-+		goto q6_err;
- 	}
- 
- 	ret = q6asm_map_memory_regions(dir, prtd->audio_client, prtd->phys,
-@@ -944,12 +942,21 @@ static int q6asm_dai_compr_set_params(st
- 
- 	if (ret < 0) {
- 		dev_err(dev, "Buffer Mapping failed ret:%d\n", ret);
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto q6_err;
- 	}
- 
- 	prtd->state = Q6ASM_STREAM_RUNNING;
- 
- 	return 0;
-+
-+q6_err:
-+	q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
-+
-+open_err:
-+	q6asm_audio_client_free(prtd->audio_client);
-+	prtd->audio_client = NULL;
-+	return ret;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -3886,12 +3886,11 @@ static int ata_mselect_control_spg0(stru
  }
  
- static int q6asm_dai_compr_set_metadata(struct snd_soc_component *component,
+ /*
+- * Translate MODE SELECT control mode page, sub-pages f2h (ATA feature mode
++ * Translate MODE SELECT control mode page, sub-page f2h (ATA feature mode
+  * page) into a SET FEATURES command.
+  */
+-static unsigned int ata_mselect_control_ata_feature(struct ata_queued_cmd *qc,
+-						    const u8 *buf, int len,
+-						    u16 *fp)
++static int ata_mselect_control_ata_feature(struct ata_queued_cmd *qc,
++					   const u8 *buf, int len, u16 *fp)
+ {
+ 	struct ata_device *dev = qc->dev;
+ 	struct ata_taskfile *tf = &qc->tf;
 
 
 
