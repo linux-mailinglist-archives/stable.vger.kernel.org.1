@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4743AAA133A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5239CAA13E5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FC784A0971
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1693A7A64DC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEF423F413;
-	Tue, 29 Apr 2025 16:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED232441A6;
+	Tue, 29 Apr 2025 17:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHQv7AWX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NB5yydu7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE3424A047;
-	Tue, 29 Apr 2025 16:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC601DF73C;
+	Tue, 29 Apr 2025 17:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945996; cv=none; b=SL7yPkOWrxsZab/QuVi05Ekekqn2LIdGVM3zM7p4SSPPX/8zAdXLumSMdXsCL50TZuQGJ5B7vXSv7v9EqElLF7XXnkpUvXC5XbuJ3ao9bOK6mo7OfNKnAKQVakvZM47vXpZafrkoJKrRtcHQawehEuKzDF890AsZw2rK+hq33/s=
+	t=1745946645; cv=none; b=L2+xq71H3WND0hiI+sg34v6jKdjl3wT3ANXIBjC+SDijyfpZhvD0Zj5aXSwOlFnOpzQNLWgsYtv74gjlhC1aNLS3Rv/jKOpK/QkvJtvs8R+gMyKt1DxJZ3ftw4XgmmJ4P/BnSibVBbbREMT5fztQ1nledlfMnVRbjdDVRIm2/EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945996; c=relaxed/simple;
-	bh=7tokVgwYApARNbfAynqbXIGa8m1Lf517gz0sh808bpM=;
+	s=arc-20240116; t=1745946645; c=relaxed/simple;
+	bh=V9r3EZXj0Ad7My14wqTbddHBRK4eQVmebbu3bWjFSO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5CWbjaTTxH5RmtkpCwWDvqecKnfKoIyZMKJmjiauJyV9+2RCrqWlGbT1CaW2u4P4epzK7BpMjmX8ofbU62XTTBBcRh4qw8dfXQ6jOjcgVJ4PMa5cd9w7hw7NrBsyobffY//cB50snt01yOOJ3UV1ytldmA1EeEnLxgOwQje4KM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHQv7AWX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3099C4CEE3;
-	Tue, 29 Apr 2025 16:59:55 +0000 (UTC)
+	 MIME-Version; b=PzWcHeBqZa43v88TTWbu86InMIWHAWpPwV4m8G6BsnWVCCawi6wuw3wdSh8x5TDnC7OfpQZ9AmuBHZ0M+Esu7Jod/XB4DcpfRrw1C+CxcGO/0ZAyv8RRlW32ioBnDE91h2HDqw9lTk9RQ/zC/37BUej9rBIsnRCNT4rE8Z5r8Xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NB5yydu7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADF8C4CEE3;
+	Tue, 29 Apr 2025 17:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945996;
-	bh=7tokVgwYApARNbfAynqbXIGa8m1Lf517gz0sh808bpM=;
+	s=korg; t=1745946645;
+	bh=V9r3EZXj0Ad7My14wqTbddHBRK4eQVmebbu3bWjFSO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gHQv7AWX7Sk2W91UW9xu/U2IqlMX/a+8mpQul1tj5wEqi00VKVGP9j8u0/Qg2hI2I
-	 F12fkKPesJyz/pyNOi11ytASHMXXZx1i1BWQQr6pbDyTHGZeYN1MJx+LpgdrORH08+
-	 HvJAUQXQakpluCXqp9ZaQIAWjOJCgGXkZXdUWVVA=
+	b=NB5yydu7E7WowVuqIfWqs9z9QY3SLT1RCPiP4g14G7rbFltncNp4EB3LJ0nk6iDMs
+	 NJrVK4CWKieaJOOGjnjaUbaC93LqEJUzfS17mMTvmaGqe3FJ5QzO/R0yBPQQw8Uh7M
+	 cEuHgqzUr9cXPzh2U+9WQS4gZ6iRwa0H/KZccDq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Rand Deeb <rand.sec96@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 089/311] ublk: comment on ubq->canceling handling in ublk_queue_rq()
+Subject: [PATCH 5.10 022/286] fs/jfs: cast inactags to s64 to prevent potential overflow
 Date: Tue, 29 Apr 2025 18:38:46 +0200
-Message-ID: <20250429161124.692198974@linuxfoundation.org>
+Message-ID: <20250429161108.766221640@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-[ Upstream commit 7e2fe01a69f6be3e284b38cfd2e4e0598a3b0a8f ]
+[ Upstream commit 70ca3246ad201b53a9f09380b3f29d8bac320383 ]
 
-In ublk_queue_rq(), ubq->canceling has to be handled after ->fail_io and
-->force_abort are dealt with, otherwise the request may not be failed
-when deleting disk.
+The expression "inactags << bmp->db_agl2size" in the function
+dbFinalizeBmap() is computed using int operands. Although the
+values (inactags and db_agl2size) are derived from filesystem
+parameters and are usually small, there is a theoretical risk that
+the shift could overflow a 32-bit int if extreme values occur.
 
-Add comment on this usage.
+According to the C standard, shifting a signed 32-bit int can lead
+to undefined behavior if the result exceeds its range. In our
+case, an overflow could miscalculate free blocks, potentially
+leading to erroneous filesystem accounting.
 
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250327095123.179113-3-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: d6aa0c178bf8 ("ublk: call ublk_dispatch_req() for handling UBLK_U_IO_NEED_GET_DATA")
+To ensure the arithmetic is performed in 64-bit space, we cast
+"inactags" to s64 before shifting. This defensive fix prevents any
+risk of overflow and complies with kernel coding best practices.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ublk_drv.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/jfs/jfs_dmap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index f615b9bd82f5f..fbc397efff175 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -1314,6 +1314,11 @@ static blk_status_t ublk_queue_rq(struct blk_mq_hw_ctx *hctx,
- 	if (ublk_nosrv_should_queue_io(ubq) && unlikely(ubq->force_abort))
- 		return BLK_STS_IOERR;
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index ef220709c7f51..389dafd23d15e 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -3728,8 +3728,8 @@ void dbFinalizeBmap(struct inode *ipbmap)
+ 	 * system size is not a multiple of the group size).
+ 	 */
+ 	inactfree = (inactags && ag_rem) ?
+-	    ((inactags - 1) << bmp->db_agl2size) + ag_rem
+-	    : inactags << bmp->db_agl2size;
++	    (((s64)inactags - 1) << bmp->db_agl2size) + ag_rem
++	    : ((s64)inactags << bmp->db_agl2size);
  
-+	/*
-+	 * ->canceling has to be handled after ->force_abort and ->fail_io
-+	 * is dealt with, otherwise this request may not be failed in case
-+	 * of recovery, and cause hang when deleting disk
-+	 */
- 	if (unlikely(ubq->canceling)) {
- 		__ublk_abort_rq(ubq, rq);
- 		return BLK_STS_OK;
+ 	/* determine how many free blocks are in the active
+ 	 * allocation groups plus the average number of free blocks
 -- 
 2.39.5
 
