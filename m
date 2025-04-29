@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB6EAA1624
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:34:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF30AA1747
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A7619A2689
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A55661B68121
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702F6244694;
-	Tue, 29 Apr 2025 17:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB66242D73;
+	Tue, 29 Apr 2025 17:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXMBKZPw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0IrDW2l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C74738FB0;
-	Tue, 29 Apr 2025 17:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD63132103;
+	Tue, 29 Apr 2025 17:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947630; cv=none; b=XxGbtJLH8OYbTLLwczNiE8fJbqZcr02k1ly0js+s+sVBiPvsUI3qFE+hQ80eiaU8JyIXAgCVBAzys26Uz3hBgApqYc0iI+PCEaicYiqRTYslroSaBIObpBTu2HMVoT1BUr+0pKmJzYfSplX3KnTEQQ1a0e+WAgF8X/s4H/tpEK0=
+	t=1745948755; cv=none; b=haNvgsollhx95maVm9i0qYNMIcF43/CiUwAew2MqKJC48aCeHGg5q2gb8u3UX6mwn+M9HG7tRLZbqCbGCUUQGLrcbFqztytQ0XiC47tvyL5znLuOCY6ZYFld22DJhQ93qMBjK2ttk4PKbNct1Tu6HLrYbILiG5XfIqM+6xl0/Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947630; c=relaxed/simple;
-	bh=lrVM1Fjx5uoeWfRdh1p3ne1mvkhsyZ3vCm02CRbJUi8=;
+	s=arc-20240116; t=1745948755; c=relaxed/simple;
+	bh=dQ3fc9TNheTvg+wHkWc6EcnMrt30HjlmYI/Owcolhyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u0tvdBq/QvdI54STPlFN9ryZgBakEpYV6FS67Zgbd+SsX0ulzy1D8uwVHeYS3uPQLXimBDG9QCjQmnXXTaQgJWEI2X0hsKw/qfCEoTD8ZFBdxHahQsN801UoE9I0a5qb3IlOt8+F0UPN34Hfu/Fw/qB+DEnScNSrK236roGLX3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXMBKZPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226CAC4CEE3;
-	Tue, 29 Apr 2025 17:27:08 +0000 (UTC)
+	 MIME-Version; b=hEOlOTPwV5ihKQGz6sHJM0XkEr2qFhzF62MFsjJ51+leUQrb8MymItPBbabKDnMA+ISPAo/QLeqAby9NmsH79ubazpCtlb3qsedJZ2XkIbT5+Qtnv+RQj8UFgh4nm0pg0TbwTk5urErX68EcgjhJKnjjTlTEhBPDGxn3oBZzsHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0IrDW2l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55236C4CEE3;
+	Tue, 29 Apr 2025 17:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947629;
-	bh=lrVM1Fjx5uoeWfRdh1p3ne1mvkhsyZ3vCm02CRbJUi8=;
+	s=korg; t=1745948755;
+	bh=dQ3fc9TNheTvg+wHkWc6EcnMrt30HjlmYI/Owcolhyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dXMBKZPw1lqA+k4vRZsDLl70BcIKgUaXIJbmJu0REbDftSYVu0NWIuyyUUuoyeOuj
-	 iLI4QoT00lRYFoxVmCkySC0HRxrRUS1+GLIiXeItcRkxIndF7S4kw4mHlSDkaJNFqS
-	 nM6qrHODFj8oYzxHiihwjlcANlxXwlckO7fygyiM=
+	b=a0IrDW2l9x45mWoF3WYg1nzizd4iyjDVP9YqJsjoGWsvNedvOxxFn98eX65qPDICC
+	 P9XNZ/bPrSXuQBI0drUg09qv14aTDYZsCzb8nMMPCHVSqvgEJRkZxi+JUigGLcNEG3
+	 EHEpC5rQCOj4MYCOPhWMWpdtxnjtD3cCKogLGGeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/280] ksmbd: fix use-after-free in __smb2_lease_break_noti()
+	Trevor Woerner <twoerner@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 5.15 103/373] thermal/drivers/rockchip: Add missing rk3328 mapping entry
 Date: Tue, 29 Apr 2025 18:39:40 +0200
-Message-ID: <20250429161116.721149948@linuxfoundation.org>
+Message-ID: <20250429161127.392958948@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Trevor Woerner <twoerner@gmail.com>
 
-[ Upstream commit 21a4e47578d44c6b37c4fc4aba8ed7cc8dbb13de ]
+commit ee022e5cae052e0c67ca7c5fec0f2e7bc897c70e upstream.
 
-Move tcp_transport free to ksmbd_conn_free. If ksmbd connection is
-referenced when ksmbd server thread terminates, It will not be freed,
-but conn->tcp_transport is freed. __smb2_lease_break_noti can be performed
-asynchronously when the connection is disconnected. __smb2_lease_break_noti
-calls ksmbd_conn_write, which can cause use-after-free
-when conn->ksmbd_transport is already freed.
+The mapping table for the rk3328 is missing the entry for -25C which is
+found in the TRM section 9.5.2 "Temperature-to-code mapping".
 
+NOTE: the kernel uses the tsadc_q_sel=1'b1 mode which is defined as:
+      4096-<code in table>. Whereas the table in the TRM gives the code
+      "3774" for -25C, the kernel uses 4096-3774=322.
+
+[Dragan Simic] : "After going through the RK3308 and RK3328 TRMs, as
+  well as through the downstream kernel code, it seems we may have
+  some troubles at our hands.  Let me explain, please.
+
+  To sum it up, part 1 of the RK3308 TRM v1.1 says on page 538 that
+  the equation for the output when tsadc_q_sel equals 1 is (4096 -
+  tsadc_q), while part 1 of the RK3328 TRM v1.2 says that the output
+  equation is (1024 - tsadc_q) in that case.
+
+  The downstream kernel code, however, treats the RK3308 and RK3328
+  tables and their values as being the same.  It even mentions 1024 as
+  the "offset" value in a comment block for the rk_tsadcv3_control()
+  function, just like the upstream code does, which is obviously wrong
+  "offset" value when correlated with the table on page 544 of part 1
+  of the RK3308 TRM v1.1.
+
+  With all this in mind, it's obvious that more work is needed to make
+  it clear where's the actual mistake (it could be that the TRM is
+  wrong), which I'll volunteer for as part of the SoC binning project.
+  In the meantime, this patch looks fine as-is to me, by offering
+  what's a clear improvement to the current state of the upstream
+  code"
+
+Link: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
 Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: eda519d5f73e ("thermal: rockchip: Support the RK3328 SOC in thermal driver")
+Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/20250207175048.35959-1-twoerner@gmail.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.c    |  4 +++-
- fs/smb/server/transport_tcp.c | 14 +++++++++-----
- fs/smb/server/transport_tcp.h |  1 +
- 3 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/thermal/rockchip_thermal.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index b0f69cee96a75..7aaea71a4f206 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -39,8 +39,10 @@ void ksmbd_conn_free(struct ksmbd_conn *conn)
- 	xa_destroy(&conn->sessions);
- 	kvfree(conn->request_buf);
- 	kfree(conn->preauth_info);
--	if (atomic_dec_and_test(&conn->refcnt))
-+	if (atomic_dec_and_test(&conn->refcnt)) {
-+		ksmbd_free_transport(conn->transport);
- 		kfree(conn);
-+	}
- }
- 
- /**
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index 7f38a3c3f5bd6..abedf510899a7 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -93,17 +93,21 @@ static struct tcp_transport *alloc_transport(struct socket *client_sk)
- 	return t;
- }
- 
--static void free_transport(struct tcp_transport *t)
-+void ksmbd_free_transport(struct ksmbd_transport *kt)
- {
--	kernel_sock_shutdown(t->sock, SHUT_RDWR);
--	sock_release(t->sock);
--	t->sock = NULL;
-+	struct tcp_transport *t = TCP_TRANS(kt);
- 
--	ksmbd_conn_free(KSMBD_TRANS(t)->conn);
-+	sock_release(t->sock);
- 	kfree(t->iov);
- 	kfree(t);
- }
- 
-+static void free_transport(struct tcp_transport *t)
-+{
-+	kernel_sock_shutdown(t->sock, SHUT_RDWR);
-+	ksmbd_conn_free(KSMBD_TRANS(t)->conn);
-+}
-+
- /**
-  * kvec_array_init() - initialize a IO vector segment
-  * @new:	IO vector to be initialized
-diff --git a/fs/smb/server/transport_tcp.h b/fs/smb/server/transport_tcp.h
-index 8c9aa624cfe3c..1e51675ee1b20 100644
---- a/fs/smb/server/transport_tcp.h
-+++ b/fs/smb/server/transport_tcp.h
-@@ -8,6 +8,7 @@
- 
- int ksmbd_tcp_set_interfaces(char *ifc_list, int ifc_list_sz);
- struct interface *ksmbd_find_netdev_name_iface_list(char *netdev_name);
-+void ksmbd_free_transport(struct ksmbd_transport *kt);
- int ksmbd_tcp_init(void);
- void ksmbd_tcp_destroy(void);
- 
--- 
-2.39.5
-
+--- a/drivers/thermal/rockchip_thermal.c
++++ b/drivers/thermal/rockchip_thermal.c
+@@ -373,6 +373,7 @@ static const struct tsadc_table rk3328_c
+ 	{296, -40000},
+ 	{304, -35000},
+ 	{313, -30000},
++	{322, -25000},
+ 	{331, -20000},
+ 	{340, -15000},
+ 	{349, -10000},
 
 
 
