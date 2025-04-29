@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-138016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018BDAA1632
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:34:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B7DAA17F0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 951EB188D2A8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 190BC9A5C4A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFCE52528EC;
-	Tue, 29 Apr 2025 17:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49E32528F1;
+	Tue, 29 Apr 2025 17:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ke3QM/AL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PX9a5Jxh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3942528ED;
-	Tue, 29 Apr 2025 17:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728B2250C0C;
+	Tue, 29 Apr 2025 17:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947849; cv=none; b=GP8WjNgrU2qPPjWRVFKEjZOeESq6pM5Q+1yaI/2B1hlluqWlABPpzAFnifLsrMa3mstfKbrZ47T36SpflzgrUSxjrJQnf2/i+g//XRNZ7h6vAaMBu5lJ1s2vL0pO78hcJ1nLfKz9TPOUV+RALpdP+5w98aOVQk0FxkjuK6B5sus=
+	t=1745948930; cv=none; b=d1o0sfx6eapT4muiIvq2anRhUCnLotuNVoaeo/nHq36xTdYrf7owM2sAuL9vjHW4liZdwjhtR/oi0/WoCZD5c0nMkN2faaNjZUZ8Eua9BlqwvWkkye1GUJCv0eFkSQbxADAEk8h57r26uM/WMt4wNIwpe/SocIZC4ei65hKVq40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947849; c=relaxed/simple;
-	bh=Lc5h4XT+C0UHaTmm57X1juCr/5k7NhNU60bQ5fFvZNk=;
+	s=arc-20240116; t=1745948930; c=relaxed/simple;
+	bh=5QgWuHkr7CidkNeQPKi+k+5++pZWOz3Uqq1TvBZJ1EM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+BXhFrz5wEUs+7M10eOcYXXzuxRA0ZBX1fa2DklgvKyK0OIXwisg5fJS6MsaWlZk5dR3Icgy38ILA8qC8mCr03LKwISUomny79WR+P/1+Gt9/EO7qaZga99LY3eEc1Jd00tQm+4y0u7m01To7FWOZTXfBdPwYmgfBE5u9X5nUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ke3QM/AL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2218C4CEE9;
-	Tue, 29 Apr 2025 17:30:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Hmbg7d1wkPotuR7MBlJhpyvpoIzWlM/rAJa5wrwMXW9a4aj5WzGpNqPsNe9K6fnDHnoMXyGmjUuNydbcXxwba49j8c1kbNILvDpcszBNggJdT4xQPKVXcLY8vfWgP7SKVtQKr+hlL6vcCxD55vO+1z8kbS+0GR1Og6BF78YFcuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PX9a5Jxh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC39C4CEE3;
+	Tue, 29 Apr 2025 17:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947849;
-	bh=Lc5h4XT+C0UHaTmm57X1juCr/5k7NhNU60bQ5fFvZNk=;
+	s=korg; t=1745948929;
+	bh=5QgWuHkr7CidkNeQPKi+k+5++pZWOz3Uqq1TvBZJ1EM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ke3QM/ALR5Z5yrPQOZJENbbLXBx1Xcyr0oPWDEK1rwO9xzefME0TjcarCt/p+O/MH
-	 HKKs9OptSg4TXax5T8qFa2zsS4oAu/illJlFEYqsqEiWHsZvOTiNZP0E/MJCtTzwli
-	 icZPghYhs9Rf9wpsBvMszDUPKlCFOjWGav/wYBw0=
+	b=PX9a5JxhU4VAXyzKMDFtzpO4CD6dTKxvN3S5oB6ZDkDdzdjDXY+KOGgR5g8a4XWFN
+	 zNaCRAYk0DsWQdXYE+PnWwVsxRz5SJT40KgmbOORYm7mUvbE2z0vE4WRsQQJ1dwlZY
+	 Ejls/36JOa78AmHTkzQ2vENTmwHRRBoogudeVHxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Mark Broadworth <mark.broadworth@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 104/280] drm/amd/display: Force full update in gpu reset
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Jan Kara <jack@suse.cz>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 168/373] loop: LOOP_SET_FD: send uevents for partitions
 Date: Tue, 29 Apr 2025 18:40:45 +0200
-Message-ID: <20250429161119.365582512@linuxfoundation.org>
+Message-ID: <20250429161130.084941522@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 67fe574651c73fe5cc176e35f28f2ec1ba498d14 upstream.
+commit 0dba7a05b9e47d8b546399117b0ddf2426dc6042 upstream.
 
-[Why]
-While system undergoing gpu reset always do full update
-to sync the dc state before and after reset.
+Remove the suppression of the uevents before scanning for partitions.
+The partitions inherit their suppression settings from their parent device,
+which lead to the uevents being dropped.
 
-[How]
-Return true in should_reset_plane() if gpu reset detected
+This is similar to the same changes for LOOP_CONFIGURE done in
+commit bb430b694226 ("loop: LOOP_CONFIGURE: send uevents for partitions").
 
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Mark Broadworth <mark.broadworth@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2ba8619b9a378ad218ad6c2e2ccaee8f531e08de)
+Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
 Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/block/loop.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10775,6 +10775,9 @@ static bool should_reset_plane(struct dr
- 	    state->allow_modeset)
- 		return true;
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -792,12 +792,12 @@ static int loop_change_fd(struct loop_de
+ 	 * dependency.
+ 	 */
+ 	fput(old_file);
++	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+ 	if (partscan)
+ 		loop_reread_partitions(lo);
  
-+	if (amdgpu_in_reset(adev) && state->allow_modeset)
-+		return true;
-+
- 	/* Exit early if we know that we're adding or removing the plane. */
- 	if (old_plane_state->crtc != new_plane_state->crtc)
- 		return true;
+ 	error = 0;
+ done:
+-	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+ 	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+ 	return error;
+ 
+@@ -805,6 +805,7 @@ out_err:
+ 	loop_global_unlock(lo, is_loop);
+ out_putf:
+ 	fput(file);
++	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+ 	goto done;
+ }
+ 
 
 
 
