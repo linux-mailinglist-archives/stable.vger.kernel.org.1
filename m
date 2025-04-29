@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-137398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E163AA132C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:03:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C5B7AA179F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:49:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF2B517456C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD317982DFE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB9C24E4AF;
-	Tue, 29 Apr 2025 16:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266AE242D68;
+	Tue, 29 Apr 2025 17:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcEUKPP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5sAIRod"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4BE24C067;
-	Tue, 29 Apr 2025 16:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AF4C148;
+	Tue, 29 Apr 2025 17:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945948; cv=none; b=qFu2zUVR2xySopHkzStg+i37aq/ZgOsg3ipr9n4NMl3vNkaXQS4ru0tPKs/6s0D3xWVj6o97UpIoTghmlWMOZzZ91L1VSyB9mnvbogeUBYJw5Iu63yq9Fy8YE4iEo9UxOwSn9QoHjJPgSZIURY2wta/jytoeXJlBFvHh+xIW80U=
+	t=1745948725; cv=none; b=qBQlzneGPXqYfjknSQLJx5GKaJJBpPb6pnwYKdHSboKzUo/y40e74XzaJji8X6AuDGhO0mfwf/M7mpNqorYc8oqnREOFH+J/RxKsdzTEZO3Z8p1sqv8/Zi2ZgrgbqGsOOI6UBGAz+L99DvNKFFgO0bPLrbDC227wa9G2nSwQ1sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945948; c=relaxed/simple;
-	bh=ndmEapnTDP13AN2FN77owguUnyEbtLSdi7D8V5kMHnY=;
+	s=arc-20240116; t=1745948725; c=relaxed/simple;
+	bh=iWkRD9PNMLwIbsACrj0qXMtAATSkEeqTYUiIbnRUlJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KaxjNPIahuHCdClDQaGeEFTgZH/ytYpdFpXCbjmkq9S3RTVAPYWmR6XMVJiiWgL+/nddhZQISfu51JWgZMrxbNoH+egSdWLdg4V7pgS0dEj+C7x8voUwXZU+KeotEl+FdZLSewgDKmG0IErtDBUbv+tLxLLX5XBZ3iIbfbcd8Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcEUKPP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C599C4CEEA;
-	Tue, 29 Apr 2025 16:59:07 +0000 (UTC)
+	 MIME-Version; b=kb9H5GhE9hNihH59jwhaRP4PDGlPdHdbPcawUtCEzgUdiJWxbbdj4hQnpvRQvEfR6nQiu+0bE64lzLVJ2pFB6Ub17lF0Rw5VwhP2o/J4i6J6b/qqNfv5n6jmtLFKJNpZNw6NcmbhUXU77NCS2cNz0XoaKomtf/DL9ikjmG2bH5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5sAIRod; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D62FC4CEE3;
+	Tue, 29 Apr 2025 17:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945948;
-	bh=ndmEapnTDP13AN2FN77owguUnyEbtLSdi7D8V5kMHnY=;
+	s=korg; t=1745948725;
+	bh=iWkRD9PNMLwIbsACrj0qXMtAATSkEeqTYUiIbnRUlJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OcEUKPP9ATfhXyIcqwvLpl8e1Q2a7IXXv3wq+RHWT3P8B8Hf1FeYTi0ENB2CG3uYW
-	 X0dT9lLo2WbeRjgsUa6nvbKnZ1lYjDBjeGUr7gjIoOHsVdxv8Tuyby69xGDEWkaIzJ
-	 cIWMr7o74lw8Bmf9Ie+mA7z4mcfYc8D5ePn490k8=
+	b=t5sAIRodmYXZDfUobWx8a0rv+mgji/k3rY0jw+NyaxD+LMd8ua0E2EVqOvJhK9Au8
+	 drZwYnTcr65XugoZsqMPwrmZVU9vLdvkaOOne/rqjocNMqIeOWsbXOggUwBpwxQMtG
+	 bj42XtbU8Iud19YgGS0OvMSIMtARQHC/k2AbqZew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jon Hunter <jonathanh@nvidia.com>
-Subject: [PATCH 6.14 103/311] net: stmmac: simplify phylink_suspend() and phylink_resume() calls
+	stable@kernel.org,
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 5.15 063/373] xenfs/xensyms: respect hypervisors "next" indication
 Date: Tue, 29 Apr 2025 18:39:00 +0200
-Message-ID: <20250429161125.256081202@linuxfoundation.org>
+Message-ID: <20250429161125.727210331@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Jan Beulich <jbeulich@suse.com>
 
-commit f732549eb303d7e382f5101b82bb6852ad4ad642 upstream.
+commit 5c4e79e29a9fe4ea132118ac40c2bc97cfe23077 upstream.
 
-Currently, the calls to phylink's suspend and resume functions are
-inside overly complex tests, and boil down to:
+The interface specifies the symnum field as an input and output; the
+hypervisor sets it to the next sequential symbol's index. xensyms_next()
+incrementing the position explicitly (and xensyms_next_sym()
+decrementing it to "rewind") is only correct as long as the sequence of
+symbol indexes is non-sparse. Use the hypervisor-supplied value instead
+to update the position in xensyms_next(), and use the saved incoming
+index in xensyms_next_sym().
 
-	if (device_may_wakeup(priv->device) && priv->plat->pmt) {
-		call phylink
-	} else {
-		call phylink and
-		if (device_may_wakeup(priv->device))
-			do something else
-	}
-
-This results in phylink always being called, possibly with differing
-arguments for phylink_suspend().
-
-Simplify this code, noting that each site is slightly different due to
-the order in which phylink is called and the "something else".
-
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/E1tpQL1-005St4-Hn@rmk-PC.armlinux.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Cc: Jon Hunter <jonathanh@nvidia.com>
+Cc: stable@kernel.org
+Fixes: a11f4f0a4e18 ("xen: xensyms support")
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <15d5e7fa-ec5d-422f-9319-d28bed916349@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ drivers/xen/xenfs/xensyms.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7813,13 +7813,11 @@ int stmmac_suspend(struct device *dev)
- 	mutex_unlock(&priv->lock);
+--- a/drivers/xen/xenfs/xensyms.c
++++ b/drivers/xen/xenfs/xensyms.c
+@@ -48,7 +48,7 @@ static int xensyms_next_sym(struct xensy
+ 			return -ENOMEM;
  
- 	rtnl_lock();
--	if (device_may_wakeup(priv->device) && priv->plat->pmt) {
--		phylink_suspend(priv->phylink, true);
--	} else {
--		if (device_may_wakeup(priv->device))
--			phylink_speed_down(priv->phylink, false);
--		phylink_suspend(priv->phylink, false);
--	}
-+	if (device_may_wakeup(priv->device) && !priv->plat->pmt)
-+		phylink_speed_down(priv->phylink, false);
-+
-+	phylink_suspend(priv->phylink,
-+			device_may_wakeup(priv->device) && priv->plat->pmt);
- 	rtnl_unlock();
+ 		set_xen_guest_handle(symdata->name, xs->name);
+-		symdata->symnum--; /* Rewind */
++		symdata->symnum = symnum; /* Rewind */
  
- 	if (stmmac_fpe_supported(priv))
-@@ -7909,13 +7907,9 @@ int stmmac_resume(struct device *dev)
- 	}
+ 		ret = HYPERVISOR_platform_op(&xs->op);
+ 		if (ret < 0)
+@@ -78,7 +78,7 @@ static void *xensyms_next(struct seq_fil
+ {
+ 	struct xensyms *xs = (struct xensyms *)m->private;
  
- 	rtnl_lock();
--	if (device_may_wakeup(priv->device) && priv->plat->pmt) {
--		phylink_resume(priv->phylink);
--	} else {
--		phylink_resume(priv->phylink);
--		if (device_may_wakeup(priv->device))
--			phylink_speed_up(priv->phylink);
--	}
-+	phylink_resume(priv->phylink);
-+	if (device_may_wakeup(priv->device) && !priv->plat->pmt)
-+		phylink_speed_up(priv->phylink);
- 	rtnl_unlock();
+-	xs->op.u.symdata.symnum = ++(*pos);
++	*pos = xs->op.u.symdata.symnum;
  
- 	rtnl_lock();
+ 	if (xensyms_next_sym(xs))
+ 		return NULL;
 
 
 
