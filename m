@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-138492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF0DAA1845
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DAAAA1538
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BA1F1BA1E6C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E801C7A51EF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A71216605;
-	Tue, 29 Apr 2025 17:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADC02528F3;
+	Tue, 29 Apr 2025 17:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oyPx4Lev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ct8nGRin"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41283251783;
-	Tue, 29 Apr 2025 17:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF652517AB;
+	Tue, 29 Apr 2025 17:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949424; cv=none; b=pfp3uyabvMJXDelGr4BwC/WA+hjCxZHdhd1ZE8wRXmDycOduZFwQnD6AZRm6XXKEyHCRdNO2oxuGod4XI0QsKjMVOe9ar7hGqBAipsvXQ0NqkQNqJyInvowJL2T2dVDZS7E1mYBkNXUbRkR/9iOTWbGAVgwaMrRYz98T1rAcdig=
+	t=1745947394; cv=none; b=dnUUZ26A5iexe6tu+d6nKf3jrWwX8P+23lowfsdiymk345DKgzhVmgJq3r8vN9Su/RbzJv6x4I4KYm0Xn5txERLIH7YfCPJvNgdI1WecuW5IePVUM8AzVPsBcPZ3z99mVz/VGp0FYuPtOLPf7LpliBpMbLBpWss2D4bMwUaThgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949424; c=relaxed/simple;
-	bh=UKx5Va87/tCHcxfOusLB2r4rMqntv88ZLbvkCgMJpCs=;
+	s=arc-20240116; t=1745947394; c=relaxed/simple;
+	bh=4vmcc47sv9t5ZUDwuX0tBxjqDYkg5t8wtRnCHBJtacY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iMcUBPStzCQWpPa5NHlmMCi8o3wGvRfhiC8m36nA4tch3drFDUpHlRge1BmBqGM776hOHQq1nUHqKaemB8BnPDUNfwAOFv6nMfYCXPuTRo5nk5whyKrrGIo5FTRlxXshtcFRZv01X+e0SWRSqkzArkKZjgJidWICNEDDzgskWYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oyPx4Lev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03EBC4CEE3;
-	Tue, 29 Apr 2025 17:57:03 +0000 (UTC)
+	 MIME-Version; b=QcKkzH+8VrCkFbb4nJWFx1fl3e57FgQMU9Utg7gjPd2YDCg+uvAecVJvgkysJavZGzqDXZSNw/rUJGnP5X0IkzSL0ItByCRXiIB5y/i1XREmGNJoapmYq0lRFqoV+T8DONHZ+r7Bg+lcx14fiLg2DiFnOn/0otD1b+1PALDDpN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ct8nGRin; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2ACBC4CEE3;
+	Tue, 29 Apr 2025 17:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949424;
-	bh=UKx5Va87/tCHcxfOusLB2r4rMqntv88ZLbvkCgMJpCs=;
+	s=korg; t=1745947393;
+	bh=4vmcc47sv9t5ZUDwuX0tBxjqDYkg5t8wtRnCHBJtacY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oyPx4Lev1zwGkYyvkh77C0NDAguuIF0mOcEEfCOAYEXmgFI3InXYmIjpN+j0+g4/K
-	 oba2tBLRoOM0WCvhqW0wEyX7V+htKmWvxapbxSRALF4wW+7LEeKV2F8qSnjcVBSAtZ
-	 Rp6FnBsZHXeUD1XClaSFrLVEz2PG08AN0R/W9CrM=
+	b=Ct8nGRin7xMVy+mGvQ2nLSSFBegA6y8mOpt4V3OJm0DtCZyd7H3098koz67iMQpZm
+	 21Ua2gsXHyuuODTsFtuRUSG6M3T2gIy7k5iWOhkMki8QT/uXv5kMJEE32utw0+4zvi
+	 dRUe/UTN/0pU0N60tTIVOQgZpalLy1SzY7/vmP7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 286/373] dma/contiguous: avoid warning about unused size_bytes
+Subject: [PATCH 5.10 259/286] usb: gadget: aspeed: Add NULL pointer check in ast_vhub_init_dev()
 Date: Tue, 29 Apr 2025 18:42:43 +0200
-Message-ID: <20250429161134.874594031@linuxfoundation.org>
+Message-ID: <20250429161118.572954959@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit d7b98ae5221007d3f202746903d4c21c7caf7ea9 ]
+[ Upstream commit 8c75f3e6a433d92084ad4e78b029ae680865420f ]
 
-When building with W=1, this variable is unused for configs with
-CONFIG_CMA_SIZE_SEL_PERCENTAGE=y:
+The variable d->name, returned by devm_kasprintf(), could be NULL.
+A pointer check is added to prevent potential NULL pointer dereference.
+This is similar to the fix in commit 3027e7b15b02
+("ice: Fix some null pointer dereference issues in ice_ptp.c").
 
-kernel/dma/contiguous.c:67:26: error: 'size_bytes' defined but not used [-Werror=unused-const-variable=]
+This issue is found by our static analysis tool
 
-Change this to a macro to avoid the warning.
-
-Fixes: c64be2bb1c6e ("drivers: add Contiguous Memory Allocator")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20250409151557.3890443-1-arnd@kernel.org
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250311012705.1233829-1-chenyuan0y@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/contiguous.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/gadget/udc/aspeed-vhub/dev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
-index 6ea80ae426228..24d96a2fe0628 100644
---- a/kernel/dma/contiguous.c
-+++ b/kernel/dma/contiguous.c
-@@ -69,8 +69,7 @@ struct cma *dma_contiguous_default_area;
-  * Users, who want to set the size of global CMA area for their system
-  * should use cma= kernel parameter.
-  */
--static const phys_addr_t size_bytes __initconst =
--	(phys_addr_t)CMA_SIZE_MBYTES * SZ_1M;
-+#define size_bytes ((phys_addr_t)CMA_SIZE_MBYTES * SZ_1M)
- static phys_addr_t  size_cmdline __initdata = -1;
- static phys_addr_t base_cmdline __initdata;
- static phys_addr_t limit_cmdline __initdata;
+diff --git a/drivers/usb/gadget/udc/aspeed-vhub/dev.c b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
+index d268306a7bfee..92755a2fe4ff7 100644
+--- a/drivers/usb/gadget/udc/aspeed-vhub/dev.c
++++ b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
+@@ -543,6 +543,9 @@ int ast_vhub_init_dev(struct ast_vhub *vhub, unsigned int idx)
+ 	d->vhub = vhub;
+ 	d->index = idx;
+ 	d->name = devm_kasprintf(parent, GFP_KERNEL, "port%d", idx+1);
++	if (!d->name)
++		return -ENOMEM;
++
+ 	d->regs = vhub->regs + 0x100 + 0x10 * idx;
+ 
+ 	ast_vhub_init_ep0(vhub, &d->ep0, d);
 -- 
 2.39.5
 
