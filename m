@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-138187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 907B8AA16E0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:41:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B372AA131D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C97997B0F1D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AC0C16A697
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE4C252914;
-	Tue, 29 Apr 2025 17:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6C225178B;
+	Tue, 29 Apr 2025 16:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXO7rQJ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WfuGFMxb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC4D2528FC;
-	Tue, 29 Apr 2025 17:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9B0221719;
+	Tue, 29 Apr 2025 16:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948447; cv=none; b=LynXT67pnB5DuCI4rqpRoCcVP92uROtoj6fPIyJzKIfQwC63zaGkhzpoWweWEwA1pczGow1DHB2Wmdeqz09m2s7meRKRVVk0TJA+7waoLUZWQqxYHosCBtVIYcz6pKTbcZDAlTD9GrvsU7E61+NNGZYMWZKtz7i6GtSAUxNCu1U=
+	t=1745945907; cv=none; b=WtliwUiJZXGLvn2xwRhE6EWb90rc2kd9fSjbFyt0uC45wwNotN+/FlHRQ6pctUWLHLkzbBGBGhRGwM5Ra1QAyqbu2MM+yadMQNsECZrS0rEBrXfADmuqRj2HoQN5HBRgatdFqxVuz4RfX8PH76ahIc7oNh3lPC+mPWSCP2Fq/q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948447; c=relaxed/simple;
-	bh=3Hr10sQgOej4IT7YoQdoqGdwN59QHV0bm6MDgsbfx0I=;
+	s=arc-20240116; t=1745945907; c=relaxed/simple;
+	bh=VdTAPzc480X42yiE1TzgpaO2c0GKulVKfgSd4XVhZIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOjD95OwM6YSahQUe8AQSwf8kETKq64lQqAqJ9xb4K+3NzjJ3QXIowY+25lO8nc+EgaIU9hJHzT9uKJaZumFmYTcporO8n1MacVB8E3QOeXKiKVCaCz6tcRDq5Bttnux8o060Fafqmsa+OZ7nsBKwlgr3/InNRlLA3FiBudP2H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXO7rQJ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F48AC4CEE3;
-	Tue, 29 Apr 2025 17:40:47 +0000 (UTC)
+	 MIME-Version; b=E5KliiiCq8GC01e/H+l00rmTNyJNgs6t1EyiF+Zulmbfz68zvQxFdXGO+Q7Z3RjoJkg6/yHcfv7mthV3VichzZBYs6kbBw5uyhXkUduafNP1ja/GAGkzJ7fcEXO5l15ATMI2/Rs/DSS3L/nmffNagGLMiv8iuZV8Lx+Id8qluYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WfuGFMxb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0F9C4CEE9;
+	Tue, 29 Apr 2025 16:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948447;
-	bh=3Hr10sQgOej4IT7YoQdoqGdwN59QHV0bm6MDgsbfx0I=;
+	s=korg; t=1745945907;
+	bh=VdTAPzc480X42yiE1TzgpaO2c0GKulVKfgSd4XVhZIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HXO7rQJ18kwlL4hpYmjPgTua8OSXcMdr/5SQXdaZKxoFbRwksT7vG2R7g81qhqEZX
-	 v2JMz6A1CxnaT9jYc1Vy7nCq97LJvd0limHCZ5CbWMWma+by+7saTCghvU5QCXIRgF
-	 xYoxZ6sDA4lnJQ+ufVtQQYzwOK/3K75AEDb7VUTw=
+	b=WfuGFMxbHsB+syr24f/VWJ66/6OsfxSavt/jjSDP2U+QAoSe+NE0SbgaV0rgxIa/N
+	 e2ewHO9LvViZDo4bGnwOQPMEszKvfpc4N5rsFNWQYn33DnaWKm//4Z+I3CcB06mm4d
+	 Ey4eDFvYKd0aUr1XfhXt1sBv4ioUOPolz8wnKXKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	sontu mazumdar <sontu21@gmail.com>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 010/373] nft_set_pipapo: fix incorrect avx2 match of 5th field octet
+Subject: [PATCH 6.14 050/311] net/mlx5: Fix null-ptr-deref in mlx5_create_{inner_,}ttc_table()
 Date: Tue, 29 Apr 2025 18:38:07 +0200
-Message-ID: <20250429161123.558209307@linuxfoundation.org>
+Message-ID: <20250429161123.076740736@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit e042ed950d4e176379ba4c0722146cd96fb38aa2 ]
+[ Upstream commit 91037037ee3d611ce17f39d75f79c7de394b122a ]
 
-Given a set element like:
+Add NULL check for mlx5_get_flow_namespace() returns in
+mlx5_create_inner_ttc_table() and mlx5_create_ttc_table() to prevent
+NULL pointer dereference.
 
-	icmpv6 . dead:beef:00ff::1
-
-The value of 'ff' is irrelevant, any address will be matched
-as long as the other octets are the same.
-
-This is because of too-early register clobbering:
-ymm7 is reloaded with new packet data (pkt[9])  but it still holds data
-of an earlier load that wasn't processed yet.
-
-The existing tests in nft_concat_range.sh selftests do exercise this code
-path, but do not trigger incorrect matching due to the network prefix
-limitation.
-
-Fixes: 7400b063969b ("nft_set_pipapo: Introduce AVX2-based lookup implementation")
-Reported-by: sontu mazumdar <sontu21@gmail.com>
-Closes: https://lore.kernel.org/netfilter/CANgxkqwnMH7fXra+VUfODT-8+qFLgskq3set1cAzqqJaV4iEZg@mail.gmail.com/T/#t
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 137f3d50ad2a ("net/mlx5: Support matching on l4_type for ttc_table")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250418023814.71789-2-bsdhenrymartin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index dfae90cd34939..ecabe66368eab 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -994,8 +994,9 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(5, lt,  8,  pkt[8], bsize);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
+index 9f13cea164465..510879e1ba30e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
+@@ -636,6 +636,11 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
+ 	}
  
- 		NFT_PIPAPO_AVX2_AND(6, 2, 3);
-+		NFT_PIPAPO_AVX2_AND(3, 4, 7);
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(7, lt,  9,  pkt[9], bsize);
--		NFT_PIPAPO_AVX2_AND(0, 4, 5);
-+		NFT_PIPAPO_AVX2_AND(0, 3, 5);
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(1, lt, 10, pkt[10], bsize);
- 		NFT_PIPAPO_AVX2_AND(2, 6, 7);
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(3, lt, 11, pkt[11], bsize);
+ 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
++	if (!ns) {
++		kvfree(ttc);
++		return ERR_PTR(-EOPNOTSUPP);
++	}
++
+ 	groups = use_l4_type ? &inner_ttc_groups[TTC_GROUPS_USE_L4_TYPE] :
+ 			       &inner_ttc_groups[TTC_GROUPS_DEFAULT];
+ 
+@@ -709,6 +714,11 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
+ 	}
+ 
+ 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
++	if (!ns) {
++		kvfree(ttc);
++		return ERR_PTR(-EOPNOTSUPP);
++	}
++
+ 	groups = use_l4_type ? &ttc_groups[TTC_GROUPS_USE_L4_TYPE] :
+ 			       &ttc_groups[TTC_GROUPS_DEFAULT];
+ 
 -- 
 2.39.5
 
