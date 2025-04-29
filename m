@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF00AA133B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B3EAA1231
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 148DD7A5D5F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B17E1BA2846
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4F82512C0;
-	Tue, 29 Apr 2025 17:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581B9247298;
+	Tue, 29 Apr 2025 16:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxLv/k7U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SW7AWOOy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEA122A81D;
-	Tue, 29 Apr 2025 17:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13059126BF7;
+	Tue, 29 Apr 2025 16:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946203; cv=none; b=KHaYHfQ6G73J8lyHupKotiK89c7P8S0y/Ei1myhS6NeEwmIMNUBJLI7nIzboZ7CJgDXfPbZyuUpBKrhdxCRRLXJTQTW1DUasP6GXt3rgoJ38k47+dZD48nffp0Gr+Jtd2RfPkSJoDpXSxMrmEtx28Uk49WaINDmZf25pu4wWJlQ=
+	t=1745945412; cv=none; b=ndvNcdonlv4lNJYjk9yt1VGq/u7oqwFvf8NvxPCIkXMT6L9u9vP7kRlr/LhljYs9ucs48lWKOqCSM4mQE8trZrVusOaRcEypd1iunlHtio+87kQQFGA1OSeuv81RW0vwKiABiJQFQcZbIshOfiCPfD3zGfLQDwBu90yrYdvmF68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946203; c=relaxed/simple;
-	bh=26eq0U2NhX9baquq0e1+ES4OkqVxH4E8qDi1mEopq24=;
+	s=arc-20240116; t=1745945412; c=relaxed/simple;
+	bh=G6ulf52i+UGO8vrquq55V5U09biQjSKzChapjHkd8Ac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ch+xNeraCiYNe6vBhl9dGkTyCktX/cHGus/lbchFbDVdSH9N10ZxJw3tJMbZ7+gijjsjXbtXQKLK8Xbnvmf+O7lz0y9Lnu/z9C8GFXJmjvHvnxOEPKYtvjfDDTNIAzFbTfnaNJEhMbthGl9836FrvgL/AJvqsklCG/4B7TGS1wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxLv/k7U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E15C4CEE3;
-	Tue, 29 Apr 2025 17:03:23 +0000 (UTC)
+	 MIME-Version; b=eis+VZLwrAypZc7v1+3kRfGyRoBoKmtzEeFxv/Ky6DXBtkGYY3Bj/PIrMZzH9Q/9ObIf2UK2s0koDuBKuuLdQPXyHuHbYfuY55O0xxRwn0R6iCeK4w8xTbu3Qm1XL4TXCc9QwJrTrY5gJIFrcPC3Qk2S+VvWe2y8CoI9y6qbEZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SW7AWOOy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BD8C4CEE3;
+	Tue, 29 Apr 2025 16:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946203;
-	bh=26eq0U2NhX9baquq0e1+ES4OkqVxH4E8qDi1mEopq24=;
+	s=korg; t=1745945412;
+	bh=G6ulf52i+UGO8vrquq55V5U09biQjSKzChapjHkd8Ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BxLv/k7UUtXMATYRUlY/cGYespL5qKBREBNroyyKg5hObI7I3mK/eqWD6HWM90lPA
-	 G4QKoqliRcjMJRrkESA/s3+uGMK4PsybfXi+M9iGxbYYkONm99finFz932vD1jSMZH
-	 /1v9428MVAWZTPGYwXx5sDyoi9Rxxmd+Zmu32MiU=
+	b=SW7AWOOycSPiVLF+aDnuBFxS+zSmDB+ZK1K0uaJzOI3WRKhqhp9WpJHqOaX+u1gfm
+	 H4V95ENIhBgJhnbKevak3IzEIFm7tbtt28mGXax/xhxPwvFNqXJADM+iyF2ABih7yv
+	 z7uHWYi6jtiuxgpT8zvzbOr6g2jTJR+6Qwn+mQuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Michael Nemanov <michael.nemanov@ti.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 190/311] s390/tty: Fix a potential memory leak bug
+Subject: [PATCH 5.4 086/179] wifi: wl1251: fix memory leak in wl1251_tx_work
 Date: Tue, 29 Apr 2025 18:40:27 +0200
-Message-ID: <20250429161128.798696067@linuxfoundation.org>
+Message-ID: <20250429161052.881697150@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-[ Upstream commit ad9bb8f049717d64c5e62b2a44954be9f681c65b ]
+[ Upstream commit a0f0dc96de03ffeefc2a177b7f8acde565cb77f4 ]
 
-The check for get_zeroed_page() leads to a direct return
-and overlooked the memory leak caused by loop allocation.
-Add a free helper to free spaces allocated by get_zeroed_page().
+The skb dequeued from tx_queue is lost when wl1251_ps_elp_wakeup fails
+with a -ETIMEDOUT error. Fix that by queueing the skb back to tx_queue.
 
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250218034104.2436469-1-haoxiang_li2024@163.com
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: c5483b719363 ("wl12xx: check if elp wakeup failed")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Michael Nemanov <michael.nemanov@ti.com>
+Link: https://patch.msgid.link/20250330104532.44935-1-abdun.nihaal@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp_tty.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/wireless/ti/wl1251/tx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/s390/char/sclp_tty.c b/drivers/s390/char/sclp_tty.c
-index 892c18d2f87e9..d3edacb6ee148 100644
---- a/drivers/s390/char/sclp_tty.c
-+++ b/drivers/s390/char/sclp_tty.c
-@@ -490,6 +490,17 @@ static const struct tty_operations sclp_ops = {
- 	.flush_buffer = sclp_tty_flush_buffer,
- };
- 
-+/* Release allocated pages. */
-+static void __init __sclp_tty_free_pages(void)
-+{
-+	struct list_head *page, *p;
-+
-+	list_for_each_safe(page, p, &sclp_tty_pages) {
-+		list_del(page);
-+		free_page((unsigned long)page);
-+	}
-+}
-+
- static int __init
- sclp_tty_init(void)
- {
-@@ -516,6 +527,7 @@ sclp_tty_init(void)
- 	for (i = 0; i < MAX_KMEM_PAGES; i++) {
- 		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 		if (page == NULL) {
-+			__sclp_tty_free_pages();
- 			tty_driver_kref_put(driver);
- 			return -ENOMEM;
+diff --git a/drivers/net/wireless/ti/wl1251/tx.c b/drivers/net/wireless/ti/wl1251/tx.c
+index 98cd39619d579..5771f61392efb 100644
+--- a/drivers/net/wireless/ti/wl1251/tx.c
++++ b/drivers/net/wireless/ti/wl1251/tx.c
+@@ -342,8 +342,10 @@ void wl1251_tx_work(struct work_struct *work)
+ 	while ((skb = skb_dequeue(&wl->tx_queue))) {
+ 		if (!woken_up) {
+ 			ret = wl1251_ps_elp_wakeup(wl);
+-			if (ret < 0)
++			if (ret < 0) {
++				skb_queue_head(&wl->tx_queue, skb);
+ 				goto out;
++			}
+ 			woken_up = true;
  		}
+ 
 -- 
 2.39.5
 
