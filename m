@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-138025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994EFAA1670
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:37:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C489CAA13CA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99A019A0427
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 379BC1BA749D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBE0253326;
-	Tue, 29 Apr 2025 17:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D11241664;
+	Tue, 29 Apr 2025 17:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zl7cP/A+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfwuAmP/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23E6233713;
-	Tue, 29 Apr 2025 17:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922B01DF73C;
+	Tue, 29 Apr 2025 17:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947877; cv=none; b=PsRNirEP8VvoP2zeD3yxeALd5ciFXa3mtiMIdt9raFYivmxdvR2HbaU97/XalwTY+04KcqC1Td4pOM5ekkV8DbNkDJG+KyCil+bHmHaAftg7b2GSiAWRw17uuJCFyPoH9uI5b+qBwJsaeQT4v5FveOxGtS4a+IaIyWCiVuULPic=
+	t=1745946340; cv=none; b=CL0v+fOaKta9XNRgsYSkiai3vIjf7rWuJGLMTc7ovfDtn36kYCCbChNHeuq9+4ObX+SPe4i7WC0c6+9bIQ3hE4yeMQth1apOfhnVQ6cUtSOTcxbcZvBOYtHY4h3W40RN8PTsjBoL0z96WHnObJM1OR/T4T9N+GuUZgwosThawDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947877; c=relaxed/simple;
-	bh=usiiQD+O/ep0STx2cz4w4xtZ1Db2O76p5luXey7D0yE=;
+	s=arc-20240116; t=1745946340; c=relaxed/simple;
+	bh=wfy7tF32Q8l0sSzPnQFPRNQVAcWpXkI3Be+rWfvlrLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dvNRlrXon8jDcg+6/FaXLVyb0ZKO6Us3gNf9FutfjvV2Bfis3SsIvW3maYEHae6A5qOMr/aw+1Ob4jY33mcEedl1MDwdoIjN8Ou0Jj/uetP+6y2NS7TJJnHwavJZwyiI1m26MYWRXUDb0pPx3vI7nfvRCVFfNJzwRk7R2vxL5x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zl7cP/A+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F7EC4CEE3;
-	Tue, 29 Apr 2025 17:31:16 +0000 (UTC)
+	 MIME-Version; b=W9b/Hu6MruoKRpY32oTm2q5jKYFHWjiKdkc+0W1H7r4Z8Yt0RJUkQ/F00+uaztDDMstqwJ2vngw8Gbg58N64uNoliC8rhBrgxBeQUamMSCUwOaILNfLW+yBnM8qstIpQjX3otV/DlmOeJubZgPaMDsCF6Q2XzX4WL0YACkpDacE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfwuAmP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1908DC4CEE3;
+	Tue, 29 Apr 2025 17:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947876;
-	bh=usiiQD+O/ep0STx2cz4w4xtZ1Db2O76p5luXey7D0yE=;
+	s=korg; t=1745946340;
+	bh=wfy7tF32Q8l0sSzPnQFPRNQVAcWpXkI3Be+rWfvlrLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zl7cP/A+aPXJhMz0pqr/RHDyAyopCwEHpPjNkdaat1lkppumVI2FLtQ5YY869KAcR
-	 FUGgw45d2s6nP7DxCnSYOdcB9qLPcuxy95/5qAv9o03uCnxthv19czktd/BdgA7OVt
-	 fdD+ZuMFUf+d8jNfLzEySlL1edOeoo7NTyw8bpd8=
+	b=PfwuAmP/4k2ry9QZulYA0bcmcUb/EDD4/LL2WsuVyRwG+241MebFxj9fHET0q2Xyv
+	 4xJTvoj0qHe3LD+kiclGwQQvswQFaYBqo+ugp9hC77n9UeNiVvTdsx+Jyr4cKqbP2g
+	 0R+5wWp9gRgJ8yvjfcopmxm65Axv7WlWf3Di5hPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jared Finder <jared@finder.org>,
-	Jann Horn <jannh@google.com>,
-	=?UTF-8?q?Hanno=20B=C3=B6ck?= <hanno@hboeck.de>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>
-Subject: [PATCH 6.12 130/280] tty: Require CAP_SYS_ADMIN for all usages of TIOCL_SELMOUSEREPORT
+	syzbot+903a2ad71fb3f1e47cf5@syzkaller.appspotmail.com,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 234/311] io_uring: always do atomic put from iowq
 Date: Tue, 29 Apr 2025 18:41:11 +0200
-Message-ID: <20250429161120.446706006@linuxfoundation.org>
+Message-ID: <20250429161130.613053426@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,147 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Günther Noack <gnoack3000@gmail.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit ee6a44da3c87cf64d67dd02be8c0127a5bf56175 upstream.
+[ Upstream commit 390513642ee6763c7ada07f0a1470474986e6c1c ]
 
-This requirement was overeagerly loosened in commit 2f83e38a095f
-("tty: Permit some TIOCL_SETSEL modes without CAP_SYS_ADMIN"), but as
-it turns out,
+io_uring always switches requests to atomic refcounting for iowq
+execution before there is any parallilism by setting REQ_F_REFCOUNT,
+and the flag is not cleared until the request completes. That should be
+fine as long as the compiler doesn't make up a non existing value for
+the flags, however KCSAN still complains when the request owner changes
+oter flag bits:
 
-  (1) the logic I implemented there was inconsistent (apologies!),
+BUG: KCSAN: data-race in io_req_task_cancel / io_wq_free_work
+...
+read to 0xffff888117207448 of 8 bytes by task 3871 on cpu 0:
+ req_ref_put_and_test io_uring/refs.h:22 [inline]
 
-  (2) TIOCL_SELMOUSEREPORT might actually be a small security risk
-      after all, and
+Skip REQ_F_REFCOUNT checks for iowq, we know it's set.
 
-  (3) TIOCL_SELMOUSEREPORT is only meant to be used by the mouse
-      daemon (GPM or Consolation), which runs as CAP_SYS_ADMIN
-      already.
-
-In more detail:
-
-1. The previous patch has inconsistent logic:
-
-   In commit 2f83e38a095f ("tty: Permit some TIOCL_SETSEL modes
-   without CAP_SYS_ADMIN"), we checked for sel_mode ==
-   TIOCL_SELMOUSEREPORT, but overlooked that the lower four bits of
-   this "mode" parameter were actually used as an additional way to
-   pass an argument.  So the patch did actually still require
-   CAP_SYS_ADMIN, if any of the mouse button bits are set, but did not
-   require it if none of the mouse buttons bits are set.
-
-   This logic is inconsistent and was not intentional.  We should have
-   the same policies for using TIOCL_SELMOUSEREPORT independent of the
-   value of the "hidden" mouse button argument.
-
-   I sent a separate documentation patch to the man page list with
-   more details on TIOCL_SELMOUSEREPORT:
-   https://lore.kernel.org/all/20250223091342.35523-2-gnoack3000@gmail.com/
-
-2. TIOCL_SELMOUSEREPORT is indeed a potential security risk which can
-   let an attacker simulate "keyboard" input to command line
-   applications on the same terminal, like TIOCSTI and some other
-   TIOCLINUX "selection mode" IOCTLs.
-
-   By enabling mouse reporting on a terminal and then injecting mouse
-   reports through TIOCL_SELMOUSEREPORT, an attacker can simulate
-   mouse movements on the same terminal, similar to the TIOCSTI
-   keystroke injection attacks that were previously possible with
-   TIOCSTI and other TIOCL_SETSEL selection modes.
-
-   Many programs (including libreadline/bash) are then prone to
-   misinterpret these mouse reports as normal keyboard input because
-   they do not expect input in the X11 mouse protocol form.  The
-   attacker does not have complete control over the escape sequence,
-   but they can at least control the values of two consecutive bytes
-   in the binary mouse reporting escape sequence.
-
-   I went into more detail on that in the discussion at
-   https://lore.kernel.org/all/20250221.0a947528d8f3@gnoack.org/
-
-   It is not equally trivial to simulate arbitrary keystrokes as it
-   was with TIOCSTI (commit 83efeeeb3d04 ("tty: Allow TIOCSTI to be
-   disabled")), but the general mechanism is there, and together with
-   the small number of existing legit use cases (see below), it would
-   be better to revert back to requiring CAP_SYS_ADMIN for
-   TIOCL_SELMOUSEREPORT, as it was already the case before
-   commit 2f83e38a095f ("tty: Permit some TIOCL_SETSEL modes without
-   CAP_SYS_ADMIN").
-
-3. TIOCL_SELMOUSEREPORT is only used by the mouse daemons (GPM or
-   Consolation), and they are the only legit use case:
-
-   To quote console_codes(4):
-
-     The mouse tracking facility is intended to return
-     xterm(1)-compatible mouse status reports.  Because the console
-     driver has no way to know the device or type of the mouse, these
-     reports are returned in the console input stream only when the
-     virtual terminal driver receives a mouse update ioctl.  These
-     ioctls must be generated by a mouse-aware user-mode application
-     such as the gpm(8) daemon.
-
-   Jared Finder has also confirmed in
-   https://lore.kernel.org/all/491f3df9de6593df8e70dbe77614b026@finder.org/
-   that Emacs does not call TIOCL_SELMOUSEREPORT directly, and it
-   would be difficult to find good reasons for doing that, given that
-   it would interfere with the reports that GPM is sending.
-
-   More information on the interaction between GPM, terminals and the
-   kernel with additional pointers is also available in this patch:
-   https://lore.kernel.org/all/a773e48920aa104a65073671effbdee665c105fc.1603963593.git.tammo.block@gmail.com/
-
-   For background on who else uses TIOCL_SELMOUSEREPORT: Debian Code
-   search finds one page of results, the only two known callers are
-   the two mouse daemons GPM and Consolation.  (GPM does not show up
-   in the search results because it uses literal numbers to refer to
-   TIOCLINUX-related enums.  I looked through GPM by hand instead.
-   TIOCL_SELMOUSEREPORT is also not used from libgpm.)
-   https://codesearch.debian.net/search?q=TIOCL_SELMOUSEREPORT
-
-Cc: Jared Finder <jared@finder.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Hanno Böck <hanno@hboeck.de>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: stable <stable@kernel.org>
-Fixes: 2f83e38a095f ("tty: Permit some TIOCL_SETSEL modes without CAP_SYS_ADMIN")
-Signed-off-by: Günther Noack <gnoack3000@gmail.com>
-Link: https://lore.kernel.org/r/20250411070144.3959-2-gnoack3000@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+903a2ad71fb3f1e47cf5@syzkaller.appspotmail.com
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/d880bc27fb8c3209b54641be4ff6ac02b0e5789a.1743679736.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vt/selection.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ io_uring/io_uring.c | 2 +-
+ io_uring/refs.h     | 7 +++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/vt/selection.c b/drivers/tty/vt/selection.c
-index 0bd6544e30a6..791e2f1f7c0b 100644
---- a/drivers/tty/vt/selection.c
-+++ b/drivers/tty/vt/selection.c
-@@ -193,13 +193,12 @@ int set_selection_user(const struct tiocl_selection __user *sel,
- 		return -EFAULT;
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index d9c02e6b7b921..24b9e9a5105d4 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1775,7 +1775,7 @@ struct io_wq_work *io_wq_free_work(struct io_wq_work *work)
+ 	struct io_kiocb *req = container_of(work, struct io_kiocb, work);
+ 	struct io_kiocb *nxt = NULL;
  
- 	/*
--	 * TIOCL_SELCLEAR, TIOCL_SELPOINTER and TIOCL_SELMOUSEREPORT are OK to
--	 * use without CAP_SYS_ADMIN as they do not modify the selection.
-+	 * TIOCL_SELCLEAR and TIOCL_SELPOINTER are OK to use without
-+	 * CAP_SYS_ADMIN as they do not modify the selection.
- 	 */
- 	switch (v.sel_mode) {
- 	case TIOCL_SELCLEAR:
- 	case TIOCL_SELPOINTER:
--	case TIOCL_SELMOUSEREPORT:
- 		break;
- 	default:
- 		if (!capable(CAP_SYS_ADMIN))
+-	if (req_ref_put_and_test(req)) {
++	if (req_ref_put_and_test_atomic(req)) {
+ 		if (req->flags & IO_REQ_LINK_FLAGS)
+ 			nxt = io_req_find_next(req);
+ 		io_free_req(req);
+diff --git a/io_uring/refs.h b/io_uring/refs.h
+index 63982ead9f7da..0d928d87c4ed1 100644
+--- a/io_uring/refs.h
++++ b/io_uring/refs.h
+@@ -17,6 +17,13 @@ static inline bool req_ref_inc_not_zero(struct io_kiocb *req)
+ 	return atomic_inc_not_zero(&req->refs);
+ }
+ 
++static inline bool req_ref_put_and_test_atomic(struct io_kiocb *req)
++{
++	WARN_ON_ONCE(!(data_race(req->flags) & REQ_F_REFCOUNT));
++	WARN_ON_ONCE(req_ref_zero_or_close_to_overflow(req));
++	return atomic_dec_and_test(&req->refs);
++}
++
+ static inline bool req_ref_put_and_test(struct io_kiocb *req)
+ {
+ 	if (likely(!(req->flags & REQ_F_REFCOUNT)))
 -- 
-2.49.0
+2.39.5
 
 
 
