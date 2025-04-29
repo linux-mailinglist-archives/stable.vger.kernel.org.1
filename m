@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 083AEAA1A52
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:21:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F99AA198A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:13:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1F1A4A258E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:19:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1389F3ADF90
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE56254861;
-	Tue, 29 Apr 2025 18:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F9F22AE68;
+	Tue, 29 Apr 2025 18:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEfJP9BS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAWiR0X/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EC2254B0E;
-	Tue, 29 Apr 2025 18:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388B3221D92;
+	Tue, 29 Apr 2025 18:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950760; cv=none; b=SAY/Mi+0FcIa0mt/rrCOQTT10U1VcjSc4qW/3YdmQOF0Iexgh2pzoAzL4T47JE1cdBPPaxSl5ZMxnQT8vmrRCMAYw7ZzbHQr6PHvvP/l7xO72AKZf4Epg4Vbcv5TAEtbUoHWzXFEHgu7+jVj9ehjscs4hGp6LUgG5WY1r6Dx6WM=
+	t=1745950072; cv=none; b=HUNxS9/YpvFAd5cICq4lvXvwQ+lNmDXDVdy3J61JyD6IcRZODHyEo881Bpatzer+tSQ+bwmd1BnYbipr/NXdosTMbs4SCA6tLNhqTJczv1PB1Vqq2MlXkfUntoeEgVv0l9kX92xMDVtY3KXS6XPsxgQa62kbibQe4AWsangLEV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950760; c=relaxed/simple;
-	bh=W1PSbjRX385k4I3J7TGdMZNsgQjIkOp52ZhvW+YgQBY=;
+	s=arc-20240116; t=1745950072; c=relaxed/simple;
+	bh=wxFtqaVaHPzNA0Ea+1ZsQcuBJz2i+BH85apFjLNyBt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZyyLvklIh53l4+BHKTw57YQRjYxvQSS/epAppwMLbjaUC26wEJ47uH9cVSZWgkS5vkQElsxUsdxCNJFBObRHGM7nraO6OeCoccL0JcmNL0N5HaotfKegXU6TJnUAPsIWk837EPb36bb1emB7+/IzBofqTWSvbE8sNC01eaGexxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEfJP9BS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DCDC4CEE3;
-	Tue, 29 Apr 2025 18:19:18 +0000 (UTC)
+	 MIME-Version; b=B2sCbYl4mlOmsBlcyvQDwAhJAn2jWlZ9N3PcUcvkl0GSB/fE21YIUviGqzO+ZqfohSX2Vh/W5GtNXnYMr0Qk9oLMQYageyySlRAppxTSvDDaVJy0IRgaewyEUdJiqQqIecNgutd0m+3iFpGJclXKBtpkjudrgdhiHGduH+acsVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAWiR0X/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3246FC4CEE3;
+	Tue, 29 Apr 2025 18:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950759;
-	bh=W1PSbjRX385k4I3J7TGdMZNsgQjIkOp52ZhvW+YgQBY=;
+	s=korg; t=1745950071;
+	bh=wxFtqaVaHPzNA0Ea+1ZsQcuBJz2i+BH85apFjLNyBt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EEfJP9BSPttqJK6LOk2OJEMUQxjtR83aDBYcWq8CLqheopsXXhStZsDIVi57HxrQb
-	 y5OLr8DW8Du55f/OgJgSsa87LfGVUdPWhocsHmf3VYzjIKUli/WKQGyHQH+YXra1JG
-	 HcTP/GYoLGjxMLeF976zCbcPHxwh2eIOR6ih2Uk8=
+	b=rAWiR0X/eZaibSz3Dlsytx1tabNuMpq7nuyZXdI2Siiybi2KpwvHr53qKnYiBzPTB
+	 eXduJ9xpiqaKu8mCDV0J9gpeoSZ2Pr0025B/A9bloGnAMRWTClNCC2hrRlPAWvXpGf
+	 dgrwuhrnaCGYEDiS1uoRfSWF086qDHdxND3Erxcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Lai <yi1.lai@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Mostafa Saleh <smostafa@google.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/204] selftests/mincore: Allow read-ahead pages to reach the end of the file
-Date: Tue, 29 Apr 2025 18:44:14 +0200
-Message-ID: <20250429161106.195509222@linuxfoundation.org>
+Subject: [PATCH 6.1 147/167] ubsan: Fix panic from test_ubsan_out_of_bounds
+Date: Tue, 29 Apr 2025 18:44:15 +0200
+Message-ID: <20250429161057.673372803@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Mostafa Saleh <smostafa@google.com>
 
-[ Upstream commit 197c1eaa7ba633a482ed7588eea6fd4aa57e08d4 ]
+[ Upstream commit 9b044614be12d78d3a93767708b8d02fb7dfa9b0 ]
 
-When running the mincore_selftest on a system with an XFS file system, it
-failed the "check_file_mmap" test case due to the read-ahead pages reaching
-the end of the file. The failure log is as below:
+Running lib_ubsan.ko on arm64 (without CONFIG_UBSAN_TRAP) panics the
+kernel:
 
-   RUN           global.check_file_mmap ...
-  mincore_selftest.c:264:check_file_mmap:Expected i (1024) < vec_size (1024)
-  mincore_selftest.c:265:check_file_mmap:Read-ahead pages reached the end of the file
-  check_file_mmap: Test failed
-           FAIL  global.check_file_mmap
+[   31.616546] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: test_ubsan_out_of_bounds+0x158/0x158 [test_ubsan]
+[   31.646817] CPU: 3 UID: 0 PID: 179 Comm: insmod Not tainted 6.15.0-rc2 #1 PREEMPT
+[   31.648153] Hardware name: linux,dummy-virt (DT)
+[   31.648970] Call trace:
+[   31.649345]  show_stack+0x18/0x24 (C)
+[   31.650960]  dump_stack_lvl+0x40/0x84
+[   31.651559]  dump_stack+0x18/0x24
+[   31.652264]  panic+0x138/0x3b4
+[   31.652812]  __ktime_get_real_seconds+0x0/0x10
+[   31.653540]  test_ubsan_load_invalid_value+0x0/0xa8 [test_ubsan]
+[   31.654388]  init_module+0x24/0xff4 [test_ubsan]
+[   31.655077]  do_one_initcall+0xd4/0x280
+[   31.655680]  do_init_module+0x58/0x2b4
 
-This is because the read-ahead window size of the XFS file system on this
-machine is 4 MB, which is larger than the size from the #PF address to the
-end of the file. As a result, all the pages for this file are populated.
+That happens because the test corrupts other data in the stack:
+400:   d5384108        mrs     x8, sp_el0
+404:   f9426d08        ldr     x8, [x8, #1240]
+408:   f85f83a9        ldur    x9, [x29, #-8]
+40c:   eb09011f        cmp     x8, x9
+410:   54000301        b.ne    470 <test_ubsan_out_of_bounds+0x154>  // b.any
 
-  blockdev --getra /dev/nvme0n1p5
-    8192
-  blockdev --getbsz /dev/nvme0n1p5
-    512
+As there is no guarantee the compiler will order the local variables
+as declared in the module:
+        volatile char above[4] = { }; /* Protect surrounding memory. */
+        volatile int arr[4];
+        volatile char below[4] = { }; /* Protect surrounding memory. */
 
-This issue can be fixed by extending the current FILE_SIZE 4MB to a larger
-number, but it will still fail if the read-ahead window size of the file
-system is larger enough. Additionally, in the real world, read-ahead pages
-reaching the end of the file can happen and is an expected behavior.
-Therefore, allowing read-ahead pages to reach the end of the file is a
-better choice for the "check_file_mmap" test case.
+There is another problem where the out-of-bound index is 5 which is larger
+than the extra surrounding memory for protection.
 
-Link: https://lore.kernel.org/r/20250311080940.21413-1-qiuxu.zhuo@intel.com
-Reported-by: Yi Lai <yi1.lai@intel.com>
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+So, use a struct to enforce the ordering, and fix the index to be 4.
+Also, remove some of the volatiles and rely on OPTIMIZER_HIDE_VAR()
+
+Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Link: https://lore.kernel.org/r/20250415203354.4109415-1-smostafa@google.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mincore/mincore_selftest.c | 3 ---
- 1 file changed, 3 deletions(-)
+ lib/test_ubsan.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
-index e949a43a61450..efabfcbe0b498 100644
---- a/tools/testing/selftests/mincore/mincore_selftest.c
-+++ b/tools/testing/selftests/mincore/mincore_selftest.c
-@@ -261,9 +261,6 @@ TEST(check_file_mmap)
- 		TH_LOG("No read-ahead pages found in memory");
- 	}
+diff --git a/lib/test_ubsan.c b/lib/test_ubsan.c
+index 2062be1f2e80f..f90f2b9842ec4 100644
+--- a/lib/test_ubsan.c
++++ b/lib/test_ubsan.c
+@@ -35,18 +35,22 @@ static void test_ubsan_shift_out_of_bounds(void)
  
--	EXPECT_LT(i, vec_size) {
--		TH_LOG("Read-ahead pages reached the end of the file");
--	}
- 	/*
- 	 * End of the readahead window. The rest of the pages shouldn't
- 	 * be in memory.
+ static void test_ubsan_out_of_bounds(void)
+ {
+-	volatile int i = 4, j = 5, k = -1;
+-	volatile char above[4] = { }; /* Protect surrounding memory. */
+-	volatile int arr[4];
+-	volatile char below[4] = { }; /* Protect surrounding memory. */
++	int i = 4, j = 4, k = -1;
++	volatile struct {
++		char above[4]; /* Protect surrounding memory. */
++		int arr[4];
++		char below[4]; /* Protect surrounding memory. */
++	} data;
+ 
+-	above[0] = below[0];
++	OPTIMIZER_HIDE_VAR(i);
++	OPTIMIZER_HIDE_VAR(j);
++	OPTIMIZER_HIDE_VAR(k);
+ 
+ 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "above");
+-	arr[j] = i;
++	data.arr[j] = i;
+ 
+ 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "below");
+-	arr[k] = i;
++	data.arr[k] = i;
+ }
+ 
+ enum ubsan_test_enum {
 -- 
 2.39.5
 
