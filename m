@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5E8AA1777
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7790BAA15F6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F23F84C227B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FEC0176628
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225BB24C083;
-	Tue, 29 Apr 2025 17:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F2025178C;
+	Tue, 29 Apr 2025 17:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZgQfbHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7YJjEI+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53BD243964;
-	Tue, 29 Apr 2025 17:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025CD24503E;
+	Tue, 29 Apr 2025 17:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948877; cv=none; b=uAJgG3GoKczJKDoLoQ2hNUo7ZxHOZ+iWp6NAKHHrZWb031wK+vkuiX4BxLtfKcrYkIG+gUIZyZzk35pS+8feqnTdRVf8ZhplRliUmGc4c7V4memGMo6S6SeF6BOwZvmU3CfBtYTzTROoh8dFuRC9JMIR377HVlSoej+ZkM0TPMU=
+	t=1745947713; cv=none; b=R5gexr5fW8QanuUAqr4YjNr51+MgObQ0yrpukhyhRK8KPQg8XdvXcIwZLP/k0E4W8Q9f/GclE81ALhOpBxGRTaL21CF1ToeDKFGdioGiBneb7a9VNL3FlWJJI+DVWojtPlPlZ9KhilU+02WUJdrAoNoKfzd77oCCpDVpP0R10r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948877; c=relaxed/simple;
-	bh=aaSV4lYZbh+F+H0XC81Jy9OFCRT0rf2HBA1r+dbmGuY=;
+	s=arc-20240116; t=1745947713; c=relaxed/simple;
+	bh=PbqOQNLQW39Ukz/LPlP5AZMcEC3ap+wKTUofykBZDuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k20/58ge5kENoFRisZWf6Q5seS7DB9XgQyMEHBAFJe2kV5T3o6Q0Ph5jRDc2WP8h9o9C8gyOhHIY+wPTfsQTgVu5fBQKzlE7aRUNdIaBIcmCkgzwDmLX8uhFrkjWScun9DFB6ynAm3HKE8LV6okTBC9MpZFE4mLGtaecpTxfrEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZgQfbHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668EDC4CEE3;
-	Tue, 29 Apr 2025 17:47:57 +0000 (UTC)
+	 MIME-Version; b=BSRZjhcWufpHfZHmi28HDTJQLYEArtP0/y/E7rerGKoTrwUGsbngyBjTZoYtaO+UYqSGpYUZnta0huFdKmEitUKNg0osemSBo8qPUFeMHNEosXM32vLPdgicVLHI1srtVmcRhQSgCdGInjAZySrUALNXag4gSd/0zYwSwZPuUgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7YJjEI+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0A3C4CEE9;
+	Tue, 29 Apr 2025 17:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948877;
-	bh=aaSV4lYZbh+F+H0XC81Jy9OFCRT0rf2HBA1r+dbmGuY=;
+	s=korg; t=1745947712;
+	bh=PbqOQNLQW39Ukz/LPlP5AZMcEC3ap+wKTUofykBZDuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PZgQfbHFJ6K0YPIH/yxk27DANwtXI4rVmBmjHLuk/vabnFK8Yolaq+7rm4WRIrVSd
-	 bHid7MI7LKuc6b8lDhd6EXf01Oz6wAmzKGlc1Zs7kpsg+oXNie3zyH082eZfaleyid
-	 Oy3MfDYFZjbGXNgzX6nsLTca8cMQvMBgFGtEm0GY=
+	b=X7YJjEI+j3HZXv+6qi7IoUdJlVfeRDQIFUdhKLqZARfbweSeMtDdNYsXYzphlJZY/
+	 oGpExooz1OYT05HsT818R0vr4qJM/CpYHQK8V7Vu5Mpd91a4BuXqQU6NZou1OU2UFc
+	 4XYdBz9jQJUmYd8UvM80v5EaN79X8/mOWUiPdW0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 147/373] net: b53: enable BPDU reception for management port
+Subject: [PATCH 6.12 083/280] iommu/amd: Return an error if vCPU affinity is set for non-vCPU IRTE
 Date: Tue, 29 Apr 2025 18:40:24 +0200
-Message-ID: <20250429161129.207632505@linuxfoundation.org>
+Message-ID: <20250429161118.508827952@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 36355ddfe8955f226a88a543ed354b9f6b84cd70 ]
+[ Upstream commit 07172206a26dcf3f0bf7c3ecaadd4242b008ea54 ]
 
-For STP to work, receiving BPDUs is essential, but the appropriate bit
-was never set. Without GC_RX_BPDU_EN, the switch chip will filter all
-BPDUs, even if an appropriate PVID VLAN was setup.
+Return -EINVAL instead of success if amd_ir_set_vcpu_affinity() is
+invoked without use_vapic; lying to KVM about whether or not the IRTE was
+configured to post IRQs is all kinds of bad.
 
-Fixes: ff39c2d68679 ("net: dsa: b53: Add bridge support")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20250414200434.194422-1-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d98de49a53e4 ("iommu/amd: Enable vAPIC interrupt remapping mode by default")
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-6-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/iommu/amd/iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index df67262c30924..27025ca5a7598 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -724,6 +724,15 @@ static void b53_enable_mib(struct b53_device *dev)
- 	b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, gc);
- }
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index a24a97a2c6469..f61e48f237324 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -3660,7 +3660,7 @@ static int amd_ir_set_vcpu_affinity(struct irq_data *data, void *vcpu_info)
+ 	 * we should not modify the IRTE
+ 	 */
+ 	if (!dev_data || !dev_data->use_vapic)
+-		return 0;
++		return -EINVAL;
  
-+static void b53_enable_stp(struct b53_device *dev)
-+{
-+	u8 gc;
-+
-+	b53_read8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, &gc);
-+	gc |= GC_RX_BPDU_EN;
-+	b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, gc);
-+}
-+
- static u16 b53_default_pvid(struct b53_device *dev)
- {
- 	if (is5325(dev) || is5365(dev))
-@@ -863,6 +872,7 @@ static int b53_switch_reset(struct b53_device *dev)
- 	}
- 
- 	b53_enable_mib(dev);
-+	b53_enable_stp(dev);
- 
- 	return b53_flush_arl(dev, FAST_AGE_STATIC);
- }
+ 	ir_data->cfg = irqd_cfg(data);
+ 	pi_data->ir_data = ir_data;
 -- 
 2.39.5
 
