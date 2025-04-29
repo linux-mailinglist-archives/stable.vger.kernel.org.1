@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-137242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83922AA1258
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69172AA13CD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D4DF1885A84
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:51:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63EFB189B086
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079EF24E016;
-	Tue, 29 Apr 2025 16:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3B982C60;
+	Tue, 29 Apr 2025 17:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfR+NrU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="indl8k6K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FDE24C098;
-	Tue, 29 Apr 2025 16:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5721DF73C;
+	Tue, 29 Apr 2025 17:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945485; cv=none; b=A6XQrUdn9VILrjPj2G0DSyv8q0vNtUF7wLmeJaxiMB2Xsnm2+Fkz9k6hbl87fFkkV4T6bQrcwh/I9VC06uoJiE4B/6QAEFAKZ6P0fJUFIMTqfNvuNbp7nkPNm8QqW9UIc0T08HL1y5LCU53BIMDFtrmy9bYHG5vDyaem7RcW1HY=
+	t=1745946337; cv=none; b=j1tBjkbcTfjEbD5ToJ1YzBe56K71Y/6g0Q7cSAnpiEjryACw+GZw+IWpq7XqAazpDwbwja3JfB79YyCdatBpdeZjqhUBXOzci/UY7nwpfR8RW5gQXIJJmrZYChN466YBSahuCcBaSwq8qX0hToB7UZ1WRaw6zpOaJq3w08vLNs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945485; c=relaxed/simple;
-	bh=ALIXlGWH/0VgRKXXNWE+r5ycZGXEaGHJAwvElIdQBoE=;
+	s=arc-20240116; t=1745946337; c=relaxed/simple;
+	bh=DWN6c7UjaKWCl3bgAjw4xXyaoTvi2NufpGMUuL205JE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aTG3l2RTzY4DuvgzlqJ+9W6cfn4Ujjd4iRFm0zB6Ef698DwWxpBuvY/yEU1Iv6nHdwPfyTNYCG9zVhDGP0QYGFQI4KviyU4mmHctADvhreJv0JgZjzgsC6nbMDO/CqcBgpKAxoydsBsnq8rFcnpOJiMMOIyzIEbSbb7/2lOzPhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfR+NrU3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351A7C4CEE9;
-	Tue, 29 Apr 2025 16:51:25 +0000 (UTC)
+	 MIME-Version; b=KDL7wHxBLxSXTduuls2mV/DWb9GJT0CFaZbK/aNyDQJpM04iaB5WVyne7mRZaWzwQq2cuWXfz5QpzmQz2sc2LuClE+40VeoWlHLxVCwQS5AVNZQ1I8nRBqwLizUHtSlqoJRs8pRUfBatwaFeC+z4r21DUIiOS4tcJ6+noX3aF38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=indl8k6K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFB7C4CEE9;
+	Tue, 29 Apr 2025 17:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945485;
-	bh=ALIXlGWH/0VgRKXXNWE+r5ycZGXEaGHJAwvElIdQBoE=;
+	s=korg; t=1745946337;
+	bh=DWN6c7UjaKWCl3bgAjw4xXyaoTvi2NufpGMUuL205JE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XfR+NrU3x09g0VnQtmNC/5t4LXkVn5ESPj0FSLlGofQ3UGj+Uuu06KP7fGIvz31ii
-	 87C8jrlNjMasPdMSQxZA/VkphkRUt8n77BhoPcq1tMD6YKePKMR9/dqTZiYKF3WDpN
-	 uDLWdS99s9V7E2szXD72FbNiuqCI/WNkOxP5HBsE=
+	b=indl8k6KDWr9ReVuHoE06SwN91NJFGRc8ioOkLVxaGpsVBpdRdNYhNlN4FnjtVbhw
+	 pnG659kAYn22yVCg+cr5ClQPjkQ7gtwoeRpUKL6eMcR8ueS1EccKlC3+LYGklqpvpn
+	 91jgcnLV44KOpKQxzDM2POFEiTIAsLMoPppUdedo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengguang Xu <cgxu519@mykernel.net>,
-	Theodore Tso <tytso@mit.edu>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 129/179] ext4: code cleanup for ext4_statfs_project()
+Subject: [PATCH 6.14 233/311] tracing: Enforce the persistent ring buffer to be page aligned
 Date: Tue, 29 Apr 2025 18:41:10 +0200
-Message-ID: <20250429161054.611448291@linuxfoundation.org>
+Message-ID: <20250429161130.572666881@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +70,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengguang Xu <cgxu519@mykernel.net>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit a08fe66e4a0e12a3df982b28059f3a90e0f1b31e ]
+[ Upstream commit c44a14f216f45d8bf1634b52854a699d7090f1e8 ]
 
-Calling min_not_zero() to simplify complicated prjquota
-limit comparison in ext4_statfs_project().
+Enforce that the address and the size of the memory used by the persistent
+ring buffer is page aligned. Also update the documentation to reflect this
+requirement.
 
-Signed-off-by: Chengguang Xu <cgxu519@mykernel.net>
-Link: https://lore.kernel.org/r/20200210082445.2379-1-cgxu519@mykernel.net
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: f87d3af74193 ("ext4: don't over-report free space or inodes in statvfs")
+Link: https://lore.kernel.org/all/CAHk-=whUOfVucfJRt7E0AH+GV41ELmS4wJqxHDnui6Giddfkzw@mail.gmail.com/
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/20250402144953.412882844@goodmis.org
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |  2 ++
+ Documentation/trace/debugging.rst               |  2 ++
+ kernel/trace/trace.c                            | 10 ++++++++++
+ 3 files changed, 14 insertions(+)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 8675b4dcc899d..332849e17b2bd 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5680,10 +5680,8 @@ static int ext4_statfs_project(struct super_block *sb,
- 		return PTR_ERR(dquot);
- 	spin_lock(&dquot->dq_dqb_lock);
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index aa7447f8837cb..56be1fc99bdd4 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -7243,6 +7243,8 @@
+ 			This is just one of many ways that can clear memory. Make sure your system
+ 			keeps the content of memory across reboots before relying on this option.
  
--	limit = dquot->dq_dqb.dqb_bsoftlimit;
--	if (dquot->dq_dqb.dqb_bhardlimit &&
--	    (!limit || dquot->dq_dqb.dqb_bhardlimit < limit))
--		limit = dquot->dq_dqb.dqb_bhardlimit;
-+	limit = min_not_zero(dquot->dq_dqb.dqb_bsoftlimit,
-+			     dquot->dq_dqb.dqb_bhardlimit);
- 	limit >>= sb->s_blocksize_bits;
++			NB: Both the mapped address and size must be page aligned for the architecture.
++
+ 			See also Documentation/trace/debugging.rst
  
- 	if (limit && buf->f_blocks > limit) {
-@@ -5695,11 +5693,8 @@ static int ext4_statfs_project(struct super_block *sb,
- 			 (buf->f_blocks - curblock) : 0;
- 	}
  
--	limit = dquot->dq_dqb.dqb_isoftlimit;
--	if (dquot->dq_dqb.dqb_ihardlimit &&
--	    (!limit || dquot->dq_dqb.dqb_ihardlimit < limit))
--		limit = dquot->dq_dqb.dqb_ihardlimit;
--
-+	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
-+			     dquot->dq_dqb.dqb_ihardlimit);
- 	if (limit && buf->f_files > limit) {
- 		buf->f_files = limit;
- 		buf->f_ffree =
+diff --git a/Documentation/trace/debugging.rst b/Documentation/trace/debugging.rst
+index 54fb16239d703..d54bc500af80b 100644
+--- a/Documentation/trace/debugging.rst
++++ b/Documentation/trace/debugging.rst
+@@ -136,6 +136,8 @@ kernel, so only the same kernel is guaranteed to work if the mapping is
+ preserved. Switching to a different kernel version may find a different
+ layout and mark the buffer as invalid.
+ 
++NB: Both the mapped address and size must be page aligned for the architecture.
++
+ Using trace_printk() in the boot instance
+ -----------------------------------------
+ By default, the content of trace_printk() goes into the top level tracing
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 0e6d517e74e0f..50aa6d5908329 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -10427,6 +10427,16 @@ __init static void enable_instances(void)
+ 		}
+ 
+ 		if (start) {
++			/* Start and size must be page aligned */
++			if (start & ~PAGE_MASK) {
++				pr_warn("Tracing: mapping start addr %pa is not page aligned\n", &start);
++				continue;
++			}
++			if (size & ~PAGE_MASK) {
++				pr_warn("Tracing: mapping size %pa is not page aligned\n", &size);
++				continue;
++			}
++
+ 			addr = map_pages(start, size);
+ 			if (addr) {
+ 				pr_info("Tracing: mapped boot instance %s at physical memory %pa of size 0x%lx\n",
 -- 
 2.39.5
 
