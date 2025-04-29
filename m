@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-137339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E129CAA1300
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:01:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12F90AA16E8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:41:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 087383BA006
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:57:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F549188D8B6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC08725334C;
-	Tue, 29 Apr 2025 16:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2846E227E95;
+	Tue, 29 Apr 2025 17:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8n6NRTF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufoo3Jef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790412522A2;
-	Tue, 29 Apr 2025 16:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B79242D68;
+	Tue, 29 Apr 2025 17:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945773; cv=none; b=Lqr0uLrhCa6OxkOJyw6wIZckj0uwRwXSvpiJ01v/eVnBPv7Ju22WYSRubeIFqFzXQ6uaDFGzwJkJhmpmfcsvFAy9p2DcRseuxFjtN16N4pT1wsH2jMKj2koqGROwpx1WrIPeiFtg5HlzYzBqkLHFe5vo7sqwN7ImCbuk/EDTylI=
+	t=1745948489; cv=none; b=eOt93og8sGPonEC8043jP2y5OmMXGAXGoRt1dNCLphZpjxvlnRJDXeEBAZE3guqufJPEaGOK3it97pn4ZbQuvlc127OSiKbiftw3gAXyVZ5lvOV0gKzPSOuBek0Q2plyp6qvhmD/Zt4qMshaxXAMUHO3kok5fLIdmYA3YjI6YKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945773; c=relaxed/simple;
-	bh=c/F3T3FO7quPtdkRCg12Telz8UMP0RVaCMUHBVRO9/M=;
+	s=arc-20240116; t=1745948489; c=relaxed/simple;
+	bh=587lfatq6AV9ZIjII0yhWiL3V0FEfXJnpi8ac3RS6GQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E03fvCrMoxGP0IWP8rSEP/u5JKVSJSanlOA2389UVOdoVSS/BAqqZs1uRMLwBNgoMJsi8IsZOZaDnbDARyXXS348E8F5USePtgQiYsFCU/V+YiV3Y+cOzqXOI1d/7eWWG8BPsilpuarKtOu/PlRh/rjdclnWu0AteAZn/UDhCm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8n6NRTF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC72DC4CEE3;
-	Tue, 29 Apr 2025 16:56:12 +0000 (UTC)
+	 MIME-Version; b=cI2ml+7ppavBlsyZ+664Y8tdOOBMP5BtIUdNtb4UxAonbvUah5rLmLwVnwQwrGuK6LLnZWBocWkOMxq2rRUn/huJEwFJ9RpG4FNaCXau2kSuu2LkOML7oDGTPQHsp7u/hrk6NDMxX7hAQxKl2O1S6jbnNErSKr8LMSQrL2UkocE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufoo3Jef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149C2C4CEE3;
+	Tue, 29 Apr 2025 17:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945773;
-	bh=c/F3T3FO7quPtdkRCg12Telz8UMP0RVaCMUHBVRO9/M=;
+	s=korg; t=1745948489;
+	bh=587lfatq6AV9ZIjII0yhWiL3V0FEfXJnpi8ac3RS6GQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8n6NRTFdLpsvq1mP9movISrvOK6reAK8Ec7xHsSSweeiduUC0TxC81XoBXbYN+kM
-	 +pbHAh5TBRdYT+Q0WAxudglxN7L5N9Z1KXbt1+xCHGnZWXUY4VL0knpiEhyO9bT9bs
-	 OYGqP7RAshc0v+5DB9q58SOwcvclnqtOuDUNYbqA=
+	b=ufoo3JefE7KzHfCFUSbHGoDP9hghW7CS8ZHGgvEP/8araD/zbhu9XGSCP35HE2RtZ
+	 tFDcF+4E1TKrFt6vV6CYvY8EwKMz44nvPp2drPBUyP9fRT0Fb1q3vDHTRoLV0BrFES
+	 AFmaBCepe0L6ig/dZVsdsL5F6k3SG4F/a7JaEJDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	syzbot+b4cd76826045a1eb93c1@syzkaller.appspotmail.com,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 044/311] btrfs: avoid page_lockend underflow in btrfs_punch_hole_lock_range()
+Subject: [PATCH 5.15 004/373] net: tls: explicitly disallow disconnect
 Date: Tue, 29 Apr 2025 18:38:01 +0200
-Message-ID: <20250429161122.829991700@linuxfoundation.org>
+Message-ID: <20250429161123.311080184@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit bc2dbc4983afedd198490cca043798f57c93e9bf ]
+[ Upstream commit 5071a1e606b30c0c11278d3c6620cd6a24724cf6 ]
 
-[BUG]
-When running btrfs/004 with 4K fs block size and 64K page size,
-sometimes fsstress workload can take 100% CPU for a while, but not long
-enough to trigger a 120s hang warning.
+syzbot discovered that it can disconnect a TLS socket and then
+run into all sort of unexpected corner cases. I have a vague
+recollection of Eric pointing this out to us a long time ago.
+Supporting disconnect is really hard, for one thing if offload
+is enabled we'd need to wait for all packets to be _acked_.
+Disconnect is not commonly used, disallow it.
 
-[CAUSE]
-When such 100% CPU usage happens, btrfs_punch_hole_lock_range() is
-always in the call trace.
+The immediate problem syzbot run into is the warning in the strp,
+but that's just the easiest bug to trigger:
 
-One example when this problem happens, the function
-btrfs_punch_hole_lock_range() got the following parameters:
+  WARNING: CPU: 0 PID: 5834 at net/tls/tls_strp.c:486 tls_strp_msg_load+0x72e/0xa80 net/tls/tls_strp.c:486
+  RIP: 0010:tls_strp_msg_load+0x72e/0xa80 net/tls/tls_strp.c:486
+  Call Trace:
+   <TASK>
+   tls_rx_rec_wait+0x280/0xa60 net/tls/tls_sw.c:1363
+   tls_sw_recvmsg+0x85c/0x1c30 net/tls/tls_sw.c:2043
+   inet6_recvmsg+0x2c9/0x730 net/ipv6/af_inet6.c:678
+   sock_recvmsg_nosec net/socket.c:1023 [inline]
+   sock_recvmsg+0x109/0x280 net/socket.c:1045
+   __sys_recvfrom+0x202/0x380 net/socket.c:2237
 
-  lock_start = 4096, lockend = 20469
-
-Then we calculate @page_lockstart by rounding up lock_start to page
-boundary, which is 64K (page size is 64K).
-
-For @page_lockend, we round down the value towards page boundary, which
-result 0.  Then since we need to pass an inclusive end to
-filemap_range_has_page(), we subtract 1 from the rounded down value,
-resulting in (u64)-1.
-
-In the above case, the range is inside the same page, and we do not even
-need to call filemap_range_has_page(), not to mention to call it with
-(u64)-1 at the end.
-
-This behavior will cause btrfs_punch_hole_lock_range() to busy loop
-waiting for irrelevant range to have its pages dropped.
-
-[FIX]
-Calculate @page_lockend by just rounding down @lockend, without
-decreasing the value by one.  So @page_lockend will no longer overflow.
-
-Then exit early if @page_lockend is no larger than @page_lockstart.
-As it means either the range is inside the same page, or the two pages
-are adjacent already.
-
-Finally only decrease @page_lockend when calling filemap_range_has_page().
-
-Fixes: 0528476b6ac7 ("btrfs: fix the filemap_range_has_page() call in btrfs_punch_hole_lock_range()")
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 3c4d7559159b ("tls: kernel TLS support")
+Reported-by: syzbot+b4cd76826045a1eb93c1@syzkaller.appspotmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20250404180334.3224206-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/file.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/tls/tls_main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
-index 0b568c8d24cbc..a92997a583bd2 100644
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -2104,15 +2104,20 @@ static void btrfs_punch_hole_lock_range(struct inode *inode,
- 	 * will always return true.
- 	 * So here we need to do extra page alignment for
- 	 * filemap_range_has_page().
-+	 *
-+	 * And do not decrease page_lockend right now, as it can be 0.
- 	 */
- 	const u64 page_lockstart = round_up(lockstart, PAGE_SIZE);
--	const u64 page_lockend = round_down(lockend + 1, PAGE_SIZE) - 1;
-+	const u64 page_lockend = round_down(lockend + 1, PAGE_SIZE);
+diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+index 4a3bf8528da7c..ba170f1f38a4c 100644
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -626,6 +626,11 @@ static int tls_setsockopt(struct sock *sk, int level, int optname,
+ 	return do_tls_setsockopt(sk, optname, optval, optlen);
+ }
  
- 	while (1) {
- 		truncate_pagecache_range(inode, lockstart, lockend);
++static int tls_disconnect(struct sock *sk, int flags)
++{
++	return -EOPNOTSUPP;
++}
++
+ struct tls_context *tls_ctx_create(struct sock *sk)
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+@@ -720,6 +725,7 @@ static void build_protos(struct proto prot[TLS_NUM_CONFIG][TLS_NUM_CONFIG],
+ 	prot[TLS_BASE][TLS_BASE] = *base;
+ 	prot[TLS_BASE][TLS_BASE].setsockopt	= tls_setsockopt;
+ 	prot[TLS_BASE][TLS_BASE].getsockopt	= tls_getsockopt;
++	prot[TLS_BASE][TLS_BASE].disconnect	= tls_disconnect;
+ 	prot[TLS_BASE][TLS_BASE].close		= tls_sk_proto_close;
  
- 		lock_extent(&BTRFS_I(inode)->io_tree, lockstart, lockend,
- 			    cached_state);
-+		/* The same page or adjacent pages. */
-+		if (page_lockend <= page_lockstart)
-+			break;
- 		/*
- 		 * We can't have ordered extents in the range, nor dirty/writeback
- 		 * pages, because we have locked the inode's VFS lock in exclusive
-@@ -2124,7 +2129,7 @@ static void btrfs_punch_hole_lock_range(struct inode *inode,
- 		 * we do, unlock the range and retry.
- 		 */
- 		if (!filemap_range_has_page(inode->i_mapping, page_lockstart,
--					    page_lockend))
-+					    page_lockend - 1))
- 			break;
- 
- 		unlock_extent(&BTRFS_I(inode)->io_tree, lockstart, lockend,
+ 	prot[TLS_SW][TLS_BASE] = prot[TLS_BASE][TLS_BASE];
 -- 
 2.39.5
 
