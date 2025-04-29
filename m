@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-137480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8E6AA1339
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3514EAA175A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05E997AE674
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8609917E40D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90011FE468;
-	Tue, 29 Apr 2025 17:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED9DC148;
+	Tue, 29 Apr 2025 17:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ya/Rl+eW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCvV10XV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92875229B05;
-	Tue, 29 Apr 2025 17:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7E82135DD;
+	Tue, 29 Apr 2025 17:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946191; cv=none; b=il0D/0/Tz2Uws0pPb1EYIhLB+L+wHbpyJuHq/+NiPb6yAsvaq2XpDNC1JGgkf06U2NCflERIeoKy+vjP1jZvSYTNlEAPPzfPLIuWicyjv987yTJFiiOr3EO3CrsAbqnXSak7+UYP+dZXCcYfZcrl58Hbi/+SsOY2yZ4KXQK6Y8U=
+	t=1745948799; cv=none; b=TnGcV9Vb3b/GkLSRbXojN8koGET0axkwzuoM7x/smqqLuMDZo3sFRgoxgLt0tZRciOIrzkv+dPrw3VJi3pzfUmfHSYvCfZEv9quxSaDwQzq12kgIj2a84AZWvoUuEc8cVQS4N7yGO756iUaNiQJeIVkG/6zFSNI0mNDf8M+km2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946191; c=relaxed/simple;
-	bh=UvnoctLgWZKjZQVOWghBgpGHgOCVVRJbd0iEZ6w0/CM=;
+	s=arc-20240116; t=1745948799; c=relaxed/simple;
+	bh=aZE5adbCD6RDAst8yfM5re99tV+6V7YHzp3I/KXB8Y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAP+vEZic6Welpblqq68fgS7Ix6Ci8hMCvrWGgINUfHefHM32kwAmNFWbPVsTnjQW8yDvRbbUNdNlEyxyDXKtf1gJG0k1sTo9EteGN1jB46LV3Pb2mBtA+pStqvvy/Ogkgm+9psaVnzq7DdkZgeuMb31+i85ZJ0Y1bE7aqAOVCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ya/Rl+eW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F91C4CEE3;
-	Tue, 29 Apr 2025 17:03:10 +0000 (UTC)
+	 MIME-Version; b=JqlcHoAvPgb7lCT3HakhFMAfKVsGn/LK1er8RAL+FN/oT+TcKfG4LeuGxz6iRCnSkpCudcz7isu46GVCRbTuTNcLywIeMsyT6ICZLvlc1Ykf5JxNIIUh7HbtWoiR+wNvHafoLg3m/xABuSjUsuCKodtGJo7x84C/SLmnr+lilVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCvV10XV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AD6C4CEE3;
+	Tue, 29 Apr 2025 17:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946191;
-	bh=UvnoctLgWZKjZQVOWghBgpGHgOCVVRJbd0iEZ6w0/CM=;
+	s=korg; t=1745948799;
+	bh=aZE5adbCD6RDAst8yfM5re99tV+6V7YHzp3I/KXB8Y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ya/Rl+eWoJtF+reYF5kheXzQnr6w6uO+lF0fvpZkywbtVNsIaqc3iLnzyjckLnKTD
-	 viAYwBzTZS+6jYARHKGUmfdmiAc3h9I0nLzBa8duGoghF5voCnMQ+3Jh1VLBUvaBfL
-	 9ODsHzWn/2LHvTbOACK1Nzl1B8zzW+ySlM4gFZUA=
+	b=JCvV10XVHyq2KCNhsgah7ITL+sS6GV7uEOIlRr0T51pL9y77HZUZkyAC58M+puxBD
+	 GTmSp8PLI3UwVZ0cKwKiLwsa9X9USzJxo/ldbuYpX2Rj8Zl16bc5OWUzTXk4B2RVoC
+	 v/pZGtuE1XMCf3lvc66Eny5FB0o5XBhH1reN01X4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Xue <zxue@semtech.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.14 156/311] USB: serial: option: add Sierra Wireless EM9291
-Date: Tue, 29 Apr 2025 18:39:53 +0200
-Message-ID: <20250429161127.423035040@linuxfoundation.org>
+	John Rowley <lkml@johnrowley.me>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 117/373] ACPI: platform-profile: Fix CFI violation when accessing sysfs files
+Date: Tue, 29 Apr 2025 18:39:54 +0200
+Message-ID: <20250429161127.988785617@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Xue <zxue@semtech.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 968e1cbb1f6293c3add9607f80b5ce3d29f57583 upstream.
+commit dd4f730b557ce701a2cd4f604bf1e57667bd8b6e upstream.
 
-Add Sierra Wireless EM9291.
+When an attribute group is created with sysfs_create_group(), the
+->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
+and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
+respectively. These functions use container_of() to get the respective
+callback from the passed attribute, meaning that these callbacks need to
+be of the same type as the callbacks in 'struct kobj_attribute'.
 
-Interface 0: MBIM control
-          1: MBIM data
-          3: AT port
-          4: Diagnostic port
+However, ->show() and ->store() in the platform_profile driver are
+defined for struct device_attribute with the help of DEVICE_ATTR_RO()
+and DEVICE_ATTR_RW(), which results in a CFI violation when accessing
+platform_profile or platform_profile_choices under /sys/firmware/acpi
+because the types do not match:
 
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1199 ProdID=90e3 Rev=00.06
-S:  Manufacturer=Sierra Wireless, Incorporated
-S:  Product=Sierra Wireless EM9291
-S:  SerialNumber=xxxxxxxxxxxxxxxx
-C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=(none)
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+  CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
 
-Signed-off-by: Adam Xue <zxue@semtech.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+There is no functional issue from the type mismatch because the layout
+of 'struct kobj_attribute' and 'struct device_attribute' are the same,
+so the container_of() cast does not break anything aside from CFI.
+
+Change the type of platform_profile_choices_show() and
+platform_profile_{show,store}() to match the callbacks in
+'struct kobj_attribute' and update the attribute variables to
+match, which resolves the CFI violation.
+
+Cc: All applicable <stable@vger.kernel.org>
+Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
+Reported-by: John Rowley <lkml@johnrowley.me>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
+Tested-by: John Rowley <lkml@johnrowley.me>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://patch.msgid.link/20250210-acpi-platform_profile-fix-cfi-violation-v3-1-ed9e9901c33a@kernel.org
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[nathan: Fix conflicts in older stable branches]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/acpi/platform_profile.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -611,6 +611,7 @@ static void option_instat_callback(struc
- /* Sierra Wireless products */
- #define SIERRA_VENDOR_ID			0x1199
- #define SIERRA_PRODUCT_EM9191			0x90d3
-+#define SIERRA_PRODUCT_EM9291			0x90e3
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -22,8 +22,8 @@ static const char * const profile_names[
+ };
+ static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
  
- /* UNISOC (Spreadtrum) products */
- #define UNISOC_VENDOR_ID			0x1782
-@@ -2432,6 +2433,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
+-static ssize_t platform_profile_choices_show(struct device *dev,
+-					struct device_attribute *attr,
++static ssize_t platform_profile_choices_show(struct kobject *kobj,
++					struct kobj_attribute *attr,
+ 					char *buf)
+ {
+ 	int len = 0;
+@@ -49,8 +49,8 @@ static ssize_t platform_profile_choices_
+ 	return len;
+ }
+ 
+-static ssize_t platform_profile_show(struct device *dev,
+-					struct device_attribute *attr,
++static ssize_t platform_profile_show(struct kobject *kobj,
++					struct kobj_attribute *attr,
+ 					char *buf)
+ {
+ 	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
+@@ -77,8 +77,8 @@ static ssize_t platform_profile_show(str
+ 	return sysfs_emit(buf, "%s\n", profile_names[profile]);
+ }
+ 
+-static ssize_t platform_profile_store(struct device *dev,
+-			    struct device_attribute *attr,
++static ssize_t platform_profile_store(struct kobject *kobj,
++			    struct kobj_attribute *attr,
+ 			    const char *buf, size_t count)
+ {
+ 	int err, i;
+@@ -115,12 +115,12 @@ static ssize_t platform_profile_store(st
+ 	return count;
+ }
+ 
+-static DEVICE_ATTR_RO(platform_profile_choices);
+-static DEVICE_ATTR_RW(platform_profile);
++static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
++static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
+ 
+ static struct attribute *platform_profile_attrs[] = {
+-	&dev_attr_platform_profile_choices.attr,
+-	&dev_attr_platform_profile.attr,
++	&attr_platform_profile_choices.attr,
++	&attr_platform_profile.attr,
+ 	NULL
+ };
+ 
 
 
 
