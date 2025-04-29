@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56676AA13C4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C67EAA161E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B2851895789
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D68E716CC95
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83DD524EAB2;
-	Tue, 29 Apr 2025 17:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04ABE2512DE;
+	Tue, 29 Apr 2025 17:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJdnQ5Xd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kn5oKyPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410FC24A06A;
-	Tue, 29 Apr 2025 17:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49EF23E340;
+	Tue, 29 Apr 2025 17:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946298; cv=none; b=R3FK7AHujpAl0OO3gPvT9yLUzS/QAduscj6qqCXS0jVwBryoYtl7F8bY0kiSEMHL1KdsTQTOMPRbmZPEb1RLLIw1FZzgSdaI+RgeiPjxWiy12vbxm5U83tcW1L5HKZzqa4ZdE4eBsGeY/kvONK5beKWk9AZwm34cAdAteAIPEoI=
+	t=1745947798; cv=none; b=EvvJcPdzsPi2Hf1E1wXsDZ+lLrQR5UduEexk69SMWFosDW3bxF/UKP2CoscSqWTfd+HxJNuhqUU5JEKsHinHNJsCfJlPk9VkshA2lMuGmhrSolHIivyCvhg3gi7XTjkadg9C1LP3U/8+lJdMxtHivBnEDkNG7ibOaU48sJOWfWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946298; c=relaxed/simple;
-	bh=UBK8FsxVoePSP0WKteXtFu4TvppBt5nrZImkMinv5YA=;
+	s=arc-20240116; t=1745947798; c=relaxed/simple;
+	bh=USOZX0tpI2ZMmuIiibumQPk6/73eEMX2HOxSE6buXu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V9o/GcD6YYfdWmi+IKPof+R0m8RVFwE/peB72x3RcZY9+SMSSGs6vUO1e/loX09+BuyizgaHa0u82GqM3hXhJMJjRN8k6Az+vB+2a79AgqrxK2xnSQcI9W2XJrUGS1gyhyLm9tBy623hPdhFdIj+vcc2uyRW3tYBKQ6ZwW2a68I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJdnQ5Xd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC985C4CEE3;
-	Tue, 29 Apr 2025 17:04:57 +0000 (UTC)
+	 MIME-Version; b=ebtMtJtp81Nu3D/B2TiM2AuYXHUUAvEHHl6LNLDjDTDY0H6cBg3iuyY9wQ9XQxJhphneZF9igBHCrQ/8ozIw3ejySUediscQZjSp+x5UsPI6bc77KgCXo6dJP7RRB6YxJUfsZNvZeovXpU3mP8t18CFZVLygw7//3EBPAuiVjPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kn5oKyPo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA571C4CEE9;
+	Tue, 29 Apr 2025 17:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946298;
-	bh=UBK8FsxVoePSP0WKteXtFu4TvppBt5nrZImkMinv5YA=;
+	s=korg; t=1745947798;
+	bh=USOZX0tpI2ZMmuIiibumQPk6/73eEMX2HOxSE6buXu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CJdnQ5XdF096yUWqP6HzMi7aAnhZfDm12q97LVVvLk4Thz64I0tYy6OsFua+c2AUr
-	 FLgzeoEyLNxTjSqfiPdYOc4aaaMm/7S5pntbShbpbKUXe7UaRyiAMs2pq+rMHGgdfv
-	 XM/E1o+ezyr07nhfwihBZvV2lQ4N93FpKqlCgJn0=
+	b=Kn5oKyPoe2TJBUs2c/k2iE6lySPZHfnODn9gLZ0NuCRHPIrgIgBgXwr0EN5KmbdxH
+	 uIon/UYmgJts1RRhvSFpXFnzwa0GyvBG4rTSD+nlqTl7G0kJimdeje31pODXLHRQQl
+	 X0RE59VKGJEJuWIld+nsRZ/eGYdyTtdod7u+XDFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Mastykin <mastichi@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 180/311] pinctrl: mcp23s08: Get rid of spurious level interrupts
+Subject: [PATCH 6.12 076/280] net_sched: hfsc: Fix a potential UAF in hfsc_dequeue() too
 Date: Tue, 29 Apr 2025 18:40:17 +0200
-Message-ID: <20250429161128.397274459@linuxfoundation.org>
+Message-ID: <20250429161118.218553672@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Mastykin <mastichi@gmail.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 7b0671b97f0872d6950ccc925e210cb3f67721bf ]
+[ Upstream commit 6ccbda44e2cc3d26fd22af54c650d6d5d801addf ]
 
-irq_mask()/irq_unmask() are not called for nested interrupts. So level
-interrupts are never masked, chip's interrupt output is not cleared on
-INTCAP or GPIO read, the irq handler is uselessly called again. Nested
-irq handler is not called again, because interrupt reason is cleared by
-its first call.
-/proc/interrupts shows that number of chip's irqs is greater than
-number of nested irqs.
+Similarly to the previous patch, we need to safe guard hfsc_dequeue()
+too. But for this one, we don't have a reliable reproducer.
 
-This patch adds masking and unmasking level interrupts inside irq handler.
-
-Signed-off-by: Dmitry Mastykin <mastichi@gmail.com>
-Link: https://lore.kernel.org/20250122120504.1279790-1-mastichi@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 ("Linux-2.6.12-rc2")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20250417184732.943057-3-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-mcp23s08.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ net/sched/sch_hfsc.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
-index b96e6368a9568..4d1f41488017e 100644
---- a/drivers/pinctrl/pinctrl-mcp23s08.c
-+++ b/drivers/pinctrl/pinctrl-mcp23s08.c
-@@ -382,6 +382,7 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
- {
- 	struct mcp23s08 *mcp = data;
- 	int intcap, intcon, intf, i, gpio, gpio_orig, intcap_mask, defval, gpinten;
-+	bool need_unmask = false;
- 	unsigned long int enabled_interrupts;
- 	unsigned int child_irq;
- 	bool intf_set, intcap_changed, gpio_bit_changed,
-@@ -396,9 +397,6 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
- 		goto unlock;
- 	}
- 
--	if (mcp_read(mcp, MCP_INTCAP, &intcap))
--		goto unlock;
--
- 	if (mcp_read(mcp, MCP_INTCON, &intcon))
- 		goto unlock;
- 
-@@ -408,6 +406,16 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
- 	if (mcp_read(mcp, MCP_DEFVAL, &defval))
- 		goto unlock;
- 
-+	/* Mask level interrupts to avoid their immediate reactivation after clearing */
-+	if (intcon) {
-+		need_unmask = true;
-+		if (mcp_write(mcp, MCP_GPINTEN, gpinten & ~intcon))
-+			goto unlock;
-+	}
-+
-+	if (mcp_read(mcp, MCP_INTCAP, &intcap))
-+		goto unlock;
-+
- 	/* This clears the interrupt(configurable on S18) */
- 	if (mcp_read(mcp, MCP_GPIO, &gpio))
- 		goto unlock;
-@@ -470,9 +478,18 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
- 		}
- 	}
- 
-+	if (need_unmask) {
-+		mutex_lock(&mcp->lock);
-+		goto unlock;
-+	}
-+
- 	return IRQ_HANDLED;
- 
- unlock:
-+	if (need_unmask)
-+		if (mcp_write(mcp, MCP_GPINTEN, gpinten))
-+			dev_err(mcp->chip.parent, "can't unmask GPINTEN\n");
-+
- 	mutex_unlock(&mcp->lock);
- 	return IRQ_HANDLED;
- }
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index e730d3f791c24..5bb4ab9941d6e 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -1637,10 +1637,16 @@ hfsc_dequeue(struct Qdisc *sch)
+ 		if (cl->qdisc->q.qlen != 0) {
+ 			/* update ed */
+ 			next_len = qdisc_peek_len(cl->qdisc);
+-			if (realtime)
+-				update_ed(cl, next_len);
+-			else
+-				update_d(cl, next_len);
++			/* Check queue length again since some qdisc implementations
++			 * (e.g., netem/codel) might empty the queue during the peek
++			 * operation.
++			 */
++			if (cl->qdisc->q.qlen != 0) {
++				if (realtime)
++					update_ed(cl, next_len);
++				else
++					update_d(cl, next_len);
++			}
+ 		} else {
+ 			/* the class becomes passive */
+ 			eltree_remove(cl);
 -- 
 2.39.5
 
