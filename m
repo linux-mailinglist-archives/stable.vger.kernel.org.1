@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F99AA198A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:13:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 500DCAA1A87
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1389F3ADF90
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 997BF9A63B7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F9F22AE68;
-	Tue, 29 Apr 2025 18:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E426A253B77;
+	Tue, 29 Apr 2025 18:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAWiR0X/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Laq5ZDsJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388B3221D92;
-	Tue, 29 Apr 2025 18:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B3C25394B;
+	Tue, 29 Apr 2025 18:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950072; cv=none; b=HUNxS9/YpvFAd5cICq4lvXvwQ+lNmDXDVdy3J61JyD6IcRZODHyEo881Bpatzer+tSQ+bwmd1BnYbipr/NXdosTMbs4SCA6tLNhqTJczv1PB1Vqq2MlXkfUntoeEgVv0l9kX92xMDVtY3KXS6XPsxgQa62kbibQe4AWsangLEV0=
+	t=1745950762; cv=none; b=iPAkfd/izUhswnsXTKZqQJiJEPqUFOI79I5qDK7lEqWJthfnGp34PZ32rYQvA8wmPcdSfUHEcS6+dQsJ+B91yWslYpy6wxq72+EXbQrRgtI8NKNcStili/uqMvthLKwrzn5VsNnyOiyFXYRGkWQ4HY4Q5zsZfuxJObqBnGbEImc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950072; c=relaxed/simple;
-	bh=wxFtqaVaHPzNA0Ea+1ZsQcuBJz2i+BH85apFjLNyBt4=;
+	s=arc-20240116; t=1745950762; c=relaxed/simple;
+	bh=pY0VQDanUa82g+WbI/mmCElk6cq2+0dNjJYZyxzbr+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B2sCbYl4mlOmsBlcyvQDwAhJAn2jWlZ9N3PcUcvkl0GSB/fE21YIUviGqzO+ZqfohSX2Vh/W5GtNXnYMr0Qk9oLMQYageyySlRAppxTSvDDaVJy0IRgaewyEUdJiqQqIecNgutd0m+3iFpGJclXKBtpkjudrgdhiHGduH+acsVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAWiR0X/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3246FC4CEE3;
-	Tue, 29 Apr 2025 18:07:51 +0000 (UTC)
+	 MIME-Version; b=sm5IqoIVRe2PUwKCpd6axWfF79eYVYYK9CYHZ2qy7FqyMBhjP9nhQ1jW3ZUQ5GajgEJJlZcG5pBoPrayTD7rPoBRSoza4gLLrmWTG1eDmwiDa8kKoJnIhJaKTDtGtORzKv+kNbJiQClvrH3uwjtxW0BO14IjA7iRXBx/tRYy6Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Laq5ZDsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337D4C4CEE3;
+	Tue, 29 Apr 2025 18:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950071;
-	bh=wxFtqaVaHPzNA0Ea+1ZsQcuBJz2i+BH85apFjLNyBt4=;
+	s=korg; t=1745950762;
+	bh=pY0VQDanUa82g+WbI/mmCElk6cq2+0dNjJYZyxzbr+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rAWiR0X/eZaibSz3Dlsytx1tabNuMpq7nuyZXdI2Siiybi2KpwvHr53qKnYiBzPTB
-	 eXduJ9xpiqaKu8mCDV0J9gpeoSZ2Pr0025B/A9bloGnAMRWTClNCC2hrRlPAWvXpGf
-	 dgrwuhrnaCGYEDiS1uoRfSWF086qDHdxND3Erxcg=
+	b=Laq5ZDsJ1htbwFw8mzK3wxhGOCjpqR2jmdfJsbLl+G2c9ispMsOIGM/tgqmk8/B+c
+	 /55NTRkGRK6nZM6I5QEk2PSFgfciStSpopL/fKQrfun4LMcNrai6hr/9I3jjJhUgkK
+	 Zs9x3SQjaEbB48MzK1NS6YDC/thOfCDERAk1pJH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mostafa Saleh <smostafa@google.com>,
-	Kees Cook <kees@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 147/167] ubsan: Fix panic from test_ubsan_out_of_bounds
+Subject: [PATCH 6.6 167/204] x86/bugs: Use SBPB in write_ibpb() if applicable
 Date: Tue, 29 Apr 2025 18:44:15 +0200
-Message-ID: <20250429161057.673372803@linuxfoundation.org>
+Message-ID: <20250429161106.237347697@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mostafa Saleh <smostafa@google.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 9b044614be12d78d3a93767708b8d02fb7dfa9b0 ]
+[ Upstream commit fc9fd3f98423367c79e0bd85a9515df26dc1b3cc ]
 
-Running lib_ubsan.ko on arm64 (without CONFIG_UBSAN_TRAP) panics the
-kernel:
+write_ibpb() does IBPB, which (among other things) flushes branch type
+predictions on AMD.  If the CPU has SRSO_NO, or if the SRSO mitigation
+has been disabled, branch type flushing isn't needed, in which case the
+lighter-weight SBPB can be used.
 
-[   31.616546] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: test_ubsan_out_of_bounds+0x158/0x158 [test_ubsan]
-[   31.646817] CPU: 3 UID: 0 PID: 179 Comm: insmod Not tainted 6.15.0-rc2 #1 PREEMPT
-[   31.648153] Hardware name: linux,dummy-virt (DT)
-[   31.648970] Call trace:
-[   31.649345]  show_stack+0x18/0x24 (C)
-[   31.650960]  dump_stack_lvl+0x40/0x84
-[   31.651559]  dump_stack+0x18/0x24
-[   31.652264]  panic+0x138/0x3b4
-[   31.652812]  __ktime_get_real_seconds+0x0/0x10
-[   31.653540]  test_ubsan_load_invalid_value+0x0/0xa8 [test_ubsan]
-[   31.654388]  init_module+0x24/0xff4 [test_ubsan]
-[   31.655077]  do_one_initcall+0xd4/0x280
-[   31.655680]  do_init_module+0x58/0x2b4
+The 'x86_pred_cmd' variable already keeps track of whether IBPB or SBPB
+should be used.  Use that instead of hardcoding IBPB.
 
-That happens because the test corrupts other data in the stack:
-400:   d5384108        mrs     x8, sp_el0
-404:   f9426d08        ldr     x8, [x8, #1240]
-408:   f85f83a9        ldur    x9, [x29, #-8]
-40c:   eb09011f        cmp     x8, x9
-410:   54000301        b.ne    470 <test_ubsan_out_of_bounds+0x154>  // b.any
-
-As there is no guarantee the compiler will order the local variables
-as declared in the module:
-        volatile char above[4] = { }; /* Protect surrounding memory. */
-        volatile int arr[4];
-        volatile char below[4] = { }; /* Protect surrounding memory. */
-
-There is another problem where the out-of-bound index is 5 which is larger
-than the extra surrounding memory for protection.
-
-So, use a struct to enforce the ordering, and fix the index to be 4.
-Also, remove some of the volatiles and rely on OPTIMIZER_HIDE_VAR()
-
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Link: https://lore.kernel.org/r/20250415203354.4109415-1-smostafa@google.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/17c5dcd14b29199b75199d67ff7758de9d9a4928.1744148254.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_ubsan.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ arch/x86/entry/entry.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/test_ubsan.c b/lib/test_ubsan.c
-index 2062be1f2e80f..f90f2b9842ec4 100644
---- a/lib/test_ubsan.c
-+++ b/lib/test_ubsan.c
-@@ -35,18 +35,22 @@ static void test_ubsan_shift_out_of_bounds(void)
+diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
+index 2143358d0c4c7..78fd2442b49dc 100644
+--- a/arch/x86/entry/entry.S
++++ b/arch/x86/entry/entry.S
+@@ -16,7 +16,7 @@
  
- static void test_ubsan_out_of_bounds(void)
- {
--	volatile int i = 4, j = 5, k = -1;
--	volatile char above[4] = { }; /* Protect surrounding memory. */
--	volatile int arr[4];
--	volatile char below[4] = { }; /* Protect surrounding memory. */
-+	int i = 4, j = 4, k = -1;
-+	volatile struct {
-+		char above[4]; /* Protect surrounding memory. */
-+		int arr[4];
-+		char below[4]; /* Protect surrounding memory. */
-+	} data;
+ SYM_FUNC_START(entry_ibpb)
+ 	movl	$MSR_IA32_PRED_CMD, %ecx
+-	movl	$PRED_CMD_IBPB, %eax
++	movl	_ASM_RIP(x86_pred_cmd), %eax
+ 	xorl	%edx, %edx
+ 	wrmsr
  
--	above[0] = below[0];
-+	OPTIMIZER_HIDE_VAR(i);
-+	OPTIMIZER_HIDE_VAR(j);
-+	OPTIMIZER_HIDE_VAR(k);
- 
- 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "above");
--	arr[j] = i;
-+	data.arr[j] = i;
- 
- 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "below");
--	arr[k] = i;
-+	data.arr[k] = i;
- }
- 
- enum ubsan_test_enum {
 -- 
 2.39.5
 
