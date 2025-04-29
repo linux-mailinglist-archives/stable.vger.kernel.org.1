@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-138592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF77AAA18B1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF2B7AA1813
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BC491BC5A43
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5DD41BC58FC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65ED725485E;
-	Tue, 29 Apr 2025 18:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668F8243964;
+	Tue, 29 Apr 2025 17:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+DU6var"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOD4wplz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F9E23E32B;
-	Tue, 29 Apr 2025 18:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F7125335F;
+	Tue, 29 Apr 2025 17:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949737; cv=none; b=SHaGHToit2xZyuMWpX3N+BtXjHC5MYV7v2cad9TRsMkWH27M51mwddViMQP+j7PfabiKcgSSxZF0SQP6vs1z0HT8+3z/ziWaOYUq33gBFjowH5Ccpi8DqtGh7WExgdWnsmmTPn2xmivuE5gNzZHDIPNUJ1hqqmYe51NBIwXrvJw=
+	t=1745949296; cv=none; b=mhlyLkF99zeTYomg5ihyEnZJxCBy3KN3JA6QwnedcZc50UjHqm/BdqZkt5cflPmVjbj3Iafw0/ASsiIZb9Jfxt/Us1SRi+EN6+BpNbddm1KlEu7eCC/bqOK1Y5oM5tPcAKY/ZonsJTzRpyvrL7wsXc2qz4ty2I8BXBzKXTDm5q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949737; c=relaxed/simple;
-	bh=wQwpJIthJMXeUV1WE2Y8d3K9MyZ2bjbY2fVtaS5d0iA=;
+	s=arc-20240116; t=1745949296; c=relaxed/simple;
+	bh=Upe9tVPwks4hZKZIzzljHUw+/o+YEVaSCXx4ia6ZdXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QOrDz+ofIBnF/KiIiQL3Kn9cUCGJwl/5Kfn6lb9znLcAfIUBatPZQib0inFsp4yxOzmaykCuqDXNoovicWe14THuGuiyN7qWRR8xPlfAK1vgr2yQU7LVvRz2tv8nkgvOEZq8ll7KlqWFQqFgUHsmNb3CHItQCPgIhjc62+/hUzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+DU6var; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889B4C4CEE9;
-	Tue, 29 Apr 2025 18:02:16 +0000 (UTC)
+	 MIME-Version; b=uaaq1vLk12fft8pwABVzQEKGrsa0FUUH0FxQZ4xrLCoBFrAc6BgEL10McIcHc1fVSAnnsewow/RGA8UucH8IQjz8h6OHD/D3I3hyG0q06LCm3yyy3uGQfHStIBHfOQa0lX1RJ7qALHrAds15d4y7dq1sv3u4GreJagQ15Esb734=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOD4wplz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBB7C4CEE3;
+	Tue, 29 Apr 2025 17:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949737;
-	bh=wQwpJIthJMXeUV1WE2Y8d3K9MyZ2bjbY2fVtaS5d0iA=;
+	s=korg; t=1745949296;
+	bh=Upe9tVPwks4hZKZIzzljHUw+/o+YEVaSCXx4ia6ZdXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+DU6varJhWmGuzSG8FMv6sL4oxJqF8WtNM0/rBAPimlkrvUuwc51Igp+jwv+u2b+
-	 3/BszZLdJq9tO8qksWRAU4+qp6xdDN2L74ifA3PPpkKeZaxx0kAMIJeU1vq/B33MEn
-	 46w8cBJcOrwkk5FcncWYCwuE1zZ/plP0G0gAGDBs=
+	b=FOD4wplzkLfxzaGDWsFN2UTt82dMsuDtV8RQCyvPhx1NWL6E5AlHuQSZIYbccuv2r
+	 MP7CZgQZP5L1kEwKviUyMhswbGUpuIJNLTaYYU83MyX0HpPzVnuLh3yPG052NIHH+i
+	 Kw4IGRP96cJXLn7KnDxVap+NEXe9AHaaUkTWO+Js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kobuk <m.kobuk@ispras.ru>,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	Evgeny Pimenov <pimenoveu12@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Thierry Reding <treding@nvidia.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/167] ASoC: qcom: Fix sc7280 lpass potential buffer overflow
-Date: Tue, 29 Apr 2025 18:42:29 +0200
-Message-ID: <20250429161053.418379416@linuxfoundation.org>
+Subject: [PATCH 5.15 273/373] gpio: tegra186: Force one interrupt per bank
+Date: Tue, 29 Apr 2025 18:42:30 +0200
+Message-ID: <20250429161134.358837825@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Evgeny Pimenov <pimenoveu12@gmail.com>
+From: Thierry Reding <treding@nvidia.com>
 
-[ Upstream commit a31a4934b31faea76e735bab17e63d02fcd8e029 ]
+[ Upstream commit ca038748068f454d20ad1bb120cbe36599f81db6 ]
 
-Case values introduced in commit
-5f78e1fb7a3e ("ASoC: qcom: Add driver support for audioreach solution")
-cause out of bounds access in arrays of sc7280 driver data (e.g. in case
-of RX_CODEC_DMA_RX_0 in sc7280_snd_hw_params()).
+Newer chips support up to 8 interrupts per bank, which can be useful to
+balance the load and decrease latency. However, it also required a very
+complicated interrupt routing to be set up. To keep things simple for
+now, ensure that a single interrupt per bank is enforced, even if all
+possible interrupts are described in device tree.
 
-Redefine LPASS_MAX_PORTS to consider the maximum possible port id for
-q6dsp as sc7280 driver utilizes some of those values.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 77d0ffef793d ("ASoC: qcom: Add macro for lpass DAI id's max limit")
-Cc: stable@vger.kernel.org # v6.0+
-Suggested-by: Mikhail Kobuk <m.kobuk@ispras.ru>
-Suggested-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Signed-off-by: Evgeny Pimenov <pimenoveu12@gmail.com>
-Link: https://patch.msgid.link/20250401204058.32261-1-pimenoveu12@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Bartosz Golaszewski <brgl@bgdev.pl>
+Stable-dep-of: 8323f3a69de6 ("gpio: tegra186: fix resource handling in ACPI probe path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/lpass.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-tegra186.c | 68 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 62 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/qcom/lpass.h b/sound/soc/qcom/lpass.h
-index dd78600fc7b01..b96116ea81167 100644
---- a/sound/soc/qcom/lpass.h
-+++ b/sound/soc/qcom/lpass.h
-@@ -13,10 +13,11 @@
- #include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <dt-bindings/sound/qcom,lpass.h>
-+#include <dt-bindings/sound/qcom,q6afe.h>
- #include "lpass-hdmi.h"
+diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra186.c
+index 00762de3d4096..52e08bc2f0530 100644
+--- a/drivers/gpio/gpio-tegra186.c
++++ b/drivers/gpio/gpio-tegra186.c
+@@ -81,6 +81,8 @@ struct tegra_gpio {
+ 	unsigned int *irq;
  
- #define LPASS_AHBIX_CLOCK_FREQUENCY		131072000
--#define LPASS_MAX_PORTS			(LPASS_CDC_DMA_VA_TX8 + 1)
-+#define LPASS_MAX_PORTS			(DISPLAY_PORT_RX_7 + 1)
- #define LPASS_MAX_MI2S_PORTS			(8)
- #define LPASS_MAX_DMA_CHANNELS			(8)
- #define LPASS_MAX_HDMI_DMA_CHANNELS		(4)
+ 	const struct tegra_gpio_soc *soc;
++	unsigned int num_irqs_per_bank;
++	unsigned int num_banks;
+ 
+ 	void __iomem *secure;
+ 	void __iomem *base;
+@@ -600,6 +602,28 @@ static void tegra186_gpio_init_route_mapping(struct tegra_gpio *gpio)
+ 	}
+ }
+ 
++static unsigned int tegra186_gpio_irqs_per_bank(struct tegra_gpio *gpio)
++{
++	struct device *dev = gpio->gpio.parent;
++
++	if (gpio->num_irq > gpio->num_banks) {
++		if (gpio->num_irq % gpio->num_banks != 0)
++			goto error;
++	}
++
++	if (gpio->num_irq < gpio->num_banks)
++		goto error;
++
++	gpio->num_irqs_per_bank = gpio->num_irq / gpio->num_banks;
++
++	return 0;
++
++error:
++	dev_err(dev, "invalid number of interrupts (%u) for %u banks\n",
++		gpio->num_irq, gpio->num_banks);
++	return -EINVAL;
++}
++
+ static int tegra186_gpio_probe(struct platform_device *pdev)
+ {
+ 	unsigned int i, j, offset;
+@@ -614,7 +638,17 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	gpio->soc = device_get_match_data(&pdev->dev);
++	gpio->gpio.label = gpio->soc->name;
++	gpio->gpio.parent = &pdev->dev;
++
++	/* count the number of banks in the controller */
++	for (i = 0; i < gpio->soc->num_ports; i++)
++		if (gpio->soc->ports[i].bank > gpio->num_banks)
++			gpio->num_banks = gpio->soc->ports[i].bank;
++
++	gpio->num_banks++;
+ 
++	/* get register apertures */
+ 	gpio->secure = devm_platform_ioremap_resource_byname(pdev, "security");
+ 	if (IS_ERR(gpio->secure)) {
+ 		gpio->secure = devm_platform_ioremap_resource(pdev, 0);
+@@ -635,6 +669,10 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
+ 
+ 	gpio->num_irq = err;
+ 
++	err = tegra186_gpio_irqs_per_bank(gpio);
++	if (err < 0)
++		return err;
++
+ 	gpio->irq = devm_kcalloc(&pdev->dev, gpio->num_irq, sizeof(*gpio->irq),
+ 				 GFP_KERNEL);
+ 	if (!gpio->irq)
+@@ -648,9 +686,6 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
+ 		gpio->irq[i] = err;
+ 	}
+ 
+-	gpio->gpio.label = gpio->soc->name;
+-	gpio->gpio.parent = &pdev->dev;
+-
+ 	gpio->gpio.request = gpiochip_generic_request;
+ 	gpio->gpio.free = gpiochip_generic_free;
+ 	gpio->gpio.get_direction = tegra186_gpio_get_direction;
+@@ -714,7 +749,30 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
+ 	irq->parent_handler = tegra186_gpio_irq;
+ 	irq->parent_handler_data = gpio;
+ 	irq->num_parents = gpio->num_irq;
+-	irq->parents = gpio->irq;
++
++	/*
++	 * To simplify things, use a single interrupt per bank for now. Some
++	 * chips support up to 8 interrupts per bank, which can be useful to
++	 * distribute the load and decrease the processing latency for GPIOs
++	 * but it also requires a more complicated interrupt routing than we
++	 * currently program.
++	 */
++	if (gpio->num_irqs_per_bank > 1) {
++		irq->parents = devm_kcalloc(&pdev->dev, gpio->num_banks,
++					    sizeof(*irq->parents), GFP_KERNEL);
++		if (!irq->parents)
++			return -ENOMEM;
++
++		for (i = 0; i < gpio->num_banks; i++)
++			irq->parents[i] = gpio->irq[i * gpio->num_irqs_per_bank];
++
++		irq->num_parents = gpio->num_banks;
++	} else {
++		irq->num_parents = gpio->num_irq;
++		irq->parents = gpio->irq;
++	}
++
++	tegra186_gpio_init_route_mapping(gpio);
+ 
+ 	np = of_find_matching_node(NULL, tegra186_pmc_of_match);
+ 	if (np) {
+@@ -725,8 +783,6 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
+ 			return -EPROBE_DEFER;
+ 	}
+ 
+-	tegra186_gpio_init_route_mapping(gpio);
+-
+ 	irq->map = devm_kcalloc(&pdev->dev, gpio->gpio.ngpio,
+ 				sizeof(*irq->map), GFP_KERNEL);
+ 	if (!irq->map)
 -- 
 2.39.5
 
