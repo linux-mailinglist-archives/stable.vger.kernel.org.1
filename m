@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE55AA1A1C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4388AAA1908
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2629C3B1D89
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C630E17395F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6562512F3;
-	Tue, 29 Apr 2025 18:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B79E22AE68;
+	Tue, 29 Apr 2025 18:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIpb3/tW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyH9o5D+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530201519A6;
-	Tue, 29 Apr 2025 18:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC92140C03;
+	Tue, 29 Apr 2025 18:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950384; cv=none; b=tGMrdxts6IbyZ8PokFXNr6nAqY1ybIQnnJDsRKwggv1nzCi7DoxLtdpaPCtC3yNV4/KH6JqX9/x+JzkyemPTE2rkhHlV0xwwER7d1tlV3O8qJFgdzb+pVCPMDb1oQ6rBiji2Ur3DDMG/7z7InGUOj4qdz+gjWZZOl5nWK+81woY=
+	t=1745949850; cv=none; b=HS3Gfxtv2V7Vm7uEPPD/IsPsTFNc5OoCBGKMTMGhL+o9M4f5zkEAolTeSbDlYisI2jhWxXpnWoq7sAPVpBFxdTQj/YgMM6XvEa+iMdn7yjW5DqLGKGZnP+jPrmycRM0evJGm2RNFBPF8j6D5tFJbt9+U2qaCc/riBozM0vCx70o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950384; c=relaxed/simple;
-	bh=wBaOxdwcUbk2rcXZtf5/ZrHon9I3vDZWkm+db3N1Vwg=;
+	s=arc-20240116; t=1745949850; c=relaxed/simple;
+	bh=4UgokZSMM9YD3jmw3T9OtKDf5FIKHW5BDmp64hyi0GI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mG6JyNtWk5dj5lJjPBODy+jwqoGvZlCLymKnEu6iuSQjv5Y7cUxUl8vc2w1Xv9GYi9D/n+TWlfKwyRgKrhxg5x1PDvfZ6Xd3XM44mdlxQ0S7SKporh5hdQ+hDmih/mb0+d9ZTVO7RFMo53rzi+wawoK7XClpmdfafIEznE3FIwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIpb3/tW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691EAC4CEE3;
-	Tue, 29 Apr 2025 18:13:03 +0000 (UTC)
+	 MIME-Version; b=rDzzaQ8vjvECQODICc0knzM473yLxi9SV4vCmbRxF0dVpLt61o7ZIQ+iPToginzLMIMXa6BYMBKapaxg7oUtWE7kVUCVn0tiFWR9ftitH0KY+Ym4RVreXpfMEz9pz7V7pEd8QzknE/9VH+hULu/SCbAj4hWatQ3bJNvNO/N7/zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyH9o5D+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5A4C4CEE3;
+	Tue, 29 Apr 2025 18:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950383;
-	bh=wBaOxdwcUbk2rcXZtf5/ZrHon9I3vDZWkm+db3N1Vwg=;
+	s=korg; t=1745949849;
+	bh=4UgokZSMM9YD3jmw3T9OtKDf5FIKHW5BDmp64hyi0GI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dIpb3/tW3xPmn1Ifs7/HmyjRtVFpjLYpdDR5U1c8Glkb/+ohOTOYz0jAQT/5O+DRP
-	 OE7YmSwV1hnAsuGA0UeuRilQ1CcFMiGOsHYQzpWSA7tRocnmnnl1lCwvheMuLJR+a6
-	 29RvLqINhWW3dbNa/WjXL9Ym4cXpCvsGxKZ/T7Sg=
+	b=TyH9o5D+he2F9KDC1Sw3EVswzM6sQ1XG9H27CXVD9ng/YrVCSKHSKz2n1+/x7Eb5C
+	 DFePvo8vJPRW0r5nWTa+5EqfgszHIoUpfQ9rTHL2eYy7+UZWN90Hkf1wUriwx+1OM2
+	 d+wb2nzBek9ntzhG4Jp8OlLIOCBk8igI9hyaDdug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.6 079/204] irqchip/gic-v2m: Prevent use after free of gicv2m_get_fwnode()
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 059/167] LoongArch: Make regs_irqs_disabled() more clear
 Date: Tue, 29 Apr 2025 18:42:47 +0200
-Message-ID: <20250429161102.653746887@linuxfoundation.org>
+Message-ID: <20250429161054.156855044@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 3318dc299b072a0511d6dfd8367f3304fb6d9827 upstream.
+[ Upstream commit bb0511d59db9b3e40c8d51f0d151ccd0fd44071d ]
 
-With ACPI in place, gicv2m_get_fwnode() is registered with the pci
-subsystem as pci_msi_get_fwnode_cb(), which may get invoked at runtime
-during a PCI host bridge probe. But, the call back is wrongly marked as
-__init, causing it to be freed, while being registered with the PCI
-subsystem and could trigger:
+In the current code, the definition of regs_irqs_disabled() is actually
+"!(regs->csr_prmd & CSR_CRMD_IE)" because arch_irqs_disabled_flags() is
+defined as "!(flags & CSR_CRMD_IE)", it looks a little strange.
 
- Unable to handle kernel paging request at virtual address ffff8000816c0400
-  gicv2m_get_fwnode+0x0/0x58 (P)
-  pci_set_bus_msi_domain+0x74/0x88
-  pci_register_host_bridge+0x194/0x548
+Define regs_irqs_disabled() as !(regs->csr_prmd & CSR_PRMD_PIE) directly
+to make it more clear, no functional change.
 
-This is easily reproducible on a Juno board with ACPI boot.
+While at it, the return value of regs_irqs_disabled() is true or false,
+so change its type to reflect that and also make it always inline.
 
-Retain the function for later use.
-
-Fixes: 0644b3daca28 ("irqchip/gic-v2m: acpi: Introducing GICv2m ACPI support")
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v2m.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/include/asm/ptrace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/irqchip/irq-gic-v2m.c
-+++ b/drivers/irqchip/irq-gic-v2m.c
-@@ -454,7 +454,7 @@ static int __init gicv2m_of_init(struct
- #ifdef CONFIG_ACPI
- static int acpi_num_msi;
+diff --git a/arch/loongarch/include/asm/ptrace.h b/arch/loongarch/include/asm/ptrace.h
+index 59c4608de91db..f5d9096d18aa1 100644
+--- a/arch/loongarch/include/asm/ptrace.h
++++ b/arch/loongarch/include/asm/ptrace.h
+@@ -32,9 +32,9 @@ struct pt_regs {
+ 	unsigned long __last[];
+ } __aligned(8);
  
--static __init struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
-+static struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
+-static inline int regs_irqs_disabled(struct pt_regs *regs)
++static __always_inline bool regs_irqs_disabled(struct pt_regs *regs)
  {
- 	struct v2m_data *data;
+-	return arch_irqs_disabled_flags(regs->csr_prmd);
++	return !(regs->csr_prmd & CSR_PRMD_PIE);
+ }
  
+ static inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
+-- 
+2.39.5
+
 
 
 
