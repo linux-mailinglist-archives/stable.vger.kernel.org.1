@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-138049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630C0AA165A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6BD0AA12A7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F16A1888FBB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC8204C0111
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3321238C21;
-	Tue, 29 Apr 2025 17:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27DE02522B6;
+	Tue, 29 Apr 2025 16:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWkrhZyy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0BHlBK/1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B079521883E;
-	Tue, 29 Apr 2025 17:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FF2251796;
+	Tue, 29 Apr 2025 16:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947957; cv=none; b=BP+YDTLW5GtaJw1KyzOQ/URYHBKXxcpdK3iVNpvmr71psKbZrVqB2CyT2ES1nfZPd9qIcuO4f5Uzf41t2c2NYMmGnke7CMDbgfCX3L9wu8a5qaPEn61zR7d2ZOhG689i3je5sRUBC+yGmCVA6FZPKZpRTDj/wffGGPnZx1qfE2A=
+	t=1745945648; cv=none; b=Cgq2PsjDvD6K86koG1smYG4vD9rBTAyp0GQxCxEvpubhhFGE72xUrW22iMqG5Zwgi2FJfFl8M6/70zNGw1UABq/5SoxGL7CFoJMvwOX75uJjCBDjvjBaYpH5X1MdCjkS+Ou5hsiAb/Ywr51ybZQnxohUTvPhrC8nQOhNlq2DwzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947957; c=relaxed/simple;
-	bh=jwb+n96BlzMW/EVRE8Kxq2GS34zomoftIuUqtfQl0ps=;
+	s=arc-20240116; t=1745945648; c=relaxed/simple;
+	bh=B2rNd1kQfP1o55SeBGqeepaiYwoG9eputvedGxQzWWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tsxswpd2GcIknk9n9ZOOgr+3FgnoIYzimM90Vim75Ar01efBH9It2W/sDhIF3rtX8rJcRT7GA3k+TD0xZG0kX62bKsxdvdXGwD9UGJS0B8RJQaksghpcZ3tVrbxsaMCIS00onYq/mJOL2mqLBjgfvTsC6urBL8pyyxzUfNdZJpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWkrhZyy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A11EC4CEE3;
-	Tue, 29 Apr 2025 17:32:37 +0000 (UTC)
+	 MIME-Version; b=PkaNPh7mwWH/u6VlsqjWwE8W95oQjGjAw19C1w7dX0/bFUB5WBQSa4GN3Mrrcsmcxv1HpRvy3ipT4VsKGEhlmmhMAEXS4LUzOBpm3rnoIr54lTzILmiJFMt3PvSlehXi1pGS9Jg688xWuhWdvgc2nDWZllnJlPN6P74y1q208G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0BHlBK/1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 603ACC4CEEE;
+	Tue, 29 Apr 2025 16:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947957;
-	bh=jwb+n96BlzMW/EVRE8Kxq2GS34zomoftIuUqtfQl0ps=;
+	s=korg; t=1745945648;
+	bh=B2rNd1kQfP1o55SeBGqeepaiYwoG9eputvedGxQzWWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWkrhZyyctT8TC44ICr+QbCWjPBGJdmfH3Ok0ATF42nh8/afz2Fyzk6UOfqT+aUQs
-	 sF0ICITfXROmyCFLL7xV6Wqwn+hqRup2aW3ASnJlToibNwqENtU+7S1ZsD88TTyIaU
-	 QQQTf4Ev/Wd9r0RQSnj9BJTtOumfMu02vgw8hPLc=
+	b=0BHlBK/1WhGUX7GCZMJJY8vsBgNYCmar73CCSxvzZV/JyhVoffkpDecrCEIPVFKMv
+	 eMvNUk2erCKyf0DcW9mvH3b6ZwfCL1kHnq6AUj73i5ADLklgm6zQplOAJjvVotCbuH
+	 U3Ss0VEseThG7PTknLMcxP0OuJ2UNI+yTB0xm7MU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Mastykin <mastichi@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 154/280] pinctrl: mcp23s08: Get rid of spurious level interrupts
+	stable <stable@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Mingcong Bai <baimingcong@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 5.4 154/179] USB: OHCI: Add quirk for LS7A OHCI controller (rev 0x02)
 Date: Tue, 29 Apr 2025 18:41:35 +0200
-Message-ID: <20250429161121.422116357@linuxfoundation.org>
+Message-ID: <20250429161055.612207643@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Mastykin <mastichi@gmail.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 7b0671b97f0872d6950ccc925e210cb3f67721bf ]
+commit bcb60d438547355b8f9ad48645909139b64d3482 upstream.
 
-irq_mask()/irq_unmask() are not called for nested interrupts. So level
-interrupts are never masked, chip's interrupt output is not cleared on
-INTCAP or GPIO read, the irq handler is uselessly called again. Nested
-irq handler is not called again, because interrupt reason is cleared by
-its first call.
-/proc/interrupts shows that number of chip's irqs is greater than
-number of nested irqs.
+The OHCI controller (rev 0x02) under LS7A PCI host has a hardware flaw.
+MMIO register with offset 0x60/0x64 is treated as legacy PS2-compatible
+keyboard/mouse interface, which confuse the OHCI controller. Since OHCI
+only use a 4KB BAR resource indeed, the LS7A OHCI controller's 32KB BAR
+is wrapped around (the second 4KB BAR space is the same as the first 4KB
+internally). So we can add an 4KB offset (0x1000) to the OHCI registers
+(from the PCI BAR resource) as a quirk.
 
-This patch adds masking and unmasking level interrupts inside irq handler.
-
-Signed-off-by: Dmitry Mastykin <mastichi@gmail.com>
-Link: https://lore.kernel.org/20250122120504.1279790-1-mastichi@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Tested-by: Mingcong Bai <baimingcong@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lore.kernel.org/r/20250328040059.3672979-1-chenhuacai@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-mcp23s08.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/usb/host/ohci-pci.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
-index f384c72d95545..70d7485ada364 100644
---- a/drivers/pinctrl/pinctrl-mcp23s08.c
-+++ b/drivers/pinctrl/pinctrl-mcp23s08.c
-@@ -382,6 +382,7 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
- {
- 	struct mcp23s08 *mcp = data;
- 	int intcap, intcon, intf, i, gpio, gpio_orig, intcap_mask, defval, gpinten;
-+	bool need_unmask = false;
- 	unsigned long int enabled_interrupts;
- 	unsigned int child_irq;
- 	bool intf_set, intcap_changed, gpio_bit_changed,
-@@ -396,9 +397,6 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
- 		goto unlock;
- 	}
- 
--	if (mcp_read(mcp, MCP_INTCAP, &intcap))
--		goto unlock;
--
- 	if (mcp_read(mcp, MCP_INTCON, &intcon))
- 		goto unlock;
- 
-@@ -408,6 +406,16 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
- 	if (mcp_read(mcp, MCP_DEFVAL, &defval))
- 		goto unlock;
- 
-+	/* Mask level interrupts to avoid their immediate reactivation after clearing */
-+	if (intcon) {
-+		need_unmask = true;
-+		if (mcp_write(mcp, MCP_GPINTEN, gpinten & ~intcon))
-+			goto unlock;
-+	}
-+
-+	if (mcp_read(mcp, MCP_INTCAP, &intcap))
-+		goto unlock;
-+
- 	/* This clears the interrupt(configurable on S18) */
- 	if (mcp_read(mcp, MCP_GPIO, &gpio))
- 		goto unlock;
-@@ -470,9 +478,18 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
- 		}
- 	}
- 
-+	if (need_unmask) {
-+		mutex_lock(&mcp->lock);
-+		goto unlock;
-+	}
-+
- 	return IRQ_HANDLED;
- 
- unlock:
-+	if (need_unmask)
-+		if (mcp_write(mcp, MCP_GPINTEN, gpinten))
-+			dev_err(mcp->chip.parent, "can't unmask GPINTEN\n");
-+
- 	mutex_unlock(&mcp->lock);
- 	return IRQ_HANDLED;
+--- a/drivers/usb/host/ohci-pci.c
++++ b/drivers/usb/host/ohci-pci.c
+@@ -165,6 +165,25 @@ static int ohci_quirk_amd700(struct usb_
+ 	return 0;
  }
--- 
-2.39.5
-
+ 
++static int ohci_quirk_loongson(struct usb_hcd *hcd)
++{
++	struct pci_dev *pdev = to_pci_dev(hcd->self.controller);
++
++	/*
++	 * Loongson's LS7A OHCI controller (rev 0x02) has a
++	 * flaw. MMIO register with offset 0x60/64 is treated
++	 * as legacy PS2-compatible keyboard/mouse interface.
++	 * Since OHCI only use 4KB BAR resource, LS7A OHCI's
++	 * 32KB BAR is wrapped around (the 2nd 4KB BAR space
++	 * is the same as the 1st 4KB internally). So add 4KB
++	 * offset (0x1000) to the OHCI registers as a quirk.
++	 */
++	if (pdev->revision == 0x2)
++		hcd->regs += SZ_4K;	/* SZ_4K = 0x1000 */
++
++	return 0;
++}
++
+ static int ohci_quirk_qemu(struct usb_hcd *hcd)
+ {
+ 	struct ohci_hcd *ohci = hcd_to_ohci(hcd);
+@@ -225,6 +244,10 @@ static const struct pci_device_id ohci_p
+ 		.driver_data = (unsigned long)ohci_quirk_amd700,
+ 	},
+ 	{
++		PCI_DEVICE(PCI_VENDOR_ID_LOONGSON, 0x7a24),
++		.driver_data = (unsigned long)ohci_quirk_loongson,
++	},
++	{
+ 		.vendor		= PCI_VENDOR_ID_APPLE,
+ 		.device		= 0x003f,
+ 		.subvendor	= PCI_SUBVENDOR_ID_REDHAT_QUMRANET,
 
 
 
