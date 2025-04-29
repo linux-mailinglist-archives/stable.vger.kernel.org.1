@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED6AAA1505
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBB6AA1298
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAD581BA3AB0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D4709272BB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CC1216605;
-	Tue, 29 Apr 2025 17:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7651B25178C;
+	Tue, 29 Apr 2025 16:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQKaTJuh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2qBEyxn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6628E21ADC7;
-	Tue, 29 Apr 2025 17:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31438251780;
+	Tue, 29 Apr 2025 16:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947139; cv=none; b=mT1vrA5OpEZyGkiZ34ZmpekflgX4yLqOmohagujY0AYGPuoHw08WZd6qn8WD+inGCfz9xNLzhGksLIlLA1Hu8abY8GT1uc4QLu5XPjlcwrDDMQXbzlQ8+dLht1UmbYqLZUgPk3iNGbtWO+xw2+WV8l/AQAwl1vc9QuQILkDCvi4=
+	t=1745945544; cv=none; b=GplSSjU1M7tV2K/9Hs36RPbBTLIatPUowDtfeEfzfadzXd6IOaT/qWThzMYjsYphDDDSsHCioe3oFAKuzQbTdvvegVgnPcdXd0SiZx6+IIVpf2jBkA9Fnfm6SFeyq9OAzhtlfEQr6dYUM7k1MlDA7WhWuoR/chzevZ+Lrivs8g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947139; c=relaxed/simple;
-	bh=w7JIPlDS631MRgSJJ88VSgF3VDoI1ca/mw+zyI+sdUI=;
+	s=arc-20240116; t=1745945544; c=relaxed/simple;
+	bh=XJEphChaa3/CmZ8es3WT1uV+YGNXdcb/BMYySGmI3qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7ZkZ2KCRA5Ai27EqGcigmV6nprtVgorpjx58rdgXH+nbNk5Q2sE5NK8IUMVFW97hii0nD01FV1xJiWzaI0ERxiIdcSskWPXmb8JlCnDFsQGSUUmHY6dXraBdYbYeVHwd0xwf52o6+z6aMJXqUiO0YrTUrjory1UE43YLVeSquk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQKaTJuh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C92C4CEE3;
-	Tue, 29 Apr 2025 17:18:58 +0000 (UTC)
+	 MIME-Version; b=N6Zc0fsMfOk8jfN9HRET/edqAzfK0TUYOHbt+IfkRUllCdisqWzTRoKXLHVZg7KYyDdDws64VLwDxXZA1RW4bwS3IfU031jKxtOOqNcaHxyZnifPQ+UbAe7g/Sf10kTsrV2txSau/jLWsNWBVBsV8Ul9rwvQqT05y4AK71uNyHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2qBEyxn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3522C4CEE9;
+	Tue, 29 Apr 2025 16:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947138;
-	bh=w7JIPlDS631MRgSJJ88VSgF3VDoI1ca/mw+zyI+sdUI=;
+	s=korg; t=1745945544;
+	bh=XJEphChaa3/CmZ8es3WT1uV+YGNXdcb/BMYySGmI3qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQKaTJuhJU3x8P5Y6SX6nNCrvVEp6TVghi0RwjWmm+vSupQ6aa5YMJ6j2P9C7KucT
-	 ZSU/U1X3cKrqtRCgKoqaNXGrGNh/yDK6wReUC8JBVtYjH7EIXzbZY40XAeGVhKY0gW
-	 yVlJ0pKKDcjwGXFlR+QuDkSdaMGlw9kEH59IWbr0=
+	b=Z2qBEyxnAY8CL+cYg3KFg6S6OXbdUrg0Szsg/IGszsO9PYSsE5r2ZWEyNWZVyNZHs
+	 eIqq51Tyu+ts6E0hiI8QCtZGo90nM8gUhFLamOJgXGtrGrF2iUSlexwh0+BjkpPWg2
+	 pxdO6gPhlPk8bFRerv0ykaONmK1xpWBf6uV9uKcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>,
-	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Subject: [PATCH 5.10 184/286] dm cache: fix flushing uninitialized delayed_work on cache_ctr error
+	stable <stable@kernel.org>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Johannes Thumshirn <jth@kernel.org>
+Subject: [PATCH 5.4 147/179] mcb: fix a double free bug in chameleon_parse_gdd()
 Date: Tue, 29 Apr 2025 18:41:28 +0200
-Message-ID: <20250429161115.542553046@linuxfoundation.org>
+Message-ID: <20250429161055.335930742@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 135496c208ba26fd68cdef10b64ed7a91ac9a7ff upstream.
+commit 7c7f1bfdb2249f854a736d9b79778c7e5a29a150 upstream.
 
-An unexpected WARN_ON from flush_work() may occur when cache creation
-fails, caused by destroying the uninitialized delayed_work waker in the
-error path of cache_create(). For example, the warning appears on the
-superblock checksum error.
+In chameleon_parse_gdd(), if mcb_device_register() fails, 'mdev'
+would be released in mcb_device_register() via put_device().
+Thus, goto 'err' label and free 'mdev' again causes a double free.
+Just return if mcb_device_register() fails.
 
-Reproduce steps:
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/urandom of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-Kernel logs:
-
-(snip)
-WARNING: CPU: 0 PID: 84 at kernel/workqueue.c:4178 __flush_work+0x5d4/0x890
-
-Fix by pulling out the cancel_delayed_work_sync() from the constructor's
-error path. This patch doesn't affect the use-after-free fix for
-concurrent dm_resume and dm_destroy (commit 6a459d8edbdb ("dm cache: Fix
-UAF in destroy()")) as cache_dtr is not changed.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: 6a459d8edbdb ("dm cache: Fix UAF in destroy()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Fixes: 3764e82e5150 ("drivers: Introduce MEN Chameleon Bus")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Signed-off-by: Johannes Thumshirn <jth@kernel.org>
+Link: https://lore.kernel.org/r/6201d09e2975ae5789879f79a6de4c38de9edd4a.1741596225.git.jth@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/mcb/mcb-parse.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1960,16 +1960,13 @@ static void check_migrations(struct work
-  * This function gets called on the error paths of the constructor, so we
-  * have to cope with a partially initialised struct.
-  */
--static void destroy(struct cache *cache)
-+static void __destroy(struct cache *cache)
- {
--	unsigned i;
--
- 	mempool_exit(&cache->migration_pool);
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -101,7 +101,7 @@ static int chameleon_parse_gdd(struct mc
  
- 	if (cache->prison)
- 		dm_bio_prison_destroy_v2(cache->prison);
+ 	ret = mcb_device_register(bus, mdev);
+ 	if (ret < 0)
+-		goto err;
++		return ret;
  
--	cancel_delayed_work_sync(&cache->waker);
- 	if (cache->wq)
- 		destroy_workqueue(cache->wq);
- 
-@@ -1997,13 +1994,22 @@ static void destroy(struct cache *cache)
- 	if (cache->policy)
- 		dm_cache_policy_destroy(cache->policy);
- 
-+	bioset_exit(&cache->bs);
-+
-+	kfree(cache);
-+}
-+
-+static void destroy(struct cache *cache)
-+{
-+	unsigned int i;
-+
-+	cancel_delayed_work_sync(&cache->waker);
-+
- 	for (i = 0; i < cache->nr_ctr_args ; i++)
- 		kfree(cache->ctr_args[i]);
- 	kfree(cache->ctr_args);
- 
--	bioset_exit(&cache->bs);
--
--	kfree(cache);
-+	__destroy(cache);
- }
- 
- static void cache_dtr(struct dm_target *ti)
-@@ -2616,7 +2622,7 @@ static int cache_create(struct cache_arg
- 	*result = cache;
  	return 0;
- bad:
--	destroy(cache);
-+	__destroy(cache);
- 	return r;
- }
- 
-@@ -2667,7 +2673,7 @@ static int cache_ctr(struct dm_target *t
- 
- 	r = copy_ctr_args(cache, argc - 3, (const char **)argv + 3);
- 	if (r) {
--		destroy(cache);
-+		__destroy(cache);
- 		goto out;
- 	}
  
 
 
