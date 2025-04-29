@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D619DAA1402
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA4CAA14E9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC86D9857EB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6832A1BC1878
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2DA229B05;
-	Tue, 29 Apr 2025 17:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADE8251783;
+	Tue, 29 Apr 2025 17:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkYwB6rb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luPqats5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589EE7E110;
-	Tue, 29 Apr 2025 17:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DAB2512C6;
+	Tue, 29 Apr 2025 17:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946368; cv=none; b=PcWtgR1B49bAZOBCpO4wwc0GYxAQ062+gZjVpBfGx+cOh5HcYmTw/dbEfuV1wlnLTWi/B9oKh9YDURf2tpKISftvzI3CorkTI6F4R5iQnYf6po7AYekGONN5tnyCMnkinKmtPtWIlBMfKWul5KyIrXARNsMeuDEDRkkUE/xSM9A=
+	t=1745947033; cv=none; b=KSW3m0Os18T2boqcLbS15TfbrAbq5uphwbhIv/AoP9/LtdVokticSZV8W6SUfKJTPVFKj9gOds0zH0J2urytb6LpJwyXQveVM1ubaTHRSZjTSswH3PXEy30JmOhfv2GIk+LbdiHr8cQkDBsLlGzqoMambLWenFeko+djyT7x6x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946368; c=relaxed/simple;
-	bh=CdaYYYlc1Q8vvhjweixPexjUovSPdyZbT9e/+1wxBaQ=;
+	s=arc-20240116; t=1745947033; c=relaxed/simple;
+	bh=mg0BXOGZgwtarsCWyWmMKNCxBfUPAu10+QedH787ZX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=al6X1vODAViihgL4+RK9C76WawozTIxED8M4yd9TqJu/Bwx8bF4f9vHc03zcCZ7jRyvclI19YvRo4UliwCP1eO1Hu1y+oBcww8pKNA1APBHBs1HYvFwhfGRXzFOeqITSS/wWAUcEnuHRRlhbw7CZ5yPGI35qIJNRg+qjXX2IdWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkYwB6rb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD03C4CEE3;
-	Tue, 29 Apr 2025 17:06:07 +0000 (UTC)
+	 MIME-Version; b=oPDsgxIYV0ggLgeuAOk3W+k7Q5dtfslhPDyqWbUN4c9hLO2SwXZjcGTjCgsBBk1YhR7wap8hod6eM/kZ7tdKlYdfyQQRQuA7Kllk6HkdHaqcBoNsbZKy5GJBtw280UX60YEOLN0P9ouwhds1o7rcBBvgFjdmTYI2OYdxaoOoUNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luPqats5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECDDC4CEE3;
+	Tue, 29 Apr 2025 17:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946368;
-	bh=CdaYYYlc1Q8vvhjweixPexjUovSPdyZbT9e/+1wxBaQ=;
+	s=korg; t=1745947033;
+	bh=mg0BXOGZgwtarsCWyWmMKNCxBfUPAu10+QedH787ZX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkYwB6rbvD37pwrNj9ZUKrYhqWN5B/sO/3EtIox8wBYhst3xxsMxf2kEetUWudtdm
-	 bdakwovuJgHryekecthKQLYndPOi3iDuT/aSd0Lsr4XgFGQdZ1ptkObNGbhtvqngJM
-	 cL2eJSjgq0C5g15pwINks7i86aJ3moppEjALk5b0=
+	b=luPqats5yhqtGcTOiKbJ839iid7Y6VPC5SMIp/jO5+jCgCCtQwKuhShFkswme0xSD
+	 /fnAfwX19e1gL9nw3MDaewmTkrRy1nMFOK+gAU8K52A/ufJRYS+Os0K5NZ4KkI7sJs
+	 YOcyA6ZyVVs0TAobNGl06Mm6EcZLSr04QEMQLctA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 216/311] usb: gadget: aspeed: Add NULL pointer check in ast_vhub_init_dev()
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 149/286] mptcp: sockopt: fix getting IPV6_V6ONLY
 Date: Tue, 29 Apr 2025 18:40:53 +0200
-Message-ID: <20250429161129.844561794@linuxfoundation.org>
+Message-ID: <20250429161114.014921161@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 8c75f3e6a433d92084ad4e78b029ae680865420f ]
+commit 8c39633759885b6ff85f6d96cf445560e74df5e8 upstream.
 
-The variable d->name, returned by devm_kasprintf(), could be NULL.
-A pointer check is added to prevent potential NULL pointer dereference.
-This is similar to the fix in commit 3027e7b15b02
-("ice: Fix some null pointer dereference issues in ice_ptp.c").
+When adding a socket option support in MPTCP, both the get and set parts
+are supposed to be implemented.
 
-This issue is found by our static analysis tool
+IPV6_V6ONLY support for the setsockopt part has been added a while ago,
+but it looks like the get part got forgotten. It should have been
+present as a way to verify a setting has been set as expected, and not
+to act differently from TCP or any other socket types.
 
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250311012705.1233829-1-chenyuan0y@gmail.com
+Not supporting this getsockopt(IPV6_V6ONLY) blocks some apps which want
+to check the default value, before doing extra actions. On Linux, the
+default value is 0, but this can be changed with the net.ipv6.bindv6only
+sysctl knob. On Windows, it is set to 1 by default. So supporting the
+get part, like for all other socket options, is important.
+
+Everything was in place to expose it, just the last step was missing.
+Only new code is added to cover this specific getsockopt(), that seems
+safe.
+
+Fixes: c9b95a135987 ("mptcp: support IPV6_V6ONLY setsockopt")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/550
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-2-122dbb249db3@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflicts in sockopt.c in the context, because commit 0abdde82b163
+  ("mptcp: move sockopt function into a new file") is not in this
+  release. The modifications can still be done in protocol.c without
+  difficulties. A particularity is that the mptcp_put_int_option()
+  helper is required, and imported from newer versions without taking
+  the extra features introduced with them in commit 2c9e77659a0c
+  ("mptcp: add TCP_INQ cmsg support") and commit 3b1e21eb60e8 ("mptcp:
+  getsockopt: add support for IP_TOS"). ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/aspeed-vhub/dev.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mptcp/protocol.c |   45 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/drivers/usb/gadget/udc/aspeed-vhub/dev.c b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-index 573109ca5b799..a09f72772e6e9 100644
---- a/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-+++ b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-@@ -548,6 +548,9 @@ int ast_vhub_init_dev(struct ast_vhub *vhub, unsigned int idx)
- 	d->vhub = vhub;
- 	d->index = idx;
- 	d->name = devm_kasprintf(parent, GFP_KERNEL, "port%d", idx+1);
-+	if (!d->name)
-+		return -ENOMEM;
-+
- 	d->regs = vhub->regs + 0x100 + 0x10 * idx;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2395,6 +2395,49 @@ static int mptcp_setsockopt(struct sock
+ 	return -EOPNOTSUPP;
+ }
  
- 	ast_vhub_init_ep0(vhub, &d->ep0, d);
--- 
-2.39.5
-
++static int mptcp_put_int_option(struct mptcp_sock *msk, char __user *optval,
++				int __user *optlen, int val)
++{
++	int len;
++
++	if (get_user(len, optlen))
++		return -EFAULT;
++	if (len < 0)
++		return -EINVAL;
++
++	if (len < sizeof(int) && len > 0 && val >= 0 && val <= 255) {
++		unsigned char ucval = (unsigned char)val;
++
++		len = 1;
++		if (put_user(len, optlen))
++			return -EFAULT;
++		if (copy_to_user(optval, &ucval, 1))
++			return -EFAULT;
++	} else {
++		len = min_t(unsigned int, len, sizeof(int));
++		if (put_user(len, optlen))
++			return -EFAULT;
++		if (copy_to_user(optval, &val, len))
++			return -EFAULT;
++	}
++
++	return 0;
++}
++
++static int mptcp_getsockopt_v6(struct mptcp_sock *msk, int optname,
++			       char __user *optval, int __user *optlen)
++{
++	struct sock *sk = (void *)msk;
++
++	switch (optname) {
++	case IPV6_V6ONLY:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    sk->sk_ipv6only);
++	}
++
++	return -EOPNOTSUPP;
++}
++
+ static int mptcp_getsockopt(struct sock *sk, int level, int optname,
+ 			    char __user *optval, int __user *option)
+ {
+@@ -2415,6 +2458,8 @@ static int mptcp_getsockopt(struct sock
+ 	if (ssk)
+ 		return tcp_getsockopt(ssk, level, optname, optval, option);
+ 
++	if (level == SOL_IPV6)
++		return mptcp_getsockopt_v6(msk, optname, optval, option);
+ 	return -EOPNOTSUPP;
+ }
+ 
 
 
 
