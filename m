@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC7AAA160D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88B1AA1803
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:54:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4053716809A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAB893B98F6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DB424A07D;
-	Tue, 29 Apr 2025 17:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01ACD243964;
+	Tue, 29 Apr 2025 17:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jp8jzL+M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xEaHRosN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9CC78F58;
-	Tue, 29 Apr 2025 17:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3439221DA7;
+	Tue, 29 Apr 2025 17:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947751; cv=none; b=Iid6PGVmel+AhvmEGNondKU4CzUkCHNlAKHs90jAyIW3B5eTd9FwziAExQPRLd7IrqAFDxg2mjzg2RTy6PeGjbK4TXG7iSdx1OOevfgZI0boEPRiD7E38khe9iLja1ZP2Bh8ZeRIx/ja9XZuFhOfjuZiu/SHFaEQvQiFgjHS3+M=
+	t=1745948999; cv=none; b=ZmGwfCGaeeeoyb+GdkixpXREJwtdbABMz3CsisrGU34BsREBMuM3izq4Ec4flzeOZNAk65LV/nWu1HXzrIzHikYrQBQX5jLi08C5I1sKDiAdDEVgGzMTQoB+zmCjcmsu443Qw9wj2A/hUfgK7cqPaBLRs+Z1XGPKT8HNoKG6drk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947751; c=relaxed/simple;
-	bh=K0LBvZrDu1HuikThZ+G9jY08VLn/8g6QFhOcWQgBfDg=;
+	s=arc-20240116; t=1745948999; c=relaxed/simple;
+	bh=x9hB42/RSPgExuZQhQRzw5eb8cGi37ApQzq6G6x7oRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIzqgTSF3BAiSwlCELgwgd67udxysWg3iO4kqq27Gdilg7x/S+lGcExNRqst7NqmKUdFfvVFUqEEQdZlDikMQk1dzETcdAXgx+tny4FKPCMK2JtqaKzRh6B3axE5aVqtWRWj1qQJ18Gsx023wBo7gSeKzqi//T480bbyGbxsa7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jp8jzL+M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C54ADC4CEE9;
-	Tue, 29 Apr 2025 17:29:10 +0000 (UTC)
+	 MIME-Version; b=KZGW3HaVp+IenrOOtNGF23vrkFmER8M86jH3AvjaFbOtHdCog/TntoGXJxsC6fQiNLsUJm8LzbgUD3lT5v4kym9dLrX6I1dobjPfrzLuwJCprJZSOy3qQY8wemJ6QocPeT4RdN5JBRDls62uMP+cwbJnqp1gZkyrY8+iBhRAifc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xEaHRosN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCE0C4CEE3;
+	Tue, 29 Apr 2025 17:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947751;
-	bh=K0LBvZrDu1HuikThZ+G9jY08VLn/8g6QFhOcWQgBfDg=;
+	s=korg; t=1745948999;
+	bh=x9hB42/RSPgExuZQhQRzw5eb8cGi37ApQzq6G6x7oRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jp8jzL+MWgvqEII6DK7ZM7mTuO1kc7rsozCI4x87JYZ+BZmGDn1Z97g6mofph4TAq
-	 Q2YvpXZPSKaslIpxwDMKOXtgc+r1SjdJ3XVl87NSbvrXZUePT6O+Vz+Y4jkG1D0LeB
-	 RLNSrW67JGLJIKFmxpNdK87sfX7cyZ0nj3sOz3bg=
+	b=xEaHRosNSyU0lDBR986fFU7lSeDD/GL1CNIyh3zGosve4eYW/pfnvoLTNHBY6omsA
+	 iyFoZJQ9GEhhjnTfwq8BDQVOBSx1puquCwHTBSMH1yWYL1dtYyKqxp8rT3v2Amj3U7
+	 1S8TXeEvLVx5caG7kc2noYf+670C1n989DmVFY6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.12 093/280] netfilter: fib: avoid lookup if socket is available
+	Manikantan R <quic_manrav@quicinc.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 157/373] ASoC: codecs:lpass-wsa-macro: Fix logic of enabling vi channels
 Date: Tue, 29 Apr 2025 18:40:34 +0200
-Message-ID: <20250429161118.912386855@linuxfoundation.org>
+Message-ID: <20250429161129.605074970@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,141 +63,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-commit eaaff9b6702e99be5d79135f2afa9fc48a0d59e0 upstream.
+commit 7648beb65600220996ebb2da207610b1ff9b735e upstream.
 
-In case the fib match is used from the input hook we can avoid the fib
-lookup if early demux assigned a socket for us: check that the input
-interface matches sk-cached one.
+Existing code only configures one of WSA_MACRO_TX0 or WSA_MACRO_TX1
+paths eventhough we enable both of them. Fix this bug by adding proper
+checks and rearranging some of the common code to able to allow setting
+both TX0 and TX1 paths
 
-Rework the existing 'lo bypass' logic to first check sk, then
-for loopback interface type to elide the fib lookup.
+Without this patch only one channel gets enabled in VI path instead of 2
+channels. End result would be 1 channel recording instead of 2.
 
-This speeds up fib matching a little, before:
-93.08 GBit/s (no rules at all)
-75.1  GBit/s ("fib saddr . iif oif missing drop" in prerouting)
-75.62 GBit/s ("fib saddr . iif oif missing drop" in input)
-
-After:
-92.48 GBit/s (no rules at all)
-75.62 GBit/s (fib rule in prerouting)
-90.37 GBit/s (fib rule in input).
-
-Numbers for the 'no rules' and 'prerouting' are expected to
-closely match in-between runs, the 3rd/input test case exercises the
-the 'avoid lookup if cached ifindex in sk matches' case.
-
-Test used iperf3 via veth interface, lo can't be used due to existing
-loopback test.
-
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
+Cc: stable@vger.kernel.org
+Co-developed-by: Manikantan R <quic_manrav@quicinc.com>
+Signed-off-by: Manikantan R <quic_manrav@quicinc.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250403160209.21613-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nft_fib.h   |   21 +++++++++++++++++++++
- net/ipv4/netfilter/nft_fib_ipv4.c |   11 +++++------
- net/ipv6/netfilter/nft_fib_ipv6.c |   19 ++++++++++---------
- 3 files changed, 36 insertions(+), 15 deletions(-)
+ sound/soc/codecs/lpass-wsa-macro.c |  108 +++++++++++++++++++++----------------
+ 1 file changed, 63 insertions(+), 45 deletions(-)
 
---- a/include/net/netfilter/nft_fib.h
-+++ b/include/net/netfilter/nft_fib.h
-@@ -18,6 +18,27 @@ nft_fib_is_loopback(const struct sk_buff
- 	return skb->pkt_type == PACKET_LOOPBACK || in->flags & IFF_LOOPBACK;
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -1146,6 +1146,67 @@ static void wsa_macro_mclk_enable(struct
+ 	}
  }
  
-+static inline bool nft_fib_can_skip(const struct nft_pktinfo *pkt)
++static void wsa_macro_enable_disable_vi_sense(struct snd_soc_component *component, bool enable,
++						u32 tx_reg0, u32 tx_reg1, u32 val)
 +{
-+	const struct net_device *indev = nft_in(pkt);
-+	const struct sock *sk;
-+
-+	switch (nft_hook(pkt)) {
-+	case NF_INET_PRE_ROUTING:
-+	case NF_INET_INGRESS:
-+	case NF_INET_LOCAL_IN:
-+		break;
-+	default:
-+		return false;
++	if (enable) {
++		/* Enable V&I sensing */
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
++					      val);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
++					      val);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
++	} else {
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
 +	}
-+
-+	sk = pkt->skb->sk;
-+	if (sk && sk_fullsock(sk))
-+	       return sk->sk_rx_dst_ifindex == indev->ifindex;
-+
-+	return nft_fib_is_loopback(pkt->skb, indev);
 +}
 +
- int nft_fib_dump(struct sk_buff *skb, const struct nft_expr *expr, bool reset);
- int nft_fib_init(const struct nft_ctx *ctx, const struct nft_expr *expr,
- 		 const struct nlattr * const tb[]);
---- a/net/ipv4/netfilter/nft_fib_ipv4.c
-+++ b/net/ipv4/netfilter/nft_fib_ipv4.c
-@@ -70,6 +70,11 @@ void nft_fib4_eval(const struct nft_expr
- 	const struct net_device *oif;
- 	const struct net_device *found;
- 
-+	if (nft_fib_can_skip(pkt)) {
-+		nft_fib_store_result(dest, priv, nft_in(pkt));
-+		return;
-+	}
++static void wsa_macro_enable_disable_vi_feedback(struct snd_soc_component *component,
++						 bool enable, u32 rate)
++{
++	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
 +
- 	/*
- 	 * Do not set flowi4_oif, it restricts results (for example, asking
- 	 * for oif 3 will get RTN_UNICAST result even if the daddr exits
-@@ -84,12 +89,6 @@ void nft_fib4_eval(const struct nft_expr
- 	else
- 		oif = NULL;
++	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI]))
++		wsa_macro_enable_disable_vi_sense(component, enable,
++				CDC_WSA_TX0_SPKR_PROT_PATH_CTL,
++				CDC_WSA_TX1_SPKR_PROT_PATH_CTL, rate);
++
++	if (test_bit(WSA_MACRO_TX1, &wsa->active_ch_mask[WSA_MACRO_AIF_VI]))
++		wsa_macro_enable_disable_vi_sense(component, enable,
++				CDC_WSA_TX2_SPKR_PROT_PATH_CTL,
++				CDC_WSA_TX3_SPKR_PROT_PATH_CTL, rate);
++}
++
+ static int wsa_macro_mclk_event(struct snd_soc_dapm_widget *w,
+ 				struct snd_kcontrol *kcontrol, int event)
+ {
+@@ -1162,7 +1223,6 @@ static int wsa_macro_enable_vi_feedback(
+ {
+ 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+ 	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
+-	u32 tx_reg0, tx_reg1;
+ 	u32 rate_val;
  
--	if (nft_hook(pkt) == NF_INET_PRE_ROUTING &&
--	    nft_fib_is_loopback(pkt->skb, nft_in(pkt))) {
--		nft_fib_store_result(dest, priv, nft_in(pkt));
--		return;
+ 	switch (wsa->pcm_rate_vi) {
+@@ -1186,56 +1246,14 @@ static int wsa_macro_enable_vi_feedback(
+ 		break;
+ 	}
+ 
+-	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
+-		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
+-		tx_reg1 = CDC_WSA_TX1_SPKR_PROT_PATH_CTL;
+-	} else if (test_bit(WSA_MACRO_TX1, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
+-		tx_reg0 = CDC_WSA_TX2_SPKR_PROT_PATH_CTL;
+-		tx_reg1 = CDC_WSA_TX3_SPKR_PROT_PATH_CTL;
 -	}
 -
- 	iph = skb_header_pointer(pkt->skb, noff, sizeof(_iph), &_iph);
- 	if (!iph) {
- 		regs->verdict.code = NFT_BREAK;
---- a/net/ipv6/netfilter/nft_fib_ipv6.c
-+++ b/net/ipv6/netfilter/nft_fib_ipv6.c
-@@ -170,6 +170,11 @@ void nft_fib6_eval(const struct nft_expr
- 	struct rt6_info *rt;
- 	int lookup_flags;
- 
-+	if (nft_fib_can_skip(pkt)) {
-+		nft_fib_store_result(dest, priv, nft_in(pkt));
-+		return;
-+	}
-+
- 	if (priv->flags & NFTA_FIB_F_IIF)
- 		oif = nft_in(pkt);
- 	else if (priv->flags & NFTA_FIB_F_OIF)
-@@ -181,17 +186,13 @@ void nft_fib6_eval(const struct nft_expr
- 		return;
+ 	switch (event) {
+ 	case SND_SOC_DAPM_POST_PMU:
+ 		/* Enable V&I sensing */
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      rate_val);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      rate_val);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
++		wsa_macro_enable_disable_vi_feedback(component, true, rate_val);
+ 		break;
+ 	case SND_SOC_DAPM_POST_PMD:
+ 		/* Disable V&I sensing */
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
++		wsa_macro_enable_disable_vi_feedback(component, false, rate_val);
+ 		break;
  	}
  
--	lookup_flags = nft_fib6_flowi_init(&fl6, priv, pkt, oif, iph);
--
--	if (nft_hook(pkt) == NF_INET_PRE_ROUTING ||
--	    nft_hook(pkt) == NF_INET_INGRESS) {
--		if (nft_fib_is_loopback(pkt->skb, nft_in(pkt)) ||
--		    nft_fib_v6_skip_icmpv6(pkt->skb, pkt->tprot, iph)) {
--			nft_fib_store_result(dest, priv, nft_in(pkt));
--			return;
--		}
-+	if (nft_fib_v6_skip_icmpv6(pkt->skb, pkt->tprot, iph)) {
-+		nft_fib_store_result(dest, priv, nft_in(pkt));
-+		return;
- 	}
- 
-+	lookup_flags = nft_fib6_flowi_init(&fl6, priv, pkt, oif, iph);
-+
- 	*dest = 0;
- 	rt = (void *)ip6_route_lookup(nft_net(pkt), &fl6, pkt->skb,
- 				      lookup_flags);
 
 
 
