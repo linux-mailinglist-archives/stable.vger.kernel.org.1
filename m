@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-137137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2536AA11DF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A888AA15AD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B51894A5509
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2E9F4A3DD6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7977D2472AC;
-	Tue, 29 Apr 2025 16:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699792517A4;
+	Tue, 29 Apr 2025 17:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyayIQU/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgY0pUHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19ECC216E30;
-	Tue, 29 Apr 2025 16:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277962459EA;
+	Tue, 29 Apr 2025 17:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945171; cv=none; b=QgN9sInUR/hmLLj7YbMBjtG7fy3wkQm/sSTNGmjn6X+PphEOApnp2dndCSlsY4+mdmNdNIB253Vi+WEG5qBMua9OQGSVZtWqouHo6hrshuDG1zgCVuf8yh0aVPJU1X+Hb83sOGbpgmGphU9RT1jwRrntYOv9LPPYPYkzGX+CB04=
+	t=1745947537; cv=none; b=B6OlURQO7I1U0BbZL0CAn2ONvZI7pzAJb/fDOfDCbDMwhQQCXiFRhepXJoSq+SO1XIq1Bfr6Y99A73r07qxwY9UtINHXYY0aEZavKSNtXo1vLqEAq32PeiBeKy2vwTkHXsqaPEfcAr055urXHT3iZt5s5Qv06eBpmFovCQ68k+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945171; c=relaxed/simple;
-	bh=PuyHt2z5ws0Bj3PmcY76iOFfGqQcCidK9QZfL9729/E=;
+	s=arc-20240116; t=1745947537; c=relaxed/simple;
+	bh=ALDOSqg7qjL3cKMUdnUmk9h2LKwvRWRqKkiX3PrYrvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gBpTwVM1r8IheftobvwjceUL7e6cQBnHQMaCjm/HahTVl+XNK7S2Wnx88wbyy+5N06AwY47OHeBFHVULhVHzI58TO/PomOdDFfDVeKG1AAIto9AqmTF4h9VVlG0FSos1cd3K9hl8FkEPAKSv3Qij8C54bHMPW1+AoYMmQs2SPPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyayIQU/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7511BC4CEE3;
-	Tue, 29 Apr 2025 16:46:10 +0000 (UTC)
+	 MIME-Version; b=jqOEkGZgnPZlDK0Jyjtu7sZvQwxFH/LxIN2XF/J0O1s+mXF6emDBkOAesBr5ikg1PUCeV7SX+j4qq9bjh740y8FmubmcXCIlTGdUu/cEH0sOW0RDtnefv+frsnSZzSIqDMsW00PLRoxF9MAjziZpJx9KF6kDJQwRXp1eXiCdbjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgY0pUHg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A513C4CEE3;
+	Tue, 29 Apr 2025 17:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945170;
-	bh=PuyHt2z5ws0Bj3PmcY76iOFfGqQcCidK9QZfL9729/E=;
+	s=korg; t=1745947537;
+	bh=ALDOSqg7qjL3cKMUdnUmk9h2LKwvRWRqKkiX3PrYrvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YyayIQU/IWnXVhuOkwZ9zQEMfn7kuqjBPu0qaOPq0ZvOHr3IpdKTP3l8bfc3bWEzB
-	 5K1eUvRIV7noqckPTlt4iVyZYVKbQJVrmQ6/QK+8pB8I5ZX525b6evZDnTI4Ngi3yz
-	 uVizybvXBXkGevX8jfT0EMU5hEsZlTt0ZPhmyqIE=
+	b=qgY0pUHgTXhLNtf4YKHBHrTuc0tfPhM78jw3NqOoQ+wy2Jgh6Wea4gXA2aEyjzww4
+	 QYImBHxDeZUk/IeF6alsJa0m1Y+kTqjeGh6HQ+44tII8To4lza9o4Zs/AdyiN31Zuo
+	 RlC3B5JluXyZm3sqMGgNcvnIBoQDksPi8FDMl9tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Grobecker <max@grobecker.info>,
-	Ingo Molnar <mingo@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Borislav Petkov <bp@alien8.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 008/179] x86/cpu: Dont clear X86_FEATURE_LAHF_LM flag in init_amd_k8() on AMD when running in a virtual machine
+Subject: [PATCH 6.12 008/280] PM: EM: Address RCU-related sparse warnings
 Date: Tue, 29 Apr 2025 18:39:09 +0200
-Message-ID: <20250429161049.730192467@linuxfoundation.org>
+Message-ID: <20250429161115.418366973@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +60,256 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Grobecker <max@grobecker.info>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit a4248ee16f411ac1ea7dfab228a6659b111e3d65 ]
+[ Upstream commit 3ee7be9e10dd5f79448788b899591d4bd2bf0c19 ]
 
-When running in a virtual machine, we might see the original hardware CPU
-vendor string (i.e. "AuthenticAMD"), but a model and family ID set by the
-hypervisor. In case we run on AMD hardware and the hypervisor sets a model
-ID < 0x14, the LAHF cpu feature is eliminated from the the list of CPU
-capabilities present to circumvent a bug with some BIOSes in conjunction with
-AMD K8 processors.
+The usage of __rcu in the Energy Model code is quite inconsistent
+which causes the following sparse warnings to trigger:
 
-Parsing the flags list from /proc/cpuinfo seems to be happening mostly in
-bash scripts and prebuilt Docker containers, as it does not need to have
-additionals tools present – even though more reliable ways like using "kcpuid",
-which calls the CPUID instruction instead of parsing a list, should be preferred.
-Scripts, that use /proc/cpuinfo to determine if the current CPU is
-"compliant" with defined microarchitecture levels like x86-64-v2 will falsely
-claim the CPU is incapable of modern CPU instructions when "lahf_lm" is missing
-in that flags list.
+kernel/power/energy_model.c:169:15: warning: incorrect type in assignment (different address spaces)
+kernel/power/energy_model.c:169:15:    expected struct em_perf_table [noderef] __rcu *table
+kernel/power/energy_model.c:169:15:    got struct em_perf_table *
+kernel/power/energy_model.c:171:9: warning: incorrect type in argument 1 (different address spaces)
+kernel/power/energy_model.c:171:9:    expected struct callback_head *head
+kernel/power/energy_model.c:171:9:    got struct callback_head [noderef] __rcu *
+kernel/power/energy_model.c:171:9: warning: cast removes address space '__rcu' of expression
+kernel/power/energy_model.c:182:19: warning: incorrect type in argument 1 (different address spaces)
+kernel/power/energy_model.c:182:19:    expected struct kref *kref
+kernel/power/energy_model.c:182:19:    got struct kref [noderef] __rcu *
+kernel/power/energy_model.c:200:15: warning: incorrect type in assignment (different address spaces)
+kernel/power/energy_model.c:200:15:    expected struct em_perf_table [noderef] __rcu *table
+kernel/power/energy_model.c:200:15:    got void *[assigned] _res
+kernel/power/energy_model.c:204:20: warning: incorrect type in argument 1 (different address spaces)
+kernel/power/energy_model.c:204:20:    expected struct kref *kref
+kernel/power/energy_model.c:204:20:    got struct kref [noderef] __rcu *
+kernel/power/energy_model.c:320:19: warning: incorrect type in argument 1 (different address spaces)
+kernel/power/energy_model.c:320:19:    expected struct kref *kref
+kernel/power/energy_model.c:320:19:    got struct kref [noderef] __rcu *
+kernel/power/energy_model.c:325:45: warning: incorrect type in argument 2 (different address spaces)
+kernel/power/energy_model.c:325:45:    expected struct em_perf_state *table
+kernel/power/energy_model.c:325:45:    got struct em_perf_state [noderef] __rcu *
+kernel/power/energy_model.c:425:45: warning: incorrect type in argument 3 (different address spaces)
+kernel/power/energy_model.c:425:45:    expected struct em_perf_state *table
+kernel/power/energy_model.c:425:45:    got struct em_perf_state [noderef] __rcu *
+kernel/power/energy_model.c:442:15: warning: incorrect type in argument 1 (different address spaces)
+kernel/power/energy_model.c:442:15:    expected void const *objp
+kernel/power/energy_model.c:442:15:    got struct em_perf_table [noderef] __rcu *[assigned] em_table
+kernel/power/energy_model.c:626:55: warning: incorrect type in argument 2 (different address spaces)
+kernel/power/energy_model.c:626:55:    expected struct em_perf_state *table
+kernel/power/energy_model.c:626:55:    got struct em_perf_state [noderef] __rcu *
+kernel/power/energy_model.c:681:16: warning: incorrect type in assignment (different address spaces)
+kernel/power/energy_model.c:681:16:    expected struct em_perf_state *new_ps
+kernel/power/energy_model.c:681:16:    got struct em_perf_state [noderef] __rcu *
+kernel/power/energy_model.c:699:37: warning: incorrect type in argument 2 (different address spaces)
+kernel/power/energy_model.c:699:37:    expected struct em_perf_state *table
+kernel/power/energy_model.c:699:37:    got struct em_perf_state [noderef] __rcu *
+kernel/power/energy_model.c:733:38: warning: incorrect type in argument 3 (different address spaces)
+kernel/power/energy_model.c:733:38:    expected struct em_perf_state *table
+kernel/power/energy_model.c:733:38:    got struct em_perf_state [noderef] __rcu *
+kernel/power/energy_model.c:855:53: warning: dereference of noderef expression
+kernel/power/energy_model.c:864:32: warning: dereference of noderef expression
 
-This can prevent some docker containers from starting or build scripts to create
-unoptimized binaries.
+This is because the __rcu annotation for sparse is only applicable to
+pointers that need rcu_dereference() or equivalent for protection, which
+basically means pointers assigned with rcu_assign_pointer().
 
-Admittably, this is more a small inconvenience than a severe bug in the kernel
-and the shoddy scripts that rely on parsing /proc/cpuinfo
-should be fixed instead.
+Make all of the above sparse warnings go away by cleaning up the usage
+of __rcu and using rcu_dereference_protected() where applicable.
 
-This patch adds an additional check to see if we're running inside a
-virtual machine (X86_FEATURE_HYPERVISOR is present), which, to my
-understanding, can't be present on a real K8 processor as it was introduced
-only with the later/other Athlon64 models.
-
-Example output with the "lahf_lm" flag missing in the flags list
-(should be shown between "hypervisor" and "abm"):
-
-    $ cat /proc/cpuinfo
-    processor       : 0
-    vendor_id       : AuthenticAMD
-    cpu family      : 15
-    model           : 6
-    model name      : Common KVM processor
-    stepping        : 1
-    microcode       : 0x1000065
-    cpu MHz         : 2599.998
-    cache size      : 512 KB
-    physical id     : 0
-    siblings        : 1
-    core id         : 0
-    cpu cores       : 1
-    apicid          : 0
-    initial apicid  : 0
-    fpu             : yes
-    fpu_exception   : yes
-    cpuid level     : 13
-    wp              : yes
-    flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca
-                      cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx rdtscp
-                      lm rep_good nopl cpuid extd_apicid tsc_known_freq pni
-                      pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe popcnt
-                      tsc_deadline_timer aes xsave avx f16c hypervisor abm
-                      3dnowprefetch vmmcall bmi1 avx2 bmi2 xsaveopt
-
-... while kcpuid shows the feature to be present in the CPU:
-
-    # kcpuid -d | grep lahf
-         lahf_lm             - LAHF/SAHF available in 64-bit mode
-
-[ mingo: Updated the comment a bit, incorporated Boris's review feedback. ]
-
-Signed-off-by: Max Grobecker <max@grobecker.info>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: Borislav Petkov <bp@alien8.de>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/5885405.DvuYhMxLoT@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/energy_model.h | 12 +++++------
+ kernel/power/energy_model.c  | 39 ++++++++++++++++++------------------
+ 2 files changed, 26 insertions(+), 25 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 533451498c8f8..9bcc099484c89 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -808,7 +808,7 @@ static void init_amd_k8(struct cpuinfo_x86 *c)
- 	 * (model = 0x14) and later actually support it.
- 	 * (AMD Erratum #110, docId: 25759).
- 	 */
--	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM)) {
-+	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM) && !cpu_has(c, X86_FEATURE_HYPERVISOR)) {
- 		clear_cpu_cap(c, X86_FEATURE_LAHF_LM);
- 		if (!rdmsrl_amd_safe(0xc001100d, &value)) {
- 			value &= ~BIT_64(32);
+diff --git a/include/linux/energy_model.h b/include/linux/energy_model.h
+index 1ff52020cf757..34498652f7802 100644
+--- a/include/linux/energy_model.h
++++ b/include/linux/energy_model.h
+@@ -163,13 +163,13 @@ struct em_data_callback {
+ struct em_perf_domain *em_cpu_get(int cpu);
+ struct em_perf_domain *em_pd_get(struct device *dev);
+ int em_dev_update_perf_domain(struct device *dev,
+-			      struct em_perf_table __rcu *new_table);
++			      struct em_perf_table *new_table);
+ int em_dev_register_perf_domain(struct device *dev, unsigned int nr_states,
+ 				struct em_data_callback *cb, cpumask_t *span,
+ 				bool microwatts);
+ void em_dev_unregister_perf_domain(struct device *dev);
+-struct em_perf_table __rcu *em_table_alloc(struct em_perf_domain *pd);
+-void em_table_free(struct em_perf_table __rcu *table);
++struct em_perf_table *em_table_alloc(struct em_perf_domain *pd);
++void em_table_free(struct em_perf_table *table);
+ int em_dev_compute_costs(struct device *dev, struct em_perf_state *table,
+ 			 int nr_states);
+ int em_dev_update_chip_binning(struct device *dev);
+@@ -365,14 +365,14 @@ static inline int em_pd_nr_perf_states(struct em_perf_domain *pd)
+ 	return 0;
+ }
+ static inline
+-struct em_perf_table __rcu *em_table_alloc(struct em_perf_domain *pd)
++struct em_perf_table *em_table_alloc(struct em_perf_domain *pd)
+ {
+ 	return NULL;
+ }
+-static inline void em_table_free(struct em_perf_table __rcu *table) {}
++static inline void em_table_free(struct em_perf_table *table) {}
+ static inline
+ int em_dev_update_perf_domain(struct device *dev,
+-			      struct em_perf_table __rcu *new_table)
++			      struct em_perf_table *new_table)
+ {
+ 	return -EINVAL;
+ }
+diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+index e303d938637f1..4e1778071d704 100644
+--- a/kernel/power/energy_model.c
++++ b/kernel/power/energy_model.c
+@@ -163,12 +163,8 @@ static void em_debug_remove_pd(struct device *dev) {}
+ 
+ static void em_release_table_kref(struct kref *kref)
+ {
+-	struct em_perf_table __rcu *table;
+-
+ 	/* It was the last owner of this table so we can free */
+-	table = container_of(kref, struct em_perf_table, kref);
+-
+-	kfree_rcu(table, rcu);
++	kfree_rcu(container_of(kref, struct em_perf_table, kref), rcu);
+ }
+ 
+ /**
+@@ -177,7 +173,7 @@ static void em_release_table_kref(struct kref *kref)
+  *
+  * No return values.
+  */
+-void em_table_free(struct em_perf_table __rcu *table)
++void em_table_free(struct em_perf_table *table)
+ {
+ 	kref_put(&table->kref, em_release_table_kref);
+ }
+@@ -190,9 +186,9 @@ void em_table_free(struct em_perf_table __rcu *table)
+  * has a user.
+  * Returns allocated table or NULL.
+  */
+-struct em_perf_table __rcu *em_table_alloc(struct em_perf_domain *pd)
++struct em_perf_table *em_table_alloc(struct em_perf_domain *pd)
+ {
+-	struct em_perf_table __rcu *table;
++	struct em_perf_table *table;
+ 	int table_size;
+ 
+ 	table_size = sizeof(struct em_perf_state) * pd->nr_perf_states;
+@@ -300,9 +296,9 @@ int em_dev_compute_costs(struct device *dev, struct em_perf_state *table,
+  * Return 0 on success or an error code on failure.
+  */
+ int em_dev_update_perf_domain(struct device *dev,
+-			      struct em_perf_table __rcu *new_table)
++			      struct em_perf_table *new_table)
+ {
+-	struct em_perf_table __rcu *old_table;
++	struct em_perf_table *old_table;
+ 	struct em_perf_domain *pd;
+ 
+ 	if (!dev)
+@@ -319,7 +315,8 @@ int em_dev_update_perf_domain(struct device *dev,
+ 
+ 	kref_get(&new_table->kref);
+ 
+-	old_table = pd->em_table;
++	old_table = rcu_dereference_protected(pd->em_table,
++					      lockdep_is_held(&em_pd_mutex));
+ 	rcu_assign_pointer(pd->em_table, new_table);
+ 
+ 	em_cpufreq_update_efficiencies(dev, new_table->state);
+@@ -391,7 +388,7 @@ static int em_create_pd(struct device *dev, int nr_states,
+ 			struct em_data_callback *cb, cpumask_t *cpus,
+ 			unsigned long flags)
+ {
+-	struct em_perf_table __rcu *em_table;
++	struct em_perf_table *em_table;
+ 	struct em_perf_domain *pd;
+ 	struct device *cpu_dev;
+ 	int cpu, ret, num_cpus;
+@@ -551,6 +548,7 @@ int em_dev_register_perf_domain(struct device *dev, unsigned int nr_states,
+ 				struct em_data_callback *cb, cpumask_t *cpus,
+ 				bool microwatts)
+ {
++	struct em_perf_table *em_table;
+ 	unsigned long cap, prev_cap = 0;
+ 	unsigned long flags = 0;
+ 	int cpu, ret;
+@@ -621,7 +619,9 @@ int em_dev_register_perf_domain(struct device *dev, unsigned int nr_states,
+ 
+ 	dev->em_pd->flags |= flags;
+ 
+-	em_cpufreq_update_efficiencies(dev, dev->em_pd->em_table->state);
++	em_table = rcu_dereference_protected(dev->em_pd->em_table,
++					     lockdep_is_held(&em_pd_mutex));
++	em_cpufreq_update_efficiencies(dev, em_table->state);
+ 
+ 	em_debug_create_pd(dev);
+ 	dev_info(dev, "EM: created perf domain\n");
+@@ -658,7 +658,8 @@ void em_dev_unregister_perf_domain(struct device *dev)
+ 	mutex_lock(&em_pd_mutex);
+ 	em_debug_remove_pd(dev);
+ 
+-	em_table_free(dev->em_pd->em_table);
++	em_table_free(rcu_dereference_protected(dev->em_pd->em_table,
++						lockdep_is_held(&em_pd_mutex)));
+ 
+ 	kfree(dev->em_pd);
+ 	dev->em_pd = NULL;
+@@ -666,9 +667,9 @@ void em_dev_unregister_perf_domain(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(em_dev_unregister_perf_domain);
+ 
+-static struct em_perf_table __rcu *em_table_dup(struct em_perf_domain *pd)
++static struct em_perf_table *em_table_dup(struct em_perf_domain *pd)
+ {
+-	struct em_perf_table __rcu *em_table;
++	struct em_perf_table *em_table;
+ 	struct em_perf_state *ps, *new_ps;
+ 	int ps_size;
+ 
+@@ -690,7 +691,7 @@ static struct em_perf_table __rcu *em_table_dup(struct em_perf_domain *pd)
+ }
+ 
+ static int em_recalc_and_update(struct device *dev, struct em_perf_domain *pd,
+-				struct em_perf_table __rcu *em_table)
++				struct em_perf_table *em_table)
+ {
+ 	int ret;
+ 
+@@ -721,7 +722,7 @@ static void em_adjust_new_capacity(struct device *dev,
+ 				   struct em_perf_domain *pd,
+ 				   u64 max_cap)
+ {
+-	struct em_perf_table __rcu *em_table;
++	struct em_perf_table *em_table;
+ 
+ 	em_table = em_table_dup(pd);
+ 	if (!em_table) {
+@@ -812,7 +813,7 @@ static void em_update_workfn(struct work_struct *work)
+  */
+ int em_dev_update_chip_binning(struct device *dev)
+ {
+-	struct em_perf_table __rcu *em_table;
++	struct em_perf_table *em_table;
+ 	struct em_perf_domain *pd;
+ 	int i, ret;
+ 
 -- 
 2.39.5
 
