@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96C7EAA152E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:24:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D97AA1874
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 871D01891BE0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:21:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F84A9A73AB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1503C244683;
-	Tue, 29 Apr 2025 17:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA4625334C;
+	Tue, 29 Apr 2025 17:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUZCYzzd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jat9IhYI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B1821ABDB;
-	Tue, 29 Apr 2025 17:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD51A250C0C;
+	Tue, 29 Apr 2025 17:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947257; cv=none; b=cwkTrQwC6BFpqKCEKUDxdwOS5yFXCfOq8D+2CUXavx1cobXQ2Wz+C3MCa5/2gIFqRMCLSLZJ6J943SrSxYmp5VOK2+fS1mAYdqIgDgyzznkxLfbtx6syImYCy0QfRHAqo0cShqkoNgUUAe85JuAVgmGpRNNeNeJ3m1gobeXJG+s=
+	t=1745949274; cv=none; b=c36+Df6iFi3h2WCu9LLApktnve8Go3AUkRTuHKBW37Uocc5duN+51KF5DpPesOvH9Jzz8PMWWMC3CASSNIOagBcQKsgXi49JavDSk0lpzvoEhlWisQN4sm/Ak8hob9AQHo95ozX1+hPm/T6bLa6VIAHlMFE1Zp0k/HA4LT4+Ao4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947257; c=relaxed/simple;
-	bh=QZ+AGfn1r7Xxl0U5iYOyK7xnSvWOfx36C6AnFXrb6mg=;
+	s=arc-20240116; t=1745949274; c=relaxed/simple;
+	bh=nKNVZd3rBOtYMoShXaJHSVL9NZ3LiBCMHE68hO2xJCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rK5RPA0fUoZQBxHv/V1BMZhMvrjYmyPIsP/iWnGuDgzbc049hvfa/6I4m3ql2Gd2nB+fYskk5dwjXBHWO66ooQsm82XVDSD+XWGde4ZZn/2ShRspyak4qeu9l8OWUAEjC0Xcfm8K57X1eyTQq04U5U9hdt/3iXw7IpGlKTiFJRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUZCYzzd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF69C4CEE3;
-	Tue, 29 Apr 2025 17:20:56 +0000 (UTC)
+	 MIME-Version; b=Y+ZmzpW4uDXcOxwjIVarErgFmuSKxh3H0FN/tCY+pZl9JLWDcEPSU0Vj9iQe0LirHckbQDmVjX7sC+LuLHWs/qUma+DAHVjBoC2Bd92pBCFgGVzqcJHqaLhsETbT24Y0jUe18ok7xykdwdWQJV9URrJa2GQhBJYOespNhrWR/iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jat9IhYI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33222C4CEE3;
+	Tue, 29 Apr 2025 17:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947257;
-	bh=QZ+AGfn1r7Xxl0U5iYOyK7xnSvWOfx36C6AnFXrb6mg=;
+	s=korg; t=1745949274;
+	bh=nKNVZd3rBOtYMoShXaJHSVL9NZ3LiBCMHE68hO2xJCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUZCYzzdykneaHIwZy65DYuTcEEp6Yj/Xw0HIte63/dEmU3+HT3MQEQKQAjferUG5
-	 ntepcKn+vcAQVsIO56igGrpPt/VTEH+cC1IISQxSH8NgkmTQ0YSE1Ba6yALgW+oczD
-	 K1SSOHV7GWH6auRS2j7Jh0ksU64v3zpcAoSmxCZc=
+	b=jat9IhYIg3392/pGDzksSqCaHIQNZNzzHWxPP6TDbs+5AUu4OdcMQgYlht1Jx+o2O
+	 K2eCYd/2CHx9/XTT4dBaG8ucEoqzKIDRtuQYzavZdmBe6ZTem8351+5SHHa19q3H9y
+	 pR1TnZ6wAPOElJhzrdJLuTM0fJoBWigmKrHvgMuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 222/286] PCI: Introduce domain_nr in pci_host_bridge
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Cliff Liu <donghua.liu@windriver.com>,
+	He Zhe <Zhe.He@windriver.com>
+Subject: [PATCH 5.15 249/373] f2fs: check validation of fault attrs in f2fs_build_fault_attr()
 Date: Tue, 29 Apr 2025 18:42:06 +0200
-Message-ID: <20250429161117.075180457@linuxfoundation.org>
+Message-ID: <20250429161133.366159417@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boqun Feng <boqun.feng@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 15d82ca23c996d50062286d27ed6a42a8105c04a ]
+commit 4ed886b187f47447ad559619c48c086f432d2b77 upstream.
 
-Currently we retrieve the PCI domain number of the host bridge from the
-bus sysdata (or pci_config_window if PCI_DOMAINS_GENERIC=y). Actually
-we have the information at PCI host bridge probing time, and it makes
-sense that we store it into pci_host_bridge. One benefit of doing so is
-the requirement for supporting PCI on Hyper-V for ARM64, because the
-host bridge of Hyper-V doesn't have pci_config_window, whereas ARM64 is
-a PCI_DOMAINS_GENERIC=y arch, so we cannot retrieve the PCI domain
-number from pci_config_window on ARM64 Hyper-V guest.
+- It missed to check validation of fault attrs in parse_options(),
+let's fix to add check condition in f2fs_build_fault_attr().
+- Use f2fs_build_fault_attr() in __sbi_store() to clean up code.
 
-As the preparation for ARM64 Hyper-V PCI support, we introduce the
-domain_nr in pci_host_bridge and a sentinel value to allow drivers to
-set domain numbers properly at probing time. Currently
-CONFIG_PCI_DOMAINS_GENERIC=y archs are only users of this
-newly-introduced field.
-
-Link: https://lore.kernel.org/r/20210726180657.142727-2-boqun.feng@gmail.com
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: 804443c1f278 ("PCI: Fix reference leak in pci_register_host_bridge()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
+Signed-off-by: He Zhe <Zhe.He@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/probe.c |  6 +++++-
- include/linux/pci.h | 11 +++++++++++
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ fs/f2fs/f2fs.h  |   12 ++++++++----
+ fs/f2fs/super.c |   27 ++++++++++++++++++++-------
+ fs/f2fs/sysfs.c |   14 ++++++++++----
+ 3 files changed, 38 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 6439fc2e526c7..be7973e249cd7 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -595,6 +595,7 @@ static void pci_init_host_bridge(struct pci_host_bridge *bridge)
- 	bridge->native_pme = 1;
- 	bridge->native_ltr = 1;
- 	bridge->native_dpc = 1;
-+	bridge->domain_nr = PCI_DOMAIN_NR_NOT_SET;
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -64,7 +64,7 @@ enum {
  
- 	device_initialize(&bridge->dev);
+ struct f2fs_fault_info {
+ 	atomic_t inject_ops;
+-	unsigned int inject_rate;
++	int inject_rate;
+ 	unsigned int inject_type;
+ };
+ 
+@@ -4373,10 +4373,14 @@ static inline bool f2fs_need_verity(cons
  }
-@@ -899,7 +900,10 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- 	bus->ops = bridge->ops;
- 	bus->number = bus->busn_res.start = bridge->busnr;
- #ifdef CONFIG_PCI_DOMAINS_GENERIC
--	bus->domain_nr = pci_bus_find_domain_nr(bus, parent);
-+	if (bridge->domain_nr == PCI_DOMAIN_NR_NOT_SET)
-+		bus->domain_nr = pci_bus_find_domain_nr(bus, parent);
-+	else
-+		bus->domain_nr = bridge->domain_nr;
+ 
+ #ifdef CONFIG_F2FS_FAULT_INJECTION
+-extern void f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned int rate,
+-							unsigned int type);
++extern int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
++							unsigned long type);
+ #else
+-#define f2fs_build_fault_attr(sbi, rate, type)		do { } while (0)
++static int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
++							unsigned long type)
++{
++	return 0;
++}
  #endif
  
- 	b = pci_find_bus(pci_domain_nr(bus), bridge->busnr);
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 30bc462fb1964..a0fd1fe4189e4 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -538,6 +538,16 @@ static inline int pci_channel_offline(struct pci_dev *pdev)
- 	return (pdev->error_state != pci_channel_io_normal);
- }
+ static inline bool is_journalled_quota(struct f2fs_sb_info *sbi)
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -61,21 +61,31 @@ const char *f2fs_fault_name[FAULT_MAX] =
+ 	[FAULT_DQUOT_INIT]	= "dquot initialize",
+ };
  
-+/*
-+ * Currently in ACPI spec, for each PCI host bridge, PCI Segment
-+ * Group number is limited to a 16-bit value, therefore (int)-1 is
-+ * not a valid PCI domain number, and can be used as a sentinel
-+ * value indicating ->domain_nr is not set by the driver (and
-+ * CONFIG_PCI_DOMAINS_GENERIC=y archs will set it with
-+ * pci_bus_find_domain_nr()).
-+ */
-+#define PCI_DOMAIN_NR_NOT_SET (-1)
-+
- struct pci_host_bridge {
- 	struct device	dev;
- 	struct pci_bus	*bus;		/* Root bus */
-@@ -545,6 +555,7 @@ struct pci_host_bridge {
- 	struct pci_ops	*child_ops;
- 	void		*sysdata;
- 	int		busnr;
-+	int		domain_nr;
- 	struct list_head windows;	/* resource_entry */
- 	struct list_head dma_ranges;	/* dma ranges resource list */
- 	u8 (*swizzle_irq)(struct pci_dev *, u8 *); /* Platform IRQ swizzler */
--- 
-2.39.5
-
+-void f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned int rate,
+-							unsigned int type)
++int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
++							unsigned long type)
+ {
+ 	struct f2fs_fault_info *ffi = &F2FS_OPTION(sbi).fault_info;
+ 
+ 	if (rate) {
++		if (rate > INT_MAX)
++			return -EINVAL;
+ 		atomic_set(&ffi->inject_ops, 0);
+-		ffi->inject_rate = rate;
++		ffi->inject_rate = (int)rate;
+ 	}
+ 
+-	if (type)
+-		ffi->inject_type = type;
++	if (type) {
++		if (type >= BIT(FAULT_MAX))
++			return -EINVAL;
++		ffi->inject_type = (unsigned int)type;
++	}
+ 
+ 	if (!rate && !type)
+ 		memset(ffi, 0, sizeof(struct f2fs_fault_info));
++	else
++		f2fs_info(sbi,
++			"build fault injection attr: rate: %lu, type: 0x%lx",
++								rate, type);
++	return 0;
+ }
+ #endif
+ 
+@@ -901,14 +911,17 @@ static int parse_options(struct super_bl
+ 		case Opt_fault_injection:
+ 			if (args->from && match_int(args, &arg))
+ 				return -EINVAL;
+-			f2fs_build_fault_attr(sbi, arg, F2FS_ALL_FAULT_TYPE);
++			if (f2fs_build_fault_attr(sbi, arg,
++					F2FS_ALL_FAULT_TYPE))
++				return -EINVAL;
+ 			set_opt(sbi, FAULT_INJECTION);
+ 			break;
+ 
+ 		case Opt_fault_type:
+ 			if (args->from && match_int(args, &arg))
+ 				return -EINVAL;
+-			f2fs_build_fault_attr(sbi, 0, arg);
++			if (f2fs_build_fault_attr(sbi, 0, arg))
++				return -EINVAL;
+ 			set_opt(sbi, FAULT_INJECTION);
+ 			break;
+ #else
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -407,10 +407,16 @@ out:
+ 	if (ret < 0)
+ 		return ret;
+ #ifdef CONFIG_F2FS_FAULT_INJECTION
+-	if (a->struct_type == FAULT_INFO_TYPE && t >= (1 << FAULT_MAX))
+-		return -EINVAL;
+-	if (a->struct_type == FAULT_INFO_RATE && t >= UINT_MAX)
+-		return -EINVAL;
++	if (a->struct_type == FAULT_INFO_TYPE) {
++		if (f2fs_build_fault_attr(sbi, 0, t))
++			return -EINVAL;
++		return count;
++	}
++	if (a->struct_type == FAULT_INFO_RATE) {
++		if (f2fs_build_fault_attr(sbi, t, 0))
++			return -EINVAL;
++		return count;
++	}
+ #endif
+ 	if (a->struct_type == RESERVED_BLOCKS) {
+ 		spin_lock(&sbi->stat_lock);
 
 
 
