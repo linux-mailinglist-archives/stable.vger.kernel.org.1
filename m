@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196DCAA151B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF41AAA1817
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:56:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0848173946
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:21:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3943C1BC5958
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651C5245007;
-	Tue, 29 Apr 2025 17:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F1D253B73;
+	Tue, 29 Apr 2025 17:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AK9Tkuys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KXlkz+ed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2448882C60;
-	Tue, 29 Apr 2025 17:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950D1253952;
+	Tue, 29 Apr 2025 17:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947264; cv=none; b=aD7LK+mPt+Z9Pd7B4hR2qZY7D+0LjZZs7hXW6Bu4Dk0N3vleznEU79Ro7WX9YBVrwCq3GupYn2aGrNmRd53LOv9joGKByaVFiUsEKn24veHY+AhDHAwwRXJlrs+3b8l8cINkpWwXMsYrsPAUyXotVTk6R0NfAJwCIKxjYP9cQTU=
+	t=1745949308; cv=none; b=fUvfW2d8/jqY5ANQxGcQ1OpyKp0SH/yOxx4IAMgEyRWYgsjX9gN7lVAnPz2hCIICG0YFCa6khOAcOrJfBQ8kLoBjy7XaYCKna1kMPR4HzyuPTo+EjwhnwTsI5lja6q1HU4giG/a5c6MzPJ/6Wbxd0kisakzVs8tAvi89xvwSxFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947264; c=relaxed/simple;
-	bh=ixyYSAJAgnhgsPD4/L22k9Xu1iKXJpmYy6zDMCONMYU=;
+	s=arc-20240116; t=1745949308; c=relaxed/simple;
+	bh=rE7atgZirpw2iZfb21qZ7JRTAci5Ii4y8A6XgmY8bhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gk2h8srWnp2Lp/0HvSkSASkBuiZT69X1PMqTY4FwCNcSPFtXpWkvMbULvQ/+UNYz43FPx+49YP5yWkhZKkA+OkyNBfJykg6YTQZ5VRIWSKEUB2G/+T6wAFUF3moU8GrE19frSztAmzUyPKNLs7uRTSQUbRUfnlFd+IAu7lemfiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AK9Tkuys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28DBC4CEEE;
-	Tue, 29 Apr 2025 17:21:03 +0000 (UTC)
+	 MIME-Version; b=BWkkGtaWStoucO62wt6nHFl1k3s7XpJU2poAEad4iNFJSkgSRIMOznucYydwsjAkYt6/KcY2RPXrFv4tRwkSwLu0DVOnbCE8KQbgViU2h4wY9O1SWzxsaq718aiy3fhcgOA00AeocdspcQ580yjS+IuFGJ/VwcIAGD3eQ9GLI7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXlkz+ed; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03369C4CEE3;
+	Tue, 29 Apr 2025 17:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947264;
-	bh=ixyYSAJAgnhgsPD4/L22k9Xu1iKXJpmYy6zDMCONMYU=;
+	s=korg; t=1745949308;
+	bh=rE7atgZirpw2iZfb21qZ7JRTAci5Ii4y8A6XgmY8bhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AK9TkuysdZEyp4PhgOuPufVt4UHm3ylgvsHkkN6xP5uxkeI2Gle8LT9vVVNFaZLv9
-	 F6wkmSUbdQv/5ElcqnxpoIHd8+Q/jfTDtqyv+xxPbQBrcraWwz2alJ5LE22NwFZpcF
-	 OiLuJCOzbrgiNGpnD1WZrt2Xsw+ciqIQKgX/AEGQ=
+	b=KXlkz+edgFuYoGI35GWG0h2BNKCWoFEJiUkLcpQcr2wOP7KJpSuLbBbXj7U+uFT2y
+	 gq9wPa7tGF6s0R32RqCYJbY7tGRMP/ZoHJHir8eMb5lnnuPijUVUu171FhhbN9P9mp
+	 4I0weDOuCzsU1ei+8AMGeDHfRHrCTDemFWJYZkh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 223/286] PCI: Coalesce host bridge contiguous apertures
+	Kunwu Chan <chentao@kylinos.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Feng Liu <Feng.Liu3@windriver.com>,
+	He Zhe <Zhe.He@windriver.com>
+Subject: [PATCH 5.15 250/373] pmdomain: ti: Add a null pointer check to the omap_prm_domain_init
 Date: Tue, 29 Apr 2025 18:42:07 +0200
-Message-ID: <20250429161117.115356093@linuxfoundation.org>
+Message-ID: <20250429161133.407582195@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 65db04053efea3f3e412a7e0cc599962999c96b4 ]
+commit 5d7f58ee08434a33340f75ac7ac5071eea9673b3 upstream.
 
-Built-in graphics on HP EliteDesk 805 G6 doesn't work because graphics
-can't get the BAR it needs:
+devm_kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-  pci_bus 0000:00: root bus resource [mem 0x10020200000-0x100303fffff window]
-  pci_bus 0000:00: root bus resource [mem 0x10030400000-0x100401fffff window]
-
-  pci 0000:00:08.1:   bridge window [mem 0xd2000000-0xd23fffff]
-  pci 0000:00:08.1:   bridge window [mem 0x10030000000-0x100401fffff 64bit pref]
-  pci 0000:00:08.1: can't claim BAR 15 [mem 0x10030000000-0x100401fffff 64bit pref]: no compatible bridge window
-  pci 0000:00:08.1: [mem 0x10030000000-0x100401fffff 64bit pref] clipped to [mem 0x10030000000-0x100303fffff 64bit pref]
-  pci 0000:00:08.1:   bridge window [mem 0x10030000000-0x100303fffff 64bit pref]
-  pci 0000:07:00.0: can't claim BAR 0 [mem 0x10030000000-0x1003fffffff 64bit pref]: no compatible bridge window
-  pci 0000:07:00.0: can't claim BAR 2 [mem 0x10040000000-0x100401fffff 64bit pref]: no compatible bridge window
-
-However, the root bus has two contiguous apertures that can contain the
-child resource requested.
-
-Coalesce contiguous apertures so we can allocate from the entire contiguous
-region.
-
-[bhelgaas: fold in https://lore.kernel.org/r/20210528170242.1564038-1-kai.heng.feng@canonical.com]
-Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=212013
-Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/r/20210401131252.531935-1-kai.heng.feng@canonical.com
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: 804443c1f278 ("PCI: Fix reference leak in pci_register_host_bridge()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20240118054257.200814-1-chentao@kylinos.cn
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[Minor context change fixed]
+Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
+Signed-off-by: He Zhe <Zhe.He@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/probe.c | 31 +++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ drivers/soc/ti/omap_prm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index be7973e249cd7..a2c53f6d1848a 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -878,11 +878,11 @@ static void pci_set_bus_msi_domain(struct pci_bus *bus)
- static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- {
- 	struct device *parent = bridge->dev.parent;
--	struct resource_entry *window, *n;
-+	struct resource_entry *window, *next, *n;
- 	struct pci_bus *bus, *b;
--	resource_size_t offset;
-+	resource_size_t offset, next_offset;
- 	LIST_HEAD(resources);
--	struct resource *res;
-+	struct resource *res, *next_res;
- 	char addr[64], *fmt;
- 	const char *name;
- 	int err;
-@@ -962,11 +962,34 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- 	if (nr_node_ids > 1 && pcibus_to_node(bus) == NUMA_NO_NODE)
- 		dev_warn(&bus->dev, "Unknown NUMA node; performance will be reduced\n");
+--- a/drivers/soc/ti/omap_prm.c
++++ b/drivers/soc/ti/omap_prm.c
+@@ -696,6 +696,8 @@ static int omap_prm_domain_init(struct d
+ 	data = prm->data;
+ 	name = devm_kasprintf(dev, GFP_KERNEL, "prm_%s",
+ 			      data->name);
++	if (!name)
++		return -ENOMEM;
  
-+	/* Coalesce contiguous windows */
-+	resource_list_for_each_entry_safe(window, n, &resources) {
-+		if (list_is_last(&window->node, &resources))
-+			break;
-+
-+		next = list_next_entry(window, node);
-+		offset = window->offset;
-+		res = window->res;
-+		next_offset = next->offset;
-+		next_res = next->res;
-+
-+		if (res->flags != next_res->flags || offset != next_offset)
-+			continue;
-+
-+		if (res->end + 1 == next_res->start) {
-+			next_res->start = res->start;
-+			res->flags = res->start = res->end = 0;
-+		}
-+	}
-+
- 	/* Add initial resources to the bus */
- 	resource_list_for_each_entry_safe(window, n, &resources) {
--		list_move_tail(&window->node, &bridge->windows);
- 		offset = window->offset;
- 		res = window->res;
-+		if (!res->end)
-+			continue;
-+
-+		list_move_tail(&window->node, &bridge->windows);
- 
- 		if (res->flags & IORESOURCE_BUS)
- 			pci_bus_insert_busn_res(bus, bus->number, res->end);
--- 
-2.39.5
-
+ 	prmd->dev = dev;
+ 	prmd->prm = prm;
 
 
 
