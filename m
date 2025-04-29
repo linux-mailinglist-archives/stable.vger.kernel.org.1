@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-138644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E14AA18E9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6B3AA1A22
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 373171BC7921
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD9235A59A9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E245F22AE68;
-	Tue, 29 Apr 2025 18:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4EE24111D;
+	Tue, 29 Apr 2025 18:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBimpIbL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntk7JM48"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8A040C03;
-	Tue, 29 Apr 2025 18:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A8F227BA9;
+	Tue, 29 Apr 2025 18:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949900; cv=none; b=KzlYrye1LegPyMLjGAE9FH5N3F2l+lHX0FZaAKKk0PAzZf1zQ62BUlKMq446Gy1y856CShl7BTmxlcfbw9aZCi5IC5B1l+5W2NYdFGuVlDIEcYN7ZWuDB9aVPjAytmLB12Q0fsQqPogsKAejTzVTnH2p6pu+8yzRMKSZWGQN8i8=
+	t=1745950403; cv=none; b=RsgRfwGwSGz93yqC1VbYk4V+MR8sTbzz7F59ErO0nBmwjai2aGEIAffR8HYqhzKNLgol+WACOhnRFIZgOkx+il0r/bf5FgwITQ1WHdmwON8eNYlbyo0USBYhzwopcCi93uIqGGr9RciLV/90wEqwVuzhn4np79XdKmW6qTK1wYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949900; c=relaxed/simple;
-	bh=HfAwzIa23iAa2rifIYEyQl83J5jO1cW04Hst4HrIbxg=;
+	s=arc-20240116; t=1745950403; c=relaxed/simple;
+	bh=dS2L08jzrW9BI7ZjF2B+XyH+VAMgK4LHIrEvSL8G5d4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OTeLk0mS8TVrhkeorNUclrgkt2PgORn6JIz/3/1mpApD7JGnAnckUjl5oV8zl74Rzzmce+VLJJg2P3Ez+N8rdtSagNOBTOexUcthIQRfQ9LU3CM2+pMpgKX0pfk/U3qX7znAP4sCC/dH1aMyv/d2ZFVPO+UlVDF2ECwF6DTiHd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBimpIbL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2640EC4CEE3;
-	Tue, 29 Apr 2025 18:04:59 +0000 (UTC)
+	 MIME-Version; b=qPMtSR6j3vZ9bBFMEuzKCxh/WrnSAAc/w9T7lJcCZLWxDLFiN+hsIbgkQhLdJ8VdO4AWsBc78OtFH7USRv0noh8e611PdZsNO5fX2AFDVXriYr4oRhF3Y7lXnDaanXtyf08Az2Te2ds1lfOPPxW+bS668xHz22izFMMJFJBZUXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntk7JM48; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832F2C4CEE3;
+	Tue, 29 Apr 2025 18:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949900;
-	bh=HfAwzIa23iAa2rifIYEyQl83J5jO1cW04Hst4HrIbxg=;
+	s=korg; t=1745950402;
+	bh=dS2L08jzrW9BI7ZjF2B+XyH+VAMgK4LHIrEvSL8G5d4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lBimpIbLpCC6u2yah+GC/Ww9WY36Gy60REjh6HIGnCYi+B3ZehcN8XQxAJQlFbjjI
-	 tiyVWkxPatDkewZ+WyHGr1L/aejn5q5GGsj5K628Y46k38Ry87TMf4mBevfpSPqNPq
-	 6ONIUcuz2TxcAdqdYhFpmVNG9Pkl2eQp25rX03UE=
+	b=ntk7JM48p5jYqs4bxXT/dOZMydQdZoN/QKjf3c0r5kOqw/PKEVVjEFBC/jBFfZ/K4
+	 XNleLu6tA5w72TV2/f03nKbCrKWk8y+jMdX3QYTAKK1fiT4UPiv2XEjSgX2QIsWlar
+	 EB6cudLNkKEV9BZhkPIIpJtDNkxTaJX9FrltAvxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Nepomnyashih <sdl@nppct.ru>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 063/167] xen-netfront: handle NULL returned by xdp_convert_buff_to_frame()
-Date: Tue, 29 Apr 2025 18:42:51 +0200
-Message-ID: <20250429161054.324576700@linuxfoundation.org>
+	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Terry Bowman <terry.bowman@amd.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Robert Richter <rrichter@amd.com>
+Subject: [PATCH 6.6 084/204] cxl/core/regs.c: Skip Memory Space Enable check for RCD and RCH Ports
+Date: Tue, 29 Apr 2025 18:42:52 +0200
+Message-ID: <20250429161102.858409279@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Nepomnyashih <sdl@nppct.ru>
+From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 
-commit cc3628dcd851ddd8d418bf0c897024b4621ddc92 upstream.
+commit 078d3ee7c162cd66d76171579c02d7890bd77daf upstream.
 
-The function xdp_convert_buff_to_frame() may return NULL if it fails
-to correctly convert the XDP buffer into an XDP frame due to memory
-constraints, internal errors, or invalid data. Failing to check for NULL
-may lead to a NULL pointer dereference if the result is used later in
-processing, potentially causing crashes, data corruption, or undefined
-behavior.
+According to CXL r3.2 section 8.2.1.2, the PCI_COMMAND register fields,
+including Memory Space Enable bit, have no effect on the behavior of an
+RCD Upstream Port. Retaining this check may incorrectly cause
+cxl_pci_probe() to fail on a valid RCD upstream Port.
 
-On XDP redirect failure, the associated page must be released explicitly
-if it was previously retained via get_page(). Failing to do so may result
-in a memory leak, as the pages reference count is not decremented.
+While the specification is explicit only for RCD Upstream Ports, this
+check is solely for accessing the RCRB, which is always mapped through
+memory space. Therefore, its safe to remove the check entirely. In
+practice, firmware reliably enables the Memory Space Enable bit for
+RCH Downstream Ports and no failures have been observed.
 
-Cc: stable@vger.kernel.org # v5.9+
-Fixes: 6c5aa6fc4def ("xen networking: add basic XDP support for xen-netfront")
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
-Link: https://patch.msgid.link/20250417122118.1009824-1-sdl@nppct.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Removing the check simplifies the code and avoids unnecessary
+special-casing, while relying on BIOS/firmware to configure devices
+correctly. Moreover, any failures due to inaccessible RCRB regions
+will still be caught either in __rcrb_to_component() or while
+parsing the component register block.
+
+The following failure was observed in dmesg when the check was present:
+	cxl_pci 0000:7f:00.0: No component registers (-6)
+
+Fixes: d5b1a27143cb ("cxl/acpi: Extract component registers of restricted hosts from RCRB")
+Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Terry Bowman <terry.bowman@amd.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Robert Richter <rrichter@amd.com>
+Link: https://patch.msgid.link/20250407192734.70631-1-Smita.KoralahalliChannabasappa@amd.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/xen-netfront.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/cxl/core/regs.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -985,20 +985,27 @@ static u32 xennet_run_xdp(struct netfron
- 	act = bpf_prog_run_xdp(prog, xdp);
- 	switch (act) {
- 	case XDP_TX:
--		get_page(pdata);
- 		xdpf = xdp_convert_buff_to_frame(xdp);
-+		if (unlikely(!xdpf)) {
-+			trace_xdp_exception(queue->info->netdev, prog, act);
-+			break;
-+		}
-+		get_page(pdata);
- 		err = xennet_xdp_xmit(queue->info->netdev, 1, &xdpf, 0);
--		if (unlikely(!err))
-+		if (unlikely(err <= 0)) {
-+			if (err < 0)
-+				trace_xdp_exception(queue->info->netdev, prog, act);
- 			xdp_return_frame_rx_napi(xdpf);
--		else if (unlikely(err < 0))
--			trace_xdp_exception(queue->info->netdev, prog, act);
-+		}
- 		break;
- 	case XDP_REDIRECT:
- 		get_page(pdata);
- 		err = xdp_do_redirect(queue->info->netdev, xdp, prog);
- 		*need_xdp_flush = true;
--		if (unlikely(err))
-+		if (unlikely(err)) {
- 			trace_xdp_exception(queue->info->netdev, prog, act);
-+			xdp_return_buff(xdp);
-+		}
- 		break;
- 	case XDP_PASS:
- 	case XDP_DROP:
+--- a/drivers/cxl/core/regs.c
++++ b/drivers/cxl/core/regs.c
+@@ -478,7 +478,6 @@ resource_size_t __rcrb_to_component(stru
+ 	resource_size_t rcrb = ri->base;
+ 	void __iomem *addr;
+ 	u32 bar0, bar1;
+-	u16 cmd;
+ 	u32 id;
+ 
+ 	if (which == CXL_RCRB_UPSTREAM)
+@@ -500,7 +499,6 @@ resource_size_t __rcrb_to_component(stru
+ 	}
+ 
+ 	id = readl(addr + PCI_VENDOR_ID);
+-	cmd = readw(addr + PCI_COMMAND);
+ 	bar0 = readl(addr + PCI_BASE_ADDRESS_0);
+ 	bar1 = readl(addr + PCI_BASE_ADDRESS_1);
+ 	iounmap(addr);
+@@ -515,8 +513,6 @@ resource_size_t __rcrb_to_component(stru
+ 			dev_err(dev, "Failed to access Downstream Port RCRB\n");
+ 		return CXL_RESOURCE_NONE;
+ 	}
+-	if (!(cmd & PCI_COMMAND_MEMORY))
+-		return CXL_RESOURCE_NONE;
+ 	/* The RCRB is a Memory Window, and the MEM_TYPE_1M bit is obsolete */
+ 	if (bar0 & (PCI_BASE_ADDRESS_MEM_TYPE_1M | PCI_BASE_ADDRESS_SPACE_IO))
+ 		return CXL_RESOURCE_NONE;
 
 
 
