@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-137588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65FD1AA1410
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C1EAA1680
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A85D7188DBC5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:08:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16C36188C9FE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F5B247298;
-	Tue, 29 Apr 2025 17:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978B324E000;
+	Tue, 29 Apr 2025 17:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mLkhr6xp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMqIvNqY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2357A221719;
-	Tue, 29 Apr 2025 17:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55583215F7C;
+	Tue, 29 Apr 2025 17:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946519; cv=none; b=ZHcyWcG8qPGxADaNbO1/3Gd1WQVFHdQ99PIXvc5MhMFMTDD51FdQDpORNJfIZa6KxtGZwvZRz8Ry+mA67pMme8EisdJNaL+RzXKd1D+ZkdBmBBfsc1vzUPh6TEXNjwS2YjgeFQ77BZQz6JDIGb2G6hj7MkS38w0p6Ktof6T6QAY=
+	t=1745948101; cv=none; b=gkFSrF/9byKnMmQRejK8N1MjhsNx1p3UzOXCDdJjuK6NAE8wKFHkMMS3tzEiN49+Ehw3bOyd/1QT6nne1jWSgcrTHedELiKPBUr47PoQ3NzDO30F2+76mDpauDGZIUK1US7r0RCdwLvEB4yWF6JG7oGn3+KbOCudjRZeF+3xnJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946519; c=relaxed/simple;
-	bh=mABsr2jFnajjjvwgJIwODDRBvrZI+fa9EHcpoqbEPV4=;
+	s=arc-20240116; t=1745948101; c=relaxed/simple;
+	bh=kqmDVQuijlVa0SMwCQB1Du9/fVIQo1qLjbAXw+msrTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqhGQ+F+RvMoY1k2ClwgGZrygFPCp0jN2w3an+PQvzJsW6nIG50E+fYi1KM0UZf7n2qWzwPWX+u1Q3Lng9bMo5zUdKFwfz0hUKhOvW4Wyx21ULTlod57D/DoIYT9erzibljtTt3dyWRZIbXVHVByitcai/9RRGPv8HuFCIyddS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mLkhr6xp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911E5C4CEE3;
-	Tue, 29 Apr 2025 17:08:38 +0000 (UTC)
+	 MIME-Version; b=iwYR81ewLXwwik+PMtwyILduCbxg2o4slLHBabW8CyZW0BOqC67O3oAfC2MYS0gdQhNTz5ioDPKCOi7RIvzZQHtkyP+wixb1TspR69OLeYalOqCNpLa/mxoIGIazgWC+4y/wk6u06dZVx1DJQRSIN/8og+CrRcEOeEuZUt/UfUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMqIvNqY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC619C4CEE3;
+	Tue, 29 Apr 2025 17:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946519;
-	bh=mABsr2jFnajjjvwgJIwODDRBvrZI+fa9EHcpoqbEPV4=;
+	s=korg; t=1745948101;
+	bh=kqmDVQuijlVa0SMwCQB1Du9/fVIQo1qLjbAXw+msrTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mLkhr6xptBzp39+9EzQZJht97MxHlEOxEKAYhOA1dhFXbEjLoHiAe8vQOinPcPosY
-	 L+G831jsJqAoJ2plNIxI5BYZR/lyqMp3pDH6U9GVOoPS2JRDfhFDkDYcy1IUbWFefq
-	 Vv0n7MdQp/qiDAuB1aqna1f9QUHhVFOb6iGkiP6U=
+	b=LMqIvNqYZav2xh5hVhSFii/tB2xSk57IOB/9qEvDbdHoM99dvStyPQW5tnu9RN+MF
+	 iRbCna9qV2dul1Ekz2ZHT9NdeBffr/KPB2MtduIoBGUDSCgRik66h93ogaDdf3XLrm
+	 RdpR1KSeBj1zVHfzooZAOkVQLKOUpTjJDQjUYZ8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Uday Shankar <ushankar@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 294/311] ublk: rely on ->canceling for dealing with ublk_nosrv_dev_should_queue_io
+Subject: [PATCH 6.12 190/280] objtool, regulator: rk808: Remove potential undefined behavior in rk806_set_mode_dcdc()
 Date: Tue, 29 Apr 2025 18:42:11 +0200
-Message-ID: <20250429161133.041292136@linuxfoundation.org>
+Message-ID: <20250429161122.879763233@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 7e26cb69c5e62152a6f05a2ae23605a983a8ef31 ]
+[ Upstream commit 29c578c848402a34e8c8e115bf66cb6008b77062 ]
 
-Now ublk deals with ublk_nosrv_dev_should_queue_io() by keeping request
-queue as quiesced. This way is fragile because queue quiesce crosses syscalls
-or process contexts.
+If 'ctr_bit' is negative, the shift counts become negative, causing a
+shift of bounds and undefined behavior.
 
-Switch to rely on ubq->canceling for dealing with
-ublk_nosrv_dev_should_queue_io(), because it has been used for this purpose
-during io_uring context exiting, and it can be reused before recovering too.
-In ublk_queue_rq(), the request will be added to requeue list without
-kicking off requeue in case of ubq->canceling, and finally requests added in
-requeue list will be dispatched from either ublk_stop_dev() or
-ublk_ctrl_end_recovery().
+Presumably that's not possible in normal operation, but the code
+generation isn't optimal.  And undefined behavior should be avoided
+regardless.
 
-Meantime we have to move reset of ubq->canceling from ublk_ctrl_start_recovery()
-to ublk_ctrl_end_recovery(), when IO handling can be recovered completely.
+Improve code generation and remove the undefined behavior by converting
+the signed variables to unsigned.
 
-Then blk_mq_quiesce_queue() and blk_mq_unquiesce_queue() are always used
-in same context.
+Fixes the following warning with an UBSAN kernel:
 
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Uday Shankar <ushankar@purestorage.com>
-Link: https://lore.kernel.org/r/20250416035444.99569-4-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+  vmlinux.o: warning: objtool: rk806_set_mode_dcdc() falls through to next function rk806_get_mode_dcdc()
+  vmlinux.o: warning: objtool: .text.rk806_set_mode_dcdc: unexpected end of section
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Mark Brown <broonie@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/2023abcddf3f524ba478d64339996f25dc4097d2.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202503182350.52KeHGD4-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ublk_drv.c | 31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ drivers/regulator/rk808-regulator.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 7bb7276f14c60..0efac33473c1e 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -1698,13 +1698,19 @@ static void ublk_wait_tagset_rqs_idle(struct ublk_device *ub)
+diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
+index 37476d2558fda..72df554b6375b 100644
+--- a/drivers/regulator/rk808-regulator.c
++++ b/drivers/regulator/rk808-regulator.c
+@@ -270,8 +270,8 @@ static const unsigned int rk817_buck1_4_ramp_table[] = {
  
- static void __ublk_quiesce_dev(struct ublk_device *ub)
+ static int rk806_set_mode_dcdc(struct regulator_dev *rdev, unsigned int mode)
  {
-+	int i;
-+
- 	pr_devel("%s: quiesce ub: dev_id %d state %s\n",
- 			__func__, ub->dev_info.dev_id,
- 			ub->dev_info.state == UBLK_S_DEV_LIVE ?
- 			"LIVE" : "QUIESCED");
- 	blk_mq_quiesce_queue(ub->ub_disk->queue);
-+	/* mark every queue as canceling */
-+	for (i = 0; i < ub->dev_info.nr_hw_queues; i++)
-+		ublk_get_queue(ub, i)->canceling = true;
- 	ublk_wait_tagset_rqs_idle(ub);
- 	ub->dev_info.state = UBLK_S_DEV_QUIESCED;
-+	blk_mq_unquiesce_queue(ub->ub_disk->queue);
- }
+-	int rid = rdev_get_id(rdev);
+-	int ctr_bit, reg;
++	unsigned int rid = rdev_get_id(rdev);
++	unsigned int ctr_bit, reg;
  
- static void ublk_force_abort_dev(struct ublk_device *ub)
-@@ -2846,7 +2852,6 @@ static void ublk_queue_reinit(struct ublk_device *ub, struct ublk_queue *ubq)
- 	/* We have to reset it to NULL, otherwise ub won't accept new FETCH_REQ */
- 	ubq->ubq_daemon = NULL;
- 	ubq->timeout = false;
--	ubq->canceling = false;
- 
- 	for (i = 0; i < ubq->q_depth; i++) {
- 		struct ublk_io *io = &ubq->ios[i];
-@@ -2935,20 +2940,18 @@ static int ublk_ctrl_end_recovery(struct ublk_device *ub,
- 	pr_devel("%s: new ublksrv_pid %d, dev id %d\n",
- 			__func__, ublksrv_pid, header->dev_id);
- 
--	if (ublk_nosrv_dev_should_queue_io(ub)) {
--		ub->dev_info.state = UBLK_S_DEV_LIVE;
--		blk_mq_unquiesce_queue(ub->ub_disk->queue);
--		pr_devel("%s: queue unquiesced, dev id %d.\n",
--				__func__, header->dev_id);
--		blk_mq_kick_requeue_list(ub->ub_disk->queue);
--	} else {
--		blk_mq_quiesce_queue(ub->ub_disk->queue);
--		ub->dev_info.state = UBLK_S_DEV_LIVE;
--		for (i = 0; i < ub->dev_info.nr_hw_queues; i++) {
--			ublk_get_queue(ub, i)->fail_io = false;
--		}
--		blk_mq_unquiesce_queue(ub->ub_disk->queue);
-+	blk_mq_quiesce_queue(ub->ub_disk->queue);
-+	ub->dev_info.state = UBLK_S_DEV_LIVE;
-+	for (i = 0; i < ub->dev_info.nr_hw_queues; i++) {
-+		struct ublk_queue *ubq = ublk_get_queue(ub, i);
-+
-+		ubq->canceling = false;
-+		ubq->fail_io = false;
- 	}
-+	blk_mq_unquiesce_queue(ub->ub_disk->queue);
-+	pr_devel("%s: queue unquiesced, dev id %d.\n",
-+			__func__, header->dev_id);
-+	blk_mq_kick_requeue_list(ub->ub_disk->queue);
- 
- 	ret = 0;
-  out_unlock:
+ 	reg = RK806_POWER_FPWM_EN0 + rid / 8;
+ 	ctr_bit = rid % 8;
 -- 
 2.39.5
 
