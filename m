@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-137471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C19EAA13AC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8ECAA120D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAAE89848F9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5BE74A6B60
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8502512FD;
-	Tue, 29 Apr 2025 17:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2870B229B05;
+	Tue, 29 Apr 2025 16:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OU6x2l4j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWm2kM4R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBD2246326;
-	Tue, 29 Apr 2025 17:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D555624113C;
+	Tue, 29 Apr 2025 16:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946164; cv=none; b=ZbARxkcHj8qz8uOVVTjdt7OfbrhJTV1UhGi3Q8Q8D10q59ImYw0WsTdyJY01U6FHyxbmkVAORnDvzogm+Jk1pAlUGl7RXyR3QgYLyUWWLVWsfsl1FSnPINMZpykiYNfNzukM25sUiW2iNySXs+cgqhALGQsMIXkk9mYUmbpUl60=
+	t=1745945318; cv=none; b=WZy9594dA/lFufOtqE0vJuWKhy39qyaFGXnqaqOyRS/1qdpFhcSCr1WL4U0MKqPor00J7v/RtlAlE6rFvZKIsnEGyd74OCnAs/tMWQcrZQ7aNV3jAp5DFDmUPHYk1jIX0Ba5hJ6O2/t5IKTBWdNWIJfKi7OyWlNCgdFqVM2Oyt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946164; c=relaxed/simple;
-	bh=/8iLxp1Xv9YOkE47A1Neyhil2JYc/q/rSbcLaAWBM+4=;
+	s=arc-20240116; t=1745945318; c=relaxed/simple;
+	bh=/6S3Oihm5iwiShRHHX8h3klnfZ2aP8Z9U4TIxA7l0N0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WyxXZeZVPLjNzUiDJDpu0TL6AWjp5xCbTa6ILsnh4s17e3OL3+sFunjJCnf+2FCSqIAaCF+hRwAiLkuoE12Awltn8c8oHLrss6qZsPaEUnzM9wY37Rhu8+n0f9gUkkndcd2FqxE37wvyaf2KCsH4003iJHG6lRJVMk93FwvJPQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OU6x2l4j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B223FC4CEE3;
-	Tue, 29 Apr 2025 17:02:43 +0000 (UTC)
+	 MIME-Version; b=cMYdG8oLQc66oz5UnNuh9PD9imDesthvOp2cLd4gc3+pDLTe4PhlhGy99lgkGPl4lgmIg9kI89qIJtzTSlQT4Lrf5e+Fx/19nO2SAHzNq6C9nNJ/9KriCx0qRAHyHOMHeccnNzBRHTWuTQFof8OklozyeeR5KaOBh1HpXtJ6z58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWm2kM4R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C6DC4CEE3;
+	Tue, 29 Apr 2025 16:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946164;
-	bh=/8iLxp1Xv9YOkE47A1Neyhil2JYc/q/rSbcLaAWBM+4=;
+	s=korg; t=1745945318;
+	bh=/6S3Oihm5iwiShRHHX8h3klnfZ2aP8Z9U4TIxA7l0N0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OU6x2l4jZCcZurcI5NStFbI6oT8lqK1Hc1/75BW47YoyfJ3ea71xkSbvLVLzzfQol
-	 wy2lEebTX3VWOJC6p1dmVjooR1cg67gGCH2KpmnDqADJYbS/XrQcH+f5ykmWLV7R+4
-	 BR97rxdHEm3CdPaviq+C/D0BdRS6hNCRBbkCHn80=
+	b=oWm2kM4Re6j+O5H7ZhkOGQgVCW4EvpuWkXd1XpEEe3vG4fAkpCjrU4N1IjwlSW3V6
+	 plBMrMduEb6ODhcYzYKSeZ4wWcW58M8OUhNpTqBlPva2WnKiWcvM/1kr9uaEy66Q90
+	 2cRGKGOGpC685fAOD7qDKRQcp3tUUB+nkI7n+iTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.14 176/311] USB: wdm: add annotation
+	zhoumin <teczm@foxmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.4 072/179] ftrace: Add cond_resched() to ftrace_graph_set_hash()
 Date: Tue, 29 Apr 2025 18:40:13 +0200
-Message-ID: <20250429161128.237526440@linuxfoundation.org>
+Message-ID: <20250429161052.328842589@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: zhoumin <teczm@foxmail.com>
 
-commit 73e9cc1ffd3650b12c4eb059dfdafd56e725ceda upstream.
+commit 42ea22e754ba4f2b86f8760ca27f6f71da2d982c upstream.
 
-This is not understandable without a comment on endianness
+When the kernel contains a large number of functions that can be traced,
+the loop in ftrace_graph_set_hash() may take a lot of time to execute.
+This may trigger the softlockup watchdog.
 
-Fixes: afba937e540c9 ("USB: CDC WDM driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250401084749.175246-5-oneukum@suse.com
+Add cond_resched() within the loop to allow the kernel to remain
+responsive even when processing a large number of functions.
+
+This matches the cond_resched() that is used in other locations of the
+code that iterates over all functions that can be traced.
+
+Cc: stable@vger.kernel.org
+Fixes: b9b0c831bed26 ("ftrace: Convert graph filter to use hash tables")
+Link: https://lore.kernel.org/tencent_3E06CE338692017B5809534B9C5C03DA7705@qq.com
+Signed-off-by: zhoumin <teczm@foxmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-wdm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/ftrace.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -909,7 +909,7 @@ static int wdm_wwan_port_tx(struct wwan_
- 	req->bRequestType = (USB_DIR_OUT | USB_TYPE_CLASS | USB_RECIP_INTERFACE);
- 	req->bRequest = USB_CDC_SEND_ENCAPSULATED_COMMAND;
- 	req->wValue = 0;
--	req->wIndex = desc->inum;
-+	req->wIndex = desc->inum; /* already converted */
- 	req->wLength = cpu_to_le16(skb->len);
- 
- 	skb_shinfo(skb)->destructor_arg = desc;
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -5506,6 +5506,7 @@ ftrace_graph_set_hash(struct ftrace_hash
+ 				}
+ 			}
+ 		}
++		cond_resched();
+ 	} while_for_each_ftrace_rec();
+ out:
+ 	mutex_unlock(&ftrace_lock);
 
 
 
