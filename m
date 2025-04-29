@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2EADAA14F5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE84AA1352
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 663651A82F47
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56AC47AF918
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD2C2512F3;
-	Tue, 29 Apr 2025 17:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72F87E110;
+	Tue, 29 Apr 2025 17:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f183SpKv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WY8Q2DJW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8E61C6B4;
-	Tue, 29 Apr 2025 17:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27F9241664;
+	Tue, 29 Apr 2025 17:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947088; cv=none; b=BSQHjFEFg/g5EkbIxakqfdy4qCezLolC3UMaRh4NoeBZy8hLYmb4LknTc/Z/pWK//tM9Tb+ErjCij0W6fLRVs4nLoGHMkySwic7uqfYklyYEjrjOF17tvsQ2UF9reHYR3arwkeBs4AO+c+Wz9zKLqTqbDEnZxdfTEg9dVj8YwBw=
+	t=1745946252; cv=none; b=tD+Nez8KndDvCb7Yi3MECLIo6dBLMSiPJg+8O47Tc0EfGCyniJBUkFvAlGwWgXb1x2Ug5NaNwCqchlYjES2qurNbZ0in1QL+olRXlwigcNBO5MRiIphz6qrTaj4KedRLkow7y0653nGQf19DBdqY3SCPfmsCzCWTTKsDnYsdS3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947088; c=relaxed/simple;
-	bh=rbM0+b+L/K4kj4fSPHmRei1gyOb+qQGxIUEKkcOCZwE=;
+	s=arc-20240116; t=1745946252; c=relaxed/simple;
+	bh=YdJ2ANrBEeNexRBEYjxQFPz7t2ZKuETomhQbVDUcLC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=om0Dv8CYC2biKdCfheMROxKazt0+aNx8x+w77BfCjwhm6+hp8nFFn+41pYmnf399jIeh1XYQU0/pWGGw5MmRCcsm9ha3mc9OzJnqMB5o4LhmfWbbsqGyLZbu7r6cdYalwFzz71Kqcpz+4ZJ+O3vxB3IRjbadt+zFbIsO1z4+7LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f183SpKv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5106DC4CEE3;
-	Tue, 29 Apr 2025 17:18:07 +0000 (UTC)
+	 MIME-Version; b=QQc9d2ogbAqB6fnWjc/Q41Gz9Bnc4LnG1yRN7KXL5L+lT2KMJbUe6OZEGyiAJK/rZrSmo1wEHjR7RTo9OTekAaguEoqmvCvj4XVQo9NkpGDCGXj127+VYjI5OuBcOTsQ9q2+9Si3nTg36VwO5uhxIq67Buy6wx49MMPfscjv50Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WY8Q2DJW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C43C4CEE3;
+	Tue, 29 Apr 2025 17:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947087;
-	bh=rbM0+b+L/K4kj4fSPHmRei1gyOb+qQGxIUEKkcOCZwE=;
+	s=korg; t=1745946252;
+	bh=YdJ2ANrBEeNexRBEYjxQFPz7t2ZKuETomhQbVDUcLC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f183SpKvJaZnUZ3EHWvP2RShpKZGQyEFwHgU2x9KgpTwqOAHk20b3DbSAhpuhW2T0
-	 r7qJ+pUSzJ8rUzSIZoYLPT4RwEONhGJjrHaOQnE5s5d1UTSQixl5fc3RlKL67e7WTk
-	 tyIqX3Aj1DZPUPjHSoLi23TRcrLT1ymiieEKENa4=
+	b=WY8Q2DJWeKEjfiA4CdORRYK2gX1IyXRhg/5qsZX+KpqG0MG3EY1sja6JqDCuavBgI
+	 pgQCRNUP3uFNPqMJx5ZKRallxrm4NctsYGoRqgOZFzjlCgIoSWX3CYm6GFdhsRu/3y
+	 DWfY8Knkipr+aHvkyVuncaKicEAy0fN9FVsMXhsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Lanzano <lanzano.alex@gmail.com>
-Subject: [PATCH 5.10 138/286] drm/repaper: fix integer overflows in repeat functions
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ferry Toth <fntoth@gmail.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 205/311] usb: dwc3: gadget: Refactor loop to avoid NULL endpoints
 Date: Tue, 29 Apr 2025 18:40:42 +0200
-Message-ID: <20250429161113.548713769@linuxfoundation.org>
+Message-ID: <20250429161129.406182449@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 4d098000ac193f359e6b8ca4801dbdbd6a27b41f upstream.
+[ Upstream commit eafba0205426091354f050381c32ad1567c35844 ]
 
-There are conditions, albeit somewhat unlikely, under which right hand
-expressions, calculating the end of time period in functions like
-repaper_frame_fixed_repeat(), may overflow.
+Prepare the gadget driver to handle the reserved endpoints that will be
+not allocated at the initialisation time.
 
-For instance, if 'factor10x' in repaper_get_temperature() is high
-enough (170), as is 'epd->stage_time' in repaper_probe(), then the
-resulting value of 'end' will not fit in unsigned int expression.
+While at it, add a warning where the NULL endpoint should never happen.
 
-Mitigate this by casting 'epd->factored_stage_time' to wider type before
-any multiplication is done.
-
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 3589211e9b03 ("drm/tinydrm: Add RePaper e-ink driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250116134801.22067-1-n.zhandarovich@fintech.ru
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Ferry Toth <fntoth@gmail.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250212193116.2487289-3-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tiny/repaper.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/gadget.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/tiny/repaper.c
-+++ b/drivers/gpu/drm/tiny/repaper.c
-@@ -454,7 +454,7 @@ static void repaper_frame_fixed_repeat(s
- 				       enum repaper_stage stage)
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index b75b4c5ca7fcf..c6761fe89cfae 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -547,6 +547,7 @@ static int dwc3_gadget_set_xfer_resource(struct dwc3_ep *dep)
+ int dwc3_gadget_start_config(struct dwc3 *dwc, unsigned int resource_index)
  {
- 	u64 start = local_clock();
--	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
-+	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
+ 	struct dwc3_gadget_ep_cmd_params params;
++	struct dwc3_ep		*dep;
+ 	u32			cmd;
+ 	int			i;
+ 	int			ret;
+@@ -563,8 +564,13 @@ int dwc3_gadget_start_config(struct dwc3 *dwc, unsigned int resource_index)
+ 		return ret;
  
- 	do {
- 		repaper_frame_fixed(epd, fixed_value, stage);
-@@ -465,7 +465,7 @@ static void repaper_frame_data_repeat(st
- 				      const u8 *mask, enum repaper_stage stage)
- {
- 	u64 start = local_clock();
--	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
-+	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
+ 	/* Reset resource allocation flags */
+-	for (i = resource_index; i < dwc->num_eps && dwc->eps[i]; i++)
+-		dwc->eps[i]->flags &= ~DWC3_EP_RESOURCE_ALLOCATED;
++	for (i = resource_index; i < dwc->num_eps; i++) {
++		dep = dwc->eps[i];
++		if (!dep)
++			continue;
++
++		dep->flags &= ~DWC3_EP_RESOURCE_ALLOCATED;
++	}
  
- 	do {
- 		repaper_frame_data(epd, image, mask, stage);
+ 	return 0;
+ }
+@@ -751,9 +757,11 @@ void dwc3_gadget_clear_tx_fifos(struct dwc3 *dwc)
+ 
+ 	dwc->last_fifo_depth = fifo_depth;
+ 	/* Clear existing TXFIFO for all IN eps except ep0 */
+-	for (num = 3; num < min_t(int, dwc->num_eps, DWC3_ENDPOINTS_NUM);
+-	     num += 2) {
++	for (num = 3; num < min_t(int, dwc->num_eps, DWC3_ENDPOINTS_NUM); num += 2) {
+ 		dep = dwc->eps[num];
++		if (!dep)
++			continue;
++
+ 		/* Don't change TXFRAMNUM on usb31 version */
+ 		size = DWC3_IP_IS(DWC3) ? 0 :
+ 			dwc3_readl(dwc->regs, DWC3_GTXFIFOSIZ(num >> 1)) &
+@@ -3703,6 +3711,8 @@ static bool dwc3_gadget_endpoint_trbs_complete(struct dwc3_ep *dep,
+ 
+ 		for (i = 0; i < DWC3_ENDPOINTS_NUM; i++) {
+ 			dep = dwc->eps[i];
++			if (!dep)
++				continue;
+ 
+ 			if (!(dep->flags & DWC3_EP_ENABLED))
+ 				continue;
+@@ -3852,6 +3862,10 @@ static void dwc3_endpoint_interrupt(struct dwc3 *dwc,
+ 	u8			epnum = event->endpoint_number;
+ 
+ 	dep = dwc->eps[epnum];
++	if (!dep) {
++		dev_warn(dwc->dev, "spurious event, endpoint %u is not allocated\n", epnum);
++		return;
++	}
+ 
+ 	if (!(dep->flags & DWC3_EP_ENABLED)) {
+ 		if ((epnum > 1) && !(dep->flags & DWC3_EP_TRANSFER_STARTED))
+-- 
+2.39.5
+
 
 
 
