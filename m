@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-137821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5678AA1528
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBDC6AA1454
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E709188DE5F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FB563BC6C3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2232B24500A;
-	Tue, 29 Apr 2025 17:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787BC24A067;
+	Tue, 29 Apr 2025 17:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrYb90mJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZ2XTwa4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D342A24337C;
-	Tue, 29 Apr 2025 17:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357B023C8D6;
+	Tue, 29 Apr 2025 17:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947233; cv=none; b=FKiZiVNNZxwL7HPWkO64LRwyn2HfzeeROc8sreZd2v4F7IcTSJEIpQwwpC9ggdY7qrXsQYcmqLot90WVsMLYyx0GzTWXD60im51s621txopFwKfu6nOh7D0o8PQ0XtwyRTsOyE2v1zJ+h982a3okTOGSnayhu2sJKLv9QD5Ye8o=
+	t=1745946565; cv=none; b=eWMY+IpLPMYV2j2NLhPO+mTG+FKwZ23zJUdApoXwWiKUm5UxhoNn18t1wyypto81/muF/+rNFKOenr5lT5Ym1KSAnO2+HieBRKKiybn520A8Zw2rTbdAqIBxFyRpXpEeBLUjXiuYDhcvC03Sg5B32NvPJHU7btOTPExW0C9PlMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947233; c=relaxed/simple;
-	bh=lw7xV+1YW+IHIQ8gLWwlRjGE/nTqNPQfvifou7q5ZVA=;
+	s=arc-20240116; t=1745946565; c=relaxed/simple;
+	bh=IXY8bwPL9mXWiEgYADCfFSbGyTQ9FpWhJDmX4cCOlEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hRO1lKpIOn+oKwCifti0TWlWAW9tWRFwoJ1UdV7v8dD7EoL3bM2jn0ZslhUbWySDPbQcziibFeZisgKV58hwrOpSfv8XsqE9t152PUgOpkNfPuuB7+DmWl+F+R0u6qNAqvp9eLNbM57gYFw2YaQExMSLVmqf/niG7Rv5mN94eHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrYb90mJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DCAC4CEE3;
-	Tue, 29 Apr 2025 17:20:32 +0000 (UTC)
+	 MIME-Version; b=NIpEI4eymjcldPXuwjDhl33+gh/kbZZTmdHRCOPeBSmNE/4AOazMDXj86KdmLCbBRFYrP0J4SxZU6n8wK/euuqFl815dRcbRwZs0b9OON1yuFoG6cnhCsdgNn0LYn0vOJ/HPI8bz5BqAZjoR5pszd8zP+S9g9fR7f4uSIpE1cQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZ2XTwa4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B9FC4CEE3;
+	Tue, 29 Apr 2025 17:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947233;
-	bh=lw7xV+1YW+IHIQ8gLWwlRjGE/nTqNPQfvifou7q5ZVA=;
+	s=korg; t=1745946565;
+	bh=IXY8bwPL9mXWiEgYADCfFSbGyTQ9FpWhJDmX4cCOlEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zrYb90mJ5r9NOTgjT/rQDwmtL1RFAUWPql1ETAHz0F7DS4c1BO4DyrI7raFVvvs/K
-	 50FcP8PmuEcgFBuG5wmx+u9DBCjpeBFMuUX2tfoRvmfUsmx9r3Oi5zr53MjSVGEGko
-	 EOsr5uBiJX7CdACNOQpe47G+HIOdbtyPuhSpxqZU=
+	b=jZ2XTwa4Agsge7I2Df4zNU33UIHx5Clbw8mH0pLv0nJwCGL2uXlysrtQ1du2Hd+Nu
+	 tK1O7z1Ggaf8bdVEU1dAjSwAusAAFrW3YHEa8QMOPJ9Mwg3GkzDYq3ITthHTN+G5tz
+	 PHSTCSr4ppq0AaBKju7NOqgjN21AFIkKAEph9Kdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-	Sylwester Nawrocki <snawrocki@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
+	Gou Hao <gouhao@uniontech.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Christoph Hellwig <hch@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 214/286] soc: samsung: exynos-chipid: avoid soc_device_to_device()
+Subject: [PATCH 6.14 281/311] iomap: skip unnecessary ifs_block_is_uptodate check
 Date: Tue, 29 Apr 2025 18:41:58 +0200
-Message-ID: <20250429161116.751035172@linuxfoundation.org>
+Message-ID: <20250429161132.523529783@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+From: Gou Hao <gouhao@uniontech.com>
 
-[ Upstream commit d1141886c8d72ad77920e6e4b617d366e6e3ee8a ]
+[ Upstream commit 8e3c15ee0d292c413c66fe10201d1b035a0bea72 ]
 
-soc_device_to_device() seems to be discouraged [1] so remove it in favor
-of printing info message with platform device.  This will only change
-the prefix in the info message from "soc soc0: " to "exynos-chipid
-10000000.chipid:".
+In iomap_adjust_read_range, i is either the first !uptodate block, or it
+is past last for the second loop looking for trailing uptodate blocks.
+Assuming there's no overflow (there's no combination of huge folios and
+tiny blksize) then yeah, there is no point in retesting that the same
+block pointed to by i is uptodate since we hold the folio lock so nobody
+else could have set it uptodate.
 
-[1] https://lore.kernel.org/lkml/20191111052741.GB3176397@kroah.com/
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Reviewed-by: Sylwester Nawrocki <snawrocki@kernel.org>
-Tested-by: Sylwester Nawrocki <snawrocki@kernel.org>
-Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
-Tested-by: Alim Akhtar <alim.akhtar@samsung.com>
-Link: https://lore.kernel.org/r/20210919093114.35987-2-krzysztof.kozlowski@canonical.com
-Stable-dep-of: c8222ef6cf29 ("soc: samsung: exynos-chipid: Add NULL pointer check in exynos_chipid_probe()")
+Signed-off-by: Gou Hao <gouhao@uniontech.com>
+Link: https://lore.kernel.org/20250410071236.16017-1-gouhao@uniontech.com
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/samsung/exynos-chipid.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/iomap/buffered-io.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
-index 2ab6ce71e9be5..2b02af5d2faff 100644
---- a/drivers/soc/samsung/exynos-chipid.c
-+++ b/drivers/soc/samsung/exynos-chipid.c
-@@ -103,8 +103,7 @@ static int exynos_chipid_probe(struct platform_device *pdev)
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index d303e6c8900cd..a47e3afd724ca 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -263,7 +263,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 		}
  
- 	platform_set_drvdata(pdev, soc_dev);
- 
--	dev_info(soc_device_to_device(soc_dev),
--		 "Exynos: CPU[%s] PRO_ID[0x%x] REV[0x%x] Detected\n",
-+	dev_info(&pdev->dev, "Exynos: CPU[%s] PRO_ID[0x%x] REV[0x%x] Detected\n",
- 		 soc_dev_attr->soc_id, product_id, revision);
- 
- 	return 0;
+ 		/* truncate len if we find any trailing uptodate block(s) */
+-		for ( ; i <= last; i++) {
++		while (++i <= last) {
+ 			if (ifs_block_is_uptodate(ifs, i)) {
+ 				plen -= (last - i + 1) * block_size;
+ 				last = i - 1;
 -- 
 2.39.5
 
