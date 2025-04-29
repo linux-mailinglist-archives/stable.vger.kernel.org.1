@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4037AA13EC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 630C0AA165A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87F721884C01
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F16A1888FBB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179F7241664;
-	Tue, 29 Apr 2025 17:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3321238C21;
+	Tue, 29 Apr 2025 17:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGCk++0p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWkrhZyy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D4524113C;
-	Tue, 29 Apr 2025 17:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B079521883E;
+	Tue, 29 Apr 2025 17:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946409; cv=none; b=sywzndgTcSq/RXOybJ/mGvIjqnMkH7yVJRrE2ZPRANrFHWCuSZHOmhv9Za8OPSqkdwocul/W1pJk/G/yTdPZAaSk7YjQgvX7G6XYM38cpoULOJsdx8EaYPte33fwjg6Bbqwe/ine0hb8oymOU5asdWRFO5FxX3eGAcVT9gjmkFo=
+	t=1745947957; cv=none; b=BP+YDTLW5GtaJw1KyzOQ/URYHBKXxcpdK3iVNpvmr71psKbZrVqB2CyT2ES1nfZPd9qIcuO4f5Uzf41t2c2NYMmGnke7CMDbgfCX3L9wu8a5qaPEn61zR7d2ZOhG689i3je5sRUBC+yGmCVA6FZPKZpRTDj/wffGGPnZx1qfE2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946409; c=relaxed/simple;
-	bh=kBDoPAtEBVo77Pr1a89w7q7OIpbb5v2kDBtAqeUx1Ss=;
+	s=arc-20240116; t=1745947957; c=relaxed/simple;
+	bh=jwb+n96BlzMW/EVRE8Kxq2GS34zomoftIuUqtfQl0ps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s+ghGyzEehMI3/IXPbLBwOKjDu0Fpd64/wPmXqE72PAFNvxKYzqB2ir4yzlzeCSaHCk4InrqGL2hQ9bJAYb7G4Z8ByqGdc4Qgyw+HZk4ZP5NQhrhjvO8f/givaQoh5cYR3gYfn5lTqdfRrWUIleXAHEKRFbd18gw/vgwcoD40g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGCk++0p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E02C4CEE3;
-	Tue, 29 Apr 2025 17:06:49 +0000 (UTC)
+	 MIME-Version; b=tsxswpd2GcIknk9n9ZOOgr+3FgnoIYzimM90Vim75Ar01efBH9It2W/sDhIF3rtX8rJcRT7GA3k+TD0xZG0kX62bKsxdvdXGwD9UGJS0B8RJQaksghpcZ3tVrbxsaMCIS00onYq/mJOL2mqLBjgfvTsC6urBL8pyyxzUfNdZJpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWkrhZyy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A11EC4CEE3;
+	Tue, 29 Apr 2025 17:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946409;
-	bh=kBDoPAtEBVo77Pr1a89w7q7OIpbb5v2kDBtAqeUx1Ss=;
+	s=korg; t=1745947957;
+	bh=jwb+n96BlzMW/EVRE8Kxq2GS34zomoftIuUqtfQl0ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGCk++0pc6F2rwvh9vzJQIB7g6FVC+21E6NPJzNQPWKRN9FHLSKw+SuAat5S8yqp2
-	 smi5yIaJQGEv/7KtKFnc/8UyHK1iOV2uy0LzqZMfO299lkNXGgBasITSGoPgg8hark
-	 cPCjIyYIJBlLsrS5CpZj3G0sj9+3JLDir8QySAew=
+	b=sWkrhZyyctT8TC44ICr+QbCWjPBGJdmfH3Ok0ATF42nh8/afz2Fyzk6UOfqT+aUQs
+	 sF0ICITfXROmyCFLL7xV6Wqwn+hqRup2aW3ASnJlToibNwqENtU+7S1ZsD88TTyIaU
+	 QQQTf4Ev/Wd9r0RQSnj9BJTtOumfMu02vgw8hPLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Lai <yi1.lai@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Dmitry Mastykin <mastichi@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 258/311] selftests/mincore: Allow read-ahead pages to reach the end of the file
+Subject: [PATCH 6.12 154/280] pinctrl: mcp23s08: Get rid of spurious level interrupts
 Date: Tue, 29 Apr 2025 18:41:35 +0200
-Message-ID: <20250429161131.588489297@linuxfoundation.org>
+Message-ID: <20250429161121.422116357@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Dmitry Mastykin <mastichi@gmail.com>
 
-[ Upstream commit 197c1eaa7ba633a482ed7588eea6fd4aa57e08d4 ]
+[ Upstream commit 7b0671b97f0872d6950ccc925e210cb3f67721bf ]
 
-When running the mincore_selftest on a system with an XFS file system, it
-failed the "check_file_mmap" test case due to the read-ahead pages reaching
-the end of the file. The failure log is as below:
+irq_mask()/irq_unmask() are not called for nested interrupts. So level
+interrupts are never masked, chip's interrupt output is not cleared on
+INTCAP or GPIO read, the irq handler is uselessly called again. Nested
+irq handler is not called again, because interrupt reason is cleared by
+its first call.
+/proc/interrupts shows that number of chip's irqs is greater than
+number of nested irqs.
 
-   RUN           global.check_file_mmap ...
-  mincore_selftest.c:264:check_file_mmap:Expected i (1024) < vec_size (1024)
-  mincore_selftest.c:265:check_file_mmap:Read-ahead pages reached the end of the file
-  check_file_mmap: Test failed
-           FAIL  global.check_file_mmap
+This patch adds masking and unmasking level interrupts inside irq handler.
 
-This is because the read-ahead window size of the XFS file system on this
-machine is 4 MB, which is larger than the size from the #PF address to the
-end of the file. As a result, all the pages for this file are populated.
-
-  blockdev --getra /dev/nvme0n1p5
-    8192
-  blockdev --getbsz /dev/nvme0n1p5
-    512
-
-This issue can be fixed by extending the current FILE_SIZE 4MB to a larger
-number, but it will still fail if the read-ahead window size of the file
-system is larger enough. Additionally, in the real world, read-ahead pages
-reaching the end of the file can happen and is an expected behavior.
-Therefore, allowing read-ahead pages to reach the end of the file is a
-better choice for the "check_file_mmap" test case.
-
-Link: https://lore.kernel.org/r/20250311080940.21413-1-qiuxu.zhuo@intel.com
-Reported-by: Yi Lai <yi1.lai@intel.com>
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Dmitry Mastykin <mastichi@gmail.com>
+Link: https://lore.kernel.org/20250122120504.1279790-1-mastichi@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mincore/mincore_selftest.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/pinctrl/pinctrl-mcp23s08.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
-index 0fd4b00bd345b..17ed3e9917ca1 100644
---- a/tools/testing/selftests/mincore/mincore_selftest.c
-+++ b/tools/testing/selftests/mincore/mincore_selftest.c
-@@ -261,9 +261,6 @@ TEST(check_file_mmap)
- 		TH_LOG("No read-ahead pages found in memory");
+diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
+index f384c72d95545..70d7485ada364 100644
+--- a/drivers/pinctrl/pinctrl-mcp23s08.c
++++ b/drivers/pinctrl/pinctrl-mcp23s08.c
+@@ -382,6 +382,7 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
+ {
+ 	struct mcp23s08 *mcp = data;
+ 	int intcap, intcon, intf, i, gpio, gpio_orig, intcap_mask, defval, gpinten;
++	bool need_unmask = false;
+ 	unsigned long int enabled_interrupts;
+ 	unsigned int child_irq;
+ 	bool intf_set, intcap_changed, gpio_bit_changed,
+@@ -396,9 +397,6 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
+ 		goto unlock;
  	}
  
--	EXPECT_LT(i, vec_size) {
--		TH_LOG("Read-ahead pages reached the end of the file");
--	}
- 	/*
- 	 * End of the readahead window. The rest of the pages shouldn't
- 	 * be in memory.
+-	if (mcp_read(mcp, MCP_INTCAP, &intcap))
+-		goto unlock;
+-
+ 	if (mcp_read(mcp, MCP_INTCON, &intcon))
+ 		goto unlock;
+ 
+@@ -408,6 +406,16 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
+ 	if (mcp_read(mcp, MCP_DEFVAL, &defval))
+ 		goto unlock;
+ 
++	/* Mask level interrupts to avoid their immediate reactivation after clearing */
++	if (intcon) {
++		need_unmask = true;
++		if (mcp_write(mcp, MCP_GPINTEN, gpinten & ~intcon))
++			goto unlock;
++	}
++
++	if (mcp_read(mcp, MCP_INTCAP, &intcap))
++		goto unlock;
++
+ 	/* This clears the interrupt(configurable on S18) */
+ 	if (mcp_read(mcp, MCP_GPIO, &gpio))
+ 		goto unlock;
+@@ -470,9 +478,18 @@ static irqreturn_t mcp23s08_irq(int irq, void *data)
+ 		}
+ 	}
+ 
++	if (need_unmask) {
++		mutex_lock(&mcp->lock);
++		goto unlock;
++	}
++
+ 	return IRQ_HANDLED;
+ 
+ unlock:
++	if (need_unmask)
++		if (mcp_write(mcp, MCP_GPINTEN, gpinten))
++			dev_err(mcp->chip.parent, "can't unmask GPINTEN\n");
++
+ 	mutex_unlock(&mcp->lock);
+ 	return IRQ_HANDLED;
+ }
 -- 
 2.39.5
 
