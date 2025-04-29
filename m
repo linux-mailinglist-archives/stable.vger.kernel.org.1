@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F5BAA15F5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC4BAA177A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25F421A8327E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79BAD4C2D1C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBD7244686;
-	Tue, 29 Apr 2025 17:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CE521ABC1;
+	Tue, 29 Apr 2025 17:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNGk+2+x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdexC1Jv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196511FE468;
-	Tue, 29 Apr 2025 17:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E23C148;
+	Tue, 29 Apr 2025 17:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947716; cv=none; b=eYsd2tiB1buLKjdbIfACCuG+Qy8z/HnYXrT0nbABr5blo96r2e2dvpknVlqhCgGlwpaSzLZK2ImKNeaLLTUPmQ37N2sBPo3fxu6O4JRn2sDBn0srtOXuxETwpK+VByJEfF/uv+QohZ7z6UqdKaHvq6XW5tVNurYgd80M0GM+GHU=
+	t=1745948880; cv=none; b=bRWp27FX88bOOz2nrKh658jdLJuK+XOgjV6Ev/qyO0xVIBHTlEePQW1sOjD6q+tTOyRN/sNL/6yzR4l6YdrOWMtt+cOfESn6D/v7HPsbDtoQ7e8zQeHk/QrDAWQeKfJmzmVyhoJhTfebxHlFIf6m/JbkJ5YOR7/AFLk2X+Nx0Mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947716; c=relaxed/simple;
-	bh=LgX7wj89MXUGrknwgQY5Yp3wvqwTwGMxnnPTlyM2MIs=;
+	s=arc-20240116; t=1745948880; c=relaxed/simple;
+	bh=cvloOVqpGmjYWr49SOAYwfVDBXbPCpVNAWRP4tJYLOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z22zmF8mT4oFdwPNKyz0E1N+Ozi/jtsosYRYASTUkrD2c6jHrkNDDR5clUa4M67TrPeP5b9rEjx9ChbHrKDlw4nDpiA1q9pyIFq8dj0IypCvpP98XWiMpdlffoygSdLCGc3DZ/NhoXqbfyPy/sQotOO+juFoJ4vDfPDYWYF3PvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNGk+2+x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29E9C4CEE9;
-	Tue, 29 Apr 2025 17:28:35 +0000 (UTC)
+	 MIME-Version; b=fKaPeeQ9V4WjrgClIzO9YGKp1qMGQ+VgSPVY+BjSLX1V999IWXctFWHqvMvtNB4w+bd7/FJV4MZ1VbusJrmBlQfMQnFyiVBGzpU60VqAQQR/PLul25atJoqONuDxOvyzGtDPbQNXIYDGOB/KUq6sSyXm6l9M6lCrXh6PeNWq5Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdexC1Jv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03062C4CEE3;
+	Tue, 29 Apr 2025 17:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947716;
-	bh=LgX7wj89MXUGrknwgQY5Yp3wvqwTwGMxnnPTlyM2MIs=;
+	s=korg; t=1745948880;
+	bh=cvloOVqpGmjYWr49SOAYwfVDBXbPCpVNAWRP4tJYLOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JNGk+2+xiLzsGC5Fuha15DGLSQT16oG72QCK2G79DCOj71SJrNaHexyGVlK3Kqhyz
-	 TVtKZO8AEShXZ2gh+W0AY8qSEoW+JH6Hfg8fDf3p8uaTWn7zqrdGWZW2qjz6hxYIQl
-	 1Nwe0TGkToBMZVDh5L4/L+q/KOXUbWjId7veL5fI=
+	b=rdexC1JvVPqzap4UgLy6hfqqiN90P6GpKJN8geVBYugLFJE4GQKNBa6k5cEaM3avU
+	 cCSOUHSE4K0v6vOIQmdP57/ALAWjwsVeMEU8syl+gISzvLz7DPN6xxmF59WS8R7DKK
+	 Sdyt8pHY3J3jD1IybdXXmeTAZz47v+3VwAlHsOUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/280] riscv: Replace function-like macro by static inline function
+Subject: [PATCH 5.15 148/373] net: dsa: mv88e6xxx: avoid unregistering devlink regions which were never registered
 Date: Tue, 29 Apr 2025 18:40:25 +0200
-Message-ID: <20250429161118.549291635@linuxfoundation.org>
+Message-ID: <20250429161129.246791558@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 121f34341d396b666d8a90b24768b40e08ca0d61 ]
+[ Upstream commit c84f6ce918a9e6f4996597cbc62536bbf2247c96 ]
 
-The flush_icache_range() function is implemented as a "function-like
-macro with unused parameters", which can result in "unused variables"
-warnings.
+Russell King reports that a system with mv88e6xxx dereferences a NULL
+pointer when unbinding this driver:
+https://lore.kernel.org/netdev/Z_lRkMlTJ1KQ0kVX@shell.armlinux.org.uk/
 
-Replace the macro with a static inline function, as advised by
-Documentation/process/coding-style.rst.
+The crash seems to be in devlink_region_destroy(), which is not NULL
+tolerant but is given a NULL devlink global region pointer.
 
-Fixes: 08f051eda33b ("RISC-V: Flush I$ when making a dirty page executable")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Link: https://lore.kernel.org/r/20250419111402.1660267-1-bjorn@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+At least on some chips, some devlink regions are conditionally registered
+since the blamed commit, see mv88e6xxx_setup_devlink_regions_global():
+
+		if (cond && !cond(chip))
+			continue;
+
+These are MV88E6XXX_REGION_STU and MV88E6XXX_REGION_PVT. If the chip
+does not have an STU or PVT, it should crash like this.
+
+To fix the issue, avoid unregistering those regions which are NULL, i.e.
+were skipped at mv88e6xxx_setup_devlink_regions_global() time.
+
+Fixes: 836021a2d0e0 ("net: dsa: mv88e6xxx: Export cross-chip PVT as devlink region")
+Tested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250414212850.2953957-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/cacheflush.h | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/net/dsa/mv88e6xxx/devlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
-index 8de73f91bfa37..b59ffeb668d6a 100644
---- a/arch/riscv/include/asm/cacheflush.h
-+++ b/arch/riscv/include/asm/cacheflush.h
-@@ -34,11 +34,6 @@ static inline void flush_dcache_page(struct page *page)
- 	flush_dcache_folio(page_folio(page));
+diff --git a/drivers/net/dsa/mv88e6xxx/devlink.c b/drivers/net/dsa/mv88e6xxx/devlink.c
+index 381068395c63b..e6d1801bb8f50 100644
+--- a/drivers/net/dsa/mv88e6xxx/devlink.c
++++ b/drivers/net/dsa/mv88e6xxx/devlink.c
+@@ -653,7 +653,8 @@ void mv88e6xxx_teardown_devlink_regions_global(struct dsa_switch *ds)
+ 	int i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(mv88e6xxx_regions); i++)
+-		dsa_devlink_region_destroy(chip->regions[i]);
++		if (chip->regions[i])
++			dsa_devlink_region_destroy(chip->regions[i]);
  }
  
--/*
-- * RISC-V doesn't have an instruction to flush parts of the instruction cache,
-- * so instead we just flush the whole thing.
-- */
--#define flush_icache_range(start, end) flush_icache_all()
- #define flush_icache_user_page(vma, pg, addr, len)	\
- do {							\
- 	if (vma->vm_flags & VM_EXEC)			\
-@@ -78,6 +73,16 @@ void flush_icache_mm(struct mm_struct *mm, bool local);
- 
- #endif /* CONFIG_SMP */
- 
-+/*
-+ * RISC-V doesn't have an instruction to flush parts of the instruction cache,
-+ * so instead we just flush the whole thing.
-+ */
-+#define flush_icache_range flush_icache_range
-+static inline void flush_icache_range(unsigned long start, unsigned long end)
-+{
-+	flush_icache_all();
-+}
-+
- extern unsigned int riscv_cbom_block_size;
- extern unsigned int riscv_cboz_block_size;
- void riscv_init_cbo_blocksizes(void);
+ void mv88e6xxx_teardown_devlink_regions_port(struct dsa_switch *ds, int port)
 -- 
 2.39.5
 
