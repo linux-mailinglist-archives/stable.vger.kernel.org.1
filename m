@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-138312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D31AA176E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF6AAA120A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 259804C223B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC7B74A6A08
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06A2243964;
-	Tue, 29 Apr 2025 17:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEFE24E000;
+	Tue, 29 Apr 2025 16:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFmWRrwn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuZyLFdL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA2624BD02;
-	Tue, 29 Apr 2025 17:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1624624C098;
+	Tue, 29 Apr 2025 16:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948844; cv=none; b=GdwFph6zrng7sm69FCHFyE/Lzgyb0CAgyOnZ+esN+BdbHhqXYmYoyTrC2+bY/bWiK3zwO7OC97lMy5ooWCrym9DtQhxDHH1V3b+WJPawk0fDo2CgXEB2hg8/RGLktw9W4+hCYmaFqtr/cA3PttfvtEax+dBmiYq+ophXdbEccUU=
+	t=1745945313; cv=none; b=fS0tlJu109sSOcy7n/4avX8+zYsB8uXLTvVYYu4g715aTMU1Dx37rMZ8UN+Useh9j+SQiJJc7udYGsIM1hr4UgxnZlercGrO1Rau5c7SXf+faUSS/NvDMx5wXnLkJUp0KciCTi0pVK+D5SmP+YYOyWrmlxLU1m7Y9MOcPfPNZto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948844; c=relaxed/simple;
-	bh=vpXg8EwgKF9cwGQeZGw+MgMYzYMlD5V5/i3dHzRCxQA=;
+	s=arc-20240116; t=1745945313; c=relaxed/simple;
+	bh=sWXuxyoUlVCvKyQbOy3mT3jqte2MmoBSsymGGwWvRzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dTMHqXEiF9XqzJIFO1/oum3Xp3J7wk4kFJcLOCn+/OLiL/4Lv4GhlSg8BTO2QzWBio7ZbENSBGmYwP7HON/qmn6uIh4UPuhf/+XcFLFjrwOlweS0HhPdYLGS/eUxv74f+UnMvLtnN+5qbEisThp4+9RMj2zqo556UOwsi24205I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFmWRrwn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6B8C4CEE3;
-	Tue, 29 Apr 2025 17:47:23 +0000 (UTC)
+	 MIME-Version; b=oxiTSLpiHg0Y7zErVAJd/vwJ3c5+AJote7PWDwC0lC9zxPWa6bKtHEKStBTQ65+mPWjBVYhlIE/YsBdyVKJuT8gkAVJ+bvo6wOjb1lgzbSK70hgu54QjFwmreTNuEDIv3OELMyOkjUHXPf+YcdhzLtO6klAMeKSDVnYw6HdRAWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuZyLFdL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1852FC4CEE9;
+	Tue, 29 Apr 2025 16:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948844;
-	bh=vpXg8EwgKF9cwGQeZGw+MgMYzYMlD5V5/i3dHzRCxQA=;
+	s=korg; t=1745945312;
+	bh=sWXuxyoUlVCvKyQbOy3mT3jqte2MmoBSsymGGwWvRzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MFmWRrwn+WVte71W4kg+c864HP/FUGS4aLYUtWCryVYmoUc5il8GF+9t3RHOgEMWH
-	 hLaq8XBdzbFkyshvkW6u/AbplSUkeWQRhaax4EXPx9JSs7oU5TzGJjHCmUKbln9InV
-	 JF6sazcXdY/I1wCwfeZffQOSeAzZA6xxJSiAVwFw=
+	b=PuZyLFdL83k2jrkSjHgRL2+bjwlF3ffhlHWa+oIhQJn6yNWW/STu8vGFhh6/MgDFG
+	 PRaD/+nB0C51UXqcRl4nbl3xpMOaLcqMyRHhhI42IXfyFHoVjb+HssO2GM9+4PHZsw
+	 Mn5q8mSECUGzDaUOqWcbsXusW8KRyOU7eZLBRUyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 135/373] RDMA/core: Silence oversized kvmalloc() warning
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 5.4 071/179] dm-integrity: set ti->error on memory allocation failure
 Date: Tue, 29 Apr 2025 18:40:12 +0200
-Message-ID: <20250429161128.718636663@linuxfoundation.org>
+Message-ID: <20250429161052.289727756@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 9a0e6f15029e1a8a21e40f06fd05aa52b7f063de ]
+commit 00204ae3d6712ee053353920e3ce2b00c35ef75b upstream.
 
-syzkaller triggered an oversized kvmalloc() warning.
-Silence it by adding __GFP_NOWARN.
+The dm-integrity target didn't set the error string when memory
+allocation failed. This patch fixes it.
 
-syzkaller log:
- WARNING: CPU: 7 PID: 518 at mm/util.c:665 __kvmalloc_node_noprof+0x175/0x180
- CPU: 7 UID: 0 PID: 518 Comm: c_repro Not tainted 6.11.0-rc6+ #6
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
- RIP: 0010:__kvmalloc_node_noprof+0x175/0x180
- RSP: 0018:ffffc90001e67c10 EFLAGS: 00010246
- RAX: 0000000000000100 RBX: 0000000000000400 RCX: ffffffff8149d46b
- RDX: 0000000000000000 RSI: ffff8881030fae80 RDI: 0000000000000002
- RBP: 000000712c800000 R08: 0000000000000100 R09: 0000000000000000
- R10: ffffc90001e67c10 R11: 0030ae0601000000 R12: 0000000000000000
- R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000000
- FS:  00007fde79159740(0000) GS:ffff88813bdc0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000020000180 CR3: 0000000105eb4005 CR4: 00000000003706b0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- Call Trace:
-  <TASK>
-  ib_umem_odp_get+0x1f6/0x390
-  mlx5_ib_reg_user_mr+0x1e8/0x450
-  ib_uverbs_reg_mr+0x28b/0x440
-  ib_uverbs_write+0x7d3/0xa30
-  vfs_write+0x1ac/0x6c0
-  ksys_write+0x134/0x170
-  ? __sanitizer_cov_trace_pc+0x1c/0x50
-  do_syscall_64+0x50/0x110
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: 37824952dc8f ("RDMA/odp: Use kvcalloc for the dma_list and page_list")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Link: https://patch.msgid.link/c6cb92379de668be94894f49c2cfa40e73f94d56.1742388096.git.leonro@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/umem_odp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/md/dm-integrity.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/core/umem_odp.c b/drivers/infiniband/core/umem_odp.c
-index b052de1b9ccb9..cbb14b0b175f6 100644
---- a/drivers/infiniband/core/umem_odp.c
-+++ b/drivers/infiniband/core/umem_odp.c
-@@ -78,12 +78,14 @@ static inline int ib_init_umem_odp(struct ib_umem_odp *umem_odp,
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -4112,16 +4112,19 @@ try_smaller_buffer:
  
- 		npfns = (end - start) >> PAGE_SHIFT;
- 		umem_odp->pfn_list = kvcalloc(
--			npfns, sizeof(*umem_odp->pfn_list), GFP_KERNEL);
-+			npfns, sizeof(*umem_odp->pfn_list),
-+			GFP_KERNEL | __GFP_NOWARN);
- 		if (!umem_odp->pfn_list)
- 			return -ENOMEM;
- 
- 		umem_odp->dma_list = kvcalloc(
--			ndmas, sizeof(*umem_odp->dma_list), GFP_KERNEL);
-+			ndmas, sizeof(*umem_odp->dma_list),
-+			GFP_KERNEL | __GFP_NOWARN);
- 		if (!umem_odp->dma_list) {
- 			ret = -ENOMEM;
- 			goto out_pfn_list;
--- 
-2.39.5
-
+ 		ic->recalc_bitmap = dm_integrity_alloc_page_list(n_bitmap_pages);
+ 		if (!ic->recalc_bitmap) {
++			ti->error = "Could not allocate memory for bitmap";
+ 			r = -ENOMEM;
+ 			goto bad;
+ 		}
+ 		ic->may_write_bitmap = dm_integrity_alloc_page_list(n_bitmap_pages);
+ 		if (!ic->may_write_bitmap) {
++			ti->error = "Could not allocate memory for bitmap";
+ 			r = -ENOMEM;
+ 			goto bad;
+ 		}
+ 		ic->bbs = kvmalloc_array(ic->n_bitmap_blocks, sizeof(struct bitmap_block_status), GFP_KERNEL);
+ 		if (!ic->bbs) {
++			ti->error = "Could not allocate memory for bitmap";
+ 			r = -ENOMEM;
+ 			goto bad;
+ 		}
 
 
 
