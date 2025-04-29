@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5D6AA1672
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:37:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87345AA15B2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABF6E7A423D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BA4698798A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F292248889;
-	Tue, 29 Apr 2025 17:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3AD2528E4;
+	Tue, 29 Apr 2025 17:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7m8ByjD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07LOrLeZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC2A1C6B4;
-	Tue, 29 Apr 2025 17:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD30E2512E8;
+	Tue, 29 Apr 2025 17:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948252; cv=none; b=rPY4gZsC+mrm6ceIMmlB4BBdt9G4BTD3mH9z3NR8ZhU6laMGAiuIaLVBtxwwGxTUzEhZTiFFNhTD+zUamSiB/oqW1LW5tGrmzEzawi3BMH16fF5TqOK6EnLeQzhvw7XaLxgDgUPhT0qZ9akjAsEqh3Z9WTU+b4NukG1/Gjq8Ass=
+	t=1745947397; cv=none; b=ZdIy+XBMv8hLsjdyUHHuyKIqH85QXMDq2wKUHDn5gOZjUWQEsqNUQsdFlQ7A1HKLBKcNx0VIQLY01dzS951RM6+luUpeHSTJ4pIVFbBuaj4iQTdDfSDNPabBaukdlDNCfk1nkPmhV9D3Lb3D2uB3GmSS7WFK/apSlC00hpcRMu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948252; c=relaxed/simple;
-	bh=a2d9FUssCeTyoeSzeHzz4uGtL+v49Nd6iBnSyERyEdU=;
+	s=arc-20240116; t=1745947397; c=relaxed/simple;
+	bh=71WXt4rDMILQ1w5XbqnHx5JJlzljTq2ccsmVUWzeHk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=suvHDNVlgIGEp0Yc9NLsS6qlOK0z3i1S0WBEML1/e39egiL7kyxu4enw2vmbVkkSAK8NI/RsuYYyhOxuVah9mipeSLex06NFE/As/W2XOi5SyDhofxL1z+VaR4hroDk3/Q5yMrvDYfeuKDujNtOg/wwaLDXqDc23jbWcGpqTa5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7m8ByjD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA2EC4CEE3;
-	Tue, 29 Apr 2025 17:37:31 +0000 (UTC)
+	 MIME-Version; b=DN8t84tMoADhrzwOUeCksVnDmiPqPJ5/LynThBGBrBvTPDunYuYqN9xI+EyBZSxS43C3aA3o2gg8zWp9FzaZ+SInxjwt031jYHwUyCh020beKnmG8X0SUDgv7+Sa+zHJoMbY3giqvsZ3vOKaJM40g7D3jzc6xASUMwAtlenNyw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07LOrLeZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C406C4CEEF;
+	Tue, 29 Apr 2025 17:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948251;
-	bh=a2d9FUssCeTyoeSzeHzz4uGtL+v49Nd6iBnSyERyEdU=;
+	s=korg; t=1745947396;
+	bh=71WXt4rDMILQ1w5XbqnHx5JJlzljTq2ccsmVUWzeHk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7m8ByjDzfXw99GBgLv2O0JDFPwGdozGlxxe9l/eg2F0ZZC8IVnLX74b9SabmuKcq
-	 oksV5oyZSEyfEj9htny2kzPBITE04me/qQOjGzyHZYcRGQmzIbBApAMNN40Cv3AieZ
-	 Aqt83idf5mXRPByDz431vsEXjtS9qqktu2FW2Jo8=
+	b=07LOrLeZrST0aqTU0EekmK0l9a1SGqBVV5ULSIHeU2LTrvqddhSR8pO9Dyv0WweDi
+	 EBidUcfY6mo/zWg866Iqvh+w9ZuAjSeuUgMYv6iJTsL5hkQ4kkDdxoG5l+GbixlLRM
+	 KlHcdMYF3hiLpbxjayFZo8myk2xHgas8udv1aRBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jean-Marc Eurin <jmeurin@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 231/280] scsi: ufs: exynos: Move phy calls to .exit() callback
+Subject: [PATCH 5.10 268/286] ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls
 Date: Tue, 29 Apr 2025 18:42:52 +0200
-Message-ID: <20250429161124.571338939@linuxfoundation.org>
+Message-ID: <20250429161118.946032354@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Jean-Marc Eurin <jmeurin@google.com>
 
-[ Upstream commit 67e4085015c33bf2fb552af1f171c58b81ef0616 ]
+[ Upstream commit 7ab4f0e37a0f4207e742a8de69be03984db6ebf0 ]
 
-ufshcd_pltfrm_remove() calls ufshcd_remove(hba) which in turn calls
-ufshcd_hba_exit().
+The end of table checks should be done with the structure size,
+but 2 of the 3 similar calls use the pointer size.
 
-By moving the phy_power_off() and phy_exit() calls to the newly created
-.exit callback they get called by ufshcd_variant_hba_exit() before
-ufshcd_hba_exit() turns off the regulators. This is also similar flow to
-the ufs-qcom driver.
-
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-6-96722cc2ba1b@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jean-Marc Eurin <jmeurin@google.com>
+Link: https://patch.msgid.link/20250402001542.2600671-1-jmeurin@google.com
+[ rjw: Subject edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-exynos.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/acpi/pptt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index 626187100316b..55ea863b47f3d 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -1490,6 +1490,14 @@ static int exynos_ufs_init(struct ufs_hba *hba)
- 	return ret;
- }
+diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+index 4ae93350b70de..38581001811b4 100644
+--- a/drivers/acpi/pptt.c
++++ b/drivers/acpi/pptt.c
+@@ -217,7 +217,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
+ 	node_entry = ACPI_PTR_DIFF(node, table_hdr);
+ 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+ 			     sizeof(struct acpi_table_pptt));
+-	proc_sz = sizeof(struct acpi_pptt_processor *);
++	proc_sz = sizeof(struct acpi_pptt_processor);
  
-+static void exynos_ufs_exit(struct ufs_hba *hba)
-+{
-+	struct exynos_ufs *ufs = ufshcd_get_variant(hba);
-+
-+	phy_power_off(ufs->phy);
-+	phy_exit(ufs->phy);
-+}
-+
- static int exynos_ufs_host_reset(struct ufs_hba *hba)
- {
- 	struct exynos_ufs *ufs = ufshcd_get_variant(hba);
-@@ -1958,6 +1966,7 @@ static int gs101_ufs_pre_pwr_change(struct exynos_ufs *ufs,
- static const struct ufs_hba_variant_ops ufs_hba_exynos_ops = {
- 	.name				= "exynos_ufs",
- 	.init				= exynos_ufs_init,
-+	.exit				= exynos_ufs_exit,
- 	.hce_enable_notify		= exynos_ufs_hce_enable_notify,
- 	.link_startup_notify		= exynos_ufs_link_startup_notify,
- 	.pwr_change_notify		= exynos_ufs_pwr_change_notify,
-@@ -1996,13 +2005,7 @@ static int exynos_ufs_probe(struct platform_device *pdev)
+ 	while ((unsigned long)entry + proc_sz < table_end) {
+ 		cpu_node = (struct acpi_pptt_processor *)entry;
+@@ -258,7 +258,7 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
+ 	table_end = (unsigned long)table_hdr + table_hdr->length;
+ 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+ 			     sizeof(struct acpi_table_pptt));
+-	proc_sz = sizeof(struct acpi_pptt_processor *);
++	proc_sz = sizeof(struct acpi_pptt_processor);
  
- static void exynos_ufs_remove(struct platform_device *pdev)
- {
--	struct ufs_hba *hba =  platform_get_drvdata(pdev);
--	struct exynos_ufs *ufs = ufshcd_get_variant(hba);
--
- 	ufshcd_pltfrm_remove(pdev);
--
--	phy_power_off(ufs->phy);
--	phy_exit(ufs->phy);
- }
- 
- static struct exynos_ufs_uic_attr exynos7_uic_attr = {
+ 	/* find the processor structure associated with this cpuid */
+ 	while ((unsigned long)entry + proc_sz < table_end) {
 -- 
 2.39.5
 
