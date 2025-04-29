@@ -1,232 +1,119 @@
-Return-Path: <stable+bounces-137114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 662C7AA10D8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93856AA10E9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20FA13AC2DC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 15:45:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEBB47A238D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 15:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB56F238C21;
-	Tue, 29 Apr 2025 15:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C9D23E35E;
+	Tue, 29 Apr 2025 15:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f1AHNA6s"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Voz75BMs"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CDB227BB9
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 15:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D6B21771B;
+	Tue, 29 Apr 2025 15:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745941567; cv=none; b=FYzwCDMZD189ZftQWBd/aor5gHD8S3D3vwqfsZ5eyKQIyICrAQY6d27f8ZpoUI2oXGnPXfuqRl3cLtZbunJAfldJNxhsY9TcgXvzFjKTwNsdWowAXjXs/eFCbd8WwoaVA9vPe/+k+YkJpqknAvZlQtm1xNPhO0TsnSTbuMvbWQc=
+	t=1745941800; cv=none; b=Hkvctj+KvOB9zKaxnjv7Ewl1lfztvePACCU1SGdjR2vUtREteDXfNDi7Z0jw6QotL7VMxy+RNNCBM03N+Gaz4i4vYifVIh1EY6OVyK3fgvVAnXpeUX/BO2LEwDJK6C2+4XJtPmEuNWHhAEh5symDRTnuMjDAzI3FJs0Ftkq9E/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745941567; c=relaxed/simple;
-	bh=S7itzmkTPv/yQdqAjes8b8Y4TuhqFNIK1LkVNhNlswM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=P3UWBz3zXD9RStRV/e3P8mofPvtxfOHjFEZHiFhiDYG80+JG5XY0iW2Zvc93q7KP1+6fOEGXGRxmZu0Eo9+j6JyioS5/UdAV/bzaTh6+vsDnb0/jPB53E46tNlAqAUqLIAYfNOWyeEKeR7frRIFk2WQWgg9R8AK9pRrfmAlEYk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f1AHNA6s; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745941558;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=KJkBeINQl3NFAYCfsyQAhOdLaYy8cgJsBpXeXsGczuA=;
-	b=f1AHNA6sPVUg7GllMvk97PBgMogB6bifn1nvYDARUSuV4cH94T+RXb0uwpLSJpL2Ug2YCS
-	3WJz1nHMye95JoqWr+I3syaeOFuT4GcLGrr6f0i9cb+eXCVZIL8Db3Xw9abzZh+YwKJISK
-	QkbujnHHXRxQ+Zws5d42odqldKkioEM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-280-_jzjhIQfN0OSlI9X42sSIQ-1; Tue, 29 Apr 2025 11:45:56 -0400
-X-MC-Unique: _jzjhIQfN0OSlI9X42sSIQ-1
-X-Mimecast-MFC-AGG-ID: _jzjhIQfN0OSlI9X42sSIQ_1745941555
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43947a0919aso43120005e9.0
-        for <stable@vger.kernel.org>; Tue, 29 Apr 2025 08:45:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745941555; x=1746546355;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:from:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=KJkBeINQl3NFAYCfsyQAhOdLaYy8cgJsBpXeXsGczuA=;
-        b=YTknEI2lhSAUiKQg36LQjweDaqCdd8FsODFQFw3fXF4BMbOaQjSYMArXkObP4IxSmp
-         fn+Xkh5I1UwZ2O1EmmfcNPzQ/up4XYtfYVtipaBirzbBysL77vlNvBjwLHArNKe4gHer
-         MBsAKktuyLtOfm/nA/bm491PYsrcWZXqSUbyaMtKT5eMrcWAKm9PkLOpLxuEj/fwp3a2
-         JfW3Zpy5v344opU4zJw6qfTFCZFMWAGFtFBr7mMdJEl4uRLlK1huSTeZZEVyRw4ZMX8T
-         x1r3Utq/vqBin+iG1erzRa1no4mZpMsGSHyV+KhwWXSo2JeXOl7aufzzQIcuNNNDjXAB
-         YpuA==
-X-Forwarded-Encrypted: i=1; AJvYcCUGsHGXjt9WhjwpQPJYZQSF2Zo4/uJCqoLICkESPzGL/Zv25zKfTtzY8e3jojtTZJSYzn1HB/U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0rM1BpS7dJw3qEA12PhZKD4293l2DW6D1Zgxgk+0Wo7YXfq+u
-	yvDH1exL1pkpFV2YEPfBa6LfbYFQ1mZDJusDXzWzjqe+EN9L4uwTTCnw+Xj4Df66bQ2JmIlFupE
-	RhZG7m+E+alhYJo2GY2/nSmJ6OhJhkZp+gLsIZQQbGpdtcMN/3iGPqw==
-X-Gm-Gg: ASbGnctljkdvyIdmv++AfmhIbl1pj6ptrgehNyYK6kEjPqLMiMFA/X+b/EpLmkgVrXK
-	LNA/KEVztHVAqGvAC052oTOjfVwV9B9yIOKOYkcxVMgutTNe+H3W6sK+dJNYbKncS00MX1i0wRV
-	gj2z09okSnlPb6Rumc5GcZxVpUxuPYWjGrORLo2OCwE0dNShLbKhaxa6tMEJJKVY+psy+m2AXnQ
-	CWCkzqN3ZPLuKN3oymxxN0H/Ef1D61ANy2IdbHbUQ8vxWaSv8DzeqNY+1jCsbZKyvUZ2xSUn91X
-	lmHT6EJrUBYiQ7sKGigTfF4tBWQz8h0QTdRvlwY5l9csOzSXgf1/BWeT5CgfypoCs95hA1lIgjA
-	1EXfPlr9HpKmrEKsF0r5kH3wOzWhVj+WZJpdAHBY=
-X-Received: by 2002:a05:600c:46cf:b0:439:9424:1b70 with SMTP id 5b1f17b1804b1-440ab871770mr128621555e9.30.1745941554862;
-        Tue, 29 Apr 2025 08:45:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFt0DK2rmUfljN2z2b+q11frPzsFEc1skfJ0nZYXWdcoUPJqbsw4oWgy/3IkPCYXvYpVzK/AA==
-X-Received: by 2002:a05:600c:46cf:b0:439:9424:1b70 with SMTP id 5b1f17b1804b1-440ab871770mr128621335e9.30.1745941554500;
-        Tue, 29 Apr 2025 08:45:54 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c73b:fa00:8909:2d07:8909:6a5a? (p200300cbc73bfa0089092d0789096a5a.dip0.t-ipconnect.de. [2003:cb:c73b:fa00:8909:2d07:8909:6a5a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441ae3ee26fsm19485125e9.1.2025.04.29.08.45.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Apr 2025 08:45:54 -0700 (PDT)
-Message-ID: <b6613b71-3eb9-4348-9031-c1dd172b9814@redhat.com>
-Date: Tue, 29 Apr 2025 17:45:53 +0200
+	s=arc-20240116; t=1745941800; c=relaxed/simple;
+	bh=SWA30VtLEsbKUxXYuBVojhQkeXIFkAjMhnPUSK81HNk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ThKqCPI6M5WQXUBMupaFZ36Eqs9audP549NWWTyN2OSxrVTCQPoclFvamaaWtXFHgRA+0IV/NO6lSy1SMG/i1A2n5q6DDHyWAscMLVSROa70FSiQS2jgsdQwbsDpxMweiF977kJidAEcLOaXqVnuEDn/q/sbbkme5Cb12qRhz7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Voz75BMs; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=HzDcT6NzZ8VkLqeQVpl0smJGiuB7wxJtJRI/zTXIq3o=; b=Voz75BMsteZL0PPUQ+gTkryk1w
+	BTron6lHlau6SX4sgZF045B6msd1Entzv7YViyHTQi6mIWw+zC8g+xCk2qofpU5AHKKZ84egJ8PCf
+	yjRsR088SEdlP3X/a6G7CsLmv1ZSbDA2j64AAqTpcIAl6c85+T5cksz/NNQY1EdXTUi7eW4SqMSnS
+	tgr03i5IRKr5JGpPNVVOXm1PcN1BtHeDqKDZ+nXbv/U5VoK/JEgzfLZrqGu8cOIjU9RLfJiHCniid
+	JcyOmD53lTuzS8RZNDQrwbP4anvInd14bqybm4Ac7I0OZ4QzwaUM3bsoUAcJu+lhAVvUh1iiQgp9P
+	y0fgdVdg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
+	id 1u9nDP-0000000DSQz-2ynT;
+	Tue, 29 Apr 2025 15:49:47 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 26DD730057C; Tue, 29 Apr 2025 17:49:47 +0200 (CEST)
+Date: Tue, 29 Apr 2025 17:49:46 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Jianzhou Zhao <luckd0g@163.com>
+Cc: stable@vger.kernel.org, alexander.shishkin@linux.intel.com,
+	mingo@redhat.com, acme@kernel.org, namhyung@kernel.org,
+	mark.rutland@arm.com, jolsa@kernel.org, irogers@google.com,
+	adrian.hunter@intel.com, kan.liang@linux.intel.com,
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: possible deadlock in perf_ctx_lock  in  linux6.12.25(longterm
+ maintenance)
+Message-ID: <20250429154946.GA4439@noisy.programming.kicks-ass.net>
+References: <77c2ee24.b63e.19681e979ea.Coremail.luckd0g@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm: Fix folio_pte_batch() overcount with zero PTEs
-From: David Hildenbrand <david@redhat.com>
-To: =?UTF-8?Q?Petr_Van=C4=9Bk?= <arkamar@atlas.cz>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org,
- stable@vger.kernel.org
-References: <20250429142237.22138-1-arkamar@atlas.cz>
- <20250429142237.22138-2-arkamar@atlas.cz>
- <d53fd549-887f-4220-b0d1-ebc336eecb9f@redhat.com>
- <2025429144547-aBDmGzJBQc9RMBj--arkamar@atlas.cz>
- <ef317615-3e26-4641-8141-4d3913ced47f@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <ef317615-3e26-4641-8141-4d3913ced47f@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <77c2ee24.b63e.19681e979ea.Coremail.luckd0g@163.com>
 
-On 29.04.25 16:52, David Hildenbrand wrote:
-> On 29.04.25 16:45, Petr Vaněk wrote:
->> On Tue, Apr 29, 2025 at 04:29:30PM +0200, David Hildenbrand wrote:
->>> On 29.04.25 16:22, Petr Vaněk wrote:
->>>> folio_pte_batch() could overcount the number of contiguous PTEs when
->>>> pte_advance_pfn() returns a zero-valued PTE and the following PTE in
->>>> memory also happens to be zero. The loop doesn't break in such a case
->>>> because pte_same() returns true, and the batch size is advanced by one
->>>> more than it should be.
->>>>
->>>> To fix this, bail out early if a non-present PTE is encountered,
->>>> preventing the invalid comparison.
->>>>
->>>> This issue started to appear after commit 10ebac4f95e7 ("mm/memory:
->>>> optimize unmap/zap with PTE-mapped THP") and was discovered via git
->>>> bisect.
->>>>
->>>> Fixes: 10ebac4f95e7 ("mm/memory: optimize unmap/zap with PTE-mapped THP")
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
->>>> ---
->>>>     mm/internal.h | 2 ++
->>>>     1 file changed, 2 insertions(+)
->>>>
->>>> diff --git a/mm/internal.h b/mm/internal.h
->>>> index e9695baa5922..c181fe2bac9d 100644
->>>> --- a/mm/internal.h
->>>> +++ b/mm/internal.h
->>>> @@ -279,6 +279,8 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
->>>>     			dirty = !!pte_dirty(pte);
->>>>     		pte = __pte_batch_clear_ignored(pte, flags);
->>>>     
->>>> +		if (!pte_present(pte))
->>>> +			break;
->>>>     		if (!pte_same(pte, expected_pte))
->>>>     			break;
->>>
->>> How could pte_same() suddenly match on a present and non-present PTE.
->>
->> In the problematic case pte.pte == 0 and expected_pte.pte == 0 as well.
->> pte_same() returns a.pte == b.pte -> 0 == 0. Both are non-present PTEs.
-> 
-> Observe that folio_pte_batch() was called *with a present pte*.
-> 
-> do_zap_pte_range()
-> 	if (pte_present(ptent))
-> 		zap_present_ptes()
-> 			folio_pte_batch()
-> 
-> How can we end up with an expected_pte that is !present, if it is based
-> on the provided pte that *is present* and we only used pte_advance_pfn()
-> to advance the pfn?
+On Tue, Apr 29, 2025 at 10:18:04PM +0800, Jianzhou Zhao wrote:
+> Hello, I found a potential bug titled "   possible deadlock in perf_ctx_lock " with modified syzkaller in the Linux6.12.25(longterm maintenance, last updated on April 25, 2025)
 
-I've been staring at the code for too long and don't see the issue.
+Nah, you hit a WARN and then printk being lousy made it explode worse.
 
-We even have
+> WARNING: CPU: 0 PID: 15835 at kernel/trace/trace_event_perf.c:375 perf_trace_add+0x2da/0x390 kernel/trace/trace_event_perf.c:375
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 15835 Comm: syz.9.499 Not tainted 6.12.25 #3
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+> RIP: 0010:perf_trace_add+0x2da/0x390 kernel/trace/trace_event_perf.c:375
+> Code: fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 64 48 89 ab f8 01 00 00 48 89 df e8 b1 ab 26 00 e9 f3 fd ff ff e8 37 87 f6 ff 90 <0f> 0b 90 41 bc ea ff ff ff e9 77 ff ff ff e8 23 c5 56 00 e9 8a fd
+> RSP: 0018:ffffc9000713f7f0 EFLAGS: 00010006
+> RAX: 0000000040000002 RBX: ffff88802a069880 RCX: ffffffff8195a68e
+> RDX: ffff888045ec2500 RSI: ffffffff8195a839 RDI: ffffffff8deabf48
+> RBP: 0000000000000000 R08: 0000000000000001 R09: fffff52000e27eef
+> R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+> R13: ffffffff8deabee0 R14: ffff88802a069928 R15: ffff888051237200
+> FS:  00007fe4fec1c640(0000) GS:ffff88802b800000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f50219e7bac CR3: 00000000743bc000 CR4: 0000000000752ef0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> PKRU: 80000000
+> Call Trace:
+>  <TASK>
+>  event_sched_in+0x434/0xac0 kernel/events/core.c:2629
+>  group_sched_in kernel/events/core.c:2662 [inline]
+>  merge_sched_in+0x895/0x1570 kernel/events/core.c:3940
+>  visit_groups_merge.constprop.0.isra.0+0x6d2/0x1250 kernel/events/core.c:3885
+>  pmu_groups_sched_in kernel/events/core.c:3967 [inline]
+>  __pmu_ctx_sched_in kernel/events/core.c:3979 [inline]
+>  ctx_sched_in+0x5c1/0xa30 kernel/events/core.c:4030
+>  perf_event_sched_in+0x5d/0x90 kernel/events/core.c:2760
+>  perf_event_context_sched_in kernel/events/core.c:4077 [inline]
+>  __perf_event_task_sched_in+0x33a/0x6f0 kernel/events/core.c:4106
+>  perf_event_task_sched_in include/linux/perf_event.h:1524 [inline]
+>  finish_task_switch.isra.0+0x5f9/0xcb0 kernel/sched/core.c:5201
+>  context_switch kernel/sched/core.c:5335 [inline]
+>  __schedule+0x1156/0x5b20 kernel/sched/core.c:6710
+>  preempt_schedule_irq+0x51/0x90 kernel/sched/core.c:7032
+>  irqentry_exit+0x36/0x90 kernel/entry/common.c:354
+>  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
 
-VM_WARN_ON_FOLIO(!pte_present(pte), folio);
+Not quite sure which of the WARNs that is, as I don't keep the stable
+trees around and .12 is quite old by now.
 
-So the initial pteval we got is present.
-
-I don't see how
-
-	nr = pte_batch_hint(start_ptep, pte);
-	expected_pte = __pte_batch_clear_ignored(pte_advance_pfn(pte, nr), flags);
-
-would suddenly result in !pte_present(expected_pte).
-
-The really weird thing is that this has only been seen on XEN.
-
-But even on XEN, a present pte should not suddenly get !present -- we're not
-re-reading from ptep :/
-
--- 
-Cheers,
-
-David / dhildenb
-
+Anyway, if you can reproduce I'll take a look.
 
