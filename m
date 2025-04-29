@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-137981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B07AA15F8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7BB6AA17E9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0002D177F04
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 217939A2B75
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEED22459E1;
-	Tue, 29 Apr 2025 17:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2525F24E4A9;
+	Tue, 29 Apr 2025 17:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgLx8EO+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnzAUm1C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3F01FE468;
-	Tue, 29 Apr 2025 17:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C881821ABC1;
+	Tue, 29 Apr 2025 17:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947725; cv=none; b=pp/Pw0Skblcj7CwNbjfx0uXXN/2UqhD1/fF5ZbGP5c8+OdF1PN4DwBzudV9GwoXXRN+bfWX/FXsciaImmn2fEZKvBVbH9R/bXuETjh//YR0psq3yN6+IdMEAKxI5MHcYvaYepJPSbHm7myrkIsGEM8ExUtn+vR9hsnyIC/VZt3c=
+	t=1745948908; cv=none; b=fhS/KvW8vbEkjFZqzA9FhsbxHq7fmBiIwgl5zI2t3bbJgZ0XEOxxIYk/jdy0b9p8O48Ng2KcjePilgTopJ7ZZhT+t/+ireSvlB/Wp0MD8zDWZ+QDCmp+wytIzI9fE/m8xmlRPF3ibC6r/k4SHrlEQab+XHudAS7QodgHaGKJVZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947725; c=relaxed/simple;
-	bh=wujIosWUttdoZxQ+kQlYJ7cfzDWjilgB0Tz9sx8i554=;
+	s=arc-20240116; t=1745948908; c=relaxed/simple;
+	bh=mmnWJlaFMxsvSu7l6X+mQadvG6zmXjv76Ppom0d7dmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gc5bQvjoC5VPEuV3fFCbzDJ963RoQlgTJSSEOhqQPLNAWRfvcSuhB9+xj9+h7f0zYtbjHsHRIA3U/nf7QHN7HXPForTEn7ffZjlK91ufCdlgF/Hw1c8M+Ckr/GnlWDmJN3Nammzi0zX/FJbC4MtiUwanb4TPtdH2+EtvFCv88So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgLx8EO+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630C8C4CEE9;
-	Tue, 29 Apr 2025 17:28:44 +0000 (UTC)
+	 MIME-Version; b=dh/mZKtmT17EASY3Ibk9Xsz3xJSCziH+9DeSn1ShiH6qDVpDxlRVCPIvR1tF1Y1U5sVfLDNcNaBgDIcry5wvUGXIIkST31t5GCRU5hdFymQ6sRtcxm332F0b7xysTJanimlOrHQbUJOMy5qzk1UevAJOOl+zMcBFE8hgQw2bI3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnzAUm1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D407C4CEE3;
+	Tue, 29 Apr 2025 17:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947725;
-	bh=wujIosWUttdoZxQ+kQlYJ7cfzDWjilgB0Tz9sx8i554=;
+	s=korg; t=1745948908;
+	bh=mmnWJlaFMxsvSu7l6X+mQadvG6zmXjv76Ppom0d7dmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jgLx8EO+aNrwqkLFH9V0tIThLF0DscCA76LcXQoiPQDzfyBaQA+jiW3oMBpqVoize
-	 2RqhJW/x3Eez6MEdes12geMLVx0n8pV3CWjqr7qSgH9ECceCnNzlkQn8bZXi5DJpRt
-	 UxQUaMa7fYcde1yfVfdr4sRNGomIZxGW8F5tIdFc=
+	b=nnzAUm1CKGuP9it1LP4+1zY/RB4MY96CSHakiK0mwWIb2SEb4BQl9HraIdgCpG9xW
+	 PoEdElGYbSTJ1pJQqBxOXI9IDiDuzsVDbOZf6sMqYB6lD0YN/+oNLlTkzX1bspn64F
+	 45OoLG12wLvfQmJ7pmkvwQdKqKdHfj2G0pxbdmvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	WangYuli <wangyuli@uniontech.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/280] bpf: Add namespace to BPF internal symbols
-Date: Tue, 29 Apr 2025 18:40:28 +0200
-Message-ID: <20250429161118.669603433@linuxfoundation.org>
+Subject: [PATCH 5.15 152/373] riscv: KGDB: Remove ".option norvc/.option rvc" for kgdb_compiled_break
+Date: Tue, 29 Apr 2025 18:40:29 +0200
+Message-ID: <20250429161129.407966867@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit f88886de0927a2adf4c1b4c5c1f1d31d2023ef74 ]
+[ Upstream commit 550c2aa787d1b06efcb11de1877354502a1237f2 ]
 
-Add namespace to BPF internal symbols used by light skeleton
-to prevent abuse and document with the code their allowed usage.
+[ Quoting Samuel Holland: ]
 
-Fixes: b1d18a7574d0 ("bpf: Extend sys_bpf commands for bpf_syscall programs.")
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/bpf/20250425014542.62385-1-alexei.starovoitov@gmail.com
+  This is a separate issue, but using ".option rvc" here is a bug.
+  It will unconditionally enable the C extension for the rest of
+  the file, even if the kernel is being built with CONFIG_RISCV_ISA_C=n.
+
+[ Quoting Palmer Dabbelt: ]
+
+  We're just looking at the address of kgdb_compiled_break, so it's
+  fine if it ends up as a c.ebreak.
+
+[ Quoting Alexandre Ghiti: ]
+
+  .option norvc is used to prevent the assembler from using compressed
+  instructions, but it's generally used when we need to ensure the
+  size of the instructions that are used, which is not the case here
+  as noted by Palmer since we only care about the address. So yes
+  it will work fine with C enabled :)
+
+So let's just remove them all.
+
+Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
+Link: https://lore.kernel.org/all/mhng-69513841-5068-441d-be8f-2aeebdc56a08@palmer-ri-x1c9a/
+Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
+Fixes: fe89bd2be866 ("riscv: Add KGDB support")
+Cc: Samuel Holland <samuel.holland@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/8B431C6A4626225C+20250411073222.56820-2-wangyuli@uniontech.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/bpf/bpf_devel_QA.rst    |    8 ++++++++
- kernel/bpf/preload/bpf_preload_kern.c |    1 +
- kernel/bpf/syscall.c                  |    6 +++---
- 3 files changed, 12 insertions(+), 3 deletions(-)
+ arch/riscv/kernel/kgdb.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/Documentation/bpf/bpf_devel_QA.rst
-+++ b/Documentation/bpf/bpf_devel_QA.rst
-@@ -382,6 +382,14 @@ In case of new BPF instructions, once th
- into the Linux kernel, please implement support into LLVM's BPF back
- end. See LLVM_ section below for further information.
- 
-+Q: What "BPF_INTERNAL" symbol namespace is for?
-+-----------------------------------------------
-+A: Symbols exported as BPF_INTERNAL can only be used by BPF infrastructure
-+like preload kernel modules with light skeleton. Most symbols outside
-+of BPF_INTERNAL are not expected to be used by code outside of BPF either.
-+Symbols may lack the designation because they predate the namespaces,
-+or due to an oversight.
-+
- Stable submission
- =================
- 
---- a/kernel/bpf/preload/bpf_preload_kern.c
-+++ b/kernel/bpf/preload/bpf_preload_kern.c
-@@ -89,4 +89,5 @@ static void __exit fini(void)
- }
- late_initcall(load);
- module_exit(fini);
-+MODULE_IMPORT_NS("BPF_INTERNAL");
- MODULE_LICENSE("GPL");
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -1457,7 +1457,7 @@ struct bpf_map *bpf_map_get(u32 ufd)
- 
- 	return map;
- }
--EXPORT_SYMBOL(bpf_map_get);
-+EXPORT_SYMBOL_NS(bpf_map_get, BPF_INTERNAL);
- 
- struct bpf_map *bpf_map_get_with_uref(u32 ufd)
+diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
+index b0db3350d243b..1d83b36967212 100644
+--- a/arch/riscv/kernel/kgdb.c
++++ b/arch/riscv/kernel/kgdb.c
+@@ -276,9 +276,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ noinline void arch_kgdb_breakpoint(void)
  {
-@@ -3223,7 +3223,7 @@ struct bpf_link *bpf_link_get_from_fd(u3
- 	bpf_link_inc(link);
- 	return link;
+ 	asm(".global kgdb_compiled_break\n"
+-	    ".option norvc\n"
+-	    "kgdb_compiled_break: ebreak\n"
+-	    ".option rvc\n");
++	    "kgdb_compiled_break: ebreak\n");
  }
--EXPORT_SYMBOL(bpf_link_get_from_fd);
-+EXPORT_SYMBOL_NS(bpf_link_get_from_fd, BPF_INTERNAL);
  
- static void bpf_tracing_link_release(struct bpf_link *link)
- {
-@@ -5853,7 +5853,7 @@ int kern_sys_bpf(int cmd, union bpf_attr
- 		return ____bpf_sys_bpf(cmd, attr, size);
- 	}
- }
--EXPORT_SYMBOL(kern_sys_bpf);
-+EXPORT_SYMBOL_NS(kern_sys_bpf, BPF_INTERNAL);
- 
- static const struct bpf_func_proto bpf_sys_bpf_proto = {
- 	.func		= bpf_sys_bpf,
+ void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
+-- 
+2.39.5
+
 
 
 
