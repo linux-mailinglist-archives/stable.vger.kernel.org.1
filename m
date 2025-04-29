@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-138834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A41AA19E9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:16:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5260EAA18D3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:05:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38882173DBD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:15:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F6F71BC6737
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5F8227E95;
-	Tue, 29 Apr 2025 18:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E34223E32B;
+	Tue, 29 Apr 2025 18:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGxjKCI0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbWyUAL9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07ACD40C03;
-	Tue, 29 Apr 2025 18:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2C621ABA7;
+	Tue, 29 Apr 2025 18:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950498; cv=none; b=AF8EwARu1x4nnfflHmvi7HA230hVu6+Pj0FyGpvC2d8IR88mL2ag9y9MneCp4h+XFJWGjTrVHpBuFu1fCrHUfV8wQdA4a+t/ibtV48kbOSDE1bvBCx2T4l6QVvL2ddITO6tG1uPdx2yPAVQ+HLvoR6meo2+xcFce7a/TtUCB+pQ=
+	t=1745949853; cv=none; b=o8C63K+C6DlPAO8LpKyycX/TgnX1FPOONizVMHxVOXvbLlYLwfhRNR7pOETz3CXeCv8EQxG5i6KoUcGO+sI2Cig8NyGWm6c0uCMpN6vM8KAHQttWne8bXrcUdLOY+L92aqZQlXNpzXMFX9yfIooHk0oW8zAmXFEwR6SokCvutHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950498; c=relaxed/simple;
-	bh=llpKlTk8qKJ697HB6dtHaWw65IC7skUjncQRnMfK7hY=;
+	s=arc-20240116; t=1745949853; c=relaxed/simple;
+	bh=4Bqf03EWIPhxipPlApGtm245up4cuifJFM0uhufza1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZ5Fe9M3oLxyNvjQAt5NqFcopJqUlLqCdIuYNQtH3hWlYcwMkv9Z5hUp0kRdgHAoCnXO6vUcPYHqv5D8kP1iSVYGG8fFdj+6WxrnwMFk3JRBdAGNWOm56dokDNc4BM/FWRVC+zPOH/o04+v9OdvNE20WTza4xfVQA6oy7boeoUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGxjKCI0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F43C4CEE3;
-	Tue, 29 Apr 2025 18:14:57 +0000 (UTC)
+	 MIME-Version; b=QvvpBrN0PycfutwFL05fCTJe4Qbw4fwlfcvPyuvWk/qcMAKigsfFJd9YuouqpPRMsCyGZtlvbFbRWeLth2oYj5Bf+Uai3aCzQ+gYXf/DzATYRrdodYhyL5rgRctw4ltZEbj8AWaZBnUzq+tnnq4SBbES7r7TR4CltCQGjPZS/m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbWyUAL9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1F5C4CEE3;
+	Tue, 29 Apr 2025 18:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950497;
-	bh=llpKlTk8qKJ697HB6dtHaWw65IC7skUjncQRnMfK7hY=;
+	s=korg; t=1745949853;
+	bh=4Bqf03EWIPhxipPlApGtm245up4cuifJFM0uhufza1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGxjKCI0ovSzK7fQ9ckH3DO2dEti8v9SF6iUR/c+QdRkK6JmP+q5FIYuU7AqR3Pcm
-	 QzJQ8yOvuCTUefnArYGPmnHOnjAf8+1n5jRMSwTt+cH8zEreCoQTswPrmmR2xmyJD5
-	 slajasu7dADFtwpgHZcKojI/o9GcXNByPOGpkXBg=
+	b=XbWyUAL95mZlce6r1b8LbUDkcozuiTSdUhfL/UYfgYDoBFGk3JuS+r+ZvAIg+Vhwy
+	 KYpAY4qGJwPLyBOYblfBVbtiNg/64jV+xgaK6tLcmoVqSa823PRe+Rva2QG01Lmhpp
+	 vyavUP/Rbk5iLCf1RiW3v+fpWFp2ySpOSlL6p908=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.6 097/204] serial: msm: Configure correct working mode before starting earlycon
+	Rengarajan S <rengarajan.s@microchip.com>
+Subject: [PATCH 6.1 077/167] misc: microchip: pci1xxxx: Fix incorrect IRQ status handling during ack
 Date: Tue, 29 Apr 2025 18:43:05 +0200
-Message-ID: <20250429161103.404751023@linuxfoundation.org>
+Message-ID: <20250429161054.881589263@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Rengarajan S <rengarajan.s@microchip.com>
 
-commit 7094832b5ac861b0bd7ed8866c93cb15ef619996 upstream.
+commit e9d7748a7468581859d2b85b378135f9688a0aff upstream.
 
-The MSM UART DM controller supports different working modes, e.g. DMA or
-the "single-character mode", where all reads/writes operate on a single
-character rather than 4 chars (32-bit) at once. When using earlycon,
-__msm_console_write() always writes 4 characters at a time, but we don't
-know which mode the bootloader was using and we don't set the mode either.
+Under irq_ack, pci1xxxx_assign_bit reads the current interrupt status,
+modifies and writes the entire value back. Since, the IRQ status bit
+gets cleared on writing back, the better approach is to directly write
+the bitmask to the register in order to preserve the value.
 
-This causes garbled output if the bootloader was using the single-character
-mode, because only every 4th character appears in the serial console, e.g.
-
-  "[ 00oni pi  000xf0[ 00i s 5rm9(l)l s 1  1 SPMTA 7:C 5[ 00A ade k d[
-   00ano:ameoi .Q1B[ 00ac _idaM00080oo'"
-
-If the bootloader was using the DMA ("DM") mode, output would likely fail
-entirely. Later, when the full serial driver probes, the port is
-re-initialized and output works as expected.
-
-Fix this also for earlycon by clearing the DMEN register and
-reset+re-enable the transmitter to apply the change. This ensures the
-transmitter is in the expected state before writing any output.
-
+Fixes: 1f4d8ae231f4 ("misc: microchip: pci1xxxx: Add gpio irq handler and irq helper functions irq_ack, irq_mask, irq_unmask and irq_set_type of irq_chip.")
 Cc: stable <stable@kernel.org>
-Fixes: 0efe72963409 ("tty: serial: msm: Add earlycon support")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250408-msm-serial-earlycon-v1-1-429080127530@linaro.org
+Signed-off-by: Rengarajan S <rengarajan.s@microchip.com>
+Link: https://lore.kernel.org/r/20250313170856.20868-3-rengarajan.s@microchip.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/msm_serial.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/msm_serial.c
-+++ b/drivers/tty/serial/msm_serial.c
-@@ -1741,6 +1741,12 @@ msm_serial_early_console_setup_dm(struct
- 	if (!device->port.membase)
- 		return -ENODEV;
+--- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c
++++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c
+@@ -165,7 +165,7 @@ static void pci1xxxx_gpio_irq_ack(struct
+ 	unsigned long flags;
  
-+	/* Disable DM / single-character modes */
-+	msm_write(&device->port, 0, UARTDM_DMEN);
-+	msm_write(&device->port, MSM_UART_CR_CMD_RESET_RX, MSM_UART_CR);
-+	msm_write(&device->port, MSM_UART_CR_CMD_RESET_TX, MSM_UART_CR);
-+	msm_write(&device->port, MSM_UART_CR_TX_ENABLE, MSM_UART_CR);
-+
- 	device->con->write = msm_serial_early_write_dm;
- 	return 0;
+ 	spin_lock_irqsave(&priv->lock, flags);
+-	pci1xxx_assign_bit(priv->reg_base, INTR_STAT_OFFSET(gpio), (gpio % 32), true);
++	writel(BIT(gpio % 32), priv->reg_base + INTR_STAT_OFFSET(gpio));
+ 	spin_unlock_irqrestore(&priv->lock, flags);
  }
+ 
 
 
 
