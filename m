@@ -1,58 +1,67 @@
-Return-Path: <stable+bounces-137961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CDC1AA161F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:34:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0060FAA1220
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E04B9A28B7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 515B59268D0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DA82459C9;
-	Tue, 29 Apr 2025 17:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE5D24113A;
+	Tue, 29 Apr 2025 16:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVTxRgoK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdZEp2wJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A056324503E;
-	Tue, 29 Apr 2025 17:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7994F126BF7;
+	Tue, 29 Apr 2025 16:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947660; cv=none; b=Y9p8HGgJiXOcWxCu6uWOSER0jYs/m2C1Dq/5R2vva17Y0ob86Behicva24x+CvSIE1ccngs0WfOgfPkGNczRbmDO1kShiQ9sY8EgmZx/uGTAjhLHsVFyNdXsu8+0q0RL931yf6+LUujOQ/CAOMfCwAx/FpVJMYA7mqDAOc/b8g8=
+	t=1745945297; cv=none; b=KqYe8YOb+3P5CDUcdb4nmWkNhZdzqiUG/9n+NbK1LDI8j8MD+DRpu3BTtNqMgDkQ558Fv79NYl/Ra3/Uhp6kOWu6Xow+4ob1Q5JIYD8ZQd3q6Vp12gz+f2gig8phnRP+y4bbzPyAD0AI9EGMwGEjlE34auVkj1/xnYwljBkrVKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947660; c=relaxed/simple;
-	bh=M2nH/BDMCIAKyMBKg+9yXthNM196KwHY+cjxOY42CxA=;
+	s=arc-20240116; t=1745945297; c=relaxed/simple;
+	bh=AaStNzpqDo0XkcLDt9YGVqoQYFjT2DOsOMFNJweRuWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mrdbu7wVXkfSUcQQ75SJqYj72YIqCIdVsqCtVYVXpVq7Cexy75BbcQuywrRdoV4d4IqzwrNRZpV9n0snShSE0qtwov+hdn+LSgTgR2IqjXedQNs8WwcEOArdvx9tJ4F1g6+QRN+2fx499bRMIIC/qutK/tVUg1eThH7XcR1ALj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVTxRgoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F490C4CEE3;
-	Tue, 29 Apr 2025 17:27:39 +0000 (UTC)
+	 MIME-Version; b=Mwp4+k3vJIXiyP24SDn00FFh3WqtfdfY5JfuetSsIVzFsQ3jfWdCb8ZZw2NUfp8OTyTkdlqFxWiYXlKdkipkN4uMi/mEbxrJDodUZZCqBa4jDhEWQenAZ0wrH7z4YVOTlODcsG0SV0fgoXDlB2FsSV1Gc5HPC0+6DR1tCXy8ft0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdZEp2wJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51EAC4CEE3;
+	Tue, 29 Apr 2025 16:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947660;
-	bh=M2nH/BDMCIAKyMBKg+9yXthNM196KwHY+cjxOY42CxA=;
+	s=korg; t=1745945297;
+	bh=AaStNzpqDo0XkcLDt9YGVqoQYFjT2DOsOMFNJweRuWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YVTxRgoKlP+zABwdRZ/YOyDaKZt3Fv5j36IGNx444JPh1yBxZEwoU/U99AIiik5A4
-	 p155rRUWvLCd9GmGacXDl4tczvpF+KtYn0xV+KN9qjuEKPOS3465zMK9hZdRpXivbe
-	 ak4E7EfQQSE7mvG5EqyBGL2+0atS5nApB/Wx6tPI=
+	b=LdZEp2wJW7J0OcYcFbskV3CKjb3Fzr3N5WrC4QaK2cPlfk4dWcZEPb6dIdor1hAi4
+	 j0Xfc2HrR+X0+6WYt6b7eMAT68i5jIECDhcs1S4x0CcwkQ0TetTMqseAgmEW3ORQF9
+	 EABrPd6dM3/TLC47c7FEbFQa+NY9t3YNA3lzV7lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/280] net/mlx5: Fix null-ptr-deref in mlx5_create_{inner_,}ttc_table()
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Juergen Gross <jgross@suse.com>,
+	Borislav Betkov <bp@alien8.de>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 066/179] sparc/mm: disable preemption in lazy mmu mode
 Date: Tue, 29 Apr 2025 18:40:07 +0200
-Message-ID: <20250429161117.811841849@linuxfoundation.org>
+Message-ID: <20250429161052.090699337@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +73,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit 91037037ee3d611ce17f39d75f79c7de394b122a ]
+commit a1d416bf9faf4f4871cb5a943614a07f80a7d70f upstream.
 
-Add NULL check for mlx5_get_flow_namespace() returns in
-mlx5_create_inner_ttc_table() and mlx5_create_ttc_table() to prevent
-NULL pointer dereference.
+Since commit 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy
+updates") it's been possible for arch_[enter|leave]_lazy_mmu_mode() to be
+called without holding a page table lock (for the kernel mappings case),
+and therefore it is possible that preemption may occur while in the lazy
+mmu mode.  The Sparc lazy mmu implementation is not robust to preemption
+since it stores the lazy mode state in a per-cpu structure and does not
+attempt to manage that state on task switch.
 
-Fixes: 137f3d50ad2a ("net/mlx5: Support matching on l4_type for ttc_table")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250418023814.71789-2-bsdhenrymartin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Powerpc had the same issue and fixed it by explicitly disabling preemption
+in arch_enter_lazy_mmu_mode() and re-enabling in
+arch_leave_lazy_mmu_mode().  See commit b9ef323ea168 ("powerpc/64s:
+Disable preemption in hash lazy mmu mode").
+
+Given Sparc's lazy mmu mode is based on powerpc's, let's fix it in the
+same way here.
+
+Link: https://lkml.kernel.org/r/20250303141542.3371656-4-ryan.roberts@arm.com
+Fixes: 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy updates")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Andreas Larsson <andreas@gaisler.com>
+Acked-by: Juergen Gross <jgross@suse.com>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juegren Gross <jgross@suse.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/sparc/mm/tlb.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-index 9f13cea164465..510879e1ba30e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-@@ -636,6 +636,11 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
- 	}
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -53,8 +53,10 @@ out:
  
- 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
-+	if (!ns) {
-+		kvfree(ttc);
-+		return ERR_PTR(-EOPNOTSUPP);
-+	}
-+
- 	groups = use_l4_type ? &inner_ttc_groups[TTC_GROUPS_USE_L4_TYPE] :
- 			       &inner_ttc_groups[TTC_GROUPS_DEFAULT];
+ void arch_enter_lazy_mmu_mode(void)
+ {
+-	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
++	struct tlb_batch *tb;
  
-@@ -709,6 +714,11 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
- 	}
++	preempt_disable();
++	tb = this_cpu_ptr(&tlb_batch);
+ 	tb->active = 1;
+ }
  
- 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
-+	if (!ns) {
-+		kvfree(ttc);
-+		return ERR_PTR(-EOPNOTSUPP);
-+	}
-+
- 	groups = use_l4_type ? &ttc_groups[TTC_GROUPS_USE_L4_TYPE] :
- 			       &ttc_groups[TTC_GROUPS_DEFAULT];
+@@ -65,6 +67,7 @@ void arch_leave_lazy_mmu_mode(void)
+ 	if (tb->tlb_nr)
+ 		flush_tlb_pending();
+ 	tb->active = 0;
++	preempt_enable();
+ }
  
--- 
-2.39.5
-
+ static void tlb_batch_add_one(struct mm_struct *mm, unsigned long vaddr,
 
 
 
