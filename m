@@ -1,52 +1,69 @@
-Return-Path: <stable+bounces-136999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEE7AA0389
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 08:39:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB98AA03BB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 08:51:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53E9C3A6C7C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 06:38:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFB64188CCBF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 06:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89837274FE3;
-	Tue, 29 Apr 2025 06:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b35z8SIu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF275274FF7;
+	Tue, 29 Apr 2025 06:51:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4868B21A449
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 06:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D441FBE8C
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 06:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745908745; cv=none; b=eOjKzpuoXDv42LBAPRvygScyXMshT+43XmC5Ni0BPlFE7rQgxX8RUamOp5GDXT47DrX92QJKyccmmcaNaYEWe4dPTyC+UNmHhwAbJS9nO7uYl9Xykv2uqTQ08jir9LX9+8K5k9AVuURwgg0O/VAHps2nvqP1VvMXxY6wHRUHsNc=
+	t=1745909481; cv=none; b=o5wVAGvwsCkAPsfMAZOkQyak4kfaPiDl4fFO3GJmFZGPM+Ouv+N1LMHkyY+Pz2Ewq5WUvlFYj4C1RmuknsNVUILqZshA3KB7hh9cEJMwG7mEVrbwEW0TfkN9gDUP/5NaWJXCMo86/sF/uD33+qMV2ersgdoQnKmaq55yZHunM+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745908745; c=relaxed/simple;
-	bh=Ee8kzLF/lOK4ZuvzA+A+EvNhYy3AF7W/HvmiljF0Y2M=;
+	s=arc-20240116; t=1745909481; c=relaxed/simple;
+	bh=ng4cdubXRoHSOfNaikV2yHk9smMLtTiFP7fxNeNmUIA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gS3FtY5rtQYFYyMZ2q2Hj3PYbgi68CDDf0tuIswMHidtAcscl+H985/jH4UFbVW9sF+9P0gTBJBUq8t9GL6BB26s7aVko2oRvZvsB/gRTkWdubp+3Kmd/3PKs6HwWtHTf3XGr6e51AL0WTmLmD9HVyPIAMo0tPM2VpckV9jJM6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b35z8SIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D299C4CEED;
-	Tue, 29 Apr 2025 06:39:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745908744;
-	bh=Ee8kzLF/lOK4ZuvzA+A+EvNhYy3AF7W/HvmiljF0Y2M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b35z8SIuv12e3+/hfzcSsDIVQxSEqs4JXEPbuLPZzBFQ+gWWq87N80UwVDfzjZfAu
-	 nDbclXAzWzbvpQEti2/kXhkPSOtnfYUCHJHe+pI5/b7IddzpgnVknRJSX0qyJqFx+W
-	 3ojTDhpWcTN+0q82tylg3F+ExQ0mu2GKkUwooCxY=
-Date: Tue, 29 Apr 2025 08:39:01 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Mateusz =?utf-8?Q?Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-Cc: stable@vger.kernel.org
-Subject: Re: Patch "x86/Kconfig: Make CONFIG_PCI_CNB20LE_QUIRK depend on
- X86_32" has been added to the 6.14-stable tree
-Message-ID: <2025042952-cohesive-seismic-99a0@gregkh>
-References: <20250429014148.400200-1-sashal@kernel.org>
- <76952D8A-500F-491B-9565-C8EB12BDA897@o2.pl>
+	 Content-Type:Content-Disposition:In-Reply-To; b=PEKo/cgE2y4UlUHXHdLAcDQjlIGl38ZVncjky90SWAxOvB4+C1qbd0ZxEH6eTRVna8KVOjki0d7g+Txv25B85Sa8fsnjaUXYk/J2+7q+QSI1SgUqHQNXhVe7iq2HDZqZCCnF3H6GZctqTefCE8NIN9lNSkpuWAp+dINJbHHwQpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1u9eo6-0000oM-Lq; Tue, 29 Apr 2025 08:51:06 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1u9eo4-000DdC-2u;
+	Tue, 29 Apr 2025 08:51:04 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1u9eo4-00An2G-2X;
+	Tue, 29 Apr 2025 08:51:04 +0200
+Date: Tue, 29 Apr 2025 08:51:04 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	"Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>, stable@vger.kernel.org,
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, UNGLinuxDriver@microchip.com
+Subject: Re: [PATCH net v1 1/2] net: dsa: microchip: let phylink manage PHY
+ EEE configuration on KSZ switches
+Message-ID: <aBB22NnNE4p6isiC@pengutronix.de>
+References: <20250428125119.3414046-1-o.rempel@pengutronix.de>
+ <20250428125119.3414046-2-o.rempel@pengutronix.de>
+ <4d8a3e79-f454-4e2f-9362-c842354b123a@lunn.ch>
+ <aA_DyKw8AVPdmu-Y@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,32 +72,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <76952D8A-500F-491B-9565-C8EB12BDA897@o2.pl>
+In-Reply-To: <aA_DyKw8AVPdmu-Y@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Tue, Apr 29, 2025 at 07:38:25AM +0200, Mateusz Jończyk wrote:
-> Dnia 29 kwietnia 2025 03:41:48 CEST, Sasha Levin <sashal@kernel.org> napisał/a:
-> >This is a note to let you know that I've just added the patch titled
-> >
-> >    x86/Kconfig: Make CONFIG_PCI_CNB20LE_QUIRK depend on X86_32
-> >
-> >to the 6.14-stable tree which can be found at:
-> >    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> >
-> >The filename of the patch is:
-> >     x86-kconfig-make-config_pci_cnb20le_quirk-depend-on-.patch
-> >and it can be found in the queue-6.14 subdirectory.
-> >
-> >If you, or anyone else, feels it should not be added to the stable tree,
-> >please let <stable@vger.kernel.org> know about it.
+On Mon, Apr 28, 2025 at 08:07:04PM +0200, Oleksij Rempel wrote:
+> On Mon, Apr 28, 2025 at 06:51:19PM +0200, Andrew Lunn wrote:
+> > > +/**
+> > > + * ksz_phylink_mac_disable_tx_lpi() - Dummy handler to disable TX LPI
+> > > + * @config: phylink config structure
+> > > + *
+> > > + * For ports with integrated PHYs, LPI is managed internally by hardware.
+> > 
+> > Could you expand that.
+> > 
+> > Does it mean the hardware will look at the results of the autoneg and
+> > disable/enable LPI depending on those results?
 > 
-> Hello, 
+> Yes.
 > 
-> I'd like to ask that this patch be dropped from the stable queues (for 6.14 and earlier kernels). It does not fix
-> anything important, it is just for convenience - to
-> hide this one option from amd64 kernel Kconfig.
+> > I also assume this means it is not possible to force LPI on/off, independent
+> > of autoneg?
+> 
+> Correct. set_eee call in this driver is filtering (tx_lpi == false) to
+> reflect HW functionality.
 
-Ok, now dropped from everywhere, thanks.
+I'll update this patch to include this information.
 
-greg k-h
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
