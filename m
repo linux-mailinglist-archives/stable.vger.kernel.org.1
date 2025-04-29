@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-138282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12258AA17AB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49059AA1464
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD2439805BB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3D741640AE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577EC2459FA;
-	Tue, 29 Apr 2025 17:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DE9221DA7;
+	Tue, 29 Apr 2025 17:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rzq0Dyon"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JeAuVeJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155B422A81D;
-	Tue, 29 Apr 2025 17:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8483B38FB0;
+	Tue, 29 Apr 2025 17:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948763; cv=none; b=Kud8uPtwIZPhOh713Ml0EDnLonXNhTjf1tzDs1ZYtJ8nYKhAODK2ttu7jm36ilxob525IfzssvduEAwJmVqtmt/zmTDuQnewM8a+XZkn5HR7djongG4GFMxkLV30lvJfduEkzt3Wy1C3Hl14G/RQnasCi+SgN5hRyM5G0sqjWBk=
+	t=1745946813; cv=none; b=cWsX7laRTSCWeMF3kkAJ27+ZWFAJs8ItQK8WlVW+X1ZlfQ2zPprVu3VRhXl9fo59sQ/qwcRk8OP9F2eSOdnR46KdMJIqYtbG03WVVjFB7VHGNjCDowiSxDtC53DUAF5/gPp+VAHiTtbMXNchb0RJsEKuoO6RP74+cg6Es1XVhhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948763; c=relaxed/simple;
-	bh=WuHjXtcXh8EBeDOGV7S0bpCiNSOFPBhUbwRD23J1/Rg=;
+	s=arc-20240116; t=1745946813; c=relaxed/simple;
+	bh=qerGBQMCrFr04Pt8LyljZ3JIVfsr4BQysnN15Lr4++E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O9gg9OIitXBKWVPwNSvjMHfR8OzaWRQiqXqnXfk02dAZ7fZnszW5Owd16r37H4vS4zOdVmdCPPVFq1SsV4tHtefRn44OJeePij/1UtKbH+PK14lvXtFDs8kRAPVP7BSY5EmC9W0KA7FDTcxFJURNdAcUCwd/+CEx4b7hUEmymTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rzq0Dyon; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 364F8C4CEE3;
-	Tue, 29 Apr 2025 17:46:02 +0000 (UTC)
+	 MIME-Version; b=CU8ZyKTN7pELkpRhO1qO2NQ3TW0arGaL2aPBwGWiazN2QAbBg23tgT7L54QN7KrEgqqsb34v2pkYt+fUHMIqRm9SwUwgwdbj/Kh0ABWWqnU+NNVWlEIeo92VA8lH8mgpQBCveFqVnQG9D7N+LrndvqEViMZ+RrwcuxFSYT/tEiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JeAuVeJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3ABBC4CEE3;
+	Tue, 29 Apr 2025 17:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948762;
-	bh=WuHjXtcXh8EBeDOGV7S0bpCiNSOFPBhUbwRD23J1/Rg=;
+	s=korg; t=1745946813;
+	bh=qerGBQMCrFr04Pt8LyljZ3JIVfsr4BQysnN15Lr4++E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rzq0DyongzSBRh7lOmZP6U7jidifOloQ8/TVT+s+tuEXNBnrNRSBcFiDjmiB56Xr7
-	 PZFPscEI5iwHzcV8GZ2V6eNBiLspdq6hieLzRbeG4nD9SDZ2awshSbyq/RaPcWUvoX
-	 SsRtOD0Wsm83nzdVB3cd4Z3x+nj6gvrv3oOpsd68=
+	b=JeAuVeJ8iAvXeRA6tYLndMuANzzrfjNgUn3WoTlcep5FBmmlsz7SXzmWmEs6z7Kyr
+	 3e7BZHM2ehTQQ/6Gjb8M37EzlNS+uH1bOwnr8WNsaISRd8lPH7kUnYL7h6wJA8yPzs
+	 7nsOZKTPU39ZH65YzExDaqSI4AGwVhBpXMhPnE3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.15 105/373] dm-integrity: set ti->error on memory allocation failure
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH 5.10 078/286] locking/lockdep: Decrease nr_unused_locks if lock unused in zap_class()
 Date: Tue, 29 Apr 2025 18:39:42 +0200
-Message-ID: <20250429161127.475993992@linuxfoundation.org>
+Message-ID: <20250429161111.058445111@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Boqun Feng <boqun.feng@gmail.com>
 
-commit 00204ae3d6712ee053353920e3ce2b00c35ef75b upstream.
+commit 495f53d5cca0f939eaed9dca90b67e7e6fb0e30c upstream.
 
-The dm-integrity target didn't set the error string when memory
-allocation failed. This patch fixes it.
+Currently, when a lock class is allocated, nr_unused_locks will be
+increased by 1, until it gets used: nr_unused_locks will be decreased by
+1 in mark_lock(). However, one scenario is missed: a lock class may be
+zapped without even being used once. This could result into a situation
+that nr_unused_locks != 0 but no unused lock class is active in the
+system, and when `cat /proc/lockdep_stats`, a WARN_ON() will
+be triggered in a CONFIG_DEBUG_LOCKDEP=y kernel:
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+  [...] DEBUG_LOCKS_WARN_ON(debug_atomic_read(nr_unused_locks) != nr_unused)
+  [...] WARNING: CPU: 41 PID: 1121 at kernel/locking/lockdep_proc.c:283 lockdep_stats_show+0xba9/0xbd0
+
+And as a result, lockdep will be disabled after this.
+
+Therefore, nr_unused_locks needs to be accounted correctly at
+zap_class() time.
+
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Waiman Long <longman@redhat.com>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250326180831.510348-1-boqun.feng@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-integrity.c |    3 +++
+ kernel/locking/lockdep.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -4454,16 +4454,19 @@ try_smaller_buffer:
- 
- 		ic->recalc_bitmap = dm_integrity_alloc_page_list(n_bitmap_pages);
- 		if (!ic->recalc_bitmap) {
-+			ti->error = "Could not allocate memory for bitmap";
- 			r = -ENOMEM;
- 			goto bad;
- 		}
- 		ic->may_write_bitmap = dm_integrity_alloc_page_list(n_bitmap_pages);
- 		if (!ic->may_write_bitmap) {
-+			ti->error = "Could not allocate memory for bitmap";
- 			r = -ENOMEM;
- 			goto bad;
- 		}
- 		ic->bbs = kvmalloc_array(ic->n_bitmap_blocks, sizeof(struct bitmap_block_status), GFP_KERNEL);
- 		if (!ic->bbs) {
-+			ti->error = "Could not allocate memory for bitmap";
- 			r = -ENOMEM;
- 			goto bad;
- 		}
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -5921,6 +5921,9 @@ static void zap_class(struct pending_fre
+ 		hlist_del_rcu(&class->hash_entry);
+ 		WRITE_ONCE(class->key, NULL);
+ 		WRITE_ONCE(class->name, NULL);
++		/* Class allocated but not used, -1 in nr_unused_locks */
++		if (class->usage_mask == 0)
++			debug_atomic_dec(nr_unused_locks);
+ 		nr_lock_classes--;
+ 		__clear_bit(class - lock_classes, lock_classes_in_use);
+ 		if (class - lock_classes == max_lock_class_idx)
 
 
 
