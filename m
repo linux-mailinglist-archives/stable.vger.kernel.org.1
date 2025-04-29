@@ -1,116 +1,115 @@
-Return-Path: <stable+bounces-137118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D63AA1166
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A15AA1169
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E62C83B3B54
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:14:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 239E03BD5EF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CDB524291A;
-	Tue, 29 Apr 2025 16:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98EF245019;
+	Tue, 29 Apr 2025 16:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aJVgesED";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Lec00RY2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SHbxnauX"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629EF220685;
-	Tue, 29 Apr 2025 16:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE18244686;
+	Tue, 29 Apr 2025 16:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745943274; cv=none; b=jRk300Rxt0+a3MXqTp9c2ig94xuJ1oJXGA4tRCmkO7xuEsM5N3KlbilHuuKnj1Hj8UGOZwVnISUW28/Iw2v+Q1DRtxBTSfyctF4SsmfOOD9DVEBLqLtXopZgyaRoGTq05OC8Ai7E9I5FlxHF1Wfjbc2/nMmKCJlHNAZefS1LL4E=
+	t=1745943276; cv=none; b=KR4V3Kagv/MWOhKb4KsMXWnkzO5yEV/gBWOQzYi4tvd+gPjf3AZoa33oMxW9fGJrJZxXzt8E/Thq2kjw1HqwC4vBy1g7xnqF14Y13KZwvbWPwtAFbXslZEHgy0qzlnOzOfs+FjyrRN8pIFvZGfzVf+fxcq/XcyjvBD7i4cLrquM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745943274; c=relaxed/simple;
-	bh=nmOVK/5oP2W84z1GhxIGMZxAc9Q7DJzziD3/msDKFJw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CPefV7vighgptLyEuzu70nvsiqfe84UmGR0SDVwVBjHzF1sOlbcTULoTvsm7zS3X0+kbM1qY/coD+oN8/kJVVbaQTrFnCIDtG1toUA4IHbWlCVn9vkzpT+6MNQhRqUTK4ZNggkVJ5mHNxxNS6bp5qnJt0CqRt3lu4FoSDQve3/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aJVgesED; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Lec00RY2; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1745943268;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=qfL69VYEddMdBXsaXEyqXWeD+E6YG/rOeJLtsomd1uc=;
-	b=aJVgesEDYo+Wr3Ayn7ihOQ3s194qDIi4yeVcaO8nUIYjoOK+4qu1BRRB20IxXvF0t3M6zr
-	p/MUKqyNPcwVSjXploZCfOzJ/PIOjJrmo2M1eNLOTEEW+im0LrMV6XChBlxz3qCHWBLqcN
-	L8OWoRUoN/3T2O4n94bpW5oNnKXVzulzJeal+u+z5Kl0sOZZYHOgvPnIeoSiR7Y0iDjIDf
-	sbQmcAcGDjCrjMiEYKinjBU9ZlD5jupKYGbG4b9Sw4Y5tBr3tDHYjF0lMd4R6MuQzUkZ2w
-	qpcRVAT3WoozOvgrU3nMzzWNJXrT9GqyOvim1T1+tdfD43+zk1um7+gfWh6pxw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1745943268;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=qfL69VYEddMdBXsaXEyqXWeD+E6YG/rOeJLtsomd1uc=;
-	b=Lec00RY2NYzaBrbxa4Kahhmevdr2Ln760zQu6wLFShDGlR0rXTDIplE3tOUEQEsZ1geURU
-	FZo2MPZUa8oJQ7Dg==
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org
-Cc: Kai Zhang <zhangkai@iscas.ac.cn>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Nam Cao <namcao@linutronix.de>
-Subject: [PATCH stable v6.6] riscv: kprobes: Fix wrong lengths passed to patch_text_nosync()
-Date: Tue, 29 Apr 2025 18:14:18 +0200
-Message-Id: <20250429161418.838564-1-namcao@linutronix.de>
+	s=arc-20240116; t=1745943276; c=relaxed/simple;
+	bh=Za8BZ1UuGG2x9A7r1s1ssfvw4dTTAtf2acqIsO/vEKQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DQzLjM4SZU0CLvB9bR9TOLt83TAx9y/Rn/3t00va8GnZA8QEYXtYFvwB1HgDkMAtXOHWFUwI3mywaO846s2vTXMCPb9oxX/aJZuy61XI4chAkLTqcYldziOXfNFwidEgcU2RKHgGtdlQEsLuUZR6aTj16GmIPeV/aVfAfmSXONA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SHbxnauX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47365C4CEE9;
+	Tue, 29 Apr 2025 16:14:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745943275;
+	bh=Za8BZ1UuGG2x9A7r1s1ssfvw4dTTAtf2acqIsO/vEKQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SHbxnauXLSp+l6ucqxC0MVJsfT2tWA3tsa4WUZuygkJ7bIefavMEcVylGGbx3u1WR
+	 Vwh9cMNNo0n1kzTkZMIDfXbjDpmUvMub52/2Q0782AX9UmTU9H1Jj1I4y1bCjIoHxH
+	 aM4rB0brwO6RBieMNPa5ayn3nY/KJ14mdFvdr6FzLbH7D43veYo/mfqip7p1Jqq1x+
+	 4O2I/ZjC4ZNUOP28X7o7p9qUkINwSdygqnwH4ObTS2Wkbp/I8guLZ8ml7P1HBHSnvH
+	 hyFCfA5ZFVrt0xbxR3TrQwa3Y91eFnSbVs+Gt6K/IJF3npnF3e8ZNm6g0fOauCE8sD
+	 Fozt+c+Ndc+ww==
+Date: Tue, 29 Apr 2025 09:14:33 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: "David S. Miller" <davem@davemloft.net>, Andrew Lunn <andrew@lunn.ch>,
+ Eric Dumazet <edumazet@google.com>, Florian Fainelli
+ <f.fainelli@gmail.com>, Paolo Abeni <pabeni@redhat.com>, Vladimir Oltean
+ <olteanv@gmail.com>, Woojung Huh <woojung.huh@microchip.com>, "Russell King
+ (Oracle)" <linux@armlinux.org.uk>, Heiner Kallweit <hkallweit1@gmail.com>,
+ stable@vger.kernel.org, kernel@pengutronix.de,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ UNGLinuxDriver@microchip.com
+Subject: Re: [PATCH net v3 1/2] net: dsa: microchip: let phylink manage PHY
+ EEE configuration on KSZ switches
+Message-ID: <20250429091433.7a4e8aaa@kernel.org>
+In-Reply-To: <20250429073644.2987282-2-o.rempel@pengutronix.de>
+References: <20250429073644.2987282-1-o.rempel@pengutronix.de>
+	<20250429073644.2987282-2-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Unlike patch_text(), patch_text_nosync() takes the length in bytes, not
-number of instructions. It is therefore wrong for arch_prepare_ss_slot() to
-pass length=3D1 while patching one instruction.
+On Tue, 29 Apr 2025 09:36:43 +0200 Oleksij Rempel wrote:
+>  	switch (dev->chip_id) {
+>  	case KSZ8563_CHIP_ID:
+> +	case KSZ9563_CHIP_ID:
+> +	case KSZ9893_CHIP_ID:
+> +		return true;
+>  	case KSZ8567_CHIP_ID:
+> +		/* KSZ8567R Errata DS80000752C Module 4 */
+> +	case KSZ8765_CHIP_ID:
+> +	case KSZ8794_CHIP_ID:
+> +	case KSZ8795_CHIP_ID:
+> +		/* KSZ879x/KSZ877x/KSZ876x Errata DS80000687C Module 2 */
+>  	case KSZ9477_CHIP_ID:
+> -	case KSZ9563_CHIP_ID:
+> +		/* KSZ9477S Errata DS80000754A Module 4 */
+>  	case KSZ9567_CHIP_ID:
+> -	case KSZ9893_CHIP_ID:
+> +		/* KSZ9567S Errata DS80000756A Module 4 */
+>  	case KSZ9896_CHIP_ID:
+> +		/* KSZ9896C Errata DS80000757A Module 3 */
+>  	case KSZ9897_CHIP_ID:
+>  	case LAN9646_CHIP_ID:
+> -		return true;
+> +		/* KSZ9897R Errata DS80000758C Module 4 */
+> +		/* Energy Efficient Ethernet (EEE) feature select must be
+> +		 * manually disabled
+> +		 *   The EEE feature is enabled by default, but it is not fully
+> +		 *   operational. It must be manually disabled through register
+> +		 *   controls. If not disabled, the PHY ports can auto-negotiate
+> +		 *   to enable EEE, and this feature can cause link drops when
+> +		 *   linked to another device supporting EEE.
+> +		 *
+> +		 * The same item appears in the errata for all switches above.
+> +		 */
+>  	}
 
-This bug was introduced by commit b1756750a397 ("riscv: kprobes: Use
-patch_text_nosync() for insn slots"). It has been fixed upstream by commit
-51781ce8f448 ("riscv: Pass patch_text() the length in bytes"). However,
-beside fixing this bug, this commit does many other things, making it
-unsuitable for backporting.
+compilers are not on board with having labels right before the closing
+bracket. Please add a 'break;' here?
 
-Fix it by properly passing the lengths in bytes.
+drivers/net/dsa/microchip/ksz_common.c:3565:9: warning: statement expected after case label
 
-Fixes: b1756750a397 ("riscv: kprobes: Use patch_text_nosync() for insn slot=
-s")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
----
- arch/riscv/kernel/probes/kprobes.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/riscv/kernel/probes/kprobes.c b/arch/riscv/kernel/probes/=
-kprobes.c
-index 4fbc70e823f0..dc431b965bc3 100644
---- a/arch/riscv/kernel/probes/kprobes.c
-+++ b/arch/riscv/kernel/probes/kprobes.c
-@@ -28,8 +28,8 @@ static void __kprobes arch_prepare_ss_slot(struct kprobe =
-*p)
-=20
- 	p->ainsn.api.restore =3D (unsigned long)p->addr + offset;
-=20
--	patch_text_nosync(p->ainsn.api.insn, &p->opcode, 1);
--	patch_text_nosync((void *)p->ainsn.api.insn + offset, &insn, 1);
-+	patch_text_nosync(p->ainsn.api.insn, &p->opcode, offset);
-+	patch_text_nosync((void *)p->ainsn.api.insn + offset, &insn, sizeof(insn)=
-);
- }
-=20
- static void __kprobes arch_prepare_simulate(struct kprobe *p)
---=20
-2.39.5
-
+reminder: we have a 24h cool down period between reposts
+-- 
+pv-bot: 24h
+pw-bot: cr
 
