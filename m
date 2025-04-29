@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-138295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3514EAA175A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52DABAA13B9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8609917E40D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9334984E16
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED9DC148;
-	Tue, 29 Apr 2025 17:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA96C24A047;
+	Tue, 29 Apr 2025 17:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCvV10XV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACAuYtEv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7E82135DD;
-	Tue, 29 Apr 2025 17:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A612F1DF73C;
+	Tue, 29 Apr 2025 17:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948799; cv=none; b=TnGcV9Vb3b/GkLSRbXojN8koGET0axkwzuoM7x/smqqLuMDZo3sFRgoxgLt0tZRciOIrzkv+dPrw3VJi3pzfUmfHSYvCfZEv9quxSaDwQzq12kgIj2a84AZWvoUuEc8cVQS4N7yGO756iUaNiQJeIVkG/6zFSNI0mNDf8M+km2g=
+	t=1745946194; cv=none; b=tetfhFBkhaqQ2zwtlaHH1m2Dcmp/AW3e+nPnzn1CnIqtpxRfDP6Q6zrpGlECcWGdR7dlLl7zN1wu2OAwHm1vhT+8Xn2PYnyFOT12Jy0O1tnIh7IU41U8Vk6XoUYhV0fIUFQpvv/isuLu8O1/OAgiQfnTPZrBPFjEt/tSNITVmRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948799; c=relaxed/simple;
-	bh=aZE5adbCD6RDAst8yfM5re99tV+6V7YHzp3I/KXB8Y0=;
+	s=arc-20240116; t=1745946194; c=relaxed/simple;
+	bh=WC0V6OPmfqEQflb1yq5Pu5x+vHbTnB7AeWZ+sVzV1H0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JqlcHoAvPgb7lCT3HakhFMAfKVsGn/LK1er8RAL+FN/oT+TcKfG4LeuGxz6iRCnSkpCudcz7isu46GVCRbTuTNcLywIeMsyT6ICZLvlc1Ykf5JxNIIUh7HbtWoiR+wNvHafoLg3m/xABuSjUsuCKodtGJo7x84C/SLmnr+lilVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCvV10XV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AD6C4CEE3;
-	Tue, 29 Apr 2025 17:46:38 +0000 (UTC)
+	 MIME-Version; b=liQs7ipxJMCqmvNfoSSOUKXz2kmmYwhZfRuEA1Sh+uGD+jd8AWE5wtSJ13tXvOXxzBXZS+ezBkCQmx2Jc5bPkGe6cno1gKFv/e6zPw+nAYNAAeanyb0V8A1UNU4rN41c7+vX6ZUHZAXnWYIGujaUX7u3p9li5zqzG2/39typW+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACAuYtEv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1440FC4CEE9;
+	Tue, 29 Apr 2025 17:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948799;
-	bh=aZE5adbCD6RDAst8yfM5re99tV+6V7YHzp3I/KXB8Y0=;
+	s=korg; t=1745946194;
+	bh=WC0V6OPmfqEQflb1yq5Pu5x+vHbTnB7AeWZ+sVzV1H0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JCvV10XVHyq2KCNhsgah7ITL+sS6GV7uEOIlRr0T51pL9y77HZUZkyAC58M+puxBD
-	 GTmSp8PLI3UwVZ0cKwKiLwsa9X9USzJxo/ldbuYpX2Rj8Zl16bc5OWUzTXk4B2RVoC
-	 v/pZGtuE1XMCf3lvc66Eny5FB0o5XBhH1reN01X4=
+	b=ACAuYtEvyUoijdqLBspIKBTpvGry56eG/RH8FG3NUyOAD+oG1lnsXUwsCoOxVAHr3
+	 l+CB8iUsJmJvv4w8WpOIDEfw6jo2lvyzzFk+nAlJF2z++yMwM2Uk7SSp7zwtKW+TR2
+	 ZsPYp69Hv5vCAdVLEsmgTpL81PpfgDfcvbVVCuoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Rowley <lkml@johnrowley.me>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 117/373] ACPI: platform-profile: Fix CFI violation when accessing sysfs files
+	Craig Hesling <craig@hesling.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.14 157/311] USB: serial: simple: add OWON HDS200 series oscilloscope support
 Date: Tue, 29 Apr 2025 18:39:54 +0200
-Message-ID: <20250429161127.988785617@linuxfoundation.org>
+Message-ID: <20250429161127.462701919@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,110 +61,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Craig Hesling <craig@hesling.com>
 
-commit dd4f730b557ce701a2cd4f604bf1e57667bd8b6e upstream.
+commit 4cc01410e1c1dd075df10f750775c81d1cb6672b upstream.
 
-When an attribute group is created with sysfs_create_group(), the
-->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
-and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
-respectively. These functions use container_of() to get the respective
-callback from the passed attribute, meaning that these callbacks need to
-be of the same type as the callbacks in 'struct kobj_attribute'.
+Add serial support for OWON HDS200 series oscilloscopes and likely
+many other pieces of OWON test equipment.
 
-However, ->show() and ->store() in the platform_profile driver are
-defined for struct device_attribute with the help of DEVICE_ATTR_RO()
-and DEVICE_ATTR_RW(), which results in a CFI violation when accessing
-platform_profile or platform_profile_choices under /sys/firmware/acpi
-because the types do not match:
+OWON HDS200 series devices host two USB endpoints, designed to
+facilitate bidirectional SCPI. SCPI is a predominately ASCII text
+protocol for test/measurement equipment. Having a serial/tty interface
+for these devices lowers the barrier to entry for anyone trying to
+write programs to communicate with them.
 
-  CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
+The following shows the USB descriptor for the OWON HDS272S running
+firmware V5.7.1:
 
-There is no functional issue from the type mismatch because the layout
-of 'struct kobj_attribute' and 'struct device_attribute' are the same,
-so the container_of() cast does not break anything aside from CFI.
+Bus 001 Device 068: ID 5345:1234 Owon PDS6062T Oscilloscope
+Negotiated speed: Full Speed (12Mbps)
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass            0 [unknown]
+  bDeviceSubClass         0 [unknown]
+  bDeviceProtocol         0
+  bMaxPacketSize0        64
+  idVendor           0x5345 Owon
+  idProduct          0x1234 PDS6062T Oscilloscope
+  bcdDevice            1.00
+  iManufacturer           1 oscilloscope
+  iProduct                2 oscilloscope
+  iSerial                 3 oscilloscope
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength       0x0029
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0x80
+      (Bus Powered)
+    MaxPower              100mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           2
+      bInterfaceClass         5 Physical Interface Device
+      bInterfaceSubClass      0 [unknown]
+      bInterfaceProtocol      0
+      iInterface              0
+      ** UNRECOGNIZED:  09 21 11 01 00 01 22 5f 00
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval              32
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x01  EP 1 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval              32
+Device Status:     0x0000
+  (Bus Powered)
 
-Change the type of platform_profile_choices_show() and
-platform_profile_{show,store}() to match the callbacks in
-'struct kobj_attribute' and update the attribute variables to
-match, which resolves the CFI violation.
+OWON appears to be using the same USB Vendor and Product ID for many
+of their oscilloscopes. Looking at the discussion about the USB
+vendor/product ID, in the link bellow, suggests that this VID/PID is
+shared with VDS, SDS, PDS, and now the HDS series oscilloscopes.
+Available documentation for these devices seems to indicate that all
+use a similar SCPI protocol, some with RS232 options. It is likely that
+this same simple serial setup would work correctly for them all.
 
-Cc: All applicable <stable@vger.kernel.org>
-Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
-Reported-by: John Rowley <lkml@johnrowley.me>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
-Tested-by: John Rowley <lkml@johnrowley.me>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://patch.msgid.link/20250210-acpi-platform_profile-fix-cfi-violation-v3-1-ed9e9901c33a@kernel.org
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-[nathan: Fix conflicts in older stable branches]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://usb-ids.gowdy.us/read/UD/5345/1234
+Signed-off-by: Craig Hesling <craig@hesling.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/platform_profile.c |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/usb/serial/usb-serial-simple.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -22,8 +22,8 @@ static const char * const profile_names[
- };
- static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
+--- a/drivers/usb/serial/usb-serial-simple.c
++++ b/drivers/usb/serial/usb-serial-simple.c
+@@ -100,6 +100,11 @@ DEVICE(nokia, NOKIA_IDS);
+ 	{ USB_DEVICE(0x09d7, 0x0100) }	/* NovAtel FlexPack GPS */
+ DEVICE_N(novatel_gps, NOVATEL_IDS, 3);
  
--static ssize_t platform_profile_choices_show(struct device *dev,
--					struct device_attribute *attr,
-+static ssize_t platform_profile_choices_show(struct kobject *kobj,
-+					struct kobj_attribute *attr,
- 					char *buf)
- {
- 	int len = 0;
-@@ -49,8 +49,8 @@ static ssize_t platform_profile_choices_
- 	return len;
- }
- 
--static ssize_t platform_profile_show(struct device *dev,
--					struct device_attribute *attr,
-+static ssize_t platform_profile_show(struct kobject *kobj,
-+					struct kobj_attribute *attr,
- 					char *buf)
- {
- 	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
-@@ -77,8 +77,8 @@ static ssize_t platform_profile_show(str
- 	return sysfs_emit(buf, "%s\n", profile_names[profile]);
- }
- 
--static ssize_t platform_profile_store(struct device *dev,
--			    struct device_attribute *attr,
-+static ssize_t platform_profile_store(struct kobject *kobj,
-+			    struct kobj_attribute *attr,
- 			    const char *buf, size_t count)
- {
- 	int err, i;
-@@ -115,12 +115,12 @@ static ssize_t platform_profile_store(st
- 	return count;
- }
- 
--static DEVICE_ATTR_RO(platform_profile_choices);
--static DEVICE_ATTR_RW(platform_profile);
-+static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
-+static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
- 
- static struct attribute *platform_profile_attrs[] = {
--	&dev_attr_platform_profile_choices.attr,
--	&dev_attr_platform_profile.attr,
-+	&attr_platform_profile_choices.attr,
-+	&attr_platform_profile.attr,
- 	NULL
- };
- 
++/* OWON electronic test and measurement equipment driver */
++#define OWON_IDS()			\
++	{ USB_DEVICE(0x5345, 0x1234) } /* HDS200 oscilloscopes and others */
++DEVICE(owon, OWON_IDS);
++
+ /* Siemens USB/MPI adapter */
+ #define SIEMENS_IDS()			\
+ 	{ USB_DEVICE(0x908, 0x0004) }
+@@ -134,6 +139,7 @@ static struct usb_serial_driver * const
+ 	&motorola_tetra_device,
+ 	&nokia_device,
+ 	&novatel_gps_device,
++	&owon_device,
+ 	&siemens_mpi_device,
+ 	&suunto_device,
+ 	&vivopay_device,
+@@ -153,6 +159,7 @@ static const struct usb_device_id id_tab
+ 	MOTOROLA_TETRA_IDS(),
+ 	NOKIA_IDS(),
+ 	NOVATEL_IDS(),
++	OWON_IDS(),
+ 	SIEMENS_IDS(),
+ 	SUUNTO_IDS(),
+ 	VIVOPAY_IDS(),
 
 
 
