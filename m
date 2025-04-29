@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED54AA16A3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E39E0AA184B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8B817A5F73
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:37:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAEC01BC5066
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB2424E000;
-	Tue, 29 Apr 2025 17:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0E4216605;
+	Tue, 29 Apr 2025 17:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjfm3IKg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3YnWVlW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991381917E3;
-	Tue, 29 Apr 2025 17:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB832AE96;
+	Tue, 29 Apr 2025 17:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948341; cv=none; b=Sp0G49GsnQQTV5alMHDMRXtBwLxohU92a3M8dYjnJEXTa4TV94sID9fafb587AcDpnKIgroAJL6gEmNzQTnZmEvk8mkBZ7m7Fdx4pKyyLDAcJVhWXQQqReNhaTMaO+G2i29bmemvgdtLhaGmdXIddeQ9/12de5DBOI7j088UKQY=
+	t=1745949449; cv=none; b=F1uT/yw64yjb//T7RBS8e++D98704CmiEw0g1Giea9UyIoHXPsxaRv5Grmt4KKC7lB52kUy1I2Id/wtUt0L92torHGXAuLnmPALzpnqOUqFoHFUqg2SHvWiFE0/qkXwcqwgEZfP49rzmOT0t8FuBcHlfvrAHF51AlYb6ED/1rMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948341; c=relaxed/simple;
-	bh=btiMqlBeaDLWUmgVNatogn4k41fZt+YMvUCq+3hCg4I=;
+	s=arc-20240116; t=1745949449; c=relaxed/simple;
+	bh=ORuHMGRlTKAR6/uG+kkaUkAzi91PAw4cAJtwZ9qleEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJyNt910sllhI3nmw50AJ7CkrH+QqPo7f3XP2oKfBqXF3wDfwE9LVJ56BzM3jdOSDuzNCACITZ/8ZkvCDp6lUJH8Rb3RjpFkztS7nIzTzWmQtIu8b0ql8APrM9N69fWeGVbnryInkzxqyJwO3x1GkE4WpKSW5d5AYxlcZLGBoYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjfm3IKg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20817C4CEE3;
-	Tue, 29 Apr 2025 17:39:00 +0000 (UTC)
+	 MIME-Version; b=S7yNLHUz2Oie+wKxKlUPAveJcxnvYmLO39UQ6EZOYKtNWnG+nQB8YcJs+AMfTFz+cMogaAh0I4KwFS6AU3txBHiBpypXKLqpxPEkeCXn4RYK2k47PgSWtg7lmisd8RqsK5AagXTNkbIgn4z7mMgRQ5w34M27KwK3OKJ4pOCywLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3YnWVlW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B06EC4CEE3;
+	Tue, 29 Apr 2025 17:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948341;
-	bh=btiMqlBeaDLWUmgVNatogn4k41fZt+YMvUCq+3hCg4I=;
+	s=korg; t=1745949449;
+	bh=ORuHMGRlTKAR6/uG+kkaUkAzi91PAw4cAJtwZ9qleEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vjfm3IKg16QxKqWEg5ZkqXMzjZVF41P4aPfUXpSgzHrokbOtLbyGl5PW3aiuCc3PM
-	 iinP7PH6kV+Zu8jjLHhqiYeuemYMHk6OAH7+xg16500qGElESSNzEhrFvQLsVP1aYf
-	 C7xU1HTX6m/ZynQC9RZFd2xfTvIaMvhVNFW7w+UA=
+	b=l3YnWVlWUx/an6XAmJJko8jTp0w9LV63VFFuXow0yCEj2WXVNuB4WPryHp4AbAoss
+	 gWVIiU/0uxj7VbZfNLytR2k4WSfHfN+F4IxSOHG/s2zGDuWNzKizu3wr8v3uDKYHw7
+	 NJ2QKn3oytXg+WjmuhXtnJNm7JrCIpLZgRvsoxxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.12 258/280] selftests/bpf: Adjust data size to have ETH_HLEN
-Date: Tue, 29 Apr 2025 18:43:19 +0200
-Message-ID: <20250429161125.691511677@linuxfoundation.org>
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 323/373] MIPS: cm: Detect CM quirks from device tree
+Date: Tue, 29 Apr 2025 18:43:20 +0200
+Message-ID: <20250429161136.413861780@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Gregory CLEMENT <gregory.clement@bootlin.com>
 
-commit c7f2188d68c114095660a950b7e880a1e5a71c8f upstream.
+[ Upstream commit e27fbe16af5cfc40639de4ced67d1a866a1953e9 ]
 
-The function bpf_test_init() now returns an error if user_size
-(.data_size_in) is less than ETH_HLEN, causing the tests to
-fail. Adjust the data size to ensure it meets the requirement of
-ETH_HLEN.
+Some information that should be retrieved at runtime for the Coherence
+Manager can be either absent or wrong. This patch allows checking if
+some of this information is available from the device tree and updates
+the internal variable accordingly.
 
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250121150643.671650-2-syoshida@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Fixes: 972bafed67ca ("bpf, test_run: Fix use-after-free issue in eth_skb_pkt_type()")
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For now, only the compatible string associated with the broken HCI is
+being retrieved.
+
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c |    4 ++--
- tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c |    8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/mips/include/asm/mips-cm.h | 22 ++++++++++++++++++++++
+ arch/mips/kernel/mips-cm.c      | 14 ++++++++++++++
+ 2 files changed, 36 insertions(+)
 
---- a/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
-@@ -52,10 +52,10 @@ static void test_xdp_with_cpumap_helpers
- 	ASSERT_EQ(info.id, val.bpf_prog.id, "Match program id to cpumap entry prog_id");
+diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
+index 696b40beb774f..0f31324998c0a 100644
+--- a/arch/mips/include/asm/mips-cm.h
++++ b/arch/mips/include/asm/mips-cm.h
+@@ -47,6 +47,16 @@ extern phys_addr_t __mips_cm_phys_base(void);
+  */
+ extern int mips_cm_is64;
  
- 	/* send a packet to trigger any potential bugs in there */
--	char data[10] = {};
-+	char data[ETH_HLEN] = {};
- 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
- 			    .data_in = &data,
--			    .data_size_in = 10,
-+			    .data_size_in = sizeof(data),
- 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
- 			    .repeat = 1,
- 		);
---- a/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c
-@@ -23,7 +23,7 @@ static void test_xdp_with_devmap_helpers
- 	__u32 len = sizeof(info);
- 	int err, dm_fd, dm_fd_redir, map_fd;
- 	struct nstoken *nstoken = NULL;
--	char data[10] = {};
-+	char data[ETH_HLEN] = {};
- 	__u32 idx = 0;
++/*
++ * mips_cm_is_l2_hci_broken  - determine if HCI is broken
++ *
++ * Some CM reports show that Hardware Cache Initialization is
++ * complete, but in reality it's not the case. They also incorrectly
++ * indicate that Hardware Cache Initialization is supported. This
++ * flags allows warning about this broken feature.
++ */
++extern bool mips_cm_is_l2_hci_broken;
++
+ /**
+  * mips_cm_error_report - Report CM cache errors
+  */
+@@ -85,6 +95,18 @@ static inline bool mips_cm_present(void)
+ #endif
+ }
  
- 	SYS(out_close, "ip netns add %s", TEST_NS);
-@@ -58,7 +58,7 @@ static void test_xdp_with_devmap_helpers
- 	/* send a packet to trigger any potential bugs in there */
- 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
- 			    .data_in = &data,
--			    .data_size_in = 10,
-+			    .data_size_in = sizeof(data),
- 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
- 			    .repeat = 1,
- 		);
-@@ -158,7 +158,7 @@ static void test_xdp_with_devmap_helpers
- 	struct nstoken *nstoken = NULL;
- 	__u32 len = sizeof(info);
- 	int err, dm_fd, dm_fd_redir, map_fd, ifindex_dst;
--	char data[10] = {};
-+	char data[ETH_HLEN] = {};
- 	__u32 idx = 0;
++/**
++ * mips_cm_update_property - update property from the device tree
++ *
++ * Retrieve the properties from the device tree if a CM node exist and
++ * update the internal variable based on this.
++ */
++#ifdef CONFIG_MIPS_CM
++extern void mips_cm_update_property(void);
++#else
++static void mips_cm_update_property(void) {}
++#endif
++
+ /**
+  * mips_cm_has_l2sync - determine whether an L2-only sync region is present
+  *
+diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
+index b4f7d950c8468..e21c2fd761674 100644
+--- a/arch/mips/kernel/mips-cm.c
++++ b/arch/mips/kernel/mips-cm.c
+@@ -5,6 +5,7 @@
+  */
  
- 	SYS(out_close, "ip netns add %s", TEST_NS);
-@@ -208,7 +208,7 @@ static void test_xdp_with_devmap_helpers
- 	/* send a packet to trigger any potential bugs in there */
- 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
- 			    .data_in = &data,
--			    .data_size_in = 10,
-+			    .data_size_in = sizeof(data),
- 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
- 			    .repeat = 1,
- 		);
+ #include <linux/errno.h>
++#include <linux/of.h>
+ #include <linux/percpu.h>
+ #include <linux/spinlock.h>
+ 
+@@ -14,6 +15,7 @@
+ void __iomem *mips_gcr_base;
+ void __iomem *mips_cm_l2sync_base;
+ int mips_cm_is64;
++bool mips_cm_is_l2_hci_broken;
+ 
+ static char *cm2_tr[8] = {
+ 	"mem",	"gcr",	"gic",	"mmio",
+@@ -238,6 +240,18 @@ static void mips_cm_probe_l2sync(void)
+ 	mips_cm_l2sync_base = ioremap(addr, MIPS_CM_L2SYNC_SIZE);
+ }
+ 
++void mips_cm_update_property(void)
++{
++	struct device_node *cm_node;
++
++	cm_node = of_find_compatible_node(of_root, NULL, "mobileye,eyeq6-cm");
++	if (!cm_node)
++		return;
++	pr_info("HCI (Hardware Cache Init for the L2 cache) in GCR_L2_RAM_CONFIG from the CM3 is broken");
++	mips_cm_is_l2_hci_broken = true;
++	of_node_put(cm_node);
++}
++
+ int mips_cm_probe(void)
+ {
+ 	phys_addr_t addr;
+-- 
+2.39.5
+
 
 
 
