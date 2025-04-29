@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD1C5AA120B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3112EAA1359
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E9611B60950
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E486A4A7785
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEAFD2512F3;
-	Tue, 29 Apr 2025 16:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A73244679;
+	Tue, 29 Apr 2025 17:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nY9q3120"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOJwQMJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0942512E2;
-	Tue, 29 Apr 2025 16:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614EF7E110;
+	Tue, 29 Apr 2025 17:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945231; cv=none; b=es2IU1AAoxAu0YdA47FHRKS2f6x5KaFam0rXuiTerNJwGHrwSsoUwwCSpUJn0sZH4JEd5mUoSEqcNqqTmtcWLLUEQx61fqUyXZ9OaMbydibbnWKD1M8d1w3wHp6UJFyPifHhps6yTFTBekq0d+HTaN82qCsS0TNaXNwCgQyv0a8=
+	t=1745946082; cv=none; b=gi1Gzsc1/Md1dIxJl/Rl19s8hqWOfsrfcwp4BksQcV/YyIJTCNYzXXOuopODU1dr92CtzboVhzxTtnUsC1lDLztEz734CzTzwDOJRpyFWMjIFz2GFk6GsQaFT07bIV1yC7R5w2q4nOqQ5jiMquBQXDj0Jw4SjiRqOmlIQAZzU1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945231; c=relaxed/simple;
-	bh=jKGaYZsumomCmFFxNwRCsDQjXW5jZVextj8eOaERIlQ=;
+	s=arc-20240116; t=1745946082; c=relaxed/simple;
+	bh=htguMVFjqEQelzRcwhMNuOQ3OrPpZYLa5XbQIQCoQh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mlOT0I5AQ53V3ompN0vBAppEhHtYKG4J1HFVu0yBnVtVYzyHF8wBHOEVRFL7OefaPRK48ILNeEQy/Ytl9q9kg2zya9VZ/G9inb/vjSRb3wSDFUPaqv1uvB9kYLRXyY6UM4EV/ee9vEOA1yi5xXWeT0/M9w3aJPMzjlwnzJv5AV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nY9q3120; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED036C4CEED;
-	Tue, 29 Apr 2025 16:47:08 +0000 (UTC)
+	 MIME-Version; b=XEcdcet2VrUXiVv+6YPU+CI6PV6bsGmCttqU/4OHH6XJSi2WQry7EZLT1z/wAkZfPQ3gH9VJ9a8meDGOd4+GqdxOLSNbHrWV9HcJ3YQOVgHpIpdLIicjnI8AjhFLldZyQ5+Lkp4B5mYxGeFmzwchrf8nZaVmbi1Q8TUaYHEhbic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOJwQMJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A30C4CEE3;
+	Tue, 29 Apr 2025 17:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945229;
-	bh=jKGaYZsumomCmFFxNwRCsDQjXW5jZVextj8eOaERIlQ=;
+	s=korg; t=1745946082;
+	bh=htguMVFjqEQelzRcwhMNuOQ3OrPpZYLa5XbQIQCoQh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nY9q3120l0KdmdK/9i2sH+q/kEwMDLy/sHXYkjBzr3tqibs6v0WAC6SuWT7kJxWxT
-	 bnZ9svLFsoZSadFHDztJHTghwwEihNjMQWpimDvB9jagOEejdn/0zJolIzCyFkNoq3
-	 hW53KkZ5cenYBqKnwYng/e6foJOGU1wUnX0G6kG4=
+	b=HOJwQMJVOhoFOEHrlPIeXT0OX4g9kTHJOGb4dfffiPmRO3NdMNzNuI/UyIbCGuBPD
+	 1wLoQdtymCIzmPgZxJ9Bj7HOdgz2z3DI6KhawFN3CBoJk4FrtswNFsMURIu77w0f7q
+	 GlI2hHJ2yYvYg6JCMisEuseiNG0AZOiNOi5VXzdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 043/179] ext4: dont treat fhandle lookup of ea_inode as FS corruption
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.14 147/311] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass producer
 Date: Tue, 29 Apr 2025 18:39:44 +0200
-Message-ID: <20250429161051.149457293@linuxfoundation.org>
+Message-ID: <20250429161127.056447434@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,149 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 642335f3ea2b3fd6dba03e57e01fa9587843a497 ]
+commit f1fb088d9cecde5c3066d8ff8846789667519b7d upstream.
 
-A file handle that userspace provides to open_by_handle_at() can
-legitimately contain an outdated inode number that has since been reused
-for another purpose - that's why the file handle also contains a generation
-number.
+Take irqfds.lock when adding/deleting an IRQ bypass producer to ensure
+irqfd->producer isn't modified while kvm_irq_routing_update() is running.
+The only lock held when a producer is added/removed is irqbypass's mutex.
 
-But if the inode number has been reused for an ea_inode, check_igot_inode()
-will notice, __ext4_iget() will go through ext4_error_inode(), and if the
-inode was newly created, it will also be marked as bad by iget_failed().
-This all happens before the point where the inode generation is checked.
-
-ext4_error_inode() is supposed to only be used on filesystem corruption; it
-should not be used when userspace just got unlucky with a stale file
-handle. So when this happens, let __ext4_iget() just return an error.
-
-Fixes: b3e6bcb94590 ("ext4: add EA_INODE checking to ext4_iget()")
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241129-ext4-ignore-ea-fhandle-v1-1-e532c0d1cee0@google.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 872768800652 ("KVM: x86: select IRQ_BYPASS_MANAGER")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-5-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c | 68 ++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 48 insertions(+), 20 deletions(-)
+ arch/x86/kvm/x86.c |   17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 0289a9e36d355..8f020c719b18d 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4893,22 +4893,43 @@ static inline u64 ext4_inode_peek_iversion(const struct inode *inode)
- 		return inode_peek_iversion(inode);
- }
- 
--static const char *check_igot_inode(struct inode *inode, ext4_iget_flags flags)
--
-+static int check_igot_inode(struct inode *inode, ext4_iget_flags flags,
-+			    const char *function, unsigned int line)
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -13565,15 +13565,22 @@ int kvm_arch_irq_bypass_add_producer(str
  {
-+	const char *err_str;
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
+ 	int ret;
+ 
+-	irqfd->producer = prod;
+ 	kvm_arch_start_assignment(irqfd->kvm);
 +
- 	if (flags & EXT4_IGET_EA_INODE) {
--		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
--			return "missing EA_INODE flag";
-+		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
-+			err_str = "missing EA_INODE flag";
-+			goto error;
-+		}
- 		if (ext4_test_inode_state(inode, EXT4_STATE_XATTR) ||
--		    EXT4_I(inode)->i_file_acl)
--			return "ea_inode with extended attributes";
-+		    EXT4_I(inode)->i_file_acl) {
-+			err_str = "ea_inode with extended attributes";
-+			goto error;
-+		}
- 	} else {
--		if ((EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
--			return "unexpected EA_INODE flag";
-+		if ((EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
-+			/*
-+			 * open_by_handle_at() could provide an old inode number
-+			 * that has since been reused for an ea_inode; this does
-+			 * not indicate filesystem corruption
-+			 */
-+			if (flags & EXT4_IGET_HANDLE)
-+				return -ESTALE;
-+			err_str = "unexpected EA_INODE flag";
-+			goto error;
-+		}
-+	}
-+	if (is_bad_inode(inode) && !(flags & EXT4_IGET_BAD)) {
-+		err_str = "unexpected bad inode w/o EXT4_IGET_BAD";
-+		goto error;
- 	}
--	if (is_bad_inode(inode) && !(flags & EXT4_IGET_BAD))
--		return "unexpected bad inode w/o EXT4_IGET_BAD";
--	return NULL;
-+	return 0;
++	spin_lock_irq(&kvm->irqfds.lock);
++	irqfd->producer = prod;
 +
-+error:
-+	ext4_error_inode(inode, function, line, 0, err_str);
-+	return -EFSCORRUPTED;
+ 	ret = kvm_x86_call(pi_update_irte)(irqfd->kvm,
+ 					   prod->irq, irqfd->gsi, 1);
+ 	if (ret)
+ 		kvm_arch_end_assignment(irqfd->kvm);
+ 
++	spin_unlock_irq(&kvm->irqfds.lock);
++
++
+ 	return ret;
  }
  
- struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
-@@ -4919,7 +4940,6 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
- 	struct ext4_inode *raw_inode;
- 	struct ext4_inode_info *ei;
- 	struct inode *inode;
--	const char *err_str;
- 	journal_t *journal = EXT4_SB(sb)->s_journal;
- 	long ret;
- 	loff_t size;
-@@ -4944,10 +4964,10 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
- 	if (!inode)
- 		return ERR_PTR(-ENOMEM);
- 	if (!(inode->i_state & I_NEW)) {
--		if ((err_str = check_igot_inode(inode, flags)) != NULL) {
--			ext4_error_inode(inode, function, line, 0, err_str);
-+		ret = check_igot_inode(inode, flags, function, line);
-+		if (ret) {
- 			iput(inode);
--			return ERR_PTR(-EFSCORRUPTED);
-+			return ERR_PTR(ret);
- 		}
- 		return inode;
- 	}
-@@ -5218,13 +5238,21 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
- 		ret = -EFSCORRUPTED;
- 		goto bad_inode;
- 	}
--	if ((err_str = check_igot_inode(inode, flags)) != NULL) {
--		ext4_error_inode(inode, function, line, 0, err_str);
--		ret = -EFSCORRUPTED;
--		goto bad_inode;
-+	ret = check_igot_inode(inode, flags, function, line);
-+	/*
-+	 * -ESTALE here means there is nothing inherently wrong with the inode,
-+	 * it's just not an inode we can return for an fhandle lookup.
-+	 */
-+	if (ret == -ESTALE) {
-+		brelse(iloc.bh);
-+		unlock_new_inode(inode);
-+		iput(inode);
-+		return ERR_PTR(-ESTALE);
- 	}
--
-+	if (ret)
-+		goto bad_inode;
- 	brelse(iloc.bh);
-+
- 	unlock_new_inode(inode);
- 	return inode;
+@@ -13583,9 +13590,9 @@ void kvm_arch_irq_bypass_del_producer(st
+ 	int ret;
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
  
--- 
-2.39.5
-
+ 	WARN_ON(irqfd->producer != prod);
+-	irqfd->producer = NULL;
+ 
+ 	/*
+ 	 * When producer of consumer is unregistered, we change back to
+@@ -13593,12 +13600,18 @@ void kvm_arch_irq_bypass_del_producer(st
+ 	 * when the irq is masked/disabled or the consumer side (KVM
+ 	 * int this case doesn't want to receive the interrupts.
+ 	*/
++	spin_lock_irq(&kvm->irqfds.lock);
++	irqfd->producer = NULL;
++
+ 	ret = kvm_x86_call(pi_update_irte)(irqfd->kvm,
+ 					   prod->irq, irqfd->gsi, 0);
+ 	if (ret)
+ 		printk(KERN_INFO "irq bypass consumer (token %p) unregistration"
+ 		       " fails: %d\n", irqfd->consumer.token, ret);
+ 
++	spin_unlock_irq(&kvm->irqfds.lock);
++
++
+ 	kvm_arch_end_assignment(irqfd->kvm);
+ }
+ 
 
 
 
