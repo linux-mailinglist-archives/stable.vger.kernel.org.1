@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-138433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42E08AA1859
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04CE0AA1681
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 025819A61F8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:54:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF19B170CD5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC553253F2C;
-	Tue, 29 Apr 2025 17:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDD722A4F4;
+	Tue, 29 Apr 2025 17:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LfxKZ41j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/yPbx9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692AF253F27;
-	Tue, 29 Apr 2025 17:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD8224729E;
+	Tue, 29 Apr 2025 17:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949236; cv=none; b=dlt5KQGzxV9sm8xSDPmYFc1oPVxDI0JgYN2l4hsTUxrNulb5gpDU0nriHrQ7XvRcvENZm1CmGqgSubke5SPfKuRtvGoHCto0+0aLvFDxQ2CN5IEnCD5H3kKrAF0LXcGNcuO0J3jghKJR7npvqsywCL7PLH+ue9tgqWUXDDP84bQ=
+	t=1745948079; cv=none; b=ZAOZI0fQ+9vewNfxunUoHpguZemMSJrbQVAlf2u1N/ZatTDJyHgdV3xVq2d8VaNu8sNp3ky6mUUuMAlVAwgLBwX4P+NpVDnEXeSQnW+mQAi0sKJVeffKoUok3zqojoK1rlbF6OHpxS3yNST3csZ92Ew+S+wfpaHNEl7lELeaUug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949236; c=relaxed/simple;
-	bh=3XvXLXKEj8KM340idEwMW6OdiADseoQc4JbB7N7cquQ=;
+	s=arc-20240116; t=1745948079; c=relaxed/simple;
+	bh=nzvQWpEYxhBkIIXgB5anVf8Ge0Tnf3UKS+LFKch4Wkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PuE9QV3WM9VMjkz4F3nYBG/O00zf2hyEkeb0dy2njN8ZJc4c0f6oljODHa0fR8uIHyZhx5dwg0UObxuqIZC7UwssFACXLHlV6IMP1SjKNDd1JzWQoGQH+wvsG0iRJ12XnLKgkKNMdpH0GG+PBAl7FZBQUYMSitVAQViH2qtUNpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LfxKZ41j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1671C4CEE3;
-	Tue, 29 Apr 2025 17:53:55 +0000 (UTC)
+	 MIME-Version; b=otTXSPaOCJb8NpPhhN7A1T6QcFIkr7srdo8iU3vo+0KpiYRagljMujNp4iNky1eZS8M4IT04jjVs8VzHivFH9mW3qQuCSZrtCy/WJQH6ycZ7tjKORakJHASRk8Bs1pBNcgB+iW+0OuXkh3/I++d7/Gvyyd1/eAuQxo/gPbtpF5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/yPbx9R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74473C4CEE9;
+	Tue, 29 Apr 2025 17:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949236;
-	bh=3XvXLXKEj8KM340idEwMW6OdiADseoQc4JbB7N7cquQ=;
+	s=korg; t=1745948078;
+	bh=nzvQWpEYxhBkIIXgB5anVf8Ge0Tnf3UKS+LFKch4Wkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LfxKZ41j4ydF9yTMLHeSJ58SzhuY0ltgNkV+h7l+swLU50E0RKPwYXtIlZEVqy+Vx
-	 BXUUEYbHN3SzC9EunJ+onFhBuuzyBS6tpkI5C3N5QN0q0QFpUaCX55etbrlwXmhDme
-	 UgFu0k9ggX4BL+b9cUMbDSmNTc2Hn5ZQLUB0Xka0=
+	b=a/yPbx9RRdtpG0JD3eSLh0aGP7ywQ3p/UCe6Wz2WwzAdJXcE7CECLpoRp6md4QPU6
+	 /XxQYg3VPJoS1JCmC//F0CHwZbPmaIEA97DMRVVxF/NWo6eXFrjgeQg4Kctix16Ai8
+	 Aa13z7A7nbcQERPI/jQhPgI5KVETfKgn9bzD4vmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Daniel Axtens <dja@axtens.net>,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 248/373] mm: fix apply_to_existing_page_range()
-Date: Tue, 29 Apr 2025 18:42:05 +0200
-Message-ID: <20250429161133.326434189@linuxfoundation.org>
+	Thomas Lynema <lyz27@yahoo.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 185/280] thunderbolt: Scan retimers after device router has been enumerated
+Date: Tue, 29 Apr 2025 18:42:06 +0200
+Message-ID: <20250429161122.677801681@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit a995199384347261bb3f21b2e171fa7f988bd2f8 upstream.
+[ Upstream commit 75749d2c1d8cef439f8b69fa1f4f36d0fc3193e6 ]
 
-In the case of apply_to_existing_page_range(), apply_to_pte_range() is
-reached with 'create' set to false.  When !create, the loop over the PTE
-page table is broken.
+Thomas reported connection issues on AMD system with Pluggable UD-4VPD
+dock. After some experiments it looks like the device has some sort of
+internal timeout that triggers reconnect. This is completely against the
+USB4 spec, as there is no requirement for the host to enumerate the
+device right away or even at all.
 
-apply_to_pte_range() will only move to the next PTE entry if 'create' is
-true or if the current entry is not pte_none().
+In Linux case the delay is caused by scanning of retimers on the link so
+we can work this around by doing the scanning after the device router
+has been enumerated.
 
-This means that the user of apply_to_existing_page_range() will not have
-'fn' called for any entries after the first pte_none() in the PTE page
-table.
-
-Fix the loop logic in apply_to_pte_range().
-
-There are no known runtime issues from this, but the fix is trivial enough
-for stable@ even without a known buggy user.
-
-Link: https://lkml.kernel.org/r/20250409094043.1629234-1-kirill.shutemov@linux.intel.com
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: be1db4753ee6 ("mm/memory.c: add apply_to_existing_page_range() helper")
-Cc: Daniel Axtens <dja@axtens.net>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Thomas Lynema <lyz27@yahoo.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219748
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/thunderbolt/tb.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2570,11 +2570,11 @@ static int apply_to_pte_range(struct mm_
- 	if (fn) {
- 		do {
- 			if (create || !pte_none(*pte)) {
--				err = fn(pte++, addr, data);
-+				err = fn(pte, addr, data);
- 				if (err)
- 					break;
- 			}
--		} while (addr += PAGE_SIZE, addr != end);
-+		} while (pte++, addr += PAGE_SIZE, addr != end);
+diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
+index a7c6919fbf978..e1da433a9e7fb 100644
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -1295,11 +1295,15 @@ static void tb_scan_port(struct tb_port *port)
+ 		goto out_rpm_put;
  	}
- 	*mask |= PGTBL_PTE_MODIFIED;
  
+-	tb_retimer_scan(port, true);
+-
+ 	sw = tb_switch_alloc(port->sw->tb, &port->sw->dev,
+ 			     tb_downstream_route(port));
+ 	if (IS_ERR(sw)) {
++		/*
++		 * Make the downstream retimers available even if there
++		 * is no router connected.
++		 */
++		tb_retimer_scan(port, true);
++
+ 		/*
+ 		 * If there is an error accessing the connected switch
+ 		 * it may be connected to another domain. Also we allow
+@@ -1349,6 +1353,14 @@ static void tb_scan_port(struct tb_port *port)
+ 	upstream_port = tb_upstream_port(sw);
+ 	tb_configure_link(port, upstream_port, sw);
+ 
++	/*
++	 * Scan for downstream retimers. We only scan them after the
++	 * router has been enumerated to avoid issues with certain
++	 * Pluggable devices that expect the host to enumerate them
++	 * within certain timeout.
++	 */
++	tb_retimer_scan(port, true);
++
+ 	/*
+ 	 * CL0s and CL1 are enabled and supported together.
+ 	 * Silently ignore CLx enabling in case CLx is not supported.
+-- 
+2.39.5
+
 
 
 
