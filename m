@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-138037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A984DAA164B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DCC0AA14D4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33DD8188F38E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21CCB4C50E9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D0A238C21;
-	Tue, 29 Apr 2025 17:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602E82472B4;
+	Tue, 29 Apr 2025 17:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rR3m26X7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNGHydBj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A332482C60;
-	Tue, 29 Apr 2025 17:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8CA24500A;
+	Tue, 29 Apr 2025 17:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947912; cv=none; b=bgMljqF2bWbl2fICg6ZdQdHTCjR7VG20BGC0F9a5/harA1IXP1INznFLdhdmw2pG8YaYQ0Cwblq7rJHgYGcWc1euSPgaBW6IqmAXGM7C3HHet2Sd3sd2Rxj7JCiGC+OIeNuKPIMH/AiI8ORibl1/9pV35SWs7m9qRIul3uS/7F4=
+	t=1745947100; cv=none; b=KAo9oYVae8gGiq0jF14Q5n2o9Dy5Rwn7IAp3aTBNDNk6n8nkmaOjoBY8Mbc92xv//wQhcYGkVZHCqOey7XagTFlhhF/xAmjqkwd+l/Rj48sir6M/bjXK/8AhUNjLMPOLRJ/9YpktTOSbazZUrWB6QKRHi6djlwqjbrUUPq+fOTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947912; c=relaxed/simple;
-	bh=JF46PM/3YwuQn+vylc8hMbHQLUC206OWDQkt0pMjLK4=;
+	s=arc-20240116; t=1745947100; c=relaxed/simple;
+	bh=usob6uVd3HMgog6heIpVZfzLz14oUeaSav2gs7wlK38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbqq+c1wS397+xZU/R1qR+pQWSxDeuvu+T+vWgV0+E7PufwX4UOvM9kdjJZS7n5wDqaebPQ7a3JDxQNWtmGSDEj0Yv+63uZQG21DEvo/Cl9nl76+8X1Mk4PIWM60LlL4yTbfxHwq7e8b4Cd+jhcev0Cepyo3wUqRPxXsxJB0cZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rR3m26X7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235CFC4CEE3;
-	Tue, 29 Apr 2025 17:31:51 +0000 (UTC)
+	 MIME-Version; b=LRfAlkO9n2VEfnYtJtsr94qVVXD7omq3K3bfy++ftA94WZXp3gTHZWF58IiDhTMV2tBvw6J27sBNDDo9/fm7liraLTGAqkNnm4cRb/PH7XYAO25PEJV8arqadOD2wut5vo8oXt4JFjgJtnrtH9noTFh0snm2Hxj1GE7HXIC09ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNGHydBj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E56EC4CEE3;
+	Tue, 29 Apr 2025 17:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947912;
-	bh=JF46PM/3YwuQn+vylc8hMbHQLUC206OWDQkt0pMjLK4=;
+	s=korg; t=1745947100;
+	bh=usob6uVd3HMgog6heIpVZfzLz14oUeaSav2gs7wlK38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rR3m26X7aky2sC4OqOYfbjB8KnTsHhXhXVebJJDsaA5D9sJmF+NV3GP9y8Psdyn6z
-	 1l9seu5TeLSEQq5AMgcq/AZCfADjPnC5ilAmI+aDUIag9zuiG1wOvkMMVS9kXwJByL
-	 jgrJ4D2sTaCk4YItg/wLfgkpfK3xNQHQs+/1J0YE=
+	b=LNGHydBjJTlMKq6xcDpYROkTe1nEYLfML4ngMvjo9ZLiHNThvA15PwjPSE8MhbaIX
+	 BM5A+EP3Sf5EFrSNHE2owlDWp7kV5zyVAoO21H+O0cxlsmXY28YXwo2fkVOflotjnv
+	 gxq3rpbtDv+ltqmVWgJKj8oXo/xiK1TuCosdMSkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Craig Hesling <craig@hesling.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 135/280] USB: serial: simple: add OWON HDS200 series oscilloscope support
+	Xiaxi Shen <shenxiaxi26@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
+	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	He Zhe <zhe.he@windriver.com>,
+	syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 172/286] ext4: fix timer use-after-free on failed mount
 Date: Tue, 29 Apr 2025 18:41:16 +0200
-Message-ID: <20250429161120.653142387@linuxfoundation.org>
+Message-ID: <20250429161114.964373721@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,134 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Craig Hesling <craig@hesling.com>
+From: Xiaxi Shen <shenxiaxi26@gmail.com>
 
-commit 4cc01410e1c1dd075df10f750775c81d1cb6672b upstream.
+commit 0ce160c5bdb67081a62293028dc85758a8efb22a upstream.
 
-Add serial support for OWON HDS200 series oscilloscopes and likely
-many other pieces of OWON test equipment.
+Syzbot has found an ODEBUG bug in ext4_fill_super
 
-OWON HDS200 series devices host two USB endpoints, designed to
-facilitate bidirectional SCPI. SCPI is a predominately ASCII text
-protocol for test/measurement equipment. Having a serial/tty interface
-for these devices lowers the barrier to entry for anyone trying to
-write programs to communicate with them.
+The del_timer_sync function cancels the s_err_report timer,
+which reminds about filesystem errors daily. We should
+guarantee the timer is no longer active before kfree(sbi).
 
-The following shows the USB descriptor for the OWON HDS272S running
-firmware V5.7.1:
+When filesystem mounting fails, the flow goes to failed_mount3,
+where an error occurs when ext4_stop_mmpd is called, causing
+a read I/O failure. This triggers the ext4_handle_error function
+that ultimately re-arms the timer,
+leaving the s_err_report timer active before kfree(sbi) is called.
 
-Bus 001 Device 068: ID 5345:1234 Owon PDS6062T Oscilloscope
-Negotiated speed: Full Speed (12Mbps)
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass            0 [unknown]
-  bDeviceSubClass         0 [unknown]
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  idVendor           0x5345 Owon
-  idProduct          0x1234 PDS6062T Oscilloscope
-  bcdDevice            1.00
-  iManufacturer           1 oscilloscope
-  iProduct                2 oscilloscope
-  iSerial                 3 oscilloscope
-  bNumConfigurations      1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x0029
-    bNumInterfaces          1
-    bConfigurationValue     1
-    iConfiguration          0
-    bmAttributes         0x80
-      (Bus Powered)
-    MaxPower              100mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass         5 Physical Interface Device
-      bInterfaceSubClass      0 [unknown]
-      bInterfaceProtocol      0
-      iInterface              0
-      ** UNRECOGNIZED:  09 21 11 01 00 01 22 5f 00
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x81  EP 1 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval              32
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x01  EP 1 OUT
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval              32
-Device Status:     0x0000
-  (Bus Powered)
+Fix the issue by canceling the s_err_report timer after calling ext4_stop_mmpd.
 
-OWON appears to be using the same USB Vendor and Product ID for many
-of their oscilloscopes. Looking at the discussion about the USB
-vendor/product ID, in the link bellow, suggests that this VID/PID is
-shared with VDS, SDS, PDS, and now the HDS series oscilloscopes.
-Available documentation for these devices seems to indicate that all
-use a similar SCPI protocol, some with RS232 options. It is likely that
-this same simple serial setup would work correctly for them all.
-
-Link: https://usb-ids.gowdy.us/read/UD/5345/1234
-Signed-off-by: Craig Hesling <craig@hesling.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
+Reported-and-tested-by: syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=59e0101c430934bc9a36
+Link: https://patch.msgid.link/20240715043336.98097-1-shenxiaxi26@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+[Minor context change fixed]
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/usb-serial-simple.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ext4/super.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/usb-serial-simple.c
-+++ b/drivers/usb/serial/usb-serial-simple.c
-@@ -100,6 +100,11 @@ DEVICE(nokia, NOKIA_IDS);
- 	{ USB_DEVICE(0x09d7, 0x0100) }	/* NovAtel FlexPack GPS */
- DEVICE_N(novatel_gps, NOVATEL_IDS, 3);
- 
-+/* OWON electronic test and measurement equipment driver */
-+#define OWON_IDS()			\
-+	{ USB_DEVICE(0x5345, 0x1234) } /* HDS200 oscilloscopes and others */
-+DEVICE(owon, OWON_IDS);
-+
- /* Siemens USB/MPI adapter */
- #define SIEMENS_IDS()			\
- 	{ USB_DEVICE(0x908, 0x0004) }
-@@ -134,6 +139,7 @@ static struct usb_serial_driver * const
- 	&motorola_tetra_device,
- 	&nokia_device,
- 	&novatel_gps_device,
-+	&owon_device,
- 	&siemens_mpi_device,
- 	&suunto_device,
- 	&vivopay_device,
-@@ -153,6 +159,7 @@ static const struct usb_device_id id_tab
- 	MOTOROLA_TETRA_IDS(),
- 	NOKIA_IDS(),
- 	NOVATEL_IDS(),
-+	OWON_IDS(),
- 	SIEMENS_IDS(),
- 	SUUNTO_IDS(),
- 	VIVOPAY_IDS(),
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5185,8 +5185,8 @@ failed_mount_wq:
+ failed_mount3a:
+ 	ext4_es_unregister_shrinker(sbi);
+ failed_mount3:
+-	del_timer_sync(&sbi->s_err_report);
+ 	ext4_stop_mmpd(sbi);
++	del_timer_sync(&sbi->s_err_report);
+ failed_mount2:
+ 	rcu_read_lock();
+ 	group_desc = rcu_dereference(sbi->s_group_desc);
 
 
 
