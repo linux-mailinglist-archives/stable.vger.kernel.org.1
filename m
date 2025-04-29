@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC19AA163C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F89FAA1526
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 006D51BC527D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43FBB9839AF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B45252914;
-	Tue, 29 Apr 2025 17:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5340824291A;
+	Tue, 29 Apr 2025 17:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2YvCmbM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNq5rELn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5465253356;
-	Tue, 29 Apr 2025 17:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106B71C6B4;
+	Tue, 29 Apr 2025 17:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947861; cv=none; b=hFyaCjCftwCA1TLQPlMw/Ey6JrLArjAelj3KPy8AeyWp+dTPhF8FTaMtqG+sSCrbPs8PYs0CG17rMH2hlNFM5fYiGEDsPRQAhKaBmaNPv2jF2/YT25uZYAbXmkHms3wuESm2XU4gAcXpeLovpIT7VoCJ0jGNScauLSrrJKkQFBQ=
+	t=1745947094; cv=none; b=U4q6R0lOJgnwu8pFQ24KMSVWiE4breUxnAGPTh0iqkO3mblv/HMROm6DnPdLPmn8Iwd3kkoTDJ1vGSKlrju+GEFBYjmPUgbHNplnt7Bg3IfHQqlVF6xotSitTAAcYaNbF8/UP9YZ96oG+BZr6gUEq1wbacsxHAthuuAPcvWYVbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947861; c=relaxed/simple;
-	bh=RM+Igvdbz0J/rq3j6JjkgkSBflVGpP+wjil66VImTjA=;
+	s=arc-20240116; t=1745947094; c=relaxed/simple;
+	bh=JHfm2tVv+NTcdggrzeAN8OYwuXqLR1KR8sinOWh+3TQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gEhsIegOU+tx/ibg9zA0BnIsvGUo2LkWtZ75h7C/npBIaBwc+6yjESmhJExfiylfLSP0RtMcxWO/KilGPV0e+oVTeKHHhD+zk0YtnDAetPoC32yPrqpjb43E1+HRIAUsmDe0KeN1QlX1v2X6CXdJoXsA6XIK9dnV9IlUlsC7Cgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2YvCmbM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490ECC4CEE3;
-	Tue, 29 Apr 2025 17:31:01 +0000 (UTC)
+	 MIME-Version; b=GbUcEOtA2iunhwRgfsO3G0JcfeSJnxpq+/EC3VTGZ5Ugb9+bTcvMA36L8XzCG9Qq7bYYxkiyLpbsLm2WjBAo2tN1bGtkbvQlPrNkgn/G0XRNNf6jIt9y6PnISctnGBH45yKyppfkS3QuFvNt2TnHI3o4hYC/kMhBxDAvtNRdzYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNq5rELn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741CAC4CEE3;
+	Tue, 29 Apr 2025 17:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947861;
-	bh=RM+Igvdbz0J/rq3j6JjkgkSBflVGpP+wjil66VImTjA=;
+	s=korg; t=1745947093;
+	bh=JHfm2tVv+NTcdggrzeAN8OYwuXqLR1KR8sinOWh+3TQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b2YvCmbMEUJJ758/td5wLqJ7Hoc9EEAeJgUri0ZLxtc+3a0aXXrEWgrGxtuLwiwSh
-	 bdLhhVSvyMFHqd9HR+fA9HMjChzqIv0SzWtqtSDhClNF2vsBDjArPF8SkTwsK/gAOn
-	 Pco4Ij01OSyiXQoEaDRV0OWVVTLmNizSA0ur3Sd4=
+	b=tNq5rELnBf6cE0AYs9RCVJhq7VKitwntjEGjfl6lBbgdtlGypp/WnKHYz7EPHnD9R
+	 ygL6sGzRZ6CuOiZsESPFpdL/0KLiVwBgiIZjS+NykIYwNOvehvIzYTZX2ZCsq8isRb
+	 a/2hMFeU2sL/StZPEyP0YSbr6u64QT4EgSoMBf5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12 125/280] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass producer
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.10 162/286] smb: client: fix use-after-free bug in cifs_debug_data_proc_show()
 Date: Tue, 29 Apr 2025 18:41:06 +0200
-Message-ID: <20250429161120.236022003@linuxfoundation.org>
+Message-ID: <20250429161114.549457542@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit f1fb088d9cecde5c3066d8ff8846789667519b7d upstream.
+commit d328c09ee9f15ee5a26431f5aad7c9239fa85e62 upstream.
 
-Take irqfds.lock when adding/deleting an IRQ bypass producer to ensure
-irqfd->producer isn't modified while kvm_irq_routing_update() is running.
-The only lock held when a producer is added/removed is irqbypass's mutex.
+Skip SMB sessions that are being teared down
+(e.g. @ses->ses_status == SES_EXITING) in cifs_debug_data_proc_show()
+to avoid use-after-free in @ses.
 
-Fixes: 872768800652 ("KVM: x86: select IRQ_BYPASS_MANAGER")
+This fixes the following GPF when reading from /proc/fs/cifs/DebugData
+while mounting and umounting
+
+  [ 816.251274] general protection fault, probably for non-canonical
+  address 0x6b6b6b6b6b6b6d81: 0000 [#1] PREEMPT SMP NOPTI
+  ...
+  [  816.260138] Call Trace:
+  [  816.260329]  <TASK>
+  [  816.260499]  ? die_addr+0x36/0x90
+  [  816.260762]  ? exc_general_protection+0x1b3/0x410
+  [  816.261126]  ? asm_exc_general_protection+0x26/0x30
+  [  816.261502]  ? cifs_debug_tcon+0xbd/0x240 [cifs]
+  [  816.261878]  ? cifs_debug_tcon+0xab/0x240 [cifs]
+  [  816.262249]  cifs_debug_data_proc_show+0x516/0xdb0 [cifs]
+  [  816.262689]  ? seq_read_iter+0x379/0x470
+  [  816.262995]  seq_read_iter+0x118/0x470
+  [  816.263291]  proc_reg_read_iter+0x53/0x90
+  [  816.263596]  ? srso_alias_return_thunk+0x5/0x7f
+  [  816.263945]  vfs_read+0x201/0x350
+  [  816.264211]  ksys_read+0x75/0x100
+  [  816.264472]  do_syscall_64+0x3f/0x90
+  [  816.264750]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+  [  816.265135] RIP: 0033:0x7fd5e669d381
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-5-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ This patch removed lock/unlock operation due to ses_lock is
+not present in v5.10 and not ported yet. ses->status is protected
+by a global lock, cifs_tcp_ses_lock, in v5.10. ]
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |   17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ fs/cifs/cifs_debug.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -13555,15 +13555,22 @@ int kvm_arch_irq_bypass_add_producer(str
- {
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	struct kvm *kvm = irqfd->kvm;
- 	int ret;
- 
--	irqfd->producer = prod;
- 	kvm_arch_start_assignment(irqfd->kvm);
-+
-+	spin_lock_irq(&kvm->irqfds.lock);
-+	irqfd->producer = prod;
-+
- 	ret = kvm_x86_call(pi_update_irte)(irqfd->kvm,
- 					   prod->irq, irqfd->gsi, 1);
- 	if (ret)
- 		kvm_arch_end_assignment(irqfd->kvm);
- 
-+	spin_unlock_irq(&kvm->irqfds.lock);
-+
-+
- 	return ret;
- }
- 
-@@ -13573,9 +13580,9 @@ void kvm_arch_irq_bypass_del_producer(st
- 	int ret;
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	struct kvm *kvm = irqfd->kvm;
- 
- 	WARN_ON(irqfd->producer != prod);
--	irqfd->producer = NULL;
- 
- 	/*
- 	 * When producer of consumer is unregistered, we change back to
-@@ -13583,12 +13590,18 @@ void kvm_arch_irq_bypass_del_producer(st
- 	 * when the irq is masked/disabled or the consumer side (KVM
- 	 * int this case doesn't want to receive the interrupts.
- 	*/
-+	spin_lock_irq(&kvm->irqfds.lock);
-+	irqfd->producer = NULL;
-+
- 	ret = kvm_x86_call(pi_update_irte)(irqfd->kvm,
- 					   prod->irq, irqfd->gsi, 0);
- 	if (ret)
- 		printk(KERN_INFO "irq bypass consumer (token %p) unregistration"
- 		       " fails: %d\n", irqfd->consumer.token, ret);
- 
-+	spin_unlock_irq(&kvm->irqfds.lock);
-+
-+
- 	kvm_arch_end_assignment(irqfd->kvm);
- }
- 
+--- a/fs/cifs/cifs_debug.c
++++ b/fs/cifs/cifs_debug.c
+@@ -358,6 +358,8 @@ skip_rdma:
+ 		list_for_each(tmp2, &server->smb_ses_list) {
+ 			ses = list_entry(tmp2, struct cifs_ses,
+ 					 smb_ses_list);
++			if (ses->status == CifsExiting)
++				continue;
+ 			if ((ses->serverDomain == NULL) ||
+ 				(ses->serverOS == NULL) ||
+ 				(ses->serverNOS == NULL)) {
 
 
 
