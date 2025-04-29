@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-138352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632E3AA179A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:49:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBAEAA1647
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E14E1BC51E9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB6291899BEE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1ED224E000;
-	Tue, 29 Apr 2025 17:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C79F238C21;
+	Tue, 29 Apr 2025 17:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxN2QpZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vI74c+Kf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D47921ABC1;
-	Tue, 29 Apr 2025 17:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F7E22A81D;
+	Tue, 29 Apr 2025 17:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948954; cv=none; b=TmNedsNL5XmCsIXnNQ01rfBcetnMoVSijekac+LVrQ3y1HzjkDFs1cVC1wvoyyzpylrMZJB7BbhbNXFmuxTMBGSn/Knwdy8Uz9ikpAIdoV9POQ2UmfD1Eydf5fXfJ4/1ZTv13NcT91itrF8RHf6k4RfbbQWhUeKwF4IyCZeZFqM=
+	t=1745947904; cv=none; b=ZYNWD5IHtQqGXNRFSGKAmEIXtHl23Ul+jixN1xlY2Ta2ozZF2kbGl+JNmcYYtnruSff02OebaHacMxTkuro+sd1IEmoolk74WNqqyytg8YP/yWSXJRKlGvtHxAtnL8aBvCOlfuotbKaw86GhSI3D8G4t7gOTDrQz0nsJNXUcKyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948954; c=relaxed/simple;
-	bh=QbA5zCDm1woEz3PQzFoZSdLM4ezJUquzpB/9DK+U7JE=;
+	s=arc-20240116; t=1745947904; c=relaxed/simple;
+	bh=uiWWJZTe/7OrMnvUAZg4hyzxKHCtgLJ0vGs1sBAeikI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fAZ9JjuFta1xfvSjLpakHTuvmThOP+h3SwX3bNvL4zUQ2cTmdSfbNYOsH8GCwNzjS1OaXjRtj4faZ2X6wDsuUGkaoI6Zq2pqdmGHM6woRSFOfdljq22JNmhN+5Tw7yxbeoqe6zduuoTufPnlvnCWjPnF7jsadv/5sLLMeAtSFFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxN2QpZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864B0C4CEE3;
-	Tue, 29 Apr 2025 17:49:13 +0000 (UTC)
+	 MIME-Version; b=fknXOmAxdL6DXcG6OKkZ4dNbtqbDq95BC3zFz5DZg5bDRA9BgTpXO71LSReNyIek1DdTiqUhpkyAff0J5qbkh1OoZ8HHHlbI2RHYuTDG5canQHmzTWwH8tdrAsECnGoGpz0ML+WJODIX4jxrpsOYkx94OBClB+PLAdthlm/OF5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vI74c+Kf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A0DC4CEE3;
+	Tue, 29 Apr 2025 17:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948953;
-	bh=QbA5zCDm1woEz3PQzFoZSdLM4ezJUquzpB/9DK+U7JE=;
+	s=korg; t=1745947904;
+	bh=uiWWJZTe/7OrMnvUAZg4hyzxKHCtgLJ0vGs1sBAeikI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WxN2QpZA1EuciCBWqOekdqlbT6EgL22NhMQ2kHPJCtbfb56gyQrCqP4YlcQTy7FWQ
-	 9oeFSICwQi77B571Pkqw0S1Nt04u8q7j08cqqCeXBRER0qNnt+uZBi6OVdpfSt0oRh
-	 55wiAUwgl4j1I4yGTbz3rECsFunJgc6Whm0FTGlE=
+	b=vI74c+KfQy/EZ0alrOp2o4qnyh3DWcH815hUn1/rmIM5kz5Uh9jJUsIo/vJq76XAM
+	 h8SGpmzOW8i7tEhuB5Ij49dujCqwr1KY+nfO3gefc7aG8iTs9G6CV4GI2iU4KeN4on
+	 bsvw9m195lsIugIpNQYIj2YFTDy1MNBfDgNSMABY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <a.p.zijlstra@chello.nl>
-Subject: [PATCH 5.15 174/373] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SNR
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 110/280] LoongArch: KVM: Fully clear some CSRs when VM reboot
 Date: Tue, 29 Apr 2025 18:40:51 +0200
-Message-ID: <20250429161130.330886942@linuxfoundation.org>
+Message-ID: <20250429161119.615337418@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-commit 96a720db59ab330c8562b2437153faa45dac705f upstream.
+commit 9ea86232a5520d9d21832d06031ea80f055a6ff8 upstream.
 
-There was a mistake in the SNR uncore spec. The counter increments for
-every 32 bytes of data sent from the IO agent to the SOC, not 4 bytes
-which was documented in the spec.
+Some registers such as LOONGARCH_CSR_ESTAT and LOONGARCH_CSR_GINTC are
+partly cleared with function _kvm_setcsr(). This comes from the hardware
+specification, some bits are read only in VM mode, and however they can
+be written in host mode. So they are partly cleared in VM mode, and can
+be fully cleared in host mode.
 
-The event list has been updated:
+These read only bits show pending interrupt or exception status. When VM
+reset, the read-only bits should be cleared, otherwise vCPU will receive
+unknown interrupts in boot stage.
 
-  "EventName": "UNC_IIO_BANDWIDTH_IN.PART0_FREERUN",
-  "BriefDescription": "Free running counter that increments for every 32
-		       bytes of data sent from the IO agent to the SOC",
+Here registers LOONGARCH_CSR_ESTAT/LOONGARCH_CSR_GINTC are fully cleared
+in ioctl KVM_REG_LOONGARCH_VCPU_RESET vCPU reset path.
 
-Update the scale of the IIO bandwidth in free running counters as well.
-
-Fixes: 210cc5f9db7a ("perf/x86/intel/uncore: Add uncore support for Snow Ridge server")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250416142426.3933977-1-kan.liang@linux.intel.com
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_snbep.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/loongarch/kvm/vcpu.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -4656,28 +4656,28 @@ static struct uncore_event_desc snr_unco
- 	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
- 	/* Free-Running IIO BANDWIDTH IN Counters */
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
- 	{ /* end: all zeroes */ },
- };
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -874,6 +874,13 @@ static int kvm_set_one_reg(struct kvm_vc
+ 			vcpu->arch.st.guest_addr = 0;
+ 			memset(&vcpu->arch.irq_pending, 0, sizeof(vcpu->arch.irq_pending));
+ 			memset(&vcpu->arch.irq_clear, 0, sizeof(vcpu->arch.irq_clear));
++
++			/*
++			 * When vCPU reset, clear the ESTAT and GINTC registers
++			 * Other CSR registers are cleared with function _kvm_setcsr().
++			 */
++			kvm_write_sw_gcsr(vcpu->arch.csr, LOONGARCH_CSR_GINTC, 0);
++			kvm_write_sw_gcsr(vcpu->arch.csr, LOONGARCH_CSR_ESTAT, 0);
+ 			break;
+ 		default:
+ 			ret = -EINVAL;
 
 
 
