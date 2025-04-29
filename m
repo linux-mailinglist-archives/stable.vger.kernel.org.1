@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D22EAA1551
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 875B3AA17F8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 141443B458E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17B7C1BC3B42
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328BC247280;
-	Tue, 29 Apr 2025 17:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56817253334;
+	Tue, 29 Apr 2025 17:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcAwoPPr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/pFT5Xm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E434E248878;
-	Tue, 29 Apr 2025 17:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E932517A6;
+	Tue, 29 Apr 2025 17:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947191; cv=none; b=SYWNWx2wPPAVziLGIa/Fa5SF00lqjRFkdKNb/A+OVfHg6Tci2xb21RM5bFFLhL4pNK98kAir/ey53UQkYPARR74YEi7H2nGFuloQgySMp7DzZBBR2tVv5IhLWKaiudrSFt+UmxN7xR9ABLmiNYooxAjzSwlySUotAAl71ORT+hw=
+	t=1745949221; cv=none; b=DsVFNYq4rtAz76uvLP/7nyam96p3BkQ2EhEA+qahIc4JOyiukaKJ7TjvhP2nnH0klyygTjmq4FLvnUuB/FE38cp/FxUDP6OZ9EgKyYMNjJReVkSSKut7Ds5Nk9MnW4udl+r/5B0s4+JaCUbGHfedz+c+pnc27z2Cyd+ZvcPUoJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947191; c=relaxed/simple;
-	bh=fkQgLUQ0LPMu0O5QzZtjbz6BTDUdX4YCvRBM2Iv1b6E=;
+	s=arc-20240116; t=1745949221; c=relaxed/simple;
+	bh=0Andh60W6pCeJAR/nQoTcLY7+YBIG0kAw6Vf4aKc+bY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iEOYjSgszDiPmxiu2D3FTMFDUE9lbNMdRmZMeE6ufIUkHxH8n0qV2fDv+R0nc1JU7L4QhH53NXY/DnUGEQKZzHrVAmVkPv0LdM2afcOeZ0JbYbViCdhWo42Wj1LbpNvye004HVGw+uujijeZh1MmQrZkBoggVsNMGMh1etYiOWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcAwoPPr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B3FC4CEEE;
-	Tue, 29 Apr 2025 17:19:50 +0000 (UTC)
+	 MIME-Version; b=H0aUmWN5UCo0BkUKzt+QtgSxseYDNoIIZ9IrH7Ffg8NV98kpJUPL9j1viuQeSaiZs/nRcY8X5151E1GWFXY1pehtJWywewKS2jRQOv5HwFz8reuNhP7wuWKWsl2iA4bjEQFGvtuU5uAF4K3n61fo0BajgdDEVvZSU+YRrvT7lAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/pFT5Xm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCD9C4CEE9;
+	Tue, 29 Apr 2025 17:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947190;
-	bh=fkQgLUQ0LPMu0O5QzZtjbz6BTDUdX4YCvRBM2Iv1b6E=;
+	s=korg; t=1745949220;
+	bh=0Andh60W6pCeJAR/nQoTcLY7+YBIG0kAw6Vf4aKc+bY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KcAwoPPrumzHRzZqkiKsP18Axv3V1IOakVllO9Eaa+3PjGe53R06T8k2J/5hQO89A
-	 pDksd4/Rh9wqZojHZIuhsKD+wQmqLPULIKpPC5lizcbQRXAESS/rspR/G7P8y98YM0
-	 47rUS9tHnp3uwTfnVtTvrpz+zIDLMrJZTYMy55Fw=
+	b=a/pFT5Xmtwi0hF8IM4TEHIC1+/N1VEdlJH1N+4Esr4HLTwvnWYB5Vqsh0rgsDLb4W
+	 aUtkDkckcXC1xdul9mvRRrYHRoBQ9hsvadsJ2xdo5nRcdZUihF7jjd6iIvo4d9Qccm
+	 H9lVg15it4DrwPMF4a+Q/SxLTwhSvorjxO1G68jE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 194/286] platform/x86: ISST: Correct command storage data length
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.15 221/373] net: make sock_inuse_add() available
 Date: Tue, 29 Apr 2025 18:41:38 +0200
-Message-ID: <20250429161115.946420757@linuxfoundation.org>
+Message-ID: <20250429161132.244442340@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +62,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 9462e74c5c983cce34019bfb27f734552bebe59f ]
+commit d477eb9004845cb2dc92ad5eed79a437738a868a upstream.
 
-After resume/online turbo limit ratio (TRL) is restored partially if
-the admin explicitly changed TRL from user space.
+MPTCP hard codes it, let us instead provide this helper.
 
-A hash table is used to store SST mail box and MSR settings when modified
-to restore those settings after resume or online. This uses a struct
-isst_cmd field "data" to store these settings. This is a 64 bit field.
-But isst_store_new_cmd() is only assigning as u32. This results in
-truncation of 32 bits.
-
-Change the argument to u64 from u32.
-
-Fixes: f607874f35cb ("platform/x86: ISST: Restore state on resume")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250328224749.2691272-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+[ cherry-pick from amazon-linux amazon-5.15.y/mainline ]
+Link: https://github.com/amazonlinux/linux/commit/7154d8eaac16
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel_speed_select_if/isst_if_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/sock.h  |   10 ++++++++++
+ net/core/sock.c     |   10 ----------
+ net/mptcp/subflow.c |    4 +---
+ 3 files changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/platform/x86/intel_speed_select_if/isst_if_common.c b/drivers/platform/x86/intel_speed_select_if/isst_if_common.c
-index 407afafc7e83f..e0f7368e7e3e9 100644
---- a/drivers/platform/x86/intel_speed_select_if/isst_if_common.c
-+++ b/drivers/platform/x86/intel_speed_select_if/isst_if_common.c
-@@ -77,7 +77,7 @@ static DECLARE_HASHTABLE(isst_hash, 8);
- static DEFINE_MUTEX(isst_hash_lock);
- 
- static int isst_store_new_cmd(int cmd, u32 cpu, int mbox_cmd_type, u32 param,
--			      u32 data)
-+			      u64 data)
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1472,6 +1472,12 @@ static inline void sock_prot_inuse_add(c
  {
- 	struct isst_cmd *sst_cmd;
+ 	this_cpu_add(net->core.prot_inuse->val[prot->inuse_idx], val);
+ }
++
++static inline void sock_inuse_add(const struct net *net, int val)
++{
++	this_cpu_add(*net->core.sock_inuse, val);
++}
++
+ int sock_prot_inuse_get(struct net *net, struct proto *proto);
+ int sock_inuse_get(struct net *net);
+ #else
+@@ -1479,6 +1485,10 @@ static inline void sock_prot_inuse_add(c
+ 				       const struct proto *prot, int val)
+ {
+ }
++
++static inline void sock_inuse_add(const struct net *net, int val)
++{
++}
+ #endif
  
--- 
-2.39.5
-
+ 
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -144,8 +144,6 @@
+ static DEFINE_MUTEX(proto_list_mutex);
+ static LIST_HEAD(proto_list);
+ 
+-static void sock_inuse_add(struct net *net, int val);
+-
+ /**
+  * sk_ns_capable - General socket capability test
+  * @sk: Socket to use a capability on or through
+@@ -3519,11 +3517,6 @@ int sock_prot_inuse_get(struct net *net,
+ }
+ EXPORT_SYMBOL_GPL(sock_prot_inuse_get);
+ 
+-static void sock_inuse_add(struct net *net, int val)
+-{
+-	this_cpu_add(*net->core.sock_inuse, val);
+-}
+-
+ int sock_inuse_get(struct net *net)
+ {
+ 	int cpu, res = 0;
+@@ -3602,9 +3595,6 @@ static inline void release_proto_idx(str
+ {
+ }
+ 
+-static void sock_inuse_add(struct net *net, int val)
+-{
+-}
+ #endif
+ 
+ static void tw_prot_cleanup(struct timewait_sock_ops *twsk_prot)
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1584,9 +1584,7 @@ int mptcp_subflow_create_socket(struct s
+ 	 */
+ 	sf->sk->sk_net_refcnt = 1;
+ 	get_net(net);
+-#ifdef CONFIG_PROC_FS
+-	this_cpu_add(*net->core.sock_inuse, 1);
+-#endif
++	sock_inuse_add(net, 1);
+ 	err = tcp_set_ulp(sf->sk, "mptcp");
+ 	release_sock(sf->sk);
+ 
 
 
 
