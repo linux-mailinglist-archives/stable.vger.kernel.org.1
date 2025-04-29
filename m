@@ -1,67 +1,59 @@
-Return-Path: <stable+bounces-138277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BEE8AA174C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02879AA14A6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:18:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6218174FE9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83E703A85EC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA60244664;
-	Tue, 29 Apr 2025 17:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38472459FA;
+	Tue, 29 Apr 2025 17:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8dSRTg1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQAuwt2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982CDC148;
-	Tue, 29 Apr 2025 17:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B045538FB0;
+	Tue, 29 Apr 2025 17:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948746; cv=none; b=iMhMufEQZGgij7AZIZCDPmHZgoXikhfxsawB0R0ijXDdqk4aT+Id5g/cU3KmK0/nqhDKUj7Bcut2S+9p8RkPvL2Ojp7tB2D3YAxpcjVDSlWnFKE6FZBer8IKE0D+2KrkS2QS1HDLmbahFJnsgZ+9TKgL7tHShomaNlYpNNFCYaY=
+	t=1745946801; cv=none; b=jIciZCudByXH2dZGJFClFWZsAt4XVAkrBGQigKiXQtRj8v701N9GIFE/XAY9IHR3T6CnmzwbwH4/LNHlcIAIOOrLIW5Ri5Q78zcfqKpWcghJ5jBKDwt5J0/KHKa8MRODvfaWIKOmng1hwahXs+bGM5vjqP07JInYzyW60e/+fUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948746; c=relaxed/simple;
-	bh=hB1akbcDku3jpLr8DH+hAnSrD/2nyL5wuSU9rI8ekFw=;
+	s=arc-20240116; t=1745946801; c=relaxed/simple;
+	bh=pNdIv1Hx7vKcgVJHLzU7+KeNpwQQU/IA1oHbJ7DPxho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ajN1QZtGbspWQZo0aXjVbAPHpHXhGfPd69Zh5CDLbVLYDINnH4AKmmwDSJgP9Dpy3k+MUa5e3kXAn27SdQnpS709Evff9xUOPs31GZQUzbuZ31hCHzQ5exqQo5CHAMUtMnASiK/jMLwooaQh3iNZ5z+K99YDVAtiPlAmMbZdd/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8dSRTg1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C21C4CEE3;
-	Tue, 29 Apr 2025 17:45:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iN48shSyBAE6HNZTt2f3yEFnu8Wwdq0dpp8HzpqwzfQ6Mt9wkErzNf5weZqnyI67r6cBSU/Q3gmxujmNUaFCFxAaOThJek7jokM2L1aERds8i7yfTY07HlDpMje/k0taB5NoetHXUoinQaoXzUqnyl1SjQ/H5rviUSIXnWvfEwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQAuwt2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FABC4CEE3;
+	Tue, 29 Apr 2025 17:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948746;
-	bh=hB1akbcDku3jpLr8DH+hAnSrD/2nyL5wuSU9rI8ekFw=;
+	s=korg; t=1745946801;
+	bh=pNdIv1Hx7vKcgVJHLzU7+KeNpwQQU/IA1oHbJ7DPxho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r8dSRTg1DLE12bWfUUPgmPtIA7z1tRmwDygcu7zkKEZmwdmDP2sKS29+9MhQiJ05q
-	 ERA2HyekkfHn6k7wfeuRBAuGPtOi3Hn4+T319Ma9G/9Tag6PLyEKflMRTk2+l9XoxF
-	 34m1+CFQA9utLJZGlP6+ZX9vJ/jwvYL6Jg0S9/ik=
+	b=KQAuwt2QynnQNzmBtkqw43JYLygtJsBOSbDz0l9sit1qnZj12JYg1U6h2xvTZzOjW
+	 8hxUk0w6Ewt+uNLqq0UlDnXBfOVUNrhnLzs+d1cjrIT1ckTjxndoxkRjwBjV/+XOLc
+	 5cByPbmZRYM6N0E6O6oHcZURw0GG7DQboF6wiDr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,
-	Luc Maranget <luc.maranget@inria.fr>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 100/373] mm: add missing release barrier on PGDAT_RECLAIM_LOCKED unlock
-Date: Tue, 29 Apr 2025 18:39:37 +0200
-Message-ID: <20250429161127.270171497@linuxfoundation.org>
+	Cong Meng <cong.meng@oracle.com>,
+	Si-Wei Liu <si-wei.liu@oracle.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>
+Subject: [PATCH 5.10 074/286] vdpa/mlx5: Fix oversized null mkey longer than 32bit
+Date: Tue, 29 Apr 2025 18:39:38 +0200
+Message-ID: <20250429161110.896651226@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,69 +63,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+From: Si-Wei Liu <si-wei.liu@oracle.com>
 
-commit c0ebbb3841e07c4493e6fe351698806b09a87a37 upstream.
+commit a6097e0a54a5c24f8d577ffecbc35289ae281c2e upstream.
 
-The PGDAT_RECLAIM_LOCKED bit is used to provide mutual exclusion of node
-reclaim for struct pglist_data using a single bit.
+create_user_mr() has correct code to count the number of null keys
+used to fill in a hole for the memory map. However, fill_indir()
+does not follow the same to cap the range up to the 1GB limit
+correspondingly. Fill in more null keys for the gaps in between,
+so that null keys are correctly populated.
 
-It is "locked" with a test_and_set_bit (similarly to a try lock) which
-provides full ordering with respect to loads and stores done within
-__node_reclaim().
-
-It is "unlocked" with clear_bit(), which does not provide any ordering
-with respect to loads and stores done before clearing the bit.
-
-The lack of clear_bit() memory ordering with respect to stores within
-__node_reclaim() can cause a subsequent CPU to fail to observe stores from
-a prior node reclaim.  This is not an issue in practice on TSO (e.g.
-x86), but it is an issue on weakly-ordered architectures (e.g.  arm64).
-
-Fix this by using clear_bit_unlock rather than clear_bit to clear
-PGDAT_RECLAIM_LOCKED with a release memory ordering semantic.
-
-This provides stronger memory ordering (release rather than relaxed).
-
-Link: https://lkml.kernel.org/r/20250312141014.129725-1-mathieu.desnoyers@efficios.com
-Fixes: d773ed6b856a ("mm: test and set zone reclaim lock before starting reclaim")
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Cc: Andrea Parri <parri.andrea@gmail.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Jade Alglave <j.alglave@ucl.ac.uk>
-Cc: Luc Maranget <luc.maranget@inria.fr>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
+Cc: stable@vger.kernel.org
+Reported-by: Cong Meng <cong.meng@oracle.com>
+Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20250220193732.521462-2-dtatulea@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmscan.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vdpa/mlx5/core/mr.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4581,7 +4581,7 @@ int node_reclaim(struct pglist_data *pgd
- 		return NODE_RECLAIM_NOSCAN;
- 
- 	ret = __node_reclaim(pgdat, gfp_mask, order);
--	clear_bit(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
-+	clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
- 
- 	if (!ret)
- 		count_vm_event(PGSCAN_ZONE_RECLAIM_FAILED);
+--- a/drivers/vdpa/mlx5/core/mr.c
++++ b/drivers/vdpa/mlx5/core/mr.c
+@@ -165,9 +165,12 @@ again:
+ 			klm->bcount = cpu_to_be32(klm_bcount(dmr->end - dmr->start));
+ 			preve = dmr->end;
+ 		} else {
++			u64 bcount = min_t(u64, dmr->start - preve, MAX_KLM_SIZE);
++
+ 			klm->key = cpu_to_be32(mvdev->res.null_mkey);
+-			klm->bcount = cpu_to_be32(klm_bcount(dmr->start - preve));
+-			preve = dmr->start;
++			klm->bcount = cpu_to_be32(klm_bcount(bcount));
++			preve += bcount;
++
+ 			goto again;
+ 		}
+ 	}
 
 
 
