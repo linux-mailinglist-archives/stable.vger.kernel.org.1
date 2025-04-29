@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-137246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3A8AA1262
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97FC7AA1648
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 738811BA2A6D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:52:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E3ED4A1141
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE772472AC;
-	Tue, 29 Apr 2025 16:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4312242D6A;
+	Tue, 29 Apr 2025 17:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tq2PKN2I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B47xkQAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABC7250BFE;
-	Tue, 29 Apr 2025 16:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC1D82C60;
+	Tue, 29 Apr 2025 17:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945497; cv=none; b=V/dVu0j5bRBQ4iM6noNJxUsn2C10wkXqA03Q1jVoffr4iqRL948MrwIpm/Q7kY/GOO+BITUhzdqD/BlUpBtW5IQaQ7MCEMAVUsGHU4C/nCZUeg8PPzakHMM9Lwg8E2QEEbotrcazxUYuG05RsvaBj48qi73wGAvfLJVReg6MqIk=
+	t=1745947889; cv=none; b=Z1qhE9EQSKLFBxCj8drcB65tRi1DZmJvxgxfeuiANkTnK7hgeBGLUo6X7S8j3dlGUbKjSJAg2gnKHVOO8IW7qHpSE0zEVyb7CW16m2iAV7lLVPTjTYAu3DJXxHJNXBjnjIVmgz1hgISJ9ML9tTlod9sFmcj4BodyQkpJxZ9DEwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945497; c=relaxed/simple;
-	bh=ka/UBEC2E2g0VdOanmUzmWL4CGW209I9SCS2A13GOW4=;
+	s=arc-20240116; t=1745947889; c=relaxed/simple;
+	bh=Ug8DpiHDlJXvjuL/79ey0iEuXXrDYCtLsYiB+n8Ec1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kU1tA/88+HCDd3JTCt6unbe/vZwFa8foxIRVSwCO4GD4qXeHmnC71rdhCs6NKyEZFaifI66Yy2J5TTUydK5sgUN3OAomHaC0QWsltrYaAiMOCvm8yIn5R0SOEeMFgARvEGCyFDGIL1tD1nATZO8w6mZURLpC/evqtSLqkhlIJ0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tq2PKN2I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993C5C4CEE9;
-	Tue, 29 Apr 2025 16:51:36 +0000 (UTC)
+	 MIME-Version; b=puyO0Sj36vhVFuSR0R3c631NqOHBU07LKVreTv77cTYyQoYnRd3UqFJsurGylbgpkJttxilCLPWqJiBH2iJa98Mw+Yvt+tOdMlD9UT0PdD1iTTCn4ONoq1drD0Zno/FSL3//FYuKjhJkqKJOP8yVCL8cgUFUF80xGAVXgqvVh5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B47xkQAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2240EC4CEE3;
+	Tue, 29 Apr 2025 17:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945497;
-	bh=ka/UBEC2E2g0VdOanmUzmWL4CGW209I9SCS2A13GOW4=;
+	s=korg; t=1745947889;
+	bh=Ug8DpiHDlJXvjuL/79ey0iEuXXrDYCtLsYiB+n8Ec1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tq2PKN2IAnYaZHf5GAkzDMJHz4LPqNz4EZxxNdtlrTRyRB/qDNxPNBglPxrBoZKIg
-	 8/A9kUZR+XZuEfsL9U9PYKOhJsOtsXbMT23bWDh7B6Yg9MT2MMDH9ppoDoA54GTFaQ
-	 vEt7ijLU9TBw7Kjtr4iqODGmDTX3lckZA0IhinUI=
+	b=B47xkQAuZjzzwcDafZDezedBphqLtZfr4l8Z0dHKVJaN0tQiNQrJRdLdVJhWEDauQ
+	 z7/AY2UG0KslDfsNhgM1kuVs9wNR7su+DmgscPYgJxHe2tsoxukgFGyprZIgZ+27wK
+	 C96MlziNZD/cYZ3mOoKC0raf1Bdrv44D+eJOgQg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Majewski <mattwmajewski@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 133/179] media: vim2m: print device name after registering device
+	Michael Ehrenreich <michideep@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 133/280] USB: serial: ftdi_sio: add support for Abacus Electrics Optical Probe
 Date: Tue, 29 Apr 2025 18:41:14 +0200
-Message-ID: <20250429161054.776090847@linuxfoundation.org>
+Message-ID: <20250429161120.570150524@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Majewski <mattwmajewski@gmail.com>
+From: Michael Ehrenreich <michideep@gmail.com>
 
-[ Upstream commit 143d75583f2427f3a97dba62413c4f0604867ebf ]
+commit b399078f882b6e5d32da18b6c696cc84b12f90d5 upstream.
 
-Move the v4l2_info() call displaying the video device name after the
-device is actually registered.
+Abacus Electrics makes optical probes for interacting with smart meters
+over an optical interface.
 
-This fixes a bug where the driver was always displaying "/dev/video0"
-since it was reading from the vfd before it was registered.
+At least one version uses an FT232B chip (as detected by ftdi_sio) with
+a custom USB PID, which needs to be added to the list to make the device
+work in a plug-and-play fashion.
 
-Fixes: cf7f34777a5b ("media: vim2m: Register video device after setting up internals")
+Signed-off-by: Michael Ehrenreich <michideep@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Majewski <mattwmajewski@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/vim2m.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/serial/ftdi_sio.c     |    2 ++
+ drivers/usb/serial/ftdi_sio_ids.h |    5 +++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/media/platform/vim2m.c b/drivers/media/platform/vim2m.c
-index 6fba00e03c67b..10c9e8026d981 100644
---- a/drivers/media/platform/vim2m.c
-+++ b/drivers/media/platform/vim2m.c
-@@ -1334,9 +1334,6 @@ static int vim2m_probe(struct platform_device *pdev)
- 	vfd->v4l2_dev = &dev->v4l2_dev;
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -1093,6 +1093,8 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 2) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 3) },
++	/* Abacus Electrics */
++	{ USB_DEVICE(FTDI_VID, ABACUS_OPTICAL_PROBE_PID) },
+ 	{ }					/* Terminating entry */
+ };
  
- 	video_set_drvdata(vfd, dev);
--	v4l2_info(&dev->v4l2_dev,
--		  "Device registered as /dev/video%d\n", vfd->num);
--
- 	platform_set_drvdata(pdev, dev);
+--- a/drivers/usb/serial/ftdi_sio_ids.h
++++ b/drivers/usb/serial/ftdi_sio_ids.h
+@@ -443,6 +443,11 @@
+ #define LINX_FUTURE_2_PID   0xF44C	/* Linx future device */
  
- 	dev->m2m_dev = v4l2_m2m_init(&m2m_ops);
-@@ -1363,6 +1360,9 @@ static int vim2m_probe(struct platform_device *pdev)
- 		goto error_m2m;
- 	}
- 
-+	v4l2_info(&dev->v4l2_dev,
-+		  "Device registered as /dev/video%d\n", vfd->num);
+ /*
++ * Abacus Electrics
++ */
++#define ABACUS_OPTICAL_PROBE_PID	0xf458 /* ABACUS ELECTRICS Optical Probe */
 +
- #ifdef CONFIG_MEDIA_CONTROLLER
- 	ret = v4l2_m2m_register_media_controller(dev->m2m_dev, vfd,
- 						 MEDIA_ENT_F_PROC_VIDEO_SCALER);
--- 
-2.39.5
-
++/*
+  * Oceanic product ids
+  */
+ #define FTDI_OCEANIC_PID	0xF460  /* Oceanic dive instrument */
 
 
 
