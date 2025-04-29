@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-137833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9611DAA1546
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1C5AA13F6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A1B518808DF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:21:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 623C318888A4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDE52472B4;
-	Tue, 29 Apr 2025 17:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AD924168A;
+	Tue, 29 Apr 2025 17:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XteHeNNC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRerBwp0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17ABC2522BA;
-	Tue, 29 Apr 2025 17:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A80211A0B;
+	Tue, 29 Apr 2025 17:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947270; cv=none; b=icc+4Mfa26JDmhqVaGRiZOFl5iT2P4JZ36/z2nShOrd1m40HI3P5q4T/zkpvTAOTV4GCfgJfAqZgUL2plFYpaK7Km8cFxsb5f0VAxgwx7hIuvxJP6dzJKR12cZ4SJSo70oBGZLYjq3Mr1wjqdKGJoV99QT7VVUI8lJ5V6mW64tY=
+	t=1745946430; cv=none; b=fRUCBcvg1XKQmt0GDmUMNRwS9xWzyv4CqvPJTHdQ6dkEpLDTU8xY7iXnbJkVrobGOzHrIFcBk9Hrcpu8hNBxDVxjkFmUlntXv1SZ/Dg3scAZuZVRLWPK4My/gyzLSabE3gLpS2lZsSoknTW7j8M7odTsINO2KGbhT6uCllAdYAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947270; c=relaxed/simple;
-	bh=Q8omofmRTjJhnnnMzgDoK1Kj2vLgUfL8J+dqx0sVdhM=;
+	s=arc-20240116; t=1745946430; c=relaxed/simple;
+	bh=PNY1mPED5HWJojudthxCYO5GKgvPV7SbtRwp+ldhnBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Io11AGfPRPj+YgszoIsUaJI901LZL+njmvdbvZJYZ3gMTQPNzbW475SFJ3/gWSN9CK1cJw4xx+hIHYI49BxSm++/vVu7JbVLxkPYH2nY851my6BPyUM3b1Jfy8qmdntTox7kHp4pXAHJdfqimbvWL4EEY10UdkoOqhY64F4R5hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XteHeNNC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B99C4CEEA;
-	Tue, 29 Apr 2025 17:21:09 +0000 (UTC)
+	 MIME-Version; b=n6tqxpwotf75nVIpXydIYtkjCnzz9uUwBIwDVnciYXLlfC0lDsnIgiXdfgRfcOP0wXsPN/uo5pwEHdeqs/Yp05AclOApEjMb+1y1LhCJTEmDYi0kD2I9ALd4EMkJ2OUODQLk3ka3i6exq6l9l1ObHvogsM1f+DexT9cFK6tBc+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRerBwp0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3B8C4CEE3;
+	Tue, 29 Apr 2025 17:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947270;
-	bh=Q8omofmRTjJhnnnMzgDoK1Kj2vLgUfL8J+dqx0sVdhM=;
+	s=korg; t=1745946430;
+	bh=PNY1mPED5HWJojudthxCYO5GKgvPV7SbtRwp+ldhnBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XteHeNNCiiVrTI3IdsQ0TK68/4XZX7QcJCbJiU8Je/frYV6myGLbcVS4OL68O1nBE
-	 FPX06tAIo9azF24E1wofbwJmUoqqs3UGIfBweAY7FafjcafNWNzNlaylyNFkFg9oq6
-	 TAzKBlLsUWqGxxgpN0IId5/5mLV7G/L0yXGacS0w=
+	b=TRerBwp0t5dWKjOfO5WydmWPZDbXIOvxCpFK3D5t/bgWwHWirtyhXcVEhsGLqkgne
+	 emhhWGH+2ql7HHfZCFxp8z0p3fzYfwN36Y/CMpf4gg6i2bagQv8rrQ64fspA1NIzKo
+	 45V8QV6cyCLnGaX31wuKLqkq/cZlZKtgYGj7Ex/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Young <sean@mess.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 197/286] media: streamzap: remove unnecessary ir_raw_event_reset and handle
-Date: Tue, 29 Apr 2025 18:41:41 +0200
-Message-ID: <20250429161116.066309988@linuxfoundation.org>
+Subject: [PATCH 6.14 265/311] timekeeping: Add a lockdep override in tick_freeze()
+Date: Tue, 29 Apr 2025 18:41:42 +0200
+Message-ID: <20250429161131.883329566@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +65,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Young <sean@mess.org>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 4bed9306050497f49cbe77b842f0d812f4f27593 ]
+[ Upstream commit 92e250c624ea37fde64bfd624fd2556f0d846f18 ]
 
-There is no reason to have a reset after an IR timeout.
-Calling ir_raw_event_handle() twice for the same interrupt has no
-affect.
+tick_freeze() acquires a raw spinlock (tick_freeze_lock). Later in the
+callchain (timekeeping_suspend() -> mc146818_avoid_UIP()) the RTC driver
+acquires a spinlock which becomes a sleeping lock on PREEMPT_RT.  Lockdep
+complains about this lock nesting.
 
-Fixes: 56b0ec30c4bc ("[media] rc/streamzap: fix reporting response times")
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: f656cfbc7a29 ("media: streamzap: fix race between device disconnection and urb callback")
+Add a lockdep override for this special case and a comment explaining
+why it is okay.
+
+Reported-by: Borislav Petkov <bp@alien8.de>
+Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/all/20250404133429.pnAzf-eF@linutronix.de
+Closes: https://lore.kernel.org/all/20250330113202.GAZ-krsjAnurOlTcp-@fat_crate.local/
+Closes: https://lore.kernel.org/all/CAP-bSRZ0CWyZZsMtx046YV8L28LhY0fson2g4EqcwRAVN1Jk+Q@mail.gmail.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/streamzap.c | 2 --
- 1 file changed, 2 deletions(-)
+ kernel/time/tick-common.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/media/rc/streamzap.c b/drivers/media/rc/streamzap.c
-index b6bd3cbec7c7c..cd4bb605a7614 100644
---- a/drivers/media/rc/streamzap.c
-+++ b/drivers/media/rc/streamzap.c
-@@ -215,8 +215,6 @@ static void sz_process_ir_data(struct streamzap_ir *sz, int len)
- 				sz->idle = true;
- 				if (sz->timeout_enabled)
- 					sz_push(sz, rawir);
--				ir_raw_event_handle(sz->rdev);
--				ir_raw_event_reset(sz->rdev);
- 			} else {
- 				sz_push_full_space(sz, sz->buf_in[i]);
- 			}
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index a47bcf71defcf..9a3859443c042 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -509,6 +509,7 @@ void tick_resume(void)
+ 
+ #ifdef CONFIG_SUSPEND
+ static DEFINE_RAW_SPINLOCK(tick_freeze_lock);
++static DEFINE_WAIT_OVERRIDE_MAP(tick_freeze_map, LD_WAIT_SLEEP);
+ static unsigned int tick_freeze_depth;
+ 
+ /**
+@@ -528,9 +529,22 @@ void tick_freeze(void)
+ 	if (tick_freeze_depth == num_online_cpus()) {
+ 		trace_suspend_resume(TPS("timekeeping_freeze"),
+ 				     smp_processor_id(), true);
++		/*
++		 * All other CPUs have their interrupts disabled and are
++		 * suspended to idle. Other tasks have been frozen so there
++		 * is no scheduling happening. This means that there is no
++		 * concurrency in the system at this point. Therefore it is
++		 * okay to acquire a sleeping lock on PREEMPT_RT, such as a
++		 * spinlock, because the lock cannot be held by other CPUs
++		 * or threads and acquiring it cannot block.
++		 *
++		 * Inform lockdep about the situation.
++		 */
++		lock_map_acquire_try(&tick_freeze_map);
+ 		system_state = SYSTEM_SUSPEND;
+ 		sched_clock_suspend();
+ 		timekeeping_suspend();
++		lock_map_release(&tick_freeze_map);
+ 	} else {
+ 		tick_suspend_local();
+ 	}
+@@ -552,8 +566,16 @@ void tick_unfreeze(void)
+ 	raw_spin_lock(&tick_freeze_lock);
+ 
+ 	if (tick_freeze_depth == num_online_cpus()) {
++		/*
++		 * Similar to tick_freeze(). On resumption the first CPU may
++		 * acquire uncontended sleeping locks while other CPUs block on
++		 * tick_freeze_lock.
++		 */
++		lock_map_acquire_try(&tick_freeze_map);
+ 		timekeeping_resume();
+ 		sched_clock_resume();
++		lock_map_release(&tick_freeze_map);
++
+ 		system_state = SYSTEM_RUNNING;
+ 		trace_suspend_resume(TPS("timekeeping_freeze"),
+ 				     smp_processor_id(), false);
 -- 
 2.39.5
 
