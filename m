@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-138605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F56AA18C2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:04:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4B9AA1666
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDF73188AB43
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B7EF7AFBB5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D3625484F;
-	Tue, 29 Apr 2025 18:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691462517AB;
+	Tue, 29 Apr 2025 17:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tGOITI4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJyFHGEp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344D0254850;
-	Tue, 29 Apr 2025 18:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAD4238C21;
+	Tue, 29 Apr 2025 17:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949778; cv=none; b=jmI8wkqM/0BQtnoooj7a8R66onVacNNzwwC685y/Wqph3OOfAyPJ+ABXROqHbPUxYA9jjNprg2hXhmDBfzddyEm9Mi1W+Q3wPMquPLa/JqV9O/tycVXKJN0/rkpvL9Oyh5LH7BVVicum+QIooIPttCQyiiKK6YCAdtA3/BQTCMg=
+	t=1745948209; cv=none; b=aWCeo9hFzIdA5RNMzszAR0h7vc2QIRNJk/TIplCrVTZTmTCCme4EO18vRQEiCkXLVyzE9HOd/bB16Y3jCwqp2VxmwaNMZKCAzBhUxaPxtANammX4ibSqw0WrgYm7w2q23dru32k8ymhB5A12WZLxQIBNGOu/x9730iE0BGhnsuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949778; c=relaxed/simple;
-	bh=pUsKOofhS2JMBd2qrQucH6jCAEFRn/9y2Ao9XAwOyPo=;
+	s=arc-20240116; t=1745948209; c=relaxed/simple;
+	bh=EGbPXemyuJFssqM8cEJmk3XO7P4CBgcNYDV8vU/oQu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFoweiN4KT+ku3OHkYrlKjQk5iEyOw6qtJhZSV/9bQP45OhyHIyrTTbsi7V7ZHP5uTN6rBPhmoRsokdvlYJ5OYv1bl+FrUrZfiqssjxHqao7hG0BQRAr1oye0yXKsZRtxHdqUC/jY9Z32OJRZPvMkU7gnMFc18pLM6pHvEm96f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tGOITI4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983ADC4CEE3;
-	Tue, 29 Apr 2025 18:02:57 +0000 (UTC)
+	 MIME-Version; b=VXKC1YMgWWTBy5ocvNe7BtjfYS1JejxCQRiRIwaFa0CanUTGTsMXjcwf5R78wa2d4WqlvjVUGVpsecab+V6cplf11HYppCL7cDHV9QJwHsAZUypAlIBg/QiWOXEf0pxP3hWuyHBDY6+lkByCC8FzOBGbW/7PKBujaXMVwnivvC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJyFHGEp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE8CC4CEE3;
+	Tue, 29 Apr 2025 17:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949778;
-	bh=pUsKOofhS2JMBd2qrQucH6jCAEFRn/9y2Ao9XAwOyPo=;
+	s=korg; t=1745948208;
+	bh=EGbPXemyuJFssqM8cEJmk3XO7P4CBgcNYDV8vU/oQu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0tGOITI456D+1Nj/h1qkFS9M4KZewzG7egYqRaild9HGPoln6nsEB7D6052pUno6h
-	 hnnvnwbWCYRdD10xiOi3qLcqFr96rg2IcV1T5/UySeL8c7Ibh/ghsHwA2jpkBsqv79
-	 56QFkZIzoMj8moyOncez98oWiZzT7JLwJEpDHYdo=
+	b=rJyFHGEpBis9PZo4Kte0vWcRut+SYBkpqqNkUh8rlBqsDwyPn8EtkNrQmDO1WlEyZ
+	 iW4zGS8vp4CJcT0v64KQybEtN6gpCAsQS5DUfnY2yLZC08jCC7FQBedcAyx8paNwyb
+	 5KUcDpux+mCSe4cysH3KGnDdlfICyZeiRp+zbZ7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Amit Shah <amit.shah@amd.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/167] net_sched: hfsc: Fix a potential UAF in hfsc_dequeue() too
+Subject: [PATCH 6.12 220/280] x86/bugs: Dont fill RSB on context switch with eIBRS
 Date: Tue, 29 Apr 2025 18:42:41 +0200
-Message-ID: <20250429161053.911686448@linuxfoundation.org>
+Message-ID: <20250429161124.123308078@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +65,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 6ccbda44e2cc3d26fd22af54c650d6d5d801addf ]
+[ Upstream commit 27ce8299bc1ec6df8306073785ff82b30b3cc5ee ]
 
-Similarly to the previous patch, we need to safe guard hfsc_dequeue()
-too. But for this one, we don't have a reliable reproducer.
+User->user Spectre v2 attacks (including RSB) across context switches
+are already mitigated by IBPB in cond_mitigation(), if enabled globally
+or if either the prev or the next task has opted in to protection.  RSB
+filling without IBPB serves no purpose for protecting user space, as
+indirect branches are still vulnerable.
 
-Fixes: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 ("Linux-2.6.12-rc2")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20250417184732.943057-3-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+User->kernel RSB attacks are mitigated by eIBRS.  In which case the RSB
+filling on context switch isn't needed, so remove it.
+
+Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Reviewed-by: Amit Shah <amit.shah@amd.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://lore.kernel.org/r/98cdefe42180358efebf78e3b80752850c7a3e1b.1744148254.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/bugs.c | 24 ++++++++++++------------
+ arch/x86/mm/tlb.c          |  6 +++---
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index 901bc93ece5aa..dbed490aafd3d 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1636,10 +1636,16 @@ hfsc_dequeue(struct Qdisc *sch)
- 		if (cl->qdisc->q.qlen != 0) {
- 			/* update ed */
- 			next_len = qdisc_peek_len(cl->qdisc);
--			if (realtime)
--				update_ed(cl, next_len);
--			else
--				update_d(cl, next_len);
-+			/* Check queue length again since some qdisc implementations
-+			 * (e.g., netem/codel) might empty the queue during the peek
-+			 * operation.
-+			 */
-+			if (cl->qdisc->q.qlen != 0) {
-+				if (realtime)
-+					update_ed(cl, next_len);
-+				else
-+					update_d(cl, next_len);
-+			}
- 		} else {
- 			/* the class becomes passive */
- 			eltree_remove(cl);
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 589e34c0b70b5..46bddb5bb15ff 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1578,7 +1578,7 @@ static void __init spec_ctrl_disable_kernel_rrsba(void)
+ 	rrsba_disabled = true;
+ }
+ 
+-static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_mitigation mode)
++static void __init spectre_v2_select_rsb_mitigation(enum spectre_v2_mitigation mode)
+ {
+ 	/*
+ 	 * Similar to context switches, there are two types of RSB attacks
+@@ -1602,7 +1602,7 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
+ 	 */
+ 	switch (mode) {
+ 	case SPECTRE_V2_NONE:
+-		return;
++		break;
+ 
+ 	case SPECTRE_V2_EIBRS:
+ 	case SPECTRE_V2_EIBRS_LFENCE:
+@@ -1611,18 +1611,21 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
+ 			pr_info("Spectre v2 / PBRSB-eIBRS: Retire a single CALL on VMEXIT\n");
+ 			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
+ 		}
+-		return;
++		break;
+ 
+ 	case SPECTRE_V2_RETPOLINE:
+ 	case SPECTRE_V2_LFENCE:
+ 	case SPECTRE_V2_IBRS:
+-		pr_info("Spectre v2 / SpectreRSB : Filling RSB on VMEXIT\n");
++		pr_info("Spectre v2 / SpectreRSB: Filling RSB on context switch and VMEXIT\n");
++		setup_force_cpu_cap(X86_FEATURE_RSB_CTXSW);
+ 		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
+-		return;
+-	}
++		break;
+ 
+-	pr_warn_once("Unknown Spectre v2 mode, disabling RSB mitigation at VM exit");
+-	dump_stack();
++	default:
++		pr_warn_once("Unknown Spectre v2 mode, disabling RSB mitigation\n");
++		dump_stack();
++		break;
++	}
+ }
+ 
+ /*
+@@ -1854,10 +1857,7 @@ static void __init spectre_v2_select_mitigation(void)
+ 	 *
+ 	 * FIXME: Is this pointless for retbleed-affected AMD?
+ 	 */
+-	setup_force_cpu_cap(X86_FEATURE_RSB_CTXSW);
+-	pr_info("Spectre v2 / SpectreRSB mitigation: Filling RSB on context switch\n");
+-
+-	spectre_v2_determine_rsb_fill_type_at_vmexit(mode);
++	spectre_v2_select_rsb_mitigation(mode);
+ 
+ 	/*
+ 	 * Retpoline protects the kernel, but doesn't protect firmware.  IBRS
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index 00ffa74d0dd0b..27d81cb049ff8 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -389,9 +389,9 @@ static void cond_mitigation(struct task_struct *next)
+ 	prev_mm = this_cpu_read(cpu_tlbstate.last_user_mm_spec);
+ 
+ 	/*
+-	 * Avoid user/user BTB poisoning by flushing the branch predictor
+-	 * when switching between processes. This stops one process from
+-	 * doing Spectre-v2 attacks on another.
++	 * Avoid user->user BTB/RSB poisoning by flushing them when switching
++	 * between processes. This stops one process from doing Spectre-v2
++	 * attacks on another.
+ 	 *
+ 	 * Both, the conditional and the always IBPB mode use the mm
+ 	 * pointer to avoid the IBPB when switching between tasks of the
 -- 
 2.39.5
 
