@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6587AA134D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6508BAA11F4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D34E4A550E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFFB71889CBB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BDEE2459C9;
-	Tue, 29 Apr 2025 17:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FE92512DD;
+	Tue, 29 Apr 2025 16:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHQXzI1W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIf2500C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102F521A43D;
-	Tue, 29 Apr 2025 17:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE6482C60;
+	Tue, 29 Apr 2025 16:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946055; cv=none; b=lByxHySniWwS6VFCFQNCnh855zWOijfWjRKsHNO4sZyD2Jy5NUm21p28n8efJ484jKuqRBx1OG3GMb7BYT1QPlwxfo1loiRcI0i0xyWAN5+9xyQGwNkhYvoSALUI7OR+mrCIUVzT13Uw/5lRzaTSu7AVurRufPPH65K1wxb0w+4=
+	t=1745945201; cv=none; b=VoZNyTF6SUahSreMaWQ3h8RkNhMbGkVSQjpyovyO6xkJ3inn5zhbenTdMb8KPpXr2NXX8fpM8q23Cuo3VcUUyuC6uBdgWm8HIDzXk50j2IIpumzlYYVw5KoeS+x+9LJ9SrJ04QcSdQACLGh159kiWoo6d5CdtbT1RAtzXex57SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946055; c=relaxed/simple;
-	bh=d/4DJxQSmQvK/teFunDOMt3QG5Oh8BPBkzmiS/Pc/dw=;
+	s=arc-20240116; t=1745945201; c=relaxed/simple;
+	bh=/n/32A28jt0prlaJFAl8usaniE/7lFe9kcafAYzUs40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZj1MVz/2mh2t0eTvvL9ykDLDhB7h/tgs4BLv8FUS4tPJZD/uqaAwYpHOrbZqyxD8hWmb8YiDp/xB3OSUTYcAAfbwar3lwgt8O4O3kAGk+Sv9pantP9bL+/1wmvQ/1dvrVBxccjnH7Aw/n1CjMrUFAh4RZUDVkfAkrKwDgjCfqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHQXzI1W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966EDC4CEE3;
-	Tue, 29 Apr 2025 17:00:54 +0000 (UTC)
+	 MIME-Version; b=FymHAHKs8W5C+MBolRsfPLWqAl+aEIQ4ISKT3MuHxE0e1w4+l3exaH+xM+3UT856vkHdhsqsWeV2O7MsSR3FHC4vJpR5t0xLQ6L0+G8+fTfz1VP0zZ9HrQmbIviyy3tfIIMgCpD3ymk44jyGIybLOUPbwxaiqOxnaWw9xRT6ysA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HIf2500C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2944C4CEE3;
+	Tue, 29 Apr 2025 16:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946054;
-	bh=d/4DJxQSmQvK/teFunDOMt3QG5Oh8BPBkzmiS/Pc/dw=;
+	s=korg; t=1745945201;
+	bh=/n/32A28jt0prlaJFAl8usaniE/7lFe9kcafAYzUs40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHQXzI1W0eZxR5VzYrpJPtXDKw3i61DE8Geb6BHWaEDQh/53H7a1yEP3GnNZy7uz4
-	 4iIqnZugIQFUAKFQyc90Ni2NxTxEtNq+Q7tVBxfHvUnBp6mOxFVeb77V+A7vsgKu2x
-	 O6Ka66j7knKqBsCIrEZDrVpPKCDAdzjzUylEkkq8=
+	b=HIf2500C032skvggga+eHh8uWIAwe3TYI49UZ9G51xkKBLrLeC45FSX/VWZfrN8pj
+	 HeWvtdimYSHc276CgbeZJmS6jWPYhAvPskjtnOxWuHvVycI/Oiv0CF9CJcrZYgWgBZ
+	 WHFVtXbY4yCrVLlC/FIyeIUNkAll/UDYtbwf7Hig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>
-Subject: [PATCH 6.14 139/311] ata: libata-scsi: Fix ata_mselect_control_ata_feature() return type
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 035/179] drm/mediatek: mtk_dpi: Explicitly manage TVD clock in power on/off
 Date: Tue, 29 Apr 2025 18:39:36 +0200
-Message-ID: <20250429161126.729147667@linuxfoundation.org>
+Message-ID: <20250429161050.829579750@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-commit db91586b1e8f36122a9e5b8fbced11741488dd22 upstream.
+[ Upstream commit 473c33f5ce651365468503c76f33158aaa1c7dd2 ]
 
-The function ata_mselect_control_ata_feature() has a return type defined
-as unsigned int but this function may return negative error codes, which
-are correctly propagated up the call chain as integers.
+In preparation for adding support for MT8195's HDMI reserved
+DPI, add calls to clk_prepare_enable() / clk_disable_unprepare()
+for the TVD clock: in this particular case, the aforementioned
+clock is not (and cannot be) parented to neither pixel or engine
+clocks hence it won't get enabled automatically by the clock
+framework.
 
-Fix ata_mselect_control_ata_feature() to have the correct int return
-type.
+Please note that on all of the currently supported MediaTek
+platforms, the TVD clock is always a parent of either pixel or
+engine clocks, and this means that the common clock framework
+is already enabling this clock before the children.
+On such platforms, this commit will only increase the refcount
+of the TVD clock without any functional change.
 
-While at it, also fix a typo in this function description comment.
-
-Fixes: df60f9c64576 ("scsi: ata: libata: Add ATA feature control sub-page translation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-10-angelogioacchino.delregno@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dpi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -3886,12 +3886,11 @@ static int ata_mselect_control_spg0(stru
+diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
+index 7c68a39339150..191e0cec004b4 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dpi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
+@@ -366,6 +366,7 @@ static void mtk_dpi_power_off(struct mtk_dpi *dpi)
+ 
+ 	mtk_dpi_disable(dpi);
+ 	clk_disable_unprepare(dpi->pixel_clk);
++	clk_disable_unprepare(dpi->tvd_clk);
+ 	clk_disable_unprepare(dpi->engine_clk);
  }
  
- /*
-- * Translate MODE SELECT control mode page, sub-pages f2h (ATA feature mode
-+ * Translate MODE SELECT control mode page, sub-page f2h (ATA feature mode
-  * page) into a SET FEATURES command.
-  */
--static unsigned int ata_mselect_control_ata_feature(struct ata_queued_cmd *qc,
--						    const u8 *buf, int len,
--						    u16 *fp)
-+static int ata_mselect_control_ata_feature(struct ata_queued_cmd *qc,
-+					   const u8 *buf, int len, u16 *fp)
- {
- 	struct ata_device *dev = qc->dev;
- 	struct ata_taskfile *tf = &qc->tf;
+@@ -382,6 +383,12 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
+ 		goto err_refcount;
+ 	}
+ 
++	ret = clk_prepare_enable(dpi->tvd_clk);
++	if (ret) {
++		dev_err(dpi->dev, "Failed to enable tvd pll: %d\n", ret);
++		goto err_engine;
++	}
++
+ 	ret = clk_prepare_enable(dpi->pixel_clk);
+ 	if (ret) {
+ 		dev_err(dpi->dev, "Failed to enable pixel clock: %d\n", ret);
+@@ -391,6 +398,8 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
+ 	return 0;
+ 
+ err_pixel:
++	clk_disable_unprepare(dpi->tvd_clk);
++err_engine:
+ 	clk_disable_unprepare(dpi->engine_clk);
+ err_refcount:
+ 	dpi->refcount--;
+-- 
+2.39.5
+
 
 
 
