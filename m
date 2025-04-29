@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8929AAA1268
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F11D1AA1814
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E43211BA2D66
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:52:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22ED59A77A7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EAF242934;
-	Tue, 29 Apr 2025 16:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498EE2528ED;
+	Tue, 29 Apr 2025 17:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JH2u/nrI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZOUgZBA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0669C215060;
-	Tue, 29 Apr 2025 16:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D9B239072;
+	Tue, 29 Apr 2025 17:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945523; cv=none; b=gQKmshw95o0ZR0NhnSzRYrabUc/HBUmE8sW0AxzlEXa/bQO3KJibyULp/E97t9cwBEYUCa5GpjrKiuG0EquO5PhBcMbyohZt9wsxSQP6shoDfacjEEE81zDRCdDuqV9gggtWn8fQUfLW2X94/WBzp4JQCd+QnPUiJfpBFsGSta8=
+	t=1745949071; cv=none; b=Zdt92SNK1hv25sJvfKEsA9kNtwS6XccWoAt5gtRCudUbgeItKtPsf1YPJgUPZGihmiG3C0Tgi7yB7G05e6mDrjePe0vki6bcvxRTDYiEH77kl2eYUY3dXleVusjMvB1e/COmID7qUnf/r/pp0Js8kmttRjrTXh3B5H/C+7danKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945523; c=relaxed/simple;
-	bh=GswN5RhNiR2cpOWaPT9AqMiYRYDMzuoaI7FMRm6N+wE=;
+	s=arc-20240116; t=1745949071; c=relaxed/simple;
+	bh=PNqyWHymR0wOZ0k/qOzZbhgusK+lKCykqF9ltot5UlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HT7D+6dYI9qFSmMbQj4O+McsENjA58vIvnDWZoCdHlqRdobtszNUkYmy89SMm6IwdWT9A3ZjrOqC6hJOOjLGqEcMRVzkdPZRFpF0/fVCwoCtTDLJ7vtUxN/Ms3PMIkrUJmNr0qWEwF21iclu9P+6V4szX+Hd5Svo9PgDSDi23Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JH2u/nrI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E4BC4CEE3;
-	Tue, 29 Apr 2025 16:52:02 +0000 (UTC)
+	 MIME-Version; b=Cl/1U1abCtrd8KrWlNYSMc2VxHyZGFFAVapeKoofyyWEmmzfDXZliDhzdw6rMkGDS9ZOxm86fe4GDo45KFPmZJWI3MIeRByDFtmjPHzP+BtLXGsPif7Jmf83MVJKALUJIXRNXP2DbdRzQVfvYSRW0JjtG6RNG/UkpzWCReOpIX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZOUgZBA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7125DC4CEE3;
+	Tue, 29 Apr 2025 17:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945522;
-	bh=GswN5RhNiR2cpOWaPT9AqMiYRYDMzuoaI7FMRm6N+wE=;
+	s=korg; t=1745949070;
+	bh=PNqyWHymR0wOZ0k/qOzZbhgusK+lKCykqF9ltot5UlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JH2u/nrIdzx0WlTUPevmn7/+yDk3BJ4FOsmOdW/Xv3X3WPPviBYh0AMHfvOTalOol
-	 mkCv8Q29sbqqdIjVSDAzqWfCj9BBmgNV7Vs1jv8dYkE/WQvoeVKjXc161yS4yPzscK
-	 CwkfE2Jg094n7Q/9yhAAitPhmmzhUkhzbm05IRyQ=
+	b=ZZOUgZBAC4AguIt1yBZGzjfRm6uIkwhdRtdqHMM2MUKamgkRnfuQf9bGhnkOOmPQ0
+	 Rhzh6jU7Xu/8zJXW3NM8vX0g+x/u4vjgK55PLtSUIKLMoCbTL9phE6bYe/Bk8BNEK8
+	 GhUumxPQsTU1DgJs1O9VQTtIA+2na3VhRTlGL2Bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 141/179] cpufreq: scpi: Fix null-ptr-deref in scpi_cpufreq_get_rate()
+	Mike Snitzer <snitzer@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 5.15 205/373] filemap: Fix bounds checking in filemap_read()
 Date: Tue, 29 Apr 2025 18:41:22 +0200
-Message-ID: <20250429161055.100161134@linuxfoundation.org>
+Message-ID: <20250429161131.597706216@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 73b24dc731731edf762f9454552cb3a5b7224949 ]
+[ Upstream commit ace149e0830c380ddfce7e466fe860ca502fe4ee ]
 
-cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
-in the policy->cpus mask. scpi_cpufreq_get_rate() does not check for
-this case, which results in a NULL pointer dereference.
+If the caller supplies an iocb->ki_pos value that is close to the
+filesystem upper limit, and an iterator with a count that causes us to
+overflow that limit, then filemap_read() enters an infinite loop.
 
-Fixes: 343a8d17fa8d ("cpufreq: scpi: remove arm_big_little dependency")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This behaviour was discovered when testing xfstests generic/525 with the
+"localio" optimisation for loopback NFS mounts.
+
+Reported-by: Mike Snitzer <snitzer@kernel.org>
+Fixes: c2a9737f45e2 ("vfs,mm: fix a dead loop in truncate_inode_pages_range()")
+Tested-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+(cherry picked from commit ace149e0830c380ddfce7e466fe860ca502fe4ee)
+[Harshit: Minor conflict resolved due to missing commit: 25d6a23e8d28
+("filemap: Convert filemap_get_read_batch() to use a folio_batch") in
+5.15.y]
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/scpi-cpufreq.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ mm/filemap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
-index b341ffbf56bc3..73539f357c7ae 100644
---- a/drivers/cpufreq/scpi-cpufreq.c
-+++ b/drivers/cpufreq/scpi-cpufreq.c
-@@ -39,9 +39,16 @@ static struct scpi_ops *scpi_ops;
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2617,7 +2617,7 @@ ssize_t filemap_read(struct kiocb *iocb,
+ 	if (unlikely(!iov_iter_count(iter)))
+ 		return 0;
  
- static unsigned int scpi_cpufreq_get_rate(unsigned int cpu)
- {
--	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
--	struct scpi_data *priv = policy->driver_data;
--	unsigned long rate = clk_get_rate(priv->clk);
-+	struct cpufreq_policy *policy;
-+	struct scpi_data *priv;
-+	unsigned long rate;
-+
-+	policy = cpufreq_cpu_get_raw(cpu);
-+	if (unlikely(!policy))
-+		return 0;
-+
-+	priv = policy->driver_data;
-+	rate = clk_get_rate(priv->clk);
+-	iov_iter_truncate(iter, inode->i_sb->s_maxbytes);
++	iov_iter_truncate(iter, inode->i_sb->s_maxbytes - iocb->ki_pos);
+ 	pagevec_init(&pvec);
  
- 	return rate / 1000;
- }
--- 
-2.39.5
-
+ 	do {
 
 
 
