@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED181AA183F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39486AA16CD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A5A54E01CC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1708188F431
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64457253B71;
-	Tue, 29 Apr 2025 17:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5058B244686;
+	Tue, 29 Apr 2025 17:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuJSlo60"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmrBZrk2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB8A2522A8;
-	Tue, 29 Apr 2025 17:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE3C1917E3;
+	Tue, 29 Apr 2025 17:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949364; cv=none; b=PW6+OAs39HXgjPsYnPDQgcZIatCsxq2DuNbyzZK363ki5egBxh9DxS+MWEYma0KzFrdHsKGOCsQqcKUbSW4RGbHzpofVetk4gkobfx8hV8xokwna4uGCsOgXlxXnOBDO9CpamuRG3OG8TvAoXQMBYxGqUHErJOnid7fLXLrE7m8=
+	t=1745948385; cv=none; b=LtKqIyz49toj7KtvLkcmK1eWpreu4O4aPvUIlyRDIaf+ofWqD6bBJmZttbN8p7nJdlufiYjE5hat2XtHIBL9dggrt2xcsyl+zugEMkpLTpzITDcA3HEZFOLO4xHL6GSaYkaARdJA5m3I2/5dFj3pLXvAD09mcH1GSOKX7RpFPlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949364; c=relaxed/simple;
-	bh=lGVscWh7tOnTZMNhxrBk/xgAVklcgIR1U7fDSUsreA8=;
+	s=arc-20240116; t=1745948385; c=relaxed/simple;
+	bh=U7P/Uk/dCxY2QpS9WyzrIyaZnqxChNQu0E/miT0keDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p8x3NPQLdYFRZ8z6qpcpucVQGDp/hWHpW1tlbMq02VHSJB8vS2Sp0OE25ypxwpSV3C7r9d0LDVnsQZv0y4kKf7zkF/78lVuGWdBWPOc8jGbP0VRSUuIRzs+2+8DP2otYlbJiT5td0eit61ihc0Huvc5SLQLC/n/f8m7KeVnMYkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuJSlo60; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBBEC4CEE3;
-	Tue, 29 Apr 2025 17:56:03 +0000 (UTC)
+	 MIME-Version; b=XwsLl4548ykWmalvH8G1lnATl2DxxxAZ8t9WEBtBTfOxWlxqzAypGP90AldRbR+AjidvIyrCO3yRqWwfg7W7TiFbdNQ97Vcl2l7OMjLv4Lp7FrlpTH9vZg8+bI3QHvxW22Wul72xPjHhl0BOCa19NQZ4rM/K/sLG6MvM81M7rKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmrBZrk2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8739BC4CEE3;
+	Tue, 29 Apr 2025 17:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949364;
-	bh=lGVscWh7tOnTZMNhxrBk/xgAVklcgIR1U7fDSUsreA8=;
+	s=korg; t=1745948384;
+	bh=U7P/Uk/dCxY2QpS9WyzrIyaZnqxChNQu0E/miT0keDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vuJSlo601ndty0nCj1KiHTApkknTFbMDXc+OjFzk4PpE9CQG1z2yBOD85HL1gao5B
-	 qJ7quW9ionORbQyRd2FYR1daAo+BO+ircZhGIR445jGrzbHk6CNUHOFuKUOdtaLBru
-	 oyqyekpMXLNzMANOTQ4dfsQ8eb0Xh9+2e3VAlTAk=
+	b=nmrBZrk2aOJmKGRBQ07vhAK8xTKEonsrZOyCVcwR65G2ZjEh1AtAGQPkfotTkq//3
+	 dM4fNmybMCL1GbBylZQMDm06Fqz35DFBJ9xml8s9oTjFoLLFcrmD8ORAATsd7gfMvz
+	 AQ20KO0+/ekYn67SPqnuRPnshfWZHtrmgsYHxQWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 296/373] riscv: uprobes: Add missing fence.i after building the XOL buffer
+Subject: [PATCH 6.12 232/280] scsi: ufs: exynos: gs101: Put UFS device in reset on .suspend()
 Date: Tue, 29 Apr 2025 18:42:53 +0200
-Message-ID: <20250429161135.288871254@linuxfoundation.org>
+Message-ID: <20250429161124.612667898@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-[ Upstream commit 7d1d19a11cfbfd8bae1d89cc010b2cc397cd0c48 ]
+[ Upstream commit cd4c0025069f16fc666c6ffc56c49c9b1154841f ]
 
-The XOL (execute out-of-line) buffer is used to single-step the
-replaced instruction(s) for uprobes. The RISC-V port was missing a
-proper fence.i (i$ flushing) after constructing the XOL buffer, which
-can result in incorrect execution of stale/broken instructions.
+GPIO_OUT[0] is connected to the reset pin of embedded UFS device.
+Before powering off the phy assert the reset signal.
 
-This was found running the BPF selftests "test_progs:
-uprobe_autoattach, attach_probe" on the Spacemit K1/X60, where the
-uprobes tests randomly blew up.
+This is added as a gs101 specific suspend hook so as not to have any
+unintended consequences for other SoCs supported by this driver.
 
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Fixes: 74784081aac8 ("riscv: Add uprobes supported")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Link: https://lore.kernel.org/r/20250419111402.1660267-2-bjorn@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-7-96722cc2ba1b@linaro.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/probes/uprobes.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/ufs/host/ufs-exynos.c | 10 ++++++++++
+ drivers/ufs/host/ufs-exynos.h |  1 +
+ 2 files changed, 11 insertions(+)
 
-diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
-index 194f166b2cc40..0d18ee53fd649 100644
---- a/arch/riscv/kernel/probes/uprobes.c
-+++ b/arch/riscv/kernel/probes/uprobes.c
-@@ -161,6 +161,7 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
- 	/* Initialize the slot */
- 	void *kaddr = kmap_atomic(page);
- 	void *dst = kaddr + (vaddr & ~PAGE_MASK);
-+	unsigned long start = (unsigned long)dst;
- 
- 	memcpy(dst, src, len);
- 
-@@ -170,13 +171,6 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
- 		*(uprobe_opcode_t *)dst = __BUG_INSN_32;
+diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
+index 55ea863b47f3d..5ba17ccf6417f 100644
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -1687,6 +1687,12 @@ static void exynos_ufs_hibern8_notify(struct ufs_hba *hba,
  	}
- 
-+	flush_icache_range(start, start + len);
- 	kunmap_atomic(kaddr);
--
--	/*
--	 * We probably need flush_icache_user_page() but it needs vma.
--	 * This should work on most of architectures by default. If
--	 * architecture needs to do something different it can define
--	 * its own version of the function.
--	 */
--	flush_dcache_page(page);
  }
+ 
++static int gs101_ufs_suspend(struct exynos_ufs *ufs)
++{
++	hci_writel(ufs, 0 << 0, HCI_GPIO_OUT);
++	return 0;
++}
++
+ static int exynos_ufs_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
+ 	enum ufs_notify_change_status status)
+ {
+@@ -1695,6 +1701,9 @@ static int exynos_ufs_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
+ 	if (status == PRE_CHANGE)
+ 		return 0;
+ 
++	if (ufs->drv_data->suspend)
++		ufs->drv_data->suspend(ufs);
++
+ 	if (!ufshcd_is_link_active(hba))
+ 		phy_power_off(ufs->phy);
+ 
+@@ -2172,6 +2181,7 @@ static const struct exynos_ufs_drv_data gs101_ufs_drvs = {
+ 	.pre_link		= gs101_ufs_pre_link,
+ 	.post_link		= gs101_ufs_post_link,
+ 	.pre_pwr_change		= gs101_ufs_pre_pwr_change,
++	.suspend		= gs101_ufs_suspend,
+ };
+ 
+ static const struct of_device_id exynos_ufs_of_match[] = {
+diff --git a/drivers/ufs/host/ufs-exynos.h b/drivers/ufs/host/ufs-exynos.h
+index d0b3df221503c..3c6fe5132190a 100644
+--- a/drivers/ufs/host/ufs-exynos.h
++++ b/drivers/ufs/host/ufs-exynos.h
+@@ -192,6 +192,7 @@ struct exynos_ufs_drv_data {
+ 				struct ufs_pa_layer_attr *pwr);
+ 	int (*pre_hce_enable)(struct exynos_ufs *ufs);
+ 	int (*post_hce_enable)(struct exynos_ufs *ufs);
++	int (*suspend)(struct exynos_ufs *ufs);
+ };
+ 
+ struct ufs_phy_time_cfg {
 -- 
 2.39.5
 
