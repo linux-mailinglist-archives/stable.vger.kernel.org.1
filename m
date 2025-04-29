@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-138817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587BFAA19D1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:16:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4857AA1930
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EF201C01B86
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9BF13A3BF1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751BE24728A;
-	Tue, 29 Apr 2025 18:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E2025335F;
+	Tue, 29 Apr 2025 18:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhAbB6Nd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aj1OvD1z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F06188A0E;
-	Tue, 29 Apr 2025 18:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3DF253327;
+	Tue, 29 Apr 2025 18:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950444; cv=none; b=aCEZVWFEeU9kOf9cA1YwWTvPZfWzJAyNrCr9qQOK1dCKg4eHn6shlSqOruxotYJgFBePHB4oinaJVC13z35dW3o6ZxUI7HRH5EB/tAr5ipjUgXgr+xUqj1tbMeWtguL27U5qXNNolqnk2q+9tiM0y0hf3qnC0c2qdKUvZOL497c=
+	t=1745949765; cv=none; b=VN2h//L5xbjO9ylgbxHko7qcKA0w6mAoMiE7/4a72DG2CPRai0/rNs79IDeoz39fpLOpvweCt+bAdrjJXWIx8ER5qCxZcXxWe+i99IsJhm5fwll8JjlkkhiorOhtmPHtdCtaZOccug8zxPzMqUteOAFnreZ75ySXs4QsyUEOyaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950444; c=relaxed/simple;
-	bh=uXcctiXy/hRV9Cvxx6/nC9CLwNuTngaWqlbUOREYpr4=;
+	s=arc-20240116; t=1745949765; c=relaxed/simple;
+	bh=udF3PFrNks6aCs5N5gg7W71Q3cQwrrr/0boEIYgYyyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=apORQcrq6EyLpRC6vY3+BfXX2Y4Ea1vVAih1VLZ3cOq65zjx/cYHeH2Aqt4cdDv+NLIHYjTuiBbRZnT5Z/8/0qEDIemdVRUgFFbRJ6V4Uo2rXjolrXFpN5das/kCE9Oi1qRudxce2rhRuKajb0YKxqCF1cRnqIED+JRBzRfRcqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhAbB6Nd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB30C4CEE3;
-	Tue, 29 Apr 2025 18:14:03 +0000 (UTC)
+	 MIME-Version; b=f7qNyH5Stsh0qbUqsHH/m0AH6FR8LItO5LwTg5ClsFNRc5ubxrgtiV3UGfrHJ+tB3tzrVeAKKIYPkXi/38bgGZaqwDlIG8BM1Fe5bojLz11zKQY4BHCNqKnbbuJ3QOkVpOtTa71J5N1c6ab2UCA2zwRdcVuTLJgUtWK2TeFC5XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aj1OvD1z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6AF2C4CEE3;
+	Tue, 29 Apr 2025 18:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950443;
-	bh=uXcctiXy/hRV9Cvxx6/nC9CLwNuTngaWqlbUOREYpr4=;
+	s=korg; t=1745949765;
+	bh=udF3PFrNks6aCs5N5gg7W71Q3cQwrrr/0boEIYgYyyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vhAbB6NdO9QBCvqE4hNoM+H/U3iXb0whUmw4ztDXnXlS3KFfExXKNcO54oln+TDc7
-	 h91uaRywo5d8B0AeDYDz+k8CTRwbLNw++eXcWb+r2AFlVNCFLTFzqI+X1d5PCdxSXu
-	 XFsM1G3osQPPw1AHDMmk7ZHE7B19Du9tx3Ifwa7w=
+	b=Aj1OvD1zeUP6pHdYtKXMsxggz+dhl3fOr7cCqIXSvRdOI+a/VN0bQ/kExxRPFfRe2
+	 CWOp9RjUXDvEnsMLn7QdTIxY0KySEWi6ksnO2YWEupOs0lHN4J7sJJ0msKNXjN7fPq
+	 +2h7I/BBGU1whEZiQiWymNBvB/jwLhCc6rR194Cc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Jiri Olsa <jolsa@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/204] perf/x86: Fix non-sampling (counting) events on certain x86 platforms
-Date: Tue, 29 Apr 2025 18:42:36 +0200
-Message-ID: <20250429161102.208073051@linuxfoundation.org>
+Subject: [PATCH 6.1 049/167] net: lwtunnel: disable BHs when required
+Date: Tue, 29 Apr 2025 18:42:37 +0200
+Message-ID: <20250429161053.745199705@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,64 +65,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-[ Upstream commit 1a97fea9db9e9b9c4839d4232dde9f505ff5b4cc ]
+[ Upstream commit c03a49f3093a4903c8a93c8b5c9a297b5343b169 ]
 
-Perf doesn't work at perf stat for hardware events on certain x86 platforms:
+In lwtunnel_{output|xmit}(), dev_xmit_recursion() may be called in
+preemptible scope for PREEMPT kernels. This patch disables BHs before
+calling dev_xmit_recursion(). BHs are re-enabled only at the end, since
+we must ensure the same CPU is used for both dev_xmit_recursion_inc()
+and dev_xmit_recursion_dec() (and any other recursion levels in some
+cases) in order to maintain valid per-cpu counters.
 
- $perf stat -- sleep 1
- Performance counter stats for 'sleep 1':
-             16.44 msec task-clock                       #    0.016 CPUs utilized
-                 2      context-switches                 #  121.691 /sec
-                 0      cpu-migrations                   #    0.000 /sec
-                54      page-faults                      #    3.286 K/sec
-   <not supported>	cycles
-   <not supported>	instructions
-   <not supported>	branches
-   <not supported>	branch-misses
-
-The reason is that the check in x86_pmu_hw_config() for sampling events is
-unexpectedly applied to counting events as well.
-
-It should only impact x86 platforms with limit_period used for non-PEBS
-events. For Intel platforms, it should only impact some older platforms,
-e.g., HSW, BDW and NHM.
-
-Fixes: 88ec7eedbbd2 ("perf/x86: Fix low freqency setting issue")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Link: https://lore.kernel.org/r/20250423064724.3716211-1-luogengkun@huaweicloud.com
+Reported-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAADnVQJFWn3dBFJtY+ci6oN1pDFL=TzCmNbRgey7MdYxt_AP2g@mail.gmail.com/
+Reported-by: Eduard Zingerman <eddyz87@gmail.com>
+Closes: https://lore.kernel.org/netdev/m2h62qwf34.fsf@gmail.com/
+Fixes: 986ffb3a57c5 ("net: lwtunnel: fix recursion loops")
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250416160716.8823-1-justin.iurman@uliege.be
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/lwtunnel.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 1458ccaa6a057..ad63bd408cd90 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -623,7 +623,7 @@ int x86_pmu_hw_config(struct perf_event *event)
- 	if (event->attr.type == event->pmu->type)
- 		event->hw.config |= event->attr.config & X86_RAW_EVENT_MASK;
+diff --git a/net/core/lwtunnel.c b/net/core/lwtunnel.c
+index 4417a18b3e951..f63586c9ce021 100644
+--- a/net/core/lwtunnel.c
++++ b/net/core/lwtunnel.c
+@@ -332,6 +332,8 @@ int lwtunnel_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	struct dst_entry *dst;
+ 	int ret;
  
--	if (!event->attr.freq && x86_pmu.limit_period) {
-+	if (is_sampling_event(event) && !event->attr.freq && x86_pmu.limit_period) {
- 		s64 left = event->attr.sample_period;
- 		x86_pmu.limit_period(event, &left);
- 		if (left > event->attr.sample_period)
++	local_bh_disable();
++
+ 	if (dev_xmit_recursion()) {
+ 		net_crit_ratelimited("%s(): recursion limit reached on datapath\n",
+ 				     __func__);
+@@ -347,8 +349,10 @@ int lwtunnel_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	lwtstate = dst->lwtstate;
+ 
+ 	if (lwtstate->type == LWTUNNEL_ENCAP_NONE ||
+-	    lwtstate->type > LWTUNNEL_ENCAP_MAX)
+-		return 0;
++	    lwtstate->type > LWTUNNEL_ENCAP_MAX) {
++		ret = 0;
++		goto out;
++	}
+ 
+ 	ret = -EOPNOTSUPP;
+ 	rcu_read_lock();
+@@ -363,11 +367,13 @@ int lwtunnel_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	if (ret == -EOPNOTSUPP)
+ 		goto drop;
+ 
+-	return ret;
++	goto out;
+ 
+ drop:
+ 	kfree_skb(skb);
+ 
++out:
++	local_bh_enable();
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(lwtunnel_output);
+@@ -379,6 +385,8 @@ int lwtunnel_xmit(struct sk_buff *skb)
+ 	struct dst_entry *dst;
+ 	int ret;
+ 
++	local_bh_disable();
++
+ 	if (dev_xmit_recursion()) {
+ 		net_crit_ratelimited("%s(): recursion limit reached on datapath\n",
+ 				     __func__);
+@@ -395,8 +403,10 @@ int lwtunnel_xmit(struct sk_buff *skb)
+ 	lwtstate = dst->lwtstate;
+ 
+ 	if (lwtstate->type == LWTUNNEL_ENCAP_NONE ||
+-	    lwtstate->type > LWTUNNEL_ENCAP_MAX)
+-		return 0;
++	    lwtstate->type > LWTUNNEL_ENCAP_MAX) {
++		ret = 0;
++		goto out;
++	}
+ 
+ 	ret = -EOPNOTSUPP;
+ 	rcu_read_lock();
+@@ -411,11 +421,13 @@ int lwtunnel_xmit(struct sk_buff *skb)
+ 	if (ret == -EOPNOTSUPP)
+ 		goto drop;
+ 
+-	return ret;
++	goto out;
+ 
+ drop:
+ 	kfree_skb(skb);
+ 
++out:
++	local_bh_enable();
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(lwtunnel_xmit);
+@@ -427,6 +439,8 @@ int lwtunnel_input(struct sk_buff *skb)
+ 	struct dst_entry *dst;
+ 	int ret;
+ 
++	DEBUG_NET_WARN_ON_ONCE(!in_softirq());
++
+ 	if (dev_xmit_recursion()) {
+ 		net_crit_ratelimited("%s(): recursion limit reached on datapath\n",
+ 				     __func__);
 -- 
 2.39.5
 
