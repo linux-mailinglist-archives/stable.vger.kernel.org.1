@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C15CDAA1246
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB476AA1397
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F69B4A6CD5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A26414C3C02
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373E3246326;
-	Tue, 29 Apr 2025 16:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205A02512F3;
+	Tue, 29 Apr 2025 17:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qH1ngR6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6bFDvzN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84B221772B;
-	Tue, 29 Apr 2025 16:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D7324A067;
+	Tue, 29 Apr 2025 17:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945456; cv=none; b=CMw95WV058aoqJOQClyYECg7MlhiiDDuxlG7HmB1rt66PSyRdhDBdlLJtRcMUoqnvYFB3zwnRZnXawN0yw5EXiOhmTZEc7f27HrQDSplFjIuq1FDukoBtFY1CkYSe7TbgUARIc5o2FTDNQ9u47sD0pkiL4xENLiwMOioaIdEsSc=
+	t=1745946209; cv=none; b=Xt+HALn2YqH0EvU+WI/gfXFNz+9ppVabv+2ItF3STw8kyclP0Bg0N46CrB6eYorFuDS1lqzp3LveSJcOclpqc7TFxZfmJ8eXWBimEiN+WE7iP43Ss/+4vNVNMNBTLU3/byq0+00+EHPKoGPZ+gqwVqaNQtz1dtmhALEIFTiGuWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945456; c=relaxed/simple;
-	bh=PelSaCWYcLevcqksVD3H1EPH2cfFmwa+4M5b2cEe5e4=;
+	s=arc-20240116; t=1745946209; c=relaxed/simple;
+	bh=iC5NHaktYZXz3m3MWgW+V27BmjZ4D65YrPmJJI0xl4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjajO4UcISc143cVgoLmOLRHA4uQqP5d4YU8NcBn4aFNl4UCcSRm7ZiNUh+4WwlAVcyaR76s8xqaCc5HvjL/eHOCm4Mq9IZkrRutj81U8wcj4oQWPyj4qDjAjuyJE0Q9yzfvTOReohE1KglG3ocpwcs8ouXm8sLqlrnRSqYoHRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qH1ngR6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417A1C4CEE9;
-	Tue, 29 Apr 2025 16:50:55 +0000 (UTC)
+	 MIME-Version; b=f7gfWOsG0gTxTLuToK8JIB8MskCzz+uaNkrXVudjujk+1eyIy23JjCtu1jBmbNjoB5e7sGO6CnX7Wy9/e8jleFS+743Cg9EnKNfZRUOfXqmp5Tlc1mzaCCRfrrmF/eHSpbU8+oaFYHEKpXD9K+JnDOO6dkphAt9Dh1DtWig1U/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6bFDvzN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632B8C4CEE3;
+	Tue, 29 Apr 2025 17:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945455;
-	bh=PelSaCWYcLevcqksVD3H1EPH2cfFmwa+4M5b2cEe5e4=;
+	s=korg; t=1745946209;
+	bh=iC5NHaktYZXz3m3MWgW+V27BmjZ4D65YrPmJJI0xl4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qH1ngR6RdMsta8vRLTauAz5nEKM9OyX1EsGjvc4DFMe7gWDvyHyi23HpNw1ssXmTM
-	 c45SLcpLkFsIjIgY4cc2OHSw1tvLd7rySuvoJRtyDwAak2EN4Fs1fy9PyfDheiqi3/
-	 7CBbFHsBm4cLteJXmxFV6Q2xJA9NZUYQumo3qqzo=
+	b=U6bFDvzNXBMetHXAB+n2OXTpHGKVgZa345FB8aWURJ/2mC/w/kgJALiD82WF0IXjH
+	 hqXO8P9X+29lrhEO6D/ddCuwPLoMm8ddoIFb9WLK7kz+whajW5ByexdPmaYT72hzAq
+	 MPBLD9A1ddGo7IWjvx7xegsOMAQzGAz6bCSIxvtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Feng Yang <yangfeng@kylinos.cn>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 088/179] RDMA/usnic: Fix passing zero to PTR_ERR in usnic_ib_pci_probe()
+Subject: [PATCH 6.14 192/311] selftests/bpf: Fix cap_enable_effective() return code
 Date: Tue, 29 Apr 2025 18:40:29 +0200
-Message-ID: <20250429161052.962852335@linuxfoundation.org>
+Message-ID: <20250429161128.877900046@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Feng Yang <yangfeng@kylinos.cn>
 
-[ Upstream commit 95ba3850fed03e01b422ab5d7943aeba130c9723 ]
+[ Upstream commit 339c1f8ea11cc042c30c315c1a8f61e4b8a90117 ]
 
-drivers/infiniband/hw/usnic/usnic_ib_main.c:590
- usnic_ib_pci_probe() warn: passing zero to 'PTR_ERR'
+The caller of cap_enable_effective() expects negative error code.
+Fix it.
 
-Make usnic_ib_device_add() return NULL on fail path, also remove
-useless NULL check for usnic_ib_discover_pf()
+Before:
+  failed to restore CAP_SYS_ADMIN: -1, Unknown error -1
 
-Fixes: e3cf00d0a87f ("IB/usnic: Add Cisco VIC low-level hardware driver")
-Link: https://patch.msgid.link/r/20250324123132.2392077-1-yuehaibing@huawei.com
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+After:
+  failed to restore CAP_SYS_ADMIN: -3, No such process
+  failed to restore CAP_SYS_ADMIN: -22, Invalid argument
+
+Signed-off-by: Feng Yang <yangfeng@kylinos.cn>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20250305022234.44932-1-yangfeng59949@163.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/usnic/usnic_ib_main.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ tools/testing/selftests/bpf/cap_helpers.c         | 8 ++++----
+ tools/testing/selftests/bpf/cap_helpers.h         | 1 +
+ tools/testing/selftests/bpf/prog_tests/verifier.c | 4 ++--
+ tools/testing/selftests/bpf/test_loader.c         | 6 +++---
+ 4 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/infiniband/hw/usnic/usnic_ib_main.c b/drivers/infiniband/hw/usnic/usnic_ib_main.c
-index c9abe1c01e4eb..eaa60554eb462 100644
---- a/drivers/infiniband/hw/usnic/usnic_ib_main.c
-+++ b/drivers/infiniband/hw/usnic/usnic_ib_main.c
-@@ -380,7 +380,7 @@ static void *usnic_ib_device_add(struct pci_dev *dev)
- 	if (!us_ibdev) {
- 		usnic_err("Device %s context alloc failed\n",
- 				netdev_name(pci_get_drvdata(dev)));
--		return ERR_PTR(-EFAULT);
-+		return NULL;
+diff --git a/tools/testing/selftests/bpf/cap_helpers.c b/tools/testing/selftests/bpf/cap_helpers.c
+index d5ac507401d7c..98f840c3a38f7 100644
+--- a/tools/testing/selftests/bpf/cap_helpers.c
++++ b/tools/testing/selftests/bpf/cap_helpers.c
+@@ -19,7 +19,7 @@ int cap_enable_effective(__u64 caps, __u64 *old_caps)
+ 
+ 	err = capget(&hdr, data);
+ 	if (err)
+-		return err;
++		return -errno;
+ 
+ 	if (old_caps)
+ 		*old_caps = (__u64)(data[1].effective) << 32 | data[0].effective;
+@@ -32,7 +32,7 @@ int cap_enable_effective(__u64 caps, __u64 *old_caps)
+ 	data[1].effective |= cap1;
+ 	err = capset(&hdr, data);
+ 	if (err)
+-		return err;
++		return -errno;
+ 
+ 	return 0;
+ }
+@@ -49,7 +49,7 @@ int cap_disable_effective(__u64 caps, __u64 *old_caps)
+ 
+ 	err = capget(&hdr, data);
+ 	if (err)
+-		return err;
++		return -errno;
+ 
+ 	if (old_caps)
+ 		*old_caps = (__u64)(data[1].effective) << 32 | data[0].effective;
+@@ -61,7 +61,7 @@ int cap_disable_effective(__u64 caps, __u64 *old_caps)
+ 	data[1].effective &= ~cap1;
+ 	err = capset(&hdr, data);
+ 	if (err)
+-		return err;
++		return -errno;
+ 
+ 	return 0;
+ }
+diff --git a/tools/testing/selftests/bpf/cap_helpers.h b/tools/testing/selftests/bpf/cap_helpers.h
+index 6d163530cb0fd..8dcb28557f762 100644
+--- a/tools/testing/selftests/bpf/cap_helpers.h
++++ b/tools/testing/selftests/bpf/cap_helpers.h
+@@ -4,6 +4,7 @@
+ 
+ #include <linux/types.h>
+ #include <linux/capability.h>
++#include <errno.h>
+ 
+ #ifndef CAP_PERFMON
+ #define CAP_PERFMON		38
+diff --git a/tools/testing/selftests/bpf/prog_tests/verifier.c b/tools/testing/selftests/bpf/prog_tests/verifier.c
+index 8a0e1ff8a2dc6..ecc320e045513 100644
+--- a/tools/testing/selftests/bpf/prog_tests/verifier.c
++++ b/tools/testing/selftests/bpf/prog_tests/verifier.c
+@@ -121,7 +121,7 @@ static void run_tests_aux(const char *skel_name,
+ 	/* test_verifier tests are executed w/o CAP_SYS_ADMIN, do the same here */
+ 	err = cap_disable_effective(1ULL << CAP_SYS_ADMIN, &old_caps);
+ 	if (err) {
+-		PRINT_FAIL("failed to drop CAP_SYS_ADMIN: %i, %s\n", err, strerror(err));
++		PRINT_FAIL("failed to drop CAP_SYS_ADMIN: %i, %s\n", err, strerror(-err));
+ 		return;
  	}
  
- 	us_ibdev->ufdev = usnic_fwd_dev_alloc(dev);
-@@ -520,8 +520,8 @@ static struct usnic_ib_dev *usnic_ib_discover_pf(struct usnic_vnic *vnic)
+@@ -131,7 +131,7 @@ static void run_tests_aux(const char *skel_name,
+ 
+ 	err = cap_enable_effective(old_caps, NULL);
+ 	if (err)
+-		PRINT_FAIL("failed to restore CAP_SYS_ADMIN: %i, %s\n", err, strerror(err));
++		PRINT_FAIL("failed to restore CAP_SYS_ADMIN: %i, %s\n", err, strerror(-err));
+ }
+ 
+ #define RUN(skel) run_tests_aux(#skel, skel##__elf_bytes, NULL)
+diff --git a/tools/testing/selftests/bpf/test_loader.c b/tools/testing/selftests/bpf/test_loader.c
+index 53b06647cf57d..8a403e5aa3145 100644
+--- a/tools/testing/selftests/bpf/test_loader.c
++++ b/tools/testing/selftests/bpf/test_loader.c
+@@ -773,7 +773,7 @@ static int drop_capabilities(struct cap_state *caps)
+ 
+ 	err = cap_disable_effective(caps_to_drop, &caps->old_caps);
+ 	if (err) {
+-		PRINT_FAIL("failed to drop capabilities: %i, %s\n", err, strerror(err));
++		PRINT_FAIL("failed to drop capabilities: %i, %s\n", err, strerror(-err));
+ 		return err;
  	}
  
- 	us_ibdev = usnic_ib_device_add(parent_pci);
--	if (IS_ERR_OR_NULL(us_ibdev)) {
--		us_ibdev = us_ibdev ? us_ibdev : ERR_PTR(-EFAULT);
-+	if (!us_ibdev) {
-+		us_ibdev = ERR_PTR(-EFAULT);
- 		goto out;
- 	}
+@@ -790,7 +790,7 @@ static int restore_capabilities(struct cap_state *caps)
  
-@@ -584,10 +584,10 @@ static int usnic_ib_pci_probe(struct pci_dev *pdev,
- 	}
- 
- 	pf = usnic_ib_discover_pf(vf->vnic);
--	if (IS_ERR_OR_NULL(pf)) {
--		usnic_err("Failed to discover pf of vnic %s with err%ld\n",
--				pci_name(pdev), PTR_ERR(pf));
--		err = pf ? PTR_ERR(pf) : -EFAULT;
-+	if (IS_ERR(pf)) {
-+		err = PTR_ERR(pf);
-+		usnic_err("Failed to discover pf of vnic %s with err%d\n",
-+				pci_name(pdev), err);
- 		goto out_clean_vnic;
- 	}
- 
+ 	err = cap_enable_effective(caps->old_caps, NULL);
+ 	if (err)
+-		PRINT_FAIL("failed to restore capabilities: %i, %s\n", err, strerror(err));
++		PRINT_FAIL("failed to restore capabilities: %i, %s\n", err, strerror(-err));
+ 	caps->initialized = false;
+ 	return err;
+ }
+@@ -959,7 +959,7 @@ void run_subtest(struct test_loader *tester,
+ 		if (subspec->caps) {
+ 			err = cap_enable_effective(subspec->caps, NULL);
+ 			if (err) {
+-				PRINT_FAIL("failed to set capabilities: %i, %s\n", err, strerror(err));
++				PRINT_FAIL("failed to set capabilities: %i, %s\n", err, strerror(-err));
+ 				goto subtest_cleanup;
+ 			}
+ 		}
 -- 
 2.39.5
 
