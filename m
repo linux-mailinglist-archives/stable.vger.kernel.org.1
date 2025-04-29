@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FC7AA1648
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F5DAA13D2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E3ED4A1141
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0468F189FAE9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4312242D6A;
-	Tue, 29 Apr 2025 17:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6574B24C08D;
+	Tue, 29 Apr 2025 17:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B47xkQAu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gENi1PFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC1D82C60;
-	Tue, 29 Apr 2025 17:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3E7229B05;
+	Tue, 29 Apr 2025 17:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947889; cv=none; b=Z1qhE9EQSKLFBxCj8drcB65tRi1DZmJvxgxfeuiANkTnK7hgeBGLUo6X7S8j3dlGUbKjSJAg2gnKHVOO8IW7qHpSE0zEVyb7CW16m2iAV7lLVPTjTYAu3DJXxHJNXBjnjIVmgz1hgISJ9ML9tTlod9sFmcj4BodyQkpJxZ9DEwE=
+	t=1745946349; cv=none; b=tpyOZywZT4hcnMNWLE9S930wyjmKQDaXX56IgfDh9FyLbhNM87duRqG0DtaoCQRTMUuSK+gSFMgVKzh/5YEH0bLpO4Z4QUhY1cx+nHUXipQx0l+ohqSt7D0sgm8DtTcioMZud0mHy2BY5CLVi+wWgjGEEiO96/lvBCoRfHa4UiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947889; c=relaxed/simple;
-	bh=Ug8DpiHDlJXvjuL/79ey0iEuXXrDYCtLsYiB+n8Ec1c=;
+	s=arc-20240116; t=1745946349; c=relaxed/simple;
+	bh=Z+yMLDaoJqFAjCeNsaj9OqT8rDhGLgohoIA5P0SqG2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=puyO0Sj36vhVFuSR0R3c631NqOHBU07LKVreTv77cTYyQoYnRd3UqFJsurGylbgpkJttxilCLPWqJiBH2iJa98Mw+Yvt+tOdMlD9UT0PdD1iTTCn4ONoq1drD0Zno/FSL3//FYuKjhJkqKJOP8yVCL8cgUFUF80xGAVXgqvVh5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B47xkQAu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2240EC4CEE3;
-	Tue, 29 Apr 2025 17:31:28 +0000 (UTC)
+	 MIME-Version; b=rSnPamp4x+Xkdd838SDyqzdv4MyPLiVt6GZ5i+dOuow45gdlH5QhsyYHmSAjqJ9f4iLloyHuwg7bgtJcsvncDN1qAI5kaNaIDgFawfmwi0UvZ36QtLcDe35pijlf7p9DaRhswLY5C/eY/Vopnug3S/oyfHiHECN/p/IttxfKzzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gENi1PFb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943A2C4CEEF;
+	Tue, 29 Apr 2025 17:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947889;
-	bh=Ug8DpiHDlJXvjuL/79ey0iEuXXrDYCtLsYiB+n8Ec1c=;
+	s=korg; t=1745946349;
+	bh=Z+yMLDaoJqFAjCeNsaj9OqT8rDhGLgohoIA5P0SqG2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B47xkQAuZjzzwcDafZDezedBphqLtZfr4l8Z0dHKVJaN0tQiNQrJRdLdVJhWEDauQ
-	 z7/AY2UG0KslDfsNhgM1kuVs9wNR7su+DmgscPYgJxHe2tsoxukgFGyprZIgZ+27wK
-	 C96MlziNZD/cYZ3mOoKC0raf1Bdrv44D+eJOgQg4=
+	b=gENi1PFbMpwqfx5+tIat1iXZeH1lMxiNO07R41bYTS6ida6HWNl7K35/g+NyrH7NI
+	 jLdmMgIGiPRkQQzIh+A5ftfYh0cj6cG0XM/ao3e/YflZ5txyomOOvVapqoys5K1w+l
+	 6f0I4rKiaxBNN6XY9gnUUECCG9u+RO2t2obVJo3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ehrenreich <michideep@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 133/280] USB: serial: ftdi_sio: add support for Abacus Electrics Optical Probe
+	kernel test robot <lkp@intel.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 237/311] sched/isolation: Make CONFIG_CPU_ISOLATION depend on CONFIG_SMP
 Date: Tue, 29 Apr 2025 18:41:14 +0200
-Message-ID: <20250429161120.570150524@linuxfoundation.org>
+Message-ID: <20250429161130.733080826@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ehrenreich <michideep@gmail.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit b399078f882b6e5d32da18b6c696cc84b12f90d5 upstream.
+[ Upstream commit 975776841e689dd8ba36df9fa72ac3eca3c2957a ]
 
-Abacus Electrics makes optical probes for interacting with smart meters
-over an optical interface.
+kernel/sched/isolation.c obviously makes no sense without CONFIG_SMP, but
+the Kconfig entry we have right now:
 
-At least one version uses an FT232B chip (as detected by ftdi_sio) with
-a custom USB PID, which needs to be added to the list to make the device
-work in a plug-and-play fashion.
+	config CPU_ISOLATION
+		bool "CPU isolation"
+		depends on SMP || COMPILE_TEST
 
-Signed-off-by: Michael Ehrenreich <michideep@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+allows the creation of pointless .config's which cause
+build failures.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250330134955.GA7910@redhat.com
+
+Closes: https://lore.kernel.org/oe-kbuild-all/202503260646.lrUqD3j5-lkp@intel.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/ftdi_sio.c     |    2 ++
- drivers/usb/serial/ftdi_sio_ids.h |    5 +++++
- 2 files changed, 7 insertions(+)
+ init/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -1093,6 +1093,8 @@ static const struct usb_device_id id_tab
- 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 1) },
- 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 2) },
- 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 3) },
-+	/* Abacus Electrics */
-+	{ USB_DEVICE(FTDI_VID, ABACUS_OPTICAL_PROBE_PID) },
- 	{ }					/* Terminating entry */
- };
+diff --git a/init/Kconfig b/init/Kconfig
+index 5ab47c346ef93..dc7b10a1fad2b 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -711,7 +711,7 @@ endmenu # "CPU/Task time and stats accounting"
  
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -443,6 +443,11 @@
- #define LINX_FUTURE_2_PID   0xF44C	/* Linx future device */
- 
- /*
-+ * Abacus Electrics
-+ */
-+#define ABACUS_OPTICAL_PROBE_PID	0xf458 /* ABACUS ELECTRICS Optical Probe */
-+
-+/*
-  * Oceanic product ids
-  */
- #define FTDI_OCEANIC_PID	0xF460  /* Oceanic dive instrument */
+ config CPU_ISOLATION
+ 	bool "CPU isolation"
+-	depends on SMP || COMPILE_TEST
++	depends on SMP
+ 	default y
+ 	help
+ 	  Make sure that CPUs running critical tasks are not disturbed by
+-- 
+2.39.5
+
 
 
 
