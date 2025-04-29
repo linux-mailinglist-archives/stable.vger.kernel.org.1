@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-137173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67FAAAA1213
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD39AA1475
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:16:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DD901BA32F7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6957F1649C2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408E323C8D6;
-	Tue, 29 Apr 2025 16:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6492472B4;
+	Tue, 29 Apr 2025 17:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caVXsdD4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHgTG4UR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF4F24113C;
-	Tue, 29 Apr 2025 16:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF6121883E;
+	Tue, 29 Apr 2025 17:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945282; cv=none; b=VCBbLa0wC8q42o28xls3qYbPV340HfXAnr81IFgxpaAwYqpVhOVRjyUMjSXMKVYfktMd1afPgBeC0h/oCRGoHNv6ibO/A5s2/lXRnXqRa0M6iIZ9HLDwVj9LyQRJoNq7QWfKCzlEQPqDAXYCa71BzABI/Pv2liMTt9rHEYaZKV0=
+	t=1745946854; cv=none; b=c5R5ykw//Hx0EhQCNrMF7w0iH5kdXUSERunYMyabk9UyDTHYofv5kO/I7cBiU0x7uGjpZC7WfJOoHvpjp6QTdKdkGeS0V+nMJ/l1MuluacMYPSghUNdHrT530wI2USgxN7xP1NkhOO5SkMDWFAQOwBBXGunIWX879EMmU+2RBrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945282; c=relaxed/simple;
-	bh=l8tKARZ8SVfd65o55HA+NemItSSraUgYx0yZl6lo+YQ=;
+	s=arc-20240116; t=1745946854; c=relaxed/simple;
+	bh=v7y6mo/fKM0RHzMB6Vqd0XE6BmfilyVZqhNdym6Apto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r0/EsuvVFGT+6V8bwT5J67Vs2taI/Bw8xal67hL8JmoaqAQmEZW+aPeIn1gRnnsVEa0Er5BE4ORsPo13M6XHbBxGqe1zSMNvaItsq8DrpiWPlpY5ywEF359LYvyDaXRh+EEr3jJFyWMLtCCbtRhG5w8VvCNSF4aRnF0s2omhY1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caVXsdD4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC69C4CEE3;
-	Tue, 29 Apr 2025 16:48:01 +0000 (UTC)
+	 MIME-Version; b=pRYlNzIhdUcoiSXnAY2ey0yE7ssD25gpvc7uirE7KE0RbdbI4uB/eeVu3VuBIfnGUDAkc1p4Tb0o0qspE6e6c5GTMugDNyOr1Fsr8Xf9FMjuMbzupia+8xlt0NqeYN3CKvggyyhS3sgf4jhTGYC2gX4IkNjxvlbGLMhQY2gpb2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHgTG4UR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F15C4CEE3;
+	Tue, 29 Apr 2025 17:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945281;
-	bh=l8tKARZ8SVfd65o55HA+NemItSSraUgYx0yZl6lo+YQ=;
+	s=korg; t=1745946854;
+	bh=v7y6mo/fKM0RHzMB6Vqd0XE6BmfilyVZqhNdym6Apto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=caVXsdD4Sb9wCF4DKNALK3Qs9KlIXQcm9B3Sn5sY3UI5y5w/6Z7jlianANXYN7cJG
-	 AE7hNrZbSLiKd9lrZVzGUHFYwEFtbEsBC6K3P55+NAJEJ7hJx+06C3EZV5+fg3r6xu
-	 6lqlqOUJbycG0LTmxziRRdroihRY/QxzTl2idxqg=
+	b=jHgTG4URETzVfeVn7eQiktiQgeTbe25dDGV4lz9XPKOk0aLPISjm+Lpf6MIZyQR7W
+	 lkzwDjOcFPaavRFcuDT5I4oBqhlWXvXc5uw/rBmoohCiaVcw+q/RLx7Y5qdSHaFmew
+	 SgvhKw9emqmk+m5QxBOm3umG8dBceLOX4jqmBQrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.4 053/179] media: i2c: ov7251: Set enable GPIO low in probe
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 5.10 090/286] gpio: zynq: Fix wakeup source leaks on device unbind
 Date: Tue, 29 Apr 2025 18:39:54 +0200
-Message-ID: <20250429161051.544748691@linuxfoundation.org>
+Message-ID: <20250429161111.560693376@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit a1963698d59cec83df640ded343af08b76c8e9c5 upstream.
+commit c5672e310ad971d408752fce7596ed27adc6008f upstream.
 
-Set the enable GPIO low when acquiring it.
+Device can be unbound, so driver must also release memory for the wakeup
+source.
 
-Fixes: d30bb512da3d ("media: Add a driver for the ov7251 camera sensor")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250406202245.53854-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov7251.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-zynq.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/i2c/ov7251.c
-+++ b/drivers/media/i2c/ov7251.c
-@@ -1330,7 +1330,7 @@ static int ov7251_probe(struct i2c_clien
- 		return PTR_ERR(ov7251->analog_regulator);
- 	}
- 
--	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_HIGH);
-+	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_LOW);
- 	if (IS_ERR(ov7251->enable_gpio)) {
- 		dev_err(dev, "cannot get enable gpio\n");
- 		return PTR_ERR(ov7251->enable_gpio);
+--- a/drivers/gpio/gpio-zynq.c
++++ b/drivers/gpio/gpio-zynq.c
+@@ -1016,6 +1016,7 @@ static int zynq_gpio_remove(struct platf
+ 	ret = pm_runtime_get_sync(&pdev->dev);
+ 	if (ret < 0)
+ 		dev_warn(&pdev->dev, "pm_runtime_get_sync() Failed\n");
++	device_init_wakeup(&pdev->dev, 0);
+ 	gpiochip_remove(&gpio->chip);
+ 	clk_disable_unprepare(gpio->clk);
+ 	device_set_wakeup_capable(&pdev->dev, 0);
 
 
 
