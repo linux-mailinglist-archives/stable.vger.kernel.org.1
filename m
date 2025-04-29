@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596FCAA179C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:49:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22623AA1232
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D0B71BC4FD4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6412F7B4111
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075D22522A1;
-	Tue, 29 Apr 2025 17:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB512248878;
+	Tue, 29 Apr 2025 16:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ft4da7j6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZOV4Dg5f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79D2239072;
-	Tue, 29 Apr 2025 17:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E462472AA;
+	Tue, 29 Apr 2025 16:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948959; cv=none; b=rOVhfzdt6cAJcEJ0gLgmMqSrhZH5l9DbN+ks9H74qBmGjPVrHDgMG8PDD/mLEopyg87iV7cqddT0FrVEjN4sHvBFmNH9wVEpZXyDYLi51Fy5L1Xd2WYqot7xG9ADV98bgLurBcTcn8e4vs6sm38bQ9dfQQrh2HQOSl/KHBxEmeM=
+	t=1745945438; cv=none; b=QcWfzQDWuyMSyG1w0T/j6OUzWVHgCrdWa3X+G3NK/fh0u2kzZS83YjiOI5C4PFM6VpUbGPkfhCIuv0MZ9hHAQ26DL1g92fcB/qlM6Dk3dOe98qIP8fFpDrSrZW9xplSDMjt2Ss7NPiuBIDio3uf5Pb6dXJm5OPt9b0cr22WhWV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948959; c=relaxed/simple;
-	bh=7iQwOyl3oH55uxOXmIFrigkpqMsQNWPWrvjzr1z4hrA=;
+	s=arc-20240116; t=1745945438; c=relaxed/simple;
+	bh=RAYZW4OJ+ESdxaxfmvHbQiqCqrHwKGCS+D9bqUOKG4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cRXE31S9Ib+3T23Qbghkj7nq6Fffr1HPaBn6EgQCnaowEuSECkX9AQjpagdtdDdLEti3Una5Nkm9Y05jtsy9xlxJ2ocwxG97QxILBInvHrlqzhDLX4p+DNaQp5VVu/ddV0jOm8nTD8mH2g9drFFYsRY7kgoKMe/3mST3Fw7QOaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ft4da7j6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B190C4CEE3;
-	Tue, 29 Apr 2025 17:49:19 +0000 (UTC)
+	 MIME-Version; b=BFrX/tvQ23NNOweguMJGzRygctXZV+T5RokQ/xtZ/1cBGVIE37v+IwgVimgDqm4noDjF/SuAzBs9F41G6P73rs6EU0w4mulVZiBh/jHaYi1xc/svLR3423DR0h4IJubV5xatKWzScpD/aMcy8SoWv+OZjVoduabu3pid74xYHmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZOV4Dg5f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0192CC4CEE3;
+	Tue, 29 Apr 2025 16:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948959;
-	bh=7iQwOyl3oH55uxOXmIFrigkpqMsQNWPWrvjzr1z4hrA=;
+	s=korg; t=1745945438;
+	bh=RAYZW4OJ+ESdxaxfmvHbQiqCqrHwKGCS+D9bqUOKG4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ft4da7j6NyLHhESncEDxC1b2SX79BTlRcUO8JxBd/Aqq41KsZOXObxJ3PLHVpgKqo
-	 E21CcsQQQPI8d64H+e5yvCl/Zih98uTpj78wGN6W+pZefMtcx04zEX6RpOAk5uFGM9
-	 33ErAj3WTfOeDqW9CsPPZ+7wogw7MAbZaQOLJqEs=
+	b=ZOV4Dg5fBU3CsFM2vMqrQ2frQ9TfKbNwsyBobdHuhxLVBcq6A/8t2fQt2v1EfGxIz
+	 pC0FfeR8cVV98r54rDAtpeHwl3CzBQaOmxI8PBULcH13qsOSYAjnSsxL8rabXHJF/0
+	 zwrzHQNPH5NaOfgYLlOdxoalJgkfopNdSd5sOv4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tang Jun <dukang.tj@alibaba-inc.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <a.p.zijlstra@chello.nl>
-Subject: [PATCH 5.15 176/373] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SPR
+	Nathan Chancellor <nathan@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.4 112/179] kbuild: Add -fno-builtin-wcslen
 Date: Tue, 29 Apr 2025 18:40:53 +0200
-Message-ID: <20250429161130.412616735@linuxfoundation.org>
+Message-ID: <20250429161053.937628257@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 506f981ab40f0b03a11a640cfd77f48b09aff330 upstream.
+commit 84ffc79bfbf70c779e60218563f2f3ad45288671 upstream.
 
-The scale of IIO bandwidth in free running counters is inherited from
-the ICX. The counter increments for every 32 bytes rather than 4 bytes.
+A recent optimization change in LLVM [1] aims to transform certain loop
+idioms into calls to strlen() or wcslen(). This change transforms the
+first while loop in UniStrcat() into a call to wcslen(), breaking the
+build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
 
-The IIO bandwidth out free running counters don't increment with a
-consistent size. The increment depends on the requested size. It's
-impossible to find a fixed increment. Remove it from the event_descs.
+  ld.lld: error: undefined symbol: wcslen
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
 
-Fixes: 0378c93a92e2 ("perf/x86/intel/uncore: Support IIO free-running counters on Sapphire Rapids server")
-Reported-by: Tang Jun <dukang.tj@alibaba-inc.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Disable this optimization with '-fno-builtin-wcslen', which prevents the
+compiler from assuming that wcslen() is available in the kernel's C
+library.
+
+[ More to the point - it's not that we couldn't implement wcslen(), it's
+  that this isn't an optimization at all in the context of the kernel.
+
+  Replacing a simple inlined loop with a function call to the same loop
+  is just stupid and pointless if you don't have long strings and fancy
+  libraries with vectorization support etc.
+
+  For the regular 'strlen()' cases, we want the compiler to do this in
+  order to handle the trivial case of constant strings. And we do have
+  optimized versions of 'strlen()' on some architectures. But for
+  wcslen? Just no.    - Linus ]
+
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250416142426.3933977-3-kan.liang@linux.intel.com
+Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[nathan: Resolve small conflict in older trees]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_snbep.c |   58 -----------------------------------
- 1 file changed, 1 insertion(+), 57 deletions(-)
+ Makefile |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -5826,69 +5826,13 @@ static struct freerunning_counters spr_i
- 	[SPR_IIO_MSR_BW_OUT]	= { 0x3808, 0x1, 0x10, 8, 48 },
- };
+--- a/Makefile
++++ b/Makefile
+@@ -930,6 +930,9 @@ KBUILD_CFLAGS   += $(call cc-option,-Wer
+ # Require designated initializers for all marked structures
+ KBUILD_CFLAGS   += $(call cc-option,-Werror=designated-init)
  
--static struct uncore_event_desc spr_uncore_iio_freerunning_events[] = {
--	/* Free-Running IIO CLOCKS Counter */
--	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
--	/* Free-Running IIO BANDWIDTH IN Counters */
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
--	/* Free-Running IIO BANDWIDTH OUT Counters */
--	INTEL_UNCORE_EVENT_DESC(bw_out_port0,		"event=0xff,umask=0x30"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port0.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port0.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port1,		"event=0xff,umask=0x31"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port1.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port1.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port2,		"event=0xff,umask=0x32"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port2.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port2.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port3,		"event=0xff,umask=0x33"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port3.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port3.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port4,		"event=0xff,umask=0x34"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port4.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port4.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port5,		"event=0xff,umask=0x35"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port5.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port5.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port6,		"event=0xff,umask=0x36"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port6.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port6.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port7,		"event=0xff,umask=0x37"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port7.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port7.unit,	"MiB"),
--	{ /* end: all zeroes */ },
--};
--
- static struct intel_uncore_type spr_uncore_iio_free_running = {
- 	.name			= "iio_free_running",
- 	.num_counters		= 17,
- 	.num_freerunning_types	= SPR_IIO_FREERUNNING_TYPE_MAX,
- 	.freerunning		= spr_iio_freerunning,
- 	.ops			= &skx_uncore_iio_freerunning_ops,
--	.event_descs		= spr_uncore_iio_freerunning_events,
-+	.event_descs		= snr_uncore_iio_freerunning_events,
- 	.format_group		= &skx_uncore_iio_freerunning_format_group,
- };
++# Ensure compilers do not transform certain loops into calls to wcslen()
++KBUILD_CFLAGS += -fno-builtin-wcslen
++
+ # change __FILE__ to the relative path from the srctree
+ KBUILD_CFLAGS	+= $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
  
 
 
