@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-138918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B627EAA1A51
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:20:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D938CAA1984
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B77EE1C01DCC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:20:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49F163A509C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6114C155A4E;
-	Tue, 29 Apr 2025 18:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6EC227E95;
+	Tue, 29 Apr 2025 18:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FO2483Kj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ak0rG27Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDBE219A63;
-	Tue, 29 Apr 2025 18:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7904340C03;
+	Tue, 29 Apr 2025 18:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950769; cv=none; b=Rcw55NrwK4K6Y9avloKXw2E9d0YJ5hv3VVnt9P7wyAblOg8L7voKMxQvedwQ4xG5VxrdnFX5nbjoGN+ojjG9+dleUHAYUqVtcLt1GVZg/tE5FCVfvmGNAZRVKX/E98PzWPNmop4ZmGitg4G741FT5lFAkV1EHppd1R/qhQ0uNcc=
+	t=1745950043; cv=none; b=Df+SC5+8uIX8qA4eRbYBi1t9cv/sHEImVXK4Vd934wlCZcnaKVvDtPSOfaEafMi1jVWMVGdI/ZXW4+bOye+dGPTNbl6pFbh63IqhBANStftE8T/sWU0jKIvcbM0RHmAGlgnVbN2kWkvwUQHqxk2DY0HFlD9OwaNPbvqW3F6jzgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950769; c=relaxed/simple;
-	bh=FHVyiwnvw6pF3r5JwB5EkK5uzjw3EqIWw37kX5fTifQ=;
+	s=arc-20240116; t=1745950043; c=relaxed/simple;
+	bh=dmEKyhW45AwnH8/RRg0WrEafFtjjR1Gb3hC63BYndY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MeZOG1jSi6+euGGtaq6IGjHjaoeZBuYi+kWYZwQaaSApdBsC1n0Hs5/AZHsc0OJACwUWYLKey6n6tEaYAZiG4x5pUOENxUwcvv74aXMTCRLRkPwmRj4d1D1MH8YqEk6mlqoQJALa9j6Yhvbv+oiwNbb1o2I2iTu7V0xjNAXVQDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FO2483Kj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1951C4CEE3;
-	Tue, 29 Apr 2025 18:19:28 +0000 (UTC)
+	 MIME-Version; b=H9+hEC4iTU+UYyITmVAVe0HZFytKU7dEEFJ9K0aEVdmcVN4N4nOnL4MH2pZYfEWN9Q7F3ZZy7O9JVczGxwfNk80Fih7nJ2mgndAd2UbB10BCXCzNqSHRNHMk9Aj8jBwfaXLeSrll2za59hB+vv63XqSTDSu2PElZNm0kpGQ7Lo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ak0rG27Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F42C4CEE3;
+	Tue, 29 Apr 2025 18:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950769;
-	bh=FHVyiwnvw6pF3r5JwB5EkK5uzjw3EqIWw37kX5fTifQ=;
+	s=korg; t=1745950043;
+	bh=dmEKyhW45AwnH8/RRg0WrEafFtjjR1Gb3hC63BYndY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FO2483KjhqP1QuI+0fe3zR7C5FDrh05W3LHqEZ3yGyjrRJ/NGN18uZ1K04WkzcIwA
-	 W0Lfpp+i2GFEhbHTbZ3B5YvVbn+d5IW6ZrlB1mIAX3qxnzs4jTM/XOqqBjwn/6lTZ9
-	 8e9GFcvuT6goo3jE2xVqIwkN5nxT9ImhBlOejGjk=
+	b=ak0rG27Qcla2qpLqL6CnJW1s63Kj7uCaJqkEsPi7NbfAB5iw0iP/XhhSVEmv2sy1j
+	 DTS3ekBw/Ew/XuK4wIDr7amqKfX3VcjM8tShZbZ4yWFVOAmnqTjEhJJP7siLsRUPZm
+	 fyTPWelB0JU67VsW3AHWWAakQRAqioqyDZt8rGXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/204] nvme: requeue namespace scan on missed AENs
+Subject: [PATCH 6.1 139/167] ext4: make block validity check resistent to sb bh corruption
 Date: Tue, 29 Apr 2025 18:44:07 +0200
-Message-ID: <20250429161105.918972962@linuxfoundation.org>
+Message-ID: <20250429161057.352588365@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit 9546ad1a9bda7362492114f5866b95b0ac4a100e ]
+[ Upstream commit ccad447a3d331a239477c281533bacb585b54a98 ]
 
-Scanning for namespaces can take some time, so if the target is
-reconfigured while the scan is running we may miss a Attached Namespace
-Attribute Changed AEN.
+Block validity checks need to be skipped in case they are called
+for journal blocks since they are part of system's protected
+zone.
 
-Check if the NVME_AER_NOTICE_NS_CHANGED bit is set once the scan has
-finished, and requeue scanning to pick up any missed change.
+Currently, this is done by checking inode->ino against
+sbi->s_es->s_journal_inum, which is a direct read from the ext4 sb
+buffer head. If someone modifies this underneath us then the
+s_journal_inum field might get corrupted. To prevent against this,
+change the check to directly compare the inode with journal->j_inode.
 
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+**Slight change in behavior**: During journal init path,
+check_block_validity etc might be called for journal inode when
+sbi->s_journal is not set yet. In this case we now proceed with
+ext4_inode_block_valid() instead of returning early. Since systems zones
+have not been set yet, it is okay to proceed so we can perform basic
+checks on the blocks.
+
+Suggested-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/0c06bc9ebfcd6ccfed84a36e79147bf45ff5adc1.1743142920.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ext4/block_validity.c | 5 ++---
+ fs/ext4/inode.c          | 7 ++++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index f00665ad0c11a..e36c6fcab1eed 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3972,6 +3972,10 @@ static void nvme_scan_work(struct work_struct *work)
- 			nvme_scan_ns_sequential(ctrl);
- 	}
- 	mutex_unlock(&ctrl->scan_lock);
-+
-+	/* Requeue if we have missed AENs */
-+	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
-+		nvme_queue_scan(ctrl);
- }
+diff --git a/fs/ext4/block_validity.c b/fs/ext4/block_validity.c
+index 6fe3c941b5651..4d6ba140276b5 100644
+--- a/fs/ext4/block_validity.c
++++ b/fs/ext4/block_validity.c
+@@ -351,10 +351,9 @@ int ext4_check_blockref(const char *function, unsigned int line,
+ {
+ 	__le32 *bref = p;
+ 	unsigned int blk;
++	journal_t *journal = EXT4_SB(inode->i_sb)->s_journal;
  
- /*
+-	if (ext4_has_feature_journal(inode->i_sb) &&
+-	    (inode->i_ino ==
+-	     le32_to_cpu(EXT4_SB(inode->i_sb)->s_es->s_journal_inum)))
++	if (journal && inode == journal->j_inode)
+ 		return 0;
+ 
+ 	while (bref < p+max) {
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index f460150ec73e5..abe7f769054ff 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -406,10 +406,11 @@ static int __check_block_validity(struct inode *inode, const char *func,
+ 				unsigned int line,
+ 				struct ext4_map_blocks *map)
+ {
+-	if (ext4_has_feature_journal(inode->i_sb) &&
+-	    (inode->i_ino ==
+-	     le32_to_cpu(EXT4_SB(inode->i_sb)->s_es->s_journal_inum)))
++	journal_t *journal = EXT4_SB(inode->i_sb)->s_journal;
++
++	if (journal && inode == journal->j_inode)
+ 		return 0;
++
+ 	if (!ext4_inode_block_valid(inode, map->m_pblk, map->m_len)) {
+ 		ext4_error_inode(inode, func, line, map->m_pblk,
+ 				 "lblock %lu mapped to illegal pblock %llu "
 -- 
 2.39.5
 
