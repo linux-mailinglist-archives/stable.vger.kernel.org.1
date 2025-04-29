@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-138813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8B4AA19CD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:15:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEB7AA19D5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:16:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 347D81BA0EA4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E58B316CDD6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7CD24111D;
-	Tue, 29 Apr 2025 18:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5578B2528ED;
+	Tue, 29 Apr 2025 18:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dccoZIaK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SeRK6yre"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37474227BA9;
-	Tue, 29 Apr 2025 18:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7E1155333;
+	Tue, 29 Apr 2025 18:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950431; cv=none; b=SvaqoufTLFAfl8Wt+rsNNliGPQb8kVqUEpdjxuhtaqYXBIt5z5Y1vD0EqFzNt04/sidykqg+a+/hNW7twMlmqcBcP7oe63E3F0SfJSpSyLWg2clEsMsXqo3tRw4DKV7JFR60wfGdpSk6QLN/ERxaoGVu3qV5OKj6sTMgzFtxWvg=
+	t=1745950441; cv=none; b=Zfq+VVqJbbX31nyHUGZW/3p4BF5JuA/S8rXYR40TYJVM8tKeFbNMIgiu1eQ4RzkBo6g/r1COgBFL6PLXvzzPVC/wb2hqxD0/3KsbHBNpVd5rj4dJOKB+9xQbh9tCMk2mBbCgNynmoguOvZ0115tf2laYcntspyTkp3NftVZ6FpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950431; c=relaxed/simple;
-	bh=frBW//u3RidqNs2H/zCu6TrvT5i4m4iNIj4nbkFo4Sc=;
+	s=arc-20240116; t=1745950441; c=relaxed/simple;
+	bh=cN78O8Gg/Ri3W0s78eDdfU/CGNtjSmyFhkDRh+0kq7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ise9k/PaqwbygUXzC7tJApK3pRnov/3MIWG97AUOeWF6m1ALqi+GEKoUKj3MLHkSlv57+Ff1TuJWnDZ3/sbeDQvNtJqPkA3FkXYQuBqFrGojafCml9z0rwxz+skCeMWRAHwinEYdtopS6XpF1hjya0QhnIAcLlspUqsWdZicJz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dccoZIaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB291C4CEE3;
-	Tue, 29 Apr 2025 18:13:50 +0000 (UTC)
+	 MIME-Version; b=YkUmESJsVJ2cyraPcxODiS4/C9zrLytFtSjimZftp9vWpM/mU7RHANRCYqAUd6uX6dHQgslmTSDoB4Xa4+Gu1CphSKGbfrPBuD+tPtZnU9Sudwbxnuiy2OeE5K+8tAfGFwYHCQI9DH/tD0Rdk1WP1ZwiLhlX5j5HEwJrGCN5IOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SeRK6yre; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D49FC4CEE3;
+	Tue, 29 Apr 2025 18:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950431;
-	bh=frBW//u3RidqNs2H/zCu6TrvT5i4m4iNIj4nbkFo4Sc=;
+	s=korg; t=1745950440;
+	bh=cN78O8Gg/Ri3W0s78eDdfU/CGNtjSmyFhkDRh+0kq7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dccoZIaKC1y+QdE0gFYYMb63O5/oBgBJ7WakED8JoQBc5nhB/WscCPGyOsbG/Mrh/
-	 +OZkV+4WRvmUpL+24RNMXlA7MfNFPuEE/IpjICTaMg1e7Pta9oen5N8Cke7FVX/NS4
-	 APGed3gB8dH6+EdkngNV57hn4Dt3lxwKbC6i6Co0=
+	b=SeRK6yremrzAhns8dotWTxjfd2pAm+EwIZUQnwQl2SxKZopejBzLp7MysoqQtJKAn
+	 v+Lzps//DywowQBW+XuJbqibI3mDIediYlMtxoVQGkXafURJMHsydB/aTkrRTjbToz
+	 TkOdJ/a2Pp/5XN6I3bOjk1qHsKmr4vu8IEa1jLag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/204] riscv: uprobes: Add missing fence.i after building the XOL buffer
-Date: Tue, 29 Apr 2025 18:42:34 +0200
-Message-ID: <20250429161102.127164704@linuxfoundation.org>
+Subject: [PATCH 6.6 067/204] splice: remove duplicate noinline from pipe_clear_nowait
+Date: Tue, 29 Apr 2025 18:42:35 +0200
+Message-ID: <20250429161102.169694273@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
 References: <20250429161059.396852607@linuxfoundation.org>
@@ -61,63 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: T.J. Mercier <tjmercier@google.com>
 
-[ Upstream commit 7d1d19a11cfbfd8bae1d89cc010b2cc397cd0c48 ]
+[ Upstream commit e6f141b332ddd9007756751b6afd24f799488fd8 ]
 
-The XOL (execute out-of-line) buffer is used to single-step the
-replaced instruction(s) for uprobes. The RISC-V port was missing a
-proper fence.i (i$ flushing) after constructing the XOL buffer, which
-can result in incorrect execution of stale/broken instructions.
+pipe_clear_nowait has two noinline macros, but we only need one.
 
-This was found running the BPF selftests "test_progs:
-uprobe_autoattach, attach_probe" on the Spacemit K1/X60, where the
-uprobes tests randomly blew up.
+I checked the whole tree, and this is the only occurrence:
 
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Fixes: 74784081aac8 ("riscv: Add uprobes supported")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Link: https://lore.kernel.org/r/20250419111402.1660267-2-bjorn@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+$ grep -r "noinline .* noinline"
+fs/splice.c:static noinline void noinline pipe_clear_nowait(struct file *file)
+$
+
+Fixes: 0f99fc513ddd ("splice: clear FMODE_NOWAIT on file if splice/vmsplice is used")
+Signed-off-by: "T.J. Mercier" <tjmercier@google.com>
+Link: https://lore.kernel.org/20250423180025.2627670-1-tjmercier@google.com
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/probes/uprobes.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ fs/splice.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
-index 4b3dc8beaf77d..cc15f7ca6cc17 100644
---- a/arch/riscv/kernel/probes/uprobes.c
-+++ b/arch/riscv/kernel/probes/uprobes.c
-@@ -167,6 +167,7 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
- 	/* Initialize the slot */
- 	void *kaddr = kmap_atomic(page);
- 	void *dst = kaddr + (vaddr & ~PAGE_MASK);
-+	unsigned long start = (unsigned long)dst;
+diff --git a/fs/splice.c b/fs/splice.c
+index d983d375ff113..6f9b06bbb860a 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -45,7 +45,7 @@
+  * here if set to avoid blocking other users of this pipe if splice is
+  * being done on it.
+  */
+-static noinline void noinline pipe_clear_nowait(struct file *file)
++static noinline void pipe_clear_nowait(struct file *file)
+ {
+ 	fmode_t fmode = READ_ONCE(file->f_mode);
  
- 	memcpy(dst, src, len);
- 
-@@ -176,13 +177,6 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
- 		*(uprobe_opcode_t *)dst = __BUG_INSN_32;
- 	}
- 
-+	flush_icache_range(start, start + len);
- 	kunmap_atomic(kaddr);
--
--	/*
--	 * We probably need flush_icache_user_page() but it needs vma.
--	 * This should work on most of architectures by default. If
--	 * architecture needs to do something different it can define
--	 * its own version of the function.
--	 */
--	flush_dcache_page(page);
- }
 -- 
 2.39.5
 
