@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A67AA121F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E99AAA13A3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AF271BA0A1D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8059D1689FA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF38244668;
-	Tue, 29 Apr 2025 16:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746C224C098;
+	Tue, 29 Apr 2025 17:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJSu0Ajp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHTDBmFs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487F324336D;
-	Tue, 29 Apr 2025 16:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FDF211A0B;
+	Tue, 29 Apr 2025 17:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945338; cv=none; b=D5x4AL7P5mS9N4p7w9caJtDaWzARwuUQpSgmOGWOvD4fGewXgvGFRBEzSfD3YURa6pdC8X8fo5DyfzHfv+vfnqAz9fbKL1u9VwWgzFu/pB6RXzkgskadmgWLEyHfMalIA3pEe5h/2lznxeXWqXuHGshT+sUMYbQCo29tuedLs8c=
+	t=1745946234; cv=none; b=P2KqF1kHhQyy2xhaadst5m/RKBUZVLk8VpxkVHk3wslPU64noO46yRE/71ahjdpA/SwAcJsgyCpxuE29ZhW6DqL0azeL5AvwbgGfuhPY4X/jJS1J6EmZ03wAdXjCq9r1KaqSAePh+aOPX+pjZGi7y4LCIc0j55PNsfADZ1qyDZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945338; c=relaxed/simple;
-	bh=4CyNbHeMJ7/xvP+O6ASsBqpR4Mzudp2g1Cxs8Myz9KE=;
+	s=arc-20240116; t=1745946234; c=relaxed/simple;
+	bh=w0uk+a+n7rg0jTa34ARw4EQwEcMGEGmvyRl+fHiLqn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qVQMeUcArGIy3N5roLX0nlomzr0V5BYcZ+dv+NVQwWwg3TQ3pDuykZP9Ea1jf7JoM7Blew5DLKPWpl0O0i9uHokM9C59WTVPG0iwOS+K5Nk0hFd2519m8Np/MiLt3/cgUcXPH+4hlVNjik++gHCidNA8dq6nT+Kw7VJYbiR7r/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJSu0Ajp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB23C4CEE3;
-	Tue, 29 Apr 2025 16:48:57 +0000 (UTC)
+	 MIME-Version; b=swFo4vC3RUU1HcCIWAJOQH9MUmgPfC91gN+6lt95DEGlDkMOUWBlM2bFJd89zl3qSbs8CQVqMqg6ASiPGtTCU8Y9G9c/tb1O1AJXdAQSBg3E127cznGaDnPuGe4SasfKTwudcFtn8jFEc6vIvCHrAG8i7cAp8E7FOMpochlbZ8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHTDBmFs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3731C4CEE3;
+	Tue, 29 Apr 2025 17:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945338;
-	bh=4CyNbHeMJ7/xvP+O6ASsBqpR4Mzudp2g1Cxs8Myz9KE=;
+	s=korg; t=1745946234;
+	bh=w0uk+a+n7rg0jTa34ARw4EQwEcMGEGmvyRl+fHiLqn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jJSu0AjpmmpZJg1edj54juToWusBtP0JBqOe656CjwXy3iBVc/FBPvjfTeR7rdQeD
-	 +4qAWv+nISvZ2J1riky/5KYrLaJmh9hnJVQ88V7XejuIwCM46NIq8PA7h/5NX0wnm2
-	 wZP8E3g8ndJoNNRRY9NqODX6v7KBcul/oNPWLYOk=
+	b=OHTDBmFsoigQhwTt3u2XIXLH5fPaS/IBeUVuvzqgIR3tBEb7hZgtrWj33ApIlgPLt
+	 58Kptr2w26ykFg4SxC5l/Nol+VqSEJhkdwhG2cZsejunOjEM1134mn+AYTdH2qU+Rz
+	 4jZAm5Sr8DSJfhZpur9il5owjFb99tB+F+tx6bOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 5.4 078/179] PCI: Fix reference leak in pci_alloc_child_bus()
+	Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 182/311] crypto: ccp - Add support for PCI device 0x1134
 Date: Tue, 29 Apr 2025 18:40:19 +0200
-Message-ID: <20250429161052.569480035@linuxfoundation.org>
+Message-ID: <20250429161128.478177956@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>
 
-commit 1f2768b6a3ee77a295106e3a5d68458064923ede upstream.
+[ Upstream commit 6cb345939b8cc4be79909875276aa9dc87d16757 ]
 
-If device_register(&child->dev) fails, call put_device() to explicitly
-release child->dev, per the comment at device_register().
+PCI device 0x1134 shares same register features as PCI device 0x17E0.
+Hence reuse same data for the new PCI device ID 0x1134.
 
-Found by code review.
-
-Link: https://lore.kernel.org/r/20250202062357.872971-1-make24@iscas.ac.cn
-Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possible")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/probe.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/crypto/ccp/sp-pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1041,7 +1041,10 @@ static struct pci_bus *pci_alloc_child_b
- add_dev:
- 	pci_set_bus_msi_domain(child);
- 	ret = device_register(&child->dev);
--	WARN_ON(ret < 0);
-+	if (WARN_ON(ret < 0)) {
-+		put_device(&child->dev);
-+		return NULL;
-+	}
- 
- 	pcibios_add_bus(child);
- 
+diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
+index 157f9a9ed6361..2ebc878da1609 100644
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -532,6 +532,7 @@ static const struct pci_device_id sp_pci_table[] = {
+ 	{ PCI_VDEVICE(AMD, 0x14CA), (kernel_ulong_t)&dev_vdata[5] },
+ 	{ PCI_VDEVICE(AMD, 0x15C7), (kernel_ulong_t)&dev_vdata[6] },
+ 	{ PCI_VDEVICE(AMD, 0x1649), (kernel_ulong_t)&dev_vdata[6] },
++	{ PCI_VDEVICE(AMD, 0x1134), (kernel_ulong_t)&dev_vdata[7] },
+ 	{ PCI_VDEVICE(AMD, 0x17E0), (kernel_ulong_t)&dev_vdata[7] },
+ 	{ PCI_VDEVICE(AMD, 0x156E), (kernel_ulong_t)&dev_vdata[8] },
+ 	/* Last entry must be zero */
+-- 
+2.39.5
+
 
 
 
