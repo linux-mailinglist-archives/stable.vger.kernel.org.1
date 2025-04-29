@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F387CAA1453
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D33BAA1789
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E6761885C29
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:11:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA8935A69BE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D907024BD02;
-	Tue, 29 Apr 2025 17:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61181251793;
+	Tue, 29 Apr 2025 17:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlC450CH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIVyF6aI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A56221DA7;
-	Tue, 29 Apr 2025 17:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D841227E95;
+	Tue, 29 Apr 2025 17:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946673; cv=none; b=rpOo1/o393vWUmUv57eXASuLyuEnLQyaNsNE8aMZ9c7bTnKtELPYmv/ZhgsEfWquZb0F6pnIPxPIsUE+6yvjqOiyI78Ra/gk2H4kX0SJqrM+e0gsXG8NofrjtA5z9tUJKehShHfRHEHoJyjAZvEpcvk1zFh7pLMYMJ+J2Zhys1o=
+	t=1745948663; cv=none; b=FXY/aymR+fWlmVBAUJwxEA1o3f7S7L6FyMSuKd/XPQXXvIpysVea6zDv/Jk9NG9udyAojZ8KiAlhU43oqJKCWnsCMc3AAgBlOOJj+//T71UKkFehsMOQ5KE/EiPpTQ8IEUYOL+9r9qyNd9IUC8xkIVrinbOPRi3dJrPXZnXx4B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946673; c=relaxed/simple;
-	bh=zl1OXigrM6Yvss9myVCw5jirKcd2kJnVoLfCbZHjhqk=;
+	s=arc-20240116; t=1745948663; c=relaxed/simple;
+	bh=gHy3adkzKodwoYq+pviJxHGqnaJ+RSWzK3o6YX3Q6LY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ianIQdcqpweM0e7GqX+2lA5/Mg4tYOacMdE6OnA5oAoCUT1i55+qLs5nx5CKza2GcxTO/ZRxKE7xkPuIC/2rapXSt53onBXoWvOsBT0ytp9xAsp+OU2/xuCx62deY6VKQI7BBqdhx+yttwPbZndZnslrctiyOZBjLhguRQmREkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlC450CH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E69C4CEE3;
-	Tue, 29 Apr 2025 17:11:12 +0000 (UTC)
+	 MIME-Version; b=M/mhJ4as7w3dYovhAIE/bL1OX79BcvBXpkLWJXKPXJdcQzZDDs1g6nxb22OW/s9sGZkaFPJns9CPVq3787buAKMJz/S71sREGTpyQD5KW+ntq4bfbsAFQRU2/YFOW5aVvg2dzZrbYqka2JR9MBhM1szXTLPC/UAv+TJ/miionLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIVyF6aI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51D8C4CEE9;
+	Tue, 29 Apr 2025 17:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946673;
-	bh=zl1OXigrM6Yvss9myVCw5jirKcd2kJnVoLfCbZHjhqk=;
+	s=korg; t=1745948663;
+	bh=gHy3adkzKodwoYq+pviJxHGqnaJ+RSWzK3o6YX3Q6LY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlC450CHHFZy77c5vyHGcgZwXnOHnypntf7grkcaxdCufq/LGhjfHdAmjL0B5loJo
-	 39tDE+iRzH7mR8iw3EdS/tt8ESogMyoD070wWexbjyms9MA3/wGwp2Ti/ZtWgqMhrT
-	 x7ikwOZ1QOGoME45GmeaM7pQJ2WgMBhrXCSkSLUY=
+	b=RIVyF6aIZ+wY+2FyG1YEXVzLpN59aO3evbqi8ogxg2ZhqxBsCXig0TL+4ceT5uXBW
+	 dwhdQpJiXAWhnRhrCs/JH9rWgygTzqrKSKnw8HweJq20s08GIBPGtDEeY3/77bwjAt
+	 AVUyUQMQcBpPCpzI2fvDIU5ZeVhA6lkcAqZbBRE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b244bda78289b00204ed@syzkaller.appspotmail.com,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Bhupesh <bhupesh@igalia.com>,
+	Jann Horn <jannh@google.com>,
+	Jan Kara <jack@suse.cz>,
 	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 030/286] ext4: ignore xattrs past end
+Subject: [PATCH 5.15 057/373] ext4: dont treat fhandle lookup of ea_inode as FS corruption
 Date: Tue, 29 Apr 2025 18:38:54 +0200
-Message-ID: <20250429161109.097292361@linuxfoundation.org>
+Message-ID: <20250429161125.472339619@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,148 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bhupesh <bhupesh@igalia.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit c8e008b60492cf6fd31ef127aea6d02fd3d314cd ]
+[ Upstream commit 642335f3ea2b3fd6dba03e57e01fa9587843a497 ]
 
-Once inside 'ext4_xattr_inode_dec_ref_all' we should
-ignore xattrs entries past the 'end' entry.
+A file handle that userspace provides to open_by_handle_at() can
+legitimately contain an outdated inode number that has since been reused
+for another purpose - that's why the file handle also contains a generation
+number.
 
-This fixes the following KASAN reported issue:
+But if the inode number has been reused for an ea_inode, check_igot_inode()
+will notice, __ext4_iget() will go through ext4_error_inode(), and if the
+inode was newly created, it will also be marked as bad by iget_failed().
+This all happens before the point where the inode generation is checked.
 
-==================================================================
-BUG: KASAN: slab-use-after-free in ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
-Read of size 4 at addr ffff888012c120c4 by task repro/2065
+ext4_error_inode() is supposed to only be used on filesystem corruption; it
+should not be used when userspace just got unlucky with a stale file
+handle. So when this happens, let __ext4_iget() just return an error.
 
-CPU: 1 UID: 0 PID: 2065 Comm: repro Not tainted 6.13.0-rc2+ #11
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x1fd/0x300
- ? tcp_gro_dev_warn+0x260/0x260
- ? _printk+0xc0/0x100
- ? read_lock_is_recursive+0x10/0x10
- ? irq_work_queue+0x72/0xf0
- ? __virt_addr_valid+0x17b/0x4b0
- print_address_description+0x78/0x390
- print_report+0x107/0x1f0
- ? __virt_addr_valid+0x17b/0x4b0
- ? __virt_addr_valid+0x3ff/0x4b0
- ? __phys_addr+0xb5/0x160
- ? ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
- kasan_report+0xcc/0x100
- ? ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
- ext4_xattr_inode_dec_ref_all+0xb8c/0xe90
- ? ext4_xattr_delete_inode+0xd30/0xd30
- ? __ext4_journal_ensure_credits+0x5f0/0x5f0
- ? __ext4_journal_ensure_credits+0x2b/0x5f0
- ? inode_update_timestamps+0x410/0x410
- ext4_xattr_delete_inode+0xb64/0xd30
- ? ext4_truncate+0xb70/0xdc0
- ? ext4_expand_extra_isize_ea+0x1d20/0x1d20
- ? __ext4_mark_inode_dirty+0x670/0x670
- ? ext4_journal_check_start+0x16f/0x240
- ? ext4_inode_is_fast_symlink+0x2f2/0x3a0
- ext4_evict_inode+0xc8c/0xff0
- ? ext4_inode_is_fast_symlink+0x3a0/0x3a0
- ? do_raw_spin_unlock+0x53/0x8a0
- ? ext4_inode_is_fast_symlink+0x3a0/0x3a0
- evict+0x4ac/0x950
- ? proc_nr_inodes+0x310/0x310
- ? trace_ext4_drop_inode+0xa2/0x220
- ? _raw_spin_unlock+0x1a/0x30
- ? iput+0x4cb/0x7e0
- do_unlinkat+0x495/0x7c0
- ? try_break_deleg+0x120/0x120
- ? 0xffffffff81000000
- ? __check_object_size+0x15a/0x210
- ? strncpy_from_user+0x13e/0x250
- ? getname_flags+0x1dc/0x530
- __x64_sys_unlinkat+0xc8/0xf0
- do_syscall_64+0x65/0x110
- entry_SYSCALL_64_after_hwframe+0x67/0x6f
-RIP: 0033:0x434ffd
-Code: 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 8
-RSP: 002b:00007ffc50fa7b28 EFLAGS: 00000246 ORIG_RAX: 0000000000000107
-RAX: ffffffffffffffda RBX: 00007ffc50fa7e18 RCX: 0000000000434ffd
-RDX: 0000000000000000 RSI: 0000000020000240 RDI: 0000000000000005
-RBP: 00007ffc50fa7be0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007ffc50fa7e08 R14: 00000000004bbf30 R15: 0000000000000001
- </TASK>
-
-The buggy address belongs to the object at ffff888012c12000
- which belongs to the cache filp of size 360
-The buggy address is located 196 bytes inside of
- freed 360-byte region [ffff888012c12000, ffff888012c12168)
-
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x12c12
-head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0x40(head|node=0|zone=0)
-page_type: f5(slab)
-raw: 0000000000000040 ffff888000ad7640 ffffea0000497a00 dead000000000004
-raw: 0000000000000000 0000000000100010 00000001f5000000 0000000000000000
-head: 0000000000000040 ffff888000ad7640 ffffea0000497a00 dead000000000004
-head: 0000000000000000 0000000000100010 00000001f5000000 0000000000000000
-head: 0000000000000001 ffffea00004b0481 ffffffffffffffff 0000000000000000
-head: 0000000000000002 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff888012c11f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff888012c12000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> ffff888012c12080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                           ^
- ffff888012c12100: fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc
- ffff888012c12180: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-==================================================================
-
-Reported-by: syzbot+b244bda78289b00204ed@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b244bda78289b00204ed
-Suggested-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Bhupesh <bhupesh@igalia.com>
-Link: https://patch.msgid.link/20250128082751.124948-2-bhupesh@igalia.com
+Fixes: b3e6bcb94590 ("ext4: add EA_INODE checking to ext4_iget()")
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20241129-ext4-ignore-ea-fhandle-v1-1-e532c0d1cee0@google.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/ext4/inode.c | 68 ++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 48 insertions(+), 20 deletions(-)
 
-diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index d1d930d09cb8a..4eb75216218a0 100644
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1123,15 +1123,24 @@ ext4_xattr_inode_dec_ref_all(handle_t *handle, struct inode *parent,
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 87e6187e6584b..e50dfe3d60139 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4593,22 +4593,43 @@ static inline u64 ext4_inode_peek_iversion(const struct inode *inode)
+ 		return inode_peek_iversion(inode);
+ }
+ 
+-static const char *check_igot_inode(struct inode *inode, ext4_iget_flags flags)
+-
++static int check_igot_inode(struct inode *inode, ext4_iget_flags flags,
++			    const char *function, unsigned int line)
  {
- 	struct inode *ea_inode;
- 	struct ext4_xattr_entry *entry;
-+	struct ext4_iloc iloc;
- 	bool dirty = false;
- 	unsigned int ea_ino;
- 	int err;
- 	int credits;
-+	void *end;
++	const char *err_str;
 +
-+	if (block_csum)
-+		end = (void *)bh->b_data + bh->b_size;
-+	else {
-+		ext4_get_inode_loc(parent, &iloc);
-+		end = (void *)ext4_raw_inode(&iloc) + EXT4_SB(parent->i_sb)->s_inode_size;
+ 	if (flags & EXT4_IGET_EA_INODE) {
+-		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
+-			return "missing EA_INODE flag";
++		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
++			err_str = "missing EA_INODE flag";
++			goto error;
++		}
+ 		if (ext4_test_inode_state(inode, EXT4_STATE_XATTR) ||
+-		    EXT4_I(inode)->i_file_acl)
+-			return "ea_inode with extended attributes";
++		    EXT4_I(inode)->i_file_acl) {
++			err_str = "ea_inode with extended attributes";
++			goto error;
++		}
+ 	} else {
+-		if ((EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
+-			return "unexpected EA_INODE flag";
++		if ((EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
++			/*
++			 * open_by_handle_at() could provide an old inode number
++			 * that has since been reused for an ea_inode; this does
++			 * not indicate filesystem corruption
++			 */
++			if (flags & EXT4_IGET_HANDLE)
++				return -ESTALE;
++			err_str = "unexpected EA_INODE flag";
++			goto error;
++		}
 +	}
++	if (is_bad_inode(inode) && !(flags & EXT4_IGET_BAD)) {
++		err_str = "unexpected bad inode w/o EXT4_IGET_BAD";
++		goto error;
+ 	}
+-	if (is_bad_inode(inode) && !(flags & EXT4_IGET_BAD))
+-		return "unexpected bad inode w/o EXT4_IGET_BAD";
+-	return NULL;
++	return 0;
++
++error:
++	ext4_error_inode(inode, function, line, 0, err_str);
++	return -EFSCORRUPTED;
+ }
  
- 	/* One credit for dec ref on ea_inode, one for orphan list addition, */
- 	credits = 2 + extra_credits;
+ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+@@ -4620,7 +4641,6 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+ 	struct ext4_inode_info *ei;
+ 	struct ext4_super_block *es = EXT4_SB(sb)->s_es;
+ 	struct inode *inode;
+-	const char *err_str;
+ 	journal_t *journal = EXT4_SB(sb)->s_journal;
+ 	long ret;
+ 	loff_t size;
+@@ -4649,10 +4669,10 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+ 	if (!inode)
+ 		return ERR_PTR(-ENOMEM);
+ 	if (!(inode->i_state & I_NEW)) {
+-		if ((err_str = check_igot_inode(inode, flags)) != NULL) {
+-			ext4_error_inode(inode, function, line, 0, err_str);
++		ret = check_igot_inode(inode, flags, function, line);
++		if (ret) {
+ 			iput(inode);
+-			return ERR_PTR(-EFSCORRUPTED);
++			return ERR_PTR(ret);
+ 		}
+ 		return inode;
+ 	}
+@@ -4927,13 +4947,21 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+ 		ret = -EFSCORRUPTED;
+ 		goto bad_inode;
+ 	}
+-	if ((err_str = check_igot_inode(inode, flags)) != NULL) {
+-		ext4_error_inode(inode, function, line, 0, err_str);
+-		ret = -EFSCORRUPTED;
+-		goto bad_inode;
++	ret = check_igot_inode(inode, flags, function, line);
++	/*
++	 * -ESTALE here means there is nothing inherently wrong with the inode,
++	 * it's just not an inode we can return for an fhandle lookup.
++	 */
++	if (ret == -ESTALE) {
++		brelse(iloc.bh);
++		unlock_new_inode(inode);
++		iput(inode);
++		return ERR_PTR(-ESTALE);
+ 	}
+-
++	if (ret)
++		goto bad_inode;
+ 	brelse(iloc.bh);
++
+ 	unlock_new_inode(inode);
+ 	return inode;
  
--	for (entry = first; !IS_LAST_ENTRY(entry);
-+	for (entry = first; (void *)entry < end && !IS_LAST_ENTRY(entry);
- 	     entry = EXT4_XATTR_NEXT(entry)) {
- 		if (!entry->e_value_inum)
- 			continue;
 -- 
 2.39.5
 
