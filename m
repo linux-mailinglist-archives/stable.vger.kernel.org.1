@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D87AA1422
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B96AA136A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DAEA4A3332
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:10:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 210E69830AE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30685241664;
-	Tue, 29 Apr 2025 17:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB444248191;
+	Tue, 29 Apr 2025 16:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8cIibc/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqHsSTe9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A1C1DF73C;
-	Tue, 29 Apr 2025 17:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A957A244668;
+	Tue, 29 Apr 2025 16:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946642; cv=none; b=huiugPdWKjMcmAVJA8+qMTII+2t94hGD3ARdKbK1HPhm06+P++W+vB/YPDyHQJ3tq+rygA2oa/sL2+qe7h4nhvlUwY+MuuSW8B60DfUvWj5epS4gOnnC+KtI6VMb+dEWRVEeA0RD0x9j/MhEwyawWhPNA9cyHHp1mWNyzH3W+No=
+	t=1745945993; cv=none; b=p+AjUkVQa8Me4lrin28qqXCdk4Jo0FMd8K+pa2FB8iWoDzltEfBiS6nHyX9kIuFONzZoVfmT3WUoRrfvquchJhhwRBGb0tzQt2ttc4lHqCzeeBYt+ATZn9R5IuGNIMNT0AT+oWWxyA/J/mxPeww506Sk//rnEoi8t7/ezNFYXFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946642; c=relaxed/simple;
-	bh=7stHEwaFjy0+RCnggpucWdCXGkmuPdxF0neoyXJEzXI=;
+	s=arc-20240116; t=1745945993; c=relaxed/simple;
+	bh=lkPhPH64Gmdne1LsJwflveyywA1lulhllSEv4SO3xC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mu7O2zdfLJ9x2P18h0p6yd9fkAQtpiLqxUFiV6ullx9gbw0oHIXbYa/BnXA0syiSnzbmbxI/aU/N+8qyoWEe74jt0x+0TBTHgNLlPiNswHEJTychjVdUAycOmeYaqFSEVNW4iATbPXDVDi0HL3kou+qrGmJ5SYpTIk52ppTtpo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8cIibc/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF7EC4CEE3;
-	Tue, 29 Apr 2025 17:10:41 +0000 (UTC)
+	 MIME-Version; b=hFoKJwLmSMEF5ZoTpJKp0gLVadrhp0Af41+lges37O0Q/09S7fwKBo2NF/lc7uPvwvOf489WGH7jFHPmRU85CLYxfIU1mCZn/8LZXlIJh42R96gzJswep2Cqn2roJkQ3hWf1PwZoTJtNhe1WbxclM0+DdzzhXLt316FvlGOTJc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqHsSTe9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F068C4CEE3;
+	Tue, 29 Apr 2025 16:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946641;
-	bh=7stHEwaFjy0+RCnggpucWdCXGkmuPdxF0neoyXJEzXI=;
+	s=korg; t=1745945993;
+	bh=lkPhPH64Gmdne1LsJwflveyywA1lulhllSEv4SO3xC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P8cIibc/I/0ZEyjzPuoCriniPRRk+/nnIqU8yPIbKpWQNOPgOMsH4fCzat0y//J0j
-	 IqeQSJ5Ur69OCimzzJZunaq1gWyier0hLLAsbQQHenmGBGRi76lQwpWWw4pTyRsIXH
-	 /5j97ErULo7pVPs/WNUQkFozIsBoS6pDkeyr8SP8=
+	b=fqHsSTe9hISurPL558m3nhSOHizgqtJkqmnNDNnc2HTLOzsz5nRhjQrwhw1joTQvj
+	 nNM/TE3QAOmB8biRrQzOmVT3f0FTzwjAApPNawq5uZu/YklY7QT2pqiV7yrLC98p3y
+	 LGGGHbp9hvnwVoDCjG77Y6u8tAfTBKkNtWu5I74Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Uday Shankar <ushankar@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 021/286] page_pool: avoid infinite loop to schedule delayed worker
+Subject: [PATCH 6.14 088/311] ublk: remove io_cmds list in ublk_queue
 Date: Tue, 29 Apr 2025 18:38:45 +0200
-Message-ID: <20250429161108.724005138@linuxfoundation.org>
+Message-ID: <20250429161124.652166217@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kerneljasonxing@gmail.com>
+From: Uday Shankar <ushankar@purestorage.com>
 
-[ Upstream commit 43130d02baa137033c25297aaae95fd0edc41654 ]
+[ Upstream commit 989bcd623a8b0c32b76d9258767d8b37e53419e6 ]
 
-We noticed the kworker in page_pool_release_retry() was waken
-up repeatedly and infinitely in production because of the
-buggy driver causing the inflight less than 0 and warning
-us in page_pool_inflight()[1].
+The current I/O dispatch mechanism - queueing I/O by adding it to the
+io_cmds list (and poking task_work as needed), then dispatching it in
+ublk server task context by reversing io_cmds and completing the
+io_uring command associated to each one - was introduced by commit
+7d4a93176e014 ("ublk_drv: don't forward io commands in reserve order")
+to ensure that the ublk server received I/O in the same order that the
+block layer submitted it to ublk_drv. This mechanism was only needed for
+the "raw" task_work submission mechanism, since the io_uring task work
+wrapper maintains FIFO ordering (using quite a similar mechanism in
+fact). The "raw" task_work submission mechanism is no longer supported
+in ublk_drv as of commit 29dc5d06613f2 ("ublk: kill queuing request by
+task_work_add"), so the explicit llist/reversal is no longer needed - it
+just duplicates logic already present in the underlying io_uring APIs.
+Remove it.
 
-Since the inflight value goes negative, it means we should
-not expect the whole page_pool to get back to work normally.
-
-This patch mitigates the adverse effect by not rescheduling
-the kworker when detecting the inflight negative in
-page_pool_release_retry().
-
-[1]
-[Mon Feb 10 20:36:11 2025] ------------[ cut here ]------------
-[Mon Feb 10 20:36:11 2025] Negative(-51446) inflight packet-pages
-...
-[Mon Feb 10 20:36:11 2025] Call Trace:
-[Mon Feb 10 20:36:11 2025]  page_pool_release_retry+0x23/0x70
-[Mon Feb 10 20:36:11 2025]  process_one_work+0x1b1/0x370
-[Mon Feb 10 20:36:11 2025]  worker_thread+0x37/0x3a0
-[Mon Feb 10 20:36:11 2025]  kthread+0x11a/0x140
-[Mon Feb 10 20:36:11 2025]  ? process_one_work+0x370/0x370
-[Mon Feb 10 20:36:11 2025]  ? __kthread_cancel_work+0x40/0x40
-[Mon Feb 10 20:36:11 2025]  ret_from_fork+0x35/0x40
-[Mon Feb 10 20:36:11 2025] ---[ end trace ebffe800f33e7e34 ]---
-Note: before this patch, the above calltrace would flood the
-dmesg due to repeated reschedule of release_dw kworker.
-
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/20250214064250.85987-1-kerneljasonxing@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250318-ublk_io_cmds-v1-1-c1bb74798fef@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: d6aa0c178bf8 ("ublk: call ublk_dispatch_req() for handling UBLK_U_IO_NEED_GET_DATA")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/page_pool.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/block/ublk_drv.c | 46 ++++++++++------------------------------
+ 1 file changed, 11 insertions(+), 35 deletions(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 08fbf4049c108..a11809b3149b4 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -485,7 +485,13 @@ static void page_pool_release_retry(struct work_struct *wq)
- 	int inflight;
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 971b793dedd03..f615b9bd82f5f 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -73,8 +73,6 @@
+ 	 UBLK_PARAM_TYPE_DEVT | UBLK_PARAM_TYPE_ZONED)
  
- 	inflight = page_pool_release(pool);
--	if (!inflight)
-+	/* In rare cases, a driver bug may cause inflight to go negative.
-+	 * Don't reschedule release if inflight is 0 or negative.
-+	 * - If 0, the page_pool has been destroyed
-+	 * - if negative, we will never recover
-+	 * in both cases no reschedule is necessary.
-+	 */
-+	if (inflight <= 0)
- 		return;
+ struct ublk_rq_data {
+-	struct llist_node node;
+-
+ 	struct kref ref;
+ };
  
- 	/* Periodic warning */
+@@ -141,8 +139,6 @@ struct ublk_queue {
+ 	struct task_struct	*ubq_daemon;
+ 	char *io_cmd_buf;
+ 
+-	struct llist_head	io_cmds;
+-
+ 	unsigned long io_addr;	/* mapped vm address */
+ 	unsigned int max_io_sz;
+ 	bool force_abort;
+@@ -1114,7 +1110,7 @@ static void ublk_fail_rq_fn(struct kref *ref)
+ }
+ 
+ /*
+- * Since __ublk_rq_task_work always fails requests immediately during
++ * Since ublk_rq_task_work_cb always fails requests immediately during
+  * exiting, __ublk_fail_req() is only called from abort context during
+  * exiting. So lock is unnecessary.
+  *
+@@ -1163,11 +1159,14 @@ static inline void __ublk_abort_rq(struct ublk_queue *ubq,
+ 		blk_mq_end_request(rq, BLK_STS_IOERR);
+ }
+ 
+-static inline void __ublk_rq_task_work(struct request *req,
+-				       unsigned issue_flags)
++static void ublk_rq_task_work_cb(struct io_uring_cmd *cmd,
++				 unsigned int issue_flags)
+ {
+-	struct ublk_queue *ubq = req->mq_hctx->driver_data;
+-	int tag = req->tag;
++	struct ublk_uring_cmd_pdu *pdu = ublk_get_uring_cmd_pdu(cmd);
++	struct ublk_queue *ubq = pdu->ubq;
++	int tag = pdu->tag;
++	struct request *req = blk_mq_tag_to_rq(
++		ubq->dev->tag_set.tags[ubq->q_id], tag);
+ 	struct ublk_io *io = &ubq->ios[tag];
+ 	unsigned int mapped_bytes;
+ 
+@@ -1242,34 +1241,11 @@ static inline void __ublk_rq_task_work(struct request *req,
+ 	ubq_complete_io_cmd(io, UBLK_IO_RES_OK, issue_flags);
+ }
+ 
+-static inline void ublk_forward_io_cmds(struct ublk_queue *ubq,
+-					unsigned issue_flags)
+-{
+-	struct llist_node *io_cmds = llist_del_all(&ubq->io_cmds);
+-	struct ublk_rq_data *data, *tmp;
+-
+-	io_cmds = llist_reverse_order(io_cmds);
+-	llist_for_each_entry_safe(data, tmp, io_cmds, node)
+-		__ublk_rq_task_work(blk_mq_rq_from_pdu(data), issue_flags);
+-}
+-
+-static void ublk_rq_task_work_cb(struct io_uring_cmd *cmd, unsigned issue_flags)
+-{
+-	struct ublk_uring_cmd_pdu *pdu = ublk_get_uring_cmd_pdu(cmd);
+-	struct ublk_queue *ubq = pdu->ubq;
+-
+-	ublk_forward_io_cmds(ubq, issue_flags);
+-}
+-
+ static void ublk_queue_cmd(struct ublk_queue *ubq, struct request *rq)
+ {
+-	struct ublk_rq_data *data = blk_mq_rq_to_pdu(rq);
++	struct ublk_io *io = &ubq->ios[rq->tag];
+ 
+-	if (llist_add(&data->node, &ubq->io_cmds)) {
+-		struct ublk_io *io = &ubq->ios[rq->tag];
+-
+-		io_uring_cmd_complete_in_task(io->cmd, ublk_rq_task_work_cb);
+-	}
++	io_uring_cmd_complete_in_task(io->cmd, ublk_rq_task_work_cb);
+ }
+ 
+ static enum blk_eh_timer_return ublk_timeout(struct request *rq)
+@@ -1462,7 +1438,7 @@ static void ublk_abort_queue(struct ublk_device *ub, struct ublk_queue *ubq)
+ 			struct request *rq;
+ 
+ 			/*
+-			 * Either we fail the request or ublk_rq_task_work_fn
++			 * Either we fail the request or ublk_rq_task_work_cb
+ 			 * will do it
+ 			 */
+ 			rq = blk_mq_tag_to_rq(ub->tag_set.tags[ubq->q_id], i);
 -- 
 2.39.5
 
