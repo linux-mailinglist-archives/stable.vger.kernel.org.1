@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-138812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1D1AA1A38
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD65AA18FD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 785DD9A4E34
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2983316F340
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53B8188A0E;
-	Tue, 29 Apr 2025 18:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA3C248889;
+	Tue, 29 Apr 2025 18:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/yxZ/MH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQ2Xn3w1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BD9CA5A;
-	Tue, 29 Apr 2025 18:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0931121ABC6;
+	Tue, 29 Apr 2025 18:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950428; cv=none; b=U5LNLDdoYM/VGXWZcdqPWvPBtDe9RWOKCrPksL1lvrms2WSsoqtUWUzq00mcRfQg9HlUbPHPQc644hz1cjBi+0oxYFf+S3D6tV4b1+AY14EvB1Qhr5ayhgZfRe3RR7JmLVJPfr8SxqeDVaVgpM/Rl51efSogxpO5I46rg0zeA7g=
+	t=1745949837; cv=none; b=USSZeFgJkPQPESPn0bOHEIaW7h9CnRcTncIDlXjWZL6ZjRlo3Qq9uY/r1Sj4H7w7QdX+DcaToNrdJ+8L+GvyqWVWLoyyHprMMFY++w9xc0mMXywMTYQjg/F29/THcSu3G2s2dQvh/sJgZNz4Qh2Eu+kVPRqu4WAgGQ9hxJzVDug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950428; c=relaxed/simple;
-	bh=6C9Hr8suHzeN/USZbq40fB2EKZeI3qwS/6/m3fJDMGA=;
+	s=arc-20240116; t=1745949837; c=relaxed/simple;
+	bh=fufFM2Usaj09oI811cyg54t7fBWyaJk8hS2blmLMDsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jv5XHDeAl5AZfYUf49R6G27u1lLvnxMJVg8q5UjiPF0+xDOpRUzjImfGg/cseAly7GOEE/Gdi4+1+2xcPZcO3T5RWNBR6lWaIHuV645YQUXe3ANd6n5RAoG167hByO5uYbkFJl5YiD1LrnZ0TuaDOnFsk2YL0qP1t89xCS600Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/yxZ/MH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E77C4CEE3;
-	Tue, 29 Apr 2025 18:13:47 +0000 (UTC)
+	 MIME-Version; b=Ppb8mt91N2pGMJdFMmNK6I9TMBUkY2flF6/SDTYelSiLnge3ZwhRrgZvDn1FIVxRnjz3GUPKKK8eoK2Lj5Q7vH/S1V6QNjpXUtE12xBGYxF+5pGmvobJhI69Ph6xnYwFVX04isATQNTnQ4l8X/8JOF8jvSEXjkei8XIAGUCNmeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQ2Xn3w1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61818C4CEE3;
+	Tue, 29 Apr 2025 18:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950427;
-	bh=6C9Hr8suHzeN/USZbq40fB2EKZeI3qwS/6/m3fJDMGA=;
+	s=korg; t=1745949836;
+	bh=fufFM2Usaj09oI811cyg54t7fBWyaJk8hS2blmLMDsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/yxZ/MH9NpJF8hBv1Psex1+EyXt1FDjXlnDYaWY4BlDFYy/cHSi7uPP3em8Q6DpQ
-	 cV7WV4uTIGbDCMhm66jW9uO7yFWBDlBnP0p5nLQ1miHDdwS5IA04tm1rqKuEae+b6j
-	 6CD8Ka8YDn3WJKPqwp+MJRmw5qvbje1gZSRwQva8=
+	b=UQ2Xn3w1vDbvET/0U3EXsS+my2jLHbsHNM0tYn7YwSfJW8omSUpfO1X2ZtFFMlb2C
+	 XcdzheWU09sd/PSZpQeepNaTVMDS0E5TmwO/VClMXQ8PH36Wws7+zxUU1IG0+0ONX/
+	 6esYEG+NY/msjOXmvvFL4AleTGSi79V9jizWSnUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 092/204] KVM: x86: Explicitly treat routing entry type changes as changes
-Date: Tue, 29 Apr 2025 18:43:00 +0200
-Message-ID: <20250429161103.197286599@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 6.1 073/167] mei: me: add panther lake H DID
+Date: Tue, 29 Apr 2025 18:43:01 +0200
+Message-ID: <20250429161054.718262888@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit bcda70c56f3e718465cab2aad260cf34183ce1ce upstream.
+commit 86ce5c0a1dec02e21b4c864b2bc0cc5880a2c13c upstream.
 
-Explicitly treat type differences as GSI routing changes, as comparing MSI
-data between two entries could get a false negative, e.g. if userspace
-changed the type but left the type-specific data as-is.
+Add Panther Lake H device id.
 
-Fixes: 515a0c79e796 ("kvm: irqfd: avoid update unmodified entries of the routing")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-4-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: stable <stable@kernel.org>
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://lore.kernel.org/r/20250408130005.1358140-1-alexander.usyskin@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/misc/mei/hw-me-regs.h |    1 +
+ drivers/misc/mei/pci-me.c     |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -13297,7 +13297,8 @@ int kvm_arch_update_irqfd_routing(struct
- bool kvm_arch_irqfd_route_changed(struct kvm_kernel_irq_routing_entry *old,
- 				  struct kvm_kernel_irq_routing_entry *new)
- {
--	if (new->type != KVM_IRQ_ROUTING_MSI)
-+	if (old->type != KVM_IRQ_ROUTING_MSI ||
-+	    new->type != KVM_IRQ_ROUTING_MSI)
- 		return true;
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -117,6 +117,7 @@
  
- 	return !!memcmp(&old->msi, &new->msi, sizeof(new->msi));
+ #define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
+ 
++#define MEI_DEV_ID_PTL_H      0xE370  /* Panther Lake H */
+ #define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
+ 
+ /*
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -124,6 +124,7 @@ static const struct pci_device_id mei_me
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
+ 
++	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_H, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
+ 
+ 	/* required last entry */
 
 
 
