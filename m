@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-138392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18574AA181C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:56:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D03D1AA12B0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:57:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B6943A63F6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 110E216E7A8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721CA2472B9;
-	Tue, 29 Apr 2025 17:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBFF3253F21;
+	Tue, 29 Apr 2025 16:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/rR2TJ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwHCdyte"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDD5233735;
-	Tue, 29 Apr 2025 17:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAA6253F09;
+	Tue, 29 Apr 2025 16:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949104; cv=none; b=JXQkWCMwNWShFblIUaCIRfIB+LqyotV1JedkzYNnkbPxF+uaYXUqS4PHPTFpzC59pZupY3NCLy0/vJ9djm0QD37r9qZ1rXdJO4St8jdX+m/ViImagyJmiMlTJI+OBEZBGydLThAug7AOpPUDtmjJOQumnk21/jolidgsmxUk3GQ=
+	t=1745945663; cv=none; b=hIz3DvfnobHCmkt2y+yrFH8S2c7NGLMzra5kblt7rMJZLyr6c0KogiID7nuIqrysmlKbKtqYhLjooJCW329NGiq8Wo0UShzewCQYPrVn30v6wupnJj57NOxlqVVxpyCdmFBjFy9hgTT0B9M3lBSQxqrbMJZTkEuDXYkenJUn38E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949104; c=relaxed/simple;
-	bh=hE+BSLewlo1KIrKLU/dxM0nNgPYdYa7Y1Ldt/+Q5OYI=;
+	s=arc-20240116; t=1745945663; c=relaxed/simple;
+	bh=vCrM5pZq+aE8Nr3kuQxypblm1T7YPLJ/QUAmB0QnDG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FmCndJk6h9EvgViQgV8VkXDa+HI0PIIcy86+kSHpmhBLeWIlNCukicpHOnrbzixzyN+pQFiebrsL4O3BtJ5xhQ07gYtUAwotRfcA9//kMqH36exZZYbHuDTSDx6/9Ew7exoImhZicSmqj2xmqWSbzRROpEpTJnnzUoJ6j2z1PJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/rR2TJ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95CBC4CEE3;
-	Tue, 29 Apr 2025 17:51:43 +0000 (UTC)
+	 MIME-Version; b=HdLp/geNagadhbIRXrssS6aUjV9XvBefWQe/byFbBQ4aqahL8D2Cqj6mWbJmb1TOAzZA0LFhqd/CHSWrU6I5Y8t8m3JxJLqejKFkemtlML0+AlwFsCckQUUb5TbHRQ+qiEWicylkuUJ/4TmKnizmMOWfTbLf8p4YLRF7wdCOuA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwHCdyte; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07379C4CEEA;
+	Tue, 29 Apr 2025 16:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949104;
-	bh=hE+BSLewlo1KIrKLU/dxM0nNgPYdYa7Y1Ldt/+Q5OYI=;
+	s=korg; t=1745945663;
+	bh=vCrM5pZq+aE8Nr3kuQxypblm1T7YPLJ/QUAmB0QnDG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o/rR2TJ7d9z2QIaZORDG9yKaN3cQq2unuv0ZYHdjNd2WWvrr46ahxhlc68IUlw07B
-	 SJ1J6vYCuXbECUchyHaj5J/kvn5TNUiYMoRynp5o3ePoOO6Ct8Np/D6KtljvATdBKy
-	 xt1gVmLarVig5UZVdkH5ZcRifG4prHHaEBFvhHG4=
+	b=BwHCdytetmw4VU5l2VUu8pPEIDlYEUZ+Hc7iTB9BeUemXXdumTrY8iDH704/Fo0+B
+	 ynAyBKmQzwpw+zeL6PCHXPFBhAKM38XdxLjKsHMGpoa1uKvf0IAXrzQo8BYSkn+NxU
+	 XHN4SPZH6kvtkAfBgZiL3WiorOIW4HzCRfo6Iqyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.15 213/373] drm/amd/display: Stop amdgpu_dm initialize when link nums greater than max_links
+	Ryo Takakura <ryotkkr98@gmail.com>,
+	Petr Mladek <pmladek@suse.com>,
+	John Ogness <john.ogness@linutronix.de>
+Subject: [PATCH 5.4 149/179] serial: sifive: lock port in startup()/shutdown() callbacks
 Date: Tue, 29 Apr 2025 18:41:30 +0200
-Message-ID: <20250429161131.920887319@linuxfoundation.org>
+Message-ID: <20250429161055.414786153@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,65 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Ryo Takakura <ryotkkr98@gmail.com>
 
-commit cf8b16857db702ceb8d52f9219a4613363e2b1cf upstream.
+commit e1ca3ff28ab1e2c1e70713ef3fa7943c725742c3 upstream.
 
-[Why]
-Coverity report OVERRUN warning. There are
-only max_links elements within dc->links. link
-count could up to AMDGPU_DM_MAX_DISPLAY_INDEX 31.
+startup()/shutdown() callbacks access SIFIVE_SERIAL_IE_OFFS.
+The register is also accessed from write() callback.
 
-[How]
-Make sure link count less than max_links.
+If console were printing and startup()/shutdown() callback
+gets called, its access to the register could be overwritten.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[Minor conflict resolved due to code context change. And the macro MAX_LINKS
- is introduced by Commit 60df5628144b ("drm/amd/display: handle invalid
- connector indices") after 6.10. So here we still use the original array
- length MAX_PIPES * 2]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Add port->lock to startup()/shutdown() callbacks to make sure
+their access to SIFIVE_SERIAL_IE_OFFS is synchronized against
+write() callback.
+
+Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
+Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Rule: add
+Link: https://lore.kernel.org/stable/20250330003522.386632-1-ryotkkr98%40gmail.com
+Link: https://lore.kernel.org/r/20250412001847.183221-1-ryotkkr98@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/tty/serial/sifive.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4321,17 +4321,17 @@ static int amdgpu_dm_initialize_drm_devi
- 	}
- #endif
+--- a/drivers/tty/serial/sifive.c
++++ b/drivers/tty/serial/sifive.c
+@@ -596,8 +596,11 @@ static void sifive_serial_break_ctl(stru
+ static int sifive_serial_startup(struct uart_port *port)
+ {
+ 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
++	unsigned long flags;
  
-+	if (link_cnt > (MAX_PIPES * 2)) {
-+		DRM_ERROR(
-+			"KMS: Cannot support more than %d display indexes\n",
-+				MAX_PIPES * 2);
-+		goto fail;
-+	}
-+
- 	/* loops over all connectors on the board */
- 	for (i = 0; i < link_cnt; i++) {
- 		struct dc_link *link = NULL;
++	uart_port_lock_irqsave(&ssp->port, &flags);
+ 	__ssp_enable_rxwm(ssp);
++	uart_port_unlock_irqrestore(&ssp->port, flags);
  
--		if (i > AMDGPU_DM_MAX_DISPLAY_INDEX) {
--			DRM_ERROR(
--				"KMS: Cannot support more than %d display indexes\n",
--					AMDGPU_DM_MAX_DISPLAY_INDEX);
--			continue;
--		}
--
- 		aconnector = kzalloc(sizeof(*aconnector), GFP_KERNEL);
- 		if (!aconnector)
- 			goto fail;
+ 	return 0;
+ }
+@@ -605,9 +608,12 @@ static int sifive_serial_startup(struct
+ static void sifive_serial_shutdown(struct uart_port *port)
+ {
+ 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
++	unsigned long flags;
+ 
++	uart_port_lock_irqsave(&ssp->port, &flags);
+ 	__ssp_disable_rxwm(ssp);
+ 	__ssp_disable_txwm(ssp);
++	uart_port_unlock_irqrestore(&ssp->port, flags);
+ }
+ 
+ /**
 
 
 
