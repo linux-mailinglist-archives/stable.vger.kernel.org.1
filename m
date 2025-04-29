@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-137736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE21AA14B8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:19:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6170AA13C8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 336C01731C5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30708925ECD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8372F254867;
-	Tue, 29 Apr 2025 17:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A902522A2;
+	Tue, 29 Apr 2025 17:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FI1iZQyg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k33N2YDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375CE25485B;
-	Tue, 29 Apr 2025 17:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB1324C067;
+	Tue, 29 Apr 2025 17:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946974; cv=none; b=fcQZLOTtxoIxlWaH0tq1q8ufdCzFJztvEBu/moE8NKgubacyHIW937CpXqZ5ip4pYAUluehtEt3u7YxwhPZZJxoi6uDCZQpi7zpRx7B1Ht96OYecN4H1KT073J5P7wp41S4V0Grd8vQ8buoiojij8+o8q07GDNeyo9jy528Wsm4=
+	t=1745946222; cv=none; b=G4nZ1AoIXTyG2DSYIBERuJy3usZQ33TxmxYunqeFeOyS5ngyLdFC3SoejAxJvxpN/Q/SKsZ/ocbfZoxVPl93y5sGbxBVIdK0YljV2V1LsDERJdukgzZDHHbBe2tHE12u005p6ZJTfQlcPupQCxNy8StKZNTWBZiDZ79EERf8rdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946974; c=relaxed/simple;
-	bh=QBpKRBwAWXnY6h+pF2gMG9LrINXsuDeNOTh3F+ydBKg=;
+	s=arc-20240116; t=1745946222; c=relaxed/simple;
+	bh=/PLYxehcMZ4ABGwRuBDPWSWEFzQNOcyLxc1BHFOirMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pv1Q88zqAq+q8fcx8PQyU40AJx2e9ghN73V6/8Gj5r45EOdaumYZ+YMoODOrEd5vHILiuNo8opqtm40J3yZsOgd+qKbTf52qow877zB0eX42//22kNQR5iru6tA4tH+aBgaLN5qT2pnsjmx4PrgI4ZMO4vkFiomc7IW4LKjs6rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FI1iZQyg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C15CC4CEE3;
-	Tue, 29 Apr 2025 17:16:13 +0000 (UTC)
+	 MIME-Version; b=jEg5n8DK81PWbiTQZ4KRlVtO4vb+MvO8coRWsvgyPXCUXzyGRfrHlAkRa2Yf2VBA21FzsaCs9rGmo0XKrkRVSxkDqQcl6beU2QjBURy++WDVXarL4zuohWu+MMTCJlqxsI02fuZo4NPXxhK2aSGBQ3ATYl4lhLtPN4XxFo25g4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k33N2YDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CFFC4CEE3;
+	Tue, 29 Apr 2025 17:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946973;
-	bh=QBpKRBwAWXnY6h+pF2gMG9LrINXsuDeNOTh3F+ydBKg=;
+	s=korg; t=1745946221;
+	bh=/PLYxehcMZ4ABGwRuBDPWSWEFzQNOcyLxc1BHFOirMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FI1iZQyguFa24UKcBNfbyYVdeiXSusnuBVA+aGAHMEmqiARkQE8BwPTOjMMaxwGrZ
-	 jCVK77l9SlypUruQoeCyI0VtT3Ysye3bLAgq1tMJPl0gaiSoWYzSIfTfRskIXI1Ox4
-	 8zFvV7iTPuwLIIG+apg8tJwAepn+scJO2uaFiaZ8=
+	b=k33N2YDepugAA1aXd1SVy9iNFf/JtOvaOwr6hrUU0gjsSchP73mz4PtmqI6BSFByX
+	 JKJXCd/LOy1AfMxs60a0NyfdFfStmZN2e2oYXUtAAFFsIgDKHxPdn1FAHFhGINiaMI
+	 puklcsb6IaT18sxBTWAQVAPd7OPj8kx3XJRpuLuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 128/286] hfs/hfsplus: fix slab-out-of-bounds in hfs_bnode_read_key
-Date: Tue, 29 Apr 2025 18:40:32 +0200
-Message-ID: <20250429161113.124500592@linuxfoundation.org>
+	Adam Young <admiyo@os.amperecomputing.com>,
+	Robbie King <robbiek@xsightlabs.com>,
+	Huisong Li <lihuisong@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 196/311] mailbox: pcc: Fix the possible race in updation of chan_in_use flag
+Date: Tue, 29 Apr 2025 18:40:33 +0200
+Message-ID: <20250429161129.042193504@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +65,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Huisong Li <lihuisong@huawei.com>
 
-commit bb5e07cb927724e0b47be371fa081141cfb14414 upstream.
+[ Upstream commit 9779d45c749340ab461d595c1a4a664cb28f3007 ]
 
-Syzbot reported an issue in hfs subsystem:
+The function mbox_chan_received_data() calls the Rx callback of the
+mailbox client driver. The callback might set chan_in_use flag from
+pcc_send_data(). This flag's status determines whether the PCC channel
+is in use.
 
-BUG: KASAN: slab-out-of-bounds in memcpy_from_page include/linux/highmem.h:423 [inline]
-BUG: KASAN: slab-out-of-bounds in hfs_bnode_read fs/hfs/bnode.c:35 [inline]
-BUG: KASAN: slab-out-of-bounds in hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
-Write of size 94 at addr ffff8880123cd100 by task syz-executor237/5102
+However, there is a potential race condition where chan_in_use is
+updated incorrectly due to concurrency between the interrupt handler
+(pcc_mbox_irq()) and the command sender(pcc_send_data()).
 
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
- __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
- memcpy_from_page include/linux/highmem.h:423 [inline]
- hfs_bnode_read fs/hfs/bnode.c:35 [inline]
- hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
- hfs_brec_insert+0x7f3/0xbd0 fs/hfs/brec.c:159
- hfs_cat_create+0x41d/0xa50 fs/hfs/catalog.c:118
- hfs_mkdir+0x6c/0xe0 fs/hfs/dir.c:232
- vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
- do_mkdirat+0x264/0x3a0 fs/namei.c:4280
- __do_sys_mkdir fs/namei.c:4300 [inline]
- __se_sys_mkdir fs/namei.c:4298 [inline]
- __x64_sys_mkdir+0x6c/0x80 fs/namei.c:4298
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fbdd6057a99
+The 'chan_in_use' flag of a channel is set to true after sending a
+command. And the flag of the new command may be cleared erroneous by
+the interrupt handler afer mbox_chan_received_data() returns,
 
-Add a check for key length in hfs_bnode_read_key to prevent
-out-of-bounds memory access. If the key length is invalid, the
-key buffer is cleared, improving stability and reliability.
+As a result, the interrupt being level triggered can't be cleared in
+pcc_mbox_irq() and it will be disabled after the number of handled times
+exceeds the specified value. The error log is as follows:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5f3a973ed3dfb85a6683
-Cc: stable@vger.kernel.org
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/20241019191303.24048-1-kovalev@altlinux.org
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  |  kunpeng_hccs HISI04B2:00: PCC command executed timeout!
+  |  kunpeng_hccs HISI04B2:00: get port link status info failed, ret = -110
+  |  irq 13: nobody cared (try booting with the "irqpoll" option)
+  |  Call trace:
+  |   dump_backtrace+0x0/0x210
+  |   show_stack+0x1c/0x2c
+  |   dump_stack+0xec/0x130
+  |   __report_bad_irq+0x50/0x190
+  |   note_interrupt+0x1e4/0x260
+  |   handle_irq_event+0x144/0x17c
+  |   handle_fasteoi_irq+0xd0/0x240
+  |   __handle_domain_irq+0x80/0xf0
+  |   gic_handle_irq+0x74/0x2d0
+  |   el1_irq+0xbc/0x140
+  |   mnt_clone_write+0x0/0x70
+  |   file_update_time+0xcc/0x160
+  |   fault_dirty_shared_page+0xe8/0x150
+  |   do_shared_fault+0x80/0x1d0
+  |   do_fault+0x118/0x1a4
+  |   handle_pte_fault+0x154/0x230
+  |   __handle_mm_fault+0x1ac/0x390
+  |   handle_mm_fault+0xf0/0x250
+  |   do_page_fault+0x184/0x454
+  |   do_translation_fault+0xac/0xd4
+  |   do_mem_abort+0x44/0xb4
+  |   el0_da+0x40/0x74
+  |   el0_sync_handler+0x60/0xb4
+  |   el0_sync+0x168/0x180
+  |  handlers:
+  |   pcc_mbox_irq
+  |  Disabling IRQ #13
+
+To solve this issue, pcc_mbox_irq() must clear 'chan_in_use' flag before
+the call to mbox_chan_received_data().
+
+Tested-by: Adam Young <admiyo@os.amperecomputing.com>
+Tested-by: Robbie King <robbiek@xsightlabs.com>
+Signed-off-by: Huisong Li <lihuisong@huawei.com>
+(sudeep.holla: Minor updates to the subject, commit message and comment)
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/bnode.c     |    6 ++++++
- fs/hfsplus/bnode.c |    6 ++++++
- 2 files changed, 12 insertions(+)
+ drivers/mailbox/pcc.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/hfs/bnode.c
-+++ b/fs/hfs/bnode.c
-@@ -70,6 +70,12 @@ void hfs_bnode_read_key(struct hfs_bnode
- 	else
- 		key_len = tree->max_key_len + 1;
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index 82102a4c5d688..8fd4d0f79b090 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -333,10 +333,16 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ 	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
+ 		return IRQ_NONE;
  
-+	if (key_len > sizeof(hfs_btree_key) || key_len < 1) {
-+		memset(key, 0, sizeof(hfs_btree_key));
-+		pr_err("hfs: Invalid key length: %d\n", key_len);
-+		return;
-+	}
-+
- 	hfs_bnode_read(node, key, off, key_len);
++	/*
++	 * Clear this flag after updating interrupt ack register and just
++	 * before mbox_chan_received_data() which might call pcc_send_data()
++	 * where the flag is set again to start new transfer. This is
++	 * required to avoid any possible race in updatation of this flag.
++	 */
++	pchan->chan_in_use = false;
+ 	mbox_chan_received_data(chan, NULL);
+ 
+ 	check_and_ack(pchan, chan);
+-	pchan->chan_in_use = false;
+ 
+ 	return IRQ_HANDLED;
  }
- 
---- a/fs/hfsplus/bnode.c
-+++ b/fs/hfsplus/bnode.c
-@@ -69,6 +69,12 @@ void hfs_bnode_read_key(struct hfs_bnode
- 	else
- 		key_len = tree->max_key_len + 2;
- 
-+	if (key_len > sizeof(hfsplus_btree_key) || key_len < 1) {
-+		memset(key, 0, sizeof(hfsplus_btree_key));
-+		pr_err("hfsplus: Invalid key length: %d\n", key_len);
-+		return;
-+	}
-+
- 	hfs_bnode_read(node, key, off, key_len);
- }
- 
+-- 
+2.39.5
+
 
 
 
