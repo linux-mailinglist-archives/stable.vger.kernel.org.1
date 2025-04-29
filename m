@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F675AA135C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E139AA14DE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 088BD7AFE71
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FCC71BC152D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B982512C0;
-	Tue, 29 Apr 2025 17:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D6D22A4F4;
+	Tue, 29 Apr 2025 17:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VlRIUsii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcGGMYsv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B2382C60;
-	Tue, 29 Apr 2025 17:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5CE24C098;
+	Tue, 29 Apr 2025 17:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946274; cv=none; b=sPDvm927Q1TZlmXRZ+awPZXvjrCZVM5pYhRsEY8Ac4iMoKLeZIGivB3wVWFWny67wP5BsdVME5TB1p+2p9rMDnoswPPxqbH8KN1uYI33KrfwxoOCMUI0y9InQFd7EjrditKhXv1Q9SWwqE6k7ErbHjj7p4Hpz5yBV2eN3LnGO9E=
+	t=1745947015; cv=none; b=ZNPyN/6DCgEiNna9mW7ON1hxULVd+BhgDREZZFv8+rCwzf1YaTQSbA5zkwEXhTphLqSRZZZk6nJz73aZVVyqUr7qzfzj7OCrwOdkSYcWBU2huBjY7BQ2wZyOelSKpApQZlCawlXjPkx/0rsi90IIuvdT4BcOG0hgy18Z+mUZACk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946274; c=relaxed/simple;
-	bh=Owflf4YEm70HZKJlax+DiAvnC9pmQBsqy/1HEPb7fp8=;
+	s=arc-20240116; t=1745947015; c=relaxed/simple;
+	bh=zCbc9xb6XgRw3gLP1t4B7HNLCHCf+LrQ9Av2BngNjIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AvT34e+wmQeXF2CSvlK2D5zlfXOAFsQKCofuFoGSAkVHmiKA2+3nUv08GVkO4TeETT+fgxM+VA0d676Mqe121w8r0uHOeAmreaH1WCwfj6kgi8DBb2t3i9D5K8IPDUTCP1HaMUNYfpkPi/uu65HOVycVxelYJa17KPTlcQvlHvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VlRIUsii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940F8C4CEEE;
-	Tue, 29 Apr 2025 17:04:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cH1H9KNztkWdKWLcHLQKJpQVO/GuHP+bwKjGqVybAUim4/XqQZtXJy5smGik3zzkI3q0pnq8HoFFurazxMTISp4bTWMjwPb58z02RctQhYVG5rF5z26vYOmtUExZic8GXJcsnAnlWWN2N4HslQnAP/Twolx1rOlSBujjsf6TikY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcGGMYsv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35208C4CEE3;
+	Tue, 29 Apr 2025 17:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946274;
-	bh=Owflf4YEm70HZKJlax+DiAvnC9pmQBsqy/1HEPb7fp8=;
+	s=korg; t=1745947014;
+	bh=zCbc9xb6XgRw3gLP1t4B7HNLCHCf+LrQ9Av2BngNjIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VlRIUsiiTnjtMjFobBIRkAdfC4b5+fGuyZD3geBswln9LCUe4cAd6mQUQwscQxJwa
-	 FrzGIKwx9t+EvNMJo9hRPMExDebwheWixehg2yJOBi8MSY7OLy+iqRD0Ps0GDvePPV
-	 vLonqWk3/f7Lzxz/LCWX9zCu848MIFvTlpZLUnnE=
+	b=gcGGMYsvjPntJJBF6KPkAkD9iSeSfN03FOyS4U8VrOsPVqQT24gnS9/4Jn7cOuhPE
+	 xPTScjaicEFP8w/0hImcClo1Lq5ZGnC7Qiz0Xj7yHNnL1bOVeKpPFK7bq5LJhw1G3K
+	 THX//OTWDL07oIxU4KMSpuqUhQNwxyOAbcSPu6rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuangyi Chiang <ki.chiang65@gmail.com>,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 211/311] xhci: Handle spurious events on Etron host isoc enpoints
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 5.10 144/286] cpufreq: Reference count policy in cpufreq_update_limits()
 Date: Tue, 29 Apr 2025 18:40:48 +0200
-Message-ID: <20250429161129.644914068@linuxfoundation.org>
+Message-ID: <20250429161113.810325717@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,160 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit b331a3d8097fad4e541d212684192f21fedbd6e5 ]
+commit 9e4e249018d208678888bdf22f6b652728106528 upstream.
 
-Unplugging a USB3.0 webcam from Etron hosts while streaming results
-in errors like this:
+Since acpi_processor_notify() can be called before registering a cpufreq
+driver or even in cases when a cpufreq driver is not registered at all,
+cpufreq_update_limits() needs to check if a cpufreq driver is present
+and prevent it from being unregistered.
 
-[ 2.646387] xhci_hcd 0000:03:00.0: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 18 comp_code 13
-[ 2.646446] xhci_hcd 0000:03:00.0: Looking for event-dma 000000002fdf8630 trb-start 000000002fdf8640 trb-end 000000002fdf8650
-[ 2.646560] xhci_hcd 0000:03:00.0: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 18 comp_code 13
-[ 2.646568] xhci_hcd 0000:03:00.0: Looking for event-dma 000000002fdf8660 trb-start 000000002fdf8670 trb-end 000000002fdf8670
+For this purpose, make it call cpufreq_cpu_get() to obtain a cpufreq
+policy pointer for the given CPU and reference count the corresponding
+policy object, if present.
 
-Etron xHC generates two transfer events for the TRB if an error is
-detected while processing the last TRB of an isoc TD.
-
-The first event can be any sort of error (like USB Transaction or
-Babble Detected, etc), and the final event is Success.
-
-The xHCI driver will handle the TD after the first event and remove it
-from its internal list, and then print an "Transfer event TRB DMA ptr
-not part of current TD" error message after the final event.
-
-Commit 5372c65e1311 ("xhci: process isoc TD properly when there was a
-transaction error mid TD.") is designed to address isoc transaction
-errors, but unfortunately it doesn't account for this scenario.
-
-This issue is similar to the XHCI_SPURIOUS_SUCCESS case where a success
-event follows a 'short transfer' event, but the TD the event points to
-is already given back.
-
-Expand the spurious success 'short transfer' event handling to cover
-the spurious success after error on Etron hosts.
-
-Kuangyi Chiang reported this issue and submitted a different solution
-based on using error_mid_td. This commit message is mostly taken
-from that patch.
-
-Reported-by: Kuangyi Chiang <ki.chiang65@gmail.com>
-Closes: https://lore.kernel.org/linux-usb/20241028025337.6372-6-ki.chiang65@gmail.com/
-Tested-by: Kuangyi Chiang <ki.chiang65@gmail.com>
-Tested-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250306144954.3507700-16-mathias.nyman@linux.intel.com
+Fixes: 5a25e3f7cc53 ("cpufreq: intel_pstate: Driver-specific handling of _PPC updates")
+Closes: https://lore.kernel.org/linux-acpi/Z-ShAR59cTow0KcR@mail-itl
+Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/1928789.tdWV9SEqCh@rjwysocki.net
+[do not use __free(cpufreq_cpu_put) in a backport]
+Signed-off-by: Marek Marczykowski-GÃ³recki <marmarek@invisiblethingslab.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 38 ++++++++++++++++++++++++------------
- drivers/usb/host/xhci.h      |  2 +-
- 2 files changed, 27 insertions(+), 13 deletions(-)
+ drivers/cpufreq/cpufreq.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 12b1c14efeb21..6b20072424f0c 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2644,6 +2644,22 @@ static int handle_transferless_tx_event(struct xhci_hcd *xhci, struct xhci_virt_
- 	return 0;
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2593,10 +2593,18 @@ EXPORT_SYMBOL(cpufreq_update_policy);
+  */
+ void cpufreq_update_limits(unsigned int cpu)
+ {
++	struct cpufreq_policy *policy;
++
++	policy = cpufreq_cpu_get(cpu);
++	if (!policy)
++		return;
++
+ 	if (cpufreq_driver->update_limits)
+ 		cpufreq_driver->update_limits(cpu);
+ 	else
+ 		cpufreq_update_policy(cpu);
++
++	cpufreq_cpu_put(policy);
  }
+ EXPORT_SYMBOL_GPL(cpufreq_update_limits);
  
-+static bool xhci_spurious_success_tx_event(struct xhci_hcd *xhci,
-+					   struct xhci_ring *ring)
-+{
-+	switch (ring->old_trb_comp_code) {
-+	case COMP_SHORT_PACKET:
-+		return xhci->quirks & XHCI_SPURIOUS_SUCCESS;
-+	case COMP_USB_TRANSACTION_ERROR:
-+	case COMP_BABBLE_DETECTED_ERROR:
-+	case COMP_ISOCH_BUFFER_OVERRUN:
-+		return xhci->quirks & XHCI_ETRON_HOST &&
-+			ring->type == TYPE_ISOC;
-+	default:
-+		return false;
-+	}
-+}
-+
- /*
-  * If this function returns an error condition, it means it got a Transfer
-  * event with a corrupted Slot ID, Endpoint ID, or TRB DMA address.
-@@ -2698,8 +2714,8 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 	case COMP_SUCCESS:
- 		if (EVENT_TRB_LEN(le32_to_cpu(event->transfer_len)) != 0) {
- 			trb_comp_code = COMP_SHORT_PACKET;
--			xhci_dbg(xhci, "Successful completion on short TX for slot %u ep %u with last td short %d\n",
--				 slot_id, ep_index, ep_ring->last_td_was_short);
-+			xhci_dbg(xhci, "Successful completion on short TX for slot %u ep %u with last td comp code %d\n",
-+				 slot_id, ep_index, ep_ring->old_trb_comp_code);
- 		}
- 		break;
- 	case COMP_SHORT_PACKET:
-@@ -2850,7 +2866,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 		if (trb_comp_code != COMP_STOPPED &&
- 		    trb_comp_code != COMP_STOPPED_LENGTH_INVALID &&
- 		    !ring_xrun_event &&
--		    !ep_ring->last_td_was_short) {
-+		    !xhci_spurious_success_tx_event(xhci, ep_ring)) {
- 			xhci_warn(xhci, "Event TRB for slot %u ep %u with no TDs queued\n",
- 				  slot_id, ep_index);
- 		}
-@@ -2902,11 +2918,12 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 
- 			/*
- 			 * Some hosts give a spurious success event after a short
--			 * transfer. Ignore it.
-+			 * transfer or error on last TRB. Ignore it.
- 			 */
--			if ((xhci->quirks & XHCI_SPURIOUS_SUCCESS) &&
--			    ep_ring->last_td_was_short) {
--				ep_ring->last_td_was_short = false;
-+			if (xhci_spurious_success_tx_event(xhci, ep_ring)) {
-+				xhci_dbg(xhci, "Spurious event dma %pad, comp_code %u after %u\n",
-+					 &ep_trb_dma, trb_comp_code, ep_ring->old_trb_comp_code);
-+				ep_ring->old_trb_comp_code = trb_comp_code;
- 				return 0;
- 			}
- 
-@@ -2934,15 +2951,12 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 	 */
- 	} while (ep->skip);
- 
-+	ep_ring->old_trb_comp_code = trb_comp_code;
-+
- 	/* Get out if a TD was queued at enqueue after the xrun occurred */
- 	if (ring_xrun_event)
- 		return 0;
- 
--	if (trb_comp_code == COMP_SHORT_PACKET)
--		ep_ring->last_td_was_short = true;
--	else
--		ep_ring->last_td_was_short = false;
--
- 	ep_trb = &ep_seg->trbs[(ep_trb_dma - ep_seg->dma) / sizeof(*ep_trb)];
- 	trace_xhci_handle_transfer(ep_ring, (struct xhci_generic_trb *) ep_trb, ep_trb_dma);
- 
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 696b2b9c8f8e6..2c394cba120f1 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1371,7 +1371,7 @@ struct xhci_ring {
- 	unsigned int		num_trbs_free; /* used only by xhci DbC */
- 	unsigned int		bounce_buf_len;
- 	enum xhci_ring_type	type;
--	bool			last_td_was_short;
-+	u32			old_trb_comp_code;
- 	struct radix_tree_root	*trb_address_map;
- };
- 
--- 
-2.39.5
-
 
 
 
