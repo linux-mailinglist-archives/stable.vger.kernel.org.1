@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-138419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC8BAA1837
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 972A1AA129F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A29A53A87AE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:52:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CB6A4619A8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059B52B2DA;
-	Tue, 29 Apr 2025 17:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164BC24A047;
+	Tue, 29 Apr 2025 16:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOd+xQxx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGH5aoa/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4ECF243364;
-	Tue, 29 Apr 2025 17:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C621F215060;
+	Tue, 29 Apr 2025 16:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949194; cv=none; b=DE1uy9cz1XlDDI1fHydJkzzvqK1kBYapd/Oa4oBgLC2MYdY+jVvBqM6jAqUn0KB82Jqv4sn6i0PR2zSJ4EtZ5akG2/wAfnp6qiCmiwoVcP3r735ByojhvrINxjvm6oZZVzZ17FFWcaut/0x82/V0VCC+hnDdu0eIaXRJ4VqgBxg=
+	t=1745945632; cv=none; b=sgBttxKGh49WtnmymhydawCUEE6G+vG9hr0Wq9ysyTWJlNVwyd8xZbA7fafKo5loDEzmY3PulwOuBQBh7jt0B3rxYFc7OeX2CkanKs1lKpwjUb2RuZYN+crBdDWHrBPqwvSJ9o7HIeHHh+xYSFowRk0mcoL4tSsFyJoX2nmmU/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949194; c=relaxed/simple;
-	bh=Ae3eVLbhmWVTh8KHULnGJyYVLPfFtJRghXtk9fCPgBM=;
+	s=arc-20240116; t=1745945632; c=relaxed/simple;
+	bh=ioWXNWOT8vD38RBVra2xXsWvUT92sxFC58Y4URKYDow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MjSrPMSM5mYAJ1dS3x6la74p6nBnjbPsxACxqNFpRMKHiINsAcPYCkNWGSPGzzO5QELF4J2J5Ixl+U7mbOhNWLolwBTwL/5X5RJ1U5pJjRG9mu+lJ3FcyTUZ4xwEvMh9Uf8YQt/tLNUV9uOKz0E812Tywr8dplMF+UCzyqVWlzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOd+xQxx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4342DC4CEE3;
-	Tue, 29 Apr 2025 17:53:14 +0000 (UTC)
+	 MIME-Version; b=H9nSy/lFUjWjwfw0xJR92D56eeNK4ikkwDolV0jb7L5kxOB5wSOpUqqqfiNpER+WF5ZBEX8PqWhC4Q/WIIeSYxYZZoSSh5gflOChRiaCwZbk6/mFDkVLD2uCDCI57hkDJ7k9uE5QkOHO+Mn/7fhuIxP/aJq1aBIf4APJDipF4vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGH5aoa/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32DCCC4CEE3;
+	Tue, 29 Apr 2025 16:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949194;
-	bh=Ae3eVLbhmWVTh8KHULnGJyYVLPfFtJRghXtk9fCPgBM=;
+	s=korg; t=1745945632;
+	bh=ioWXNWOT8vD38RBVra2xXsWvUT92sxFC58Y4URKYDow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOd+xQxxTyXRGXZSjjKqVwDKNx5Rzwd0ThjotUuvL/tq+m32S/9RRCHfunCfezqVu
-	 6kBPekwwoKjvymCbv3HmdYYeBpP9+y92lkVV2jJ5nelHec7QlHMUpMt+AG67IZGpEe
-	 cCl+GuDx0OCVj0sC/qT1jBGTwpe8na7elmBzLXAM=
+	b=GGH5aoa/rgI79ZEZfT5NDmXc/NhaGlSOLyST/FdTHUlm+1I+mW0OK6cL18QMeR0uH
+	 aLSBkPB8exFs4vwm1s0isaaLvq0NYUsVAS0hG5ZHjuSaUNvSocRqx0uJdizGPwhszl
+	 4V1msasY/6hJnXLGcesYFRrBQdLVeG6xk8zgUDh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.15 241/373] MIPS: dec: Declare which_prom() as static
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 5.4 177/179] comedi: jr3_pci: Fix synchronous deletion of timer
 Date: Tue, 29 Apr 2025 18:41:58 +0200
-Message-ID: <20250429161133.046277142@linuxfoundation.org>
+Message-ID: <20250429161056.555397723@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +59,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 55fa5868519bc48a7344a4c070efa2f4468f2167 upstream.
+commit 44d9b3f584c59a606b521e7274e658d5b866c699 upstream.
 
-Declare which_prom() as static to suppress gcc compiler warning that
-'missing-prototypes'. This function is not intended to be called
-from other parts.
+When `jr3_pci_detach()` is called during device removal, it calls
+`timer_delete_sync()` to stop the timer, but the timer expiry function
+always reschedules the timer, so the synchronization is ineffective.
 
-Fix follow error with gcc-14 when -Werror:
+Call `timer_shutdown_sync()` instead.  It does not matter that the timer
+expiry function pointer is cleared, because the device is being removed.
 
-arch/mips/dec/prom/init.c:45:13: error: no previous prototype for ‘which_prom’ [-Werror=missing-prototypes]
-   45 | void __init which_prom(s32 magic, s32 *prom_vec)
-      |             ^~~~~~~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:207: arch/mips/dec/prom/init.o] Error 1
-make[5]: *** [scripts/Makefile.build:465: arch/mips/dec/prom] Error 2
-make[5]: *** Waiting for unfinished jobs....
-
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 07b509e6584a5 ("Staging: comedi: add jr3_pci driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250415123901.13483-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/dec/prom/init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/comedi/drivers/jr3_pci.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/arch/mips/dec/prom/init.c
-+++ b/arch/mips/dec/prom/init.c
-@@ -42,7 +42,7 @@ int (*__pmax_close)(int);
-  * Detect which PROM the DECSTATION has, and set the callback vectors
-  * appropriately.
-  */
--void __init which_prom(s32 magic, s32 *prom_vec)
-+static void __init which_prom(s32 magic, s32 *prom_vec)
+--- a/drivers/staging/comedi/drivers/jr3_pci.c
++++ b/drivers/staging/comedi/drivers/jr3_pci.c
+@@ -88,6 +88,7 @@ struct jr3_pci_poll_delay {
+ struct jr3_pci_dev_private {
+ 	struct timer_list timer;
+ 	struct comedi_device *dev;
++	bool timer_enable;
+ };
+ 
+ union jr3_pci_single_range {
+@@ -612,10 +613,11 @@ static void jr3_pci_poll_dev(struct time
+ 				delay = sub_delay.max;
+ 		}
+ 	}
++	if (devpriv->timer_enable) {
++		devpriv->timer.expires = jiffies + msecs_to_jiffies(delay);
++		add_timer(&devpriv->timer);
++	}
+ 	spin_unlock_irqrestore(&dev->spinlock, flags);
+-
+-	devpriv->timer.expires = jiffies + msecs_to_jiffies(delay);
+-	add_timer(&devpriv->timer);
+ }
+ 
+ static struct jr3_pci_subdev_private *
+@@ -764,6 +766,7 @@ static int jr3_pci_auto_attach(struct co
+ 	devpriv->dev = dev;
+ 	timer_setup(&devpriv->timer, jr3_pci_poll_dev, 0);
+ 	devpriv->timer.expires = jiffies + msecs_to_jiffies(1000);
++	devpriv->timer_enable = true;
+ 	add_timer(&devpriv->timer);
+ 
+ 	return 0;
+@@ -773,8 +776,12 @@ static void jr3_pci_detach(struct comedi
  {
- 	/*
- 	 * No sign of the REX PROM's magic number means we assume a non-REX
+ 	struct jr3_pci_dev_private *devpriv = dev->private;
+ 
+-	if (devpriv)
++	if (devpriv) {
++		spin_lock_bh(&dev->spinlock);
++		devpriv->timer_enable = false;
++		spin_unlock_bh(&dev->spinlock);
+ 		del_timer_sync(&devpriv->timer);
++	}
+ 
+ 	comedi_pci_detach(dev);
+ }
 
 
 
