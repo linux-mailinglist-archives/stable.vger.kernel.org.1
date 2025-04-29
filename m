@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7790BAA15F6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC211AA14C0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FEC0176628
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B10F81888035
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F2025178C;
-	Tue, 29 Apr 2025 17:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D6D250C15;
+	Tue, 29 Apr 2025 17:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7YJjEI+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qsvh4wMG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025CD24503E;
-	Tue, 29 Apr 2025 17:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228D02512DD;
+	Tue, 29 Apr 2025 17:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947713; cv=none; b=R5gexr5fW8QanuUAqr4YjNr51+MgObQ0yrpukhyhRK8KPQg8XdvXcIwZLP/k0E4W8Q9f/GclE81ALhOpBxGRTaL21CF1ToeDKFGdioGiBneb7a9VNL3FlWJJI+DVWojtPlPlZ9KhilU+02WUJdrAoNoKfzd77oCCpDVpP0R10r8=
+	t=1745946948; cv=none; b=k8jyrJV/9LOhAzYa7reqCQtPr6xhKMQeBkFyzTWL9LckJmStCqbsUwgGCaDxo3WtxnL6nDRQdClQ6DbwUR9LW/0u4JA1ijRCqa52T2moSn9NEc8IFT865mNJ5dA7YG0nXNJlhLal24S/UaccitLYvLIaStOMWF6WxkxbvOZKUpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947713; c=relaxed/simple;
-	bh=PbqOQNLQW39Ukz/LPlP5AZMcEC3ap+wKTUofykBZDuw=;
+	s=arc-20240116; t=1745946948; c=relaxed/simple;
+	bh=T4xewdkv7K4U32NalGeV3DYpL0AmvdgZmz1MHrktlAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSRZjhcWufpHfZHmi28HDTJQLYEArtP0/y/E7rerGKoTrwUGsbngyBjTZoYtaO+UYqSGpYUZnta0huFdKmEitUKNg0osemSBo8qPUFeMHNEosXM32vLPdgicVLHI1srtVmcRhQSgCdGInjAZySrUALNXag4gSd/0zYwSwZPuUgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7YJjEI+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0A3C4CEE9;
-	Tue, 29 Apr 2025 17:28:32 +0000 (UTC)
+	 MIME-Version; b=uRMkoqozqVOUHbTpaG6qo2uSdI+ap8aHyzWVwYgMYVT0AIEBErXaHB3urmKb4Ri3O0VBFfNkU0FP8At1KsmHPP9ePck/KcRcMfSLbqi2F6J1H6f8bu6jWh2G6uQlFOOJFEEps0XBCcVlppGo1hX95qshUIFFA4uHDe8ZKohTKQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qsvh4wMG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0021C4CEE3;
+	Tue, 29 Apr 2025 17:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947712;
-	bh=PbqOQNLQW39Ukz/LPlP5AZMcEC3ap+wKTUofykBZDuw=;
+	s=korg; t=1745946948;
+	bh=T4xewdkv7K4U32NalGeV3DYpL0AmvdgZmz1MHrktlAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X7YJjEI+j3HZXv+6qi7IoUdJlVfeRDQIFUdhKLqZARfbweSeMtDdNYsXYzphlJZY/
-	 oGpExooz1OYT05HsT818R0vr4qJM/CpYHQK8V7Vu5Mpd91a4BuXqQU6NZou1OU2UFc
-	 4XYdBz9jQJUmYd8UvM80v5EaN79X8/mOWUiPdW0w=
+	b=Qsvh4wMGablSwFG/hsUwRDb5Ieet/jY3vKGu3tKWnGAmoW2nudlNDhmLpw9Yx7v3c
+	 c4Kina/RkYNP86ti/Bj5Y1RKmveDCfv2+BfCrcPWdwz7w8iICTX9QY5G1SF5JJ6XR2
+	 f0mqClQLE4BPq+g/R60z4a3OuNdV/qsayN1+yRys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/280] iommu/amd: Return an error if vCPU affinity is set for non-vCPU IRTE
-Date: Tue, 29 Apr 2025 18:40:24 +0200
-Message-ID: <20250429161118.508827952@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 121/286] writeback: fix false warning in inode_to_wb()
+Date: Tue, 29 Apr 2025 18:40:25 +0200
+Message-ID: <20250429161112.833971754@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 07172206a26dcf3f0bf7c3ecaadd4242b008ea54 ]
+commit 9e888998ea4d22257b07ce911576509486fa0667 upstream.
 
-Return -EINVAL instead of success if amd_ir_set_vcpu_affinity() is
-invoked without use_vapic; lying to KVM about whether or not the IRTE was
-configured to post IRQs is all kinds of bad.
+inode_to_wb() is used also for filesystems that don't support cgroup
+writeback.  For these filesystems inode->i_wb is stable during the
+lifetime of the inode (it points to bdi->wb) and there's no need to hold
+locks protecting the inode->i_wb dereference.  Improve the warning in
+inode_to_wb() to not trigger for these filesystems.
 
-Fixes: d98de49a53e4 ("iommu/amd: Enable vAPIC interrupt remapping mode by default")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-6-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
+Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/backing-dev.h |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index a24a97a2c6469..f61e48f237324 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -3660,7 +3660,7 @@ static int amd_ir_set_vcpu_affinity(struct irq_data *data, void *vcpu_info)
- 	 * we should not modify the IRTE
- 	 */
- 	if (!dev_data || !dev_data->use_vapic)
--		return 0;
-+		return -EINVAL;
- 
- 	ir_data->cfg = irqd_cfg(data);
- 	pi_data->ir_data = ir_data;
--- 
-2.39.5
-
+--- a/include/linux/backing-dev.h
++++ b/include/linux/backing-dev.h
+@@ -281,6 +281,7 @@ static inline struct bdi_writeback *inod
+ {
+ #ifdef CONFIG_LOCKDEP
+ 	WARN_ON_ONCE(debug_locks &&
++		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
+ 		     (!lockdep_is_held(&inode->i_lock) &&
+ 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
+ 		      !lockdep_is_held(&inode->i_wb->list_lock)));
 
 
 
