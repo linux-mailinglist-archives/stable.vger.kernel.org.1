@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19E9AA1283
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:54:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 851C0AA16A0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 006A11BA3987
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED9FD5A1C82
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C899624A067;
-	Tue, 29 Apr 2025 16:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AEC0243958;
+	Tue, 29 Apr 2025 17:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkyU+6oH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmkt7G9J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F3A247291;
-	Tue, 29 Apr 2025 16:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0562C233713;
+	Tue, 29 Apr 2025 17:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945574; cv=none; b=JgYNheDd+ZtJAgSeFAGylrt7yyEJW3RlYgk4+89G10abSTbBsThJ/ClLcAiUz5uIlnJIJJD1V1Q8JvJf38Q4YK62HzeenJhX18RC1SuCTsbmrmPoOl4MajjOF4SZY0DWrfJTKJUeHyrNtRffQT2oleXNE1eCVqwyzE11vyOq9Oo=
+	t=1745947981; cv=none; b=r5D4TINwa7/UTnbvcyTCvBrOs5mBOGZfFj9AdLxWvK8huNc8u1F+gckNb0Z69f0YLlB5s4SaSXZX/U2gaPGm6eIeSgJVF36Ek2GYLrfO/9eylydAontywVuEKjm9b8u0yNP1iHmdJF+HbM07F4LD8+0u7MvCAkJXF/1n85iwsEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945574; c=relaxed/simple;
-	bh=Ruq+zF/1mWmPfqPgPkaCbVgj5w2omGcA52QkM7UOrHc=;
+	s=arc-20240116; t=1745947981; c=relaxed/simple;
+	bh=NLDF6N5p3Gw7xC6nyHFSfV+71wbxB7sSbBCvOC6N5Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3scDAcuBV49qStuavcBqPuJwNDdT7FjZGTpzdiZ/nQU9dTeKJqbCkEE/Ng5jmZ0lXRfyNMOON2fEfRal9E0Fkks95JqVA8rel7nD0bS9+FpyD5C6GU0vbK5fNpcI1uyRigTdjrCrFX62XMe+ClBBvs8mlnVHdF1euLc1fXvpp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkyU+6oH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C08DC4CEE3;
-	Tue, 29 Apr 2025 16:52:53 +0000 (UTC)
+	 MIME-Version; b=D83jn5E8LvtXNDzyh58BEivfW3757qD0raNgEGmjF5A+Bit1s0pV+0hWk3bIf2IkGNGLSh4LJaocwW8WflMKQP4mhvfB41C4O1/FCeFeOM9K/5fVnmCZDDxulqSZkpZGTkEWJMEM+Uoosx82BD2zcZhgyDtTEvl+Qw3Sj7xoxUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmkt7G9J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B93EC4CEE3;
+	Tue, 29 Apr 2025 17:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945574;
-	bh=Ruq+zF/1mWmPfqPgPkaCbVgj5w2omGcA52QkM7UOrHc=;
+	s=korg; t=1745947980;
+	bh=NLDF6N5p3Gw7xC6nyHFSfV+71wbxB7sSbBCvOC6N5Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LkyU+6oHmWSYJmPuTczuDj8heUsN9jhUtIM828X0Lq+V/AJ/a3/iA3iDiVM6oEv1M
-	 MZOo47QHhalRWORt+wsDCtlS2aa8lJM8uUx6JMwMIP+eNWlXBxYjCGtluew6AxqOoB
-	 vW0INrwCONoQdTxgEiTkW1zLiHhSDD9FLo3uFstw=
+	b=gmkt7G9JNj33jbZQh2q7Mvk4LhnNHn/fl2rI/6IttjpOVIRdrdX1qDIKRvMafuel3
+	 X74ZnrvdHbqa6xeikyVDTxcg0jcU1GsC7HaMeVOOhiOyvdwLDT3hEZfY4iaLsKEvwE
+	 mdcaBkjMqOEmduLE6hky3gbM0yoIeKk+NC67hIMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 159/179] MIPS: cm: Detect CM quirks from device tree
-Date: Tue, 29 Apr 2025 18:41:40 +0200
-Message-ID: <20250429161055.813048620@linuxfoundation.org>
+Subject: [PATCH 6.12 160/280] bpf: Fix deadlock between rcu_tasks_trace and event_mutex.
+Date: Tue, 29 Apr 2025 18:41:41 +0200
+Message-ID: <20250429161121.664735750@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
+From: Alexei Starovoitov <ast@kernel.org>
 
-[ Upstream commit e27fbe16af5cfc40639de4ced67d1a866a1953e9 ]
+[ Upstream commit 4580f4e0ebdf8dc8d506ae926b88510395a0c1d1 ]
 
-Some information that should be retrieved at runtime for the Coherence
-Manager can be either absent or wrong. This patch allows checking if
-some of this information is available from the device tree and updates
-the internal variable accordingly.
+Fix the following deadlock:
+CPU A
+_free_event()
+  perf_kprobe_destroy()
+    mutex_lock(&event_mutex)
+      perf_trace_event_unreg()
+        synchronize_rcu_tasks_trace()
 
-For now, only the compatible string associated with the broken HCI is
-being retrieved.
+There are several paths where _free_event() grabs event_mutex
+and calls sync_rcu_tasks_trace. Above is one such case.
 
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+CPU B
+bpf_prog_test_run_syscall()
+  rcu_read_lock_trace()
+    bpf_prog_run_pin_on_cpu()
+      bpf_prog_load()
+        bpf_tracing_func_proto()
+          trace_set_clr_event()
+            mutex_lock(&event_mutex)
+
+Delegate trace_set_clr_event() to workqueue to avoid
+such lock dependency.
+
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250224221637.4780-1-alexei.starovoitov@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mips-cm.h | 22 ++++++++++++++++++++++
- arch/mips/kernel/mips-cm.c      | 14 ++++++++++++++
- 2 files changed, 36 insertions(+)
+ kernel/trace/bpf_trace.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index 696b40beb774f..0f31324998c0a 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -47,6 +47,16 @@ extern phys_addr_t __mips_cm_phys_base(void);
-  */
- extern int mips_cm_is64;
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 55f279ddfd63d..e5c063fc8ef97 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -403,7 +403,7 @@ static const struct bpf_func_proto bpf_trace_printk_proto = {
+ 	.arg2_type	= ARG_CONST_SIZE,
+ };
  
-+/*
-+ * mips_cm_is_l2_hci_broken  - determine if HCI is broken
-+ *
-+ * Some CM reports show that Hardware Cache Initialization is
-+ * complete, but in reality it's not the case. They also incorrectly
-+ * indicate that Hardware Cache Initialization is supported. This
-+ * flags allows warning about this broken feature.
-+ */
-+extern bool mips_cm_is_l2_hci_broken;
-+
- /**
-  * mips_cm_error_report - Report CM cache errors
-  */
-@@ -85,6 +95,18 @@ static inline bool mips_cm_present(void)
- #endif
- }
- 
-+/**
-+ * mips_cm_update_property - update property from the device tree
-+ *
-+ * Retrieve the properties from the device tree if a CM node exist and
-+ * update the internal variable based on this.
-+ */
-+#ifdef CONFIG_MIPS_CM
-+extern void mips_cm_update_property(void);
-+#else
-+static void mips_cm_update_property(void) {}
-+#endif
-+
- /**
-  * mips_cm_has_l2sync - determine whether an L2-only sync region is present
-  *
-diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
-index 611ef512c0b81..159354ac9335b 100644
---- a/arch/mips/kernel/mips-cm.c
-+++ b/arch/mips/kernel/mips-cm.c
-@@ -5,6 +5,7 @@
-  */
- 
- #include <linux/errno.h>
-+#include <linux/of.h>
- #include <linux/percpu.h>
- #include <linux/spinlock.h>
- 
-@@ -14,6 +15,7 @@
- void __iomem *mips_gcr_base;
- void __iomem *mips_cm_l2sync_base;
- int mips_cm_is64;
-+bool mips_cm_is_l2_hci_broken;
- 
- static char *cm2_tr[8] = {
- 	"mem",	"gcr",	"gic",	"mmio",
-@@ -196,6 +198,18 @@ static void mips_cm_probe_l2sync(void)
- 	mips_cm_l2sync_base = ioremap_nocache(addr, MIPS_CM_L2SYNC_SIZE);
- }
- 
-+void mips_cm_update_property(void)
-+{
-+	struct device_node *cm_node;
-+
-+	cm_node = of_find_compatible_node(of_root, NULL, "mobileye,eyeq6-cm");
-+	if (!cm_node)
-+		return;
-+	pr_info("HCI (Hardware Cache Init for the L2 cache) in GCR_L2_RAM_CONFIG from the CM3 is broken");
-+	mips_cm_is_l2_hci_broken = true;
-+	of_node_put(cm_node);
-+}
-+
- int mips_cm_probe(void)
+-static void __set_printk_clr_event(void)
++static void __set_printk_clr_event(struct work_struct *work)
  {
- 	phys_addr_t addr;
+ 	/*
+ 	 * This program might be calling bpf_trace_printk,
+@@ -416,10 +416,11 @@ static void __set_printk_clr_event(void)
+ 	if (trace_set_clr_event("bpf_trace", "bpf_trace_printk", 1))
+ 		pr_warn_ratelimited("could not enable bpf_trace_printk events");
+ }
++static DECLARE_WORK(set_printk_work, __set_printk_clr_event);
+ 
+ const struct bpf_func_proto *bpf_get_trace_printk_proto(void)
+ {
+-	__set_printk_clr_event();
++	schedule_work(&set_printk_work);
+ 	return &bpf_trace_printk_proto;
+ }
+ 
+@@ -462,7 +463,7 @@ static const struct bpf_func_proto bpf_trace_vprintk_proto = {
+ 
+ const struct bpf_func_proto *bpf_get_trace_vprintk_proto(void)
+ {
+-	__set_printk_clr_event();
++	schedule_work(&set_printk_work);
+ 	return &bpf_trace_vprintk_proto;
+ }
+ 
 -- 
 2.39.5
 
