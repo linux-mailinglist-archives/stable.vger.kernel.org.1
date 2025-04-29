@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-137532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F5DAA13D2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC91AA1515
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0468F189FAE9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B71221BA6FA0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6574B24C08D;
-	Tue, 29 Apr 2025 17:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4364621ADC7;
+	Tue, 29 Apr 2025 17:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gENi1PFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G++PsmSS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3E7229B05;
-	Tue, 29 Apr 2025 17:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AE62206AA;
+	Tue, 29 Apr 2025 17:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946349; cv=none; b=tpyOZywZT4hcnMNWLE9S930wyjmKQDaXX56IgfDh9FyLbhNM87duRqG0DtaoCQRTMUuSK+gSFMgVKzh/5YEH0bLpO4Z4QUhY1cx+nHUXipQx0l+ohqSt7D0sgm8DtTcioMZud0mHy2BY5CLVi+wWgjGEEiO96/lvBCoRfHa4UiM=
+	t=1745947185; cv=none; b=SxdzpwZnRgbXJwxQrH0mZIIsM2QujWaIvUbWsX8Lz1PKgRkEMWaUvzhfcitT3cvKhOZCIyjGEUghwDtK4/7RL/FAIEc4CkdC0OB50kZQCZsXDibNx03pu6sJHt+bRcstTM31xcCjwbhHFKzTEapDhJsHU39IlLnLD2ceGn8zfpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946349; c=relaxed/simple;
-	bh=Z+yMLDaoJqFAjCeNsaj9OqT8rDhGLgohoIA5P0SqG2o=;
+	s=arc-20240116; t=1745947185; c=relaxed/simple;
+	bh=60T5jdSV1Bbl+42uiECU3vUomaZ2jueyEKOnkU90HMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSnPamp4x+Xkdd838SDyqzdv4MyPLiVt6GZ5i+dOuow45gdlH5QhsyYHmSAjqJ9f4iLloyHuwg7bgtJcsvncDN1qAI5kaNaIDgFawfmwi0UvZ36QtLcDe35pijlf7p9DaRhswLY5C/eY/Vopnug3S/oyfHiHECN/p/IttxfKzzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gENi1PFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943A2C4CEEF;
-	Tue, 29 Apr 2025 17:05:48 +0000 (UTC)
+	 MIME-Version; b=YIHyznR2f6EMU9Z5eeU6UbdyOp3XCgkqJ8R+3liMGxT5n3Fv8l/wSY/NCmPZIGeNZ4Zl9iK1A9gRoWizrCvtMspwOLahz5TnqAFqMts8tMM3wyj2DQivrA85z7m9UIBv+PSIO/8YXFKNh0goHcgOuCzrC4OJRhWkQz888d7yZt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G++PsmSS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63794C4CEE3;
+	Tue, 29 Apr 2025 17:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946349;
-	bh=Z+yMLDaoJqFAjCeNsaj9OqT8rDhGLgohoIA5P0SqG2o=;
+	s=korg; t=1745947184;
+	bh=60T5jdSV1Bbl+42uiECU3vUomaZ2jueyEKOnkU90HMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gENi1PFbMpwqfx5+tIat1iXZeH1lMxiNO07R41bYTS6ida6HWNl7K35/g+NyrH7NI
-	 jLdmMgIGiPRkQQzIh+A5ftfYh0cj6cG0XM/ao3e/YflZ5txyomOOvVapqoys5K1w+l
-	 6f0I4rKiaxBNN6XY9gnUUECCG9u+RO2t2obVJo3I=
+	b=G++PsmSSmRJWWa+30HG5Zovg8fb7i5C2yJgZ5VERNKSwwvKzrik0YgxZwUjwx4yVD
+	 sSE0PrVES0Ny3vqnNh12gALpnVcKVvWQdgyG4FpH9pryRViamLYixjtFk64govCgLU
+	 8W9E50TxZToO+SBVciSwUwKKw5/BTV//WXWfHrsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 237/311] sched/isolation: Make CONFIG_CPU_ISOLATION depend on CONFIG_SMP
+	Yu Kuai <yukuai3@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Bin Lan <bin.lan.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.10 170/286] blk-cgroup: support to track if policy is online
 Date: Tue, 29 Apr 2025 18:41:14 +0200
-Message-ID: <20250429161130.733080826@linuxfoundation.org>
+Message-ID: <20250429161114.878961854@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +65,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 975776841e689dd8ba36df9fa72ac3eca3c2957a ]
+commit dfd6200a095440b663099d8d42f1efb0175a1ce3 upstream.
 
-kernel/sched/isolation.c obviously makes no sense without CONFIG_SMP, but
-the Kconfig entry we have right now:
+A new field 'online' is added to blkg_policy_data to fix following
+2 problem:
 
-	config CPU_ISOLATION
-		bool "CPU isolation"
-		depends on SMP || COMPILE_TEST
+1) In blkcg_activate_policy(), if pd_alloc_fn() with 'GFP_NOWAIT'
+   failed, 'queue_lock' will be dropped and pd_alloc_fn() will try again
+   without 'GFP_NOWAIT'. In the meantime, remove cgroup can race with
+   it, and pd_offline_fn() will be called without pd_init_fn() and
+   pd_online_fn(). This way null-ptr-deference can be triggered.
 
-allows the creation of pointless .config's which cause
-build failures.
+2) In order to synchronize pd_free_fn() from blkg_free_workfn() and
+   blkcg_deactivate_policy(), 'list_del_init(&blkg->q_node)' will be
+   delayed to blkg_free_workfn(), hence pd_offline_fn() can be called
+   first in blkg_destroy(), and then blkcg_deactivate_policy() will
+   call it again, we must prevent it.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250330134955.GA7910@redhat.com
+The new field 'online' will be set after pd_online_fn() and will be
+cleared after pd_offline_fn(), in the meantime pd_offline_fn() will only
+be called if 'online' is set.
 
-Closes: https://lore.kernel.org/oe-kbuild-all/202503260646.lrUqD3j5-lkp@intel.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230119110350.2287325-3-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-cgroup.c         |   24 +++++++++++++++++-------
+ include/linux/blk-cgroup.h |    1 +
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 5ab47c346ef93..dc7b10a1fad2b 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -711,7 +711,7 @@ endmenu # "CPU/Task time and stats accounting"
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -191,6 +191,7 @@ static struct blkcg_gq *blkg_alloc(struc
+ 		blkg->pd[i] = pd;
+ 		pd->blkg = blkg;
+ 		pd->plid = i;
++		pd->online = false;
+ 	}
  
- config CPU_ISOLATION
- 	bool "CPU isolation"
--	depends on SMP || COMPILE_TEST
-+	depends on SMP
- 	default y
- 	help
- 	  Make sure that CPUs running critical tasks are not disturbed by
--- 
-2.39.5
-
+ 	return blkg;
+@@ -288,8 +289,11 @@ static struct blkcg_gq *blkg_create(stru
+ 		for (i = 0; i < BLKCG_MAX_POLS; i++) {
+ 			struct blkcg_policy *pol = blkcg_policy[i];
+ 
+-			if (blkg->pd[i] && pol->pd_online_fn)
+-				pol->pd_online_fn(blkg->pd[i]);
++			if (blkg->pd[i]) {
++				if (pol->pd_online_fn)
++					pol->pd_online_fn(blkg->pd[i]);
++				blkg->pd[i]->online = true;
++			}
+ 		}
+ 	}
+ 	blkg->online = true;
+@@ -389,8 +393,11 @@ static void blkg_destroy(struct blkcg_gq
+ 	for (i = 0; i < BLKCG_MAX_POLS; i++) {
+ 		struct blkcg_policy *pol = blkcg_policy[i];
+ 
+-		if (blkg->pd[i] && pol->pd_offline_fn)
+-			pol->pd_offline_fn(blkg->pd[i]);
++		if (blkg->pd[i] && blkg->pd[i]->online) {
++			if (pol->pd_offline_fn)
++				pol->pd_offline_fn(blkg->pd[i]);
++			blkg->pd[i]->online = false;
++		}
+ 	}
+ 
+ 	blkg->online = false;
+@@ -1364,6 +1371,7 @@ retry:
+ 		blkg->pd[pol->plid] = pd;
+ 		pd->blkg = blkg;
+ 		pd->plid = pol->plid;
++		pd->online = false;
+ 	}
+ 
+ 	/* all allocated, init in the same order */
+@@ -1371,9 +1379,11 @@ retry:
+ 		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
+ 			pol->pd_init_fn(blkg->pd[pol->plid]);
+ 
+-	if (pol->pd_online_fn)
+-		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
++	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
++		if (pol->pd_online_fn)
+ 			pol->pd_online_fn(blkg->pd[pol->plid]);
++		blkg->pd[pol->plid]->online = true;
++	}
+ 
+ 	__set_bit(pol->plid, q->blkcg_pols);
+ 	ret = 0;
+@@ -1435,7 +1445,7 @@ void blkcg_deactivate_policy(struct requ
+ 
+ 		spin_lock(&blkcg->lock);
+ 		if (blkg->pd[pol->plid]) {
+-			if (pol->pd_offline_fn)
++			if (blkg->pd[pol->plid]->online && pol->pd_offline_fn)
+ 				pol->pd_offline_fn(blkg->pd[pol->plid]);
+ 			pol->pd_free_fn(blkg->pd[pol->plid]);
+ 			blkg->pd[pol->plid] = NULL;
+--- a/include/linux/blk-cgroup.h
++++ b/include/linux/blk-cgroup.h
+@@ -87,6 +87,7 @@ struct blkg_policy_data {
+ 	/* the blkg and policy id this per-policy data belongs to */
+ 	struct blkcg_gq			*blkg;
+ 	int				plid;
++	bool				online;
+ };
+ 
+ /*
 
 
 
