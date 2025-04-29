@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AA9AA14B6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:19:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBFAAA1227
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B95B63B2540
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA1B71BA37E5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3242E24729E;
-	Tue, 29 Apr 2025 17:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26142472A5;
+	Tue, 29 Apr 2025 16:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZdIdk+i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LObLQgmO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CBA27453;
-	Tue, 29 Apr 2025 17:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDD52459C9;
+	Tue, 29 Apr 2025 16:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946873; cv=none; b=QtPSwf01BfyYvsGgH5Z/v3MmoGzKVMF4aKP/8ooR8AuHenKTXqVBwYAkNUf1jiUuS1/OBbp0WxbCdiBrwxx0QMC2IJc4h+xQZPRJyM8CdpM/7bZSPl+aAilm8hYOe9CEjEwyAnSAW52/J97NacNVonvMewQ/w1yuLzEJAfnRfKI=
+	t=1745945366; cv=none; b=FC9HugCu5CCPqepeXe9H0ejuUEfuno8vbAE3+IQTLottUw1mVGuzrpcLbbNEvBmbnOzZGklDV9QEm8/Xcj6M6xHIpmRMMA95bs3c/B1UvDgtX7qatGcX/Sa8ygh8LBCX4m+DDf9kBIt8ejgswhM/pcTxxxY8vdjOvg52yx5EYXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946873; c=relaxed/simple;
-	bh=aX/dIDn61So+RQ1oQSQb6mjwYt9hrKX5mTh6CQIAgmc=;
+	s=arc-20240116; t=1745945366; c=relaxed/simple;
+	bh=BEWQA7Ftn/CF8qUfbFjBrJcPVEuiNBtrXe980fv8Q4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AF0hbMWdd43gUi+wfZmlJO0beILKbAiWBMBJDt8YqxqM1uDGC7QoZAzlX9uPG8SPw0iqZ/QaJKUBQQ1BczOZMUsexPDqfxGErtCyW1BVR53vE78WZ33i+JBoT/gQLgVCk3Y1I+jqjEpEmG2m/4dHAvl7Aubsf5+f2sJrN8lSllM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZdIdk+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143F1C4CEE3;
-	Tue, 29 Apr 2025 17:14:31 +0000 (UTC)
+	 MIME-Version; b=CqRu7DXfO+CqNc2P1fZkrv5p1WHuiJSgy7+yupdSa9mLO2OCbkK7vJyspUl0XVt7s7zFboSz6oXjZVVnxwePmPnEP0ZTuFZ7SNkv0H2mjgzBoZGCxktXrG9JnTXkFi3kyC1uOfpygJjZE7yz/4lTf7iNyjEFJRC6K8miaeQDJfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LObLQgmO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D236BC4CEE3;
+	Tue, 29 Apr 2025 16:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946872;
-	bh=aX/dIDn61So+RQ1oQSQb6mjwYt9hrKX5mTh6CQIAgmc=;
+	s=korg; t=1745945366;
+	bh=BEWQA7Ftn/CF8qUfbFjBrJcPVEuiNBtrXe980fv8Q4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZdIdk+iOXgXbOAoLY0gYw0eBKfSYBircHQyVSJ1jy3ODiWszv63jw6dSx2tvPAWJ
-	 xmkur6KaIRi4G4bENQq0GOL289b65POoTirM4lzHpu6ceVJ1Lvr7LAnqvZoyViixA8
-	 2S5rfl9f2kNl2Wrb9DbhgG4+t3p4jgM/1zkjodl8=
+	b=LObLQgmORwRKGSQWY+6OPTU7yDl9lCMMYXHSaQy/Q368oXyiXeq3YdJGlWOb82RVs
+	 u0TcoiH9ia2DEqZWzAN6+UIJCZYvTS2HYpS07WNe2CoP1f7uj4xL+f9GFYXMp8eXmY
+	 LPpKJWPo9si6FysI2Q3ctIvwEDXevvrNDtlqjHGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanimir Varbanov <svarbanov@suse.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 5.10 095/286] PCI: brcmstb: Fix missing of_node_put() in brcm_pcie_probe()
+	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.4 058/179] ext4: fix off-by-one error in do_split
 Date: Tue, 29 Apr 2025 18:39:59 +0200
-Message-ID: <20250429161111.762024371@linuxfoundation.org>
+Message-ID: <20250429161051.746091516@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +60,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanimir Varbanov <svarbanov@suse.de>
+From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
 
-commit 2df181e1aea4628a8fd257f866026625d0519627 upstream.
+commit 94824ac9a8aaf2fb3c54b4bdde842db80ffa555d upstream.
 
-A call to of_parse_phandle() is incrementing the refcount, and as such,
-the of_node_put() must be called when the reference is no longer needed.
+Syzkaller detected a use-after-free issue in ext4_insert_dentry that was
+caused by out-of-bounds access due to incorrect splitting in do_split.
 
-Thus, refactor the existing code and add a missing of_node_put() call
-following the check to ensure that "msi_np" matches "pcie->np" and after
-MSI initialization, but only if the MSI support is enabled system-wide.
+BUG: KASAN: use-after-free in ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
+Write of size 251 at addr ffff888074572f14 by task syz-executor335/5847
 
-Cc: stable@vger.kernel.org # v5.10+
-Fixes: 40ca1bf580ef ("PCI: brcmstb: Add MSI support")
-Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250122222955.1752778-1-svarbanov@suse.de
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+CPU: 0 UID: 0 PID: 5847 Comm: syz-executor335 Not tainted 6.12.0-rc6-syzkaller-00318-ga9cda7c0ffed #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+ ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
+ add_dirent_to_buf+0x3d9/0x750 fs/ext4/namei.c:2154
+ make_indexed_dir+0xf98/0x1600 fs/ext4/namei.c:2351
+ ext4_add_entry+0x222a/0x25d0 fs/ext4/namei.c:2455
+ ext4_add_nondir+0x8d/0x290 fs/ext4/namei.c:2796
+ ext4_symlink+0x920/0xb50 fs/ext4/namei.c:3431
+ vfs_symlink+0x137/0x2e0 fs/namei.c:4615
+ do_symlinkat+0x222/0x3a0 fs/namei.c:4641
+ __do_sys_symlink fs/namei.c:4662 [inline]
+ __se_sys_symlink fs/namei.c:4660 [inline]
+ __x64_sys_symlink+0x7a/0x90 fs/namei.c:4660
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+
+The following loop is located right above 'if' statement.
+
+for (i = count-1; i >= 0; i--) {
+	/* is more than half of this entry in 2nd half of the block? */
+	if (size + map[i].size/2 > blocksize/2)
+		break;
+	size += map[i].size;
+	move++;
+}
+
+'i' in this case could go down to -1, in which case sum of active entries
+wouldn't exceed half the block size, but previous behaviour would also do
+split in half if sum would exceed at the very last block, which in case of
+having too many long name files in a single block could lead to
+out-of-bounds access and following use-after-free.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Cc: stable@vger.kernel.org
+Fixes: 5872331b3d91 ("ext4: fix potential negative array index in do_split()")
+Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250404082804.2567-3-a.sadovnikov@ispras.ru
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-brcmstb.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ fs/ext4/namei.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -1215,7 +1215,7 @@ static const struct of_device_id brcm_pc
- 
- static int brcm_pcie_probe(struct platform_device *pdev)
- {
--	struct device_node *np = pdev->dev.of_node, *msi_np;
-+	struct device_node *np = pdev->dev.of_node;
- 	struct pci_host_bridge *bridge;
- 	const struct pcie_cfg_data *data;
- 	struct brcm_pcie *pcie;
-@@ -1280,9 +1280,14 @@ static int brcm_pcie_probe(struct platfo
- 
- 	pcie->hw_rev = readl(pcie->base + PCIE_MISC_REVISION);
- 
--	msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
--	if (pci_msi_enabled() && msi_np == pcie->np) {
--		ret = brcm_pcie_enable_msi(pcie);
-+	if (pci_msi_enabled()) {
-+		struct device_node *msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
-+
-+		if (msi_np == pcie->np)
-+			ret = brcm_pcie_enable_msi(pcie);
-+
-+		of_node_put(msi_np);
-+
- 		if (ret) {
- 			dev_err(pcie->dev, "probe of internal MSI failed");
- 			goto fail;
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -1918,7 +1918,7 @@ static struct ext4_dir_entry_2 *do_split
+ 	 * split it in half by count; each resulting block will have at least
+ 	 * half the space free.
+ 	 */
+-	if (i > 0)
++	if (i >= 0)
+ 		split = count - move;
+ 	else
+ 		split = count/2;
 
 
 
