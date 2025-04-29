@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-137896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9FAAA158E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:28:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5461DAA16AC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B183179CCD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95DE31889609
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FBA2517A6;
-	Tue, 29 Apr 2025 17:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7F124C074;
+	Tue, 29 Apr 2025 17:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWA6jYCS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCeCfIQK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62D52459C9;
-	Tue, 29 Apr 2025 17:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFBA1C6B4;
+	Tue, 29 Apr 2025 17:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947462; cv=none; b=J1i+yxJbSARxoNrrPsgpIrWctdIUrVGm6IilkdbWsXk4ckZqxPPMz9Wspm69RCUtaFat8Xqyb7S5qc40jn899wcsvJuqZVvg4mVOGGzY1o7QKNIw8b6QnS32PVTftMOamKAFWnPp6bwvUXgdDTqb+95rPIH1qiOEab6F49RTZ+w=
+	t=1745948224; cv=none; b=BDnWKhR1tslsU9lezFeGE9USNACSoJ24OV2jFQC7aDL09yQ5rTl7Y7NkKaYA208bPW3NlAbalxx+dNHYatwG90tENdNthI2iWVweAr/sqHpVo214d81IhSuRpp1Txs4/Ll0Rg1g1eZ9mUgpDTNNOVmzYw9Hogm9EhUMsFonIRIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947462; c=relaxed/simple;
-	bh=cb3dh8Q/ZTRURCAvl0rl9ygtRu0SNR48IJiYP63VGFM=;
+	s=arc-20240116; t=1745948224; c=relaxed/simple;
+	bh=rxEWrTlrQ8KVwVUBQU97aWdbSR/kqd63WAZF15j5rfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mc3H+BizqwLPz5KFPKGraVvH5rQ56TJ2wu189DDXuxTkRvAq9quVghP/NgZGYNJR2/InoOAjJH1D6uyUd9NEH7eEOZATVjP5PRdzd1Ho66Uf+FFahLaL+LFsyair5XdeTz2c/4SIboblcqPLHpys6jaV7pqeyuNPjYiSkDiKPPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWA6jYCS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363A8C4CEE3;
-	Tue, 29 Apr 2025 17:24:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Cu2pFmyVZ39RtxBGmwogKWsALwWiHLI/NnJJsOyFFlJOWkYALw5n47/vQg7+F8EnqQOvKRSsMxomlZTPij2udChIpd7wLs39S5df3Owu/O0k9R6p3g+6homxpCyKILvHlKVttbYIkHL2ew1WQWmPi6xEup97VoEejQdTXuX5+Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCeCfIQK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3C9C4CEE3;
+	Tue, 29 Apr 2025 17:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947462;
-	bh=cb3dh8Q/ZTRURCAvl0rl9ygtRu0SNR48IJiYP63VGFM=;
+	s=korg; t=1745948223;
+	bh=rxEWrTlrQ8KVwVUBQU97aWdbSR/kqd63WAZF15j5rfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KWA6jYCSlldovWQynuLpZD9pjG5TDWYnNEcwN0xTWLXutyb8UgEDZjqkrH5QBGMhd
-	 qZW8bLmick7AT4LJptI35i1kgEsMFmXNsPBRioRZD3GZpBDr156hrDaWb7Fsx6xBAv
-	 a9Vnnc/5EWp9RHK4zfVmM2PvBqQ7U4PMZAJBu7a8=
+	b=NCeCfIQK2UaPlJczd85Wc53gWzHtDDAI+gTSO7XBT33MfoEn1NUxVf4VBPW4FEX3V
+	 3GAVlVC0EE7ROYYLeMCd/Zutxjwbkv7oxLDPn9FRErM7uoFN+mVRwl2IwtFkDXepaP
+	 VXmlSf70CiU75AtcQjUYoHbJkLMRX60ouMit/hWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jon Mason <jdmason@kudzu.us>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 262/286] ntb: reduce stack usage in idt_scan_mws
+Subject: [PATCH 6.12 225/280] cifs: Fix querying of WSL CHR and BLK reparse points over SMB1
 Date: Tue, 29 Apr 2025 18:42:46 +0200
-Message-ID: <20250429161118.692638072@linuxfoundation.org>
+Message-ID: <20250429161124.326745109@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit aff12700b8dd7422bfe2277696e192af4df9de8f ]
+[ Upstream commit ef86ab131d9127dfbfa8f06e12441d05fdfb090b ]
 
-idt_scan_mws() puts a large fixed-size array on the stack and copies
-it into a smaller dynamically allocated array at the end. On 32-bit
-targets, the fixed size can easily exceed the warning limit for
-possible stack overflow:
+When reparse point in SMB1 query_path_info() callback was detected then
+query also for EA $LXDEV. In this EA are stored device major and minor
+numbers used by WSL CHR and BLK reparse points. Without major and minor
+numbers, stat() syscall does not work for char and block devices.
 
-drivers/ntb/hw/idt/ntb_hw_idt.c:1041:27: error: stack frame size (1032) exceeds limit (1024) in 'idt_scan_mws' [-Werror,-Wframe-larger-than]
+Similar code is already in SMB2+ query_path_info() callback function.
 
-Change it to instead just always use dynamic allocation for the
-array from the start. It's too big for the stack, but not actually
-all that much for a permanent allocation.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/all/202205111109.PiKTruEj-lkp@intel.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/hw/idt/ntb_hw_idt.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ fs/smb/client/smb1ops.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
-index 99711dd0b6e8e..d39fc55f8b0cc 100644
---- a/drivers/ntb/hw/idt/ntb_hw_idt.c
-+++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
-@@ -1041,7 +1041,7 @@ static inline char *idt_get_mw_name(enum idt_mw_type mw_type)
- static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
- 				       unsigned char *mw_cnt)
- {
--	struct idt_mw_cfg mws[IDT_MAX_NR_MWS], *ret_mws;
-+	struct idt_mw_cfg *mws;
- 	const struct idt_ntb_bar *bars;
- 	enum idt_mw_type mw_type;
- 	unsigned char widx, bidx, en_cnt;
-@@ -1049,6 +1049,11 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
- 	int aprt_size;
- 	u32 data;
- 
-+	mws = devm_kcalloc(&ndev->ntb.pdev->dev, IDT_MAX_NR_MWS,
-+			   sizeof(*mws), GFP_KERNEL);
-+	if (!mws)
-+		return ERR_PTR(-ENOMEM);
-+
- 	/* Retrieve the array of the BARs registers */
- 	bars = portdata_tbl[port].bars;
- 
-@@ -1103,16 +1108,7 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
- 		}
+diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
+index bd791aa54681f..55cceb8229323 100644
+--- a/fs/smb/client/smb1ops.c
++++ b/fs/smb/client/smb1ops.c
+@@ -597,6 +597,42 @@ static int cifs_query_path_info(const unsigned int xid,
+ 			CIFSSMBClose(xid, tcon, fid.netfid);
  	}
  
--	/* Allocate memory for memory window descriptors */
--	ret_mws = devm_kcalloc(&ndev->ntb.pdev->dev, *mw_cnt, sizeof(*ret_mws),
--			       GFP_KERNEL);
--	if (!ret_mws)
--		return ERR_PTR(-ENOMEM);
--
--	/* Copy the info of detected memory windows */
--	memcpy(ret_mws, mws, (*mw_cnt)*sizeof(*ret_mws));
--
--	return ret_mws;
-+	return mws;
++#ifdef CONFIG_CIFS_XATTR
++	/*
++	 * For WSL CHR and BLK reparse points it is required to fetch
++	 * EA $LXDEV which contains major and minor device numbers.
++	 */
++	if (!rc && data->reparse_point) {
++		struct smb2_file_full_ea_info *ea;
++
++		ea = (struct smb2_file_full_ea_info *)data->wsl.eas;
++		rc = CIFSSMBQAllEAs(xid, tcon, full_path, SMB2_WSL_XATTR_DEV,
++				    &ea->ea_data[SMB2_WSL_XATTR_NAME_LEN + 1],
++				    SMB2_WSL_XATTR_DEV_SIZE, cifs_sb);
++		if (rc == SMB2_WSL_XATTR_DEV_SIZE) {
++			ea->next_entry_offset = cpu_to_le32(0);
++			ea->flags = 0;
++			ea->ea_name_length = SMB2_WSL_XATTR_NAME_LEN;
++			ea->ea_value_length = cpu_to_le16(SMB2_WSL_XATTR_DEV_SIZE);
++			memcpy(&ea->ea_data[0], SMB2_WSL_XATTR_DEV, SMB2_WSL_XATTR_NAME_LEN + 1);
++			data->wsl.eas_len = sizeof(*ea) + SMB2_WSL_XATTR_NAME_LEN + 1 +
++					    SMB2_WSL_XATTR_DEV_SIZE;
++			rc = 0;
++		} else if (rc >= 0) {
++			/* It is an error if EA $LXDEV has wrong size. */
++			rc = -EINVAL;
++		} else {
++			/*
++			 * In all other cases ignore error if fetching
++			 * of EA $LXDEV failed. It is needed only for
++			 * WSL CHR and BLK reparse points and wsl_to_fattr()
++			 * handle the case when EA is missing.
++			 */
++			rc = 0;
++		}
++	}
++#endif
++
+ 	return rc;
  }
  
- /*
 -- 
 2.39.5
 
