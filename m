@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-137916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B983AA15A9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 667D7AA133E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 653801728C9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 999474A12A6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A008D2459C9;
-	Tue, 29 Apr 2025 17:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2858C229B05;
+	Tue, 29 Apr 2025 17:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSlCg2xw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfXLQXSZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF9E82C60;
-	Tue, 29 Apr 2025 17:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F1823F413;
+	Tue, 29 Apr 2025 17:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947524; cv=none; b=QGzrhSYcqBXMrqV+A6Bu5tCUOgv/CJrrFsKgPSSlVuoYb61cUa9vmZ3CUDkIqUPywbzePTvkrn8ndEPG3hAY323d7plm35AJOOuWpmpKB1ul0ML/4GozPYdxGcVKJ8DVyTlnMAdARrEQVRTPkZ+FCGE8hL/bo0pTaywyWbwfQrg=
+	t=1745946014; cv=none; b=pWrcv8iwx6Q6GylVpvrF1ma+yh0WTG0VGYvOZC3y2vZhV02DzV03kF0oh0wfZqQ6c+hIcFND03N/sFWGBzC5l25ELXNxUzoE9t283CNRuHKlMAhaleiLDepWa9qhmluph0coep14r8DKN9PegQo9Amdd+/I7MdeTD3PAkf9B9P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947524; c=relaxed/simple;
-	bh=4bYj+A0/nKLZdHxwaciZPDcXd0SXBUjYl+sCfupR2Jk=;
+	s=arc-20240116; t=1745946014; c=relaxed/simple;
+	bh=j5yFoS3TntcrFv4VVBot6W43S6mK/AV3pKbXypvHpTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pIIKL8SjXH00pluOkI4whj0TKk33nm9fZI3bp1RoB4mkaRCTBVynivjwbV6rgqPE76YVju9M5jHOZTTWO9P2m872PUjLXYdxOScyJe8jWhNNb3N0mk47TpYVAYYEn9Lpcx28jzUKS8ztz1AlThUNDQuspoq5gGgvzi3Mu8lYE2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSlCg2xw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA80C4CEE9;
-	Tue, 29 Apr 2025 17:25:23 +0000 (UTC)
+	 MIME-Version; b=a59/Q4BY9J4uibi4UUcDkM89Oe4iq0bcW2BiNfiCEuw5esVoVULHMlatIPM1v+XUZiNG8VtukETk+pBUgMu7wjrxJ8VyvpbbAZO6XycbUFJADD5GiuCg8HTaPysVVreBsRf7RAYfWigRsIhu3kPG9m+F6/SivHonfGNXTXS8NRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfXLQXSZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18441C4CEE3;
+	Tue, 29 Apr 2025 17:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947524;
-	bh=4bYj+A0/nKLZdHxwaciZPDcXd0SXBUjYl+sCfupR2Jk=;
+	s=korg; t=1745946014;
+	bh=j5yFoS3TntcrFv4VVBot6W43S6mK/AV3pKbXypvHpTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nSlCg2xwZlOHSZraWMHbes7y5EfX7R3Os06V+Q1B3WWUOwPZmLs9LYW+J3NmPQUdm
-	 IJ5wK3bfEDikio9YF0t+xZY6Q2a2eo7lrAX4VcQU7ziNTUv10PFu374XcYGVahH2ZY
-	 DFk9M5juCMj/wzwm7NIJaXpm4P0B4A7XchNcyLbM=
+	b=CfXLQXSZTwKLfKdX/2NzgrjByqYxK1BLY6wLygVKK/B/Y62nni72SY5O6c40cQTyJ
+	 sm2LzKei+gL74hHM5ahEztTl8LmHW8XvEgPVNx/cQ8q0aU3OOO6mnGeuFpKynLhzuy
+	 hEHIxCV/qJMbCW2j0tJh2HUJUG5zVP4Kq3DVpiA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 022/280] iio: adc: ad7768-1: Fix conversion result sign
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.14 126/311] irqchip/gic-v2m: Prevent use after free of gicv2m_get_fwnode()
 Date: Tue, 29 Apr 2025 18:39:23 +0200
-Message-ID: <20250429161116.002815616@linuxfoundation.org>
+Message-ID: <20250429161126.198338491@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-[ Upstream commit 8236644f5ecb180e80ad92d691c22bc509b747bb ]
+commit 3318dc299b072a0511d6dfd8367f3304fb6d9827 upstream.
 
-The ad7768-1 ADC output code is two's complement, meaning that the voltage
-conversion result is a signed value.. Since the value is a 24 bit one,
-stored in a 32 bit variable, the sign should be extended in order to get
-the correct representation.
+With ACPI in place, gicv2m_get_fwnode() is registered with the pci
+subsystem as pci_msi_get_fwnode_cb(), which may get invoked at runtime
+during a PCI host bridge probe. But, the call back is wrongly marked as
+__init, causing it to be freed, while being registered with the PCI
+subsystem and could trigger:
 
-Also the channel description has been updated to signed representation,
-to match the ADC specifications.
+ Unable to handle kernel paging request at virtual address ffff8000816c0400
+  gicv2m_get_fwnode+0x0/0x58 (P)
+  pci_set_bus_msi_domain+0x74/0x88
+  pci_register_host_bridge+0x194/0x548
 
-Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: <Stable@vger.kernel.org>
-Link: https://patch.msgid.link/505994d3b71c2aa38ba714d909a68e021f12124c.1741268122.git.Jonathan.Santos@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is easily reproducible on a Juno board with ACPI boot.
+
+Retain the function for later use.
+
+Fixes: 0644b3daca28 ("irqchip/gic-v2m: acpi: Introducing GICv2m ACPI support")
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7768-1.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-gic-v2m.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index c78243a68b6e0..157a0df97f971 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -142,7 +142,7 @@ static const struct iio_chan_spec ad7768_channels[] = {
- 		.channel = 0,
- 		.scan_index = 0,
- 		.scan_type = {
--			.sign = 'u',
-+			.sign = 's',
- 			.realbits = 24,
- 			.storagebits = 32,
- 			.shift = 8,
-@@ -374,7 +374,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
- 		iio_device_release_direct_mode(indio_dev);
- 		if (ret < 0)
- 			return ret;
--		*val = ret;
-+		*val = sign_extend32(ret, chan->scan_type.realbits - 1);
+--- a/drivers/irqchip/irq-gic-v2m.c
++++ b/drivers/irqchip/irq-gic-v2m.c
+@@ -423,7 +423,7 @@ static int __init gicv2m_of_init(struct
+ #ifdef CONFIG_ACPI
+ static int acpi_num_msi;
  
- 		return IIO_VAL_INT;
+-static __init struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
++static struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
+ {
+ 	struct v2m_data *data;
  
--- 
-2.39.5
-
 
 
 
