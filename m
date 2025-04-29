@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-137292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 972A1AA129F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C38AA187B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CB6A4619A8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9699E1BA17AE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164BC24A047;
-	Tue, 29 Apr 2025 16:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34493248889;
+	Tue, 29 Apr 2025 18:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGH5aoa/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlVR4SH3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C621F215060;
-	Tue, 29 Apr 2025 16:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8CC3FFD;
+	Tue, 29 Apr 2025 18:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945632; cv=none; b=sgBttxKGh49WtnmymhydawCUEE6G+vG9hr0Wq9ysyTWJlNVwyd8xZbA7fafKo5loDEzmY3PulwOuBQBh7jt0B3rxYFc7OeX2CkanKs1lKpwjUb2RuZYN+crBdDWHrBPqwvSJ9o7HIeHHh+xYSFowRk0mcoL4tSsFyJoX2nmmU/o=
+	t=1745949646; cv=none; b=PepdRauEpvIInqDgO3qDFrOwnbJVHnHqD9nuey1vspfE+VHKfj2MUiT5QsvOLKzcb7AA/iwJCgm/mXTjK8kbkDvi6Xq7f7JCiHL3A5kk6u3sSMyFKdu6wwD9TDv/zO1BmqkM9faE9AyDM7dQExTsZLrrQSfXj8OZLgEXqrwOTDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945632; c=relaxed/simple;
-	bh=ioWXNWOT8vD38RBVra2xXsWvUT92sxFC58Y4URKYDow=;
+	s=arc-20240116; t=1745949646; c=relaxed/simple;
+	bh=dQFfjjjVOD5bedv56xqdoQJzqpG1a2TYPB5JWL/L6Os=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H9nSy/lFUjWjwfw0xJR92D56eeNK4ikkwDolV0jb7L5kxOB5wSOpUqqqfiNpER+WF5ZBEX8PqWhC4Q/WIIeSYxYZZoSSh5gflOChRiaCwZbk6/mFDkVLD2uCDCI57hkDJ7k9uE5QkOHO+Mn/7fhuIxP/aJq1aBIf4APJDipF4vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGH5aoa/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32DCCC4CEE3;
-	Tue, 29 Apr 2025 16:53:52 +0000 (UTC)
+	 MIME-Version; b=IhcGLcpP0nqUvdCdUSh7a02mOB+WUdR4UcZ92Q3BmFdERUsABVt8yhsqrR1llNunG/lN2olxzPt4LcnurhOhExlwIV21KsbuoD1vUpseWPgoLu/0B2ftzaj6MnQAns3hLLRLJcq0eAfwFNkUuUf9Xdwu40QHi2bxczcBtH1iNM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlVR4SH3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0E9C4CEE3;
+	Tue, 29 Apr 2025 18:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945632;
-	bh=ioWXNWOT8vD38RBVra2xXsWvUT92sxFC58Y4URKYDow=;
+	s=korg; t=1745949645;
+	bh=dQFfjjjVOD5bedv56xqdoQJzqpG1a2TYPB5JWL/L6Os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GGH5aoa/rgI79ZEZfT5NDmXc/NhaGlSOLyST/FdTHUlm+1I+mW0OK6cL18QMeR0uH
-	 aLSBkPB8exFs4vwm1s0isaaLvq0NYUsVAS0hG5ZHjuSaUNvSocRqx0uJdizGPwhszl
-	 4V1msasY/6hJnXLGcesYFRrBQdLVeG6xk8zgUDh4=
+	b=ZlVR4SH3660O0Nsc4WRH3xb6i9evpBuEr/G+M7it+4vnmzGrxD1SJPEwyau9CAUtR
+	 S6J3dC6OhD0rwkZTYvi1qnuYlHQWvzbCMtuqbxnwzuX3SIceWVEI8mHwPtvoNJn1n0
+	 EjaGxHNtwOa/oeoPL3JQgaUM3Vaz26A5Gpbcm3Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.4 177/179] comedi: jr3_pci: Fix synchronous deletion of timer
-Date: Tue, 29 Apr 2025 18:41:58 +0200
-Message-ID: <20250429161056.555397723@linuxfoundation.org>
+	Andrew Lunn <andrew@lunn.ch>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Simon Horman <simon.horman@corigine.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 011/167] net: dsa: add support for mac_prepare() and mac_finish() calls
+Date: Tue, 29 Apr 2025 18:41:59 +0200
+Message-ID: <20250429161052.206546974@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +64,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-commit 44d9b3f584c59a606b521e7274e658d5b866c699 upstream.
+[ Upstream commit dd805cf3e80e038aeb06902399ce9bd6fafb4ff3 ]
 
-When `jr3_pci_detach()` is called during device removal, it calls
-`timer_delete_sync()` to stop the timer, but the timer expiry function
-always reschedules the timer, so the synchronization is ineffective.
+Add DSA support for the phylink mac_prepare() and mac_finish() calls.
+These were introduced as part of the PCS support to allow MACs to
+perform preparatory steps prior to configuration, and finalisation
+steps after the MAC and PCS has been configured.
 
-Call `timer_shutdown_sync()` instead.  It does not matter that the timer
-expiry function pointer is cleared, because the device is being removed.
+Introducing phylink_pcs support to the mv88e6xxx DSA driver needs some
+code moved out of its mac_config() stage into the mac_prepare() and
+mac_finish() stages, and this commit facilitates such code in DSA
+drivers.
 
-Fixes: 07b509e6584a5 ("Staging: comedi: add jr3_pci driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250415123901.13483-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 52fdc41c3278 ("net: dsa: mv88e6xxx: fix internal PHYs for 6320 family")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/comedi/drivers/jr3_pci.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ include/net/dsa.h |  6 ++++++
+ net/dsa/port.c    | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
---- a/drivers/staging/comedi/drivers/jr3_pci.c
-+++ b/drivers/staging/comedi/drivers/jr3_pci.c
-@@ -88,6 +88,7 @@ struct jr3_pci_poll_delay {
- struct jr3_pci_dev_private {
- 	struct timer_list timer;
- 	struct comedi_device *dev;
-+	bool timer_enable;
- };
- 
- union jr3_pci_single_range {
-@@ -612,10 +613,11 @@ static void jr3_pci_poll_dev(struct time
- 				delay = sub_delay.max;
- 		}
- 	}
-+	if (devpriv->timer_enable) {
-+		devpriv->timer.expires = jiffies + msecs_to_jiffies(delay);
-+		add_timer(&devpriv->timer);
-+	}
- 	spin_unlock_irqrestore(&dev->spinlock, flags);
--
--	devpriv->timer.expires = jiffies + msecs_to_jiffies(delay);
--	add_timer(&devpriv->timer);
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index f96b61d9768e0..e26bace774799 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -888,9 +888,15 @@ struct dsa_switch_ops {
+ 						      phy_interface_t iface);
+ 	int	(*phylink_mac_link_state)(struct dsa_switch *ds, int port,
+ 					  struct phylink_link_state *state);
++	int	(*phylink_mac_prepare)(struct dsa_switch *ds, int port,
++				       unsigned int mode,
++				       phy_interface_t interface);
+ 	void	(*phylink_mac_config)(struct dsa_switch *ds, int port,
+ 				      unsigned int mode,
+ 				      const struct phylink_link_state *state);
++	int	(*phylink_mac_finish)(struct dsa_switch *ds, int port,
++				      unsigned int mode,
++				      phy_interface_t interface);
+ 	void	(*phylink_mac_an_restart)(struct dsa_switch *ds, int port);
+ 	void	(*phylink_mac_link_down)(struct dsa_switch *ds, int port,
+ 					 unsigned int mode,
+diff --git a/net/dsa/port.c b/net/dsa/port.c
+index 750fe68d9b2a0..cd1741792f6a9 100644
+--- a/net/dsa/port.c
++++ b/net/dsa/port.c
+@@ -1599,6 +1599,21 @@ dsa_port_phylink_mac_select_pcs(struct phylink_config *config,
+ 	return pcs;
  }
  
- static struct jr3_pci_subdev_private *
-@@ -764,6 +766,7 @@ static int jr3_pci_auto_attach(struct co
- 	devpriv->dev = dev;
- 	timer_setup(&devpriv->timer, jr3_pci_poll_dev, 0);
- 	devpriv->timer.expires = jiffies + msecs_to_jiffies(1000);
-+	devpriv->timer_enable = true;
- 	add_timer(&devpriv->timer);
++static int dsa_port_phylink_mac_prepare(struct phylink_config *config,
++					unsigned int mode,
++					phy_interface_t interface)
++{
++	struct dsa_port *dp = container_of(config, struct dsa_port, pl_config);
++	struct dsa_switch *ds = dp->ds;
++	int err = 0;
++
++	if (ds->ops->phylink_mac_prepare)
++		err = ds->ops->phylink_mac_prepare(ds, dp->index, mode,
++						   interface);
++
++	return err;
++}
++
+ static void dsa_port_phylink_mac_config(struct phylink_config *config,
+ 					unsigned int mode,
+ 					const struct phylink_link_state *state)
+@@ -1612,6 +1627,21 @@ static void dsa_port_phylink_mac_config(struct phylink_config *config,
+ 	ds->ops->phylink_mac_config(ds, dp->index, mode, state);
+ }
  
- 	return 0;
-@@ -773,8 +776,12 @@ static void jr3_pci_detach(struct comedi
++static int dsa_port_phylink_mac_finish(struct phylink_config *config,
++				       unsigned int mode,
++				       phy_interface_t interface)
++{
++	struct dsa_port *dp = container_of(config, struct dsa_port, pl_config);
++	struct dsa_switch *ds = dp->ds;
++	int err = 0;
++
++	if (ds->ops->phylink_mac_finish)
++		err = ds->ops->phylink_mac_finish(ds, dp->index, mode,
++						  interface);
++
++	return err;
++}
++
+ static void dsa_port_phylink_mac_an_restart(struct phylink_config *config)
  {
- 	struct jr3_pci_dev_private *devpriv = dev->private;
- 
--	if (devpriv)
-+	if (devpriv) {
-+		spin_lock_bh(&dev->spinlock);
-+		devpriv->timer_enable = false;
-+		spin_unlock_bh(&dev->spinlock);
- 		del_timer_sync(&devpriv->timer);
-+	}
- 
- 	comedi_pci_detach(dev);
- }
+ 	struct dsa_port *dp = container_of(config, struct dsa_port, pl_config);
+@@ -1667,7 +1697,9 @@ static const struct phylink_mac_ops dsa_port_phylink_mac_ops = {
+ 	.validate = dsa_port_phylink_validate,
+ 	.mac_select_pcs = dsa_port_phylink_mac_select_pcs,
+ 	.mac_pcs_get_state = dsa_port_phylink_mac_pcs_get_state,
++	.mac_prepare = dsa_port_phylink_mac_prepare,
+ 	.mac_config = dsa_port_phylink_mac_config,
++	.mac_finish = dsa_port_phylink_mac_finish,
+ 	.mac_an_restart = dsa_port_phylink_mac_an_restart,
+ 	.mac_link_down = dsa_port_phylink_mac_link_down,
+ 	.mac_link_up = dsa_port_phylink_mac_link_up,
+-- 
+2.39.5
+
 
 
 
