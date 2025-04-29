@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-138196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AE9AA16E9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:41:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7FCBAA1314
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 496207B411F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AD773B446A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:57:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB8E2522AB;
-	Tue, 29 Apr 2025 17:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40FF02512E4;
+	Tue, 29 Apr 2025 16:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fT14a8ZM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlotAkEu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C6421ABC1;
-	Tue, 29 Apr 2025 17:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D0C2512DD;
+	Tue, 29 Apr 2025 16:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948473; cv=none; b=u3nB1u6p/I44fKUWv9rg/qs5/res41iXHqLmy/4vnAbRpYTsSI4sKUgTm6QOzaYToqSo9z7EaBR9dTq3g+AVQThY8c9zxgpODjTqY6y+SYjofaC57OSVxhhP5eSu5X6w5mYek62g1l57M8NcMuWysDSoi9DwGXzE7SVZMvBIi1E=
+	t=1745945818; cv=none; b=bLhhvQ1ktIoE+Msxvs6+DIE3iQo1o6+5shRx3aZGrVIrqG/APMAPJx4sTYmEJG5hU4gakKnW2jObcdnzzFh5AVCOXSXdcjPK1Wj3eFapJme00unPQiDdjh/LHvOX0ew9Q6Yzs2CK2XetxhBzl9So6o9P9yW6vzh9pgwsh6zhE/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948473; c=relaxed/simple;
-	bh=rYFauXuOS9OIWR7p8PPb2+tQIP5Drvag/DjAbyeI0JM=;
+	s=arc-20240116; t=1745945818; c=relaxed/simple;
+	bh=sYwxwbbPZjhuDACzYS/eU3RF+peeIZguBGgxeziJfcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jqb5pNxAPWBo1e9ReCIm9AMFtXMmXTUuIAT+zIvpWTD0c4v3l15gaHb4TI8WznwIuhxd67rVtC+kZkNcydQv8Wf8I9Fh0/mngmOCbzbvwHZYSvC//v+cI+Evy8CTNb1nxXWKEZwsN6YmgLi9uwbXjyeERHWz74kxuXV0OrLLGYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fT14a8ZM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09042C4CEE3;
-	Tue, 29 Apr 2025 17:41:12 +0000 (UTC)
+	 MIME-Version; b=Xfei775UTwiS8VJIkBXxLh21MNGrLWzZtpl/BsWiT3LFCegByvfiO27EwDA6MHmQwe2+6PHdPsDeN3jacSREfY75kIqyRB6AOLHiuID39H92yzj8dGVvkHO10iNlXOUVD8K2t3CEXnb8wpyN42jM0bbpMV8IpSGaP2Y5Lv60uY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlotAkEu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F6FC4CEE3;
+	Tue, 29 Apr 2025 16:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948473;
-	bh=rYFauXuOS9OIWR7p8PPb2+tQIP5Drvag/DjAbyeI0JM=;
+	s=korg; t=1745945817;
+	bh=sYwxwbbPZjhuDACzYS/eU3RF+peeIZguBGgxeziJfcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fT14a8ZM+ccLHrOKnsYIEFjqgQJkqibVLhu8NzJ6TFRRlEavYqOaSptiKX4dP6IKs
-	 aI0IOZqey2EeIxfhjZ4Vw7debDT7tIVxRDrF8OIxCAcOWLM8Z6DHrpXSK+tQXA0EQj
-	 ZFW3S0dbwObQdvnxCnbErDBXn/TulkIZ2cg/yvSw=
+	b=LlotAkEufglZgZB8CVz83WdXeBC02FjBBh3SOA77MKybWlbCHOz2kUWNdpJXbYPgp
+	 EsvlEH/lGHZoKQyZGpaABOopnnF+UZ8sazJUIp3J7J3rPHZVPhoyyNaO+1+SoUTGGp
+	 zoXvnC0C0tq+b7A6dKIxN43/QzePXkQR7FeL1FSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nolan Nicholson <nolananicholson@gmail.com>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 019/373] HID: pidff: Fix null pointer dereference in pidff_find_fields
-Date: Tue, 29 Apr 2025 18:38:16 +0200
-Message-ID: <20250429161123.922244892@linuxfoundation.org>
+Subject: [PATCH 6.14 060/311] net: phylink: fix suspend/resume with WoL enabled and link down
+Date: Tue, 29 Apr 2025 18:38:17 +0200
+Message-ID: <20250429161123.500440047@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +60,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <forest10pl@gmail.com>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit 22a05462c3d0eee15154faf8d13c49e6295270a5 ]
+[ Upstream commit 4c8925cb9db158c812e1e11f3e74b945df7c9801 ]
 
-This function triggered a null pointer dereference if used to search for
-a report that isn't implemented on the device. This happened both for
-optional and required reports alike.
+When WoL is enabled, we update the software state in phylink to
+indicate that the link is down, and disable the resolver from
+bringing the link back up.
 
-The same logic was applied to pidff_find_special_field and although
-pidff_init_fields should return an error earlier if one of the required
-reports is missing, future modifications could change this logic and
-resurface this possible null pointer dereference again.
+On resume, we attempt to bring the overall state into consistency
+by calling the .mac_link_down() method, but this is wrong if the
+link was already down, as phylink strictly orders the .mac_link_up()
+and .mac_link_down() methods - and this would break that ordering.
 
-LKML bug report:
-https://lore.kernel.org/all/CAL-gK7f5=R0nrrQdPtaZZr1fd-cdAMbDMuZ_NLA8vM0SX+nGSw@mail.gmail.com
-
-Reported-by: Nolan Nicholson <nolananicholson@gmail.com>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: f97493657c63 ("net: phylink: add suspend/resume support")
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Tested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/E1u55Qf-0016RN-PA@rmk-PC.armlinux.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/phy/phylink.c | 38 ++++++++++++++++++++++----------------
+ 1 file changed, 22 insertions(+), 16 deletions(-)
 
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -772,6 +772,11 @@ static int pidff_find_fields(struct pidf
- {
- 	int i, j, k, found;
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index b74b1c3365000..306275fbe4c98 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -82,6 +82,7 @@ struct phylink {
+ 	unsigned int pcs_state;
  
-+	if (!report) {
-+		pr_debug("pidff_find_fields, null report\n");
-+		return -1;
-+	}
-+
- 	for (k = 0; k < count; k++) {
- 		found = 0;
- 		for (i = 0; i < report->maxfield; i++) {
-@@ -885,6 +890,11 @@ static struct hid_field *pidff_find_spec
- {
- 	int i;
+ 	bool link_failed;
++	bool suspend_link_up;
+ 	bool major_config_failed;
+ 	bool mac_supports_eee_ops;
+ 	bool mac_supports_eee;
+@@ -2645,14 +2646,16 @@ void phylink_suspend(struct phylink *pl, bool mac_wol)
+ 		/* Stop the resolver bringing the link up */
+ 		__set_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state);
  
-+	if (!report) {
-+		pr_debug("pidff_find_special_field, null report\n");
-+		return NULL;
-+	}
-+
- 	for (i = 0; i < report->maxfield; i++) {
- 		if (report->field[i]->logical == (HID_UP_PID | usage) &&
- 		    report->field[i]->report_count > 0) {
+-		/* Disable the carrier, to prevent transmit timeouts,
+-		 * but one would hope all packets have been sent. This
+-		 * also means phylink_resolve() will do nothing.
+-		 */
+-		if (pl->netdev)
+-			netif_carrier_off(pl->netdev);
+-		else
++		pl->suspend_link_up = phylink_link_is_up(pl);
++		if (pl->suspend_link_up) {
++			/* Disable the carrier, to prevent transmit timeouts,
++			 * but one would hope all packets have been sent. This
++			 * also means phylink_resolve() will do nothing.
++			 */
++			if (pl->netdev)
++				netif_carrier_off(pl->netdev);
+ 			pl->old_link_state = false;
++		}
+ 
+ 		/* We do not call mac_link_down() here as we want the
+ 		 * link to remain up to receive the WoL packets.
+@@ -2678,15 +2681,18 @@ void phylink_resume(struct phylink *pl)
+ 	if (test_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state)) {
+ 		/* Wake-on-Lan enabled, MAC handling */
+ 
+-		/* Call mac_link_down() so we keep the overall state balanced.
+-		 * Do this under the state_mutex lock for consistency. This
+-		 * will cause a "Link Down" message to be printed during
+-		 * resume, which is harmless - the true link state will be
+-		 * printed when we run a resolve.
+-		 */
+-		mutex_lock(&pl->state_mutex);
+-		phylink_link_down(pl);
+-		mutex_unlock(&pl->state_mutex);
++		if (pl->suspend_link_up) {
++			/* Call mac_link_down() so we keep the overall state
++			 * balanced. Do this under the state_mutex lock for
++			 * consistency. This will cause a "Link Down" message
++			 * to be printed during resume, which is harmless -
++			 * the true link state will be printed when we run a
++			 * resolve.
++			 */
++			mutex_lock(&pl->state_mutex);
++			phylink_link_down(pl);
++			mutex_unlock(&pl->state_mutex);
++		}
+ 
+ 		/* Re-apply the link parameters so that all the settings get
+ 		 * restored to the MAC.
+-- 
+2.39.5
+
 
 
 
