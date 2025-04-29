@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-138362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D38AA17AC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7252AA13B3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E7C71651C5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 612C71BA3DCF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C7A243964;
-	Tue, 29 Apr 2025 17:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7330525178C;
+	Tue, 29 Apr 2025 17:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCEGeNeU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Lz8vrxn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CF8221DA7;
-	Tue, 29 Apr 2025 17:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A3F22A81D;
+	Tue, 29 Apr 2025 17:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948990; cv=none; b=MeAeYqXHLPO9EBwT7bGtrWWczH5TQ1wkhRLOgSLl3ljP8AaF/g10CAa4JnfhI117S0f9T8SA4kDx2Lj9Hf7qnfRiSRuCYkgViteMz0xWS6EuH55H5DiC3A19gWn6mWDINbgUNiNDiFaF2YEvi7lvFL2xVmifW1zqux31Z1adcBY=
+	t=1745946219; cv=none; b=jMHphOI41wk8NdtoBJBxW+J+4ArOtxJBQxVTRbuZZ6BlAr2jJRklptoU6CaCScYToFzvWXw6SWeNUwEeuC6sJHt37CC66fQa4S5IBLf9e6v640n8kKPTt+EDknwwGJtUFelA5lctnkGW3Ngj69XguT9y0VQIudFfO5OZwAiOJw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948990; c=relaxed/simple;
-	bh=T4ygqG3r6v54msrQ6LTDo/GDj5w+f0Cvq8TsnfMcfes=;
+	s=arc-20240116; t=1745946219; c=relaxed/simple;
+	bh=T1369clMFG+ZSsGy83dsxZP6kihDj2G6sv1MA+emMmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eKEbZ4XR3dQ9vvM3uDyUDED9PmQM+dByao6fA69uk4Q4hXbbExqO0GiVR4GHpri1Ea8LHcZwr35F99vfkdBhtMZByOjkHzvWaGW9FWKWd9eORkC+kcp4ut9TAQfjET+HcpuJ2GQ4Vcn3q8p9zf9GkrzbMVk9RR3gg2vA3iTKgns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCEGeNeU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8360AC4CEE3;
-	Tue, 29 Apr 2025 17:49:48 +0000 (UTC)
+	 MIME-Version; b=jobOU/cfxtDwva8iAUsHelCpiEc5sGye9DYaO0IhxlpcK8JZl+SW8Kqwt4ItZ1v6GnPGfr4vLzlV664/f1/UWj/5qI4zz8AvUmSUFTs22vfccKQFAqK2vFMMLXTswtThHmvL60TV2hNPbV7kJh9YOcx77crYqVAB9ksiwLaeI/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Lz8vrxn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7C4C4CEE3;
+	Tue, 29 Apr 2025 17:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948989;
-	bh=T4ygqG3r6v54msrQ6LTDo/GDj5w+f0Cvq8TsnfMcfes=;
+	s=korg; t=1745946218;
+	bh=T1369clMFG+ZSsGy83dsxZP6kihDj2G6sv1MA+emMmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KCEGeNeUjYferoEGBqw4LfrxKVyUnmJf4OAsU7v0uCw8qJqAid/jvsqwNk4BqN5Iw
-	 qqKT26a6F/RUsE/2n9c97BvIP6/xsfzrOSfYMehSe72DGIr95vkdNK0cqgs7FoYdcy
-	 69X8H6rQEviQRlAEL1PR+HgHbt+xYbnyS4rGnThs=
+	b=2Lz8vrxnEVS01/8U34IxFgXPxNR7alFhznS2cqs4Gt1mI23BzaWMNHFQQRQsyWrTz
+	 jVEmkYTX59yHcGjTtjWICUHFv2Orm+kVTq3jjzsrYyOLVXl/NRUfQfbFxETCwVjeQF
+	 fV8Z3j1kYQq6fkafy70hDQ4SVXpp2EeU80/XvVUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cal Peake <cp@absolutedigital.net>,
-	Athul Krishna <athul.krishna.kr@protonmail.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kevin Tian <kevin.tian@intel.com>
-Subject: [PATCH 5.15 155/373] Revert "PCI: Avoid reset when disabled via sysfs"
+	Yafang Shao <laoar.shao@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 195/311] bpf: Reject attaching fexit/fmod_ret to __noreturn functions
 Date: Tue, 29 Apr 2025 18:40:32 +0200
-Message-ID: <20250429161129.526781955@linuxfoundation.org>
+Message-ID: <20250429161129.003200671@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-commit bc0b828ef6e561081ebc4c758d0c4d166bb9829c upstream.
+[ Upstream commit cfe816d469dce9c0864062cf65dd7b3c42adc6f8 ]
 
-This reverts commit 479380efe1625e251008d24b2810283db60d6fcd.
+If we attach fexit/fmod_ret to __noreturn functions, it will cause an
+issue that the bpf trampoline image will be left over even if the bpf
+link has been destroyed. Take attaching do_exit() with fexit for example.
+The fexit works as follows,
 
-The reset_method attribute on a PCI device is only intended to manage the
-availability of function scoped resets for a device.  It was never intended
-to restrict resets targeting the bus or slot.
+  bpf_trampoline
+  + __bpf_tramp_enter
+    + percpu_ref_get(&tr->pcref);
 
-In introducing a restriction that each device must support function level
-reset by testing pci_reset_supported(), we essentially create a catch-22,
-that a device must have a function scope reset in order to support bus/slot
-reset, when we use bus/slot reset to effect a reset of a device that does
-not support a function scoped reset, especially multi-function devices.
+  + call do_exit()
 
-This breaks the majority of uses cases where vfio-pci uses bus/slot resets
-to manage multifunction devices that do not support function scoped resets.
+  + __bpf_tramp_exit
+    + percpu_ref_put(&tr->pcref);
 
-Fixes: 479380efe162 ("PCI: Avoid reset when disabled via sysfs")
-Reported-by: Cal Peake <cp@absolutedigital.net>
-Closes: https://lore.kernel.org/all/808e1111-27b7-f35b-6d5c-5b275e73677b@absolutedigital.net
-Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220010
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250414211828.3530741-1-alex.williamson@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since do_exit() never returns, the refcnt of the trampoline image is
+never decremented, preventing it from being freed. That can be verified
+with as follows,
+
+  $ bpftool link show                                   <<<< nothing output
+  $ grep "bpf_trampoline_[0-9]" /proc/kallsyms
+  ffffffffc04cb000 t bpf_trampoline_6442526459    [bpf] <<<< leftover
+
+In this patch, all functions annotated with __noreturn are rejected, except
+for the following cases:
+- Functions that result in a system reboot, such as panic,
+  machine_real_restart and rust_begin_unwind
+- Functions that are never executed by tasks, such as rest_init and
+  cpu_startup_entry
+- Functions implemented in assembly, such as rewind_stack_and_make_dead and
+  xen_cpu_bringup_again, lack an associated BTF ID.
+
+With this change, attaching fexit probes to functions like do_exit() will
+be rejected.
+
+$ ./fexit
+libbpf: prog 'fexit': BPF program load failed: -EINVAL
+libbpf: prog 'fexit': -- BEGIN PROG LOAD LOG --
+Attaching fexit/fmod_ret to __noreturn functions is rejected.
+
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Link: https://lore.kernel.org/r/20250318114447.75484-2-laoar.shao@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c |    4 ----
- 1 file changed, 4 deletions(-)
+ kernel/bpf/verifier.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5484,8 +5484,6 @@ static bool pci_bus_resetable(struct pci
- 		return false;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index c6f3b5f4ff2be..db95b76f5c139 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -22863,6 +22863,33 @@ BTF_ID(func, __rcu_read_unlock)
+ #endif
+ BTF_SET_END(btf_id_deny)
  
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
--		if (!pci_reset_supported(dev))
--			return false;
- 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
- 		    (dev->subordinate && !pci_bus_resetable(dev->subordinate)))
- 			return false;
-@@ -5562,8 +5560,6 @@ static bool pci_slot_resetable(struct pc
- 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
- 		if (!dev->slot || dev->slot != slot)
- 			continue;
--		if (!pci_reset_supported(dev))
--			return false;
- 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
- 		    (dev->subordinate && !pci_bus_resetable(dev->subordinate)))
- 			return false;
++/* fexit and fmod_ret can't be used to attach to __noreturn functions.
++ * Currently, we must manually list all __noreturn functions here. Once a more
++ * robust solution is implemented, this workaround can be removed.
++ */
++BTF_SET_START(noreturn_deny)
++#ifdef CONFIG_IA32_EMULATION
++BTF_ID(func, __ia32_sys_exit)
++BTF_ID(func, __ia32_sys_exit_group)
++#endif
++#ifdef CONFIG_KUNIT
++BTF_ID(func, __kunit_abort)
++BTF_ID(func, kunit_try_catch_throw)
++#endif
++#ifdef CONFIG_MODULES
++BTF_ID(func, __module_put_and_kthread_exit)
++#endif
++#ifdef CONFIG_X86_64
++BTF_ID(func, __x64_sys_exit)
++BTF_ID(func, __x64_sys_exit_group)
++#endif
++BTF_ID(func, do_exit)
++BTF_ID(func, do_group_exit)
++BTF_ID(func, kthread_complete_and_exit)
++BTF_ID(func, kthread_exit)
++BTF_ID(func, make_task_dead)
++BTF_SET_END(noreturn_deny)
++
+ static bool can_be_sleepable(struct bpf_prog *prog)
+ {
+ 	if (prog->type == BPF_PROG_TYPE_TRACING) {
+@@ -22951,6 +22978,11 @@ static int check_attach_btf_id(struct bpf_verifier_env *env)
+ 	} else if (prog->type == BPF_PROG_TYPE_TRACING &&
+ 		   btf_id_set_contains(&btf_id_deny, btf_id)) {
+ 		return -EINVAL;
++	} else if ((prog->expected_attach_type == BPF_TRACE_FEXIT ||
++		   prog->expected_attach_type == BPF_MODIFY_RETURN) &&
++		   btf_id_set_contains(&noreturn_deny, btf_id)) {
++		verbose(env, "Attaching fexit/fmod_ret to __noreturn functions is rejected.\n");
++		return -EINVAL;
+ 	}
+ 
+ 	key = bpf_trampoline_compute_key(tgt_prog, prog->aux->attach_btf, btf_id);
+-- 
+2.39.5
+
 
 
 
