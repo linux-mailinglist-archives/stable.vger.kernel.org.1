@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-138824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57473AA1A0A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A805AA195B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:10:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F33D165F59
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6C6E9C41A6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B009A188A0E;
-	Tue, 29 Apr 2025 18:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FA925333F;
+	Tue, 29 Apr 2025 18:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPsZzlrA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbF57gPU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB853FFD;
-	Tue, 29 Apr 2025 18:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2C8253322;
+	Tue, 29 Apr 2025 18:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950466; cv=none; b=hUEKxwTzV4RrHkh9FEAERB5oh2zORJjXS2jtNMXwlTRssaGdYrzlXwKQDm2BKlgJzgaAEHPOR90LBCaALMDTaIMTvsDLsBzJKlEfwqocxIUGJwXiyZ3eK4qWWVPPI2Xc34PgekJuv6cV0aXkC6j1ZgtL/dC3NJMds4jbr/BFJGI=
+	t=1745949878; cv=none; b=bmBplmyHjLKcORM51iVZbVWXfGcQuoXJgBC2S6LrlHKjV9Cj9/V1MZDdcjzBBYvJhVF5xQCX0m5LYtzN/V2WSPUJ8fB/lTwsXy4X5OZwgT2g7Ge1uZBEoAlzYh9nv8q4EOhsU/0aKE5+CsSXfLE8+Ve3tXgbBsboHx5FFle2wE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950466; c=relaxed/simple;
-	bh=81VUWf5xw53KuBfTzGN2tFih7PzRN8gzhigxwGIFjT8=;
+	s=arc-20240116; t=1745949878; c=relaxed/simple;
+	bh=uIPIXaUZV4wDFLtT0Rct50Gu6XQDI+voQ1pDR9i4Vtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nH0DaZau52v3YHGQZJ3AwUi/TDmdWGtZaveg0lrPYXlfrRS3xHcc84WhxtecI1yEMiR/sY/WYHw92Bw2hK3MtVVWAEPpOyiMrm1kMQYKv3Izs6XAmi9ypbMoIpzDrFyFYxXOcjoDXXF4h8UvLw3qrnFy42nkZvmw7MGVHxyc/aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPsZzlrA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D269EC4CEE3;
-	Tue, 29 Apr 2025 18:14:25 +0000 (UTC)
+	 MIME-Version; b=TgwMzYAbLnmWwLFoRleD7tLdhdZqEjBxsySg4B3r3s/0FjaBHRUmMkIQ3eg3E8cac7D974e+jZYv5XE80Rv6aGXKHQL7tCKkATeBebMG5eOwxtcRDQSVkbo6SuXZeHUkQYywy1+8flpUv6BNPL51kvs9EEG87zqEFaBKKVpvX38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GbF57gPU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A3DC4CEE3;
+	Tue, 29 Apr 2025 18:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950466;
-	bh=81VUWf5xw53KuBfTzGN2tFih7PzRN8gzhigxwGIFjT8=;
+	s=korg; t=1745949878;
+	bh=uIPIXaUZV4wDFLtT0Rct50Gu6XQDI+voQ1pDR9i4Vtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yPsZzlrAaLJX+V90F27geVbGtYjssQK0FQ2IWTgPPybXVk2PbB5/jVubhQ/2HfZFj
-	 I8KfTM/U1dw0E1VarsuiDPGBigRmd9W/B9td8KScvNxTWpZrWJdD/QiZ4mIl3dMt2r
-	 zj4eUsj3tlLzPY/AFyPk8+Wr/O0WZgUgLrwNMg50=
+	b=GbF57gPU0i7fNDDd4tRoM9wzzYewBHF0PHBBufMzNhrs0BZJrfLesC1JxxgvHXe1s
+	 dbkOCW0x/AvplC5yrq1qzGisJSGiH822b1mOkHqrOf/65E656qfV6AJkLfxGuygALK
+	 JOH1iep2czMuKk/sALnM+M6AuUB740XwBf1qQMiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable <stable@kernel.org>,
 	Fedor Pchelkin <pchelkin@ispras.ru>,
 	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.6 105/204] usb: chipidea: ci_hdrc_imx: fix call balance of regulator routines
+Subject: [PATCH 6.1 085/167] usb: chipidea: ci_hdrc_imx: fix call balance of regulator routines
 Date: Tue, 29 Apr 2025 18:43:13 +0200
-Message-ID: <20250429161103.723071818@linuxfoundation.org>
+Message-ID: <20250429161055.194997230@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -90,7 +90,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/usb/chipidea/ci_hdrc_imx.c
 +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -328,6 +328,13 @@ static int ci_hdrc_imx_notify_event(stru
+@@ -324,6 +324,13 @@ static int ci_hdrc_imx_notify_event(stru
  	return ret;
  }
  
@@ -104,7 +104,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  static int ci_hdrc_imx_probe(struct platform_device *pdev)
  {
  	struct ci_hdrc_imx_data *data;
-@@ -386,6 +393,13 @@ static int ci_hdrc_imx_probe(struct plat
+@@ -381,6 +388,13 @@ static int ci_hdrc_imx_probe(struct plat
  					"Failed to enable HSIC pad regulator\n");
  				goto err_put;
  			}
@@ -118,7 +118,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  	}
  
-@@ -424,11 +438,11 @@ static int ci_hdrc_imx_probe(struct plat
+@@ -419,11 +433,11 @@ static int ci_hdrc_imx_probe(struct plat
  
  	ret = imx_get_clks(dev);
  	if (ret)
@@ -132,7 +132,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	data->phy = devm_usb_get_phy_by_phandle(dev, "fsl,usbphy", 0);
  	if (IS_ERR(data->phy)) {
-@@ -512,10 +526,7 @@ disable_device:
+@@ -503,10 +517,7 @@ disable_device:
  	ci_hdrc_remove_device(data->ci_pdev);
  err_clk:
  	imx_disable_unprepare_clks(dev);
@@ -144,7 +144,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	if (pdata.flags & CI_HDRC_PMQOS)
  		cpu_latency_qos_remove_request(&data->pm_qos_req);
  	data->ci_pdev = NULL;
-@@ -542,8 +553,6 @@ static void ci_hdrc_imx_remove(struct pl
+@@ -533,8 +544,6 @@ static void ci_hdrc_imx_remove(struct pl
  		imx_disable_unprepare_clks(&pdev->dev);
  		if (data->plat_data->flags & CI_HDRC_PMQOS)
  			cpu_latency_qos_remove_request(&data->pm_qos_req);
