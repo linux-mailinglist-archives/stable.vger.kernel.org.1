@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-137418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C36AA12EC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:00:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A67AA11D5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:46:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 999057A9ED9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEA754A534A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869B422A81D;
-	Tue, 29 Apr 2025 17:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AEC2459E0;
+	Tue, 29 Apr 2025 16:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQxeaCbT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z01xekLg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C6F24887D;
-	Tue, 29 Apr 2025 17:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B8727453;
+	Tue, 29 Apr 2025 16:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946009; cv=none; b=STZxiszweoxbJb7RfhIOVe5swDxDhWDtX4zYsy7HdnqjayXuvimAQyTqORnmz5nHb/qFeoyccQMPMCjHcpnL4Q8kucwCEPqOkX3Q3MKp0CxryG7/lTu4uNzpi201EnD5cny/3s3OHHeYy8wNt++eUIuqjyOtgLBcIGBuTZOh0Fk=
+	t=1745945131; cv=none; b=EfK3B/qhgLIDPVPKPB9WBN4Aam2KCPTJnCbiPg3mzvxklssyJcBct6A2PYZ4sWUFb+kJIpBOSRMe7Mw8/hv+nrqDW7ifY7D5NA5snCNvdhux5AtaW2T/1b9bP7/9MapOeRERNWtCcfPlaOLs/B+i8d9bW+kpUKzj0HxHAd70Esc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946009; c=relaxed/simple;
-	bh=TpNeRAfc/r/Qx9pAtWjPNjatl+YPrccEBSZQnkskDCs=;
+	s=arc-20240116; t=1745945131; c=relaxed/simple;
+	bh=7Ilg2HoMLMPNT66byFUDlnz66tU2vHqh2lAfCH2hIRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LUxnK4gcpRsLg2GHXr8Bc7Gu8Oen4m1wCloigLZ2RsQt7z4nbwir+ARZIZWqwxiXOHqp41iOT9Ie4g+w02W8R1t3DalrLJtc0Rgop7Svntu8awb0CXDw4/i357Kz3dDPPjOu+8CzUkFt/J9ccGdExHyo331i+7inpw16MoEfy9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQxeaCbT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68DE7C4CEE3;
-	Tue, 29 Apr 2025 17:00:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BL49njiW3ER1rSBqGILE7QxO2Y6gamGi6sX16nizzKV0wzpMIy192GHEulamq5CJD3bnLZLyg5ZAraHqK4ZjH/lGNiFrgn+U13KyND9xNBYS91kBm/yij+IKmFSKm8vpK0VboZyAYlNbOWPqFWMACX+Q6wHtYgXtDhkCgPSP5oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z01xekLg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFAB3C4CEE3;
+	Tue, 29 Apr 2025 16:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946008;
-	bh=TpNeRAfc/r/Qx9pAtWjPNjatl+YPrccEBSZQnkskDCs=;
+	s=korg; t=1745945131;
+	bh=7Ilg2HoMLMPNT66byFUDlnz66tU2vHqh2lAfCH2hIRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQxeaCbT8gNRvXY/dUn8JPydgW1HMoRkbpYbtIP+qKSr/k4gvGlAF2AH/xJkjskwe
-	 sbM46a882aL/T3jDk6eilK43h6dE5tjnFFvczvLRRVroG1ITMpVKyo7hnSA6Yb2Obq
-	 cIzCwPTF/s7tLqfL7cDVjjLAE7755BoJwCeF3kpA=
+	b=Z01xekLgYRIdednbeaotjTdXL6eyluUKe2A93KN7wZPnPLmpcVxXkmTsDRZuB7EW+
+	 vmUL9Fb2nyFlLZ+lFPZxF63u6iVUVMTD7hEPjwhArKd3GZ0URnAdGU6h5KIcx8zXBw
+	 tVcc0Y+EcIDBP9YtWJeKRz4nCuR5HvbiYsw4FlpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.14 116/311] mptcp: pm: Defer freeing of MPTCP userspace path manager entries
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 012/179] HID: pidff: Do not send effect envelope if its empty
 Date: Tue, 29 Apr 2025 18:39:13 +0200
-Message-ID: <20250429161125.793667154@linuxfoundation.org>
+Message-ID: <20250429161049.889350190@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +64,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mat Martineau <martineau@kernel.org>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-commit 13b4ece33cf9def67966bb8716783c42cec20617 upstream.
+[ Upstream commit 8876fc1884f5b39550c8387ff3176396c988541d ]
 
-When path manager entries are deleted from the local address list, they
-are first unlinked from the address list using list_del_rcu(). The
-entries must not be freed until after the RCU grace period, but the
-existing code immediately frees the entry.
+Envelope struct is always initialized, but the envelope itself is
+optional as described in USB PID Device class definition 1.0.
 
-Use kfree_rcu_mightsleep() and adjust sk_omem_alloc in open code instead
-of using the sock_kfree_s() helper. This code path is only called in a
-netlink handler, so the "might sleep" function is preferable to adding
-a rarely-used rcu_head member to struct mptcp_pm_addr_entry.
+5.1.1.1 Type Specific Block Offsets
+...
+4) Effects that do not use Condition Blocks use 1 Parameter Block and
+an *optional* Envelope Block.
 
-Fixes: 88d097316371 ("mptcp: drop free_list for deleting entries")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250421-net-mptcp-pm-defer-freeing-v1-1-e731dc6e86b9@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Sending out "empty" envelope breaks force feedback on some devices with
+games that use SINE effect + offset to emulate constant force effect, as
+well as generally breaking Constant/Periodic effects. One of the affected
+brands is Moza Racing.
+
+This change prevents the envelope from being sent if it contains all
+0 values while keeping the old behavior of only sending it, if it differs
+from the old one.
+
+Changes in v6:
+- Simplify the checks to make them clearer
+- Fix possible null pointer dereference while calling
+  pidff_needs_set_envelope
+
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_userspace.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/hid/usbhid/hid-pidff.c | 42 +++++++++++++++++++---------------
+ 1 file changed, 24 insertions(+), 18 deletions(-)
 
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -352,7 +352,11 @@ int mptcp_pm_nl_remove_doit(struct sk_bu
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index badcb5f28607e..ba0d7cb15377e 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -262,10 +262,22 @@ static void pidff_set_envelope_report(struct pidff_device *pidff,
+ static int pidff_needs_set_envelope(struct ff_envelope *envelope,
+ 				    struct ff_envelope *old)
+ {
+-	return envelope->attack_level != old->attack_level ||
+-	       envelope->fade_level != old->fade_level ||
++	bool needs_new_envelope;
++	needs_new_envelope = envelope->attack_level  != 0 ||
++			     envelope->fade_level    != 0 ||
++			     envelope->attack_length != 0 ||
++			     envelope->fade_length   != 0;
++
++	if (!needs_new_envelope)
++		return false;
++
++	if (!old)
++		return needs_new_envelope;
++
++	return envelope->attack_level  != old->attack_level  ||
++	       envelope->fade_level    != old->fade_level    ||
+ 	       envelope->attack_length != old->attack_length ||
+-	       envelope->fade_length != old->fade_length;
++	       envelope->fade_length   != old->fade_length;
+ }
  
- 	release_sock(sk);
+ /*
+@@ -580,11 +592,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
+ 			pidff_set_effect_report(pidff, effect);
+ 		if (!old || pidff_needs_set_constant(effect, old))
+ 			pidff_set_constant_force_report(pidff, effect);
+-		if (!old ||
+-		    pidff_needs_set_envelope(&effect->u.constant.envelope,
+-					&old->u.constant.envelope))
+-			pidff_set_envelope_report(pidff,
+-					&effect->u.constant.envelope);
++		if (pidff_needs_set_envelope(&effect->u.constant.envelope,
++					old ? &old->u.constant.envelope : NULL))
++			pidff_set_envelope_report(pidff, &effect->u.constant.envelope);
+ 		break;
  
--	sock_kfree_s(sk, match, sizeof(*match));
-+	kfree_rcu_mightsleep(match);
-+	/* Adjust sk_omem_alloc like sock_kfree_s() does, to match
-+	 * with allocation of this memory by sock_kmemdup()
-+	 */
-+	atomic_sub(sizeof(*match), &sk->sk_omem_alloc);
+ 	case FF_PERIODIC:
+@@ -619,11 +629,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
+ 			pidff_set_effect_report(pidff, effect);
+ 		if (!old || pidff_needs_set_periodic(effect, old))
+ 			pidff_set_periodic_report(pidff, effect);
+-		if (!old ||
+-		    pidff_needs_set_envelope(&effect->u.periodic.envelope,
+-					&old->u.periodic.envelope))
+-			pidff_set_envelope_report(pidff,
+-					&effect->u.periodic.envelope);
++		if (pidff_needs_set_envelope(&effect->u.periodic.envelope,
++					old ? &old->u.periodic.envelope : NULL))
++			pidff_set_envelope_report(pidff, &effect->u.periodic.envelope);
+ 		break;
  
- 	err = 0;
- out:
+ 	case FF_RAMP:
+@@ -637,11 +645,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
+ 			pidff_set_effect_report(pidff, effect);
+ 		if (!old || pidff_needs_set_ramp(effect, old))
+ 			pidff_set_ramp_force_report(pidff, effect);
+-		if (!old ||
+-		    pidff_needs_set_envelope(&effect->u.ramp.envelope,
+-					&old->u.ramp.envelope))
+-			pidff_set_envelope_report(pidff,
+-					&effect->u.ramp.envelope);
++		if (pidff_needs_set_envelope(&effect->u.ramp.envelope,
++					old ? &old->u.ramp.envelope : NULL))
++			pidff_set_envelope_report(pidff, &effect->u.ramp.envelope);
+ 		break;
+ 
+ 	case FF_SPRING:
+-- 
+2.39.5
+
 
 
 
