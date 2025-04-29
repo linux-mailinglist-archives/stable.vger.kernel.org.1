@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7F7AA1966
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:11:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7487CAA1A37
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC0389C4559
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EED593B1EC6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E614243964;
-	Tue, 29 Apr 2025 18:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF08215F6C;
+	Tue, 29 Apr 2025 18:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEhOMZOn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtxlyU1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D164E2AE96;
-	Tue, 29 Apr 2025 18:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472B02AE72;
+	Tue, 29 Apr 2025 18:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949903; cv=none; b=j5gDZNU+8wDOVhL2+DAg7EgDjJ1jkGsC+PYxSPQ9Crj4sHuxBX7o2Jq31KdRo5LlWDHuU1I7f9lS3yhf7+IKqSlD8zqoswvEEBnatKuohV9RssE8HcduAfEhl7qtrMvrmMwLFxX+tKmD+aPC5NzTx0jIxJ6fLZK2MpkFmwPrILc=
+	t=1745950406; cv=none; b=UNoHk/RbOXfpG/Ode1v6PERyXV7LONXMRRRR5tYpyNgSYT0oHeWzVDdKdWBy3fzXNhRNYVUak1hgAJ+leTrxIi3Ym4qcZ1oybbKo3j5LLJrGAmNj4pmQhTohc7S+DCygJ/v+T1eRyv9Fh8Qt/OCR7uavN960qj4xht+RxqDTQTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949903; c=relaxed/simple;
-	bh=fRCZfAp8lrLvFJlGfg8Puyr48Q3X7WayRhieLUeVzMU=;
+	s=arc-20240116; t=1745950406; c=relaxed/simple;
+	bh=/wccCfPHGlUQY87JgBfZHnAsE8SVRA+av9BKCV21SQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/Yo0q5zkngWO//VXpoCOJr3vI/6NckcVj16f6424vYYmPiOOx/eIat5cW38nPoqxC+N7uPdJPhGdsxWds14YEYDc7c7X17vfJqiexmyAp1L5c0V/24uBTTYCZZAw8ROwpp/40dAOuaPhNbjLroOTEmDhbBS9np6iBbR+HKqWck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEhOMZOn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42099C4CEE3;
-	Tue, 29 Apr 2025 18:05:03 +0000 (UTC)
+	 MIME-Version; b=T5JCDkbykxdhij8M2WXjP08kgPnyblhlAlCOyCCwvD1jGwJZHund13510YZZWHSyTgGT/XYhyiuUwoHJa6icg4VZffGtzwzybAwFQEzX/Oh2+acyv62DtxaiEAQpmbHVYdArtT6CN74jxW1Vvnpan0Hu+bLH95ZuSXOvf3+R2wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtxlyU1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C72BDC4CEE3;
+	Tue, 29 Apr 2025 18:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949903;
-	bh=fRCZfAp8lrLvFJlGfg8Puyr48Q3X7WayRhieLUeVzMU=;
+	s=korg; t=1745950406;
+	bh=/wccCfPHGlUQY87JgBfZHnAsE8SVRA+av9BKCV21SQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YEhOMZOnQZdjxSnWXCIqpLoWmjNBM8nan7zb79TMEpCGbcViX2RKyGUX7vxy1jdxo
-	 qMZoLhUBHn54svsloYuGlfIpb4WZN9RnVv95L3eCQd0rWi2TPlFVl0JluT5wPaZhY6
-	 BFldYPdj4MuAr54RtFsLTSS6YJWssDspAOnJVq38=
+	b=NtxlyU1FPrOdov09f6wYXgiU4zosLHVBU3TSup88i/nxAyaYRvp2sO84AxdCzyjD+
+	 MXOEhanbtiRqxpeYKKcR1nivbMAvvHz1o5WqcumAB15gw/5KeyNz0xYogbtjLePS2U
+	 sxH4swkkAP/+7fVoalnoiyWdG7EgVGHxqqS9gfwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 064/167] net: selftests: initialize TCP header and skb payload with zero
-Date: Tue, 29 Apr 2025 18:42:52 +0200
-Message-ID: <20250429161054.365774969@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Johannes Thumshirn <jth@kernel.org>
+Subject: [PATCH 6.6 085/204] mcb: fix a double free bug in chameleon_parse_gdd()
+Date: Tue, 29 Apr 2025 18:42:53 +0200
+Message-ID: <20250429161102.898283277@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 9e8d1013b0c38910cbc9e60de74dbe883878469d upstream.
+commit 7c7f1bfdb2249f854a736d9b79778c7e5a29a150 upstream.
 
-Zero-initialize TCP header via memset() to avoid garbage values that
-may affect checksum or behavior during test transmission.
+In chameleon_parse_gdd(), if mcb_device_register() fails, 'mdev'
+would be released in mcb_device_register() via put_device().
+Thus, goto 'err' label and free 'mdev' again causes a double free.
+Just return if mcb_device_register() fails.
 
-Also zero-fill allocated payload and padding regions using memset()
-after skb_put(), ensuring deterministic content for all outgoing
-test packets.
-
-Fixes: 3e1e58d64c3d ("net: add generic selftest support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250416160125.2914724-1-o.rempel@pengutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 3764e82e5150 ("drivers: Introduce MEN Chameleon Bus")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Signed-off-by: Johannes Thumshirn <jth@kernel.org>
+Link: https://lore.kernel.org/r/6201d09e2975ae5789879f79a6de4c38de9edd4a.1741596225.git.jth@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/selftests.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/mcb/mcb-parse.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/core/selftests.c
-+++ b/net/core/selftests.c
-@@ -100,10 +100,10 @@ static struct sk_buff *net_test_get_skb(
- 	ehdr->h_proto = htons(ETH_P_IP);
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -101,7 +101,7 @@ static int chameleon_parse_gdd(struct mc
  
- 	if (attr->tcp) {
-+		memset(thdr, 0, sizeof(*thdr));
- 		thdr->source = htons(attr->sport);
- 		thdr->dest = htons(attr->dport);
- 		thdr->doff = sizeof(struct tcphdr) / 4;
--		thdr->check = 0;
- 	} else {
- 		uhdr->source = htons(attr->sport);
- 		uhdr->dest = htons(attr->dport);
-@@ -144,10 +144,18 @@ static struct sk_buff *net_test_get_skb(
- 	attr->id = net_test_next_id;
- 	shdr->id = net_test_next_id++;
+ 	ret = mcb_device_register(bus, mdev);
+ 	if (ret < 0)
+-		goto err;
++		return ret;
  
--	if (attr->size)
--		skb_put(skb, attr->size);
--	if (attr->max_size && attr->max_size > skb->len)
--		skb_put(skb, attr->max_size - skb->len);
-+	if (attr->size) {
-+		void *payload = skb_put(skb, attr->size);
-+
-+		memset(payload, 0, attr->size);
-+	}
-+
-+	if (attr->max_size && attr->max_size > skb->len) {
-+		size_t pad_len = attr->max_size - skb->len;
-+		void *pad = skb_put(skb, pad_len);
-+
-+		memset(pad, 0, pad_len);
-+	}
+ 	return 0;
  
- 	skb->csum = 0;
- 	skb->ip_summed = CHECKSUM_PARTIAL;
 
 
 
