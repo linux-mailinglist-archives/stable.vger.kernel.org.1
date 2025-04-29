@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-138796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5A1AA19C5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:15:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 804D0AA18CE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:04:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E1E218943B2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D01651BC77B2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180922139B5;
-	Tue, 29 Apr 2025 18:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAAE2517AB;
+	Tue, 29 Apr 2025 18:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6kGRD5c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EuKYhdg8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84462AE72;
-	Tue, 29 Apr 2025 18:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773162522AB;
+	Tue, 29 Apr 2025 18:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950377; cv=none; b=GgsYP9k8suTWNm8ThTNB6YEKwEDRkBSjQoFh0Mnp/JQjYerTuN30i5avu5cxZFKw9W3v3KW98obhFeqQflId0mFoMxRW24KXwD76Ps+SpWIBBaRbZntmb93aYkriqvk7S3wJvcL/SoBIo1myfVpo4MkrSIHUFGGsc4jc9ouiGwA=
+	t=1745949815; cv=none; b=lhR75xBnj8cVfyibZYdVG24dRAHYRJX/lB8n5pOuasQt5XFZlRVJQ7Cob56seD8UOai21WeBbnOZYfaTbkmIn3tNadMCD4a+MMMD7QQaArzCzQGlAmQCYvGpWQmQsvLr6sJEMak9ZH+kmUWy+yT8Lz79Ddq0IeogndiNEW1xfUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950377; c=relaxed/simple;
-	bh=/w0oL5tcdQUz5UDxDJ/sAaWWgecYXl4F4VgAawLNbic=;
+	s=arc-20240116; t=1745949815; c=relaxed/simple;
+	bh=0d0oDCnh6C2QHnYVFlETYS8X05J20Zgu+tfDwG5BZCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rkXvrBXWuWhL9LPopeZ4kn9x9W9U5LfiUSj8oGkPc+smuBQN0cRif6l3go/LZOcMzooA+amtpSRl1F7z8H2cHSAnffdfujjBzD76IrQ0X4jv2rVwsbm14wdtnrNjiqs8DpDKm+6M5pA03TO7C59GVI2DjDrHNtT8u9Dy8EhYbvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6kGRD5c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC80C4CEE3;
-	Tue, 29 Apr 2025 18:12:56 +0000 (UTC)
+	 MIME-Version; b=Yqml/j4M3RA6hFHOunU+sGJPbwWg9Me6hbBfVoO/LPHd8gctLhEuVNbfXADpgKeKnF87BG1lUwyKbJwy08oeFHeXPUGe1AYTJh0exe8LlVsFH/QgiWCHf9dzn54KVEPmpYvA30Zqmi/5sVglU1hhL8OvabHt6VM7UCJ5ONb+6I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EuKYhdg8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0FDC4CEE3;
+	Tue, 29 Apr 2025 18:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950377;
-	bh=/w0oL5tcdQUz5UDxDJ/sAaWWgecYXl4F4VgAawLNbic=;
+	s=korg; t=1745949815;
+	bh=0d0oDCnh6C2QHnYVFlETYS8X05J20Zgu+tfDwG5BZCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6kGRD5cweW6nRSrCsA35U/sxVZtj4mDwOSNIWT0N4JAVnNRBSKm5a/xUZvgJ9T5M
-	 J9o7FnveWFZvZU34qBn94EW4Q6RgVEdzfvwVW2l5G6v7a+hod00UcAGgeWHizvek6e
-	 f2RrP2FkdsJxjkPe5Ffzc1EtbJDsRxqwyLTPs+qI=
+	b=EuKYhdg8GBxq9OY7z4jZbVYDeXmVJdWbWttBpsqaRiXktdZoYxzYjbEe6lUWklSLf
+	 41RrdYHexUP8Dvx2eBKoYb7yGItNFd4bWB3gSqPcDOCZdAchwMdgyb/n3wzKykCYp8
+	 qM8Rd7Gs4WqQAiVfO7KW/itimD0jw7IBKz3ZWWbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Mark Broadworth <mark.broadworth@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 077/204] drm/amd/display: Fix gpu reset in multidisplay config
-Date: Tue, 29 Apr 2025 18:42:45 +0200
-Message-ID: <20250429161102.573814403@linuxfoundation.org>
+	Erpeng Xu <xuerpeng@uniontech.com>,
+	Yuli Wang <wangyuli@uniontech.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 058/167] LoongArch: Select ARCH_USE_MEMTEST
+Date: Tue, 29 Apr 2025 18:42:46 +0200
+Message-ID: <20250429161054.112558635@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Yuli Wang <wangyuli@uniontech.com>
 
-commit 7eb287beeb60be1e4437be2b4e4e9f0da89aab97 upstream.
+[ Upstream commit fb8e9f59d6f292c3d9fea6c155c22ea5fc3053ab ]
 
-[Why]
-The indexing of stream_status in dm_gpureset_commit_state() is incorrect.
-That leads to asserts in multi-display configuration after gpu reset.
+As of commit dce44566192e ("mm/memtest: add ARCH_USE_MEMTEST"),
+architectures must select ARCH_USE_MEMTESET to enable CONFIG_MEMTEST.
 
-[How]
-Adjust the indexing logic to align stream_status with surface_updates.
+Commit 628c3bb40e9a ("LoongArch: Add boot and setup routines") added
+support for early_memtest but did not select ARCH_USE_MEMTESET.
 
-Fixes: cdaae8371aa9 ("drm/amd/display: Handle GPU reset for DC block")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3808
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Mark Broadworth <mark.broadworth@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d91bc901398741d317d9b55c59ca949d4bc7394b)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 628c3bb40e9a ("LoongArch: Add boot and setup routines")
+Tested-by: Erpeng Xu <xuerpeng@uniontech.com>
+Tested-by: Yuli Wang <wangyuli@uniontech.com>
+Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/loongarch/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2789,16 +2789,16 @@ static void dm_gpureset_commit_state(str
- 	for (k = 0; k < dc_state->stream_count; k++) {
- 		bundle->stream_update.stream = dc_state->streams[k];
- 
--		for (m = 0; m < dc_state->stream_status->plane_count; m++) {
-+		for (m = 0; m < dc_state->stream_status[k].plane_count; m++) {
- 			bundle->surface_updates[m].surface =
--				dc_state->stream_status->plane_states[m];
-+				dc_state->stream_status[k].plane_states[m];
- 			bundle->surface_updates[m].surface->force_full_update =
- 				true;
- 		}
- 
- 		update_planes_and_stream_adapter(dm->dc,
- 					 UPDATE_TYPE_FULL,
--					 dc_state->stream_status->plane_count,
-+					 dc_state->stream_status[k].plane_count,
- 					 dc_state->streams[k],
- 					 &bundle->stream_update,
- 					 bundle->surface_updates);
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index 0166d357069d9..6c55d85b1c767 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -51,6 +51,7 @@ config LOONGARCH
+ 	select ARCH_SUPPORTS_NUMA_BALANCING
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_CMPXCHG_LOCKREF
++	select ARCH_USE_MEMTEST
+ 	select ARCH_USE_QUEUED_RWLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS
+ 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
+-- 
+2.39.5
+
 
 
 
