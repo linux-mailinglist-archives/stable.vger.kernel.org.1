@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C41AA1506
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC49FAA168A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66EBD16EC12
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D80F1893345
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94126245007;
-	Tue, 29 Apr 2025 17:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7807252284;
+	Tue, 29 Apr 2025 17:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtRYu52U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x84REJRN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5224421ADC7;
-	Tue, 29 Apr 2025 17:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12E824EF6B;
+	Tue, 29 Apr 2025 17:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947211; cv=none; b=RlUQrCBRz6iJm+/7ywzkE27ixxBKRn9S2wr5fg354XhxGUVAqE6xVvbtFK4JKEGb1SNyuZB2dEfTp5I6re87X7iyGx/lpLi5KoPaZLkekNr9IyuRm1sW7GKwotD9aE9DAy1YBdci6Nx1IeszkjVfiqMLGdESaGvVYGd8Yd9BaYo=
+	t=1745948145; cv=none; b=Xtp5u3J/ZHPMwutjixSEb6reqRlvE99YMRyr2DUxo8tiv6z4LMcZTZ6FH+sdiqOaOzCID9FIR4PKi94becUtc5H+FvGmnuByiHGdqzt4gzXYoRQftsXgp+oyE+Qt6mx9oSw4ZIyktj6VAhQ1eTdplSby1xdLmdF9ZpdihfqhNPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947211; c=relaxed/simple;
-	bh=62wo0MnCj3Irl8F+fWF/VgK6gxJEVydVmwQzk6LIFAk=;
+	s=arc-20240116; t=1745948145; c=relaxed/simple;
+	bh=Qo66y2sKVQN8cfpWal7zxd2FgG4N/BO9BGBCYSsmOWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+I8AXOpaGRUNzE3H6FO2oVCHe0AFVGk0fCdybMd3UWegDv+VGT2mM5MIki/FSr7FkloxQUgYcDrn4pLHtxIEyNwGu4owX+FgT0/rxyQFqQWkew6ZFd0WJI6jmBCJfN6jzitdtHUOzOL9WmbJwOD7Be9K48Hy7Jv0IHHXaRMG5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtRYu52U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E10C4CEE9;
-	Tue, 29 Apr 2025 17:20:10 +0000 (UTC)
+	 MIME-Version; b=NtvZm+P9hTzWisXHVty0DeLQGdab/NRPEzPYNQoQEsxcQTV1H6n8ok/WLu3PllMKCbA2VEN3OcvhowhBW0GC1kRkxdTZ9644AquUWZnPi0CLc4DcQUUs2XZiCQJiXq1f+0/kxe4CPGVfKO4dKAGWGEi9OxJaR4b4YR5SAaRSmLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x84REJRN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2327C4CEE9;
+	Tue, 29 Apr 2025 17:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947211;
-	bh=62wo0MnCj3Irl8F+fWF/VgK6gxJEVydVmwQzk6LIFAk=;
+	s=korg; t=1745948145;
+	bh=Qo66y2sKVQN8cfpWal7zxd2FgG4N/BO9BGBCYSsmOWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JtRYu52UtIArgVii8w2QZXPC/PI2zuObMwMP7Xl81S6lQ3ptSG2pWf6qJStrSFBbj
-	 YlWvQ8JYPQjRmxUiGuGaKtodz/OgwPkQXnPggg5enBb1tTe5cfAtyN0sH1DrJnhMxt
-	 LxUg48C0JtmQHzk82Ck+69RBBosrhLZmCT84uqp0=
+	b=x84REJRNE87Y3V+aCDxrnGpvVBszNOeHAJtmuZbITnTwoQSQB08epkXnPieDNaztl
+	 u9kdd+frFMQCQZtH/LQRBDQdQBGhw9iNRVe2+8Lh3zG5j7okB8JfVvZQeLuVviq3V4
+	 eDCD07ErQ+HO7o6kThv3NtnM7ZWGyGHEEyUMCEoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	syzbot+5d0bdc98770e6c55a0fd@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 208/286] media: venus: hfi_plat: Add codecs and capabilities ops
+Subject: [PATCH 6.12 171/280] fs/ntfs3: Keep write operations atomic
 Date: Tue, 29 Apr 2025 18:41:52 +0200
-Message-ID: <20250429161116.508942854@linuxfoundation.org>
+Message-ID: <20250429161122.112450952@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit 9822291e031f6d7149ae4f3fc00bd9c33ac2a084 ]
+[ Upstream commit 285cec318bf5a7a6c8ba999b2b6ec96f9a20590f ]
 
-Add ops to get the supported by the platform codecs and capabilities.
+syzbot reported a NULL pointer dereference in __generic_file_write_iter. [1]
 
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 9edaaa8e3e15 ("media: venus: hfi_parser: refactor hfi packet parsing logic")
+Before the write operation is completed, the user executes ioctl[2] to clear
+the compress flag of the file, which causes the is_compressed() judgment to
+return 0, further causing the program to enter the wrong process and call the
+wrong ops ntfs_aops_cmpr, which triggers the null pointer dereference of
+write_begin.
+
+Use inode lock to synchronize ioctl and write to avoid this case.
+
+[1]
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+Mem abort info:
+  ESR = 0x0000000086000006
+  EC = 0x21: IABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x06: level 2 translation fault
+user pgtable: 4k pages, 48-bit VAs, pgdp=000000011896d000
+[0000000000000000] pgd=0800000118b44403, p4d=0800000118b44403, pud=0800000117517403, pmd=0000000000000000
+Internal error: Oops: 0000000086000006 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 0 UID: 0 PID: 6427 Comm: syz-executor347 Not tainted 6.13.0-rc3-syzkaller-g573067a5a685 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : 0x0
+lr : generic_perform_write+0x29c/0x868 mm/filemap.c:4055
+sp : ffff80009d4978a0
+x29: ffff80009d4979c0 x28: dfff800000000000 x27: ffff80009d497bc8
+x26: 0000000000000000 x25: ffff80009d497960 x24: ffff80008ba71c68
+x23: 0000000000000000 x22: ffff0000c655dac0 x21: 0000000000001000
+x20: 000000000000000c x19: 1ffff00013a92f2c x18: ffff0000e183aa1c
+x17: 0004060000000014 x16: ffff800083275834 x15: 0000000000000001
+x14: 0000000000000000 x13: 0000000000000001 x12: ffff0000c655dac0
+x11: 0000000000ff0100 x10: 0000000000ff0100 x9 : 0000000000000000
+x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+x5 : ffff80009d497980 x4 : ffff80009d497960 x3 : 0000000000001000
+x2 : 0000000000000000 x1 : ffff0000e183a928 x0 : ffff0000d60b0fc0
+Call trace:
+ 0x0 (P)
+ __generic_file_write_iter+0xfc/0x204 mm/filemap.c:4156
+ ntfs_file_write_iter+0x54c/0x630 fs/ntfs3/file.c:1267
+ new_sync_write fs/read_write.c:586 [inline]
+ vfs_write+0x920/0xcf4 fs/read_write.c:679
+ ksys_write+0x15c/0x26c fs/read_write.c:731
+ __do_sys_write fs/read_write.c:742 [inline]
+ __se_sys_write fs/read_write.c:739 [inline]
+ __arm64_sys_write+0x7c/0x90 fs/read_write.c:739
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
+ el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
+
+[2]
+ioctl$FS_IOC_SETFLAGS(r0, 0x40086602, &(0x7f00000000c0)=0x20)
+
+Reported-by: syzbot+5d0bdc98770e6c55a0fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5d0bdc98770e6c55a0fd
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/hfi_platform.h | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ntfs3/file.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/venus/hfi_platform.h b/drivers/media/platform/qcom/venus/hfi_platform.h
-index 6794232322557..50512d142662f 100644
---- a/drivers/media/platform/qcom/venus/hfi_platform.h
-+++ b/drivers/media/platform/qcom/venus/hfi_platform.h
-@@ -47,6 +47,8 @@ struct hfi_platform_codec_freq_data {
- struct hfi_platform {
- 	unsigned long (*codec_vpp_freq)(u32 session_type, u32 codec);
- 	unsigned long (*codec_vsp_freq)(u32 session_type, u32 codec);
-+	void (*codecs)(u32 *enc_codecs, u32 *dec_codecs, u32 *count);
-+	const struct hfi_plat_caps *(*capabilities)(unsigned int *entries);
- };
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index 7976ac4611c8d..4ca1fff826fd0 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -1238,21 +1238,22 @@ static ssize_t ntfs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 	ssize_t ret;
+ 	int err;
  
- extern const struct hfi_platform hfi_plat_v4;
+-	err = check_write_restriction(inode);
+-	if (err)
+-		return err;
+-
+-	if (is_compressed(ni) && (iocb->ki_flags & IOCB_DIRECT)) {
+-		ntfs_inode_warn(inode, "direct i/o + compressed not supported");
+-		return -EOPNOTSUPP;
+-	}
+-
+ 	if (!inode_trylock(inode)) {
+ 		if (iocb->ki_flags & IOCB_NOWAIT)
+ 			return -EAGAIN;
+ 		inode_lock(inode);
+ 	}
+ 
++	ret = check_write_restriction(inode);
++	if (ret)
++		goto out;
++
++	if (is_compressed(ni) && (iocb->ki_flags & IOCB_DIRECT)) {
++		ntfs_inode_warn(inode, "direct i/o + compressed not supported");
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
+ 	ret = generic_write_checks(iocb, from);
+ 	if (ret <= 0)
+ 		goto out;
 -- 
 2.39.5
 
