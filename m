@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-138693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA3EFAA193F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE60DAA1A0B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 698994E2C0A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0F1C16A3BF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C90221D92;
-	Tue, 29 Apr 2025 18:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87D02522B3;
+	Tue, 29 Apr 2025 18:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlpkW5Md"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoxZw94Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F50540C03;
-	Tue, 29 Apr 2025 18:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A6F188A0E;
+	Tue, 29 Apr 2025 18:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950053; cv=none; b=PNdiIIaA3rOg75rXnH3LeofYbnBoDvQ62xciiX8Sg29LW/I2i1u5SsDUq/LNu64YoMLX+8aS1kNB/rDhz4JObasUJ1VGwz9k9uqNjIGgc070duzlRzToQXye+1ecHrMvCVq2J2CaAPbdNp5YPAHBAQEJJhRJ1XnuP+Czpslakrk=
+	t=1745950590; cv=none; b=M2/dR9FZsZWJR8qb9k4TxVfYY7qR9f1oOiLUi71F/ALpehyv+WiUmE+a65zbVpnxzhFGT480u4+5Gy8ABWLtpnURLgJFRW58v475tQzJF4dmpbHRoqzN3xg+bNFaeTRDp2w+ArvZznbHWp2JUAYeQd2k2dL2cbwJobbsscUvTp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950053; c=relaxed/simple;
-	bh=PmIx5KU8d2k/1h0SS4o8krxBqWivU9VbsnDmm2pcfR8=;
+	s=arc-20240116; t=1745950590; c=relaxed/simple;
+	bh=xRsfjBcQpK+8F87NdRM/p+keLMJ1vc55dg6GeeUnDlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tLLgxb5mqlA+kqVoZxO0sop4kRWgA86clgo6I6WBihbV76JcB/Gno+u1rxWshnuoKFsi9g7XT4QDt0zKMvWZou8gkGRC89FNbZiPXU4OrN7GZ1MjSGY+K7v1xBZfE3EKc2fdpL6Ap9oAs1O/2dsNdj9bb0P7toQPhUMLFd4ZE+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlpkW5Md; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CA5C4CEE3;
-	Tue, 29 Apr 2025 18:07:32 +0000 (UTC)
+	 MIME-Version; b=cEXZewfhDfY12Hc/kYkbW1N4p2abXx9K3IPbUs+RcyADqY67W48wikVAMkRzRoPLiUN6xB/nCsdlht/nk10NZW3ZdrhQw665wQBr9iK7CuwzPcu6hgsQ1Mp9phJTxkak2zjD3q9qIINQ9Jz7E4bl4+85Qm8NrHenvrVa7JCbtuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoxZw94Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBFBC4CEE9;
+	Tue, 29 Apr 2025 18:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950052;
-	bh=PmIx5KU8d2k/1h0SS4o8krxBqWivU9VbsnDmm2pcfR8=;
+	s=korg; t=1745950590;
+	bh=xRsfjBcQpK+8F87NdRM/p+keLMJ1vc55dg6GeeUnDlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rlpkW5MdG0huRztmh4X5RotUpjNFkNtil5EgpBDMHCuIWLKioEdVSin9rv5iCwL0Q
-	 0qluyUWuo4t0QNA4eX9Jh9xcCpRQVQt/tk/8OeY6Nh2iMybo+u2UtH2oKWNwqVoP9i
-	 /5xagNIEiqLKN2UhELhJeCv9A4X/V5vY6cJ7CWsQ=
+	b=AoxZw94Y5WEeYzynv8pnxbrKbr66/A7RJWSbN5MtSfrFAtXL2MqIIy5HaCB8cwzb5
+	 1eUJ0GbYFYUDxV6Jjg30Txg9V1/jYHH8XrfcGQ7F2MKMlb16d8WL6lQNsf6aAN2wPc
+	 C8WoZGdIF0Z4qM5zdcFmjaFVcr70eOMpqKoeD4yM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Michael Mueller <mimu@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/167] KVM: s390: Dont use %pK through tracepoints
+Subject: [PATCH 6.6 144/204] objtool, regulator: rk808: Remove potential undefined behavior in rk806_set_mode_dcdc()
 Date: Tue, 29 Apr 2025 18:43:52 +0200
-Message-ID: <20250429161056.758474936@linuxfoundation.org>
+Message-ID: <20250429161105.319242030@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +64,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 6c9567e0850be2f0f94ab64fa6512413fd1a1eb1 ]
+[ Upstream commit 29c578c848402a34e8c8e115bf66cb6008b77062 ]
 
-Restricted pointers ("%pK") are not meant to be used through TP_format().
-It can unintentionally expose security sensitive, raw pointer values.
+If 'ctr_bit' is negative, the shift counts become negative, causing a
+shift of bounds and undefined behavior.
 
-Use regular pointer formatting instead.
+Presumably that's not possible in normal operation, but the code
+generation isn't optimal.  And undefined behavior should be avoided
+regardless.
 
-Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Michael Mueller <mimu@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Message-ID: <20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de>
+Improve code generation and remove the undefined behavior by converting
+the signed variables to unsigned.
+
+Fixes the following warning with an UBSAN kernel:
+
+  vmlinux.o: warning: objtool: rk806_set_mode_dcdc() falls through to next function rk806_get_mode_dcdc()
+  vmlinux.o: warning: objtool: .text.rk806_set_mode_dcdc: unexpected end of section
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Mark Brown <broonie@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/2023abcddf3f524ba478d64339996f25dc4097d2.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202503182350.52KeHGD4-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/trace-s390.h | 4 ++--
+ drivers/regulator/rk808-regulator.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kvm/trace-s390.h b/arch/s390/kvm/trace-s390.h
-index 6f0209d45164f..9c5f546a2e1a3 100644
---- a/arch/s390/kvm/trace-s390.h
-+++ b/arch/s390/kvm/trace-s390.h
-@@ -56,7 +56,7 @@ TRACE_EVENT(kvm_s390_create_vcpu,
- 		    __entry->sie_block = sie_block;
- 		    ),
+diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
+index 374d80dc6d17a..bec22a001a5dd 100644
+--- a/drivers/regulator/rk808-regulator.c
++++ b/drivers/regulator/rk808-regulator.c
+@@ -267,8 +267,8 @@ static const unsigned int rk817_buck1_4_ramp_table[] = {
  
--	    TP_printk("create cpu %d at 0x%pK, sie block at 0x%pK",
-+	    TP_printk("create cpu %d at 0x%p, sie block at 0x%p",
- 		      __entry->id, __entry->vcpu, __entry->sie_block)
- 	);
+ static int rk806_set_mode_dcdc(struct regulator_dev *rdev, unsigned int mode)
+ {
+-	int rid = rdev_get_id(rdev);
+-	int ctr_bit, reg;
++	unsigned int rid = rdev_get_id(rdev);
++	unsigned int ctr_bit, reg;
  
-@@ -255,7 +255,7 @@ TRACE_EVENT(kvm_s390_enable_css,
- 		    __entry->kvm = kvm;
- 		    ),
- 
--	    TP_printk("enabling channel I/O support (kvm @ %pK)\n",
-+	    TP_printk("enabling channel I/O support (kvm @ %p)\n",
- 		      __entry->kvm)
- 	);
- 
+ 	reg = RK806_POWER_FPWM_EN0 + rid / 8;
+ 	ctr_bit = rid % 8;
 -- 
 2.39.5
 
