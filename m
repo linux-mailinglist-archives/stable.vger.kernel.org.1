@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570AAAA16A8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C999FAA17E5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B64593BA655
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:33:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 509D44C65F6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3027223CEF9;
-	Tue, 29 Apr 2025 17:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031692512F3;
+	Tue, 29 Apr 2025 17:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUXuElJc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAspZy4k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB584238C21;
-	Tue, 29 Apr 2025 17:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC40B248883;
+	Tue, 29 Apr 2025 17:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948008; cv=none; b=cEwj7X6IJueCN0Zd8UpbLiDESXVqXaFkodTx2dddeCZblsl80XarwhStopJt63LMr97B29beKmMZNHXxfRLAPpbWhJYD2T3K+rvaopCUpt5vTFJk/BduWPPbGAKjiMOGOqd7uBkTu6ve2KVvHorRIrGZO02VZxjgJaqrniOBleg=
+	t=1745949156; cv=none; b=PARt228a9GTBNMFkyCDUZ8JpVqnaZfGd8pl8Ckoy2W5AgssStqVYbKSVowij/dHDyFCSO7aHJUplJBgKGKaFr7PRmJhNkeAjl1dq3P7JV6FOANYayU4uMjzY156ymi83m02u5kdOAVDW8cZt8Fd8hu0MRXd3+xT7XVHFDyD8nCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948008; c=relaxed/simple;
-	bh=vBuJejzMUjFM3bTjk0/hQYlT43+oC7l/0zR0YoOG+zI=;
+	s=arc-20240116; t=1745949156; c=relaxed/simple;
+	bh=7W7AZJ5eeRPc8r+9oXJWX4XxHxYFC+EwXSX9y2vPrzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrNuGIqXHzQeTt5TWIq+pQvkDiGtf+TfwuYTJxIl4WMxNtBqXymemcYn5hkfKGal39o+zmSfKG2fDNK1YcNaoz4yCUVMU9yihu5YAvmOPjEW9MHGaUeHRV3fWD6QfF3DqlE03ALxbe5MsmPaBGkJTAffc8ec9/EHExA+u1c4Uus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUXuElJc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F96FC4CEE3;
-	Tue, 29 Apr 2025 17:33:27 +0000 (UTC)
+	 MIME-Version; b=JyXKgZHdcm2b8hrbxsShz9EkUkeZ78kSWYnGQ3oNxpRi8MGCaGABYDnWXhZs6gKaTy/w1HrVFSvOctRN3UvBtaekfr4z+BWwV0rbbTHwuVv7GN5jvEr3h3EvJeoDctqKcb3Rpch8zO5xI7b2dPo5vGkVfMaBznquYR1LIYNaXVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAspZy4k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68A4C4CEE3;
+	Tue, 29 Apr 2025 17:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948007;
-	bh=vBuJejzMUjFM3bTjk0/hQYlT43+oC7l/0zR0YoOG+zI=;
+	s=korg; t=1745949156;
+	bh=7W7AZJ5eeRPc8r+9oXJWX4XxHxYFC+EwXSX9y2vPrzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUXuElJcZWeLfWH1Fz4GeLujWXcXfth43urt6UORWQL7qcCT1bx0pyTpzZTACnBwG
-	 Su6ATBCMP8otqQ30iKZeCFHnr105nJhmYXO7Zki7dWq8CV3PXViCXrRtMvr3qYmCPQ
-	 71NXVHnWtPWSfUr/ROMfsoXtT5MPaBi/fPNQ0ZtE=
+	b=MAspZy4k84l+Mvx3cvDPVIydWgsgqxRlfzlBSvtyPtqaXlGxys8lNUaO4de+LE4K0
+	 osft3TSNJA+HYZ1ZN8/kV19Da6LVVRT0EFBpZvmFJb/jvDGWFhx+Gv3N1wHzcJhhy5
+	 pyhipHFQPRx3tL9gYPOTWzIushlrXr6riJqlE+i8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
 	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 166/280] bpf: Only fails the busy counter check in bpf_cgrp_storage_get if it creates storage
-Date: Tue, 29 Apr 2025 18:41:47 +0200
-Message-ID: <20250429161121.902623754@linuxfoundation.org>
+	Cliff Liu <donghua.liu@windriver.com>,
+	He Zhe <Zhe.He@windriver.com>
+Subject: [PATCH 5.15 231/373] bpf: Check rcu_read_lock_trace_held() before calling bpf map helpers
+Date: Tue, 29 Apr 2025 18:41:48 +0200
+Message-ID: <20250429161132.646618933@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit f4edc66e48a694b3e6d164cc71f059de542dfaec ]
+commit 169410eba271afc9f0fb476d996795aa26770c6d upstream.
 
-The current cgrp storage has a percpu counter, bpf_cgrp_storage_busy,
-to detect potential deadlock at a spin_lock that the local storage
-acquires during new storage creation.
+These three bpf_map_{lookup,update,delete}_elem() helpers are also
+available for sleepable bpf program, so add the corresponding lock
+assertion for sleepable bpf program, otherwise the following warning
+will be reported when a sleepable bpf program manipulates bpf map under
+interpreter mode (aka bpf_jit_enable=0):
 
-There are false positives. It turns out to be too noisy in
-production. For example, a bpf prog may be doing a
-bpf_cgrp_storage_get on map_a. An IRQ comes in and triggers
-another bpf_cgrp_storage_get on a different map_b. It will then
-trigger the false positive deadlock check in the percpu counter.
-On top of that, both are doing lookup only and no need to create
-new storage, so practically it does not need to acquire
-the spin_lock.
+  WARNING: CPU: 3 PID: 4985 at kernel/bpf/helpers.c:40 ......
+  CPU: 3 PID: 4985 Comm: test_progs Not tainted 6.6.0+ #2
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996) ......
+  RIP: 0010:bpf_map_lookup_elem+0x54/0x60
+  ......
+  Call Trace:
+   <TASK>
+   ? __warn+0xa5/0x240
+   ? bpf_map_lookup_elem+0x54/0x60
+   ? report_bug+0x1ba/0x1f0
+   ? handle_bug+0x40/0x80
+   ? exc_invalid_op+0x18/0x50
+   ? asm_exc_invalid_op+0x1b/0x20
+   ? __pfx_bpf_map_lookup_elem+0x10/0x10
+   ? rcu_lockdep_current_cpu_online+0x65/0xb0
+   ? rcu_is_watching+0x23/0x50
+   ? bpf_map_lookup_elem+0x54/0x60
+   ? __pfx_bpf_map_lookup_elem+0x10/0x10
+   ___bpf_prog_run+0x513/0x3b70
+   __bpf_prog_run32+0x9d/0xd0
+   ? __bpf_prog_enter_sleepable_recur+0xad/0x120
+   ? __bpf_prog_enter_sleepable_recur+0x3e/0x120
+   bpf_trampoline_6442580665+0x4d/0x1000
+   __x64_sys_getpgid+0x5/0x30
+   ? do_syscall_64+0x36/0xb0
+   entry_SYSCALL_64_after_hwframe+0x6e/0x76
+   </TASK>
 
-The bpf_task_storage_get already has a strategy to minimize this
-false positive by only failing if the bpf_task_storage_get needs
-to create a new storage and the percpu counter is busy. Creating
-a new storage is the only time it must acquire the spin_lock.
-
-This patch borrows the same idea. Unlike task storage that
-has a separate variant for tracing (_recur) and non-tracing, this
-patch stays with one bpf_cgrp_storage_get helper to keep it simple
-for now in light of the upcoming res_spin_lock.
-
-The variable could potentially use a better name noTbusy instead
-of nobusy. This patch follows the same naming in
-bpf_task_storage_get for now.
-
-I have tested it by temporarily adding noinline to
-the cgroup_storage_lookup(), traced it by fentry, and the fentry
-program succeeded in calling bpf_cgrp_storage_get().
-
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/r/20250318182759.3676094-1-martin.lau@linux.dev
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20231204140425.1480317-2-houtao@huaweicloud.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
+Signed-off-by: He Zhe <Zhe.He@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/bpf_cgrp_storage.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ kernel/bpf/helpers.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/bpf/bpf_cgrp_storage.c b/kernel/bpf/bpf_cgrp_storage.c
-index 6547fb7ac0dcb..129a51b1da1b1 100644
---- a/kernel/bpf/bpf_cgrp_storage.c
-+++ b/kernel/bpf/bpf_cgrp_storage.c
-@@ -162,6 +162,7 @@ BPF_CALL_5(bpf_cgrp_storage_get, struct bpf_map *, map, struct cgroup *, cgroup,
- 	   void *, value, u64, flags, gfp_t, gfp_flags)
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -3,6 +3,7 @@
+  */
+ #include <linux/bpf.h>
+ #include <linux/rcupdate.h>
++#include <linux/rcupdate_trace.h>
+ #include <linux/random.h>
+ #include <linux/smp.h>
+ #include <linux/topology.h>
+@@ -24,12 +25,13 @@
+  *
+  * Different map implementations will rely on rcu in map methods
+  * lookup/update/delete, therefore eBPF programs must run under rcu lock
+- * if program is allowed to access maps, so check rcu_read_lock_held in
+- * all three functions.
++ * if program is allowed to access maps, so check rcu_read_lock_held() or
++ * rcu_read_lock_trace_held() in all three functions.
+  */
+ BPF_CALL_2(bpf_map_lookup_elem, struct bpf_map *, map, void *, key)
  {
- 	struct bpf_local_storage_data *sdata;
-+	bool nobusy;
- 
- 	WARN_ON_ONCE(!bpf_rcu_lock_held());
- 	if (flags & ~(BPF_LOCAL_STORAGE_GET_F_CREATE))
-@@ -170,21 +171,21 @@ BPF_CALL_5(bpf_cgrp_storage_get, struct bpf_map *, map, struct cgroup *, cgroup,
- 	if (!cgroup)
- 		return (unsigned long)NULL;
- 
--	if (!bpf_cgrp_storage_trylock())
--		return (unsigned long)NULL;
-+	nobusy = bpf_cgrp_storage_trylock();
- 
--	sdata = cgroup_storage_lookup(cgroup, map, true);
-+	sdata = cgroup_storage_lookup(cgroup, map, nobusy);
- 	if (sdata)
- 		goto unlock;
- 
- 	/* only allocate new storage, when the cgroup is refcounted */
- 	if (!percpu_ref_is_dying(&cgroup->self.refcnt) &&
--	    (flags & BPF_LOCAL_STORAGE_GET_F_CREATE))
-+	    (flags & BPF_LOCAL_STORAGE_GET_F_CREATE) && nobusy)
- 		sdata = bpf_local_storage_update(cgroup, (struct bpf_local_storage_map *)map,
- 						 value, BPF_NOEXIST, gfp_flags);
- 
- unlock:
--	bpf_cgrp_storage_unlock();
-+	if (nobusy)
-+		bpf_cgrp_storage_unlock();
- 	return IS_ERR_OR_NULL(sdata) ? (unsigned long)NULL : (unsigned long)sdata->data;
+-	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
++		     !rcu_read_lock_bh_held());
+ 	return (unsigned long) map->ops->map_lookup_elem(map, key);
  }
  
--- 
-2.39.5
-
+@@ -45,7 +47,8 @@ const struct bpf_func_proto bpf_map_look
+ BPF_CALL_4(bpf_map_update_elem, struct bpf_map *, map, void *, key,
+ 	   void *, value, u64, flags)
+ {
+-	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
++		     !rcu_read_lock_bh_held());
+ 	return map->ops->map_update_elem(map, key, value, flags);
+ }
+ 
+@@ -62,7 +65,8 @@ const struct bpf_func_proto bpf_map_upda
+ 
+ BPF_CALL_2(bpf_map_delete_elem, struct bpf_map *, map, void *, key)
+ {
+-	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
++		     !rcu_read_lock_bh_held());
+ 	return map->ops->map_delete_elem(map, key);
+ }
+ 
 
 
 
