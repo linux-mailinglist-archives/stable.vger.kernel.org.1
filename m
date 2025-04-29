@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-137685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11960AA1465
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5543AA11EE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F73416973D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2DC27B14E8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8AE92472AC;
-	Tue, 29 Apr 2025 17:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B51248878;
+	Tue, 29 Apr 2025 16:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6f5GKkp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxv3uR0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659C138FB0;
-	Tue, 29 Apr 2025 17:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95954244679;
+	Tue, 29 Apr 2025 16:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946816; cv=none; b=i4E1sgc9DzxuRIOsgmm/rNhe8zPkFneDYhY/h2YTico9xksGH9SqfJrjkksBtjHhfu9gJqYeJKbsguZBEnnNz2AnV9oLNjGQ5t55OYq3FoOAV9frQRfPQXSlOyRVGZ/hy1KCLx44/z0r5m8xXpCAtXebuHlEkKi6RreMK5PkK88=
+	t=1745945226; cv=none; b=AmAUae6V3Hk5GnGOiozc52BjIjXyLjFUsNou5xrRNz5W4+6VhvEooIFMECjNHKZzbzhhy9JrNZi3li+uIKCvr1q58EfbI8oknd6gN89ZxTKoV4Ag2Heo+QDZjU1uGKhZM0l/CnxxB9SRNOBYmzFME0L38Dv1yU7UdKKUEWu6yXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946816; c=relaxed/simple;
-	bh=gQxi7YzQMxeTS/3eDTH2NYqrH0192rY4+nLi/EOIqUA=;
+	s=arc-20240116; t=1745945226; c=relaxed/simple;
+	bh=bHbz4TPbRR5NLORD7eXrognPdk+SEzDOluCGi1/8eg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n8eTIBZ7ldlFbepOqJdd4IPszwPk0Ylc/0yYDr909qpMm4qI5pFHsQnJIDDh5zeeH88igy8MFAw0EPatmVnzZUsFBhvO/qa+7x9aeJed/+UK6al/+PeqTmyF21CWXPPbucPpmHmRaG3LZGhvvTcCj6Et15moRRdRGQsIfte0yyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6f5GKkp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89B3C4CEE3;
-	Tue, 29 Apr 2025 17:13:35 +0000 (UTC)
+	 MIME-Version; b=cj5QAKH3VYiE/PyRKZ+Ni5iKj9WjPTrPwXpQBODutMHVqLsuDZCUOjDUi8WSMOODqMoNrbRpE/QdG0irIp/Fug8gBLdhRM8dW9nLiMj8iLPEaZ9PWYuO1k+H1owX9Ll5ZHWjsk/maygzDKfLc3VX2TBbokeWxKlgH0ikpkzmRho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxv3uR0Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF860C4CEED;
+	Tue, 29 Apr 2025 16:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946816;
-	bh=gQxi7YzQMxeTS/3eDTH2NYqrH0192rY4+nLi/EOIqUA=;
+	s=korg; t=1745945226;
+	bh=bHbz4TPbRR5NLORD7eXrognPdk+SEzDOluCGi1/8eg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6f5GKkpxQvO8CBs18YK2hVmdlIFETZK6z6zMlAIpsA11i2kNSd8VkHEzW2Zl48hr
-	 oehaDHbqEsZncSg+hj6DqTyVC4CQdoNaraYLXbcQKli2bGOVTHMOaoxmfFRn7SZ/3A
-	 PXceoMErUYQWn1Ty1+hCEoy4Z7OMaRx06Ejok8gg=
+	b=bxv3uR0YL7IH27J/Pp0Rebtdzf7GCjetZFNxpI5c6gO3w0j9MQEgXVNSLD9P5g4Al
+	 fJKxkB1Ud4Ho0I6yQ10KNLMAn/VnhpJvQLzg3B4GBdt83e4GR0NI+5mYZ2fI6WsfOS
+	 LiRl5ER43OEj0vkoYh3f9/xFlaFTmFOe63ICwGUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	T Pratham <t-pratham@ti.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Jens Axboe <axboe@kernel.dk>,
-	Kamlesh Gurudasani <kamlesh@ti.com>,
-	Praneeth Bajjuri <praneeth@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 079/286] lib: scatterlist: fix sg_split_phys to preserve original scatterlist offsets
+	Eric Biggers <ebiggers@google.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 042/179] ext4: reject casefold inode flag without casefold feature
 Date: Tue, 29 Apr 2025 18:39:43 +0200
-Message-ID: <20250429161111.098792675@linuxfoundation.org>
+Message-ID: <20250429161051.110140842@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T Pratham <t-pratham@ti.com>
+From: Eric Biggers <ebiggers@google.com>
 
-commit 8b46fdaea819a679da176b879e7b0674a1161a5e upstream.
+[ Upstream commit 8216776ccff6fcd40e3fdaa109aa4150ebe760b3 ]
 
-The split_sg_phys function was incorrectly setting the offsets of all
-scatterlist entries (except the first) to 0.  Only the first scatterlist
-entry's offset and length needs to be modified to account for the skip.
-Setting the rest entries' offsets to 0 could lead to incorrect data
-access.
+It is invalid for the casefold inode flag to be set without the casefold
+superblock feature flag also being set.  e2fsck already considers this
+case to be invalid and handles it by offering to clear the casefold flag
+on the inode.  __ext4_iget() also already considered this to be invalid,
+sort of, but it only got so far as logging an error message; it didn't
+actually reject the inode.  Make it reject the inode so that other code
+doesn't have to handle this case.  This matches what f2fs does.
 
-I am using this function in a crypto driver that I'm currently developing
-(not yet sent to mailing list).  During testing, it was observed that the
-output scatterlists (except the first one) contained incorrect garbage
-data.
+Note: we could check 's_encoding != NULL' instead of
+ext4_has_feature_casefold().  This would make the check robust against
+the casefold feature being enabled by userspace writing to the page
+cache of the mounted block device.  However, it's unsolvable in general
+for filesystems to be robust against concurrent writes to the page cache
+of the mounted block device.  Though this very particular scenario
+involving the casefold feature is solvable, we should not pretend that
+we can support this model, so let's just check the casefold feature.
+tune2fs already forbids enabling casefold on a mounted filesystem.
 
-I narrowed this issue down to the call of sg_split().  Upon debugging
-inside this function, I found that this resetting of offset is the cause
-of the problem, causing the subsequent scatterlists to point to incorrect
-memory locations in a page.  By removing this code, I am obtaining
-expected data in all the split output scatterlists.  Thus, this was indeed
-causing observable runtime effects!
-
-This patch removes the offending code, ensuring that the page offsets in
-the input scatterlist are preserved in the output scatterlist.
-
-Link: https://lkml.kernel.org/r/20250319111437.1969903-1-t-pratham@ti.com
-Fixes: f8bcbe62acd0 ("lib: scatterlist: add sg splitting function")
-Signed-off-by: T Pratham <t-pratham@ti.com>
-Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Kamlesh Gurudasani <kamlesh@ti.com>
-Cc: Praneeth Bajjuri <praneeth@ti.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Link: https://lore.kernel.org/r/20230814182903.37267-2-ebiggers@kernel.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 642335f3ea2b ("ext4: don't treat fhandle lookup of ea_inode as FS corruption")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/sg_split.c |    2 --
- 1 file changed, 2 deletions(-)
+ fs/ext4/inode.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/lib/sg_split.c
-+++ b/lib/sg_split.c
-@@ -88,8 +88,6 @@ static void sg_split_phys(struct sg_spli
- 			if (!j) {
- 				out_sg->offset += split->skip_sg0;
- 				out_sg->length -= split->skip_sg0;
--			} else {
--				out_sg->offset = 0;
- 			}
- 			sg_dma_address(out_sg) = 0;
- 			sg_dma_len(out_sg) = 0;
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 97c884f7b0d82..0289a9e36d355 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -5212,9 +5212,12 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+ 				 "iget: bogus i_mode (%o)", inode->i_mode);
+ 		goto bad_inode;
+ 	}
+-	if (IS_CASEFOLDED(inode) && !ext4_has_feature_casefold(inode->i_sb))
++	if (IS_CASEFOLDED(inode) && !ext4_has_feature_casefold(inode->i_sb)) {
+ 		ext4_error_inode(inode, function, line, 0,
+ 				 "casefold flag without casefold feature");
++		ret = -EFSCORRUPTED;
++		goto bad_inode;
++	}
+ 	if ((err_str = check_igot_inode(inode, flags)) != NULL) {
+ 		ext4_error_inode(inode, function, line, 0, err_str);
+ 		ret = -EFSCORRUPTED;
+-- 
+2.39.5
+
 
 
 
