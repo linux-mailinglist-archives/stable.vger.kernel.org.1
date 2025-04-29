@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 378D2AA16CF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD53CAA1513
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2412985790
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C1201721AB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A534E22A4F4;
-	Tue, 29 Apr 2025 17:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695D5245007;
+	Tue, 29 Apr 2025 17:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGz5TUNb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHQbJjRx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633E67E110;
-	Tue, 29 Apr 2025 17:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289DF21ABDB;
+	Tue, 29 Apr 2025 17:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948072; cv=none; b=Ux6YNMl99ab0iAIGw6v+OKoOCm8JQLAkqBqL+U8JZJNxRbrGFfFzpBwTyiY/bSuwBcPjjipNs4VAin600MFuX4IY690tvdSno+eWyahGgyCkUP4bR4tHc96530ZSf4xZ5mcx3jFRFW6g2NnRWJk39ze4U1HnOkMSg1+Rg2o1D30=
+	t=1745947252; cv=none; b=tRQeM/LF38egw9iK87kT/1DnCF/lEzPq+qDDjtSnBXlgx1WU0UI0xNRFMehS3DE/CTPE5H4yyG4K2+qCHQEcQsuKIPc7ASHyu0rFECkIWilrOE7eHSgBwL9Sqw3d5QRwSiQ/7BM5TDvr7CaSy9jfbfHs8ox0lw3fulWZSMa0LKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948072; c=relaxed/simple;
-	bh=hNpXyFwQ8vSoaq7Pv//9e+zBb7m+AFR5VbLf6gyGSBQ=;
+	s=arc-20240116; t=1745947252; c=relaxed/simple;
+	bh=Wo2wozmoG/11RT168NEmf60knO+dr0lJYvCuzu3Q+i0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VnxhNmkj/V+RkGXOVTMj3ogmFUIY3xK/2cLM7sH0cuEB4SsyEjKPLqRCA2qhEXlUEcq7m/eLyKbjXetuwl2qFN0DkVoif49q0dSN7LJBL/+B38qaUsalsl7bMXp15Z9+N2SzawBI1YMyZRKeTCFrH5RYyooGZc4NLGcPMRi4rL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGz5TUNb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E6DC4CEE3;
-	Tue, 29 Apr 2025 17:34:31 +0000 (UTC)
+	 MIME-Version; b=EF64oYBnSXZPpzoveUKVsLCFXzIBCMOvpxbv660NJgmW6MnZkLh2eBri1R/cQ156da6d+i6GXh8f1/J/kIboprLWRPREbd1kSD7m/q6CZjgCSpCvTbNKIXkGT7QcN0/AnvPskKdAkQOVop2L8lhE9ilEpGyIxptIIqGKAks1DWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHQbJjRx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38056C4CEE3;
+	Tue, 29 Apr 2025 17:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948072;
-	bh=hNpXyFwQ8vSoaq7Pv//9e+zBb7m+AFR5VbLf6gyGSBQ=;
+	s=korg; t=1745947251;
+	bh=Wo2wozmoG/11RT168NEmf60knO+dr0lJYvCuzu3Q+i0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tGz5TUNbzB4MGUS6O/wi8+lXp+56/JOFNyx8qDBjnIjBMH6CJu/elIji6EfkwhZ0q
-	 8jVMyV6sccfd4wHmONbX3laqLPwPRIO1cnt23Hj7OcQ/Bg5uQgHiKrlZ+3+KgC+ajY
-	 1k12pHCcnHfdzEz+MVrigspaz7Eb6IjwRtzyVWdk=
+	b=ZHQbJjRxoVEXM8EPlBN8W7GRnjJM79bv1zOXtUQTBz/3CoygfvVvKTY9FhA+Eky3r
+	 HoJQCqe64bfx256i3u2nbDaHtEWhQhSFYKl160NTn5PX2a9tCFDZ2/wdIC0a5UGT7s
+	 VI7Q8wlyjnfTnkVINEy+49o2fyeiEq4KTfGP605w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	"Paulo Alcantara (SUSE)" <pc@cjr.nz>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 183/280] usb: gadget: aspeed: Add NULL pointer check in ast_vhub_init_dev()
+Subject: [PATCH 5.10 220/286] cifs: print TIDs as hex
 Date: Tue, 29 Apr 2025 18:42:04 +0200
-Message-ID: <20250429161122.596836515@linuxfoundation.org>
+Message-ID: <20250429161116.996092228@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Enzo Matsumiya <ematsumiya@suse.de>
 
-[ Upstream commit 8c75f3e6a433d92084ad4e78b029ae680865420f ]
+[ Upstream commit 71081e7ac16c93acdd18afa65daa468620bb1b64 ]
 
-The variable d->name, returned by devm_kasprintf(), could be NULL.
-A pointer check is added to prevent potential NULL pointer dereference.
-This is similar to the fix in commit 3027e7b15b02
-("ice: Fix some null pointer dereference issues in ice_ptp.c").
+Makes these debug messages easier to read
 
-This issue is found by our static analysis tool
-
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250311012705.1233829-1-chenyuan0y@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
+Reviewed-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: b4885bd5935b ("cifs: avoid NULL pointer dereference in dbg call")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/aspeed-vhub/dev.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/cifs/connect.c  | 2 +-
+ fs/cifs/smb2misc.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/aspeed-vhub/dev.c b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-index 573109ca5b799..a09f72772e6e9 100644
---- a/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-+++ b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-@@ -548,6 +548,9 @@ int ast_vhub_init_dev(struct ast_vhub *vhub, unsigned int idx)
- 	d->vhub = vhub;
- 	d->index = idx;
- 	d->name = devm_kasprintf(parent, GFP_KERNEL, "port%d", idx+1);
-+	if (!d->name)
-+		return -ENOMEM;
-+
- 	d->regs = vhub->regs + 0x100 + 0x10 * idx;
+diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
+index a3c0e6a4e4847..2c0522d97e037 100644
+--- a/fs/cifs/connect.c
++++ b/fs/cifs/connect.c
+@@ -2770,7 +2770,7 @@ cifs_setup_ipc(struct cifs_ses *ses, struct smb_vol *volume_info)
+ 		goto out;
+ 	}
  
- 	ast_vhub_init_ep0(vhub, &d->ep0, d);
+-	cifs_dbg(FYI, "IPC tcon rc = %d ipc tid = %d\n", rc, tcon->tid);
++	cifs_dbg(FYI, "IPC tcon rc=%d ipc tid=0x%x\n", rc, tcon->tid);
+ 
+ 	ses->tcon_ipc = tcon;
+ out:
+diff --git a/fs/cifs/smb2misc.c b/fs/cifs/smb2misc.c
+index 64887856331ae..d21b27e68f2a8 100644
+--- a/fs/cifs/smb2misc.c
++++ b/fs/cifs/smb2misc.c
+@@ -812,7 +812,7 @@ smb2_handle_cancelled_close(struct cifs_tcon *tcon, __u64 persistent_fid,
+ 		if (tcon->ses)
+ 			server = tcon->ses->server;
+ 
+-		cifs_server_dbg(FYI, "tid=%u: tcon is closing, skipping async close retry of fid %llu %llu\n",
++		cifs_server_dbg(FYI, "tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
+ 				tcon->tid, persistent_fid, volatile_fid);
+ 
+ 		return 0;
 -- 
 2.39.5
 
