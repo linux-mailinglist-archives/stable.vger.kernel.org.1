@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1B6AA1291
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:55:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78071AA1877
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5336516FEF7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E8D01BA6872
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0EE2517AF;
-	Tue, 29 Apr 2025 16:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43ECC243964;
+	Tue, 29 Apr 2025 18:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWKJVN1B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgzMJIZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF4924BD02;
-	Tue, 29 Apr 2025 16:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F369C3FFD;
+	Tue, 29 Apr 2025 18:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945602; cv=none; b=NPU+a9IqFcoDa/u4SoM4R8XXeNwlbsCrOwxv21940GzzP82rQ/SRAkMbo0lCipWaEXStsXiv9lHEXBUIKmchpJjyvsn8R6CBUyKWyDqTlwvgQrR2gnF41lbpNwZKI1/H3aay/tJ9UerN4s/waJ5KqA4IHsloofvFUtYTLVIUyUY=
+	t=1745949639; cv=none; b=debqg2kcMfQyDBsLnmz7gvx0/4bHaXQPf3Ei54T4KVirK8grWOxXz+uwVq7FK/6faAgfYOZCHwSGTSiD/ioC7zvTlN9R0cACt/l/D5M1lVdJeULUy/4bFYPxbl+gL2/klomC2Gge7BAl0QRslaX/7u8YvuiL54eJRzvqzlO2kWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945602; c=relaxed/simple;
-	bh=nEHwnORHmKIRRroxuBWAgo1RXOUvTwh1OMZl8hb8bQs=;
+	s=arc-20240116; t=1745949639; c=relaxed/simple;
+	bh=5fGLV6INKJyXkJ1Nn1MlESs7I4npDdR5GEGsZykRqNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KcNwl3LVh2HI6uDnN6gcSl1+li7+VQaFA85xEMamRfk74PrgNdp9fXi2ql0uFrnKb5KZKcm2D0yFzmJDRVbofCrjx6pMjvD9SQWVsleVqcLF0ebFzquMIL0Elmb3XYDe9p75E4blUJQJ+eE1AK1Rfs+Nhms6RrDmyrrTU0wNtbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWKJVN1B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CB5C4CEE3;
-	Tue, 29 Apr 2025 16:53:20 +0000 (UTC)
+	 MIME-Version; b=QRg5ygYSQN1k/bMT5OuKCbZPv6E6RVHzjP2dDY1oEzxvXwUyaosQ0nuWxSFV8OpQzfSAer4KVZ75dHRi99oIe0UItzZG22KsLAF84X5NGAPwTVjt3pnzue1MX3iQa0pXWmfCMTjESqASJ2UYlXbDpOFJmOhLhpQHLv47g6n07L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgzMJIZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852D2C4CEE3;
+	Tue, 29 Apr 2025 18:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945601;
-	bh=nEHwnORHmKIRRroxuBWAgo1RXOUvTwh1OMZl8hb8bQs=;
+	s=korg; t=1745949638;
+	bh=5fGLV6INKJyXkJ1Nn1MlESs7I4npDdR5GEGsZykRqNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bWKJVN1BSYZ23E0c/s9L65/3PHREpyHS0fuJ6qRC5csmykCiTB5JtOo1sKZHt7D1b
-	 879KnxohT3qKaIzNlmh//5l54mSP/46M2DzX6Opz4jS1EzGbO/H02umqjZwg6Ldzd/
-	 WBEkmMaF2MbK2eo7xKXf//SQ1q6QaiIAeXvLKbb8=
+	b=UgzMJIZV4V6ruWgJGlsRFGg0MElWNQt902+DPDL1odZMok1VHR/ya+IsWNTuRCmSx
+	 dmTEQk1SmTfiqBF8/Elsi/T0ggr9b/Q7OnGbmJ+HD7ZFmquhWTM9D9dSIQOXa4eMIP
+	 4PaCQhBSGhKNd4BWkS2CQRSJQAv1MBMFgVqoVriY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 168/179] sched/isolation: Make CONFIG_CPU_ISOLATION depend on CONFIG_SMP
+	Thorsten Leemhuis <linux@leemhuis.info>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	kdevops <kdevops@lists.linux.dev>
+Subject: [PATCH 6.1 001/167] module: sign with sha512 instead of sha1 by default
 Date: Tue, 29 Apr 2025 18:41:49 +0200
-Message-ID: <20250429161056.189212085@linuxfoundation.org>
+Message-ID: <20250429161051.806089600@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Thorsten Leemhuis <linux@leemhuis.info>
 
-[ Upstream commit 975776841e689dd8ba36df9fa72ac3eca3c2957a ]
+commit f3b93547b91ad849b58eb5ab2dd070950ad7beb3 upstream.
 
-kernel/sched/isolation.c obviously makes no sense without CONFIG_SMP, but
-the Kconfig entry we have right now:
+Switch away from using sha1 for module signing by default and use the
+more modern sha512 instead, which is what among others Arch, Fedora,
+RHEL, and Ubuntu are currently using for their kernels.
 
-	config CPU_ISOLATION
-		bool "CPU isolation"
-		depends on SMP || COMPILE_TEST
+Sha1 has not been considered secure against well-funded opponents since
+2005[1]; since 2011 the NIST and other organizations furthermore
+recommended its replacement[2]. This is why OpenSSL on RHEL9, Fedora
+Linux 41+[3], and likely some other current and future distributions
+reject the creation of sha1 signatures, which leads to a build error of
+allmodconfig configurations:
 
-allows the creation of pointless .config's which cause
-build failures.
+  80A20474797F0000:error:03000098:digital envelope routines:do_sigver_init:invalid digest:crypto/evp/m_sigver.c:342:
+  make[4]: *** [.../certs/Makefile:53: certs/signing_key.pem] Error 1
+  make[4]: *** Deleting file 'certs/signing_key.pem'
+  make[4]: *** Waiting for unfinished jobs....
+  make[3]: *** [.../scripts/Makefile.build:478: certs] Error 2
+  make[2]: *** [.../Makefile:1936: .] Error 2
+  make[1]: *** [.../Makefile:224: __sub-make] Error 2
+  make[1]: Leaving directory '...'
+  make: *** [Makefile:224: __sub-make] Error 2
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250330134955.GA7910@redhat.com
+This change makes allmodconfig work again and sets a default that is
+more appropriate for current and future users, too.
 
-Closes: https://lore.kernel.org/oe-kbuild-all/202503260646.lrUqD3j5-lkp@intel.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://www.schneier.com/blog/archives/2005/02/cryptanalysis_o.html [1]
+Link: https://csrc.nist.gov/projects/hash-functions [2]
+Link: https://fedoraproject.org/wiki/Changes/OpenSSLDistrustsha1SigVer [3]
+Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Tested-by: kdevops <kdevops@lists.linux.dev> [0]
+Link: https://github.com/linux-kdevops/linux-modules-kpd/actions/runs/11420092929/job/31775404330 [0]
+Link: https://lore.kernel.org/r/52ee32c0c92afc4d3263cea1f8a1cdc809728aff.1729088288.git.linux@leemhuis.info
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/module/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 293da9b0bea6b..41e87e8a5c6c1 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -559,7 +559,7 @@ endmenu # "CPU/Task time and stats accounting"
- 
- config CPU_ISOLATION
- 	bool "CPU isolation"
--	depends on SMP || COMPILE_TEST
-+	depends on SMP
- 	default y
+--- a/kernel/module/Kconfig
++++ b/kernel/module/Kconfig
+@@ -131,6 +131,7 @@ comment "Do not forget to sign required
+ choice
+ 	prompt "Which hash algorithm should modules be signed with?"
+ 	depends on MODULE_SIG || IMA_APPRAISE_MODSIG
++	default MODULE_SIG_SHA512
  	help
- 	  Make sure that CPUs running critical tasks are not disturbed by
--- 
-2.39.5
-
+ 	  This determines which sort of hashing algorithm will be used during
+ 	  signature generation.  This algorithm _must_ be built into the kernel
 
 
 
