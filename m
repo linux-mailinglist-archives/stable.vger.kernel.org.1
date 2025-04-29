@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FCFAA12ED
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:00:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17637AA1716
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D12754C23B6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:58:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33FE27A01DE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142532517B6;
-	Tue, 29 Apr 2025 16:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB028242D68;
+	Tue, 29 Apr 2025 17:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n83p1J3I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iy+2HSOG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B322517AA;
-	Tue, 29 Apr 2025 16:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6744C21ABC1;
+	Tue, 29 Apr 2025 17:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945844; cv=none; b=rGb+QqxkZ8I2JpGo//ZyhWUG+qYJOlQ+mFGxKE1ABVF9R4jzEgOpkMRron89B43Tqfvri0KtNX+8AlvoRGlLk6xByNWlecP++yx3IrPfLNmOR67h8vdgxoPOwJkqG4w/0hnRkXqv5n5HvcjMw1S7iTAy4vRsnICTlxnOllkPssM=
+	t=1745948612; cv=none; b=INMlpKvb0HmOCoG+StYhrse702N5v9DHxuCwUP2SgQvcOB0jKubggVXdDxH9DmY8RnM6/NN/I+nryzNDl1uQz8YSEmdty+PPDUdio59TFq85Y0LZtp63QXj/1Ty8ZU6cSwFKY9kztRKzj71zqkgiKuQleOP1aSuOzZj/sZKrf20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945844; c=relaxed/simple;
-	bh=wlH0bKnipYkWTEyXQRFnhV0GOeo4lE1WS6lvrRqrFFg=;
+	s=arc-20240116; t=1745948612; c=relaxed/simple;
+	bh=d9iUVIcb05VzhH2ztjcnKAuwqMZFcba7NNY7yttI7lY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bd8+Gmf3oaV/QwJPwFHjk5HnmOKbLUSdYgbgZSheps7e2VOBY0HAET/MBJbOjzEzU+QZd4QzUn9c0aVO+y76eiVFfTqVxtZNzuDkM2pJA7+IJ3gkwwrt7k75ZQ772DoAImsk9Fyqpi0uKMuyQorx5GaOch+u/2BTkqNBuD/+NvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n83p1J3I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2742C4CEE3;
-	Tue, 29 Apr 2025 16:57:23 +0000 (UTC)
+	 MIME-Version; b=EPUKx6RZwSYwipAAoG5P/PZ2HBxQnCP0APSnbMrhnW3pJwuF12yOY+w3INQ/7G5fQaMCf41WszJFLxj0OEj6nN5sBjR/XO+10AbIk4YS2ioF8cq474ON26+RrcrLn8U4JBI32GAHFd7V7kT3LRmwBCwZKIcFY6qVy3NvfC4yCdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iy+2HSOG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8005C4CEE3;
+	Tue, 29 Apr 2025 17:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945844;
-	bh=wlH0bKnipYkWTEyXQRFnhV0GOeo4lE1WS6lvrRqrFFg=;
+	s=korg; t=1745948611;
+	bh=d9iUVIcb05VzhH2ztjcnKAuwqMZFcba7NNY7yttI7lY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n83p1J3Ine/y260NkY6v4dwxsA97R7z6YGUFUQXtCL/G8xr8nJdTCISjGCEMrYftW
-	 vQJl3IHKn9hpCXAsNo5vvp7aw7QQQulIfKvhYEJuV0O9c/CxEbWfmtFhVP/8oZX9x7
-	 9pqrAGBLHpODDslNLALJMJ/q1Uy9kQIjBtGC8OD0=
+	b=Iy+2HSOGpmafjBsm6PeMnqzsU+56E2TpljTq6ODUeCjrQqJcDZsK4sO4XgH+VK3uH
+	 9JM92a9CpqWwcmiFnvmeTo8Bvjkc4jhrAm8mUL8LKbFaLLN6GutTOcea34WN7AGGnY
+	 x6A1Ia0CML6dtmO5cMZDMhZye4dkUPBUyfMt3oDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Philip Pemberton <lists@philpem.me.uk>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 069/311] net_sched: hfsc: Fix a potential UAF in hfsc_dequeue() too
+Subject: [PATCH 5.15 029/373] ata: libata-eh: Do not use ATAPI DMA for a device limited to PIO mode
 Date: Tue, 29 Apr 2025 18:38:26 +0200
-Message-ID: <20250429161123.872048751@linuxfoundation.org>
+Message-ID: <20250429161124.334649667@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 6ccbda44e2cc3d26fd22af54c650d6d5d801addf ]
+[ Upstream commit 91ec84f8eaddbc93d7c62e363d68aeb7b89879c7 ]
 
-Similarly to the previous patch, we need to safe guard hfsc_dequeue()
-too. But for this one, we don't have a reliable reproducer.
+atapi_eh_request_sense() currently uses ATAPI DMA if the SATA controller
+has ATA_FLAG_PIO_DMA (PIO cmds via DMA) set.
 
-Fixes: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 ("Linux-2.6.12-rc2")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20250417184732.943057-3-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However, ATA_FLAG_PIO_DMA is a flag that can be set by a low-level driver
+on a port at initialization time, before any devices are scanned.
+
+If a controller detects a connected device that only supports PIO, we set
+the flag ATA_DFLAG_PIO.
+
+Modify atapi_eh_request_sense() to not use ATAPI DMA if the connected
+device only supports PIO.
+
+Reported-by: Philip Pemberton <lists@philpem.me.uk>
+Closes: https://lore.kernel.org/linux-ide/c6722ee8-5e21-4169-af59-cbbae9edc02f@philpem.me.uk/
+Tested-by: Philip Pemberton <lists@philpem.me.uk>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250221015422.20687-2-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/ata/libata-eh.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index e730d3f791c24..5bb4ab9941d6e 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1637,10 +1637,16 @@ hfsc_dequeue(struct Qdisc *sch)
- 		if (cl->qdisc->q.qlen != 0) {
- 			/* update ed */
- 			next_len = qdisc_peek_len(cl->qdisc);
--			if (realtime)
--				update_ed(cl, next_len);
--			else
--				update_d(cl, next_len);
-+			/* Check queue length again since some qdisc implementations
-+			 * (e.g., netem/codel) might empty the queue during the peek
-+			 * operation.
-+			 */
-+			if (cl->qdisc->q.qlen != 0) {
-+				if (realtime)
-+					update_ed(cl, next_len);
-+				else
-+					update_d(cl, next_len);
-+			}
- 		} else {
- 			/* the class becomes passive */
- 			eltree_remove(cl);
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index 10742d72f44fb..f0b690b39bf7a 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -1479,8 +1479,15 @@ unsigned int atapi_eh_request_sense(struct ata_device *dev,
+ 	tf.flags |= ATA_TFLAG_ISADDR | ATA_TFLAG_DEVICE;
+ 	tf.command = ATA_CMD_PACKET;
+ 
+-	/* is it pointless to prefer PIO for "safety reasons"? */
+-	if (ap->flags & ATA_FLAG_PIO_DMA) {
++	/*
++	 * Do not use DMA if the connected device only supports PIO, even if the
++	 * port prefers PIO commands via DMA.
++	 *
++	 * Ideally, we should call atapi_check_dma() to check if it is safe for
++	 * the LLD to use DMA for REQUEST_SENSE, but we don't have a qc.
++	 * Since we can't check the command, perhaps we should only use pio?
++	 */
++	if ((ap->flags & ATA_FLAG_PIO_DMA) && !(dev->flags & ATA_DFLAG_PIO)) {
+ 		tf.protocol = ATAPI_PROT_DMA;
+ 		tf.feature |= ATAPI_PKT_DMA;
+ 	} else {
 -- 
 2.39.5
 
