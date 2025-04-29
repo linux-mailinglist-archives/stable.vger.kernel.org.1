@@ -1,82 +1,91 @@
-Return-Path: <stable+bounces-136988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3593FAA00E4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 05:50:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1261EAA01C6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 07:25:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 971A816DA54
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 03:50:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61956482C4F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 05:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28626205E25;
-	Tue, 29 Apr 2025 03:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8D220C488;
+	Tue, 29 Apr 2025 05:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GV5Ahk1j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PD6cIvlM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71971876;
-	Tue, 29 Apr 2025 03:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6E726FD82;
+	Tue, 29 Apr 2025 05:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745898610; cv=none; b=qosIZX7PWCJ8JJDe9BmFEbKun0KHk5wGXeA+z4QzMdoEVctT73HSde0ozWwHCkzo4lulJ3IQ9I7WKg7S/eUTDDFZVKM6pbPdGwlm0Ez1fJFrg10oxG9Kq/Zj9M2Jh6qiAbjcwiom7CSqojjY4lzsL9nxPfLQL1L6JlpfAXdAyxM=
+	t=1745904288; cv=none; b=ImXiHqMP6/90G7rD8ftnRolU2Uxoq5XwmLTzvl6DffwH9FQ7YO8qpAuTsRy3kaKdj7UB9U/UpIALzcrtGrNliuoa3xgr7xHI/fxu/52pPRt+8WKli+2F8xgTRs38gdzg7DkmLxHjG1jRQ3162oD+tab1EqjHdyYjE4zNQS2hl5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745898610; c=relaxed/simple;
-	bh=YXGk8lAmrdjoZqFgLHxvo+rKzMZ4nvHw1bi4fVY8f6o=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=e5ZqWLjVMwGsRNbVx9ydt5gWzDz4eDMAYVmHJGYPK1brEWWu7QkvDKBCe+4XBNX8efoBb/JsebYMfCHOwuE0BlA6/90sgMY391Sz/83rAEjZFoIMNuGn1Y0xHKbiqeiDCAqqEogyQVOhj0S0ewZ9MGELJh1UkRIpLL4JmJl8nXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GV5Ahk1j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E8AC4CEE3;
-	Tue, 29 Apr 2025 03:50:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745898610;
-	bh=YXGk8lAmrdjoZqFgLHxvo+rKzMZ4nvHw1bi4fVY8f6o=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=GV5Ahk1joCdmnd63iqgdtSrxlGGnvdV1Vs97OrPY7ntshGvBT112ON0IE83gUtUUb
-	 KI/gK++gAOMIrTj6hDRDLaK52DmOfk9sg000CCQq37hxuL896WzSf1GOz4sbGVbr3D
-	 DyqlW5ECsyzm/Qrhb1tMHdGNjZFQRD83gLrx3rfwwgyRsxvuPAdmOXLEQPV0KmZ/PG
-	 KjZdUngAMV1LKJ8h2WzJD1t/poEOeFOtWm1HY/iCOq9LfZ9wHJ4dInxCS4P6iJD79v
-	 m7xuILSTFRys6vcSJ8tn99537kEArLrZ5OoauMW8hfZ1uRUUzLfnOlzMhglWkGd+Oq
-	 ewOqd3JUQPaWw==
-Date: Mon, 28 Apr 2025 20:50:05 -0700
-From: Kees Cook <kees@kernel.org>
-To: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
- stable-commits@vger.kernel.org
-CC: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>,
- =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
- =?ISO-8859-1?Q?G=FCnther_Noack?= <gnoack@google.com>
-Subject: =?US-ASCII?Q?Re=3A_Patch_=22hardening=3A_Disable_GCC_randstruct_for_C?=
- =?US-ASCII?Q?OMPILE=5FTEST=22_has_been_added_to_the_6=2E14-stable_tree?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20250429014846.406859-1-sashal@kernel.org>
-References: <20250429014846.406859-1-sashal@kernel.org>
-Message-ID: <120BD02C-8EA3-484F-81F5-6767B66C48A8@kernel.org>
+	s=arc-20240116; t=1745904288; c=relaxed/simple;
+	bh=UqK7GBBSQ6CsjvCjN/5GbJ+c0FiRdwrwd7xWWu5Y5Y0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cgTvEc5y0J3g6pulE1lqvgSX4cGWUDb45AlrfPat4vF5gYGpSkxxXKCNKMSSLDnKYXZEpsMa+qxUWVerFM2gDt6jlOo9/ZZxeksiX6CgyISfvZmO5kaAf1bNyw7icEwfa0KYTDQSc1iAOzRFj5L2emkTnhP9q8U21l6NoLX5QYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PD6cIvlM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54080C4CEE3;
+	Tue, 29 Apr 2025 05:24:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745904288;
+	bh=UqK7GBBSQ6CsjvCjN/5GbJ+c0FiRdwrwd7xWWu5Y5Y0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PD6cIvlMDpcl7T+5wBlQJt/WYAMwm7/6FarDDxxiE7dVn8P/3+0VbVF0FHJv01SKp
+	 /zNufR9rSZGhxMSgIVipec/gzPAUHKTr/lfOlFEXdzzYX2pgxjziIWoA5j7n1ZxNg5
+	 p9mSjzH12ujDgpde3xghnTVXgPr0oMbEB7fW7AGQ=
+Date: Tue, 29 Apr 2025 07:24:44 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	Ramesh.Errabolu@amd.com, Alex Deucher <alexander.deucher@amd.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: Re: Patch "drm/amdgpu: Remove amdgpu_device arg from free_sgt api
+ (v2)" has been added to the 5.10-stable tree
+Message-ID: <2025042922-elliptic-impish-9c91@gregkh>
+References: <20250426134009.817330-1-sashal@kernel.org>
+ <d5b5c2c8-4c44-4500-a56b-12888abda85b@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d5b5c2c8-4c44-4500-a56b-12888abda85b@amd.com>
 
+On Mon, Apr 28, 2025 at 08:20:02PM +0200, Christian König wrote:
+> On 4/26/25 15:40, Sasha Levin wrote:
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >     drm/amdgpu: Remove amdgpu_device arg from free_sgt api (v2)
+> > 
+> > to the 5.10-stable tree which can be found at:
+> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >      drm-amdgpu-remove-amdgpu_device-arg-from-free_sgt-ap.patch
+> > and it can be found in the queue-5.10 subdirectory.
+> > 
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
+> 
+> Mhm, why has that patch been picked up for backporting? It's a cleanup and not a bug fix.
+> 
+> When some other fix depends on it it's probably ok to backport it as well, but stand alone it would probably rather hurt than help,
 
+That is exactly why it is needed, see below:
 
-On April 28, 2025 6:48:46 PM PDT, Sasha Levin <sashal@kernel=2Eorg> wrote:
->This is a note to let you know that I've just added the patch titled
->
->    hardening: Disable GCC randstruct for COMPILE_TEST
+> >     Stable-dep-of: c0dd8a9253fa ("drm/amdgpu/dma_buf: fix page_link check")
 
-Please don't backport this to any stable kernels=2E There is already a fix=
- in -next and the problem only exists due to a 6=2E15 landlock change=2E
+Hope this helps, thanks!
 
-
---=20
-Kees Cook
+greg k-h
 
