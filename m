@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-138602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF10AA18BC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D47BAA1856
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93D451BC719E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 636D04C5462
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9F2253934;
-	Tue, 29 Apr 2025 18:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF13242D73;
+	Tue, 29 Apr 2025 17:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWWvtzZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sI4BdSrm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC5F25335B;
-	Tue, 29 Apr 2025 18:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE71B243371;
+	Tue, 29 Apr 2025 17:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949768; cv=none; b=j7PxDFB0/NOfSkoiTy22/RL1mRDvG+KrDbrsZu8tAWceUSy7UCv4Yn1pZ+pqQWRzeQ59bErb0IF7BbtaktKrQNdLvbxyvSCF43lxfVL0YSjtLtXt0r9h+OrZmeDpqsgY6goE1ekQ5CBwQNQCzayyAXEASz8ZVjfbTSBPur3g90Y=
+	t=1745949408; cv=none; b=d34BhEt08/7NcxFA6WLk4cLajGK5DO2mVQ8qkem6f6u7w9svnfmBvcAL60jmzT0TZ8f6ixFD3INUIQAqgn3VRqp/UT+dXwtabHmfCTtbyKbJtveHsiEQwSnKoTkekg8WJp6DX8jILJ/Ae81lor9VWMuxQ1C14Rn2OOMN3APgZ64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949768; c=relaxed/simple;
-	bh=SMcD9zFZR16Vl0AiE/rdajfCkB/pGlSkDlsBhhroPyA=;
+	s=arc-20240116; t=1745949408; c=relaxed/simple;
+	bh=/mwHVNN43PaCsG95b21knU3d+xeZ3hzixzNVOU05Yvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcmsHzp4qJ08+S6hAOnS9JPiSnNb0WSuZh4tKypMFMLRK2a8QW/XWEietTHUUGYZsDYxn1dJjSEqjFL2MO5RM29UTXd+xQkyyHgyor0b9f8f9fcHsCNZO0pga4//0ICrpNmIRqxLg9fnZBOVXjJx4LXfw7HlGVbpLE/OwAkRma8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWWvtzZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA34CC4CEE3;
-	Tue, 29 Apr 2025 18:02:47 +0000 (UTC)
+	 MIME-Version; b=pfOwk+mxGQ23MDrIwUhFWeMbPEkF42TPBpphwkwI+GipAZqFdZW22+Cn2xzBfGX/m858bE3P4oXg4TiInG75tEuWP07hfadlvj4Hs/ZvzRrH3tBn9+ho5sFGB8S6d/d42OD0mv3CArIUN5uJNw+0QFCzgKHMmBk82HSd+oHXOKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sI4BdSrm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F62EC4CEE3;
+	Tue, 29 Apr 2025 17:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949768;
-	bh=SMcD9zFZR16Vl0AiE/rdajfCkB/pGlSkDlsBhhroPyA=;
+	s=korg; t=1745949408;
+	bh=/mwHVNN43PaCsG95b21knU3d+xeZ3hzixzNVOU05Yvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WWWvtzZLNH2y9zscKR9Y8Y3pzNZRMmv/eBs1aMgtmwQFvdJKEUzr+sHxz2e+cwvG7
-	 +ieYsFtIDybKwATHsWQJDVEsI6xMel9MOeVb8jJMrTry9rEFUadzXz7vckx+qRA98k
-	 OEp3p8/t1/Op54dugQCBdvsxdaoHWAoiA3mtPuio=
+	b=sI4BdSrmgyI/XNEu6l4hmIZChsFPZGtQ/k6fwayOrQ4yv2GwBF/qaoTHXxEs8/pDf
+	 +s7K8jccjhDBKMb08D7sFDJsIOEbzKGdBp5Zq02KFmV7mUjM2tE4um5OSPCOJlfUgP
+	 t9Ma8F0V8o3fHN5nEiLrWoVCk5C1KpLgQV1fhlSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Guan <hao.guan@siflower.com.cn>,
-	Qingfang Deng <qingfang.deng@siflower.com.cn>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Akhil P Oommen <quic_akhilpo@quicinc.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/167] net: phy: leds: fix memory leak
-Date: Tue, 29 Apr 2025 18:42:38 +0200
-Message-ID: <20250429161053.789067485@linuxfoundation.org>
+Subject: [PATCH 5.15 282/373] drm/msm/a6xx: Improve gpu recovery sequence
+Date: Tue, 29 Apr 2025 18:42:39 +0200
+Message-ID: <20250429161134.713802268@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +62,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <qingfang.deng@siflower.com.cn>
+From: Akhil P Oommen <quic_akhilpo@quicinc.com>
 
-[ Upstream commit b7f0ee992adf601aa00c252418266177eb7ac2bc ]
+[ Upstream commit 3a9dd708b902a1a646c3725151554cbef16c2c28 ]
 
-A network restart test on a router led to an out-of-memory condition,
-which was traced to a memory leak in the PHY LED trigger code.
+We can do a few more things to improve our chance at a successful gpu
+recovery, especially during a hangcheck timeout:
+1. Halt CP and GMU core
+2. Do RBBM GBIF HALT sequence
+3. Do a soft reset of GPU core
 
-The root cause is misuse of the devm API. The registration function
-(phy_led_triggers_register) is called from phy_attach_direct, not
-phy_probe, and the unregister function (phy_led_triggers_unregister)
-is called from phy_detach, not phy_remove. This means the register and
-unregister functions can be called multiple times for the same PHY
-device, but devm-allocated memory is not freed until the driver is
-unbound.
-
-This also prevents kmemleak from detecting the leak, as the devm API
-internally stores the allocated pointer.
-
-Fix this by replacing devm_kzalloc/devm_kcalloc with standard
-kzalloc/kcalloc, and add the corresponding kfree calls in the unregister
-path.
-
-Fixes: 3928ee6485a3 ("net: phy: leds: Add support for "link" trigger")
-Fixes: 2e0bc452f472 ("net: phy: leds: add support for led triggers on phy link state change")
-Signed-off-by: Hao Guan <hao.guan@siflower.com.cn>
-Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250417032557.2929427-1-dqfext@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/498400/
+Link: https://lore.kernel.org/r/20220819015030.v5.6.Idf2ba51078e87ae7ceb75cc77a5bd4ff2bd31eab@changeid
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Stable-dep-of: f561db72a663 ("drm/msm/a6xx: Fix stale rpmh votes from GPU")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_led_triggers.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx.xml.h |  4 ++
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 77 ++++++++++++++++-----------
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c |  7 +++
+ 3 files changed, 58 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/net/phy/phy_led_triggers.c b/drivers/net/phy/phy_led_triggers.c
-index f550576eb9dae..6f9d8da76c4df 100644
---- a/drivers/net/phy/phy_led_triggers.c
-+++ b/drivers/net/phy/phy_led_triggers.c
-@@ -91,9 +91,8 @@ int phy_led_triggers_register(struct phy_device *phy)
- 	if (!phy->phy_num_led_triggers)
- 		return 0;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx.xml.h b/drivers/gpu/drm/msm/adreno/a6xx.xml.h
+index a3cb3d988ba4e..5b1adda08d056 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx.xml.h
++++ b/drivers/gpu/drm/msm/adreno/a6xx.xml.h
+@@ -1354,6 +1354,10 @@ static inline uint32_t REG_A6XX_RBBM_PERFCTR_RBBM_SEL(uint32_t i0) { return 0x00
  
--	phy->led_link_trigger = devm_kzalloc(&phy->mdio.dev,
--					     sizeof(*phy->led_link_trigger),
--					     GFP_KERNEL);
-+	phy->led_link_trigger = kzalloc(sizeof(*phy->led_link_trigger),
-+					GFP_KERNEL);
- 	if (!phy->led_link_trigger) {
- 		err = -ENOMEM;
- 		goto out_clear;
-@@ -103,10 +102,9 @@ int phy_led_triggers_register(struct phy_device *phy)
- 	if (err)
- 		goto out_free_link;
+ #define REG_A6XX_RBBM_GBIF_CLIENT_QOS_CNTL			0x00000011
  
--	phy->phy_led_triggers = devm_kcalloc(&phy->mdio.dev,
--					    phy->phy_num_led_triggers,
--					    sizeof(struct phy_led_trigger),
--					    GFP_KERNEL);
-+	phy->phy_led_triggers = kcalloc(phy->phy_num_led_triggers,
-+					sizeof(struct phy_led_trigger),
-+					GFP_KERNEL);
- 	if (!phy->phy_led_triggers) {
- 		err = -ENOMEM;
- 		goto out_unreg_link;
-@@ -127,11 +125,11 @@ int phy_led_triggers_register(struct phy_device *phy)
- out_unreg:
- 	while (i--)
- 		phy_led_trigger_unregister(&phy->phy_led_triggers[i]);
--	devm_kfree(&phy->mdio.dev, phy->phy_led_triggers);
-+	kfree(phy->phy_led_triggers);
- out_unreg_link:
- 	phy_led_trigger_unregister(phy->led_link_trigger);
- out_free_link:
--	devm_kfree(&phy->mdio.dev, phy->led_link_trigger);
-+	kfree(phy->led_link_trigger);
- 	phy->led_link_trigger = NULL;
- out_clear:
- 	phy->phy_num_led_triggers = 0;
-@@ -145,8 +143,13 @@ void phy_led_triggers_unregister(struct phy_device *phy)
++#define REG_A6XX_RBBM_GBIF_HALT					0x00000016
++
++#define REG_A6XX_RBBM_GBIF_HALT_ACK				0x00000017
++
+ #define REG_A6XX_RBBM_WAIT_FOR_GPU_IDLE_CMD			0x0000001c
+ #define A6XX_RBBM_WAIT_FOR_GPU_IDLE_CMD_WAIT_GPU_IDLE		0x00000001
  
- 	for (i = 0; i < phy->phy_num_led_triggers; i++)
- 		phy_led_trigger_unregister(&phy->phy_led_triggers[i]);
-+	kfree(phy->phy_led_triggers);
-+	phy->phy_led_triggers = NULL;
- 
--	if (phy->led_link_trigger)
-+	if (phy->led_link_trigger) {
- 		phy_led_trigger_unregister(phy->led_link_trigger);
-+		kfree(phy->led_link_trigger);
-+		phy->led_link_trigger = NULL;
-+	}
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index 8b6fc1b26f049..db19f3dee6f2b 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -869,9 +869,47 @@ static void a6xx_gmu_rpmh_off(struct a6xx_gmu *gmu)
+ 		(val & 1), 100, 1000);
  }
- EXPORT_SYMBOL_GPL(phy_led_triggers_unregister);
+ 
++#define GBIF_CLIENT_HALT_MASK             BIT(0)
++#define GBIF_ARB_HALT_MASK                BIT(1)
++
++static void a6xx_bus_clear_pending_transactions(struct adreno_gpu *adreno_gpu)
++{
++	struct msm_gpu *gpu = &adreno_gpu->base;
++
++	if (!a6xx_has_gbif(adreno_gpu)) {
++		gpu_write(gpu, REG_A6XX_VBIF_XIN_HALT_CTRL0, 0xf);
++		spin_until((gpu_read(gpu, REG_A6XX_VBIF_XIN_HALT_CTRL1) &
++								0xf) == 0xf);
++		gpu_write(gpu, REG_A6XX_VBIF_XIN_HALT_CTRL0, 0);
++
++		return;
++	}
++
++	/* Halt the gx side of GBIF */
++	gpu_write(gpu, REG_A6XX_RBBM_GBIF_HALT, 1);
++	spin_until(gpu_read(gpu, REG_A6XX_RBBM_GBIF_HALT_ACK) & 1);
++
++	/* Halt new client requests on GBIF */
++	gpu_write(gpu, REG_A6XX_GBIF_HALT, GBIF_CLIENT_HALT_MASK);
++	spin_until((gpu_read(gpu, REG_A6XX_GBIF_HALT_ACK) &
++			(GBIF_CLIENT_HALT_MASK)) == GBIF_CLIENT_HALT_MASK);
++
++	/* Halt all AXI requests on GBIF */
++	gpu_write(gpu, REG_A6XX_GBIF_HALT, GBIF_ARB_HALT_MASK);
++	spin_until((gpu_read(gpu,  REG_A6XX_GBIF_HALT_ACK) &
++			(GBIF_ARB_HALT_MASK)) == GBIF_ARB_HALT_MASK);
++
++	/* The GBIF halt needs to be explicitly cleared */
++	gpu_write(gpu, REG_A6XX_GBIF_HALT, 0x0);
++}
++
+ /* Force the GMU off in case it isn't responsive */
+ static void a6xx_gmu_force_off(struct a6xx_gmu *gmu)
+ {
++	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
++	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
++	struct msm_gpu *gpu = &adreno_gpu->base;
++
+ 	/* Flush all the queues */
+ 	a6xx_hfi_stop(gmu);
+ 
+@@ -883,6 +921,15 @@ static void a6xx_gmu_force_off(struct a6xx_gmu *gmu)
+ 
+ 	/* Make sure there are no outstanding RPMh votes */
+ 	a6xx_gmu_rpmh_off(gmu);
++
++	/* Halt the gmu cm3 core */
++	gmu_write(gmu, REG_A6XX_GMU_CM3_SYSRESET, 1);
++
++	a6xx_bus_clear_pending_transactions(adreno_gpu);
++
++	/* Reset GPU core blocks */
++	gpu_write(gpu, REG_A6XX_RBBM_SW_RESET_CMD, 1);
++	udelay(100);
+ }
+ 
+ static void a6xx_gmu_set_initial_freq(struct msm_gpu *gpu, struct a6xx_gmu *gmu)
+@@ -1010,36 +1057,6 @@ bool a6xx_gmu_isidle(struct a6xx_gmu *gmu)
+ 	return true;
+ }
+ 
+-#define GBIF_CLIENT_HALT_MASK             BIT(0)
+-#define GBIF_ARB_HALT_MASK                BIT(1)
+-
+-static void a6xx_bus_clear_pending_transactions(struct adreno_gpu *adreno_gpu)
+-{
+-	struct msm_gpu *gpu = &adreno_gpu->base;
+-
+-	if (!a6xx_has_gbif(adreno_gpu)) {
+-		gpu_write(gpu, REG_A6XX_VBIF_XIN_HALT_CTRL0, 0xf);
+-		spin_until((gpu_read(gpu, REG_A6XX_VBIF_XIN_HALT_CTRL1) &
+-								0xf) == 0xf);
+-		gpu_write(gpu, REG_A6XX_VBIF_XIN_HALT_CTRL0, 0);
+-
+-		return;
+-	}
+-
+-	/* Halt new client requests on GBIF */
+-	gpu_write(gpu, REG_A6XX_GBIF_HALT, GBIF_CLIENT_HALT_MASK);
+-	spin_until((gpu_read(gpu, REG_A6XX_GBIF_HALT_ACK) &
+-			(GBIF_CLIENT_HALT_MASK)) == GBIF_CLIENT_HALT_MASK);
+-
+-	/* Halt all AXI requests on GBIF */
+-	gpu_write(gpu, REG_A6XX_GBIF_HALT, GBIF_ARB_HALT_MASK);
+-	spin_until((gpu_read(gpu,  REG_A6XX_GBIF_HALT_ACK) &
+-			(GBIF_ARB_HALT_MASK)) == GBIF_ARB_HALT_MASK);
+-
+-	/* The GBIF halt needs to be explicitly cleared */
+-	gpu_write(gpu, REG_A6XX_GBIF_HALT, 0x0);
+-}
+-
+ /* Gracefully try to shut down the GMU and by extension the GPU */
+ static void a6xx_gmu_shutdown(struct a6xx_gmu *gmu)
+ {
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 27fae0dc97040..a1dff22b02a7a 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -891,6 +891,10 @@ static int hw_init(struct msm_gpu *gpu)
+ 	/* Make sure the GMU keeps the GPU on while we set it up */
+ 	a6xx_gmu_set_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET);
+ 
++	/* Clear GBIF halt in case GX domain was not collapsed */
++	if (a6xx_has_gbif(adreno_gpu))
++		gpu_write(gpu, REG_A6XX_RBBM_GBIF_HALT, 0);
++
+ 	gpu_write(gpu, REG_A6XX_RBBM_SECVID_TSB_CNTL, 0);
+ 
+ 	/*
+@@ -1174,6 +1178,9 @@ static void a6xx_recover(struct msm_gpu *gpu)
+ 	if (hang_debug)
+ 		a6xx_dump(gpu);
+ 
++	/* Halt SQE first */
++	gpu_write(gpu, REG_A6XX_CP_SQE_CNTL, 3);
++
+ 	/*
+ 	 * Turn off keep alive that might have been enabled by the hang
+ 	 * interrupt
 -- 
 2.39.5
 
