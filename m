@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-137752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBBBAA14CA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:20:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED18AA13E9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D81F4A3413
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95D161882333
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DA72517A4;
-	Tue, 29 Apr 2025 17:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146C62472AA;
+	Tue, 29 Apr 2025 17:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rj5gbqw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wOMKWnr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C749D25178B;
-	Tue, 29 Apr 2025 17:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48B922A81D;
+	Tue, 29 Apr 2025 17:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947020; cv=none; b=dp9MaUDE9k4Nch8UpeAabm+4loSRJ/75uVg0/Wv5EC6wumR2iYuYeWYos84xvnLXhVfy+L1rk5MhXYY61JfvnKfSKBuoOKCH5MOMPYhmX5y3oqp/Apvmj5DwTQNVFeAuqhbyl6dqIkX48gzMMEYoJ0OuASAHHhJlW00uXZV+avI=
+	t=1745946396; cv=none; b=mwXvBBYBf5/87rqU0LLkies9fBA6o3bNB7QQvMgzpsDc+lFWIJuhfuxcWkBSj2RGcq+Cl3qA94Wp2zo5P9vh0vafSSGofhT456Y9vBDr7URuRTmkyCVv8eO/Ib7sCFoX0ZaBWFJAhecSVcrMU1869qyRNhDXG5H9NttBAKUYwtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947020; c=relaxed/simple;
-	bh=VAk0tMkGxI2Tpq+C4RgTM0V3Hf37sFJgJfQ0nIe3PKk=;
+	s=arc-20240116; t=1745946396; c=relaxed/simple;
+	bh=0RFffxN6E/3jiz7EKs7/4E3/X/WxaSgWb4qqvc0vG6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=od+5e8Kpf0Q2sJqGiqNZwIwNyFWlP5tEp0+ALdyq7lvpWW+ZxCUBvSrlgbvcYHtWz4iaIEoLGjcVkxvaecxrPWdxvQfqgxakUy8BTZGkQm/mC3z2VZl2F75Sx6pU+wE3XzmKkJnkpeLKzDG5m62lJqmQnyS4QSgaOICDV60Q+ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1rj5gbqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F39FC4CEE3;
-	Tue, 29 Apr 2025 17:17:00 +0000 (UTC)
+	 MIME-Version; b=k1epkpMa1Hm/DbsRe8NcnZUx9yTRZEk99KRw85tujeJHlRejdf3Z+0bGNchNgss8b0qFh49+Lt0QCTK7PygU9OKDDlCv0IT4zLZ5Yg0t43dWSEa5Vr9Xtx4AeKnUU05OFEiV2t51B+I1r3A3+rhjLCEFRc9H9f44KgnVRclF/CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wOMKWnr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A470C4CEE9;
+	Tue, 29 Apr 2025 17:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947020;
-	bh=VAk0tMkGxI2Tpq+C4RgTM0V3Hf37sFJgJfQ0nIe3PKk=;
+	s=korg; t=1745946396;
+	bh=0RFffxN6E/3jiz7EKs7/4E3/X/WxaSgWb4qqvc0vG6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1rj5gbqw7lV966AK9ujzuTx8UgbjSQcczICveC/YZn2s43D3SmVDalL6YgAMN+oBk
-	 0SC4+yBv8iGzUCgOBUhuvt3pD2iFKLGNWJr3aW3U1RFg4rH/NCRhCKoqxo8TVoMj1s
-	 E/j2cgZY3QT0C7z0nJoGNWP61kw0pFhm8Aiwm/Gw=
+	b=2wOMKWnrV6g6NgQHvlzEiqA3SKkRY0e+3d7uKSTKj6Q5XmoR1dOXlYx0uMV+Kthnf
+	 GqePC0Cp1uh51gaOF4JNQyVF48b35JqQ8c/hv1LCmjjDCNNK1rTq8ZdKJ9D+ahcKIj
+	 +cQQPEZCQETdvbvVFlXDj29m7JTtTRroAQbzlFbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 146/286] tcp/dccp: Dont use timer_pending() in reqsk_queue_unlink().
+	kernel test robot <oliver.sang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 213/311] dmaengine: dmatest: Fix dmatest waiting less when interrupted
 Date: Tue, 29 Apr 2025 18:40:50 +0200
-Message-ID: <20250429161113.889976013@linuxfoundation.org>
+Message-ID: <20250429161129.723413691@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,173 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-commit e8c526f2bdf1845bedaf6a478816a3d06fa78b8f upstream.
+[ Upstream commit e87ca16e99118ab4e130a41bdf12abbf6a87656c ]
 
-Martin KaFai Lau reported use-after-free [0] in reqsk_timer_handler().
+Change the "wait for operation finish" logic to take interrupts into
+account.
 
-  """
-  We are seeing a use-after-free from a bpf prog attached to
-  trace_tcp_retransmit_synack. The program passes the req->sk to the
-  bpf_sk_storage_get_tracing kernel helper which does check for null
-  before using it.
-  """
+When using dmatest with idxd DMA engine, it's possible that during
+longer tests, the interrupt notifying the finish of an operation
+happens during wait_event_freezable_timeout(), which causes dmatest to
+cleanup all the resources, some of which might still be in use.
 
-The commit 83fccfc3940c ("inet: fix potential deadlock in
-reqsk_queue_unlink()") added timer_pending() in reqsk_queue_unlink() not
-to call del_timer_sync() from reqsk_timer_handler(), but it introduced a
-small race window.
+This fix ensures that the wait logic correctly handles interrupts,
+preventing premature cleanup of resources.
 
-Before the timer is called, expire_timers() calls detach_timer(timer, true)
-to clear timer->entry.pprev and marks it as not pending.
-
-If reqsk_queue_unlink() checks timer_pending() just after expire_timers()
-calls detach_timer(), TCP will miss del_timer_sync(); the reqsk timer will
-continue running and send multiple SYN+ACKs until it expires.
-
-The reported UAF could happen if req->sk is close()d earlier than the timer
-expiration, which is 63s by default.
-
-The scenario would be
-
-  1. inet_csk_complete_hashdance() calls inet_csk_reqsk_queue_drop(),
-     but del_timer_sync() is missed
-
-  2. reqsk timer is executed and scheduled again
-
-  3. req->sk is accept()ed and reqsk_put() decrements rsk_refcnt, but
-     reqsk timer still has another one, and inet_csk_accept() does not
-     clear req->sk for non-TFO sockets
-
-  4. sk is close()d
-
-  5. reqsk timer is executed again, and BPF touches req->sk
-
-Let's not use timer_pending() by passing the caller context to
-__inet_csk_reqsk_queue_drop().
-
-Note that reqsk timer is pinned, so the issue does not happen in most
-use cases. [1]
-
-[0]
-BUG: KFENCE: use-after-free read in bpf_sk_storage_get_tracing+0x2e/0x1b0
-
-Use-after-free read at 0x00000000a891fb3a (in kfence-#1):
-bpf_sk_storage_get_tracing+0x2e/0x1b0
-bpf_prog_5ea3e95db6da0438_tcp_retransmit_synack+0x1d20/0x1dda
-bpf_trace_run2+0x4c/0xc0
-tcp_rtx_synack+0xf9/0x100
-reqsk_timer_handler+0xda/0x3d0
-run_timer_softirq+0x292/0x8a0
-irq_exit_rcu+0xf5/0x320
-sysvec_apic_timer_interrupt+0x6d/0x80
-asm_sysvec_apic_timer_interrupt+0x16/0x20
-intel_idle_irq+0x5a/0xa0
-cpuidle_enter_state+0x94/0x273
-cpu_startup_entry+0x15e/0x260
-start_secondary+0x8a/0x90
-secondary_startup_64_no_verify+0xfa/0xfb
-
-kfence-#1: 0x00000000a72cc7b6-0x00000000d97616d9, size=2376, cache=TCPv6
-
-allocated by task 0 on cpu 9 at 260507.901592s:
-sk_prot_alloc+0x35/0x140
-sk_clone_lock+0x1f/0x3f0
-inet_csk_clone_lock+0x15/0x160
-tcp_create_openreq_child+0x1f/0x410
-tcp_v6_syn_recv_sock+0x1da/0x700
-tcp_check_req+0x1fb/0x510
-tcp_v6_rcv+0x98b/0x1420
-ipv6_list_rcv+0x2258/0x26e0
-napi_complete_done+0x5b1/0x2990
-mlx5e_napi_poll+0x2ae/0x8d0
-net_rx_action+0x13e/0x590
-irq_exit_rcu+0xf5/0x320
-common_interrupt+0x80/0x90
-asm_common_interrupt+0x22/0x40
-cpuidle_enter_state+0xfb/0x273
-cpu_startup_entry+0x15e/0x260
-start_secondary+0x8a/0x90
-secondary_startup_64_no_verify+0xfa/0xfb
-
-freed by task 0 on cpu 9 at 260507.927527s:
-rcu_core_si+0x4ff/0xf10
-irq_exit_rcu+0xf5/0x320
-sysvec_apic_timer_interrupt+0x6d/0x80
-asm_sysvec_apic_timer_interrupt+0x16/0x20
-cpuidle_enter_state+0xfb/0x273
-cpu_startup_entry+0x15e/0x260
-start_secondary+0x8a/0x90
-secondary_startup_64_no_verify+0xfa/0xfb
-
-Fixes: 83fccfc3940c ("inet: fix potential deadlock in reqsk_queue_unlink()")
-Reported-by: Martin KaFai Lau <martin.lau@kernel.org>
-Closes: https://lore.kernel.org/netdev/eb6684d0-ffd9-4bdc-9196-33f690c25824@linux.dev/
-Link: https://lore.kernel.org/netdev/b55e2ca0-42f2-4b7c-b445-6ffd87ca74a0@linux.dev/ [1]
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20241014223312.4254-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202502171134.8c403348-lkp@intel.com
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20250305230007.590178-1-vinicius.gomes@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_connection_sock.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/dma/dmatest.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -722,21 +722,31 @@ static bool reqsk_queue_unlink(struct re
- 		found = __sk_nulls_del_node_init_rcu(req_to_sk(req));
- 		spin_unlock(lock);
- 	}
--	if (timer_pending(&req->rsk_timer) && del_timer_sync(&req->rsk_timer))
--		reqsk_put(req);
-+
- 	return found;
- }
+diff --git a/drivers/dma/dmatest.c b/drivers/dma/dmatest.c
+index 91b2fbc0b8647..d891dfca358e2 100644
+--- a/drivers/dma/dmatest.c
++++ b/drivers/dma/dmatest.c
+@@ -841,9 +841,9 @@ static int dmatest_func(void *data)
+ 		} else {
+ 			dma_async_issue_pending(chan);
  
--bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req)
-+static bool __inet_csk_reqsk_queue_drop(struct sock *sk,
-+					struct request_sock *req,
-+					bool from_timer)
- {
- 	bool unlinked = reqsk_queue_unlink(req);
+-			wait_event_freezable_timeout(thread->done_wait,
+-					done->done,
+-					msecs_to_jiffies(params->timeout));
++			wait_event_timeout(thread->done_wait,
++					   done->done,
++					   msecs_to_jiffies(params->timeout));
  
-+	if (!from_timer && timer_delete_sync(&req->rsk_timer))
-+		reqsk_put(req);
-+
- 	if (unlinked) {
- 		reqsk_queue_removed(&inet_csk(sk)->icsk_accept_queue, req);
- 		reqsk_put(req);
- 	}
-+
- 	return unlinked;
- }
-+
-+bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req)
-+{
-+	return __inet_csk_reqsk_queue_drop(sk, req, false);
-+}
- EXPORT_SYMBOL(inet_csk_reqsk_queue_drop);
- 
- void inet_csk_reqsk_queue_drop_and_put(struct sock *sk, struct request_sock *req)
-@@ -804,7 +814,8 @@ static void reqsk_timer_handler(struct t
- 		return;
- 	}
- drop:
--	inet_csk_reqsk_queue_drop_and_put(sk_listener, req);
-+	__inet_csk_reqsk_queue_drop(sk_listener, req, true);
-+	reqsk_put(req);
- }
- 
- static void reqsk_queue_hash_req(struct request_sock *req,
+ 			status = dma_async_is_tx_complete(chan, cookie, NULL,
+ 							  NULL);
+-- 
+2.39.5
+
 
 
 
