@@ -1,77 +1,112 @@
-Return-Path: <stable+bounces-137059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DAFAA0B5E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 14:18:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F408AAA0BA4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 14:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5241B6254B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 12:18:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EEDE4845A8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 12:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232BC2C10A2;
-	Tue, 29 Apr 2025 12:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6D02C17AB;
+	Tue, 29 Apr 2025 12:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mcst.ru header.i=@mcst.ru header.b="p5ZA9exv"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6A11EEF9
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 12:18:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from tretyak2q.mcst.ru (tretyak2q.mcst.ru [213.247.143.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692752BEC5D
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 12:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.247.143.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745929114; cv=none; b=C40goi925Dw9+tPescOAu9HWzx5WzpCtohHvqijRpG4+QVrGnbT6j4oTYcFa4gi5jdQii9x9Og+xmiq8soNMXOltUiTLuvo7aw/SsHn5a4qpxYvcMu886UE+xzkxk3uQyF7ZYta8w039V0zd/vfLe0BOWbHYJy2RtGcikl+kxWM=
+	t=1745929730; cv=none; b=L5hnRo2kWRbG6ZGaGoRf1r7zphlz3kJuxXpr2crGNLcCeTxhhKaCZK3KeUZhSaZbR98+W/U8qOcc3VhZZ1jcrfATwKgE/lJDRLM2VAnWOY7cPIlmgQNCaaePDBSdvkOb3QkY8qgcNeai2kEmjlgcVirxmHZtm9wZcyLem3RKy4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745929114; c=relaxed/simple;
-	bh=tli6/R+CTgKmXTLrhL6wlb/y/6SPOT5+i0hw9etSIj0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fqqnEzUe3KfQp7SbsLZEJJBOBs6uq47dlKKThAVKDwweWEMIpt/i8QPET2vs9eGnRsfDTHB1B7gKiPf4IaJimPnAo0pZ6HhnHwnRpa9s0nBdRb+GHzWipzOm9V0H55qLZE66y5t7Qf9Pkxp2XdtupxtU2TVSgGNlfHSs2xS7Go0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9C6501515;
-	Tue, 29 Apr 2025 05:18:23 -0700 (PDT)
-Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D8A0B3F66E;
-	Tue, 29 Apr 2025 05:18:27 -0700 (PDT)
-Message-ID: <c50921c6-98bb-4aee-8eba-c254556f2c79@arm.com>
-Date: Tue, 29 Apr 2025 13:18:25 +0100
+	s=arc-20240116; t=1745929730; c=relaxed/simple;
+	bh=ZGOwHJN9T6Ufq78cJaZMUAQsKWhGnJeXHj2oH8VgLH4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dZb43xQz1E1qHB3dv3p5p3ZOfV7uT75pydWqxErOtJfP/ZVCG2TdLQwowrr4nANqYdaNEXZzhZOiJZL9scuFkbrWpSkibWixvPhbuYKKpRcJDhNtvj48cn55FKQf0FIsxul6ruijpogKjrG6o19ucJsqmTSlMfeu8fOp1iuy0Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mcst.ru; spf=pass smtp.mailfrom=mcst.ru; dkim=pass (2048-bit key) header.d=mcst.ru header.i=@mcst.ru header.b=p5ZA9exv; arc=none smtp.client-ip=213.247.143.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mcst.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mcst.ru
+Received: from tretyak2q.mcst.ru (localhost.localdomain [127.0.0.1])
+	by tretyak2q.mcst.ru (Proxmox) with ESMTP id 0ED22100C09
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 15:28:38 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mcst.ru; h=cc:cc
+	:content-transfer-encoding:date:from:from:message-id
+	:mime-version:reply-to:subject:subject:to:to; s=dkim; bh=ywxBNZm
+	/e8MuqcQvNAqzfZyw9hVYSTV4wTfXNoxerqU=; b=p5ZA9exveVnEd/AVFHrAPky
+	wTA+tUq7WuVaCUDajMDcHNYVm9djyGMWplG4gnw/v5+vqO0AuWDvEcZ5EqdCg57F
+	5zDxMcDrv+XFlqtK6UVIdgS6V94imODgkH/xIglmjfXrfJJsaHqvg7/yUOdrKfdc
+	xwzN/Jfcmbqdky7blaWTENpCTDYn6pYk4tP79g+sB5liglyo55mtofn5FDCdepyE
+	570I9x8b/FiyV8QqPnXO9i1v0cSGuLL2Ewi+cTEAnjqMHt0VO1/myRYvepPIgclt
+	r2cfWLxQMz9KMBSPeXwFy6al93GFIDFdU+4PmyKLDX5E0zE7EvbaUXT6r3/rHUQ=
+	=
+X-Virus-Scanned: Debian amavis at mcst.ru
+From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
+	Evan Quan <evan.quan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	David Airlie <airlied@linux.ie>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Subject: [lvc-project] [PATCH 5.10/5.15] drm/amd/pm: vega10_hwmgr: fix potential off-by-one overflow in 'performance_levels'
+Date: Tue, 29 Apr 2025 15:20:15 +0300
+Message-Id: <20250429122015.1503994-1-Igor.A.Artemiev@mcst.ru>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6] iommu: Handle race with default domain setup
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Charan Teja Kalla <quic_charante@quicinc.com>
-References: <e1e5d56a9821b3428c561cf4b3c5017a9c41b0b5.1739903836.git.robin.murphy@arm.com>
- <2025042955-pelt-scorebook-dd4d@gregkh>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <2025042955-pelt-scorebook-dd4d@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 29/04/2025 8:35 am, Greg KH wrote:
-> On Fri, Apr 25, 2025 at 03:19:22PM +0100, Robin Murphy wrote:
->> [ Upstream commit b46064a18810bad3aea089a79993ca5ea7a3d2b2 ]
-> 
-> <snip>
-> 
-> You seem to have forgotten about a backport for 6.12.y as well.  You
-> know we can't take backports that skip stable branches, otherwise users
-> will have regressions when they upgrade.
-> 
-> Please resend this when you also send a 6.12.y backport, and we will be
-> glad to queue both up.
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 
-Hmm, 6.12.y should have had the mainline patch already, I wonder why it 
-didn't get picked? Admittedly I didn't explicitly CC stable, but I'm so 
-used to autosel picking up fixes tags these days... I resent anyway for 
-good measure, given what else I also managed to mess up last time, sorry 
-for any confusion.
+commit 2cc4a5914ce952d6fc83b0f8089a23095ad4f677 upstream.
 
-Thanks,
-Robin.
+Since 'hardwareActivityPerformanceLevels' is set to the size of the
+'performance_levels' array in vega10_hwmgr_backend_init(), using the
+'<=' assertion to check for the next index value is incorrect.
+Replace it with '<'.
+
+Detected using the static analysis tool - Svace.
+Fixes: f83a9991648b ("drm/amd/powerplay: add Vega10 powerplay support (v5)")
+Reviewed-by: Evan Quan <evan.quan@amd.com>
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[Igor: In order to adapt this patch to branch 5.10/5.15 the variable name
+'vega10_ps' has been changed to 'vega10_power_state' as it is used 
+in branch 5.10/5.15.] 
+Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+---
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index 79a41180adf1..30eab5002077 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -3171,7 +3171,7 @@ static int vega10_get_pp_table_entry_callback_func(struct pp_hwmgr *hwmgr,
+ 			return -1);
+ 
+ 	PP_ASSERT_WITH_CODE(
+-			(vega10_power_state->performance_level_count <=
++			(vega10_power_state->performance_level_count <
+ 					hwmgr->platform_descriptor.
+ 					hardwareActivityPerformanceLevels),
+ 			"Performance levels exceeds Driver limit!",
+-- 
+2.39.2
+
+
 
