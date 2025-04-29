@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-137479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3605AAA1338
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA8CAA11F5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A3897AE5D0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4BD74A6991
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C7F24A06A;
-	Tue, 29 Apr 2025 17:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F6524C067;
+	Tue, 29 Apr 2025 16:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fO3HPhPy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEsPjsp8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EAD1FE468;
-	Tue, 29 Apr 2025 17:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616A1229B05;
+	Tue, 29 Apr 2025 16:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946188; cv=none; b=ckYE3azcCTt/LCFi4tBYazCuOeTfZgyX/oEwOyg/+84c4jWf/z9GtgiZ9JaWlnLopR5ufJYN+pttErCLhRzPmH0L7yXN78O5k9fKAjNybEd8rNYd0MTAvM6QO3QLMY572YR+VP7uuV05tdIiSnz+9J/X65L+O0lPdYOkBsfjycQ=
+	t=1745945257; cv=none; b=SWB7Vk8NGteAQNZmE8vBsrWlGMwLUyfxahztre2ToqL9yB/0NjtB6HMnnTw2rYqF7nEUIGfuBnGPMvDBa4ITLwTbxBHfw0Q1538ItKuTwSAkZgSzHbxXN5AFQlHH5sbT+Ufzv0mw0gT0YscFBZbN/0N0odE7ASVQF5bw3Kf0H48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946188; c=relaxed/simple;
-	bh=nAh1pD8owDDkYfuJehcDzRKfvsvMLuSzsJu1woA+XVM=;
+	s=arc-20240116; t=1745945257; c=relaxed/simple;
+	bh=OYqBQ6ZJhSJzzWZss1vHfnVhfC9ouVg8bC5Vp5PG94Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=juTQMMt+BA+coHZLBT3n8fM2rbbGBW6VEglQah49CbHvLB+bqCTAjYgjb8M7zfVhT4DbeUnVlCVoY3h9N5EQ4LX0nA4aIgCBInbfDfz/1jYg51yE1eqhw7GbnJDnF0UGGt5dGiW/UlPAVWlJjvSpDz5e7iH01i35NFClql4be70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fO3HPhPy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A44BC4CEE3;
-	Tue, 29 Apr 2025 17:03:07 +0000 (UTC)
+	 MIME-Version; b=rUruVynj8R38U5baMI1OdlWP4nsXOTHf6wBidm1wDsw/wp55XOTCZL3hrTn0nc4/FrsgmWTufRRgODPXXiJV+AeqgqhhhnXiSyisRZsj7kp3Ino0nQxNEtKs9AqsaxCmSCAtHdMZ/9S3Y16QvD8ybkc8CPqUHi+ii9FaHpktL58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEsPjsp8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCC3C4CEE3;
+	Tue, 29 Apr 2025 16:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946188;
-	bh=nAh1pD8owDDkYfuJehcDzRKfvsvMLuSzsJu1woA+XVM=;
+	s=korg; t=1745945257;
+	bh=OYqBQ6ZJhSJzzWZss1vHfnVhfC9ouVg8bC5Vp5PG94Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fO3HPhPy4aY4lJuCgC0P3Dc5sMl42cJen90gpZByXBXTf/7iDxr8W0RaEGr8AUSCI
-	 AZR+HE7OrQ9UlDW++ES+Lxs3UrnIlTTlKjt1eshRom8WHQOglDcaYhiBUTs7gR6wLh
-	 IVjgWyWYnQaIsEuXdPCZywm+IlTl09L8+qvyAMRM=
+	b=cEsPjsp8uDrKdWDIsH65yELw3nkrwvhILKb2EeipZoLmYb6ZH+SYN7IR54jLW/pIf
+	 DWV0aULniXMrHPzefw/S4rDpuratVDFpgZHcAJomBUwTnQpU3VmOMxXLG8Qdt/R5dY
+	 9zH5RCrz03CWDO9SG64coS9nVEGq2x/8/jKisv98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ehrenreich <michideep@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.14 155/311] USB: serial: ftdi_sio: add support for Abacus Electrics Optical Probe
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.4 051/179] media: streamzap: prevent processing IR data on URB failure
 Date: Tue, 29 Apr 2025 18:39:52 +0200
-Message-ID: <20250429161127.382431268@linuxfoundation.org>
+Message-ID: <20250429161051.466694595@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ehrenreich <michideep@gmail.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit b399078f882b6e5d32da18b6c696cc84b12f90d5 upstream.
+commit 549f6d348167fb2f7800ed7c8d4bce9630c74498 upstream.
 
-Abacus Electrics makes optical probes for interacting with smart meters
-over an optical interface.
+If streamzap_callback() receives an urb with any non-critical error
+status, i.e. any error code other than -ECONNRESET, -ENOENT or -ESHUTDOWN,
+it will try to process IR data, ignoring a possible transfer failure.
 
-At least one version uses an FT232B chip (as detected by ftdi_sio) with
-a custom USB PID, which needs to be added to the list to make the device
-work in a plug-and-play fashion.
+Make streamzap_callback() process IR data only when urb->status is 0.
+Move processing logic to a separate function to make code cleaner and
+more similar to the URB completion handlers in other RC drivers.
 
-Signed-off-by: Michael Ehrenreich <michideep@gmail.com>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 19770693c354 ("V4L/DVB: staging/lirc: add lirc_streamzap driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/ftdi_sio.c     |    2 ++
- drivers/usb/serial/ftdi_sio_ids.h |    5 +++++
- 2 files changed, 7 insertions(+)
+ drivers/media/rc/streamzap.c |   68 ++++++++++++++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 30 deletions(-)
 
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -1093,6 +1093,8 @@ static const struct usb_device_id id_tab
- 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 1) },
- 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 2) },
- 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 3) },
-+	/* Abacus Electrics */
-+	{ USB_DEVICE(FTDI_VID, ABACUS_OPTICAL_PROBE_PID) },
- 	{ }					/* Terminating entry */
- };
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -182,39 +182,10 @@ static void sz_push_half_space(struct st
+ 	sz_push_full_space(sz, value & SZ_SPACE_MASK);
+ }
  
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -443,6 +443,11 @@
- #define LINX_FUTURE_2_PID   0xF44C	/* Linx future device */
+-/*
+- * streamzap_callback - usb IRQ handler callback
+- *
+- * This procedure is invoked on reception of data from
+- * the usb remote.
+- */
+-static void streamzap_callback(struct urb *urb)
++static void sz_process_ir_data(struct streamzap_ir *sz, int len)
+ {
+-	struct streamzap_ir *sz;
+ 	unsigned int i;
+-	int len;
+-
+-	if (!urb)
+-		return;
+-
+-	sz = urb->context;
+-	len = urb->actual_length;
+-
+-	switch (urb->status) {
+-	case -ECONNRESET:
+-	case -ENOENT:
+-	case -ESHUTDOWN:
+-		/*
+-		 * this urb is terminated, clean up.
+-		 * sz might already be invalid at this point
+-		 */
+-		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
+-		return;
+-	default:
+-		break;
+-	}
  
- /*
-+ * Abacus Electrics
-+ */
-+#define ABACUS_OPTICAL_PROBE_PID	0xf458 /* ABACUS ELECTRICS Optical Probe */
+-	dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
+ 	for (i = 0; i < len; i++) {
+ 		dev_dbg(sz->dev, "sz->buf_in[%d]: %x\n",
+ 			i, (unsigned char)sz->buf_in[i]);
+@@ -267,6 +238,43 @@ static void streamzap_callback(struct ur
+ 	}
+ 
+ 	ir_raw_event_handle(sz->rdev);
++}
 +
 +/*
-  * Oceanic product ids
-  */
- #define FTDI_OCEANIC_PID	0xF460  /* Oceanic dive instrument */
++ * streamzap_callback - usb IRQ handler callback
++ *
++ * This procedure is invoked on reception of data from
++ * the usb remote.
++ */
++static void streamzap_callback(struct urb *urb)
++{
++	struct streamzap_ir *sz;
++	int len;
++
++	if (!urb)
++		return;
++
++	sz = urb->context;
++	len = urb->actual_length;
++
++	switch (urb->status) {
++	case 0:
++		dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
++		sz_process_ir_data(sz, len);
++		break;
++	case -ECONNRESET:
++	case -ENOENT:
++	case -ESHUTDOWN:
++		/*
++		 * this urb is terminated, clean up.
++		 * sz might already be invalid at this point
++		 */
++		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
++		return;
++	default:
++		break;
++	}
++
+ 	usb_submit_urb(urb, GFP_ATOMIC);
+ 
+ 	return;
 
 
 
