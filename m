@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 241CBAA17B2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC71AA13A4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D9674C5A1D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0E91169046
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0702253321;
-	Tue, 29 Apr 2025 17:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE252512D7;
+	Tue, 29 Apr 2025 17:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kurUaOKX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oiRgLpo1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEB4242D73;
-	Tue, 29 Apr 2025 17:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298C124C067;
+	Tue, 29 Apr 2025 17:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949010; cv=none; b=KsNJ3LMVopeB61SfYzlKOVec2ovt2VKpyFdMji8vb+rULtiZAezWImgOWpbreR5xijnZLCg2fWhi5az7Db/ffvy698rUVq3SLDxn53WUFbcz4+nCJVnqJxgl+Jdt6FkAOS2PXmx9aIAtZSV9Qi56pQVJ4eOHX5/sM6e97fyg6OM=
+	t=1745946237; cv=none; b=d4nYOEYilk+QaVPSDn+dYQHSMXkp644k/dRlFXMYgNVKuXaTIyI4ZQhPaqMNFeAyknior7eBrD/y5o9q8LPZD0vLMzosTppf3+8cCJJOjjhLTlxAo/tiFOBRy1CtK23IZoH52jTIK68/0VLR2gZHg4B2UORsFIn655prqstkj0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949010; c=relaxed/simple;
-	bh=ZfLDPXTJ4ESFE/C8cldJt6xcaKd8rFb/Tk+JrlTKmbc=;
+	s=arc-20240116; t=1745946237; c=relaxed/simple;
+	bh=b1YeA0Pz5xmjWXs/2/DBEN1nzPPltWUS2WWL6GBP4IA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bRA8j8i1U+Iy2kRoCx3Gf1LlsznGpaWE7V0fD/hy0pEluFCMAgqz8BcYxxZ56TV2HsNYxIHhT1WTVU9x1CcdJmpFYY4HbJ7VsrY6w/KmKUxuXOpJqrPcLVLneh01qUbLu/1zXP+89AQTgsIbmheoV0GY8mouo+Aa1/JXs9IqoDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kurUaOKX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348E8C4CEEA;
-	Tue, 29 Apr 2025 17:50:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BKpCmEh2/RrfgjcAgGdrNJV3Kty0zVx+GseUg1aXBRjCYnQ0bkRQ1S/rl+s5dINucdChH2me0GRHbUvGvRNJKJHqGsmQou8lLaLemXysmbgf5wUO2aQm/yhX4HWy3xc3Hs289D2rEw7sEiToDFtRQbHFyalylBRomny6BXVV0ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oiRgLpo1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC80C4CEEE;
+	Tue, 29 Apr 2025 17:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949010;
-	bh=ZfLDPXTJ4ESFE/C8cldJt6xcaKd8rFb/Tk+JrlTKmbc=;
+	s=korg; t=1745946237;
+	bh=b1YeA0Pz5xmjWXs/2/DBEN1nzPPltWUS2WWL6GBP4IA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kurUaOKXggyqUPlPe/e0Utqw7NlyurVkOPlFQcoF8vk+4uJQGBLWonWQldmkxQFfy
-	 eD5jKvKjTKsCHnMr5DaVF3AfJyamnWdpJoCnQGAQa5ZYhMyqtKZl3XquLnPtg6rZwK
-	 RHzkpbAJKGl4DTiWoSdWsyDO7R9qS6pguSSq5kp4=
+	b=oiRgLpo1BydWH+8m4IPeXOwGOXn7vmzK8qwuepphFPe4y36xQAJyDmYvwDegm/nYx
+	 lo3kETMfEX0h64nrBD+pTw2BtEXzYzRWnli3i20JUVyUqOHtnuMnUYpquJwUZSyHYu
+	 42kLFNKU/jjHksxjEWK70sS3gLlCnLFnZnal7UtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 160/373] nfs: add missing selections of CONFIG_CRC32
+Subject: [PATCH 6.14 200/311] usb: typec: ucsi: return CCI and message from sync_control callback
 Date: Tue, 29 Apr 2025 18:40:37 +0200
-Message-ID: <20250429161129.724323725@linuxfoundation.org>
+Message-ID: <20250429161129.206687451@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,183 +60,182 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit cd35b6cb46649750b7dbd0df0e2d767415d8917b ]
+[ Upstream commit 667ecac55861281c1f5e107c8550ae893b3984f6 ]
 
-nfs.ko, nfsd.ko, and lockd.ko all use crc32_le(), which is available
-only when CONFIG_CRC32 is enabled.  But the only NFS kconfig option that
-selected CONFIG_CRC32 was CONFIG_NFS_DEBUG, which is client-specific and
-did not actually guard the use of crc32_le() even on the client.
+Some of the drivers emulate or handle some of the commands in the
+platform-specific way. The code ends up being split between several
+callbacks, which complicates emulation.
 
-The code worked around this bug by only actually calling crc32_le() when
-CONFIG_CRC32 is built-in, instead hard-coding '0' in other cases.  This
-avoided randconfig build errors, and in real kernels the fallback code
-was unlikely to be reached since CONFIG_CRC32 is 'default y'.  But, this
-really needs to just be done properly, especially now that I'm planning
-to update CONFIG_CRC32 to not be 'default y'.
+In preparation to reworking such drivers, move read_cci() and
+read_message_in() calls into ucsi_sync_control_common().
 
-Therefore, make CONFIG_NFS_FS, CONFIG_NFSD, and CONFIG_LOCKD select
-CONFIG_CRC32.  Then remove the fallback code that becomes unnecessary,
-as well as the selection of CONFIG_CRC32 from CONFIG_NFS_DEBUG.
-
-Fixes: 1264a2f053a3 ("NFS: refactor code for calculating the crc32 hash of a filehandle")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Acked-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Łukasz Bartosik <ukaszb@chromium.org>
+Link: https://lore.kernel.org/r/20250120-ucsi-merge-commands-v2-1-462a1ec22ecc@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/Kconfig           | 1 +
- fs/nfs/Kconfig       | 2 +-
- fs/nfs/internal.h    | 7 -------
- fs/nfs/nfs4session.h | 4 ----
- fs/nfsd/Kconfig      | 1 +
- fs/nfsd/nfsfh.h      | 7 -------
- include/linux/nfs.h  | 7 -------
- 7 files changed, 3 insertions(+), 26 deletions(-)
+ drivers/usb/typec/ucsi/cros_ec_ucsi.c |  5 +++--
+ drivers/usb/typec/ucsi/ucsi.c         | 19 +++++++++++--------
+ drivers/usb/typec/ucsi/ucsi.h         |  6 ++++--
+ drivers/usb/typec/ucsi/ucsi_acpi.c    |  5 +++--
+ drivers/usb/typec/ucsi/ucsi_ccg.c     |  5 +++--
+ 5 files changed, 24 insertions(+), 16 deletions(-)
 
-diff --git a/fs/Kconfig b/fs/Kconfig
-index 9ea9614107a48..cc9543ed94604 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -340,6 +340,7 @@ config GRACE_PERIOD
- config LOCKD
- 	tristate
- 	depends on FILE_LOCKING
-+	select CRC32
- 	select GRACE_PERIOD
- 
- config LOCKD_V4
-diff --git a/fs/nfs/Kconfig b/fs/nfs/Kconfig
-index 14a72224b6571..899e25e9b4eb5 100644
---- a/fs/nfs/Kconfig
-+++ b/fs/nfs/Kconfig
-@@ -2,6 +2,7 @@
- config NFS_FS
- 	tristate "NFS client support"
- 	depends on INET && FILE_LOCKING && MULTIUSER
-+	select CRC32
- 	select LOCKD
- 	select SUNRPC
- 	select NFS_ACL_SUPPORT if NFS_V3_ACL
-@@ -194,7 +195,6 @@ config NFS_USE_KERNEL_DNS
- config NFS_DEBUG
- 	bool
- 	depends on NFS_FS && SUNRPC_DEBUG
--	select CRC32
- 	default y
- 
- config NFS_DISABLE_UDP_SUPPORT
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 243d7e69e5115..a6d0b64dda36f 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -768,18 +768,11 @@ u64 nfs_timespec_to_change_attr(const struct timespec64 *ts)
- 	return ((u64)ts->tv_sec << 30) + ts->tv_nsec;
+diff --git a/drivers/usb/typec/ucsi/cros_ec_ucsi.c b/drivers/usb/typec/ucsi/cros_ec_ucsi.c
+index c605c86167268..744f0709a40ed 100644
+--- a/drivers/usb/typec/ucsi/cros_ec_ucsi.c
++++ b/drivers/usb/typec/ucsi/cros_ec_ucsi.c
+@@ -105,12 +105,13 @@ static int cros_ucsi_async_control(struct ucsi *ucsi, u64 cmd)
+ 	return 0;
  }
  
--#ifdef CONFIG_CRC32
- static inline u32 nfs_stateid_hash(const nfs4_stateid *stateid)
+-static int cros_ucsi_sync_control(struct ucsi *ucsi, u64 cmd)
++static int cros_ucsi_sync_control(struct ucsi *ucsi, u64 cmd, u32 *cci,
++				  void *data, size_t size)
  {
- 	return ~crc32_le(0xFFFFFFFF, &stateid->other[0],
- 				NFS4_STATEID_OTHER_SIZE);
- }
--#else
--static inline u32 nfs_stateid_hash(nfs4_stateid *stateid)
--{
--	return 0;
--}
--#endif
+ 	struct cros_ucsi_data *udata = ucsi_get_drvdata(ucsi);
+ 	int ret;
  
- static inline bool nfs_error_is_fatal(int err)
+-	ret = ucsi_sync_control_common(ucsi, cmd);
++	ret = ucsi_sync_control_common(ucsi, cmd, cci, data, size);
+ 	switch (ret) {
+ 	case -EBUSY:
+ 		/* EC may return -EBUSY if CCI.busy is set.
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 2a2915b0a645f..e8c7e9dc49309 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -55,7 +55,8 @@ void ucsi_notify_common(struct ucsi *ucsi, u32 cci)
+ }
+ EXPORT_SYMBOL_GPL(ucsi_notify_common);
+ 
+-int ucsi_sync_control_common(struct ucsi *ucsi, u64 command)
++int ucsi_sync_control_common(struct ucsi *ucsi, u64 command, u32 *cci,
++			     void *data, size_t size)
  {
-diff --git a/fs/nfs/nfs4session.h b/fs/nfs/nfs4session.h
-index 3de425f59b3a7..1dbc5562ac25b 100644
---- a/fs/nfs/nfs4session.h
-+++ b/fs/nfs/nfs4session.h
-@@ -147,16 +147,12 @@ static inline void nfs4_copy_sessionid(struct nfs4_sessionid *dst,
- 	memcpy(dst->data, src->data, NFS4_MAX_SESSIONID_LEN);
+ 	bool ack = UCSI_COMMAND(command) == UCSI_ACK_CC_CI;
+ 	int ret;
+@@ -80,6 +81,13 @@ int ucsi_sync_control_common(struct ucsi *ucsi, u64 command)
+ 	else
+ 		clear_bit(COMMAND_PENDING, &ucsi->flags);
+ 
++	if (!ret && cci)
++		ret = ucsi->ops->read_cci(ucsi, cci);
++
++	if (!ret && data &&
++	    (*cci & UCSI_CCI_COMMAND_COMPLETE))
++		ret = ucsi->ops->read_message_in(ucsi, data, size);
++
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(ucsi_sync_control_common);
+@@ -95,7 +103,7 @@ static int ucsi_acknowledge(struct ucsi *ucsi, bool conn_ack)
+ 		ctrl |= UCSI_ACK_CONNECTOR_CHANGE;
+ 	}
+ 
+-	return ucsi->ops->sync_control(ucsi, ctrl);
++	return ucsi->ops->sync_control(ucsi, ctrl, NULL, NULL, 0);
  }
  
--#ifdef CONFIG_CRC32
- /*
-  * nfs_session_id_hash - calculate the crc32 hash for the session id
-  * @session - pointer to session
-  */
- #define nfs_session_id_hash(sess_id) \
- 	(~crc32_le(0xFFFFFFFF, &(sess_id)->data[0], sizeof((sess_id)->data)))
--#else
--#define nfs_session_id_hash(session) (0)
--#endif
- #else /* defined(CONFIG_NFS_V4_1) */
+ static int ucsi_run_command(struct ucsi *ucsi, u64 command, u32 *cci,
+@@ -108,9 +116,7 @@ static int ucsi_run_command(struct ucsi *ucsi, u64 command, u32 *cci,
+ 	if (size > UCSI_MAX_DATA_LENGTH(ucsi))
+ 		return -EINVAL;
  
- static inline int nfs4_init_session(struct nfs_client *clp)
-diff --git a/fs/nfsd/Kconfig b/fs/nfsd/Kconfig
-index 7f071519fb2e0..73367b41e4fae 100644
---- a/fs/nfsd/Kconfig
-+++ b/fs/nfsd/Kconfig
-@@ -4,6 +4,7 @@ config NFSD
- 	depends on INET
- 	depends on FILE_LOCKING
- 	depends on FSNOTIFY
-+	select CRC32
- 	select LOCKD
- 	select SUNRPC
- 	select EXPORTFS
-diff --git a/fs/nfsd/nfsfh.h b/fs/nfsd/nfsfh.h
-index 513e028b0bbee..40aee06ebd952 100644
---- a/fs/nfsd/nfsfh.h
-+++ b/fs/nfsd/nfsfh.h
-@@ -263,7 +263,6 @@ static inline bool fh_fsid_match(const struct knfsd_fh *fh1,
- 	return true;
+-	ret = ucsi->ops->sync_control(ucsi, command);
+-	if (ucsi->ops->read_cci(ucsi, cci))
+-		return -EIO;
++	ret = ucsi->ops->sync_control(ucsi, command, cci, data, size);
+ 
+ 	if (*cci & UCSI_CCI_BUSY)
+ 		return ucsi_run_command(ucsi, UCSI_CANCEL, cci, NULL, 0, false) ?: -EBUSY;
+@@ -127,9 +133,6 @@ static int ucsi_run_command(struct ucsi *ucsi, u64 command, u32 *cci,
+ 	else
+ 		err = 0;
+ 
+-	if (!err && data && UCSI_CCI_LENGTH(*cci))
+-		err = ucsi->ops->read_message_in(ucsi, data, size);
+-
+ 	/*
+ 	 * Don't ACK connection change if there was an error.
+ 	 */
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 28780acc4af2e..892bcf8dbcd50 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -79,7 +79,8 @@ struct ucsi_operations {
+ 	int (*read_cci)(struct ucsi *ucsi, u32 *cci);
+ 	int (*poll_cci)(struct ucsi *ucsi, u32 *cci);
+ 	int (*read_message_in)(struct ucsi *ucsi, void *val, size_t val_len);
+-	int (*sync_control)(struct ucsi *ucsi, u64 command);
++	int (*sync_control)(struct ucsi *ucsi, u64 command, u32 *cci,
++			    void *data, size_t size);
+ 	int (*async_control)(struct ucsi *ucsi, u64 command);
+ 	bool (*update_altmodes)(struct ucsi *ucsi, struct ucsi_altmode *orig,
+ 				struct ucsi_altmode *updated);
+@@ -531,7 +532,8 @@ void ucsi_altmode_update_active(struct ucsi_connector *con);
+ int ucsi_resume(struct ucsi *ucsi);
+ 
+ void ucsi_notify_common(struct ucsi *ucsi, u32 cci);
+-int ucsi_sync_control_common(struct ucsi *ucsi, u64 command);
++int ucsi_sync_control_common(struct ucsi *ucsi, u64 command, u32 *cci,
++			     void *data, size_t size);
+ 
+ #if IS_ENABLED(CONFIG_POWER_SUPPLY)
+ int ucsi_register_port_psy(struct ucsi_connector *con);
+diff --git a/drivers/usb/typec/ucsi/ucsi_acpi.c b/drivers/usb/typec/ucsi/ucsi_acpi.c
+index ac1ebb5d95272..0ac6e5ce4a288 100644
+--- a/drivers/usb/typec/ucsi/ucsi_acpi.c
++++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
+@@ -128,12 +128,13 @@ static int ucsi_gram_read_message_in(struct ucsi *ucsi, void *val, size_t val_le
+ 	return ret;
  }
  
--#ifdef CONFIG_CRC32
- /**
-  * knfsd_fh_hash - calculate the crc32 hash for the filehandle
-  * @fh - pointer to filehandle
-@@ -275,12 +274,6 @@ static inline u32 knfsd_fh_hash(const struct knfsd_fh *fh)
+-static int ucsi_gram_sync_control(struct ucsi *ucsi, u64 command)
++static int ucsi_gram_sync_control(struct ucsi *ucsi, u64 command, u32 *cci,
++				  void *data, size_t size)
  {
- 	return ~crc32_le(0xFFFFFFFF, fh->fh_raw, fh->fh_size);
+ 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
+ 	int ret;
+ 
+-	ret = ucsi_sync_control_common(ucsi, command);
++	ret = ucsi_sync_control_common(ucsi, command, cci, data, size);
+ 	if (ret < 0)
+ 		return ret;
+ 
+diff --git a/drivers/usb/typec/ucsi/ucsi_ccg.c b/drivers/usb/typec/ucsi/ucsi_ccg.c
+index 511dd1b224ae5..43a8a67159d84 100644
+--- a/drivers/usb/typec/ucsi/ucsi_ccg.c
++++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+@@ -628,7 +628,8 @@ static int ucsi_ccg_async_control(struct ucsi *ucsi, u64 command)
+ 	return ccg_write(uc, reg, (u8 *)&command, sizeof(command));
  }
--#else
--static inline u32 knfsd_fh_hash(const struct knfsd_fh *fh)
--{
--	return 0;
--}
--#endif
  
- /**
-  * fh_clear_pre_post_attrs - Reset pre/post attributes
-diff --git a/include/linux/nfs.h b/include/linux/nfs.h
-index ceb70a926b95e..095a95c1fae82 100644
---- a/include/linux/nfs.h
-+++ b/include/linux/nfs.h
-@@ -46,7 +46,6 @@ enum nfs3_stable_how {
- 	NFS_INVALID_STABLE_HOW = -1
- };
- 
--#ifdef CONFIG_CRC32
- /**
-  * nfs_fhandle_hash - calculate the crc32 hash for the filehandle
-  * @fh - pointer to filehandle
-@@ -58,10 +57,4 @@ static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
+-static int ucsi_ccg_sync_control(struct ucsi *ucsi, u64 command)
++static int ucsi_ccg_sync_control(struct ucsi *ucsi, u64 command, u32 *cci,
++				 void *data, size_t size)
  {
- 	return ~crc32_le(0xFFFFFFFF, &fh->data[0], fh->size);
- }
--#else /* CONFIG_CRC32 */
--static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
--{
--	return 0;
--}
--#endif /* CONFIG_CRC32 */
- #endif /* _LINUX_NFS_H */
+ 	struct ucsi_ccg *uc = ucsi_get_drvdata(ucsi);
+ 	struct ucsi_connector *con;
+@@ -652,7 +653,7 @@ static int ucsi_ccg_sync_control(struct ucsi *ucsi, u64 command)
+ 		ucsi_ccg_update_set_new_cam_cmd(uc, con, &command);
+ 	}
+ 
+-	ret = ucsi_sync_control_common(ucsi, command);
++	ret = ucsi_sync_control_common(ucsi, command, cci, data, size);
+ 
+ err_put:
+ 	pm_runtime_put_sync(uc->dev);
 -- 
 2.39.5
 
