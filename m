@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-138954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 976C3AA3CF0
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:49:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F3DAA3CF9
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D8189A738B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:48:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 459599A63AC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521A72BD589;
-	Tue, 29 Apr 2025 23:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75EC2DCB6A;
+	Tue, 29 Apr 2025 23:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m2Oten3T"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CzL+BSU+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8F4255F51
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 23:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9F3246762
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 23:47:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745970431; cv=none; b=ACg4tDWE+VXEBEwmskBeJU/Dp0JtgZRWpr2XpS5fB9nGa9Q7cYV9x6wlhIM2NmGwX4vAXbZjG1nFxKQ1wck3MxQ890oKfH4+NRZGVLk+TcYM+sH40HydLk+X0h1Bzm6+qSU0yFlM6J+RnCt1GzSnu406LBEJm1D7V9yyJozO4B8=
+	t=1745970469; cv=none; b=cqxgWBmXJP8ppxybKGeo60zdTD6oqrghpiv1HKmaoqQiKSOZh1soKiF8G0O5NgRw6I+1BP7IOn+0r4LRw99krCZZ6jQBsxalEcb/MfzP95ncVnulttKLDhbcoCydFCZlEr7JaINpOCawDG76/fc5wXV5ENW78u9MMdy2YNrhAaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745970431; c=relaxed/simple;
-	bh=lqFpTzBKH0n+hLPP3D74zDTrtj3ZCOQgeEHM7+9pKZ4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:Cc:Content-Type; b=gXLZ5wnUOzaB7zKQiqgKerv8Vlp8TQI740iA6qvcLlzXWaM2tO6Vj5XZad82NPa5tvWL+CZJY0v0hBth2e2kE/60InvFEAfRaPJR8VCB3ZthMVeg87SjqJfTsxcUsOXMQ921CY21EML8Ozo3bK4NrKiFLRMb+kXbQeV/V8Cqd9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m2Oten3T; arc=none smtp.client-ip=209.85.215.201
+	s=arc-20240116; t=1745970469; c=relaxed/simple;
+	bh=EUXN40sun50EBrYaGuLWVQrctCvrMTiPSjuC2qVa6MA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:Cc:Content-Type; b=XDzOLemomOzHYFcxY1BHAAuCyY1tiapmOFYKV6MQcvcOBu9TPvCjHlDzHfcmmY0nBRZbswTOAEhNEoqQOY6xkuvhoWjnAudz39/5VW/djd5cjVIFbhJngQWnMTntRXGlH78+vdSpMo4ye/xpuuKvaA5FT2LAEwrLUDauAeLGhhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CzL+BSU+; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-af2f03fcc95so6449640a12.1
-        for <stable@vger.kernel.org>; Tue, 29 Apr 2025 16:47:09 -0700 (PDT)
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ff52e1c56fso8977127a91.2
+        for <stable@vger.kernel.org>; Tue, 29 Apr 2025 16:47:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745970428; x=1746575228; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1745970467; x=1746575267; darn=vger.kernel.org;
         h=cc:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=rHgN+FCfcpWxKWmUBcvDV+CDR/OsUBfRs2x102Mf4zk=;
-        b=m2Oten3TacdjncZXnZwfYz/0bAs35CDRIRa3B6apFcHEWS124i3a4+mSgrLAn186Ca
-         8a4rjrF0qHBNKhWXPolP+HnFxqd61iHlDF0Rf/SNdzBi7KhyBcdbrBWTUQDQ2u9a0tbZ
-         6dWtN2wg+cmeFSLobbRs7cxj5d9B0nUC6/1EpteOTFcGErTne1fNHzHZ7f8a0GlS83WC
-         2O/we83avKo8JAQGU5KnzomJviYacpgJGH+mc+X0hi7kLGlYDmak+UL3eHkttSVSusx8
-         oer7vkXC3D2dfYB65q0q2HwH94Hf98L0hVnDaL/1dsjZ5nGwso9MzlDMDZ5NE5cfkiRe
-         syqw==
+        bh=kqhn91kxJk0NqrWbN6uNVF8ez7ssrZW8quhtkNzQJcg=;
+        b=CzL+BSU+J+3IOAtJsTXPf8lw4JvLGCvN4/gDlnyVwn0OwUIOahX5ZtYZqwa2YLkr05
+         SrE66pFaOgNheWY9tKdtBPwqljryVz4DjjyZiwoXTJE0ArfwfGTesKdbTeDcA8vYSeYT
+         IvQ/bz/G0zdAFyueBscslUP6cdz1333it+gTqk1/IBt6rdqN3UUaTOXFis5BxMA8BIqZ
+         Mipa7XNhOe/qXZFjUb/Jg9aT7ZB3YwQVUDemw8qq6WU+DXxPWQTAwbUoftmLPMHfoFk8
+         erIgZtyvULb9lP36UnYzaSEOdi026vl43BAHF8LTbjNYphojWGPUiBZgNucebF85UWgY
+         CTnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745970428; x=1746575228;
+        d=1e100.net; s=20230601; t=1745970467; x=1746575267;
         h=cc:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=rHgN+FCfcpWxKWmUBcvDV+CDR/OsUBfRs2x102Mf4zk=;
-        b=bgXtEpROHe6rbanz/RrKt4I/Ap191v+soTgZL7P+Mf7w0eMOpFkPYd7hHuDlM8Kzcg
-         Lm2XGkwWwmnawoSoL+kDWmXPHviH3RE56u88kaO6s7D4520JwWulatTZGqlc4ywYsqdl
-         G2Pi+a93v9TMaeVwsaRutfy9tGp2OXT9imj1xj14kPX7iFKAqy2rQSpsCgb8dV0ns61I
-         NBgxNn9rF04r4a0S3tZbWqnT1emBMBY+wNWhf6pp+Ji2hg1PB7MBYiFSKBuq6U9rg1nM
-         9nqDoH0UsrKYZQd0NRUk9vzWZZ60mkQWDVAY7w181uzWWE/EqvgKOJ5L6B2BakCpzgq7
-         s3Pg==
-X-Forwarded-Encrypted: i=1; AJvYcCXYmNL1RpTfCz3yiAu7QDv+37MMvBGpR4vvb+lcQisl3APIc0ARghqpz3EENyr8SCHg/XRNynk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrYkau/KHXcmS2nLRZzrfg65t5oLb8Cihjneln52fyGqt/09S8
-	EhIG2CXttWedDfMfu1SAHVobJpWOd95mt5aDDE1dtmOd246ItwvP2GDfbzGOmLX2tgu0nledzA/
-	EaNFSxx5JQiv4Lg==
-X-Google-Smtp-Source: AGHT+IHJSCSltg+/WIvPA6Nl6fDGEhdVNbCCtrD4AIszlnjDqDNJCFlblYduUzbVm4fXKSyRzxB9EK7JCUQkCWs=
-X-Received: from pgnm17.prod.google.com ([2002:a63:7d51:0:b0:b15:84fa:ff1f])
+        bh=kqhn91kxJk0NqrWbN6uNVF8ez7ssrZW8quhtkNzQJcg=;
+        b=EmG1TSs1GUQT92RI9IJjSH/9xsuudsCfaiEM0tkoxDDUyGzsKmzUxZ4nB670zybY76
+         Uo+rX4fOkeU8knQuDVsc6cpOf9EEaBYc3pcGUZ6Ho8K9ZK6lowLn6x0AzYbW/nQlAPlu
+         biMi+1mNI96KFgiroAEP5mGlZWYJG2BNeQmaIdzoKwbkbUFTmNNWPZ4CLoGsBF9XzDY6
+         yUEPhkvAdNrkI7VhVwjveZRKluQZvwsinFQByL0Lk/cSVQbsVhQ848vMqnWsxZ1GROm+
+         /WOgJaUMuO815LNE0Qk/Cd++FiVzAouqZAPU13rC8TJG6fEOXePvipne+hQNjuZpLd+p
+         Z/Ow==
+X-Forwarded-Encrypted: i=1; AJvYcCUMjZ+k+vwpmYx2buybnkuWubHcev8KSVwF3Kz5F+0vFJpJt87HV1GnXRTIrdcwvpsNFoBlFKE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1pDIi4nf3Tbda2i51VJ3Yu4yOw6HU2KFOB8WG56LiDxbgBdkj
+	ufiaEDOOmEwFi8tKhqtEW14JF2ow4noN0vpVmJUfnp6GZD9l/dchekLC22ibuK6449TXNekJ2It
+	f9GIkuXxkz4lkQA==
+X-Google-Smtp-Source: AGHT+IFJlrR3Sq9I5l43d7ShfYq2cl3PN625t73YYl+5vc8ZyI1ord9aUK9rPq80NYo4FPLDUqCmnjMJmHuGuMA=
+X-Received: from pjbok13.prod.google.com ([2002:a17:90b:1d4d:b0:301:1ea9:63b0])
  (user=rdbabiera job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:e94:b0:1f5:7280:1cf7 with SMTP id adf61e73a8af0-20a87c542bamr1146783637.16.1745970428604;
- Tue, 29 Apr 2025 16:47:08 -0700 (PDT)
-Date: Tue, 29 Apr 2025 23:47:01 +0000
+ 2002:a17:90b:4fce:b0:309:fd87:821d with SMTP id 98e67ed59e1d1-30a333647demr1488703a91.29.1745970466762;
+ Tue, 29 Apr 2025 16:47:46 -0700 (PDT)
+Date: Tue, 29 Apr 2025 23:47:42 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,55 +71,110 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Developer-Key: i=rdbabiera@google.com; a=openpgp; fpr=639A331F1A21D691815CE090416E17CA2BBBD5C8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1469; i=rdbabiera@google.com;
- h=from:subject; bh=lqFpTzBKH0n+hLPP3D74zDTrtj3ZCOQgeEHM7+9pKZ4=;
- b=owGbwMvMwCFW0bfok0KS4TbG02pJDBmCKd9jVzPEWE+SSrfKeOVlefIr47ZZgRELovtfTD78I
- zOVdXdlRykLgxgHg6yYIouuf57BjSupW+Zw1hjDzGFlAhnCwMUpABP58Z2R4Z39tc+rWv++8FLm
- FvHh9P/j6cJSI/Uy9HDYjEsd03i38DD84c25lzGD5yy3dIz5rdjZusJGkve3vA/pufQr/I70Zd9 1nAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2833; i=rdbabiera@google.com;
+ h=from:subject; bh=EUXN40sun50EBrYaGuLWVQrctCvrMTiPSjuC2qVa6MA=;
+ b=owGbwMvMwCFW0bfok0KS4TbG02pJDBmCqfJPBE+e+jH9vbDYhiVySQvO/qvZY9Q499Zc8yyPl
+ k/+rhVtHaUsDGIcDLJiiiy6/nkGN66kbpnDWWMMM4eVCWQIAxenAExk6VmG/04cOVYfax9siJgd
+ PU2n4kXVDW0VPaskoVt3U3MVdQ9I+zMyPIicfpxR8mDNhcdXLDR1LmxsuZ7L7nzj20t5R7saxYI aPgA=
 X-Mailer: git-send-email 2.49.0.967.g6a0df3ecc3-goog
-Message-ID: <20250429234703.3748506-2-rdbabiera@google.com>
-Subject: [PATCH v1] usb: typec: tcpm: delay SNK_TRY_WAIT_DEBOUNCE to
- SRC_TRYWAIT transition
+Message-ID: <20250429234743.3749129-2-rdbabiera@google.com>
+Subject: [PATCH v1] usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach
 From: RD Babiera <rdbabiera@google.com>
 Cc: heikki.krogerus@linux.intel.com, badhri@google.com, 
 	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, RD Babiera <rdbabiera@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-This patch fixes Type-C Compliance Test TD 4.7.6 - Try.SNK DRP Connect
+This patch fixes Type-C compliance test TD 4.7.6 - Try.SNK DRP Connect
 SNKAS.
 
-The compliance tester moves into SNK_UNATTACHED during toggling and
-expects the PUT to apply Rp after tPDDebounce of detection. If the port
-is in SNK_TRY_WAIT_DEBOUNCE, it will move into SRC_TRYWAIT immediately
-and apply Rp. This violates TD 4.7.5.V.3, where the tester confirms that
-the PUT attaches Rp after the transitions to Unattached.SNK for
-tPDDebounce.
+tVbusON has a limit of 275ms when entering SRC_ATTACHED. Compliance
+testers can interpret the TryWait.Src to Attached.Src transition after
+Try.Snk as being in Attached.Src the entire time, so ~170ms is lost
+to the debounce timer.
 
-Change the tcpm_set_state delay between SNK_TRY_WAIT_DEBOUNCE and
-SRC_TRYWAIT to tPDDebounce.
+Setting the data role can be a costly operation in host mode, and when
+completed after 100ms can cause Type-C compliance test check TD 4.7.5.V.4
+to fail.
 
-Fixes: a0a3e04e6b2c ("staging: typec: tcpm: Check for Rp for tPDDebounce")
+Turn VBUS on before tcpm_set_roles to meet timing requirement.
+
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
 Cc: stable@vger.kernel.org
 Signed-off-by: RD Babiera <rdbabiera@google.com>
 Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
 ---
- drivers/usb/typec/tcpm/tcpm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 784fa23102f9..87d56ac4565d 100644
+index 784fa23102f9..e099a3c4428d 100644
 --- a/drivers/usb/typec/tcpm/tcpm.c
 +++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -6003,7 +6003,7 @@ static void _tcpm_cc_change(struct tcpm_port *port, enum typec_cc_status cc1,
- 	case SNK_TRY_WAIT_DEBOUNCE:
- 		if (!tcpm_port_is_sink(port)) {
- 			port->max_wait = 0;
--			tcpm_set_state(port, SRC_TRYWAIT, 0);
-+			tcpm_set_state(port, SRC_TRYWAIT, PD_T_PD_DEBOUNCE);
- 		}
- 		break;
- 	case SRC_TRY_WAIT:
+@@ -4355,17 +4355,6 @@ static int tcpm_src_attach(struct tcpm_port *port)
+ 
+ 	tcpm_enable_auto_vbus_discharge(port, true);
+ 
+-	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
+-			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
+-	if (ret < 0)
+-		return ret;
+-
+-	if (port->pd_supported) {
+-		ret = port->tcpc->set_pd_rx(port->tcpc, true);
+-		if (ret < 0)
+-			goto out_disable_mux;
+-	}
+-
+ 	/*
+ 	 * USB Type-C specification, version 1.2,
+ 	 * chapter 4.5.2.2.8.1 (Attached.SRC Requirements)
+@@ -4375,13 +4364,24 @@ static int tcpm_src_attach(struct tcpm_port *port)
+ 	    (polarity == TYPEC_POLARITY_CC2 && port->cc1 == TYPEC_CC_RA)) {
+ 		ret = tcpm_set_vconn(port, true);
+ 		if (ret < 0)
+-			goto out_disable_pd;
++			return ret;
+ 	}
+ 
+ 	ret = tcpm_set_vbus(port, true);
+ 	if (ret < 0)
+ 		goto out_disable_vconn;
+ 
++	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB, TYPEC_SOURCE,
++			     tcpm_data_role_for_source(port));
++	if (ret < 0)
++		goto out_disable_vbus;
++
++	if (port->pd_supported) {
++		ret = port->tcpc->set_pd_rx(port->tcpc, true);
++		if (ret < 0)
++			goto out_disable_mux;
++	}
++
+ 	port->pd_capable = false;
+ 
+ 	port->partner = NULL;
+@@ -4392,14 +4392,14 @@ static int tcpm_src_attach(struct tcpm_port *port)
+ 
+ 	return 0;
+ 
+-out_disable_vconn:
+-	tcpm_set_vconn(port, false);
+-out_disable_pd:
+-	if (port->pd_supported)
+-		port->tcpc->set_pd_rx(port->tcpc, false);
+ out_disable_mux:
+ 	tcpm_mux_set(port, TYPEC_STATE_SAFE, USB_ROLE_NONE,
+ 		     TYPEC_ORIENTATION_NONE);
++out_disable_vbus:
++	tcpm_set_vbus(port, false);
++out_disable_vconn:
++	tcpm_set_vconn(port, false);
++
+ 	return ret;
+ }
+ 
 
 base-commit: 615dca38c2eae55aff80050275931c87a812b48c
 -- 
