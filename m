@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-138209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFBD0AA16F4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:42:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3650DAA12F7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:01:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AEC17B5EE8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F10424C097E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD5EC251780;
-	Tue, 29 Apr 2025 17:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8A4253934;
+	Tue, 29 Apr 2025 16:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7huQzFL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKePMgnC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A39E2459FA;
-	Tue, 29 Apr 2025 17:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA10253938;
+	Tue, 29 Apr 2025 16:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948515; cv=none; b=rZz63zwQ7ZhwmSRYNZRHQhPcXD8SCGIKIgZYYdR3Q4nSTNO2RFzNnNZU4bcS1o7Cc2CHdJ29vEaMeoNz5Muns1GnB4St0c7sMGo0Th50dU9ptbMw10Zy2l5lMHs4t/ypKnjGSiG+IX1hUZ6UogETUtmwfGWbA9YD2itM95cKMk0=
+	t=1745945856; cv=none; b=IAsnNbMOnqj8D6REnor0Sznj0pu/mKk5GrhnykcH4HFxz8q6dTYe39fzyQDf46O9/URfODWC+OR7G8MjbTxA5SF3zTl85YY9Kz73/yFoT1uxQ6r/1ATSsciHPs1iGP3YzJBmGYyEbFGF9rerRt6ukkvmsbXTg+bBu3m0ZX2gHwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948515; c=relaxed/simple;
-	bh=dKVaQwqhfHIil6q3m/hPF5PDDCwEvL+AHVO+ye4MSsM=;
+	s=arc-20240116; t=1745945856; c=relaxed/simple;
+	bh=8rNC/WaKacdN9hPDHDJq3lzYWr+C3QBSZ9hdBnbFZo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4Fvaz404k8tPmYLsa1ti5B3DFhoqCZOFmrax8oPwXZusNo4V3MlucEN1AuzwkVUhCpFKw6hKv8zBKEJIDRpp0XJGbugXM5hSivS03U6MFrjdbJxjivJBxVggdGpWjqW5dP/oB30lcP1gQA9Mt43Dr3aH0fknt026C68jD9G7p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7huQzFL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0711EC4CEE3;
-	Tue, 29 Apr 2025 17:41:54 +0000 (UTC)
+	 MIME-Version; b=CZx0w0c7WXuoyIa9h8Z3l1Emz5CqieXVcLe8Mwmpij0nmP4MgkQkjnH6Gd2aqpIt4PcCaS95IXgv0DOpSOs4lIzEgYnC2IWoYyQp5co56htPqhhU3x63mo6q+yeYk/3eEFvpGp322xRC98Rl7Iganc1NUeQSCm8cZaB8FXoC8c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKePMgnC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D13C4CEE3;
+	Tue, 29 Apr 2025 16:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948515;
-	bh=dKVaQwqhfHIil6q3m/hPF5PDDCwEvL+AHVO+ye4MSsM=;
+	s=korg; t=1745945856;
+	bh=8rNC/WaKacdN9hPDHDJq3lzYWr+C3QBSZ9hdBnbFZo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w7huQzFLlH1EUiULA9RSrNZYDjMWNWZwwmDBPXXhUOQHZm9U3a63SkfhzPrMudxwE
-	 1V1pkvgO0vIjS9PxKURiXmNu6sqsuYtbdzETmB01kfcj9nItAhtGhwuLzVApeUS6gx
-	 gQlqQGQQi5pPOWQ6bBEsgjVKODFWKhCPk3CKJE+c=
+	b=hKePMgnCVvMPM/ohNLlNUspPQTtEO300OO5gZmvEy3Bt1WBCvhOuJTiejFjhmlvs0
+	 pa4dVzQ/jRIrXHo3ck45Z65CcTIV77kctjqlOnRka439sPtT0zJ/Fwn302nnkKBLsv
+	 flZ1sTnyuKNoUexbcy3nwRYmWky3/70JGst1/g9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Simon Horman <horms@kernel.org>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 032/373] ext4: protect ext4_release_dquot against freezing
+Subject: [PATCH 6.14 072/311] pds_core: handle unsupported PDS_CORE_CMD_FW_CONTROL result
 Date: Tue, 29 Apr 2025 18:38:29 +0200
-Message-ID: <20250429161124.458831950@linuxfoundation.org>
+Message-ID: <20250429161123.992084562@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit 530fea29ef82e169cd7fe048c2b7baaeb85a0028 ]
+[ Upstream commit 2567daad69cd1107fc0ec29b1615f110d7cf7385 ]
 
-Protect ext4_release_dquot against freezing so that we
-don't try to start a transaction when FS is frozen, leading
-to warnings.
+If the FW doesn't support the PDS_CORE_CMD_FW_CONTROL command
+the driver might at the least print garbage and at the worst
+crash when the user runs the "devlink dev info" devlink command.
 
-Further, avoid taking the freeze protection if a transaction
-is already running so that we don't need end up in a deadlock
-as described in
+This happens because the stack variable fw_list is not 0
+initialized which results in fw_list.num_fw_slots being a
+garbage value from the stack.  Then the driver tries to access
+fw_list.fw_names[i] with i >= ARRAY_SIZE and runs off the end
+of the array.
 
-  46e294efc355 ext4: fix deadlock with fs freezing and EA inodes
+Fix this by initializing the fw_list and by not failing
+completely if the devcmd fails because other useful information
+is printed via devlink dev info even if the devcmd fails.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241121123855.645335-3-ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 45d76f492938 ("pds_core: set up device and adminq")
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250421174606.3892-3-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/net/ethernet/amd/pds_core/devlink.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 541cfd118fbc7..8a103b0755348 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -6212,12 +6212,25 @@ static int ext4_release_dquot(struct dquot *dquot)
- {
- 	int ret, err;
- 	handle_t *handle;
-+	bool freeze_protected = false;
-+
-+	/*
-+	 * Trying to sb_start_intwrite() in a running transaction
-+	 * can result in a deadlock. Further, running transactions
-+	 * are already protected from freezing.
-+	 */
-+	if (!ext4_journal_current_handle()) {
-+		sb_start_intwrite(dquot->dq_sb);
-+		freeze_protected = true;
-+	}
+diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
+index 44971e71991ff..ca23cde385e67 100644
+--- a/drivers/net/ethernet/amd/pds_core/devlink.c
++++ b/drivers/net/ethernet/amd/pds_core/devlink.c
+@@ -102,7 +102,7 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
+ 		.fw_control.opcode = PDS_CORE_CMD_FW_CONTROL,
+ 		.fw_control.oper = PDS_CORE_FW_GET_LIST,
+ 	};
+-	struct pds_core_fw_list_info fw_list;
++	struct pds_core_fw_list_info fw_list = {};
+ 	struct pdsc *pdsc = devlink_priv(dl);
+ 	union pds_core_dev_comp comp;
+ 	char buf[32];
+@@ -115,8 +115,6 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
+ 	if (!err)
+ 		memcpy_fromio(&fw_list, pdsc->cmd_regs->data, sizeof(fw_list));
+ 	mutex_unlock(&pdsc->devcmd_lock);
+-	if (err && err != -EIO)
+-		return err;
  
- 	handle = ext4_journal_start(dquot_to_inode(dquot), EXT4_HT_QUOTA,
- 				    EXT4_QUOTA_DEL_BLOCKS(dquot->dq_sb));
- 	if (IS_ERR(handle)) {
- 		/* Release dquot anyway to avoid endless cycle in dqput() */
- 		dquot_release(dquot);
-+		if (freeze_protected)
-+			sb_end_intwrite(dquot->dq_sb);
- 		return PTR_ERR(handle);
- 	}
- 	ret = dquot_release(dquot);
-@@ -6228,6 +6241,10 @@ static int ext4_release_dquot(struct dquot *dquot)
- 	err = ext4_journal_stop(handle);
- 	if (!ret)
- 		ret = err;
-+
-+	if (freeze_protected)
-+		sb_end_intwrite(dquot->dq_sb);
-+
- 	return ret;
- }
- 
+ 	listlen = min(fw_list.num_fw_slots, ARRAY_SIZE(fw_list.fw_names));
+ 	for (i = 0; i < listlen; i++) {
 -- 
 2.39.5
 
