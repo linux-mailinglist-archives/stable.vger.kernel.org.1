@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-137886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F951AA1587
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:28:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1567AA18A1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:02:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31023174B45
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A09593BEA5F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027A32528E9;
-	Tue, 29 Apr 2025 17:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0154E2AE96;
+	Tue, 29 Apr 2025 17:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sR9VBLbv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3Frioay"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46F824A07D;
-	Tue, 29 Apr 2025 17:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3940215F6C;
+	Tue, 29 Apr 2025 17:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947431; cv=none; b=B59wQYxsQe/E4J87w47VPOG0Z41dJDW1ZcVs16l1gv0aXbOw8TfD6YYRTaDvYzw3lv7tiex3RrFMG96Jdt/O5dfromypRUxO4Wd8IqttWe/4ImqegdDxCUlwY8/VbvmlgQWpFnKKM7n4YLQZ5orPLSXdfsa4Ql+JpSRFDLeOxPM=
+	t=1745949399; cv=none; b=Vrpc2QRwLQ7KMKurB6RcGk+jB74zZg4UBpSVKeE1wMXtWUvAFfo47rzjxF/Mt96zfc2z5/UDzXkT4bgpGMbLEzeDKYfBSHgfmFhlW2poRtrMWajZ/keJrN/9KXCLzqLy8ob0hua1g6Hm/BEuAiMzLdWQ8ZaG2nx7Pz0Uu0ca45s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947431; c=relaxed/simple;
-	bh=EVxNLEjGgFzhSOc8fWNddBjmhIfGRRtpoPBPzixVAgk=;
+	s=arc-20240116; t=1745949399; c=relaxed/simple;
+	bh=m9Umx7Rmkh+X0HXArvwTOHy1PURza1GjRCPs9Bp9Isw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hljIBXoWilpFsOS00FpVu9k9YNFWkHHa1kU+27Biv6DPnih53S6C5O5PavGMnkI1IxhXPPkbMHbMlAQsY2tn3fNx9eagsY581cF3ghPe+d9azpGroBrB/u2pC0xvrLrBJLNd76nL3sKN86Q7IYw5mVpZM1CyV5vl1oP6/AJqR80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sR9VBLbv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32008C4CEE3;
-	Tue, 29 Apr 2025 17:23:51 +0000 (UTC)
+	 MIME-Version; b=Q7DHNI1KHCZsNETjvpKQCXty8eOU5RRZZcEz5QRQoNTIPwy+UdqSfRxnxPcypVLaqpHbkftvF+czO2cC+LDVW7z2A5mjWWXJCMBochPyCXPujuEHpdVq7L3kWroSg2ubLlt7W8ShXGF+sn38H00YF5rzCOcoTEPLbJtzeLx3/+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3Frioay; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398E0C4CEE3;
+	Tue, 29 Apr 2025 17:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947431;
-	bh=EVxNLEjGgFzhSOc8fWNddBjmhIfGRRtpoPBPzixVAgk=;
+	s=korg; t=1745949399;
+	bh=m9Umx7Rmkh+X0HXArvwTOHy1PURza1GjRCPs9Bp9Isw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sR9VBLbvf0FFBadCLz8qZgSVQIkyefdQQVZddUPxBftwcaOWo3TWWX7PQe4uWG1PO
-	 lN443UuGDquYAYOqlOPMzRBBvpRM883VBddMi3u+rcPZPNRabtnLy/oaFLCpBnhUj4
-	 WNj8Xey0TRXzmf0zTNfoxEJkz7hHoQDR3s6DmYX8=
+	b=J3FrioayMqtHMsSayNc56UFLU3fHbtJ6GujxJ7No2qiMhOHd8kqZ3u8Xb+G83ayHJ
+	 SdP+UovGLyGBuDKwU96uqDy6l4QtcKpJY1UWlxgx1NwnwhaH2cmWYxn0n/zRTH9L+f
+	 Xs/Kk15/d/9lp4ZOpFeVQ62FJwWp8uiwWDlpzSPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.10 278/286] comedi: jr3_pci: Fix synchronous deletion of timer
-Date: Tue, 29 Apr 2025 18:43:02 +0200
-Message-ID: <20250429161119.348885172@linuxfoundation.org>
+	Ryo Takakura <ryotkkr98@gmail.com>,
+	Petr Mladek <pmladek@suse.com>,
+	John Ogness <john.ogness@linutronix.de>
+Subject: [PATCH 5.15 306/373] serial: sifive: lock port in startup()/shutdown() callbacks
+Date: Tue, 29 Apr 2025 18:43:03 +0200
+Message-ID: <20250429161135.703640414@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Ryo Takakura <ryotkkr98@gmail.com>
 
-commit 44d9b3f584c59a606b521e7274e658d5b866c699 upstream.
+commit e1ca3ff28ab1e2c1e70713ef3fa7943c725742c3 upstream.
 
-When `jr3_pci_detach()` is called during device removal, it calls
-`timer_delete_sync()` to stop the timer, but the timer expiry function
-always reschedules the timer, so the synchronization is ineffective.
+startup()/shutdown() callbacks access SIFIVE_SERIAL_IE_OFFS.
+The register is also accessed from write() callback.
 
-Call `timer_shutdown_sync()` instead.  It does not matter that the timer
-expiry function pointer is cleared, because the device is being removed.
+If console were printing and startup()/shutdown() callback
+gets called, its access to the register could be overwritten.
 
-Fixes: 07b509e6584a5 ("Staging: comedi: add jr3_pci driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250415123901.13483-1-abbotti@mev.co.uk
+Add port->lock to startup()/shutdown() callbacks to make sure
+their access to SIFIVE_SERIAL_IE_OFFS is synchronized against
+write() callback.
+
+Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
+Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Rule: add
+Link: https://lore.kernel.org/stable/20250330003522.386632-1-ryotkkr98%40gmail.com
+Link: https://lore.kernel.org/r/20250412001847.183221-1-ryotkkr98@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/comedi/drivers/jr3_pci.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/tty/serial/sifive.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/staging/comedi/drivers/jr3_pci.c
-+++ b/drivers/staging/comedi/drivers/jr3_pci.c
-@@ -88,6 +88,7 @@ struct jr3_pci_poll_delay {
- struct jr3_pci_dev_private {
- 	struct timer_list timer;
- 	struct comedi_device *dev;
-+	bool timer_enable;
- };
+--- a/drivers/tty/serial/sifive.c
++++ b/drivers/tty/serial/sifive.c
+@@ -595,8 +595,11 @@ static void sifive_serial_break_ctl(stru
+ static int sifive_serial_startup(struct uart_port *port)
+ {
+ 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
++	unsigned long flags;
  
- union jr3_pci_single_range {
-@@ -612,10 +613,11 @@ static void jr3_pci_poll_dev(struct time
- 				delay = sub_delay.max;
- 		}
- 	}
-+	if (devpriv->timer_enable) {
-+		devpriv->timer.expires = jiffies + msecs_to_jiffies(delay);
-+		add_timer(&devpriv->timer);
-+	}
- 	spin_unlock_irqrestore(&dev->spinlock, flags);
--
--	devpriv->timer.expires = jiffies + msecs_to_jiffies(delay);
--	add_timer(&devpriv->timer);
- }
- 
- static struct jr3_pci_subdev_private *
-@@ -764,6 +766,7 @@ static int jr3_pci_auto_attach(struct co
- 	devpriv->dev = dev;
- 	timer_setup(&devpriv->timer, jr3_pci_poll_dev, 0);
- 	devpriv->timer.expires = jiffies + msecs_to_jiffies(1000);
-+	devpriv->timer_enable = true;
- 	add_timer(&devpriv->timer);
++	uart_port_lock_irqsave(&ssp->port, &flags);
+ 	__ssp_enable_rxwm(ssp);
++	uart_port_unlock_irqrestore(&ssp->port, flags);
  
  	return 0;
-@@ -773,8 +776,12 @@ static void jr3_pci_detach(struct comedi
- {
- 	struct jr3_pci_dev_private *devpriv = dev->private;
- 
--	if (devpriv)
-+	if (devpriv) {
-+		spin_lock_bh(&dev->spinlock);
-+		devpriv->timer_enable = false;
-+		spin_unlock_bh(&dev->spinlock);
- 		del_timer_sync(&devpriv->timer);
-+	}
- 
- 	comedi_pci_detach(dev);
  }
+@@ -604,9 +607,12 @@ static int sifive_serial_startup(struct
+ static void sifive_serial_shutdown(struct uart_port *port)
+ {
+ 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
++	unsigned long flags;
+ 
++	uart_port_lock_irqsave(&ssp->port, &flags);
+ 	__ssp_disable_rxwm(ssp);
+ 	__ssp_disable_txwm(ssp);
++	uart_port_unlock_irqrestore(&ssp->port, flags);
+ }
+ 
+ /**
 
 
 
