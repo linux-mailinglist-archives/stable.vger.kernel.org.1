@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-137547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7859AAA13E6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC39AA1801
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:54:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77DAB18815C0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B259E9805E3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3765B2405E5;
-	Tue, 29 Apr 2025 17:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC5D24BD02;
+	Tue, 29 Apr 2025 17:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9Y4RM6D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vd/jCMEc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E7E211A0B;
-	Tue, 29 Apr 2025 17:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D0E21ABC1;
+	Tue, 29 Apr 2025 17:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946394; cv=none; b=hXZgxU1pz7kWIhqGBLrHG0v3DFAYCZgb85nwolhLt6SUwDxBi3L0bZVnHu06JolOvcUoyekLEtkHLZ7sDWePHPfA9vGsFimhJbqpaRQ9MHTbt+D8JsT3isQj83uXGySdNMhBeEBjhJ+QNLG5uWhXl7UI6nIEELU1jfO/T75/wjg=
+	t=1745948986; cv=none; b=qBajvT4PzCAp4/qocO9EQCwbzDIA9Md1mW4V475LMo9K5vbc4Kw0e0eg1YWDgZJeEDf9lsN39MG+5+WxOhAP1JP4iRYT241UGxAHIpWjTmSgsVaAbspXaNoDmDyf6EurUqlr8a0Im32OFwJdcmYPzNxw1LbwuMZl61AMaUJhYHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946394; c=relaxed/simple;
-	bh=4Qt2wBqvlSbZ8lv2j1YHWjMaxg8fMANXQCgBUWdah2U=;
+	s=arc-20240116; t=1745948986; c=relaxed/simple;
+	bh=WSMwajCTIJa5pi4fhBFdCeuREMJZb0S5vS3ZcteIGnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CnPm5ezbJ2U+0GLqqzQcCmCZof95BFRa13+E2XWwRqmyVbnXEO7oi77eAxUqxS+paVFtX2zlYYXMQwlBxxEH4p6z3itwtZ19C4M+mNrHXa51SulaBKgS/lm/KGOfcrbmIaC5hCW1ss4U+6XKaDK85qKSsChugV+o5dUkdeVAudI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9Y4RM6D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF9CC4CEE3;
-	Tue, 29 Apr 2025 17:06:33 +0000 (UTC)
+	 MIME-Version; b=DxNBJxOVhvxxw7gjj0t7Hf62zF0oWX9V6l82jYZc97aUqg+ETPMUn1XOBw9S0+LHuHyu7E+0w+eYAZL/mSWm64d4MyLxRh2d0fmXHZCTcCR3yg/dZZilp5Q6saclMfYGCQ3wEeTzU4Lp+/GPZYnhuSbKHf/UJVBXPmcbzAa8Jfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vd/jCMEc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD97C4CEE3;
+	Tue, 29 Apr 2025 17:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946393;
-	bh=4Qt2wBqvlSbZ8lv2j1YHWjMaxg8fMANXQCgBUWdah2U=;
+	s=korg; t=1745948985;
+	bh=WSMwajCTIJa5pi4fhBFdCeuREMJZb0S5vS3ZcteIGnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9Y4RM6DoAEibXjYwkkycESnHVchrH5yw+/nvk/Ib36QU1KbrbPlfpwKNsQIr7zY6
-	 QPdB7mnBPRqccBbdxwc7XFhW9dFFz4teo5YFLDpYPHYzLZdEUCRlAvclXt7Ojp5tmE
-	 gRZ3C6KjS2VGCKLCquqZTqSgJ4SXMw9hdGVXppUQ=
+	b=Vd/jCMEcN64M3viQr7wlkuDDIASKNTudqSzxJ30CAbaNJ4heFaobBKSZ0904IsPtH
+	 6H6/GWBGqbI+2RegwsrUDLQFTKWn/Q8sNMO58eJnr7QTKkzQrGcs2CWN77G8NevjOJ
+	 bc4x5ibye7kFVtXlwXDVQH1/ygPsFEIqLqzHIrNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 222/311] objtool, panic: Disable SMAP in __stack_chk_fail()
+	Denis Arefev <arefev@swemel.ru>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 182/373] drm/amd/pm/powerplay/hwmgr/vega20_thermal: Prevent division by zero
 Date: Tue, 29 Apr 2025 18:40:59 +0200
-Message-ID: <20250429161130.113365814@linuxfoundation.org>
+Message-ID: <20250429161130.649868683@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Denis Arefev <arefev@swemel.ru>
 
-[ Upstream commit 72c774aa9d1e16bfd247096935e7dae194d84929 ]
+commit 4e3d9508c056d7e0a56b58d5c81253e2a0d22b6c upstream.
 
-__stack_chk_fail() can be called from uaccess-enabled code.  Make sure
-uaccess gets disabled before calling panic().
+The user can set any speed value.
+If speed is greater than UINT_MAX/8, division by zero is possible.
 
-Fixes the following warning:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-  kernel/trace/trace_branch.o: error: objtool: ftrace_likely_update+0x1ea: call to __stack_chk_fail() with UACCESS enabled
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/a3e97e0119e1b04c725a8aa05f7bc83d98e657eb.1742852847.git.jpoimboe@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 031db09017da ("drm/amd/powerplay/vega20: enable fan RPM and pwm settings V2")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/panic.c        | 6 ++++++
- tools/objtool/check.c | 5 ++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/panic.c b/kernel/panic.c
-index d8635d5cecb25..f9f0c5148f6aa 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -832,9 +832,15 @@ device_initcall(register_warn_debugfs);
-  */
- __visible noinstr void __stack_chk_fail(void)
- {
-+	unsigned long flags;
-+
- 	instrumentation_begin();
-+	flags = user_access_save();
-+
- 	panic("stack-protector: Kernel stack is corrupted in: %pB",
- 		__builtin_return_address(0));
-+
-+	user_access_restore(flags);
- 	instrumentation_end();
- }
- EXPORT_SYMBOL(__stack_chk_fail);
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 0ca83c74c1f38..bbfd81f49802e 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1189,12 +1189,15 @@ static const char *uaccess_safe_builtin[] = {
- 	"__ubsan_handle_load_invalid_value",
- 	/* STACKLEAK */
- 	"stackleak_track_stack",
-+	/* TRACE_BRANCH_PROFILING */
-+	"ftrace_likely_update",
-+	/* STACKPROTECTOR */
-+	"__stack_chk_fail",
- 	/* misc */
- 	"csum_partial_copy_generic",
- 	"copy_mc_fragile",
- 	"copy_mc_fragile_handle_tail",
- 	"copy_mc_enhanced_fast_string",
--	"ftrace_likely_update", /* CONFIG_TRACE_BRANCH_PROFILING */
- 	"rep_stos_alternative",
- 	"rep_movs_alternative",
- 	"__copy_user_nocache",
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c
+@@ -191,7 +191,7 @@ int vega20_fan_ctrl_set_fan_speed_rpm(st
+ 	uint32_t tach_period, crystal_clock_freq;
+ 	int result = 0;
+ 
+-	if (!speed)
++	if (!speed || speed > UINT_MAX/8)
+ 		return -EINVAL;
+ 
+ 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl)) {
 
 
 
