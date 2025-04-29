@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-138995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3E1AA3D7B
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 02:00:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A32AA3D87
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 02:01:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C7A73BE919
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:59:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 295B6173862
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 00:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9868289E0A;
-	Tue, 29 Apr 2025 23:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CFE255F5B;
+	Tue, 29 Apr 2025 23:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KcoAUxiZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lDLGiDuX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8894A256995;
-	Tue, 29 Apr 2025 23:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D37289E36;
+	Tue, 29 Apr 2025 23:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745970682; cv=none; b=pCG2xpqWlRa9UZRs01k3wNcIlTs3k86szQm/N//mcEcwJgidFGhm2QCvWiJn9OQziMhGuSRr0KFXsUEb6AdNrqwZrNAfV5jhRrolnlVGlEnJnB+/QRuErLhXpOqVF82D4He1+Jbd2yB3PiA+lnC8/NE7f/kVaEF7HUfmn50CYKs=
+	t=1745970688; cv=none; b=A5Mtm0bJTBQjbFgBOtf/QS5lN47oxj5MPgUU3MgYCY4XSaIQmJEI/DM2k+Uz7sWTiUpIjXjDgYSDtbCPb/RFR6rWykYH9gIsrT2UjPj2wkU+jr3WjtfbWXfGxXP7iDhtfKQRuC9DsVKxhNh2/qOV2uSbJGp45vt0WpRC7kAn+yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745970682; c=relaxed/simple;
-	bh=ugnFpq/CJSiQpHZT0kH7G9ZFQdagTJgfEfE3JRV6fFs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=J6+WAi4m6oTcN0CnHgzQNMQ8AT4csymWcY/pHsuZLNHfz20m+9z8eWckYELSDXnyPRigZ8PNchsrELRVo+ZLgOF5UWV9XRhCta3vQJjTYaWEB8RN5mgsLH9mbWt4BjRHWjdA8HCAnBaVI7cRxrjxIA4cHisltOsp0MkndPaCSdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KcoAUxiZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD48BC4CEE3;
-	Tue, 29 Apr 2025 23:51:20 +0000 (UTC)
+	s=arc-20240116; t=1745970688; c=relaxed/simple;
+	bh=zjSRx6SysfioPY3K1Prjqvm9ZdLjto2YOs0mwhoLir4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Pf9WPbMyExxHq03xButX/ibZh/KpBzmtF2SLxjAjAAqiidnmdEXTvM29RebMI4FSRfz5VF+gC8eizqqJIjNXU5q8q4Kh5GEu5a824oi9jh0mgBVi2C17WpiAF5BzM2ooc9EZ/vlUWs7EhclfzV9/TR2aPmiekEQvh+2pgK/kSgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lDLGiDuX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D0EAC4CEEE;
+	Tue, 29 Apr 2025 23:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745970682;
-	bh=ugnFpq/CJSiQpHZT0kH7G9ZFQdagTJgfEfE3JRV6fFs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KcoAUxiZoOPYCuhS6vf9GK0Fw2CVOeI0C03x8dlkOSb23N8uNIEz/wxaSvvP21tj2
-	 ikG3OrxwJPFX/j4rDveqBuawR43z1jpXlrmBW+rkCuQBA/3gnqmILqHXgPh+Ncu+jc
-	 o//749AfFbsNfG5iSa6tEv6vC3gWPwC1YkGOB+NImrj1I0kBnB7k31oogQLDOgmCfV
-	 O3M/nsCnREVIDuf1GcYexcmmljCqWAKZTIHV8qnCv0Gtd9+bp+zr0kyDz1ZPTg5F9G
-	 g6WZA1sc4BnWAtk8+4leMOCPutykXstm7gERnKC4GguEO561ER7bwC5gpEqMwj3kdC
-	 dhs0QgaIvdlIw==
+	s=k20201202; t=1745970687;
+	bh=zjSRx6SysfioPY3K1Prjqvm9ZdLjto2YOs0mwhoLir4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lDLGiDuX4XmaSoVx92ksrjmy0InamrhGV6P1x3xSDa9tS7//YlsTSjIECmONVM3HS
+	 AZf1gBo4l/a+ZOuO17WHNwhsZSG/v8Uj6E86CsWcPT4kyNCpkqPjZ3yZxie8r/2sHC
+	 uQ58eGxvn2G8mKNg/vPAd/aC7G5DhHzlfTvOfs92Z5aks5hk7jyWXE9bMJdHCPCzxh
+	 d7BeNbvXgYsKTPqRO+cLuv9ByYFSvP1+jm0bXLzv2y78o0kUw3Lys37OseuCwoBIAU
+	 bXobgBZ3+EklyXAmJsJggOpRMp2LyIwNFySjXdPVwNCmUnG3f8XDlnttbXCaFMhG2V
+	 4/0MPGGuRdaUg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Haoran Jiang <jianghaoran@kylinos.cn>,
-	zhangxi <zhangxi@kylinos.cn>,
-	Andrii Nakryiko <andrii@kernel.org>,
+Cc: Pengyu Luo <mitltlatltl@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	nathan@kernel.org,
-	bpf@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 39/39] samples/bpf: Fix compilation failure for samples/bpf on LoongArch Fedora
-Date: Tue, 29 Apr 2025 19:50:06 -0400
-Message-Id: <20250429235006.536648-39-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 01/37] cpufreq: Add SM8650 to cpufreq-dt-platdev blocklist
+Date: Tue, 29 Apr 2025 19:50:46 -0400
+Message-Id: <20250429235122.537321-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250429235006.536648-1-sashal@kernel.org>
-References: <20250429235006.536648-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,59 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.4
+X-stable-base: Linux 6.12.25
 Content-Transfer-Encoding: 8bit
 
-From: Haoran Jiang <jianghaoran@kylinos.cn>
+From: Pengyu Luo <mitltlatltl@gmail.com>
 
-[ Upstream commit 548762f05d19c5542db7590bcdfb9be1fb928376 ]
+[ Upstream commit fc5414a4774e14e51a93499a6adfdc45f2de82e0 ]
 
-When building the latest samples/bpf on LoongArch Fedora
+SM8650 have already been supported by qcom-cpufreq-hw driver, but
+never been added to cpufreq-dt-platdev. This makes noise
 
-     make M=samples/bpf
+[    0.388525] cpufreq-dt cpufreq-dt: failed register driver: -17
+[    0.388537] cpufreq-dt cpufreq-dt: probe with driver cpufreq-dt failed with error -17
 
-There are compilation errors as follows:
+So adding it to the cpufreq-dt-platdev driver's blocklist to fix it.
 
-In file included from ./linux/samples/bpf/sockex2_kern.c:2:
-In file included from ./include/uapi/linux/in.h:25:
-In file included from ./include/linux/socket.h:8:
-In file included from ./include/linux/uio.h:9:
-In file included from ./include/linux/thread_info.h:60:
-In file included from ./arch/loongarch/include/asm/thread_info.h:15:
-In file included from ./arch/loongarch/include/asm/processor.h:13:
-In file included from ./arch/loongarch/include/asm/cpu-info.h:11:
-./arch/loongarch/include/asm/loongarch.h:13:10: fatal error: 'larchintrin.h' file not found
-         ^~~~~~~~~~~~~~~
-1 error generated.
-
-larchintrin.h is included in /usr/lib64/clang/14.0.6/include,
-and the header file location is specified at compile time.
-
-Test on LoongArch Fedora:
-https://github.com/fedora-remix-loongarch/releases-info
-
-Signed-off-by: Haoran Jiang <jianghaoran@kylinos.cn>
-Signed-off-by: zhangxi <zhangxi@kylinos.cn>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250425095042.838824-1-jianghaoran@kylinos.cn
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq-dt-platdev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
-index 5b632635e00dd..95a4fa1f1e447 100644
---- a/samples/bpf/Makefile
-+++ b/samples/bpf/Makefile
-@@ -376,7 +376,7 @@ $(obj)/%.o: $(src)/%.c
- 	@echo "  CLANG-bpf " $@
- 	$(Q)$(CLANG) $(NOSTDINC_FLAGS) $(LINUXINCLUDE) $(BPF_EXTRA_CFLAGS) \
- 		-I$(obj) -I$(srctree)/tools/testing/selftests/bpf/ \
--		-I$(LIBBPF_INCLUDE) \
-+		-I$(LIBBPF_INCLUDE) $(CLANG_SYS_INCLUDES) \
- 		-D__KERNEL__ -D__BPF_TRACING__ -Wno-unused-value -Wno-pointer-sign \
- 		-D__TARGET_ARCH_$(SRCARCH) -Wno-compare-distinct-pointer-types \
- 		-Wno-gnu-variable-sized-type-not-at-end \
+diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
+index 78ad3221fe077..67bac12d4d55b 100644
+--- a/drivers/cpufreq/cpufreq-dt-platdev.c
++++ b/drivers/cpufreq/cpufreq-dt-platdev.c
+@@ -172,6 +172,7 @@ static const struct of_device_id blocklist[] __initconst = {
+ 	{ .compatible = "qcom,sm8350", },
+ 	{ .compatible = "qcom,sm8450", },
+ 	{ .compatible = "qcom,sm8550", },
++	{ .compatible = "qcom,sm8650", },
+ 
+ 	{ .compatible = "st,stih407", },
+ 	{ .compatible = "st,stih410", },
 -- 
 2.39.5
 
