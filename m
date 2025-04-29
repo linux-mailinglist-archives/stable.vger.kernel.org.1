@@ -1,166 +1,190 @@
-Return-Path: <stable+bounces-137052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF25AA0908
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 12:58:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23140AA0910
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 13:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8464E845416
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 10:58:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7854B483C60
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 11:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F6B2C10BA;
-	Tue, 29 Apr 2025 10:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2043275854;
+	Tue, 29 Apr 2025 11:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="AKZDmVp7"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="E36cSTi1"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0C62BD59D;
-	Tue, 29 Apr 2025 10:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6BE200130
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 11:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745924301; cv=none; b=cVdorjeOL4jSZ6EEG3j67fzt+t2imEJimXD8OeuX3FVIWAzZ1HOAmKXGr/GSQ/4M9iQ78uhnTMxY6wAHtJXwfQ5MCNThj2fTzUeZ9bQi2L2GwZ30Q1ZP0f7L2zC0HWKfUuI4mIgolTevO51UmgBRnnQqKP2RVtbJeAric14D5jM=
+	t=1745924456; cv=none; b=CIHqEAXcwANC7Cxbz1Ztg87b1JqO3f+ia/oUgbNRxM2zGK9DaXY1aZf6JAswKsyM2UdTWTEluvFeZRts669XT7gBk35Y25LPZjZ2bIXciOU6UPE9yIWjDTb0aoKMiVgr/7yV7PR83dIrVFpzo4g9du8CyNVYvH4NlBSuoPki8QM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745924301; c=relaxed/simple;
-	bh=7yqJb04/du8szosVpYU+M0nMBFv0R1rnOJ67ux1vJns=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VIgaOV3uB2mUga39dZs16o+IDBNF1ssmqWwXrzzCFwWJy3JG2i8Go9UDhdH55+10FMBCfLoSfzeA//n24IjiOnNmZKGatqdO7UK8QWH2YZYdM+Va2mVIPHX2GfZxXHvYJgn3zR6OMXBq3g3Fju18vcTfax0z0REkzuzo9jDtEfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=AKZDmVp7; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53TA4ter012691;
-	Tue, 29 Apr 2025 10:58:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	8jC6F1Z4b6kdxNWjS7UuoEd+SQubhF9nB4iMARJJSX4=; b=AKZDmVp7fI/umvl9
-	J7PWkKiGZW/IPcVI/Nci0mvsZ6QrNcU9pZ472S2w6rkcrDbDD1pdCr3WGWjPSPOu
-	itn8V8TYtsPBDtGbZtQWEVcTrsA2FUBNQz3Z/jq6czrf65jNkHvtWYPZ7eUcciUj
-	1v1l8dmLRlFMTdx9Yfoe3ou349Yuyiw9lP46Fu5yM5YIFyE/B6XxpEWsOimm1G63
-	8351lt3bQY8hq0aVxsZq6KZ4LFBMURirrppIyuhFPIGA4VF4cLE4wuq+7akuiipJ
-	m0qN03QyTAcFsDn/88SnDHp9aMurcwwd8Bv1AhG4icu5Kd4yEeK/VkXXzqVaQ4Tk
-	oLch0w==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 468pg9cab1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Apr 2025 10:58:14 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53TAwCtT032229
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Apr 2025 10:58:13 GMT
-Received: from [10.50.5.200] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 29 Apr
- 2025 03:58:04 -0700
-Message-ID: <2c431232-e0d6-1e6c-cd22-a912b5f08f7a@quicinc.com>
-Date: Tue, 29 Apr 2025 16:28:00 +0530
+	s=arc-20240116; t=1745924456; c=relaxed/simple;
+	bh=4BsfPMt85RF+yieVNYkX12jdqliwvgqgNJdXL1vUxK4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SH02qE+KlPAbV4nCEjp90qrI86vVqWa337aywksKBZ8y51CIbGd8WDTvWMNDh7izQT44NboQBUJbWmBKl8NbPWUIs+6x33guZT7hqD5CUJXjje7Hy/ggWv+KraIXGs2zTPyXoGdCcJUSx6mN6sET+PQochlPOvk2aDMj/nZMQco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=E36cSTi1; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=n9kw9NbSYa3wceyO5y7c71uxM/68avOApvxZH4c2MwE=; b=E36cSTi1oGm8NxzpxzRhA+Av9Y
+	4AOGnN68ncaJQ/4LJv/lrsxR1f+37OXrrzRnxKN79L7q995CsGXCqi+YSxy9SrNXWi98ny7dgYvL/
+	Kv18I1giiiZvB0oEoYeAbJe0R9mdBiepF90XPnP43+75O/GVYprwGFzVd5J9wbrWutCveCONvFYwA
+	FCnrTXX1wmtymfjfEnwiVsDbvhug5B/i6vGsv28wk0rFEZBMSHJG0zeCFLxsdtCDLqR4VkrmBwgaP
+	1kSm2HPpmgG0q3btRlDYNysrYJgBv5pu6wb4qZkPQtRcj/AFbOWR+ZtUQimfT2zwkhjEGX+yeVEwh
+	9ZQAxwuA==;
+Received: from 80.174.116.62.dyn.user.ono.com ([80.174.116.62] helo=[192.168.0.17])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1u9ihU-000HSZ-F2; Tue, 29 Apr 2025 13:00:47 +0200
+Message-ID: <1a7a025cc4b75c3667a12a1ab4781a07b31026d5.camel@igalia.com>
+Subject: Re: [PATCH] drm/v3d: Add job to pending list if the reset was
+ skipped
+From: Iago Toral <itoral@igalia.com>
+To: =?ISO-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>, Melissa Wen
+	 <mwen@igalia.com>, Jose Maria Casanova Crespo <jmcasanova@igalia.com>, 
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: dri-devel@lists.freedesktop.org, kernel-dev@igalia.com, 
+	stable@vger.kernel.org, Daivik Bhatia <dtgs1208@gmail.com>
+Date: Tue, 29 Apr 2025 13:00:36 +0200
+In-Reply-To: <ace509ac67221d5a3e7215ea132c8155179850e4.camel@igalia.com>
+References: <20250427202907.94415-2-mcanal@igalia.com>
+	 <ace509ac67221d5a3e7215ea132c8155179850e4.camel@igalia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 01/23] media: iris: Skip destroying internal buffer if
- not dequeued
-Content-Language: en-US
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Vikash Garodia
-	<quic_vgarodia@quicinc.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
-        Stefan Schmidt
-	<stefan.schmidt@linaro.org>,
-        Hans Verkuil <hverkuil@xs4all.nl>,
-        "Bjorn
- Andersson" <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        "Rob Herring" <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        "Conor Dooley" <conor+dt@kernel.org>
-CC: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Neil Armstrong
-	<neil.armstrong@linaro.org>,
-        Nicolas Dufresne
-	<nicolas.dufresne@collabora.com>,
-        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <20250417-topic-sm8x50-iris-v10-v7-0-f020cb1d0e98@linaro.org>,
-        <20250424-qcs8300_iris-v5-0-f118f505c300@quicinc.com>,
-        <stable@vger.kernel.org>
-References: <20250428-qcom-iris-hevc-vp9-v2-0-3a6013ecb8a5@quicinc.com>
- <20250428-qcom-iris-hevc-vp9-v2-1-3a6013ecb8a5@quicinc.com>
- <a056266e-612d-4abf-916f-3db49b00dbde@linaro.org>
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
-In-Reply-To: <a056266e-612d-4abf-916f-3db49b00dbde@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=ZpvtK87G c=1 sm=1 tr=0 ts=6810b0c6 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=t8wUSylDH0XA4G90k0EA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: LGhnwJroeOAOuawBJfSqEC2j_DCAMqFf
-X-Proofpoint-GUID: LGhnwJroeOAOuawBJfSqEC2j_DCAMqFf
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI5MDA4MSBTYWx0ZWRfXxG60tWbI/WqM j3jmEmFMfTHugufKqfLbKGs9H46Zh0R0vyvvX/dmf63RDETMi+paKUu6fJpieUsWvHjauhR/moO rpLByUSfKrDH+FEcO2JGns8syhOEQfLtqOs2lRLQUCsq+/NlOZ5b4WUYi5Mfxn2p6o/hLflH19W
- pFRUYksBhtLTaXV2E2PRvc8L54MthP38qttX981M7GvkousOUufWRrRfRUBJ1aCyCsdFZxf0i02 OdYvvbIn3n4acsXj0bjVtPGhw9YbZeHsA0buPBz4udheyLVwjuJ0K7xa9llEozf958XWo393bsj cyYLh7sk4c6puCebr/HxXg3KJyzCzJB9MTmjcRIO1NCZhsix8VItQ8ZI+mn0OQnhqAk5g1/s9kU
- BSYKh8ArnCVC8aQ4L86PuCRqJJt0ovvLooBoq1Fz3mGlB3TdXfYy4Krban7dBTWReVLwi5wg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-29_04,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- mlxscore=0 bulkscore=0 mlxlogscore=936 malwarescore=0 adultscore=0
- clxscore=1015 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- phishscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504290081
 
+Never mind, somehow I missed you're already doing that in this patch.
 
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
 
-On 4/29/2025 3:13 PM, Bryan O'Donoghue wrote:
-> On 28/04/2025 10:28, Dikshita Agarwal wrote:
->> +            /*
->> +             * during stream on, skip destroying internal(DPB) buffer
->> +             * if firmware did not return it.
->> +             * during close, destroy all buffers irrespectively.
->> +             */
->> +            if (!force && buf->attr & BUF_ATTR_QUEUED)
->> +                continue;
->> +
-> 
-> What's the effect of the firmware not having dequeued the buffer though ?
-> 
-> My main concern here is APSS and firmware have a different view of DMA memory.
-> 
-> We release on the APSS side but firmware has not.
-> 
-> Surely failure to release buffers by the time we get to Linux::close() is a
-> failure of the software contract sufficient to require resetting the
-> firmware ?
-> 
-> i.e. we release memory on the APSS side but firmware writes into it anyway ...
-> 
-As I mentioned earlier as well, during STOP issued before close, firmware
-is expected to release all these internal buffers and the check I added now
-in this patch will also ensures that.
-Firmware also has a check to make sure all buffers queued are released as
-part of STOP and then only firmware sends the STOP_DONE response to driver.
-STOP is a synchronous call and driver doesn't proceed without receiving the
-response for the same from firmware.
-So we will never run into this issue where driver release buffers which are
-still being accessed by firmware.
-Please note, these are internal buffers which are allocated and managed by
-driver only.
+El lun, 28-04-2025 a las 07:45 +0200, Iago Toral escribi=C3=B3:
+> Hi Maira,
+>=20
+> Looks good to me, but don't we need to do the same in
+> v3d_csd_job_timedout?
+>=20
+> Iago
+>=20
+> El dom, 27-04-2025 a las 17:28 -0300, Ma=C3=ADra Canal escribi=C3=B3:
+> > When a CL/CSD job times out, we check if the GPU has made any
+> > progress
+> > since the last timeout. If so, instead of resetting the hardware,
+> > we
+> > skip
+> > the reset and let the timer get rearmed. This gives long-running
+> > jobs
+> > a
+> > chance to complete.
+> >=20
+> > However, when `timedout_job()` is called, the job in question is
+> > removed
+> > from the pending list, which means it won't be automatically freed
+> > through
+> > `free_job()`. Consequently, when we skip the reset and keep the job
+> > running, the job won't be freed when it finally completes.
+> >=20
+> > This situation leads to a memory leak, as exposed in [1].
+> >=20
+> > Similarly to commit 704d3d60fec4 ("drm/etnaviv: don't block
+> > scheduler
+> > when
+> > GPU is still active"), this patch ensures the job is put back on
+> > the
+> > pending list when extending the timeout.
+> >=20
+> > Cc: stable@vger.kernel.org=C2=A0# 6.0
+> > Link: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12227=C2=A0[1]
+> > Reported-by: Daivik Bhatia <dtgs1208@gmail.com>
+> > Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+> > ---
+> > =C2=A0drivers/gpu/drm/v3d/v3d_sched.c | 18 +++++++++++-------
+> > =C2=A01 file changed, 11 insertions(+), 7 deletions(-)
+> >=20
+> > diff --git a/drivers/gpu/drm/v3d/v3d_sched.c
+> > b/drivers/gpu/drm/v3d/v3d_sched.c
+> > index b3be08b0ca91..a98dcf9d75b1 100644
+> > --- a/drivers/gpu/drm/v3d/v3d_sched.c
+> > +++ b/drivers/gpu/drm/v3d/v3d_sched.c
+> > @@ -734,11 +734,6 @@ v3d_gpu_reset_for_timeout(struct v3d_dev *v3d,
+> > struct drm_sched_job *sched_job)
+> > =C2=A0	return DRM_GPU_SCHED_STAT_NOMINAL;
+> > =C2=A0}
+> > =C2=A0
+> > -/* If the current address or return address have changed, then the
+> > GPU
+> > - * has probably made progress and we should delay the reset.=C2=A0 Thi=
+s
+> > - * could fail if the GPU got in an infinite loop in the CL, but
+> > that
+> > - * is pretty unlikely outside of an i-g-t testcase.
+> > - */
+> > =C2=A0static enum drm_gpu_sched_stat
+> > =C2=A0v3d_cl_job_timedout(struct drm_sched_job *sched_job, enum
+> > v3d_queue
+> > q,
+> > =C2=A0		=C2=A0=C2=A0=C2=A0 u32 *timedout_ctca, u32 *timedout_ctra)
+> > @@ -748,9 +743,16 @@ v3d_cl_job_timedout(struct drm_sched_job
+> > *sched_job, enum v3d_queue q,
+> > =C2=A0	u32 ctca =3D V3D_CORE_READ(0, V3D_CLE_CTNCA(q));
+> > =C2=A0	u32 ctra =3D V3D_CORE_READ(0, V3D_CLE_CTNRA(q));
+> > =C2=A0
+> > +	/* If the current address or return address have changed,
+> > then the GPU
+> > +	 * has probably made progress and we should delay the
+> > reset.
+> > This
+> > +	 * could fail if the GPU got in an infinite loop in the
+> > CL,
+> > but that
+> > +	 * is pretty unlikely outside of an i-g-t testcase.
+> > +	 */
+> > =C2=A0	if (*timedout_ctca !=3D ctca || *timedout_ctra !=3D ctra) {
+> > =C2=A0		*timedout_ctca =3D ctca;
+> > =C2=A0		*timedout_ctra =3D ctra;
+> > +
+> > +		list_add(&sched_job->list, &sched_job->sched-
+> > > pending_list);
+> > =C2=A0		return DRM_GPU_SCHED_STAT_NOMINAL;
+> > =C2=A0	}
+> > =C2=A0
+> > @@ -790,11 +792,13 @@ v3d_csd_job_timedout(struct drm_sched_job
+> > *sched_job)
+> > =C2=A0	struct v3d_dev *v3d =3D job->base.v3d;
+> > =C2=A0	u32 batches =3D V3D_CORE_READ(0, V3D_CSD_CURRENT_CFG4(v3d-
+> > > ver));
+> > =C2=A0
+> > -	/* If we've made progress, skip reset and let the timer
+> > get
+> > -	 * rearmed.
+> > +	/* If we've made progress, skip reset, add the job to the
+> > pending
+> > +	 * list, and let the timer get rearmed.
+> > =C2=A0	 */
+> > =C2=A0	if (job->timedout_batches !=3D batches) {
+> > =C2=A0		job->timedout_batches =3D batches;
+> > +
+> > +		list_add(&sched_job->list, &sched_job->sched-
+> > > pending_list);
+> > =C2=A0		return DRM_GPU_SCHED_STAT_NOMINAL;
+> > =C2=A0	}
+> > =C2=A0
+>=20
 
-Thanks,
-Dikshita
-> ?
-> 
-> ---
-> bod
 
