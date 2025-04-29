@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75CADAA13AD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECBCAA1614
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33ED9984947
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 885551893992
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FE824A07B;
-	Tue, 29 Apr 2025 17:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EACE72522AA;
+	Tue, 29 Apr 2025 17:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWzWfydK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxy7aUwn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E57229B05;
-	Tue, 29 Apr 2025 17:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AC6252296;
+	Tue, 29 Apr 2025 17:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946167; cv=none; b=XD7o9qUlbB8DkJcX4JJ/rMDBhV4UhliwnCG1G80RzPbF9pyY90Kp37KhKAkDeBsSgQG1hvS0tlexTtB7TLWRIXokWRvN8HYu9KVFvcRqawaVffKj/L4sgb9qUH4nkd2i1PVP2WIBDPRrT60wNa2dBZXjPfO18JJIczlE0pqDrGM=
+	t=1745947789; cv=none; b=nX+ibOzmZTtT8b8gbNPR08lD/qXt9WGYNfgDfB+qOFVR30tiRnW8N9Uqa90L9LPd29YPbDAQ7icbYsnt/HAYnXdHcwKAbKc/jN0c83bwUvX4i0Du6GXOZBlBJdsXAM7JgXyev3vyUoUzCPtmwej9sia8HEWBeLyjoM2eQZDDPLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946167; c=relaxed/simple;
-	bh=GJ04eBvDLbt437VUbAvmbD8PEzCTcfQhbdrjmY7Iqa8=;
+	s=arc-20240116; t=1745947789; c=relaxed/simple;
+	bh=+eZMwLJyKhZad2pnAncK8XSEHLbZRr6kRnTjpB64S8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P7nQCUq+fCb2VxUHB9avDXKe02x2hIOJmCWm8ZR3b0A4yIuC6WyKhfwXA8IvZOVAepEfbPsa+YI+Whu36zVFlP7MqsO358m7FzLSQGjMQFwcZFs8jp6/A0slqnzsYfdXDC6XFsXW8l8dyYb21UkUfiNxdy36twz/JXf7RVr2smA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWzWfydK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD86C4CEE3;
-	Tue, 29 Apr 2025 17:02:46 +0000 (UTC)
+	 MIME-Version; b=KDhJfZLtZGR4HYb5h8uEomr6BNX2ViRyicFzFhyCiSL1WtdxBm2cqoUGAy2Gasat+JSTL2X1EvlZvUT3ILwvRd0TA8tkYhl90jAF5OTa8iIn3A5rFUp6XD+5/T7hFP9ktGehfy/TssAO/gryK4I4DkfXWH0Pdr7Rj5i4TL4QchY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxy7aUwn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8BBC4CEEE;
+	Tue, 29 Apr 2025 17:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946167;
-	bh=GJ04eBvDLbt437VUbAvmbD8PEzCTcfQhbdrjmY7Iqa8=;
+	s=korg; t=1745947789;
+	bh=+eZMwLJyKhZad2pnAncK8XSEHLbZRr6kRnTjpB64S8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWzWfydKh7CycA9Qh3sySDxCcZmo1kAourZfU0Zj9lcJWHkb4GTpcISG5ep5yP/lc
-	 82bdGEU9hJu8h2JwoUBtudy4jzpn9q9wGiBgYBupb8FtPouxu12b1KYXqrTwPh9XPQ
-	 1DFTxYl9O+/Y5tqTmpsa3jZHaF0U4IEbJxSl5Nks=
+	b=mxy7aUwnmPZErTo6t2EgB/sVMUgbl6r9ukXq6EGlH2u2Ihkho5ZxXE4xxUNNXwk+w
+	 HcsrSlbLWOO5T0piWUulr1+2GmjAJdbx/D9mz7GQSROpgev+C+IWMQ+JxkxA8CVsc9
+	 julYblTeuxTMHXvexq77j+RyCtlPcNnb4BrWRqog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 177/311] crypto: ecdsa - Harden against integer overflows in DIV_ROUND_UP()
+Subject: [PATCH 6.12 073/280] net: ethernet: mtk_eth_soc: net: revise NETSYSv3 hardware configuration
 Date: Tue, 29 Apr 2025 18:40:14 +0200
-Message-ID: <20250429161128.278346321@linuxfoundation.org>
+Message-ID: <20250429161118.099874333@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
 
-[ Upstream commit b16510a530d1e6ab9683f04f8fb34f2e0f538275 ]
+[ Upstream commit 491ef1117c56476f199b481f8c68820fe4c3a7c2 ]
 
-Herbert notes that DIV_ROUND_UP() may overflow unnecessarily if an ecdsa
-implementation's ->key_size() callback returns an unusually large value.
-Herbert instead suggests (for a division by 8):
+Change hardware configuration for the NETSYSv3.
+ - Enable PSE dummy page mechanism for the GDM1/2/3
+ - Enable PSE drop mechanism when the WDMA Rx ring full
+ - Enable PSE no-drop mechanism for packets from the WDMA Tx
+ - Correct PSE free drop threshold
+ - Correct PSE CDMA high threshold
 
-  X / 8 + !!(X & 7)
-
-Based on this formula, introduce a generic DIV_ROUND_UP_POW2() macro and
-use it in lieu of DIV_ROUND_UP() for ->key_size() return values.
-
-Additionally, use the macro in ecc_digits_from_bytes(), whose "nbytes"
-parameter is a ->key_size() return value in some instances, or a
-user-specified ASN.1 length in the case of ecdsa_get_signature_rs().
-
-Link: https://lore.kernel.org/r/Z3iElsILmoSu6FuC@gondor.apana.org.au/
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 1953f134a1a8b ("net: ethernet: mtk_eth_soc: add NETSYS_V3 version support")
+Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/b71f8fd9d4bb69c646c4d558f9331dd965068606.1744907886.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/ecc.c         |  2 +-
- crypto/ecdsa-p1363.c |  2 +-
- crypto/ecdsa-x962.c  |  4 ++--
- include/linux/math.h | 12 ++++++++++++
- 4 files changed, 16 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 24 +++++++++++++++++----
+ drivers/net/ethernet/mediatek/mtk_eth_soc.h | 10 ++++++++-
+ 2 files changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/crypto/ecc.c b/crypto/ecc.c
-index 50ad2d4ed672c..6cf9a945fc6c2 100644
---- a/crypto/ecc.c
-+++ b/crypto/ecc.c
-@@ -71,7 +71,7 @@ EXPORT_SYMBOL(ecc_get_curve);
- void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
- 			   u64 *out, unsigned int ndigits)
- {
--	int diff = ndigits - DIV_ROUND_UP(nbytes, sizeof(u64));
-+	int diff = ndigits - DIV_ROUND_UP_POW2(nbytes, sizeof(u64));
- 	unsigned int o = nbytes & 7;
- 	__be64 msd = 0;
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index d408dcda76d79..223aee1af4430 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -3997,11 +3997,27 @@ static int mtk_hw_init(struct mtk_eth *eth, bool reset)
+ 	mtk_w32(eth, 0x21021000, MTK_FE_INT_GRP);
  
-diff --git a/crypto/ecdsa-p1363.c b/crypto/ecdsa-p1363.c
-index eaae7214d69bc..4454f1f8f33f5 100644
---- a/crypto/ecdsa-p1363.c
-+++ b/crypto/ecdsa-p1363.c
-@@ -22,7 +22,7 @@ static int ecdsa_p1363_verify(struct crypto_sig *tfm,
- {
- 	struct ecdsa_p1363_ctx *ctx = crypto_sig_ctx(tfm);
- 	unsigned int keylen = crypto_sig_keysize(ctx->child);
--	unsigned int ndigits = DIV_ROUND_UP(keylen, sizeof(u64));
-+	unsigned int ndigits = DIV_ROUND_UP_POW2(keylen, sizeof(u64));
- 	struct ecdsa_raw_sig sig;
- 
- 	if (slen != 2 * keylen)
-diff --git a/crypto/ecdsa-x962.c b/crypto/ecdsa-x962.c
-index 6a77c13e192b1..90a04f4b9a2f5 100644
---- a/crypto/ecdsa-x962.c
-+++ b/crypto/ecdsa-x962.c
-@@ -81,8 +81,8 @@ static int ecdsa_x962_verify(struct crypto_sig *tfm,
- 	struct ecdsa_x962_signature_ctx sig_ctx;
- 	int err;
- 
--	sig_ctx.ndigits = DIV_ROUND_UP(crypto_sig_keysize(ctx->child),
--				       sizeof(u64));
-+	sig_ctx.ndigits = DIV_ROUND_UP_POW2(crypto_sig_keysize(ctx->child),
-+					    sizeof(u64));
- 
- 	err = asn1_ber_decoder(&ecdsasignature_decoder, &sig_ctx, src, slen);
- 	if (err < 0)
-diff --git a/include/linux/math.h b/include/linux/math.h
-index f5f18dc3616b0..0198c92cbe3ef 100644
---- a/include/linux/math.h
-+++ b/include/linux/math.h
-@@ -34,6 +34,18 @@
-  */
- #define round_down(x, y) ((x) & ~__round_mask(x, y))
- 
-+/**
-+ * DIV_ROUND_UP_POW2 - divide and round up
-+ * @n: numerator
-+ * @d: denominator (must be a power of 2)
-+ *
-+ * Divides @n by @d and rounds up to next multiple of @d (which must be a power
-+ * of 2). Avoids integer overflows that may occur with __KERNEL_DIV_ROUND_UP().
-+ * Performance is roughly equivalent to __KERNEL_DIV_ROUND_UP().
-+ */
-+#define DIV_ROUND_UP_POW2(n, d) \
-+	((n) / (d) + !!((n) & ((d) - 1)))
+ 	if (mtk_is_netsys_v3_or_greater(eth)) {
+-		/* PSE should not drop port1, port8 and port9 packets */
+-		mtk_w32(eth, 0x00000302, PSE_DROP_CFG);
++		/* PSE dummy page mechanism */
++		mtk_w32(eth, PSE_DUMMY_WORK_GDM(1) | PSE_DUMMY_WORK_GDM(2) |
++			PSE_DUMMY_WORK_GDM(3) | DUMMY_PAGE_THR, PSE_DUMY_REQ);
 +
- #define DIV_ROUND_UP __KERNEL_DIV_ROUND_UP
++		/* PSE free buffer drop threshold */
++		mtk_w32(eth, 0x00600009, PSE_IQ_REV(8));
++
++		/* PSE should not drop port8, port9 and port13 packets from
++		 * WDMA Tx
++		 */
++		mtk_w32(eth, 0x00002300, PSE_DROP_CFG);
++
++		/* PSE should drop packets to port8, port9 and port13 on WDMA Rx
++		 * ring full
++		 */
++		mtk_w32(eth, 0x00002300, PSE_PPE_DROP(0));
++		mtk_w32(eth, 0x00002300, PSE_PPE_DROP(1));
++		mtk_w32(eth, 0x00002300, PSE_PPE_DROP(2));
  
- #define DIV_ROUND_DOWN_ULL(ll, d) \
+ 		/* GDM and CDM Threshold */
+-		mtk_w32(eth, 0x00000707, MTK_CDMW0_THRES);
++		mtk_w32(eth, 0x08000707, MTK_CDMW0_THRES);
+ 		mtk_w32(eth, 0x00000077, MTK_CDMW1_THRES);
+ 
+ 		/* Disable GDM1 RX CRC stripping */
+@@ -4018,7 +4034,7 @@ static int mtk_hw_init(struct mtk_eth *eth, bool reset)
+ 		mtk_w32(eth, 0x00000300, PSE_DROP_CFG);
+ 
+ 		/* PSE should drop packets to port 8/9 on WDMA Rx ring full */
+-		mtk_w32(eth, 0x00000300, PSE_PPE0_DROP);
++		mtk_w32(eth, 0x00000300, PSE_PPE_DROP(0));
+ 
+ 		/* PSE Free Queue Flow Control  */
+ 		mtk_w32(eth, 0x01fa01f4, PSE_FQFC_CFG2);
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.h b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
+index 8d7b6818d8601..0570623e569d5 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.h
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
+@@ -151,7 +151,15 @@
+ #define PSE_FQFC_CFG1		0x100
+ #define PSE_FQFC_CFG2		0x104
+ #define PSE_DROP_CFG		0x108
+-#define PSE_PPE0_DROP		0x110
++#define PSE_PPE_DROP(x)		(0x110 + ((x) * 0x4))
++
++/* PSE Last FreeQ Page Request Control */
++#define PSE_DUMY_REQ		0x10C
++/* PSE_DUMY_REQ is not a typo but actually called like that also in
++ * MediaTek's datasheet
++ */
++#define PSE_DUMMY_WORK_GDM(x)	BIT(16 + (x))
++#define DUMMY_PAGE_THR		0x1
+ 
+ /* PSE Input Queue Reservation Register*/
+ #define PSE_IQ_REV(x)		(0x140 + (((x) - 1) << 2))
 -- 
 2.39.5
 
