@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-137445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DD0AA1364
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E66AA1441
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 558BB4C04A8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A3ED460390
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8400424A06A;
-	Tue, 29 Apr 2025 17:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C54243364;
+	Tue, 29 Apr 2025 17:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJ6tL/L4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8Cycqff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4042722A81D;
-	Tue, 29 Apr 2025 17:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0316E27453;
+	Tue, 29 Apr 2025 17:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946088; cv=none; b=R5+b6UiAk6JJiuBBaAciQ30BkKh1nWe6/eyjq/L1LfJXWOpeWur90BMIkESZ7Lk+SqVB2hso+gvaaVh1R3v7D73qUv8SBvadqqdpdrieYXxIBGw6VzV/mtLa5f8Ga5Xm1Vk+BQ7prDY+gceDWpeXHugaImX37fIVy5haAVxTzeM=
+	t=1745946738; cv=none; b=tZSlpn3W4zVni25vBTnSqthl1FpoH/9FVzaNfY/ILoDdry8oLtYKkSHeWw97yzkPPjsPTwck0eiPa8P26ZTNWe2X9Bw6fKTF95R2ZjYeLADB74HeD9xgfOJFHyFr8wbo97UuF9tI/5Qs+KohlUatsACI7ZQeCKJ3eRxeb9Oxzr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946088; c=relaxed/simple;
-	bh=OX5U2rDACrjax5emk+xZxqAw2SqOkINEZNEYPsWlqjY=;
+	s=arc-20240116; t=1745946738; c=relaxed/simple;
+	bh=jU5dAA3O9C/ZvWtBKiBOfKBVuFKsx6lQN9/+0HtTX94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iM5C8zxBbWc3FBbCDecV4DRN0Wq+PDMGWBn6U7F5svqzXojCQ6PhaNY6+PirtKyNiGQlSu+pBvDl6Lpgtzr0e+keW6go0nUYtZYFjsqVyCEdZBxAw6QSuc3JqwNT55NHBt7BF0ygkqvdrHtlx+U3uCFH+EBgkujJLrLB2knma1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJ6tL/L4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F47C4CEEA;
-	Tue, 29 Apr 2025 17:01:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ISXN7PHY65Ui3XveGhM4U3ZNvv76lacWwXh0HXfv+n5hc9fWja+Nl9UUjUZkM3iIoXgX2KQCR2Kus6eh1qbxulHJbJ65j82k77Xw2eI78ART6cIm4snVv+AwPVCQO9SSr1YESqZSIiMLzuB8T+JuQI9p+kFAVKRpJvRRZt6zNkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8Cycqff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78025C4CEE3;
+	Tue, 29 Apr 2025 17:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946088;
-	bh=OX5U2rDACrjax5emk+xZxqAw2SqOkINEZNEYPsWlqjY=;
+	s=korg; t=1745946737;
+	bh=jU5dAA3O9C/ZvWtBKiBOfKBVuFKsx6lQN9/+0HtTX94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MJ6tL/L48zZ5xtpDuCNbu/AmcDI20uGgF+M5qyjY+RdllJ1bZtugeDDCiR+DLLGn3
-	 WbxF4spCa24KFske1ysJv7Vun5hu8RJ4bEuyRFNTspKZQbOAL/vq8UVdpfxNzqfY9+
-	 lWcYyy5g6fXgMgkbjuGw6loU7yq28mQwtUnmjmm8=
+	b=W8CycqffR/JZgC1jTTLJzlytjsdw4AqWP/PVMa1lFVEMf3nBXIeTNUybuW6voyU33
+	 tJsBwKeBKsRjWO9aKAs1k5QkR/CEsmxmc19DctF8zpznESbOIpFZMuxQ/uJ7WZxnGM
+	 9qcIAdPGbpDzAV5pp8d4n1o5evSFdchVEjFzR4jI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Mark Broadworth <mark.broadworth@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 120/311] drm/amd/display: Fix gpu reset in multidisplay config
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 053/286] media: i2c: adv748x: Fix test pattern selection mask
 Date: Tue, 29 Apr 2025 18:39:17 +0200
-Message-ID: <20250429161125.952996956@linuxfoundation.org>
+Message-ID: <20250429161110.034609281@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-commit 7eb287beeb60be1e4437be2b4e4e9f0da89aab97 upstream.
+commit 9e38acacb9d809b97a0bdc5c76e725355a47158a upstream.
 
-[Why]
-The indexing of stream_status in dm_gpureset_commit_state() is incorrect.
-That leads to asserts in multi-display configuration after gpu reset.
+The mask to select the test-pattern in register ADV748X_SDP_FRP is
+incorrect, it's the lower 3 bits which controls the pattern. The
+GENMASK() macro is used incorrectly and the generated mask is 0x0e
+instead of 0x07.
 
-[How]
-Adjust the indexing logic to align stream_status with surface_updates.
+The result is that not all test patterns are selectable, and that in
+some cases the wrong test pattern is activated. Fix this by correcting
+the GENMASK().
 
-Fixes: cdaae8371aa9 ("drm/amd/display: Handle GPU reset for DC block")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3808
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Mark Broadworth <mark.broadworth@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d91bc901398741d317d9b55c59ca949d4bc7394b)
+Fixes: 3e89586a64df ("media: i2c: adv748x: add adv748x driver")
 Cc: stable@vger.kernel.org
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[hverkuil: fixed tiny typo in commit log: my -> by]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/i2c/adv748x/adv748x.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -3293,16 +3293,16 @@ static void dm_gpureset_commit_state(str
- 	for (k = 0; k < dc_state->stream_count; k++) {
- 		bundle->stream_update.stream = dc_state->streams[k];
+--- a/drivers/media/i2c/adv748x/adv748x.h
++++ b/drivers/media/i2c/adv748x/adv748x.h
+@@ -322,7 +322,7 @@ struct adv748x_state {
  
--		for (m = 0; m < dc_state->stream_status->plane_count; m++) {
-+		for (m = 0; m < dc_state->stream_status[k].plane_count; m++) {
- 			bundle->surface_updates[m].surface =
--				dc_state->stream_status->plane_states[m];
-+				dc_state->stream_status[k].plane_states[m];
- 			bundle->surface_updates[m].surface->force_full_update =
- 				true;
- 		}
+ /* Free run pattern select */
+ #define ADV748X_SDP_FRP			0x14
+-#define ADV748X_SDP_FRP_MASK		GENMASK(3, 1)
++#define ADV748X_SDP_FRP_MASK		GENMASK(2, 0)
  
- 		update_planes_and_stream_adapter(dm->dc,
- 					 UPDATE_TYPE_FULL,
--					 dc_state->stream_status->plane_count,
-+					 dc_state->stream_status[k].plane_count,
- 					 dc_state->streams[k],
- 					 &bundle->stream_update,
- 					 bundle->surface_updates);
+ /* Saturation */
+ #define ADV748X_SDP_SD_SAT_U		0xe3	/* user_map_rw_reg_e3 */
 
 
 
