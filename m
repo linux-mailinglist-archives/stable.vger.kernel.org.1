@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD878AA13D4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A9CAA16BF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E73DC1BA7EC2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09C7C98511D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115BC2512E8;
-	Tue, 29 Apr 2025 17:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E75C253348;
+	Tue, 29 Apr 2025 17:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5h/Knw9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlRFy/x3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4ABF248191;
-	Tue, 29 Apr 2025 17:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4865A2528EC;
+	Tue, 29 Apr 2025 17:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946351; cv=none; b=A5u4v44ky2g43pjl4SZi/8sp4u1PWiVUDjesrllU6kii9KoI9QFuWq4g4C2xmlC3qVWr6OHWM5lN7w7KcDrMEYiZVSQoff8fvmdwGKby45YZvJtMUOI2iLqyGwNRJeNCD5EF9kWdHvEvp35IUb5CaCXDOszOlx/gcqhc8Mr88bg=
+	t=1745948037; cv=none; b=fjCIv8thDN928GZqWIXy9ICmWe+pwvStOtWZdnLF6IIthCNklZGTq/0POPzYEQH+Ru5E7gdH/SNNI3d4XpfAPe0ynHi7hqcf6JiD8EqZTWA7uLGiTwRmQGT/SfigqODmpr4/8REVzsxocy+7L5uczZe5Qd6irz0eVEfyoa5sMV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946351; c=relaxed/simple;
-	bh=MqK080vAUatB3N/Q90G5G2BLyZlFBRRTC3rvZzJnaNQ=;
+	s=arc-20240116; t=1745948037; c=relaxed/simple;
+	bh=Cj0FqzQxBDUTY6UU0DBWgU+esLD7O4VquqjKzX7eqns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NTf9JtDGHY+NS1NPp6ZaPG8yImNYSfueRIaxJd+swVLoFQ+HnjdAFNxIFVDLrJIeLSa/Z0zCUknHY0sakN8EF65VCerFmwhhFf+XxORpXJCCeyNw//7R5JYrhyTOxDuoMV7yd9KmSX+kd7PRFRf8aRIELWQl9JakyfLZpEWQmH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5h/Knw9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57554C4CEE3;
-	Tue, 29 Apr 2025 17:05:51 +0000 (UTC)
+	 MIME-Version; b=lV+UqtuxiUmo4uDGIbTIkA48b2CFmNxLEnofXqQrPnVuRo1q82MRSpV/mYp4w5zOcl5ZER2TrjDl15W0ZYUncvnS1rSSwjRzbL4kSEXiK0HhB+mmE9SEA1z7F/A+m7FX4VcCO1+m085u6CdhWDwreyktFFNqBXGhOXwIZ0J+AzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlRFy/x3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F6CC4CEEE;
+	Tue, 29 Apr 2025 17:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946351;
-	bh=MqK080vAUatB3N/Q90G5G2BLyZlFBRRTC3rvZzJnaNQ=;
+	s=korg; t=1745948037;
+	bh=Cj0FqzQxBDUTY6UU0DBWgU+esLD7O4VquqjKzX7eqns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5h/Knw9hZMMCNkJRaZ4pGGP3HrNtW6HJs0T1fUurX1AW1p//XPv4youegWt2ff0J
-	 8aVnx8kXW2Moofr5XGubdGID39KlBIDdGz0GPwxga4881yzm7uxfcctskfB/2mWjA4
-	 NDLwQLYiANHculisMTcEzSqMvPkdYKHqCxWYhgAY=
+	b=RlRFy/x3gZg7aUnxsw5bcq73iwt7kmKMhRQo71XXK130m8A/MPLTBK3iv9G0/mNAc
+	 25kntWaZpB/dcRyevLLBRW2PzADSqXuTiRzfeKmQCnIYznLeHT01xZlFTXKGlkVVXf
+	 L1wt+9HAqhvkXLoeyD1wmgHe4ihZPPCd9dtAjK/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Michael Mueller <mimu@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 238/311] KVM: s390: Dont use %pK through tracepoints
+	Adam Xue <zxue@semtech.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 134/280] USB: serial: option: add Sierra Wireless EM9291
 Date: Tue, 29 Apr 2025 18:41:15 +0200
-Message-ID: <20250429161130.772611976@linuxfoundation.org>
+Message-ID: <20250429161120.612308136@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +59,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Adam Xue <zxue@semtech.com>
 
-[ Upstream commit 6c9567e0850be2f0f94ab64fa6512413fd1a1eb1 ]
+commit 968e1cbb1f6293c3add9607f80b5ce3d29f57583 upstream.
 
-Restricted pointers ("%pK") are not meant to be used through TP_format().
-It can unintentionally expose security sensitive, raw pointer values.
+Add Sierra Wireless EM9291.
 
-Use regular pointer formatting instead.
+Interface 0: MBIM control
+          1: MBIM data
+          3: AT port
+          4: Diagnostic port
 
-Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Michael Mueller <mimu@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Message-ID: <20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1199 ProdID=90e3 Rev=00.06
+S:  Manufacturer=Sierra Wireless, Incorporated
+S:  Product=Sierra Wireless EM9291
+S:  SerialNumber=xxxxxxxxxxxxxxxx
+C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=(none)
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Adam Xue <zxue@semtech.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kvm/trace-s390.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/s390/kvm/trace-s390.h b/arch/s390/kvm/trace-s390.h
-index 9ac92dbf680db..9e28f165c114c 100644
---- a/arch/s390/kvm/trace-s390.h
-+++ b/arch/s390/kvm/trace-s390.h
-@@ -56,7 +56,7 @@ TRACE_EVENT(kvm_s390_create_vcpu,
- 		    __entry->sie_block = sie_block;
- 		    ),
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -611,6 +611,7 @@ static void option_instat_callback(struc
+ /* Sierra Wireless products */
+ #define SIERRA_VENDOR_ID			0x1199
+ #define SIERRA_PRODUCT_EM9191			0x90d3
++#define SIERRA_PRODUCT_EM9291			0x90e3
  
--	    TP_printk("create cpu %d at 0x%pK, sie block at 0x%pK",
-+	    TP_printk("create cpu %d at 0x%p, sie block at 0x%p",
- 		      __entry->id, __entry->vcpu, __entry->sie_block)
- 	);
- 
-@@ -255,7 +255,7 @@ TRACE_EVENT(kvm_s390_enable_css,
- 		    __entry->kvm = kvm;
- 		    ),
- 
--	    TP_printk("enabling channel I/O support (kvm @ %pK)\n",
-+	    TP_printk("enabling channel I/O support (kvm @ %p)\n",
- 		      __entry->kvm)
- 	);
- 
--- 
-2.39.5
-
+ /* UNISOC (Spreadtrum) products */
+ #define UNISOC_VENDOR_ID			0x1782
+@@ -2432,6 +2433,8 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
 
 
 
