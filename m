@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0183CAA1336
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:03:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E2EAA1757
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DB297ADD1D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25AE11B683CC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3A52522A1;
-	Tue, 29 Apr 2025 17:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7684242D73;
+	Tue, 29 Apr 2025 17:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwOiy/CS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wC+7pw9Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487C31FE468;
-	Tue, 29 Apr 2025 17:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828EC2135DD;
+	Tue, 29 Apr 2025 17:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946182; cv=none; b=iE8OVH0LViATV5VDLyQpjpDf0Px4k+QSM0ogcH8DpAKDWo20m7LLN09ysS5sx3u3UWu0WQdkNdO8L+rUvhwUCMVQy0xBF1SN0EMmnj50lN1TNIln433HnPGeJx3acZRVaPUzaclvnDs+58kAvAexpikfyTmbb+Cj4pEm/D2O9jY=
+	t=1745948789; cv=none; b=XYOuUW724HR4x1Bp4kCvfIrJ7LT4/+9uU/INunmXOONt0LyZE83n84yAhE7Nn0+8W8i2RdjxfcrZGdHBhstYmzXDcLN/DNHICGqEh4feBE8b4idcXLo+LG3MbESF663GLTHgl9VbQdo8BESgdJ4WiNv4oLKsEBuH0SEAE+EXPS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946182; c=relaxed/simple;
-	bh=bj22yOdEWtgfS/DW3oPOudE43Qo2v4SfxzjG9TCEZBI=;
+	s=arc-20240116; t=1745948789; c=relaxed/simple;
+	bh=rVIGTWxAknfXtS+ioOJHWlV/XiIi01uR42aTfQ0qMjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6YerFi64elGBu+6GoanKf9jTBep0lNRw012kxzAC0oq+cqPgObpLRvqZar3/hNQ8fPwQLTjy2WyAHrRnlHlzAGn3fAi4T7ykfKz2IiqkoT5GBlT63/lRbxXiGqDSg2yQuskgNeumhZxzRx97IsoFtL/53BpOC0DorfbPLisF+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwOiy/CS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C25FEC4CEE3;
-	Tue, 29 Apr 2025 17:03:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZGF4MyZj0URt6Nl+PhkQqda4KUcTHAc6kClDcEFwmqNodZ9A4w3r2IWwhHbj/8KHliqd4zn16HnuwdH2SIATtCGBBfY+npwFf/FSJu8iSIo1L0ulldQufAUt1T2SovlNcFULftyYxutfr3MGDSo5YGvf8o6sOu80dCqxOHiCdbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wC+7pw9Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F53CC4CEE3;
+	Tue, 29 Apr 2025 17:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946182;
-	bh=bj22yOdEWtgfS/DW3oPOudE43Qo2v4SfxzjG9TCEZBI=;
+	s=korg; t=1745948789;
+	bh=rVIGTWxAknfXtS+ioOJHWlV/XiIi01uR42aTfQ0qMjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xwOiy/CSz5Br2WP8U9FDhpKuHszSARVCJAbYhwEPw7jcYLBQvGpjq7ncGwq2B+xN/
-	 f9WFz+NLOq6rU30jmBg5zV053VUiGM+HcPXSoV3ICQTYp2qCMu0lTi1u/GDDjnGeny
-	 rx4u4zIW9YIY2OFd2eJSAnDaLWYsvjgo1fD0s40c=
+	b=wC+7pw9QjAldxDALVI4fCRrUxVstfJ0JRdQp8crRZ0mdUd4JUalTB2YQ2YA0AO1Av
+	 yvN8CNpg0KzbHq1aAZ9uNM7MIWN/TuRTepAevtxGMZdK3OgTU/ZDlc29u7DHTdcI2M
+	 gXodqCfqJdRVxTncfof5FweB+SMr2iGN6xPcOiE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.14 153/311] serial: msm: Configure correct working mode before starting earlycon
+	Ma Ke <make24@iscas.ac.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 5.15 113/373] PCI: Fix reference leak in pci_alloc_child_bus()
 Date: Tue, 29 Apr 2025 18:39:50 +0200
-Message-ID: <20250429161127.303537467@linuxfoundation.org>
+Message-ID: <20250429161127.824683027@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 7094832b5ac861b0bd7ed8866c93cb15ef619996 upstream.
+commit 1f2768b6a3ee77a295106e3a5d68458064923ede upstream.
 
-The MSM UART DM controller supports different working modes, e.g. DMA or
-the "single-character mode", where all reads/writes operate on a single
-character rather than 4 chars (32-bit) at once. When using earlycon,
-__msm_console_write() always writes 4 characters at a time, but we don't
-know which mode the bootloader was using and we don't set the mode either.
+If device_register(&child->dev) fails, call put_device() to explicitly
+release child->dev, per the comment at device_register().
 
-This causes garbled output if the bootloader was using the single-character
-mode, because only every 4th character appears in the serial console, e.g.
+Found by code review.
 
-  "[ 00oni pi  000xf0[ 00i s 5rm9(l)l s 1  1 SPMTA 7:C 5[ 00A ade k d[
-   00ano:ameoi .Q1B[ 00ac _idaM00080oo'"
-
-If the bootloader was using the DMA ("DM") mode, output would likely fail
-entirely. Later, when the full serial driver probes, the port is
-re-initialized and output works as expected.
-
-Fix this also for earlycon by clearing the DMEN register and
-reset+re-enable the transmitter to apply the change. This ensures the
-transmitter is in the expected state before writing any output.
-
-Cc: stable <stable@kernel.org>
-Fixes: 0efe72963409 ("tty: serial: msm: Add earlycon support")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250408-msm-serial-earlycon-v1-1-429080127530@linaro.org
+Link: https://lore.kernel.org/r/20250202062357.872971-1-make24@iscas.ac.cn
+Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possible")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/msm_serial.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pci/probe.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/msm_serial.c
-+++ b/drivers/tty/serial/msm_serial.c
-@@ -1746,6 +1746,12 @@ msm_serial_early_console_setup_dm(struct
- 	if (!device->port.membase)
- 		return -ENODEV;
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1115,7 +1115,10 @@ static struct pci_bus *pci_alloc_child_b
+ add_dev:
+ 	pci_set_bus_msi_domain(child);
+ 	ret = device_register(&child->dev);
+-	WARN_ON(ret < 0);
++	if (WARN_ON(ret < 0)) {
++		put_device(&child->dev);
++		return NULL;
++	}
  
-+	/* Disable DM / single-character modes */
-+	msm_write(&device->port, 0, UARTDM_DMEN);
-+	msm_write(&device->port, MSM_UART_CR_CMD_RESET_RX, MSM_UART_CR);
-+	msm_write(&device->port, MSM_UART_CR_CMD_RESET_TX, MSM_UART_CR);
-+	msm_write(&device->port, MSM_UART_CR_TX_ENABLE, MSM_UART_CR);
-+
- 	device->con->write = msm_serial_early_write_dm;
- 	return 0;
- }
+ 	pcibios_add_bus(child);
+ 
 
 
 
