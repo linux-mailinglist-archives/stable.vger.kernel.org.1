@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-138879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 670CCAA1A34
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B627EAA1A51
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:20:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD37818893B3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:17:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B77EE1C01DCC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9866425332D;
-	Tue, 29 Apr 2025 18:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6114C155A4E;
+	Tue, 29 Apr 2025 18:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQoIBtIE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FO2483Kj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572CC155A4E;
-	Tue, 29 Apr 2025 18:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDBE219A63;
+	Tue, 29 Apr 2025 18:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950641; cv=none; b=ljTgKvRVPJYLqFLzAuzlkkWrIpAvE5Y+m1h8xH7gbq9WPn5A1UHhcbKogBosgv4Erl/UcpVi+KeeG6sutnWduIzMs4S8fDlT1Hr+pP8E8EhpBvOPR3lYXBrKaZPDs1yXanPqAO6VAtFkhbXSdoCui7c/cUbYLLfWt88D1bgN3rE=
+	t=1745950769; cv=none; b=Rcw55NrwK4K6Y9avloKXw2E9d0YJ5hv3VVnt9P7wyAblOg8L7voKMxQvedwQ4xG5VxrdnFX5nbjoGN+ojjG9+dleUHAYUqVtcLt1GVZg/tE5FCVfvmGNAZRVKX/E98PzWPNmop4ZmGitg4G741FT5lFAkV1EHppd1R/qhQ0uNcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950641; c=relaxed/simple;
-	bh=++mJA97+LfkL8YxIZXBni2j5UUu1I4bXB63le8jseDE=;
+	s=arc-20240116; t=1745950769; c=relaxed/simple;
+	bh=FHVyiwnvw6pF3r5JwB5EkK5uzjw3EqIWw37kX5fTifQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2DkJJfeymxciTMmaVPmeJfYNcGkaUzKbfPDHSN/dBeh5Yo6Ea1+mpMUy9p5WbjwQyFHx3TwP9ju5V3dGIk3e9/COL/uAAbL6yZSoTnenovAnmY/RrcbtrXPyj42x74n6HWR7SFIlLm5MIDdD0J2WBRASHmXoyg4REx5WpdnGmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQoIBtIE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE74C4CEE3;
-	Tue, 29 Apr 2025 18:17:20 +0000 (UTC)
+	 MIME-Version; b=MeZOG1jSi6+euGGtaq6IGjHjaoeZBuYi+kWYZwQaaSApdBsC1n0Hs5/AZHsc0OJACwUWYLKey6n6tEaYAZiG4x5pUOENxUwcvv74aXMTCRLRkPwmRj4d1D1MH8YqEk6mlqoQJALa9j6Yhvbv+oiwNbb1o2I2iTu7V0xjNAXVQDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FO2483Kj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1951C4CEE3;
+	Tue, 29 Apr 2025 18:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950641;
-	bh=++mJA97+LfkL8YxIZXBni2j5UUu1I4bXB63le8jseDE=;
+	s=korg; t=1745950769;
+	bh=FHVyiwnvw6pF3r5JwB5EkK5uzjw3EqIWw37kX5fTifQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQoIBtIEaAtJVGdl4iCsK3i+dDbU3NliUexAnFk1WgtNvuirUUZ0L5jpKO3+F6kJq
-	 tl/hJhrlvclow4fQc8g41DYyqLhznBmEWwMT8CdBPGIqBA5PODWfGYbF0TJMdktDZV
-	 v9Hv0KzNU/+ITwKrL/rprwidaWQzVc5mG6OxY/Xw=
+	b=FO2483KjhqP1QuI+0fe3zR7C5FDrh05W3LHqEZ3yGyjrRJ/NGN18uZ1K04WkzcIwA
+	 W0Lfpp+i2GFEhbHTbZ3B5YvVbn+d5IW6ZrlB1mIAX3qxnzs4jTM/XOqqBjwn/6lTZ9
+	 8e9GFcvuT6goo3jE2xVqIwkN5nxT9ImhBlOejGjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	Juergen Gross <jgross@suse.com>,
+	Hannes Reinecke <hare@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 158/204] xen: Change xen-acpi-processor dom0 dependency
-Date: Tue, 29 Apr 2025 18:44:06 +0200
-Message-ID: <20250429161105.878160561@linuxfoundation.org>
+Subject: [PATCH 6.6 159/204] nvme: requeue namespace scan on missed AENs
+Date: Tue, 29 Apr 2025 18:44:07 +0200
+Message-ID: <20250429161105.918972962@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
 References: <20250429161059.396852607@linuxfoundation.org>
@@ -67,38 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: Hannes Reinecke <hare@kernel.org>
 
-[ Upstream commit 0f2946bb172632e122d4033e0b03f85230a29510 ]
+[ Upstream commit 9546ad1a9bda7362492114f5866b95b0ac4a100e ]
 
-xen-acpi-processor functions under a PVH dom0 with only a
-xen_initial_domain() runtime check.  Change the Kconfig dependency from
-PV dom0 to generic dom0 to reflect that.
+Scanning for namespaces can take some time, so if the target is
+reconfigured while the scan is running we may miss a Attached Namespace
+Attribute Changed AEN.
 
-Suggested-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Tested-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250331172913.51240-1-jason.andryuk@amd.com>
+Check if the NVME_AER_NOTICE_NS_CHANGED bit is set once the scan has
+finished, and requeue scanning to pick up any missed change.
+
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/xen/Kconfig b/drivers/xen/Kconfig
-index d43153fec18ea..af5c214b22069 100644
---- a/drivers/xen/Kconfig
-+++ b/drivers/xen/Kconfig
-@@ -278,7 +278,7 @@ config XEN_PRIVCMD_IRQFD
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index f00665ad0c11a..e36c6fcab1eed 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -3972,6 +3972,10 @@ static void nvme_scan_work(struct work_struct *work)
+ 			nvme_scan_ns_sequential(ctrl);
+ 	}
+ 	mutex_unlock(&ctrl->scan_lock);
++
++	/* Requeue if we have missed AENs */
++	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
++		nvme_queue_scan(ctrl);
+ }
  
- config XEN_ACPI_PROCESSOR
- 	tristate "Xen ACPI processor"
--	depends on XEN && XEN_PV_DOM0 && X86 && ACPI_PROCESSOR && CPU_FREQ
-+	depends on XEN && XEN_DOM0 && X86 && ACPI_PROCESSOR && CPU_FREQ
- 	default m
- 	help
- 	  This ACPI processor uploads Power Management information to the Xen
+ /*
 -- 
 2.39.5
 
