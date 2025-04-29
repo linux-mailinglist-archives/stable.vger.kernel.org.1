@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-137716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3988EAA1497
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35197AA121B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B6914A1551
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:15:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4247E1BA2DBE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E79F253331;
-	Tue, 29 Apr 2025 17:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42085244668;
+	Tue, 29 Apr 2025 16:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMAsU3yv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvf7B9Ax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2A22512F3;
-	Tue, 29 Apr 2025 17:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E3D24113C;
+	Tue, 29 Apr 2025 16:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946912; cv=none; b=f0YF3Rdyh4GJ+43tRm8QwOowPEDdlq9EQX0r2e4HWp0rp1OB3T0oXlXHpCtRuslG30n/CPWsMmhhs6QyXGxw9SiEBbCidQUKUJxvrbkQPdgICyINFjFZ1/omcbdh5UX735H8mwsyyTQRYake7pEprx0GDL1ICIjsL1tUMATfGiw=
+	t=1745945322; cv=none; b=MA95Cdqls6iTQz4aZ6LACYCy46v1C3hSXjo8JWovIaE2Xa9uvXSWRftuQxxFvnQexpnecgJYa7jtyfDpQlmd3Y0Hv7MQudgIRPa0Ca8JuuoBPCAY1epOxUC7cWkR/osj5+pDPeFDwNPZFPBz57fv/kGhegyPRxrsqpsjZGEQFt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946912; c=relaxed/simple;
-	bh=VA9teisRkhwg+WD612r19zUIHdQkKyHAVUPYnMrIt+8=;
+	s=arc-20240116; t=1745945322; c=relaxed/simple;
+	bh=7ZrOzoZ4LDhb5kDrTAdOUEJ7NimO1uwk4zbgsU/hw4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KMrQfYwh5lwaphGpVd14fbdhW0koT9OBRUuf3kP+KQJRoGJe3slQIgfmaM4MO43gnMGAgIjy0OdOsgB6IyGmy68q7ePkvejUvi0Btpi7faiomqcfPgk4oMYf9KmepOs9nia1oVKNxBb27qSijWuTKbRmg+YyHag5PHY8rVHubbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMAsU3yv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE3FC4CEE3;
-	Tue, 29 Apr 2025 17:15:11 +0000 (UTC)
+	 MIME-Version; b=kDxttxD761DbBw7gnLCfCCG50b322b1cxyPhYRb0s+Ku1k0iT4rRnl8BQXl+fC7zOUC0djqVtwGnA/LwCkvyvRCiJr7Fq2MkzfC6gDG9i1rPK/nJo/iL6Q5rMfOikfo73CCRfQKpcAXYptLqgyfC9+MKQ/a87hv37z2UTwT6wIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvf7B9Ax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA00C4CEE3;
+	Tue, 29 Apr 2025 16:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946911;
-	bh=VA9teisRkhwg+WD612r19zUIHdQkKyHAVUPYnMrIt+8=;
+	s=korg; t=1745945321;
+	bh=7ZrOzoZ4LDhb5kDrTAdOUEJ7NimO1uwk4zbgsU/hw4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yMAsU3yv089mB806jHboIJC58e3l+c+8dx+GFc1CL4rEmk9teFK21Rj/0Gy5eJ7B5
-	 2fz0vZKJKL1qjVbyQK8k8osb9EmTuJgde9fObEknYzXpyfuAgSderOV+vW4cBlz7zD
-	 KASfaEV9TQUdtBbnryYWv3qUCITeDjwAsnGgoBbY=
+	b=hvf7B9Ax7KFXDw4BU5S4W2fPrOpPd1SVZzlHadUp6bZxbaYDCPZxe0j+aUPLm5Q4C
+	 R9Uf2i5UMgOX3wYl7aQNM9EvZvv7a1RARh7lfqz+uruKpVEo5ZPWKlHfa4+7gL9WJ1
+	 a+aXk0u8pMqDIj42pQRdcyoYVkeghjFdKcpBakAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 110/286] Bluetooth: hci_event: Fix sending MGMT_EV_DEVICE_FOUND for invalid address
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 5.4 073/179] gpio: zynq: Fix wakeup source leaks on device unbind
 Date: Tue, 29 Apr 2025 18:40:14 +0200
-Message-ID: <20250429161112.385107869@linuxfoundation.org>
+Message-ID: <20250429161052.368991534@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit eb73b5a9157221f405b4fe32751da84ee46b7a25 ]
+commit c5672e310ad971d408752fce7596ed27adc6008f upstream.
 
-This fixes sending MGMT_EV_DEVICE_FOUND for invalid address
-(00:00:00:00:00:00) which is a regression introduced by
-a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
-since in the attempt to skip storing data for extended advertisement it
-actually made the code to skip the entire if statement supposed to send
-MGMT_EV_DEVICE_FOUND without attempting to use the last_addr_adv which
-is garanteed to be invalid for extended advertisement since we never
-store anything on it.
+Device can be unbound, so driver must also release memory for the wakeup
+source.
 
-Link: https://github.com/bluez/bluez/issues/1157
-Link: https://github.com/bluez/bluez/issues/1149#issuecomment-2767215658
-Fixes: a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250406202245.53854-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-zynq.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 546795425119b..7f26c1aab9a06 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -5644,11 +5644,12 @@ static void process_adv_report(struct hci_dev *hdev, u8 type, bdaddr_t *bdaddr,
- 	 * event or send an immediate device found event if the data
- 	 * should not be stored for later.
- 	 */
--	if (!ext_adv &&	!has_pending_adv_report(hdev)) {
-+	if (!has_pending_adv_report(hdev)) {
- 		/* If the report will trigger a SCAN_REQ store it for
- 		 * later merging.
- 		 */
--		if (type == LE_ADV_IND || type == LE_ADV_SCAN_IND) {
-+		if (!ext_adv && (type == LE_ADV_IND ||
-+				 type == LE_ADV_SCAN_IND)) {
- 			store_pending_adv_report(hdev, bdaddr, bdaddr_type,
- 						 rssi, flags, data, len);
- 			return;
--- 
-2.39.5
-
+--- a/drivers/gpio/gpio-zynq.c
++++ b/drivers/gpio/gpio-zynq.c
+@@ -943,6 +943,7 @@ static int zynq_gpio_remove(struct platf
+ 	ret = pm_runtime_get_sync(&pdev->dev);
+ 	if (ret < 0)
+ 		dev_warn(&pdev->dev, "pm_runtime_get_sync() Failed\n");
++	device_init_wakeup(&pdev->dev, 0);
+ 	gpiochip_remove(&gpio->chip);
+ 	clk_disable_unprepare(gpio->clk);
+ 	device_set_wakeup_capable(&pdev->dev, 0);
 
 
 
