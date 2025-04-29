@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 595D1AA122B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E230AA135A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 773D07B2C5D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A63DC7AFD17
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E96424336D;
-	Tue, 29 Apr 2025 16:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9783E2512D9;
+	Tue, 29 Apr 2025 17:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWsJxQV8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0I0BqEBZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B953243364;
-	Tue, 29 Apr 2025 16:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BD682C60;
+	Tue, 29 Apr 2025 17:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945421; cv=none; b=i2aufxrCjjocvPpXN7DHZ0TpFD8ajohdDsaHkm+bbpIBlcoyUYB7iqPGiv7dHzoI26rAhzaqd8tpHiSRRGCPQSxrIWL1b8WOwM+a2Sn7Wfc1pc04KppvcoZ4k0zC1O23wiUD0WcpcMGpv+ZSFq5gjTM9tHHN5yUolt9BQQeJ0LI=
+	t=1745946271; cv=none; b=TehQaTchYLQSKVDSrDjXVVs5XTodTZnDbUzQp6o+C3n8wQSf6FXixIT0MS+D8sDJnQwDi5hJGg2IHCkoltvVaFkYMjJmdKLzH+rZalDbELa7JfQASdrkh5aHt5RxSMaIhxsgQb8qdIbsEmZ8TQuHHX9/I+17Sk8F5PvQiEaFeGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945421; c=relaxed/simple;
-	bh=LTyAquxuTc+esBhZIeWrXJ8kxTbdaO9o65NstLb/ml8=;
+	s=arc-20240116; t=1745946271; c=relaxed/simple;
+	bh=z1aDlTfdvDkeWsJTiJ2pR5yZolONi+Cn7qTbI9Re8gU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YfOdV3EiC+3lRzJ3Jdlq+3LjHjpEKi7F0zdyaYc6kbDM5WG6KRFvCEwomJ/sCLdnnlcvTIBZGtbzwLriA8B2eVT1ZJbZWHBeKRuwOfE34rgXmk2hIAvmppCLSLuCwnPQdeC2I0tKOX21wGv7antPrx/8A/yc4TW4kvLXk7UDhBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWsJxQV8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3867C4CEE3;
-	Tue, 29 Apr 2025 16:50:20 +0000 (UTC)
+	 MIME-Version; b=rIO7zI2V+OJF8lUlKIBYEiRR8oXAn1t7fjfjVJuwQiBD2bNwnKbXrENMhL18Tfz8tP9bMK6edHAeTLwXr1OduIButtpw9uYDIw1TQyr8136fV94SHlypF+w3mMvV7LNUsi3c6+5PUmR0I54Wxv2fOlK1u3RNo17cv55OaZevx5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0I0BqEBZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7401CC4CEE3;
+	Tue, 29 Apr 2025 17:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945421;
-	bh=LTyAquxuTc+esBhZIeWrXJ8kxTbdaO9o65NstLb/ml8=;
+	s=korg; t=1745946270;
+	bh=z1aDlTfdvDkeWsJTiJ2pR5yZolONi+Cn7qTbI9Re8gU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jWsJxQV8mEDhFpLCeh1pBWXgQI3dmL+7XaWExYg+6tJNVd9fNH5bPknqelhlE6hVA
-	 gjF5pmvAItxQ2U029+T37hl2XV0ezwns41/3hBKv7+Pstv2ITpdiHFXh5R04f8i+lU
-	 h6lVERbPrjZjwwtM1fNwYanZtRtPycBqssbNFoiU=
+	b=0I0BqEBZSr2P5B/CGSoUwlV2Rlz7b+kocp0DFlwaxT7EARmyZmgHxesZASF3dGpZs
+	 aPLXr4KWVPDUI47uetPdM/1VrslcW5vJx1cgokylwo0JEwq1T+L5KGBZFddQ7Wvnmt
+	 i1DNWGx8pGF+Not0Y0htE88eDD7LvA08VHNokT6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <a.p.zijlstra@chello.nl>
-Subject: [PATCH 5.4 106/179] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SNR
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 210/311] usb: xhci: Fix isochronous Ring Underrun/Overrun event handling
 Date: Tue, 29 Apr 2025 18:40:47 +0200
-Message-ID: <20250429161053.692756839@linuxfoundation.org>
+Message-ID: <20250429161129.605541237@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 96a720db59ab330c8562b2437153faa45dac705f upstream.
+[ Upstream commit 906dec15b9b321b546fd31a3c99ffc13724c7af4 ]
 
-There was a mistake in the SNR uncore spec. The counter increments for
-every 32 bytes of data sent from the IO agent to the SOC, not 4 bytes
-which was documented in the spec.
+The TRB pointer of these events points at enqueue at the time of error
+occurrence on xHCI 1.1+ HCs or it's NULL on older ones. By the time we
+are handling the event, a new TD may be queued at this ring position.
 
-The event list has been updated:
+I can trigger this race by rising interrupt moderation to increase IRQ
+handling delay. Similar delay may occur naturally due to system load.
 
-  "EventName": "UNC_IIO_BANDWIDTH_IN.PART0_FREERUN",
-  "BriefDescription": "Free running counter that increments for every 32
-		       bytes of data sent from the IO agent to the SOC",
+If this ever happens after a Missed Service Error, missed TDs will be
+skipped and the new TD processed as if it matched the event. It could
+be given back prematurely, risking data loss or buffer UAF by the xHC.
 
-Update the scale of the IIO bandwidth in free running counters as well.
+Don't complete TDs on xrun events and don't warn if queued TDs don't
+match the event's TRB pointer, which can be NULL or a link/no-op TRB.
+Don't warn if there are no queued TDs at all.
 
-Fixes: 210cc5f9db7a ("perf/x86/intel/uncore: Add uncore support for Snow Ridge server")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250416142426.3933977-1-kan.liang@linux.intel.com
+Now that it's safe, also handle xrun events if the skip flag is clear.
+This ensures completion of any TD stuck in 'error mid TD' state right
+before the xrun event, which could happen if a driver submits a finite
+number of URBs to a buggy HC and then an error occurs on the last TD.
+
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250306144954.3507700-6-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/uncore_snbep.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/usb/host/xhci-ring.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -4220,28 +4220,28 @@ static struct uncore_event_desc snr_unco
- 	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
- 	/* Free-Running IIO BANDWIDTH IN Counters */
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
- 	{ /* end: all zeroes */ },
- };
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 7721215be79ff..12b1c14efeb21 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2664,6 +2664,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 	int status = -EINPROGRESS;
+ 	struct xhci_ep_ctx *ep_ctx;
+ 	u32 trb_comp_code;
++	bool ring_xrun_event = false;
+ 
+ 	slot_id = TRB_TO_SLOT_ID(le32_to_cpu(event->flags));
+ 	ep_index = TRB_TO_EP_ID(le32_to_cpu(event->flags)) - 1;
+@@ -2770,14 +2771,12 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 		 * Underrun Event for OUT Isoch endpoint.
+ 		 */
+ 		xhci_dbg(xhci, "Underrun event on slot %u ep %u\n", slot_id, ep_index);
+-		if (ep->skip)
+-			break;
+-		return 0;
++		ring_xrun_event = true;
++		break;
+ 	case COMP_RING_OVERRUN:
+ 		xhci_dbg(xhci, "Overrun event on slot %u ep %u\n", slot_id, ep_index);
+-		if (ep->skip)
+-			break;
+-		return 0;
++		ring_xrun_event = true;
++		break;
+ 	case COMP_MISSED_SERVICE_ERROR:
+ 		/*
+ 		 * When encounter missed service error, one or more isoc tds
+@@ -2850,6 +2849,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 		 */
+ 		if (trb_comp_code != COMP_STOPPED &&
+ 		    trb_comp_code != COMP_STOPPED_LENGTH_INVALID &&
++		    !ring_xrun_event &&
+ 		    !ep_ring->last_td_was_short) {
+ 			xhci_warn(xhci, "Event TRB for slot %u ep %u with no TDs queued\n",
+ 				  slot_id, ep_index);
+@@ -2884,6 +2884,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 				goto check_endpoint_halted;
+ 			}
+ 
++			/* TD was queued after xrun, maybe xrun was on a link, don't panic yet */
++			if (ring_xrun_event)
++				return 0;
++
+ 			/*
+ 			 * Skip the Force Stopped Event. The 'ep_trb' of FSE is not in the current
+ 			 * TD pointed by 'ep_ring->dequeue' because that the hardware dequeue
+@@ -2930,6 +2934,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 	 */
+ 	} while (ep->skip);
+ 
++	/* Get out if a TD was queued at enqueue after the xrun occurred */
++	if (ring_xrun_event)
++		return 0;
++
+ 	if (trb_comp_code == COMP_SHORT_PACKET)
+ 		ep_ring->last_td_was_short = true;
+ 	else
+-- 
+2.39.5
+
 
 
 
