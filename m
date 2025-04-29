@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-137900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A12AAA15B8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76EAAAA188E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:01:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FAD55A3848
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0154F9C182B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B09524A047;
-	Tue, 29 Apr 2025 17:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4AA254842;
+	Tue, 29 Apr 2025 17:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Av+1b9VD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWNLIdWr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6C024397A;
-	Tue, 29 Apr 2025 17:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8725C253F31;
+	Tue, 29 Apr 2025 17:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947474; cv=none; b=MNO9KtQZqvxaK07fnui4g841d0ra8QfFvJCMAc79PfhfI3SL5SDNegbqvEmQd1wG9cxo1AIrSAz1PVQbbPuVzP/Zl/Otpuvdcw5NPGRYuf6uuKCXy8Bd+c0sDLoHyDmRYS83uC2Iqw55W4996DapMDbeoRvhoPV71ARWuYVHKVA=
+	t=1745949355; cv=none; b=Bd3DyCjoqLZzGRe1GSB+emsoqq+/UD9HpGO4fJVFHjf2L1Ef3eKuywNPgAhaRV12nDweoAUzVzVOzEYSMOx3hNeCQeS5jqMljfa/upCTC+cgfLLUKZIrNsaGMfogB5Gds1Wi0v+nLGx8tgtpfHuVav9MSAOFK/9gFx8b/ejv9EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947474; c=relaxed/simple;
-	bh=nJ7MCQym1/uSrkbcTMMK3GBXmkyq2mRGUUkepoG3XkI=;
+	s=arc-20240116; t=1745949355; c=relaxed/simple;
+	bh=TLkvkQuZ35elOrudNTc31In3XvdKNzm2h4OZbdxpGwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SQmXq5beJdf0eO8BO91xgTlB5re/4iUSbQPYtL71SoWYWEI9iqNrwNHoDy6A+u5YxS1AdSlZkvYieZLaRYLrlwtw8WDPCRQW+gnawhn6RtbWqfKw+7RadhTrbi6wZ0jKX87FGDcug9+OSf4BWSBWAl4Bn83xpCW7XXVsUW6SmEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Av+1b9VD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AAD8C4CEE3;
-	Tue, 29 Apr 2025 17:24:34 +0000 (UTC)
+	 MIME-Version; b=akwP9J/WMmJI+MHYB5qFT3rOlJmOzo1pR4cmWtOwCUg5Kq97CfO16D/Bhl4bzIZqPub4dCaCu8BxJNfaRMLUUIz77j5H36dVJ/C48KhcI3K3yRABytROo9Xneq6kwySGDUDeXuKWyDs2LISmmcD680eJObQIZA5F0djhV1JUSNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWNLIdWr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC03C4CEE3;
+	Tue, 29 Apr 2025 17:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947474;
-	bh=nJ7MCQym1/uSrkbcTMMK3GBXmkyq2mRGUUkepoG3XkI=;
+	s=korg; t=1745949355;
+	bh=TLkvkQuZ35elOrudNTc31In3XvdKNzm2h4OZbdxpGwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Av+1b9VDCNgNEnO8X3jW7M6VO1fWUb7JTxCbbd+Nw30HA765ISOfhXJCJQGIjMIFc
-	 qDQnAeci3XVe+cz122DqXSwyUGWre5dvteX6VTYh8yzUr+0k+VCaJWbptY7YORr6UG
-	 dsxwx0evegB8FUK3D93d8c5j2VIjOEvbDpDVONG4=
+	b=uWNLIdWrPiMrTAvbKMnG2ZJ9ANleohH5Yd+tEsVhK4mLc1zYSsC971ZBQ598Ei24U
+	 tS43YF5mNEJAj+lnfb00vdu3ZEbXSS3ufJD+jRCEeFLvIFuY2d09mm5knAa7di0ajc
+	 h2khsImjamWt9KklaeEeeXyWSmCnFZpj2GV/zwQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday Shankar <ushankar@purestorage.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 266/286] selftests: ublk: fix test_stripe_04
+Subject: [PATCH 5.15 293/373] net_sched: hfsc: Fix a potential UAF in hfsc_dequeue() too
 Date: Tue, 29 Apr 2025 18:42:50 +0200
-Message-ID: <20250429161118.863872164@linuxfoundation.org>
+Message-ID: <20250429161135.166997835@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 72070e57b0a518ec8e562a2b68fdfc796ef5c040 ]
+[ Upstream commit 6ccbda44e2cc3d26fd22af54c650d6d5d801addf ]
 
-Commit 57ed58c13256 ("selftests: ublk: enable zero copy for stripe target")
-added test entry of test_stripe_04, but forgot to add the test script.
+Similarly to the previous patch, we need to safe guard hfsc_dequeue()
+too. But for this one, we don't have a reliable reproducer.
 
-So fix the test by adding the script file.
-
-Reported-by: Uday Shankar <ushankar@purestorage.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Uday Shankar <ushankar@purestorage.com>
-Link: https://lore.kernel.org/r/20250404001849.1443064-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 ("Linux-2.6.12-rc2")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20250417184732.943057-3-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/ublk/test_stripe_04.sh  | 24 +++++++++++++++++++
- 1 file changed, 24 insertions(+)
- create mode 100755 tools/testing/selftests/ublk/test_stripe_04.sh
+ net/sched/sch_hfsc.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/ublk/test_stripe_04.sh b/tools/testing/selftests/ublk/test_stripe_04.sh
-new file mode 100755
-index 0000000000000..1f2b642381d17
---- /dev/null
-+++ b/tools/testing/selftests/ublk/test_stripe_04.sh
-@@ -0,0 +1,24 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+. "$(cd "$(dirname "$0")" && pwd)"/test_common.sh
-+
-+TID="stripe_04"
-+ERR_CODE=0
-+
-+_prep_test "stripe" "mkfs & mount & umount on zero copy"
-+
-+backfile_0=$(_create_backfile 256M)
-+backfile_1=$(_create_backfile 256M)
-+dev_id=$(_add_ublk_dev -t stripe -z -q 2 "$backfile_0" "$backfile_1")
-+_check_add_dev $TID $? "$backfile_0" "$backfile_1"
-+
-+_mkfs_mount_test /dev/ublkb"${dev_id}"
-+ERR_CODE=$?
-+
-+_cleanup_test "stripe"
-+
-+_remove_backfile "$backfile_0"
-+_remove_backfile "$backfile_1"
-+
-+_show_result $TID $ERR_CODE
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index ea42708aac7e2..85c296664c9ab 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -1644,10 +1644,16 @@ hfsc_dequeue(struct Qdisc *sch)
+ 		if (cl->qdisc->q.qlen != 0) {
+ 			/* update ed */
+ 			next_len = qdisc_peek_len(cl->qdisc);
+-			if (realtime)
+-				update_ed(cl, next_len);
+-			else
+-				update_d(cl, next_len);
++			/* Check queue length again since some qdisc implementations
++			 * (e.g., netem/codel) might empty the queue during the peek
++			 * operation.
++			 */
++			if (cl->qdisc->q.qlen != 0) {
++				if (realtime)
++					update_ed(cl, next_len);
++				else
++					update_d(cl, next_len);
++			}
+ 		} else {
+ 			/* the class becomes passive */
+ 			eltree_remove(cl);
 -- 
 2.39.5
 
