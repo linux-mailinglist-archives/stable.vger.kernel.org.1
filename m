@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1DF2AA1A27
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A82D0AA1932
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BACBD4E11BA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:17:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25A521BC7B1A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E022517A8;
-	Tue, 29 Apr 2025 18:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C1D2517BE;
+	Tue, 29 Apr 2025 18:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRUes1iy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqsg9Gq5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C8B155A4E;
-	Tue, 29 Apr 2025 18:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E171A5BBB;
+	Tue, 29 Apr 2025 18:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950677; cv=none; b=Vlh1rChcpVK1qUQpcMILEmEZ5qNV5N3MCiB/YypStbZSSi2iokkcRFcLmpK4uR+OPPa8kHPGa7IkXSzb0QheYboxrdc/kQbi7IdCHCpFEEPTudNskHVQaemgj21uIGYBGPLcUyaFP+cOqAql24jHiG6X081GOVMKl6LUueCiKj8=
+	t=1745950092; cv=none; b=h+0c3azuPtrvxhrGscPcw+IpfZ41i81eS8g26Cbisj/q5f402JiHtwv6AUjsLvXurAERpQkfXsL/KC4HTEFO16KEJuzoiZhgSKdFtmwDScP/0EPYXOxych7v8kB4+t8XZV8Ny7Bff5VK2ZHA+Hxoz52oQLAc7z8n0DruH4eb8H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950677; c=relaxed/simple;
-	bh=PRrJdrDY1o0fIjGf61Bfv61HzqidVnAgCBV3R1bClaw=;
+	s=arc-20240116; t=1745950092; c=relaxed/simple;
+	bh=n/TCoHJ6GrX1DPMnCt4cEYaS23T3VgIElZhLn2IBgZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I6KUeke833Hz+79heuUc+MMAxFA1xFdOHuWGYrindwIRsPZl2yyOQmnr+SCviBmIacfcAn1DDWPga//f7AgfeBHJ6C20XrgFAOscukt6pHMlwWd4fNlp7/LbRDwcV9d4gzNvXs5ge4VMBCiN8k+VURvfeY1mDMI0HrPRedZJbuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRUes1iy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA61C4CEE3;
-	Tue, 29 Apr 2025 18:17:56 +0000 (UTC)
+	 MIME-Version; b=Dgd14VmHkgf0YNlUZbd9GWq+EfUKTy2uFXDQOUUjWrPnXLI96QmdcpTBYUfeKYeU+PeQtdgOnSZCAuPL1vFDma/9jI0MeCuZasz2ldOuscKPGkOzUh34figGCctecenP9O41tTl4AQDsCI6d5OHkzxFXjqzfEATBX9FqRNp2sWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqsg9Gq5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189B4C4CEE3;
+	Tue, 29 Apr 2025 18:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950677;
-	bh=PRrJdrDY1o0fIjGf61Bfv61HzqidVnAgCBV3R1bClaw=;
+	s=korg; t=1745950092;
+	bh=n/TCoHJ6GrX1DPMnCt4cEYaS23T3VgIElZhLn2IBgZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wRUes1iyhbcfDuFzOKs5APHy0n0UEixuOZcCeb84Yt5ZpIzbITbANXh3KzNd3p61A
-	 9RbyxOuAsNPQcbhKwafVtoxuYVzIcx1AhbW0IuBZJg6ZvSlqqW/RNg1fwlWrjoOKCg
-	 MfeWNfUIm4NAte1DjvjK2hpW6gPqwl8ezKuyTLWA=
+	b=eqsg9Gq5/8skbFiylVxTX1SFDfioQoB/3epksuCdIcigOqOx+7Wo9aoGtHPbsaRhT
+	 qmzWXZ3LnME0zX/SnWf4kDXOcn4ZuLKAtIfJbOYvhkCQC+egFa3BsuIh4D5fJATyEd
+	 R9y0UGSVMIKzgltKkUpC7jV9FSkkqLkTBvqLy2Z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 171/204] nvmet-fc: put ref when assoc->del_work is already scheduled
-Date: Tue, 29 Apr 2025 18:44:19 +0200
-Message-ID: <20250429161106.402544339@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.1 152/167] comedi: jr3_pci: Fix synchronous deletion of timer
+Date: Tue, 29 Apr 2025 18:44:20 +0200
+Message-ID: <20250429161057.871714438@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 70289ae5cac4d3a39575405aaf63330486cea030 ]
+commit 44d9b3f584c59a606b521e7274e658d5b866c699 upstream.
 
-Do not leak the tgtport reference when the work is already scheduled.
+When `jr3_pci_detach()` is called during device removal, it calls
+`timer_delete_sync()` to stop the timer, but the timer expiry function
+always reschedules the timer, so the synchronization is ineffective.
 
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Call `timer_shutdown_sync()` instead.  It does not matter that the timer
+expiry function pointer is cleared, because the device is being removed.
+
+Fixes: 07b509e6584a5 ("Staging: comedi: add jr3_pci driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250415123901.13483-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/fc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/comedi/drivers/jr3_pci.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
-index 68ff9540e2d13..570c58d2b5a58 100644
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -1091,7 +1091,8 @@ static void
- nvmet_fc_schedule_delete_assoc(struct nvmet_fc_tgt_assoc *assoc)
- {
- 	nvmet_fc_tgtport_get(assoc->tgtport);
--	queue_work(nvmet_wq, &assoc->del_work);
-+	if (!queue_work(nvmet_wq, &assoc->del_work))
-+		nvmet_fc_tgtport_put(assoc->tgtport);
+--- a/drivers/comedi/drivers/jr3_pci.c
++++ b/drivers/comedi/drivers/jr3_pci.c
+@@ -87,6 +87,7 @@ struct jr3_pci_poll_delay {
+ struct jr3_pci_dev_private {
+ 	struct timer_list timer;
+ 	struct comedi_device *dev;
++	bool timer_enable;
+ };
+ 
+ union jr3_pci_single_range {
+@@ -596,10 +597,11 @@ static void jr3_pci_poll_dev(struct time
+ 				delay = sub_delay.max;
+ 		}
+ 	}
++	if (devpriv->timer_enable) {
++		devpriv->timer.expires = jiffies + msecs_to_jiffies(delay);
++		add_timer(&devpriv->timer);
++	}
+ 	spin_unlock_irqrestore(&dev->spinlock, flags);
+-
+-	devpriv->timer.expires = jiffies + msecs_to_jiffies(delay);
+-	add_timer(&devpriv->timer);
  }
  
- static struct nvmet_fc_tgt_assoc *
--- 
-2.39.5
-
+ static struct jr3_pci_subdev_private *
+@@ -748,6 +750,7 @@ static int jr3_pci_auto_attach(struct co
+ 	devpriv->dev = dev;
+ 	timer_setup(&devpriv->timer, jr3_pci_poll_dev, 0);
+ 	devpriv->timer.expires = jiffies + msecs_to_jiffies(1000);
++	devpriv->timer_enable = true;
+ 	add_timer(&devpriv->timer);
+ 
+ 	return 0;
+@@ -757,8 +760,12 @@ static void jr3_pci_detach(struct comedi
+ {
+ 	struct jr3_pci_dev_private *devpriv = dev->private;
+ 
+-	if (devpriv)
+-		del_timer_sync(&devpriv->timer);
++	if (devpriv) {
++		spin_lock_bh(&dev->spinlock);
++		devpriv->timer_enable = false;
++		spin_unlock_bh(&dev->spinlock);
++		timer_delete_sync(&devpriv->timer);
++	}
+ 
+ 	comedi_pci_detach(dev);
+ }
 
 
 
