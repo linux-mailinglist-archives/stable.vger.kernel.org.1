@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-138289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9BEDAA1752
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB66DAA15C0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66DD51B68317
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2014F1890EA6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B976244664;
-	Tue, 29 Apr 2025 17:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64C524E01D;
+	Tue, 29 Apr 2025 17:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZB+94Dn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QefSIEK8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFFBC148;
-	Tue, 29 Apr 2025 17:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F6382C60;
+	Tue, 29 Apr 2025 17:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948784; cv=none; b=LvO4OmBSsP3pgqOmXqSQvtKpXzcyyOJNe+VkgxjOLsaw6RXFGigUiJ106BSXsxkmBpj+owpcNzrHliT9g+L5PzCshx9nioEGoUpju8QZ+uf3xUg/LUEoR6B2JLyE9UaPQ61gbxMsOZM+GfkV2VvRSdeALmfGkE2hYSxGV4Yqgwc=
+	t=1745947600; cv=none; b=phr7+0xFWpSRnZyuG2RjEVB8qKzZsL4H7gEqzf4aQ4PDeEbZU3aXIaL6BA/ZUc1hoCWXQBVQFUBaPxz5R7u/qxM7+FbG7SErH8NtszsOV+ZlURnGyARGIz5W39VzcMt8SAGA8SMxcpmyToMb/7am8Qxyf9+LNzadR0FPakV+G7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948784; c=relaxed/simple;
-	bh=sobehw6PRgpZaJQ3mDjGteE5AtcFVNAoYZR2ImoczBs=;
+	s=arc-20240116; t=1745947600; c=relaxed/simple;
+	bh=daw/pOv6/VveXinlqHrKWzZKB9FA3+w+WJE0QXSltb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TCHMP1u33nPMkQBtwnwXpy6E4V5xVXVD04RBD1oobksqlvIK9UWTUWmzk0y98GNaVM2Py+EAMNf7HHJNoNXWZzGfdeoYW6vnPEmiGyz/tnAlz/TLX8grq/nkkLT9gLwHoh5siM9/mR23wbmvJRS+0UkC/ulKgvkb4vRbKypObSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZB+94Dn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666C0C4CEE3;
-	Tue, 29 Apr 2025 17:46:23 +0000 (UTC)
+	 MIME-Version; b=J/m+yWI/Mkd+6higcN7uxBGt6EP5O7uaSjmqY0WCpCwMyzUTzagIxkgt/8EN3upD10S2NLp92PDzmtIEEak9hFzFvMg5puAOcwOrgNr5SB0I96fQgCDJU2wY3JbRpNIBhNERUxedOJlMgt6/fQLKz6UU5NFygG7A5YE7RJroAvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QefSIEK8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B85C4CEE3;
+	Tue, 29 Apr 2025 17:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948783;
-	bh=sobehw6PRgpZaJQ3mDjGteE5AtcFVNAoYZR2ImoczBs=;
+	s=korg; t=1745947600;
+	bh=daw/pOv6/VveXinlqHrKWzZKB9FA3+w+WJE0QXSltb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ZB+94DnKzimYn2likVz8cPXhXhZv4gm4Zb693LPDSU2Y8/8TR5IRJQ/kzWBweEum
-	 H7UwTkSLb9RCRNjNO+Kwyfx5lql7Sk+yuaMQs7YWain5UvO3F/CtK4Lyhr6zkIidb2
-	 H7j+bRgEJQhW47JACaaQpft6D/ACq0NQ5Ty0cRL4=
+	b=QefSIEK8TFTPf3z9XV581Vvdzye3egHfxZdteOjszhkl8EthEoVFb6D8ka9vTeVku
+	 sPrIO7OXdXvaXQBX+KeZPN5/bShG5Hxi/0WxbCNWMhQj52kdr/kq321XQSQlPaZ2W4
+	 pp9om4h2tT2YnpcVBNFrcZ89+dvUoLU2h+XUbXb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 5.15 111/373] of/irq: Fix device node refcount leakages in of_irq_init()
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rohit Chavan <roheetchavan@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 047/280] drm/amd/display: Fix unnecessary cast warnings from checkpatch
 Date: Tue, 29 Apr 2025 18:39:48 +0200
-Message-ID: <20250429161127.736751486@linuxfoundation.org>
+Message-ID: <20250429161117.043981273@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Rohit Chavan <roheetchavan@gmail.com>
 
-commit 708124d9e6e7ac5ebf927830760679136b23fdf0 upstream.
+[ Upstream commit c299cb6eafaf76d0cb4094623d6401c45d8bd0dc ]
 
-of_irq_init() will leak interrupt controller device node refcounts
-in two places as explained below:
+This patch addresses warnings produced by the checkpatch script
+related to unnecessary casts that could potentially hide bugs.
 
-1) Leak refcounts of both @desc->dev and @desc->interrupt_parent when
-   suffers @desc->irq_init_cb() failure.
-2) Leak refcount of @desc->interrupt_parent when cleans up list
-   @intc_desc_list in the end.
+The specific warnings are as follows:
+- Warning at drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c:16
+- Warning at drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c:20
+- Warning at drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c:30
 
-Refcounts of both @desc->dev and @desc->interrupt_parent were got in
-the first loop, but of_irq_init() does not put them before kfree(@desc)
-in places mentioned above, so causes refcount leakages.
-
-Fix by putting refcounts involved before kfree(@desc).
-
-Fixes: 8363ccb917c6 ("of/irq: add missing of_node_put")
-Fixes: c71a54b08201 ("of/irq: introduce of_irq_init")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-7-93e3a2659aa7@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Rohit Chavan <roheetchavan@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: cd9e6d6fdd2d ("drm/amd/display/dml2: use vzalloc rather than kzalloc")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/irq.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -555,6 +555,8 @@ void __init of_irq_init(const struct of_
- 						desc->interrupt_parent);
- 			if (ret) {
- 				of_node_clear_flag(desc->dev, OF_POPULATED);
-+				of_node_put(desc->interrupt_parent);
-+				of_node_put(desc->dev);
- 				kfree(desc);
- 				continue;
- 			}
-@@ -585,6 +587,7 @@ void __init of_irq_init(const struct of_
- err:
- 	list_for_each_entry_safe(desc, temp_desc, &intc_desc_list, list) {
- 		list_del(&desc->list);
-+		of_node_put(desc->interrupt_parent);
- 		of_node_put(desc->dev);
- 		kfree(desc);
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
+index cb187604744e9..dedf0fd3eb276 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
+@@ -13,11 +13,11 @@
+ 
+ static bool dml21_allocate_memory(struct dml2_context **dml_ctx)
+ {
+-	*dml_ctx = (struct dml2_context *)kzalloc(sizeof(struct dml2_context), GFP_KERNEL);
++	*dml_ctx = kzalloc(sizeof(struct dml2_context), GFP_KERNEL);
+ 	if (!(*dml_ctx))
+ 		return false;
+ 
+-	(*dml_ctx)->v21.dml_init.dml2_instance = (struct dml2_instance *)kzalloc(sizeof(struct dml2_instance), GFP_KERNEL);
++	(*dml_ctx)->v21.dml_init.dml2_instance = kzalloc(sizeof(struct dml2_instance), GFP_KERNEL);
+ 	if (!((*dml_ctx)->v21.dml_init.dml2_instance))
+ 		return false;
+ 
+@@ -27,7 +27,7 @@ static bool dml21_allocate_memory(struct dml2_context **dml_ctx)
+ 	(*dml_ctx)->v21.mode_support.display_config = &(*dml_ctx)->v21.display_config;
+ 	(*dml_ctx)->v21.mode_programming.display_config = (*dml_ctx)->v21.mode_support.display_config;
+ 
+-	(*dml_ctx)->v21.mode_programming.programming = (struct dml2_display_cfg_programming *)kzalloc(sizeof(struct dml2_display_cfg_programming), GFP_KERNEL);
++	(*dml_ctx)->v21.mode_programming.programming = kzalloc(sizeof(struct dml2_display_cfg_programming), GFP_KERNEL);
+ 	if (!((*dml_ctx)->v21.mode_programming.programming))
+ 		return false;
+ 
+-- 
+2.39.5
+
 
 
 
