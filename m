@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44CB0AA1495
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F3BCAA11F8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2D8B1896264
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 187FE3A1EB9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B8A24729E;
-	Tue, 29 Apr 2025 17:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9430524EF85;
+	Tue, 29 Apr 2025 16:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Umav8Y0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BmUm/NkK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F48242D6E;
-	Tue, 29 Apr 2025 17:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA2B2472AA;
+	Tue, 29 Apr 2025 16:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946863; cv=none; b=iPrMIn2cifI6Pkz4vPM8NIESv2Fs1geEGRrIF0HQL00f5v3Qq1HsiqqPMcPIcZb3MfVNSNGBiCKba9q9yl8HBdtP00h6a5nv6x7SueO86fHcjXoHBKBth9k86ed+5wtlsbP/H53RgnnNQBFnBHJiZpV7ZcIx9fsmO6t5HnjrKa0=
+	t=1745945183; cv=none; b=GMyIeySAeYiHUbwxTvX2dN7y+DDLUWIC/g1N+P3mkURmtO3hzj1tB5wp/c3/jy9GQceaCkSpBBuKfmhNowXNAu7h6McKYa0NjV0nRfV7y51uCPockEHZfCt4QZw0ZVWwhVuV0Pl9x6B84Lms0k/1wO/m8aCUlUdTDQfEUB/jNlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946863; c=relaxed/simple;
-	bh=Ye6zvPFo7XPLiCVIYX8MP9OMK+1HKKUoqHkSBEogh40=;
+	s=arc-20240116; t=1745945183; c=relaxed/simple;
+	bh=gpqRqewFpeMsG+sPG6G6hrzosICqqoBvwx11pgEz1b8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sf/NdXyCYEO5w5gJ1Oe66sPTB9k9QTIIRsTIN0EodfKMLu4T4/JUh+e3ZqW0nnsCGNFN6Z61qC/MkV17lqDStKrzkrAoJdb75oZTcVxemf3m8YWyzhglUpzGlIlXjl6qTnRS0kNn3NtlawNxWcBIr7dUuRGG0N5OoDD5s3DurzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Umav8Y0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C8AC4CEE3;
-	Tue, 29 Apr 2025 17:14:22 +0000 (UTC)
+	 MIME-Version; b=p7pOfpsqMZOuYIzXSpXnuWyjv2jSS0yqPynp+oEt2cOkCBPLkDXkH0nhaAerVGofkAob4NcB+wDcLqW/t1qXSUTSAEnqlfwINsC19uDvSSmhbxuk8l/zGsryzLs8EbmyF6KHxmPwa+mHw7y9Eo3vnxV5tqy5GsFxtM/HjOW5mTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BmUm/NkK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C231C4CEF2;
+	Tue, 29 Apr 2025 16:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946863;
-	bh=Ye6zvPFo7XPLiCVIYX8MP9OMK+1HKKUoqHkSBEogh40=;
+	s=korg; t=1745945183;
+	bh=gpqRqewFpeMsG+sPG6G6hrzosICqqoBvwx11pgEz1b8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Umav8Y0qAablVbgIQ1b4dL1IvWTiJNnJ1FmWaDrtZ5Ba/kqi64rgoT/ymekzW6kg
-	 8qB5nJwkiYRugvq0+QHjUDjnMBzyzPBu0RbcR/H34W2jDNzlR0eGHWdDouUt9uC9RZ
-	 upMe1mA5pddanE0WKgo7+rE5ObADkT1/r5vLL8dA=
+	b=BmUm/NkKTeTapi6JGohah8JvNWjLTXZCk/Xos5N2W6kw2wFembxGP7OS/sODhqCWY
+	 FeDxRnuo3rrUVcs01psy2aseBxM8Du+O3hliTh9fQ/aWsVBSEMB8/QqDqyE+bpHu8D
+	 rdpJVTG/GuLVYHcZGqRzlUtrnvABibXAgt8195JA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 066/286] media: i2c: ov7251: Introduce 1 ms delay between regulators and en GPIO
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 029/179] Bluetooth: hci_uart: fix race during initialization
 Date: Tue, 29 Apr 2025 18:39:30 +0200
-Message-ID: <20250429161110.557429219@linuxfoundation.org>
+Message-ID: <20250429161050.592368161@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-commit 3d391292cdd53984ec1b9a1f6182a62a62751e03 upstream.
+[ Upstream commit 366ceff495f902182d42b6f41525c2474caf3f9a ]
 
-Lift the xshutdown (enable) GPIO 1 ms after enabling the regulators, as
-required by the sensor's power-up sequence.
+'hci_register_dev()' calls power up function, which is executed by
+kworker - 'hci_power_on()'. This function does access to bluetooth chip
+using callbacks from 'hci_ldisc.c', for example 'hci_uart_send_frame()'.
+Now 'hci_uart_send_frame()' checks 'HCI_UART_PROTO_READY' bit set, and
+if not - it fails. Problem is that 'HCI_UART_PROTO_READY' is set after
+'hci_register_dev()', and there is tiny chance that 'hci_power_on()' will
+be executed before setting this bit. In that case HCI init logic fails.
 
-Fixes: d30bb512da3d ("media: Add a driver for the ov7251 camera sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Patch moves setting of 'HCI_UART_PROTO_READY' before calling function
+'hci_uart_register_dev()'.
+
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov7251.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bluetooth/hci_ldisc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/media/i2c/ov7251.c
-+++ b/drivers/media/i2c/ov7251.c
-@@ -748,6 +748,8 @@ static int ov7251_set_power_on(struct ov
- 		return ret;
+diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
+index 600c88fc3145f..8e4a23cd40218 100644
+--- a/drivers/bluetooth/hci_ldisc.c
++++ b/drivers/bluetooth/hci_ldisc.c
+@@ -703,12 +703,13 @@ static int hci_uart_set_proto(struct hci_uart *hu, int id)
+ 
+ 	hu->proto = p;
+ 
++	set_bit(HCI_UART_PROTO_READY, &hu->flags);
++
+ 	err = hci_uart_register_dev(hu);
+ 	if (err) {
+ 		return err;
  	}
  
-+	usleep_range(1000, 1100);
-+
- 	gpiod_set_value_cansleep(ov7251->enable_gpio, 1);
+-	set_bit(HCI_UART_PROTO_READY, &hu->flags);
+ 	return 0;
+ }
  
- 	/* wait at least 65536 external clock cycles */
+-- 
+2.39.5
+
 
 
 
