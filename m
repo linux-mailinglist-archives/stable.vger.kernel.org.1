@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583E6AA12B6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:57:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 051F8AA1753
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 537DF7AFA09
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:56:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E570B3BE9B4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5CD248866;
-	Tue, 29 Apr 2025 16:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FBC21ABC1;
+	Tue, 29 Apr 2025 17:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZ7b93rQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXVZtM+y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9ED21772B;
-	Tue, 29 Apr 2025 16:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F454227E95;
+	Tue, 29 Apr 2025 17:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945791; cv=none; b=gbE7KPFYtUPzAJYKMsmJJ5ANQuz6stKxQUTWMe5kkZ9WymiJ7ByTXks3/1PtKxLFfcC9upRvfRSzTZWPaRNAWiLzcgjg7bEig3+izfLsNRFaT184Pq8H1w9Bq3gF5ExcG+ton04jJPkegzHUORGabLQ/Oh7Iy6m0f6Pi0sbdgJc=
+	t=1745948506; cv=none; b=GdlLbRGASqg4BnumYjBf7bcoSftqOys7E+2tVmEI/GmHeMbIA4Aa0u/5CqmnLRiMABJT7nnwMG2ruJOYmzTtbCFBKfVsi98z92CwChmpYK4Y/DCQJmaNS5SusjyWp6r5FFmLyr12gg8vkUusRm91eaNWgeM7esvHpGdDNK+kQMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945791; c=relaxed/simple;
-	bh=Jg+g58Vk4KOLf+fgqd3mCNZEK4wJ+WM3JxtPu4m8nwE=;
+	s=arc-20240116; t=1745948506; c=relaxed/simple;
+	bh=POIR63RR4E86wO7h30Q8vShM/jz451XqOS9jk5HpaAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5pslHQiNb0jEANOm7/i5+ByrNEMUwZCkaQc7tBuXPGtpldnsFz48riUuAVPmdojOq7fSaFRSfUYsFDQ2cyCiGKCNer3+zq8NoiMftQz4zkazpKOAS3vmKIw1K/whZ+IJHfZGfZz9Nxm5zf4V+UI65yyEmoA343zUd9B13RXkTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZ7b93rQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BB2C4CEE3;
-	Tue, 29 Apr 2025 16:56:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cujH9rI7MGdEXCBDBi7e7w1GbzPLebTZFewqEk7wXhmpSw+geVH7ICfkXvBzI/vd6ounjqluLjotP+3XjUKH8U2GHu3zVgOozKAz5OIZQszR11FUy8HWrGWy3Q0hRavmqNWIK3B+oxORZ0hypPCMcaQBSkWRtAGBTzpyc4afb40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXVZtM+y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7CAEC4CEE3;
+	Tue, 29 Apr 2025 17:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945790;
-	bh=Jg+g58Vk4KOLf+fgqd3mCNZEK4wJ+WM3JxtPu4m8nwE=;
+	s=korg; t=1745948506;
+	bh=POIR63RR4E86wO7h30Q8vShM/jz451XqOS9jk5HpaAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZ7b93rQdD3iqSxMW3bWz4IocC533OMU4g7NeaIEZDZQK0r10fU7zcU8C+Pz7Cm/V
-	 j8XhLCRaOuDSlOolsNZo7sh9sEXviK6p0c+oMBrjuZ4bvZhvFPZrGQuhJeNmwQ8DE5
-	 Ty0sazGlIcI/S+hSlHdFZs+GLj6AgVZenDin/jQ8=
+	b=TXVZtM+yyWpPyw0iX3vx0G0aNnpKbgXY3p53/L1CjiM81uzeEBe8jWc62EoqReqqR
+	 u1yCCf/OD+ioiFs7a1nWnWPYsfzJWYpugWCdBsJDi6cD0c0czh9bJY3e+uF+7vKhWJ
+	 cu5H0mtPfFD7oBl5dSSH8oD1KcHpWuhflu2IenkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 049/311] vhost-scsi: Fix vhost_scsi_send_status()
+Subject: [PATCH 5.15 009/373] net: ppp: Add bound checking for skb data on ppp_sync_txmung
 Date: Tue, 29 Apr 2025 18:38:06 +0200
-Message-ID: <20250429161123.033256292@linuxfoundation.org>
+Message-ID: <20250429161123.517904993@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
 
-[ Upstream commit 58465d86071b61415e25fb054201f61e83d21465 ]
+[ Upstream commit aabc6596ffb377c4c9c8f335124b92ea282c9821 ]
 
-Although the support of VIRTIO_F_ANY_LAYOUT + VIRTIO_F_VERSION_1 was
-signaled by the commit 664ed90e621c ("vhost/scsi: Set
-VIRTIO_F_ANY_LAYOUT + VIRTIO_F_VERSION_1 feature bits"),
-vhost_scsi_send_bad_target() still assumes the response in a single
-descriptor.
+Ensure we have enough data in linear buffer from skb before accessing
+initial bytes. This prevents potential out-of-bounds accesses
+when processing short packets.
 
-Similar issue in vhost_scsi_send_bad_target() has been fixed in previous
-commit. In addition, similar issue for vhost_scsi_complete_cmd_work() has
-been fixed by the commit 6dd88fd59da8 ("vhost-scsi: unbreak any layout for
-response").
+When ppp_sync_txmung receives an incoming package with an empty
+payload:
+(remote) gef➤  p *(struct pppoe_hdr *) (skb->head + skb->network_header)
+$18 = {
+	type = 0x1,
+	ver = 0x1,
+	code = 0x0,
+	sid = 0x2,
+        length = 0x0,
+	tag = 0xffff8880371cdb96
+}
 
-Fixes: 3ca51662f818 ("vhost-scsi: Add better resource allocation failure handling")
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <20250403063028.16045-4-dongli.zhang@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+from the skb struct (trimmed)
+      tail = 0x16,
+      end = 0x140,
+      head = 0xffff88803346f400 "4",
+      data = 0xffff88803346f416 ":\377",
+      truesize = 0x380,
+      len = 0x0,
+      data_len = 0x0,
+      mac_len = 0xe,
+      hdr_len = 0x0,
+
+it is not safe to access data[2].
+
+Reported-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=29fc8991b0ecb186cf40
+Tested-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+Link: https://patch.msgid.link/20250408-bound-checking-ppp_txmung-v2-1-94bb6e1b92d0@arnaud-lcm.com
+[pabeni@redhat.com: fixed subj typo]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/scsi.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/net/ppp/ppp_synctty.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 7bfe5e5865fe9..35a03306d1345 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -931,18 +931,22 @@ static void vhost_scsi_target_queue_cmd(struct vhost_scsi_cmd *cmd)
+diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
+index 692c558beed54..c8d9c580ed503 100644
+--- a/drivers/net/ppp/ppp_synctty.c
++++ b/drivers/net/ppp/ppp_synctty.c
+@@ -517,6 +517,11 @@ ppp_sync_txmunge(struct syncppp *ap, struct sk_buff *skb)
+ 	unsigned char *data;
+ 	int islcp;
  
- static void
- vhost_scsi_send_status(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
--		       int head, unsigned int out, u8 status)
-+		       struct vhost_scsi_ctx *vc, u8 status)
- {
--	struct virtio_scsi_cmd_resp __user *resp;
- 	struct virtio_scsi_cmd_resp rsp;
-+	struct iov_iter iov_iter;
- 	int ret;
++	/* Ensure we can safely access protocol field and LCP code */
++	if (!pskb_may_pull(skb, 3)) {
++		kfree_skb(skb);
++		return NULL;
++	}
+ 	data  = skb->data;
+ 	proto = get_unaligned_be16(data);
  
- 	memset(&rsp, 0, sizeof(rsp));
- 	rsp.status = status;
--	resp = vq->iov[out].iov_base;
--	ret = __copy_to_user(resp, &rsp, sizeof(rsp));
--	if (!ret)
--		vhost_add_used_and_signal(&vs->dev, vq, head, 0);
-+
-+	iov_iter_init(&iov_iter, ITER_DEST, &vq->iov[vc->out], vc->in,
-+		      sizeof(rsp));
-+
-+	ret = copy_to_iter(&rsp, sizeof(rsp), &iov_iter);
-+
-+	if (likely(ret == sizeof(rsp)))
-+		vhost_add_used_and_signal(&vs->dev, vq, vc->head, 0);
- 	else
- 		pr_err("Faulted on virtio_scsi_cmd_resp\n");
- }
-@@ -1302,7 +1306,7 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
- 		else if (ret == -EIO)
- 			vhost_scsi_send_bad_target(vs, vq, &vc, TYPE_IO_CMD);
- 		else if (ret == -ENOMEM)
--			vhost_scsi_send_status(vs, vq, vc.head, vc.out,
-+			vhost_scsi_send_status(vs, vq, &vc,
- 					       SAM_STAT_TASK_SET_FULL);
- 	} while (likely(!vhost_exceeds_weight(vq, ++c, 0)));
- out:
 -- 
 2.39.5
 
