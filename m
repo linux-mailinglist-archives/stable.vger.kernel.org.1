@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-138000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12B1AA161D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:34:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0CAAA120F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C42916C951
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F3AE4A6B33
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A47250C08;
-	Tue, 29 Apr 2025 17:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE5F244679;
+	Tue, 29 Apr 2025 16:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DN+fSSG6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jK7Rym5K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86412221570;
-	Tue, 29 Apr 2025 17:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58458229B05;
+	Tue, 29 Apr 2025 16:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947795; cv=none; b=Awq/Pp8Km9KeWvB9RfR62Bwkl1sLmADvJDdy66I7hUp4/UR0LBcjLUOrUYV/cDvcOYPTrbg2waYr4oxjI+OcR94EMKhdBA67lD6YD4VUM2siVV/FsV71vK++o6eZ+K7FbOlOPuXKSFI1OBHTho4MHAyGePJhpwi/LiheY2QE08k=
+	t=1745945328; cv=none; b=rbFXhvOKIPiFuVJIUbSXbDMYjErO/MDl+pvzvYobWUv4EKf5JqWLTCJSgSm3wni2XiKrs7417KwQGgEANpvpyxW4u5xjjDVExB7GIro/KZS/ErlYpbjffDSzZVHiY3Y60ryFDxu3MkhLFk2FZ+8OVn90cRdsHDWVPG84bklNVzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947795; c=relaxed/simple;
-	bh=fabhxRt0lZRaOlsubGxMJjjelkKthUkl5n57PDKy9Bk=;
+	s=arc-20240116; t=1745945328; c=relaxed/simple;
+	bh=LGtv5277mREodKUyRIu1taB9JVVb62AT94/p4GNJj5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXq4PfeNIZnZDQ7kjUJCALkA+ap3fZY3nqewj6fZUV0IxgkEJL63mxR94RXj+A9ZXw9y4tr6PTAaKr6oEK2/suB38x4VvCWANtSmv94++c63ERMHORXuaRkup2iRMLmbYwXZQXCakolA9/JcR7qxLtUhzlOWFLB7cubMo1wy4JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DN+fSSG6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197EEC4CEE9;
-	Tue, 29 Apr 2025 17:29:54 +0000 (UTC)
+	 MIME-Version; b=m1PvOJ2yRIpaLRs5CwRDdP5/2ZSltcvps0hz61ny3aiJ6syya8R179oYDEU1h6UShqbE0Ki5Oo3GvOvbNwYzVLPPiKo01jxMYqgduNEa6gIlfkA8W7ff1T2ZY+/NB28uY+Qddo5Y+d9D2tRgc0aCpsLDn1Bghy4KQtegHTVZKjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jK7Rym5K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB658C4CEE9;
+	Tue, 29 Apr 2025 16:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947795;
-	bh=fabhxRt0lZRaOlsubGxMJjjelkKthUkl5n57PDKy9Bk=;
+	s=korg; t=1745945328;
+	bh=LGtv5277mREodKUyRIu1taB9JVVb62AT94/p4GNJj5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DN+fSSG6Xia9HKioaPamDQntdT8tdHDN427jVBl0n6mJxsSEENPxP6snDz52LNgvk
-	 IEHwFE7WiqHmmVt/R/nR2MacpyVjooq3VHRgtsHGMZ+IDoVxhKXMsUZtejjBa/Rt1a
-	 FomagY/fOGFtspjH0Fv9kO9tpgqoEvX9/BEWUSFs=
+	b=jK7Rym5Kc4AQiYcxEt6SHv4F1vThWtyGHgrYkIjaWNJ5uFZX+y5Kq7ZzdUIJfiaCt
+	 ComCFicTEMAE1GtezeVcb0wHM90ooaOK0t4B/pfriUp/pga30AFn3kRXddkxJno54Z
+	 Yi3cQwxAFsLU3pdb8hzGLEO/Bw/bAV403OroXzXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Konstantin Khlebnikov <koct9i@gmail.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/280] net_sched: hfsc: Fix a UAF vulnerability in class handling
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 5.4 075/179] of/irq: Fix device node refcount leakages in of_irq_count()
 Date: Tue, 29 Apr 2025 18:40:16 +0200
-Message-ID: <20250429161118.178321657@linuxfoundation.org>
+Message-ID: <20250429161052.449660883@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 3df275ef0a6ae181e8428a6589ef5d5231e58b5c ]
+commit bbf71f44aaf241d853759a71de7e7ebcdb89be3d upstream.
 
-This patch fixes a Use-After-Free vulnerability in the HFSC qdisc class
-handling. The issue occurs due to a time-of-check/time-of-use condition
-in hfsc_change_class() when working with certain child qdiscs like netem
-or codel.
+of_irq_count() invokes of_irq_parse_one() to count IRQs, and successful
+invocation of the later will get device node @irq.np refcount, but the
+former does not put the refcount before next iteration invocation, hence
+causes device node refcount leakages.
 
-The vulnerability works as follows:
-1. hfsc_change_class() checks if a class has packets (q.qlen != 0)
-2. It then calls qdisc_peek_len(), which for certain qdiscs (e.g.,
-   codel, netem) might drop packets and empty the queue
-3. The code continues assuming the queue is still non-empty, adding
-   the class to vttree
-4. This breaks HFSC scheduler assumptions that only non-empty classes
-   are in vttree
-5. Later, when the class is destroyed, this can lead to a Use-After-Free
+Fix by putting @irq.np refcount before the next iteration invocation.
 
-The fix adds a second queue length check after qdisc_peek_len() to verify
-the queue wasn't emptied.
-
-Fixes: 21f4d5cc25ec ("net_sched/hfsc: fix curve activation in hfsc_change_class()")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Reviewed-by: Konstantin Khlebnikov <koct9i@gmail.com>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20250417184732.943057-2-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3da5278727a8 ("of/irq: Rework of_irq_count()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-5-93e3a2659aa7@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_hfsc.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/of/irq.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index c287bf8423b47..e730d3f791c24 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -958,6 +958,7 @@ hfsc_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -443,8 +443,10 @@ int of_irq_count(struct device_node *dev
+ 	struct of_phandle_args irq;
+ 	int nr = 0;
  
- 	if (cl != NULL) {
- 		int old_flags;
-+		int len = 0;
+-	while (of_irq_parse_one(dev, nr, &irq) == 0)
++	while (of_irq_parse_one(dev, nr, &irq) == 0) {
++		of_node_put(irq.np);
+ 		nr++;
++	}
  
- 		if (parentid) {
- 			if (cl->cl_parent &&
-@@ -988,9 +989,13 @@ hfsc_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 		if (usc != NULL)
- 			hfsc_change_usc(cl, usc, cur_time);
- 
-+		if (cl->qdisc->q.qlen != 0)
-+			len = qdisc_peek_len(cl->qdisc);
-+		/* Check queue length again since some qdisc implementations
-+		 * (e.g., netem/codel) might empty the queue during the peek
-+		 * operation.
-+		 */
- 		if (cl->qdisc->q.qlen != 0) {
--			int len = qdisc_peek_len(cl->qdisc);
--
- 			if (cl->cl_flags & HFSC_RSC) {
- 				if (old_flags & HFSC_RSC)
- 					update_ed(cl, len);
--- 
-2.39.5
-
+ 	return nr;
+ }
 
 
 
