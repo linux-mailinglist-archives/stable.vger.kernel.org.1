@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22801AA1A44
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:20:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A29B3AA1925
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBD22168133
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:19:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EB42188C877
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10AF5245022;
-	Tue, 29 Apr 2025 18:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5EAA227E95;
+	Tue, 29 Apr 2025 18:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mzmBmB4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDLhrIs4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2078155A4E;
-	Tue, 29 Apr 2025 18:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E7240C03;
+	Tue, 29 Apr 2025 18:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950749; cv=none; b=j39fVyHOrKTqYfMm6CoRvWJmCfcC+3beRYz/o3XX2a/A/vtfKVjcso3iT+3KRMFN6lfY7Pr1pFvROG1sPChX1AQ7l4f87AFTGXhLtlSQzuK2Nsh+rUpkXYkqllMwXfgO04bcNW12Idvt0QnijfrwTgUb2LQ0D6oXiKRJJirzApA=
+	t=1745950059; cv=none; b=XXD12HwzU4aXxN7k9kEW8Y5sRrb1eO1M5ESDsQD1zEjknp8lMUnn0LyxxXtfin/owqdvzJ6NimU0h2juNshCUIotYBDRYOQxMpXDg3q+3QJtXQ7xdCFEGplQQcuXQM2YzmsDMUiPzIUoqKQ170jw0OcClhmU3iVEcUASGYW7fVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950749; c=relaxed/simple;
-	bh=2zNklv0WkDYYMAHvEoQHVefNihShRlG9cq+sijKIzPA=;
+	s=arc-20240116; t=1745950059; c=relaxed/simple;
+	bh=uqL/IiH/DkNsc6K9l+FrTCHpjtvKO28Znwv54PdSKGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=McmQlm0bfgMdwrbDltzOw0UZSHxKVgLFDEi3+8CKKET2KlGcN/eE9UgHel3FM4fWkqpbHc2xtuZW1DIp6HGR26OAg4yy82EYivH4oGZKqVN5LSkdjwRoDnZDmI4GFElHqdiaYVw8b6Rryz0fVAgMf11J+jrX4G1i/Ed1cccMHw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mzmBmB4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33342C4CEE9;
-	Tue, 29 Apr 2025 18:19:08 +0000 (UTC)
+	 MIME-Version; b=TvYSvZaeIajPiGOasslWvuCRQeMTnU/mKNVjgDKZLEQQDvIIWEPkWbCB90fIKUNlYlbT6jH1o8qez2SRoJCFr7nuAp+Zu8W8bnckjwvGcFJLaLrIGlVbXPl8M97okRXYSmWM1WvxXbEU7xn7mpqxGVV1savbsaoy0Xp6LfGvrZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDLhrIs4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EC5C4CEE3;
+	Tue, 29 Apr 2025 18:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950749;
-	bh=2zNklv0WkDYYMAHvEoQHVefNihShRlG9cq+sijKIzPA=;
+	s=korg; t=1745950059;
+	bh=uqL/IiH/DkNsc6K9l+FrTCHpjtvKO28Znwv54PdSKGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1mzmBmB4B6IFUx+kQ9pw1xGtgRbra2Z/guf/XB3HrJgFfdntS7HUtMsKyW+pziJJp
-	 VUYo+CCAH2+53vY9z1B1r0NmWhBC1nfMpwTtMXNGiFejVXXwAM9Mr0hSkKYfBWTr78
-	 MLfDWVH4W+6sEYr7mLL0grPEHPTVgaL5uG7xRy3E=
+	b=BDLhrIs4lMy0fKW2mFjvJSlHnmSARYiLwV5DaMwv/XrokJcr2nWygsp7epiEVek24
+	 QXio/qHFrsneHKI+DiRm2WaoO0Xfm8HVPgkV2BPUtkDCkf69DUOMgwpfbFB3+C3z9p
+	 6scFljIGKI32T4c5aw0QCczY9FFbVVgAzQPWysc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday Shankar <ushankar@purestorage.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Fernando Fernandez Mancera <ffmancera@riseup.net>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/204] nvme: multipath: fix return value of nvme_available_path
+Subject: [PATCH 6.1 143/167] x86/i8253: Call clockevent_i8253_disable() with interrupts disabled
 Date: Tue, 29 Apr 2025 18:44:11 +0200
-Message-ID: <20250429161106.079482956@linuxfoundation.org>
+Message-ID: <20250429161057.514338370@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uday Shankar <ushankar@purestorage.com>
+From: Fernando Fernandez Mancera <ffmancera@riseup.net>
 
-[ Upstream commit e3105f54a51554fb1bbf19dcaf93c4411d2d6c8a ]
+[ Upstream commit 3940f5349b476197fb079c5aa19c9a988de64efb ]
 
-The function returns bool so we should return false, not NULL. No
-functional changes are expected.
+There's a lockdep false positive warning related to i8253_lock:
 
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+  WARNING: HARDIRQ-safe -> HARDIRQ-unsafe lock order detected
+  ...
+  systemd-sleep/3324 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
+  ffffffffb2c23398 (i8253_lock){+.+.}-{2:2}, at: pcspkr_event+0x3f/0xe0 [pcspkr]
+
+  ...
+  ... which became HARDIRQ-irq-unsafe at:
+  ...
+    lock_acquire+0xd0/0x2f0
+    _raw_spin_lock+0x30/0x40
+    clockevent_i8253_disable+0x1c/0x60
+    pit_timer_init+0x25/0x50
+    hpet_time_init+0x46/0x50
+    x86_late_time_init+0x1b/0x40
+    start_kernel+0x962/0xa00
+    x86_64_start_reservations+0x24/0x30
+    x86_64_start_kernel+0xed/0xf0
+    common_startup_64+0x13e/0x141
+  ...
+
+Lockdep complains due pit_timer_init() using the lock in an IRQ-unsafe
+fashion, but it's a false positive, because there is no deadlock
+possible at that point due to init ordering: at the point where
+pit_timer_init() is called there is no other possible usage of
+i8253_lock because the system is still in the very early boot stage
+with no interrupts.
+
+But in any case, pit_timer_init() should disable interrupts before
+calling clockevent_i8253_disable() out of general principle, and to
+keep lockdep working even in this scenario.
+
+Use scoped_guard() for that, as suggested by Thomas Gleixner.
+
+[ mingo: Cleaned up the changelog. ]
+
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/Z-uwd4Bnn7FcCShX@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/multipath.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/i8253.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index 32283301199f0..119afdfe4b91e 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -426,7 +426,7 @@ static bool nvme_available_path(struct nvme_ns_head *head)
- 	struct nvme_ns *ns;
- 
- 	if (!test_bit(NVME_NSHEAD_DISK_LIVE, &head->flags))
--		return NULL;
-+		return false;
- 
- 	list_for_each_entry_srcu(ns, &head->list, siblings,
- 				 srcu_read_lock_held(&head->srcu)) {
+diff --git a/arch/x86/kernel/i8253.c b/arch/x86/kernel/i8253.c
+index 80e262bb627fe..cb9852ad60989 100644
+--- a/arch/x86/kernel/i8253.c
++++ b/arch/x86/kernel/i8253.c
+@@ -46,7 +46,8 @@ bool __init pit_timer_init(void)
+ 		 * VMMs otherwise steal CPU time just to pointlessly waggle
+ 		 * the (masked) IRQ.
+ 		 */
+-		clockevent_i8253_disable();
++		scoped_guard(irq)
++			clockevent_i8253_disable();
+ 		return false;
+ 	}
+ 	clockevent_i8253_init(true);
 -- 
 2.39.5
 
