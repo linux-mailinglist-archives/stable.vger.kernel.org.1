@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F58AA1392
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1879AA15CC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF2991890B4C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A16A1887F3F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D32250C15;
-	Tue, 29 Apr 2025 17:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74053244694;
+	Tue, 29 Apr 2025 17:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaP0cpZd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvhxUZAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276D0250BFE;
-	Tue, 29 Apr 2025 17:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F63B18BBBB;
+	Tue, 29 Apr 2025 17:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946134; cv=none; b=S8yQ6+GLKTB4YjLYKGPlJHGMGGpMQdET1lsylCOE2uerACALm8ErO62fNLNvP1UpmO4tz+SGC2cOyt8IizP/KFx1bZvfkegjE87qp200iQs6MCWfV2B+YScd3jW9ZzomOxdYawXHqtDQYkeLNMdiyGBaN6Hn4xRML55cYQZjllQ=
+	t=1745947651; cv=none; b=BYl3icYkeZsfOyo2yHtCzyNP1G7befAakqiyaEwE/FJIPLbzqj7Zds9lT7++RO+zyJA7aATD1rcdrkdl9zOhSvS58M/dO2hkh2mAMmY/u3yG9XUmFwww2PDhJQAgRWrd1h9We90JjSLXUZhLXN26hryjP8fscAUPlviLkCjBltA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946134; c=relaxed/simple;
-	bh=6eQWRJbDXYFM6pwJdEOAByDjBbPFrqoE51sB0p0xc7g=;
+	s=arc-20240116; t=1745947651; c=relaxed/simple;
+	bh=2Simo2xzMJrDcWae+1kBbD124NP9eJ/8Ndi8bgYAKA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kF8lw7bmoOROXwldudlKixP3LpRX9B1npXjm+HpkEry1Tr6bTtlLpygZzeGsfxSuiPw81dfsofTn6P5RSAArqSDtg+dDg+vJqJF2tWovLPBGDM81grCVU53kFaNQfVfDrKt/tii/BM5AHfi+u5AMQccaQLTbTTm8LSThTSDJwW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaP0cpZd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE90C4CEE3;
-	Tue, 29 Apr 2025 17:02:13 +0000 (UTC)
+	 MIME-Version; b=WWFEuiN7G4kW9QV4J3OypWd4qTzx+/UmsPfSbvT0aALhK8HUZ+Nyd19IBM6iOWkiqaYmEFUJEWwndvFLephNtAmKAodTkhCp8QvCEYinDHj7eMTla/TwluLxhp8VsBDunNBT0WDejE0QEcziJDEBRl7qVPVop5b2LCwnOQAyiv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvhxUZAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCBCC4CEE3;
+	Tue, 29 Apr 2025 17:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946134;
-	bh=6eQWRJbDXYFM6pwJdEOAByDjBbPFrqoE51sB0p0xc7g=;
+	s=korg; t=1745947651;
+	bh=2Simo2xzMJrDcWae+1kBbD124NP9eJ/8Ndi8bgYAKA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IaP0cpZdTAT/FWvb+h+jgssvMHk+RGaEOMxReHAF88Qrv65hcoLIMC+iny6Oab0De
-	 cXSDK2v0ZSFqGSCocFSGVp8HwTjD0JDGDngPOh6z0MiU59YYhekV7FXHjF8QwV2yfD
-	 qjD3rLYq/5OmCmUpxOAm+x5ZEkdU3bkBS+dNNOTo=
+	b=lvhxUZAuZO6sWWC2PvZUrIkSBFH3SzxQAc7Esv+7uuOVCoFMuvjzeU9j/b1HBriTH
+	 rUkENgMkg1IE0gEYs/SsDvEE/IOJ0HzQ9TQcfQjyyh7c4WQkK6kQEjVr71828+gtcl
+	 mkvGhC6vL698jk0NHgn3qeGNN5Fz0RmRs9nkczW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miao Li <limiao@kylinos.cn>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.14 167/311] usb: quirks: add DELAY_INIT quirk for Silicon Motion Flash Drive
+	Mike Christie <michael.christie@oracle.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 063/280] vhost-scsi: Add better resource allocation failure handling
 Date: Tue, 29 Apr 2025 18:40:04 +0200
-Message-ID: <20250429161127.880499510@linuxfoundation.org>
+Message-ID: <20250429161117.693239480@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miao Li <limiao@kylinos.cn>
+From: Mike Christie <michael.christie@oracle.com>
 
-commit 2932b6b547ec36ad2ed60fbf2117c0e46bb7d40a upstream.
+[ Upstream commit 3ca51662f8186b569b8fb282242c20ccbb3993c2 ]
 
-Silicon Motion Flash Drive connects to Huawei hisi platforms and
-performs a system reboot test for two thousand circles, it will
-randomly work incorrectly on boot, set DELAY_INIT quirk can workaround
-this issue.
+If we can't allocate mem to map in data for a request or can't find
+a tag for a command, we currently drop the command. This leads to the
+error handler running to clean it up. Instead of dropping the command
+this has us return an error telling the initiator that it queued more
+commands than we can handle. The initiator will then reduce how many
+commands it will send us and retry later.
 
-Signed-off-by: Miao Li <limiao@kylinos.cn>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Message-Id: <20241203191705.19431-4-michael.christie@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+Stable-dep-of: b18268713547 ("vhost-scsi: Fix vhost_scsi_send_bad_target()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/vhost/scsi.c | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -383,6 +383,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0904, 0x6103), .driver_info =
- 			USB_QUIRK_LINEAR_FRAME_INTR_BINTERVAL },
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 7aeff435c1d87..ad7fa5bc0f5fc 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -630,7 +630,7 @@ vhost_scsi_get_cmd(struct vhost_virtqueue *vq, struct vhost_scsi_tpg *tpg,
  
-+	/* Silicon Motion Flash Drive */
-+	{ USB_DEVICE(0x090c, 0x1000), .driver_info = USB_QUIRK_DELAY_INIT },
+ 	tag = sbitmap_get(&svq->scsi_tags);
+ 	if (tag < 0) {
+-		pr_err("Unable to obtain tag for vhost_scsi_cmd\n");
++		pr_warn_once("Guest sent too many cmds. Returning TASK_SET_FULL.\n");
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+@@ -929,6 +929,24 @@ static void vhost_scsi_target_queue_cmd(struct vhost_scsi_cmd *cmd)
+ 	target_submit(se_cmd);
+ }
+ 
++static void
++vhost_scsi_send_status(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
++		       int head, unsigned int out, u8 status)
++{
++	struct virtio_scsi_cmd_resp __user *resp;
++	struct virtio_scsi_cmd_resp rsp;
++	int ret;
 +
- 	/* Sound Devices USBPre2 */
- 	{ USB_DEVICE(0x0926, 0x0202), .driver_info =
- 			USB_QUIRK_ENDPOINT_IGNORE },
++	memset(&rsp, 0, sizeof(rsp));
++	rsp.status = status;
++	resp = vq->iov[out].iov_base;
++	ret = __copy_to_user(resp, &rsp, sizeof(rsp));
++	if (!ret)
++		vhost_add_used_and_signal(&vs->dev, vq, head, 0);
++	else
++		pr_err("Faulted on virtio_scsi_cmd_resp\n");
++}
++
+ static void
+ vhost_scsi_send_bad_target(struct vhost_scsi *vs,
+ 			   struct vhost_virtqueue *vq,
+@@ -1216,8 +1234,8 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
+ 					 exp_data_len + prot_bytes,
+ 					 data_direction);
+ 		if (IS_ERR(cmd)) {
+-			vq_err(vq, "vhost_scsi_get_cmd failed %ld\n",
+-			       PTR_ERR(cmd));
++			ret = PTR_ERR(cmd);
++			vq_err(vq, "vhost_scsi_get_tag failed %dd\n", ret);
+ 			goto err;
+ 		}
+ 		cmd->tvc_vhost = vs;
+@@ -1254,11 +1272,15 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
+ 		 * EINVAL: Invalid response buffer, drop the request
+ 		 * EIO:    Respond with bad target
+ 		 * EAGAIN: Pending request
++		 * ENOMEM: Could not allocate resources for request
+ 		 */
+ 		if (ret == -ENXIO)
+ 			break;
+ 		else if (ret == -EIO)
+ 			vhost_scsi_send_bad_target(vs, vq, vc.head, vc.out);
++		else if (ret == -ENOMEM)
++			vhost_scsi_send_status(vs, vq, vc.head, vc.out,
++					       SAM_STAT_TASK_SET_FULL);
+ 	} while (likely(!vhost_exceeds_weight(vq, ++c, 0)));
+ out:
+ 	mutex_unlock(&vq->mutex);
+-- 
+2.39.5
+
 
 
 
