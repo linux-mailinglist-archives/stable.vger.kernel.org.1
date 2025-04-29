@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-138623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C03AAA194B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1D1AA1A38
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C01A49C324B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 785DD9A4E34
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AB425228D;
-	Tue, 29 Apr 2025 18:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53B8188A0E;
+	Tue, 29 Apr 2025 18:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4XSfJgi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/yxZ/MH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7222248883;
-	Tue, 29 Apr 2025 18:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BD9CA5A;
+	Tue, 29 Apr 2025 18:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949833; cv=none; b=Ic1hnh7T3APISSx/DHgLrwi/qn+CZ0pBMCt731NDOzPbsy7pUbuw0qvCdbKJX3vpVTDyGb8zn7nnHYHjpN/zfZoAOhDXOAfV1WEB9dnPw7ONdthpjiWImWJ00lXwiOjOCuCasaWkLQnV6uqeTNRu58sp6qe9L2DcMKq3COuW4r8=
+	t=1745950428; cv=none; b=U5LNLDdoYM/VGXWZcdqPWvPBtDe9RWOKCrPksL1lvrms2WSsoqtUWUzq00mcRfQg9HlUbPHPQc644hz1cjBi+0oxYFf+S3D6tV4b1+AY14EvB1Qhr5ayhgZfRe3RR7JmLVJPfr8SxqeDVaVgpM/Rl51efSogxpO5I46rg0zeA7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949833; c=relaxed/simple;
-	bh=mUzFXDhwpzAds7ApUH6/6lVzdUDkRmi8oRFRwSYnjJg=;
+	s=arc-20240116; t=1745950428; c=relaxed/simple;
+	bh=6C9Hr8suHzeN/USZbq40fB2EKZeI3qwS/6/m3fJDMGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f8xbB6F2HukIrK8I8wmGxIxCslum4kiM8AmA/caPSfDuzXokhU0IesWXEY5c++u1XTccj5CHDI/J6khHUM1Al7bMA7NDaGPWEYE+hT4BxBZmsiHjU+yFdnzs3XJ1Zyv5F7/0bN4g4EV1Z1O2JzsZ31qLhejv8UlJrhjvczrJadQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4XSfJgi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37802C4CEE3;
-	Tue, 29 Apr 2025 18:03:53 +0000 (UTC)
+	 MIME-Version; b=jv5XHDeAl5AZfYUf49R6G27u1lLvnxMJVg8q5UjiPF0+xDOpRUzjImfGg/cseAly7GOEE/Gdi4+1+2xcPZcO3T5RWNBR6lWaIHuV645YQUXe3ANd6n5RAoG167hByO5uYbkFJl5YiD1LrnZ0TuaDOnFsk2YL0qP1t89xCS600Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/yxZ/MH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E77C4CEE3;
+	Tue, 29 Apr 2025 18:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949833;
-	bh=mUzFXDhwpzAds7ApUH6/6lVzdUDkRmi8oRFRwSYnjJg=;
+	s=korg; t=1745950427;
+	bh=6C9Hr8suHzeN/USZbq40fB2EKZeI3qwS/6/m3fJDMGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y4XSfJgi0k5OqK5iIIIgu1dbDMeKeG4QYnlNL5TyFsUViRnn8OxoIoSsuW8c/HshX
-	 3FTKk6CZOpH+wqwg6xFbe749cZIV2R+4uk+Qe7UML+lqQx+VFwpzrVRP570A5Rsekp
-	 pOBxDtKmfiKJWU0TblECo/aI6AMyTfhnnKegTw/E=
+	b=D/yxZ/MH9NpJF8hBv1Psex1+EyXt1FDjXlnDYaWY4BlDFYy/cHSi7uPP3em8Q6DpQ
+	 cV7WV4uTIGbDCMhm66jW9uO7yFWBDlBnP0p5nLQ1miHDdwS5IA04tm1rqKuEae+b6j
+	 6CD8Ka8YDn3WJKPqwp+MJRmw5qvbje1gZSRwQva8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.1 072/167] USB: storage: quirk for ADATA Portable HDD CH94
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 092/204] KVM: x86: Explicitly treat routing entry type changes as changes
 Date: Tue, 29 Apr 2025 18:43:00 +0200
-Message-ID: <20250429161054.678452610@linuxfoundation.org>
+Message-ID: <20250429161103.197286599@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 9ab75eee1a056f896b87d139044dd103adc532b9 upstream.
+commit bcda70c56f3e718465cab2aad260cf34183ce1ce upstream.
 
-Version 1.60 specifically needs this quirk.
-Version 2.00 is known good.
+Explicitly treat type differences as GSI routing changes, as comparing MSI
+data between two entries could get a false negative, e.g. if userspace
+changed the type but left the type-specific data as-is.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250403180004.343133-1-oneukum@suse.com
+Fixes: 515a0c79e796 ("kvm: irqfd: avoid update unmodified entries of the routing")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-4-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_uas.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kvm/x86.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -83,6 +83,13 @@ UNUSUAL_DEV(0x0bc2, 0x331a, 0x0000, 0x99
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_REPORT_LUNS),
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -13297,7 +13297,8 @@ int kvm_arch_update_irqfd_routing(struct
+ bool kvm_arch_irqfd_route_changed(struct kvm_kernel_irq_routing_entry *old,
+ 				  struct kvm_kernel_irq_routing_entry *new)
+ {
+-	if (new->type != KVM_IRQ_ROUTING_MSI)
++	if (old->type != KVM_IRQ_ROUTING_MSI ||
++	    new->type != KVM_IRQ_ROUTING_MSI)
+ 		return true;
  
-+/* Reported-by: Oliver Neukum <oneukum@suse.com> */
-+UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x0160,
-+		"ADATA",
-+		"Portable HDD CH94",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_NO_ATA_1X),
-+
- /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
- UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x9999,
- 		"Initio Corporation",
+ 	return !!memcmp(&old->msi, &new->msi, sizeof(new->msi));
 
 
 
