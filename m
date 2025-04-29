@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-138618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68BCAA1942
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8129AA19CA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:15:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21F673A5CF7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 980701C0172E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D936D2517BE;
-	Tue, 29 Apr 2025 18:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255DA188A0E;
+	Tue, 29 Apr 2025 18:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YcOInf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJFchMtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CCB40C03;
-	Tue, 29 Apr 2025 18:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60CACA5A;
+	Tue, 29 Apr 2025 18:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949818; cv=none; b=nZTKw+oiOr1HtnMb7nOpgp36LwDfHqI1NjSpQ8TakfzmpLnIN3WGOF3xyECBC/37B8JhHpmRGN7uUTxFnNcku6i3WGVuwvL7gAes4csuNkyhELtPKHv6Fl9Te1L+5hTfl9Ilp8xfYhyq/6k3gsG56F2gW5EkeMKZAtr6lX/cCLw=
+	t=1745950415; cv=none; b=Me+sfnglaeOJXORvaCevrya7ViYBhv6i83CaRIVuV0x0cYUp4xQ3DDMo+2O23XHWgP5NUbRW/uhZkpNznKzWtwzTEU6fgwL3M+X4DNWkZ7CNENcLcvNioP9Dvx88vc7smGbLk81AdUIZTx8E+ZbjvVwFIhGn9bf+4RL8ATr4Chc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949818; c=relaxed/simple;
-	bh=giQDdAkBVN9QLMbcbB3Jlg0jhIn2sLYl/d62HMZdeAA=;
+	s=arc-20240116; t=1745950415; c=relaxed/simple;
+	bh=pOihYjmsCJiuwyp1aKEIYLXxBtzOGCm8DPxLm/RAsWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hYDOIrurqHmkgxN0uzgA6W52qLvyQT7WM8EnZ+V/6U7+FcJnGRSaiXti2JzcCsoXZS8h1zvpOYeW8/lRxrA6rRQnaiCTWfi11nKyUkkezqey+vl9n32/QlB6B0LTG3sLgx9M/4yjDS4rO09njuhrWs7em1U04pUvhoiEOT12F3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YcOInf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122E9C4CEE3;
-	Tue, 29 Apr 2025 18:03:37 +0000 (UTC)
+	 MIME-Version; b=HBxX9EycIe9gwjER0ArnSzxibZXAGAsJZb6cqgkVojC60MBKMEsSb4gojHlXk/YYJkyDy25U1t7mJs6LwJHClykdnvH2EQgdkf00wmqpnV06yVih9vUW4bLV6oruCg2n57Mb3Ewsa2RDH8kiTU3HgEs7k0Kjco0pa3Oa1iXBA+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJFchMtD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD33C4CEE3;
+	Tue, 29 Apr 2025 18:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949818;
-	bh=giQDdAkBVN9QLMbcbB3Jlg0jhIn2sLYl/d62HMZdeAA=;
+	s=korg; t=1745950415;
+	bh=pOihYjmsCJiuwyp1aKEIYLXxBtzOGCm8DPxLm/RAsWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0YcOInf+/pavI3mQONE+yr0HfajHyfly1rv1FrKVS3FMtcjly+tQvm8TJ7963ZoGf
-	 /JKoJYTms6NmDOt2Uqdzr3wldY3AU22Ra611Hy8BJY8MO08Apo/FypvZdEvvdt20lq
-	 7xf+3bLo4diF+OTUZddv6zifwBH+TFDthZ3g7/DU=
+	b=HJFchMtDH/mqouNUGRMkEXBtFyS30RI9zLMWpThnCpHOoY3FbxSpAtwJGmMcV6mzm
+	 KSiXSkt/LRejGfiXi8l6u+/yMl+eJzz0pltuuyaigF0DOJTdjn2kFdotJaXOrC5PHT
+	 P+oWAJoDtNkKbQcGOe0Ow5vE8k1SGRYyiJPShOvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Mark Broadworth <mark.broadworth@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 067/167] drm/amd/display: Force full update in gpu reset
-Date: Tue, 29 Apr 2025 18:42:55 +0200
-Message-ID: <20250429161054.484882294@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>
+Subject: [PATCH 6.6 088/204] ata: libata-scsi: Fix ata_msense_control_ata_feature()
+Date: Tue, 29 Apr 2025 18:42:56 +0200
+Message-ID: <20250429161103.025754698@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 67fe574651c73fe5cc176e35f28f2ec1ba498d14 upstream.
+commit 88474ad734fb2000805c63e01cc53ea930adf2c7 upstream.
 
-[Why]
-While system undergoing gpu reset always do full update
-to sync the dc state before and after reset.
+For the ATA features subpage of the control mode page, the T10 SAT-6
+specifications state that:
 
-[How]
-Return true in should_reset_plane() if gpu reset detected
+For a MODE SENSE command, the SATL shall return the CDL_CTRL field value
+that was last set by an application client.
 
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Mark Broadworth <mark.broadworth@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2ba8619b9a378ad218ad6c2e2ccaee8f531e08de)
+However, the function ata_msense_control_ata_feature() always sets the
+CDL_CTRL field to the 0x02 value to indicate support for the CDL T2A and
+T2B pages. This is thus incorrect and the value 0x02 must be reported
+only after the user enables the CDL feature, which is indicated with the
+ATA_DFLAG_CDL_ENABLED device flag. When this flag is not set, the
+CDL_CTRL field of the ATA feature subpage of the control mode page must
+report a value of 0x00.
+
+Fix ata_msense_control_ata_feature() to report the correct values for
+the CDL_CTRL field, according to the enable/disable state of the device
+CDL feature.
+
+Fixes: df60f9c64576 ("scsi: ata: libata: Add ATA feature control sub-page translation")
 Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/ata/libata-scsi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -9358,6 +9358,9 @@ static bool should_reset_plane(struct dr
- 	if (adev->ip_versions[DCE_HWIP][0] < IP_VERSION(3, 2, 0) && state->allow_modeset)
- 		return true;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -2354,8 +2354,8 @@ static unsigned int ata_msense_control_a
+ 	 */
+ 	put_unaligned_be16(ATA_FEATURE_SUB_MPAGE_LEN - 4, &buf[2]);
  
-+	if (amdgpu_in_reset(adev) && state->allow_modeset)
-+		return true;
-+
- 	/* Exit early if we know that we're adding or removing the plane. */
- 	if (old_plane_state->crtc != new_plane_state->crtc)
- 		return true;
+-	if (dev->flags & ATA_DFLAG_CDL)
+-		buf[4] = 0x02; /* Support T2A and T2B pages */
++	if (dev->flags & ATA_DFLAG_CDL_ENABLED)
++		buf[4] = 0x02; /* T2A and T2B pages enabled */
+ 	else
+ 		buf[4] = 0;
+ 
 
 
 
