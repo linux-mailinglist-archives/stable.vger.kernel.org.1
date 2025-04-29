@@ -1,195 +1,131 @@
-Return-Path: <stable+bounces-136994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35DEFAA0362
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 08:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01ABBAA0377
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 08:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 357A73B14E4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 06:32:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB8C93B19F6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 06:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB212741BE;
-	Tue, 29 Apr 2025 06:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE792222C7;
+	Tue, 29 Apr 2025 06:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Onm1anIz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufpsLUkT"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFBA2222C7;
-	Tue, 29 Apr 2025 06:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A655D2FB
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 06:34:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745908339; cv=none; b=E97nMP99aCvxgxnDQddEn270bNIZGm3k7inMVHJnGKjsZQ2bN1Q7H3es48FRFY8QP70tiPX60UmJrTN3A4q9defy71nQMzKb8AQyMprOa6vL0Kbp+AKqaCqK4z6+SLpHSXbh2OJdhHyFf4YHB/F96/no47oBaDzWcsd+zfgMEbk=
+	t=1745908500; cv=none; b=mQH3RCWTtdIPKLLDgOyvcx1gudIySn6ZSig8O3Zbw0cjgvKAxlS1oVDDERT8+nA3aAWve6H+zAmdXunqg5LFBTgS0y8hHDWPL5fFlN3QNCl4EY7H+EdNZ03kvPMg5y7l3HUwVZmIG6txa/uYQr2pdSO1xm0j++wyx4FMuxldsJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745908339; c=relaxed/simple;
-	bh=IZ7OLT5OmCO34GamkCsEAbPcSzA7K7qMQeTQuaVDBr8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=blPTnvnuaeeIOd957YC0Ie1bwzRoB+JIFVqnhBmR+Cm3venHfx7bu1ICoDJifUzpDNPTR6ddQuPjH8BSiSOFb6Sc2pYxvp8R4uYwJOft25xo4bPohpUhUdQcJTNIUD/DUJbK67Q7z1FI0xxHaweWjFbgikbNkxDtYY2o98y8XCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Onm1anIz; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 341CE669;
-	Tue, 29 Apr 2025 08:32:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1745908330;
-	bh=IZ7OLT5OmCO34GamkCsEAbPcSzA7K7qMQeTQuaVDBr8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Onm1anIz64s93gLDhscLKJxK7sd1iKYvubEFfNWf5oP44VKQ8toi7AWGqD7ggoAi0
-	 RxLLyZpcB9ZKeydt/WI3Y5KsnbDlGbS6ZKsgjx/D7PnCQlcdBVDkb6iuN/32M0K9Vj
-	 S9G7MRwEcA7S/9CkVXcNGGQgb3lTHf3JBr4KAHYk=
-Message-ID: <fbde0659-78f3-46e4-98cf-d832f765a18b@ideasonboard.com>
-Date: Tue, 29 Apr 2025 09:32:11 +0300
+	s=arc-20240116; t=1745908500; c=relaxed/simple;
+	bh=WopRz1dDSBKFsLt2Xvfh/K8wxPZenx+QQtgdTC7AuEo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JLrlRA77C6ZwzXsKOxh8jwHDGyeiHYb0sPRvRgPs3mc/dyk2BjI0LFBLgTGnZyULaMmoh7JlJICVyxVoqoTo/If2kpt6Sf51ncSrOYcUWCVoi/5VvpWyQV7TMM2LoCHQL2k+DOYcVoPghhw1nruMF4LVPNN/IQlD0VSbAkC88bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufpsLUkT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C60C4CEE3;
+	Tue, 29 Apr 2025 06:34:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745908499;
+	bh=WopRz1dDSBKFsLt2Xvfh/K8wxPZenx+QQtgdTC7AuEo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=ufpsLUkTT7BacMVTGhYQfIn6tCkextQrcvUq0mG4joCEe4W01RusZ+FxNlzTaJ8Jl
+	 Z3wAg/ENXnI34ZnaN6P3WfcFWcjI7ubqZkXA7+1wbClEgVSpe6rdSr0L8oGAlGv1/k
+	 mzpJ2TMT2mCeQX5VqRfE3iCe0vQBSvZaYsMYenNs=
+Subject: FAILED: patch "[PATCH] serial: msm: Configure correct working mode before starting" failed to apply to 5.4-stable tree
+To: stephan.gerhold@linaro.org,gregkh@linuxfoundation.org,neil.armstrong@linaro.org,stable@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 29 Apr 2025 08:34:56 +0200
+Message-ID: <2025042956-parkway-commend-a62f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] drm/bridge: cdns-dsi: Replace deprecated
- UNIVERSAL_DEV_PM_OPS()
-To: Vitor Soares <ivitro@gmail.com>
-Cc: Vitor Soares <vitor.soares@toradex.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Aradhya Bhatia <aradhya.bhatia@linux.dev>,
- Jayesh Choudhary <j-choudhary@ti.com>, stable@vger.kernel.org,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-References: <20250428094048.1459620-1-ivitro@gmail.com>
-Content-Language: en-US
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- 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
-In-Reply-To: <20250428094048.1459620-1-ivitro@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Hi,
 
-On 28/04/2025 12:40, Vitor Soares wrote:
-> From: Vitor Soares <vitor.soares@toradex.com>
-> 
-> The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided callbacks
-> for both runtime PM and system sleep. This causes the DSI clocks to be
-> disabled twice: once during runtime suspend and again during system
-> suspend, resulting in a WARN message from the clock framework when
-> attempting to disable already-disabled clocks.
-> 
-> [   84.384540] clk:231:5 already disabled
-> [   84.388314] WARNING: CPU: 2 PID: 531 at /drivers/clk/clk.c:1181 clk_core_disable+0xa4/0xac
-> ...
-> [   84.579183] Call trace:
-> [   84.581624]  clk_core_disable+0xa4/0xac
-> [   84.585457]  clk_disable+0x30/0x4c
-> [   84.588857]  cdns_dsi_suspend+0x20/0x58 [cdns_dsi]
-> [   84.593651]  pm_generic_suspend+0x2c/0x44
-> [   84.597661]  ti_sci_pd_suspend+0xbc/0x15c
-> [   84.601670]  dpm_run_callback+0x8c/0x14c
-> [   84.605588]  __device_suspend+0x1a0/0x56c
-> [   84.609594]  dpm_suspend+0x17c/0x21c
-> [   84.613165]  dpm_suspend_start+0xa0/0xa8
-> [   84.617083]  suspend_devices_and_enter+0x12c/0x634
-> [   84.621872]  pm_suspend+0x1fc/0x368
-> 
-> To address this issue, replace UNIVERSAL_DEV_PM_OPS() with
-> DEFINE_RUNTIME_DEV_PM_OPS(), which avoids redundant suspend/resume calls
-> by checking if the device is already runtime suspended.
-> 
-> Cc: <stable@vger.kernel.org> # 6.1.x
-> Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
-> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
-> ---
->   drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-> index b022dd6e6b6e..62179e55e032 100644
-> --- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-> +++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-> @@ -1258,7 +1258,7 @@ static const struct mipi_dsi_host_ops cdns_dsi_ops = {
->   	.transfer = cdns_dsi_transfer,
->   };
->   
-> -static int __maybe_unused cdns_dsi_resume(struct device *dev)
-> +static int cdns_dsi_resume(struct device *dev)
->   {
->   	struct cdns_dsi *dsi = dev_get_drvdata(dev);
->   
-> @@ -1269,7 +1269,7 @@ static int __maybe_unused cdns_dsi_resume(struct device *dev)
->   	return 0;
->   }
->   
-> -static int __maybe_unused cdns_dsi_suspend(struct device *dev)
-> +static int cdns_dsi_suspend(struct device *dev)
->   {
->   	struct cdns_dsi *dsi = dev_get_drvdata(dev);
->   
-> @@ -1279,8 +1279,8 @@ static int __maybe_unused cdns_dsi_suspend(struct device *dev)
->   	return 0;
->   }
->   
-> -static UNIVERSAL_DEV_PM_OPS(cdns_dsi_pm_ops, cdns_dsi_suspend, cdns_dsi_resume,
-> -			    NULL);
-> +static DEFINE_RUNTIME_DEV_PM_OPS(cdns_dsi_pm_ops, cdns_dsi_suspend,
-> +				 cdns_dsi_resume, NULL);
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-I'm not sure if this, or the UNIVERSAL_DEV_PM_OPS, is right here. When 
-the system is suspended, the bridge drivers will get a call to the 
-*_disable() hook, which then disables the device. If the bridge driver 
-would additionally do something in its system suspend hook, it would 
-conflict with normal disable path.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-I think bridges/panels should only deal with runtime PM.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x 7094832b5ac861b0bd7ed8866c93cb15ef619996
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042956-parkway-commend-a62f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
-  Tomi
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 7094832b5ac861b0bd7ed8866c93cb15ef619996 Mon Sep 17 00:00:00 2001
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
+Date: Tue, 8 Apr 2025 19:22:47 +0200
+Subject: [PATCH] serial: msm: Configure correct working mode before starting
+ earlycon
+
+The MSM UART DM controller supports different working modes, e.g. DMA or
+the "single-character mode", where all reads/writes operate on a single
+character rather than 4 chars (32-bit) at once. When using earlycon,
+__msm_console_write() always writes 4 characters at a time, but we don't
+know which mode the bootloader was using and we don't set the mode either.
+
+This causes garbled output if the bootloader was using the single-character
+mode, because only every 4th character appears in the serial console, e.g.
+
+  "[ 00oni pi  000xf0[ 00i s 5rm9(l)l s 1  1 SPMTA 7:C 5[ 00A ade k d[
+   00ano:ameoi .Q1B[ 00ac _idaM00080oo'"
+
+If the bootloader was using the DMA ("DM") mode, output would likely fail
+entirely. Later, when the full serial driver probes, the port is
+re-initialized and output works as expected.
+
+Fix this also for earlycon by clearing the DMEN register and
+reset+re-enable the transmitter to apply the change. This ensures the
+transmitter is in the expected state before writing any output.
+
+Cc: stable <stable@kernel.org>
+Fixes: 0efe72963409 ("tty: serial: msm: Add earlycon support")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250408-msm-serial-earlycon-v1-1-429080127530@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/tty/serial/msm_serial.c b/drivers/tty/serial/msm_serial.c
+index 1b137e068444..3449945493ce 100644
+--- a/drivers/tty/serial/msm_serial.c
++++ b/drivers/tty/serial/msm_serial.c
+@@ -1746,6 +1746,12 @@ msm_serial_early_console_setup_dm(struct earlycon_device *device,
+ 	if (!device->port.membase)
+ 		return -ENODEV;
+ 
++	/* Disable DM / single-character modes */
++	msm_write(&device->port, 0, UARTDM_DMEN);
++	msm_write(&device->port, MSM_UART_CR_CMD_RESET_RX, MSM_UART_CR);
++	msm_write(&device->port, MSM_UART_CR_CMD_RESET_TX, MSM_UART_CR);
++	msm_write(&device->port, MSM_UART_CR_TX_ENABLE, MSM_UART_CR);
++
+ 	device->con->write = msm_serial_early_write_dm;
+ 	return 0;
+ }
 
 
