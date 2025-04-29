@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC3EAA137E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28842AA143B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B9D09256E2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC3EA7A1D7C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875DD23F413;
-	Tue, 29 Apr 2025 17:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F83F2459FA;
+	Tue, 29 Apr 2025 17:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcjqDgQs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDu7spia"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BD821A43D;
-	Tue, 29 Apr 2025 17:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA7D27453;
+	Tue, 29 Apr 2025 17:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946067; cv=none; b=Prb6d3RonBTYL00z4jBsKDoFL4Km6eMbL03bbteyMfBgcXzngbnh5kDaGbcrVWtAt3i2sIZ94txnCiiAg+vSx5ClhGwUAWIR058BCzVyVaoMY2QvJnq7C3Il6rL3Tu/YI3BRhN1jJx0vBnJUXp1nG6ALjpyTbJV8Q3mbAqhKboQ=
+	t=1745946807; cv=none; b=caUmjuw/WAlpSvmoVF+/IFq0S7dRlECS7b2/Oi20yS6izEon3I6hZPPQrd8D1C58zCbq3BtLoLz+Y+5X0P1me9v4O9Yu5b8DaKBpLIVJDDtn8eiN1sVEcIZoRByKHgUlRRxLQTW+i13Ep0Igsv46zJTnSVQacFIxvHDzT1eu2uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946067; c=relaxed/simple;
-	bh=GNwMDE5AtAoCfGiiQOJZ+DoSo4gOdBPbug7qG3me/ak=;
+	s=arc-20240116; t=1745946807; c=relaxed/simple;
+	bh=OwxsJnoObmk8JR3QIjbCx4HI1bG12051WCBjIp8n56Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DdqCi4QG+5X2jonEv9bE1a2AvamBBN8QncQrWkavxOC0PKHiJMyu6CYOKmN2VYQqw2M6Dftywnm0wh3iuFSzEJ0GdicvHDYmdHmqkZHh2kfYFs//k4T+rVamGAwgEf0MYIJ6Jyx/FRsBQoGGY2OCW698/nHmHhZY8SMWPs20RqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcjqDgQs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE2CC4CEE9;
-	Tue, 29 Apr 2025 17:01:06 +0000 (UTC)
+	 MIME-Version; b=PVaoe2fAiMDmSlv71XR7hO1qOHCCmyvStzYiopEYC/HBmH77NcR1B6KrrYWx7KoJna6tWvjQ802N1kokjqjX9Jin2OYSCh6yzbkXBxXRnTpnPreNpxbe6Bu90o+u+7qaFQ0EXem3lTxnC5v2vqGZtN18oS0E9i27ns+dg1mKXeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDu7spia; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4C4C4CEE3;
+	Tue, 29 Apr 2025 17:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946067;
-	bh=GNwMDE5AtAoCfGiiQOJZ+DoSo4gOdBPbug7qG3me/ak=;
+	s=korg; t=1745946807;
+	bh=OwxsJnoObmk8JR3QIjbCx4HI1bG12051WCBjIp8n56Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XcjqDgQs0O71X/PLcHiMNJ7wuCTpAd3zh0b/mqfZAeo7QgDTckhWIc4J6iDxwIOk7
-	 Ss3Lt2Nevj9YTE6QKhcjAjhJew3FaNGmnLZOZzKj6AmVb8meWQAE+qo9bx+ifVxYY0
-	 Bl4P6331PUcm8UaC++Jg/T95K/B53M/J6U73GKzw=
+	b=cDu7spiahxCIWyhOKDVQB6Ul9JWA7IQB3Ks2m7bQLU5XBj8t2pzeNVe8WZkg9uOlw
+	 fpHhNpSlX6qfQ4OgzQbDMCIjumXpJYh5O13YSsld8FUN+FikLtB6HCIo54+dB/NTR6
+	 pcZH0nTs8/xWk3JCq1iYYDXsX21PJcCJRke+7spU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Tomas Winkler <tomasw@gmail.com>,
-	Alexander Usyskin <alexander.usyskin@intel.com>
-Subject: [PATCH 6.14 143/311] mei: me: add panther lake H DID
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 076/286] jbd2: remove wrong sb->s_sequence check
 Date: Tue, 29 Apr 2025 18:39:40 +0200
-Message-ID: <20250429161126.893126469@linuxfoundation.org>
+Message-ID: <20250429161110.976479051@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 86ce5c0a1dec02e21b4c864b2bc0cc5880a2c13c upstream.
+commit e6eff39dd0fe4190c6146069cc16d160e71d1148 upstream.
 
-Add Panther Lake H device id.
+Journal emptiness is not determined by sb->s_sequence == 0 but rather by
+sb->s_start == 0 (which is set a few lines above). Furthermore 0 is a
+valid transaction ID so the check can spuriously trigger. Remove the
+invalid WARN_ON.
 
-Cc: stable <stable@kernel.org>
-Co-developed-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://lore.kernel.org/r/20250408130005.1358140-1-alexander.usyskin@intel.com
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250206094657.20865-3-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    1 +
- drivers/misc/mei/pci-me.c     |    1 +
- 2 files changed, 2 insertions(+)
+ fs/jbd2/journal.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -117,6 +117,7 @@
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1649,7 +1649,6 @@ int jbd2_journal_update_sb_log_tail(jour
  
- #define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
+ 	/* Log is no longer empty */
+ 	write_lock(&journal->j_state_lock);
+-	WARN_ON(!sb->s_sequence);
+ 	journal->j_flags &= ~JBD2_FLUSHED;
+ 	write_unlock(&journal->j_state_lock);
  
-+#define MEI_DEV_ID_PTL_H      0xE370  /* Panther Lake H */
- #define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
- 
- /*
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -124,6 +124,7 @@ static const struct pci_device_id mei_me
- 
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
- 
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_H, MEI_ME_PCH15_CFG)},
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
- 
- 	/* required last entry */
 
 
 
