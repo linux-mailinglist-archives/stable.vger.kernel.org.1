@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-138599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36C0AA1927
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 587BFAA19D1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:16:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7720E9C0BA9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EF201C01B86
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7CB224222;
-	Tue, 29 Apr 2025 18:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751BE24728A;
+	Tue, 29 Apr 2025 18:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQZa3/4o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhAbB6Nd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CEF22AE68;
-	Tue, 29 Apr 2025 18:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F06188A0E;
+	Tue, 29 Apr 2025 18:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949759; cv=none; b=kPvuKWsHL9qzOdnPqHEcwLDTT8YyBiVAEQaWXTxZHNTjzO6dTgAxufrRw2DzmmeO4ds/KvV05q07Jd/tTjCYiBheb1aqpMsiX4RVoiMH6aDnfu+JHGHNy0Y+upjJAnDUeMTahC+3lj9w3lZCutZldz2vClU1o6jmC48j8tq+ZNc=
+	t=1745950444; cv=none; b=aCEZVWFEeU9kOf9cA1YwWTvPZfWzJAyNrCr9qQOK1dCKg4eHn6shlSqOruxotYJgFBePHB4oinaJVC13z35dW3o6ZxUI7HRH5EB/tAr5ipjUgXgr+xUqj1tbMeWtguL27U5qXNNolqnk2q+9tiM0y0hf3qnC0c2qdKUvZOL497c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949759; c=relaxed/simple;
-	bh=Gvg68PHoevoa+JLi5MmtPV/8sWhi7GWEXpWA+vrIoGk=;
+	s=arc-20240116; t=1745950444; c=relaxed/simple;
+	bh=uXcctiXy/hRV9Cvxx6/nC9CLwNuTngaWqlbUOREYpr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BH52Tlw9SHKxbs6TbBhQgUEFq/cCZw2VmGCNLRcleLUeO/VxiPialsR+NzAI+qWrr4S+Lr+p7MHoHMU8itQYeyTK/PXA0PZ8r/kS5CYfN7cI8NB1/GztLDVJ8KQ9N13LSwxKyrbWGlD0TI6qPriYW660s2WBvO1vGt6BeMQiTd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQZa3/4o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CF6C4CEE3;
-	Tue, 29 Apr 2025 18:02:37 +0000 (UTC)
+	 MIME-Version; b=apORQcrq6EyLpRC6vY3+BfXX2Y4Ea1vVAih1VLZ3cOq65zjx/cYHeH2Aqt4cdDv+NLIHYjTuiBbRZnT5Z/8/0qEDIemdVRUgFFbRJ6V4Uo2rXjolrXFpN5das/kCE9Oi1qRudxce2rhRuKajb0YKxqCF1cRnqIED+JRBzRfRcqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhAbB6Nd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB30C4CEE3;
+	Tue, 29 Apr 2025 18:14:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949758;
-	bh=Gvg68PHoevoa+JLi5MmtPV/8sWhi7GWEXpWA+vrIoGk=;
+	s=korg; t=1745950443;
+	bh=uXcctiXy/hRV9Cvxx6/nC9CLwNuTngaWqlbUOREYpr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VQZa3/4oFK6aYEYGllgHfePVBjeaxVsZOYP2NCEhS/hxwH3IB/UmFGWm2BLvAkDnN
-	 VnySkRl34+yjZn/ldGywbRjOy8Q02F96ZQTylsQIgD2XDB+p3H2Q8bk7+ywO36Cdfn
-	 XLZY7iljuxJCeN0Io+O3SvfiGI3PsBTTmAW3MTm8=
+	b=vhAbB6NdO9QBCvqE4hNoM+H/U3iXb0whUmw4ztDXnXlS3KFfExXKNcO54oln+TDc7
+	 h91uaRywo5d8B0AeDYDz+k8CTRwbLNw++eXcWb+r2AFlVNCFLTFzqI+X1d5PCdxSXu
+	 XFsM1G3osQPPw1AHDMmk7ZHE7B19Du9tx3Ifwa7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Luo Gengkun <luogengkun@huaweicloud.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Jiri Olsa <jolsa@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/167] btrfs: avoid page_lockend underflow in btrfs_punch_hole_lock_range()
-Date: Tue, 29 Apr 2025 18:42:35 +0200
-Message-ID: <20250429161053.665207250@linuxfoundation.org>
+Subject: [PATCH 6.6 068/204] perf/x86: Fix non-sampling (counting) events on certain x86 platforms
+Date: Tue, 29 Apr 2025 18:42:36 +0200
+Message-ID: <20250429161102.208073051@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +70,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Luo Gengkun <luogengkun@huaweicloud.com>
 
-[ Upstream commit bc2dbc4983afedd198490cca043798f57c93e9bf ]
+[ Upstream commit 1a97fea9db9e9b9c4839d4232dde9f505ff5b4cc ]
 
-[BUG]
-When running btrfs/004 with 4K fs block size and 64K page size,
-sometimes fsstress workload can take 100% CPU for a while, but not long
-enough to trigger a 120s hang warning.
+Perf doesn't work at perf stat for hardware events on certain x86 platforms:
 
-[CAUSE]
-When such 100% CPU usage happens, btrfs_punch_hole_lock_range() is
-always in the call trace.
+ $perf stat -- sleep 1
+ Performance counter stats for 'sleep 1':
+             16.44 msec task-clock                       #    0.016 CPUs utilized
+                 2      context-switches                 #  121.691 /sec
+                 0      cpu-migrations                   #    0.000 /sec
+                54      page-faults                      #    3.286 K/sec
+   <not supported>	cycles
+   <not supported>	instructions
+   <not supported>	branches
+   <not supported>	branch-misses
 
-One example when this problem happens, the function
-btrfs_punch_hole_lock_range() got the following parameters:
+The reason is that the check in x86_pmu_hw_config() for sampling events is
+unexpectedly applied to counting events as well.
 
-  lock_start = 4096, lockend = 20469
+It should only impact x86 platforms with limit_period used for non-PEBS
+events. For Intel platforms, it should only impact some older platforms,
+e.g., HSW, BDW and NHM.
 
-Then we calculate @page_lockstart by rounding up lock_start to page
-boundary, which is 64K (page size is 64K).
-
-For @page_lockend, we round down the value towards page boundary, which
-result 0.  Then since we need to pass an inclusive end to
-filemap_range_has_page(), we subtract 1 from the rounded down value,
-resulting in (u64)-1.
-
-In the above case, the range is inside the same page, and we do not even
-need to call filemap_range_has_page(), not to mention to call it with
-(u64)-1 at the end.
-
-This behavior will cause btrfs_punch_hole_lock_range() to busy loop
-waiting for irrelevant range to have its pages dropped.
-
-[FIX]
-Calculate @page_lockend by just rounding down @lockend, without
-decreasing the value by one.  So @page_lockend will no longer overflow.
-
-Then exit early if @page_lockend is no larger than @page_lockstart.
-As it means either the range is inside the same page, or the two pages
-are adjacent already.
-
-Finally only decrease @page_lockend when calling filemap_range_has_page().
-
-Fixes: 0528476b6ac7 ("btrfs: fix the filemap_range_has_page() call in btrfs_punch_hole_lock_range()")
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 88ec7eedbbd2 ("perf/x86: Fix low freqency setting issue")
+Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20250423064724.3716211-1-luogengkun@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/file.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/x86/events/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
-index 9e06d1a0d373d..3814f09dc4ae0 100644
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -2224,15 +2224,20 @@ static void btrfs_punch_hole_lock_range(struct inode *inode,
- 	 * will always return true.
- 	 * So here we need to do extra page alignment for
- 	 * filemap_range_has_page().
-+	 *
-+	 * And do not decrease page_lockend right now, as it can be 0.
- 	 */
- 	const u64 page_lockstart = round_up(lockstart, PAGE_SIZE);
--	const u64 page_lockend = round_down(lockend + 1, PAGE_SIZE) - 1;
-+	const u64 page_lockend = round_down(lockend + 1, PAGE_SIZE);
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index 1458ccaa6a057..ad63bd408cd90 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -623,7 +623,7 @@ int x86_pmu_hw_config(struct perf_event *event)
+ 	if (event->attr.type == event->pmu->type)
+ 		event->hw.config |= event->attr.config & X86_RAW_EVENT_MASK;
  
- 	while (1) {
- 		truncate_pagecache_range(inode, lockstart, lockend);
- 
- 		lock_extent(&BTRFS_I(inode)->io_tree, lockstart, lockend,
- 			    cached_state);
-+		/* The same page or adjacent pages. */
-+		if (page_lockend <= page_lockstart)
-+			break;
- 		/*
- 		 * We can't have ordered extents in the range, nor dirty/writeback
- 		 * pages, because we have locked the inode's VFS lock in exclusive
-@@ -2244,7 +2249,7 @@ static void btrfs_punch_hole_lock_range(struct inode *inode,
- 		 * we do, unlock the range and retry.
- 		 */
- 		if (!filemap_range_has_page(inode->i_mapping, page_lockstart,
--					    page_lockend))
-+					    page_lockend - 1))
- 			break;
- 
- 		unlock_extent(&BTRFS_I(inode)->io_tree, lockstart, lockend,
+-	if (!event->attr.freq && x86_pmu.limit_period) {
++	if (is_sampling_event(event) && !event->attr.freq && x86_pmu.limit_period) {
+ 		s64 left = event->attr.sample_period;
+ 		x86_pmu.limit_period(event, &left);
+ 		if (left > event->attr.sample_period)
 -- 
 2.39.5
 
