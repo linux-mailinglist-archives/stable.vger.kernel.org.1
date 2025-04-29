@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-137452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67898AA138C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E73AA1760
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31BA6984239
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B5A8189B3E9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443CE2472AC;
-	Tue, 29 Apr 2025 17:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A2A24BD02;
+	Tue, 29 Apr 2025 17:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BgZt4CLW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r362Nhlf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015B922A81D;
-	Tue, 29 Apr 2025 17:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D03421ABC1;
+	Tue, 29 Apr 2025 17:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946108; cv=none; b=kt96vyPXqJN0XU9L1d3sUF67QHYmzF47az40za+0OyRk272uoOsmyFnpCCtGzRzaAk2DYBbwxRurRECfVcOMIiNo0jsdH18RanY1cIrd/5rLKciAfDIcRCZc47VDpoEvGh3N9YfpZ79m7mX6eS8JDWsqPKn96oMFwyC9H2dW6Y4=
+	t=1745948804; cv=none; b=KrS+ryndTPz997X/8Ig1e92XO88cQYDsKbr4F3yy03cWS7i31wadx9Cd7YqWK0nRVJRy4tTe01XGopuNErMMOiSw/+/JUqMuHetsqfwCe7xxoD/g8Spi3Ql3YxDi6gQ5f9PVUk8ZCCOHz/S0MTvDDUMsEHSDPkR8m3UwhsKjgjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946108; c=relaxed/simple;
-	bh=VxF+ckl6ohOQ4YdoFSZASvhio5FTh2yXAPTZ+YXg1Gk=;
+	s=arc-20240116; t=1745948804; c=relaxed/simple;
+	bh=aFoT2K9xbqE8cl3gr8+C/rSnwtHSGRCyjtnkX8NaofM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DHgMg0dbu1O9UUz8i1vpUBrUyzCJ+Wd4+0/MoPNNpnqJlixBg16qAOMcLd5sRBtB80uct+ttL+verC50EZp7v/LLCiaTNJt1lUaz6Q6YjRHPC3EGr88xCJaG+dnBOolBoVZgMg5i0W7ZQTdV3T/x14wexvPWUd/FIM1XJ0o2TjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BgZt4CLW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84754C4CEE3;
-	Tue, 29 Apr 2025 17:01:47 +0000 (UTC)
+	 MIME-Version; b=pjyE3WiqRYu4Rj5WDkKVrKzUVCgsKZVTNshfQvpLvAcugEBcN5hAPc6o2jLNJQZ7KIn09A27gi/Lcm6LNdDTOYyOCT4xovTOtD69xcEDEj87kDwRxN5lgPzDYHk7L4HGnjHyGb0hF5Pq0xRpMV8IMG+dHlHKraIiB00uGdMh4tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r362Nhlf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE5FC4CEE3;
+	Tue, 29 Apr 2025 17:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946107;
-	bh=VxF+ckl6ohOQ4YdoFSZASvhio5FTh2yXAPTZ+YXg1Gk=;
+	s=korg; t=1745948804;
+	bh=aFoT2K9xbqE8cl3gr8+C/rSnwtHSGRCyjtnkX8NaofM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BgZt4CLWXEZAkRBGFHuZDPZII7WMV+bJpMr51sT28y+8deAEbgjP18NDgadVxAhsY
-	 x47klXbOgmLtEOSLuMnlNub0OiHbYzWKCge5JUyEAyUoVWjesHG45Ce+QLPKTErBsz
-	 1XNr2E/cgVsXCaJtvnwadUccIOqw41c9eVCjvpkI=
+	b=r362NhlfZHfrRUM98yASeQjsqIMocWHBnfuI+x9hn1ax9MSHrJ6wGga1oa6IJkjHF
+	 oT0ff7aIiph+qoCcHrI7CRw37MkmiXfW2AtOIb5KDlKRL/1TWWHZ4NZEqD3zsRqArD
+	 gsYBH1OC6nB8HnXY2q4pEZP4Zkuyh0T1zaYmRK+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devyn Liu <liudingyuan@huawei.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.14 158/311] xhci: Limit time spent with xHC interrupts disabled during bus resume
+	Roberto Ricci <io@r-ricci.it>,
+	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Kees Cook <keescook@chromium.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Len Brown <len.brown@intel.com>
+Subject: [PATCH 5.15 118/373] x86/e820: Fix handling of subpage regions when calculating nosave ranges in e820__register_nosave_regions()
 Date: Tue, 29 Apr 2025 18:39:55 +0200
-Message-ID: <20250429161127.503529371@linuxfoundation.org>
+Message-ID: <20250429161128.029138592@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,145 +69,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-commit bea5892d0ed274e03655223d1977cf59f9aff2f2 upstream.
+commit f2f29da9f0d4367f6ff35e0d9d021257bb53e273 upstream.
 
-Current xhci bus resume implementation prevents xHC host from generating
-interrupts during high-speed USB 2 and super-speed USB 3 bus resume.
+While debugging kexec/hibernation hangs and crashes, it turned out that
+the current implementation of e820__register_nosave_regions() suffers from
+multiple serious issues:
 
-Only reason to disable interrupts during bus resume would be to prevent
-the interrupt handler from interfering with the resume process of USB 2
-ports.
+ - The end of last region is tracked by PFN, causing it to find holes
+   that aren't there if two consecutive subpage regions are present
 
-Host initiated resume of USB 2 ports is done in two stages.
+ - The nosave PFN ranges derived from holes are rounded out (instead of
+   rounded in) which makes it inconsistent with how explicitly reserved
+   regions are handled
 
-The xhci driver first transitions the port from 'U3' to 'Resume' state,
-then wait in Resume for 20ms, and finally moves port to U0 state.
-xhci driver can't prevent interrupts by keeping the xhci spinlock
-due to this 20ms sleep.
+Fix this by:
 
-Limit interrupt disabling to the USB 2 port resume case only.
-resuming USB 2 ports in bus resume is only done in special cases where
-USB 2 ports had to be forced to suspend during bus suspend.
+ - Treating reserved regions as if they were holes, to ensure consistent
+   handling (rounding out nosave PFN ranges is more correct as the
+   kernel does not use partial pages)
 
-The current way of preventing interrupts by clearing the 'Interrupt
-Enable' (INTE) bit in USBCMD register won't prevent the Interrupter
-registers 'Interrupt Pending' (IP), 'Event Handler Busy' (EHB) and
-USBSTS register Event Interrupt (EINT) bits from being set.
+ - Tracking the end of the last RAM region by address instead of pages
+   to detect holes more precisely
 
-New interrupts can't be issued before those bits are properly clered.
+These bugs appear to have been introduced about ~18 years ago with the very
+first version of e820_mark_nosave_regions(), and its flawed assumptions were
+carried forward uninterrupted through various waves of rewrites and renames.
 
-Disable interrupts by clearing the interrupter register 'Interrupt
-Enable' (IE) bit instead. This way IP, EHB and INTE won't be set
-before IE is enabled again and a new interrupt is triggered.
+[ mingo: Added Git archeology details, for kicks and giggles. ]
 
-Reported-by: Devyn Liu <liudingyuan@huawei.com>
-Closes: https://lore.kernel.org/linux-usb/b1a9e2d51b4d4ff7a304f77c5be8164e@huawei.com/
+Fixes: e8eff5ac294e ("[PATCH] Make swsusp avoid memory holes and reserved memory regions on x86_64")
+Reported-by: Roberto Ricci <io@r-ricci.it>
+Tested-by: Roberto Ricci <io@r-ricci.it>
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: David Woodhouse <dwmw@amazon.co.uk>
+Cc: Len Brown <len.brown@intel.com>
 Cc: stable@vger.kernel.org
-Tested-by: Devyn Liu <liudingyuan@huawei.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250410151828.2868740-6-mathias.nyman@linux.intel.com
+Link: https://lore.kernel.org/r/20250406-fix-e820-nosave-v3-1-f3787bc1ee1d@qtmlabs.xyz
+Closes: https://lore.kernel.org/all/Z4WFjBVHpndct7br@desktop0a/
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-hub.c |   30 ++++++++++++++++--------------
- drivers/usb/host/xhci.c     |    4 ++--
- drivers/usb/host/xhci.h     |    2 ++
- 3 files changed, 20 insertions(+), 16 deletions(-)
+ arch/x86/kernel/e820.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/host/xhci-hub.c
-+++ b/drivers/usb/host/xhci-hub.c
-@@ -1878,9 +1878,10 @@ int xhci_bus_resume(struct usb_hcd *hcd)
- 	int max_ports, port_index;
- 	int sret;
- 	u32 next_state;
--	u32 temp, portsc;
-+	u32 portsc;
- 	struct xhci_hub *rhub;
- 	struct xhci_port **ports;
-+	bool disabled_irq = false;
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -753,22 +753,21 @@ void __init e820__memory_setup_extended(
+ void __init e820__register_nosave_regions(unsigned long limit_pfn)
+ {
+ 	int i;
+-	unsigned long pfn = 0;
++	u64 last_addr = 0;
  
- 	rhub = xhci_get_rhub(hcd);
- 	ports = rhub->ports;
-@@ -1896,17 +1897,20 @@ int xhci_bus_resume(struct usb_hcd *hcd)
- 		return -ESHUTDOWN;
+ 	for (i = 0; i < e820_table->nr_entries; i++) {
+ 		struct e820_entry *entry = &e820_table->entries[i];
+ 
+-		if (pfn < PFN_UP(entry->addr))
+-			register_nosave_region(pfn, PFN_UP(entry->addr));
+-
+-		pfn = PFN_DOWN(entry->addr + entry->size);
+-
+ 		if (entry->type != E820_TYPE_RAM && entry->type != E820_TYPE_RESERVED_KERN)
+-			register_nosave_region(PFN_UP(entry->addr), pfn);
++			continue;
+ 
+-		if (pfn >= limit_pfn)
+-			break;
++		if (last_addr < entry->addr)
++			register_nosave_region(PFN_DOWN(last_addr), PFN_UP(entry->addr));
++
++		last_addr = entry->addr + entry->size;
  	}
- 
--	/* delay the irqs */
--	temp = readl(&xhci->op_regs->command);
--	temp &= ~CMD_EIE;
--	writel(temp, &xhci->op_regs->command);
--
- 	/* bus specific resume for ports we suspended at bus_suspend */
--	if (hcd->speed >= HCD_USB3)
-+	if (hcd->speed >= HCD_USB3) {
- 		next_state = XDEV_U0;
--	else
-+	} else {
- 		next_state = XDEV_RESUME;
--
-+		if (bus_state->bus_suspended) {
-+			/*
-+			 * prevent port event interrupts from interfering
-+			 * with usb2 port resume process
-+			 */
-+			xhci_disable_interrupter(xhci->interrupters[0]);
-+			disabled_irq = true;
-+		}
-+	}
- 	port_index = max_ports;
- 	while (port_index--) {
- 		portsc = readl(ports[port_index]->addr);
-@@ -1974,11 +1978,9 @@ int xhci_bus_resume(struct usb_hcd *hcd)
- 	(void) readl(&xhci->op_regs->command);
- 
- 	bus_state->next_statechange = jiffies + msecs_to_jiffies(5);
--	/* re-enable irqs */
--	temp = readl(&xhci->op_regs->command);
--	temp |= CMD_EIE;
--	writel(temp, &xhci->op_regs->command);
--	temp = readl(&xhci->op_regs->command);
-+	/* re-enable interrupter */
-+	if (disabled_irq)
-+		xhci_enable_interrupter(xhci->interrupters[0]);
- 
- 	spin_unlock_irqrestore(&xhci->lock, flags);
- 	return 0;
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -322,7 +322,7 @@ static void xhci_zero_64b_regs(struct xh
- 		xhci_info(xhci, "Fault detected\n");
++
++	register_nosave_region(PFN_DOWN(last_addr), limit_pfn);
  }
  
--static int xhci_enable_interrupter(struct xhci_interrupter *ir)
-+int xhci_enable_interrupter(struct xhci_interrupter *ir)
- {
- 	u32 iman;
- 
-@@ -335,7 +335,7 @@ static int xhci_enable_interrupter(struc
- 	return 0;
- }
- 
--static int xhci_disable_interrupter(struct xhci_interrupter *ir)
-+int xhci_disable_interrupter(struct xhci_interrupter *ir)
- {
- 	u32 iman;
- 
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1890,6 +1890,8 @@ int xhci_alloc_tt_info(struct xhci_hcd *
- 		struct usb_tt *tt, gfp_t mem_flags);
- int xhci_set_interrupter_moderation(struct xhci_interrupter *ir,
- 				    u32 imod_interval);
-+int xhci_enable_interrupter(struct xhci_interrupter *ir);
-+int xhci_disable_interrupter(struct xhci_interrupter *ir);
- 
- /* xHCI ring, segment, TRB, and TD functions */
- dma_addr_t xhci_trb_virt_to_dma(struct xhci_segment *seg, union xhci_trb *trb);
+ #ifdef CONFIG_ACPI
 
 
 
