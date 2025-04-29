@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334F0AA133D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42EF3AA1776
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D242188FAE0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24F2A5A6C36
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE132528E4;
-	Tue, 29 Apr 2025 16:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED8924C067;
+	Tue, 29 Apr 2025 17:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1rcoc/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JoUm/Eo/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A402522B3;
-	Tue, 29 Apr 2025 16:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D59F227E95;
+	Tue, 29 Apr 2025 17:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945951; cv=none; b=YIednMkP+EkMribyOYAbeSVP/+r9+wlHY5pXj+ZiiRCP7OiVu3b9d9F1a1isQMPX7Ktoh7+1oI0OiT2SNgE1VG6a05izdJ+f02k/zJ60GgvU4Wso2qOJRIs99/fneZENgHtjGwzhSR4fDUIeSydQbw7ixwd+eKmXS1RrR8RQR20=
+	t=1745948627; cv=none; b=tErbjKIL63LMBZMuuKZlHHXNKZVBv6mE46T6yJCQifdTxmMTY9EJqbhQyW/m+qVe1d+1dGKY2gzBatb4n+sCaaJztwHhlhqVcGhiu6uZfGt7x6qtVAxWT4jC8dchMZDZm1Y6UT5zhfhk4FeFnZvY1BoZMxNsosNYRR+MuhV6864=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945951; c=relaxed/simple;
-	bh=6aLy9D6Z+EdYczfYwCtfZ4ug9Rp9zgQsP1EEtUG4Uac=;
+	s=arc-20240116; t=1745948627; c=relaxed/simple;
+	bh=qWr5jns3XUmw62gcHqzOKn+OG/but6WhVn9rGDSDPOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ksbkrhQbMJwnBTo3A63TMuioYe9Lev6q0lWQkNnapSxirumpIqSS+78Hey79QKxtpBdPUTsQxypMANitDMKtmKxiSs4RvpsDp/wNh6n04P6vP+7QT/OVQkmZtW+rekQFLsuE67giomrQgEj1F7u5Wwmt/uXveNIgpOsaymvmdFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1rcoc/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A22C4CEE9;
-	Tue, 29 Apr 2025 16:59:10 +0000 (UTC)
+	 MIME-Version; b=ud2nTu0nrhpplZf9UF+aOaAMB49kzB3sBeBrOJGQfCzpw8OFT0zSjN1y+eNVM+yEMyZ2b5+6mjXkQ+zI3eoaJOd0wUb8bXahz3H0p+c984sS3vgOdtUK/ry9xgUop/iB/q4jVG59cyBoBz9NTNklCtfis9Dqq5CT20O7JQJleAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JoUm/Eo/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B740EC4CEE3;
+	Tue, 29 Apr 2025 17:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945951;
-	bh=6aLy9D6Z+EdYczfYwCtfZ4ug9Rp9zgQsP1EEtUG4Uac=;
+	s=korg; t=1745948627;
+	bh=qWr5jns3XUmw62gcHqzOKn+OG/but6WhVn9rGDSDPOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1rcoc/RWFVRXjzKGSFksDaBdw6tZ/vbL8XXaVuMEaN++pzdxoe08FxFg1i8zCpna
-	 IYhsf0i/U639ObJ1g/SQKIADPjXB9+Q8K154b7y5BIFy0tA86vSrujeSFgsZ2nZgIE
-	 Om5ktOxNHVLB/lXuVKBirihXEoSvycll+KiZn1t0=
+	b=JoUm/Eo/HeX+BYbexElolUMHtlvZTCBaL+4k8ON2TLH5NfokzIJSy4yIei3vK86Ny
+	 1M6D0w91MCilyBrSnr1wj1ZH31IcLGuX8GNj64FDVrDgEgqJqmDc/w0NK7Pe2yA0DH
+	 LpEEEjglLH0XfTfjrWTJiB51+7kyeQCtk3Za14Iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jon Hunter <jonathanh@nvidia.com>
-Subject: [PATCH 6.14 104/311] net: phylink: add phylink_prepare_resume()
-Date: Tue, 29 Apr 2025 18:39:01 +0200
-Message-ID: <20250429161125.297088313@linuxfoundation.org>
+	Scott Bauer <sbauer@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 5.15 065/373] arm64: errata: Add QCOM_KRYO_4XX_GOLD to the spectre_bhb_k24_list
+Date: Tue, 29 Apr 2025 18:39:02 +0200
+Message-ID: <20250429161125.810184005@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 367f1854d442b33c4a0305b068ae40d67ccd7d6a upstream.
+commit ed1ce841245d8febe3badf51c57e81c3619d0a1d upstream.
 
-When the system is suspended, the PHY may be placed in low-power mode
-by setting the BMCR 0.11 Power down bit. IEEE 802.3 states that the
-behaviour of the PHY in this state is implementation specific, and
-the PHY is not required to meet the RX_CLK and TX_CLK requirements.
-Essentially, this means that a PHY may stop the clocks that it is
-generating while in power down state.
+Qualcomm Kryo 400-series Gold cores have a derivative of an ARM Cortex
+A76 in them. Since A76 needs Spectre mitigation via looping then the
+Kyro 400-series Gold cores also need Spectre mitigation via looping.
 
-However, MACs exist which require the clocks from the PHY to be running
-in order to properly resume. phylink_prepare_resume() provides them
-with a way to clear the Power down bit early.
+Qualcomm has confirmed that the proper "k" value for Kryo 400-series
+Gold cores is 24.
 
-Note, however, that IEEE 802.3 gives PHYs up to 500ms grace before the
-transmit and receive clocks meet the requirements after clearing the
-power down bit.
-
-Add a resume preparation function, which will ensure that the receive
-clock from the PHY is appropriately configured while resuming.
-
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/E1tvO6V-008Vjb-AP@rmk-PC.armlinux.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Cc: Jon Hunter <jonathanh@nvidia.com>
+Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
+Cc: stable@vger.kernel.org
+Cc: Scott Bauer <sbauer@quicinc.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
+Link: https://lore.kernel.org/r/20250107120555.v4.1.Ie4ef54abe02e7eb0eee50f830575719bf23bda48@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/phylink.c |   25 +++++++++++++++++++++++++
- include/linux/phylink.h   |    1 +
- 2 files changed, 26 insertions(+)
+ arch/arm64/kernel/proton-pack.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -2668,6 +2668,31 @@ void phylink_suspend(struct phylink *pl,
- EXPORT_SYMBOL_GPL(phylink_suspend);
- 
- /**
-+ * phylink_prepare_resume() - prepare to resume a network device
-+ * @pl: a pointer to a &struct phylink returned from phylink_create()
-+ *
-+ * Optional, but if called must be called prior to phylink_resume().
-+ *
-+ * Prepare to resume a network device, preparing the PHY as necessary.
-+ */
-+void phylink_prepare_resume(struct phylink *pl)
-+{
-+	struct phy_device *phydev = pl->phydev;
-+
-+	ASSERT_RTNL();
-+
-+	/* IEEE 802.3 22.2.4.1.5 allows PHYs to stop their receive clock
-+	 * when PDOWN is set. However, some MACs require RXC to be running
-+	 * in order to resume. If the MAC requires RXC, and we have a PHY,
-+	 * then resume the PHY. Note that 802.3 allows PHYs 500ms before
-+	 * the clock meets requirements. We do not implement this delay.
-+	 */
-+	if (pl->config->mac_requires_rxc && phydev && phydev->suspended)
-+		phy_resume(phydev);
-+}
-+EXPORT_SYMBOL_GPL(phylink_prepare_resume);
-+
-+/**
-  * phylink_resume() - handle a network device resume event
-  * @pl: a pointer to a &struct phylink returned from phylink_create()
-  *
---- a/include/linux/phylink.h
-+++ b/include/linux/phylink.h
-@@ -679,6 +679,7 @@ void phylink_start(struct phylink *);
- void phylink_stop(struct phylink *);
- 
- void phylink_suspend(struct phylink *pl, bool mac_wol);
-+void phylink_prepare_resume(struct phylink *pl);
- void phylink_resume(struct phylink *pl);
- 
- void phylink_ethtool_get_wol(struct phylink *, struct ethtool_wolinfo *);
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -866,6 +866,7 @@ u8 spectre_bhb_loop_affected(int scope)
+ 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
+ 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
++			MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
+ 			{},
+ 		};
+ 		static const struct midr_range spectre_bhb_k11_list[] = {
 
 
 
