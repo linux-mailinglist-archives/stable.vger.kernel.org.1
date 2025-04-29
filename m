@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-137106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146AFAA0F72
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D6CAA0FA4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 951C14A3368
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 14:47:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E5C516E39C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 14:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A0221ABD3;
-	Tue, 29 Apr 2025 14:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E788F21A431;
+	Tue, 29 Apr 2025 14:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZqQGDr2r"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cYU7vtUh"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D41215F6C
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 14:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F632192E1
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 14:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745937987; cv=none; b=Vkfq7Kmr4o73scLGCeb7NU3cvxT1ZUm+sQhxTJOlnTFJWkJctKghBEgKys+SioRkV/sk7Hh544SIE1+Qrw9Tq0OGDkoawgEplHezKi65fWTheT+EtEyk0NuI7bXp7YBQQqkX65Xz1rZjhA6Pt6FzSlc5ryYNeuMoRqpYPddqstQ=
+	t=1745938344; cv=none; b=bRD3ouuiTezn0J19IOWqIhDxh1Rf7626c1A0ZImy4ZAq6Q5wVtJEZKQb+1/GCOESrsZ+OihDHbTywNJwOnBWljIJYyjAVzDFJeLWbGdXfQNAYU7amXTvse2SVZizoukSIXHyrTJC2VJUKJUoXDK4t2zgCT88e6d21vbrflI0aoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745937987; c=relaxed/simple;
-	bh=snIS4vhGRssXnoN1pY7HJdNuGFL3by2NCS3TDRu4gFs=;
+	s=arc-20240116; t=1745938344; c=relaxed/simple;
+	bh=OpM87YfriGcf1VS0gitgANL8zRL4GYfHhUTngxd3Smc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C2N/+g90bo5dYO1+B8BUbXM+UcXYtCiBT5ueXLTtR6hPOxIzufzRqwvwUMFtP8RwVixEid+WUB+o1jEZKd77ZisRRnaSJhNfzjGFlovPbI7tRSLCJaP9T/bieQNnSJaGLUMzTkSnDaw3guPLsrqVy8VvoRynbWvc+J4hScVPZeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZqQGDr2r; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=GCstm+GYx+z6RNx3IVuyy+TaddwEpj89Ubge24Bk8NQ7cXT9u0x4HcOy9fX4tysQqytBEFbsy9/kZhGGadh6tY1tHrlarcziPOs3Nht46HzswiYJvB/rIKINvDKvGXEyz7KtC4xp1EHSGmDHic0hPMj8yJypgW9rU+Qfv+Xev9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cYU7vtUh; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745937984;
+	s=mimecast20190719; t=1745938342;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=So5S8sD+I2YgOYOjQZKvpf3wIivuDABn+zCCZb8ZZ+4=;
-	b=ZqQGDr2r+UfNg5WHljRW4OzzF+D/tZwdgDEsocEaAOjaeKS8DlsHwmKgp4EqXsC8Ei/+Ki
-	dpl46BQpA3z9ng2W1VQGT/fAZ0POT2hTSNpLZ38xX3BhTNTS1VfN66RZJJMidg2FWnkzFd
-	vOXdJ/0Qr0UQND47+w34ZCOoPEt+6cg=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=FPXFneTqSSB5zuiDtZbajOXUg4v3b14pcP0NzGs1q3k=;
+	b=cYU7vtUhH+6TPXxMIUqK6f1UxVHSk+BbKgogCDr4BHQbRZ/mbrS7ocLKQfw4RJUHuHUIpP
+	hSm+0J7Y+S5ePgPZ9svc56oDquo+Lq0UiHWzECduEfArIaJ+ZwUOduSJfb8N7oNGcddq2K
+	ZJyIGUMQL+TYMjDq59UCcod3aYrQr6M=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-134-M1fAHax3MdC3ADkFekwBhg-1; Tue, 29 Apr 2025 10:46:22 -0400
-X-MC-Unique: M1fAHax3MdC3ADkFekwBhg-1
-X-Mimecast-MFC-AGG-ID: M1fAHax3MdC3ADkFekwBhg_1745937982
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3a064c45f03so2702396f8f.0
-        for <stable@vger.kernel.org>; Tue, 29 Apr 2025 07:46:22 -0700 (PDT)
+ us-mta-443-zP_qou1IOvmLRIZha9-idg-1; Tue, 29 Apr 2025 10:52:20 -0400
+X-MC-Unique: zP_qou1IOvmLRIZha9-idg-1
+X-Mimecast-MFC-AGG-ID: zP_qou1IOvmLRIZha9-idg_1745938339
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43efa869b0aso37243085e9.3
+        for <stable@vger.kernel.org>; Tue, 29 Apr 2025 07:52:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745937982; x=1746542782;
+        d=1e100.net; s=20230601; t=1745938339; x=1746543139;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=So5S8sD+I2YgOYOjQZKvpf3wIivuDABn+zCCZb8ZZ+4=;
-        b=I2xpK3JalSGicnJZBWq/9/flfHsH1gemtt1+gBCx1n4VEfh9y2DfkbinffO8xFZWZW
-         kJz9lfOCJB4LDYCloZAFkH1Iy1MOcjAebNeIn+CetwVoi+2bfrQcbYri7+Kuqz190qAy
-         Vdy1aUS917pqRcz0jFvasS/FNd3IUFO95/So3M0SnMhDetN1pVV5cRqglERGKmy/fN4q
-         4VMqSab+4H/gBFlyxWeU7s6mZiJ1jgsTRHoUDk1hk9ctS1MUqdxVtkSwTmnhZQYxz7cw
-         fmFECsupVYE/H3dFKi/G4GZe9bc4avxIoBy8f85upyrme2sqeJqUcSjzHRyrP6pEA8pd
-         ZNwA==
-X-Forwarded-Encrypted: i=1; AJvYcCXcKbubxgBbcha18P+vecL2wnSzeR0+Sgi4mNTl4Xqrt0LTcArrHALkiCla3WVPU9UDhk7uWuo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXNFGlUgznvwTZ7MmwUZCQbom8PuEMhMKAYkApDHFepTIAGl8N
-	m6XEHodc8JbJ7R+pSRDAR0bZtpj//dvyfFW5YuFSFoEeoZdxmW1wWcUWry4b0DMxb77MlNb7bk7
-	aRKD1I+Jmjs6W8SyUjNWWf105FIKKNmz3ZJocm6+ky4Evd9T00cMElQ==
-X-Gm-Gg: ASbGncuazBrT9+LDBB0rYSGwRj7Ma9G1rwO/4cvvjjmIPb6xjm+gornzjU2krUnspIa
-	xcqOOyocuFG+qCpnnikHsCTXwx0wTuJifBg1SKntYhrV34Ipues3qF3zqE5i10/7wKI7dULNQJn
-	5JpS0q4Gxu2hRtJtQq0+sKAUCuF/CtUhUwY9JXpj7DMvWPdRX8FeNKMTt5kh8Wkc/u82qTExdJK
-	fi9DoOTd1Nmzvmaj2fH8NehxnL7jfLvzTizmedO+81hT98vqBecOpWAzP/7nRiCm1gQ2DOcVWFH
-	UQfq8yQTJ6IZGTWZqLmA38EI5nVlsf/W2W0CcO3KchFdxW64DjNtIKE3gr+9o6eqNASe/GV0hHW
-	ra2Tp3matUWpcBnoym3sr1qr7CcVACS3eyJ0saJg=
-X-Received: by 2002:a05:6000:2a1:b0:39f:d0a:5b23 with SMTP id ffacd0b85a97d-3a08a51fb97mr2658108f8f.17.1745937981620;
-        Tue, 29 Apr 2025 07:46:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE6dsJBdR+bHHaU2+8egweIE2dJ2t0DU4uwXHc22E2qh371BmcqxNVEvlNIK7604ghEWaDtdg==
-X-Received: by 2002:a05:6000:2a1:b0:39f:d0a:5b23 with SMTP id ffacd0b85a97d-3a08a51fb97mr2658084f8f.17.1745937981197;
-        Tue, 29 Apr 2025 07:46:21 -0700 (PDT)
+        bh=FPXFneTqSSB5zuiDtZbajOXUg4v3b14pcP0NzGs1q3k=;
+        b=VKGPuTG1dSLhIpXgjhG5M7ImVBvuIObjfzrWKXu1t3VrW8d192I58R39Y0OyK5wE3+
+         BRlrUBqUEXg9mlN2NGqZpfC+3PIS+8HXPr2I8yUUMjTjhkR9Z2Y66WmyJbSS+JIqONNI
+         zdDsXr78QJJi4qFojORZRV8jblImNlWZUJ/O4GJ4w6SVJPvFd5t67/H4QUNpR3ATSIBn
+         XC8scMdQhqzaK6hl0S4N6pbprGaKVMNtuLDu3mQVJfEn4C2pER4wtecQd518F0/EzIH7
+         VhxCRA98AGnj2tt+YBfksXIwZvdccxln7V1EctvKjMWuA/akKeMcXKHBh0FgWaKJ5Am6
+         sIdg==
+X-Forwarded-Encrypted: i=1; AJvYcCUgsPnB22a5H6c2JtZOyueaiPgfqowZ8DXs4pmfn1/AknKox/+HTA2k/wG+KlqZ0D8l/kMtAsc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQDSS3/sfJus6O+tEQ3yUCuyvYRoahTDqY6fLJieKg8WlKLeqU
+	57ldSCwEo2pRnSmtqSAJBzhix/GAsVab/Z5t5+UM7RjdtG21Y1GJN/rRv4bIL+PQeaS0pDfko7O
+	3navdrndmj654vzc/BoU3dAsTR7ySGHO3ynq2F3ZcvnfszUx9wB5Pxw==
+X-Gm-Gg: ASbGncvqpB0z1dlTVQN5v+ahFcDVrVBs6Mwu1k9/JIwZNggSqo2n0sdytA+FoYNCPe/
+	hii7Vo1fVQZPWDA2n9yFYiOluUJHiA7q216/tRtMebHBR+UfG47+FqApI4zjoTTY67q5DIA1dSr
+	sNd3kqSZUsHrVhKrZdOyDsmnFYvlZoAexAAaH4+ZXIAyqCGgOxsBXvQ6qsmbpFB+E2YPkohZZuJ
+	l9y+izifDxHaDOfoNd5mJ2LkFuz0r2IIGuhz9uZ+fwKeQs/hi33WFrslRHENrJvs7xB+iGGcdME
+	Xj5M2H50ZFqk7CV5O/+WVPpCyKvgg9Vq+O2+dcoEosaS6ATdQJr8P9i7dLkiTvDpElRo6Xdpgdi
+	l8IcCAqH4WPl3c7frlC2p+7t2eCoPlVf5s95XS/c=
+X-Received: by 2002:a05:6000:b4e:b0:39e:cc5e:147 with SMTP id ffacd0b85a97d-3a0894a1aa8mr3382382f8f.55.1745938338761;
+        Tue, 29 Apr 2025 07:52:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFknDt7idMQFn49+Vd3SM9PGLfuRRnsX394KMwyFKL9XgO5i1+VoMX9a1FE1wpCoHhmRxPebg==
+X-Received: by 2002:a05:6000:b4e:b0:39e:cc5e:147 with SMTP id ffacd0b85a97d-3a0894a1aa8mr3382368f8f.55.1745938338407;
+        Tue, 29 Apr 2025 07:52:18 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c73b:fa00:8909:2d07:8909:6a5a? (p200300cbc73bfa0089092d0789096a5a.dip0.t-ipconnect.de. [2003:cb:c73b:fa00:8909:2d07:8909:6a5a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073e5e345sm14319611f8f.94.2025.04.29.07.46.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073c8da58sm14299217f8f.15.2025.04.29.07.52.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Apr 2025 07:46:20 -0700 (PDT)
-Message-ID: <bb24f0d3-cbbf-4323-a9e6-09a627c8559b@redhat.com>
-Date: Tue, 29 Apr 2025 16:46:20 +0200
+        Tue, 29 Apr 2025 07:52:18 -0700 (PDT)
+Message-ID: <ef317615-3e26-4641-8141-4d3913ced47f@redhat.com>
+Date: Tue, 29 Apr 2025 16:52:17 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,14 +91,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/1] mm: Fix folio_pte_batch() overcount with zero PTEs
-To: Ryan Roberts <ryan.roberts@arm.com>, =?UTF-8?Q?Petr_Van=C4=9Bk?=
- <arkamar@atlas.cz>, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+To: =?UTF-8?Q?Petr_Van=C4=9Bk?= <arkamar@atlas.cz>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org,
  stable@vger.kernel.org
 References: <20250429142237.22138-1-arkamar@atlas.cz>
  <20250429142237.22138-2-arkamar@atlas.cz>
  <d53fd549-887f-4220-b0d1-ebc336eecb9f@redhat.com>
- <e9617001-da1d-4c4f-99f4-0e51d51d385e@arm.com>
+ <2025429144547-aBDmGzJBQc9RMBj--arkamar@atlas.cz>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -146,12 +146,12 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <e9617001-da1d-4c4f-99f4-0e51d51d385e@arm.com>
+In-Reply-To: <2025429144547-aBDmGzJBQc9RMBj--arkamar@atlas.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 29.04.25 16:41, Ryan Roberts wrote:
-> On 29/04/2025 15:29, David Hildenbrand wrote:
+On 29.04.25 16:45, Petr Vaněk wrote:
+> On Tue, Apr 29, 2025 at 04:29:30PM +0200, David Hildenbrand wrote:
 >> On 29.04.25 16:22, Petr Vaněk wrote:
 >>> folio_pte_batch() could overcount the number of contiguous PTEs when
 >>> pte_advance_pfn() returns a zero-valued PTE and the following PTE in
@@ -170,37 +170,37 @@ On 29.04.25 16:41, Ryan Roberts wrote:
 >>> Cc: stable@vger.kernel.org
 >>> Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
 >>> ---
->>>    mm/internal.h | 2 ++
->>>    1 file changed, 2 insertions(+)
+>>>    mm/internal.h | 2 ++
+>>>    1 file changed, 2 insertions(+)
 >>>
 >>> diff --git a/mm/internal.h b/mm/internal.h
 >>> index e9695baa5922..c181fe2bac9d 100644
 >>> --- a/mm/internal.h
 >>> +++ b/mm/internal.h
->>> @@ -279,6 +279,8 @@ static inline int folio_pte_batch(struct folio *folio,
->>> unsigned long addr,
->>>                dirty = !!pte_dirty(pte);
->>>            pte = __pte_batch_clear_ignored(pte, flags);
->>>    +        if (!pte_present(pte))
->>> +            break;
->>>            if (!pte_same(pte, expected_pte))
->>>                break;
+>>> @@ -279,6 +279,8 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
+>>>    			dirty = !!pte_dirty(pte);
+>>>    		pte = __pte_batch_clear_ignored(pte, flags);
+>>>    
+>>> +		if (!pte_present(pte))
+>>> +			break;
+>>>    		if (!pte_same(pte, expected_pte))
+>>>    			break;
 >>
 >> How could pte_same() suddenly match on a present and non-present PTE.
->>
->> Something with XEN is really problematic here.
->>
 > 
-> We are inside a lazy MMU region (arch_enter_lazy_mmu_mode()) at this point,
-> which I believe XEN uses. If a PTE was written then read back while in lazy mode
-> you could get a stale value.
-> 
-> See
-> https://lore.kernel.org/all/912c7a32-b39c-494f-a29c-4865cd92aeba@agordeev.local/
-> for an example bug.
+> In the problematic case pte.pte == 0 and expected_pte.pte == 0 as well.
+> pte_same() returns a.pte == b.pte -> 0 == 0. Both are non-present PTEs.
 
-So if we cannot trust ptep_get() output, then, ... how could we trust 
-anything here and ever possibly batch?
+Observe that folio_pte_batch() was called *with a present pte*.
+
+do_zap_pte_range()
+	if (pte_present(ptent))
+		zap_present_ptes()
+			folio_pte_batch()
+
+How can we end up with an expected_pte that is !present, if it is based 
+on the provided pte that *is present* and we only used pte_advance_pfn() 
+to advance the pfn?
 
 -- 
 Cheers,
