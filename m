@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-137957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 176F1AA15D3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A08E6AA1214
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3F78163ED5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CA191BA3340
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE9A38FB0;
-	Tue, 29 Apr 2025 17:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5223D244679;
+	Tue, 29 Apr 2025 16:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kve8f+y5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ut9H1QzI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3705B78F58;
-	Tue, 29 Apr 2025 17:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D57B126BF7;
+	Tue, 29 Apr 2025 16:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947648; cv=none; b=KuZrYjCQxLxCe/Fo8fgDOngt4Tf+T602YSSyD3jGlONGHvQLkJJRO7mIg6FXKvVsStnjb4bMbGCYV9ebS71112fQ3oD7yPQDcT+K+G6XFkE4CEuzjWCC1KW91MbIuxe+Pk48MoqJA7X/20v9+zdatM2gYVyxP8CjK+/hqYdpSbA=
+	t=1745945285; cv=none; b=E+9yPEL2RKlsCxi2Xr5b/syDHtI+C60IWxE7Lgew0UJjPi2oWP/21aNeiY3goZP48xQ4PRUEEOlCpdrv7JrPFv+q8wACHy+P2rw3FlTotiPeYRQNzbkdCF3L9dke1IJNl6C65LFVwSbMwUHDdnNfGIio92KJSpZkPNEerB0+7/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947648; c=relaxed/simple;
-	bh=mNBine2AIkH/maHmHQDca4Pn2cZmjOZwC/YA4KYTTc0=;
+	s=arc-20240116; t=1745945285; c=relaxed/simple;
+	bh=vfCyC3hZaubR3BIFY0RPmn3hPrF5fw1A/JS3B/DPpUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BVDjM+rbko75O2kf1kc+XivyypjZV36HOFyrTx8Tb2qtIphGxJLm818Bl8hgtyNYi02+u16D8I7ZCcyZHTY1Z9/mHgOQJxkiJVE0Wt/0pZqc4lSGy//nfQPZTzPAuiFjeNm6xC5FmaP0OuRpxpA+3RnlAMxcMuLctGx5OBxvP88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kve8f+y5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD19CC4CEE3;
-	Tue, 29 Apr 2025 17:27:27 +0000 (UTC)
+	 MIME-Version; b=H8xg1aMK18X3hAodntDRBCucymw+klf2YUDvK5W7cRYXawEhoyDs0sU2KayHfAqu0JL9CNDk+Crhn3iPQSlvz5r3gnlpzQP3H1c0+0mltKsByQ5kc5PBy5aAtcIz1ar4u/0Y6E7+8oAtWy3IowBGVnxHg/6L3LMK9jhKcrScv5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ut9H1QzI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E345C4CEE3;
+	Tue, 29 Apr 2025 16:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947648;
-	bh=mNBine2AIkH/maHmHQDca4Pn2cZmjOZwC/YA4KYTTc0=;
+	s=korg; t=1745945284;
+	bh=vfCyC3hZaubR3BIFY0RPmn3hPrF5fw1A/JS3B/DPpUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kve8f+y5+k0pDj9GqZ6l9xDinFYND5kIWnHi+smRMuQ6jvpQm3eeOaZi9WHAxxSlL
-	 7HSnGUCazqAXvai2L6NvGLPQ8kSr4uVgsjS2hkyxJJ8VilyH6fcwIMt93RXjsPhN4b
-	 CVY0CFEvorGNEgEIh5SoV1VAu6f3F3lzda6Ogq84=
+	b=Ut9H1QzIM0qODMcVaoS9QDVUktEUBT+Ejq4obe+AomYHz38mPaC+yhBbYqgf8Uszy
+	 Sgg4bVymCxQc6M7OKHMVR7+904ZvJQUVB6+zMfMbyEz6FoW47gUKkZZ3kBJJoYHice
+	 lDu7eFLRcb/yGnmGx/X+eSnx4gFrVPhavOcMW8yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Waiman Long <longman@redhat.com>,
-	Kamalesh Babulal <kamalesh.babulal@oracle.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/280] cgroup/cpuset-v1: Add missing support for cpuset_v2_mode
+	T Pratham <t-pratham@ti.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Jens Axboe <axboe@kernel.dk>,
+	Kamlesh Gurudasani <kamlesh@ti.com>,
+	Praneeth Bajjuri <praneeth@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 062/179] lib: scatterlist: fix sg_split_phys to preserve original scatterlist offsets
 Date: Tue, 29 Apr 2025 18:40:03 +0200
-Message-ID: <20250429161117.654144047@linuxfoundation.org>
+Message-ID: <20250429161051.914743495@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +64,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T.J. Mercier <tjmercier@google.com>
+From: T Pratham <t-pratham@ti.com>
 
-[ Upstream commit 1bf67c8fdbda21fadd564a12dbe2b13c1ea5eda7 ]
+commit 8b46fdaea819a679da176b879e7b0674a1161a5e upstream.
 
-Android has mounted the v1 cpuset controller using filesystem type
-"cpuset" (not "cgroup") since 2015 [1], and depends on the resulting
-behavior where the controller name is not added as a prefix for cgroupfs
-files. [2]
+The split_sg_phys function was incorrectly setting the offsets of all
+scatterlist entries (except the first) to 0.  Only the first scatterlist
+entry's offset and length needs to be modified to account for the skip.
+Setting the rest entries' offsets to 0 could lead to incorrect data
+access.
 
-Later, a problem was discovered where cpu hotplug onlining did not
-affect the cpuset/cpus files, which Android carried an out-of-tree patch
-to address for a while. An attempt was made to upstream this patch, but
-the recommendation was to use the "cpuset_v2_mode" mount option
-instead. [3]
+I am using this function in a crypto driver that I'm currently developing
+(not yet sent to mailing list).  During testing, it was observed that the
+output scatterlists (except the first one) contained incorrect garbage
+data.
 
-An effort was made to do so, but this fails with "cgroup: Unknown
-parameter 'cpuset_v2_mode'" because commit e1cba4b85daa ("cgroup: Add
-mount flag to enable cpuset to use v2 behavior in v1 cgroup") did not
-update the special cased cpuset_mount(), and only the cgroup (v1)
-filesystem type was updated.
+I narrowed this issue down to the call of sg_split().  Upon debugging
+inside this function, I found that this resetting of offset is the cause
+of the problem, causing the subsequent scatterlists to point to incorrect
+memory locations in a page.  By removing this code, I am obtaining
+expected data in all the split output scatterlists.  Thus, this was indeed
+causing observable runtime effects!
 
-Add parameter parsing to the cpuset filesystem type so that
-cpuset_v2_mode works like the cgroup filesystem type:
+This patch removes the offending code, ensuring that the page offsets in
+the input scatterlist are preserved in the output scatterlist.
 
-$ mkdir /dev/cpuset
-$ mount -t cpuset -ocpuset_v2_mode none /dev/cpuset
-$ mount|grep cpuset
-none on /dev/cpuset type cgroup (rw,relatime,cpuset,noprefix,cpuset_v2_mode,release_agent=/sbin/cpuset_release_agent)
-
-[1] https://cs.android.com/android/_/android/platform/system/core/+/b769c8d24fd7be96f8968aa4c80b669525b930d3
-[2] https://cs.android.com/android/platform/superproject/main/+/main:system/core/libprocessgroup/setup/cgroup_map_write.cpp;drc=2dac5d89a0f024a2d0cc46a80ba4ee13472f1681;l=192
-[3] https://lore.kernel.org/lkml/f795f8be-a184-408a-0b5a-553d26061385@redhat.com/T/
-
-Fixes: e1cba4b85daa ("cgroup: Add mount flag to enable cpuset to use v2 behavior in v1 cgroup")
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Acked-by: Waiman Long <longman@redhat.com>
-Reviewed-by: Kamalesh Babulal <kamalesh.babulal@oracle.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250319111437.1969903-1-t-pratham@ti.com
+Fixes: f8bcbe62acd0 ("lib: scatterlist: add sg splitting function")
+Signed-off-by: T Pratham <t-pratham@ti.com>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Kamlesh Gurudasani <kamlesh@ti.com>
+Cc: Praneeth Bajjuri <praneeth@ti.com>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ lib/sg_split.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 4378f3eff25d2..e63d6f3b00470 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -2339,9 +2339,37 @@ static struct file_system_type cgroup2_fs_type = {
- };
- 
- #ifdef CONFIG_CPUSETS_V1
-+enum cpuset_param {
-+	Opt_cpuset_v2_mode,
-+};
-+
-+static const struct fs_parameter_spec cpuset_fs_parameters[] = {
-+	fsparam_flag  ("cpuset_v2_mode", Opt_cpuset_v2_mode),
-+	{}
-+};
-+
-+static int cpuset_parse_param(struct fs_context *fc, struct fs_parameter *param)
-+{
-+	struct cgroup_fs_context *ctx = cgroup_fc2context(fc);
-+	struct fs_parse_result result;
-+	int opt;
-+
-+	opt = fs_parse(fc, cpuset_fs_parameters, param, &result);
-+	if (opt < 0)
-+		return opt;
-+
-+	switch (opt) {
-+	case Opt_cpuset_v2_mode:
-+		ctx->flags |= CGRP_ROOT_CPUSET_V2_MODE;
-+		return 0;
-+	}
-+	return -EINVAL;
-+}
-+
- static const struct fs_context_operations cpuset_fs_context_ops = {
- 	.get_tree	= cgroup1_get_tree,
- 	.free		= cgroup_fs_context_free,
-+	.parse_param	= cpuset_parse_param,
- };
- 
- /*
-@@ -2378,6 +2406,7 @@ static int cpuset_init_fs_context(struct fs_context *fc)
- static struct file_system_type cpuset_fs_type = {
- 	.name			= "cpuset",
- 	.init_fs_context	= cpuset_init_fs_context,
-+	.parameters		= cpuset_fs_parameters,
- 	.fs_flags		= FS_USERNS_MOUNT,
- };
- #endif
--- 
-2.39.5
-
+--- a/lib/sg_split.c
++++ b/lib/sg_split.c
+@@ -88,8 +88,6 @@ static void sg_split_phys(struct sg_spli
+ 			if (!j) {
+ 				out_sg->offset += split->skip_sg0;
+ 				out_sg->length -= split->skip_sg0;
+-			} else {
+-				out_sg->offset = 0;
+ 			}
+ 			sg_dma_address(out_sg) = 0;
+ 			sg_dma_len(out_sg) = 0;
 
 
 
