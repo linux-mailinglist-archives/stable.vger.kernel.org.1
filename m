@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-137144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A26FAA11FF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C2CAA137B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 818899268CA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8329A983A7F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14DF245020;
-	Tue, 29 Apr 2025 16:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECFB23F413;
+	Tue, 29 Apr 2025 17:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvuSlREF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lN2y7YGJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E41A24113A;
-	Tue, 29 Apr 2025 16:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FC57E110;
+	Tue, 29 Apr 2025 17:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945192; cv=none; b=I3r0Q43Fp6NfKt1R02W6Kwh2k+6DAx1bdo1qcwtePQt7xWqzgJKWMxUlCem8M3kLOKUQzxAwuTxiDWreK6qbNPJza76/q5hKm0L5jdrpd43HDal3Rh2/yNVoqCKb1u0tRsLtKt3YcjSIrl7sr5UQjHNKhgD/69AXzeuHxSWDMLw=
+	t=1745946049; cv=none; b=UfeWVLaF69qs5HSGGItihUMIuQiApKNws7VaxzdB/rus7jqJz8WDnfy0yYUxfgS4kblJo4IqZ25Us9aJXz1J1YBdCxNG/XuIKjuFNLhw/IrqthaSxpL6Ud4GsvHyrhtX/DAcXFRoerrpTwM8GpA1oN0pA08FKCkLpPftnnXGo8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945192; c=relaxed/simple;
-	bh=K8lnBzlNMmy8DlUrsAVJdMSb4FJWThlo304jD7nsJq4=;
+	s=arc-20240116; t=1745946049; c=relaxed/simple;
+	bh=/6rOnYQi2arvoof/ZGVyIovrh0bGIw6TzszU06SRTVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jne6MA3tI9BzwMsiaCWSjoRsTk67aPecmz5C+9JY+kDl6KLu1DaSxjdLQFiLiksqlJoI6W4Vw8u2LLt+zJDBg/yBsbmLAnuyBytps14wKcLwzA1iOXPY5JmY6VVKJCFDpoQ93WBRmroPIj8MrAG7lv38JbYXjWMIhuS2UQVUNJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvuSlREF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F014DC4CEE3;
-	Tue, 29 Apr 2025 16:46:31 +0000 (UTC)
+	 MIME-Version; b=K7NWvVCj4rfAJkKURDtADFIys3Qmsc/BWfygf8qwQ4S1LWnJHlOhbKWKM+8hd7ST+ZsInXK5siBp4LoU3kJvOVgz/RLZrWcv+ov0Zt10yCcr5no6QHoFBLFfTS83uglJkJFKcFMdX7C4IPnCbyJ2GZEBQrCmeTu8I/65fXad2WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lN2y7YGJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D733AC4CEE3;
+	Tue, 29 Apr 2025 17:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945192;
-	bh=K8lnBzlNMmy8DlUrsAVJdMSb4FJWThlo304jD7nsJq4=;
+	s=korg; t=1745946049;
+	bh=/6rOnYQi2arvoof/ZGVyIovrh0bGIw6TzszU06SRTVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvuSlREFm/L2oOtSm4gpmAA1B5ftGyC+zTsd43rLIbYtZ4HtsbqK2RwdI8yuHmvdN
-	 qMTNS0mGVubjTSPWQw0bDRdhEvuXI3ch/aYjuoE/5PFGRc+UIGmI8ZO6mfhT61v4VF
-	 wTstZHgYLMMFUA5r0egP1jL5N741kQfiQroHj++k=
+	b=lN2y7YGJVH1iXpyx2LTOZl7ZRg2f2r6q+K9yk9mym7K/1xszR0lvflpXzTtml+lA+
+	 eqisyPSPzEt4m6a7NGRD8C00P82X9CrFDVxi6bzCr1bq3ejyJue3uR8wbXCSoJmfx3
+	 HGra1P/1WclUv+jUENkCfHJfO9mSRxqpYTd8meKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Wyatt <fewtarius@steamfork.org>,
-	John Edwards <uejji@uejji.net>,
-	Paco Avelar <pacoavelar@hotmail.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 032/179] drm: panel-orientation-quirks: Add new quirk for GPD Win 2
-Date: Tue, 29 Apr 2025 18:39:33 +0200
-Message-ID: <20250429161050.712296722@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Johannes Thumshirn <jth@kernel.org>
+Subject: [PATCH 6.14 137/311] mcb: fix a double free bug in chameleon_parse_gdd()
+Date: Tue, 29 Apr 2025 18:39:34 +0200
+Message-ID: <20250429161126.650064248@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Wyatt <fewtarius@steamfork.org>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit a860eb9c6ba6cdbf32e3e01a606556e5a90a2931 ]
+commit 7c7f1bfdb2249f854a736d9b79778c7e5a29a150 upstream.
 
-Some GPD Win 2 units shipped with the correct DMI strings.
+In chameleon_parse_gdd(), if mcb_device_register() fails, 'mdev'
+would be released in mcb_device_register() via put_device().
+Thus, goto 'err' label and free 'mdev' again causes a double free.
+Just return if mcb_device_register() fails.
 
-Add a DMI match to correctly rotate the panel on these units.
-
-Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
-Signed-off-by: John Edwards <uejji@uejji.net>
-Tested-by: Paco Avelar <pacoavelar@hotmail.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-5-uejji@uejji.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3764e82e5150 ("drivers: Introduce MEN Chameleon Bus")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Signed-off-by: Johannes Thumshirn <jth@kernel.org>
+Link: https://lore.kernel.org/r/6201d09e2975ae5789879f79a6de4c38de9edd4a.1741596225.git.jth@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mcb/mcb-parse.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 6bb8d4502ca8e..6fc9d638ccd23 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -235,6 +235,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_BOARD_NAME, "Default string"),
- 		},
- 		.driver_data = (void *)&gpd_win2,
-+	}, {	/* GPD Win 2 (correct DMI strings) */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "GPD"),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "WIN2")
-+		},
-+		.driver_data = (void *)&lcd720x1280_rightside_up,
- 	}, {	/* GPD Win 3 */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "GPD"),
--- 
-2.39.5
-
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -96,7 +96,7 @@ static int chameleon_parse_gdd(struct mc
+ 
+ 	ret = mcb_device_register(bus, mdev);
+ 	if (ret < 0)
+-		goto err;
++		return ret;
+ 
+ 	return 0;
+ 
 
 
 
