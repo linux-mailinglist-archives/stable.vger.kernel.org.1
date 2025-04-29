@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-137746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4FD8AA14DB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AA5AA1256
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB29A1B66697
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 904CC3A64BA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421CB2528EC;
-	Tue, 29 Apr 2025 17:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C85244679;
+	Tue, 29 Apr 2025 16:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Xd/WNxA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLDAgEc9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27CF24E000;
-	Tue, 29 Apr 2025 17:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EF4215060;
+	Tue, 29 Apr 2025 16:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947003; cv=none; b=H5MVNDBVxOonTxv7hbYMBoV9jz+zPBIwE7KZy8ByuoJx61VuxVxguND5cxJoqUUEPPkXhaQKtg5x1nSsAVeDp9FWTLM1JGFNnh23e7MBavyGk7uGV0mBGD3Voyen4Kc/PR/Nn5RI1AE2/Y2MTOhNdz6BXcPdTGsSzCESLgpBI2I=
+	t=1745945415; cv=none; b=IrfKE+N82lklb/xtxi9UmCtJuRK9XGpBu+Xw/cSFB1JC19XReBEluIoun4soLzcOsGPsVbBagtNxFfv/tL89S9FcvuUdyIEnQoiWhpnefegs+5KrIyzmsGdsdAYZfe1ipusN0Bsl5JUeE+SSeZmc+CzXn6F9JvRkei4kGQynkHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947003; c=relaxed/simple;
-	bh=LWfhVx25MFy9utd2tANdHvAWxTtYUijOHtLuaHtAUq4=;
+	s=arc-20240116; t=1745945415; c=relaxed/simple;
+	bh=DeuvOHXv0/FqG1Hzl2Fi9Eji11gaRUU+eu2yoKPRZuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OiuPSMPmKshcaOKLoPRe9tEXu8P82z2a33xFBkkW0DMSiUw3ZNjzvT7T33cKhBh18EnMlhiFk8txgwTVOeeNfeQtfwp5ql0ZljCphj62REo09yVX5nxDHEuEYMeY9eJIO+VHAyZZHy81d8eAYEsmIDYNvNH/EQBRNl+/MDti7LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Xd/WNxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5E0C4CEE9;
-	Tue, 29 Apr 2025 17:16:42 +0000 (UTC)
+	 MIME-Version; b=T6FLmajqhOTdbgeJ4fsobZ6nDfffy+OvWnVHACf97NQmM0APFN2JzVm2X3+2NsmwLBp1FaCb0/Ou6DMJndetYsLbZx1hB+HJwPOZyGAnmm9GAU0/eYC6mTxmyNRZ89WK4A+bLI1JVHEcprBjpJ3qa0qM/zJoPKTH+ebw8pBtwT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLDAgEc9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C183DC4CEE3;
+	Tue, 29 Apr 2025 16:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947002;
-	bh=LWfhVx25MFy9utd2tANdHvAWxTtYUijOHtLuaHtAUq4=;
+	s=korg; t=1745945415;
+	bh=DeuvOHXv0/FqG1Hzl2Fi9Eji11gaRUU+eu2yoKPRZuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Xd/WNxAU1l8TPAc9FUyhGc0SlkUNgJYhzg3oOZ/fnMwFzIeSxCNEODQCPUSY1EPP
-	 QeB4GMo9UyVoGg5kI7zYXUkjiQUSnyPn59iVrbvMHEaNDUHjKO/B6W5elLW/liHi7N
-	 3V3erRoT8UCCixss/FIWluHVCMNL5l7SefQt7BYQ=
+	b=sLDAgEc9ynHfoJ/hYuGcNiPeKdB/EgHRutqb4YdMB5PecnFr/uWnVtFYEUTph51yj
+	 Fp96Xxele1HnsKLvv4TIjR/rOA238wzIhxVcVA7oC/szijZrG70C3gjP6RQXPGKi2r
+	 8MxnDFF2Aal01cqadPIQHNE3Fl96+znH7bKtGQoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 140/286] drm/amd/pm/powerplay/hwmgr/smu7_thermal: Prevent division by zero
-Date: Tue, 29 Apr 2025 18:40:44 +0200
-Message-ID: <20250429161113.630870899@linuxfoundation.org>
+	Xiangsheng Hou <xiangsheng.hou@mediatek.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.4 104/179] virtiofs: add filesystem context source name check
+Date: Tue, 29 Apr 2025 18:40:45 +0200
+Message-ID: <20250429161053.609893615@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
 
-commit 7c246a05df51c52fe0852ce56ba10c41e6ed1f39 upstream.
+commit a94fd938df2b1628da66b498aa0eeb89593bc7a2 upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+In certain scenarios, for example, during fuzz testing, the source
+name may be NULL, which could lead to a kernel panic. Therefore, an
+extra check for the source name should be added.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: c52dcf49195d ("drm/amd/pp: Avoid divide-by-zero in fan_ctrl_set_fan_speed_rpm")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Fixes: a62a8ef9d97d ("virtio-fs: add virtiofs filesystem")
+Cc: <stable@vger.kernel.org> # all LTS kernels
+Signed-off-by: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
+Link: https://lore.kernel.org/20250407115111.25535-1-xiangsheng.hou@mediatek.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/fuse/virtio_fs.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c
-@@ -261,10 +261,10 @@ int smu7_fan_ctrl_set_fan_speed_rpm(stru
- 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
- 			(hwmgr->thermal_controller.fanInfo.
- 			ucTachometerPulsesPerRevolution == 0) ||
--			speed == 0 ||
-+			(!speed || speed > UINT_MAX/8) ||
- 			(speed < hwmgr->thermal_controller.fanInfo.ulMinRPM) ||
- 			(speed > hwmgr->thermal_controller.fanInfo.ulMaxRPM))
--		return 0;
-+		return -EINVAL;
+--- a/fs/fuse/virtio_fs.c
++++ b/fs/fuse/virtio_fs.c
+@@ -1206,6 +1206,9 @@ static int virtio_fs_get_tree(struct fs_
+ 	struct fuse_conn *fc;
+ 	int err;
  
- 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl))
- 		smu7_fan_ctrl_stop_smc_fan_control(hwmgr);
++	if (!fsc->source)
++		return invalf(fsc, "No source specified");
++
+ 	/* This gets a reference on virtio_fs object. This ptr gets installed
+ 	 * in fc->iq->priv. Once fuse_conn is going away, it calls ->put()
+ 	 * to drop the reference to this object.
 
 
 
