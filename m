@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-137446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E144AA1377
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 836C1AA15EE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0CCE1A803FD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36ED99A19D0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044B422A81D;
-	Tue, 29 Apr 2025 17:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA0D253B50;
+	Tue, 29 Apr 2025 17:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b96W5xev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMDK4nGd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A357E110;
-	Tue, 29 Apr 2025 17:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB25252287;
+	Tue, 29 Apr 2025 17:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946091; cv=none; b=HPUiIx1FOAZzsgpjX4+wNUJK7EOPSfyzW7fbggnImqbxi2eS+MNdEfRLFBfMCI0rWjuJWDoGPBXerKr3RdHQU53SdrLjkVWil5QHShJYFXLVH5a07YthhJckICqyaUHcubflji163miA6DxWZaRI9a1TVu4cx/stJtsPAaRqVoE=
+	t=1745947509; cv=none; b=sed7JPXfEO9XhdaRZUC3R96oq8dWvx2SzwhX9dKiigL+TBAbIrdKZYGLJLDjgtH44QOHi9RiUZ9BXX4R1c4PXdAwkZZ5FG56cjzHNOnjeLCb/x8xfWyrdd9BmKtdegNe/uGMf0Eh7TF22hIB/TvagAxyuShi5U7ihgMye7/NZss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946091; c=relaxed/simple;
-	bh=rXgOaGz9cM4MdVTOQJsZ5m/IiNyP5AFi6o1fXB/2DCs=;
+	s=arc-20240116; t=1745947509; c=relaxed/simple;
+	bh=50WEbXGLxLqoKRhCo9fW744wRv1IoIAMYOGREJJbBpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R1EaOVxRvt4ykoLXJkh7YxE1dVCH2EkOUUHoVfW+aWO0RDJQmPuRyGfwyPZKDFbDgbQy3S8UmAZcECno+EGoR8ANiEUqo9S9OHZBsHty658mUPjNzd6vHdx4PlVhvJnowS15ItuTGxzYEUigHMx7oRnrHFUDL4VP7iGMR3HSV0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b96W5xev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2990C4CEE3;
-	Tue, 29 Apr 2025 17:01:30 +0000 (UTC)
+	 MIME-Version; b=UTUxRuds0a4CHMIB1eKuULhvTpkOR7XWNaNSO4+bPYF2V5zgLsm5NZX3qSl4vhlN7XnCQEfQRQg3NmQy2SH85CgqGta04dCO/ahlbAEwbFxQnxMt7G7UOMZy06oc+35hyfeN4WaD4UW8me0Zw1qTWmQyoqRJ9jgsXG9+PTl0K/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMDK4nGd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE414C4CEE9;
+	Tue, 29 Apr 2025 17:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946091;
-	bh=rXgOaGz9cM4MdVTOQJsZ5m/IiNyP5AFi6o1fXB/2DCs=;
+	s=korg; t=1745947509;
+	bh=50WEbXGLxLqoKRhCo9fW744wRv1IoIAMYOGREJJbBpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b96W5xevvCniRk9XNtxNBmvaaMt1k7150yK+MOB0+XrBqRZakJhWMcBzDzgBl0ZMi
-	 wKPwryFCjN4zH63WcVGlSagjJleo0AHCKM+btmQ6yyHXpJECskFwWkmtAVaQLUQpHG
-	 cTdNbQP7i0kP+LHpnhrwhYXDo+HMK1zdHmL3X3mM=
+	b=GMDK4nGdT+/+Dp3LzaUv99Mgpv4RhB/edhDZnPNF4hRgFcLJ8mmhUCzUC/aLJoFYX
+	 /4CYzvZc4dwlKCxCv3rjXzlo6XNiAsYsqNhvWJCoOFUY0bKUmHBz+73xPMlGBgj5Io
+	 lXuGk+Mik11awZ4zk1dMI1i2kFRPO9RFkrXS7oCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Mark Broadworth <mark.broadworth@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 121/311] drm/amd/display: Force full update in gpu reset
+	Christoph Hellwig <hch@lst.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 017/280] block: remove the write_hint field from struct request
 Date: Tue, 29 Apr 2025 18:39:18 +0200
-Message-ID: <20250429161125.996025472@linuxfoundation.org>
+Message-ID: <20250429161115.793746592@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +63,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 67fe574651c73fe5cc176e35f28f2ec1ba498d14 upstream.
+[ Upstream commit 61952bb73486fff0f5550bccdf4062d9dd0fb163 ]
 
-[Why]
-While system undergoing gpu reset always do full update
-to sync the dc state before and after reset.
+The write_hint is only used for read/write requests, which must have a
+bio attached to them.  Just use the bio field instead.
 
-[How]
-Return true in should_reset_plane() if gpu reset detected
-
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Mark Broadworth <mark.broadworth@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2ba8619b9a378ad218ad6c2e2ccaee8f531e08de)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20241112170050.1612998-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: fc0e982b8a3a ("block: make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ block/blk-merge.c      | 16 ++++++++++------
+ block/blk-mq.c         |  2 --
+ drivers/scsi/sd.c      |  6 +++---
+ include/linux/blk-mq.h |  1 -
+ 4 files changed, 13 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10901,6 +10901,9 @@ static bool should_reset_plane(struct dr
- 	    state->allow_modeset)
- 		return true;
+diff --git a/block/blk-merge.c b/block/blk-merge.c
+index ceac64e796ea8..bc909bd894fae 100644
+--- a/block/blk-merge.c
++++ b/block/blk-merge.c
+@@ -864,9 +864,11 @@ static struct request *attempt_merge(struct request_queue *q,
+ 	if (rq_data_dir(req) != rq_data_dir(next))
+ 		return NULL;
  
-+	if (amdgpu_in_reset(adev) && state->allow_modeset)
-+		return true;
-+
- 	/* Exit early if we know that we're adding or removing the plane. */
- 	if (old_plane_state->crtc != new_plane_state->crtc)
- 		return true;
+-	/* Don't merge requests with different write hints. */
+-	if (req->write_hint != next->write_hint)
+-		return NULL;
++	if (req->bio && next->bio) {
++		/* Don't merge requests with different write hints. */
++		if (req->bio->bi_write_hint != next->bio->bi_write_hint)
++			return NULL;
++	}
+ 
+ 	if (req->ioprio != next->ioprio)
+ 		return NULL;
+@@ -998,9 +1000,11 @@ bool blk_rq_merge_ok(struct request *rq, struct bio *bio)
+ 	if (!bio_crypt_rq_ctx_compatible(rq, bio))
+ 		return false;
+ 
+-	/* Don't merge requests with different write hints. */
+-	if (rq->write_hint != bio->bi_write_hint)
+-		return false;
++	if (rq->bio) {
++		/* Don't merge requests with different write hints. */
++		if (rq->bio->bi_write_hint != bio->bi_write_hint)
++			return false;
++	}
+ 
+ 	if (rq->ioprio != bio_prio(bio))
+ 		return false;
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index f26bee5626936..e3a0f521335bb 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -2654,7 +2654,6 @@ static void blk_mq_bio_to_request(struct request *rq, struct bio *bio,
+ 		rq->cmd_flags |= REQ_FAILFAST_MASK;
+ 
+ 	rq->__sector = bio->bi_iter.bi_sector;
+-	rq->write_hint = bio->bi_write_hint;
+ 	blk_rq_bio_prep(rq, bio, nr_segs);
+ 	if (bio_integrity(bio))
+ 		rq->nr_integrity_segments = blk_rq_count_integrity_sg(rq->q,
+@@ -3308,7 +3307,6 @@ int blk_rq_prep_clone(struct request *rq, struct request *rq_src,
+ 	}
+ 	rq->nr_phys_segments = rq_src->nr_phys_segments;
+ 	rq->ioprio = rq_src->ioprio;
+-	rq->write_hint = rq_src->write_hint;
+ 
+ 	if (rq->bio && blk_crypto_rq_bio_prep(rq, rq->bio, gfp_mask) < 0)
+ 		goto free_and_out;
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index ca4bc0ac76adc..8947dab132d78 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -1190,8 +1190,8 @@ static u8 sd_group_number(struct scsi_cmnd *cmd)
+ 	if (!sdkp->rscs)
+ 		return 0;
+ 
+-	return min3((u32)rq->write_hint, (u32)sdkp->permanent_stream_count,
+-		    0x3fu);
++	return min3((u32)rq->bio->bi_write_hint,
++		    (u32)sdkp->permanent_stream_count, 0x3fu);
+ }
+ 
+ static blk_status_t sd_setup_rw32_cmnd(struct scsi_cmnd *cmd, bool write,
+@@ -1389,7 +1389,7 @@ static blk_status_t sd_setup_read_write_cmnd(struct scsi_cmnd *cmd)
+ 		ret = sd_setup_rw16_cmnd(cmd, write, lba, nr_blocks,
+ 					 protect | fua, dld);
+ 	} else if ((nr_blocks > 0xff) || (lba > 0x1fffff) ||
+-		   sdp->use_10_for_rw || protect || rq->write_hint) {
++		   sdp->use_10_for_rw || protect || rq->bio->bi_write_hint) {
+ 		ret = sd_setup_rw10_cmnd(cmd, write, lba, nr_blocks,
+ 					 protect | fua);
+ 	} else {
+diff --git a/include/linux/blk-mq.h b/include/linux/blk-mq.h
+index 318245b4e38fb..07c3934080bad 100644
+--- a/include/linux/blk-mq.h
++++ b/include/linux/blk-mq.h
+@@ -156,7 +156,6 @@ struct request {
+ 	struct blk_crypto_keyslot *crypt_keyslot;
+ #endif
+ 
+-	enum rw_hint write_hint;
+ 	unsigned short ioprio;
+ 
+ 	enum mq_rq_state state;
+-- 
+2.39.5
+
 
 
 
