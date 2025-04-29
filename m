@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-138035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E93CAA1649
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9923CAA1660
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 538011887631
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30C44987ADD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11803238C21;
-	Tue, 29 Apr 2025 17:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3156D2517AB;
+	Tue, 29 Apr 2025 17:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNXs28QJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/3BXOJI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6752233713;
-	Tue, 29 Apr 2025 17:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08682459EA;
+	Tue, 29 Apr 2025 17:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947907; cv=none; b=M1L/yiRoUEWqCR/Yq9OTkLlC9ORwkf8lPG1Gi5/caZQoAWuaPUT9HZRMXiwshDFNRw/q0ihFbvQ8tCUQANIJASiKXyCexPJQ8aO969udCSNFA4u74EwSYm8ZrJFhBACIyB7aWPWNeKE/jsAZ6/piehvMeYkxS92gNQhZM2WJYaI=
+	t=1745947817; cv=none; b=ClTltSjNSndHeCBJ1LhWsVPbTQ2y1n5U3x4wJlOh6G+BL+KKUVliwQDjbbEbcfEUU5MpylEC+sAJvbENC/A3eiAadp5GjFPiGz0hE/jq9lRxYm2X9Y26QxcDUmuhoBMNLLV5579SfuKN4JxzfoUVjmLDdmv2cGjveBUwnohwi7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947907; c=relaxed/simple;
-	bh=duBHKfTj/Oz5KjKo9pMJ8xS9Ykr3qlEjDAG6Ijs+x94=;
+	s=arc-20240116; t=1745947817; c=relaxed/simple;
+	bh=9VohW/vnBoTNNSoBbs1rhy+HnyFQ/juW4knu/D/Oebs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AWp83dMuYVk2QRkKHO3yk+17DS4GvcKpGGvsjsi+baixzcQBY6DTCk/pvSAM1370uQxAUnoRqck0dv6nLHnEmE0w6sA7MK2LkAy5864++8PkhOijT1o5DhiZmlvgdqWGAWldLIbJqX6fsOU9B+yF8SSrspF6mxgPRY4khhpgArs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNXs28QJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEEBC4CEE3;
-	Tue, 29 Apr 2025 17:31:46 +0000 (UTC)
+	 MIME-Version; b=iYFaHbh28SDbqIyzSxTxOle2IhUinjoxwKjIscfRdYmF8KRGBGlf4sdR5hRVgh1owNwtKClgEJKVoG6V2I03Gk+d0TBrSN8yrnHjO+CLzOHaMH7636XVRHPdZweU1Okuxz2pTraCC9K9xLCos8iBx7u2vSiWi2eHZhSrJr2V9O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/3BXOJI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2D5C4CEE9;
+	Tue, 29 Apr 2025 17:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947907;
-	bh=duBHKfTj/Oz5KjKo9pMJ8xS9Ykr3qlEjDAG6Ijs+x94=;
+	s=korg; t=1745947816;
+	bh=9VohW/vnBoTNNSoBbs1rhy+HnyFQ/juW4knu/D/Oebs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GNXs28QJ9EoMWvUd6fM66J48Zcreoj74AHhsMKMvSaRrRdk2g2wixhBivYiEp4xDU
-	 lAHtQitQ8j6fudNdmruFOVXqwX32XVYqbaFUzTCyBMqQ/gsxawXtbo/1YrFrphaYbg
-	 rWmw20E+v6JevvZVKXRiVwGjcynk4/KRLshSVxlM=
+	b=K/3BXOJI+S6tdOK62lNNk61DElzpEeSa18sGUgALRIFdvLZffFhGBv0bofBj9gjWK
+	 G8tGfcv4NqxCe1JHAzmv1dO765RX/GWLTTo7XVuIf98Jk8+pY9zrvumyaujDhHikYX
+	 jyOPMe+LZfU2JoWo3S0m4shMiHThLpkgCmUna5JI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 111/280] LoongArch: KVM: Fix PMU pass-through issue if VM exits to host finally
-Date: Tue, 29 Apr 2025 18:40:52 +0200
-Message-ID: <20250429161119.656222959@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 112/280] io_uring: fix sync handling of io_fallback_tw()
+Date: Tue, 29 Apr 2025 18:40:53 +0200
+Message-ID: <20250429161119.696579654@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
 References: <20250429161115.008747050@linuxfoundation.org>
@@ -65,39 +64,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 5add0dbbebd60628b55e5eb8426612dedab7311a upstream.
+commit edd43f4d6f50ec3de55a0c9e9df6348d1da51965 upstream.
 
-In function kvm_pre_enter_guest(), it prepares to enter guest and check
-whether there are pending signals or events. And it will not enter guest
-if there are, PMU pass-through preparation for guest should be cancelled
-and host should own PMU hardware.
+A previous commit added a 'sync' parameter to io_fallback_tw(), which if
+true, means the caller wants to wait on the fallback thread handling it.
+But the logic is somewhat messed up, ensure that ctxs are swapped and
+flushed appropriately.
 
 Cc: stable@vger.kernel.org
-Fixes: f4e40ea9f78f ("LoongArch: KVM: Add PMU support for guest")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: dfbe5561ae93 ("io_uring: flush offloaded and delayed task_work on exit")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kvm/vcpu.c | 1 +
- 1 file changed, 1 insertion(+)
+ io_uring/io_uring.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index 2d3c2a2d1d1c..5af32ec62cb1 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -294,6 +294,7 @@ static int kvm_pre_enter_guest(struct kvm_vcpu *vcpu)
- 		vcpu->arch.aux_inuse &= ~KVM_LARCH_SWCSR_LATEST;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1103,21 +1103,22 @@ static __cold void io_fallback_tw(struct
+ 	while (node) {
+ 		req = container_of(node, struct io_kiocb, io_task_work.node);
+ 		node = node->next;
+-		if (sync && last_ctx != req->ctx) {
++		if (last_ctx != req->ctx) {
+ 			if (last_ctx) {
+-				flush_delayed_work(&last_ctx->fallback_work);
++				if (sync)
++					flush_delayed_work(&last_ctx->fallback_work);
+ 				percpu_ref_put(&last_ctx->refs);
+ 			}
+ 			last_ctx = req->ctx;
+ 			percpu_ref_get(&last_ctx->refs);
+ 		}
+-		if (llist_add(&req->io_task_work.node,
+-			      &req->ctx->fallback_llist))
+-			schedule_delayed_work(&req->ctx->fallback_work, 1);
++		if (llist_add(&req->io_task_work.node, &last_ctx->fallback_llist))
++			schedule_delayed_work(&last_ctx->fallback_work, 1);
+ 	}
  
- 		if (kvm_request_pending(vcpu) || xfer_to_guest_mode_work_pending()) {
-+			kvm_lose_pmu(vcpu);
- 			/* make sure the vcpu mode has been written */
- 			smp_store_mb(vcpu->mode, OUTSIDE_GUEST_MODE);
- 			local_irq_enable();
--- 
-2.49.0
-
+ 	if (last_ctx) {
+-		flush_delayed_work(&last_ctx->fallback_work);
++		if (sync)
++			flush_delayed_work(&last_ctx->fallback_work);
+ 		percpu_ref_put(&last_ctx->refs);
+ 	}
+ }
 
 
 
