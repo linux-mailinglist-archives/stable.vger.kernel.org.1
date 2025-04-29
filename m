@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-137253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C737AA1267
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDF6AA14D8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4B101890289
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:52:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 168A74C3F80
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5800B2459C9;
-	Tue, 29 Apr 2025 16:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E3F2472B4;
+	Tue, 29 Apr 2025 17:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EC6oZxgE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEiLuj1k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1625D2472AC;
-	Tue, 29 Apr 2025 16:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74EB221DA7;
+	Tue, 29 Apr 2025 17:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945517; cv=none; b=a7dl0eNiLfTFcHhxdfVQR78n9G0BrexRw5XVuwm64ZIDOcsjnYz0A+vxVB7TvZQ4PaQ2bOWZFhQPRN6L6M+NT+3ATwEZz3iYEeD0o08vXtGbGA+UwWi/6KYqhlLBxXa47XiKQ58cUN0kJgZHr6E2t/iFklJayAF6LpZAux21OGw=
+	t=1745947111; cv=none; b=Lv6xu+pjga9rbY0F/898GHI8PKZtsGNJmOZY6JPa5blrfrztRBJcL6oXAyFhxBH8xqrUYc7aM74UDYC+y1NfPjGQm4mW8cgLrPmK/fpqhfp6ZQqnAVxcJgIbjf8tHwqg3n4UhHr++/ktcyoWhCVicWClYZeOAvG5kR/qS99pIwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945517; c=relaxed/simple;
-	bh=MAU4gN/9ShsmqotYmLAgbYlcPqAj9RAmkQjkXLwcB+k=;
+	s=arc-20240116; t=1745947111; c=relaxed/simple;
+	bh=YYU5FledBKiGgQXnCsOu/roEzrfyatemB7vaFOxPn54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tz1uspaZ8AtZm34E/crJ8ycUOYLNxJYIiLt51ekn4pa6ZaAV4p/l3p1KbNt6L9k8Uc+uyfT8fiq02sCrHk60rz8l+emV2H7vQRmSQeqwlvZuqqwViKWCJ7WIXtcrwsmG2LR+ISfemydowSGtpCU/IfIiZR1pysJJJiYlOvLDb1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EC6oZxgE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917C0C4CEE3;
-	Tue, 29 Apr 2025 16:51:56 +0000 (UTC)
+	 MIME-Version; b=llDDT5Fcf1/YQeHBTKWN6ljqg8YMgcpgutkxUXKqJUaJc0jkU/zJ+/6kt/zMYQHc156duHUZmMLlrUDQg3ABL4+7MAC0Z0b6vpYGD4bd3oW90eZXQldqYSBpLK67VZ9xELuypKU+r4o2+ZIRt5ztj48by4J2IYtktYt64DTlsEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEiLuj1k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A21C4CEEE;
+	Tue, 29 Apr 2025 17:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945517;
-	bh=MAU4gN/9ShsmqotYmLAgbYlcPqAj9RAmkQjkXLwcB+k=;
+	s=korg; t=1745947111;
+	bh=YYU5FledBKiGgQXnCsOu/roEzrfyatemB7vaFOxPn54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EC6oZxgEncZotSWk9PeodsMS1kVe3PK1eYxgw8gwG9Hl145QIkcYP8KglUbXb0vCB
-	 ttOb6gFigzvdY7MMDguc759gE9bCcS09c1eTfnYQeyArjp2sCpxLmMwdGyNkPbK+e9
-	 qMb5Auht3r+uVaL9MR50DWu1Q8TAlvy0wd4q0g68=
+	b=FEiLuj1kmxr9m0pXmvwOIDKWw4xGe/C+ylhQki3JrHNfiXvYh1/c25qz5i8tPJ+66
+	 +3oGBiSc9wTIic/iAaxOFNN/IDk/t4cx6Ul1kOOofm2AcZWRuzjAPKW7yqkPsA5Gr1
+	 BpTWefT4rpdcGPXjXs1cM5yIl6jIgKrNk7OasK+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 139/179] misc: pci_endpoint_test: Fix displaying irq_type after request_irq error
+	Friedrich Weber <f.weber@proxmox.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Carlos Soto <carlos.soto@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 5.10 176/286] openvswitch: fix lockup on tx to unregistering netdev with carrier
 Date: Tue, 29 Apr 2025 18:41:20 +0200
-Message-ID: <20250429161055.019870723@linuxfoundation.org>
+Message-ID: <20250429161115.138401605@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit 919d14603dab6a9cf03ebbeb2cfa556df48737c8 ]
+commit 47e55e4b410f7d552e43011baa5be1aab4093990 upstream.
 
-There are two variables that indicate the interrupt type to be used
-in the next test execution, global "irq_type" and "test->irq_type".
+Commit in a fixes tag attempted to fix the issue in the following
+sequence of calls:
 
-The former is referenced from pci_endpoint_test_get_irq() to preserve
-the current type for ioctl(PCITEST_GET_IRQTYPE).
+    do_output
+    -> ovs_vport_send
+       -> dev_queue_xmit
+          -> __dev_queue_xmit
+             -> netdev_core_pick_tx
+                -> skb_tx_hash
 
-In the pci_endpoint_test_request_irq(), since this global variable
-is referenced when an error occurs, the unintended error message is
-displayed.
+When device is unregistering, the 'dev->real_num_tx_queues' goes to
+zero and the 'while (unlikely(hash >= qcount))' loop inside the
+'skb_tx_hash' becomes infinite, locking up the core forever.
 
-For example, after running "pcitest -i 2", the following message
-shows "MSI 3" even if the current IRQ type becomes "MSI-X":
+But unfortunately, checking just the carrier status is not enough to
+fix the issue, because some devices may still be in unregistering
+state while reporting carrier status OK.
 
-  pci-endpoint-test 0000:01:00.0: Failed to request IRQ 30 for MSI 3
-  SET IRQ TYPE TO MSI-X:          NOT OKAY
+One example of such device is a net/dummy.  It sets carrier ON
+on start, but it doesn't implement .ndo_stop to set the carrier off.
+And it makes sense, because dummy doesn't really have a carrier.
+Therefore, while this device is unregistering, it's still easy to hit
+the infinite loop in the skb_tx_hash() from the OVS datapath.  There
+might be other drivers that do the same, but dummy by itself is
+important for the OVS ecosystem, because it is frequently used as a
+packet sink for tcpdump while debugging OVS deployments.  And when the
+issue is hit, the only way to recover is to reboot.
 
-Fix this issue by using "test->irq_type" instead of global "irq_type".
+Fix that by also checking if the device is running.  The running
+state is handled by the net core during unregistering, so it covers
+unregistering case better, and we don't really need to send packets
+to devices that are not running anyway.
 
-Cc: stable@vger.kernel.org
-Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Link: https://lore.kernel.org/r/20250225110252.28866-4-hayashi.kunihiko@socionext.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+While only checking the running state might be enough, the carrier
+check is preserved.  The running and the carrier states seem disjoined
+throughout the code and different drivers.  And other core functions
+like __dev_direct_xmit() check both before attempting to transmit
+a packet.  So, it seems safer to check both flags in OVS as well.
+
+Fixes: 066b86787fa3 ("net: openvswitch: fix race on port output")
+Reported-by: Friedrich Weber <f.weber@proxmox.com>
+Closes: https://mail.openvswitch.org/pipermail/ovs-discuss/2025-January/053423.html
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Tested-by: Friedrich Weber <f.weber@proxmox.com>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20250109122225.4034688-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Carlos Soto <carlos.soto@broadcom.com>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/openvswitch/actions.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index fcb7dc8e79d43..711db6667b087 100644
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -230,7 +230,7 @@ static bool pci_endpoint_test_request_irq(struct pci_endpoint_test *test)
- 	return true;
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -912,7 +912,9 @@ static void do_output(struct datapath *d
+ {
+ 	struct vport *vport = ovs_vport_rcu(dp, out_port);
  
- fail:
--	switch (irq_type) {
-+	switch (test->irq_type) {
- 	case IRQ_TYPE_INTX:
- 		dev_err(dev, "Failed to request IRQ %d for Legacy\n",
- 			pci_irq_vector(pdev, i));
--- 
-2.39.5
-
+-	if (likely(vport && netif_carrier_ok(vport->dev))) {
++	if (likely(vport &&
++		   netif_running(vport->dev) &&
++		   netif_carrier_ok(vport->dev))) {
+ 		u16 mru = OVS_CB(skb)->mru;
+ 		u32 cutlen = OVS_CB(skb)->cutlen;
+ 
 
 
 
