@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-138184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F3BAA173C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7002AA172A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B07C0982446
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16C3D3BE92F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2983A252912;
-	Tue, 29 Apr 2025 17:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BFB242D68;
+	Tue, 29 Apr 2025 17:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbyPf6JU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttRs5iSr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BE7252905;
-	Tue, 29 Apr 2025 17:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4164922DF91;
+	Tue, 29 Apr 2025 17:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948438; cv=none; b=dfnsaOH/ZypkQ9uvOWH1Eq4zO5DSCoUE4Yyt6cfONfMWZr4KidEeV+pDXxn99oEHJ/JAL8WN8q3V9ryBibEEiAJUrw+6mf/Rla5JiOjl95JW3XrKBrB9BRRzNYO9UMo3Gu3bMV8I9EVY2r2XuZ5nmjpUH+/OFzQ27S6yt6Nu1HI=
+	t=1745948392; cv=none; b=iEWGkqbcr2YTJMBsXNW+8wKmvq/0jaGKil5iea0qOJuP4hKFw/OVaZA0yof1tRAYnqJ87W7ZCJQCnh6pdL//w/Jwy2bi0MNWUFjFdBnEf8I00yl7L+dzGm4allE/HHzpWlRLCo6IEFH1JIr7YTv/AVoUBz7/kFeNgbbgTxD8N0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948438; c=relaxed/simple;
-	bh=di7n3BbnPrKiTIIKmf6mLAZhAlHCezP1es4fCYnEwrc=;
+	s=arc-20240116; t=1745948392; c=relaxed/simple;
+	bh=Z+6D7OrzVkckj1npwAT9V+JMqOdcbb1F3J2jBwQWTf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gDcoH8vkbm4PVzFABAaZBXnweucpYmk6pQKL9m6uG2GlglmYEzy1WQBNzxvNhmmuYIjDW6xdlj9fyIbXloU0CHKg2CLlfQzDaWW0kOhA3rfS8o7jpfNvAj86E/a36PpXmOCdbz1b86dmJbnbJmwvv21/n8P1Rt3wA0Zci8+5ag8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbyPf6JU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635DDC4CEE3;
-	Tue, 29 Apr 2025 17:40:37 +0000 (UTC)
+	 MIME-Version; b=tdVhq+wd/zvOYkMm66sT8N4zBt8iK3K7zdPq1Wznvmj0eA347YXj4ZK6W5ea3QOdN42Zgnt9gFe2V20ROBWXhIVRqeEvIGSiduG1nUL1mZnGElqXn36kyXUwdDp0izc4dXgInMGq9KJXcK+HljvJ9RP6hlNXPhAjEBucAWf4sPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttRs5iSr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E298C4CEE3;
+	Tue, 29 Apr 2025 17:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948438;
-	bh=di7n3BbnPrKiTIIKmf6mLAZhAlHCezP1es4fCYnEwrc=;
+	s=korg; t=1745948391;
+	bh=Z+6D7OrzVkckj1npwAT9V+JMqOdcbb1F3J2jBwQWTf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JbyPf6JUe5/mKLGs26H+DGfBeF2bVpQB5dHyLNVcckUolyq6wxgDNnKCg8eYyVnK1
-	 0TlVBT5pvhy/YF6cYHRAvSBWMXB0Fo4FWaN7vcI5blRySk+84qDrSj2RRInXRFm01+
-	 s0IOV+5ItKndyVka9Yu3Q2iZ6kzGv18yXhFEN1k4=
+	b=ttRs5iSrj5RTI1HKj+2rty3DI6YYL9+TNNP2CH7Ccg/4Zdxod+yUKTm/Mn+5uh1uQ
+	 ddsKyUB1G+QvQp3E7TUR4EYArH0tKQQv17hKVuSu8Ee21xtOdOsOfPKSoV+OJWdVry
+	 zo2z2OlOoSiThF7dIrmm4NhjmP/YaB8xib51PpiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Srikanth Aithal <sraithal@amd.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>
-Subject: [PATCH 6.12 273/280] nvme: fixup scan failure for non-ANA multipath controllers
-Date: Tue, 29 Apr 2025 18:43:34 +0200
-Message-ID: <20250429161126.304956889@linuxfoundation.org>
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.12 274/280] usb: xhci: Fix Short Packet handling rework ignoring errors
+Date: Tue, 29 Apr 2025 18:43:35 +0200
+Message-ID: <20250429161126.344405860@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
 References: <20250429161115.008747050@linuxfoundation.org>
@@ -67,37 +65,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 26d7fb4fd4ca1180e2fa96587dea544563b4962a upstream.
+commit 9e3a28793d2fde7a709e814d2504652eaba6ae98 upstream.
 
-Commit 62baf70c3274 caused the ANA log page to be re-read, even on
-controllers that do not support ANA.  While this should generally
-harmless, some controllers hang on the unsupported log page and
-never finish probing.
+A Short Packet event before the last TRB of a TD is followed by another
+event on the final TRB on spec-compliant HCs, which is most of them.
 
-Fixes: 62baf70c3274 ("nvme: re-read ANA log page after ns scan completes")
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Tested-by: Srikanth Aithal <sraithal@amd.com>
-[hch: more detailed commit message]
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+A 'last_td_was_short' flag was added to know if a TD has just completed
+as Short Packet and another event is to come. The flag was cleared after
+seeing the event (unless no TDs are pending, but that's a separate bug)
+or seeing a new TD complete as something other than Short Packet.
+
+A rework replaced the flag with an 'old_trb_comp_code' variable. When
+an event doesn't match the pending TD and the previous event was Short
+Packet, the new event is silently ignored.
+
+To preserve old behavior, 'old_trb_comp_code' should be cleared at this
+point, but instead it is being set to current comp code, which is often
+Short Packet again. This can cause more events to be silently ignored,
+even though they are no longer connected with the old TD that completed
+short and indicate a serious problem with the driver or the xHC.
+
+Common device classes like UAC in async mode, UVC, serial or the UAS
+status pipe complete as Short Packet routinely and could be affected.
+
+Clear 'old_trb_comp_code' to zero, which is an invalid completion code
+and the same value the variable starts with. This restores original
+behavior on Short Packet and also works for illegal Etron events, which
+the code has been extended to cover too.
+
+Fixes: b331a3d8097f ("xhci: Handle spurious events on Etron host isoc enpoints")
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250410151828.2868740-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c |    2 +-
+ drivers/usb/host/xhci-ring.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4278,7 +4278,7 @@ static void nvme_scan_work(struct work_s
- 	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
- 		nvme_queue_scan(ctrl);
- #ifdef CONFIG_NVME_MULTIPATH
--	else
-+	else if (ctrl->ana_log_buf)
- 		/* Re-read the ANA log page to not miss updates */
- 		queue_work(nvme_wq, &ctrl->ana_work);
- #endif
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2927,7 +2927,7 @@ static int handle_tx_event(struct xhci_h
+ 			if (xhci_spurious_success_tx_event(xhci, ep_ring)) {
+ 				xhci_dbg(xhci, "Spurious event dma %pad, comp_code %u after %u\n",
+ 					 &ep_trb_dma, trb_comp_code, ep_ring->old_trb_comp_code);
+-				ep_ring->old_trb_comp_code = trb_comp_code;
++				ep_ring->old_trb_comp_code = 0;
+ 				return 0;
+ 			}
+ 
 
 
 
