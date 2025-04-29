@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDBF7AA1625
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:34:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E1DAA176A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B22DB981A1A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59A881B60E47
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B50B1FE468;
-	Tue, 29 Apr 2025 17:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1984324C098;
+	Tue, 29 Apr 2025 17:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10Omeq/3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQF0Y3g9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B319478F58;
-	Tue, 29 Apr 2025 17:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0AA242D73;
+	Tue, 29 Apr 2025 17:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947666; cv=none; b=rbUI/CRv69zi3VuB5hcJhEiSl3LkEQNwzIEda2DO+YMlODBlxBrwfv4sISVWDE/3me7yadgw8unu8YU5/wfSNKHQQiNnYpQ2kwWLWUpeUI9bYxJUF7LJJLkWqypPq+0QAiArNboje0fZGY7ucN0pQFLcYxPFgYmZwzyRX6K3ZvE=
+	t=1745948833; cv=none; b=XB+a7wYSAZ1k4iSOYeyat8S+VGqBfrH+NTxGbbcp1OG935U+Oi8h5DdUgMb4x91Wefz9fWV05kE/8QuACWwaZy8jQucU5aC7cnZbtWN2EhW9aDbHWHjhYnp8zjUbc2Bq1NDQSokjTNYXJfEy1kpCy+XkSejN7WFaAtrS0Dyb9vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947666; c=relaxed/simple;
-	bh=vYHFNuKOJKhntA6IiFM+ixNkER/hUywVT9rHhNxwKz8=;
+	s=arc-20240116; t=1745948833; c=relaxed/simple;
+	bh=r3Ki7FSyP+qPXGyZZccEvhs8JnLIuqCq77ngTIubUhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kM2mAmuGSP8i2tTs03uUR91KAyvnlqwAqNYdzu4lpjHqSaxsK7ZLteBQlsjXngxP+OCI0kv6m69eRoayQMpTPgOJlG2fs0owdySiRwlVWH/LZeWUa0pw1ca1pauS9e3G+6oXKNRgx7KdXopOeXxbjfOHR889fprXVXOAP+siEb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10Omeq/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4706AC4CEE3;
-	Tue, 29 Apr 2025 17:27:46 +0000 (UTC)
+	 MIME-Version; b=FhRdNSioyu90kBB8pNQtAeu3LF1Mdbisr73NMz5/nTez1KZtE2G9iGne51Ji7zt/zW0ASjBO6+3vI+igHkHVs3UIX7XkN+7lZvqINVM/yR+y/PD6CInMHE1ewavzC/woUAg4ANNgp2BRiKN8sr6xUZ0Rfk4AKRhp7J1XFai0mLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQF0Y3g9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB58C4CEE3;
+	Tue, 29 Apr 2025 17:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947666;
-	bh=vYHFNuKOJKhntA6IiFM+ixNkER/hUywVT9rHhNxwKz8=;
+	s=korg; t=1745948833;
+	bh=r3Ki7FSyP+qPXGyZZccEvhs8JnLIuqCq77ngTIubUhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=10Omeq/32HT5SR3d+J+Y+vMnctlUQCr1of3x6nTIzsppXasxPtVLcGRF5ucVez+td
-	 ZSo8r8B3EhxxS0cbt0/gp4td79/GNpI28Dgco3yef1tA0oD+Kvd4WqHU8rG8xrSyXw
-	 DcQHxhQsNpxoIp0P0z5TarFwzF8pfL0LaeQoSLo8=
+	b=jQF0Y3g9qZfTUriUb4ThAMUmtpoM/vgkhCN5LKPOt7BtEhB8mkaLAGANw3KUitgqC
+	 c5inhQvqL8I2fPcWi86chnHsRbh9ZTqQHa5kY0VTN0kjwjvWYLEe0Ck3Q9tRWqoCsM
+	 vY19WChNK1HCRIHBg7/EtQXXKPzk7fiYdbG08hMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 067/280] net/mlx5: Move ttc allocation after switch case to prevent leaks
+Subject: [PATCH 5.15 131/373] scsi: iscsi: Fix missing scsi_host_put() in error path
 Date: Tue, 29 Apr 2025 18:40:08 +0200
-Message-ID: <20250429161117.851780176@linuxfoundation.org>
+Message-ID: <20250429161128.557019048@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit fa8fd315127ca48c65e7e6692a84ffcf3d07168e ]
+[ Upstream commit 72eea84a1092b50a10eeecfeba4b28ac9f1312ab ]
 
-Relocate the memory allocation for ttc table after the switch statement
-that validates params->ns_type in both mlx5_create_inner_ttc_table() and
-mlx5_create_ttc_table(). This ensures memory is only allocated after
-confirming valid input, eliminating potential memory leaks when invalid
-ns_type cases occur.
+Add goto to ensure scsi_host_put() is called in all error paths of
+iscsi_set_host_param() function. This fixes a potential memory leak when
+strlen() check fails.
 
-Fixes: 137f3d50ad2a ("net/mlx5: Support matching on l4_type for ttc_table")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250418023814.71789-3-bsdhenrymartin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ce51c8170084 ("scsi: iscsi: Add strlen() check in iscsi_if_set{_host}_param()")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://lore.kernel.org/r/20250318094344.91776-1-linmq006@gmail.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/scsi/scsi_transport_iscsi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-index 510879e1ba30e..43b2216bc0a22 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-@@ -618,10 +618,6 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
- 	bool use_l4_type;
- 	int err;
- 
--	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
--	if (!ttc)
--		return ERR_PTR(-ENOMEM);
--
- 	switch (params->ns_type) {
- 	case MLX5_FLOW_NAMESPACE_PORT_SEL:
- 		use_l4_type = MLX5_CAP_GEN_2(dev, pcc_ifa2) &&
-@@ -635,6 +631,10 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
- 		return ERR_PTR(-EINVAL);
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index f839e8e497be3..8930acdff08c5 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -3228,11 +3228,14 @@ iscsi_set_host_param(struct iscsi_transport *transport,
  	}
  
-+	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
-+	if (!ttc)
-+		return ERR_PTR(-ENOMEM);
-+
- 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
- 	if (!ns) {
- 		kvfree(ttc);
-@@ -696,10 +696,6 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
- 	bool use_l4_type;
- 	int err;
+ 	/* see similar check in iscsi_if_set_param() */
+-	if (strlen(data) > ev->u.set_host_param.len)
+-		return -EINVAL;
++	if (strlen(data) > ev->u.set_host_param.len) {
++		err = -EINVAL;
++		goto out;
++	}
  
--	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
--	if (!ttc)
--		return ERR_PTR(-ENOMEM);
--
- 	switch (params->ns_type) {
- 	case MLX5_FLOW_NAMESPACE_PORT_SEL:
- 		use_l4_type = MLX5_CAP_GEN_2(dev, pcc_ifa2) &&
-@@ -713,6 +709,10 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
- 		return ERR_PTR(-EINVAL);
- 	}
- 
-+	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
-+	if (!ttc)
-+		return ERR_PTR(-ENOMEM);
-+
- 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
- 	if (!ns) {
- 		kvfree(ttc);
+ 	err = transport->set_host_param(shost, ev->u.set_host_param.param,
+ 					data, ev->u.set_host_param.len);
++out:
+ 	scsi_host_put(shost);
+ 	return err;
+ }
 -- 
 2.39.5
 
