@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83DEFAA1401
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E83AA17BD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDA57983787
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1706172A8C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA19122A81D;
-	Tue, 29 Apr 2025 17:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3117D242D73;
+	Tue, 29 Apr 2025 17:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H43zsepB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFVGKKmf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A727482C60;
-	Tue, 29 Apr 2025 17:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EBE243964;
+	Tue, 29 Apr 2025 17:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946358; cv=none; b=LEkIvOE9TQhFBFTasRbHnhbM1kzCJRgft9WG91atwP7x0hk7XCr5E6zZGoe1WlbFdo87RbQV2XVhk1LiKz6CB09/iMmaRlARnOwcJDAYb9ltKCxLBHUqN1VvVnwczR13Td+dUh0c8G4YIqQe8diB9yKFoWYjaRlQpGoUp1scfgU=
+	t=1745949054; cv=none; b=VA9/Ia1yrIYonQxlyGzewpxf7NHbm2GhwmMbtSmmDXgaPfPIchnuvxTNxKuR3sKb/2ZEyfbf/M+rngcgIZ8KrIru1avzrdM66NEiF5mqm3snvV/zKqvnt0zyIXsSZbVa2bfG+8TIWpJDa35W3R5wkvlVOi8jHu2ah018nfv0IY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946358; c=relaxed/simple;
-	bh=dg0wesRzJkaofzKBB2bBehAUBCZH/5T4wlAu2ZJCEOg=;
+	s=arc-20240116; t=1745949054; c=relaxed/simple;
+	bh=jvnVXPGgWrFVZR1nqEVlYdqC7cAxQf05aSXdH3VYVrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bEZqFtSqLlwfqx8tpShjxeeFNPNUpr/nFPOCKmubDOF/hJK/tw63qlgeU64GwMiBd5dCxPlX5eHI5HX/M53ISYvUAH5a7EgyOmJU5SypptDNkeDDY0fxr4VppfqFEcCCqZDJ/+YG75TzzrT5mFK6CVei7TWsBJjUWsgxe76RHco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H43zsepB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20133C4CEE3;
-	Tue, 29 Apr 2025 17:05:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bABcyawTYjraRPgF/rSn+SKV38tGzMDbBfpyVB/FmXnEY9dC64OhMSYpk85FiNHRW+qAbyeHATxxUOuPPGFetMPWlWDOaZIvSEDAgN/tgHPkxYo/yXKSEicFX86adB0EaK0ZCcJ/8t85JUaC1RbXWi4hil88xLUhQQupDEYDlTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFVGKKmf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6689CC4CEE3;
+	Tue, 29 Apr 2025 17:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946358;
-	bh=dg0wesRzJkaofzKBB2bBehAUBCZH/5T4wlAu2ZJCEOg=;
+	s=korg; t=1745949053;
+	bh=jvnVXPGgWrFVZR1nqEVlYdqC7cAxQf05aSXdH3VYVrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H43zsepBboy4W0Bun42k5Lhm80rb/uvMdWlU4GNzpupKQRhnLcr7xALGX/9CDx1tu
-	 RMwMml9O5hYqcGWEl7zivJMsG1WFUmuOjiE61Bq2t2Bmw7fiCleOXSEyc7kSHUCrKE
-	 FzkdpbvJkJH/eKmsN+dGBWvCCE2U/vXEMDgBAJW0=
+	b=DFVGKKmfeeWiKJmxqEIGvkEslsUvxDFa4TsXWB5wAKNFZSwlAf/lQ6hDkDp0r6Glz
+	 63qAiPfaVRy+t0Of3AsCYy2Rl0pNtdY//At9WPCC65ZzJedzI3lTjW0A3pQ7aqypKZ
+	 LYExqVX2mXlxhXiwBhHUA+oicxYB4l3bM6p0HveU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaogang Chen <Xiaogang.Chen@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 240/311] udmabuf: fix a buf size overflow issue during udmabuf creation
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 5.15 200/373] misc: pci_endpoint_test: Avoid issue of interrupts remaining after request_irq error
 Date: Tue, 29 Apr 2025 18:41:17 +0200
-Message-ID: <20250429161130.853699752@linuxfoundation.org>
+Message-ID: <20250429161131.395387437@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaogang Chen <xiaogang.chen@amd.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-[ Upstream commit 021ba7f1babd029e714d13a6bf2571b08af96d0f ]
+commit f6cb7828c8e17520d4f5afb416515d3fae1af9a9 upstream.
 
-by casting size_limit_mb to u64  when calculate pglimit.
+After devm_request_irq() fails with error in pci_endpoint_test_request_irq(),
+the pci_endpoint_test_free_irq_vectors() is called assuming that all IRQs
+have been released.
 
-Signed-off-by: Xiaogang Chen<Xiaogang.Chen@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250321164126.329638-1-xiaogang.chen@amd.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, some requested IRQs remain unreleased, so there are still
+/proc/irq/* entries remaining, and this results in WARN() with the
+following message:
+
+  remove_proc_entry: removing non-empty directory 'irq/30', leaking at least 'pci-endpoint-test.0'
+  WARNING: CPU: 0 PID: 202 at fs/proc/generic.c:719 remove_proc_entry +0x190/0x19c
+
+To solve this issue, set the number of remaining IRQs to test->num_irqs,
+and release IRQs in advance by calling pci_endpoint_test_release_irq().
+
+Cc: stable@vger.kernel.org
+Fixes: e03327122e2c ("pci_endpoint_test: Add 2 ioctl commands")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Link: https://lore.kernel.org/r/20250225110252.28866-3-hayashi.kunihiko@socionext.com
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/udmabuf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/pci_endpoint_test.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index cc7398cc17d67..e74e36a8ecda2 100644
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -393,7 +393,7 @@ static long udmabuf_create(struct miscdevice *device,
- 	if (!ubuf)
- 		return -ENOMEM;
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -262,6 +262,9 @@ fail:
+ 		break;
+ 	}
  
--	pglimit = (size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
-+	pglimit = ((u64)size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
- 	for (i = 0; i < head->count; i++) {
- 		pgoff_t subpgcnt;
++	test->num_irqs = i;
++	pci_endpoint_test_release_irq(test);
++
+ 	return false;
+ }
  
--- 
-2.39.5
-
 
 
 
