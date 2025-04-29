@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-138334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D92AA1785
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9A5AA1200
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58D594C336A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12ABC4A5D75
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B31E25334C;
-	Tue, 29 Apr 2025 17:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F8624466C;
+	Tue, 29 Apr 2025 16:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDvtdnr0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6xd1qWS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AC024C083;
-	Tue, 29 Apr 2025 17:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DE7216E30;
+	Tue, 29 Apr 2025 16:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948901; cv=none; b=Xr+tDoGnsXK39/PktaLnqtBeONhlb+jPV3pqnFbMeA53bxZIygEcdKGOO8wD3+L05oEgvnTvTX7Y2xiRJqhkb376lrpR6JV+IkJH5YgzTpJgZ+iPRLr9pxiCNISczSoJEbfJUhQpkkOvlBp+oOuB0DmWK1xf3Zk4GI2sdIPvp9A=
+	t=1745945288; cv=none; b=UnOCt7UkIuVusdTzgHpBzGCN4/9QPL45KCxQGuVc7ENjA0eBOpyEDiIDVinXyYSiiaObNRM5anZTVZYIDOxFN4hBAV+z//GFbpldJo4M0gTRfAOyXJ+Ehz5XMtQyYayDF/pY9eYN0riX808axoHzqwjDnoHrEdYjD7kn+Lz0LAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948901; c=relaxed/simple;
-	bh=E62zkaxVxfzAfgfmXFENG8eYnmqkPTX2FqcO0cyc7Kc=;
+	s=arc-20240116; t=1745945288; c=relaxed/simple;
+	bh=ShnDHtMu9urA8zNhVJKZDmBGLEvJZS9/4Dni8pMaQ58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eZVpXyt5uTIe7GLhmzyzEqmp76qsb1M+s5rrHYqg+jqf0SrgyybE9phnHMWtc6gEOi7iAdRT+zXrKvxvPq2MHfyVkHwFkObLlHVrA7HqXrbhTk1d5RLWn2ETBAshI77EX0QtyUvHz4MDZLYzyQDZyqvatpYJGuW43Ozdvmk2Gc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDvtdnr0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D257C4CEE3;
-	Tue, 29 Apr 2025 17:48:20 +0000 (UTC)
+	 MIME-Version; b=lHV8DVzd9ZM8Hw5JLBnA4iznfvTk191vSPWHtO3j11weA0Pvln4jT7Gdve0jFZ6I6+6S/f+ltircjSRhkfPzkX/NM+XgA1tBTWMg3bnjtAOe+DwO+iUCibieAKjozl6tOcl/j8yVYwas3634r5M5qZ4usTW0r6bG7ZqiMoBi6ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6xd1qWS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF41C4CEE3;
+	Tue, 29 Apr 2025 16:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948901;
-	bh=E62zkaxVxfzAfgfmXFENG8eYnmqkPTX2FqcO0cyc7Kc=;
+	s=korg; t=1745945287;
+	bh=ShnDHtMu9urA8zNhVJKZDmBGLEvJZS9/4Dni8pMaQ58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pDvtdnr0M4KAUey6vwpIp7DLs7pObBkjQgTJVUfHlKi+Jcv3UQdADFchWIwN01v5f
-	 rSWUcC8+ZADXVh17a78xX+cRf6E6mzedJ8douzslv98XsUcBkCA0JsPnTpbRYEhWUf
-	 e6ZFpkJjyBmUWO06zpRnYUiC4A4cvBMG83QT2o+A=
+	b=G6xd1qWSrVoa6SfPWuDxxyAOlQGMoosg0cWBS6jrH8pe3Sc9iI5WH9zgWWuF2FQzw
+	 +lzYzyI3WedvyRsnQKflcG6dRlBRkEpCrnZ1w8utd9ptZUOBKk18QxNuCSkEek9Ks+
+	 lEOc/EVq1aez/n8SOlG/v14zahTkeycTgMSm6PRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 127/373] wifi: at76c50x: fix use after free access in at76_disconnect
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.4 063/179] mtd: inftlcore: Add error check for inftl_read_oob()
 Date: Tue, 29 Apr 2025 18:40:04 +0200
-Message-ID: <20250429161128.396953101@linuxfoundation.org>
+Message-ID: <20250429161051.954472013@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 27c7e63b3cb1a20bb78ed4a36c561ea4579fd7da ]
+commit d027951dc85cb2e15924c980dc22a6754d100c7c upstream.
 
-The memory pointed to by priv is freed at the end of at76_delete_device
-function (using ieee80211_free_hw). But the code then accesses the udev
-field of the freed object to put the USB device. This may also lead to a
-memory leak of the usb device. Fix this by using udev from interface.
+In INFTL_findwriteunit(), the return value of inftl_read_oob()
+need to be checked. A proper implementation can be
+found in INFTL_deleteblock(). The status will be set as
+SECTOR_IGNORE to break from the while-loop correctly
+if the inftl_read_oob() fails.
 
-Fixes: 29e20aa6c6af ("at76c50x-usb: fix use after free on failure path in at76_probe()")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Link: https://patch.msgid.link/20250330103110.44080-1-abdun.nihaal@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8593fbc68b0d ("[MTD] Rework the out of band handling completely")
+Cc: stable@vger.kernel.org # v2.6+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/atmel/at76c50x-usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/inftlcore.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/atmel/at76c50x-usb.c b/drivers/net/wireless/atmel/at76c50x-usb.c
-index 7582761c61e2c..26953dcffe193 100644
---- a/drivers/net/wireless/atmel/at76c50x-usb.c
-+++ b/drivers/net/wireless/atmel/at76c50x-usb.c
-@@ -2553,7 +2553,7 @@ static void at76_disconnect(struct usb_interface *interface)
+--- a/drivers/mtd/inftlcore.c
++++ b/drivers/mtd/inftlcore.c
+@@ -482,10 +482,11 @@ static inline u16 INFTL_findwriteunit(st
+ 		silly = MAX_LOOPS;
  
- 	wiphy_info(priv->hw->wiphy, "disconnecting\n");
- 	at76_delete_device(priv);
--	usb_put_dev(priv->udev);
-+	usb_put_dev(interface_to_usbdev(interface));
- 	dev_info(&interface->dev, "disconnected\n");
- }
+ 		while (thisEUN <= inftl->lastEUN) {
+-			inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
+-				       blockofs, 8, &retlen, (char *)&bci);
+-
+-			status = bci.Status | bci.Status1;
++			if (inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
++				       blockofs, 8, &retlen, (char *)&bci) < 0)
++				status = SECTOR_IGNORE;
++			else
++				status = bci.Status | bci.Status1;
+ 			pr_debug("INFTL: status of block %d in EUN %d is %x\n",
+ 					block , writeEUN, status);
  
--- 
-2.39.5
-
 
 
 
