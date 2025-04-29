@@ -1,157 +1,162 @@
-Return-Path: <stable+bounces-136985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4101A9FFBB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 04:22:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65287AA0017
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 04:52:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5C31883625
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 02:22:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9F58481402
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 02:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E19A29AB11;
-	Tue, 29 Apr 2025 02:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EACE29CB4A;
+	Tue, 29 Apr 2025 02:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="W+qdw5tp"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Lx8T1+3S"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5A720D4E2
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 02:22:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7423A29B76F
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 02:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745893359; cv=none; b=FSkOu8zNHzRrYuQE3Hbk9O84KE8dkCjG4DR7JdsOoAPNT1w5md+o7/xqtEeK89veoX7scwOTvvKGSZBgzXiCtDH72dUNDyG+//fQchS0yT/hWTN696wCnUR4khsRQXuEtlbEnZaK/RPztyNO+40FjRCkJ4cp0XOK5rVaYEbqYgk=
+	t=1745895160; cv=none; b=CriSCRtf4G7owZ0vk9vLZETUAdRdCaLkMP63ynVFWtSK2eH+/TOZD4kc7Cz4FPEdjufJxFXPCUKJgmiGn8+Yj+dAgTHnQ6YjGG2TOI2cNgWg76Oa6Epx25J841NkUdMM44kET+RfDeR0B4QRkMqi0NPcuGHt3/XNWzQYWAt17bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745893359; c=relaxed/simple;
-	bh=ny3K46RiJ6T5vi8ZqMtrAs1XjX2rQtAJoiWSBj4+64w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=pcni5t+twmld6RnhyNeDbqiwxuLaxNTuf3bIlYJn4uT5FjAQ5XKjaET4Y43h14tyJh2fkoyyE8s4hqWnJaqIjchdwqI06dFjudQlkKAvn0ag7o3kn4/YsCLHwPCB9jjqKoyZwnLuNJoMSFBKwYk96VDiK9E2BcmY9l/a+nb3i+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=W+qdw5tp reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=arzO7CivrOtFBk52UR4bg5nOcmXGgl3uZbcpRQxxwc4=; b=W
-	+qdw5tpEdmhwx3OQYEVde/WE4uXFtpr0xOi/F3oyWdLHEMygIyQn66a8NbJzZRjB
-	Jwqnzc4fANbaHAilBd1Z6a/ifnVXqtHoP4FOUI0MUViRBQ7qZiKqQyLiLbWtZRP/
-	XmdKzfiucPfyDJiUf9XRPXPEPn2wSsLfgAl8A3vbho=
-Received: from luckd0g$163.com ( [183.205.138.3] ) by
- ajax-webmail-wmsvr-40-123 (Coremail) ; Tue, 29 Apr 2025 10:22:19 +0800
- (CST)
-Date: Tue, 29 Apr 2025 10:22:19 +0800 (CST)
-From: "Jianzhou Zhao" <luckd0g@163.com>
-To: stable@vger.kernel.org
-Cc: shaggy@kernel.org
-Subject: Re:kernel BUG in write_dev_supers  in  linux6.15-rc1
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
- Copyright (c) 2002-2025 www.mailtech.cn 163com
-In-Reply-To: <70ae959e.21a4.1967f5040b6.Coremail.luckd0g@163.com>
-References: <70ae959e.21a4.1967f5040b6.Coremail.luckd0g@163.com>
-X-NTES-SC: AL_Qu2fB/SSvEso7yaeYukfmU4Rhug7UMO3uf8n24JfPJ9wjAnp9wIAfHlFIHrNwsKdJiGJnh6RfyR++sdAc4Bceqw5ZUS6c03UT6adpRbPJPOcbA==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=arc-20240116; t=1745895160; c=relaxed/simple;
+	bh=6zGrKlI+vbW0EgLtBiqyo7XkmvVAT/TtIQwncT58chg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=RDvOXQkDRtkJDLhYuuvI8tsWLXPAnEFF7YP1b92Xh7JNulzdfH6DBYSBiih0D3UKPPkdEHIzyOtB3bwmd6FjBrjvi9TfaBVjyuA0afBKz4Qzamq66VNV2aXF6xUobQ7oUletbQfzvXICDYxXuKAs4vH9x1SVzrnvW5HR/TDi4AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Lx8T1+3S; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ace3b03c043so846427566b.2
+        for <stable@vger.kernel.org>; Mon, 28 Apr 2025 19:52:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1745895156; x=1746499956; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RToo9FXxqt+8t5BJ+XtqZXyvJwGCNqAp+NYpglN/jCA=;
+        b=Lx8T1+3Sx4YNdPBvyjWqDWOkrdL9qH42xq2XpiNMwBdkAKjccfmy9Wp3/qiXyJdnto
+         qRfT3epcBfXEMCzGy9Q3UWabi6tKfjfw6HhttX3MjsUSXTo6BmsAqjvU2bPzPXVVR8rh
+         6iJg20mnI2sK/7kjCL5tAbExtiZkGkv6h5Kp2MZ6X4YFNadFgfj3rGznxjYcSnxiIUQt
+         DL5bpcvLt6CWbC8AP7rNdN5tVruEacpDnZjO2Ic4Hu7p+yBK5sIL6IuAqVIALZ0i/xbK
+         U7BSUodgSHTcY7HjMIO0zQUbEf1j46SPBfDUW9t5mFN2CdfLSMIzuwXE9/nvUQYmqmrG
+         p2rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745895156; x=1746499956;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RToo9FXxqt+8t5BJ+XtqZXyvJwGCNqAp+NYpglN/jCA=;
+        b=k9kzlDn2Y090KjLwWw5TzVw+FcE6LtuDN03QFkIQgzLc0jEwwgF9LJRC1A4e+d2YTL
+         b8XaEs+hlUN6qkE1pkjLJ7tlClVJxuGQffjIpb1Y0xthReBcoPsxvT3plcPktxrqzVXT
+         r2slthAuOZaAM6fOYa3yvQ/ji3le0PnWnFFURMH0jycjyCJNwuOMH057oJUx+xixi1QE
+         17GpVN5mGKn0WIoDzvetCU5zao6ERSIKsNQWImltSPKpqKVGBsJviinyrYepLndYxXYE
+         3zaq82PxxjBLmUFuvi+R858XMHHLU+CIOaF05aC3+3BJzwE7ieR0luHjH/syrxz0UQJY
+         ymig==
+X-Gm-Message-State: AOJu0Ywx1K+0ODorYjBmvwRdIWeg1rKVBvlIpr0+wMk+Yt7kntv9gd6D
+	adH70vr7RH14W1v6s0Tpx9kA3BL6TcyTHyzMmLOwzjstqZWJn7KO0iQeTNW4Szn1EGjlK1JIWWW
+	QKcQ=
+X-Gm-Gg: ASbGnctR2u/DmUwBDTYgZOkAZPRJoIzOFm6j+n5aIpqTgSnQImul374KEzuw04OGSME
+	P0eXGD5qv0L96CS0DTlmSbrtEg1nFZHtG15aLAu9uw8cOQVFRWqgT9vMeJ7tthRWsgsoZCalwsG
+	73LcPLJZ6Q0a0o1FoFT216Xi/bkl4dOXRUlPcSGZWBkpcWMLG9YQBe0E5zEmt7amPv6wdTE9Klf
+	HKevkLvlIei769F9WbG2ncjT7zAhy+vluWpKLbIwBK4+FcadPPQFTO/RUIgLmQqO84fLu/Bm78r
+	EgNimq+/DYVkOiE5PH6fWBnJf68rViAuaIsUJFyZW07x3Ygqs3E+foxd15VFnfDv9w==
+X-Google-Smtp-Source: AGHT+IHsSUcfAeh2/f3Lw756LCNJtkRJ8BtO/vPKHWTVSmzUxKL37V+R7Wh8qp7S8HS1Vb9B098ciw==
+X-Received: by 2002:a17:907:94c8:b0:acb:86f0:feda with SMTP id a640c23a62f3a-acec84f5d8cmr78831966b.14.1745895155619;
+        Mon, 28 Apr 2025 19:52:35 -0700 (PDT)
+Received: from u94a (114-140-113-76.adsl.fetnet.net. [114.140.113.76])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6ecf8f3dsm695375366b.110.2025.04.28.19.52.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Apr 2025 19:52:35 -0700 (PDT)
+Date: Tue, 29 Apr 2025 10:52:28 +0800
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Subject: Build failure due to backport of "bpf: Add namespace to BPF internal
+ symbols"
+Message-ID: <d5qsidvulna547jx6tyrjnocvqlddfpsmy6nqlbjss6dt3xbg5@zeqfjvfng25a>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <4ee97357.253d.1967f5a3216.Coremail.luckd0g@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:eygvCgD3P2nbNxBod40QAA--.56694W
-X-CM-SenderInfo: poxfyvkqj6il2tof0z/1tbiPRE9imgPaWMWlgAJs-
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-CgoKCkknbSB2ZXJ5IHNvcnJ5IHRoYXQgSSB3cm9uZ2x5IHJlcG9ydGVkIHRoZSBidWcgb2YgdGhl
-IGJ0cmZzIHN1YnN5c3RlbSBpbiBMaW51eCA2LjE1LXJjMSB0byB5b3UuIEkgc2hvdWxkIGhhdmUg
-cmVwb3J0ZWQgaXQgdG8gdGhlIG1haW50YWluZXJzIG9mIHRoZSBidHJmcyBzdWJzeXN0ZW0uIEkg
-YXBvbG9naXplIHRvIHlvdSBhZ2FpbiBmb3IgbXkgYmVoYXZpb3IuCgoKCgoKCgoKCgoKQXQgMjAy
-NS0wNC0yOSAxMDoxMToyOCwgIkppYW56aG91IFpoYW8iIDxsdWNrZDBnQDE2My5jb20+IHdyb3Rl
-Ogo+SGVsbG8sIEkgZm91bmQgYSBwb3RlbnRpYWwgYnVnIHRpdGxlZCAiICBrZXJuZWwgQlVHIGlu
-IHdyaXRlX2Rldl9zdXBlcnMgICIgd2l0aCBtb2RpZmllZCBzeXprYWxsZXIgaW4gdGhlICBMaW51
-eDYuMTUtcmMxLgo+SWYgeW91IGZpeCB0aGlzIGlzc3VlLCBwbGVhc2UgYWRkIHRoZSBmb2xsb3dp
-bmcgdGFnIHRvIHRoZSBjb21taXQ6ICBSZXBvcnRlZC1ieTogSmlhbnpob3UgWmhhbyA8bHVja2Qw
-Z0AxNjMuY29tPiwgICAgeGluZ3dlaSBsZWUgPHhyaXZlbmRlbGw3QGdtYWlsLmNvbT4KPlRoZSBj
-b21taXQgb2YgdGhlIGtlcm5lbCBpcyA6IDBhZjJmNmJlMWI0MjgxMzg1YjYxOGNiODZhZDk0NmVk
-ZWQwODlhYzgKPmtlcm5lbCBjb25maWc6IGh0dHBzOi8vc3l6a2FsbGVyLmFwcHNwb3QuY29tL3Rl
-eHQ/dGFnPUtlcm5lbENvbmZpZyZ4PTRjOTE4NzIyY2I3ZTNkNwo+Y29tcGlsZXI6IGdjYyB2ZXJz
-aW9uIDExLjQuMAo+Cj5VbmZvcnR1bmF0ZWx5LCB3ZSBmYWlsZWQgdG8gZ2VuZXJhdGUgdGhlIHJl
-cHJvZHVjdGlvbiBwcm9ncmFtIG9mIHRoaXMgYnVnLgo+Cj4tLS0tLS0tLS0tLS1bIGN1dCBoZXJl
-IF0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+IFRJVExFOiAgIGtl
-cm5lbCBCVUcgaW4gd3JpdGVfZGV2X3N1cGVycyAKPi0tLS0tLS0tLS0tLVsgY3V0IGhlcmUgXS0t
-LS0tLS0tLS0tLQo+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09Cj5hc3NlcnRpb24gZmFpbGVkOiBmb2xpb19vcmRlcihmb2xp
-bykgPT0gMCwgaW4gZnMvYnRyZnMvZGlzay1pby5jOjM4NTYKPi0tLS0tLS0tLS0tLVsgY3V0IGhl
-cmUgXS0tLS0tLS0tLS0tLQo+a2VybmVsIEJVRyBhdCBmcy9idHJmcy9kaXNrLWlvLmM6Mzg1NiEK
-Pk9vcHM6IGludmFsaWQgb3Bjb2RlOiAwMDAwIFsjMV0gU01QIEtBU0FOIE5PUFRJCj5DUFU6IDAg
-VUlEOiAwIFBJRDogOTQ2MiBDb21tOiBzeXotZXhlY3V0b3IgTm90IHRhaW50ZWQgNi4xNS4wLXJj
-MS1kaXJ0eSAjOSBQUkVFTVBUKGZ1bGwpIAo+SGFyZHdhcmUgbmFtZTogUUVNVSBTdGFuZGFyZCBQ
-QyAoaTQ0MEZYICsgUElJWCwgMTk5NiksIEJJT1MgMS4xNS4wLTEgMDQvMDEvMjAxNAo+UklQOiAw
-MDEwOndyaXRlX2Rldl9zdXBlcnMrMHg3ZjAvMHg5MTAgZnMvYnRyZnMvZGlzay1pby5jOjM4NTYK
-PkNvZGU6IGU5IDAzIGZmIGZmIGZmIGU4IDcwIGEzIGViIGZkIGI5IDEwIDBmIDAwIDAwIDQ4IGM3
-IGMyIDYwIGMwIGQ5IDhiIDQ4IGM3IGM2IDYwIGM3IGQ5IDhiIDQ4IGM3IGM3IGUwIGMwIGQ5IDhi
-IGU4IDQxIGQ0IGNhIGZkIDkwIDwwZj4gMGIgNDggOGIgN2MgMjQgMzggZTggMDQgZjkgNTEgZmUg
-ZTkgM2QgZjkgZmYgZmYgZTggM2EgZjggNTEgZmUKPlJTUDogMDAxODpmZmZmYzkwMDA1M2ZmN2Mw
-IEVGTEFHUzogMDAwMTAyODYKPlJBWDogMDAwMDAwMDAwMDAwMDA0NSBSQlg6IGZmZmY4ODgwMjll
-NjAwMDAgUkNYOiBmZmZmZmZmZjgxOWE1OTI5Cj5SRFg6IDAwMDAwMDAwMDAwMDAwMDAgUlNJOiBm
-ZmZmODg4MDFlYjliYzgwIFJESTogMDAwMDAwMDAwMDAwMDAwMgo+UkJQOiBmZmZmZWEwMDAxNTYw
-YTAwIFIwODogZmZmZmZiZmZmMWM0YmIwMCBSMDk6IGZmZmZmNTIwMDBhN2ZlYjEKPlIxMDogZmZm
-ZmY1MjAwMGE3ZmViMCBSMTE6IGZmZmZjOTAwMDUzZmY1ODcgUjEyOiBkZmZmZmMwMDAwMDAwMDAw
-Cj5SMTM6IDAwMDAwMDAwMDAwMDAwMDAgUjE0OiAwMDAwMDAwMDAwMDAwMDAyIFIxNTogMDAwMDAw
-MDAwMTAwMDAwMAo+RlM6ICAwMDAwNTU1NTZlM2M1NTAwKDAwMDApIEdTOmZmZmY4ODgwOTdiNDEw
-MDAoMDAwMCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMAo+Q1M6ICAwMDEwIERTOiAwMDAwIEVTOiAw
-MDAwIENSMDogMDAwMDAwMDA4MDA1MDAzMwo+Q1IyOiAwMDAwN2Y4YWY0OTc2MDgwIENSMzogMDAw
-MDAwMDA3NjI0ODAwMCBDUjQ6IDAwMDAwMDAwMDA3NTJlZjAKPlBLUlU6IDgwMDAwMDAwCj5DYWxs
-IFRyYWNlOgo+IDxUQVNLPgo+IHdyaXRlX2FsbF9zdXBlcnMrMHg5MjEvMHgzNjgwIGZzL2J0cmZz
-L2Rpc2staW8uYzo0MTUzCj4gYnRyZnNfY29tbWl0X3RyYW5zYWN0aW9uKzB4MmRhZC8weDQ2MjAg
-ZnMvYnRyZnMvdHJhbnNhY3Rpb24uYzoyNTQxCj4gYnRyZnNfc3luY19mcysweDEzMC8weDc2MCBm
-cy9idHJmcy9zdXBlci5jOjEwNDAKPiBzeW5jX2ZpbGVzeXN0ZW0gZnMvc3luYy5jOjY2IFtpbmxp
-bmVdCj4gc3luY19maWxlc3lzdGVtKzB4MWQzLzB4MmEwIGZzL3N5bmMuYzozMAo+IGdlbmVyaWNf
-c2h1dGRvd25fc3VwZXIrMHg3NC8weDM5MCBmcy9zdXBlci5jOjYyMQo+IGtpbGxfYW5vbl9zdXBl
-cisweDNhLzB4NjAgZnMvc3VwZXIuYzoxMjM3Cj4gYnRyZnNfa2lsbF9zdXBlcisweDNjLzB4NTAg
-ZnMvYnRyZnMvc3VwZXIuYzoyMTAwCj4gZGVhY3RpdmF0ZV9sb2NrZWRfc3VwZXIrMHhiOC8weDEz
-MCBmcy9zdXBlci5jOjQ3Mwo+IGRlYWN0aXZhdGVfc3VwZXIgZnMvc3VwZXIuYzo1MDYgW2lubGlu
-ZV0KPiBkZWFjdGl2YXRlX3N1cGVyKzB4YjEvMHhkMCBmcy9zdXBlci5jOjUwMgo+IGNsZWFudXBf
-bW50KzB4Mzc4LzB4NTEwIGZzL25hbWVzcGFjZS5jOjE0MzUKPiB0YXNrX3dvcmtfcnVuKzB4MTZm
-LzB4MjgwIGtlcm5lbC90YXNrX3dvcmsuYzoyMjcKPiByZXN1bWVfdXNlcl9tb2RlX3dvcmsgaW5j
-bHVkZS9saW51eC9yZXN1bWVfdXNlcl9tb2RlLmg6NTAgW2lubGluZV0KPiBleGl0X3RvX3VzZXJf
-bW9kZV9sb29wIGtlcm5lbC9lbnRyeS9jb21tb24uYzoxMTQgW2lubGluZV0KPiBleGl0X3RvX3Vz
-ZXJfbW9kZV9wcmVwYXJlIGluY2x1ZGUvbGludXgvZW50cnktY29tbW9uLmg6MzI5IFtpbmxpbmVd
-Cj4gX19zeXNjYWxsX2V4aXRfdG9fdXNlcl9tb2RlX3dvcmsga2VybmVsL2VudHJ5L2NvbW1vbi5j
-OjIwNyBbaW5saW5lXQo+IHN5c2NhbGxfZXhpdF90b191c2VyX21vZGUrMHgyOWUvMHgyYTAga2Vy
-bmVsL2VudHJ5L2NvbW1vbi5jOjIxOAo+IGRvX3N5c2NhbGxfNjQrMHhkYy8weDI2MCBhcmNoL3g4
-Ni9lbnRyeS9zeXNjYWxsXzY0LmM6MTAwCj4gZW50cnlfU1lTQ0FMTF82NF9hZnRlcl9od2ZyYW1l
-KzB4NzcvMHg3Zgo+UklQOiAwMDMzOjB4N2ZlMzFmYmFkZmNiCj5Db2RlOiBhOCBmZiBmZiBmZiBm
-NyBkOCA2NCA4OSAwMSA0OCA4MyBjOCBmZiBjMyA5MCBmMyAwZiAxZSBmYSAzMSBmNiBlOSAwNSAw
-MCAwMCAwMCAwZiAxZiA0NCAwMCAwMCBmMyAwZiAxZSBmYSBiOCBhNiAwMCAwMCAwMCAwZiAwNSA8
-NDg+IDNkIDAwIGYwIGZmIGZmIDc3IDA1IGMzIDBmIDFmIDQwIDAwIDQ4IGM3IGMyIGE4IGZmIGZm
-IGZmIGY3IGQ4Cj5SU1A6IDAwMmI6MDAwMDdmZmY2ZWVkMWQ5OCBFRkxBR1M6IDAwMDAwMjQ2IE9S
-SUdfUkFYOiAwMDAwMDAwMDAwMDAwMGE2Cj5SQVg6IDAwMDAwMDAwMDAwMDAwMDAgUkJYOiAwMDAw
-MDAwMDAwMDAwMGNmIFJDWDogMDAwMDdmZTMxZmJhZGZjYgo+UkRYOiAwMDAwN2ZlMzFmYTRlYjMw
-IFJTSTogMDAwMDAwMDAwMDAwMDAwOSBSREk6IDAwMDA3ZmZmNmVlZDFlNTAKPlJCUDogMDAwMDdm
-ZmY2ZWVkMWU1MCBSMDg6IDAwMDAwMDAwMDAwMDAwMDAgUjA5OiAwMDAwN2ZmZjZlZWQxYzIwCj5S
-MTA6IDAwMDA1NTU1NmUzZDg2NzMgUjExOiAwMDAwMDAwMDAwMDAwMjQ2IFIxMjogMDAwMDdmZTMx
-ZmM0NDEzNQo+UjEzOiAwMDAwN2ZmZjZlZWQyZjIwIFIxNDogMDAwMDU1NTU2ZTNkODYwMCBSMTU6
-IDAwMDAwMDAwMDAwMzY0NGIKPiA8L1RBU0s+Cj5Nb2R1bGVzIGxpbmtlZCBpbjoKPi0tLVsgZW5k
-IHRyYWNlIDAwMDAwMDAwMDAwMDAwMDAgXS0tLQo+UklQOiAwMDEwOndyaXRlX2Rldl9zdXBlcnMr
-MHg3ZjAvMHg5MTAgZnMvYnRyZnMvZGlzay1pby5jOjM4NTYKPkNvZGU6IGU5IDAzIGZmIGZmIGZm
-IGU4IDcwIGEzIGViIGZkIGI5IDEwIDBmIDAwIDAwIDQ4IGM3IGMyIDYwIGMwIGQ5IDhiIDQ4IGM3
-IGM2IDYwIGM3IGQ5IDhiIDQ4IGM3IGM3IGUwIGMwIGQ5IDhiIGU4IDQxIGQ0IGNhIGZkIDkwIDww
-Zj4gMGIgNDggOGIgN2MgMjQgMzggZTggMDQgZjkgNTEgZmUgZTkgM2QgZjkgZmYgZmYgZTggM2Eg
-ZjggNTEgZmUKPlJTUDogMDAxODpmZmZmYzkwMDA1M2ZmN2MwIEVGTEFHUzogMDAwMTAyODYKPlJB
-WDogMDAwMDAwMDAwMDAwMDA0NSBSQlg6IGZmZmY4ODgwMjllNjAwMDAgUkNYOiBmZmZmZmZmZjgx
-OWE1OTI5Cj5SRFg6IDAwMDAwMDAwMDAwMDAwMDAgUlNJOiBmZmZmODg4MDFlYjliYzgwIFJESTog
-MDAwMDAwMDAwMDAwMDAwMgo+UkJQOiBmZmZmZWEwMDAxNTYwYTAwIFIwODogZmZmZmZiZmZmMWM0
-YmIwMCBSMDk6IGZmZmZmNTIwMDBhN2ZlYjEKPlIxMDogZmZmZmY1MjAwMGE3ZmViMCBSMTE6IGZm
-ZmZjOTAwMDUzZmY1ODcgUjEyOiBkZmZmZmMwMDAwMDAwMDAwCj5SMTM6IDAwMDAwMDAwMDAwMDAw
-MDAgUjE0OiAwMDAwMDAwMDAwMDAwMDAyIFIxNTogMDAwMDAwMDAwMTAwMDAwMAo+RlM6ICAwMDAw
-NTU1NTZlM2M1NTAwKDAwMDApIEdTOmZmZmY4ODgwZWIzNDEwMDAoMDAwMCkga25sR1M6MDAwMDAw
-MDAwMDAwMDAwMAo+Q1M6ICAwMDEwIERTOiAwMDAwIEVTOiAwMDAwIENSMDogMDAwMDAwMDA4MDA1
-MDAzMwo+Q1IyOiAwMDAwN2ZhNWIyMTNlNzMwIENSMzogMDAwMDAwMDA3NjI0ODAwMCBDUjQ6IDAw
-MDAwMDAwMDA3NTJlZjAKPlBLUlU6IDgwMDAwMDAwCj49PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KPgo+SSBob3BlIGl0IGhl
-bHBzLgo+QmVzdCByZWdhcmRzCj5KaWFuemhvdSBaaGFvCg==
+Hi Sasha,
+
+bpf-add-namespace-to-bpf-internal-symbols.patch is stable-queue.git
+seems like the culprit responsible for build failure in stable 6.12 and
+earlier (log below). The reason is likely due to the lack of commit
+cdd30ebb1b9f ("module: Convert symbol namespace to string literal")
+before v6.13. Getting rid of the quotes s/"BPF_INTERNAL"/BPF_INTERNAL/
+probably would be enough to fix it.
+
+  In file included from .vmlinux.export.c:1:
+  .vmlinux.export.c:1697:33: error: expected ‘)’ before ‘BPF_INTERNAL’
+   1697 | KSYMTAB_FUNC(bpf_map_get, "", ""BPF_INTERNAL"");
+        |                                 ^~~~~~~~~~~~
+  ./include/linux/export-internal.h:45:28: note: in definition of macro ‘__KSYMTAB’
+     45 |             "   .asciz \"" ns "\""                                      "\n"    \
+        |                            ^~
+  .vmlinux.export.c:1697:1: note: in expansion of macro ‘KSYMTAB_FUNC’
+   1697 | KSYMTAB_FUNC(bpf_map_get, "", ""BPF_INTERNAL"");
+        | ^~~~~~~~~~~~
+  ./include/linux/export-internal.h:41:12: note: to match this ‘(’
+     41 |         asm("   .section \"__ksymtab_strings\",\"aMS\",%progbits,1"     "\n"    \
+        |            ^
+  ./include/linux/export-internal.h:62:41: note: in expansion of macro ‘__KSYMTAB’
+     62 | #define KSYMTAB_FUNC(name, sec, ns)     __KSYMTAB(name, KSYM_FUNC(name), sec, ns)
+        |                                         ^~~~~~~~~
+  .vmlinux.export.c:1697:1: note: in expansion of macro ‘KSYMTAB_FUNC’
+   1697 | KSYMTAB_FUNC(bpf_map_get, "", ""BPF_INTERNAL"");
+        | ^~~~~~~~~~~~
+  .vmlinux.export.c:1706:42: error: expected ‘)’ before ‘BPF_INTERNAL’
+   1706 | KSYMTAB_FUNC(bpf_link_get_from_fd, "", ""BPF_INTERNAL"");
+        |                                          ^~~~~~~~~~~~
+  ./include/linux/export-internal.h:45:28: note: in definition of macro ‘__KSYMTAB’
+     45 |             "   .asciz \"" ns "\""                                      "\n"    \
+        |                            ^~
+  .vmlinux.export.c:1706:1: note: in expansion of macro ‘KSYMTAB_FUNC’
+   1706 | KSYMTAB_FUNC(bpf_link_get_from_fd, "", ""BPF_INTERNAL"");
+        | ^~~~~~~~~~~~
+  ./include/linux/export-internal.h:41:12: note: to match this ‘(’
+     41 |         asm("   .section \"__ksymtab_strings\",\"aMS\",%progbits,1"     "\n"    \
+        |            ^
+  ./include/linux/export-internal.h:62:41: note: in expansion of macro ‘__KSYMTAB’
+     62 | #define KSYMTAB_FUNC(name, sec, ns)     __KSYMTAB(name, KSYM_FUNC(name), sec, ns)
+        |                                         ^~~~~~~~~
+  .vmlinux.export.c:1706:1: note: in expansion of macro ‘KSYMTAB_FUNC’
+   1706 | KSYMTAB_FUNC(bpf_link_get_from_fd, "", ""BPF_INTERNAL"");
+        | ^~~~~~~~~~~~
+  .vmlinux.export.c:1708:34: error: expected ‘)’ before ‘BPF_INTERNAL’
+   1708 | KSYMTAB_FUNC(kern_sys_bpf, "", ""BPF_INTERNAL"");
+        |                                  ^~~~~~~~~~~~
+  ./include/linux/export-internal.h:45:28: note: in definition of macro ‘__KSYMTAB’
+     45 |             "   .asciz \"" ns "\""                                      "\n"    \
+        |                            ^~
+  .vmlinux.export.c:1708:1: note: in expansion of macro ‘KSYMTAB_FUNC’
+   1708 | KSYMTAB_FUNC(kern_sys_bpf, "", ""BPF_INTERNAL"");
+        | ^~~~~~~~~~~~
+  ./include/linux/export-internal.h:41:12: note: to match this ‘(’
+     41 |         asm("   .section \"__ksymtab_strings\",\"aMS\",%progbits,1"     "\n"    \
+        |            ^
+  ./include/linux/export-internal.h:62:41: note: in expansion of macro ‘__KSYMTAB’
+     62 | #define KSYMTAB_FUNC(name, sec, ns)     __KSYMTAB(name, KSYM_FUNC(name), sec, ns)
+        |                                         ^~~~~~~~~
+  .vmlinux.export.c:1708:1: note: in expansion of macro ‘KSYMTAB_FUNC’
+   1708 | KSYMTAB_FUNC(kern_sys_bpf, "", ""BPF_INTERNAL"");
+        | ^~~~~~~~~~~~
+  make[2]: *** [scripts/Makefile.vmlinux:18: .vmlinux.export.o] Error 1
+  make[1]: *** [/home/runner/work/libbpf/libbpf/.kernel/Makefile:1184: vmlinux] Error 2
+  make: *** [Makefile:224: __sub-make] Error 2
+
+
+Shung-Hsi Yu
 
