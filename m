@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56A3AA1678
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:37:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3DBAA129B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 979B29882D4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5952927C35
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF772528FC;
-	Tue, 29 Apr 2025 17:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9C72472B0;
+	Tue, 29 Apr 2025 16:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpTspxS9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0uNHBzA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A31B242D6A;
-	Tue, 29 Apr 2025 17:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985DA221719;
+	Tue, 29 Apr 2025 16:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947856; cv=none; b=kszZi2G7uFsSFN+vGBXrpXkMOQxxesx2FdvCQdahYIRd4AG2uvtK6pmgepMBl39iLmJDizxJMWVARKeGmU6O8sh5IQELdFYtO2kGgjfDjhXd5GhNWTDs+MhmUVy4aACLr9YpAmkmITa2rkO0QzHm7SNfVAFpTXpmbHlUoGlTpJI=
+	t=1745945556; cv=none; b=GNKHUsYx6uwBK060nekoiVIRhGtSCvkKBwE7+6/odrhO/lRN7xYUvYDTaHuDmZAOoBXldkHkbP7ruWQPgPhpRcqPCDt6110drRUu3AE7gYM0L3XIpFq9bidcKT46q1KKbJecl9sCpWVDXS3RE+I0sbc75tA3kcUAcVw2wTv7JNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947856; c=relaxed/simple;
-	bh=Xpg5yPq8HckwW9Eu8Z0EsPgCbNdPP01h0IybCWs8BoI=;
+	s=arc-20240116; t=1745945556; c=relaxed/simple;
+	bh=ZjrR95rHeXmKI/gxU2x/cxZDoz8LtkwnMZBGZr1PYOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JBuw2MmS9u5EBPI4BrW4jSfymis70IiBXra4i5Znk35WuJZ9CrwNTIZQfGzzhbvSLpA9e2b/rUj1BXR5855EyOY5UqRK5+UOyBdJ8Y2aqkd1+kKBR9b3N6d43PG/VqEskr9kmKI+F9E5YllttEJqckayycmW4kBIydBP+vQxKhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpTspxS9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E59C4CEE3;
-	Tue, 29 Apr 2025 17:30:55 +0000 (UTC)
+	 MIME-Version; b=FdujWMwqGX1cQg69CCEGYYthzQLQ7PE0P/alze4ThPs9D0iykKTxC/ZcfeGKbs3loAsY02ydGd0mEj6XHHzMAEIjsujNK0Vq2UO+XdqU/oz8AW1S7DU6EiBOlsqil+Udzku5ZVEB9Z2vJ4BAUjT67OZGHXzMJXMA8C+6vm/XYgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0uNHBzA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF13C4CEE9;
+	Tue, 29 Apr 2025 16:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947855;
-	bh=Xpg5yPq8HckwW9Eu8Z0EsPgCbNdPP01h0IybCWs8BoI=;
+	s=korg; t=1745945556;
+	bh=ZjrR95rHeXmKI/gxU2x/cxZDoz8LtkwnMZBGZr1PYOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qpTspxS9ZvfsWsRjRcBaZateBi0timb+eC8BBLdPNooT0WGrK1B4DzE22V9XwM+9d
-	 s18f9mCz72oPEKbBK9CvXMz9Ts0+KsP/1+3H4hrkfUDNFH4Fnmv+U8uuCDn2kIgLOC
-	 QVkp8YA7Ng71xg6OiWLLhIw4P/RwvSL/s1JCMBNE=
+	b=R0uNHBzAtRV+QKcMlPRBFbvUT34C8cCj9xHfF4D6NL4JVxrUac7QxmV4/erG/a2gs
+	 682GJuj/LzehfoifGX+C1+nRAClVK4GJktj+0E7WmCwXYuTvZv6S4xchB6JY6MSLZC
+	 3GUkr2t/plc+VPfhHZd3MG+LMDMXdGj1IVUrZoeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12 123/280] KVM: x86: Explicitly treat routing entry type changes as changes
+	Xie Yongji <xieyongji@bytedance.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Larry Bassel <larry.bassel@oracle.com>
+Subject: [PATCH 5.4 123/179] virtio-net: Add validation for used length
 Date: Tue, 29 Apr 2025 18:41:04 +0200
-Message-ID: <20250429161120.141193717@linuxfoundation.org>
+Message-ID: <20250429161054.373592427@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Xie Yongji <xieyongji@bytedance.com>
 
-commit bcda70c56f3e718465cab2aad260cf34183ce1ce upstream.
+commit ad993a95c508417acdeb15244109e009e50d8758 upstream.
 
-Explicitly treat type differences as GSI routing changes, as comparing MSI
-data between two entries could get a false negative, e.g. if userspace
-changed the type but left the type-specific data as-is.
+This adds validation for used length (might come
+from an untrusted device) to avoid data corruption
+or loss.
 
-Fixes: 515a0c79e796 ("kvm: irqfd: avoid update unmodified entries of the routing")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-4-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Xie Yongji <xieyongji@bytedance.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://lore.kernel.org/r/20210531135852.113-1-xieyongji@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Larry: backport to 5.4.y. Minor conflict resolved due to missing commit 9ce6146ec7b50
+  virtio_net: Add XDP frame size in two code paths ]
+Signed-off-by: Larry Bassel <larry.bassel@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/virtio_net.c |   22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -13601,7 +13601,8 @@ int kvm_arch_update_irqfd_routing(struct
- bool kvm_arch_irqfd_route_changed(struct kvm_kernel_irq_routing_entry *old,
- 				  struct kvm_kernel_irq_routing_entry *new)
- {
--	if (new->type != KVM_IRQ_ROUTING_MSI)
-+	if (old->type != KVM_IRQ_ROUTING_MSI ||
-+	    new->type != KVM_IRQ_ROUTING_MSI)
- 		return true;
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -717,6 +717,12 @@ static struct sk_buff *receive_small(str
+ 	len -= vi->hdr_len;
+ 	stats->bytes += len;
  
- 	return !!memcmp(&old->msi, &new->msi, sizeof(new->msi));
++	if (unlikely(len > GOOD_PACKET_LEN)) {
++		pr_debug("%s: rx error: len %u exceeds max size %d\n",
++			 dev->name, len, GOOD_PACKET_LEN);
++		dev->stats.rx_length_errors++;
++		goto err_len;
++	}
+ 	rcu_read_lock();
+ 	xdp_prog = rcu_dereference(rq->xdp_prog);
+ 	if (xdp_prog) {
+@@ -819,6 +825,7 @@ err:
+ err_xdp:
+ 	rcu_read_unlock();
+ 	stats->xdp_drops++;
++err_len:
+ 	stats->drops++;
+ 	put_page(page);
+ xdp_xmit:
+@@ -871,6 +878,13 @@ static struct sk_buff *receive_mergeable
+ 	head_skb = NULL;
+ 	stats->bytes += len - vi->hdr_len;
+ 
++	truesize = mergeable_ctx_to_truesize(ctx);
++	if (unlikely(len > truesize)) {
++		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
++			 dev->name, len, (unsigned long)ctx);
++		dev->stats.rx_length_errors++;
++		goto err_skb;
++	}
+ 	rcu_read_lock();
+ 	xdp_prog = rcu_dereference(rq->xdp_prog);
+ 	if (xdp_prog) {
+@@ -990,14 +1004,6 @@ static struct sk_buff *receive_mergeable
+ 	}
+ 	rcu_read_unlock();
+ 
+-	truesize = mergeable_ctx_to_truesize(ctx);
+-	if (unlikely(len > truesize)) {
+-		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
+-			 dev->name, len, (unsigned long)ctx);
+-		dev->stats.rx_length_errors++;
+-		goto err_skb;
+-	}
+-
+ 	head_skb = page_to_skb(vi, rq, page, offset, len, truesize, !xdp_prog,
+ 			       metasize);
+ 	curr_skb = head_skb;
 
 
 
