@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-138639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98CB6AA18E5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:05:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF825AA1A15
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3F1D1B68102
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85B0D9C5BB4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E7A24E00F;
-	Tue, 29 Apr 2025 18:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66AA253325;
+	Tue, 29 Apr 2025 18:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTUDo0K8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2yAHEaB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27747243964;
-	Tue, 29 Apr 2025 18:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C724367;
+	Tue, 29 Apr 2025 18:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949885; cv=none; b=TRRXygBdbZSJeDwAtm0Nc+v4BPBdHHTt8tipTdUpg0bdmEEQC2sl0Fi40pPqlg1qxAfLn8x/yA8iQUOhn2mwr6SCjnLp6Ya1NNeS1SKOKp43p84HX2cPMRyh6gdoWyN90ZCXo76d7MrD91imPJ7wlmS9fm1+Rq4hPWl14viXE1k=
+	t=1745950390; cv=none; b=rrDqAgdW5gQmH7QPYBsd8IZiiQVir0IYvGbcC2vkDQ74wM/pcf9xbWsIBG3NJPKYdme1VwmF83MuHd0m+m+6wVPbjmG01Mkse8BL/WRcH7GGqh9omxXHCKUPJu08kWhc2yk56+mZ6R81sEVR7QIAb2NwZKgpYP1u0lluenxS4sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949885; c=relaxed/simple;
-	bh=Efgw9k4aVj6GT2SBZiyN1Z3Lzh9cjhFTMCTUqwICswA=;
+	s=arc-20240116; t=1745950390; c=relaxed/simple;
+	bh=SFy9aLAlmt5Q8nDrKaQu/JYkHlap+vihtEvDDUHh6rM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8sxKockkynoFI3NxMi+IWdrYdEyGLeUO4VOSlJlpiVB+P54nHHVxby/0aWh2CKzWfpJhjBDMhxD1MINIrbPofNbeCEU7uTOwVJsbjMHZikkg6q4heyqpBCpEQw5vxTCPP0XoIEQetXTLr7zewOfxw/5YqseytFHQbKCYJG1FTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTUDo0K8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBEBC4CEE3;
-	Tue, 29 Apr 2025 18:04:43 +0000 (UTC)
+	 MIME-Version; b=j0jgR4RApdthqBoLMBoWWibCcUQkaRNkAn+45mKfviW+ztgrZ2EixGW5z5SQ6gQlu9PuU1s4JtOOiQuU+B2zQJUjklcM0Cya37Cdh4ZXKEMjDew2dn/9/8GC1W48tlVmsJhIU1ISnN1BB2xyVlYavmPnb1AaBJ5iXfzrw8DTgQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2yAHEaB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D682AC4CEE3;
+	Tue, 29 Apr 2025 18:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949884;
-	bh=Efgw9k4aVj6GT2SBZiyN1Z3Lzh9cjhFTMCTUqwICswA=;
+	s=korg; t=1745950390;
+	bh=SFy9aLAlmt5Q8nDrKaQu/JYkHlap+vihtEvDDUHh6rM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xTUDo0K8lYKQTL6Dtu1aom3Xn7UTTtdehlTBgiKHz58qhOfbwp6BHyhMLBRKt3Lhk
-	 4NEJxev5CJCErrrG5lglatYRCEWNw3ja5KsMnEw9Xax4jSsXzah5nA6/tnUPB99sMl
-	 ki6R5c1VKgIc5uUZNpVfm+adEFuDnfNy8Mx/oTK0=
+	b=u2yAHEaBkyFxrcp7yJp9FAMmFFNyHhTAgsB5WPd9SeQV/wpuOLFezbmQs5nrTGG8u
+	 BF+js5GrBoa/epn3iKWFsuDPy9PpWA1beOVFj9c7f4ICPsAEhKt4hEI4SeJxQGX4Ry
+	 MmcYkwGWGBtTioBTzkbsKuwMzvD/Nnpyshcih538=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 060/167] wifi: mac80211: export ieee80211_purge_tx_queue() for drivers
-Date: Tue, 29 Apr 2025 18:42:48 +0200
-Message-ID: <20250429161054.198648669@linuxfoundation.org>
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 081/204] LoongArch: Remove a bogus reference to ZONE_DMA
+Date: Tue, 29 Apr 2025 18:42:49 +0200
+Message-ID: <20250429161102.733124385@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Petr Tesarik <ptesarik@suse.com>
 
-commit 53bc1b73b67836ac9867f93dee7a443986b4a94f upstream.
+commit c37325cbd91abe3bfab280b3b09947155abe8e07 upstream.
 
-Drivers need to purge TX SKB when stopping. Using skb_queue_purge() can't
-report TX status to mac80211, causing ieee80211_free_ack_frame() warns
-"Have pending ack frames!". Export ieee80211_purge_tx_queue() for drivers
-to not have to reimplement it.
+Remove dead code. LoongArch does not have a DMA memory zone (24bit DMA).
+The architecture does not even define MAX_DMA_PFN.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240822014255.10211-1-pkshih@realtek.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Petr Tesarik <ptesarik@suse.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/mac80211.h     |   13 +++++++++++++
- net/mac80211/ieee80211_i.h |    2 --
- net/mac80211/status.c      |    1 +
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ arch/loongarch/mm/init.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -2957,6 +2957,19 @@ ieee80211_get_alt_retry_rate(const struc
- void ieee80211_free_txskb(struct ieee80211_hw *hw, struct sk_buff *skb);
+--- a/arch/loongarch/mm/init.c
++++ b/arch/loongarch/mm/init.c
+@@ -64,9 +64,6 @@ void __init paging_init(void)
+ {
+ 	unsigned long max_zone_pfns[MAX_NR_ZONES];
  
- /**
-+ * ieee80211_purge_tx_queue - purge TX skb queue
-+ * @hw: the hardware
-+ * @skbs: the skbs
-+ *
-+ * Free a set of transmit skbs. Use this function when device is going to stop
-+ * but some transmit skbs without TX status are still queued.
-+ * This function does not take the list lock and the caller must hold the
-+ * relevant locks to use it.
-+ */
-+void ieee80211_purge_tx_queue(struct ieee80211_hw *hw,
-+			      struct sk_buff_head *skbs);
-+
-+/**
-  * DOC: Hardware crypto acceleration
-  *
-  * mac80211 is capable of taking advantage of many hardware
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1984,8 +1984,6 @@ void __ieee80211_subif_start_xmit(struct
- 				  u32 info_flags,
- 				  u32 ctrl_flags,
- 				  u64 *cookie);
--void ieee80211_purge_tx_queue(struct ieee80211_hw *hw,
--			      struct sk_buff_head *skbs);
- struct sk_buff *
- ieee80211_build_data_template(struct ieee80211_sub_if_data *sdata,
- 			      struct sk_buff *skb, u32 info_flags);
---- a/net/mac80211/status.c
-+++ b/net/mac80211/status.c
-@@ -1294,3 +1294,4 @@ void ieee80211_purge_tx_queue(struct iee
- 	while ((skb = __skb_dequeue(skbs)))
- 		ieee80211_free_txskb(hw, skb);
- }
-+EXPORT_SYMBOL(ieee80211_purge_tx_queue);
+-#ifdef CONFIG_ZONE_DMA
+-	max_zone_pfns[ZONE_DMA] = MAX_DMA_PFN;
+-#endif
+ #ifdef CONFIG_ZONE_DMA32
+ 	max_zone_pfns[ZONE_DMA32] = MAX_DMA32_PFN;
+ #endif
 
 
 
