@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-137259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F476AA1265
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D09CAA1404
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE2374A7628
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:52:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AEDF1887690
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6502472B0;
-	Tue, 29 Apr 2025 16:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4BC211A0B;
+	Tue, 29 Apr 2025 17:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4Gj+qJt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5r6K6+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC0D242934;
-	Tue, 29 Apr 2025 16:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB084127E18;
+	Tue, 29 Apr 2025 17:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945535; cv=none; b=e6veuwH6IlkFWleSoXEzJPUdKmzphLwibMCZKzvTAq+lfUzzlFplJaOQ/rkfwV+wD0QtzSyJT7WwNqAe8BMAbRq3DH3j6tCel3/4CKJCcR41CHT9KIQPTV1RgCvV4fbbDxiiLqIbG/YK8TChbBoRwTOBxQ7j6WlOKV6AYxWm/3k=
+	t=1745946467; cv=none; b=N8hWxifWo1mmTC8expqTqW1bipa8tydgWqwVoHiyuBL1Ki8h9LFN/sX7RA59pZQTljmZIs719M5PNuahkA5VINh4E2ceSvCb21fTAM8guKCmwcoaP73tH8tFySMeZX9nbRHbNCNk1b64VnnDCickrfYreaz7TPRnnBCUXLPB/Eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945535; c=relaxed/simple;
-	bh=tI8XnZSZW/hT79RGEI4gmiv2ffwYbBsTKFVUiC3q+lo=;
+	s=arc-20240116; t=1745946467; c=relaxed/simple;
+	bh=kHmHg+4vVLrrSB+z070fsXRbWxxtJOJ2uPOzmzKk0aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VaBTde6Yl2SX4em+j52RPdnHI2Rm2YdcWKU0KVaeDjqVQW/O43nwLXhyuC+jaacSYo7DGF8eAVCC1lrK78Pjz6opsL2QSQiCkltiPl4cQn7LWdjUB5xfouM4FgQRmb3NIoA2nnCA4U6grdO/2bRZhWUDHL6FJlIFagARE1iUFG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4Gj+qJt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C657C4CEE3;
-	Tue, 29 Apr 2025 16:52:14 +0000 (UTC)
+	 MIME-Version; b=ts/GGLhQFBH2aSEUVtKHwtHCQojs9LdoLPE/9dODSPUuKE+y47+TNvsBeQHRauEz4n8tKZZDvDRv02HxbgaT2OTP49chYlj9HPANgyTxvTKe8yQRGwyLshvfHt4AJ1HYD8JW2KjCWx4botFz0eR991e0kjiwnkjORZYjcZBJBRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5r6K6+K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A05DC4CEE3;
+	Tue, 29 Apr 2025 17:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945535;
-	bh=tI8XnZSZW/hT79RGEI4gmiv2ffwYbBsTKFVUiC3q+lo=;
+	s=korg; t=1745946466;
+	bh=kHmHg+4vVLrrSB+z070fsXRbWxxtJOJ2uPOzmzKk0aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4Gj+qJtouyf+ycSxg3XZ2XwRunvcmm9zmcS4rVhH/PUQ+qHJkxl5JkxTtJ1DM8ua
-	 uyrISLX2I8iT6EwB98x+tMbvwzOaToQTJ5Mya89dH/zpiqMKJ8knf2oLx5iGvIBScK
-	 5davkRyNBNXVRkeKBblTMn/O12TK9SfbAcowd55c=
+	b=i5r6K6+KbVe7UHOJ0PtKj9UjMNU98y4QaignNEs+sgk0s9U/+B8CgoHKkj2CxskK8
+	 p0hJwkkEPrLwKVqa12JIORjIVTH3fIq2fT52hUpW3kcSlDUXlVSRBlvzGsrfoai+0r
+	 VuxcRTXVz72N59gT7Ul+nBXxsZ9lhTkm6y2PO8ys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jean-Marc Eurin <jmeurin@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 145/179] net_sched: hfsc: Fix a potential UAF in hfsc_dequeue() too
+Subject: [PATCH 6.14 249/311] ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls
 Date: Tue, 29 Apr 2025 18:41:26 +0200
-Message-ID: <20250429161055.257618417@linuxfoundation.org>
+Message-ID: <20250429161131.225472126@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Jean-Marc Eurin <jmeurin@google.com>
 
-[ Upstream commit 6ccbda44e2cc3d26fd22af54c650d6d5d801addf ]
+[ Upstream commit 7ab4f0e37a0f4207e742a8de69be03984db6ebf0 ]
 
-Similarly to the previous patch, we need to safe guard hfsc_dequeue()
-too. But for this one, we don't have a reliable reproducer.
+The end of table checks should be done with the structure size,
+but 2 of the 3 similar calls use the pointer size.
 
-Fixes: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 ("Linux-2.6.12-rc2")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20250417184732.943057-3-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jean-Marc Eurin <jmeurin@google.com>
+Link: https://patch.msgid.link/20250402001542.2600671-1-jmeurin@google.com
+[ rjw: Subject edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/acpi/pptt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index eabc62df6f4e4..79c63c4610d3a 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1645,10 +1645,16 @@ hfsc_dequeue(struct Qdisc *sch)
- 		if (cl->qdisc->q.qlen != 0) {
- 			/* update ed */
- 			next_len = qdisc_peek_len(cl->qdisc);
--			if (realtime)
--				update_ed(cl, next_len);
--			else
--				update_d(cl, next_len);
-+			/* Check queue length again since some qdisc implementations
-+			 * (e.g., netem/codel) might empty the queue during the peek
-+			 * operation.
-+			 */
-+			if (cl->qdisc->q.qlen != 0) {
-+				if (realtime)
-+					update_ed(cl, next_len);
-+				else
-+					update_d(cl, next_len);
-+			}
- 		} else {
- 			/* the class becomes passive */
- 			eltree_remove(cl);
+diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+index a35dd0e41c270..f73ce6e13065d 100644
+--- a/drivers/acpi/pptt.c
++++ b/drivers/acpi/pptt.c
+@@ -229,7 +229,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
+ 	node_entry = ACPI_PTR_DIFF(node, table_hdr);
+ 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+ 			     sizeof(struct acpi_table_pptt));
+-	proc_sz = sizeof(struct acpi_pptt_processor *);
++	proc_sz = sizeof(struct acpi_pptt_processor);
+ 
+ 	while ((unsigned long)entry + proc_sz < table_end) {
+ 		cpu_node = (struct acpi_pptt_processor *)entry;
+@@ -270,7 +270,7 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
+ 	table_end = (unsigned long)table_hdr + table_hdr->length;
+ 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+ 			     sizeof(struct acpi_table_pptt));
+-	proc_sz = sizeof(struct acpi_pptt_processor *);
++	proc_sz = sizeof(struct acpi_pptt_processor);
+ 
+ 	/* find the processor structure associated with this cpuid */
+ 	while ((unsigned long)entry + proc_sz < table_end) {
 -- 
 2.39.5
 
