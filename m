@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-137570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA85AA1403
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00761AA17EA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C18CB188BBE5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 801921893753
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3C52472B0;
-	Tue, 29 Apr 2025 17:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCCF248883;
+	Tue, 29 Apr 2025 17:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N71mm5VO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d68IVPvD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5D6127E18;
-	Tue, 29 Apr 2025 17:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6999A243364;
+	Tue, 29 Apr 2025 17:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946464; cv=none; b=ATAylS8sd1TUrVzJTQq71MjvN68tc/EbKtoVJeuFRwyONjIddU/5Q8/WXeOnJ2UuMgAygphKIU2nSj+RldUZjKtT2L0IptPdct9gQ/k6w1L20nQk6/ZHMgZHELsDxPP8TLIJ8Oi7YQxGRESRbIfhryui9xRAMnfgVwlOo8ZvlPA=
+	t=1745949178; cv=none; b=Bt72OKzu4kENTsHaMgaFLllKm5EV7O9YuA55ISwA56+aRIv9IRyxBRF1XMXjfJ9TeyAgB9zLMz5D8ymb3zYi71JS1hbrL5Mv7Iw8wb6DMJBEvEZ4G/6gxpsvDMN58vb+JUNfg5WkOMFNMV8p6PRa53MvJoG47SuHkBjcBIa+jAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946464; c=relaxed/simple;
-	bh=2cKi2XNm0Nh6ojF1afRtys8G8UN5Y+8USri3oFP+tIc=;
+	s=arc-20240116; t=1745949178; c=relaxed/simple;
+	bh=AaWqhBXvqDU/uI0eXKWcXLkwTGNyefedDPHgF2uIMUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qndlHNRv5/YXt6b9aAjsFNB9jNWlpjS5KwE75/0yydQeeN626LO8PauI4Kg8K5zMCLLhSRImO+UCZh1KQA+4wHY9tFm6dZOP+IR3ZIjQovEAUhiUgBczR7tpVTz0FaVTVFVQin05+sx4UeMo11aRNq5VJ7374XIBPOVNa/LWp7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N71mm5VO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D90CC4CEE3;
-	Tue, 29 Apr 2025 17:07:43 +0000 (UTC)
+	 MIME-Version; b=BL7e+6b8o3cN6j0zWkNiLfhb6tz0s7Ffey/UMCRNAWOuTtEIpxI/iizgXQjDkeZou1sILF7c/juzEJNCcYO+1ozX1RlWfD08zjxgiFFaBDPn5YKVZcRhzCutohPb+VTWJLg5gZ2zvZzckbBXdl80o3BmxdwzLCIC66/tCTlBP1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d68IVPvD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9628BC4CEE9;
+	Tue, 29 Apr 2025 17:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946463;
-	bh=2cKi2XNm0Nh6ojF1afRtys8G8UN5Y+8USri3oFP+tIc=;
+	s=korg; t=1745949177;
+	bh=AaWqhBXvqDU/uI0eXKWcXLkwTGNyefedDPHgF2uIMUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N71mm5VO+9Tm4h4SysaY+ndMHFrSTYK54+r1vAYAh3V5ipVHZixxGu2x5Ymnqh/U+
-	 SbtMDfLUScPV9b/QRX/rnuuUoqdPQH8p7lMOY+ulAKgqP+Axn6hpPwMTLOMKKAS2sx
-	 anM3zVmRM2tUerOxjnWgv7V8DFuwk1DQo961JD2g=
+	b=d68IVPvD11DQl+xoAtvUaBPOGS99/6Z0XXYRrlLF0tUbK7F+BTrw5Yfw90Czi5KFP
+	 pVtKpUvExY///tDO4T0KejvGF6DyQA8dy1AUSgXyiNklkV8xiuNuLkZz+iJVmmVfXn
+	 OS7S8lGkiP7PhOaU+LZabH5p+lxGoJ1TlBJiDBh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 275/311] ASoC: fsl_asrc_dma: get codec or cpu dai from backend
+	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
+	Julian Anastasov <ja@ssi.bg>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Cliff Liu <donghua.liu@windriver.com>,
+	He Zhe <Zhe.He@windriver.com>
+Subject: [PATCH 5.15 235/373] ipvs: properly dereference pe in ip_vs_add_service
 Date: Tue, 29 Apr 2025 18:41:52 +0200
-Message-ID: <20250429161132.282950686@linuxfoundation.org>
+Message-ID: <20250429161132.807632502@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
 
-[ Upstream commit ef5c23ae9ab380fa756f257411024a9b4518d1b9 ]
+commit cbd070a4ae62f119058973f6d2c984e325bce6e7 upstream.
 
-With audio graph card, original cpu dai is changed to codec device in
-backend, so if cpu dai is dummy device in backend, get the codec dai
-device, which is the real hardware device connected.
+Use pe directly to resolve sparse warning:
 
-The specific case is ASRC->SAI->AMIX->CODEC.
+  net/netfilter/ipvs/ip_vs_ctl.c:1471:27: warning: dereference of noderef expression
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250319033504.2898605-1-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 39b972231536 ("ipvs: handle connections started by real-servers")
+Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Acked-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
+Signed-off-by: He Zhe <Zhe.He@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_asrc_dma.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ net/netfilter/ipvs/ip_vs_ctl.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-index f501f47242fb0..1bba48318e2dd 100644
---- a/sound/soc/fsl/fsl_asrc_dma.c
-+++ b/sound/soc/fsl/fsl_asrc_dma.c
-@@ -156,11 +156,24 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
- 	for_each_dpcm_be(rtd, stream, dpcm) {
- 		struct snd_soc_pcm_runtime *be = dpcm->be;
- 		struct snd_pcm_substream *substream_be;
--		struct snd_soc_dai *dai = snd_soc_rtd_to_cpu(be, 0);
-+		struct snd_soc_dai *dai_cpu = snd_soc_rtd_to_cpu(be, 0);
-+		struct snd_soc_dai *dai_codec = snd_soc_rtd_to_codec(be, 0);
-+		struct snd_soc_dai *dai;
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -1384,20 +1384,20 @@ ip_vs_add_service(struct netns_ipvs *ipv
+ 		sched = NULL;
+ 	}
  
- 		if (dpcm->fe != rtd)
- 			continue;
+-	/* Bind the ct retriever */
+-	RCU_INIT_POINTER(svc->pe, pe);
+-	pe = NULL;
+-
+ 	/* Update the virtual service counters */
+ 	if (svc->port == FTPPORT)
+ 		atomic_inc(&ipvs->ftpsvc_counter);
+ 	else if (svc->port == 0)
+ 		atomic_inc(&ipvs->nullsvc_counter);
+-	if (svc->pe && svc->pe->conn_out)
++	if (pe && pe->conn_out)
+ 		atomic_inc(&ipvs->conn_out_counter);
  
-+		/*
-+		 * With audio graph card, original cpu dai is changed to codec
-+		 * device in backend, so if cpu dai is dummy device in backend,
-+		 * get the codec dai device, which is the real hardware device
-+		 * connected.
-+		 */
-+		if (!snd_soc_dai_is_dummy(dai_cpu))
-+			dai = dai_cpu;
-+		else
-+			dai = dai_codec;
+ 	ip_vs_start_estimator(ipvs, &svc->stats);
+ 
++	/* Bind the ct retriever */
++	RCU_INIT_POINTER(svc->pe, pe);
++	pe = NULL;
 +
- 		substream_be = snd_soc_dpcm_get_substream(be, stream);
- 		dma_params_be = snd_soc_dai_get_dma_data(dai, substream_be);
- 		dev_be = dai->dev;
--- 
-2.39.5
-
+ 	/* Count only IPv4 services for old get/setsockopt interface */
+ 	if (svc->af == AF_INET)
+ 		ipvs->num_services++;
 
 
 
