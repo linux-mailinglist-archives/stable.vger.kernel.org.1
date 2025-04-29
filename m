@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-138707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1207AA1997
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:13:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F53AA1A13
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DED3B9A6643
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C5C516728A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3535C24E4BF;
-	Tue, 29 Apr 2025 18:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD6E20C488;
+	Tue, 29 Apr 2025 18:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXgMRKBv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X69xrM+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E574621ABC1;
-	Tue, 29 Apr 2025 18:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0C1155A4E;
+	Tue, 29 Apr 2025 18:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950099; cv=none; b=E1IwVnLZfzGhBx9xd0R2NulXUPVuHZeY7fPHGpiwbvcRKwUHrGsT2OWzSfsvcbc64m/bRUg1uukE+LBiiW/noYsud80OGBYAwQd4ZvvGpq/NnLJGInwN2rFPBQJFvrnLQ314PDQEET8KrGSh8W7p3KfgnofDJU2JTnXkpUgoF5w=
+	t=1745950603; cv=none; b=GTIfMQrSagMGzG7U0YqH3IMyc+Ko+gQgEZTuEdXADEGHFhs9JXYpRWEI4Bn/B/8rkgKLt+e24OpixOdDXh8ZF9ls1seuQCx5tqCH7vm55G5tICAKsjmq6WmuCLQAVi9IUgT0q/5DRXyeY9ha974/I/erFM/PYrpZ+P2fB513DxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950099; c=relaxed/simple;
-	bh=ffjcPUxAwvlw9Rsj535FNnjSSvbcT3GdFQVJOCha1j4=;
+	s=arc-20240116; t=1745950603; c=relaxed/simple;
+	bh=mhCxIKxSGn8nAAfahxPLo7uc7rnEYEVEkIKF36WimMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RBXCWhFKnp/rsSSgDwKtw7ejClHYGCMFbWtxc5/Q2JfJdNhcl4xaRpgt2s4aZ/D+77szIjDXN2P9Vb4i+eRqi/9ZVg7cFpKhdHJKmHCMO0xv9XcyThx5Ot3gR5AeV5oDYK6VazeCPDqPADeehEQjxl4RCd5AtMEk58zGIgC9X3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXgMRKBv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5498DC4CEE3;
-	Tue, 29 Apr 2025 18:08:18 +0000 (UTC)
+	 MIME-Version; b=q8MKIYjT/WLkwIuloopuHQgd1ilLIOXYh13c31/Q7AyXI6ean2IjEvAqNihbbxR7/7CmBe8TG5EyoltGpE9v4oyCHjkpkBlLoeA/RNGDNWSXw52LXfvuPKT2jEma75D6WNOagL/if9GscR0uku+3QPzI4m94EfsZ3oVxb35vVas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X69xrM+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A46C4CEE3;
+	Tue, 29 Apr 2025 18:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950098;
-	bh=ffjcPUxAwvlw9Rsj535FNnjSSvbcT3GdFQVJOCha1j4=;
+	s=korg; t=1745950603;
+	bh=mhCxIKxSGn8nAAfahxPLo7uc7rnEYEVEkIKF36WimMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WXgMRKBvbZikKs2tnKbb75WZ68A3yX45SsMlc4lSP5YJBtnLBPLzIgnRxBk0v/Be0
-	 TmG9RH8VYobAdfgK/lxb4S8hq9T6+JqzIVeVrE8AUyC3UG6Ar00Zqk8DFQ584jTIoj
-	 ExOt9YBOJIeVhpg3l9E9n8owEHjAVzY2TQK0343I=
+	b=X69xrM+TFKCr5TH/ljv7YLOBprbjiq1bthcPJSYHcO0z1++vi3r6PozqObZl6eP5C
+	 c7+ytaP6vnhC0RlgRZzk8q6WMqi9Y4y5HXuVtI+s1Oxbh43H1ivvUNP3CnjV+rDW73
+	 Xw+SKhgTKyzat5YcMGxzEdE8W6KntT/20FxYgRUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday Shankar <ushankar@purestorage.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jon Mason <jdmason@kudzu.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/167] selftests: ublk: fix test_stripe_04
-Date: Tue, 29 Apr 2025 18:43:54 +0200
-Message-ID: <20250429161056.838202552@linuxfoundation.org>
+Subject: [PATCH 6.6 147/204] ntb: reduce stack usage in idt_scan_mws
+Date: Tue, 29 Apr 2025 18:43:55 +0200
+Message-ID: <20250429161105.437877000@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 72070e57b0a518ec8e562a2b68fdfc796ef5c040 ]
+[ Upstream commit aff12700b8dd7422bfe2277696e192af4df9de8f ]
 
-Commit 57ed58c13256 ("selftests: ublk: enable zero copy for stripe target")
-added test entry of test_stripe_04, but forgot to add the test script.
+idt_scan_mws() puts a large fixed-size array on the stack and copies
+it into a smaller dynamically allocated array at the end. On 32-bit
+targets, the fixed size can easily exceed the warning limit for
+possible stack overflow:
 
-So fix the test by adding the script file.
+drivers/ntb/hw/idt/ntb_hw_idt.c:1041:27: error: stack frame size (1032) exceeds limit (1024) in 'idt_scan_mws' [-Werror,-Wframe-larger-than]
 
-Reported-by: Uday Shankar <ushankar@purestorage.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Uday Shankar <ushankar@purestorage.com>
-Link: https://lore.kernel.org/r/20250404001849.1443064-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Change it to instead just always use dynamic allocation for the
+array from the start. It's too big for the stack, but not actually
+all that much for a permanent allocation.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202205111109.PiKTruEj-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/ublk/test_stripe_04.sh  | 24 +++++++++++++++++++
- 1 file changed, 24 insertions(+)
- create mode 100755 tools/testing/selftests/ublk/test_stripe_04.sh
+ drivers/ntb/hw/idt/ntb_hw_idt.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/tools/testing/selftests/ublk/test_stripe_04.sh b/tools/testing/selftests/ublk/test_stripe_04.sh
-new file mode 100755
-index 0000000000000..1f2b642381d17
---- /dev/null
-+++ b/tools/testing/selftests/ublk/test_stripe_04.sh
-@@ -0,0 +1,24 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
+diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
+index 48823b53ede3e..22aaa60d2d384 100644
+--- a/drivers/ntb/hw/idt/ntb_hw_idt.c
++++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
+@@ -1041,7 +1041,7 @@ static inline char *idt_get_mw_name(enum idt_mw_type mw_type)
+ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 				       unsigned char *mw_cnt)
+ {
+-	struct idt_mw_cfg mws[IDT_MAX_NR_MWS], *ret_mws;
++	struct idt_mw_cfg *mws;
+ 	const struct idt_ntb_bar *bars;
+ 	enum idt_mw_type mw_type;
+ 	unsigned char widx, bidx, en_cnt;
+@@ -1049,6 +1049,11 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 	int aprt_size;
+ 	u32 data;
+ 
++	mws = devm_kcalloc(&ndev->ntb.pdev->dev, IDT_MAX_NR_MWS,
++			   sizeof(*mws), GFP_KERNEL);
++	if (!mws)
++		return ERR_PTR(-ENOMEM);
 +
-+. "$(cd "$(dirname "$0")" && pwd)"/test_common.sh
-+
-+TID="stripe_04"
-+ERR_CODE=0
-+
-+_prep_test "stripe" "mkfs & mount & umount on zero copy"
-+
-+backfile_0=$(_create_backfile 256M)
-+backfile_1=$(_create_backfile 256M)
-+dev_id=$(_add_ublk_dev -t stripe -z -q 2 "$backfile_0" "$backfile_1")
-+_check_add_dev $TID $? "$backfile_0" "$backfile_1"
-+
-+_mkfs_mount_test /dev/ublkb"${dev_id}"
-+ERR_CODE=$?
-+
-+_cleanup_test "stripe"
-+
-+_remove_backfile "$backfile_0"
-+_remove_backfile "$backfile_1"
-+
-+_show_result $TID $ERR_CODE
+ 	/* Retrieve the array of the BARs registers */
+ 	bars = portdata_tbl[port].bars;
+ 
+@@ -1103,16 +1108,7 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 		}
+ 	}
+ 
+-	/* Allocate memory for memory window descriptors */
+-	ret_mws = devm_kcalloc(&ndev->ntb.pdev->dev, *mw_cnt, sizeof(*ret_mws),
+-			       GFP_KERNEL);
+-	if (!ret_mws)
+-		return ERR_PTR(-ENOMEM);
+-
+-	/* Copy the info of detected memory windows */
+-	memcpy(ret_mws, mws, (*mw_cnt)*sizeof(*ret_mws));
+-
+-	return ret_mws;
++	return mws;
+ }
+ 
+ /*
 -- 
 2.39.5
 
