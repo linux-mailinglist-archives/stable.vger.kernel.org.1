@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-137778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DCC0AA14D4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BEBEAA1289
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21CCB4C50E9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D9B73BA18D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602E82472B4;
-	Tue, 29 Apr 2025 17:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503132472AA;
+	Tue, 29 Apr 2025 16:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNGHydBj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wlt+hk9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8CA24500A;
-	Tue, 29 Apr 2025 17:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA642459E0;
+	Tue, 29 Apr 2025 16:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947100; cv=none; b=KAo9oYVae8gGiq0jF14Q5n2o9Dy5Rwn7IAp3aTBNDNk6n8nkmaOjoBY8Mbc92xv//wQhcYGkVZHCqOey7XagTFlhhF/xAmjqkwd+l/Rj48sir6M/bjXK/8AhUNjLMPOLRJ/9YpktTOSbazZUrWB6QKRHi6djlwqjbrUUPq+fOTQ=
+	t=1745945503; cv=none; b=FmX3LqLVAlk5V+e+/wxXLwUUZfKG2/Om2dxEEK4LGyJnkFcoXqyYCO7Ewvm9/OBD8i8l6LtamFycUR8ZXLE0qvy+hPRclBacnY5nCht21dUnFrma6eYTbr3n47bdmFjArtb/yhInpYnQjRjwAMawig+bwqxKCXoNwdDTdbW0Blc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947100; c=relaxed/simple;
-	bh=usob6uVd3HMgog6heIpVZfzLz14oUeaSav2gs7wlK38=;
+	s=arc-20240116; t=1745945503; c=relaxed/simple;
+	bh=uzKsuT+IZHO31RKpgLUXBLuQxFgmCLcpbRmiA3/1e64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LRfAlkO9n2VEfnYtJtsr94qVVXD7omq3K3bfy++ftA94WZXp3gTHZWF58IiDhTMV2tBvw6J27sBNDDo9/fm7liraLTGAqkNnm4cRb/PH7XYAO25PEJV8arqadOD2wut5vo8oXt4JFjgJtnrtH9noTFh0snm2Hxj1GE7HXIC09ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNGHydBj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E56EC4CEE3;
-	Tue, 29 Apr 2025 17:18:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZJQ25jg3bLvLUbN7L9s9UN1QQDpO9IS5Zouioijy7W37wf4/7DQsrB1cB0h2k98eO/+PYgi52+aT4i+NRol02tsp9ASr+1SsSYmxhfKrdUFJlx0it5cxtJOs09yAz7NPaSOn+mVAYkA3DgqtSUW80DKLEV059E5Pv+ar+Iogiv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wlt+hk9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EBAC4CEE3;
+	Tue, 29 Apr 2025 16:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947100;
-	bh=usob6uVd3HMgog6heIpVZfzLz14oUeaSav2gs7wlK38=;
+	s=korg; t=1745945502;
+	bh=uzKsuT+IZHO31RKpgLUXBLuQxFgmCLcpbRmiA3/1e64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNGHydBjJTlMKq6xcDpYROkTe1nEYLfML4ngMvjo9ZLiHNThvA15PwjPSE8MhbaIX
-	 BM5A+EP3Sf5EFrSNHE2owlDWp7kV5zyVAoO21H+O0cxlsmXY28YXwo2fkVOflotjnv
-	 gxq3rpbtDv+ltqmVWgJKj8oXo/xiK1TuCosdMSkc=
+	b=Wlt+hk9h0Jx5d8c2mX/X2X/Te4P+3ON4lloyRC8OXil/hLw1ErHHqbPfhfNzMYdSl
+	 h2YECN9RhvGSd2qMpAeFPP3jGnIwx+nM0wPB6svdkI2k0PjMNlaBoZTHOjERjBlHRP
+	 RCu0jaWby7byisZuxaVxcVSBgQkfCYMJiG6GmG+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaxi Shen <shenxiaxi26@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org,
-	Xiangyu Chen <xiangyu.chen@windriver.com>,
-	He Zhe <zhe.he@windriver.com>,
-	syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 172/286] ext4: fix timer use-after-free on failed mount
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 135/179] iio: adc: ad7768-1: Move setting of val a bit later to avoid unnecessary return value check
 Date: Tue, 29 Apr 2025 18:41:16 +0200
-Message-ID: <20250429161114.964373721@linuxfoundation.org>
+Message-ID: <20250429161054.859031071@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaxi Shen <shenxiaxi26@gmail.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-commit 0ce160c5bdb67081a62293028dc85758a8efb22a upstream.
+[ Upstream commit 0af1c801a15225304a6328258efbf2bee245c654 ]
 
-Syzbot has found an ODEBUG bug in ext4_fill_super
+The data used is all in local variables so there is no advantage
+in setting *val = ret with the direct mode claim held.
+Move it later to after error check.
 
-The del_timer_sync function cancels the s_err_report timer,
-which reminds about filesystem errors daily. We should
-guarantee the timer is no longer active before kfree(sbi).
-
-When filesystem mounting fails, the flow goes to failed_mount3,
-where an error occurs when ext4_stop_mmpd is called, causing
-a read I/O failure. This triggers the ext4_handle_error function
-that ultimately re-arms the timer,
-leaving the s_err_report timer active before kfree(sbi) is called.
-
-Fix the issue by canceling the s_err_report timer after calling ext4_stop_mmpd.
-
-Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
-Reported-and-tested-by: syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=59e0101c430934bc9a36
-Link: https://patch.msgid.link/20240715043336.98097-1-shenxiaxi26@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[Minor context change fixed]
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250217141630.897334-13-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 8236644f5ecb ("iio: adc: ad7768-1: Fix conversion result sign")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7768-1.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5185,8 +5185,8 @@ failed_mount_wq:
- failed_mount3a:
- 	ext4_es_unregister_shrinker(sbi);
- failed_mount3:
--	del_timer_sync(&sbi->s_err_report);
- 	ext4_stop_mmpd(sbi);
-+	del_timer_sync(&sbi->s_err_report);
- failed_mount2:
- 	rcu_read_lock();
- 	group_desc = rcu_dereference(sbi->s_group_desc);
+diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+index 9e26517870595..9b9956c0b076f 100644
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -369,12 +369,11 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
+ 			return ret;
+ 
+ 		ret = ad7768_scan_direct(indio_dev);
+-		if (ret >= 0)
+-			*val = ret;
+ 
+ 		iio_device_release_direct_mode(indio_dev);
+ 		if (ret < 0)
+ 			return ret;
++		*val = ret;
+ 
+ 		return IIO_VAL_INT;
+ 
+-- 
+2.39.5
+
 
 
 
