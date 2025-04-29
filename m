@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-137591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE457AA13B1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CADAA185D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEAFC7A5820
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B87CC9A7DB5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A90E2459E1;
-	Tue, 29 Apr 2025 17:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34CDE2517A6;
+	Tue, 29 Apr 2025 17:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghEqDUA9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiwQmAkr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491E923C8D6;
-	Tue, 29 Apr 2025 17:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6995243364;
+	Tue, 29 Apr 2025 17:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946528; cv=none; b=vDN3M9jV8iBuOHBHPDaxowgnVDZbqPA4KZxBEFrT/WsMZ8lMSToDAGFN9XaVEQ3CG2OE4qda4oPyNJ2q17lv5BTxQn0fPSj8aSXGGj+WC+Df5/ekJh3+9fbKw7GHQXMPXerr1B09GMzmASna+doql+gyZbTzPIzNrAAFIpIuGpw=
+	t=1745949244; cv=none; b=JT3gMbmyUb9G+1nwmUwOyzqR5O2yExW0bREcXEdTd4Bt8kB+EXg4i8MsTFzqgf7bt2xnwLgbqA7cp8ZTe0yLKiwO4pMTclDEkFNc0JgR6i+9zfYMQVSVTDADGoEduM6PPrKYrCJY4mzsHp8C7afOT2JkINY1PtWcP5t1SEORrRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946528; c=relaxed/simple;
-	bh=aAThkAWDpxDSTBiUPeuPW1Ykcsd2sHUJz0Z2u1aPo88=;
+	s=arc-20240116; t=1745949244; c=relaxed/simple;
+	bh=pukrLrJ2MbAhzcRzw3EKKH12Q7lk06L2fYVxuYRbo1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QbT73bB4mB+SUh20jlA0LCkab1KAqwabbuwiUMub8WA1EJ9t6Bo7Wb6lHzynqZPYeaxDvSyigBb8KwA9ZTaML4gvY7GQ9nIm5dvX4ut1OlLKASXvEpe/hPKKlZ3rNw/sZ4/ft2IiWJEypk7yj1mJG9fv0Uq9LTfEw7tDA37ZnHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghEqDUA9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BB6C4CEE3;
-	Tue, 29 Apr 2025 17:08:47 +0000 (UTC)
+	 MIME-Version; b=NOSRAnQa7QbkWwe3WpfvqrpBhPQFJzThaCyFBMFxjgwGXdgcDeQAQkbULESN6zv4QA97Boc8eM1XlVbdMbwVXcyRxFRI2a0ud2Z/QgEQPgrhEnlIl4fL8tTCNm+PawAOsPwvMMPQd7nf5LTd31/M5w+tU1hmddy6b2VPWqFKZzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiwQmAkr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16265C4CEE3;
+	Tue, 29 Apr 2025 17:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946528;
-	bh=aAThkAWDpxDSTBiUPeuPW1Ykcsd2sHUJz0Z2u1aPo88=;
+	s=korg; t=1745949243;
+	bh=pukrLrJ2MbAhzcRzw3EKKH12Q7lk06L2fYVxuYRbo1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ghEqDUA9k3UiIC0mi3P7UDMH8Bi4a5h1N7DE5hvW8Sb6YXtulnNLdL+oFQaPpFyCR
-	 EMwzTOvnrj+jdC80Omm85rdb8QwMWiRBFiSMpeMn0g3t6PGPmcLaK0w36tc1vPLMOI
-	 FglPkhCsdYSdsc+w0hQ/m0i26cXnZ8T+uriSjrSo=
+	b=tiwQmAkrYehvsQNdfP5tdXbgDCX0UqlPGGeR9xch+Kdq2TEEVIOMrOnVKFxKzRSao
+	 OuVmJYWzEG8wN11J7mSNSk/p5notMWTZFEKFTksafQAhTedWdZ8dU1DZHlaMWuUuvu
+	 GOOZ9aK/Urc+hS/Fa8/gNctqudokm0eQHpEt8gGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.14 297/311] driver core: introduce device_set_driver() helper
-Date: Tue, 29 Apr 2025 18:42:14 +0200
-Message-ID: <20250429161133.158967001@linuxfoundation.org>
+	Sean Young <sean@mess.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 258/373] media: streamzap: remove unused struct members
+Date: Tue, 29 Apr 2025 18:42:15 +0200
+Message-ID: <20250429161133.735500826@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +62,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Sean Young <sean@mess.org>
 
-commit 04d3e5461c1f5cf8eec964ab64948ebed826e95e upstream.
+[ Upstream commit 4df69e46c352df9bdbe859824da33428a3ce8a1d ]
 
-In preparation to closing a race when reading driver pointer in
-dev_uevent() code, instead of setting device->driver pointer directly
-introduce device_set_driver() helper.
+These struct members do not serve any purpose.
 
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Link: https://lore.kernel.org/r/20250311052417.1846985-2-dmitry.torokhov@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: f656cfbc7a29 ("media: streamzap: fix race between device disconnection and urb callback")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/base.h |    6 ++++++
- drivers/base/core.c |    2 +-
- drivers/base/dd.c   |    7 +++----
- 3 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/media/rc/streamzap.c | 37 ++++++++++++++----------------------
+ 1 file changed, 14 insertions(+), 23 deletions(-)
 
---- a/drivers/base/base.h
-+++ b/drivers/base/base.h
-@@ -180,6 +180,12 @@ int driver_add_groups(const struct devic
- void driver_remove_groups(const struct device_driver *drv, const struct attribute_group **groups);
- void device_driver_detach(struct device *dev);
+diff --git a/drivers/media/rc/streamzap.c b/drivers/media/rc/streamzap.c
+index aff4dfb99a827..d4b38532c7b44 100644
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -66,9 +66,6 @@ struct streamzap_ir {
+ 	struct device *dev;
  
-+static inline void device_set_driver(struct device *dev, const struct device_driver *drv)
-+{
-+	// FIXME - this cast should not be needed "soon"
-+	dev->driver = (struct device_driver *)drv;
-+}
-+
- int devres_release_all(struct device *dev);
- void device_block_probing(void);
- void device_unblock_probing(void);
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -3697,7 +3697,7 @@ done:
- 	device_pm_remove(dev);
- 	dpm_sysfs_remove(dev);
-  DPMError:
--	dev->driver = NULL;
-+	device_set_driver(dev, NULL);
- 	bus_remove_device(dev);
-  BusError:
- 	device_remove_attrs(dev);
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -550,7 +550,7 @@ static void device_unbind_cleanup(struct
- 	arch_teardown_dma_ops(dev);
- 	kfree(dev->dma_range_map);
- 	dev->dma_range_map = NULL;
--	dev->driver = NULL;
-+	device_set_driver(dev, NULL);
- 	dev_set_drvdata(dev, NULL);
- 	if (dev->pm_domain && dev->pm_domain->dismiss)
- 		dev->pm_domain->dismiss(dev);
-@@ -629,8 +629,7 @@ static int really_probe(struct device *d
+ 	/* usb */
+-	struct usb_device	*usbdev;
+-	struct usb_interface	*interface;
+-	struct usb_endpoint_descriptor *endpoint;
+ 	struct urb		*urb_in;
+ 
+ 	/* buffer & dma */
+@@ -85,7 +82,6 @@ struct streamzap_ir {
+ 	/* start time of signal; necessary for gap tracking */
+ 	ktime_t			signal_last;
+ 	ktime_t			signal_start;
+-	bool			timeout_enabled;
+ 
+ 	char			phys[64];
+ };
+@@ -211,8 +207,7 @@ static void sz_process_ir_data(struct streamzap_ir *sz, int len)
+ 					.duration = sz->rdev->timeout
+ 				};
+ 				sz->idle = true;
+-				if (sz->timeout_enabled)
+-					sz_push(sz, rawir);
++				sz_push(sz, rawir);
+ 			} else {
+ 				sz_push_full_space(sz, sz->buf_in[i]);
+ 			}
+@@ -271,7 +266,8 @@ static void streamzap_callback(struct urb *urb)
+ 	usb_submit_urb(urb, GFP_ATOMIC);
+ }
+ 
+-static struct rc_dev *streamzap_init_rc_dev(struct streamzap_ir *sz)
++static struct rc_dev *streamzap_init_rc_dev(struct streamzap_ir *sz,
++					    struct usb_device *usbdev)
+ {
+ 	struct rc_dev *rdev;
+ 	struct device *dev = sz->dev;
+@@ -281,12 +277,12 @@ static struct rc_dev *streamzap_init_rc_dev(struct streamzap_ir *sz)
+ 	if (!rdev)
+ 		goto out;
+ 
+-	usb_make_path(sz->usbdev, sz->phys, sizeof(sz->phys));
++	usb_make_path(usbdev, sz->phys, sizeof(sz->phys));
+ 	strlcat(sz->phys, "/input0", sizeof(sz->phys));
+ 
+ 	rdev->device_name = "Streamzap PC Remote Infrared Receiver";
+ 	rdev->input_phys = sz->phys;
+-	usb_to_input_id(sz->usbdev, &rdev->input_id);
++	usb_to_input_id(usbdev, &rdev->input_id);
+ 	rdev->dev.parent = dev;
+ 	rdev->priv = sz;
+ 	rdev->allowed_protocols = RC_PROTO_BIT_ALL_IR_DECODER;
+@@ -317,6 +313,7 @@ static int streamzap_probe(struct usb_interface *intf,
+ 			   const struct usb_device_id *id)
+ {
+ 	struct usb_device *usbdev = interface_to_usbdev(intf);
++	struct usb_endpoint_descriptor *endpoint;
+ 	struct usb_host_interface *iface_host;
+ 	struct streamzap_ir *sz = NULL;
+ 	int retval = -ENOMEM;
+@@ -327,9 +324,6 @@ static int streamzap_probe(struct usb_interface *intf,
+ 	if (!sz)
+ 		return -ENOMEM;
+ 
+-	sz->usbdev = usbdev;
+-	sz->interface = intf;
+-
+ 	/* Check to ensure endpoint information matches requirements */
+ 	iface_host = intf->cur_altsetting;
+ 
+@@ -340,22 +334,22 @@ static int streamzap_probe(struct usb_interface *intf,
+ 		goto free_sz;
  	}
  
- re_probe:
--	// FIXME - this cast should not be needed "soon"
--	dev->driver = (struct device_driver *)drv;
-+	device_set_driver(dev, drv);
+-	sz->endpoint = &(iface_host->endpoint[0].desc);
+-	if (!usb_endpoint_dir_in(sz->endpoint)) {
++	endpoint = &iface_host->endpoint[0].desc;
++	if (!usb_endpoint_dir_in(endpoint)) {
+ 		dev_err(&intf->dev, "%s: endpoint doesn't match input device 02%02x\n",
+-			__func__, sz->endpoint->bEndpointAddress);
++			__func__, endpoint->bEndpointAddress);
+ 		retval = -ENODEV;
+ 		goto free_sz;
+ 	}
  
- 	/* If using pinctrl, bind pins now before probing */
- 	ret = pinctrl_bind_pins(dev);
-@@ -1014,7 +1013,7 @@ static int __device_attach(struct device
- 		if (ret == 0)
- 			ret = 1;
- 		else {
--			dev->driver = NULL;
-+			device_set_driver(dev, NULL);
- 			ret = 0;
- 		}
- 	} else {
+-	if (!usb_endpoint_xfer_int(sz->endpoint)) {
++	if (!usb_endpoint_xfer_int(endpoint)) {
+ 		dev_err(&intf->dev, "%s: endpoint attributes don't match xfer 02%02x\n",
+-			__func__, sz->endpoint->bmAttributes);
++			__func__, endpoint->bmAttributes);
+ 		retval = -ENODEV;
+ 		goto free_sz;
+ 	}
+ 
+-	pipe = usb_rcvintpipe(usbdev, sz->endpoint->bEndpointAddress);
++	pipe = usb_rcvintpipe(usbdev, endpoint->bEndpointAddress);
+ 	maxp = usb_maxpacket(usbdev, pipe, usb_pipeout(pipe));
+ 
+ 	if (maxp == 0) {
+@@ -377,14 +371,13 @@ static int streamzap_probe(struct usb_interface *intf,
+ 	sz->dev = &intf->dev;
+ 	sz->buf_in_len = maxp;
+ 
+-	sz->rdev = streamzap_init_rc_dev(sz);
++	sz->rdev = streamzap_init_rc_dev(sz, usbdev);
+ 	if (!sz->rdev)
+ 		goto rc_dev_fail;
+ 
+ 	sz->idle = true;
+ 	sz->decoder_state = PulseSpace;
+ 	/* FIXME: don't yet have a way to set this */
+-	sz->timeout_enabled = true;
+ 	sz->rdev->timeout = SZ_TIMEOUT * SZ_RESOLUTION;
+ 	#if 0
+ 	/* not yet supported, depends on patches from maxim */
+@@ -397,8 +390,7 @@ static int streamzap_probe(struct usb_interface *intf,
+ 
+ 	/* Complete final initialisations */
+ 	usb_fill_int_urb(sz->urb_in, usbdev, pipe, sz->buf_in,
+-			 maxp, (usb_complete_t)streamzap_callback,
+-			 sz, sz->endpoint->bInterval);
++			 maxp, streamzap_callback, sz, endpoint->bInterval);
+ 	sz->urb_in->transfer_dma = sz->dma_in;
+ 	sz->urb_in->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
+ 
+@@ -439,7 +431,6 @@ static void streamzap_disconnect(struct usb_interface *interface)
+ 	if (!sz)
+ 		return;
+ 
+-	sz->usbdev = NULL;
+ 	rc_unregister_device(sz->rdev);
+ 	usb_kill_urb(sz->urb_in);
+ 	usb_free_urb(sz->urb_in);
+-- 
+2.39.5
+
 
 
 
