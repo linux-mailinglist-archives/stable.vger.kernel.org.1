@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C69AA13B0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8808AAA14A7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:18:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8432D175D62
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 216384C41F4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773E1241664;
-	Tue, 29 Apr 2025 17:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B90D2472B4;
+	Tue, 29 Apr 2025 17:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/ornQxD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ivn4A7sG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D7D2405E5;
-	Tue, 29 Apr 2025 17:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EC7250C15;
+	Tue, 29 Apr 2025 17:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946286; cv=none; b=QSvnSLdUcCSJOdU88MGM97fTfcF2jxeE9Nn3jxTzqg5eEn8UBDUoPC1zJyLAXe9RIP4dF/EomfZf/BkEgA7BwD95oT4I+4wd2h5ns46md84Ucwg1Gi2RlZ/qdOCqj1bMcwtKnYiDQYezEmEwUb2HyhkEgT83+ZTqBa+xbRTqwhQ=
+	t=1745946945; cv=none; b=RCMrZgImuEXgxJcjlU3SluRKGa6tyZeupkD60yNlRrsJ9AmDS4CobqaYgJvG013twSRj4HNV+jROWEOsgsvqBqgc7Hf6BFkbdUGfV7kLgzyhTQRoFggP5/2e/teD6nlSSUPX6xOK4gM0/hYW+V5MfUafiiVttYKPgGusUwb6smI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946286; c=relaxed/simple;
-	bh=w4R3HNG+nMy+56EchB675hEwGD+YiJRg6ftx+ko+Xws=;
+	s=arc-20240116; t=1745946945; c=relaxed/simple;
+	bh=VXBvA0+FaDkRWMEitkoYgbTT0wEMpgvPO8tITebQ8tI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WBOBmEJkpADhXcvzNs2aiiRIP+oEYqG6Kx199dazwzWtd3+ponJfEJ2AD+HQu8QgkJR0xXUPyx2WMeeGbsUWZC8MPgR3VLEyin8CwzG46X1k6213eeRr3tr546rr79ope895YnkItlCJFDqZpZSlJri46UZWygb7yzoeTT+IVQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/ornQxD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EA6C4CEE3;
-	Tue, 29 Apr 2025 17:04:45 +0000 (UTC)
+	 MIME-Version; b=LmgY5ak6rlQiTS97ihvHyaMgYNUzEa3vBc7KV7/SG6UcmOsjh7NGu7jgCqsJMCpmiLI5YXv+VqQeKCFIvSwNprD2Nh7cZ7dZr9gMxkQfDLysr8R1h3YTpw1BgJ9mM7+5DtJoubt8VpJwbD6LaLgcmLYwdwhnpS6yDlI9ybQxu6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ivn4A7sG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04BBC4CEE3;
+	Tue, 29 Apr 2025 17:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946286;
-	bh=w4R3HNG+nMy+56EchB675hEwGD+YiJRg6ftx+ko+Xws=;
+	s=korg; t=1745946945;
+	bh=VXBvA0+FaDkRWMEitkoYgbTT0wEMpgvPO8tITebQ8tI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H/ornQxDx/j5ZKR1wc3raE3sS9F7Jv5h8UsBRWyirU/N/uC9U269wGRgm1L5LfwPm
-	 LIUGkaC9Xz6GEF3cTkenHrqrnTqUg0WftmmOdoA6Dev5dFURo0sAUy0tQza6yv6Mtl
-	 Cs6KbJ2N/ymGwA7DeiaDV8BwZTxlla+Apf2Fw/zo=
+	b=Ivn4A7sG+KfGfj2pmeTu3tc+m13T9+CsqECXaaiwR2ZkjI90Yp/CGrgfYyHhT4ZL8
+	 2+9KGnEkBB9p6IZLNzcVs1xozs1ERLiKdscnRFIGHTSJxQz8+OWUSARor0QM2Lnv51
+	 8AkRw9cAi7RU/1Vnc65OM3B6oN5gYd99HhR85vRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 186/311] bpf: Fix deadlock between rcu_tasks_trace and event_mutex.
-Date: Tue, 29 Apr 2025 18:40:23 +0200
-Message-ID: <20250429161128.637727766@linuxfoundation.org>
+Subject: [PATCH 5.10 120/286] cpufreq/sched: Fix the usage of CPUFREQ_NEED_UPDATE_LIMITS
+Date: Tue, 29 Apr 2025 18:40:24 +0200
+Message-ID: <20250429161112.794258965@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 4580f4e0ebdf8dc8d506ae926b88510395a0c1d1 ]
+[ Upstream commit cfde542df7dd51d26cf667f4af497878ddffd85a ]
 
-Fix the following deadlock:
-CPU A
-_free_event()
-  perf_kprobe_destroy()
-    mutex_lock(&event_mutex)
-      perf_trace_event_unreg()
-        synchronize_rcu_tasks_trace()
+Commit 8e461a1cb43d ("cpufreq: schedutil: Fix superfluous updates caused
+by need_freq_update") modified sugov_should_update_freq() to set the
+need_freq_update flag only for drivers with CPUFREQ_NEED_UPDATE_LIMITS
+set, but that flag generally needs to be set when the policy limits
+change because the driver callback may need to be invoked for the new
+limits to take effect.
 
-There are several paths where _free_event() grabs event_mutex
-and calls sync_rcu_tasks_trace. Above is one such case.
+However, if the return value of cpufreq_driver_resolve_freq() after
+applying the new limits is still equal to the previously selected
+frequency, the driver callback needs to be invoked only in the case
+when CPUFREQ_NEED_UPDATE_LIMITS is set (which means that the driver
+specifically wants its callback to be invoked every time the policy
+limits change).
 
-CPU B
-bpf_prog_test_run_syscall()
-  rcu_read_lock_trace()
-    bpf_prog_run_pin_on_cpu()
-      bpf_prog_load()
-        bpf_tracing_func_proto()
-          trace_set_clr_event()
-            mutex_lock(&event_mutex)
+Update the code accordingly to avoid missing policy limits changes for
+drivers without CPUFREQ_NEED_UPDATE_LIMITS.
 
-Delegate trace_set_clr_event() to workqueue to avoid
-such lock dependency.
-
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250224221637.4780-1-alexei.starovoitov@gmail.com
+Fixes: 8e461a1cb43d ("cpufreq: schedutil: Fix superfluous updates caused by need_freq_update")
+Closes: https://lore.kernel.org/lkml/Z_Tlc6Qs-tYpxWYb@linaro.org/
+Reported-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/3010358.e9J7NaK4W3@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ kernel/sched/cpufreq_schedutil.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index a612f6f182e51..13bef2462e94b 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -392,7 +392,7 @@ static const struct bpf_func_proto bpf_trace_printk_proto = {
- 	.arg2_type	= ARG_CONST_SIZE,
- };
+diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+index d8b9e1d25200f..c1307bbdc291b 100644
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -90,7 +90,7 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
  
--static void __set_printk_clr_event(void)
-+static void __set_printk_clr_event(struct work_struct *work)
+ 	if (unlikely(sg_policy->limits_changed)) {
+ 		sg_policy->limits_changed = false;
+-		sg_policy->need_freq_update = cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS);
++		sg_policy->need_freq_update = true;
+ 		return true;
+ 	}
+ 
+@@ -102,10 +102,22 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
+ static bool sugov_update_next_freq(struct sugov_policy *sg_policy, u64 time,
+ 				   unsigned int next_freq)
  {
- 	/*
- 	 * This program might be calling bpf_trace_printk,
-@@ -405,10 +405,11 @@ static void __set_printk_clr_event(void)
- 	if (trace_set_clr_event("bpf_trace", "bpf_trace_printk", 1))
- 		pr_warn_ratelimited("could not enable bpf_trace_printk events");
- }
-+static DECLARE_WORK(set_printk_work, __set_printk_clr_event);
+-	if (sg_policy->need_freq_update)
++	if (sg_policy->need_freq_update) {
+ 		sg_policy->need_freq_update = false;
+-	else if (sg_policy->next_freq == next_freq)
++		/*
++		 * The policy limits have changed, but if the return value of
++		 * cpufreq_driver_resolve_freq() after applying the new limits
++		 * is still equal to the previously selected frequency, the
++		 * driver callback need not be invoked unless the driver
++		 * specifically wants that to happen on every update of the
++		 * policy limits.
++		 */
++		if (sg_policy->next_freq == next_freq &&
++		    !cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS))
++			return false;
++	} else if (sg_policy->next_freq == next_freq) {
+ 		return false;
++	}
  
- const struct bpf_func_proto *bpf_get_trace_printk_proto(void)
- {
--	__set_printk_clr_event();
-+	schedule_work(&set_printk_work);
- 	return &bpf_trace_printk_proto;
- }
- 
-@@ -451,7 +452,7 @@ static const struct bpf_func_proto bpf_trace_vprintk_proto = {
- 
- const struct bpf_func_proto *bpf_get_trace_vprintk_proto(void)
- {
--	__set_printk_clr_event();
-+	schedule_work(&set_printk_work);
- 	return &bpf_trace_vprintk_proto;
- }
- 
+ 	sg_policy->next_freq = next_freq;
+ 	sg_policy->last_freq_update_time = time;
 -- 
 2.39.5
 
