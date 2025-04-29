@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-138991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E50AA3D71
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EFADAA3D76
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C7469A0AEC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:58:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EF949A20DD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15440256981;
-	Tue, 29 Apr 2025 23:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4918C255F3F;
+	Tue, 29 Apr 2025 23:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QUhNe/vy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GFH9Tp0L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35D425696C;
-	Tue, 29 Apr 2025 23:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB5C256994;
+	Tue, 29 Apr 2025 23:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745970677; cv=none; b=Q99BAc8G9Kuo1JsQVcIkAu97kQ9rQwEmr2srx86ZCijvWyNII+YkHb8b+VWFiSA3ZC1d+pFhT2NITsWr9QTq88oaLK9NqJuOESJslkUWja0eIeOM7BjbRV2BhTt+tAixSZiSZuYTVzUSq1jZGMK6Ut81hZH8i0lq3c3oUxXPLy4=
+	t=1745970679; cv=none; b=gvZaWiG57CWJS/AUZmgHGSvGIQ7PMfB0UmHSJFaYq/XCucfVNHh+qahn50WesCvtDEodOFWJti+nD0y6JAamiR6De6eyZI4vZElV2BPfBDWMKyZx/g4nlyec9gZbWSfGlISW90hEvzvKTQ4xBY1HeBNuKo5LG/Sd6WtXuQQjfWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745970677; c=relaxed/simple;
-	bh=2gvr+tfeQlHcRGJ8gH3wuldebmB4K931xOHT8FRYLmw=;
+	s=arc-20240116; t=1745970679; c=relaxed/simple;
+	bh=hCMqzhW+XfQ1sGbaSzvh3YAc5ANAD/fo2v3VJx9zzZs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pUXVUvTNi402UDt/xgwP41ZW2IKTgQxyxZuRTWijbsXAunJGwp+3DRF0q9wV9cgE35ftkM+ahlcmeJEnikpsvANzl9Zh1u+FK/GC3rlbvqwNW8L4GpNXnHvtz1N8qiOvhjR6IvXA5mb0SXaRlqIWaLz+SAQ9wLP/dACqBX6J69A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QUhNe/vy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DC9C4CEEE;
-	Tue, 29 Apr 2025 23:51:16 +0000 (UTC)
+	 MIME-Version; b=UcG0DzPMDcKS17BNIM17rFG7FyjN9s5mXYYLe9w0wgoycN7kfk5o4mp4OifXqTXx8OjQt75+mYcgdyWcDh+d4DxpAayKVVQ52BOdblqwZwsT/+gZd5dp8DKFsDiV33A4Vf7kSCuSKVv9SKE2mKkmxgLRiRCgMyZlWwTYU7oOfHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GFH9Tp0L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1338BC4CEEE;
+	Tue, 29 Apr 2025 23:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745970677;
-	bh=2gvr+tfeQlHcRGJ8gH3wuldebmB4K931xOHT8FRYLmw=;
+	s=k20201202; t=1745970678;
+	bh=hCMqzhW+XfQ1sGbaSzvh3YAc5ANAD/fo2v3VJx9zzZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUhNe/vyjSfqZzaul6H81bvbh7yrnF3KcdfxDb5Wu9HfcbuOEI3OEoGQ8fyWSEsyU
-	 1UKul/jUuk3qlq+I1l6HWU3kWDz57Qvrj56vKDau5SzaVQp3n7QbCNn09ntSD0N2Qz
-	 UXYtn3OhkhMorJQmhSiJED9Nk76PTMwD/iwGbafx8BD7s0yRZ5iQ3JRF9bCmiPyi64
-	 LdGLUDwOLqSjHljhefS0QSBLW3bLvU5mQWQRhhfz7rb5t+kOZYtI38T1c/ZcrOX8Hy
-	 ULsurxf1LJixtWdw10uVkjQTMJ7IVo1jFxpvlPfpwgMiVLEJqV83wqXU+NWY/XRAjO
-	 h+InWE/LXLYLg==
+	b=GFH9Tp0LH6wckso2DdsqoFiS12EPRXHwYa9TUx10HEZXe/ZDRguvQMk7z1PPDbcPo
+	 RKX1tsenKJQcrdZtp1hP1sJP6fJuxwKL2xyn3JFiFyEFhFuT3wE5AgCutMKHQcaPbI
+	 1a6RQyEY/zu3FidqRBFEQ4P6zRdorvQ1fXBG/Y1g8TAoHNUPiDrD0oi7PxTEfgaQuq
+	 TWbx4GzPZL6ekjLMfgwZGC4gsfCZDVWh0Jh2iYyZNU/apGlPtVm2IVWgBOe+3xNyhu
+	 oyUxeU1nvRkNH0WS0ZQMUJ1zpesMEmLQPiz5K3Bl4Cny57DUMbEOmvNeuQUkcc51nv
+	 AWYT73j2lmdBQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Darrick J. Wong" <djwong@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+Cc: Pavel Begunkov <asml.silence@gmail.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 36/39] block: hoist block size validation code to a separate function
-Date: Tue, 29 Apr 2025 19:50:03 -0400
-Message-Id: <20250429235006.536648-36-sashal@kernel.org>
+	io-uring@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 37/39] io_uring: don't duplicate flushing in io_req_post_cqe
+Date: Tue, 29 Apr 2025 19:50:04 -0400
+Message-Id: <20250429235006.536648-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250429235006.536648-1-sashal@kernel.org>
 References: <20250429235006.536648-1-sashal@kernel.org>
@@ -67,87 +65,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.4
 Content-Transfer-Encoding: 8bit
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit e03463d247ddac66e71143468373df3d74a3a6bd ]
+[ Upstream commit 5e16f1a68d28965c12b6fa227a306fef8a680f84 ]
 
-Hoist the block size validation code to bdev_validate_blocksize so that
-we can call it from filesystems that don't care about the bdev pagecache
-manipulations of set_blocksize.
+io_req_post_cqe() sets submit_state.cq_flush so that
+*flush_completions() can take care of batch commiting CQEs. Don't commit
+it twice by using __io_cq_unlock_post().
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/174543795720.4139148.840349813093799165.stgit@frogsfrogsfrogs
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/41c416660c509cee676b6cad96081274bcb459f3.1745493861.git.asml.silence@gmail.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bdev.c           | 33 +++++++++++++++++++++++++++------
- include/linux/blkdev.h |  1 +
- 2 files changed, 28 insertions(+), 6 deletions(-)
+ io_uring/io_uring.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/block/bdev.c b/block/bdev.c
-index 06b8cab31d759..e5af18bc43082 100644
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -150,18 +150,39 @@ static void set_init_blocksize(struct block_device *bdev)
- 	BD_INODE(bdev)->i_blkbits = blksize_bits(bsize);
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 7370f763346f4..1421ada5b0330 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -877,10 +877,15 @@ bool io_req_post_cqe(struct io_kiocb *req, s32 res, u32 cflags)
+ 	lockdep_assert(!io_wq_current_is_worker());
+ 	lockdep_assert_held(&ctx->uring_lock);
+ 
+-	__io_cq_lock(ctx);
+-	posted = io_fill_cqe_aux(ctx, req->cqe.user_data, res, cflags);
++	if (!ctx->lockless_cq) {
++		spin_lock(&ctx->completion_lock);
++		posted = io_fill_cqe_aux(ctx, req->cqe.user_data, res, cflags);
++		spin_unlock(&ctx->completion_lock);
++	} else {
++		posted = io_fill_cqe_aux(ctx, req->cqe.user_data, res, cflags);
++	}
++
+ 	ctx->submit_state.cq_flush = true;
+-	__io_cq_unlock_post(ctx);
+ 	return posted;
  }
  
--int set_blocksize(struct file *file, int size)
-+/**
-+ * bdev_validate_blocksize - check that this block size is acceptable
-+ * @bdev:	blockdevice to check
-+ * @block_size:	block size to check
-+ *
-+ * For block device users that do not use buffer heads or the block device
-+ * page cache, make sure that this block size can be used with the device.
-+ *
-+ * Return: On success zero is returned, negative error code on failure.
-+ */
-+int bdev_validate_blocksize(struct block_device *bdev, int block_size)
- {
--	struct inode *inode = file->f_mapping->host;
--	struct block_device *bdev = I_BDEV(inode);
--
--	if (blk_validate_block_size(size))
-+	if (blk_validate_block_size(block_size))
- 		return -EINVAL;
- 
- 	/* Size cannot be smaller than the size supported by the device */
--	if (size < bdev_logical_block_size(bdev))
-+	if (block_size < bdev_logical_block_size(bdev))
- 		return -EINVAL;
- 
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(bdev_validate_blocksize);
-+
-+int set_blocksize(struct file *file, int size)
-+{
-+	struct inode *inode = file->f_mapping->host;
-+	struct block_device *bdev = I_BDEV(inode);
-+	int ret;
-+
-+	ret = bdev_validate_blocksize(bdev, size);
-+	if (ret)
-+		return ret;
-+
- 	if (!file->private_data)
- 		return -EINVAL;
- 
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index d37751789bf58..ef98bcca7f5f7 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1593,6 +1593,7 @@ static inline void bio_end_io_acct(struct bio *bio, unsigned long start_time)
- 	return bio_end_io_acct_remapped(bio, start_time, bio->bi_bdev);
- }
- 
-+int bdev_validate_blocksize(struct block_device *bdev, int block_size);
- int set_blocksize(struct file *file, int size);
- 
- int lookup_bdev(const char *pathname, dev_t *dev);
 -- 
 2.39.5
 
