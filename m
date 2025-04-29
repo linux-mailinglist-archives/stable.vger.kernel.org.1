@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-137554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF75AA13EE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D16FDAA12C7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:58:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3EAA188570A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A873B98306B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE4823F413;
-	Tue, 29 Apr 2025 17:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655C1253341;
+	Tue, 29 Apr 2025 16:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vow9x6wR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJVOxU3D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF785211A0B;
-	Tue, 29 Apr 2025 17:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E01253332;
+	Tue, 29 Apr 2025 16:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946416; cv=none; b=NnuARJxG7QC5sUSqjmUrW4AJ+2iyhsHyI6MD/swMEK1mxe61NOua3ZlstIDXfiGW40pzbNpzf1ZTB29ITSOGZlnxwGvNxk+5wVu097lRLudFysXDl1oenXjNi66y92fSWj1WIPNr9OFY8FzR2TfEKQodE+17fHGqZvfkqt4NK18=
+	t=1745945655; cv=none; b=sdIBabWEpqgFqw64qJKxEgSN0irhE+6767Y6QEDG/Z7AJdJ7Jb9JsWdC5QfdmzpfQ7OkwMZZmfamxzCh2fmVk47u5EKBCm9Fx3mrcbiihSwQFCJaYGC7vvp9atq8vixYlPZ86dVBHPJTP7HNQkXtjmoYGhMRgrmVwJfKYiw+x0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946416; c=relaxed/simple;
-	bh=CQLW378xvJruMczJE9YN2LAusCHSv+a/2Vjlk2vUjz4=;
+	s=arc-20240116; t=1745945655; c=relaxed/simple;
+	bh=mtu5abSfSNuA3fbPjCi03g65PR7d5kS2lJugn4lUXw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QDvswe+01FFIvBpFgoLS5l16XPWGqQkOr6qvD+SrpTpccsbi3BTosQLINaYk6c9PonUWq85SIi2pgQLxWbYRLaLF3GegqusGjIySp2PhbFpJTb/jgF45mKaxCeqU8Sg/lfwBBhUJ9GC20aez4qbhDjDDTrrdQdLvyElAQ5hWb28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vow9x6wR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B734C4CEE3;
-	Tue, 29 Apr 2025 17:06:55 +0000 (UTC)
+	 MIME-Version; b=M3nH1s4RAI1rgwq45lXoJfBGC63fZkf/8XTJgHB9p1q74LOPr6TAEoeBe2WV/4kvnS/j55RSnjEpHIa4QnS/oiICaj6ke/o058gqQuThTKROlnhG8DESJ/QTcUwnSdvo0MVVok2wXHW3RPJOUPXuVfN4VQZgTYRdzgOaEhCIiIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJVOxU3D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366E4C4CEE3;
+	Tue, 29 Apr 2025 16:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946415;
-	bh=CQLW378xvJruMczJE9YN2LAusCHSv+a/2Vjlk2vUjz4=;
+	s=korg; t=1745945654;
+	bh=mtu5abSfSNuA3fbPjCi03g65PR7d5kS2lJugn4lUXw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vow9x6wR1VUIkBUV7LzwpjmfDoZ9kZWDztSqsNdEdc1ZqwykZHSLSjCHFg7LJGoUO
-	 x2N/F20dQBkQ0qNIqmnDuzCbAmyBIGhaDU6Yga9KDju5dPpqoO7QthCxeVwvuzhPRD
-	 ULLSItWAXcndUXJXl3gx3vfafEZzS0LL5AvIyKsA=
+	b=gJVOxU3DENqNZ66JIfkwxp67unHlNWQQx31BZGafOplJsUf7T6eOUjWE2x4aFbgtS
+	 /eFzdtczKpPA9ws8X0+3qA5uCaPYV+t/Z3lbMfpZuxdyBX6Xz3ZatG+hGAb/hG+UXa
+	 f8D1I5o636mH6C8nZoskMBOVC07+VgRzKKBxuP7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Amit Shah <amit.shah@amd.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 260/311] x86/bugs: Dont fill RSB on VMEXIT with eIBRS+retpoline
+	Miao Li <limiao@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.4 156/179] usb: quirks: add DELAY_INIT quirk for Silicon Motion Flash Drive
 Date: Tue, 29 Apr 2025 18:41:37 +0200
-Message-ID: <20250429161131.669380114@linuxfoundation.org>
+Message-ID: <20250429161055.692668133@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,69 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Miao Li <limiao@kylinos.cn>
 
-[ Upstream commit 18bae0dfec15b24ec14ca17dc18603372f5f254f ]
+commit 2932b6b547ec36ad2ed60fbf2117c0e46bb7d40a upstream.
 
-eIBRS protects against guest->host RSB underflow/poisoning attacks.
-Adding retpoline to the mix doesn't change that.  Retpoline has a
-balanced CALL/RET anyway.
+Silicon Motion Flash Drive connects to Huawei hisi platforms and
+performs a system reboot test for two thousand circles, it will
+randomly work incorrectly on boot, set DELAY_INIT quirk can workaround
+this issue.
 
-So the current full RSB filling on VMEXIT with eIBRS+retpoline is
-overkill.  Disable it or do the VMEXIT_LITE mitigation if needed.
-
-Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Reviewed-by: Amit Shah <amit.shah@amd.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
-Link: https://lore.kernel.org/r/84a1226e5c9e2698eae1b5ade861f1b8bf3677dc.1744148254.git.jpoimboe@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Miao Li <limiao@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index a5d0998d76049..41b4d9018633e 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1604,20 +1604,20 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
- 	case SPECTRE_V2_NONE:
- 		return;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -380,6 +380,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0904, 0x6103), .driver_info =
+ 			USB_QUIRK_LINEAR_FRAME_INTR_BINTERVAL },
  
--	case SPECTRE_V2_EIBRS_LFENCE:
- 	case SPECTRE_V2_EIBRS:
-+	case SPECTRE_V2_EIBRS_LFENCE:
-+	case SPECTRE_V2_EIBRS_RETPOLINE:
- 		if (boot_cpu_has_bug(X86_BUG_EIBRS_PBRSB)) {
--			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 			pr_info("Spectre v2 / PBRSB-eIBRS: Retire a single CALL on VMEXIT\n");
-+			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 		}
- 		return;
- 
--	case SPECTRE_V2_EIBRS_RETPOLINE:
- 	case SPECTRE_V2_RETPOLINE:
- 	case SPECTRE_V2_LFENCE:
- 	case SPECTRE_V2_IBRS:
--		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
- 		pr_info("Spectre v2 / SpectreRSB : Filling RSB on VMEXIT\n");
-+		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
- 		return;
- 	}
- 
--- 
-2.39.5
-
++	/* Silicon Motion Flash Drive */
++	{ USB_DEVICE(0x090c, 0x1000), .driver_info = USB_QUIRK_DELAY_INIT },
++
+ 	/* Sound Devices USBPre2 */
+ 	{ USB_DEVICE(0x0926, 0x0202), .driver_info =
+ 			USB_QUIRK_ENDPOINT_BLACKLIST },
 
 
 
