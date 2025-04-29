@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-137613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717BEAA1460
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B43AA18AB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB7013B379F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6566B1BC68B2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B684924728A;
-	Tue, 29 Apr 2025 17:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F66F253358;
+	Tue, 29 Apr 2025 18:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fty/GdgD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbYtpjWO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750C222A81D;
-	Tue, 29 Apr 2025 17:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5CF25228D;
+	Tue, 29 Apr 2025 18:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946595; cv=none; b=GIte3OLEBwDYrNnN/bAjfJ97xcjZgY9ZD7qs1mgfm3x/ghb7pzH1n3ELuHFDieEA+8nazCix1zZyXbfSh+DhIRVN1Inq7Oy/pGCY0NUk+VdYpM3LHKooAMCWVfVpKDv5waKDNUMm3ACbSH7bfA6XJgB7GnrGhNuII9F2JfE95io=
+	t=1745949734; cv=none; b=LKCLPoCEAuDipvIeJ5t40+tNfImlMb/lN8QSsVyo1L1U0qxDXXti0NFTfcZHNVZY8oVEUkMkiJE6xaFuuK6jZdoGLBjVEosoc67qqozsx5ZSILBDcEuVRBS+WcBmvIOUjaoQKxLJ2XZRvaMpbIGe8CuZzHZM2wiJfvJV8ho3DQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946595; c=relaxed/simple;
-	bh=dR9eVEHnys1vpJppULb1+Wmdwlh35JxDFjRaINSwJ0E=;
+	s=arc-20240116; t=1745949734; c=relaxed/simple;
+	bh=XKduWQlQ8zUvVoeEYdZCkYqW8QEvRJM4Gvw6qe8k8tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHrU7FSt7GGWjBbLSXawcRg331yWz+/4To4SCmUOtsBVHagV1udBkkhBjTHws9JdDjWbo5RTwLe+zBz7v8DP6/q4LKqrXM2kHRCWdxKclA1m95qZ1GNUN/tSvzZLlg1qKT1tvEHVbrI9w/CTU/obOzndsGGL/SmX9qQlzGRa4po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fty/GdgD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D92C4CEE3;
-	Tue, 29 Apr 2025 17:09:54 +0000 (UTC)
+	 MIME-Version; b=OCgAQUBJbo5hbyzryJjXP+1fyrlLjTbLkVCHhXaIVtvYyVW0bKtzI7Llc3+MYA1svOAgmQ3DV5SE84tzNIvl4N+9C/p6UueC7x/B57LRBUubk+/04OYqhkuYKBVZJFHrESfrX8HzFnsoRraDdiqDmVfRYKkX9aOjObhfdHfhhMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbYtpjWO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC4DC4CEF4;
+	Tue, 29 Apr 2025 18:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946594;
-	bh=dR9eVEHnys1vpJppULb1+Wmdwlh35JxDFjRaINSwJ0E=;
+	s=korg; t=1745949733;
+	bh=XKduWQlQ8zUvVoeEYdZCkYqW8QEvRJM4Gvw6qe8k8tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fty/GdgDC03W9O2bwRHZss5NBYL65pessvOvgCllxt/VXceU/nJGjplEi5OMQAAiV
-	 j2JAzkMbsge9skmY9rYWZXwQTFE0oVjgV3pI8vL2KQOUblkKkNvfV/hiWFU+RwegQv
-	 7YVi7/AqXFzypZ1rw7lEM8e78PYiDuIHcQWzxU/E=
+	b=CbYtpjWOoqZJXKkmyQw/q2sCsaPHSoc9dl7t0l1fc5NaOwvFJHPPYk3lF8jscGPZf
+	 dqchp+XWp+DAQZjMEoL6lh7/4uaJ0xFX5v8YVo9k54qqZWFIjXvTK4MvpHnjJifl32
+	 NyWADWCsI9IzrOrzGQChe6MG2FTyBcmLvYHp+/D8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.14 311/311] crypto: Kconfig - Select LIB generic option
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 040/167] ASoC: qcom: q6dsp: add support to more display ports
 Date: Tue, 29 Apr 2025 18:42:28 +0200
-Message-ID: <20250429161133.731791691@linuxfoundation.org>
+Message-ID: <20250429161053.377987662@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-commit 98330b9a61506de7df0d1725122111909c157864 upstream.
+[ Upstream commit 90848a2557fec0a6f1a35e58031a1f6f5e44e7d6 ]
 
-Select the generic LIB options if the Crypto API algorithm is
-enabled.  Otherwise this may lead to a build failure as the Crypto
-API algorithm always uses the generic implementation.
+Existing code base only supports one display port, this patch adds
+support upto 8 display ports. This support is required to allow platforms
+like X13s which have 3 display ports, and some of the Qualcomm SoCs
+there are upto 7 Display ports.
 
-Fixes: 17ec3e71ba79 ("crypto: lib/Kconfig - Hide arch options from user")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202503022113.79uEtUuy-lkp@intel.com/
-Closes: https://lore.kernel.org/oe-kbuild-all/202503022115.9OOyDR5A-lkp@intel.com/
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org
+Link: https://lore.kernel.org/r/20230509112202.21471-4-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org
+Stable-dep-of: a31a4934b31f ("ASoC: qcom: Fix sc7280 lpass potential buffer overflow")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/Kconfig |    3 +++
- 1 file changed, 3 insertions(+)
+ .../sound/qcom,q6dsp-lpass-ports.h            |  8 ++++
+ sound/soc/qcom/qdsp6/q6dsp-lpass-ports.c      | 43 ++++++++++++-------
+ 2 files changed, 35 insertions(+), 16 deletions(-)
 
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -317,6 +317,7 @@ config CRYPTO_ECRDSA
- config CRYPTO_CURVE25519
- 	tristate "Curve25519"
- 	select CRYPTO_KPP
-+	select CRYPTO_LIB_CURVE25519_GENERIC
- 	select CRYPTO_LIB_CURVE25519_INTERNAL
- 	help
- 	  Curve25519 elliptic curve (RFC7748)
-@@ -615,6 +616,7 @@ config CRYPTO_ARC4
+diff --git a/include/dt-bindings/sound/qcom,q6dsp-lpass-ports.h b/include/dt-bindings/sound/qcom,q6dsp-lpass-ports.h
+index 9f7c5103bc82b..39f203256c4f6 100644
+--- a/include/dt-bindings/sound/qcom,q6dsp-lpass-ports.h
++++ b/include/dt-bindings/sound/qcom,q6dsp-lpass-ports.h
+@@ -131,6 +131,14 @@
+ #define RX_CODEC_DMA_RX_7	126
+ #define QUINARY_MI2S_RX		127
+ #define QUINARY_MI2S_TX		128
++#define DISPLAY_PORT_RX_0	DISPLAY_PORT_RX
++#define DISPLAY_PORT_RX_1	129
++#define DISPLAY_PORT_RX_2	130
++#define DISPLAY_PORT_RX_3	131
++#define DISPLAY_PORT_RX_4	132
++#define DISPLAY_PORT_RX_5	133
++#define DISPLAY_PORT_RX_6	134
++#define DISPLAY_PORT_RX_7	135
  
- config CRYPTO_CHACHA20
- 	tristate "ChaCha"
-+	select CRYPTO_LIB_CHACHA_GENERIC
- 	select CRYPTO_LIB_CHACHA_INTERNAL
- 	select CRYPTO_SKCIPHER
- 	help
-@@ -936,6 +938,7 @@ config CRYPTO_POLYVAL
- config CRYPTO_POLY1305
- 	tristate "Poly1305"
- 	select CRYPTO_HASH
-+	select CRYPTO_LIB_POLY1305_GENERIC
- 	select CRYPTO_LIB_POLY1305_INTERNAL
- 	help
- 	  Poly1305 authenticator algorithm (RFC7539)
+ #define LPASS_CLK_ID_PRI_MI2S_IBIT	1
+ #define LPASS_CLK_ID_PRI_MI2S_EBIT	2
+diff --git a/sound/soc/qcom/qdsp6/q6dsp-lpass-ports.c b/sound/soc/qcom/qdsp6/q6dsp-lpass-ports.c
+index f67c16fd90b9b..ac937a6bf909b 100644
+--- a/sound/soc/qcom/qdsp6/q6dsp-lpass-ports.c
++++ b/sound/soc/qcom/qdsp6/q6dsp-lpass-ports.c
+@@ -79,6 +79,22 @@
+ 		.id = did,						\
+ 	}
+ 
++#define Q6AFE_DP_RX_DAI(did) {						\
++		.playback = {						\
++			.stream_name = #did" Playback",			\
++			.rates = SNDRV_PCM_RATE_48000 |			\
++				SNDRV_PCM_RATE_96000 |			\
++				SNDRV_PCM_RATE_192000,			\
++			.formats = SNDRV_PCM_FMTBIT_S16_LE |		\
++				   SNDRV_PCM_FMTBIT_S24_LE,		\
++			.channels_min = 2,				\
++			.channels_max = 8,				\
++			.rate_min = 48000,				\
++			.rate_max = 192000,				\
++		},							\
++		.name = #did,						\
++		.id = did,						\
++	}
+ 
+ static struct snd_soc_dai_driver q6dsp_audio_fe_dais[] = {
+ 	{
+@@ -528,22 +544,14 @@ static struct snd_soc_dai_driver q6dsp_audio_fe_dais[] = {
+ 	Q6AFE_TDM_CAP_DAI("Quinary", 5, QUINARY_TDM_TX_5),
+ 	Q6AFE_TDM_CAP_DAI("Quinary", 6, QUINARY_TDM_TX_6),
+ 	Q6AFE_TDM_CAP_DAI("Quinary", 7, QUINARY_TDM_TX_7),
+-	{
+-		.playback = {
+-			.stream_name = "Display Port Playback",
+-			.rates = SNDRV_PCM_RATE_48000 |
+-				 SNDRV_PCM_RATE_96000 |
+-				 SNDRV_PCM_RATE_192000,
+-			.formats = SNDRV_PCM_FMTBIT_S16_LE |
+-				   SNDRV_PCM_FMTBIT_S24_LE,
+-			.channels_min = 2,
+-			.channels_max = 8,
+-			.rate_max =     192000,
+-			.rate_min =	48000,
+-		},
+-		.id = DISPLAY_PORT_RX,
+-		.name = "DISPLAY_PORT",
+-	},
++	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_0),
++	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_1),
++	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_2),
++	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_3),
++	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_4),
++	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_5),
++	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_6),
++	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_7),
+ 	Q6AFE_CDC_DMA_RX_DAI(WSA_CODEC_DMA_RX_0),
+ 	Q6AFE_CDC_DMA_TX_DAI(WSA_CODEC_DMA_TX_0),
+ 	Q6AFE_CDC_DMA_RX_DAI(WSA_CODEC_DMA_RX_1),
+@@ -603,6 +611,9 @@ struct snd_soc_dai_driver *q6dsp_audio_ports_set_config(struct device *dev,
+ 		case DISPLAY_PORT_RX:
+ 			q6dsp_audio_fe_dais[i].ops = cfg->q6hdmi_ops;
+ 			break;
++		case DISPLAY_PORT_RX_1 ... DISPLAY_PORT_RX_7:
++			q6dsp_audio_fe_dais[i].ops = cfg->q6hdmi_ops;
++			break;
+ 		case SLIMBUS_0_RX ... SLIMBUS_6_TX:
+ 			q6dsp_audio_fe_dais[i].ops = cfg->q6slim_ops;
+ 			break;
+-- 
+2.39.5
+
 
 
 
