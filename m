@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-137550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43479AA13CF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F192CAA12A0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 377B916DBDE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FF461BA447B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB7923C8D6;
-	Tue, 29 Apr 2025 17:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8A324C067;
+	Tue, 29 Apr 2025 16:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xro++UsM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPssi4Yl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3AF211A0B;
-	Tue, 29 Apr 2025 17:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA4B2472AC;
+	Tue, 29 Apr 2025 16:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946403; cv=none; b=fpLu6wTY0fHX4NAmrqoiTCVyrP6xNcf+OrVSAjK9SYVM9mK8AuvFCWL3xTddH1Ug+ipA3/cMUpy/Ju8scAVcwtTFi2bTnHdB/eQqLUelr3y1xp8QHOD4IcQJ/+WksGvCMHEsxIjiL41PzuzSy4OS/F3AP4362lEKVriJG/r2f+E=
+	t=1745945639; cv=none; b=S8+6CXonoRPA1gYfzBUVnn3rWuFG7Q0lzdRtaYKG9Nc7k3Okz8bOppcj3owWi9s71vcYlAYLV8IKi/TxrABwNpFsLGmNWxJX2j5PErnRy0I57qigtG6UHF8rqVlTd6g0YhgfIzxDuiNVBkK9q1B/CtPYGXI5ESnnIjAc5UME4KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946403; c=relaxed/simple;
-	bh=6pTgEBWSv07B/w52ryHWKQRKN8TKUW8iOocALmohR0o=;
+	s=arc-20240116; t=1745945639; c=relaxed/simple;
+	bh=Iz2699moQUojacuLDXOw2JhOY1C5Gs+tdbzo3AG4rS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=euCPr944QImlURcfTKo4av/M7dUzikP3yfQusFCTm1BR30eGyINFXdAxL9Qo0tVJAk23DZQIOI0bN/ezgW0aG954WD9VY9DUmD/zbFtjn5+1NM+K1Y9GZ5ar57xexTUgcwBwJQOszBMqyYfbXzFtA2KQBhx4ffZ8d4hxR3lWB8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xro++UsM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E62DC4CEE3;
-	Tue, 29 Apr 2025 17:06:43 +0000 (UTC)
+	 MIME-Version; b=V1xBpbGKWi4dJ+v93MpkKaxXh/z3uS4RWKT/xXArZ8SZpSKdFmw2j4k15lO65smsM1//lyRetWLw7MGXTpa8+2bLWHaq27WoxJRoZieGZ1lDMt/0SrKk/0pCD6BRskQocs3XBS+PFMGq+Qg+iRjHt8Wn1uPVyQkUyZUkoKOwfWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPssi4Yl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FF9C4CEE3;
+	Tue, 29 Apr 2025 16:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946403;
-	bh=6pTgEBWSv07B/w52ryHWKQRKN8TKUW8iOocALmohR0o=;
+	s=korg; t=1745945639;
+	bh=Iz2699moQUojacuLDXOw2JhOY1C5Gs+tdbzo3AG4rS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xro++UsMfa2EDEcqWKoXtKgRvtoNfEG9Beh59kCMppo3Hk5YnyWDYhoTfLhIt/f+l
-	 uAWOLSYvdeJwijd1GcnSVkoRIAJKvd/1AXtiec2gkgsAxUWNdJmT+lFhhLl+XI4Bae
-	 FfObubn+5VHaxi8qcnyY5uqHuiNsNK1xzJuhoQxY=
+	b=KPssi4YlACKFD140i7MVaYzCAul+EAwMLoVVdJsj6OEFu3ANdRwD45WcG8T+DfeSi
+	 XYjdWpty1X48P3gV507xNj4S5cVS/TS6fwhZnKB08bWE99JB0awiYTzkZmvz6PBC/P
+	 Pi5iNrkWS0RpHeXLTq7lyTxcrs/8leY3hQKrvrys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 256/311] gpiolib: of: Move Atmel HSMCI quirk up out of the regulator comment
+	Craig Hesling <craig@hesling.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 152/179] USB: serial: simple: add OWON HDS200 series oscilloscope support
 Date: Tue, 29 Apr 2025 18:41:33 +0200
-Message-ID: <20250429161131.508515512@linuxfoundation.org>
+Message-ID: <20250429161055.533332082@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Craig Hesling <craig@hesling.com>
 
-[ Upstream commit b8c7a1ac884cc267d1031f8de07f1a689a69fbab ]
+commit 4cc01410e1c1dd075df10f750775c81d1cb6672b upstream.
 
-The regulator comment in of_gpio_set_polarity_by_property()
-made on top of a couple of the cases, while Atmel HSMCI quirk
-is not related to that. Make it clear by moving Atmel HSMCI
-quirk up out of the scope of the regulator comment.
+Add serial support for OWON HDS200 series oscilloscopes and likely
+many other pieces of OWON test equipment.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250402122058.1517393-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+OWON HDS200 series devices host two USB endpoints, designed to
+facilitate bidirectional SCPI. SCPI is a predominately ASCII text
+protocol for test/measurement equipment. Having a serial/tty interface
+for these devices lowers the barrier to entry for anyone trying to
+write programs to communicate with them.
+
+The following shows the USB descriptor for the OWON HDS272S running
+firmware V5.7.1:
+
+Bus 001 Device 068: ID 5345:1234 Owon PDS6062T Oscilloscope
+Negotiated speed: Full Speed (12Mbps)
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass            0 [unknown]
+  bDeviceSubClass         0 [unknown]
+  bDeviceProtocol         0
+  bMaxPacketSize0        64
+  idVendor           0x5345 Owon
+  idProduct          0x1234 PDS6062T Oscilloscope
+  bcdDevice            1.00
+  iManufacturer           1 oscilloscope
+  iProduct                2 oscilloscope
+  iSerial                 3 oscilloscope
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength       0x0029
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0x80
+      (Bus Powered)
+    MaxPower              100mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           2
+      bInterfaceClass         5 Physical Interface Device
+      bInterfaceSubClass      0 [unknown]
+      bInterfaceProtocol      0
+      iInterface              0
+      ** UNRECOGNIZED:  09 21 11 01 00 01 22 5f 00
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval              32
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x01  EP 1 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval              32
+Device Status:     0x0000
+  (Bus Powered)
+
+OWON appears to be using the same USB Vendor and Product ID for many
+of their oscilloscopes. Looking at the discussion about the USB
+vendor/product ID, in the link bellow, suggests that this VID/PID is
+shared with VDS, SDS, PDS, and now the HDS series oscilloscopes.
+Available documentation for these devices seems to indicate that all
+use a similar SCPI protocol, some with RS232 options. It is likely that
+this same simple serial setup would work correctly for them all.
+
+Link: https://usb-ids.gowdy.us/read/UD/5345/1234
+Signed-off-by: Craig Hesling <craig@hesling.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-of.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/serial/usb-serial-simple.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index 176e9142fd8f8..56f13e4fa3614 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -259,6 +259,9 @@ static void of_gpio_set_polarity_by_property(const struct device_node *np,
- 		{ "fsl,imx8qm-fec",  "phy-reset-gpios", "phy-reset-active-high" },
- 		{ "fsl,s32v234-fec", "phy-reset-gpios", "phy-reset-active-high" },
- #endif
-+#if IS_ENABLED(CONFIG_MMC_ATMELMCI)
-+		{ "atmel,hsmci",       "cd-gpios",     "cd-inverted" },
-+#endif
- #if IS_ENABLED(CONFIG_PCI_IMX6)
- 		{ "fsl,imx6q-pcie",  "reset-gpio", "reset-gpio-active-high" },
- 		{ "fsl,imx6sx-pcie", "reset-gpio", "reset-gpio-active-high" },
-@@ -284,9 +287,6 @@ static void of_gpio_set_polarity_by_property(const struct device_node *np,
- #if IS_ENABLED(CONFIG_REGULATOR_GPIO)
- 		{ "regulator-gpio",    "enable-gpio",  "enable-active-high" },
- 		{ "regulator-gpio",    "enable-gpios", "enable-active-high" },
--#endif
--#if IS_ENABLED(CONFIG_MMC_ATMELMCI)
--		{ "atmel,hsmci",       "cd-gpios",     "cd-inverted" },
- #endif
- 	};
- 	unsigned int i;
--- 
-2.39.5
-
+--- a/drivers/usb/serial/usb-serial-simple.c
++++ b/drivers/usb/serial/usb-serial-simple.c
+@@ -101,6 +101,11 @@ DEVICE(nokia, NOKIA_IDS);
+ 	{ USB_DEVICE(0x09d7, 0x0100) }	/* NovAtel FlexPack GPS */
+ DEVICE_N(novatel_gps, NOVATEL_IDS, 3);
+ 
++/* OWON electronic test and measurement equipment driver */
++#define OWON_IDS()			\
++	{ USB_DEVICE(0x5345, 0x1234) } /* HDS200 oscilloscopes and others */
++DEVICE(owon, OWON_IDS);
++
+ /* Siemens USB/MPI adapter */
+ #define SIEMENS_IDS()			\
+ 	{ USB_DEVICE(0x908, 0x0004) }
+@@ -135,6 +140,7 @@ static struct usb_serial_driver * const
+ 	&motorola_tetra_device,
+ 	&nokia_device,
+ 	&novatel_gps_device,
++	&owon_device,
+ 	&siemens_mpi_device,
+ 	&suunto_device,
+ 	&vivopay_device,
+@@ -154,6 +160,7 @@ static const struct usb_device_id id_tab
+ 	MOTOROLA_TETRA_IDS(),
+ 	NOKIA_IDS(),
+ 	NOVATEL_IDS(),
++	OWON_IDS(),
+ 	SIEMENS_IDS(),
+ 	SUUNTO_IDS(),
+ 	VIVOPAY_IDS(),
 
 
 
