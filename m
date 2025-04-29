@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-137721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29CDAA14A2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:18:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A53DCAA17D5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D37DE16907B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EE819A4E56
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09712253F20;
-	Tue, 29 Apr 2025 17:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7C522AE68;
+	Tue, 29 Apr 2025 17:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vvNRuZs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LR9YupBb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA23C253F12;
-	Tue, 29 Apr 2025 17:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6727421ABC1;
+	Tue, 29 Apr 2025 17:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946927; cv=none; b=gePvf56mfKzEtFQ8limhEiTt+y4nDNY34qQUrp9D7MppkmvZHKfuSOTAKDjdWXvJQli3h2SUirt/U2+6Uh4d7CLrX9/aVq6Zt8h5mKF6y/47CVHvOLdEp4TjToT/GLOvMH1eLtQUyLTAPLMHGqMJ9d1/wnL4shWObJj5/Rq4gF0=
+	t=1745948865; cv=none; b=k6Vd/gJpvqd9YkO7stdHosbUueSSxY1faHe/3aaShF8pjNiBhKAxcJEv4s7DNdFI8ql6aFDGpEw9erewPTob//bJjf1OeGuWCOssUr0aL6mdki0whz2LrYkQ2VwoZnuIv3HGFXpXHVR5K/vy3R4d+LXGu4OGE1D4gAgeQus6vaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946927; c=relaxed/simple;
-	bh=UfX4OsDOGgMOsl3jiLNVK1D7aMZlq13Vn7I4afRVf6s=;
+	s=arc-20240116; t=1745948865; c=relaxed/simple;
+	bh=+40JxMBeaQW3B/SnF1t3OPOZpRRXVVb4XJrRglF77P4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zzu7zTyHxzz0yMI8sZ8u50cEaPDMCxHB+xhphpC+eNNurujS3lvRDugZunIzhqXCcuNJ+sHqU8ngGIm2GrF17f3sDDl/v8mGvQmFd58b4mXP82jpRt+MpjksW3ee2VT4fiAgs9PMUqynRlCF3QzXPexvluUKIKGdnL80F1SNaKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vvNRuZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E82C4CEE3;
-	Tue, 29 Apr 2025 17:15:27 +0000 (UTC)
+	 MIME-Version; b=uQdDAEhsG1NpGz0jRNOl56eOqvd56Wt+gOIO910PCJSnDOeereMgB2aPNur4WfAr40WJXZ3lEMJ/IZX/O4oUN5K+HcwAyPN40afdjyzq2dSg3giJhyPnNjnNXYpTr6BZxcCeU0NWzHUcvNc0nmOp8hfbbpyAlShthHibS1RHefE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LR9YupBb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864F4C4CEE3;
+	Tue, 29 Apr 2025 17:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946927;
-	bh=UfX4OsDOGgMOsl3jiLNVK1D7aMZlq13Vn7I4afRVf6s=;
+	s=korg; t=1745948864;
+	bh=+40JxMBeaQW3B/SnF1t3OPOZpRRXVVb4XJrRglF77P4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2vvNRuZs5Bfv0Zi/NZm+LVU7ZQ9ah+F/8t7UJ67Lrb3F8U4puuNZRC+0m7f7t/Lu6
-	 1VTG+7QBo6qAfhoun+K4jC0zOhLOsg6zsacSfKZ08TEG1SsU9uGCsux3e0qDQytxAl
-	 ijMa2YeYBAzqwCLb1J/+enNet6PP7KDDR7TKkCb0=
+	b=LR9YupBb5/btY550fC+Jrejrmk2Apr5qP0xsG82uzvLc47L8uADDGYGlsHK+doIQH
+	 f5L0v/3Jspy3eK0wjrXzlWXj9nm8rcHyS2RFQGgBZvsLo+4eVmukV1BVRQwyGlWAWh
+	 XqUPWE+rcxCKYosCKnNhT36NRKKKA4DExjZcLDLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christopher S M Hall <christopher.s.hall@intel.com>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 115/286] net: openvswitch: fix nested key length validation in the set() action
+Subject: [PATCH 5.15 142/373] igc: handle the IGC_PTP_ENABLED flag correctly
 Date: Tue, 29 Apr 2025 18:40:19 +0200
-Message-ID: <20250429161112.588609840@linuxfoundation.org>
+Message-ID: <20250429161129.010189155@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Christopher S M Hall <christopher.s.hall@intel.com>
 
-[ Upstream commit 65d91192aa66f05710cfddf6a14b5a25ee554dba ]
+[ Upstream commit 26a3910afd111f7c1a96dace6dc02f3225063896 ]
 
-It's not safe to access nla_len(ovs_key) if the data is smaller than
-the netlink header.  Check that the attribute is OK first.
+All functions in igc_ptp.c called from igc_main.c should check the
+IGC_PTP_ENABLED flag. Adding check for this flag to stop and reset
+functions.
 
-Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
-Reported-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b07a9da40df1576b8048
-Tested-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Reviewed-by: Eelco Chaudron <echaudro@redhat.com>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20250412104052.2073688-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5f2958052c58 ("igc: Add basic skeleton for PTP")
+Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
+Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/flow_netlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index cff18a5bbf386..3f8f43dbf44fc 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -2834,7 +2834,8 @@ static int validate_set(const struct nlattr *a,
- 	size_t key_len;
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index 863669192301e..49f8b0b0e6586 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -1075,8 +1075,12 @@ void igc_ptp_suspend(struct igc_adapter *adapter)
+  **/
+ void igc_ptp_stop(struct igc_adapter *adapter)
+ {
++	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
++		return;
++
+ 	igc_ptp_suspend(adapter);
  
- 	/* There can be only one key in a action */
--	if (nla_total_size(nla_len(ovs_key)) != nla_len(a))
-+	if (!nla_ok(ovs_key, nla_len(a)) ||
-+	    nla_total_size(nla_len(ovs_key)) != nla_len(a))
- 		return -EINVAL;
++	adapter->ptp_flags &= ~IGC_PTP_ENABLED;
+ 	if (adapter->ptp_clock) {
+ 		ptp_clock_unregister(adapter->ptp_clock);
+ 		netdev_info(adapter->netdev, "PHC removed\n");
+@@ -1097,6 +1101,9 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ 	unsigned long flags;
+ 	u32 timadj;
  
- 	key_len = nla_len(ovs_key);
++	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
++		return;
++
+ 	/* reset the tstamp_config */
+ 	igc_ptp_set_timestamp_mode(adapter, &adapter->tstamp_config);
+ 
 -- 
 2.39.5
 
