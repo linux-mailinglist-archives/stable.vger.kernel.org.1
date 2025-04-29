@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 864FAAA144F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0642BAA173E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5B824A2276
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 724601B64B91
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47ECE250BFE;
-	Tue, 29 Apr 2025 17:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321AB244664;
+	Tue, 29 Apr 2025 17:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItbzkGG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cizTqoE5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0497C221DA7;
-	Tue, 29 Apr 2025 17:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E495D216605;
+	Tue, 29 Apr 2025 17:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946772; cv=none; b=pBvdDuxXGsE0weDg4yS9CUOzvTB0PnLv2g3iOXLfGdDVn30rKk4jIOSFG6bWERNyAC/zESjwZ9pnRlfRcC6YhMciAKQryd5GrEVUD6Y3BpavETOyapCH1cCW+jYGueSrA0ciQDqZX59OBNZDSghuqizTSuASfFOvKYp8E43SNww=
+	t=1745948723; cv=none; b=OiMahFkyga5pcx/kgfN/zbVO36GFRwqKvNk3Ne8s84VtjOjo5XKjB6yUka00ww1lJdnAEYJoifxOWFKZ0O8rU2VnbPhNQgDiIlMxNBeu98dNt47HMY5NdxEbqkbDXVfLvgjgw+/xSHXYC0eqyk+LhsljieHOtIGtjDKwmADhn08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946772; c=relaxed/simple;
-	bh=DAm/gQEn2SujM+cyxiG2hdEU9nkYCkNR0Rbo8h729y0=;
+	s=arc-20240116; t=1745948723; c=relaxed/simple;
+	bh=/M3ziKdwGTb89YW3MublGa3nYKZDIvQ/tfnlSIbBMU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSi5l1JmkULrJ32FVjJxauKaeJ+0J2J4kP4rxjqxZ1tngY5fosrdMEa1A8aiG1+BuPf6UgYPVxShXg5H+hTJQUfG4JLVe5v1/HkfjCZ2L6KL6dIayLBNYAC2qF2+fXzTYiEmMxhC+zXYrMde233m5zmyQKaTFN7sAr429dKR/bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItbzkGG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C55EC4CEE3;
-	Tue, 29 Apr 2025 17:12:50 +0000 (UTC)
+	 MIME-Version; b=YsaGpFJluijlP+518r4E5RSv/tCB/3aFDkjB7M1k0u9lE4836Hu7AeSOg40ihyP/YwVRdv7orbL8qizl34FK7kkm2y35Hqem85HCqRfJwBH25iPkGMKv2M/SqDMYGEvq39zXlZVPtPIxSEjQprSsGyaouZVtP905f0ZEnFlyiIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cizTqoE5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74CCDC4CEE3;
+	Tue, 29 Apr 2025 17:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946771;
-	bh=DAm/gQEn2SujM+cyxiG2hdEU9nkYCkNR0Rbo8h729y0=;
+	s=korg; t=1745948722;
+	bh=/M3ziKdwGTb89YW3MublGa3nYKZDIvQ/tfnlSIbBMU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ItbzkGG73EYstO+EjFZqGSlxiJnkX05kmK34y9/k3MV/k6lZpjfT0f/EgVJt0tE0V
-	 3hW1/T0TtE06JuSj6HH2G6mEGWRk3s4dMxIGivkSvSYNPRsVDeG2hkvX0G2HkyyTQ3
-	 tMBK6V+LeLY+ChoQjwrP4idS9n5GFgF37pz4hfu0=
+	b=cizTqoE5oEKLQACm4LC5vUmvYnut45e9EfE9/YQbXrUWG9ITZADbqoURD7AFh90Bz
+	 PV7mzkjQHyldKnGW/VXsBF8w+WdxOty7Is/ffchhTZgcFFGPICl80JZ2dMmUPxbnLx
+	 GIsChfkT3lk3r5sBmFv/4MUB1EdVLQ877nhMIOu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 035/286] Bluetooth: hci_uart: fix race during initialization
+	Yuan Can <yuancan@huawei.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 062/373] media: siano: Fix error handling in smsdvb_module_init()
 Date: Tue, 29 Apr 2025 18:38:59 +0200
-Message-ID: <20250429161109.305141552@linuxfoundation.org>
+Message-ID: <20250429161125.684409213@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit 366ceff495f902182d42b6f41525c2474caf3f9a ]
+commit 734ac57e47b3bdd140a1119e2c4e8e6f8ef8b33d upstream.
 
-'hci_register_dev()' calls power up function, which is executed by
-kworker - 'hci_power_on()'. This function does access to bluetooth chip
-using callbacks from 'hci_ldisc.c', for example 'hci_uart_send_frame()'.
-Now 'hci_uart_send_frame()' checks 'HCI_UART_PROTO_READY' bit set, and
-if not - it fails. Problem is that 'HCI_UART_PROTO_READY' is set after
-'hci_register_dev()', and there is tiny chance that 'hci_power_on()' will
-be executed before setting this bit. In that case HCI init logic fails.
+The smsdvb_module_init() returns without checking the retval from
+smscore_register_hotplug().
+If the smscore_register_hotplug() failed, the module failed to install,
+leaving the smsdvb_debugfs not unregistered.
 
-Patch moves setting of 'HCI_UART_PROTO_READY' before calling function
-'hci_uart_register_dev()'.
-
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3f6b87cff66b ("[media] siano: allow showing the complete statistics via debugfs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Acked-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_ldisc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/common/siano/smsdvb-main.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
-index e7d78937f7d6b..8ca0ac3a440c9 100644
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -706,12 +706,13 @@ static int hci_uart_set_proto(struct hci_uart *hu, int id)
+--- a/drivers/media/common/siano/smsdvb-main.c
++++ b/drivers/media/common/siano/smsdvb-main.c
+@@ -1243,6 +1243,8 @@ static int __init smsdvb_module_init(voi
+ 	smsdvb_debugfs_register();
  
- 	hu->proto = p;
+ 	rc = smscore_register_hotplug(smsdvb_hotplug);
++	if (rc)
++		smsdvb_debugfs_unregister();
  
-+	set_bit(HCI_UART_PROTO_READY, &hu->flags);
-+
- 	err = hci_uart_register_dev(hu);
- 	if (err) {
- 		return err;
- 	}
+ 	pr_debug("\n");
  
--	set_bit(HCI_UART_PROTO_READY, &hu->flags);
- 	return 0;
- }
- 
--- 
-2.39.5
-
 
 
 
