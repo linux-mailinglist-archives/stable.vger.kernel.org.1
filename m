@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25BAAA1622
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:34:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F283EAA1393
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49E7C9A2A85
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 587824C3B09
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01BB24503E;
-	Tue, 29 Apr 2025 17:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE852246326;
+	Tue, 29 Apr 2025 17:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSi9oCya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpHmLA+c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF5C1FE468;
-	Tue, 29 Apr 2025 17:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA9982C60;
+	Tue, 29 Apr 2025 17:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947681; cv=none; b=ET6R1QHbj8xynvw0dLYimu4o5gRu9USirFKMK8c8IhAy/ZQssdBqK/aUx7xB8qosfeaJegqhBVe/QhNQVYgHfPi4djP3vZqeZ6zfwb9vWYNBqyQZYK7CJRWW+0ciUPhvl//pWQKrTBKAwjZa0f5dc2xYXyCotbAnkCp+rLZxyK4=
+	t=1745946197; cv=none; b=XU5FgcA6f36EfeN3xOo9Ha0JNJYVBgXQwe6CHWqVIG2Bn1sjiPqBGDKNx45bGg1ki8ngP8cu3WwpgWhVulCxRMoyIIPDhfPi6YsCNWc0tVfx9HcBmO90fI1CrbHkJYJtj6jCKDf0HmLQZMuqouS5JYm2pZ2+Ak2zIDhrE0O9rzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947681; c=relaxed/simple;
-	bh=zTARzdI1Ikc0B2a3YeAEgCKl/huQw9DBJgMHWhoN7dY=;
+	s=arc-20240116; t=1745946197; c=relaxed/simple;
+	bh=8y/4lpliBb+H+IM4tmEPJmbdBgwjkgbKBsbs+q9hHKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4gnbXS/tZJ70xifAB2JC2WHE3rgtTEorpEHDK5PXe/YLh+36+JqNoFtEZwd6+ZgMCodVCXGPgnyURdE7/FE72j1T8oay8T75Od+9j68XnZRVxhlWVNZ7vptsYCtvPmzqBhuEwNg/JKQn+5Y/aVFpUoChxl52lLbGobNEHjRyMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSi9oCya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E219DC4CEE9;
-	Tue, 29 Apr 2025 17:28:00 +0000 (UTC)
+	 MIME-Version; b=CktBosl6LeIhRFfO9C4tZnKSlxSBX9sFFqzWGoYsEmxMqt3yxdGl516tqK7zJFp2Vr0vJSObJ4lda+02g2Rq/kS8IVRwZzhgCnO3X6ZkkAMCMtxc9T2HIsDFFABBJ1hapGWZ8YW89gyYYEs9vjQvOANlQxo2Mjj86KBB+W1zWw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpHmLA+c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE6EC4CEE3;
+	Tue, 29 Apr 2025 17:03:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947681;
-	bh=zTARzdI1Ikc0B2a3YeAEgCKl/huQw9DBJgMHWhoN7dY=;
+	s=korg; t=1745946197;
+	bh=8y/4lpliBb+H+IM4tmEPJmbdBgwjkgbKBsbs+q9hHKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSi9oCyalY9P7ChtVSFuRmG8iPUQBhkYi97XdCnMEw1djceuWoezBO4H9FfsULlex
-	 wTyhOq1A+kPeQTpAaSjY3s4G35AgKcTvT3D40rKda4/XcLZ0O8f3VhIc/1tqn8VYPN
-	 CaUODT6tU3T6o8wD587UWyDJF2XsGrQ95HXvCcfM=
+	b=wpHmLA+c4bQxjF22K8JvGzKWJywXsKkbZiR5fpg+XMYlnExmZtfLQ3s8IX/N1LCJU
+	 jR4l7tdqm0DIRp//hs7jrQzOdAvniHV9MFllt/xv5i5lYtdU3POUp/1JpdF17iLQpD
+	 wS4EOLLudvTT4bpNgLMc3Ny6F8sn1MAumF9ZSqoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Chanho Park <chanho61.park@samsung.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 044/280] scsi: ufs: exynos: Disable iocc if dma-coherent property isnt set
+	kernel test robot <oliver.sang@intel.com>,
+	stable <stable@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Hou Wenlong <houwenlong.hwl@antgroup.com>
+Subject: [PATCH 6.14 148/311] char: misc: register chrdev region with all possible minors
 Date: Tue, 29 Apr 2025 18:39:45 +0200
-Message-ID: <20250429161116.922860311@linuxfoundation.org>
+Message-ID: <20250429161127.095723205@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit f92bb7436802f8eb7ee72dc911a33c8897fde366 ]
+commit c876be906ce7e518d9ef9926478669c151999e69 upstream.
 
-If dma-coherent property isn't set then descriptors are non-cacheable
-and the iocc shareability bits should be disabled. Without this UFS can
-end up in an incompatible configuration and suffer from random cache
-related stability issues.
+register_chrdev will only register the first 256 minors of a major chrdev.
+That means that dynamically allocated misc devices with minor above 255
+will fail to open with -ENXIO.
 
-Suggested-by: Bart Van Assche <bvanassche@acm.org>
-Fixes: cc52e15397cc ("scsi: ufs: ufs-exynos: Support ExynosAuto v9 UFS")
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-3-96722cc2ba1b@linaro.org
-Cc: Chanho Park <chanho61.park@samsung.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This was found by kernel test robot when testing a different change that
+makes all dynamically allocated minors be above 255. This has, however,
+been separately tested by creating 256 serio_raw devices with the help of
+userio driver.
+
+Ever since allowing misc devices with minors above 128, this has been
+possible.
+
+Fix it by registering all minor numbers from 0 to MINORMASK + 1 for
+MISC_MAJOR.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Cc: stable <stable@kernel.org>
+Closes: https://lore.kernel.org/oe-lkp/202503171507.6c8093d0-lkp@intel.com
+Fixes: ab760791c0cf ("char: misc: Increase the maximum number of dynamic misc devices to 1048448")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Tested-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
+Link: https://lore.kernel.org/r/20250317-misc-chrdev-v1-1-6cd05da11aef@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-exynos.c | 17 +++++++++++++----
- drivers/ufs/host/ufs-exynos.h |  3 ++-
- 2 files changed, 15 insertions(+), 5 deletions(-)
+ drivers/char/misc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index 453f1dee103c8..fd1ebb4fcd96c 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -210,8 +210,8 @@ static int exynos_ufs_shareability(struct exynos_ufs *ufs)
- 	/* IO Coherency setting */
- 	if (ufs->sysreg) {
- 		return regmap_update_bits(ufs->sysreg,
--					  ufs->shareability_reg_offset,
--					  ufs->iocc_mask, ufs->iocc_mask);
-+					  ufs->iocc_offset,
-+					  ufs->iocc_mask, ufs->iocc_val);
- 	}
+--- a/drivers/char/misc.c
++++ b/drivers/char/misc.c
+@@ -315,7 +315,7 @@ static int __init misc_init(void)
+ 		goto fail_remove;
  
- 	attr->tx_dif_p_nsec = 3200000;
-@@ -1147,13 +1147,22 @@ static int exynos_ufs_parse_dt(struct device *dev, struct exynos_ufs *ufs)
- 		ufs->sysreg = NULL;
- 	else {
- 		if (of_property_read_u32_index(np, "samsung,sysreg", 1,
--					       &ufs->shareability_reg_offset)) {
-+					       &ufs->iocc_offset)) {
- 			dev_warn(dev, "can't get an offset from sysreg. Set to default value\n");
--			ufs->shareability_reg_offset = UFS_SHAREABILITY_OFFSET;
-+			ufs->iocc_offset = UFS_SHAREABILITY_OFFSET;
- 		}
- 	}
+ 	err = -EIO;
+-	if (register_chrdev(MISC_MAJOR, "misc", &misc_fops))
++	if (__register_chrdev(MISC_MAJOR, 0, MINORMASK + 1, "misc", &misc_fops))
+ 		goto fail_printk;
+ 	return 0;
  
- 	ufs->iocc_mask = ufs->drv_data->iocc_mask;
-+	/*
-+	 * no 'dma-coherent' property means the descriptors are
-+	 * non-cacheable so iocc shareability should be disabled.
-+	 */
-+	if (of_dma_is_coherent(dev->of_node))
-+		ufs->iocc_val = ufs->iocc_mask;
-+	else
-+		ufs->iocc_val = 0;
-+
- 	ufs->pclk_avail_min = PCLK_AVAIL_MIN;
- 	ufs->pclk_avail_max = PCLK_AVAIL_MAX;
- 
-diff --git a/drivers/ufs/host/ufs-exynos.h b/drivers/ufs/host/ufs-exynos.h
-index ad49d9cdd5c12..d0b3df221503c 100644
---- a/drivers/ufs/host/ufs-exynos.h
-+++ b/drivers/ufs/host/ufs-exynos.h
-@@ -231,8 +231,9 @@ struct exynos_ufs {
- 	ktime_t entry_hibern8_t;
- 	const struct exynos_ufs_drv_data *drv_data;
- 	struct regmap *sysreg;
--	u32 shareability_reg_offset;
-+	u32 iocc_offset;
- 	u32 iocc_mask;
-+	u32 iocc_val;
- 
- 	u32 opts;
- #define EXYNOS_UFS_OPT_HAS_APB_CLK_CTRL		BIT(0)
--- 
-2.39.5
-
 
 
 
