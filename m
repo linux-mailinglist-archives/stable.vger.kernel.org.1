@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-138056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEFAAAA15FD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38045AA128A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 799937AA395
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A4D91BA3BCB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2622F82C60;
-	Tue, 29 Apr 2025 17:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095592528EF;
+	Tue, 29 Apr 2025 16:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDyEqDU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etrO7raP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F55233713;
-	Tue, 29 Apr 2025 17:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F572459EE;
+	Tue, 29 Apr 2025 16:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947985; cv=none; b=OU5uGhdG1lS95pdtP58HWPyioL1pkmcvtD1eKnKtkXKCkErHsNu2APV60QTfJUJWCyMnqF7YDJ2Zx1+1j3IHxTAzfOlOfJg4IKRGqrIeVxSl9gsX5/MN/VCC3I3URZGiA4BBa2j5+679IAyiCy7KLz2tLDC/UzNHvQQ4t8TLAr4=
+	t=1745945580; cv=none; b=YJVUjIYUwMgOGTKc5z0M5+VxRng0IhIOnij4Owjr0QMZRTWEUz8abeRm6kICw2m4OdcWo36JDnHumNpM7HmZXV1sKtyX/XZ9n0vgk4iaXW6iNNbImrigIKC8noZUeaotKxL461kNOAkNhgLK+HUWe6SJl7/t+WBpvyxkYcUIZmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947985; c=relaxed/simple;
-	bh=2hehMzesb4uVk2QVluTPR3+fU8i74zOj1TuziJutoXI=;
+	s=arc-20240116; t=1745945580; c=relaxed/simple;
+	bh=tl6a+qrLTThsts1jBDZioWp7NqKaGkoHQHOK3uHVA1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GjChqXb7ASslYPLNF4Cy+A0puAgTYATkm77V86E2W72fUGMZ1vMCoYicWS6nZlwnrBCfL7MqRt4VbX7+bhLxVxNSVlZ4b2XXJEY3i0+1WoBitIGSg66rT/NyrlWAg09hoJNlzjP6pjGP7AibmfooEy0za70YThHEYGCpZXZ/Xb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDyEqDU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2079CC4CEE3;
-	Tue, 29 Apr 2025 17:33:04 +0000 (UTC)
+	 MIME-Version; b=Gaol3CKQPPVh8Guiwqyyb8vALvUjG34QzWsobo9m5VDBE1dZsCwF+KoS+BOwm2blDzFtFVlBafYs6o4sj7EG5SGX6VGTtI+FcE7IaQNbopMHhjPk6p1KTGX6Qi0mkI/AKhHGcCJnm8rMMRpmhAfHPEvhcapI5BzznVhriqCWja8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etrO7raP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDEFC4CEE3;
+	Tue, 29 Apr 2025 16:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947985;
-	bh=2hehMzesb4uVk2QVluTPR3+fU8i74zOj1TuziJutoXI=;
+	s=korg; t=1745945580;
+	bh=tl6a+qrLTThsts1jBDZioWp7NqKaGkoHQHOK3uHVA1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDyEqDU62heiRsHmKzdiv4YqT/FPi67a40sp/RIVH4Tr9OoTaA9cM9rWYegPHnL53
-	 E16nMT8ijQ/pTkd29ilIjY5/B1amOgoIrUfPHpv0od2AXDdHRn2RLiCNrsGhD3lzCx
-	 TQuAUG8Ow1bApF5BhIspMlm86bpWroWKV9mXYwrc=
+	b=etrO7raPQJ86yXpUCjuNXzayYYzXSznWsV7gc8hz4XtfgPWOs1kK59dHXRSSYNlLv
+	 LfZCCm2RmJ/0bFCT8E76AGtXefcuBWc/7Fq0pqd9g3lJs93RCeF3yr4Dc7MUrXKpsD
+	 YVjSeUFTDHKa9iEkeIwbhc3Pf88ySxvEAqVSrs4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 161/280] clk: check for disabled clock-provider in of_clk_get_hw_from_clkspec()
+Subject: [PATCH 5.4 161/179] clk: check for disabled clock-provider in of_clk_get_hw_from_clkspec()
 Date: Tue, 29 Apr 2025 18:41:42 +0200
-Message-ID: <20250429161121.704346319@linuxfoundation.org>
+Message-ID: <20250429161055.891811602@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -106,10 +106,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 5b4ab94193c2b..7de3dfdae4b50 100644
+index 56be3f97c265a..6ef5bf61fdd47 100644
 --- a/drivers/clk/clk.c
 +++ b/drivers/clk/clk.c
-@@ -5264,6 +5264,10 @@ of_clk_get_hw_from_clkspec(struct of_phandle_args *clkspec)
+@@ -4727,6 +4727,10 @@ of_clk_get_hw_from_clkspec(struct of_phandle_args *clkspec)
  	if (!clkspec)
  		return ERR_PTR(-EINVAL);
  
