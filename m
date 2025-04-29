@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-137464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA9DAA1380
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5B3AA15D9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 080104C2C6B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AEAA1653DA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4290A1FE468;
-	Tue, 29 Apr 2025 17:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF63821ADC7;
+	Tue, 29 Apr 2025 17:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQm/pa2O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmILPTxt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37BF24A047;
-	Tue, 29 Apr 2025 17:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C15A1FE468;
+	Tue, 29 Apr 2025 17:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946142; cv=none; b=VyrOl88fY06LUWOxjFo4WGufa4LlPN53W/OkSL2Dqf3IPIj68fvpkQi0OHyElyKf2yo4eiblOcLMCwMP/BWxAdBbE8WlxvuNBHELqVQFh4Vy3epGHwNP3mIOH4lilBLluU+C/g/S2Dv0Nr58Js99fKA/diLLt1OrBPYXHOG3axY=
+	t=1745947657; cv=none; b=IcLsMgoyzRXmR3tObHW3S81H6w1g/ryiMjaycmwK2uAk3EWJKmc7Sr/jb5r5hzXrYkJ/6aOtZBOpxqHtJxBfL99Q6Gky0jW1Q2ptXnWNCneoN6TI8KDCciGTFGCfVgBewczQmq7ZQih4QleYlbH+9NKedPaSp0biT1QVgjVF7O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946142; c=relaxed/simple;
-	bh=kK5MthezLg3woXb2gx+Pars/9CKXZdumbazvFoP+x2w=;
+	s=arc-20240116; t=1745947657; c=relaxed/simple;
+	bh=2qw5ztrW8HChDrkuEz7Fwiuc/PAgHVrK/mXLZKIUJGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b3961pDYn9CtygzFAVOh38LHT7UarQYLBJeSJew9aqezftPwqyjRt13Cl70vbXQYlNHiNyPnY0zaLoMInIFfKC1n6uUPwK9maTppLw/U/TPn/W2CCOCnURfeIYaIkYYGa0TrawSYPwxSIVc4NpiQAwOSqqlnI4vW6cLv2kbDcas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQm/pa2O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CD5C4CEE3;
-	Tue, 29 Apr 2025 17:02:22 +0000 (UTC)
+	 MIME-Version; b=AaXMUKf/PdqcKc0/XtgoFyCpDmc4CG8lk3P70tGPFviq/CuATN6riW3zk3/P+R2SLe2Bya+3Wuz7hBBv2IjkDaamesJb7lbK1TQgbuA6m7i3p8QkjxAHoH8h1og7X6ylSq5g+mouOhWT2DnBHyGf2Q1xUViPuhtzix0ZKNarXSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmILPTxt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E64C4CEE3;
+	Tue, 29 Apr 2025 17:27:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946142;
-	bh=kK5MthezLg3woXb2gx+Pars/9CKXZdumbazvFoP+x2w=;
+	s=korg; t=1745947657;
+	bh=2qw5ztrW8HChDrkuEz7Fwiuc/PAgHVrK/mXLZKIUJGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQm/pa2O2RkV5YiUfql3I/Vz9epqYFpRCxqM57mbdHmgV9boQ534lUtP5hxgXk3s5
-	 UBOKGHPotiLyxLurYXOEvmYEPQyUSu3XacibivEym8F5CHT8QVGciqBgW4hah/p0t5
-	 MGPmVXhomcvPE5I06jt/X6EohymL/FCv/3FLdPYo=
+	b=XmILPTxtD0pvYV1fmTJEDfr6iM4/BSnpGsXdLpRIsA+cMq5TX8rv+jKhM+bZn6CSV
+	 WnaT0L11BiIPRYrbFPjgjlZqrMlKCsUwQYjnvz7iuKMgDbpAvOldQT3WmVxTl1FgAw
+	 zGi+92PUVK8Cc0pA9/YZpYWzEFYTbS6zG/q1yssM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.14 169/311] USB: VLI disk crashes if LPM is used
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 065/280] vhost-scsi: Fix vhost_scsi_send_status()
 Date: Tue, 29 Apr 2025 18:40:06 +0200
-Message-ID: <20250429161127.959602819@linuxfoundation.org>
+Message-ID: <20250429161117.772963675@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-commit e00b39a4f3552c730f1e24c8d62c4a8c6aad4e5d upstream.
+[ Upstream commit 58465d86071b61415e25fb054201f61e83d21465 ]
 
-This device needs the NO_LPM quirk.
+Although the support of VIRTIO_F_ANY_LAYOUT + VIRTIO_F_VERSION_1 was
+signaled by the commit 664ed90e621c ("vhost/scsi: Set
+VIRTIO_F_ANY_LAYOUT + VIRTIO_F_VERSION_1 feature bits"),
+vhost_scsi_send_bad_target() still assumes the response in a single
+descriptor.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250408135800.792515-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Similar issue in vhost_scsi_send_bad_target() has been fixed in previous
+commit. In addition, similar issue for vhost_scsi_complete_cmd_work() has
+been fixed by the commit 6dd88fd59da8 ("vhost-scsi: unbreak any layout for
+response").
+
+Fixes: 3ca51662f818 ("vhost-scsi: Add better resource allocation failure handling")
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Message-Id: <20250403063028.16045-4-dongli.zhang@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/vhost/scsi.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -545,6 +545,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x2040, 0x7200), .driver_info =
- 			USB_QUIRK_CONFIG_INTF_STRINGS },
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 7bfe5e5865fe9..35a03306d1345 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -931,18 +931,22 @@ static void vhost_scsi_target_queue_cmd(struct vhost_scsi_cmd *cmd)
  
-+	/* VLI disk */
-+	{ USB_DEVICE(0x2109, 0x0711), .driver_info = USB_QUIRK_NO_LPM },
+ static void
+ vhost_scsi_send_status(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
+-		       int head, unsigned int out, u8 status)
++		       struct vhost_scsi_ctx *vc, u8 status)
+ {
+-	struct virtio_scsi_cmd_resp __user *resp;
+ 	struct virtio_scsi_cmd_resp rsp;
++	struct iov_iter iov_iter;
+ 	int ret;
+ 
+ 	memset(&rsp, 0, sizeof(rsp));
+ 	rsp.status = status;
+-	resp = vq->iov[out].iov_base;
+-	ret = __copy_to_user(resp, &rsp, sizeof(rsp));
+-	if (!ret)
+-		vhost_add_used_and_signal(&vs->dev, vq, head, 0);
 +
- 	/* Raydium Touchscreen */
- 	{ USB_DEVICE(0x2386, 0x3114), .driver_info = USB_QUIRK_NO_LPM },
- 
++	iov_iter_init(&iov_iter, ITER_DEST, &vq->iov[vc->out], vc->in,
++		      sizeof(rsp));
++
++	ret = copy_to_iter(&rsp, sizeof(rsp), &iov_iter);
++
++	if (likely(ret == sizeof(rsp)))
++		vhost_add_used_and_signal(&vs->dev, vq, vc->head, 0);
+ 	else
+ 		pr_err("Faulted on virtio_scsi_cmd_resp\n");
+ }
+@@ -1302,7 +1306,7 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
+ 		else if (ret == -EIO)
+ 			vhost_scsi_send_bad_target(vs, vq, &vc, TYPE_IO_CMD);
+ 		else if (ret == -ENOMEM)
+-			vhost_scsi_send_status(vs, vq, vc.head, vc.out,
++			vhost_scsi_send_status(vs, vq, &vc,
+ 					       SAM_STAT_TASK_SET_FULL);
+ 	} while (likely(!vhost_exceeds_weight(vq, ++c, 0)));
+ out:
+-- 
+2.39.5
+
 
 
 
