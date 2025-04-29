@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BEBEAA1289
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:54:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9861EAA17BB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D9B73BA18D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:51:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B24931679D0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503132472AA;
-	Tue, 29 Apr 2025 16:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920F82472B9;
+	Tue, 29 Apr 2025 17:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wlt+hk9h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmZ1WwzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA642459E0;
-	Tue, 29 Apr 2025 16:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E857221DA7;
+	Tue, 29 Apr 2025 17:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945503; cv=none; b=FmX3LqLVAlk5V+e+/wxXLwUUZfKG2/Om2dxEEK4LGyJnkFcoXqyYCO7Ewvm9/OBD8i8l6LtamFycUR8ZXLE0qvy+hPRclBacnY5nCht21dUnFrma6eYTbr3n47bdmFjArtb/yhInpYnQjRjwAMawig+bwqxKCXoNwdDTdbW0Blc=
+	t=1745949049; cv=none; b=pvxrE56trt741mz3aICnARFtRmaTYefLvXHPrNL6yqe8rHFK3qvp4Qq1U/oSbrrrH9ALaLpyWY1VEOmPzdZd3ietJJ2JZkaWORu/u8fmspYzQLKxePY4tGuvcUDLXRvDXm1xwZkt4FUQ1S3QRx2L8aYZfdbPJjJhIs/F9l1Quqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945503; c=relaxed/simple;
-	bh=uzKsuT+IZHO31RKpgLUXBLuQxFgmCLcpbRmiA3/1e64=;
+	s=arc-20240116; t=1745949049; c=relaxed/simple;
+	bh=AjhRstLQ3bkyH6Mo+TSRnoxLMEqgj2Sjxhx1UgcOpzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZJQ25jg3bLvLUbN7L9s9UN1QQDpO9IS5Zouioijy7W37wf4/7DQsrB1cB0h2k98eO/+PYgi52+aT4i+NRol02tsp9ASr+1SsSYmxhfKrdUFJlx0it5cxtJOs09yAz7NPaSOn+mVAYkA3DgqtSUW80DKLEV059E5Pv+ar+Iogiv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wlt+hk9h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EBAC4CEE3;
-	Tue, 29 Apr 2025 16:51:42 +0000 (UTC)
+	 MIME-Version; b=PEOtu6mgF4DhttxzmaivSrPDTMjOLSka7Wb//BfIrFiU7mJyDZ8GdBHq5dfTkAGyzWoJhYU9+EffbazR0p41cDGP4ipof/KLOzx7RKHKHrWS9WbQHl3ys9XihNYgwLkchxglCe3ypFm1G/65+OE0xE7jaNJt2lib/KsY85ZL+Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmZ1WwzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B00C4CEE3;
+	Tue, 29 Apr 2025 17:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945502;
-	bh=uzKsuT+IZHO31RKpgLUXBLuQxFgmCLcpbRmiA3/1e64=;
+	s=korg; t=1745949049;
+	bh=AjhRstLQ3bkyH6Mo+TSRnoxLMEqgj2Sjxhx1UgcOpzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wlt+hk9h0Jx5d8c2mX/X2X/Te4P+3ON4lloyRC8OXil/hLw1ErHHqbPfhfNzMYdSl
-	 h2YECN9RhvGSd2qMpAeFPP3jGnIwx+nM0wPB6svdkI2k0PjMNlaBoZTHOjERjBlHRP
-	 RCu0jaWby7byisZuxaVxcVSBgQkfCYMJiG6GmG+E=
+	b=HmZ1WwzWrLy5m2Vyips50Sa+Dc0YuAHO6c5utio0uDZo9Vqb8ZcnzB/pUs79yacQY
+	 Z4fdK/vTkz8uKOH47PImPOrr5WIxvjDI20jZ1+hYr94e8IPGup8tgK9sbHvthEdr+O
+	 XNfy1KMgAL8JacmzC/3VbKGNbazDfxLlGX6hFPTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 135/179] iio: adc: ad7768-1: Move setting of val a bit later to avoid unnecessary return value check
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 199/373] mptcp: sockopt: fix getting IPV6_V6ONLY
 Date: Tue, 29 Apr 2025 18:41:16 +0200
-Message-ID: <20250429161054.859031071@linuxfoundation.org>
+Message-ID: <20250429161131.354131679@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 0af1c801a15225304a6328258efbf2bee245c654 ]
+commit 8c39633759885b6ff85f6d96cf445560e74df5e8 upstream.
 
-The data used is all in local variables so there is no advantage
-in setting *val = ret with the direct mode claim held.
-Move it later to after error check.
+When adding a socket option support in MPTCP, both the get and set parts
+are supposed to be implemented.
 
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250217141630.897334-13-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 8236644f5ecb ("iio: adc: ad7768-1: Fix conversion result sign")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+IPV6_V6ONLY support for the setsockopt part has been added a while ago,
+but it looks like the get part got forgotten. It should have been
+present as a way to verify a setting has been set as expected, and not
+to act differently from TCP or any other socket types.
+
+Not supporting this getsockopt(IPV6_V6ONLY) blocks some apps which want
+to check the default value, before doing extra actions. On Linux, the
+default value is 0, but this can be changed with the net.ipv6.bindv6only
+sysctl knob. On Windows, it is set to 1 by default. So supporting the
+get part, like for all other socket options, is important.
+
+Everything was in place to expose it, just the last step was missing.
+Only new code is added to cover this specific getsockopt(), that seems
+safe.
+
+Fixes: c9b95a135987 ("mptcp: support IPV6_V6ONLY setsockopt")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/550
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-2-122dbb249db3@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflicts in sockopt.c in the context, because commit 3b1e21eb60e8
+  ("mptcp: getsockopt: add support for IP_TOS") is not in this release.
+  The conflicts are in the context, the new helper can be added without
+  issue. It depends on mptcp_put_int_option() which has been added via
+  another backport, see commit 874aae15fbef ("mptcp: fix full TCP
+  keep-alive support"). ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7768-1.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/mptcp/sockopt.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 9e26517870595..9b9956c0b076f 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -369,12 +369,11 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
- 			return ret;
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -793,6 +793,20 @@ static int mptcp_getsockopt_sol_tcp(stru
+ 	return -EOPNOTSUPP;
+ }
  
- 		ret = ad7768_scan_direct(indio_dev);
--		if (ret >= 0)
--			*val = ret;
++static int mptcp_getsockopt_v6(struct mptcp_sock *msk, int optname,
++			       char __user *optval, int __user *optlen)
++{
++	struct sock *sk = (void *)msk;
++
++	switch (optname) {
++	case IPV6_V6ONLY:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    sk->sk_ipv6only);
++	}
++
++	return -EOPNOTSUPP;
++}
++
+ int mptcp_getsockopt(struct sock *sk, int level, int optname,
+ 		     char __user *optval, int __user *option)
+ {
+@@ -813,6 +827,8 @@ int mptcp_getsockopt(struct sock *sk, in
+ 	if (ssk)
+ 		return tcp_getsockopt(ssk, level, optname, optval, option);
  
- 		iio_device_release_direct_mode(indio_dev);
- 		if (ret < 0)
- 			return ret;
-+		*val = ret;
- 
- 		return IIO_VAL_INT;
- 
--- 
-2.39.5
-
++	if (level == SOL_IPV6)
++		return mptcp_getsockopt_v6(msk, optname, optval, option);
+ 	if (level == SOL_TCP)
+ 		return mptcp_getsockopt_sol_tcp(msk, optname, optval, option);
+ 	return -EOPNOTSUPP;
 
 
 
