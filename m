@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-137789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A52AA1503
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F476AA1265
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24244188BA8D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE2374A7628
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40E42206AA;
-	Tue, 29 Apr 2025 17:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6502472B0;
+	Tue, 29 Apr 2025 16:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgYES14K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4Gj+qJt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F181C6B4;
-	Tue, 29 Apr 2025 17:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC0D242934;
+	Tue, 29 Apr 2025 16:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947133; cv=none; b=CtdblYUUrGHUGaWXFI1cvHvWE7eagD/GotQ/BIhXS3AyASVPvRLxftEGzyTswwRyu5qcE73ZIO3HA65+JQ6v3mc5IBSYhgFMbrTVBiJIWVJGCcuCuOVnpPfUQ5D2FZEt79+md8O0+5FFaR11e85lBeaeXfAiCLkfFGD2+dmrHfs=
+	t=1745945535; cv=none; b=e6veuwH6IlkFWleSoXEzJPUdKmzphLwibMCZKzvTAq+lfUzzlFplJaOQ/rkfwV+wD0QtzSyJT7WwNqAe8BMAbRq3DH3j6tCel3/4CKJCcR41CHT9KIQPTV1RgCvV4fbbDxiiLqIbG/YK8TChbBoRwTOBxQ7j6WlOKV6AYxWm/3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947133; c=relaxed/simple;
-	bh=WapQGqZ+QGuFKtcu3cJSfHqlv+QeG9Q1wuyuPT0L/1o=;
+	s=arc-20240116; t=1745945535; c=relaxed/simple;
+	bh=tI8XnZSZW/hT79RGEI4gmiv2ffwYbBsTKFVUiC3q+lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tIkEnQQ49+b2UfX11XjcnRySGUY/knkCNi8xVfIKmrQzMYxo8DkkZo0ShJ/LFFAZbZQ7exSl+5WsO9F39yYK6hM08TGC79STkaySzmK4oyeUgPgcuGCB1uGT0s0pV6lMrWAHHMgDeSF3oXj3CmH5zBqz38bXCmhq87Ox/Bq+uVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgYES14K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D71C4CEE3;
-	Tue, 29 Apr 2025 17:18:52 +0000 (UTC)
+	 MIME-Version; b=VaBTde6Yl2SX4em+j52RPdnHI2Rm2YdcWKU0KVaeDjqVQW/O43nwLXhyuC+jaacSYo7DGF8eAVCC1lrK78Pjz6opsL2QSQiCkltiPl4cQn7LWdjUB5xfouM4FgQRmb3NIoA2nnCA4U6grdO/2bRZhWUDHL6FJlIFagARE1iUFG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4Gj+qJt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C657C4CEE3;
+	Tue, 29 Apr 2025 16:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947133;
-	bh=WapQGqZ+QGuFKtcu3cJSfHqlv+QeG9Q1wuyuPT0L/1o=;
+	s=korg; t=1745945535;
+	bh=tI8XnZSZW/hT79RGEI4gmiv2ffwYbBsTKFVUiC3q+lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EgYES14KZ3NOuINa+ikm9JWO/Dj0AdiMJuitlqZau/aAT82LkgSDV0g1vni9rkAcs
-	 2qoNr3mEl8tpfTMiSjUUmvdmGrh+DVzU5VgJXHXcn6EteOtEE4YQN0BV/GOFe+89Io
-	 eKKi8gDYfC6EOk3jqjnLpYzjx+CwDHLgqZ9uywWo=
+	b=l4Gj+qJtouyf+ycSxg3XZ2XwRunvcmm9zmcS4rVhH/PUQ+qHJkxl5JkxTtJ1DM8ua
+	 uyrISLX2I8iT6EwB98x+tMbvwzOaToQTJ5Mya89dH/zpiqMKJ8knf2oLx5iGvIBScK
+	 5davkRyNBNXVRkeKBblTMn/O12TK9SfbAcowd55c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.10 182/286] MIPS: ds1287: Match ds1287_set_base_clock() function types
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 145/179] net_sched: hfsc: Fix a potential UAF in hfsc_dequeue() too
 Date: Tue, 29 Apr 2025 18:41:26 +0200
-Message-ID: <20250429161115.458925276@linuxfoundation.org>
+Message-ID: <20250429161055.257618417@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +62,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-commit a759109b234385b74d2f5f4c86b5f59b3201ec12 upstream.
+[ Upstream commit 6ccbda44e2cc3d26fd22af54c650d6d5d801addf ]
 
-Synchronize the declaration of ds1287_set_base_clock() between
-cevt-ds1287.c and ds1287.h.
+Similarly to the previous patch, we need to safe guard hfsc_dequeue()
+too. But for this one, we don't have a reliable reproducer.
 
-Fix follow error with gcc-14 when -Werror:
-
-arch/mips/kernel/cevt-ds1287.c:21:5: error: conflicting types for ‘ds1287_set_base_clock’; have ‘int(unsigned int)’
-   21 | int ds1287_set_base_clock(unsigned int hz)
-      |     ^~~~~~~~~~~~~~~~~~~~~
-In file included from arch/mips/kernel/cevt-ds1287.c:13:
-./arch/mips/include/asm/ds1287.h:11:13: note: previous declaration of ‘ds1287_set_base_clock’ with type ‘void(unsigned int)’
-   11 | extern void ds1287_set_base_clock(unsigned int clock);
-      |             ^~~~~~~~~~~~~~~~~~~~~
-make[7]: *** [scripts/Makefile.build:207: arch/mips/kernel/cevt-ds1287.o] Error 1
-make[6]: *** [scripts/Makefile.build:465: arch/mips/kernel] Error 2
-make[6]: *** Waiting for unfinished jobs....
-
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 ("Linux-2.6.12-rc2")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20250417184732.943057-3-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/ds1287.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_hfsc.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/arch/mips/include/asm/ds1287.h
-+++ b/arch/mips/include/asm/ds1287.h
-@@ -8,7 +8,7 @@
- #define __ASM_DS1287_H
- 
- extern int ds1287_timer_state(void);
--extern void ds1287_set_base_clock(unsigned int clock);
-+extern int ds1287_set_base_clock(unsigned int hz);
- extern int ds1287_clockevent_init(int irq);
- 
- #endif
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index eabc62df6f4e4..79c63c4610d3a 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -1645,10 +1645,16 @@ hfsc_dequeue(struct Qdisc *sch)
+ 		if (cl->qdisc->q.qlen != 0) {
+ 			/* update ed */
+ 			next_len = qdisc_peek_len(cl->qdisc);
+-			if (realtime)
+-				update_ed(cl, next_len);
+-			else
+-				update_d(cl, next_len);
++			/* Check queue length again since some qdisc implementations
++			 * (e.g., netem/codel) might empty the queue during the peek
++			 * operation.
++			 */
++			if (cl->qdisc->q.qlen != 0) {
++				if (realtime)
++					update_ed(cl, next_len);
++				else
++					update_d(cl, next_len);
++			}
+ 		} else {
+ 			/* the class becomes passive */
+ 			eltree_remove(cl);
+-- 
+2.39.5
+
 
 
 
