@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-138183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EB2AA16CE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBC9AA18BB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B7F67AEEF7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 944A23A82FE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300B2251780;
-	Tue, 29 Apr 2025 17:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F7C2512D8;
+	Tue, 29 Apr 2025 17:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+T2qJM8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5Cg+Nbd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E4F227E95;
-	Tue, 29 Apr 2025 17:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BDD2AE96;
+	Tue, 29 Apr 2025 17:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948433; cv=none; b=Kh5/7Egp+09sbSBQTgIqrmJ18z0xREOH6zaZZ6kzPqi1zkUQ//2lbD+aB++zVNF5FlPCnBf+DsPxi3yu9VOtGjDUuNYzeYcYE3xOYLySoi/5KgUk9eWirlmtZnkwU4uK/inz32qskwMMFDG8v9iNCF/fVfnpUb4iUHpjDqjAKd0=
+	t=1745949497; cv=none; b=rnfObcUL6jg/gb2AjmOHCIhPgx2G5F0/fBaxlbekePLw/IFXZGraRwh3P4PRerXKujsj2Nsx6ti66vfZbyo552Xdrv2zzH/jbwNMB+Ud0iclewlsmLy011G0nicfKnQFQpWaVuypPmRTRLinvYoGPe20xn8QygXbiBpua35AFZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948433; c=relaxed/simple;
-	bh=RRrprCwxF8GRnjKhD9csKnWYuOUb93lNsHau9O2PS4Q=;
+	s=arc-20240116; t=1745949497; c=relaxed/simple;
+	bh=tRVg9xxTS6+KpLVSOFSY38YtrmbnvoMIJZ+SgAZvBIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y6ahVHfbiuCkit+SGsJ/hMSIUIWIQK3yVfiGbRQnAsg2otpVds19iavOSw9uVB+0ZfB5DlYiVv7L6EDsKnP4D/Q12/ctZLkkZQAH0FpdSnDTxAdH63NfGXQKns0Udw4yb6MD9/PIuuJ85DGKzYAJsHrFGLurKMxv/CUH33PPXrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+T2qJM8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63010C4CEE3;
-	Tue, 29 Apr 2025 17:40:32 +0000 (UTC)
+	 MIME-Version; b=gBz8Agu3dwcgi2fJcafWkZqmT4BfvUtwuPzPUxzvjx5zVDeYKuBFVqv84b+15PEfbH9/lHd6qRmE37bauVx4StoVCSBQ6hIejzq/I3kAya4sZ/EIsKpPioRQj0L0LVRInfZc+RyGIkAxHUF8DwcV7n6dBM7IXfIsDaVbL523Uyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5Cg+Nbd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23154C4CEE3;
+	Tue, 29 Apr 2025 17:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948432;
-	bh=RRrprCwxF8GRnjKhD9csKnWYuOUb93lNsHau9O2PS4Q=;
+	s=korg; t=1745949497;
+	bh=tRVg9xxTS6+KpLVSOFSY38YtrmbnvoMIJZ+SgAZvBIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+T2qJM8YSKhE+Kuj3EaqlDzZHybTdFgYBorluNUCvhFo/IaGiopLuoay1bk3KfMS
-	 vglftJfgL57yPs9XKOKZljk8YjRwcHbLUiWs6Gz+iB0U+7INpgXljPxpxP3hMJcNfp
-	 0foW0mYELIvgNL5EphPyyn0SAkDwL6NAKcHr1Tv0=
+	b=l5Cg+NbdkNkThISdaJt2XRSzGbMca0/h3Ludsi60LN/+v49K3V7B/4XrdA8nHrAhK
+	 s1YLRPo54HPUo5/pYEu4QFVlJQMqmsL/3LiKnvSnGOO5+fZIBXprIfbA7PhyxKVsHp
+	 phsr70Dd10xzdkPUtmI1homu4Xvgo5fBMbsa9BPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.12 272/280] MIPS: cm: Fix warning if MIPS_CM is disabled
-Date: Tue, 29 Apr 2025 18:43:33 +0200
-Message-ID: <20250429161126.264624775@linuxfoundation.org>
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 337/373] qibfs: fix _another_ leak
+Date: Tue, 29 Apr 2025 18:43:34 +0200
+Message-ID: <20250429161136.987780833@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,43 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit b73c3ccdca95c237750c981054997c71d33e09d7 upstream.
+[ Upstream commit bdb43af4fdb39f844ede401bdb1258f67a580a27 ]
 
-Commit e27fbe16af5c ("MIPS: cm: Detect CM quirks from device tree")
-introduced
+failure to allocate inode => leaked dentry...
 
-arch/mips/include/asm/mips-cm.h:119:13: error: ‘mips_cm_update_property’
-	defined but not used [-Werror=unused-function]
+this one had been there since the initial merge; to be fair,
+if we are that far OOM, the odds of failing at that particular
+allocation are low...
 
-Fix this by making empty function implementation inline
-
-Fixes: e27fbe16af5c ("MIPS: cm: Detect CM quirks from device tree")
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mips-cm.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/qib/qib_fs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -116,7 +116,7 @@ static inline bool mips_cm_present(void)
- #ifdef CONFIG_MIPS_CM
- extern void mips_cm_update_property(void);
- #else
--static void mips_cm_update_property(void) {}
-+static inline void mips_cm_update_property(void) {}
- #endif
+diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
+index 8665e506404f9..774037ea44a92 100644
+--- a/drivers/infiniband/hw/qib/qib_fs.c
++++ b/drivers/infiniband/hw/qib/qib_fs.c
+@@ -56,6 +56,7 @@ static int qibfs_mknod(struct inode *dir, struct dentry *dentry,
+ 	struct inode *inode = new_inode(dir->i_sb);
  
- /**
+ 	if (!inode) {
++		dput(dentry);
+ 		error = -EPERM;
+ 		goto bail;
+ 	}
+-- 
+2.39.5
+
 
 
 
