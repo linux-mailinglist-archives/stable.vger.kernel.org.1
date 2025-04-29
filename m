@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7252AA13B3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE32AA1274
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:53:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 612C71BA3DCF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 452343A94E4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7330525178C;
-	Tue, 29 Apr 2025 17:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DA72472AA;
+	Tue, 29 Apr 2025 16:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Lz8vrxn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtsCqNEr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A3F22A81D;
-	Tue, 29 Apr 2025 17:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8E421772B;
+	Tue, 29 Apr 2025 16:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946219; cv=none; b=jMHphOI41wk8NdtoBJBxW+J+4ArOtxJBQxVTRbuZZ6BlAr2jJRklptoU6CaCScYToFzvWXw6SWeNUwEeuC6sJHt37CC66fQa4S5IBLf9e6v640n8kKPTt+EDknwwGJtUFelA5lctnkGW3Ngj69XguT9y0VQIudFfO5OZwAiOJw8=
+	t=1745945465; cv=none; b=LXBObIm1E2FQLLLZJXx8CJZgcGc/HSNyZwwdoE2ZiikHabM62HUihMeP/cSZxi/6UjFUQ1I23cytnqTdAcleitnOMXmT+47FRtRswxdZMIHXJn5tBP9cHU/e14JlRwOAugKLKbylS7dhsrFTgEkT9llpo8r14dFuzeYpe3/T1oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946219; c=relaxed/simple;
-	bh=T1369clMFG+ZSsGy83dsxZP6kihDj2G6sv1MA+emMmU=;
+	s=arc-20240116; t=1745945465; c=relaxed/simple;
+	bh=xKZbTEae3B5RAoajgA2A8JPLDxxfRramshGopkB1ADc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jobOU/cfxtDwva8iAUsHelCpiEc5sGye9DYaO0IhxlpcK8JZl+SW8Kqwt4ItZ1v6GnPGfr4vLzlV664/f1/UWj/5qI4zz8AvUmSUFTs22vfccKQFAqK2vFMMLXTswtThHmvL60TV2hNPbV7kJh9YOcx77crYqVAB9ksiwLaeI/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Lz8vrxn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7C4C4CEE3;
-	Tue, 29 Apr 2025 17:03:38 +0000 (UTC)
+	 MIME-Version; b=Jd0uLnssrcMaIBuhGW8FsVT6TLWWH6/OK2wLmvGVuceIkOUG0RpbtmgulsI9JNjDTF9zm+OhVdkaNy65kJ61aj9KFWuYDOEgIxt3xuyDHirvEUrD0SqtKqcAI3fQ8GbHLOqziOoniBc5d3/2ZHjENZRGUbRRqw+CNvSwbl02cbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtsCqNEr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2899FC4CEE3;
+	Tue, 29 Apr 2025 16:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946218;
-	bh=T1369clMFG+ZSsGy83dsxZP6kihDj2G6sv1MA+emMmU=;
+	s=korg; t=1745945464;
+	bh=xKZbTEae3B5RAoajgA2A8JPLDxxfRramshGopkB1ADc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Lz8vrxnEVS01/8U34IxFgXPxNR7alFhznS2cqs4Gt1mI23BzaWMNHFQQRQsyWrTz
-	 jVEmkYTX59yHcGjTtjWICUHFv2Orm+kVTq3jjzsrYyOLVXl/NRUfQfbFxETCwVjeQF
-	 fV8Z3j1kYQq6fkafy70hDQ4SVXpp2EeU80/XvVUk=
+	b=NtsCqNErEXHnQoqauEKTvFsTVNsznV9ImvEygX1S1fArcPrPyKNBZH7CqGLefTp3f
+	 66SO2VF3gxmnB6gyKcyoL87bphut934ltVma7H5CCfVPmK5CX7F1RYnUsiSBKMxPYG
+	 aXzGpxpE2MRNs/iQbhiqggvCcztDbO3Pf92esoBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Bert Karwatzki <spasswolf@web.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 195/311] bpf: Reject attaching fexit/fmod_ret to __noreturn functions
+Subject: [PATCH 5.4 091/179] Revert "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
 Date: Tue, 29 Apr 2025 18:40:32 +0200
-Message-ID: <20250429161129.003200671@linuxfoundation.org>
+Message-ID: <20250429161053.085365018@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit cfe816d469dce9c0864062cf65dd7b3c42adc6f8 ]
+[ Upstream commit 0937cb5f345c79d702b4d0d744e2a2529b551cb2 ]
 
-If we attach fexit/fmod_ret to __noreturn functions, it will cause an
-issue that the bpf trampoline image will be left over even if the bpf
-link has been destroyed. Take attaching do_exit() with fexit for example.
-The fexit works as follows,
+This reverts commit a104042e2bf6528199adb6ca901efe7b60c2c27f.
 
-  bpf_trampoline
-  + __bpf_tramp_enter
-    + percpu_ref_get(&tr->pcref);
+Since the original bug seems to have been around for years,
+but a new issue was report with the fix, revert the fix for
+now. We have a couple of weeks to figure it out for this
+release, if needed.
 
-  + call do_exit()
-
-  + __bpf_tramp_exit
-    + percpu_ref_put(&tr->pcref);
-
-Since do_exit() never returns, the refcnt of the trampoline image is
-never decremented, preventing it from being freed. That can be verified
-with as follows,
-
-  $ bpftool link show                                   <<<< nothing output
-  $ grep "bpf_trampoline_[0-9]" /proc/kallsyms
-  ffffffffc04cb000 t bpf_trampoline_6442526459    [bpf] <<<< leftover
-
-In this patch, all functions annotated with __noreturn are rejected, except
-for the following cases:
-- Functions that result in a system reboot, such as panic,
-  machine_real_restart and rust_begin_unwind
-- Functions that are never executed by tasks, such as rest_init and
-  cpu_startup_entry
-- Functions implemented in assembly, such as rewind_stack_and_make_dead and
-  xen_cpu_bringup_again, lack an associated BTF ID.
-
-With this change, attaching fexit probes to functions like do_exit() will
-be rejected.
-
-$ ./fexit
-libbpf: prog 'fexit': BPF program load failed: -EINVAL
-libbpf: prog 'fexit': -- BEGIN PROG LOAD LOG --
-Attaching fexit/fmod_ret to __noreturn functions is rejected.
-
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Link: https://lore.kernel.org/r/20250318114447.75484-2-laoar.shao@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
+Fixes: a104042e2bf6 ("wifi: mac80211: Update skb's control block key in ieee80211_tx_dequeue()")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ net/mac80211/tx.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index c6f3b5f4ff2be..db95b76f5c139 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -22863,6 +22863,33 @@ BTF_ID(func, __rcu_read_unlock)
- #endif
- BTF_SET_END(btf_id_deny)
- 
-+/* fexit and fmod_ret can't be used to attach to __noreturn functions.
-+ * Currently, we must manually list all __noreturn functions here. Once a more
-+ * robust solution is implemented, this workaround can be removed.
-+ */
-+BTF_SET_START(noreturn_deny)
-+#ifdef CONFIG_IA32_EMULATION
-+BTF_ID(func, __ia32_sys_exit)
-+BTF_ID(func, __ia32_sys_exit_group)
-+#endif
-+#ifdef CONFIG_KUNIT
-+BTF_ID(func, __kunit_abort)
-+BTF_ID(func, kunit_try_catch_throw)
-+#endif
-+#ifdef CONFIG_MODULES
-+BTF_ID(func, __module_put_and_kthread_exit)
-+#endif
-+#ifdef CONFIG_X86_64
-+BTF_ID(func, __x64_sys_exit)
-+BTF_ID(func, __x64_sys_exit_group)
-+#endif
-+BTF_ID(func, do_exit)
-+BTF_ID(func, do_group_exit)
-+BTF_ID(func, kthread_complete_and_exit)
-+BTF_ID(func, kthread_exit)
-+BTF_ID(func, make_task_dead)
-+BTF_SET_END(noreturn_deny)
-+
- static bool can_be_sleepable(struct bpf_prog *prog)
- {
- 	if (prog->type == BPF_PROG_TYPE_TRACING) {
-@@ -22951,6 +22978,11 @@ static int check_attach_btf_id(struct bpf_verifier_env *env)
- 	} else if (prog->type == BPF_PROG_TYPE_TRACING &&
- 		   btf_id_set_contains(&btf_id_deny, btf_id)) {
- 		return -EINVAL;
-+	} else if ((prog->expected_attach_type == BPF_TRACE_FEXIT ||
-+		   prog->expected_attach_type == BPF_MODIFY_RETURN) &&
-+		   btf_id_set_contains(&noreturn_deny, btf_id)) {
-+		verbose(env, "Attaching fexit/fmod_ret to __noreturn functions is rejected.\n");
-+		return -EINVAL;
- 	}
- 
- 	key = bpf_trampoline_compute_key(tgt_prog, prog->aux->attach_btf, btf_id);
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index f8d72f3e4def8..461cff7b94ad7 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3661,7 +3661,6 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	 * The key can be removed while the packet was queued, so need to call
+ 	 * this here to get the current key.
+ 	 */
+-	info->control.hw_key = NULL;
+ 	r = ieee80211_tx_h_select_key(&tx);
+ 	if (r != TX_CONTINUE) {
+ 		ieee80211_free_txskb(&local->hw, skb);
 -- 
 2.39.5
 
