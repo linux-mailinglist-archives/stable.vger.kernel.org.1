@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379B5AA17B5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B89AA122A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C2123A9FC6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787C6188F7B0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDA8244664;
-	Tue, 29 Apr 2025 17:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3736A244679;
+	Tue, 29 Apr 2025 16:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WBWpKNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boPgWl3A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A23EC148;
-	Tue, 29 Apr 2025 17:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E775024113A;
+	Tue, 29 Apr 2025 16:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948794; cv=none; b=OBsrzSq4jZhfN/MKb05+u9rDisayN1QKAqhEkMwms59To09frMtazRuQ4NifZ1KK3M0TKG+SOViRyaJOFmYpZaTLDR3cLCFJVVKUrW3FciwdtsVZ2zar2oyqAxgvOJuIGTZ0CSTs6KgUAMqdwssY19HEgRuAthez0zPXTSusWkc=
+	t=1745945379; cv=none; b=eH/KSqsRjHKB+FyClqDGbtrliJ8JB/TqHrzTnEiwt5RtZS/bOaxEbaAFewIZxo1jowdhrJepK5v24M31cJqkdrOuvbXzUFIcYJf25pL9yIzQHb2JlAhdrfTVjynb85Kh09VZrne0DTU2IXI9ylfibHiY2N0JMDmXKCuGoyzOwNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948794; c=relaxed/simple;
-	bh=cSY+siYeStZUiTZMo1p5DRIrqYqmX1IRzSMPpt5hBhE=;
+	s=arc-20240116; t=1745945379; c=relaxed/simple;
+	bh=lGBNf56XkdNg6UWSpva5iXYkJoQmjeklKtP7Gkuh9lA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DqlbGSN0IVJ/NMy8nGs0jTLz65/wCYpYils2JRCG6wKR7KmsAgow4GgrDFEmH6o55gHkzql3qGZpDa0DDX8BUYGUrmHdtGscirf8A8rs5DXzUd6vlcOfkqRr4qixdMOK7uaLwWLqR+2abRjsJ0tWFywGIpGtLPN7yiOlIwfGS28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WBWpKNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29D4C4CEE3;
-	Tue, 29 Apr 2025 17:46:33 +0000 (UTC)
+	 MIME-Version; b=JHGkJJW8kUlVAhz8ixFUQTD5+YzKAgPEwfwl/TNkzvxcS9iHPLGPpSlMu8APbOqJpt2wwQRoaBxa4CGf5ove8XGDJaSjsvtROn0GYsrzCFR5Oocovr2DIB3LWKSktolTrSdx7j2oaX+M6wu+dbXeHpUSd7Cd5XKrPxGTccyoJ/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boPgWl3A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBD9C4CEE3;
+	Tue, 29 Apr 2025 16:49:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948794;
-	bh=cSY+siYeStZUiTZMo1p5DRIrqYqmX1IRzSMPpt5hBhE=;
+	s=korg; t=1745945378;
+	bh=lGBNf56XkdNg6UWSpva5iXYkJoQmjeklKtP7Gkuh9lA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2WBWpKNiWyglFXYJ1PZ9OLsRy0Pg+TnuMlbbx2LCWnLOGUfP1AM4mf876y79eOjcC
-	 PSWyXsiRWYosi5HXp2Hs+PZaqnLXZbFMsRuQP/jY9Cgfnkj9HZfzDjpvdUset5+AFa
-	 nb5CwFlhl5G1EZoazUYa18BCbvSQslKkkLTafaLQ=
+	b=boPgWl3Ay2j1gXfSPV+q/Ol0VSERxsVaHAGGhZ7ucjHoEpj4k3X+/S5EnN9QylEyo
+	 XelhYzVdY+ss6E8cILw88gY2sA3whaTS2go4t/UnZZ7h7K067TCfM7/Y9gmRoeOO8O
+	 XB8/og+ZGlgrnJZr4VUmBGEWmanq9YPHqxQatAhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 5.15 115/373] HSI: ssi_protocol: Fix use after free vulnerability in ssi_protocol Driver Due to Race Condition
-Date: Tue, 29 Apr 2025 18:39:52 +0200
-Message-ID: <20250429161127.908007749@linuxfoundation.org>
+	Karina Yankevich <k.yankevich@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.4 052/179] media: v4l2-dv-timings: prevent possible overflow in v4l2_detect_gtf()
+Date: Tue, 29 Apr 2025 18:39:53 +0200
+Message-ID: <20250429161051.505613099@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Karina Yankevich <k.yankevich@omp.ru>
 
-commit e3f88665a78045fe35c7669d2926b8d97b892c11 upstream.
+commit 3edd1fc48d2c045e8259561797c89fe78f01717e upstream.
 
-In the ssi_protocol_probe() function, &ssi->work is bound with
-ssip_xmit_work(), In ssip_pn_setup(), the ssip_pn_xmit() function
-within the ssip_pn_ops structure is capable of starting the
-work.
+In v4l2_detect_gtf(), it seems safer to cast the 32-bit image_width
+variable to the 64-bit type u64 before multiplying to avoid
+a possible overflow. The resulting object code even seems to
+look better, at least on x86_64.
 
-If we remove the module which will call ssi_protocol_remove()
-to make a cleanup, it will free ssi through kfree(ssi),
-while the work mentioned above will be used. The sequence
-of operations that may lead to a UAF bug is as follows:
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-CPU0                                    CPU1
+[Sergey: rewrote the patch subject/descripition]
 
-                        | ssip_xmit_work
-ssi_protocol_remove     |
-kfree(ssi);             |
-                        | struct hsi_client *cl = ssi->cl;
-                        | // use ssi
-
-Fix it by ensuring that the work is canceled before proceeding
-with the cleanup in ssi_protocol_remove().
-
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240918120749.1730-1-kxwang23@m.fudan.edu.cn
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: c9bc9f50753d ("[media] v4l2-dv-timings: fix overflow in gtf timings calculation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Karina Yankevich <k.yankevich@omp.ru>
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hsi/clients/ssi_protocol.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/v4l2-core/v4l2-dv-timings.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/hsi/clients/ssi_protocol.c
-+++ b/drivers/hsi/clients/ssi_protocol.c
-@@ -403,6 +403,7 @@ static void ssip_reset(struct hsi_client
- 	del_timer(&ssi->rx_wd);
- 	del_timer(&ssi->tx_wd);
- 	del_timer(&ssi->keep_alive);
-+	cancel_work_sync(&ssi->work);
- 	ssi->main_state = 0;
- 	ssi->send_state = 0;
- 	ssi->recv_state = 0;
+--- a/drivers/media/v4l2-core/v4l2-dv-timings.c
++++ b/drivers/media/v4l2-core/v4l2-dv-timings.c
+@@ -755,7 +755,7 @@ bool v4l2_detect_gtf(unsigned frame_heig
+ 		u64 num;
+ 		u32 den;
+ 
+-		num = ((image_width * GTF_D_C_PRIME * (u64)hfreq) -
++		num = (((u64)image_width * GTF_D_C_PRIME * hfreq) -
+ 		      ((u64)image_width * GTF_D_M_PRIME * 1000));
+ 		den = (hfreq * (100 - GTF_D_C_PRIME) + GTF_D_M_PRIME * 1000) *
+ 		      (2 * GTF_CELL_GRAN);
+@@ -765,7 +765,7 @@ bool v4l2_detect_gtf(unsigned frame_heig
+ 		u64 num;
+ 		u32 den;
+ 
+-		num = ((image_width * GTF_S_C_PRIME * (u64)hfreq) -
++		num = (((u64)image_width * GTF_S_C_PRIME * hfreq) -
+ 		      ((u64)image_width * GTF_S_M_PRIME * 1000));
+ 		den = (hfreq * (100 - GTF_S_C_PRIME) + GTF_S_M_PRIME * 1000) *
+ 		      (2 * GTF_CELL_GRAN);
 
 
 
