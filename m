@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-138398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D9BAA17DA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBFAAA150B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE5F11A85D58
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:52:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6362D1BA4410
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E02624EAB2;
-	Tue, 29 Apr 2025 17:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DDD24291A;
+	Tue, 29 Apr 2025 17:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rouuskpH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvxoehbJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B21B22AE68;
-	Tue, 29 Apr 2025 17:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D430021ABDB;
+	Tue, 29 Apr 2025 17:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949122; cv=none; b=PjF8/K7WRiyy6a/ZUV4HsYFMNaVnNMOklWkgrNYoT/pbgC87LJlSi6zJhnqN3y2HAjRCxIAvOplbLuDviSUFxFFk8wnNYAYWTi7qS8Dl0LBrSuHyuc0g7ntSzVYcHni0mCDwhbeBHrBAi6H9usUsd1TmjZ08KXFaWdhWtEI31RU=
+	t=1745947160; cv=none; b=hAdzOqoQe8B7xP5tcOO/Kee+QhH8V/16ZZyyfsUJ2p0vBetl4LfPeCKyfHXonTpgt/+EuVvPRvrECS21MzWtw4Ol++VpBF0vLdbFYnXjdbd3yFi23LC0rMG5GcjvxZx+htyfj8pgGwqyUiD/AQKO7GNUjzQ6mUfdmCp7d/ty1QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949122; c=relaxed/simple;
-	bh=rdHNlVW5xeGHAbQ0r66YWhmRQIgDUK8Z19aOaSwBB88=;
+	s=arc-20240116; t=1745947160; c=relaxed/simple;
+	bh=CrSGKe/4Axv7rv687199w4VJFUaN6Ngh5JNHZYI50vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NII5NfHrXznsrE7ZL+3pgAr2P3RfFM/+TACjHhpAwCYpkQgAoKk2gMZaeOg11YKO1Aff6Je/kTiNBjOPWj3F1cmO2ZPv/fzg44VcAf+vLn1V6HdP0kX/le5Bs8kM3S4eAw9W4X3PWnTVnXGRkwJaDrXv5cYK6M77i7wiL0C7Epw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rouuskpH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4F9C4CEE3;
-	Tue, 29 Apr 2025 17:52:01 +0000 (UTC)
+	 MIME-Version; b=dASt9BlmkKN6nKIO98ki85UxypzPKRC5dGIQgH36WYTX1j5i2PIv94OtxL5FhfjPnY9vCRldC9fRFHe1MtxpP+xsFN26y6diPJej5M1K1kR4SiFkgkKKPMvtFuSzQ92lbTzNd++CXnYg1F8ceVZ9+IsLbpHasPSAsD6ifqJelms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvxoehbJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB095C4CEE3;
+	Tue, 29 Apr 2025 17:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949122;
-	bh=rdHNlVW5xeGHAbQ0r66YWhmRQIgDUK8Z19aOaSwBB88=;
+	s=korg; t=1745947160;
+	bh=CrSGKe/4Axv7rv687199w4VJFUaN6Ngh5JNHZYI50vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rouuskpHNMBPCSAI5JtvxyrfLMdM1aU/m+mtmGUa2PhU68XPE5jVebO4VI159zFYi
-	 sVsiQHkzLl+F06V9QR8g4f6lM2ks90kvPyjKc9ulQK4kGAuwD0ox02YxLe5IxGztYE
-	 99+7a58R4439vqO4144Z+MnC26mFe7ld9GGgAPgM=
+	b=fvxoehbJjS8hXTCkSLfhjs6JvljAZlYlY4Q+TE5m/tyNSOxjbb7s9Kv/73eJ9sm+V
+	 1NZire49U3T5Mzr4I+bmYKTcKgU2JU6KdeXxSjXir4g8R+R0OeTJZnYw2738JyMab0
+	 +rnSMrhs6Em/5EBFnybmI8BTARpEGLUKXwrENUvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 5.15 191/373] arm64/fpsimd: Stop using TIF_SVE to manage register saving in KVM
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Cliff Liu <donghua.liu@windriver.com>,
+	He Zhe <Zhe.He@windriver.com>
+Subject: [PATCH 5.10 164/286] smb: client: fix potential deadlock when releasing mids
 Date: Tue, 29 Apr 2025 18:41:08 +0200
-Message-ID: <20250429161131.021262090@linuxfoundation.org>
+Message-ID: <20250429161114.630865036@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 62021cc36add7b2c015b837f7893f2fb4b8c2586 ]
+commit e6322fd177c6885a21dd4609dc5e5c973d1a2eb7 upstream.
 
-Now that we are explicitly telling the host FP code which register state
-it needs to save we can remove the manipulation of TIF_SVE from the KVM
-code, simplifying it and allowing us to optimise our handling of normal
-tasks. Remove the manipulation of TIF_SVE from KVM and instead rely on
-to_save to ensure we save the correct data for it.
+All release_mid() callers seem to hold a reference of @mid so there is
+no need to call kref_put(&mid->refcount, __release_mid) under
+@server->mid_lock spinlock.  If they don't, then an use-after-free bug
+would have occurred anyways.
 
-There should be no functional or performance impact from this change.
+By getting rid of such spinlock also fixes a potential deadlock as
+shown below
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221115094640.112848-5-broonie@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+CPU 0                                CPU 1
+------------------------------------------------------------------
+cifs_demultiplex_thread()            cifs_debug_data_proc_show()
+ release_mid()
+  spin_lock(&server->mid_lock);
+                                     spin_lock(&cifs_tcp_ses_lock)
+				      spin_lock(&server->mid_lock)
+  __release_mid()
+   smb2_find_smb_tcon()
+    spin_lock(&cifs_tcp_ses_lock) *deadlock*
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[cifs_mid_q_entry_release() is renamed to release_mid() and
+ _cifs_mid_q_entry_release() is renamed to __release_mid() by
+ commit 70f08f914a37 ("cifs: remove useless DeleteMidQEntry()")
+ which is integrated into v6.0, so preserve old names in v5.10.]
+Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
+Signed-off-by: He Zhe <Zhe.He@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/fpsimd.c |   40 ++++++++++++++++------------------------
- arch/arm64/kvm/fpsimd.c    |    3 ---
- 2 files changed, 16 insertions(+), 27 deletions(-)
+ fs/cifs/cifsproto.h |    7 ++++++-
+ fs/cifs/smb2misc.c  |    2 +-
+ fs/cifs/transport.c |    9 +--------
+ 3 files changed, 8 insertions(+), 10 deletions(-)
 
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -318,7 +318,13 @@ static void task_fpsimd_load(void)
+--- a/fs/cifs/cifsproto.h
++++ b/fs/cifs/cifsproto.h
+@@ -85,7 +85,7 @@ extern struct mid_q_entry *AllocMidQEntr
+ 					struct TCP_Server_Info *server);
+ extern void DeleteMidQEntry(struct mid_q_entry *midEntry);
+ extern void cifs_delete_mid(struct mid_q_entry *mid);
+-extern void cifs_mid_q_entry_release(struct mid_q_entry *midEntry);
++void _cifs_mid_q_entry_release(struct kref *refcount);
+ extern void cifs_wake_up_task(struct mid_q_entry *mid);
+ extern int cifs_handle_standard(struct TCP_Server_Info *server,
+ 				struct mid_q_entry *mid);
+@@ -646,4 +646,9 @@ static inline int cifs_create_options(st
+ 		return options;
+ }
  
- /*
-  * Ensure FPSIMD/SVE storage in memory for the loaded context is up to
-- * date with respect to the CPU registers.
-+ * date with respect to the CPU registers. Note carefully that the
-+ * current context is the context last bound to the CPU stored in
-+ * last, if KVM is involved this may be the guest VM context rather
-+ * than the host thread for the VM pointed to by current. This means
-+ * that we must always reference the state storage via last rather
-+ * than via current, if we are saving KVM state then it will have
-+ * ensured that the type of registers to save is set in last->to_save.
-  */
- static void fpsimd_save(void)
- {
-@@ -334,9 +340,15 @@ static void fpsimd_save(void)
- 	if (test_thread_flag(TIF_FOREIGN_FPSTATE))
- 		return;
- 
--	if (IS_ENABLED(CONFIG_ARM64_SVE) &&
--	    test_thread_flag(TIF_SVE)) {
--		if (WARN_ON(sve_get_vl() != last->sve_vl)) {
-+	if ((last->to_save == FP_STATE_CURRENT && test_thread_flag(TIF_SVE)) ||
-+	    last->to_save == FP_STATE_SVE) {
-+		save_sve_regs = true;
-+		vl = last->sve_vl;
-+	}
++static inline void cifs_mid_q_entry_release(struct mid_q_entry *midEntry)
++{
++	kref_put(&midEntry->refcount, _cifs_mid_q_entry_release);
++}
 +
-+	if (IS_ENABLED(CONFIG_ARM64_SVE) && save_sve_regs) {
-+		/* Get the configured VL from RDVL, will account for SM */
-+		if (WARN_ON(sve_get_vl() != vl)) {
- 			/*
- 			 * Can't save the user regs, so current would
- 			 * re-enter user with corrupt state.
-@@ -347,26 +359,6 @@ static void fpsimd_save(void)
- 		}
- 	}
+ #endif			/* _CIFSPROTO_H */
+--- a/fs/cifs/smb2misc.c
++++ b/fs/cifs/smb2misc.c
+@@ -780,7 +780,7 @@ __smb2_handle_cancelled_cmd(struct cifs_
+ {
+ 	struct close_cancelled_open *cancelled;
  
--	if (test_thread_flag(TIF_SVE)) {
--		save_sve_regs = true;
--		vl = last->sve_vl;
--	}
--
--	/*
--	 * Validate that an explicitly specified state to save is
--	 * consistent with the task state.
--	 */
--	switch (last->to_save) {
--	case FP_STATE_CURRENT:
--		break;
--	case FP_STATE_FPSIMD:
--		WARN_ON_ONCE(save_sve_regs);
--		break;
--	case FP_STATE_SVE:
--		WARN_ON_ONCE(!save_sve_regs);
--		break;
--	}
--
- 	if (IS_ENABLED(CONFIG_ARM64_SVE) && save_sve_regs) {
- 		sve_save_state((char *)last->sve_state +
- 			       sve_ffr_offset(last->sve_vl),
---- a/arch/arm64/kvm/fpsimd.c
-+++ b/arch/arm64/kvm/fpsimd.c
-@@ -110,7 +110,6 @@ void kvm_arch_vcpu_ctxsync_fp(struct kvm
- 					 &vcpu->arch.fp_type, fp_type);
+-	cancelled = kzalloc(sizeof(*cancelled), GFP_ATOMIC);
++	cancelled = kzalloc(sizeof(*cancelled), GFP_KERNEL);
+ 	if (!cancelled)
+ 		return -ENOMEM;
  
- 		clear_thread_flag(TIF_FOREIGN_FPSTATE);
--		update_thread_flag(TIF_SVE, vcpu_has_sve(vcpu));
- 	}
+--- a/fs/cifs/transport.c
++++ b/fs/cifs/transport.c
+@@ -88,7 +88,7 @@ AllocMidQEntry(const struct smb_hdr *smb
+ 	return temp;
  }
  
-@@ -151,7 +150,5 @@ void kvm_arch_vcpu_put_fp(struct kvm_vcp
- 			sysreg_clear_set(CPACR_EL1, CPACR_EL1_ZEN_EL0EN, 0);
- 	}
- 
--	update_thread_flag(TIF_SVE, 0);
--
- 	local_irq_restore(flags);
+-static void _cifs_mid_q_entry_release(struct kref *refcount)
++void _cifs_mid_q_entry_release(struct kref *refcount)
+ {
+ 	struct mid_q_entry *midEntry =
+ 			container_of(refcount, struct mid_q_entry, refcount);
+@@ -168,13 +168,6 @@ static void _cifs_mid_q_entry_release(st
+ 	mempool_free(midEntry, cifs_mid_poolp);
  }
+ 
+-void cifs_mid_q_entry_release(struct mid_q_entry *midEntry)
+-{
+-	spin_lock(&GlobalMid_Lock);
+-	kref_put(&midEntry->refcount, _cifs_mid_q_entry_release);
+-	spin_unlock(&GlobalMid_Lock);
+-}
+-
+ void DeleteMidQEntry(struct mid_q_entry *midEntry)
+ {
+ 	cifs_mid_q_entry_release(midEntry);
 
 
 
