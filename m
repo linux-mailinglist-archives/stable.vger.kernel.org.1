@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-137913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A232AA15A6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E5DAA1799
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBBC84A198F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B118B9A3C65
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9773C24E4A9;
-	Tue, 29 Apr 2025 17:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF81244664;
+	Tue, 29 Apr 2025 17:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EP2IQN8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qq72eomZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E29242D94;
-	Tue, 29 Apr 2025 17:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DEB2522B4;
+	Tue, 29 Apr 2025 17:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947515; cv=none; b=pjnXh9nPpoLvu3W3OFVWT5pjVfZr9jTz3TLDYoYSUwi5cw/MOpuvhcQwLjHezK3fLvF/IxLeTr+nocLuNHP5Yzr7NGsrCF49SY1w+zRVZzFlECyk+0Wwc5cDJyqBT6UlxM0ObfhHCX37nhzL7SV6YMMpm/Q8A9i1gkn6DQiOs88=
+	t=1745948693; cv=none; b=TIyshCkvVe9mIybG3TPc4igwRpAYw4dK/KmbqZ7ar2O55IexRx10Ll/l4unmaNKkPrfiQVFmZdkAbX5omD94yi7M60rEbtfIOKAXC+93e5EFPbiafp/Vnmq5jSDaGUjV+afk93bq4u369MODL9MSIqNDRTSEyXgGt5sH/p6wakU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947515; c=relaxed/simple;
-	bh=pqs4lw0ZVOFFIt/HHCC+FkuQF0TTK0/WqCY+HRMxMW0=;
+	s=arc-20240116; t=1745948693; c=relaxed/simple;
+	bh=/l2shZ+SdeLfm2NfjGal5s38AzlsZG8DIMWT40cN+Qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=am/+loxF2XzGlR18dg0DHEazoJMu9V471wtd8L5mBw7XVLspIgA+OgfGFnbYfV7jJEwy9k/j/pA9wo2f8TBU8BeZ7fbz3V06/Wc1O8C+VFXwU2rKP1Xrc3FT5Od20VDO6KOM2ekwRqoeYPwHRuPQ9ivvYpolER8nWuW8r0IbiHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EP2IQN8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B0DC4CEE3;
-	Tue, 29 Apr 2025 17:25:14 +0000 (UTC)
+	 MIME-Version; b=OcU+f1u9fbet0ETP8NFmYognMVa+sSInIKhZnuziUq4n0NMg/2aoPt+KLFmtWB02Vg8nkY5wmVVDLm74UdEK6asOautYVKe/hlBpLxyU4uNn71UupkAAFMz17Z/NpOtBs5CFzLm6AwaJbHk7J+OO6zn1WzQ/dWyZVP/Gn07vsJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qq72eomZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A47C4CEE3;
+	Tue, 29 Apr 2025 17:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947515;
-	bh=pqs4lw0ZVOFFIt/HHCC+FkuQF0TTK0/WqCY+HRMxMW0=;
+	s=korg; t=1745948693;
+	bh=/l2shZ+SdeLfm2NfjGal5s38AzlsZG8DIMWT40cN+Qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1EP2IQN8z0MbtsLki6Kv7nHjs4feG0l7hEy2BR9UKCHt+8MfjIsOEzel9AmFD9uMq
-	 gNchNfEKe6gD7zKa09HIkcz4KmhIqOj0TgxlOvRjcRPrOub6XaPO/y+NrF7kzadMfd
-	 5mCFnwMfdXN12jqgiDa43+OWRDNCukBkJI/dEiCY=
+	b=qq72eomZyk6R/FxB6bhsod9+zRfuVz3Uy4dogkZI+trdPyz56xzRSi/k/8xoLDF36
+	 /tPZsfRhhhmOW7fqv8tlzJUVNpRHxNEk0J/AzgxOU2R26pmYnQIE89a+cqXpA29BAc
+	 pw3+4JQuQF8/gF3Ja2bu/1frbwUzUsnwxy3FM+Cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@infradead.org>,
-	Ming Lei <ming.lei@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/280] block: make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone
+	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.15 083/373] wifi: mac80211: fix integer overflow in hwmp_route_info_get()
 Date: Tue, 29 Apr 2025 18:39:20 +0200
-Message-ID: <20250429161115.874597040@linuxfoundation.org>
+Message-ID: <20250429161126.564773859@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-[ Upstream commit fc0e982b8a3a169b1c654d9a1aa45bf292943ef2 ]
+commit d00c0c4105e5ab8a6a13ed23d701cceb285761fa upstream.
 
-Make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone(),
-otherwise requests cloned by device-mapper multipath will not have the
-proper nr_integrity_segments values set, then BUG() is hit from
-sg_alloc_table_chained().
+Since the new_metric and last_hop_metric variables can reach
+the MAX_METRIC(0xffffffff) value, an integer overflow may occur
+when multiplying them by 10/9. It can lead to incorrect behavior.
 
-Fixes: b0fd271d5fba ("block: add request clone interface (v2)")
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
+
+Fixes: a8d418d9ac25 ("mac80211: mesh: only switch path when new metric is at least 10% better")
 Cc: stable@vger.kernel.org
-Cc: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250310115453.2271109-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Link: https://patch.msgid.link/20250212082124.4078236-1-Ilia.Gavrilov@infotecs.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/mesh_hwmp.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 5e6afda59e7a1..a7765e96cf40e 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3306,6 +3306,7 @@ int blk_rq_prep_clone(struct request *rq, struct request *rq_src,
- 		rq->special_vec = rq_src->special_vec;
- 	}
- 	rq->nr_phys_segments = rq_src->nr_phys_segments;
-+	rq->nr_integrity_segments = rq_src->nr_integrity_segments;
+--- a/net/mac80211/mesh_hwmp.c
++++ b/net/mac80211/mesh_hwmp.c
+@@ -360,6 +360,12 @@ u32 airtime_link_metric_get(struct ieee8
+ 	return (u32)result;
+ }
  
- 	if (rq->bio && blk_crypto_rq_bio_prep(rq, rq->bio, gfp_mask) < 0)
- 		goto free_and_out;
--- 
-2.39.5
-
++/* Check that the first metric is at least 10% better than the second one */
++static bool is_metric_better(u32 x, u32 y)
++{
++	return (x < y) && (x < (y - x / 10));
++}
++
+ /**
+  * hwmp_route_info_get - Update routing info to originator and transmitter
+  *
+@@ -450,8 +456,8 @@ static u32 hwmp_route_info_get(struct ie
+ 				    (mpath->sn == orig_sn &&
+ 				     (rcu_access_pointer(mpath->next_hop) !=
+ 						      sta ?
+-					      mult_frac(new_metric, 10, 9) :
+-					      new_metric) >= mpath->metric)) {
++					      !is_metric_better(new_metric, mpath->metric) :
++					      new_metric >= mpath->metric))) {
+ 					process = false;
+ 					fresh_info = false;
+ 				}
+@@ -521,8 +527,8 @@ static u32 hwmp_route_info_get(struct ie
+ 			if ((mpath->flags & MESH_PATH_FIXED) ||
+ 			    ((mpath->flags & MESH_PATH_ACTIVE) &&
+ 			     ((rcu_access_pointer(mpath->next_hop) != sta ?
+-				       mult_frac(last_hop_metric, 10, 9) :
+-				       last_hop_metric) > mpath->metric)))
++				      !is_metric_better(last_hop_metric, mpath->metric) :
++				       last_hop_metric > mpath->metric))))
+ 				fresh_info = false;
+ 		} else {
+ 			mpath = mesh_path_add(sdata, ta);
 
 
 
