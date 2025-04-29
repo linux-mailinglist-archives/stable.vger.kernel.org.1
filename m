@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-137205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B89AA122A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 344C1AA1493
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787C6188F7B0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F400E18958B7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3736A244679;
-	Tue, 29 Apr 2025 16:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701AB247280;
+	Tue, 29 Apr 2025 17:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boPgWl3A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDzJylpB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E775024113A;
-	Tue, 29 Apr 2025 16:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8BF242D6E;
+	Tue, 29 Apr 2025 17:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945379; cv=none; b=eH/KSqsRjHKB+FyClqDGbtrliJ8JB/TqHrzTnEiwt5RtZS/bOaxEbaAFewIZxo1jowdhrJepK5v24M31cJqkdrOuvbXzUFIcYJf25pL9yIzQHb2JlAhdrfTVjynb85Kh09VZrne0DTU2IXI9ylfibHiY2N0JMDmXKCuGoyzOwNM=
+	t=1745946851; cv=none; b=KBnfxOE7BaxiLdAyL1vUWXyHUzpxWeOZrT7hycChwdpiY+V9/rP0sZHqPhLSHf8ycUfxxoedevzyZejIDD5qSupD/e0gck5l06SiBvVSjmYj/p/uQdWXD/RCSbhb90piQucPOhkx4Smv9mibpURuWKRQaf28OozTYv3zNw8Mu2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945379; c=relaxed/simple;
-	bh=lGBNf56XkdNg6UWSpva5iXYkJoQmjeklKtP7Gkuh9lA=;
+	s=arc-20240116; t=1745946851; c=relaxed/simple;
+	bh=k++T/4YMjhA4i1Cxb5cbEXU8LehiFOoTcNKb1vm4Rc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHGkJJW8kUlVAhz8ixFUQTD5+YzKAgPEwfwl/TNkzvxcS9iHPLGPpSlMu8APbOqJpt2wwQRoaBxa4CGf5ove8XGDJaSjsvtROn0GYsrzCFR5Oocovr2DIB3LWKSktolTrSdx7j2oaX+M6wu+dbXeHpUSd7Cd5XKrPxGTccyoJ/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boPgWl3A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBD9C4CEE3;
-	Tue, 29 Apr 2025 16:49:38 +0000 (UTC)
+	 MIME-Version; b=sw3LurhtOQ2NikV1RoGREwlfz+ZNFaOSygPaJG2U3/fDXPnsE2X7WOV4vWwdi7x2aLUXH56JsCWPYykjokkXujsI5kN1pv3kYLWiAaj1r+teBgABvgZpnAByUdEClxv9loJJ0wV4BgxVHSEKHbpaKN2j7DaP91pkk8suC6Ghw6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDzJylpB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D455C4CEE3;
+	Tue, 29 Apr 2025 17:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945378;
-	bh=lGBNf56XkdNg6UWSpva5iXYkJoQmjeklKtP7Gkuh9lA=;
+	s=korg; t=1745946851;
+	bh=k++T/4YMjhA4i1Cxb5cbEXU8LehiFOoTcNKb1vm4Rc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=boPgWl3Ay2j1gXfSPV+q/Ol0VSERxsVaHAGGhZ7ucjHoEpj4k3X+/S5EnN9QylEyo
-	 XelhYzVdY+ss6E8cILw88gY2sA3whaTS2go4t/UnZZ7h7K067TCfM7/Y9gmRoeOO8O
-	 XB8/og+ZGlgrnJZr4VUmBGEWmanq9YPHqxQatAhE=
+	b=MDzJylpBVYJwMYTiBO7ShHxPEyA4syX0JJ/GaCdmG7/DCOu3CKs8102XuZqEVW1Y0
+	 tF67+vt7UE7JT5jra1yn7Md7a+Bl+tZb6SUuw/hzvtJiEW1bQwRWs9EHjA48mnWecl
+	 tuyrZ3s82sJVb6527nlyzBny4OSw809cVn3gn6jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karina Yankevich <k.yankevich@omp.ru>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.4 052/179] media: v4l2-dv-timings: prevent possible overflow in v4l2_detect_gtf()
+	zhoumin <teczm@foxmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 089/286] ftrace: Add cond_resched() to ftrace_graph_set_hash()
 Date: Tue, 29 Apr 2025 18:39:53 +0200
-Message-ID: <20250429161051.505613099@linuxfoundation.org>
+Message-ID: <20250429161111.520663289@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karina Yankevich <k.yankevich@omp.ru>
+From: zhoumin <teczm@foxmail.com>
 
-commit 3edd1fc48d2c045e8259561797c89fe78f01717e upstream.
+commit 42ea22e754ba4f2b86f8760ca27f6f71da2d982c upstream.
 
-In v4l2_detect_gtf(), it seems safer to cast the 32-bit image_width
-variable to the 64-bit type u64 before multiplying to avoid
-a possible overflow. The resulting object code even seems to
-look better, at least on x86_64.
+When the kernel contains a large number of functions that can be traced,
+the loop in ftrace_graph_set_hash() may take a lot of time to execute.
+This may trigger the softlockup watchdog.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+Add cond_resched() within the loop to allow the kernel to remain
+responsive even when processing a large number of functions.
 
-[Sergey: rewrote the patch subject/descripition]
+This matches the cond_resched() that is used in other locations of the
+code that iterates over all functions that can be traced.
 
-Fixes: c9bc9f50753d ("[media] v4l2-dv-timings: fix overflow in gtf timings calculation")
 Cc: stable@vger.kernel.org
-Signed-off-by: Karina Yankevich <k.yankevich@omp.ru>
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: b9b0c831bed26 ("ftrace: Convert graph filter to use hash tables")
+Link: https://lore.kernel.org/tencent_3E06CE338692017B5809534B9C5C03DA7705@qq.com
+Signed-off-by: zhoumin <teczm@foxmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-dv-timings.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/ftrace.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/v4l2-core/v4l2-dv-timings.c
-+++ b/drivers/media/v4l2-core/v4l2-dv-timings.c
-@@ -755,7 +755,7 @@ bool v4l2_detect_gtf(unsigned frame_heig
- 		u64 num;
- 		u32 den;
- 
--		num = ((image_width * GTF_D_C_PRIME * (u64)hfreq) -
-+		num = (((u64)image_width * GTF_D_C_PRIME * hfreq) -
- 		      ((u64)image_width * GTF_D_M_PRIME * 1000));
- 		den = (hfreq * (100 - GTF_D_C_PRIME) + GTF_D_M_PRIME * 1000) *
- 		      (2 * GTF_CELL_GRAN);
-@@ -765,7 +765,7 @@ bool v4l2_detect_gtf(unsigned frame_heig
- 		u64 num;
- 		u32 den;
- 
--		num = ((image_width * GTF_S_C_PRIME * (u64)hfreq) -
-+		num = (((u64)image_width * GTF_S_C_PRIME * hfreq) -
- 		      ((u64)image_width * GTF_S_M_PRIME * 1000));
- 		den = (hfreq * (100 - GTF_S_C_PRIME) + GTF_S_M_PRIME * 1000) *
- 		      (2 * GTF_CELL_GRAN);
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -6096,6 +6096,7 @@ ftrace_graph_set_hash(struct ftrace_hash
+ 				}
+ 			}
+ 		}
++		cond_resched();
+ 	} while_for_each_ftrace_rec();
+ out:
+ 	mutex_unlock(&ftrace_lock);
 
 
 
