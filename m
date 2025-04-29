@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC4BAA177A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BBCAA1249
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79BAD4C2D1C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0985A7B47E2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CE521ABC1;
-	Tue, 29 Apr 2025 17:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D1D247291;
+	Tue, 29 Apr 2025 16:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdexC1Jv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGP9FddJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E23C148;
-	Tue, 29 Apr 2025 17:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48B121772B;
+	Tue, 29 Apr 2025 16:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948880; cv=none; b=bRWp27FX88bOOz2nrKh658jdLJuK+XOgjV6Ev/qyO0xVIBHTlEePQW1sOjD6q+tTOyRN/sNL/6yzR4l6YdrOWMtt+cOfESn6D/v7HPsbDtoQ7e8zQeHk/QrDAWQeKfJmzmVyhoJhTfebxHlFIf6m/JbkJ5YOR7/AFLk2X+Nx0Mw=
+	t=1745945473; cv=none; b=Jo3jiTvnqpbR8tQetNVxcOI/sW9TWqFNvYslnKjxVv0TK1Pk9dc2cH/0Cey+JcMlsXJsQP5p6nFvujmZGsXtUdTCkeOasK6bftBZzFseWCrkAbVRwYBA++FA8Na6iHV0BYJLqNKYjP6q0t9TiA9/agx7Vzx/OjswWQo6mFUIJdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948880; c=relaxed/simple;
-	bh=cvloOVqpGmjYWr49SOAYwfVDBXbPCpVNAWRP4tJYLOA=;
+	s=arc-20240116; t=1745945473; c=relaxed/simple;
+	bh=MR2xS2sIswyVqmBjFEZTuUhc1I/M02WUZrI3yz/nveE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKaPeeQ9V4WjrgClIzO9YGKp1qMGQ+VgSPVY+BjSLX1V999IWXctFWHqvMvtNB4w+bd7/FJV4MZ1VbusJrmBlQfMQnFyiVBGzpU60VqAQQR/PLul25atJoqONuDxOvyzGtDPbQNXIYDGOB/KUq6sSyXm6l9M6lCrXh6PeNWq5Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdexC1Jv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03062C4CEE3;
-	Tue, 29 Apr 2025 17:47:59 +0000 (UTC)
+	 MIME-Version; b=tDjlSvWOlqUCo/fs6Sx/dVlM5ED+nE0Y1gSdXg5t4OLC5is5VbddmO3bDPq9/Y7ZNjxo2VdRy34EOjCjv7hnvmfa4Hlh59lgcLEkFOBM+IYCTgRpzZS8Ae+FbQjtCnmQrmOx7/Il3U5iLBz5Sp9p6xYWz7AlKYyLUaKXx2C/Ho0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGP9FddJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D823C4CEE3;
+	Tue, 29 Apr 2025 16:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948880;
-	bh=cvloOVqpGmjYWr49SOAYwfVDBXbPCpVNAWRP4tJYLOA=;
+	s=korg; t=1745945473;
+	bh=MR2xS2sIswyVqmBjFEZTuUhc1I/M02WUZrI3yz/nveE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rdexC1JvVPqzap4UgLy6hfqqiN90P6GpKJN8geVBYugLFJE4GQKNBa6k5cEaM3avU
-	 cCSOUHSE4K0v6vOIQmdP57/ALAWjwsVeMEU8syl+gISzvLz7DPN6xxmF59WS8R7DKK
-	 Sdyt8pHY3J3jD1IybdXXmeTAZz47v+3VwAlHsOUI=
+	b=AGP9FddJA8Jlyi87PUShYGcPZOzgIODBUMtQpD1GUScDNfhlyLJjNIBxEIna5FE3y
+	 okU44NrE+LVWjmYFjwDP8NK0v9Wk4R+GaLnidpIBkq6UKFFimN1gG+yKrsGwZlP8Du
+	 kLZ/qTXOoHSksrdxt/hjzlR0TBAUAJGZSkIH5o7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 148/373] net: dsa: mv88e6xxx: avoid unregistering devlink regions which were never registered
+Subject: [PATCH 5.4 084/179] wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()
 Date: Tue, 29 Apr 2025 18:40:25 +0200
-Message-ID: <20250429161129.246791558@linuxfoundation.org>
+Message-ID: <20250429161052.804135240@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit c84f6ce918a9e6f4996597cbc62536bbf2247c96 ]
+[ Upstream commit a104042e2bf6528199adb6ca901efe7b60c2c27f ]
 
-Russell King reports that a system with mv88e6xxx dereferences a NULL
-pointer when unbinding this driver:
-https://lore.kernel.org/netdev/Z_lRkMlTJ1KQ0kVX@shell.armlinux.org.uk/
+The ieee80211 skb control block key (set when skb was queued) could have
+been removed before ieee80211_tx_dequeue() call. ieee80211_tx_dequeue()
+already called ieee80211_tx_h_select_key() to get the current key, but
+the latter do not update the key in skb control block in case it is
+NULL. Because some drivers actually use this key in their TX callbacks
+(e.g. ath1{1,2}k_mac_op_tx()) this could lead to the use after free
+below:
 
-The crash seems to be in devlink_region_destroy(), which is not NULL
-tolerant but is given a NULL devlink global region pointer.
+  BUG: KASAN: slab-use-after-free in ath11k_mac_op_tx+0x590/0x61c
+  Read of size 4 at addr ffffff803083c248 by task kworker/u16:4/1440
 
-At least on some chips, some devlink regions are conditionally registered
-since the blamed commit, see mv88e6xxx_setup_devlink_regions_global():
+  CPU: 3 UID: 0 PID: 1440 Comm: kworker/u16:4 Not tainted 6.13.0-ge128f627f404 #2
+  Hardware name: HW (DT)
+  Workqueue: bat_events batadv_send_outstanding_bcast_packet
+  Call trace:
+   show_stack+0x14/0x1c (C)
+   dump_stack_lvl+0x58/0x74
+   print_report+0x164/0x4c0
+   kasan_report+0xac/0xe8
+   __asan_report_load4_noabort+0x1c/0x24
+   ath11k_mac_op_tx+0x590/0x61c
+   ieee80211_handle_wake_tx_queue+0x12c/0x1c8
+   ieee80211_queue_skb+0xdcc/0x1b4c
+   ieee80211_tx+0x1ec/0x2bc
+   ieee80211_xmit+0x224/0x324
+   __ieee80211_subif_start_xmit+0x85c/0xcf8
+   ieee80211_subif_start_xmit+0xc0/0xec4
+   dev_hard_start_xmit+0xf4/0x28c
+   __dev_queue_xmit+0x6ac/0x318c
+   batadv_send_skb_packet+0x38c/0x4b0
+   batadv_send_outstanding_bcast_packet+0x110/0x328
+   process_one_work+0x578/0xc10
+   worker_thread+0x4bc/0xc7c
+   kthread+0x2f8/0x380
+   ret_from_fork+0x10/0x20
 
-		if (cond && !cond(chip))
-			continue;
+  Allocated by task 1906:
+   kasan_save_stack+0x28/0x4c
+   kasan_save_track+0x1c/0x40
+   kasan_save_alloc_info+0x3c/0x4c
+   __kasan_kmalloc+0xac/0xb0
+   __kmalloc_noprof+0x1b4/0x380
+   ieee80211_key_alloc+0x3c/0xb64
+   ieee80211_add_key+0x1b4/0x71c
+   nl80211_new_key+0x2b4/0x5d8
+   genl_family_rcv_msg_doit+0x198/0x240
+  <...>
 
-These are MV88E6XXX_REGION_STU and MV88E6XXX_REGION_PVT. If the chip
-does not have an STU or PVT, it should crash like this.
+  Freed by task 1494:
+   kasan_save_stack+0x28/0x4c
+   kasan_save_track+0x1c/0x40
+   kasan_save_free_info+0x48/0x94
+   __kasan_slab_free+0x48/0x60
+   kfree+0xc8/0x31c
+   kfree_sensitive+0x70/0x80
+   ieee80211_key_free_common+0x10c/0x174
+   ieee80211_free_keys+0x188/0x46c
+   ieee80211_stop_mesh+0x70/0x2cc
+   ieee80211_leave_mesh+0x1c/0x60
+   cfg80211_leave_mesh+0xe0/0x280
+   cfg80211_leave+0x1e0/0x244
+  <...>
 
-To fix the issue, avoid unregistering those regions which are NULL, i.e.
-were skipped at mv88e6xxx_setup_devlink_regions_global() time.
+Reset SKB control block key before calling ieee80211_tx_h_select_key()
+to avoid that.
 
-Fixes: 836021a2d0e0 ("net: dsa: mv88e6xxx: Export cross-chip PVT as devlink region")
-Tested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250414212850.2953957-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Link: https://patch.msgid.link/06aa507b853ca385ceded81c18b0a6dd0f081bc8.1742833382.git.repk@triplefau.lt
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/devlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/tx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/devlink.c b/drivers/net/dsa/mv88e6xxx/devlink.c
-index 381068395c63b..e6d1801bb8f50 100644
---- a/drivers/net/dsa/mv88e6xxx/devlink.c
-+++ b/drivers/net/dsa/mv88e6xxx/devlink.c
-@@ -653,7 +653,8 @@ void mv88e6xxx_teardown_devlink_regions_global(struct dsa_switch *ds)
- 	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(mv88e6xxx_regions); i++)
--		dsa_devlink_region_destroy(chip->regions[i]);
-+		if (chip->regions[i])
-+			dsa_devlink_region_destroy(chip->regions[i]);
- }
- 
- void mv88e6xxx_teardown_devlink_regions_port(struct dsa_switch *ds, int port)
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 461cff7b94ad7..f8d72f3e4def8 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3661,6 +3661,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	 * The key can be removed while the packet was queued, so need to call
+ 	 * this here to get the current key.
+ 	 */
++	info->control.hw_key = NULL;
+ 	r = ieee80211_tx_h_select_key(&tx);
+ 	if (r != TX_CONTINUE) {
+ 		ieee80211_free_txskb(&local->hw, skb);
 -- 
 2.39.5
 
