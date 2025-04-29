@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-138878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB913AA1A1A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D758DAA18E4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A52DC179D12
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:17:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 539C79A3823
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F092517AC;
-	Tue, 29 Apr 2025 18:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14890248883;
+	Tue, 29 Apr 2025 17:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVc2IUgS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1nQoBLmz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C228155A4E;
-	Tue, 29 Apr 2025 18:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65FC252284;
+	Tue, 29 Apr 2025 17:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950638; cv=none; b=ehCxwlBWl/LXsBqqZfhRbMQFjnzKvIzj6/f7/6rc/BfsBMRj+XdghdQf+15kcWUTpF1Dw0SS8PXj0ETiRHy4BINaPfCcTpx6Kpm1noILF7NwR4yauaN1Gh/FNJ5Ja0QIIzD+2f+pfLhQOSbDK65M+GJi1kOkjkQAe7RavpADHUs=
+	t=1745949594; cv=none; b=sEM7bYsfv6oAjznL7B142MTwHKpZzBWq0jcYZmMdIe6w5DZJeoMfr/G4pV5HSqAOrFp6j+Ic4ffbW6IgBb8A4Rwr86ywDjHZiDB96DhmW37QlQFYq7St9+hCiJdnHzmD/HbBS2jnFHdYF+SALQOIjhqvSjcbyBflZXJSwdUrZKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950638; c=relaxed/simple;
-	bh=hfiFDYG5oUflXYIILtfYK2IwRwCi4sQe1P+jEL5bCU0=;
+	s=arc-20240116; t=1745949594; c=relaxed/simple;
+	bh=6U0FyAaThMMvevzNemwdUcptYXZNxDBUGV5rn+CWjpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rg9ZUC1bQlld8Uh0f6GX14Dprk1HDbiSWFxsQl4GwBD1Fp1vjEuGLHqKCB/lXd0Ei3199ltmGj9l5kSDswr8v/xuTzle4ZjeBHq4P3R0A2HMjyO41f7NO2ybmtP4PlgdZRofdeLUuJUfDQoG+URk2fuOxrITOiqTb/Ge15HXymI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVc2IUgS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E448C4CEE3;
-	Tue, 29 Apr 2025 18:17:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t0g8qOsL0ccVPAIF00tJXGg3o2P5dwfE3xF5QrDtd1foa9s14G/iNQvn/j2K9D4kpjtumBEl6Fl6AwG0shdpg72i4+k20EMTzrVuN5mpHdxOGlg/2LI27+Vnfo+ogZWrxipC1noW5DMEboLMGbUU5yF3+Gm+J8dyay+CoeHnnT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nQoBLmz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C6CC4CEE3;
+	Tue, 29 Apr 2025 17:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950637;
-	bh=hfiFDYG5oUflXYIILtfYK2IwRwCi4sQe1P+jEL5bCU0=;
+	s=korg; t=1745949594;
+	bh=6U0FyAaThMMvevzNemwdUcptYXZNxDBUGV5rn+CWjpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jVc2IUgSden92HkDWDDrLVNS4RCAK+MGADvStWJtU28Nw9Uqx+KsUG9eyPRkWasf0
-	 w9NmueIZJsycL9Og3k5/HzHuEaCsSqTOFfROO918VrJAe23Ex63bMliluYcN3e2WUF
-	 7pYg9ruhgiotH8LaszDWRZwKd4TZoFTBqdeqm+p4=
+	b=1nQoBLmzWzzHYc/lcFhlw76qU5q4v1a00Tzbk8o+M4xdDczTIxH8b98GFUlJphoR9
+	 vJMdu62ZszBKJGLo70yvw5nIXN3Wxy63jgZDgeGXBtPXdH86Uru4kr4TUw4rJMkphu
+	 IPLOSKn9RDjtHJva4xMb0G6S0LHFxyg+UX9cgoC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ff3aa851d46ab82953a3@syzkaller.appspotmail.com,
-	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/204] perf/core: Fix WARN_ON(!ctx) in __free_event() for partial init
+	=?UTF-8?q?Toke=20H=F8iland-J=F8rgensen?= <toke@kernel.org>,
+	=?UTF-8?q?Ricardo=20Ca=F1uelo=20Navarro?= <rcn@igalia.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 5.15 368/373] xdp: Reset bpf_redirect_info before running a xdps BPF prog.
 Date: Tue, 29 Apr 2025 18:44:05 +0200
-Message-ID: <20250429161105.839044339@linuxfoundation.org>
+Message-ID: <20250429161138.267799200@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,97 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 0ba3a4ab76fd3367b9cb680cad70182c896c795c ]
+Ricardo reported a KASAN discovered use after free in v6.6-stable.
 
-Move the get_ctx(child_ctx) call and the child_event->ctx assignment to
-occur immediately after the child event is allocated. Ensure that
-child_event->ctx is non-NULL before any subsequent error path within
-inherit_event calls free_event(), satisfying the assumptions of the
-cleanup code.
+The syzbot starts a BPF program via xdp_test_run_batch() which assigns
+ri->tgt_value via dev_hash_map_redirect() and the return code isn't
+XDP_REDIRECT it looks like nonsense. So the output in
+bpf_warn_invalid_xdp_action() appears once.
+Then the TUN driver runs another BPF program (on the same CPU) which
+returns XDP_REDIRECT without setting ri->tgt_value first. It invokes
+bpf_trace_printk() to print four characters and obtain the required
+return value. This is enough to get xdp_do_redirect() invoked which
+then accesses the pointer in tgt_value which might have been already
+deallocated.
 
-Details:
+This problem does not affect upstream because since commit
+	401cb7dae8130 ("net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.")
 
-There's no clear Fixes tag, because this bug is a side-effect of
-multiple interacting commits over time (up to 15 years old), not
-a single regression.
+the per-CPU variable is referenced via task's task_struct and exists on
+the stack during NAPI callback. Therefore it is cleared once before the
+first invocation and remains valid within the RCU section of the NAPI
+callback.
 
-The code initially incremented refcount then assigned context
-immediately after the child_event was created. Later, an early
-validity check for child_event was added before the
-refcount/assignment. Even later, a WARN_ON_ONCE() cleanup check was
-added, assuming event->ctx is valid if the pmu_ctx is valid.
-The problem is that the WARN_ON_ONCE() could trigger after the initial
-check passed but before child_event->ctx was assigned, violating its
-precondition. The solution is to assign child_event->ctx right after
-its initial validation. This ensures the context exists for any
-subsequent checks or cleanup routines, resolving the WARN_ON_ONCE().
+Instead of performing the huge backport of the commit (plus its fix ups)
+here is an alternative version which only resets the variable in
+question prior invoking the BPF program.
 
-To resolve it, defer the refcount update and child_event->ctx assignment
-directly after child_event->pmu_ctx is set but before checking if the
-parent event is orphaned. The cleanup routine depends on
-event->pmu_ctx being non-NULL before it verifies event->ctx is
-non-NULL. This also maintains the author's original intent of passing
-in child_ctx to find_get_pmu_context before its refcount/assignment.
-
-[ mingo: Expanded the changelog from another email by Gabriel Shahrouzi. ]
-
-Reported-by: syzbot+ff3aa851d46ab82953a3@syzkaller.appspotmail.com
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Link: https://lore.kernel.org/r/20250405203036.582721-1-gshahrouzi@gmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ff3aa851d46ab82953a3
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Toke Høiland-Jørgensen <toke@kernel.org>
+Reported-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
+Closes: https://lore.kernel.org/all/20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-0-360efec441ba@igalia.com/
+Fixes: 97f91a7cf04ff ("bpf: add bpf_redirect_map helper routine")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/filter.h |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index b710976fb01b1..987807b1040ae 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -13419,6 +13419,9 @@ inherit_event(struct perf_event *parent_event,
- 	if (IS_ERR(child_event))
- 		return child_event;
- 
-+	get_ctx(child_ctx);
-+	child_event->ctx = child_ctx;
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -800,7 +800,14 @@ static __always_inline u32 bpf_prog_run_
+ 	 * under local_bh_disable(), which provides the needed RCU protection
+ 	 * for accessing map entries.
+ 	 */
+-	u32 act = __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
++	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
++	u32 act;
 +
- 	pmu_ctx = find_get_pmu_context(child_event->pmu, child_ctx, child_event);
- 	if (IS_ERR(pmu_ctx)) {
- 		free_event(child_event);
-@@ -13441,8 +13444,6 @@ inherit_event(struct perf_event *parent_event,
- 		return NULL;
- 	}
++	if (ri->map_id || ri->map_type) {
++		ri->map_id = 0;
++		ri->map_type = BPF_MAP_TYPE_UNSPEC;
++	}
++	act = __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
  
--	get_ctx(child_ctx);
--
- 	/*
- 	 * Make the child state follow the state of the parent event,
- 	 * not its attr.disabled bit.  We hold the parent's mutex,
-@@ -13463,7 +13464,6 @@ inherit_event(struct perf_event *parent_event,
- 		local64_set(&hwc->period_left, sample_period);
- 	}
- 
--	child_event->ctx = child_ctx;
- 	child_event->overflow_handler = parent_event->overflow_handler;
- 	child_event->overflow_handler_context
- 		= parent_event->overflow_handler_context;
--- 
-2.39.5
-
+ 	if (static_branch_unlikely(&bpf_master_redirect_enabled_key)) {
+ 		if (act == XDP_TX && netif_is_bond_slave(xdp->rxq->dev))
 
 
 
