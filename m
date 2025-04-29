@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-137176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48D8AA1202
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B294AA15D8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A5604A69E7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AC54165295
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE2C248878;
-	Tue, 29 Apr 2025 16:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8570B2459E1;
+	Tue, 29 Apr 2025 17:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jz2ZO8im"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSg8qcMF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D98A126BF7;
-	Tue, 29 Apr 2025 16:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428101FE468;
+	Tue, 29 Apr 2025 17:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945291; cv=none; b=Q2mSwcfGahc30QwxeY0iAinxz0SgbskRDj5BLJdjEguDwZDmLal3mLnbtrMJaKYiNc04d/Ent4gQqJRQHJH+NedZm+gLEd/c4mRR5ojo4G5yE+5ePzRau/wtTO42hNDqqy3Wz9fhTWqDK6ZAqhBoITZeMdXbUJdNH+pDCxT68+8=
+	t=1745947654; cv=none; b=bzjsRyPjC1b0Mz3MQ6A2kLDuW5bnDNCzpu2iF8YRvaTphEX1Z49YStxZ/FcRFehc+BHfEOXsdxHDCv3dSKJkmPqecofeXsQNEEYp3DUl+ApSbCNjRLp/5jWpISHUteM3tBD4wHcMFHQODZ8S567wn0olfe+WS6Yz32z0nf7e4sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945291; c=relaxed/simple;
-	bh=aE0co5hDSQQIIlTulipBcnFkCb6slXeASCRbsWbg4ow=;
+	s=arc-20240116; t=1745947654; c=relaxed/simple;
+	bh=MFmh/7pfgYNfm0b3wdS13dDnWaZnh6t7SHWKeO/VhI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=toa7RLokbKYy/BEdI+9smwMaKnANPfIpEsdmSgiomnAHr7NlhpDJerGLHLWPhvmvTQ/DWR2ycegGi2cpdMAFnKWEOE/AcvXxDwwNZfgklc3lufO3ytjagZaQkQtvS10Kczm+dloweqiHGX+qDZqrZ683OuhAK6GyvWsZvdVZOS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jz2ZO8im; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA84DC4CEE3;
-	Tue, 29 Apr 2025 16:48:10 +0000 (UTC)
+	 MIME-Version; b=UUolMZOsOn7GWmfe6XlFMn8kHr7HpEloMJ5tfWroMzTlc7n9v+uPFEAOWlR/+26PyruTynlUBlks/MRceKa0xvgZ0jDrTWMTUEfcQm1sglkfIg3xz4Eo6sOqCwEnDd21UNUA7miMJihlJcVDMhrycqdXjs01UjEdWmOgQ1crerY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSg8qcMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83C1C4CEE3;
+	Tue, 29 Apr 2025 17:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945291;
-	bh=aE0co5hDSQQIIlTulipBcnFkCb6slXeASCRbsWbg4ow=;
+	s=korg; t=1745947654;
+	bh=MFmh/7pfgYNfm0b3wdS13dDnWaZnh6t7SHWKeO/VhI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jz2ZO8imVbJeyjrOWCJVdQldDUR0aw2PVCtDmKrIN+5nLb8I1Io3eYpZZt1hRRXhN
-	 NuSapaL390khu++zn3vb2Cg06ytgrY1xjQ/Qk5c/lcbl09Tc5PvG2HNdHS/T3IWVM6
-	 X3+CAP96jU56EIPaj40vpU+hNsRHtZ3IpleLuVZQ=
+	b=PSg8qcMFm25lLILesZ9kEWxs/oiuR7XT+hBE2zGASkHrBdkvtFIKfDQaFWYokFKjA
+	 JxVVRjga0i0fxecjy5ciyN5V8anYdxMPLbmm/snglai9BH6AtMYrumOBhYAQKfNZj/
+	 2B+9suk8ldoVHdFfV/aLumsTZR9u9voNIlMVpdCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.4 064/179] mtd: rawnand: Add status chack in r852_ready()
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 064/280] vhost-scsi: Fix vhost_scsi_send_bad_target()
 Date: Tue, 29 Apr 2025 18:40:05 +0200
-Message-ID: <20250429161051.997324601@linuxfoundation.org>
+Message-ID: <20250429161117.733091747@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-commit b79fe1829975556854665258cf4d2476784a89db upstream.
+[ Upstream commit b182687135474d7ed905a07cc6cb2734b359e13e ]
 
-In r852_ready(), the dev get from r852_get_dev() need to be checked.
-An unstable device should not be ready. A proper implementation can
-be found in r852_read_byte(). Add a status check and return 0 when it is
-unstable.
+Although the support of VIRTIO_F_ANY_LAYOUT + VIRTIO_F_VERSION_1 was
+signaled by the commit 664ed90e621c ("vhost/scsi: Set
+VIRTIO_F_ANY_LAYOUT + VIRTIO_F_VERSION_1 feature bits"),
+vhost_scsi_send_bad_target() still assumes the response in a single
+descriptor.
 
-Fixes: 50a487e7719c ("mtd: rawnand: Pass a nand_chip object to chip->dev_ready()")
-Cc: stable@vger.kernel.org # v4.20+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In addition, although vhost_scsi_send_bad_target() is used by both I/O
+queue and control queue, the response header is always
+virtio_scsi_cmd_resp. It is required to use virtio_scsi_ctrl_tmf_resp or
+virtio_scsi_ctrl_an_resp for control queue.
+
+Fixes: 664ed90e621c ("vhost/scsi: Set VIRTIO_F_ANY_LAYOUT + VIRTIO_F_VERSION_1 feature bits")
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Message-Id: <20250403063028.16045-3-dongli.zhang@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/r852.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/vhost/scsi.c | 48 ++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 37 insertions(+), 11 deletions(-)
 
---- a/drivers/mtd/nand/raw/r852.c
-+++ b/drivers/mtd/nand/raw/r852.c
-@@ -387,6 +387,9 @@ static int r852_wait(struct nand_chip *c
- static int r852_ready(struct nand_chip *chip)
- {
- 	struct r852_device *dev = r852_get_dev(nand_to_mtd(chip));
-+	if (dev->card_unstable)
-+		return 0;
-+
- 	return !(r852_read_reg(dev, R852_CARD_STA) & R852_CARD_STA_BUSY);
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index ad7fa5bc0f5fc..7bfe5e5865fe9 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -947,23 +947,46 @@ vhost_scsi_send_status(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
+ 		pr_err("Faulted on virtio_scsi_cmd_resp\n");
  }
  
++#define TYPE_IO_CMD    0
++#define TYPE_CTRL_TMF  1
++#define TYPE_CTRL_AN   2
++
+ static void
+ vhost_scsi_send_bad_target(struct vhost_scsi *vs,
+ 			   struct vhost_virtqueue *vq,
+-			   int head, unsigned out)
++			   struct vhost_scsi_ctx *vc, int type)
+ {
+-	struct virtio_scsi_cmd_resp __user *resp;
+-	struct virtio_scsi_cmd_resp rsp;
++	union {
++		struct virtio_scsi_cmd_resp cmd;
++		struct virtio_scsi_ctrl_tmf_resp tmf;
++		struct virtio_scsi_ctrl_an_resp an;
++	} rsp;
++	struct iov_iter iov_iter;
++	size_t rsp_size;
+ 	int ret;
+ 
+ 	memset(&rsp, 0, sizeof(rsp));
+-	rsp.response = VIRTIO_SCSI_S_BAD_TARGET;
+-	resp = vq->iov[out].iov_base;
+-	ret = __copy_to_user(resp, &rsp, sizeof(rsp));
+-	if (!ret)
+-		vhost_add_used_and_signal(&vs->dev, vq, head, 0);
++
++	if (type == TYPE_IO_CMD) {
++		rsp_size = sizeof(struct virtio_scsi_cmd_resp);
++		rsp.cmd.response = VIRTIO_SCSI_S_BAD_TARGET;
++	} else if (type == TYPE_CTRL_TMF) {
++		rsp_size = sizeof(struct virtio_scsi_ctrl_tmf_resp);
++		rsp.tmf.response = VIRTIO_SCSI_S_BAD_TARGET;
++	} else {
++		rsp_size = sizeof(struct virtio_scsi_ctrl_an_resp);
++		rsp.an.response = VIRTIO_SCSI_S_BAD_TARGET;
++	}
++
++	iov_iter_init(&iov_iter, ITER_DEST, &vq->iov[vc->out], vc->in,
++		      rsp_size);
++
++	ret = copy_to_iter(&rsp, rsp_size, &iov_iter);
++
++	if (likely(ret == rsp_size))
++		vhost_add_used_and_signal(&vs->dev, vq, vc->head, 0);
+ 	else
+-		pr_err("Faulted on virtio_scsi_cmd_resp\n");
++		pr_err("Faulted on virtio scsi type=%d\n", type);
+ }
+ 
+ static int
+@@ -1277,7 +1300,7 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
+ 		if (ret == -ENXIO)
+ 			break;
+ 		else if (ret == -EIO)
+-			vhost_scsi_send_bad_target(vs, vq, vc.head, vc.out);
++			vhost_scsi_send_bad_target(vs, vq, &vc, TYPE_IO_CMD);
+ 		else if (ret == -ENOMEM)
+ 			vhost_scsi_send_status(vs, vq, vc.head, vc.out,
+ 					       SAM_STAT_TASK_SET_FULL);
+@@ -1510,7 +1533,10 @@ vhost_scsi_ctl_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
+ 		if (ret == -ENXIO)
+ 			break;
+ 		else if (ret == -EIO)
+-			vhost_scsi_send_bad_target(vs, vq, vc.head, vc.out);
++			vhost_scsi_send_bad_target(vs, vq, &vc,
++						   v_req.type == VIRTIO_SCSI_T_TMF ?
++						   TYPE_CTRL_TMF :
++						   TYPE_CTRL_AN);
+ 	} while (likely(!vhost_exceeds_weight(vq, ++c, 0)));
+ out:
+ 	mutex_unlock(&vq->mutex);
+-- 
+2.39.5
+
 
 
 
