@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5027AA193E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B637AA1A2B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC8DB4E2AD0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD4B117020C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8287227E95;
-	Tue, 29 Apr 2025 18:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E042517AC;
+	Tue, 29 Apr 2025 18:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxejFi67"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Su9+Pa1A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71A240C03;
-	Tue, 29 Apr 2025 18:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921C5240611;
+	Tue, 29 Apr 2025 18:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950049; cv=none; b=PZymUVdYwtQ1QXejg5mRoDjTaqGqGKbk6y/rW/V0YFDliJ7qEOyOwUc0WjPokXZ0VAig5WdE/dO2O81+YsyqdddIa2KnLIA5fMztZV1aYqiZEElI88kcrlnWm48jBOG8IIz02eznO02ELVC3V8TUNLdlMjWYZrV7bqQ3inwRwLI=
+	t=1745950705; cv=none; b=fDjdkobcBmCF99Kc5yLL1NLFh4gz9/RjuI4MiMEcwNscm+rFgMiDzm47W2cGAMJco+cxJ1Pfg8F0i4wXYf6Rawwg/JdYhqryqkr8DP0S3/CsYW4+yK0sjUfZlZIYBksohskXPjaNrL2ChYw9OPq5XSahkmGcTC4x55IisG5VV8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950049; c=relaxed/simple;
-	bh=3No4+HEVOzxop8r2VsoemUBMqwYHEWo4roGS2cuw7eg=;
+	s=arc-20240116; t=1745950705; c=relaxed/simple;
+	bh=UIlUIrj5VmW6z1dIDPI5xvLDYoY02638FQEKZSlHtxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MKzbayrb+dWbJz+Rc+k8VraURx9Z+t90DSlOCTxWtMT4Sgpaq9mDxpkqxQG5wMmuZ+xau1bqW355JRc9hFJ7YOIfVO/mPKIi/xXqXJpUQtkdBKjl5GS4+Yw+Uz5JPrVuwtK/XQ89nTeKQLN18zgf7szT+YeiWzsZjR+SWdP+oTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxejFi67; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F09C4CEE3;
-	Tue, 29 Apr 2025 18:07:28 +0000 (UTC)
+	 MIME-Version; b=FROwwQFfZaC7Y1qXjIu/XLiOTmDCBodxfgN5ggNrDM8JPsanx+9jmcXC5i1NjOcflfdGxOUEMJjh154K2qCJAglX+J5MAy7Pbq5UEYgY0qv0kPVa13XZh7JtM9qUgApJqrtGB33QwIuzeUWCsYQwhzCBS62RAopInLlpLBPMUN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Su9+Pa1A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E20C4CEE3;
+	Tue, 29 Apr 2025 18:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950049;
-	bh=3No4+HEVOzxop8r2VsoemUBMqwYHEWo4roGS2cuw7eg=;
+	s=korg; t=1745950705;
+	bh=UIlUIrj5VmW6z1dIDPI5xvLDYoY02638FQEKZSlHtxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oxejFi67bjUf9kpcFdBoOUtwI5cch1le0eorTrYdBWZoVA4B3PX7m9Wkevwxz/KVw
-	 625AYh+HWwRBDmfQuuAJcQV7tfTklXog4XLGpOIhAaB1Ew3czzPktE5p5Gl3ycAZkm
-	 nPF4eh3fZpMNJLUDdUB+4ZN14N1+oGEYnZwyMwwk=
+	b=Su9+Pa1AXXIiXclCsjC8c+DRXa20GS71DXksVc28enAkDvlHYSpTJ6Ph8ONBgHawd
+	 1q52a024e7gUhg3hxTlU3e9l1WLD9DdJG1p6gq4CBvr/SnRRTRqMOSpbUvuwsqD85i
+	 H7HyVDWCdPjosjGNhsVWAKeWQKS6EnVDXsEqfr9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jean-Marc Eurin <jmeurin@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 141/167] scsi: ufs: exynos: Ensure pre_link() executes before exynos_ufs_phy_init()
+Subject: [PATCH 6.6 161/204] ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls
 Date: Tue, 29 Apr 2025 18:44:09 +0200
-Message-ID: <20250429161057.433699801@linuxfoundation.org>
+Message-ID: <20250429161106.000787194@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Jean-Marc Eurin <jmeurin@google.com>
 
-[ Upstream commit 3d101165e72316775947d71321d97194f03dfef3 ]
+[ Upstream commit 7ab4f0e37a0f4207e742a8de69be03984db6ebf0 ]
 
-Ensure clocks are enabled before configuring unipro. Additionally move
-the pre_link() hook before the exynos_ufs_phy_init() calls. This means
-the register write sequence more closely resembles the ordering of the
-downstream driver.
+The end of table checks should be done with the structure size,
+but 2 of the 3 similar calls use the pointer size.
 
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-1-96722cc2ba1b@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jean-Marc Eurin <jmeurin@google.com>
+Link: https://patch.msgid.link/20250402001542.2600671-1-jmeurin@google.com
+[ rjw: Subject edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-exynos.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/acpi/pptt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index 064829640c187..e981f1f8805f2 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -990,9 +990,14 @@ static int exynos_ufs_pre_link(struct ufs_hba *hba)
- 	exynos_ufs_config_intr(ufs, DFES_DEF_L4_ERRS, UNIPRO_L4);
- 	exynos_ufs_set_unipro_pclk_div(ufs);
+diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+index a35dd0e41c270..f73ce6e13065d 100644
+--- a/drivers/acpi/pptt.c
++++ b/drivers/acpi/pptt.c
+@@ -229,7 +229,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
+ 	node_entry = ACPI_PTR_DIFF(node, table_hdr);
+ 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+ 			     sizeof(struct acpi_table_pptt));
+-	proc_sz = sizeof(struct acpi_pptt_processor *);
++	proc_sz = sizeof(struct acpi_pptt_processor);
  
-+	exynos_ufs_setup_clocks(hba, true, PRE_CHANGE);
-+
- 	/* unipro */
- 	exynos_ufs_config_unipro(ufs);
+ 	while ((unsigned long)entry + proc_sz < table_end) {
+ 		cpu_node = (struct acpi_pptt_processor *)entry;
+@@ -270,7 +270,7 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
+ 	table_end = (unsigned long)table_hdr + table_hdr->length;
+ 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+ 			     sizeof(struct acpi_table_pptt));
+-	proc_sz = sizeof(struct acpi_pptt_processor *);
++	proc_sz = sizeof(struct acpi_pptt_processor);
  
-+	if (ufs->drv_data->pre_link)
-+		ufs->drv_data->pre_link(ufs);
-+
- 	/* m-phy */
- 	exynos_ufs_phy_init(ufs);
- 	if (!(ufs->opts & EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR)) {
-@@ -1000,11 +1005,6 @@ static int exynos_ufs_pre_link(struct ufs_hba *hba)
- 		exynos_ufs_config_phy_cap_attr(ufs);
- 	}
- 
--	exynos_ufs_setup_clocks(hba, true, PRE_CHANGE);
--
--	if (ufs->drv_data->pre_link)
--		ufs->drv_data->pre_link(ufs);
--
- 	return 0;
- }
- 
+ 	/* find the processor structure associated with this cpuid */
+ 	while ((unsigned long)entry + proc_sz < table_end) {
 -- 
 2.39.5
 
