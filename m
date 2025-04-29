@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-138856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E56AA19FE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:17:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5564FAA197B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:12:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A876188B5E9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C57A9A586D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634BD2517A8;
-	Tue, 29 Apr 2025 18:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792FD22AE68;
+	Tue, 29 Apr 2025 18:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cV9LiyIE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUQU+ITk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9AC213E67;
-	Tue, 29 Apr 2025 18:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37CF62AE96;
+	Tue, 29 Apr 2025 18:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950569; cv=none; b=PFPxyxcV23wkv8X7zFuzG8T8MqDCpyRW2rjFo5f/oMttOjtoSrYuxBdzQ+CYRuaJsAWtUUOHZsus5bqFwKKsaYBRlEFkBlpneV0p0RvkbUeqHkBRda0HhExjd/euznE25Zzbc4Yx02oHL+TtuQVkmXK5cKbNWDcd8Nofu2Wf3U4=
+	t=1745949979; cv=none; b=mtBOr2FC4EWusduRbVwpu0fbhVYFl8qadof2QJ/WKmNk7a/NHc+vcyRpmz5Izv/frD/nX3m2GROyWkDzc+NwEMM/+jLqNpYJu8PG7b1ca5x/xQ/8cKyTMRXtGXeyLrxABwPntH4//PHXMZxhh9NArLLJyj7Ngk8dwWrrgydaWi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950569; c=relaxed/simple;
-	bh=Vm+AtyYTK7WrFQH/+7e4MmWKl057+P1H8wPQ4FPetto=;
+	s=arc-20240116; t=1745949979; c=relaxed/simple;
+	bh=tEawqjNuYc82vHuDY6IN2NeYoDYNz8FJrREQV9PD2lw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+xZUxyGApDtXkxzlZr3DQjk93cCQjk/3XZmfDm2Ml5kgVTUURViGQ34Rawg3XeUfoNJW6AicYoe5PwXreC4OZ2g2a03AG6eqbBlpoqCIsE4/1phocmZXgwhW65uQf82rcQYrENTI8d8dkfQSedLElX3fiVsNeL6HU8UtNzdsOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cV9LiyIE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4277C4CEE3;
-	Tue, 29 Apr 2025 18:16:08 +0000 (UTC)
+	 MIME-Version; b=iAkQFP4u4LQVuWNlb8v6oP98kWPwAzgFi+oJiZFqkXXrOORsAzBh4QtEaaQAyISnGs4BszZ9ulp85QVQD0RIMxt2Q8lwW5G/1FCt4gt+1IVcrMNe8UnSZ+3sHQGPbx0nulvjn1pF6e3Bzo9f+M9FYeVBMtfU2boFaF1OWjW7zZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUQU+ITk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AACC4CEE3;
+	Tue, 29 Apr 2025 18:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950569;
-	bh=Vm+AtyYTK7WrFQH/+7e4MmWKl057+P1H8wPQ4FPetto=;
+	s=korg; t=1745949979;
+	bh=tEawqjNuYc82vHuDY6IN2NeYoDYNz8FJrREQV9PD2lw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cV9LiyIEI1ChXynWCscfRRBQaEUqdKKBBgujH1ROPXzQP8RTjHLIC7XAIfo9qQCkn
-	 OXH6+6hctgCV4KF46HsmJNKvN5yUcJKJAk/ew2FDpl2W6H79aP9HmJIqXi4YGPE12/
-	 mBVEy4LcNGMy/Z6XtAseqOoKMpAulSV7JjfbCEzw=
+	b=gUQU+ITk6pRUmN0N63fv7ENl6mbTPXSCLc/myFIMr3W/O7YIQjy39hT7EeacDDlHB
+	 Wa3URQKIsrSH6J9/1LPSLYd5Sfjrj/fwI2LJb7Fpb/vnW7aUAqF2MXj71y43oSKxVZ
+	 Ozq1LWo65hl2sRJ8xI+L02AIxoMFNdg/CMAFn3Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 137/204] usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running
+Subject: [PATCH 6.1 117/167] objtool, lkdtm: Obfuscate the do_nothing() pointer
 Date: Tue, 29 Apr 2025 18:43:45 +0200
-Message-ID: <20250429161105.039206013@linuxfoundation.org>
+Message-ID: <20250429161056.477870174@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +66,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 28a76fcc4c85dd39633fb96edb643c91820133e3 ]
+[ Upstream commit 05026ea01e95ffdeb0e5ac8fb7fb1b551e3a8726 ]
 
-Nothing prevents a broken HC from claiming that an endpoint is Running
-and repeatedly rejecting Stop Endpoint with Context State Error.
+If execute_location()'s memcpy of do_nothing() gets inlined and unrolled
+by the compiler, it copies one word at a time:
 
-Avoid infinite retries and give back cancelled TDs.
+    mov    0x0(%rip),%rax    R_X86_64_PC32    .text+0x1374
+    mov    %rax,0x38(%rbx)
+    mov    0x0(%rip),%rax    R_X86_64_PC32    .text+0x136c
+    mov    %rax,0x30(%rbx)
+    ...
 
-No such cases known so far, but HCs have bugs.
+Those .text references point to the middle of the function, causing
+objtool to complain about their lack of ENDBR.
 
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250311154551.4035726-4-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Prevent that by resolving the function pointer at runtime rather than
+build time.  This fixes the following warning:
+
+  drivers/misc/lkdtm/lkdtm.o: warning: objtool: execute_location+0x23: relocation to !ENDBR: .text+0x1378
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/30b9abffbddeb43c4f6320b1270fa9b4d74c54ed.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202503191453.uFfxQy5R-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/misc/lkdtm/perms.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index e66bb87c42179..cb94439629451 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1214,16 +1214,19 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
- 			 * Stopped state, but it will soon change to Running.
- 			 *
- 			 * Assume this bug on unexpected Stop Endpoint failures.
--			 * Keep retrying until the EP starts and stops again, on
--			 * chips where this is known to help. Wait for 100ms.
-+			 * Keep retrying until the EP starts and stops again.
- 			 */
--			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
--				break;
- 			fallthrough;
- 		case EP_STATE_RUNNING:
- 			/* Race, HW handled stop ep cmd before ep was running */
- 			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
- 					GET_EP_CTX_STATE(ep_ctx));
-+			/*
-+			 * Don't retry forever if we guessed wrong or a defective HC never starts
-+			 * the EP or says 'Running' but fails the command. We must give back TDs.
-+			 */
-+			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
-+				break;
+diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
+index b93404d656509..e82d9543a0c5f 100644
+--- a/drivers/misc/lkdtm/perms.c
++++ b/drivers/misc/lkdtm/perms.c
+@@ -28,6 +28,13 @@ static const unsigned long rodata = 0xAA55AA55;
+ /* This is marked __ro_after_init, so it should ultimately be .rodata. */
+ static unsigned long ro_after_init __ro_after_init = 0x55AA5500;
  
- 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
- 			if (!command) {
++/*
++ * This is a pointer to do_nothing() which is initialized at runtime rather
++ * than build time to avoid objtool IBT validation warnings caused by an
++ * inlined unrolled memcpy() in execute_location().
++ */
++static void __ro_after_init *do_nothing_ptr;
++
+ /*
+  * This just returns to the caller. It is designed to be copied into
+  * non-executable memory regions.
+@@ -65,13 +72,12 @@ static noinline void execute_location(void *dst, bool write)
+ {
+ 	void (*func)(void);
+ 	func_desc_t fdesc;
+-	void *do_nothing_text = dereference_function_descriptor(do_nothing);
+ 
+-	pr_info("attempting ok execution at %px\n", do_nothing_text);
++	pr_info("attempting ok execution at %px\n", do_nothing_ptr);
+ 	do_nothing();
+ 
+ 	if (write == CODE_WRITE) {
+-		memcpy(dst, do_nothing_text, EXEC_SIZE);
++		memcpy(dst, do_nothing_ptr, EXEC_SIZE);
+ 		flush_icache_range((unsigned long)dst,
+ 				   (unsigned long)dst + EXEC_SIZE);
+ 	}
+@@ -267,6 +273,8 @@ static void lkdtm_ACCESS_NULL(void)
+ 
+ void __init lkdtm_perms_init(void)
+ {
++	do_nothing_ptr = dereference_function_descriptor(do_nothing);
++
+ 	/* Make sure we can write to __ro_after_init values during __init */
+ 	ro_after_init |= 0xAA;
+ }
 -- 
 2.39.5
 
