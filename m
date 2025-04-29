@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-138728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6E3AA194A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78835AA196A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112F11BC78F3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:09:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E696A1BC7B12
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4AF248889;
-	Tue, 29 Apr 2025 18:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37D925334D;
+	Tue, 29 Apr 2025 18:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSv7+8Bt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJCQnftk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2555320C488;
-	Tue, 29 Apr 2025 18:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FE4253328;
+	Tue, 29 Apr 2025 18:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950166; cv=none; b=rb/0pIciRIaMjLIhUWUyqYBfXja+nFKyib4Iw7l+fRd6LLUv8YboRDBwLQz9I300hRntu7lxFuhNSD2hXVXDZ09DUy2d1hrxnsGbCfD3bDn0fq7qYDFtGo9/TIQ62y2lIOtO3ObTeV+dNTiGwY8DLSzr3kK3WritF2yBpfETsWo=
+	t=1745950200; cv=none; b=qR1gE+4216W0w6h6kRk9XmASXut3Tm+lMBMkR/YfJFWSQ8jxZIZGeGHHFnOygoDMDOuewa/wg9OHEyD+o1FPQ6f8drSXz4ySXVanc5nIbRCusT7//lhWZlb5or0n19HruR5rgDcVKcI79QOElS5OXlxXYdxBb1U5/c8O50+J8tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950166; c=relaxed/simple;
-	bh=yJ5n/y/SQWjkTiAmmex0ZZ/+bFhWwelf4QgI62N13f8=;
+	s=arc-20240116; t=1745950200; c=relaxed/simple;
+	bh=chntxT41UW8FJB2wdsd+nQyoh4YCNrH18LRxFtDLcBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEeDpBZac4uNt9Ni1p2vS/+tsJsz2NoItyqQuJfRX1u7xKgsjMx8NMuFArnk9+LdgAFN8/AdURajERzs8l3wuIFGdwQGLM9bHAftFML2F3zKA1ZmFtxk9yn5T7OEU0ay7OlFSnFFr3zYeT7WYj+LQOqpbYgqcWYUaMBB6sByKlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSv7+8Bt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9807AC4CEE9;
-	Tue, 29 Apr 2025 18:09:25 +0000 (UTC)
+	 MIME-Version; b=ljRI+jBdomGltwFCiEFu96FFrxbV5P+cnupb7ztGQHlXzS7Vn52UqrBb6+5m40SgCJeWqItAoLoFM38etaVBwk7U5t8uggSWBbUMByLQ9ZL1d3wsUU+lO0Xirhym6YLID5uh/O+h6pk6T51kIHMw6gkzxXV6jSW7w+1jW7A+KEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJCQnftk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 200AAC4CEE9;
+	Tue, 29 Apr 2025 18:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950166;
-	bh=yJ5n/y/SQWjkTiAmmex0ZZ/+bFhWwelf4QgI62N13f8=;
+	s=korg; t=1745950200;
+	bh=chntxT41UW8FJB2wdsd+nQyoh4YCNrH18LRxFtDLcBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSv7+8Bt69sHhmcZ0dVCk/rcltPhLZn4bDJgm+40SVe1ZHseT5pAip6/33eCGtKCd
-	 /GO+kgBKZnkouZaezzKY5o3vG1U0k4EEtzY+xC+64FgTXiK9LbYKOfh0BIMd6meZgf
-	 KhVPT/xAM7xjfypzMqrmLdUZpqMHxVarM+P0skGM=
+	b=yJCQnftk8vesZ8aXZ8HaY4693AnoxDqdb1XxQUl18yd59VrTWs4lcy2oH4BljybQK
+	 yvyc9TWTdRUrTl0S80yT5wH8UOFaAWezS+v8yuUDijf4twSbBeuliDHgVBG/LU4pGA
+	 aflDgTn0934M+gKjkXIQfWsyiVSmNvcR7/tlSYlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Leemhuis <linux@leemhuis.info>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	kdevops <kdevops@lists.linux.dev>
-Subject: [PATCH 6.6 001/204] module: sign with sha512 instead of sha1 by default
-Date: Tue, 29 Apr 2025 18:41:29 +0200
-Message-ID: <20250429161059.459611074@linuxfoundation.org>
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 002/204] memcg: drain obj stock on cpu hotplug teardown
+Date: Tue, 29 Apr 2025 18:41:30 +0200
+Message-ID: <20250429161059.501454979@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
 References: <20250429161059.396852607@linuxfoundation.org>
@@ -67,58 +70,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thorsten Leemhuis <linux@leemhuis.info>
+From: Shakeel Butt <shakeel.butt@linux.dev>
 
-commit f3b93547b91ad849b58eb5ab2dd070950ad7beb3 upstream.
+[ Upstream commit 9f01b4954490d4ccdbcc2b9be34a9921ceee9cbb ]
 
-Switch away from using sha1 for module signing by default and use the
-more modern sha512 instead, which is what among others Arch, Fedora,
-RHEL, and Ubuntu are currently using for their kernels.
+Currently on cpu hotplug teardown, only memcg stock is drained but we
+need to drain the obj stock as well otherwise we will miss the stats
+accumulated on the target cpu as well as the nr_bytes cached. The stats
+include MEMCG_KMEM, NR_SLAB_RECLAIMABLE_B & NR_SLAB_UNRECLAIMABLE_B. In
+addition we are leaking reference to struct obj_cgroup object.
 
-Sha1 has not been considered secure against well-funded opponents since
-2005[1]; since 2011 the NIST and other organizations furthermore
-recommended its replacement[2]. This is why OpenSSL on RHEL9, Fedora
-Linux 41+[3], and likely some other current and future distributions
-reject the creation of sha1 signatures, which leads to a build error of
-allmodconfig configurations:
-
-  80A20474797F0000:error:03000098:digital envelope routines:do_sigver_init:invalid digest:crypto/evp/m_sigver.c:342:
-  make[4]: *** [.../certs/Makefile:53: certs/signing_key.pem] Error 1
-  make[4]: *** Deleting file 'certs/signing_key.pem'
-  make[4]: *** Waiting for unfinished jobs....
-  make[3]: *** [.../scripts/Makefile.build:478: certs] Error 2
-  make[2]: *** [.../Makefile:1936: .] Error 2
-  make[1]: *** [.../Makefile:224: __sub-make] Error 2
-  make[1]: Leaving directory '...'
-  make: *** [Makefile:224: __sub-make] Error 2
-
-This change makes allmodconfig work again and sets a default that is
-more appropriate for current and future users, too.
-
-Link: https://www.schneier.com/blog/archives/2005/02/cryptanalysis_o.html [1]
-Link: https://csrc.nist.gov/projects/hash-functions [2]
-Link: https://fedoraproject.org/wiki/Changes/OpenSSLDistrustsha1SigVer [3]
-Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Tested-by: kdevops <kdevops@lists.linux.dev> [0]
-Link: https://github.com/linux-kdevops/linux-modules-kpd/actions/runs/11420092929/job/31775404330 [0]
-Link: https://lore.kernel.org/r/52ee32c0c92afc4d3263cea1f8a1cdc809728aff.1729088288.git.linux@leemhuis.info
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20250310230934.2913113-1-shakeel.butt@linux.dev
+Fixes: bf4f059954dc ("mm: memcg/slab: obj_cgroup API")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/module/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ mm/memcontrol.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/kernel/module/Kconfig
-+++ b/kernel/module/Kconfig
-@@ -229,6 +229,7 @@ comment "Do not forget to sign required
- choice
- 	prompt "Which hash algorithm should modules be signed with?"
- 	depends on MODULE_SIG || IMA_APPRAISE_MODSIG
-+	default MODULE_SIG_SHA512
- 	help
- 	  This determines which sort of hashing algorithm will be used during
- 	  signature generation.  This algorithm _must_ be built into the kernel
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 9bf5a69e20d87..ab9afcd372a93 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2378,9 +2378,18 @@ static void drain_all_stock(struct mem_cgroup *root_memcg)
+ static int memcg_hotplug_cpu_dead(unsigned int cpu)
+ {
+ 	struct memcg_stock_pcp *stock;
++	struct obj_cgroup *old;
++	unsigned long flags;
+ 
+ 	stock = &per_cpu(memcg_stock, cpu);
++
++	/* drain_obj_stock requires stock_lock */
++	local_lock_irqsave(&memcg_stock.stock_lock, flags);
++	old = drain_obj_stock(stock);
++	local_unlock_irqrestore(&memcg_stock.stock_lock, flags);
++
+ 	drain_stock(stock);
++	obj_cgroup_put(old);
+ 
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
