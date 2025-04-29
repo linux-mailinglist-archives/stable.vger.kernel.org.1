@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920A3AA1335
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:03:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DD0AA1731
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D61E517F1A0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A6E017C860
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E9322A7E6;
-	Tue, 29 Apr 2025 16:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910DB2517A8;
+	Tue, 29 Apr 2025 17:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkaLa3Ot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTNiW61p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468AC82C60;
-	Tue, 29 Apr 2025 16:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA6624397A;
+	Tue, 29 Apr 2025 17:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945978; cv=none; b=tXDChel4H9r6EiViIN3WdrJ++te4p+jQYeal00cz5+FW/2ZOE/Y7/p1OrYhbQXZUpARAH+XHinZdtEmzdOVocy3ek1upmJwk7sUnDgL5YjVOjB7OLivCKcSsKw02ujYWuftWLrYGh0efURgUgNKHwtxFxO+9k8P39VK/oqUM3xg=
+	t=1745948652; cv=none; b=bFf3pZj20yueRp3Q/jtIS/AGWicOdsVQbo0mFXEdLCw1qIjtKmlEHwjFz/eBc2MF/xSQfNNesyJgSi3U8yqtu2vNdgfzOusm64UvFtwjxq1BvpSAlHBzLBOiDXFjGz5n74nCLdwIR04i4+7wc0SgtKjNM9z0UuTFG5ao4ce/MPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945978; c=relaxed/simple;
-	bh=yz/TAfUGNi6SfjmyPCmwEAPIDMU+OmB0kmx9i5cEhIU=;
+	s=arc-20240116; t=1745948652; c=relaxed/simple;
+	bh=npYWyG8DbKFkaAv47UsiPDLGmJO11y1EH/5UUM995sY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X61vJwApN/CliHfE8ysidosMDiSXcn9ftpSIVDoiKz1TpzDRZMjrot0bZqSKFAC6fDwJMCv2/1zS9SB/4M8OBqmzIummFR23isb+8oqCy8gu+34Kn2f1SKLO1w6WIdu3ptxK+gmADTYIPdja/mQy1iGxhrtx7tK2uKs/iYv1iYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkaLa3Ot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFFFC4CEE3;
-	Tue, 29 Apr 2025 16:59:37 +0000 (UTC)
+	 MIME-Version; b=g3p/MdYfs1HID69rvS9UXkEibcNUb9xoK2fIb2qbup23Z6EuhXmUTF64vnM4ki4OzcE7IVB7e3VZ5U3+TCi7vMNohbyhZnPQpX9thU6nEb7a0zKQzq6EZvrIxfrmoUeKpRb38BQQ4DQFI+u4rUryH9jKIpSOmWvG7ut6lWCab6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTNiW61p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A60C4CEF5;
+	Tue, 29 Apr 2025 17:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945978;
-	bh=yz/TAfUGNi6SfjmyPCmwEAPIDMU+OmB0kmx9i5cEhIU=;
+	s=korg; t=1745948652;
+	bh=npYWyG8DbKFkaAv47UsiPDLGmJO11y1EH/5UUM995sY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PkaLa3OtT1DIYjlCEZtCV/ivGhgun2medUmzdrJ0W4P3wq8CXWLzoU0PyNBeHMRMU
-	 D075hv99tBWh2wud6ReaXd1R6y4QgjaxtUUVcmebPdFbipg8mStFNMVKKCEIXXa9Tr
-	 zwz/LgXtmrKYS4AYbo7cdKG8T37aJdZtU/snoolU=
+	b=fTNiW61pmlsxm3s5/dSUpM9OgsFCwajrDslBEO1DJqrrUUDStbueQf/4VvCrXuRRS
+	 iKDNrTiTkbu6zt6+Z8FJ58PtIUkY95UA61nfoFRDxCK9rSymgrX6U119jjPvKGprmg
+	 fb7lTt/BDlDb428+GnrfbvY5qV92dBeYMbsUzCD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.14 112/311] crypto: atmel-sha204a - Set hwrng quality to lowest possible
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 072/373] media: i2c: ccs: Set the devices runtime PM status correctly in remove
 Date: Tue, 29 Apr 2025 18:39:09 +0200
-Message-ID: <20250429161125.620202426@linuxfoundation.org>
+Message-ID: <20250429161126.106565274@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 8006aff15516a170640239c5a8e6696c0ba18d8e upstream.
+commit e04604583095faf455b3490b004254a225fd60d4 upstream.
 
-According to the review by Bill Cox [1], the Atmel SHA204A random number
-generator produces random numbers with very low entropy.
+Set the device's runtime PM status to suspended in device removal only if
+it wasn't suspended already.
 
-Set the lowest possible entropy for this chip just to be safe.
-
-[1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
-
-Fixes: da001fb651b00e1d ("crypto: atmel-i2c - add support for SHA204A random number generator")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 9447082ae666 ("[media] smiapp: Implement power-on and power-off sequences without runtime PM")
+Cc: stable@vger.kernel.org # for >= v5.15
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/atmel-sha204a.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/i2c/ccs/ccs-core.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/crypto/atmel-sha204a.c
-+++ b/drivers/crypto/atmel-sha204a.c
-@@ -163,6 +163,12 @@ static int atmel_sha204a_probe(struct i2
- 	i2c_priv->hwrng.name = dev_name(&client->dev);
- 	i2c_priv->hwrng.read = atmel_sha204a_rng_read;
+--- a/drivers/media/i2c/ccs/ccs-core.c
++++ b/drivers/media/i2c/ccs/ccs-core.c
+@@ -3677,9 +3677,10 @@ static int ccs_remove(struct i2c_client
+ 	v4l2_async_unregister_subdev(subdev);
  
-+	/*
-+	 * According to review by Bill Cox [1], this HWRNG has very low entropy.
-+	 * [1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
-+	 */
-+	i2c_priv->hwrng.quality = 1;
-+
- 	ret = devm_hwrng_register(&client->dev, &i2c_priv->hwrng);
- 	if (ret)
- 		dev_warn(&client->dev, "failed to register RNG (%d)\n", ret);
+ 	pm_runtime_disable(&client->dev);
+-	if (!pm_runtime_status_suspended(&client->dev))
++	if (!pm_runtime_status_suspended(&client->dev)) {
+ 		ccs_power_off(&client->dev);
+-	pm_runtime_set_suspended(&client->dev);
++		pm_runtime_set_suspended(&client->dev);
++	}
+ 
+ 	for (i = 0; i < sensor->ssds_used; i++) {
+ 		v4l2_device_unregister_subdev(&sensor->ssds[i].sd);
 
 
 
