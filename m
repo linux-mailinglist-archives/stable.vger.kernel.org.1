@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-139002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A11BAA3D90
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 02:02:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 781BFAA3D8F
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 02:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCD7E1683A8
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 00:01:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F9CE920BCE
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 00:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFE428F202;
-	Tue, 29 Apr 2025 23:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E56F28F224;
+	Tue, 29 Apr 2025 23:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zxz/vdUr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VgoXdTJE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B926277013;
-	Tue, 29 Apr 2025 23:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC23128F21C;
+	Tue, 29 Apr 2025 23:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745970696; cv=none; b=WmVYLWSBHyIG/c1+2hYuBSmWeUwIi701H11UnOCHrD7sbaT3RatfAniOJEsFhowAhxs2C5J7B5RHrX2XYivkJGH/Njt/MJEF35KsUcyZOcyKZsEDUtiGL202nB0okqsTsXIfZdkl3Z+hXGahJdE7LkfUOXXXzGKLQGH9FCad59k=
+	t=1745970697; cv=none; b=WLcyqD7F+Ht4VC7iBQWjdfIZOELvMiOhaxt40jit6ySGvBgUGd9n83DUwwRoP73e0CFuf+OlOCuMoEPa/37gYSyj03rV5SVzAksQOrrVbpOFGgrO6d72Ybe3USFreQaagBe1QGCfPZeV/om6NMKUliqxMqJO9niEJgjgaWE2LmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745970696; c=relaxed/simple;
-	bh=0xZ76QH3HflUWPp/0rUpNJVO9Oo2L/GfiD6E8Ga85rI=;
+	s=arc-20240116; t=1745970697; c=relaxed/simple;
+	bh=CAdi08RiNenFcq0C/quHTapGbgDaCIUTxSFZYUZ3nS8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VO5plCecWHKh04FePuRLwLXcIBmvTPLLqdF6haCqnL7I3Kifw79sLeol/QhrJI5irYroViIlRyOolCVyk19P7aiY1hSxaYPxNgZ+V3rkHMQEhoIlUbwwMKkgEb3dSaC398s5nrJM8Js8S0Z9mEFmfoqerMnRTyHaTITiXb/XsRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zxz/vdUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7ECC4CEED;
-	Tue, 29 Apr 2025 23:51:35 +0000 (UTC)
+	 MIME-Version; b=ggy+bjXozeXwlNnk7B/rMsEvVR2KgPCzI5yI+VqBr6lE69frUTB3PE8RMutO6jvGVB0Gok+q/gx82zVeNXZyFf1Aa/Um1VoNWtoJnPLiSK2qAxqrTbjW8jMtk97T7Jd+l9YIECq8BHBt+v5ZN+HliRFDSeYPII3mRJ7gnmLUCuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VgoXdTJE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DECC4CEE3;
+	Tue, 29 Apr 2025 23:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745970696;
-	bh=0xZ76QH3HflUWPp/0rUpNJVO9Oo2L/GfiD6E8Ga85rI=;
+	s=k20201202; t=1745970697;
+	bh=CAdi08RiNenFcq0C/quHTapGbgDaCIUTxSFZYUZ3nS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zxz/vdUr66+5jw48OI9XtR4WKjGTPIQ8QmYo5VMgokQsFmngGZ3L15f8acR5sHNI/
-	 pEtLM7+TUhZmA7249Dx6uyatv1ZOWKDNKOKicIfKT3i2awAjWkeKuZspZiAFMKDhtC
-	 FmnSNLHN42NAmD0gAZgU7YaThyFtk4ngLSyGxdmXW/euqAlTLbg7KTy4cnmYiOJI+V
-	 d5+r6XNTFaaHERtBh+TjbOrFNQDy+bkL/BlJ8gxUYiySJ8B1Gr2TVfDy9n9Jux0C3q
-	 3abAwTVFWyvk6lzw1BhYbvhv+Vzm33Gx37IB200HZZEFegwsEWTFxImUZ2MgwfrjPw
-	 u53miqNNgJosw==
+	b=VgoXdTJEJtcy6CgfW2yuUe/fS6exo1EP6zuEJNDEwibNR5cRWEd5p/j2pK7QOqZup
+	 sTToB+FXRHvpa2YdPRxZmFudndxPNHzKpil/CpwtZdan34Cz2V2Pyvb+yOz5Ya7sGf
+	 QAht9E47QprXXYVU+q7dxsPqE5l4coAg5/s2NQUJz4PjgDFWwqyQlqKoDdwOkMz+lw
+	 BH6ExhBEgT9fo8PnrEW5WDggzzY+Pijvd8z8G5iGUYDQ00Oei3TBn8C9Vr6ovdVYK4
+	 QeIuRqjJRPKTj4q8uSC0nwFDK67FlzFyjQBoXVczsYIKoxfAZ8aENLsbqR5tJTGRj3
+	 C4O1ZHlMLIadQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,9 +49,9 @@ Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
 	srini@kernel.org
-Subject: [PATCH AUTOSEL 6.12 07/37] nvmem: core: update raw_len if the bit reading is required
-Date: Tue, 29 Apr 2025 19:50:52 -0400
-Message-Id: <20250429235122.537321-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 08/37] nvmem: qfprom: switch to 4-byte aligned reads
+Date: Tue, 29 Apr 2025 19:50:53 -0400
+Message-Id: <20250429235122.537321-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250429235122.537321-1-sashal@kernel.org>
 References: <20250429235122.537321-1-sashal@kernel.org>
@@ -68,38 +68,80 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 6786484223d5705bf7f919c1e5055d478ebeec32 ]
+[ Upstream commit 3566a737db87a9bf360c2fd36433c5149f805f2e ]
 
-If NVMEM cell uses bit offset or specifies bit truncation, update
-raw_len manually (following the cell->bytes update), ensuring that the
-NVMEM access is still word-aligned.
+All platforms since Snapdragon 8 Gen1 (SM8450) require using 4-byte
+reads to access QFPROM data. While older platforms were more than happy
+with 1-byte reads, change the qfprom driver to use 4-byte reads for all
+the platforms. Specify stride and word size of 4 bytes. To retain
+compatibility with the existing DT and to simplify porting data from
+vendor kernels, use fixup_dt_cell_info in order to bump alignment
+requirements.
 
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20250411112251.68002-11-srinivas.kandagatla@linaro.org
+Link: https://lore.kernel.org/r/20250411112251.68002-12-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/nvmem/qfprom.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index 3671d156c7c33..d1869e6de3844 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -581,9 +581,11 @@ static int nvmem_cell_info_to_nvmem_cell_entry_nodup(struct nvmem_device *nvmem,
- 	cell->nbits = info->nbits;
- 	cell->np = info->np;
+diff --git a/drivers/nvmem/qfprom.c b/drivers/nvmem/qfprom.c
+index 116a39e804c70..a872c640b8c5a 100644
+--- a/drivers/nvmem/qfprom.c
++++ b/drivers/nvmem/qfprom.c
+@@ -321,19 +321,32 @@ static int qfprom_reg_read(void *context,
+ 			unsigned int reg, void *_val, size_t bytes)
+ {
+ 	struct qfprom_priv *priv = context;
+-	u8 *val = _val;
+-	int i = 0, words = bytes;
++	u32 *val = _val;
+ 	void __iomem *base = priv->qfpcorrected;
++	int words = DIV_ROUND_UP(bytes, sizeof(u32));
++	int i;
  
--	if (cell->nbits)
-+	if (cell->nbits) {
- 		cell->bytes = DIV_ROUND_UP(cell->nbits + cell->bit_offset,
- 					   BITS_PER_BYTE);
-+		cell->raw_len = ALIGN(cell->bytes, nvmem->word_size);
-+	}
+ 	if (read_raw_data && priv->qfpraw)
+ 		base = priv->qfpraw;
  
- 	if (!IS_ALIGNED(cell->offset, nvmem->stride)) {
- 		dev_err(&nvmem->dev,
+-	while (words--)
+-		*val++ = readb(base + reg + i++);
++	for (i = 0; i < words; i++)
++		*val++ = readl(base + reg + i * sizeof(u32));
+ 
+ 	return 0;
+ }
+ 
++/* Align reads to word boundary */
++static void qfprom_fixup_dt_cell_info(struct nvmem_device *nvmem,
++				      struct nvmem_cell_info *cell)
++{
++	unsigned int byte_offset = cell->offset % sizeof(u32);
++
++	cell->bit_offset += byte_offset * BITS_PER_BYTE;
++	cell->offset -= byte_offset;
++	if (byte_offset && !cell->nbits)
++		cell->nbits = cell->bytes * BITS_PER_BYTE;
++}
++
+ static void qfprom_runtime_disable(void *data)
+ {
+ 	pm_runtime_disable(data);
+@@ -358,10 +371,11 @@ static int qfprom_probe(struct platform_device *pdev)
+ 	struct nvmem_config econfig = {
+ 		.name = "qfprom",
+ 		.add_legacy_fixed_of_cells = true,
+-		.stride = 1,
+-		.word_size = 1,
++		.stride = 4,
++		.word_size = 4,
+ 		.id = NVMEM_DEVID_AUTO,
+ 		.reg_read = qfprom_reg_read,
++		.fixup_dt_cell_info = qfprom_fixup_dt_cell_info,
+ 	};
+ 	struct device *dev = &pdev->dev;
+ 	struct resource *res;
 -- 
 2.39.5
 
