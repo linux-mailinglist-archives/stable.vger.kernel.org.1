@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-138830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF3EAA19D6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:16:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31546AA18FC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F16A51C0047F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 499571BC734C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB5524729A;
-	Tue, 29 Apr 2025 18:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CFB248889;
+	Tue, 29 Apr 2025 18:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVB7ebD9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iq6k5x/s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CB024111D;
-	Tue, 29 Apr 2025 18:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6034024633C;
+	Tue, 29 Apr 2025 18:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950485; cv=none; b=puCy1WdKMl78NK0PQqmKjkFXYKmS5aq48S8qtyEQ3MLfz1RsUvjOqRCKokkjZE6EDH/XYnUPFrd3z/MGuDhgJe+F2x0H2HYb4oybnDG3wqp46JeCmovwQ2SrqVS8nA++8/qwLqtb95WLqe9VOja2kXMeE+P7WTUqe6oYSiATN1Q=
+	t=1745949951; cv=none; b=SYXoKO/RW1mGQO4oTEcu+t0gDylcpGksjnWAMmzQtSqfzjzRfODFdv79BJYq3Ekw3xfrioet5YOq9yGKiKSD9dXPywC9KNVziWh9N5SPRmcNwcCOGx+7rML3KIpiIhdmgrUKU32EFBWScH68vk2Gdu0+PliMFjbzVRWsJZQuIh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950485; c=relaxed/simple;
-	bh=hHf5s9t+y8Cgw94WYoaFjDm9hQoA7DPYcBpqzYIk6s4=;
+	s=arc-20240116; t=1745949951; c=relaxed/simple;
+	bh=BaB83UkOFOXNFfOIA7WBr0Pe6U9lTENWNjzzfmZd4UU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QvzZVkbXpWUhbPfG+ijUrG8d3ifR//75FjkCj8+KFOb04QuUKzG3YseYpJUBWF4kYOidf9pUKGw2PthPdN8siQUOC48BAjLN4ybnGzSPgfodyf3Ifn1XvhbKw+xsjL680AeM3KDrOCePuYh1JcqxWkjJdusQBRTWiOYWZbRkjzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVB7ebD9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA4AC4CEE3;
-	Tue, 29 Apr 2025 18:14:44 +0000 (UTC)
+	 MIME-Version; b=CvE1gq6MZJwuCgI9lghymBH6Do6q0dxZqz9WwOXf+tgq0pikm6AElxIkYC4/mkXicFuf+1495RnuMytvSwhhiGyjOUmJ5OgW/Nw02zg191NoW71CWwy58qraOQqRS6KNDsWxvnwNh5Cva2tMabgm8aY8kdK9AyHsYNzQFwVj/x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iq6k5x/s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D845C4CEE3;
+	Tue, 29 Apr 2025 18:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950485;
-	bh=hHf5s9t+y8Cgw94WYoaFjDm9hQoA7DPYcBpqzYIk6s4=;
+	s=korg; t=1745949950;
+	bh=BaB83UkOFOXNFfOIA7WBr0Pe6U9lTENWNjzzfmZd4UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xVB7ebD95ug2FNq749Jqjpv6gBKX7Xp6I5pNZjeM08cjEGGK5XFnmw4qtx9oA1wiX
-	 8BnzHyQ0MT6Aeee2PIhs2Z9/+aTBV/MmtNl1N1kvGiSFbMEY7+4Y68oJ7Ir4AHdnbq
-	 KO9PLTK+hOSYd1ZzFBiyHwiqGUOnUyvLTEkd2gEs=
+	b=iq6k5x/sJoXe7+sBiNIPOEGPLscnJFVQtUZjN0ys7+nUSCSPZ/l+FQVrvRZdbLR32
+	 OStH05HzDqcrUUkCgMM67VTtvYgUUfxXo33h9T6WkPX29067R+yVaXajsU6xE4lE9Y
+	 Pd+XWWr16A3dm62WADE8rQytULb0LRMgkhdbeFXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable <stable@kernel.org>,
 	Miao Li <limiao@kylinos.cn>,
 	Lei Huang <huanglei@kylinos.cn>
-Subject: [PATCH 6.6 111/204] usb: quirks: Add delay init quirk for SanDisk 3.2Gen1 Flash Drive
+Subject: [PATCH 6.1 091/167] usb: quirks: Add delay init quirk for SanDisk 3.2Gen1 Flash Drive
 Date: Tue, 29 Apr 2025 18:43:19 +0200
-Message-ID: <20250429161103.979091843@linuxfoundation.org>
+Message-ID: <20250429161055.441575626@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
