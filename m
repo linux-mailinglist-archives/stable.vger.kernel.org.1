@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123A9AA1209
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC3EAA137E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B007292741B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B9D09256E2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F07A2459C9;
-	Tue, 29 Apr 2025 16:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875DD23F413;
+	Tue, 29 Apr 2025 17:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8AEScnM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcjqDgQs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16ED244679;
-	Tue, 29 Apr 2025 16:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BD821A43D;
+	Tue, 29 Apr 2025 17:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945216; cv=none; b=oJD6qBZ6cqZa4j5BIxtPrX8u+snP1/MF+L81qvz1S+8HRKudfzdWPe3JiyXTz45osccHSZgvCFo3HD5wr3ma2PFJk2yKp6k9fdTs5r9Bhta/feCwzryZpaxYsNmKC846jnsv5Fkcu/SCGYOkqngXSA6jA2biSZxnYcjfym696V0=
+	t=1745946067; cv=none; b=Prb6d3RonBTYL00z4jBsKDoFL4Km6eMbL03bbteyMfBgcXzngbnh5kDaGbcrVWtAt3i2sIZ94txnCiiAg+vSx5ClhGwUAWIR058BCzVyVaoMY2QvJnq7C3Il6rL3Tu/YI3BRhN1jJx0vBnJUXp1nG6ALjpyTbJV8Q3mbAqhKboQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945216; c=relaxed/simple;
-	bh=JwDpd9DPQFBo4KNotie6WbPx7vk9MUxX1lOCggw+a08=;
+	s=arc-20240116; t=1745946067; c=relaxed/simple;
+	bh=GNwMDE5AtAoCfGiiQOJZ+DoSo4gOdBPbug7qG3me/ak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZMRL/yjdnJlaJRoA+omAFWrvAHqgX0ZtQPzjftS8KfnH9MRqM694lE4D6hMArVtiU3zrDtWjV6g7PcbsiQD4cXZrPKPBS5O+GhFnPyCSELCQzHb4MycIGpT7HCiv898wCU5Bv/tbcLo5FqhDOy9N92D6j7ZMA8TJJWiBfUD72P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8AEScnM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56859C4CEE9;
-	Tue, 29 Apr 2025 16:46:56 +0000 (UTC)
+	 MIME-Version; b=DdqCi4QG+5X2jonEv9bE1a2AvamBBN8QncQrWkavxOC0PKHiJMyu6CYOKmN2VYQqw2M6Dftywnm0wh3iuFSzEJ0GdicvHDYmdHmqkZHh2kfYFs//k4T+rVamGAwgEf0MYIJ6Jyx/FRsBQoGGY2OCW698/nHmHhZY8SMWPs20RqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcjqDgQs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE2CC4CEE9;
+	Tue, 29 Apr 2025 17:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945216;
-	bh=JwDpd9DPQFBo4KNotie6WbPx7vk9MUxX1lOCggw+a08=;
+	s=korg; t=1745946067;
+	bh=GNwMDE5AtAoCfGiiQOJZ+DoSo4gOdBPbug7qG3me/ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T8AEScnM9UYMUTwZq5Avi3BtZb79R0ikoN6g/jrf5wNMeg8zmpE2Nvmywf8+rGe7P
-	 FULB3IW9oLvushn4vsToCDp01H9/oeNLgHaazFbNgXlMs8JYjo1e72yMU2sHOwGSUW
-	 kBMRFCfYG0lo/RtuFnxwNhS59LV90krI2w2BKygc=
+	b=XcjqDgQs0O71X/PLcHiMNJ7wuCTpAd3zh0b/mqfZAeo7QgDTckhWIc4J6iDxwIOk7
+	 Ss3Lt2Nevj9YTE6QKhcjAjhJew3FaNGmnLZOZzKj6AmVb8meWQAE+qo9bx+ifVxYY0
+	 Bl4P6331PUcm8UaC++Jg/T95K/B53M/J6U73GKzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 039/179] pwm: fsl-ftm: Handle clk_get_rate() returning 0
+	stable <stable@kernel.org>,
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 6.14 143/311] mei: me: add panther lake H DID
 Date: Tue, 29 Apr 2025 18:39:40 +0200
-Message-ID: <20250429161050.994566553@linuxfoundation.org>
+Message-ID: <20250429161126.893126469@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit 928446a5302eee30ebb32075c0db5dda5a138fb7 ]
+commit 86ce5c0a1dec02e21b4c864b2bc0cc5880a2c13c upstream.
 
-Considering that the driver doesn't enable the used clocks (and also
-that clk_get_rate() returns 0 if CONFIG_HAVE_CLK is unset) better check
-the return value of clk_get_rate() for being non-zero before dividing by
-it.
+Add Panther Lake H device id.
 
-Fixes: 3479bbd1e1f8 ("pwm: fsl-ftm: More relaxed permissions for updating period")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/b68351a51017035651bc62ad3146afcb706874f0.1743501688.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://lore.kernel.org/r/20250408130005.1358140-1-alexander.usyskin@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-fsl-ftm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/misc/mei/hw-me-regs.h |    1 +
+ drivers/misc/mei/pci-me.c     |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/pwm/pwm-fsl-ftm.c b/drivers/pwm/pwm-fsl-ftm.c
-index 59272a9204793..8221f286f5828 100644
---- a/drivers/pwm/pwm-fsl-ftm.c
-+++ b/drivers/pwm/pwm-fsl-ftm.c
-@@ -123,6 +123,9 @@ static unsigned int fsl_pwm_ticks_to_ns(struct fsl_pwm_chip *fpc,
- 	unsigned long long exval;
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -117,6 +117,7 @@
  
- 	rate = clk_get_rate(fpc->clk[fpc->period.clk_select]);
-+	if (rate >> fpc->period.clk_ps == 0)
-+		return 0;
-+
- 	exval = ticks;
- 	exval *= 1000000000UL;
- 	do_div(exval, rate >> fpc->period.clk_ps);
-@@ -195,6 +198,9 @@ static unsigned int fsl_pwm_calculate_duty(struct fsl_pwm_chip *fpc,
- 	unsigned int period = fpc->period.mod_period + 1;
- 	unsigned int period_ns = fsl_pwm_ticks_to_ns(fpc, period);
+ #define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
  
-+	if (!period_ns)
-+		return 0;
-+
- 	duty = (unsigned long long)duty_ns * period;
- 	do_div(duty, period_ns);
++#define MEI_DEV_ID_PTL_H      0xE370  /* Panther Lake H */
+ #define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
  
--- 
-2.39.5
-
+ /*
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -124,6 +124,7 @@ static const struct pci_device_id mei_me
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
+ 
++	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_H, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
+ 
+ 	/* required last entry */
 
 
 
