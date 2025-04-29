@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-137256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 978C0AA1269
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D184AA166E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:37:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C87C1890D02
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:52:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A54A016AFC5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292E3246326;
-	Tue, 29 Apr 2025 16:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C102512D8;
+	Tue, 29 Apr 2025 17:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuMzSLUB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgiRL2h8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97CA24466C;
-	Tue, 29 Apr 2025 16:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E8D82C60;
+	Tue, 29 Apr 2025 17:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945525; cv=none; b=c9FcOnwcE8IUWpKBp3IK2V5e2bDT4WJlpMVLttO3xvNTZ4ZcrTQAoK6AAjXo5/h7puwzdxi65n58ldL6v4HpNn7By7e01wePfTquU9u46MPlyRpY9LleygVSeYTCpS4yN3E7YLVMUmHCW22PjJAo6L7qqGFURSAUeUXd4/jvdRc=
+	t=1745948030; cv=none; b=SYm73lFp9ckScTno6vykIzkL7a4c++FniGcVxrOrrMJNkShroKqFZOxs437g+gaLLd9skMX4Mmti/r62G1fcdHdRPgsI8glz+j7F9F71CqBQmacU0yWP+CSTKXZSpgTTUtzTZATz79u48rpFbxS6Rt5AlCZ1RB/cOSwJOKT29Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945525; c=relaxed/simple;
-	bh=LqRhkeKWD3nT7w7ISgmiVrDRPNUx2f47mmQhArFbs8k=;
+	s=arc-20240116; t=1745948030; c=relaxed/simple;
+	bh=xPPkVY26L4JB/ZD6GXIWjW38X95jTHscsOQZzDDVc/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQA216H2XBtlAvJqq7Lq2u7T3KHoiEmwzAaCT45ogXGZzL8upH6fzRgF/I0OKLSJ2SdJtWPciqCeeiiJeo/CUdzcfKD5L+ILUIBQwlEcDuk+LsvBQT3luprfShStf+8Mosmf2XbskYA6FnIsnHXFJYA1R85SEZ32FZX20M18hzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kuMzSLUB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49479C4CEE3;
-	Tue, 29 Apr 2025 16:52:05 +0000 (UTC)
+	 MIME-Version; b=U5RG4k+537uJ8ySE5MxzBgpxb63JXsv45a7IMSF5wiLA8xb1x7tB+7uFB/f9JxRJWSwICmv3fbzlHut+jUXTgmyni010oY4/ZQwznTL6A2E3iii1QloDKKg7rG6+vqS8PS91i5Ih3M0Ucdkhw+oiLwr025l2TpIjSSv2h2jfHcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgiRL2h8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4ED9C4CEE3;
+	Tue, 29 Apr 2025 17:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945525;
-	bh=LqRhkeKWD3nT7w7ISgmiVrDRPNUx2f47mmQhArFbs8k=;
+	s=korg; t=1745948029;
+	bh=xPPkVY26L4JB/ZD6GXIWjW38X95jTHscsOQZzDDVc/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kuMzSLUBwvay72ssuIX9lOY8kQBnFlq7SvsbbH5qJVfRh4c32DJekBiFr9vxc+eVe
-	 8TbihHDSiyIHs/ej4rkt2pYqqVe/30spyg1lNnky2vwgUciw13SN5/EY2F1m96wQp6
-	 IAvWrjQHzPBhFA8oG9hwb/dzBhNLBW15JxOxGsyM=
+	b=RgiRL2h8/+llBMOXSzWhQQTKbBHTKwKPs0lzyO1LsQO441p0wpVQScaTX85QkzmtU
+	 GQLWDBbJu1uwSHiOifADygIjhawBJXb/Ey1Btf1NsqZJOX9mp9uFRYoO7xqUnbGD3U
+	 ThGD5NpNkFl312NaNekdbf/cUgasd7mV3v+LZbmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Guan <hao.guan@siflower.com.cn>,
-	Qingfang Deng <qingfang.deng@siflower.com.cn>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 142/179] net: phy: leds: fix memory leak
+	stable <stable@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Mingcong Bai <baimingcong@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 142/280] USB: OHCI: Add quirk for LS7A OHCI controller (rev 0x02)
 Date: Tue, 29 Apr 2025 18:41:23 +0200
-Message-ID: <20250429161055.139337006@linuxfoundation.org>
+Message-ID: <20250429161120.937381937@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <qingfang.deng@siflower.com.cn>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit b7f0ee992adf601aa00c252418266177eb7ac2bc ]
+commit bcb60d438547355b8f9ad48645909139b64d3482 upstream.
 
-A network restart test on a router led to an out-of-memory condition,
-which was traced to a memory leak in the PHY LED trigger code.
+The OHCI controller (rev 0x02) under LS7A PCI host has a hardware flaw.
+MMIO register with offset 0x60/0x64 is treated as legacy PS2-compatible
+keyboard/mouse interface, which confuse the OHCI controller. Since OHCI
+only use a 4KB BAR resource indeed, the LS7A OHCI controller's 32KB BAR
+is wrapped around (the second 4KB BAR space is the same as the first 4KB
+internally). So we can add an 4KB offset (0x1000) to the OHCI registers
+(from the PCI BAR resource) as a quirk.
 
-The root cause is misuse of the devm API. The registration function
-(phy_led_triggers_register) is called from phy_attach_direct, not
-phy_probe, and the unregister function (phy_led_triggers_unregister)
-is called from phy_detach, not phy_remove. This means the register and
-unregister functions can be called multiple times for the same PHY
-device, but devm-allocated memory is not freed until the driver is
-unbound.
-
-This also prevents kmemleak from detecting the leak, as the devm API
-internally stores the allocated pointer.
-
-Fix this by replacing devm_kzalloc/devm_kcalloc with standard
-kzalloc/kcalloc, and add the corresponding kfree calls in the unregister
-path.
-
-Fixes: 3928ee6485a3 ("net: phy: leds: Add support for "link" trigger")
-Fixes: 2e0bc452f472 ("net: phy: leds: add support for led triggers on phy link state change")
-Signed-off-by: Hao Guan <hao.guan@siflower.com.cn>
-Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250417032557.2929427-1-dqfext@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Tested-by: Mingcong Bai <baimingcong@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lore.kernel.org/r/20250328040059.3672979-1-chenhuacai@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/phy_led_triggers.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/usb/host/ohci-pci.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/net/phy/phy_led_triggers.c b/drivers/net/phy/phy_led_triggers.c
-index 59a94e07e7c55..ae28aa2f9a392 100644
---- a/drivers/net/phy/phy_led_triggers.c
-+++ b/drivers/net/phy/phy_led_triggers.c
-@@ -91,9 +91,8 @@ int phy_led_triggers_register(struct phy_device *phy)
- 	if (!phy->phy_num_led_triggers)
- 		return 0;
- 
--	phy->led_link_trigger = devm_kzalloc(&phy->mdio.dev,
--					     sizeof(*phy->led_link_trigger),
--					     GFP_KERNEL);
-+	phy->led_link_trigger = kzalloc(sizeof(*phy->led_link_trigger),
-+					GFP_KERNEL);
- 	if (!phy->led_link_trigger) {
- 		err = -ENOMEM;
- 		goto out_clear;
-@@ -108,10 +107,9 @@ int phy_led_triggers_register(struct phy_device *phy)
- 	if (err)
- 		goto out_free_link;
- 
--	phy->phy_led_triggers = devm_kcalloc(&phy->mdio.dev,
--					    phy->phy_num_led_triggers,
--					    sizeof(struct phy_led_trigger),
--					    GFP_KERNEL);
-+	phy->phy_led_triggers = kcalloc(phy->phy_num_led_triggers,
-+					sizeof(struct phy_led_trigger),
-+					GFP_KERNEL);
- 	if (!phy->phy_led_triggers) {
- 		err = -ENOMEM;
- 		goto out_unreg_link;
-@@ -131,11 +129,11 @@ int phy_led_triggers_register(struct phy_device *phy)
- out_unreg:
- 	while (i--)
- 		phy_led_trigger_unregister(&phy->phy_led_triggers[i]);
--	devm_kfree(&phy->mdio.dev, phy->phy_led_triggers);
-+	kfree(phy->phy_led_triggers);
- out_unreg_link:
- 	phy_led_trigger_unregister(phy->led_link_trigger);
- out_free_link:
--	devm_kfree(&phy->mdio.dev, phy->led_link_trigger);
-+	kfree(phy->led_link_trigger);
- 	phy->led_link_trigger = NULL;
- out_clear:
- 	phy->phy_num_led_triggers = 0;
-@@ -149,8 +147,13 @@ void phy_led_triggers_unregister(struct phy_device *phy)
- 
- 	for (i = 0; i < phy->phy_num_led_triggers; i++)
- 		phy_led_trigger_unregister(&phy->phy_led_triggers[i]);
-+	kfree(phy->phy_led_triggers);
-+	phy->phy_led_triggers = NULL;
- 
--	if (phy->led_link_trigger)
-+	if (phy->led_link_trigger) {
- 		phy_led_trigger_unregister(phy->led_link_trigger);
-+		kfree(phy->led_link_trigger);
-+		phy->led_link_trigger = NULL;
-+	}
+--- a/drivers/usb/host/ohci-pci.c
++++ b/drivers/usb/host/ohci-pci.c
+@@ -165,6 +165,25 @@ static int ohci_quirk_amd700(struct usb_
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(phy_led_triggers_unregister);
--- 
-2.39.5
-
+ 
++static int ohci_quirk_loongson(struct usb_hcd *hcd)
++{
++	struct pci_dev *pdev = to_pci_dev(hcd->self.controller);
++
++	/*
++	 * Loongson's LS7A OHCI controller (rev 0x02) has a
++	 * flaw. MMIO register with offset 0x60/64 is treated
++	 * as legacy PS2-compatible keyboard/mouse interface.
++	 * Since OHCI only use 4KB BAR resource, LS7A OHCI's
++	 * 32KB BAR is wrapped around (the 2nd 4KB BAR space
++	 * is the same as the 1st 4KB internally). So add 4KB
++	 * offset (0x1000) to the OHCI registers as a quirk.
++	 */
++	if (pdev->revision == 0x2)
++		hcd->regs += SZ_4K;	/* SZ_4K = 0x1000 */
++
++	return 0;
++}
++
+ static int ohci_quirk_qemu(struct usb_hcd *hcd)
+ {
+ 	struct ohci_hcd *ohci = hcd_to_ohci(hcd);
+@@ -225,6 +244,10 @@ static const struct pci_device_id ohci_p
+ 		.driver_data = (unsigned long)ohci_quirk_amd700,
+ 	},
+ 	{
++		PCI_DEVICE(PCI_VENDOR_ID_LOONGSON, 0x7a24),
++		.driver_data = (unsigned long)ohci_quirk_loongson,
++	},
++	{
+ 		.vendor		= PCI_VENDOR_ID_APPLE,
+ 		.device		= 0x003f,
+ 		.subvendor	= PCI_SUBVENDOR_ID_REDHAT_QUMRANET,
 
 
 
