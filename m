@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061F0AA17F7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A39AA1569
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:27:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41FEB4C6C4F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:53:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10D3C984D0B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFA4251793;
-	Tue, 29 Apr 2025 17:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8521C6B4;
+	Tue, 29 Apr 2025 17:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I6jRuOp2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjLdLCDS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF6422AE68;
-	Tue, 29 Apr 2025 17:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2749D82C60;
+	Tue, 29 Apr 2025 17:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949218; cv=none; b=tHuVpxO2M0l/+h1L7Hed1PHSbsJKxdt9aQNlpL086zr8AUBoJ3gE8U1ENc9CXTk7IVdr8lWYnIDeuYzlxpV/QWCNvGi2N1LfpakyyGOP1cyXnhjn3cnbdSR0K82Wy+EMOyFXu+2+kmXuV3zgSBfmRVqWSiXsWfmQb9xiNpSas2A=
+	t=1745947287; cv=none; b=lnDee97RbFk2Z/ZhoKHGdr3l3Xvt9ARMaCBfsZOgxI5fo5DvnQKTV3LnfP2vinCEPluk0OZo9YZw5p2vlTbqja7oWViEpkV4UymXh0ftIagCY9pdURbQC2JqQAg6Az87F5fj+GS9cweBFiY/NTPDDEOh+eFTTQP8UR2/u737nAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949218; c=relaxed/simple;
-	bh=oQXWjnKZDIUNCG1R2PB0X5ApgArVH+v6ttUJ3WKFO7g=;
+	s=arc-20240116; t=1745947287; c=relaxed/simple;
+	bh=EDPWvSE0UWghsvgVN3LgiZq60bb230qKfdOAlVVRD8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l9iKYMiUJ9+82TubNmoSDvykdn8G6URA4ZW4Ch7j//hk3S7clcG2R4YhR2eEHAdCr53fG7EQURCDzpK/0jzR+/aQ1WtjFZkCocXhQbqKF28go7fVM2DXprie+5Qx4YMxSr4igMIWmoIbySsbpTLJ7YlnVGwkAS2ycB1G0mVjtUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I6jRuOp2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772E3C4CEE3;
-	Tue, 29 Apr 2025 17:53:37 +0000 (UTC)
+	 MIME-Version; b=I5PAzpjJZI69uxQLCC3ennirJ0IB2j3f4+GDtMVcJUIbG93sX+nJpEBANkzTtNTBEbqaIY0hhqHqlkASeNXqJMp+oXeGwNztl/BlxxbS3TuwZoglEdbuYxR5VRbHKCabOoZE+d8hJM9tBIcYgjEuw4DEUKBl+KLMqLpFRa9GHVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjLdLCDS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFE1C4CEE3;
+	Tue, 29 Apr 2025 17:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949217;
-	bh=oQXWjnKZDIUNCG1R2PB0X5ApgArVH+v6ttUJ3WKFO7g=;
+	s=korg; t=1745947287;
+	bh=EDPWvSE0UWghsvgVN3LgiZq60bb230qKfdOAlVVRD8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I6jRuOp2ozoNE2EkyZcdtxmr1ev6NUWsnoZm2QGCVrjrD+8IaLvy4DpM27oqEl7Xg
-	 TeyfCfbS+CNwOCwnKWhGKgorEeaGp+T/t7x2iSoWvDi2WnjTeFfjrWp/yZZ0k53vbc
-	 NiUtDMmj0lkJoZ41nIBb28e2RdssVF8Z5n4qhHwI=
+	b=MjLdLCDSYvV8efSzf5/fvCFKkxwro8zMc7MwEdKLOcC6fh7Pv2mbIfEjUPdf2xCfy
+	 7/9MieFftJni0e7sYT7f0+nCFwnvrMsXgDyQGPEtxTQ+Nme/hVcx/XARkO3Gye8Dd+
+	 wjew6973eVKeTwOulnyZ6TuYRIs4okyKlOEC0C7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.15 220/373] ksmbd: fix potencial out-of-bounds when buffer offset is invalid
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 5.10 193/286] drivers: staging: rtl8723bs: Fix locking in rtw_scan_timeout_handler()
 Date: Tue, 29 Apr 2025 18:41:37 +0200
-Message-ID: <20250429161132.204661261@linuxfoundation.org>
+Message-ID: <20250429161115.906554220@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,307 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit c6cd2e8d2d9aa7ee35b1fa6a668e32a22a9753da upstream.
+commit 3f467036093fedd7e231924327455fc609b5ef02 upstream.
 
-I found potencial out-of-bounds when buffer offset fields of a few requests
-is invalid. This patch set the minimum value of buffer offset field to
-->Buffer offset to validate buffer length.
+Commit cc7ad0d77b51 ("drivers: staging: rtl8723bs: Fix deadlock in
+rtw_surveydone_event_callback()") besides fixing the deadlock also
+modified rtw_scan_timeout_handler() to use spin_[un]lock_irq()
+instead of spin_[un]lock_bh().
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Disabling the IRQs is not necessary since all code taking this lock
+runs from either user contexts or from softirqs
+
+rtw_scan_timeout_handler() is the only function taking pmlmepriv->lock
+which uses spin_[un]lock_irq() for this. Switch back to
+spin_[un]lock_bh() to make it consistent with the rest of the code.
+
+Fixes: cc7ad0d77b51 ("drivers: staging: rtl8723bs: Fix deadlock in rtw_surveydone_event_callback()")
+Cc: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230221145326.7808-2-hdegoede@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2misc.c |   22 ++++++++++++++++------
- fs/ksmbd/smb2pdu.c  |   47 +++++++++++++++++++++++++----------------------
- 2 files changed, 41 insertions(+), 28 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ksmbd/smb2misc.c
-+++ b/fs/ksmbd/smb2misc.c
-@@ -102,7 +102,9 @@ static int smb2_get_data_area_len(unsign
- 		*len = le16_to_cpu(((struct smb2_sess_setup_req *)hdr)->SecurityBufferLength);
- 		break;
- 	case SMB2_TREE_CONNECT:
--		*off = le16_to_cpu(((struct smb2_tree_connect_req *)hdr)->PathOffset);
-+		*off = max_t(unsigned short int,
-+			     le16_to_cpu(((struct smb2_tree_connect_req *)hdr)->PathOffset),
-+			     offsetof(struct smb2_tree_connect_req, Buffer));
- 		*len = le16_to_cpu(((struct smb2_tree_connect_req *)hdr)->PathLength);
- 		break;
- 	case SMB2_CREATE:
-@@ -129,11 +131,15 @@ static int smb2_get_data_area_len(unsign
- 		break;
- 	}
- 	case SMB2_QUERY_INFO:
--		*off = le16_to_cpu(((struct smb2_query_info_req *)hdr)->InputBufferOffset);
-+		*off = max_t(unsigned int,
-+			     le16_to_cpu(((struct smb2_query_info_req *)hdr)->InputBufferOffset),
-+			     offsetof(struct smb2_query_info_req, Buffer));
- 		*len = le32_to_cpu(((struct smb2_query_info_req *)hdr)->InputBufferLength);
- 		break;
- 	case SMB2_SET_INFO:
--		*off = le16_to_cpu(((struct smb2_set_info_req *)hdr)->BufferOffset);
-+		*off = max_t(unsigned int,
-+			     le16_to_cpu(((struct smb2_set_info_req *)hdr)->BufferOffset),
-+			     offsetof(struct smb2_set_info_req, Buffer));
- 		*len = le32_to_cpu(((struct smb2_set_info_req *)hdr)->BufferLength);
- 		break;
- 	case SMB2_READ:
-@@ -143,7 +149,7 @@ static int smb2_get_data_area_len(unsign
- 	case SMB2_WRITE:
- 		if (((struct smb2_write_req *)hdr)->DataOffset ||
- 		    ((struct smb2_write_req *)hdr)->Length) {
--			*off = max_t(unsigned int,
-+			*off = max_t(unsigned short int,
- 				     le16_to_cpu(((struct smb2_write_req *)hdr)->DataOffset),
- 				     offsetof(struct smb2_write_req, Buffer) - 4);
- 			*len = le32_to_cpu(((struct smb2_write_req *)hdr)->Length);
-@@ -154,7 +160,9 @@ static int smb2_get_data_area_len(unsign
- 		*len = le16_to_cpu(((struct smb2_write_req *)hdr)->WriteChannelInfoLength);
- 		break;
- 	case SMB2_QUERY_DIRECTORY:
--		*off = le16_to_cpu(((struct smb2_query_directory_req *)hdr)->FileNameOffset);
-+		*off = max_t(unsigned short int,
-+			     le16_to_cpu(((struct smb2_query_directory_req *)hdr)->FileNameOffset),
-+			     offsetof(struct smb2_query_directory_req, Buffer));
- 		*len = le16_to_cpu(((struct smb2_query_directory_req *)hdr)->FileNameLength);
- 		break;
- 	case SMB2_LOCK:
-@@ -169,7 +177,9 @@ static int smb2_get_data_area_len(unsign
- 		break;
- 	}
- 	case SMB2_IOCTL:
--		*off = le32_to_cpu(((struct smb2_ioctl_req *)hdr)->InputOffset);
-+		*off = max_t(unsigned int,
-+			     le32_to_cpu(((struct smb2_ioctl_req *)hdr)->InputOffset),
-+			     offsetof(struct smb2_ioctl_req, Buffer));
- 		*len = le32_to_cpu(((struct smb2_ioctl_req *)hdr)->InputCount);
- 		break;
- 	default:
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -1967,7 +1967,7 @@ int smb2_tree_connect(struct ksmbd_work
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -1755,11 +1755,11 @@ void rtw_scan_timeout_handler(struct tim
  
- 	WORK_BUFFERS(work, req, rsp);
+ 	DBG_871X(FUNC_ADPT_FMT" fw_state =%x\n", FUNC_ADPT_ARG(adapter), get_fwstate(pmlmepriv));
  
--	treename = smb_strndup_from_utf16(req->Buffer,
-+	treename = smb_strndup_from_utf16((char *)req + le16_to_cpu(req->PathOffset),
- 					  le16_to_cpu(req->PathLength), true,
- 					  conn->local_nls);
- 	if (IS_ERR(treename)) {
-@@ -2714,7 +2714,7 @@ int smb2_open(struct ksmbd_work *work)
- 			goto err_out2;
- 		}
+-	spin_lock_irq(&pmlmepriv->lock);
++	spin_lock_bh(&pmlmepriv->lock);
  
--		name = smb2_get_name(req->Buffer,
-+		name = smb2_get_name((char *)req + le16_to_cpu(req->NameOffset),
- 				     le16_to_cpu(req->NameLength),
- 				     work->conn->local_nls);
- 		if (IS_ERR(name)) {
-@@ -4086,7 +4086,7 @@ int smb2_query_dir(struct ksmbd_work *wo
- 	}
+ 	_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY);
  
- 	srch_flag = req->Flags;
--	srch_ptr = smb_strndup_from_utf16(req->Buffer,
-+	srch_ptr = smb_strndup_from_utf16((char *)req + le16_to_cpu(req->FileNameOffset),
- 					  le16_to_cpu(req->FileNameLength), 1,
- 					  conn->local_nls);
- 	if (IS_ERR(srch_ptr)) {
-@@ -4346,7 +4346,8 @@ static int smb2_get_ea(struct ksmbd_work
- 		    sizeof(struct smb2_ea_info_req))
- 			return -EINVAL;
+-	spin_unlock_irq(&pmlmepriv->lock);
++	spin_unlock_bh(&pmlmepriv->lock);
  
--		ea_req = (struct smb2_ea_info_req *)req->Buffer;
-+		ea_req = (struct smb2_ea_info_req *)((char *)req +
-+						     le16_to_cpu(req->InputBufferOffset));
- 	} else {
- 		/* need to send all EAs, if no specific EA is requested*/
- 		if (le32_to_cpu(req->Flags) & SL_RETURN_SINGLE_ENTRY)
-@@ -5952,6 +5953,7 @@ static int smb2_set_info_file(struct ksm
- 			      struct ksmbd_share_config *share)
- {
- 	unsigned int buf_len = le32_to_cpu(req->BufferLength);
-+	char *buffer = (char *)req + le16_to_cpu(req->BufferOffset);
- 
- 	switch (req->FileInfoClass) {
- 	case FILE_BASIC_INFORMATION:
-@@ -5959,7 +5961,7 @@ static int smb2_set_info_file(struct ksm
- 		if (buf_len < sizeof(struct smb2_file_basic_info))
- 			return -EINVAL;
- 
--		return set_file_basic_info(fp, (struct smb2_file_basic_info *)req->Buffer, share);
-+		return set_file_basic_info(fp, (struct smb2_file_basic_info *)buffer, share);
- 	}
- 	case FILE_ALLOCATION_INFORMATION:
- 	{
-@@ -5967,7 +5969,7 @@ static int smb2_set_info_file(struct ksm
- 			return -EINVAL;
- 
- 		return set_file_allocation_info(work, fp,
--						(struct smb2_file_alloc_info *)req->Buffer);
-+						(struct smb2_file_alloc_info *)buffer);
- 	}
- 	case FILE_END_OF_FILE_INFORMATION:
- 	{
-@@ -5975,7 +5977,7 @@ static int smb2_set_info_file(struct ksm
- 			return -EINVAL;
- 
- 		return set_end_of_file_info(work, fp,
--					    (struct smb2_file_eof_info *)req->Buffer);
-+					    (struct smb2_file_eof_info *)buffer);
- 	}
- 	case FILE_RENAME_INFORMATION:
- 	{
-@@ -5983,7 +5985,7 @@ static int smb2_set_info_file(struct ksm
- 			return -EINVAL;
- 
- 		return set_rename_info(work, fp,
--				       (struct smb2_file_rename_info *)req->Buffer,
-+				       (struct smb2_file_rename_info *)buffer,
- 				       buf_len);
- 	}
- 	case FILE_LINK_INFORMATION:
-@@ -5992,7 +5994,7 @@ static int smb2_set_info_file(struct ksm
- 			return -EINVAL;
- 
- 		return smb2_create_link(work, work->tcon->share_conf,
--					(struct smb2_file_link_info *)req->Buffer,
-+					(struct smb2_file_link_info *)buffer,
- 					buf_len, fp->filp,
- 					work->conn->local_nls);
- 	}
-@@ -6002,7 +6004,7 @@ static int smb2_set_info_file(struct ksm
- 			return -EINVAL;
- 
- 		return set_file_disposition_info(fp,
--						 (struct smb2_file_disposition_info *)req->Buffer);
-+						 (struct smb2_file_disposition_info *)buffer);
- 	}
- 	case FILE_FULL_EA_INFORMATION:
- 	{
-@@ -6015,7 +6017,7 @@ static int smb2_set_info_file(struct ksm
- 		if (buf_len < sizeof(struct smb2_ea_info))
- 			return -EINVAL;
- 
--		return smb2_set_ea((struct smb2_ea_info *)req->Buffer,
-+		return smb2_set_ea((struct smb2_ea_info *)buffer,
- 				   buf_len, &fp->filp->f_path, true);
- 	}
- 	case FILE_POSITION_INFORMATION:
-@@ -6023,14 +6025,14 @@ static int smb2_set_info_file(struct ksm
- 		if (buf_len < sizeof(struct smb2_file_pos_info))
- 			return -EINVAL;
- 
--		return set_file_position_info(fp, (struct smb2_file_pos_info *)req->Buffer);
-+		return set_file_position_info(fp, (struct smb2_file_pos_info *)buffer);
- 	}
- 	case FILE_MODE_INFORMATION:
- 	{
- 		if (buf_len < sizeof(struct smb2_file_mode_info))
- 			return -EINVAL;
- 
--		return set_file_mode_info(fp, (struct smb2_file_mode_info *)req->Buffer);
-+		return set_file_mode_info(fp, (struct smb2_file_mode_info *)buffer);
- 	}
- 	}
- 
-@@ -6111,7 +6113,7 @@ int smb2_set_info(struct ksmbd_work *wor
- 		}
- 		rc = smb2_set_info_sec(fp,
- 				       le32_to_cpu(req->AdditionalInformation),
--				       req->Buffer,
-+				       (char *)req + le16_to_cpu(req->BufferOffset),
- 				       le32_to_cpu(req->BufferLength));
- 		ksmbd_revert_fsids(work);
- 		break;
-@@ -7563,7 +7565,7 @@ static int fsctl_pipe_transceive(struct
- 				 struct smb2_ioctl_rsp *rsp)
- {
- 	struct ksmbd_rpc_command *rpc_resp;
--	char *data_buf = (char *)&req->Buffer[0];
-+	char *data_buf = (char *)req + le32_to_cpu(req->InputOffset);
- 	int nbytes = 0;
- 
- 	rpc_resp = ksmbd_rpc_ioctl(work->sess, id, data_buf,
-@@ -7676,6 +7678,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 	u64 id = KSMBD_NO_FID;
- 	struct ksmbd_conn *conn = work->conn;
- 	int ret = 0;
-+	char *buffer;
- 
- 	if (work->next_smb2_rcv_hdr_off) {
- 		req = ksmbd_req_buf_next(work);
-@@ -7698,6 +7701,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 		goto out;
- 	}
- 
-+	buffer = (char *)req + le32_to_cpu(req->InputOffset);
- 	cnt_code = le32_to_cpu(req->CntCode);
- 	ret = smb2_calc_max_out_buf_len(work, 48,
- 					le32_to_cpu(req->MaxOutputResponse));
-@@ -7755,7 +7759,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 		}
- 
- 		ret = fsctl_validate_negotiate_info(conn,
--			(struct validate_negotiate_info_req *)&req->Buffer[0],
-+			(struct validate_negotiate_info_req *)buffer,
- 			(struct validate_negotiate_info_rsp *)&rsp->Buffer[0],
- 			in_buf_len);
- 		if (ret < 0)
-@@ -7808,7 +7812,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 		rsp->VolatileFileId = req->VolatileFileId;
- 		rsp->PersistentFileId = req->PersistentFileId;
- 		fsctl_copychunk(work,
--				(struct copychunk_ioctl_req *)&req->Buffer[0],
-+				(struct copychunk_ioctl_req *)buffer,
- 				le32_to_cpu(req->CntCode),
- 				le32_to_cpu(req->InputCount),
- 				req->VolatileFileId,
-@@ -7821,8 +7825,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 			goto out;
- 		}
- 
--		ret = fsctl_set_sparse(work, id,
--				       (struct file_sparse *)&req->Buffer[0]);
-+		ret = fsctl_set_sparse(work, id, (struct file_sparse *)buffer);
- 		if (ret < 0)
- 			goto out;
- 		break;
-@@ -7845,7 +7848,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 		}
- 
- 		zero_data =
--			(struct file_zero_data_information *)&req->Buffer[0];
-+			(struct file_zero_data_information *)buffer;
- 
- 		off = le64_to_cpu(zero_data->FileOffset);
- 		bfz = le64_to_cpu(zero_data->BeyondFinalZero);
-@@ -7876,7 +7879,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 		}
- 
- 		ret = fsctl_query_allocated_ranges(work, id,
--			(struct file_allocated_range_buffer *)&req->Buffer[0],
-+			(struct file_allocated_range_buffer *)buffer,
- 			(struct file_allocated_range_buffer *)&rsp->Buffer[0],
- 			out_buf_len /
- 			sizeof(struct file_allocated_range_buffer), &nbytes);
-@@ -7920,7 +7923,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 			goto out;
- 		}
- 
--		dup_ext = (struct duplicate_extents_to_file *)&req->Buffer[0];
-+		dup_ext = (struct duplicate_extents_to_file *)buffer;
- 
- 		fp_in = ksmbd_lookup_fd_slow(work, dup_ext->VolatileFileHandle,
- 					     dup_ext->PersistentFileHandle);
+ 	rtw_indicate_scan_done(adapter, true);
+ }
 
 
 
