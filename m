@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-137594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9221FAA13B4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE2EAA1688
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50D177A57D0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ADDF1674BE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335ED2459E1;
-	Tue, 29 Apr 2025 17:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A9B24EF6B;
+	Tue, 29 Apr 2025 17:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oF9Fs+E5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1rn9FQ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A21221719;
-	Tue, 29 Apr 2025 17:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F132459FE;
+	Tue, 29 Apr 2025 17:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946538; cv=none; b=VvjWgYKykphxG7qfrR5dlTUeD2ms94unA9+sFjm40Ox1GspDbvNygsovB4lZHX3CsSgzBxaOLDlUYdq+J5iGF9qrowxx09yRNJK+QRQeThcj4+eJBjw3/G18+IUGVdrOC10dITSoVSuRPVtmK12NhUfbvNUfNl7byRBwcX/zIsg=
+	t=1745948120; cv=none; b=LSbQbbqwIFJIgkS3J39GfqZe0lBQTRwNSeqQV/NAnyqq7BzNEu9zyPgcz7h3A3kMrQSgDWuKp+kiZtqmGedkyU3zOSMBgYjCdkxHIdgzpfexQTn5WdMIfLwhKEP8Cv3sR90sP5d+j5dTkWlDaInOhxNRvdHvA09/l8c1mh8hG1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946538; c=relaxed/simple;
-	bh=yaoVX8QjtpF7Z2jrdFdNwhTE/519U5Vxn0niJ7qqVpw=;
+	s=arc-20240116; t=1745948120; c=relaxed/simple;
+	bh=jgg2Dx1LGrwpU2DMkxgoOLZ7LJnKiE9E7QbWwRyV0AA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjCVFpdYOdpk9mCC+9iOFUsrBivaFW3mRPZTa19jFmrWpTJLiedbhgdBLQcLSDB5vyAsJovE4Pfh6buSEW8c2le3J5s1YZT09oSx8qJZHwleRj27jAwbjBRG+8KWv0q5AVZFhiClqojIfIZ8Zokbnz/EGA1mB1Z/R/w3p3WXr7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oF9Fs+E5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CE7C4CEE3;
-	Tue, 29 Apr 2025 17:08:57 +0000 (UTC)
+	 MIME-Version; b=hyWyWyE6LZyL1/YuDMT2dmLNeCzPdAjYQp4dJ7Go6HfgJs1UMG0790ApxJXQfzTwl3vp+X0+k6TV+av5PWRBeDo6Qi19juOm4KNvPuFdJkeYtx0WJ1aPNo3ki3k8wm/cBJni6MU74MVm+Y7Q/UqbZjU/Ej6ObikPKQN07PLSoq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1rn9FQ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE010C4CEE3;
+	Tue, 29 Apr 2025 17:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946537;
-	bh=yaoVX8QjtpF7Z2jrdFdNwhTE/519U5Vxn0niJ7qqVpw=;
+	s=korg; t=1745948120;
+	bh=jgg2Dx1LGrwpU2DMkxgoOLZ7LJnKiE9E7QbWwRyV0AA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oF9Fs+E5oTIu/nnaaGb8nR7G9qm3bj+4EmkhDlU2RaC7/OeW+HuEqg+3TV939HGcj
-	 Bmq3NSJjZ1MUBj4Vel+R1lrLG4f+GPxw1JI+G5G5bMOsWdgdlsD2ja8tb2MOBwy5Y/
-	 p11stfoQeZeXBdOGHdZiR87c1bzgw4bMnPIQx+Zk=
+	b=L1rn9FQ0wLEidnLlajxawFF5+Ss4hQgLQ+z691XbHNQ881zTnwFJQb+PnV62uyllK
+	 3tTqiEK0XlLsKLeJuP9usFOmjQWCV0RDyJfvNdDqnaOyLxXhUFOs7xLTl5Lh2d5wbp
+	 YQ85r+sc9sVBAWMp8Dvne36hS4pDeAZ51v7nxL3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrew Sauber <andrew.sauber@isovalent.com>,
-	Anton Protopopov <aspsk@isovalent.com>,
-	William Tu <witu@nvidia.com>,
-	Martin Zaharinov <micron10@gmail.com>,
-	Ronak Doshi <ronak.doshi@broadcom.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.14 299/311] vmxnet3: Fix malformed packet sizing in vmxnet3_process_xdp
+	Robert Morris <rtm@mit.edu>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 195/280] 9p/net: fix improper handling of bogus negative read/write replies
 Date: Tue, 29 Apr 2025 18:42:16 +0200
-Message-ID: <20250429161133.248277933@linuxfoundation.org>
+Message-ID: <20250429161123.087989182@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,74 +63,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Dominique Martinet <asmadeus@codewreck.org>
 
-commit 4c2227656d9003f4d77afc76f34dd81b95e4c2c4 upstream.
+[ Upstream commit d0259a856afca31d699b706ed5e2adf11086c73b ]
 
-vmxnet3 driver's XDP handling is buggy for packet sizes using ring0 (that
-is, packet sizes between 128 - 3k bytes).
+In p9_client_write() and p9_client_read_once(), if the server
+incorrectly replies with success but a negative write/read count then we
+would consider written (negative) <= rsize (positive) because both
+variables were signed.
 
-We noticed MTU-related connectivity issues with Cilium's service load-
-balancing in case of vmxnet3 as NIC underneath. A simple curl to a HTTP
-backend service where the XDP LB was doing IPIP encap led to overly large
-packet sizes but only for *some* of the packets (e.g. HTTP GET request)
-while others (e.g. the prior TCP 3WHS) looked completely fine on the wire.
+Make variables unsigned to avoid this problem.
 
-In fact, the pcap recording on the backend node actually revealed that the
-node with the XDP LB was leaking uninitialized kernel data onto the wire
-for the affected packets, for example, while the packets should have been
-152 bytes their actual size was 1482 bytes, so the remainder after 152 bytes
-was padded with whatever other data was in that page at the time (e.g. we
-saw user/payload data from prior processed packets).
+The reproducer linked below now fails with the following error instead
+of a null pointer deref:
+9pnet: bogus RWRITE count (4294967295 > 3)
 
-We only noticed this through an MTU issue, e.g. when the XDP LB node and
-the backend node both had the same MTU (e.g. 1500) then the curl request
-got dropped on the backend node's NIC given the packet was too large even
-though the IPIP-encapped packet normally would never even come close to
-the MTU limit. Lowering the MTU on the XDP LB (e.g. 1480) allowed to let
-the curl request succeed (which also indicates that the kernel ignored the
-padding, and thus the issue wasn't very user-visible).
-
-Commit e127ce7699c1 ("vmxnet3: Fix missing reserved tailroom") was too eager
-to also switch xdp_prepare_buff() from rcd->len to rbi->len. It really needs
-to stick to rcd->len which is the actual packet length from the descriptor.
-The latter we also feed into vmxnet3_process_xdp_small(), by the way, and
-it indicates the correct length needed to initialize the xdp->{data,data_end}
-parts. For e127ce7699c1 ("vmxnet3: Fix missing reserved tailroom") the
-relevant part was adapting xdp_init_buff() to address the warning given the
-xdp_data_hard_end() depends on xdp->frame_sz. With that fixed, traffic on
-the wire looks good again.
-
-Fixes: e127ce7699c1 ("vmxnet3: Fix missing reserved tailroom")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Andrew Sauber <andrew.sauber@isovalent.com>
-Cc: Anton Protopopov <aspsk@isovalent.com>
-Cc: William Tu <witu@nvidia.com>
-Cc: Martin Zaharinov <micron10@gmail.com>
-Cc: Ronak Doshi <ronak.doshi@broadcom.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250423133600.176689-1-daniel@iogearbox.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Robert Morris <rtm@mit.edu>
+Closes: https://lore.kernel.org/16271.1734448631@26-5-164.dynamic.csail.mit.edu
+Message-ID: <20250319-9p_unsigned_rw-v3-1-71327f1503d0@codewreck.org>
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vmxnet3/vmxnet3_xdp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/9p/client.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
---- a/drivers/net/vmxnet3/vmxnet3_xdp.c
-+++ b/drivers/net/vmxnet3/vmxnet3_xdp.c
-@@ -397,7 +397,7 @@ vmxnet3_process_xdp(struct vmxnet3_adapt
+diff --git a/net/9p/client.c b/net/9p/client.c
+index 09f8ced9f8bb7..52a5497cfca79 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -1548,7 +1548,8 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
+ 	struct p9_client *clnt = fid->clnt;
+ 	struct p9_req_t *req;
+ 	int count = iov_iter_count(to);
+-	int rsize, received, non_zc = 0;
++	u32 rsize, received;
++	bool non_zc = false;
+ 	char *dataptr;
  
- 	xdp_init_buff(&xdp, PAGE_SIZE, &rq->xdp_rxq);
- 	xdp_prepare_buff(&xdp, page_address(page), rq->page_pool->p.offset,
--			 rbi->len, false);
-+			 rcd->len, false);
- 	xdp_buff_clear_frags_flag(&xdp);
+ 	*err = 0;
+@@ -1571,7 +1572,7 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
+ 				       0, 11, "dqd", fid->fid,
+ 				       offset, rsize);
+ 	} else {
+-		non_zc = 1;
++		non_zc = true;
+ 		req = p9_client_rpc(clnt, P9_TREAD, "dqd", fid->fid, offset,
+ 				    rsize);
+ 	}
+@@ -1592,11 +1593,11 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
+ 		return 0;
+ 	}
+ 	if (rsize < received) {
+-		pr_err("bogus RREAD count (%d > %d)\n", received, rsize);
++		pr_err("bogus RREAD count (%u > %u)\n", received, rsize);
+ 		received = rsize;
+ 	}
  
- 	xdp_prog = rcu_dereference(rq->adapter->xdp_bpf_prog);
+-	p9_debug(P9_DEBUG_9P, "<<< RREAD count %d\n", received);
++	p9_debug(P9_DEBUG_9P, "<<< RREAD count %u\n", received);
+ 
+ 	if (non_zc) {
+ 		int n = copy_to_iter(dataptr, received, to);
+@@ -1623,9 +1624,9 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
+ 	*err = 0;
+ 
+ 	while (iov_iter_count(from)) {
+-		int count = iov_iter_count(from);
+-		int rsize = fid->iounit;
+-		int written;
++		size_t count = iov_iter_count(from);
++		u32 rsize = fid->iounit;
++		u32 written;
+ 
+ 		if (!rsize || rsize > clnt->msize - P9_IOHDRSZ)
+ 			rsize = clnt->msize - P9_IOHDRSZ;
+@@ -1633,7 +1634,7 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
+ 		if (count < rsize)
+ 			rsize = count;
+ 
+-		p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %d (/%d)\n",
++		p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %u (/%zu)\n",
+ 			 fid->fid, offset, rsize, count);
+ 
+ 		/* Don't bother zerocopy for small IO (< 1024) */
+@@ -1659,11 +1660,11 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
+ 			break;
+ 		}
+ 		if (rsize < written) {
+-			pr_err("bogus RWRITE count (%d > %d)\n", written, rsize);
++			pr_err("bogus RWRITE count (%u > %u)\n", written, rsize);
+ 			written = rsize;
+ 		}
+ 
+-		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %d\n", written);
++		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %u\n", written);
+ 
+ 		p9_req_put(clnt, req);
+ 		iov_iter_revert(from, count - written - iov_iter_count(from));
+@@ -2098,7 +2099,8 @@ EXPORT_SYMBOL_GPL(p9_client_xattrcreate);
+ 
+ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
+ {
+-	int err, rsize, non_zc = 0;
++	int err, non_zc = 0;
++	u32 rsize;
+ 	struct p9_client *clnt;
+ 	struct p9_req_t *req;
+ 	char *dataptr;
+@@ -2107,7 +2109,7 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
+ 
+ 	iov_iter_kvec(&to, ITER_DEST, &kv, 1, count);
+ 
+-	p9_debug(P9_DEBUG_9P, ">>> TREADDIR fid %d offset %llu count %d\n",
++	p9_debug(P9_DEBUG_9P, ">>> TREADDIR fid %d offset %llu count %u\n",
+ 		 fid->fid, offset, count);
+ 
+ 	clnt = fid->clnt;
+@@ -2142,11 +2144,11 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
+ 		goto free_and_error;
+ 	}
+ 	if (rsize < count) {
+-		pr_err("bogus RREADDIR count (%d > %d)\n", count, rsize);
++		pr_err("bogus RREADDIR count (%u > %u)\n", count, rsize);
+ 		count = rsize;
+ 	}
+ 
+-	p9_debug(P9_DEBUG_9P, "<<< RREADDIR count %d\n", count);
++	p9_debug(P9_DEBUG_9P, "<<< RREADDIR count %u\n", count);
+ 
+ 	if (non_zc)
+ 		memmove(data, dataptr, count);
+-- 
+2.39.5
+
 
 
 
