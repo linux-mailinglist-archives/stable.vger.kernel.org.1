@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-138620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27171AA18F9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A69CAA1A32
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DC55161A6F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC6DB98646A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01E624111D;
-	Tue, 29 Apr 2025 18:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EE1227E95;
+	Tue, 29 Apr 2025 18:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plPPZxqP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bq2dN7Lh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC69D2AE96;
-	Tue, 29 Apr 2025 18:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2534BCA5A;
+	Tue, 29 Apr 2025 18:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949824; cv=none; b=Na2ZYEvl83iMywu28hPOHpuLkcUPniBGG6vsfju3rKEffib/DVUCuNY8BMMJUADZtQ2+ou7ftPhtJs5dgUQ17UrHZDdFqEVInoPaLqr3ue2SsZHX6sTFAOIYgVMiBG5i1F4tWBBXG9gCtwxcLxSYtyBw25AjjwFHTIhO6WWXdyk=
+	t=1745950419; cv=none; b=IU1s/Je/RaBUZ2e7A2F1CnyJ2mPwL75HMxgnjut9NyDNIv9znLTPbiCD2LTuZJKBXQCte2lwDq2hjxUWwdh9nmBvY9kONqgXNELG4mT2qYnGDe2TCkk1M9nu3g9YE5Rzszp3/lvmRE8jmIrnC6TkX4fA+RQatpupLo7HWRyqXnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949824; c=relaxed/simple;
-	bh=FD6nMFzis0KgU8wmc+Pzl/g51u5jQ1gI7BOrDmRpC4k=;
+	s=arc-20240116; t=1745950419; c=relaxed/simple;
+	bh=vw8IKCIAkykIShM9FSj6zTchn4b/i0+rFN0bJIfDWSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4z9NXyK+dRpe855VXY/CFm+J9XOe1Uf2qN0LuyKSmLuIejS32C2Ls+2ajlTqrFlAFfk0rgWC43c5qrgZXrq9g/aRWFUokeCHqyZ6m0Cs3X2SgJCcVRbxBQUJhMtoA4aOfNtoOEC/BsGmhSMFAPxhJgnacd4/KX/kxGnN2ntO4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plPPZxqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2DCC4CEE3;
-	Tue, 29 Apr 2025 18:03:43 +0000 (UTC)
+	 MIME-Version; b=TJCjxz7bG5WGdj0uPh6CiUxO8H0meSkuZeihsuQej9DiCS+iOFU7Cx3qG57zHVH+r+uyWXdi3Tb1U7H+HD93eMqR29s8Ldtw9Y310q8WLF3HTh8ENTNNqDfIme8Qzy0qE7FDoVY2Ey6piEbTSC6TgXCp0hahPraZMdzF9XdqFKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bq2dN7Lh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87475C4CEE3;
+	Tue, 29 Apr 2025 18:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949824;
-	bh=FD6nMFzis0KgU8wmc+Pzl/g51u5jQ1gI7BOrDmRpC4k=;
+	s=korg; t=1745950419;
+	bh=vw8IKCIAkykIShM9FSj6zTchn4b/i0+rFN0bJIfDWSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=plPPZxqPtb6jEd0hTHM03MwZ+11PVyQY0ipAITvfebzlAKw2Udkh34IWBGCOAK9Qx
-	 cU4NaGByzrOwAKJ2Nf5TRQYdnZ7UQmtqc3MTQJXNN7ekW5KDP82vlubNHXsV21SBTj
-	 KSYECgQYH7VE2knvGgC6Vb5oQtHRtsOJFECL59tQ=
+	b=Bq2dN7LhGq1CDU9M3IqHM3zybas5q4rXGJDxYlQ7LPtEMtlnfB/jdQuP/A3C+WzQa
+	 avcoMHiY2KvLol8GuHzDAGZ8gR11bNRQ3aPyTqGAKsgG9cegMCe28IMeRnSun6NA5N
+	 MyfznKLt9fRibpRQT9dylbFZOIYTxqFZPqzIL038=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 069/167] LoongArch: Remove a bogus reference to ZONE_DMA
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.6 089/204] USB: storage: quirk for ADATA Portable HDD CH94
 Date: Tue, 29 Apr 2025 18:42:57 +0200
-Message-ID: <20250429161054.563112239@linuxfoundation.org>
+Message-ID: <20250429161103.065583366@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Tesarik <ptesarik@suse.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit c37325cbd91abe3bfab280b3b09947155abe8e07 upstream.
+commit 9ab75eee1a056f896b87d139044dd103adc532b9 upstream.
 
-Remove dead code. LoongArch does not have a DMA memory zone (24bit DMA).
-The architecture does not even define MAX_DMA_PFN.
+Version 1.60 specifically needs this quirk.
+Version 2.00 is known good.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Petr Tesarik <ptesarik@suse.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250403180004.343133-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/mm/init.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/usb/storage/unusual_uas.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/loongarch/mm/init.c
-+++ b/arch/loongarch/mm/init.c
-@@ -89,9 +89,6 @@ void __init paging_init(void)
- {
- 	unsigned long max_zone_pfns[MAX_NR_ZONES];
+--- a/drivers/usb/storage/unusual_uas.h
++++ b/drivers/usb/storage/unusual_uas.h
+@@ -83,6 +83,13 @@ UNUSUAL_DEV(0x0bc2, 0x331a, 0x0000, 0x99
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_NO_REPORT_LUNS),
  
--#ifdef CONFIG_ZONE_DMA
--	max_zone_pfns[ZONE_DMA] = MAX_DMA_PFN;
--#endif
- #ifdef CONFIG_ZONE_DMA32
- 	max_zone_pfns[ZONE_DMA32] = MAX_DMA32_PFN;
- #endif
++/* Reported-by: Oliver Neukum <oneukum@suse.com> */
++UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x0160,
++		"ADATA",
++		"Portable HDD CH94",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_NO_ATA_1X),
++
+ /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
+ UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x9999,
+ 		"Initio Corporation",
 
 
 
