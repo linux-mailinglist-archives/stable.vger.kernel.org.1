@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-138759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D53AA198C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:13:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6748FAA18F0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67E9E4C090F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:11:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 550189A5D8E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C96E25486E;
-	Tue, 29 Apr 2025 18:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6E1224222;
+	Tue, 29 Apr 2025 18:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aE5o9Ka6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yRAxHEXN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A05525228D;
-	Tue, 29 Apr 2025 18:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F80A3FFD;
+	Tue, 29 Apr 2025 18:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950264; cv=none; b=g9YMfdfICOj/hLYUZg5Sm/6PulyOq5n30x6cWJhFom/twRnIrwMPi3XZFpjH35KgY/U232VslHfuFxSw/tvNRN0FYZ8nWKZDfvWf3ywguQSNVhYK2ZIEmz9HfbSl6qCadms/yTKRi1Ch3zYpaOYGK+Sbj3jIZ/XKBc6JyHd1BO4=
+	t=1745949649; cv=none; b=JeZM7zVnSR4mk2cBoEW3OeHia11hfw/TajAoPFQVtILhFW0OENgI94MV6b+yXI/jOuuQliLhfy+6XaBNb8mDP51VnQlAHe703fPJDTwH1vWSoBZexB+05ynKpSF3zE61PljTGHgzfTwktt2GusgHv1Uqq7vYEJtSS2chidSagFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950264; c=relaxed/simple;
-	bh=EHssN/Tudz59hnRdokEC+lDs6rKfXs/v+MVsxFpjqN8=;
+	s=arc-20240116; t=1745949649; c=relaxed/simple;
+	bh=la7WDOD7vvPzUNDk4jNXuFEONQlFx40s+1Dod6MdQYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bk/JIgt6oJEYJbRm1eU0f+fyK+NyLg+BI0bMtBfFJCDGlz/8CIOyaVl+2GfKryNAu3+OMXtYb/VPvpeNo44BJm92+JFr7FNO/sDZ46HBb6KsU8cxOwKG4CaIDRMuY5/dtJ0wqznnO5L0NYRJZR2tqLTpKtAQSsJAnAsMpeK8ySk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aE5o9Ka6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C942BC4CEE3;
-	Tue, 29 Apr 2025 18:11:03 +0000 (UTC)
+	 MIME-Version; b=GNgIIUuqMQ4mgpvujCgucK1yTj93u7wp2NUQIje/HoKGcC38FxsF0DIBjAzy4QPgiY7yqzNuNK4ewGedFm+N4xQrZQRECqRAnd62R9omXMUuA4YOJp15coJGww6Y2u2AWoInBFIn+d53wVdLb7rPtc///rtgrY6ay55QHcqJ/0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yRAxHEXN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91399C4CEE3;
+	Tue, 29 Apr 2025 18:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950264;
-	bh=EHssN/Tudz59hnRdokEC+lDs6rKfXs/v+MVsxFpjqN8=;
+	s=korg; t=1745949649;
+	bh=la7WDOD7vvPzUNDk4jNXuFEONQlFx40s+1Dod6MdQYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aE5o9Ka6x+gCFVv10w/I/DAmdomLUYxdN9nihncuv+Yc8AQt+7y/CXdY+04fiiPXy
-	 wp0JtQ0ywgYWje2kN1Je2gxOoaeh2enIrFkn1Cx5PVT/3CYOuoIjiGvo7Y0p/1zDxw
-	 CrC0SnH1Q0RvpkDyd+5wDW/aBObyg49E7BzqrkZM=
+	b=yRAxHEXN5liO3apcQA40l0LAyf24JyzrRI7/AOkzWONquEKg7BWh+puAhxd/mtBIm
+	 UUBH/SxCV9HurVlfUh4bpbcT+Wmx0j+wCisB7d8CbvUX4s56Dqc+8dIQtQrorZxs9M
+	 PO6qRRTQD8oD/kVOnrJNzUKBK56mjTEfpBubIhxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hien Huynh <hien.huynh.px@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Simon Horman <simon.horman@corigine.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/204] clk: renesas: r9a07g043: Fix HP clock source for RZ/Five
+Subject: [PATCH 6.1 012/167] net: dsa: mv88e6xxx: move link forcing to mac_prepare/mac_finish
 Date: Tue, 29 Apr 2025 18:42:00 +0200
-Message-ID: <20250429161100.728755599@linuxfoundation.org>
+Message-ID: <20250429161052.246916948@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit 7f22a298d926664b51fcfe2f8ea5feb7f8b79952 ]
+[ Upstream commit 267d7692f6cd5c9b8796324cdd54db594ca8d3e4 ]
 
-According to the Rev.1.20 hardware manual for the RZ/Five SoC, the clock
-source for HP is derived from PLL6 divided by 2.  Correct the
-implementation by configuring HP as a fixed clock source instead of a
-MUX.
+Move the link forcing out of mac_config() and into the mac_prepare()
+and mac_finish() methods. This results in no change to the order in
+which these operations are performed, but does mean when we convert
+mv88e6xxx to phylink_pcs support, we will continue to preserve this
+ordering.
 
-The `CPG_PL6_ETH_SSEL' register, which is available on the RZ/G2UL SoC,
-is not present on the RZ/Five SoC, necessitating this change.
-
-Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Five SoC")
-Cc: stable@vger.kernel.org
-Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250127173159.34572-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 52fdc41c3278 ("net: dsa: mv88e6xxx: fix internal PHYs for 6320 family")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a07g043-cpg.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/dsa/mv88e6xxx/chip.c | 65 ++++++++++++++++++++++----------
+ 1 file changed, 45 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/clk/renesas/r9a07g043-cpg.c b/drivers/clk/renesas/r9a07g043-cpg.c
-index 3a717dcecba56..865d47800791b 100644
---- a/drivers/clk/renesas/r9a07g043-cpg.c
-+++ b/drivers/clk/renesas/r9a07g043-cpg.c
-@@ -86,7 +86,9 @@ static const struct clk_div_table dtable_1_32[] = {
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 4c60f79ce2697..b3744f2ea0f48 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -848,29 +848,38 @@ static void mv88e6xxx_get_caps(struct dsa_switch *ds, int port,
+ 	}
+ }
  
- /* Mux clock tables */
- static const char * const sel_pll3_3[] = { ".pll3_533", ".pll3_400" };
-+#ifdef CONFIG_ARM64
- static const char * const sel_pll6_2[]	= { ".pll6_250", ".pll5_250" };
-+#endif
- static const char * const sel_sdhi[] = { ".clk_533", ".clk_400", ".clk_266" };
++static int mv88e6xxx_mac_prepare(struct dsa_switch *ds, int port,
++				 unsigned int mode, phy_interface_t interface)
++{
++	struct mv88e6xxx_chip *chip = ds->priv;
++	int err = 0;
++
++	/* In inband mode, the link may come up at any time while the link
++	 * is not forced down. Force the link down while we reconfigure the
++	 * interface mode.
++	 */
++	if (mode == MLO_AN_INBAND &&
++	    chip->ports[port].interface != interface &&
++	    chip->info->ops->port_set_link) {
++		mv88e6xxx_reg_lock(chip);
++		err = chip->info->ops->port_set_link(chip, port,
++						     LINK_FORCED_DOWN);
++		mv88e6xxx_reg_unlock(chip);
++	}
++
++	return err;
++}
++
+ static void mv88e6xxx_mac_config(struct dsa_switch *ds, int port,
+ 				 unsigned int mode,
+ 				 const struct phylink_link_state *state)
+ {
+ 	struct mv88e6xxx_chip *chip = ds->priv;
+-	struct mv88e6xxx_port *p;
+ 	int err = 0;
  
- static const u32 mtable_sdhi[] = { 1, 2, 3 };
-@@ -133,7 +135,12 @@ static const struct cpg_core_clk r9a07g043_core_clks[] __initconst = {
- 	DEF_DIV("P2", R9A07G043_CLK_P2, CLK_PLL3_DIV2_4_2, DIVPL3A, dtable_1_32),
- 	DEF_FIXED("M0", R9A07G043_CLK_M0, CLK_PLL3_DIV2_4, 1, 1),
- 	DEF_FIXED("ZT", R9A07G043_CLK_ZT, CLK_PLL3_DIV2_4_2, 1, 1),
-+#ifdef CONFIG_ARM64
- 	DEF_MUX("HP", R9A07G043_CLK_HP, SEL_PLL6_2, sel_pll6_2),
-+#endif
-+#ifdef CONFIG_RISCV
-+	DEF_FIXED("HP", R9A07G043_CLK_HP, CLK_PLL6_250, 1, 1),
-+#endif
- 	DEF_FIXED("SPI0", R9A07G043_CLK_SPI0, CLK_DIV_PLL3_C, 1, 2),
- 	DEF_FIXED("SPI1", R9A07G043_CLK_SPI1, CLK_DIV_PLL3_C, 1, 4),
- 	DEF_SD_MUX("SD0", R9A07G043_CLK_SD0, SEL_SDHI0, SEL_SDHI0_STS, sel_sdhi,
+-	p = &chip->ports[port];
+-
+ 	mv88e6xxx_reg_lock(chip);
+ 
+ 	if (mode != MLO_AN_PHY || !mv88e6xxx_phy_is_internal(ds, port)) {
+-		/* In inband mode, the link may come up at any time while the
+-		 * link is not forced down. Force the link down while we
+-		 * reconfigure the interface mode.
+-		 */
+-		if (mode == MLO_AN_INBAND &&
+-		    p->interface != state->interface &&
+-		    chip->info->ops->port_set_link)
+-			chip->info->ops->port_set_link(chip, port,
+-						       LINK_FORCED_DOWN);
+-
+ 		err = mv88e6xxx_port_config_interface(chip, port,
+ 						      state->interface);
+ 		if (err && err != -EOPNOTSUPP)
+@@ -887,24 +896,38 @@ static void mv88e6xxx_mac_config(struct dsa_switch *ds, int port,
+ 			err = 0;
+ 	}
+ 
++err_unlock:
++	mv88e6xxx_reg_unlock(chip);
++
++	if (err && err != -EOPNOTSUPP)
++		dev_err(ds->dev, "p%d: failed to configure MAC/PCS\n", port);
++}
++
++static int mv88e6xxx_mac_finish(struct dsa_switch *ds, int port,
++				unsigned int mode, phy_interface_t interface)
++{
++	struct mv88e6xxx_chip *chip = ds->priv;
++	int err = 0;
++
+ 	/* Undo the forced down state above after completing configuration
+ 	 * irrespective of its state on entry, which allows the link to come
+ 	 * up in the in-band case where there is no separate SERDES. Also
+ 	 * ensure that the link can come up if the PPU is in use and we are
+ 	 * in PHY mode (we treat the PPU as an effective in-band mechanism.)
+ 	 */
++	mv88e6xxx_reg_lock(chip);
++
+ 	if (chip->info->ops->port_set_link &&
+-	    ((mode == MLO_AN_INBAND && p->interface != state->interface) ||
++	    ((mode == MLO_AN_INBAND &&
++	      chip->ports[port].interface != interface) ||
+ 	     (mode == MLO_AN_PHY && mv88e6xxx_port_ppu_updates(chip, port))))
+-		chip->info->ops->port_set_link(chip, port, LINK_UNFORCED);
++		err = chip->info->ops->port_set_link(chip, port, LINK_UNFORCED);
+ 
+-	p->interface = state->interface;
+-
+-err_unlock:
+ 	mv88e6xxx_reg_unlock(chip);
+ 
+-	if (err && err != -EOPNOTSUPP)
+-		dev_err(ds->dev, "p%d: failed to configure MAC/PCS\n", port);
++	chip->ports[port].interface = interface;
++
++	return err;
+ }
+ 
+ static void mv88e6xxx_mac_link_down(struct dsa_switch *ds, int port,
+@@ -7024,7 +7047,9 @@ static const struct dsa_switch_ops mv88e6xxx_switch_ops = {
+ 	.port_teardown		= mv88e6xxx_port_teardown,
+ 	.phylink_get_caps	= mv88e6xxx_get_caps,
+ 	.phylink_mac_link_state	= mv88e6xxx_serdes_pcs_get_state,
++	.phylink_mac_prepare	= mv88e6xxx_mac_prepare,
+ 	.phylink_mac_config	= mv88e6xxx_mac_config,
++	.phylink_mac_finish	= mv88e6xxx_mac_finish,
+ 	.phylink_mac_an_restart	= mv88e6xxx_serdes_pcs_an_restart,
+ 	.phylink_mac_link_down	= mv88e6xxx_mac_link_down,
+ 	.phylink_mac_link_up	= mv88e6xxx_mac_link_up,
 -- 
 2.39.5
 
