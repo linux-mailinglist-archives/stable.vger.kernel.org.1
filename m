@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-137844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54BEEAA157A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:28:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40719AA1406
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0292E985417
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:22:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D62E178658
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812C82512F3;
-	Tue, 29 Apr 2025 17:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977F522A81D;
+	Tue, 29 Apr 2025 17:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCy/6c8B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ft+jGuyy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D02E24A07D;
-	Tue, 29 Apr 2025 17:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5501E221703;
+	Tue, 29 Apr 2025 17:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947302; cv=none; b=MxMa2b/7G/SuYbMAmsd/WYyDtq+QRqqpeSKNub3w3HjwmTlqXkjR2HftjtKW0rVga30hcVk57x5dUsxpBdVLS3HhoDM+13mdGpVcCKodz9Y+P2IKrA9y9KVdSFwapRH9MOBvd+EvWmV651wo3Dkse9U3MtHho+HrsSbJolPdc4A=
+	t=1745946556; cv=none; b=sVu5eiMS0zkA7EO0OY9aHAdE/NnXwXfMcG8mNIzAeL9vCmAzXv8FNj8fGTfjGUHWqWl7xoJNcaTt0FhiDutlpL84DM6kBHrodNMafNZ4dXr4uWZij/rqxjMdHTa0vUsHcaJRXS1NPTbfOJZbve0k7pu4BDUY2Xmas9HtgPxNu/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947302; c=relaxed/simple;
-	bh=aClPNfefnA2MDJ9z+o2XfzsGSRNEkYSw+JxB3c0pMV0=;
+	s=arc-20240116; t=1745946556; c=relaxed/simple;
+	bh=hum8NtKl05C/WHvlHP0NWG6s7pHvHd8gyyYjMdjY+BM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PzFa0g473Nl1G7hI1yDYB62DtsIgp36BH716knqBEt0YczJWVgP+G7PTYdQdw8Vxmqxn3tr28Bb1IMtoyXaHPKz6FG3GNCLTwltDKGuWEULSR03azUJ20W9KYsQJ730eP+K1KC5dmArU0/IeG2yVm3JiIqFACMw2VUE6YS+Un+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCy/6c8B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A133AC4CEEA;
-	Tue, 29 Apr 2025 17:21:41 +0000 (UTC)
+	 MIME-Version; b=K7V11H1f2OW9uLxQgGf/NEqqHZbT+xlFHw7eqHvf1Gm/MBKP+p8t7/mbNHVuz7WEAWSgUhnq8DNN5sWL8fjVjjaQGB8bDJ58yepT5YIMir3NC9vwruAxV3u3DESL9/B/7LVEFAV9deHJGjRrnHy5LK17n/uIotdaQ3lypp1azJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ft+jGuyy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C22C4CEE3;
+	Tue, 29 Apr 2025 17:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947302;
-	bh=aClPNfefnA2MDJ9z+o2XfzsGSRNEkYSw+JxB3c0pMV0=;
+	s=korg; t=1745946555;
+	bh=hum8NtKl05C/WHvlHP0NWG6s7pHvHd8gyyYjMdjY+BM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SCy/6c8BJP2QFRmb/nS1mnX1oV5W3ChIzRDmXL7wV1l1ekiGnNLpsarYnf0KlhRsT
-	 3yGi4k3rEqweJKE7esG71igaxKc3fmj55w0vfIdCSf2LfdTEWdSpaVCSnnhfG84Gn2
-	 bqK0ZYTtJ/CfhwE2ZiPGXjonhrIioCyVAzdn/hr0=
+	b=Ft+jGuyy0c6K/SU0UwfvPEGwi4kcG0RaJoJbZpM2YqHeS/Q51lF5AQE9ZY6eejif4
+	 dTZMHd97QR1r0tt/21DxuDzoKt7B+IZkk+E2R3N/fpfADuuC5BODPY8DcJZVrMv2px
+	 39mz0Of2SThC4Cl8GRc3diBVsKPtcnU7II1NAo1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 5.10 238/286] KVM: SVM: Allocate IR data using atomic allocation
+	Miguel Ojeda <ojeda@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.14 305/311] rust: kbuild: skip `--remap-path-prefix` for `rustdoc`
 Date: Tue, 29 Apr 2025 18:42:22 +0200
-Message-ID: <20250429161117.717734488@linuxfoundation.org>
+Message-ID: <20250429161133.489577865@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 7537deda36521fa8fff9133b39c46e31893606f2 upstream.
+commit 2c8725c1dca3de043670b38592b1b43105322496 upstream.
 
-Allocate SVM's interrupt remapping metadata using GFP_ATOMIC as
-svm_ir_list_add() is called with IRQs are disabled and irqfs.lock held
-when kvm_irq_routing_update() reacts to GSI routing changes.
+`rustdoc` only recognizes `--remap-path-prefix` starting with
+Rust 1.81.0, which is later than on minimum, so we cannot pass it
+unconditionally. Otherwise, we get:
 
-Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-2-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+    error: Unrecognized option: 'remap-path-prefix'
+
+Note that `rustc` (the compiler) does recognize the flag since a long
+time ago (1.26.0).
+
+Moreover, `rustdoc` since Rust 1.82.0 ICEs in out-of-tree builds when
+using `--remap-path-prefix`. The issue has been reduced and reported
+upstream [1].
+
+Thus workaround both issues by simply skipping the flag when generating
+the docs -- it is not critical there anyway.
+
+The ICE does not reproduce under `--test`, but we still need to skip
+the flag as well for `RUSTDOC TK` since it is not recognized.
+
+Fixes: dbdffaf50ff9 ("kbuild, rust: use -fremap-path-prefix to make paths relative")
+Link: https://github.com/rust-lang/rust/issues/138520 [1]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/avic.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/Makefile |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -742,7 +742,7 @@ static int svm_ir_list_add(struct vcpu_s
- 	 * Allocating new amd_iommu_pi_data, which will get
- 	 * add to the per-vcpu ir_list.
- 	 */
--	ir = kzalloc(sizeof(struct amd_svm_iommu_ir), GFP_KERNEL_ACCOUNT);
-+	ir = kzalloc(sizeof(struct amd_svm_iommu_ir), GFP_ATOMIC | __GFP_ACCOUNT);
- 	if (!ir) {
- 		ret = -ENOMEM;
- 		goto out;
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -57,10 +57,14 @@ endif
+ core-cfgs = \
+     --cfg no_fp_fmt_parse
+ 
++# `rustc` recognizes `--remap-path-prefix` since 1.26.0, but `rustdoc` only
++# since Rust 1.81.0. Moreover, `rustdoc` ICEs on out-of-tree builds since Rust
++# 1.82.0 (https://github.com/rust-lang/rust/issues/138520). Thus workaround both
++# issues skipping the flag. The former also applies to `RUSTDOC TK`.
+ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
+       cmd_rustdoc = \
+ 	OBJTREE=$(abspath $(objtree)) \
+-	$(RUSTDOC) $(filter-out $(skip_flags),$(if $(rustdoc_host),$(rust_common_flags),$(rust_flags))) \
++	$(RUSTDOC) $(filter-out $(skip_flags) --remap-path-prefix=%,$(if $(rustdoc_host),$(rust_common_flags),$(rust_flags))) \
+ 		$(rustc_target_flags) -L$(objtree)/$(obj) \
+ 		-Zunstable-options --generate-link-to-definition \
+ 		--output $(rustdoc_output) \
+@@ -171,7 +175,7 @@ quiet_cmd_rustdoc_test_kernel = RUSTDOC
+ 	rm -rf $(objtree)/$(obj)/test/doctests/kernel; \
+ 	mkdir -p $(objtree)/$(obj)/test/doctests/kernel; \
+ 	OBJTREE=$(abspath $(objtree)) \
+-	$(RUSTDOC) --test $(rust_flags) \
++	$(RUSTDOC) --test $(filter-out --remap-path-prefix=%,$(rust_flags)) \
+ 		-L$(objtree)/$(obj) --extern ffi --extern kernel \
+ 		--extern build_error --extern macros \
+ 		--extern bindings --extern uapi \
 
 
 
