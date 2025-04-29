@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-138844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF32AA1A4D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:20:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B80E4AA196F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:11:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08F8C9A7D3E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:15:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2F58985D67
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F073B253351;
-	Tue, 29 Apr 2025 18:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1340B24E00F;
+	Tue, 29 Apr 2025 18:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWbkq3Qq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQWQQ61/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4B9221FAE;
-	Tue, 29 Apr 2025 18:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93908248883;
+	Tue, 29 Apr 2025 18:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950532; cv=none; b=a9FZZACfyvo5nWUpw616ZKKuUwd7EYW/dgq6/MGmn5Ds6dNnhcB3FEn10Y7pMMG12bIG/4Qfu2yk8xjxZtE20PCQfuTkTsM4iVDKFxVcFsi/20Ysm/TYb4fxdC6m+KvGWNd8gpfREkl5DpQzW2Fdn9FD4bdVoa24mw7269hxJAs=
+	t=1745949935; cv=none; b=Y7S49nJ3NxSRS/jpdYJlx4Mlgfx41YpZxVMF9HiYYMTmaqTrkMmip21z6cjHXPNKqbPDvLu8XIFDuvCxmBWQTqyMMJt0k2WtMf0ek5+sf7BF7b4RP1dsxSAHEkkqFIqe0M/4zHzsVRU6ApIsELe1+77nh63C58H7OaYVrlNVlvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950532; c=relaxed/simple;
-	bh=rmkqtzDQzT0ZyeXp19ckIK08w1bvKezHDU9C2dMF+us=;
+	s=arc-20240116; t=1745949935; c=relaxed/simple;
+	bh=rmsYIhGr+VqVvJHzJS1s3XT7F8NpqOroFCnu1WF9UjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftgtppTn2KZGsiXW3gXWvVtkbglhurbZh20VCIpov62tl8YQvL1QSXT5CdXDaRryQo4FXretHGBMkeNH4fyTzXoM1+JmmKJTAs3vbdOYYT7FR5yKwXAqQ9v3bSDlDiI+VEFGMFvJV5h4tx0ANfnL03TVlvG22/ly2kwtSs/FBHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWbkq3Qq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C218C4CEE3;
-	Tue, 29 Apr 2025 18:15:31 +0000 (UTC)
+	 MIME-Version; b=K8YHRIavYQSlH6kgA/jtTAkXZztlG3HoQvMaNlcWaBJ3lmu49LlewxGevIP9mDH4//5EkjpP+fheypNshQ4ZocyuOP9yT5OlDwq6dpd7EyOkkDzItkdpY41bRKdgrO7cuf2Z9PIQGBSz+BmAI2PzbNEWpIMbk3OyIxBwfYqueRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQWQQ61/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03004C4CEE3;
+	Tue, 29 Apr 2025 18:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950532;
-	bh=rmkqtzDQzT0ZyeXp19ckIK08w1bvKezHDU9C2dMF+us=;
+	s=korg; t=1745949935;
+	bh=rmsYIhGr+VqVvJHzJS1s3XT7F8NpqOroFCnu1WF9UjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWbkq3Qqwpz2DsEEdJ6fd6cFo70ZHGuLTJtW6VqUg+UV0DS6BdQnRlMY7KOM2cYTz
-	 CCOvYF/V0jhbAivgmRp8DQfsG7AR1ZSFmD5M4aHYrNucnpTaJHl1GOZSQbYcTP21Q+
-	 /YkFPinqGT4NT6ENhKkvZul/67qKAGHQB9ZH6j94=
+	b=nQWQQ61/kDPoCI6xf2uf1N/vt4NWBDG9Gj6cT0ySA7hfOMHxOKNyy+RlVnZcXeV7A
+	 OiQq7Zc/7YGJ0d5keBavnFC0P5DRGw+GtEA3y310gYQs+BrdsSgqfJg0i9vz+AvRY7
+	 9S8ICOEiWCOBgYvSnH9A3GFrbixlVwnLIVYXea+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/204] s390/sclp: Add check for get_zeroed_page()
+Subject: [PATCH 6.1 104/167] s390/tty: Fix a potential memory leak bug
 Date: Tue, 29 Apr 2025 18:43:32 +0200
-Message-ID: <20250429161104.506069463@linuxfoundation.org>
+Message-ID: <20250429161055.956245798@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit 3db42c75a921854a99db0a2775814fef97415bac ]
+[ Upstream commit ad9bb8f049717d64c5e62b2a44954be9f681c65b ]
 
-Add check for the return value of get_zeroed_page() in
-sclp_console_init() to prevent null pointer dereference.
-Furthermore, to solve the memory leak caused by the loop
-allocation, add a free helper to do the free job.
+The check for get_zeroed_page() leads to a direct return
+and overlooked the memory leak caused by loop allocation.
+Add a free helper to free spaces allocated by get_zeroed_page().
 
 Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250218025216.2421548-1-haoxiang_li2024@163.com
+Link: https://lore.kernel.org/r/20250218034104.2436469-1-haoxiang_li2024@163.com
 Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp_con.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/s390/char/sclp_tty.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/s390/char/sclp_con.c b/drivers/s390/char/sclp_con.c
-index e5d947c763ea5..6a030ba38bf36 100644
---- a/drivers/s390/char/sclp_con.c
-+++ b/drivers/s390/char/sclp_con.c
-@@ -263,6 +263,19 @@ static struct console sclp_console =
- 	.index = 0 /* ttyS0 */
+diff --git a/drivers/s390/char/sclp_tty.c b/drivers/s390/char/sclp_tty.c
+index 971fbb52740bf..432dad2a22664 100644
+--- a/drivers/s390/char/sclp_tty.c
++++ b/drivers/s390/char/sclp_tty.c
+@@ -490,6 +490,17 @@ static const struct tty_operations sclp_ops = {
+ 	.flush_buffer = sclp_tty_flush_buffer,
  };
  
-+/*
-+ *  Release allocated pages.
-+ */
-+static void __init __sclp_console_free_pages(void)
++/* Release allocated pages. */
++static void __init __sclp_tty_free_pages(void)
 +{
 +	struct list_head *page, *p;
 +
-+	list_for_each_safe(page, p, &sclp_con_pages) {
++	list_for_each_safe(page, p, &sclp_tty_pages) {
 +		list_del(page);
 +		free_page((unsigned long)page);
 +	}
 +}
 +
- /*
-  * called by console_init() in drivers/char/tty_io.c at boot-time.
-  */
-@@ -282,6 +295,10 @@ sclp_console_init(void)
- 	/* Allocate pages for output buffering */
- 	for (i = 0; i < sclp_console_pages; i++) {
+ static int __init
+ sclp_tty_init(void)
+ {
+@@ -516,6 +527,7 @@ sclp_tty_init(void)
+ 	for (i = 0; i < MAX_KMEM_PAGES; i++) {
  		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+		if (!page) {
-+			__sclp_console_free_pages();
-+			return -ENOMEM;
-+		}
- 		list_add_tail(page, &sclp_con_pages);
- 	}
- 	sclp_conbuf = NULL;
+ 		if (page == NULL) {
++			__sclp_tty_free_pages();
+ 			tty_driver_kref_put(driver);
+ 			return -ENOMEM;
+ 		}
 -- 
 2.39.5
 
