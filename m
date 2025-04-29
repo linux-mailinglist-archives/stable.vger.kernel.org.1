@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8C0AA186C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:59:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C59AA1693
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BA594A34A2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 069397A5683
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC7E247280;
-	Tue, 29 Apr 2025 17:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F2D244686;
+	Tue, 29 Apr 2025 17:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNzr5+KC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUYdv4yL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF19A1DC988;
-	Tue, 29 Apr 2025 17:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF73B22DF91;
+	Tue, 29 Apr 2025 17:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949526; cv=none; b=oU3RxHJSPJxML0/0iLBfRGwrxekzpkwDLUiXy5B/fzXcMvszcMEba0jVr0mdh4YPc0/qYhH9BrsImkHfiH5ZYK+iWJOgyCDymYhZvSrnppPDoKuH2hkG8i9IIJ7hQiAGXEUJooixQcukNFz8c/AN8issUzziAPdnRBGpKFZgNVw=
+	t=1745948323; cv=none; b=uscmJzl1jjC9+qvl0rA4tFkpdC3Vuo1ZYftmsYvWrsJ4+aAyXkCbKgRXaU60Nq6hDg3uwj+oBbehPeUibCls9HjioLjXbWLzfwkQc3MAYFXKKmqn9s34Nu68LmNbgmsejRhEkLHRfjEJAHsx4Ixgsry5ZPSAq+VcqEs4RZttP6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949526; c=relaxed/simple;
-	bh=LSeT3swboYsGzqPAZkrZWHOamYFGPr6N2BipAxZvcZw=;
+	s=arc-20240116; t=1745948323; c=relaxed/simple;
+	bh=qXVj/JpcSXevtNgfxoCcbT0ldTXdN8oaUq8grEAxxPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BLmEji+jfuekaelfN13/XIZcPdzwODyQYg3K6mROwCStx/rN7YorpxMpLQb23utRqxS/nt1d28SmcdWckWNfy1xdwVAL2iF8XVno0KWEjmPF0d1UyjcaFMYZyFgivVHEDXHHFd0/EHzm1HN/KWzai3rE1L8S/d1h63vXT3eZhKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNzr5+KC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5F2C4CEE3;
-	Tue, 29 Apr 2025 17:58:44 +0000 (UTC)
+	 MIME-Version; b=f2d28B++LPG6yUKqyEdcrcy7FYDgJiebWNRWmdeewyqaPJQvH003k1y/ZivJBfSxW7pD4mVboWHGOGsYxKAM8OYWxLK6sgpSNA39zI09gAMnBNch5W/0CzhDi2mOzr/AHf/re13rWf96vytlgNpdm9ANfysZv02+4wKCLiLGjss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUYdv4yL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09FBC4CEE3;
+	Tue, 29 Apr 2025 17:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949525;
-	bh=LSeT3swboYsGzqPAZkrZWHOamYFGPr6N2BipAxZvcZw=;
+	s=korg; t=1745948323;
+	bh=qXVj/JpcSXevtNgfxoCcbT0ldTXdN8oaUq8grEAxxPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNzr5+KC5h66acFTgAbYp+F3HXuRZ+OgQGFxQoAQCHNZKpbgEtrJKG6cXnFWuxq0k
-	 YHRQRZ6Q7UUb9w4rSxUIUcDFTH4sD2ahuBsnWDslYp5hwoMZKGeUnvB7RUp8G2IBpJ
-	 MY28LLGzMvtgiQ37bM/7CE6vveEjs2YQo3+LlD0E=
+	b=SUYdv4yLPqTNUuHmLFid/u43dmAAYf5O1pYSWmc/UqIUtiIdXTCDw8IeiRg+35nSP
+	 JDtvghHX2fcFZJ5T9faxMDG1XdmmtQosnqtbe8VzMlkYv0mb97mLAayXwhhmReNqCq
+	 oztdT2tjX32we/v4zn4I2HgEJkMgXAydTA9UVoxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miao Li <limiao@kylinos.cn>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 316/373] usb: quirks: add DELAY_INIT quirk for Silicon Motion Flash Drive
-Date: Tue, 29 Apr 2025 18:43:13 +0200
-Message-ID: <20250429161136.110250658@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.12 253/280] xfs: rename xfs_iomap_swapfile_activate to xfs_vm_swap_activate
+Date: Tue, 29 Apr 2025 18:43:14 +0200
+Message-ID: <20250429161125.475628018@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miao Li <limiao@kylinos.cn>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 2932b6b547ec36ad2ed60fbf2117c0e46bb7d40a upstream.
+Commit 3cd6a8056f5a2e794c42fc2114ee2611e358b357 upstream
 
-Silicon Motion Flash Drive connects to Huawei hisi platforms and
-performs a system reboot test for two thousand circles, it will
-randomly work incorrectly on boot, set DELAY_INIT quirk can workaround
-this issue.
+Match the method name and the naming convention or address_space
+operations.
 
-Signed-off-by: Miao Li <limiao@kylinos.cn>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/xfs/xfs_aops.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -380,6 +380,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0904, 0x6103), .driver_info =
- 			USB_QUIRK_LINEAR_FRAME_INTR_BINTERVAL },
+
+--- a/fs/xfs/xfs_aops.c
++++ b/fs/xfs/xfs_aops.c
+@@ -528,7 +528,7 @@ xfs_vm_readahead(
+ }
  
-+	/* Silicon Motion Flash Drive */
-+	{ USB_DEVICE(0x090c, 0x1000), .driver_info = USB_QUIRK_DELAY_INIT },
-+
- 	/* Sound Devices USBPre2 */
- 	{ USB_DEVICE(0x0926, 0x0202), .driver_info =
- 			USB_QUIRK_ENDPOINT_IGNORE },
+ static int
+-xfs_iomap_swapfile_activate(
++xfs_vm_swap_activate(
+ 	struct swap_info_struct		*sis,
+ 	struct file			*swap_file,
+ 	sector_t			*span)
+@@ -549,11 +549,11 @@ const struct address_space_operations xf
+ 	.migrate_folio		= filemap_migrate_folio,
+ 	.is_partially_uptodate  = iomap_is_partially_uptodate,
+ 	.error_remove_folio	= generic_error_remove_folio,
+-	.swap_activate		= xfs_iomap_swapfile_activate,
++	.swap_activate		= xfs_vm_swap_activate,
+ };
+ 
+ const struct address_space_operations xfs_dax_aops = {
+ 	.writepages		= xfs_dax_writepages,
+ 	.dirty_folio		= noop_dirty_folio,
+-	.swap_activate		= xfs_iomap_swapfile_activate,
++	.swap_activate		= xfs_vm_swap_activate,
+ };
 
 
 
