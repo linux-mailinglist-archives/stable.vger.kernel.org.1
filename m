@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-138425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA40BAA17F4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61276AA181E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:56:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B2441BC2D56
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:53:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EDE27B56B9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223FE24DFF3;
-	Tue, 29 Apr 2025 17:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6752C253334;
+	Tue, 29 Apr 2025 17:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Zgx+GKx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyHsK5Xh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23C122AE68;
-	Tue, 29 Apr 2025 17:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2371325332D;
+	Tue, 29 Apr 2025 17:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949211; cv=none; b=vES/ktPHm2PRCsfFP0DjspXeZylNwjr8PvQ/smT5h7k7GX//jN6F8osOde+myd9zC+7jeMQgeG5rjUigwfmjqRQUgDPef+gQb0EV1Ny8Dw8s0VNhhvtvtMbq1KJ8q0mdvdOfIH8pr1tpG6gfAF6bKjqfoyB8OkxfoRJdN7qySQs=
+	t=1745949336; cv=none; b=Ov5ax2AmEZ9TxDL0vZSb/sZT3nbFY427KXLtmhoRwbMWeE2epADk2DzawmE8rKkKPjw6RZ+XpPLjtrFXSz1s5v45n17DatoX7U2ZOXa4s5p2p1SFkvDWgLrJ54h7w/Fi9D3Z6PCcKO75XuoUU4G/SQi9AxtrXP3v9FruDN0grBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949211; c=relaxed/simple;
-	bh=870Zqz8rtEdCoSW8xRVdOs93I4hs9zsgUjLSEqSqatI=;
+	s=arc-20240116; t=1745949336; c=relaxed/simple;
+	bh=4HNIH3FI1knwA4tP+iPLttXPim2mU7qUVEZbtDzbQa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJyQSOjp6+D4ZlnAs0Q4XQzZi3gZCEdRkEo6fb9LXBFQXfkgYZBopSxVswXsHtCDp3mrfnr/lYi8FVg4WPEcZ3xM22+KcQqOHLxWgUmz4pmDMih+RNsksfRM9B081v8dKuZHblvyDkkuqdQyHsPWGmjraFJsUR+8m8xv/yxLjBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Zgx+GKx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62889C4CEE3;
-	Tue, 29 Apr 2025 17:53:31 +0000 (UTC)
+	 MIME-Version; b=MViPMP0IfdpcwrFjBsSUiz7dJqllcm1LbnLrfOApmFfyAo6rwIkpSxC5y1j1xlXEqisuy2od3FyxA0gdx6gDI13Duii8CHkxq53OC02oBF4vHijviZusV6ba12a2nY4AOK+1CS4m61XYwgE5S7HplUvUkK5hRYIDAPlHT2jA0dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyHsK5Xh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8755DC4CEE3;
+	Tue, 29 Apr 2025 17:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949211;
-	bh=870Zqz8rtEdCoSW8xRVdOs93I4hs9zsgUjLSEqSqatI=;
+	s=korg; t=1745949336;
+	bh=4HNIH3FI1knwA4tP+iPLttXPim2mU7qUVEZbtDzbQa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Zgx+GKx4P69BURAyLNjZmbx5vnak5TvbtgvcyN5orlYhJVzth0/aFPEfbHs0FHHY
-	 5RVjcffXCHIu39ib8pqxZ+2rItLtCittXHrEoa/kf1ydDIn2EPSwBwEIAu/UQhnZuO
-	 S2L0aQBRYOnyWk0nYsRYPIa0OWopUfq+bCbPs3lQ=
+	b=jyHsK5XhOrQrj5soh8lMBPk7WHW9YhMjUR36AztEaRCyg6Rbgw1uQ5zs+GiQTMQ1E
+	 Na963pezD0IPvK4VMjw0cN4ranxnzgrPUj4VqFtuKMfqjLp4JuRlhO3gzw6O0t7qun
+	 F4Gh3p2QbcQqEU6t+1RyBceE3iUHtoODYXAksl1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wilson <chris.p.wilson@intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Zhi Yang <Zhi.Yang@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.15 246/373] drm/i915/gt: Cleanup partial engine discovery failures
-Date: Tue, 29 Apr 2025 18:42:03 +0200
-Message-ID: <20250429161133.244014371@linuxfoundation.org>
+	Oleg Nesterov <oleg@redhat.com>,
+	Dylan Hatch <dylanbhatch@google.com>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	David Sauerwein <dssauerw@amazon.de>
+Subject: [PATCH 5.15 247/373] fs/proc: do_task_stat: use sig->stats_lock to gather the threads/children stats
+Date: Tue, 29 Apr 2025 18:42:04 +0200
+Message-ID: <20250429161133.283702860@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
 References: <20250429161123.119104857@linuxfoundation.org>
@@ -68,48 +69,125 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chris Wilson <chris.p.wilson@intel.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 78a033433a5ae4fee85511ee075bc9a48312c79e upstream.
+commit 7601df8031fd67310af891897ef6cc0df4209305 upstream.
 
-If we abort driver initialisation in the middle of gt/engine discovery,
-some engines will be fully setup and some not. Those incompletely setup
-engines only have 'engine->release == NULL' and so will leak any of the
-common objects allocated.
+lock_task_sighand() can trigger a hard lockup.  If NR_CPUS threads call
+do_task_stat() at the same time and the process has NR_THREADS, it will
+spin with irqs disabled O(NR_CPUS * NR_THREADS) time.
 
-v2:
- - Drop the destroy_pinned_context() helper for now.  It's not really
-   worth it with just a single callsite at the moment.  (Janusz)
+Change do_task_stat() to use sig->stats_lock to gather the statistics
+outside of ->siglock protected section, in the likely case this code will
+run lockless.
 
-Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220915232654.3283095-2-matthew.d.roper@intel.com
-Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Link: https://lkml.kernel.org/r/20240123153357.GA21857@redhat.com
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Dylan Hatch <dylanbhatch@google.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: David Sauerwein <dssauerw@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/intel_engine_cs.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/proc/array.c |   53 +++++++++++++++++++++++++++++------------------------
+ 1 file changed, 29 insertions(+), 24 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-@@ -983,8 +983,13 @@ int intel_engines_init(struct intel_gt *
- 			return err;
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -462,12 +462,12 @@ static int do_task_stat(struct seq_file
+ 	int permitted;
+ 	struct mm_struct *mm;
+ 	unsigned long long start_time;
+-	unsigned long cmin_flt = 0, cmaj_flt = 0;
+-	unsigned long  min_flt = 0,  maj_flt = 0;
+-	u64 cutime, cstime, utime, stime;
+-	u64 cgtime, gtime;
++	unsigned long cmin_flt, cmaj_flt, min_flt, maj_flt;
++	u64 cutime, cstime, cgtime, utime, stime, gtime;
+ 	unsigned long rsslim = 0;
+ 	unsigned long flags;
++	struct signal_struct *sig = task->signal;
++	unsigned int seq = 1;
  
- 		err = setup(engine);
--		if (err)
-+		if (err) {
-+			intel_engine_cleanup_common(engine);
- 			return err;
-+		}
+ 	state = *get_task_state(task);
+ 	vsize = eip = esp = 0;
+@@ -495,12 +495,8 @@ static int do_task_stat(struct seq_file
+ 
+ 	sigemptyset(&sigign);
+ 	sigemptyset(&sigcatch);
+-	cutime = cstime = 0;
+-	cgtime = gtime = 0;
+ 
+ 	if (lock_task_sighand(task, &flags)) {
+-		struct signal_struct *sig = task->signal;
+-
+ 		if (sig->tty) {
+ 			struct pid *pgrp = tty_get_pgrp(sig->tty);
+ 			tty_pgrp = pid_nr_ns(pgrp, ns);
+@@ -511,36 +507,45 @@ static int do_task_stat(struct seq_file
+ 		num_threads = get_nr_threads(task);
+ 		collect_sigign_sigcatch(task, &sigign, &sigcatch);
+ 
++		rsslim = READ_ONCE(sig->rlim[RLIMIT_RSS].rlim_cur);
 +
-+		/* The backend should now be responsible for cleanup */
-+		GEM_BUG_ON(engine->release == NULL);
++		sid = task_session_nr_ns(task, ns);
++		ppid = task_tgid_nr_ns(task->real_parent, ns);
++		pgid = task_pgrp_nr_ns(task, ns);
++
++		unlock_task_sighand(task, &flags);
++	}
++
++	if (permitted && (!whole || num_threads < 2))
++		wchan = !task_is_running(task);
++
++	do {
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
++		flags = read_seqbegin_or_lock_irqsave(&sig->stats_lock, &seq);
++
+ 		cmin_flt = sig->cmin_flt;
+ 		cmaj_flt = sig->cmaj_flt;
+ 		cutime = sig->cutime;
+ 		cstime = sig->cstime;
+ 		cgtime = sig->cgtime;
+-		rsslim = READ_ONCE(sig->rlim[RLIMIT_RSS].rlim_cur);
  
- 		err = engine_init_common(engine);
- 		if (err)
+-		/* add up live thread stats at the group level */
+ 		if (whole) {
+ 			struct task_struct *t = task;
++
++			min_flt = sig->min_flt;
++			maj_flt = sig->maj_flt;
++			gtime = sig->gtime;
++
++			rcu_read_lock();
+ 			do {
+ 				min_flt += t->min_flt;
+ 				maj_flt += t->maj_flt;
+ 				gtime += task_gtime(t);
+ 			} while_each_thread(task, t);
+-
+-			min_flt += sig->min_flt;
+-			maj_flt += sig->maj_flt;
+-			gtime += sig->gtime;
++			rcu_read_unlock();
+ 		}
+-
+-		sid = task_session_nr_ns(task, ns);
+-		ppid = task_tgid_nr_ns(task->real_parent, ns);
+-		pgid = task_pgrp_nr_ns(task, ns);
+-
+-		unlock_task_sighand(task, &flags);
+-	}
+-
+-	if (permitted && (!whole || num_threads < 2))
+-		wchan = !task_is_running(task);
++	} while (need_seqretry(&sig->stats_lock, seq));
++	done_seqretry_irqrestore(&sig->stats_lock, seq, flags);
+ 
+ 	if (whole) {
+ 		thread_group_cputime_adjusted(task, &utime, &stime);
 
 
 
