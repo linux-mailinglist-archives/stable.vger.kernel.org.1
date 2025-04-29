@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0F5AA16DB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC2FAA18B0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ECD7165F57
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB36A3A56A0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4582024E000;
-	Tue, 29 Apr 2025 17:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C39216605;
+	Tue, 29 Apr 2025 17:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJRdfRPV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZrWBFnE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023E51917E3;
-	Tue, 29 Apr 2025 17:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D922AE96;
+	Tue, 29 Apr 2025 17:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948388; cv=none; b=QWFGKh2oADyNDVu9KKVhcpXWe8xNfbfdLxOpcn2ihyU3Z1wbg9fxHrNZ9P3gigvCFKp34hJjYvF9CK+mjsvG/DhZWy0IYBcwg9mG4kmNYQjRmYzut/Y0TGyGnByr43HeH3mCIx9PMqHbVP3jsN563NRONxUkNjAUjPfUZ85xqcY=
+	t=1745949468; cv=none; b=dVuFDfV9hcECLx72dV60YrlD9hWjBUwdvhD64+pg0Abj6aN56urccgRVl7GXPfpu8qJ23HXoRpF8CdIEGZL6ZX/4X85i6N1JR5wITveGskVkWuSpjrWvxeGTuJPayRWYJLjRu3EA0CgttxMFwBqbgRPPOKN+HtgeN3L9gYabXAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948388; c=relaxed/simple;
-	bh=8fwSjdFQf5BlD+1L8tRuJmWnxUfheIzNs7y/wtD2fro=;
+	s=arc-20240116; t=1745949468; c=relaxed/simple;
+	bh=ypu7z+GZfqcohkrN16gc7CNEwMNYXN2WpLzNxXVC3so=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b6M3Hez+6jWInDYs4cp/XeVAy8XeBmQ1u4RBhc+jpaoZSq8TBbLMmpqim2jrtVOLhlZeRxSq/e9F7c8uykM+GFxhwXnTjddPV38O1kJYaW2AUAPyAwmfEB2gg2zX+k+U5JtETvxILxcwOJC+NZwUbT0Rd3puOb6I9gNLyroC8eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJRdfRPV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826CEC4CEE3;
-	Tue, 29 Apr 2025 17:39:47 +0000 (UTC)
+	 MIME-Version; b=kBTzueJSYwR7xi4Bn0sV1zSQROIsqO5gDnvDldzeZ237eDp1G/RlfPVG6D8oaZhPYa4la7Gjhf1E9bNmJJUaBpCbORaEqhg35lQ7w6s2Cte7+EW+nHQn4riGnth4pO5A/Vp/3XesDgHaJuUxbJ+oNVzkr6ElRDzxKNJeTYutMv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZrWBFnE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28859C4CEE3;
+	Tue, 29 Apr 2025 17:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948387;
-	bh=8fwSjdFQf5BlD+1L8tRuJmWnxUfheIzNs7y/wtD2fro=;
+	s=korg; t=1745949468;
+	bh=ypu7z+GZfqcohkrN16gc7CNEwMNYXN2WpLzNxXVC3so=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cJRdfRPVXN0A2j8RBReh5D2bmvRLM1ki4q4KaGDXdV+AKQWWEDMoMat+vdyu47c+i
-	 j+9LM1Mt7bD9CnwDVrdOPDyz5BxSb3pMGWdR3SO9N9Bv4yKqeCk0I3GgnQnhrPVipS
-	 NbNOhzkWJHgvLCwealbtMqy+elCDvIXa347wtZrI=
+	b=EZrWBFnEEXU/Fga9a47y99GHJsTr+r5sWyJ5PFZgQUYGE7VL0qVrIOFIf3T3h2YwS
+	 70YsK2J7cnrH/6ZI0B+E3XCSNaVz3zas/RmSVbE6GuNXfQVajrkos2J9MwV1f19PDs
+	 TZx90IqcvCIG8uUqPW71ZOKWcuFA+pNv/ENBJ+xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	"stable@vger.kernel.org, Sasha Levin" <sashal@kernel.org>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 265/280] net: dsa: mv88e6xxx: fix atu_move_port_mask for 6341 family
+	Alexander Stein <alexander.stein@mailbox.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 329/373] usb: host: max3421-hcd: Add missing spi_device_id table
 Date: Tue, 29 Apr 2025 18:43:26 +0200
-Message-ID: <20250429161125.974056947@linuxfoundation.org>
+Message-ID: <20250429161136.667810118@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +59,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Marek Behún" <kabel@kernel.org>
+From: Alexander Stein <alexander.stein@mailbox.org>
 
-commit 4ae01ec007716986e1a20f1285eb013cbf188830 upstream.
+[ Upstream commit 41d5e3806cf589f658f92c75195095df0b66f66a ]
 
-The atu_move_port_mask for 6341 family (Topaz) is 0xf, not 0x1f. The
-PortVec field is 8 bits wide, not 11 as in 6390 family. Fix this.
+"maxim,max3421" DT compatible is missing its SPI device ID entry, not
+allowing module autoloading and leading to the following message:
+ "SPI driver max3421-hcd has no spi_device_id for maxim,max3421"
 
-Fixes: e606ca36bbf2 ("net: dsa: mv88e6xxx: rework ATU Remove")
-Signed-off-by: Marek BehÃºn <kabel@kernel.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-3-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by adding the spi_device_id table.
+
+Signed-off-by: Alexander Stein <alexander.stein@mailbox.org>
+Link: https://lore.kernel.org/r/20250128195114.56321-1-alexander.stein@mailbox.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/max3421-hcd.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5852,7 +5852,7 @@ static const struct mv88e6xxx_info mv88e
- 		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.age_time_coeff = 3750,
--		.atu_move_port_mask = 0x1f,
-+		.atu_move_port_mask = 0xf,
- 		.g1_irqs = 9,
- 		.g2_irqs = 10,
- 		.pvt = true,
-@@ -6311,7 +6311,7 @@ static const struct mv88e6xxx_info mv88e
- 		.global1_addr = 0x1b,
- 		.global2_addr = 0x1c,
- 		.age_time_coeff = 3750,
--		.atu_move_port_mask = 0x1f,
-+		.atu_move_port_mask = 0xf,
- 		.g1_irqs = 9,
- 		.g2_irqs = 10,
- 		.pvt = true,
+diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
+index 6d95b90683bc8..37a5914f79871 100644
+--- a/drivers/usb/host/max3421-hcd.c
++++ b/drivers/usb/host/max3421-hcd.c
+@@ -1956,6 +1956,12 @@ max3421_remove(struct spi_device *spi)
+ 	return 0;
+ }
+ 
++static const struct spi_device_id max3421_spi_ids[] = {
++	{ "max3421" },
++	{ },
++};
++MODULE_DEVICE_TABLE(spi, max3421_spi_ids);
++
+ static const struct of_device_id max3421_of_match_table[] = {
+ 	{ .compatible = "maxim,max3421", },
+ 	{},
+@@ -1965,6 +1971,7 @@ MODULE_DEVICE_TABLE(of, max3421_of_match_table);
+ static struct spi_driver max3421_driver = {
+ 	.probe		= max3421_probe,
+ 	.remove		= max3421_remove,
++	.id_table	= max3421_spi_ids,
+ 	.driver		= {
+ 		.name	= "max3421-hcd",
+ 		.of_match_table = of_match_ptr(max3421_of_match_table),
+-- 
+2.39.5
+
 
 
 
