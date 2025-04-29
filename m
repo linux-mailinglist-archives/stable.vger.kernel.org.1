@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-138706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD40AAA194F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F03AA1A29
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF1244A0B92
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAE71169DE3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492D4227E95;
-	Tue, 29 Apr 2025 18:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC5424889B;
+	Tue, 29 Apr 2025 18:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kh/PBH8X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIElRP1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0617F1A5BBB;
-	Tue, 29 Apr 2025 18:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B849F155A4E;
+	Tue, 29 Apr 2025 18:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950096; cv=none; b=d/0iW8qT+2aBzjwfA4pFOCZshvTvE4D01d2soThIOdRG1DKRnH13U3nB/T7yzZzA5dOi9dXSiE13omj9bW0rrhgkIgtbZxkjdtaiv2yi7b2DnVa5ifRxcOweFgR2AhOu4z2DieGHSs40Loo+R5nEtNlPfNxaBS+C1eRzFrz/xdg=
+	t=1745950684; cv=none; b=Ndb2q0dTHONVHdJiIXN9CAbDkMDW3QHid2Rrhg5grNJfmnNiwzNsJ2j9H21ewfLgVlWtW2NfkHqtY3OF54VAjv8xyVHTY4jduau+FTeoIsQ/ebz3e0TBPUhZ07W6z3ifqLTEeO+bsN81ASFzf9EMrILP2PmkGug5jig2k90qdqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950096; c=relaxed/simple;
-	bh=lo8rY3tWJuR6mLXExhKkSzpZW3NHp2hySa45m6pWgZk=;
+	s=arc-20240116; t=1745950684; c=relaxed/simple;
+	bh=6V0WTA4g7637Mw2x3CthB9AVLfIX7lBeWNL9hBLiQXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u+WrUwToBOqc0bMfOifdXzZQ73ZpZR/UAkhmm+q06+Z6vQ4aSlc4jHHhvwiQdpBUVCfE2Cyn7UT9dXTSR1KEoW0clHbHysrCcWUEJ7uBVY6GqM55flwdR0bq3i7LAtsdkhnNpUhNASaTzOZrUm11HNrbWtMIlHAzvoJJxXDHu88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kh/PBH8X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFC0C4CEE3;
-	Tue, 29 Apr 2025 18:08:14 +0000 (UTC)
+	 MIME-Version; b=TesTdyrDu/k+n8Fcket+WSAM+0YYvSmr5iKyEPHkJctp+oJm8d7mB8SHDq+YssN5ZPQ7E/jPWdOGVKH+XsivQ0ZCtwWzsRSWbBIJShakqmpYcgg99m3LvZGlL8lVJzhD0Dhnrl6PcmEX2aiSdZnQoMwwDgTnj9FX+A2/o/B5ecU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIElRP1q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5750C4CEE3;
+	Tue, 29 Apr 2025 18:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950095;
-	bh=lo8rY3tWJuR6mLXExhKkSzpZW3NHp2hySa45m6pWgZk=;
+	s=korg; t=1745950684;
+	bh=6V0WTA4g7637Mw2x3CthB9AVLfIX7lBeWNL9hBLiQXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kh/PBH8XTi9oJ5ubpaVSXhHt/+VmXjjMu7pFM96Ji79dCeVUwlr/CGk39jtbaHyK4
-	 nvW2Zn2IagbsEIbbsuexLMkMoi0goBh2llbR4quHuPwVYRljdkhx35s9W2SBL/1i8x
-	 Ir80Sz8w4HYHyQqfYgWkKkT8jPGmoBpwtzscWav8=
+	b=JIElRP1qy4WmTl3HhJsoSbcsyr4lK4A8+RuerKkByWWRSB0vwT1loceV3v78IN6su
+	 S9B10lTQ9Bb3dVmTpDaNK9c4BpepJlKcHtF/YOI3KhOfQJ0jGwKwRoXHPki52kku3F
+	 1JmkUS3awno1J9jrUAw4tnWGG3GglU6ygV9Fv8as=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 153/167] crypto: atmel-sha204a - Set hwrng quality to lowest possible
+	Borislav Petkov <bp@alien8.de>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 173/204] timekeeping: Add a lockdep override in tick_freeze()
 Date: Tue, 29 Apr 2025 18:44:21 +0200
-Message-ID: <20250429161057.911974303@linuxfoundation.org>
+Message-ID: <20250429161106.483698315@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 8006aff15516a170640239c5a8e6696c0ba18d8e upstream.
+[ Upstream commit 92e250c624ea37fde64bfd624fd2556f0d846f18 ]
 
-According to the review by Bill Cox [1], the Atmel SHA204A random number
-generator produces random numbers with very low entropy.
+tick_freeze() acquires a raw spinlock (tick_freeze_lock). Later in the
+callchain (timekeeping_suspend() -> mc146818_avoid_UIP()) the RTC driver
+acquires a spinlock which becomes a sleeping lock on PREEMPT_RT.  Lockdep
+complains about this lock nesting.
 
-Set the lowest possible entropy for this chip just to be safe.
+Add a lockdep override for this special case and a comment explaining
+why it is okay.
 
-[1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
-
-Fixes: da001fb651b00e1d ("crypto: atmel-i2c - add support for SHA204A random number generator")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Marek Behún <kabel@kernel.org>
+Reported-by: Borislav Petkov <bp@alien8.de>
+Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/all/20250404133429.pnAzf-eF@linutronix.de
+Closes: https://lore.kernel.org/all/20250330113202.GAZ-krsjAnurOlTcp-@fat_crate.local/
+Closes: https://lore.kernel.org/all/CAP-bSRZ0CWyZZsMtx046YV8L28LhY0fson2g4EqcwRAVN1Jk+Q@mail.gmail.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/atmel-sha204a.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ kernel/time/tick-common.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/drivers/crypto/atmel-sha204a.c
-+++ b/drivers/crypto/atmel-sha204a.c
-@@ -107,7 +107,12 @@ static int atmel_sha204a_probe(struct i2
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index 7f2b17fc8ce40..ecdb8c2b2cab2 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -495,6 +495,7 @@ void tick_resume(void)
  
- 	i2c_priv->hwrng.name = dev_name(&client->dev);
- 	i2c_priv->hwrng.read = atmel_sha204a_rng_read;
--	i2c_priv->hwrng.quality = 1024;
+ #ifdef CONFIG_SUSPEND
+ static DEFINE_RAW_SPINLOCK(tick_freeze_lock);
++static DEFINE_WAIT_OVERRIDE_MAP(tick_freeze_map, LD_WAIT_SLEEP);
+ static unsigned int tick_freeze_depth;
+ 
+ /**
+@@ -514,9 +515,22 @@ void tick_freeze(void)
+ 	if (tick_freeze_depth == num_online_cpus()) {
+ 		trace_suspend_resume(TPS("timekeeping_freeze"),
+ 				     smp_processor_id(), true);
++		/*
++		 * All other CPUs have their interrupts disabled and are
++		 * suspended to idle. Other tasks have been frozen so there
++		 * is no scheduling happening. This means that there is no
++		 * concurrency in the system at this point. Therefore it is
++		 * okay to acquire a sleeping lock on PREEMPT_RT, such as a
++		 * spinlock, because the lock cannot be held by other CPUs
++		 * or threads and acquiring it cannot block.
++		 *
++		 * Inform lockdep about the situation.
++		 */
++		lock_map_acquire_try(&tick_freeze_map);
+ 		system_state = SYSTEM_SUSPEND;
+ 		sched_clock_suspend();
+ 		timekeeping_suspend();
++		lock_map_release(&tick_freeze_map);
+ 	} else {
+ 		tick_suspend_local();
+ 	}
+@@ -538,8 +552,16 @@ void tick_unfreeze(void)
+ 	raw_spin_lock(&tick_freeze_lock);
+ 
+ 	if (tick_freeze_depth == num_online_cpus()) {
++		/*
++		 * Similar to tick_freeze(). On resumption the first CPU may
++		 * acquire uncontended sleeping locks while other CPUs block on
++		 * tick_freeze_lock.
++		 */
++		lock_map_acquire_try(&tick_freeze_map);
+ 		timekeeping_resume();
+ 		sched_clock_resume();
++		lock_map_release(&tick_freeze_map);
 +
-+	/*
-+	 * According to review by Bill Cox [1], this HWRNG has very low entropy.
-+	 * [1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
-+	 */
-+	i2c_priv->hwrng.quality = 1;
- 
- 	ret = devm_hwrng_register(&client->dev, &i2c_priv->hwrng);
- 	if (ret)
+ 		system_state = SYSTEM_RUNNING;
+ 		trace_suspend_resume(TPS("timekeeping_freeze"),
+ 				     smp_processor_id(), false);
+-- 
+2.39.5
+
 
 
 
