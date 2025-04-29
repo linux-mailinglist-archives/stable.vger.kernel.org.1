@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-138727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB659AA1946
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51424AA1A6C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:22:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C12011BC7A69
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:09:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44D0D3AC12B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDEB2528F1;
-	Tue, 29 Apr 2025 18:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B175C25332D;
+	Tue, 29 Apr 2025 18:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mO0CPGRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ep3fu7/c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD1220C488;
-	Tue, 29 Apr 2025 18:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C0D219A63;
+	Tue, 29 Apr 2025 18:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950163; cv=none; b=rglzKPPk7jGTzHJh75Ix46+95Qswow1kC4ipAVj0eUJpmdMuHtcZ3xteuDuXWF+Jht/6uno9J7LTYdv41CtMFYqoOayq16rhoID42dD5j3CWeFLX4LrAkdOMeeklenBY7Y4xQvSgZcZBNjLEcTmA/51D/oCPr1mfoJaVlFppZXU=
+	t=1745950689; cv=none; b=t5b4VJ2ysSnlpWSMoWw1SFgGv6DoKG4g9/y27Q9WHxSRJR7Ui598gBwrGezAAN0wu+Tuj5Qm3XEVr2uj9k1cRpw2pe7ssgOfxYZqThHSGONQjp+/rPzNPvBtojyH+e4a+HhQxgPWExYwilBHh3pJ1+Mhi5odvvgRubhff8CcQAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950163; c=relaxed/simple;
-	bh=zs1CWnuERMZ1l94YGvBcxWX3KUjV5g3ykNLCpN3PHq4=;
+	s=arc-20240116; t=1745950689; c=relaxed/simple;
+	bh=fL6mIV2+qM61ivc+VW3P9y5lIEq1kEQyfP8+lJ40Z3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpX13ppEV29o8ou2IHWYkE/fyEtJJpk/6MTvl87Py+lFGyXd3O9hOgAfytKcjVI40p3LU2+riEgWv6VvDuQX8CLq48ax4y0uvbhvF23iJmK43rFCZaDSzIRMYV704lxOpBmFmtD/vniucvgD/UMKDzGBLYoMt8eXxDI9r3gjj2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mO0CPGRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCAEC4CEE3;
-	Tue, 29 Apr 2025 18:09:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=R0ObeyUFqWHeVfIf7aJfYdtiH5qWOMe+TVT0bWAmyE8op729EPsgUpRO+JNh3HKidFtBJ6Ci8EeS9YR4XKfoCEBdeccJDyE0lFoEd/yUojJcnCHv5iT1sHYWsI4o3vFh3M3KEDcuSDIu76axtyGBTH9vU3Kxzc4ctPM1MLoJb0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ep3fu7/c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C4EC4CEE9;
+	Tue, 29 Apr 2025 18:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950162;
-	bh=zs1CWnuERMZ1l94YGvBcxWX3KUjV5g3ykNLCpN3PHq4=;
+	s=korg; t=1745950689;
+	bh=fL6mIV2+qM61ivc+VW3P9y5lIEq1kEQyfP8+lJ40Z3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mO0CPGRjEL9aJ9Io6ZrbUNFHikZAGYbF5BPu22b5hdvp+aZpA7rXcv4QZKcYJHpCe
-	 Y9eXHVY4F6k/aL4JPqVVVbsRj8cfVVvBxHvw6rE0B0QN3BneaBlxhNiM0nafzF/52p
-	 CwkH4hcnPb89z6GYBb2Nmr6AtTG5yhbwcMDVSJNE=
+	b=Ep3fu7/cTBXTkbdp2EWvrmSm5vdr9/2iWoMvZdcDBq0wid7HYlG/gz/DQwpS+++Vi
+	 TCqfY6Kd+ragQPPBxcAafefqxuA9d6x/tMOYbndcNyei1d6EO7uwBfc5iXqyc69zYV
+	 TNEzZJLD9i1SKuGAdqlgmwIUhvZN1mpq+t/vkUdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 154/167] net/sched: act_mirred: dont override retval if we already lost the skb
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 174/204] cifs: Fix querying of WSL CHR and BLK reparse points over SMB1
 Date: Tue, 29 Apr 2025 18:44:22 +0200
-Message-ID: <20250429161057.955972363@linuxfoundation.org>
+Message-ID: <20250429161106.522410041@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Pali Rohár <pali@kernel.org>
 
-commit 166c2c8a6a4dc2e4ceba9e10cfe81c3e469e3210 upstream.
+[ Upstream commit ef86ab131d9127dfbfa8f06e12441d05fdfb090b ]
 
-If we're redirecting the skb, and haven't called tcf_mirred_forward(),
-yet, we need to tell the core to drop the skb by setting the retcode
-to SHOT. If we have called tcf_mirred_forward(), however, the skb
-is out of our hands and returning SHOT will lead to UaF.
+When reparse point in SMB1 query_path_info() callback was detected then
+query also for EA $LXDEV. In this EA are stored device major and minor
+numbers used by WSL CHR and BLK reparse points. Without major and minor
+numbers, stat() syscall does not work for char and block devices.
 
-Move the retval override to the error path which actually need it.
+Similar code is already in SMB2+ query_path_info() callback function.
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Fixes: e5cf1baf92cb ("act_mirred: use TC_ACT_REINSERT when possible")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[Minor conflict resolved due to code context change.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_mirred.c |   22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ fs/smb/client/smb1ops.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -255,31 +255,31 @@ static int tcf_mirred_act(struct sk_buff
- 
- 	m_mac_header_xmit = READ_ONCE(m->tcfm_mac_header_xmit);
- 	m_eaction = READ_ONCE(m->tcfm_eaction);
-+	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
- 	retval = READ_ONCE(m->tcf_action);
- 	dev = rcu_dereference_bh(m->tcfm_dev);
- 	if (unlikely(!dev)) {
- 		pr_notice_once("tc mirred: target device is gone\n");
--		goto out;
-+		goto err_cant_do;
+diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
+index bc1bac36c1b29..caa1d852ece49 100644
+--- a/fs/smb/client/smb1ops.c
++++ b/fs/smb/client/smb1ops.c
+@@ -597,6 +597,42 @@ static int cifs_query_path_info(const unsigned int xid,
+ 			CIFSSMBClose(xid, tcon, fid.netfid);
  	}
  
- 	if (unlikely(!(dev->flags & IFF_UP)) || !netif_carrier_ok(dev)) {
- 		net_notice_ratelimited("tc mirred to Houston: device %s is down\n",
- 				       dev->name);
--		goto out;
-+		goto err_cant_do;
- 	}
- 
- 	/* we could easily avoid the clone only if called by ingress and clsact;
- 	 * since we can't easily detect the clsact caller, skip clone only for
- 	 * ingress - that covers the TC S/W datapath.
- 	 */
--	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
- 	at_ingress = skb_at_tc_ingress(skb);
- 	use_reinsert = at_ingress && is_redirect &&
- 		       tcf_mirred_can_reinsert(retval);
- 	if (!use_reinsert) {
- 		skb2 = skb_clone(skb, GFP_ATOMIC);
- 		if (!skb2)
--			goto out;
-+			goto err_cant_do;
- 	}
- 
- 	want_ingress = tcf_mirred_act_wants_ingress(m_eaction);
-@@ -321,12 +321,16 @@ static int tcf_mirred_act(struct sk_buff
- 	}
- 
- 	err = tcf_mirred_forward(want_ingress, skb2);
--	if (err) {
--out:
-+	if (err)
- 		tcf_action_inc_overlimit_qstats(&m->common);
--		if (tcf_mirred_is_act_redirect(m_eaction))
--			retval = TC_ACT_SHOT;
--	}
-+	__this_cpu_dec(mirred_nest_level);
++#ifdef CONFIG_CIFS_XATTR
++	/*
++	 * For WSL CHR and BLK reparse points it is required to fetch
++	 * EA $LXDEV which contains major and minor device numbers.
++	 */
++	if (!rc && data->reparse_point) {
++		struct smb2_file_full_ea_info *ea;
 +
-+	return retval;
++		ea = (struct smb2_file_full_ea_info *)data->wsl.eas;
++		rc = CIFSSMBQAllEAs(xid, tcon, full_path, SMB2_WSL_XATTR_DEV,
++				    &ea->ea_data[SMB2_WSL_XATTR_NAME_LEN + 1],
++				    SMB2_WSL_XATTR_DEV_SIZE, cifs_sb);
++		if (rc == SMB2_WSL_XATTR_DEV_SIZE) {
++			ea->next_entry_offset = cpu_to_le32(0);
++			ea->flags = 0;
++			ea->ea_name_length = SMB2_WSL_XATTR_NAME_LEN;
++			ea->ea_value_length = cpu_to_le16(SMB2_WSL_XATTR_DEV_SIZE);
++			memcpy(&ea->ea_data[0], SMB2_WSL_XATTR_DEV, SMB2_WSL_XATTR_NAME_LEN + 1);
++			data->wsl.eas_len = sizeof(*ea) + SMB2_WSL_XATTR_NAME_LEN + 1 +
++					    SMB2_WSL_XATTR_DEV_SIZE;
++			rc = 0;
++		} else if (rc >= 0) {
++			/* It is an error if EA $LXDEV has wrong size. */
++			rc = -EINVAL;
++		} else {
++			/*
++			 * In all other cases ignore error if fetching
++			 * of EA $LXDEV failed. It is needed only for
++			 * WSL CHR and BLK reparse points and wsl_to_fattr()
++			 * handle the case when EA is missing.
++			 */
++			rc = 0;
++		}
++	}
++#endif
 +
-+err_cant_do:
-+	if (is_redirect)
-+		retval = TC_ACT_SHOT;
-+	tcf_action_inc_overlimit_qstats(&m->common);
- 	__this_cpu_dec(mirred_nest_level);
+ 	return rc;
+ }
  
- 	return retval;
+-- 
+2.39.5
+
 
 
 
