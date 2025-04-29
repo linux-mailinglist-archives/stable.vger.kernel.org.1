@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AFDAA1367
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED729AA1766
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C456C98303A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB1605A496E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93FA824A067;
-	Tue, 29 Apr 2025 16:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257CF23BCF2;
+	Tue, 29 Apr 2025 17:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IN5uNSYL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yim3SISz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2C3248191;
-	Tue, 29 Apr 2025 16:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6258216605;
+	Tue, 29 Apr 2025 17:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945991; cv=none; b=cLBpeDmhfkE7IK5GyEk7saemJOOPynOyE8OSYmsZE5wkMI+H1jUSRSyzB9EeuGAue309w8c48MXkkxO7LhPsHCxv66uNhJndBVXXoOpuCp8Gr4eQmg+QjTRS6k9f+91nC4GxmM4MiLZol9OHMbOaJ9BuTmVaFKJZylBFDgg2Kq8=
+	t=1745948571; cv=none; b=IEgzExo8PkYtiXl7k7wE5D8gb7lR0Gs27W5y4LQ9At0gZ7q/dcfAqx5FGfcfSW7d4l5FieMCawSsfa9n/3VC6DWZcA/HHotLpk5jUKbE5eYo6PUcZ/Ef65HCIDzjDQs0HJgPdAtqH/FLKV6/C+cs6nfHgKP738lz5aJU5eCo6/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945991; c=relaxed/simple;
-	bh=AfTLJywSWey6NKRBypRiXDXt68AlqedOpy9ATMUTzAU=;
+	s=arc-20240116; t=1745948571; c=relaxed/simple;
+	bh=LfwD9t+XSAkwURdvahsPihCL8+F7QUPbFfNOi5QInG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZQ+9NPJJxwSzrImpOxG6K7Kj23JCMmcbFLVDcPl5NlDmscoe40cDbq4UBburJkWkZowqIxyBsQXTgfOaVkEA1DVCnjdSPBpOJBCRtEe58elvFCcqz2zb+WFtnZSCpm3XJnN4z8rrZbL/ybc/SCn5CLy06sdPgEztBTNXaz5nnLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IN5uNSYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66442C4CEE3;
-	Tue, 29 Apr 2025 16:59:50 +0000 (UTC)
+	 MIME-Version; b=BdJ/QC7RQob0vvDesOPHCzWRlWd1kW8U9iD8kfRwy8raYPo3pI8viLv1u1ahbJAwZQluPrmCm8bWxOEUu0g2LIHIPlHOOzrAbYUraPy4zVWxWStSGLTua27quoolghbDHyNFoMIr9yDVc0ny/nrzdDVRM3oAeKhpKfBxAcd5aeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yim3SISz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3A7C4CEE3;
+	Tue, 29 Apr 2025 17:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945990;
-	bh=AfTLJywSWey6NKRBypRiXDXt68AlqedOpy9ATMUTzAU=;
+	s=korg; t=1745948571;
+	bh=LfwD9t+XSAkwURdvahsPihCL8+F7QUPbFfNOi5QInG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IN5uNSYLh2P5NnxZZt1d2WmWryX6gYMReLCbiesCVbEqSdnYIgnAwNpSF2x88waR6
-	 isNi+nkNuGSooKl7Qo5DzwjqB53Gbs6euO+nlar888UtXfstJSwGiAE9L/N3i06p1I
-	 B9H8g0tcgBxzGlw9d8hv9aDUf2O+e9xPnYC+/3xo=
+	b=Yim3SISz1rs+fRGtRd3ieOqIj5CB86zAyRZV8jlr5Q32ShzYvTOMdfjk1pMuhBIAf
+	 DuVYY4uFA/vN6B9WM3b6DE3ecxe9SSnYMqj2swvRM0gRjbdW9QoSA4NX8dUAiqaPuz
+	 H1k6zSGr3JaAQmANz2yVzjPJD+Noosow82sD1WXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 087/311] riscv: uprobes: Add missing fence.i after building the XOL buffer
+Subject: [PATCH 5.15 047/373] drm/mediatek: mtk_dpi: Explicitly manage TVD clock in power on/off
 Date: Tue, 29 Apr 2025 18:38:44 +0200
-Message-ID: <20250429161124.612294220@linuxfoundation.org>
+Message-ID: <20250429161125.069301781@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 7d1d19a11cfbfd8bae1d89cc010b2cc397cd0c48 ]
+[ Upstream commit 473c33f5ce651365468503c76f33158aaa1c7dd2 ]
 
-The XOL (execute out-of-line) buffer is used to single-step the
-replaced instruction(s) for uprobes. The RISC-V port was missing a
-proper fence.i (i$ flushing) after constructing the XOL buffer, which
-can result in incorrect execution of stale/broken instructions.
+In preparation for adding support for MT8195's HDMI reserved
+DPI, add calls to clk_prepare_enable() / clk_disable_unprepare()
+for the TVD clock: in this particular case, the aforementioned
+clock is not (and cannot be) parented to neither pixel or engine
+clocks hence it won't get enabled automatically by the clock
+framework.
 
-This was found running the BPF selftests "test_progs:
-uprobe_autoattach, attach_probe" on the Spacemit K1/X60, where the
-uprobes tests randomly blew up.
+Please note that on all of the currently supported MediaTek
+platforms, the TVD clock is always a parent of either pixel or
+engine clocks, and this means that the common clock framework
+is already enabling this clock before the children.
+On such platforms, this commit will only increase the refcount
+of the TVD clock without any functional change.
 
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Fixes: 74784081aac8 ("riscv: Add uprobes supported")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Link: https://lore.kernel.org/r/20250419111402.1660267-2-bjorn@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-10-angelogioacchino.delregno@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/probes/uprobes.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dpi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
-index 4b3dc8beaf77d..cc15f7ca6cc17 100644
---- a/arch/riscv/kernel/probes/uprobes.c
-+++ b/arch/riscv/kernel/probes/uprobes.c
-@@ -167,6 +167,7 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
- 	/* Initialize the slot */
- 	void *kaddr = kmap_atomic(page);
- 	void *dst = kaddr + (vaddr & ~PAGE_MASK);
-+	unsigned long start = (unsigned long)dst;
+diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
+index 94c6bd3b00823..9518672dc21b3 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dpi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
+@@ -389,6 +389,7 @@ static void mtk_dpi_power_off(struct mtk_dpi *dpi)
  
- 	memcpy(dst, src, len);
+ 	mtk_dpi_disable(dpi);
+ 	clk_disable_unprepare(dpi->pixel_clk);
++	clk_disable_unprepare(dpi->tvd_clk);
+ 	clk_disable_unprepare(dpi->engine_clk);
+ }
  
-@@ -176,13 +177,6 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
- 		*(uprobe_opcode_t *)dst = __BUG_INSN_32;
+@@ -405,6 +406,12 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
+ 		goto err_refcount;
  	}
  
-+	flush_icache_range(start, start + len);
- 	kunmap_atomic(kaddr);
--
--	/*
--	 * We probably need flush_icache_user_page() but it needs vma.
--	 * This should work on most of architectures by default. If
--	 * architecture needs to do something different it can define
--	 * its own version of the function.
--	 */
--	flush_dcache_page(page);
- }
++	ret = clk_prepare_enable(dpi->tvd_clk);
++	if (ret) {
++		dev_err(dpi->dev, "Failed to enable tvd pll: %d\n", ret);
++		goto err_engine;
++	}
++
+ 	ret = clk_prepare_enable(dpi->pixel_clk);
+ 	if (ret) {
+ 		dev_err(dpi->dev, "Failed to enable pixel clock: %d\n", ret);
+@@ -414,6 +421,8 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
+ 	return 0;
+ 
+ err_pixel:
++	clk_disable_unprepare(dpi->tvd_clk);
++err_engine:
+ 	clk_disable_unprepare(dpi->engine_clk);
+ err_refcount:
+ 	dpi->refcount--;
 -- 
 2.39.5
 
