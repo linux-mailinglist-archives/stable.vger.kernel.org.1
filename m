@@ -1,60 +1,53 @@
-Return-Path: <stable+bounces-137722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD98AA14E3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491E0AA1485
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:16:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 077F7984CF3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64D077ABEDE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AD92522B4;
-	Tue, 29 Apr 2025 17:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80142512FD;
+	Tue, 29 Apr 2025 17:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1FIy5dO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fn7tbC5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F652522A8;
-	Tue, 29 Apr 2025 17:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DC221ABDB;
+	Tue, 29 Apr 2025 17:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946931; cv=none; b=eZJBn7ZaCMR6a2oWecSjpN+pSzMhDP5+LnFUuktNAU1i5nu2GX1ukWXEqgOJ3xsgLkBmNz8UzTR81NoZcJtUcZJnP97bHAbsTsT+0dBTnnJleF2O8De4+n6XOpVsV22CjOujHvAc961e/YFGpUz3CzQmsyloJOvsh2CLqwnpjh0=
+	t=1745946962; cv=none; b=L2fDyEE0mijy0MRCvqXtcyfyECnOVGQU2L0N8IOmjHxl2qvQ0AitLBDdH805MqBkYPvB/aYiOcTB5jyARuLBckHoUb7e19OYEcF6r0uG+w3RJ512JckgN4bKlbfImhvp5rbjvlawxKQALCzVCrW8Kyh6KibdKB+5WTY/cNOekL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946931; c=relaxed/simple;
-	bh=eJQGIT/41MSTHtppLjhWaLlc7lJGEYvNte1EnTpba9k=;
+	s=arc-20240116; t=1745946962; c=relaxed/simple;
+	bh=XiP7izDhUf59EhYkJwohJ577okTJy2SR0uREP/nGBu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XzDvJr/sYzDz1Rv0X5W4ky5nZxzRzIBDieXxLpv0Uw3tR4NBJQtpM/9SRE63FjwpWsMcISBS09rgxM9XgThr2py4pCgyciosfVTYwjphtHNsY0yTFaQ6Fdm8EnKOozHuzxmkVEujfOiPAx62gbaSBmMD7jQOMMozwFnnwPpTk5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1FIy5dO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236EEC4CEE3;
-	Tue, 29 Apr 2025 17:15:29 +0000 (UTC)
+	 MIME-Version; b=iXXNC6qGf1QnkzfkHrGYEngdvytDn+zs+yHPmHHIKOrMNj5B6BPjpA/yWCL96jZv0a7bXvbsLhMwhdO52XRyl0D7aN8GBF6sPJ9FApwtSSADWt8x3yCxCy65mVm0AZfQd7iTfb02AWZJCpUfQin3oZ5trkWkSzI+PjtI8eyjvy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fn7tbC5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17242C4CEE3;
+	Tue, 29 Apr 2025 17:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946930;
-	bh=eJQGIT/41MSTHtppLjhWaLlc7lJGEYvNte1EnTpba9k=;
+	s=korg; t=1745946962;
+	bh=XiP7izDhUf59EhYkJwohJ577okTJy2SR0uREP/nGBu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1FIy5dOo3r2jWA9XANw+mOHoUmUzb0wsvaCWhyBEPOZLdeZe9bbDRXXtbHry5Xb0
-	 LTT+0EYJAhID5SyI7YBogy9e5c0h5O3JVgIYb5CSZ+9fFABrYYdN1u4XIHMrNst6Jm
-	 NviZZabvATyKhXfravR3MntkXamttlzFt0MFiI8w=
+	b=Fn7tbC5rEGpTX8hjOFkEkuOHRpDvY0L4FgiqFoCYbHPc7X8GRyH9sdaJT2Q1k0BbJ
+	 BWVtrYq7lWZbIoXP5BZkY+TaqwBLp5DswZQS6NduoBgrBkHCE+chKKLPZhn5n9sqEt
+	 ibWLcTDzMz6RdHrnGqvfJ0UJJpSQHMCkaM15zkGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Ricci <io@r-ricci.it>,
-	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kees Cook <keescook@chromium.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Len Brown <len.brown@intel.com>
-Subject: [PATCH 5.10 098/286] x86/e820: Fix handling of subpage regions when calculating nosave ranges in e820__register_nosave_regions()
-Date: Tue, 29 Apr 2025 18:40:02 +0200
-Message-ID: <20250429161111.886272162@linuxfoundation.org>
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	syzbot+683f8cb11b94b1824c77@syzkaller.appspotmail.com,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.10 099/286] Bluetooth: hci_uart: Fix another race during initialization
+Date: Tue, 29 Apr 2025 18:40:03 +0200
+Message-ID: <20250429161111.927432731@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
 References: <20250429161107.848008295@linuxfoundation.org>
@@ -73,90 +66,135 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-commit f2f29da9f0d4367f6ff35e0d9d021257bb53e273 upstream.
+commit 5df5dafc171b90d0b8d51547a82657cd5a1986c7 upstream.
 
-While debugging kexec/hibernation hangs and crashes, it turned out that
-the current implementation of e820__register_nosave_regions() suffers from
-multiple serious issues:
+Do not set 'HCI_UART_PROTO_READY' before call 'hci_uart_register_dev()'.
+Possible race is when someone calls 'hci_tty_uart_close()' after this bit
+is set, but 'hci_uart_register_dev()' wasn't done. This leads to access
+to uninitialized fields. To fix it let's set this bit after device was
+registered (as before patch c411c62cc133) and to fix previous problem let's
+add one more bit in addition to 'HCI_UART_PROTO_READY' which allows to
+perform power up without original bit set (pls see commit c411c62cc133).
 
- - The end of last region is tracked by PFN, causing it to find holes
-   that aren't there if two consecutive subpage regions are present
+Crash backtrace from syzbot report:
 
- - The nosave PFN ranges derived from holes are rounded out (instead of
-   rounded in) which makes it inconsistent with how explicitly reserved
-   regions are handled
+RIP: 0010:skb_queue_empty_lockless include/linux/skbuff.h:1887 [inline]
+RIP: 0010:skb_queue_purge_reason+0x6d/0x140 net/core/skbuff.c:3936
 
-Fix this by:
+Call Trace:
+ <TASK>
+ skb_queue_purge include/linux/skbuff.h:3364 [inline]
+ mrvl_close+0x2f/0x90 drivers/bluetooth/hci_mrvl.c:100
+ hci_uart_tty_close+0xb6/0x120 drivers/bluetooth/hci_ldisc.c:557
+ tty_ldisc_close drivers/tty/tty_ldisc.c:455 [inline]
+ tty_ldisc_kill+0x66/0xc0 drivers/tty/tty_ldisc.c:613
+ tty_ldisc_release+0xc9/0x120 drivers/tty/tty_ldisc.c:781
+ tty_release_struct+0x10/0x80 drivers/tty/tty_io.c:1690
+ tty_release+0x4ef/0x640 drivers/tty/tty_io.c:1861
+ __fput+0x86/0x2a0 fs/file_table.c:450
+ task_work_run+0x82/0xb0 kernel/task_work.c:239
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0xa3/0x1b0 kernel/entry/common.c:218
+ do_syscall_64+0x9a/0x190 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
- - Treating reserved regions as if they were holes, to ensure consistent
-   handling (rounding out nosave PFN ranges is more correct as the
-   kernel does not use partial pages)
-
- - Tracking the end of the last RAM region by address instead of pages
-   to detect holes more precisely
-
-These bugs appear to have been introduced about ~18 years ago with the very
-first version of e820_mark_nosave_regions(), and its flawed assumptions were
-carried forward uninterrupted through various waves of rewrites and renames.
-
-[ mingo: Added Git archeology details, for kicks and giggles. ]
-
-Fixes: e8eff5ac294e ("[PATCH] Make swsusp avoid memory holes and reserved memory regions on x86_64")
-Reported-by: Roberto Ricci <io@r-ricci.it>
-Tested-by: Roberto Ricci <io@r-ricci.it>
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Len Brown <len.brown@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250406-fix-e820-nosave-v3-1-f3787bc1ee1d@qtmlabs.xyz
-Closes: https://lore.kernel.org/all/Z4WFjBVHpndct7br@desktop0a/
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Reported-by: syzbot+683f8cb11b94b1824c77@syzkaller.appspotmail.com
+Tested-by: syzbot+683f8cb11b94b1824c77@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-bluetooth/d159c57f-8490-4c26-79da-6ad3612c4a14@salutedevices.com/
+Fixes: 366ceff495f9 ("Bluetooth: hci_uart: fix race during initialization")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/e820.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ drivers/bluetooth/hci_ldisc.c |   20 ++++++++++++++------
+ drivers/bluetooth/hci_uart.h  |    1 +
+ 2 files changed, 15 insertions(+), 6 deletions(-)
 
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -753,22 +753,21 @@ void __init e820__memory_setup_extended(
- void __init e820__register_nosave_regions(unsigned long limit_pfn)
- {
- 	int i;
--	unsigned long pfn = 0;
-+	u64 last_addr = 0;
+--- a/drivers/bluetooth/hci_ldisc.c
++++ b/drivers/bluetooth/hci_ldisc.c
+@@ -102,7 +102,8 @@ static inline struct sk_buff *hci_uart_d
+ 	if (!skb) {
+ 		percpu_down_read(&hu->proto_lock);
  
- 	for (i = 0; i < e820_table->nr_entries; i++) {
- 		struct e820_entry *entry = &e820_table->entries[i];
+-		if (test_bit(HCI_UART_PROTO_READY, &hu->flags))
++		if (test_bit(HCI_UART_PROTO_READY, &hu->flags) ||
++		    test_bit(HCI_UART_PROTO_INIT, &hu->flags))
+ 			skb = hu->proto->dequeue(hu);
  
--		if (pfn < PFN_UP(entry->addr))
--			register_nosave_region(pfn, PFN_UP(entry->addr));
--
--		pfn = PFN_DOWN(entry->addr + entry->size);
--
- 		if (entry->type != E820_TYPE_RAM && entry->type != E820_TYPE_RESERVED_KERN)
--			register_nosave_region(PFN_UP(entry->addr), pfn);
-+			continue;
+ 		percpu_up_read(&hu->proto_lock);
+@@ -124,7 +125,8 @@ int hci_uart_tx_wakeup(struct hci_uart *
+ 	if (!percpu_down_read_trylock(&hu->proto_lock))
+ 		return 0;
  
--		if (pfn >= limit_pfn)
--			break;
-+		if (last_addr < entry->addr)
-+			register_nosave_region(PFN_DOWN(last_addr), PFN_UP(entry->addr));
-+
-+		last_addr = entry->addr + entry->size;
+-	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags))
++	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags) &&
++	    !test_bit(HCI_UART_PROTO_INIT, &hu->flags))
+ 		goto no_schedule;
+ 
+ 	set_bit(HCI_UART_TX_WAKEUP, &hu->tx_state);
+@@ -278,7 +280,8 @@ static int hci_uart_send_frame(struct hc
+ 
+ 	percpu_down_read(&hu->proto_lock);
+ 
+-	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
++	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags) &&
++	    !test_bit(HCI_UART_PROTO_INIT, &hu->flags)) {
+ 		percpu_up_read(&hu->proto_lock);
+ 		return -EUNATCH;
  	}
-+
-+	register_nosave_region(PFN_DOWN(last_addr), limit_pfn);
+@@ -579,7 +582,8 @@ static void hci_uart_tty_wakeup(struct t
+ 	if (tty != hu->tty)
+ 		return;
+ 
+-	if (test_bit(HCI_UART_PROTO_READY, &hu->flags))
++	if (test_bit(HCI_UART_PROTO_READY, &hu->flags) ||
++	    test_bit(HCI_UART_PROTO_INIT, &hu->flags))
+ 		hci_uart_tx_wakeup(hu);
  }
  
- #ifdef CONFIG_ACPI
+@@ -605,7 +609,8 @@ static void hci_uart_tty_receive(struct
+ 
+ 	percpu_down_read(&hu->proto_lock);
+ 
+-	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
++	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags) &&
++	    !test_bit(HCI_UART_PROTO_INIT, &hu->flags)) {
+ 		percpu_up_read(&hu->proto_lock);
+ 		return;
+ 	}
+@@ -706,13 +711,16 @@ static int hci_uart_set_proto(struct hci
+ 
+ 	hu->proto = p;
+ 
+-	set_bit(HCI_UART_PROTO_READY, &hu->flags);
++	set_bit(HCI_UART_PROTO_INIT, &hu->flags);
+ 
+ 	err = hci_uart_register_dev(hu);
+ 	if (err) {
+ 		return err;
+ 	}
+ 
++	set_bit(HCI_UART_PROTO_READY, &hu->flags);
++	clear_bit(HCI_UART_PROTO_INIT, &hu->flags);
++
+ 	return 0;
+ }
+ 
+--- a/drivers/bluetooth/hci_uart.h
++++ b/drivers/bluetooth/hci_uart.h
+@@ -89,6 +89,7 @@ struct hci_uart {
+ #define HCI_UART_PROTO_SET	0
+ #define HCI_UART_REGISTERED	1
+ #define HCI_UART_PROTO_READY	2
++#define HCI_UART_PROTO_INIT	4
+ 
+ /* TX states  */
+ #define HCI_UART_SENDING	1
 
 
 
