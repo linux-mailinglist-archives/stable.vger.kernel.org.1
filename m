@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D26CAA1563
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C39CFAA182F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CF5C173819
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 315D04C317E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CEAF2522B5;
-	Tue, 29 Apr 2025 17:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8B9253B5F;
+	Tue, 29 Apr 2025 17:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGwT1GX+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhwZIxPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C53245007;
-	Tue, 29 Apr 2025 17:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03972528F1;
+	Tue, 29 Apr 2025 17:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947347; cv=none; b=pt31Jc+p6xgx93TZSbXcRnIFLjQAHt0BUN8mngVJqTw9YFO/MH6Qo5xotvoVu2Cm3r0vnj5lQkyueUdR1l0Dsng55K3qIUj844BqhDqZX5MEMZXvpWPhPtAWFrK0dsLq27mm/KJ8/BUpMuICgdmGhNTEzBGaqvnYieFjritc4x0=
+	t=1745949314; cv=none; b=RI1QKA/6B2Rcpc44BEN8e0MNO7c65un+H1J1YGW7uo66gkx8cQFuDz4Dd0JhxtpWhLEkeWQVPqxEQSZ+KrBfGsVq665ZHaKr4pF8DMLLH8isVRwYjQRGHtdZQAA8IlLWMUTOvNzEtW5Z2w5+VPy44MuHf2sXOKQQTcK4BiV5Mhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947347; c=relaxed/simple;
-	bh=NLfVLDY6SPOdb5FaYdl643gB5g1+GlexmhTMfkhtGk8=;
+	s=arc-20240116; t=1745949314; c=relaxed/simple;
+	bh=7EWvVB7VTPVTFJGEQmh8+pv0LJSYkKvie9DzYIh+O6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WINvQYdkoSV2OLobUR6IFvJfiIIWYmiohR4GP3Qz4aQwPHxDhrxKHvSbp45+9IzVfuWD0YH7av9aOtMFgzF7ABpKdCmljaNjEYRpVKIi59VTdgj3/dr+yP+xkW/kdPLnV6NbX8DslifmqT7dBR8GHBuFrUHMF98EdxrX15SqvDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGwT1GX+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C671C4CEE3;
-	Tue, 29 Apr 2025 17:22:26 +0000 (UTC)
+	 MIME-Version; b=BKW7YiCmlr/0o+OjCf0oSeemVXExo/IqKw21tjFk7X7GGhyNZU1/gSWSUF8hGDIVuDStYJsNrzTyXlKzLDk2uha0UUzy280dq3J4BSC1DVNZtYQEMf5pzlD/t1iUjo1jZ/BxLpDnWxDoPYv/uhm4Rkhzk2HACkU+/LgRuZqQlRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhwZIxPr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56188C4CEE3;
+	Tue, 29 Apr 2025 17:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947347;
-	bh=NLfVLDY6SPOdb5FaYdl643gB5g1+GlexmhTMfkhtGk8=;
+	s=korg; t=1745949314;
+	bh=7EWvVB7VTPVTFJGEQmh8+pv0LJSYkKvie9DzYIh+O6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oGwT1GX+CAAKCGCnzaNNKqiG5rv6TzhkX60U0QDlX4Bf/PWg52aqvYDsJR/AnRggK
-	 RT5d3qeRNHbGPOpCPD5CR6s1BrRXYG35H4vtScXPZkDTUBOwqUgY2DlsBcAnmRFLfF
-	 Da2OWUP23jvmTxJpDHjAwPEMSde0Vq9zYuahWiXY=
+	b=LhwZIxPrs/R26UAeRItlW3Ucjl7e6F8jXqYagmwmmFjoGFuTy8pvWbyQsJmDLBkUC
+	 2UADPNGJU+taF0+gFPDH9HkpE4prevMzKsxPY5LykEIPtU8aZerRgEq4fTRsh61n+/
+	 Ckbwkv47ZcZP0mv1KK3SllyNKizVPhVIlUI94Vds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miao Li <limiao@kylinos.cn>,
-	Lei Huang <huanglei@kylinos.cn>
-Subject: [PATCH 5.10 251/286] usb: quirks: Add delay init quirk for SanDisk 3.2Gen1 Flash Drive
+	Denis Arefev <arefev@swemel.ru>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 278/373] ksmbd: Prevent integer overflow in calculation of deadtime
 Date: Tue, 29 Apr 2025 18:42:35 +0200
-Message-ID: <20250429161118.248556024@linuxfoundation.org>
+Message-ID: <20250429161134.554934614@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miao Li <limiao@kylinos.cn>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit 37ffdbd695c02189dbf23d6e7d2385e0299587ca upstream.
+[ Upstream commit a93ff742820f75bf8bb3fcf21d9f25ca6eb3d4c6 ]
 
-The SanDisk 3.2Gen1 Flash Drive, which VID:PID is in 0781:55a3,
-just like Silicon Motion Flash Drive:
-https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
-also needs the DELAY_INIT quirk, or it will randomly work incorrectly
-(e.g.: lsusb and can't list this device info) when connecting Huawei
-hisi platforms and doing thousand of reboot test circles.
+The user can set any value for 'deadtime'. This affects the arithmetic
+expression 'req->deadtime * SMB_ECHO_INTERVAL', which is subject to
+overflow. The added check makes the server behavior more predictable.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miao Li <limiao@kylinos.cn>
-Signed-off-by: Lei Huang <huanglei@kylinos.cn>
-Link: https://lore.kernel.org/r/20250414062935.159024-1-limiao870622@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/ksmbd/transport_ipc.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -366,6 +366,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0781, 0x5583), .driver_info = USB_QUIRK_NO_LPM },
- 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
+diff --git a/fs/ksmbd/transport_ipc.c b/fs/ksmbd/transport_ipc.c
+index 0d096a11ba30e..7e6003c6cd9bf 100644
+--- a/fs/ksmbd/transport_ipc.c
++++ b/fs/ksmbd/transport_ipc.c
+@@ -294,7 +294,11 @@ static int ipc_server_config_on_startup(struct ksmbd_startup_request *req)
+ 	server_conf.signing = req->signing;
+ 	server_conf.tcp_port = req->tcp_port;
+ 	server_conf.ipc_timeout = req->ipc_timeout * HZ;
+-	server_conf.deadtime = req->deadtime * SMB_ECHO_INTERVAL;
++	if (check_mul_overflow(req->deadtime, SMB_ECHO_INTERVAL,
++					&server_conf.deadtime)) {
++		ret = -EINVAL;
++		goto out;
++	}
+ 	server_conf.share_fake_fscaps = req->share_fake_fscaps;
+ 	ksmbd_init_domain(req->sub_auth);
  
-+	/* SanDisk Corp. SanDisk 3.2Gen1 */
-+	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
-+
- 	/* Realforce 87U Keyboard */
- 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
- 
+@@ -317,6 +321,7 @@ static int ipc_server_config_on_startup(struct ksmbd_startup_request *req)
+ 	ret |= ksmbd_set_work_group(req->work_group);
+ 	ret |= ksmbd_tcp_set_interfaces(KSMBD_STARTUP_CONFIG_INTERFACES(req),
+ 					req->ifc_list_sz);
++out:
+ 	if (ret) {
+ 		pr_err("Server configuration error: %s %s %s\n",
+ 		       req->netbios_name, req->server_string,
+-- 
+2.39.5
+
 
 
 
