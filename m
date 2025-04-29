@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-138527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06AEDAA18C8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:04:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C113AA18A8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC24B3AAA1A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D3AF9C2EEA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559361DC988;
-	Tue, 29 Apr 2025 17:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409B52512D8;
+	Tue, 29 Apr 2025 17:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SiYLLBIi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLdZjkuT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1266D2AE96;
-	Tue, 29 Apr 2025 17:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF76F233735;
+	Tue, 29 Apr 2025 17:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949535; cv=none; b=phi19uKeH/4KQr1Nx7FEuj6/YQRJcEhf3NU3FM3fSDF2L5yubcRxO4q2JMhMN4rt4FeYWkyRdFgsP9GUPGYzM1LJwRV6zVW4GBNR2GSKrNvKBN878Ih/zd7S5sG4qaGCGipTqOuBmlLGx2fa5oKf+FEe0kXA7wSouXQZZl+p4wk=
+	t=1745949440; cv=none; b=iR1e07JSv7M2SgJAP8d7MnqG7675YFDdbGniR6fTGv5rE2hwkwJCF7PogoatLNSO29MDMqLpSo68KYt3vl0IdM6AAQnhimYqqKQvnLwqkJNvJ8WBG+l+iKiJB+VoKmcZXOUxEg+rFUYjU4Krj+Zx22tiyau+kGjqiaqDPt++9RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949535; c=relaxed/simple;
-	bh=D6Jr4aYGpBQ/Hvs7+N3FEur9gfFoiebulJuuji49jys=;
+	s=arc-20240116; t=1745949440; c=relaxed/simple;
+	bh=po+Lh1YGujt9LOAjXS7kYT7dtR7TwbsBYwHXHxQIhWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKuyftOSf6Ph1u5o3ixbY0unnRWzPssktYPzlGDXHOfFYXenPKPKV9UdPuypI176z3Q9oTIfDt8Wkoh09IlC2NUtu/tfnP/vT0JEB/JY3yjYrMp1ttVWR5tIEWBfoGdYanu74QlOKj1SMZIO1gOJEb22YtGoQyGZ3UKicDrCps8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SiYLLBIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A21C4CEE3;
-	Tue, 29 Apr 2025 17:58:54 +0000 (UTC)
+	 MIME-Version; b=p3xRbUyIV47jX1+xAK0Ever6biOFrvEOI1JvFsF/XmZYh0rIk1osXC9+CqErOaTOpperXwUE5VO4esrqIU/WETj9EOEoAzSnfQZS1ZOYHXbBC3RbFhvrTZQTznipTE0I4Xpkq6TVsG6IkXhrUxbOVjB9df2IboCgBLkbihnHkWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLdZjkuT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F165C4CEE3;
+	Tue, 29 Apr 2025 17:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949534;
-	bh=D6Jr4aYGpBQ/Hvs7+N3FEur9gfFoiebulJuuji49jys=;
+	s=korg; t=1745949439;
+	bh=po+Lh1YGujt9LOAjXS7kYT7dtR7TwbsBYwHXHxQIhWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SiYLLBIinLrkT+zXfgwDvfDoRMQZAJvHV4gD6/vYAHR6UyrPFC+SWwCEb9xGo3ILK
-	 lWammM+SoIAU3gh3VjGGSfsNbEgoCF/eRa79B1YqZmUKUKynVVurT9LKw+xS0s1LPy
-	 CPtqLIBcH/KpNj5xUpdgqOQJM+4xE3FP7zKObTT8=
+	b=vLdZjkuTEiZ8AhJeKvn4Ki94m7pLAgdaljzvx0K2+JTTny9frNQV6GZS1OyRu5AQs
+	 DReir0a2QOwAhP8QRQV91FQpSJp5g8GHs6qw+d2ibUEuFW9x8L+YwLX4dRa8bVigjT
+	 Py7I9BqD5cYuuNLXWjY03b/ZeQ+YJlDDkOw2HAG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
 	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 5.15 319/373] USB: wdm: handle IO errors in wdm_wwan_port_start
-Date: Tue, 29 Apr 2025 18:43:16 +0200
-Message-ID: <20250429161136.240438401@linuxfoundation.org>
+Subject: [PATCH 5.15 320/373] USB: wdm: close race between wdm_open and wdm_wwan_port_stop
+Date: Tue, 29 Apr 2025 18:43:17 +0200
+Message-ID: <20250429161136.287362842@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
 References: <20250429161123.119104857@linuxfoundation.org>
@@ -67,47 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Oliver Neukum <oneukum@suse.com>
 
-commit 9697f5efcf5fdea65b8390b5eb81bebe746ceedc upstream.
+commit c1846ed4eb527bdfe6b3b7dd2c78e2af4bf98f4f upstream.
 
-In case submitting the URB fails we must undo
-what we've done so far.
+Clearing WDM_WWAN_IN_USE must be the last action or
+we can open a chardev whose URBs are still poisoned
 
 Fixes: cac6fb015f71 ("usb: class: cdc-wdm: WWAN framework integration")
 Cc: stable <stable@kernel.org>
 Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250401084749.175246-2-oneukum@suse.com
+Link: https://lore.kernel.org/r/20250401084749.175246-3-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-wdm.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/usb/class/cdc-wdm.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 --- a/drivers/usb/class/cdc-wdm.c
 +++ b/drivers/usb/class/cdc-wdm.c
-@@ -829,6 +829,7 @@ static struct usb_class_driver wdm_class
- static int wdm_wwan_port_start(struct wwan_port *port)
- {
- 	struct wdm_device *desc = wwan_port_get_drvdata(port);
-+	int rv;
- 
- 	/* The interface is both exposed via the WWAN framework and as a
- 	 * legacy usbmisc chardev. If chardev is already open, just fail
-@@ -848,7 +849,15 @@ static int wdm_wwan_port_start(struct ww
- 	wwan_port_txon(port);
- 
- 	/* Start getting events */
--	return usb_submit_urb(desc->validity, GFP_KERNEL);
-+	rv = usb_submit_urb(desc->validity, GFP_KERNEL);
-+	if (rv < 0) {
-+		wwan_port_txoff(port);
-+		desc->manage_power(desc->intf, 0);
-+		/* this must be last lest we race with chardev open */
-+		clear_bit(WDM_WWAN_IN_USE, &desc->flags);
-+	}
-+
-+	return rv;
+@@ -726,7 +726,7 @@ static int wdm_open(struct inode *inode,
+ 		rv = -EBUSY;
+ 		goto out;
+ 	}
+-
++	smp_rmb(); /* ordered against wdm_wwan_port_stop() */
+ 	rv = usb_autopm_get_interface(desc->intf);
+ 	if (rv < 0) {
+ 		dev_err(&desc->intf->dev, "Error autopm - %d\n", rv);
+@@ -868,8 +868,10 @@ static void wdm_wwan_port_stop(struct ww
+ 	poison_urbs(desc);
+ 	desc->manage_power(desc->intf, 0);
+ 	clear_bit(WDM_READ, &desc->flags);
+-	clear_bit(WDM_WWAN_IN_USE, &desc->flags);
+ 	unpoison_urbs(desc);
++	smp_wmb(); /* ordered against wdm_open() */
++	/* this must be last lest we open a poisoned device */
++	clear_bit(WDM_WWAN_IN_USE, &desc->flags);
  }
  
- static void wdm_wwan_port_stop(struct wwan_port *port)
+ static void wdm_wwan_port_tx_complete(struct urb *urb)
 
 
 
