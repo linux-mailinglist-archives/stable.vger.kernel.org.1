@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-137295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F80AAA12A4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65299AA142F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 454714A7C67
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:55:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F04D1892D57
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14F325178C;
-	Tue, 29 Apr 2025 16:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98014248878;
+	Tue, 29 Apr 2025 17:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qjt48XEj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdKyu2Dm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F032251788;
-	Tue, 29 Apr 2025 16:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5687222A81D;
+	Tue, 29 Apr 2025 17:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945643; cv=none; b=bFGwX82EFSqkoF3JUv4PHUYzWsbwHriATqu0O25xpLh4O8AHbjXBvdrpgLSA0Z9yuaMjB+dHzPWs+pbCFr+fw4p8ZXez5vVl1yHoMDBQDjtlfDsMpFNcr5Ps/M31Bir137KL7v5LieDE0vhMCebtYGEovda5v2az5cxO8NlSP1Q=
+	t=1745946577; cv=none; b=t72/LJTqmFac2YhdjiLJ+vZHy5r8F0J9RL0sMXXRwWEzaEMjBqVKr0rP+JdQXWbd6A9JlOQ518x/vURtiYkMnZj1URd4m4lHdhFk7kQYJpExun0yoPnpoK1uZg9XKq2bNURMv8dekMRdR60bsdTNPxwKebQeWYSYvBZu4wL2s2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945643; c=relaxed/simple;
-	bh=Iq0EdHNZ3J4agLhKd2KGDbEJ3ANRR2sUybJQjQqBYMc=;
+	s=arc-20240116; t=1745946577; c=relaxed/simple;
+	bh=wCWI9xS6ojLpKnM4WLI8t3Qn1yCPZyVIoHZKs2sDXgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pnw0eWErG92OirRtT4hrkxj8y6aYAPZii3COLHyWNl4ySgi+cJ7Lx228ylnQ1TXrBw+uHOlFqLWa/eL/+IF8W1MZy0Yrw+oUTKLw3ET3knWKcQqJB9nS3N4XvqEazUeffYr+VCshcAcObgjySg2qxhHkDjxxrz+6RSQfthvDCEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qjt48XEj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93969C4AF09;
-	Tue, 29 Apr 2025 16:54:02 +0000 (UTC)
+	 MIME-Version; b=scTOsL2PBmdJkBDSFNzGztn0DqXQZfrOH//lJSKwtQkj1HJvpmcUmI1QCwLcYMoIyqxC3DTzASfhwLVch6J9a2DFA1RQtEGJ7XgMARLPoTOGtjsWNEdRykBoYxN0EjRRuJQvpYxRQZ1Of3asS4UQa/Nm3A3j2ebRgBi4eYY8AIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdKyu2Dm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DA1C4CEE3;
+	Tue, 29 Apr 2025 17:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945643;
-	bh=Iq0EdHNZ3J4agLhKd2KGDbEJ3ANRR2sUybJQjQqBYMc=;
+	s=korg; t=1745946577;
+	bh=wCWI9xS6ojLpKnM4WLI8t3Qn1yCPZyVIoHZKs2sDXgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qjt48XEjAGgIoFGTnXA0dG5hpCUJ82gZCTxWKx493HmeeRUTL62njQ0w8fFaEAoE6
-	 wLhOIbQB8oZ6jWEoYQSQB5fqgT/XONWjm19Svl2dIXhMRYB4Q4NxIdoOlZKm9J+HNc
-	 b3Q5FtCw7Y5iG5CTWrlR3AmpvS6iQmVtud/3BAQQ=
+	b=UdKyu2DmmXEwfQU6AT2zrjxUL2evRLRn6nMdwFBDFMgK2YdMVxHYZkdtOL0jpeDCn
+	 yGGIEic1u5Se29RWOqRuZYkuAAm20sUcgUFbehPWjBphPEfTydNResrgBQQtfDwLjY
+	 y+YZ7JD6lgGBTgMpJ+kcaO9RdHArHkO+ncr+uI8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.4 179/179] MIPS: cm: Fix warning if MIPS_CM is disabled
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 283/311] ksmbd: fix WARNING "do not call blocking ops when !TASK_RUNNING"
 Date: Tue, 29 Apr 2025 18:42:00 +0200
-Message-ID: <20250429161056.636773338@linuxfoundation.org>
+Message-ID: <20250429161132.603168989@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,43 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit b73c3ccdca95c237750c981054997c71d33e09d7 upstream.
+[ Upstream commit 1df0d4c616138784e033ad337961b6e1a6bcd999 ]
 
-Commit e27fbe16af5c ("MIPS: cm: Detect CM quirks from device tree")
-introduced
+wait_event_timeout() will set the state of the current
+task to TASK_UNINTERRUPTIBLE, before doing the condition check. This
+means that ksmbd_durable_scavenger_alive() will try to acquire the mutex
+while already in a sleeping state. The scheduler warns us by giving
+the following warning:
 
-arch/mips/include/asm/mips-cm.h:119:13: error: ‘mips_cm_update_property’
-	defined but not used [-Werror=unused-function]
+do not call blocking ops when !TASK_RUNNING; state=2 set at
+ [<0000000061515a6f>] prepare_to_wait_event+0x9f/0x6c0
+WARNING: CPU: 2 PID: 4147 at kernel/sched/core.c:10099 __might_sleep+0x12f/0x160
 
-Fix this by making empty function implementation inline
+mutex lock is not needed in ksmbd_durable_scavenger_alive().
 
-Fixes: e27fbe16af5c ("MIPS: cm: Detect CM quirks from device tree")
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mips-cm.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/vfs_cache.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -104,7 +104,7 @@ static inline bool mips_cm_present(void)
- #ifdef CONFIG_MIPS_CM
- extern void mips_cm_update_property(void);
- #else
--static void mips_cm_update_property(void) {}
-+static inline void mips_cm_update_property(void) {}
- #endif
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index 8d1f30dcba7e8..1f8fa3468173a 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -713,12 +713,8 @@ static bool tree_conn_fd_check(struct ksmbd_tree_connect *tcon,
  
- /**
+ static bool ksmbd_durable_scavenger_alive(void)
+ {
+-	mutex_lock(&durable_scavenger_lock);
+-	if (!durable_scavenger_running) {
+-		mutex_unlock(&durable_scavenger_lock);
++	if (!durable_scavenger_running)
+ 		return false;
+-	}
+-	mutex_unlock(&durable_scavenger_lock);
+ 
+ 	if (kthread_should_stop())
+ 		return false;
+@@ -799,9 +795,7 @@ static int ksmbd_durable_scavenger(void *dummy)
+ 			break;
+ 	}
+ 
+-	mutex_lock(&durable_scavenger_lock);
+ 	durable_scavenger_running = false;
+-	mutex_unlock(&durable_scavenger_lock);
+ 
+ 	module_put(THIS_MODULE);
+ 
+-- 
+2.39.5
+
 
 
 
