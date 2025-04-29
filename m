@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-137518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A55FAA13C0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD865AA14EF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D6521BA7250
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E03511A80926
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D2122A81D;
-	Tue, 29 Apr 2025 17:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BE1252296;
+	Tue, 29 Apr 2025 17:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESsg901/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBzVNf8+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BAA1DF73C;
-	Tue, 29 Apr 2025 17:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C849124E016;
+	Tue, 29 Apr 2025 17:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946307; cv=none; b=XTE8ZdzwHZyqMaZDbB56Icw3F+BpNIkL5xzi62nUsnMwv87ApNPcYOd9HpbpFsKUClNC1P1WpU7P8fWj1P+AkTgi8iXfufA9xl4bh4pBeEko+NdkJiCCq/h+enlS/jrWnT3D+DDaRIyV0Zkl/d1ta3qGNH8WyctTTnRNRZItDhg=
+	t=1745947057; cv=none; b=E10QxNzVe0Yu11LucVMKGIuTQnlfk1M9PnmAT1b0iS+4EUoVeNLXNBCvRvJ5I5IaRiJtW8h9+pRL2uBYYmS8rqbltMDPVeXUScTDxxks1Qox/I9vmTKwOhZneF+lBNyWiM5Kxgeq1fsbuEN/8A1saTJdR1yoE+9uqFVtCspDQ6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946307; c=relaxed/simple;
-	bh=KkqRLkXccLXVR/9dL3hnWHCoRBfCEBPvzn6lPtK88Uw=;
+	s=arc-20240116; t=1745947057; c=relaxed/simple;
+	bh=DKAiB+heF/LtY6sFUaRpdAgqUIRUJhUvFA4uB6YThXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CgFk3XxfzJoD5DUmXlDlU91Td/lW0xohR+k4x/h8um4s8JyM171yEi2QhbUSFo2Ig/WGIxSPdvti0BO2WrP/RBw+baA2HMFhbgt3aX2t0d491o5ArYyWLPUkfkleQ3qhk4qJ8bssiaDkzdrt9QFC1XLm02rJHQgc5qkL/Javjzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESsg901/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3374C4CEE3;
-	Tue, 29 Apr 2025 17:05:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u0CP2vJUH1sXOZZLB3Fit9Atg2oMHLJAXzP93d9ZLgx9ckbOIoohSO3eeCk46KLv7zYOX3rA4k86dzd6CwbzHhNbqMaaXV5wcwuzb76nZZx5l/0rpLraJyYewh6LmSHRllg/lktenKly7yRt6lzNJ2v8JDL5lhIyskVTlE/rigk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBzVNf8+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C763FC4CEE3;
+	Tue, 29 Apr 2025 17:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946307;
-	bh=KkqRLkXccLXVR/9dL3hnWHCoRBfCEBPvzn6lPtK88Uw=;
+	s=korg; t=1745947057;
+	bh=DKAiB+heF/LtY6sFUaRpdAgqUIRUJhUvFA4uB6YThXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ESsg901/oqLuOO5oOm5GdjIGpdW1+J9iWyoBgE+1AEcXHr9NhemIJi8zoA0zFcxr0
-	 GZdu/NnrSq3C58k86d2B+7DDTIghNOEKqSPh0wGtSSObntQj7Tmqe2eeaAbvGIck7T
-	 BHID5VowNygjQ5njJStJknnkmh/akiDnyd2jUYP4=
+	b=tBzVNf8+C9lOOzeojLHupvHs29ZUdgcso8j54mwaSrTLZgW93nJZs/C1SdX3wOIDp
+	 Re+YhNaM5PWMID9fMGwvFBbhb5hQ9JhloZ126mpgTd1gL0vftZfJdDnVwi35D6hINP
+	 frZIEw9Lr1bjGriaExz+/o56rmT4cn4DUFsKk9uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 224/311] objtool, regulator: rk808: Remove potential undefined behavior in rk806_set_mode_dcdc()
+	Kang Yang <quic_kangyang@quicinc.com>,
+	David Ruth <druth@chromium.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 5.10 157/286] wifi: ath10k: avoid NULL pointer error during sdio remove
 Date: Tue, 29 Apr 2025 18:41:01 +0200
-Message-ID: <20250429161130.193715176@linuxfoundation.org>
+Message-ID: <20250429161114.343210290@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +61,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Kang Yang <quic_kangyang@quicinc.com>
 
-[ Upstream commit 29c578c848402a34e8c8e115bf66cb6008b77062 ]
+commit 95c38953cb1ecf40399a676a1f85dfe2b5780a9a upstream.
 
-If 'ctr_bit' is negative, the shift counts become negative, causing a
-shift of bounds and undefined behavior.
+When running 'rmmod ath10k', ath10k_sdio_remove() will free sdio
+workqueue by destroy_workqueue(). But if CONFIG_INIT_ON_FREE_DEFAULT_ON
+is set to yes, kernel panic will happen:
+Call trace:
+ destroy_workqueue+0x1c/0x258
+ ath10k_sdio_remove+0x84/0x94
+ sdio_bus_remove+0x50/0x16c
+ device_release_driver_internal+0x188/0x25c
+ device_driver_detach+0x20/0x2c
 
-Presumably that's not possible in normal operation, but the code
-generation isn't optimal.  And undefined behavior should be avoided
-regardless.
+This is because during 'rmmod ath10k', ath10k_sdio_remove() will call
+ath10k_core_destroy() before destroy_workqueue(). wiphy_dev_release()
+will finally be called in ath10k_core_destroy(). This function will free
+struct cfg80211_registered_device *rdev and all its members, including
+wiphy, dev and the pointer of sdio workqueue. Then the pointer of sdio
+workqueue will be set to NULL due to CONFIG_INIT_ON_FREE_DEFAULT_ON.
 
-Improve code generation and remove the undefined behavior by converting
-the signed variables to unsigned.
+After device release, destroy_workqueue() will use NULL pointer then the
+kernel panic happen.
 
-Fixes the following warning with an UBSAN kernel:
+Call trace:
+ath10k_sdio_remove
+  ->ath10k_core_unregister
+    ……
+    ->ath10k_core_stop
+      ->ath10k_hif_stop
+        ->ath10k_sdio_irq_disable
+    ->ath10k_hif_power_down
+      ->del_timer_sync(&ar_sdio->sleep_timer)
+  ->ath10k_core_destroy
+    ->ath10k_mac_destroy
+      ->ieee80211_free_hw
+        ->wiphy_free
+    ……
+          ->wiphy_dev_release
+  ->destroy_workqueue
 
-  vmlinux.o: warning: objtool: rk806_set_mode_dcdc() falls through to next function rk806_get_mode_dcdc()
-  vmlinux.o: warning: objtool: .text.rk806_set_mode_dcdc: unexpected end of section
+Need to call destroy_workqueue() before ath10k_core_destroy(), free
+the work queue buffer first and then free pointer of work queue by
+ath10k_core_destroy(). This order matches the error path order in
+ath10k_sdio_probe().
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/2023abcddf3f524ba478d64339996f25dc4097d2.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202503182350.52KeHGD4-lkp@intel.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+No work will be queued on sdio workqueue between it is destroyed and
+ath10k_core_destroy() is called. Based on the call_stack above, the
+reason is:
+Only ath10k_sdio_sleep_timer_handler(), ath10k_sdio_hif_tx_sg() and
+ath10k_sdio_irq_disable() will queue work on sdio workqueue.
+Sleep timer will be deleted before ath10k_core_destroy() in
+ath10k_hif_power_down().
+ath10k_sdio_irq_disable() only be called in ath10k_hif_stop().
+ath10k_core_unregister() will call ath10k_hif_power_down() to stop hif
+bus, so ath10k_sdio_hif_tx_sg() won't be called anymore.
+
+Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
+
+Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+Tested-by: David Ruth <druth@chromium.org>
+Reviewed-by: David Ruth <druth@chromium.org>
+Link: https://patch.msgid.link/20241008022246.1010-1-quic_kangyang@quicinc.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/rk808-regulator.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath10k/sdio.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
-index 7d82bd1b36dfc..1e8142479656a 100644
---- a/drivers/regulator/rk808-regulator.c
-+++ b/drivers/regulator/rk808-regulator.c
-@@ -270,8 +270,8 @@ static const unsigned int rk817_buck1_4_ramp_table[] = {
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -3,6 +3,7 @@
+  * Copyright (c) 2004-2011 Atheros Communications Inc.
+  * Copyright (c) 2011-2012,2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2016-2017 Erik Stromdahl <erik.stromdahl@gmail.com>
++ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
  
- static int rk806_set_mode_dcdc(struct regulator_dev *rdev, unsigned int mode)
- {
--	int rid = rdev_get_id(rdev);
--	int ctr_bit, reg;
-+	unsigned int rid = rdev_get_id(rdev);
-+	unsigned int ctr_bit, reg;
+ #include <linux/module.h>
+@@ -2649,9 +2650,9 @@ static void ath10k_sdio_remove(struct sd
  
- 	reg = RK806_POWER_FPWM_EN0 + rid / 8;
- 	ctr_bit = rid % 8;
--- 
-2.39.5
-
+ 	netif_napi_del(&ar->napi);
+ 
+-	ath10k_core_destroy(ar);
+-
+ 	destroy_workqueue(ar_sdio->workqueue);
++
++	ath10k_core_destroy(ar);
+ }
+ 
+ static const struct sdio_device_id ath10k_sdio_devices[] = {
 
 
 
