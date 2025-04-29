@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C272AA16F8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:42:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 201D0AA185A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:59:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94CC03BE42F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D13F84E079C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52DF1C6B4;
-	Tue, 29 Apr 2025 17:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C866F25334D;
+	Tue, 29 Apr 2025 17:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1Bu1XCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WU+wXKiw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937AD216605;
-	Tue, 29 Apr 2025 17:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A03248883;
+	Tue, 29 Apr 2025 17:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948217; cv=none; b=Q4NdSJaJ+acMM5ROwoGyISeDPgOPA7jlQGjhrXsnrqvbf3Nqmpc0GEFeoGUIopi0dLFiZ8b2fRmjveIe4p1DiSVgkRUm2MdcmXGBuQFYf+/aMZh18xE4llLgHOcSutzrc1SrQ68zivGsREAsnIaeaG8nUwT+NthYJ7aHNUnLnZI=
+	t=1745949427; cv=none; b=odF/2HfZw+b8uLQK9M2IX0Hhn9VKnT2Us2oPn8JeeaNcYrwCOAsXBnV+X7SP1ov/XFseGMNjoD/Smy5q1VUFc2wQQOuN7DrnoBdy6hBcIGz1VXGWi6KFBJ0CSFIKM27x0Z4xoLIO8GdQE3gim9qLL51zQ2BPGNiUPle77T37830=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948217; c=relaxed/simple;
-	bh=AW7KdBnG2UEGkfRVzamBX/Ceeg1jQoTv0nbsdIwrwnQ=;
+	s=arc-20240116; t=1745949427; c=relaxed/simple;
+	bh=3owN6UxaJdTPtTk1BVJ45wT9yy52nvRIXpGDzFjk/3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nbSFxiXhCV/orWd0wwlUmvcT/jW/mt2hzrYtI0pHHRBJu6I1F2XF7Id7LChIWG1ioyvGieHzxJy5A6ZUwQ4lCMD1Y4Bsow+5uO4Io+ezcpGOBPrSyoSas5Cf4MjIjlOXouyHg945p/d4ZFwwwfP2V6WpMW58LNP6H2poPPRwwfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1Bu1XCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2738BC4CEE3;
-	Tue, 29 Apr 2025 17:36:56 +0000 (UTC)
+	 MIME-Version; b=pP8M8AoyMz2oOlCUQkszFlclJoAinSeAQWQQFCRvx3LKo8+L8KwBjWq1+SUwux783VOGtVnVRBLkOahORQv7XlXvDGS//eXrXi+Rx4VXvxSjPe6IhnNEe9K0C5Ue55NmezSUSts9iTURqFJJ82wHBooSc7SnYsNxQ4qLe6RzNr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WU+wXKiw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DFCC4CEE3;
+	Tue, 29 Apr 2025 17:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948217;
-	bh=AW7KdBnG2UEGkfRVzamBX/Ceeg1jQoTv0nbsdIwrwnQ=;
+	s=korg; t=1745949427;
+	bh=3owN6UxaJdTPtTk1BVJ45wT9yy52nvRIXpGDzFjk/3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O1Bu1XChQeY8J8tEJL3KAbW+p4J/lL1UjQA36SXIgfAol58bafgtbdwBIOShQvqHb
-	 0TV2E1w6HT5+Qau2w6lB27aO9Y2o6SceJxLPJxOLzAOWXdx/Ha9MjZ+qxCB6om+9an
-	 p4h7DKwZgeZxF2XiSUU3Panm++hOub56cAya6bbU=
+	b=WU+wXKiwL4lYcrVnZv6SWvE58B+qEitbgSxuDWTKF5iKeHu9Wq0jWQ8H06LItL5U0
+	 EFImWR+91j1kKdRP3574bYOn6uF8JcyqsQWMmIaB+IZg/ioHv6n8HJPv/FR/9q03z1
+	 c6zbNUQSKTuQcJQfxcxb6/pZunN5G5BAPW64Ct38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 223/280] cifs: Fix encoding of SMB1 Session Setup Kerberos Request in non-UNICODE mode
+Subject: [PATCH 5.15 287/373] cpufreq: scmi: Fix null-ptr-deref in scmi_cpufreq_get_rate()
 Date: Tue, 29 Apr 2025 18:42:44 +0200
-Message-ID: <20250429161124.244461100@linuxfoundation.org>
+Message-ID: <20250429161134.915104684@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,136 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 16cb6b0509b65ac89187e9402e0b7a9ddf1765ef ]
+[ Upstream commit 484d3f15cc6cbaa52541d6259778e715b2c83c54 ]
 
-Like in UNICODE mode, SMB1 Session Setup Kerberos Request contains oslm and
-domain strings.
+cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
+in the policy->cpus mask. scmi_cpufreq_get_rate() does not check for
+this case, which results in a NULL pointer dereference.
 
-Extract common code into ascii_oslm_strings() and ascii_domain_string()
-functions (similar to unicode variants) and use these functions in
-non-UNICODE code path in sess_auth_kerberos().
+Add NULL check after cpufreq_cpu_get_raw() to prevent this issue.
 
-Decision if non-UNICODE or UNICODE mode is used is based on the
-SMBFLG2_UNICODE flag in Flags2 packed field, and not based on the
-capabilities of server. Fix this check too.
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 99d6bdf33877 ("cpufreq: add support for CPU DVFS based on SCMI message protocol")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c | 60 +++++++++++++++++++++++++++++---------------
- 1 file changed, 40 insertions(+), 20 deletions(-)
+ drivers/cpufreq/scmi-cpufreq.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index 2426fa7405173..9b32f7821b718 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -707,6 +707,22 @@ unicode_oslm_strings(char **pbcc_area, const struct nls_table *nls_cp)
- 	*pbcc_area = bcc_ptr;
- }
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index eb3f1952f9864..8c9c2f710790f 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -32,11 +32,17 @@ static const struct scmi_perf_proto_ops *perf_ops;
  
-+static void
-+ascii_oslm_strings(char **pbcc_area, const struct nls_table *nls_cp)
-+{
-+	char *bcc_ptr = *pbcc_area;
-+
-+	strcpy(bcc_ptr, "Linux version ");
-+	bcc_ptr += strlen("Linux version ");
-+	strcpy(bcc_ptr, init_utsname()->release);
-+	bcc_ptr += strlen(init_utsname()->release) + 1;
-+
-+	strcpy(bcc_ptr, CIFS_NETWORK_OPSYS);
-+	bcc_ptr += strlen(CIFS_NETWORK_OPSYS) + 1;
-+
-+	*pbcc_area = bcc_ptr;
-+}
-+
- static void unicode_domain_string(char **pbcc_area, struct cifs_ses *ses,
- 				   const struct nls_table *nls_cp)
+ static unsigned int scmi_cpufreq_get_rate(unsigned int cpu)
  {
-@@ -731,6 +747,25 @@ static void unicode_domain_string(char **pbcc_area, struct cifs_ses *ses,
- 	*pbcc_area = bcc_ptr;
- }
+-	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
+-	struct scmi_data *priv = policy->driver_data;
++	struct cpufreq_policy *policy;
++	struct scmi_data *priv;
+ 	unsigned long rate;
+ 	int ret;
  
-+static void ascii_domain_string(char **pbcc_area, struct cifs_ses *ses,
-+				const struct nls_table *nls_cp)
-+{
-+	char *bcc_ptr = *pbcc_area;
-+	int len;
++	policy = cpufreq_cpu_get_raw(cpu);
++	if (unlikely(!policy))
++		return 0;
 +
-+	/* copy domain */
-+	if (ses->domainName != NULL) {
-+		len = strscpy(bcc_ptr, ses->domainName, CIFS_MAX_DOMAINNAME_LEN);
-+		if (WARN_ON_ONCE(len < 0))
-+			len = CIFS_MAX_DOMAINNAME_LEN - 1;
-+		bcc_ptr += len;
-+	} /* else we send a null domain name so server will default to its own domain */
-+	*bcc_ptr = 0;
-+	bcc_ptr++;
++	priv = policy->driver_data;
 +
-+	*pbcc_area = bcc_ptr;
-+}
-+
- static void unicode_ssetup_strings(char **pbcc_area, struct cifs_ses *ses,
- 				   const struct nls_table *nls_cp)
- {
-@@ -776,25 +811,10 @@ static void ascii_ssetup_strings(char **pbcc_area, struct cifs_ses *ses,
- 	*bcc_ptr = 0;
- 	bcc_ptr++; /* account for null termination */
- 
--	/* copy domain */
--	if (ses->domainName != NULL) {
--		len = strscpy(bcc_ptr, ses->domainName, CIFS_MAX_DOMAINNAME_LEN);
--		if (WARN_ON_ONCE(len < 0))
--			len = CIFS_MAX_DOMAINNAME_LEN - 1;
--		bcc_ptr += len;
--	} /* else we send a null domain name so server will default to its own domain */
--	*bcc_ptr = 0;
--	bcc_ptr++;
--
- 	/* BB check for overflow here */
- 
--	strcpy(bcc_ptr, "Linux version ");
--	bcc_ptr += strlen("Linux version ");
--	strcpy(bcc_ptr, init_utsname()->release);
--	bcc_ptr += strlen(init_utsname()->release) + 1;
--
--	strcpy(bcc_ptr, CIFS_NETWORK_OPSYS);
--	bcc_ptr += strlen(CIFS_NETWORK_OPSYS) + 1;
-+	ascii_domain_string(&bcc_ptr, ses, nls_cp);
-+	ascii_oslm_strings(&bcc_ptr, nls_cp);
- 
- 	*pbcc_area = bcc_ptr;
- }
-@@ -1597,7 +1617,7 @@ sess_auth_kerberos(struct sess_data *sess_data)
- 	sess_data->iov[1].iov_len = msg->secblob_len;
- 	pSMB->req.SecurityBlobLength = cpu_to_le16(sess_data->iov[1].iov_len);
- 
--	if (ses->capabilities & CAP_UNICODE) {
-+	if (pSMB->req.hdr.Flags2 & SMBFLG2_UNICODE) {
- 		/* unicode strings must be word aligned */
- 		if (!IS_ALIGNED(sess_data->iov[0].iov_len + sess_data->iov[1].iov_len, 2)) {
- 			*bcc_ptr = 0;
-@@ -1606,8 +1626,8 @@ sess_auth_kerberos(struct sess_data *sess_data)
- 		unicode_oslm_strings(&bcc_ptr, sess_data->nls_cp);
- 		unicode_domain_string(&bcc_ptr, ses, sess_data->nls_cp);
- 	} else {
--		/* BB: is this right? */
--		ascii_ssetup_strings(&bcc_ptr, ses, sess_data->nls_cp);
-+		ascii_oslm_strings(&bcc_ptr, sess_data->nls_cp);
-+		ascii_domain_string(&bcc_ptr, ses, sess_data->nls_cp);
- 	}
- 
- 	sess_data->iov[2].iov_len = (long) bcc_ptr -
+ 	ret = perf_ops->freq_get(ph, priv->domain_id, &rate, false);
+ 	if (ret)
+ 		return 0;
 -- 
 2.39.5
 
