@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF825AA1A15
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF93AA18E6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85B0D9C5BB4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1618C1BC78B8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66AA253325;
-	Tue, 29 Apr 2025 18:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F58243964;
+	Tue, 29 Apr 2025 18:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2yAHEaB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgMo93qW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C724367;
-	Tue, 29 Apr 2025 18:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38847221D92;
+	Tue, 29 Apr 2025 18:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950390; cv=none; b=rrDqAgdW5gQmH7QPYBsd8IZiiQVir0IYvGbcC2vkDQ74wM/pcf9xbWsIBG3NJPKYdme1VwmF83MuHd0m+m+6wVPbjmG01Mkse8BL/WRcH7GGqh9omxXHCKUPJu08kWhc2yk56+mZ6R81sEVR7QIAb2NwZKgpYP1u0lluenxS4sk=
+	t=1745949894; cv=none; b=YdVEr0+6btD5F194pYZwr3RGpqcPW62HJGvEEM/zoDv30ndO5cXOXutxNAZpjACpnZb6Fllns1iSf5JHcDV74r0u0W44kP2vE8JPQAEBYuIyd16NI//K/XOsNCr6JKD02PODk40VqbAoSLHvlYh1Nb+U+OA9jcG6lWZ8wmF8jmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950390; c=relaxed/simple;
-	bh=SFy9aLAlmt5Q8nDrKaQu/JYkHlap+vihtEvDDUHh6rM=;
+	s=arc-20240116; t=1745949894; c=relaxed/simple;
+	bh=oCBE3xGyo7b1r5IFcMxvdLPtdPKjwVPERuMtpUCPKMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j0jgR4RApdthqBoLMBoWWibCcUQkaRNkAn+45mKfviW+ztgrZ2EixGW5z5SQ6gQlu9PuU1s4JtOOiQuU+B2zQJUjklcM0Cya37Cdh4ZXKEMjDew2dn/9/8GC1W48tlVmsJhIU1ISnN1BB2xyVlYavmPnb1AaBJ5iXfzrw8DTgQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2yAHEaB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D682AC4CEE3;
-	Tue, 29 Apr 2025 18:13:09 +0000 (UTC)
+	 MIME-Version; b=oN1PiT+hBUZAcimb6OEI7wVcHimi2HWevC/a/HOUe88/NkeWe6bfPPvl6GUwnts5j5YsSMEusYSvEaSawex77fGzlZQ+h3EiMrfW2Oinl0t4wE/JODIZrv9yo/2kA+03g3O47KzY1oRlF9P81cxQLKUJ6kFpHvjFxboFIOQ1R6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgMo93qW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF41C4CEE3;
+	Tue, 29 Apr 2025 18:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950390;
-	bh=SFy9aLAlmt5Q8nDrKaQu/JYkHlap+vihtEvDDUHh6rM=;
+	s=korg; t=1745949894;
+	bh=oCBE3xGyo7b1r5IFcMxvdLPtdPKjwVPERuMtpUCPKMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u2yAHEaBkyFxrcp7yJp9FAMmFFNyHhTAgsB5WPd9SeQV/wpuOLFezbmQs5nrTGG8u
-	 BF+js5GrBoa/epn3iKWFsuDPy9PpWA1beOVFj9c7f4ICPsAEhKt4hEI4SeJxQGX4Ry
-	 MmcYkwGWGBtTioBTzkbsKuwMzvD/Nnpyshcih538=
+	b=cgMo93qWWs3i4RleNKwqYF8CvingAK6qU5VTQV2G0Se8oLMDhSo4bcf0631/3xfjz
+	 0OIdJdoT7nSAmd143m0PxjN32taqgHNe0Hv5HKyh1FfwjAX7gHd2Gt51WHX/cZsnht
+	 b7ZA8TUEcRnd3fskPvpW5t6e86oxvYCAI227C/0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Petr Tesarik <ptesarik@suse.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 081/204] LoongArch: Remove a bogus reference to ZONE_DMA
+	Peter Robinson <pbrobinson@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Ladislav Michl <ladis@triops.cz>
+Subject: [PATCH 6.1 061/167] wifi: rtw88: use ieee80211_purge_tx_queue() to purge TX skb
 Date: Tue, 29 Apr 2025 18:42:49 +0200
-Message-ID: <20250429161102.733124385@linuxfoundation.org>
+Message-ID: <20250429161054.240292255@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Tesarik <ptesarik@suse.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-commit c37325cbd91abe3bfab280b3b09947155abe8e07 upstream.
+commit 3e5e4a801aaf4283390cc34959c6c48f910ca5ea upstream.
 
-Remove dead code. LoongArch does not have a DMA memory zone (24bit DMA).
-The architecture does not even define MAX_DMA_PFN.
+When removing kernel modules by:
+   rmmod rtw88_8723cs rtw88_8703b rtw88_8723x rtw88_sdio rtw88_core
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Petr Tesarik <ptesarik@suse.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Driver uses skb_queue_purge() to purge TX skb, but not report tx status
+causing "Have pending ack frames!" warning. Use ieee80211_purge_tx_queue()
+to correct this.
+
+Since ieee80211_purge_tx_queue() doesn't take locks, to prevent racing
+between TX work and purge TX queue, flush and destroy TX work in advance.
+
+   wlan0: deauthenticating from aa:f5:fd:60:4c:a8 by local
+     choice (Reason: 3=DEAUTH_LEAVING)
+   ------------[ cut here ]------------
+   Have pending ack frames!
+   WARNING: CPU: 3 PID: 9232 at net/mac80211/main.c:1691
+       ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
+   CPU: 3 PID: 9232 Comm: rmmod Tainted: G         C
+       6.10.1-200.fc40.aarch64 #1
+   Hardware name: pine64 Pine64 PinePhone Braveheart
+      (1.1)/Pine64 PinePhone Braveheart (1.1), BIOS 2024.01 01/01/2024
+   pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+   pc : ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
+   lr : ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
+   sp : ffff80008c1b37b0
+   x29: ffff80008c1b37b0 x28: ffff000003be8000 x27: 0000000000000000
+   x26: 0000000000000000 x25: ffff000003dc14b8 x24: ffff80008c1b37d0
+   x23: ffff000000ff9f80 x22: 0000000000000000 x21: 000000007fffffff
+   x20: ffff80007c7e93d8 x19: ffff00006e66f400 x18: 0000000000000000
+   x17: ffff7ffffd2b3000 x16: ffff800083fc0000 x15: 0000000000000000
+   x14: 0000000000000000 x13: 2173656d61726620 x12: 6b636120676e6964
+   x11: 0000000000000000 x10: 000000000000005d x9 : ffff8000802af2b0
+   x8 : ffff80008c1b3430 x7 : 0000000000000001 x6 : 0000000000000001
+   x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
+   x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000003be8000
+   Call trace:
+    ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
+    idr_for_each+0x74/0x110
+    ieee80211_free_hw+0x44/0xe8 [mac80211]
+    rtw_sdio_remove+0x9c/0xc0 [rtw88_sdio]
+    sdio_bus_remove+0x44/0x180
+    device_remove+0x54/0x90
+    device_release_driver_internal+0x1d4/0x238
+    driver_detach+0x54/0xc0
+    bus_remove_driver+0x78/0x108
+    driver_unregister+0x38/0x78
+    sdio_unregister_driver+0x2c/0x40
+    rtw_8723cs_driver_exit+0x18/0x1000 [rtw88_8723cs]
+    __do_sys_delete_module.isra.0+0x190/0x338
+    __arm64_sys_delete_module+0x1c/0x30
+    invoke_syscall+0x74/0x100
+    el0_svc_common.constprop.0+0x48/0xf0
+    do_el0_svc+0x24/0x38
+    el0_svc+0x3c/0x158
+    el0t_64_sync_handler+0x120/0x138
+    el0t_64_sync+0x194/0x198
+   ---[ end trace 0000000000000000 ]---
+
+Reported-by: Peter Robinson <pbrobinson@gmail.com>
+Closes: https://lore.kernel.org/linux-wireless/CALeDE9OAa56KMzgknaCD3quOgYuEHFx9_hcT=OFgmMAb+8MPyA@mail.gmail.com/
+Tested-by: Ping-Ke Shih <pkshih@realtek.com> # 8723DU
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240822014255.10211-2-pkshih@realtek.com
+Signed-off-by: Ladislav Michl <ladis@triops.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/mm/init.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/wireless/realtek/rtw88/main.c |    2 +-
+ drivers/net/wireless/realtek/rtw88/tx.c   |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/mm/init.c
-+++ b/arch/loongarch/mm/init.c
-@@ -64,9 +64,6 @@ void __init paging_init(void)
- {
- 	unsigned long max_zone_pfns[MAX_NR_ZONES];
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -2146,7 +2146,7 @@ void rtw_core_deinit(struct rtw_dev *rtw
  
--#ifdef CONFIG_ZONE_DMA
--	max_zone_pfns[ZONE_DMA] = MAX_DMA_PFN;
--#endif
- #ifdef CONFIG_ZONE_DMA32
- 	max_zone_pfns[ZONE_DMA32] = MAX_DMA32_PFN;
- #endif
+ 	destroy_workqueue(rtwdev->tx_wq);
+ 	spin_lock_irqsave(&rtwdev->tx_report.q_lock, flags);
+-	skb_queue_purge(&rtwdev->tx_report.queue);
++	ieee80211_purge_tx_queue(rtwdev->hw, &rtwdev->tx_report.queue);
+ 	skb_queue_purge(&rtwdev->coex.queue);
+ 	spin_unlock_irqrestore(&rtwdev->tx_report.q_lock, flags);
+ 
+--- a/drivers/net/wireless/realtek/rtw88/tx.c
++++ b/drivers/net/wireless/realtek/rtw88/tx.c
+@@ -169,7 +169,7 @@ void rtw_tx_report_purge_timer(struct ti
+ 	rtw_warn(rtwdev, "failed to get tx report from firmware\n");
+ 
+ 	spin_lock_irqsave(&tx_report->q_lock, flags);
+-	skb_queue_purge(&tx_report->queue);
++	ieee80211_purge_tx_queue(rtwdev->hw, &tx_report->queue);
+ 	spin_unlock_irqrestore(&tx_report->q_lock, flags);
+ }
+ 
 
 
 
