@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965A6AA1414
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2BEAA1307
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9734E4A1F91
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:10:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78D6A16983A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2054213E67;
-	Tue, 29 Apr 2025 17:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5053924E016;
+	Tue, 29 Apr 2025 16:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKUV1wH8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsusWBQI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EE61DF73C;
-	Tue, 29 Apr 2025 17:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D82B244668;
+	Tue, 29 Apr 2025 16:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946607; cv=none; b=FPGQ1dZAU1qi62LkttMSvUQKH1uaPmv43J7biOrhjJ5TxZMB/rg7fukwXYqaWtctjmOQsf6PjbuCFm/IGoruG6q95PyewPKvbgr8cj9b2WdEmsCSWZawWiCeOWDj4aVp1WYQF98K/0cx57To9f9VhqiplEEc6TSxSSKGcnQJs9s=
+	t=1745945878; cv=none; b=pTnJK495g9/zEYe+j+Mrr/qK4qIwB14qjfVzAKGqYDCaV4d7c5WODLpMSvbfiT59DOZkBRsXUKuHPa0ChPNCG2kO0KdLjKJPbSUJS3qu/IVzmCAywkCraVbTKpIS5qlovu5/p+ZF1LgpT1SZybz01LaHXVIrLDkNW8vRwqN5pF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946607; c=relaxed/simple;
-	bh=XhhZPtw5xIDdjCD4t6PgS7QF0+pv3+XxAclFBmDkUv8=;
+	s=arc-20240116; t=1745945878; c=relaxed/simple;
+	bh=K9VGDbvHvKE4O47DwC0Yclzh9ZMN/IBAwN2YGU/jFmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hfbk9l/UZ0l5IUm3yeOoapPCVkktxR3e0F5QtGA9G+kCrFhJbif3oiPDCGqZNAXTxmNCZ/7GAo0QjHRRvEGlrIrhsmSLHmWdygluoFI9InTzLom3RF7vBVwDLjzOULFW9C4gEDH3oLHI8E4H+6WzbKvSkSMOXeHDb6N959+/x60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKUV1wH8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94940C4CEE3;
-	Tue, 29 Apr 2025 17:10:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OBhquStpa44mlEPsJRFmQqC2abq/TY3M/caX9ap4raJ0LmPHyEn35RcvrZb09kqj5UotnyBg7TqDrj2w5sBdyxL792cWwmYZeHriqllr4P9KkLxVkqV8ONNvrOf4pnTTkT4dbyPvP0lTwnBYF0fh+SR4S0xrJQNuAA9V/jWNtbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsusWBQI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A43DC4CEE9;
+	Tue, 29 Apr 2025 16:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946607;
-	bh=XhhZPtw5xIDdjCD4t6PgS7QF0+pv3+XxAclFBmDkUv8=;
+	s=korg; t=1745945877;
+	bh=K9VGDbvHvKE4O47DwC0Yclzh9ZMN/IBAwN2YGU/jFmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uKUV1wH8Dmb1dnhG2FmRbzawr06UXjqC13BYZFFu7f2tZD1flZ9RlRTO3v+MRZSKO
-	 8atxSIimj9YrslH7jTWyqeoS4jBRKjFhaQd0nvtz8OTcfONrXkX6Wz88cR2SuVT/TE
-	 DTfzuCTCtxa6LidEmVxHSZSVOixMsPpT/s3HaoBM=
+	b=HsusWBQIid69xPmkb4PriG/Rlrigj1MzWa8iN9jVmNru8f1x8w3AGJsHX5eGMGA+h
+	 Aqybl9/9wBTQ/V6/MhMatuFA7uPG0x4AAGTAoI2HIAEYTvlZ9dbOf7eBu+a/wYyOqn
+	 Hwv5HcwKf4qj2YpghMZt2oJUfqihv7dPxyDhMg40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 011/286] pm: cpupower: bench: Prevent NULL dereference on malloc failure
-Date: Tue, 29 Apr 2025 18:38:35 +0200
-Message-ID: <20250429161108.318769156@linuxfoundation.org>
+Subject: [PATCH 6.14 079/311] net: stmmac: fix multiplication overflow when reading timestamp
+Date: Tue, 29 Apr 2025 18:38:36 +0200
+Message-ID: <20250429161124.283014066@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-[ Upstream commit 208baa3ec9043a664d9acfb8174b332e6b17fb69 ]
+[ Upstream commit 7b7491372f8ec2d8c08da18e5d629e55f41dda89 ]
 
-If malloc returns NULL due to low memory, 'config' pointer can be NULL.
-Add a check to prevent NULL dereference.
+The current way of reading a timestamp snapshot in stmmac can lead to
+integer overflow, as the computation is done on 32 bits. The issue has
+been observed on a dwmac-socfpga platform returning chaotic timestamp
+values due to this overflow. The corresponding multiplication is done
+with a MUL instruction, which returns 32 bit values. Explicitly casting
+the value to 64 bits replaced the MUL with a UMLAL, which computes and
+returns the result on 64 bits, and so returns correctly the timestamps.
 
-Link: https://lore.kernel.org/r/20250219122715.3892223-1-quic_zhonhan@quicinc.com
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Prevent this overflow by explicitly casting the intermediate value to
+u64 to make sure that the whole computation is made on u64. While at it,
+apply the same cast on the other dwmac variant (GMAC4) method for
+snapshot retrieval.
+
+Fixes: 477c3e1f6363 ("net: stmmac: Introduce dwmac1000 timestamping operations")
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250423-stmmac_ts-v2-2-e2cf2bbd61b1@bootlin.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/bench/parse.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c  | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/power/cpupower/bench/parse.c b/tools/power/cpupower/bench/parse.c
-index e63dc11fa3a53..48e25be6e1635 100644
---- a/tools/power/cpupower/bench/parse.c
-+++ b/tools/power/cpupower/bench/parse.c
-@@ -120,6 +120,10 @@ FILE *prepare_output(const char *dirname)
- struct config *prepare_default_config()
- {
- 	struct config *config = malloc(sizeof(struct config));
-+	if (!config) {
-+		perror("malloc");
-+		return NULL;
-+	}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
+index 96bcda0856ec6..11c525b8d2698 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
+@@ -560,7 +560,7 @@ void dwmac1000_get_ptptime(void __iomem *ptpaddr, u64 *ptp_time)
+ 	u64 ns;
  
- 	dprintf("loading defaults\n");
+ 	ns = readl(ptpaddr + GMAC_PTP_ATNR);
+-	ns += readl(ptpaddr + GMAC_PTP_ATSR) * NSEC_PER_SEC;
++	ns += (u64)readl(ptpaddr + GMAC_PTP_ATSR) * NSEC_PER_SEC;
  
+ 	*ptp_time = ns;
+ }
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+index 0f59aa9826040..e2840fa241f29 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+@@ -222,7 +222,7 @@ static void get_ptptime(void __iomem *ptpaddr, u64 *ptp_time)
+ 	u64 ns;
+ 
+ 	ns = readl(ptpaddr + PTP_ATNR);
+-	ns += readl(ptpaddr + PTP_ATSR) * NSEC_PER_SEC;
++	ns += (u64)readl(ptpaddr + PTP_ATSR) * NSEC_PER_SEC;
+ 
+ 	*ptp_time = ns;
+ }
 -- 
 2.39.5
 
