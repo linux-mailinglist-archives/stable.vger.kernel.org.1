@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-137946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1EEDAA161A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8E6AA1339
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEE14984B15
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05E997AE674
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96FB2472B4;
-	Tue, 29 Apr 2025 17:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90011FE468;
+	Tue, 29 Apr 2025 17:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3zzwzV7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ya/Rl+eW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9451F18BBBB;
-	Tue, 29 Apr 2025 17:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92875229B05;
+	Tue, 29 Apr 2025 17:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947614; cv=none; b=TDKQ7nWpvZdDBcP3l1UhgbFaDwLJroEcttJ6NPV7GDAmYvIp2wE06NvKqflnegOsvrT3QRlcQ2CyWVhHJ45rI+zBWoxyRMllTu6nehKj+scVi/qaxkb3Csv+Nu3YIwoeN5EZ+sS2DoVgqRDv9ofTFAQY0SbaPbLTGwPfQSaWiOI=
+	t=1745946191; cv=none; b=il0D/0/Tz2Uws0pPb1EYIhLB+L+wHbpyJuHq/+NiPb6yAsvaq2XpDNC1JGgkf06U2NCflERIeoKy+vjP1jZvSYTNlEAPPzfPLIuWicyjv987yTJFiiOr3EO3CrsAbqnXSak7+UYP+dZXCcYfZcrl58Hbi/+SsOY2yZ4KXQK6Y8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947614; c=relaxed/simple;
-	bh=TfdTvi5ahJS1yHfDlqpnKrjPxbrWrs5/IcO/k10XfPM=;
+	s=arc-20240116; t=1745946191; c=relaxed/simple;
+	bh=UvnoctLgWZKjZQVOWghBgpGHgOCVVRJbd0iEZ6w0/CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZdSK+DPu2KMUf/aL9mYBIDuy2R77WbZ0YplaTQQ9lxVk45gzvSpNoIkI+BA5ayY9/yS0qmSwPRvpqWMzeAGG2NRqHr5Xj+WMAwMgp9MaoCSSy/V7W/oW5d8oC8cf1yWPPAtAzeahNUxHeSh5A2w8v79K6giShA4ioFJd9KIp3to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3zzwzV7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A48C4CEE3;
-	Tue, 29 Apr 2025 17:26:53 +0000 (UTC)
+	 MIME-Version; b=iAP+vEZic6Welpblqq68fgS7Ix6Ci8hMCvrWGgINUfHefHM32kwAmNFWbPVsTnjQW8yDvRbbUNdNlEyxyDXKtf1gJG0k1sTo9EteGN1jB46LV3Pb2mBtA+pStqvvy/Ogkgm+9psaVnzq7DdkZgeuMb31+i85ZJ0Y1bE7aqAOVCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ya/Rl+eW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F91C4CEE3;
+	Tue, 29 Apr 2025 17:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947614;
-	bh=TfdTvi5ahJS1yHfDlqpnKrjPxbrWrs5/IcO/k10XfPM=;
+	s=korg; t=1745946191;
+	bh=UvnoctLgWZKjZQVOWghBgpGHgOCVVRJbd0iEZ6w0/CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3zzwzV77FcCjxJ230rnwUGtBRI+eHBzf15CCpntx+aVfrEBIBsUsYmi+/ai0HcNX
-	 5gpfq23sHc8swj8TvS+nq1RV1CK5H2dyNwkZFE0RaYoCtBujtxVAoOoGxvCVg3Roi3
-	 KmoIN3yoWOXHiFDC7T52PnsNJZRwWnfAAeogCE2I=
+	b=Ya/Rl+eWoJtF+reYF5kheXzQnr6w6uO+lF0fvpZkywbtVNsIaqc3iLnzyjckLnKTD
+	 viAYwBzTZS+6jYARHKGUmfdmiAc3h9I0nLzBa8duGoghF5voCnMQ+3Jh1VLBUvaBfL
+	 9ODsHzWn/2LHvTbOACK1Nzl1B8zzW+ySlM4gFZUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/280] dma/contiguous: avoid warning about unused size_bytes
+	Adam Xue <zxue@semtech.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.14 156/311] USB: serial: option: add Sierra Wireless EM9291
 Date: Tue, 29 Apr 2025 18:39:53 +0200
-Message-ID: <20250429161117.252985987@linuxfoundation.org>
+Message-ID: <20250429161127.423035040@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Adam Xue <zxue@semtech.com>
 
-[ Upstream commit d7b98ae5221007d3f202746903d4c21c7caf7ea9 ]
+commit 968e1cbb1f6293c3add9607f80b5ce3d29f57583 upstream.
 
-When building with W=1, this variable is unused for configs with
-CONFIG_CMA_SIZE_SEL_PERCENTAGE=y:
+Add Sierra Wireless EM9291.
 
-kernel/dma/contiguous.c:67:26: error: 'size_bytes' defined but not used [-Werror=unused-const-variable=]
+Interface 0: MBIM control
+          1: MBIM data
+          3: AT port
+          4: Diagnostic port
 
-Change this to a macro to avoid the warning.
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1199 ProdID=90e3 Rev=00.06
+S:  Manufacturer=Sierra Wireless, Incorporated
+S:  Product=Sierra Wireless EM9291
+S:  SerialNumber=xxxxxxxxxxxxxxxx
+C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=(none)
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fixes: c64be2bb1c6e ("drivers: add Contiguous Memory Allocator")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20250409151557.3890443-1-arnd@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Adam Xue <zxue@semtech.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/contiguous.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
-index 055da410ac71d..8df0dfaaca18e 100644
---- a/kernel/dma/contiguous.c
-+++ b/kernel/dma/contiguous.c
-@@ -64,8 +64,7 @@ struct cma *dma_contiguous_default_area;
-  * Users, who want to set the size of global CMA area for their system
-  * should use cma= kernel parameter.
-  */
--static const phys_addr_t size_bytes __initconst =
--	(phys_addr_t)CMA_SIZE_MBYTES * SZ_1M;
-+#define size_bytes ((phys_addr_t)CMA_SIZE_MBYTES * SZ_1M)
- static phys_addr_t  size_cmdline __initdata = -1;
- static phys_addr_t base_cmdline __initdata;
- static phys_addr_t limit_cmdline __initdata;
--- 
-2.39.5
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -611,6 +611,7 @@ static void option_instat_callback(struc
+ /* Sierra Wireless products */
+ #define SIERRA_VENDOR_ID			0x1199
+ #define SIERRA_PRODUCT_EM9191			0x90d3
++#define SIERRA_PRODUCT_EM9291			0x90e3
+ 
+ /* UNISOC (Spreadtrum) products */
+ #define UNISOC_VENDOR_ID			0x1782
+@@ -2432,6 +2433,8 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
 
 
 
