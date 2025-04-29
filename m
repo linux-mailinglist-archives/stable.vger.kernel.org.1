@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-137793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484E1AA153B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18574AA181C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CD743ACA91
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B6943A63F6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8422F21ABDB;
-	Tue, 29 Apr 2025 17:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721CA2472B9;
+	Tue, 29 Apr 2025 17:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4ijzq4X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/rR2TJ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438CD221DA7;
-	Tue, 29 Apr 2025 17:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDD5233735;
+	Tue, 29 Apr 2025 17:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947145; cv=none; b=g8g+8iYDyxTMn2uAf86w8EYIZuk1xkl+ae5aubSaM+VVxHiqGABcsOc9vjzgkg3iszil7TmHXugPZJn/TybePRH8r5/lOu4rsWB8G9RwkWEK7PYPPabAvqlkxV7wKBEhndKs9JwN3MxU4EH7TFNJkztgs7G9tywXU1npP9jm5Ws=
+	t=1745949104; cv=none; b=JXQkWCMwNWShFblIUaCIRfIB+LqyotV1JedkzYNnkbPxF+uaYXUqS4PHPTFpzC59pZupY3NCLy0/vJ9djm0QD37r9qZ1rXdJO4St8jdX+m/ViImagyJmiMlTJI+OBEZBGydLThAug7AOpPUDtmjJOQumnk21/jolidgsmxUk3GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947145; c=relaxed/simple;
-	bh=b28HevihXxFILrS3HBBIr7AWk4RPpAO6kA4ZsaQh4AQ=;
+	s=arc-20240116; t=1745949104; c=relaxed/simple;
+	bh=hE+BSLewlo1KIrKLU/dxM0nNgPYdYa7Y1Ldt/+Q5OYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cnzIYnbwXp3GkNQ8Lhi+3Grp6iS/0lb+7e5UwRu7gQ8kXclmeEflfFn1Nk/WOnj6SWs9c2r9GwOHxveUHNBbBjRpcN3Wsv+r64EJo5WbhqpAzkz/9/lzSMAVjCI8Ao5bIyxI5SF39KVhbibEr/dRe3EvxiX7drQxj6vt0JXhhzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4ijzq4X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A521CC4CEE3;
-	Tue, 29 Apr 2025 17:19:04 +0000 (UTC)
+	 MIME-Version; b=FmCndJk6h9EvgViQgV8VkXDa+HI0PIIcy86+kSHpmhBLeWIlNCukicpHOnrbzixzyN+pQFiebrsL4O3BtJ5xhQ07gYtUAwotRfcA9//kMqH36exZZYbHuDTSDx6/9Ew7exoImhZicSmqj2xmqWSbzRROpEpTJnnzUoJ6j2z1PJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/rR2TJ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95CBC4CEE3;
+	Tue, 29 Apr 2025 17:51:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947145;
-	bh=b28HevihXxFILrS3HBBIr7AWk4RPpAO6kA4ZsaQh4AQ=;
+	s=korg; t=1745949104;
+	bh=hE+BSLewlo1KIrKLU/dxM0nNgPYdYa7Y1Ldt/+Q5OYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p4ijzq4XI4luzSHd4HVf0muN5HYzP6N/hD5ofhNSzOTZ4mE4PpPIeiA3Rx7GYc154
-	 rzad6ztNE6DKEAR2A6laxrVGghuICD6ZBOaz1HB9iB+idMg+Ef53dGKJHOOTnpJ3l8
-	 F1O/pX3CnobPlrpjrfOj0ljQdKYTKyfpvtDOUpck=
+	b=o/rR2TJ7d9z2QIaZORDG9yKaN3cQq2unuv0ZYHdjNd2WWvrr46ahxhlc68IUlw07B
+	 SJ1J6vYCuXbECUchyHaj5J/kvn5TNUiYMoRynp5o3ePoOO6Ct8Np/D6KtljvATdBKy
+	 xt1gVmLarVig5UZVdkH5ZcRifG4prHHaEBFvhHG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	David Sauerwein <dssauerw@amazon.de>
-Subject: [PATCH 5.10 186/286] kernel/resource: fix kfree() of bootmem memory again
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.15 213/373] drm/amd/display: Stop amdgpu_dm initialize when link nums greater than max_links
 Date: Tue, 29 Apr 2025 18:41:30 +0200
-Message-ID: <20250429161115.622333440@linuxfoundation.org>
+Message-ID: <20250429161131.920887319@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,98 +66,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-commit 0cbcc92917c5de80f15c24d033566539ad696892 upstream.
+commit cf8b16857db702ceb8d52f9219a4613363e2b1cf upstream.
 
-Since commit ebff7d8f270d ("mem hotunplug: fix kfree() of bootmem
-memory"), we could get a resource allocated during boot via
-alloc_resource().  And it's required to release the resource using
-free_resource().  Howerver, many people use kfree directly which will
-result in kernel BUG.  In order to fix this without fixing every call
-site, just leak a couple of bytes in such corner case.
+[Why]
+Coverity report OVERRUN warning. There are
+only max_links elements within dc->links. link
+count could up to AMDGPU_DM_MAX_DISPLAY_INDEX 31.
 
-Link: https://lkml.kernel.org/r/20220217083619.19305-1-linmiaohe@huawei.com
-Fixes: ebff7d8f270d ("mem hotunplug: fix kfree() of bootmem memory")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: David Sauerwein <dssauerw@amazon.de>
+[How]
+Make sure link count less than max_links.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[Minor conflict resolved due to code context change. And the macro MAX_LINKS
+ is introduced by Commit 60df5628144b ("drm/amd/display: handle invalid
+ connector indices") after 6.10. So here we still use the original array
+ length MAX_PIPES * 2]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/resource.c |   41 ++++++++---------------------------------
- 1 file changed, 8 insertions(+), 33 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -53,14 +53,6 @@ struct resource_constraint {
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4321,17 +4321,17 @@ static int amdgpu_dm_initialize_drm_devi
+ 	}
+ #endif
  
- static DEFINE_RWLOCK(resource_lock);
++	if (link_cnt > (MAX_PIPES * 2)) {
++		DRM_ERROR(
++			"KMS: Cannot support more than %d display indexes\n",
++				MAX_PIPES * 2);
++		goto fail;
++	}
++
+ 	/* loops over all connectors on the board */
+ 	for (i = 0; i < link_cnt; i++) {
+ 		struct dc_link *link = NULL;
  
--/*
-- * For memory hotplug, there is no way to free resource entries allocated
-- * by boot mem after the system is up. So for reusing the resource entry
-- * we need to remember the resource.
-- */
--static struct resource *bootmem_resource_free;
--static DEFINE_SPINLOCK(bootmem_resource_lock);
+-		if (i > AMDGPU_DM_MAX_DISPLAY_INDEX) {
+-			DRM_ERROR(
+-				"KMS: Cannot support more than %d display indexes\n",
+-					AMDGPU_DM_MAX_DISPLAY_INDEX);
+-			continue;
+-		}
 -
- static struct resource *next_resource(struct resource *p, bool sibling_only)
- {
- 	/* Caller wants to traverse through siblings only */
-@@ -149,36 +141,19 @@ __initcall(ioresources_init);
- 
- static void free_resource(struct resource *res)
- {
--	if (!res)
--		return;
--
--	if (!PageSlab(virt_to_head_page(res))) {
--		spin_lock(&bootmem_resource_lock);
--		res->sibling = bootmem_resource_free;
--		bootmem_resource_free = res;
--		spin_unlock(&bootmem_resource_lock);
--	} else {
-+	/**
-+	 * If the resource was allocated using memblock early during boot
-+	 * we'll leak it here: we can only return full pages back to the
-+	 * buddy and trying to be smart and reusing them eventually in
-+	 * alloc_resource() overcomplicates resource handling.
-+	 */
-+	if (res && PageSlab(virt_to_head_page(res)))
- 		kfree(res);
--	}
- }
- 
- static struct resource *alloc_resource(gfp_t flags)
- {
--	struct resource *res = NULL;
--
--	spin_lock(&bootmem_resource_lock);
--	if (bootmem_resource_free) {
--		res = bootmem_resource_free;
--		bootmem_resource_free = res->sibling;
--	}
--	spin_unlock(&bootmem_resource_lock);
--
--	if (res)
--		memset(res, 0, sizeof(struct resource));
--	else
--		res = kzalloc(sizeof(struct resource), flags);
--
--	return res;
-+	return kzalloc(sizeof(struct resource), flags);
- }
- 
- /* Return the conflict entry if you can't request it */
+ 		aconnector = kzalloc(sizeof(*aconnector), GFP_KERNEL);
+ 		if (!aconnector)
+ 			goto fail;
 
 
 
