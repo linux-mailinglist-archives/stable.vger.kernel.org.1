@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-138361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC39AA1801
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:54:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D93AA128B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:55:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B259E9805E3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F3D23BC116
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC5D24BD02;
-	Tue, 29 Apr 2025 17:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B200423FC7D;
+	Tue, 29 Apr 2025 16:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vd/jCMEc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ckg1EK4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D0E21ABC1;
-	Tue, 29 Apr 2025 17:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB7621772B;
+	Tue, 29 Apr 2025 16:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948986; cv=none; b=qBajvT4PzCAp4/qocO9EQCwbzDIA9Md1mW4V475LMo9K5vbc4Kw0e0eg1YWDgZJeEDf9lsN39MG+5+WxOhAP1JP4iRYT241UGxAHIpWjTmSgsVaAbspXaNoDmDyf6EurUqlr8a0Im32OFwJdcmYPzNxw1LbwuMZl61AMaUJhYHc=
+	t=1745945508; cv=none; b=tHjxSK3YoT5K8Tjmh8gw5MBHrVQqMOjEfGMboGDlR+ioRfZ/zPDMC5Ox3vT1PJ2XfZ0YxqP0YVezALwYL84FkVm0XeBlNX7mysuhNSIE20tUYW9ULXE2eGQ2m7hPydiDQQ3IdpW2/3YxLwXpZ8p+CerzN3679K5qWJob49exawM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948986; c=relaxed/simple;
-	bh=WSMwajCTIJa5pi4fhBFdCeuREMJZb0S5vS3ZcteIGnk=;
+	s=arc-20240116; t=1745945508; c=relaxed/simple;
+	bh=hRIixV9ecQgXZvV71zeHkqjUiR27hHPFgRa7XOm8Snk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DxNBJxOVhvxxw7gjj0t7Hf62zF0oWX9V6l82jYZc97aUqg+ETPMUn1XOBw9S0+LHuHyu7E+0w+eYAZL/mSWm64d4MyLxRh2d0fmXHZCTcCR3yg/dZZilp5Q6saclMfYGCQ3wEeTzU4Lp+/GPZYnhuSbKHf/UJVBXPmcbzAa8Jfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vd/jCMEc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD97C4CEE3;
-	Tue, 29 Apr 2025 17:49:45 +0000 (UTC)
+	 MIME-Version; b=qkeDVNslS0j5c9PLMavwwZrrUlABSgg3RCvkNL/i90BbDHfcWTok740qgnj34twUjOrP09QuSF5EJ/vHNWZ/7yXUeU7rlPjP4DQ+kgoFc5/OfzLKccVhOHyeSVGkG2vunNzNAUHSqV2sqN4p9X4BzneqnWosc4uQ605Mi1FjZcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ckg1EK4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34E9C4CEE3;
+	Tue, 29 Apr 2025 16:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948985;
-	bh=WSMwajCTIJa5pi4fhBFdCeuREMJZb0S5vS3ZcteIGnk=;
+	s=korg; t=1745945508;
+	bh=hRIixV9ecQgXZvV71zeHkqjUiR27hHPFgRa7XOm8Snk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vd/jCMEcN64M3viQr7wlkuDDIASKNTudqSzxJ30CAbaNJ4heFaobBKSZ0904IsPtH
-	 6H6/GWBGqbI+2RegwsrUDLQFTKWn/Q8sNMO58eJnr7QTKkzQrGcs2CWN77G8NevjOJ
-	 bc4x5ibye7kFVtXlwXDVQH1/ygPsFEIqLqzHIrNw=
+	b=2ckg1EK470RdrNnrYwA/zl4TrWkDgoLYyCsSQaShwjhHEpoS5GXUCxdLoyBbGFS14
+	 itBL9ObQgdBLCf6LMvx2GPavL31MALa2gaVMsiWq7VJ3ZrFr6s1jBVttzmtZKeIVn5
+	 sDHTPR5Pph9zAleL5yXJplBSrPZCmeI6zvQ3MBGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 182/373] drm/amd/pm/powerplay/hwmgr/vega20_thermal: Prevent division by zero
-Date: Tue, 29 Apr 2025 18:40:59 +0200
-Message-ID: <20250429161130.649868683@linuxfoundation.org>
+	Seunghwan Baek <sh8267.baek@samsung.com>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Kamal Dasu <kamal.dasu@broadcom.com>
+Subject: [PATCH 5.4 119/179] mmc: cqhci: Fix checking of CQHCI_HALT state
+Date: Tue, 29 Apr 2025 18:41:00 +0200
+Message-ID: <20250429161054.217276826@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Seunghwan Baek <sh8267.baek@samsung.com>
 
-commit 4e3d9508c056d7e0a56b58d5c81253e2a0d22b6c upstream.
+commit aea62c744a9ae2a8247c54ec42138405216414da upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+To check if mmc cqe is in halt state, need to check set/clear of CQHCI_HALT
+bit. At this time, we need to check with &, not &&.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 031db09017da ("drm/amd/powerplay/vega20: enable fan RPM and pwm settings V2")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
 Cc: stable@vger.kernel.org
+Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
+Reviewed-by: Ritesh Harjani <ritesh.list@gmail.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240829061823.3718-2-sh8267.baek@samsung.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c |    2 +-
+ drivers/mmc/host/cqhci.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c
-@@ -191,7 +191,7 @@ int vega20_fan_ctrl_set_fan_speed_rpm(st
- 	uint32_t tach_period, crystal_clock_freq;
- 	int result = 0;
- 
--	if (!speed)
-+	if (!speed || speed > UINT_MAX/8)
- 		return -EINVAL;
- 
- 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl)) {
+--- a/drivers/mmc/host/cqhci.c
++++ b/drivers/mmc/host/cqhci.c
+@@ -580,7 +580,7 @@ static int cqhci_request(struct mmc_host
+ 		cqhci_writel(cq_host, 0, CQHCI_CTL);
+ 		mmc->cqe_on = true;
+ 		pr_debug("%s: cqhci: CQE on\n", mmc_hostname(mmc));
+-		if (cqhci_readl(cq_host, CQHCI_CTL) && CQHCI_HALT) {
++		if (cqhci_readl(cq_host, CQHCI_CTL) & CQHCI_HALT) {
+ 			pr_err("%s: cqhci: CQE failed to exit halt state\n",
+ 			       mmc_hostname(mmc));
+ 		}
 
 
 
