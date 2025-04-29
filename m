@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5408BAA1603
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BDBAA1808
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E2547AAD99
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B6245A7C24
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51787242D94;
-	Tue, 29 Apr 2025 17:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED092528F1;
+	Tue, 29 Apr 2025 17:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omRFMXdl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNzVmrMO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067F321883E;
-	Tue, 29 Apr 2025 17:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4522517A6;
+	Tue, 29 Apr 2025 17:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947998; cv=none; b=VbarZrkV3KOvpwucwYUznVcSlsj7CSIEc7FnVqV+xE7tm93aBZX/nZ0eRc2qK5nEc8wUhMj/20ksxe3SPZm1lANvCkZaX+b8K7pe/k4Hds8AqEeGd3TiucfM/GL+92hkrhqRdoVx+N4CCuoyHtUnrlA+24+UOZ/ZZOU1NH7DX/w=
+	t=1745949056; cv=none; b=LyiapY0R0i9c8BJg4FrWbSH7CHsr+riacMuvAUyc1Vg5a5EZfu/pb0S2mcYV96/gOLeQWnsFZVL4KhgG5/mdwq4Fc1GuNcgs3hk1cMYUcJDbiXJvbXOEishlaTFlvMYNmTtD14Q78T/9bfUqi3rYRooYDaGpuQYwrfe+OwnB+h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947998; c=relaxed/simple;
-	bh=jDiWURAzDIfBWeQyOVev4s/U/AaNdH2AiYPbTLk4gdI=;
+	s=arc-20240116; t=1745949056; c=relaxed/simple;
+	bh=IBi5DBzvNGc21STObI5dq6quhDr/ttRsgWFR/qLIpdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PCK6X1vghJRp0Njqp/xNRRTJijIliWDn4W+wjUx9TsmASQwjIpkjbD2nqnsUlH5nJulfqfXbSbfRj1l8/FmJzBmbXAlWnSBiXc791l/iKtiOpeUqlgpmkLz4HW7eq9McKU+IfPeRq6yel9Bn+GEOw8NfAiCWdAUy4+d7buNqP4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omRFMXdl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D80C4CEE3;
-	Tue, 29 Apr 2025 17:33:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MZPijBV+EzRCXir79o2RJgrbNMDD9gD9Ub+Vz3/Cq7ZxD6yp1KDJuT3Gncb32wtE96YvjwLgEFpj17bUZ85DoswBMGbw9fXpEwlFxmBFlmng5dgVWV5E7mJzlIwjkLfNb/RyGIwhjE54n/91e2ROV6Z/FD+lCiwV8CQyE58HJnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNzVmrMO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9FEC4CEE3;
+	Tue, 29 Apr 2025 17:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947997;
-	bh=jDiWURAzDIfBWeQyOVev4s/U/AaNdH2AiYPbTLk4gdI=;
+	s=korg; t=1745949056;
+	bh=IBi5DBzvNGc21STObI5dq6quhDr/ttRsgWFR/qLIpdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omRFMXdlR3bKmkMy9ZxZCuoQ32WJq8vq8N28EPly5TmVn4+eY3CiQtYUPl6MI4MXe
-	 go5hTnhmOSuIiKxt4CgdMmdbbjEmK72LFIIhwmwKr6IZRcplkc7H/NMRZcN9kMGwTW
-	 +Si8LyBRW+fujI2+FPkf8J5Pl6jo+tlW3fvQ+xWo=
+	b=rNzVmrMOAJ5RE09TPCtDBppWFoumpl4zlsYYoqA+zPOK3Rgf8rLMq2XcNfVnVowhm
+	 mksenW6quzFI69WgJY89aJLsqR79nm0uYsbgC+Yu4PYJjx2yRkFdrMrYWxLelyRzgP
+	 iN32t7lwOYt4hCw+hvzGP+Eyv+wmMNSYKeJvpbVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Kuangyi Chiang <ki.chiang65@gmail.com>
-Subject: [PATCH 6.12 137/280] usb: xhci: Fix invalid pointer dereference in Etron workaround
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 5.15 201/373] misc: pci_endpoint_test: Fix displaying irq_type after request_irq error
 Date: Tue, 29 Apr 2025 18:41:18 +0200
-Message-ID: <20250429161120.733804357@linuxfoundation.org>
+Message-ID: <20250429161131.435505563@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit 1ea050da5562af9b930d17cbbe9632d30f5df43a upstream.
+commit 919d14603dab6a9cf03ebbeb2cfa556df48737c8 upstream.
 
-This check is performed before prepare_transfer() and prepare_ring(), so
-enqueue can already point at the final link TRB of a segment. And indeed
-it will, some 0.4% of times this code is called.
+There are two variables that indicate the interrupt type to be used
+in the next test execution, global "irq_type" and "test->irq_type".
 
-Then enqueue + 1 is an invalid pointer. It will crash the kernel right
-away or load some junk which may look like a link TRB and cause the real
-link TRB to be replaced with a NOOP. This wouldn't end well.
+The former is referenced from pci_endpoint_test_get_irq() to preserve
+the current type for ioctl(PCITEST_GET_IRQTYPE).
 
-Use a functionally equivalent test which doesn't dereference the pointer
-and always gives correct result.
+In the pci_endpoint_test_request_irq(), since this global variable
+is referenced when an error occurs, the unintended error message is
+displayed.
 
-Something has crashed my machine twice in recent days while playing with
-an Etron HC, and a control transfer stress test ran for confirmation has
-just crashed it again. The same test passes with this patch applied.
+For example, after running "pcitest -i 2", the following message
+shows "MSI 3" even if the current IRQ type becomes "MSI-X":
 
-Fixes: 5e1c67abc930 ("xhci: Fix control transfer error on Etron xHCI host")
+  pci-endpoint-test 0000:01:00.0: Failed to request IRQ 30 for MSI 3
+  SET IRQ TYPE TO MSI-X:          NOT OKAY
+
+Fix this issue by using "test->irq_type" instead of global "irq_type".
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Reviewed-by: Kuangyi Chiang <ki.chiang65@gmail.com>
-Link: https://lore.kernel.org/r/20250410151828.2868740-5-mathias.nyman@linux.intel.com
+Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Link: https://lore.kernel.org/r/20250225110252.28866-4-hayashi.kunihiko@socionext.com
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |    2 +-
+ drivers/misc/pci_endpoint_test.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -3778,7 +3778,7 @@ int xhci_queue_ctrl_tx(struct xhci_hcd *
- 		 * enqueue a No Op TRB, this can prevent the Setup and Data Stage
- 		 * TRB to be breaked by the Link TRB.
- 		 */
--		if (trb_is_link(ep_ring->enqueue + 1)) {
-+		if (last_trb_on_seg(ep_ring->enq_seg, ep_ring->enqueue + 1)) {
- 			field = TRB_TYPE(TRB_TR_NOOP) | ep_ring->cycle_state;
- 			queue_trb(xhci, ep_ring, false, 0, 0,
- 					TRB_INTR_TARGET(0), field);
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -245,7 +245,7 @@ static bool pci_endpoint_test_request_ir
+ 	return true;
+ 
+ fail:
+-	switch (irq_type) {
++	switch (test->irq_type) {
+ 	case IRQ_TYPE_LEGACY:
+ 		dev_err(dev, "Failed to request IRQ %d for Legacy\n",
+ 			pci_irq_vector(pdev, i));
 
 
 
