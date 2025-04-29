@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-138216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D910FAA1709
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD912AA1466
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E07141A8648E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCC4A5A29FE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1499B253321;
-	Tue, 29 Apr 2025 17:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF0B2472AA;
+	Tue, 29 Apr 2025 17:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G93oZPSs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kh7O59n7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D6F227E95;
-	Tue, 29 Apr 2025 17:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A7B1DF73C;
+	Tue, 29 Apr 2025 17:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948538; cv=none; b=aDp6yNSaL7oEmezoDSYCzJsxY0jkvNPNVBPfed/5SelEYut7aJobxz16cAeo5wm3kPPHtpe7dVslTD5KKIQ8eH1WYwkjqtjQ9wGskzy4s2Sjc5jNR6fNVouYLJsxCUR1geKVg14FfwET1fETqxzivWgG5hEQ/5XfN8rzc736Lfc=
+	t=1745946610; cv=none; b=lwd568FxJQOTJ/YBZ9LIDYZ+zAscZnIylY4x/Maw+TW02mQrbXLpFK4h1vVPKyuxvUrdStO8u3cti1E2fQv9O4RORYZKsF4kGl/Vmz2DOHRakRIUfQ9+F7W3NL+zbxtisDKGvFMdlzL19B9T5S2/fBSbwOibY5AmuN7W1UJF5fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948538; c=relaxed/simple;
-	bh=Y9gEAkrfFJgjc+1G2AC3gCIF55d8w45ineqfxgZiuyI=;
+	s=arc-20240116; t=1745946610; c=relaxed/simple;
+	bh=lADPbhiKG0z3i47u2cGgCB0Xa+zoWFmODShud75S2zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ttqmZzY0G96SiviT5EvJA+2xnpiV2kuYUhQUe0e1QYKX3TG1nJQ3KCt4UhmNfKkzNd1lzkwy2DJs9fgbEBdCiq8/kcTjBFHqXtcHDWAR11vIki4VQRxD5zkpfTLqtTzPCKTQNwuOKKfGeErSN57a3BpOSJHL+d8vZ1b15oXfZ0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G93oZPSs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F8BC4CEE3;
-	Tue, 29 Apr 2025 17:42:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NGubbKUaCDP1I6ZsIG5aFjXJerYvn3jMhbnPQBlt1XPyEuHWechX/Yf4SjI2/M1vnc7eb2UQRaBk7nvkDuF51VJmHNRlhppS177/GXhQYQJIIcHLqbMYDIFeqxdNHqnCUw1fd/dr68Io6Ca//iSF78ZEbMEnOViUw06gEqYjKV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kh7O59n7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A909EC4CEE3;
+	Tue, 29 Apr 2025 17:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948538;
-	bh=Y9gEAkrfFJgjc+1G2AC3gCIF55d8w45ineqfxgZiuyI=;
+	s=korg; t=1745946610;
+	bh=lADPbhiKG0z3i47u2cGgCB0Xa+zoWFmODShud75S2zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G93oZPSsTvRyVHEXBPT76jC/gMzmikyl9CaayO5n+cFgF1C+I6icFga4sIMG2LVxG
-	 JSOv426iZVlrlnH8tsX+yTyl0m8rtf05rEAf0CWs2x3L6mu2HH0Kf3DxlPEXwUdbX6
-	 yk5HCbaAz2OkAel/PozbaFUieWtaZpgwZ6dPO9AU=
+	b=Kh7O59n7ztMuvMcvFGSY/DzhpEmkBJOfs8Ol101wAzzn5rztG+Y1GnzkRQSNSWIgK
+	 h9hjr1SZK+xQ8u/R3OPC2X1VcNa8whOLOBL1r+VRjT+78GaHV/aZ9rIJuSItw0+Dy3
+	 Hh47wSIyCfYVx7ht9fE2ZjDuUHCq3fIP5NbniLoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Max Grobecker <max@grobecker.info>,
+	Ingo Molnar <mingo@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Borislav Petkov <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 039/373] drm: allow encoder mode_set even when connectors change for crtc
+Subject: [PATCH 5.10 012/286] x86/cpu: Dont clear X86_FEATURE_LAHF_LM flag in init_amd_k8() on AMD when running in a virtual machine
 Date: Tue, 29 Apr 2025 18:38:36 +0200
-Message-ID: <20250429161124.738544739@linuxfoundation.org>
+Message-ID: <20250429161108.358465874@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Max Grobecker <max@grobecker.info>
 
-[ Upstream commit 7e182cb4f5567f53417b762ec0d679f0b6f0039d ]
+[ Upstream commit a4248ee16f411ac1ea7dfab228a6659b111e3d65 ]
 
-In certain use-cases, a CRTC could switch between two encoders
-and because the mode being programmed on the CRTC remains
-the same during this switch, the CRTC's mode_changed remains false.
-In such cases, the encoder's mode_set also gets skipped.
+When running in a virtual machine, we might see the original hardware CPU
+vendor string (i.e. "AuthenticAMD"), but a model and family ID set by the
+hypervisor. In case we run on AMD hardware and the hypervisor sets a model
+ID < 0x14, the LAHF cpu feature is eliminated from the the list of CPU
+capabilities present to circumvent a bug with some BIOSes in conjunction with
+AMD K8 processors.
 
-Skipping mode_set on the encoder for such cases could cause an issue
-because even though the same CRTC mode was being used, the encoder
-type could have changed like the CRTC could have switched from a
-real time encoder to a writeback encoder OR vice-versa.
+Parsing the flags list from /proc/cpuinfo seems to be happening mostly in
+bash scripts and prebuilt Docker containers, as it does not need to have
+additionals tools present – even though more reliable ways like using "kcpuid",
+which calls the CPUID instruction instead of parsing a list, should be preferred.
+Scripts, that use /proc/cpuinfo to determine if the current CPU is
+"compliant" with defined microarchitecture levels like x86-64-v2 will falsely
+claim the CPU is incapable of modern CPU instructions when "lahf_lm" is missing
+in that flags list.
 
-Allow encoder's mode_set to happen even when connectors changed on a
-CRTC and not just when the mode changed.
+This can prevent some docker containers from starting or build scripts to create
+unoptimized binaries.
 
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241211-abhinavk-modeset-fix-v3-1-0de4bf3e7c32@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Admittably, this is more a small inconvenience than a severe bug in the kernel
+and the shoddy scripts that rely on parsing /proc/cpuinfo
+should be fixed instead.
+
+This patch adds an additional check to see if we're running inside a
+virtual machine (X86_FEATURE_HYPERVISOR is present), which, to my
+understanding, can't be present on a real K8 processor as it was introduced
+only with the later/other Athlon64 models.
+
+Example output with the "lahf_lm" flag missing in the flags list
+(should be shown between "hypervisor" and "abm"):
+
+    $ cat /proc/cpuinfo
+    processor       : 0
+    vendor_id       : AuthenticAMD
+    cpu family      : 15
+    model           : 6
+    model name      : Common KVM processor
+    stepping        : 1
+    microcode       : 0x1000065
+    cpu MHz         : 2599.998
+    cache size      : 512 KB
+    physical id     : 0
+    siblings        : 1
+    core id         : 0
+    cpu cores       : 1
+    apicid          : 0
+    initial apicid  : 0
+    fpu             : yes
+    fpu_exception   : yes
+    cpuid level     : 13
+    wp              : yes
+    flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca
+                      cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx rdtscp
+                      lm rep_good nopl cpuid extd_apicid tsc_known_freq pni
+                      pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe popcnt
+                      tsc_deadline_timer aes xsave avx f16c hypervisor abm
+                      3dnowprefetch vmmcall bmi1 avx2 bmi2 xsaveopt
+
+... while kcpuid shows the feature to be present in the CPU:
+
+    # kcpuid -d | grep lahf
+         lahf_lm             - LAHF/SAHF available in 64-bit mode
+
+[ mingo: Updated the comment a bit, incorporated Boris's review feedback. ]
+
+Signed-off-by: Max Grobecker <max@grobecker.info>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: Borislav Petkov <bp@alien8.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c | 2 +-
+ arch/x86/kernel/cpu/amd.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index 2c3883d79f531..bd01d925769db 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -1279,7 +1279,7 @@ crtc_set_mode(struct drm_device *dev, struct drm_atomic_state *old_state)
- 		mode = &new_crtc_state->mode;
- 		adjusted_mode = &new_crtc_state->adjusted_mode;
- 
--		if (!new_crtc_state->mode_changed)
-+		if (!new_crtc_state->mode_changed && !new_crtc_state->connectors_changed)
- 			continue;
- 
- 		DRM_DEBUG_ATOMIC("modeset on [ENCODER:%d:%s]\n",
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index c10f7dcaa7b7c..5f0bdb53b0067 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -839,7 +839,7 @@ static void init_amd_k8(struct cpuinfo_x86 *c)
+ 	 * (model = 0x14) and later actually support it.
+ 	 * (AMD Erratum #110, docId: 25759).
+ 	 */
+-	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM)) {
++	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM) && !cpu_has(c, X86_FEATURE_HYPERVISOR)) {
+ 		clear_cpu_cap(c, X86_FEATURE_LAHF_LM);
+ 		if (!rdmsrl_amd_safe(0xc001100d, &value)) {
+ 			value &= ~BIT_64(32);
 -- 
 2.39.5
 
