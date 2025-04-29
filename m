@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-138371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F17B7AA17B6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC1DAA125A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF889172EBC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FED0188D1A0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23A5243964;
-	Tue, 29 Apr 2025 17:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810CB247291;
+	Tue, 29 Apr 2025 16:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiigCx5b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTXsvE0Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0F221ABC1;
-	Tue, 29 Apr 2025 17:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D58F215060;
+	Tue, 29 Apr 2025 16:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949026; cv=none; b=QArFgvq2OQDkXRXMnFO89A+YBZ356/bjUtF0emJEFhKs8IAdx/NkND9Pr6vNBT0Ss7RZr1OYDb/2KWWuw6l3goJG+XQxZFwxUcs+uHwOGfdSQDuYQJr1M3Er66CxLsLI7NLtGxa9diU/4RpIrCAYQcmerxDpJP6v8BLu4d3NOSQ=
+	t=1745945491; cv=none; b=tbCrNslWA2z4o2ztYGMb5c2EdLx+WQocj7mBYwZHYClaf4igdZ34cqSoqYneyewd53sN1LJA0hLyoArrhUUQ/QSz+bKobYKNy8qKknSwyZr+hkgwQJ4Zhl40pf+2qRriSp7iDCXr/7RYW1eTHfVQSx3nsy0eYOzlhHDObTKeNfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949026; c=relaxed/simple;
-	bh=TEZpwa6YqRQlICRqC2t6GfU+7z7vUQXgKJevKtdgudc=;
+	s=arc-20240116; t=1745945491; c=relaxed/simple;
+	bh=19xMiusv3QIyaRHTnLVGGrcTGDP5v9/r2G2yR8rtc08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okn0/JPAXwDgaxjRmKkLQoyrMWD43U6ZWgYVZCA2kJFAuhjYWSu4GP+c6oM2A6XwJBjaFPmyda5VAnofyDZTDE8lreRU4ZLnuh0Z62cNNpsiuEQ0qjexc0D2qn1L7dhPT+llfYunDByqD7EnYdFd6K5cn2JbHLkQ8gmHvi+t2HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiigCx5b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F73EC4CEE3;
-	Tue, 29 Apr 2025 17:50:25 +0000 (UTC)
+	 MIME-Version; b=uuypX9gaDcq0bffvKharvxfzyFXVkohPL1u5Dh++SN1BDFBPuaFhyDM7Dfm3z21K91PSy8uNZETBW+EtYm2M85zNLymEMt53KoxLUPiJ046qcajX9txx3lD4/ZxeIVBvlGfCEb26ToYEdlMMvrdbOKzdx4O9dNG/4gVWDSgKcow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTXsvE0Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C582CC4CEE3;
+	Tue, 29 Apr 2025 16:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949026;
-	bh=TEZpwa6YqRQlICRqC2t6GfU+7z7vUQXgKJevKtdgudc=;
+	s=korg; t=1745945491;
+	bh=19xMiusv3QIyaRHTnLVGGrcTGDP5v9/r2G2yR8rtc08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TiigCx5b27HrF1OafPVh3JemuB9AJqwmlmXEWmLUhc5Zd2qvHretiUh6Eapqw1rRA
-	 bLn11tiQN9p8jMfAURRFknWKSs+0s+2GYQCx7ad2zu967ZfP+ON/WLB+u/nf0JAXmb
-	 19Vt4rfhqtl9k56qdOmfhpe3r6vFDGc0NiNF83ss=
+	b=DTXsvE0QT7RbemXU/8IxZ38uDpggzRgGY6Y7uh1radB8WRP3wOchKdpnet5M3Y/hP
+	 hhHQm+dtGnVbA1nyaAupi0cOJ2fFC4QhQYHmZKvbslOTAGnlYexRkd1aAjk0rB9wKi
+	 4ElEiCSkakAjIB8f5U5LZvkxYWrBPFKL0z69E4hk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 5.15 194/373] KVM: arm64: Remove VHE host restore of CPACR_EL1.ZEN
-Date: Tue, 29 Apr 2025 18:41:11 +0200
-Message-ID: <20250429161131.149779023@linuxfoundation.org>
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 131/179] ext4: optimize __ext4_check_dir_entry()
+Date: Tue, 29 Apr 2025 18:41:12 +0200
+Message-ID: <20250429161054.694080717@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit 459f059be702056d91537b99a129994aa6ccdd35 ]
+[ Upstream commit 707d1a2f601bea6110a5633054253c0cb71b44c1 ]
 
-When KVM is in VHE mode, the host kernel tries to save and restore the
-configuration of CPACR_EL1.ZEN (i.e. CPTR_EL2.ZEN when HCR_EL2.E2H=1)
-across kvm_arch_vcpu_load_fp() and kvm_arch_vcpu_put_fp(), since the
-configuration may be clobbered by hyp when running a vCPU. This logic is
-currently redundant.
+Make __ext4_check_dir_entry() a bit easier to understand, and reduce
+the object size of the function by over 11%.
 
-The VHE hyp code unconditionally configures CPTR_EL2.ZEN to 0b01 when
-returning to the host, permitting host kernel usage of SVE.
-
-Now that the host eagerly saves and unbinds its own FPSIMD/SVE/SME
-state, there's no need to save/restore the state of the EL0 SVE trap.
-The kernel can safely save/restore state without trapping, as described
-above, and will restore userspace state (including trap controls) before
-returning to userspace.
-
-Remove the redundant logic.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Tested-by: Mark Brown <broonie@kernel.org>
-Acked-by: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Fuad Tabba <tabba@google.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20250210195226.1215254-4-mark.rutland@arm.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-[Rework for refactoring of where the flags are stored -- broonie]
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/r/20191209004346.38526-1-tytso@mit.edu
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: d5e206778e96 ("ext4: fix OOB read when checking dotdot dir")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/kvm_host.h |    1 -
- arch/arm64/kvm/fpsimd.c           |   15 ---------------
- 2 files changed, 16 deletions(-)
+ fs/ext4/dir.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -421,7 +421,6 @@ struct kvm_vcpu_arch {
- #define KVM_ARM64_DEBUG_DIRTY		(1 << 0)
- #define KVM_ARM64_FP_ENABLED		(1 << 1) /* guest FP regs loaded */
- #define KVM_ARM64_FP_HOST		(1 << 2) /* host FP regs loaded */
--#define KVM_ARM64_HOST_SVE_ENABLED	(1 << 4) /* SVE enabled for EL0 */
- #define KVM_ARM64_GUEST_HAS_SVE		(1 << 5) /* SVE exposed to guest */
- #define KVM_ARM64_VCPU_SVE_FINALIZED	(1 << 6) /* SVE config completed */
- #define KVM_ARM64_GUEST_HAS_PTRAUTH	(1 << 7) /* PTRAUTH exposed to guest */
---- a/arch/arm64/kvm/fpsimd.c
-+++ b/arch/arm64/kvm/fpsimd.c
-@@ -83,9 +83,6 @@ void kvm_arch_vcpu_load_fp(struct kvm_vc
- 	 */
- 	fpsimd_save_and_flush_cpu_state();
- 	vcpu->arch.flags &= ~KVM_ARM64_FP_HOST;
--
--	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
--		vcpu->arch.flags |= KVM_ARM64_HOST_SVE_ENABLED;
- }
+diff --git a/fs/ext4/dir.c b/fs/ext4/dir.c
+index e8275b5d27439..c4f7fd22a907c 100644
+--- a/fs/ext4/dir.c
++++ b/fs/ext4/dir.c
+@@ -72,6 +72,7 @@ int __ext4_check_dir_entry(const char *function, unsigned int line,
+ 	const char *error_msg = NULL;
+ 	const int rlen = ext4_rec_len_from_disk(de->rec_len,
+ 						dir->i_sb->s_blocksize);
++	const int next_offset = ((char *) de - buf) + rlen;
  
- /*
-@@ -142,18 +139,6 @@ void kvm_arch_vcpu_put_fp(struct kvm_vcp
- 		}
- 
- 		fpsimd_save_and_flush_cpu_state();
--	} else if (has_vhe() && system_supports_sve()) {
--		/*
--		 * The FPSIMD/SVE state in the CPU has not been touched, and we
--		 * have SVE (and VHE): CPACR_EL1 (alias CPTR_EL2) has been
--		 * reset to CPACR_EL1_DEFAULT by the Hyp code, disabling SVE
--		 * for EL0.  To avoid spurious traps, restore the trap state
--		 * seen by kvm_arch_vcpu_load_fp():
--		 */
--		if (vcpu->arch.flags & KVM_ARM64_HOST_SVE_ENABLED)
--			sysreg_clear_set(CPACR_EL1, 0, CPACR_EL1_ZEN_EL0EN);
--		else
--			sysreg_clear_set(CPACR_EL1, CPACR_EL1_ZEN_EL0EN, 0);
- 	}
- 
- 	local_irq_restore(flags);
+ 	if (unlikely(rlen < EXT4_DIR_REC_LEN(1)))
+ 		error_msg = "rec_len is smaller than minimal";
+@@ -79,13 +80,11 @@ int __ext4_check_dir_entry(const char *function, unsigned int line,
+ 		error_msg = "rec_len % 4 != 0";
+ 	else if (unlikely(rlen < EXT4_DIR_REC_LEN(de->name_len)))
+ 		error_msg = "rec_len is too small for name_len";
+-	else if (unlikely(((char *) de - buf) + rlen > size))
++	else if (unlikely(next_offset > size))
+ 		error_msg = "directory entry overrun";
+-	else if (unlikely(((char *) de - buf) + rlen >
+-			  size - EXT4_DIR_REC_LEN(1) &&
+-			  ((char *) de - buf) + rlen != size)) {
++	else if (unlikely(next_offset > size - EXT4_DIR_REC_LEN(1) &&
++			  next_offset != size))
+ 		error_msg = "directory entry too close to block end";
+-	}
+ 	else if (unlikely(le32_to_cpu(de->inode) >
+ 			le32_to_cpu(EXT4_SB(dir->i_sb)->s_es->s_inodes_count)))
+ 		error_msg = "inode out of bounds";
+-- 
+2.39.5
+
 
 
 
