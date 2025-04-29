@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-138008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843BEAA1669
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:37:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53323AA1243
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66B6B9A3AC0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DFE54A5B67
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1EC253356;
-	Tue, 29 Apr 2025 17:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9D8243364;
+	Tue, 29 Apr 2025 16:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9us2C/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOq+cdUb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC73A2517AB;
-	Tue, 29 Apr 2025 17:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0A0215060;
+	Tue, 29 Apr 2025 16:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947823; cv=none; b=LNPDqHAcMOnKxF+UsN7nnlHEKG2J05Nat86x/z7pSByxr5aCRnnwpTfQ2ll9eyiCuoEvZ3ZWM7BgqXz5XYsukLw1lSikUbHGPB5SnNSCz3+a6jmNmlKmzpBVCLvR2MW3xT4Gq1I16MThkTVqcqtv0M/0HZuMa7pO7HN9kJReQwk=
+	t=1745945450; cv=none; b=XGd90Pk787JhyfIVCpXJVybMGkLoePGlMScuDUcVARro878mfHk5iP+UcYfMYBESk3KRxf/mm5fK35L7Q+R6OmKFjNkT+mxYlDximalg85gUSlPX0gLXgidrrsSPvHCySU/JWYcDtSSkghYF0/vZ4ndIfBN76liJF2VqLf4BZXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947823; c=relaxed/simple;
-	bh=h9bLTjeC0qWt/f8J+TLepWxHjrzZ8GOhymSmZ+CaSXk=;
+	s=arc-20240116; t=1745945450; c=relaxed/simple;
+	bh=F8fKmiVjGLdkFYuDo9xk6ByYIwDsZBeAAOMgnZPWwrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ocnBHxnUlOWyFRIdeuiXZXw5ZuHikWlwtdzqSugSa3/bYEW/V4N5qWx+D8ac1Uxq/7/fFpr9kLx4yBORG3p39aaVnNioM9iv1BuBHKJeTBi4AWEnWpGtIfRqhV8Xjaqrn+T3JoXEUf6tO4JuwQb0l6MAAKgvD8nK05YpzVvfHqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9us2C/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21A4C4CEE9;
-	Tue, 29 Apr 2025 17:30:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oir8IPlzDPJ48l/IVXoRVAso0c4c6gCH1OU5m8ftlpI/yLAU8PwEErPOS+7xhy5D4yZnSYehcXTpuKWvGmk7KNpPdw42vHJyXJ9DKY8jxBn0DTS+gJd7CSqdA+GarNEp+gmBZzDa051weZMem/TQxofP3P7StlXLbWUHtdugNxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOq+cdUb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A93C4CEEA;
+	Tue, 29 Apr 2025 16:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947823;
-	bh=h9bLTjeC0qWt/f8J+TLepWxHjrzZ8GOhymSmZ+CaSXk=;
+	s=korg; t=1745945449;
+	bh=F8fKmiVjGLdkFYuDo9xk6ByYIwDsZBeAAOMgnZPWwrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H9us2C/+1FgPc+bq6jHQA01QrD5TxkqOHvIFLyixqYCRqqX2uOPOLVuJ5NsnDmd0/
-	 29zkfv7Hcl7XN7ME9QAt1RzPnsT2V7fYyUOoMFtlfw0McqdILUVk5Afr3lUVqgFsO6
-	 ZoV0GBVXAYur354EUAwLSoJ/KC0MUVJFct2GKL/k=
+	b=pOq+cdUbVVGSgczt13BP2Zbn7zmMJQX2LW/SheCdJEGO1QBH8HHPJ18ypB97jnEM3
+	 di3e4CKNSEyNhjvLJYa/UBXFmTARDFicBmAxls9gnOyfp75HGZ1Cijr8+WzXQqEXFO
+	 2P+oN8eK5Al2cL/I6ODOFPbDSoThnyoIQ6NyQ/Jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Robert Richter <rrichter@amd.com>
-Subject: [PATCH 6.12 114/280] cxl/core/regs.c: Skip Memory Space Enable check for RCD and RCH Ports
-Date: Tue, 29 Apr 2025 18:40:55 +0200
-Message-ID: <20250429161119.778297066@linuxfoundation.org>
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 5.4 115/179] misc: pci_endpoint_test: Avoid issue of interrupts remaining after request_irq error
+Date: Tue, 29 Apr 2025 18:40:56 +0200
+Message-ID: <20250429161054.058110465@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit 078d3ee7c162cd66d76171579c02d7890bd77daf upstream.
+commit f6cb7828c8e17520d4f5afb416515d3fae1af9a9 upstream.
 
-According to CXL r3.2 section 8.2.1.2, the PCI_COMMAND register fields,
-including Memory Space Enable bit, have no effect on the behavior of an
-RCD Upstream Port. Retaining this check may incorrectly cause
-cxl_pci_probe() to fail on a valid RCD upstream Port.
+After devm_request_irq() fails with error in pci_endpoint_test_request_irq(),
+the pci_endpoint_test_free_irq_vectors() is called assuming that all IRQs
+have been released.
 
-While the specification is explicit only for RCD Upstream Ports, this
-check is solely for accessing the RCRB, which is always mapped through
-memory space. Therefore, its safe to remove the check entirely. In
-practice, firmware reliably enables the Memory Space Enable bit for
-RCH Downstream Ports and no failures have been observed.
+However, some requested IRQs remain unreleased, so there are still
+/proc/irq/* entries remaining, and this results in WARN() with the
+following message:
 
-Removing the check simplifies the code and avoids unnecessary
-special-casing, while relying on BIOS/firmware to configure devices
-correctly. Moreover, any failures due to inaccessible RCRB regions
-will still be caught either in __rcrb_to_component() or while
-parsing the component register block.
+  remove_proc_entry: removing non-empty directory 'irq/30', leaking at least 'pci-endpoint-test.0'
+  WARNING: CPU: 0 PID: 202 at fs/proc/generic.c:719 remove_proc_entry +0x190/0x19c
 
-The following failure was observed in dmesg when the check was present:
-	cxl_pci 0000:7f:00.0: No component registers (-6)
+To solve this issue, set the number of remaining IRQs to test->num_irqs,
+and release IRQs in advance by calling pci_endpoint_test_release_irq().
 
-Fixes: d5b1a27143cb ("cxl/acpi: Extract component registers of restricted hosts from RCRB")
-Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Terry Bowman <terry.bowman@amd.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Robert Richter <rrichter@amd.com>
-Link: https://patch.msgid.link/20250407192734.70631-1-Smita.KoralahalliChannabasappa@amd.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: e03327122e2c ("pci_endpoint_test: Add 2 ioctl commands")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Link: https://lore.kernel.org/r/20250225110252.28866-3-hayashi.kunihiko@socionext.com
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/regs.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/misc/pci_endpoint_test.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/cxl/core/regs.c
-+++ b/drivers/cxl/core/regs.c
-@@ -513,7 +513,6 @@ resource_size_t __rcrb_to_component(stru
- 	resource_size_t rcrb = ri->base;
- 	void __iomem *addr;
- 	u32 bar0, bar1;
--	u16 cmd;
- 	u32 id;
- 
- 	if (which == CXL_RCRB_UPSTREAM)
-@@ -535,7 +534,6 @@ resource_size_t __rcrb_to_component(stru
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -247,6 +247,9 @@ fail:
+ 		break;
  	}
  
- 	id = readl(addr + PCI_VENDOR_ID);
--	cmd = readw(addr + PCI_COMMAND);
- 	bar0 = readl(addr + PCI_BASE_ADDRESS_0);
- 	bar1 = readl(addr + PCI_BASE_ADDRESS_1);
- 	iounmap(addr);
-@@ -550,8 +548,6 @@ resource_size_t __rcrb_to_component(stru
- 			dev_err(dev, "Failed to access Downstream Port RCRB\n");
- 		return CXL_RESOURCE_NONE;
- 	}
--	if (!(cmd & PCI_COMMAND_MEMORY))
--		return CXL_RESOURCE_NONE;
- 	/* The RCRB is a Memory Window, and the MEM_TYPE_1M bit is obsolete */
- 	if (bar0 & (PCI_BASE_ADDRESS_MEM_TYPE_1M | PCI_BASE_ADDRESS_SPACE_IO))
- 		return CXL_RESOURCE_NONE;
++	test->num_irqs = i;
++	pci_endpoint_test_release_irq(test);
++
+ 	return false;
+ }
+ 
 
 
 
