@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-138258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6663FAA1796
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:49:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E144AA1377
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 747893B7FBF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:44:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0CCE1A803FD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C19A25334E;
-	Tue, 29 Apr 2025 17:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044B422A81D;
+	Tue, 29 Apr 2025 17:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oS0vRdcN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b96W5xev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389C2244664;
-	Tue, 29 Apr 2025 17:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A357E110;
+	Tue, 29 Apr 2025 17:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948683; cv=none; b=PsIJlzop/HQChQjcINdxZlauyVSRjfBZUZwENULk3+oLgCUBbUuFLz9YOy7WlJQmO9rzEWJlZY4sWKvBEUrVaeuRjcu2ugxZYPKs8nqEFFuBZ+C5wpkW1hBgbYHwmVT2j6G40+zhtdmxoS2OHgL/Jc5sbU6wFmXhHEzRBsewnV4=
+	t=1745946091; cv=none; b=HPUiIx1FOAZzsgpjX4+wNUJK7EOPSfyzW7fbggnImqbxi2eS+MNdEfRLFBfMCI0rWjuJWDoGPBXerKr3RdHQU53SdrLjkVWil5QHShJYFXLVH5a07YthhJckICqyaUHcubflji163miA6DxWZaRI9a1TVu4cx/stJtsPAaRqVoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948683; c=relaxed/simple;
-	bh=yxtTjFTxiyuGajZa8DtkxSIPRB3lbF/Mty4P/CpwbOg=;
+	s=arc-20240116; t=1745946091; c=relaxed/simple;
+	bh=rXgOaGz9cM4MdVTOQJsZ5m/IiNyP5AFi6o1fXB/2DCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8trYSIwYuo0MxHIRjWh0YknfmodXA4IoQ81xLZBoOZ8N2EVNCDF8aYeNiLghz3bDaxPa+5aHs3bxKcu2nqonv4HFR7M/rtE85wxx+iW7zsZEVyp59Qr3jovYt+KsyrYqIlaZotcQGkL35vPv7xLUD9jNinbOQPQ5MTpiO2bFwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oS0vRdcN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E70C4CEE3;
-	Tue, 29 Apr 2025 17:44:42 +0000 (UTC)
+	 MIME-Version; b=R1EaOVxRvt4ykoLXJkh7YxE1dVCH2EkOUUHoVfW+aWO0RDJQmPuRyGfwyPZKDFbDgbQy3S8UmAZcECno+EGoR8ANiEUqo9S9OHZBsHty658mUPjNzd6vHdx4PlVhvJnowS15ItuTGxzYEUigHMx7oRnrHFUDL4VP7iGMR3HSV0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b96W5xev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2990C4CEE3;
+	Tue, 29 Apr 2025 17:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948683;
-	bh=yxtTjFTxiyuGajZa8DtkxSIPRB3lbF/Mty4P/CpwbOg=;
+	s=korg; t=1745946091;
+	bh=rXgOaGz9cM4MdVTOQJsZ5m/IiNyP5AFi6o1fXB/2DCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oS0vRdcNsDJFGGcaoJ4Ucf2XYcfq+A1BVKuSluHC61Jz9hTNWd3JBsS0x4JDQobR0
-	 lsiFb4uoTJc/6vFrq6Y7Fq/KWxDyl9tFBLLKL22yeqXA0DKAMNzGT9qOG4gqd0rnk4
-	 Ascf55j5mYmgJrxsg1rATC7O4in3QMMn0OfFbvLE=
+	b=b96W5xevvCniRk9XNtxNBmvaaMt1k7150yK+MOB0+XrBqRZakJhWMcBzDzgBl0ZMi
+	 wKPwryFCjN4zH63WcVGlSagjJleo0AHCKM+btmQ6yyHXpJECskFwWkmtAVaQLUQpHG
+	 cTdNbQP7i0kP+LHpnhrwhYXDo+HMK1zdHmL3X3mM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.15 080/373] mtd: Replace kcalloc() with devm_kcalloc()
-Date: Tue, 29 Apr 2025 18:39:17 +0200
-Message-ID: <20250429161126.444020024@linuxfoundation.org>
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Roman Li <Roman.Li@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Mark Broadworth <mark.broadworth@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.14 121/311] drm/amd/display: Force full update in gpu reset
+Date: Tue, 29 Apr 2025 18:39:18 +0200
+Message-ID: <20250429161125.996025472@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Roman Li <Roman.Li@amd.com>
 
-commit 1b61a59876f0eafc19b23007c522ee407f55dbec upstream.
+commit 67fe574651c73fe5cc176e35f28f2ec1ba498d14 upstream.
 
-Replace kcalloc() with devm_kcalloc() to prevent memory leaks in case of
-errors.
+[Why]
+While system undergoing gpu reset always do full update
+to sync the dc state before and after reset.
 
-Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
-Cc: stable@vger.kernel.org # v5.10+
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+[How]
+Return true in should_reset_plane() if gpu reset detected
+
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Roman Li <Roman.Li@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Mark Broadworth <mark.broadworth@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2ba8619b9a378ad218ad6c2e2ccaee8f531e08de)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/mtdpstore.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mtd/mtdpstore.c
-+++ b/drivers/mtd/mtdpstore.c
-@@ -417,11 +417,11 @@ static void mtdpstore_notify_add(struct
- 	}
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -10901,6 +10901,9 @@ static bool should_reset_plane(struct dr
+ 	    state->allow_modeset)
+ 		return true;
  
- 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
--	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
--	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->rmmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->usedmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
- 
- 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
--	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
- 
- 	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
- 		return;
-@@ -530,9 +530,6 @@ static void mtdpstore_notify_remove(stru
- 	mtdpstore_flush_removed(cxt);
- 
- 	unregister_pstore_device(&cxt->dev);
--	kfree(cxt->badmap);
--	kfree(cxt->usedmap);
--	kfree(cxt->rmmap);
- 	cxt->mtd = NULL;
- 	cxt->index = -1;
- }
++	if (amdgpu_in_reset(adev) && state->allow_modeset)
++		return true;
++
+ 	/* Exit early if we know that we're adding or removing the plane. */
+ 	if (old_plane_state->crtc != new_plane_state->crtc)
+ 		return true;
 
 
 
