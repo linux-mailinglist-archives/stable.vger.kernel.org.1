@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-138159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D96C8AA1720
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:44:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B668DAA189E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:02:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F2CD3B9D6A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:38:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8043984D0C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE14822DF91;
-	Tue, 29 Apr 2025 17:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D61F254867;
+	Tue, 29 Apr 2025 17:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwEMIZ6P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tMJhezSn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1AA238C21;
-	Tue, 29 Apr 2025 17:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E78253354;
+	Tue, 29 Apr 2025 17:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948355; cv=none; b=BWMbGlikWxKYniGWIVOic4GGx/fJyXOmbQij7o1KXNhoXwq/QHCXbe5mO77iZEuGx701xDKKfGkzxwgCD6yQnQraScowlga5U8zZ+fRWiVz9ZPILISj3A615B3DBOXP78sLnp9HAKH4DD7DV+DWbtiGmcPVGZr/0wl5Z1clhVeg=
+	t=1745949382; cv=none; b=TxzsirW0NM+Z6Lv0XFKgXHXZe3LLmbWqYYJaIE4Bm0iUJlP+zjFLwOfAKXyX7oXBr3rKj8Anobmb0oolRmr6DdCJM5Ueefak+DVWD1dk8cmHoSJxB9t6Ez6tiNq999QB5PFtICAdybAZj6jqm0QSQ2jGicw30Aal/Lcv6ANRDzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948355; c=relaxed/simple;
-	bh=rmEWZLlZjbnpO0EAkTGZ4SoMpdGmdIbXOnq+jgmXLlo=;
+	s=arc-20240116; t=1745949382; c=relaxed/simple;
+	bh=MRKXqZzW0sbZ62HNatZabwj3Vx41kLRYFcboQEnLLwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IBFDDipH1rTxpdOnu9Jv/2lY1SEDjSa+0b58hoxtP+Pnl6iTW6PhtG2cCcXVY2YqvIso69EghSyt3hD8GTAHFXPKvBIl061KE1XZWY+d2IqZTL611KV6voisMVZe5iUAQd+opLqErsF4JGm9lV0ykanCZZRP+bDBdppZWvNhKUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwEMIZ6P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08180C4CEE3;
-	Tue, 29 Apr 2025 17:39:14 +0000 (UTC)
+	 MIME-Version; b=KnnSWp7yMV4yDGGYkRmZlRwQhDqI7AZRML80KnyzoBlSLEFH+agsF4iOqgjwP2xq/UObbmRK7xX/IU/9fgsPCar9vQinvP8J4Zlux0Rynn+h3jlVot6N0PzTGGWE5rKh/nC/hA+fS0pWWwLkaM4N3/VrIrCEb3X2pitwMRmbQdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMJhezSn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0C8C4CEEF;
+	Tue, 29 Apr 2025 17:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948355;
-	bh=rmEWZLlZjbnpO0EAkTGZ4SoMpdGmdIbXOnq+jgmXLlo=;
+	s=korg; t=1745949382;
+	bh=MRKXqZzW0sbZ62HNatZabwj3Vx41kLRYFcboQEnLLwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cwEMIZ6Pqsw0wvJKQQNC+pR0OQBVYCJQmzOrgFkSGpuBJKicytok2cjqwsZ/KMn++
-	 CC/JMcUCOjvNM/j66aMoPGgOhQP6o1CI0B2/2jR35L3QqVRVJdhz3780zK2yZXJpq3
-	 016SzKBK1EdM1ukVJwDMYSwURBYBogoMY87Zpcq0=
+	b=tMJhezSnrAr0cPgeVF4YbfsnMwM4sNvNLSHDh+AdIwUaEEwI/LT8f6Ji3Ep1UYf3S
+	 3XWhWB7hKHhH7UozKVSubs23WketAF4yOSQ8SxH9vt2SDxOv26AFhK6qIZXcb/l6DQ
+	 eGrEpP3XPcbGeY3u+urxilS2SI7MqXBEftO2iaL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Fernando Fernandez Mancera <ffmancera@riseup.net>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 235/280] x86/i8253: Call clockevent_i8253_disable() with interrupts disabled
-Date: Tue, 29 Apr 2025 18:42:56 +0200
-Message-ID: <20250429161124.733296013@linuxfoundation.org>
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Roman Li <Roman.Li@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Mark Broadworth <mark.broadworth@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 300/373] drm/amd/display: Fix gpu reset in multidisplay config
+Date: Tue, 29 Apr 2025 18:42:57 +0200
+Message-ID: <20250429161135.454331295@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <ffmancera@riseup.net>
+From: Roman Li <Roman.Li@amd.com>
 
-[ Upstream commit 3940f5349b476197fb079c5aa19c9a988de64efb ]
+commit 7eb287beeb60be1e4437be2b4e4e9f0da89aab97 upstream.
 
-There's a lockdep false positive warning related to i8253_lock:
+[Why]
+The indexing of stream_status in dm_gpureset_commit_state() is incorrect.
+That leads to asserts in multi-display configuration after gpu reset.
 
-  WARNING: HARDIRQ-safe -> HARDIRQ-unsafe lock order detected
-  ...
-  systemd-sleep/3324 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
-  ffffffffb2c23398 (i8253_lock){+.+.}-{2:2}, at: pcspkr_event+0x3f/0xe0 [pcspkr]
+[How]
+Adjust the indexing logic to align stream_status with surface_updates.
 
-  ...
-  ... which became HARDIRQ-irq-unsafe at:
-  ...
-    lock_acquire+0xd0/0x2f0
-    _raw_spin_lock+0x30/0x40
-    clockevent_i8253_disable+0x1c/0x60
-    pit_timer_init+0x25/0x50
-    hpet_time_init+0x46/0x50
-    x86_late_time_init+0x1b/0x40
-    start_kernel+0x962/0xa00
-    x86_64_start_reservations+0x24/0x30
-    x86_64_start_kernel+0xed/0xf0
-    common_startup_64+0x13e/0x141
-  ...
-
-Lockdep complains due pit_timer_init() using the lock in an IRQ-unsafe
-fashion, but it's a false positive, because there is no deadlock
-possible at that point due to init ordering: at the point where
-pit_timer_init() is called there is no other possible usage of
-i8253_lock because the system is still in the very early boot stage
-with no interrupts.
-
-But in any case, pit_timer_init() should disable interrupts before
-calling clockevent_i8253_disable() out of general principle, and to
-keep lockdep working even in this scenario.
-
-Use scoped_guard() for that, as suggested by Thomas Gleixner.
-
-[ mingo: Cleaned up the changelog. ]
-
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/Z-uwd4Bnn7FcCShX@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cdaae8371aa9 ("drm/amd/display: Handle GPU reset for DC block")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3808
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Roman Li <Roman.Li@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Mark Broadworth <mark.broadworth@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d91bc901398741d317d9b55c59ca949d4bc7394b)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/i8253.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/i8253.c b/arch/x86/kernel/i8253.c
-index 80e262bb627fe..cb9852ad60989 100644
---- a/arch/x86/kernel/i8253.c
-+++ b/arch/x86/kernel/i8253.c
-@@ -46,7 +46,8 @@ bool __init pit_timer_init(void)
- 		 * VMMs otherwise steal CPU time just to pointlessly waggle
- 		 * the (masked) IRQ.
- 		 */
--		clockevent_i8253_disable();
-+		scoped_guard(irq)
-+			clockevent_i8253_disable();
- 		return false;
- 	}
- 	clockevent_i8253_init(true);
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2590,16 +2590,16 @@ static void dm_gpureset_commit_state(str
+ 	for (k = 0; k < dc_state->stream_count; k++) {
+ 		bundle->stream_update.stream = dc_state->streams[k];
+ 
+-		for (m = 0; m < dc_state->stream_status->plane_count; m++) {
++		for (m = 0; m < dc_state->stream_status[k].plane_count; m++) {
+ 			bundle->surface_updates[m].surface =
+-				dc_state->stream_status->plane_states[m];
++				dc_state->stream_status[k].plane_states[m];
+ 			bundle->surface_updates[m].surface->force_full_update =
+ 				true;
+ 		}
+ 
+ 		update_planes_and_stream_adapter(dm->dc,
+ 					 UPDATE_TYPE_FULL,
+-					 dc_state->stream_status->plane_count,
++					 dc_state->stream_status[k].plane_count,
+ 					 dc_state->streams[k],
+ 					 &bundle->stream_update,
+ 					 bundle->surface_updates);
 
 
 
