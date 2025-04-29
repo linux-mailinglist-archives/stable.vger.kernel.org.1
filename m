@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-138218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02478AA175E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EFE2AA130A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3C2D9A1BA6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3230916A691
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F81E23BCF2;
-	Tue, 29 Apr 2025 17:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A2724EF7F;
+	Tue, 29 Apr 2025 16:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HU7gcWLS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzV6odR2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C865221719;
-	Tue, 29 Apr 2025 17:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968FD229B05;
+	Tue, 29 Apr 2025 16:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948546; cv=none; b=AfZK6E+abQa/Ia3BQQnBFt+7q0AE190hY9MXmbV5ZenE9JlZujC/7ozmNXjY7VoYTj7O9e+TjMWGzJtMmW0jphUdEIgYJvUzX6RfLIzPnVtEsZPYniiG/nXzq30+ndtUunYx7VGD38HxR2/KGUN/+twXQ2GWSTjv1WR0ykKf12U=
+	t=1745945888; cv=none; b=oHgoM/oUTkVkAnqdD2KtELmFFZfEWsrRBvKhDPeO3X8hRA34ADQCEn6MZ1J4uFaVrBnorT9FudkAX908jz04+BX/jakdNi2MrZXWI5T846sWsoLgjekZciLW6bktyp6AJdLJOPOoX72RPm4MwLSaCUoAFM20e46SuYG//0Brctg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948546; c=relaxed/simple;
-	bh=5GXghh3rp0dcdXit8RoGaQOBDBuo0iZ0t3lUUwqz9E8=;
+	s=arc-20240116; t=1745945888; c=relaxed/simple;
+	bh=axZ1oA/0gftr9wn420ArV4J0MNbXlGW57L4hONpStK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HY4g/HhDnql9Aqn1Y+sNfGKePlkQ38inDjfW/U7X809nvIKfAcO/MkE+GCbWJuupTmRcGBeQDzM5OjXxYe4r0btSyXyPTOeDyjAMRi6SSu3tWMlFlHas/Hi/77bgE4PVu5QS0fyWgsS47TioL8sezfn3LOCGOKd9/mjLskcQhik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HU7gcWLS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5EB2C4CEE3;
-	Tue, 29 Apr 2025 17:42:24 +0000 (UTC)
+	 MIME-Version; b=DGE5LH0arIgKKta5JbmGExhJLZYNdvkFCSTd1rbRSZ9mq6Ulwb9mHE+EvMgyC28v/+JLldmsVseFygBTHkXztK8amphBWihE0i3w/Iej69zekWj4+Zbj5LoP38OoxWaleTBJUeuXkjU7p/i4oDMrY8CYD3l6BaV+fdsH+JnhLho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzV6odR2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E8FC4CEE9;
+	Tue, 29 Apr 2025 16:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948545;
-	bh=5GXghh3rp0dcdXit8RoGaQOBDBuo0iZ0t3lUUwqz9E8=;
+	s=korg; t=1745945888;
+	bh=axZ1oA/0gftr9wn420ArV4J0MNbXlGW57L4hONpStK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HU7gcWLSXRzmYvJ/iv8kF56foDzff81/EdY8BhOOgDxoZimRX2tWQRzvDVc5NBfDa
-	 7Hd+2U8LawEcsRcbhp1fRXoXZrLvXM7Umo06Et0DyRmwLO0rG/f3kY2XW/uz48Iyqe
-	 KShN4ay0XW1JzLEotKdFsWVfkKU9FYxDyQeSPv3Q=
+	b=CzV6odR2hmp6d6/fh8E7xR9b796xU48nYC3R1MxsgjkHd0/W6WO8SPZ53dv1+sMkx
+	 WZcHdsGMJ4qA+XnDUid+6wOccl3s8JcmKBPZGt0NHjyLXfnRYOvE2YD2gFMSUpxVsV
+	 HGSCiC1PUt+kRrT8zx0d8O3zgfvy2UiotoptKcM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Wyatt <fewtarius@steamfork.org>,
-	John Edwards <uejji@uejji.net>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 041/373] drm: panel-orientation-quirks: Add support for AYANEO 2S
+Subject: [PATCH 6.14 081/311] bdev: use bdev_io_min() for statx block size
 Date: Tue, 29 Apr 2025 18:38:38 +0200
-Message-ID: <20250429161124.819035379@linuxfoundation.org>
+Message-ID: <20250429161124.375960285@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +64,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Wyatt <fewtarius@steamfork.org>
+From: Luis Chamberlain <mcgrof@kernel.org>
 
-[ Upstream commit eb8f1e3e8ee10cff591d4a47437dfd34d850d454 ]
+[ Upstream commit 425fbcd62d2e1330e64d8d3bf89e554830ba997f ]
 
-AYANEO 2S uses the same panel and orientation as the AYANEO 2.
+You can use lsblk to query for a block device block device block size:
 
-Update the AYANEO 2 DMI match to also match AYANEO 2S.
+lsblk -o MIN-IO /dev/nvme0n1
+MIN-IO
+ 4096
 
-Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
-Signed-off-by: John Edwards <uejji@uejji.net>
-Tested-by: John Edwards <uejji@uejji.net>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-2-uejji@uejji.net
+The min-io is the minimum IO the block device prefers for optimal
+performance. In turn we map this to the block device block size.
+The current block size exposed even for block devices with an
+LBA format of 16k is 4k. Likewise devices which support 4k LBA format
+but have a larger Indirection Unit of 16k have an exposed block size
+of 4k.
+
+This incurs read-modify-writes on direct IO against devices with a
+min-io larger than the page size. To fix this, use the block device
+min io, which is the minimal optimal IO the device prefers.
+
+With this we now get:
+
+lsblk -o MIN-IO /dev/nvme0n1
+MIN-IO
+ 16384
+
+And so userspace gets the appropriate information it needs for optimal
+performance. This is verified with blkalgn against mkfs against a
+device with LBA format of 4k but an NPWG of 16k (min io size)
+
+mkfs.xfs -f -b size=16k  /dev/nvme3n1
+blkalgn -d nvme3n1 --ops Write
+
+     Block size          : count     distribution
+         0 -> 1          : 0        |                                        |
+         2 -> 3          : 0        |                                        |
+         4 -> 7          : 0        |                                        |
+         8 -> 15         : 0        |                                        |
+        16 -> 31         : 0        |                                        |
+        32 -> 63         : 0        |                                        |
+        64 -> 127        : 0        |                                        |
+       128 -> 255        : 0        |                                        |
+       256 -> 511        : 0        |                                        |
+       512 -> 1023       : 0        |                                        |
+      1024 -> 2047       : 0        |                                        |
+      2048 -> 4095       : 0        |                                        |
+      4096 -> 8191       : 0        |                                        |
+      8192 -> 16383      : 0        |                                        |
+     16384 -> 32767      : 66       |****************************************|
+     32768 -> 65535      : 0        |                                        |
+     65536 -> 131071     : 0        |                                        |
+    131072 -> 262143     : 2        |*                                       |
+Block size: 14 - 66
+Block size: 17 - 2
+
+     Algn size           : count     distribution
+         0 -> 1          : 0        |                                        |
+         2 -> 3          : 0        |                                        |
+         4 -> 7          : 0        |                                        |
+         8 -> 15         : 0        |                                        |
+        16 -> 31         : 0        |                                        |
+        32 -> 63         : 0        |                                        |
+        64 -> 127        : 0        |                                        |
+       128 -> 255        : 0        |                                        |
+       256 -> 511        : 0        |                                        |
+       512 -> 1023       : 0        |                                        |
+      1024 -> 2047       : 0        |                                        |
+      2048 -> 4095       : 0        |                                        |
+      4096 -> 8191       : 0        |                                        |
+      8192 -> 16383      : 0        |                                        |
+     16384 -> 32767      : 66       |****************************************|
+     32768 -> 65535      : 0        |                                        |
+     65536 -> 131071     : 0        |                                        |
+    131072 -> 262143     : 2        |*                                       |
+Algn size: 14 - 66
+Algn size: 17 - 2
+
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Link: https://lore.kernel.org/r/20250221223823.1680616-9-mcgrof@kernel.org
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 5f33b5226c9d ("block: don't autoload drivers on stat")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ block/bdev.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index bf90a5be956fe..6bb8d4502ca8e 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -166,10 +166,10 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T103HAF"),
- 		},
- 		.driver_data = (void *)&lcd800x1280_rightside_up,
--	}, {	/* AYA NEO AYANEO 2 */
-+	}, {	/* AYA NEO AYANEO 2/2S */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
--		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
- 		},
- 		.driver_data = (void *)&lcd1200x1920_rightside_up,
- 	}, {	/* AYA NEO 2021 */
+diff --git a/block/bdev.c b/block/bdev.c
+index 9d73a8fbf7f99..8453f6a795d9a 100644
+--- a/block/bdev.c
++++ b/block/bdev.c
+@@ -1274,9 +1274,6 @@ void bdev_statx(struct path *path, struct kstat *stat,
+ 	struct inode *backing_inode;
+ 	struct block_device *bdev;
+ 
+-	if (!(request_mask & (STATX_DIOALIGN | STATX_WRITE_ATOMIC)))
+-		return;
+-
+ 	backing_inode = d_backing_inode(path->dentry);
+ 
+ 	/*
+@@ -1303,6 +1300,8 @@ void bdev_statx(struct path *path, struct kstat *stat,
+ 			queue_atomic_write_unit_max_bytes(bd_queue));
+ 	}
+ 
++	stat->blksize = bdev_io_min(bdev);
++
+ 	blkdev_put_no_open(bdev);
+ }
+ 
 -- 
 2.39.5
 
