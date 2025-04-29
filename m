@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-138040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99515AA1650
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3931AA1504
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCD9316707D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B74A9188EDA8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EE623CEF9;
-	Tue, 29 Apr 2025 17:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C7024397A;
+	Tue, 29 Apr 2025 17:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKESua85"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PR/yv6mB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915B682C60;
-	Tue, 29 Apr 2025 17:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2787724113A;
+	Tue, 29 Apr 2025 17:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947924; cv=none; b=PVNiYWfijg2psEB94AWsA2eMRdIe6sF/v5TE2QMqZBi6DDY0kcc+Ma9q1L6oHY3iePqeTSwsxLwbir7YCLVyMq7NKqtG4NGCrYRk9ONaIxwdFZwaWGHt8T5Kj1My2icZSSkjU9m7VmBS3xmzIao7G7m4PwhwmTpBctkHV1qpdbI=
+	t=1745947136; cv=none; b=FmiDqB/APvjy4PgsnY7ZQu/wwH0ulYTAqfscL/vuw3dGHZHBMDMGXSdTrYyZ9tWBnjFkam0fCL6MuZix2c1ejSuU0Ph+QxBV2XEjbiKo0UXe/EIVhNBA9itxrSO38ShDMdLjdLLCNp6MVcMlEv8GWnRTEldGJyw7ECmNVsykT4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947924; c=relaxed/simple;
-	bh=ySs35wza1L4UWzOWoNFUXKuN6nwMvx+AkIXlxghx6fw=;
+	s=arc-20240116; t=1745947136; c=relaxed/simple;
+	bh=9tURXtoWziVAGpV2qWMpW22oX12el0WHiLCotUssGBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNetYU9qyiwS5BbbaDQTlh1XbYY9nC9ok1jhbbfRedTJ+FI9QKRc3FG9/gKjssl5sbR9pd6SWJXuguzrudzINTo1K9dHT8f+qdDaB2Fv41wrolce6PeKuAvbWz1NNofLyyBeMbSAcKWJyZsHVrHYWdhhmZ646boCvbc1+8j9+IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKESua85; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D42C4CEE3;
-	Tue, 29 Apr 2025 17:32:03 +0000 (UTC)
+	 MIME-Version; b=UKFtif7Fvsd1cM2IhCKACS/P4eGDHMTdSZfeoJDST/tiJXrZIfgDlIpzgvlhZQC1Q4qp+oDB7iNtqWy7cedilnCprjki7xl4Q64J8uTE4lEC1bFxlGpJCiYB3ZKlMY+xSSG1bfl6N0AG74tLWrdCWhrc9CyxypBSJjdnsIiShjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PR/yv6mB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2593C4CEE3;
+	Tue, 29 Apr 2025 17:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947924;
-	bh=ySs35wza1L4UWzOWoNFUXKuN6nwMvx+AkIXlxghx6fw=;
+	s=korg; t=1745947136;
+	bh=9tURXtoWziVAGpV2qWMpW22oX12el0WHiLCotUssGBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZKESua852mNMKquW3yFBsB7OD2tG45y4XfVtnT69MCPZPAxjP0YW3+KOs3y6kaElr
-	 8tsTTWsjwB/YsG4FNwNvMVCkkrJ/PWDymQYIrZ5mS71t60kMqJoECLLriI4BnNwIbd
-	 zu/y6Fet1FIWXeOiMU2j0j+7cKG+PTw4nitbVvTM=
+	b=PR/yv6mBbWr9+G9AAFgCRMEn4Et7SVnrIwcE3L1FsJ6q8xeLUQ0B20Ytww8FksERZ
+	 r2wsaMR+vsOKJjWfgzPtaaD/NO8SZZAlnqMp2BNcqqnZFK/321j3W0g4DUMdyD2v78
+	 zszmlmlLXPF9CYGU08Ua6/e6XAuqrkkCEEvFvkRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miao Li <limiao@kylinos.cn>,
-	Lei Huang <huanglei@kylinos.cn>
-Subject: [PATCH 6.12 146/280] usb: quirks: Add delay init quirk for SanDisk 3.2Gen1 Flash Drive
+	syzbot+61be3359d2ee3467e7e4@syzkaller.appspotmail.com,
+	Pei Li <peili.dev@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Zhi Yang <Zhi.Yang@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.10 183/286] jfs: Fix shift-out-of-bounds in dbDiscardAG
 Date: Tue, 29 Apr 2025 18:41:27 +0200
-Message-ID: <20250429161121.099869867@linuxfoundation.org>
+Message-ID: <20250429161115.499506769@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miao Li <limiao@kylinos.cn>
+From: Pei Li <peili.dev@gmail.com>
 
-commit 37ffdbd695c02189dbf23d6e7d2385e0299587ca upstream.
+commit 7063b80268e2593e58bee8a8d709c2f3ff93e2f2 upstream.
 
-The SanDisk 3.2Gen1 Flash Drive, which VID:PID is in 0781:55a3,
-just like Silicon Motion Flash Drive:
-https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
-also needs the DELAY_INIT quirk, or it will randomly work incorrectly
-(e.g.: lsusb and can't list this device info) when connecting Huawei
-hisi platforms and doing thousand of reboot test circles.
+When searching for the next smaller log2 block, BLKSTOL2() returned 0,
+causing shift exponent -1 to be negative.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miao Li <limiao@kylinos.cn>
-Signed-off-by: Lei Huang <huanglei@kylinos.cn>
-Link: https://lore.kernel.org/r/20250414062935.159024-1-limiao870622@163.com
+This patch fixes the issue by exiting the loop directly when negative
+shift is found.
+
+Reported-by: syzbot+61be3359d2ee3467e7e4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=61be3359d2ee3467e7e4
+Signed-off-by: Pei Li <peili.dev@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/jfs/jfs_dmap.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -369,6 +369,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0781, 0x5583), .driver_info = USB_QUIRK_NO_LPM },
- 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
- 
-+	/* SanDisk Corp. SanDisk 3.2Gen1 */
-+	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
-+
- 	/* Realforce 87U Keyboard */
- 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
- 
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1698,6 +1698,8 @@ s64 dbDiscardAG(struct inode *ip, int ag
+ 		} else if (rc == -ENOSPC) {
+ 			/* search for next smaller log2 block */
+ 			l2nb = BLKSTOL2(nblocks) - 1;
++			if (unlikely(l2nb < 0))
++				break;
+ 			nblocks = 1LL << l2nb;
+ 		} else {
+ 			/* Trim any already allocated blocks */
 
 
 
