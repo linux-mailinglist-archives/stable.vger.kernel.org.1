@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 395B3AA167B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B74AA17F3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4C4516F7A0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D07621BC144D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37402528FB;
-	Tue, 29 Apr 2025 17:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CFF24EAB2;
+	Tue, 29 Apr 2025 17:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2OlHghr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgzVAfcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A5982C60;
-	Tue, 29 Apr 2025 17:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117E722AE68;
+	Tue, 29 Apr 2025 17:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948064; cv=none; b=SQyy500pcCSjIBkvQBiwvDU7Njvs5KRBJ+Vz+OykZpSI/3F5jtZt/zJHdlMWypQ5iilxnlpsssvveiA4g6J8YajdYvf7hE0xXBBIiKIB25rkcatj7PpekOWM9luMnBr500sDj4vjzqvuFwZkbJDFkMLpjJrnoQNhpBMVW57tSes=
+	t=1745949209; cv=none; b=BfjxFKwRCJkXtEFwLYUKDwMXBgyU8mcsrMIKGr7FVOowy/r5CZa8z5+QD4DG/vuQSCKog+pUJnHk3PNW6z6d1rQ37y6wOXeEieJaFZCxN0WmbnEJBlEIauo3oOZDWoe/rjYsMdn8B0Zgx7C0C5Dbgmh+MLkCIqSvxxmUBLSMJR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948064; c=relaxed/simple;
-	bh=dV7otym06O1vR2wG/yWgZRkj83j34WW/3tbXV0y5VlE=;
+	s=arc-20240116; t=1745949209; c=relaxed/simple;
+	bh=bqCMHSxsSQjJ2cZ5dFmUdd0Q1tOiFL9zd1KJqkQxm6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3MrdTZWAWup1STAT3abnr09Lrma7jVP4pCH0TXEvxpo7aSoQRsB+HD4j3dD6tE6tnln2R8zrUV5DqrnjRbFr8WkO3uG2pN5DMLgEWjNjOjey8b5x5A/YT21XRU8aeFrbtOX0wO8GZWsg4tMjq4qg2kexYDrclJfWESHf+guL30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2OlHghr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99940C4CEE3;
-	Tue, 29 Apr 2025 17:34:23 +0000 (UTC)
+	 MIME-Version; b=e98J0B64hOPcNjkerHaVahFuOGnTwjzKqqdh580ZuifHPDZ2eebLoIccoPlN4xyYvyo2q6JGrKeuAm2Z3REmZl6sjPNlNAzQBbFrBBmWvC1b+Haw81lGRI0rNj5lzVury8Kzx59biB7Ou4WBAJYJ4lxMWMhGuAtiieNN8gx2e+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgzVAfcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AACC4CEE3;
+	Tue, 29 Apr 2025 17:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948064;
-	bh=dV7otym06O1vR2wG/yWgZRkj83j34WW/3tbXV0y5VlE=;
+	s=korg; t=1745949208;
+	bh=bqCMHSxsSQjJ2cZ5dFmUdd0Q1tOiFL9zd1KJqkQxm6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n2OlHghrJ/Ad+ksLy0CcS7akM/6xjVjxt4uhNJQfhhVLqFGSnzGvU15WacLPmUq9Q
-	 cPLl3Y9zh3MtUNUrLuQul9FE7o919OEsupQr35QhDedwWbLCDk6ilgLUboq7PmNPkb
-	 BG7gF0X39Yb+qK1qSea6ieJj3lSMx+gD4FcT7x1k=
+	b=QgzVAfcKR6PMBZClOmYB6bBaKtriPX4tosR8rBGanHfFLynKiRhUgLd7aupb3ZWPe
+	 3P/qYGDcif4YBXdFfXS0GUl1k4AudDQowV0GPR4Zmetjo7EJvua4s1HE+DlXUH4rQR
+	 3T3f8b6kVoxcERgq70IFUKq3dmms6YWvpkdFy89Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 181/280] usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Joe Thornber <thornber@redhat.com>,
+	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Subject: [PATCH 5.15 245/373] dm cache: fix flushing uninitialized delayed_work on cache_ctr error
 Date: Tue, 29 Apr 2025 18:42:02 +0200
-Message-ID: <20250429161122.513672692@linuxfoundation.org>
+Message-ID: <20250429161133.204361732@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 28a76fcc4c85dd39633fb96edb643c91820133e3 ]
+commit 135496c208ba26fd68cdef10b64ed7a91ac9a7ff upstream.
 
-Nothing prevents a broken HC from claiming that an endpoint is Running
-and repeatedly rejecting Stop Endpoint with Context State Error.
+An unexpected WARN_ON from flush_work() may occur when cache creation
+fails, caused by destroying the uninitialized delayed_work waker in the
+error path of cache_create(). For example, the warning appears on the
+superblock checksum error.
 
-Avoid infinite retries and give back cancelled TDs.
+Reproduce steps:
 
-No such cases known so far, but HCs have bugs.
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dd if=/dev/urandom of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
 
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250311154551.4035726-4-mathias.nyman@linux.intel.com
+Kernel logs:
+
+(snip)
+WARNING: CPU: 0 PID: 84 at kernel/workqueue.c:4178 __flush_work+0x5d4/0x890
+
+Fix by pulling out the cancel_delayed_work_sync() from the constructor's
+error path. This patch doesn't affect the use-after-free fix for
+concurrent dm_resume and dm_destroy (commit 6a459d8edbdb ("dm cache: Fix
+UAF in destroy()")) as cache_dtr is not changed.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: 6a459d8edbdb ("dm cache: Fix UAF in destroy()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Joe Thornber <thornber@redhat.com>
+Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/md/dm-cache-target.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 653e24bb3e9ad..cb2a047213075 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1190,16 +1190,19 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
- 			 * Stopped state, but it will soon change to Running.
- 			 *
- 			 * Assume this bug on unexpected Stop Endpoint failures.
--			 * Keep retrying until the EP starts and stops again, on
--			 * chips where this is known to help. Wait for 100ms.
-+			 * Keep retrying until the EP starts and stops again.
- 			 */
--			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
--				break;
- 			fallthrough;
- 		case EP_STATE_RUNNING:
- 			/* Race, HW handled stop ep cmd before ep was running */
- 			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
- 					GET_EP_CTX_STATE(ep_ctx));
-+			/*
-+			 * Don't retry forever if we guessed wrong or a defective HC never starts
-+			 * the EP or says 'Running' but fails the command. We must give back TDs.
-+			 */
-+			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
-+				break;
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1890,16 +1890,13 @@ static void check_migrations(struct work
+  * This function gets called on the error paths of the constructor, so we
+  * have to cope with a partially initialised struct.
+  */
+-static void destroy(struct cache *cache)
++static void __destroy(struct cache *cache)
+ {
+-	unsigned i;
+-
+ 	mempool_exit(&cache->migration_pool);
  
- 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
- 			if (!command) {
--- 
-2.39.5
-
+ 	if (cache->prison)
+ 		dm_bio_prison_destroy_v2(cache->prison);
+ 
+-	cancel_delayed_work_sync(&cache->waker);
+ 	if (cache->wq)
+ 		destroy_workqueue(cache->wq);
+ 
+@@ -1927,13 +1924,22 @@ static void destroy(struct cache *cache)
+ 	if (cache->policy)
+ 		dm_cache_policy_destroy(cache->policy);
+ 
++	bioset_exit(&cache->bs);
++
++	kfree(cache);
++}
++
++static void destroy(struct cache *cache)
++{
++	unsigned int i;
++
++	cancel_delayed_work_sync(&cache->waker);
++
+ 	for (i = 0; i < cache->nr_ctr_args ; i++)
+ 		kfree(cache->ctr_args[i]);
+ 	kfree(cache->ctr_args);
+ 
+-	bioset_exit(&cache->bs);
+-
+-	kfree(cache);
++	__destroy(cache);
+ }
+ 
+ static void cache_dtr(struct dm_target *ti)
+@@ -2546,7 +2552,7 @@ static int cache_create(struct cache_arg
+ 	*result = cache;
+ 	return 0;
+ bad:
+-	destroy(cache);
++	__destroy(cache);
+ 	return r;
+ }
+ 
+@@ -2597,7 +2603,7 @@ static int cache_ctr(struct dm_target *t
+ 
+ 	r = copy_ctr_args(cache, argc - 3, (const char **)argv + 3);
+ 	if (r) {
+-		destroy(cache);
++		__destroy(cache);
+ 		goto out;
+ 	}
+ 
 
 
 
