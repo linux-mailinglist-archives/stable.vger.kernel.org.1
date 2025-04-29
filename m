@@ -1,109 +1,82 @@
-Return-Path: <stable+bounces-136987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A4DAA0027
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 05:07:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3593FAA00E4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 05:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 729663B9945
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 03:06:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 971A816DA54
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 03:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D8A1F3BAC;
-	Tue, 29 Apr 2025 03:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28626205E25;
+	Tue, 29 Apr 2025 03:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPGkMOG/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GV5Ahk1j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB6D2AEE1;
-	Tue, 29 Apr 2025 03:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71971876;
+	Tue, 29 Apr 2025 03:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745896022; cv=none; b=AuAG12nNk5q/8KPvYJueatfeMqCB9Z7WnAjD0Boq7JQjA1Aere6nHrElPT0UfRG5ZBd6jUw8nuNM1zfdy4ha6N2mM+TkJUbFKnJG4HkSBDv68RkMwe/eUcXtbgIgn+mSDmWHYifzKlgzHD+fIMJS7vSiTa3ceR7NAYD7FICVnnQ=
+	t=1745898610; cv=none; b=qosIZX7PWCJ8JJDe9BmFEbKun0KHk5wGXeA+z4QzMdoEVctT73HSde0ozWwHCkzo4lulJ3IQ9I7WKg7S/eUTDDFZVKM6pbPdGwlm0Ez1fJFrg10oxG9Kq/Zj9M2Jh6qiAbjcwiom7CSqojjY4lzsL9nxPfLQL1L6JlpfAXdAyxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745896022; c=relaxed/simple;
-	bh=Q670eReyAtJoadARUJrI2RpbKjr3KWV2o+ElngikDiE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B01Pxwuo0eQdGmG81yaLFB2zN5cRrytK3odRGt6RMWv2ccp9/Stj3WsJBKfrDOdIZ83xXhJ33e0bAQSLoIvDivFrDpnu/zJSPHTofwo+LLLAt6LxyqSQfA8SsMyfAuYy+gSp6guvMujZvhpRqQInOjDwm+ZUFNtXO8gkVvSy08k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPGkMOG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DDFFC4CEE4;
-	Tue, 29 Apr 2025 03:06:58 +0000 (UTC)
+	s=arc-20240116; t=1745898610; c=relaxed/simple;
+	bh=YXGk8lAmrdjoZqFgLHxvo+rKzMZ4nvHw1bi4fVY8f6o=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=e5ZqWLjVMwGsRNbVx9ydt5gWzDz4eDMAYVmHJGYPK1brEWWu7QkvDKBCe+4XBNX8efoBb/JsebYMfCHOwuE0BlA6/90sgMY391Sz/83rAEjZFoIMNuGn1Y0xHKbiqeiDCAqqEogyQVOhj0S0ewZ9MGELJh1UkRIpLL4JmJl8nXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GV5Ahk1j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E8AC4CEE3;
+	Tue, 29 Apr 2025 03:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745896021;
-	bh=Q670eReyAtJoadARUJrI2RpbKjr3KWV2o+ElngikDiE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NPGkMOG/bb287fpr0RQ0Bf7QJgyDzWisVOWqcRgnvLQRaciyvwDt/JwqkkQNDq4hX
-	 iTajprmqF/tiZlcv0e/D2FMUZNuFmhlMm7gOu0subQR1B03+6VKUGm16jvhLPq9pQo
-	 Ii45Fw2NTfj0vQQ+CvUsq7TYIQXIoVJ92H+UbhhOpOFwA2fI9gDQmcIZa9evO2L9Bg
-	 3eiaKq+Fw/L8ZDr3tIZMdPxF3XzL/L0yO13IVGGXTYqnfLqerYmwYU3nZxHDdRgrQr
-	 l+TSPqq/42wZgvmfkoMnZkOeYMbf41are0G8eJmbEX8WloWYC2L4j4A3x3hS0j/5DC
-	 Jb1QyLjrGeFEw==
-Date: Tue, 29 Apr 2025 11:06:52 +0800
-From: Gao Xiang <xiang@kernel.org>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: xiang@kernel.org, chao@kernel.org, zbestahu@gmail.com,
-	jefflexu@linux.alibaba.com, dhavale@google.com,
-	linux-erofs@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] fs/erofs/fileio: call erofs_onlinefolio_split() after
- bio_add_folio()
-Message-ID: <aBBCTGo7I4OHyVAH@debian>
-Mail-Followup-To: Max Kellermann <max.kellermann@ionos.com>,
-	xiang@kernel.org, chao@kernel.org, zbestahu@gmail.com,
-	jefflexu@linux.alibaba.com, dhavale@google.com,
-	linux-erofs@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-References: <20250428230933.3422273-1-max.kellermann@ionos.com>
+	s=k20201202; t=1745898610;
+	bh=YXGk8lAmrdjoZqFgLHxvo+rKzMZ4nvHw1bi4fVY8f6o=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=GV5Ahk1joCdmnd63iqgdtSrxlGGnvdV1Vs97OrPY7ntshGvBT112ON0IE83gUtUUb
+	 KI/gK++gAOMIrTj6hDRDLaK52DmOfk9sg000CCQq37hxuL896WzSf1GOz4sbGVbr3D
+	 DyqlW5ECsyzm/Qrhb1tMHdGNjZFQRD83gLrx3rfwwgyRsxvuPAdmOXLEQPV0KmZ/PG
+	 KjZdUngAMV1LKJ8h2WzJD1t/poEOeFOtWm1HY/iCOq9LfZ9wHJ4dInxCS4P6iJD79v
+	 m7xuILSTFRys6vcSJ8tn99537kEArLrZ5OoauMW8hfZ1uRUUzLfnOlzMhglWkGd+Oq
+	 ewOqd3JUQPaWw==
+Date: Mon, 28 Apr 2025 20:50:05 -0700
+From: Kees Cook <kees@kernel.org>
+To: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+ stable-commits@vger.kernel.org
+CC: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+ =?ISO-8859-1?Q?G=FCnther_Noack?= <gnoack@google.com>
+Subject: =?US-ASCII?Q?Re=3A_Patch_=22hardening=3A_Disable_GCC_randstruct_for_C?=
+ =?US-ASCII?Q?OMPILE=5FTEST=22_has_been_added_to_the_6=2E14-stable_tree?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20250429014846.406859-1-sashal@kernel.org>
+References: <20250429014846.406859-1-sashal@kernel.org>
+Message-ID: <120BD02C-8EA3-484F-81F5-6767B66C48A8@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250428230933.3422273-1-max.kellermann@ionos.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 29, 2025 at 01:09:33AM +0200, Max Kellermann wrote:
-> If bio_add_folio() fails (because it is full),
-> erofs_fileio_scan_folio() needs to submit the I/O request via
-> erofs_fileio_rq_submit() and allocate a new I/O request with an empty
-> `struct bio`.  Then it retries the bio_add_folio() call.
-> 
-> However, at this point, erofs_onlinefolio_split() has already been
-> called which increments `folio->private`; the retry will call
-> erofs_onlinefolio_split() again, but there will never be a matching
-> erofs_onlinefolio_end() call.  This leaves the folio locked forever
-> and all waiters will be stuck in folio_wait_bit_common().
-> 
-> This bug has been added by commit ce63cb62d794 ("erofs: support
-> unencoded inodes for fileio"), but was practically unreachable because
-> there was room for 256 folios in the `struct bio` - until commit
-> 9f74ae8c9ac9 ("erofs: shorten bvecs[] for file-backed mounts") which
-> reduced the array capacity to 16 folios.
-> 
-> It was now trivial to trigger the bug by manually invoking readahead
-> from userspace, e.g.:
-> 
->  posix_fadvise(fd, 0, st.st_size, POSIX_FADV_WILLNEED);
-> 
-> This should be fixed by invoking erofs_onlinefolio_split() only after
-> bio_add_folio() has succeeded.  This is safe: asynchronous completions
-> invoking erofs_onlinefolio_end() will not unlock the folio because
-> erofs_fileio_scan_folio() is still holding a reference to be released
-> by erofs_onlinefolio_end() at the end.
-> 
-> Fixes: ce63cb62d794 ("erofs: support unencoded inodes for fileio")
-> Fixes: 9f74ae8c9ac9 ("erofs: shorten bvecs[] for file-backed mounts")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 
-Thanks for catching this! LGTM:
-Reviewed-by: Gao Xiang <xiang@kernel.org>
 
-Thanks,
-Gao Xiang
+On April 28, 2025 6:48:46 PM PDT, Sasha Levin <sashal@kernel=2Eorg> wrote:
+>This is a note to let you know that I've just added the patch titled
+>
+>    hardening: Disable GCC randstruct for COMPILE_TEST
+
+Please don't backport this to any stable kernels=2E There is already a fix=
+ in -next and the problem only exists due to a 6=2E15 landlock change=2E
+
+
+--=20
+Kees Cook
 
