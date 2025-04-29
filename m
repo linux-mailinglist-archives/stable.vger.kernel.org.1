@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA20FAA167E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E735AA1840
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 065757A82E0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9256117A783
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC52C2512D8;
-	Tue, 29 Apr 2025 17:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F0D252914;
+	Tue, 29 Apr 2025 17:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCw7fePK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CT1H50YA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6827E24A07D;
-	Tue, 29 Apr 2025 17:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068FC24EAB2;
+	Tue, 29 Apr 2025 17:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948279; cv=none; b=toMMdnkTHs0G0X0ClOdaJTpWZVsMkjBuy9oSTbXN0hKkFDBEGbPO+dlTdtBTRKx1Km1m7pkhWPAPWLP3hXsJy/F96+e2evxoFvjlqQwzwPllgVppcQn3p7DBarF9yHJUtEWVMF1rqE1z5moxesHxbuARH9AprAPY8f+9iAEncfU=
+	t=1745949367; cv=none; b=QHw8x1KF4Wdg1lbb+BOzEr5PP9kSd62FXK6mZYpbq8opxKMCv6H32dMsb4sB/84VZvgkSvS3i7JyKuUzKaTYVGrdf7nXQDeZur3zGKmz0Si9AOU4POoVwBVpKfBgbbyzfA+rIxF3cBH3SEs85TrwNsCtdWKJK9Q0zzrvhZUHc+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948279; c=relaxed/simple;
-	bh=5QUmHhEItUyA3sa+rwI83vHw1DezEn2cdqSgA1tuF6A=;
+	s=arc-20240116; t=1745949367; c=relaxed/simple;
+	bh=/0WzHXs5AfraOg5+PycNMmObZzQwpu3uH+9V2hwyVrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgExOFyG/UaIleuR3UckJVtNqEstrWnZGZQXN2ukRprfARPUq/lQbpP9z791ciiPk1e4DuzN7QCA2jvXWQdZNcnlss7iZ4eVAfBBlY1ryZYwbsouTX0gWBBPeQY2P1b0LrTCZ7Wxy1qkSO6IVEBPJxPskLf+2kNPjCletJYO/zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCw7fePK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B222C4CEEA;
-	Tue, 29 Apr 2025 17:37:58 +0000 (UTC)
+	 MIME-Version; b=ltgKfGQz8tWRdTWhO+aLD4zK+SV0J/+7B/dO3exC0LxWv6LGlC9B+HRDRP7l4b//PS85A0OXnSH4oO4dJX0zJ5JvFt7TpyTeFe7L0IRjLUlSFWbNbo9qLT+ERlQ9nMfVI5TQkjuHOW3H0/MlMvBPxKDnl8CqzViU4+doiYzbjNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CT1H50YA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FD7C4CEE3;
+	Tue, 29 Apr 2025 17:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948278;
-	bh=5QUmHhEItUyA3sa+rwI83vHw1DezEn2cdqSgA1tuF6A=;
+	s=korg; t=1745949366;
+	bh=/0WzHXs5AfraOg5+PycNMmObZzQwpu3uH+9V2hwyVrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCw7fePKtTIrW8F+UK0SIAgHLXD5F4BNuuI7YUPUA4c809CHZ8dI/3EVTwmvtT1xM
-	 gDetE0uXbTVLvQ2GVTE2Ibu+xknoEIMMw3Adm0I0S28dzPtrgiIaMpZvIzE2fWSney
-	 +LS4blBA9lGiFCJUY8LW3sD3zl0MWh1HFZCVS/Kw=
+	b=CT1H50YAZTLEDYUnvH6SRrB5gD7bvLFU5l8eBS3GsU10tip36nzJLOQfbqVhl+ENF
+	 jgLi4+prUEjv/K38YeqcWBR+a1M6L8ftf1FwG2jswmmDTKvVbcNUzx3O2ydnzKmbo1
+	 +DrtrsFjzwGFO7HOa8Fiz7DGnHzpN1CBqpHHU23I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Salomon Dushimirimana <salomondush@google.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 233/280] scsi: pm80xx: Set phy_attached to zero when device is gone
+	Halil Pasic <pasic@linux.ibm.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 5.15 297/373] virtio_console: fix missing byte order handling for cols and rows
 Date: Tue, 29 Apr 2025 18:42:54 +0200
-Message-ID: <20250429161124.651767590@linuxfoundation.org>
+Message-ID: <20250429161135.329920774@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Halil Pasic <pasic@linux.ibm.com>
 
-[ Upstream commit f7b705c238d1483f0a766e2b20010f176e5c0fb7 ]
+commit fbd3039a64b01b769040677c4fc68badeca8e3b2 upstream.
 
-When a fatal error occurs, a phy down event may not be received to set
-phy->phy_attached to zero.
+As per virtio spec the fields cols and rows are specified as little
+endian. Although there is no legacy interface requirement that would
+state that cols and rows need to be handled as native endian when legacy
+interface is used, unlike for the fields of the adjacent struct
+virtio_console_control, I decided to err on the side of caution based
+on some non-conclusive virtio spec repo archaeology and opt for using
+virtio16_to_cpu() much like for virtio_console_control.event. Strictly
+by the letter of the spec virtio_le_to_cpu() would have been sufficient.
+But when the legacy interface is not used, it boils down to the same.
 
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
-Link: https://lore.kernel.org/r/20250319230305.3172920-1-salomondush@google.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And when using the legacy interface, the device formatting these as
+little endian when the guest is big endian would surprise me more than
+it using guest native byte order (which would make it compatible with
+the current implementation). Nevertheless somebody trying to implement
+the spec following it to the letter could end up forcing little endian
+byte order when the legacy interface is in use. So IMHO this ultimately
+needs a judgement call by the maintainers.
+
+Fixes: 8345adbf96fc1 ("virtio: console: Accept console size along with resize control message")
+Signed-off-by: Halil Pasic <pasic@linux.ibm.com>
+Cc: stable@vger.kernel.org # v2.6.35+
+Message-Id: <20250322002954.3129282-1-pasic@linux.ibm.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/pm8001/pm8001_sas.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/char/virtio_console.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
-index ee2da8e49d4cf..a9d6dac413346 100644
---- a/drivers/scsi/pm8001/pm8001_sas.c
-+++ b/drivers/scsi/pm8001/pm8001_sas.c
-@@ -719,6 +719,7 @@ static void pm8001_dev_gone_notify(struct domain_device *dev)
- 			spin_lock_irqsave(&pm8001_ha->lock, flags);
- 		}
- 		PM8001_CHIP_DISP->dereg_dev_req(pm8001_ha, device_id);
-+		pm8001_ha->phy[pm8001_dev->attached_phy].phy_attached = 0;
- 		pm8001_free_dev(pm8001_dev);
- 	} else {
- 		pm8001_dbg(pm8001_ha, DISC, "Found dev has gone.\n");
--- 
-2.39.5
-
+--- a/drivers/char/virtio_console.c
++++ b/drivers/char/virtio_console.c
+@@ -1614,8 +1614,8 @@ static void handle_control_message(struc
+ 		break;
+ 	case VIRTIO_CONSOLE_RESIZE: {
+ 		struct {
+-			__u16 rows;
+-			__u16 cols;
++			__virtio16 rows;
++			__virtio16 cols;
+ 		} size;
+ 
+ 		if (!is_console_port(port))
+@@ -1623,7 +1623,8 @@ static void handle_control_message(struc
+ 
+ 		memcpy(&size, buf->buf + buf->offset + sizeof(*cpkt),
+ 		       sizeof(size));
+-		set_console_size(port, size.rows, size.cols);
++		set_console_size(port, virtio16_to_cpu(vdev, size.rows),
++				 virtio16_to_cpu(vdev, size.cols));
+ 
+ 		port->cons.hvc->irq_requested = 1;
+ 		resize_console(port);
 
 
 
