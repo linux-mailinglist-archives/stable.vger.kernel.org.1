@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-138904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596EFAA1A79
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:23:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 935CEAA19A1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 741423B0BAD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:18:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BCE63B23B6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A0224A07D;
-	Tue, 29 Apr 2025 18:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC74227E95;
+	Tue, 29 Apr 2025 18:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3iy3iw/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0UzMZVO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEE0219A63;
-	Tue, 29 Apr 2025 18:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386FC1A5BBB;
+	Tue, 29 Apr 2025 18:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950724; cv=none; b=b/EAn2cEcmqPNheFdrJ3le7++Wv1J+7znmyziSQc4572QzN0tumJfsGvcelE7wkRvpxikpO9+QX7G5feIJiYDdN6t+Sbb25+rWCs24TG0GYpzEkf8tazQ9zJxWx+dA/mX7ixjtS1/cs9SOpdYBU8KPy3hn7daukvOPaPy6eiHBY=
+	t=1745950124; cv=none; b=P+boZNNE/gxd02etH7kwRetKVcJ51pB4j6QF+9U8iDQhRPjQPyctXAV5qvlRaVMuqBa8weas2+q5UthIw4t+Bm8TjOuHQ70XITQsjJDWjp23d71ez5FZtRBB5rcoFoFuF7zQVuZAwbWFYI1iNx4jglHDEZfIbaQUdokCg/umRrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950724; c=relaxed/simple;
-	bh=vE/heJSDltBI9TQwQxZ2Qf/eQrijNOE4vRjCrMs+lzs=;
+	s=arc-20240116; t=1745950124; c=relaxed/simple;
+	bh=A53u3FrEJ3GfYnXWWZ1sGgbPMF1QxKRa8BitI76irHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=emIdjvQvau58hZtQKIsVJS5Cgh+X4+bFaVN087ItXNSpLgq1Oc67Z9GkkdtNlcTHJnTlyo2c22twSbEziKDxy3hD2LLQPxi8l7ZyBi7TLI6yecMLTlLX2eNNR15gKSKIetJ+RWqehiiUAkpBl2wom9bV7cJJyCWJ1Ax7UO49r+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3iy3iw/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143B4C4CEE3;
-	Tue, 29 Apr 2025 18:18:43 +0000 (UTC)
+	 MIME-Version; b=BkgcDdSp8618xaHkCVsw4lJMeYvVDQ/bExtXhKyp/Oyw7HmPPPw4j5tP6CEBaCLF7/BxW+1ZosW0Qgvq0cC/AXQaB5qLqdl7DsqalXxEPk/Dyeg5ZR09YFaUgbYiZUVQKWaM/uDjV+cLyHXYpCcTz8aZiExc5ivHdiI5FNPlVyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0UzMZVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CDDC4CEE3;
+	Tue, 29 Apr 2025 18:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950724;
-	bh=vE/heJSDltBI9TQwQxZ2Qf/eQrijNOE4vRjCrMs+lzs=;
+	s=korg; t=1745950124;
+	bh=A53u3FrEJ3GfYnXWWZ1sGgbPMF1QxKRa8BitI76irHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k3iy3iw/PWN46AWet7mejLQczPE4SaJDuvDaIvbd3ly6tG3MM6Xv4UmaFk4/7qY0q
-	 GXCd5ncri9V7457bIRRrmbePV0oPZy0vc8sdSQ1AnfxNjKggTpmAEz6nmI2gIHn7xo
-	 E1qVNE8q3PzGgDyAlQwI5C60QSX7QqHJbyTLoaE8=
+	b=p0UzMZVOF7Rb3aUO1R4XrYwUwS75G/oNTRSRzWchQRy8AfiQjzUWkJA9UG1K+hQCs
+	 fkthiskmMl6fvEV0IcU/nQ5ubgN7NIqDM8eqw8OKUYx5FFsaZ6RJu0At5A0RFDgUl5
+	 MetqrG0RM6Xx/k8X53TvckD+R756VzMboZkBbJyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/204] spi: tegra210-quad: add rate limiting and simplify timeout error message
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Douglas Raillard <douglas.raillard@arm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 164/167] tracing: Remove pointer (asterisk) and brackets from cpumask_t field
 Date: Tue, 29 Apr 2025 18:44:32 +0200
-Message-ID: <20250429161106.918921600@linuxfoundation.org>
+Message-ID: <20250429161058.359062999@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 21f4314e66ed8d40b2ee24185d1a06a07a512eb1 ]
+commit fab89a09c86f948adfc7e20a7d608bd9f323bbe1 upstream.
 
-On malfunctioning hardware, timeout error messages can appear thousands
-of times, creating unnecessary system pressure and log bloat. This patch
-makes two improvements:
+To differentiate between long arrays and cpumasks, the __cpumask() field
+was created. Part of the TRACE_EVENT() macros test if the type is signed
+or not by using the is_signed_type() macro. The __cpumask() field used the
+__dynamic_array() helper but because cpumask_t is a structure, it could
+not be used in the is_signed_type() macro as that would fail to build, so
+instead it passed in the pointer to cpumask_t.
 
-1. Replace dev_err() with dev_err_ratelimited() to prevent log flooding
-   when hardware errors persist
-2. Remove the redundant timeout value parameter from the error message,
-   as 'ret' is always zero in this error path
+Unfortunately, that creates in the format file:
 
-These changes reduce logging overhead while maintaining necessary error
-reporting for debugging purposes.
+  field:__data_loc cpumask_t *[] mask;    offset:36;      size:4; signed:0;
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20250401-tegra-v2-2-126c293ec047@debian.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Which looks like an array of pointers to cpumask_t and not a cpumask_t
+type, which is misleading to user space parsers.
+
+Douglas Raillard pointed out that the "[]" are also misleading, as
+cpumask_t is not an array.
+
+Since cpumask() hasn't been created yet, and the parsers currently fail on
+it (but will still produce the raw output), make it be:
+
+  field:__data_loc cpumask_t mask;    offset:36;      size:4; signed:0;
+
+Which is the correct type of the field.
+
+Then the parsers can be updated to handle this.
+
+Link: https://lore.kernel.org/lkml/6dda5e1d-9416-b55e-88f3-31d148bc925f@arm.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20221212193814.0e3f1e43@gandalf.local.home
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 8230f27b1ccc ("tracing: Add __cpumask to denote a trace event field that is a cpumask_t")
+Reported-by: Douglas Raillard <douglas.raillard@arm.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/trace/stages/stage4_event_fields.h |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 2abb54f9a9ba4..e3c236025a7b3 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1118,8 +1118,8 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 					QSPI_DMA_TIMEOUT);
+--- a/include/trace/stages/stage4_event_fields.h
++++ b/include/trace/stages/stage4_event_fields.h
+@@ -48,7 +48,10 @@
+ #define __bitmask(item, nr_bits) __dynamic_array(unsigned long, item, -1)
  
- 			if (WARN_ON_ONCE(ret == 0)) {
--				dev_err(tqspi->dev, "QSPI Transfer failed with timeout: %d\n",
--					ret);
-+				dev_err_ratelimited(tqspi->dev,
-+						    "QSPI Transfer failed with timeout\n");
- 				if (tqspi->is_curr_dma_xfer &&
- 				    (tqspi->cur_direction & DATA_DIR_TX))
- 					dmaengine_terminate_all
--- 
-2.39.5
-
+ #undef __cpumask
+-#define __cpumask(item) __dynamic_array(cpumask_t *, item, -1)
++#define __cpumask(item) {						\
++	.type = "__data_loc cpumask_t", .name = #item,			\
++	.size = 4, .align = 4,						\
++	.is_signed = 0, .filter_type = FILTER_OTHER },
+ 
+ #undef __sockaddr
+ #define __sockaddr(field, len) __dynamic_array(u8, field, len)
+@@ -69,7 +72,10 @@
+ #define __rel_bitmask(item, nr_bits) __rel_dynamic_array(unsigned long, item, -1)
+ 
+ #undef __rel_cpumask
+-#define __rel_cpumask(item) __rel_dynamic_array(cpumask_t *, item, -1)
++#define __rel_cpumask(item) {						\
++	.type = "__rel_loc cpumask_t", .name = #item,			\
++	.size = 4, .align = 4,						\
++	.is_signed = 0, .filter_type = FILTER_OTHER },
+ 
+ #undef __rel_sockaddr
+ #define __rel_sockaddr(field, len) __rel_dynamic_array(u8, field, len)
 
 
 
