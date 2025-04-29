@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-138366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101DBAA17AA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8905BAA1343
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022B61BC51F8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6995D7AEF62
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB99F21ABC1;
-	Tue, 29 Apr 2025 17:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA7824BC1A;
+	Tue, 29 Apr 2025 17:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SV4J/fwZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qN5/XsBS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79ABB2517AF;
-	Tue, 29 Apr 2025 17:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66ADE1DF73C;
+	Tue, 29 Apr 2025 17:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949007; cv=none; b=Sye4nYPOfmXJoPXVGxV6NPEunw/C8RdaQAnw0FL5mLNhkl3ZMQNej/kKACU1Ym+9e/2EICCUvLQnsAqeMvSma1dyBKaNnnHt9RtqZUh8lHypm4dLvZ+8LBQBQzjnvZVuq+xeVQUgCoua6sLNrNjM8Eq3qDxACy0LiFe7nRYfWTE=
+	t=1745946231; cv=none; b=n5qZLf1HBShTLYFcyiEOTFwBu6w0IyKtHi0r6AlSD1MeMaEHcCoFKsPgvylHeubj46b/ESSO/+S1KLbAXbgsNp/vIDr2zmsVRUdxSoODlvCcZFQsJXhwSHU3sreNP3Xi7A/z+QS8crIWf/ajZWGA0tUwGUdgXv8Q9S7a/NZfrOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949007; c=relaxed/simple;
-	bh=MB0tV4c4yw3C5CaRAbtC3+TkPWwIxYtC5BAhGnf6JZI=;
+	s=arc-20240116; t=1745946231; c=relaxed/simple;
+	bh=+basgL5drwLZSJqlp03awCCU1bKt5FKEW2VmEKTarb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EAEyPYsnn4AEqyuB+LGRw7A+jYqao+RWCUzMKwcIxXWM+miUdpXfkWNQrXaCTIkTQCpMDAXCTzp39EQWDkDyzrKoAmuEbFMjtdZ2VR4qKSh/x9pGdBctw+LkxUPRoATx7VjDEavJgdw0Pp/JdY8nI6TZbSEO+v0uEahHWPaxQt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SV4J/fwZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4E2C4CEE9;
-	Tue, 29 Apr 2025 17:50:06 +0000 (UTC)
+	 MIME-Version; b=jR/TuShI0JkuTBTTjX2QEJxqNj68761nL9yvNNuIi4e1OZWf2a9mq4sqzLpgAri6jMnEOpOpH3fWxcKdk6kWPY5pBVMpcLGAnmHBWOteS7BzC88C7GMwvg/90NMxuV+qgl0vwhrAUBc0RaJ8v1rCloMaPjt+pmJNqQmyB4X8HXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qN5/XsBS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384DCC4CEE3;
+	Tue, 29 Apr 2025 17:03:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949007;
-	bh=MB0tV4c4yw3C5CaRAbtC3+TkPWwIxYtC5BAhGnf6JZI=;
+	s=korg; t=1745946230;
+	bh=+basgL5drwLZSJqlp03awCCU1bKt5FKEW2VmEKTarb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SV4J/fwZlL3vlVAClqFikd0gSvYyS4T5GoB6RDFaMB3udUkYSwRNtdOiDJnZ6YAQX
-	 pgRtoREfohDN1WzzSOH/yecaB5mwoQmWnHFK7v9wS+jZ4DTwNQJtkzusb5U1SlzPnQ
-	 284gI1eSoVCPhp6OJjoXN1TS/H7pkTy3X0vVOAiQ=
+	b=qN5/XsBS2PzGra4cJ8uSMNKPrWIqHs9IqDcYqlMfvgYh2FvfYSoVz5q2HwdLSEazM
+	 JkYGo0JctMXJgnuVIqhtnIKWgS/Q3V/7TdI4rJrKJi5EKTV5SLGxL4pvUguFtjB4M7
+	 urGEwevPNYDFZhqG5/dQLzjzWMoSyY6fU5dHlias=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Alexander Stein <alexander.stein@mailbox.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 159/373] nfs: move nfs_fhandle_hash to common include file
+Subject: [PATCH 6.14 199/311] usb: host: max3421-hcd: Add missing spi_device_id table
 Date: Tue, 29 Apr 2025 18:40:36 +0200
-Message-ID: <20250429161129.682999897@linuxfoundation.org>
+Message-ID: <20250429161129.163338807@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Alexander Stein <alexander.stein@mailbox.org>
 
-[ Upstream commit e59fb6749ed833deee5b3cfd7e89925296d41f49 ]
+[ Upstream commit 41d5e3806cf589f658f92c75195095df0b66f66a ]
 
-lockd needs to be able to hash filehandles for tracepoints. Move the
-nfs_fhandle_hash() helper to a common nfs include file.
+"maxim,max3421" DT compatible is missing its SPI device ID entry, not
+allowing module autoloading and leading to the following message:
+ "SPI driver max3421-hcd has no spi_device_id for maxim,max3421"
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: cd35b6cb4664 ("nfs: add missing selections of CONFIG_CRC32")
+Fix this by adding the spi_device_id table.
+
+Signed-off-by: Alexander Stein <alexander.stein@mailbox.org>
+Link: https://lore.kernel.org/r/20250128195114.56321-1-alexander.stein@mailbox.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/internal.h   | 15 ---------------
- include/linux/nfs.h | 20 ++++++++++++++++++++
- 2 files changed, 20 insertions(+), 15 deletions(-)
+ drivers/usb/host/max3421-hcd.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 692018327b5ff..243d7e69e5115 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -769,27 +769,12 @@ u64 nfs_timespec_to_change_attr(const struct timespec64 *ts)
+diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
+index 0881fdd1823e0..dcf31a592f5d1 100644
+--- a/drivers/usb/host/max3421-hcd.c
++++ b/drivers/usb/host/max3421-hcd.c
+@@ -1946,6 +1946,12 @@ max3421_remove(struct spi_device *spi)
+ 	usb_put_hcd(hcd);
  }
  
- #ifdef CONFIG_CRC32
--/**
-- * nfs_fhandle_hash - calculate the crc32 hash for the filehandle
-- * @fh - pointer to filehandle
-- *
-- * returns a crc32 hash for the filehandle that is compatible with
-- * the one displayed by "wireshark".
-- */
--static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
--{
--	return ~crc32_le(0xFFFFFFFF, &fh->data[0], fh->size);
--}
- static inline u32 nfs_stateid_hash(const nfs4_stateid *stateid)
- {
- 	return ~crc32_le(0xFFFFFFFF, &stateid->other[0],
- 				NFS4_STATEID_OTHER_SIZE);
- }
- #else
--static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
--{
--	return 0;
--}
- static inline u32 nfs_stateid_hash(nfs4_stateid *stateid)
- {
- 	return 0;
-diff --git a/include/linux/nfs.h b/include/linux/nfs.h
-index b06375e88e589..ceb70a926b95e 100644
---- a/include/linux/nfs.h
-+++ b/include/linux/nfs.h
-@@ -10,6 +10,7 @@
- 
- #include <linux/sunrpc/msg_prot.h>
- #include <linux/string.h>
-+#include <linux/crc32.h>
- #include <uapi/linux/nfs.h>
- 
- /*
-@@ -44,4 +45,23 @@ enum nfs3_stable_how {
- 	/* used by direct.c to mark verf as invalid */
- 	NFS_INVALID_STABLE_HOW = -1
- };
++static const struct spi_device_id max3421_spi_ids[] = {
++	{ "max3421" },
++	{ },
++};
++MODULE_DEVICE_TABLE(spi, max3421_spi_ids);
 +
-+#ifdef CONFIG_CRC32
-+/**
-+ * nfs_fhandle_hash - calculate the crc32 hash for the filehandle
-+ * @fh - pointer to filehandle
-+ *
-+ * returns a crc32 hash for the filehandle that is compatible with
-+ * the one displayed by "wireshark".
-+ */
-+static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
-+{
-+	return ~crc32_le(0xFFFFFFFF, &fh->data[0], fh->size);
-+}
-+#else /* CONFIG_CRC32 */
-+static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
-+{
-+	return 0;
-+}
-+#endif /* CONFIG_CRC32 */
- #endif /* _LINUX_NFS_H */
+ static const struct of_device_id max3421_of_match_table[] = {
+ 	{ .compatible = "maxim,max3421", },
+ 	{},
+@@ -1955,6 +1961,7 @@ MODULE_DEVICE_TABLE(of, max3421_of_match_table);
+ static struct spi_driver max3421_driver = {
+ 	.probe		= max3421_probe,
+ 	.remove		= max3421_remove,
++	.id_table	= max3421_spi_ids,
+ 	.driver		= {
+ 		.name	= "max3421-hcd",
+ 		.of_match_table = max3421_of_match_table,
 -- 
 2.39.5
 
