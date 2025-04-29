@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A7EAA1443
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FCFAA12ED
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:00:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20AB81899595
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:10:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D12754C23B6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D242D2475CB;
-	Tue, 29 Apr 2025 17:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142532517B6;
+	Tue, 29 Apr 2025 16:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1gpnyl8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n83p1J3I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB571DF73C;
-	Tue, 29 Apr 2025 17:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B322517AA;
+	Tue, 29 Apr 2025 16:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946635; cv=none; b=KAFGZxjd6TkeTLVeTLVyfHiOxa42ex39KPUBgvBGIeLBzn0o1T0vfMCsnQnepTZdZ0io7uaIlzVSxno9/utu6LEelsBmg/M4wBjgBY8U5kXRk3CxHpxhZtm0PuRfmUTNQLJlxpTIPOz3i2ZmKDD7Ezu56a4VO7G1Wzm9i0zAdfE=
+	t=1745945844; cv=none; b=rGb+QqxkZ8I2JpGo//ZyhWUG+qYJOlQ+mFGxKE1ABVF9R4jzEgOpkMRron89B43Tqfvri0KtNX+8AlvoRGlLk6xByNWlecP++yx3IrPfLNmOR67h8vdgxoPOwJkqG4w/0hnRkXqv5n5HvcjMw1S7iTAy4vRsnICTlxnOllkPssM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946635; c=relaxed/simple;
-	bh=TjIyiah6TcqO69Pv9fEa7SzqzzcFI1kCQbVDsb++DP0=;
+	s=arc-20240116; t=1745945844; c=relaxed/simple;
+	bh=wlH0bKnipYkWTEyXQRFnhV0GOeo4lE1WS6lvrRqrFFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urG/Mif8EnIyeqUP4AF3VC9OxoepHKIrQ5SsrlVUmwVBgdM0BV9dKInNt9vTG6Z882o1lk7VwqJhmS5vi4sdJX3YZEPUETl3mNa7BCnYNFSVe28CeI2blUliGnnxq9Cfpw81PSoV6jxmYTJwgL9/O+Zbu5sMJX1jvJZsQ4B8WJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1gpnyl8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688B3C4CEE3;
-	Tue, 29 Apr 2025 17:10:34 +0000 (UTC)
+	 MIME-Version; b=Bd8+Gmf3oaV/QwJPwFHjk5HnmOKbLUSdYgbgZSheps7e2VOBY0HAET/MBJbOjzEzU+QZd4QzUn9c0aVO+y76eiVFfTqVxtZNzuDkM2pJA7+IJ3gkwwrt7k75ZQ772DoAImsk9Fyqpi0uKMuyQorx5GaOch+u/2BTkqNBuD/+NvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n83p1J3I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2742C4CEE3;
+	Tue, 29 Apr 2025 16:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946635;
-	bh=TjIyiah6TcqO69Pv9fEa7SzqzzcFI1kCQbVDsb++DP0=;
+	s=korg; t=1745945844;
+	bh=wlH0bKnipYkWTEyXQRFnhV0GOeo4lE1WS6lvrRqrFFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T1gpnyl8qm0PeSrrbK4U5nwF/2yo+8nnG1GmtfQrCT7yfO9TbFCDk/t6q/ZPnsL+Z
-	 LQhYDbv5NZGNPdUKb82bcmMHl/CFoYuGSaA29MgeDvD/71Gn8R7AZaCVUHzUAMKpqE
-	 DT/f/4jSyFxtK8tTaP/VA6E9tgNiyYy4MAMcYpUU=
+	b=n83p1J3Ine/y260NkY6v4dwxsA97R7z6YGUFUQXtCL/G8xr8nJdTCISjGCEMrYftW
+	 vQJl3IHKn9hpCXAsNo5vvp7aw7QQQulIfKvhYEJuV0O9c/CxEbWfmtFhVP/8oZX9x7
+	 9pqrAGBLHpODDslNLALJMJ/q1Uy9kQIjBtGC8OD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 002/286] tipc: fix memory leak in tipc_link_xmit
+Subject: [PATCH 6.14 069/311] net_sched: hfsc: Fix a potential UAF in hfsc_dequeue() too
 Date: Tue, 29 Apr 2025 18:38:26 +0200
-Message-ID: <20250429161107.955470497@linuxfoundation.org>
+Message-ID: <20250429161123.872048751@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tung Nguyen <tung.quang.nguyen@est.tech>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 69ae94725f4fc9e75219d2d69022029c5b24bc9a ]
+[ Upstream commit 6ccbda44e2cc3d26fd22af54c650d6d5d801addf ]
 
-In case the backlog transmit queue for system-importance messages is overloaded,
-tipc_link_xmit() returns -ENOBUFS but the skb list is not purged. This leads to
-memory leak and failure when a skb is allocated.
+Similarly to the previous patch, we need to safe guard hfsc_dequeue()
+too. But for this one, we don't have a reliable reproducer.
 
-This commit fixes this issue by purging the skb list before tipc_link_xmit()
-returns.
-
-Fixes: 365ad353c256 ("tipc: reduce risk of user starvation during link congestion")
-Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Link: https://patch.msgid.link/20250403092431.514063-1-tung.quang.nguyen@est.tech
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 ("Linux-2.6.12-rc2")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20250417184732.943057-3-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/link.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/sch_hfsc.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/net/tipc/link.c b/net/tipc/link.c
-index 5f849c7300283..336d1bb2cf6a3 100644
---- a/net/tipc/link.c
-+++ b/net/tipc/link.c
-@@ -1033,6 +1033,7 @@ int tipc_link_xmit(struct tipc_link *l, struct sk_buff_head *list,
- 	if (unlikely(l->backlog[imp].len >= l->backlog[imp].limit)) {
- 		if (imp == TIPC_SYSTEM_IMPORTANCE) {
- 			pr_warn("%s<%s>, link overflow", link_rst_msg, l->name);
-+			__skb_queue_purge(list);
- 			return -ENOBUFS;
- 		}
- 		rc = link_schedule_user(l, hdr);
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index e730d3f791c24..5bb4ab9941d6e 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -1637,10 +1637,16 @@ hfsc_dequeue(struct Qdisc *sch)
+ 		if (cl->qdisc->q.qlen != 0) {
+ 			/* update ed */
+ 			next_len = qdisc_peek_len(cl->qdisc);
+-			if (realtime)
+-				update_ed(cl, next_len);
+-			else
+-				update_d(cl, next_len);
++			/* Check queue length again since some qdisc implementations
++			 * (e.g., netem/codel) might empty the queue during the peek
++			 * operation.
++			 */
++			if (cl->qdisc->q.qlen != 0) {
++				if (realtime)
++					update_ed(cl, next_len);
++				else
++					update_d(cl, next_len);
++			}
+ 		} else {
+ 			/* the class becomes passive */
+ 			eltree_remove(cl);
 -- 
 2.39.5
 
