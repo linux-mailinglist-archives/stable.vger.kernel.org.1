@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-137624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1030AAA13DD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D76AA1362
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C99FB7A516D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81636982D8D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C933B2441A6;
-	Tue, 29 Apr 2025 17:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABED8242934;
+	Tue, 29 Apr 2025 16:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCrgn2B2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmtSEKfr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863E1221DA7;
-	Tue, 29 Apr 2025 17:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3721EB5CE;
+	Tue, 29 Apr 2025 16:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946628; cv=none; b=kBCDAqCliMuo5YWdQYN7uKTX1SoAek1y3Vd6yDAk0T3KhXQ94d0SkIEBguKEBmV83ufbILPwnghRuAn4mS5Hhw7XfKmIT8JxiIxmQWflWglwmoi7E7oKjlt1nJqZGgBYTQ9zVlt0+s8pGQmaveOiKn2UvXfdEw+OB50xMBoe/Yo=
+	t=1745945975; cv=none; b=MYu6vtoEakZsj5Gc6mixVfSBa0b93fMkxxmVv3k9z+QPC8KQ4hLOy4pVe2K4XC0VJJu1r6B/FxnyyS8X+slz+BenzFiVs71tyZ5hPSpXsUpOxoxhC8pmrXfE0bwb4GDqyhDqfzaKNKsV20E0/JLeNcia4rssUII7qPByrvwdcyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946628; c=relaxed/simple;
-	bh=NP4uKWVLiKRA4cKuOon3UDSjF4Td0KMC4CjSaTVNzyk=;
+	s=arc-20240116; t=1745945975; c=relaxed/simple;
+	bh=QGj3qBjWTxNKrzuhk6+BKv6UTBlaVktivtbxpJcmedw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LA5fsU5xnFiXUhEJ8yluvhctDNepDISOLb/d4g/RxUxylnPFW1Z5d1xbdZJvUhf4fV7m5kh96JdOCMXj/yk9ljiXuJxAwISSCtlwJtFRmuPQ/P+mphyDO9E93YFnb7jqtATQGqpQo2d4lsEdH+RfAe+w4w1Pa2mQBrPe5vcV2wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCrgn2B2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA76DC4CEE3;
-	Tue, 29 Apr 2025 17:10:27 +0000 (UTC)
+	 MIME-Version; b=VQKzLMvSDUzCH1AsuQlQIuQadAu1RmZXk5mfIpPOKPDYtZOTQTd8so7qOV9kRrbYVgBDCKdVXLvstGcEoIGe34hi2BYmOmHiXmtk/cg2qoAzg+rJirQza+glNUEGRY4q7Qf4JRRprSS282iMKvc6T26sC64c6kDfPH1/V17n+A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmtSEKfr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA4FC4CEE3;
+	Tue, 29 Apr 2025 16:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946628;
-	bh=NP4uKWVLiKRA4cKuOon3UDSjF4Td0KMC4CjSaTVNzyk=;
+	s=korg; t=1745945975;
+	bh=QGj3qBjWTxNKrzuhk6+BKv6UTBlaVktivtbxpJcmedw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bCrgn2B2m/BkVmKKTL5UL8JxLKDbLt6yfY/NOtMzCcNHFDGCWfa3W4HjTsJNK5IIq
-	 8+InkApYV+1nOAimCtOipEB2qESidZxF8nEfnyH/duLLbLYeAgwkW1vQgDW/hOdnYq
-	 Nsv8e5dfdpKRs4cDm4NLkgSoI+n8mmiKjiKtbbMg=
+	b=mmtSEKfrcPyg4zq6Hk2fJB7MKLK0BoERltMqbDyqIrB3zpwX9x9KvPD83/NjYufhU
+	 gzkGKLk37QtGDtJEALcW/jQrTw3VxVOMt03CyBUsGbk7m9eSVGPH0uAypUK0tIqTHx
+	 gLGYX9YkfgNtQ2/DzJ+2sFjh8WXyJsESjJaHoawU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nolan Nicholson <nolananicholson@gmail.com>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 018/286] HID: pidff: Fix null pointer dereference in pidff_find_fields
+Subject: [PATCH 6.14 085/311] iommu/amd: Return an error if vCPU affinity is set for non-vCPU IRTE
 Date: Tue, 29 Apr 2025 18:38:42 +0200
-Message-ID: <20250429161108.602803656@linuxfoundation.org>
+Message-ID: <20250429161124.534215524@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <forest10pl@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 22a05462c3d0eee15154faf8d13c49e6295270a5 ]
+[ Upstream commit 07172206a26dcf3f0bf7c3ecaadd4242b008ea54 ]
 
-This function triggered a null pointer dereference if used to search for
-a report that isn't implemented on the device. This happened both for
-optional and required reports alike.
+Return -EINVAL instead of success if amd_ir_set_vcpu_affinity() is
+invoked without use_vapic; lying to KVM about whether or not the IRTE was
+configured to post IRQs is all kinds of bad.
 
-The same logic was applied to pidff_find_special_field and although
-pidff_init_fields should return an error earlier if one of the required
-reports is missing, future modifications could change this logic and
-resurface this possible null pointer dereference again.
-
-LKML bug report:
-https://lore.kernel.org/all/CAL-gK7f5=R0nrrQdPtaZZr1fd-cdAMbDMuZ_NLA8vM0SX+nGSw@mail.gmail.com
-
-Reported-by: Nolan Nicholson <nolananicholson@gmail.com>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: d98de49a53e4 ("iommu/amd: Enable vAPIC interrupt remapping mode by default")
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-6-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/iommu/amd/iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -772,6 +772,11 @@ static int pidff_find_fields(struct pidf
- {
- 	int i, j, k, found;
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index cd5116d8c3b28..b3a01b7757ee1 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -3850,7 +3850,7 @@ static int amd_ir_set_vcpu_affinity(struct irq_data *data, void *vcpu_info)
+ 	 * we should not modify the IRTE
+ 	 */
+ 	if (!dev_data || !dev_data->use_vapic)
+-		return 0;
++		return -EINVAL;
  
-+	if (!report) {
-+		pr_debug("pidff_find_fields, null report\n");
-+		return -1;
-+	}
-+
- 	for (k = 0; k < count; k++) {
- 		found = 0;
- 		for (i = 0; i < report->maxfield; i++) {
-@@ -885,6 +890,11 @@ static struct hid_field *pidff_find_spec
- {
- 	int i;
- 
-+	if (!report) {
-+		pr_debug("pidff_find_special_field, null report\n");
-+		return NULL;
-+	}
-+
- 	for (i = 0; i < report->maxfield; i++) {
- 		if (report->field[i]->logical == (HID_UP_PID | usage) &&
- 		    report->field[i]->report_count > 0) {
+ 	ir_data->cfg = irqd_cfg(data);
+ 	pi_data->ir_data = ir_data;
+-- 
+2.39.5
+
 
 
 
