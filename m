@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01710AA1933
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C1ACAA19BA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27B049C1D83
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C80964C0242
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CFF254861;
-	Tue, 29 Apr 2025 18:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91443250C0C;
+	Tue, 29 Apr 2025 18:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCSrqJbr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orTd6UBt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7576423E32B;
-	Tue, 29 Apr 2025 18:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E901155A4E;
+	Tue, 29 Apr 2025 18:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949781; cv=none; b=DgZJTMOsFxlVDlfmtzH66SFZ7JgUp9/ZBAI7wd/YJZ0kJ0NrXFB0ZDLRqnzU6smlSBaVHqTh+Bkvg9rcCWBigKfUnmKjsepE9F9Cf51LcVSodrJnmQzPJgzW2IhIWFYUyXrUqTCwQDdIan5KU0jS6V8lmt/T2CKPhx5NygNnqGg=
+	t=1745950371; cv=none; b=tmegMYDVBEilqXcITioyrK1O/UDr06GgTDFzFS9WQlCgFfFVn3E1W9TZdY7oT63MEBFq1FMxVjJmTf7Hlh6ZoHdHpKI4rL0vF28P+Y/xhLPsACfouVLnL8KXDJjG+g7OxjZk9yC7ikwiZvrjLeg15CAVhpjA1zjtIbdFH3Ngf5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949781; c=relaxed/simple;
-	bh=EAuDTulO5sKl+OpTKbRvinuUz+eYwbrbwQrCpWQ5TIY=;
+	s=arc-20240116; t=1745950371; c=relaxed/simple;
+	bh=Sc5t6OHf5Fsj3EnW9lnjBqwHWnHU6Kjq1VYCjhveSeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HxLfPRo4+4MeOhlipZioMkkcC55H2oPszlV0hxmRb31ZffTCvxM7zMYXEV6eIBJcemVxdgvl3WQGg71ill9Atqt+MdoryzFeoZWG8+ECARWERyJ1K2kXZAzm8+uU1SU5wI+WVobdj3SOu/88qmjiAAjCNaOMJoAS0zv4r225jQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCSrqJbr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A2DC4CEE9;
-	Tue, 29 Apr 2025 18:03:00 +0000 (UTC)
+	 MIME-Version; b=q1VjUOHHs3+KVXC2cyYeuXvC3tSrT1HwqIBnceNNs1isRzAiZ68LRwg88cdU6/9eXNuTbyISYCRXjaUm0q6hcR6Zr2YXluMx4kkVZz6/BF/EliKoQblp6ByObRHU6uv6gMzhXHIEjI1D0tFQbDrS4n8UJbbVayZh8bp6kp/9jbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orTd6UBt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E34C4CEE3;
+	Tue, 29 Apr 2025 18:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949780;
-	bh=EAuDTulO5sKl+OpTKbRvinuUz+eYwbrbwQrCpWQ5TIY=;
+	s=korg; t=1745950371;
+	bh=Sc5t6OHf5Fsj3EnW9lnjBqwHWnHU6Kjq1VYCjhveSeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RCSrqJbrOm5jIzo09MmGhtRiBoREh6ZnWC8Q1jloQJrxmETtvoY0GJNIOqO6Vb3aK
-	 sbnsq8T5vjnOd22XTOiW3Qr7GTdce/XLJfn1CvocrTXdJrsu6Lsfpy2s5VFpnv7zWJ
-	 mM0KZXU+rTJ5MNQh/kwSOh5lM5Q4Ax4ka69GVOVM=
+	b=orTd6UBtHL+qh8GkG2/03mtI4rIfp2kS5/bs3nqKP5rYodTuwMGep44wXAaQe+Q++
+	 +AbUTndctiYiXa5NwCE+AQR7YlPFbsSzVhb7FmJnQc0I83dtoUAuELyagCqMWkwjPD
+	 D+4zdeS6LQ+6YVeJpnt74V7pHTqAv5MYwKzv4MSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/167] net: dsa: mt7530: sync driver-specific behavior of MT7531 variants
-Date: Tue, 29 Apr 2025 18:42:42 +0200
-Message-ID: <20250429161053.950437783@linuxfoundation.org>
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 075/204] net: selftests: initialize TCP header and skb payload with zero
+Date: Tue, 29 Apr 2025 18:42:43 +0200
+Message-ID: <20250429161102.492848066@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 497041d763016c2e8314d2f6a329a9b77c3797ca ]
+commit 9e8d1013b0c38910cbc9e60de74dbe883878469d upstream.
 
-MT7531 standalone and MMIO variants found in MT7988 and EN7581 share
-most basic properties. Despite that, assisted_learning_on_cpu_port and
-mtu_enforcement_ingress were only applied for MT7531 but not for MT7988
-or EN7581, causing the expected issues on MMIO devices.
+Zero-initialize TCP header via memset() to avoid garbage values that
+may affect checksum or behavior during test transmission.
 
-Apply both settings equally also for MT7988 and EN7581 by moving both
-assignments form mt7531_setup() to mt7531_setup_common().
+Also zero-fill allocated payload and padding regions using memset()
+after skb_put(), ensuring deterministic content for all outgoing
+test packets.
 
-This fixes unwanted flooding of packets due to unknown unicast
-during DA lookup, as well as issues with heterogenous MTU settings.
-
-Fixes: 7f54cc9772ce ("net: dsa: mt7530: split-off common parts from mt7531_setup")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Chester A. Unal <chester.a.unal@arinc9.com>
-Link: https://patch.msgid.link/89ed7ec6d4fa0395ac53ad2809742bb1ce61ed12.1745290867.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3e1e58d64c3d ("net: add generic selftest support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250416160125.2914724-1-o.rempel@pengutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mt7530.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/core/selftests.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 1aba0cf38630f..308e56a73df01 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -2558,6 +2558,9 @@ mt7531_setup_common(struct dsa_switch *ds)
- 	struct mt7530_priv *priv = ds->priv;
- 	int ret, i;
+--- a/net/core/selftests.c
++++ b/net/core/selftests.c
+@@ -100,10 +100,10 @@ static struct sk_buff *net_test_get_skb(
+ 	ehdr->h_proto = htons(ETH_P_IP);
  
-+	ds->assisted_learning_on_cpu_port = true;
-+	ds->mtu_enforcement_ingress = true;
+ 	if (attr->tcp) {
++		memset(thdr, 0, sizeof(*thdr));
+ 		thdr->source = htons(attr->sport);
+ 		thdr->dest = htons(attr->dport);
+ 		thdr->doff = sizeof(struct tcphdr) / 4;
+-		thdr->check = 0;
+ 	} else {
+ 		uhdr->source = htons(attr->sport);
+ 		uhdr->dest = htons(attr->dport);
+@@ -144,10 +144,18 @@ static struct sk_buff *net_test_get_skb(
+ 	attr->id = net_test_next_id;
+ 	shdr->id = net_test_next_id++;
+ 
+-	if (attr->size)
+-		skb_put(skb, attr->size);
+-	if (attr->max_size && attr->max_size > skb->len)
+-		skb_put(skb, attr->max_size - skb->len);
++	if (attr->size) {
++		void *payload = skb_put(skb, attr->size);
 +
- 	mt753x_trap_frames(priv);
++		memset(payload, 0, attr->size);
++	}
++
++	if (attr->max_size && attr->max_size > skb->len) {
++		size_t pad_len = attr->max_size - skb->len;
++		void *pad = skb_put(skb, pad_len);
++
++		memset(pad, 0, pad_len);
++	}
  
- 	/* Enable and reset MIB counters */
-@@ -2701,9 +2704,6 @@ mt7531_setup(struct dsa_switch *ds)
- 	if (ret)
- 		return ret;
- 
--	ds->assisted_learning_on_cpu_port = true;
--	ds->mtu_enforcement_ingress = true;
--
- 	return 0;
- }
- 
--- 
-2.39.5
-
+ 	skb->csum = 0;
+ 	skb->ip_summed = CHECKSUM_PARTIAL;
 
 
 
