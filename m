@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-138804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6B3AA1A22
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7F7AA1966
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:11:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD9235A59A9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC0389C4559
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4EE24111D;
-	Tue, 29 Apr 2025 18:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E614243964;
+	Tue, 29 Apr 2025 18:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntk7JM48"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEhOMZOn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A8F227BA9;
-	Tue, 29 Apr 2025 18:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D164E2AE96;
+	Tue, 29 Apr 2025 18:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950403; cv=none; b=RsgRfwGwSGz93yqC1VbYk4V+MR8sTbzz7F59ErO0nBmwjai2aGEIAffR8HYqhzKNLgol+WACOhnRFIZgOkx+il0r/bf5FgwITQ1WHdmwON8eNYlbyo0USBYhzwopcCi93uIqGGr9RciLV/90wEqwVuzhn4np79XdKmW6qTK1wYo=
+	t=1745949903; cv=none; b=j5gDZNU+8wDOVhL2+DAg7EgDjJ1jkGsC+PYxSPQ9Crj4sHuxBX7o2Jq31KdRo5LlWDHuU1I7f9lS3yhf7+IKqSlD8zqoswvEEBnatKuohV9RssE8HcduAfEhl7qtrMvrmMwLFxX+tKmD+aPC5NzTx0jIxJ6fLZK2MpkFmwPrILc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950403; c=relaxed/simple;
-	bh=dS2L08jzrW9BI7ZjF2B+XyH+VAMgK4LHIrEvSL8G5d4=;
+	s=arc-20240116; t=1745949903; c=relaxed/simple;
+	bh=fRCZfAp8lrLvFJlGfg8Puyr48Q3X7WayRhieLUeVzMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qPMtSR6j3vZ9bBFMEuzKCxh/WrnSAAc/w9T7lJcCZLWxDLFiN+hsIbgkQhLdJ8VdO4AWsBc78OtFH7USRv0noh8e611PdZsNO5fX2AFDVXriYr4oRhF3Y7lXnDaanXtyf08Az2Te2ds1lfOPPxW+bS668xHz22izFMMJFJBZUXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntk7JM48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832F2C4CEE3;
-	Tue, 29 Apr 2025 18:13:22 +0000 (UTC)
+	 MIME-Version; b=a/Yo0q5zkngWO//VXpoCOJr3vI/6NckcVj16f6424vYYmPiOOx/eIat5cW38nPoqxC+N7uPdJPhGdsxWds14YEYDc7c7X17vfJqiexmyAp1L5c0V/24uBTTYCZZAw8ROwpp/40dAOuaPhNbjLroOTEmDhbBS9np6iBbR+HKqWck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEhOMZOn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42099C4CEE3;
+	Tue, 29 Apr 2025 18:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950402;
-	bh=dS2L08jzrW9BI7ZjF2B+XyH+VAMgK4LHIrEvSL8G5d4=;
+	s=korg; t=1745949903;
+	bh=fRCZfAp8lrLvFJlGfg8Puyr48Q3X7WayRhieLUeVzMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ntk7JM48p5jYqs4bxXT/dOZMydQdZoN/QKjf3c0r5kOqw/PKEVVjEFBC/jBFfZ/K4
-	 XNleLu6tA5w72TV2/f03nKbCrKWk8y+jMdX3QYTAKK1fiT4UPiv2XEjSgX2QIsWlar
-	 EB6cudLNkKEV9BZhkPIIpJtDNkxTaJX9FrltAvxY=
+	b=YEhOMZOnQZdjxSnWXCIqpLoWmjNBM8nan7zb79TMEpCGbcViX2RKyGUX7vxy1jdxo
+	 qMZoLhUBHn54svsloYuGlfIpb4WZN9RnVv95L3eCQd0rWi2TPlFVl0JluT5wPaZhY6
+	 BFldYPdj4MuAr54RtFsLTSS6YJWssDspAOnJVq38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Robert Richter <rrichter@amd.com>
-Subject: [PATCH 6.6 084/204] cxl/core/regs.c: Skip Memory Space Enable check for RCD and RCH Ports
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 064/167] net: selftests: initialize TCP header and skb payload with zero
 Date: Tue, 29 Apr 2025 18:42:52 +0200
-Message-ID: <20250429161102.858409279@linuxfoundation.org>
+Message-ID: <20250429161054.365774969@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 078d3ee7c162cd66d76171579c02d7890bd77daf upstream.
+commit 9e8d1013b0c38910cbc9e60de74dbe883878469d upstream.
 
-According to CXL r3.2 section 8.2.1.2, the PCI_COMMAND register fields,
-including Memory Space Enable bit, have no effect on the behavior of an
-RCD Upstream Port. Retaining this check may incorrectly cause
-cxl_pci_probe() to fail on a valid RCD upstream Port.
+Zero-initialize TCP header via memset() to avoid garbage values that
+may affect checksum or behavior during test transmission.
 
-While the specification is explicit only for RCD Upstream Ports, this
-check is solely for accessing the RCRB, which is always mapped through
-memory space. Therefore, its safe to remove the check entirely. In
-practice, firmware reliably enables the Memory Space Enable bit for
-RCH Downstream Ports and no failures have been observed.
+Also zero-fill allocated payload and padding regions using memset()
+after skb_put(), ensuring deterministic content for all outgoing
+test packets.
 
-Removing the check simplifies the code and avoids unnecessary
-special-casing, while relying on BIOS/firmware to configure devices
-correctly. Moreover, any failures due to inaccessible RCRB regions
-will still be caught either in __rcrb_to_component() or while
-parsing the component register block.
-
-The following failure was observed in dmesg when the check was present:
-	cxl_pci 0000:7f:00.0: No component registers (-6)
-
-Fixes: d5b1a27143cb ("cxl/acpi: Extract component registers of restricted hosts from RCRB")
-Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Terry Bowman <terry.bowman@amd.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Robert Richter <rrichter@amd.com>
-Link: https://patch.msgid.link/20250407192734.70631-1-Smita.KoralahalliChannabasappa@amd.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: 3e1e58d64c3d ("net: add generic selftest support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250416160125.2914724-1-o.rempel@pengutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/regs.c |    4 ----
- 1 file changed, 4 deletions(-)
+ net/core/selftests.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/drivers/cxl/core/regs.c
-+++ b/drivers/cxl/core/regs.c
-@@ -478,7 +478,6 @@ resource_size_t __rcrb_to_component(stru
- 	resource_size_t rcrb = ri->base;
- 	void __iomem *addr;
- 	u32 bar0, bar1;
--	u16 cmd;
- 	u32 id;
+--- a/net/core/selftests.c
++++ b/net/core/selftests.c
+@@ -100,10 +100,10 @@ static struct sk_buff *net_test_get_skb(
+ 	ehdr->h_proto = htons(ETH_P_IP);
  
- 	if (which == CXL_RCRB_UPSTREAM)
-@@ -500,7 +499,6 @@ resource_size_t __rcrb_to_component(stru
- 	}
+ 	if (attr->tcp) {
++		memset(thdr, 0, sizeof(*thdr));
+ 		thdr->source = htons(attr->sport);
+ 		thdr->dest = htons(attr->dport);
+ 		thdr->doff = sizeof(struct tcphdr) / 4;
+-		thdr->check = 0;
+ 	} else {
+ 		uhdr->source = htons(attr->sport);
+ 		uhdr->dest = htons(attr->dport);
+@@ -144,10 +144,18 @@ static struct sk_buff *net_test_get_skb(
+ 	attr->id = net_test_next_id;
+ 	shdr->id = net_test_next_id++;
  
- 	id = readl(addr + PCI_VENDOR_ID);
--	cmd = readw(addr + PCI_COMMAND);
- 	bar0 = readl(addr + PCI_BASE_ADDRESS_0);
- 	bar1 = readl(addr + PCI_BASE_ADDRESS_1);
- 	iounmap(addr);
-@@ -515,8 +513,6 @@ resource_size_t __rcrb_to_component(stru
- 			dev_err(dev, "Failed to access Downstream Port RCRB\n");
- 		return CXL_RESOURCE_NONE;
- 	}
--	if (!(cmd & PCI_COMMAND_MEMORY))
--		return CXL_RESOURCE_NONE;
- 	/* The RCRB is a Memory Window, and the MEM_TYPE_1M bit is obsolete */
- 	if (bar0 & (PCI_BASE_ADDRESS_MEM_TYPE_1M | PCI_BASE_ADDRESS_SPACE_IO))
- 		return CXL_RESOURCE_NONE;
+-	if (attr->size)
+-		skb_put(skb, attr->size);
+-	if (attr->max_size && attr->max_size > skb->len)
+-		skb_put(skb, attr->max_size - skb->len);
++	if (attr->size) {
++		void *payload = skb_put(skb, attr->size);
++
++		memset(payload, 0, attr->size);
++	}
++
++	if (attr->max_size && attr->max_size > skb->len) {
++		size_t pad_len = attr->max_size - skb->len;
++		void *pad = skb_put(skb, pad_len);
++
++		memset(pad, 0, pad_len);
++	}
+ 
+ 	skb->csum = 0;
+ 	skb->ip_summed = CHECKSUM_PARTIAL;
 
 
 
