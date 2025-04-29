@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-137300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD5FAA12A9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 705A0AA1388
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 229FE17F01E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:55:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 780207B1C81
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6799925179A;
-	Tue, 29 Apr 2025 16:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FBD241664;
+	Tue, 29 Apr 2025 17:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDn0x2cz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pb1JmpC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D752517A5;
-	Tue, 29 Apr 2025 16:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CB2211A0B;
+	Tue, 29 Apr 2025 17:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945658; cv=none; b=QwP37SlCkivmb/xw9VmVyEaM55V0hjgJ4BzA63JYteI7s3de6w8paHF9Rd/J72DG8JMXCajUMgZs5Fz1RBTAY5h3rvRyvEC2MWPNTelC9nR2ioVWGrbsEmmV7C1xU7Bmp5GrqACT01kPVOdq7VNNFVT9Ev7MsFXZgiy2E0SZ5P4=
+	t=1745946419; cv=none; b=odCroF6LvWrQ7hAwu+Ey4EVARqrAMhhooIJdnW9fqkudu7LJG967QrBKYEsvv3VLqK7WXsr0gMwvMEm9R4iPB2Y2g3LgsvrMxtgfFIB57goiFbCBBwENYS46+Ch0KavC10MRa3ww6DYohPq+Bdy82UCkGSkpi4VsHJczXbz5FUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945658; c=relaxed/simple;
-	bh=5vKuspXHMehPQ489/3yaVHx+uWWHriHUTyg0SiAIvtc=;
+	s=arc-20240116; t=1745946419; c=relaxed/simple;
+	bh=xwuhTkLsEGiUA1YKrqipas6iTrPjAsdQW7c5O5zSsoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ufkIbPecmJ123s/GmjdS0c1QQOazAts0e8zNOYKZERbgbG+e41oEIp4u5X589RkARHRr0tfmiuRBSuTplrHF74DXBOYoE16H37f7iL6rTs0aHMjGNQMiNtWzoatWKdiu+mW8Y0KyYcYWFPVsQj1iRD+E/1qnFnxu8Ycbl6aJGKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDn0x2cz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F192C4CEE3;
-	Tue, 29 Apr 2025 16:54:16 +0000 (UTC)
+	 MIME-Version; b=axZtPFhXLUb1Yb+/JiF2gR4iU0If63P0EvVhDx5MIiulOkzKtdXUfUOIoBv9kCxEC9xk4KbnXwzx5qd0Z0ex0nNZzcGL0qoUHaVwcZU4pdBdEZ2TzUvCmAd5SbVkM5syzPHjBeC10NvHzipF/MjFzPSyTHDAw5Z0YOdOjsGqdhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pb1JmpC0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B63C4CEE3;
+	Tue, 29 Apr 2025 17:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945657;
-	bh=5vKuspXHMehPQ489/3yaVHx+uWWHriHUTyg0SiAIvtc=;
+	s=korg; t=1745946418;
+	bh=xwuhTkLsEGiUA1YKrqipas6iTrPjAsdQW7c5O5zSsoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDn0x2cz6K4g/LPUenGXMh3Vf9W1bKNa/YG7mLf/oAWpN3nRkeDsgZSt924GFrs8z
-	 /ZB+aVVAO33D6hfiVXeYV45ZGKU1x13F2OhiLDcv8BqXkw9b2N65wEfwLlK0EoQwS+
-	 QzVVatjxjL8PBbEXsetErVinBO9Si+cXj+mez8kk=
+	b=Pb1JmpC0dazNno1spIYPbFotmE0ynPdhushsKv5jHKbiWacn3HznfrpZFBl65AMt9
+	 5Ymc9nXTSbN5Klb3iZdbYBpwubSEEcrNsxertB2NtyDFClEEJvPBizpFu8z5Ji1Yq6
+	 UT/hXO5cC5KwlCh6lxSp9i5tZvIgsoCtA+CghR54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miao Li <limiao@kylinos.cn>,
-	Lei Huang <huanglei@kylinos.cn>
-Subject: [PATCH 5.4 157/179] usb: quirks: Add delay init quirk for SanDisk 3.2Gen1 Flash Drive
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Amit Shah <amit.shah@amd.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 261/311] x86/bugs: Dont fill RSB on context switch with eIBRS
 Date: Tue, 29 Apr 2025 18:41:38 +0200
-Message-ID: <20250429161055.733628934@linuxfoundation.org>
+Message-ID: <20250429161131.709470520@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +65,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miao Li <limiao@kylinos.cn>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 37ffdbd695c02189dbf23d6e7d2385e0299587ca upstream.
+[ Upstream commit 27ce8299bc1ec6df8306073785ff82b30b3cc5ee ]
 
-The SanDisk 3.2Gen1 Flash Drive, which VID:PID is in 0781:55a3,
-just like Silicon Motion Flash Drive:
-https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
-also needs the DELAY_INIT quirk, or it will randomly work incorrectly
-(e.g.: lsusb and can't list this device info) when connecting Huawei
-hisi platforms and doing thousand of reboot test circles.
+User->user Spectre v2 attacks (including RSB) across context switches
+are already mitigated by IBPB in cond_mitigation(), if enabled globally
+or if either the prev or the next task has opted in to protection.  RSB
+filling without IBPB serves no purpose for protecting user space, as
+indirect branches are still vulnerable.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miao Li <limiao@kylinos.cn>
-Signed-off-by: Lei Huang <huanglei@kylinos.cn>
-Link: https://lore.kernel.org/r/20250414062935.159024-1-limiao870622@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+User->kernel RSB attacks are mitigated by eIBRS.  In which case the RSB
+filling on context switch isn't needed, so remove it.
+
+Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Reviewed-by: Amit Shah <amit.shah@amd.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://lore.kernel.org/r/98cdefe42180358efebf78e3b80752850c7a3e1b.1744148254.git.jpoimboe@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kernel/cpu/bugs.c | 24 ++++++++++++------------
+ arch/x86/mm/tlb.c          |  6 +++---
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -366,6 +366,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0781, 0x5583), .driver_info = USB_QUIRK_NO_LPM },
- 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 41b4d9018633e..9152285aaaf96 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1578,7 +1578,7 @@ static void __init spec_ctrl_disable_kernel_rrsba(void)
+ 	rrsba_disabled = true;
+ }
  
-+	/* SanDisk Corp. SanDisk 3.2Gen1 */
-+	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
-+
- 	/* Realforce 87U Keyboard */
- 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
+-static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_mitigation mode)
++static void __init spectre_v2_select_rsb_mitigation(enum spectre_v2_mitigation mode)
+ {
+ 	/*
+ 	 * Similar to context switches, there are two types of RSB attacks
+@@ -1602,7 +1602,7 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
+ 	 */
+ 	switch (mode) {
+ 	case SPECTRE_V2_NONE:
+-		return;
++		break;
  
+ 	case SPECTRE_V2_EIBRS:
+ 	case SPECTRE_V2_EIBRS_LFENCE:
+@@ -1611,18 +1611,21 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
+ 			pr_info("Spectre v2 / PBRSB-eIBRS: Retire a single CALL on VMEXIT\n");
+ 			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
+ 		}
+-		return;
++		break;
+ 
+ 	case SPECTRE_V2_RETPOLINE:
+ 	case SPECTRE_V2_LFENCE:
+ 	case SPECTRE_V2_IBRS:
+-		pr_info("Spectre v2 / SpectreRSB : Filling RSB on VMEXIT\n");
++		pr_info("Spectre v2 / SpectreRSB: Filling RSB on context switch and VMEXIT\n");
++		setup_force_cpu_cap(X86_FEATURE_RSB_CTXSW);
+ 		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
+-		return;
+-	}
++		break;
+ 
+-	pr_warn_once("Unknown Spectre v2 mode, disabling RSB mitigation at VM exit");
+-	dump_stack();
++	default:
++		pr_warn_once("Unknown Spectre v2 mode, disabling RSB mitigation\n");
++		dump_stack();
++		break;
++	}
+ }
+ 
+ /*
+@@ -1854,10 +1857,7 @@ static void __init spectre_v2_select_mitigation(void)
+ 	 *
+ 	 * FIXME: Is this pointless for retbleed-affected AMD?
+ 	 */
+-	setup_force_cpu_cap(X86_FEATURE_RSB_CTXSW);
+-	pr_info("Spectre v2 / SpectreRSB mitigation: Filling RSB on context switch\n");
+-
+-	spectre_v2_determine_rsb_fill_type_at_vmexit(mode);
++	spectre_v2_select_rsb_mitigation(mode);
+ 
+ 	/*
+ 	 * Retpoline protects the kernel, but doesn't protect firmware.  IBRS
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index 6cf881a942bbe..e491c75b2a688 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -389,9 +389,9 @@ static void cond_mitigation(struct task_struct *next)
+ 	prev_mm = this_cpu_read(cpu_tlbstate.last_user_mm_spec);
+ 
+ 	/*
+-	 * Avoid user/user BTB poisoning by flushing the branch predictor
+-	 * when switching between processes. This stops one process from
+-	 * doing Spectre-v2 attacks on another.
++	 * Avoid user->user BTB/RSB poisoning by flushing them when switching
++	 * between processes. This stops one process from doing Spectre-v2
++	 * attacks on another.
+ 	 *
+ 	 * Both, the conditional and the always IBPB mode use the mm
+ 	 * pointer to avoid the IBPB when switching between tasks of the
+-- 
+2.39.5
+
 
 
 
