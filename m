@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-138208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9077DAA16FC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:42:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56CAFAA1317
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 997AD16CFCC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2608A3B5C2A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BFB2522AB;
-	Tue, 29 Apr 2025 17:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF522512E8;
+	Tue, 29 Apr 2025 16:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmPCxycP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8lIR850"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BB6251780;
-	Tue, 29 Apr 2025 17:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375FC247298;
+	Tue, 29 Apr 2025 16:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948512; cv=none; b=OCHnx8qPjYEjL4etD+qzfEWbh14WVyIjONJD9tS+wi2irgEoqYK3/I+8bfuYauOpvxOZcWoGipvT5swTNiq8ToCVxoPT7h2nycfFvzBrgVanWbX8e6pex+4pLeBefCiSIyqq2YhkU+WstLQZhkto63BytfKhwK6id08X18kC/rY=
+	t=1745945826; cv=none; b=gR0WtvRMSvfiIulyrYvw3FkDEWRf5KfTdW8uiba2lTnnhi0vPM1P5MSwP/VXALVdHJZb/V//zUdwV/U5pdjMjYcmzLhpeurUc96yYwOFmdaVbwaNieWWEKNxpbypru77OH5H31LGfdvOjonhC3GFHwRhOVu00cyIadjekIAgILY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948512; c=relaxed/simple;
-	bh=Uko+R7AvdiQZ6MEHV9YrMyu/ReDeecjypYc9WGXPvcA=;
+	s=arc-20240116; t=1745945826; c=relaxed/simple;
+	bh=x1hTQZuvCxwzQz8MHhkFjerI+mDv+sLyFQnM5u/UBJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a34sEnIHN1cIbnuIJkH/f45DzPjfOlPp6d0rxl81FTbl79cHJYCX8AsUS6YVMktpqwn9ZVytsnTb0nPErT4Ue8bg4F43FdyekO6mf2ljuiMXgySZVfFGLVOqvKglnGP7Buchn3leDnDK93g9xOsyn8XbrsuM+XFQozMoRAFVzJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmPCxycP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365B5C4CEE9;
-	Tue, 29 Apr 2025 17:41:52 +0000 (UTC)
+	 MIME-Version; b=IpBA15nHHQB6CZLMfkGtwfSPvC9m/Ww/Zl/WPDw+Dh8tqRkVyFW1dAH/T2kcHuRa91TewA4iY09FoT+B1MypCjuxa9Yo7RzkBxuXdou8U/QTKAEKpADcnLzN5Ua7G2iYIWfMwPoyG9x4S+itrU8EYoJVWZWV67wyhEpd/KvR9R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8lIR850; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B676FC4CEE3;
+	Tue, 29 Apr 2025 16:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948512;
-	bh=Uko+R7AvdiQZ6MEHV9YrMyu/ReDeecjypYc9WGXPvcA=;
+	s=korg; t=1745945826;
+	bh=x1hTQZuvCxwzQz8MHhkFjerI+mDv+sLyFQnM5u/UBJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmPCxycP1PaUjK0DClobSeOXYaii4HtDvlQEagPuGAOYoyAPt5yIQC0RFk2KyZE/t
-	 HFVAO5c0NDfq13h94kdCB36zWxvqiyX7dkD9GOeeD8B8DTGop+aI5WW1UJshW9z61D
-	 SdFaRxBoNhIbUVfvJWbb/J4QY+K8nO8/YMRJNXLQ=
+	b=C8lIR850WgQBh5AGxa05HaZP/x7lfKottECmjOlAwEm5Eg1XKRljkkDJd5lHIBG4J
+	 O1VAJW2NUGw9mU0fe8RM5H9YoFt8ZXGghMzIm2UvGtJLMFcXBdBROWHiU6N4u/WVsH
+	 kS5NNfM+R7ljWyzjSN3rlUQIfqTNSXM/BkSJMUw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Joe Damato <jdamato@fastly.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Lei Yang <leiyang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/373] page_pool: avoid infinite loop to schedule delayed worker
+Subject: [PATCH 6.14 063/311] virtio-net: Refactor napi_disable paths
 Date: Tue, 29 Apr 2025 18:38:20 +0200
-Message-ID: <20250429161124.085525157@linuxfoundation.org>
+Message-ID: <20250429161123.621862608@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +66,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kerneljasonxing@gmail.com>
+From: Joe Damato <jdamato@fastly.com>
 
-[ Upstream commit 43130d02baa137033c25297aaae95fd0edc41654 ]
+[ Upstream commit 986a93045183ae2f13e6d99d990ae8be36f6d6b0 ]
 
-We noticed the kworker in page_pool_release_retry() was waken
-up repeatedly and infinitely in production because of the
-buggy driver causing the inflight less than 0 and warning
-us in page_pool_inflight()[1].
+Create virtnet_napi_disable helper and refactor virtnet_napi_tx_disable
+to take a struct send_queue.
 
-Since the inflight value goes negative, it means we should
-not expect the whole page_pool to get back to work normally.
-
-This patch mitigates the adverse effect by not rescheduling
-the kworker when detecting the inflight negative in
-page_pool_release_retry().
-
-[1]
-[Mon Feb 10 20:36:11 2025] ------------[ cut here ]------------
-[Mon Feb 10 20:36:11 2025] Negative(-51446) inflight packet-pages
-...
-[Mon Feb 10 20:36:11 2025] Call Trace:
-[Mon Feb 10 20:36:11 2025]  page_pool_release_retry+0x23/0x70
-[Mon Feb 10 20:36:11 2025]  process_one_work+0x1b1/0x370
-[Mon Feb 10 20:36:11 2025]  worker_thread+0x37/0x3a0
-[Mon Feb 10 20:36:11 2025]  kthread+0x11a/0x140
-[Mon Feb 10 20:36:11 2025]  ? process_one_work+0x370/0x370
-[Mon Feb 10 20:36:11 2025]  ? __kthread_cancel_work+0x40/0x40
-[Mon Feb 10 20:36:11 2025]  ret_from_fork+0x35/0x40
-[Mon Feb 10 20:36:11 2025] ---[ end trace ebffe800f33e7e34 ]---
-Note: before this patch, the above calltrace would flood the
-dmesg due to repeated reschedule of release_dw kworker.
-
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/20250214064250.85987-1-kerneljasonxing@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Link: https://patch.msgid.link/20250307011215.266806-3-jdamato@fastly.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 4bc12818b363 ("virtio-net: disable delayed refill when pausing rx")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/page_pool.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/virtio_net.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 069d6ba0e33fb..416be038e1cae 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -699,7 +699,13 @@ static void page_pool_release_retry(struct work_struct *wq)
- 	int inflight;
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index d25f68004f97e..44dbb991787ed 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2827,12 +2827,21 @@ static void virtnet_napi_tx_enable(struct send_queue *sq)
+ 	virtnet_napi_do_enable(sq->vq, napi);
+ }
  
- 	inflight = page_pool_release(pool);
--	if (!inflight)
-+	/* In rare cases, a driver bug may cause inflight to go negative.
-+	 * Don't reschedule release if inflight is 0 or negative.
-+	 * - If 0, the page_pool has been destroyed
-+	 * - if negative, we will never recover
-+	 * in both cases no reschedule is necessary.
-+	 */
-+	if (inflight <= 0)
- 		return;
+-static void virtnet_napi_tx_disable(struct napi_struct *napi)
++static void virtnet_napi_tx_disable(struct send_queue *sq)
+ {
++	struct napi_struct *napi = &sq->napi;
++
+ 	if (napi->weight)
+ 		napi_disable(napi);
+ }
  
- 	/* Periodic warning */
++static void virtnet_napi_disable(struct receive_queue *rq)
++{
++	struct napi_struct *napi = &rq->napi;
++
++	napi_disable(napi);
++}
++
+ static void refill_work(struct work_struct *work)
+ {
+ 	struct virtnet_info *vi =
+@@ -2843,7 +2852,7 @@ static void refill_work(struct work_struct *work)
+ 	for (i = 0; i < vi->curr_queue_pairs; i++) {
+ 		struct receive_queue *rq = &vi->rq[i];
+ 
+-		napi_disable(&rq->napi);
++		virtnet_napi_disable(rq);
+ 		still_empty = !try_fill_recv(vi, rq, GFP_KERNEL);
+ 		virtnet_napi_enable(rq);
+ 
+@@ -3042,8 +3051,8 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
+ 
+ static void virtnet_disable_queue_pair(struct virtnet_info *vi, int qp_index)
+ {
+-	virtnet_napi_tx_disable(&vi->sq[qp_index].napi);
+-	napi_disable(&vi->rq[qp_index].napi);
++	virtnet_napi_tx_disable(&vi->sq[qp_index]);
++	virtnet_napi_disable(&vi->rq[qp_index]);
+ 	xdp_rxq_info_unreg(&vi->rq[qp_index].xdp_rxq);
+ }
+ 
+@@ -3314,7 +3323,7 @@ static void virtnet_rx_pause(struct virtnet_info *vi, struct receive_queue *rq)
+ 	bool running = netif_running(vi->dev);
+ 
+ 	if (running) {
+-		napi_disable(&rq->napi);
++		virtnet_napi_disable(rq);
+ 		virtnet_cancel_dim(vi, &rq->dim);
+ 	}
+ }
+@@ -3356,7 +3365,7 @@ static void virtnet_tx_pause(struct virtnet_info *vi, struct send_queue *sq)
+ 	qindex = sq - vi->sq;
+ 
+ 	if (running)
+-		virtnet_napi_tx_disable(&sq->napi);
++		virtnet_napi_tx_disable(sq);
+ 
+ 	txq = netdev_get_tx_queue(vi->dev, qindex);
+ 
+@@ -5933,8 +5942,8 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
+ 	/* Make sure NAPI is not using any XDP TX queues for RX. */
+ 	if (netif_running(dev)) {
+ 		for (i = 0; i < vi->max_queue_pairs; i++) {
+-			napi_disable(&vi->rq[i].napi);
+-			virtnet_napi_tx_disable(&vi->sq[i].napi);
++			virtnet_napi_disable(&vi->rq[i]);
++			virtnet_napi_tx_disable(&vi->sq[i]);
+ 		}
+ 	}
+ 
 -- 
 2.39.5
 
