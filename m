@@ -1,95 +1,96 @@
-Return-Path: <stable+bounces-136990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF323AA01CB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 07:26:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F932AA01DE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 07:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56E8E1B6309A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 05:26:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8147917C88D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 05:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658D126FA4E;
-	Tue, 29 Apr 2025 05:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSpWPQH6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C4A23370C;
+	Tue, 29 Apr 2025 05:37:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E86220D4E2;
-	Tue, 29 Apr 2025 05:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41746433B3;
+	Tue, 29 Apr 2025 05:37:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745904366; cv=none; b=Fk+7exSJCiWrHeqYWwNCzgoIMe7neW5wT5qi+j1AdFR3JHOSo9g6Ls0b7TAD6je1dupb5jl66Nc0ldg9FwoIh4LYPImUUnUtv056E2ThW+L96/smjWCdXv9bic/hO1SnFRHtuLdQkC0xIipDnUnFqxiTy+2JraodDb/h3AbcXP0=
+	t=1745905059; cv=none; b=bObkyh54u9H3cyUw/2g8GUnBZ/eHh1XGLDC+8mMj7OkrZ8MGI9CbdItYSdFgDkxpeVJWmPwNfsWOezwvzSwQapmZWroXOk+JaYCFt+Lft6eMq2r/d5Sg3SNJguK7ZctLVXeCZD/qtZM5zwAhyzyqlCB2szzrLABHj9Aoc+R7WCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745904366; c=relaxed/simple;
-	bh=4MUBUkoGJl4Bv5nfEzeKWaFYA0vnWu4Vn3SkigflzUk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ddAMIxLSadeICqkB3U3wbLczXIY9LdeSD+iokiC+isITZAuXAKxBjoAiDmMlOATfhHh/yaHGp+UQ6KEe/pP90TDmB/kxcbVa/JpvMn5K8B8IkNbYM8LlvCxo5M6u2BZqQzdddqEnw0FlZTh7e2+lC5gQkhThisQimsks0NRu5s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSpWPQH6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8517C4CEE3;
-	Tue, 29 Apr 2025 05:26:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745904365;
-	bh=4MUBUkoGJl4Bv5nfEzeKWaFYA0vnWu4Vn3SkigflzUk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BSpWPQH6o5cG2ChcPFT+OsrrYUU+oIFjr5s8tA/ta6yM9Dm9kwVtu53tAxmPQIdHi
-	 gYvf0VaWNdoruDgt7J2+LO4Wd98+gBMfHuIxQ6t1Sii2pvIVltZhOAlhH6H101wxs1
-	 4sqvx6hRfP4Tcj8M+I43olzb3IV4EgrOujMvHSj4=
-Date: Tue, 29 Apr 2025 07:26:02 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Ren, Jianqi (Jacky) (CN)" <Jianqi.Ren.CN@windriver.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"jhs@mojatatu.com" <jhs@mojatatu.com>,
-	"xiyou.wangcong@gmail.com" <xiyou.wangcong@gmail.com>,
-	"jiri@resnulli.us" <jiri@resnulli.us>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"michal.swiatkowski@linux.intel.com" <michal.swiatkowski@linux.intel.com>,
-	"He, Zhe" <Zhe.He@windriver.com>
-Subject: Re: [PATCH 6.1.y v2] net/sched: act_mirred: don't override retval if
- we already lost the skb
-Message-ID: <2025042928-vessel-mulled-fbf3@gregkh>
-References: <20250428080103.4158144-1-jianqi.ren.cn@windriver.com>
- <2025042844-pavestone-fringe-1478@gregkh>
- <IA1PR11MB61703A24C42BAA887F5263ACBB802@IA1PR11MB6170.namprd11.prod.outlook.com>
+	s=arc-20240116; t=1745905059; c=relaxed/simple;
+	bh=KFqzEyNKOFOAeSkTWy5DiiPoP4XGs7Kz86yGcU1/JJw=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=XxiBhC47EaWhp9+3LQqOPZTwgVysXu7V7SyrI0pNilaXeVnJ2n+st4NubU9UZKFkWy0OnH5kn2jDHmYuH3QjknGy0OSk/ACWL2rZ8yQ84ihtix/QqvxCulih8pTT642p3a3gO8wLjd0EJ1rAM+7lKv4m7cUKNkMG9vkXy1pYoTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E36411515;
+	Mon, 28 Apr 2025 22:37:30 -0700 (PDT)
+Received: from [10.163.52.122] (unknown [10.163.52.122])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D23DC3F5A1;
+	Mon, 28 Apr 2025 22:37:32 -0700 (PDT)
+Message-ID: <06140631-c3cb-4837-bb4c-bdff30863ad2@arm.com>
+Date: Tue, 29 Apr 2025 11:07:28 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <IA1PR11MB61703A24C42BAA887F5263ACBB802@IA1PR11MB6170.namprd11.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3] arm64/boot: Enable EL2 requirements for FEAT_PMUv3p9
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+ linux-arm-kernel@lists.infradead.org, mark.rutland@arm.com, robh@kernel.org
+Cc: Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kvmarm@lists.linux.dev, stable@vger.kernel.org
+References: <20250227035119.2025171-1-anshuman.khandual@arm.com>
+ <174171335999.3659520.16613654046629962007.b4-ty@arm.com>
+ <ddeb3df1-995b-44f4-ad20-50edfb906a28@arm.com>
+Content-Language: en-US
+In-Reply-To: <ddeb3df1-995b-44f4-ad20-50edfb906a28@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-A: http://en.wikipedia.org/wiki/Top_post
-Q: Were do I find info about this thing called top-posting?
-A: Because it messes up the order in which people normally read text.
-Q: Why is top-posting such a bad thing?
-A: Top-posting.
-Q: What is the most annoying thing in e-mail?
-
-A: No.
-Q: Should I include quotations after my reply?
 
 
-http://daringfireball.net/2007/07/on_top
+On 3/12/25 09:16, Anshuman Khandual wrote:
+> 
+> 
+> On 3/11/25 22:47, Catalin Marinas wrote:
+>> On Thu, 27 Feb 2025 09:21:19 +0530, Anshuman Khandual wrote:
+>>> FEAT_PMUv3p9 registers such as PMICNTR_EL0, PMICFILTR_EL0, and PMUACR_EL1
+>>> access from EL1 requires appropriate EL2 fine grained trap configuration
+>>> via FEAT_FGT2 based trap control registers HDFGRTR2_EL2 and HDFGWTR2_EL2.
+>>> Otherwise such register accesses will result in traps into EL2.
+>>>
+>>> Add a new helper __init_el2_fgt2() which initializes FEAT_FGT2 based fine
+>>> grained trap control registers HDFGRTR2_EL2 and HDFGWTR2_EL2 (setting the
+>>> bits nPMICNTR_EL0, nPMICFILTR_EL0 and nPMUACR_EL1) to enable access into
+>>> PMICNTR_EL0, PMICFILTR_EL0, and PMUACR_EL1 registers.
+>>>
+>>> [...]
+>>
+>> Applied to arm64 (for-next/el2-enable-feat-pmuv3p9), thanks!
+>>
+>> [1/1] arm64/boot: Enable EL2 requirements for FEAT_PMUv3p9
+>>       https://git.kernel.org/arm64/c/858c7bfcb35e
+>>
+>> I removed Cc: stable since, if it gets backported automatically, it will
+>> miss the sysreg updates and break the build. Please send it to stable
+>> directly once it lands upstream, together with the dependencies.
+> 
+> Sure, will do that.
+> 
 
-On Tue, Apr 29, 2025 at 02:07:54AM +0000, Ren, Jianqi (Jacky) (CN) wrote:
-> Hello,
-> I have already dropped the first v2 patch for incorrect comments(Maybe you missed the dropping email). This v2 patch is just I want to send. Thanks!
+Just FYI,
 
-You can not send two different "v2" patches, that defeats the purpose of
-versioning them entirely :)
-
-thanks,
-
-greg k-h
+This patch along with required tools sysreg patches are merged in applicable
+stable branches which are now available in v6.12.25 and v6.14.4 respectively.
 
