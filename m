@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-138070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A9CAA16BF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9942AA14D3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09C7C98511D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEE564C50C2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E75C253348;
-	Tue, 29 Apr 2025 17:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5B024E01D;
+	Tue, 29 Apr 2025 17:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlRFy/x3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDo83hLn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4865A2528EC;
-	Tue, 29 Apr 2025 17:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096BE21ABDB;
+	Tue, 29 Apr 2025 17:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948037; cv=none; b=fjCIv8thDN928GZqWIXy9ICmWe+pwvStOtWZdnLF6IIthCNklZGTq/0POPzYEQH+Ru5E7gdH/SNNI3d4XpfAPe0ynHi7hqcf6JiD8EqZTWA7uLGiTwRmQGT/SfigqODmpr4/8REVzsxocy+7L5uczZe5Qd6irz0eVEfyoa5sMV0=
+	t=1745947097; cv=none; b=Wr/ApXZ3ZBk2ggRJdh0VyW1EdhfDKDOuOhC/KJ5KOPwHi+W3PX9sxKNGNd1r27XzvR2Fpa8ytTL/lDVhM9XhNqTFJ7TixfoeHIsO0c4p3IaxFxPwqd1A7uv/jZg5Oqqn/z/93me4ZQQCZPLpTmb98KmfJzU9qB90ZTIfHI6Dvbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948037; c=relaxed/simple;
-	bh=Cj0FqzQxBDUTY6UU0DBWgU+esLD7O4VquqjKzX7eqns=;
+	s=arc-20240116; t=1745947097; c=relaxed/simple;
+	bh=SFlTHHUFZKAZonWGlsFmoGkgf8FSevkDsRX+/v+Vgqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lV+UqtuxiUmo4uDGIbTIkA48b2CFmNxLEnofXqQrPnVuRo1q82MRSpV/mYp4w5zOcl5ZER2TrjDl15W0ZYUncvnS1rSSwjRzbL4kSEXiK0HhB+mmE9SEA1z7F/A+m7FX4VcCO1+m085u6CdhWDwreyktFFNqBXGhOXwIZ0J+AzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlRFy/x3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F6CC4CEEE;
-	Tue, 29 Apr 2025 17:33:56 +0000 (UTC)
+	 MIME-Version; b=rosG52/bSsaXr6GkGK6QyMzN1YMtOz6M98rd3EC8b1FHiYssX7J+SWLmW/izuEB4sLKFaIOUYjAw/Q48hU2hZpSEL5sGVdqcY/N3vbkvSFrPcUtHtOklE4AfixFwal3VxBBgsO0nv5UGqqnOYfvPEiGzdxV71Lq98u+jxgzBzDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDo83hLn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DEF2C4CEE3;
+	Tue, 29 Apr 2025 17:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948037;
-	bh=Cj0FqzQxBDUTY6UU0DBWgU+esLD7O4VquqjKzX7eqns=;
+	s=korg; t=1745947096;
+	bh=SFlTHHUFZKAZonWGlsFmoGkgf8FSevkDsRX+/v+Vgqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RlRFy/x3gZg7aUnxsw5bcq73iwt7kmKMhRQo71XXK130m8A/MPLTBK3iv9G0/mNAc
-	 25kntWaZpB/dcRyevLLBRW2PzADSqXuTiRzfeKmQCnIYznLeHT01xZlFTXKGlkVVXf
-	 L1wt+9HAqhvkXLoeyD1wmgHe4ihZPPCd9dtAjK/I=
+	b=MDo83hLn7nqtyDyEWw1fc5RCoPCS5ZRNu5FT2TwyjFmK+r8abfF0ej5dx+6Trp+kK
+	 P8j6jEepoiZ06QmrcLJ9ZrPSZOr+cd6ptErVdWpgJs1x/pk9q8+IEOzs2sF+OD8d71
+	 QEWz0p7SaJv6z/hjOlcVH2XQScrPHxdnmbwapR6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Xue <zxue@semtech.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 134/280] USB: serial: option: add Sierra Wireless EM9291
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Bin Lan <bin.lan.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.10 171/286] blk-iocost: do not WARN if iocg was already offlined
 Date: Tue, 29 Apr 2025 18:41:15 +0200
-Message-ID: <20250429161120.612308136@linuxfoundation.org>
+Message-ID: <20250429161114.920070733@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Xue <zxue@semtech.com>
+From: Li Nan <linan122@huawei.com>
 
-commit 968e1cbb1f6293c3add9607f80b5ce3d29f57583 upstream.
+commit 01bc4fda9ea0a6b52f12326486f07a4910666cf6 upstream.
 
-Add Sierra Wireless EM9291.
+In iocg_pay_debt(), warn is triggered if 'active_list' is empty, which
+is intended to confirm iocg is active when it has debt. However, warn
+can be triggered during a blkcg or disk removal, if iocg_waitq_timer_fn()
+is run at that time:
 
-Interface 0: MBIM control
-          1: MBIM data
-          3: AT port
-          4: Diagnostic port
+  WARNING: CPU: 0 PID: 2344971 at block/blk-iocost.c:1402 iocg_pay_debt+0x14c/0x190
+  Call trace:
+  iocg_pay_debt+0x14c/0x190
+  iocg_kick_waitq+0x438/0x4c0
+  iocg_waitq_timer_fn+0xd8/0x130
+  __run_hrtimer+0x144/0x45c
+  __hrtimer_run_queues+0x16c/0x244
+  hrtimer_interrupt+0x2cc/0x7b0
 
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1199 ProdID=90e3 Rev=00.06
-S:  Manufacturer=Sierra Wireless, Incorporated
-S:  Product=Sierra Wireless EM9291
-S:  SerialNumber=xxxxxxxxxxxxxxxx
-C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=(none)
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+The warn in this situation is meaningless. Since this iocg is being
+removed, the state of the 'active_list' is irrelevant, and 'waitq_timer'
+is canceled after removing 'active_list' in ioc_pd_free(), which ensures
+iocg is freed after iocg_waitq_timer_fn() returns.
 
-Signed-off-by: Adam Xue <zxue@semtech.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Therefore, add the check if iocg was already offlined to avoid warn
+when removing a blkcg or disk.
+
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20240419093257.3004211-1-linan666@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ block/blk-iocost.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -611,6 +611,7 @@ static void option_instat_callback(struc
- /* Sierra Wireless products */
- #define SIERRA_VENDOR_ID			0x1199
- #define SIERRA_PRODUCT_EM9191			0x90d3
-+#define SIERRA_PRODUCT_EM9291			0x90e3
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -1389,8 +1389,11 @@ static void iocg_pay_debt(struct ioc_gq
+ 	lockdep_assert_held(&iocg->ioc->lock);
+ 	lockdep_assert_held(&iocg->waitq.lock);
  
- /* UNISOC (Spreadtrum) products */
- #define UNISOC_VENDOR_ID			0x1782
-@@ -2432,6 +2433,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
+-	/* make sure that nobody messed with @iocg */
+-	WARN_ON_ONCE(list_empty(&iocg->active_list));
++	/*
++	 * make sure that nobody messed with @iocg. Check iocg->pd.online
++	 * to avoid warn when removing blkcg or disk.
++	 */
++	WARN_ON_ONCE(list_empty(&iocg->active_list) && iocg->pd.online);
+ 	WARN_ON_ONCE(iocg->inuse > 1);
+ 
+ 	iocg->abs_vdebt -= min(abs_vpay, iocg->abs_vdebt);
 
 
 
