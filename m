@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-137265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F01FAA1276
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:53:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 564E5AA14CF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 772D31B6584C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD9324C3D1B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9413F2472AA;
-	Tue, 29 Apr 2025 16:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC628247280;
+	Tue, 29 Apr 2025 17:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXPxCsK5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SOoFA4Xg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5237824168A;
-	Tue, 29 Apr 2025 16:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980A524500A;
+	Tue, 29 Apr 2025 17:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945553; cv=none; b=PhBH0KNO2INYFDZHGjbeYp01wiFYjEn7kL8GRKaLAF0wmalWF/H1f7hh5QtxtR1D4AUVDt/llB4KcZaeqnCq2Kxs4ljQlFouhzXCeSjQmTEVjVQZYTO6eJq0IJ/INeiPPskbSwwwldqDWahwKD++LjLme7P8nPrqdhAG9kyRoLQ=
+	t=1745947066; cv=none; b=SZYn///umIFaPOoZO6kwiMoVbOp05EjDGQ4CI05T//OAJFA1X4bGljEXW5bdoyb0URW2Kuhedl9/i95d/rB8Gq9Nv4GDnqiNn9GIBcS73+XpLqreSrausiewYssTdaNNnhD2ZRbt0vW1XhPOm9zdUFTgBYOPCkJ7zxnUEu7pReU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945553; c=relaxed/simple;
-	bh=uKQ9hEtI2wAx0xQvgtXEOBLBkJcAGmfCMSj8NW/PVJY=;
+	s=arc-20240116; t=1745947066; c=relaxed/simple;
+	bh=Wfldx3awGhvUCLGeZ3ADRhkRP6GqgcYdkhW70dTEb0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ITmYnaQfw77gR7217aOJkcvamiFLCAfk9klR95MBAKFTTJucjgehmr0wtupDtbKKU/HbWsZ1NORw+vsy+Z6hNURlwXw/lTUXCgKptWA1rX7hw5yFefJg+aMf+Z68H4kKkLPrIXzaDkv8wtocZj0OY3PEWdqVVZJkAOB/sAnzyKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXPxCsK5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECE7C4CEE3;
-	Tue, 29 Apr 2025 16:52:32 +0000 (UTC)
+	 MIME-Version; b=b1sFOvpaD/bULmLdXbkhoXP0HjdEqMVKfmbmDf/D+LD3mgMeAcXmpRN5m0jLBkcQ4owcHxfRbrUMB0y3D3dIhTzhrnykAzleAjY2VLrsiJKjX/xIe4a3Kmo8556Sj7GIZghGNrlLgDlmYoOCPnPMb0dIV85VWUU3PeyKanH6NsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SOoFA4Xg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93615C4CEE3;
+	Tue, 29 Apr 2025 17:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945553;
-	bh=uKQ9hEtI2wAx0xQvgtXEOBLBkJcAGmfCMSj8NW/PVJY=;
+	s=korg; t=1745947066;
+	bh=Wfldx3awGhvUCLGeZ3ADRhkRP6GqgcYdkhW70dTEb0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qXPxCsK54pqQuzcuUqy4Pi2TCIQS3Qfc5UtiKq43oKpaDbu+CMoTEJt8hjoHry0jS
-	 VSxNQH9Q0QQdMMpUNNDmT1BGrdpz5v/4azgrgZqDaCYtz6NdV9lexmZyuJWhrpSE5E
-	 cxc/GIQcdTk1DQreiCEIUQxbLhyu+ym8QAgb0EfA=
+	b=SOoFA4Xg73Ku2l+aEakdLj0HpDWyNWJqGyApnxQySQZdi323hddniA/dmddbwiglO
+	 xkI/1HzA/llLN7js/y1iYH8iQhz/VHBdVzKuW/yrvcuvW191J73GyDFnilPT1q5agb
+	 2ndT2egTHmDC+METUi2oVq6UWwio71Dz/uxCzOUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	LiHonggang <honggangli@163.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Alok Tiwari <alok.a.tiwari@oracle.com>
-Subject: [PATCH 5.4 122/179] RDMA/srpt: Support specifying the srpt_service_guid parameter
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Bin Lan <bin.lan.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.10 159/286] drm/amd/display: Fix out-of-bounds access in dcn21_link_encoder_create
 Date: Tue, 29 Apr 2025 18:41:03 +0200
-Message-ID: <20250429161054.333640390@linuxfoundation.org>
+Message-ID: <20250429161114.425971985@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +70,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit fdfa083549de5d50ebf7f6811f33757781e838c0 upstream.
+commit 63de35a8fcfca59ae8750d469a7eb220c7557baf upstream.
 
-Make loading ib_srpt with this parameter set work. The current behavior is
-that setting that parameter while loading the ib_srpt kernel module
-triggers the following kernel crash:
+An issue was identified in the dcn21_link_encoder_create function where
+an out-of-bounds access could occur when the hpd_source index was used
+to reference the link_enc_hpd_regs array. This array has a fixed size
+and the index was not being checked against the array's bounds before
+accessing it.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-Call Trace:
- <TASK>
- parse_one+0x18c/0x1d0
- parse_args+0xe1/0x230
- load_module+0x8de/0xa60
- init_module_from_file+0x8b/0xd0
- idempotent_init_module+0x181/0x240
- __x64_sys_finit_module+0x5a/0xb0
- do_syscall_64+0x5f/0xe0
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
+This fix adds a conditional check to ensure that the hpd_source index is
+within the valid range of the link_enc_hpd_regs array. If the index is
+out of bounds, the function now returns NULL to prevent undefined
+behavior.
 
-Cc: LiHonggang <honggangli@163.com>
-Reported-by: LiHonggang <honggangli@163.com>
-Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240205004207.17031-1-bvanassche@acm.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-[ Alok: Backport to 5.4.y since the commit has already been backported to
-  5.15y, 5.10.y, and 4.19.y ]
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+References:
+
+[   65.920507] ------------[ cut here ]------------
+[   65.920510] UBSAN: array-index-out-of-bounds in drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn21/dcn21_resource.c:1312:29
+[   65.920519] index 7 is out of range for type 'dcn10_link_enc_hpd_registers [5]'
+[   65.920523] CPU: 3 PID: 1178 Comm: modprobe Tainted: G           OE      6.8.0-cleanershaderfeatureresetasdntipmi200nv2132 #13
+[   65.920525] Hardware name: AMD Majolica-RN/Majolica-RN, BIOS WMJ0429N_Weekly_20_04_2 04/29/2020
+[   65.920527] Call Trace:
+[   65.920529]  <TASK>
+[   65.920532]  dump_stack_lvl+0x48/0x70
+[   65.920541]  dump_stack+0x10/0x20
+[   65.920543]  __ubsan_handle_out_of_bounds+0xa2/0xe0
+[   65.920549]  dcn21_link_encoder_create+0xd9/0x140 [amdgpu]
+[   65.921009]  link_create+0x6d3/0xed0 [amdgpu]
+[   65.921355]  create_links+0x18a/0x4e0 [amdgpu]
+[   65.921679]  dc_create+0x360/0x720 [amdgpu]
+[   65.921999]  ? dmi_matches+0xa0/0x220
+[   65.922004]  amdgpu_dm_init+0x2b6/0x2c90 [amdgpu]
+[   65.922342]  ? console_unlock+0x77/0x120
+[   65.922348]  ? dev_printk_emit+0x86/0xb0
+[   65.922354]  dm_hw_init+0x15/0x40 [amdgpu]
+[   65.922686]  amdgpu_device_init+0x26a8/0x33a0 [amdgpu]
+[   65.922921]  amdgpu_driver_load_kms+0x1b/0xa0 [amdgpu]
+[   65.923087]  amdgpu_pci_probe+0x1b7/0x630 [amdgpu]
+[   65.923087]  local_pci_probe+0x4b/0xb0
+[   65.923087]  pci_device_probe+0xc8/0x280
+[   65.923087]  really_probe+0x187/0x300
+[   65.923087]  __driver_probe_device+0x85/0x130
+[   65.923087]  driver_probe_device+0x24/0x110
+[   65.923087]  __driver_attach+0xac/0x1d0
+[   65.923087]  ? __pfx___driver_attach+0x10/0x10
+[   65.923087]  bus_for_each_dev+0x7d/0xd0
+[   65.923087]  driver_attach+0x1e/0x30
+[   65.923087]  bus_add_driver+0xf2/0x200
+[   65.923087]  driver_register+0x64/0x130
+[   65.923087]  ? __pfx_amdgpu_init+0x10/0x10 [amdgpu]
+[   65.923087]  __pci_register_driver+0x61/0x70
+[   65.923087]  amdgpu_init+0x7d/0xff0 [amdgpu]
+[   65.923087]  do_one_initcall+0x49/0x310
+[   65.923087]  ? kmalloc_trace+0x136/0x360
+[   65.923087]  do_init_module+0x6a/0x270
+[   65.923087]  load_module+0x1fce/0x23a0
+[   65.923087]  init_module_from_file+0x9c/0xe0
+[   65.923087]  ? init_module_from_file+0x9c/0xe0
+[   65.923087]  idempotent_init_module+0x179/0x230
+[   65.923087]  __x64_sys_finit_module+0x5d/0xa0
+[   65.923087]  do_syscall_64+0x76/0x120
+[   65.923087]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+[   65.923087] RIP: 0033:0x7f2d80f1e88d
+[   65.923087] Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 b5 0f 00 f7 d8 64 89 01 48
+[   65.923087] RSP: 002b:00007ffc7bc1aa78 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+[   65.923087] RAX: ffffffffffffffda RBX: 0000564c9c1db130 RCX: 00007f2d80f1e88d
+[   65.923087] RDX: 0000000000000000 RSI: 0000564c9c1e5480 RDI: 000000000000000f
+[   65.923087] RBP: 0000000000040000 R08: 0000000000000000 R09: 0000000000000002
+[   65.923087] R10: 000000000000000f R11: 0000000000000246 R12: 0000564c9c1e5480
+[   65.923087] R13: 0000564c9c1db260 R14: 0000000000000000 R15: 0000564c9c1e54b0
+[   65.923087]  </TASK>
+[   65.923927] ---[ end trace ]---
+
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/srpt/ib_srpt.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -79,12 +79,16 @@ module_param(srpt_srq_size, int, 0444);
- MODULE_PARM_DESC(srpt_srq_size,
- 		 "Shared receive queue (SRQ) size.");
+--- a/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_resource.c
+@@ -1698,7 +1698,7 @@ static struct link_encoder *dcn21_link_e
+ 		kzalloc(sizeof(struct dcn21_link_encoder), GFP_KERNEL);
+ 	int link_regs_id;
  
-+static int srpt_set_u64_x(const char *buffer, const struct kernel_param *kp)
-+{
-+	return kstrtou64(buffer, 16, (u64 *)kp->arg);
-+}
- static int srpt_get_u64_x(char *buffer, const struct kernel_param *kp)
- {
- 	return sprintf(buffer, "0x%016llx", *(u64 *)kp->arg);
- }
--module_param_call(srpt_service_guid, NULL, srpt_get_u64_x, &srpt_service_guid,
--		  0444);
-+module_param_call(srpt_service_guid, srpt_set_u64_x, srpt_get_u64_x,
-+		  &srpt_service_guid, 0444);
- MODULE_PARM_DESC(srpt_service_guid,
- 		 "Using this value for ioc_guid, id_ext, and cm_listen_id instead of using the node_guid of the first HCA.");
+-	if (!enc21)
++	if (!enc21 || enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs))
+ 		return NULL;
  
+ 	link_regs_id =
 
 
 
