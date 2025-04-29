@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22967AA1971
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:11:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A53ADAA1906
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88E4B1BC77DA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:11:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CC423AC7FF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E132550C3;
-	Tue, 29 Apr 2025 18:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B172422AE68;
+	Tue, 29 Apr 2025 18:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qO9ff8G/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHscK7Hp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688D02550B2;
-	Tue, 29 Apr 2025 18:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4963FFD;
+	Tue, 29 Apr 2025 18:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950213; cv=none; b=M7P5aTGuA471RjZUk8SduGMRek2umT3okpW7Z2R+ll+Kf45BuSsSIAs1zJz4w/2biLRCGcqK+d9PuV0p1VMlLI3466oEop8wKSWUo8td1I69g5Bo1wYcS1afQ/pcOvmVnbHjGrXivz0NXHSn5XAes1BROMq2D505wHrbKKPMPeQ=
+	t=1745949694; cv=none; b=bHba+3cfB8jDpcck5QzRlT5LF5PCNl28K/9AgYIyOK/uzs8LNWP/3f+IIBOw4IJR1N8mGj4SPLlZe2VK6g6IASZaaFUGDwUNi2fuiVnTOub573zSz9QThM5iNUFNaBf0PgkaMBOqRXrkf+l1dUcpWJna1YzdLKceFEOICvBz1e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950213; c=relaxed/simple;
-	bh=1XfVTePV+ihRNiSH9/El/Psu6AdCkvl2pLU11weC+FQ=;
+	s=arc-20240116; t=1745949694; c=relaxed/simple;
+	bh=3QU60RNjYQLL71xhhLo8V9dtU/I0aEQVhIB7Uu7VMgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qbr9oHa9DB6uq2iNzJk2X54gfi8a2HC8WIZ5YogECVIcdSeoNPw6sK3yf+ebkpmACkWlUEdKBmtpHO6HyC+uxN93gZLtnvTG5WORwA+OE0oq3KRltQB2AGNvF+vrt9JB+ojObhqngKwAw/dp6uYYkDVy1/lenPHTNbzzyjSbFuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qO9ff8G/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAECFC4CEEE;
-	Tue, 29 Apr 2025 18:10:12 +0000 (UTC)
+	 MIME-Version; b=KKY9uen4XhSL+iUIdjS9AssSzU2iNki/RkadpFZh6ZQd7cp4q0fV65N08SK6Ojz3PmrqtnH19lxFIgUCWbBh3mWeLVbosh4enOWBJRfMV73UfXJID9NCT3fMEGEPq3OtJ+1QcistY9Coh29TXSNRVixS4Ooh9zQeQQS6SQOPclI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHscK7Hp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0768C4CEEE;
+	Tue, 29 Apr 2025 18:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950213;
-	bh=1XfVTePV+ihRNiSH9/El/Psu6AdCkvl2pLU11weC+FQ=;
+	s=korg; t=1745949694;
+	bh=3QU60RNjYQLL71xhhLo8V9dtU/I0aEQVhIB7Uu7VMgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qO9ff8G/m8D9+E3nNDWEjmV9jgFhQ5iXCTSzZXKVuh6+25p9+GJObHnlTDHchFlHH
-	 REwgOvhlvZaIuiNAtm/qoFMhW44jGByCR3ByX2nCK3C9O9WCk0Fj7UN4I09J6pfQiW
-	 lICzEDf5ASZNe7DMKErhpUMzqmuvox+X37hnvJFs=
+	b=AHscK7Hp+Csx3FYsv+ziVEar+4Ei8H6Tf6AdP2tZeEtwYasTQZ5PhZnk/ub0afSA/
+	 w2RfUlXUu0HwQc9JE1QTzJjLo71zwgje3HR7/4Poa1USBiYBtDHophc5ZfHQ6fyaLg
+	 uxUJ2eKn814nBYon43oM/HeBF21JN/5Cas5BB1DE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/204] iio: adc: ad7768-1: Move setting of val a bit later to avoid unnecessary return value check
-Date: Tue, 29 Apr 2025 18:41:51 +0200
-Message-ID: <20250429161100.372522234@linuxfoundation.org>
+Subject: [PATCH 6.1 004/167] tracing: Fix cpumask() example typo
+Date: Tue, 29 Apr 2025 18:41:52 +0200
+Message-ID: <20250429161051.926853805@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 0af1c801a15225304a6328258efbf2bee245c654 ]
+[ Upstream commit eb9d58947d40699d93e5e69e1ddc54e41da7e132 ]
 
-The data used is all in local variables so there is no advantage
-in setting *val = ret with the direct mode claim held.
-Move it later to after error check.
+The sample code for using cpumask used the wrong field for the
+__get_cpumask() helper. It used "cpus" which is the bitmask (but would
+still give a proper example) instead of the "cpum" that was there to be
+used.
 
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250217141630.897334-13-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 8236644f5ecb ("iio: adc: ad7768-1: Fix conversion result sign")
+Although it produces the same output, fix it, because it's an example and
+is confusing in how to properly use the cpumask() macro.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20221213221227.56560374@gandalf.local.home
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: ea8d7647f9dd ("tracing: Verify event formats that have "%*p.."")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7768-1.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ samples/trace_events/trace-events-sample.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 70a25949142c0..19d604f5701d6 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -370,12 +370,11 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
- 			return ret;
- 
- 		ret = ad7768_scan_direct(indio_dev);
--		if (ret >= 0)
--			*val = ret;
- 
- 		iio_device_release_direct_mode(indio_dev);
- 		if (ret < 0)
- 			return ret;
-+		*val = ret;
- 
- 		return IIO_VAL_INT;
+diff --git a/samples/trace_events/trace-events-sample.h b/samples/trace_events/trace-events-sample.h
+index fb4548a44153c..1c6b843b8c4ee 100644
+--- a/samples/trace_events/trace-events-sample.h
++++ b/samples/trace_events/trace-events-sample.h
+@@ -359,7 +359,7 @@ TRACE_EVENT(foo_bar,
+ 		  __print_array(__get_dynamic_array(list),
+ 				__get_dynamic_array_len(list) / sizeof(int),
+ 				sizeof(int)),
+-		  __get_str(str), __get_bitmask(cpus), __get_cpumask(cpus),
++		  __get_str(str), __get_bitmask(cpus), __get_cpumask(cpum),
+ 		  __get_str(vstr))
+ );
  
 -- 
 2.39.5
