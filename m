@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC59AA122E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E050AA161B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9E261BA0EA3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72C9F169727
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4959C244679;
-	Tue, 29 Apr 2025 16:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30FF78F58;
+	Tue, 29 Apr 2025 17:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzJfZyZ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+bFY7j5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C71215060;
-	Tue, 29 Apr 2025 16:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F90E21ABDB;
+	Tue, 29 Apr 2025 17:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945398; cv=none; b=jtrWmY7NKLgvmaVIMYpnGeOmX8z17p+xK0Im41pfdDNLZxjchmvSkVbUF9xxu300hwdF7hRlbkjv4Oek63ENjjnGLW01j0xI025WfxOlCsaxM6Scz+ck5vu+p5jKrha1oz3c8hKrkHNu/Hows+bFX8WOJu5bGo4i0Z0E00Qe5Ao=
+	t=1745947775; cv=none; b=EpbkyXNIB2ttaqRVQp9iavk+tW8kKjWS46JbW9ojyXcqxqw14tXKK02XoXlIKR8L5BaYkjDtXgHvou5qZlUCh45bNSftP8Hva2K4Cyvr8xRQiEYXRBwXOjZpKzdkST11N6/sr5Vy1vT/wHRYOsZJILbG4pxs7jncQBDPP9SBygQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945398; c=relaxed/simple;
-	bh=bN5StPvi+KQxsEzJ+VrVYx76CbKjmLgIOwZ22V8S/78=;
+	s=arc-20240116; t=1745947775; c=relaxed/simple;
+	bh=UVvDCASDhkA9u1zHzd7PjwFDczkje8CKQy4XzaM8twY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jmkiampAuS2jRfADeD2POsdXjH77J8gjz0dlUfwbrrbB/sBddrHSSIhxTOR11LSnrCXSCuxjfsksJvwRCFQm9FH7iQ6VBoB0JIB/8M5Ij/tw+ZCfM0YtjuqW4oUv7scTqswSTKM1vq6tjMMtJIjP5Jpgt+0Pmfolwlum/KBfy4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzJfZyZ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2566FC4CEE3;
-	Tue, 29 Apr 2025 16:49:56 +0000 (UTC)
+	 MIME-Version; b=B8Ws6VFVR7RNgAy4zNUYaUVqUS+wX7ZB4+yjufYkSdqStU92a34DdBS86Fy7jWlZtR1JDyJ04oKd9uHGfP8HZ+5LYYy32PMOH2aOYsxoaep7CipTTCs/KwqMqMIMEOkUHTZKCT7bXGCe7m4vzA3oCsPcJ+Y/iNiyICBwwC8ozQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+bFY7j5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6665C4CEE9;
+	Tue, 29 Apr 2025 17:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945397;
-	bh=bN5StPvi+KQxsEzJ+VrVYx76CbKjmLgIOwZ22V8S/78=;
+	s=korg; t=1745947775;
+	bh=UVvDCASDhkA9u1zHzd7PjwFDczkje8CKQy4XzaM8twY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzJfZyZ5igvSWPJEZj3r3s4pxNF1l/YMrQE1qA9cXHQPoq3wKZWkKbTtu3EKO9yRn
-	 OqO0x/zatxJMNFALWHJVBQ4k2oRZLlc0Owj0pJmyDVgrZRGchUyD/P+gj6z/nDJDI4
-	 w9N5XVyxh+MbMktLpR+4jYKdJOYLCVec0Qu2E/UQ=
+	b=g+bFY7j50RuTVeq3QgbFguxO7H4CiGDAQ0L2MwHjzFqlbyScJUtzsA2tMGPvryhzK
+	 ofHoSlfmtaSliZxHKpRL7fIJFEOvdGHGo3u3z2UKwCGgBTNSRx/1TaWpBQ7ngCiMm3
+	 KBn/ClaF1ByNCIvskd+YkOOqhBUd008cKe3us01I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Calvin Walton <calvin.walton@kepstin.ca>,
-	Johannes Kimmel <kernel@bareminimum.eu>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 099/179] btrfs: correctly escape subvol in btrfs_show_options()
+	Fiona Klute <fiona.klute@gmx.de>,
+	kernel-list@raspberrypi.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 099/280] net: phy: microchip: force IRQ polling mode for lan88xx
 Date: Tue, 29 Apr 2025 18:40:40 +0200
-Message-ID: <20250429161053.404274738@linuxfoundation.org>
+Message-ID: <20250429161119.164598875@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Kimmel <kernel@bareminimum.eu>
+From: Fiona Klute <fiona.klute@gmx.de>
 
-commit dc08c58696f8555e4a802f1f23c894a330d80ab7 upstream.
+commit 30a41ed32d3088cd0d682a13d7f30b23baed7e93 upstream.
 
-Currently, displaying the btrfs subvol mount option doesn't escape ','.
-This makes parsing /proc/self/mounts and /proc/self/mountinfo
-ambiguous for subvolume names that contain commas. The text after the
-comma could be mistaken for another option (think "subvol=foo,ro", where
-ro is actually part of the subvolumes name).
+With lan88xx based devices the lan78xx driver can get stuck in an
+interrupt loop while bringing the device up, flooding the kernel log
+with messages like the following:
 
-Replace the manual escape characters list with a call to
-seq_show_option(). Thanks to Calvin Walton for suggesting this approach.
+lan78xx 2-3:1.0 enp1s0u3: kevent 4 may have been dropped
 
-Fixes: c8d3fe028f64 ("Btrfs: show subvol= and subvolid= in /proc/mounts")
-CC: stable@vger.kernel.org # 5.4+
-Suggested-by: Calvin Walton <calvin.walton@kepstin.ca>
-Signed-off-by: Johannes Kimmel <kernel@bareminimum.eu>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Removing interrupt support from the lan88xx PHY driver forces the
+driver to use polling instead, which avoids the problem.
+
+The issue has been observed with Raspberry Pi devices at least since
+4.14 (see [1], bug report for their downstream kernel), as well as
+with Nvidia devices [2] in 2020, where disabling interrupts was the
+vendor-suggested workaround (together with the claim that phylib
+changes in 4.9 made the interrupt handling in lan78xx incompatible).
+
+Iperf reports well over 900Mbits/sec per direction with client in
+--dualtest mode, so there does not seem to be a significant impact on
+throughput (lan88xx device connected via switch to the peer).
+
+[1] https://github.com/raspberrypi/linux/issues/2447
+[2] https://forums.developer.nvidia.com/t/jetson-xavier-and-lan7800-problem/142134/11
+
+Link: https://lore.kernel.org/0901d90d-3f20-4a10-b680-9c978e04ddda@lunn.ch
+Fixes: 792aec47d59d ("add microchip LAN88xx phy driver")
+Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
+Cc: kernel-list@raspberrypi.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250416102413.30654-1-fiona.klute@gmx.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/super.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/phy/microchip.c |   46 ++------------------------------------------
+ 1 file changed, 3 insertions(+), 43 deletions(-)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -1380,8 +1380,7 @@ static int btrfs_show_options(struct seq
- 	subvol_name = btrfs_get_subvol_name_from_objectid(info,
- 			BTRFS_I(d_inode(dentry))->root->root_key.objectid);
- 	if (!IS_ERR(subvol_name)) {
--		seq_puts(seq, ",subvol=");
--		seq_escape(seq, subvol_name, " \t\n\\");
-+		seq_show_option(seq, "subvol", subvol_name);
- 		kfree(subvol_name);
- 	}
- 	return 0;
+--- a/drivers/net/phy/microchip.c
++++ b/drivers/net/phy/microchip.c
+@@ -37,47 +37,6 @@ static int lan88xx_write_page(struct phy
+ 	return __phy_write(phydev, LAN88XX_EXT_PAGE_ACCESS, page);
+ }
+ 
+-static int lan88xx_phy_config_intr(struct phy_device *phydev)
+-{
+-	int rc;
+-
+-	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
+-		/* unmask all source and clear them before enable */
+-		rc = phy_write(phydev, LAN88XX_INT_MASK, 0x7FFF);
+-		rc = phy_read(phydev, LAN88XX_INT_STS);
+-		rc = phy_write(phydev, LAN88XX_INT_MASK,
+-			       LAN88XX_INT_MASK_MDINTPIN_EN_ |
+-			       LAN88XX_INT_MASK_LINK_CHANGE_);
+-	} else {
+-		rc = phy_write(phydev, LAN88XX_INT_MASK, 0);
+-		if (rc)
+-			return rc;
+-
+-		/* Ack interrupts after they have been disabled */
+-		rc = phy_read(phydev, LAN88XX_INT_STS);
+-	}
+-
+-	return rc < 0 ? rc : 0;
+-}
+-
+-static irqreturn_t lan88xx_handle_interrupt(struct phy_device *phydev)
+-{
+-	int irq_status;
+-
+-	irq_status = phy_read(phydev, LAN88XX_INT_STS);
+-	if (irq_status < 0) {
+-		phy_error(phydev);
+-		return IRQ_NONE;
+-	}
+-
+-	if (!(irq_status & LAN88XX_INT_STS_LINK_CHANGE_))
+-		return IRQ_NONE;
+-
+-	phy_trigger_machine(phydev);
+-
+-	return IRQ_HANDLED;
+-}
+-
+ static int lan88xx_suspend(struct phy_device *phydev)
+ {
+ 	struct lan88xx_priv *priv = phydev->priv;
+@@ -528,8 +487,9 @@ static struct phy_driver microchip_phy_d
+ 	.config_aneg	= lan88xx_config_aneg,
+ 	.link_change_notify = lan88xx_link_change_notify,
+ 
+-	.config_intr	= lan88xx_phy_config_intr,
+-	.handle_interrupt = lan88xx_handle_interrupt,
++	/* Interrupt handling is broken, do not define related
++	 * functions to force polling.
++	 */
+ 
+ 	.suspend	= lan88xx_suspend,
+ 	.resume		= genphy_resume,
 
 
 
