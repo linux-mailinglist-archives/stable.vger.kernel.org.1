@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2474FAA1467
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E05AA120E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C85F94A0FA8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C94C1BA04A0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9E1221DA7;
-	Tue, 29 Apr 2025 17:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3132459C9;
+	Tue, 29 Apr 2025 16:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZR2Dinc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCKlXE97"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD371C6B4;
-	Tue, 29 Apr 2025 17:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1721C27453;
+	Tue, 29 Apr 2025 16:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946825; cv=none; b=Aqqcwr3kmWi7apIS5iDOdYb7z4QwRMXx+mydfUTPgJxwZrIgI9FDpWQasYccmisIwPezsyK2qO4cVWuX8gcgUrxzRzTXVdWdZ2SURSUAZTZFzCHVuzyxiOa/6bD4etNaAREne72sRR1AyNbp4UxRS+V5QZ6QWePvn6AEKi7i79o=
+	t=1745945236; cv=none; b=V4BGjfN8VROPh9/PWM1QQQcXQZCb2EHmiiHU11aGNWecu3vRQeRr0Nk66n2xV0HnqNWWmmLIgmB644tblu5D/Yk4Po8BcgVzmEq32+pDOY1wASFnBZskojJSiDDI8jwL/P/5BeJe1iYjg9mscTKtWx5VZihKr7MRjGGXOF4ssQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946825; c=relaxed/simple;
-	bh=Vj3emwHhZsH2wpIMrICNTcQrmsxGbxs4zy1uug1CY4M=;
+	s=arc-20240116; t=1745945236; c=relaxed/simple;
+	bh=/LwShb2i05BR4p2nTZCrpccAJ+u+DzbNrVqRIxf0r8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uitl1wqNfbq7Us5xMf+AQvd0f6knhwaH+26YLVbSRQp3h6gNV0V+xx2atl1W3Pt8sIJr3RZ8Iq8tx7u2l27gS3loSoZGjdE8PYTrYUci3Psr+tW8T1QMslUCPjvIkiFi97qqVDei/fMh5qujLaNgeeTYCJ8byCB+Cb5XuV1lJT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZR2Dinc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4464C4CEE3;
-	Tue, 29 Apr 2025 17:13:44 +0000 (UTC)
+	 MIME-Version; b=r75FD/s4IhXjDo82UUH+APz4BuxdCyjGOjT0kgOp1/QTDwlW8ULV0hHgTKqW+kN8nuHKDx5kK58+JmIQQ/cma0y2poVKGpz/9yPGxHL/9XGj4qHueBQxTy4B64vua7rQ6iTqDBGc9FYY454tKQsBpGrXa/8HQNBlUzflT4IF1ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCKlXE97; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B14CC4CEE9;
+	Tue, 29 Apr 2025 16:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946825;
-	bh=Vj3emwHhZsH2wpIMrICNTcQrmsxGbxs4zy1uug1CY4M=;
+	s=korg; t=1745945236;
+	bh=/LwShb2i05BR4p2nTZCrpccAJ+u+DzbNrVqRIxf0r8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZR2Dinc7AIuUTrt3LetKSZfU+uIWLSbfJUJbrPAL0/1x2AkQ3WAQfVkIx3+XN8Yp
-	 yZKPAiHKlF96+cG0vWJ3YfDQi3RP706dxpf3CeUo/aRO28Ql621L0343W1KP/8UVqs
-	 INQDvUbf7BmZ/Xozp+kyWlgH7nxUfbnqqj65ujAw=
+	b=MCKlXE97gUTdNInsnRjFM7SquF5Dfa80APlAwVkS1sa3VpLOIGHKGqBUuhaZhlj8S
+	 VWN4LETwxKEb728jfbb81btVlCBD4TR1r2I20cDXo1bQ7Dwq8/rrJ1Xx60ykVILEjs
+	 IVJdgfxjWWWO0pqljhMpjLE7QrbWq9wgyrUUbA2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YH Huang <yh.huang@mediatek.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 5.10 082/286] arm64: dts: mediatek: mt8173: Fix disp-pwm compatible string
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.4 045/179] media: venus: hfi: add a check to handle OOB in sfr region
 Date: Tue, 29 Apr 2025 18:39:46 +0200
-Message-ID: <20250429161111.225930809@linuxfoundation.org>
+Message-ID: <20250429161051.227460900@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-commit 46ad36002088eff8fc5cae200aa42ae9f9310ddd upstream.
+commit f4b211714bcc70effa60c34d9fa613d182e3ef1e upstream.
 
-The MT8173 disp-pwm device should have only one compatible string, based
-on the following DT validation error:
+sfr->buf_size is in shared memory and can be modified by malicious user.
+OOB write is possible when the size is made higher than actual sfr data
+buffer. Cap the size to allocated size for such cases.
 
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401e000: compatible: 'oneOf' conditional failed, one must be fixed:
-	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' was expected
-	    'mediatek,mt8183-disp-pwm' was expected
-	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401f000: compatible: 'oneOf' conditional failed, one must be fixed:
-	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' was expected
-	    'mediatek,mt8183-disp-pwm' was expected
-	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
-
-Drop the extra "mediatek,mt6595-disp-pwm" compatible string.
-
-Fixes: 61aee9342514 ("arm64: dts: mt8173: add MT8173 display PWM driver support node")
-Cc: YH Huang <yh.huang@mediatek.com>
-Cc: stable@vger.kernel.org # v4.5+
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250108083424.2732375-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: stable@vger.kernel.org
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173.dtsi |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-@@ -1193,8 +1193,7 @@
- 		};
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -970,18 +970,26 @@ static void venus_sfr_print(struct venus
+ {
+ 	struct device *dev = hdev->core->dev;
+ 	struct hfi_sfr *sfr = hdev->sfr.kva;
++	u32 size;
+ 	void *p;
  
- 		pwm0: pwm@1401e000 {
--			compatible = "mediatek,mt8173-disp-pwm",
--				     "mediatek,mt6595-disp-pwm";
-+			compatible = "mediatek,mt8173-disp-pwm";
- 			reg = <0 0x1401e000 0 0x1000>;
- 			#pwm-cells = <2>;
- 			clocks = <&mmsys CLK_MM_DISP_PWM026M>,
-@@ -1204,8 +1203,7 @@
- 		};
+ 	if (!sfr)
+ 		return;
  
- 		pwm1: pwm@1401f000 {
--			compatible = "mediatek,mt8173-disp-pwm",
--				     "mediatek,mt6595-disp-pwm";
-+			compatible = "mediatek,mt8173-disp-pwm";
- 			reg = <0 0x1401f000 0 0x1000>;
- 			#pwm-cells = <2>;
- 			clocks = <&mmsys CLK_MM_DISP_PWM126M>,
+-	p = memchr(sfr->data, '\0', sfr->buf_size);
++	size = sfr->buf_size;
++	if (!size)
++		return;
++
++	if (size > ALIGNED_SFR_SIZE)
++		size = ALIGNED_SFR_SIZE;
++
++	p = memchr(sfr->data, '\0', size);
+ 	/*
+ 	 * SFR isn't guaranteed to be NULL terminated since SYS_ERROR indicates
+ 	 * that Venus is in the process of crashing.
+ 	 */
+ 	if (!p)
+-		sfr->data[sfr->buf_size - 1] = '\0';
++		sfr->data[size - 1] = '\0';
+ 
+ 	dev_err_ratelimited(dev, "SFR message from FW: %s\n", sfr->data);
+ }
 
 
 
