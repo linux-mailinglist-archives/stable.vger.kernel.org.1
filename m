@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8FB4AA13D3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF868AA128F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01E9F17D366
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F12C7B5423
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB07247298;
-	Tue, 29 Apr 2025 17:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050592472B9;
+	Tue, 29 Apr 2025 16:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JaNNv9R/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bl8u5//j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04C322A81D;
-	Tue, 29 Apr 2025 17:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C4825334B;
+	Tue, 29 Apr 2025 16:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946421; cv=none; b=YNwkWp2HdzJfaMCg8OI/qjsI/z9kiXTrPhQsreCUtIJFQQCKMJZwD88sY7MvDrgIQrhG7qDnCYeZvHx7qqeVenxjly94Rb2bViQskOFbtl07RCi2uOEITwZKE7VzZSn0CxkacnlH69eqC1n+xvC1BIIdnsRkJYwQ/XOCcCpeKBg=
+	t=1745945660; cv=none; b=rzYLOj8Jk5HO05gcxNBB9PnOmGl4O4FARoZB3H0tLrgtHMKRcYKd7NDmDqk29LJANck6av3Wk/X/bNrJVTHpbSs9+xIpylofP/gMUnWTGFfjoldq0lVfaoA0Ui00NgGOCXyMvXtO0cdiRUu2M5wHFJZw5ChdFqbfh5bmOdKWTdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946421; c=relaxed/simple;
-	bh=wwb1dVdRw3kMg6B7YQXCTbk84gvDwmh1cax3d7uOeZU=;
+	s=arc-20240116; t=1745945660; c=relaxed/simple;
+	bh=qBF4CKLwSXyqIKiq8tNBsIihqWvUPKXjkCxa8jHtook=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFmvaQzeZUq4qn266at45S1g1cxtf9h+otPYGbAaG+fxkZLyXQXPp80E4cq+FqaSITFMKov/oym2A9gJwyg+fIy2XuY19pPA2TLWHu0H6Lvv3NcmT+8sA6qlWRNQWLrbFYREjE4Xgf8Af6oyRHew4EqZVydGDS0cEUr+qarAfPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JaNNv9R/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B45C4CEE3;
-	Tue, 29 Apr 2025 17:07:01 +0000 (UTC)
+	 MIME-Version; b=CAbdKwPsa7qpRPwueOGzZnNUBzjjwK0JHoOxnD1hshIz0mX+mlhqRspDtyMzt9/FTdzz3Y1VPKgUFnvctgBV2aijgor4RVCeoBLUvnFlqszSVtB8Hx82ATtSQ87vbV1A1Zbn5TjAeZ6VAxAmprG3lI9/4KgqcZiUpz6sArhsONk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bl8u5//j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278D3C4CEEA;
+	Tue, 29 Apr 2025 16:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946421;
-	bh=wwb1dVdRw3kMg6B7YQXCTbk84gvDwmh1cax3d7uOeZU=;
+	s=korg; t=1745945660;
+	bh=qBF4CKLwSXyqIKiq8tNBsIihqWvUPKXjkCxa8jHtook=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JaNNv9R/pGeTWgeVxD+auLJBPsfytnxrgaaUvJAN5iyL8BjtG42t9YprQrDp5j2Xk
-	 tQMTqx46uCPf9JEVh6rHpba0Jxx8VZSjgVJClPd4Ky92caStuPAQseenZ+dVaveChz
-	 ybXnbSAWNjROwnvZ3otTCoj2BH64Qr71Z0F9QPIg=
+	b=Bl8u5//jqU4l0V2a7d6aF78Kb38EccOjmabK8HmoyQ/oOXMiK/OPJ5W6f4wghS1Pe
+	 VawK820+kaq01Kx1VR6vl/YJ7A3Z70q8u7vmxF0OS4IXvN/f7sTKCiXrKare6Ex0kZ
+	 oZ3AcXRbc+xKJ8s9Z4CEUJVffLjk7iJZjxiKVf7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 262/311] nvmet-fc: take tgtport reference only once
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 5.4 158/179] USB: VLI disk crashes if LPM is used
 Date: Tue, 29 Apr 2025 18:41:39 +0200
-Message-ID: <20250429161131.750077903@linuxfoundation.org>
+Message-ID: <20250429161055.773672220@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit b0b26ad0e1943de25ce82a7e5af3574f31b1cf99 ]
+commit e00b39a4f3552c730f1e24c8d62c4a8c6aad4e5d upstream.
 
-The reference counting code can be simplified. Instead taking a tgtport
-refrerence at the beginning of nvmet_fc_alloc_hostport and put it back
-if not a new hostport object is allocated, only take it when a new
-hostport object is allocated.
+This device needs the NO_LPM quirk.
 
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250408135800.792515-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/fc.c | 22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
-index 7318b736d4141..78c4a417f477e 100644
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -1028,33 +1028,24 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
- 	struct nvmet_fc_hostport *newhost, *match = NULL;
- 	unsigned long flags;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -540,6 +540,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x2040, 0x7200), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
  
-+	/*
-+	 * Caller holds a reference on tgtport.
-+	 */
++	/* VLI disk */
++	{ USB_DEVICE(0x2109, 0x0711), .driver_info = USB_QUIRK_NO_LPM },
 +
- 	/* if LLDD not implemented, leave as NULL */
- 	if (!hosthandle)
- 		return NULL;
+ 	/* Raydium Touchscreen */
+ 	{ USB_DEVICE(0x2386, 0x3114), .driver_info = USB_QUIRK_NO_LPM },
  
--	/*
--	 * take reference for what will be the newly allocated hostport if
--	 * we end up using a new allocation
--	 */
--	if (!nvmet_fc_tgtport_get(tgtport))
--		return ERR_PTR(-EINVAL);
--
- 	spin_lock_irqsave(&tgtport->lock, flags);
- 	match = nvmet_fc_match_hostport(tgtport, hosthandle);
- 	spin_unlock_irqrestore(&tgtport->lock, flags);
- 
--	if (match) {
--		/* no new allocation - release reference */
--		nvmet_fc_tgtport_put(tgtport);
-+	if (match)
- 		return match;
--	}
- 
- 	newhost = kzalloc(sizeof(*newhost), GFP_KERNEL);
--	if (!newhost) {
--		/* no new allocation - release reference */
--		nvmet_fc_tgtport_put(tgtport);
-+	if (!newhost)
- 		return ERR_PTR(-ENOMEM);
--	}
- 
- 	spin_lock_irqsave(&tgtport->lock, flags);
- 	match = nvmet_fc_match_hostport(tgtport, hosthandle);
-@@ -1063,6 +1054,7 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
- 		kfree(newhost);
- 		newhost = match;
- 	} else {
-+		nvmet_fc_tgtport_get(tgtport);
- 		newhost->tgtport = tgtport;
- 		newhost->hosthandle = hosthandle;
- 		INIT_LIST_HEAD(&newhost->host_list);
--- 
-2.39.5
-
 
 
 
