@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-137973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803F2AA15F1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12950AA13D9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84FDC4E0104
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A75E7981B92
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB95524EF6B;
-	Tue, 29 Apr 2025 17:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2B424E4AD;
+	Tue, 29 Apr 2025 17:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iz8T6v+h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNBG6I5U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAC4221570;
-	Tue, 29 Apr 2025 17:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE9B23F413;
+	Tue, 29 Apr 2025 17:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947698; cv=none; b=ZUHARa+Yh7COvBHAhEvQCYhdsejQecjWz3OkJ3MKegWTnW2ZtD9ETC9J/HByEMR6K2UArJn8G80vCf6AXnilCFvuI86Hj9QjEMo/qRmHtD1PtQijPtbt3qWwjxlCtTNoWi9FS1ciQ/KiVppqvvmU4OSmUp9tejff7hHjyGbwwYs=
+	t=1745946268; cv=none; b=imq4Rv/gsT+QLJkgq/OKdJpq+Goho0TQUJeMjzmggQ8InOAsyG/cCeHCJPKCbLq3x/odQgC4WKwzpXM3b7JFbiZmdVXSoetMafpklR79aHORZ3ZHGuvTrh7Lp5CupDLDeav/8NcwNaNPw1oCtVTLb2qawMy+vjkmTTGqAuyu6O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947698; c=relaxed/simple;
-	bh=YRkGmFgkXMes52SRfrUKzpqIf11+m2MYttRKO5R1P4s=;
+	s=arc-20240116; t=1745946268; c=relaxed/simple;
+	bh=/i8BFgpLJFtmdU7VOmfP31XChG0EJ9UUKaLvCyfTQ7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OP+UISMhKLYwrblJc47cYF+Vd0undkca1A7slaDGvc5xz9n5SdOlY4cCdLx1mDES8ng/7JSpsv+lqWzCuUHwaWf1qu4Lm8IEoHDM4N9jhu21M/aaGKMOuHG9O9jFXRsQLd5yqbBx+CrrvK7sTxT/KGbatON4MPb7xmBccdgk6sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iz8T6v+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D044C4CEE9;
-	Tue, 29 Apr 2025 17:28:17 +0000 (UTC)
+	 MIME-Version; b=o7w0LJhFdOG2WESdBVZzTQRYLkeGa/ozZNde0DCoQ8sRd6Qk7IgJrBsBdkAYIo6VmxW7n3of1l0WDxfU7SMR6utVaFs2S6AH/akuP+27fPqIaVHzS7yMsRAob1TwKvopN0787EhWHXgbBNcFqINxCb/drg7mrI85islk8E4ME7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNBG6I5U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6249BC4CEE3;
+	Tue, 29 Apr 2025 17:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947698;
-	bh=YRkGmFgkXMes52SRfrUKzpqIf11+m2MYttRKO5R1P4s=;
+	s=korg; t=1745946267;
+	bh=/i8BFgpLJFtmdU7VOmfP31XChG0EJ9UUKaLvCyfTQ7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iz8T6v+hpONIbQYMZB2F1HkHZuJIb+gmpMu9Zogc1SllhZoBm3hzwJwNEs5/7jbct
-	 B8KgjPtCLEjghwTWO/F/IKUv49rQb90/I9VFFlprfNRZFLB4xPcShSi2cPG3WuUIPv
-	 kzme7q+c1DCr3rLZnpLw8805DK0JANx9X90VvIGQ=
+	b=fNBG6I5U5lao/DJz2QnokKER4lfSslXd5IPNupBfAHDUrJf5+htvP0xcgsZodkyBZ
+	 42KNpWck+9aPYsaKDf2ovk9ODy5xUP7SrJO2XZlo/QIxtSisNB1JFnWxcqxNSQ3EX5
+	 KAeO8UFD5ZwrvtNq4C+AqQadk5CDlEfnxAXHBTRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Creeley <brett.creeley@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/280] pds_core: handle unsupported PDS_CORE_CMD_FW_CONTROL result
+Subject: [PATCH 6.14 183/311] crypto: lib/Kconfig - Fix lib built-in failure when arch is modular
 Date: Tue, 29 Apr 2025 18:40:20 +0200
-Message-ID: <20250429161118.348632236@linuxfoundation.org>
+Message-ID: <20250429161128.516911861@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +62,211 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Creeley <brett.creeley@amd.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 2567daad69cd1107fc0ec29b1615f110d7cf7385 ]
+[ Upstream commit 1047e21aecdf17c8a9ab9fd4bd24c6647453f93d ]
 
-If the FW doesn't support the PDS_CORE_CMD_FW_CONTROL command
-the driver might at the least print garbage and at the worst
-crash when the user runs the "devlink dev info" devlink command.
+The HAVE_ARCH Kconfig options in lib/crypto try to solve the
+modular versus built-in problem, but it still fails when the
+the LIB option (e.g., CRYPTO_LIB_CURVE25519) is selected externally.
 
-This happens because the stack variable fw_list is not 0
-initialized which results in fw_list.num_fw_slots being a
-garbage value from the stack.  Then the driver tries to access
-fw_list.fw_names[i] with i >= ARRAY_SIZE and runs off the end
-of the array.
+Fix this by introducing a level of indirection with ARCH_MAY_HAVE
+Kconfig options, these then go on to select the ARCH_HAVE options
+if the ARCH Kconfig options matches that of the LIB option.
 
-Fix this by initializing the fw_list and by not failing
-completely if the devcmd fails because other useful information
-is printed via devlink dev info even if the devcmd fails.
-
-Fixes: 45d76f492938 ("pds_core: set up device and adminq")
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250421174606.3892-3-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501230223.ikroNDr1-lkp@intel.com/
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/devlink.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm/crypto/Kconfig     |  6 +++---
+ arch/powerpc/crypto/Kconfig |  4 ++--
+ arch/x86/crypto/Kconfig     |  6 +++---
+ lib/crypto/Kconfig          | 26 ++++++++++++++++++--------
+ 4 files changed, 26 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
-index 44971e71991ff..ca23cde385e67 100644
---- a/drivers/net/ethernet/amd/pds_core/devlink.c
-+++ b/drivers/net/ethernet/amd/pds_core/devlink.c
-@@ -102,7 +102,7 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
- 		.fw_control.opcode = PDS_CORE_CMD_FW_CONTROL,
- 		.fw_control.oper = PDS_CORE_FW_GET_LIST,
- 	};
--	struct pds_core_fw_list_info fw_list;
-+	struct pds_core_fw_list_info fw_list = {};
- 	struct pdsc *pdsc = devlink_priv(dl);
- 	union pds_core_dev_comp comp;
- 	char buf[32];
-@@ -115,8 +115,6 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
- 	if (!err)
- 		memcpy_fromio(&fw_list, pdsc->cmd_regs->data, sizeof(fw_list));
- 	mutex_unlock(&pdsc->devcmd_lock);
--	if (err && err != -EIO)
--		return err;
+diff --git a/arch/arm/crypto/Kconfig b/arch/arm/crypto/Kconfig
+index 32650c8431d98..47d9cc59f254c 100644
+--- a/arch/arm/crypto/Kconfig
++++ b/arch/arm/crypto/Kconfig
+@@ -6,7 +6,7 @@ config CRYPTO_CURVE25519_NEON
+ 	tristate "Public key crypto: Curve25519 (NEON)"
+ 	depends on KERNEL_MODE_NEON
+ 	select CRYPTO_LIB_CURVE25519_GENERIC
+-	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
++	select CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519
+ 	help
+ 	  Curve25519 algorithm
  
- 	listlen = min(fw_list.num_fw_slots, ARRAY_SIZE(fw_list.fw_names));
- 	for (i = 0; i < listlen; i++) {
+@@ -47,7 +47,7 @@ config CRYPTO_NHPOLY1305_NEON
+ config CRYPTO_POLY1305_ARM
+ 	tristate "Hash functions: Poly1305 (NEON)"
+ 	select CRYPTO_HASH
+-	select CRYPTO_ARCH_HAVE_LIB_POLY1305
++	select CRYPTO_ARCH_MAY_HAVE_LIB_POLY1305
+ 	help
+ 	  Poly1305 authenticator algorithm (RFC7539)
+ 
+@@ -214,7 +214,7 @@ config CRYPTO_AES_ARM_CE
+ config CRYPTO_CHACHA20_NEON
+ 	tristate "Ciphers: ChaCha20, XChaCha20, XChaCha12 (NEON)"
+ 	select CRYPTO_SKCIPHER
+-	select CRYPTO_ARCH_HAVE_LIB_CHACHA
++	select CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA
+ 	help
+ 	  Length-preserving ciphers: ChaCha20, XChaCha20, and XChaCha12
+ 	  stream cipher algorithms
+diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
+index 5b315e9756b3f..e453cb0c82d2a 100644
+--- a/arch/powerpc/crypto/Kconfig
++++ b/arch/powerpc/crypto/Kconfig
+@@ -6,7 +6,7 @@ config CRYPTO_CURVE25519_PPC64
+ 	tristate "Public key crypto: Curve25519 (PowerPC64)"
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN
+ 	select CRYPTO_LIB_CURVE25519_GENERIC
+-	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
++	select CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519
+ 	help
+ 	  Curve25519 algorithm
+ 
+@@ -95,7 +95,7 @@ config CRYPTO_CHACHA20_P10
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+ 	select CRYPTO_SKCIPHER
+ 	select CRYPTO_LIB_CHACHA_GENERIC
+-	select CRYPTO_ARCH_HAVE_LIB_CHACHA
++	select CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA
+ 	help
+ 	  Length-preserving ciphers: ChaCha20, XChaCha20, and XChaCha12
+ 	  stream cipher algorithms
+diff --git a/arch/x86/crypto/Kconfig b/arch/x86/crypto/Kconfig
+index 4757bf922075b..c189dad0969ba 100644
+--- a/arch/x86/crypto/Kconfig
++++ b/arch/x86/crypto/Kconfig
+@@ -6,7 +6,7 @@ config CRYPTO_CURVE25519_X86
+ 	tristate "Public key crypto: Curve25519 (ADX)"
+ 	depends on X86 && 64BIT
+ 	select CRYPTO_LIB_CURVE25519_GENERIC
+-	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
++	select CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519
+ 	help
+ 	  Curve25519 algorithm
+ 
+@@ -352,7 +352,7 @@ config CRYPTO_CHACHA20_X86_64
+ 	depends on X86 && 64BIT
+ 	select CRYPTO_SKCIPHER
+ 	select CRYPTO_LIB_CHACHA_GENERIC
+-	select CRYPTO_ARCH_HAVE_LIB_CHACHA
++	select CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA
+ 	help
+ 	  Length-preserving ciphers: ChaCha20, XChaCha20, and XChaCha12
+ 	  stream cipher algorithms
+@@ -420,7 +420,7 @@ config CRYPTO_POLY1305_X86_64
+ 	tristate "Hash functions: Poly1305 (SSE2/AVX2)"
+ 	depends on X86 && 64BIT
+ 	select CRYPTO_LIB_POLY1305_GENERIC
+-	select CRYPTO_ARCH_HAVE_LIB_POLY1305
++	select CRYPTO_ARCH_MAY_HAVE_LIB_POLY1305
+ 	help
+ 	  Poly1305 authenticator algorithm (RFC7539)
+ 
+diff --git a/lib/crypto/Kconfig b/lib/crypto/Kconfig
+index b01253cac70a7..c542ef1d64d03 100644
+--- a/lib/crypto/Kconfig
++++ b/lib/crypto/Kconfig
+@@ -42,12 +42,17 @@ config CRYPTO_LIB_BLAKE2S_GENERIC
+ 	  of CRYPTO_LIB_BLAKE2S.
+ 
+ config CRYPTO_ARCH_HAVE_LIB_CHACHA
+-	tristate
++	bool
+ 	help
+ 	  Declares whether the architecture provides an arch-specific
+ 	  accelerated implementation of the ChaCha library interface,
+ 	  either builtin or as a module.
+ 
++config CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA
++	tristate
++	select CRYPTO_ARCH_HAVE_LIB_CHACHA if CRYPTO_LIB_CHACHA=m
++	select CRYPTO_ARCH_HAVE_LIB_CHACHA if CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA=y
++
+ config CRYPTO_LIB_CHACHA_GENERIC
+ 	tristate
+ 	select CRYPTO_LIB_UTILS
+@@ -60,7 +65,6 @@ config CRYPTO_LIB_CHACHA_GENERIC
+ 
+ config CRYPTO_LIB_CHACHA
+ 	tristate "ChaCha library interface"
+-	depends on CRYPTO_ARCH_HAVE_LIB_CHACHA || !CRYPTO_ARCH_HAVE_LIB_CHACHA
+ 	select CRYPTO_LIB_CHACHA_GENERIC if CRYPTO_ARCH_HAVE_LIB_CHACHA=n
+ 	help
+ 	  Enable the ChaCha library interface. This interface may be fulfilled
+@@ -68,12 +72,17 @@ config CRYPTO_LIB_CHACHA
+ 	  is available and enabled.
+ 
+ config CRYPTO_ARCH_HAVE_LIB_CURVE25519
+-	tristate
++	bool
+ 	help
+ 	  Declares whether the architecture provides an arch-specific
+ 	  accelerated implementation of the Curve25519 library interface,
+ 	  either builtin or as a module.
+ 
++config CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519
++	tristate
++	select CRYPTO_ARCH_HAVE_LIB_CURVE25519 if CRYPTO_LIB_CURVE25519=m
++	select CRYPTO_ARCH_HAVE_LIB_CURVE25519 if CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519=y
++
+ config CRYPTO_LIB_CURVE25519_GENERIC
+ 	tristate
+ 	help
+@@ -85,7 +94,6 @@ config CRYPTO_LIB_CURVE25519_GENERIC
+ 
+ config CRYPTO_LIB_CURVE25519
+ 	tristate "Curve25519 scalar multiplication library"
+-	depends on CRYPTO_ARCH_HAVE_LIB_CURVE25519 || !CRYPTO_ARCH_HAVE_LIB_CURVE25519
+ 	select CRYPTO_LIB_CURVE25519_GENERIC if CRYPTO_ARCH_HAVE_LIB_CURVE25519=n
+ 	select CRYPTO_LIB_UTILS
+ 	help
+@@ -104,12 +112,17 @@ config CRYPTO_LIB_POLY1305_RSIZE
+ 	default 1
+ 
+ config CRYPTO_ARCH_HAVE_LIB_POLY1305
+-	tristate
++	bool
+ 	help
+ 	  Declares whether the architecture provides an arch-specific
+ 	  accelerated implementation of the Poly1305 library interface,
+ 	  either builtin or as a module.
+ 
++config CRYPTO_ARCH_MAY_HAVE_LIB_POLY1305
++	tristate
++	select CRYPTO_ARCH_HAVE_LIB_POLY1305 if CRYPTO_LIB_POLY1305=m
++	select CRYPTO_ARCH_HAVE_LIB_POLY1305 if CRYPTO_ARCH_MAY_HAVE_LIB_POLY1305=y
++
+ config CRYPTO_LIB_POLY1305_GENERIC
+ 	tristate
+ 	help
+@@ -121,7 +134,6 @@ config CRYPTO_LIB_POLY1305_GENERIC
+ 
+ config CRYPTO_LIB_POLY1305
+ 	tristate "Poly1305 library interface"
+-	depends on CRYPTO_ARCH_HAVE_LIB_POLY1305 || !CRYPTO_ARCH_HAVE_LIB_POLY1305
+ 	select CRYPTO_LIB_POLY1305_GENERIC if CRYPTO_ARCH_HAVE_LIB_POLY1305=n
+ 	help
+ 	  Enable the Poly1305 library interface. This interface may be fulfilled
+@@ -130,8 +142,6 @@ config CRYPTO_LIB_POLY1305
+ 
+ config CRYPTO_LIB_CHACHA20POLY1305
+ 	tristate "ChaCha20-Poly1305 AEAD support (8-byte nonce library version)"
+-	depends on CRYPTO_ARCH_HAVE_LIB_CHACHA || !CRYPTO_ARCH_HAVE_LIB_CHACHA
+-	depends on CRYPTO_ARCH_HAVE_LIB_POLY1305 || !CRYPTO_ARCH_HAVE_LIB_POLY1305
+ 	depends on CRYPTO
+ 	select CRYPTO_LIB_CHACHA
+ 	select CRYPTO_LIB_POLY1305
 -- 
 2.39.5
 
