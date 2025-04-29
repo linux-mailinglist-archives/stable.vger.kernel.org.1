@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A668AA1667
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E12EAA13C2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61C98188C0B5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:33:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 482A817AD18
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D290A23CEF9;
-	Tue, 29 Apr 2025 17:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7222A82C60;
+	Tue, 29 Apr 2025 17:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hu+x/UhM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5iwNNyu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8307E110;
-	Tue, 29 Apr 2025 17:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3D122A81D;
+	Tue, 29 Apr 2025 17:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948021; cv=none; b=SPX/OOxK1byZ1l9I8DvmeI1565Nmx5xFuax+zQZSoM0bUi/Bsh8sJH1n0jcosTqKRtJ5kExOmHRdWP/tnf3FCKgvjGChd/T5aZW55gU7xAY9yl8qhEv7PObx9LAjmdIwlR8voeX9l61DIsEqs/3AP8P9Mvma9EuAeAr41UKpGU0=
+	t=1745946374; cv=none; b=lM1FsT+ej8QKe4KdAdmnRYhtEmI03Tqrl5P5WSbKF5p5f2HLW0CurY05WYsE0OGabMd82Ob8oL9BfNuT+hZ+b+gbwv6111QjG8qa0n2WmQDLcaFyhB8HF4aAkUXOBMt8pVVj4Y4Fb4Ljt/7jyq1GcywwPyl65NSYVwgkMWZqC+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948021; c=relaxed/simple;
-	bh=JNRhAtH2v5p8YDVGtRf2EEvPTZWE0x7lQNcyVeN+KiQ=;
+	s=arc-20240116; t=1745946374; c=relaxed/simple;
+	bh=3V0TpQYY25r0KEpfQ+qOVAXtF57FUdp4WFYMdQkEJQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YIf5DDqnm/8FbzSfWS4EStV4P4BEtP3MXcFU8HFclJpcC72tKSSQr5BFMUsZ3RvusV98y/1Rx81NCDJqCaDrBNGjEfswIbzkegHc8ccj6r3n/YXW+lz2lvy22bnGf0tkqi7oEEMQ+p7KJdxSE3y6kM7KK4XjNCgR0WqTFYIh35s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hu+x/UhM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC09C4CEE3;
-	Tue, 29 Apr 2025 17:33:40 +0000 (UTC)
+	 MIME-Version; b=kz7PWxWil3sVdvXGVEvPeOH7Jnk/unU3QJAC9cJ1/39IlBDFbx+bycyRXg+WpZMI1dS6Fpg9Z2Rq/0bat7DmMhDANslGkVn9RWGCE1dE99TtrUgP8ZE+dIxUQD4+MGUGLcsaOZ6bI65oeela95Gh0CyKcIkrqtDywJ12PhP03ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5iwNNyu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4467C4CEE3;
+	Tue, 29 Apr 2025 17:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948021;
-	bh=JNRhAtH2v5p8YDVGtRf2EEvPTZWE0x7lQNcyVeN+KiQ=;
+	s=korg; t=1745946374;
+	bh=3V0TpQYY25r0KEpfQ+qOVAXtF57FUdp4WFYMdQkEJQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hu+x/UhMfSQ3Nb+cEjlLgGdYjuDQKOiKLDlnkPy0N7LMkILLEgydkvqJ2FQvD2Xzm
-	 SJUtsi9bcDlVVVZCShJ8x1tQyWTrNvOqLohrhmtVmACNHZZuF1pppGzgzC2KFE3esV
-	 tBmM3OgrbVjYeeXZCrMBQgKDi6FNSahoG9JM9Gzs=
+	b=w5iwNNyuSnGGJ1zFJWasWBWj15xkq9ryd4GO7hP+tCLydqIyddV26QeROAoiOcXrf
+	 0Y8VovP3ay/zQhEUbzHbfcWU7NdZWILwRMDGtLHU8flRQ66lX1fMlCErPSoAmxQDK5
+	 Wqcl7A8SP2nyRhL6FRha6by0xptWnpWMIBRhSKHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.12 140/280] usb: chipidea: ci_hdrc_imx: fix call balance of regulator routines
+	Jan Beulich <jbeulich@suse.com>,
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Juergen Gross <jgross@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 244/311] xen: Change xen-acpi-processor dom0 dependency
 Date: Tue, 29 Apr 2025 18:41:21 +0200
-Message-ID: <20250429161120.853859617@linuxfoundation.org>
+Message-ID: <20250429161131.025431542@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-commit 8cab0e9a3f3e8d700179e0d6141643d54a267fd5 upstream.
+[ Upstream commit 0f2946bb172632e122d4033e0b03f85230a29510 ]
 
-Upon encountering errors during the HSIC pinctrl handling section the
-regulator should be disabled.
+xen-acpi-processor functions under a PVH dom0 with only a
+xen_initial_domain() runtime check.  Change the Kconfig dependency from
+PV dom0 to generic dom0 to reflect that.
 
-Use devm_add_action_or_reset() to let the regulator-disabling routine be
-handled by device resource management stack.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 4d6141288c33 ("usb: chipidea: imx: pinctrl for HSIC is optional")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20250316102658.490340-3-pchelkin@ispras.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Tested-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250331172913.51240-1-jason.andryuk@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/ci_hdrc_imx.c |   25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ drivers/xen/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -336,6 +336,13 @@ static int ci_hdrc_imx_notify_event(stru
- 	return ret;
- }
+diff --git a/drivers/xen/Kconfig b/drivers/xen/Kconfig
+index f7d6f47971fdf..24f485827e039 100644
+--- a/drivers/xen/Kconfig
++++ b/drivers/xen/Kconfig
+@@ -278,7 +278,7 @@ config XEN_PRIVCMD_EVENTFD
  
-+static void ci_hdrc_imx_disable_regulator(void *arg)
-+{
-+	struct ci_hdrc_imx_data *data = arg;
-+
-+	regulator_disable(data->hsic_pad_regulator);
-+}
-+
- static int ci_hdrc_imx_probe(struct platform_device *pdev)
- {
- 	struct ci_hdrc_imx_data *data;
-@@ -394,6 +401,13 @@ static int ci_hdrc_imx_probe(struct plat
- 					"Failed to enable HSIC pad regulator\n");
- 				goto err_put;
- 			}
-+			ret = devm_add_action_or_reset(dev,
-+					ci_hdrc_imx_disable_regulator, data);
-+			if (ret) {
-+				dev_err(dev,
-+					"Failed to add regulator devm action\n");
-+				goto err_put;
-+			}
- 		}
- 	}
- 
-@@ -432,11 +446,11 @@ static int ci_hdrc_imx_probe(struct plat
- 
- 	ret = imx_get_clks(dev);
- 	if (ret)
--		goto disable_hsic_regulator;
-+		goto qos_remove_request;
- 
- 	ret = imx_prepare_enable_clks(dev);
- 	if (ret)
--		goto disable_hsic_regulator;
-+		goto qos_remove_request;
- 
- 	ret = clk_prepare_enable(data->clk_wakeup);
- 	if (ret)
-@@ -526,10 +540,7 @@ err_clk:
- 	clk_disable_unprepare(data->clk_wakeup);
- err_wakeup_clk:
- 	imx_disable_unprepare_clks(dev);
--disable_hsic_regulator:
--	if (data->hsic_pad_regulator)
--		/* don't overwrite original ret (cf. EPROBE_DEFER) */
--		regulator_disable(data->hsic_pad_regulator);
-+qos_remove_request:
- 	if (pdata.flags & CI_HDRC_PMQOS)
- 		cpu_latency_qos_remove_request(&data->pm_qos_req);
- 	data->ci_pdev = NULL;
-@@ -557,8 +568,6 @@ static void ci_hdrc_imx_remove(struct pl
- 		clk_disable_unprepare(data->clk_wakeup);
- 		if (data->plat_data->flags & CI_HDRC_PMQOS)
- 			cpu_latency_qos_remove_request(&data->pm_qos_req);
--		if (data->hsic_pad_regulator)
--			regulator_disable(data->hsic_pad_regulator);
- 	}
- 	if (data->usbmisc_data)
- 		put_device(data->usbmisc_data->dev);
+ config XEN_ACPI_PROCESSOR
+ 	tristate "Xen ACPI processor"
+-	depends on XEN && XEN_PV_DOM0 && X86 && ACPI_PROCESSOR && CPU_FREQ
++	depends on XEN && XEN_DOM0 && X86 && ACPI_PROCESSOR && CPU_FREQ
+ 	default m
+ 	help
+ 	  This ACPI processor uploads Power Management information to the Xen
+-- 
+2.39.5
+
 
 
 
