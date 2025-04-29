@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-138436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7088AA180E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C22AA18C5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0078317A6A8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:54:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36AFA1BC6C01
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1659D25485B;
-	Tue, 29 Apr 2025 17:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8679523E32B;
+	Tue, 29 Apr 2025 18:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktHQFvZx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBnykdEf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A8C25484F;
-	Tue, 29 Apr 2025 17:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AD422AE68;
+	Tue, 29 Apr 2025 18:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949248; cv=none; b=IZJEQWcXTtLJzdtPNz9Mq0DwgS6LcLr5oc2oLuSkAj9XUyosMai+TgkePPjsOURaujnHNM7v4BzbjCVmaL9bs5Ebf7dDJz2saEJq32BSRymqwnvLUhWjTdhQEZJWqaDNtNWZ3h456Ch2pxMcmZR+NNnGcy4S3rz95PEWyuQiBmo=
+	t=1745949784; cv=none; b=rVcz0mjnSrMtbUa87TCcwEFpLSyr3uEkthSSbWTrFi8p7HXfAqluBMLvfIuR9CrLGNkB3cO7UrRFCY9vrbNm3zI7OZs8hRlonQw/lumD/mlHTogfS1wjpMpvQ3krOXM03EoSlJakxiXpwiMKxk5rZOIuJ+JiKow/EyAgc548N+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949248; c=relaxed/simple;
-	bh=pO+0CGhKLmxoBVGKSoYzZNUZm5hoYfqdRTdVoLloqd0=;
+	s=arc-20240116; t=1745949784; c=relaxed/simple;
+	bh=y5yXJzd1EFKFjlTkRBMJBat6cfDoxVGu4jCRyx4vDxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d046rEH+MxiCIXUDPLyhoS7xT+jB+xWwLQnSVlae5iNHb0ebXUzflfnwVYkEC5VQZiXqy9bmOqsgOOtSg8hRctHvoJnQsY9zxlVjIn4P3vgWacZ10l1kUk13p7zMGlGK0Le1wubJ1FBEjsc1kL+BwwdvA6XKbQ7ESqVW0/2X/Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktHQFvZx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46190C4CEE9;
-	Tue, 29 Apr 2025 17:54:07 +0000 (UTC)
+	 MIME-Version; b=hu1i1lZHbz/lTBpbIPHU4i1tRg6vsln1ABV0R+laggxoggSinfrvAE5aBNIc0f9946DIk48N/5ZVYQVv8Dq6JQmWZTDoS2kwSZtfm/rv9Mdy1hjyGUMK4no8avdRdQ+6HKc73skGIfKD44isyskM+btavESDU9W5lXYFagHJBi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBnykdEf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB126C4CEE3;
+	Tue, 29 Apr 2025 18:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949248;
-	bh=pO+0CGhKLmxoBVGKSoYzZNUZm5hoYfqdRTdVoLloqd0=;
+	s=korg; t=1745949784;
+	bh=y5yXJzd1EFKFjlTkRBMJBat6cfDoxVGu4jCRyx4vDxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ktHQFvZxQDkUsqVFq8PaXDQRc1okVfAUFbDO61yKVfyWdmCkzzOMMsiO/RDxFOIrH
-	 lIp/olohSJX6MhSpRxzwMLYepRGVNzDXYQN6TWDpXmfZzUm+m8VwtrFB07VOviV/dK
-	 6DgMAOA0igjzW96kn5Z8M53JRKOFLav4fEkdJEfs=
+	b=kBnykdEfRkV9blmQ8I5MWdp+7bYxEd8r5M9U8zSMS7nkWAgA/AvZGZk2una5CuaBM
+	 Yn32zL5mvAm/N1aQdlKUAXYur2RRv7CR/zfhw034VSvPBNXVF9BfkRq9Rr/UnuU5N1
+	 O3+FLiPrAGUlLLF94vEkXvnCBD/NQhsDyC7oCuLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 259/373] media: streamzap: fix race between device disconnection and urb callback
+Subject: [PATCH 6.1 028/167] of: resolver: Simplify of_resolve_phandles() using __free()
 Date: Tue, 29 Apr 2025 18:42:16 +0200
-Message-ID: <20250429161133.775380874@linuxfoundation.org>
+Message-ID: <20250429161052.885505634@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +61,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-[ Upstream commit f656cfbc7a293a039d6a0c7100e1c846845148c1 ]
+[ Upstream commit 5275e8b5293f65cc82a5ee5eab02dd573b911d6e ]
 
-Syzkaller has reported a general protection fault at function
-ir_raw_event_store_with_filter(). This crash is caused by a NULL pointer
-dereference of dev->raw pointer, even though it is checked for NULL in
-the same function, which means there is a race condition. It occurs due
-to the incorrect order of actions in the streamzap_disconnect() function:
-rc_unregister_device() is called before usb_kill_urb(). The dev->raw
-pointer is freed and set to NULL in rc_unregister_device(), and only
-after that usb_kill_urb() waits for in-progress requests to finish.
+Use the __free() cleanup to simplify of_resolve_phandles() and remove
+all the goto's.
 
-If rc_unregister_device() is called while streamzap_callback() handler is
-not finished, this can lead to accessing freed resources. Thus
-rc_unregister_device() should be called after usb_kill_urb().
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 8e9e60640067 ("V4L/DVB: staging/lirc: port lirc_streamzap to ir-core")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=34008406ee9a31b13c73
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Stable-dep-of: a46a0805635d ("of: resolver: Fix device node refcount leakage in of_resolve_phandles()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/streamzap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/resolver.c | 34 +++++++++++-----------------------
+ 1 file changed, 11 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/media/rc/streamzap.c b/drivers/media/rc/streamzap.c
-index d4b38532c7b44..d31ee190301b3 100644
---- a/drivers/media/rc/streamzap.c
-+++ b/drivers/media/rc/streamzap.c
-@@ -431,8 +431,8 @@ static void streamzap_disconnect(struct usb_interface *interface)
- 	if (!sz)
- 		return;
+diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
+index b278ab4338ceb..2dd19dc6987c7 100644
+--- a/drivers/of/resolver.c
++++ b/drivers/of/resolver.c
+@@ -263,24 +263,20 @@ static int adjust_local_phandle_references(struct device_node *local_fixups,
+ int of_resolve_phandles(struct device_node *overlay)
+ {
+ 	struct device_node *child, *local_fixups, *refnode;
+-	struct device_node *tree_symbols, *overlay_fixups;
++	struct device_node *overlay_fixups;
+ 	struct property *prop;
+ 	const char *refpath;
+ 	phandle phandle, phandle_delta;
+ 	int err;
  
--	rc_unregister_device(sz->rdev);
- 	usb_kill_urb(sz->urb_in);
-+	rc_unregister_device(sz->rdev);
- 	usb_free_urb(sz->urb_in);
- 	usb_free_coherent(usbdev, sz->buf_in_len, sz->buf_in, sz->dma_in);
+-	tree_symbols = NULL;
+-
+ 	if (!overlay) {
+ 		pr_err("null overlay\n");
+-		err = -EINVAL;
+-		goto out;
++		return -EINVAL;
+ 	}
  
+ 	if (!of_node_check_flag(overlay, OF_DETACHED)) {
+ 		pr_err("overlay not detached\n");
+-		err = -EINVAL;
+-		goto out;
++		return -EINVAL;
+ 	}
+ 
+ 	phandle_delta = live_tree_max_phandle() + 1;
+@@ -292,7 +288,7 @@ int of_resolve_phandles(struct device_node *overlay)
+ 
+ 	err = adjust_local_phandle_references(local_fixups, overlay, phandle_delta);
+ 	if (err)
+-		goto out;
++		return err;
+ 
+ 	overlay_fixups = NULL;
+ 
+@@ -301,16 +297,13 @@ int of_resolve_phandles(struct device_node *overlay)
+ 			overlay_fixups = child;
+ 	}
+ 
+-	if (!overlay_fixups) {
+-		err = 0;
+-		goto out;
+-	}
++	if (!overlay_fixups)
++		return 0;
+ 
+-	tree_symbols = of_find_node_by_path("/__symbols__");
++	struct device_node __free(device_node) *tree_symbols = of_find_node_by_path("/__symbols__");
+ 	if (!tree_symbols) {
+ 		pr_err("no symbols in root of device tree.\n");
+-		err = -EINVAL;
+-		goto out;
++		return -EINVAL;
+ 	}
+ 
+ 	for_each_property_of_node(overlay_fixups, prop) {
+@@ -324,14 +317,12 @@ int of_resolve_phandles(struct device_node *overlay)
+ 		if (err) {
+ 			pr_err("node label '%s' not found in live devicetree symbols table\n",
+ 			       prop->name);
+-			goto out;
++			return err;
+ 		}
+ 
+ 		refnode = of_find_node_by_path(refpath);
+-		if (!refnode) {
+-			err = -ENOENT;
+-			goto out;
+-		}
++		if (!refnode)
++			return -ENOENT;
+ 
+ 		phandle = refnode->phandle;
+ 		of_node_put(refnode);
+@@ -341,11 +332,8 @@ int of_resolve_phandles(struct device_node *overlay)
+ 			break;
+ 	}
+ 
+-out:
+ 	if (err)
+ 		pr_err("overlay phandle fixup failed: %d\n", err);
+-	of_node_put(tree_symbols);
+-
+ 	return err;
+ }
+ EXPORT_SYMBOL_GPL(of_resolve_phandles);
 -- 
 2.39.5
 
