@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-138028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A670EAA1642
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC6FAA125B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ED8F4A0C60
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5976A18907BD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677DC24BBE4;
-	Tue, 29 Apr 2025 17:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B42C21772B;
+	Tue, 29 Apr 2025 16:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVB29Wsg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlQJwP++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CEF1F4736;
-	Tue, 29 Apr 2025 17:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CF92472AC;
+	Tue, 29 Apr 2025 16:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947887; cv=none; b=T0ODarrO2HVzfz1JjzKTGsoQ+j81ijy6sYLlVH+8W+GzBpSIPXkk7CNBI88x/nhFScf4fbYhb0sBD9bBrpYcSAW2z23BqY5+OH39MlJij0GiIdrSKJ81SE1IMGpdRgNQtsINiRefiGVeS9xDQZsqbDZ8nU6/VIa+18Bi/IZM3oA=
+	t=1745945494; cv=none; b=bzOc/iqtkc6CAOkB+1ya3mew8wOL1UTf+neyc/XHlxBfrdoUnBwjv7N6A2bIY21UCFgw+lOzHWa6n+CbEd2d8IjGIUmFDMIOBjMdEuJ4DzMZ3yXVquNZ6yIfZWxKj43PZPH9Cj4NPyeErWdRaUD+MIdxx5JgtJVtbYxveKcGmt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947887; c=relaxed/simple;
-	bh=YNXqLgqkPLuBMHjKn4QNPQnHZ0kHPN1bLy7KEuyrQCE=;
+	s=arc-20240116; t=1745945494; c=relaxed/simple;
+	bh=o+YbX2gfYVe3/UPmojUSTZfbv7GRtCkDEd4TyLVZDss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuJUnaJj1zdZv2ceTcPWN6NHMmEA8u0P7rM4zlHHhvcFE6KA4aDTpscb5bAEmDTxreUYdj9Sh2d5B8Zf0uYjCKWh56O9f30mfITjWtY6f4dfxZsh/Og5hptcgpmTqYpZlVNupF3CIq/Q0aFIe37UABeEn5oaeiL97PtiD0u4SnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVB29Wsg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38937C4CEE3;
-	Tue, 29 Apr 2025 17:31:26 +0000 (UTC)
+	 MIME-Version; b=dHt3YtCHNd2Nf8FDmfDdCH/xlKKwzY172dmFhATYOL/4Kf88K+IC619TDnDpIkCN063yYQRDqZ0cHAC3ycn3qNfmNEhfyFO/pqhGnjr2J5g9qraGXKCTZ7quavlEuWDpL7m3iGXPnaLVKNQAd49YHPI2ONnHZ2W5K5xu+3q3cLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlQJwP++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0ABBC4CEE3;
+	Tue, 29 Apr 2025 16:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947886;
-	bh=YNXqLgqkPLuBMHjKn4QNPQnHZ0kHPN1bLy7KEuyrQCE=;
+	s=korg; t=1745945494;
+	bh=o+YbX2gfYVe3/UPmojUSTZfbv7GRtCkDEd4TyLVZDss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PVB29WsgkXC7mbsRoLAxouwr+s3FFVhBKvnc23WeoWUao78H+qeH1S63MONh3CS+X
-	 k24Pt7bUfWY3TZk9KeXm1VniO3y+nCtK9d7p0+dzwV1pSlVfp4kvTpXhjH6G8jR9n4
-	 pbMVroCIw6CMBDIcS/OEW3htaKGBrXuK7U6nw/UA=
+	b=rlQJwP++IpKpgvzYfEqUCUNjQuSAwvncok+I7osDyFrm/Xhpy1jM7oxxd0QZmMbTL
+	 rYaU+Bqkd02xWbMFptUmpXp0qO0ZtyglU2NFjyaXUFukz29OJzkJGM8DukTlGwCvdE
+	 Mb6MbP+PAhoutAqpv5xFAgPUQv33Z7qwi5LcIbbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryo Takakura <ryotkkr98@gmail.com>,
-	Petr Mladek <pmladek@suse.com>,
-	John Ogness <john.ogness@linutronix.de>
-Subject: [PATCH 6.12 132/280] serial: sifive: lock port in startup()/shutdown() callbacks
+	Jakub Acs <acsjakub@amazon.de>,
+	Theodore Tso <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	linux-ext4@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mahmoud Adam <mngyadam@amazon.com>,
+	security@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 132/179] ext4: fix OOB read when checking dotdot dir
 Date: Tue, 29 Apr 2025 18:41:13 +0200
-Message-ID: <20250429161120.527086818@linuxfoundation.org>
+Message-ID: <20250429161054.732659274@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +67,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryo Takakura <ryotkkr98@gmail.com>
+From: Acs, Jakub <acsjakub@amazon.de>
 
-commit e1ca3ff28ab1e2c1e70713ef3fa7943c725742c3 upstream.
+[ Upstream commit d5e206778e96e8667d3bde695ad372c296dc9353 ]
 
-startup()/shutdown() callbacks access SIFIVE_SERIAL_IE_OFFS.
-The register is also accessed from write() callback.
+Mounting a corrupted filesystem with directory which contains '.' dir
+entry with rec_len == block size results in out-of-bounds read (later
+on, when the corrupted directory is removed).
 
-If console were printing and startup()/shutdown() callback
-gets called, its access to the register could be overwritten.
+ext4_empty_dir() assumes every ext4 directory contains at least '.'
+and '..' as directory entries in the first data block. It first loads
+the '.' dir entry, performs sanity checks by calling ext4_check_dir_entry()
+and then uses its rec_len member to compute the location of '..' dir
+entry (in ext4_next_entry). It assumes the '..' dir entry fits into the
+same data block.
 
-Add port->lock to startup()/shutdown() callbacks to make sure
-their access to SIFIVE_SERIAL_IE_OFFS is synchronized against
-write() callback.
+If the rec_len of '.' is precisely one block (4KB), it slips through the
+sanity checks (it is considered the last directory entry in the data
+block) and leaves "struct ext4_dir_entry_2 *de" point exactly past the
+memory slot allocated to the data block. The following call to
+ext4_check_dir_entry() on new value of de then dereferences this pointer
+which results in out-of-bounds mem access.
 
-Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
+Fix this by extending __ext4_check_dir_entry() to check for '.' dir
+entries that reach the end of data block. Make sure to ignore the phony
+dir entries for checksum (by checking name_len for non-zero).
+
+Note: This is reported by KASAN as use-after-free in case another
+structure was recently freed from the slot past the bound, but it is
+really an OOB read.
+
+This issue was found by syzkaller tool.
+
+Call Trace:
+[   38.594108] BUG: KASAN: slab-use-after-free in __ext4_check_dir_entry+0x67e/0x710
+[   38.594649] Read of size 2 at addr ffff88802b41a004 by task syz-executor/5375
+[   38.595158]
+[   38.595288] CPU: 0 UID: 0 PID: 5375 Comm: syz-executor Not tainted 6.14.0-rc7 #1
+[   38.595298] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   38.595304] Call Trace:
+[   38.595308]  <TASK>
+[   38.595311]  dump_stack_lvl+0xa7/0xd0
+[   38.595325]  print_address_description.constprop.0+0x2c/0x3f0
+[   38.595339]  ? __ext4_check_dir_entry+0x67e/0x710
+[   38.595349]  print_report+0xaa/0x250
+[   38.595359]  ? __ext4_check_dir_entry+0x67e/0x710
+[   38.595368]  ? kasan_addr_to_slab+0x9/0x90
+[   38.595378]  kasan_report+0xab/0xe0
+[   38.595389]  ? __ext4_check_dir_entry+0x67e/0x710
+[   38.595400]  __ext4_check_dir_entry+0x67e/0x710
+[   38.595410]  ext4_empty_dir+0x465/0x990
+[   38.595421]  ? __pfx_ext4_empty_dir+0x10/0x10
+[   38.595432]  ext4_rmdir.part.0+0x29a/0xd10
+[   38.595441]  ? __dquot_initialize+0x2a7/0xbf0
+[   38.595455]  ? __pfx_ext4_rmdir.part.0+0x10/0x10
+[   38.595464]  ? __pfx___dquot_initialize+0x10/0x10
+[   38.595478]  ? down_write+0xdb/0x140
+[   38.595487]  ? __pfx_down_write+0x10/0x10
+[   38.595497]  ext4_rmdir+0xee/0x140
+[   38.595506]  vfs_rmdir+0x209/0x670
+[   38.595517]  ? lookup_one_qstr_excl+0x3b/0x190
+[   38.595529]  do_rmdir+0x363/0x3c0
+[   38.595537]  ? __pfx_do_rmdir+0x10/0x10
+[   38.595544]  ? strncpy_from_user+0x1ff/0x2e0
+[   38.595561]  __x64_sys_unlinkat+0xf0/0x130
+[   38.595570]  do_syscall_64+0x5b/0x180
+[   38.595583]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: ac27a0ec112a0 ("[PATCH] ext4: initial copy of files from ext3")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Theodore Ts'o <tytso@mit.edu>
+Cc: Andreas Dilger <adilger.kernel@dilger.ca>
+Cc: linux-ext4@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Mahmoud Adam <mngyadam@amazon.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Rule: add
-Link: https://lore.kernel.org/stable/20250330003522.386632-1-ryotkkr98%40gmail.com
-Link: https://lore.kernel.org/r/20250412001847.183221-1-ryotkkr98@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: security@kernel.org
+Link: https://patch.msgid.link/b3ae36a6794c4a01944c7d70b403db5b@amazon.de
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sifive.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ext4/dir.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/tty/serial/sifive.c
-+++ b/drivers/tty/serial/sifive.c
-@@ -563,8 +563,11 @@ static void sifive_serial_break_ctl(stru
- static int sifive_serial_startup(struct uart_port *port)
- {
- 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
-+	unsigned long flags;
+diff --git a/fs/ext4/dir.c b/fs/ext4/dir.c
+index c4f7fd22a907c..567c47cf4f20c 100644
+--- a/fs/ext4/dir.c
++++ b/fs/ext4/dir.c
+@@ -88,6 +88,9 @@ int __ext4_check_dir_entry(const char *function, unsigned int line,
+ 	else if (unlikely(le32_to_cpu(de->inode) >
+ 			le32_to_cpu(EXT4_SB(dir->i_sb)->s_es->s_inodes_count)))
+ 		error_msg = "inode out of bounds";
++	else if (unlikely(next_offset == size && de->name_len == 1 &&
++			  de->name[0] == '.'))
++		error_msg = "'.' directory cannot be the last in data block";
+ 	else
+ 		return 0;
  
-+	uart_port_lock_irqsave(&ssp->port, &flags);
- 	__ssp_enable_rxwm(ssp);
-+	uart_port_unlock_irqrestore(&ssp->port, flags);
- 
- 	return 0;
- }
-@@ -572,9 +575,12 @@ static int sifive_serial_startup(struct
- static void sifive_serial_shutdown(struct uart_port *port)
- {
- 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
-+	unsigned long flags;
- 
-+	uart_port_lock_irqsave(&ssp->port, &flags);
- 	__ssp_disable_rxwm(ssp);
- 	__ssp_disable_txwm(ssp);
-+	uart_port_unlock_irqrestore(&ssp->port, flags);
- }
- 
- /**
+-- 
+2.39.5
+
 
 
 
