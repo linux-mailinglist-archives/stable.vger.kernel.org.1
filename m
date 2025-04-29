@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-138191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E4CAA16E6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:41:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19466AA130B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B495F7B33D2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CD8B16AD2D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8A725334C;
-	Tue, 29 Apr 2025 17:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138F7250C02;
+	Tue, 29 Apr 2025 16:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0JI2S7n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axUqHnxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8E7244664;
-	Tue, 29 Apr 2025 17:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C567B24C08D;
+	Tue, 29 Apr 2025 16:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948458; cv=none; b=fnqXFlO6Vm1YYU2ywf+h1QzCW/2276voCVyqaQx/Zar64e2SxNS2CY+wfS+Z8AzFAF4CcjrB9+iPDy3VkwzyIo4LvSG0AkjimrrFdSSyGWeB5+3JimezSFwZP886VJY4rCWGwjoGVrtk9RZ7ujT1XdPKBtgqzR8P7i9Rz4rE2Hg=
+	t=1745945890; cv=none; b=UmwWklB3H8AIZFmkblVJbMkR0I8zX7OxW21XEnEjV4iN8q/7tsr5gjp7RqyLPgEP3bse5dIy0bEYLf6K1gjgI2VMGWTcalEYtckffiiUnlg0eJfKWBdGLJGJO//6KiTOkhiOx1ym4H/wmiJ5w5X9SkH8Sfqa+h8VQHbz7aEMIBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948458; c=relaxed/simple;
-	bh=nlft/leLtsc3LqgSBRdKRS9V6JYONN+PD8jKF8v3qi0=;
+	s=arc-20240116; t=1745945890; c=relaxed/simple;
+	bh=5rzX3y+JdtT2mGV7cRTuKF0U8Z1ockkDdyRUg3HEkeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNZAckOdy4OoaQrI1G6+biZC8DToCVKwq2PgFSgKfy0Dbg2UFwEd4p8ymGTVrwaWQT7BSDkZTnMUgv2YsT0m//mOL0eJryeK8gtR9sDKIasTJxlBIt4kjdlnW1useYGmgsgbMad7a8tVAcbW+VwDQlUwEscUyqAl4amMGvKTlpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0JI2S7n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F00AC4CEE3;
-	Tue, 29 Apr 2025 17:40:58 +0000 (UTC)
+	 MIME-Version; b=j6zbg1/g/N/ZUHTCV9vPERiwK+HAwutDsPjZxV/e6qKWVp6bnI/6slOMJdl3PqHiHNm18oICMdltBWFqcECjtyQDhQukEO56ScJ8sx4IPKVxdziE0uXwmnX7ZueRv283X2zJryDuiX8vXmiWtKFMU0/Xa6gGPunzJBSZBq3xZTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axUqHnxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594C2C4CEE9;
+	Tue, 29 Apr 2025 16:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948458;
-	bh=nlft/leLtsc3LqgSBRdKRS9V6JYONN+PD8jKF8v3qi0=;
+	s=korg; t=1745945890;
+	bh=5rzX3y+JdtT2mGV7cRTuKF0U8Z1ockkDdyRUg3HEkeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g0JI2S7nGfnPFEDlP6NtDEvRcHfd7FT21KRk0w5Vyru9h0pPeD2yEzHLV2U++8Kuz
-	 BBOR8UiZV+UUhpYP+nqGN8yF3V0o85cU6Rhs6IoKHDo1qEC/obwAkeUL3VFmwGEGzJ
-	 oU/L3tlWSp0pb5qWgKybqWLuJ19LGgLfGXlCNiR0=
+	b=axUqHnxXBJO3lwvtfMXBh/SGNqoeEbw7VULdjCxBO5eYZu+py91SnSc0rgBeXI3+o
+	 dK7rceXKZLRyumEzkapeF3LKyd30Fb/OEEd30s4DFrjGCBlSjmwOw4XFFKxPk4htdN
+	 HGKBv6rjahXW9RXNffOPzVF67YTPqsQSkpTkM7GI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Will Deacon <will@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 014/373] perf: arm_pmu: Dont disable counter in armpmu_add()
+Subject: [PATCH 6.14 054/311] net: enetc: register XDP RX queues with frag_size
 Date: Tue, 29 Apr 2025 18:38:11 +0200
-Message-ID: <20250429161123.720803637@linuxfoundation.org>
+Message-ID: <20250429161123.253379934@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit dcca27bc1eccb9abc2552aab950b18a9742fb8e7 ]
+[ Upstream commit 2768b2e2f7d25ae8984ebdcde8ec1014b6fdcd89 ]
 
-Currently armpmu_add() tries to handle a newly-allocated counter having
-a stale associated event, but this should not be possible, and if this
-were to happen the current mitigation is insufficient and potentially
-expensive. It would be better to warn if we encounter the impossible
-case.
+At the time when bpf_xdp_adjust_tail() gained support for non-linear
+buffers, ENETC was already generating this kind of geometry on RX, due
+to its use of 2K half page buffers. Frames larger than 1472 bytes
+(without FCS) are stored as multi-buffer, presenting a need for multi
+buffer support to work properly even in standard MTU circumstances.
 
-Calls to pmu::add() and pmu::del() are serialized by the core perf code,
-and armpmu_del() clears the relevant slot in pmu_hw_events::events[]
-before clearing the bit in pmu_hw_events::used_mask such that the
-counter can be reallocated. Thus when armpmu_add() allocates a counter
-index from pmu_hw_events::used_mask, it should not be possible to observe
-a stale even in pmu_hw_events::events[] unless either
-pmu_hw_events::used_mask or pmu_hw_events::events[] have been corrupted.
+Allow bpf_xdp_frags_increase_tail() to know the allocation size of paged
+data, so it can safely permit growing the tailroom of the buffer from
+XDP programs.
 
-If this were to happen, we'd end up with two events with the same
-event->hw.idx, which would clash with each other during reprogramming,
-deletion, etc, and produce bogus results. Add a WARN_ON_ONCE() for this
-case so that we can detect if this ever occurs in practice.
-
-That possiblity aside, there's no need to call arm_pmu::disable(event)
-for the new event. The PMU reset code initialises the counter in a
-disabled state, and armpmu_del() will disable the counter before it can
-be reused. Remove the redundant disable.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20250218-arm-brbe-v19-v20-2-4e9922fc2e8e@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: bf25146a5595 ("bpf: add frags support to the bpf_xdp_adjust_tail() API")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250417120005.3288549-2-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm_pmu.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/perf/arm_pmu.c b/drivers/perf/arm_pmu.c
-index 57d20cf3da7a3..fd59f40f74435 100644
---- a/drivers/perf/arm_pmu.c
-+++ b/drivers/perf/arm_pmu.c
-@@ -338,12 +338,10 @@ armpmu_add(struct perf_event *event, int flags)
- 	if (idx < 0)
- 		return idx;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index 2106861463e40..9b333254c73ec 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -3362,7 +3362,8 @@ static int enetc_int_vector_init(struct enetc_ndev_priv *priv, int i,
+ 	bdr->buffer_offset = ENETC_RXB_PAD;
+ 	priv->rx_ring[i] = bdr;
  
--	/*
--	 * If there is an event in the counter we are going to use then make
--	 * sure it is disabled.
--	 */
-+	/* The newly-allocated counter should be empty */
-+	WARN_ON_ONCE(hw_events->events[idx]);
-+
- 	event->hw.idx = idx;
--	armpmu->disable(event);
- 	hw_events->events[idx] = event;
+-	err = xdp_rxq_info_reg(&bdr->xdp.rxq, priv->ndev, i, 0);
++	err = __xdp_rxq_info_reg(&bdr->xdp.rxq, priv->ndev, i, 0,
++				 ENETC_RXB_DMA_SIZE_XDP);
+ 	if (err)
+ 		goto free_vector;
  
- 	hwc->state = PERF_HES_STOPPED | PERF_HES_UPTODATE;
 -- 
 2.39.5
 
