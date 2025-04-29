@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D221AA1329
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:03:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 864FAAA144F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07D121733D3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5B824A2276
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDBD24BBE4;
-	Tue, 29 Apr 2025 16:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47ECE250BFE;
+	Tue, 29 Apr 2025 17:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eraz9dk2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItbzkGG7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976CC248866;
-	Tue, 29 Apr 2025 16:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0497C221DA7;
+	Tue, 29 Apr 2025 17:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945945; cv=none; b=spS+0h/X2FGTP9O0TRVv6X6y6eKX/OePNLHkaIjg+VjVJSgRakDBNJdu7OCTtu95GiMlYWJp/cqzhCwXA1pipwZDwqtmj1ghixqSlsdywJQ6gCHgL2GOFr9tgdCzwpjDIyW3TgSXiJtqDwkwOeTTEG8B85vYjrJm6aSSY7fE4OM=
+	t=1745946772; cv=none; b=pBvdDuxXGsE0weDg4yS9CUOzvTB0PnLv2g3iOXLfGdDVn30rKk4jIOSFG6bWERNyAC/zESjwZ9pnRlfRcC6YhMciAKQryd5GrEVUD6Y3BpavETOyapCH1cCW+jYGueSrA0ciQDqZX59OBNZDSghuqizTSuASfFOvKYp8E43SNww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945945; c=relaxed/simple;
-	bh=z9bDdnp9gZxTNNJquiDaxb4iKmUmOw7sowIRA4JPP5s=;
+	s=arc-20240116; t=1745946772; c=relaxed/simple;
+	bh=DAm/gQEn2SujM+cyxiG2hdEU9nkYCkNR0Rbo8h729y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLUGcSFl4T2aPImspBYnpxruuVMWK0kS09tHsnz6/mhJTlynQHZfMOXqFYyuhvaMxlIKRB1rVAfWTUkVbbA57Yty3mAHtqx67t2D0RQtSYn42IYYD41wg5BCVyyWJy92iXCCdaNfWt9l/wVIQLXAJmOSxj71lsYm+Fn6Cff8lVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eraz9dk2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A889C4CEE3;
-	Tue, 29 Apr 2025 16:59:04 +0000 (UTC)
+	 MIME-Version; b=eSi5l1JmkULrJ32FVjJxauKaeJ+0J2J4kP4rxjqxZ1tngY5fosrdMEa1A8aiG1+BuPf6UgYPVxShXg5H+hTJQUfG4JLVe5v1/HkfjCZ2L6KL6dIayLBNYAC2qF2+fXzTYiEmMxhC+zXYrMde233m5zmyQKaTFN7sAr429dKR/bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItbzkGG7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C55EC4CEE3;
+	Tue, 29 Apr 2025 17:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945945;
-	bh=z9bDdnp9gZxTNNJquiDaxb4iKmUmOw7sowIRA4JPP5s=;
+	s=korg; t=1745946771;
+	bh=DAm/gQEn2SujM+cyxiG2hdEU9nkYCkNR0Rbo8h729y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eraz9dk2bTHJXTVgLRP+9mcqhY54MCLZFEL5L7LLSti4J7aqBZSCc3GbwSLNu7Ghu
-	 T7fwqpABtLoHFFgkQgj0uY55PDRI+rHA/bzOd6TpQon3qpxWu3acsJl/nrm8QMjRNz
-	 zAwvy5lVwXBKq/bPB6ElYwTrBrkwFW4m8FIsf7EA=
+	b=ItbzkGG73EYstO+EjFZqGSlxiJnkX05kmK34y9/k3MV/k6lZpjfT0f/EgVJt0tE0V
+	 3hW1/T0TtE06JuSj6HH2G6mEGWRk3s4dMxIGivkSvSYNPRsVDeG2hkvX0G2HkyyTQ3
+	 tMBK6V+LeLY+ChoQjwrP4idS9n5GFgF37pz4hfu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Omar Sandoval <osandov@fb.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 102/311] sched/eevdf: Fix se->slice being set to U64_MAX and resulting crash
+Subject: [PATCH 5.10 035/286] Bluetooth: hci_uart: fix race during initialization
 Date: Tue, 29 Apr 2025 18:38:59 +0200
-Message-ID: <20250429161125.215831187@linuxfoundation.org>
+Message-ID: <20250429161109.305141552@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Omar Sandoval <osandov@fb.com>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-[ Upstream commit bbce3de72be56e4b5f68924b7da9630cc89aa1a8 ]
+[ Upstream commit 366ceff495f902182d42b6f41525c2474caf3f9a ]
 
-There is a code path in dequeue_entities() that can set the slice of a
-sched_entity to U64_MAX, which sometimes results in a crash.
+'hci_register_dev()' calls power up function, which is executed by
+kworker - 'hci_power_on()'. This function does access to bluetooth chip
+using callbacks from 'hci_ldisc.c', for example 'hci_uart_send_frame()'.
+Now 'hci_uart_send_frame()' checks 'HCI_UART_PROTO_READY' bit set, and
+if not - it fails. Problem is that 'HCI_UART_PROTO_READY' is set after
+'hci_register_dev()', and there is tiny chance that 'hci_power_on()' will
+be executed before setting this bit. In that case HCI init logic fails.
 
-The offending case is when dequeue_entities() is called to dequeue a
-delayed group entity, and then the entity's parent's dequeue is delayed.
-In that case:
+Patch moves setting of 'HCI_UART_PROTO_READY' before calling function
+'hci_uart_register_dev()'.
 
-1. In the if (entity_is_task(se)) else block at the beginning of
-   dequeue_entities(), slice is set to
-   cfs_rq_min_slice(group_cfs_rq(se)). If the entity was delayed, then
-   it has no queued tasks, so cfs_rq_min_slice() returns U64_MAX.
-2. The first for_each_sched_entity() loop dequeues the entity.
-3. If the entity was its parent's only child, then the next iteration
-   tries to dequeue the parent.
-4. If the parent's dequeue needs to be delayed, then it breaks from the
-   first for_each_sched_entity() loop _without updating slice_.
-5. The second for_each_sched_entity() loop sets the parent's ->slice to
-   the saved slice, which is still U64_MAX.
-
-This throws off subsequent calculations with potentially catastrophic
-results. A manifestation we saw in production was:
-
-6. In update_entity_lag(), se->slice is used to calculate limit, which
-   ends up as a huge negative number.
-7. limit is used in se->vlag = clamp(vlag, -limit, limit). Because limit
-   is negative, vlag > limit, so se->vlag is set to the same huge
-   negative number.
-8. In place_entity(), se->vlag is scaled, which overflows and results in
-   another huge (positive or negative) number.
-9. The adjusted lag is subtracted from se->vruntime, which increases or
-   decreases se->vruntime by a huge number.
-10. pick_eevdf() calls entity_eligible()/vruntime_eligible(), which
-    incorrectly returns false because the vruntime is so far from the
-    other vruntimes on the queue, causing the
-    (vruntime - cfs_rq->min_vruntime) * load calulation to overflow.
-11. Nothing appears to be eligible, so pick_eevdf() returns NULL.
-12. pick_next_entity() tries to dereference the return value of
-    pick_eevdf() and crashes.
-
-Dumping the cfs_rq states from the core dumps with drgn showed tell-tale
-huge vruntime ranges and bogus vlag values, and I also traced se->slice
-being set to U64_MAX on live systems (which was usually "benign" since
-the rest of the runqueue needed to be in a particular state to crash).
-
-Fix it in dequeue_entities() by always setting slice from the first
-non-empty cfs_rq.
-
-Fixes: aef6987d8954 ("sched/eevdf: Propagate min_slice up the cgroup hierarchy")
-Signed-off-by: Omar Sandoval <osandov@fb.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/f0c2d1072be229e1bdddc73c0703919a8b00c652.1745570998.git.osandov@fb.com
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/bluetooth/hci_ldisc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 89c7260103e18..3d9b68a347b76 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7083,9 +7083,6 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- 		h_nr_idle = task_has_idle_policy(p);
- 		if (task_sleep || task_delayed || !se->sched_delayed)
- 			h_nr_runnable = 1;
--	} else {
--		cfs_rq = group_cfs_rq(se);
--		slice = cfs_rq_min_slice(cfs_rq);
+diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
+index e7d78937f7d6b..8ca0ac3a440c9 100644
+--- a/drivers/bluetooth/hci_ldisc.c
++++ b/drivers/bluetooth/hci_ldisc.c
+@@ -706,12 +706,13 @@ static int hci_uart_set_proto(struct hci_uart *hu, int id)
+ 
+ 	hu->proto = p;
+ 
++	set_bit(HCI_UART_PROTO_READY, &hu->flags);
++
+ 	err = hci_uart_register_dev(hu);
+ 	if (err) {
+ 		return err;
  	}
  
- 	for_each_sched_entity(se) {
-@@ -7095,6 +7092,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- 			if (p && &p->se == se)
- 				return -1;
- 
-+			slice = cfs_rq_min_slice(cfs_rq);
- 			break;
- 		}
+-	set_bit(HCI_UART_PROTO_READY, &hu->flags);
+ 	return 0;
+ }
  
 -- 
 2.39.5
