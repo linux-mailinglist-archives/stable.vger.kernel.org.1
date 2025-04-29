@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B201AA1278
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:54:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF1FAA13B8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC29E4A7547
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69DC71671BB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD0A2522A0;
-	Tue, 29 Apr 2025 16:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC1D22A81D;
+	Tue, 29 Apr 2025 17:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="soZ23cHg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpT7kH1N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477D0215060;
-	Tue, 29 Apr 2025 16:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C29A1DF73C;
+	Tue, 29 Apr 2025 17:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945563; cv=none; b=Izca4QyI67CYE03oaCVVEqhW6dA/Ob/Dw3kCu9C6tFEMyajDiE9N+748iwP1oWWlvRUnd2jJWVdjMT/TdjtuzaMQDIladC61YSf9S3L4SfagMnYe5pUN9LDIUbsrTUQmhNTmXxNQQcmnn1Id/hQ2Fxb2eLWhuhs7ocTzBh19vus=
+	t=1745946326; cv=none; b=pMSTqJFRCOx5qFpHuDVG6mSDdaZyEp6YeLVCNHrANca/rWzUX+27pDKxNPVG9xnBs6fIQ2NeP7pHJz+GopOQFfTNHj6gAQ3clGaMHMqX0xrmrCE8PG/jkSjcD/Vh0SvraYAVQraKkq/KD3Q/aDEiFVmPeW2Rm4007/W/uBA/1hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945563; c=relaxed/simple;
-	bh=7bQW4V55G8gJeBepH8slSrRJOfKtoZeJs5i/LR/k1ws=;
+	s=arc-20240116; t=1745946326; c=relaxed/simple;
+	bh=DptZ6pdtBrtz9fEeA3A9w6E9zOwN0FNiYxmXQ66XZbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ggYN9z7XwvljBqNKU6MK96Wx2erH2xSMNTnWxYSJRj6kfcJZqVdlg6l/Uh6aLfeBhKnThYmJ0tbtQW1qByLkctlBoxTKL3miX0Yvf0H5d6P754w8qgIVj49GVj5pncjn5E/72cLttjy279/t32hCVDLUGU67oiNgTrTikT0rEoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=soZ23cHg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41278C4CEE3;
-	Tue, 29 Apr 2025 16:52:42 +0000 (UTC)
+	 MIME-Version; b=NL5KGStguKtJwIlf0UIN/zMlN19wHuEMfMQZ9eAeK77JSRXmpBnOI9kcoK6tm93HyMHsKSXXlEyU/KZaFm9ZktHoyLlbdv9Qz2wvu/UmL73KdogwViYUerJhXyVfNAUCvbjTZi/5b+n+RbmYJJ6nfX6cDG7NXwq/dJ4TDx4BVvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpT7kH1N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFEAC4CEE3;
+	Tue, 29 Apr 2025 17:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945563;
-	bh=7bQW4V55G8gJeBepH8slSrRJOfKtoZeJs5i/LR/k1ws=;
+	s=korg; t=1745946325;
+	bh=DptZ6pdtBrtz9fEeA3A9w6E9zOwN0FNiYxmXQ66XZbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=soZ23cHglA/IqXnvwXTLRKmnn1dL8vzhQyaTRCpogP+k6W/1yHH5sISIcqNrZJYzY
-	 o8Zx6iD0zyT4XPjM/Kx5uyXUaJZthpdXBq+Z8v6P2LgI5oGca4D7LALnGMd++9uCNW
-	 BCZ1dn8F9t64ryPmEybmc5kPrsM+OuNtkjbOU8m8=
+	b=SpT7kH1NMwXHKnSq1fTvJ53wExyw9sZVpKi2xSVw/z9Vzs9DTSNZFv7cck7rKW+6u
+	 fVKvKo6oNvV49v6+wnURx1eq0bqXe59WbBpHZiKbfEA5udPEP50v4sGtHh8HCLKePP
+	 USwjUbGSqiNj/V86NvkA4P8EllgnKJ8VAtt7jCVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.4 125/179] MIPS: cevt-ds1287: Add missing ds1287.h include
-Date: Tue, 29 Apr 2025 18:41:06 +0200
-Message-ID: <20250429161054.453023004@linuxfoundation.org>
+	Robert Morris <rtm@mit.edu>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 230/311] 9p/net: fix improper handling of bogus negative read/write replies
+Date: Tue, 29 Apr 2025 18:41:07 +0200
+Message-ID: <20250429161130.453533255@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +61,146 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Dominique Martinet <asmadeus@codewreck.org>
 
-commit f3be225f338a578851a7b607a409f476354a8deb upstream.
+[ Upstream commit d0259a856afca31d699b706ed5e2adf11086c73b ]
 
-Address the issue of cevt-ds1287.c not including the ds1287.h header
-file.
+In p9_client_write() and p9_client_read_once(), if the server
+incorrectly replies with success but a negative write/read count then we
+would consider written (negative) <= rsize (positive) because both
+variables were signed.
 
-Fix follow errors with gcc-14 when -Werror:
+Make variables unsigned to avoid this problem.
 
-arch/mips/kernel/cevt-ds1287.c:15:5: error: no previous prototype for ‘ds1287_timer_state’ [-Werror=missing-prototypes]
-   15 | int ds1287_timer_state(void)
-      |     ^~~~~~~~~~~~~~~~~~
-arch/mips/kernel/cevt-ds1287.c:20:5: error: no previous prototype for ‘ds1287_set_base_clock’ [-Werror=missing-prototypes]
-   20 | int ds1287_set_base_clock(unsigned int hz)
-      |     ^~~~~~~~~~~~~~~~~~~~~
-arch/mips/kernel/cevt-ds1287.c:103:12: error: no previous prototype for ‘ds1287_clockevent_init’ [-Werror=missing-prototypes]
-  103 | int __init ds1287_clockevent_init(int irq)
-      |            ^~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-make[7]: *** [scripts/Makefile.build:207: arch/mips/kernel/cevt-ds1287.o] Error 1
-make[7]: *** Waiting for unfinished jobs....
-make[6]: *** [scripts/Makefile.build:465: arch/mips/kernel] Error 2
-make[6]: *** Waiting for unfinished jobs....
+The reproducer linked below now fails with the following error instead
+of a null pointer deref:
+9pnet: bogus RWRITE count (4294967295 > 3)
 
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Robert Morris <rtm@mit.edu>
+Closes: https://lore.kernel.org/16271.1734448631@26-5-164.dynamic.csail.mit.edu
+Message-ID: <20250319-9p_unsigned_rw-v3-1-71327f1503d0@codewreck.org>
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/cevt-ds1287.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/9p/client.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
---- a/arch/mips/kernel/cevt-ds1287.c
-+++ b/arch/mips/kernel/cevt-ds1287.c
-@@ -10,6 +10,7 @@
- #include <linux/mc146818rtc.h>
- #include <linux/irq.h>
+diff --git a/net/9p/client.c b/net/9p/client.c
+index 09f8ced9f8bb7..52a5497cfca79 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -1548,7 +1548,8 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
+ 	struct p9_client *clnt = fid->clnt;
+ 	struct p9_req_t *req;
+ 	int count = iov_iter_count(to);
+-	int rsize, received, non_zc = 0;
++	u32 rsize, received;
++	bool non_zc = false;
+ 	char *dataptr;
  
-+#include <asm/ds1287.h>
- #include <asm/time.h>
+ 	*err = 0;
+@@ -1571,7 +1572,7 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
+ 				       0, 11, "dqd", fid->fid,
+ 				       offset, rsize);
+ 	} else {
+-		non_zc = 1;
++		non_zc = true;
+ 		req = p9_client_rpc(clnt, P9_TREAD, "dqd", fid->fid, offset,
+ 				    rsize);
+ 	}
+@@ -1592,11 +1593,11 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
+ 		return 0;
+ 	}
+ 	if (rsize < received) {
+-		pr_err("bogus RREAD count (%d > %d)\n", received, rsize);
++		pr_err("bogus RREAD count (%u > %u)\n", received, rsize);
+ 		received = rsize;
+ 	}
  
- int ds1287_timer_state(void)
+-	p9_debug(P9_DEBUG_9P, "<<< RREAD count %d\n", received);
++	p9_debug(P9_DEBUG_9P, "<<< RREAD count %u\n", received);
+ 
+ 	if (non_zc) {
+ 		int n = copy_to_iter(dataptr, received, to);
+@@ -1623,9 +1624,9 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
+ 	*err = 0;
+ 
+ 	while (iov_iter_count(from)) {
+-		int count = iov_iter_count(from);
+-		int rsize = fid->iounit;
+-		int written;
++		size_t count = iov_iter_count(from);
++		u32 rsize = fid->iounit;
++		u32 written;
+ 
+ 		if (!rsize || rsize > clnt->msize - P9_IOHDRSZ)
+ 			rsize = clnt->msize - P9_IOHDRSZ;
+@@ -1633,7 +1634,7 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
+ 		if (count < rsize)
+ 			rsize = count;
+ 
+-		p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %d (/%d)\n",
++		p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %u (/%zu)\n",
+ 			 fid->fid, offset, rsize, count);
+ 
+ 		/* Don't bother zerocopy for small IO (< 1024) */
+@@ -1659,11 +1660,11 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
+ 			break;
+ 		}
+ 		if (rsize < written) {
+-			pr_err("bogus RWRITE count (%d > %d)\n", written, rsize);
++			pr_err("bogus RWRITE count (%u > %u)\n", written, rsize);
+ 			written = rsize;
+ 		}
+ 
+-		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %d\n", written);
++		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %u\n", written);
+ 
+ 		p9_req_put(clnt, req);
+ 		iov_iter_revert(from, count - written - iov_iter_count(from));
+@@ -2098,7 +2099,8 @@ EXPORT_SYMBOL_GPL(p9_client_xattrcreate);
+ 
+ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
+ {
+-	int err, rsize, non_zc = 0;
++	int err, non_zc = 0;
++	u32 rsize;
+ 	struct p9_client *clnt;
+ 	struct p9_req_t *req;
+ 	char *dataptr;
+@@ -2107,7 +2109,7 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
+ 
+ 	iov_iter_kvec(&to, ITER_DEST, &kv, 1, count);
+ 
+-	p9_debug(P9_DEBUG_9P, ">>> TREADDIR fid %d offset %llu count %d\n",
++	p9_debug(P9_DEBUG_9P, ">>> TREADDIR fid %d offset %llu count %u\n",
+ 		 fid->fid, offset, count);
+ 
+ 	clnt = fid->clnt;
+@@ -2142,11 +2144,11 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
+ 		goto free_and_error;
+ 	}
+ 	if (rsize < count) {
+-		pr_err("bogus RREADDIR count (%d > %d)\n", count, rsize);
++		pr_err("bogus RREADDIR count (%u > %u)\n", count, rsize);
+ 		count = rsize;
+ 	}
+ 
+-	p9_debug(P9_DEBUG_9P, "<<< RREADDIR count %d\n", count);
++	p9_debug(P9_DEBUG_9P, "<<< RREADDIR count %u\n", count);
+ 
+ 	if (non_zc)
+ 		memmove(data, dataptr, count);
+-- 
+2.39.5
+
 
 
 
