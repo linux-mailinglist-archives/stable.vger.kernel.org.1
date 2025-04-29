@@ -1,135 +1,166 @@
-Return-Path: <stable+bounces-137051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED28EAA08DE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 12:48:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF25AA0908
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 12:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C3371725D4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 10:48:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8464E845416
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 10:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A2129E07D;
-	Tue, 29 Apr 2025 10:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F6B2C10BA;
+	Tue, 29 Apr 2025 10:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="AKZDmVp7"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5E022A7EA
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 10:47:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0C62BD59D;
+	Tue, 29 Apr 2025 10:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745923679; cv=none; b=oSVc/JZMJ0pKJXLpRczzUiKsYwi4EImn8hd9eCQSmhhCdH7vE9CrvycJy71W9Zn5y5abO0ciO9Y75XYQQBjMealF+h3DlpQ6Ie0lBSMqRE78m1IXJI3p9TKXLiI4+9Ih7qCed4S6gIROC/v/RTaEZkbL5kwPNIpvS9y8fGcJkOU=
+	t=1745924301; cv=none; b=cVdorjeOL4jSZ6EEG3j67fzt+t2imEJimXD8OeuX3FVIWAzZ1HOAmKXGr/GSQ/4M9iQ78uhnTMxY6wAHtJXwfQ5MCNThj2fTzUeZ9bQi2L2GwZ30Q1ZP0f7L2zC0HWKfUuI4mIgolTevO51UmgBRnnQqKP2RVtbJeAric14D5jM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745923679; c=relaxed/simple;
-	bh=fjGiC7L89EKc6VxKIFKuq+8JXclFeCmU4SH3lbXkz80=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kA2qhFyvbefVcabzbU0qCQuzM6Ye/MflC+PiPISOkMk+k7yWMBt5xH9XH0lxe8+MldHnD4T6Po9++7RZgHdU91tFPgn6Q1/Wyvk2XT5b620Uzj5lk7UVQiPlo9EcqTkZ1R4VaBScgwuTi83WoX6Vi+ThcBgR1GNxUETGauUMzbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 51FC51515;
-	Tue, 29 Apr 2025 03:47:48 -0700 (PDT)
-Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B39243F66E;
-	Tue, 29 Apr 2025 03:47:54 -0700 (PDT)
-From: Robin Murphy <robin.murphy@arm.com>
-To: stable@vger.kernel.org
-Cc: Charan Teja Kalla <quic_charante@quicinc.com>
-Subject: [PATCH v3 6.6] iommu: Handle race with default domain setup
-Date: Tue, 29 Apr 2025 11:47:40 +0100
-Message-Id: <f0cac3a642f34d0d239f8d7870e33881fc7081d6.1745923148.git.robin.murphy@arm.com>
-X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
+	s=arc-20240116; t=1745924301; c=relaxed/simple;
+	bh=7yqJb04/du8szosVpYU+M0nMBFv0R1rnOJ67ux1vJns=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VIgaOV3uB2mUga39dZs16o+IDBNF1ssmqWwXrzzCFwWJy3JG2i8Go9UDhdH55+10FMBCfLoSfzeA//n24IjiOnNmZKGatqdO7UK8QWH2YZYdM+Va2mVIPHX2GfZxXHvYJgn3zR6OMXBq3g3Fju18vcTfax0z0REkzuzo9jDtEfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=AKZDmVp7; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53TA4ter012691;
+	Tue, 29 Apr 2025 10:58:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	8jC6F1Z4b6kdxNWjS7UuoEd+SQubhF9nB4iMARJJSX4=; b=AKZDmVp7fI/umvl9
+	J7PWkKiGZW/IPcVI/Nci0mvsZ6QrNcU9pZ472S2w6rkcrDbDD1pdCr3WGWjPSPOu
+	itn8V8TYtsPBDtGbZtQWEVcTrsA2FUBNQz3Z/jq6czrf65jNkHvtWYPZ7eUcciUj
+	1v1l8dmLRlFMTdx9Yfoe3ou349Yuyiw9lP46Fu5yM5YIFyE/B6XxpEWsOimm1G63
+	8351lt3bQY8hq0aVxsZq6KZ4LFBMURirrppIyuhFPIGA4VF4cLE4wuq+7akuiipJ
+	m0qN03QyTAcFsDn/88SnDHp9aMurcwwd8Bv1AhG4icu5Kd4yEeK/VkXXzqVaQ4Tk
+	oLch0w==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 468pg9cab1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Apr 2025 10:58:14 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53TAwCtT032229
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Apr 2025 10:58:13 GMT
+Received: from [10.50.5.200] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 29 Apr
+ 2025 03:58:04 -0700
+Message-ID: <2c431232-e0d6-1e6c-cd22-a912b5f08f7a@quicinc.com>
+Date: Tue, 29 Apr 2025 16:28:00 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 01/23] media: iris: Skip destroying internal buffer if
+ not dequeued
+Content-Language: en-US
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Vikash Garodia
+	<quic_vgarodia@quicinc.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
+        Stefan Schmidt
+	<stefan.schmidt@linaro.org>,
+        Hans Verkuil <hverkuil@xs4all.nl>,
+        "Bjorn
+ Andersson" <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        "Rob Herring" <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        "Conor Dooley" <conor+dt@kernel.org>
+CC: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+        Neil Armstrong
+	<neil.armstrong@linaro.org>,
+        Nicolas Dufresne
+	<nicolas.dufresne@collabora.com>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <20250417-topic-sm8x50-iris-v10-v7-0-f020cb1d0e98@linaro.org>,
+        <20250424-qcs8300_iris-v5-0-f118f505c300@quicinc.com>,
+        <stable@vger.kernel.org>
+References: <20250428-qcom-iris-hevc-vp9-v2-0-3a6013ecb8a5@quicinc.com>
+ <20250428-qcom-iris-hevc-vp9-v2-1-3a6013ecb8a5@quicinc.com>
+ <a056266e-612d-4abf-916f-3db49b00dbde@linaro.org>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+In-Reply-To: <a056266e-612d-4abf-916f-3db49b00dbde@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=ZpvtK87G c=1 sm=1 tr=0 ts=6810b0c6 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=t8wUSylDH0XA4G90k0EA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: LGhnwJroeOAOuawBJfSqEC2j_DCAMqFf
+X-Proofpoint-GUID: LGhnwJroeOAOuawBJfSqEC2j_DCAMqFf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI5MDA4MSBTYWx0ZWRfXxG60tWbI/WqM j3jmEmFMfTHugufKqfLbKGs9H46Zh0R0vyvvX/dmf63RDETMi+paKUu6fJpieUsWvHjauhR/moO rpLByUSfKrDH+FEcO2JGns8syhOEQfLtqOs2lRLQUCsq+/NlOZ5b4WUYi5Mfxn2p6o/hLflH19W
+ pFRUYksBhtLTaXV2E2PRvc8L54MthP38qttX981M7GvkousOUufWRrRfRUBJ1aCyCsdFZxf0i02 OdYvvbIn3n4acsXj0bjVtPGhw9YbZeHsA0buPBz4udheyLVwjuJ0K7xa9llEozf958XWo393bsj cyYLh7sk4c6puCebr/HxXg3KJyzCzJB9MTmjcRIO1NCZhsix8VItQ8ZI+mn0OQnhqAk5g1/s9kU
+ BSYKh8ArnCVC8aQ4L86PuCRqJJt0ovvLooBoq1Fz3mGlB3TdXfYy4Krban7dBTWReVLwi5wg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-04-29_04,2025-04-24_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
+ mlxscore=0 bulkscore=0 mlxlogscore=936 malwarescore=0 adultscore=0
+ clxscore=1015 priorityscore=1501 lowpriorityscore=0 suspectscore=0
+ phishscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504290081
 
-[ Upstream commit b46064a18810bad3aea089a79993ca5ea7a3d2b2 ]
 
-It turns out that deferred default domain creation leaves a subtle
-race window during iommu_device_register() wherein a client driver may
-asynchronously probe in parallel and get as far as performing DMA API
-operations with dma-direct, only to be switched to iommu-dma underfoot
-once the default domain attachment finally happens, with obviously
-disastrous consequences. Even the wonky of_iommu_configure() path is at
-risk, since iommu_fwspec_init() will no longer defer client probe as the
-instance ops are (necessarily) already registered, and the "replay"
-iommu_probe_device() call can see dev->iommu_group already set and so
-think there's nothing to do either.
 
-Fortunately we already have the right tool in the right place in the
-form of iommu_device_use_default_domain(), which just needs to ensure
-that said default domain is actually ready to *be* used. Deferring the
-client probe shouldn't have too much impact, given that this only
-happens while the IOMMU driver is probing, and thus due to kick the
-deferred probe list again once it finishes.
-
-[ Backport: The above is true for mainline, but here we still have
-arch_setup_dma_ops() to worry about, which is not replayed if the
-default domain happens to be allocated *between* that call and
-subsequently reaching iommu_device_use_default_domain(), so we need an
-additional earlier check to cover that case. Also we're now back before
-the nominal commit 98ac73f99bc4 so we need to tweak the logic to depend
-on IOMMU_DMA as well, to avoid falsely deferring on architectures not
-using default domains. This then serves us back as far as f188056352bc,
-where this specific form of the problem first arises. ]
-
-Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Fixes: 98ac73f99bc4 ("iommu: Require a default_domain for all iommu drivers")
-Fixes: f188056352bc ("iommu: Avoid locking/unlocking for iommu_probe_device()")
-Link: https://lore.kernel.org/r/e88b94c9b575034a2c98a48b3d383654cbda7902.1740753261.git.robin.murphy@arm.com
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
----
-
-Resending as a new version with a new Message-Id so as not to confuse
-the tools... 6.12.y should simply have a straight cherry-pick of the
-mainline commit - 98ac73f99bc4 was in 6.7 so I'm not sure why autosel
-hasn't picked that already?
+On 4/29/2025 3:13 PM, Bryan O'Donoghue wrote:
+> On 28/04/2025 10:28, Dikshita Agarwal wrote:
+>> +            /*
+>> +             * during stream on, skip destroying internal(DPB) buffer
+>> +             * if firmware did not return it.
+>> +             * during close, destroy all buffers irrespectively.
+>> +             */
+>> +            if (!force && buf->attr & BUF_ATTR_QUEUED)
+>> +                continue;
+>> +
+> 
+> What's the effect of the firmware not having dequeued the buffer though ?
+> 
+> My main concern here is APSS and firmware have a different view of DMA memory.
+> 
+> We release on the APSS side but firmware has not.
+> 
+> Surely failure to release buffers by the time we get to Linux::close() is a
+> failure of the software contract sufficient to require resetting the
+> firmware ?
+> 
+> i.e. we release memory on the APSS side but firmware writes into it anyway ...
+> 
+As I mentioned earlier as well, during STOP issued before close, firmware
+is expected to release all these internal buffers and the check I added now
+in this patch will also ensures that.
+Firmware also has a check to make sure all buffers queued are released as
+part of STOP and then only firmware sends the STOP_DONE response to driver.
+STOP is a synchronous call and driver doesn't proceed without receiving the
+response for the same from firmware.
+So we will never run into this issue where driver release buffers which are
+still being accessed by firmware.
+Please note, these are internal buffers which are allocated and managed by
+driver only.
 
 Thanks,
-Robin.
-
- drivers/iommu/iommu.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 3f1029c0825e..713f2be48075 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -566,6 +566,17 @@ int iommu_probe_device(struct device *dev)
- 	mutex_lock(&iommu_probe_device_lock);
- 	ret = __iommu_probe_device(dev, NULL);
- 	mutex_unlock(&iommu_probe_device_lock);
-+
-+	/*
-+	 * The dma_configure replay paths need bus_iommu_probe() to
-+	 * finish before they can call arch_setup_dma_ops()
-+	 */
-+	if (IS_ENABLED(CONFIG_IOMMU_DMA) && !ret && dev->iommu_group) {
-+		mutex_lock(&dev->iommu_group->mutex);
-+		if (!dev->iommu_group->default_domain)
-+			ret = -EPROBE_DEFER;
-+		mutex_unlock(&dev->iommu_group->mutex);
-+	}
- 	if (ret)
- 		return ret;
- 
-@@ -3149,6 +3160,11 @@ int iommu_device_use_default_domain(struct device *dev)
- 		return 0;
- 
- 	mutex_lock(&group->mutex);
-+	/* We may race against bus_iommu_probe() finalising groups here */
-+	if (IS_ENABLED(CONFIG_IOMMU_DMA) && !group->default_domain) {
-+		ret = -EPROBE_DEFER;
-+		goto unlock_out;
-+	}
- 	if (group->owner_cnt) {
- 		if (group->owner || !iommu_is_default_domain(group) ||
- 		    !xa_empty(&group->pasid_array)) {
--- 
-2.39.2.101.g768bb238c484.dirty
-
+Dikshita
+> ?
+> 
+> ---
+> bod
 
