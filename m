@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-138495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73885AA1847
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 420C1AA18B6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30B6F1BA6AB4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 769641BC680B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0562AE96;
-	Tue, 29 Apr 2025 17:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A8822AE68;
+	Tue, 29 Apr 2025 18:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/5vA4xe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwqoNUuf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDFA233735;
-	Tue, 29 Apr 2025 17:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7C024111D;
+	Tue, 29 Apr 2025 18:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949433; cv=none; b=WDuY8+O2IMJbP6u1UbU2twfIVbLQxExlh1+qG/KqGf7PTvQ/8um0Otoqyuv5O8iVE7Mz9BV2vxbT8TjwjJKPk3hJ14h8M24/YJuuVqGXbdlNXO5FoYH61Vu1WMl6SADp5/FZPHyHBMRzpzQjNPpruL/QMwiD8tL2QM3FYYWnVrU=
+	t=1745949762; cv=none; b=IytoVy14fhSbPvOMjz1BGsIY5/Z2dQf2GZCikSCA+BM1NJrBjTLHcMeJUER4UIZnHq16lHWcIN8KhTEU+R74NxhXVwrw4A72nQV9IMsP2Wml8wh2Gr86mvr46udi4R8o6Q8VhA8lL9Q2QoDZq9cBzPp/MAbpg4oiqOjuMBZlcaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949433; c=relaxed/simple;
-	bh=zK5fJvbhA1f80mpoloJzlYHwVTEZ+3b86sIAMzOAo0U=;
+	s=arc-20240116; t=1745949762; c=relaxed/simple;
+	bh=XVhZDnMsaTfmJMuAo2xN9W7iLHrqNuBSPDDcoRWB89c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPKsB8U7smyWm+x4s0guaZytHRPEhnjAoZ4qdaVyNthfjbBjpFrml3m432HgOktxNhsLOvExBntGrONvt1GUzfnB7i8Bwp9yEy1CQZTkRGgl0v6xS4P2csBMVY9ux4J2dpR/4Kw+ciB9D/FzkLk/JagcZjXnq6SQT4fPH5BupPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/5vA4xe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285FFC4CEE3;
-	Tue, 29 Apr 2025 17:57:13 +0000 (UTC)
+	 MIME-Version; b=dl48rsCiLc+E5pw2UnRZe2zL02jhU4kwoSrKDKDF2OZBFy8irwgYnX1Gez8BiT+LQYTebTDIMdXZscDlsB5nuI9bBy2niT+8NxkPSnJ4CVGWL+tC/XJmHCeGaluRSy181QsZJ8Jrl/GKVny75RFUTsSW9cpoJhc0rsXuTrJWaEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwqoNUuf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97ADEC4CEE3;
+	Tue, 29 Apr 2025 18:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949433;
-	bh=zK5fJvbhA1f80mpoloJzlYHwVTEZ+3b86sIAMzOAo0U=;
+	s=korg; t=1745949762;
+	bh=XVhZDnMsaTfmJMuAo2xN9W7iLHrqNuBSPDDcoRWB89c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G/5vA4xeu0sk2i5cAodGAl8uDUkdgZKAVEZnLehXGx3B0Diw/oPjyEyybL0mNdxQP
-	 ZOqe0lF0ii7CkAaDiUTVzEKIMdi0zHjcUmTu8P+G1mqliz8wAj/ph8sdjQjxJQ1ZG7
-	 Hk6kBkAx3f2nk+tzds1mbM8WUf384gnefjQ2Lvio=
+	b=VwqoNUufSjoriSkRR8konTpNR9u2VW96KoFgEReNQcNNtltlOtt6HhhWkiAO30Io7
+	 7RJvVcJPgi/MzU5usGlDQvZn5WZgDIxl8hdorziqHxth9UALykNzyfcWw6nexJ8WlW
+	 CfBFKjVqKjnPq8Jraysr/UEgGqywk+wteDpQTnDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Aishwarya TCV <aishwarya.tcv@arm.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Anastasia Kovaleva <a.kovaleva@yadro.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 279/373] selftests/mm: generate a temporary mountpoint for cgroup filesystem
+Subject: [PATCH 6.1 048/167] scsi: core: Clear flags for scsi_cmnd that did not complete
 Date: Tue, 29 Apr 2025 18:42:36 +0200
-Message-ID: <20250429161134.594542323@linuxfoundation.org>
+Message-ID: <20250429161053.705708325@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Anastasia Kovaleva <a.kovaleva@yadro.com>
 
-[ Upstream commit 9c02223e2d9df5cb37c51aedb78f3960294e09b5 ]
+[ Upstream commit 54bebe46871d4e56e05fcf55c1a37e7efa24e0a8 ]
 
-Currently if the filesystem for the cgroups version it wants to use is not
-mounted charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh tests
-will attempt to mount it on the hard coded path /dev/cgroup/memory,
-deleting that directory when the test finishes.  This will fail if there
-is not a preexisting directory at that path, and since the directory is
-deleted subsequent runs of the test will fail.  Instead of relying on this
-hard coded directory name use mktemp to generate a temporary directory to
-use as a mountpoint, fixing both the assumption and the disruption caused
-by deleting a preexisting directory.
+Commands that have not been completed with scsi_done() do not clear the
+SCMD_INITIALIZED flag and therefore will not be properly reinitialized.
+Thus, the next time the scsi_cmnd structure is used, the command may
+fail in scsi_cmd_runtime_exceeded() due to the old jiffies_at_alloc
+value:
 
-This means that if the relevant cgroup filesystem is not already mounted
-then we rely on having coreutils (which provides mktemp) installed.  I
-suspect that many current users are relying on having things automounted
-by default, and given that the script relies on bash it's probably not an
-unreasonable requirement.
+  kernel: sd 16:0:1:84: [sdts] tag#405 timing out command, waited 720s
+  kernel: sd 16:0:1:84: [sdts] tag#405 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=66636s
 
-Link: https://lkml.kernel.org/r/20250404-kselftest-mm-cgroup2-detection-v1-1-3dba6d32ba8c@kernel.org
-Fixes: 209376ed2a84 ("selftests/vm: make charge_reserved_hugetlb.sh work with existing cgroup setting")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Aishwarya TCV <aishwarya.tcv@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Clear flags for commands that have not been completed by SCSI.
+
+Fixes: 4abafdc4360d ("block: remove the initialize_rq_fn blk_mq_ops method")
+Signed-off-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
+Link: https://lore.kernel.org/r/20250324084933.15932-2-a.kovaleva@yadro.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vm/charge_reserved_hugetlb.sh  | 4 ++--
- tools/testing/selftests/vm/hugetlb_reparenting_test.sh | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/scsi/scsi_lib.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-index 8e00276b4e69b..dc3fc438b3d9e 100644
---- a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-@@ -27,7 +27,7 @@ fi
- if [[ $cgroup2 ]]; then
-   cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
--    cgroup_path=/dev/cgroup/memory
-+    cgroup_path=$(mktemp -d)
-     mount -t cgroup2 none $cgroup_path
-     do_umount=1
-   fi
-@@ -35,7 +35,7 @@ if [[ $cgroup2 ]]; then
- else
-   cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
--    cgroup_path=/dev/cgroup/memory
-+    cgroup_path=$(mktemp -d)
-     mount -t cgroup memory,hugetlb $cgroup_path
-     do_umount=1
-   fi
-diff --git a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-index 14d26075c8635..302f2c7003f03 100644
---- a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-+++ b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-@@ -22,7 +22,7 @@ fi
- if [[ $cgroup2 ]]; then
-   CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$CGROUP_ROOT" ]]; then
--    CGROUP_ROOT=/dev/cgroup/memory
-+    CGROUP_ROOT=$(mktemp -d)
-     mount -t cgroup2 none $CGROUP_ROOT
-     do_umount=1
-   fi
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index 8e75eb1b6eab8..df61d7b906653 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -1158,8 +1158,12 @@ EXPORT_SYMBOL_GPL(scsi_alloc_request);
+  */
+ static void scsi_cleanup_rq(struct request *rq)
+ {
++	struct scsi_cmnd *cmd = blk_mq_rq_to_pdu(rq);
++
++	cmd->flags = 0;
++
+ 	if (rq->rq_flags & RQF_DONTPREP) {
+-		scsi_mq_uninit_cmd(blk_mq_rq_to_pdu(rq));
++		scsi_mq_uninit_cmd(cmd);
+ 		rq->rq_flags &= ~RQF_DONTPREP;
+ 	}
+ }
 -- 
 2.39.5
 
