@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A805DAA1759
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1EEDAA161A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 189F717F291
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEE14984B15
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1490F22A81D;
-	Tue, 29 Apr 2025 17:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96FB2472B4;
+	Tue, 29 Apr 2025 17:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNsW/Auu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3zzwzV7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D7BC148;
-	Tue, 29 Apr 2025 17:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9451F18BBBB;
+	Tue, 29 Apr 2025 17:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948796; cv=none; b=FluB/Ba9pZKEQRwlCJmR1tUXt145RUX/umxWvmc/bXj8Yy80H+Hc7MKhrH5qy2+ckPOJkRqdENbleVzCZRtKzoyj2hSHeWsCumi9WYKdA9fcw7zcRtHTVMqozbOM2mYYSPrjt0QCQJNwwWPwVgYq7hnliJihr0BKhbYqDHtj2xI=
+	t=1745947614; cv=none; b=TDKQ7nWpvZdDBcP3l1UhgbFaDwLJroEcttJ6NPV7GDAmYvIp2wE06NvKqflnegOsvrT3QRlcQ2CyWVhHJ45rI+zBWoxyRMllTu6nehKj+scVi/qaxkb3Csv+Nu3YIwoeN5EZ+sS2DoVgqRDv9ofTFAQY0SbaPbLTGwPfQSaWiOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948796; c=relaxed/simple;
-	bh=3WB7mIRx15b4R4Zl3Wor/D5u1pYkeCpzJjk1iMKWNDM=;
+	s=arc-20240116; t=1745947614; c=relaxed/simple;
+	bh=TfdTvi5ahJS1yHfDlqpnKrjPxbrWrs5/IcO/k10XfPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=baN/kRuf3yQz6R86nl3tnTS+cDopbO37RCklbw15mTLPArGnMKiYUym7vbkojv6lWyXzIZx7pD/YWvsRiatPxICFSy8RxmdysJ5be6idY4Va05L2r+H2iIAGBfwyq4tbB0aY5UjfHNqJLkWpaTX4xLva4mjKWn7NDU1VijZErBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNsW/Auu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5985AC4CEE3;
-	Tue, 29 Apr 2025 17:46:36 +0000 (UTC)
+	 MIME-Version; b=ZdSK+DPu2KMUf/aL9mYBIDuy2R77WbZ0YplaTQQ9lxVk45gzvSpNoIkI+BA5ayY9/yS0qmSwPRvpqWMzeAGG2NRqHr5Xj+WMAwMgp9MaoCSSy/V7W/oW5d8oC8cf1yWPPAtAzeahNUxHeSh5A2w8v79K6giShA4ioFJd9KIp3to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3zzwzV7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A48C4CEE3;
+	Tue, 29 Apr 2025 17:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948796;
-	bh=3WB7mIRx15b4R4Zl3Wor/D5u1pYkeCpzJjk1iMKWNDM=;
+	s=korg; t=1745947614;
+	bh=TfdTvi5ahJS1yHfDlqpnKrjPxbrWrs5/IcO/k10XfPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MNsW/AuuNQUA20/0XvNHjNzUAgw2SNgg6NU6Mgn1oN+RLPx9Ip0NzKz+uLZbQR5Zx
-	 /Vx5yigtmIt+bZyGtdNBsFepb3PWLDcGIpMrkD2219BCPNeJwpxhcwxOM5yShGz1vg
-	 gSmNwyxX5u4xr/SxLfoK8166ZK6TzyctIKnJtOZ0=
+	b=i3zzwzV77FcCjxJ230rnwUGtBRI+eHBzf15CCpntx+aVfrEBIBsUsYmi+/ai0HcNX
+	 5gpfq23sHc8swj8TvS+nq1RV1CK5H2dyNwkZFE0RaYoCtBujtxVAoOoGxvCVg3Roi3
+	 KmoIN3yoWOXHiFDC7T52PnsNJZRwWnfAAeogCE2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 5.15 116/373] arm64: errata: Add newer ARM cores to the spectre_bhb_loop_affected() lists
+	Arnd Bergmann <arnd@arndb.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 052/280] dma/contiguous: avoid warning about unused size_bytes
 Date: Tue, 29 Apr 2025 18:39:53 +0200
-Message-ID: <20250429161127.947903746@linuxfoundation.org>
+Message-ID: <20250429161117.252985987@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit a5951389e58d2e816eed3dbec5877de9327fd881 upstream.
+[ Upstream commit d7b98ae5221007d3f202746903d4c21c7caf7ea9 ]
 
-When comparing to the ARM list [1], it appears that several ARM cores
-were missing from the lists in spectre_bhb_loop_affected(). Add them.
+When building with W=1, this variable is unused for configs with
+CONFIG_CMA_SIZE_SEL_PERCENTAGE=y:
 
-NOTE: for some of these cores it may not matter since other ways of
-clearing the BHB may be used (like the CLRBHB instruction or ECBHB),
-but it still seems good to have all the info from ARM's whitepaper
-included.
+kernel/dma/contiguous.c:67:26: error: 'size_bytes' defined but not used [-Werror=unused-const-variable=]
 
-[1] https://developer.arm.com/Arm%20Security%20Center/Spectre-BHB
+Change this to a macro to avoid the warning.
 
-Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
-Cc: stable@vger.kernel.org
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: James Morse <james.morse@arm.com>
-Link: https://lore.kernel.org/r/20250107120555.v4.5.I4a9a527e03f663040721c5401c41de587d015c82@changeid
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c64be2bb1c6e ("drivers: add Contiguous Memory Allocator")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20250409151557.3890443-1-arnd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/proton-pack.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ kernel/dma/contiguous.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -876,6 +876,14 @@ static u8 spectre_bhb_loop_affected(void
- {
- 	u8 k = 0;
- 
-+	static const struct midr_range spectre_bhb_k132_list[] = {
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
-+		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
-+	};
-+	static const struct midr_range spectre_bhb_k38_list[] = {
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A715),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
-+	};
- 	static const struct midr_range spectre_bhb_k32_list[] = {
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
-@@ -889,6 +897,7 @@ static u8 spectre_bhb_loop_affected(void
- 	};
- 	static const struct midr_range spectre_bhb_k24_list[] = {
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76AE),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
- 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
- 		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
-@@ -904,7 +913,11 @@ static u8 spectre_bhb_loop_affected(void
- 		{},
- 	};
- 
--	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
-+	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k132_list))
-+		k = 132;
-+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k38_list))
-+		k = 38;
-+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
- 		k = 32;
- 	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
- 		k = 24;
+diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
+index 055da410ac71d..8df0dfaaca18e 100644
+--- a/kernel/dma/contiguous.c
++++ b/kernel/dma/contiguous.c
+@@ -64,8 +64,7 @@ struct cma *dma_contiguous_default_area;
+  * Users, who want to set the size of global CMA area for their system
+  * should use cma= kernel parameter.
+  */
+-static const phys_addr_t size_bytes __initconst =
+-	(phys_addr_t)CMA_SIZE_MBYTES * SZ_1M;
++#define size_bytes ((phys_addr_t)CMA_SIZE_MBYTES * SZ_1M)
+ static phys_addr_t  size_cmdline __initdata = -1;
+ static phys_addr_t base_cmdline __initdata;
+ static phys_addr_t limit_cmdline __initdata;
+-- 
+2.39.5
+
 
 
 
