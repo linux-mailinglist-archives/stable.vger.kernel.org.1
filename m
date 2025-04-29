@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-137982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B24AA15FA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCEC3AA14C5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2F991B624DD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C3AD188A0E0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E41B25178C;
-	Tue, 29 Apr 2025 17:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D191A24C098;
+	Tue, 29 Apr 2025 17:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6GyaRST"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEBoiXTo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA2924503E;
-	Tue, 29 Apr 2025 17:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA832459EA;
+	Tue, 29 Apr 2025 17:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947728; cv=none; b=at9lhB73uDv2NHcn8tSHA15Rkx3P5PKOA+SMq4NHRef1HB2H18fgBOq/S4RwiRxBgT5W9Pc2HbAC3cJBPZbMU2q8iMnmfWIBOB/lxfIO3HMJK2X2FAxp9/mhDbnJ6gAIZtJhuedgQkpdndyWuj8NdlaZAnGxFkFkCQPlDdLrfF4=
+	t=1745946959; cv=none; b=Z6+1CsG/qalR+bq3/Ycp2Aya2rv0/KpGn9HfKfN9XLQcFcgpLQttnKdoUcKbKC8Rh/5dQct/QygMDjtB0CRRQ4ze6fvfu+iPHrPtFfAvuoRKvX3ENg5UJnL4NcDnHHYzR4HtY1bJWFejmHv1oabqs8iZZJx1JsEjVLMVYv3krk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947728; c=relaxed/simple;
-	bh=yjTCV7PVfF+4EsFXN6ADst08EqydfgE2FyrqyMKXXeI=;
+	s=arc-20240116; t=1745946959; c=relaxed/simple;
+	bh=Pa6S6gyXxAXp2d6xhBRd6IOv0EQJXyeJ7xU3kq2AlrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJVZaqUVINpO9BMzf4uAdMLrsaZmnF0+ESV2l43wTydf0MjzCmhtk87njQxaS8eHUccVqW2eUWAN5ss5134QxJwGjbUZhxnG6e2s1pI+y6H0oSiWiN5v1Ea1NhigA3DR1GdJrTkfuqqAFrI6s3kcBFeRmLWABhc/OrN8P/44nuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6GyaRST; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E484C4CEE9;
-	Tue, 29 Apr 2025 17:28:47 +0000 (UTC)
+	 MIME-Version; b=tdOHoS3vvLCAT7r1+vOKLW+Hn2SF6Eba33SU9+AvuRbVkiSN0E7tXiLj/l13Nnnnahegwombb44iDTvZqQUNSLDDyDg0Fw9NVPQtJJO9kKNTs4HCUi46yvsWZefoTHxfevGy6aMtIJB/3TK7PTNS8f4XUWuwBTO1INZjv1d+9Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEBoiXTo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22616C4CEE3;
+	Tue, 29 Apr 2025 17:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947728;
-	bh=yjTCV7PVfF+4EsFXN6ADst08EqydfgE2FyrqyMKXXeI=;
+	s=korg; t=1745946959;
+	bh=Pa6S6gyXxAXp2d6xhBRd6IOv0EQJXyeJ7xU3kq2AlrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i6GyaRSThaAzRKzxeZQsS7QaRLKQkBtHLFv27lFPmJvp2gB1a2rhvzAC5NZRHdreS
-	 EteOLdpGkfgzJJk/GCcvMq+6Y8OgNjnfLeQfplaR2Kcuq/J/JfjixyHJ9mkdB/H+xB
-	 m6XEYAxOkl/kbMdwbcMfP+sO2OUPgRr+cPYA8dOs=
+	b=JEBoiXTo8xOtl7N9lXC9C1IXSzaVD7ar7AnZOfq6bYeacVE5tzuHxal+GiRXeYSQH
+	 hu5nbsUpsU5FENw57BuFVODqDhHt4dHqWHpX6VZV5xvRG/EUbok7raeMQNDHnb+uF/
+	 DPWe3gn1gN+eQ/8jKv1Zc7b5EPN4U5HjwFT01f50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Jiri Olsa <jolsa@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/280] perf/x86: Fix non-sampling (counting) events on certain x86 platforms
+Subject: [PATCH 5.10 125/286] nfsd: decrease sc_count directly if fail to queue dl_recall
 Date: Tue, 29 Apr 2025 18:40:29 +0200
-Message-ID: <20250429161118.711565947@linuxfoundation.org>
+Message-ID: <20250429161113.001164124@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,64 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit 1a97fea9db9e9b9c4839d4232dde9f505ff5b4cc ]
+[ Upstream commit a1d14d931bf700c1025db8c46d6731aa5cf440f9 ]
 
-Perf doesn't work at perf stat for hardware events on certain x86 platforms:
+A deadlock warning occurred when invoking nfs4_put_stid following a failed
+dl_recall queue operation:
+            T1                            T2
+                                nfs4_laundromat
+                                 nfs4_get_client_reaplist
+                                  nfs4_anylock_blockers
+__break_lease
+ spin_lock // ctx->flc_lock
+                                   spin_lock // clp->cl_lock
+                                   nfs4_lockowner_has_blockers
+                                    locks_owner_has_blockers
+                                     spin_lock // flctx->flc_lock
+ nfsd_break_deleg_cb
+  nfsd_break_one_deleg
+   nfs4_put_stid
+    refcount_dec_and_lock
+     spin_lock // clp->cl_lock
 
- $perf stat -- sleep 1
- Performance counter stats for 'sleep 1':
-             16.44 msec task-clock                       #    0.016 CPUs utilized
-                 2      context-switches                 #  121.691 /sec
-                 0      cpu-migrations                   #    0.000 /sec
-                54      page-faults                      #    3.286 K/sec
-   <not supported>	cycles
-   <not supported>	instructions
-   <not supported>	branches
-   <not supported>	branch-misses
+When a file is opened, an nfs4_delegation is allocated with sc_count
+initialized to 1, and the file_lease holds a reference to the delegation.
+The file_lease is then associated with the file through kernel_setlease.
 
-The reason is that the check in x86_pmu_hw_config() for sampling events is
-unexpectedly applied to counting events as well.
+The disassociation is performed in nfsd4_delegreturn via the following
+call chain:
+nfsd4_delegreturn --> destroy_delegation --> destroy_unhashed_deleg -->
+nfs4_unlock_deleg_lease --> kernel_setlease --> generic_delete_lease
+The corresponding sc_count reference will be released after this
+disassociation.
 
-It should only impact x86 platforms with limit_period used for non-PEBS
-events. For Intel platforms, it should only impact some older platforms,
-e.g., HSW, BDW and NHM.
+Since nfsd_break_one_deleg executes while holding the flc_lock, the
+disassociation process becomes blocked when attempting to acquire flc_lock
+in generic_delete_lease. This means:
+1) sc_count in nfsd_break_one_deleg will not be decremented to 0;
+2) The nfs4_put_stid called by nfsd_break_one_deleg will not attempt to
+acquire cl_lock;
+3) Consequently, no deadlock condition is created.
 
-Fixes: 88ec7eedbbd2 ("perf/x86: Fix low freqency setting issue")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Link: https://lore.kernel.org/r/20250423064724.3716211-1-luogengkun@huaweicloud.com
+Given that sc_count in nfsd_break_one_deleg remains non-zero, we can
+safely perform refcount_dec on sc_count directly. This approach
+effectively avoids triggering deadlock warnings.
+
+Fixes: 230ca758453c ("nfsd: put dl_stid if fail to queue dl_recall")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/core.c | 2 +-
+ fs/nfsd/nfs4state.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 0d33c85da4535..d737d53d03aa9 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -628,7 +628,7 @@ int x86_pmu_hw_config(struct perf_event *event)
- 	if (event->attr.type == event->pmu->type)
- 		event->hw.config |= x86_pmu_get_event_config(event);
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 311409be73745..bf78745b19ca9 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4940,7 +4940,7 @@ static void nfsd_break_one_deleg(struct nfs4_delegation *dp)
+ 	queued = nfsd4_run_cb(&dp->dl_recall);
+ 	WARN_ON_ONCE(!queued);
+ 	if (!queued)
+-		nfs4_put_stid(&dp->dl_stid);
++		refcount_dec(&dp->dl_stid.sc_count);
+ }
  
--	if (!event->attr.freq && x86_pmu.limit_period) {
-+	if (is_sampling_event(event) && !event->attr.freq && x86_pmu.limit_period) {
- 		s64 left = event->attr.sample_period;
- 		x86_pmu.limit_period(event, &left);
- 		if (left > event->attr.sample_period)
+ /* Called from break_lease() with flc_lock held. */
 -- 
 2.39.5
 
