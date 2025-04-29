@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93715AA1323
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA14AA142C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7BA616FFD8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BC29164852
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97187252287;
-	Tue, 29 Apr 2025 16:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F743248889;
+	Tue, 29 Apr 2025 17:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcsAIIst"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R53t5lyX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5494F251798;
-	Tue, 29 Apr 2025 16:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46ACE24728A;
+	Tue, 29 Apr 2025 17:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945922; cv=none; b=KS/I3ZYpahqqIHNp8P1AEZ+lgnkyySbYlEoWY+d9x2v8FRACJy9fF8QmOkETnX3Xitbk3X1jSIQqqjTpyleebm1uQdwMLkekRTxlVSZ6ilam9VXb04yYHpMsvkb+A6EyMvNcGAlrcwVqKDVWBtH0qvFDut18pwyW2/y6C8Ctvhg=
+	t=1745946664; cv=none; b=mGNgrxAgkGYJ7E+SpVkw/yD0qWi638hS6BvwTaBLjLpqDRhBV7SHbkafj3K9HFY27Bt+rJ+YIMYa/RxLItdrlMx+UCxvhtpv3bzooLQNW1SEzTJdYGpSaIOcDanSesnj1lBfCoCHIZrbtbfHTd6yntpuy8seEJeKYM9EnckE1uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945922; c=relaxed/simple;
-	bh=yMUv/OaV+hPS6y446mTGvemzs911IU9mW/GsFSc5hmk=;
+	s=arc-20240116; t=1745946664; c=relaxed/simple;
+	bh=zjbgyquNh/6HHLZN2UghOSiJiy0NAJDBcKD2ZaNASg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vEP1vdklN+h10BplVpL60KHYX6+hgBrZh9N8NKUXAnibSrJjKTuMjZ+6lD51Nl7Vgt/Fx47yvdglDL68wsu5wUemHMRKcgnCTMRa0UkaY6Btp0bwWAnwABvOL5T/wIst+ypkPK9+hKVr+TpAKENpYlSu8vTuxVEfaL3IrTBcUjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcsAIIst; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1C1C4CEE9;
-	Tue, 29 Apr 2025 16:58:41 +0000 (UTC)
+	 MIME-Version; b=Wp7sTNv5H2iBZxcltmaadYQp2RaEwOCuJYgwRmaZ6oxZinbDx9t+PX/U2pTcN4RNI+Hx7F5iPImTELyJ5vOlY0n/Z6Kw5CPgrHI1joui/Znpjuq6TB5J0nKhvfWYPAvsn20Ox6AxoOuM8C/Di63NkbmrgcY5N1rdQV5FvvChLIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R53t5lyX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E46C4CEE3;
+	Tue, 29 Apr 2025 17:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945922;
-	bh=yMUv/OaV+hPS6y446mTGvemzs911IU9mW/GsFSc5hmk=;
+	s=korg; t=1745946664;
+	bh=zjbgyquNh/6HHLZN2UghOSiJiy0NAJDBcKD2ZaNASg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rcsAIIstFHc7wyLEjBLNykci2g1aqYr3ohB75wriCEFz+jTsKO/oFSWWsQOTDa3Fx
-	 WUdy70Mi3ginclS1KYUvOXc3hg1BKRmSs2FxwokwbDkWij9xrl3OSrUvvO2BA+tZii
-	 RorY4M3mQDvM8VIJ/aDGsqM5MXelpWzvDD5dzLds=
+	b=R53t5lyXKVmwVj7AxIdIEdyoYIfmKHxLK5Kmpg3hVluMSipMgwXe3nQuxzbAEruIb
+	 jTMKeuyvhHHwDvgUAeuVY/ZSqUZkcmtvWAV5sMSQ0sHJgkqe1nZDjKdVEnDpVBEtlR
+	 8obaFsicX+gPlFKr6Wa+PN8RQVzZTQeOkalwY8nw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Daniel Kral <d.kral@proxmox.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 095/311] bpf: Add namespace to BPF internal symbols
+Subject: [PATCH 5.10 028/286] ahci: add PCI ID for Marvell 88SE9215 SATA Controller
 Date: Tue, 29 Apr 2025 18:38:52 +0200
-Message-ID: <20250429161124.934140651@linuxfoundation.org>
+Message-ID: <20250429161109.016377123@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Daniel Kral <d.kral@proxmox.com>
 
-[ Upstream commit f88886de0927a2adf4c1b4c5c1f1d31d2023ef74 ]
+[ Upstream commit 885251dc35767b1c992f6909532ca366c830814a ]
 
-Add namespace to BPF internal symbols used by light skeleton
-to prevent abuse and document with the code their allowed usage.
+Add support for Marvell Technology Group Ltd. 88SE9215 SATA 6 Gb/s
+controller, which is e.g. used in the DAWICONTROL DC-614e RAID bus
+controller and was not automatically recognized before.
 
-Fixes: b1d18a7574d0 ("bpf: Extend sys_bpf commands for bpf_syscall programs.")
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/bpf/20250425014542.62385-1-alexei.starovoitov@gmail.com
+Tested with a DAWICONTROL DC-614e RAID bus controller.
+
+Signed-off-by: Daniel Kral <d.kral@proxmox.com>
+Link: https://lore.kernel.org/r/20250304092030.37108-1-d.kral@proxmox.com
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/bpf/bpf_devel_QA.rst    | 8 ++++++++
- kernel/bpf/preload/bpf_preload_kern.c | 1 +
- kernel/bpf/syscall.c                  | 6 +++---
- 3 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/ata/ahci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/bpf/bpf_devel_QA.rst b/Documentation/bpf/bpf_devel_QA.rst
-index de27e1620821c..0acb4c9b8d90f 100644
---- a/Documentation/bpf/bpf_devel_QA.rst
-+++ b/Documentation/bpf/bpf_devel_QA.rst
-@@ -382,6 +382,14 @@ In case of new BPF instructions, once the changes have been accepted
- into the Linux kernel, please implement support into LLVM's BPF back
- end. See LLVM_ section below for further information.
- 
-+Q: What "BPF_INTERNAL" symbol namespace is for?
-+-----------------------------------------------
-+A: Symbols exported as BPF_INTERNAL can only be used by BPF infrastructure
-+like preload kernel modules with light skeleton. Most symbols outside
-+of BPF_INTERNAL are not expected to be used by code outside of BPF either.
-+Symbols may lack the designation because they predate the namespaces,
-+or due to an oversight.
-+
- Stable submission
- =================
- 
-diff --git a/kernel/bpf/preload/bpf_preload_kern.c b/kernel/bpf/preload/bpf_preload_kern.c
-index 0c63bc2cd895a..56a81df7a9d7c 100644
---- a/kernel/bpf/preload/bpf_preload_kern.c
-+++ b/kernel/bpf/preload/bpf_preload_kern.c
-@@ -89,4 +89,5 @@ static void __exit fini(void)
- }
- late_initcall(load);
- module_exit(fini);
-+MODULE_IMPORT_NS("BPF_INTERNAL");
- MODULE_LICENSE("GPL");
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index e1e42e918ba7f..1c2caae0d8946 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -1562,7 +1562,7 @@ struct bpf_map *bpf_map_get(u32 ufd)
- 
- 	return map;
- }
--EXPORT_SYMBOL(bpf_map_get);
-+EXPORT_SYMBOL_NS(bpf_map_get, "BPF_INTERNAL");
- 
- struct bpf_map *bpf_map_get_with_uref(u32 ufd)
- {
-@@ -3345,7 +3345,7 @@ struct bpf_link *bpf_link_get_from_fd(u32 ufd)
- 	bpf_link_inc(link);
- 	return link;
- }
--EXPORT_SYMBOL(bpf_link_get_from_fd);
-+EXPORT_SYMBOL_NS(bpf_link_get_from_fd, "BPF_INTERNAL");
- 
- static void bpf_tracing_link_release(struct bpf_link *link)
- {
-@@ -5981,7 +5981,7 @@ int kern_sys_bpf(int cmd, union bpf_attr *attr, unsigned int size)
- 		return ____bpf_sys_bpf(cmd, attr, size);
- 	}
- }
--EXPORT_SYMBOL(kern_sys_bpf);
-+EXPORT_SYMBOL_NS(kern_sys_bpf, "BPF_INTERNAL");
- 
- static const struct bpf_func_proto bpf_sys_bpf_proto = {
- 	.func		= bpf_sys_bpf,
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 04b53bb7a692d..2bb9555663e75 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -591,6 +591,8 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x91a3),
+ 	  .driver_data = board_ahci_yes_fbs },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9215),
++	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9230),
+ 	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_TTI, 0x0642), /* highpoint rocketraid 642L */
 -- 
 2.39.5
 
