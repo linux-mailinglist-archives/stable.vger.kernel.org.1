@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-137828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E54AA1514
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE04AA16D1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECD2117236B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 285309A183B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF0C2459EC;
-	Tue, 29 Apr 2025 17:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF919250C15;
+	Tue, 29 Apr 2025 17:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/HImkcu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESLfKRbg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B326A242D94;
-	Tue, 29 Apr 2025 17:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8852459FE;
+	Tue, 29 Apr 2025 17:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947254; cv=none; b=h79FS1EcRMy+pU8c8HpQ6rE5nSEHhr47MXK8ZMSDLaLr+zd4RwmxiO8kRuJ//kMab+IBRRZyVDPXhOIIKfaq05vnWyUnWKWuV17EUlD5gYPMLd43CY8xPwec3R+q62lpvrZRK9V93sQBNGLUwlVsnROb0tPBYLLeasD1IPnqMFs=
+	t=1745948075; cv=none; b=NVXT4U7Cor+5TIYYOHuT3XKruiQ39TAir+/emfTO5TaoYJfPH06HpK5J9S5P17N0NVGe5mqNGOa9/RaJIW1cAFxfxidJJusGdYwN2BvzyzMj7yzoyu7zVRjBTRzFTglW7YEexUhW0HaytaZoBNG/ns9CpLxCfYsLM1rb/Igyuk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947254; c=relaxed/simple;
-	bh=hIg6uYmMDhLr/Ph/DngLQPstFQPP1z+Pe7x0ophHMaY=;
+	s=arc-20240116; t=1745948075; c=relaxed/simple;
+	bh=o2/FiH52o/YGB3VOOADEgrjkDGlF7WiUL20dEp6xosg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OWuYei7t9JoYqicTkwEVv25y+AIcIkf+jKdoXWRzt51Hl+SbxxJDX/x5ivgdt6oIu6ciLzPf12bIPgAQFGQ/no7+/w64tJpc5Y4l7WTsxojd9ikfonoW536UWtWyJ/TCk4NzcX8J8Spzb+EOPaaozQRz8PXPgP17jQq9I/611R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/HImkcu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23186C4CEE3;
-	Tue, 29 Apr 2025 17:20:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wu1F/9cyLg7s0rsafVJ3xgWzkRajytnlXXkrcPdPLw3Z9odjTdTDjDA08eqhdFoTpDpmagBJHii+jDTqy4zDkhgwGswmgxQG8/8x8xVtJOGOkVsXua1d0Kq7sZImKRbNX2mlv1qXxrOtsTj2ERBYyjTnDqRxiwzXuM8hn1iF0kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESLfKRbg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A8AC4CEE3;
+	Tue, 29 Apr 2025 17:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947254;
-	bh=hIg6uYmMDhLr/Ph/DngLQPstFQPP1z+Pe7x0ophHMaY=;
+	s=korg; t=1745948075;
+	bh=o2/FiH52o/YGB3VOOADEgrjkDGlF7WiUL20dEp6xosg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/HImkcux5XcLVJFPJVOUuFosy6Ao86sFZshkveLylTDEs4Fz70VxHFD2LauZxxOD
-	 GWRCx9qogjBO9Fjj/OewHl+x4/H2gmVhqUsEMjijyHMcHumg04K85fgttRgoCkjf4Q
-	 pEnnSHN4vGcMAlZdib3r1q8jnzDH11pLDMpPjVis=
+	b=ESLfKRbg6cSuzpwlifsXaMgLT7RmGaBoSht6qLbAUMjU3nyp/mKBK2cI0eamgxFib
+	 5uk7fysEfCOK5EZRYLu8mau+cS3xL25GEBd7wwnB418QpA4ETLv4/xJm22hp4gsO2G
+	 szhs46S2RZR2xPmJdnLe0pqHJqhCTSAO+2xcvX6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Diupina <adiupina@astralinux.ru>,
-	Steve French <stfrench@microsoft.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 221/286] cifs: avoid NULL pointer dereference in dbg call
+Subject: [PATCH 6.12 184/280] usb: host: xhci-plat: mvebu: use ->quirks instead of ->init_quirk() func
 Date: Tue, 29 Apr 2025 18:42:05 +0200
-Message-ID: <20250429161117.035581918@linuxfoundation.org>
+Message-ID: <20250429161122.637059700@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +59,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Diupina <adiupina@astralinux.ru>
+From: Théo Lebrun <theo.lebrun@bootlin.com>
 
-[ Upstream commit b4885bd5935bb26f0a414ad55679a372e53f9b9b ]
+[ Upstream commit 64eb182d5f7a5ec30227bce4f6922ff663432f44 ]
 
-cifs_server_dbg() implies server to be non-NULL so
-move call under condition to avoid NULL pointer dereference.
+Compatible "marvell,armada3700-xhci" match data uses the
+struct xhci_plat_priv::init_quirk() function pointer to add
+XHCI_RESET_ON_RESUME as quirk on XHCI.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Instead, use the struct xhci_plat_priv::quirks field.
 
-Fixes: e79b0332ae06 ("cifs: ignore cached share root handle closing errors")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://lore.kernel.org/r/20250205-s2r-cdns-v7-1-13658a271c3c@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2misc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/usb/host/xhci-mvebu.c | 10 ----------
+ drivers/usb/host/xhci-mvebu.h |  6 ------
+ drivers/usb/host/xhci-plat.c  |  2 +-
+ 3 files changed, 1 insertion(+), 17 deletions(-)
 
-diff --git a/fs/cifs/smb2misc.c b/fs/cifs/smb2misc.c
-index d21b27e68f2a8..c0b80ba8875af 100644
---- a/fs/cifs/smb2misc.c
-+++ b/fs/cifs/smb2misc.c
-@@ -809,11 +809,12 @@ smb2_handle_cancelled_close(struct cifs_tcon *tcon, __u64 persistent_fid,
- 		WARN_ONCE(tcon->tc_count < 0, "tcon refcount is negative");
- 		spin_unlock(&cifs_tcp_ses_lock);
+diff --git a/drivers/usb/host/xhci-mvebu.c b/drivers/usb/host/xhci-mvebu.c
+index 87f1597a0e5ab..257e4d79971fd 100644
+--- a/drivers/usb/host/xhci-mvebu.c
++++ b/drivers/usb/host/xhci-mvebu.c
+@@ -73,13 +73,3 @@ int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd)
  
--		if (tcon->ses)
-+		if (tcon->ses) {
- 			server = tcon->ses->server;
+ 	return 0;
+ }
 -
--		cifs_server_dbg(FYI, "tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
--				tcon->tid, persistent_fid, volatile_fid);
-+			cifs_server_dbg(FYI,
-+					"tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
-+					tcon->tid, persistent_fid, volatile_fid);
-+		}
+-int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd)
+-{
+-	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
+-
+-	/* Without reset on resume, the HC won't work at all */
+-	xhci->quirks |= XHCI_RESET_ON_RESUME;
+-
+-	return 0;
+-}
+diff --git a/drivers/usb/host/xhci-mvebu.h b/drivers/usb/host/xhci-mvebu.h
+index 3be021793cc8b..9d26e22c48422 100644
+--- a/drivers/usb/host/xhci-mvebu.h
++++ b/drivers/usb/host/xhci-mvebu.h
+@@ -12,16 +12,10 @@ struct usb_hcd;
  
- 		return 0;
- 	}
+ #if IS_ENABLED(CONFIG_USB_XHCI_MVEBU)
+ int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd);
+-int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd);
+ #else
+ static inline int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd)
+ {
+ 	return 0;
+ }
+-
+-static inline int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd)
+-{
+-	return 0;
+-}
+ #endif
+ #endif /* __LINUX_XHCI_MVEBU_H */
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index e6660472501e4..2379a67e34e12 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -106,7 +106,7 @@ static const struct xhci_plat_priv xhci_plat_marvell_armada = {
+ };
+ 
+ static const struct xhci_plat_priv xhci_plat_marvell_armada3700 = {
+-	.init_quirk = xhci_mvebu_a3700_init_quirk,
++	.quirks = XHCI_RESET_ON_RESUME,
+ };
+ 
+ static const struct xhci_plat_priv xhci_plat_brcm = {
 -- 
 2.39.5
 
