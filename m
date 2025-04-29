@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F00AA1695
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9E6AA1598
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:29:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20A98189D79D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 173279863F3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A323C251793;
-	Tue, 29 Apr 2025 17:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92D724C098;
+	Tue, 29 Apr 2025 17:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIW+QpS5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMxD183v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603761C6B4;
-	Tue, 29 Apr 2025 17:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9678A2472B4;
+	Tue, 29 Apr 2025 17:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948184; cv=none; b=N38UlrQvQIzUTrmQvtFT/QcjTxOzEWHWqqTNALaymIAzYUzU/px6J9/NOxhCRlmV57+QB6+/aODTt7zjP1kgXKnPTkFqs/M10QsRtAMpHZDpNkGXgE4C33KE27TiwwJxB+rpuHKZb3vRzs2ur8MoXVQr3Zvs316LSlk84lxE99w=
+	t=1745947350; cv=none; b=fFFJ2NI7dpdsgbCu2v3evA4s+ORKWwU0MhS8wThxtZJNGiYiBBMo4lsw0Rlmsv7Iifl4d0hkJbilhI0gZ54s1vnv0S0QK8YlEHgHtZVjSHwQlNlhPa+nMEdJOK1EohiqWgaMPazbnX/N1G4o/K+ECmvu+B1qpzO0yUCHTJw2a44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948184; c=relaxed/simple;
-	bh=v5tnPKNglulc8Kh7hiMymUbgFcIqwqP6d+Odg9Nmqgw=;
+	s=arc-20240116; t=1745947350; c=relaxed/simple;
+	bh=MovaAcOzhlBhQlvbM/uJA4qPaguWhpW6ivUk8UIoSy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AahoJGAY5/iRoFd9BjRbrm73n3DdPCJ4i3TB20IBzo4UxyDl1O22YGIb7iMlecU+/uDOfT9jQFLvlZspWqr1dabm45LzHLI5UcKUtmIRklC7OjTXOKhq5Imnu3TFG6RNXwRyFWcgfie8utF6RdCsJ4yOrHlyqFV9Th3DJtJZlic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIW+QpS5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FA0C4CEE3;
-	Tue, 29 Apr 2025 17:36:23 +0000 (UTC)
+	 MIME-Version; b=KVM1UnTT0iSxT6pitS+32oEvdW6aUQug5GZ/B3GPVLysLPesZJkSPhwSg3UJwxuLiC35kcb4o26DEIAndAVO1FZUEV5nsyFOkZMYmJWO4r/N1CF6T0WGIhuX2B227y38EtAyXvnNsX6fgNTb2KDJTeA8Z9U9V35VPeUrVGyRsts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMxD183v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE66C4CEE3;
+	Tue, 29 Apr 2025 17:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948184;
-	bh=v5tnPKNglulc8Kh7hiMymUbgFcIqwqP6d+Odg9Nmqgw=;
+	s=korg; t=1745947350;
+	bh=MovaAcOzhlBhQlvbM/uJA4qPaguWhpW6ivUk8UIoSy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iIW+QpS50ILvcwLzImCll1aN3TK3kqkI1K5qFksJY7o4APPb5Vx/rcsszgVKP4pLU
-	 1R207/xgwX0DzLIREHrGY4ubJQSA1vAtJxwdMT4Lh0bhp54eTc0ePPV8P8CCKxpFl3
-	 6wTVBmuRO+xOlDrTaSOwUWs6THqugDfTLzIAjPK8=
+	b=TMxD183vbkMBwzSEe6bM6LJK+M73MEUgSXKNg7oNt2O6cQOHkkABjpXaH0E/VPk8O
+	 7HzG+OWDTlwuIgLBf9Y+2Kf4lSakQdA3GUlWBqB1U84OxiaVjFrPWrk7TvJicw8EUP
+	 ZWU9HYewzljbI29Q7h+etOAJuhNtHsuf8ZWC8a1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 214/280] objtool: Stop UNRET validation on UD2
-Date: Tue, 29 Apr 2025 18:42:35 +0200
-Message-ID: <20250429161123.882198294@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 5.10 252/286] USB: VLI disk crashes if LPM is used
+Date: Tue, 29 Apr 2025 18:42:36 +0200
+Message-ID: <20250429161118.288978698@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 9f9cc012c2cbac4833746a0182e06a8eec940d19 ]
+commit e00b39a4f3552c730f1e24c8d62c4a8c6aad4e5d upstream.
 
-In preparation for simplifying INSN_SYSCALL, make validate_unret()
-terminate control flow on UD2 just like validate_branch() already does.
+This device needs the NO_LPM quirk.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/ce841269e7e28c8b7f32064464a9821034d724ff.1744095216.git.jpoimboe@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250408135800.792515-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/check.c | 3 +++
+ drivers/usb/core/quirks.c |    3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index bab1f22fd50a1..9e6a934329dc8 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -4014,6 +4014,9 @@ static int validate_unret(struct objtool_file *file, struct instruction *insn)
- 			break;
- 		}
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -540,6 +540,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x2040, 0x7200), .driver_info =
+ 			USB_QUIRK_CONFIG_INTF_STRINGS },
  
-+		if (insn->dead_end)
-+			return 0;
++	/* VLI disk */
++	{ USB_DEVICE(0x2109, 0x0711), .driver_info = USB_QUIRK_NO_LPM },
 +
- 		if (!next) {
- 			WARN_INSN(insn, "teh end!");
- 			return -1;
--- 
-2.39.5
-
+ 	/* Raydium Touchscreen */
+ 	{ USB_DEVICE(0x2386, 0x3114), .driver_info = USB_QUIRK_NO_LPM },
+ 
 
 
 
