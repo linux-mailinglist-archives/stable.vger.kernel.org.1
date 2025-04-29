@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95ABFAA1640
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DA9DAA11F3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2067985A01
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F55B4A60E5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD63253321;
-	Tue, 29 Apr 2025 17:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A140246326;
+	Tue, 29 Apr 2025 16:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2sa3dUi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czGS/sSl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9AF2528F3;
-	Tue, 29 Apr 2025 17:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F1C24113C;
+	Tue, 29 Apr 2025 16:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947688; cv=none; b=njYMoJ4k/7f2/OO9rbbSGavbScIKeYc8WgF4oQG1wDtY14g5gzdNSMvIx9BZDkX8IXH0/PdtA1I+JXSbLDCLuTFhIBEf6YhyhxfO7ncyik3AWkdXom/gvFisGZIEoim86UEliOLAP/gYyUs66YXw9/KcNyRxBYb5Uq0ZkrBNX7k=
+	t=1745945240; cv=none; b=CNcflAg9OmO+5NqbjbIdJcFKe0V1rRF/8S/l9SndOl9V/SFAEHOJM9iHU6PQs9+k6DzO0C5OhDYVhz6EE41yiJzTr/N1razlSTxIlbuFOridVwnSUQnpWiov3RcXOO5EjMPzzPZ5s/Jl36L8zdTarwGQnr8h5k4K09Dk1VW3Bhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947688; c=relaxed/simple;
-	bh=Qrqmpu+oCEG1sUxIscpKSHKkR62T5G5vPhilv+yTLaI=;
+	s=arc-20240116; t=1745945240; c=relaxed/simple;
+	bh=zLfGoZx6FkrqkgS4QTtknsHsxtElA3BNhoAONQkzKTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hyBmfYoky2Hc/pxEm+TgndpELhB9tIjwyyE+QsgkAV0TMOfdfdIr1Eir3o+Ox3vpPpQkfmstyp/f5dSsr7ERXuC9pi3al1bSOGt81B4/Jvvo9T1qJymrPIfSO5wq1XxXW6pdzgyX+0JMbLxVcpfO8LN7fhSSkk3hzqEHv/DK4CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2sa3dUi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF34C4CEF1;
-	Tue, 29 Apr 2025 17:28:07 +0000 (UTC)
+	 MIME-Version; b=jJWeJO1Nl+5zfQtqB7VIDFcEMgpg+IJUyDqbkxbiQNToJoruW7YlPklMnlrgkQ87reK5Xf90bYt4UejGj0fsQzBpjowpG4vAnVVOoNB5uC8NXA2bi+TdqVzswD8fU5kqgABMzvUDVs+Htm12oBLdSOlSyq533LEuhMdQ1rzr554=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czGS/sSl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE36C4CEE3;
+	Tue, 29 Apr 2025 16:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947688;
-	bh=Qrqmpu+oCEG1sUxIscpKSHKkR62T5G5vPhilv+yTLaI=;
+	s=korg; t=1745945238;
+	bh=zLfGoZx6FkrqkgS4QTtknsHsxtElA3BNhoAONQkzKTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2sa3dUi43rMXp1vPIqg6V4w7CTi4rDuqmBbEXYKfAZ/8Ttik2UtFECiu6A6N4kb4
-	 9HOwEGTu7nX0xOX1NNpMTrB+BjZb3Wca6f9xhszVAbsUflycjZfQcZiKWVuU7hJZLa
-	 a7LS86itA8wPZiBFHqhH0GKymC6f0pJakuEC0gog=
+	b=czGS/sSl2TTz76o0dmNiKsHt16gw/4UpdWVhSZPc6UmZBo/br6EYyC0EmHafdGUvF
+	 OWraRi41EY06aZMUDpJOMmImUnWPqEhoYPgAruWDjN3TR2p1NA+AV/zf97DNJUEWDF
+	 UcS+Vt/dRJDNVw19yQKtVxUclqCoxoBhjfTZ5BDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Clint Taylor <Clinton.A.Taylor@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/280] drm/xe/bmg: Add one additional PCI ID
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.4 046/179] media: venus: hfi: add check to handle incorrect queue size
 Date: Tue, 29 Apr 2025 18:39:47 +0200
-Message-ID: <20250429161117.002653535@linuxfoundation.org>
+Message-ID: <20250429161051.267464157@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-[ Upstream commit 5529df92b8e8cbb4b14a226665888f74648260ad ]
+commit 69baf245b23e20efda0079238b27fc63ecf13de1 upstream.
 
-One additional BMG PCI ID has been added to the spec; make sure our
-driver recognizes devices with this ID properly.
+qsize represents size of shared queued between driver and video
+firmware. Firmware can modify this value to an invalid large value. In
+such situation, empty_space will be bigger than the space actually
+available. Since new_wr_idx is not checked, so the following code will
+result in an OOB write.
+...
+qsize = qhdr->q_size
 
-Bspec: 68090
-Cc: stable@vger.kernel.org # v6.12+
-Reviewed-by: Clint Taylor <Clinton.A.Taylor@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://lore.kernel.org/r/20250325224709.4073080-2-matthew.d.roper@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit cca9734ebe55f6af11ce8d57ca1afdc4d158c808)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+if (wr_idx >= rd_idx)
+ empty_space = qsize - (wr_idx - rd_idx)
+....
+if (new_wr_idx < qsize) {
+ memcpy(wr_ptr, packet, dwords << 2) --> OOB write
+
+Add check to ensure qsize is within the allocated size while
+reading and writing packets into the queue.
+
+Cc: stable@vger.kernel.org
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/drm/intel/i915_pciids.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/qcom/venus/hfi_venus.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/drm/intel/i915_pciids.h b/include/drm/intel/i915_pciids.h
-index dacea289acaf5..1ff00e3d4418e 100644
---- a/include/drm/intel/i915_pciids.h
-+++ b/include/drm/intel/i915_pciids.h
-@@ -810,6 +810,7 @@
- 	MACRO__(0xE20C, ## __VA_ARGS__), \
- 	MACRO__(0xE20D, ## __VA_ARGS__), \
- 	MACRO__(0xE210, ## __VA_ARGS__), \
-+	MACRO__(0xE211, ## __VA_ARGS__), \
- 	MACRO__(0xE212, ## __VA_ARGS__), \
- 	MACRO__(0xE215, ## __VA_ARGS__), \
- 	MACRO__(0xE216, ## __VA_ARGS__)
--- 
-2.39.5
-
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -188,6 +188,9 @@ static int venus_write_queue(struct venu
+ 	/* ensure rd/wr indices's are read from memory */
+ 	rmb();
+ 
++	if (qsize > IFACEQ_QUEUE_SIZE / 4)
++		return -EINVAL;
++
+ 	if (wr_idx >= rd_idx)
+ 		empty_space = qsize - (wr_idx - rd_idx);
+ 	else
+@@ -256,6 +259,9 @@ static int venus_read_queue(struct venus
+ 	wr_idx = qhdr->write_idx;
+ 	qsize = qhdr->q_size;
+ 
++	if (qsize > IFACEQ_QUEUE_SIZE / 4)
++		return -EINVAL;
++
+ 	/* make sure data is valid before using it */
+ 	rmb();
+ 
 
 
 
