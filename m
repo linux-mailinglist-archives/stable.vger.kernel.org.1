@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-137440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F80AAA1354
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E013AA15FF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3FF94A74D4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A92BA9A20EE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADB822A81D;
-	Tue, 29 Apr 2025 17:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0587D2522B4;
+	Tue, 29 Apr 2025 17:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hpz2+TaC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whCXxPc8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEDE7E110;
-	Tue, 29 Apr 2025 17:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A382517BE;
+	Tue, 29 Apr 2025 17:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946073; cv=none; b=cCrhA/iseXhnrh8aDsxoHgQ2lqh2FNZiVSn2cuo8z8+y6vTDapmbdI+XxqKmNcJMa5gblJa56Kqc8n8x1AyQGrM+UJ7dUMeQ0w3OselQ7OOstfXt+rWetl99o/XgBQ4BJ6/QXM0nPbozoze0gTNlS531rdB+mdLGBzxlXzQJRCI=
+	t=1745947591; cv=none; b=t1pfv3foK7+rAxnJPxIpWdf6uO8MzsRVIVdXgmF9xXQit+AfGu3PPl6feNEqmrHg1Za1kDR8CbyDidhyvhPX2mn4BdsnxdwWcJwm8pji/t4/tp63p+2wll/UqHZrVcaIHuKCqgY/9/vKiCdsC+1J9VT5IeXIQpK1If8y7SrSaAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946073; c=relaxed/simple;
-	bh=PsnABcpbRq+AH44q4SWYhLyNhP7FNLizAKmWFXgtrhs=;
+	s=arc-20240116; t=1745947591; c=relaxed/simple;
+	bh=7GOPtIgRHNfkCDsBtf+mY0OmAxHKKW31Vrsa9nqP2AA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfqGSz1MckSNQSj3kow/SvrUN4rgliYoBZ1o7sGDYM545/FT8ZLAjOH+mgvn6JkQAqjTuLzJz7oTzzM/dhywxQwyorKJwFIEbWkLNepjn+/y7dUm4yA50vmnlno83A4lo8YW8llsDodAjpe+d0i6CsbL0xRQqP+/y5LhTgTz1go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hpz2+TaC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E85BC4CEE3;
-	Tue, 29 Apr 2025 17:01:13 +0000 (UTC)
+	 MIME-Version; b=j5d1u4QbMjl+/WIyMyoVXR12oo90+iopMVdkO8RLqaPI6L/+FSuVczv9zCbZvR+yZS8/kAMxByt3bhjNZZkKTYlYPxEbzJQaDoR+lC2+Ke+37b2bND+fJKPNB40y3wS1+h0+oF44Hk4vT1L+Jq3wEOAuwef07Fg0lA9K8IlrMtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whCXxPc8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCBD4C4CEE3;
+	Tue, 29 Apr 2025 17:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946073;
-	bh=PsnABcpbRq+AH44q4SWYhLyNhP7FNLizAKmWFXgtrhs=;
+	s=korg; t=1745947591;
+	bh=7GOPtIgRHNfkCDsBtf+mY0OmAxHKKW31Vrsa9nqP2AA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hpz2+TaCJDMsawUAIsPqlP1j1qla2YsiuyGd5NRC5JXR9bS3psj55iQHrCAx7Ix4M
-	 9ZkAAvJ1MJUVdxPam/oTW+XYjT1i7N60Qy63tQ8Gm1PjMVcwN++N1XnprRFS8TIwCJ
-	 EHhcYBIK9iBk/Sn/C7Y504wpYaM3gs6dGcWNPIXM=
+	b=whCXxPc8XgIlvOiKhEJ3JHS3bUcbALTmJ2KP3v0KLS+3HTfwFF5jES1Zy8vKj4ymZ
+	 dE5fluGmGAdcM31Z0MNCbYH0Ftt4rIZMTGfTeFAyp+rfC3IRU2Ww7tf2bJmaoHtYWI
+	 EVTN2rlGL21Jkn7cLGcApUH0FTJzgPUcH+sCnI78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benno Lossin <benno.lossin@proton.me>,
-	Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.14 118/311] rust: firmware: Use `ffi::c_char` type in `FwFunc`
-Date: Tue, 29 Apr 2025 18:39:15 +0200
-Message-ID: <20250429161125.873585868@linuxfoundation.org>
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 015/280] media: ov08x40: Move ov08x40_identify_module() function up
+Date: Tue, 29 Apr 2025 18:39:16 +0200
+Message-ID: <20250429161115.705483103@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 53bd97801632c940767f4c8407c2cbdeb56b40e7 upstream.
+[ Upstream commit 7a39639e448f070cbe37317ac922886b6080ff43 ]
 
-The `FwFunc` struct contains an function with a char pointer argument,
-for which a `*const u8` pointer was used. This is not really the
-"proper" type for this, so use a `*const kernel::ffi::c_char` pointer
-instead.
+Move the ov08x40_identify_module() function to above ov08x40_set_stream()
+this is a preparation patch for adding a missing ov08x40_identify_module()
+call to ov08x40_set_stream().
 
-This has no real functionality changes, since now `kernel::ffi::c_char`
-(which bindgen uses for `char`) is now a type alias to `u8` anyways,
-but before commit 1bae8729e50a ("rust: map `long` to `isize` and `char`
-to `u8`") the concrete type of `kernel::ffi::c_char` depended on the
-architecture (However all supported architectures at the time mapped to
-`i8`).
+No functional changes, just moving code around.
 
-This caused problems on the v6.13 tag when building for 32 bit arm (with
-my patches), since back then `*const i8` was used in the function
-argument and the function that bindgen generated used
-`*const core::ffi::c_char` which Rust mapped to `*const u8` on 32 bit
-arm. The stable v6.13.y branch does not have this issue since commit
-1bae8729e50a ("rust: map `long` to `isize` and `char` to `u8`") was
-backported.
-
-This caused the following build error:
-```
-error[E0308]: mismatched types
-  --> rust/kernel/firmware.rs:20:4
-   |
-20 |         Self(bindings::request_firmware)
-   |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
-   |         |
-   |         arguments to this function are incorrect
-   |
-   = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
-                 found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {request_firmware}`
-note: tuple struct defined here
-  --> rust/kernel/firmware.rs:14:8
-   |
-14 | struct FwFunc(
-   |        ^^^^^^
-
-error[E0308]: mismatched types
-  --> rust/kernel/firmware.rs:24:14
-   |
-24 |         Self(bindings::firmware_request_nowarn)
-   |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
-   |         |
-   |         arguments to this function are incorrect
-   |
-   = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
-                 found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {firmware_request_nowarn}`
-note: tuple struct defined here
-  --> rust/kernel/firmware.rs:14:8
-   |
-14 | struct FwFunc(
-   |        ^^^^^^
-
-error[E0308]: mismatched types
-  --> rust/kernel/firmware.rs:64:45
-   |
-64 |         let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), dev.as_raw()) };
-   |                            ------           ^^^^^^^^^^^^^^^^^^ expected `*const i8`, found `*const u8`
-   |                            |
-   |                            arguments to this function are incorrect
-   |
-   = note: expected raw pointer `*const i8`
-              found raw pointer `*const u8`
-
-error: aborting due to 3 previous errors
-```
-
-Fixes: de6582833db0 ("rust: add firmware abstractions")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://lore.kernel.org/r/20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com
-[ Add firmware prefix to commit subject. - Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Stable-dep-of: ebf185efadb7 ("media: ov08x40: Add missing ov08x40_identify_module() call on stream-start")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/firmware.rs |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/media/i2c/ov08x40.c | 52 ++++++++++++++++++-------------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
---- a/rust/kernel/firmware.rs
-+++ b/rust/kernel/firmware.rs
-@@ -4,7 +4,7 @@
- //!
- //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
+diff --git a/drivers/media/i2c/ov08x40.c b/drivers/media/i2c/ov08x40.c
+index 67b86dabc67eb..8b9c70dd70b88 100644
+--- a/drivers/media/i2c/ov08x40.c
++++ b/drivers/media/i2c/ov08x40.c
+@@ -1869,6 +1869,32 @@ static int ov08x40_stop_streaming(struct ov08x40 *ov08x)
+ 				 OV08X40_REG_VALUE_08BIT, OV08X40_MODE_STANDBY);
+ }
  
--use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
-+use crate::{bindings, device::Device, error::Error, error::Result, ffi, str::CStr};
- use core::ptr::NonNull;
++/* Verify chip ID */
++static int ov08x40_identify_module(struct ov08x40 *ov08x)
++{
++	struct i2c_client *client = v4l2_get_subdevdata(&ov08x->sd);
++	int ret;
++	u32 val;
++
++	if (ov08x->identified)
++		return 0;
++
++	ret = ov08x40_read_reg(ov08x, OV08X40_REG_CHIP_ID,
++			       OV08X40_REG_VALUE_24BIT, &val);
++	if (ret)
++		return ret;
++
++	if (val != OV08X40_CHIP_ID) {
++		dev_err(&client->dev, "chip id mismatch: %x!=%x\n",
++			OV08X40_CHIP_ID, val);
++		return -ENXIO;
++	}
++
++	ov08x->identified = true;
++
++	return 0;
++}
++
+ static int ov08x40_set_stream(struct v4l2_subdev *sd, int enable)
+ {
+ 	struct ov08x40 *ov08x = to_ov08x40(sd);
+@@ -1906,32 +1932,6 @@ static int ov08x40_set_stream(struct v4l2_subdev *sd, int enable)
+ 	return ret;
+ }
  
- /// # Invariants
-@@ -12,7 +12,11 @@ use core::ptr::NonNull;
- /// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
- /// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
- struct FwFunc(
--    unsafe extern "C" fn(*mut *const bindings::firmware, *const u8, *mut bindings::device) -> i32,
-+    unsafe extern "C" fn(
-+        *mut *const bindings::firmware,
-+        *const ffi::c_char,
-+        *mut bindings::device,
-+    ) -> i32,
- );
- 
- impl FwFunc {
+-/* Verify chip ID */
+-static int ov08x40_identify_module(struct ov08x40 *ov08x)
+-{
+-	struct i2c_client *client = v4l2_get_subdevdata(&ov08x->sd);
+-	int ret;
+-	u32 val;
+-
+-	if (ov08x->identified)
+-		return 0;
+-
+-	ret = ov08x40_read_reg(ov08x, OV08X40_REG_CHIP_ID,
+-			       OV08X40_REG_VALUE_24BIT, &val);
+-	if (ret)
+-		return ret;
+-
+-	if (val != OV08X40_CHIP_ID) {
+-		dev_err(&client->dev, "chip id mismatch: %x!=%x\n",
+-			OV08X40_CHIP_ID, val);
+-		return -ENXIO;
+-	}
+-
+-	ov08x->identified = true;
+-
+-	return 0;
+-}
+-
+ static const struct v4l2_subdev_video_ops ov08x40_video_ops = {
+ 	.s_stream = ov08x40_set_stream,
+ };
+-- 
+2.39.5
+
 
 
 
