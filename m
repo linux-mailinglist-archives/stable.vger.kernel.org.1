@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-138852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10332AA1A05
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:17:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4C8AA18E2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70DD04E3B17
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 815D61BC76BA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A146155A4E;
-	Tue, 29 Apr 2025 18:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E77525335F;
+	Tue, 29 Apr 2025 18:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPGXhJqP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xc4R71Zm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47AA1250C0C;
-	Tue, 29 Apr 2025 18:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CAB62517BE;
+	Tue, 29 Apr 2025 18:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950557; cv=none; b=qUdsRpftiawhpbl1TzlXUlJig/EgmsI2VP66C2E2Yahexcb6vZbVhZDNB3WlzZd11PpjzvqUBs7yo+e5agOGN660fzqOe414qxpuflsip0EnxiuAPI5BNFY1zQo1SjHY8pBJ3e9n0bj6VPijt/d6SZ6vj9801LTAYu40HN9pzmc=
+	t=1745949872; cv=none; b=mcoYm/gHFnpe6zdOmKZPGVOlsmUTSg1S3YJsYQkXS/3oX2y0kVXwWIi5YA86Oa1UPO8wE9zoL4PYFNvYX78JzpA4wXpmGv+03L+20a4Sd8CfGt9wZpGZB87HxOH3aLza/PF5OZoBOBnfFHkrNkcz3YYLLVF/bPym/pkp7ANLaEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950557; c=relaxed/simple;
-	bh=viNFcOG2mWY/gNlJtrXmMBBDZkv4I5gipnfOVVR/z5k=;
+	s=arc-20240116; t=1745949872; c=relaxed/simple;
+	bh=Ii9nqpvq64Pi7tMHCCS4/fk3f1qEspuX8067h99F528=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKCS8N9SFnfbdcd4DteMiuOKYas7ZZdkuEpCzrsljNTu9GoVlTtzCEihjCk6ZPfi+WLDmwu4kkmg47EjQ2qvYMny0ppUI2K/BHWqodTZ5caeOi3e0q/8Jiw8SGyUa1Pz/rg6aZqOEEsxH34l2q9kW0wZV93VL/sUvDwYwkFLx68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPGXhJqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CF8C4CEE3;
-	Tue, 29 Apr 2025 18:15:56 +0000 (UTC)
+	 MIME-Version; b=muyZL4rCMihQcs9yIIoKyt4wfgQXoxlxc5wWeX0qczfDC8FDV5mvKFcLXLGH01rZupRfRguMECMyZx2WQoM8UfK5w9s6JinRc22pCTNCl3GqXUlyH2lo94HgQTAGdsmigjSAWaFQvfzfVgLXwnc3qYNC5FgZOQqwfN5cMb1IHss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xc4R71Zm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66ED8C4CEE3;
+	Tue, 29 Apr 2025 18:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950557;
-	bh=viNFcOG2mWY/gNlJtrXmMBBDZkv4I5gipnfOVVR/z5k=;
+	s=korg; t=1745949871;
+	bh=Ii9nqpvq64Pi7tMHCCS4/fk3f1qEspuX8067h99F528=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPGXhJqPUAPvhJg3GnKCTCGXXupslZjzM9yDfqQM9nVUXDKVU/EhAEpdhb1QbPCle
-	 gJV2KoQz0pMfZzlcvwsoGsRAHYo4vKdVjV8cwnHDB5Wuz1L6DPN0wX2Z6neSdQyK78
-	 sUNkPIrFVyoH3RgAbQj/0v/RnO/sX3L7Fgt4Iv8E=
+	b=Xc4R71ZmPF/lDf/ofqAWeHlFM8M/M2Fl4dUsawMiXYybN17mV3W3aIn7e/YBKwm11
+	 LJyb0Xz+pFXo6o2sYe06l4XA9QHARhIpz2WMb7XPlWoQud3c871cgvOckKwI9euCxL
+	 A20/GIID5yF3J/L8Oi/fDXN//qSFn2ivznmopuvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ralph Siemsen <ralph.siemsen@linaro.org>,
 	Peter Chen <peter.chen@kernel.org>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 6.6 103/204] usb: cdns3: Fix deadlock when using NCM gadget
+Subject: [PATCH 6.1 083/167] usb: cdns3: Fix deadlock when using NCM gadget
 Date: Tue, 29 Apr 2025 18:43:11 +0200
-Message-ID: <20250429161103.644510395@linuxfoundation.org>
+Message-ID: <20250429161055.118328734@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -94,7 +94,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/usb/cdns3/cdns3-gadget.c
 +++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -1962,6 +1962,7 @@ static irqreturn_t cdns3_device_thread_i
+@@ -1960,6 +1960,7 @@ static irqreturn_t cdns3_device_thread_i
  	unsigned int bit;
  	unsigned long reg;
  
@@ -102,7 +102,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	spin_lock_irqsave(&priv_dev->lock, flags);
  
  	reg = readl(&priv_dev->regs->usb_ists);
-@@ -2003,6 +2004,7 @@ static irqreturn_t cdns3_device_thread_i
+@@ -2001,6 +2002,7 @@ static irqreturn_t cdns3_device_thread_i
  irqend:
  	writel(~0, &priv_dev->regs->ep_ien);
  	spin_unlock_irqrestore(&priv_dev->lock, flags);
