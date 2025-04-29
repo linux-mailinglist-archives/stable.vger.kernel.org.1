@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6601DAA16C3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89059AA12A1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEFD0984CF3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B92EC4628CD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBB524E000;
-	Tue, 29 Apr 2025 17:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E872459EE;
+	Tue, 29 Apr 2025 16:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/8FjeDq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eT6AMcBx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1A324729E;
-	Tue, 29 Apr 2025 17:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E47215060;
+	Tue, 29 Apr 2025 16:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948047; cv=none; b=uP9vHOz5qe/dTHPLCn5obw8Aema3HDzx3OOeSEVyGxIuCdQbS+TwZ2GkxelW23Ya/zItCdV4M52Mw/zllRLAswfAHqH6PWgO2KUQXs7hc2C3ZWuoydIjUOTrG3FjxlAE1Tsvhv4ruowe9R2CP0CftfUrHONR3ClZvXzSdczyGKA=
+	t=1745945636; cv=none; b=jgb/GcH1H8UYl0TgS8opCNP5pvVYp58prXFITogWG3iYkvBnKpc+bmXuANln7UfUjusRsBUgLVcBsDDRtpjcbbJ2j2OVn19bjQCJCtzqNnSSIjoHxBFq0B66in/j3uJszuUkKGmDvUswFTuwokrkD90xnTJBp1chtYXAMjKhxjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948047; c=relaxed/simple;
-	bh=3XHg6V3LmSnJQGekK/5z0LfvW8XW1up7CbuxEZgfS60=;
+	s=arc-20240116; t=1745945636; c=relaxed/simple;
+	bh=72iSI5YbYeJxWTYj1vjoHeb0sdGvLppmXT/U2v+Iy1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GaA3Oz40x2NhLA1X1hbrkhUQT+1bafJb3TCNPZSbjbEvKCdTGRKTJnpXzFH4xwUPmKln1Vw5x+KcIw8mWJFpPy/VkGl2aM4TdpWl5byRWG0ngZuGuKlIPoHO7SvCJWQG4SE9XIfQC8R/62d8U2h3mT25z7tkaFjEfQxpDXRy7+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/8FjeDq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34350C4CEE3;
-	Tue, 29 Apr 2025 17:34:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SOisGN90hfD3hzEmbDu8nuutE+KrMprOgo2kuBxxCc089iOCP2mWivUrfxkU1aYife6m10ebllXBTLWg3kzdV7aSysyImwNtYJmUPeNrI3MYWK2GbnXNSk3DNPWyD740P3XzvYogRHwHOM53P1SAZqklHiPU6M8pFAo5rdC8Vwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eT6AMcBx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522E7C4CEE3;
+	Tue, 29 Apr 2025 16:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948047;
-	bh=3XHg6V3LmSnJQGekK/5z0LfvW8XW1up7CbuxEZgfS60=;
+	s=korg; t=1745945635;
+	bh=72iSI5YbYeJxWTYj1vjoHeb0sdGvLppmXT/U2v+Iy1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/8FjeDqDXoj5fdhoiTck5P7xcWYK5Gnh3t+7iK/krFWGnR9+RP1SHvZKNNqhNcIx
-	 x41vYCK7LjnpmiIp3XN+FGO17Nsv4T93qjn2qC/m2GBDps8Mha8N59Yb8/TtcukJaB
-	 Z55toQWIolOy52tcjEmORLDI7CMbu9spXZu072t4=
+	b=eT6AMcBxmRTVqK+8ISwh1QYDM74uEIMbKzGiHbOZOIz618C9+H+z8Wtjko8F0r11u
+	 SjN7u3akeXodAo1w24e2vy/MXmxsAGJwR18ePmA4LAePfbupxnE1cicHmTcyq4EdHQ
+	 BMxryVg0s1gMmzKl3tD6WJ4LL4mANm1CTz3vqDUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuangyi Chiang <ki.chiang65@gmail.com>,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 178/280] xhci: Handle spurious events on Etron host isoc enpoints
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.4 178/179] crypto: atmel-sha204a - Set hwrng quality to lowest possible
 Date: Tue, 29 Apr 2025 18:41:59 +0200
-Message-ID: <20250429161122.390925659@linuxfoundation.org>
+Message-ID: <20250429161056.595296761@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,160 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit b331a3d8097fad4e541d212684192f21fedbd6e5 ]
+commit 8006aff15516a170640239c5a8e6696c0ba18d8e upstream.
 
-Unplugging a USB3.0 webcam from Etron hosts while streaming results
-in errors like this:
+According to the review by Bill Cox [1], the Atmel SHA204A random number
+generator produces random numbers with very low entropy.
 
-[ 2.646387] xhci_hcd 0000:03:00.0: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 18 comp_code 13
-[ 2.646446] xhci_hcd 0000:03:00.0: Looking for event-dma 000000002fdf8630 trb-start 000000002fdf8640 trb-end 000000002fdf8650
-[ 2.646560] xhci_hcd 0000:03:00.0: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 18 comp_code 13
-[ 2.646568] xhci_hcd 0000:03:00.0: Looking for event-dma 000000002fdf8660 trb-start 000000002fdf8670 trb-end 000000002fdf8670
+Set the lowest possible entropy for this chip just to be safe.
 
-Etron xHC generates two transfer events for the TRB if an error is
-detected while processing the last TRB of an isoc TD.
+[1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
 
-The first event can be any sort of error (like USB Transaction or
-Babble Detected, etc), and the final event is Success.
-
-The xHCI driver will handle the TD after the first event and remove it
-from its internal list, and then print an "Transfer event TRB DMA ptr
-not part of current TD" error message after the final event.
-
-Commit 5372c65e1311 ("xhci: process isoc TD properly when there was a
-transaction error mid TD.") is designed to address isoc transaction
-errors, but unfortunately it doesn't account for this scenario.
-
-This issue is similar to the XHCI_SPURIOUS_SUCCESS case where a success
-event follows a 'short transfer' event, but the TD the event points to
-is already given back.
-
-Expand the spurious success 'short transfer' event handling to cover
-the spurious success after error on Etron hosts.
-
-Kuangyi Chiang reported this issue and submitted a different solution
-based on using error_mid_td. This commit message is mostly taken
-from that patch.
-
-Reported-by: Kuangyi Chiang <ki.chiang65@gmail.com>
-Closes: https://lore.kernel.org/linux-usb/20241028025337.6372-6-ki.chiang65@gmail.com/
-Tested-by: Kuangyi Chiang <ki.chiang65@gmail.com>
-Tested-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250306144954.3507700-16-mathias.nyman@linux.intel.com
+Fixes: da001fb651b00e1d ("crypto: atmel-i2c - add support for SHA204A random number generator")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Marek Behún <kabel@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 38 ++++++++++++++++++++++++------------
- drivers/usb/host/xhci.h      |  2 +-
- 2 files changed, 27 insertions(+), 13 deletions(-)
+ drivers/crypto/atmel-sha204a.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 6eb297b168fa4..653e24bb3e9ad 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2642,6 +2642,22 @@ static int handle_transferless_tx_event(struct xhci_hcd *xhci, struct xhci_virt_
- 	return 0;
- }
+--- a/drivers/crypto/atmel-sha204a.c
++++ b/drivers/crypto/atmel-sha204a.c
+@@ -107,7 +107,12 @@ static int atmel_sha204a_probe(struct i2
  
-+static bool xhci_spurious_success_tx_event(struct xhci_hcd *xhci,
-+					   struct xhci_ring *ring)
-+{
-+	switch (ring->old_trb_comp_code) {
-+	case COMP_SHORT_PACKET:
-+		return xhci->quirks & XHCI_SPURIOUS_SUCCESS;
-+	case COMP_USB_TRANSACTION_ERROR:
-+	case COMP_BABBLE_DETECTED_ERROR:
-+	case COMP_ISOCH_BUFFER_OVERRUN:
-+		return xhci->quirks & XHCI_ETRON_HOST &&
-+			ring->type == TYPE_ISOC;
-+	default:
-+		return false;
-+	}
-+}
+ 	i2c_priv->hwrng.name = dev_name(&client->dev);
+ 	i2c_priv->hwrng.read = atmel_sha204a_rng_read;
+-	i2c_priv->hwrng.quality = 1024;
 +
- /*
-  * If this function returns an error condition, it means it got a Transfer
-  * event with a corrupted Slot ID, Endpoint ID, or TRB DMA address.
-@@ -2696,8 +2712,8 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 	case COMP_SUCCESS:
- 		if (EVENT_TRB_LEN(le32_to_cpu(event->transfer_len)) != 0) {
- 			trb_comp_code = COMP_SHORT_PACKET;
--			xhci_dbg(xhci, "Successful completion on short TX for slot %u ep %u with last td short %d\n",
--				 slot_id, ep_index, ep_ring->last_td_was_short);
-+			xhci_dbg(xhci, "Successful completion on short TX for slot %u ep %u with last td comp code %d\n",
-+				 slot_id, ep_index, ep_ring->old_trb_comp_code);
- 		}
- 		break;
- 	case COMP_SHORT_PACKET:
-@@ -2851,7 +2867,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 		if (trb_comp_code != COMP_STOPPED &&
- 		    trb_comp_code != COMP_STOPPED_LENGTH_INVALID &&
- 		    !ring_xrun_event &&
--		    !ep_ring->last_td_was_short) {
-+		    !xhci_spurious_success_tx_event(xhci, ep_ring)) {
- 			xhci_warn(xhci, "Event TRB for slot %u ep %u with no TDs queued\n",
- 				  slot_id, ep_index);
- 		}
-@@ -2903,11 +2919,12 @@ static int handle_tx_event(struct xhci_hcd *xhci,
++	/*
++	 * According to review by Bill Cox [1], this HWRNG has very low entropy.
++	 * [1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
++	 */
++	i2c_priv->hwrng.quality = 1;
  
- 			/*
- 			 * Some hosts give a spurious success event after a short
--			 * transfer. Ignore it.
-+			 * transfer or error on last TRB. Ignore it.
- 			 */
--			if ((xhci->quirks & XHCI_SPURIOUS_SUCCESS) &&
--			    ep_ring->last_td_was_short) {
--				ep_ring->last_td_was_short = false;
-+			if (xhci_spurious_success_tx_event(xhci, ep_ring)) {
-+				xhci_dbg(xhci, "Spurious event dma %pad, comp_code %u after %u\n",
-+					 &ep_trb_dma, trb_comp_code, ep_ring->old_trb_comp_code);
-+				ep_ring->old_trb_comp_code = trb_comp_code;
- 				return 0;
- 			}
- 
-@@ -2935,15 +2952,12 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 	 */
- 	} while (ep->skip);
- 
-+	ep_ring->old_trb_comp_code = trb_comp_code;
-+
- 	/* Get out if a TD was queued at enqueue after the xrun occurred */
- 	if (ring_xrun_event)
- 		return 0;
- 
--	if (trb_comp_code == COMP_SHORT_PACKET)
--		ep_ring->last_td_was_short = true;
--	else
--		ep_ring->last_td_was_short = false;
--
- 	ep_trb = &ep_seg->trbs[(ep_trb_dma - ep_seg->dma) / sizeof(*ep_trb)];
- 	trace_xhci_handle_transfer(ep_ring, (struct xhci_generic_trb *) ep_trb);
- 
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 017a156953d72..2a954efa53e80 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1360,7 +1360,7 @@ struct xhci_ring {
- 	unsigned int		num_trbs_free; /* used only by xhci DbC */
- 	unsigned int		bounce_buf_len;
- 	enum xhci_ring_type	type;
--	bool			last_td_was_short;
-+	u32			old_trb_comp_code;
- 	struct radix_tree_root	*trb_address_map;
- };
- 
--- 
-2.39.5
-
+ 	ret = devm_hwrng_register(&client->dev, &i2c_priv->hwrng);
+ 	if (ret)
 
 
 
