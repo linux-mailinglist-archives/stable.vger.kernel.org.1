@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-138638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE65AA1959
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:10:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0435BAA1A40
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 093FF9C4216
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E1B69C659D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5CCC248866;
-	Tue, 29 Apr 2025 18:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405E0227BA9;
+	Tue, 29 Apr 2025 18:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEgKo1v/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="teB9PnFL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8418740C03;
-	Tue, 29 Apr 2025 18:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7FF215F6C;
+	Tue, 29 Apr 2025 18:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949881; cv=none; b=gdgKmaXxMi9E/MId+TOkl8Ee1Cf04CExtjAk6O1ut2vtu1nDQRue3EJg8q53qicj45OB5p1Lv6HiwmlRvZfHuT8ga5lNxLota6gkEXhXsQAee5VTjlfgkS4nmfak9i5c6mkhZHsno0ovFZBMw4udgmHXBJMGlpQ6PJ3r2mrTn7g=
+	t=1745950470; cv=none; b=ohtY8+V9NxEXHwf9m5juW+2GdHMPWhanDJ12bSA9qsjHgVDe7acLOXLfbD3cunZWcck1pty+F0tTZ0+h0Wn+fORxaVkYA3WSgJf63xEMhfXl3b36sEDe9v8R+XUqsZQG8maMIpPEiFGdTwKrrNjTmCb0b1Il6aWHaQ5hjfabtvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949881; c=relaxed/simple;
-	bh=9kGQvuN8t96e2XE3ir7WJOXSdsKXzHSY7yKgAD1V+So=;
+	s=arc-20240116; t=1745950470; c=relaxed/simple;
+	bh=MSiJsWGOhUfIFOoq7PiRkCW7zQjJfEZSn0tXAHjqA/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sR+5hydHK+73nu70Riz9qrf11/LbveUJTS+zhEk2+JnyNxc8hebvFcL/PUpkju9wO2FhPw5cf5HVaBtVNuUSHFTI4jD6o5NKbWsOpPgAcW54yjwOMD5Tw0ycuFgbtl7pTBkESeovaHJ2xl47eASQ7lECPi84ZWCBdTx1hxmziMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEgKo1v/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7454C4CEE3;
-	Tue, 29 Apr 2025 18:04:40 +0000 (UTC)
+	 MIME-Version; b=SfDzGU0TY7a9/OX5aaQHTkhbCKO6knfZ+kpj7gsiobZUJ9YeGJ8/6MX+H+A5TfWY5XiXR/9SDgOiZNasUsay99t6f+RxexFRWi1EyMJIW19h7puZyB+V+Dq2apxGBp95ig3rEymBt+Bnu8+ToKjop55ozZXhtUIK78T5M2NA09A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=teB9PnFL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4462C4CEE3;
+	Tue, 29 Apr 2025 18:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949881;
-	bh=9kGQvuN8t96e2XE3ir7WJOXSdsKXzHSY7yKgAD1V+So=;
+	s=korg; t=1745950469;
+	bh=MSiJsWGOhUfIFOoq7PiRkCW7zQjJfEZSn0tXAHjqA/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TEgKo1v/7Dp9k/zkBYAOmgVm7BmmkbFiQBIwiVEMRu3zLKfSQB/yWKToWdRN+iBcv
-	 OfvpdgW+WnUgQkEljoV0Xc/TKYhOB0jNxft5yPniYABPJsidXgoYTDKJnIsheiDQod
-	 W3nj26yuK99Z3lAFRcX2fyuvA8ZlniUGOndSxKQQ=
+	b=teB9PnFL2sEQj0CEF6dpL1v2sC90MALxY1giUzmv65b5lVk00RQetyE0TjeDKVMqS
+	 UpI3T7ypqMgrJmDFdmkCU+fV/7N3zrzOUIYbP7NWJBZZNhHEZkdYcQnZd3AT5Q8XAh
+	 4lUcDt9hiSkM/eKhv1XsfyVx8XgU1/xd5fA/Kv7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable <stable@kernel.org>,
 	Fedor Pchelkin <pchelkin@ispras.ru>,
 	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.1 086/167] usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling
+Subject: [PATCH 6.6 106/204] usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling
 Date: Tue, 29 Apr 2025 18:43:14 +0200
-Message-ID: <20250429161055.233502876@linuxfoundation.org>
+Message-ID: <20250429161103.767854763@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -88,7 +88,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/usb/chipidea/ci_hdrc_imx.c
 +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -463,7 +463,11 @@ static int ci_hdrc_imx_probe(struct plat
+@@ -472,7 +472,11 @@ static int ci_hdrc_imx_probe(struct plat
  	    of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI) {
  		pdata.flags |= CI_HDRC_OVERRIDE_PHY_CONTROL;
  		data->override_phy_control = true;
@@ -101,7 +101,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	}
  
  	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
-@@ -472,7 +476,7 @@ static int ci_hdrc_imx_probe(struct plat
+@@ -481,7 +485,7 @@ static int ci_hdrc_imx_probe(struct plat
  	ret = imx_usbmisc_init(data->usbmisc_data);
  	if (ret) {
  		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
@@ -110,7 +110,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	}
  
  	data->ci_pdev = ci_hdrc_add_device(dev,
-@@ -481,7 +485,7 @@ static int ci_hdrc_imx_probe(struct plat
+@@ -490,7 +494,7 @@ static int ci_hdrc_imx_probe(struct plat
  	if (IS_ERR(data->ci_pdev)) {
  		ret = PTR_ERR(data->ci_pdev);
  		dev_err_probe(dev, ret, "ci_hdrc_add_device failed\n");
@@ -119,7 +119,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	}
  
  	if (data->usbmisc_data) {
-@@ -515,6 +519,9 @@ static int ci_hdrc_imx_probe(struct plat
+@@ -524,6 +528,9 @@ static int ci_hdrc_imx_probe(struct plat
  
  disable_device:
  	ci_hdrc_remove_device(data->ci_pdev);
