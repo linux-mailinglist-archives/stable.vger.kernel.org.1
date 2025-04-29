@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-138121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDBA5AA16F9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:42:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92269AA1820
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:56:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D9123A7954
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B76747B6E92
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D34624113A;
-	Tue, 29 Apr 2025 17:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D1C2522A2;
+	Tue, 29 Apr 2025 17:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOn/sh4j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heha3a+E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A53321ABB7;
-	Tue, 29 Apr 2025 17:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72C0216605;
+	Tue, 29 Apr 2025 17:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948221; cv=none; b=ZK1CMni+LjN8aP+1xUxj61rUYHI817h+fR29PN0bxqU81KO07OAEP0KVkx4Oa7H1C81jY8QVrSoyLRUZXhzAkgPrRDir0DZtq8l2QjiPSGerayro79caTiT2QZlo/2+xctCS7gkjLEBRw5ujPE/zcR9TPYVn5UaXqJ+2IcVsMBM=
+	t=1745949342; cv=none; b=nG++ZFJCqEd9XbZFxw5UG+unRdg0VgwUyt1eoriCieSQzCIOYeQT/idceQMP2nZCoDzgeYzcTXF/JWI98AQD8oO5WC0nhO3Hy5hnnnw9dSjAMmQHot1rWz6svKt091SBaRICtQ9ytGFvo+5afbC8QFTcvdweK0tsoPesIOp0FnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948221; c=relaxed/simple;
-	bh=rqkrAXFIjQpabzHpiwXFk6/85eHrUvUFQ0+pigaOzkg=;
+	s=arc-20240116; t=1745949342; c=relaxed/simple;
+	bh=dlbDkJStd0pFPbsw9Ru68B5YkH9BCxxrwr2qGVdjt9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k+fgZkZE8kjaIQlWyjgwK8W0R9bO8lv/O9daPjtTJd6zk8v89D8tg9F/NxI2o3tUJ+Sww2ebo3X2grm+hGQgCJgejHJjrJ7TXIad9JMt4Y8KhONNW6wwDASVT02uNOPvxGEfEU0EZEahBJ741hYcxivT0IEfx8o2QzbGvHhu0jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOn/sh4j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562EBC4CEE3;
-	Tue, 29 Apr 2025 17:37:00 +0000 (UTC)
+	 MIME-Version; b=uLnIwPIuZcAaumKv2JesMbkwUpda6JPRquHmzX4ySo17OvC9HXVacUeybgs3BMw7UC12cMMVnvbT1XIh3eYnIJF/4zq0qW3Jk2qTGon8ujzxH0kmOLBy5dk+iK1EVn3UO2qvaxpniccInoCE8PuT7A0jn2Cmcfa10T/hJTDhs3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heha3a+E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D94C4CEE3;
+	Tue, 29 Apr 2025 17:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948221;
-	bh=rqkrAXFIjQpabzHpiwXFk6/85eHrUvUFQ0+pigaOzkg=;
+	s=korg; t=1745949342;
+	bh=dlbDkJStd0pFPbsw9Ru68B5YkH9BCxxrwr2qGVdjt9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOn/sh4j2Xab7CnU1VDylAlijTm1HL5VSVFZqbYLP+Onvs6lLoUuivpBNvuUrQosf
-	 VXz8LUGI33ZlxZ5zbAqhR8aTQyrQUghiRBS0qaOua/+tcaFGZuECtrRHcJ5SJ0vJtJ
-	 GiXDOIYZl611srsQQwkg7K+1OrRfQhImJLoOWmno=
+	b=heha3a+ELAOrrZjnUFL1G4q9Pw+bjvYWqtUkS8yB/CKqRNH8J9h5ZENRXmjckJMcu
+	 trRIenT8G+XloLhzQ/d4FIc2rVe0CptuVxGnMftqSxWiQEODty6jtCgUWpEg3wB1bK
+	 ufH+CUYdH/Acmb0nDcIK6svNTO4NSaPuVKQm12kE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Marc Zyngier <maz@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 224/280] timekeeping: Add a lockdep override in tick_freeze()
-Date: Tue, 29 Apr 2025 18:42:45 +0200
-Message-ID: <20250429161124.284894514@linuxfoundation.org>
+Subject: [PATCH 5.15 289/373] cpufreq: cppc: Fix invalid return value in .get() callback
+Date: Tue, 29 Apr 2025 18:42:46 +0200
+Message-ID: <20250429161135.001562425@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 92e250c624ea37fde64bfd624fd2556f0d846f18 ]
+[ Upstream commit 2b8e6b58889c672e1ae3601d9b2b070be4dc2fbc ]
 
-tick_freeze() acquires a raw spinlock (tick_freeze_lock). Later in the
-callchain (timekeeping_suspend() -> mc146818_avoid_UIP()) the RTC driver
-acquires a spinlock which becomes a sleeping lock on PREEMPT_RT.  Lockdep
-complains about this lock nesting.
+Returning a negative error code in a function with an unsigned
+return type is a pretty bad idea. It is probably worse when the
+justification for the change is "our static analisys tool found it".
 
-Add a lockdep override for this special case and a comment explaining
-why it is okay.
-
-Reported-by: Borislav Petkov <bp@alien8.de>
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/20250404133429.pnAzf-eF@linutronix.de
-Closes: https://lore.kernel.org/all/20250330113202.GAZ-krsjAnurOlTcp-@fat_crate.local/
-Closes: https://lore.kernel.org/all/CAP-bSRZ0CWyZZsMtx046YV8L28LhY0fson2g4EqcwRAVN1Jk+Q@mail.gmail.com/
+Fixes: cf7de25878a1 ("cppc_cpufreq: Fix possible null pointer dereference")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-common.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/cpufreq/cppc_cpufreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index a47bcf71defcf..9a3859443c042 100644
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -509,6 +509,7 @@ void tick_resume(void)
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index 17cfa2b92eeec..c5a4aa0c2c9ae 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -620,7 +620,7 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+ 	int ret;
  
- #ifdef CONFIG_SUSPEND
- static DEFINE_RAW_SPINLOCK(tick_freeze_lock);
-+static DEFINE_WAIT_OVERRIDE_MAP(tick_freeze_map, LD_WAIT_SLEEP);
- static unsigned int tick_freeze_depth;
+ 	if (!policy)
+-		return -ENODEV;
++		return 0;
  
- /**
-@@ -528,9 +529,22 @@ void tick_freeze(void)
- 	if (tick_freeze_depth == num_online_cpus()) {
- 		trace_suspend_resume(TPS("timekeeping_freeze"),
- 				     smp_processor_id(), true);
-+		/*
-+		 * All other CPUs have their interrupts disabled and are
-+		 * suspended to idle. Other tasks have been frozen so there
-+		 * is no scheduling happening. This means that there is no
-+		 * concurrency in the system at this point. Therefore it is
-+		 * okay to acquire a sleeping lock on PREEMPT_RT, such as a
-+		 * spinlock, because the lock cannot be held by other CPUs
-+		 * or threads and acquiring it cannot block.
-+		 *
-+		 * Inform lockdep about the situation.
-+		 */
-+		lock_map_acquire_try(&tick_freeze_map);
- 		system_state = SYSTEM_SUSPEND;
- 		sched_clock_suspend();
- 		timekeeping_suspend();
-+		lock_map_release(&tick_freeze_map);
- 	} else {
- 		tick_suspend_local();
- 	}
-@@ -552,8 +566,16 @@ void tick_unfreeze(void)
- 	raw_spin_lock(&tick_freeze_lock);
+ 	cpu_data = policy->driver_data;
  
- 	if (tick_freeze_depth == num_online_cpus()) {
-+		/*
-+		 * Similar to tick_freeze(). On resumption the first CPU may
-+		 * acquire uncontended sleeping locks while other CPUs block on
-+		 * tick_freeze_lock.
-+		 */
-+		lock_map_acquire_try(&tick_freeze_map);
- 		timekeeping_resume();
- 		sched_clock_resume();
-+		lock_map_release(&tick_freeze_map);
-+
- 		system_state = SYSTEM_RUNNING;
- 		trace_suspend_resume(TPS("timekeeping_freeze"),
- 				     smp_processor_id(), false);
 -- 
 2.39.5
 
