@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-138643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF23AA1919
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:07:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F5AAA1A24
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A50BC4A0AC3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B96D69C5D14
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7CE2517BE;
-	Tue, 29 Apr 2025 18:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2799924729A;
+	Tue, 29 Apr 2025 18:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0Ygqasv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tD6ECy/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8CB221D92;
-	Tue, 29 Apr 2025 18:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E842AE72;
+	Tue, 29 Apr 2025 18:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949897; cv=none; b=g3LejluQ2eoC3pppURLuZHTQtge/Ne9HmKnM/Fn1Y3sbiKmng8eK/fXbjkK4T8PIqlsEyfLRe/C4F15/Z9MyAuxik4sRlAGDMlba4vBilGi9grp1tOMJw05RyWw+98Kk75VZ29QmqrW1J2ZNuw577APg9LSVYzefihOxnbnsENI=
+	t=1745950399; cv=none; b=audVIHPKoDQMHootxu6Q9RFGLASKSCu78nzr6gDl/zvMjbKzvQ4OchSp5Ct2zjlwN0AL/vMgDr9Fm707TuA7kOxkcKp6s3VUxxsnuIlOFVmOtz0rIsQCguv3f7U9EkVHcUGcNcr5z+2LqmwGWoOLJbBZLoI/MLLSyR3PHFCAZ9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949897; c=relaxed/simple;
-	bh=Mtplip4B8dYPwIQipH/PIwQU4vIbmgsHGR6gmucz3/4=;
+	s=arc-20240116; t=1745950399; c=relaxed/simple;
+	bh=uLXJr+nD+B2E08/HBB8WA4MSCmchMfMkIkT2FNUa+Wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tzR8XXwcNZ1xhUM/SkQKoawEFU+5F2iITceA9E2PuDUcLOB1LkInynlfWkhAyIdnIldtDJyMjJVf3IocDsY+szoZgOdQf/XTI/jaCAMq8+fgL9XAQKlgC+YbH8wVW+SqUssV59vgxeV0ZU5d1AN2v0o2/3+R6Lln/VqpVyQCDpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0Ygqasv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DBBC4CEE3;
-	Tue, 29 Apr 2025 18:04:56 +0000 (UTC)
+	 MIME-Version; b=eAEgNiScTIxxEegDdpuQGbpAsohHa3o/fxP9+2iGth+3UgbkDvwTGjg5nuiSNJ7ui/2416zKN6Vp99XZcrEEX54axHcQf5ih38rZO9BNwm1MRt5rx8qY3YHhzQ7FctrXVV3rVicwli+5hgL2+hyX0gZ01gXKT4npygLbzF+wF2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tD6ECy/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 493B1C4CEE9;
+	Tue, 29 Apr 2025 18:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949897;
-	bh=Mtplip4B8dYPwIQipH/PIwQU4vIbmgsHGR6gmucz3/4=;
+	s=korg; t=1745950399;
+	bh=uLXJr+nD+B2E08/HBB8WA4MSCmchMfMkIkT2FNUa+Wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g0YgqasvYbGACr0VIK9jsZIhoXMX4tFwagHQvyoxI2Dq5g7naiyN2KLk6fHCClySo
-	 q3vvA2iswOoNHT9iHzoOpQK5jHpVCer1IqyEDfaWuEGyTq/COS0Tb8OdIMk5rm11EF
-	 Dh+WXD5gw/qWTmJf30g4FUi4QJR06E0fKLPq74uE=
+	b=tD6ECy/I9odh14P9lWBEr4pTsA1kM+JgKhSQA3i9RSruNYFUTNblXZh48PCYKTOJ1
+	 lBvt0tvPBnDDiAyknCQEiBeA6NG0Tln5J3aMeS1KSLbkr6e2jgZaZMQle1oWyGQnPu
+	 x7EQxQ1O8C/2InjF+sljKgqpmprQLo8kMjbUhwvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 6.1 062/167] virtio_console: fix missing byte order handling for cols and rows
-Date: Tue, 29 Apr 2025 18:42:50 +0200
-Message-ID: <20250429161054.282223969@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 083/204] KVM: SVM: Allocate IR data using atomic allocation
+Date: Tue, 29 Apr 2025 18:42:51 +0200
+Message-ID: <20250429161102.816869193@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Halil Pasic <pasic@linux.ibm.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit fbd3039a64b01b769040677c4fc68badeca8e3b2 upstream.
+commit 7537deda36521fa8fff9133b39c46e31893606f2 upstream.
 
-As per virtio spec the fields cols and rows are specified as little
-endian. Although there is no legacy interface requirement that would
-state that cols and rows need to be handled as native endian when legacy
-interface is used, unlike for the fields of the adjacent struct
-virtio_console_control, I decided to err on the side of caution based
-on some non-conclusive virtio spec repo archaeology and opt for using
-virtio16_to_cpu() much like for virtio_console_control.event. Strictly
-by the letter of the spec virtio_le_to_cpu() would have been sufficient.
-But when the legacy interface is not used, it boils down to the same.
+Allocate SVM's interrupt remapping metadata using GFP_ATOMIC as
+svm_ir_list_add() is called with IRQs are disabled and irqfs.lock held
+when kvm_irq_routing_update() reacts to GSI routing changes.
 
-And when using the legacy interface, the device formatting these as
-little endian when the guest is big endian would surprise me more than
-it using guest native byte order (which would make it compatible with
-the current implementation). Nevertheless somebody trying to implement
-the spec following it to the letter could end up forcing little endian
-byte order when the legacy interface is in use. So IMHO this ultimately
-needs a judgement call by the maintainers.
-
-Fixes: 8345adbf96fc1 ("virtio: console: Accept console size along with resize control message")
-Signed-off-by: Halil Pasic <pasic@linux.ibm.com>
-Cc: stable@vger.kernel.org # v2.6.35+
-Message-Id: <20250322002954.3129282-1-pasic@linux.ibm.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/virtio_console.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/kvm/svm/avic.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/virtio_console.c
-+++ b/drivers/char/virtio_console.c
-@@ -1615,8 +1615,8 @@ static void handle_control_message(struc
- 		break;
- 	case VIRTIO_CONSOLE_RESIZE: {
- 		struct {
--			__u16 rows;
--			__u16 cols;
-+			__virtio16 rows;
-+			__virtio16 cols;
- 		} size;
- 
- 		if (!is_console_port(port))
-@@ -1624,7 +1624,8 @@ static void handle_control_message(struc
- 
- 		memcpy(&size, buf->buf + buf->offset + sizeof(*cpkt),
- 		       sizeof(size));
--		set_console_size(port, size.rows, size.cols);
-+		set_console_size(port, virtio16_to_cpu(vdev, size.rows),
-+				 virtio16_to_cpu(vdev, size.cols));
- 
- 		port->cons.hvc->irq_requested = 1;
- 		resize_console(port);
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -820,7 +820,7 @@ static int svm_ir_list_add(struct vcpu_s
+ 	 * Allocating new amd_iommu_pi_data, which will get
+ 	 * add to the per-vcpu ir_list.
+ 	 */
+-	ir = kzalloc(sizeof(struct amd_svm_iommu_ir), GFP_KERNEL_ACCOUNT);
++	ir = kzalloc(sizeof(struct amd_svm_iommu_ir), GFP_ATOMIC | __GFP_ACCOUNT);
+ 	if (!ir) {
+ 		ret = -ENOMEM;
+ 		goto out;
 
 
 
