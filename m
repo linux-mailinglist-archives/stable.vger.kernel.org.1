@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-137705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CCDDAA1498
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA3AAA134A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FA5F189C06C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E9E94A2BAB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72132459FA;
-	Tue, 29 Apr 2025 17:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E882459E0;
+	Tue, 29 Apr 2025 17:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnOkOFiC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXzvUJ92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9536527453;
-	Tue, 29 Apr 2025 17:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D499E21A43D;
+	Tue, 29 Apr 2025 17:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946878; cv=none; b=lXOXNY7KZj+FVEE/jV1ZjYcWK1Ub5yYIO+nniYeZPPEO7wrZjRflwfptIg922KIB1XFRUzT3N14xeDMncCq+s+Kr4k5+IK4RInI+rcYgtZxVcBy9/NpsgNnF6JMqfpR952G22YvCVYOiRYpx0ryy+h9bmmuyStX0vU3tzJ6jj1c=
+	t=1745946043; cv=none; b=fAfSV4f7OCGC19xHQiL8jqBdGyMb5MdXPYaD1aHpGRW0kQX09WFHWeR7XuE3sC8SkfLJ5RiYDuDN7p9DFPh/kuJePWdHa6EuE+TiCYcX2nWCv+8biEcK0A52OlC+Ei+2CAOyWi5iPIEHzKRQpHmPQZejgbTZI4z6scpKnOMI4mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946878; c=relaxed/simple;
-	bh=aMrwDQ8dxOuCKEhBZjV5DFiiVpdKI8w4tV+o4Tfn+ZU=;
+	s=arc-20240116; t=1745946043; c=relaxed/simple;
+	bh=/cRymtbJ2UbgLeUVwtaLrpJSo7Eagwkf0fUVL76/NvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F6kro2AyiNLLKsfeBByJRFYoHP6sxMVe37gRQ/YKpUx8VEb6hVwEk54xbXyWmHHiOzqNxK78tyRabmv7o5r+3ME8CC6BBCS51aUbkjdOIYc23w/ipvdlaWrXK/TfUqYiWhIUKZYDSWUHaUjwhRLRpCC+qxsW8I4Gy6mmROKLDAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnOkOFiC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11301C4CEE3;
-	Tue, 29 Apr 2025 17:14:37 +0000 (UTC)
+	 MIME-Version; b=R+hWcI4/5sD82n4pib5iT5IkmhQ7lHRGPiiEpZ8PM69TEOPWo+9ustJ5WuT3u3KdDN3FDSVOkqfsrAxtFifvPZAlSSVkRnflbZWe3eNcpGTF1rP0PfnvSlLiGNXWv0d+vHd1MFMfohHbaTF/VlcHpMP/WAap8F7MTAAMNhUTCxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXzvUJ92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55DC9C4CEE3;
+	Tue, 29 Apr 2025 17:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946878;
-	bh=aMrwDQ8dxOuCKEhBZjV5DFiiVpdKI8w4tV+o4Tfn+ZU=;
+	s=korg; t=1745946043;
+	bh=/cRymtbJ2UbgLeUVwtaLrpJSo7Eagwkf0fUVL76/NvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fnOkOFiC9NF0+QHR3h2LT5hdjib0ad/bOhoTkLjpv5Qs5wK9czzfOT88WerMH3SF2
-	 aOX5zWOu9++ud9XtKy9HO/+b2uK/U5E4GK72bWV7aXbF5LqCOdK6Qsn/Wv8xOfkiXw
-	 WCwmyhNMisOp+hmdGiMxb6XXDyZc5H+2oi8Bt5FM=
+	b=SXzvUJ922LYhEQPQEcgZ56uma0Vj47FW/PNQimC/WMfK5rHvB9oNTq7FHCBNWRw99
+	 OX/bJCYR7XsImrOQs09CTD0NPKIiMMTpsgeC/shzLpskOEYl1pk2gkOXJEGIdDOc6a
+	 97oMxooC4IxKXKHcmVNdOgDmxcqprP8XTm1qsp9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 068/286] net: dsa: mv88e6xxx: workaround RGMII transmit delay erratum for 6320 family
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.14 135/311] KVM: SVM: Allocate IR data using atomic allocation
 Date: Tue, 29 Apr 2025 18:39:32 +0200
-Message-ID: <20250429161110.647413427@linuxfoundation.org>
+Message-ID: <20250429161126.570906009@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 1ebc8e1ef906db9c08e9abe9776d85ddec837725 upstream.
+commit 7537deda36521fa8fff9133b39c46e31893606f2 upstream.
 
-Implement the workaround for erratum
-  3.3 RGMII timing may be out of spec when transmit delay is enabled
-for the 6320 family, which says:
+Allocate SVM's interrupt remapping metadata using GFP_ATOMIC as
+svm_ir_list_add() is called with IRQs are disabled and irqfs.lock held
+when kvm_irq_routing_update() reacts to GSI routing changes.
 
-  When transmit delay is enabled via Port register 1 bit 14 = 1, duty
-  cycle may be out of spec. Under very rare conditions this may cause
-  the attached device receive CRC errors.
-
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.4.x
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-8-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/x86/kvm/svm/avic.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -2832,6 +2832,21 @@ static int mv88e6xxx_stats_setup(struct
- 	return mv88e6xxx_g1_stats_clear(chip);
- }
- 
-+static int mv88e6320_setup_errata(struct mv88e6xxx_chip *chip)
-+{
-+	u16 dummy;
-+	int err;
-+
-+	/* Workaround for erratum
-+	 *   3.3 RGMII timing may be out of spec when transmit delay is enabled
-+	 */
-+	err = mv88e6xxx_port_hidden_write(chip, 0, 0xf, 0x7, 0xe000);
-+	if (err)
-+		return err;
-+
-+	return mv88e6xxx_port_hidden_read(chip, 0, 0xf, 0x7, &dummy);
-+}
-+
- /* Check if the errata has already been applied. */
- static bool mv88e6390_setup_errata_applied(struct mv88e6xxx_chip *chip)
- {
-@@ -4122,6 +4137,7 @@ static const struct mv88e6xxx_ops mv88e6
- 
- static const struct mv88e6xxx_ops mv88e6320_ops = {
- 	/* MV88E6XXX_FAMILY_6320 */
-+	.setup_errata = mv88e6320_setup_errata,
- 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
- 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
- 	.irl_init_all = mv88e6352_g2_irl_init_all,
-@@ -4164,6 +4180,7 @@ static const struct mv88e6xxx_ops mv88e6
- 
- static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	/* MV88E6XXX_FAMILY_6320 */
-+	.setup_errata = mv88e6320_setup_errata,
- 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
- 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
- 	.irl_init_all = mv88e6352_g2_irl_init_all,
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -820,7 +820,7 @@ static int svm_ir_list_add(struct vcpu_s
+ 	 * Allocating new amd_iommu_pi_data, which will get
+ 	 * add to the per-vcpu ir_list.
+ 	 */
+-	ir = kzalloc(sizeof(struct amd_svm_iommu_ir), GFP_KERNEL_ACCOUNT);
++	ir = kzalloc(sizeof(struct amd_svm_iommu_ir), GFP_ATOMIC | __GFP_ACCOUNT);
+ 	if (!ir) {
+ 		ret = -ENOMEM;
+ 		goto out;
 
 
 
