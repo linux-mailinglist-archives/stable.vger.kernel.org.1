@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-137251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD06EAA125F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFCCEAA13D6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1614317471C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:52:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA2EE1BA830D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC2624113C;
-	Tue, 29 Apr 2025 16:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4922123F413;
+	Tue, 29 Apr 2025 17:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBHDUM9c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VydjAQc7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B20247DF9;
-	Tue, 29 Apr 2025 16:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D0682C60;
+	Tue, 29 Apr 2025 17:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945511; cv=none; b=haEB8chjRjt1YwvkjaOTdfoQfiecIIAuWnXGcnyynmFCyYNvW3irk5jJiKf+910smvOpwMuwcJrXgiz9gN9Pe6ig9rabbQeRt8AX51yvxRmR5PdnGKT6pyNUsRUatgdoOr31UgCSEof7RbiDz+0lWBKsy+UyMsBAyGdytaCciVk=
+	t=1745946362; cv=none; b=V5G5NYEiPalcI7erS7GYKXLzJQyx9vDHOZxIb/Jsnan49L9UHV8lX44Pt358hYA94ajtL8fDiPBPiUJxgBDL1/EdxDIuDfUgGBqrFrJIDJ4YKA0tOmoUoHlBGcjM/R7buGIvFfPdTIf+TQ1I00HQxZ+CdPYmCRc2Mzi/4AZbyQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945511; c=relaxed/simple;
-	bh=30Fge9rsALukdcua7z3ZPogNAJPP3egD3BXqJ2lso7w=;
+	s=arc-20240116; t=1745946362; c=relaxed/simple;
+	bh=d2HVIdVvnBEbd3smz3n+UPhcZ/2x3uBk0TQcvUA7yZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h1/5N7//NNL0dZw5b80TinGaQ/0jG6psonKu/B5WVi6Rtq+4L1mPJxCAWH4L/EIcpfWcCpJGB7RhRvJ6gOrUHTKDcnm3pq/A+nvg+fuH9f2PFeY4BLqZ7GG1SFYlL9TEB+68vgIb5qkm07D2j9FxRc2XZowfj6YFq0BYEZbrzd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBHDUM9c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2814C4CEE3;
-	Tue, 29 Apr 2025 16:51:50 +0000 (UTC)
+	 MIME-Version; b=s02D1RA8M2dDsAkf22CFbbuCTZlZwKaEKUVuH33TtMTctVHPBZM812Xl6d1bqKlEySYZQDjuurU3NpXdzvxMLO9M/rKFLmmDH5TAu8OebTvBNInW/va0xPVLdBcu6O6o6dotf+Dn8ioWdS4AJ7qgEo3ATP8XKj0B/9HJ1h7Rde4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VydjAQc7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187DCC4CEE3;
+	Tue, 29 Apr 2025 17:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945511;
-	bh=30Fge9rsALukdcua7z3ZPogNAJPP3egD3BXqJ2lso7w=;
+	s=korg; t=1745946361;
+	bh=d2HVIdVvnBEbd3smz3n+UPhcZ/2x3uBk0TQcvUA7yZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBHDUM9cPCUOfR+pB6iP0IXgmXdprMNGKx+yecZaqsLuaSnYwRzDx1fNW4zFT2+tV
-	 Iw0b1KXkqP+VcQGJ1Ks4kJvR6Bb0Px7hOfmWtGVFkN/vcV4T3DWihsf2poWVWPVhkg
-	 pr5/ZEvtYXUAwTQancCL9ZDu5nB9igfytk9OEVqo=
+	b=VydjAQc7WWJZj0oCBUl+OSzyUDVPdntFUttW/IND9ex+CQcZLGlzBVOYha+FaFz30
+	 JQwK6PK2W7kypqp7uxOgXJ/FyBTBDLpF/5HEdy/9f/g9ysU9649SpfBb7SXoaj710S
+	 +UhOeHhUq/1Mxz6kqFPZ6c/tJmYKMHv86MiIPQho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 137/179] PCI: Rename PCI_IRQ_LEGACY to PCI_IRQ_INTX
+Subject: [PATCH 6.14 241/311] cgroup/cpuset: Dont allow creation of local partition over a remote one
 Date: Tue, 29 Apr 2025 18:41:18 +0200
-Message-ID: <20250429161054.939945498@linuxfoundation.org>
+Message-ID: <20250429161130.893666119@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,53 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 58ff9c5acb4aef58e118bbf39736cc4d6c11a3d3 ]
+[ Upstream commit 6da580ec656a5ed135db2cdf574b47635611a4d7 ]
 
-Rename PCI_IRQ_LEGACY to PCI_IRQ_INTX to be more explicit about the type
-of IRQ being referenced as well as to match the PCI specifications
-terms. Redefine PCI_IRQ_LEGACY as an alias to PCI_IRQ_INTX to avoid the
-need for doing the renaming tree-wide. New drivers and new code should
-now prefer using PCI_IRQ_INTX instead of PCI_IRQ_LEGACY.
+Currently, we don't allow the creation of a remote partition underneath
+another local or remote partition. However, it is currently possible to
+create a new local partition with an existing remote partition underneath
+it if top_cpuset is the parent. However, the current cpuset code does
+not set the effective exclusive CPUs correctly to account for those
+that are taken by the remote partition.
 
-Link: https://lore.kernel.org/r/20231122060406.14695-2-dlemoal@kernel.org
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Stable-dep-of: 919d14603dab ("misc: pci_endpoint_test: Fix displaying 'irq_type' after 'request_irq' error")
+Changing the code to properly account for those remote partition CPUs
+under all possible circumstances can be complex. It is much easier to
+not allow such a configuration which is not that useful. So forbid
+that by making sure that exclusive_cpus mask doesn't overlap with
+subpartitions_cpus and invalidate the partition if that happens.
+
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pci.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/cgroup/cpuset-internal.h |  1 +
+ kernel/cgroup/cpuset.c          | 14 ++++++++++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 7edc6de9e88c2..f2f92eb950cc6 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -935,11 +935,13 @@ enum {
- 	PCI_SCAN_ALL_PCIE_DEVS	= 0x00000040,	/* Scan all, not just dev 0 */
+diff --git a/kernel/cgroup/cpuset-internal.h b/kernel/cgroup/cpuset-internal.h
+index 976a8bc3ff603..383963e28ac69 100644
+--- a/kernel/cgroup/cpuset-internal.h
++++ b/kernel/cgroup/cpuset-internal.h
+@@ -33,6 +33,7 @@ enum prs_errcode {
+ 	PERR_CPUSEMPTY,
+ 	PERR_HKEEPING,
+ 	PERR_ACCESS,
++	PERR_REMOTE,
  };
  
--#define PCI_IRQ_LEGACY		(1 << 0) /* Allow legacy interrupts */
-+#define PCI_IRQ_INTX		(1 << 0) /* Allow INTx interrupts */
- #define PCI_IRQ_MSI		(1 << 1) /* Allow MSI interrupts */
- #define PCI_IRQ_MSIX		(1 << 2) /* Allow MSI-X interrupts */
- #define PCI_IRQ_AFFINITY	(1 << 3) /* Auto-assign affinity */
+ /* bits in struct cpuset flags field */
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index d72f843d9feeb..1287274ae1ce9 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -62,6 +62,7 @@ static const char * const perr_strings[] = {
+ 	[PERR_CPUSEMPTY] = "cpuset.cpus and cpuset.cpus.exclusive are empty",
+ 	[PERR_HKEEPING]  = "partition config conflicts with housekeeping setup",
+ 	[PERR_ACCESS]    = "Enable partition not permitted",
++	[PERR_REMOTE]    = "Have remote partition underneath",
+ };
  
-+#define PCI_IRQ_LEGACY		PCI_IRQ_INTX /* Deprecated! Use PCI_IRQ_INTX */
+ /*
+@@ -2840,6 +2841,19 @@ static int update_prstate(struct cpuset *cs, int new_prs)
+ 			goto out;
+ 		}
+ 
++		/*
++		 * We don't support the creation of a new local partition with
++		 * a remote partition underneath it. This unsupported
++		 * setting can happen only if parent is the top_cpuset because
++		 * a remote partition cannot be created underneath an existing
++		 * local or remote partition.
++		 */
++		if ((parent == &top_cpuset) &&
++		    cpumask_intersects(cs->exclusive_cpus, subpartitions_cpus)) {
++			err = PERR_REMOTE;
++			goto out;
++		}
 +
- /* These external functions are only available when PCI support is enabled */
- #ifdef CONFIG_PCI
- 
+ 		/*
+ 		 * If parent is valid partition, enable local partiion.
+ 		 * Otherwise, enable a remote partition.
 -- 
 2.39.5
 
