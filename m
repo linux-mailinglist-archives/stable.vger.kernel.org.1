@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E230AA135A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D61AA1798
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A63DC7AFD17
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5083C16884E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9783E2512D9;
-	Tue, 29 Apr 2025 17:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAAB824C083;
+	Tue, 29 Apr 2025 17:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0I0BqEBZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYq2A2b+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BD682C60;
-	Tue, 29 Apr 2025 17:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66CF24BD02;
+	Tue, 29 Apr 2025 17:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946271; cv=none; b=TehQaTchYLQSKVDSrDjXVVs5XTodTZnDbUzQp6o+C3n8wQSf6FXixIT0MS+D8sDJnQwDi5hJGg2IHCkoltvVaFkYMjJmdKLzH+rZalDbELa7JfQASdrkh5aHt5RxSMaIhxsgQb8qdIbsEmZ8TQuHHX9/I+17Sk8F5PvQiEaFeGk=
+	t=1745948937; cv=none; b=Di86/Ppa86r82OzhPWi0MLrn5khiWdQG8FqpmkC04Bk23UAiNsXXnDvr14QHwlZ5hhVrdqTBLUpWl3rJdDuTJt3E5wyobD8GXt/FxILPFuzpGSgm8Cj7988pvbFJv9YyIScT9qXxVyIsYnQnNhKyucbzbNBoQyXndigR4g+ZAKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946271; c=relaxed/simple;
-	bh=z1aDlTfdvDkeWsJTiJ2pR5yZolONi+Cn7qTbI9Re8gU=;
+	s=arc-20240116; t=1745948937; c=relaxed/simple;
+	bh=CxGXRYQxmv5PHnzpPtrRQMQBGTBszLsg8mS4CaeCPYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rIO7zI2V+OJF8lUlKIBYEiRR8oXAn1t7fjfjVJuwQiBD2bNwnKbXrENMhL18Tfz8tP9bMK6edHAeTLwXr1OduIButtpw9uYDIw1TQyr8136fV94SHlypF+w3mMvV7LNUsi3c6+5PUmR0I54Wxv2fOlK1u3RNo17cv55OaZevx5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0I0BqEBZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7401CC4CEE3;
-	Tue, 29 Apr 2025 17:04:30 +0000 (UTC)
+	 MIME-Version; b=uYbveNQUT7PO2Y+f2cKSef2tVodWJCDtEaTNa6swFNIi9fp1MzkrtkLS21eBD2Z59eA6wVIB3SuIJjgcmA3ZQqYT8qFN1+KA/h092tw9zdV+iT5C9sRZ1ffVjvEpKvl4FT0GwGHfnOUrQvhIGQEJyHHOvCajUijMGPP7M2yc3fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYq2A2b+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CF8C4CEE3;
+	Tue, 29 Apr 2025 17:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946270;
-	bh=z1aDlTfdvDkeWsJTiJ2pR5yZolONi+Cn7qTbI9Re8gU=;
+	s=korg; t=1745948937;
+	bh=CxGXRYQxmv5PHnzpPtrRQMQBGTBszLsg8mS4CaeCPYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0I0BqEBZSr2P5B/CGSoUwlV2Rlz7b+kocp0DFlwaxT7EARmyZmgHxesZASF3dGpZs
-	 aPLXr4KWVPDUI47uetPdM/1VrslcW5vJx1cgokylwo0JEwq1T+L5KGBZFddQ7Wvnmt
-	 i1DNWGx8pGF+Not0Y0htE88eDD7LvA08VHNokT6Q=
+	b=DYq2A2b+S2wTvdeYaz4kXEzs4C7S/2VsceuSbrV9q5wDDi2lYB1HfKlP9xL9yCxCv
+	 uZMLZJ5A3Ysg07ogClNtB9ehlRfei/lbUMegRkqJ1DPiew1gBEsC06LwIKHQ+m4ucS
+	 dc1D6n1eysABea8nqkZyX+IFfnfgpp+C7VWD2a4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 210/311] usb: xhci: Fix isochronous Ring Underrun/Overrun event handling
+	Nathan Chancellor <nathan@kernel.org>,
+	"Dmitry V. Levin" <ldv@strace.io>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 5.15 170/373] riscv: Avoid fortify warning in syscall_get_arguments()
 Date: Tue, 29 Apr 2025 18:40:47 +0200
-Message-ID: <20250429161129.605541237@linuxfoundation.org>
+Message-ID: <20250429161130.167374919@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 906dec15b9b321b546fd31a3c99ffc13724c7af4 ]
+commit adf53771a3123df99ca26e38818760fbcf5c05d0 upstream.
 
-The TRB pointer of these events points at enqueue at the time of error
-occurrence on xHCI 1.1+ HCs or it's NULL on older ones. By the time we
-are handling the event, a new TD may be queued at this ring position.
+When building with CONFIG_FORTIFY_SOURCE=y and W=1, there is a warning
+because of the memcpy() in syscall_get_arguments():
 
-I can trigger this race by rising interrupt moderation to increase IRQ
-handling delay. Similar delay may occur naturally due to system load.
+  In file included from include/linux/string.h:392,
+                   from include/linux/bitmap.h:13,
+                   from include/linux/cpumask.h:12,
+                   from arch/riscv/include/asm/processor.h:55,
+                   from include/linux/sched.h:13,
+                   from kernel/ptrace.c:13:
+  In function 'fortify_memcpy_chk',
+      inlined from 'syscall_get_arguments.isra' at arch/riscv/include/asm/syscall.h:66:2:
+  include/linux/fortify-string.h:580:25: error: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
+    580 |                         __read_overflow2_field(q_size_field, size);
+        |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cc1: all warnings being treated as errors
 
-If this ever happens after a Missed Service Error, missed TDs will be
-skipped and the new TD processed as if it matched the event. It could
-be given back prematurely, risking data loss or buffer UAF by the xHC.
+The fortified memcpy() routine enforces that the source is not overread
+and the destination is not overwritten if the size of either field and
+the size of the copy are known at compile time. The memcpy() in
+syscall_get_arguments() intentionally overreads from a1 to a5 in
+'struct pt_regs' but this is bigger than the size of a1.
 
-Don't complete TDs on xrun events and don't warn if queued TDs don't
-match the event's TRB pointer, which can be NULL or a link/no-op TRB.
-Don't warn if there are no queued TDs at all.
+Normally, this could be solved by wrapping a1 through a5 with
+struct_group() but there was already a struct_group() applied to these
+members in commit bba547810c66 ("riscv: tracing: Fix
+__write_overflow_field in ftrace_partial_regs()").
 
-Now that it's safe, also handle xrun events if the skip flag is clear.
-This ensures completion of any TD stuck in 'error mid TD' state right
-before the xrun event, which could happen if a driver submits a finite
-number of URBs to a buggy HC and then an error occurs on the last TD.
+Just avoid memcpy() altogether and write the copying of args from regs
+manually, which clears up the warning at the expense of three extra
+lines of code.
 
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250306144954.3507700-6-mathias.nyman@linux.intel.com
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Dmitry V. Levin <ldv@strace.io>
+Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250409-riscv-avoid-fortify-warning-syscall_get_arguments-v1-1-7853436d4755@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ arch/riscv/include/asm/syscall.h |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 7721215be79ff..12b1c14efeb21 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2664,6 +2664,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 	int status = -EINPROGRESS;
- 	struct xhci_ep_ctx *ep_ctx;
- 	u32 trb_comp_code;
-+	bool ring_xrun_event = false;
+--- a/arch/riscv/include/asm/syscall.h
++++ b/arch/riscv/include/asm/syscall.h
+@@ -60,8 +60,11 @@ static inline void syscall_get_arguments
+ 					 unsigned long *args)
+ {
+ 	args[0] = regs->orig_a0;
+-	args++;
+-	memcpy(args, &regs->a1, 5 * sizeof(args[0]));
++	args[1] = regs->a1;
++	args[2] = regs->a2;
++	args[3] = regs->a3;
++	args[4] = regs->a4;
++	args[5] = regs->a5;
+ }
  
- 	slot_id = TRB_TO_SLOT_ID(le32_to_cpu(event->flags));
- 	ep_index = TRB_TO_EP_ID(le32_to_cpu(event->flags)) - 1;
-@@ -2770,14 +2771,12 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 		 * Underrun Event for OUT Isoch endpoint.
- 		 */
- 		xhci_dbg(xhci, "Underrun event on slot %u ep %u\n", slot_id, ep_index);
--		if (ep->skip)
--			break;
--		return 0;
-+		ring_xrun_event = true;
-+		break;
- 	case COMP_RING_OVERRUN:
- 		xhci_dbg(xhci, "Overrun event on slot %u ep %u\n", slot_id, ep_index);
--		if (ep->skip)
--			break;
--		return 0;
-+		ring_xrun_event = true;
-+		break;
- 	case COMP_MISSED_SERVICE_ERROR:
- 		/*
- 		 * When encounter missed service error, one or more isoc tds
-@@ -2850,6 +2849,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 		 */
- 		if (trb_comp_code != COMP_STOPPED &&
- 		    trb_comp_code != COMP_STOPPED_LENGTH_INVALID &&
-+		    !ring_xrun_event &&
- 		    !ep_ring->last_td_was_short) {
- 			xhci_warn(xhci, "Event TRB for slot %u ep %u with no TDs queued\n",
- 				  slot_id, ep_index);
-@@ -2884,6 +2884,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 				goto check_endpoint_halted;
- 			}
- 
-+			/* TD was queued after xrun, maybe xrun was on a link, don't panic yet */
-+			if (ring_xrun_event)
-+				return 0;
-+
- 			/*
- 			 * Skip the Force Stopped Event. The 'ep_trb' of FSE is not in the current
- 			 * TD pointed by 'ep_ring->dequeue' because that the hardware dequeue
-@@ -2930,6 +2934,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 	 */
- 	} while (ep->skip);
- 
-+	/* Get out if a TD was queued at enqueue after the xrun occurred */
-+	if (ring_xrun_event)
-+		return 0;
-+
- 	if (trb_comp_code == COMP_SHORT_PACKET)
- 		ep_ring->last_td_was_short = true;
- 	else
--- 
-2.39.5
-
+ static inline void syscall_set_arguments(struct task_struct *task,
 
 
 
