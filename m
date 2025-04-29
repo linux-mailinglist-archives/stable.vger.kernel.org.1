@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-137855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785B0AA156B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:27:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37793AA16EC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D00691A8586A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB57A987347
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984E02517B6;
-	Tue, 29 Apr 2025 17:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3233C250C15;
+	Tue, 29 Apr 2025 17:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVzNZZ/J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+ncl1kc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54943245007;
-	Tue, 29 Apr 2025 17:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B0F215F7C;
+	Tue, 29 Apr 2025 17:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947335; cv=none; b=o3lwBnY78Iiz9C0kXJcW3Pq8ADeeZ2nz5gtJwzn2CXiI91HQc5kfxYkUS5bRW4eiLMbXTAuP6ew85EsOLemYtFiWqu3pM66nPCcG2NjYP5iumTQMKDTpnYm5NOb4TNdMPRYDaHHoT7ZdVY+ICqPI0mdNa6YLvL5YYlIlFqZCkXM=
+	t=1745948173; cv=none; b=ILXQH4DrD4rTLXqlcobNULRB1eid0Fe8N6lipRSy/5itVay+Ze7XfuWbA/kBKvHcbVTbE+QWId9ugEq0yO3/2bKAVhkE6M/m6C4aDmDAKNzQM4aTXDl2QZ2cK4j7hzDbhF5ZA82SNCVGeT77wZ/mS1IcbNY1XNJjqKI34RCnOQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947335; c=relaxed/simple;
-	bh=PyhcafT2aeN8peGpOob+ooSIsnWn46ZcjLD3M/Z0N64=;
+	s=arc-20240116; t=1745948173; c=relaxed/simple;
+	bh=ylNYhxJ1LFyr4vNRyVAvxauB+gscZt9C+HNMBp99YuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cltxh1qmEgbLkrQmNjGHQuglDibba110Cw+VgH4E5dFRf76Ofq8P/eWg7pwhZjjTItpMoGR2J4+8zeV4dU5tVXdkjE3ZRwvuZXGmaLP7/7jqhb6RV/Cbf7kZ6ty2m6xJ6PAq6bggTkO7vbmSibm8AvZh5ID6ygkrBngCmGNQBFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVzNZZ/J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1969C4CEE3;
-	Tue, 29 Apr 2025 17:22:14 +0000 (UTC)
+	 MIME-Version; b=ledALRMwaI2I5H42xbQyHAZV1oq6t0RZYtwT6EMglOSL5EY7YNBI2SYtdoS1nEj6kCJJY4mwMVIBl/of/+STL99sQlzaMkP4ATjIZmNljVPFC4wYb4Gk+Jnt2McACyZZw82UsmGY//8vaY6u85W4tPusDTsKjUCMPkQsgLR+kLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+ncl1kc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D809C4CEE3;
+	Tue, 29 Apr 2025 17:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947335;
-	bh=PyhcafT2aeN8peGpOob+ooSIsnWn46ZcjLD3M/Z0N64=;
+	s=korg; t=1745948172;
+	bh=ylNYhxJ1LFyr4vNRyVAvxauB+gscZt9C+HNMBp99YuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVzNZZ/J86BUTk5B4UupE6iUYSwdz8Vg2ZPcUzMKDO+6E0hHvIiFkskSOZ0FYBAji
-	 1EWPkUAdeawhNUMFUavU4VCMO79EEBMMKC4ynMZoarNmXvD5V2fS9BK6rvEVNnLLnt
-	 kcuomSnn4A2ciUEADJ0VVzRLzsgyYNdhIUerdIvQ=
+	b=T+ncl1kcTlUDAE5DHgC7kKqDRSs+y1wJs7ciR5agYPq3nMf/PRCICas1ZiMJc55Gp
+	 LtnQ5xmth4hpcjG+FVL3cseO1IAAXHI2kt48fJkOYVBsboia88Iuy8bEB+XhdUuk0F
+	 JtLBqe8XTmlrtmANtifRwUHJ6orXiJg+LAD90Hy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ralph Siemsen <ralph.siemsen@linaro.org>,
-	Peter Chen <peter.chen@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 5.10 247/286] usb: cdns3: Fix deadlock when using NCM gadget
+	Jay Cornwall <jay.cornwall@amd.com>,
+	Kent Russell <kent.russell@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 210/280] drm/amdgpu: Increase KIQ invalidate_tlbs timeout
 Date: Tue, 29 Apr 2025 18:42:31 +0200
-Message-ID: <20250429161118.089752730@linuxfoundation.org>
+Message-ID: <20250429161123.719790423@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ralph Siemsen <ralph.siemsen@linaro.org>
+From: Jay Cornwall <jay.cornwall@amd.com>
 
-commit a1059896f2bfdcebcdc7153c3be2307ea319501f upstream.
+[ Upstream commit 3666ed821832f42baaf25f362680dda603cde732 ]
 
-The cdns3 driver has the same NCM deadlock as fixed in cdnsp by commit
-58f2fcb3a845 ("usb: cdnsp: Fix deadlock issue during using NCM gadget").
+KIQ invalidate_tlbs request has been seen to marginally exceed the
+configured 100 ms timeout on systems under load.
 
-Under PREEMPT_RT the deadlock can be readily triggered by heavy network
-traffic, for example using "iperf --bidir" over NCM ethernet link.
+All other KIQ requests in the driver use a 10 second timeout. Use a
+similar timeout implementation on the invalidate_tlbs path.
 
-The deadlock occurs because the threaded interrupt handler gets
-preempted by a softirq, but both are protected by the same spinlock.
-Prevent deadlock by disabling softirq during threaded irq handler.
+v2: Poll once before msleep
+v3: Fix return value
 
-Cc: stable <stable@kernel.org>
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Ralph Siemsen <ralph.siemsen@linaro.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20250318-rfs-cdns3-deadlock-v2-1-bfd9cfcee732@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jay Cornwall <jay.cornwall@amd.com>
+Cc: Kent Russell <kent.russell@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/gadget.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h     |  1 -
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 19 ++++++++++++++-----
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/cdns3/gadget.c
-+++ b/drivers/usb/cdns3/gadget.c
-@@ -1961,6 +1961,7 @@ static irqreturn_t cdns3_device_thread_i
- 	unsigned int bit;
- 	unsigned long reg;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index 9b1e0ede05a45..b7aad43d9ad07 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -350,7 +350,6 @@ enum amdgpu_kiq_irq {
+ 	AMDGPU_CP_KIQ_IRQ_DRIVER0 = 0,
+ 	AMDGPU_CP_KIQ_IRQ_LAST
+ };
+-#define SRIOV_USEC_TIMEOUT  1200000 /* wait 12 * 100ms for SRIOV */
+ #define MAX_KIQ_REG_WAIT       5000 /* in usecs, 5ms */
+ #define MAX_KIQ_REG_BAILOUT_INTERVAL   5 /* in msecs, 5ms */
+ #define MAX_KIQ_REG_TRY 1000
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+index 17a19d49d30a5..9d130d3af0b39 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -678,12 +678,10 @@ int amdgpu_gmc_flush_gpu_tlb_pasid(struct amdgpu_device *adev, uint16_t pasid,
+ 				   uint32_t flush_type, bool all_hub,
+ 				   uint32_t inst)
+ {
+-	u32 usec_timeout = amdgpu_sriov_vf(adev) ? SRIOV_USEC_TIMEOUT :
+-		adev->usec_timeout;
+ 	struct amdgpu_ring *ring = &adev->gfx.kiq[inst].ring;
+ 	struct amdgpu_kiq *kiq = &adev->gfx.kiq[inst];
+ 	unsigned int ndw;
+-	int r;
++	int r, cnt = 0;
+ 	uint32_t seq;
  
-+	local_bh_disable();
- 	spin_lock_irqsave(&priv_dev->lock, flags);
+ 	/*
+@@ -740,10 +738,21 @@ int amdgpu_gmc_flush_gpu_tlb_pasid(struct amdgpu_device *adev, uint16_t pasid,
  
- 	reg = readl(&priv_dev->regs->usb_ists);
-@@ -2002,6 +2003,7 @@ static irqreturn_t cdns3_device_thread_i
- irqend:
- 	writel(~0, &priv_dev->regs->ep_ien);
- 	spin_unlock_irqrestore(&priv_dev->lock, flags);
-+	local_bh_enable();
+ 		amdgpu_ring_commit(ring);
+ 		spin_unlock(&adev->gfx.kiq[inst].ring_lock);
+-		if (amdgpu_fence_wait_polling(ring, seq, usec_timeout) < 1) {
++
++		r = amdgpu_fence_wait_polling(ring, seq, MAX_KIQ_REG_WAIT);
++
++		might_sleep();
++		while (r < 1 && cnt++ < MAX_KIQ_REG_TRY &&
++		       !amdgpu_reset_pending(adev->reset_domain)) {
++			msleep(MAX_KIQ_REG_BAILOUT_INTERVAL);
++			r = amdgpu_fence_wait_polling(ring, seq, MAX_KIQ_REG_WAIT);
++		}
++
++		if (cnt > MAX_KIQ_REG_TRY) {
+ 			dev_err(adev->dev, "timeout waiting for kiq fence\n");
+ 			r = -ETIME;
+-		}
++		} else
++			r = 0;
+ 	}
  
- 	return ret;
- }
+ error_unlock_reset:
+-- 
+2.39.5
+
 
 
 
