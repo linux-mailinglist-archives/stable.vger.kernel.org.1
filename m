@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9A10AA1929
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8B4AA19CD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5E609C0A33
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 347D81BA0EA4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E970253B5F;
-	Tue, 29 Apr 2025 18:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7CD24111D;
+	Tue, 29 Apr 2025 18:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ds0vEx/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dccoZIaK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B97724111D;
-	Tue, 29 Apr 2025 18:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37474227BA9;
+	Tue, 29 Apr 2025 18:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949752; cv=none; b=BfWsua8MC9WTCyuoprbmQ1H9mNkqFoy2gtFuvyx/FPJ4WBb0Xm1dGVRMHr1WewRxw3EqTvT4ni0QFKLCunIIdmIctqohwdGKMjdcpAbDYCsIcPUIezHmoTFrW3zYttC/xlL/Q9opBYygKW0ZptdcFFf5LO+O+hL6k4R7YwJxX6o=
+	t=1745950431; cv=none; b=SvaqoufTLFAfl8Wt+rsNNliGPQb8kVqUEpdjxuhtaqYXBIt5z5Y1vD0EqFzNt04/sidykqg+a+/hNW7twMlmqcBcP7oe63E3F0SfJSpSyLWg2clEsMsXqo3tRw4DKV7JFR60wfGdpSk6QLN/ERxaoGVu3qV5OKj6sTMgzFtxWvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949752; c=relaxed/simple;
-	bh=tn8CseaMTYjGiPY5SpeMyW+TsBxicIcxQIq/vf7LYxo=;
+	s=arc-20240116; t=1745950431; c=relaxed/simple;
+	bh=frBW//u3RidqNs2H/zCu6TrvT5i4m4iNIj4nbkFo4Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ivIZDCYgSZxJKuIqr1F5xa2jJwPWVjvhNqxzflOK13iq4rp5RtLqwQraTi9hvW2bRSaWZP+F0jdkDXx56aIuv/tqVvUELCFMoFb49W89WJl+iWj9O363Bu9sBJXvPITMaZ7tmsJfpM9UBMTqfWBf8aqWaRmb7PIPCsQpp3fcCcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ds0vEx/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E84C4CEE3;
-	Tue, 29 Apr 2025 18:02:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ise9k/PaqwbygUXzC7tJApK3pRnov/3MIWG97AUOeWF6m1ALqi+GEKoUKj3MLHkSlv57+Ff1TuJWnDZ3/sbeDQvNtJqPkA3FkXYQuBqFrGojafCml9z0rwxz+skCeMWRAHwinEYdtopS6XpF1hjya0QhnIAcLlspUqsWdZicJz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dccoZIaK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB291C4CEE3;
+	Tue, 29 Apr 2025 18:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949752;
-	bh=tn8CseaMTYjGiPY5SpeMyW+TsBxicIcxQIq/vf7LYxo=;
+	s=korg; t=1745950431;
+	bh=frBW//u3RidqNs2H/zCu6TrvT5i4m4iNIj4nbkFo4Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ds0vEx/dLoeQZcv8a9v0jt214oq8tP1mUvraEvzWjSOKQw0lIxPJQg12pG7NQXitl
-	 lDVE07K2arzB/DG17aXpgngjwxD66ttu/wAPuWSmh/BrTDfvlHaKykhtoJII1tjONG
-	 LsLt4WbuKEXrAJUvDC0k0Qk0sPUZ1+SwmvHnS/mg=
+	b=dccoZIaKC1y+QdE0gFYYMb63O5/oBgBJ7WakED8JoQBc5nhB/WscCPGyOsbG/Mrh/
+	 +OZkV+4WRvmUpL+24RNMXlA7MfNFPuEE/IpjICTaMg1e7Pta9oen5N8Cke7FVX/NS4
+	 APGed3gB8dH6+EdkngNV57hn4Dt3lxwKbC6i6Co0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Guo Ren <guoren@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/167] cpufreq: scpi: Fix null-ptr-deref in scpi_cpufreq_get_rate()
-Date: Tue, 29 Apr 2025 18:42:33 +0200
-Message-ID: <20250429161053.579572394@linuxfoundation.org>
+Subject: [PATCH 6.6 066/204] riscv: uprobes: Add missing fence.i after building the XOL buffer
+Date: Tue, 29 Apr 2025 18:42:34 +0200
+Message-ID: <20250429161102.127164704@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-[ Upstream commit 73b24dc731731edf762f9454552cb3a5b7224949 ]
+[ Upstream commit 7d1d19a11cfbfd8bae1d89cc010b2cc397cd0c48 ]
 
-cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
-in the policy->cpus mask. scpi_cpufreq_get_rate() does not check for
-this case, which results in a NULL pointer dereference.
+The XOL (execute out-of-line) buffer is used to single-step the
+replaced instruction(s) for uprobes. The RISC-V port was missing a
+proper fence.i (i$ flushing) after constructing the XOL buffer, which
+can result in incorrect execution of stale/broken instructions.
 
-Fixes: 343a8d17fa8d ("cpufreq: scpi: remove arm_big_little dependency")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+This was found running the BPF selftests "test_progs:
+uprobe_autoattach, attach_probe" on the Spacemit K1/X60, where the
+uprobes tests randomly blew up.
+
+Reviewed-by: Guo Ren <guoren@kernel.org>
+Fixes: 74784081aac8 ("riscv: Add uprobes supported")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20250419111402.1660267-2-bjorn@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/scpi-cpufreq.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/riscv/kernel/probes/uprobes.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
-index 433deec4b61f8..217073faf60cf 100644
---- a/drivers/cpufreq/scpi-cpufreq.c
-+++ b/drivers/cpufreq/scpi-cpufreq.c
-@@ -29,9 +29,16 @@ static struct scpi_ops *scpi_ops;
+diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
+index 4b3dc8beaf77d..cc15f7ca6cc17 100644
+--- a/arch/riscv/kernel/probes/uprobes.c
++++ b/arch/riscv/kernel/probes/uprobes.c
+@@ -167,6 +167,7 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 	/* Initialize the slot */
+ 	void *kaddr = kmap_atomic(page);
+ 	void *dst = kaddr + (vaddr & ~PAGE_MASK);
++	unsigned long start = (unsigned long)dst;
  
- static unsigned int scpi_cpufreq_get_rate(unsigned int cpu)
- {
--	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
--	struct scpi_data *priv = policy->driver_data;
--	unsigned long rate = clk_get_rate(priv->clk);
-+	struct cpufreq_policy *policy;
-+	struct scpi_data *priv;
-+	unsigned long rate;
-+
-+	policy = cpufreq_cpu_get_raw(cpu);
-+	if (unlikely(!policy))
-+		return 0;
-+
-+	priv = policy->driver_data;
-+	rate = clk_get_rate(priv->clk);
+ 	memcpy(dst, src, len);
  
- 	return rate / 1000;
+@@ -176,13 +177,6 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 		*(uprobe_opcode_t *)dst = __BUG_INSN_32;
+ 	}
+ 
++	flush_icache_range(start, start + len);
+ 	kunmap_atomic(kaddr);
+-
+-	/*
+-	 * We probably need flush_icache_user_page() but it needs vma.
+-	 * This should work on most of architectures by default. If
+-	 * architecture needs to do something different it can define
+-	 * its own version of the function.
+-	 */
+-	flush_dcache_page(page);
  }
 -- 
 2.39.5
