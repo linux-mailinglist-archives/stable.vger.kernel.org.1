@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D09AA137F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B563AA1787
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FBA24C2BBD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CD364C3A4D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB982522A8;
-	Tue, 29 Apr 2025 17:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB1924DFF3;
+	Tue, 29 Apr 2025 17:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJ6c+h+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRi+Cb8o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04AD2522A1;
-	Tue, 29 Apr 2025 17:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A836B221DA7;
+	Tue, 29 Apr 2025 17:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946139; cv=none; b=nY0DOYarv372E/tWvep0CJVdnJp1kAlABKbXNfk/pULxEOGw0bFHoSofvPCuZNsNV/9TQhlOCSxGGVe4k5IgNDZD/HWzu5xgV5/+FO3z0Strb/AhRZAPbOz9LsegvHe2kVQ8uaSMvy/Hy106E5SRSD+ixn9Q7x/E0x+mTXX9u6I=
+	t=1745948903; cv=none; b=f1T5IcgxcApxAtsPmerVVQp/Wy3LHNOgxh23Vp+Re8YM1zd7451NQB/92/9sbJefNJC1JN8kHoywMMcD/hw/7p7cYADBRO/iyvjlwnBK+6GGyhBDrTPT/Jsr5zEK5P2zIZuCTa6DUel7Br2jmxMzlNehpbcF2riYGDMVdBQtAmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946139; c=relaxed/simple;
-	bh=gdow9pz0D3HM7z2Hrp13rZZ1skAUYW0kT27sCBogILg=;
+	s=arc-20240116; t=1745948903; c=relaxed/simple;
+	bh=pxr/Kihf3iYJl/jE71B5l92ttWdzltrlfLSQrJ9Ysxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E0bZNN8luFPjjGWPvnss/IlMcTK8hTPUtjjk44AbNHKpxp9pNffKsBjnVPlk6hX1dIsh4iUEjUrnCBbyHjotB8AdMPhw8qKpClgufPOhQ+Ww/DFYbsPDNJXpBXSgslUHpHuRalgkw6nO1S/N0iCwrNevgF6LfRpp1Yg56/R01Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJ6c+h+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACE8C4CEE3;
-	Tue, 29 Apr 2025 17:02:19 +0000 (UTC)
+	 MIME-Version; b=bYdrNzluBnjGkgl5jGAK+r3GXtx0hFvtu4+viir/izKvJc2s0cdTrOATHO9HRMsAtTkaj3FT7Rp3he0k3d15UG7Csiy3Zd+HjW0JVEPTQiySA9ehkawD946pEw58gSFjHqKWK8ekLEZU5FC3Zpr04TZnBL4vYS1ZuR+bs5l4eII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRi+Cb8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38613C4CEE3;
+	Tue, 29 Apr 2025 17:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946139;
-	bh=gdow9pz0D3HM7z2Hrp13rZZ1skAUYW0kT27sCBogILg=;
+	s=korg; t=1745948903;
+	bh=pxr/Kihf3iYJl/jE71B5l92ttWdzltrlfLSQrJ9Ysxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJ6c+h+uBxpFZo/pFvXIhZ4VV8080cnonvJF8vY79Sh/ikWv1kJ1SA+MffP/GUz0O
-	 +ccCCXayFCnEJfbI9G3CW5nQLn4rPll4sqnKvKGysxU9iWH9FGP/camsxBRsXSzShU
-	 q9pTFcol5Mjam09EwCY2ibKv/jjqYwNLy4zTay8k=
+	b=TRi+Cb8oVFya14IWyTD8CSB+iZrHYIwJJK313NH+JSRsvg5uexr+1Zz/WfxLg+p1Y
+	 BL9464JW98e3DUAXMSsBty8rxf+rX5ONGAvoyT0ggZXr4oplwrkU8cp0evVrp0lL9u
+	 GTSD3MiIkFfH8d0Db8rhf8myvkroumeisYFvgl1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miao Li <limiao@kylinos.cn>,
-	Lei Huang <huanglei@kylinos.cn>
-Subject: [PATCH 6.14 168/311] usb: quirks: Add delay init quirk for SanDisk 3.2Gen1 Flash Drive
+	Remi Pommarel <repk@triplefau.lt>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 128/373] wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()
 Date: Tue, 29 Apr 2025 18:40:05 +0200
-Message-ID: <20250429161127.920516686@linuxfoundation.org>
+Message-ID: <20250429161128.436695769@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miao Li <limiao@kylinos.cn>
+From: Remi Pommarel <repk@triplefau.lt>
 
-commit 37ffdbd695c02189dbf23d6e7d2385e0299587ca upstream.
+[ Upstream commit a104042e2bf6528199adb6ca901efe7b60c2c27f ]
 
-The SanDisk 3.2Gen1 Flash Drive, which VID:PID is in 0781:55a3,
-just like Silicon Motion Flash Drive:
-https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
-also needs the DELAY_INIT quirk, or it will randomly work incorrectly
-(e.g.: lsusb and can't list this device info) when connecting Huawei
-hisi platforms and doing thousand of reboot test circles.
+The ieee80211 skb control block key (set when skb was queued) could have
+been removed before ieee80211_tx_dequeue() call. ieee80211_tx_dequeue()
+already called ieee80211_tx_h_select_key() to get the current key, but
+the latter do not update the key in skb control block in case it is
+NULL. Because some drivers actually use this key in their TX callbacks
+(e.g. ath1{1,2}k_mac_op_tx()) this could lead to the use after free
+below:
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miao Li <limiao@kylinos.cn>
-Signed-off-by: Lei Huang <huanglei@kylinos.cn>
-Link: https://lore.kernel.org/r/20250414062935.159024-1-limiao870622@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  BUG: KASAN: slab-use-after-free in ath11k_mac_op_tx+0x590/0x61c
+  Read of size 4 at addr ffffff803083c248 by task kworker/u16:4/1440
+
+  CPU: 3 UID: 0 PID: 1440 Comm: kworker/u16:4 Not tainted 6.13.0-ge128f627f404 #2
+  Hardware name: HW (DT)
+  Workqueue: bat_events batadv_send_outstanding_bcast_packet
+  Call trace:
+   show_stack+0x14/0x1c (C)
+   dump_stack_lvl+0x58/0x74
+   print_report+0x164/0x4c0
+   kasan_report+0xac/0xe8
+   __asan_report_load4_noabort+0x1c/0x24
+   ath11k_mac_op_tx+0x590/0x61c
+   ieee80211_handle_wake_tx_queue+0x12c/0x1c8
+   ieee80211_queue_skb+0xdcc/0x1b4c
+   ieee80211_tx+0x1ec/0x2bc
+   ieee80211_xmit+0x224/0x324
+   __ieee80211_subif_start_xmit+0x85c/0xcf8
+   ieee80211_subif_start_xmit+0xc0/0xec4
+   dev_hard_start_xmit+0xf4/0x28c
+   __dev_queue_xmit+0x6ac/0x318c
+   batadv_send_skb_packet+0x38c/0x4b0
+   batadv_send_outstanding_bcast_packet+0x110/0x328
+   process_one_work+0x578/0xc10
+   worker_thread+0x4bc/0xc7c
+   kthread+0x2f8/0x380
+   ret_from_fork+0x10/0x20
+
+  Allocated by task 1906:
+   kasan_save_stack+0x28/0x4c
+   kasan_save_track+0x1c/0x40
+   kasan_save_alloc_info+0x3c/0x4c
+   __kasan_kmalloc+0xac/0xb0
+   __kmalloc_noprof+0x1b4/0x380
+   ieee80211_key_alloc+0x3c/0xb64
+   ieee80211_add_key+0x1b4/0x71c
+   nl80211_new_key+0x2b4/0x5d8
+   genl_family_rcv_msg_doit+0x198/0x240
+  <...>
+
+  Freed by task 1494:
+   kasan_save_stack+0x28/0x4c
+   kasan_save_track+0x1c/0x40
+   kasan_save_free_info+0x48/0x94
+   __kasan_slab_free+0x48/0x60
+   kfree+0xc8/0x31c
+   kfree_sensitive+0x70/0x80
+   ieee80211_key_free_common+0x10c/0x174
+   ieee80211_free_keys+0x188/0x46c
+   ieee80211_stop_mesh+0x70/0x2cc
+   ieee80211_leave_mesh+0x1c/0x60
+   cfg80211_leave_mesh+0xe0/0x280
+   cfg80211_leave+0x1e0/0x244
+  <...>
+
+Reset SKB control block key before calling ieee80211_tx_h_select_key()
+to avoid that.
+
+Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Link: https://patch.msgid.link/06aa507b853ca385ceded81c18b0a6dd0f081bc8.1742833382.git.repk@triplefau.lt
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/tx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -369,6 +369,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0781, 0x5583), .driver_info = USB_QUIRK_NO_LPM },
- 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
- 
-+	/* SanDisk Corp. SanDisk 3.2Gen1 */
-+	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
-+
- 	/* Realforce 87U Keyboard */
- 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
- 
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index c4e6fbe4343ee..0a658e747798b 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3704,6 +3704,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	 * The key can be removed while the packet was queued, so need to call
+ 	 * this here to get the current key.
+ 	 */
++	info->control.hw_key = NULL;
+ 	r = ieee80211_tx_h_select_key(&tx);
+ 	if (r != TX_CONTINUE) {
+ 		ieee80211_free_txskb(&local->hw, skb);
+-- 
+2.39.5
+
 
 
 
