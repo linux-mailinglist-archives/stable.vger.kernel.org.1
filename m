@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-137528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69172AA13CD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC04AA1644
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63EFB189B086
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BD514605A4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3B982C60;
-	Tue, 29 Apr 2025 17:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EEF250C15;
+	Tue, 29 Apr 2025 17:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="indl8k6K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4mCoHyK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5721DF73C;
-	Tue, 29 Apr 2025 17:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4EC242D6A;
+	Tue, 29 Apr 2025 17:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946337; cv=none; b=j1tBjkbcTfjEbD5ToJ1YzBe56K71Y/6g0Q7cSAnpiEjryACw+GZw+IWpq7XqAazpDwbwja3JfB79YyCdatBpdeZjqhUBXOzci/UY7nwpfR8RW5gQXIJJmrZYChN466YBSahuCcBaSwq8qX0hToB7UZ1WRaw6zpOaJq3w08vLNs0=
+	t=1745947874; cv=none; b=c9oZy1nA1x2kEuLJYODPiWzLCJii4M6I/jXdx4NjUSl/5m3FK0j+NGHawecQIFWuLYs3ey7qcUQWxwq44ov8OikIovoAxoSWMNyTyOBD0vDGL4lMVQzPrFlC3A2zayH1/DVgfo/wof1rISr92nE1LssPGuFlzdw6PshDkR4JqlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946337; c=relaxed/simple;
-	bh=DWN6c7UjaKWCl3bgAjw4xXyaoTvi2NufpGMUuL205JE=;
+	s=arc-20240116; t=1745947874; c=relaxed/simple;
+	bh=frB5SD1M2N4lkJx3tzPojavEHt5f8eCj5HNQRHmgOqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDL7wHxBLxSXTduuls2mV/DWb9GJT0CFaZbK/aNyDQJpM04iaB5WVyne7mRZaWzwQq2cuWXfz5QpzmQz2sc2LuClE+40VeoWlHLxVCwQS5AVNZQ1I8nRBqwLizUHtSlqoJRs8pRUfBatwaFeC+z4r21DUIiOS4tcJ6+noX3aF38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=indl8k6K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFB7C4CEE9;
-	Tue, 29 Apr 2025 17:05:37 +0000 (UTC)
+	 MIME-Version; b=j2zPuCR0Mtc3Ih23wdzNUFjHSAAq9FPZrz9zXiYlhKRRJXK89ylQJZMe70b/V2FEutK1MDuhJW4j7uSAJFoVzRT/u+q7oPHV4MtqEroeGh0khQIJSovC7TYjuWy8l+5HtZpdRlEF66mrTjq30RDqQVY3AjO1m29dp22jbcC3FHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4mCoHyK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB0EC4CEE3;
+	Tue, 29 Apr 2025 17:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946337;
-	bh=DWN6c7UjaKWCl3bgAjw4xXyaoTvi2NufpGMUuL205JE=;
+	s=korg; t=1745947873;
+	bh=frB5SD1M2N4lkJx3tzPojavEHt5f8eCj5HNQRHmgOqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=indl8k6KDWr9ReVuHoE06SwN91NJFGRc8ioOkLVxaGpsVBpdRdNYhNlN4FnjtVbhw
-	 pnG659kAYn22yVCg+cr5ClQPjkQ7gtwoeRpUKL6eMcR8ueS1EccKlC3+LYGklqpvpn
-	 91jgcnLV44KOpKQxzDM2POFEiTIAsLMoPppUdedo=
+	b=v4mCoHyKTrs7VKibapB1fD7xb9upuimaYxekhhCPcMo3LP74l4ZJmsCylogT8dTv+
+	 kLJRj8cnkWSKZO+xrLt6fijfwZorzkX4ljbRHka4zN1TxI538Rv5n1HAUncRjVyZjq
+	 Z0NPrqRbdi/iC8T8kSY8cIHdCO70nAp5DVnzJgp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 233/311] tracing: Enforce the persistent ring buffer to be page aligned
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Mahesh Rao <mahesh.rao@intel.com>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.12 129/280] firmware: stratix10-svc: Add of_platform_default_populate()
 Date: Tue, 29 Apr 2025 18:41:10 +0200
-Message-ID: <20250429161130.572666881@linuxfoundation.org>
+Message-ID: <20250429161120.405123951@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,88 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Mahesh Rao <mahesh.rao@intel.com>
 
-[ Upstream commit c44a14f216f45d8bf1634b52854a699d7090f1e8 ]
+commit 4d239f447f96bd2cb646f89431e9db186c1ccfd4 upstream.
 
-Enforce that the address and the size of the memory used by the persistent
-ring buffer is page aligned. Also update the documentation to reflect this
-requirement.
+Add of_platform_default_populate() to stratix10-svc
+driver as the firmware/svc node was moved out of soc.
+This fixes the failed probing of child drivers of
+svc node.
 
-Link: https://lore.kernel.org/all/CAHk-=whUOfVucfJRt7E0AH+GV41ELmS4wJqxHDnui6Giddfkzw@mail.gmail.com/
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/20250402144953.412882844@goodmis.org
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 23c3ebed382a ("arm64: dts: socfpga: agilex: move firmware out of soc node")
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
+Signed-off-by: Mahesh Rao <mahesh.rao@intel.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Link: https://lore.kernel.org/r/20250326115446.36123-1-dinguyen@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  2 ++
- Documentation/trace/debugging.rst               |  2 ++
- kernel/trace/trace.c                            | 10 ++++++++++
- 3 files changed, 14 insertions(+)
+ drivers/firmware/stratix10-svc.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index aa7447f8837cb..56be1fc99bdd4 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -7243,6 +7243,8 @@
- 			This is just one of many ways that can clear memory. Make sure your system
- 			keeps the content of memory across reboots before relying on this option.
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -1227,22 +1227,28 @@ static int stratix10_svc_drv_probe(struc
+ 	if (!svc->intel_svc_fcs) {
+ 		dev_err(dev, "failed to allocate %s device\n", INTEL_FCS);
+ 		ret = -ENOMEM;
+-		goto err_unregister_dev;
++		goto err_unregister_rsu_dev;
+ 	}
  
-+			NB: Both the mapped address and size must be page aligned for the architecture.
+ 	ret = platform_device_add(svc->intel_svc_fcs);
+ 	if (ret) {
+ 		platform_device_put(svc->intel_svc_fcs);
+-		goto err_unregister_dev;
++		goto err_unregister_rsu_dev;
+ 	}
+ 
++	ret = of_platform_default_populate(dev_of_node(dev), NULL, dev);
++	if (ret)
++		goto err_unregister_fcs_dev;
 +
- 			See also Documentation/trace/debugging.rst
+ 	dev_set_drvdata(dev, svc);
  
+ 	pr_info("Intel Service Layer Driver Initialized\n");
  
-diff --git a/Documentation/trace/debugging.rst b/Documentation/trace/debugging.rst
-index 54fb16239d703..d54bc500af80b 100644
---- a/Documentation/trace/debugging.rst
-+++ b/Documentation/trace/debugging.rst
-@@ -136,6 +136,8 @@ kernel, so only the same kernel is guaranteed to work if the mapping is
- preserved. Switching to a different kernel version may find a different
- layout and mark the buffer as invalid.
+ 	return 0;
  
-+NB: Both the mapped address and size must be page aligned for the architecture.
+-err_unregister_dev:
++err_unregister_fcs_dev:
++	platform_device_unregister(svc->intel_svc_fcs);
++err_unregister_rsu_dev:
+ 	platform_device_unregister(svc->stratix10_svc_rsu);
+ err_free_kfifo:
+ 	kfifo_free(&controller->svc_fifo);
+@@ -1256,6 +1262,8 @@ static void stratix10_svc_drv_remove(str
+ 	struct stratix10_svc *svc = dev_get_drvdata(&pdev->dev);
+ 	struct stratix10_svc_controller *ctrl = platform_get_drvdata(pdev);
+ 
++	of_platform_depopulate(ctrl->dev);
 +
- Using trace_printk() in the boot instance
- -----------------------------------------
- By default, the content of trace_printk() goes into the top level tracing
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 0e6d517e74e0f..50aa6d5908329 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -10427,6 +10427,16 @@ __init static void enable_instances(void)
- 		}
+ 	platform_device_unregister(svc->intel_svc_fcs);
+ 	platform_device_unregister(svc->stratix10_svc_rsu);
  
- 		if (start) {
-+			/* Start and size must be page aligned */
-+			if (start & ~PAGE_MASK) {
-+				pr_warn("Tracing: mapping start addr %pa is not page aligned\n", &start);
-+				continue;
-+			}
-+			if (size & ~PAGE_MASK) {
-+				pr_warn("Tracing: mapping size %pa is not page aligned\n", &size);
-+				continue;
-+			}
-+
- 			addr = map_pages(start, size);
- 			if (addr) {
- 				pr_info("Tracing: mapped boot instance %s at physical memory %pa of size 0x%lx\n",
--- 
-2.39.5
-
 
 
 
