@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-138866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EABFAA1A12
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9B6AA18FF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2347C171A08
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB6B31BA7610
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2E9254854;
-	Tue, 29 Apr 2025 18:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295E0250C0C;
+	Tue, 29 Apr 2025 18:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwvxRSzS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idss620X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EEF155A4E;
-	Tue, 29 Apr 2025 18:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CB840C03;
+	Tue, 29 Apr 2025 18:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950600; cv=none; b=p/5OT1tvrctpxuYjuSn40SNvDkK1tYpm9e9ear2C2lBf73PnFTyOi38NzM2aEnWh3zaJA/Y4w/DLYMQIifH1pvKByfpzGcMW2T1g0/WwFVSETO4PuLVQt87woZ51DthTw/XenQn7tMWjrNwsYGBrLIBZ+Ry+Os8s21KbQCjZ6M4=
+	t=1745949953; cv=none; b=gU33o8fDo6qepAXbXfkrtfs2Hghm9BkIlKI6gZPbqQQwMCxfUtSDRARD3Kw/ylzxOPz48xSdO51DaPhpaxkO9z0nrh/eRLiQeNvzGE1e3WUDhL1K1VwZZQbybErP7Q8SRjXJYHf5SQ8ApwucyqjS0vDqZlttGrDk5Y5jOBNMA1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950600; c=relaxed/simple;
-	bh=IaHjsmPdK48WtS6hYbDpC6oMv3kIQhgvf14XappBuAQ=;
+	s=arc-20240116; t=1745949953; c=relaxed/simple;
+	bh=3Djvvtp2+QZtAPeMxXz5FYR8v7r2wjNxGet/UIX4Bjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHkQTMctfJsVsNfpNWSgmVUj4YZ4Q36fiZnz08bHqaenfupmKpoJI3KaQ5bGHkdigi5BAFpqPR0ghhE95NnxB0j6Z78aFWlhE1UWsl20PhTleyX3RcQNXhrqGBMEYe0YJW+XaPe8km3dkDtfxeowN7xI8QXB/z/GT8Bp0tdXYF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwvxRSzS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E60C4CEE3;
-	Tue, 29 Apr 2025 18:16:39 +0000 (UTC)
+	 MIME-Version; b=gZPFU90fn08DaCjxsoWPN9Hi02q5YrZ11rb46YpImWIcTtZwGEHg8CYwCIdLOwz+1uvm/IqDu2kk6hR8jllu7dEHzmATEqKQDOXWcbtPKjARBJemqbl5XhOpgBh3woRTiYN4fpOBQ8k+MoJRQIqhZTxICCkm3JlP+JAXXRGLclo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idss620X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410E2C4CEEE;
+	Tue, 29 Apr 2025 18:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950600;
-	bh=IaHjsmPdK48WtS6hYbDpC6oMv3kIQhgvf14XappBuAQ=;
+	s=korg; t=1745949953;
+	bh=3Djvvtp2+QZtAPeMxXz5FYR8v7r2wjNxGet/UIX4Bjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwvxRSzSTUDhdUz103LQrt1FHSXkrCjN3JDZFcxlI7Xy5nUwmVhh6479OemHz8w07
-	 7flpZqHmcjT5LAO3DFEZLfKagIBUo0dXFqpeNsztUmHZKKZ/Ubaasu3BLEEHGtMGu3
-	 vily8SgkRD8DFlTEKLvjEyY8MNlRge5DHaY07lm0=
+	b=idss620XXeA5ggRcDi49togKRfjunJBuk1LNA8N32goDc2hhuT/+1t9eKV7/sqbiC
+	 L7Pph3t0spWzB6jkb7eDkFXvvu/KiAICbSg7xTrJZtdcCBI3r3Zb0sT+KDWYwBh74J
+	 tclwYoPoSLtgHAZ2ttLfiB/dKUxx2U+rxSJ9Lo0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Young <admiyo@os.amperecomputing.com>,
-	Robbie King <robbiek@xsightlabs.com>,
-	Huisong Li <lihuisong@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	virtualization@lists.linux.dev,
+	linux-sound@vger.kernel.org,
+	kernel-team@android.com,
+	Betty Zhou <bettyzhou@google.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	John Stultz <jstultz@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 129/204] mailbox: pcc: Fix the possible race in updation of chan_in_use flag
+Subject: [PATCH 6.1 109/167] sound/virtio: Fix cancel_sync warnings on uninitialized work_structs
 Date: Tue, 29 Apr 2025 18:43:37 +0200
-Message-ID: <20250429161104.708403631@linuxfoundation.org>
+Message-ID: <20250429161056.151017326@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,99 +70,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huisong Li <lihuisong@huawei.com>
+From: John Stultz <jstultz@google.com>
 
-[ Upstream commit 9779d45c749340ab461d595c1a4a664cb28f3007 ]
+[ Upstream commit 3c7df2e27346eb40a0e86230db1ccab195c97cfe ]
 
-The function mbox_chan_received_data() calls the Rx callback of the
-mailbox client driver. The callback might set chan_in_use flag from
-pcc_send_data(). This flag's status determines whether the PCC channel
-is in use.
+Betty reported hitting the following warning:
 
-However, there is a potential race condition where chan_in_use is
-updated incorrectly due to concurrency between the interrupt handler
-(pcc_mbox_irq()) and the command sender(pcc_send_data()).
+[    8.709131][  T221] WARNING: CPU: 2 PID: 221 at kernel/workqueue.c:4182
+...
+[    8.713282][  T221] Call trace:
+[    8.713365][  T221]  __flush_work+0x8d0/0x914
+[    8.713468][  T221]  __cancel_work_sync+0xac/0xfc
+[    8.713570][  T221]  cancel_work_sync+0x24/0x34
+[    8.713667][  T221]  virtsnd_remove+0xa8/0xf8 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
+[    8.713868][  T221]  virtsnd_probe+0x48c/0x664 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
+[    8.714035][  T221]  virtio_dev_probe+0x28c/0x390
+[    8.714139][  T221]  really_probe+0x1bc/0x4c8
+...
 
-The 'chan_in_use' flag of a channel is set to true after sending a
-command. And the flag of the new command may be cleared erroneous by
-the interrupt handler afer mbox_chan_received_data() returns,
+It seems we're hitting the error path in virtsnd_probe(), which
+triggers a virtsnd_remove() which iterates over the substreams
+calling cancel_work_sync() on the elapsed_period work_struct.
 
-As a result, the interrupt being level triggered can't be cleared in
-pcc_mbox_irq() and it will be disabled after the number of handled times
-exceeds the specified value. The error log is as follows:
+Looking at the code, from earlier in:
+virtsnd_probe()->virtsnd_build_devs()->virtsnd_pcm_parse_cfg()
 
-  |  kunpeng_hccs HISI04B2:00: PCC command executed timeout!
-  |  kunpeng_hccs HISI04B2:00: get port link status info failed, ret = -110
-  |  irq 13: nobody cared (try booting with the "irqpoll" option)
-  |  Call trace:
-  |   dump_backtrace+0x0/0x210
-  |   show_stack+0x1c/0x2c
-  |   dump_stack+0xec/0x130
-  |   __report_bad_irq+0x50/0x190
-  |   note_interrupt+0x1e4/0x260
-  |   handle_irq_event+0x144/0x17c
-  |   handle_fasteoi_irq+0xd0/0x240
-  |   __handle_domain_irq+0x80/0xf0
-  |   gic_handle_irq+0x74/0x2d0
-  |   el1_irq+0xbc/0x140
-  |   mnt_clone_write+0x0/0x70
-  |   file_update_time+0xcc/0x160
-  |   fault_dirty_shared_page+0xe8/0x150
-  |   do_shared_fault+0x80/0x1d0
-  |   do_fault+0x118/0x1a4
-  |   handle_pte_fault+0x154/0x230
-  |   __handle_mm_fault+0x1ac/0x390
-  |   handle_mm_fault+0xf0/0x250
-  |   do_page_fault+0x184/0x454
-  |   do_translation_fault+0xac/0xd4
-  |   do_mem_abort+0x44/0xb4
-  |   el0_da+0x40/0x74
-  |   el0_sync_handler+0x60/0xb4
-  |   el0_sync+0x168/0x180
-  |  handlers:
-  |   pcc_mbox_irq
-  |  Disabling IRQ #13
+We set snd->nsubstreams, allocate the snd->substreams, and if
+we then hit an error on the info allocation or something in
+virtsnd_ctl_query_info() fails, we will exit without having
+initialized the elapsed_period work_struct.
 
-To solve this issue, pcc_mbox_irq() must clear 'chan_in_use' flag before
-the call to mbox_chan_received_data().
+When that error path unwinds we then call virtsnd_remove()
+which as long as the substreams array is allocated, will iterate
+through calling cancel_work_sync() on the uninitialized work
+struct hitting this warning.
 
-Tested-by: Adam Young <admiyo@os.amperecomputing.com>
-Tested-by: Robbie King <robbiek@xsightlabs.com>
-Signed-off-by: Huisong Li <lihuisong@huawei.com>
-(sudeep.holla: Minor updates to the subject, commit message and comment)
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Takashi Iwai suggested this fix, which initializes the substreams
+structure right after allocation, so that if we hit the error
+paths we avoid trying to cleanup uninitialized data.
+
+Note: I have not yet managed to reproduce the issue myself, so
+this patch has had limited testing.
+
+Feedback or thoughts would be appreciated!
+
+Cc: Anton Yakovlev <anton.yakovlev@opensynergy.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: virtualization@lists.linux.dev
+Cc: linux-sound@vger.kernel.org
+Cc: kernel-team@android.com
+Reported-by: Betty Zhou <bettyzhou@google.com>
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: John Stultz <jstultz@google.com>
+Message-Id: <20250116194114.3375616-1-jstultz@google.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/pcc.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/virtio/virtio_pcm.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 82102a4c5d688..8fd4d0f79b090 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -333,10 +333,16 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
- 		return IRQ_NONE;
+diff --git a/sound/virtio/virtio_pcm.c b/sound/virtio/virtio_pcm.c
+index c10d91fff2fb0..1ddec1f4f05d5 100644
+--- a/sound/virtio/virtio_pcm.c
++++ b/sound/virtio/virtio_pcm.c
+@@ -337,6 +337,21 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
+ 	if (!snd->substreams)
+ 		return -ENOMEM;
  
 +	/*
-+	 * Clear this flag after updating interrupt ack register and just
-+	 * before mbox_chan_received_data() which might call pcc_send_data()
-+	 * where the flag is set again to start new transfer. This is
-+	 * required to avoid any possible race in updatation of this flag.
++	 * Initialize critical substream fields early in case we hit an
++	 * error path and end up trying to clean up uninitialized structures
++	 * elsewhere.
 +	 */
-+	pchan->chan_in_use = false;
- 	mbox_chan_received_data(chan, NULL);
++	for (i = 0; i < snd->nsubstreams; ++i) {
++		struct virtio_pcm_substream *vss = &snd->substreams[i];
++
++		vss->snd = snd;
++		vss->sid = i;
++		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
++		init_waitqueue_head(&vss->msg_empty);
++		spin_lock_init(&vss->lock);
++	}
++
+ 	info = kcalloc(snd->nsubstreams, sizeof(*info), GFP_KERNEL);
+ 	if (!info)
+ 		return -ENOMEM;
+@@ -350,12 +365,6 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
+ 		struct virtio_pcm_substream *vss = &snd->substreams[i];
+ 		struct virtio_pcm *vpcm;
  
- 	check_and_ack(pchan, chan);
--	pchan->chan_in_use = false;
- 
- 	return IRQ_HANDLED;
- }
+-		vss->snd = snd;
+-		vss->sid = i;
+-		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
+-		init_waitqueue_head(&vss->msg_empty);
+-		spin_lock_init(&vss->lock);
+-
+ 		rc = virtsnd_pcm_build_hw(vss, &info[i]);
+ 		if (rc)
+ 			goto on_exit;
 -- 
 2.39.5
 
