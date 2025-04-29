@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-138355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C26BDAA17FE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:54:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3AE3AA1623
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:34:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9551D9A3AE5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81216189E21A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2845324C083;
-	Tue, 29 Apr 2025 17:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908EA2522AA;
+	Tue, 29 Apr 2025 17:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3gJvUpC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DD7nupf8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9A222AE68;
-	Tue, 29 Apr 2025 17:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A8A25333E;
+	Tue, 29 Apr 2025 17:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948962; cv=none; b=cBdy6iq+y9/0R8LK+J+jJfBRag1G9E92Try+Tj6djg936p9Qv03NTM4KjvJ/H68Kb5cR6ufAq94QoQ6D/XLNUt6P6CnRn33SCd160Sv7nBceXDudH/I0tOfQAHYq2rnxg+CaktXOiniUdvULWqNS13NDRhr0uWiiuPbylcCx98Q=
+	t=1745947820; cv=none; b=iNskPiDxk1EGlZFBF3qXngBhnzpJUXrq3B14uHmZZzzWvrY2La3memz/yM/eDYB1CkScA2f3wuB1BYe6OQ3daH+bONsMxjoQJe28C+93ZNjDI3196ednOFIyzBHFJ75enP9BJQoxoWizKt+LFJkNH///VF74FT08VS4atH+lfmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948962; c=relaxed/simple;
-	bh=M1dhoYId87+ooVsspV94y9jI2+x2kQBnKEWXH5ksHwA=;
+	s=arc-20240116; t=1745947820; c=relaxed/simple;
+	bh=yV4MBJuZEv6b/iWmGUhwC2+YoHxFrrdIgZlPdU0Nsjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RUD3d3rJqO8Sv4oPty/h200nAcZgc9xVNSxtRZcMnKaXl9cRM/oDQ5yp4WYjps6W275RWesVWKQXRKAMXka8TGqwhkMO4jLEqOJqF+7pPYQGjc+oeoM7C85EkNYBfbeqmUrWIu3BIZV/uCz44RpRBZ7Ohhehtx/fVAEzNJIP5hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3gJvUpC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55783C4CEE3;
-	Tue, 29 Apr 2025 17:49:22 +0000 (UTC)
+	 MIME-Version; b=mGEvnKDHZQkimWbnEdogiSi1c+MFmlmDWAqga7zdthpzh0ykSfkv5UM0XdxvC/+UnaUb1kMxOQbFvF3lHcfiCMPwT086lJCtlOxvrmsAxv2kydvojDH4K2VZnnryYBnUylC/0wz2cCGSuKtm7uyETl93VFXYJsDKO5ubUWQM4rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DD7nupf8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84BFC4CEEF;
+	Tue, 29 Apr 2025 17:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948962;
-	bh=M1dhoYId87+ooVsspV94y9jI2+x2kQBnKEWXH5ksHwA=;
+	s=korg; t=1745947820;
+	bh=yV4MBJuZEv6b/iWmGUhwC2+YoHxFrrdIgZlPdU0Nsjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b3gJvUpCjoI6FA9+DNh/Db0vmVGHcwKcXm6+3C84qYYKYgzrSDm5mBrFxieKuQ452
-	 z9L9Pr/ljM5Z5irciCoU3QZXX04L8C0MQ7erjyzTDTIw8RlUtDARaBofnaivub3QxC
-	 PqvV/SaKCT5Zk1CgnwJRkxIzz/HHi1/IYbLqBaxI=
+	b=DD7nupf8Z+jAmj/rt6FNuJqIvlDd8L5KeECuiSGY7OB0h37IozfLG5mvIEtSqZ00r
+	 xaN6aQbB8eOJZ3vdEHeedDV0g3ah/8B9PyxQRCRNGrRz/N6hCOL3XoXgHC1Y7kXpka
+	 7GXMTQLXG7S+/XSQtUBiqEN3XnQq4d5aFzvauSfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Lanzano <lanzano.alex@gmail.com>
-Subject: [PATCH 5.15 177/373] drm/repaper: fix integer overflows in repeat functions
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 113/280] KVM: SVM: Allocate IR data using atomic allocation
 Date: Tue, 29 Apr 2025 18:40:54 +0200
-Message-ID: <20250429161130.451250351@linuxfoundation.org>
+Message-ID: <20250429161119.737672403@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 4d098000ac193f359e6b8ca4801dbdbd6a27b41f upstream.
+commit 7537deda36521fa8fff9133b39c46e31893606f2 upstream.
 
-There are conditions, albeit somewhat unlikely, under which right hand
-expressions, calculating the end of time period in functions like
-repaper_frame_fixed_repeat(), may overflow.
+Allocate SVM's interrupt remapping metadata using GFP_ATOMIC as
+svm_ir_list_add() is called with IRQs are disabled and irqfs.lock held
+when kvm_irq_routing_update() reacts to GSI routing changes.
 
-For instance, if 'factor10x' in repaper_get_temperature() is high
-enough (170), as is 'epd->stage_time' in repaper_probe(), then the
-resulting value of 'end' will not fit in unsigned int expression.
-
-Mitigate this by casting 'epd->factored_stage_time' to wider type before
-any multiplication is done.
-
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 3589211e9b03 ("drm/tinydrm: Add RePaper e-ink driver")
+Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
 Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250116134801.22067-1-n.zhandarovich@fintech.ru
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/repaper.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/avic.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/tiny/repaper.c
-+++ b/drivers/gpu/drm/tiny/repaper.c
-@@ -454,7 +454,7 @@ static void repaper_frame_fixed_repeat(s
- 				       enum repaper_stage stage)
- {
- 	u64 start = local_clock();
--	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
-+	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
- 
- 	do {
- 		repaper_frame_fixed(epd, fixed_value, stage);
-@@ -465,7 +465,7 @@ static void repaper_frame_data_repeat(st
- 				      const u8 *mask, enum repaper_stage stage)
- {
- 	u64 start = local_clock();
--	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
-+	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
- 
- 	do {
- 		repaper_frame_data(epd, image, mask, stage);
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -820,7 +820,7 @@ static int svm_ir_list_add(struct vcpu_s
+ 	 * Allocating new amd_iommu_pi_data, which will get
+ 	 * add to the per-vcpu ir_list.
+ 	 */
+-	ir = kzalloc(sizeof(struct amd_svm_iommu_ir), GFP_KERNEL_ACCOUNT);
++	ir = kzalloc(sizeof(struct amd_svm_iommu_ir), GFP_ATOMIC | __GFP_ACCOUNT);
+ 	if (!ir) {
+ 		ret = -ENOMEM;
+ 		goto out;
 
 
 
