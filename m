@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E876AA1613
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3450FAA122D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A75CD168B40
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D2591BA0D1A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D2C23E340;
-	Tue, 29 Apr 2025 17:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C968126BF7;
+	Tue, 29 Apr 2025 16:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lmKMiCXj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxePev6C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F68B78F58;
-	Tue, 29 Apr 2025 17:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6D624336D;
+	Tue, 29 Apr 2025 16:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947763; cv=none; b=Q8qhtG4dUX5RL69z8MmQ6uAa6nr2uaKqtDYJ8+XS1LxXHtJnBkDnKaE9WhizenAFkvxUv/HMumx/6GiXyYfAYy/UtVpTfojcsQ70m573jsuWiSS0y+NIyzDVL0UtTsHEsTkejl0AkZ7iKzWuLGXryScTeMAqWrTne0KhAxzcX3s=
+	t=1745945395; cv=none; b=FlGj9IEP1Aqgd0AT0CMi84AqEx2598g4umsfGKP0wyIGXfLioK7/ZvWfaIJqgL0Tfhyj7FWB2P3yx8Z8wk2/SBj2JrfUiJ2m7D/twFastyAV4/CXkp78aK+8N3jwHflbJnIpvl7Dv9++71bhMJKCYqoubHDsw8gNt6i7+9NVE6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947763; c=relaxed/simple;
-	bh=P3ljcjQSjrIdrnB4mi0YxCIsb5NbK2PPbgnuJsKLWOc=;
+	s=arc-20240116; t=1745945395; c=relaxed/simple;
+	bh=0JXadE2OZuxqtDXcnHU5bEKXR4Ixr2bcMjOgqHgAgTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KP4tirKozc2kkS/k+oC7EC1XCZls9V6TwnrPzBVDy6WGT1TtUOf9xuqaBokDfKKddVcrrM/AAaVgZ4Nmsn9LNceSx0poOZkgtl1fMy0HKd0ICwdNMc65qXUP/xnRB1uLkuW/yOUOEpNwBwp36JhDUUZAtHwM7lQeaVIIhwUte6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmKMiCXj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55BFC4CEE9;
-	Tue, 29 Apr 2025 17:29:22 +0000 (UTC)
+	 MIME-Version; b=FsKeOUCBOUwuaqYtzN31wZfR5LavxbDcGilrkZ7M+0T2WuNI45IV6nTA6Lh4uh4miaEXXczqLsuCtbucKeVE1qNnfpmz7UVgtZivjOejDGRax+faJwXeyzGwv8pHR0kHurjp/pMJIYpzDsNT4hqZyVanFXhLaNGvTzWXhFkawQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxePev6C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690EBC4CEE3;
+	Tue, 29 Apr 2025 16:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947763;
-	bh=P3ljcjQSjrIdrnB4mi0YxCIsb5NbK2PPbgnuJsKLWOc=;
+	s=korg; t=1745945394;
+	bh=0JXadE2OZuxqtDXcnHU5bEKXR4Ixr2bcMjOgqHgAgTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lmKMiCXjV+lTnwCS8OGUWWMhO3Z6djj9Na2KwBlCLgg1H2c4sKsKTeLvs0ATHLGLj
-	 fWR+Fz1qgd5PS/V61PrLKWLJDLpzb00Rma+gI9HIqabYfYdZMDJT2Te3w1VNm9wYsL
-	 d8hCPwlJsxkXN20AXlAlDY8JdoTqNNeQdna/22mk=
+	b=OxePev6CHorpzdFeIppwbAyLZPzh+vdgk4/wFZJhWF76JtCA3LD81Clm98RsiDADf
+	 bGr2uSCPhMVlK1akj5IOGv/3O8Rxmu27MawJ2N1ILIl8FB3qju/7TDoHyOm5ipv6M0
+	 jvtisJ1ZFh/kWJ+vYDNSx/101iBDrPm9t0hw2PzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Nepomnyashih <sdl@nppct.ru>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 097/280] xen-netfront: handle NULL returned by xdp_convert_buff_to_frame()
-Date: Tue, 29 Apr 2025 18:40:38 +0200
-Message-ID: <20250429161119.081552751@linuxfoundation.org>
+	Eric Biggers <ebiggers@google.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 098/179] nfs: add missing selections of CONFIG_CRC32
+Date: Tue, 29 Apr 2025 18:40:39 +0200
+Message-ID: <20250429161053.362420234@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Nepomnyashih <sdl@nppct.ru>
+From: Eric Biggers <ebiggers@google.com>
 
-commit cc3628dcd851ddd8d418bf0c897024b4621ddc92 upstream.
+[ Upstream commit cd35b6cb46649750b7dbd0df0e2d767415d8917b ]
 
-The function xdp_convert_buff_to_frame() may return NULL if it fails
-to correctly convert the XDP buffer into an XDP frame due to memory
-constraints, internal errors, or invalid data. Failing to check for NULL
-may lead to a NULL pointer dereference if the result is used later in
-processing, potentially causing crashes, data corruption, or undefined
-behavior.
+nfs.ko, nfsd.ko, and lockd.ko all use crc32_le(), which is available
+only when CONFIG_CRC32 is enabled.  But the only NFS kconfig option that
+selected CONFIG_CRC32 was CONFIG_NFS_DEBUG, which is client-specific and
+did not actually guard the use of crc32_le() even on the client.
 
-On XDP redirect failure, the associated page must be released explicitly
-if it was previously retained via get_page(). Failing to do so may result
-in a memory leak, as the pages reference count is not decremented.
+The code worked around this bug by only actually calling crc32_le() when
+CONFIG_CRC32 is built-in, instead hard-coding '0' in other cases.  This
+avoided randconfig build errors, and in real kernels the fallback code
+was unlikely to be reached since CONFIG_CRC32 is 'default y'.  But, this
+really needs to just be done properly, especially now that I'm planning
+to update CONFIG_CRC32 to not be 'default y'.
 
-Cc: stable@vger.kernel.org # v5.9+
-Fixes: 6c5aa6fc4def ("xen networking: add basic XDP support for xen-netfront")
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
-Link: https://patch.msgid.link/20250417122118.1009824-1-sdl@nppct.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Therefore, make CONFIG_NFS_FS, CONFIG_NFSD, and CONFIG_LOCKD select
+CONFIG_CRC32.  Then remove the fallback code that becomes unnecessary,
+as well as the selection of CONFIG_CRC32 from CONFIG_NFS_DEBUG.
+
+Fixes: 1264a2f053a3 ("NFS: refactor code for calculating the crc32 hash of a filehandle")
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Acked-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netfront.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ fs/Kconfig           | 1 +
+ fs/nfs/Kconfig       | 2 +-
+ fs/nfs/internal.h    | 7 -------
+ fs/nfs/nfs4session.h | 4 ----
+ fs/nfsd/Kconfig      | 1 +
+ fs/nfsd/nfsfh.h      | 7 -------
+ include/linux/nfs.h  | 7 -------
+ 7 files changed, 3 insertions(+), 26 deletions(-)
 
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -985,20 +985,27 @@ static u32 xennet_run_xdp(struct netfron
- 	act = bpf_prog_run_xdp(prog, xdp);
- 	switch (act) {
- 	case XDP_TX:
--		get_page(pdata);
- 		xdpf = xdp_convert_buff_to_frame(xdp);
-+		if (unlikely(!xdpf)) {
-+			trace_xdp_exception(queue->info->netdev, prog, act);
-+			break;
-+		}
-+		get_page(pdata);
- 		err = xennet_xdp_xmit(queue->info->netdev, 1, &xdpf, 0);
--		if (unlikely(!err))
-+		if (unlikely(err <= 0)) {
-+			if (err < 0)
-+				trace_xdp_exception(queue->info->netdev, prog, act);
- 			xdp_return_frame_rx_napi(xdpf);
--		else if (unlikely(err < 0))
--			trace_xdp_exception(queue->info->netdev, prog, act);
-+		}
- 		break;
- 	case XDP_REDIRECT:
- 		get_page(pdata);
- 		err = xdp_do_redirect(queue->info->netdev, xdp, prog);
- 		*need_xdp_flush = true;
--		if (unlikely(err))
-+		if (unlikely(err)) {
- 			trace_xdp_exception(queue->info->netdev, prog, act);
-+			xdp_return_buff(xdp);
-+		}
- 		break;
- 	case XDP_PASS:
- 	case XDP_DROP:
+diff --git a/fs/Kconfig b/fs/Kconfig
+index 2501e6f1f9655..52853cf5d7dab 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -292,6 +292,7 @@ config GRACE_PERIOD
+ config LOCKD
+ 	tristate
+ 	depends on FILE_LOCKING
++	select CRC32
+ 	select GRACE_PERIOD
+ 
+ config LOCKD_V4
+diff --git a/fs/nfs/Kconfig b/fs/nfs/Kconfig
+index e84c187d942e8..1a5bfd42443f9 100644
+--- a/fs/nfs/Kconfig
++++ b/fs/nfs/Kconfig
+@@ -2,6 +2,7 @@
+ config NFS_FS
+ 	tristate "NFS client support"
+ 	depends on INET && FILE_LOCKING && MULTIUSER
++	select CRC32
+ 	select LOCKD
+ 	select SUNRPC
+ 	select NFS_ACL_SUPPORT if NFS_V3_ACL
+@@ -194,5 +195,4 @@ config NFS_USE_KERNEL_DNS
+ config NFS_DEBUG
+ 	bool
+ 	depends on NFS_FS && SUNRPC_DEBUG
+-	select CRC32
+ 	default y
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index 5c9166357ae7c..bfb53756654d9 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -720,18 +720,11 @@ u64 nfs_timespec_to_change_attr(const struct timespec *ts)
+ 	return ((u64)ts->tv_sec << 30) + ts->tv_nsec;
+ }
+ 
+-#ifdef CONFIG_CRC32
+ static inline u32 nfs_stateid_hash(const nfs4_stateid *stateid)
+ {
+ 	return ~crc32_le(0xFFFFFFFF, &stateid->other[0],
+ 				NFS4_STATEID_OTHER_SIZE);
+ }
+-#else
+-static inline u32 nfs_stateid_hash(nfs4_stateid *stateid)
+-{
+-	return 0;
+-}
+-#endif
+ 
+ static inline bool nfs_error_is_fatal(int err)
+ {
+diff --git a/fs/nfs/nfs4session.h b/fs/nfs/nfs4session.h
+index b996ee23f1bae..8ad99938aae18 100644
+--- a/fs/nfs/nfs4session.h
++++ b/fs/nfs/nfs4session.h
+@@ -147,16 +147,12 @@ static inline void nfs4_copy_sessionid(struct nfs4_sessionid *dst,
+ 	memcpy(dst->data, src->data, NFS4_MAX_SESSIONID_LEN);
+ }
+ 
+-#ifdef CONFIG_CRC32
+ /*
+  * nfs_session_id_hash - calculate the crc32 hash for the session id
+  * @session - pointer to session
+  */
+ #define nfs_session_id_hash(sess_id) \
+ 	(~crc32_le(0xFFFFFFFF, &(sess_id)->data[0], sizeof((sess_id)->data)))
+-#else
+-#define nfs_session_id_hash(session) (0)
+-#endif
+ #else /* defined(CONFIG_NFS_V4_1) */
+ 
+ static inline int nfs4_init_session(struct nfs_client *clp)
+diff --git a/fs/nfsd/Kconfig b/fs/nfsd/Kconfig
+index 4d6e71335bce2..45fc2fcb8fe49 100644
+--- a/fs/nfsd/Kconfig
++++ b/fs/nfsd/Kconfig
+@@ -4,6 +4,7 @@ config NFSD
+ 	depends on INET
+ 	depends on FILE_LOCKING
+ 	depends on FSNOTIFY
++	select CRC32
+ 	select LOCKD
+ 	select SUNRPC
+ 	select EXPORTFS
+diff --git a/fs/nfsd/nfsfh.h b/fs/nfsd/nfsfh.h
+index 42c168ac6b934..5001c134b8eb6 100644
+--- a/fs/nfsd/nfsfh.h
++++ b/fs/nfsd/nfsfh.h
+@@ -208,7 +208,6 @@ static inline bool fh_fsid_match(struct knfsd_fh *fh1, struct knfsd_fh *fh2)
+ 	return true;
+ }
+ 
+-#ifdef CONFIG_CRC32
+ /**
+  * knfsd_fh_hash - calculate the crc32 hash for the filehandle
+  * @fh - pointer to filehandle
+@@ -220,12 +219,6 @@ static inline u32 knfsd_fh_hash(const struct knfsd_fh *fh)
+ {
+ 	return ~crc32_le(0xFFFFFFFF, (unsigned char *)&fh->fh_base, fh->fh_size);
+ }
+-#else
+-static inline u32 knfsd_fh_hash(const struct knfsd_fh *fh)
+-{
+-	return 0;
+-}
+-#endif
+ 
+ #ifdef CONFIG_NFSD_V3
+ /*
+diff --git a/include/linux/nfs.h b/include/linux/nfs.h
+index a8b62a08e784f..5746acd066457 100644
+--- a/include/linux/nfs.h
++++ b/include/linux/nfs.h
+@@ -54,7 +54,6 @@ enum nfs3_stable_how {
+ 	NFS_INVALID_STABLE_HOW = -1
+ };
+ 
+-#ifdef CONFIG_CRC32
+ /**
+  * nfs_fhandle_hash - calculate the crc32 hash for the filehandle
+  * @fh - pointer to filehandle
+@@ -66,10 +65,4 @@ static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
+ {
+ 	return ~crc32_le(0xFFFFFFFF, &fh->data[0], fh->size);
+ }
+-#else /* CONFIG_CRC32 */
+-static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
+-{
+-	return 0;
+-}
+-#endif /* CONFIG_CRC32 */
+ #endif /* _LINUX_NFS_H */
+-- 
+2.39.5
+
 
 
 
