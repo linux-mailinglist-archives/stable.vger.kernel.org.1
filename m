@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFBD3AA134F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A721AAA17C2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CD5E1896181
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6A429A0A84
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0752A241664;
-	Tue, 29 Apr 2025 17:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091F924BD02;
+	Tue, 29 Apr 2025 17:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qy2MpdBt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEGwj8jY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B940E82C60;
-	Tue, 29 Apr 2025 17:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B992D21ABC1;
+	Tue, 29 Apr 2025 17:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946020; cv=none; b=PrndM5WJcxjbeuMhTq/VnA0HRGTJPUeUFDzD1J64I2rfd2Ctvpr3Tvc/ZK/qF6urZPNzq1Q2kCxVjfoTW1SqdjtzAc/ugQLUFATDaLUwG1XBsxxK/QPmLodHOf8KGhobJSWTBR8jtgGsV81eTR82OBQu8qEKd25UVnjeASovDmU=
+	t=1745948822; cv=none; b=M8NtIJ42oVLpbc4859E7G0C8N0H3Yj8zxWELqCSYrjFuWxn3PbLgEr5IihSMXC90C60jeBeZw4qwoxRpnBUxmDWJlIij9GVECYi/FKx0ajj4fLNtuTa+VIz0IAZNSpfRfqUBonvmlfo4dEx5etpAc4Rn9lUDiPNCLySvSnW8BMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946020; c=relaxed/simple;
-	bh=5reXo1aB9dwlnIWprMRm2qaQrDExizfcHMTE5IF5i8c=;
+	s=arc-20240116; t=1745948822; c=relaxed/simple;
+	bh=Bx/89LlKEw7AzPyjwGzKr/OXt9wz3vYcI7KWrzAzzRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Phrp1QGKBOPhk0gbw97Bp7GEguZAz79huyYh1sBNgeo4Spme2/TDfu8qqqdc4r8tJqDxNFCjAp2Hur9YuTuVzqQX0xkYPNuKmjojv+gJpjNmexbC+0z85uPYezl6stj4z7+fkLMxWYuP2cvpWtvLTNHOOrTrpi8PGgEgr5RHMsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qy2MpdBt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8EFC4CEEA;
-	Tue, 29 Apr 2025 17:00:20 +0000 (UTC)
+	 MIME-Version; b=VfxSkPv9V5iExbzqnzLMeTkulUqmastYQwLswQqZ/ctcel4xCEH0fnj5FpglkymPG4VpvGRZkS/ts4cEr0PE4lOVOTWCn9zWcpSpUP3nN/vvbcYZFfi4xUYxmP1jQ9qZ8zDnhqLNvn/0ygPyk5I7/RNQFA0s8irTS6JnmbwXfEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEGwj8jY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFA6C4CEE3;
+	Tue, 29 Apr 2025 17:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946020;
-	bh=5reXo1aB9dwlnIWprMRm2qaQrDExizfcHMTE5IF5i8c=;
+	s=korg; t=1745948822;
+	bh=Bx/89LlKEw7AzPyjwGzKr/OXt9wz3vYcI7KWrzAzzRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qy2MpdBtG5ohIITiK8heoZXWxfOHReW+2pN30vMaOOLH1Ck259BybBk0yqaZmCxKN
-	 hS2loj/W/b2dmi9+5sQ3VlDawhRMcKIntBP14Wp6P36yRAyDvcp9fSs5MYYHcOR7vO
-	 N5N/d4/cUIiQ77DI+BZAoayVtYODe18aBVggpPis=
+	b=dEGwj8jYX6oyvOdjbXRNlbZOOc/zDD5Pi1ioEmpaWl497+JfD5SWDwx/SZwMHADSC
+	 rUUQOJ/218xr6Ew/r7dVY9C/WldeF2DwZblGd0S9wysZAZnjaYr0ReT+uPqfl8KLjX
+	 cI5LRcYzacUY/Zwa6BRz2T2Am8KqClQMOD6n7fXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.14 128/311] LoongArch: Handle fp, lsx, lasx and lbt assembly symbols
+	stable@kernel.org,
+	Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.15 088/373] i3c: master: svc: Use readsb helper for reading MDB
 Date: Tue, 29 Apr 2025 18:39:25 +0200
-Message-ID: <20250429161126.280501370@linuxfoundation.org>
+Message-ID: <20250429161126.783245141@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,214 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Stanley Chu <yschu@nuvoton.com>
 
-commit 2ef174b13344b3b4554d3d28e6f9e2a2c1d3138f upstream.
+commit c06acf7143bddaa3c0f7bedd8b99e48f6acb85c3 upstream.
 
-Like the other relevant symbols, export some fp, lsx, lasx and lbt
-assembly symbols and put the function declarations in header files
-rather than source files.
+The target can send the MDB byte followed by additional data bytes.
+The readl on MRDATAB reads one actual byte, but the readsl advances
+the destination pointer by 4 bytes. This causes the subsequent payload
+to be copied to wrong position in the destination buffer.
 
-While at it, use "asmlinkage" for the other existing C prototypes
-of assembly functions and also do not use the "extern" keyword with
-function declarations according to the document coding-style.rst.
-
-Cc: stable@vger.kernel.org # 6.6+
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: stable@kernel.org
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250318053606.3087121-3-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/fpu.h |   37 ++++++++++++++++++++++---------------
- arch/loongarch/include/asm/lbt.h |   10 +++++++---
- arch/loongarch/kernel/fpu.S      |    6 ++++++
- arch/loongarch/kernel/lbt.S      |    4 ++++
- arch/loongarch/kernel/signal.c   |   21 ---------------------
- 5 files changed, 39 insertions(+), 39 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/include/asm/fpu.h
-+++ b/arch/loongarch/include/asm/fpu.h
-@@ -22,22 +22,29 @@
- struct sigcontext;
- 
- #define kernel_fpu_available() cpu_has_fpu
--extern void kernel_fpu_begin(void);
--extern void kernel_fpu_end(void);
- 
--extern void _init_fpu(unsigned int);
--extern void _save_fp(struct loongarch_fpu *);
--extern void _restore_fp(struct loongarch_fpu *);
--
--extern void _save_lsx(struct loongarch_fpu *fpu);
--extern void _restore_lsx(struct loongarch_fpu *fpu);
--extern void _init_lsx_upper(void);
--extern void _restore_lsx_upper(struct loongarch_fpu *fpu);
--
--extern void _save_lasx(struct loongarch_fpu *fpu);
--extern void _restore_lasx(struct loongarch_fpu *fpu);
--extern void _init_lasx_upper(void);
--extern void _restore_lasx_upper(struct loongarch_fpu *fpu);
-+void kernel_fpu_begin(void);
-+void kernel_fpu_end(void);
-+
-+asmlinkage void _init_fpu(unsigned int);
-+asmlinkage void _save_fp(struct loongarch_fpu *);
-+asmlinkage void _restore_fp(struct loongarch_fpu *);
-+asmlinkage int _save_fp_context(void __user *fpregs, void __user *fcc, void __user *csr);
-+asmlinkage int _restore_fp_context(void __user *fpregs, void __user *fcc, void __user *csr);
-+
-+asmlinkage void _save_lsx(struct loongarch_fpu *fpu);
-+asmlinkage void _restore_lsx(struct loongarch_fpu *fpu);
-+asmlinkage void _init_lsx_upper(void);
-+asmlinkage void _restore_lsx_upper(struct loongarch_fpu *fpu);
-+asmlinkage int _save_lsx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
-+asmlinkage int _restore_lsx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
-+
-+asmlinkage void _save_lasx(struct loongarch_fpu *fpu);
-+asmlinkage void _restore_lasx(struct loongarch_fpu *fpu);
-+asmlinkage void _init_lasx_upper(void);
-+asmlinkage void _restore_lasx_upper(struct loongarch_fpu *fpu);
-+asmlinkage int _save_lasx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
-+asmlinkage int _restore_lasx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
- 
- static inline void enable_lsx(void);
- static inline void disable_lsx(void);
---- a/arch/loongarch/include/asm/lbt.h
-+++ b/arch/loongarch/include/asm/lbt.h
-@@ -12,9 +12,13 @@
- #include <asm/loongarch.h>
- #include <asm/processor.h>
- 
--extern void _init_lbt(void);
--extern void _save_lbt(struct loongarch_lbt *);
--extern void _restore_lbt(struct loongarch_lbt *);
-+asmlinkage void _init_lbt(void);
-+asmlinkage void _save_lbt(struct loongarch_lbt *);
-+asmlinkage void _restore_lbt(struct loongarch_lbt *);
-+asmlinkage int _save_lbt_context(void __user *regs, void __user *eflags);
-+asmlinkage int _restore_lbt_context(void __user *regs, void __user *eflags);
-+asmlinkage int _save_ftop_context(void __user *ftop);
-+asmlinkage int _restore_ftop_context(void __user *ftop);
- 
- static inline int is_lbt_enabled(void)
- {
---- a/arch/loongarch/kernel/fpu.S
-+++ b/arch/loongarch/kernel/fpu.S
-@@ -458,6 +458,7 @@ SYM_FUNC_START(_save_fp_context)
- 	li.w		a0, 0				# success
- 	jr		ra
- SYM_FUNC_END(_save_fp_context)
-+EXPORT_SYMBOL_GPL(_save_fp_context)
- 
- /*
-  * a0: fpregs
-@@ -471,6 +472,7 @@ SYM_FUNC_START(_restore_fp_context)
- 	li.w		a0, 0				# success
- 	jr		ra
- SYM_FUNC_END(_restore_fp_context)
-+EXPORT_SYMBOL_GPL(_restore_fp_context)
- 
- /*
-  * a0: fpregs
-@@ -484,6 +486,7 @@ SYM_FUNC_START(_save_lsx_context)
- 	li.w	a0, 0					# success
- 	jr	ra
- SYM_FUNC_END(_save_lsx_context)
-+EXPORT_SYMBOL_GPL(_save_lsx_context)
- 
- /*
-  * a0: fpregs
-@@ -497,6 +500,7 @@ SYM_FUNC_START(_restore_lsx_context)
- 	li.w	a0, 0					# success
- 	jr	ra
- SYM_FUNC_END(_restore_lsx_context)
-+EXPORT_SYMBOL_GPL(_restore_lsx_context)
- 
- /*
-  * a0: fpregs
-@@ -510,6 +514,7 @@ SYM_FUNC_START(_save_lasx_context)
- 	li.w	a0, 0					# success
- 	jr	ra
- SYM_FUNC_END(_save_lasx_context)
-+EXPORT_SYMBOL_GPL(_save_lasx_context)
- 
- /*
-  * a0: fpregs
-@@ -523,6 +528,7 @@ SYM_FUNC_START(_restore_lasx_context)
- 	li.w	a0, 0					# success
- 	jr	ra
- SYM_FUNC_END(_restore_lasx_context)
-+EXPORT_SYMBOL_GPL(_restore_lasx_context)
- 
- .L_fpu_fault:
- 	li.w	a0, -EFAULT				# failure
---- a/arch/loongarch/kernel/lbt.S
-+++ b/arch/loongarch/kernel/lbt.S
-@@ -90,6 +90,7 @@ SYM_FUNC_START(_save_lbt_context)
- 	li.w		a0, 0			# success
- 	jr		ra
- SYM_FUNC_END(_save_lbt_context)
-+EXPORT_SYMBOL_GPL(_save_lbt_context)
- 
- /*
-  * a0: scr
-@@ -110,6 +111,7 @@ SYM_FUNC_START(_restore_lbt_context)
- 	li.w		a0, 0			# success
- 	jr		ra
- SYM_FUNC_END(_restore_lbt_context)
-+EXPORT_SYMBOL_GPL(_restore_lbt_context)
- 
- /*
-  * a0: ftop
-@@ -120,6 +122,7 @@ SYM_FUNC_START(_save_ftop_context)
- 	li.w		a0, 0			# success
- 	jr		ra
- SYM_FUNC_END(_save_ftop_context)
-+EXPORT_SYMBOL_GPL(_save_ftop_context)
- 
- /*
-  * a0: ftop
-@@ -150,6 +153,7 @@ SYM_FUNC_START(_restore_ftop_context)
- 	li.w		a0, 0			# success
- 	jr		ra
- SYM_FUNC_END(_restore_ftop_context)
-+EXPORT_SYMBOL_GPL(_restore_ftop_context)
- 
- .L_lbt_fault:
- 	li.w		a0, -EFAULT		# failure
---- a/arch/loongarch/kernel/signal.c
-+++ b/arch/loongarch/kernel/signal.c
-@@ -51,27 +51,6 @@
- #define lock_lbt_owner()	({ preempt_disable(); pagefault_disable(); })
- #define unlock_lbt_owner()	({ pagefault_enable(); preempt_enable(); })
- 
--/* Assembly functions to move context to/from the FPU */
--extern asmlinkage int
--_save_fp_context(void __user *fpregs, void __user *fcc, void __user *csr);
--extern asmlinkage int
--_restore_fp_context(void __user *fpregs, void __user *fcc, void __user *csr);
--extern asmlinkage int
--_save_lsx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
--extern asmlinkage int
--_restore_lsx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
--extern asmlinkage int
--_save_lasx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
--extern asmlinkage int
--_restore_lasx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
--
--#ifdef CONFIG_CPU_HAS_LBT
--extern asmlinkage int _save_lbt_context(void __user *regs, void __user *eflags);
--extern asmlinkage int _restore_lbt_context(void __user *regs, void __user *eflags);
--extern asmlinkage int _save_ftop_context(void __user *ftop);
--extern asmlinkage int _restore_ftop_context(void __user *ftop);
--#endif
--
- struct rt_sigframe {
- 	struct siginfo rs_info;
- 	struct ucontext rs_uctx;
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -315,7 +315,7 @@ static int svc_i3c_master_handle_ibi(str
+ 	       slot->len < SVC_I3C_FIFO_SIZE) {
+ 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
+ 		count = SVC_I3C_MDATACTRL_RXCOUNT(mdatactrl);
+-		readsl(master->regs + SVC_I3C_MRDATAB, buf, count);
++		readsb(master->regs + SVC_I3C_MRDATAB, buf, count);
+ 		slot->len += count;
+ 		buf += count;
+ 	}
 
 
 
