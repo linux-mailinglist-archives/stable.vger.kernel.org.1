@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6328FAA16CA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F05EAA15BB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C162188EA13
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F20F9882AC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FC824A07D;
-	Tue, 29 Apr 2025 17:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74852512F3;
+	Tue, 29 Apr 2025 17:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoW+rK0D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tu3UZX+r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914DA1917E3;
-	Tue, 29 Apr 2025 17:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A563F24C08D;
+	Tue, 29 Apr 2025 17:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948374; cv=none; b=mEPJ23f7D/CW1wEmpIFPZOV+q1WOXtpTb9MYY+LpqJldf9FeGIwx55Z2ZuMDtKTYYRkAuHotP+g8Ot6RbAaArV4hI39M0IXkhoXIDix6ma8yiBLqSuZ+CHA8//m2/5jHg5C1qCjq96Y9N8vNt7iwaayILly1cVwKocPvqD2UjsA=
+	t=1745947422; cv=none; b=STHzjP8OwrXdpNO0ROcAo2c1xAW8+v/FVQzlN05xm7MbJnvhIXH+JYZHx0WOnUEnoIGDYP7t1AGn9zSiGV0EXKKu6Ubc3HLe88fHPtBI1WR8zHw0vPTKUL02dKC3L1HL9z9eOxCL6tqjZNMaNi/BMYLy/sQvQYTIEyFveaZwPf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948374; c=relaxed/simple;
-	bh=zTKPhO4b/RS4uuQuCBmCFDv+JfvwZlvvMNk2q9a6/Ps=;
+	s=arc-20240116; t=1745947422; c=relaxed/simple;
+	bh=VoigsAe7tcpzVyOQ7rxWbgAfq/oIALGo9/imFusVKbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPpiOzlz4Jw2olXqKytJMRrhEHpHFrRb9FSK1F5H4ds5cztqxaZe1Bk6LuFh6wB+kQE+L4Io8KbXxUAiNRd11UsdM/oUPFt5o/bDTpxjtghgnFw4fxM18e4yfMmsFhZEQkj3KbnKSQanor/YWOL7vgOjJoaqLqfg1VDpfrQ5XJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoW+rK0D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190EAC4CEE3;
-	Tue, 29 Apr 2025 17:39:33 +0000 (UTC)
+	 MIME-Version; b=G8p40VPCnhE0ps74gOVYrMQIHRUK6DwCAfFi+KU2oWg8HgVgmPxlAz2KjABZ46H5XpJJJgzfLbT2OnaAFE9gnN+kjEqRlN3/8K6f/dg9ArHfn5AUDspylgck1C1F8cSifza/bmPT67ordpNHzrkvGqM86BqXPlXWya32D/+wXOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tu3UZX+r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1515FC4CEE3;
+	Tue, 29 Apr 2025 17:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948374;
-	bh=zTKPhO4b/RS4uuQuCBmCFDv+JfvwZlvvMNk2q9a6/Ps=;
+	s=korg; t=1745947422;
+	bh=VoigsAe7tcpzVyOQ7rxWbgAfq/oIALGo9/imFusVKbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZoW+rK0D2eVFVXZYWRt2mo042bIy0HO4xhyoVgTMub7vmQcwtruS8roBxh8R47AI0
-	 9V7Bx7BylyGSpGqHpBT794XdDNyy0DEgYVaPTvVtYqlwtSyejH/QvMH9SmXATbF+Wp
-	 YUQOILo7ZB7Sn6L1fXPkaRDf5X5yH7yK4Bv0BIXA=
+	b=Tu3UZX+rlbnmGlsFhY9B1pyQ66sDr3KXAG3ps24qG6Ggan3um5jD+VZq0Js9WTLZU
+	 Mj8ePtAm2HA9tX6rDHqLdWSimbS8jHStgxeGVu5BWOj/ymGrTmR6EtzfnGR+Ft2r/R
+	 MW2XNW0aIrBJqsHWMlb2gX+B2bg5iU0TPQeziQmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Meir Elisha <meir.elisha@volumez.com>,
+	Yu Kuai <yukuai3@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 239/280] ksmbd: fix WARNING "do not call blocking ops when !TASK_RUNNING"
+Subject: [PATCH 5.10 276/286] md/raid1: Add check for missing source disk in process_checks()
 Date: Tue, 29 Apr 2025 18:43:00 +0200
-Message-ID: <20250429161124.897683061@linuxfoundation.org>
+Message-ID: <20250429161119.269227446@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Meir Elisha <meir.elisha@volumez.com>
 
-[ Upstream commit 1df0d4c616138784e033ad337961b6e1a6bcd999 ]
+[ Upstream commit b7c178d9e57c8fd4238ff77263b877f6f16182ba ]
 
-wait_event_timeout() will set the state of the current
-task to TASK_UNINTERRUPTIBLE, before doing the condition check. This
-means that ksmbd_durable_scavenger_alive() will try to acquire the mutex
-while already in a sleeping state. The scheduler warns us by giving
-the following warning:
+During recovery/check operations, the process_checks function loops
+through available disks to find a 'primary' source with successfully
+read data.
 
-do not call blocking ops when !TASK_RUNNING; state=2 set at
- [<0000000061515a6f>] prepare_to_wait_event+0x9f/0x6c0
-WARNING: CPU: 2 PID: 4147 at kernel/sched/core.c:10099 __might_sleep+0x12f/0x160
+If no suitable source disk is found after checking all possibilities,
+the 'primary' index will reach conf->raid_disks * 2. Add an explicit
+check for this condition after the loop. If no source disk was found,
+print an error message and return early to prevent further processing
+without a valid primary source.
 
-mutex lock is not needed in ksmbd_durable_scavenger_alive().
-
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://lore.kernel.org/linux-raid/20250408143808.1026534-1-meir.elisha@volumez.com
+Signed-off-by: Meir Elisha <meir.elisha@volumez.com>
+Suggested-and-reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs_cache.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/md/raid1.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index 8d1f30dcba7e8..1f8fa3468173a 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -713,12 +713,8 @@ static bool tree_conn_fd_check(struct ksmbd_tree_connect *tcon,
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 3619db7e382a0..dada9b2258a61 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -2034,14 +2034,9 @@ static int fix_sync_read_error(struct r1bio *r1_bio)
+ 				if (!rdev_set_badblocks(rdev, sect, s, 0))
+ 					abort = 1;
+ 			}
+-			if (abort) {
+-				conf->recovery_disabled =
+-					mddev->recovery_disabled;
+-				set_bit(MD_RECOVERY_INTR, &mddev->recovery);
+-				md_done_sync(mddev, r1_bio->sectors, 0);
+-				put_buf(r1_bio);
++			if (abort)
+ 				return 0;
+-			}
++
+ 			/* Try next page */
+ 			sectors -= s;
+ 			sect += s;
+@@ -2181,10 +2176,21 @@ static void sync_request_write(struct mddev *mddev, struct r1bio *r1_bio)
+ 	int disks = conf->raid_disks * 2;
+ 	struct bio *wbio;
  
- static bool ksmbd_durable_scavenger_alive(void)
- {
--	mutex_lock(&durable_scavenger_lock);
--	if (!durable_scavenger_running) {
--		mutex_unlock(&durable_scavenger_lock);
-+	if (!durable_scavenger_running)
- 		return false;
--	}
--	mutex_unlock(&durable_scavenger_lock);
+-	if (!test_bit(R1BIO_Uptodate, &r1_bio->state))
+-		/* ouch - failed to read all of that. */
+-		if (!fix_sync_read_error(r1_bio))
++	if (!test_bit(R1BIO_Uptodate, &r1_bio->state)) {
++		/*
++		 * ouch - failed to read all of that.
++		 * No need to fix read error for check/repair
++		 * because all member disks are read.
++		 */
++		if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery) ||
++		    !fix_sync_read_error(r1_bio)) {
++			conf->recovery_disabled = mddev->recovery_disabled;
++			set_bit(MD_RECOVERY_INTR, &mddev->recovery);
++			md_done_sync(mddev, r1_bio->sectors, 0);
++			put_buf(r1_bio);
+ 			return;
++		}
++	}
  
- 	if (kthread_should_stop())
- 		return false;
-@@ -799,9 +795,7 @@ static int ksmbd_durable_scavenger(void *dummy)
- 			break;
- 	}
- 
--	mutex_lock(&durable_scavenger_lock);
- 	durable_scavenger_running = false;
--	mutex_unlock(&durable_scavenger_lock);
- 
- 	module_put(THIS_MODULE);
- 
+ 	if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery))
+ 		process_checks(r1_bio);
 -- 
 2.39.5
 
