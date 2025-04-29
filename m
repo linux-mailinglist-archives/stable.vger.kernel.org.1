@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CEFAA157C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:28:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 284CAAA182B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:56:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA01D1895D11
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68AB57A2D1E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A3D2517BE;
-	Tue, 29 Apr 2025 17:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD7225484F;
+	Tue, 29 Apr 2025 17:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n++m7wL2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGkyfCUy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D2382C60;
-	Tue, 29 Apr 2025 17:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B63E2522A1;
+	Tue, 29 Apr 2025 17:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947406; cv=none; b=NO3LF466Ukfy5RnE2ncHEc8cqyiWo33eSGEscy8EoLQY6JFQLprqeOC/mSgtEmg4BhSRKGdWsWgqfoTFTZy++ErffxhgI3Q1B0pZE1jkBh4zkn2J6U2pgk22CDB05VgbMqKLCa2yG0hxpaPoPIBWcjzng0LOMuwipi0PxeNLbOI=
+	t=1745949370; cv=none; b=NeO1TJXBuN9negzjXIEPWFN7c/7kSFCmmBVG6d73cXzqkMhk6C5XT75J5G9ffpHv9nmhXu+HXo9r24PekJdqfYMo4lLlptbzWZstWmb2ck/lpaoiVUPxn+qjst36Pzb0/7wxBQ2NMBoMu24j4PLLkPlfXbpKjGHwXD0zRx78jrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947406; c=relaxed/simple;
-	bh=+9TPmFk+ceZeEK28CooGeK9o/iNHiExsV134kornrMY=;
+	s=arc-20240116; t=1745949370; c=relaxed/simple;
+	bh=OLjq3wRhvHgdLSsC4nRAE4pr4R/M2rSHlJoewUsyHq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ni4RFbeNeUU3T6Dm1Ug3jBTNJTohaqWjQR4TmdYt0QnXI3ndGVHJX3+zfng6GcReXoKzRRliYQBUXYcBDu2hiRcPx36yDYroVC8imil5pEWQUSf0/mVMnKS5ZV4lORsxSLt7CIQxQ5x3wIYflWnWiQR6wcHFl7wdzgxx9g8UlZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n++m7wL2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B3CC4CEE3;
-	Tue, 29 Apr 2025 17:23:26 +0000 (UTC)
+	 MIME-Version; b=q8vfcWr05as40MiyZFuHb1hjYK/q1jbIrmoY+TTbzrMj89R7nYR+Of4vZbqX2EMd7SpULfRIehZwoc+UE0WSlkYunB5cYBV53LrfABeMJouWQCvXpO5ZT0k3PBFO/yBqPTNebtfVPH4RK8fELrxw4423LQo+uF26d8rCKSDISb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGkyfCUy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B4EC4CEEA;
+	Tue, 29 Apr 2025 17:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947406;
-	bh=+9TPmFk+ceZeEK28CooGeK9o/iNHiExsV134kornrMY=;
+	s=korg; t=1745949370;
+	bh=OLjq3wRhvHgdLSsC4nRAE4pr4R/M2rSHlJoewUsyHq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n++m7wL2NYWMGthoiA51CD/3C6H2P6zic3Z5R858hT2xTcY+gNvnssArLSf8zEJas
-	 CKIwYxFzvoKn60nBsLQIHXRbbSjkGauVnjLqpe52wiHWtsxmQ+kbywP4SzGncDGeeJ
-	 wB/gM5bFTx9X4UUy1fbzjF8l39axtSYYZ6bWWoBg=
+	b=CGkyfCUyiumlmzEwvc+EcKtvZNvTKtkWO7cDAfnBNtgSGgfUAdcWyaE4AIP7tgkKX
+	 odMLchMJXoMmQRTTKMcyUDGOUf1E3kYyUUjMli3OmDnI9QaprgA3G5yzzUgw3MZ/dT
+	 11OGfArYt1aVbYkW0YUIRcqUqOPrKKnI0ndFrtmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Lai <yi1.lai@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 271/286] selftests/mincore: Allow read-ahead pages to reach the end of the file
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 298/373] net: selftests: initialize TCP header and skb payload with zero
 Date: Tue, 29 Apr 2025 18:42:55 +0200
-Message-ID: <20250429161119.067697593@linuxfoundation.org>
+Message-ID: <20250429161135.371175732@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 197c1eaa7ba633a482ed7588eea6fd4aa57e08d4 ]
+commit 9e8d1013b0c38910cbc9e60de74dbe883878469d upstream.
 
-When running the mincore_selftest on a system with an XFS file system, it
-failed the "check_file_mmap" test case due to the read-ahead pages reaching
-the end of the file. The failure log is as below:
+Zero-initialize TCP header via memset() to avoid garbage values that
+may affect checksum or behavior during test transmission.
 
-   RUN           global.check_file_mmap ...
-  mincore_selftest.c:264:check_file_mmap:Expected i (1024) < vec_size (1024)
-  mincore_selftest.c:265:check_file_mmap:Read-ahead pages reached the end of the file
-  check_file_mmap: Test failed
-           FAIL  global.check_file_mmap
+Also zero-fill allocated payload and padding regions using memset()
+after skb_put(), ensuring deterministic content for all outgoing
+test packets.
 
-This is because the read-ahead window size of the XFS file system on this
-machine is 4 MB, which is larger than the size from the #PF address to the
-end of the file. As a result, all the pages for this file are populated.
-
-  blockdev --getra /dev/nvme0n1p5
-    8192
-  blockdev --getbsz /dev/nvme0n1p5
-    512
-
-This issue can be fixed by extending the current FILE_SIZE 4MB to a larger
-number, but it will still fail if the read-ahead window size of the file
-system is larger enough. Additionally, in the real world, read-ahead pages
-reaching the end of the file can happen and is an expected behavior.
-Therefore, allowing read-ahead pages to reach the end of the file is a
-better choice for the "check_file_mmap" test case.
-
-Link: https://lore.kernel.org/r/20250311080940.21413-1-qiuxu.zhuo@intel.com
-Reported-by: Yi Lai <yi1.lai@intel.com>
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3e1e58d64c3d ("net: add generic selftest support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250416160125.2914724-1-o.rempel@pengutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mincore/mincore_selftest.c | 3 ---
- 1 file changed, 3 deletions(-)
+ net/core/selftests.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
-index 2cf6f2f277ab8..31820435825b1 100644
---- a/tools/testing/selftests/mincore/mincore_selftest.c
-+++ b/tools/testing/selftests/mincore/mincore_selftest.c
-@@ -262,9 +262,6 @@ TEST(check_file_mmap)
- 		TH_LOG("No read-ahead pages found in memory");
- 	}
+--- a/net/core/selftests.c
++++ b/net/core/selftests.c
+@@ -100,10 +100,10 @@ static struct sk_buff *net_test_get_skb(
+ 	ehdr->h_proto = htons(ETH_P_IP);
  
--	EXPECT_LT(i, vec_size) {
--		TH_LOG("Read-ahead pages reached the end of the file");
--	}
- 	/*
- 	 * End of the readahead window. The rest of the pages shouldn't
- 	 * be in memory.
--- 
-2.39.5
-
+ 	if (attr->tcp) {
++		memset(thdr, 0, sizeof(*thdr));
+ 		thdr->source = htons(attr->sport);
+ 		thdr->dest = htons(attr->dport);
+ 		thdr->doff = sizeof(struct tcphdr) / 4;
+-		thdr->check = 0;
+ 	} else {
+ 		uhdr->source = htons(attr->sport);
+ 		uhdr->dest = htons(attr->dport);
+@@ -144,10 +144,18 @@ static struct sk_buff *net_test_get_skb(
+ 	attr->id = net_test_next_id;
+ 	shdr->id = net_test_next_id++;
+ 
+-	if (attr->size)
+-		skb_put(skb, attr->size);
+-	if (attr->max_size && attr->max_size > skb->len)
+-		skb_put(skb, attr->max_size - skb->len);
++	if (attr->size) {
++		void *payload = skb_put(skb, attr->size);
++
++		memset(payload, 0, attr->size);
++	}
++
++	if (attr->max_size && attr->max_size > skb->len) {
++		size_t pad_len = attr->max_size - skb->len;
++		void *pad = skb_put(skb, pad_len);
++
++		memset(pad, 0, pad_len);
++	}
+ 
+ 	skb->csum = 0;
+ 	skb->ip_summed = CHECKSUM_PARTIAL;
 
 
 
