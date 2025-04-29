@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98961AA1212
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6F6AA12F2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:00:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76E811BA2611
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7782C7AA7F2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2AD124C098;
-	Tue, 29 Apr 2025 16:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590C623F413;
+	Tue, 29 Apr 2025 17:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gp+Id2Md"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0Kma82q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B0D23C8D6;
-	Tue, 29 Apr 2025 16:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1787A78F58;
+	Tue, 29 Apr 2025 17:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945266; cv=none; b=VKdZcU9JVsCAdxCuKZZvXJyL1raBFKRDaJpwIzt4lolr7p/vmSdkolhLtrWNeu4qhdPsWpoC8/EvzHSshnfHlFFSo63zhjH6fCvIksDIriYKrvurl9GHfBYbvFIiuJxyrIqw6hAvW69xjkf7hmHHlbwMCUoA1CiTdu+XtqJVXHE=
+	t=1745946024; cv=none; b=pjKBXPuSpZb4PPy7iiMSF2Pm+TlP8TfwMtvus3QBBWiP4R+DAtHnLlxgzgN3YRfiD7upXuWjZonMqzYHWVtGsFkBfgqJmpUmgyCqnrn4JGdWzTmZnGlOfGHiwDjLZuSZ5clPf0vVUYHNXVQdoKykwrxPj/bOcdGD3ahx4VgRuxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945266; c=relaxed/simple;
-	bh=8IRjGLWMKnyLArvctRDAF/NCTvmLA0Z1c5Zae48Wdlo=;
+	s=arc-20240116; t=1745946024; c=relaxed/simple;
+	bh=2+OdaB4l89SuCd9MtxYSQ9UuiubVljcfrckZbdEWlV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hfLYFN6Ij9nmFoizwhwIkn0VIso5boxgSxBVSwi3fJUjtQOB4OZqhVyi28Otnt0YMftgoOy21uBRIXIO+bsdxhBvIvWhhZbgM1PQIL2gzQSQqfrBmGrkDiEeRaDJzhQGC9IEKGkPXB+uVOckoQwmlkRGLXjRxQiD85ZDOFrMP5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gp+Id2Md; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEEDC4CEE3;
-	Tue, 29 Apr 2025 16:47:45 +0000 (UTC)
+	 MIME-Version; b=raLBwXqgQouXgF7LcudPu60h02iGJ2w3d5r6ZIheVDfYQFH6wNe2arls1AQ71m+LwBNq6alMohmQf5IzVNXW7P+3ad2pF89wmLFKmrtIRuQSITzr5PQv+EqMi2q0F3k/LhRue5cBkkb9oxGfR/narcbbHIsHkojb8WVmTz+JUV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0Kma82q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12628C4CEE9;
+	Tue, 29 Apr 2025 17:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945266;
-	bh=8IRjGLWMKnyLArvctRDAF/NCTvmLA0Z1c5Zae48Wdlo=;
+	s=korg; t=1745946023;
+	bh=2+OdaB4l89SuCd9MtxYSQ9UuiubVljcfrckZbdEWlV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gp+Id2Md3/HnEH+X3hRFbehaFPmK2rOCcmvHqo7IFIp3LWkTqa+F8g1OvsBRIQnN8
-	 YFrIw/fNSHiW6B9Cn0mXSjpBSaoceKd/CjvfPr+SKFUR7TFnw4e9WEUs3gV03I2IkS
-	 RchgcYb4CMt/ugaUtUVW7g7pPW7oz1M9p5bLf0O8=
+	b=o0Kma82ql8SYPHbky9FysXbZnHcuw6880omDJlxCttxuMC3nLCQLf4Rk5oh9DBH81
+	 VcHdgGMTYawoR/isAxEG5ybfYQIS54KW6WiQm8xXNklXAzl+B8K4mjOcbnRgr++mKQ
+	 LfOLMUo5svT9LDRVNAEBr7zTecQsXpLSal/0eB7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 025/179] scsi: st: Fix array overflow in st_setup()
+	Peter Xu <peterx@redhat.com>,
+	Hongchen Zhang <zhanghongchen@loongson.cn>,
+	Ming Wang <wangming01@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.14 129/311] LoongArch: Return NULL from huge_pte_offset() for invalid PMD
 Date: Tue, 29 Apr 2025 18:39:26 +0200
-Message-ID: <20250429161050.429884961@linuxfoundation.org>
+Message-ID: <20250429161126.325662122@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Ming Wang <wangming01@loongson.cn>
 
-[ Upstream commit a018d1cf990d0c339fe0e29b762ea5dc10567d67 ]
+commit bd51834d1cf65a2c801295d230c220aeebf87a73 upstream.
 
-Change the array size to follow parms size instead of a fixed value.
+LoongArch's huge_pte_offset() currently returns a pointer to a PMD slot
+even if the underlying entry points to invalid_pte_table (indicating no
+mapping). Callers like smaps_hugetlb_range() fetch this invalid entry
+value (the address of invalid_pte_table) via this pointer.
 
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Closes: https://lore.kernel.org/linux-scsi/CALGdzuoubbra4xKOJcsyThdk5Y1BrAmZs==wbqjbkAgmKS39Aw@mail.gmail.com/
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250311112516.5548-2-Kai.Makisara@kolumbus.fi
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The generic is_swap_pte() check then incorrectly identifies this address
+as a swap entry on LoongArch, because it satisfies the "!pte_present()
+&& !pte_none()" conditions. This misinterpretation, combined with a
+coincidental match by is_migration_entry() on the address bits, leads to
+kernel crashes in pfn_swap_entry_to_page().
+
+Fix this at the architecture level by modifying huge_pte_offset() to
+check the PMD entry's content using pmd_none() before returning. If the
+entry is invalid (i.e., it points to invalid_pte_table), return NULL
+instead of the pointer to the slot.
+
+Cc: stable@vger.kernel.org
+Acked-by: Peter Xu <peterx@redhat.com>
+Co-developed-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Signed-off-by: Ming Wang <wangming01@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/st.c | 2 +-
+ arch/loongarch/mm/hugetlbpage.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 49e149d28954a..2b5e3e2ba3b8b 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -4124,7 +4124,7 @@ static void validate_options(void)
-  */
- static int __init st_setup(char *str)
- {
--	int i, len, ints[5];
-+	int i, len, ints[ARRAY_SIZE(parms) + 1];
- 	char *stp;
+--- a/arch/loongarch/mm/hugetlbpage.c
++++ b/arch/loongarch/mm/hugetlbpage.c
+@@ -47,7 +47,7 @@ pte_t *huge_pte_offset(struct mm_struct
+ 				pmd = pmd_offset(pud, addr);
+ 		}
+ 	}
+-	return (pte_t *) pmd;
++	return pmd_none(pmdp_get(pmd)) ? NULL : (pte_t *) pmd;
+ }
  
- 	stp = get_options(str, ARRAY_SIZE(ints), ints);
--- 
-2.39.5
-
+ uint64_t pmd_to_entrylo(unsigned long pmd_val)
 
 
 
