@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52E1AAA19BF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:15:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A10AA1929
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EACFB4C4C67
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5E609C0A33
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B37F2517AB;
-	Tue, 29 Apr 2025 18:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E970253B5F;
+	Tue, 29 Apr 2025 18:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXlDKobF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ds0vEx/d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE5F24729A;
-	Tue, 29 Apr 2025 18:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B97724111D;
+	Tue, 29 Apr 2025 18:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950396; cv=none; b=u1Pylfv7EpbexhYDuTiadhfoUxIKQdzw2JF8bKiErxkUnp3kZp7+sFbcA6t1Id6SfnEPx0daF1kqVbBbko4mjU53aYpnegKu/UcGefHNyOqqne31WYzxjQGoYXnqTicRbuUahO9QCxxmN9qPxYFSm0q2ufT123iu5TWXar4WCVI=
+	t=1745949752; cv=none; b=BfWsua8MC9WTCyuoprbmQ1H9mNkqFoy2gtFuvyx/FPJ4WBb0Xm1dGVRMHr1WewRxw3EqTvT4ni0QFKLCunIIdmIctqohwdGKMjdcpAbDYCsIcPUIezHmoTFrW3zYttC/xlL/Q9opBYygKW0ZptdcFFf5LO+O+hL6k4R7YwJxX6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950396; c=relaxed/simple;
-	bh=HiNFoV7djFrQt5+uBeQQqOu2A2iKgjU8UFOef4VzJTI=;
+	s=arc-20240116; t=1745949752; c=relaxed/simple;
+	bh=tn8CseaMTYjGiPY5SpeMyW+TsBxicIcxQIq/vf7LYxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BO5wrSJSgiCJ7Qo+qrnP3ZvAsXzD9YfT+Ofv0npMEnZAaMoFscdFN5ZV+u9FqoAMzqcIJG5aTId6ijeGESHGiR11jhhc7rVt82+C6ie5lHepLCjKqWqtDnLgSkEY7OO+M6fzxyuK9kQ7XHvDCeanw79T2GebrZnDJ7joPbmfZW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXlDKobF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38901C4CEE9;
-	Tue, 29 Apr 2025 18:13:16 +0000 (UTC)
+	 MIME-Version; b=ivIZDCYgSZxJKuIqr1F5xa2jJwPWVjvhNqxzflOK13iq4rp5RtLqwQraTi9hvW2bRSaWZP+F0jdkDXx56aIuv/tqVvUELCFMoFb49W89WJl+iWj9O363Bu9sBJXvPITMaZ7tmsJfpM9UBMTqfWBf8aqWaRmb7PIPCsQpp3fcCcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ds0vEx/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E84C4CEE3;
+	Tue, 29 Apr 2025 18:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950396;
-	bh=HiNFoV7djFrQt5+uBeQQqOu2A2iKgjU8UFOef4VzJTI=;
+	s=korg; t=1745949752;
+	bh=tn8CseaMTYjGiPY5SpeMyW+TsBxicIcxQIq/vf7LYxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NXlDKobFzzouMANJS9T71zZT6VCEGk+Q1+0FJeZMFRTkcn//fmWO5T1Y22FoEIvNS
-	 ZDfPo0cEC7N67N8bDABdci2AFS1EokTAJRol4CavELY8mEyCwl9qR/GNTRzNBRiTqb
-	 J7EK/iRFNv80DctTwzXflnAVDTaxpe8BpBOsy/94=
+	b=Ds0vEx/dLoeQZcv8a9v0jt214oq8tP1mUvraEvzWjSOKQw0lIxPJQg12pG7NQXitl
+	 lDVE07K2arzB/DG17aXpgngjwxD66ttu/wAPuWSmh/BrTDfvlHaKykhtoJII1tjONG
+	 LsLt4WbuKEXrAJUvDC0k0Qk0sPUZ1+SwmvHnS/mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/204] iommu/amd: Return an error if vCPU affinity is set for non-vCPU IRTE
+Subject: [PATCH 6.1 045/167] cpufreq: scpi: Fix null-ptr-deref in scpi_cpufreq_get_rate()
 Date: Tue, 29 Apr 2025 18:42:33 +0200
-Message-ID: <20250429161102.086830589@linuxfoundation.org>
+Message-ID: <20250429161053.579572394@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 07172206a26dcf3f0bf7c3ecaadd4242b008ea54 ]
+[ Upstream commit 73b24dc731731edf762f9454552cb3a5b7224949 ]
 
-Return -EINVAL instead of success if amd_ir_set_vcpu_affinity() is
-invoked without use_vapic; lying to KVM about whether or not the IRTE was
-configured to post IRQs is all kinds of bad.
+cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
+in the policy->cpus mask. scpi_cpufreq_get_rate() does not check for
+this case, which results in a NULL pointer dereference.
 
-Fixes: d98de49a53e4 ("iommu/amd: Enable vAPIC interrupt remapping mode by default")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-6-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: 343a8d17fa8d ("cpufreq: scpi: remove arm_big_little dependency")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/scpi-cpufreq.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 95bd7c25ba6f3..83c5d786686d0 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -3619,7 +3619,7 @@ static int amd_ir_set_vcpu_affinity(struct irq_data *data, void *vcpu_info)
- 	 * we should not modify the IRTE
- 	 */
- 	if (!dev_data || !dev_data->use_vapic)
--		return 0;
-+		return -EINVAL;
+diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
+index 433deec4b61f8..217073faf60cf 100644
+--- a/drivers/cpufreq/scpi-cpufreq.c
++++ b/drivers/cpufreq/scpi-cpufreq.c
+@@ -29,9 +29,16 @@ static struct scpi_ops *scpi_ops;
  
- 	ir_data->cfg = irqd_cfg(data);
- 	pi_data->ir_data = ir_data;
+ static unsigned int scpi_cpufreq_get_rate(unsigned int cpu)
+ {
+-	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
+-	struct scpi_data *priv = policy->driver_data;
+-	unsigned long rate = clk_get_rate(priv->clk);
++	struct cpufreq_policy *policy;
++	struct scpi_data *priv;
++	unsigned long rate;
++
++	policy = cpufreq_cpu_get_raw(cpu);
++	if (unlikely(!policy))
++		return 0;
++
++	priv = policy->driver_data;
++	rate = clk_get_rate(priv->clk);
+ 
+ 	return rate / 1000;
+ }
 -- 
 2.39.5
 
