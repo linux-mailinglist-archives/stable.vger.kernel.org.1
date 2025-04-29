@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4BD3AA171F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:44:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCC6AA184E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BCFA5A1693
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:38:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9723A1888895
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CC2244686;
-	Tue, 29 Apr 2025 17:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9AFB219A63;
+	Tue, 29 Apr 2025 17:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cilttp3d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPsaKbs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A7E1917E3;
-	Tue, 29 Apr 2025 17:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C592AE96;
+	Tue, 29 Apr 2025 17:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948346; cv=none; b=bWHxyCo4MSg+1xXjnVrDbMtXnCWsU0DPMz82fgyNH5PJV1ZkrF2j3dUnZDNB+CFTFH66KALFDehhvYEGRNol/su35DyEk7rc3b30pZM3D7NPXDBfXymB0dp82Jl8NlJmAwk0lpGJ2zb8KhEzCFlzSjylFjdoPTQWGAuRPiWwZwQ=
+	t=1745949452; cv=none; b=rlOIstSZ55ffq02dPHVF2+KgzTi621f3oGZ5mW8BVOEcCinvVzdUkmzcPXbTdhsNyisHwHCOKaEZjLYjW8tRZ58pNkppNKcyxDXPgIznnFMbMlVOBEApTN4C9za2ME/xf/7e10kiJhspwmHArmC8B0siWdVe3LPLeQN2JYAsfXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948346; c=relaxed/simple;
-	bh=okEiGwmzKoERpUky7u4kX4hl4+W9dWHI2LG+i0NTWRk=;
+	s=arc-20240116; t=1745949452; c=relaxed/simple;
+	bh=JtdYv72pVGDV95VrpGRYu2IMTwQ32bQYHtm+Kepb+ME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGvRB4G9DSUGFSRC4NNSTCnqJ9XiQVQJul9kFf2JSBQ5OIytIwClm9f1BClwmaYiIo8LTfT934G289vgB8S9CByEQrg2UvVlhZ4x5ZpxqHYA3GiZNB2uxcBX2lKkhVIH/BugR/Narn2/OnsrVtnRV99z7KJPw1HM2ifcdirr1yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cilttp3d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9D4C4CEE3;
-	Tue, 29 Apr 2025 17:39:05 +0000 (UTC)
+	 MIME-Version; b=KB2dxo8mNLfrCSew2vmbdSBu8mmcdNrKziuvdCADPwArsi5o8cP1JvS+QVzgCQO4fo6F/ZejEgcMoNsVy5U5g5xFeFWJW1M1doSFehUMxN+oVGWjFkdkEEaYDajSIhqT6a15Ji4jzIdhGFgz03baTkFvnsvsW6dOphlAl1ob6W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPsaKbs5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F052CC4CEE3;
+	Tue, 29 Apr 2025 17:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948346;
-	bh=okEiGwmzKoERpUky7u4kX4hl4+W9dWHI2LG+i0NTWRk=;
+	s=korg; t=1745949452;
+	bh=JtdYv72pVGDV95VrpGRYu2IMTwQ32bQYHtm+Kepb+ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cilttp3dLrWLVDa2QyEsPrnecrL3EE0cm5B0W6lWwfAe0YJmbTb2LOwq+Ho4GF1EK
-	 pXQSGOVVAz8Gy0g1zGOwYhmCzvzlGfI0qGDh5llhNR97pLbmqe/AzLO8hUaFsYFTIJ
-	 a6vX8VU2kGU1jgBRBlCGKEoAUgFaUeg7m5Dunw5U=
+	b=pPsaKbs5ksrKTRKcguMSaZRw/hYLRcxf3PVpCkJBXbfyWtyrpPdfvi25iE6MZHTUs
+	 /4ii6nEzHM+T2cxjOzaYm5SapUl0G66vBdRDTfZcxICRQQ7IdGTcYmwpJrvRd6pcx7
+	 PfNLNJ57q7FqqsbJEyA69y7Pq9TojcqgcTCwdNiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Kuchynski <akuchynski@chromium.org>,
-	Benson Leung <bleung@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.12 259/280] usb: typec: class: Fix NULL pointer access
-Date: Tue, 29 Apr 2025 18:43:20 +0200
-Message-ID: <20250429161125.733215332@linuxfoundation.org>
+	syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 324/373] crypto: null - Use spin lock instead of mutex
+Date: Tue, 29 Apr 2025 18:43:21 +0200
+Message-ID: <20250429161136.464968764@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Kuchynski <akuchynski@chromium.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit ec27386de23a511008c53aa2f3434ad180a3ca9a upstream.
+[ Upstream commit dcc47a028c24e793ce6d6efebfef1a1e92f80297 ]
 
-Concurrent calls to typec_partner_unlink_device can lead to a NULL pointer
-dereference. This patch adds a mutex to protect USB device pointers and
-prevent this issue. The same mutex protects both the device pointers and
-the partner device registration.
+As the null algorithm may be freed in softirq context through
+af_alg, use spin locks instead of mutexes to protect the default
+null algorithm.
 
-Cc: stable@vger.kernel.org
-Fixes: 59de2a56d127 ("usb: typec: Link enumerated USB devices with Type-C partner")
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250321143728.4092417-2-akuchynski@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/class.c |   15 +++++++++++++--
- drivers/usb/typec/class.h |    1 +
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ crypto/crypto_null.c | 39 ++++++++++++++++++++++++++-------------
+ 1 file changed, 26 insertions(+), 13 deletions(-)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -932,6 +932,7 @@ struct typec_partner *typec_register_par
- 	partner->dev.type = &typec_partner_dev_type;
- 	dev_set_name(&partner->dev, "%s-partner", dev_name(&port->dev));
+diff --git a/crypto/crypto_null.c b/crypto/crypto_null.c
+index 5b84b0f7cc178..3378670286535 100644
+--- a/crypto/crypto_null.c
++++ b/crypto/crypto_null.c
+@@ -17,10 +17,10 @@
+ #include <crypto/internal/skcipher.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+-#include <linux/mm.h>
++#include <linux/spinlock.h>
+ #include <linux/string.h>
  
-+	mutex_lock(&port->partner_link_lock);
- 	ret = device_register(&partner->dev);
- 	if (ret) {
- 		dev_err(&port->dev, "failed to register partner (%d)\n", ret);
-@@ -943,6 +944,7 @@ struct typec_partner *typec_register_par
- 		typec_partner_link_device(partner, port->usb2_dev);
- 	if (port->usb3_dev)
- 		typec_partner_link_device(partner, port->usb3_dev);
-+	mutex_unlock(&port->partner_link_lock);
+-static DEFINE_MUTEX(crypto_default_null_skcipher_lock);
++static DEFINE_SPINLOCK(crypto_default_null_skcipher_lock);
+ static struct crypto_sync_skcipher *crypto_default_null_skcipher;
+ static int crypto_default_null_skcipher_refcnt;
  
- 	return partner;
- }
-@@ -963,12 +965,14 @@ void typec_unregister_partner(struct typ
+@@ -152,23 +152,32 @@ MODULE_ALIAS_CRYPTO("cipher_null");
  
- 	port = to_typec_port(partner->dev.parent);
- 
-+	mutex_lock(&port->partner_link_lock);
- 	if (port->usb2_dev)
- 		typec_partner_unlink_device(partner, port->usb2_dev);
- 	if (port->usb3_dev)
- 		typec_partner_unlink_device(partner, port->usb3_dev);
- 
- 	device_unregister(&partner->dev);
-+	mutex_unlock(&port->partner_link_lock);
- }
- EXPORT_SYMBOL_GPL(typec_unregister_partner);
- 
-@@ -1862,25 +1866,30 @@ static struct typec_partner *typec_get_p
- static void typec_partner_attach(struct typec_connector *con, struct device *dev)
+ struct crypto_sync_skcipher *crypto_get_default_null_skcipher(void)
  {
- 	struct typec_port *port = container_of(con, struct typec_port, con);
--	struct typec_partner *partner = typec_get_partner(port);
-+	struct typec_partner *partner;
- 	struct usb_device *udev = to_usb_device(dev);
++	struct crypto_sync_skcipher *ntfm = NULL;
+ 	struct crypto_sync_skcipher *tfm;
  
-+	mutex_lock(&port->partner_link_lock);
- 	if (udev->speed < USB_SPEED_SUPER)
- 		port->usb2_dev = dev;
- 	else
- 		port->usb3_dev = dev;
+-	mutex_lock(&crypto_default_null_skcipher_lock);
++	spin_lock_bh(&crypto_default_null_skcipher_lock);
+ 	tfm = crypto_default_null_skcipher;
  
-+	partner = typec_get_partner(port);
- 	if (partner) {
- 		typec_partner_link_device(partner, dev);
- 		put_device(&partner->dev);
+ 	if (!tfm) {
+-		tfm = crypto_alloc_sync_skcipher("ecb(cipher_null)", 0, 0);
+-		if (IS_ERR(tfm))
+-			goto unlock;
+-
+-		crypto_default_null_skcipher = tfm;
++		spin_unlock_bh(&crypto_default_null_skcipher_lock);
++
++		ntfm = crypto_alloc_sync_skcipher("ecb(cipher_null)", 0, 0);
++		if (IS_ERR(ntfm))
++			return ntfm;
++
++		spin_lock_bh(&crypto_default_null_skcipher_lock);
++		tfm = crypto_default_null_skcipher;
++		if (!tfm) {
++			tfm = ntfm;
++			ntfm = NULL;
++			crypto_default_null_skcipher = tfm;
++		}
  	}
-+	mutex_unlock(&port->partner_link_lock);
- }
  
- static void typec_partner_deattach(struct typec_connector *con, struct device *dev)
+ 	crypto_default_null_skcipher_refcnt++;
++	spin_unlock_bh(&crypto_default_null_skcipher_lock);
+ 
+-unlock:
+-	mutex_unlock(&crypto_default_null_skcipher_lock);
++	crypto_free_sync_skcipher(ntfm);
+ 
+ 	return tfm;
+ }
+@@ -176,12 +185,16 @@ EXPORT_SYMBOL_GPL(crypto_get_default_null_skcipher);
+ 
+ void crypto_put_default_null_skcipher(void)
  {
- 	struct typec_port *port = container_of(con, struct typec_port, con);
--	struct typec_partner *partner = typec_get_partner(port);
-+	struct typec_partner *partner;
- 
-+	mutex_lock(&port->partner_link_lock);
-+	partner = typec_get_partner(port);
- 	if (partner) {
- 		typec_partner_unlink_device(partner, dev);
- 		put_device(&partner->dev);
-@@ -1890,6 +1899,7 @@ static void typec_partner_deattach(struc
- 		port->usb2_dev = NULL;
- 	else if (port->usb3_dev == dev)
- 		port->usb3_dev = NULL;
-+	mutex_unlock(&port->partner_link_lock);
+-	mutex_lock(&crypto_default_null_skcipher_lock);
++	struct crypto_sync_skcipher *tfm = NULL;
++
++	spin_lock_bh(&crypto_default_null_skcipher_lock);
+ 	if (!--crypto_default_null_skcipher_refcnt) {
+-		crypto_free_sync_skcipher(crypto_default_null_skcipher);
++		tfm = crypto_default_null_skcipher;
+ 		crypto_default_null_skcipher = NULL;
+ 	}
+-	mutex_unlock(&crypto_default_null_skcipher_lock);
++	spin_unlock_bh(&crypto_default_null_skcipher_lock);
++
++	crypto_free_sync_skcipher(tfm);
  }
+ EXPORT_SYMBOL_GPL(crypto_put_default_null_skcipher);
  
- /**
-@@ -2425,6 +2435,7 @@ struct typec_port *typec_register_port(s
- 
- 	ida_init(&port->mode_ids);
- 	mutex_init(&port->port_type_lock);
-+	mutex_init(&port->partner_link_lock);
- 
- 	port->id = id;
- 	port->ops = cap->ops;
---- a/drivers/usb/typec/class.h
-+++ b/drivers/usb/typec/class.h
-@@ -56,6 +56,7 @@ struct typec_port {
- 	enum typec_pwr_opmode		pwr_opmode;
- 	enum typec_port_type		port_type;
- 	struct mutex			port_type_lock;
-+	struct mutex			partner_link_lock;
- 
- 	enum typec_orientation		orientation;
- 	struct typec_switch		*sw;
+-- 
+2.39.5
+
 
 
 
