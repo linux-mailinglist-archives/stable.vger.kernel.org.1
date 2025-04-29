@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C88AA13CC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B68AA14FB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11CEE1BA74EF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5428016A8EF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B1D1FE468;
-	Tue, 29 Apr 2025 17:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A3723FC7D;
+	Tue, 29 Apr 2025 17:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3reGn59"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ntaE9ox"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816037E110;
-	Tue, 29 Apr 2025 17:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CCC21ABDB;
+	Tue, 29 Apr 2025 17:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946343; cv=none; b=TxW9deVv2kp6WYfIE6odaztXzg6e6aGe5y7FTHarpm6DgnGczBlcFyqJXm2S78tk4OnmeuhLiuH739ydsq4JfNpbwG6/j+FHX4WAJtNNmsgeTSD1TBnho5ae8cyZ4RGjterRbQXxn0vD44QfoZx2xKiYjg0ntReSLiG0fTNr5ko=
+	t=1745947179; cv=none; b=bDRDtvHMrxrpFblELuImlAMQcz9uqJwDoDsBnwrFvOmi5rrlpOvGL5AF/UImnU1DerdWBQRbCbysopvYS7kCwFE1HTV6bDECiqMfFDH8qqCCbFiEqnmgicMAa8pSqNcMNlUAjYAzsVJlMxzE8vSddKES77rLh87mI8EHD6t9kec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946343; c=relaxed/simple;
-	bh=IPwAIzpCqiuzae+lF1XqVMKdw3VOyP3AHVEqb4OAVCY=;
+	s=arc-20240116; t=1745947179; c=relaxed/simple;
+	bh=ToDGcpWW9rFrxz28jviBQbJbab/hZQ7SoB2srYysP0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KjPSoHdh8zlXJKAw+vZu0TLvefcxioNI+VVPKNjUdTOulMVMdpe/LuzUVNN3fBGw8s6rzDrmJsi8dCMd+6DlV9D6tNeWBwLMpNlWvKW1JjkdvVSihFVg8+06TNRZBAUQeOn5/RpCXJxD9iwPZPLPCx76jjvkEacrognMdxwUvpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3reGn59; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36B1C4CEE3;
-	Tue, 29 Apr 2025 17:05:42 +0000 (UTC)
+	 MIME-Version; b=qA2omwRsQzAyeNyzwEtd019ZWrB8S0DMXn+sBaNOPf+8/WUth+0PjaMxRFGIYL2bhQGxqEvHigfeCAfSvCNlyPiAvdKqQ4pMCyX+NClvI+SI34ayOEe3S3BaP322Mqzfl6VHXMVdC2LVb+fNgYisWaFqrLhyTwHjByGutdqbaZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ntaE9ox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4AA8C4CEE3;
+	Tue, 29 Apr 2025 17:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946343;
-	bh=IPwAIzpCqiuzae+lF1XqVMKdw3VOyP3AHVEqb4OAVCY=;
+	s=korg; t=1745947179;
+	bh=ToDGcpWW9rFrxz28jviBQbJbab/hZQ7SoB2srYysP0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K3reGn59XzMtWbx1X0Um0c021pHSOU2ff3Blix4Mga8zwDYY0k+JfirmVG9vWamEy
-	 De0XevRKhf2rjeG1eYuAQ/vgtdIhRy/BeNewOmjrCE8i9uOBlb76ZJnlM/R+TGzgc7
-	 +ng50FFCNgQ1xzaeB5lkNMtAulKL9vUwTljSK96c=
+	b=1ntaE9oxWdwdUekOUT6v3BmYBYVHwv4gF4Bx9maGp3Vt048mi71BqASg4lqNCnPXo
+	 0c0TKaodviHnLbvMn9z6mUjl0bxKpDSElDGzHjDBrXb59P/cC+5180RzIef82RW32p
+	 f7VyZzAAC7MKxp/mUmRQy5Z3pJRKWiDtv2WTaHMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Gary Guo <gary@garyguo.net>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 235/311] kbuild, rust: use -fremap-path-prefix to make paths relative
+	syzbot+4dc041c686b7c816a71e@syzkaller.appspotmail.com,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	David Sauerwein <dssauerw@amazon.de>
+Subject: [PATCH 5.10 168/286] bpf: avoid holding freeze_mutex during mmap operation
 Date: Tue, 29 Apr 2025 18:41:12 +0200
-Message-ID: <20250429161130.652802824@linuxfoundation.org>
+Message-ID: <20250429161114.797114463@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit dbdffaf50ff9cee3259a7cef8a7bd9e0f0ba9f13 ]
+commit bc27c52eea189e8f7492d40739b7746d67b65beb upstream.
 
-Remap source path prefixes in all output, including compiler
-diagnostics, debug information, macro expansions, etc.
-This removes a few absolute paths from the binary and also makes it
-possible to use core::panic::Location properly.
+We use map->freeze_mutex to prevent races between map_freeze() and
+memory mapping BPF map contents with writable permissions. The way we
+naively do this means we'll hold freeze_mutex for entire duration of all
+the mm and VMA manipulations, which is completely unnecessary. This can
+potentially also lead to deadlocks, as reported by syzbot in [0].
 
-Equivalent to the same configuration done for C sources in
-commit 1d3730f0012f ("kbuild: support -fmacro-prefix-map for external
-modules") and commit a73619a845d5 ("kbuild: use -fmacro-prefix-map to
-make __FILE__ a relative path").
+So, instead, hold freeze_mutex only during writeability checks, bump
+(proactively) "write active" count for the map, unlock the mutex and
+proceed with mmap logic. And only if something went wrong during mmap
+logic, then undo that "write active" counter increment.
 
-Link: https://doc.rust-lang.org/rustc/command-line-arguments.html#--remap-path-prefix-remap-source-names-in-output
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Tested-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  [0] https://lore.kernel.org/bpf/678dcbc9.050a0220.303755.0066.GAE@google.com/
+
+Fixes: fc9702273e2e ("bpf: Add mmap() support for BPF_MAP_TYPE_ARRAY")
+Reported-by: syzbot+4dc041c686b7c816a71e@syzkaller.appspotmail.com
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20250129012246.1515826-2-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: David Sauerwein <dssauerw@amazon.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/syscall.c |   17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 0c1b99da2c1f2..65663244e2d5c 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1070,6 +1070,7 @@ KBUILD_CFLAGS += -fno-builtin-wcslen
- # change __FILE__ to the relative path to the source directory
- ifdef building_out_of_srctree
- KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srcroot)/=)
-+KBUILD_RUSTFLAGS += --remap-path-prefix=$(srcroot)/=
- endif
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -647,7 +647,7 @@ static const struct vm_operations_struct
+ static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
+ {
+ 	struct bpf_map *map = filp->private_data;
+-	int err;
++	int err = 0;
  
- # include additional Makefiles when needed
--- 
-2.39.5
-
+ 	if (!map->ops->map_mmap || map_value_has_spin_lock(map))
+ 		return -ENOTSUPP;
+@@ -671,7 +671,12 @@ static int bpf_map_mmap(struct file *fil
+ 			err = -EACCES;
+ 			goto out;
+ 		}
++		bpf_map_write_active_inc(map);
+ 	}
++out:
++	mutex_unlock(&map->freeze_mutex);
++	if (err)
++		return err;
+ 
+ 	/* set default open/close callbacks */
+ 	vma->vm_ops = &bpf_map_default_vmops;
+@@ -682,13 +687,11 @@ static int bpf_map_mmap(struct file *fil
+ 		vma->vm_flags &= ~VM_MAYWRITE;
+ 
+ 	err = map->ops->map_mmap(map, vma);
+-	if (err)
+-		goto out;
++	if (err) {
++		if (vma->vm_flags & VM_WRITE)
++			bpf_map_write_active_dec(map);
++	}
+ 
+-	if (vma->vm_flags & VM_MAYWRITE)
+-		bpf_map_write_active_inc(map);
+-out:
+-	mutex_unlock(&map->freeze_mutex);
+ 	return err;
+ }
+ 
 
 
 
