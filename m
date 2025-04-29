@@ -1,178 +1,143 @@
-Return-Path: <stable+bounces-137013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F58AA04ED
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 09:46:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BBDBAA0502
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 09:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 306E55A20BE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 07:45:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEA2D189DE0C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 07:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A851A27817E;
-	Tue, 29 Apr 2025 07:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D1025335E;
+	Tue, 29 Apr 2025 07:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="JOWFpnQU"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896B627933A;
-	Tue, 29 Apr 2025 07:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709A0219E93;
+	Tue, 29 Apr 2025 07:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745912716; cv=none; b=cwBS6dmBnJInKljlyNeVlPaXO1Mxm293OYrq8GHZB9+O0w97p54hBgX/6fz68MsDvgPBGQbp7DIHTd+lYUO/zo2ksUtF57QpdfI5RDrS6VOCN8dwyasW6+Xo0z6OL22RdxWa92C56NDvpAFQLswhwg0V6V51yPmVChM8p1S/LOM=
+	t=1745913143; cv=none; b=FTF1Hyt2RozSQejxdPf/B7+PgqzmGeTdHN6oOd4EGCb+wf8ynim67BJcq8HsFJA2dNPBdjyMZmtzyUDLtA0HgKt/8ygQ3GPnwNw1oqVZe7re4oi2OVWW6tJzTs3dOu/tMwm5N49VWl3wGT/UnzC5c6ZHt8OLDFD+L2EOMLZClAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745912716; c=relaxed/simple;
-	bh=G8dU/8ZraGb4ZDw4STUDdNEQVI98PTS1z3Ot10oXmVU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H2+vmiVCBLwVDCBmJlW9z4EVIh+uaKe2+D6xnOHcB5UhH9P2T9NDWyOGvmK4bgwxxGFTuj2iGGugC6Z5hwfENpcmDxRqm9p+HHg/ymct2ewdSPkAvGZLriJBbg538KnHZ/S5ANWu0t/hwPjYIFWtfa1zPh02phNb91WX6tPUQzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53T3kYcd006268;
-	Tue, 29 Apr 2025 00:45:01 -0700
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 468y0ksmxx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 29 Apr 2025 00:45:01 -0700 (PDT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Tue, 29 Apr 2025 00:45:00 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Tue, 29 Apr 2025 00:44:57 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <jianqi.ren.cn@windriver.com>, <jhs@mojatatu.com>,
-        <xiyou.wangcong@gmail.com>, <jiri@resnulli.us>, <davem@davemloft.net>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-        <michal.swiatkowski@linux.intel.com>, <zhe.he@windriver.com>
-Subject: [PATCH 6.1.y v3] net/sched: act_mirred: don't override retval if we already lost the skb
-Date: Tue, 29 Apr 2025 15:44:56 +0800
-Message-ID: <20250429074456.3626604-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1745913143; c=relaxed/simple;
+	bh=wE0U2VGA7GlUPMVPWivqfH6B/Zuo/KqSHYZwBGmVYM8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=c48XbAStRaIkqryaR00DXp2SCsYWYIkmwZAZZXOCkgnXo48kAky8thceZ35Ef39h6F2110TKOHLxb37mqHvpxcKwNjGo8KirZ5UAnHW/LqCAh2q285TSQ9OSWLASU0eMwibotUynIk76ehStsE+nOxWhji3s4pRAtV6dyX5WiYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=JOWFpnQU; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:Content-Description
+	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=cHS9pP4p6fCGr0o3s86NTXq06gurSik+u2CaY+Hb9ZY=; b=JOWFpnQUdX01m/onw6NGe8aS4M
+	Bel5jI4/CeN9GEHAlfG00VN6+tyHswftPpDndvP6B2RJr1KUKZDxVzomZg9ZeURFZ5wz6S1vlMCkn
+	FgaHd8IzyA/zIt+hZ4J3qqdVTco+mYOPecCrQBqi/6ospM5vAtF4YfrIKCCz4VXLT8BbJ6wFWRHXm
+	keNrf9zFc/7jEygNfLQcQsx8toZBV728yUNVX0ai8E3m/hKv3ee3EcwgyfigOhGmXX16czcCxserN
+	MQhxA/MNMgdlY6JlU0aL5UH3qlQTEYYB79TcWCAjYxHxWKsBPgR0zGVN66hqzC9mqKDDnPKwEIgx1
+	z9uJTeWA==;
+Received: from 53.red-81-38-30.dynamicip.rima-tde.net ([81.38.30.53] helo=localhost.localdomain)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1u9fl4-000DWe-EC; Tue, 29 Apr 2025 09:52:13 +0200
+From: =?utf-8?q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>
+Date: Tue, 29 Apr 2025 09:51:50 +0200
+Subject: [PATCH 6.6/6.12] ext4: goto right label 'out_mmap_sem' in
+ ext4_setattr()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI5MDA1NyBTYWx0ZWRfX1Nc8ZcZ8rBQT QBwUzFC1J0xE8XOfxC9iBJn4HgRDdmKMnWfn/FxuvVvlJvxkRGoRect+QTs8bSzVF3xh4D4Q9lk X37auw/naTAmxWvLXbSk518A5FggQGI32rkV0s0uzqDpN01eVf+qaZVTnNSsGAGhWsQI6SrdmK2
- h90fj3wd7nOgX+wXuD6b246qiZefyW3QnlkzQsg3d+3GoFYo/OY/052VTYhwdenRN75mmzpHp1/ VLz8xMMtezVT2UEyCzMS6BTTOLumqxSwyaYi550DwXcRjBF8/8z8RzhkiT4VTxyly7pi3XzKI+Z cRJSHCsT3T2s35By/3/vbXFsCl3YoaOEzvoF+sBfw+Yu+qu5jxG+Ie8U20GubkwDy1sCojKihXP
- dvFwUemZRBfBjw9frCKpMXNDQ/CZXPKl/X4nYFm02SL2T0D7WYV/lzNQxM5YvNVWegRfsjsS
-X-Proofpoint-ORIG-GUID: rIVTkqjRQilyT82V_WNgSXcEnFdkaigz
-X-Authority-Analysis: v=2.4 cv=O8A5vA9W c=1 sm=1 tr=0 ts=6810837d cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=QyXUC8HyAAAA:8 a=A7XncKjpAAAA:8 a=J1Y8HTJGAAAA:8 a=t7CeM3EgAAAA:8
- a=46DbhiKqDBczhwNKROYA:9 a=R9rPLQDAdC6-Ub70kJmZ:22 a=y1Q9-5lHfBjTkpIzbSAN:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: rIVTkqjRQilyT82V_WNgSXcEnFdkaigz
-X-Sensitive_Customer_Information: Yes
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-29_02,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015 suspectscore=0
- adultscore=0 mlxlogscore=999 mlxscore=0 impostorscore=0 malwarescore=0
- phishscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.21.0-2504070000
- definitions=main-2504290057
+Message-Id: <20250429-rcn-20250429-v6-6-backport-v1-1-9a27617e4ba8@igalia.com>
+X-B4-Tracking: v=1; b=H4sIABWFEGgC/z3MwQqDMAwA0F+RnBdXg2Z2vzI81Bq3MKiSDhmI/
+ 27ZYcd3eTtkMZUM92oHk02zLqmguVQQXyE9BXUqBnLUuZY8Wkz4x8bIOIb4Xhf7YCDvRxf7m+s
+ ZSrCazPr95Q/gmq9cNwTDcZyVbd0RdgAAAA==
+X-Change-ID: 20250429-rcn-20250429-v6-6-backport-a299b0c87086
+To: stable@vger.kernel.org
+Cc: Theodore Ts'o <tytso@mit.edu>, 
+ Andreas Dilger <adilger.kernel@dilger.ca>, 
+ Brian Foster <bfoster@redhat.com>, kernel-dev@igalia.com, 
+ linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Baokun Li <libaokun1@huawei.com>, Jan Kara <jack@suse.cz>
+X-Mailer: b4 0.14.2
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 166c2c8a6a4dc2e4ceba9e10cfe81c3e469e3210 ]
+[ Upstream commit 7e91ae31e2d264155dfd102101afc2de7bd74a64 ]
 
-If we're redirecting the skb, and haven't called tcf_mirred_forward(),
-yet, we need to tell the core to drop the skb by setting the retcode
-to SHOT. If we have called tcf_mirred_forward(), however, the skb
-is out of our hands and returning SHOT will lead to UaF.
+Otherwise, if ext4_inode_attach_jinode() fails, a hung task will
+happen because filemap_invalidate_unlock() isn't called to unlock
+mapping->invalidate_lock. Like this:
 
-Move the retval override to the error path which actually need it.
+EXT4-fs error (device sda) in ext4_setattr:5557: Out of memory
+INFO: task fsstress:374 blocked for more than 122 seconds.
+      Not tainted 6.14.0-rc1-next-20250206-xfstests-dirty #726
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:fsstress state:D stack:0     pid:374   tgid:374   ppid:373
+                                  task_flags:0x440140 flags:0x00000000
+Call Trace:
+ <TASK>
+ __schedule+0x2c9/0x7f0
+ schedule+0x27/0xa0
+ schedule_preempt_disabled+0x15/0x30
+ rwsem_down_read_slowpath+0x278/0x4c0
+ down_read+0x59/0xb0
+ page_cache_ra_unbounded+0x65/0x1b0
+ filemap_get_pages+0x124/0x3e0
+ filemap_read+0x114/0x3d0
+ vfs_read+0x297/0x360
+ ksys_read+0x6c/0xe0
+ do_syscall_64+0x4b/0x110
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Fixes: e5cf1baf92cb ("act_mirred: use TC_ACT_REINSERT when possible")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[Minor conflict resolved due to code context change.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: c7fc0366c656 ("ext4: partial zero eof block on unaligned inode size extension")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Link: https://patch.msgid.link/20250213112247.3168709-1-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
 ---
-v2: Fix the following issue
-net/sched/act_mirred.c:265:6: error: variable 'is_redirect' is used
-uninitialized whenever 'if' condition is true
-found by the following tuxmake
-(https://lore.kernel.org/stable/CA+G9fYu+FEZ-3ye30Hk2sk1+LFsw7iO5AHueUa9H1Ub=JO-k2g@mail.gmail.com/)
-Verified the build test by cmd(tuxmake --runtime podman --target-arch arm
- --toolchain clang-20 --kconfig allmodconfig LLVM=1 LLVM_IAS=1)
----
- net/sched/act_mirred.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+Hi,
 
-diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-index 36395e5db3b4..bbc34987bd09 100644
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -255,31 +255,31 @@ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
+Requesting this fix to be backported to stable v6.6 and v6.12, which
+contain the backport for upstream patch
+c7fc0366c656 ("ext4: partial zero eof block on unaligned inode size extension").
+That patch was also backported to v6.14 but the fix is there already as
+well.
+
+Thanks,
+Ricardo
+---
+ fs/ext4/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index ddfeaf19bff1ba22cea7e108c0564daceb09e9ee..ebb8097b11397fb3e8c005035a808712ac31ee77 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -5478,7 +5478,7 @@ int ext4_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 			    oldsize & (inode->i_sb->s_blocksize - 1)) {
+ 				error = ext4_inode_attach_jinode(inode);
+ 				if (error)
+-					goto err_out;
++					goto out_mmap_sem;
+ 			}
  
- 	m_mac_header_xmit = READ_ONCE(m->tcfm_mac_header_xmit);
- 	m_eaction = READ_ONCE(m->tcfm_eaction);
-+	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
- 	retval = READ_ONCE(m->tcf_action);
- 	dev = rcu_dereference_bh(m->tcfm_dev);
- 	if (unlikely(!dev)) {
- 		pr_notice_once("tc mirred: target device is gone\n");
--		goto out;
-+		goto err_cant_do;
- 	}
- 
- 	if (unlikely(!(dev->flags & IFF_UP)) || !netif_carrier_ok(dev)) {
- 		net_notice_ratelimited("tc mirred to Houston: device %s is down\n",
- 				       dev->name);
--		goto out;
-+		goto err_cant_do;
- 	}
- 
- 	/* we could easily avoid the clone only if called by ingress and clsact;
- 	 * since we can't easily detect the clsact caller, skip clone only for
- 	 * ingress - that covers the TC S/W datapath.
- 	 */
--	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
- 	at_ingress = skb_at_tc_ingress(skb);
- 	use_reinsert = at_ingress && is_redirect &&
- 		       tcf_mirred_can_reinsert(retval);
- 	if (!use_reinsert) {
- 		skb2 = skb_clone(skb, GFP_ATOMIC);
- 		if (!skb2)
--			goto out;
-+			goto err_cant_do;
- 	}
- 
- 	want_ingress = tcf_mirred_act_wants_ingress(m_eaction);
-@@ -321,12 +321,16 @@ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
- 	}
- 
- 	err = tcf_mirred_forward(want_ingress, skb2);
--	if (err) {
--out:
-+	if (err)
- 		tcf_action_inc_overlimit_qstats(&m->common);
--		if (tcf_mirred_is_act_redirect(m_eaction))
--			retval = TC_ACT_SHOT;
--	}
-+	__this_cpu_dec(mirred_nest_level);
-+
-+	return retval;
-+
-+err_cant_do:
-+	if (is_redirect)
-+		retval = TC_ACT_SHOT;
-+	tcf_action_inc_overlimit_qstats(&m->common);
- 	__this_cpu_dec(mirred_nest_level);
- 
- 	return retval;
--- 
-2.34.1
+ 			handle = ext4_journal_start(inode, EXT4_HT_INODE, 3);
+
+---
+base-commit: 23ec0b4057294d86cdefafe373b1f03568f75aff
+change-id: 20250429-rcn-20250429-v6-6-backport-a299b0c87086
 
 
