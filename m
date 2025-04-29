@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-137713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680BCAA1483
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF76AA15F0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D17F16C70D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:15:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6954717510C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E9524E000;
-	Tue, 29 Apr 2025 17:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC992472B4;
+	Tue, 29 Apr 2025 17:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uiRhftZX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYAAtDCI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A429C24A067;
-	Tue, 29 Apr 2025 17:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB5338FB0;
+	Tue, 29 Apr 2025 17:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946902; cv=none; b=K/1bF8BxExfcJnZo12FNiXIVtc5uBTp6dMn5h+sVOzRT0DrQsjOHCIG53as5MsUe+D+H7DQY+zDf1l/g5kbS+fGHblZt0I52JlxxjKgOUZhJGMQMbLig7+A2Cz4VERuxnIDT2bQhk0yw/eSB8S8mURJfExz/BIyI4L39POae44M=
+	t=1745947694; cv=none; b=A1UJ6Lg9wd0c2cYktqzA8uTDom1fJv3ARZXa5yiPw0kCB63ktRrSd5tqvGm5NrtBgq9dPQSGIGpUty4DIcaH9r6cUOPde6pEqlM+c4q0wa91a0yGWY95ZxKfLTpbM4tzvadNIfj7wug9AMMTXLP09yKh1Df4G6eg/ds9dHOqu9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946902; c=relaxed/simple;
-	bh=qQMMiCeUCsXD+lfE9sLi7/ChEZNAv6tEyMQWlUz47bU=;
+	s=arc-20240116; t=1745947694; c=relaxed/simple;
+	bh=xeOOMGcQ9+BrmMAS+47vErxsL1uDjqy5DuVtgCSdYjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfH8DYdOX4cj1F5qx3ot+yOv9gVgp557wrOWlexJJ6iQJOYAaC/Bw8Udd18XskfY3QrzTXDs/gkM2fk4E6mRGRQin/Mp05aRebGMuzBhFnalr70PJwVA8lI3TObVWpPOKdixPCnKX9/iWGsM0MFTUDmR07bmvVqdLWVl/Z2bLqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uiRhftZX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15BCAC4CEE3;
-	Tue, 29 Apr 2025 17:15:01 +0000 (UTC)
+	 MIME-Version; b=RW6KsBt0b0iXvrR3yU4mx/dRqF0q7ScPZGChhvn+82VH3eOo1sJirHWHB7NRWLO6rhbU0ldEH1AWcTzQYj/avs1eh8xCylMHsblkV8soqMLKv3m3Um+M1RKQaWzbdIbY6WsbpoK7JMFL5oiUOehjZGluq7eeEH9InwZP7XFW6g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYAAtDCI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430CEC4CEE9;
+	Tue, 29 Apr 2025 17:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946902;
-	bh=qQMMiCeUCsXD+lfE9sLi7/ChEZNAv6tEyMQWlUz47bU=;
+	s=korg; t=1745947694;
+	bh=xeOOMGcQ9+BrmMAS+47vErxsL1uDjqy5DuVtgCSdYjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uiRhftZXnxXa0evRvPknpZ0MJXtqNllpe8PylBsZ5nLd0EvX/efhmlgn25OJanir8
-	 9X/kGaJzSlZAxgnhojpyudJlfDI948xqp16cTTvhjNHzjoVnXcwgD7Q57UpnCyAoeJ
-	 XPmaGmtXzCuJqpd7jKr/el0M5jEW6sD7Z69pZuFQ=
+	b=TYAAtDCI9xN96w50ec87uwnGh9Yazpvg1p3bPeWFRsKJZYRLQtWlxc2gGc/Duf/nN
+	 8QOA+0/8om8bIZWzils+0jMc6pZYePTbf9nhnKnZxABqa71lzryOrrtjGL3OBmVELj
+	 5JHi2vnSFIqu9XODvxDGy29EJAQRp3tV0dysyCz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 107/286] RDMA/usnic: Fix passing zero to PTR_ERR in usnic_ib_pci_probe()
+Subject: [PATCH 6.12 070/280] net: lwtunnel: disable BHs when required
 Date: Tue, 29 Apr 2025 18:40:11 +0200
-Message-ID: <20250429161112.259756524@linuxfoundation.org>
+Message-ID: <20250429161117.972499882@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +65,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-[ Upstream commit 95ba3850fed03e01b422ab5d7943aeba130c9723 ]
+[ Upstream commit c03a49f3093a4903c8a93c8b5c9a297b5343b169 ]
 
-drivers/infiniband/hw/usnic/usnic_ib_main.c:590
- usnic_ib_pci_probe() warn: passing zero to 'PTR_ERR'
+In lwtunnel_{output|xmit}(), dev_xmit_recursion() may be called in
+preemptible scope for PREEMPT kernels. This patch disables BHs before
+calling dev_xmit_recursion(). BHs are re-enabled only at the end, since
+we must ensure the same CPU is used for both dev_xmit_recursion_inc()
+and dev_xmit_recursion_dec() (and any other recursion levels in some
+cases) in order to maintain valid per-cpu counters.
 
-Make usnic_ib_device_add() return NULL on fail path, also remove
-useless NULL check for usnic_ib_discover_pf()
-
-Fixes: e3cf00d0a87f ("IB/usnic: Add Cisco VIC low-level hardware driver")
-Link: https://patch.msgid.link/r/20250324123132.2392077-1-yuehaibing@huawei.com
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reported-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAADnVQJFWn3dBFJtY+ci6oN1pDFL=TzCmNbRgey7MdYxt_AP2g@mail.gmail.com/
+Reported-by: Eduard Zingerman <eddyz87@gmail.com>
+Closes: https://lore.kernel.org/netdev/m2h62qwf34.fsf@gmail.com/
+Fixes: 986ffb3a57c5 ("net: lwtunnel: fix recursion loops")
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250416160716.8823-1-justin.iurman@uliege.be
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/usnic/usnic_ib_main.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/core/lwtunnel.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/hw/usnic/usnic_ib_main.c b/drivers/infiniband/hw/usnic/usnic_ib_main.c
-index aa2e65fc5cd65..ea3e28e3e0b29 100644
---- a/drivers/infiniband/hw/usnic/usnic_ib_main.c
-+++ b/drivers/infiniband/hw/usnic/usnic_ib_main.c
-@@ -378,7 +378,7 @@ static void *usnic_ib_device_add(struct pci_dev *dev)
- 	if (!us_ibdev) {
- 		usnic_err("Device %s context alloc failed\n",
- 				netdev_name(pci_get_drvdata(dev)));
--		return ERR_PTR(-EFAULT);
-+		return NULL;
- 	}
+diff --git a/net/core/lwtunnel.c b/net/core/lwtunnel.c
+index 4417a18b3e951..f63586c9ce021 100644
+--- a/net/core/lwtunnel.c
++++ b/net/core/lwtunnel.c
+@@ -332,6 +332,8 @@ int lwtunnel_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	struct dst_entry *dst;
+ 	int ret;
  
- 	us_ibdev->ufdev = usnic_fwd_dev_alloc(dev);
-@@ -519,8 +519,8 @@ static struct usnic_ib_dev *usnic_ib_discover_pf(struct usnic_vnic *vnic)
- 	}
++	local_bh_disable();
++
+ 	if (dev_xmit_recursion()) {
+ 		net_crit_ratelimited("%s(): recursion limit reached on datapath\n",
+ 				     __func__);
+@@ -347,8 +349,10 @@ int lwtunnel_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	lwtstate = dst->lwtstate;
  
- 	us_ibdev = usnic_ib_device_add(parent_pci);
--	if (IS_ERR_OR_NULL(us_ibdev)) {
--		us_ibdev = us_ibdev ? us_ibdev : ERR_PTR(-EFAULT);
-+	if (!us_ibdev) {
-+		us_ibdev = ERR_PTR(-EFAULT);
- 		goto out;
- 	}
+ 	if (lwtstate->type == LWTUNNEL_ENCAP_NONE ||
+-	    lwtstate->type > LWTUNNEL_ENCAP_MAX)
+-		return 0;
++	    lwtstate->type > LWTUNNEL_ENCAP_MAX) {
++		ret = 0;
++		goto out;
++	}
  
-@@ -583,10 +583,10 @@ static int usnic_ib_pci_probe(struct pci_dev *pdev,
- 	}
+ 	ret = -EOPNOTSUPP;
+ 	rcu_read_lock();
+@@ -363,11 +367,13 @@ int lwtunnel_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	if (ret == -EOPNOTSUPP)
+ 		goto drop;
  
- 	pf = usnic_ib_discover_pf(vf->vnic);
--	if (IS_ERR_OR_NULL(pf)) {
--		usnic_err("Failed to discover pf of vnic %s with err%ld\n",
--				pci_name(pdev), PTR_ERR(pf));
--		err = pf ? PTR_ERR(pf) : -EFAULT;
-+	if (IS_ERR(pf)) {
-+		err = PTR_ERR(pf);
-+		usnic_err("Failed to discover pf of vnic %s with err%d\n",
-+				pci_name(pdev), err);
- 		goto out_clean_vnic;
- 	}
+-	return ret;
++	goto out;
  
+ drop:
+ 	kfree_skb(skb);
+ 
++out:
++	local_bh_enable();
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(lwtunnel_output);
+@@ -379,6 +385,8 @@ int lwtunnel_xmit(struct sk_buff *skb)
+ 	struct dst_entry *dst;
+ 	int ret;
+ 
++	local_bh_disable();
++
+ 	if (dev_xmit_recursion()) {
+ 		net_crit_ratelimited("%s(): recursion limit reached on datapath\n",
+ 				     __func__);
+@@ -395,8 +403,10 @@ int lwtunnel_xmit(struct sk_buff *skb)
+ 	lwtstate = dst->lwtstate;
+ 
+ 	if (lwtstate->type == LWTUNNEL_ENCAP_NONE ||
+-	    lwtstate->type > LWTUNNEL_ENCAP_MAX)
+-		return 0;
++	    lwtstate->type > LWTUNNEL_ENCAP_MAX) {
++		ret = 0;
++		goto out;
++	}
+ 
+ 	ret = -EOPNOTSUPP;
+ 	rcu_read_lock();
+@@ -411,11 +421,13 @@ int lwtunnel_xmit(struct sk_buff *skb)
+ 	if (ret == -EOPNOTSUPP)
+ 		goto drop;
+ 
+-	return ret;
++	goto out;
+ 
+ drop:
+ 	kfree_skb(skb);
+ 
++out:
++	local_bh_enable();
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(lwtunnel_xmit);
+@@ -427,6 +439,8 @@ int lwtunnel_input(struct sk_buff *skb)
+ 	struct dst_entry *dst;
+ 	int ret;
+ 
++	DEBUG_NET_WARN_ON_ONCE(!in_softirq());
++
+ 	if (dev_xmit_recursion()) {
+ 		net_crit_ratelimited("%s(): recursion limit reached on datapath\n",
+ 				     __func__);
 -- 
 2.39.5
 
