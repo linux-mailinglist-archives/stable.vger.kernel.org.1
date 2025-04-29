@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-138411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE89AA17E7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 420C9AA1684
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ECAC4C6463
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:52:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AA44188DE95
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66DEB24DFF3;
-	Tue, 29 Apr 2025 17:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C742522B4;
+	Tue, 29 Apr 2025 17:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXnrFhNH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQ20uB87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D6022AE68;
-	Tue, 29 Apr 2025 17:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7422517A8;
+	Tue, 29 Apr 2025 17:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949169; cv=none; b=GhdSyFktWqElOW7QHmlgsu0mizYeZ3phVQ6aj61MVSdwqppIcpygK4hKPRz6iY4MyxC97lU1GM5Gt9nCuyFjceliG33V8I0GdHZ2I1ihHPcRGaCEc5sGsdnidP8yI4mfPq5PPHPAHtxch/ODLyXvZfSigIzJ12MYCl0Ol0wx1xU=
+	t=1745948126; cv=none; b=LHDqj80koC5aWjBNGi8GWyi0H1vKXOUsVO2I4Xck08LxC3JlqkQaO6Yj7yQCVlr3AHdavU5xaDUBVbAj93lHZQUPtIr9w413ZdIXkjKkvmd4UzLOmdHbyJvN2sM22P7LdmRf9W5p20WAh3voi+AuDc9wvXD5QjrO7JCsX/mULyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949169; c=relaxed/simple;
-	bh=EuPrxi6301D2lEbCfqthDvvgtQ+Ie8I7sky6gG+wi4U=;
+	s=arc-20240116; t=1745948126; c=relaxed/simple;
+	bh=H2k1bU6PpIDes/rquxx0KMw4jGo+iXvH2DUWfNPNEhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hLY8jUtLeRrYYQD/o9EBrsOpejTMTYIQkMFyb6EIhGky48hufxGDl81w11JOvpbEZ381ONFVIKWdGXhYIqAKmQAziw5XtwmGFPMG8jO1uzf9+QPm7Ipaic8s02BfCMRIu80KwfvBhS+bBF+rfy9PmEOATOfjjpQ+X98G4MZSg8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXnrFhNH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9644C4CEE3;
-	Tue, 29 Apr 2025 17:52:48 +0000 (UTC)
+	 MIME-Version; b=W7CU1NwxbcARjSVkkm9HnZI0BHjDbE49EpmVaMQd/1obqcYavvx33m+k69OJA9PcAikTKeBP23ZZLJKR50CgLVVFbWJttvSfAkZcy+Ox9OmgvfCFF43waVDV0uDRIn25d9qVQ0XOEMpy9ts6mWFuK+gTTf2g1bfLUE5IcbuoRj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQ20uB87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848CFC4CEE3;
+	Tue, 29 Apr 2025 17:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949169;
-	bh=EuPrxi6301D2lEbCfqthDvvgtQ+Ie8I7sky6gG+wi4U=;
+	s=korg; t=1745948126;
+	bh=H2k1bU6PpIDes/rquxx0KMw4jGo+iXvH2DUWfNPNEhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uXnrFhNHKc1dKgdm4MXrZJec4PhRL+SJBgt7v/O8p3beWwutquIp2vp+UJKlEVpOC
-	 6aKNoqhV/IhxM9fp+69cG+lEFSPH+pcBY60pUR/44CdvfetyDzFQy7i5HWYDxv3qV6
-	 EZNyzkQm8PYaRaCtbd0zWBjQbzVYqgbHCg6lkGjo=
+	b=GQ20uB87IOD+tHDkn18Z9/jFVkS8XGXZwEpDfeyCyXuSkG53C1F59QuPs7gc23FSt
+	 x2MugAdoOq6Xje897jFmTq/T+ZnZGjkDEJdzA/Mw/Yzj1nePSdO94kDDeMzGGRP850
+	 kKeeFldZshpwswLUB0cQSWcnAPOl/edgHaJGLoAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaxi Shen <shenxiaxi26@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org,
-	Xiangyu Chen <xiangyu.chen@windriver.com>,
-	He Zhe <zhe.he@windriver.com>,
-	syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 234/373] ext4: fix timer use-after-free on failed mount
+	Alexander Stein <alexander.stein@mailbox.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 170/280] usb: host: max3421-hcd: Add missing spi_device_id table
 Date: Tue, 29 Apr 2025 18:41:51 +0200
-Message-ID: <20250429161132.766941121@linuxfoundation.org>
+Message-ID: <20250429161122.072796944@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaxi Shen <shenxiaxi26@gmail.com>
+From: Alexander Stein <alexander.stein@mailbox.org>
 
-commit 0ce160c5bdb67081a62293028dc85758a8efb22a upstream.
+[ Upstream commit 41d5e3806cf589f658f92c75195095df0b66f66a ]
 
-Syzbot has found an ODEBUG bug in ext4_fill_super
+"maxim,max3421" DT compatible is missing its SPI device ID entry, not
+allowing module autoloading and leading to the following message:
+ "SPI driver max3421-hcd has no spi_device_id for maxim,max3421"
 
-The del_timer_sync function cancels the s_err_report timer,
-which reminds about filesystem errors daily. We should
-guarantee the timer is no longer active before kfree(sbi).
+Fix this by adding the spi_device_id table.
 
-When filesystem mounting fails, the flow goes to failed_mount3,
-where an error occurs when ext4_stop_mmpd is called, causing
-a read I/O failure. This triggers the ext4_handle_error function
-that ultimately re-arms the timer,
-leaving the s_err_report timer active before kfree(sbi) is called.
-
-Fix the issue by canceling the s_err_report timer after calling ext4_stop_mmpd.
-
-Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
-Reported-and-tested-by: syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=59e0101c430934bc9a36
-Link: https://patch.msgid.link/20240715043336.98097-1-shenxiaxi26@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[Minor context change fixed]
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Alexander Stein <alexander.stein@mailbox.org>
+Link: https://lore.kernel.org/r/20250128195114.56321-1-alexander.stein@mailbox.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/max3421-hcd.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5085,8 +5085,8 @@ failed_mount3a:
- failed_mount3:
- 	/* flush s_error_work before sbi destroy */
- 	flush_work(&sbi->s_error_work);
--	del_timer_sync(&sbi->s_err_report);
- 	ext4_stop_mmpd(sbi);
-+	del_timer_sync(&sbi->s_err_report);
- failed_mount2:
- 	rcu_read_lock();
- 	group_desc = rcu_dereference(sbi->s_group_desc);
+diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
+index 0881fdd1823e0..dcf31a592f5d1 100644
+--- a/drivers/usb/host/max3421-hcd.c
++++ b/drivers/usb/host/max3421-hcd.c
+@@ -1946,6 +1946,12 @@ max3421_remove(struct spi_device *spi)
+ 	usb_put_hcd(hcd);
+ }
+ 
++static const struct spi_device_id max3421_spi_ids[] = {
++	{ "max3421" },
++	{ },
++};
++MODULE_DEVICE_TABLE(spi, max3421_spi_ids);
++
+ static const struct of_device_id max3421_of_match_table[] = {
+ 	{ .compatible = "maxim,max3421", },
+ 	{},
+@@ -1955,6 +1961,7 @@ MODULE_DEVICE_TABLE(of, max3421_of_match_table);
+ static struct spi_driver max3421_driver = {
+ 	.probe		= max3421_probe,
+ 	.remove		= max3421_remove,
++	.id_table	= max3421_spi_ids,
+ 	.driver		= {
+ 		.name	= "max3421-hcd",
+ 		.of_match_table = max3421_of_match_table,
+-- 
+2.39.5
+
 
 
 
