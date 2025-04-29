@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-138337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BB6AA17E9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C15CDAA1246
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 217939A2B75
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F69B4A6CD5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2525F24E4A9;
-	Tue, 29 Apr 2025 17:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373E3246326;
+	Tue, 29 Apr 2025 16:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnzAUm1C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qH1ngR6R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C881821ABC1;
-	Tue, 29 Apr 2025 17:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84B221772B;
+	Tue, 29 Apr 2025 16:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948908; cv=none; b=fhS/KvW8vbEkjFZqzA9FhsbxHq7fmBiIwgl5zI2t3bbJgZ0XEOxxIYk/jdy0b9p8O48Ng2KcjePilgTopJ7ZZhT+t/+ireSvlB/Wp0MD8zDWZ+QDCmp+wytIzI9fE/m8xmlRPF3ibC6r/k4SHrlEQab+XHudAS7QodgHaGKJVZ4=
+	t=1745945456; cv=none; b=CMw95WV058aoqJOQClyYECg7MlhiiDDuxlG7HmB1rt66PSyRdhDBdlLJtRcMUoqnvYFB3zwnRZnXawN0yw5EXiOhmTZEc7f27HrQDSplFjIuq1FDukoBtFY1CkYSe7TbgUARIc5o2FTDNQ9u47sD0pkiL4xENLiwMOioaIdEsSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948908; c=relaxed/simple;
-	bh=mmnWJlaFMxsvSu7l6X+mQadvG6zmXjv76Ppom0d7dmY=;
+	s=arc-20240116; t=1745945456; c=relaxed/simple;
+	bh=PelSaCWYcLevcqksVD3H1EPH2cfFmwa+4M5b2cEe5e4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dh/mZKtmT17EASY3Ibk9Xsz3xJSCziH+9DeSn1ShiH6qDVpDxlRVCPIvR1tF1Y1U5sVfLDNcNaBgDIcry5wvUGXIIkST31t5GCRU5hdFymQ6sRtcxm332F0b7xysTJanimlOrHQbUJOMy5qzk1UevAJOOl+zMcBFE8hgQw2bI3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnzAUm1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D407C4CEE3;
-	Tue, 29 Apr 2025 17:48:28 +0000 (UTC)
+	 MIME-Version; b=DjajO4UcISc143cVgoLmOLRHA4uQqP5d4YU8NcBn4aFNl4UCcSRm7ZiNUh+4WwlAVcyaR76s8xqaCc5HvjL/eHOCm4Mq9IZkrRutj81U8wcj4oQWPyj4qDjAjuyJE0Q9yzfvTOReohE1KglG3ocpwcs8ouXm8sLqlrnRSqYoHRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qH1ngR6R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417A1C4CEE9;
+	Tue, 29 Apr 2025 16:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948908;
-	bh=mmnWJlaFMxsvSu7l6X+mQadvG6zmXjv76Ppom0d7dmY=;
+	s=korg; t=1745945455;
+	bh=PelSaCWYcLevcqksVD3H1EPH2cfFmwa+4M5b2cEe5e4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nnzAUm1CKGuP9it1LP4+1zY/RB4MY96CSHakiK0mwWIb2SEb4BQl9HraIdgCpG9xW
-	 PoEdElGYbSTJ1pJQqBxOXI9IDiDuzsVDbOZf6sMqYB6lD0YN/+oNLlTkzX1bspn64F
-	 45OoLG12wLvfQmJ7pmkvwQdKqKdHfj2G0pxbdmvg=
+	b=qH1ngR6RdMsta8vRLTauAz5nEKM9OyX1EsGjvc4DFMe7gWDvyHyi23HpNw1ssXmTM
+	 c45SLcpLkFsIjIgY4cc2OHSw1tvLd7rySuvoJRtyDwAak2EN4Fs1fy9PyfDheiqi3/
+	 7CBbFHsBm4cLteJXmxFV6Q2xJA9NZUYQumo3qqzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	WangYuli <wangyuli@uniontech.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 152/373] riscv: KGDB: Remove ".option norvc/.option rvc" for kgdb_compiled_break
+Subject: [PATCH 5.4 088/179] RDMA/usnic: Fix passing zero to PTR_ERR in usnic_ib_pci_probe()
 Date: Tue, 29 Apr 2025 18:40:29 +0200
-Message-ID: <20250429161129.407966867@linuxfoundation.org>
+Message-ID: <20250429161052.962852335@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-[ Upstream commit 550c2aa787d1b06efcb11de1877354502a1237f2 ]
+[ Upstream commit 95ba3850fed03e01b422ab5d7943aeba130c9723 ]
 
-[ Quoting Samuel Holland: ]
+drivers/infiniband/hw/usnic/usnic_ib_main.c:590
+ usnic_ib_pci_probe() warn: passing zero to 'PTR_ERR'
 
-  This is a separate issue, but using ".option rvc" here is a bug.
-  It will unconditionally enable the C extension for the rest of
-  the file, even if the kernel is being built with CONFIG_RISCV_ISA_C=n.
+Make usnic_ib_device_add() return NULL on fail path, also remove
+useless NULL check for usnic_ib_discover_pf()
 
-[ Quoting Palmer Dabbelt: ]
-
-  We're just looking at the address of kgdb_compiled_break, so it's
-  fine if it ends up as a c.ebreak.
-
-[ Quoting Alexandre Ghiti: ]
-
-  .option norvc is used to prevent the assembler from using compressed
-  instructions, but it's generally used when we need to ensure the
-  size of the instructions that are used, which is not the case here
-  as noted by Palmer since we only care about the address. So yes
-  it will work fine with C enabled :)
-
-So let's just remove them all.
-
-Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
-Link: https://lore.kernel.org/all/mhng-69513841-5068-441d-be8f-2aeebdc56a08@palmer-ri-x1c9a/
-Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
-Fixes: fe89bd2be866 ("riscv: Add KGDB support")
-Cc: Samuel Holland <samuel.holland@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/8B431C6A4626225C+20250411073222.56820-2-wangyuli@uniontech.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: e3cf00d0a87f ("IB/usnic: Add Cisco VIC low-level hardware driver")
+Link: https://patch.msgid.link/r/20250324123132.2392077-1-yuehaibing@huawei.com
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/kgdb.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/infiniband/hw/usnic/usnic_ib_main.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
-index b0db3350d243b..1d83b36967212 100644
---- a/arch/riscv/kernel/kgdb.c
-+++ b/arch/riscv/kernel/kgdb.c
-@@ -276,9 +276,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
- noinline void arch_kgdb_breakpoint(void)
- {
- 	asm(".global kgdb_compiled_break\n"
--	    ".option norvc\n"
--	    "kgdb_compiled_break: ebreak\n"
--	    ".option rvc\n");
-+	    "kgdb_compiled_break: ebreak\n");
- }
+diff --git a/drivers/infiniband/hw/usnic/usnic_ib_main.c b/drivers/infiniband/hw/usnic/usnic_ib_main.c
+index c9abe1c01e4eb..eaa60554eb462 100644
+--- a/drivers/infiniband/hw/usnic/usnic_ib_main.c
++++ b/drivers/infiniband/hw/usnic/usnic_ib_main.c
+@@ -380,7 +380,7 @@ static void *usnic_ib_device_add(struct pci_dev *dev)
+ 	if (!us_ibdev) {
+ 		usnic_err("Device %s context alloc failed\n",
+ 				netdev_name(pci_get_drvdata(dev)));
+-		return ERR_PTR(-EFAULT);
++		return NULL;
+ 	}
  
- void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
+ 	us_ibdev->ufdev = usnic_fwd_dev_alloc(dev);
+@@ -520,8 +520,8 @@ static struct usnic_ib_dev *usnic_ib_discover_pf(struct usnic_vnic *vnic)
+ 	}
+ 
+ 	us_ibdev = usnic_ib_device_add(parent_pci);
+-	if (IS_ERR_OR_NULL(us_ibdev)) {
+-		us_ibdev = us_ibdev ? us_ibdev : ERR_PTR(-EFAULT);
++	if (!us_ibdev) {
++		us_ibdev = ERR_PTR(-EFAULT);
+ 		goto out;
+ 	}
+ 
+@@ -584,10 +584,10 @@ static int usnic_ib_pci_probe(struct pci_dev *pdev,
+ 	}
+ 
+ 	pf = usnic_ib_discover_pf(vf->vnic);
+-	if (IS_ERR_OR_NULL(pf)) {
+-		usnic_err("Failed to discover pf of vnic %s with err%ld\n",
+-				pci_name(pdev), PTR_ERR(pf));
+-		err = pf ? PTR_ERR(pf) : -EFAULT;
++	if (IS_ERR(pf)) {
++		err = PTR_ERR(pf);
++		usnic_err("Failed to discover pf of vnic %s with err%d\n",
++				pci_name(pdev), err);
+ 		goto out_clean_vnic;
+ 	}
+ 
 -- 
 2.39.5
 
