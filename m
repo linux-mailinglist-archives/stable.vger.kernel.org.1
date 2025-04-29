@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FBFAAA150B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 498E5AA124D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6362D1BA4410
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5862F1B63B89
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DDD24291A;
-	Tue, 29 Apr 2025 17:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11DCA247298;
+	Tue, 29 Apr 2025 16:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvxoehbJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwMaDMWq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D430021ABDB;
-	Tue, 29 Apr 2025 17:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C328B21772B;
+	Tue, 29 Apr 2025 16:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947160; cv=none; b=hAdzOqoQe8B7xP5tcOO/Kee+QhH8V/16ZZyyfsUJ2p0vBetl4LfPeCKyfHXonTpgt/+EuVvPRvrECS21MzWtw4Ol++VpBF0vLdbFYnXjdbd3yFi23LC0rMG5GcjvxZx+htyfj8pgGwqyUiD/AQKO7GNUjzQ6mUfdmCp7d/ty1QE=
+	t=1745945479; cv=none; b=sprnHdjhGfmx8oFid3MpOsc+lL0SLBI6ii4UMTDDeYo3lpDT56J2uYMMAljIpFBeszvlBffVk0Ey9OplHsD/zM6QtTGAiBlDASaLHf16t9FBoc8OhWo8LRjp3tE/KNhSvijleoikueyg1oEV5cCjYA4EsnQ/xHK4PM3ZKt7MLJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947160; c=relaxed/simple;
-	bh=CrSGKe/4Axv7rv687199w4VJFUaN6Ngh5JNHZYI50vs=;
+	s=arc-20240116; t=1745945479; c=relaxed/simple;
+	bh=j5dSkBa4fDDhOg67A4Nbrr4eJV0BfxYkUAsorEZBM1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dASt9BlmkKN6nKIO98ki85UxypzPKRC5dGIQgH36WYTX1j5i2PIv94OtxL5FhfjPnY9vCRldC9fRFHe1MtxpP+xsFN26y6diPJej5M1K1kR4SiFkgkKKPMvtFuSzQ92lbTzNd++CXnYg1F8ceVZ9+IsLbpHasPSAsD6ifqJelms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvxoehbJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB095C4CEE3;
-	Tue, 29 Apr 2025 17:19:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eSNxcBWr7X3GpWWyYDzBfoUybcrmV+bJx8wdKxBGmNte5LDzsY11930BReAyGm2uVOiOoZ5t8BnVSTWQBPZz8ZPKq3bHQS1zp+iY+8u9tihTl3x8PpxX2ztjy/IU5oRx+OGIrSdA6pH5z+zXtxLW+lrLxLKzIWkP0oVmnaE7WmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwMaDMWq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E724C4CEE3;
+	Tue, 29 Apr 2025 16:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947160;
-	bh=CrSGKe/4Axv7rv687199w4VJFUaN6Ngh5JNHZYI50vs=;
+	s=korg; t=1745945479;
+	bh=j5dSkBa4fDDhOg67A4Nbrr4eJV0BfxYkUAsorEZBM1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fvxoehbJjS8hXTCkSLfhjs6JvljAZlYlY4Q+TE5m/tyNSOxjbb7s9Kv/73eJ9sm+V
-	 1NZire49U3T5Mzr4I+bmYKTcKgU2JU6KdeXxSjXir4g8R+R0OeTJZnYw2738JyMab0
-	 +rnSMrhs6Em/5EBFnybmI8BTARpEGLUKXwrENUvQ=
+	b=HwMaDMWqpFLw+qLV2Hk5SkY12OAHuZR9qT8hUdkbpanseWaZITIEei2923KOQqaSg
+	 DhFBWp5cq57Z2V1RpPNmIRn2Q4A84DoXKcmpVGI0/BmnvmfAMLDyjNQvMD/OR6a7wK
+	 ++XTiGCARYtfGd+4tRylTdzxvDu0JIkPTyCR9Xso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Cliff Liu <donghua.liu@windriver.com>,
-	He Zhe <Zhe.He@windriver.com>
-Subject: [PATCH 5.10 164/286] smb: client: fix potential deadlock when releasing mids
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 127/179] platform/x86: ISST: Correct command storage data length
 Date: Tue, 29 Apr 2025 18:41:08 +0200
-Message-ID: <20250429161114.630865036@linuxfoundation.org>
+Message-ID: <20250429161054.531091730@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-commit e6322fd177c6885a21dd4609dc5e5c973d1a2eb7 upstream.
+[ Upstream commit 9462e74c5c983cce34019bfb27f734552bebe59f ]
 
-All release_mid() callers seem to hold a reference of @mid so there is
-no need to call kref_put(&mid->refcount, __release_mid) under
-@server->mid_lock spinlock.  If they don't, then an use-after-free bug
-would have occurred anyways.
+After resume/online turbo limit ratio (TRL) is restored partially if
+the admin explicitly changed TRL from user space.
 
-By getting rid of such spinlock also fixes a potential deadlock as
-shown below
+A hash table is used to store SST mail box and MSR settings when modified
+to restore those settings after resume or online. This uses a struct
+isst_cmd field "data" to store these settings. This is a 64 bit field.
+But isst_store_new_cmd() is only assigning as u32. This results in
+truncation of 32 bits.
 
-CPU 0                                CPU 1
-------------------------------------------------------------------
-cifs_demultiplex_thread()            cifs_debug_data_proc_show()
- release_mid()
-  spin_lock(&server->mid_lock);
-                                     spin_lock(&cifs_tcp_ses_lock)
-				      spin_lock(&server->mid_lock)
-  __release_mid()
-   smb2_find_smb_tcon()
-    spin_lock(&cifs_tcp_ses_lock) *deadlock*
+Change the argument to u64 from u32.
 
+Fixes: f607874f35cb ("platform/x86: ISST: Restore state on resume")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[cifs_mid_q_entry_release() is renamed to release_mid() and
- _cifs_mid_q_entry_release() is renamed to __release_mid() by
- commit 70f08f914a37 ("cifs: remove useless DeleteMidQEntry()")
- which is integrated into v6.0, so preserve old names in v5.10.]
-Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250328224749.2691272-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/cifsproto.h |    7 ++++++-
- fs/cifs/smb2misc.c  |    2 +-
- fs/cifs/transport.c |    9 +--------
- 3 files changed, 8 insertions(+), 10 deletions(-)
+ drivers/platform/x86/intel_speed_select_if/isst_if_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/cifs/cifsproto.h
-+++ b/fs/cifs/cifsproto.h
-@@ -85,7 +85,7 @@ extern struct mid_q_entry *AllocMidQEntr
- 					struct TCP_Server_Info *server);
- extern void DeleteMidQEntry(struct mid_q_entry *midEntry);
- extern void cifs_delete_mid(struct mid_q_entry *mid);
--extern void cifs_mid_q_entry_release(struct mid_q_entry *midEntry);
-+void _cifs_mid_q_entry_release(struct kref *refcount);
- extern void cifs_wake_up_task(struct mid_q_entry *mid);
- extern int cifs_handle_standard(struct TCP_Server_Info *server,
- 				struct mid_q_entry *mid);
-@@ -646,4 +646,9 @@ static inline int cifs_create_options(st
- 		return options;
- }
+diff --git a/drivers/platform/x86/intel_speed_select_if/isst_if_common.c b/drivers/platform/x86/intel_speed_select_if/isst_if_common.c
+index cf7b6dee82191..d561e49741ba3 100644
+--- a/drivers/platform/x86/intel_speed_select_if/isst_if_common.c
++++ b/drivers/platform/x86/intel_speed_select_if/isst_if_common.c
+@@ -74,7 +74,7 @@ static DECLARE_HASHTABLE(isst_hash, 8);
+ static DEFINE_MUTEX(isst_hash_lock);
  
-+static inline void cifs_mid_q_entry_release(struct mid_q_entry *midEntry)
-+{
-+	kref_put(&midEntry->refcount, _cifs_mid_q_entry_release);
-+}
-+
- #endif			/* _CIFSPROTO_H */
---- a/fs/cifs/smb2misc.c
-+++ b/fs/cifs/smb2misc.c
-@@ -780,7 +780,7 @@ __smb2_handle_cancelled_cmd(struct cifs_
+ static int isst_store_new_cmd(int cmd, u32 cpu, int mbox_cmd_type, u32 param,
+-			      u32 data)
++			      u64 data)
  {
- 	struct close_cancelled_open *cancelled;
+ 	struct isst_cmd *sst_cmd;
  
--	cancelled = kzalloc(sizeof(*cancelled), GFP_ATOMIC);
-+	cancelled = kzalloc(sizeof(*cancelled), GFP_KERNEL);
- 	if (!cancelled)
- 		return -ENOMEM;
- 
---- a/fs/cifs/transport.c
-+++ b/fs/cifs/transport.c
-@@ -88,7 +88,7 @@ AllocMidQEntry(const struct smb_hdr *smb
- 	return temp;
- }
- 
--static void _cifs_mid_q_entry_release(struct kref *refcount)
-+void _cifs_mid_q_entry_release(struct kref *refcount)
- {
- 	struct mid_q_entry *midEntry =
- 			container_of(refcount, struct mid_q_entry, refcount);
-@@ -168,13 +168,6 @@ static void _cifs_mid_q_entry_release(st
- 	mempool_free(midEntry, cifs_mid_poolp);
- }
- 
--void cifs_mid_q_entry_release(struct mid_q_entry *midEntry)
--{
--	spin_lock(&GlobalMid_Lock);
--	kref_put(&midEntry->refcount, _cifs_mid_q_entry_release);
--	spin_unlock(&GlobalMid_Lock);
--}
--
- void DeleteMidQEntry(struct mid_q_entry *midEntry)
- {
- 	cifs_mid_q_entry_release(midEntry);
+-- 
+2.39.5
+
 
 
 
