@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-138087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32EF1AA1639
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 487F0AA159B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:29:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64EA47AD17A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E74893A4558
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291F124EF6B;
-	Tue, 29 Apr 2025 17:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1611B253356;
+	Tue, 29 Apr 2025 17:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G35m/gnC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZuYVkmW5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98AC238C21;
-	Tue, 29 Apr 2025 17:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F69253358;
+	Tue, 29 Apr 2025 17:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948105; cv=none; b=GdFcA03OfgjxBRMDGX8OOUY8Jo5FFBdsaJGWYHuz7NlEjlUpTBvqPfb6ZTy0OrMpiFgcUoaayZEo85Ww3pHV9Lxl+fv09tbOJv1JG1Fn5PwHd+LnhkMVI6tiAM2PxBaqd5nksJpD6ocpWk3c4qsG+aPqgKgER8CAoCkxhPIR0cg=
+	t=1745947359; cv=none; b=iRGAC4fGgKB4ECM7lZNdb88O7jRYjKVSoMuouaNG9qZ1VMQIHZcPj/qMV8lpc9VrWmJEhdfgwUsF1B46rWbvAI4UAbbAQVGaDQjZHiSv/Cl7saUSWVqzlb8AVlgiYcNEfqF0b1isjnRLviXbI4hisIzuW3wYSHDKX5V67dLEs1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948105; c=relaxed/simple;
-	bh=AfjKTPVcEgOYaMWZTGF2iHNS//Y54cfyP2/wVs8u7eE=;
+	s=arc-20240116; t=1745947359; c=relaxed/simple;
+	bh=AoOLKmORzRebcz+vbpVvtGcoskGB0ToTNDuOiqYTlfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtwzAlpUy+iWSIJFXoDhrWSL6hFvk5gmLBtVV2UTnaC8foENjygKvZC3i1ADVbw/ut4ofQZVdJmcDCb0px+dggi9h8EdyZP5cHxl04jO5dMxQuIwRE4K5fJIFSbw9eUN3GBT9XXdZKA9w4NHvdFpDYfa4F9ZOoM5tFx+PQXH5KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G35m/gnC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332B1C4CEE3;
-	Tue, 29 Apr 2025 17:35:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tEb6OWHm5WnyJGzff3FFvg6Tmlaul+i+OH0F5gzA2SlVT1bM5Wci2FV8pN2pd74JIF4hiR+NbQZeToIBBjtsPLRjHzH7goW4en+6e3jVeF/hVASeGZKK50vjcU6hrIePmHcTZSuEhk5p+A6q7JyWJUItgUK6eftsynuVBTWT4j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZuYVkmW5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC9CC4CEF0;
+	Tue, 29 Apr 2025 17:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948105;
-	bh=AfjKTPVcEgOYaMWZTGF2iHNS//Y54cfyP2/wVs8u7eE=;
+	s=korg; t=1745947359;
+	bh=AoOLKmORzRebcz+vbpVvtGcoskGB0ToTNDuOiqYTlfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G35m/gnCnma97Mc06riY5DdWER1UutK9Ssr8s6H5U/KH797Nrgo5awtrtmEuB1qxZ
-	 6beWZJppsuw1NQ3F5oXtA9UUAaabli7UVLTbqRGTTDe6+Z6k+smwTiHyoMYBUw2yPA
-	 VLg4vyBrGePDsgnveD+zfUhvZKc1LACuaEThCX0Y=
+	b=ZuYVkmW50izFA4BPcjZxNpXwcRhCC2KvjCbm0yXWPiXXBgGyHaJiUuMd+tr5yztT8
+	 x/kcePZQs7BuBRSnOtlqGORSsAHRO4y1pWmXX8wJBvzP/AFoO03vpK7kEwQhCVYs1C
+	 X+7sDrY7bajS48LDYReo542kWSrC5F4MeeLHiYwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Ramesh Errabolu <Ramesh.Errabolu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 191/280] objtool, lkdtm: Obfuscate the do_nothing() pointer
+Subject: [PATCH 5.10 228/286] drm/amdgpu: Remove amdgpu_device arg from free_sgt api (v2)
 Date: Tue, 29 Apr 2025 18:42:12 +0200
-Message-ID: <20250429161122.918573147@linuxfoundation.org>
+Message-ID: <20250429161117.315852744@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +61,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Ramesh Errabolu <Ramesh.Errabolu@amd.com>
 
-[ Upstream commit 05026ea01e95ffdeb0e5ac8fb7fb1b551e3a8726 ]
+[ Upstream commit 5392b2af97dc5802991f953eb2687e538da4688c ]
 
-If execute_location()'s memcpy of do_nothing() gets inlined and unrolled
-by the compiler, it copies one word at a time:
+Currently callers have to provide handle of amdgpu_device,
+which is not used by the implementation. It is unlikely this
+parameter will become useful in future, thus removing it
 
-    mov    0x0(%rip),%rax    R_X86_64_PC32    .text+0x1374
-    mov    %rax,0x38(%rbx)
-    mov    0x0(%rip),%rax    R_X86_64_PC32    .text+0x136c
-    mov    %rax,0x30(%rbx)
-    ...
+v2: squash in unused variable fix
 
-Those .text references point to the middle of the function, causing
-objtool to complain about their lack of ENDBR.
-
-Prevent that by resolving the function pointer at runtime rather than
-build time.  This fixes the following warning:
-
-  drivers/misc/lkdtm/lkdtm.o: warning: objtool: execute_location+0x23: relocation to !ENDBR: .text+0x1378
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/30b9abffbddeb43c4f6320b1270fa9b4d74c54ed.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202503191453.uFfxQy5R-lkp@intel.com/
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Ramesh Errabolu <Ramesh.Errabolu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: c0dd8a9253fa ("drm/amdgpu/dma_buf: fix page_link check")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/lkdtm/perms.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c  | 7 +------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h      | 3 +--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 4 +---
+ 3 files changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-index 5b861dbff27e9..6c24426104ba6 100644
---- a/drivers/misc/lkdtm/perms.c
-+++ b/drivers/misc/lkdtm/perms.c
-@@ -28,6 +28,13 @@ static const unsigned long rodata = 0xAA55AA55;
- /* This is marked __ro_after_init, so it should ultimately be .rodata. */
- static unsigned long ro_after_init __ro_after_init = 0x55AA5500;
- 
-+/*
-+ * This is a pointer to do_nothing() which is initialized at runtime rather
-+ * than build time to avoid objtool IBT validation warnings caused by an
-+ * inlined unrolled memcpy() in execute_location().
-+ */
-+static void __ro_after_init *do_nothing_ptr;
-+
- /*
-  * This just returns to the caller. It is designed to be copied into
-  * non-executable memory regions.
-@@ -65,13 +72,12 @@ static noinline __nocfi void execute_location(void *dst, bool write)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+index e93ccdc5faf4e..bbbacc7b6c463 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+@@ -357,17 +357,12 @@ static void amdgpu_dma_buf_unmap(struct dma_buf_attachment *attach,
+ 				 struct sg_table *sgt,
+ 				 enum dma_data_direction dir)
  {
- 	void (*func)(void);
- 	func_desc_t fdesc;
--	void *do_nothing_text = dereference_function_descriptor(do_nothing);
- 
--	pr_info("attempting ok execution at %px\n", do_nothing_text);
-+	pr_info("attempting ok execution at %px\n", do_nothing_ptr);
- 	do_nothing();
- 
- 	if (write == CODE_WRITE) {
--		memcpy(dst, do_nothing_text, EXEC_SIZE);
-+		memcpy(dst, do_nothing_ptr, EXEC_SIZE);
- 		flush_icache_range((unsigned long)dst,
- 				   (unsigned long)dst + EXEC_SIZE);
+-	struct dma_buf *dma_buf = attach->dmabuf;
+-	struct drm_gem_object *obj = dma_buf->priv;
+-	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
+-	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
+-
+ 	if (sgt->sgl->page_link) {
+ 		dma_unmap_sgtable(attach->dev, sgt, dir, 0);
+ 		sg_free_table(sgt);
+ 		kfree(sgt);
+ 	} else {
+-		amdgpu_vram_mgr_free_sgt(adev, attach->dev, dir, sgt);
++		amdgpu_vram_mgr_free_sgt(attach->dev, dir, sgt);
  	}
-@@ -267,6 +273,8 @@ static void lkdtm_ACCESS_NULL(void)
- 
- void __init lkdtm_perms_init(void)
- {
-+	do_nothing_ptr = dereference_function_descriptor(do_nothing);
-+
- 	/* Make sure we can write to __ro_after_init values during __init */
- 	ro_after_init |= 0xAA;
  }
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
+index a87951b2f06dd..bd873b1b760cf 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
+@@ -113,8 +113,7 @@ int amdgpu_vram_mgr_alloc_sgt(struct amdgpu_device *adev,
+ 			      struct device *dev,
+ 			      enum dma_data_direction dir,
+ 			      struct sg_table **sgt);
+-void amdgpu_vram_mgr_free_sgt(struct amdgpu_device *adev,
+-			      struct device *dev,
++void amdgpu_vram_mgr_free_sgt(struct device *dev,
+ 			      enum dma_data_direction dir,
+ 			      struct sg_table *sgt);
+ uint64_t amdgpu_vram_mgr_usage(struct ttm_resource_manager *man);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+index 2c3a94e939bab..ad72db21b8d62 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -530,15 +530,13 @@ int amdgpu_vram_mgr_alloc_sgt(struct amdgpu_device *adev,
+ /**
+  * amdgpu_vram_mgr_alloc_sgt - allocate and fill a sg table
+  *
+- * @adev: amdgpu device pointer
+  * @dev: device pointer
+  * @dir: data direction of resource to unmap
+  * @sgt: sg table to free
+  *
+  * Free a previously allocate sg table.
+  */
+-void amdgpu_vram_mgr_free_sgt(struct amdgpu_device *adev,
+-			      struct device *dev,
++void amdgpu_vram_mgr_free_sgt(struct device *dev,
+ 			      enum dma_data_direction dir,
+ 			      struct sg_table *sgt)
+ {
 -- 
 2.39.5
 
