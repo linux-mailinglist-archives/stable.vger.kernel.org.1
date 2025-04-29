@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE34AA1861
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:59:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B5EAA16D8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2D03176EB7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0F4F1899712
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADDF243964;
-	Tue, 29 Apr 2025 17:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C621251780;
+	Tue, 29 Apr 2025 17:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlSm5ED+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huRlL5kk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC13216605;
-	Tue, 29 Apr 2025 17:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294521917E3;
+	Tue, 29 Apr 2025 17:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949477; cv=none; b=U0EwuZnjYv2EzC4EHCoR4muLLcjmojTH76wFTMbjdfOOT7aM93kcyA8lLWM50C2lcXwH1VWs6DIolSRWKQFwuK9EwwQGa9aYXnRy86P/7I8zTZn9BXgwQHCTsfJe2TgYr6OPOQWphQgB7Ctv7FncnZDLzbtGHGoVV6Hrr8SzhOk=
+	t=1745948420; cv=none; b=qsHnAf5LFzefAffLqDO3rT5jgs1vOoSsvzCrl3Xv+hvqFKQcV80LynUAonwAsItkJ10O5zuIipafKyEiV4FJyaSmPdhSyTlz0/HhkQ6WmpcTBd6/0Hz8XITVpS+GHufuJHcppVdWIGMzIl7Fd1DbkBmZsWGqmjV+x9q/GB7lGhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949477; c=relaxed/simple;
-	bh=cB9lLj24e6GBFtuyWCI697TTiEWXH/7/CoN1RCZ7+gM=;
+	s=arc-20240116; t=1745948420; c=relaxed/simple;
+	bh=9JMgEPd/otdSbJ0s8WLEDI9siMgh1bCE80fLRJX1fyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sQ28nPxoRbN1PfSM7dc85s1ynxkSJEytxv9m8e9kUldCE46IwiizuSHAFEgOV886CQDMLwUMAKIkoixvImMBTh+9IhMb+i9DDIY7iezCVHkyIvKcklCzz2GVc4qT1cKdBSAvAVw7fXZ8laqvIiXpsMozRCqDMKJV3JJQoXEX5uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlSm5ED+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8BFC4CEE3;
-	Tue, 29 Apr 2025 17:57:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BoLquwKBvHKYkRFAq0lJB0ytPWug6pO3xU5hG1Pvn7AewRowIDxrv71sv38dh1fsZnpXqK91R0LWwwQckRgqw3e9qJrdQfQEk7xcz1j6fQjiV5Dxl/5gf5lNZXF6OHyOGiYrcxYCy+hiny576QVzeP8mCW8aLq/miQKRsq4WXOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huRlL5kk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DF4C4CEE3;
+	Tue, 29 Apr 2025 17:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949477;
-	bh=cB9lLj24e6GBFtuyWCI697TTiEWXH/7/CoN1RCZ7+gM=;
+	s=korg; t=1745948420;
+	bh=9JMgEPd/otdSbJ0s8WLEDI9siMgh1bCE80fLRJX1fyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wlSm5ED+wN9LKq17vW631FLMh2iNBFz6SlulOnnQwou9p0jwwpweb9MgGMj4Y/Co+
-	 pnEmrAYyQIwEldlresAdomlx02NyB6jjsNnXgecwUvvOMMJqRmAC3zX/P2cfkEX5zL
-	 Xla4MMgJbGzpo+jP59ihpNQ3lJqss4tdljKDVFwA=
+	b=huRlL5kkCwEEqaCA19U3B7ZPLJFu+EGjt8XzIotvmAWkLO2bhq2Ry/WP0bP0GHrYt
+	 gFkHHD18W49cqS/9fXg+5V0e6h9TVSkGv9BjQkgGACgwxmB5cOgvYMtV2IFtbnQBQO
+	 GVo3JwG2S5dmT253hO2w0CIEMNPHReIGrRbBJyfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	"stable@vger.kernel.org, Sasha Levin" <sashal@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ferry Toth <fntoth@gmail.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 331/373] usb: dwc3: gadget: Avoid using reserved endpoints on Intel Merrifield
-Date: Tue, 29 Apr 2025 18:43:28 +0200
-Message-ID: <20250429161136.745836935@linuxfoundation.org>
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 268/280] net: dsa: mv88e6xxx: enable STU methods for 6320 family
+Date: Tue, 29 Apr 2025 18:43:29 +0200
+Message-ID: <20250429161126.099934959@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +64,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: "Marek Beh�n" <kabel@kernel.org>
 
-[ Upstream commit 461f24bff86808ee5fbfe74751a825f8a7ab24e0 ]
+commit 1428a6109b20e356188c3fb027bdb7998cc2fb98 upstream.
 
-Intel Merrifield SoC uses these endpoints for tracing and they cannot
-be re-allocated if being used because the side band flow control signals
-are hard wired to certain endpoints:
+Commit c050f5e91b47 ("net: dsa: mv88e6xxx: Fill in STU support for all
+supported chips") introduced STU methods, but did not add them to the
+6320 family. Fix it.
 
-• 1 High BW Bulk IN (IN#1) (RTIT)
-• 1 1KB BW Bulk IN (IN#8) + 1 1KB BW Bulk OUT (Run Control) (OUT#8)
-
-In device mode, since RTIT (EP#1) and EXI/RunControl (EP#8) uses
-External Buffer Control (EBC) mode, these endpoints are to be mapped to
-EBC mode (to be done by EXI target driver). Additionally TRB for RTIT
-and EXI are maintained in STM (System Trace Module) unit and the EXI
-target driver will as well configure the TRB location for EP #1 IN
-and EP#8 (IN and OUT). Since STM/PTI and EXI hardware blocks manage
-these endpoints and interface to OTG3 controller through EBC interface,
-there is no need to enable any events (such as XferComplete etc)
-for these end points.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: Ferry Toth <fntoth@gmail.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250212193116.2487289-5-andriy.shevchenko@linux.intel.com
+Fixes: c050f5e91b47 ("net: dsa: mv88e6xxx: Fill in STU support for all supported chips")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250317173250.28780-6-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/dsa/mv88e6xxx/chip.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/usb/dwc3/dwc3-pci.c b/drivers/usb/dwc3/dwc3-pci.c
-index 1872de3ce98bd..5e0b326875fac 100644
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -132,11 +132,21 @@ static const struct property_entry dwc3_pci_intel_byt_properties[] = {
- 	{}
- };
- 
-+/*
-+ * Intel Merrifield SoC uses these endpoints for tracing and they cannot
-+ * be re-allocated if being used because the side band flow control signals
-+ * are hard wired to certain endpoints:
-+ * - 1 High BW Bulk IN (IN#1) (RTIT)
-+ * - 1 1KB BW Bulk IN (IN#8) + 1 1KB BW Bulk OUT (Run Control) (OUT#8)
-+ */
-+static const u8 dwc3_pci_mrfld_reserved_endpoints[] = { 3, 16, 17 };
-+
- static const struct property_entry dwc3_pci_mrfld_properties[] = {
- 	PROPERTY_ENTRY_STRING("dr_mode", "otg"),
- 	PROPERTY_ENTRY_STRING("linux,extcon-name", "mrfld_bcove_pwrsrc"),
- 	PROPERTY_ENTRY_BOOL("snps,dis_u3_susphy_quirk"),
- 	PROPERTY_ENTRY_BOOL("snps,dis_u2_susphy_quirk"),
-+	PROPERTY_ENTRY_U8_ARRAY("snps,reserved-endpoints", dwc3_pci_mrfld_reserved_endpoints),
- 	PROPERTY_ENTRY_BOOL("snps,usb2-gadget-lpm-disable"),
- 	PROPERTY_ENTRY_BOOL("linux,sysdev_is_parent"),
- 	{}
--- 
-2.39.5
-
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -5213,6 +5213,8 @@ static const struct mv88e6xxx_ops mv88e6
+ 	.reset = mv88e6352_g1_reset,
+ 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
+ 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
++	.stu_getnext = mv88e6352_g1_stu_getnext,
++	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
+ 	.gpio_ops = &mv88e6352_gpio_ops,
+ 	.avb_ops = &mv88e6352_avb_ops,
+ 	.ptp_ops = &mv88e6352_ptp_ops,
+@@ -5263,6 +5265,8 @@ static const struct mv88e6xxx_ops mv88e6
+ 	.reset = mv88e6352_g1_reset,
+ 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
+ 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
++	.stu_getnext = mv88e6352_g1_stu_getnext,
++	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
+ 	.gpio_ops = &mv88e6352_gpio_ops,
+ 	.avb_ops = &mv88e6352_avb_ops,
+ 	.ptp_ops = &mv88e6352_ptp_ops,
+@@ -6258,6 +6262,7 @@ static const struct mv88e6xxx_info mv88e
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
+ 		.max_vid = 4095,
++		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+ 		.phy_base_addr = 0x0,
+ 		.global1_addr = 0x1b,
+@@ -6283,6 +6288,7 @@ static const struct mv88e6xxx_info mv88e
+ 		.num_internal_phys = 5,
+ 		.num_gpio = 15,
+ 		.max_vid = 4095,
++		.max_sid = 63,
+ 		.port_base_addr = 0x10,
+ 		.phy_base_addr = 0x0,
+ 		.global1_addr = 0x1b,
 
 
 
