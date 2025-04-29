@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-138213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75957AA1700
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:42:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 006A1AA1311
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF0C01689CC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 220101BA6079
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA19244686;
-	Tue, 29 Apr 2025 17:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98117248879;
+	Tue, 29 Apr 2025 16:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2SCchFm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOgjEnTD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2789242D73;
-	Tue, 29 Apr 2025 17:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA27244679;
+	Tue, 29 Apr 2025 16:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948529; cv=none; b=lqB6gVaxPuREeNJjbk/f0Ke8y/3n0l+7xArKwx+UX+yOrir1WvUq3l8rHmJPfIW6Q7upN/eEepoas3+8P/VJUQ4OrlmvRV02Nm3XHAaDen5fzMdOaD4ln5wsqM2ZWgyX0Ydc0QFOcpPJIWIWDLf8/w7Mc+qon9Bh4RYXLdXiPxo=
+	t=1745945868; cv=none; b=jwzrH7owJ3A71asiE2TNyyQMMh9wcQsm1hUu/QMLWoDhKhEHugasShLrMsigyRuWFMjaRZf+/16ZHbaKXToDpFJ0kebqSfQdcP7fMW0sYKstJL8s8z7fdIyjkirCE3tI89AsXYwahSJcVNI0U3TvIRwYiRmghC/yJ6R2Rmd9gRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948529; c=relaxed/simple;
-	bh=3nr5bsMbqezz/Wc+jImJ6ccakXHdSOhDyUIXb8gavc4=;
+	s=arc-20240116; t=1745945868; c=relaxed/simple;
+	bh=+oQGne0vBZX1jT3CC+4UhsI4pPYin5xm81opKbKlZuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIM5+1rnpsEhRyH1MfPSa1j0Wxtxc6KlxkNPu1rQow+UGDpBXN77xBZVVqpHn9v6Q/bKNZo0tW+TYhxDlHGiCVvmpsenL3Q2xyFInKO5Jt42eHbs2LIgPEshmKgI5dMeZTQ6LP1IhE6N7HtMBJJYsswRqu9sUtIaJq6RO/93QyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2SCchFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A8EC4CEE3;
-	Tue, 29 Apr 2025 17:42:07 +0000 (UTC)
+	 MIME-Version; b=Smp8M7FsRQMu/dQ7WjBhi5wg9+a7CSrUbWDEsWjTgjQFKFZIDyeuLE1+8KrnF+4rPMUPpAISRwyL0V3n7ZfBq0LBDTO8ZrqtV90qnaPRokrE9lbbyMnlAhpXgbYQnaRh+sPAzZEZvnAm6MVDHxaxyZYX5vFcabHSkrx2nEcp0PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOgjEnTD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA2CC4CEE3;
+	Tue, 29 Apr 2025 16:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948528;
-	bh=3nr5bsMbqezz/Wc+jImJ6ccakXHdSOhDyUIXb8gavc4=;
+	s=korg; t=1745945868;
+	bh=+oQGne0vBZX1jT3CC+4UhsI4pPYin5xm81opKbKlZuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c2SCchFmpoL0QM5uTSMl9yuN5S2YM7xlV2uDzkRyL5HYns6Vc9BQN3BQ+GqrnUXNg
-	 5RuQX0k9oHAUJbQl/PLH6Lo4ZCWYgRW2LjGaCZ/les9+znbANqW59oDj5NOkMIZi5m
-	 YWDOVE/HjiJnSMH5vNnJyq6FH3jHSVxw/gvU0f1Y=
+	b=QOgjEnTDt6K/SMdw+botbbQmVD17RBEqx75jagJbjgaxKkFISBZ4xfUjD6/hFn/bY
+	 KHNZ1s/eFD+UqB52qcPCHBq6tSQSIi04kVXZyR0P3SqEg521qyBXGooikBcIjp3fhr
+	 9ukJ4efNG7VNFzeQTzO7j5Jt6DauxuLQQ95WtlIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b0c03d76056ef6cd12a6@syzkaller.appspotmail.com,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 036/373] net: vlan: dont propagate flags on open
+Subject: [PATCH 6.14 076/311] net: phy: dp83822: Add support for changing the transmit amplitude voltage
 Date: Tue, 29 Apr 2025 18:38:33 +0200
-Message-ID: <20250429161124.618378319@linuxfoundation.org>
+Message-ID: <20250429161124.158866314@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,184 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@fomichev.me>
+From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 
-[ Upstream commit 27b918007d96402aba10ed52a6af8015230f1793 ]
+[ Upstream commit 4f3735e82d8a2e80ee39731832536b1e34697c71 ]
 
-With the device instance lock, there is now a possibility of a deadlock:
+Add support for changing the transmit amplitude voltage in 100BASE-TX mode.
+Modifying it can be necessary to compensate losses on the PCB and
+connector, so the voltages measured on the RJ45 pins are conforming.
 
-[    1.211455] ============================================
-[    1.211571] WARNING: possible recursive locking detected
-[    1.211687] 6.14.0-rc5-01215-g032756b4ca7a-dirty #5 Not tainted
-[    1.211823] --------------------------------------------
-[    1.211936] ip/184 is trying to acquire lock:
-[    1.212032] ffff8881024a4c30 (&dev->lock){+.+.}-{4:4}, at: dev_set_allmulti+0x4e/0xb0
-[    1.212207]
-[    1.212207] but task is already holding lock:
-[    1.212332] ffff8881024a4c30 (&dev->lock){+.+.}-{4:4}, at: dev_open+0x50/0xb0
-[    1.212487]
-[    1.212487] other info that might help us debug this:
-[    1.212626]  Possible unsafe locking scenario:
-[    1.212626]
-[    1.212751]        CPU0
-[    1.212815]        ----
-[    1.212871]   lock(&dev->lock);
-[    1.212944]   lock(&dev->lock);
-[    1.213016]
-[    1.213016]  *** DEADLOCK ***
-[    1.213016]
-[    1.213143]  May be due to missing lock nesting notation
-[    1.213143]
-[    1.213294] 3 locks held by ip/184:
-[    1.213371]  #0: ffffffff838b53e0 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_nets_lock+0x1b/0xa0
-[    1.213543]  #1: ffffffff84e5fc70 (&net->rtnl_mutex){+.+.}-{4:4}, at: rtnl_nets_lock+0x37/0xa0
-[    1.213727]  #2: ffff8881024a4c30 (&dev->lock){+.+.}-{4:4}, at: dev_open+0x50/0xb0
-[    1.213895]
-[    1.213895] stack backtrace:
-[    1.213991] CPU: 0 UID: 0 PID: 184 Comm: ip Not tainted 6.14.0-rc5-01215-g032756b4ca7a-dirty #5
-[    1.213993] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
-[    1.213994] Call Trace:
-[    1.213995]  <TASK>
-[    1.213996]  dump_stack_lvl+0x8e/0xd0
-[    1.214000]  print_deadlock_bug+0x28b/0x2a0
-[    1.214020]  lock_acquire+0xea/0x2a0
-[    1.214027]  __mutex_lock+0xbf/0xd40
-[    1.214038]  dev_set_allmulti+0x4e/0xb0 # real_dev->flags & IFF_ALLMULTI
-[    1.214040]  vlan_dev_open+0xa5/0x170 # ndo_open on vlandev
-[    1.214042]  __dev_open+0x145/0x270
-[    1.214046]  __dev_change_flags+0xb0/0x1e0
-[    1.214051]  netif_change_flags+0x22/0x60 # IFF_UP vlandev
-[    1.214053]  dev_change_flags+0x61/0xb0 # for each device in group from dev->vlan_info
-[    1.214055]  vlan_device_event+0x766/0x7c0 # on netdevsim0
-[    1.214058]  notifier_call_chain+0x78/0x120
-[    1.214062]  netif_open+0x6d/0x90
-[    1.214064]  dev_open+0x5b/0xb0 # locks netdevsim0
-[    1.214066]  bond_enslave+0x64c/0x1230
-[    1.214075]  do_set_master+0x175/0x1e0 # on netdevsim0
-[    1.214077]  do_setlink+0x516/0x13b0
-[    1.214094]  rtnl_newlink+0xaba/0xb80
-[    1.214132]  rtnetlink_rcv_msg+0x440/0x490
-[    1.214144]  netlink_rcv_skb+0xeb/0x120
-[    1.214150]  netlink_unicast+0x1f9/0x320
-[    1.214153]  netlink_sendmsg+0x346/0x3f0
-[    1.214157]  __sock_sendmsg+0x86/0xb0
-[    1.214160]  ____sys_sendmsg+0x1c8/0x220
-[    1.214164]  ___sys_sendmsg+0x28f/0x2d0
-[    1.214179]  __x64_sys_sendmsg+0xef/0x140
-[    1.214184]  do_syscall_64+0xec/0x1d0
-[    1.214190]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[    1.214191] RIP: 0033:0x7f2d1b4a7e56
-
-Device setup:
-
-     netdevsim0 (down)
-     ^        ^
-  bond        netdevsim1.100@netdevsim1 allmulticast=on (down)
-
-When we enslave the lower device (netdevsim0) which has a vlan, we
-propagate vlan's allmuti/promisc flags during ndo_open. This causes
-(re)locking on of the real_dev.
-
-Propagate allmulti/promisc on flags change, not on the open. There
-is a slight semantics change that vlans that are down now propagate
-the flags, but this seems unlikely to result in the real issues.
-
-Reproducer:
-
-  echo 0 1 > /sys/bus/netdevsim/new_device
-
-  dev_path=$(ls -d /sys/bus/netdevsim/devices/netdevsim0/net/*)
-  dev=$(echo $dev_path | rev | cut -d/ -f1 | rev)
-
-  ip link set dev $dev name netdevsim0
-  ip link set dev netdevsim0 up
-
-  ip link add link netdevsim0 name netdevsim0.100 type vlan id 100
-  ip link set dev netdevsim0.100 allmulticast on down
-  ip link add name bond1 type bond mode 802.3ad
-  ip link set dev netdevsim0 down
-  ip link set dev netdevsim0 master bond1
-  ip link set dev bond1 up
-  ip link show
-
-Reported-by: syzbot+b0c03d76056ef6cd12a6@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/Z9CfXjLMKn6VLG5d@mini-arch/T/#m15ba130f53227c883e79fb969687d69d670337a0
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250313100657.2287455-1-sdf@fomichev.me
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250214-dp83822-tx-swing-v5-3-02ca72620599@liebherr.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 607b310ada5e ("net: dp83822: Fix OF_MDIO config check")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/8021q/vlan_dev.c | 31 ++++---------------------------
- 1 file changed, 4 insertions(+), 27 deletions(-)
+ drivers/net/phy/dp83822.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index ad2d3ad34b7d7..945a5bb7402d2 100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -272,17 +272,6 @@ static int vlan_dev_open(struct net_device *dev)
- 			goto out;
- 	}
+diff --git a/drivers/net/phy/dp83822.c b/drivers/net/phy/dp83822.c
+index 6599feca1967d..3662f3905d5ad 100644
+--- a/drivers/net/phy/dp83822.c
++++ b/drivers/net/phy/dp83822.c
+@@ -31,6 +31,7 @@
+ #define MII_DP83822_RCSR	0x17
+ #define MII_DP83822_RESET_CTRL	0x1f
+ #define MII_DP83822_MLEDCR	0x25
++#define MII_DP83822_LDCTRL	0x403
+ #define MII_DP83822_LEDCFG1	0x460
+ #define MII_DP83822_IOCTRL1	0x462
+ #define MII_DP83822_IOCTRL2	0x463
+@@ -123,6 +124,9 @@
+ #define DP83822_IOCTRL1_GPIO1_CTRL		GENMASK(2, 0)
+ #define DP83822_IOCTRL1_GPIO1_CTRL_LED_1	BIT(0)
  
--	if (dev->flags & IFF_ALLMULTI) {
--		err = dev_set_allmulti(real_dev, 1);
--		if (err < 0)
--			goto del_unicast;
--	}
--	if (dev->flags & IFF_PROMISC) {
--		err = dev_set_promiscuity(real_dev, 1);
--		if (err < 0)
--			goto clear_allmulti;
--	}
--
- 	ether_addr_copy(vlan->real_dev_addr, real_dev->dev_addr);
++/* LDCTRL bits */
++#define DP83822_100BASE_TX_LINE_DRIVER_SWING	GENMASK(7, 4)
++
+ /* IOCTRL2 bits */
+ #define DP83822_IOCTRL2_GPIO2_CLK_SRC		GENMASK(6, 4)
+ #define DP83822_IOCTRL2_GPIO2_CTRL		GENMASK(2, 0)
+@@ -197,6 +201,7 @@ struct dp83822_private {
+ 	bool set_gpio2_clk_out;
+ 	u32 gpio2_clk_out;
+ 	bool led_pin_enable[DP83822_MAX_LED_PINS];
++	int tx_amplitude_100base_tx_index;
+ };
  
- 	if (vlan->flags & VLAN_FLAG_GVRP)
-@@ -296,12 +285,6 @@ static int vlan_dev_open(struct net_device *dev)
- 		netif_carrier_on(dev);
- 	return 0;
+ static int dp83822_config_wol(struct phy_device *phydev,
+@@ -522,6 +527,12 @@ static int dp83822_config_init(struct phy_device *phydev)
+ 			       FIELD_PREP(DP83822_IOCTRL2_GPIO2_CLK_SRC,
+ 					  dp83822->gpio2_clk_out));
  
--clear_allmulti:
--	if (dev->flags & IFF_ALLMULTI)
--		dev_set_allmulti(real_dev, -1);
--del_unicast:
--	if (!ether_addr_equal(dev->dev_addr, real_dev->dev_addr))
--		dev_uc_del(real_dev, dev->dev_addr);
- out:
- 	netif_carrier_off(dev);
- 	return err;
-@@ -314,10 +297,6 @@ static int vlan_dev_stop(struct net_device *dev)
- 
- 	dev_mc_unsync(real_dev, dev);
- 	dev_uc_unsync(real_dev, dev);
--	if (dev->flags & IFF_ALLMULTI)
--		dev_set_allmulti(real_dev, -1);
--	if (dev->flags & IFF_PROMISC)
--		dev_set_promiscuity(real_dev, -1);
- 
- 	if (!ether_addr_equal(dev->dev_addr, real_dev->dev_addr))
- 		dev_uc_del(real_dev, dev->dev_addr);
-@@ -474,12 +453,10 @@ static void vlan_dev_change_rx_flags(struct net_device *dev, int change)
- {
- 	struct net_device *real_dev = vlan_dev_priv(dev)->real_dev;
- 
--	if (dev->flags & IFF_UP) {
--		if (change & IFF_ALLMULTI)
--			dev_set_allmulti(real_dev, dev->flags & IFF_ALLMULTI ? 1 : -1);
--		if (change & IFF_PROMISC)
--			dev_set_promiscuity(real_dev, dev->flags & IFF_PROMISC ? 1 : -1);
--	}
-+	if (change & IFF_ALLMULTI)
-+		dev_set_allmulti(real_dev, dev->flags & IFF_ALLMULTI ? 1 : -1);
-+	if (change & IFF_PROMISC)
-+		dev_set_promiscuity(real_dev, dev->flags & IFF_PROMISC ? 1 : -1);
++	if (dp83822->tx_amplitude_100base_tx_index >= 0)
++		phy_modify_mmd(phydev, MDIO_MMD_VEND2, MII_DP83822_LDCTRL,
++			       DP83822_100BASE_TX_LINE_DRIVER_SWING,
++			       FIELD_PREP(DP83822_100BASE_TX_LINE_DRIVER_SWING,
++					  dp83822->tx_amplitude_100base_tx_index));
++
+ 	err = dp83822_config_init_leds(phydev);
+ 	if (err)
+ 		return err;
+@@ -720,6 +731,11 @@ static int dp83822_phy_reset(struct phy_device *phydev)
  }
  
- static void vlan_dev_set_rx_mode(struct net_device *vlan_dev)
+ #ifdef CONFIG_OF_MDIO
++static const u32 tx_amplitude_100base_tx_gain[] = {
++	80, 82, 83, 85, 87, 88, 90, 92,
++	93, 95, 97, 98, 100, 102, 103, 105,
++};
++
+ static int dp83822_of_init_leds(struct phy_device *phydev)
+ {
+ 	struct device_node *node = phydev->mdio.dev.of_node;
+@@ -780,6 +796,8 @@ static int dp83822_of_init(struct phy_device *phydev)
+ 	struct dp83822_private *dp83822 = phydev->priv;
+ 	struct device *dev = &phydev->mdio.dev;
+ 	const char *of_val;
++	int i, ret;
++	u32 val;
+ 
+ 	/* Signal detection for the PHY is only enabled if the FX_EN and the
+ 	 * SD_EN pins are strapped. Signal detection can only enabled if FX_EN
+@@ -815,6 +833,26 @@ static int dp83822_of_init(struct phy_device *phydev)
+ 		dp83822->set_gpio2_clk_out = true;
+ 	}
+ 
++	dp83822->tx_amplitude_100base_tx_index = -1;
++	ret = phy_get_tx_amplitude_gain(phydev, dev,
++					ETHTOOL_LINK_MODE_100baseT_Full_BIT,
++					&val);
++	if (!ret) {
++		for (i = 0; i < ARRAY_SIZE(tx_amplitude_100base_tx_gain); i++) {
++			if (tx_amplitude_100base_tx_gain[i] == val) {
++				dp83822->tx_amplitude_100base_tx_index = i;
++				break;
++			}
++		}
++
++		if (dp83822->tx_amplitude_100base_tx_index < 0) {
++			phydev_err(phydev,
++				   "Invalid value for tx-amplitude-100base-tx-percent property (%u)\n",
++				   val);
++			return -EINVAL;
++		}
++	}
++
+ 	return dp83822_of_init_leds(phydev);
+ }
+ 
 -- 
 2.39.5
 
