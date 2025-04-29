@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B90AA15B0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B6E0AA148F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D00204A60AD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07148188C2DE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8FF2517BE;
-	Tue, 29 Apr 2025 17:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACDD24729E;
+	Tue, 29 Apr 2025 17:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ut2Fozt4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnNO/osL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC0D2459EA;
-	Tue, 29 Apr 2025 17:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E6B27453;
+	Tue, 29 Apr 2025 17:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947546; cv=none; b=nOyrTo0onmYuiBZCy6Wz1PebRO9WzxeeU6jus9nApJV7zuOJJgQ2BB4ESa97yGoS5fxTCUjEA6Quqs2TgQ6GykAKZQU0+bBk5kLHdqzfXNWlpauUE9J5Qr6K5OZuV8s2PBfCZcHgLN0mefZRWYIwXgpBjwMpFwCj7bcivg8A23k=
+	t=1745946828; cv=none; b=fV2OOq13jujDgzlEorokbuHC9lKugVMdypfp+06ngiPJD+MIbqo0GvmkCMi1SyaDoIokGK0HjYBmazhgOMOTqFUUQUBanolyDOjP0LN46ij6Kxk/i22BO6gWixVvtZHkxZL7mOGbLow6/WXc8l/ZhopxdzNR3/EpcMxulNkKxNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947546; c=relaxed/simple;
-	bh=gH7P3yBHE9rEkxN/TOYb9b+amJSIPD1/fi2CnQTdhxk=;
+	s=arc-20240116; t=1745946828; c=relaxed/simple;
+	bh=seYGX9VBdniFV++2oEqHMUaNz3QQY593ob2+LAYJ3Js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PKqy5VhZK+WC2Pxy7ukzHV8gIOI1rXyzo2bwr4vGTyW8U02qkn0tym2IWW6NDgQxVQUnVZxvk8rmM5r4rqJhqa1NGeabETKFYJ0lbhJdj28SWTyf76bJo6sNomoETg8u6I2LgDztO24HJUuvW9TtpcbFjJpqRE01JVZw2A+qMjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ut2Fozt4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568B2C4CEE3;
-	Tue, 29 Apr 2025 17:25:45 +0000 (UTC)
+	 MIME-Version; b=BLsLsJOTwZ6gb/cXhpD7fSOZCwiwYixM4tj40rwdgK+tYdFP0G3BPVAIYb+aRwQPxgDRCSLLfX1U4Ky8biOZML8iNJSiUREaJgcNwZgdWANAXuGzkLZ9w7CnfCoxb4iFt9TrnCTjcVCnyC9Q2E8lA/iwlJNPKfoZQu+Wm55sWcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnNO/osL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6B8C4CEE3;
+	Tue, 29 Apr 2025 17:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947545;
-	bh=gH7P3yBHE9rEkxN/TOYb9b+amJSIPD1/fi2CnQTdhxk=;
+	s=korg; t=1745946828;
+	bh=seYGX9VBdniFV++2oEqHMUaNz3QQY593ob2+LAYJ3Js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ut2Fozt4+v4eS9w3ZvMuWIStlzrYKBS8WbDwZx8LyWXWdsVgWm960Nazn2wp5nTRe
-	 BDx5wfHpIfrfJpz/Mnr/rkhuyCzon10JssBu1wqzLRUXefvU0Fj7Ljr+PXVizMvpFH
-	 W9jDcTKMVr/PyGNaE/RGQA8EgNKAjR17liI68sag=
+	b=nnNO/osLm3tzXtMhCgSYNpRbSsUV92AnPWcAmMhgNEaa8DMWKPuptG8k0wAOdLN8d
+	 iTWXvNIIFlURoHLgM0GL1PwPCOBaOu3EPexsFSfvlMvJVPhzphm/RZl3caLgzVfM4V
+	 976dqtYa7AfiKp1gaXzEqkX1DYX8WsFw06b+NDyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/280] s390/sclp: Allow user-space to provide PCI reports for optical modules
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 065/286] media: i2c: ov7251: Set enable GPIO low in probe
 Date: Tue, 29 Apr 2025 18:39:29 +0200
-Message-ID: <20250429161116.255869961@linuxfoundation.org>
+Message-ID: <20250429161110.518289057@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit e9ab04490667249633fb397be17db46a8fa6d130 ]
+commit a1963698d59cec83df640ded343af08b76c8e9c5 upstream.
 
-The new SCLP action qualifier 3 is used by user-space code to provide
-optical module monitoring data to the platform.
+Set the enable GPIO low when acquiring it.
 
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Stable-dep-of: aa9f168d55dc ("s390/pci: Support mmap() of PCI resources except for ISM devices")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d30bb512da3d ("media: Add a driver for the ov7251 camera sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/char/sclp_pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/i2c/ov7251.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/s390/char/sclp_pci.c b/drivers/s390/char/sclp_pci.c
-index a3e5a5fb0c1e7..c3466a8c56bb5 100644
---- a/drivers/s390/char/sclp_pci.c
-+++ b/drivers/s390/char/sclp_pci.c
-@@ -27,6 +27,7 @@
- #define SCLP_ERRNOTIFY_AQ_RESET			0
- #define SCLP_ERRNOTIFY_AQ_REPAIR		1
- #define SCLP_ERRNOTIFY_AQ_INFO_LOG		2
-+#define SCLP_ERRNOTIFY_AQ_OPTICS_DATA		3
+--- a/drivers/media/i2c/ov7251.c
++++ b/drivers/media/i2c/ov7251.c
+@@ -1330,7 +1330,7 @@ static int ov7251_probe(struct i2c_clien
+ 		return PTR_ERR(ov7251->analog_regulator);
+ 	}
  
- static DEFINE_MUTEX(sclp_pci_mutex);
- static struct sclp_register sclp_pci_event = {
-@@ -116,6 +117,7 @@ static int sclp_pci_check_report(struct zpci_report_error_header *report)
- 	case SCLP_ERRNOTIFY_AQ_RESET:
- 	case SCLP_ERRNOTIFY_AQ_REPAIR:
- 	case SCLP_ERRNOTIFY_AQ_INFO_LOG:
-+	case SCLP_ERRNOTIFY_AQ_OPTICS_DATA:
- 		break;
- 	default:
- 		return -EINVAL;
--- 
-2.39.5
-
+-	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_HIGH);
++	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_LOW);
+ 	if (IS_ERR(ov7251->enable_gpio)) {
+ 		dev_err(dev, "cannot get enable gpio\n");
+ 		return PTR_ERR(ov7251->enable_gpio);
 
 
 
