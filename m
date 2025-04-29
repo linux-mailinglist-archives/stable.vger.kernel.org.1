@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-138212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F98AA16FF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:42:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5BDAA1461
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7519F164B4D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC25E1B6548B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415582528E8;
-	Tue, 29 Apr 2025 17:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA28D24466C;
+	Tue, 29 Apr 2025 17:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlEoZ+uQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NLvzhy6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3761227E95;
-	Tue, 29 Apr 2025 17:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66CD321ADC7;
+	Tue, 29 Apr 2025 17:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948524; cv=none; b=r/FrRNz0xAa4//UobCE4uAEmM4nUCktYv97iP/ubx+6EMe+ok4K3GRuZwIM1QwOXi8UGV7s8fyiy/8WA40HouTfe8CpvObUeE9RNFN7wkh3HjBBRN+OYCJNcD//ahEIEjApO+YCGyzjMmKeeTEDAIM3LkJLFP6ZV6ZeyrJ7N9Oo=
+	t=1745946691; cv=none; b=oI52V2gO+QeeoiakJ0aR0ZfQdbOj/Wh6gQuk5nZSXYnG4lYM1CZaC8I+6eJYFBK3EvYeWIooruLPC7Mf+JUnZbxHskRzf8qLs1T657uDWU7ZvgYEh86k3t5ItGo1tUdyrqTvuT88AlklVS2nRpmzKJu2pPpD9fNT+3e1xvoPJG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948524; c=relaxed/simple;
-	bh=cGJHWs9EkGbR86yYBCWN6Lp89ODULDhJqP2zu0RhEQ4=;
+	s=arc-20240116; t=1745946691; c=relaxed/simple;
+	bh=ogSJjivtTSE35rzBiO8vhMStfZGvSVZPU2FwEkzpaOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZYPyotvtKxLUbm2LPcck9T1fpM6baIxJ5gQrTOjbEZVYPr+KN40nR8JAf311UhlRySohIxJy8KmiL/qcyK0py797ji5Ev3SKYpBx3cbWlf0FDAIMJAoxnJwQNKoav5hDaA2Q+tMFlyxCZzIHLahvUUqIOyGLP9sa9HZtX7Wze0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlEoZ+uQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B429C4CEE3;
-	Tue, 29 Apr 2025 17:42:03 +0000 (UTC)
+	 MIME-Version; b=nA2mT0kWqDLyT83pkUYuokCgl2mv3SnOKQZ3+OQFBatqcBYlBy830FNOwPTCFSxvaEsfGktOh/C5JdAdVbj3A56/e+FwKQktXxpVBm/dpg71NLvGFK5XXd7AbapAqPMbO7iWb7W8M9YKLGZXRB7A+SO/SCOKqktyiGdyHPUhgp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NLvzhy6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E181CC4CEE3;
+	Tue, 29 Apr 2025 17:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948523;
-	bh=cGJHWs9EkGbR86yYBCWN6Lp89ODULDhJqP2zu0RhEQ4=;
+	s=korg; t=1745946691;
+	bh=ogSJjivtTSE35rzBiO8vhMStfZGvSVZPU2FwEkzpaOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WlEoZ+uQeEfMBNiyJ+k5/dcogt04tNCMAl9+waByajNOfjLy+Y9Cfr+G+LAWTbllJ
-	 fycWuewEKC+jfyE74JIcEIsX/URS+tI71iUPGAIcGFOSwWeT7mOrbkfx3px7mas1bB
-	 yTXRvgF/YWzGtiM0NYhoMRomw3key+5Sv1Gcxu8g=
+	b=2NLvzhy6llVqJi30emzfHUGmPLoGoqNkNJOY3wSN2kojGYg6droSlQ2V5iVFRG7/l
+	 sodXhvVoGle2tS2RoStXrSQ0HXzaBg+8aYnL+hAYPAt2tyvc+rcjop9ys5oPspBnW2
+	 eSB3VMy0OsZ8JC4SJh4fId0bWJCuom5T1+9ux7pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Felix Fietkau <nbd@nbd.name>,
+	sontu mazumdar <sontu21@gmail.com>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 035/373] wifi: mt76: mt76x2u: add TP-Link TL-WDN6200 ID to device table
-Date: Tue, 29 Apr 2025 18:38:32 +0200
-Message-ID: <20250429161124.578902989@linuxfoundation.org>
+Subject: [PATCH 5.10 009/286] nft_set_pipapo: fix incorrect avx2 match of 5th field octet
+Date: Tue, 29 Apr 2025 18:38:33 +0200
+Message-ID: <20250429161108.237322232@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 06cccc2ebbe6c8a20f714f3a0ff3ff489d3004bb ]
+[ Upstream commit e042ed950d4e176379ba4c0722146cd96fb38aa2 ]
 
-The TP-Link TL-WDN6200 "Driverless" version cards use a MT7612U chipset.
+Given a set element like:
 
-Add the USB ID to mt76x2u driver.
+	icmpv6 . dead:beef:00ff::1
 
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Link: https://patch.msgid.link/20250317102235.1421726-1-uwu@icenowy.me
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+The value of 'ff' is irrelevant, any address will be matched
+as long as the other octets are the same.
+
+This is because of too-early register clobbering:
+ymm7 is reloaded with new packet data (pkt[9])  but it still holds data
+of an earlier load that wasn't processed yet.
+
+The existing tests in nft_concat_range.sh selftests do exercise this code
+path, but do not trigger incorrect matching due to the network prefix
+limitation.
+
+Fixes: 7400b063969b ("nft_set_pipapo: Introduce AVX2-based lookup implementation")
+Reported-by: sontu mazumdar <sontu21@gmail.com>
+Closes: https://lore.kernel.org/netfilter/CANgxkqwnMH7fXra+VUfODT-8+qFLgskq3set1cAzqqJaV4iEZg@mail.gmail.com/T/#t
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_set_pipapo_avx2.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-index 2575369e44e20..9369515f36a3a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -21,6 +21,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
- 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
- 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
- 	{ USB_DEVICE(0x045e, 0x02fe) },	/* XBox One Wireless Adapter */
-+	{ USB_DEVICE(0x2357, 0x0137) },	/* TP-Link TL-WDN6200 */
- 	{ },
- };
+diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
+index 13c7e22c93842..0a23d297084d4 100644
+--- a/net/netfilter/nft_set_pipapo_avx2.c
++++ b/net/netfilter/nft_set_pipapo_avx2.c
+@@ -985,8 +985,9 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
+ 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(5, lt,  8,  pkt[8], bsize);
  
+ 		NFT_PIPAPO_AVX2_AND(6, 2, 3);
++		NFT_PIPAPO_AVX2_AND(3, 4, 7);
+ 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(7, lt,  9,  pkt[9], bsize);
+-		NFT_PIPAPO_AVX2_AND(0, 4, 5);
++		NFT_PIPAPO_AVX2_AND(0, 3, 5);
+ 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(1, lt, 10, pkt[10], bsize);
+ 		NFT_PIPAPO_AVX2_AND(2, 6, 7);
+ 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(3, lt, 11, pkt[11], bsize);
 -- 
 2.39.5
 
