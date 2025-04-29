@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584D8AA138E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2AFAA124A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88D1B188EA58
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A005A5A3B3D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966D21FE468;
-	Tue, 29 Apr 2025 17:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1948E2405ED;
+	Tue, 29 Apr 2025 16:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGfQdr+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kl6nuioR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A0B24A055;
-	Tue, 29 Apr 2025 17:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC92B246326;
+	Tue, 29 Apr 2025 16:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946128; cv=none; b=SfjeYeMZ25ZVMooVwrioE3lLD4aPEu2FKLufFXIMXgup9d+m0DbW7bf02xLKnVTrHssivy+92KXixUy/ywzfWQAQ0nJQxNFnSpf0/aDUCoHd0fsKX4C6ey0q+awBOA2YW/Z5GYeJPqyjbHftyv2B9EDAJ/vpXfaE1r0hOSMeulQ=
+	t=1745945375; cv=none; b=penHIMiGL2EsacrfwXYyiHiOA+RTyVieE1ALwMGM+PoAOmgWgeocqsOOOFqL/KKFmZIBezOXWm8i+zmIV0F8pKKB5P317hBHsfjdd/fB/8Ak/jaV8+uFJXkBBZkKZfJcN/nKeLiJIrIdxQeGLUWVsZoKYypdMhnP/MDdKh/yuHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946128; c=relaxed/simple;
-	bh=Y2Gylub7I5tcqYZ5PneFnbQN1Jqz1ZJe2yUlQLr/FCI=;
+	s=arc-20240116; t=1745945375; c=relaxed/simple;
+	bh=lbyBospvaQl5CqDvl9IJ8N7cuPenSZxLJ6f4+FSAAnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H8SKRh53yZ72P3VM6zXdKTRdyzcZTIfiQef+s8r3lyeqLMo2vgTS0a77iC03nwcLAFEutXVf/4Ds0aFDdEyFLydkeSbXWPTZa+pNmncaZEyc54HYTP7a3ffuz7UzN+UAtakjA0wtWFRbqwSCnxQSRelwDxS0IZuVBerZgiyrsk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGfQdr+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2D6C4CEE3;
-	Tue, 29 Apr 2025 17:02:07 +0000 (UTC)
+	 MIME-Version; b=d/F0VqliHGZuNiFoqm7nDpyPpnmrkq30Ej6XTgwx3LsvWXmAtAuPAFNUv/mCtBHmG6r1q/Q+2IoE5o/x7Rp+wHFGEPilGXvhNu95iMt0KzMA/PukM5RF/w/dL1r6ZYiw3HqDeLvRLPmlWSE1o/yOzNWFnMYjlRYyETQ0jy+rIZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kl6nuioR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E25C4CEE3;
+	Tue, 29 Apr 2025 16:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946128;
-	bh=Y2Gylub7I5tcqYZ5PneFnbQN1Jqz1ZJe2yUlQLr/FCI=;
+	s=korg; t=1745945375;
+	bh=lbyBospvaQl5CqDvl9IJ8N7cuPenSZxLJ6f4+FSAAnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGfQdr+oFuebkoTB7YHvckoSYoLCyk8jUQPv4aN0itARPQQ7k61soGCki4FN0IO7k
-	 UUEFdcUTjhnNLS/+YtgiThOZGUjDslWPHCxqw9RwQfn+/CH4m/9wwTk6WkOVE5Ngcy
-	 gSSGVETvbnEPQf+Js3yJKsz/Lka9pWoQI7pGwaHk=
+	b=Kl6nuioR8axL0yaRoG3189yYOgAP7j+Ii2gMSlzU6ic/dyGK9kv98MgO6ONR5Urba
+	 1cIGA0kLQEo1Ke/pmsOOTwCatymyJ+ITsdgr8v5ewlzthaJQ2c1SNPFKCr6Y8lY2DZ
+	 dMHHwAwO8y563f4WI4iHDi0RM+tquky4b4qHqHHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frode Isaksen <frode@meta.com>,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.14 165/311] usb: dwc3: gadget: check that event count does not exceed event buffer length
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH 5.4 061/179] locking/lockdep: Decrease nr_unused_locks if lock unused in zap_class()
 Date: Tue, 29 Apr 2025 18:40:02 +0200
-Message-ID: <20250429161127.801472160@linuxfoundation.org>
+Message-ID: <20250429161051.874630559@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frode Isaksen <frode@meta.com>
+From: Boqun Feng <boqun.feng@gmail.com>
 
-commit 63ccd26cd1f6600421795f6ca3e625076be06c9f upstream.
+commit 495f53d5cca0f939eaed9dca90b67e7e6fb0e30c upstream.
 
-The event count is read from register DWC3_GEVNTCOUNT.
-There is a check for the count being zero, but not for exceeding the
-event buffer length.
-Check that event count does not exceed event buffer length,
-avoiding an out-of-bounds access when memcpy'ing the event.
-Crash log:
-Unable to handle kernel paging request at virtual address ffffffc0129be000
-pc : __memcpy+0x114/0x180
-lr : dwc3_check_event_buf+0xec/0x348
-x3 : 0000000000000030 x2 : 000000000000dfc4
-x1 : ffffffc0129be000 x0 : ffffff87aad60080
-Call trace:
-__memcpy+0x114/0x180
-dwc3_interrupt+0x24/0x34
+Currently, when a lock class is allocated, nr_unused_locks will be
+increased by 1, until it gets used: nr_unused_locks will be decreased by
+1 in mark_lock(). However, one scenario is missed: a lock class may be
+zapped without even being used once. This could result into a situation
+that nr_unused_locks != 0 but no unused lock class is active in the
+system, and when `cat /proc/lockdep_stats`, a WARN_ON() will
+be triggered in a CONFIG_DEBUG_LOCKDEP=y kernel:
 
-Signed-off-by: Frode Isaksen <frode@meta.com>
-Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
-Cc: stable <stable@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250403072907.448524-1-fisaksen@baylibre.com
+  [...] DEBUG_LOCKS_WARN_ON(debug_atomic_read(nr_unused_locks) != nr_unused)
+  [...] WARNING: CPU: 41 PID: 1121 at kernel/locking/lockdep_proc.c:283 lockdep_stats_show+0xba9/0xbd0
+
+And as a result, lockdep will be disabled after this.
+
+Therefore, nr_unused_locks needs to be accounted correctly at
+zap_class() time.
+
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250326180831.510348-1-boqun.feng@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/locking/lockdep.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4564,6 +4564,12 @@ static irqreturn_t dwc3_check_event_buf(
- 	if (!count)
- 		return IRQ_NONE;
- 
-+	if (count > evt->length) {
-+		dev_err_ratelimited(dwc->dev, "invalid count(%u) > evt->length(%u)\n",
-+			count, evt->length);
-+		return IRQ_NONE;
-+	}
-+
- 	evt->count = count;
- 	evt->flags |= DWC3_EVENT_PENDING;
- 
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -5011,6 +5011,9 @@ static void zap_class(struct pending_fre
+ 		hlist_del_rcu(&class->hash_entry);
+ 		WRITE_ONCE(class->key, NULL);
+ 		WRITE_ONCE(class->name, NULL);
++		/* Class allocated but not used, -1 in nr_unused_locks */
++		if (class->usage_mask == 0)
++			debug_atomic_dec(nr_unused_locks);
+ 		nr_lock_classes--;
+ 		__clear_bit(class - lock_classes, lock_classes_in_use);
+ 	} else {
 
 
 
