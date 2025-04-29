@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D81EAA1239
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22582AA1645
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A42C1BA279B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 292E11889885
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2218E2459C9;
-	Tue, 29 Apr 2025 16:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1B42459FE;
+	Tue, 29 Apr 2025 17:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mq+Ikd6q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFFPTAyd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40B424336D;
-	Tue, 29 Apr 2025 16:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6648F242D6A;
+	Tue, 29 Apr 2025 17:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945429; cv=none; b=Hx/CWTQYhqNEPO2QFK55BQCYfGHsvlxqwoOFH+Q45pKkuKBSctDlSi5gouUvmpZru5vi7xwf/EYhM64lxqQcKPi7ue61MKlmNWCm/ADwCptI3OX9/9QZIE+Dc3BMW6BmQhNI6R9JShWXnr5wvz+zx6+CbGLHlFjREEHQGhNIXRY=
+	t=1745947901; cv=none; b=TxjouJgX5yeYxBua05yoa0t6l8z0CLmim59jwP3s8i0PBFwUb1F5Vw2lsQMFjsXGmF7cp1ICMVtimbAP4/MK/3/smCC8IQS5Od4WL+v0l/goZa+xVz/ZLf46h3hC4nZM2AvGATvPDrzHlMDJ0ewxZNUD1u2n1R4MRtMKec4j/6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945429; c=relaxed/simple;
-	bh=yyrNjUY7tFSQ1m83ekw0k981phliHDqnrKTCbDN6AjQ=;
+	s=arc-20240116; t=1745947901; c=relaxed/simple;
+	bh=WCA+dnR6NEltMDdQqbisXHpzlKKjgpCiPy3gh4Qig8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cZWOKT90LZNIvmjDSQX0z3d8jUmC3XsRvuNsOpyQ1+n7v4NyyYtx095/ttakJV/4QejkeDtfspgXbWAqRAgIFwoHgt6GDKk+XQiu6mMXFdV9bDR5uu3i1BR8aEfYwGa9Vecr+zy3B6Z5/Fv2NPV62tjWRtGfMKGsvpzsKOeahD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mq+Ikd6q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACBEC4CEE3;
-	Tue, 29 Apr 2025 16:50:29 +0000 (UTC)
+	 MIME-Version; b=nohZ4xdIa+vQ7vgqD61jJAZs5XpjbFwykuwQAjl7VS7r1HOrcaGV86EJGLfbdXQI7Jz8gTl791b6rVn3quHN/1d+Z/7a1vKW3IdhO4WnSJGMBUHcH5//uFRlcpF6mtAKNcu3znw8K9nM/ZIjNB7MFAF6wRmLdUuqjHbb4KfqIy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFFPTAyd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED09BC4CEE3;
+	Tue, 29 Apr 2025 17:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945429;
-	bh=yyrNjUY7tFSQ1m83ekw0k981phliHDqnrKTCbDN6AjQ=;
+	s=korg; t=1745947901;
+	bh=WCA+dnR6NEltMDdQqbisXHpzlKKjgpCiPy3gh4Qig8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mq+Ikd6qRgYrywjCd+nEd0RrlwYEw8NKHiCTYFW9znIXR6QlOJL7mjT8im/sede2v
-	 yONebDSNbibW7J9JPmZxEgUFlkzOSd1lCjnxjAyxQ+NkpKAfGL/w43PH9HG/SPlUrp
-	 EcdwJn0lXjR2qkpokaSwr9SPljJJ8J2SW8CXI3Pg=
+	b=IFFPTAyd8TSLASS/uGG9I6OqenabXz8xoc5hH6Ir+iTLIZIaRWGrzEWAuEimWhb5a
+	 AE0bHhDyfgX+CQM7iN0bulXtzw3kvpsQmYzfvAu7BTQEhqeZhF+udjvwVOz703sOfl
+	 GX8r5yunkfYM+Biz8KXedgaMKIv/nDCIl4yYkXjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Stable@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 5.4 109/179] drm/nouveau: prime: fix ttm_bo_delayed_delete oops
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 109/280] LoongArch: Remove a bogus reference to ZONE_DMA
 Date: Tue, 29 Apr 2025 18:40:50 +0200
-Message-ID: <20250429161053.814121731@linuxfoundation.org>
+Message-ID: <20250429161119.573961581@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
+From: Petr Tesarik <ptesarik@suse.com>
 
-commit 8ec0fbb28d049273bfd4f1e7a5ae4c74884beed3 upstream.
+commit c37325cbd91abe3bfab280b3b09947155abe8e07 upstream.
 
-Fix an oops in ttm_bo_delayed_delete which results from dererencing a
-dangling pointer:
+Remove dead code. LoongArch does not have a DMA memory zone (24bit DMA).
+The architecture does not even define MAX_DMA_PFN.
 
-Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b7b: 0000 [#1] PREEMPT SMP
-CPU: 4 UID: 0 PID: 1082 Comm: kworker/u65:2 Not tainted 6.14.0-rc4-00267-g505460b44513-dirty #216
-Hardware name: LENOVO 82N6/LNVNB161216, BIOS GKCN65WW 01/16/2024
-Workqueue: ttm ttm_bo_delayed_delete [ttm]
-RIP: 0010:dma_resv_iter_first_unlocked+0x55/0x290
-Code: 31 f6 48 c7 c7 00 2b fa aa e8 97 bd 52 ff e8 a2 c1 53 00 5a 85 c0 74 48 e9 88 01 00 00 4c 89 63 20 4d 85 e4 0f 84 30 01 00 00 <41> 8b 44 24 10 c6 43 2c 01 48 89 df 89 43 28 e8 97 fd ff ff 4c 8b
-RSP: 0018:ffffbf9383473d60 EFLAGS: 00010202
-RAX: 0000000000000001 RBX: ffffbf9383473d88 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffbf9383473d78 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 6b6b6b6b6b6b6b6b
-R13: ffffa003bbf78580 R14: ffffa003a6728040 R15: 00000000000383cc
-FS:  0000000000000000(0000) GS:ffffa00991c00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000758348024dd0 CR3: 000000012c259000 CR4: 0000000000f50ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __die_body.cold+0x19/0x26
- ? die_addr+0x3d/0x70
- ? exc_general_protection+0x159/0x460
- ? asm_exc_general_protection+0x27/0x30
- ? dma_resv_iter_first_unlocked+0x55/0x290
- dma_resv_wait_timeout+0x56/0x100
- ttm_bo_delayed_delete+0x69/0xb0 [ttm]
- process_one_work+0x217/0x5c0
- worker_thread+0x1c8/0x3d0
- ? apply_wqattrs_cleanup.part.0+0xc0/0xc0
- kthread+0x10b/0x240
- ? kthreads_online_cpu+0x140/0x140
- ret_from_fork+0x40/0x70
- ? kthreads_online_cpu+0x140/0x140
- ret_from_fork_asm+0x11/0x20
- </TASK>
-
-The cause of this is:
-
-- drm_prime_gem_destroy calls dma_buf_put(dma_buf) which releases the
-  reference to the shared dma_buf. The reference count is 0, so the
-  dma_buf is destroyed, which in turn decrements the corresponding
-  amdgpu_bo reference count to 0, and the amdgpu_bo is destroyed -
-  calling drm_gem_object_release then dma_resv_fini (which destroys the
-  reservation object), then finally freeing the amdgpu_bo.
-
-- nouveau_bo obj->bo.base.resv is now a dangling pointer to the memory
-  formerly allocated to the amdgpu_bo.
-
-- nouveau_gem_object_del calls ttm_bo_put(&nvbo->bo) which calls
-  ttm_bo_release, which schedules ttm_bo_delayed_delete.
-
-- ttm_bo_delayed_delete runs and dereferences the dangling resv pointer,
-  resulting in a general protection fault.
-
-Fix this by moving the drm_prime_gem_destroy call from
-nouveau_gem_object_del to nouveau_bo_del_ttm. This ensures that it will
-be run after ttm_bo_delayed_delete.
-
-Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Fixes: 22b33e8ed0e3 ("nouveau: add PRIME support")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3937
-Cc: Stable@vger.kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/Z-P4epVK8k7tFZ7C@debian.local
+Cc: stable@vger.kernel.org
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Petr Tesarik <ptesarik@suse.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_bo.c  |    3 +++
- drivers/gpu/drm/nouveau/nouveau_gem.c |    3 ---
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/loongarch/mm/init.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_bo.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
-@@ -139,6 +139,9 @@ nouveau_bo_del_ttm(struct ttm_buffer_obj
- 	WARN_ON(nvbo->pin_refcnt > 0);
- 	nv10_bo_put_tile_region(dev, nvbo->tile, NULL);
+--- a/arch/loongarch/mm/init.c
++++ b/arch/loongarch/mm/init.c
+@@ -65,9 +65,6 @@ void __init paging_init(void)
+ {
+ 	unsigned long max_zone_pfns[MAX_NR_ZONES];
  
-+	if (bo->base.import_attach)
-+		drm_prime_gem_destroy(&bo->base, bo->sg);
-+
- 	/*
- 	 * If nouveau_bo_new() allocated this buffer, the GEM object was never
- 	 * initialized, so don't attempt to release it.
---- a/drivers/gpu/drm/nouveau/nouveau_gem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
-@@ -50,9 +50,6 @@ nouveau_gem_object_del(struct drm_gem_ob
- 		return;
- 	}
- 
--	if (gem->import_attach)
--		drm_prime_gem_destroy(gem, nvbo->bo.sg);
--
- 	ttm_bo_put(&nvbo->bo);
- 
- 	pm_runtime_mark_last_busy(dev);
+-#ifdef CONFIG_ZONE_DMA
+-	max_zone_pfns[ZONE_DMA] = MAX_DMA_PFN;
+-#endif
+ #ifdef CONFIG_ZONE_DMA32
+ 	max_zone_pfns[ZONE_DMA32] = MAX_DMA32_PFN;
+ #endif
 
 
 
