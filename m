@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A865AA1A26
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B9DAA192A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 566814E040F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:17:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 785E61BC7414
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8481D25333F;
-	Tue, 29 Apr 2025 18:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391AB21ABC6;
+	Tue, 29 Apr 2025 18:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZE1/2nw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQqTTS/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4302724889B;
-	Tue, 29 Apr 2025 18:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3D240C03;
+	Tue, 29 Apr 2025 18:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950674; cv=none; b=FueRcYrxpcWqDaQD6GS5T778Sqc3BDXrEtjAKrqXD+FIZTE2tKhVkdp7n+Z/NknuFoQV2H9LWQOx63HZoi0yYSZStx71JigTo1Ya98gDr6sVakwvRbIXkLIZkLTerTv0nNlBSEbDr39XmfY26dkyH9dlWJARzXs/FZJhqVk/wdE=
+	t=1745950083; cv=none; b=RLXYWHVm27+S7tuEDt/lNJFnMb3FMRgbmnuXe1I5cXsqAyJzBuJQ8hOfeiolKUVynuXOH9yU7EnoMRRlWf86+65kbTAbZaXkYqyF/lmpTBW5NMJq+6Zhi14AdMxTgjxWZ4wmDYIQ5T4bVmVwBdWPpjkVNVU2randBOm4uf6E3tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950674; c=relaxed/simple;
-	bh=mjz1EQeFO0fMkaHenN344TjLJAhrMKDMpy2Y11N0MpA=;
+	s=arc-20240116; t=1745950083; c=relaxed/simple;
+	bh=7pznRt0JHMSGdYLEhmH5u0Hrv7C5aUvpynF9DA7VqCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dt6J+G76fFrS4X4gc7Pth2gUUyl5XH1r4A0broP6SB1eiqgn4P4x7jXEMyulaeOtLWP6to7MpRcbaCTJSraRIj1Kpo1tOHRXTcuh11cvFoIywFEc+6FcnifyfUW4kLLV073Nqco91vGzGNqLxPyEw5U33iOLgB73tL+DpNL4V4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZE1/2nw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F618C4CEE3;
-	Tue, 29 Apr 2025 18:17:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RUV612jzMjVTPD8Shjw2DnNuSJsiZMGDmFuFG2xQHAC4kw6xQ8YNoO3MF9VQNgYrSkY3chRph705cR2yEkNGpeqt+Y0JpYXeWEU0k9wjiTr7WL88+BR66eRfbSxYprBFuVDREKp+EHyrkN1H9Ap0rq8shrkrVmS53EpTznUR+cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQqTTS/r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFF6C4CEE3;
+	Tue, 29 Apr 2025 18:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950673;
-	bh=mjz1EQeFO0fMkaHenN344TjLJAhrMKDMpy2Y11N0MpA=;
+	s=korg; t=1745950082;
+	bh=7pznRt0JHMSGdYLEhmH5u0Hrv7C5aUvpynF9DA7VqCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZE1/2nw6Ghz2dAQLqxl2jijPexNm2nQ7o+JJ0NClZ5Hf2rjte3vE3bajCeLm8NVq
-	 x3tiT5VcvfWuBhf8pv8BgjxJVqAVekIc+Ha4taPpDNcvyW15BRQdcJlDDcf9e8jPTQ
-	 DE9Lz1ts+VF2XP+Kn8L6pdrTlCOByx/+udG+1zoo=
+	b=OQqTTS/r5gZSzDQz3nfwp/Q7X6RNF2/VFObTcHvCM4Hwfhi4LDBGrH3bkI/3sV/7c
+	 9mqZGwZaVNl0P+cEDqXsG6Bw4RooJrb2nW+bz3vcUFGT6vk0kUp4IAF0u4D48GPmBC
+	 GJxox3OslmepByjCZnH87KUVMQlH+/CCPuJGosV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 170/204] nvmet-fc: take tgtport reference only once
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Rob Herring <robh@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=83=C2=B6nig?= <ukleinek@debian.org>
+Subject: [PATCH 6.1 150/167] of: module: add buffer overflow check in of_modalias()
 Date: Tue, 29 Apr 2025 18:44:18 +0200
-Message-ID: <20250429161106.362574652@linuxfoundation.org>
+Message-ID: <20250429161057.791863253@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit b0b26ad0e1943de25ce82a7e5af3574f31b1cf99 ]
+commit cf7385cb26ac4f0ee6c7385960525ad534323252 upstream.
 
-The reference counting code can be simplified. Instead taking a tgtport
-refrerence at the beginning of nvmet_fc_alloc_hostport and put it back
-if not a new hostport object is allocated, only take it when a new
-hostport object is allocated.
+In of_modalias(), if the buffer happens to be too small even for the 1st
+snprintf() call, the len parameter will become negative and str parameter
+(if not NULL initially) will point beyond the buffer's end. Add the buffer
+overflow check after the 1st snprintf() call and fix such check after the
+strlen() call (accounting for the terminating NUL char).
 
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bc575064d688 ("of/device: use of_property_for_each_string to parse compatible strings")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/bbfc6be0-c687-62b6-d015-5141b93f313e@omp.ru
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Uwe Kleine-KÃ¶nig <ukleinek@debian.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/fc.c | 22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ drivers/of/device.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
-index d40d5a4ea932e..68ff9540e2d13 100644
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -1030,33 +1030,24 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
- 	struct nvmet_fc_hostport *newhost, *match = NULL;
- 	unsigned long flags;
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -264,14 +264,15 @@ static ssize_t of_device_get_modalias(st
+ 	csize = snprintf(str, len, "of:N%pOFn%c%s", dev->of_node, 'T',
+ 			 of_node_get_device_type(dev->of_node));
+ 	tsize = csize;
++	if (csize >= len)
++		csize = len > 0 ? len - 1 : 0;
+ 	len -= csize;
+-	if (str)
+-		str += csize;
++	str += csize;
  
-+	/*
-+	 * Caller holds a reference on tgtport.
-+	 */
-+
- 	/* if LLDD not implemented, leave as NULL */
- 	if (!hosthandle)
- 		return NULL;
+ 	of_property_for_each_string(dev->of_node, "compatible", p, compat) {
+ 		csize = strlen(compat) + 1;
+ 		tsize += csize;
+-		if (csize > len)
++		if (csize >= len)
+ 			continue;
  
--	/*
--	 * take reference for what will be the newly allocated hostport if
--	 * we end up using a new allocation
--	 */
--	if (!nvmet_fc_tgtport_get(tgtport))
--		return ERR_PTR(-EINVAL);
--
- 	spin_lock_irqsave(&tgtport->lock, flags);
- 	match = nvmet_fc_match_hostport(tgtport, hosthandle);
- 	spin_unlock_irqrestore(&tgtport->lock, flags);
- 
--	if (match) {
--		/* no new allocation - release reference */
--		nvmet_fc_tgtport_put(tgtport);
-+	if (match)
- 		return match;
--	}
- 
- 	newhost = kzalloc(sizeof(*newhost), GFP_KERNEL);
--	if (!newhost) {
--		/* no new allocation - release reference */
--		nvmet_fc_tgtport_put(tgtport);
-+	if (!newhost)
- 		return ERR_PTR(-ENOMEM);
--	}
- 
- 	spin_lock_irqsave(&tgtport->lock, flags);
- 	match = nvmet_fc_match_hostport(tgtport, hosthandle);
-@@ -1065,6 +1056,7 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
- 		kfree(newhost);
- 		newhost = match;
- 	} else {
-+		nvmet_fc_tgtport_get(tgtport);
- 		newhost->tgtport = tgtport;
- 		newhost->hosthandle = hosthandle;
- 		INIT_LIST_HEAD(&newhost->host_list);
--- 
-2.39.5
-
+ 		csize = snprintf(str, len, "C%s", compat);
 
 
 
