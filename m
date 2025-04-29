@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE2DAA191B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:07:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B320AA1A0E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADF289A8360
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31A4C9C4B83
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BB192522A5;
-	Tue, 29 Apr 2025 18:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65663253327;
+	Tue, 29 Apr 2025 18:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6HvaX+q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8+UXrxb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0947A253327;
-	Tue, 29 Apr 2025 18:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D2A19F424;
+	Tue, 29 Apr 2025 18:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949728; cv=none; b=SYvLDUnlagfPBISwyX2tS9CbG0nCPOV0KzAjn3SiTP+6o2onOswEDWO2HGpHMHxhhvlopf4ne8t60kFjsqHyDfvWoqRMD/MvQP/Jteqzfwq8Wv+rKTb/ZnXBZJSPmnvLTzJubBrHiAqAIkyQh/+iRGSD5gSb4Fw2iASb1Xo1g5s=
+	t=1745950321; cv=none; b=hXCoqk+PNa+qYoyvshIuT3bF7qZmFr0aSO5blftwq2ZFuvNIPp3NrKqbmbgdTng7qsjr8LNaC565mVjzdRB8ToVD+j3eHSa6Fu5YLF2AK9sFx2WNHUfp2Ff4GlkJWNkStIZizCqfLO3+9EDBIyoooVDy8ybtk7KwXpg0vn83pjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949728; c=relaxed/simple;
-	bh=YeJteJeZCskRACVLJieAbmFUeUdcO12QCS9+CIvXrTg=;
+	s=arc-20240116; t=1745950321; c=relaxed/simple;
+	bh=vzCAPXk0AYGhrB/qwXw3Wow+BHGSxFoOVEyMkClqUg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qUyWA/AlJEzfROueDyK5AWoWWzBuHCp20JQb5F15+ALhFWm92IZ+sRSA1MoEgrsrzHrqP53P6e8/66fNMtwSXlJ/iDMSsjN/VI0Lsg7ajaJk9wtTN74HaXswSfXuQ1FKNgIhgTNHNizZY3NaBYC5QDFPxATtIsDBlT58I56rs6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6HvaX+q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08639C4CEE3;
-	Tue, 29 Apr 2025 18:02:06 +0000 (UTC)
+	 MIME-Version; b=gMDqu1Pv9Fvk7tw0KoBRkDGgqIfRQYgRevEify8bo2cwvhwUAcbd00Z0mOxP3mxKQSBxiv0sQFu7690C+B4CJ7Q6VKECC779ecu6Gs+Oh9xsTunumDh06vNjNEaKwFYF8HdV9TmCJqSRMEnC5x8srdj0iF4JEZXyqab+GbuUoJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8+UXrxb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D7B9C4CEE3;
+	Tue, 29 Apr 2025 18:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949727;
-	bh=YeJteJeZCskRACVLJieAbmFUeUdcO12QCS9+CIvXrTg=;
+	s=korg; t=1745950321;
+	bh=vzCAPXk0AYGhrB/qwXw3Wow+BHGSxFoOVEyMkClqUg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s6HvaX+qAGf1yHjb8pNMoJRs1XrO3WHNdblW/dZeXrpVR9AU+CxoK3HQK98Ew+Xss
-	 mgsJZSoYtAFHzKpgF+aLFTjuL6kZZnx86DgXGgIw81vtSyuHlciyUdZaWiREkGSjC2
-	 GEI0km/Q5mXPsK3ZSeEhDY9TEsk1w8VlM2PWH+X4=
+	b=C8+UXrxbKqxkTVfDAHXKLNYRl2Ax/7InRSvuRW8NBHWglyV/BmQqKnl1jQ7mGyYXm
+	 KalmKQzB5Aorkt80rumWnUNbYMFr7uqIqmMvb2Mveqg4UNqs2mZkYADcBh21qrOlNt
+	 J3kVLliSVokSHOX4vfUvgucfh4W9/hGhCB51qHMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/167] s390/pci: Report PCI error recovery results via SCLP
+Subject: [PATCH 6.6 058/204] fix a couple of races in MNT_TREE_BENEATH handling by do_move_mount()
 Date: Tue, 29 Apr 2025 18:42:26 +0200
-Message-ID: <20250429161053.295203006@linuxfoundation.org>
+Message-ID: <20250429161101.807801796@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,382 +62,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 4ec6054e7321dc24ebccaa08b3af0d590f5666e6 ]
+[ Upstream commit 0d039eac6e5950f9d1ecc9e410c2fd1feaeab3b6 ]
 
-Add a mechanism with which the status of PCI error recovery runs
-is reported to the platform. Together with the status supply additional
-information that may aid in problem determination.
+Normally do_lock_mount(path, _) is locking a mountpoint pinned by
+*path and at the time when matching unlock_mount() unlocks that
+location it is still pinned by the same thing.
 
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Stable-dep-of: aa9f168d55dc ("s390/pci: Support mmap() of PCI resources except for ISM devices")
+Unfortunately, for 'beneath' case it's no longer that simple -
+the object being locked is not the one *path points to.  It's the
+mountpoint of path->mnt.  The thing is, without sufficient locking
+->mnt_parent may change under us and none of the locks are held
+at that point.  The rules are
+	* mount_lock stabilizes m->mnt_parent for any mount m.
+	* namespace_sem stabilizes m->mnt_parent, provided that
+m is mounted.
+	* if either of the above holds and refcount of m is positive,
+we are guaranteed the same for refcount of m->mnt_parent.
+
+namespace_sem nests inside inode_lock(), so do_lock_mount() has
+to take inode_lock() before grabbing namespace_sem.  It does
+recheck that path->mnt is still mounted in the same place after
+getting namespace_sem, and it does take care to pin the dentry.
+It is needed, since otherwise we might end up with racing mount --move
+(or umount) happening while we were getting locks; in that case
+dentry would no longer be a mountpoint and could've been evicted
+on memory pressure along with its inode - not something you want
+when grabbing lock on that inode.
+
+However, pinning a dentry is not enough - the matching mount is
+also pinned only by the fact that path->mnt is mounted on top it
+and at that point we are not holding any locks whatsoever, so
+the same kind of races could end up with all references to
+that mount gone just as we are about to enter inode_lock().
+If that happens, we are left with filesystem being shut down while
+we are holding a dentry reference on it; results are not pretty.
+
+What we need to do is grab both dentry and mount at the same time;
+that makes inode_lock() safe *and* avoids the problem with fs getting
+shut down under us.  After taking namespace_sem we verify that
+path->mnt is still mounted (which stabilizes its ->mnt_parent) and
+check that it's still mounted at the same place.  From that point
+on to the matching namespace_unlock() we are guaranteed that
+mount/dentry pair we'd grabbed are also pinned by being the mountpoint
+of path->mnt, so we can quietly drop both the dentry reference (as
+the current code does) and mnt one - it's OK to do under namespace_sem,
+since we are not dropping the final refs.
+
+That solves the problem on do_lock_mount() side; unlock_mount()
+also has one, since dentry is guaranteed to stay pinned only until
+the namespace_unlock().  That's easy to fix - just have inode_unlock()
+done earlier, while it's still pinned by mp->m_dentry.
+
+Fixes: 6ac392815628 "fs: allow to mount beneath top mount" # v6.5+
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/sclp.h |  33 +++++++++++
- arch/s390/pci/Makefile       |   2 +-
- arch/s390/pci/pci_event.c    |  21 +++++--
- arch/s390/pci/pci_report.c   | 111 +++++++++++++++++++++++++++++++++++
- arch/s390/pci/pci_report.h   |  16 +++++
- drivers/s390/char/sclp.h     |  14 -----
- drivers/s390/char/sclp_pci.c |  19 ------
- 7 files changed, 178 insertions(+), 38 deletions(-)
- create mode 100644 arch/s390/pci/pci_report.c
- create mode 100644 arch/s390/pci/pci_report.h
+ fs/namespace.c | 69 ++++++++++++++++++++++++++------------------------
+ 1 file changed, 36 insertions(+), 33 deletions(-)
 
-diff --git a/arch/s390/include/asm/sclp.h b/arch/s390/include/asm/sclp.h
-index 9d4c7f71e070f..e64dac00e7bf7 100644
---- a/arch/s390/include/asm/sclp.h
-+++ b/arch/s390/include/asm/sclp.h
-@@ -16,6 +16,11 @@
- /* 24 + 16 * SCLP_MAX_CORES */
- #define EXT_SCCB_READ_CPU	(3 * PAGE_SIZE)
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 671e266b8fc5d..5a885d35efe93 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2439,56 +2439,62 @@ static struct mountpoint *do_lock_mount(struct path *path, bool beneath)
+ 	struct vfsmount *mnt = path->mnt;
+ 	struct dentry *dentry;
+ 	struct mountpoint *mp = ERR_PTR(-ENOENT);
++	struct path under = {};
  
-+#define SCLP_ERRNOTIFY_AQ_RESET			0
-+#define SCLP_ERRNOTIFY_AQ_REPAIR		1
-+#define SCLP_ERRNOTIFY_AQ_INFO_LOG		2
-+#define SCLP_ERRNOTIFY_AQ_OPTICS_DATA		3
+ 	for (;;) {
+-		struct mount *m;
++		struct mount *m = real_mount(mnt);
+ 
+ 		if (beneath) {
+-			m = real_mount(mnt);
++			path_put(&under);
+ 			read_seqlock_excl(&mount_lock);
+-			dentry = dget(m->mnt_mountpoint);
++			under.mnt = mntget(&m->mnt_parent->mnt);
++			under.dentry = dget(m->mnt_mountpoint);
+ 			read_sequnlock_excl(&mount_lock);
++			dentry = under.dentry;
+ 		} else {
+ 			dentry = path->dentry;
+ 		}
+ 
+ 		inode_lock(dentry->d_inode);
+-		if (unlikely(cant_mount(dentry))) {
+-			inode_unlock(dentry->d_inode);
+-			goto out;
+-		}
+-
+ 		namespace_lock();
+ 
+-		if (beneath && (!is_mounted(mnt) || m->mnt_mountpoint != dentry)) {
++		if (unlikely(cant_mount(dentry) || !is_mounted(mnt)))
++			break;		// not to be mounted on
 +
- #ifndef __ASSEMBLY__
- #include <linux/uio.h>
- #include <asm/chpid.h>
-@@ -107,6 +112,34 @@ struct sclp_info {
- };
- extern struct sclp_info sclp;
++		if (beneath && unlikely(m->mnt_mountpoint != dentry ||
++				        &m->mnt_parent->mnt != under.mnt)) {
+ 			namespace_unlock();
+ 			inode_unlock(dentry->d_inode);
+-			goto out;
++			continue;	// got moved
+ 		}
  
-+struct sccb_header {
-+	u16	length;
-+	u8	function_code;
-+	u8	control_mask[3];
-+	u16	response_code;
-+} __packed;
-+
-+struct evbuf_header {
-+	u16	length;
-+	u8	type;
-+	u8	flags;
-+	u16	_reserved;
-+} __packed;
-+
-+struct err_notify_evbuf {
-+	struct evbuf_header header;
-+	u8 action;
-+	u8 atype;
-+	u32 fh;
-+	u32 fid;
-+	u8 data[];
-+} __packed;
-+
-+struct err_notify_sccb {
-+	struct sccb_header header;
-+	struct err_notify_evbuf evbuf;
-+} __packed;
-+
- struct zpci_report_error_header {
- 	u8 version;	/* Interface version byte */
- 	u8 action;	/* Action qualifier byte
-diff --git a/arch/s390/pci/Makefile b/arch/s390/pci/Makefile
-index 5ae31ca9dd441..eeef68901a15c 100644
---- a/arch/s390/pci/Makefile
-+++ b/arch/s390/pci/Makefile
-@@ -5,5 +5,5 @@
- 
- obj-$(CONFIG_PCI)	+= pci.o pci_irq.o pci_dma.o pci_clp.o pci_sysfs.o \
- 			   pci_event.o pci_debug.o pci_insn.o pci_mmio.o \
--			   pci_bus.o pci_kvm_hook.o
-+			   pci_bus.o pci_kvm_hook.o pci_report.o
- obj-$(CONFIG_PCI_IOV)	+= pci_iov.o
-diff --git a/arch/s390/pci/pci_event.c b/arch/s390/pci/pci_event.c
-index b3961f1016ea0..ed8c7f61e642b 100644
---- a/arch/s390/pci/pci_event.c
-+++ b/arch/s390/pci/pci_event.c
-@@ -16,6 +16,7 @@
- #include <asm/sclp.h>
- 
- #include "pci_bus.h"
-+#include "pci_report.h"
- 
- /* Content Code Description for PCI Function Error */
- struct zpci_ccdf_err {
-@@ -162,6 +163,8 @@ static pci_ers_result_t zpci_event_do_reset(struct pci_dev *pdev,
- static pci_ers_result_t zpci_event_attempt_error_recovery(struct pci_dev *pdev)
- {
- 	pci_ers_result_t ers_res = PCI_ERS_RESULT_DISCONNECT;
-+	struct zpci_dev *zdev = to_zpci(pdev);
-+	char *status_str = "success";
- 	struct pci_driver *driver;
- 
- 	/*
-@@ -179,29 +182,37 @@ static pci_ers_result_t zpci_event_attempt_error_recovery(struct pci_dev *pdev)
- 	if (is_passed_through(to_zpci(pdev))) {
- 		pr_info("%s: Cannot be recovered in the host because it is a pass-through device\n",
- 			pci_name(pdev));
-+		status_str = "failed (pass-through)";
- 		goto out_unlock;
- 	}
- 
- 	driver = to_pci_driver(pdev->dev.driver);
- 	if (!is_driver_supported(driver)) {
--		if (!driver)
-+		if (!driver) {
- 			pr_info("%s: Cannot be recovered because no driver is bound to the device\n",
- 				pci_name(pdev));
--		else
-+			status_str = "failed (no driver)";
-+		} else {
- 			pr_info("%s: The %s driver bound to the device does not support error recovery\n",
- 				pci_name(pdev),
- 				driver->name);
-+			status_str = "failed (no driver support)";
+ 		mnt = lookup_mnt(path);
+-		if (likely(!mnt))
++		if (unlikely(mnt)) {
++			namespace_unlock();
++			inode_unlock(dentry->d_inode);
++			path_put(path);
++			path->mnt = mnt;
++			path->dentry = dget(mnt->mnt_root);
++			continue;	// got overmounted
 +		}
- 		goto out_unlock;
- 	}
- 
- 	ers_res = zpci_event_notify_error_detected(pdev, driver);
--	if (ers_result_indicates_abort(ers_res))
-+	if (ers_result_indicates_abort(ers_res)) {
-+		status_str = "failed (abort on detection)";
- 		goto out_unlock;
-+	}
- 
- 	if (ers_res == PCI_ERS_RESULT_CAN_RECOVER) {
- 		ers_res = zpci_event_do_error_state_clear(pdev, driver);
--		if (ers_result_indicates_abort(ers_res))
-+		if (ers_result_indicates_abort(ers_res)) {
-+			status_str = "failed (abort on MMIO enable)";
- 			goto out_unlock;
++		mp = get_mountpoint(dentry);
++		if (IS_ERR(mp))
+ 			break;
+-
+-		namespace_unlock();
+-		inode_unlock(dentry->d_inode);
+-		if (beneath)
+-			dput(dentry);
+-		path_put(path);
+-		path->mnt = mnt;
+-		path->dentry = dget(mnt->mnt_root);
+-	}
+-
+-	mp = get_mountpoint(dentry);
+-	if (IS_ERR(mp)) {
+-		namespace_unlock();
+-		inode_unlock(dentry->d_inode);
++		if (beneath) {
++			/*
++			 * @under duplicates the references that will stay
++			 * at least until namespace_unlock(), so the path_put()
++			 * below is safe (and OK to do under namespace_lock -
++			 * we are not dropping the final references here).
++			 */
++			path_put(&under);
 +		}
++		return mp;
  	}
- 
- 	if (ers_res == PCI_ERS_RESULT_NEED_RESET)
-@@ -210,6 +221,7 @@ static pci_ers_result_t zpci_event_attempt_error_recovery(struct pci_dev *pdev)
- 	if (ers_res != PCI_ERS_RESULT_RECOVERED) {
- 		pr_err("%s: Automatic recovery failed; operator intervention is required\n",
- 		       pci_name(pdev));
-+		status_str = "failed (driver can't recover)";
- 		goto out_unlock;
- 	}
- 
-@@ -218,6 +230,7 @@ static pci_ers_result_t zpci_event_attempt_error_recovery(struct pci_dev *pdev)
- 		driver->err_handler->resume(pdev);
- out_unlock:
- 	pci_dev_unlock(pdev);
-+	zpci_report_status(zdev, "recovery", status_str);
- 
- 	return ers_res;
+-
+-out:
++	namespace_unlock();
++	inode_unlock(dentry->d_inode);
+ 	if (beneath)
+-		dput(dentry);
+-
++		path_put(&under);
+ 	return mp;
  }
-diff --git a/arch/s390/pci/pci_report.c b/arch/s390/pci/pci_report.c
-new file mode 100644
-index 0000000000000..2754c9c161f5b
---- /dev/null
-+++ b/arch/s390/pci/pci_report.c
-@@ -0,0 +1,111 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright IBM Corp. 2024
-+ *
-+ * Author(s):
-+ *   Niklas Schnelle <schnelle@linux.ibm.com>
-+ *
-+ */
-+
-+#define KMSG_COMPONENT "zpci"
-+#define pr_fmt(fmt) KMSG_COMPONENT ": " fmt
-+
-+#include <linux/kernel.h>
-+#include <linux/sprintf.h>
-+#include <linux/pci.h>
-+
-+#include <asm/sclp.h>
-+
-+#include "pci_report.h"
-+
-+#define ZPCI_ERR_LOG_ID_KERNEL_REPORT 0x4714
-+
-+struct zpci_report_error_data {
-+	u64 timestamp;
-+	u64 err_log_id;
-+	char log_data[];
-+} __packed;
-+
-+#define ZPCI_REPORT_SIZE	(PAGE_SIZE - sizeof(struct err_notify_sccb))
-+#define ZPCI_REPORT_DATA_SIZE	(ZPCI_REPORT_SIZE - sizeof(struct zpci_report_error_data))
-+
-+struct zpci_report_error {
-+	struct zpci_report_error_header header;
-+	struct zpci_report_error_data data;
-+} __packed;
-+
-+static const char *zpci_state_str(pci_channel_state_t state)
-+{
-+	switch (state) {
-+	case pci_channel_io_normal:
-+		return "normal";
-+	case pci_channel_io_frozen:
-+		return "frozen";
-+	case pci_channel_io_perm_failure:
-+		return "permanent-failure";
-+	default:
-+		return "invalid";
-+	};
-+}
-+
-+/**
-+ * zpci_report_status - Report the status of operations on a PCI device
-+ * @zdev:	The PCI device for which to report status
-+ * @operation:	A string representing the operation reported
-+ * @status:	A string representing the status of the operation
-+ *
-+ * This function creates a human readable report about an operation such as
-+ * PCI device recovery and forwards this to the platform using the SCLP Write
-+ * Event Data mechanism. Besides the operation and status strings the report
-+ * also contains additional information about the device deemed useful for
-+ * debug such as the currently bound device driver, if any, and error state.
-+ *
-+ * Return: 0 on success an error code < 0 otherwise.
-+ */
-+int zpci_report_status(struct zpci_dev *zdev, const char *operation, const char *status)
-+{
-+	struct zpci_report_error *report;
-+	struct pci_driver *driver = NULL;
-+	struct pci_dev *pdev = NULL;
-+	char *buf, *end;
-+	int ret;
-+
-+	if (!zdev || !zdev->zbus)
-+		return -ENODEV;
-+
-+	/* Protected virtualization hosts get nothing from us */
-+	if (prot_virt_guest)
-+		return -ENODATA;
-+
-+	report = (void *)get_zeroed_page(GFP_KERNEL);
-+	if (!report)
-+		return -ENOMEM;
-+	if (zdev->zbus->bus)
-+		pdev = pci_get_slot(zdev->zbus->bus, zdev->devfn);
-+	if (pdev)
-+		driver = to_pci_driver(pdev->dev.driver);
-+
-+	buf = report->data.log_data;
-+	end = report->data.log_data + ZPCI_REPORT_DATA_SIZE;
-+	buf += scnprintf(buf, end - buf, "report: %s\n", operation);
-+	buf += scnprintf(buf, end - buf, "status: %s\n", status);
-+	buf += scnprintf(buf, end - buf, "state: %s\n",
-+			 (pdev) ? zpci_state_str(pdev->error_state) : "n/a");
-+	buf += scnprintf(buf, end - buf, "driver: %s\n", (driver) ? driver->name : "n/a");
-+
-+	report->header.version = 1;
-+	report->header.action = SCLP_ERRNOTIFY_AQ_INFO_LOG;
-+	report->header.length = buf - (char *)&report->data;
-+	report->data.timestamp = ktime_get_clocktai_seconds();
-+	report->data.err_log_id = ZPCI_ERR_LOG_ID_KERNEL_REPORT;
-+
-+	ret = sclp_pci_report(&report->header, zdev->fh, zdev->fid);
-+	if (ret)
-+		pr_err("Reporting PCI status failed with code %d\n", ret);
-+	else
-+		pr_info("Reported PCI device status\n");
-+
-+	free_page((unsigned long)report);
-+
-+	return ret;
-+}
-diff --git a/arch/s390/pci/pci_report.h b/arch/s390/pci/pci_report.h
-new file mode 100644
-index 0000000000000..e08003d51a972
---- /dev/null
-+++ b/arch/s390/pci/pci_report.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright IBM Corp. 2024
-+ *
-+ * Author(s):
-+ *   Niklas Schnelle <schnelle@linux.ibm.com>
-+ *
-+ */
-+#ifndef __S390_PCI_REPORT_H
-+#define __S390_PCI_REPORT_H
-+
-+struct zpci_dev;
-+
-+int zpci_report_status(struct zpci_dev *zdev, const char *operation, const char *status);
-+
-+#endif /* __S390_PCI_REPORT_H */
-diff --git a/drivers/s390/char/sclp.h b/drivers/s390/char/sclp.h
-index 86dd2cde0f78b..805f0a1ca687f 100644
---- a/drivers/s390/char/sclp.h
-+++ b/drivers/s390/char/sclp.h
-@@ -84,13 +84,6 @@ typedef unsigned int sclp_cmdw_t;
  
- typedef u64 sccb_mask_t;
+@@ -2499,14 +2505,11 @@ static inline struct mountpoint *lock_mount(struct path *path)
  
--struct sccb_header {
--	u16	length;
--	u8	function_code;
--	u8	control_mask[3];
--	u16	response_code;
--} __attribute__((packed));
+ static void unlock_mount(struct mountpoint *where)
+ {
+-	struct dentry *dentry = where->m_dentry;
 -
- struct init_sccb {
- 	struct sccb_header header;
- 	u16 _reserved;
-@@ -237,13 +230,6 @@ struct gds_vector {
- 	u16	gds_id;
- } __attribute__((packed));
- 
--struct evbuf_header {
--	u16	length;
--	u8	type;
--	u8	flags;
--	u16	_reserved;
--} __attribute__((packed));
++	inode_unlock(where->m_dentry->d_inode);
+ 	read_seqlock_excl(&mount_lock);
+ 	put_mountpoint(where);
+ 	read_sequnlock_excl(&mount_lock);
 -
- struct sclp_req {
- 	struct list_head list;		/* list_head for request queueing. */
- 	sclp_cmdw_t command;		/* sclp command to execute */
-diff --git a/drivers/s390/char/sclp_pci.c b/drivers/s390/char/sclp_pci.c
-index c3466a8c56bb5..56400886f7fca 100644
---- a/drivers/s390/char/sclp_pci.c
-+++ b/drivers/s390/char/sclp_pci.c
-@@ -24,30 +24,11 @@
+ 	namespace_unlock();
+-	inode_unlock(dentry->d_inode);
+ }
  
- #define SCLP_ATYPE_PCI				2
- 
--#define SCLP_ERRNOTIFY_AQ_RESET			0
--#define SCLP_ERRNOTIFY_AQ_REPAIR		1
--#define SCLP_ERRNOTIFY_AQ_INFO_LOG		2
--#define SCLP_ERRNOTIFY_AQ_OPTICS_DATA		3
--
- static DEFINE_MUTEX(sclp_pci_mutex);
- static struct sclp_register sclp_pci_event = {
- 	.send_mask = EVTYP_ERRNOTIFY_MASK,
- };
- 
--struct err_notify_evbuf {
--	struct evbuf_header header;
--	u8 action;
--	u8 atype;
--	u32 fh;
--	u32 fid;
--	u8 data[];
--} __packed;
--
--struct err_notify_sccb {
--	struct sccb_header header;
--	struct err_notify_evbuf evbuf;
--} __packed;
--
- struct pci_cfg_sccb {
- 	struct sccb_header header;
- 	u8 atype;		/* adapter type */
+ static int graft_tree(struct mount *mnt, struct mount *p, struct mountpoint *mp)
 -- 
 2.39.5
 
