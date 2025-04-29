@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5B0AA17E4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4C8AA1290
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 856647B2B83
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B8A516EC69
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E3F2517AF;
-	Tue, 29 Apr 2025 17:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C102517A8;
+	Tue, 29 Apr 2025 16:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jv3xAmfk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xu5T4U2i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A771F2459C5;
-	Tue, 29 Apr 2025 17:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C3C251792;
+	Tue, 29 Apr 2025 16:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949152; cv=none; b=BPDX3luvgKzaMVs4h2UInMxu2pHzNpOpHiqmDjaddG1Q1Ah1AyO3LGcC6YTuZij/TIphO57TMFbBLV6xONeawZZXVmPx9z09n2B5nRJAs8i4t2qCTJRvL8gZIaQU1U8zaVcHJFc/K5mSJdaZvsFA1i0oZTC56Z7BWZIgwUZBqBI=
+	t=1745945596; cv=none; b=KWvpIEOwjsSM20IsnQzMJiRsz01ucorQH5oh6aldPVhXVdgg1YZFy6Zwj05SLTCHnZlKR2fvDzW1X+rL3FZbP7y7J/Wo3vP7homZhornkPub9VLfXW4ULC5jeNAH7BsxOyxLc2qt3JrrSbUDJYGiVsGJa4H7gJ1TzYe/nwqfeQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949152; c=relaxed/simple;
-	bh=2Bdrm9XwhJCvqcSFBZ651oKhFZq/wkmqa8XYPl96BbM=;
+	s=arc-20240116; t=1745945596; c=relaxed/simple;
+	bh=hm/Hyiw0lPgeGvfNghySOhCaiHLWwT9udt+FzRSupws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cFfk5H67r6/tFo9UbVR4P+47r1FqKkPxPw4V+rKDynx1kLmADX5qOp+dKHCnxoTLg7dWJCsBgnXZJxlujsoiYPcPUrYoBv3rzkzEO2AntkjHIYkZwUSZqUKIW78x0fw8KdDtYMuaGOZ8vbBwqZw5UGJ7/Kapx5D1O/fw0g4tDug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jv3xAmfk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0EAC4CEE3;
-	Tue, 29 Apr 2025 17:52:32 +0000 (UTC)
+	 MIME-Version; b=eqdY4Rp9E0OGEttXBL5bDfCCYg11RXM8UwzDrUJOc/8+MCBuQ99cDcUG+aiRybvchwEoimMwaIi21n302rvA9S5GL8EJ0cPUM13v3GuIkdVUVx5bcf1xSvgUnYWFE95Ey+ZKRcoiuDW2ykQpxFojIgNPF3FaWQKgAH5HfFkQb/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xu5T4U2i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0213BC4CEE3;
+	Tue, 29 Apr 2025 16:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949152;
-	bh=2Bdrm9XwhJCvqcSFBZ651oKhFZq/wkmqa8XYPl96BbM=;
+	s=korg; t=1745945595;
+	bh=hm/Hyiw0lPgeGvfNghySOhCaiHLWwT9udt+FzRSupws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jv3xAmfk6vMvErTKShXgqKS7PxOVKfMijqwIewEsN90+DpF37o2IhQ+TLir4lgC94
-	 fTRKndkaDyWaER4FslDWUsKUYWxxt4nZdrvKOufnY/Ur8cv6va/U349z07G6wTWkdm
-	 3YrbhcuLDMjNsUCy7nPgHdnvP2UEnBvuJQIr6cXI=
+	b=xu5T4U2iPiT4DTrvNQc/F8Ep9UzN3EsN8htYTJxDM7Htnfe8v/CFQQMKLlk2P3JqJ
+	 mxucWYHeXPAuH+C58FoYoU1cwvtJrMWJTiYMNlBzz5F3Kwk5mX/e/ZynIbjXoJDAcE
+	 zKrEbH1clbZRirUnXH0/ecasYML3vcChK5PlJ/Ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4dc041c686b7c816a71e@syzkaller.appspotmail.com,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	David Sauerwein <dssauerw@amazon.de>
-Subject: [PATCH 5.15 230/373] bpf: avoid holding freeze_mutex during mmap operation
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 166/179] qibfs: fix _another_ leak
 Date: Tue, 29 Apr 2025 18:41:47 +0200
-Message-ID: <20250429161132.605370924@linuxfoundation.org>
+Message-ID: <20250429161056.097108021@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit bc27c52eea189e8f7492d40739b7746d67b65beb upstream.
+[ Upstream commit bdb43af4fdb39f844ede401bdb1258f67a580a27 ]
 
-We use map->freeze_mutex to prevent races between map_freeze() and
-memory mapping BPF map contents with writable permissions. The way we
-naively do this means we'll hold freeze_mutex for entire duration of all
-the mm and VMA manipulations, which is completely unnecessary. This can
-potentially also lead to deadlocks, as reported by syzbot in [0].
+failure to allocate inode => leaked dentry...
 
-So, instead, hold freeze_mutex only during writeability checks, bump
-(proactively) "write active" count for the map, unlock the mutex and
-proceed with mmap logic. And only if something went wrong during mmap
-logic, then undo that "write active" counter increment.
+this one had been there since the initial merge; to be fair,
+if we are that far OOM, the odds of failing at that particular
+allocation are low...
 
-  [0] https://lore.kernel.org/bpf/678dcbc9.050a0220.303755.0066.GAE@google.com/
-
-Fixes: fc9702273e2e ("bpf: Add mmap() support for BPF_MAP_TYPE_ARRAY")
-Reported-by: syzbot+4dc041c686b7c816a71e@syzkaller.appspotmail.com
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20250129012246.1515826-2-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: David Sauerwein <dssauerw@amazon.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/syscall.c |   17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/infiniband/hw/qib/qib_fs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -654,7 +654,7 @@ static const struct vm_operations_struct
- static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
- {
- 	struct bpf_map *map = filp->private_data;
--	int err;
-+	int err = 0;
+diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
+index e336d778e076e..5ec67e3c2d03c 100644
+--- a/drivers/infiniband/hw/qib/qib_fs.c
++++ b/drivers/infiniband/hw/qib/qib_fs.c
+@@ -56,6 +56,7 @@ static int qibfs_mknod(struct inode *dir, struct dentry *dentry,
+ 	struct inode *inode = new_inode(dir->i_sb);
  
- 	if (!map->ops->map_mmap || map_value_has_spin_lock(map) ||
- 	    map_value_has_timer(map))
-@@ -679,7 +679,12 @@ static int bpf_map_mmap(struct file *fil
- 			err = -EACCES;
- 			goto out;
- 		}
-+		bpf_map_write_active_inc(map);
+ 	if (!inode) {
++		dput(dentry);
+ 		error = -EPERM;
+ 		goto bail;
  	}
-+out:
-+	mutex_unlock(&map->freeze_mutex);
-+	if (err)
-+		return err;
- 
- 	/* set default open/close callbacks */
- 	vma->vm_ops = &bpf_map_default_vmops;
-@@ -690,13 +695,11 @@ static int bpf_map_mmap(struct file *fil
- 		vma->vm_flags &= ~VM_MAYWRITE;
- 
- 	err = map->ops->map_mmap(map, vma);
--	if (err)
--		goto out;
-+	if (err) {
-+		if (vma->vm_flags & VM_WRITE)
-+			bpf_map_write_active_dec(map);
-+	}
- 
--	if (vma->vm_flags & VM_MAYWRITE)
--		bpf_map_write_active_inc(map);
--out:
--	mutex_unlock(&map->freeze_mutex);
- 	return err;
- }
- 
+-- 
+2.39.5
+
 
 
 
