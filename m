@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C05AA11EC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:47:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B7AAA148C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4EE74A55C0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBC0C1890C33
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495A724A06A;
-	Tue, 29 Apr 2025 16:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8401F248878;
+	Tue, 29 Apr 2025 17:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k41rzmgu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIDL2NLm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B46126C17;
-	Tue, 29 Apr 2025 16:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4067127453;
+	Tue, 29 Apr 2025 17:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945211; cv=none; b=eREIikuhLmyB7RIKsSXZUtIlb8tpCz1ejDsqVsDqnCRRFk2OEAL9omtJirsAIya8k4awMG1yy0KBTsX9eTMFQKerzGr6yss0thB8ZyTSuCDkAqHzI8ycPNzcYUHG4Zm9Dg+eqCcWU40F+gkhThss2shHmCEmN2t40iVQTpyBh+o=
+	t=1745946804; cv=none; b=rUQT+GOAwr7BoxrDHGKHqcX5q4cMn8/vqQMGEft67i/3QcjGx8pRNzSiePTSkqkJqPIXvOMMyKmyt6nKvCTcAcC7civBwdjutWb6qZ0ETY8cgkT6KzSmehAJa1hFwC9+zu6NvBJRlI+xPbA4cdRE4XxlYq1qdrG2ktTHs1I4bqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945211; c=relaxed/simple;
-	bh=9qDXfpdnl4y6iqaqBzgwRpEbwMoLEYA0ikcQAQ0/Fgs=;
+	s=arc-20240116; t=1745946804; c=relaxed/simple;
+	bh=MJ5iiKWvpUmZrDJyLOaf66S/XGBgGr5YOC2ERE50U1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QP+k+L0iYQZ7OpnpykxL9aVjas579uIG/FSOKVK27um89FqLT6dQRDlLQBRbGuxmy65+1gKbTBuhAhGfe2RJm7ukKuxrslG7k15Q8cnc7HCFN52K9+f4Ex1Mcjb5Ii2NFMibFu4p2WeYFWmHFuekghxR4BXZzJWJerJkUYVGNN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k41rzmgu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6595DC4CEE9;
-	Tue, 29 Apr 2025 16:46:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yrh+awmjwV695G5ebw6fpFhH3zgq6+AOjkEtZFXimDgQ5WBH5UVPxxZTKxlsxdxUxMgWhwUK4ZRFEyJrrcqoYRb2Tir+5NmrPOPwJxZrKDaaiJQjSPd6BletpN7l2E+gMqdjlvbwnJNnMaC5/0X90+Rc3CTw1A1Dw3fHh0nBhAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIDL2NLm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBAFC4CEE3;
+	Tue, 29 Apr 2025 17:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945210;
-	bh=9qDXfpdnl4y6iqaqBzgwRpEbwMoLEYA0ikcQAQ0/Fgs=;
+	s=korg; t=1745946804;
+	bh=MJ5iiKWvpUmZrDJyLOaf66S/XGBgGr5YOC2ERE50U1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k41rzmguxE0f3Fc/mCgid11pfjKEN4c44RsrtHbdwgQpXAoVmvNs6I8lOYu1qSgH4
-	 E8WsVtfguGsh5upvE3F5H/S4bHJAJbxfGo5KgSpqu741tBPDuanpbm0gG0oif4rdDO
-	 W0jct7wY1n51a9YMw5sQpFBsPw5aZ0MMz1yfAj6U=
+	b=fIDL2NLm/pzGr1/EJ2XJqEF+avKYpzi7xh6XrBo/AfSOgLcyaYImgFqnuHwjhqkZq
+	 oHwFFpiJd7LOChErwX3hVg2vM3GO/5Aa+thjUPH7aaIMk23GjtpPDg+hstgIMAWBCW
+	 Ah2lAIQ1IMmpVodVdYKDrjsSPNU4ZcAG+CC3bz/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 038/179] pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()
+	Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.10 075/286] i3c: Add NULL pointer check in i3c_master_queue_ibi()
 Date: Tue, 29 Apr 2025 18:39:39 +0200
-Message-ID: <20250429161050.955763819@linuxfoundation.org>
+Message-ID: <20250429161110.936982401@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>
 
-[ Upstream commit 7ca59947b5fcf94e7ea4029d1bd0f7c41500a161 ]
+commit bd496a44f041da9ef3afe14d1d6193d460424e91 upstream.
 
-With CONFIG_COMPILE_TEST && !CONFIG_HAVE_CLK, pwm_mediatek_config() has a
-divide-by-zero in the following line:
+The I3C master driver may receive an IBI from a target device that has not
+been probed yet. In such cases, the master calls `i3c_master_queue_ibi()`
+to queue an IBI work task, leading to "Unable to handle kernel read from
+unreadable memory" and resulting in a kernel panic.
 
-	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
+Typical IBI handling flow:
+1. The I3C master scans target devices and probes their respective drivers.
+2. The target device driver calls `i3c_device_request_ibi()` to enable IBI
+   and assigns `dev->ibi = ibi`.
+3. The I3C master receives an IBI from the target device and calls
+   `i3c_master_queue_ibi()` to queue the target device driver’s IBI
+   handler task.
 
-due to the fact that the !CONFIG_HAVE_CLK version of clk_get_rate()
-returns zero.
+However, since target device events are asynchronous to the I3C probe
+sequence, step 3 may occur before step 2, causing `dev->ibi` to be `NULL`,
+leading to a kernel panic.
 
-This is presumably just a theoretical problem: COMPILE_TEST overrides
-the dependency on RALINK which would select COMMON_CLK.  Regardless it's
-a good idea to check for the error explicitly to avoid divide-by-zero.
+Add a NULL pointer check in `i3c_master_queue_ibi()` to prevent accessing
+an uninitialized `dev->ibi`, ensuring stability.
 
-Fixes the following warning:
-
-  drivers/pwm/pwm-mediatek.o: warning: objtool: .text: unexpected end of section
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/fb56444939325cc173e752ba199abd7aeae3bf12.1742852847.git.jpoimboe@kernel.org
-[ukleinek: s/CONFIG_CLK/CONFIG_HAVE_CLK/]
-Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/9e78a0796acba3435553ed7db1c7965dcffa6215.1743501688.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3a379bbcea0af ("i3c: Add core I3C infrastructure")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/lkml/Z9gjGYudiYyl3bSe@lizhi-Precision-Tower-5810/
+Signed-off-by: Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250326123047.2797946-1-manjunatha.venkatesh@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-mediatek.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/i3c/master.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
-index 2bece32e62dad..b2a2e1f501682 100644
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -125,21 +125,25 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
- 	u32 clkdiv = 0, cnt_period, cnt_duty, reg_width = PWMDWIDTH,
- 	    reg_thres = PWMTHRES;
-+	unsigned long clk_rate;
- 	u64 resolution;
- 	int ret;
- 
- 	ret = pwm_mediatek_clk_enable(chip, pwm);
--
- 	if (ret < 0)
- 		return ret;
- 
-+	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
-+	if (!clk_rate)
-+		return -EINVAL;
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2282,6 +2282,9 @@ static void i3c_master_unregister_i3c_de
+  */
+ void i3c_master_queue_ibi(struct i3c_dev_desc *dev, struct i3c_ibi_slot *slot)
+ {
++	if (!dev->ibi || !slot)
++		return;
 +
- 	/* Make sure we use the bus clock and not the 26MHz clock */
- 	if (pc->soc->has_ck_26m_sel)
- 		writel(0, pc->regs + PWM_CK_26M_SEL);
- 
- 	/* Using resolution in picosecond gets accuracy higher */
- 	resolution = (u64)NSEC_PER_SEC * 1000;
--	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
-+	do_div(resolution, clk_rate);
- 
- 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
- 	while (cnt_period > 8191) {
--- 
-2.39.5
-
+ 	atomic_inc(&dev->ibi->pending_ibis);
+ 	queue_work(dev->common.master->wq, &slot->work);
+ }
 
 
 
