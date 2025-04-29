@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB80AA123C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1CCAA13E2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C26474A725A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 395A0982284
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14033247291;
-	Tue, 29 Apr 2025 16:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94625221719;
+	Tue, 29 Apr 2025 17:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZx1Abgr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbUAmaZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C716021772B;
-	Tue, 29 Apr 2025 16:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519881FE468;
+	Tue, 29 Apr 2025 17:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945432; cv=none; b=K0Bs+nbLk8LoWfKbOe7BXSbYrFrEA0OvLR1EiES2bJoHIOwYuniOhAsy0cBp6fZlmTumiKmQyU/44ZElj4rnAKFl4Q3v4M30yTt6IRtSkojGqQLlagWrZRnpdg8JWOAAAgK3Dxsygrp08DfvTJMH4eX1VXTZXWAFNxr9Qo1LV0s=
+	t=1745946301; cv=none; b=STqeh6poz4/pzFRZBf+30XY5Wrmq3whctLeA6uMVB1dzXj6MEfzU+4UnGvoTUaUyHuXJ/04Q94+UKNN7/gDZ15pbyGDv7xu/ETZO61E8sOFKkVoABh4iqrEBmpESWOM03yThJ2xaizeBS8OpH7M+dBBAT8EJZT8RaACfPNWfxfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945432; c=relaxed/simple;
-	bh=2qjodBvlacIlpCk+SQKswSe0qzhUq0g2QDJdjeCz71M=;
+	s=arc-20240116; t=1745946301; c=relaxed/simple;
+	bh=Ok+cYwS3Y++nGIcmqPWJSNKb8d5/vu92rVtz3wioRec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cf37kGU19vLnSxf/C8EzACihnC7z8r8g2HJjuwS+B72GxU5sqFMsZKVl2LjLkF2XNiMnm2GnatouTVumEY0rVAwiQjYZ4K0z7IMWOuOnrRaWSy/ghP3GU7u+xskJFCnUTbSbZA6QhRrhUmyb/CqWNiGBUp61mq4l760q1XGXf1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZx1Abgr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43940C4CEE3;
-	Tue, 29 Apr 2025 16:50:32 +0000 (UTC)
+	 MIME-Version; b=JGxoJTYgpSg6pHvLoc0VkzdIysO6n3OUWQKcsqzMs/r9LiK15irjv6pxomHBAI96C6I1wI58c5nYrD7vKU7EGxIA43xHQu67vwnh3JMZfbgR1oBxmB6x6LvgmSIQyBgzKdCUFWHq/u/5WEZMXwae3miL/5osiVuzsgRJiN6kPPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbUAmaZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DB0C4CEE3;
+	Tue, 29 Apr 2025 17:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945432;
-	bh=2qjodBvlacIlpCk+SQKswSe0qzhUq0g2QDJdjeCz71M=;
+	s=korg; t=1745946301;
+	bh=Ok+cYwS3Y++nGIcmqPWJSNKb8d5/vu92rVtz3wioRec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZx1AbgrheHUnNWIJLOqYwyvaUyinwdE5Y7VXGx+Zk9RER7gZaTZUgZDoyuHJqE57
-	 tqzxCODLgZezHnbnVwe+GkPsyLdRdB+zR/mlE9ruPbz4++ytkWLzZtBKCBGyRPSxTe
-	 hXD/uw8F6ZVW8A+20rx2SfaIpm2QvsI0p0izCgZU=
+	b=TbUAmaZS/9Y/3QWAac3Rh7wFxwdIcyrks4wa6iX26txeXJkxQrEhEPa6cT6MD0uvR
+	 1yr8eqBKD5GdAgOxRlNeB0pM/xZLLW7R0VgM5SvzjzRxRujjgF9lESHEfuA+94z2Q+
+	 jpZv5Z8g8XDtxgV7hwtlQhpi7AsleYY9jQ6zpM/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Rolf Eike Beer <eb@emlix.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Subject: [PATCH 5.4 110/179] drm/sti: remove duplicate object names
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 214/311] usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running
 Date: Tue, 29 Apr 2025 18:40:51 +0200
-Message-ID: <20250429161053.855852526@linuxfoundation.org>
+Message-ID: <20250429161129.762446884@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rolf Eike Beer <eb@emlix.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 7fb6afa9125fc111478615e24231943c4f76cc2e upstream.
+[ Upstream commit 28a76fcc4c85dd39633fb96edb643c91820133e3 ]
 
-When merging 2 drivers common object files were not deduplicated.
+Nothing prevents a broken HC from claiming that an endpoint is Running
+and repeatedly rejecting Stop Endpoint with Context State Error.
 
-Fixes: dcec16efd677 ("drm/sti: Build monolithic driver")
-Cc: stable@kernel.org
-Signed-off-by: Rolf Eike Beer <eb@emlix.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/1920148.tdWV9SEqCh@devpool47.emlix.com
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Avoid infinite retries and give back cancelled TDs.
+
+No such cases known so far, but HCs have bugs.
+
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250311154551.4035726-4-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sti/Makefile |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/usb/host/xhci-ring.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/sti/Makefile
-+++ b/drivers/gpu/drm/sti/Makefile
-@@ -7,8 +7,6 @@ sti-drm-y := \
- 	sti_compositor.o \
- 	sti_crtc.o \
- 	sti_plane.o \
--	sti_crtc.o \
--	sti_plane.o \
- 	sti_hdmi.o \
- 	sti_hdmi_tx3g4c28phy.o \
- 	sti_dvo.o \
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 6b20072424f0c..3a284c68e37a0 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1198,16 +1198,19 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
+ 			 * Stopped state, but it will soon change to Running.
+ 			 *
+ 			 * Assume this bug on unexpected Stop Endpoint failures.
+-			 * Keep retrying until the EP starts and stops again, on
+-			 * chips where this is known to help. Wait for 100ms.
++			 * Keep retrying until the EP starts and stops again.
+ 			 */
+-			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
+-				break;
+ 			fallthrough;
+ 		case EP_STATE_RUNNING:
+ 			/* Race, HW handled stop ep cmd before ep was running */
+ 			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
+ 					GET_EP_CTX_STATE(ep_ctx));
++			/*
++			 * Don't retry forever if we guessed wrong or a defective HC never starts
++			 * the EP or says 'Running' but fails the command. We must give back TDs.
++			 */
++			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
++				break;
+ 
+ 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
+ 			if (!command) {
+-- 
+2.39.5
+
 
 
 
