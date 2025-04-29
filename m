@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-138551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 918D1AA1899
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:02:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C192AA1875
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E3C54C83C8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A9C91BA1D42
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416CE25393F;
-	Tue, 29 Apr 2025 18:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669D1253328;
+	Tue, 29 Apr 2025 18:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNxxXmQZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrFGuMcn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CF08F77;
-	Tue, 29 Apr 2025 18:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2452319F424;
+	Tue, 29 Apr 2025 18:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949611; cv=none; b=OomKM3iqTfajw3coUriDihyWVLyuUe+jnfVts4z35c2D395ZLFIliadefxktSGRDAOYpcMykHmoGB8MtWMqC1QGbQHQ8e+N+mJIvbz25TVztdKY7lbYKwIIhp3Iv7hg8zMSPS+TxK86ouLcofCHDrQbx+zZsWCG0JMwq16NoExU=
+	t=1745949617; cv=none; b=NPFPT0RuDSIQl+ZNNbL50A3+5IJ9aKTusGgSLcaPTtZpp8jxERgijZY6k2II8p4KxKmrSDLyisEtbHxPWKuVTWhtHPckTKZB2stW/kZRdDLBkRY9khwlnCc6V7A6HoP2ye332NrdJcTV2D8vw+/I4H+t/HEUyW6IwC7eg6WKL1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949611; c=relaxed/simple;
-	bh=kiUGcCc4RnpgsZJYsVK1GzxW50DHRUDwjo5EB5agD/8=;
+	s=arc-20240116; t=1745949617; c=relaxed/simple;
+	bh=94cckmOd9kGqLoqH9Vesf+Bpffgk8RkmsWEp/t26nEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TFHUOSugAbHTIGncetU5DJNVi5edRXU6Mg/4aq0gci282mJByG9iZf5fw3XRzxfk3Kjvn23CFIuRTYiQX+TThIdHtvkRK+xgdvz+OGHlVtlsIPGHr4csYa/X952de89NM53PUdT/ytcM4dS0ZISNxYbUMTe0A7mVNcKY8Wqhdro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNxxXmQZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48973C4CEE3;
-	Tue, 29 Apr 2025 18:00:10 +0000 (UTC)
+	 MIME-Version; b=aN4k/mkbWr4rVkKlsZk0oSwnRsABqJYMsRbItxvA4LeZDcnPOjac+T9DxpjgQS1bCsO26VhA3RgChMJeFmd1S1g2BNu8QY68huqfptnyJdkaxnzMqQeHz9pBKpG1dPj0ZzrTBSNtkPEst0pG2gLVJ20NSv2o+lilMVfVesnUYkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrFGuMcn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87442C4CEE3;
+	Tue, 29 Apr 2025 18:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949610;
-	bh=kiUGcCc4RnpgsZJYsVK1GzxW50DHRUDwjo5EB5agD/8=;
+	s=korg; t=1745949617;
+	bh=94cckmOd9kGqLoqH9Vesf+Bpffgk8RkmsWEp/t26nEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNxxXmQZZQbKK7f5/8Tiewl7cWge/fEQ4zZYU1rBdP4nHz/LkfoCqrTGZ4VK3s9HZ
-	 AcwOhe4uhmW+/oCYXMeG1FRlP/fut9yL52z3R6AlCoEaNfO7raMTTeHsmSig8WtWLF
-	 ESUOEBvFeuPuU4G1rAZwHchHoJIvDeGXF2BW7PX4=
+	b=RrFGuMcn+DF00JvuJAkppsufy/a99KAbdMCeKJU0m8k1jLz0zqid7zpLLIFBllwhz
+	 9DigTOR1JhaZpfP5KDDsPALNVJbszehEJKM7A/Y1h+bqrh0CMLBr7sH+7uchvdmCs2
+	 MGCTm5ZUdYF5Rh62MTGqyB/5V53QtRhMjW3RymzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 346/373] nvme: re-read ANA log page after ns scan completes
-Date: Tue, 29 Apr 2025 18:43:43 +0200
-Message-ID: <20250429161137.365698527@linuxfoundation.org>
+Subject: [PATCH 5.15 347/373] objtool: Stop UNRET validation on UD2
+Date: Tue, 29 Apr 2025 18:43:44 +0200
+Message-ID: <20250429161137.405933972@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
 References: <20250429161123.119104857@linuxfoundation.org>
@@ -67,45 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 62baf70c327444338c34703c71aa8cc8e4189bd6 ]
+[ Upstream commit 9f9cc012c2cbac4833746a0182e06a8eec940d19 ]
 
-When scanning for new namespaces we might have missed an ANA AEN.
+In preparation for simplifying INSN_SYSCALL, make validate_unret()
+terminate control flow on UD2 just like validate_branch() already does.
 
-The NVMe base spec (NVMe Base Specification v2.1, Figure 151 'Asynchonous
-Event Information - Notice': Asymmetric Namespace Access Change) states:
-
-  A controller shall not send this even if an Attached Namespace
-  Attribute Changed asynchronous event [...] is sent for the same event.
-
-so we need to re-read the ANA log page after we rescanned the namespace
-list to update the ANA states of the new namespaces.
-
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/ce841269e7e28c8b7f32064464a9821034d724ff.1744095216.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/objtool/check.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 85d965fe8838c..68d4546dda3bb 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4225,6 +4225,11 @@ static void nvme_scan_work(struct work_struct *work)
- 	/* Requeue if we have missed AENs */
- 	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
- 		nvme_queue_scan(ctrl);
-+#ifdef CONFIG_NVME_MULTIPATH
-+	else
-+		/* Re-read the ANA log page to not miss updates */
-+		queue_work(nvme_wq, &ctrl->ana_work);
-+#endif
- }
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index c2596b1e1fb1e..d2366ec61edc4 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -3416,6 +3416,9 @@ static int validate_entry(struct objtool_file *file, struct instruction *insn)
+ 			break;
+ 		}
  
- /*
++		if (insn->dead_end)
++			return 0;
++
+ 		if (!next) {
+ 			WARN_FUNC("teh end!", insn->sec, insn->offset);
+ 			return -1;
 -- 
 2.39.5
 
