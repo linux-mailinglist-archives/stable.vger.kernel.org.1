@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809C5AA17C3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC9CAA147C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:16:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4BC69A0CF1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7247F164300
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A45E24E000;
-	Tue, 29 Apr 2025 17:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62B1248866;
+	Tue, 29 Apr 2025 17:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CODc163W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXiCGqj0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5C224DFF3;
-	Tue, 29 Apr 2025 17:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93555221DA7;
+	Tue, 29 Apr 2025 17:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948825; cv=none; b=UF/dalJCGfm5afSNzMJgZY/2Swgtp1b+nw4Nrh3CB8WwFVPAuIGErNAnbxwHj8umNuswX7tIn+CdiQBS0CYuKyvt3INhgT4+zwdBn82JJY9qeEXddBMinhK6W3+4ZUE9bnJIGwWxzQcgGxILCOeF0MmzNDrc+409R4HHHtv/EK8=
+	t=1745946869; cv=none; b=cBW35YoHiZMRL+02Wc4NGMVNcYiKoW6gnQTJaoCBlM7hZ/XsCkWLLgqe+UjkjuUpsLIdbeIq3futYzxOz2M0nkDgsJDdpv+fCfYb9cihx9bKekVd9s3fTBYo1PgWGCQgXq6GmTjyS5k8AWFiBrEb0HGOHFhfLZVJy5wVf26f4TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948825; c=relaxed/simple;
-	bh=viKWvZrBfKRWSkN8QdWpt4i1T1vqTcCZPqR9yuCyU5k=;
+	s=arc-20240116; t=1745946869; c=relaxed/simple;
+	bh=MhppqgZSy2wsMCtJftDtB41tnFq7+HC+WE4rrGPGkxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EWuCgq+u0y1MpiWhct77NKCu0BQLN7pyfH7C8mpMue4zSxvu/jt/OX6PvDSvxor5zykcls4RlSzTQVW43IZC4Eyz2bT+03YAjWSyERn9BjIsw0fjx5S0EZs5xe4hJTEgG+ps2FsGLpNYphfYM0966UPOdlsM5VPNN+Qns/yEUuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CODc163W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70164C4CEE3;
-	Tue, 29 Apr 2025 17:47:05 +0000 (UTC)
+	 MIME-Version; b=vDY1BNTgzyKon1g0Gi74qrNQmWO6KDG/2/cOhlt0zwQPab8vMoQOqT9uSskj+pJelH6KD1/FDB8iTaaojNLqezbpPW85gLFiaH23jY7Ho4byBakoYskEuzKrEr3hJA2KcjL6eAXbFUWnLuUt+vzlJcnUQMDjanxBU+vgMF89vrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXiCGqj0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE44C4CEE3;
+	Tue, 29 Apr 2025 17:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948825;
-	bh=viKWvZrBfKRWSkN8QdWpt4i1T1vqTcCZPqR9yuCyU5k=;
+	s=korg; t=1745946869;
+	bh=MhppqgZSy2wsMCtJftDtB41tnFq7+HC+WE4rrGPGkxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CODc163WMV66HfiLj6oF1Qm7OovpS14/ZKyqgipfQwtEHRlg/ZhhkVLoEDoxjAQJY
-	 4T8nddTUcQXr7D4aKwPwXZf8NS74JcMAr9v0H9tEN9dRcucIOEs0lfHX5oRtJSvBpQ
-	 gKxiHr+CzuqcHln16BLWzg3cfVrb/jKwrogUgMTc=
+	b=QXiCGqj0/552k+GuERzmykQrvQOYcD9KwJcLlaAA8WdtJM0MYEd7hTmopQ1bdJoVi
+	 m2aDYwF02t1TCp+TDjSmdEnZgI056bX348xT6x5Hr0WMyVpSOdk0lrtYAqIDao78qE
+	 wXlop76K1PLMbvypS5r3ab3s2QghsPUfK27K4RnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	John Garry <john.garry@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 120/373] scsi: hisi_sas: Start delivery hisi_sas_task_exec() directly
-Date: Tue, 29 Apr 2025 18:39:57 +0200
-Message-ID: <20250429161128.111936407@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 5.10 094/286] of/irq: Fix device node refcount leakages in of_irq_init()
+Date: Tue, 29 Apr 2025 18:39:58 +0200
+Message-ID: <20250429161111.721925064@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.garry@huawei.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 0e4620856b89335426a17904933a92346ee4599d ]
+commit 708124d9e6e7ac5ebf927830760679136b23fdf0 upstream.
 
-Currently we start delivery of commands to the DQ after returning from
-hisi_sas_task_exec() with success.
+of_irq_init() will leak interrupt controller device node refcounts
+in two places as explained below:
 
-Let's just start delivery directly in that function without having to check
-if some local variable is set.
+1) Leak refcounts of both @desc->dev and @desc->interrupt_parent when
+   suffers @desc->irq_init_cb() failure.
+2) Leak refcount of @desc->interrupt_parent when cleans up list
+   @intc_desc_list in the end.
 
-Link: https://lore.kernel.org/r/1639579061-179473-2-git-send-email-john.garry@huawei.com
-Reviewed-by: Xiang Chen <chenxiang66@hisilicon.com>
-Signed-off-by: John Garry <john.garry@huawei.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 8aa580cd9284 ("scsi: hisi_sas: Enable force phy when SATA disk directly connected")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Refcounts of both @desc->dev and @desc->interrupt_parent were got in
+the first loop, but of_irq_init() does not put them before kfree(@desc)
+in places mentioned above, so causes refcount leakages.
+
+Fix by putting refcounts involved before kfree(@desc).
+
+Fixes: 8363ccb917c6 ("of/irq: add missing of_node_put")
+Fixes: c71a54b08201 ("of/irq: introduce of_irq_init")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-7-93e3a2659aa7@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/of/irq.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index 530f61df109a3..ff6b6868cd955 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -405,8 +405,7 @@ static int hisi_sas_dif_dma_map(struct hisi_hba *hisi_hba,
- 
- static int hisi_sas_task_prep(struct sas_task *task,
- 			      struct hisi_sas_dq **dq_pointer,
--			      bool is_tmf, struct hisi_sas_tmf_task *tmf,
--			      int *pass)
-+			      bool is_tmf, struct hisi_sas_tmf_task *tmf)
- {
- 	struct domain_device *device = task->dev;
- 	struct hisi_hba *hisi_hba = dev_to_hisi_hba(device);
-@@ -544,9 +543,12 @@ static int hisi_sas_task_prep(struct sas_task *task,
- 	task->task_state_flags |= SAS_TASK_AT_INITIATOR;
- 	spin_unlock_irqrestore(&task->task_state_lock, flags);
- 
--	++(*pass);
- 	WRITE_ONCE(slot->ready, 1);
- 
-+	spin_lock(&dq->lock);
-+	hisi_hba->hw->start_delivery(dq);
-+	spin_unlock(&dq->lock);
-+
- 	return 0;
- 
- err_out_dif_dma_unmap:
-@@ -564,7 +566,6 @@ static int hisi_sas_task_exec(struct sas_task *task, gfp_t gfp_flags,
- 			      bool is_tmf, struct hisi_sas_tmf_task *tmf)
- {
- 	u32 rc;
--	u32 pass = 0;
- 	struct hisi_hba *hisi_hba;
- 	struct device *dev;
- 	struct domain_device *device = task->dev;
-@@ -597,16 +598,10 @@ static int hisi_sas_task_exec(struct sas_task *task, gfp_t gfp_flags,
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -555,6 +555,8 @@ void __init of_irq_init(const struct of_
+ 						desc->interrupt_parent);
+ 			if (ret) {
+ 				of_node_clear_flag(desc->dev, OF_POPULATED);
++				of_node_put(desc->interrupt_parent);
++				of_node_put(desc->dev);
+ 				kfree(desc);
+ 				continue;
+ 			}
+@@ -585,6 +587,7 @@ void __init of_irq_init(const struct of_
+ err:
+ 	list_for_each_entry_safe(desc, temp_desc, &intc_desc_list, list) {
+ 		list_del(&desc->list);
++		of_node_put(desc->interrupt_parent);
+ 		of_node_put(desc->dev);
+ 		kfree(desc);
  	}
- 
- 	/* protect task_prep and start_delivery sequence */
--	rc = hisi_sas_task_prep(task, &dq, is_tmf, tmf, &pass);
-+	rc = hisi_sas_task_prep(task, &dq, is_tmf, tmf);
- 	if (rc)
- 		dev_err(dev, "task exec: failed[%d]!\n", rc);
- 
--	if (likely(pass)) {
--		spin_lock(&dq->lock);
--		hisi_hba->hw->start_delivery(dq);
--		spin_unlock(&dq->lock);
--	}
--
- 	return rc;
- }
- 
--- 
-2.39.5
-
 
 
 
