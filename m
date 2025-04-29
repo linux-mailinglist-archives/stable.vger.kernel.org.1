@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844AEAA1591
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:29:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB14DAA1459
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57E5F1BC483D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8F0E4C306D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB952451C8;
-	Tue, 29 Apr 2025 17:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AF1221DA7;
+	Tue, 29 Apr 2025 17:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0D9nDzfj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPQfpSKM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07FB24503E;
-	Tue, 29 Apr 2025 17:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6371927453;
+	Tue, 29 Apr 2025 17:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947486; cv=none; b=tVCb1//uRJ1B/NBmy+i5cOh49Q8dhLLr1YbY4rgBPr3A6eNj4i15mxDWEbAoab+CQg1K3QG8TyM06r5Ye2QZbnPVEFGcdKWEjcPVYP7cR4zUN+71jArrzUKATUO89q1HMnGIANlJZA1CqkTdbTMYN70VcrlEfyBlcCTuhhecGSI=
+	t=1745946784; cv=none; b=JftLAt9EtEFCoBIVBk6hGbhNaTeriSyna6UcI8RDSN0YowEVl3KR0XzalVOOFRpfI5vyUF5BECTMtOMW2fiArFKVlWWmnrJRUelibd/n6+6ftZei7jBFJZprPlarnIaU5P25bemNtXFuCyfDAUNKHRD12QsR37DlBiK3aKtOWFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947486; c=relaxed/simple;
-	bh=j0hL/FUGLJH8Xr8dje9n/KIbQL+EdafUc0Ku5esgKoY=;
+	s=arc-20240116; t=1745946784; c=relaxed/simple;
+	bh=i2O2S8T4NYQw51QWnlLJHx33v519ZfC4ns6MsKy9WTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEAM5jREUHPQ23ztHgGfl79Z7/naMww8ahVtAGnk9ioPIE8SN0yQyJzS5HVVnKxuWUM05uTXkAJRaI8EMHyF3D+96Q/3p786dUWz2XUPId9U9WV5jRzYgsvzx9eNQNuKXiLfTqNqgnNtmp/1Nw0ytR68uYaf3pTyAd541CLyrcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0D9nDzfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477BCC4CEE3;
-	Tue, 29 Apr 2025 17:24:46 +0000 (UTC)
+	 MIME-Version; b=tMOrAnuQo0ClDay3z2BIvnAZIWT9Ihy9CgtHQS523HMfMKl6kcOldGxduFCWKoRQzDrM3cPW94B7Z2JSoHlSnItMSou0YJlrK/1i9v9SL31mKPy3ANVxJC6eoiHzonWafwvT3c+/h1GvwrWQj59Aa9ePG/qR3NwxcDTOxXvQhm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPQfpSKM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BBCC4CEE3;
+	Tue, 29 Apr 2025 17:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947486;
-	bh=j0hL/FUGLJH8Xr8dje9n/KIbQL+EdafUc0Ku5esgKoY=;
+	s=korg; t=1745946783;
+	bh=i2O2S8T4NYQw51QWnlLJHx33v519ZfC4ns6MsKy9WTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0D9nDzfjIRuVnZPP22SHj2/rMIIoCZ2TlgQWZnR0VyvSGd9bMOPfFPi0iPqI0g0kE
-	 8DC6sOb99yu8cGXqIptoQA4tfbQVYmYTsznkjirJN9VAE7/fLWiufbJqFKNCPz0g9I
-	 fzPFnqNFfP7SW1cqXS9iTG6jOhfp60wHCKxA8hxM=
+	b=CPQfpSKMSI5nLd6D/FKw5znPAS8aA1z8A4/BLNra3PWvMc1m43U7PwgR+/K5juPGy
+	 WSXRWuTmc9h3aYGXP4Ksg6r8pW/h0ZOQDJ/2x5sMzvifKYOo6bdAw9BR1U7AKopnpI
+	 3kDfuoE8aEs4CYHK+Y+3kuBrnryeS+SFrrGp1RCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Avadhut Naik <avadhut.naik@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/280] tracing: Add __print_dynamic_array() helper
+Subject: [PATCH 5.10 039/286] drm/bridge: panel: forbid initializing a panel with unknown connector type
 Date: Tue, 29 Apr 2025 18:39:03 +0200
-Message-ID: <20250429161115.113574699@linuxfoundation.org>
+Message-ID: <20250429161109.471739436@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit e52750fb1458ae9ea5860a08ed7a149185bc5b97 ]
+[ Upstream commit b296955b3a740ecc8b3b08e34fd64f1ceabb8fb4 ]
 
-When printing a dynamic array in a trace event, the method is rather ugly.
-It has the format of:
+Having an DRM_MODE_CONNECTOR_Unknown connector type is considered bad, and
+drm_panel_bridge_add_typed() and derivatives are deprecated for this.
 
-  __print_array(__get_dynamic_array(array),
-            __get_dynmaic_array_len(array) / el_size, el_size)
+drm_panel_init() won't prevent initializing a panel with a
+DRM_MODE_CONNECTOR_Unknown connector type. Luckily there are no in-tree
+users doing it, so take this as an opportinuty to document a valid
+connector type must be passed.
 
-Since dynamic arrays are known to the tracing infrastructure, create a
-helper macro that does the above for you.
+Returning an error if this rule is violated is not possible because
+drm_panel_init() is a void function. Add at least a warning to make any
+violations noticeable, especially to non-upstream drivers.
 
-  __print_dynamic_array(array, el_size)
-
-Which would expand to the same output.
-
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Link: https://lore.kernel.org/r/20241022194158.110073-3-avadhut.naik@amd.com
-Stable-dep-of: ea8d7647f9dd ("tracing: Verify event formats that have "%*p.."")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250214-drm-assorted-cleanups-v7-5-88ca5827d7af@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/stages/stage3_trace_output.h | 8 ++++++++
- include/trace/stages/stage7_class_define.h | 1 +
- samples/trace_events/trace-events-sample.h | 7 ++++++-
- 3 files changed, 15 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_panel.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/trace/stages/stage3_trace_output.h b/include/trace/stages/stage3_trace_output.h
-index c1fb1355d3094..1e7b0bef95f52 100644
---- a/include/trace/stages/stage3_trace_output.h
-+++ b/include/trace/stages/stage3_trace_output.h
-@@ -119,6 +119,14 @@
- 		trace_print_array_seq(p, array, count, el_size);	\
- 	})
- 
-+#undef __print_dynamic_array
-+#define __print_dynamic_array(array, el_size)				\
-+	({								\
-+		__print_array(__get_dynamic_array(array),		\
-+			      __get_dynamic_array_len(array) / (el_size), \
-+			      (el_size));				\
-+	})
+diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
+index 7fd3de89ed079..acd29b4f43f84 100644
+--- a/drivers/gpu/drm/drm_panel.c
++++ b/drivers/gpu/drm/drm_panel.c
+@@ -49,7 +49,7 @@ static LIST_HEAD(panel_list);
+  * @dev: parent device of the panel
+  * @funcs: panel operations
+  * @connector_type: the connector type (DRM_MODE_CONNECTOR_*) corresponding to
+- *	the panel interface
++ *	the panel interface (must NOT be DRM_MODE_CONNECTOR_Unknown)
+  *
+  * Initialize the panel structure for subsequent registration with
+  * drm_panel_add().
+@@ -57,6 +57,9 @@ static LIST_HEAD(panel_list);
+ void drm_panel_init(struct drm_panel *panel, struct device *dev,
+ 		    const struct drm_panel_funcs *funcs, int connector_type)
+ {
++	if (connector_type == DRM_MODE_CONNECTOR_Unknown)
++		DRM_WARN("%s: %s: a valid connector type is required!\n", __func__, dev_name(dev));
 +
- #undef __print_hex_dump
- #define __print_hex_dump(prefix_str, prefix_type,			\
- 			 rowsize, groupsize, buf, len, ascii)		\
-diff --git a/include/trace/stages/stage7_class_define.h b/include/trace/stages/stage7_class_define.h
-index bcb960d16fc0e..fcd564a590f43 100644
---- a/include/trace/stages/stage7_class_define.h
-+++ b/include/trace/stages/stage7_class_define.h
-@@ -22,6 +22,7 @@
- #undef __get_rel_cpumask
- #undef __get_rel_sockaddr
- #undef __print_array
-+#undef __print_dynamic_array
- #undef __print_hex_dump
- #undef __get_buf
- 
-diff --git a/samples/trace_events/trace-events-sample.h b/samples/trace_events/trace-events-sample.h
-index 55f9a3da92d5f..999f78d380aee 100644
---- a/samples/trace_events/trace-events-sample.h
-+++ b/samples/trace_events/trace-events-sample.h
-@@ -319,7 +319,7 @@ TRACE_EVENT(foo_bar,
- 		__assign_cpumask(cpum, cpumask_bits(mask));
- 	),
- 
--	TP_printk("foo %s %d %s %s %s %s %s (%s) (%s) %s", __entry->foo, __entry->bar,
-+	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s", __entry->foo, __entry->bar,
- 
- /*
-  * Notice here the use of some helper functions. This includes:
-@@ -363,6 +363,11 @@ TRACE_EVENT(foo_bar,
- 		  __print_array(__get_dynamic_array(list),
- 				__get_dynamic_array_len(list) / sizeof(int),
- 				sizeof(int)),
-+
-+/*     A shortcut is to use __print_dynamic_array for dynamic arrays */
-+
-+		  __print_dynamic_array(list, sizeof(int)),
-+
- 		  __get_str(str), __get_str(lstr),
- 		  __get_bitmask(cpus), __get_cpumask(cpum),
- 		  __get_str(vstr))
+ 	INIT_LIST_HEAD(&panel->list);
+ 	panel->dev = dev;
+ 	panel->funcs = funcs;
 -- 
 2.39.5
 
