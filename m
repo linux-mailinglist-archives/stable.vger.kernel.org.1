@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B3EAA1231
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C04AA14C3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:20:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B17E1BA2846
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10B9518896CA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581B9247298;
-	Tue, 29 Apr 2025 16:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E95252284;
+	Tue, 29 Apr 2025 17:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SW7AWOOy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/6xoUOL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13059126BF7;
-	Tue, 29 Apr 2025 16:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1265B248878;
+	Tue, 29 Apr 2025 17:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945412; cv=none; b=ndvNcdonlv4lNJYjk9yt1VGq/u7oqwFvf8NvxPCIkXMT6L9u9vP7kRlr/LhljYs9ucs48lWKOqCSM4mQE8trZrVusOaRcEypd1iunlHtio+87kQQFGA1OSeuv81RW0vwKiABiJQFQcZbIshOfiCPfD3zGfLQDwBu90yrYdvmF68=
+	t=1745946954; cv=none; b=MRURzJy+539L7BSNLGK59KZlpGEjOh7fCH8aEsnhJxLOlQNILG9qFQyY56oWFfmVD/OGlV2hOV2m4nwvnEXdB0T/aJ4+UpSQ23dH1OxPv+qYE1ok3dr5gACEsVNUchEE7t1ymO68PXUKNmTiLohEN15T08VzEHv6yaop+5S77/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945412; c=relaxed/simple;
-	bh=G6ulf52i+UGO8vrquq55V5U09biQjSKzChapjHkd8Ac=;
+	s=arc-20240116; t=1745946954; c=relaxed/simple;
+	bh=/BR4imJ0yZHN/QzR6UXOFWA9ZZFR3/hw7Z08lsJoK2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eis+VZLwrAypZc7v1+3kRfGyRoBoKmtzEeFxv/Ky6DXBtkGYY3Bj/PIrMZzH9Q/9ObIf2UK2s0koDuBKuuLdQPXyHuHbYfuY55O0xxRwn0R6iCeK4w8xTbu3Qm1XL4TXCc9QwJrTrY5gJIFrcPC3Qk2S+VvWe2y8CoI9y6qbEZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SW7AWOOy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BD8C4CEE3;
-	Tue, 29 Apr 2025 16:50:11 +0000 (UTC)
+	 MIME-Version; b=FRYEX6YeFZBvghq9Y36X3iKcquQSLJyawLDZJNhHLRjq09JbJCw9Ro8mawozpF+EPfZqyAAFqJ0u13gaiDxnKRQf+rkaz/Z6MZIGnQ4w/GGQAwDF3TIba0QBDiH7RJUyIQ8yCj11wYztVErQuajNCd8yFuuVjziGkfkba/Ca54w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/6xoUOL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DF8C4CEE3;
+	Tue, 29 Apr 2025 17:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945412;
-	bh=G6ulf52i+UGO8vrquq55V5U09biQjSKzChapjHkd8Ac=;
+	s=korg; t=1745946954;
+	bh=/BR4imJ0yZHN/QzR6UXOFWA9ZZFR3/hw7Z08lsJoK2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SW7AWOOycSPiVLF+aDnuBFxS+zSmDB+ZK1K0uaJzOI3WRKhqhp9WpJHqOaX+u1gfm
-	 H4V95ENIhBgJhnbKevak3IzEIFm7tbtt28mGXax/xhxPwvFNqXJADM+iyF2ABih7yv
-	 z7uHWYi6jtiuxgpT8zvzbOr6g2jTJR+6Qwn+mQuc=
+	b=m/6xoUOLMFII2dT2a9HcG57qRvXREAN38bXIPxlCUPq0ryooXnxMyFzrqDOD6iHMb
+	 uPFk4GszwRlHMC0jtzowfURIaM5Yqe7sgLXq3gFBcOqtFYQDJsxPCCPv3zPbB5qvei
+	 6qU0/7fA2G2mrwEtle/MX1wmam3sIv6aHXYLMXI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Michael Nemanov <michael.nemanov@ti.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 086/179] wifi: wl1251: fix memory leak in wl1251_tx_work
+Subject: [PATCH 5.10 123/286] nfs: move nfs_fhandle_hash to common include file
 Date: Tue, 29 Apr 2025 18:40:27 +0200
-Message-ID: <20250429161052.881697150@linuxfoundation.org>
+Message-ID: <20250429161112.914965431@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit a0f0dc96de03ffeefc2a177b7f8acde565cb77f4 ]
+[ Upstream commit e59fb6749ed833deee5b3cfd7e89925296d41f49 ]
 
-The skb dequeued from tx_queue is lost when wl1251_ps_elp_wakeup fails
-with a -ETIMEDOUT error. Fix that by queueing the skb back to tx_queue.
+lockd needs to be able to hash filehandles for tracepoints. Move the
+nfs_fhandle_hash() helper to a common nfs include file.
 
-Fixes: c5483b719363 ("wl12xx: check if elp wakeup failed")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Michael Nemanov <michael.nemanov@ti.com>
-Link: https://patch.msgid.link/20250330104532.44935-1-abdun.nihaal@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: cd35b6cb4664 ("nfs: add missing selections of CONFIG_CRC32")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wl1251/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/nfs/internal.h   | 15 ---------------
+ include/linux/nfs.h | 20 ++++++++++++++++++++
+ 2 files changed, 20 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/ti/wl1251/tx.c b/drivers/net/wireless/ti/wl1251/tx.c
-index 98cd39619d579..5771f61392efb 100644
---- a/drivers/net/wireless/ti/wl1251/tx.c
-+++ b/drivers/net/wireless/ti/wl1251/tx.c
-@@ -342,8 +342,10 @@ void wl1251_tx_work(struct work_struct *work)
- 	while ((skb = skb_dequeue(&wl->tx_queue))) {
- 		if (!woken_up) {
- 			ret = wl1251_ps_elp_wakeup(wl);
--			if (ret < 0)
-+			if (ret < 0) {
-+				skb_queue_head(&wl->tx_queue, skb);
- 				goto out;
-+			}
- 			woken_up = true;
- 		}
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index 394a82d470d55..05e807a0ba225 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -776,27 +776,12 @@ u64 nfs_timespec_to_change_attr(const struct timespec64 *ts)
+ }
  
+ #ifdef CONFIG_CRC32
+-/**
+- * nfs_fhandle_hash - calculate the crc32 hash for the filehandle
+- * @fh - pointer to filehandle
+- *
+- * returns a crc32 hash for the filehandle that is compatible with
+- * the one displayed by "wireshark".
+- */
+-static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
+-{
+-	return ~crc32_le(0xFFFFFFFF, &fh->data[0], fh->size);
+-}
+ static inline u32 nfs_stateid_hash(const nfs4_stateid *stateid)
+ {
+ 	return ~crc32_le(0xFFFFFFFF, &stateid->other[0],
+ 				NFS4_STATEID_OTHER_SIZE);
+ }
+ #else
+-static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
+-{
+-	return 0;
+-}
+ static inline u32 nfs_stateid_hash(nfs4_stateid *stateid)
+ {
+ 	return 0;
+diff --git a/include/linux/nfs.h b/include/linux/nfs.h
+index b06375e88e589..ceb70a926b95e 100644
+--- a/include/linux/nfs.h
++++ b/include/linux/nfs.h
+@@ -10,6 +10,7 @@
+ 
+ #include <linux/sunrpc/msg_prot.h>
+ #include <linux/string.h>
++#include <linux/crc32.h>
+ #include <uapi/linux/nfs.h>
+ 
+ /*
+@@ -44,4 +45,23 @@ enum nfs3_stable_how {
+ 	/* used by direct.c to mark verf as invalid */
+ 	NFS_INVALID_STABLE_HOW = -1
+ };
++
++#ifdef CONFIG_CRC32
++/**
++ * nfs_fhandle_hash - calculate the crc32 hash for the filehandle
++ * @fh - pointer to filehandle
++ *
++ * returns a crc32 hash for the filehandle that is compatible with
++ * the one displayed by "wireshark".
++ */
++static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
++{
++	return ~crc32_le(0xFFFFFFFF, &fh->data[0], fh->size);
++}
++#else /* CONFIG_CRC32 */
++static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
++{
++	return 0;
++}
++#endif /* CONFIG_CRC32 */
+ #endif /* _LINUX_NFS_H */
 -- 
 2.39.5
 
