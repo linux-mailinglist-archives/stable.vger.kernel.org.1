@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-138083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3080AA167D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4488AA1537
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:24:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2120B1887C3A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:35:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E080A7A4FDE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27563242D94;
-	Tue, 29 Apr 2025 17:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAAAD254857;
+	Tue, 29 Apr 2025 17:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQuBjfc6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hpORfH7v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF668215F7C;
-	Tue, 29 Apr 2025 17:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671632517AB;
+	Tue, 29 Apr 2025 17:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948089; cv=none; b=tRLRi+I7mOw1rm59uGthRFPhxm7dFGNT7a+mCoSh65v+cZbgc4NvyjplT1l5/KP0UMePG+a5GSX9mjBbNsVTHV4pUNEdX7UC+RizlrU9lSpWy9eix6IjKcaA/HIgES9FQWQY1+Qy6lRrsTpchW90igRZgtJ7zaZkmgnr0eGwaEc=
+	t=1745947390; cv=none; b=Z9WsMy49/h/mZgPEkCYBA23dHe7SMsaFFy+ICCIPE/fXFOePbID0A/QnVLtFzRtIzqxlQfibg7X0QuiuowHQeqeTqGzZqN0/whoHGEFxglQ9Fe5n1WC2/WXsoPheTKmDHddYdF+WR9dLNXXaL88VsVOO4WUAOLohIFyEfMRyrT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948089; c=relaxed/simple;
-	bh=ctF9xn6qFbCHEJFmDYt3vUe+kW5WXbYkVxZRMd1D1hs=;
+	s=arc-20240116; t=1745947390; c=relaxed/simple;
+	bh=qLkos9oujeK89+QgcbIVNVN6KicJpS8xlQKgvcUcQl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RHEkrrkQctyHbfajELEUd/g4Hn0mgw8ytYE9y6bYvJQ4kyc1LOOGMZWAluzVf2lhTPI3pdOExpSmXtkH9PkUsT8INzjR6K6qRwj4gHFUBzb60wIfvHd3xI31s+lpo/zias/RvJVyWLQy/w2f9nITeUjaR12zy4yt/oROMxU0kUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQuBjfc6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE999C4CEE9;
-	Tue, 29 Apr 2025 17:34:48 +0000 (UTC)
+	 MIME-Version; b=BaIioiS+XIPNqKw4ifPaqctXKGoTL1zJDGTGUxoyvBrmsy+MCqcqAIB/zSF2wlBVj1DVX1+U3A6KrYYyNE+6q4C9DiBKlRlbA7QmnRN2mFnDgGm4n+13ItEykqKjlig12DHwisxBuRNcLDUY9Hp9miSCUCaVdhEMMy/5VU3PP4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hpORfH7v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96A0C4CEE3;
+	Tue, 29 Apr 2025 17:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948089;
-	bh=ctF9xn6qFbCHEJFmDYt3vUe+kW5WXbYkVxZRMd1D1hs=;
+	s=korg; t=1745947390;
+	bh=qLkos9oujeK89+QgcbIVNVN6KicJpS8xlQKgvcUcQl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQuBjfc6cZoZlLdg9xf7vvUyew9ug4Refm+UvwvTpHiLSUDJkmWXCB4s97FW0QF5x
-	 6mXnHjVAnaRgUy68w8m6vlZKx9TZWfw4I04uS20hjHbHI+Mp3ON57Yh44rgKuT/0Bb
-	 orxVN1AyE1Iy2CIuoiJiYdZFq3DFleGoFovpjxho=
+	b=hpORfH7v/dLPuQmJKZDZrBwb0szhTIW2BB7OQJ/qTQoKjMY2nYdzkEUuJy3ucuAjN
+	 1k/R+Hi7VkcKkv3kso5jZOB/hUXnjT+jD62y5jCpuTnf3IvxvCKz5oivXFMqEkoUxJ
+	 Waw2Xkf8ozgLlvWXaJQ19gunmL93aOu+aCmuLK8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 187/280] objtool: Silence more KCOV warnings
-Date: Tue, 29 Apr 2025 18:42:08 +0200
-Message-ID: <20250429161122.758862599@linuxfoundation.org>
+Subject: [PATCH 5.10 225/286] PCI: Fix reference leak in pci_register_host_bridge()
+Date: Tue, 29 Apr 2025 18:42:09 +0200
+Message-ID: <20250429161117.196644688@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 6b023c7842048c4bbeede802f3cf36b96c7a8b25 ]
+[ Upstream commit 804443c1f27883926de94c849d91f5b7d7d696e9 ]
 
-In the past there were issues with KCOV triggering unreachable
-instruction warnings, which is why unreachable warnings are now disabled
-with CONFIG_KCOV.
+If device_register() fails, call put_device() to give up the reference to
+avoid a memory leak, per the comment at device_register().
 
-Now some new KCOV warnings are showing up with GCC 14:
+Found by code review.
 
-  vmlinux.o: warning: objtool: cpuset_write_resmask() falls through to next function cpuset_update_active_cpus.cold()
-  drivers/usb/core/driver.o: error: objtool: usb_deregister() falls through to next function usb_match_device()
-  sound/soc/codecs/snd-soc-wcd934x.o: warning: objtool: .text.wcd934x_slim_irq_handler: unexpected end of section
-
-All are caused by GCC KCOV not finishing an optimization, leaving behind
-a never-taken conditional branch to a basic block which falls through to
-the next function (or end of section).
-
-At a high level this is similar to the unreachable warnings mentioned
-above, in that KCOV isn't fully removing dead code.  Treat it the same
-way by adding these to the list of warnings to ignore with CONFIG_KCOV.
-
-Reported-by: Ingo Molnar <mingo@kernel.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/66a61a0b65d74e072d3dc02384e395edb2adc3c5.1742852846.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/Z9iTsI09AEBlxlHC@gmail.com
-Closes: https://lore.kernel.org/oe-kbuild-all/202503180044.oH9gyPeg-lkp@intel.com/
+Link: https://lore.kernel.org/r/20250225021440.3130264-1-make24@iscas.ac.cn
+Fixes: 37d6a0a6f470 ("PCI: Add pci_register_host_bridge() interface")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+[bhelgaas: squash Dan Carpenter's double free fix from
+https://lore.kernel.org/r/db806a6c-a91b-4e5a-a84b-6b7e01bdac85@stanley.mountain]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pci/probe.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index ce3ea0c2de042..ff7e0622e9112 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3634,6 +3634,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 			    !strncmp(func->name, "__pfx_", 6))
- 				return 0;
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 012ca242bedf4..7f3d10957eca7 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -883,6 +883,7 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
+ 	resource_size_t offset, next_offset;
+ 	LIST_HEAD(resources);
+ 	struct resource *res, *next_res;
++	bool bus_registered = false;
+ 	char addr[64], *fmt;
+ 	const char *name;
+ 	int err;
+@@ -944,6 +945,7 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
+ 	name = dev_name(&bus->dev);
  
-+			if (file->ignore_unreachables)
-+				return 0;
+ 	err = device_register(&bus->dev);
++	bus_registered = true;
+ 	if (err)
+ 		goto unregister;
+ 
+@@ -1024,12 +1026,15 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
+ unregister:
+ 	put_device(&bridge->dev);
+ 	device_del(&bridge->dev);
+-
+ free:
+ #ifdef CONFIG_PCI_DOMAINS_GENERIC
+ 	pci_bus_release_domain_nr(bus, parent);
+ #endif
+-	kfree(bus);
++	if (bus_registered)
++		put_device(&bus->dev);
++	else
++		kfree(bus);
 +
- 			WARN("%s() falls through to next function %s()",
- 			     func->name, insn_func(insn)->name);
- 			return 1;
-@@ -3853,6 +3856,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 		if (!next_insn) {
- 			if (state.cfi.cfa.base == CFI_UNDEFINED)
- 				return 0;
-+			if (file->ignore_unreachables)
-+				return 0;
-+
- 			WARN("%s: unexpected end of section", sec->name);
- 			return 1;
- 		}
+ 	return err;
+ }
+ 
 -- 
 2.39.5
 
