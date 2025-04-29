@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-138466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92269AA1820
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:56:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9FAAA158E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B76747B6E92
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B183179CCD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D1C2522A2;
-	Tue, 29 Apr 2025 17:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FBA2517A6;
+	Tue, 29 Apr 2025 17:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heha3a+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWA6jYCS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72C0216605;
-	Tue, 29 Apr 2025 17:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62D52459C9;
+	Tue, 29 Apr 2025 17:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949342; cv=none; b=nG++ZFJCqEd9XbZFxw5UG+unRdg0VgwUyt1eoriCieSQzCIOYeQT/idceQMP2nZCoDzgeYzcTXF/JWI98AQD8oO5WC0nhO3Hy5hnnnw9dSjAMmQHot1rWz6svKt091SBaRICtQ9ytGFvo+5afbC8QFTcvdweK0tsoPesIOp0FnY=
+	t=1745947462; cv=none; b=J1i+yxJbSARxoNrrPsgpIrWctdIUrVGm6IilkdbWsXk4ckZqxPPMz9Wspm69RCUtaFat8Xqyb7S5qc40jn899wcsvJuqZVvg4mVOGGzY1o7QKNIw8b6QnS32PVTftMOamKAFWnPp6bwvUXgdDTqb+95rPIH1qiOEab6F49RTZ+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949342; c=relaxed/simple;
-	bh=dlbDkJStd0pFPbsw9Ru68B5YkH9BCxxrwr2qGVdjt9A=;
+	s=arc-20240116; t=1745947462; c=relaxed/simple;
+	bh=cb3dh8Q/ZTRURCAvl0rl9ygtRu0SNR48IJiYP63VGFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uLnIwPIuZcAaumKv2JesMbkwUpda6JPRquHmzX4ySo17OvC9HXVacUeybgs3BMw7UC12cMMVnvbT1XIh3eYnIJF/4zq0qW3Jk2qTGon8ujzxH0kmOLBy5dk+iK1EVn3UO2qvaxpniccInoCE8PuT7A0jn2Cmcfa10T/hJTDhs3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heha3a+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D94C4CEE3;
-	Tue, 29 Apr 2025 17:55:41 +0000 (UTC)
+	 MIME-Version; b=mc3H+BizqwLPz5KFPKGraVvH5rQ56TJ2wu189DDXuxTkRvAq9quVghP/NgZGYNJR2/InoOAjJH1D6uyUd9NEH7eEOZATVjP5PRdzd1Ho66Uf+FFahLaL+LFsyair5XdeTz2c/4SIboblcqPLHpys6jaV7pqeyuNPjYiSkDiKPPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWA6jYCS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363A8C4CEE3;
+	Tue, 29 Apr 2025 17:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949342;
-	bh=dlbDkJStd0pFPbsw9Ru68B5YkH9BCxxrwr2qGVdjt9A=;
+	s=korg; t=1745947462;
+	bh=cb3dh8Q/ZTRURCAvl0rl9ygtRu0SNR48IJiYP63VGFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=heha3a+ELAOrrZjnUFL1G4q9Pw+bjvYWqtUkS8yB/CKqRNH8J9h5ZENRXmjckJMcu
-	 trRIenT8G+XloLhzQ/d4FIc2rVe0CptuVxGnMftqSxWiQEODty6jtCgUWpEg3wB1bK
-	 ufH+CUYdH/Acmb0nDcIK6svNTO4NSaPuVKQm12kE=
+	b=KWA6jYCSlldovWQynuLpZD9pjG5TDWYnNEcwN0xTWLXutyb8UgEDZjqkrH5QBGMhd
+	 qZW8bLmick7AT4LJptI35i1kgEsMFmXNsPBRioRZD3GZpBDr156hrDaWb7Fsx6xBAv
+	 a9Vnnc/5EWp9RHK4zfVmM2PvBqQ7U4PMZAJBu7a8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jon Mason <jdmason@kudzu.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 289/373] cpufreq: cppc: Fix invalid return value in .get() callback
+Subject: [PATCH 5.10 262/286] ntb: reduce stack usage in idt_scan_mws
 Date: Tue, 29 Apr 2025 18:42:46 +0200
-Message-ID: <20250429161135.001562425@linuxfoundation.org>
+Message-ID: <20250429161118.692638072@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 2b8e6b58889c672e1ae3601d9b2b070be4dc2fbc ]
+[ Upstream commit aff12700b8dd7422bfe2277696e192af4df9de8f ]
 
-Returning a negative error code in a function with an unsigned
-return type is a pretty bad idea. It is probably worse when the
-justification for the change is "our static analisys tool found it".
+idt_scan_mws() puts a large fixed-size array on the stack and copies
+it into a smaller dynamically allocated array at the end. On 32-bit
+targets, the fixed size can easily exceed the warning limit for
+possible stack overflow:
 
-Fixes: cf7de25878a1 ("cppc_cpufreq: Fix possible null pointer dereference")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+drivers/ntb/hw/idt/ntb_hw_idt.c:1041:27: error: stack frame size (1032) exceeds limit (1024) in 'idt_scan_mws' [-Werror,-Wframe-larger-than]
+
+Change it to instead just always use dynamic allocation for the
+array from the start. It's too big for the stack, but not actually
+all that much for a permanent allocation.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202205111109.PiKTruEj-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ntb/hw/idt/ntb_hw_idt.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 17cfa2b92eeec..c5a4aa0c2c9ae 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -620,7 +620,7 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
- 	int ret;
+diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
+index 99711dd0b6e8e..d39fc55f8b0cc 100644
+--- a/drivers/ntb/hw/idt/ntb_hw_idt.c
++++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
+@@ -1041,7 +1041,7 @@ static inline char *idt_get_mw_name(enum idt_mw_type mw_type)
+ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 				       unsigned char *mw_cnt)
+ {
+-	struct idt_mw_cfg mws[IDT_MAX_NR_MWS], *ret_mws;
++	struct idt_mw_cfg *mws;
+ 	const struct idt_ntb_bar *bars;
+ 	enum idt_mw_type mw_type;
+ 	unsigned char widx, bidx, en_cnt;
+@@ -1049,6 +1049,11 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 	int aprt_size;
+ 	u32 data;
  
- 	if (!policy)
--		return -ENODEV;
-+		return 0;
++	mws = devm_kcalloc(&ndev->ntb.pdev->dev, IDT_MAX_NR_MWS,
++			   sizeof(*mws), GFP_KERNEL);
++	if (!mws)
++		return ERR_PTR(-ENOMEM);
++
+ 	/* Retrieve the array of the BARs registers */
+ 	bars = portdata_tbl[port].bars;
  
- 	cpu_data = policy->driver_data;
+@@ -1103,16 +1108,7 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 		}
+ 	}
  
+-	/* Allocate memory for memory window descriptors */
+-	ret_mws = devm_kcalloc(&ndev->ntb.pdev->dev, *mw_cnt, sizeof(*ret_mws),
+-			       GFP_KERNEL);
+-	if (!ret_mws)
+-		return ERR_PTR(-ENOMEM);
+-
+-	/* Copy the info of detected memory windows */
+-	memcpy(ret_mws, mws, (*mw_cnt)*sizeof(*ret_mws));
+-
+-	return ret_mws;
++	return mws;
+ }
+ 
+ /*
 -- 
 2.39.5
 
