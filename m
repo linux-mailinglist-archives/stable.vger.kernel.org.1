@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-137834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE180AA152D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:24:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD528AA1829
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:56:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D45D717C9F5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:21:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19A3A3A5ED8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D4424C098;
-	Tue, 29 Apr 2025 17:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F0E22AE68;
+	Tue, 29 Apr 2025 17:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prCdr05+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRNUFd+v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537A62459EC;
-	Tue, 29 Apr 2025 17:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0C9248883;
+	Tue, 29 Apr 2025 17:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947273; cv=none; b=GOq7QS2AdhtIFgl8fpWfT+EYsCscUQcY/Jb6igyMolGmu+RBeUuoQlk+QC9DLe4EM/HrIFneZ15AJtYagc1ojO3UHvcnsC2o1iaJT4LOE77M7fhM1pLgGyY7Y6Bet6I70FYS/qaBk5bYmCAfcl4uw4u/snYqEKlMkhtyxSnB+ws=
+	t=1745949137; cv=none; b=SKntXlcT7mbj3wEAg1KFSMOJvSsYGelyYGEh785ZIuMwPiguqBpMdghY1axBqWnlrnzQM+cqAxK78Ymb9lmkqaPbAQ6hwKVjPlS/XbLx19Oqenaxj339rF9RGHV7te1C4nSRf8g1RpDO6nL7w3BCbrynZ2LMW2PhXQVYBm2m4bI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947273; c=relaxed/simple;
-	bh=wzOUyNSQZGnrWOHo7ZWXmY/JsLZtbyCXCsFbOvbTmTc=;
+	s=arc-20240116; t=1745949137; c=relaxed/simple;
+	bh=04/OrJdav82mg0yReRB9rkgHcWvK0/pPwvYHl3oMVpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVGjIJAcT0OM69XBZgFQ5O+pckrospIRrpPqlv2ONEelkIum6odQqg/wifhPspp5z+fgHtuKSjstzJ4TlH+xkwlaBlGid1TZ7JbMzTysWC5LlG/lLWHLpBukPOI67Wom/faWAUQ1uzkeKw9PgYMiTMo/071PexujD1MJg8v+Ffk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prCdr05+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73AA7C4CEE3;
-	Tue, 29 Apr 2025 17:21:12 +0000 (UTC)
+	 MIME-Version; b=j6U1Fe9jcEYWcotkWZoUYuil4bYY+vPeroz2wsMYgbeR/OpNxXihiXWvZw1CQ+ltL20NEefyKhBpDmWEhPyNYVFuGjlCEmDeLrBPyL6DJ82Ij8yHnvBiAzVX8aSH0DD9sjAtsJZn5R5dqyCILsbiTzcIFevv/ZcA0XxlCMCBdy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRNUFd+v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F96C4CEE3;
+	Tue, 29 Apr 2025 17:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947272;
-	bh=wzOUyNSQZGnrWOHo7ZWXmY/JsLZtbyCXCsFbOvbTmTc=;
+	s=korg; t=1745949137;
+	bh=04/OrJdav82mg0yReRB9rkgHcWvK0/pPwvYHl3oMVpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=prCdr05+nu0QrbNyziBKUaFPT2/AqcKzOE1lYhQyFO1zdEFcFsTWjoa4rs/FX/XDg
-	 P82kLhPiGv6ZnPIrKGVl1gKmOVYTeoNQAuQGbTWT0Lqf9dCgFU8OzoMaimfxei2n+o
-	 v30XGrYc+ti0YZznlvy8L9jOpM+sD07UkVT+MCwE=
+	b=qRNUFd+v6/uOY2THgTngcacVGjk1Ul3ItMxwy/lDt+VOVSOPma3aKIfTg/DxrRGdv
+	 6RHcZ/ee9NIGtTO4sU/B9vDkT1KJpj0SSWGguxibFxlgPJ/4iDNhx7KFk4wbjxNTlY
+	 GQ2yKHjxYN263SMphmAlx4naMmcswA1XWaeHYNec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Young <sean@mess.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 198/286] media: streamzap: no need for usb pid/vid in device name
+	Tom Talpey <tom@talpey.com>,
+	Jianhong Yin <jiyin@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.15 225/373] smb: client: fix NULL ptr deref in crypto_aead_setkey()
 Date: Tue, 29 Apr 2025 18:41:42 +0200
-Message-ID: <20250429161116.106152256@linuxfoundation.org>
+Message-ID: <20250429161132.402780777@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +65,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Young <sean@mess.org>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 7a25e6849ad73de5aa01d62da43071bc02b8530c ]
+commit 4bdec0d1f658f7c98749bd2c5a486e6cfa8565d2 upstream.
 
-The usb pid/vid can be found elsewhere, the idVendor/idProduct usb sysfs
-files for example.
+Neither SMB3.0 or SMB3.02 supports encryption negotiate context, so
+when SMB2_GLOBAL_CAP_ENCRYPTION flag is set in the negotiate response,
+the client uses AES-128-CCM as the default cipher.  See MS-SMB2
+3.3.5.4.
 
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: f656cfbc7a29 ("media: streamzap: fix race between device disconnection and urb callback")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit b0abcd65ec54 ("smb: client: fix UAF in async decryption") added
+a @server->cipher_type check to conditionally call
+smb3_crypto_aead_allocate(), but that check would always be false as
+@server->cipher_type is unset for SMB3.02.
+
+Fix the following KASAN splat by setting @server->cipher_type for
+SMB3.02 as well.
+
+mount.cifs //srv/share /mnt -o vers=3.02,seal,...
+
+BUG: KASAN: null-ptr-deref in crypto_aead_setkey+0x2c/0x130
+Read of size 8 at addr 0000000000000020 by task mount.cifs/1095
+CPU: 1 UID: 0 PID: 1095 Comm: mount.cifs Not tainted 6.12.0 #1
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-3.fc41
+04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x5d/0x80
+ ? crypto_aead_setkey+0x2c/0x130
+ kasan_report+0xda/0x110
+ ? crypto_aead_setkey+0x2c/0x130
+ crypto_aead_setkey+0x2c/0x130
+ crypt_message+0x258/0xec0 [cifs]
+ ? __asan_memset+0x23/0x50
+ ? __pfx_crypt_message+0x10/0x10 [cifs]
+ ? mark_lock+0xb0/0x6a0
+ ? hlock_class+0x32/0xb0
+ ? mark_lock+0xb0/0x6a0
+ smb3_init_transform_rq+0x352/0x3f0 [cifs]
+ ? lock_acquire.part.0+0xf4/0x2a0
+ smb_send_rqst+0x144/0x230 [cifs]
+ ? __pfx_smb_send_rqst+0x10/0x10 [cifs]
+ ? hlock_class+0x32/0xb0
+ ? smb2_setup_request+0x225/0x3a0 [cifs]
+ ? __pfx_cifs_compound_last_callback+0x10/0x10 [cifs]
+ compound_send_recv+0x59b/0x1140 [cifs]
+ ? __pfx_compound_send_recv+0x10/0x10 [cifs]
+ ? __create_object+0x5e/0x90
+ ? hlock_class+0x32/0xb0
+ ? do_raw_spin_unlock+0x9a/0xf0
+ cifs_send_recv+0x23/0x30 [cifs]
+ SMB2_tcon+0x3ec/0xb30 [cifs]
+ ? __pfx_SMB2_tcon+0x10/0x10 [cifs]
+ ? lock_acquire.part.0+0xf4/0x2a0
+ ? __pfx_lock_release+0x10/0x10
+ ? do_raw_spin_trylock+0xc6/0x120
+ ? lock_acquire+0x3f/0x90
+ ? _get_xid+0x16/0xd0 [cifs]
+ ? __pfx_SMB2_tcon+0x10/0x10 [cifs]
+ ? cifs_get_smb_ses+0xcdd/0x10a0 [cifs]
+ cifs_get_smb_ses+0xcdd/0x10a0 [cifs]
+ ? __pfx_cifs_get_smb_ses+0x10/0x10 [cifs]
+ ? cifs_get_tcp_session+0xaa0/0xca0 [cifs]
+ cifs_mount_get_session+0x8a/0x210 [cifs]
+ dfs_mount_share+0x1b0/0x11d0 [cifs]
+ ? __pfx___lock_acquire+0x10/0x10
+ ? __pfx_dfs_mount_share+0x10/0x10 [cifs]
+ ? lock_acquire.part.0+0xf4/0x2a0
+ ? find_held_lock+0x8a/0xa0
+ ? hlock_class+0x32/0xb0
+ ? lock_release+0x203/0x5d0
+ cifs_mount+0xb3/0x3d0 [cifs]
+ ? do_raw_spin_trylock+0xc6/0x120
+ ? __pfx_cifs_mount+0x10/0x10 [cifs]
+ ? lock_acquire+0x3f/0x90
+ ? find_nls+0x16/0xa0
+ ? smb3_update_mnt_flags+0x372/0x3b0 [cifs]
+ cifs_smb3_do_mount+0x1e2/0xc80 [cifs]
+ ? __pfx_vfs_parse_fs_string+0x10/0x10
+ ? __pfx_cifs_smb3_do_mount+0x10/0x10 [cifs]
+ smb3_get_tree+0x1bf/0x330 [cifs]
+ vfs_get_tree+0x4a/0x160
+ path_mount+0x3c1/0xfb0
+ ? kasan_quarantine_put+0xc7/0x1d0
+ ? __pfx_path_mount+0x10/0x10
+ ? kmem_cache_free+0x118/0x3e0
+ ? user_path_at+0x74/0xa0
+ __x64_sys_mount+0x1a6/0x1e0
+ ? __pfx___x64_sys_mount+0x10/0x10
+ ? mark_held_locks+0x1a/0x90
+ do_syscall_64+0xbb/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Cc: Tom Talpey <tom@talpey.com>
+Reported-by: Jianhong Yin <jiyin@redhat.com>
+Cc: stable@vger.kernel.org # v6.12
+Fixes: b0abcd65ec54 ("smb: client: fix UAF in async decryption")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[Commit b0abcd65ec54 ("smb: client: fix UAF in async decryption")
+fixes CVE-2024-50047 but brings NULL-pointer dereferebce. So
+commit 4bdec0d1f658 ("smb: client: fix NULL ptr deref in crypto_aead_setkey()")
+should be backported too.]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/streamzap.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/cifs/smb2pdu.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/rc/streamzap.c b/drivers/media/rc/streamzap.c
-index cd4bb605a7614..b6391ad383143 100644
---- a/drivers/media/rc/streamzap.c
-+++ b/drivers/media/rc/streamzap.c
-@@ -88,7 +88,6 @@ struct streamzap_ir {
- 	ktime_t			signal_start;
- 	bool			timeout_enabled;
+--- a/fs/cifs/smb2pdu.c
++++ b/fs/cifs/smb2pdu.c
+@@ -1028,7 +1028,9 @@ SMB2_negotiate(const unsigned int xid, s
+ 	 * SMB3.0 supports only 1 cipher and doesn't have a encryption neg context
+ 	 * Set the cipher type manually.
+ 	 */
+-	if (server->dialect == SMB30_PROT_ID && (server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
++	if ((server->dialect == SMB30_PROT_ID ||
++	     server->dialect == SMB302_PROT_ID) &&
++	    (server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
+ 		server->cipher_type = SMB2_ENCRYPTION_AES128_CCM;
  
--	char			name[128];
- 	char			phys[64];
- };
- 
-@@ -287,13 +286,10 @@ static struct rc_dev *streamzap_init_rc_dev(struct streamzap_ir *sz)
- 		goto out;
- 	}
- 
--	snprintf(sz->name, sizeof(sz->name), "Streamzap PC Remote Infrared Receiver (%04x:%04x)",
--		 le16_to_cpu(sz->usbdev->descriptor.idVendor),
--		 le16_to_cpu(sz->usbdev->descriptor.idProduct));
- 	usb_make_path(sz->usbdev, sz->phys, sizeof(sz->phys));
- 	strlcat(sz->phys, "/input0", sizeof(sz->phys));
- 
--	rdev->device_name = sz->name;
-+	rdev->device_name = "Streamzap PC Remote Infrared Receiver";
- 	rdev->input_phys = sz->phys;
- 	usb_to_input_id(sz->usbdev, &rdev->input_id);
- 	rdev->dev.parent = dev;
--- 
-2.39.5
-
+ 	security_blob = smb2_get_data_area_len(&blob_offset, &blob_length,
 
 
 
