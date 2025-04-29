@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-138311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5374AA1774
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95837AA1637
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 831A41B674F1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61F77986EE4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827CB2512D8;
-	Tue, 29 Apr 2025 17:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D522459E1;
+	Tue, 29 Apr 2025 17:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9pzQClI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEqLUWJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFCE221DA7;
-	Tue, 29 Apr 2025 17:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329B478F58;
+	Tue, 29 Apr 2025 17:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948842; cv=none; b=MnFk2Al9vX5HwO5WjVRKHAr/N/TNEgjv6KXQkYixn0X4fa0WaLfKgwzFvqP7Vs1X8ZQOFLlnj/JNVvi2R1PY5e2LqnJg94S0SvDT33lfTCxCKsk114Wqh2UjZ7MkFxpkTGT0x8kKU/ecqOG8kdJfObBX7ZQGNosd2BvCjSRnijA=
+	t=1745947733; cv=none; b=SE0mGrZ854KYWYb+y0Yd35+mj77jAZF+yD7aBntPcHrFfM5AbC0vz92vwsUC4JlBy/2B2inxHZTCzfh0ik1AkDzdbsFzva74m/psm4R0op7I874fzxTl3nfTvdIts1MonzRN9yUV0ex5jaOobO+UqME3P7smn285xkkOPHQlddU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948842; c=relaxed/simple;
-	bh=20yHXa2VTPfLDnlWwcQsCvf9Lyp8JCXPiQyVhuFcqOU=;
+	s=arc-20240116; t=1745947733; c=relaxed/simple;
+	bh=gcno3SQAkTN1zwbLvLIx9huY+K9S6ZxHrm/PGGiJzjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kwp9BtoSqpk5j2F5oncRQo8lO1cEjbQNXzEZP1/oFhQuh12XkDAEh00Uw7qEZ8TmNLYwEAEfFI5kVNna0uqeZ1BI9y6up4P5Q3YUbo54gu1IV0RB6hjSHmzHEUpcCBqApQAdm9DBKa8sQ/tC6TaGidl5eIuWqCjtEMC3au9MdOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9pzQClI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBC8C4CEE3;
-	Tue, 29 Apr 2025 17:47:21 +0000 (UTC)
+	 MIME-Version; b=REipOGMKW7Wip69Fq7CedLTEVPHL7crVRDSPIQXk8EuaA9d0/a+0AIK6nNlg0EO4NdwFeeywVE8RbU6olKjFZPOISn3BoNRwXZsMvvVkHbJGbfB31rckEtBSduFu8GiVutxqe8VZA3NrjnYjuFOngwX5T+ITW+DYvuV874wCpLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEqLUWJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6ACC4CEE9;
+	Tue, 29 Apr 2025 17:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948841;
-	bh=20yHXa2VTPfLDnlWwcQsCvf9Lyp8JCXPiQyVhuFcqOU=;
+	s=korg; t=1745947732;
+	bh=gcno3SQAkTN1zwbLvLIx9huY+K9S6ZxHrm/PGGiJzjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9pzQClIb7QQ5N4JHUeSEfbCygb7iDZEFldvpPp60jt91f0Lidsc9uvbh9+TkKqze
-	 mEDyFhF+M3IV0LEjgGyr6CQjzCyYIbkVS9OGUllegcy2eU/Vz19bfKHbL5cIrVg57b
-	 IXca4Kg5B13DLSmejQH6PPnixriSkU/O+nzVSrwU=
+	b=iEqLUWJlhUg7r9+P4p/0pS/XtBue8b2UM/N9lwbwm7ONERJFRS4r/LkHSB4yuto4y
+	 bSRofvRBWsChKqeBvwuUZ8ZyjmxJCSK+aGQtqr8R0DzplZwCJK2TU5zcwJrjbLtNi+
+	 R0clGpSv9LczSa/xZTMbIZe/cs7Pd9Q/VDXDF5rM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Hao Guan <hao.guan@siflower.com.cn>,
+	Qingfang Deng <qingfang.deng@siflower.com.cn>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 134/373] RDMA/hns: Fix wrong maximum DMA segment size
-Date: Tue, 29 Apr 2025 18:40:11 +0200
-Message-ID: <20250429161128.679205313@linuxfoundation.org>
+Subject: [PATCH 6.12 071/280] net: phy: leds: fix memory leak
+Date: Tue, 29 Apr 2025 18:40:12 +0200
+Message-ID: <20250429161118.012654747@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Qingfang Deng <qingfang.deng@siflower.com.cn>
 
-[ Upstream commit 9beb2c91fb86e0be70a5833c6730441fa3c9efa8 ]
+[ Upstream commit b7f0ee992adf601aa00c252418266177eb7ac2bc ]
 
-Set maximum DMA segment size to 2G instead of UINT_MAX due to HW limit.
+A network restart test on a router led to an out-of-memory condition,
+which was traced to a memory leak in the PHY LED trigger code.
 
-Fixes: e0477b34d9d1 ("RDMA: Explicitly pass in the dma_device to ib_register_device")
-Link: https://patch.msgid.link/r/20250327114724.3454268-3-huangjunxian6@hisilicon.com
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+The root cause is misuse of the devm API. The registration function
+(phy_led_triggers_register) is called from phy_attach_direct, not
+phy_probe, and the unregister function (phy_led_triggers_unregister)
+is called from phy_detach, not phy_remove. This means the register and
+unregister functions can be called multiple times for the same PHY
+device, but devm-allocated memory is not freed until the driver is
+unbound.
+
+This also prevents kmemleak from detecting the leak, as the devm API
+internally stores the allocated pointer.
+
+Fix this by replacing devm_kzalloc/devm_kcalloc with standard
+kzalloc/kcalloc, and add the corresponding kfree calls in the unregister
+path.
+
+Fixes: 3928ee6485a3 ("net: phy: leds: Add support for "link" trigger")
+Fixes: 2e0bc452f472 ("net: phy: leds: add support for led triggers on phy link state change")
+Signed-off-by: Hao Guan <hao.guan@siflower.com.cn>
+Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250417032557.2929427-1-dqfext@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/phy_led_triggers.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index 83a6b8fbe10f0..4fc8e0c8b7ab0 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -544,7 +544,7 @@ static int hns_roce_register_device(struct hns_roce_dev *hr_dev)
- 		if (ret)
- 			return ret;
- 	}
--	dma_set_max_seg_size(dev, UINT_MAX);
-+	dma_set_max_seg_size(dev, SZ_2G);
- 	ret = ib_register_device(ib_dev, "hns_%d", dev);
- 	if (ret) {
- 		dev_err(dev, "ib_register_device failed!\n");
+diff --git a/drivers/net/phy/phy_led_triggers.c b/drivers/net/phy/phy_led_triggers.c
+index f550576eb9dae..6f9d8da76c4df 100644
+--- a/drivers/net/phy/phy_led_triggers.c
++++ b/drivers/net/phy/phy_led_triggers.c
+@@ -91,9 +91,8 @@ int phy_led_triggers_register(struct phy_device *phy)
+ 	if (!phy->phy_num_led_triggers)
+ 		return 0;
+ 
+-	phy->led_link_trigger = devm_kzalloc(&phy->mdio.dev,
+-					     sizeof(*phy->led_link_trigger),
+-					     GFP_KERNEL);
++	phy->led_link_trigger = kzalloc(sizeof(*phy->led_link_trigger),
++					GFP_KERNEL);
+ 	if (!phy->led_link_trigger) {
+ 		err = -ENOMEM;
+ 		goto out_clear;
+@@ -103,10 +102,9 @@ int phy_led_triggers_register(struct phy_device *phy)
+ 	if (err)
+ 		goto out_free_link;
+ 
+-	phy->phy_led_triggers = devm_kcalloc(&phy->mdio.dev,
+-					    phy->phy_num_led_triggers,
+-					    sizeof(struct phy_led_trigger),
+-					    GFP_KERNEL);
++	phy->phy_led_triggers = kcalloc(phy->phy_num_led_triggers,
++					sizeof(struct phy_led_trigger),
++					GFP_KERNEL);
+ 	if (!phy->phy_led_triggers) {
+ 		err = -ENOMEM;
+ 		goto out_unreg_link;
+@@ -127,11 +125,11 @@ int phy_led_triggers_register(struct phy_device *phy)
+ out_unreg:
+ 	while (i--)
+ 		phy_led_trigger_unregister(&phy->phy_led_triggers[i]);
+-	devm_kfree(&phy->mdio.dev, phy->phy_led_triggers);
++	kfree(phy->phy_led_triggers);
+ out_unreg_link:
+ 	phy_led_trigger_unregister(phy->led_link_trigger);
+ out_free_link:
+-	devm_kfree(&phy->mdio.dev, phy->led_link_trigger);
++	kfree(phy->led_link_trigger);
+ 	phy->led_link_trigger = NULL;
+ out_clear:
+ 	phy->phy_num_led_triggers = 0;
+@@ -145,8 +143,13 @@ void phy_led_triggers_unregister(struct phy_device *phy)
+ 
+ 	for (i = 0; i < phy->phy_num_led_triggers; i++)
+ 		phy_led_trigger_unregister(&phy->phy_led_triggers[i]);
++	kfree(phy->phy_led_triggers);
++	phy->phy_led_triggers = NULL;
+ 
+-	if (phy->led_link_trigger)
++	if (phy->led_link_trigger) {
+ 		phy_led_trigger_unregister(phy->led_link_trigger);
++		kfree(phy->led_link_trigger);
++		phy->led_link_trigger = NULL;
++	}
+ }
+ EXPORT_SYMBOL_GPL(phy_led_triggers_unregister);
 -- 
 2.39.5
 
