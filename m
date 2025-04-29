@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-138262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE94AA1737
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC1EAA1446
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 873041BA6337
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE78E169778
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0719E242D68;
-	Tue, 29 Apr 2025 17:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D96248191;
+	Tue, 29 Apr 2025 17:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5GFRKeX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDd8MgCM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88692459FA;
-	Tue, 29 Apr 2025 17:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8506C243364;
+	Tue, 29 Apr 2025 17:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948696; cv=none; b=goQXpV/65qTWfnVyu3wCytVvkp8EOE/wG6JRazpcI+pS9H1aSaG1IagrA6uTh9TomAQYsAT4pdjhrizYwGzmYEqc8XSSUU3PKCyDoSdtPcPKb/7eoZNUWi110vmzsKrn3/iRy+Q4tEbg8hrsN0QvxwkDqaGDccIMf3zRyNFt4ek=
+	t=1745946750; cv=none; b=SrhBwoVmAuqWuu1L+toEO1z8lgdtzUzvXrG+iPvC4i570eRfLaoyHxbZ/rR0iLxXqz+SJJUxE9CWa2RdO5P0GFax8Iw/NaFxOsNFY/9sTkj8k04nxTowCsOkhqjWtgLL47+1o7K+ZWvh/5z8a0smah111CxsBAV8G0d7ryBcdfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948696; c=relaxed/simple;
-	bh=r5MzrHv6JNH9T/xi4mX5kOJrr63jyMCn//ha8IhSKZg=;
+	s=arc-20240116; t=1745946750; c=relaxed/simple;
+	bh=WVl82863RtOHQMb404BDv2DXpYTS7QzWys4FXMkjKvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VRAQZmA7IhdjR2NL2ac9zd4OfvtT1cccT9AzQF46g0O0F/fFz+51XqeKnVohyrT3CuOuRjqBEoToRZpUgJ8OZ5hYEL8XwGQq9nsqLLT6XUnNpYG96mLyphZreynQ3R+B1hN9N15+AjhlQRZxwuGzfbrZ1y+O5W/UiTbQsifpZ2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5GFRKeX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B748CC4CEE3;
-	Tue, 29 Apr 2025 17:44:55 +0000 (UTC)
+	 MIME-Version; b=IAv7wNk5NlbOQvmgxD17TP/og/JWRI1m0NEXJWyCA2GRHOrxIP8pMweX/tif7mZ3CNhkz+h4LQFCtMv5eDNxyX85MWyi3afzvyOj/flqqJgaQVk86B9VPByIb2Lzw3XwcjeZyYS1mXbDDsYDrdIX2vIMX9685iLRH7z+N+Z2YKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDd8MgCM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0152C4CEE3;
+	Tue, 29 Apr 2025 17:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948696;
-	bh=r5MzrHv6JNH9T/xi4mX5kOJrr63jyMCn//ha8IhSKZg=;
+	s=korg; t=1745946750;
+	bh=WVl82863RtOHQMb404BDv2DXpYTS7QzWys4FXMkjKvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D5GFRKeX+Z01o1cJo9rHd4w6LZ2a/3DsydoTCdlJ1tJei+KCWeJruU7axo7rttKm1
-	 PtTrI/OiO5CRY9gD1D0xVgZDTPG4r3nri2toZHtDrVt8gIfkaMIhiR+6IFyxK+NhF8
-	 xgPPHl6qki/kknzyxbtVcK7E2xMrHQmKPR3k50Cc=
+	b=rDd8MgCMk9M6mP1+9QE/+Yp6JVIvIikb4AAlzcaHccxlbUOvAK1QF9UkZ4CUQV8fq
+	 AcjYxfM8vxCjYe5cZsu1aAaCwA5L0oh/5ejmkyBRqFtTiq4+nWauHFbhKtveIb93Gh
+	 HOqmTNCXD1lisZCZVVFuJy7nFblTPL4ZeSttspHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 084/373] ASoC: qdsp6: q6asm-dai: fix q6asm_dai_compr_set_params error path
+	Yuan Can <yuancan@huawei.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 057/286] media: siano: Fix error handling in smsdvb_module_init()
 Date: Tue, 29 Apr 2025 18:39:21 +0200
-Message-ID: <20250429161126.617493452@linuxfoundation.org>
+Message-ID: <20250429161110.193422646@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Yuan Can <yuancan@huawei.com>
 
-commit 7eccc86e90f04a0d758d16c08627a620ac59604d upstream.
+commit 734ac57e47b3bdd140a1119e2c4e8e6f8ef8b33d upstream.
 
-In case of attempts to compress playback something, for instance,
-when audio routing is not set up correctly, the audio DSP is left in
-inconsistent state because we are not doing the correct things in
-the error path of q6asm_dai_compr_set_params().
+The smsdvb_module_init() returns without checking the retval from
+smscore_register_hotplug().
+If the smscore_register_hotplug() failed, the module failed to install,
+leaving the smsdvb_debugfs not unregistered.
 
-So, when routing is not set up and compress playback is attempted
-the following errors are present (simplified log):
-
-q6routing routing: Routing not setup for MultiMedia-1 Session
-q6asm-dai dais: Stream reg failed ret:-22
-q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
-on 17300000.remoteproc:glink-edge:apr:service@7:dais
-
-After setting the correct routing the compress playback will always fail:
-
-q6asm-dai dais: cmd = 0x10db3 returned error = 0x9
-q6asm-dai dais: DSP returned error[9]
-q6asm-dai dais: q6asm_open_write failed
-q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
-on 17300000.remoteproc:glink-edge:apr:service@7:dais
-
-0x9 here means "Operation is already processed". The CMD_OPEN here was
-sent the second time hence DSP responds that it was already done.
-
-Turns out the CMD_CLOSE should be sent after the q6asm_open_write()
-succeeded but something failed after that, for instance, routing
-setup.
-
-Fix this by slightly reworking the error path in
-q6asm_dai_compr_set_params().
-
-Tested on QRB5165 RB5 and SDM845 RB3 boards.
-
+Fixes: 3f6b87cff66b ("[media] siano: allow showing the complete statistics via debugfs")
 Cc: stable@vger.kernel.org
-Fixes: 5b39363e54cc ("ASoC: q6asm-dai: prepare set params to accept profile change")
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: Vinod Koul <vkoul@kernel.org>
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://patch.msgid.link/20250327154650.337404-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Acked-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/media/common/siano/smsdvb-main.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -902,9 +902,7 @@ static int q6asm_dai_compr_set_params(st
+--- a/drivers/media/common/siano/smsdvb-main.c
++++ b/drivers/media/common/siano/smsdvb-main.c
+@@ -1210,6 +1210,8 @@ static int __init smsdvb_module_init(voi
+ 	smsdvb_debugfs_register();
  
- 		if (ret < 0) {
- 			dev_err(dev, "q6asm_open_write failed\n");
--			q6asm_audio_client_free(prtd->audio_client);
--			prtd->audio_client = NULL;
--			return ret;
-+			goto open_err;
- 		}
- 	}
+ 	rc = smscore_register_hotplug(smsdvb_hotplug);
++	if (rc)
++		smsdvb_debugfs_unregister();
  
-@@ -913,7 +911,7 @@ static int q6asm_dai_compr_set_params(st
- 			      prtd->session_id, dir);
- 	if (ret) {
- 		dev_err(dev, "Stream reg failed ret:%d\n", ret);
--		return ret;
-+		goto q6_err;
- 	}
+ 	pr_debug("\n");
  
- 	ret = __q6asm_dai_compr_set_codec_params(component, stream,
-@@ -921,7 +919,7 @@ static int q6asm_dai_compr_set_params(st
- 						 prtd->stream_id);
- 	if (ret) {
- 		dev_err(dev, "codec param setup failed ret:%d\n", ret);
--		return ret;
-+		goto q6_err;
- 	}
- 
- 	ret = q6asm_map_memory_regions(dir, prtd->audio_client, prtd->phys,
-@@ -930,12 +928,21 @@ static int q6asm_dai_compr_set_params(st
- 
- 	if (ret < 0) {
- 		dev_err(dev, "Buffer Mapping failed ret:%d\n", ret);
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto q6_err;
- 	}
- 
- 	prtd->state = Q6ASM_STREAM_RUNNING;
- 
- 	return 0;
-+
-+q6_err:
-+	q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
-+
-+open_err:
-+	q6asm_audio_client_free(prtd->audio_client);
-+	prtd->audio_client = NULL;
-+	return ret;
- }
- 
- static int q6asm_dai_compr_set_metadata(struct snd_soc_component *component,
 
 
 
