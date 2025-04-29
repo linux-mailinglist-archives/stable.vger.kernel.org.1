@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-138170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7002AA172A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:44:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1697AA1844
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16C3D3BE92F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30C757AB566
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BFB242D68;
-	Tue, 29 Apr 2025 17:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BA22459C5;
+	Tue, 29 Apr 2025 17:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttRs5iSr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxYN4jy/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4164922DF91;
-	Tue, 29 Apr 2025 17:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9E3240611;
+	Tue, 29 Apr 2025 17:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948392; cv=none; b=iEWGkqbcr2YTJMBsXNW+8wKmvq/0jaGKil5iea0qOJuP4hKFw/OVaZA0yof1tRAYnqJ87W7ZCJQCnh6pdL//w/Jwy2bi0MNWUFjFdBnEf8I00yl7L+dzGm4allE/HHzpWlRLCo6IEFH1JIr7YTv/AVoUBz7/kFeNgbbgTxD8N0w=
+	t=1745949500; cv=none; b=InyEM+ORS43AJjceSC9iilCUSmOMwbwJq/fEmArUPJWrdtMEWJN6wxPSzHyCOi9zBrtaXgdz2zbSv9ZqzM8etvrpdmiqBazTKzqspyEfRWbdD7Yl1bWNZE+Y2Y2zE0ZaIRZBP70By5FTgxX/qWDuYw3u7BWy5uwyvPEzG3Sp6y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948392; c=relaxed/simple;
-	bh=Z+6D7OrzVkckj1npwAT9V+JMqOdcbb1F3J2jBwQWTf0=;
+	s=arc-20240116; t=1745949500; c=relaxed/simple;
+	bh=tup2YvHfJep7yQGinCLY3ljpA62COMZeVKXGJ+I87UE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tdVhq+wd/zvOYkMm66sT8N4zBt8iK3K7zdPq1Wznvmj0eA347YXj4ZK6W5ea3QOdN42Zgnt9gFe2V20ROBWXhIVRqeEvIGSiduG1nUL1mZnGElqXn36kyXUwdDp0izc4dXgInMGq9KJXcK+HljvJ9RP6hlNXPhAjEBucAWf4sPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttRs5iSr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E298C4CEE3;
-	Tue, 29 Apr 2025 17:39:51 +0000 (UTC)
+	 MIME-Version; b=e8nFEmKB+Zyuno5dLRQh/t9IC5PZHlddVh2Nbxvl0i+ElKBsJHJu31r11Us7fgB+WkP/wsbzo5i0MT4WL6JRz5wL8taNMVrvedPsZGtWqeKdkB/588UW/OUzRekbKCcsS8W/qmxPCM7Lv6jZT5UFakQnwvMHk/lFxsZe09DowDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxYN4jy/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67239C4CEE3;
+	Tue, 29 Apr 2025 17:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948391;
-	bh=Z+6D7OrzVkckj1npwAT9V+JMqOdcbb1F3J2jBwQWTf0=;
+	s=korg; t=1745949500;
+	bh=tup2YvHfJep7yQGinCLY3ljpA62COMZeVKXGJ+I87UE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ttRs5iSrj5RTI1HKj+2rty3DI6YYL9+TNNP2CH7Ccg/4Zdxod+yUKTm/Mn+5uh1uQ
-	 ddsKyUB1G+QvQp3E7TUR4EYArH0tKQQv17hKVuSu8Ee21xtOdOsOfPKSoV+OJWdVry
-	 zo2z2OlOoSiThF7dIrmm4NhjmP/YaB8xib51PpiA=
+	b=KxYN4jy/PhWDP8f18B7vSmVZ8nzUZeLVU2WWQRtitNfyD4R1RWmlQXYqtPZi/MBbN
+	 wO34qiwfzyBp2/6Qo7bCUMkxJFQdYlE6YZCKdejdCUnx1MlQj0a2Dy67U77o5RDBiT
+	 uM51LgsC5cBIJF9jWhgsB08p+4sixHHA2tK86L9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.12 274/280] usb: xhci: Fix Short Packet handling rework ignoring errors
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jon Mason <jdmason@kudzu.us>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 338/373] ntb: reduce stack usage in idt_scan_mws
 Date: Tue, 29 Apr 2025 18:43:35 +0200
-Message-ID: <20250429161126.344405860@linuxfoundation.org>
+Message-ID: <20250429161137.036385633@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 9e3a28793d2fde7a709e814d2504652eaba6ae98 upstream.
+[ Upstream commit aff12700b8dd7422bfe2277696e192af4df9de8f ]
 
-A Short Packet event before the last TRB of a TD is followed by another
-event on the final TRB on spec-compliant HCs, which is most of them.
+idt_scan_mws() puts a large fixed-size array on the stack and copies
+it into a smaller dynamically allocated array at the end. On 32-bit
+targets, the fixed size can easily exceed the warning limit for
+possible stack overflow:
 
-A 'last_td_was_short' flag was added to know if a TD has just completed
-as Short Packet and another event is to come. The flag was cleared after
-seeing the event (unless no TDs are pending, but that's a separate bug)
-or seeing a new TD complete as something other than Short Packet.
+drivers/ntb/hw/idt/ntb_hw_idt.c:1041:27: error: stack frame size (1032) exceeds limit (1024) in 'idt_scan_mws' [-Werror,-Wframe-larger-than]
 
-A rework replaced the flag with an 'old_trb_comp_code' variable. When
-an event doesn't match the pending TD and the previous event was Short
-Packet, the new event is silently ignored.
+Change it to instead just always use dynamic allocation for the
+array from the start. It's too big for the stack, but not actually
+all that much for a permanent allocation.
 
-To preserve old behavior, 'old_trb_comp_code' should be cleared at this
-point, but instead it is being set to current comp code, which is often
-Short Packet again. This can cause more events to be silently ignored,
-even though they are no longer connected with the old TD that completed
-short and indicate a serious problem with the driver or the xHC.
-
-Common device classes like UAC in async mode, UVC, serial or the UAS
-status pipe complete as Short Packet routinely and could be affected.
-
-Clear 'old_trb_comp_code' to zero, which is an invalid completion code
-and the same value the variable starts with. This restores original
-behavior on Short Packet and also works for illegal Etron events, which
-the code has been extended to cover too.
-
-Fixes: b331a3d8097f ("xhci: Handle spurious events on Etron host isoc enpoints")
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250410151828.2868740-4-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202205111109.PiKTruEj-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ntb/hw/idt/ntb_hw_idt.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2927,7 +2927,7 @@ static int handle_tx_event(struct xhci_h
- 			if (xhci_spurious_success_tx_event(xhci, ep_ring)) {
- 				xhci_dbg(xhci, "Spurious event dma %pad, comp_code %u after %u\n",
- 					 &ep_trb_dma, trb_comp_code, ep_ring->old_trb_comp_code);
--				ep_ring->old_trb_comp_code = trb_comp_code;
-+				ep_ring->old_trb_comp_code = 0;
- 				return 0;
- 			}
+diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
+index 72060acb9cafc..366e19dbae316 100644
+--- a/drivers/ntb/hw/idt/ntb_hw_idt.c
++++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
+@@ -1041,7 +1041,7 @@ static inline char *idt_get_mw_name(enum idt_mw_type mw_type)
+ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 				       unsigned char *mw_cnt)
+ {
+-	struct idt_mw_cfg mws[IDT_MAX_NR_MWS], *ret_mws;
++	struct idt_mw_cfg *mws;
+ 	const struct idt_ntb_bar *bars;
+ 	enum idt_mw_type mw_type;
+ 	unsigned char widx, bidx, en_cnt;
+@@ -1049,6 +1049,11 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 	int aprt_size;
+ 	u32 data;
  
++	mws = devm_kcalloc(&ndev->ntb.pdev->dev, IDT_MAX_NR_MWS,
++			   sizeof(*mws), GFP_KERNEL);
++	if (!mws)
++		return ERR_PTR(-ENOMEM);
++
+ 	/* Retrieve the array of the BARs registers */
+ 	bars = portdata_tbl[port].bars;
+ 
+@@ -1103,16 +1108,7 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 		}
+ 	}
+ 
+-	/* Allocate memory for memory window descriptors */
+-	ret_mws = devm_kcalloc(&ndev->ntb.pdev->dev, *mw_cnt, sizeof(*ret_mws),
+-			       GFP_KERNEL);
+-	if (!ret_mws)
+-		return ERR_PTR(-ENOMEM);
+-
+-	/* Copy the info of detected memory windows */
+-	memcpy(ret_mws, mws, (*mw_cnt)*sizeof(*ret_mws));
+-
+-	return ret_mws;
++	return mws;
+ }
+ 
+ /*
+-- 
+2.39.5
+
 
 
 
