@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2899AAA14AC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:19:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D38AA17AC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B8B84C4437
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E7C71651C5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BA522A4F4;
-	Tue, 29 Apr 2025 17:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C7A243964;
+	Tue, 29 Apr 2025 17:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4KxeHI6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCEGeNeU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB4E251791;
-	Tue, 29 Apr 2025 17:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CF8221DA7;
+	Tue, 29 Apr 2025 17:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946970; cv=none; b=Z+DZkBOdxi1YawO1dP4VqUO5/oyg9hIYPqTmULp0hsJASGf9V/xICyXm9fSuilgCmxFd2wi+exKd88oWp2OLt+jbHK8HM8QUMxBbI+pwp5zJJyxtmAgqmYQXfsc2aAXskJ6hCZOvPGa8sOt9uS8HMq99UYJF4hXo1oVMml7V3CY=
+	t=1745948990; cv=none; b=MeAeYqXHLPO9EBwT7bGtrWWczH5TQ1wkhRLOgSLl3ljP8AaF/g10CAa4JnfhI117S0f9T8SA4kDx2Lj9Hf7qnfRiSRuCYkgViteMz0xWS6EuH55H5DiC3A19gWn6mWDINbgUNiNDiFaF2YEvi7lvFL2xVmifW1zqux31Z1adcBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946970; c=relaxed/simple;
-	bh=+oR1r3UWxu6qZU7dT81o8dtV59ITPS+6reaLdhTOhPg=;
+	s=arc-20240116; t=1745948990; c=relaxed/simple;
+	bh=T4ygqG3r6v54msrQ6LTDo/GDj5w+f0Cvq8TsnfMcfes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZqacWTo9Hc7U6r9j6u997huMI/tMI0h6d5pDWyv3JarJsj91meff/yqcLPHORGuhJkfFYp96S4lvdbhyNdTYBUL2KUX6dbujmkZL/Os/Aybn8gGN+CZqswXvWmUJ9e2IRuKDl7d9CJO/8fLD1ojuTgEhYUZFEfI0bUXjXaNoUdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4KxeHI6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44549C4CEE9;
-	Tue, 29 Apr 2025 17:16:09 +0000 (UTC)
+	 MIME-Version; b=eKEbZ4XR3dQ9vvM3uDyUDED9PmQM+dByao6fA69uk4Q4hXbbExqO0GiVR4GHpri1Ea8LHcZwr35F99vfkdBhtMZByOjkHzvWaGW9FWKWd9eORkC+kcp4ut9TAQfjET+HcpuJ2GQ4Vcn3q8p9zf9GkrzbMVk9RR3gg2vA3iTKgns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCEGeNeU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8360AC4CEE3;
+	Tue, 29 Apr 2025 17:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946969;
-	bh=+oR1r3UWxu6qZU7dT81o8dtV59ITPS+6reaLdhTOhPg=;
+	s=korg; t=1745948989;
+	bh=T4ygqG3r6v54msrQ6LTDo/GDj5w+f0Cvq8TsnfMcfes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E4KxeHI6b0HP5qgWQLM1ccASy3af/Tu97XiHYfz/jFeq+/gSy/4TqByNjdqhBa4r4
-	 awxJW1JJxr23Q+fEy9zaO1H1gqi3WOat7wt1Vuu/DMBXyrjpriEMIUAXPP9MWQ5MYg
-	 ER/XJnYIrvbBisHUA682bbJufGDBP/hjCGmG9VHU=
+	b=KCEGeNeUjYferoEGBqw4LfrxKVyUnmJf4OAsU7v0uCw8qJqAid/jvsqwNk4BqN5Iw
+	 qqKT26a6F/RUsE/2n9c97BvIP6/xsfzrOSfYMehSe72DGIr95vkdNK0cqgs7FoYdcy
+	 69X8H6rQEviQRlAEL1PR+HgHbt+xYbnyS4rGnThs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>
-Subject: [PATCH 5.10 127/286] crypto: caam/qi - Fix drv_ctx refcount bug
-Date: Tue, 29 Apr 2025 18:40:31 +0200
-Message-ID: <20250429161113.084053589@linuxfoundation.org>
+	Cal Peake <cp@absolutedigital.net>,
+	Athul Krishna <athul.krishna.kr@protonmail.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kevin Tian <kevin.tian@intel.com>
+Subject: [PATCH 5.15 155/373] Revert "PCI: Avoid reset when disabled via sysfs"
+Date: Tue, 29 Apr 2025 18:40:32 +0200
+Message-ID: <20250429161129.526781955@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-commit b7b39df7e710b0068356e4c696af07aa10e2cd3d upstream.
+commit bc0b828ef6e561081ebc4c758d0c4d166bb9829c upstream.
 
-Ensure refcount is raised before request is enqueued since it could
-be dequeued before the call returns.
+This reverts commit 479380efe1625e251008d24b2810283db60d6fcd.
 
-Reported-by: Sean Anderson <sean.anderson@linux.dev>
-Cc: <stable@vger.kernel.org>
-Fixes: 11144416a755 ("crypto: caam/qi - optimize frame queue cleanup")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
-Tested-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+The reset_method attribute on a PCI device is only intended to manage the
+availability of function scoped resets for a device.  It was never intended
+to restrict resets targeting the bus or slot.
+
+In introducing a restriction that each device must support function level
+reset by testing pci_reset_supported(), we essentially create a catch-22,
+that a device must have a function scope reset in order to support bus/slot
+reset, when we use bus/slot reset to effect a reset of a device that does
+not support a function scoped reset, especially multi-function devices.
+
+This breaks the majority of uses cases where vfio-pci uses bus/slot resets
+to manage multifunction devices that do not support function scoped resets.
+
+Fixes: 479380efe162 ("PCI: Avoid reset when disabled via sysfs")
+Reported-by: Cal Peake <cp@absolutedigital.net>
+Closes: https://lore.kernel.org/all/808e1111-27b7-f35b-6d5c-5b275e73677b@absolutedigital.net
+Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220010
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250414211828.3530741-1-alex.williamson@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/caam/qi.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/pci.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/crypto/caam/qi.c
-+++ b/drivers/crypto/caam/qi.c
-@@ -115,12 +115,12 @@ int caam_qi_enqueue(struct device *qidev
- 	qm_fd_addr_set64(&fd, addr);
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5484,8 +5484,6 @@ static bool pci_bus_resetable(struct pci
+ 		return false;
  
- 	do {
-+		refcount_inc(&req->drv_ctx->refcnt);
- 		ret = qman_enqueue(req->drv_ctx->req_fq, &fd);
--		if (likely(!ret)) {
--			refcount_inc(&req->drv_ctx->refcnt);
-+		if (likely(!ret))
- 			return 0;
--		}
- 
-+		refcount_dec(&req->drv_ctx->refcnt);
- 		if (ret != -EBUSY)
- 			break;
- 		num_retries++;
+ 	list_for_each_entry(dev, &bus->devices, bus_list) {
+-		if (!pci_reset_supported(dev))
+-			return false;
+ 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
+ 		    (dev->subordinate && !pci_bus_resetable(dev->subordinate)))
+ 			return false;
+@@ -5562,8 +5560,6 @@ static bool pci_slot_resetable(struct pc
+ 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
+ 		if (!dev->slot || dev->slot != slot)
+ 			continue;
+-		if (!pci_reset_supported(dev))
+-			return false;
+ 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
+ 		    (dev->subordinate && !pci_bus_resetable(dev->subordinate)))
+ 			return false;
 
 
 
