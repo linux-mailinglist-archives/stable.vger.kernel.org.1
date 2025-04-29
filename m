@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-137541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A973AA13C5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D11CAA140B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27DC61667D4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22AB8188CEFD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A85229B05;
-	Tue, 29 Apr 2025 17:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8BB82472BC;
+	Tue, 29 Apr 2025 17:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nskUhpwA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlD9P7eq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED0423C8D6;
-	Tue, 29 Apr 2025 17:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A9922A81D;
+	Tue, 29 Apr 2025 17:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946377; cv=none; b=bxLJbTi1TU0tSo8uW8UaIiy4w1AnnOX2DznVWKHjabQvsyGt5BsQ7Y/wDjJRh1fwROXSc8VD9eMadeeMuIbph4Ey30GlilBGcIuI11L6rmyOqwQZsPBsVKvqEDgQjfyYiy2XD3DqEbCNYYyB7wFtIJK1yI3ktd+sIBbPs8+JJAI=
+	t=1745946494; cv=none; b=j0TTL3ryf8nPYx0xpuOqh6idhEOev+7c5NpnwKv9FnbIUbOv2pGaAkNNly4HXQccmhUnhf9NEj8N29m1CSOlxxQCP7U7np7x4YpRiLSkU/XI8ORys4gpOTli/9ilJWWiV3H6+zTAeouubTHweudfmIaEWa/Yzq6kFzJ8GYAg/HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946377; c=relaxed/simple;
-	bh=aQqetLqE0UIhKHxW/vii40IyshwQEcERJWLoY1N8BKQ=;
+	s=arc-20240116; t=1745946494; c=relaxed/simple;
+	bh=1KN+n1OTRu5qPmWQ7fHStklVNBmBwdV13ocKIhEXrEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A4wP0Q48ktqspvQWidMtca2PQSEZpqMcENaJVupUMnumBBKkkoYVoHyVUYzvf+/tKs27S+HERTutolWGbDhnRgF7jDLrUKPD+9ERmLuuF2FxcHaUX7NXZwF9vBWTRyPjKsz5PaxaDPzhuY3L9wj1CYd2wFy3VDdM8hGZmAx2i/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nskUhpwA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89386C4CEE3;
-	Tue, 29 Apr 2025 17:06:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jfmCbNfVUlHsA82o9v8uQkkBBQvUdNFO6jaYVAmgioiBCmS79o+ChOpDqsg6RJLixhCsZ4LCziDYktgL00hS6EyleuC3IHB8s68XOt3XnRff/p/qfB4q7yTj2j3UvQsNtlsbGBL1j8eOM/VamuMDrIZEvkRF3zPbq+a4l2XSzDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlD9P7eq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129BBC4CEE3;
+	Tue, 29 Apr 2025 17:08:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946376;
-	bh=aQqetLqE0UIhKHxW/vii40IyshwQEcERJWLoY1N8BKQ=;
+	s=korg; t=1745946494;
+	bh=1KN+n1OTRu5qPmWQ7fHStklVNBmBwdV13ocKIhEXrEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nskUhpwAEfsNv1wMiZR3GvBRDJkwdiHtfiI1eVC69OG3ZVdAwLcYIGrjyZjqCJ0UY
-	 7kipJwD7qQ80FMaS+4AMIdNxu4fJMpvzP9srcmyUTa1j+D4n+3kM++x9xIsHnq6yvS
-	 qhqKVSzV4P34qteOIZTC8D9WFrk+SYQEg7abKOMU=
+	b=YlD9P7eqG0vw24Z1UcRXy1PG/dX0sXoP19kCJrCC0A4G93cON3l1K8sfpTOOnCZel
+	 0rCM0TQmFILcq/qF80+/Jh2XkloNNzQEo0mnyqMIlhGRHnmgLH/chkVJ1nTtf/y1k8
+	 MGgHGHz/utTtyxOxxp//6VentqVLLGTw6rK4okbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Trevor Gamblin <tgamblin@baylibre.com>,
 	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 245/311] pwm: Let pwm_set_waveform() succeed even if lowlevel driver rounded up
-Date: Tue, 29 Apr 2025 18:41:22 +0200
-Message-ID: <20250429161131.065560138@linuxfoundation.org>
+Subject: [PATCH 6.14 246/311] pwm: axi-pwmgen: Let .round_waveform_tohw() signal when request was rounded up
+Date: Tue, 29 Apr 2025 18:41:23 +0200
+Message-ID: <20250429161131.105487275@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
 References: <20250429161121.011111832@linuxfoundation.org>
@@ -70,73 +70,61 @@ Content-Transfer-Encoding: 8bit
 
 From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 00e53d0f4baedd72196b65f00698b2a5a537dc2b ]
+[ Upstream commit a85e08a05bf77d5d03b4ac0c59768a606a1b640b ]
 
-Waveform parameters are supposed to be rounded down to the next value
-possible for the hardware. However when a requested value is too small,
-.round_waveform_tohw() is supposed to pick the next bigger value and
-return 1. Let pwm_set_waveform() behave in the same way.
-
-This creates consistency between pwm_set_waveform_might_sleep() with
-exact=false and pwm_round_waveform_might_sleep() +
-pwm_set_waveform_might_sleep() with exact=true.
-
-The PWM_DEBUG rounding check has to be adapted to only trigger if no
-uprounding happend.
+The .round_waveform_tohw() is supposed to return 1 if the requested
+waveform cannot be implemented by rounding down all parameters. Also
+adapt the corresponding comment to better describe why the implemented
+procedure is right.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Tested-by: Trevor Gamblin <tgamblin@baylibre.com>
-Link: https://lore.kernel.org/r/353dc6ae31be815e41fd3df89c257127ca0d1a09.1743844730.git.u.kleine-koenig@baylibre.com
+Link: https://lore.kernel.org/r/ba451573f0218d76645f068cec78bd97802cf010.1743844730.git.u.kleine-koenig@baylibre.com
 Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/core.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/pwm/pwm-axi-pwmgen.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-index ccd54c089bab8..0e4df71c2cef1 100644
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -322,7 +322,7 @@ static int __pwm_set_waveform(struct pwm_device *pwm,
- 	const struct pwm_ops *ops = chip->ops;
- 	char wfhw[WFHWSIZE];
- 	struct pwm_waveform wf_rounded;
--	int err;
-+	int err, ret_tohw;
+diff --git a/drivers/pwm/pwm-axi-pwmgen.c b/drivers/pwm/pwm-axi-pwmgen.c
+index 4259a0db9ff45..4337c8f5acf05 100644
+--- a/drivers/pwm/pwm-axi-pwmgen.c
++++ b/drivers/pwm/pwm-axi-pwmgen.c
+@@ -75,6 +75,7 @@ static int axi_pwmgen_round_waveform_tohw(struct pwm_chip *chip,
+ {
+ 	struct axi_pwmgen_waveform *wfhw = _wfhw;
+ 	struct axi_pwmgen_ddata *ddata = axi_pwmgen_ddata_from_chip(chip);
++	int ret = 0;
  
- 	BUG_ON(WFHWSIZE < ops->sizeof_wfhw);
+ 	if (wf->period_length_ns == 0) {
+ 		*wfhw = (struct axi_pwmgen_waveform){
+@@ -91,12 +92,15 @@ static int axi_pwmgen_round_waveform_tohw(struct pwm_chip *chip,
+ 		if (wfhw->period_cnt == 0) {
+ 			/*
+ 			 * The specified period is too short for the hardware.
+-			 * Let's round .duty_cycle down to 0 to get a (somewhat)
+-			 * valid result.
++			 * So round up .period_cnt to 1 (i.e. the smallest
++			 * possible period). With .duty_cycle and .duty_offset
++			 * being less than or equal to .period, their rounded
++			 * value must be 0.
+ 			 */
+ 			wfhw->period_cnt = 1;
+ 			wfhw->duty_cycle_cnt = 0;
+ 			wfhw->duty_offset_cnt = 0;
++			ret = 1;
+ 		} else {
+ 			wfhw->duty_cycle_cnt = min_t(u64,
+ 						     mul_u64_u32_div(wf->duty_length_ns, ddata->clk_rate_hz, NSEC_PER_SEC),
+@@ -111,7 +115,7 @@ static int axi_pwmgen_round_waveform_tohw(struct pwm_chip *chip,
+ 		pwm->hwpwm, wf->duty_length_ns, wf->period_length_ns, wf->duty_offset_ns,
+ 		ddata->clk_rate_hz, wfhw->period_cnt, wfhw->duty_cycle_cnt, wfhw->duty_offset_cnt);
  
-@@ -332,16 +332,16 @@ static int __pwm_set_waveform(struct pwm_device *pwm,
- 	if (!pwm_wf_valid(wf))
- 		return -EINVAL;
- 
--	err = __pwm_round_waveform_tohw(chip, pwm, wf, &wfhw);
--	if (err)
--		return err;
-+	ret_tohw = __pwm_round_waveform_tohw(chip, pwm, wf, &wfhw);
-+	if (ret_tohw < 0)
-+		return ret_tohw;
- 
- 	if ((IS_ENABLED(CONFIG_PWM_DEBUG) || exact) && wf->period_length_ns) {
- 		err = __pwm_round_waveform_fromhw(chip, pwm, &wfhw, &wf_rounded);
- 		if (err)
- 			return err;
- 
--		if (IS_ENABLED(CONFIG_PWM_DEBUG) && !pwm_check_rounding(wf, &wf_rounded))
-+		if (IS_ENABLED(CONFIG_PWM_DEBUG) && ret_tohw == 0 && !pwm_check_rounding(wf, &wf_rounded))
- 			dev_err(&chip->dev, "Wrong rounding: requested %llu/%llu [+%llu], result %llu/%llu [+%llu]\n",
- 				wf->duty_length_ns, wf->period_length_ns, wf->duty_offset_ns,
- 				wf_rounded.duty_length_ns, wf_rounded.period_length_ns, wf_rounded.duty_offset_ns);
-@@ -382,7 +382,8 @@ static int __pwm_set_waveform(struct pwm_device *pwm,
- 				wf_rounded.duty_length_ns, wf_rounded.period_length_ns, wf_rounded.duty_offset_ns,
- 				wf_set.duty_length_ns, wf_set.period_length_ns, wf_set.duty_offset_ns);
- 	}
 -	return 0;
-+
-+	return ret_tohw;
++	return ret;
  }
  
- /**
+ static int axi_pwmgen_round_waveform_fromhw(struct pwm_chip *chip, struct pwm_device *pwm,
 -- 
 2.39.5
 
