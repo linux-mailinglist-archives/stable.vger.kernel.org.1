@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E531AA1296
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DBD7AA13FF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F0651BA38C5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D63E188B926
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F037625335F;
-	Tue, 29 Apr 2025 16:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354F822A81D;
+	Tue, 29 Apr 2025 17:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orNwbLEZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyOrfGdX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB863253359;
-	Tue, 29 Apr 2025 16:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A03127E18;
+	Tue, 29 Apr 2025 17:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945607; cv=none; b=emSLgvQ1hVhy9E80lvUnjC29kUvI0J49UbsKl4N+cTYg782XgikXPLefA8LMwUm8XUmQW9kP2t3qugufOFUt0+ZgbomW4Og6BK1FIEmP6+lUU52zqeLmlfcQwOyDsQMgmsXxPsfONXkihdAD62ObzynkaKdOFpuibrlLEGegy9E=
+	t=1745946458; cv=none; b=EWMrUTnEYgMsoOUftCm5WFEIdYhICjsXRAag7IwBhN8lZf7mM1C8o9ZkcNgLUqTD1R+DmpQwA50fLbamDA0wY0pT/YKE+eo0KsxhQoxlr+iCA2kgrsYsC62QysSoGdMaRKgDSeGFkXbBqHBopd443aWMMv7Fz89IXZmnlY2kUP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945607; c=relaxed/simple;
-	bh=bk8UeQRBcHLR7qFhux1iU1mD6IpwBdirfOgPaTN3XeQ=;
+	s=arc-20240116; t=1745946458; c=relaxed/simple;
+	bh=OhjCo4NO5pI5NoO3T2Kh0MYMZzHXx+7nIVKjL0nxTlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a4Q5YFz1k3pjiS9Dl5h+m58SgYxfRFfeR3iZcbuYBwPJ4BeK06/ILlaAF4hCWxbgaveVKBm3Cm/ScOs0LApDun1+2nSxYsD4fD7TDW3nJfJ7YA6lvPkFlOONBhGHvDO9sBRV6KOSU8CMPMl6585fXwUg4ZZXK0vVJ5edFl+4loE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orNwbLEZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7844C4CEE3;
-	Tue, 29 Apr 2025 16:53:26 +0000 (UTC)
+	 MIME-Version; b=FAODOuJjdHb3vfpGv7Scoa4zRevM36/Vyi1xOmIwHFIQ1pP8CL2Lqt9eYqp/6flJZ9t8/b+qJxiPCcS3kpsnbkLBBm6E3Th32XIqO5PuK3DmURgJyTkrATBPmZyugqUfal/ObOgABo27I1qWx9fyTay5Mv/ZhSHPmJ8oPJ6P0Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyOrfGdX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574A9C4CEE3;
+	Tue, 29 Apr 2025 17:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945607;
-	bh=bk8UeQRBcHLR7qFhux1iU1mD6IpwBdirfOgPaTN3XeQ=;
+	s=korg; t=1745946457;
+	bh=OhjCo4NO5pI5NoO3T2Kh0MYMZzHXx+7nIVKjL0nxTlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=orNwbLEZcFyWYO90D8jpkHE3bwrV4xUSwQ6672gj213DT0ygpyskjoik0R7mKF/1Z
-	 5soSYF0pgQQ1jE3dpJdnghoM/KHzuelRwOlDmUIUraBaby+TJYlUYaYqVefdyZ2nnR
-	 j00rgAh4g4YkUumXpdBVyaCGlXcs/fd299RzwXjU=
+	b=jyOrfGdX04RBb4BkSSvA+76Q7KV2w00fUOjDoHiidIBCh7QwqgO1HHG0CRHGe9hbL
+	 xdrxIU9rs66EnZbMxeZdxxSR6s1mSHev2BGQx0jMDXR1FQlizA+fxvYix3dsMEKLi0
+	 /hMWbKX3T1vEtOY2qc1dRyKmB+292URfpQL1ILi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Michael Mueller <mimu@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 169/179] KVM: s390: Dont use %pK through tracepoints
+Subject: [PATCH 6.14 273/311] scsi: ufs: exynos: gs101: Put UFS device in reset on .suspend()
 Date: Tue, 29 Apr 2025 18:41:50 +0200
-Message-ID: <20250429161056.235916897@linuxfoundation.org>
+Message-ID: <20250429161132.205288677@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-[ Upstream commit 6c9567e0850be2f0f94ab64fa6512413fd1a1eb1 ]
+[ Upstream commit cd4c0025069f16fc666c6ffc56c49c9b1154841f ]
 
-Restricted pointers ("%pK") are not meant to be used through TP_format().
-It can unintentionally expose security sensitive, raw pointer values.
+GPIO_OUT[0] is connected to the reset pin of embedded UFS device.
+Before powering off the phy assert the reset signal.
 
-Use regular pointer formatting instead.
+This is added as a gs101 specific suspend hook so as not to have any
+unintended consequences for other SoCs supported by this driver.
 
-Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Michael Mueller <mimu@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Message-ID: <20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de>
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-7-96722cc2ba1b@linaro.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/trace-s390.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ufs/host/ufs-exynos.c | 10 ++++++++++
+ drivers/ufs/host/ufs-exynos.h |  1 +
+ 2 files changed, 11 insertions(+)
 
-diff --git a/arch/s390/kvm/trace-s390.h b/arch/s390/kvm/trace-s390.h
-index 6f0209d45164f..9c5f546a2e1a3 100644
---- a/arch/s390/kvm/trace-s390.h
-+++ b/arch/s390/kvm/trace-s390.h
-@@ -56,7 +56,7 @@ TRACE_EVENT(kvm_s390_create_vcpu,
- 		    __entry->sie_block = sie_block;
- 		    ),
+diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
+index b9fbc78be74ee..2436b9454480b 100644
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -1700,6 +1700,12 @@ static void exynos_ufs_hibern8_notify(struct ufs_hba *hba,
+ 	}
+ }
  
--	    TP_printk("create cpu %d at 0x%pK, sie block at 0x%pK",
-+	    TP_printk("create cpu %d at 0x%p, sie block at 0x%p",
- 		      __entry->id, __entry->vcpu, __entry->sie_block)
- 	);
++static int gs101_ufs_suspend(struct exynos_ufs *ufs)
++{
++	hci_writel(ufs, 0 << 0, HCI_GPIO_OUT);
++	return 0;
++}
++
+ static int exynos_ufs_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
+ 	enum ufs_notify_change_status status)
+ {
+@@ -1708,6 +1714,9 @@ static int exynos_ufs_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
+ 	if (status == PRE_CHANGE)
+ 		return 0;
  
-@@ -255,7 +255,7 @@ TRACE_EVENT(kvm_s390_enable_css,
- 		    __entry->kvm = kvm;
- 		    ),
++	if (ufs->drv_data->suspend)
++		ufs->drv_data->suspend(ufs);
++
+ 	if (!ufshcd_is_link_active(hba))
+ 		phy_power_off(ufs->phy);
  
--	    TP_printk("enabling channel I/O support (kvm @ %pK)\n",
-+	    TP_printk("enabling channel I/O support (kvm @ %p)\n",
- 		      __entry->kvm)
- 	);
+@@ -2170,6 +2179,7 @@ static const struct exynos_ufs_drv_data gs101_ufs_drvs = {
+ 	.pre_link		= gs101_ufs_pre_link,
+ 	.post_link		= gs101_ufs_post_link,
+ 	.pre_pwr_change		= gs101_ufs_pre_pwr_change,
++	.suspend		= gs101_ufs_suspend,
+ };
  
+ static const struct of_device_id exynos_ufs_of_match[] = {
+diff --git a/drivers/ufs/host/ufs-exynos.h b/drivers/ufs/host/ufs-exynos.h
+index d0b3df221503c..3c6fe5132190a 100644
+--- a/drivers/ufs/host/ufs-exynos.h
++++ b/drivers/ufs/host/ufs-exynos.h
+@@ -192,6 +192,7 @@ struct exynos_ufs_drv_data {
+ 				struct ufs_pa_layer_attr *pwr);
+ 	int (*pre_hce_enable)(struct exynos_ufs *ufs);
+ 	int (*post_hce_enable)(struct exynos_ufs *ufs);
++	int (*suspend)(struct exynos_ufs *ufs);
+ };
+ 
+ struct ufs_phy_time_cfg {
 -- 
 2.39.5
 
