@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2E7AA1954
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:10:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF01AA1A64
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0EFB4A355F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A89319A22E1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD94A248866;
-	Tue, 29 Apr 2025 18:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162DE2517A8;
+	Tue, 29 Apr 2025 18:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Gc5in8+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjRIxBXv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9968320C488;
-	Tue, 29 Apr 2025 18:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9172240611;
+	Tue, 29 Apr 2025 18:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950111; cv=none; b=Vk3wRo7GtQPOr8wPkdBWM9MdTsSAIphWvpbxP1YJbM+ae5RkAKKujbLNUx8e80joYPRvI5Dbyp51/PgaPRrCCor0Ycq7AQ3VjiaznKJAPu2T03mAsTa7qHVIj8rBYyFq3Xq/ZogNzdCJbaveGUicRxnxB1yHIjCUh8dsjlZgfrI=
+	t=1745950614; cv=none; b=Z951ssSAJA/XW5J9KdEumcowXLwX2Mts1XzyXYmv+gYQBzQf9XsCHs5LYTWFMZpdYf7ILVfyih8Fzph4QKm+y3+zioGt84SrFrMt3p7lHhezdC1hdeCw25rInFAbBtp/B8DZDdeR7gyC8m2t8LOfrKPl0XW8RdXlYfXR8MbFcYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950111; c=relaxed/simple;
-	bh=Q9yQ91nL2BHYGSEZskYqtb2MoU9oRKbhO/7GdEeUQrg=;
+	s=arc-20240116; t=1745950614; c=relaxed/simple;
+	bh=J5R48IU8fuxmOAx9EAoUzKk3CfgqSALa4vT8IrBgiis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZ2JP0HylOWslhdOwLx64eKh53W/YV27FE+n0oErUi3aiQ6qrl4xajd6jTdzd4zKI6H18G7YLBMrYLnIJmZGhf6r82WssykSmHAAtBnjanyjj/2KBEoaRmdqa0p0SjWrvLFefQFyTCYfXdjcLRy26ZMdQ2GvBqVzWYcPLaG5msA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Gc5in8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D12C4CEE3;
-	Tue, 29 Apr 2025 18:08:30 +0000 (UTC)
+	 MIME-Version; b=U6FcRvBHxTXV4smYWH9O+k+gO9mfTpBXsmCRIYTA0fRVYkKKnYug6qobulLDcDNlcOGvZjoeDYiPtY4NdyNSLqQL8Txqrx0whQw0eCuj/FOci0hn3yveteP19TWAQLlqdtygvXM52184AWn4L5ayV0Boe3vfhCPvr+nHyIHvU54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjRIxBXv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542C9C4CEE3;
+	Tue, 29 Apr 2025 18:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950111;
-	bh=Q9yQ91nL2BHYGSEZskYqtb2MoU9oRKbhO/7GdEeUQrg=;
+	s=korg; t=1745950614;
+	bh=J5R48IU8fuxmOAx9EAoUzKk3CfgqSALa4vT8IrBgiis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Gc5in8+i1Ogll9gfYa2ejQA3FAzN9hMw0EAtu7HOE2ySeD8cGaR/TWAau/xAy8Mb
-	 1AKfqxT9MgChtxLR/f7t2qKu8hO62ikEly+whnHZoJfvCKOSw6Ippm6AVdvTFIXTkI
-	 J3Y7wOkQL1m5Lc1zW57YE+/4Vmd2NlO4GI0OPxS0=
+	b=jjRIxBXvCpkLUGV6hrMXz89SN/eLQ+Kn5wTk10qZPXQuNVYMKnEfwy2XG6GSn/QCS
+	 8B5t8wGzUqfhTTTybzQIJQVJLq5sLDIBH9eX4z3/hjlVUsKOM7H7ZSKoMzYLqyqcOg
+	 70kCWi6RkFfpKKLiaPx7eRoKGX9s1VewHIZf5p4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Marc Eurin <jmeurin@google.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	syzbot+903a2ad71fb3f1e47cf5@syzkaller.appspotmail.com,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/167] ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls
-Date: Tue, 29 Apr 2025 18:43:58 +0200
-Message-ID: <20250429161056.997449193@linuxfoundation.org>
+Subject: [PATCH 6.6 151/204] io_uring: always do atomic put from iowq
+Date: Tue, 29 Apr 2025 18:43:59 +0200
+Message-ID: <20250429161105.598450712@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Marc Eurin <jmeurin@google.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 7ab4f0e37a0f4207e742a8de69be03984db6ebf0 ]
+[ Upstream commit 390513642ee6763c7ada07f0a1470474986e6c1c ]
 
-The end of table checks should be done with the structure size,
-but 2 of the 3 similar calls use the pointer size.
+io_uring always switches requests to atomic refcounting for iowq
+execution before there is any parallilism by setting REQ_F_REFCOUNT,
+and the flag is not cleared until the request completes. That should be
+fine as long as the compiler doesn't make up a non existing value for
+the flags, however KCSAN still complains when the request owner changes
+oter flag bits:
 
-Signed-off-by: Jean-Marc Eurin <jmeurin@google.com>
-Link: https://patch.msgid.link/20250402001542.2600671-1-jmeurin@google.com
-[ rjw: Subject edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+BUG: KCSAN: data-race in io_req_task_cancel / io_wq_free_work
+...
+read to 0xffff888117207448 of 8 bytes by task 3871 on cpu 0:
+ req_ref_put_and_test io_uring/refs.h:22 [inline]
+
+Skip REQ_F_REFCOUNT checks for iowq, we know it's set.
+
+Reported-by: syzbot+903a2ad71fb3f1e47cf5@syzkaller.appspotmail.com
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/d880bc27fb8c3209b54641be4ff6ac02b0e5789a.1743679736.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/pptt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c | 2 +-
+ io_uring/refs.h     | 7 +++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-index ced3eb15bd8b7..79a83d8236cb3 100644
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -217,7 +217,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
- 	node_entry = ACPI_PTR_DIFF(node, table_hdr);
- 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
- 			     sizeof(struct acpi_table_pptt));
--	proc_sz = sizeof(struct acpi_pptt_processor *);
-+	proc_sz = sizeof(struct acpi_pptt_processor);
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 9883fd16cde44..3ce93418e0151 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1917,7 +1917,7 @@ struct io_wq_work *io_wq_free_work(struct io_wq_work *work)
+ 	struct io_kiocb *req = container_of(work, struct io_kiocb, work);
+ 	struct io_kiocb *nxt = NULL;
  
- 	while ((unsigned long)entry + proc_sz < table_end) {
- 		cpu_node = (struct acpi_pptt_processor *)entry;
-@@ -258,7 +258,7 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
- 	table_end = (unsigned long)table_hdr + table_hdr->length;
- 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
- 			     sizeof(struct acpi_table_pptt));
--	proc_sz = sizeof(struct acpi_pptt_processor *);
-+	proc_sz = sizeof(struct acpi_pptt_processor);
+-	if (req_ref_put_and_test(req)) {
++	if (req_ref_put_and_test_atomic(req)) {
+ 		if (req->flags & IO_REQ_LINK_FLAGS)
+ 			nxt = io_req_find_next(req);
+ 		io_free_req(req);
+diff --git a/io_uring/refs.h b/io_uring/refs.h
+index 1336de3f2a30a..21a379b0f22d6 100644
+--- a/io_uring/refs.h
++++ b/io_uring/refs.h
+@@ -17,6 +17,13 @@ static inline bool req_ref_inc_not_zero(struct io_kiocb *req)
+ 	return atomic_inc_not_zero(&req->refs);
+ }
  
- 	/* find the processor structure associated with this cpuid */
- 	while ((unsigned long)entry + proc_sz < table_end) {
++static inline bool req_ref_put_and_test_atomic(struct io_kiocb *req)
++{
++	WARN_ON_ONCE(!(data_race(req->flags) & REQ_F_REFCOUNT));
++	WARN_ON_ONCE(req_ref_zero_or_close_to_overflow(req));
++	return atomic_dec_and_test(&req->refs);
++}
++
+ static inline bool req_ref_put_and_test(struct io_kiocb *req)
+ {
+ 	if (likely(!(req->flags & REQ_F_REFCOUNT)))
 -- 
 2.39.5
 
