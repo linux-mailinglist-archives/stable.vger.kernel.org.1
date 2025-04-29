@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D14B5AA144A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7ACAA1708
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3A3C189C3B0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:11:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CC467B6D86
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D852221DA7;
-	Tue, 29 Apr 2025 17:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D5322A81D;
+	Tue, 29 Apr 2025 17:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QncTcdEs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q39A/Rc5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CD42441A6;
-	Tue, 29 Apr 2025 17:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A479421ABC1;
+	Tue, 29 Apr 2025 17:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946652; cv=none; b=RF77dp2Z8slc4PegJAIlXj854JDGhxOV8uMNMTH6sPziila1ucB/8z3WF3nZceA6jDdPnW67MDDO6byESq8r9uTFpmZdiinYDHhAorYv4zdjJ21uBomqgfNsowVkG3gFPRDS+up88e7oUfVZrrUkmjNFjB9PNqHlu02i1zH67aU=
+	t=1745948583; cv=none; b=DQ1auS/CWMHQem+/Vkj3naJPqKJ28l59nxxKagq7ZPhzOnuN+hzjwbJUbxrnaySxZuFuhz+0VavqHqw6AzOtSdcuP2zZqyZOjCbAZ0zRJihnZzxFDs1lWv57ywCk8gnX0a5HtIICBjEuz34JD4z9g8Xh3grAa0m2jvSQ9QKsG8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946652; c=relaxed/simple;
-	bh=Sq1Gs639mZkaLVhifDyZ6etZHeWOwDDd7s2HPCNBFHA=;
+	s=arc-20240116; t=1745948583; c=relaxed/simple;
+	bh=4NUez06L3Rn3qRLSjWA9zMTrRFR4afJEDbYuhrJndTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dw60cX1kmgU/BbSThVwR9+KX22LU/FVhfMV5qC8uyBoqmPtb2VX7SHHqSwtxWzWrdxEorRob8NmU1OlPTdyFJtzuycNoQyE8l0fu+3jwvJD7h+UgnhFyeY+46EjwvAjUpYhlVYF6w0Nug5+jsYZA8TN8nnjH5T+MDl5LlL36/sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QncTcdEs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D14C4CEE3;
-	Tue, 29 Apr 2025 17:10:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DiKNGbrWKsYETBTUXSiGyLJZGzM47/rc/xa8nFuYHgrJjT0uNKGorrOevWOoep4jfidc2pJnMq/VJ9EIW/Ji26uq8tSh5+abR5s13aU3T9vDrNVXHIvMrfBW6kG0AVaR04gwxAV+VcgY5x0EV3gqbxXuJU2WLDkEOvEHP/PU5B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q39A/Rc5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A06C4CEE3;
+	Tue, 29 Apr 2025 17:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946651;
-	bh=Sq1Gs639mZkaLVhifDyZ6etZHeWOwDDd7s2HPCNBFHA=;
+	s=korg; t=1745948583;
+	bh=4NUez06L3Rn3qRLSjWA9zMTrRFR4afJEDbYuhrJndTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QncTcdEsmF8GL1rdLy2In9y1GPlNuX79U8YFT8WqS1HIItdyoIl9Bu3r5NTGoRuSZ
-	 ai9WnG7YQDWMO+sfc6t1XFtkKjhu1th4j2EDV3JyyPQkURFXpHzA8TtSU41Ql2V1St
-	 3KlRVLVoswklIUlucYWcy4SekiYhpJQ5+GwkOmzU=
+	b=Q39A/Rc5ql6fzF52coZcyehBgTl0oerBWdq9/Z8HSXUgJZCtobSkzKeOFTpA7EZpU
+	 LLfZBcc6fng6o+OKLDTp3ts6y0t2Y2j+5HUq9LJ16u0AKkTDXeeGi51/xJ2DVbTJnw
+	 Zyh7lW1rJEDlbWM9dDHgiE1YpA6zi1ME3Eb/OCnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+355da3b3a74881008e8f@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 024/286] jfs: Prevent copying of nlink with value 0 from disk inode
+Subject: [PATCH 5.15 051/373] pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()
 Date: Tue, 29 Apr 2025 18:38:48 +0200
-Message-ID: <20250429161108.846289813@linuxfoundation.org>
+Message-ID: <20250429161125.231073836@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,120 +61,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit b61e69bb1c049cf507e3c654fa3dc1568231bd07 ]
+[ Upstream commit 7ca59947b5fcf94e7ea4029d1bd0f7c41500a161 ]
 
-syzbot report a deadlock in diFree. [1]
+With CONFIG_COMPILE_TEST && !CONFIG_HAVE_CLK, pwm_mediatek_config() has a
+divide-by-zero in the following line:
 
-When calling "ioctl$LOOP_SET_STATUS64", the offset value passed in is 4,
-which does not match the mounted loop device, causing the mapping of the
-mounted loop device to be invalidated.
+	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
 
-When creating the directory and creating the inode of iag in diReadSpecial(),
-read the page of fixed disk inode (AIT) in raw mode in read_metapage(), the
-metapage data it returns is corrupted, which causes the nlink value of 0 to be
-assigned to the iag inode when executing copy_from_dinode(), which ultimately
-causes a deadlock when entering diFree().
+due to the fact that the !CONFIG_HAVE_CLK version of clk_get_rate()
+returns zero.
 
-To avoid this, first check the nlink value of dinode before setting iag inode.
+This is presumably just a theoretical problem: COMPILE_TEST overrides
+the dependency on RALINK which would select COMMON_CLK.  Regardless it's
+a good idea to check for the error explicitly to avoid divide-by-zero.
 
-[1]
-WARNING: possible recursive locking detected
-6.12.0-rc7-syzkaller-00212-g4a5df3796467 #0 Not tainted
---------------------------------------------
-syz-executor301/5309 is trying to acquire lock:
-ffff888044548920 (&(imap->im_aglock[index])){+.+.}-{3:3}, at: diFree+0x37c/0x2fb0 fs/jfs/jfs_imap.c:889
+Fixes the following warning:
 
-but task is already holding lock:
-ffff888044548920 (&(imap->im_aglock[index])){+.+.}-{3:3}, at: diAlloc+0x1b6/0x1630
+  drivers/pwm/pwm-mediatek.o: warning: objtool: .text: unexpected end of section
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(&(imap->im_aglock[index]));
-  lock(&(imap->im_aglock[index]));
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-5 locks held by syz-executor301/5309:
- #0: ffff8880422a4420 (sb_writers#9){.+.+}-{0:0}, at: mnt_want_write+0x3f/0x90 fs/namespace.c:515
- #1: ffff88804755b390 (&type->i_mutex_dir_key#6/1){+.+.}-{3:3}, at: inode_lock_nested include/linux/fs.h:850 [inline]
- #1: ffff88804755b390 (&type->i_mutex_dir_key#6/1){+.+.}-{3:3}, at: filename_create+0x260/0x540 fs/namei.c:4026
- #2: ffff888044548920 (&(imap->im_aglock[index])){+.+.}-{3:3}, at: diAlloc+0x1b6/0x1630
- #3: ffff888044548890 (&imap->im_freelock){+.+.}-{3:3}, at: diNewIAG fs/jfs/jfs_imap.c:2460 [inline]
- #3: ffff888044548890 (&imap->im_freelock){+.+.}-{3:3}, at: diAllocExt fs/jfs/jfs_imap.c:1905 [inline]
- #3: ffff888044548890 (&imap->im_freelock){+.+.}-{3:3}, at: diAllocAG+0x4b7/0x1e50 fs/jfs/jfs_imap.c:1669
- #4: ffff88804755a618 (&jfs_ip->rdwrlock/1){++++}-{3:3}, at: diNewIAG fs/jfs/jfs_imap.c:2477 [inline]
- #4: ffff88804755a618 (&jfs_ip->rdwrlock/1){++++}-{3:3}, at: diAllocExt fs/jfs/jfs_imap.c:1905 [inline]
- #4: ffff88804755a618 (&jfs_ip->rdwrlock/1){++++}-{3:3}, at: diAllocAG+0x869/0x1e50 fs/jfs/jfs_imap.c:1669
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 5309 Comm: syz-executor301 Not tainted 6.12.0-rc7-syzkaller-00212-g4a5df3796467 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_deadlock_bug+0x483/0x620 kernel/locking/lockdep.c:3037
- check_deadlock kernel/locking/lockdep.c:3089 [inline]
- validate_chain+0x15e2/0x5920 kernel/locking/lockdep.c:3891
- __lock_acquire+0x1384/0x2050 kernel/locking/lockdep.c:5202
- lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5825
- __mutex_lock_common kernel/locking/mutex.c:608 [inline]
- __mutex_lock+0x136/0xd70 kernel/locking/mutex.c:752
- diFree+0x37c/0x2fb0 fs/jfs/jfs_imap.c:889
- jfs_evict_inode+0x32d/0x440 fs/jfs/inode.c:156
- evict+0x4e8/0x9b0 fs/inode.c:725
- diFreeSpecial fs/jfs/jfs_imap.c:552 [inline]
- duplicateIXtree+0x3c6/0x550 fs/jfs/jfs_imap.c:3022
- diNewIAG fs/jfs/jfs_imap.c:2597 [inline]
- diAllocExt fs/jfs/jfs_imap.c:1905 [inline]
- diAllocAG+0x17dc/0x1e50 fs/jfs/jfs_imap.c:1669
- diAlloc+0x1d2/0x1630 fs/jfs/jfs_imap.c:1590
- ialloc+0x8f/0x900 fs/jfs/jfs_inode.c:56
- jfs_mkdir+0x1c5/0xba0 fs/jfs/namei.c:225
- vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
- do_mkdirat+0x264/0x3a0 fs/namei.c:4280
- __do_sys_mkdirat fs/namei.c:4295 [inline]
- __se_sys_mkdirat fs/namei.c:4293 [inline]
- __x64_sys_mkdirat+0x87/0xa0 fs/namei.c:4293
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Reported-by: syzbot+355da3b3a74881008e8f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=355da3b3a74881008e8f
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/fb56444939325cc173e752ba199abd7aeae3bf12.1742852847.git.jpoimboe@kernel.org
+[ukleinek: s/CONFIG_CLK/CONFIG_HAVE_CLK/]
+Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/9e78a0796acba3435553ed7db1c7965dcffa6215.1743501688.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_imap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-mediatek.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index da3a1c27d3498..84e2c67c9070f 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -458,7 +458,7 @@ struct inode *diReadSpecial(struct super_block *sb, ino_t inum, int secondary)
- 	dp += inum % 8;		/* 8 inodes per 4K page */
+diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
+index f8f9a74891293..bb764428bfe76 100644
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -120,21 +120,25 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
+ 	u32 clkdiv = 0, cnt_period, cnt_duty, reg_width = PWMDWIDTH,
+ 	    reg_thres = PWMTHRES;
++	unsigned long clk_rate;
+ 	u64 resolution;
+ 	int ret;
  
- 	/* copy on-disk inode to in-memory inode */
--	if ((copy_from_dinode(dp, ip)) != 0) {
-+	if ((copy_from_dinode(dp, ip) != 0) || (ip->i_nlink == 0)) {
- 		/* handle bad return by returning NULL for ip */
- 		set_nlink(ip, 1);	/* Don't want iput() deleting it */
- 		iput(ip);
+ 	ret = pwm_mediatek_clk_enable(chip, pwm);
+-
+ 	if (ret < 0)
+ 		return ret;
+ 
++	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
++	if (!clk_rate)
++		return -EINVAL;
++
+ 	/* Make sure we use the bus clock and not the 26MHz clock */
+ 	if (pc->soc->has_ck_26m_sel)
+ 		writel(0, pc->regs + PWM_CK_26M_SEL);
+ 
+ 	/* Using resolution in picosecond gets accuracy higher */
+ 	resolution = (u64)NSEC_PER_SEC * 1000;
+-	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
++	do_div(resolution, clk_rate);
+ 
+ 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
+ 	while (cnt_period > 8191) {
 -- 
 2.39.5
 
