@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ABCAAA134E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42DC4AA1208
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73CA316566E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2421D927192
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C40241664;
-	Tue, 29 Apr 2025 17:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477BF247288;
+	Tue, 29 Apr 2025 16:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDXMCrGH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WjdNxa9a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6CD82C60;
-	Tue, 29 Apr 2025 17:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029CE27453;
+	Tue, 29 Apr 2025 16:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946058; cv=none; b=XkD052JLy4uHhpBkn6fVqy7cRNQSzNAGWGjfptUb1EBFQFfOmiP9plikH+/rctvUymY4QMAVLqn9NBMELWaBS51A52ohT4C6VglnkTWdGYUOCv7ZfC/uGO+m2UU8MFgHOqxtVKFzmUQ3QBWLbSwybfoYTdTEXP9k8v1//qxPhgw=
+	t=1745945205; cv=none; b=oCsRSgFl4n0d+K4b5n8xwc21aNdz5Rv2d8iFcBGc+5GimwbowkAtID5JmjU4bbDHgCDMPDWmasvKgebJ6ktONqtwtvMfgPVsFKkKvWHJHxA/ZOT1bP4EwfNS9+y80KURESVBigLzMinLwCbBDpi2l/GRUMPXk13EzNog9vPHhQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946058; c=relaxed/simple;
-	bh=C/G+jSAXFdewQr2gqITiZYZUTb+2aVxzbik76UQInLA=;
+	s=arc-20240116; t=1745945205; c=relaxed/simple;
+	bh=M/XbYCOgi8PXz3ljJPunboUU5+mF1P6f6g0GBYTm+Qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cWIwHlAxNuAIiye5xMnvIlTjLrPJvz3JQJgMFuH3/j1aV0ubB7tB0Gcc1H874XB91DO4IiJso84+1bwP7VNmeo4bLrekpGq3yntzUu8PfB3ghDckm6ZDk60W/0ckdkBw8ZURw2NVTRrf7UjvOKclnKl9hwjtQVnx2E0nfweRwms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDXMCrGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE712C4CEE3;
-	Tue, 29 Apr 2025 17:00:57 +0000 (UTC)
+	 MIME-Version; b=sw1l7NKvuPO1T6HdJYWUrXxMLNKwYcurk/QAQkXD5RUk4jOCtNtQPGkjqKMSOld+vvWQT1EQJN8l0Whl4FZ0QKlhLuOYPJz/TTgHLMgeQEnzjNPP02W+0BkSLsZ20TwCm1qsJTdgpBi7L+xMubUl/76YtstgsLDoo/aYOGM/sEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WjdNxa9a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106C8C4CEE3;
+	Tue, 29 Apr 2025 16:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946058;
-	bh=C/G+jSAXFdewQr2gqITiZYZUTb+2aVxzbik76UQInLA=;
+	s=korg; t=1745945204;
+	bh=M/XbYCOgi8PXz3ljJPunboUU5+mF1P6f6g0GBYTm+Qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDXMCrGHl2o4Q9ktvdNGf0NPy5qtd1Vp/oxd/CvFLA0NIsvUlLuo2FbkxMvPglozR
-	 DrgJk3p5f7M2k5RsAQyW/rB5U9J0ZjaikC5H7ppO4fv4DWliezGV+sVpDyH1VJ1nKI
-	 zWJuxnutaur3gplIyVvsA3rmAkRCvkSKogFgdtdg=
+	b=WjdNxa9a88mh7ZRGnZAPX45r3BNhN0LvCrK5Lon3CQvlg7ZyKFTIV4r3Yv6SC6nyR
+	 guyRw3Xyu3RzA1RdvVeNYZuiboZ+PHN6SFXySt1C9g1ZXePcIhm9h4EUn7o4Ln3KsF
+	 Jhn8MsHyaVcAvRWs7sij+++2wsLNApek6wyvqSXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>
-Subject: [PATCH 6.14 140/311] ata: libata-scsi: Fix ata_msense_control_ata_feature()
+	Leonid Arapov <arapovl839@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 036/179] fbdev: omapfb: Add plane value check
 Date: Tue, 29 Apr 2025 18:39:37 +0200
-Message-ID: <20250429161126.770552285@linuxfoundation.org>
+Message-ID: <20250429161050.874127497@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Leonid Arapov <arapovl839@gmail.com>
 
-commit 88474ad734fb2000805c63e01cc53ea930adf2c7 upstream.
+[ Upstream commit 3e411827f31db7f938a30a3c7a7599839401ec30 ]
 
-For the ATA features subpage of the control mode page, the T10 SAT-6
-specifications state that:
+Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_WB
+of the enum parameter plane.
 
-For a MODE SENSE command, the SATL shall return the CDL_CTRL field value
-that was last set by an application client.
+The value of this parameter is initialized in dss_init_overlays and in the
+current state of the code it cannot take this value so it's not a real
+problem.
 
-However, the function ata_msense_control_ata_feature() always sets the
-CDL_CTRL field to the 0x02 value to indicate support for the CDL T2A and
-T2B pages. This is thus incorrect and the value 0x02 must be reported
-only after the user enables the CDL feature, which is indicated with the
-ATA_DFLAG_CDL_ENABLED device flag. When this flag is not set, the
-CDL_CTRL field of the ATA feature subpage of the control mode page must
-report a value of 0x00.
+For the purposes of defensive coding it wouldn't be superfluous to check
+the parameter value, because some functions down the call stack process
+this value correctly and some not.
 
-Fix ata_msense_control_ata_feature() to report the correct values for
-the CDL_CTRL field, according to the enable/disable state of the device
-CDL feature.
+For example, in dispc_ovl_setup_global_alpha it may lead to buffer
+overflow.
 
-Fixes: df60f9c64576 ("scsi: ata: libata: Add ATA feature control sub-page translation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add check for this value.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE static
+analysis tool.
+
+Signed-off-by: Leonid Arapov <arapovl839@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -2453,8 +2453,8 @@ static unsigned int ata_msense_control_a
- 	 */
- 	put_unaligned_be16(ATA_FEATURE_SUB_MPAGE_LEN - 4, &buf[2]);
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+index 34e8171856e95..5570f2359d073 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+@@ -2787,9 +2787,13 @@ int dispc_ovl_setup(enum omap_plane plane, const struct omap_overlay_info *oi,
+ 		bool mem_to_mem)
+ {
+ 	int r;
+-	enum omap_overlay_caps caps = dss_feat_get_overlay_caps(plane);
++	enum omap_overlay_caps caps;
+ 	enum omap_channel channel;
  
--	if (dev->flags & ATA_DFLAG_CDL)
--		buf[4] = 0x02; /* Support T2A and T2B pages */
-+	if (dev->flags & ATA_DFLAG_CDL_ENABLED)
-+		buf[4] = 0x02; /* T2A and T2B pages enabled */
- 	else
- 		buf[4] = 0;
++	if (plane == OMAP_DSS_WB)
++		return -EINVAL;
++
++	caps = dss_feat_get_overlay_caps(plane);
+ 	channel = dispc_ovl_get_channel_out(plane);
  
+ 	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
+-- 
+2.39.5
+
 
 
 
