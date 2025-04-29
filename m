@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-138700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76156AA1943
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFECAA1A50
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:20:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6574171DBE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 780761C00E24
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A3024633C;
-	Tue, 29 Apr 2025 18:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5676D2517AC;
+	Tue, 29 Apr 2025 18:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkI9vvDM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YT+4205"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4428F40C03;
-	Tue, 29 Apr 2025 18:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118DD253B73;
+	Tue, 29 Apr 2025 18:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950075; cv=none; b=W3MbiPs9eyUc4QNTgcNyLQoJRu6Ams+GN3is3lV9Tufj6hAEDHytB1hliAJt/vi9b13EmTFXDqd2kWVoJ8t3cbPZOuJLzUKEiK5d/mhnQm04s+VV0bDMvthr07+fJ8ujOvIvYL+eTJHMru48mPdN8WcV51eqnBvNe9/c8YA6MIg=
+	t=1745950766; cv=none; b=Qh2OwS76TXpvfVwwbeSVGpe9F8NQsmG83KDvVUfQrMBx/K6879NWxK5Oy5dBVstu2HqETyNbLMEHAiFjPLR5sQQ68GHP3BBS4J0qGskCRHFpMPN5eQa8h1G+PCidJtUj64BXB90bc8tEfn91xfOUWIHRZBPkcIhDGImZXUUH29g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950075; c=relaxed/simple;
-	bh=rldtOZutT8pQiDv8AhZYn17npcd26yMIMFO4hUuUgvA=;
+	s=arc-20240116; t=1745950766; c=relaxed/simple;
+	bh=HF4L61OpM25fFjvLYwd86uZ/08YIzg0I9k7iee5o1wU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pM1oBg9S1ogSU4+W/x93qDb2WgPERgQXFBhxoxoG18WlhPEEGYaUP2NiDVm/fXoZeTIs5qspbJAJG3QqGethKSbe42gDg1lkIRzSlhI/CU2cyNjUtA/s+GPAf7URYx+E0Vqwuss3QNwcqVlW4QtW8mV/xCokfqW7n1CK6TdgkYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkI9vvDM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27447C4CEE3;
-	Tue, 29 Apr 2025 18:07:53 +0000 (UTC)
+	 MIME-Version; b=jSbvZO6BRVKmX0mScLWan+4hxl9YKkTiqL1DaP3iKDJZOxhT5KRTlB8wlTfTXjXMj/hH35beoWHzSzW17tntS2BLQW0NKZqTyIj6oM0ri16u1wepJkpIC+kWrGCVk4F0kBJDignzJ5FsgsAtJnQiZ9vsn2PmI0xhvTz+BYY7HVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YT+4205; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9EBC4CEE3;
+	Tue, 29 Apr 2025 18:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950074;
-	bh=rldtOZutT8pQiDv8AhZYn17npcd26yMIMFO4hUuUgvA=;
+	s=korg; t=1745950766;
+	bh=HF4L61OpM25fFjvLYwd86uZ/08YIzg0I9k7iee5o1wU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZkI9vvDMl4iJ/NXNRwmwADjQwac0QbiErBAboCnckkFm/FwJVISdBKRhZv1syx69D
-	 SOm7/To28oklADZI3BZjwpD6W5iId+PyQ5BVG9/mtT9PdQOYmiNllUNFCdU0UZPy8q
-	 uNXFPDv/Uj8HIXEOy/chhljUotrDYfUjQ8GB0Ckk=
+	b=1YT+4205Rq7wd2jz0eGuRD8GI92RfbqYtfZKJpF5/vM+HXr5RwpzwxzBlUVfpMzgx
+	 5p6/kjg0ozo0qelahX0H4MWGpb2mrHRVLbepu2dm9RE7/yrmLTMoPy4ybJroJgaY7i
+	 PnHpNMxBul+NBLjVcChw11f1o/Khvj6qt+ls6sdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meir Elisha <meir.elisha@volumez.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Amit Shah <amit.shah@amd.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	David Woodhouse <dwmw2@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 148/167] md/raid1: Add check for missing source disk in process_checks()
+Subject: [PATCH 6.6 168/204] x86/bugs: Dont fill RSB on VMEXIT with eIBRS+retpoline
 Date: Tue, 29 Apr 2025 18:44:16 +0200
-Message-ID: <20250429161057.713782818@linuxfoundation.org>
+Message-ID: <20250429161106.276991615@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +69,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meir Elisha <meir.elisha@volumez.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit b7c178d9e57c8fd4238ff77263b877f6f16182ba ]
+[ Upstream commit 18bae0dfec15b24ec14ca17dc18603372f5f254f ]
 
-During recovery/check operations, the process_checks function loops
-through available disks to find a 'primary' source with successfully
-read data.
+eIBRS protects against guest->host RSB underflow/poisoning attacks.
+Adding retpoline to the mix doesn't change that.  Retpoline has a
+balanced CALL/RET anyway.
 
-If no suitable source disk is found after checking all possibilities,
-the 'primary' index will reach conf->raid_disks * 2. Add an explicit
-check for this condition after the loop. If no source disk was found,
-print an error message and return early to prevent further processing
-without a valid primary source.
+So the current full RSB filling on VMEXIT with eIBRS+retpoline is
+overkill.  Disable it or do the VMEXIT_LITE mitigation if needed.
 
-Link: https://lore.kernel.org/linux-raid/20250408143808.1026534-1-meir.elisha@volumez.com
-Signed-off-by: Meir Elisha <meir.elisha@volumez.com>
-Suggested-and-reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Reviewed-by: Amit Shah <amit.shah@amd.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Link: https://lore.kernel.org/r/84a1226e5c9e2698eae1b5ade861f1b8bf3677dc.1744148254.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ arch/x86/kernel/cpu/bugs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 76f7ca53d8123..38e77a4b6b338 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -2068,14 +2068,9 @@ static int fix_sync_read_error(struct r1bio *r1_bio)
- 				if (!rdev_set_badblocks(rdev, sect, s, 0))
- 					abort = 1;
- 			}
--			if (abort) {
--				conf->recovery_disabled =
--					mddev->recovery_disabled;
--				set_bit(MD_RECOVERY_INTR, &mddev->recovery);
--				md_done_sync(mddev, r1_bio->sectors, 0);
--				put_buf(r1_bio);
-+			if (abort)
- 				return 0;
--			}
-+
- 			/* Try next page */
- 			sectors -= s;
- 			sect += s;
-@@ -2214,10 +2209,21 @@ static void sync_request_write(struct mddev *mddev, struct r1bio *r1_bio)
- 	int disks = conf->raid_disks * 2;
- 	struct bio *wbio;
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 7df458a6553eb..a8fce2ab0f250 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1600,20 +1600,20 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
+ 	case SPECTRE_V2_NONE:
+ 		return;
  
--	if (!test_bit(R1BIO_Uptodate, &r1_bio->state))
--		/* ouch - failed to read all of that. */
--		if (!fix_sync_read_error(r1_bio))
-+	if (!test_bit(R1BIO_Uptodate, &r1_bio->state)) {
-+		/*
-+		 * ouch - failed to read all of that.
-+		 * No need to fix read error for check/repair
-+		 * because all member disks are read.
-+		 */
-+		if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery) ||
-+		    !fix_sync_read_error(r1_bio)) {
-+			conf->recovery_disabled = mddev->recovery_disabled;
-+			set_bit(MD_RECOVERY_INTR, &mddev->recovery);
-+			md_done_sync(mddev, r1_bio->sectors, 0);
-+			put_buf(r1_bio);
- 			return;
-+		}
-+	}
+-	case SPECTRE_V2_EIBRS_LFENCE:
+ 	case SPECTRE_V2_EIBRS:
++	case SPECTRE_V2_EIBRS_LFENCE:
++	case SPECTRE_V2_EIBRS_RETPOLINE:
+ 		if (boot_cpu_has_bug(X86_BUG_EIBRS_PBRSB)) {
+-			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
+ 			pr_info("Spectre v2 / PBRSB-eIBRS: Retire a single CALL on VMEXIT\n");
++			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
+ 		}
+ 		return;
  
- 	if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery))
- 		process_checks(r1_bio);
+-	case SPECTRE_V2_EIBRS_RETPOLINE:
+ 	case SPECTRE_V2_RETPOLINE:
+ 	case SPECTRE_V2_LFENCE:
+ 	case SPECTRE_V2_IBRS:
+-		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
+ 		pr_info("Spectre v2 / SpectreRSB : Filling RSB on VMEXIT\n");
++		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
+ 		return;
+ 	}
+ 
 -- 
 2.39.5
 
