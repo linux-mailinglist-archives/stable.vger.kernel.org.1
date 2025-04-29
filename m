@@ -1,128 +1,146 @@
-Return-Path: <stable+bounces-136977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4240AA9FE00
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 01:59:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E434BA9FE78
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 02:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EACA467436
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 23:59:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6516C3B32CC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 00:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBF3214A95;
-	Mon, 28 Apr 2025 23:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257581B0430;
+	Tue, 29 Apr 2025 00:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fqjh7bvF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CjPKYrKL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C221C35966;
-	Mon, 28 Apr 2025 23:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773131C3308;
+	Tue, 29 Apr 2025 00:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745884780; cv=none; b=eht7skXMYBo/FIfMqZos9hKo3NZVNI6YhdV55hOlh4IBWaMUIJ0t2Ux1fM+j45YPpsqslc2zFriEM+xE95S93w4FtcPRP875gf5q1Tl3GiaewVjqWFSJRmFg4HBjEd2wblby6NwsthTsSu3L/Sw/+NDDirqfbd8wYpdANi0ILKQ=
+	t=1745887024; cv=none; b=jhlsVw4e541BTWaLQOxr+LyGgoFNl1NDAWdCt+bqwo0xn5gdNM3c4pROFGEvX60iiorbv7OoY4k1LFhSdfpKCnLmxpG5sH4rl8w59qR2PlNbMWuYC7l9XJBd/OOXXGuUcT7pRKd2zbotKQ3JhQjJLCwWZuo9tv/4B9HrQuK7ZK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745884780; c=relaxed/simple;
-	bh=dwjOYKhNu9ectViomXMruDUC3aGQX3Yq8FWUHkxR+GY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oVN3/D9iWQrT2mSMeXu60DujGrt6pbZPn/9zgf18v7hJrW11UlGW0KMRQO8UcWofQUChuVu3Rw4kA06sKaJKLrpVyWb1u8VKjrpxPN3k1Y3mxIdbxjzpmSD7ChraK0eQDGziwSW/6b4fAGiz2QLZ6xsLByTSFyy2Y+ZICh1tOw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fqjh7bvF; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3081f72c271so5090055a91.0;
-        Mon, 28 Apr 2025 16:59:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745884778; x=1746489578; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8RsuQSMGH+Nxq35AjsUShs6H+a1PazjIafsb4arH8+U=;
-        b=Fqjh7bvFkxU7dwCfIrzX+aZRwYuKuidkLLlQ7H2dBAcsniUoZKRTALeZwu7npNOC1E
-         dQEXykuCrMVzcZRjQTL5xmf39nx2xOVWuJWchWNR0hOf5gUIpWEsYlx+uFAYPcFDAz8m
-         g4FB0pPtNRDZeDmhWSvfcw1zn99XybRRMBzza0uxD1c4tRzYoFNLbo4ynF51ol4meIKw
-         8r/WnECWo4fXWwaRSjmJ6x7K2RpgAn+MQup0kwW1NdV0f+6amDu3Kyz+BfRdGNBTBSS8
-         n7BwXVZx9PQrSq6tGCbo7hwWVkwgfZXpGU8X0zkzUxiegR82ZHOIt//bAcfyzohP2yA7
-         xVWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745884778; x=1746489578;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8RsuQSMGH+Nxq35AjsUShs6H+a1PazjIafsb4arH8+U=;
-        b=XdHcBRjLZCj+lQg4B+0kJ6Vqj18mNiWvPqW0WS2JirBw13CBSoD4hlCfLc33g8cnOf
-         0wjANuDYAUfROdGLA1M4HOLcavNAf88q1fZe5tLnItko2Mhz1d70ojeVCLj3MHRUxwQf
-         i3Zi4JeVEmOC483ifldvJmEMIatsOhtIvnmSmQCkO73P0cOGGv0gz7DJGufQwe7T3tgP
-         VoYCSX1ynpjwhrRMB0s3h4iF99carGvdm1xBvosmVdApon5tPx12h8T/M7SptvpuPzS8
-         EF18sll5SXt5oapaJc6g3xTdpO2UHoHO92Zinp5nnVJOHgK1pJw2B+WeYpUI8INqCJ+j
-         n0Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCW3GgP8A502PL18LNbOBMSki5/8NQYfr3bP7oq6hxAJ/Uh8NKMA4n/bT8UoIEQGvhMZPBdkNbfv02w+6PU=@vger.kernel.org, AJvYcCWROLSuA6A2TXRrKiC0gKfBeLoMVVv9IiPMXU5s1ovQ38m53mV/fqTf6mu0NSxUFoCD0U+S4M0d@vger.kernel.org, AJvYcCXaldsO22PoZIJfv+GK0u3xHLrzGP8oLVvxPA35zaNPBw7Vt5/uwylRbiAR2CKjH1Kponaf3TJF@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqN4pGEfXUv3lF0aqlba+/d04dyt5YbkQpaDQvL+srDK18mgyj
-	vAjHO6sHaAHfpD932KRpH6j0ECUzx9pO2d79SB3OsPpZNxqY57hW
-X-Gm-Gg: ASbGncu4ZDsasBVyy57AjTHfjv9RViFC3jTX6AOGpWM3t3R+YCWx+EP9U27mxJHkmDy
-	cA0fE90Q+4ZwCcv+zttB48ePZbwtMvivGm7mKVfjauAxfLWH1VJgV5iXKfYBByGLBWq/7ubCLQL
-	xYgz0RVUEN9aNWobexN1acKkvE7ewAf6TSvm/pJxUZnb+/71byorz4H3ciifSirOZQC0zYsr0pz
-	PaEJudY5nL2i0BTnrK73huc/JqEuxKWmhIeJf1qZ8si9S9n8zDrbX1S5zjJREaDfaQKEEYzGVSd
-	IVaZW5vD/FpWLTzDoGbA0LorbKd/UFJ7lfook4HQMomR
-X-Google-Smtp-Source: AGHT+IF2GazQWo9ab/vr8knHLM0gAcqo0PbD6j5eNNWUNBV1632zIxlbixlsSjq85xTX99OmfyebVA==
-X-Received: by 2002:a17:90a:8a88:b0:30a:214e:befc with SMTP id 98e67ed59e1d1-30a214ebfe5mr1984804a91.27.1745884778074;
-        Mon, 28 Apr 2025 16:59:38 -0700 (PDT)
-Received: from localhost ([129.210.115.104])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309ef098157sm10779310a91.26.2025.04.28.16.59.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Apr 2025 16:59:37 -0700 (PDT)
-Date: Mon, 28 Apr 2025 16:59:36 -0700
-From: Cong Wang <xiyou.wangcong@gmail.com>
-To: "Alan J. Wylie" <alan@wylie.me.uk>
-Cc: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev,
-	Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Octavian Purdila <tavip@google.com>,
-	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-	stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
- htb_dequeue
-Message-ID: <aBAWaAubkkTH9FAK@pop-os.localdomain>
-References: <20250422214716.5e181523@frodo.int.wylie.me.uk>
- <aAgO59L0ccXl6kUs@pop-os.localdomain>
- <20250423105131.7ab46a47@frodo.int.wylie.me.uk>
- <aAlAakEUu4XSEdXF@pop-os.localdomain>
- <20250424135331.02511131@frodo.int.wylie.me.uk>
- <aA6BcLENWhE4pQCa@pop-os.localdomain>
- <20250427204254.6ae5cd4a@frodo.int.wylie.me.uk>
- <20250427213548.73efc7b9@frodo.int.wylie.me.uk>
- <aA/s3GBuDc5t1nY5@pop-os.localdomain>
- <20250428223436.48529979@frodo.int.wylie.me.uk>
+	s=arc-20240116; t=1745887024; c=relaxed/simple;
+	bh=HWy+TXJzjFdBEC7yQCmPxk1fT2IsyTLjXxnmOYV/zlo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VlwJBgrPqKCI9lQuRxpM6WxRTdkhJRS1VNEAHraGJPGQAJRjxQbGt65d5KootuYcwDDHZDcaK+K/uMHMrZLdOBNv35Skx8Rqubg61R3BIyWNChuULMq738VHJ/qBQ0a4yn3QmYj9zVWMQRP8pZUanyKRbxzoKgkffLaseuHdwoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CjPKYrKL; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745887024; x=1777423024;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=HWy+TXJzjFdBEC7yQCmPxk1fT2IsyTLjXxnmOYV/zlo=;
+  b=CjPKYrKLwjGZfn+Zz/dDeD2B160ViWFEjHuX0TEhcHjY4z+KtbPX5d3g
+   bPUxHr9dsgCdHyG63Gw8s2GqJGxgunVKYWXozqT87b6oneULK8HajTX/s
+   QWPTKQ2El1dIgd2nP/+Q/Kw+hDWr4p0FSOb5b9un7kSPVFoQnlVyKiMnt
+   H9SSeZLEJIY7N6cZ31nLaEpL36h9aQWVT9kBqOGYnm74Ec7KDTjlJhAdy
+   SwZ6WWsRpibqKUJct89rf+CfkGzTEopsDnENclm0IJlXdMUVICUqL93gX
+   BWj7Mo62J3m+ABshaMM+L1oBbEL5D+RHbsStobufg+Nr8A4G405geMntD
+   A==;
+X-CSE-ConnectionGUID: SAsBPiuCSbiocLpvYEkPGw==
+X-CSE-MsgGUID: OUgdnR8USgWd33w/rh9zzQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="58485727"
+X-IronPort-AV: E=Sophos;i="6.15,247,1739865600"; 
+   d="scan'208";a="58485727"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 17:37:03 -0700
+X-CSE-ConnectionGUID: RgBn9lVTScuL3jy4Ume47w==
+X-CSE-MsgGUID: jn5uCoNQRASlbnA8eOkP7A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,247,1739865600"; 
+   d="scan'208";a="133621127"
+Received: from mdroper-mobl2.amr.corp.intel.com (HELO [10.124.223.46]) ([10.124.223.46])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 17:37:01 -0700
+Message-ID: <b6361702-fa08-498b-a603-402ae8292102@intel.com>
+Date: Mon, 28 Apr 2025 17:37:00 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250428223436.48529979@frodo.int.wylie.me.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/2] Restrict devmem for confidential VMs
+To: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com
+Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+ Vishal Annapurve <vannapurve@google.com>, Kees Cook <kees@kernel.org>,
+ stable@vger.kernel.org, x86@kernel.org,
+ Nikolay Borisov <nik.borisov@suse.com>, Naveen N Rao <naveen@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, mpe@ellerman.id.au,
+ suzuki.poulose@arm.com
+References: <174491711228.1395340.3647010925173796093.stgit@dwillia2-xfh.jf.intel.com>
+ <63bb3383-de43-4638-b229-28c33c1582be@intel.com>
+ <681005cdd3631_1d522948e@dwillia2-xfh.jf.intel.com.notmuch>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <681005cdd3631_1d522948e@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 28, 2025 at 10:34:36PM +0100, Alan J. Wylie wrote:
-> On Mon, 28 Apr 2025 14:02:20 -0700
-> Cong Wang <xiyou.wangcong@gmail.com> wrote:
+On 4/28/25 15:48, Dan Williams wrote:
+>> I guess arm and powerpc have cc_platform_has() so it's not _completely_
+>> x86 only, either. Acks from those folks would also be appreciated since
+>> it's going to affect them most immediately.
+> I have added Suzuki and Michael for their awareness, but I would not say
+> acks are needed at this point since to date CC_ATTR_GUEST_MEM_ENCRYPT is
+> strictly an x86-ism.
 > 
-> > I doubt it is related to iptables. I will try some TCP traffic on my
-> > side later, but I suspect this is related to the type of packets.
-> > 
-> > Meanwhile, since I still can't reproduce it here, do you mind applying
-> > both of my patches on top of -net and test again?
-> > 
-[...] 
-> 
-> With those patches applied, I've run 5 or 6 SpeedTests, no panics.
-> 
-> There's several WARNINGS in the log, though, about one per run.
+> For example, the PowerPC implementation of cc_platform_has() has not been
+> touched since Tom added it. 
 
-My bad, acctually I reproducced it with iperf (TCP traffic) using your
-reproducer. I saw the warning/crash within 10 seconds. With the fix I
-sent out, I didn't see any after ~10 mininutes, so it should be working 
-probably.
-
-Thanks!
+Ahh, good point. I was just grepping for cc_platform_has(), not
+CC_ATTR_GUEST_MEM_ENCRYPT. Unless someone pipes up, I'd agree that acks
+aren't required. Thanks for adding them to the cc though.
 
