@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-138356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE06AA17A4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843BEAA1669
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED756460610
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66B6B9A3AC0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4D4221DA7;
-	Tue, 29 Apr 2025 17:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1EC253356;
+	Tue, 29 Apr 2025 17:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TsL4Fodu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9us2C/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED81E22AE68;
-	Tue, 29 Apr 2025 17:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC73A2517AB;
+	Tue, 29 Apr 2025 17:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948966; cv=none; b=WEhAeB6MNl7Xw4vvB6nGrlx7JUi1LwM5OI1Xo4naOw2f0dXjGykH+evUxWkzg/lg2jxoqfAwZSHDMgcNmt6ibXteG0JUIMTz8W9QRjifsWz4sHDiQSM6Wf/6tjywtqJGNGUBkcy9WwTXnlbxS56NdZZpgxVQ3QbPiBY0sseTBXg=
+	t=1745947823; cv=none; b=LNPDqHAcMOnKxF+UsN7nnlHEKG2J05Nat86x/z7pSByxr5aCRnnwpTfQ2ll9eyiCuoEvZ3ZWM7BgqXz5XYsukLw1lSikUbHGPB5SnNSCz3+a6jmNmlKmzpBVCLvR2MW3xT4Gq1I16MThkTVqcqtv0M/0HZuMa7pO7HN9kJReQwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948966; c=relaxed/simple;
-	bh=2VtONtnOwOgOH91JTxy0wVHsBzvdmLoQTQa3reObLLE=;
+	s=arc-20240116; t=1745947823; c=relaxed/simple;
+	bh=h9bLTjeC0qWt/f8J+TLepWxHjrzZ8GOhymSmZ+CaSXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/ZroGMnOpedqmk2c3okMQFYHlHnwnUMWeEY34AEW8q6DujdXbHgF04d1yk6DkHU+I+C81yYFDY7XITFT+SYmW89riIKIkJcxNqzmG/xRYlIKlFmR+EY98L4/Gh01b48bQYOZ0+Vd8xhAassADwooR5UVoOd44ARkxbUWIE9zNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TsL4Fodu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED66C4CEE3;
-	Tue, 29 Apr 2025 17:49:25 +0000 (UTC)
+	 MIME-Version; b=ocnBHxnUlOWyFRIdeuiXZXw5ZuHikWlwtdzqSugSa3/bYEW/V4N5qWx+D8ac1Uxq/7/fFpr9kLx4yBORG3p39aaVnNioM9iv1BuBHKJeTBi4AWEnWpGtIfRqhV8Xjaqrn+T3JoXEUf6tO4JuwQb0l6MAAKgvD8nK05YpzVvfHqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9us2C/+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21A4C4CEE9;
+	Tue, 29 Apr 2025 17:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948965;
-	bh=2VtONtnOwOgOH91JTxy0wVHsBzvdmLoQTQa3reObLLE=;
+	s=korg; t=1745947823;
+	bh=h9bLTjeC0qWt/f8J+TLepWxHjrzZ8GOhymSmZ+CaSXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TsL4FoduOPNa+C8DvvQ7+UI6yEnzkHANgTV+6ggxLASApgbMvd1sda6fOnwEImdt8
-	 Dilv9kVqPFG8TbSsf4mNi8amrzQHfiTH2wunj3yQ1EdiDGkPj/6UMUa4JrMwf+VBea
-	 sBe70fLgp7lQuSXSoj5+pkqsugzZFOvpolXWIZPY=
+	b=H9us2C/+1FgPc+bq6jHQA01QrD5TxkqOHvIFLyixqYCRqqX2uOPOLVuJ5NsnDmd0/
+	 29zkfv7Hcl7XN7ME9QAt1RzPnsT2V7fYyUOoMFtlfw0McqdILUVk5Afr3lUVqgFsO6
+	 ZoV0GBVXAYur354EUAwLSoJ/KC0MUVJFct2GKL/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 178/373] drm/amd/pm: Prevent division by zero
+	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Terry Bowman <terry.bowman@amd.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Robert Richter <rrichter@amd.com>
+Subject: [PATCH 6.12 114/280] cxl/core/regs.c: Skip Memory Space Enable check for RCD and RCH Ports
 Date: Tue, 29 Apr 2025 18:40:55 +0200
-Message-ID: <20250429161130.491774754@linuxfoundation.org>
+Message-ID: <20250429161119.778297066@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
 
-commit 7d641c2b83275d3b0424127b2e0d2d0f7dd82aef upstream.
+commit 078d3ee7c162cd66d76171579c02d7890bd77daf upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+According to CXL r3.2 section 8.2.1.2, the PCI_COMMAND register fields,
+including Memory Space Enable bit, have no effect on the behavior of an
+RCD Upstream Port. Retaining this check may incorrectly cause
+cxl_pci_probe() to fail on a valid RCD upstream Port.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+While the specification is explicit only for RCD Upstream Ports, this
+check is solely for accessing the RCRB, which is always mapped through
+memory space. Therefore, its safe to remove the check entirely. In
+practice, firmware reliably enables the Memory Space Enable bit for
+RCH Downstream Ports and no failures have been observed.
 
-Fixes: b64625a303de ("drm/amd/pm: correct the address of Arcturus fan related registers")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Removing the check simplifies the code and avoids unnecessary
+special-casing, while relying on BIOS/firmware to configure devices
+correctly. Moreover, any failures due to inaccessible RCRB regions
+will still be caught either in __rcrb_to_component() or while
+parsing the component register block.
+
+The following failure was observed in dmesg when the check was present:
+	cxl_pci 0000:7f:00.0: No component registers (-6)
+
+Fixes: d5b1a27143cb ("cxl/acpi: Extract component registers of restricted hosts from RCRB")
+Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Terry Bowman <terry.bowman@amd.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Robert Richter <rrichter@amd.com>
+Link: https://patch.msgid.link/20250407192734.70631-1-Smita.KoralahalliChannabasappa@amd.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/cxl/core/regs.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-@@ -1278,6 +1278,9 @@ static int arcturus_set_fan_speed_rpm(st
- 	uint32_t crystal_clock_freq = 2500;
- 	uint32_t tach_period;
+--- a/drivers/cxl/core/regs.c
++++ b/drivers/cxl/core/regs.c
+@@ -513,7 +513,6 @@ resource_size_t __rcrb_to_component(stru
+ 	resource_size_t rcrb = ri->base;
+ 	void __iomem *addr;
+ 	u32 bar0, bar1;
+-	u16 cmd;
+ 	u32 id;
  
-+	if (!speed || speed > UINT_MAX/8)
-+		return -EINVAL;
-+
- 	tach_period = 60 * crystal_clock_freq * 10000 / (8 * speed);
- 	WREG32_SOC15(THM, 0, mmCG_TACH_CTRL_ARCT,
- 		     REG_SET_FIELD(RREG32_SOC15(THM, 0, mmCG_TACH_CTRL_ARCT),
+ 	if (which == CXL_RCRB_UPSTREAM)
+@@ -535,7 +534,6 @@ resource_size_t __rcrb_to_component(stru
+ 	}
+ 
+ 	id = readl(addr + PCI_VENDOR_ID);
+-	cmd = readw(addr + PCI_COMMAND);
+ 	bar0 = readl(addr + PCI_BASE_ADDRESS_0);
+ 	bar1 = readl(addr + PCI_BASE_ADDRESS_1);
+ 	iounmap(addr);
+@@ -550,8 +548,6 @@ resource_size_t __rcrb_to_component(stru
+ 			dev_err(dev, "Failed to access Downstream Port RCRB\n");
+ 		return CXL_RESOURCE_NONE;
+ 	}
+-	if (!(cmd & PCI_COMMAND_MEMORY))
+-		return CXL_RESOURCE_NONE;
+ 	/* The RCRB is a Memory Window, and the MEM_TYPE_1M bit is obsolete */
+ 	if (bar0 & (PCI_BASE_ADDRESS_MEM_TYPE_1M | PCI_BASE_ADDRESS_SPACE_IO))
+ 		return CXL_RESOURCE_NONE;
 
 
 
