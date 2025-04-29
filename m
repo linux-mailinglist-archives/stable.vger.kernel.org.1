@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC255AA1711
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ABC6AA1321
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DBB21B60C42
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:43:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98D2E16FABB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F97242D68;
-	Tue, 29 Apr 2025 17:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9F9252289;
+	Tue, 29 Apr 2025 16:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEvZtkzJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKF3w5VP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026F0216605;
-	Tue, 29 Apr 2025 17:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE9E242934;
+	Tue, 29 Apr 2025 16:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948597; cv=none; b=JrqIUsrtHqKboOXRGcG9GvrXXTnXVoplC5mDrqLqDXEsk2zxRHA1KO5Q5sgmPCUE29JRATLU9EgVU4dqp+MzvPESxLxko1XbQNteC3QEOlCHUDTZ61FCc8iQcwkpG7BFEXIQPoDUfDa3j1loCJFwYjcGlsvb44Knsh/08BBTR0s=
+	t=1745945919; cv=none; b=QMvK5waSdAXL6zdr1TBhHrg8vMzKH7+B8CaKLkFy8ok3x3EazgC7feDWLTwGFY8SksMyhPHorZzCjugK7yIl0rlEnJR5BbmkMyh6HgGfKd6OVHn5lhMP3h5BhWBYyVLFy8lnf/m3BNTAH2sIia6ZEimQZ8vPf2sHtxbqjojP9X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948597; c=relaxed/simple;
-	bh=+rA113pZEpdn2bFS6rR47nylLr3UAK/KuFy+ii6JWoE=;
+	s=arc-20240116; t=1745945919; c=relaxed/simple;
+	bh=9I0B8w/G4c0/64z6orstxrhfxO1RYiHHdJxmzo3eeC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PIgpQR0/SeZEYHwAnrOALgPgxyx6NPVw5NVV7UF3rplnVFi+pXI3mUwalbbjpMy/JzTeSYnK971FL1G00/hhDHk5wW0L8aYOn+53l/rbJ5D/D/qkYh6vdJk0X8ihdmbYomRI/jRATfpDi7GItGkz1g6F0TmrU9SjDYOhIUDAMVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEvZtkzJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE02C4CEE3;
-	Tue, 29 Apr 2025 17:43:15 +0000 (UTC)
+	 MIME-Version; b=imGFkXBBKixWhnmo1jkZyZdEqP9iy9egmpWxKgXEFSfO3VXvuKE7Pf+tll+CSYZTs4C5TfeH7yL+17fTds1lNkRTcFozQL4axQO27040rpD4/rNa9Tc1QgBSvtJqhzHh5NZS3HFJqpeoUgF6tpejiQtBXyudzlfT+UuAIEEmMUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKF3w5VP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C23C4CEEA;
+	Tue, 29 Apr 2025 16:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948596;
-	bh=+rA113pZEpdn2bFS6rR47nylLr3UAK/KuFy+ii6JWoE=;
+	s=korg; t=1745945919;
+	bh=9I0B8w/G4c0/64z6orstxrhfxO1RYiHHdJxmzo3eeC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DEvZtkzJPWlvCjXYZERBERmKy3IEGrxOvt6540Bc3iLQHSN53kUb6YprpbbAxCcjr
-	 xNJPZ2E6qWnSnY7gWqGx9lWUwLa+nO+NRb0qKizMmMmQfxLuX8g9DsJOJfY9AGPExh
-	 Q5f3iq55X7cHIX1aOwGtpPDXL5kydhW/PC/JjkJI=
+	b=cKF3w5VPQg1AQ+i11RUQoib9Qn9lQsZ4AZ6wZ5x3OvQN1rf9Q9Lmgxkqmyy6wBCr6
+	 3rpHICxRuHKLbHUOJ8iFVhR5qXkO7fkHHoZQZRWbArZKVn5F/y87Y+vn+Y8gHyFNHQ
+	 q0hNYVX5EjIbeyj8O2WIkPFlHXsvW/DXx9sZEUK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 054/373] pwm: fsl-ftm: Handle clk_get_rate() returning 0
+Subject: [PATCH 6.14 094/311] fs/xattr: Fix handling of AT_FDCWD in setxattrat(2) and getxattrat(2)
 Date: Tue, 29 Apr 2025 18:38:51 +0200
-Message-ID: <20250429161125.350293072@linuxfoundation.org>
+Message-ID: <20250429161124.895028009@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 928446a5302eee30ebb32075c0db5dda5a138fb7 ]
+[ Upstream commit f520bed25d17bb31c2d2d72b0a785b593a4e3179 ]
 
-Considering that the driver doesn't enable the used clocks (and also
-that clk_get_rate() returns 0 if CONFIG_HAVE_CLK is unset) better check
-the return value of clk_get_rate() for being non-zero before dividing by
-it.
+Currently, setxattrat(2) and getxattrat(2) are wrongly handling the
+calls of the from setxattrat(AF_FDCWD, NULL, AT_EMPTY_PATH, ...) and
+fail with -EBADF error instead of operating on CWD. Fix it.
 
-Fixes: 3479bbd1e1f8 ("pwm: fsl-ftm: More relaxed permissions for updating period")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/b68351a51017035651bc62ad3146afcb706874f0.1743501688.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Fixes: 6140be90ec70 ("fs/xattr: add *at family syscalls")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/20250424132246.16822-2-jack@suse.cz
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-fsl-ftm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/xattr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pwm/pwm-fsl-ftm.c b/drivers/pwm/pwm-fsl-ftm.c
-index 0247757f9a72d..6751f3d005605 100644
---- a/drivers/pwm/pwm-fsl-ftm.c
-+++ b/drivers/pwm/pwm-fsl-ftm.c
-@@ -123,6 +123,9 @@ static unsigned int fsl_pwm_ticks_to_ns(struct fsl_pwm_chip *fpc,
- 	unsigned long long exval;
+diff --git a/fs/xattr.c b/fs/xattr.c
+index 02bee149ad967..fabb2a04501ee 100644
+--- a/fs/xattr.c
++++ b/fs/xattr.c
+@@ -703,7 +703,7 @@ static int path_setxattrat(int dfd, const char __user *pathname,
+ 		return error;
  
- 	rate = clk_get_rate(fpc->clk[fpc->period.clk_select]);
-+	if (rate >> fpc->period.clk_ps == 0)
-+		return 0;
-+
- 	exval = ticks;
- 	exval *= 1000000000UL;
- 	do_div(exval, rate >> fpc->period.clk_ps);
-@@ -195,6 +198,9 @@ static unsigned int fsl_pwm_calculate_duty(struct fsl_pwm_chip *fpc,
- 	unsigned int period = fpc->period.mod_period + 1;
- 	unsigned int period_ns = fsl_pwm_ticks_to_ns(fpc, period);
+ 	filename = getname_maybe_null(pathname, at_flags);
+-	if (!filename) {
++	if (!filename && dfd >= 0) {
+ 		CLASS(fd, f)(dfd);
+ 		if (fd_empty(f))
+ 			error = -EBADF;
+@@ -847,7 +847,7 @@ static ssize_t path_getxattrat(int dfd, const char __user *pathname,
+ 		return error;
  
-+	if (!period_ns)
-+		return 0;
-+
- 	duty = (unsigned long long)duty_ns * period;
- 	do_div(duty, period_ns);
- 
+ 	filename = getname_maybe_null(pathname, at_flags);
+-	if (!filename) {
++	if (!filename && dfd >= 0) {
+ 		CLASS(fd, f)(dfd);
+ 		if (fd_empty(f))
+ 			return -EBADF;
 -- 
 2.39.5
 
