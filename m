@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-138413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00761AA17EA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D64AA168C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 801921893753
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:53:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B35F618959DE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCCF248883;
-	Tue, 29 Apr 2025 17:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BCC253321;
+	Tue, 29 Apr 2025 17:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d68IVPvD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKRg8Hgm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6999A243364;
-	Tue, 29 Apr 2025 17:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C622517AB;
+	Tue, 29 Apr 2025 17:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949178; cv=none; b=Bt72OKzu4kENTsHaMgaFLllKm5EV7O9YuA55ISwA56+aRIv9IRyxBRF1XMXjfJ9TeyAgB9zLMz5D8ymb3zYi71JS1hbrL5Mv7Iw8wb6DMJBEvEZ4G/6gxpsvDMN58vb+JUNfg5WkOMFNMV8p6PRa53MvJoG47SuHkBjcBIa+jAo=
+	t=1745948148; cv=none; b=jg1r6wtc5FMRHC0YJDZIMPMqx7IrUyMqawo2wDudL42LPU0Et3aYvjtrQjNTIVxYGtvJFq7XweNhQPmnHUFcVmhpyjiUUHeMPQZaqSVVfa5hX23bB8CSq8erdMPFSJ3IH9k9nZw6DJ3Kc1IeZUKw5zxUh8fxr+27/VMaGKh2lts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949178; c=relaxed/simple;
-	bh=AaWqhBXvqDU/uI0eXKWcXLkwTGNyefedDPHgF2uIMUc=;
+	s=arc-20240116; t=1745948148; c=relaxed/simple;
+	bh=YNBDzpudBfRj2Z1aXnyU5inghbV1P202A04Z0MEFl90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BL7e+6b8o3cN6j0zWkNiLfhb6tz0s7Ffey/UMCRNAWOuTtEIpxI/iizgXQjDkeZou1sILF7c/juzEJNCcYO+1ozX1RlWfD08zjxgiFFaBDPn5YKVZcRhzCutohPb+VTWJLg5gZ2zvZzckbBXdl80o3BmxdwzLCIC66/tCTlBP1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d68IVPvD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9628BC4CEE9;
-	Tue, 29 Apr 2025 17:52:57 +0000 (UTC)
+	 MIME-Version; b=KblbEa63U58lN5fyk19wxZBt6egqET3IIn+m3lVkzU55Oc3u2ykYwo4NfMOZiKLYiDFD82ehP4vwdACkAhEoX6cYWJ86JO672Id/0YYsaMRWlsDV2BHqEzCBrijIFDLBcOtzcC7maCroXnWUVRj6P4oich2Sw7ep8PSQV4Uv7nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKRg8Hgm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D0BC4CEEE;
+	Tue, 29 Apr 2025 17:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949177;
-	bh=AaWqhBXvqDU/uI0eXKWcXLkwTGNyefedDPHgF2uIMUc=;
+	s=korg; t=1745948147;
+	bh=YNBDzpudBfRj2Z1aXnyU5inghbV1P202A04Z0MEFl90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d68IVPvD11DQl+xoAtvUaBPOGS99/6Z0XXYRrlLF0tUbK7F+BTrw5Yfw90Czi5KFP
-	 pVtKpUvExY///tDO4T0KejvGF6DyQA8dy1AUSgXyiNklkV8xiuNuLkZz+iJVmmVfXn
-	 OS7S8lGkiP7PhOaU+LZabH5p+lxGoJ1TlBJiDBh8=
+	b=fKRg8HgmXtHR033BZxKvGyDYHrgCWwDb2jaiux1D0UbwuFuFXLd4ubEfZJg+S63RZ
+	 Ji+GpgyGrZ4zYVXj0msxHY54Pk6GKw072paZpIY7R+Qwi4m5rLJJbk7W2jU+DWfNff
+	 xHAf/yCblBR3YgQ4DeEA0AZwEgwlK35OAJlp2bAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Cliff Liu <donghua.liu@windriver.com>,
-	He Zhe <Zhe.He@windriver.com>
-Subject: [PATCH 5.15 235/373] ipvs: properly dereference pe in ip_vs_add_service
-Date: Tue, 29 Apr 2025 18:41:52 +0200
-Message-ID: <20250429161132.807632502@linuxfoundation.org>
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+e37dd1dfc814b10caa55@syzkaller.appspotmail.com
+Subject: [PATCH 6.12 172/280] fs/ntfs3: Fix WARNING in ntfs_extend_initialized_size
+Date: Tue, 29 Apr 2025 18:41:53 +0200
+Message-ID: <20250429161122.151267068@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit cbd070a4ae62f119058973f6d2c984e325bce6e7 upstream.
+[ Upstream commit ff355926445897cc9fdea3b00611e514232c213c ]
 
-Use pe directly to resolve sparse warning:
+Syzbot reported a WARNING in ntfs_extend_initialized_size.
+The data type of in->i_valid and to is u64 in ntfs_file_mmap().
+If their values are greater than LLONG_MAX, overflow will occur because
+the data types of the parameters valid and new_valid corresponding to
+the function ntfs_extend_initialized_size() are loff_t.
 
-  net/netfilter/ipvs/ip_vs_ctl.c:1471:27: warning: dereference of noderef expression
+Before calling ntfs_extend_initialized_size() in the ntfs_file_mmap(),
+the "ni->i_valid < to" has been determined, so the same WARN_ON determination
+is not required in ntfs_extend_initialized_size().
+Just execute the ntfs_extend_initialized_size() in ntfs_extend() to make
+a WARN_ON check.
 
-Fixes: 39b972231536 ("ipvs: handle connections started by real-servers")
-Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-and-tested-by: syzbot+e37dd1dfc814b10caa55@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e37dd1dfc814b10caa55
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/ntfs3/file.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1384,20 +1384,20 @@ ip_vs_add_service(struct netns_ipvs *ipv
- 		sched = NULL;
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index 4ca1fff826fd0..748c4be912db5 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -428,6 +428,7 @@ static int ntfs_extend(struct inode *inode, loff_t pos, size_t count,
  	}
  
--	/* Bind the ct retriever */
--	RCU_INIT_POINTER(svc->pe, pe);
--	pe = NULL;
--
- 	/* Update the virtual service counters */
- 	if (svc->port == FTPPORT)
- 		atomic_inc(&ipvs->ftpsvc_counter);
- 	else if (svc->port == 0)
- 		atomic_inc(&ipvs->nullsvc_counter);
--	if (svc->pe && svc->pe->conn_out)
-+	if (pe && pe->conn_out)
- 		atomic_inc(&ipvs->conn_out_counter);
- 
- 	ip_vs_start_estimator(ipvs, &svc->stats);
- 
-+	/* Bind the ct retriever */
-+	RCU_INIT_POINTER(svc->pe, pe);
-+	pe = NULL;
-+
- 	/* Count only IPv4 services for old get/setsockopt interface */
- 	if (svc->af == AF_INET)
- 		ipvs->num_services++;
+ 	if (extend_init && !is_compressed(ni)) {
++		WARN_ON(ni->i_valid >= pos);
+ 		err = ntfs_extend_initialized_size(file, ni, ni->i_valid, pos);
+ 		if (err)
+ 			goto out;
+-- 
+2.39.5
+
 
 
 
