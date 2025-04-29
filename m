@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C69AA1602
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02755AA1242
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 299951634A2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 587FC1BA03A1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069312472B4;
-	Tue, 29 Apr 2025 17:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D252A244679;
+	Tue, 29 Apr 2025 16:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4GDT6Ee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hijAbVVt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CDB23F405;
-	Tue, 29 Apr 2025 17:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9D024336D;
+	Tue, 29 Apr 2025 16:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947737; cv=none; b=KpnqDV/r+VutnlGm+nm9JyA0oeIDlU7Z2Noj+AHQjTW0xstVVXtAfQDXph3sgSb8mYtNvI57DZ+7kGnK+9uMWxNw+dr11U/UWkuvfCCEtp+CDudhCytLutDQ9xoQRin9x/sSeh82fb0sVALyZPDlLFOKy/SElpafQ9d41iDEq/E=
+	t=1745945458; cv=none; b=Ll8LLG7ZMcurdflHfSA/JK1Wdz6PVtjlF4SjH6Y2OYUCVPE/QdNyjFdsiK5AWE2NNitBhDSc6QfqMcf/3b2btu5S2YAi9e63W5t8qDEVTqv2ep01nDqMjVwOBlsGHOUthrkDzG4s++y5BMSgF+a/Jte23JbgpPMU4cedeF0qI9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947737; c=relaxed/simple;
-	bh=VJ7ZR/bzFsNIpj55r4tHZxFtejs8yrQsR9yQQvm8ziI=;
+	s=arc-20240116; t=1745945458; c=relaxed/simple;
+	bh=JTePPXD9feMuxt1PFjKBuvPrkagdRZNlFAUAfSggF/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ezEPu+zlLJ4kQUgBmxoCMoWh5VZjrqNQgTqvP3fZHI1U1MNMFIeBIBIhpmJszftOPC0RI0RFCZpuZ4yrr6Ucq9eNvlguQ7WAr77/Ey+bnv1iub3DEl6cG7EChyZrRzzgUDJcTu10sL5t69ROve3DpdJ1hPbmSllJPv/w29hXa+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4GDT6Ee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3108CC4CEE9;
-	Tue, 29 Apr 2025 17:28:57 +0000 (UTC)
+	 MIME-Version; b=T+V5SmmwvvaaSJQwhpvwkbbRa1BmcP4GK/AKG0FdKYrwOCHaS4FKeDBkXECtggu1nAhK/lgSiXJ51TWry1cyCJxDPICKDyf1eZ+gynQNCcqLkWHKT/zI1aj/gSn6J6wQ0NEY3GdN9zzRsaC5vxToUXlzU/W18FjUv0addYm87Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hijAbVVt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E667C4CEE9;
+	Tue, 29 Apr 2025 16:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947737;
-	bh=VJ7ZR/bzFsNIpj55r4tHZxFtejs8yrQsR9yQQvm8ziI=;
+	s=korg; t=1745945458;
+	bh=JTePPXD9feMuxt1PFjKBuvPrkagdRZNlFAUAfSggF/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p4GDT6EemsrQS3uwuhGNj3GIHd5ZqH5V/hQW3lVoA2k1yS3cPYLe0Ea5DVXpbnAA9
-	 TcfsdX1w6+rFiu1qC//gY0hsS4IfPGKdfpNDj5BJZXRDdvQNiej6InwNpxgbGGJREK
-	 w8xxwfclz5gtW5uHxNNXt8f5gdqPbjljjyUzSu0U=
+	b=hijAbVVt42yLxgOME6pK48ug4Q5/PdiinrzhnLkwbwyrlx5H6bs8xMP6hSLHaEeNP
+	 uI8/b2kzqFyeIt92A6FsEDlmzpvV858Ypo0QrZyPpH2NtgLyqdg3F9Mrt4PaEichTS
+	 iml2KDX3HyU7koxvw/2q5enU1J5bAiI0T135am8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erpeng Xu <xuerpeng@uniontech.com>,
-	Yuli Wang <wangyuli@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 089/280] LoongArch: Select ARCH_USE_MEMTEST
+Subject: [PATCH 5.4 089/179] Bluetooth: hci_event: Fix sending MGMT_EV_DEVICE_FOUND for invalid address
 Date: Tue, 29 Apr 2025 18:40:30 +0200
-Message-ID: <20250429161118.751837102@linuxfoundation.org>
+Message-ID: <20250429161053.003416838@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuli Wang <wangyuli@uniontech.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit fb8e9f59d6f292c3d9fea6c155c22ea5fc3053ab ]
+[ Upstream commit eb73b5a9157221f405b4fe32751da84ee46b7a25 ]
 
-As of commit dce44566192e ("mm/memtest: add ARCH_USE_MEMTEST"),
-architectures must select ARCH_USE_MEMTESET to enable CONFIG_MEMTEST.
+This fixes sending MGMT_EV_DEVICE_FOUND for invalid address
+(00:00:00:00:00:00) which is a regression introduced by
+a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
+since in the attempt to skip storing data for extended advertisement it
+actually made the code to skip the entire if statement supposed to send
+MGMT_EV_DEVICE_FOUND without attempting to use the last_addr_adv which
+is garanteed to be invalid for extended advertisement since we never
+store anything on it.
 
-Commit 628c3bb40e9a ("LoongArch: Add boot and setup routines") added
-support for early_memtest but did not select ARCH_USE_MEMTESET.
-
-Fixes: 628c3bb40e9a ("LoongArch: Add boot and setup routines")
-Tested-by: Erpeng Xu <xuerpeng@uniontech.com>
-Tested-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://github.com/bluez/bluez/issues/1157
+Link: https://github.com/bluez/bluez/issues/1149#issuecomment-2767215658
+Fixes: a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/hci_event.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index fe9f895138dba..a7a1f15bcc672 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -68,6 +68,7 @@ config LOONGARCH
- 	select ARCH_SUPPORTS_NUMA_BALANCING
- 	select ARCH_USE_BUILTIN_BSWAP
- 	select ARCH_USE_CMPXCHG_LOCKREF
-+	select ARCH_USE_MEMTEST
- 	select ARCH_USE_QUEUED_RWLOCKS
- 	select ARCH_USE_QUEUED_SPINLOCKS
- 	select ARCH_WANT_DEFAULT_BPF_JIT
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index c00872f0dd2bb..33b025a52b83a 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -5489,11 +5489,12 @@ static void process_adv_report(struct hci_dev *hdev, u8 type, bdaddr_t *bdaddr,
+ 	 * event or send an immediate device found event if the data
+ 	 * should not be stored for later.
+ 	 */
+-	if (!ext_adv &&	!has_pending_adv_report(hdev)) {
++	if (!has_pending_adv_report(hdev)) {
+ 		/* If the report will trigger a SCAN_REQ store it for
+ 		 * later merging.
+ 		 */
+-		if (type == LE_ADV_IND || type == LE_ADV_SCAN_IND) {
++		if (!ext_adv && (type == LE_ADV_IND ||
++				 type == LE_ADV_SCAN_IND)) {
+ 			store_pending_adv_report(hdev, bdaddr, bdaddr_type,
+ 						 rssi, flags, data, len);
+ 			return;
 -- 
 2.39.5
 
