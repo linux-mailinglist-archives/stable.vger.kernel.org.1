@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF448AA1764
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0618AA15A5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E43471B624B9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0BB71BC5587
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9017D221DA7;
-	Tue, 29 Apr 2025 17:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC972528FB;
+	Tue, 29 Apr 2025 17:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wt6YmRmN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzugRywR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE2021ABC1;
-	Tue, 29 Apr 2025 17:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6DC24397A;
+	Tue, 29 Apr 2025 17:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948812; cv=none; b=clBgGhLzbfHJzy3OofIPHX4xmaPQ0mOZjm2nLCFNn77oVkTaP2ARxx/nO89l4ZE2XcVmtPCvdYJSJbQKd7kx5fifDiRYoBv4rawnxD6k23n6JoBhkTopDicGdzIbceBO0E2R8ScTyDA4g03lN85mSY6RnNvF6vgloGYoXmYhTFc=
+	t=1745947551; cv=none; b=kTOEvNaOI849NSX1I9HtE5oHJgv0MMPFsldCDUDES+edtwdmzwQROY18bmt0dg7NHem7o/JBX0S1uepqunuPkRjIhSqfkZiDP3lF3oXcEBTxuEE5/bZIcONCihnP2XvQdEx4NBj5ReRWOipjpN8xbqUmJgD4bfg1NplrJ+T9bCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948812; c=relaxed/simple;
-	bh=oY4XQ01Y24H64bCmNN9upXH3TSMjsm7ODa+kgkLJI60=;
+	s=arc-20240116; t=1745947551; c=relaxed/simple;
+	bh=ntaUJXRvnqythzEFgkEPC+bnwuFGujm6FjkmiLUNUQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OqJDoE1hq1/cmujcFVsheD8ADrdtLnNnoQtmsZ0NxbJz7xhoAOBwJcYWZM/+S8ekiV1SiAwOQfqykDNBtXBWYDOdoPxVBKpicwjwYsadeWHYO0Yju44+6iIFMhL3UMgU+ND9AcpNwjwWau3pBIrxNYl/7ZreCFMAHSlj31YbCsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wt6YmRmN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD23C4CEE3;
-	Tue, 29 Apr 2025 17:46:51 +0000 (UTC)
+	 MIME-Version; b=IQK0SuWVArUpVaHsVLLaPXUSe0lQZL82DFMCijs3hO125Oh/qtgHXt30JYNxVu01uv6mjqBg8u+CYJIbHTaPpQSPHSUnDXTs3I+5ftAUAL00lD7aWht8W/j5bSJnxuhHW5cPLl7msIFvFAOTz2Nl7DHbAVfDREqmnfEYL3ZBpX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzugRywR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616F8C4CEE9;
+	Tue, 29 Apr 2025 17:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948812;
-	bh=oY4XQ01Y24H64bCmNN9upXH3TSMjsm7ODa+kgkLJI60=;
+	s=korg; t=1745947551;
+	bh=ntaUJXRvnqythzEFgkEPC+bnwuFGujm6FjkmiLUNUQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wt6YmRmN7ZEoylbM+H909pRGCZlHwOxpYwBi9k7REKkHoGhMha92R0jwhn6ffKntK
-	 k5Br+T+NCMWBoLWe/QJgFk6U6vcyqP0L1VeBReqHpFHoDbKC687pTuVWtxjUqTcwiS
-	 7pLPzESgo11fCqDDv3iyLZjc1hMMVW5g9VyTpSuk=
+	b=LzugRywRtn6k2v8W57Nx3hTqbnhAotTGGIxHSzkweCfujDKeG18cE+DhrML7fOUjp
+	 EJxPwa1TU3zPdeyKhx3EEse3/dTvbGI+dRGHJXvBeN6wLqNJHHG2zUqoCpcW9iVJuc
+	 tR6pAL1+U/BYdHp8TFgStkkMzeRRcP2p/5Zky0F0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Gang Yan <yangang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 094/373] mptcp: fix NULL pointer in can_accept_new_subflow
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 030/280] s390/pci: Support mmap() of PCI resources except for ISM devices
 Date: Tue, 29 Apr 2025 18:39:31 +0200
-Message-ID: <20250429161127.024079316@linuxfoundation.org>
+Message-ID: <20250429161116.345794298@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +62,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-commit 443041deb5ef6a1289a99ed95015ec7442f141dc upstream.
+[ Upstream commit aa9f168d55dc47c0de564f7dfe0e90467c9fee71 ]
 
-When testing valkey benchmark tool with MPTCP, the kernel panics in
-'mptcp_can_accept_new_subflow' because subflow_req->msk is NULL.
+So far s390 does not allow mmap() of PCI resources to user-space via the
+usual mechanisms, though it does use it for RDMA. For the PCI sysfs
+resource files and /proc/bus/pci it defines neither HAVE_PCI_MMAP nor
+ARCH_GENERIC_PCI_MMAP_RESOURCE. For vfio-pci s390 previously relied on
+disabled VFIO_PCI_MMAP and now relies on setting pdev->non_mappable_bars
+for all devices.
 
-Call trace:
+This is partly because access to mapped PCI resources from user-space
+requires special PCI load/store memory-I/O (MIO) instructions, or the
+special MMIO syscalls when these are not available. Still, such access is
+possible and useful not just for RDMA, in fact not being able to mmap() PCI
+resources has previously caused extra work when testing devices.
 
-  mptcp_can_accept_new_subflow (./net/mptcp/subflow.c:63 (discriminator 4)) (P)
-  subflow_syn_recv_sock (./net/mptcp/subflow.c:854)
-  tcp_check_req (./net/ipv4/tcp_minisocks.c:863)
-  tcp_v4_rcv (./net/ipv4/tcp_ipv4.c:2268)
-  ip_protocol_deliver_rcu (./net/ipv4/ip_input.c:207)
-  ip_local_deliver_finish (./net/ipv4/ip_input.c:234)
-  ip_local_deliver (./net/ipv4/ip_input.c:254)
-  ip_rcv_finish (./net/ipv4/ip_input.c:449)
-  ...
+One thing that doesn't work with PCI resources mapped to user-space though
+is the s390 specific virtual ISM device. Not only because the BAR size of
+256 TiB prevents mapping the whole BAR but also because access requires use
+of the legacy PCI instructions which are not accessible to user-space on
+systems with the newer MIO PCI instructions.
 
-According to the debug log, the same req received two SYN-ACK in a very
-short time, very likely because the client retransmits the syn ack due
-to multiple reasons.
+Now with the pdev->non_mappable_bars flag ISM can be excluded from mapping
+its resources while making this functionality available for all other PCI
+devices. To this end introduce a minimal implementation of PCI_QUIRKS and
+use that to set pdev->non_mappable_bars for ISM devices only. Then also set
+ARCH_GENERIC_PCI_MMAP_RESOURCE to take advantage of the generic
+implementation of pci_mmap_resource_range() enabling only the newer sysfs
+mmap() interface. This follows the recommendation in
+Documentation/PCI/sysfs-pci.rst.
 
-Even if the packets are transmitted with a relevant time interval, they
-can be processed by the server on different CPUs concurrently). The
-'subflow_req->msk' ownership is transferred to the subflow the first,
-and there will be a risk of a null pointer dereference here.
-
-This patch fixes this issue by moving the 'subflow_req->msk' under the
-`own_req == true` conditional.
-
-Note that the !msk check in subflow_hmac_valid() can be dropped, because
-the same check already exists under the own_req mpj branch where the
-code has been moved to.
-
-Fixes: 9466a1ccebbe ("mptcp: enable JOIN requests even if cookies are in use")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250328-net-mptcp-misc-fixes-6-15-v1-1-34161a482a7f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250226-vfio_pci_mmap-v7-3-c5c0f1d26efd@linux.ibm.com
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/subflow.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ arch/s390/Kconfig           |  4 +---
+ arch/s390/include/asm/pci.h |  3 +++
+ arch/s390/pci/Makefile      |  2 +-
+ arch/s390/pci/pci_fixup.c   | 23 +++++++++++++++++++++++
+ drivers/s390/net/ism_drv.c  |  1 -
+ include/linux/pci_ids.h     |  1 +
+ 6 files changed, 29 insertions(+), 5 deletions(-)
+ create mode 100644 arch/s390/pci/pci_fixup.c
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -589,8 +589,6 @@ static bool subflow_hmac_valid(const str
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 62f2c9e8e05f7..b9f70927c1ed8 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -41,9 +41,6 @@ config AUDIT_ARCH
+ config NO_IOPORT_MAP
+ 	def_bool y
  
- 	subflow_req = mptcp_subflow_rsk(req);
- 	msk = subflow_req->msk;
--	if (!msk)
--		return false;
+-config PCI_QUIRKS
+-	def_bool n
+-
+ config ARCH_SUPPORTS_UPROBES
+ 	def_bool y
  
- 	subflow_generate_hmac(msk->remote_key, msk->local_key,
- 			      subflow_req->remote_nonce,
-@@ -716,12 +714,8 @@ static struct sock *subflow_syn_recv_soc
- 			fallback = true;
- 	} else if (subflow_req->mp_join) {
- 		mptcp_get_options(skb, &mp_opt);
--		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK) ||
--		    !subflow_hmac_valid(req, &mp_opt) ||
--		    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
--			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
-+		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK))
- 			fallback = true;
--		}
- 	}
+@@ -237,6 +234,7 @@ config S390
+ 	select PCI_DOMAINS		if PCI
+ 	select PCI_MSI			if PCI
+ 	select PCI_MSI_ARCH_FALLBACKS	if PCI_MSI
++	select PCI_QUIRKS		if PCI
+ 	select SPARSE_IRQ
+ 	select SWIOTLB
+ 	select SYSCTL_EXCEPTION_TRACE
+diff --git a/arch/s390/include/asm/pci.h b/arch/s390/include/asm/pci.h
+index 83789e39d1d5e..8b11d37fd0349 100644
+--- a/arch/s390/include/asm/pci.h
++++ b/arch/s390/include/asm/pci.h
+@@ -11,6 +11,9 @@
+ #include <asm/pci_insn.h>
+ #include <asm/sclp.h>
  
- create_child:
-@@ -787,6 +781,13 @@ create_child:
- 				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
- 				goto dispose_child;
- 			}
++#define ARCH_GENERIC_PCI_MMAP_RESOURCE	1
++#define arch_can_pci_mmap_wc()		1
 +
-+			if (!subflow_hmac_valid(req, &mp_opt) ||
-+			    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
-+				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
-+				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
-+				goto dispose_child;
-+			}
+ #define PCIBIOS_MIN_IO		0x1000
+ #define PCIBIOS_MIN_MEM		0x10000000
  
- 			/* move the msk reference ownership to the subflow */
- 			subflow_req->msk = NULL;
+diff --git a/arch/s390/pci/Makefile b/arch/s390/pci/Makefile
+index df73c5182990a..1810e0944a4ed 100644
+--- a/arch/s390/pci/Makefile
++++ b/arch/s390/pci/Makefile
+@@ -5,6 +5,6 @@
+ 
+ obj-$(CONFIG_PCI)	+= pci.o pci_irq.o pci_clp.o \
+ 			   pci_event.o pci_debug.o pci_insn.o pci_mmio.o \
+-			   pci_bus.o pci_kvm_hook.o pci_report.o
++			   pci_bus.o pci_kvm_hook.o pci_report.o pci_fixup.o
+ obj-$(CONFIG_PCI_IOV)	+= pci_iov.o
+ obj-$(CONFIG_SYSFS)	+= pci_sysfs.o
+diff --git a/arch/s390/pci/pci_fixup.c b/arch/s390/pci/pci_fixup.c
+new file mode 100644
+index 0000000000000..35688b6450983
+--- /dev/null
++++ b/arch/s390/pci/pci_fixup.c
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Exceptions for specific devices,
++ *
++ * Copyright IBM Corp. 2025
++ *
++ * Author(s):
++ *   Niklas Schnelle <schnelle@linux.ibm.com>
++ */
++#include <linux/pci.h>
++
++static void zpci_ism_bar_no_mmap(struct pci_dev *pdev)
++{
++	/*
++	 * ISM's BAR is special. Drivers written for ISM know
++	 * how to handle this but others need to be aware of their
++	 * special nature e.g. to prevent attempts to mmap() it.
++	 */
++	pdev->non_mappable_bars = 1;
++}
++DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_IBM,
++			PCI_DEVICE_ID_IBM_ISM,
++			zpci_ism_bar_no_mmap);
+diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
+index 2f34761e64135..60ed70a39d2cc 100644
+--- a/drivers/s390/net/ism_drv.c
++++ b/drivers/s390/net/ism_drv.c
+@@ -20,7 +20,6 @@
+ MODULE_DESCRIPTION("ISM driver for s390");
+ MODULE_LICENSE("GPL");
+ 
+-#define PCI_DEVICE_ID_IBM_ISM 0x04ED
+ #define DRV_NAME "ism"
+ 
+ static const struct pci_device_id ism_device_table[] = {
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index c395b3c5c05cf..89896e82e40d8 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -517,6 +517,7 @@
+ #define PCI_DEVICE_ID_IBM_ICOM_V2_ONE_PORT_RVX_ONE_PORT_MDM	0x0251
+ #define PCI_DEVICE_ID_IBM_ICOM_V2_ONE_PORT_RVX_ONE_PORT_MDM_PCIE 0x0361
+ #define PCI_DEVICE_ID_IBM_ICOM_FOUR_PORT_MODEL	0x252
++#define PCI_DEVICE_ID_IBM_ISM		0x04ed
+ 
+ #define PCI_SUBVENDOR_ID_IBM		0x1014
+ #define PCI_SUBDEVICE_ID_IBM_SATURN_SERIAL_ONE_PORT	0x03d4
+-- 
+2.39.5
+
 
 
 
