@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-138826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06506AA19E0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32215AA1917
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:07:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F8C8170BCD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7637E4A022F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADAE227E95;
-	Tue, 29 Apr 2025 18:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A24D250C0C;
+	Tue, 29 Apr 2025 18:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2cRlEKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsof58ZK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAAF3FFD;
-	Tue, 29 Apr 2025 18:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009DD243964;
+	Tue, 29 Apr 2025 18:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950473; cv=none; b=mYwhB7k6P04LJL3TehPm8Ko43h114O0/FfGmnO5aoHmzYbvqInDZcv+j6ssQNSgXdPyHoOsdonkv3FYKNNA1UmKXGKHJ6zvYkCf8HxBkW6AbAPe45EzvEVs7QSzwWJGJnQFswZe4iMP9FGfeH2TbVIRreeC41d0c9kmVvZazJSc=
+	t=1745949888; cv=none; b=Z42rhH4ZeQ+0WEdCyyKbcUML8e2DecGW5nW0WFsa7JD2gaMctq1BLygrCiByEYTBmmfzG73VPRrBbMo//sa3joUclINx7pLiZCM9LY58f/aN1ZWfR1yMFhUTUOYsvgs8ClWh2H65i+FzjREkuo/Z6FJVkcXviEEBSPs5vrqs0eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950473; c=relaxed/simple;
-	bh=jmbtnHhrsPZb2+wSbWtnk78Z4ooZUezpzPfte0D4QOc=;
+	s=arc-20240116; t=1745949888; c=relaxed/simple;
+	bh=OmyuvChdLpN/7ZyBLCH4znl1KW/n2H4bCy7z3xvfunQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idS8v+x4t4I11PRJHrhjZOyU93Va6TFKNsc96quB7t3kE+V1x74DkviO3+6lr2lIixq9EAcGUZhf4KYcm/eNz0yw+c+INGRyENGfN8nEY0Bcst7CtT3p+0vRuF2XSEm2MB98IivCF2JzRjr+qZtYawpPdXYDK+iQXJIZHFA+tdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2cRlEKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33607C4CEE3;
-	Tue, 29 Apr 2025 18:14:31 +0000 (UTC)
+	 MIME-Version; b=tCil/xpdLReT7FgnmdijPC7WnfLOq3vJf3pDTbP0r4vjSzSiqtnCIicKsRDwjYSkAsRs1XOWMjdJO84WZGYMlk3Oy/LFZ9D6TFiN5cMmLIPD/ThXrKOnztDDSfb/MlfpiM3hST4stwpI2RGNrw1zFVfiHAyD/A16/6GMHSH1DOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsof58ZK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61492C4CEE3;
+	Tue, 29 Apr 2025 18:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950472;
-	bh=jmbtnHhrsPZb2+wSbWtnk78Z4ooZUezpzPfte0D4QOc=;
+	s=korg; t=1745949887;
+	bh=OmyuvChdLpN/7ZyBLCH4znl1KW/n2H4bCy7z3xvfunQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L2cRlEKQ3CbSoEgqLiwWSGHB/q+tFc/TyZ8BHk+w+A/spcS6Xlpyo0GSShZ2cJ1uJ
-	 CEyMZoDbNqWDXMl4PaKeQVbEYM+gSvRSl3j11Ba1wPIzsJkvIpOSZ6n7KJMDyXhmLt
-	 hL8iTxn4mN8u9aW814SF2bLNMmqQtnCgf45A8D9Q=
+	b=hsof58ZKKNtVZP+mXp7SdDEFXoSpcmU/8pT6x6ytROJT1ssEa5Ii/Tl3tnXNeNsbd
+	 ILse7oTxvxJcCjySLXUc0QGiDty60Nugi+BXfH/kelliGFAyMZPUrGvp3ltnLPj2J1
+	 Ai5GuVVBbuEvzkqHxD38H9ph4TfCwcyUoUEmYQAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alan Stern <stern@rowland.harvard.edu>,
 	Mingcong Bai <baimingcong@loongson.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 107/204] USB: OHCI: Add quirk for LS7A OHCI controller (rev 0x02)
+Subject: [PATCH 6.1 087/167] USB: OHCI: Add quirk for LS7A OHCI controller (rev 0x02)
 Date: Tue, 29 Apr 2025 18:43:15 +0200
-Message-ID: <20250429161103.811877473@linuxfoundation.org>
+Message-ID: <20250429161055.272847347@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
