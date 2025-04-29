@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1313AA1395
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41443AA125E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39DFC17C335
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F279C927897
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38AAC2512E0;
-	Tue, 29 Apr 2025 17:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5529E244679;
+	Tue, 29 Apr 2025 16:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLtCSwJe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7nNAvLj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EED24A067;
-	Tue, 29 Apr 2025 17:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DC921772B;
+	Tue, 29 Apr 2025 16:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946207; cv=none; b=CKdOli8e7UIUr9ljNS6EGYJ3stmbXzVUUWVoJ9gr9Ipa5s9NnfztKdUP0yvzSNPPzZPBEPcQzfIHz6gw+z4YgbtwNOCwYhV68H8zvB0BScsAZCNOfkJ8N5N+lBIlRdgNVHb0izhvVmFu8g7FWGwYU7aYJqsKJnHi++Jjk8HDU0M=
+	t=1745945444; cv=none; b=HBipfuIJvjlfkOxEJGdAhBptePExF6De5eBE5mlHv0EQO6brYMrRYJ8uvPoiRJVCdIdMg82FRWzZAR0nVJZjw9I1GxGrGxikHzFbvP6MUJT1KQ+BRXo3ckoRhIDUmvFWaiu3jao4nQ1Ef+8PuuMMssfewVO8KkPK3uFjjzHbyQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946207; c=relaxed/simple;
-	bh=JVN7dS7oaKfxtIieQu5OtUvF0F4Jbfa5B4rq2vQFwN8=;
+	s=arc-20240116; t=1745945444; c=relaxed/simple;
+	bh=8VxMrqlhw7fWFHUTQARcemdzpojW7gt7JnUI38s6oGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IAqRhSHttFrHZLraokL5CmXRbWEux/oXxc6E7MXPWNKkUhKy6EjR6Ve9PTyYY72k3EM+D5qKo+uzxyAUZfrtzA8objEjPtMAsdFGv95cXrlRBHyHMWAHNBHy7G1OyzhDpNWgH+icoi21ABprO+WvkkbnrBvdisWWMsq444vvBug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLtCSwJe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 474C3C4CEE3;
-	Tue, 29 Apr 2025 17:03:26 +0000 (UTC)
+	 MIME-Version; b=T8aHmpN3HGZHasG12SchbAUpXEvy8M1S9fsNH8s44IZtlR272qu5leItkEUB69j207jBZl6qN39jVumCxKIvUU/biRd7xUE8v3tLtThxaByD1Z5QDeYONOuy7dtIixo4SUxux1eeAiF16k4tdt4ZvAOz0/kqRbx5oPw4UfRQXws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7nNAvLj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E546C4CEE3;
+	Tue, 29 Apr 2025 16:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946206;
-	bh=JVN7dS7oaKfxtIieQu5OtUvF0F4Jbfa5B4rq2vQFwN8=;
+	s=korg; t=1745945443;
+	bh=8VxMrqlhw7fWFHUTQARcemdzpojW7gt7JnUI38s6oGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hLtCSwJeai70D/P8BHrqikk6YQ+n4/L1GRGackDFFUlZ+UYUJ2f3YqJRxnr45r+Er
-	 8EQN+k8zhJWQ+Pr4qwLYxCcBi3tAIJPNJodMCNX65mxnn/r0Wv6fXVUVK8EW/MXZ4f
-	 cQL+zsUIL5Mz5cTJB4yODX9AeasMYxjRORkOmdy8=
+	b=C7nNAvLjV+l9pAMvCFhtqXlgqQ7KapIRfaQP2TPrlLrrk5Z5am8D8Z09pkdRajRTb
+	 QoanhzhXG2wtz4/c51ydeyJpMPvtj7pvXqtT+LU/qaWWYSd6eU/dx7nCDD9G5dSH0T
+	 dYZfKJiHcpBndTiw7vHhXPwO3Hcsyl1XrP2VG5Nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 191/311] clk: renesas: rzv2h: Adjust for CPG_BUS_m_MSTOP starting from m = 1
+Subject: [PATCH 5.4 087/179] scsi: iscsi: Fix missing scsi_host_put() in error path
 Date: Tue, 29 Apr 2025 18:40:28 +0200
-Message-ID: <20250429161128.838465125@linuxfoundation.org>
+Message-ID: <20250429161052.922611570@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 69ac2acd209a15bd7a61a15c9532a5b505252e1c ]
+[ Upstream commit 72eea84a1092b50a10eeecfeba4b28ac9f1312ab ]
 
-Avoid using the "- 1" for finding mstop_index in all functions accessing
-priv->mstop_count, by adjusting its pointer in rzv2h_cpg_probe().
+Add goto to ensure scsi_host_put() is called in all error paths of
+iscsi_set_host_param() function. This fixes a potential memory leak when
+strlen() check fails.
 
-While at it, drop the intermediate local variable index.
-
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Closes: https://lore.kernel.org/all/CAMuHMdX1gPNCFddg_DyK7Bv0BeFLOLi=5eteT_HhMH=Ph2wVvA@mail.gmail.com/
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250222142009.41324-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: ce51c8170084 ("scsi: iscsi: Add strlen() check in iscsi_if_set{_host}_param()")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://lore.kernel.org/r/20250318094344.91776-1-linmq006@gmail.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzv2h-cpg.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/scsi/scsi_transport_iscsi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/renesas/rzv2h-cpg.c b/drivers/clk/renesas/rzv2h-cpg.c
-index a4c1e92e1fd76..4e81a0bae0228 100644
---- a/drivers/clk/renesas/rzv2h-cpg.c
-+++ b/drivers/clk/renesas/rzv2h-cpg.c
-@@ -447,8 +447,7 @@ static void rzv2h_mod_clock_mstop_enable(struct rzv2h_cpg_priv *priv,
- {
- 	unsigned long mstop_mask = FIELD_GET(BUS_MSTOP_BITS_MASK, mstop_data);
- 	u16 mstop_index = FIELD_GET(BUS_MSTOP_IDX_MASK, mstop_data);
--	unsigned int index = (mstop_index - 1) * 16;
--	atomic_t *mstop = &priv->mstop_count[index];
-+	atomic_t *mstop = &priv->mstop_count[mstop_index * 16];
- 	unsigned long flags;
- 	unsigned int i;
- 	u32 val = 0;
-@@ -469,8 +468,7 @@ static void rzv2h_mod_clock_mstop_disable(struct rzv2h_cpg_priv *priv,
- {
- 	unsigned long mstop_mask = FIELD_GET(BUS_MSTOP_BITS_MASK, mstop_data);
- 	u16 mstop_index = FIELD_GET(BUS_MSTOP_IDX_MASK, mstop_data);
--	unsigned int index = (mstop_index - 1) * 16;
--	atomic_t *mstop = &priv->mstop_count[index];
-+	atomic_t *mstop = &priv->mstop_count[mstop_index * 16];
- 	unsigned long flags;
- 	unsigned int i;
- 	u32 val = 0;
-@@ -630,8 +628,7 @@ rzv2h_cpg_register_mod_clk(const struct rzv2h_mod_clk *mod,
- 	} else if (clock->mstop_data != BUS_MSTOP_NONE && mod->critical) {
- 		unsigned long mstop_mask = FIELD_GET(BUS_MSTOP_BITS_MASK, clock->mstop_data);
- 		u16 mstop_index = FIELD_GET(BUS_MSTOP_IDX_MASK, clock->mstop_data);
--		unsigned int index = (mstop_index - 1) * 16;
--		atomic_t *mstop = &priv->mstop_count[index];
-+		atomic_t *mstop = &priv->mstop_count[mstop_index * 16];
- 		unsigned long flags;
- 		unsigned int i;
- 		u32 val = 0;
-@@ -926,6 +923,9 @@ static int __init rzv2h_cpg_probe(struct platform_device *pdev)
- 	if (!priv->mstop_count)
- 		return -ENOMEM;
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index 9ef242d2a2c9d..d75097f13efcc 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -2924,11 +2924,14 @@ iscsi_set_host_param(struct iscsi_transport *transport,
+ 	}
  
-+	/* Adjust for CPG_BUS_m_MSTOP starting from m = 1 */
-+	priv->mstop_count -= 16;
-+
- 	priv->resets = devm_kmemdup(dev, info->resets, sizeof(*info->resets) *
- 				    info->num_resets, GFP_KERNEL);
- 	if (!priv->resets)
+ 	/* see similar check in iscsi_if_set_param() */
+-	if (strlen(data) > ev->u.set_host_param.len)
+-		return -EINVAL;
++	if (strlen(data) > ev->u.set_host_param.len) {
++		err = -EINVAL;
++		goto out;
++	}
+ 
+ 	err = transport->set_host_param(shost, ev->u.set_host_param.param,
+ 					data, ev->u.set_host_param.len);
++out:
+ 	scsi_host_put(shost);
+ 	return err;
+ }
 -- 
 2.39.5
 
