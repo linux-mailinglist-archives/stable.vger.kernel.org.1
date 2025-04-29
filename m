@@ -1,61 +1,71 @@
-Return-Path: <stable+bounces-138987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4B9AA3D62
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:58:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE10AA3D66
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:58:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BDD5188F598
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:58:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 480239A722B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D426527E7C5;
-	Tue, 29 Apr 2025 23:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4546427E7F0;
+	Tue, 29 Apr 2025 23:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ye7eY4h/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B1WagvpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C124255F20;
-	Tue, 29 Apr 2025 23:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025C927E7ED;
+	Tue, 29 Apr 2025 23:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745970665; cv=none; b=G9W9gThlAoQPG5vdILSv022Q5vHQkoIcqfflC/qFvccj+IycqZGrDPVAOJO7zohkKXCNl0yRSkswUJId8A/oXT7E7cz0eSvve8VZfxCQR5AQqTAEjUGns5tWjBoPc3Ke+T2x+s/OIYPOBCWXpZBBDTGPtDyv99TedILQgBUzgi0=
+	t=1745970669; cv=none; b=inIst9u4AC1Dqs+vVXENCJZwo95medh672DEDYeHWdltq7n9UwRrWye8j1PWVk9u7hV1St6s+zwhM9CxU6l+9Sl1EugiSSZmuzRAQ/RlDuuQOBT0NKigQIqsROQzKQAV6I0eTuDCXgu0l1SMalTzxLRdGp1RN9vaMuSf0U9hRag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745970665; c=relaxed/simple;
-	bh=70b8Jc06bX+xlikGum4mEtZSHRqtISUc+HKBUjhBOWI=;
+	s=arc-20240116; t=1745970669; c=relaxed/simple;
+	bh=7Mqkh/DfpJaKhMCrCkYPgeCnFVkfSR9IgPhX19vd/Ro=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BQ+D3aSPiHX+aEGEJDiv7+ym+GSniiobd/s7nbHzQfqvkWCRmauShnaD2Wk+0qzobgjcFyF5IHaEpxTDlXqvqN1npRKEhbuQWYsJeOnpjx1jSAtpd74MNhXOeFVh7cibKdDzROT5yU+bE53/xBm7AAcQqALtJve+mf8BWcs9DGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ye7eY4h/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30990C4CEE3;
-	Tue, 29 Apr 2025 23:51:04 +0000 (UTC)
+	 MIME-Version; b=ubxKVIP7mcglrMuDGoNN9XtdpqXIOH/YD1HF3J2k1DJTb1GyQnPoPuuKj7ZJVyoy9WLoYw0WMyt8X1rI9TuEFQ7ge2UL86wfEurPEFAxn400twMSQPeirlnIWtfO3AaXo71UYY7m4txroMRh3WsNosCkGHw7nt6PTIiUgNzgI5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B1WagvpW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD52C4CEE3;
+	Tue, 29 Apr 2025 23:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745970665;
-	bh=70b8Jc06bX+xlikGum4mEtZSHRqtISUc+HKBUjhBOWI=;
+	s=k20201202; t=1745970668;
+	bh=7Mqkh/DfpJaKhMCrCkYPgeCnFVkfSR9IgPhX19vd/Ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ye7eY4h/yc1n054FCtH760jgF15dAINbKxY5oq4F1xHg/qb1uUHQUFww7qQCMEzSD
-	 T7K7vU2quUc14MjpQI+JlbA7EQhyfb7ouheRbHzbvGr1+h1H2jqd+TzhHah38ax0Eq
-	 +Dru3elQfvnUA7mFbSY5CIZv+G9nvLfolBavbbRXhF7Pj36SJ0YLYxyJC/llmiebZR
-	 qCyqhufC1ihqHh9AAN0/OTkW0Vz/peMUEr/ycX5IEYzqDElhUrNlp7CjXWODcM0Pcp
-	 uUBT/oFsFQrbNSZ4xb+wokdDm1Cv3G/fBpR7IIMJ5bCN5vnYPVK588K1mPnMBe5C3p
-	 5SVhLVuNPufqw==
+	b=B1WagvpW60CqVWXkFLuP8fPR+m4iqUOyTztr/4o0QmZxWYenuuh09hQNSNdR/Eck2
+	 IhJ548iVz8fE7YoT0bsyX/iNiI/mT6HhdQY79EHVZIlc7v4+voePt4UtXX6UCTLpZv
+	 bs5OY2uVp6HELoEwQnG8d5w+IRBHS7VHsImadFGcewzjVD8e/NqdM/kYDf5hllQ7WD
+	 nEbe7tR3etWgrlhTNohaVyZUyj/Txwsb77N8sas2XP0GvtESuIMVAnOnZ3dlAkMD+A
+	 J1/3OkHW85tqvZ95sUwlM4RctoGffYBMxVkWPdlNOeaPJ09YcCfVLWT/tn8AWnjFtF
+	 9isf6B8FdPiVA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Davidlohr Bueso <dave@stgolabs.net>,
-	Jan Kara <jack@suse.cz>,
-	kdevops@lists.linux.dev,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Nicholas Susanto <nsusanto@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Mark Broadworth <mark.broadworth@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	tytso@mit.edu,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 31/39] fs/ext4: use sleeping version of sb_find_get_block()
-Date: Tue, 29 Apr 2025 19:49:58 -0400
-Message-Id: <20250429235006.536648-31-sashal@kernel.org>
+	austin.zheng@amd.com,
+	jun.lei@amd.com,
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	Charlene.Liu@amd.com,
+	chiahsuan.chung@amd.com,
+	nicholas.kazlauskas@amd.com,
+	paul.hsieh@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 32/39] drm/amd/display: Enable urgent latency adjustment on DCN35
+Date: Tue, 29 Apr 2025 19:49:59 -0400
+Message-Id: <20250429235006.536648-32-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250429235006.536648-1-sashal@kernel.org>
 References: <20250429235006.536648-1-sashal@kernel.org>
@@ -70,43 +80,51 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.4
 Content-Transfer-Encoding: 8bit
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+From: Nicholas Susanto <nsusanto@amd.com>
 
-[ Upstream commit 6e8f57fd09c9fb569d10b2ccc3878155b702591a ]
+[ Upstream commit 756c85e4d0ddc497b4ad5b1f41ad54e838e06188 ]
 
-Enable ext4_free_blocks() to use it, which has a cond_resched to begin
-with. Convert to the new nonatomic flavor to benefit from potential
-performance benefits and adapt in the future vs migration such that
-semantics are kept.
+[Why]
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Link: https://kdevops.org/ext4/v6.15-rc2.html # [0]
-Link: https://lore.kernel.org/all/aAAEvcrmREWa1SKF@bombadil.infradead.org/ # [1]
-Link: https://lore.kernel.org/20250418015921.132400-7-dave@stgolabs.net
-Tested-by: kdevops@lists.linux.dev
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Urgent latency adjustment was disabled on DCN35 due to issues with P0
+enablement on some platforms. Without urgent latency, underflows occur
+when doing certain high timing configurations. After testing, we found
+that reenabling urgent latency didn't reintroduce p0 support on multiple
+platforms.
+
+[How]
+
+renable urgent latency on DCN35 and setting it to 3000 Mhz.
+
+This reverts commit 3412860cc4c0c484f53f91b371483e6e4440c3e5.
+
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Signed-off-by: Nicholas Susanto <nsusanto@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Mark Broadworth <mark.broadworth@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit cd74ce1f0cddffb3f36d0995d0f61e89f0010738)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index b25a27c866969..d6f1e61c6dc82 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -6644,7 +6644,8 @@ void ext4_free_blocks(handle_t *handle, struct inode *inode,
- 		for (i = 0; i < count; i++) {
- 			cond_resched();
- 			if (is_metadata)
--				bh = sb_find_get_block(inode->i_sb, block + i);
-+				bh = sb_find_get_block_nonatomic(inode->i_sb,
-+								 block + i);
- 			ext4_forget(handle, is_metadata, inode, bh, block + i);
- 		}
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+index 47d785204f29c..beed7adbbd43e 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+@@ -195,9 +195,9 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_5_soc = {
+ 	.dcn_downspread_percent = 0.5,
+ 	.gpuvm_min_page_size_bytes = 4096,
+ 	.hostvm_min_page_size_bytes = 4096,
+-	.do_urgent_latency_adjustment = 0,
++	.do_urgent_latency_adjustment = 1,
+ 	.urgent_latency_adjustment_fabric_clock_component_us = 0,
+-	.urgent_latency_adjustment_fabric_clock_reference_mhz = 0,
++	.urgent_latency_adjustment_fabric_clock_reference_mhz = 3000,
+ };
+ 
+ void dcn35_build_wm_range_table_fpu(struct clk_mgr *clk_mgr)
 -- 
 2.39.5
 
