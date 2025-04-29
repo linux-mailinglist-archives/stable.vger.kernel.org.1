@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-138418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D55AA1836
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2092FAA18B4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EED43AB856
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:52:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 831334E1658
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0959222AE68;
-	Tue, 29 Apr 2025 17:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7165A250C0C;
+	Tue, 29 Apr 2025 18:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8iU+d0v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyH3ONoS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92D82B2DA;
-	Tue, 29 Apr 2025 17:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3044F2AE96;
+	Tue, 29 Apr 2025 18:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949191; cv=none; b=CXq5pgS/5ux2koQFq1L54LP0D2XiFim5aMAhkzVFyRwrrl3EFEISJq9VrIihi4/JDdZJgDIcKzJBtUlgOFUuhq4qt0JLX1TxijkZ+u+UuVL27RdvfI955SHY6XWsNBprx+0y/dEfyq738rRVqusab3P1Ax1Fy8UI5MxVb7y1fwk=
+	t=1745949709; cv=none; b=Ut7fWYV5bzy5fWPnewDMCpZExtxQGZSfqqvbpexhJsI7nHi9C5QKCeOapQiypKyW3HtYYM7OBSCEIF7P5rw6iFTKPDiz0rmJiZ5qqzkdWCpbbXcx+cv67W4fLyWUOu/IpQAwztrTfcj+xb5KKt5oziC09sSHZnDrG8CBFAGuXdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949191; c=relaxed/simple;
-	bh=rxFBamizUuWBJoZdnEbWP0zxhLZblGJQCH8OhIZAii8=;
+	s=arc-20240116; t=1745949709; c=relaxed/simple;
+	bh=wcrilAOrq4g5cUz8hkh+YOyAK0PtBx48xVPBdTjj/3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XOUhUMMUpSVLE15+Z5CiCSmAbjMC9Qc/98JFjnbuAQqqM/MwmCMO5VxvMTBmxKopXjbRD7SvWuIwS2ikiGHaLc4qQm6iM03VL0gw8F8dg6IaomWLiY21IHwwZ7jwj62mX+QO0jbZj3oSWrl8Mj4ZHlkxJaUkt7WbdW1IUYLwP/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8iU+d0v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235B9C4CEE3;
-	Tue, 29 Apr 2025 17:53:10 +0000 (UTC)
+	 MIME-Version; b=dVsYJ25aXYMYsGhJIMvcGll/Lebam6Tl0WTv6aFrMCQy6yGF7TbLRD/zErgJEAZjgOU1KjvfX4iPtFW59MFbXktw9H8dCmhmlIZGVq0df5IYr8+3dXY0OdgiA/534bcLcL8b3fpr/v0HRhM9dhebEfzLJ1kQXtqcK7TGb5dL1p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyH3ONoS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14F2C4CEE9;
+	Tue, 29 Apr 2025 18:01:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949191;
-	bh=rxFBamizUuWBJoZdnEbWP0zxhLZblGJQCH8OhIZAii8=;
+	s=korg; t=1745949709;
+	bh=wcrilAOrq4g5cUz8hkh+YOyAK0PtBx48xVPBdTjj/3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z8iU+d0vX2o5RVE2IPspjgm+G3A8gg17BQDASBhenJaMTuTefXqYasZ488vslBpNE
-	 Oj16adpMk1W3XvJQoV+OCzwqMtL8WGa1pCABuUkz8jihnrPgUIudrmmuVRhqwuTcC6
-	 5T4FUHserwv3D5U0m6E+8pkvORhi4WQj8dPjgCc0=
+	b=QyH3ONoS7Y2pL6pLvktiFfXpuLU0V+BK5aBjyT41QR1y6tpotQFmuJDHQUHuhnX4y
+	 pvR2hvRk1vvWabLNgEPMx2/Qlt/VXX7rDT+Yz3IAqNUiFeLg8sQTe+NuRPRrkayV9E
+	 Sp40wUK5U4jf4bQbDSkUkD6YZgHhy1IHtF7X4CTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.15 240/373] net: defer final struct net free in netns dismantle
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 009/167] auxdisplay: hd44780: Fix an API misuse in hd44780.c
 Date: Tue, 29 Apr 2025 18:41:57 +0200
-Message-ID: <20250429161133.006120847@linuxfoundation.org>
+Message-ID: <20250429161052.128196319@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,222 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 0f6ede9fbc747e2553612271bce108f7517e7a45 upstream.
+[ Upstream commit 9b98a7d2e5f4e2beeff88f6571da0cdc5883c7fb ]
 
-Ilya reported a slab-use-after-free in dst_destroy [1]
+Variable allocated by charlcd_alloc() should be released
+by charlcd_free(). The following patch changed kfree() to
+charlcd_free() to fix an API misuse.
 
-Issue is in xfrm6_net_init() and xfrm4_net_init() :
-
-They copy xfrm[46]_dst_ops_template into net->xfrm.xfrm[46]_dst_ops.
-
-But net structure might be freed before all the dst callbacks are
-called. So when dst_destroy() calls later :
-
-if (dst->ops->destroy)
-    dst->ops->destroy(dst);
-
-dst->ops points to the old net->xfrm.xfrm[46]_dst_ops, which has been freed.
-
-See a relevant issue fixed in :
-
-ac888d58869b ("net: do not delay dst_entries_add() in dst_release()")
-
-A fix is to queue the 'struct net' to be freed after one
-another cleanup_net() round (and existing rcu_barrier())
-
-[1]
-
-BUG: KASAN: slab-use-after-free in dst_destroy (net/core/dst.c:112)
-Read of size 8 at addr ffff8882137ccab0 by task swapper/37/0
-Dec 03 05:46:18 kernel:
-CPU: 37 UID: 0 PID: 0 Comm: swapper/37 Kdump: loaded Not tainted 6.12.0 #67
-Hardware name: Red Hat KVM/RHEL, BIOS 1.16.1-1.el9 04/01/2014
-Call Trace:
- <IRQ>
-dump_stack_lvl (lib/dump_stack.c:124)
-print_address_description.constprop.0 (mm/kasan/report.c:378)
-? dst_destroy (net/core/dst.c:112)
-print_report (mm/kasan/report.c:489)
-? dst_destroy (net/core/dst.c:112)
-? kasan_addr_to_slab (mm/kasan/common.c:37)
-kasan_report (mm/kasan/report.c:603)
-? dst_destroy (net/core/dst.c:112)
-? rcu_do_batch (kernel/rcu/tree.c:2567)
-dst_destroy (net/core/dst.c:112)
-rcu_do_batch (kernel/rcu/tree.c:2567)
-? __pfx_rcu_do_batch (kernel/rcu/tree.c:2491)
-? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4339 kernel/locking/lockdep.c:4406)
-rcu_core (kernel/rcu/tree.c:2825)
-handle_softirqs (kernel/softirq.c:554)
-__irq_exit_rcu (kernel/softirq.c:589 kernel/softirq.c:428 kernel/softirq.c:637)
-irq_exit_rcu (kernel/softirq.c:651)
-sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1049 arch/x86/kernel/apic/apic.c:1049)
- </IRQ>
- <TASK>
-asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:702)
-RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:743)
-Code: 00 4d 29 c8 4c 01 c7 4c 29 c2 e9 6e ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 0f 00 2d c7 c9 27 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90
-RSP: 0018:ffff888100d2fe00 EFLAGS: 00000246
-RAX: 00000000001870ed RBX: 1ffff110201a5fc2 RCX: ffffffffb61a3e46
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffffb3d4d123
-RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed11c7e1835d
-R10: ffff888e3f0c1aeb R11: 0000000000000000 R12: 0000000000000000
-R13: ffff888100d20000 R14: dffffc0000000000 R15: 0000000000000000
-? ct_kernel_exit.constprop.0 (kernel/context_tracking.c:148)
-? cpuidle_idle_call (kernel/sched/idle.c:186)
-default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
-cpuidle_idle_call (kernel/sched/idle.c:186)
-? __pfx_cpuidle_idle_call (kernel/sched/idle.c:168)
-? lock_release (kernel/locking/lockdep.c:467 kernel/locking/lockdep.c:5848)
-? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4347 kernel/locking/lockdep.c:4406)
-? tsc_verify_tsc_adjust (arch/x86/kernel/tsc_sync.c:59)
-do_idle (kernel/sched/idle.c:326)
-cpu_startup_entry (kernel/sched/idle.c:423 (discriminator 1))
-start_secondary (arch/x86/kernel/smpboot.c:202 arch/x86/kernel/smpboot.c:282)
-? __pfx_start_secondary (arch/x86/kernel/smpboot.c:232)
-? soft_restart_cpu (arch/x86/kernel/head_64.S:452)
-common_startup_64 (arch/x86/kernel/head_64.S:414)
- </TASK>
-Dec 03 05:46:18 kernel:
-Allocated by task 12184:
-kasan_save_stack (mm/kasan/common.c:48)
-kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
-__kasan_slab_alloc (mm/kasan/common.c:319 mm/kasan/common.c:345)
-kmem_cache_alloc_noprof (mm/slub.c:4085 mm/slub.c:4134 mm/slub.c:4141)
-copy_net_ns (net/core/net_namespace.c:421 net/core/net_namespace.c:480)
-create_new_namespaces (kernel/nsproxy.c:110)
-unshare_nsproxy_namespaces (kernel/nsproxy.c:228 (discriminator 4))
-ksys_unshare (kernel/fork.c:3313)
-__x64_sys_unshare (kernel/fork.c:3382)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-Dec 03 05:46:18 kernel:
-Freed by task 11:
-kasan_save_stack (mm/kasan/common.c:48)
-kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
-kasan_save_free_info (mm/kasan/generic.c:582)
-__kasan_slab_free (mm/kasan/common.c:271)
-kmem_cache_free (mm/slub.c:4579 mm/slub.c:4681)
-cleanup_net (net/core/net_namespace.c:456 net/core/net_namespace.c:446 net/core/net_namespace.c:647)
-process_one_work (kernel/workqueue.c:3229)
-worker_thread (kernel/workqueue.c:3304 kernel/workqueue.c:3391)
-kthread (kernel/kthread.c:389)
-ret_from_fork (arch/x86/kernel/process.c:147)
-ret_from_fork_asm (arch/x86/entry/entry_64.S:257)
-Dec 03 05:46:18 kernel:
-Last potentially related work creation:
-kasan_save_stack (mm/kasan/common.c:48)
-__kasan_record_aux_stack (mm/kasan/generic.c:541)
-insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
-__queue_work (kernel/workqueue.c:2340)
-queue_work_on (kernel/workqueue.c:2391)
-xfrm_policy_insert (net/xfrm/xfrm_policy.c:1610)
-xfrm_add_policy (net/xfrm/xfrm_user.c:2116)
-xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
-netlink_rcv_skb (net/netlink/af_netlink.c:2536)
-xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
-netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
-netlink_sendmsg (net/netlink/af_netlink.c:1886)
-sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
-vfs_write (fs/read_write.c:590 fs/read_write.c:683)
-ksys_write (fs/read_write.c:736)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-Dec 03 05:46:18 kernel:
-Second to last potentially related work creation:
-kasan_save_stack (mm/kasan/common.c:48)
-__kasan_record_aux_stack (mm/kasan/generic.c:541)
-insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
-__queue_work (kernel/workqueue.c:2340)
-queue_work_on (kernel/workqueue.c:2391)
-__xfrm_state_insert (./include/linux/workqueue.h:723 net/xfrm/xfrm_state.c:1150 net/xfrm/xfrm_state.c:1145 net/xfrm/xfrm_state.c:1513)
-xfrm_state_update (./include/linux/spinlock.h:396 net/xfrm/xfrm_state.c:1940)
-xfrm_add_sa (net/xfrm/xfrm_user.c:912)
-xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
-netlink_rcv_skb (net/netlink/af_netlink.c:2536)
-xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
-netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
-netlink_sendmsg (net/netlink/af_netlink.c:1886)
-sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
-vfs_write (fs/read_write.c:590 fs/read_write.c:683)
-ksys_write (fs/read_write.c:736)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Fixes: a8a572a6b5f2 ("xfrm: dst_entries_init() per-net dst_ops")
-Reported-by: Ilya Maximets <i.maximets@ovn.org>
-Closes: https://lore.kernel.org/netdev/CANn89iKKYDVpB=MtmfH7nyv2p=rJWSLedO5k7wSZgtY_tO8WQg@mail.gmail.com/T/#m02c98c3009fe66382b73cfb4db9cf1df6fab3fbf
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20241204125455.3871859-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Minor conflict resolved due to code context change.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 718e05ed92ec ("auxdisplay: Introduce hd44780_common.[ch]")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/net_namespace.h |    1 +
- net/core/net_namespace.c    |   21 ++++++++++++++++++++-
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ drivers/auxdisplay/hd44780.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -80,6 +80,7 @@ struct net {
- 						 * or to unregister pernet ops
- 						 * (pernet_ops_rwsem write locked).
- 						 */
-+	struct llist_node	defer_free_list;
- 	struct llist_node	cleanup_list;	/* namespaces on death row */
+diff --git a/drivers/auxdisplay/hd44780.c b/drivers/auxdisplay/hd44780.c
+index 7ac0b1b1d5482..8b690f59df27d 100644
+--- a/drivers/auxdisplay/hd44780.c
++++ b/drivers/auxdisplay/hd44780.c
+@@ -313,7 +313,7 @@ static int hd44780_probe(struct platform_device *pdev)
+ fail3:
+ 	kfree(hd);
+ fail2:
+-	kfree(lcd);
++	charlcd_free(lcd);
+ fail1:
+ 	kfree(hdc);
+ 	return ret;
+@@ -328,7 +328,7 @@ static void hd44780_remove(struct platform_device *pdev)
+ 	kfree(hdc->hd44780);
+ 	kfree(lcd->drvdata);
  
- #ifdef CONFIG_KEYS
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -440,11 +440,28 @@ out_free:
- 	goto out;
+-	kfree(lcd);
++	charlcd_free(lcd);
  }
  
-+static LLIST_HEAD(defer_free_list);
-+
-+static void net_complete_free(void)
-+{
-+	struct llist_node *kill_list;
-+	struct net *net, *next;
-+
-+	/* Get the list of namespaces to free from last round. */
-+	kill_list = llist_del_all(&defer_free_list);
-+
-+	llist_for_each_entry_safe(net, next, kill_list, defer_free_list)
-+		kmem_cache_free(net_cachep, net);
-+
-+}
-+
- static void net_free(struct net *net)
- {
- 	if (refcount_dec_and_test(&net->passive)) {
- 		kfree(rcu_access_pointer(net->gen));
--		kmem_cache_free(net_cachep, net);
-+
-+		/* Wait for an extra rcu_barrier() before final free. */
-+		llist_add(&net->defer_free_list, &defer_free_list);
- 	}
- }
- 
-@@ -628,6 +645,8 @@ static void cleanup_net(struct work_stru
- 	 */
- 	rcu_barrier();
- 
-+	net_complete_free();
-+
- 	/* Finally it is safe to free my network namespace structure */
- 	list_for_each_entry_safe(net, tmp, &net_exit_list, exit_list) {
- 		list_del_init(&net->exit_list);
+ static const struct of_device_id hd44780_of_match[] = {
+-- 
+2.39.5
+
 
 
 
