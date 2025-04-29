@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC79AA182E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D26CAA1563
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:26:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4C654C247D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CF5C173819
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254072459C5;
-	Tue, 29 Apr 2025 17:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CEAF2522B5;
+	Tue, 29 Apr 2025 17:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P19Uz/ok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGwT1GX+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D722325393E;
-	Tue, 29 Apr 2025 17:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C53245007;
+	Tue, 29 Apr 2025 17:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949311; cv=none; b=Ssy1Qzm0TtcSx+DMI+CST8+yu7gh/DdwtRs5O3nFHGZgxiqJ/E5/wpbOiBb4kkoFN6hu2jdtLl0rH0GtWeNpFD9qJBgMcJmn6Jopt1nvX/rvM+HDCVbhB1npcaVL+UniJrrfRrwWZUubqMWe1WgU/yOeER64Alr/dm850NTrk6E=
+	t=1745947347; cv=none; b=pt31Jc+p6xgx93TZSbXcRnIFLjQAHt0BUN8mngVJqTw9YFO/MH6Qo5xotvoVu2Cm3r0vnj5lQkyueUdR1l0Dsng55K3qIUj844BqhDqZX5MEMZXvpWPhPtAWFrK0dsLq27mm/KJ8/BUpMuICgdmGhNTEzBGaqvnYieFjritc4x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949311; c=relaxed/simple;
-	bh=tImWCEdNCZsqm+yWvBhVYK1ZIPabTW0Zk1ZdBfzhkHs=;
+	s=arc-20240116; t=1745947347; c=relaxed/simple;
+	bh=NLfVLDY6SPOdb5FaYdl643gB5g1+GlexmhTMfkhtGk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eGmP4BfgrRdabYu02kpOkkSWblovgJlDthJmXK08WtBnxpMJpfIsDbnBROhxFG3ojSQHR9nrr15KZMkyq5mK+2UTYVcWTEGpCnFkKgSy6VGmvZSIfe9Il0DGV1D37Qr+MEtv0g7umzdFKCmcppxnePmOtkYczN5cYD3DbmeYmC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P19Uz/ok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45ABAC4CEE3;
-	Tue, 29 Apr 2025 17:55:11 +0000 (UTC)
+	 MIME-Version; b=WINvQYdkoSV2OLobUR6IFvJfiIIWYmiohR4GP3Qz4aQwPHxDhrxKHvSbp45+9IzVfuWD0YH7av9aOtMFgzF7ABpKdCmljaNjEYRpVKIi59VTdgj3/dr+yP+xkW/kdPLnV6NbX8DslifmqT7dBR8GHBuFrUHMF98EdxrX15SqvDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGwT1GX+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C671C4CEE3;
+	Tue, 29 Apr 2025 17:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949311;
-	bh=tImWCEdNCZsqm+yWvBhVYK1ZIPabTW0Zk1ZdBfzhkHs=;
+	s=korg; t=1745947347;
+	bh=NLfVLDY6SPOdb5FaYdl643gB5g1+GlexmhTMfkhtGk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P19Uz/okFir107swtRe/TiWAZDapFe3nQBC/WvaHZ6O8vIt8uh5Mxmsk7Lobem5lN
-	 AJVzVQaV862hg3nySk0RelAL6Vuf0u+jtXro+i8gcBxiGI1Wxf5dwoJ3qadS9iHZH4
-	 HKVSR28JYRyr3EfbdGkbbpXCLPTH1rYSRGZJpS6g=
+	b=oGwT1GX+CAAKCGCnzaNNKqiG5rv6TzhkX60U0QDlX4Bf/PWg52aqvYDsJR/AnRggK
+	 RT5d3qeRNHbGPOpCPD5CR6s1BrRXYG35H4vtScXPZkDTUBOwqUgY2DlsBcAnmRFLfF
+	 Da2OWUP23jvmTxJpDHjAwPEMSde0Vq9zYuahWiXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 277/373] PCI: Fix reference leak in pci_register_host_bridge()
-Date: Tue, 29 Apr 2025 18:42:34 +0200
-Message-ID: <20250429161134.516673855@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Miao Li <limiao@kylinos.cn>,
+	Lei Huang <huanglei@kylinos.cn>
+Subject: [PATCH 5.10 251/286] usb: quirks: Add delay init quirk for SanDisk 3.2Gen1 Flash Drive
+Date: Tue, 29 Apr 2025 18:42:35 +0200
+Message-ID: <20250429161118.248556024@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Miao Li <limiao@kylinos.cn>
 
-[ Upstream commit 804443c1f27883926de94c849d91f5b7d7d696e9 ]
+commit 37ffdbd695c02189dbf23d6e7d2385e0299587ca upstream.
 
-If device_register() fails, call put_device() to give up the reference to
-avoid a memory leak, per the comment at device_register().
+The SanDisk 3.2Gen1 Flash Drive, which VID:PID is in 0781:55a3,
+just like Silicon Motion Flash Drive:
+https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
+also needs the DELAY_INIT quirk, or it will randomly work incorrectly
+(e.g.: lsusb and can't list this device info) when connecting Huawei
+hisi platforms and doing thousand of reboot test circles.
 
-Found by code review.
-
-Link: https://lore.kernel.org/r/20250225021440.3130264-1-make24@iscas.ac.cn
-Fixes: 37d6a0a6f470 ("PCI: Add pci_register_host_bridge() interface")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-[bhelgaas: squash Dan Carpenter's double free fix from
-https://lore.kernel.org/r/db806a6c-a91b-4e5a-a84b-6b7e01bdac85@stanley.mountain]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miao Li <limiao@kylinos.cn>
+Signed-off-by: Lei Huang <huanglei@kylinos.cn>
+Link: https://lore.kernel.org/r/20250414062935.159024-1-limiao870622@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/probe.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index f70d7dec3fdde..940336fa73743 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -888,6 +888,7 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- 	resource_size_t offset, next_offset;
- 	LIST_HEAD(resources);
- 	struct resource *res, *next_res;
-+	bool bus_registered = false;
- 	char addr[64], *fmt;
- 	const char *name;
- 	int err;
-@@ -951,6 +952,7 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- 	name = dev_name(&bus->dev);
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -366,6 +366,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0781, 0x5583), .driver_info = USB_QUIRK_NO_LPM },
+ 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
  
- 	err = device_register(&bus->dev);
-+	bus_registered = true;
- 	if (err)
- 		goto unregister;
- 
-@@ -1031,12 +1033,15 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- unregister:
- 	put_device(&bridge->dev);
- 	device_del(&bridge->dev);
--
- free:
- #ifdef CONFIG_PCI_DOMAINS_GENERIC
- 	pci_bus_release_domain_nr(bus, parent);
- #endif
--	kfree(bus);
-+	if (bus_registered)
-+		put_device(&bus->dev);
-+	else
-+		kfree(bus);
++	/* SanDisk Corp. SanDisk 3.2Gen1 */
++	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
 +
- 	return err;
- }
+ 	/* Realforce 87U Keyboard */
+ 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
  
--- 
-2.39.5
-
 
 
 
