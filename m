@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-138142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BDDFAA1713
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF013AA158A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 161FD3BF212
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:38:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59F8017790B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A102517A4;
-	Tue, 29 Apr 2025 17:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE04D24E016;
+	Tue, 29 Apr 2025 17:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRbUhYvZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIqu9IZ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70694244670;
-	Tue, 29 Apr 2025 17:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9B9224AE6;
+	Tue, 29 Apr 2025 17:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948295; cv=none; b=NN/p7AKXueOa0eTFkk14SCFxU9W8+dUDx61i8FU938aN/NDR3GKjSaZZuM3ncmKe1XEGsw6AxqKBgfSihHl2Bgy0nTnRH6WILhVgjsqwxqNI63oqn5hRS/DyAOsMLjc1Cb1UHlCQ8cYFJSTlPobJTpWJK87XATXYMIOn9zkzFZk=
+	t=1745947446; cv=none; b=V769mgdvNekBnKbdHDmycGAAN+OuytRtNR1YDf6ujpBeCCmAvCpSTHiNTsb9N+eq4MZvTf371z63hygCefEgs0vKpXvgMAVAmw2xMqI/Sl0ic7Jn8hF3gOcJzlUcF/Yinzjl5dtASDRmGPnV6ToTkbNDOHy1MeHXebEdO2d58ZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948295; c=relaxed/simple;
-	bh=PXLn36Ir8Zb0ZuKe+E1JEsGRbB93r8ls53Q7jdKncyU=;
+	s=arc-20240116; t=1745947446; c=relaxed/simple;
+	bh=RuVIyE6tUO6lreeOoxhANsf+xIDxLyjoGl1W7lbcWk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pE8g3H7Uad+vNGQxXeyl7pqJx74xsDSxw4mtzgZDPxkYEL8/AyIjH3ogawwNuhM1b20JSKPLzhf4g8zltmhUaZVVzYcMcRue/dU9X4L2/K6bBnjFT6Tix/BBSaMQA1a2ARNBup/lL2vr149K/2gXCF/VwwVyRzHHQP9XnJ6M8mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRbUhYvZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E698C4CEE3;
-	Tue, 29 Apr 2025 17:38:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f5gkmt09+Cb6eVNG00r/7JbRoYRrSgjb0KsNYSicUOXX9YUurK7D+X/Hv5Md2cID+5vVAbCJOnFMjasWWkOgo9jFrrFbumyO+GI+7ZAKvVHEu2CVSCfXFE+dUHzK+DTb/glIpd5UlmQYkVK6HrkNpx+UJWAGyNPcFcTSPzWVl/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIqu9IZ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206A4C4CEE3;
+	Tue, 29 Apr 2025 17:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948294;
-	bh=PXLn36Ir8Zb0ZuKe+E1JEsGRbB93r8ls53Q7jdKncyU=;
+	s=korg; t=1745947446;
+	bh=RuVIyE6tUO6lreeOoxhANsf+xIDxLyjoGl1W7lbcWk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SRbUhYvZaCy8fifF/aYjljbQkXXOjdfA1HkUYmyqbAv5KbjURxA1gmGVRWpfF04+a
-	 8yDCOh1AAdPYt8eOPWsqDSVUDHcemrMw7lrZD1QYLzuai8pGeprxTRiBXoEmBOYU7A
-	 0RFxraBU/zC+Iul0Gu9++4WznDuxG8h0bE85YDV0=
+	b=dIqu9IZ+K9abphEOg7gpBlhiLqL2coe7PUVJwm52itjXXmTUPgHgr7//vSHjUXi5a
+	 rjDLNMHxj2OSx5nqQ1YZIDK2BDejYXmWOXxyg+YHV9MkrwGhZ7ZM9VfNOW5iw5el51
+	 +YtJeT//EGOX6Q8tt6oKBXJsv8cjCKVuazqOVbhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 246/280] drm/amdgpu: Use the right function for hdp flush
+	Jon Hunter <jonathanh@nvidia.com>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+Subject: [PATCH 5.10 283/286] PCI: Fix use-after-free in pci_bus_release_domain_nr()
 Date: Tue, 29 Apr 2025 18:43:07 +0200
-Message-ID: <20250429161125.189219682@linuxfoundation.org>
+Message-ID: <20250429161119.553094668@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,288 +62,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit c235a7132258ac30bd43d228222986022d21f5de ]
+commit 30ba2d09edb5ea857a1473ae3d820911347ada62 upstream.
 
-There are a few prechecks made before HDP flush like a flush is not
-required on APU bare metal. Using hdp callback directly bypasses those
-checks. Use amdgpu_device_flush_hdp which takes care of prechecks.
+Commit c14f7ccc9f5d ("PCI: Assign PCI domain IDs by ida_alloc()")
+introduced a use-after-free bug in the bus removal cleanup. The issue was
+found with kfence:
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1d9bff4cf8c53d33ee2ff1b11574e5da739ce61c)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  [   19.293351] BUG: KFENCE: use-after-free read in pci_bus_release_domain_nr+0x10/0x70
+
+  [   19.302817] Use-after-free read at 0x000000007f3b80eb (in kfence-#115):
+  [   19.309677]  pci_bus_release_domain_nr+0x10/0x70
+  [   19.309691]  dw_pcie_host_deinit+0x28/0x78
+  [   19.309702]  tegra_pcie_deinit_controller+0x1c/0x38 [pcie_tegra194]
+  [   19.309734]  tegra_pcie_dw_probe+0x648/0xb28 [pcie_tegra194]
+  [   19.309752]  platform_probe+0x90/0xd8
+  ...
+
+  [   19.311457] kfence-#115: 0x00000000063a155a-0x00000000ba698da8, size=1072, cache=kmalloc-2k
+
+  [   19.311469] allocated by task 96 on cpu 10 at 19.279323s:
+  [   19.311562]  __kmem_cache_alloc_node+0x260/0x278
+  [   19.311571]  kmalloc_trace+0x24/0x30
+  [   19.311580]  pci_alloc_bus+0x24/0xa0
+  [   19.311590]  pci_register_host_bridge+0x48/0x4b8
+  [   19.311601]  pci_scan_root_bus_bridge+0xc0/0xe8
+  [   19.311613]  pci_host_probe+0x18/0xc0
+  [   19.311623]  dw_pcie_host_init+0x2c0/0x568
+  [   19.311630]  tegra_pcie_dw_probe+0x610/0xb28 [pcie_tegra194]
+  [   19.311647]  platform_probe+0x90/0xd8
+  ...
+
+  [   19.311782] freed by task 96 on cpu 10 at 19.285833s:
+  [   19.311799]  release_pcibus_dev+0x30/0x40
+  [   19.311808]  device_release+0x30/0x90
+  [   19.311814]  kobject_put+0xa8/0x120
+  [   19.311832]  device_unregister+0x20/0x30
+  [   19.311839]  pci_remove_bus+0x78/0x88
+  [   19.311850]  pci_remove_root_bus+0x5c/0x98
+  [   19.311860]  dw_pcie_host_deinit+0x28/0x78
+  [   19.311866]  tegra_pcie_deinit_controller+0x1c/0x38 [pcie_tegra194]
+  [   19.311883]  tegra_pcie_dw_probe+0x648/0xb28 [pcie_tegra194]
+  [   19.311900]  platform_probe+0x90/0xd8
+  ...
+
+  [   19.313579] CPU: 10 PID: 96 Comm: kworker/u24:2 Not tainted 6.2.0 #4
+  [   19.320171] Hardware name:  /, BIOS 1.0-d7fb19b 08/10/2022
+  [   19.325852] Workqueue: events_unbound deferred_probe_work_func
+
+The stack trace is a bit misleading as dw_pcie_host_deinit() doesn't
+directly call pci_bus_release_domain_nr(). The issue turns out to be in
+pci_remove_root_bus() which first calls pci_remove_bus() which frees the
+struct pci_bus when its struct device is released. Then
+pci_bus_release_domain_nr() is called and accesses the freed struct
+pci_bus. Reordering these fixes the issue.
+
+Fixes: c14f7ccc9f5d ("PCI: Assign PCI domain IDs by ida_alloc()")
+Link: https://lore.kernel.org/r/20230329123835.2724518-1-robh@kernel.org
+Link: https://lore.kernel.org/r/b529cb69-0602-9eed-fc02-2f068707a006@nvidia.com
+Reported-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: stable@vger.kernel.org	# v6.2+
+Cc: Pali Rohár <pali@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c |  8 ++++----
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 12 ++++++------
- drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c |  6 +++---
- drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c |  4 ++--
- drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c |  4 ++--
- drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c |  4 ++--
- drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c  |  2 +-
- drivers/gpu/drm/amd/amdgpu/psp_v11_0.c |  2 +-
- drivers/gpu/drm/amd/amdgpu/psp_v13_0.c |  2 +-
- drivers/gpu/drm/amd/amdgpu/psp_v14_0.c |  2 +-
- 10 files changed, 23 insertions(+), 23 deletions(-)
+ drivers/pci/remove.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 45ed97038df0c..24d711b0e6346 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -5998,7 +5998,7 @@ static int gfx_v10_0_cp_gfx_load_pfp_microcode(struct amdgpu_device *adev)
- 	}
+--- a/drivers/pci/remove.c
++++ b/drivers/pci/remove.c
+@@ -156,8 +156,6 @@ void pci_remove_root_bus(struct pci_bus
+ 	list_for_each_entry_safe(child, tmp,
+ 				 &bus->devices, bus_list)
+ 		pci_remove_bus_device(child);
+-	pci_remove_bus(bus);
+-	host_bridge->bus = NULL;
  
- 	if (amdgpu_emu_mode == 1)
--		adev->hdp.funcs->flush_hdp(adev, NULL);
-+		amdgpu_device_flush_hdp(adev, NULL);
+ #ifdef CONFIG_PCI_DOMAINS_GENERIC
+ 	/* Release domain_nr if it was dynamically allocated */
+@@ -165,6 +163,9 @@ void pci_remove_root_bus(struct pci_bus
+ 		pci_bus_release_domain_nr(bus, host_bridge->dev.parent);
+ #endif
  
- 	tmp = RREG32_SOC15(GC, 0, mmCP_PFP_IC_BASE_CNTL);
- 	tmp = REG_SET_FIELD(tmp, CP_PFP_IC_BASE_CNTL, VMID, 0);
-@@ -6076,7 +6076,7 @@ static int gfx_v10_0_cp_gfx_load_ce_microcode(struct amdgpu_device *adev)
- 	}
- 
- 	if (amdgpu_emu_mode == 1)
--		adev->hdp.funcs->flush_hdp(adev, NULL);
-+		amdgpu_device_flush_hdp(adev, NULL);
- 
- 	tmp = RREG32_SOC15(GC, 0, mmCP_CE_IC_BASE_CNTL);
- 	tmp = REG_SET_FIELD(tmp, CP_CE_IC_BASE_CNTL, VMID, 0);
-@@ -6153,7 +6153,7 @@ static int gfx_v10_0_cp_gfx_load_me_microcode(struct amdgpu_device *adev)
- 	}
- 
- 	if (amdgpu_emu_mode == 1)
--		adev->hdp.funcs->flush_hdp(adev, NULL);
-+		amdgpu_device_flush_hdp(adev, NULL);
- 
- 	tmp = RREG32_SOC15(GC, 0, mmCP_ME_IC_BASE_CNTL);
- 	tmp = REG_SET_FIELD(tmp, CP_ME_IC_BASE_CNTL, VMID, 0);
-@@ -6528,7 +6528,7 @@ static int gfx_v10_0_cp_compute_load_microcode(struct amdgpu_device *adev)
- 	}
- 
- 	if (amdgpu_emu_mode == 1)
--		adev->hdp.funcs->flush_hdp(adev, NULL);
-+		amdgpu_device_flush_hdp(adev, NULL);
- 
- 	tmp = RREG32_SOC15(GC, 0, mmCP_CPC_IC_BASE_CNTL);
- 	tmp = REG_SET_FIELD(tmp, CP_CPC_IC_BASE_CNTL, CACHE_POLICY, 0);
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 84cf5fd297b7f..0357fea8ae1df 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -2327,7 +2327,7 @@ static int gfx_v11_0_config_me_cache(struct amdgpu_device *adev, uint64_t addr)
- 	}
- 
- 	if (amdgpu_emu_mode == 1)
--		adev->hdp.funcs->flush_hdp(adev, NULL);
-+		amdgpu_device_flush_hdp(adev, NULL);
- 
- 	tmp = RREG32_SOC15(GC, 0, regCP_ME_IC_BASE_CNTL);
- 	tmp = REG_SET_FIELD(tmp, CP_ME_IC_BASE_CNTL, VMID, 0);
-@@ -2371,7 +2371,7 @@ static int gfx_v11_0_config_pfp_cache(struct amdgpu_device *adev, uint64_t addr)
- 	}
- 
- 	if (amdgpu_emu_mode == 1)
--		adev->hdp.funcs->flush_hdp(adev, NULL);
-+		amdgpu_device_flush_hdp(adev, NULL);
- 
- 	tmp = RREG32_SOC15(GC, 0, regCP_PFP_IC_BASE_CNTL);
- 	tmp = REG_SET_FIELD(tmp, CP_PFP_IC_BASE_CNTL, VMID, 0);
-@@ -2416,7 +2416,7 @@ static int gfx_v11_0_config_mec_cache(struct amdgpu_device *adev, uint64_t addr)
- 	}
- 
- 	if (amdgpu_emu_mode == 1)
--		adev->hdp.funcs->flush_hdp(adev, NULL);
-+		amdgpu_device_flush_hdp(adev, NULL);
- 
- 	tmp = RREG32_SOC15(GC, 0, regCP_CPC_IC_BASE_CNTL);
- 	tmp = REG_SET_FIELD(tmp, CP_CPC_IC_BASE_CNTL, CACHE_POLICY, 0);
-@@ -3051,7 +3051,7 @@ static int gfx_v11_0_cp_gfx_load_pfp_microcode_rs64(struct amdgpu_device *adev)
- 	amdgpu_bo_unreserve(adev->gfx.pfp.pfp_fw_data_obj);
- 
- 	if (amdgpu_emu_mode == 1)
--		adev->hdp.funcs->flush_hdp(adev, NULL);
-+		amdgpu_device_flush_hdp(adev, NULL);
- 
- 	WREG32_SOC15(GC, 0, regCP_PFP_IC_BASE_LO,
- 		lower_32_bits(adev->gfx.pfp.pfp_fw_gpu_addr));
-@@ -3269,7 +3269,7 @@ static int gfx_v11_0_cp_gfx_load_me_microcode_rs64(struct amdgpu_device *adev)
- 	amdgpu_bo_unreserve(adev->gfx.me.me_fw_data_obj);
- 
- 	if (amdgpu_emu_mode == 1)
--		adev->hdp.funcs->flush_hdp(adev, NULL);
-+		amdgpu_device_flush_hdp(adev, NULL);
- 
- 	WREG32_SOC15(GC, 0, regCP_ME_IC_BASE_LO,
- 		lower_32_bits(adev->gfx.me.me_fw_gpu_addr));
-@@ -4487,7 +4487,7 @@ static int gfx_v11_0_gfxhub_enable(struct amdgpu_device *adev)
- 	if (r)
- 		return r;
- 
--	adev->hdp.funcs->flush_hdp(adev, NULL);
-+	amdgpu_device_flush_hdp(adev, NULL);
- 
- 	value = (amdgpu_vm_fault_stop == AMDGPU_VM_FAULT_STOP_ALWAYS) ?
- 		false : true;
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-index b259e217930c7..241619ee10e4b 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-@@ -2264,7 +2264,7 @@ static int gfx_v12_0_cp_gfx_load_pfp_microcode_rs64(struct amdgpu_device *adev)
- 	amdgpu_bo_unreserve(adev->gfx.pfp.pfp_fw_data_obj);
- 
- 	if (amdgpu_emu_mode == 1)
--		adev->hdp.funcs->flush_hdp(adev, NULL);
-+		amdgpu_device_flush_hdp(adev, NULL);
- 
- 	WREG32_SOC15(GC, 0, regCP_PFP_IC_BASE_LO,
- 		lower_32_bits(adev->gfx.pfp.pfp_fw_gpu_addr));
-@@ -2408,7 +2408,7 @@ static int gfx_v12_0_cp_gfx_load_me_microcode_rs64(struct amdgpu_device *adev)
- 	amdgpu_bo_unreserve(adev->gfx.me.me_fw_data_obj);
- 
- 	if (amdgpu_emu_mode == 1)
--		adev->hdp.funcs->flush_hdp(adev, NULL);
-+		amdgpu_device_flush_hdp(adev, NULL);
- 
- 	WREG32_SOC15(GC, 0, regCP_ME_IC_BASE_LO,
- 		lower_32_bits(adev->gfx.me.me_fw_gpu_addr));
-@@ -3429,7 +3429,7 @@ static int gfx_v12_0_gfxhub_enable(struct amdgpu_device *adev)
- 	if (r)
- 		return r;
- 
--	adev->hdp.funcs->flush_hdp(adev, NULL);
-+	amdgpu_device_flush_hdp(adev, NULL);
- 
- 	value = (amdgpu_vm_fault_stop == AMDGPU_VM_FAULT_STOP_ALWAYS) ?
- 		false : true;
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-index 9784a28921853..c6e7429212827 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-@@ -265,7 +265,7 @@ static void gmc_v10_0_flush_gpu_tlb(struct amdgpu_device *adev, uint32_t vmid,
- 	ack = hub->vm_inv_eng0_ack + hub->eng_distance * eng;
- 
- 	/* flush hdp cache */
--	adev->hdp.funcs->flush_hdp(adev, NULL);
-+	amdgpu_device_flush_hdp(adev, NULL);
- 
- 	/* This is necessary for SRIOV as well as for GFXOFF to function
- 	 * properly under bare metal
-@@ -966,7 +966,7 @@ static int gmc_v10_0_gart_enable(struct amdgpu_device *adev)
- 	adev->hdp.funcs->init_registers(adev);
- 
- 	/* Flush HDP after it is initialized */
--	adev->hdp.funcs->flush_hdp(adev, NULL);
-+	amdgpu_device_flush_hdp(adev, NULL);
- 
- 	value = (amdgpu_vm_fault_stop == AMDGPU_VM_FAULT_STOP_ALWAYS) ?
- 		false : true;
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-index 2797fd84432b2..4e9c23d65b02f 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-@@ -226,7 +226,7 @@ static void gmc_v11_0_flush_gpu_tlb(struct amdgpu_device *adev, uint32_t vmid,
- 	ack = hub->vm_inv_eng0_ack + hub->eng_distance * eng;
- 
- 	/* flush hdp cache */
--	adev->hdp.funcs->flush_hdp(adev, NULL);
-+	amdgpu_device_flush_hdp(adev, NULL);
- 
- 	/* This is necessary for SRIOV as well as for GFXOFF to function
- 	 * properly under bare metal
-@@ -893,7 +893,7 @@ static int gmc_v11_0_gart_enable(struct amdgpu_device *adev)
- 		return r;
- 
- 	/* Flush HDP after it is initialized */
--	adev->hdp.funcs->flush_hdp(adev, NULL);
-+	amdgpu_device_flush_hdp(adev, NULL);
- 
- 	value = (amdgpu_vm_fault_stop == AMDGPU_VM_FAULT_STOP_ALWAYS) ?
- 		false : true;
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
-index 60acf676000b3..525e435ee22d8 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
-@@ -294,7 +294,7 @@ static void gmc_v12_0_flush_gpu_tlb(struct amdgpu_device *adev, uint32_t vmid,
- 		return;
- 
- 	/* flush hdp cache */
--	adev->hdp.funcs->flush_hdp(adev, NULL);
-+	amdgpu_device_flush_hdp(adev, NULL);
- 
- 	/* This is necessary for SRIOV as well as for GFXOFF to function
- 	 * properly under bare metal
-@@ -862,7 +862,7 @@ static int gmc_v12_0_gart_enable(struct amdgpu_device *adev)
- 		return r;
- 
- 	/* Flush HDP after it is initialized */
--	adev->hdp.funcs->flush_hdp(adev, NULL);
-+	amdgpu_device_flush_hdp(adev, NULL);
- 
- 	value = (amdgpu_vm_fault_stop == AMDGPU_VM_FAULT_STOP_ALWAYS) ?
- 		false : true;
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-index 7a45f3fdc7341..9a212413c6d3a 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-@@ -2351,7 +2351,7 @@ static int gmc_v9_0_hw_init(void *handle)
- 	adev->hdp.funcs->init_registers(adev);
- 
- 	/* After HDP is initialized, flush HDP.*/
--	adev->hdp.funcs->flush_hdp(adev, NULL);
-+	amdgpu_device_flush_hdp(adev, NULL);
- 
- 	if (amdgpu_vm_fault_stop == AMDGPU_VM_FAULT_STOP_ALWAYS)
- 		value = false;
-diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
-index 2395f1856962a..e77a467af7ac3 100644
---- a/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
-@@ -532,7 +532,7 @@ static int psp_v11_0_memory_training(struct psp_context *psp, uint32_t ops)
- 			}
- 
- 			memcpy_toio(adev->mman.aper_base_kaddr, buf, sz);
--			adev->hdp.funcs->flush_hdp(adev, NULL);
-+			amdgpu_device_flush_hdp(adev, NULL);
- 			vfree(buf);
- 			drm_dev_exit(idx);
- 		} else {
-diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
-index 51e470e8d67d9..bf00de763acb0 100644
---- a/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
-@@ -600,7 +600,7 @@ static int psp_v13_0_memory_training(struct psp_context *psp, uint32_t ops)
- 			}
- 
- 			memcpy_toio(adev->mman.aper_base_kaddr, buf, sz);
--			adev->hdp.funcs->flush_hdp(adev, NULL);
-+			amdgpu_device_flush_hdp(adev, NULL);
- 			vfree(buf);
- 			drm_dev_exit(idx);
- 		} else {
-diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c
-index 4d33c95a51163..89f6c06946c51 100644
---- a/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c
-@@ -488,7 +488,7 @@ static int psp_v14_0_memory_training(struct psp_context *psp, uint32_t ops)
- 			}
- 
- 			memcpy_toio(adev->mman.aper_base_kaddr, buf, sz);
--			adev->hdp.funcs->flush_hdp(adev, NULL);
-+			amdgpu_device_flush_hdp(adev, NULL);
- 			vfree(buf);
- 			drm_dev_exit(idx);
- 		} else {
--- 
-2.39.5
-
++	pci_remove_bus(bus);
++	host_bridge->bus = NULL;
++
+ 	/* remove the host bridge */
+ 	device_del(&host_bridge->dev);
+ }
 
 
 
