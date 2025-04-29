@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BDEFAA1390
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57AA9AA14B6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:19:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DC5E3B0EEB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B95B63B2540
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B22248191;
-	Tue, 29 Apr 2025 17:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3242E24729E;
+	Tue, 29 Apr 2025 17:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtcQXoe1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZdIdk+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7581DF73C;
-	Tue, 29 Apr 2025 17:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CBA27453;
+	Tue, 29 Apr 2025 17:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946119; cv=none; b=psx0l6rm960Pk7uH53qqf8MUC0Nq9kYA0WUmUwGTX2X9l8tWOzzDW8gjnloJGrA5ATGFohxd2fxyh6xvE6EHow+EFxAMEJwGx38dkk63f+CkhEfEjvgJlvmp6dcj9PFo6JeyDF3tVUbEnH2QyoRPG7KxEw3SVEq6YrvBX6T6gnk=
+	t=1745946873; cv=none; b=QtPSwf01BfyYvsGgH5Z/v3MmoGzKVMF4aKP/8ooR8AuHenKTXqVBwYAkNUf1jiUuS1/OBbp0WxbCdiBrwxx0QMC2IJc4h+xQZPRJyM8CdpM/7bZSPl+aAilm8hYOe9CEjEwyAnSAW52/J97NacNVonvMewQ/w1yuLzEJAfnRfKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946119; c=relaxed/simple;
-	bh=KAHGqImCvNdJbT1jeeq79QcG9KJRpeu1NZtygy6X12A=;
+	s=arc-20240116; t=1745946873; c=relaxed/simple;
+	bh=aX/dIDn61So+RQ1oQSQb6mjwYt9hrKX5mTh6CQIAgmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VzikXgux4TwfUYGv/ru4T6i7FHTyN0U3AhHP1jTtLGyGZIc9y/Ag5GYZiwzCcWpr/H2UrgH3UK0e7XAMUEIajNgHLk6DHOeXLzVQqemCRILH48ekpIC+eSPnZ3dlGpb7RXc+18cQTNlIoegtsxOJc0hqXkE+KtW9c6pxCkXp0WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtcQXoe1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2953AC4CEE3;
-	Tue, 29 Apr 2025 17:01:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AF0hbMWdd43gUi+wfZmlJO0beILKbAiWBMBJDt8YqxqM1uDGC7QoZAzlX9uPG8SPw0iqZ/QaJKUBQQ1BczOZMUsexPDqfxGErtCyW1BVR53vE78WZ33i+JBoT/gQLgVCk3Y1I+jqjEpEmG2m/4dHAvl7Aubsf5+f2sJrN8lSllM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZdIdk+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143F1C4CEE3;
+	Tue, 29 Apr 2025 17:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946119;
-	bh=KAHGqImCvNdJbT1jeeq79QcG9KJRpeu1NZtygy6X12A=;
+	s=korg; t=1745946872;
+	bh=aX/dIDn61So+RQ1oQSQb6mjwYt9hrKX5mTh6CQIAgmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtcQXoe1N43cx6j7NjElXL/oO6bKDS2YqLHS0V2XVOjgl1zDW2DNcREu981L/ZHak
-	 mu2I7JiC5pqdtviB0hi8WbStNCDd4qd2YL1TXJJ3lHqZhbYYEyPSCdLN2kvtI09sRz
-	 iSEAlEYpQD+3eJXqn1sj05scAJkzJrKca6QA9+uI=
+	b=SZdIdk+iOXgXbOAoLY0gYw0eBKfSYBircHQyVSJ1jy3ODiWszv63jw6dSx2tvPAWJ
+	 xmkur6KaIRi4G4bENQq0GOL289b65POoTirM4lzHpu6ceVJ1Lvr7LAnqvZoyViixA8
+	 2S5rfl9f2kNl2Wrb9DbhgG4+t3p4jgM/1zkjodl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.14 162/311] usb: chipidea: ci_hdrc_imx: fix call balance of regulator routines
+	Stanimir Varbanov <svarbanov@suse.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 5.10 095/286] PCI: brcmstb: Fix missing of_node_put() in brcm_pcie_probe()
 Date: Tue, 29 Apr 2025 18:39:59 +0200
-Message-ID: <20250429161127.677360937@linuxfoundation.org>
+Message-ID: <20250429161111.762024371@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,99 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Stanimir Varbanov <svarbanov@suse.de>
 
-commit 8cab0e9a3f3e8d700179e0d6141643d54a267fd5 upstream.
+commit 2df181e1aea4628a8fd257f866026625d0519627 upstream.
 
-Upon encountering errors during the HSIC pinctrl handling section the
-regulator should be disabled.
+A call to of_parse_phandle() is incrementing the refcount, and as such,
+the of_node_put() must be called when the reference is no longer needed.
 
-Use devm_add_action_or_reset() to let the regulator-disabling routine be
-handled by device resource management stack.
+Thus, refactor the existing code and add a missing of_node_put() call
+following the check to ensure that "msi_np" matches "pcie->np" and after
+MSI initialization, but only if the MSI support is enabled system-wide.
 
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 4d6141288c33 ("usb: chipidea: imx: pinctrl for HSIC is optional")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20250316102658.490340-3-pchelkin@ispras.ru
+Cc: stable@vger.kernel.org # v5.10+
+Fixes: 40ca1bf580ef ("PCI: brcmstb: Add MSI support")
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20250122222955.1752778-1-svarbanov@suse.de
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/chipidea/ci_hdrc_imx.c |   25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ drivers/pci/controller/pcie-brcmstb.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -336,6 +336,13 @@ static int ci_hdrc_imx_notify_event(stru
- 	return ret;
- }
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -1215,7 +1215,7 @@ static const struct of_device_id brcm_pc
  
-+static void ci_hdrc_imx_disable_regulator(void *arg)
-+{
-+	struct ci_hdrc_imx_data *data = arg;
-+
-+	regulator_disable(data->hsic_pad_regulator);
-+}
-+
- static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ static int brcm_pcie_probe(struct platform_device *pdev)
  {
- 	struct ci_hdrc_imx_data *data;
-@@ -394,6 +401,13 @@ static int ci_hdrc_imx_probe(struct plat
- 					"Failed to enable HSIC pad regulator\n");
- 				goto err_put;
- 			}
-+			ret = devm_add_action_or_reset(dev,
-+					ci_hdrc_imx_disable_regulator, data);
-+			if (ret) {
-+				dev_err(dev,
-+					"Failed to add regulator devm action\n");
-+				goto err_put;
-+			}
- 		}
- 	}
+-	struct device_node *np = pdev->dev.of_node, *msi_np;
++	struct device_node *np = pdev->dev.of_node;
+ 	struct pci_host_bridge *bridge;
+ 	const struct pcie_cfg_data *data;
+ 	struct brcm_pcie *pcie;
+@@ -1280,9 +1280,14 @@ static int brcm_pcie_probe(struct platfo
  
-@@ -432,11 +446,11 @@ static int ci_hdrc_imx_probe(struct plat
+ 	pcie->hw_rev = readl(pcie->base + PCIE_MISC_REVISION);
  
- 	ret = imx_get_clks(dev);
- 	if (ret)
--		goto disable_hsic_regulator;
-+		goto qos_remove_request;
- 
- 	ret = imx_prepare_enable_clks(dev);
- 	if (ret)
--		goto disable_hsic_regulator;
-+		goto qos_remove_request;
- 
- 	ret = clk_prepare_enable(data->clk_wakeup);
- 	if (ret)
-@@ -526,10 +540,7 @@ err_clk:
- 	clk_disable_unprepare(data->clk_wakeup);
- err_wakeup_clk:
- 	imx_disable_unprepare_clks(dev);
--disable_hsic_regulator:
--	if (data->hsic_pad_regulator)
--		/* don't overwrite original ret (cf. EPROBE_DEFER) */
--		regulator_disable(data->hsic_pad_regulator);
-+qos_remove_request:
- 	if (pdata.flags & CI_HDRC_PMQOS)
- 		cpu_latency_qos_remove_request(&data->pm_qos_req);
- 	data->ci_pdev = NULL;
-@@ -557,8 +568,6 @@ static void ci_hdrc_imx_remove(struct pl
- 		clk_disable_unprepare(data->clk_wakeup);
- 		if (data->plat_data->flags & CI_HDRC_PMQOS)
- 			cpu_latency_qos_remove_request(&data->pm_qos_req);
--		if (data->hsic_pad_regulator)
--			regulator_disable(data->hsic_pad_regulator);
- 	}
- 	if (data->usbmisc_data)
- 		put_device(data->usbmisc_data->dev);
+-	msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
+-	if (pci_msi_enabled() && msi_np == pcie->np) {
+-		ret = brcm_pcie_enable_msi(pcie);
++	if (pci_msi_enabled()) {
++		struct device_node *msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
++
++		if (msi_np == pcie->np)
++			ret = brcm_pcie_enable_msi(pcie);
++
++		of_node_put(msi_np);
++
+ 		if (ret) {
+ 			dev_err(pcie->dev, "probe of internal MSI failed");
+ 			goto fail;
 
 
 
