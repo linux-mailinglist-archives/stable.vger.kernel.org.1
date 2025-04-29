@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-138564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1025AA18F2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 160D1AA19A4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E05629A5E80
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 163DB1766AD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4343C22AE68;
-	Tue, 29 Apr 2025 18:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802D225228D;
+	Tue, 29 Apr 2025 18:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygEJNJMz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNXHwIh8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A663FFD;
-	Tue, 29 Apr 2025 18:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE752AE72;
+	Tue, 29 Apr 2025 18:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949652; cv=none; b=Tqm0wRKCetJujTEKnpelqIDv4OcybxCAyrIDOtxwagjByuBgWfTEAtG/K4+4WQ84W35PBAV/RHaUNcu60CT27jUiC9nUVfOtIUJcMzXPJAU63MZ3eAcC2U30ugmblKLdc1LIjeahTgUgAvE3xLe/IEYvJ2PeO5qgU2D2Q5n5Wyo=
+	t=1745950330; cv=none; b=FhiXupKr5N0I6vFDD/jbX5f23sf6Qp/DGmmD27bzKTX9oEZqP4rVZdPD19Z0waf+H8+mqFRtLXIrctTvpoLnW/kchW1VUynIPSgK8ZvR05mop/0SjRx1A271KUhjLj8Zt1pOtsaVlH9n03RMDlCFQphkj1Dxt5WXs0DHaNsTnEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949652; c=relaxed/simple;
-	bh=6xgZk3Npr0OmivYe+5zD4iXn66ucoJQbxXoMFsxSoCM=;
+	s=arc-20240116; t=1745950330; c=relaxed/simple;
+	bh=Qa+Qih/XfIUNanVcwWdCIA5FuCgpuKDAz1AKwKw7hxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DbJc4i1KOXNhyVC+9BuvHrm8kvbCSfuBi/3WHBC9qHxv4hEcS5nTRxDuiG/jXF5mWsYZzCDD4AkgAyCVpa33GTA6blFv2Y8iECE0pRA4uzbERjDJjkFlwaKRsN0+9YtItyHstCh9DPpFFv9mOdF6Ga19RccjYcoL18WAedJd2MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygEJNJMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88653C4CEE3;
-	Tue, 29 Apr 2025 18:00:51 +0000 (UTC)
+	 MIME-Version; b=LCUPrDn+kh+Q4lt4wVXynKUcxwE6r55pGgkQl4yQfBMV3JvtQbG+YVa8rZkL1MLALdIHwxBH68iH7Jv7wdi3LZ1p6mtxAAwktaqgVvu8yUjyFTcSTj/x3M4aNl7nrbqFBg1mMXg+PDb4cWVOgq6riKXkNPfexc4QCVGqFHJmbk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNXHwIh8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0E2C4CEE3;
+	Tue, 29 Apr 2025 18:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949651;
-	bh=6xgZk3Npr0OmivYe+5zD4iXn66ucoJQbxXoMFsxSoCM=;
+	s=korg; t=1745950330;
+	bh=Qa+Qih/XfIUNanVcwWdCIA5FuCgpuKDAz1AKwKw7hxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ygEJNJMzIgOVvAnxkKk3kIq+NPcqs7ot7T1aI7p92A4R36cULjBGod//sXXq3HhZa
-	 kJqK252DjrnbDRfrgDcCiL8VoiGyG7AkGfv6/1tI6toy1iXtJutOTaePc+YC/62Yez
-	 xGi6RNuGJ9zfCo8vVL+ukIhrFmlQVGSvGCu+xUcc=
+	b=VNXHwIh8RvrLMlMGoUcCLksziNYK7eyiISrcEsgLWmTdFBaDXSBVgDNd5liU3/UfU
+	 7Unbrckv+gcz7G+eBxe2tFagBZYb83VCdK9XvqcgRTRyetPsLCewonw8U70PIwE2Rr
+	 IvCRAkLbxvqmD/FjFKhp/6NOaXzx+gyWcPkxYNEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 013/167] net: dsa: mv88e6xxx: pass directly chip structure to mv88e6xxx_phy_is_internal
-Date: Tue, 29 Apr 2025 18:42:01 +0200
-Message-ID: <20250429161052.288006278@linuxfoundation.org>
+Subject: [PATCH 6.6 034/204] of: resolver: Fix device node refcount leakage in of_resolve_phandles()
+Date: Tue, 29 Apr 2025 18:42:02 +0200
+Message-ID: <20250429161100.806561737@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré <alexis.lothore@bootlin.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit ca345931907ff1893f02f5fe1349b16c9fc27e4c ]
+[ Upstream commit a46a0805635d07de50c2ac71588345323c13b2f9 ]
 
-Since this function is a simple helper, we do not need to pass a full
-dsa_switch structure, we can directly pass the mv88e6xxx_chip structure.
-Doing so will allow to share this function with any other function
-not manipulating dsa_switch structure but needing info about number of
-internal phys
+In of_resolve_phandles(), refcount of device node @local_fixups will be
+increased if the for_each_child_of_node() exits early, but nowhere to
+decrease the refcount, so cause refcount leakage for the node.
 
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 52fdc41c3278 ("net: dsa: mv88e6xxx: fix internal PHYs for 6320 family")
+Fix by using __free() on @local_fixups.
+
+Fixes: da56d04c806a ("of/resolver: Switch to new local fixups format.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-9-93e3a2659aa7@quicinc.com
+[robh: Use __free() instead]
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/of/resolver.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index b3744f2ea0f48..cabf97a902b52 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -470,10 +470,8 @@ static int mv88e6xxx_port_setup_mac(struct mv88e6xxx_chip *chip, int port,
- 	return err;
- }
- 
--static int mv88e6xxx_phy_is_internal(struct dsa_switch *ds, int port)
-+static int mv88e6xxx_phy_is_internal(struct mv88e6xxx_chip *chip, int port)
+diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
+index 2dd19dc6987c7..d5c1b2a126a56 100644
+--- a/drivers/of/resolver.c
++++ b/drivers/of/resolver.c
+@@ -262,8 +262,9 @@ static int adjust_local_phandle_references(struct device_node *local_fixups,
+  */
+ int of_resolve_phandles(struct device_node *overlay)
  {
--	struct mv88e6xxx_chip *chip = ds->priv;
--
- 	return port < chip->info->num_internal_phys;
- }
- 
-@@ -591,7 +589,7 @@ static void mv88e6095_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
- 
- 	config->mac_capabilities = MAC_SYM_PAUSE | MAC_10 | MAC_100;
- 
--	if (mv88e6xxx_phy_is_internal(chip->ds, port)) {
-+	if (mv88e6xxx_phy_is_internal(chip, port)) {
- 		__set_bit(PHY_INTERFACE_MODE_MII, config->supported_interfaces);
- 	} else {
- 		if (cmode < ARRAY_SIZE(mv88e6185_phy_interface_modes) &&
-@@ -839,7 +837,7 @@ static void mv88e6xxx_get_caps(struct dsa_switch *ds, int port,
- 	chip->info->ops->phylink_get_caps(chip, port, config);
- 	mv88e6xxx_reg_unlock(chip);
- 
--	if (mv88e6xxx_phy_is_internal(ds, port)) {
-+	if (mv88e6xxx_phy_is_internal(chip, port)) {
- 		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
- 			  config->supported_interfaces);
- 		/* Internal ports with no phy-mode need GMII for PHYLIB */
-@@ -879,7 +877,7 @@ static void mv88e6xxx_mac_config(struct dsa_switch *ds, int port,
- 
- 	mv88e6xxx_reg_lock(chip);
- 
--	if (mode != MLO_AN_PHY || !mv88e6xxx_phy_is_internal(ds, port)) {
-+	if (mode != MLO_AN_PHY || !mv88e6xxx_phy_is_internal(chip, port)) {
- 		err = mv88e6xxx_port_config_interface(chip, port,
- 						      state->interface);
- 		if (err && err != -EOPNOTSUPP)
+-	struct device_node *child, *local_fixups, *refnode;
++	struct device_node *child, *refnode;
+ 	struct device_node *overlay_fixups;
++	struct device_node __free(device_node) *local_fixups = NULL;
+ 	struct property *prop;
+ 	const char *refpath;
+ 	phandle phandle, phandle_delta;
 -- 
 2.39.5
 
