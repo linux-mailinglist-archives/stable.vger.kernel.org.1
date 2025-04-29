@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-138109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929D5AA16A6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B54AA18CC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:04:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFEB4175836
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7851F4E2032
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74ACA238C21;
-	Tue, 29 Apr 2025 17:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2072522AB;
+	Tue, 29 Apr 2025 18:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUAMrHHi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACOr467R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339E61C6B4;
-	Tue, 29 Apr 2025 17:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973D82451C8;
+	Tue, 29 Apr 2025 18:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948181; cv=none; b=DZ9cIq/I0ycLl2ciT/FItncfZKQ3SrKh3RVBN5uOAzr45HWkl0WSe5H1uTIe1+ZX7qgx040m3jarTDPSK/WFI0NTypVruA2QTFrn585YmJVAD01rCHYoB8kEBNcDTz38MrWKAQLJvOmUZ87C9Uv7H5e1TKi5SH4QIQ8wkdU7Jns=
+	t=1745949755; cv=none; b=r8GEDkt1u6JrHORWFJWD239qpNEZTHWr+zcqaIq/d2vg1XJABFrMo6IF9Bf288BQuqy8C+CRh2bX9ZHy3Hb9Wv45CBMZOpF5tGgAyuOAPngztTM/2m3GTAvfMbrwSj0IRJjHLgpRg4vuAppCzCOFYrgLw8+PxhA2TciD8i4Qu1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948181; c=relaxed/simple;
-	bh=Gg73YJkQuUdHJr1UyaWtq4ccJ4ejzWZolBU7zMp4uK0=;
+	s=arc-20240116; t=1745949755; c=relaxed/simple;
+	bh=zZvwqLDzUrZ52hhsf4YZFSGriqgwTqNSeMSomOHJVZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HL9ptsP37zLMKLm928AVs86wQoofBBKSXdN6TUJrglo+l6Tst2mcFdd/Xqre9BagdcPWGnX4OH57moo9sPToF4H6cDEKDaDqzp8LEoWd+9O1z7YxHdOx4ZT6a++bkIYfgDgEb71gAqXcv1bfcmX5jL7Y7iWqU2Q1TtDop2pMJ5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUAMrHHi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD124C4CEE3;
-	Tue, 29 Apr 2025 17:36:20 +0000 (UTC)
+	 MIME-Version; b=Cmtk9SGbCqSxA+8f1L67SYHvI/kLt34pED9AWIKj/p2RdaMivV6NpekmC45oVQ2lL+rED3IByH/Qr3Uz8SAjugWLX6gH1W5XIoqHlrz++MDWRKphaUkISeeYQjRwxCvBq6FGQiLmub3Rcb+4zigEGHpuXKgdQ/Njklm8IvFCynQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACOr467R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D58C4CEE3;
+	Tue, 29 Apr 2025 18:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948181;
-	bh=Gg73YJkQuUdHJr1UyaWtq4ccJ4ejzWZolBU7zMp4uK0=;
+	s=korg; t=1745949755;
+	bh=zZvwqLDzUrZ52hhsf4YZFSGriqgwTqNSeMSomOHJVZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUAMrHHi0LPPpt0d+4QX9HgtM258s1ZrjuSRXCFbYi2FHRNaF4UnLO/Iy7xjrjtov
-	 /AzQmUcsctOmbyEEwB4UBeeCdGe0U5mg/q+5+pk6QAkKanddIVwv3uIdEZMbXSc8CU
-	 mn9s+8PD6nQX+YWdeuDKaOE7iuOfib7N7nMVqypk=
+	b=ACOr467RpFdjQdXWXbDbmQAN6YXpTkPvptk8HdpB2mBt5GtvEtqSIx8mYUhdMAg49
+	 5aT7Ocy3wFNXW7ZVs/tL4ymAVLWvh8G5wKCxrQ5Maatz36uHlwjQcxdKpQdQq+1ZIg
+	 TzfBnzwxWE/91evVUVCzDYBPoZXGUVaOOS+PKP9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday Shankar <ushankar@purestorage.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Marc Zyngier <maz@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 213/280] nvme: multipath: fix return value of nvme_available_path
+Subject: [PATCH 6.1 046/167] cpufreq: cppc: Fix invalid return value in .get() callback
 Date: Tue, 29 Apr 2025 18:42:34 +0200
-Message-ID: <20250429161123.842340227@linuxfoundation.org>
+Message-ID: <20250429161053.619912259@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uday Shankar <ushankar@purestorage.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit e3105f54a51554fb1bbf19dcaf93c4411d2d6c8a ]
+[ Upstream commit 2b8e6b58889c672e1ae3601d9b2b070be4dc2fbc ]
 
-The function returns bool so we should return false, not NULL. No
-functional changes are expected.
+Returning a negative error code in a function with an unsigned
+return type is a pretty bad idea. It is probably worse when the
+justification for the change is "our static analisys tool found it".
 
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: cf7de25878a1 ("cppc_cpufreq: Fix possible null pointer dereference")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/multipath.c | 2 +-
+ drivers/cpufreq/cppc_cpufreq.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index f25582e4d88bb..561dd08022c06 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -427,7 +427,7 @@ static bool nvme_available_path(struct nvme_ns_head *head)
- 	struct nvme_ns *ns;
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index 12fc07ed3502b..cfa2e3f0e56bd 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -749,7 +749,7 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+ 	int ret;
  
- 	if (!test_bit(NVME_NSHEAD_DISK_LIVE, &head->flags))
--		return NULL;
-+		return false;
+ 	if (!policy)
+-		return -ENODEV;
++		return 0;
  
- 	list_for_each_entry_srcu(ns, &head->list, siblings,
- 				 srcu_read_lock_held(&head->srcu)) {
+ 	cpu_data = policy->driver_data;
+ 
 -- 
 2.39.5
 
