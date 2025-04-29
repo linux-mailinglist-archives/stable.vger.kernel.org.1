@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED729AA1766
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D87AA1422
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB1605A496E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DAEA4A3332
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257CF23BCF2;
-	Tue, 29 Apr 2025 17:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30685241664;
+	Tue, 29 Apr 2025 17:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yim3SISz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8cIibc/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6258216605;
-	Tue, 29 Apr 2025 17:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A1C1DF73C;
+	Tue, 29 Apr 2025 17:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948571; cv=none; b=IEgzExo8PkYtiXl7k7wE5D8gb7lR0Gs27W5y4LQ9At0gZ7q/dcfAqx5FGfcfSW7d4l5FieMCawSsfa9n/3VC6DWZcA/HHotLpk5jUKbE5eYo6PUcZ/Ef65HCIDzjDQs0HJgPdAtqH/FLKV6/C+cs6nfHgKP738lz5aJU5eCo6/Y=
+	t=1745946642; cv=none; b=huiugPdWKjMcmAVJA8+qMTII+2t94hGD3ARdKbK1HPhm06+P++W+vB/YPDyHQJ3tq+rygA2oa/sL2+qe7h4nhvlUwY+MuuSW8B60DfUvWj5epS4gOnnC+KtI6VMb+dEWRVEeA0RD0x9j/MhEwyawWhPNA9cyHHp1mWNyzH3W+No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948571; c=relaxed/simple;
-	bh=LfwD9t+XSAkwURdvahsPihCL8+F7QUPbFfNOi5QInG4=;
+	s=arc-20240116; t=1745946642; c=relaxed/simple;
+	bh=7stHEwaFjy0+RCnggpucWdCXGkmuPdxF0neoyXJEzXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BdJ/QC7RQob0vvDesOPHCzWRlWd1kW8U9iD8kfRwy8raYPo3pI8viLv1u1ahbJAwZQluPrmCm8bWxOEUu0g2LIHIPlHOOzrAbYUraPy4zVWxWStSGLTua27quoolghbDHyNFoMIr9yDVc0ny/nrzdDVRM3oAeKhpKfBxAcd5aeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yim3SISz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3A7C4CEE3;
-	Tue, 29 Apr 2025 17:42:51 +0000 (UTC)
+	 MIME-Version; b=Mu7O2zdfLJ9x2P18h0p6yd9fkAQtpiLqxUFiV6ullx9gbw0oHIXbYa/BnXA0syiSnzbmbxI/aU/N+8qyoWEe74jt0x+0TBTHgNLlPiNswHEJTychjVdUAycOmeYaqFSEVNW4iATbPXDVDi0HL3kou+qrGmJ5SYpTIk52ppTtpo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8cIibc/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF7EC4CEE3;
+	Tue, 29 Apr 2025 17:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948571;
-	bh=LfwD9t+XSAkwURdvahsPihCL8+F7QUPbFfNOi5QInG4=;
+	s=korg; t=1745946641;
+	bh=7stHEwaFjy0+RCnggpucWdCXGkmuPdxF0neoyXJEzXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yim3SISz1rs+fRGtRd3ieOqIj5CB86zAyRZV8jlr5Q32ShzYvTOMdfjk1pMuhBIAf
-	 DuVYY4uFA/vN6B9WM3b6DE3ecxe9SSnYMqj2swvRM0gRjbdW9QoSA4NX8dUAiqaPuz
-	 H1k6zSGr3JaAQmANz2yVzjPJD+Noosow82sD1WXE=
+	b=P8cIibc/I/0ZEyjzPuoCriniPRRk+/nnIqU8yPIbKpWQNOPgOMsH4fCzat0y//J0j
+	 IqeQSJ5Ur69OCimzzJZunaq1gWyier0hLLAsbQQHenmGBGRi76lQwpWWw4pTyRsIXH
+	 /5j97ErULo7pVPs/WNUQkFozIsBoS6pDkeyr8SP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 047/373] drm/mediatek: mtk_dpi: Explicitly manage TVD clock in power on/off
-Date: Tue, 29 Apr 2025 18:38:44 +0200
-Message-ID: <20250429161125.069301781@linuxfoundation.org>
+Subject: [PATCH 5.10 021/286] page_pool: avoid infinite loop to schedule delayed worker
+Date: Tue, 29 Apr 2025 18:38:45 +0200
+Message-ID: <20250429161108.724005138@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
 
-[ Upstream commit 473c33f5ce651365468503c76f33158aaa1c7dd2 ]
+[ Upstream commit 43130d02baa137033c25297aaae95fd0edc41654 ]
 
-In preparation for adding support for MT8195's HDMI reserved
-DPI, add calls to clk_prepare_enable() / clk_disable_unprepare()
-for the TVD clock: in this particular case, the aforementioned
-clock is not (and cannot be) parented to neither pixel or engine
-clocks hence it won't get enabled automatically by the clock
-framework.
+We noticed the kworker in page_pool_release_retry() was waken
+up repeatedly and infinitely in production because of the
+buggy driver causing the inflight less than 0 and warning
+us in page_pool_inflight()[1].
 
-Please note that on all of the currently supported MediaTek
-platforms, the TVD clock is always a parent of either pixel or
-engine clocks, and this means that the common clock framework
-is already enabling this clock before the children.
-On such platforms, this commit will only increase the refcount
-of the TVD clock without any functional change.
+Since the inflight value goes negative, it means we should
+not expect the whole page_pool to get back to work normally.
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-10-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+This patch mitigates the adverse effect by not rescheduling
+the kworker when detecting the inflight negative in
+page_pool_release_retry().
+
+[1]
+[Mon Feb 10 20:36:11 2025] ------------[ cut here ]------------
+[Mon Feb 10 20:36:11 2025] Negative(-51446) inflight packet-pages
+...
+[Mon Feb 10 20:36:11 2025] Call Trace:
+[Mon Feb 10 20:36:11 2025]  page_pool_release_retry+0x23/0x70
+[Mon Feb 10 20:36:11 2025]  process_one_work+0x1b1/0x370
+[Mon Feb 10 20:36:11 2025]  worker_thread+0x37/0x3a0
+[Mon Feb 10 20:36:11 2025]  kthread+0x11a/0x140
+[Mon Feb 10 20:36:11 2025]  ? process_one_work+0x370/0x370
+[Mon Feb 10 20:36:11 2025]  ? __kthread_cancel_work+0x40/0x40
+[Mon Feb 10 20:36:11 2025]  ret_from_fork+0x35/0x40
+[Mon Feb 10 20:36:11 2025] ---[ end trace ebffe800f33e7e34 ]---
+Note: before this patch, the above calltrace would flood the
+dmesg due to repeated reschedule of release_dw kworker.
+
+Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250214064250.85987-1-kerneljasonxing@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dpi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/core/page_pool.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
-index 94c6bd3b00823..9518672dc21b3 100644
---- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-@@ -389,6 +389,7 @@ static void mtk_dpi_power_off(struct mtk_dpi *dpi)
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 08fbf4049c108..a11809b3149b4 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -485,7 +485,13 @@ static void page_pool_release_retry(struct work_struct *wq)
+ 	int inflight;
  
- 	mtk_dpi_disable(dpi);
- 	clk_disable_unprepare(dpi->pixel_clk);
-+	clk_disable_unprepare(dpi->tvd_clk);
- 	clk_disable_unprepare(dpi->engine_clk);
- }
+ 	inflight = page_pool_release(pool);
+-	if (!inflight)
++	/* In rare cases, a driver bug may cause inflight to go negative.
++	 * Don't reschedule release if inflight is 0 or negative.
++	 * - If 0, the page_pool has been destroyed
++	 * - if negative, we will never recover
++	 * in both cases no reschedule is necessary.
++	 */
++	if (inflight <= 0)
+ 		return;
  
-@@ -405,6 +406,12 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
- 		goto err_refcount;
- 	}
- 
-+	ret = clk_prepare_enable(dpi->tvd_clk);
-+	if (ret) {
-+		dev_err(dpi->dev, "Failed to enable tvd pll: %d\n", ret);
-+		goto err_engine;
-+	}
-+
- 	ret = clk_prepare_enable(dpi->pixel_clk);
- 	if (ret) {
- 		dev_err(dpi->dev, "Failed to enable pixel clock: %d\n", ret);
-@@ -414,6 +421,8 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
- 	return 0;
- 
- err_pixel:
-+	clk_disable_unprepare(dpi->tvd_clk);
-+err_engine:
- 	clk_disable_unprepare(dpi->engine_clk);
- err_refcount:
- 	dpi->refcount--;
+ 	/* Periodic warning */
 -- 
 2.39.5
 
