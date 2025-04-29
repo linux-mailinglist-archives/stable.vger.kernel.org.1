@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA80AA164F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FDC5AA1524
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAC967AE6D9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 993BB188C240
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FA92522B6;
-	Tue, 29 Apr 2025 17:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55074247280;
+	Tue, 29 Apr 2025 17:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qD0eWFIo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AarkGBio"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF35725332F;
-	Tue, 29 Apr 2025 17:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C2124466C;
+	Tue, 29 Apr 2025 17:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948150; cv=none; b=KxzH3b3EsEW3hUDoun6kMrTMg9oOlEz3yZ1TwS5gvXxnG1sw1MawSObnn3oSonLa3KvMeWqgUha5zRmTklhbxTbXrS62zViGSjo8hF09PjpuEOfleSmKPADcEwQvru3Hr1gp9fs/Q2BFr79FBYnW67Lgkjo0pFD6Gl0TXwov7GE=
+	t=1745947218; cv=none; b=HIygNWO0f6fIXow7muK/PAPeXxVhvTM1Se4FbuqGxY6gFVCzhzIr/wrNn9No+B7jBM53qToZa2lBxaI4x19qYHq2nmJq8rhHinLHMil141W0I1dm63oRrfO69ZJDR87iL9+O4Ai8U5l4X0hIdknBBs95VnWH7fC+ehcUlUbnNeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948150; c=relaxed/simple;
-	bh=3lwPLco8gHH872bJ6p/M7+tYIL0YNswN3E2guOzCyPU=;
+	s=arc-20240116; t=1745947218; c=relaxed/simple;
+	bh=E3CSfU3+UlS1FETLIkw38eTmT7mgE1CNgGMiP+9cQhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8FuMCOkIlGxrAnCGw6/TzLJMyHiXAIW7YDhCW484TIEEVDB8+M5FHzefYBkkqj0oh8HN9rGWuVkvfaX9HYlV2PaK42Z84qz9ae0+BMXxUTYokoyrXzMJrzOETbyKglmuB7qv64LfkUof0Qec7PxKy/08uUCi0rk8jWftLlv2IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qD0eWFIo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6240AC4CEE3;
-	Tue, 29 Apr 2025 17:35:50 +0000 (UTC)
+	 MIME-Version; b=omy5m3hpcwje/b8yBgyzPvfjmG29DY+ndq41gY894heBztCzY1osLaUcrMPLGl2jaHvmr7lnCM2dlKD73BP+h/5c6mOGzyTa6DGy6J7LBorYFflLhL/mkEaFXcl7NSBtQK1uT/E5r1iVKG/BDvXhFevXP2HOl7hm8zW5sVsArmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AarkGBio; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F6BC4CEE3;
+	Tue, 29 Apr 2025 17:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948150;
-	bh=3lwPLco8gHH872bJ6p/M7+tYIL0YNswN3E2guOzCyPU=;
+	s=korg; t=1745947217;
+	bh=E3CSfU3+UlS1FETLIkw38eTmT7mgE1CNgGMiP+9cQhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qD0eWFIo524UChH4pJMZWr4jIuf4iZOpqJwcTATUFqY6rmyFuxzWxIrnuySlN653K
-	 NB/25m1mVofvMdXMLXtbg4Ib7yoZpAj1rsXsBOZIOksCPZGOyAN21CciLNQcM/+kTs
-	 T0pDWSP6rLUtthK9hYG66D2GL+LWZLqoKqLEEhtc=
+	b=AarkGBioQnpRGRgsmM+hYnMVqOt/UVYZDo31duJDl3CKQqFdXW6uFsV7byx10yxRP
+	 RsKNCH9uMWMcRSsA3gPd2fNnnaqBY3jxd04MyyfmvrjhAuAkqmByxtBdJ3RzR9oo22
+	 MeUJZppT2rKj0KrAhS0A642TDDGN3dUtBQ4MPrZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ferry Toth <fntoth@gmail.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 173/280] usb: dwc3: gadget: Refactor loop to avoid NULL endpoints
+Subject: [PATCH 5.10 210/286] media: venus: hfi_parser: refactor hfi packet parsing logic
 Date: Tue, 29 Apr 2025 18:41:54 +0200
-Message-ID: <20250429161122.191133795@linuxfoundation.org>
+Message-ID: <20250429161116.590022021@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,277 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-[ Upstream commit eafba0205426091354f050381c32ad1567c35844 ]
+[ Upstream commit 9edaaa8e3e15aab1ca413ab50556de1975bcb329 ]
 
-Prepare the gadget driver to handle the reserved endpoints that will be
-not allocated at the initialisation time.
+words_count denotes the number of words in total payload, while data
+points to payload of various property within it. When words_count
+reaches last word, data can access memory beyond the total payload. This
+can lead to OOB access. With this patch, the utility api for handling
+individual properties now returns the size of data consumed. Accordingly
+remaining bytes are calculated before parsing the payload, thereby
+eliminates the OOB access possibilities.
 
-While at it, add a warning where the NULL endpoint should never happen.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: Ferry Toth <fntoth@gmail.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250212193116.2487289-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ .../media/platform/qcom/venus/hfi_parser.c    | 98 ++++++++++++++-----
+ 1 file changed, 72 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 12446495af87c..e72bac650981d 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -548,6 +548,7 @@ static int dwc3_gadget_set_xfer_resource(struct dwc3_ep *dep)
- int dwc3_gadget_start_config(struct dwc3 *dwc, unsigned int resource_index)
- {
- 	struct dwc3_gadget_ep_cmd_params params;
-+	struct dwc3_ep		*dep;
- 	u32			cmd;
- 	int			i;
- 	int			ret;
-@@ -564,8 +565,13 @@ int dwc3_gadget_start_config(struct dwc3 *dwc, unsigned int resource_index)
- 		return ret;
- 
- 	/* Reset resource allocation flags */
--	for (i = resource_index; i < dwc->num_eps && dwc->eps[i]; i++)
--		dwc->eps[i]->flags &= ~DWC3_EP_RESOURCE_ALLOCATED;
-+	for (i = resource_index; i < dwc->num_eps; i++) {
-+		dep = dwc->eps[i];
-+		if (!dep)
-+			continue;
-+
-+		dep->flags &= ~DWC3_EP_RESOURCE_ALLOCATED;
-+	}
- 
- 	return 0;
+diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
+index 7a2915befdb83..c6be1564c876d 100644
+--- a/drivers/media/platform/qcom/venus/hfi_parser.c
++++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+@@ -64,7 +64,7 @@ fill_buf_mode(struct hfi_plat_caps *cap, const void *data, unsigned int num)
+ 		cap->cap_bufs_mode_dynamic = true;
  }
-@@ -752,9 +758,11 @@ void dwc3_gadget_clear_tx_fifos(struct dwc3 *dwc)
  
- 	dwc->last_fifo_depth = fifo_depth;
- 	/* Clear existing TXFIFO for all IN eps except ep0 */
--	for (num = 3; num < min_t(int, dwc->num_eps, DWC3_ENDPOINTS_NUM);
--	     num += 2) {
-+	for (num = 3; num < min_t(int, dwc->num_eps, DWC3_ENDPOINTS_NUM); num += 2) {
- 		dep = dwc->eps[num];
-+		if (!dep)
-+			continue;
+-static void
++static int
+ parse_alloc_mode(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ {
+ 	struct hfi_buffer_alloc_mode_supported *mode = data;
+@@ -72,7 +72,7 @@ parse_alloc_mode(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ 	u32 *type;
+ 
+ 	if (num_entries > MAX_ALLOC_MODE_ENTRIES)
+-		return;
++		return -EINVAL;
+ 
+ 	type = mode->data;
+ 
+@@ -84,6 +84,8 @@ parse_alloc_mode(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ 
+ 		type++;
+ 	}
 +
- 		/* Don't change TXFRAMNUM on usb31 version */
- 		size = DWC3_IP_IS(DWC3) ? 0 :
- 			dwc3_readl(dwc->regs, DWC3_GTXFIFOSIZ(num >> 1)) &
-@@ -3670,6 +3678,8 @@ static bool dwc3_gadget_endpoint_trbs_complete(struct dwc3_ep *dep,
++	return sizeof(*mode);
+ }
  
- 		for (i = 0; i < DWC3_ENDPOINTS_NUM; i++) {
- 			dep = dwc->eps[i];
-+			if (!dep)
-+				continue;
+ static void fill_profile_level(struct hfi_plat_caps *cap, const void *data,
+@@ -98,7 +100,7 @@ static void fill_profile_level(struct hfi_plat_caps *cap, const void *data,
+ 	cap->num_pl += num;
+ }
  
- 			if (!(dep->flags & DWC3_EP_ENABLED))
- 				continue;
-@@ -3858,6 +3868,10 @@ static void dwc3_endpoint_interrupt(struct dwc3 *dwc,
- 	u8			epnum = event->endpoint_number;
+-static void
++static int
+ parse_profile_level(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ {
+ 	struct hfi_profile_level_supported *pl = data;
+@@ -106,12 +108,14 @@ parse_profile_level(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ 	struct hfi_profile_level pl_arr[HFI_MAX_PROFILE_COUNT] = {};
  
- 	dep = dwc->eps[epnum];
-+	if (!dep) {
-+		dev_warn(dwc->dev, "spurious event, endpoint %u is not allocated\n", epnum);
-+		return;
-+	}
+ 	if (pl->profile_count > HFI_MAX_PROFILE_COUNT)
+-		return;
++		return -EINVAL;
  
- 	if (!(dep->flags & DWC3_EP_ENABLED)) {
- 		if ((epnum > 1) && !(dep->flags & DWC3_EP_TRANSFER_STARTED))
+ 	memcpy(pl_arr, proflevel, pl->profile_count * sizeof(*proflevel));
+ 
+ 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
+ 		       fill_profile_level, pl_arr, pl->profile_count);
++
++	return pl->profile_count * sizeof(*proflevel) + sizeof(u32);
+ }
+ 
+ static void
+@@ -126,7 +130,7 @@ fill_caps(struct hfi_plat_caps *cap, const void *data, unsigned int num)
+ 	cap->num_caps += num;
+ }
+ 
+-static void
++static int
+ parse_caps(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ {
+ 	struct hfi_capabilities *caps = data;
+@@ -135,12 +139,14 @@ parse_caps(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ 	struct hfi_capability caps_arr[MAX_CAP_ENTRIES] = {};
+ 
+ 	if (num_caps > MAX_CAP_ENTRIES)
+-		return;
++		return -EINVAL;
+ 
+ 	memcpy(caps_arr, cap, num_caps * sizeof(*cap));
+ 
+ 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
+ 		       fill_caps, caps_arr, num_caps);
++
++	return sizeof(*caps);
+ }
+ 
+ static void fill_raw_fmts(struct hfi_plat_caps *cap, const void *fmts,
+@@ -155,7 +161,7 @@ static void fill_raw_fmts(struct hfi_plat_caps *cap, const void *fmts,
+ 	cap->num_fmts += num_fmts;
+ }
+ 
+-static void
++static int
+ parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ {
+ 	struct hfi_uncompressed_format_supported *fmt = data;
+@@ -164,7 +170,8 @@ parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ 	struct raw_formats rawfmts[MAX_FMT_ENTRIES] = {};
+ 	u32 entries = fmt->format_entries;
+ 	unsigned int i = 0;
+-	u32 num_planes;
++	u32 num_planes = 0;
++	u32 size;
+ 
+ 	while (entries) {
+ 		num_planes = pinfo->num_planes;
+@@ -174,7 +181,7 @@ parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ 		i++;
+ 
+ 		if (i >= MAX_FMT_ENTRIES)
+-			return;
++			return -EINVAL;
+ 
+ 		if (pinfo->num_planes > MAX_PLANES)
+ 			break;
+@@ -186,9 +193,13 @@ parse_raw_formats(struct venus_core *core, u32 codecs, u32 domain, void *data)
+ 
+ 	for_each_codec(core->caps, ARRAY_SIZE(core->caps), codecs, domain,
+ 		       fill_raw_fmts, rawfmts, i);
++	size = fmt->format_entries * (sizeof(*constr) * num_planes + 2 * sizeof(u32))
++		+ 2 * sizeof(u32);
++
++	return size;
+ }
+ 
+-static void parse_codecs(struct venus_core *core, void *data)
++static int parse_codecs(struct venus_core *core, void *data)
+ {
+ 	struct hfi_codec_supported *codecs = data;
+ 
+@@ -200,21 +211,27 @@ static void parse_codecs(struct venus_core *core, void *data)
+ 		core->dec_codecs &= ~HFI_VIDEO_CODEC_SPARK;
+ 		core->enc_codecs &= ~HFI_VIDEO_CODEC_HEVC;
+ 	}
++
++	return sizeof(*codecs);
+ }
+ 
+-static void parse_max_sessions(struct venus_core *core, const void *data)
++static int parse_max_sessions(struct venus_core *core, const void *data)
+ {
+ 	const struct hfi_max_sessions_supported *sessions = data;
+ 
+ 	core->max_sessions_supported = sessions->max_sessions;
++
++	return sizeof(*sessions);
+ }
+ 
+-static void parse_codecs_mask(u32 *codecs, u32 *domain, void *data)
++static int parse_codecs_mask(u32 *codecs, u32 *domain, void *data)
+ {
+ 	struct hfi_codec_mask_supported *mask = data;
+ 
+ 	*codecs = mask->codecs;
+ 	*domain = mask->video_domains;
++
++	return sizeof(*mask);
+ }
+ 
+ static void parser_init(struct venus_inst *inst, u32 *codecs, u32 *domain)
+@@ -281,8 +298,9 @@ static int hfi_platform_parser(struct venus_core *core, struct venus_inst *inst)
+ u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
+ 	       u32 size)
+ {
+-	unsigned int words_count = size >> 2;
+-	u32 *word = buf, *data, codecs = 0, domain = 0;
++	u32 *words = buf, *payload, codecs = 0, domain = 0;
++	u32 *frame_size = buf + size;
++	u32 rem_bytes = size;
+ 	int ret;
+ 
+ 	ret = hfi_platform_parser(core, inst);
+@@ -299,38 +317,66 @@ u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
+ 		memset(core->caps, 0, sizeof(core->caps));
+ 	}
+ 
+-	while (words_count) {
+-		data = word + 1;
++	while (words < frame_size) {
++		payload = words + 1;
+ 
+-		switch (*word) {
++		switch (*words) {
+ 		case HFI_PROPERTY_PARAM_CODEC_SUPPORTED:
+-			parse_codecs(core, data);
++			if (rem_bytes <= sizeof(struct hfi_codec_supported))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_codecs(core, payload);
++			if (ret < 0)
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
+ 			init_codecs(core);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_MAX_SESSIONS_SUPPORTED:
+-			parse_max_sessions(core, data);
++			if (rem_bytes <= sizeof(struct hfi_max_sessions_supported))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_max_sessions(core, payload);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_CODEC_MASK_SUPPORTED:
+-			parse_codecs_mask(&codecs, &domain, data);
++			if (rem_bytes <= sizeof(struct hfi_codec_mask_supported))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_codecs_mask(&codecs, &domain, payload);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_UNCOMPRESSED_FORMAT_SUPPORTED:
+-			parse_raw_formats(core, codecs, domain, data);
++			if (rem_bytes <= sizeof(struct hfi_uncompressed_format_supported))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_raw_formats(core, codecs, domain, payload);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_CAPABILITY_SUPPORTED:
+-			parse_caps(core, codecs, domain, data);
++			if (rem_bytes <= sizeof(struct hfi_capabilities))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_caps(core, codecs, domain, payload);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_PROFILE_LEVEL_SUPPORTED:
+-			parse_profile_level(core, codecs, domain, data);
++			if (rem_bytes <= sizeof(struct hfi_profile_level_supported))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_profile_level(core, codecs, domain, payload);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_BUFFER_ALLOC_MODE_SUPPORTED:
+-			parse_alloc_mode(core, codecs, domain, data);
++			if (rem_bytes <= sizeof(struct hfi_buffer_alloc_mode_supported))
++				return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++			ret = parse_alloc_mode(core, codecs, domain, payload);
+ 			break;
+ 		default:
++			ret = sizeof(u32);
+ 			break;
+ 		}
+ 
+-		word++;
+-		words_count--;
++		if (ret < 0)
++			return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
++
++		words += ret / sizeof(u32);
++		rem_bytes -= ret;
+ 	}
+ 
+ 	if (!core->max_sessions_supported)
 -- 
 2.39.5
 
