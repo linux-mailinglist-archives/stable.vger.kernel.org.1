@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83508AA1703
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E31AA1413
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B023A1892612
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4327B4A1E06
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE742528FB;
-	Tue, 29 Apr 2025 17:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702B522A81D;
+	Tue, 29 Apr 2025 17:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lC2ezJQl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XpC/xfRq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2A02517A4;
-	Tue, 29 Apr 2025 17:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFAC1DF73C;
+	Tue, 29 Apr 2025 17:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948533; cv=none; b=ZTSuKR9DPVGgSeb5i693YsDC+HNSKb4mCl7HE9Sf8WLQuDLlJvL9K/XnjKEi5RYM4oBuMl2hDYzW8pH13A3A89/BS2QtscXJdkh9udcFQp/Kj1bxxrwKy6MPU62JMGrfBLnk9J2xtpggrEx/IoWa4HCROa2XJNMgA50GJZPsRok=
+	t=1745946604; cv=none; b=ovh383Hg9vg3fGuyYWIbDUhEd0qy5fziWxT/HmMW+6aIbEt4iv/dc9HioPzFWTXgSqMwI4EAbjgWAdljyqBjgON9HZK/0H+bAFl184IO6JP9EhhEaUSHZS8JiVC4exDFauQCYySE8pSPpE5q8mA2XO48Wmr0T7BE7+Ti2bjET5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948533; c=relaxed/simple;
-	bh=lXxiSrO4vkGs4m+r6FYSQElGqAVEW3ZaIoNfPyH95g0=;
+	s=arc-20240116; t=1745946604; c=relaxed/simple;
+	bh=058q7uj5MdbEx/gZBuQyCmPMQTbIpM0S7XJotAmLuYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K40ap+n51VKFBo1afZXdLAHaTbqg5nH1MW3/5MhROa+ejlEQfojdqy+dqZmA71Yt5mt7BzVAJSW8y/CPbOotcZyoulDdqnj54o1cEDQio0V0TmiWxzVwo6T/8wfuGg2v+JiaoA36Jpwm7ZOcaADzD5Etn2h3yYHYIAN5C0KOZB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lC2ezJQl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D88C4CEE3;
-	Tue, 29 Apr 2025 17:42:12 +0000 (UTC)
+	 MIME-Version; b=JlVikunS9oDlVgkTezMMbu+N3B82/5BhzQ5kfnohgqFWv3l8LCz8aaNBqZioUsggf5MMn/dkWzOGxOqRdss4IJH9PUnIIBkX9aASPxYO8Wo0W7n887nZgeODNEO4ldF5FX2z6/h/lsR93GJxkHezidpBzkmOyfNdhJ/WKcF4cJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XpC/xfRq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F80EC4CEE3;
+	Tue, 29 Apr 2025 17:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948533;
-	bh=lXxiSrO4vkGs4m+r6FYSQElGqAVEW3ZaIoNfPyH95g0=;
+	s=korg; t=1745946604;
+	bh=058q7uj5MdbEx/gZBuQyCmPMQTbIpM0S7XJotAmLuYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lC2ezJQlrobCctu8Vz6xLq6CgOSFWv9eq7H4H+jIar9VHvORm3w138Xgji6Rclllp
-	 k2y+YpKIliGFPV+mb0uH1LtnflIPO2eUDdyHhenoieTyu9TAJCly3RIa7qENYaYVNi
-	 KoGgPhagKyaRQ9iF5boj5LtDak3o9N/xzIZ2iDio=
+	b=XpC/xfRqzOrQUhBpiYvyCIQh+AxMntTG2NY7U4kGDJz+r9OcKD4Qv5EjVbt4YnYli
+	 iZqQZmMnk8aiqeLq0DrzGRFUNsT2RTJhZ0Glz5rh/RMqctlVDKrXzl7rd4gU5cLC65
+	 3lfH6ot0I69lt9DJnPkybALgGzUQF7valvzb4mwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriele Paoloni <gpaoloni@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 037/373] tracing: fix return value in __ftrace_event_enable_disable for TRACE_REG_UNREGISTER
+Subject: [PATCH 5.10 010/286] umount: Allow superblock owners to force umount
 Date: Tue, 29 Apr 2025 18:38:34 +0200
-Message-ID: <20250429161124.658336577@linuxfoundation.org>
+Message-ID: <20250429161108.277686156@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Paoloni <gpaoloni@redhat.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 0c588ac0ca6c22b774d9ad4a6594681fdfa57d9d ]
+[ Upstream commit e1ff7aa34dec7e650159fd7ca8ec6af7cc428d9f ]
 
-When __ftrace_event_enable_disable invokes the class callback to
-unregister the event, the return value is not reported up to the
-caller, hence leading to event unregister failures being silently
-ignored.
+Loosen the permission check on forced umount to allow users holding
+CAP_SYS_ADMIN privileges in namespaces that are privileged with respect
+to the userns that originally mounted the filesystem.
 
-This patch assigns the ret variable to the invocation of the
-event unregister callback, so that its return value is stored
-and reported to the caller, and it raises a warning in case
-of error.
-
-Link: https://lore.kernel.org/20250321170821.101403-1-gpaoloni@redhat.com
-Signed-off-by: Gabriele Paoloni <gpaoloni@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Link: https://lore.kernel.org/r/12f212d4ef983714d065a6bb372fbb378753bf4c.1742315194.git.trond.myklebust@hammerspace.com
+Acked-by: "Eric W. Biederman" <ebiederm@xmission.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/namespace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 54a035b079d38..e9d40f9fb09ba 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -763,7 +763,9 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 				clear_bit(EVENT_FILE_FL_RECORDED_TGID_BIT, &file->flags);
- 			}
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 7e67db7456b3d..2f97112657adc 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -1716,6 +1716,7 @@ static inline bool may_mandlock(void)
+ static int can_umount(const struct path *path, int flags)
+ {
+ 	struct mount *mnt = real_mount(path->mnt);
++	struct super_block *sb = path->dentry->d_sb;
  
--			call->class->reg(call, TRACE_REG_UNREGISTER, file);
-+			ret = call->class->reg(call, TRACE_REG_UNREGISTER, file);
-+
-+			WARN_ON_ONCE(ret);
- 		}
- 		/* If in SOFT_MODE, just set the SOFT_DISABLE_BIT, else clear it */
- 		if (file->flags & EVENT_FILE_FL_SOFT_MODE)
+ 	if (!may_mount())
+ 		return -EPERM;
+@@ -1725,7 +1726,7 @@ static int can_umount(const struct path *path, int flags)
+ 		return -EINVAL;
+ 	if (mnt->mnt.mnt_flags & MNT_LOCKED) /* Check optimistically */
+ 		return -EINVAL;
+-	if (flags & MNT_FORCE && !capable(CAP_SYS_ADMIN))
++	if (flags & MNT_FORCE && !ns_capable(sb->s_user_ns, CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 	return 0;
+ }
 -- 
 2.39.5
 
