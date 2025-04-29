@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 422CDAA16B1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8929AAA1268
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C42B25A6257
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:33:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E43211BA2D66
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B392528FC;
-	Tue, 29 Apr 2025 17:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EAF242934;
+	Tue, 29 Apr 2025 16:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TN3yuwXM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JH2u/nrI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D72A2517AB;
-	Tue, 29 Apr 2025 17:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0669C215060;
+	Tue, 29 Apr 2025 16:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948024; cv=none; b=W9B3+pe+vVB/g7jhEyiPbVvI1GwEJ0tTJVWxt28wA8QZJc+6LeoTfOOl14UdulV1SX8qn69GNO4vOiy6T5NsD6pVgjVT9hSo/X6v77uuJI/aiBI1d624gWYD07JsbXjfkMxeUfQhUFMJtMLGXs1Gy73vqOmK3uQB577BgoCrVuc=
+	t=1745945523; cv=none; b=gQKmshw95o0ZR0NhnSzRYrabUc/HBUmE8sW0AxzlEXa/bQO3KJibyULp/E97t9cwBEYUCa5GpjrKiuG0EquO5PhBcMbyohZt9wsxSQP6shoDfacjEEE81zDRCdDuqV9gggtWn8fQUfLW2X94/WBzp4JQCd+QnPUiJfpBFsGSta8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948024; c=relaxed/simple;
-	bh=uB515YeIVJUzRhImaKnMJ2ggGVqu3UY2EcMkEBOiKHc=;
+	s=arc-20240116; t=1745945523; c=relaxed/simple;
+	bh=GswN5RhNiR2cpOWaPT9AqMiYRYDMzuoaI7FMRm6N+wE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nlhhQGPq+2rbvUYQYAfnDBdhVXDXEHZ5WXeI3gqf99t6fvkx5egTtMfLxfI9NBrI9EWsvgjkPyiskfD2W/PMG/un2fQzZwlUN5EV82fF/hBhbzhbMhqew5g/3Ql6ZEjz/JWx5KZ1peRe0Lk0xNh/sv2+Ks4VUwsmS4xpAWjSw3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TN3yuwXM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB154C4CEF1;
-	Tue, 29 Apr 2025 17:33:43 +0000 (UTC)
+	 MIME-Version; b=HT7D+6dYI9qFSmMbQj4O+McsENjA58vIvnDWZoCdHlqRdobtszNUkYmy89SMm6IwdWT9A3ZjrOqC6hJOOjLGqEcMRVzkdPZRFpF0/fVCwoCtTDLJ7vtUxN/Ms3PMIkrUJmNr0qWEwF21iclu9P+6V4szX+Hd5Svo9PgDSDi23Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JH2u/nrI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E4BC4CEE3;
+	Tue, 29 Apr 2025 16:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948024;
-	bh=uB515YeIVJUzRhImaKnMJ2ggGVqu3UY2EcMkEBOiKHc=;
+	s=korg; t=1745945522;
+	bh=GswN5RhNiR2cpOWaPT9AqMiYRYDMzuoaI7FMRm6N+wE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TN3yuwXMmGiEu2WhZXA8B181NbK1lBFX265Nty+qa8WCEISkk6iontK8/d9hi83m0
-	 tp4fZkHuD11h2fnCzZQkH3Vr0KC7RG9h5SxAc8G5Rb/RbUqVIlbQb/ucpvqkn3vj9t
-	 fXuDzb4r6FzdwdF/6yeT8QuJbMH4ST4qbl87TMmk=
+	b=JH2u/nrIdzx0WlTUPevmn7/+yDk3BJ4FOsmOdW/Xv3X3WPPviBYh0AMHfvOTalOol
+	 mkCv8Q29sbqqdIjVSDAzqWfCj9BBmgNV7Vs1jv8dYkE/WQvoeVKjXc161yS4yPzscK
+	 CwkfE2Jg094n7Q/9yhAAitPhmmzhUkhzbm05IRyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.12 141/280] usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 141/179] cpufreq: scpi: Fix null-ptr-deref in scpi_cpufreq_get_rate()
 Date: Tue, 29 Apr 2025 18:41:22 +0200
-Message-ID: <20250429161120.895571482@linuxfoundation.org>
+Message-ID: <20250429161055.100161134@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-commit 8c531e0a8c2d82509ad97c6d3a1e6217c7ed136d upstream.
+[ Upstream commit 73b24dc731731edf762f9454552cb3a5b7224949 ]
 
-usb_phy_init() may return an error code if e.g. its implementation fails
-to prepare/enable some clocks. And properly rollback on probe error path
-by calling the counterpart usb_phy_shutdown().
+cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
+in the policy->cpus mask. scpi_cpufreq_get_rate() does not check for
+this case, which results in a NULL pointer dereference.
 
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: be9cae2479f4 ("usb: chipidea: imx: Fix ULPI on imx53")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20250316102658.490340-4-pchelkin@ispras.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 343a8d17fa8d ("cpufreq: scpi: remove arm_big_little dependency")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/ci_hdrc_imx.c |   13 ++++++++++---
+ drivers/cpufreq/scpi-cpufreq.c | 13 ++++++++++---
  1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -484,7 +484,11 @@ static int ci_hdrc_imx_probe(struct plat
- 	    of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI) {
- 		pdata.flags |= CI_HDRC_OVERRIDE_PHY_CONTROL;
- 		data->override_phy_control = true;
--		usb_phy_init(pdata.usb_phy);
-+		ret = usb_phy_init(pdata.usb_phy);
-+		if (ret) {
-+			dev_err(dev, "Failed to init phy\n");
-+			goto err_clk;
-+		}
- 	}
+diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
+index b341ffbf56bc3..73539f357c7ae 100644
+--- a/drivers/cpufreq/scpi-cpufreq.c
++++ b/drivers/cpufreq/scpi-cpufreq.c
+@@ -39,9 +39,16 @@ static struct scpi_ops *scpi_ops;
  
- 	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
-@@ -493,7 +497,7 @@ static int ci_hdrc_imx_probe(struct plat
- 	ret = imx_usbmisc_init(data->usbmisc_data);
- 	if (ret) {
- 		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
--		goto err_clk;
-+		goto phy_shutdown;
- 	}
+ static unsigned int scpi_cpufreq_get_rate(unsigned int cpu)
+ {
+-	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
+-	struct scpi_data *priv = policy->driver_data;
+-	unsigned long rate = clk_get_rate(priv->clk);
++	struct cpufreq_policy *policy;
++	struct scpi_data *priv;
++	unsigned long rate;
++
++	policy = cpufreq_cpu_get_raw(cpu);
++	if (unlikely(!policy))
++		return 0;
++
++	priv = policy->driver_data;
++	rate = clk_get_rate(priv->clk);
  
- 	data->ci_pdev = ci_hdrc_add_device(dev,
-@@ -502,7 +506,7 @@ static int ci_hdrc_imx_probe(struct plat
- 	if (IS_ERR(data->ci_pdev)) {
- 		ret = PTR_ERR(data->ci_pdev);
- 		dev_err_probe(dev, ret, "ci_hdrc_add_device failed\n");
--		goto err_clk;
-+		goto phy_shutdown;
- 	}
- 
- 	if (data->usbmisc_data) {
-@@ -536,6 +540,9 @@ static int ci_hdrc_imx_probe(struct plat
- 
- disable_device:
- 	ci_hdrc_remove_device(data->ci_pdev);
-+phy_shutdown:
-+	if (data->override_phy_control)
-+		usb_phy_shutdown(data->phy);
- err_clk:
- 	clk_disable_unprepare(data->clk_wakeup);
- err_wakeup_clk:
+ 	return rate / 1000;
+ }
+-- 
+2.39.5
+
 
 
 
