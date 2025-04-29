@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6879FAA12A8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FBFBAA1384
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2D4D165567
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:55:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DCAF7B241E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C33F253934;
-	Tue, 29 Apr 2025 16:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE7A24168A;
+	Tue, 29 Apr 2025 17:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKM49Bb0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLezQB8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9952512D9;
-	Tue, 29 Apr 2025 16:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16758229B05;
+	Tue, 29 Apr 2025 17:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945651; cv=none; b=DkbkUdjhy2jIIjaxTs1VeKF34ob9KV/lARjCzdaMBuFS4AvGnwmylvJ/Yh/oKiTlsT2MgqDBsTjfDFKgkZrrj+bID/cctpTDd0Sm+qBYOYEQ2ofraNyuLHCqYH2eRT27n4G2LzzXz7AiNEPjA1qB+AkqMieZCzI4a2d25h203is=
+	t=1745946413; cv=none; b=BT0GkdGSFXL/+svZlDERVFow5YyC7i8rDj2W+79Kkt9qpHh4lrMYEDzCsXkSNrACZISx9IIDC+Sr9eBCdlEV+n5GedEcTGwrNWm4X3qVvxx/fMo33/I3f+AHMu/RqZyjxDSdA8Uck7fJ/SDVUEi9Cn2AqoTXWIYo1/C9onbCYys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945651; c=relaxed/simple;
-	bh=VVyXOE5jYNS1UHKfgdM5KSR57vMQByxmsfA6yuBoAwE=;
+	s=arc-20240116; t=1745946413; c=relaxed/simple;
+	bh=QtxRgKPV4YKpnm+gRZnv6ZbbMPcBEWImPRR+lToQG/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IU83unf3zmW+HEimmICYu3kdyOlsfdL1xl9jymU/u75F32d0KgIJUMAWkVni7sqPnnaNkv5yTLk9MZGwUMJRCGZJLKigLBqvRV8U5kn8K9zLf4f8kJz63yNVMLA7mIMR7rh98VjBSJkow7wbRI8OnFn0k8E/2Ak2wOj1wg8bHik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKM49Bb0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B81C4CEE3;
-	Tue, 29 Apr 2025 16:54:11 +0000 (UTC)
+	 MIME-Version; b=kXbrLlwhbtLMjnXoLUugF/mm1gWV+JU4bQG7sbRp+/an2A11/QoXOFrS20V4+SO4+NrdndueVBWOcV2hpD9E4l+SNmxWadfVS0B0CKffjCoanPiR14fQAnuJbo+dC490Mi8SWOxVEh3drrnn9U0M5eCskccdOHlFWYUd3BA1eos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLezQB8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB03C4CEE3;
+	Tue, 29 Apr 2025 17:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945651;
-	bh=VVyXOE5jYNS1UHKfgdM5KSR57vMQByxmsfA6yuBoAwE=;
+	s=korg; t=1745946413;
+	bh=QtxRgKPV4YKpnm+gRZnv6ZbbMPcBEWImPRR+lToQG/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QKM49Bb0eH7O63S0rmCmNmIFT60eFb727IMRbdAzqkRluoUnx5mRYcZI9HaihZD1/
-	 F5/oW+6wSvGLi7F5kyZRe7JD4rhG0McDsXRUlKEPn6e3ic/6V5kvPB+cZffG/Dl1bi
-	 IL3SL7ydfRRJr2wcbnCcry5Ini+JdXmW8XVUNRgc=
+	b=oLezQB8uePS8HItoVGjg/FObg/60MSV2Ch9pOeWKvvel9PdTG/p2xSB+68d6v/hCU
+	 iAKAOuqpYmawyPDK8scRkFTgQjyKp6MyNDd0GsbYihzQovA7fRLxv2Vv/4tiWK61NR
+	 J7arvBMZ8AHaQm8IN6siQXC73I7dxeRAr0coynLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frode Isaksen <frode@meta.com>,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.4 155/179] usb: dwc3: gadget: check that event count does not exceed event buffer length
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 259/311] x86/bugs: Use SBPB in write_ibpb() if applicable
 Date: Tue, 29 Apr 2025 18:41:36 +0200
-Message-ID: <20250429161055.651242786@linuxfoundation.org>
+Message-ID: <20250429161131.629506206@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frode Isaksen <frode@meta.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 63ccd26cd1f6600421795f6ca3e625076be06c9f upstream.
+[ Upstream commit fc9fd3f98423367c79e0bd85a9515df26dc1b3cc ]
 
-The event count is read from register DWC3_GEVNTCOUNT.
-There is a check for the count being zero, but not for exceeding the
-event buffer length.
-Check that event count does not exceed event buffer length,
-avoiding an out-of-bounds access when memcpy'ing the event.
-Crash log:
-Unable to handle kernel paging request at virtual address ffffffc0129be000
-pc : __memcpy+0x114/0x180
-lr : dwc3_check_event_buf+0xec/0x348
-x3 : 0000000000000030 x2 : 000000000000dfc4
-x1 : ffffffc0129be000 x0 : ffffff87aad60080
-Call trace:
-__memcpy+0x114/0x180
-dwc3_interrupt+0x24/0x34
+write_ibpb() does IBPB, which (among other things) flushes branch type
+predictions on AMD.  If the CPU has SRSO_NO, or if the SRSO mitigation
+has been disabled, branch type flushing isn't needed, in which case the
+lighter-weight SBPB can be used.
 
-Signed-off-by: Frode Isaksen <frode@meta.com>
-Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
-Cc: stable <stable@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250403072907.448524-1-fisaksen@baylibre.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The 'x86_pred_cmd' variable already keeps track of whether IBPB or SBPB
+should be used.  Use that instead of hardcoding IBPB.
+
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/17c5dcd14b29199b75199d67ff7758de9d9a4928.1744148254.git.jpoimboe@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/entry/entry.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3652,6 +3652,12 @@ static irqreturn_t dwc3_check_event_buf(
- 	if (!count)
- 		return IRQ_NONE;
+diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
+index b7ea3e8e9eccd..58e3124ee2b42 100644
+--- a/arch/x86/entry/entry.S
++++ b/arch/x86/entry/entry.S
+@@ -18,7 +18,7 @@
  
-+	if (count > evt->length) {
-+		dev_err_ratelimited(dwc->dev, "invalid count(%u) > evt->length(%u)\n",
-+			count, evt->length);
-+		return IRQ_NONE;
-+	}
-+
- 	evt->count = count;
- 	evt->flags |= DWC3_EVENT_PENDING;
+ SYM_FUNC_START(entry_ibpb)
+ 	movl	$MSR_IA32_PRED_CMD, %ecx
+-	movl	$PRED_CMD_IBPB, %eax
++	movl	_ASM_RIP(x86_pred_cmd), %eax
+ 	xorl	%edx, %edx
+ 	wrmsr
  
+-- 
+2.39.5
+
 
 
 
