@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-138460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C29AA181A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:56:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 948F6AA1594
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F7E51BC59DF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 616269861E2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AC924EAB2;
-	Tue, 29 Apr 2025 17:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6406821ABDB;
+	Tue, 29 Apr 2025 17:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9MHM4g4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMBS43ce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C152AE96;
-	Tue, 29 Apr 2025 17:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2155D1C6B4;
+	Tue, 29 Apr 2025 17:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949324; cv=none; b=YjjCWfhYifjSkCxcLJR1iNWPiSiiLsEn+h0ItltxZ4YQDobe0/Okmp6vCRjReOyn90LIya5yOs1Q4uOBoUoRfRFQggvSaQJbt6X5GGu4Nv7ckpTqK7KSkB9+N+4AqJSlVgKVSoi85HiWUaVGBgscsgcx1Oo3jnOytgyfIi3jC9k=
+	t=1745947323; cv=none; b=EhllipcqPhhDdzcCkpQ01FPKiNlxLI3fKuXat9lwCobRcdHmLNSusv5zhLvErhetqEgN2DlYMVoTqqK1FCRDr9TN1bG/wwXX0GSS4btESkEpCf+GZAXMz8vFEURq0suOxmMeEY96u6ci4KC/qnCPglErC7grbwesPd+FbouFa9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949324; c=relaxed/simple;
-	bh=S67zhca20bTyhPJ1KYi1iAl93DbhzZm7ObNj5+DKyjY=;
+	s=arc-20240116; t=1745947323; c=relaxed/simple;
+	bh=vcdzTl+QczwVR83WV54k0qNtVOZx4LuD8n8JziW8GsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=emSwSJ09YkrVjjDr2d2z9qRA5U31hXVK6ihQYO1GygDbI99JFzm3WbFmZMVoOODIQrpHR7OtZIbmyzVgUO0RU37toInZTvNaNKyP1nr7onSgz2qgWBRP3YfkaCmxCTr5kZNTT7sF7wsh6Xxw0IWfE/qC8ykWKpvbMVGU4Gwzt8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9MHM4g4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4A2C4CEE3;
-	Tue, 29 Apr 2025 17:55:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tgqQtRWmrj4SSO26pEiXEPTFBiLRqYq64u7K+MTuyJL8R7VHiF/zWjAMZdyVzRd6xjNJ1eSvKMGFDOxljymSz9ljxIKiRJGuDSAPyv/07ClfuVO3lUMFy/J247Q1WkQNkKGfgrujOKPPKcuGpGw3KApzHJ4KlYYHm9tmYSCsP/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMBS43ce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8DFC4CEE3;
+	Tue, 29 Apr 2025 17:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949324;
-	bh=S67zhca20bTyhPJ1KYi1iAl93DbhzZm7ObNj5+DKyjY=;
+	s=korg; t=1745947323;
+	bh=vcdzTl+QczwVR83WV54k0qNtVOZx4LuD8n8JziW8GsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9MHM4g4soStTqvzgxcLaZ2euF9UecoWvMfei39kpiJKOX+kWbLSr7laPRckABkTz
-	 O/r5SmjUJbJXTchi2T4AKIuV7s42rlf1H9sCcOZI6KhQolWWdQMcfuMeRY+yWFivUq
-	 wKye/OZeJMnWnYWPNih7h5Ku16APM4Jt5B0NeJsE=
+	b=oMBS43cebPdsA9AaDARHvViKbM833eLHOj8QaPUkndniHUuv8csqMk25cwQsYt1uZ
+	 5w/hQREwxxkEw1uiUhj/E2hC7IscME777vvy0QlQFiBNqFLCwNLlZ0vtomBjFjlLSN
+	 8hNSGSBdB4jK9WAfsIHFeVvMdI1U2Ub0QUgIJg+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Xiangyu Chen <xiangyu.chen@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.15 253/373] Bluetooth: SCO: Fix UAF on sco_sock_timeout
-Date: Tue, 29 Apr 2025 18:42:10 +0200
-Message-ID: <20250429161133.532037966@linuxfoundation.org>
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	David Airlie <airlied@linux.ie>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	Lee Jones <lee.jones@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 227/286] drm/amd/amdgpu/amdgpu_vram_mgr: Add missing descriptions for dev and dir
+Date: Tue, 29 Apr 2025 18:42:11 +0200
+Message-ID: <20250429161117.276432663@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +65,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Lee Jones <lee.jones@linaro.org>
 
-commit 1bf4470a3939c678fb822073e9ea77a0560bc6bb upstream.
+[ Upstream commit 2c8645b7a6974b33744b677e9ddc89650776af46 ]
 
-conn->sk maybe have been unlinked/freed while waiting for sco_conn_lock
-so this checks if the conn->sk is still valid by checking if it part of
-sco_sk_list.
+Fixes the following W=1 kernel build warning(s):
 
-Reported-by: syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com
-Tested-by: syzbot+4c0d0c4cde787116d465@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4c0d0c4cde787116d465
-Fixes: ba316be1b6a0 ("Bluetooth: schedule SCO timeouts with delayed_work")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c:648: warning: Function parameter or member 'dev' not described in 'amdgpu_vram_mgr_free_sgt'
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c:648: warning: Function parameter or member 'dir' not described in 'amdgpu_vram_mgr_free_sgt'
+
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: amd-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: c0dd8a9253fa ("drm/amdgpu/dma_buf: fix page_link check")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/bluetooth.h |    1 +
- net/bluetooth/af_bluetooth.c      |   22 ++++++++++++++++++++++
- net/bluetooth/sco.c               |   18 ++++++++++++------
- 3 files changed, 35 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -314,6 +314,7 @@ int  bt_sock_register(int proto, const s
- void bt_sock_unregister(int proto);
- void bt_sock_link(struct bt_sock_list *l, struct sock *s);
- void bt_sock_unlink(struct bt_sock_list *l, struct sock *s);
-+bool bt_sock_linked(struct bt_sock_list *l, struct sock *s);
- int  bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 		     int flags);
- int  bt_sock_stream_recvmsg(struct socket *sock, struct msghdr *msg,
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -154,6 +154,28 @@ void bt_sock_unlink(struct bt_sock_list
- }
- EXPORT_SYMBOL(bt_sock_unlink);
- 
-+bool bt_sock_linked(struct bt_sock_list *l, struct sock *s)
-+{
-+	struct sock *sk;
-+
-+	if (!l || !s)
-+		return false;
-+
-+	read_lock(&l->lock);
-+
-+	sk_for_each(sk, &l->head) {
-+		if (s == sk) {
-+			read_unlock(&l->lock);
-+			return true;
-+		}
-+	}
-+
-+	read_unlock(&l->lock);
-+
-+	return false;
-+}
-+EXPORT_SYMBOL(bt_sock_linked);
-+
- void bt_accept_enqueue(struct sock *parent, struct sock *sk, bool bh)
- {
- 	BT_DBG("parent %p, sk %p", parent, sk);
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -76,6 +76,16 @@ struct sco_pinfo {
- #define SCO_CONN_TIMEOUT	(HZ * 40)
- #define SCO_DISCONN_TIMEOUT	(HZ * 2)
- 
-+static struct sock *sco_sock_hold(struct sco_conn *conn)
-+{
-+	if (!conn || !bt_sock_linked(&sco_sk_list, conn->sk))
-+		return NULL;
-+
-+	sock_hold(conn->sk);
-+
-+	return conn->sk;
-+}
-+
- static void sco_sock_timeout(struct work_struct *work)
- {
- 	struct sco_conn *conn = container_of(work, struct sco_conn,
-@@ -87,9 +97,7 @@ static void sco_sock_timeout(struct work
- 		sco_conn_unlock(conn);
- 		return;
- 	}
--	sk = conn->sk;
--	if (sk)
--		sock_hold(sk);
-+	sk = sco_sock_hold(conn);
- 	sco_conn_unlock(conn);
- 
- 	if (!sk)
-@@ -191,9 +199,7 @@ static void sco_conn_del(struct hci_conn
- 
- 	/* Kill socket */
- 	sco_conn_lock(conn);
--	sk = conn->sk;
--	if (sk)
--		sock_hold(sk);
-+	sk = sco_sock_hold(conn);
- 	sco_conn_unlock(conn);
- 
- 	if (sk) {
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+index 0c6b7c5ecfec8..2c3a94e939bab 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
+@@ -531,6 +531,8 @@ int amdgpu_vram_mgr_alloc_sgt(struct amdgpu_device *adev,
+  * amdgpu_vram_mgr_alloc_sgt - allocate and fill a sg table
+  *
+  * @adev: amdgpu device pointer
++ * @dev: device pointer
++ * @dir: data direction of resource to unmap
+  * @sgt: sg table to free
+  *
+  * Free a previously allocate sg table.
+-- 
+2.39.5
+
 
 
 
