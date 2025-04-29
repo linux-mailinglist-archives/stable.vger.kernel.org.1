@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-138154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DAEBAA16CB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A568AA184A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 193EA163B6D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B9A11BC4B3E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4098B243364;
-	Tue, 29 Apr 2025 17:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B76251793;
+	Tue, 29 Apr 2025 17:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRhs/0L1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAsFPQJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04112475CF;
-	Tue, 29 Apr 2025 17:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7663215F6C;
+	Tue, 29 Apr 2025 17:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948338; cv=none; b=qlmxfGv1rqq9Z5OorKu4y48ua0m6c5aXdCLWgUYObQkeOce43U29zvsMgjQG9F4y1b6Vj8GkzEoRpwloHQsB4hpu0U0jysWFJ+sq42/blHyojRsmXtPHntntwz2HBKZwrkhAMJXXFy5dTcxa00egsFZIhJ6QUIjej5xJZKAeoSA=
+	t=1745949445; cv=none; b=fziEJDzZzTwaxnbl8p92Xr2RHNuUSL/99ouBORj39lJUNcnWGXT2D0f6QZAgTpOD237gD41i4AtwTbNXZueGNp5cf/0kQhJKORrpdtbG+P0Qp14h2A5j3M4xdhsj1eLrEXwTkeOjijFxDbuP1n+A68f61HQFTvh8Nk3MNaRWpq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948338; c=relaxed/simple;
-	bh=FHsAe950Tn90rIsJL5xYymjjIH9lvzg5RkCl1/dOoX4=;
+	s=arc-20240116; t=1745949445; c=relaxed/simple;
+	bh=W/+O7G1JzfKMsDI6U+kLiSZ3MoHxFoQrBBsYl5/TVOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qVLlmMKSZ/LPK54TiYUBSWP0rKk2frznXJEf6Ob3uQ2ROcGDPMrLLGQjkILaokVP8Ogk7UUFVx6hpQBTjv/GO45LiVS0OHKf8PTpbTGMSdy2T5i9odQM5xaiou5Ejy8bmRJOXVxNmy60iJJxFLUQhnhMPkggl9S0u/g3cKoP7BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRhs/0L1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82717C4CEE3;
-	Tue, 29 Apr 2025 17:38:57 +0000 (UTC)
+	 MIME-Version; b=YsM0U2WgPQiDs0RLpBrEjBWY1VnwCVhFlB7Gq1tngSNVD58Tww3d8axDg1KGpfRUzS1JbW9xb7BxpPMlSBb0mUPA9z9u2xjvWWkNUdIBnxo0RHt2C0UDjnlZDhBZrNIY/K1sUZ0PdkqK3MPGGIHPaltbWYs35uDfMoSeEA9Qvgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAsFPQJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDB9C4CEE3;
+	Tue, 29 Apr 2025 17:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948337;
-	bh=FHsAe950Tn90rIsJL5xYymjjIH9lvzg5RkCl1/dOoX4=;
+	s=korg; t=1745949445;
+	bh=W/+O7G1JzfKMsDI6U+kLiSZ3MoHxFoQrBBsYl5/TVOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRhs/0L1Fc8wQqBiX54m33dQ7yvMGFLT23qbc9pih9ZztG4nPmW/V8v9CkGALLBML
-	 Q7SqS87i1Bk+uBG3/qu/Qma12/OK+j/0hovhZq6I9YXG+T7cYAB9dDg/hhekx+2EK4
-	 WemFCqkMdPKNtsiBbJzzgu7WzT9S11JlYIO1qboY=
+	b=wAsFPQJ8+YFjucppj4wAsfLXVAiGvNW+DgAj6/wXabQiTqnUtAIfK0MHPbMFU0T3E
+	 lqy3ptMfoiqbKrvzh+FnBW3MKigB4rOCMXJ/9WfTrqNPvNsDAx/uEU6QiO3CMeFo3D
+	 Cp7MSNIOrpv/FHM9I2SCDUKZtrdZwZjo6tk4oweI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9=20 ?= <alexis.lothore@bootlin.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.12 257/280] selftests/bpf: check program redirect in xdp_cpumap_attach
-Date: Tue, 29 Apr 2025 18:43:18 +0200
-Message-ID: <20250429161125.649306984@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 5.15 322/373] USB: wdm: add annotation
+Date: Tue, 29 Apr 2025 18:43:19 +0200
+Message-ID: <20250429161136.370661404@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +59,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit d124d984c8a2d677e1cea6740a01ccdd0371a38d upstream.
+commit 73e9cc1ffd3650b12c4eb059dfdafd56e725ceda upstream.
 
-xdp_cpumap_attach, in its current form, only checks that an xdp cpumap
-program can be executed, but not that it performs correctly the cpu
-redirect as configured by userspace (bpf_prog_test_run_opts will return
-success even if the redirect program returns an error)
+This is not understandable without a comment on endianness
 
-Add a check to ensure that the program performs the configured redirect
-as well. The check is based on a global variable incremented by a
-chained program executed only if the redirect program properly executes.
-
-Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
-Link: https://lore.kernel.org/r/20241009-convert_xdp_tests-v3-3-51cea913710c@bootlin.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Fixes: afba937e540c9 ("USB: CDC WDM driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250401084749.175246-5-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c       |    5 ++++-
- tools/testing/selftests/bpf/progs/test_xdp_with_cpumap_helpers.c |    5 +++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/usb/class/cdc-wdm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
-@@ -62,8 +62,11 @@ static void test_xdp_with_cpumap_helpers
- 	err = bpf_prog_test_run_opts(prog_redir_fd, &opts);
- 	ASSERT_OK(err, "XDP test run");
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -909,7 +909,7 @@ static int wdm_wwan_port_tx(struct wwan_
+ 	req->bRequestType = (USB_DIR_OUT | USB_TYPE_CLASS | USB_RECIP_INTERFACE);
+ 	req->bRequest = USB_CDC_SEND_ENCAPSULATED_COMMAND;
+ 	req->wValue = 0;
+-	req->wIndex = desc->inum;
++	req->wIndex = desc->inum; /* already converted */
+ 	req->wLength = cpu_to_le16(skb->len);
  
--	/* wait for the packets to be flushed */
-+	/* wait for the packets to be flushed, then check that redirect has been
-+	 * performed
-+	 */
- 	kern_sync_rcu();
-+	ASSERT_NEQ(skel->bss->redirect_count, 0, "redirected packets");
- 
- 	err = bpf_xdp_detach(IFINDEX_LO, XDP_FLAGS_SKB_MODE, NULL);
- 	ASSERT_OK(err, "XDP program detach");
---- a/tools/testing/selftests/bpf/progs/test_xdp_with_cpumap_helpers.c
-+++ b/tools/testing/selftests/bpf/progs/test_xdp_with_cpumap_helpers.c
-@@ -12,6 +12,8 @@ struct {
- 	__uint(max_entries, 4);
- } cpu_map SEC(".maps");
- 
-+__u32 redirect_count = 0;
-+
- SEC("xdp")
- int xdp_redir_prog(struct xdp_md *ctx)
- {
-@@ -27,6 +29,9 @@ int xdp_dummy_prog(struct xdp_md *ctx)
- SEC("xdp/cpumap")
- int xdp_dummy_cm(struct xdp_md *ctx)
- {
-+	if (bpf_get_smp_processor_id() == 0)
-+		redirect_count++;
-+
- 	if (ctx->ingress_ifindex == IFINDEX_LO)
- 		return XDP_DROP;
- 
+ 	skb_shinfo(skb)->destructor_arg = desc;
 
 
 
