@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-137353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02885AA12FA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:01:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63250AA16E3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2364B189CDCF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:58:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D413188DA7C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A85A2512D8;
-	Tue, 29 Apr 2025 16:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0DA252284;
+	Tue, 29 Apr 2025 17:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q44nYq5g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2vauu/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97E72459FA;
-	Tue, 29 Apr 2025 16:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB04244686;
+	Tue, 29 Apr 2025 17:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945814; cv=none; b=BCenmbvn3UXuFibZnt7sCgdZ/gdnxWKeRJQk33oI1A/oD6F3eknLrJp+ToACjXlipewH6N3j6zvoxq4A1bHSBKg0grCgzyJzBMGRaEL4QA8XiKPE7WLgsS8UC0V1zYk9L8WmHejZ7G15Zw1T2+WBCqBsPzUm4mZUSkrgH6sxa/M=
+	t=1745948453; cv=none; b=RQSrfIWzmOzLfJbs2QfEffa1++9N/tTrSmFnIpC45xLq1CdZ90vg9vbPsufspI0NpgHvZ0h5o3aJbUdlFRHXQkbto/RnUHpI7P9gmy2rqMeQHCKm+An+v62xFaC26kWF7VMJ4dTMolVKLVTxt9M+HZ49PMiZfDaBRTZ5TJhH6Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945814; c=relaxed/simple;
-	bh=EbFb0twjB33FdfI6fzOzOo/IVTjY5cXpKGrhybxx0NA=;
+	s=arc-20240116; t=1745948453; c=relaxed/simple;
+	bh=GAredgzsRt9CVbZkxIjsYQN5RQ5qoCQgqzw6+i+3Dp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCRWWS3HDo6vls0qBSDXzL/tWjTPOwPHxCZzLpIQduLKyKzzYbekpqc5SE0vUrHVthxNQkDb6b7K/FnASsd9f2R5odrpYGdL3+6LGQwB4ATOEdb6kZLx0WywO//b+/tDZIKAzHiyDJdMrdysSIiNoDMFegRAu5+R6GheuGvdJ8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q44nYq5g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587B2C4CEE3;
-	Tue, 29 Apr 2025 16:56:54 +0000 (UTC)
+	 MIME-Version; b=OOW6Jv8cehFWaiHMd7v0dBBpU8DRQ5JYlwos172FxWx9QhqudGcsp+O0SReTENSDpJuj/NhOdG328i8X8I1DdUc/JO5Ie6acFNTKSbNjxmS0scQ31oCCRb015mSQoSMw9wTvtD0JnHGZoOEvGWePeguliory2nzqIWXxORVRpDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2vauu/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C78C4CEE3;
+	Tue, 29 Apr 2025 17:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945814;
-	bh=EbFb0twjB33FdfI6fzOzOo/IVTjY5cXpKGrhybxx0NA=;
+	s=korg; t=1745948453;
+	bh=GAredgzsRt9CVbZkxIjsYQN5RQ5qoCQgqzw6+i+3Dp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q44nYq5g6HcCueGowSBSiz9ZyOigdurfPJNWQVbfYhZzqf4FsNh0sssXkYsh6HxhW
-	 hRQ5E6Zk9oDznV+TRfrSSWiMQ1HGAqILn5V0XVWkeUZi29jeIcRF0oMAx487CtEeu2
-	 WwBR+2sb+wzmYUf3Z8a3IG0EFht++7NNmKHj1AOI=
+	b=A2vauu/AIf4ysDOWuhnbDaG8oV9S+FDDH2t0gvQ0GqdjA5bhSm3NUt7QcIR5I5rSG
+	 hihw5O+Z181yBXzC0tz16IDVhrjLOYDX1RLTeFaAWSouZljcJyiTRYyCk1LgPPcsFh
+	 t0eoizcqzczu0QO/ZYEq2AtnRvmE9/ehmyoYtgJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 051/311] net/mlx5: Move ttc allocation after switch case to prevent leaks
-Date: Tue, 29 Apr 2025 18:38:08 +0200
-Message-ID: <20250429161123.123395429@linuxfoundation.org>
+Subject: [PATCH 5.15 012/373] pm: cpupower: bench: Prevent NULL dereference on malloc failure
+Date: Tue, 29 Apr 2025 18:38:09 +0200
+Message-ID: <20250429161123.639718071@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit fa8fd315127ca48c65e7e6692a84ffcf3d07168e ]
+[ Upstream commit 208baa3ec9043a664d9acfb8174b332e6b17fb69 ]
 
-Relocate the memory allocation for ttc table after the switch statement
-that validates params->ns_type in both mlx5_create_inner_ttc_table() and
-mlx5_create_ttc_table(). This ensures memory is only allocated after
-confirming valid input, eliminating potential memory leaks when invalid
-ns_type cases occur.
+If malloc returns NULL due to low memory, 'config' pointer can be NULL.
+Add a check to prevent NULL dereference.
 
-Fixes: 137f3d50ad2a ("net/mlx5: Support matching on l4_type for ttc_table")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250418023814.71789-3-bsdhenrymartin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20250219122715.3892223-1-quic_zhonhan@quicinc.com
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ tools/power/cpupower/bench/parse.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-index 510879e1ba30e..43b2216bc0a22 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-@@ -618,10 +618,6 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
- 	bool use_l4_type;
- 	int err;
+diff --git a/tools/power/cpupower/bench/parse.c b/tools/power/cpupower/bench/parse.c
+index e63dc11fa3a53..48e25be6e1635 100644
+--- a/tools/power/cpupower/bench/parse.c
++++ b/tools/power/cpupower/bench/parse.c
+@@ -120,6 +120,10 @@ FILE *prepare_output(const char *dirname)
+ struct config *prepare_default_config()
+ {
+ 	struct config *config = malloc(sizeof(struct config));
++	if (!config) {
++		perror("malloc");
++		return NULL;
++	}
  
--	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
--	if (!ttc)
--		return ERR_PTR(-ENOMEM);
--
- 	switch (params->ns_type) {
- 	case MLX5_FLOW_NAMESPACE_PORT_SEL:
- 		use_l4_type = MLX5_CAP_GEN_2(dev, pcc_ifa2) &&
-@@ -635,6 +631,10 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
- 		return ERR_PTR(-EINVAL);
- 	}
+ 	dprintf("loading defaults\n");
  
-+	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
-+	if (!ttc)
-+		return ERR_PTR(-ENOMEM);
-+
- 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
- 	if (!ns) {
- 		kvfree(ttc);
-@@ -696,10 +696,6 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
- 	bool use_l4_type;
- 	int err;
- 
--	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
--	if (!ttc)
--		return ERR_PTR(-ENOMEM);
--
- 	switch (params->ns_type) {
- 	case MLX5_FLOW_NAMESPACE_PORT_SEL:
- 		use_l4_type = MLX5_CAP_GEN_2(dev, pcc_ifa2) &&
-@@ -713,6 +709,10 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
- 		return ERR_PTR(-EINVAL);
- 	}
- 
-+	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
-+	if (!ttc)
-+		return ERR_PTR(-ENOMEM);
-+
- 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
- 	if (!ns) {
- 		kvfree(ttc);
 -- 
 2.39.5
 
