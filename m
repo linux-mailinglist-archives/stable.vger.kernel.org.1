@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A2EAA17D2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BDFAA15D0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38A4A9A4CC0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83A094C7CE2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9452242D73;
-	Tue, 29 Apr 2025 17:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2441E1FE468;
+	Tue, 29 Apr 2025 17:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzIWLtN+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WHBn79wp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7424221DA7;
-	Tue, 29 Apr 2025 17:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D596D82C60;
+	Tue, 29 Apr 2025 17:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948854; cv=none; b=VyFGkmxHRnfD6lU7lbl9aaK8hJ2hmop9MS2pdJ5gAQLGhKZ+Fn25egFTMwOdDdmoFd9m5IjPt8XyEV82cuEkqDizNZ2hEqPv7RExKOEyOfDcGF7HrV2FZlqM+Q0XY4e7NKg4O2knnweWM0PCGHl3wVU+XRTZjYtCBWvI7QrCZws=
+	t=1745947635; cv=none; b=S09zmz6iAD+BO+OXgaYTn+HZKQGWHEiupMfoCqoZmGIMRbdyxS1FrNwMCxQJU+ny5Tsxyjs8XTr/0cjpzM3/C46BKg2JfkP97qZTpxnZwJAzvAmsLXNeD0mAZj01UNz2nhfRmjkehCOeub5h63NTB7ijDwo+pZSCcHHfa3Sis9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948854; c=relaxed/simple;
-	bh=gm0DBgfve22zdTraMYcf6ZMZDGwwklbLN9D0BRKNP60=;
+	s=arc-20240116; t=1745947635; c=relaxed/simple;
+	bh=R+VoeLLeDuJnBfVhiVhjg+mcJcAB9846Urxyn9NZAbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TFlxiq6zwdrytuuI+uw3FYoVswwoTSdEBC1dnXOjp2JePvkjJR8ovrU94hdl6udc+2AiaEGJ1UWLHFTDzwuussqJF/7bPK+Zu+ReH0pfwPUD4Nu5c2H2fLyUtYVFDTFw6MPQ7epG3dibtEZlopFHS1yRVMKr22VSkcNnql5lXXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzIWLtN+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38AFAC4CEE3;
-	Tue, 29 Apr 2025 17:47:34 +0000 (UTC)
+	 MIME-Version; b=YIU1nJ8gAg3Sgit6avmGZEvAOkFjNPNBNiRXikdvymGgMRi69KOj87scmkMwACGhP/Fcg8gu2byfeYCyCpvhejSDay403QIFKW1AENkNENanvzy55vGLDIY/yH5pzUVdXECPoMlAm3MPGZ1N1OOavrf43WfvyVGVomfZpRj5eDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WHBn79wp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9C5C4CEE3;
+	Tue, 29 Apr 2025 17:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948854;
-	bh=gm0DBgfve22zdTraMYcf6ZMZDGwwklbLN9D0BRKNP60=;
+	s=korg; t=1745947635;
+	bh=R+VoeLLeDuJnBfVhiVhjg+mcJcAB9846Urxyn9NZAbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzIWLtN+SKADmvumnyo+TUF56YdL+h5waad8V/blce+JoREhXZv6BLvV82BwURlmW
-	 Jov8zckC/BHEinxYUF+DHsE2A9Z9f0LILLT2jDGFHBwFvHnk5UjpVhCo+QBUIWTQxb
-	 9eEt9B6EfJMa4NqXz7j4frIkqsfci/8hqrUpm2ug=
+	b=WHBn79wp/o5TNF9/jV9Syzi1eiQ3Hdhja8/R3xbQQ7EXynqOMM6ljHDZgfi7HF5+m
+	 6ItUHX9Eb4bMxqQugl5PZwxC9AfOt2BpG9G6fgQct6qZyWp6k/PIbpjxOeKcyQeuQO
+	 BlksfqssxrO6Yy9YXrPwJKaf92Qizv1Cz32cI1Ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	John Garry <john.garry@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 121/373] scsi: hisi_sas: Pass abort structure for internal abort
-Date: Tue, 29 Apr 2025 18:39:58 +0200
-Message-ID: <20250429161128.151820584@linuxfoundation.org>
+Subject: [PATCH 6.12 058/280] cpufreq: Do not enable by default during compile testing
+Date: Tue, 29 Apr 2025 18:39:59 +0200
+Message-ID: <20250429161117.489149103@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.garry@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 08c61b5d902b70180b517e9f2616ad70b7a98dcf ]
+[ Upstream commit d4f610a9bafdec8e3210789aa19335367da696ea ]
 
-To help factor out code in future, it's useful to know if we're executing
-an internal abort, so pass a pointer to the structure. The idea is that a
-NULL pointer means not an internal abort.
+Enabling the compile test should not cause automatic enabling of all
+drivers.
 
-Link: https://lore.kernel.org/r/1639579061-179473-4-git-send-email-john.garry@huawei.com
-Reviewed-by: Xiang Chen <chenxiang66@hisilicon.com>
-Signed-off-by: John Garry <john.garry@huawei.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 8aa580cd9284 ("scsi: hisi_sas: Enable force phy when SATA disk directly connected")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Stable-dep-of: a374f28700ab ("cpufreq: fix compile-test defaults")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas.h      |  5 +++++
- drivers/scsi/hisi_sas/hisi_sas_main.c | 21 ++++++++++++---------
- 2 files changed, 17 insertions(+), 9 deletions(-)
+ drivers/cpufreq/Kconfig.arm | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas.h b/drivers/scsi/hisi_sas/hisi_sas.h
-index 57be32ba0109f..39da9f1645135 100644
---- a/drivers/scsi/hisi_sas/hisi_sas.h
-+++ b/drivers/scsi/hisi_sas/hisi_sas.h
-@@ -134,6 +134,11 @@ struct hisi_sas_rst {
- 	bool done;
- };
+diff --git a/drivers/cpufreq/Kconfig.arm b/drivers/cpufreq/Kconfig.arm
+index e67b2326671c9..f6e6066e2e64b 100644
+--- a/drivers/cpufreq/Kconfig.arm
++++ b/drivers/cpufreq/Kconfig.arm
+@@ -67,7 +67,7 @@ config ARM_VEXPRESS_SPC_CPUFREQ
+ config ARM_BRCMSTB_AVS_CPUFREQ
+ 	tristate "Broadcom STB AVS CPUfreq driver"
+ 	depends on (ARCH_BRCMSTB && !ARM_SCMI_CPUFREQ) || COMPILE_TEST
+-	default y
++	default ARCH_BRCMSTB
+ 	help
+ 	  Some Broadcom STB SoCs use a co-processor running proprietary firmware
+ 	  ("AVS") to handle voltage and frequency scaling. This driver provides
+@@ -172,7 +172,7 @@ config ARM_RASPBERRYPI_CPUFREQ
+ config ARM_S3C64XX_CPUFREQ
+ 	bool "Samsung S3C64XX"
+ 	depends on CPU_S3C6410 || COMPILE_TEST
+-	default y
++	default CPU_S3C6410
+ 	help
+ 	  This adds the CPUFreq driver for Samsung S3C6410 SoC.
  
-+struct hisi_sas_internal_abort {
-+	unsigned int flag;
-+	unsigned int tag;
-+};
-+
- #define HISI_SAS_RST_WORK_INIT(r, c) \
- 	{	.hisi_hba = hisi_hba, \
- 		.completion = &c, \
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index ff6b6868cd955..321e6fae03adc 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -273,11 +273,11 @@ static void hisi_sas_task_prep_ata(struct hisi_hba *hisi_hba,
- }
+@@ -181,7 +181,7 @@ config ARM_S3C64XX_CPUFREQ
+ config ARM_S5PV210_CPUFREQ
+ 	bool "Samsung S5PV210 and S5PC110"
+ 	depends on CPU_S5PV210 || COMPILE_TEST
+-	default y
++	default CPU_S5PV210
+ 	help
+ 	  This adds the CPUFreq driver for Samsung S5PV210 and
+ 	  S5PC110 SoCs.
+@@ -205,7 +205,7 @@ config ARM_SCMI_CPUFREQ
+ config ARM_SPEAR_CPUFREQ
+ 	bool "SPEAr CPUFreq support"
+ 	depends on PLAT_SPEAR || COMPILE_TEST
+-	default y
++	default PLAT_SPEAR
+ 	help
+ 	  This adds the CPUFreq driver support for SPEAr SOCs.
  
- static void hisi_sas_task_prep_abort(struct hisi_hba *hisi_hba,
--		struct hisi_sas_slot *slot,
--		int device_id, int abort_flag, int tag_to_abort)
-+		struct hisi_sas_internal_abort *abort,
-+		struct hisi_sas_slot *slot, int device_id)
- {
- 	hisi_hba->hw->prep_abort(hisi_hba, slot,
--			device_id, abort_flag, tag_to_abort);
-+			device_id, abort->flag, abort->tag);
- }
+@@ -224,7 +224,7 @@ config ARM_TEGRA20_CPUFREQ
+ 	tristate "Tegra20/30 CPUFreq support"
+ 	depends on ARCH_TEGRA || COMPILE_TEST
+ 	depends on CPUFREQ_DT
+-	default y
++	default ARCH_TEGRA
+ 	help
+ 	  This adds the CPUFreq driver support for Tegra20/30 SOCs.
  
- static void hisi_sas_dma_unmap(struct hisi_hba *hisi_hba,
-@@ -1968,8 +1968,9 @@ static int hisi_sas_query_task(struct sas_task *task)
+@@ -232,7 +232,7 @@ config ARM_TEGRA124_CPUFREQ
+ 	bool "Tegra124 CPUFreq support"
+ 	depends on ARCH_TEGRA || COMPILE_TEST
+ 	depends on CPUFREQ_DT
+-	default y
++	default ARCH_TEGRA
+ 	help
+ 	  This adds the CPUFreq driver support for Tegra124 SOCs.
  
- static int
- hisi_sas_internal_abort_task_exec(struct hisi_hba *hisi_hba, int device_id,
--				  struct sas_task *task, int abort_flag,
--				  int task_tag, struct hisi_sas_dq *dq)
-+				  struct hisi_sas_internal_abort *abort,
-+				  struct sas_task *task,
-+				  struct hisi_sas_dq *dq)
- {
- 	struct domain_device *device = task->dev;
- 	struct hisi_sas_device *sas_dev = device->lldd_dev;
-@@ -2026,8 +2027,7 @@ hisi_sas_internal_abort_task_exec(struct hisi_hba *hisi_hba, int device_id,
- 	memset(hisi_sas_status_buf_addr_mem(slot), 0,
- 	       sizeof(struct hisi_sas_err_record));
+@@ -247,14 +247,14 @@ config ARM_TEGRA194_CPUFREQ
+ 	tristate "Tegra194 CPUFreq support"
+ 	depends on ARCH_TEGRA_194_SOC || ARCH_TEGRA_234_SOC || (64BIT && COMPILE_TEST)
+ 	depends on TEGRA_BPMP
+-	default y
++	default ARCH_TEGRA
+ 	help
+ 	  This adds CPU frequency driver support for Tegra194 SOCs.
  
--	hisi_sas_task_prep_abort(hisi_hba, slot, device_id,
--				      abort_flag, task_tag);
-+	hisi_sas_task_prep_abort(hisi_hba, abort, slot, device_id);
- 
- 	spin_lock_irqsave(&task->task_state_lock, flags);
- 	task->task_state_flags |= SAS_TASK_AT_INITIATOR;
-@@ -2065,9 +2065,12 @@ _hisi_sas_internal_task_abort(struct hisi_hba *hisi_hba,
- {
- 	struct sas_task *task;
- 	struct hisi_sas_device *sas_dev = device->lldd_dev;
-+	struct hisi_sas_internal_abort abort = {
-+		.flag = abort_flag,
-+		.tag = tag,
-+	};
- 	struct device *dev = hisi_hba->dev;
- 	int res;
--
- 	/*
- 	 * The interface is not realized means this HW don't support internal
- 	 * abort, or don't need to do internal abort. Then here, we return
-@@ -2092,7 +2095,7 @@ _hisi_sas_internal_task_abort(struct hisi_hba *hisi_hba,
- 	add_timer(&task->slow_task->timer);
- 
- 	res = hisi_sas_internal_abort_task_exec(hisi_hba, sas_dev->device_id,
--						task, abort_flag, tag, dq);
-+						&abort, task, dq);
- 	if (res) {
- 		del_timer(&task->slow_task->timer);
- 		dev_err(dev, "internal task abort: executing internal task failed: %d\n",
+ config ARM_TI_CPUFREQ
+ 	bool "Texas Instruments CPUFreq support"
+ 	depends on ARCH_OMAP2PLUS || ARCH_K3 || COMPILE_TEST
+-	default y
++	default ARCH_OMAP2PLUS || ARCH_K3
+ 	help
+ 	  This driver enables valid OPPs on the running platform based on
+ 	  values contained within the SoC in use. Enable this in order to
 -- 
 2.39.5
 
