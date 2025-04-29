@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-137620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D7BAA13DA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02478AA175E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BD567A4967
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3C2D9A1BA6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA672472AA;
-	Tue, 29 Apr 2025 17:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F81E23BCF2;
+	Tue, 29 Apr 2025 17:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USyWkwc9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HU7gcWLS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9AD1DF73C;
-	Tue, 29 Apr 2025 17:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C865221719;
+	Tue, 29 Apr 2025 17:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946616; cv=none; b=eOZp1+W5Z4Kp+75K1Czxmu8ttgTA73XxjXLGFM4Tfw7EOamHlMY5ktGsmzFzcL7mYa1yoDK3SRR9+XGyIo7TS6V8zNeT0FWmcyPGqed79n2hy/IEP2lMKAB0xSckIT0sI+jEwCN3BJrQWA9WAjvo/p596ZiBIxcMmPQqqyOkLg8=
+	t=1745948546; cv=none; b=AfZK6E+abQa/Ia3BQQnBFt+7q0AE190hY9MXmbV5ZenE9JlZujC/7ozmNXjY7VoYTj7O9e+TjMWGzJtMmW0jphUdEIgYJvUzX6RfLIzPnVtEsZPYniiG/nXzq30+ndtUunYx7VGD38HxR2/KGUN/+twXQ2GWSTjv1WR0ykKf12U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946616; c=relaxed/simple;
-	bh=HLzDyKxcwo6AwT9eLR0ROe4cvv4Z7gi544XcrHCRA8A=;
+	s=arc-20240116; t=1745948546; c=relaxed/simple;
+	bh=5GXghh3rp0dcdXit8RoGaQOBDBuo0iZ0t3lUUwqz9E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOToIdrstd3Wp1EhGKoD+DJ8ZBv7jO95CcbzWj6nbBYN1otiMLFBOUvWcLvkFccQnHgjkaxSDg8pXj3GZGUk2kndKFQnPforAvLKB3/QYDyYkjSNBGX+S1JhBuPC7Ac7JKR3AFWuPjIIcwKpaSbhC0cVxF1oGGtT9LvihEJDis0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USyWkwc9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC90BC4CEE3;
-	Tue, 29 Apr 2025 17:10:15 +0000 (UTC)
+	 MIME-Version; b=HY4g/HhDnql9Aqn1Y+sNfGKePlkQ38inDjfW/U7X809nvIKfAcO/MkE+GCbWJuupTmRcGBeQDzM5OjXxYe4r0btSyXyPTOeDyjAMRi6SSu3tWMlFlHas/Hi/77bgE4PVu5QS0fyWgsS47TioL8sezfn3LOCGOKd9/mjLskcQhik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HU7gcWLS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5EB2C4CEE3;
+	Tue, 29 Apr 2025 17:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946616;
-	bh=HLzDyKxcwo6AwT9eLR0ROe4cvv4Z7gi544XcrHCRA8A=;
+	s=korg; t=1745948545;
+	bh=5GXghh3rp0dcdXit8RoGaQOBDBuo0iZ0t3lUUwqz9E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=USyWkwc98+4FfnpLmxoJ7KP8X59GN/y1+IKUG+3HzzJU9wtiiHdhjnA3B/Y1xROvn
-	 xj9IssWlQrvhME0G6mdmt5lWSoERZoYm6PtegAWM3usPNAFXQKlT1puabmPuoEx3Ok
-	 Fu8AG5rGhGAyX0lKuA5TQchP2hYftwTe+lQAA7E4=
+	b=HU7gcWLSXRzmYvJ/iv8kF56foDzff81/EdY8BhOOgDxoZimRX2tWQRzvDVc5NBfDa
+	 7Hd+2U8LawEcsRcbhp1fRXoXZrLvXM7Umo06Et0DyRmwLO0rG/f3kY2XW/uz48Iyqe
+	 KShN4ay0XW1JzLEotKdFsWVfkKU9FYxDyQeSPv3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Trilok Soni <quic_tsoni@quicinc.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Wyatt <fewtarius@steamfork.org>,
+	John Edwards <uejji@uejji.net>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 014/286] arm64: cputype: Add QCOM_CPU_PART_KRYO_3XX_GOLD
+Subject: [PATCH 5.15 041/373] drm: panel-orientation-quirks: Add support for AYANEO 2S
 Date: Tue, 29 Apr 2025 18:38:38 +0200
-Message-ID: <20250429161108.438045610@linuxfoundation.org>
+Message-ID: <20250429161124.819035379@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Andrew Wyatt <fewtarius@steamfork.org>
 
-[ Upstream commit 401c3333bb2396aa52e4121887a6f6a6e2f040bc ]
+[ Upstream commit eb8f1e3e8ee10cff591d4a47437dfd34d850d454 ]
 
-Add a definition for the Qualcomm Kryo 300-series Gold cores.
+AYANEO 2S uses the same panel and orientation as the AYANEO 2.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
-Link: https://lore.kernel.org/r/20241219131107.v3.1.I18e0288742871393228249a768e5d56ea65d93dc@changeid
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Update the AYANEO 2 DMI match to also match AYANEO 2S.
+
+Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
+Signed-off-by: John Edwards <uejji@uejji.net>
+Tested-by: John Edwards <uejji@uejji.net>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-2-uejji@uejji.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index d8305b4657d2e..5e292e08393d5 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -110,6 +110,7 @@
- #define QCOM_CPU_PART_KRYO		0x200
- #define QCOM_CPU_PART_KRYO_2XX_GOLD	0x800
- #define QCOM_CPU_PART_KRYO_2XX_SILVER	0x801
-+#define QCOM_CPU_PART_KRYO_3XX_GOLD	0x802
- #define QCOM_CPU_PART_KRYO_3XX_SILVER	0x803
- #define QCOM_CPU_PART_KRYO_4XX_GOLD	0x804
- #define QCOM_CPU_PART_KRYO_4XX_SILVER	0x805
-@@ -167,6 +168,7 @@
- #define MIDR_QCOM_KRYO MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO)
- #define MIDR_QCOM_KRYO_2XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_2XX_GOLD)
- #define MIDR_QCOM_KRYO_2XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_2XX_SILVER)
-+#define MIDR_QCOM_KRYO_3XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_3XX_GOLD)
- #define MIDR_QCOM_KRYO_3XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_3XX_SILVER)
- #define MIDR_QCOM_KRYO_4XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_GOLD)
- #define MIDR_QCOM_KRYO_4XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_SILVER)
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index bf90a5be956fe..6bb8d4502ca8e 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -166,10 +166,10 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T103HAF"),
+ 		},
+ 		.driver_data = (void *)&lcd800x1280_rightside_up,
+-	}, {	/* AYA NEO AYANEO 2 */
++	}, {	/* AYA NEO AYANEO 2/2S */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
+-		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
++		  DMI_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
+ 		},
+ 		.driver_data = (void *)&lcd1200x1920_rightside_up,
+ 	}, {	/* AYA NEO 2021 */
 -- 
 2.39.5
 
