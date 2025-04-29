@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-138670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5B6AA190B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:07:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC32AA19FF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F29B61BC719D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:06:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08E111BC676C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FD020C488;
-	Tue, 29 Apr 2025 18:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD3524889B;
+	Tue, 29 Apr 2025 18:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZx/oO34"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NeF7tvwF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E322AE96;
-	Tue, 29 Apr 2025 18:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550E1253334;
+	Tue, 29 Apr 2025 18:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949982; cv=none; b=HpNnD6TZ2fUhhCxgYVhToMX3AcccQkCPSsCoEL/ffMeVH7wnRV7ti6BKW1qvgOYkcAiekx0FMNbmIYxWIYRwj0fmfDprpVXywRWwiI1KuTNRozV5fVG/KDoCXyOmnnVbqXk5+JJA9/HLGyeDWVukZCVrpp4RRmS7W4yjHlkEKGQ=
+	t=1745950572; cv=none; b=CBhyo1PKOGfU80ltgLq42Di8UbfMQTJ42yRxh2UL+BNIUBO34KZKdb1BmY2v4HjzWRfZKyRTuMtWONoJ56GAmpdQEiJCBIffOPGsXtgBqWJJlbYF0AppgBtf/X9IncMkAP0USSltDKAxzFZfOF6T0CFnTR+ztFBUAEtEJnydjxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949982; c=relaxed/simple;
-	bh=AqeZQSI+J8fAoPZbetz6vbrQ2HlEwiG4xtaR42tDVeo=;
+	s=arc-20240116; t=1745950572; c=relaxed/simple;
+	bh=+wFJzEKjIXvxZDI6XLS/u7S7rx3n906v5oHXT2yOR90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDyWBVBZTX/Q/hrt9c0Jawu6x5pl+KnIE/vOzstPuhY+cd4JJNRI4GVQAveDs8AVcp5/kB3tH2E0b598foAX5nOl1Sr2UTRKVCK/M7NXXz/cnfR31mMQ7YvhZpMrIzzh4kbMz/rqdLWWvBl2BOYL2PvLiDF3/q2fEoapZDtFxfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZx/oO34; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C946DC4CEE3;
-	Tue, 29 Apr 2025 18:06:21 +0000 (UTC)
+	 MIME-Version; b=Qew+hVgyVdiA0Tb51GSXo02ViIVnGyLT38kxYDL+NGqhmqeQtHhCcIC5QlGycWm96xSrO19Tk9egqSVccgrVisr7fJQJk+780iiJ4mxeCdFzCCUixlfuxNRljUx/cM6MnoAFanTeu3+GFfxBx7Y9ItJXKCCWbRRmHs9O+Ss1ud8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NeF7tvwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65B5C4CEE3;
+	Tue, 29 Apr 2025 18:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949982;
-	bh=AqeZQSI+J8fAoPZbetz6vbrQ2HlEwiG4xtaR42tDVeo=;
+	s=korg; t=1745950572;
+	bh=+wFJzEKjIXvxZDI6XLS/u7S7rx3n906v5oHXT2yOR90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZx/oO34hccCJo4Zo73DZGclOrAWbL1/25calxhdjpz88DolliQjt2N8FGexIYWFB
-	 VEOIfOGzqSXO1lOMQVlhrltIT6HsKlSx9ru2EO85D0OAmj0zL0dqIFSvMLV+z4fGuJ
-	 3WLX5DN8gUqp52noYCRH0+mCEq7nQpIgV1s9r6O0=
+	b=NeF7tvwF5WqJXNRk82VQacDfWP8n8sRLxF4Rw3ohLntaaFrFkKrffRSb+4idbIcdk
+	 q9/NtrI6DMu5leUoklVPNMr0B/9eiZwpBpelR6NwV6r6zlGVY2yAASH9Lzo7skBwF3
+	 mms1NcR1xfCuYpu7kB5nlCKrw9kiZxkFgOvgQOI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/167] qibfs: fix _another_ leak
+Subject: [PATCH 6.6 138/204] usb: gadget: aspeed: Add NULL pointer check in ast_vhub_init_dev()
 Date: Tue, 29 Apr 2025 18:43:46 +0200
-Message-ID: <20250429161056.516826857@linuxfoundation.org>
+Message-ID: <20250429161105.079355880@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit bdb43af4fdb39f844ede401bdb1258f67a580a27 ]
+[ Upstream commit 8c75f3e6a433d92084ad4e78b029ae680865420f ]
 
-failure to allocate inode => leaked dentry...
+The variable d->name, returned by devm_kasprintf(), could be NULL.
+A pointer check is added to prevent potential NULL pointer dereference.
+This is similar to the fix in commit 3027e7b15b02
+("ice: Fix some null pointer dereference issues in ice_ptp.c").
 
-this one had been there since the initial merge; to be fair,
-if we are that far OOM, the odds of failing at that particular
-allocation are low...
+This issue is found by our static analysis tool
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250311012705.1233829-1-chenyuan0y@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/qib/qib_fs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/gadget/udc/aspeed-vhub/dev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
-index 182a89bb24ef4..caade796bc3cb 100644
---- a/drivers/infiniband/hw/qib/qib_fs.c
-+++ b/drivers/infiniband/hw/qib/qib_fs.c
-@@ -55,6 +55,7 @@ static int qibfs_mknod(struct inode *dir, struct dentry *dentry,
- 	struct inode *inode = new_inode(dir->i_sb);
+diff --git a/drivers/usb/gadget/udc/aspeed-vhub/dev.c b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
+index 573109ca5b799..a09f72772e6e9 100644
+--- a/drivers/usb/gadget/udc/aspeed-vhub/dev.c
++++ b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
+@@ -548,6 +548,9 @@ int ast_vhub_init_dev(struct ast_vhub *vhub, unsigned int idx)
+ 	d->vhub = vhub;
+ 	d->index = idx;
+ 	d->name = devm_kasprintf(parent, GFP_KERNEL, "port%d", idx+1);
++	if (!d->name)
++		return -ENOMEM;
++
+ 	d->regs = vhub->regs + 0x100 + 0x10 * idx;
  
- 	if (!inode) {
-+		dput(dentry);
- 		error = -EPERM;
- 		goto bail;
- 	}
+ 	ast_vhub_init_ep0(vhub, &d->ep0, d);
 -- 
 2.39.5
 
