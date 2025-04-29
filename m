@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C35AA19BE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:15:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98CB6AA18E5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C05264C14F1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3F1D1B68102
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B222528ED;
-	Tue, 29 Apr 2025 18:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E7A24E00F;
+	Tue, 29 Apr 2025 18:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnSxuZRW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTUDo0K8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E0D1519A6;
-	Tue, 29 Apr 2025 18:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27747243964;
+	Tue, 29 Apr 2025 18:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950387; cv=none; b=XmOUFXZXqRfxBuRXJmkaXEeAXYVFo8sgs0m8q3DwEDuOcf4+pYoSbtKmeCk3ID1M8ufv5pfAuR58QNl8CXXTym42gtFqtNJITdjCiUzQFDvmcJSOdO2NvhOz13eV1XUOBiV4mfaQJZq6uYe8/QOM/c+xX7xsLTuja2fhYEYIlO8=
+	t=1745949885; cv=none; b=TRRXygBdbZSJeDwAtm0Nc+v4BPBdHHTt8tipTdUpg0bdmEEQC2sl0Fi40pPqlg1qxAfLn8x/yA8iQUOhn2mwr6SCjnLp6Ya1NNeS1SKOKp43p84HX2cPMRyh6gdoWyN90ZCXo76d7MrD91imPJ7wlmS9fm1+Rq4hPWl14viXE1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950387; c=relaxed/simple;
-	bh=ar1CzgXaX5HIiJmT+Wc8fKs4urOyZCuUjHV0xI/am1Q=;
+	s=arc-20240116; t=1745949885; c=relaxed/simple;
+	bh=Efgw9k4aVj6GT2SBZiyN1Z3Lzh9cjhFTMCTUqwICswA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R8Vjk/vEzItSSp/2DqP+X9A9bZYZnlMaVwiPsrIkHjonLyxxvdR+NX9Mgalvh5Uocn4ayedSbyBuVYkmqWyjwkIh7ZzzS9Iw9xQGDxUKCOwv2DaKFG8yCWKHi9WfN2NHNftgLk46CI+wwT8CIh97KVwm9R/lp1YqKdW8H9WQ2pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnSxuZRW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1CAC4CEE3;
-	Tue, 29 Apr 2025 18:13:06 +0000 (UTC)
+	 MIME-Version; b=W8sxKockkynoFI3NxMi+IWdrYdEyGLeUO4VOSlJlpiVB+P54nHHVxby/0aWh2CKzWfpJhjBDMhxD1MINIrbPofNbeCEU7uTOwVJsbjMHZikkg6q4heyqpBCpEQw5vxTCPP0XoIEQetXTLr7zewOfxw/5YqseytFHQbKCYJG1FTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTUDo0K8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBEBC4CEE3;
+	Tue, 29 Apr 2025 18:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950387;
-	bh=ar1CzgXaX5HIiJmT+Wc8fKs4urOyZCuUjHV0xI/am1Q=;
+	s=korg; t=1745949884;
+	bh=Efgw9k4aVj6GT2SBZiyN1Z3Lzh9cjhFTMCTUqwICswA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PnSxuZRWia9c+qJjmeK6/EzqB9PLdoigcgg7PpIwF2ykcGCV8h/zAJEcmAQos1LaF
-	 l+1+Z3ZAs1l+C2+oFoUCaCmxX++9/6+FvJ3bnDW+RFogL5rypKsl4AmnM+ny7A5VoL
-	 bElIhcAy3SFyeT+hfQCRcF/DebozU2MB4MvcGOKo=
+	b=xTUDo0K8lYKQTL6Dtu1aom3Xn7UTTtdehlTBgiKHz58qhOfbwp6BHyhMLBRKt3Lhk
+	 4NEJxev5CJCErrrG5lglatYRCEWNw3ja5KsMnEw9Xax4jSsXzah5nA6/tnUPB99sMl
+	 ki6R5c1VKgIc5uUZNpVfm+adEFuDnfNy8Mx/oTK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Xu <peterx@redhat.com>,
-	Hongchen Zhang <zhanghongchen@loongson.cn>,
-	Ming Wang <wangming01@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 080/204] LoongArch: Return NULL from huge_pte_offset() for invalid PMD
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 060/167] wifi: mac80211: export ieee80211_purge_tx_queue() for drivers
 Date: Tue, 29 Apr 2025 18:42:48 +0200
-Message-ID: <20250429161102.692805610@linuxfoundation.org>
+Message-ID: <20250429161054.198648669@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Wang <wangming01@loongson.cn>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-commit bd51834d1cf65a2c801295d230c220aeebf87a73 upstream.
+commit 53bc1b73b67836ac9867f93dee7a443986b4a94f upstream.
 
-LoongArch's huge_pte_offset() currently returns a pointer to a PMD slot
-even if the underlying entry points to invalid_pte_table (indicating no
-mapping). Callers like smaps_hugetlb_range() fetch this invalid entry
-value (the address of invalid_pte_table) via this pointer.
+Drivers need to purge TX SKB when stopping. Using skb_queue_purge() can't
+report TX status to mac80211, causing ieee80211_free_ack_frame() warns
+"Have pending ack frames!". Export ieee80211_purge_tx_queue() for drivers
+to not have to reimplement it.
 
-The generic is_swap_pte() check then incorrectly identifies this address
-as a swap entry on LoongArch, because it satisfies the "!pte_present()
-&& !pte_none()" conditions. This misinterpretation, combined with a
-coincidental match by is_migration_entry() on the address bits, leads to
-kernel crashes in pfn_swap_entry_to_page().
-
-Fix this at the architecture level by modifying huge_pte_offset() to
-check the PMD entry's content using pmd_none() before returning. If the
-entry is invalid (i.e., it points to invalid_pte_table), return NULL
-instead of the pointer to the slot.
-
-Cc: stable@vger.kernel.org
-Acked-by: Peter Xu <peterx@redhat.com>
-Co-developed-by: Hongchen Zhang <zhanghongchen@loongson.cn>
-Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
-Signed-off-by: Ming Wang <wangming01@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240822014255.10211-1-pkshih@realtek.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/mm/hugetlbpage.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/mac80211.h     |   13 +++++++++++++
+ net/mac80211/ieee80211_i.h |    2 --
+ net/mac80211/status.c      |    1 +
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/mm/hugetlbpage.c
-+++ b/arch/loongarch/mm/hugetlbpage.c
-@@ -47,7 +47,7 @@ pte_t *huge_pte_offset(struct mm_struct
- 				pmd = pmd_offset(pud, addr);
- 		}
- 	}
--	return (pte_t *) pmd;
-+	return pmd_none(pmdp_get(pmd)) ? NULL : (pte_t *) pmd;
- }
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -2957,6 +2957,19 @@ ieee80211_get_alt_retry_rate(const struc
+ void ieee80211_free_txskb(struct ieee80211_hw *hw, struct sk_buff *skb);
  
- int pmd_huge(pmd_t pmd)
+ /**
++ * ieee80211_purge_tx_queue - purge TX skb queue
++ * @hw: the hardware
++ * @skbs: the skbs
++ *
++ * Free a set of transmit skbs. Use this function when device is going to stop
++ * but some transmit skbs without TX status are still queued.
++ * This function does not take the list lock and the caller must hold the
++ * relevant locks to use it.
++ */
++void ieee80211_purge_tx_queue(struct ieee80211_hw *hw,
++			      struct sk_buff_head *skbs);
++
++/**
+  * DOC: Hardware crypto acceleration
+  *
+  * mac80211 is capable of taking advantage of many hardware
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1984,8 +1984,6 @@ void __ieee80211_subif_start_xmit(struct
+ 				  u32 info_flags,
+ 				  u32 ctrl_flags,
+ 				  u64 *cookie);
+-void ieee80211_purge_tx_queue(struct ieee80211_hw *hw,
+-			      struct sk_buff_head *skbs);
+ struct sk_buff *
+ ieee80211_build_data_template(struct ieee80211_sub_if_data *sdata,
+ 			      struct sk_buff *skb, u32 info_flags);
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -1294,3 +1294,4 @@ void ieee80211_purge_tx_queue(struct iee
+ 	while ((skb = __skb_dequeue(skbs)))
+ 		ieee80211_free_txskb(hw, skb);
+ }
++EXPORT_SYMBOL(ieee80211_purge_tx_queue);
 
 
 
