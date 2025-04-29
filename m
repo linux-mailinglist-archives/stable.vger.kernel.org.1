@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F30AA17A9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D26AA124C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D8AD4C502A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52CDC188A527
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450D624500A;
-	Tue, 29 Apr 2025 17:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5462459C9;
+	Tue, 29 Apr 2025 16:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDWh2GAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+7vtFQh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01696221DA7;
-	Tue, 29 Apr 2025 17:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3BA244668;
+	Tue, 29 Apr 2025 16:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948983; cv=none; b=lj/xXhJuTCxNPcQclDsy2uCMZzU6OfYm4UK7aCLNsao2rZaK+Db6XgCwpnx9P6WiyzsoSjLnrsJIHOJU6eyixn3geeZt2M3yAic7QAzx92hvuhocNMbxr6TaC4a5xFTDokIkq8KI3u+TQ3xE73Of7Z2y7Fwzx0TtimMaReYpFyc=
+	t=1745945476; cv=none; b=n7iixkDWO0Yv0hj27ulv143rg59cyzJ8WOfMQUwHtv26dKPGUPLuqqrmY5PrH8mOc/swSzou7gWDZ2enGqJbbeXQCbaGL3yk7+mhqYwKRw4mIavIZbHsAB/IitVsFSOIhdkvtjdlr4QKT7ihbVY1hBmkALYOqzyxOVZjPxOQG/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948983; c=relaxed/simple;
-	bh=OEEPbKPOQtTCj+Tk5nEHJ55VTnK+hbizZkefjf0usGg=;
+	s=arc-20240116; t=1745945476; c=relaxed/simple;
+	bh=dppGJTzn2kqnwbVdX/mHpA+96jw3gfFKUUApwUxOhOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gO1wWqQs96m9fwM4JP7ynSk0J7q6/pNlVaiBhWM4SLRfjyQeEfWiiuiPOiRfv7Mivl2dBOgLsz5096uE375GbCJ4jMjpQIipzxLCbYW3Tz4U867FvIZi4OBsVf1lo90dKmRAURJjbmzm4gPcXduif/Blu8xQ7N64q5dv76dDuhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDWh2GAN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6628BC4CEE3;
-	Tue, 29 Apr 2025 17:49:40 +0000 (UTC)
+	 MIME-Version; b=gXa1J/FwoBwG9GZJ3qpSnTq868VeDxanaMvbSpfp7uBvHy4MI8aVF82uKfXT9Bg6j4GqmlBeOuhS91dOxshQpnq0zvSwAWWv75HvUGOViVkFvHUhTb5ACxwT6Sn/kt/i+iXe2+l1ul0FUMZWV2998Uh1C5wcFo2iwiQcFMVvpAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+7vtFQh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5273FC4CEE3;
+	Tue, 29 Apr 2025 16:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948982;
-	bh=OEEPbKPOQtTCj+Tk5nEHJ55VTnK+hbizZkefjf0usGg=;
+	s=korg; t=1745945476;
+	bh=dppGJTzn2kqnwbVdX/mHpA+96jw3gfFKUUApwUxOhOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EDWh2GANpNb3jV56Wymznw/LxzsyWTLKjyJve/fG0f/BbL4PufyT5lRUVDAW7LHdr
-	 w9MBdomnMGU70CE5ZkTPQXjNACnbrNdr9/5J40ZqXp9z6aSeoca4HmRdtyP+K2hfrB
-	 nrBF71/zyTHsghGg394VpIC2kYa55pNIF7OE9IvA=
+	b=P+7vtFQhvxSx7J53r4rhHOAzz1OuEAc47fKiblDb9oKBUroiwLxW3I/7TCF5B0Q5M
+	 qapP/ykjmC0715i5DoY0UhX5CKSq7xg2FITFWHSBJApnPBH67hh2yr/En4qkp/ArF7
+	 gx+6o7Ha/0qZvMTf9rVDajs//wfpynSRoPQAv0Fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 181/373] drm/amd/pm/swsmu/smu13/smu_v13_0: Prevent division by zero
-Date: Tue, 29 Apr 2025 18:40:58 +0200
-Message-ID: <20250429161130.610231895@linuxfoundation.org>
+	WangYuli <wangyuli@uniontech.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 5.4 118/179] nvmet-fc: Remove unused functions
+Date: Tue, 29 Apr 2025 18:40:59 +0200
+Message-ID: <20250429161054.176327916@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit f23e9116ebb71b63fe9cec0dcac792aa9af30b0c upstream.
+commit 1b304c006b0fb4f0517a8c4ba8c46e88f48a069c upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+The functions nvmet_fc_iodnum() and nvmet_fc_fodnum() are currently
+unutilized.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Following commit c53432030d86 ("nvme-fabrics: Add target support for FC
+transport"), which introduced these two functions, they have not been
+used at all in practice.
 
-Fixes: c05d1c401572 ("drm/amd/swsmu: add aldebaran smu13 ip support (v3)")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Remove them to resolve the compiler warnings.
+
+Fix follow errors with clang-19 when W=1e:
+  drivers/nvme/target/fc.c:177:1: error: unused function 'nvmet_fc_iodnum' [-Werror,-Wunused-function]
+    177 | nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
+        | ^~~~~~~~~~~~~~~
+  drivers/nvme/target/fc.c:183:1: error: unused function 'nvmet_fc_fodnum' [-Werror,-Wunused-function]
+    183 | nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
+        | ^~~~~~~~~~~~~~~
+  2 errors generated.
+  make[8]: *** [scripts/Makefile.build:207: drivers/nvme/target/fc.o] Error 1
+  make[7]: *** [scripts/Makefile.build:465: drivers/nvme/target] Error 2
+  make[6]: *** [scripts/Makefile.build:465: drivers/nvme] Error 2
+  make[6]: *** Waiting for unfinished jobs....
+
+Fixes: c53432030d86 ("nvme-fabrics: Add target support for FC transport")
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/target/fc.c |   14 --------------
+ 1 file changed, 14 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-@@ -1154,7 +1154,7 @@ int smu_v13_0_set_fan_speed_rpm(struct s
- 	int ret;
- 	uint32_t tach_period, crystal_clock_freq;
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -146,20 +146,6 @@ struct nvmet_fc_tgt_assoc {
+ 	struct work_struct		del_work;
+ };
  
--	if (!speed)
-+	if (!speed || speed > UINT_MAX/8)
- 		return -EINVAL;
- 
- 	ret = smu_v13_0_auto_fan_control(smu, 0);
+-
+-static inline int
+-nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
+-{
+-	return (iodptr - iodptr->tgtport->iod);
+-}
+-
+-static inline int
+-nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
+-{
+-	return (fodptr - fodptr->queue->fod);
+-}
+-
+-
+ /*
+  * Association and Connection IDs:
+  *
 
 
 
