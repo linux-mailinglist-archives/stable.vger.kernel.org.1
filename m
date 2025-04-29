@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB8AAA18C0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:04:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB72AA166F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CA394E0519
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6CB07B2D35
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0229253F1C;
-	Tue, 29 Apr 2025 18:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B004A250C15;
+	Tue, 29 Apr 2025 17:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGORGjrN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQD5WEsL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C173253B71;
-	Tue, 29 Apr 2025 18:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697481C6B4;
+	Tue, 29 Apr 2025 17:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949721; cv=none; b=N/mniytqIzgJbR+XKKUJjJWNZb7t42dNBd8520wFfkVmCaAATwNrgVhUp7AGuagbtvrwyxq9b4DI0VaCGzSPz263673WhAqmHcmQmll1eVbCwURys8tBNYl7r8F9CBjdDrGDfMq0XxyurFx9pyzD2NuMVq/Tj34DcYkIVbqTfNc=
+	t=1745948242; cv=none; b=nUAGnfsTJ5xndfWCdHpjt18lrSlWYLrwhZc0anNnLUHgcHUmJuNogkiJ3b/KxEZG7rxNvRzsVJ4Y4v5ELg6OMfZnzD3EY/sIrjW5WGdgHPuH48XuPiR/iQEsjZFoTRU9pL10fdR1tvEauMkDukkcGx6V5amQ9g8oko0fb5+TMZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949721; c=relaxed/simple;
-	bh=IG5/Xj7eoZ1fqtnJ9q/4sVJq209VpgVgSO1Ctwx9JWc=;
+	s=arc-20240116; t=1745948242; c=relaxed/simple;
+	bh=wZjTnaDIC82VNt2J106oe4kBt8sF0m4Tgs14MQtN12Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBr3VD7jx4WZZAVxh6hPzouHvnwunjfwimNYuzWPyNfE44v/Zm87eq3bduqiSPDKyDY+oV2FZi+7FL9UJIs4ZNgeV1oG6j1TjHS2FjqoaA6P63RyEL1MPh7SLIRqhEGR92cxDZJ2MboJnncLjs2GQU2Bh4NllwD4SPXERamQvXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGORGjrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8A8C4CEE3;
-	Tue, 29 Apr 2025 18:02:00 +0000 (UTC)
+	 MIME-Version; b=i6oGSaBiEdsa7GlYf4JUI6GiN38/Nxc18KtU3EoB64ErJmJs2wz3bsEtkjiS5K7i0b5oatjwUNv8viekkD2iTjboP8sAxXW2YkY3JnS5wFAFY/CKIKJ7sZuyMQH/WiVrOoipi4Mn9CX7zK6X0I+88tGFvmDxKyxTUM2AvZKczDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQD5WEsL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAF4C4CEE3;
+	Tue, 29 Apr 2025 17:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949721;
-	bh=IG5/Xj7eoZ1fqtnJ9q/4sVJq209VpgVgSO1Ctwx9JWc=;
+	s=korg; t=1745948242;
+	bh=wZjTnaDIC82VNt2J106oe4kBt8sF0m4Tgs14MQtN12Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGORGjrNsXMGT8enXP0Slez/hG+O1ol+U8Q5rFRLoe1z0vZqS9yeBoXDamIO6OwWs
-	 AFAPw8Qw6Cmwrx5hnHwf0qM9zR+OwjXkg47DO7snnxNU41IMzC032zYttCUAyGwYbh
-	 qjb5v+lC5g5j2jO2SzoII9jcv/GYB/fxpwlrpjVY=
+	b=MQD5WEsL35mZ0aOZUOjBsTNTa3aigYci0/6YKb+EuwosczPqukGd08LH+v8ZV2bNC
+	 uKojBcRwa+sTdYmETykBDWVtquhDqeMqFHxlSR2facegHcFO1MZ4+9FZfO94t7aFx4
+	 qx+tdUGS1GM9v21WoFuJbGtdLWfqgmfdSQ/HWCQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/167] phy: freescale: imx8m-pcie: assert phy reset and perst in power off
+Subject: [PATCH 6.12 203/280] cgroup/cpuset: Dont allow creation of local partition over a remote one
 Date: Tue, 29 Apr 2025 18:42:24 +0200
-Message-ID: <20250429161053.216708523@linuxfoundation.org>
+Message-ID: <20250429161123.438565674@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit aecb63e88c5e5fb9afb782a1577264c76f179af9 ]
+[ Upstream commit 6da580ec656a5ed135db2cdf574b47635611a4d7 ]
 
-Ensure the PHY reset and perst is asserted during power-off to
-guarantee it is in a reset state upon repeated power-on calls. This
-resolves an issue where the PHY may not properly initialize during
-subsequent power-on cycles. Power-on will deassert the reset at the
-appropriate time after tuning the PHY parameters.
+Currently, we don't allow the creation of a remote partition underneath
+another local or remote partition. However, it is currently possible to
+create a new local partition with an existing remote partition underneath
+it if top_cpuset is the parent. However, the current cpuset code does
+not set the effective exclusive CPUs correctly to account for those
+that are taken by the remote partition.
 
-During suspend/resume cycles, we observed that the PHY PLL failed to
-lock during resume when the CPU temperature increased from 65C to 75C.
-The observed errors were:
-  phy phy-32f00000.pcie-phy.3: phy poweron failed --> -110
-  imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
-  imx6q-pcie 33800000.pcie: PM: dpm_run_callback(): genpd_resume_noirq+0x0/0x80 returns -110
-  imx6q-pcie 33800000.pcie: PM: failed to resume noirq: error -110
+Changing the code to properly account for those remote partition CPUs
+under all possible circumstances can be complex. It is much easier to
+not allow such a configuration which is not that useful. So forbid
+that by making sure that exclusive_cpus mask doesn't overlap with
+subpartitions_cpus and invalidate the partition if that happens.
 
-This resulted in a complete CPU freeze, which is resolved by ensuring
-the PHY is in reset during power-on, thus preventing PHY PLL failures.
-
-Cc: stable@vger.kernel.org
-Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie standalone phy driver")
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250305144355.20364-3-eichest@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ kernel/cgroup/cpuset-internal.h |  1 +
+ kernel/cgroup/cpuset.c          | 14 ++++++++++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-index 0082de17cf4de..8f9db654019e9 100644
---- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-@@ -165,6 +165,16 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
- 	return ret;
- }
- 
-+static int imx8_pcie_phy_power_off(struct phy *phy)
-+{
-+	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
-+
-+	reset_control_assert(imx8_phy->reset);
-+	reset_control_assert(imx8_phy->perst);
-+
-+	return 0;
-+}
-+
- static int imx8_pcie_phy_init(struct phy *phy)
- {
- 	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
-@@ -185,6 +195,7 @@ static const struct phy_ops imx8_pcie_phy_ops = {
- 	.init		= imx8_pcie_phy_init,
- 	.exit		= imx8_pcie_phy_exit,
- 	.power_on	= imx8_pcie_phy_power_on,
-+	.power_off	= imx8_pcie_phy_power_off,
- 	.owner		= THIS_MODULE,
+diff --git a/kernel/cgroup/cpuset-internal.h b/kernel/cgroup/cpuset-internal.h
+index 976a8bc3ff603..383963e28ac69 100644
+--- a/kernel/cgroup/cpuset-internal.h
++++ b/kernel/cgroup/cpuset-internal.h
+@@ -33,6 +33,7 @@ enum prs_errcode {
+ 	PERR_CPUSEMPTY,
+ 	PERR_HKEEPING,
+ 	PERR_ACCESS,
++	PERR_REMOTE,
  };
  
+ /* bits in struct cpuset flags field */
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 839f88ba17f7d..c709a05023cd9 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -62,6 +62,7 @@ static const char * const perr_strings[] = {
+ 	[PERR_CPUSEMPTY] = "cpuset.cpus and cpuset.cpus.exclusive are empty",
+ 	[PERR_HKEEPING]  = "partition config conflicts with housekeeping setup",
+ 	[PERR_ACCESS]    = "Enable partition not permitted",
++	[PERR_REMOTE]    = "Have remote partition underneath",
+ };
+ 
+ /*
+@@ -2824,6 +2825,19 @@ static int update_prstate(struct cpuset *cs, int new_prs)
+ 			goto out;
+ 		}
+ 
++		/*
++		 * We don't support the creation of a new local partition with
++		 * a remote partition underneath it. This unsupported
++		 * setting can happen only if parent is the top_cpuset because
++		 * a remote partition cannot be created underneath an existing
++		 * local or remote partition.
++		 */
++		if ((parent == &top_cpuset) &&
++		    cpumask_intersects(cs->exclusive_cpus, subpartitions_cpus)) {
++			err = PERR_REMOTE;
++			goto out;
++		}
++
+ 		/*
+ 		 * If parent is valid partition, enable local partiion.
+ 		 * Otherwise, enable a remote partition.
 -- 
 2.39.5
 
