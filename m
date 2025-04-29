@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90E8AA1810
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2296BAA1455
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A3801BC58A2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 708DA3BC918
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CED253354;
-	Tue, 29 Apr 2025 17:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99DE24BC1A;
+	Tue, 29 Apr 2025 17:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOKd8D42"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVBUj+UH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFD4215060;
-	Tue, 29 Apr 2025 17:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66CF523C8D6;
+	Tue, 29 Apr 2025 17:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949280; cv=none; b=H/3xNpYfU0eVbGlhZBcEvGj2i6mTNUJOXKcZjsjc7PYwinuYP8ob3K4ASFWlDXZfiiB6JTSBrFuKW3rXtlKcYnTwB0N6PS/v7mT56lMLqjs5kdzui6NfN6ZVD4AhltM3Z0XhF9+DteB5eUuEd6xFDNjGTjLgDnMfe8fdycTaulI=
+	t=1745946568; cv=none; b=ftwuNpY8IooxIEie5bsZ5kk74l4cyc+BpXxpr68+cgQQicoPEKj15FPKgo9InIRUoFpDr2/ecSkE1BnlwXbcr/jli6BGWJe69H4eKhxEusHSKei41GIn9H3Gypk2/Ay4+eY/4m42SFAtmbYlNAuxY+0yIiWb+EpzsSAszkoHxaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949280; c=relaxed/simple;
-	bh=5N6EVp7o0GgjefxHnQ0J63yYgHlQA3ZI1Ho+yEkIjkM=;
+	s=arc-20240116; t=1745946568; c=relaxed/simple;
+	bh=W9/XQJJMS6Bsiai2ye+4wtHJuk4I5qiH1YZj0sOFDGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rQgVZBe557qsH9Zp6QBQ5XdON12dTWLRmvIURloDJo9y8H4L2In0W7P7gYeFTfDUmkO8lmsqIRYrv9VYuN1PKrBP1AgSCd8IuhzCD/VCTvgqmitdOQn6CUBlIElQ8NOLTShWzFOJ3aYh0ivtN7iyvZ5h6SA/+GSIcxZPn1Rc0NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOKd8D42; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5815BC4CEE3;
-	Tue, 29 Apr 2025 17:54:40 +0000 (UTC)
+	 MIME-Version; b=OaznPB6FKICuMMvSIuwGwprEDeOfiMoGK/raJl1ZlZKNEYfz58P6+ZmvBRq6SVzkehgdW0LD7nG3LqIus9y9JLWSPY+JIk5S8pnQInnJT9lc7N3/fTQ5MuplgYitp2tOD7jH2f9k6G7yMAQ3FF0xBzp5qF4f9DHjBVgwxOtzxhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVBUj+UH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795AEC4CEEA;
+	Tue, 29 Apr 2025 17:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949280;
-	bh=5N6EVp7o0GgjefxHnQ0J63yYgHlQA3ZI1Ho+yEkIjkM=;
+	s=korg; t=1745946567;
+	bh=W9/XQJJMS6Bsiai2ye+4wtHJuk4I5qiH1YZj0sOFDGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOKd8D42gaxJoiHgCNB11blPaj5ImS8OOLa3l7RC7LlWuBH/LA/WuN4HgAeqkBmFJ
-	 D8QBOvtEOWPKK4DugYf/srw7o1OD+p/Ic/mjtZx3fYgQStFI6OpftCQ5+/NjhaSB1k
-	 5ekRggtGK2v0SFAPFgOqgpApchYF3/zj9HORXfD8=
+	b=GVBUj+UHBAgCDT/Qob5kq05CxHLquoEZ7h5aJ165kuj6KyzfiGyms8oJePlux4JqD
+	 DkgQ8yWDDxDh+KYTZjFTxwEd28ZTi/+V40V/rxDuifNftXK+Sd345NVukllwsdYyRb
+	 UCqZCwFzRCtQvZuRDoQQ8wdd9ehGFpzgMJRjt/xE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 268/373] backlight: led_bl: Convert to platform remove callback returning void
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.14 308/311] usb: xhci: Fix Short Packet handling rework ignoring errors
 Date: Tue, 29 Apr 2025 18:42:25 +0200
-Message-ID: <20250429161134.145741327@linuxfoundation.org>
+Message-ID: <20250429161133.611553012@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +59,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit c4c4fa57fd3cc00020152baa169337521f90b2ad ]
+commit 9e3a28793d2fde7a709e814d2504652eaba6ae98 upstream.
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+A Short Packet event before the last TRB of a TD is followed by another
+event on the final TRB on spec-compliant HCs, which is most of them.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+A 'last_td_was_short' flag was added to know if a TD has just completed
+as Short Packet and another event is to come. The flag was cleared after
+seeing the event (unless no TDs are pending, but that's a separate bug)
+or seeing a new TD complete as something other than Short Packet.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230308073945.2336302-7-u.kleine-koenig@pengutronix.de
-Stable-dep-of: 276822a00db3 ("backlight: led_bl: Hold led_access lock when calling led_sysfs_disable()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A rework replaced the flag with an 'old_trb_comp_code' variable. When
+an event doesn't match the pending TD and the previous event was Short
+Packet, the new event is silently ignored.
+
+To preserve old behavior, 'old_trb_comp_code' should be cleared at this
+point, but instead it is being set to current comp code, which is often
+Short Packet again. This can cause more events to be silently ignored,
+even though they are no longer connected with the old TD that completed
+short and indicate a serious problem with the driver or the xHC.
+
+Common device classes like UAC in async mode, UVC, serial or the UAS
+status pipe complete as Short Packet routinely and could be affected.
+
+Clear 'old_trb_comp_code' to zero, which is an invalid completion code
+and the same value the variable starts with. This restores original
+behavior on Short Packet and also works for illegal Etron events, which
+the code has been extended to cover too.
+
+Fixes: b331a3d8097f ("xhci: Handle spurious events on Etron host isoc enpoints")
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250410151828.2868740-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/backlight/led_bl.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/usb/host/xhci-ring.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
-index f54d256e2d548..a1b6a2ad73a07 100644
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -217,7 +217,7 @@ static int led_bl_probe(struct platform_device *pdev)
- 	return 0;
- }
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2926,7 +2926,7 @@ static int handle_tx_event(struct xhci_h
+ 			if (xhci_spurious_success_tx_event(xhci, ep_ring)) {
+ 				xhci_dbg(xhci, "Spurious event dma %pad, comp_code %u after %u\n",
+ 					 &ep_trb_dma, trb_comp_code, ep_ring->old_trb_comp_code);
+-				ep_ring->old_trb_comp_code = trb_comp_code;
++				ep_ring->old_trb_comp_code = 0;
+ 				return 0;
+ 			}
  
--static int led_bl_remove(struct platform_device *pdev)
-+static void led_bl_remove(struct platform_device *pdev)
- {
- 	struct led_bl_data *priv = platform_get_drvdata(pdev);
- 	struct backlight_device *bl = priv->bl_dev;
-@@ -228,8 +228,6 @@ static int led_bl_remove(struct platform_device *pdev)
- 	led_bl_power_off(priv);
- 	for (i = 0; i < priv->nb_leds; i++)
- 		led_sysfs_enable(priv->leds[i]);
--
--	return 0;
- }
- 
- static const struct of_device_id led_bl_of_match[] = {
-@@ -245,7 +243,7 @@ static struct platform_driver led_bl_driver = {
- 		.of_match_table	= of_match_ptr(led_bl_of_match),
- 	},
- 	.probe		= led_bl_probe,
--	.remove		= led_bl_remove,
-+	.remove_new	= led_bl_remove,
- };
- 
- module_platform_driver(led_bl_driver);
--- 
-2.39.5
-
 
 
 
