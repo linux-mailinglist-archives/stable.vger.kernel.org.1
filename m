@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-137190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E69AA121D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 342BCAA149B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8212B1B64C27
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E323A4A426E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4603624336D;
-	Tue, 29 Apr 2025 16:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2EF12517AF;
+	Tue, 29 Apr 2025 17:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4JB67fS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rb7kX2oL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A92246326;
-	Tue, 29 Apr 2025 16:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3ED2512D9;
+	Tue, 29 Apr 2025 17:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945332; cv=none; b=nxDJtTYI1jmmfAi85WfRZen3ZfwxhV6vXoe/MFU9PiKoBpAeEiJX60jEoNc29YzxC7i3/PH/L+Y/4L5I4UcR7uwE6e1mxejXdHgyfLY93rqf9KBKQvd4cDpaMhtVlwT85ahvrhWeBcKM1e6RZfCCicPoSEt397VhfrOTh0y0NL4=
+	t=1745946921; cv=none; b=YHLg4WCsMAgRIsdlQ9Vx+vxa5upGihR3Ljsfm+pD/s9FX7mlaQlawd5tGjeu+Iqvy4N8ARUe6vX0iYA3uMTfdeWCP2vz0wrcNbmgut+3HLF7BefGnWqdTZ/PzGZjO5GvOnPqJrb9FkiY1IpRZQcr9Wn9CqKRr2AeobqPcvBnHjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945332; c=relaxed/simple;
-	bh=aCbNNRZN4cC9JA8g1h1wShvqWwBCn0/RyhkY7Zdl49c=;
+	s=arc-20240116; t=1745946921; c=relaxed/simple;
+	bh=i86p1qkfyzGZGH6sBGvtEdpgo02Zu0d/stv+q0/1t6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YHgAvqHOHx0a6mKZ+dGM6y8Vb3iaXF2Vzdh4G0PEDEyAn8zMNvfWgMUzB0l49DIG4zMUsTLfD6F3uFmV7Ew9OUE1PL7TKFBCp2slpBm8rYlXCyn+6Ui8ezuqzqPeLYB5aozNz3oD3ahE3Q7mRmpWCUYSAEEggRDArthBfs1V0Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4JB67fS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9D5C4CEEA;
-	Tue, 29 Apr 2025 16:48:50 +0000 (UTC)
+	 MIME-Version; b=LBHJVdPbIFKfrnxn+sfxyXlGmuvJ49XpwqXH6uVXSnwH6Avzf+NUulGCKCeShXXTHmrXbEyYhxKL/0ZZs6M/PY94axALxH6GRq5hEEPu9Ztq9uAePlpfAc64T7/mLXBIZpplLReG49xRxzhnbCj8kJpEZ4yQs1ONEHFPmE8qL40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rb7kX2oL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11A0C4CEEE;
+	Tue, 29 Apr 2025 17:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945331;
-	bh=aCbNNRZN4cC9JA8g1h1wShvqWwBCn0/RyhkY7Zdl49c=;
+	s=korg; t=1745946921;
+	bh=i86p1qkfyzGZGH6sBGvtEdpgo02Zu0d/stv+q0/1t6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j4JB67fSqz021nbvGQOGK1+tNI35L0EjX9YIRvC5Mpi5KF0/Nm8eQ0BSpCUqyARGC
-	 V/2zYCdX9xaehxyALiVHpSRXGYo6BxgU5MwDUJ5/BDKxqf49KVWn9T6obdcybCIyjk
-	 sZlU13L2AGTiRczJkuJpPZ7iHcQEEYKzvu7bwk6o=
+	b=Rb7kX2oLT2K4tzskyx9ftyV/KCuxM+iPG0+WlOEv2PO6muxgXeP/Ke4Q65kmQG6E2
+	 V+04EKADDJPP6qE2Hl7e2wY43sVALN9OK+7xzA9ZQJje4CO0dtSBGhzFCNA4l39bAz
+	 3Uy2Z33Jxbo8dkmlCRyAfsebJyehPromFR6Akj5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 5.4 076/179] of/irq: Fix device node refcount leakage in API irq_of_parse_and_map()
+	Christopher S M Hall <christopher.s.hall@intel.com>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 113/286] igc: handle the IGC_PTP_ENABLED flag correctly
 Date: Tue, 29 Apr 2025 18:40:17 +0200
-Message-ID: <20250429161052.488466337@linuxfoundation.org>
+Message-ID: <20250429161112.507496413@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +66,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Christopher S M Hall <christopher.s.hall@intel.com>
 
-commit 962a2805e47b933876ba0e4c488d9e89ced2dd29 upstream.
+[ Upstream commit 26a3910afd111f7c1a96dace6dc02f3225063896 ]
 
-In irq_of_parse_and_map(), refcount of device node @oirq.np was got
-by successful of_irq_parse_one() invocation, but it does not put the
-refcount before return, so causes @oirq.np refcount leakage.
+All functions in igc_ptp.c called from igc_main.c should check the
+IGC_PTP_ENABLED flag. Adding check for this flag to stop and reset
+functions.
 
-Fix by putting @oirq.np refcount before return.
-
-Fixes: e3873444990d ("of/irq: Move irq_of_parse_and_map() to common code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-6-93e3a2659aa7@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5f2958052c58 ("igc: Add basic skeleton for PTP")
+Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
+Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/irq.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -36,11 +36,15 @@
- unsigned int irq_of_parse_and_map(struct device_node *dev, int index)
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index 25b238c6a675c..d99f597a83be5 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -578,8 +578,12 @@ void igc_ptp_suspend(struct igc_adapter *adapter)
+  **/
+ void igc_ptp_stop(struct igc_adapter *adapter)
  {
- 	struct of_phandle_args oirq;
-+	unsigned int ret;
- 
- 	if (of_irq_parse_one(dev, index, &oirq))
- 		return 0;
- 
--	return irq_create_of_mapping(&oirq);
-+	ret = irq_create_of_mapping(&oirq);
-+	of_node_put(oirq.np);
++	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
++		return;
 +
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(irq_of_parse_and_map);
+ 	igc_ptp_suspend(adapter);
  
++	adapter->ptp_flags &= ~IGC_PTP_ENABLED;
+ 	if (adapter->ptp_clock) {
+ 		ptp_clock_unregister(adapter->ptp_clock);
+ 		netdev_info(adapter->netdev, "PHC removed\n");
+@@ -598,6 +602,9 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ 	struct igc_hw *hw = &adapter->hw;
+ 	unsigned long flags;
+ 
++	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
++		return;
++
+ 	/* reset the tstamp_config */
+ 	igc_ptp_set_timestamp_mode(adapter, &adapter->tstamp_config);
+ 
+-- 
+2.39.5
+
 
 
 
