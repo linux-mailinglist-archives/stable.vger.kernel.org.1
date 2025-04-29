@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-137311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE47FAA12BF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:58:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101DEAA12F9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:01:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C704A3078
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:56:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2758189C900
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C121248893;
-	Tue, 29 Apr 2025 16:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3E424EF85;
+	Tue, 29 Apr 2025 16:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2VvD6PE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GonFUQI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE0B2472AC;
-	Tue, 29 Apr 2025 16:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F078B24EF7F;
+	Tue, 29 Apr 2025 16:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945690; cv=none; b=E+V8/uISWWgNDEWm9Q6I6QfOvtBma6xY/339d+aNDMtEE/q++QN1SLSBIIR9R1FfcFt5z2qJtTBuGstw9UJbze6nsJNxTlPnOF0OxdgDKC7TG0O91oTDdSbU6tGpx0tyVD518p+Ro7TIIecDIpXnQOYh0eGy8mpnPC8yN2aMEJ4=
+	t=1745945812; cv=none; b=mGJBYOwG/ccVBI1BZN3Hg0zOD3iG8JATbaRhbvjMUh57cFqSdMLcQC45ZFgQ4uIXqomIddmkv10HocqmUNI0S5fqlHiSExB7n55kd5H+xOgcjZNeS2EGrIPafdgH+/Ve59H1+VIHjbkZAqaXTKJf3ItVPlkz8S86Pp1a0ad9I3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945690; c=relaxed/simple;
-	bh=2dMC1oq8OHd5/G++PPu/j6RyX8WaaC4myU2tqPEn5BM=;
+	s=arc-20240116; t=1745945812; c=relaxed/simple;
+	bh=f+j6EOSj72I4csUUebg1Ir/Oh2wR4Zh6O73OTPB9uEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K2HsbjXOLyMeivIksYFsMVulGGu/J58qk69B67JtLIneSWtaovHBAu7iI0QLjhOcattsaMivtmSyBc1jlZPhwdWlBw2yi+rZo+jCCLW4qAuRXH3bc2/g1vFGyrpnGBKGKJYhT3aqfMMifLG5a6d9jAg9hQTDNe0kXtDMcoYAL/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2VvD6PE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CCAC4CEE3;
-	Tue, 29 Apr 2025 16:54:49 +0000 (UTC)
+	 MIME-Version; b=IEfYqQ6hE6r5U4OiLA2SChl2/Ko46RYOJTH9kSqD3rWYJvCAwEKBfx7r1n+6vsB3VqG2isIIxlHKN9Volzf3KcPbW4EfqzMvWqS/gEou7m2goDoEUYUR+uDVy2LKJwNiNZ2FBQfMulELNrhTqT4Uen5/rPvpFFi0rWCJZi+gTjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GonFUQI2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A8CC4CEE3;
+	Tue, 29 Apr 2025 16:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945689;
-	bh=2dMC1oq8OHd5/G++PPu/j6RyX8WaaC4myU2tqPEn5BM=;
+	s=korg; t=1745945811;
+	bh=f+j6EOSj72I4csUUebg1Ir/Oh2wR4Zh6O73OTPB9uEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2VvD6PESy4eEzVEGPBEN+9wdFH93p2f8oCDwmja799a//iv7iJm1pJjbYeUcFvAb
-	 Q/D09v1EYqo7IRvW3tAaBf9IPfb06jRg1UPI3TOY47u/vVZhPNnqYkRhJPK1epa/3P
-	 yfJ+244HAnG80HA5vQyZbCJUPt24I9Ik2IaRf/ME=
+	b=GonFUQI2sVeMgOSTCysC24kByrE3qvyVjqej7zTHGLdN1wscmaRakPao6Cn8UxJSX
+	 scKLQIhSZNx9e9mxXD2qLlpr7iYWvds50MZcDhD1j3fuRcDSvq/K+nk6eK1BkQ92cw
+	 A0djKJypccQhIUDMTFVYf7mQxiJLEC58/fpgfpq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 017/311] of: resolver: Fix device node refcount leakage in of_resolve_phandles()
-Date: Tue, 29 Apr 2025 18:37:34 +0200
-Message-ID: <20250429161121.740425461@linuxfoundation.org>
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.14 018/311] scsi: ufs: qcom: fix dev reference leaked through of_qcom_ice_get
+Date: Tue, 29 Apr 2025 18:37:35 +0200
+Message-ID: <20250429161121.779623153@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
 References: <20250429161121.011111832@linuxfoundation.org>
@@ -66,42 +70,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit a46a0805635d07de50c2ac71588345323c13b2f9 ]
+[ Upstream commit ded40f32b55f7f2f4ed9627dd3c37a1fe89ed8c6 ]
 
-In of_resolve_phandles(), refcount of device node @local_fixups will be
-increased if the for_each_child_of_node() exits early, but nowhere to
-decrease the refcount, so cause refcount leakage for the node.
+The driver leaks the device reference taken with
+of_find_device_by_node(). Fix the leak by using devm_of_qcom_ice_get().
 
-Fix by using __free() on @local_fixups.
-
-Fixes: da56d04c806a ("of/resolver: Switch to new local fixups format.")
+Fixes: 56541c7c4468 ("scsi: ufs: ufs-qcom: Switch to the new ICE API")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-9-93e3a2659aa7@quicinc.com
-[robh: Use __free() instead]
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Acked-by: Martin K. Petersen <martin.petersen@oracle.com> # SCSI
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20250117-qcom-ice-fix-dev-leak-v2-3-1ffa5b6884cb@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/resolver.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ufs/host/ufs-qcom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
-index c871e35d49217..2caad365a665c 100644
---- a/drivers/of/resolver.c
-+++ b/drivers/of/resolver.c
-@@ -249,8 +249,9 @@ static int adjust_local_phandle_references(const struct device_node *local_fixup
-  */
- int of_resolve_phandles(struct device_node *overlay)
- {
--	struct device_node *child, *local_fixups, *refnode;
-+	struct device_node *child, *refnode;
- 	struct device_node *overlay_fixups;
-+	struct device_node __free(device_node) *local_fixups = NULL;
- 	struct property *prop;
- 	const char *refpath;
- 	phandle phandle, phandle_delta;
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index 23b9f6efa0475..a455a95f65fc6 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -125,7 +125,7 @@ static int ufs_qcom_ice_init(struct ufs_qcom_host *host)
+ 	int err;
+ 	int i;
+ 
+-	ice = of_qcom_ice_get(dev);
++	ice = devm_of_qcom_ice_get(dev);
+ 	if (ice == ERR_PTR(-EOPNOTSUPP)) {
+ 		dev_warn(dev, "Disabling inline encryption support\n");
+ 		ice = NULL;
 -- 
 2.39.5
 
