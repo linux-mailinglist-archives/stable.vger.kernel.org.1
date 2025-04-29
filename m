@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-137918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B15FAA15AA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA394AA1478
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:16:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 465BD4A2F17
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E1C9188DE4A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5A42512FD;
-	Tue, 29 Apr 2025 17:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FFA247280;
+	Tue, 29 Apr 2025 17:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FxTmMe0K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoDZJrZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C9582C60;
-	Tue, 29 Apr 2025 17:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBCA27453;
+	Tue, 29 Apr 2025 17:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947531; cv=none; b=Yyqyv01/ebHyGFsChpNRnKm1ieCdp+90+2nLlBdu30oPiD05q5PdMlNmKENpEQ9nis/B0utstejUPyXo50tUyQuvjyl9+Bb/X224tGwH3h4gcqZNXa0pajrnpTnohPdUyQcRsOsCbYjR+c2IJ6Fcct1xumollUq+n1U4nEYjnT8=
+	t=1745946765; cv=none; b=VII+0fNby/nRdjjmpLKlP4qa13celdRB3+JqDohWVinzh09tha8McRMnhA7MUD2isS18ZtUV5TpNJtjQEGotSE+3Dfwmzl4B8u/+qNzN5INRGzd1zDw2dIoRxoZUfv/qj0YxPxmMQz5Z+gmwNnJINc/2M/Vwau+Jo1Tgs5xV0eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947531; c=relaxed/simple;
-	bh=EBSoWfs76lluAOz9nHlzU5f67cZOgm9SEAc3PehoWMo=;
+	s=arc-20240116; t=1745946765; c=relaxed/simple;
+	bh=3QLrvJ+3pZPzLXI296ftCi2fWHoJNqgoIZDGedmPCNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aEhhQJEL9UgAN/h454vy4sjR1SRZnsIm/ZsLNVsLOSaYtfH8LIQQz/lvWcLFGnqpl7YTCnrkp/NUK96EyR3VHWv0PNIiMkLIiVBjBNKUSBxR8rqgXBPBsArWp0/TBw8+kHGGwVwSMABxh/8h/64Qe8KaYsTemzUFws/QeY7/bPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FxTmMe0K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CDCFC4CEE3;
-	Tue, 29 Apr 2025 17:25:30 +0000 (UTC)
+	 MIME-Version; b=ahGzJWu1jQykn5wqRtdp6MmK5+WGq10QI0RLiJ6KgQ7JvMuAIirLrG6gpEdSZFLQqN74jGa0M4/JYx/v8AfdjqvxEEOsvwjcLHEpclqgiogYc3S3qQmeEfLGH/gFpGMBgNIFjAa4QoYrkn2KKHfd8dgJg5ImlE8af3RxnbqYTl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoDZJrZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E72C4CEE3;
+	Tue, 29 Apr 2025 17:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947530;
-	bh=EBSoWfs76lluAOz9nHlzU5f67cZOgm9SEAc3PehoWMo=;
+	s=korg; t=1745946765;
+	bh=3QLrvJ+3pZPzLXI296ftCi2fWHoJNqgoIZDGedmPCNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FxTmMe0KGk+EyaLTw3RYBL2+k9HRoBmcbuZe2C6AiQqFEycT8OQmyPktdJs5AIOyV
-	 +2lsN1JoUhBX1Ejn5Rzzpo7iX+Bebcc/B+KwtjJ//E5MmIrC5HXMDjQHYec6OSQoX7
-	 bImvCOM/4VgVlUaNlw/L7by4WCcjRlwKIz5GbE+Y=
+	b=DoDZJrZAfsrYV9f8/IJX73/YLhdMiOJNaDsWTT3feL9pgoypb3gZQ+YvrlqmVXu/W
+	 HDyJlJvmFsZ3G+hxLkgX4LWy8yjZBVmbmNw0IiPTeIhpczmShPE38Poj8OIlfgUXxe
+	 UmTMuCZQunLybX39yl2ELwwX8xKc4kpU9JGvwHk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/280] arm64: dts: ti: k3-j784s4-j742s2-main-common: Fix serdes_ln_ctrl reg-masks
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 061/286] spi: cadence-qspi: Fix probe on AM62A LP SK
 Date: Tue, 29 Apr 2025 18:39:25 +0200
-Message-ID: <20250429161116.092270467@linuxfoundation.org>
+Message-ID: <20250429161110.355110881@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 38e7f9092efbbf2a4a67e4410b55b797f8d1e184 ]
+commit b8665a1b49f5498edb7b21d730030c06b7348a3c upstream.
 
-Commit under Fixes added the 'idle-states' property for SERDES4 lane muxes
-without defining the corresponding register offsets and masks for it in the
-'mux-reg-masks' property within the 'serdes_ln_ctrl' node.
+In 2020, there's been an unnoticed change which rightfully attempted to
+report probe deferrals upon DMA absence by checking the return value of
+dma_request_chan_by_mask(). By doing so, it also reported errors which
+were simply ignored otherwise, likely on purpose.
 
-Fix this.
+This change actually turned a void return into an error code. Hence, not
+only the -EPROBE_DEFER error codes but all error codes got reported to
+the callers, now failing to probe in the absence of Rx DMA channel,
+despite the fact that DMA seems to not be supported natively by many
+implementations.
 
-Fixes: 7287d423f138 ("arm64: dts: ti: k3-j784s4-main: Add system controller and SERDES lane mux")
+Looking at the history, this change probably led to:
+ad2775dc3fc5 ("spi: cadence-quadspi: Disable the DAC for Intel LGM SoC")
+f724c296f2f2 ("spi: cadence-quadspi: fix Direct Access Mode disable for SoCFPGA")
+
+In my case, the AM62A LP SK core octo-SPI node from TI does not
+advertise any DMA channel, hinting that there is likely no support for
+it, but yet when the support for the am654 compatible was added, DMA
+seemed to be used, so just discarding its use with the
+CQSPI_DISABLE_DAC_MODE quirk for this compatible does not seem the
+correct approach.
+
+Let's get change the return condition back to:
+- return a probe deferral error if we get one
+- ignore the return value otherwise
+The "error" log level was however likely too high for something that is
+expected to fail, so let's lower it arbitrarily to the info level.
+
+Fixes: 935da5e5100f ("mtd: spi-nor: cadence-quadspi: Handle probe deferral while requesting DMA channel")
 Cc: stable@vger.kernel.org
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Link: https://lore.kernel.org/r/20250228053850.506028-1-s-vadapalli@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20250305200933.2512925-2-miquel.raynal@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-index 7721852c1f68a..2475130ecad11 100644
---- a/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j784s4-j742s2-main-common.dtsi
-@@ -84,7 +84,9 @@ serdes_ln_ctrl: mux-controller@4080 {
- 					<0x10 0x3>, <0x14 0x3>, /* SERDES1 lane0/1 select */
- 					<0x18 0x3>, <0x1c 0x3>, /* SERDES1 lane2/3 select */
- 					<0x20 0x3>, <0x24 0x3>, /* SERDES2 lane0/1 select */
--					<0x28 0x3>, <0x2c 0x3>; /* SERDES2 lane2/3 select */
-+					<0x28 0x3>, <0x2c 0x3>, /* SERDES2 lane2/3 select */
-+					<0x40 0x3>, <0x44 0x3>, /* SERDES4 lane0/1 select */
-+					<0x48 0x3>, <0x4c 0x3>; /* SERDES4 lane2/3 select */
- 			idle-states = <J784S4_SERDES0_LANE0_PCIE1_LANE0>,
- 				      <J784S4_SERDES0_LANE1_PCIE1_LANE1>,
- 				      <J784S4_SERDES0_LANE2_IP3_UNUSED>,
--- 
-2.39.5
-
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1120,6 +1120,12 @@ static int cqspi_request_mmap_dma(struct
+ 	if (IS_ERR(cqspi->rx_chan)) {
+ 		int ret = PTR_ERR(cqspi->rx_chan);
+ 		cqspi->rx_chan = NULL;
++		if (ret == -ENODEV) {
++			/* DMA support is not mandatory */
++			dev_info(&cqspi->pdev->dev, "No Rx DMA available\n");
++			return 0;
++		}
++
+ 		return dev_err_probe(&cqspi->pdev->dev, ret, "No Rx DMA available\n");
+ 	}
+ 	init_completion(&cqspi->rx_dma_complete);
 
 
 
