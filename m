@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-137426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DB1AA1379
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B90AA15B0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 700CB9838B0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D00204A60AD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6EE241664;
-	Tue, 29 Apr 2025 17:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8FF2517BE;
+	Tue, 29 Apr 2025 17:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPtlUj46"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ut2Fozt4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1BC7E110;
-	Tue, 29 Apr 2025 17:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC0D2459EA;
+	Tue, 29 Apr 2025 17:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946032; cv=none; b=OVA9Sg8CqHo3LTIvb6Qp1MeDTmgYpfl6S99G1C8/+X+R9fmw6cjBQiJvc4asGjz74UyA9R5l5nw0sqCbaa30dl6bpyqG7+A1eZ4wxisVIRDdqDzLqlvwlZVL2w46Iy95NhVYfNusr5y9usIYSTRgrz1Iqs5IBw3eOhxhQe3UCpM=
+	t=1745947546; cv=none; b=nOyrTo0onmYuiBZCy6Wz1PebRO9WzxeeU6jus9nApJV7zuOJJgQ2BB4ESa97yGoS5fxTCUjEA6Quqs2TgQ6GykAKZQU0+bBk5kLHdqzfXNWlpauUE9J5Qr6K5OZuV8s2PBfCZcHgLN0mefZRWYIwXgpBjwMpFwCj7bcivg8A23k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946032; c=relaxed/simple;
-	bh=jelVxnANYkxCEDv6vkz2J1Xvrz2/NRFCorCwoLAiFxI=;
+	s=arc-20240116; t=1745947546; c=relaxed/simple;
+	bh=gH7P3yBHE9rEkxN/TOYb9b+amJSIPD1/fi2CnQTdhxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WVJJuBNVeVcgonZOCba00TlLvxzFZPEnoo4mr20I5w1G3oTPKBKBkADvxthJvgSMzwE6DlRxa/pHzgY7oy8P6XOyb0tRK99qOEd/cVFpFnuGNJcKMiPzKmC3MIvvVuwaXW7uycITuDxEE3L7fWWu2E8EnN+xOtb/219seYXZatI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPtlUj46; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1836C4CEE3;
-	Tue, 29 Apr 2025 17:00:31 +0000 (UTC)
+	 MIME-Version; b=PKqy5VhZK+WC2Pxy7ukzHV8gIOI1rXyzo2bwr4vGTyW8U02qkn0tym2IWW6NDgQxVQUnVZxvk8rmM5r4rqJhqa1NGeabETKFYJ0lbhJdj28SWTyf76bJo6sNomoETg8u6I2LgDztO24HJUuvW9TtpcbFjJpqRE01JVZw2A+qMjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ut2Fozt4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568B2C4CEE3;
+	Tue, 29 Apr 2025 17:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946032;
-	bh=jelVxnANYkxCEDv6vkz2J1Xvrz2/NRFCorCwoLAiFxI=;
+	s=korg; t=1745947545;
+	bh=gH7P3yBHE9rEkxN/TOYb9b+amJSIPD1/fi2CnQTdhxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HPtlUj46GLysOSp3x09Ai+m7SyZyXmP5e40WzEMc+OlHxbOFeg3xa23jv8n4wryCj
-	 ekuLfi54dynNy1B+9TlNeKsB2sKW2roAgrmoZyhTFyb6/742bkC4Gb+VBx2XnAqIbh
-	 +Mcy7WokMYX7sjMhxQ7nnCVSRh8aKKrZPaSMyiDI=
+	b=Ut2Fozt4+v4eS9w3ZvMuWIStlzrYKBS8WbDwZx8LyWXWdsVgWm960Nazn2wp5nTRe
+	 BDx5wfHpIfrfJpz/Mnr/rkhuyCzon10JssBu1wqzLRUXefvU0Fj7Ljr+PXVizMvpFH
+	 W9jDcTKMVr/PyGNaE/RGQA8EgNKAjR17liI68sag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.14 132/311] LoongArch: KVM: Fully clear some CSRs when VM reboot
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 028/280] s390/sclp: Allow user-space to provide PCI reports for optical modules
 Date: Tue, 29 Apr 2025 18:39:29 +0200
-Message-ID: <20250429161126.449263519@linuxfoundation.org>
+Message-ID: <20250429161116.255869961@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-commit 9ea86232a5520d9d21832d06031ea80f055a6ff8 upstream.
+[ Upstream commit e9ab04490667249633fb397be17db46a8fa6d130 ]
 
-Some registers such as LOONGARCH_CSR_ESTAT and LOONGARCH_CSR_GINTC are
-partly cleared with function _kvm_setcsr(). This comes from the hardware
-specification, some bits are read only in VM mode, and however they can
-be written in host mode. So they are partly cleared in VM mode, and can
-be fully cleared in host mode.
+The new SCLP action qualifier 3 is used by user-space code to provide
+optical module monitoring data to the platform.
 
-These read only bits show pending interrupt or exception status. When VM
-reset, the read-only bits should be cleared, otherwise vCPU will receive
-unknown interrupts in boot stage.
-
-Here registers LOONGARCH_CSR_ESTAT/LOONGARCH_CSR_GINTC are fully cleared
-in ioctl KVM_REG_LOONGARCH_VCPU_RESET vCPU reset path.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Stable-dep-of: aa9f168d55dc ("s390/pci: Support mmap() of PCI resources except for ISM devices")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kvm/vcpu.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/s390/char/sclp_pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -874,6 +874,13 @@ static int kvm_set_one_reg(struct kvm_vc
- 			vcpu->arch.st.guest_addr = 0;
- 			memset(&vcpu->arch.irq_pending, 0, sizeof(vcpu->arch.irq_pending));
- 			memset(&vcpu->arch.irq_clear, 0, sizeof(vcpu->arch.irq_clear));
-+
-+			/*
-+			 * When vCPU reset, clear the ESTAT and GINTC registers
-+			 * Other CSR registers are cleared with function _kvm_setcsr().
-+			 */
-+			kvm_write_sw_gcsr(vcpu->arch.csr, LOONGARCH_CSR_GINTC, 0);
-+			kvm_write_sw_gcsr(vcpu->arch.csr, LOONGARCH_CSR_ESTAT, 0);
- 			break;
- 		default:
- 			ret = -EINVAL;
+diff --git a/drivers/s390/char/sclp_pci.c b/drivers/s390/char/sclp_pci.c
+index a3e5a5fb0c1e7..c3466a8c56bb5 100644
+--- a/drivers/s390/char/sclp_pci.c
++++ b/drivers/s390/char/sclp_pci.c
+@@ -27,6 +27,7 @@
+ #define SCLP_ERRNOTIFY_AQ_RESET			0
+ #define SCLP_ERRNOTIFY_AQ_REPAIR		1
+ #define SCLP_ERRNOTIFY_AQ_INFO_LOG		2
++#define SCLP_ERRNOTIFY_AQ_OPTICS_DATA		3
+ 
+ static DEFINE_MUTEX(sclp_pci_mutex);
+ static struct sclp_register sclp_pci_event = {
+@@ -116,6 +117,7 @@ static int sclp_pci_check_report(struct zpci_report_error_header *report)
+ 	case SCLP_ERRNOTIFY_AQ_RESET:
+ 	case SCLP_ERRNOTIFY_AQ_REPAIR:
+ 	case SCLP_ERRNOTIFY_AQ_INFO_LOG:
++	case SCLP_ERRNOTIFY_AQ_OPTICS_DATA:
+ 		break;
+ 	default:
+ 		return -EINVAL;
+-- 
+2.39.5
+
 
 
 
