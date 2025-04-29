@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C921AA198D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:13:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A865AA1A26
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 526263ADF5D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 566814E040F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17A722AE68;
-	Tue, 29 Apr 2025 18:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8481D25333F;
+	Tue, 29 Apr 2025 18:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZLj7bzn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZE1/2nw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767A721ABC6;
-	Tue, 29 Apr 2025 18:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4302724889B;
+	Tue, 29 Apr 2025 18:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950079; cv=none; b=BwpYUU8CEKiRrp/qwTMqL0pvvPQlE2mhplHv54dgPurzL/zRhZ+G1C3jnEebtS5ePpKoih0N+2+RrWZkJxN5vpUzt0oDY6umHunMW+QV1CNxCy3GGFyR8Gll9xjlGoiujMTomLMgGUADon6sOx0cA2Txw4BSI8+a7XQYXLNOUkE=
+	t=1745950674; cv=none; b=FueRcYrxpcWqDaQD6GS5T778Sqc3BDXrEtjAKrqXD+FIZTE2tKhVkdp7n+Z/NknuFoQV2H9LWQOx63HZoi0yYSZStx71JigTo1Ya98gDr6sVakwvRbIXkLIZkLTerTv0nNlBSEbDr39XmfY26dkyH9dlWJARzXs/FZJhqVk/wdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950079; c=relaxed/simple;
-	bh=s8ujbGRYzMMP6g2HMCteylaNy6rBMa87BzF2uO+VhvQ=;
+	s=arc-20240116; t=1745950674; c=relaxed/simple;
+	bh=mjz1EQeFO0fMkaHenN344TjLJAhrMKDMpy2Y11N0MpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVM5hqEFPRqezMayxmC9vYtMFM8HqgGOy3BS80Ch4i+rtWYetTv/21uDf7yZARbvhVPoX0wO/p+FCagu91pwb2o6tbcKfOk90TDq6hPDGlBRRqeyIqTNNfDEaoCu2G6iFSzClgJdqWoISvh6CkBjEj9FOUh9Kl/NzKL06JA4f90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZLj7bzn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6C1C4CEE3;
-	Tue, 29 Apr 2025 18:07:58 +0000 (UTC)
+	 MIME-Version; b=dt6J+G76fFrS4X4gc7Pth2gUUyl5XH1r4A0broP6SB1eiqgn4P4x7jXEMyulaeOtLWP6to7MpRcbaCTJSraRIj1Kpo1tOHRXTcuh11cvFoIywFEc+6FcnifyfUW4kLLV073Nqco91vGzGNqLxPyEw5U33iOLgB73tL+DpNL4V4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZE1/2nw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F618C4CEE3;
+	Tue, 29 Apr 2025 18:17:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950079;
-	bh=s8ujbGRYzMMP6g2HMCteylaNy6rBMa87BzF2uO+VhvQ=;
+	s=korg; t=1745950673;
+	bh=mjz1EQeFO0fMkaHenN344TjLJAhrMKDMpy2Y11N0MpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZLj7bznvTEQyEsiFBp6ED/LgCqrkvHKC1EbgW0/59uXAwfiQDp5VSnRBEbebTM9R
-	 XCk/CBZPqKpkbm9x83g8EuaHj0ahyUSW31I4UKnvk2153hcLtEzWlJyUVApbom+zEP
-	 HKGAmMfTBrRkm/P/9tI5Y7SVakDopUM2P3f6NuW0=
+	b=pZE1/2nw6Ghz2dAQLqxl2jijPexNm2nQ7o+JJ0NClZ5Hf2rjte3vE3bajCeLm8NVq
+	 x3tiT5VcvfWuBhf8pv8BgjxJVqAVekIc+Ha4taPpDNcvyW15BRQdcJlDDcf9e8jPTQ
+	 DE9Lz1ts+VF2XP+Kn8L6pdrTlCOByx/+udG+1zoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamura Dai <kirinode0@gmail.com>,
-	Carlos Song <carlos.song@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Wagner <wagi@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/167] spi: spi-imx: Add check for spi_imx_setupxfer()
-Date: Tue, 29 Apr 2025 18:44:17 +0200
-Message-ID: <20250429161057.753795394@linuxfoundation.org>
+Subject: [PATCH 6.6 170/204] nvmet-fc: take tgtport reference only once
+Date: Tue, 29 Apr 2025 18:44:18 +0200
+Message-ID: <20250429161106.362574652@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamura Dai <kirinode0@gmail.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 951a04ab3a2db4029debfa48d380ef834b93207e ]
+[ Upstream commit b0b26ad0e1943de25ce82a7e5af3574f31b1cf99 ]
 
-Add check for the return value of spi_imx_setupxfer().
-spi_imx->rx and spi_imx->tx function pointer can be NULL when
-spi_imx_setupxfer() return error, and make NULL pointer dereference.
+The reference counting code can be simplified. Instead taking a tgtport
+refrerence at the beginning of nvmet_fc_alloc_hostport and put it back
+if not a new hostport object is allocated, only take it when a new
+hostport object is allocated.
 
- Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
- Call trace:
-  0x0
-  spi_imx_pio_transfer+0x50/0xd8
-  spi_imx_transfer_one+0x18c/0x858
-  spi_transfer_one_message+0x43c/0x790
-  __spi_pump_transfer_message+0x238/0x5d4
-  __spi_sync+0x2b0/0x454
-  spi_write_then_read+0x11c/0x200
-
-Signed-off-by: Tamura Dai <kirinode0@gmail.com>
-Reviewed-by: Carlos Song <carlos.song@nxp.com>
-Link: https://patch.msgid.link/20250417011700.14436-1-kirinode0@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/nvme/target/fc.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index df73a2c7120c9..13a6ebef01894 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1605,10 +1605,13 @@ static int spi_imx_transfer_one(struct spi_controller *controller,
- 				struct spi_device *spi,
- 				struct spi_transfer *transfer)
- {
-+	int ret;
- 	struct spi_imx_data *spi_imx = spi_controller_get_devdata(spi->controller);
- 	unsigned long hz_per_byte, byte_limit;
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index d40d5a4ea932e..68ff9540e2d13 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -1030,33 +1030,24 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
+ 	struct nvmet_fc_hostport *newhost, *match = NULL;
+ 	unsigned long flags;
  
--	spi_imx_setupxfer(spi, transfer);
-+	ret = spi_imx_setupxfer(spi, transfer);
-+	if (ret < 0)
-+		return ret;
- 	transfer->effective_speed_hz = spi_imx->spi_bus_clk;
++	/*
++	 * Caller holds a reference on tgtport.
++	 */
++
+ 	/* if LLDD not implemented, leave as NULL */
+ 	if (!hosthandle)
+ 		return NULL;
  
- 	/* flush rxfifo before transfer */
+-	/*
+-	 * take reference for what will be the newly allocated hostport if
+-	 * we end up using a new allocation
+-	 */
+-	if (!nvmet_fc_tgtport_get(tgtport))
+-		return ERR_PTR(-EINVAL);
+-
+ 	spin_lock_irqsave(&tgtport->lock, flags);
+ 	match = nvmet_fc_match_hostport(tgtport, hosthandle);
+ 	spin_unlock_irqrestore(&tgtport->lock, flags);
+ 
+-	if (match) {
+-		/* no new allocation - release reference */
+-		nvmet_fc_tgtport_put(tgtport);
++	if (match)
+ 		return match;
+-	}
+ 
+ 	newhost = kzalloc(sizeof(*newhost), GFP_KERNEL);
+-	if (!newhost) {
+-		/* no new allocation - release reference */
+-		nvmet_fc_tgtport_put(tgtport);
++	if (!newhost)
+ 		return ERR_PTR(-ENOMEM);
+-	}
+ 
+ 	spin_lock_irqsave(&tgtport->lock, flags);
+ 	match = nvmet_fc_match_hostport(tgtport, hosthandle);
+@@ -1065,6 +1056,7 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
+ 		kfree(newhost);
+ 		newhost = match;
+ 	} else {
++		nvmet_fc_tgtport_get(tgtport);
+ 		newhost->tgtport = tgtport;
+ 		newhost->hosthandle = hosthandle;
+ 		INIT_LIST_HEAD(&newhost->host_list);
 -- 
 2.39.5
 
