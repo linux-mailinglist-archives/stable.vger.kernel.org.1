@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-138324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D0E9AA17D9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51EF0AA14E7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CC349A4FE1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0E3D984E27
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929CC24DFF3;
-	Tue, 29 Apr 2025 17:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A372528E4;
+	Tue, 29 Apr 2025 17:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOoAtQUR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVvsVxyJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED01243964;
-	Tue, 29 Apr 2025 17:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756AD2472B4;
+	Tue, 29 Apr 2025 17:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948875; cv=none; b=caiJmc9ZINbWtKCWzaZ/MZdsk73rgRXsynpZILmBR3lUUbMNLX6s5XKeQPwA3MwDDXtheoaZnYNKR54eTk1SAG27oQUIHAmBjNlWu9+NCiy4EPZlyzdLFzJfn7ixjE2eD3h5jZJQkX+YnPhteI1kRtKtVuiOwnpoEth66FMX/JU=
+	t=1745946942; cv=none; b=iLc58ABI1dmh9CSdmw4bxFRkKe62wUHGmDbbpmLjx2Exp/fL/wOfEc/5E0IF5KPpZSRzl5WWlsiFFYKza+UZd2WboIrP46Vs2XDU18/+Krt/WwMGm5Ro9AYZIkqDp3ayX/zoZJ4wvkMh5W3nd92vCFFOUhn7b30ZFWX4oQS+l0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948875; c=relaxed/simple;
-	bh=tk40h3pmP2G7h2n6g0phGwqeSl3I3pxFltadkuY+PPI=;
+	s=arc-20240116; t=1745946942; c=relaxed/simple;
+	bh=DrplOJlCq5THQGtn/R7xrX1Ydzm4VnWPYJ/5Z+ejzQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ucvAwKbFZiXANR4/SGa2Efae5ty0P9Tqids8bwiueBRBuJf9y2h620U0xYu9voecZjS3fDbwwwJr6/QW3uod3TbRh+KzzYHWM+ppPmRZpww9lRyKQjmGaFvUHq8ie6F5+ajn/RBRu6Xu2xA1hCHtg5qNMjXNQ5hktrHTwnU6yLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOoAtQUR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6445C4CEE3;
-	Tue, 29 Apr 2025 17:47:54 +0000 (UTC)
+	 MIME-Version; b=cNEblTiavPPl9Pg6dKUXpVSFbEYiVAtOkX86cA5zxdhRWqUuQeGOpOGfjvTagJvMRwpY98IbiVn2MZJwJYiMlB1jTPFPdHcnUNTOLv//UmEIjwwo16KLZgbTTXgecv8wP8AIdS0IUMVfwhi7XJ+n0mq6+xSumo0QGnlmtbnbmKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVvsVxyJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F7BC4CEE3;
+	Tue, 29 Apr 2025 17:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948875;
-	bh=tk40h3pmP2G7h2n6g0phGwqeSl3I3pxFltadkuY+PPI=;
+	s=korg; t=1745946942;
+	bh=DrplOJlCq5THQGtn/R7xrX1Ydzm4VnWPYJ/5Z+ejzQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lOoAtQURnMXaSxjGudHjt88s+7N0L9APUfjcVGSuJVWc1Pc9SVWb5hIh2ssG+UL4H
-	 WvSWCwTHlpOKvMRMIYs8wBQxW+6tQhNCVH+vp2jGNpxcf6ncAIXdtBrqh9fwnnX+fD
-	 AuluHvGNc8uVScbKCDooelYXarqF3x+tjdHkX9jU=
+	b=lVvsVxyJBYwgWoQhLuVLu4ziOEgTkogIE+7qA2CJxi6IUfdHwZCnbVJL/77G3xpjv
+	 ATz95y46xo4VAVRX6zvsQJrBBYkx02ZMU+dALs4Se2dL3+PKEDZmoF7pHEp7SrEf9m
+	 anQQBWmh1EWkyQ+TEQKqyBtXnZmYi1uZbW/A1xJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	WangYuli <wangyuli@uniontech.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 146/373] cxgb4: fix memory leak in cxgb4_init_ethtool_filters() error path
+Subject: [PATCH 5.10 119/286] riscv: KGDB: Remove ".option norvc/.option rvc" for kgdb_compiled_break
 Date: Tue, 29 Apr 2025 18:40:23 +0200
-Message-ID: <20250429161129.168788481@linuxfoundation.org>
+Message-ID: <20250429161112.752106143@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 00ffb3724ce743578163f5ade2884374554ca021 ]
+[ Upstream commit 550c2aa787d1b06efcb11de1877354502a1237f2 ]
 
-In the for loop used to allocate the loc_array and bmap for each port, a
-memory leak is possible when the allocation for loc_array succeeds,
-but the allocation for bmap fails. This is because when the control flow
-goes to the label free_eth_finfo, only the allocations starting from
-(i-1)th iteration are freed.
+[ Quoting Samuel Holland: ]
 
-Fix that by freeing the loc_array in the bmap allocation error path.
+  This is a separate issue, but using ".option rvc" here is a bug.
+  It will unconditionally enable the C extension for the rest of
+  the file, even if the kernel is being built with CONFIG_RISCV_ISA_C=n.
 
-Fixes: d915c299f1da ("cxgb4: add skeleton for ethtool n-tuple filters")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250414170649.89156-1-abdun.nihaal@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Quoting Palmer Dabbelt: ]
+
+  We're just looking at the address of kgdb_compiled_break, so it's
+  fine if it ends up as a c.ebreak.
+
+[ Quoting Alexandre Ghiti: ]
+
+  .option norvc is used to prevent the assembler from using compressed
+  instructions, but it's generally used when we need to ensure the
+  size of the instructions that are used, which is not the case here
+  as noted by Palmer since we only care about the address. So yes
+  it will work fine with C enabled :)
+
+So let's just remove them all.
+
+Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
+Link: https://lore.kernel.org/all/mhng-69513841-5068-441d-be8f-2aeebdc56a08@palmer-ri-x1c9a/
+Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
+Fixes: fe89bd2be866 ("riscv: Add KGDB support")
+Cc: Samuel Holland <samuel.holland@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/8B431C6A4626225C+20250411073222.56820-2-wangyuli@uniontech.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/riscv/kernel/kgdb.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-index 129352bbe1143..f1e09a8dfc5c7 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-@@ -2262,6 +2262,7 @@ int cxgb4_init_ethtool_filters(struct adapter *adap)
- 						   GFP_KERNEL);
- 		if (!eth_filter->port[i].bmap) {
- 			ret = -ENOMEM;
-+			kvfree(eth_filter->port[i].loc_array);
- 			goto free_eth_finfo;
- 		}
- 	}
+diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
+index b0db3350d243b..1d83b36967212 100644
+--- a/arch/riscv/kernel/kgdb.c
++++ b/arch/riscv/kernel/kgdb.c
+@@ -276,9 +276,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ noinline void arch_kgdb_breakpoint(void)
+ {
+ 	asm(".global kgdb_compiled_break\n"
+-	    ".option norvc\n"
+-	    "kgdb_compiled_break: ebreak\n"
+-	    ".option rvc\n");
++	    "kgdb_compiled_break: ebreak\n");
+ }
+ 
+ void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
 -- 
 2.39.5
 
