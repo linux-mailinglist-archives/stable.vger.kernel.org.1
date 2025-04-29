@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A284AA1641
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED7DAA1360
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F33001896674
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB54F7AFEF5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0CC82C60;
-	Tue, 29 Apr 2025 17:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD812512E0;
+	Tue, 29 Apr 2025 17:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yzduqi3R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dun7l+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59887242D6A;
-	Tue, 29 Apr 2025 17:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DC324887D;
+	Tue, 29 Apr 2025 17:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947898; cv=none; b=tUf3ZGy+5joik64UWZ/7KDtyWGiVGpyurmWG7Hl7zfsKebRSjTKPJe49FP4FVF2yUDtqN5RHbzE/wqwXdKVTUwzoIVMjO0HNqcq0+EELq+F2lRLqW9W9YnKO1B5YFC57aLlxDPPkAZIVpARDke1DFRjMk0Ny8czcV6jxQ+q089s=
+	t=1745946277; cv=none; b=bT3wBY9RFhl/KMEZVwmtISziBa8cufQ0FmXwy3OLzSbiIgLY0EfCMAk6EDuTBLrwcqPHYnMl7KTAOYx/QWfB/VygR3Gp/tDvBHHT0cQ3CqAsWg2v3/8UBQBKYWa1Xqa/kl9QSKGdtREgAr5kGfd6rmxHiANX0yI3VQSP1SnwDJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947898; c=relaxed/simple;
-	bh=2+exsHPqjt5Xuw0VTCBvGO/jYSD2i1khHoIezv1wJoA=;
+	s=arc-20240116; t=1745946277; c=relaxed/simple;
+	bh=4tcFvjojyiLTGahshqU8tNGI/t6d7+Q4Q/zoLNQZD2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d74ApbDvDE2hnIz5L6ijsM6ogJhR8KVYJ99UdOouG4GVAFapXqY8yeXWfZq51Q1ACGOGewO4uNXAnmND75/JWoWCg1SEKqsVZmGFe8f1TtTWpa78BocP5rEUw/JnhlYGhsCsQ4dA8P25gbEUVTKLE83JO86Z1Jz4htLEjh0GIrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yzduqi3R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C295AC4CEE3;
-	Tue, 29 Apr 2025 17:31:37 +0000 (UTC)
+	 MIME-Version; b=pHn4k9HR9louzKDrHe6qO/KI2jWapOw6DyvgHXnNd2/FaqoBCVVfXMbvdT9MVcKrV2F2Z6f/SGizyaZWGSCfALwhniRAYb9Nxdgd/Mgy07n13nONqu4cm4WZwv2zn/CJKEAu8BQxvQaItymRh31nM+IG0d4VbTSd6xhOAWuvMlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dun7l+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97338C4CEE3;
+	Tue, 29 Apr 2025 17:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947898;
-	bh=2+exsHPqjt5Xuw0VTCBvGO/jYSD2i1khHoIezv1wJoA=;
+	s=korg; t=1745946277;
+	bh=4tcFvjojyiLTGahshqU8tNGI/t6d7+Q4Q/zoLNQZD2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yzduqi3RI53HQFg6EolOyHVyJJv+b09G/z5oD62di5/ddl/gXMonDoibqomuWp1AS
-	 LRcjk8bU6s4HoIffTKXWJkDPnbLN/wEgWEvqjRWhqTdaX9B7XJLfelVTMpcXOEv9e5
-	 JjmLWJPsJZtwV8OdA26WBrTwvAhcxbJ5+IaUzdpU=
+	b=2dun7l+Ov7Dj59O0NQPM8Ai+QnZc2gXnA4AR7OOznwoQhlo6CcUgUdfWNAR4v5E/4
+	 M+4ScwKtG0qhu3m2xezXUPdUQPVSte+ODHv8xjYFY/UnLVCXzDhNNA4EpiQYwfnbQA
+	 rRlcar9HAh4MtMngxrqgwf8An/2xYxRZ6LgXkqRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Xu <peterx@redhat.com>,
-	Hongchen Zhang <zhanghongchen@loongson.cn>,
-	Ming Wang <wangming01@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 108/280] LoongArch: Return NULL from huge_pte_offset() for invalid PMD
+	Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 212/311] i3c: master: svc: Add support for Nuvoton npcm845 i3c
 Date: Tue, 29 Apr 2025 18:40:49 +0200
-Message-ID: <20250429161119.533030030@linuxfoundation.org>
+Message-ID: <20250429161129.683487374@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Wang <wangming01@loongson.cn>
+From: Stanley Chu <yschu@nuvoton.com>
 
-commit bd51834d1cf65a2c801295d230c220aeebf87a73 upstream.
+[ Upstream commit 98d87600a04e42282797631aa6b98dd43999e274 ]
 
-LoongArch's huge_pte_offset() currently returns a pointer to a PMD slot
-even if the underlying entry points to invalid_pte_table (indicating no
-mapping). Callers like smaps_hugetlb_range() fetch this invalid entry
-value (the address of invalid_pte_table) via this pointer.
+Nuvoton npcm845 SoC uses an older IP version, which has specific
+hardware issues that need to be addressed with a different compatible
+string.
 
-The generic is_swap_pte() check then incorrectly identifies this address
-as a swap entry on LoongArch, because it satisfies the "!pte_present()
-&& !pte_none()" conditions. This misinterpretation, combined with a
-coincidental match by is_migration_entry() on the address bits, leads to
-kernel crashes in pfn_swap_entry_to_page().
+Add driver data for different compatible strings to define platform
+specific quirks.
+Add compatible string for npcm845 to define its own driver data.
 
-Fix this at the architecture level by modifying huge_pte_offset() to
-check the PMD entry's content using pmd_none() before returning. If the
-entry is invalid (i.e., it points to invalid_pte_table), return NULL
-instead of the pointer to the slot.
-
-Cc: stable@vger.kernel.org
-Acked-by: Peter Xu <peterx@redhat.com>
-Co-developed-by: Hongchen Zhang <zhanghongchen@loongson.cn>
-Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
-Signed-off-by: Ming Wang <wangming01@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250306075429.2265183-3-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/mm/hugetlbpage.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master/svc-i3c-master.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/mm/hugetlbpage.c
-+++ b/arch/loongarch/mm/hugetlbpage.c
-@@ -47,7 +47,7 @@ pte_t *huge_pte_offset(struct mm_struct
- 				pmd = pmd_offset(pud, addr);
- 		}
- 	}
--	return (pte_t *) pmd;
-+	return pmd_none(pmdp_get(pmd)) ? NULL : (pte_t *) pmd;
- }
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index ed7b9d7f688cc..0fc03bb5d0a6e 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -158,6 +158,10 @@ struct svc_i3c_regs_save {
+ 	u32 mdynaddr;
+ };
  
- uint64_t pmd_to_entrylo(unsigned long pmd_val)
++struct svc_i3c_drvdata {
++	u32 quirks;
++};
++
+ /**
+  * struct svc_i3c_master - Silvaco I3C Master structure
+  * @base: I3C master controller
+@@ -183,6 +187,7 @@ struct svc_i3c_regs_save {
+  * @ibi.tbq_slot: To be queued IBI slot
+  * @ibi.lock: IBI lock
+  * @lock: Transfer lock, protect between IBI work thread and callbacks from master
++ * @drvdata: Driver data
+  * @enabled_events: Bit masks for enable events (IBI, HotJoin).
+  * @mctrl_config: Configuration value in SVC_I3C_MCTRL for setting speed back.
+  */
+@@ -214,6 +219,7 @@ struct svc_i3c_master {
+ 		spinlock_t lock;
+ 	} ibi;
+ 	struct mutex lock;
++	const struct svc_i3c_drvdata *drvdata;
+ 	u32 enabled_events;
+ 	u32 mctrl_config;
+ };
+@@ -1817,6 +1823,10 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
+ 	if (!master)
+ 		return -ENOMEM;
+ 
++	master->drvdata = of_device_get_match_data(dev);
++	if (!master->drvdata)
++		return -EINVAL;
++
+ 	master->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(master->regs))
+ 		return PTR_ERR(master->regs);
+@@ -1958,8 +1968,13 @@ static const struct dev_pm_ops svc_i3c_pm_ops = {
+ 			   svc_i3c_runtime_resume, NULL)
+ };
+ 
++static const struct svc_i3c_drvdata npcm845_drvdata = {};
++
++static const struct svc_i3c_drvdata svc_default_drvdata = {};
++
+ static const struct of_device_id svc_i3c_master_of_match_tbl[] = {
+-	{ .compatible = "silvaco,i3c-master-v1"},
++	{ .compatible = "nuvoton,npcm845-i3c", .data = &npcm845_drvdata },
++	{ .compatible = "silvaco,i3c-master-v1", .data = &svc_default_drvdata },
+ 	{ /* sentinel */ },
+ };
+ MODULE_DEVICE_TABLE(of, svc_i3c_master_of_match_tbl);
+-- 
+2.39.5
+
 
 
 
