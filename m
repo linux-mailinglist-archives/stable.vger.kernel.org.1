@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-138705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82D0AA1932
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B40DCAA1A28
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25A521BC7B1A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA27C16559F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C1D2517BE;
-	Tue, 29 Apr 2025 18:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B879325333F;
+	Tue, 29 Apr 2025 18:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqsg9Gq5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+rf3IXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E171A5BBB;
-	Tue, 29 Apr 2025 18:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76275240611;
+	Tue, 29 Apr 2025 18:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950092; cv=none; b=h+0c3azuPtrvxhrGscPcw+IpfZ41i81eS8g26Cbisj/q5f402JiHtwv6AUjsLvXurAERpQkfXsL/KC4HTEFO16KEJuzoiZhgSKdFtmwDScP/0EPYXOxych7v8kB4+t8XZV8Ny7Bff5VK2ZHA+Hxoz52oQLAc7z8n0DruH4eb8H4=
+	t=1745950680; cv=none; b=GyfZbVjFS64QBfUCdb6Uium1wzSpuLEYhLQXlWdiEIItFOKtLRGocl1E3f62rGHAcVASVs/nKtmq21vBSk/IFfE3f84lAiSv1L74PXuS/jj9otLx8GBB4+nGs1FTtBklmedBUObBMyhOu12SVlIaEAtgNNEDLalzlwwZsnC9L5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950092; c=relaxed/simple;
-	bh=n/TCoHJ6GrX1DPMnCt4cEYaS23T3VgIElZhLn2IBgZo=;
+	s=arc-20240116; t=1745950680; c=relaxed/simple;
+	bh=9v3VJWS6yifLQKNvLwCH2tx0uJW9JK4iCoKrKYDmpE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dgd14VmHkgf0YNlUZbd9GWq+EfUKTy2uFXDQOUUjWrPnXLI96QmdcpTBYUfeKYeU+PeQtdgOnSZCAuPL1vFDma/9jI0MeCuZasz2ldOuscKPGkOzUh34figGCctecenP9O41tTl4AQDsCI6d5OHkzxFXjqzfEATBX9FqRNp2sWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqsg9Gq5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189B4C4CEE3;
-	Tue, 29 Apr 2025 18:08:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MA2dF4eofSuLv0v7a9RPcP5m5v7ZES0TlGCNwCrqAQTASWknMyMHZkNMzxHTZsk8Ocfn8q5u9HDFlGU5JgqkRKQnn11up2pNK6Gzaq2Lx5NW5+sjSmr71XrrF3s1cwp8+PY9Qzf6p5VQR2P6lI2NL0DggQ3bQW/KByQDE989Hfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+rf3IXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7742CC4CEE3;
+	Tue, 29 Apr 2025 18:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950092;
-	bh=n/TCoHJ6GrX1DPMnCt4cEYaS23T3VgIElZhLn2IBgZo=;
+	s=korg; t=1745950679;
+	bh=9v3VJWS6yifLQKNvLwCH2tx0uJW9JK4iCoKrKYDmpE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqsg9Gq5/8skbFiylVxTX1SFDfioQoB/3epksuCdIcigOqOx+7Wo9aoGtHPbsaRhT
-	 qmzWXZ3LnME0zX/SnWf4kDXOcn4ZuLKAtIfJbOYvhkCQC+egFa3BsuIh4D5fJATyEd
-	 R9y0UGSVMIKzgltKkUpC7jV9FSkkqLkTBvqLy2Z8=
+	b=U+rf3IXpPcx9aaYYPdlk0OKgM/CNQwwHNwO/BelGLq7RvkS0iv72ZYGPmJ4XL3HJC
+	 Ju3rhSzDZz2Aaky4lj3r3WHds3lnYpP2zonKNTBP6ibBnnhqq8KY1+OkJB/vs2hN4h
+	 aTwp166kGZOnhc8dCZ5T9B6tIlqy2OSFdksmBVNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.1 152/167] comedi: jr3_pci: Fix synchronous deletion of timer
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 172/204] cifs: Fix encoding of SMB1 Session Setup Kerberos Request in non-UNICODE mode
 Date: Tue, 29 Apr 2025 18:44:20 +0200
-Message-ID: <20250429161057.871714438@linuxfoundation.org>
+Message-ID: <20250429161106.443051903@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,80 +60,139 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Pali Rohár <pali@kernel.org>
 
-commit 44d9b3f584c59a606b521e7274e658d5b866c699 upstream.
+[ Upstream commit 16cb6b0509b65ac89187e9402e0b7a9ddf1765ef ]
 
-When `jr3_pci_detach()` is called during device removal, it calls
-`timer_delete_sync()` to stop the timer, but the timer expiry function
-always reschedules the timer, so the synchronization is ineffective.
+Like in UNICODE mode, SMB1 Session Setup Kerberos Request contains oslm and
+domain strings.
 
-Call `timer_shutdown_sync()` instead.  It does not matter that the timer
-expiry function pointer is cleared, because the device is being removed.
+Extract common code into ascii_oslm_strings() and ascii_domain_string()
+functions (similar to unicode variants) and use these functions in
+non-UNICODE code path in sess_auth_kerberos().
 
-Fixes: 07b509e6584a5 ("Staging: comedi: add jr3_pci driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250415123901.13483-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Decision if non-UNICODE or UNICODE mode is used is based on the
+SMBFLG2_UNICODE flag in Flags2 packed field, and not based on the
+capabilities of server. Fix this check too.
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/drivers/jr3_pci.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ fs/smb/client/sess.c | 60 +++++++++++++++++++++++++++++---------------
+ 1 file changed, 40 insertions(+), 20 deletions(-)
 
---- a/drivers/comedi/drivers/jr3_pci.c
-+++ b/drivers/comedi/drivers/jr3_pci.c
-@@ -87,6 +87,7 @@ struct jr3_pci_poll_delay {
- struct jr3_pci_dev_private {
- 	struct timer_list timer;
- 	struct comedi_device *dev;
-+	bool timer_enable;
- };
- 
- union jr3_pci_single_range {
-@@ -596,10 +597,11 @@ static void jr3_pci_poll_dev(struct time
- 				delay = sub_delay.max;
- 		}
- 	}
-+	if (devpriv->timer_enable) {
-+		devpriv->timer.expires = jiffies + msecs_to_jiffies(delay);
-+		add_timer(&devpriv->timer);
-+	}
- 	spin_unlock_irqrestore(&dev->spinlock, flags);
--
--	devpriv->timer.expires = jiffies + msecs_to_jiffies(delay);
--	add_timer(&devpriv->timer);
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index c2a98b2736645..f04922eb45d4c 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -732,6 +732,22 @@ unicode_oslm_strings(char **pbcc_area, const struct nls_table *nls_cp)
+ 	*pbcc_area = bcc_ptr;
  }
  
- static struct jr3_pci_subdev_private *
-@@ -748,6 +750,7 @@ static int jr3_pci_auto_attach(struct co
- 	devpriv->dev = dev;
- 	timer_setup(&devpriv->timer, jr3_pci_poll_dev, 0);
- 	devpriv->timer.expires = jiffies + msecs_to_jiffies(1000);
-+	devpriv->timer_enable = true;
- 	add_timer(&devpriv->timer);
- 
- 	return 0;
-@@ -757,8 +760,12 @@ static void jr3_pci_detach(struct comedi
++static void
++ascii_oslm_strings(char **pbcc_area, const struct nls_table *nls_cp)
++{
++	char *bcc_ptr = *pbcc_area;
++
++	strcpy(bcc_ptr, "Linux version ");
++	bcc_ptr += strlen("Linux version ");
++	strcpy(bcc_ptr, init_utsname()->release);
++	bcc_ptr += strlen(init_utsname()->release) + 1;
++
++	strcpy(bcc_ptr, CIFS_NETWORK_OPSYS);
++	bcc_ptr += strlen(CIFS_NETWORK_OPSYS) + 1;
++
++	*pbcc_area = bcc_ptr;
++}
++
+ static void unicode_domain_string(char **pbcc_area, struct cifs_ses *ses,
+ 				   const struct nls_table *nls_cp)
  {
- 	struct jr3_pci_dev_private *devpriv = dev->private;
- 
--	if (devpriv)
--		del_timer_sync(&devpriv->timer);
-+	if (devpriv) {
-+		spin_lock_bh(&dev->spinlock);
-+		devpriv->timer_enable = false;
-+		spin_unlock_bh(&dev->spinlock);
-+		timer_delete_sync(&devpriv->timer);
-+	}
- 
- 	comedi_pci_detach(dev);
+@@ -756,6 +772,25 @@ static void unicode_domain_string(char **pbcc_area, struct cifs_ses *ses,
+ 	*pbcc_area = bcc_ptr;
  }
+ 
++static void ascii_domain_string(char **pbcc_area, struct cifs_ses *ses,
++				const struct nls_table *nls_cp)
++{
++	char *bcc_ptr = *pbcc_area;
++	int len;
++
++	/* copy domain */
++	if (ses->domainName != NULL) {
++		len = strscpy(bcc_ptr, ses->domainName, CIFS_MAX_DOMAINNAME_LEN);
++		if (WARN_ON_ONCE(len < 0))
++			len = CIFS_MAX_DOMAINNAME_LEN - 1;
++		bcc_ptr += len;
++	} /* else we send a null domain name so server will default to its own domain */
++	*bcc_ptr = 0;
++	bcc_ptr++;
++
++	*pbcc_area = bcc_ptr;
++}
++
+ static void unicode_ssetup_strings(char **pbcc_area, struct cifs_ses *ses,
+ 				   const struct nls_table *nls_cp)
+ {
+@@ -801,25 +836,10 @@ static void ascii_ssetup_strings(char **pbcc_area, struct cifs_ses *ses,
+ 	*bcc_ptr = 0;
+ 	bcc_ptr++; /* account for null termination */
+ 
+-	/* copy domain */
+-	if (ses->domainName != NULL) {
+-		len = strscpy(bcc_ptr, ses->domainName, CIFS_MAX_DOMAINNAME_LEN);
+-		if (WARN_ON_ONCE(len < 0))
+-			len = CIFS_MAX_DOMAINNAME_LEN - 1;
+-		bcc_ptr += len;
+-	} /* else we send a null domain name so server will default to its own domain */
+-	*bcc_ptr = 0;
+-	bcc_ptr++;
+-
+ 	/* BB check for overflow here */
+ 
+-	strcpy(bcc_ptr, "Linux version ");
+-	bcc_ptr += strlen("Linux version ");
+-	strcpy(bcc_ptr, init_utsname()->release);
+-	bcc_ptr += strlen(init_utsname()->release) + 1;
+-
+-	strcpy(bcc_ptr, CIFS_NETWORK_OPSYS);
+-	bcc_ptr += strlen(CIFS_NETWORK_OPSYS) + 1;
++	ascii_domain_string(&bcc_ptr, ses, nls_cp);
++	ascii_oslm_strings(&bcc_ptr, nls_cp);
+ 
+ 	*pbcc_area = bcc_ptr;
+ }
+@@ -1622,7 +1642,7 @@ sess_auth_kerberos(struct sess_data *sess_data)
+ 	sess_data->iov[1].iov_len = msg->secblob_len;
+ 	pSMB->req.SecurityBlobLength = cpu_to_le16(sess_data->iov[1].iov_len);
+ 
+-	if (ses->capabilities & CAP_UNICODE) {
++	if (pSMB->req.hdr.Flags2 & SMBFLG2_UNICODE) {
+ 		/* unicode strings must be word aligned */
+ 		if (!IS_ALIGNED(sess_data->iov[0].iov_len + sess_data->iov[1].iov_len, 2)) {
+ 			*bcc_ptr = 0;
+@@ -1631,8 +1651,8 @@ sess_auth_kerberos(struct sess_data *sess_data)
+ 		unicode_oslm_strings(&bcc_ptr, sess_data->nls_cp);
+ 		unicode_domain_string(&bcc_ptr, ses, sess_data->nls_cp);
+ 	} else {
+-		/* BB: is this right? */
+-		ascii_ssetup_strings(&bcc_ptr, ses, sess_data->nls_cp);
++		ascii_oslm_strings(&bcc_ptr, sess_data->nls_cp);
++		ascii_domain_string(&bcc_ptr, ses, sess_data->nls_cp);
+ 	}
+ 
+ 	sess_data->iov[2].iov_len = (long) bcc_ptr -
+-- 
+2.39.5
+
 
 
 
