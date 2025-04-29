@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B136CAA1521
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC445AA1297
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82AB91889621
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9953B177332
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505C424113C;
-	Tue, 29 Apr 2025 17:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B9B2522AE;
+	Tue, 29 Apr 2025 16:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/zi/af+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huE0BE6M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F02121ADC7;
-	Tue, 29 Apr 2025 17:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740A8250C02;
+	Tue, 29 Apr 2025 16:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947207; cv=none; b=fZ+c5I7z80FgKt4jhmbIAgetkV1pH1yQtzK4LA2y5v3lJ05iBsCgm4DuUqRNMm9S+ocnvHngxuHW3WV2FPan5y8uimZgcNnmzxzdVealjmtzWLgV38QrId/RI6Z0NcQy/t7qrk7poj4Hb0nbf6y1E0qmGpdI4GWunONypT+JlzI=
+	t=1745945610; cv=none; b=ZGqHSLOFfWVxchZQTK95oO/raWfC2JYSIG20eajot/blYcrFHG16UMx+FTvv/V2BnU5wrUI6nAHm+sDqEvXy+qjnA5615GnoUwSPSADjHWF3lPDejDuVanRqRIFRxBDU5giB6ovzgvBK9SctvSgPxBnSLZifUDTriGvenDr6sWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947207; c=relaxed/simple;
-	bh=CEUM0RMPCBkNyPplMuNYjQso9n1kd9VHjZhuYYmaNok=;
+	s=arc-20240116; t=1745945610; c=relaxed/simple;
+	bh=roFMgTDoQBm5QlgSPAhZ1ZCOvIZcYWCpJBemWPUD+z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HhJIlhmmp7+EirpqGRO66NdlpxvOou1va9FUdzM5yP99fZCppeHtFW8JQh7b7r6/OP4pCBhUgJ3UXRj+y93uZvHzZqmB7UW2UJGL7yADhnSRdaFajodaGbddAWxdLKYLX7HOsWMMkEFhaGM1GeISMBlllawiqhIWjFiCP93uTVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/zi/af+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39952C4CEE3;
-	Tue, 29 Apr 2025 17:20:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y8QdDkPyRoPeWqYGmtp0ybys6iL/nyjq29157R8LxgoWW8V5sVCXjspxOl+KmZLvdRM5rYdpM0OBlQW2VEd5ieTqX4qbVBroYTwjVWVdwGF6+LInfCazEqi94yeh8PLf8LdxTSJnjL+H+onEM7PAJsg97ZXGhpa9qUfptEaFjy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huE0BE6M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7989C4CEE3;
+	Tue, 29 Apr 2025 16:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947206;
-	bh=CEUM0RMPCBkNyPplMuNYjQso9n1kd9VHjZhuYYmaNok=;
+	s=korg; t=1745945610;
+	bh=roFMgTDoQBm5QlgSPAhZ1ZCOvIZcYWCpJBemWPUD+z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/zi/af+h564VujNRKFeL5b6bWxzE30wNHE3F0HhmGys+0uAt94j6fn581ZYq7W3V
-	 0saVZ97+jdRoH7uri8USW1cNVBTqwyldus6f+NH8OJ/ylx40Kff0z3+ORYObsT8juC
-	 k7p0/wjEtZUy8maqFa5ar3VZsnMDVrSda5d8tah4=
+	b=huE0BE6Mhc7RsdWpLgvT8dmmcekYRewWy1WWRKVkNwxx8RBAxO0AMGZGi0GPRWLJz
+	 Ws1nz0ZjS38AXQti0p7jPux0NEU26v68Iddn0Nmad21UVMSg5frwp59iR6wgGgDvRu
+	 fAo8cdEDFjtIFL4YAVnGXdajnfOU7OQm+ffUSlGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Xiaogang Chen <Xiaogang.Chen@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 207/286] media: venus: Rename venus_caps to hfi_plat_caps
+Subject: [PATCH 5.4 170/179] udmabuf: fix a buf size overflow issue during udmabuf creation
 Date: Tue, 29 Apr 2025 18:41:51 +0200
-Message-ID: <20250429161116.469067057@linuxfoundation.org>
+Message-ID: <20250429161056.276685818@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,251 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+From: Xiaogang Chen <xiaogang.chen@amd.com>
 
-[ Upstream commit 8f3b41dcfb9a0fa2d2ca0af51c3eebd670dc153b ]
+[ Upstream commit 021ba7f1babd029e714d13a6bf2571b08af96d0f ]
 
-Now when we have hfi platform make venus capabilities an
-hfi platform capabilities.
+by casting size_limit_mb to u64  when calculate pglimit.
 
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 9edaaa8e3e15 ("media: venus: hfi_parser: refactor hfi packet parsing logic")
+Signed-off-by: Xiaogang Chen<Xiaogang.Chen@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250321164126.329638-1-xiaogang.chen@amd.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/core.h      | 30 ++-----------------
- drivers/media/platform/qcom/venus/helpers.c   |  6 ++--
- .../media/platform/qcom/venus/hfi_parser.c    | 18 +++++------
- .../media/platform/qcom/venus/hfi_parser.h    |  2 +-
- .../media/platform/qcom/venus/hfi_platform.h  | 25 ++++++++++++++++
- 5 files changed, 41 insertions(+), 40 deletions(-)
+ drivers/dma-buf/udmabuf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/venus/core.h b/drivers/media/platform/qcom/venus/core.h
-index 53d3202460ae9..785a5bbb19c3c 100644
---- a/drivers/media/platform/qcom/venus/core.h
-+++ b/drivers/media/platform/qcom/venus/core.h
-@@ -14,6 +14,7 @@
+diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
+index ae42e98cf8350..dfb572282097b 100644
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -138,7 +138,7 @@ static long udmabuf_create(const struct udmabuf_create_list *head,
+ 	if (!ubuf)
+ 		return -ENOMEM;
  
- #include "dbgfs.h"
- #include "hfi.h"
-+#include "hfi_platform.h"
- 
- #define VDBGL	"VenusLow : "
- #define VDBGM	"VenusMed : "
-@@ -82,31 +83,6 @@ struct venus_format {
- 	u32 flags;
- };
- 
--#define MAX_PLANES		4
--#define MAX_FMT_ENTRIES		32
--#define MAX_CAP_ENTRIES		32
--#define MAX_ALLOC_MODE_ENTRIES	16
--#define MAX_CODEC_NUM		32
--#define MAX_SESSIONS		16
--
--struct raw_formats {
--	u32 buftype;
--	u32 fmt;
--};
--
--struct venus_caps {
--	u32 codec;
--	u32 domain;
--	bool cap_bufs_mode_dynamic;
--	unsigned int num_caps;
--	struct hfi_capability caps[MAX_CAP_ENTRIES];
--	unsigned int num_pl;
--	struct hfi_profile_level pl[HFI_MAX_PROFILE_COUNT];
--	unsigned int num_fmts;
--	struct raw_formats fmts[MAX_FMT_ENTRIES];
--	bool valid;	/* used only for Venus v1xx */
--};
--
- /**
-  * struct venus_core - holds core parameters valid for all instances
-  *
-@@ -199,7 +175,7 @@ struct venus_core {
- 	void *priv;
- 	const struct hfi_ops *ops;
- 	struct delayed_work work;
--	struct venus_caps caps[MAX_CODEC_NUM];
-+	struct hfi_plat_caps caps[MAX_CODEC_NUM];
- 	unsigned int codecs_count;
- 	unsigned int core0_usage_count;
- 	unsigned int core1_usage_count;
-@@ -434,7 +410,7 @@ static inline void *to_hfi_priv(struct venus_core *core)
- 	return core->priv;
- }
- 
--static inline struct venus_caps *
-+static inline struct hfi_plat_caps *
- venus_caps_by_codec(struct venus_core *core, u32 codec, u32 domain)
- {
- 	unsigned int c;
-diff --git a/drivers/media/platform/qcom/venus/helpers.c b/drivers/media/platform/qcom/venus/helpers.c
-index 9ad8abdc4d4f2..dcf9fc0da1ce4 100644
---- a/drivers/media/platform/qcom/venus/helpers.c
-+++ b/drivers/media/platform/qcom/venus/helpers.c
-@@ -481,7 +481,7 @@ session_process_buf(struct venus_inst *inst, struct vb2_v4l2_buffer *vbuf)
- static bool is_dynamic_bufmode(struct venus_inst *inst)
- {
- 	struct venus_core *core = inst->core;
--	struct venus_caps *caps;
-+	struct hfi_plat_caps *caps;
- 
- 	/*
- 	 * v4 doesn't send BUFFER_ALLOC_MODE_SUPPORTED property and supports
-@@ -1539,7 +1539,7 @@ void venus_helper_init_instance(struct venus_inst *inst)
- }
- EXPORT_SYMBOL_GPL(venus_helper_init_instance);
- 
--static bool find_fmt_from_caps(struct venus_caps *caps, u32 buftype, u32 fmt)
-+static bool find_fmt_from_caps(struct hfi_plat_caps *caps, u32 buftype, u32 fmt)
- {
- 	unsigned int i;
- 
-@@ -1556,7 +1556,7 @@ int venus_helper_get_out_fmts(struct venus_inst *inst, u32 v4l2_fmt,
- 			      u32 *out_fmt, u32 *out2_fmt, bool ubwc)
- {
- 	struct venus_core *core = inst->core;
--	struct venus_caps *caps;
-+	struct hfi_plat_caps *caps;
- 	u32 ubwc_fmt, fmt = to_hfi_raw_fmt(v4l2_fmt);
- 	bool found, found_ubwc;
- 
-diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
-index 94981a5e8e9af..be9a58ef04d86 100644
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -11,12 +11,12 @@
- #include "hfi_helper.h"
- #include "hfi_parser.h"
- 
--typedef void (*func)(struct venus_caps *cap, const void *data,
-+typedef void (*func)(struct hfi_plat_caps *cap, const void *data,
- 		     unsigned int size);
- 
- static void init_codecs(struct venus_core *core)
- {
--	struct venus_caps *caps = core->caps, *cap;
-+	struct hfi_plat_caps *caps = core->caps, *cap;
- 	unsigned long bit;
- 
- 	core->codecs_count = 0;
-@@ -39,11 +39,11 @@ static void init_codecs(struct venus_core *core)
- 	}
- }
- 
--static void for_each_codec(struct venus_caps *caps, unsigned int caps_num,
-+static void for_each_codec(struct hfi_plat_caps *caps, unsigned int caps_num,
- 			   u32 codecs, u32 domain, func cb, void *data,
- 			   unsigned int size)
- {
--	struct venus_caps *cap;
-+	struct hfi_plat_caps *cap;
- 	unsigned int i;
- 
- 	for (i = 0; i < caps_num; i++) {
-@@ -56,7 +56,7 @@ static void for_each_codec(struct venus_caps *caps, unsigned int caps_num,
- }
- 
- static void
--fill_buf_mode(struct venus_caps *cap, const void *data, unsigned int num)
-+fill_buf_mode(struct hfi_plat_caps *cap, const void *data, unsigned int num)
- {
- 	const u32 *type = data;
- 
-@@ -86,7 +86,7 @@ parse_alloc_mode(struct venus_core *core, u32 codecs, u32 domain, void *data)
- 	}
- }
- 
--static void fill_profile_level(struct venus_caps *cap, const void *data,
-+static void fill_profile_level(struct hfi_plat_caps *cap, const void *data,
- 			       unsigned int num)
- {
- 	const struct hfi_profile_level *pl = data;
-@@ -115,7 +115,7 @@ parse_profile_level(struct venus_core *core, u32 codecs, u32 domain, void *data)
- }
- 
- static void
--fill_caps(struct venus_caps *cap, const void *data, unsigned int num)
-+fill_caps(struct hfi_plat_caps *cap, const void *data, unsigned int num)
- {
- 	const struct hfi_capability *caps = data;
- 
-@@ -143,7 +143,7 @@ parse_caps(struct venus_core *core, u32 codecs, u32 domain, void *data)
- 		       fill_caps, caps_arr, num_caps);
- }
- 
--static void fill_raw_fmts(struct venus_caps *cap, const void *fmts,
-+static void fill_raw_fmts(struct hfi_plat_caps *cap, const void *fmts,
- 			  unsigned int num_fmts)
- {
- 	const struct raw_formats *formats = fmts;
-@@ -228,7 +228,7 @@ static void parser_init(struct venus_inst *inst, u32 *codecs, u32 *domain)
- 
- static void parser_fini(struct venus_inst *inst, u32 codecs, u32 domain)
- {
--	struct venus_caps *caps, *cap;
-+	struct hfi_plat_caps *caps, *cap;
- 	unsigned int i;
- 	u32 dom;
- 
-diff --git a/drivers/media/platform/qcom/venus/hfi_parser.h b/drivers/media/platform/qcom/venus/hfi_parser.h
-index 264e6dd2415fe..7f59d82110f9c 100644
---- a/drivers/media/platform/qcom/venus/hfi_parser.h
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.h
-@@ -16,7 +16,7 @@ static inline u32 get_cap(struct venus_inst *inst, u32 type, u32 which)
- {
- 	struct venus_core *core = inst->core;
- 	struct hfi_capability *cap = NULL;
--	struct venus_caps *caps;
-+	struct hfi_plat_caps *caps;
- 	unsigned int i;
- 
- 	caps = venus_caps_by_codec(core, inst->hfi_codec, inst->session_type);
-diff --git a/drivers/media/platform/qcom/venus/hfi_platform.h b/drivers/media/platform/qcom/venus/hfi_platform.h
-index 8b07ecbb4c825..6794232322557 100644
---- a/drivers/media/platform/qcom/venus/hfi_platform.h
-+++ b/drivers/media/platform/qcom/venus/hfi_platform.h
-@@ -12,6 +12,31 @@
- #include "hfi.h"
- #include "hfi_helper.h"
- 
-+#define MAX_PLANES		4
-+#define MAX_FMT_ENTRIES		32
-+#define MAX_CAP_ENTRIES		32
-+#define MAX_ALLOC_MODE_ENTRIES	16
-+#define MAX_CODEC_NUM		32
-+#define MAX_SESSIONS		16
-+
-+struct raw_formats {
-+	u32 buftype;
-+	u32 fmt;
-+};
-+
-+struct hfi_plat_caps {
-+	u32 codec;
-+	u32 domain;
-+	bool cap_bufs_mode_dynamic;
-+	unsigned int num_caps;
-+	struct hfi_capability caps[MAX_CAP_ENTRIES];
-+	unsigned int num_pl;
-+	struct hfi_profile_level pl[HFI_MAX_PROFILE_COUNT];
-+	unsigned int num_fmts;
-+	struct raw_formats fmts[MAX_FMT_ENTRIES];
-+	bool valid;	/* used only for Venus v1xx */
-+};
-+
- struct hfi_platform_codec_freq_data {
- 	u32 pixfmt;
- 	u32 session_type;
+-	pglimit = (size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
++	pglimit = ((u64)size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
+ 	for (i = 0; i < head->count; i++) {
+ 		if (!IS_ALIGNED(list[i].offset, PAGE_SIZE))
+ 			goto err;
 -- 
 2.39.5
 
