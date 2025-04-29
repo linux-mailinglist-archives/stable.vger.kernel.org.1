@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C9EAA14C2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:20:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 595D1AA122B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA1AB4C4AB0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 773D07B2C5D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03CC7216605;
-	Tue, 29 Apr 2025 17:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E96424336D;
+	Tue, 29 Apr 2025 16:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALLZkxQr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWsJxQV8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5946221DA7;
-	Tue, 29 Apr 2025 17:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B953243364;
+	Tue, 29 Apr 2025 16:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947011; cv=none; b=mwpr/3yGTZcMCdXUXt9TtdRPrdCoQj75qZOUWlYiJJ/ePY9zcoLxcfG30FsWLamlruBBtynDNDiB2faLSUK1wsVpdO4Xhcqes/FWVP1IXvdBKbJedN3WmA8fDJQLkMYpPGrmOflr3sihknq3+Dlia35DBi8MQG/eNaoeftAx9yQ=
+	t=1745945421; cv=none; b=i2aufxrCjjocvPpXN7DHZ0TpFD8ajohdDsaHkm+bbpIBlcoyUYB7iqPGiv7dHzoI26rAhzaqd8tpHiSRRGCPQSxrIWL1b8WOwM+a2Sn7Wfc1pc04KppvcoZ4k0zC1O23wiUD0WcpcMGpv+ZSFq5gjTM9tHHN5yUolt9BQQeJ0LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947011; c=relaxed/simple;
-	bh=W7mYE3B4mmsa5K0sxjRjk1AWWkTDidf29HQR8EfsYd8=;
+	s=arc-20240116; t=1745945421; c=relaxed/simple;
+	bh=LTyAquxuTc+esBhZIeWrXJ8kxTbdaO9o65NstLb/ml8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HxJinXEmyHpV0x+A8KSGS3JEAyPjcaHb8WcN1G/d80YIEZ2wOpIhVPe0ZGTJqIbwFyX8IzUXy2B3D4wyf8BpC4VgXzn8VNGHgdIAlYsXHfIekF3pniNJ0NGw5fWdcA/PKCEq+lEiqi/wcNLSPKpELV89Epp0+FnUglxF4mBKsko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALLZkxQr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362F4C4CEE3;
-	Tue, 29 Apr 2025 17:16:51 +0000 (UTC)
+	 MIME-Version; b=YfOdV3EiC+3lRzJ3Jdlq+3LjHjpEKi7F0zdyaYc6kbDM5WG6KRFvCEwomJ/sCLdnnlcvTIBZGtbzwLriA8B2eVT1ZJbZWHBeKRuwOfE34rgXmk2hIAvmppCLSLuCwnPQdeC2I0tKOX21wGv7antPrx/8A/yc4TW4kvLXk7UDhBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWsJxQV8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3867C4CEE3;
+	Tue, 29 Apr 2025 16:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947011;
-	bh=W7mYE3B4mmsa5K0sxjRjk1AWWkTDidf29HQR8EfsYd8=;
+	s=korg; t=1745945421;
+	bh=LTyAquxuTc+esBhZIeWrXJ8kxTbdaO9o65NstLb/ml8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ALLZkxQrF5n7qTRFI9oqLQCKit9BEWfhDAXMu4dLsfTPcYRs3/86W4KVdoRXXZbCd
-	 Tg2N/03mMwCLJBec0iYqRpL36or0Nro0a6XAd8EfuJMhGOq/uZ/mZ/Uw+is2Zjn30J
-	 +sA7CB6Mhm46xYFbHCpUZad/WDboc9UPMcid3sbo=
+	b=jWsJxQV8mEDhFpLCeh1pBWXgQI3dmL+7XaWExYg+6tJNVd9fNH5bPknqelhlE6hVA
+	 gjF5pmvAItxQ2U029+T37hl2XV0ezwns41/3hBKv7+Pstv2ITpdiHFXh5R04f8i+lU
+	 h6lVERbPrjZjwwtM1fNwYanZtRtPycBqssbNFoiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Rolf Eike Beer <eb@emlix.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Subject: [PATCH 5.10 143/286] drm/sti: remove duplicate object names
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <a.p.zijlstra@chello.nl>
+Subject: [PATCH 5.4 106/179] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SNR
 Date: Tue, 29 Apr 2025 18:40:47 +0200
-Message-ID: <20250429161113.762777430@linuxfoundation.org>
+Message-ID: <20250429161053.692756839@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rolf Eike Beer <eb@emlix.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit 7fb6afa9125fc111478615e24231943c4f76cc2e upstream.
+commit 96a720db59ab330c8562b2437153faa45dac705f upstream.
 
-When merging 2 drivers common object files were not deduplicated.
+There was a mistake in the SNR uncore spec. The counter increments for
+every 32 bytes of data sent from the IO agent to the SOC, not 4 bytes
+which was documented in the spec.
 
-Fixes: dcec16efd677 ("drm/sti: Build monolithic driver")
-Cc: stable@kernel.org
-Signed-off-by: Rolf Eike Beer <eb@emlix.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/1920148.tdWV9SEqCh@devpool47.emlix.com
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+The event list has been updated:
+
+  "EventName": "UNC_IIO_BANDWIDTH_IN.PART0_FREERUN",
+  "BriefDescription": "Free running counter that increments for every 32
+		       bytes of data sent from the IO agent to the SOC",
+
+Update the scale of the IIO bandwidth in free running counters as well.
+
+Fixes: 210cc5f9db7a ("perf/x86/intel/uncore: Add uncore support for Snow Ridge server")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250416142426.3933977-1-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/sti/Makefile |    2 --
- 1 file changed, 2 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/sti/Makefile
-+++ b/drivers/gpu/drm/sti/Makefile
-@@ -7,8 +7,6 @@ sti-drm-y := \
- 	sti_compositor.o \
- 	sti_crtc.o \
- 	sti_plane.o \
--	sti_crtc.o \
--	sti_plane.o \
- 	sti_hdmi.o \
- 	sti_hdmi_tx3g4c28phy.o \
- 	sti_dvo.o \
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -4220,28 +4220,28 @@ static struct uncore_event_desc snr_unco
+ 	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
+ 	/* Free-Running IIO BANDWIDTH IN Counters */
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
+ 	{ /* end: all zeroes */ },
+ };
 
 
 
