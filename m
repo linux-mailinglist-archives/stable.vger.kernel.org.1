@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-138123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93627AA16FA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:42:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 150CEAA158F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52DC43BC49F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 156F3166688
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9B324113A;
-	Tue, 29 Apr 2025 17:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A372517AB;
+	Tue, 29 Apr 2025 17:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpJjHVoK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06rgb/uH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B63982C60;
-	Tue, 29 Apr 2025 17:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB502459C9;
+	Tue, 29 Apr 2025 17:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948228; cv=none; b=tlP1uotj5UbjNgG2nS9US37HER4ldE4K3x+mmhqhbU3FFpB83fDXdykTEWbYW3aKvIqAya3V2ygeMIEjchNO6UObJ5RTYpibNPH6D6a2gufuWMEUuun50PjmKdkP5hHAiZYGuijFabQSTuwKWstV3x9HLJWfbLIdGq+R763amXw=
+	t=1745947465; cv=none; b=M/HLfgZYvYlkcga0b5ksIxLCoh4xYzxnb9pLKpLH83E7Pe1jNV9qVQCR4JDHGrnoKA8/zFWmfaLhzB20GTyMzO0QkEMn5we1tlDorWkJvppjXQGO9nWAQ+ENxzN+TcG2yK2lGKafd/tBJWdP1ofuu+9kNbAru0WNbkEHLwRLT/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948228; c=relaxed/simple;
-	bh=TBk9GDyRFMlEy3rM8aqRozZ4LKi9U1PMmEvQmdHxqXw=;
+	s=arc-20240116; t=1745947465; c=relaxed/simple;
+	bh=24pwxplLu2pNqegIfZEnskQ8ssAEuDf12zFX5HGZLME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u50BFADvj1rjEN3LP/vYupjWf9GO+KlW1Yxv1NiZZKfR7WRxxemGDgixNSuDZPeru9Hdzipyftp2iJaHPb2UzzsEZTN31H+j9+Nebu3/HVRmzW4qfON6ydlkXsPdDGvu1dlQ4kMtS+aauBkS6zhsgT1xV5ea7MWvGSd7lwwE2aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpJjHVoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAC3C4CEE9;
-	Tue, 29 Apr 2025 17:37:07 +0000 (UTC)
+	 MIME-Version; b=RZZG398k9LmY9Bv2P2Yz94EO1NhfhB/iPzChzKPb2fFyACXwXcwZ7ezyP1vytz2zR95i98XDuyG+crZYiF/7A8YfqwA3fSICqliqFEICbGo14G0jBvOnS1IgqBU/pL8nQp+QbnzKLIRKGJolkeXKTfO6CWC+IcOaKJgNuLQflrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06rgb/uH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D939C4CEE3;
+	Tue, 29 Apr 2025 17:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948227;
-	bh=TBk9GDyRFMlEy3rM8aqRozZ4LKi9U1PMmEvQmdHxqXw=;
+	s=korg; t=1745947465;
+	bh=24pwxplLu2pNqegIfZEnskQ8ssAEuDf12zFX5HGZLME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bpJjHVoKPJvcMUjX4ZQaQBgMNI/7/r2y7rgW0Ku2Zb+t36eape1OS+ZKPSmDqW/CB
-	 3qMPHTw+H6FDuCDVe3Omy/xyBvKxC25pHeARtdLAf57iMlbJf1+5ZFqTsW2bNWS2Ot
-	 uF4gZmFoeyRs/1C63qQ4ZP3Uzt2UE0h69jYL14Zo=
+	b=06rgb/uHp+etF5fbGqpfbbmlOq1nFFDkyWl3EFyjFIpXQUVen+fezwDbJYsiZ8zcJ
+	 /NhpwfTilmEDdJ+u9z65lLJ19TcwaIJRSPistqcrZXdBPp7WKWZVbQ/NpncVA+mEOc
+	 GOadQCYr98yjd49AE1Zws8/UaIrSfKtxnXsg4loE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	kernel test robot <lkp@intel.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 226/280] iommu: Clear iommu-dma ops on cleanup
+Subject: [PATCH 5.10 263/286] sched/isolation: Make CONFIG_CPU_ISOLATION depend on CONFIG_SMP
 Date: Tue, 29 Apr 2025 18:42:47 +0200
-Message-ID: <20250429161124.368993101@linuxfoundation.org>
+Message-ID: <20250429161118.732997906@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 280e5a30100578106a4305ce0118e0aa9b866f12 ]
+[ Upstream commit 975776841e689dd8ba36df9fa72ac3eca3c2957a ]
 
-If iommu_device_register() encounters an error, it can end up tearing
-down already-configured groups and default domains, however this
-currently still leaves devices hooked up to iommu-dma (and even
-historically the behaviour in this area was at best inconsistent across
-architectures/drivers...) Although in the case that an IOMMU is present
-whose driver has failed to probe, users cannot necessarily expect DMA to
-work anyway, it's still arguable that we should do our best to put
-things back as if the IOMMU driver was never there at all, and certainly
-the potential for crashing in iommu-dma itself is undesirable. Make sure
-we clean up the dev->dma_iommu flag along with everything else.
+kernel/sched/isolation.c obviously makes no sense without CONFIG_SMP, but
+the Kconfig entry we have right now:
 
-Reported-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Closes: https://lore.kernel.org/all/CAGXv+5HJpTYmQ2h-GD7GjyeYT7bL9EBCvu0mz5LgpzJZtzfW0w@mail.gmail.com/
-Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/e788aa927f6d827dd4ea1ed608fada79f2bab030.1744284228.git.robin.murphy@arm.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+	config CPU_ISOLATION
+		bool "CPU isolation"
+		depends on SMP || COMPILE_TEST
+
+allows the creation of pointless .config's which cause
+build failures.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250330134955.GA7910@redhat.com
+
+Closes: https://lore.kernel.org/oe-kbuild-all/202503260646.lrUqD3j5-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ init/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 83c8e617a2c58..13c2a00f8aac1 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -503,6 +503,9 @@ static void iommu_deinit_device(struct device *dev)
- 	dev->iommu_group = NULL;
- 	module_put(ops->owner);
- 	dev_iommu_free(dev);
-+#ifdef CONFIG_IOMMU_DMA
-+	dev->dma_iommu = false;
-+#endif
- }
+diff --git a/init/Kconfig b/init/Kconfig
+index 4e7775279356d..233166e54df35 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -656,7 +656,7 @@ endmenu # "CPU/Task time and stats accounting"
  
- DEFINE_MUTEX(iommu_probe_device_lock);
+ config CPU_ISOLATION
+ 	bool "CPU isolation"
+-	depends on SMP || COMPILE_TEST
++	depends on SMP
+ 	default y
+ 	help
+ 	  Make sure that CPUs running critical tasks are not disturbed by
 -- 
 2.39.5
 
