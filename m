@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20568AA1702
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:42:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A97DAA1596
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:29:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDD765A2D04
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:37:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5F08987035
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4483E1C6B4;
-	Tue, 29 Apr 2025 17:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C14C2550A7;
+	Tue, 29 Apr 2025 17:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnF6QGIx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bTiH+7I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0275F22172E;
-	Tue, 29 Apr 2025 17:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC292550A0;
+	Tue, 29 Apr 2025 17:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948256; cv=none; b=uLWkQX9ODv6cEc3hmaVAcKVrIJikoT8hf2znSkpRwGH5mhlltS57xPyQBMnwfHPNBjB8GoBv7TFnwJwa2VmNJ6zrJncKEmeM9/Fd/syg2m1+EPgnYIQQ4ZK7sQsoEG5+txK61KOeZs0P3z2xQy9JLXRuf40tRBOy16wgEmFIZqQ=
+	t=1745947311; cv=none; b=asJOzCt4yD861zCRw1BB6XoQu+xbSnQ1+SN3p3qi0hlObV+SLFKtBIKRulUY975GP3prArkm1Zdfj3mLKtLAWIS4dTq5WAXG7ISTJY/1yZaXZx4DRiqQJSese3IZ3Ja1dNL5t8zYXY1a4WDTCALIVhpFg7vRQ8/GrKr8BvUAWbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948256; c=relaxed/simple;
-	bh=mG4VqY8Lp5XL91oIh2G98V7Ui0cqYYUoBKaOlJDob24=;
+	s=arc-20240116; t=1745947311; c=relaxed/simple;
+	bh=MFNTaKu+ALlxhciPkk5GPMA8+DgJD+DYM1xXrwSSc08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pw/FWk8Linvi+mebDcOA+EJSN66UrCstLTmPzC77oVthOaDp+lG9GHASZr5ha67Ou9vKvZjIZcvtZlCNOtosr/p2AzlRRvaWpzAtjnRntTxcHXguz7Szuo5g2Veysf47M5uIY54CLcocttRBbgXERGpl4mHghuepZgrXK2qpNOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnF6QGIx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E877C4CEE3;
-	Tue, 29 Apr 2025 17:37:35 +0000 (UTC)
+	 MIME-Version; b=pxkjnV2XwPXWcRWiH6TP9lJBfGFwxzcZaLxxnHgzOt/fm2jN5FKTJGCpXoXNIzwaTqKe9irAM0hjBlQQWuIHrjZTkgwnDI4tNMWt2vXMEPYeYozCgP7UZh2p2RtUS1yL668X7HDC/40M2mxsV3l5gotUlIKLMN6WAT2fnE/34/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bTiH+7I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264D4C4CEE9;
+	Tue, 29 Apr 2025 17:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948255;
-	bh=mG4VqY8Lp5XL91oIh2G98V7Ui0cqYYUoBKaOlJDob24=;
+	s=korg; t=1745947310;
+	bh=MFNTaKu+ALlxhciPkk5GPMA8+DgJD+DYM1xXrwSSc08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OnF6QGIxzwyZVNT4rcTiiebbSYJmSuzJpI5CUzw4gevMdrrLgp+JxxHYnbGaRgfN7
-	 9Dr/cTaCEIE4Vwq/ch4yF4CtqYfWWmBUnlT3woSfadeOK+9w+yIp0GKkMmm/ltw5hD
-	 3IHwaZerqxX0UZak6TgYA/zNmnqsiIfyfJNep6Sc=
+	b=0bTiH+7Ii3tl3hV7QlaidFVGWWSY+dZ9ttWDvc6YqMPULT9ZIkorYWeOC3R8NU5Th
+	 u/xfNIOkKRfGqbf5ujV3CTFWX9zkJALL0eA5jnalUvPccWaM1ZL9CTfPcFLN+MQhfQ
+	 qbqrqhmXD0f4P1cB6DIofwVkcoBiuMQtXI6S2x/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday Shankar <ushankar@purestorage.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 204/280] selftests: ublk: fix test_stripe_04
+	stable <stable@kernel.org>,
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 5.10 241/286] mei: me: add panther lake H DID
 Date: Tue, 29 Apr 2025 18:42:25 +0200
-Message-ID: <20250429161123.479416165@linuxfoundation.org>
+Message-ID: <20250429161117.839515027@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit 72070e57b0a518ec8e562a2b68fdfc796ef5c040 ]
+commit 86ce5c0a1dec02e21b4c864b2bc0cc5880a2c13c upstream.
 
-Commit 57ed58c13256 ("selftests: ublk: enable zero copy for stripe target")
-added test entry of test_stripe_04, but forgot to add the test script.
+Add Panther Lake H device id.
 
-So fix the test by adding the script file.
-
-Reported-by: Uday Shankar <ushankar@purestorage.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Uday Shankar <ushankar@purestorage.com>
-Link: https://lore.kernel.org/r/20250404001849.1443064-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://lore.kernel.org/r/20250408130005.1358140-1-alexander.usyskin@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../testing/selftests/ublk/test_stripe_04.sh  | 24 +++++++++++++++++++
- 1 file changed, 24 insertions(+)
- create mode 100755 tools/testing/selftests/ublk/test_stripe_04.sh
+ drivers/misc/mei/hw-me-regs.h |    1 +
+ drivers/misc/mei/pci-me.c     |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/ublk/test_stripe_04.sh b/tools/testing/selftests/ublk/test_stripe_04.sh
-new file mode 100755
-index 0000000000000..1f2b642381d17
---- /dev/null
-+++ b/tools/testing/selftests/ublk/test_stripe_04.sh
-@@ -0,0 +1,24 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+. "$(cd "$(dirname "$0")" && pwd)"/test_common.sh
-+
-+TID="stripe_04"
-+ERR_CODE=0
-+
-+_prep_test "stripe" "mkfs & mount & umount on zero copy"
-+
-+backfile_0=$(_create_backfile 256M)
-+backfile_1=$(_create_backfile 256M)
-+dev_id=$(_add_ublk_dev -t stripe -z -q 2 "$backfile_0" "$backfile_1")
-+_check_add_dev $TID $? "$backfile_0" "$backfile_1"
-+
-+_mkfs_mount_test /dev/ublkb"${dev_id}"
-+ERR_CODE=$?
-+
-+_cleanup_test "stripe"
-+
-+_remove_backfile "$backfile_0"
-+_remove_backfile "$backfile_1"
-+
-+_show_result $TID $ERR_CODE
--- 
-2.39.5
-
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -117,6 +117,7 @@
+ 
+ #define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
+ 
++#define MEI_DEV_ID_PTL_H      0xE370  /* Panther Lake H */
+ #define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
+ 
+ /*
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -123,6 +123,7 @@ static const struct pci_device_id mei_me
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
+ 
++	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_H, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
+ 
+ 	/* required last entry */
 
 
 
