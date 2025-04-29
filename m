@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-138194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E6AAA16E5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:41:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F02AFAA131B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD88D188F0EF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C247016D873
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB098252284;
-	Tue, 29 Apr 2025 17:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959FC24EAB2;
+	Tue, 29 Apr 2025 16:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/EofF6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJVEo83t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869DE2459FA;
-	Tue, 29 Apr 2025 17:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532C025178B;
+	Tue, 29 Apr 2025 16:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948467; cv=none; b=nuAk3LXkApPGD7M6SfyZnF3twDv36WoUaItIYjpPlZqm32Jj+FuRKR1OSUBQPVqqpny443oTGa/pg6khDFNmvbq/M80CqLr1UZiBS3omikK5joN30KTFcqPZUusEKXPTJDzqmtwXX9PS9P47zKpokbRD5NoBFzWjjam7oPUQe9E=
+	t=1745945899; cv=none; b=p0vu3jIL1CkZLJYzDeuHI1eOxvhMzn1LedfhCofpvZLnxWAH91nuiuyZ9+pWT99gdSI4R3BSnAvuv7DYvcza+xrgflgOel8jXYHuD1Wz5uKLNKTTeqjjHgcAvAp4/ne0h6QLs42DErQZAyJ1jCWR3WPkrLUNxSA4nWppvVVi+Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948467; c=relaxed/simple;
-	bh=GCPhc83xKj1HGreIqWKwYNgJ8MWcPiKcBwDCD3swnoI=;
+	s=arc-20240116; t=1745945899; c=relaxed/simple;
+	bh=mL98ytNfwguR2+BvsYZzlYljUFk2g5lk9trgZ5y9EoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iybSfgL4HpmLAl5xvRIUgU1NX+xAzW05PY9zJfg/cgoYch1Co2PLr3WtNh3Jkpa4fgpjWQA43lXf+fVHNKajK6Yy3UibTyMvTZ+uAPgmDy8Kr3ReVw40vfWdF/2NG2jCfCS0C5XZLUDZLP3DsKewO7E1YFeZAImAAwLnZ3BYxVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/EofF6r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D49C4CEE3;
-	Tue, 29 Apr 2025 17:41:06 +0000 (UTC)
+	 MIME-Version; b=foGsIGdGHVLU5OmQLS/CLfaGKK8KPxdpFRApAnxZk8bgYDDuk6eJKRlYhjsvxMIuHPcTc++tekscRl/yJlVqxMo6bvC4agAofk2fKfqgcYQsnkCfv3M2YeCTC18Q0GqSd4zkSTw+zNPvoWH0jy6WYnfrTdLk8zrP3/wfMXnyR4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJVEo83t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D85C4CEE9;
+	Tue, 29 Apr 2025 16:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948467;
-	bh=GCPhc83xKj1HGreIqWKwYNgJ8MWcPiKcBwDCD3swnoI=;
+	s=korg; t=1745945899;
+	bh=mL98ytNfwguR2+BvsYZzlYljUFk2g5lk9trgZ5y9EoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/EofF6rSxwcsX5/YK5j6zbxqpZFSVKY1v/So85wGheWtBDLkcMVrsqHyzcrjm31K
-	 OFVzmRVMFTAFVBRUOWOt9ccg/31xEEJ6mqlcvWisdpOnFKO1hOABx43hh5eMgMN+VX
-	 /k9je5T8PE1N9sALUCmSOZRlE3TnBso8h/js7eZg=
+	b=DJVEo83tCTN6JjbWq6S1A9NKSb+cTwM0+LzgMPdsyQ/pQQnMBvrA1wpMsSNjlHOiw
+	 8v0rTObxKzYWxiRMA1uXAz3uMqPJHukdmGDQDGDwn4PT6sdPpfzWRFxXGjxTAgVNhj
+	 8jUDxIk/iIOcze2gN0evf2/wCUYxpkvwyDh2zQF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Makarenko Oleg <oleg@makarenk.ooo>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Richard Weinberger <richard@nod.at>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 017/373] HID: pidff: Convert infinite length from Linux API to PID standard
+Subject: [PATCH 6.14 057/311] nvmet: fix out-of-bounds access in nvmet_enable_port
 Date: Tue, 29 Apr 2025 18:38:14 +0200
-Message-ID: <20250429161123.843548939@linuxfoundation.org>
+Message-ID: <20250429161123.376182715@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Richard Weinberger <richard@nod.at>
 
-[ Upstream commit 37e0591fe44dce39d1ebc7a82d5b6e4dba1582eb ]
+[ Upstream commit 3d7aa0c7b4e96cd460826d932e44710cdeb3378b ]
 
-Software uses 0 as de-facto infinite lenght on Linux FF apis (SDL),
-Linux doesn't actually define anythi as of now, while USB PID defines
-NULL (0xffff). Most PID devices do not expect a 0-length effect and
-can't interpret it as infinite. This change fixes Force Feedback for
-most PID compliant devices.
+When trying to enable a port that has no transport configured yet,
+nvmet_enable_port() uses NVMF_TRTYPE_MAX (255) to query the transports
+array, causing an out-of-bounds access:
 
-As most games depend on updating the values of already playing infinite
-effects, this is crucial to ensure they will actually work.
+[  106.058694] BUG: KASAN: global-out-of-bounds in nvmet_enable_port+0x42/0x1da
+[  106.058719] Read of size 8 at addr ffffffff89dafa58 by task ln/632
+[...]
+[  106.076026] nvmet: transport type 255 not supported
 
-Previously, users had to rely on third-party software to do this conversion
-and make their PID devices usable.
+Since commit 200adac75888, NVMF_TRTYPE_MAX is the default state as configured by
+nvmet_ports_make().
+Avoid this by checking for NVMF_TRTYPE_MAX before proceeding.
 
-Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 200adac75888 ("nvme: Add PCI transport type")
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/nvme/target/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 3b4ee21cd8111..5fe4422bb5bad 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -21,6 +21,7 @@
- #include "usbhid.h"
+diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
+index 2e741696f3712..6ccce0ee51573 100644
+--- a/drivers/nvme/target/core.c
++++ b/drivers/nvme/target/core.c
+@@ -324,6 +324,9 @@ int nvmet_enable_port(struct nvmet_port *port)
  
- #define	PID_EFFECTS_MAX		64
-+#define	PID_INFINITE		0xffff
+ 	lockdep_assert_held(&nvmet_config_sem);
  
- /* Report usage table used to put reports into an array */
- 
-@@ -301,7 +302,12 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
- 		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
- 	pidff->set_effect_type->value[0] =
- 		pidff->create_new_effect_type->value[0];
--	pidff->set_effect[PID_DURATION].value[0] = effect->replay.length;
++	if (port->disc_addr.trtype == NVMF_TRTYPE_MAX)
++		return -EINVAL;
 +
-+	/* Convert infinite length from Linux API (0)
-+	   to PID standard (NULL) if needed */
-+	pidff->set_effect[PID_DURATION].value[0] =
-+		effect->replay.length == 0 ? PID_INFINITE : effect->replay.length;
-+
- 	pidff->set_effect[PID_TRIGGER_BUTTON].value[0] = effect->trigger.button;
- 	pidff->set_effect[PID_TRIGGER_REPEAT_INT].value[0] =
- 		effect->trigger.interval;
+ 	ops = nvmet_transports[port->disc_addr.trtype];
+ 	if (!ops) {
+ 		up_write(&nvmet_config_sem);
 -- 
 2.39.5
 
