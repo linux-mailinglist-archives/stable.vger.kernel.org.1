@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-137236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0FF4AA1247
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7A9AA1802
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6DAE7B4ADC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5A7A3A6704
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B60248866;
-	Tue, 29 Apr 2025 16:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E7F24E000;
+	Tue, 29 Apr 2025 17:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWqxJEre"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmILsHr+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C20F248191;
-	Tue, 29 Apr 2025 16:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0412239072;
+	Tue, 29 Apr 2025 17:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945468; cv=none; b=c+gq06C52W8mPwm29uACHIqM7w7hNyu5DYR3p9Wj2iFDkmWbhbtlYUvZibbaBp8KIsMyhh/NvzahVs9zPRxj/EzXJXePdR8koijwpUmgx9Nf4Gk42I7bpfTDvGnHhh7F/JCFu6YggivHbN+aN2eXtgGMcjqhtvM015SYFi6uc7w=
+	t=1745948993; cv=none; b=VHSDEeobfeX2NsVrVLlm1xYW7ZIY+9NL2XMqHSzvqEPLHvO9MHYVL2YjeTsVgJ+tF0ASq9nuQRoMpcGxsdc9LkKNk9WH0UjGEzyp3n7lvO4FDtL1dd470OIbRGf1P4joOTmqd7Rs0BQMHNep1fhqSF4kJQDw86q9NIAuRuD/L/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945468; c=relaxed/simple;
-	bh=nfILDgwqPCMOsMlgwL/Ha3Prt9Qm2hewkJSk2gfaioo=;
+	s=arc-20240116; t=1745948993; c=relaxed/simple;
+	bh=QhrwSZf7kvSQhTkE8kATX9xr57Q9wPiGMO0VWB0qReo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lDP8JPqkC4LNkDxEtocGZM+rqxVbHgNNjOeaBphNtFTOTbKi+ZOfa6cIdJZS9LMoBRw/W+RBKITDAtWytpJH1aY7kXhNM0mGt2cc/SkWbX2tgKfeTZv9I1+ufSa0KZpCQRK11pt5PINHGc7tHKoA9umACW2Fu4iMxaLvxfphkcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWqxJEre; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851DAC4CEE3;
-	Tue, 29 Apr 2025 16:51:07 +0000 (UTC)
+	 MIME-Version; b=sqJjGRON3XM/AwmRgyZ5jXSMicm0Ud5cO6QUjhmVSu58m5vwz9QsKnxN4srqghFsIipOvChYrUSUOx4W9t0WFZSjh9iLlMa+DXBECdoptSb/YHlVd1DZkQ82OtX/56OAdsZ9pBKzDoqPIujgRKPQqX9ytp/EcOlf+B7RNJEaxvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmILsHr+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDCCC4CEE3;
+	Tue, 29 Apr 2025 17:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945467;
-	bh=nfILDgwqPCMOsMlgwL/Ha3Prt9Qm2hewkJSk2gfaioo=;
+	s=korg; t=1745948993;
+	bh=QhrwSZf7kvSQhTkE8kATX9xr57Q9wPiGMO0VWB0qReo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LWqxJEreJaFhYauMth4J10QSmBZ/YTuogLWLH+sbuQ7DkD/qxJ0qkrR/XvwOfVGPc
-	 kyaL0GtJ8uN8bAd+8+piTrlQ2VLWTb0izw2sVizYek63LZI3wse30ezbSjvPrhvtLz
-	 9cZ2fOJTy/AdkJp4Ti/D2tGwT14zsSmxp1jJ1zV8=
+	b=kmILsHr+MTuDmwxlZsAT4p9rtMVfz5izBRWHqs60vhbcBg/bnwWDYRmW/7egKZgbK
+	 5QymlV3vSIa0aAuSauxuWKdQwYBbfquMa/oLzsFEp/p/LoKp3kdYK4Xq+29o4BjojT
+	 6wJR62S/dwsJyevuUsDheIe1fqULO8yVw9/pp874=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 092/179] net: openvswitch: fix nested key length validation in the set() action
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 156/373] ASoC: codecs:lpass-wsa-macro: Fix vi feedback rate
 Date: Tue, 29 Apr 2025 18:40:33 +0200
-Message-ID: <20250429161053.124312532@linuxfoundation.org>
+Message-ID: <20250429161129.565803488@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit 65d91192aa66f05710cfddf6a14b5a25ee554dba ]
+commit d7bff1415e85b889dc8908be6aedba8807ae5e37 upstream.
 
-It's not safe to access nla_len(ovs_key) if the data is smaller than
-the netlink header.  Check that the attribute is OK first.
+Currently the VI feedback rate is set to fixed 8K, fix this by getting
+the correct rate from params_rate.
 
-Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
-Reported-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b07a9da40df1576b8048
-Tested-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Reviewed-by: Eelco Chaudron <echaudro@redhat.com>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20250412104052.2073688-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without this patch incorrect rate will be set on the VI feedback
+recording resulting in rate miss match and audio artifacts.
+
+Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
+Cc: stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250403160209.21613-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/flow_netlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/codecs/lpass-wsa-macro.c |   39 ++++++++++++++++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 3 deletions(-)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index 67125939d7eee..4ad4c89886ee3 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -2741,7 +2741,8 @@ static int validate_set(const struct nlattr *a,
- 	size_t key_len;
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -62,6 +62,10 @@
+ #define CDC_WSA_TX_SPKR_PROT_CLK_DISABLE	0
+ #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK	GENMASK(3, 0)
+ #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K	0
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K	1
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K	2
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K	3
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K	4
+ #define CDC_WSA_TX0_SPKR_PROT_PATH_CFG0		(0x0248)
+ #define CDC_WSA_TX1_SPKR_PROT_PATH_CTL		(0x0264)
+ #define CDC_WSA_TX1_SPKR_PROT_PATH_CFG0		(0x0268)
+@@ -344,6 +348,7 @@ struct wsa_macro {
+ 	int ear_spkr_gain;
+ 	int spkr_gain_offset;
+ 	int spkr_mode;
++	u32 pcm_rate_vi;
+ 	int is_softclip_on[WSA_MACRO_SOFTCLIP_MAX];
+ 	int softclip_clk_users[WSA_MACRO_SOFTCLIP_MAX];
+ 	struct regmap *regmap;
+@@ -967,6 +972,7 @@ static int wsa_macro_hw_params(struct sn
+ 			       struct snd_soc_dai *dai)
+ {
+ 	struct snd_soc_component *component = dai->component;
++	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
+ 	int ret;
  
- 	/* There can be only one key in a action */
--	if (nla_total_size(nla_len(ovs_key)) != nla_len(a))
-+	if (!nla_ok(ovs_key, nla_len(a)) ||
-+	    nla_total_size(nla_len(ovs_key)) != nla_len(a))
- 		return -EINVAL;
+ 	switch (substream->stream) {
+@@ -979,6 +985,11 @@ static int wsa_macro_hw_params(struct sn
+ 			return ret;
+ 		}
+ 		break;
++	case SNDRV_PCM_STREAM_CAPTURE:
++		if (dai->id == WSA_MACRO_AIF_VI)
++			wsa->pcm_rate_vi = params_rate(params);
++
++		break;
+ 	default:
+ 		break;
+ 	}
+@@ -1152,6 +1163,28 @@ static int wsa_macro_enable_vi_feedback(
+ 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+ 	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
+ 	u32 tx_reg0, tx_reg1;
++	u32 rate_val;
++
++	switch (wsa->pcm_rate_vi) {
++	case 8000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
++		break;
++	case 16000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K;
++		break;
++	case 24000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K;
++		break;
++	case 32000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K;
++		break;
++	case 48000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K;
++		break;
++	default:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
++		break;
++	}
  
- 	key_len = nla_len(ovs_key);
--- 
-2.39.5
-
+ 	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
+ 		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
+@@ -1163,7 +1196,7 @@ static int wsa_macro_enable_vi_feedback(
+ 
+ 	switch (event) {
+ 	case SND_SOC_DAPM_POST_PMU:
+-			/* Enable V&I sensing */
++		/* Enable V&I sensing */
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+ 					      CDC_WSA_TX_SPKR_PROT_RESET);
+@@ -1172,10 +1205,10 @@ static int wsa_macro_enable_vi_feedback(
+ 					      CDC_WSA_TX_SPKR_PROT_RESET);
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
++					      rate_val);
+ 		snd_soc_component_update_bits(component, tx_reg1,
+ 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
++					      rate_val);
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+ 					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
 
 
 
