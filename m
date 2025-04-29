@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FAAAA15E8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7348CAA11DB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 791B53B9753
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC8EC1B67FC5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944EE2512F3;
-	Tue, 29 Apr 2025 17:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8EA248889;
+	Tue, 29 Apr 2025 16:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbS79tdm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPiAFHM/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5280E242D94;
-	Tue, 29 Apr 2025 17:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3325427453;
+	Tue, 29 Apr 2025 16:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947512; cv=none; b=AzC2LT7NtoGMtAlPGCltIUy41O881AumJgkGj+GWr/rU2nLAx2BPVQpiO99Tb5eVfOQFwTfl3O9+fg8cb2nzmnU/Dl73U22aNi16iRPy+eZpSUH7iBJA7CoVQkn7UzC5kCFK4dr5JxJhc6Oy7urofronD5VIq6xCa9uzY0vuST4=
+	t=1745945149; cv=none; b=OP6x6wAkvmQj8e+JkCtTn/ZA6TradU9Zrv+Dp7z/vL6yjS4LUoi9CtCu/8kIvIbgmzJ/N3yYKzDOdbbA7r2Ne/B37BUv3s3s2/CdVA0QfWGzV2Bf8Jerc5kUY/KB9DZerF7XpPnVdRaJ4zJ5OuXz+MWPWipjN2y8nRvcVkqDAXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947512; c=relaxed/simple;
-	bh=88FGn4/7g1xrPRFxToKZkIO8a/OG0A1v+d25Mp7NMAE=;
+	s=arc-20240116; t=1745945149; c=relaxed/simple;
+	bh=XEq4zHJmTo243ECKWgdJi8bdmeZnlF2uDDTXWEPbPK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FyZeSXnjHPyPfChHmkRZuhxqOC2TyskxW/sSQ4jH1V4GPbVl02A7CX73HkDzKjUXkeNdlqt9DMy1rkTwhQCp4JymMt8LNqVkbjH37SMMVGlX+gD0sbmF5nBn+7a9j/jAK2lfHyz/kCiisxlvrCzveYwktJefbr3vVvyrHgzQPKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbS79tdm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE03C4CEE3;
-	Tue, 29 Apr 2025 17:25:11 +0000 (UTC)
+	 MIME-Version; b=mHx20d+Otgz2lf6uuaT9xVylU6T3mWkApY+Pk8eXaZ3VAfi6oY+iwEQ42M/suXcOVYOkB/+F8I7ijEX5vkYrL/0dOvZpq+Loqm9nSTHTlcZqRMdzWBGFQCoFtYYYxOVuL8Eglt57LP/z2hlUq2z7pLcumdawBHDjg3zFywW5pSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPiAFHM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F42C4CEE9;
+	Tue, 29 Apr 2025 16:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947512;
-	bh=88FGn4/7g1xrPRFxToKZkIO8a/OG0A1v+d25Mp7NMAE=;
+	s=korg; t=1745945148;
+	bh=XEq4zHJmTo243ECKWgdJi8bdmeZnlF2uDDTXWEPbPK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fbS79tdmic4dE+smoOif91MaF0INsWjzn2n5SocGyyqcM/HajwFH/Pa5Lc0vRkotE
-	 DcjKUQDqkuWN3GY/C5ydtLrChLtdrarpxlrWZM2OMAwAvELqKuESzTRi/cAWZ0cYrE
-	 deZkJc1JGPz/9BaVVkWKHoicJPSCqvXvwiwM3XgE=
+	b=NPiAFHM/33HlzPVhfVo+vF5M6L0ddeuXXQA/bjC1GFcUK/JrxS8PUqCiTVr+fNIFN
+	 u0c6cOfh02V/9HFp5veCFY+VHHRFQwgG8h4BlTSHFDc7jeubKW2W08ZlK185t1wQIG
+	 284FEf3sm51lmemXikOwI3+EK+N3xQU5MP/nDkak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Rand Deeb <rand.sec96@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 018/280] block: remove the ioprio field from struct request
+Subject: [PATCH 5.4 018/179] fs/jfs: Prevent integer overflow in AG size calculation
 Date: Tue, 29 Apr 2025 18:39:19 +0200
-Message-ID: <20250429161115.834220056@linuxfoundation.org>
+Message-ID: <20250429161050.145691342@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,147 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-[ Upstream commit 6975c1a486a40446b5bc77a89d9c520f8296fd08 ]
+[ Upstream commit 7fcbf789629cdb9fbf4e2172ce31136cfed11e5e ]
 
-The request ioprio is only initialized from the first attached bio,
-so requests without a bio already never set it.  Directly use the
-bio field instead.
+The JFS filesystem calculates allocation group (AG) size using 1 <<
+l2agsize in dbExtendFS(). When l2agsize exceeds 31 (possible with >2TB
+aggregates on 32-bit systems), this 32-bit shift operation causes undefined
+behavior and improper AG sizing.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20241112170050.1612998-3-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: fc0e982b8a3a ("block: make sure ->nr_integrity_segments is cloned in blk_rq_prep_clone")
+On 32-bit architectures:
+- Left-shifting 1 by 32+ bits results in 0 due to integer overflow
+- This creates invalid AG sizes (0 or garbage values) in
+sbi->bmap->db_agsize
+- Subsequent block allocations would reference invalid AG structures
+- Could lead to:
+  - Filesystem corruption during extend operations
+  - Kernel crashes due to invalid memory accesses
+  - Security vulnerabilities via malformed on-disk structures
+
+Fix by casting to s64 before shifting:
+bmp->db_agsize = (s64)1 << l2agsize;
+
+This ensures 64-bit arithmetic even on 32-bit architectures. The cast
+matches the data type of db_agsize (s64) and follows similar patterns in
+JFS block calculation code.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-merge.c            | 10 ++++------
- block/blk-mq.c               |  3 +--
- include/linux/blk-mq.h       |  7 +++----
- include/trace/events/block.h |  6 +++---
- 4 files changed, 11 insertions(+), 15 deletions(-)
+ fs/jfs/jfs_dmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-merge.c b/block/blk-merge.c
-index bc909bd894fae..f575cc1705b3f 100644
---- a/block/blk-merge.c
-+++ b/block/blk-merge.c
-@@ -868,11 +868,10 @@ static struct request *attempt_merge(struct request_queue *q,
- 		/* Don't merge requests with different write hints. */
- 		if (req->bio->bi_write_hint != next->bio->bi_write_hint)
- 			return NULL;
-+		if (req->bio->bi_ioprio != next->bio->bi_ioprio)
-+			return NULL;
- 	}
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 3bc304d4886e6..d4e26744b2005 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -3465,7 +3465,7 @@ int dbExtendFS(struct inode *ipbmap, s64 blkno,	s64 nblocks)
+ 	oldl2agsize = bmp->db_agl2size;
  
--	if (req->ioprio != next->ioprio)
--		return NULL;
--
- 	if (!blk_atomic_write_mergeable_rqs(req, next))
- 		return NULL;
+ 	bmp->db_agl2size = l2agsize;
+-	bmp->db_agsize = 1 << l2agsize;
++	bmp->db_agsize = (s64)1 << l2agsize;
  
-@@ -1004,11 +1003,10 @@ bool blk_rq_merge_ok(struct request *rq, struct bio *bio)
- 		/* Don't merge requests with different write hints. */
- 		if (rq->bio->bi_write_hint != bio->bi_write_hint)
- 			return false;
-+		if (rq->bio->bi_ioprio != bio->bi_ioprio)
-+			return false;
- 	}
- 
--	if (rq->ioprio != bio_prio(bio))
--		return false;
--
- 	if (blk_atomic_write_mergeable_rq_bio(rq, bio) == false)
- 		return false;
- 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index e3a0f521335bb..5e6afda59e7a1 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -870,7 +870,7 @@ static void blk_print_req_error(struct request *req, blk_status_t status)
- 		blk_op_str(req_op(req)),
- 		(__force u32)(req->cmd_flags & ~REQ_OP_MASK),
- 		req->nr_phys_segments,
--		IOPRIO_PRIO_CLASS(req->ioprio));
-+		IOPRIO_PRIO_CLASS(req_get_ioprio(req)));
- }
- 
- /*
-@@ -3306,7 +3306,6 @@ int blk_rq_prep_clone(struct request *rq, struct request *rq_src,
- 		rq->special_vec = rq_src->special_vec;
- 	}
- 	rq->nr_phys_segments = rq_src->nr_phys_segments;
--	rq->ioprio = rq_src->ioprio;
- 
- 	if (rq->bio && blk_crypto_rq_bio_prep(rq, rq->bio, gfp_mask) < 0)
- 		goto free_and_out;
-diff --git a/include/linux/blk-mq.h b/include/linux/blk-mq.h
-index 07c3934080bad..959f8f82a6509 100644
---- a/include/linux/blk-mq.h
-+++ b/include/linux/blk-mq.h
-@@ -156,8 +156,6 @@ struct request {
- 	struct blk_crypto_keyslot *crypt_keyslot;
- #endif
- 
--	unsigned short ioprio;
--
- 	enum mq_rq_state state;
- 	atomic_t ref;
- 
-@@ -221,7 +219,9 @@ static inline bool blk_rq_is_passthrough(struct request *rq)
- 
- static inline unsigned short req_get_ioprio(struct request *req)
- {
--	return req->ioprio;
-+	if (req->bio)
-+		return req->bio->bi_ioprio;
-+	return 0;
- }
- 
- #define rq_data_dir(rq)		(op_is_write(req_op(rq)) ? WRITE : READ)
-@@ -1009,7 +1009,6 @@ static inline void blk_rq_bio_prep(struct request *rq, struct bio *bio,
- 	rq->nr_phys_segments = nr_segs;
- 	rq->__data_len = bio->bi_iter.bi_size;
- 	rq->bio = rq->biotail = bio;
--	rq->ioprio = bio_prio(bio);
- }
- 
- void blk_mq_hctx_set_fq_lock_class(struct blk_mq_hw_ctx *hctx,
-diff --git a/include/trace/events/block.h b/include/trace/events/block.h
-index 1527d5d45e01a..bd0ea07338eb6 100644
---- a/include/trace/events/block.h
-+++ b/include/trace/events/block.h
-@@ -99,7 +99,7 @@ TRACE_EVENT(block_rq_requeue,
- 		__entry->dev	   = rq->q->disk ? disk_devt(rq->q->disk) : 0;
- 		__entry->sector    = blk_rq_trace_sector(rq);
- 		__entry->nr_sector = blk_rq_trace_nr_sectors(rq);
--		__entry->ioprio    = rq->ioprio;
-+		__entry->ioprio    = req_get_ioprio(rq);
- 
- 		blk_fill_rwbs(__entry->rwbs, rq->cmd_flags);
- 		__get_str(cmd)[0] = '\0';
-@@ -136,7 +136,7 @@ DECLARE_EVENT_CLASS(block_rq_completion,
- 		__entry->sector    = blk_rq_pos(rq);
- 		__entry->nr_sector = nr_bytes >> 9;
- 		__entry->error     = blk_status_to_errno(error);
--		__entry->ioprio    = rq->ioprio;
-+		__entry->ioprio    = req_get_ioprio(rq);
- 
- 		blk_fill_rwbs(__entry->rwbs, rq->cmd_flags);
- 		__get_str(cmd)[0] = '\0';
-@@ -209,7 +209,7 @@ DECLARE_EVENT_CLASS(block_rq,
- 		__entry->sector    = blk_rq_trace_sector(rq);
- 		__entry->nr_sector = blk_rq_trace_nr_sectors(rq);
- 		__entry->bytes     = blk_rq_bytes(rq);
--		__entry->ioprio	   = rq->ioprio;
-+		__entry->ioprio	   = req_get_ioprio(rq);
- 
- 		blk_fill_rwbs(__entry->rwbs, rq->cmd_flags);
- 		__get_str(cmd)[0] = '\0';
+ 	/* compute new number of AG */
+ 	agno = bmp->db_numag;
 -- 
 2.39.5
 
