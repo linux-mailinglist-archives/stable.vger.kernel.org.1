@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD804AA163A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52EEEAA1245
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A13869A35A8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82E137B4931
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C30823F405;
-	Tue, 29 Apr 2025 17:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F05624C098;
+	Tue, 29 Apr 2025 16:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ua47o9ak"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAO/tout"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE981FE468;
-	Tue, 29 Apr 2025 17:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB7824BC04;
+	Tue, 29 Apr 2025 16:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947740; cv=none; b=dkRrX0/UnvDPwmMrjyegEBOZcNGJ1t2jPZ/zqVUEORqTxOrcOQnbEcxEMpIZRe30ZQF15tWWdvi8q1LccyKBjy/JA4Io7WweMy94jkNYzjc5C/bPIjHb4b9RNIEbKnAXVdPP39L/3lIKTjRWiAhbvce/AKp7S3+XM3DFXygr+BY=
+	t=1745945462; cv=none; b=El5d8bfBX+fE978nSIeUtdlwqZlDsEu3u5hb7AzCUOpgG+bMG2IC6ZItDHTLlKeEXi30R3B1OdL2ws4qhsziHPK5xSZd3LxrK7YOhVBv0zdlYEDf//dKAHKk/DiBrE8VaUPNMHrbLt5nVvBuyZeS4+x3mLFVYZns895HJcW3SLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947740; c=relaxed/simple;
-	bh=74eP2zJo7aJZ6D1j2HNPPLIxCnJSMuZaSbmqy0Te4/c=;
+	s=arc-20240116; t=1745945462; c=relaxed/simple;
+	bh=bjoWJADaGYXpo0g/WL0wsjm0bUmIzwftRaVFijIKZEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vr+FjUsK3MbVr4XXr3gw/OzHC7e5cAuzRgZEZritLzDJ1WYeLz9bYU/VxWUWkB9sRxVnAf9rXlPP9XszgMML+mZR3+1b5O4bOk74fNOGUmSPsmmh6BzF2na5tOtNJQOVlyNlmAPTEdXkCIrWkWl+9qEf3shmg0VDdRe9+qKAzr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ua47o9ak; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B0FC4CEE9;
-	Tue, 29 Apr 2025 17:29:00 +0000 (UTC)
+	 MIME-Version; b=dxEb7fP141sO9YM2l3zFaAKtdSAjO07jfs/u5jhOUxE+J0HLKTX8HQpvY3mOWgLqMYCcbc8nRR5hjbddmAXSD2pvPfEKZoy4d8TrnrtW9ZP6P9qwmucxggmP9dKBgU2ElWI9RDdijzbG98hx3Dw1YCUnPd8gQCdsDWQaAnHCfiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAO/tout; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B89C4CEE3;
+	Tue, 29 Apr 2025 16:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947740;
-	bh=74eP2zJo7aJZ6D1j2HNPPLIxCnJSMuZaSbmqy0Te4/c=;
+	s=korg; t=1745945461;
+	bh=bjoWJADaGYXpo0g/WL0wsjm0bUmIzwftRaVFijIKZEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ua47o9akVHP2XKLg1iXFlBwl6VOlOsvw3Fp10ag362V8MTgm2D4d1hfN9qBnUjIU7
-	 oXwBa/G2/Dtlz3WAneOS3dQc/kK9K/N3764pYOVL9EfHpvKNSiRDRGlC/+8jbAVyrb
-	 aI5tW52T+iSwXyOSkXe+Hh4xqK3+ugO6b9tHy4P8=
+	b=HAO/toutbmw/qUeZac1Uz0fpSQwaRefbHKk+1ilJOuuS9ebbpE00hEI16ftYit+o0
+	 XzDabC74DkQHhCnZzNeZfm7Ywlliv2qyqFnb6oZ3Wp8CtdBNFV8IUJYwUohOQlwi+f
+	 Ze0zBkUvYv2RfXnq7SeI6YqkynazO5xpBofqU550=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 090/280] LoongArch: Make regs_irqs_disabled() more clear
+Subject: [PATCH 5.4 090/179] Bluetooth: btrtl: Prevent potential NULL dereference
 Date: Tue, 29 Apr 2025 18:40:31 +0200
-Message-ID: <20250429161118.792182096@linuxfoundation.org>
+Message-ID: <20250429161053.046181346@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit bb0511d59db9b3e40c8d51f0d151ccd0fd44071d ]
+[ Upstream commit 324dddea321078a6eeb535c2bff5257be74c9799 ]
 
-In the current code, the definition of regs_irqs_disabled() is actually
-"!(regs->csr_prmd & CSR_CRMD_IE)" because arch_irqs_disabled_flags() is
-defined as "!(flags & CSR_CRMD_IE)", it looks a little strange.
+The btrtl_initialize() function checks that rtl_load_file() either
+had an error or it loaded a zero length file.  However, if it loaded
+a zero length file then the error code is not set correctly.  It
+results in an error pointer vs NULL bug, followed by a NULL pointer
+dereference.  This was detected by Smatch:
 
-Define regs_irqs_disabled() as !(regs->csr_prmd & CSR_PRMD_PIE) directly
-to make it more clear, no functional change.
+drivers/bluetooth/btrtl.c:592 btrtl_initialize() warn: passing zero to 'ERR_PTR'
 
-While at it, the return value of regs_irqs_disabled() is true or false,
-so change its type to reflect that and also make it always inline.
-
-Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 26503ad25de8 ("Bluetooth: btrtl: split the device initialization into smaller parts")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/ptrace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btrtl.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/loongarch/include/asm/ptrace.h b/arch/loongarch/include/asm/ptrace.h
-index f3ddaed9ef7f0..a5b63c84f8541 100644
---- a/arch/loongarch/include/asm/ptrace.h
-+++ b/arch/loongarch/include/asm/ptrace.h
-@@ -33,9 +33,9 @@ struct pt_regs {
- 	unsigned long __last[];
- } __aligned(8);
- 
--static inline int regs_irqs_disabled(struct pt_regs *regs)
-+static __always_inline bool regs_irqs_disabled(struct pt_regs *regs)
- {
--	return arch_irqs_disabled_flags(regs->csr_prmd);
-+	return !(regs->csr_prmd & CSR_PRMD_PIE);
- }
- 
- static inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
+diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
+index 0dfaf90a31b06..bdee7d2d88309 100644
+--- a/drivers/bluetooth/btrtl.c
++++ b/drivers/bluetooth/btrtl.c
+@@ -605,6 +605,8 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
+ 			rtl_dev_err(hdev, "mandatory config file %s not found",
+ 				    btrtl_dev->ic_info->cfg_name);
+ 			ret = btrtl_dev->cfg_len;
++			if (!ret)
++				ret = -EINVAL;
+ 			goto err_free;
+ 		}
+ 	}
 -- 
 2.39.5
 
