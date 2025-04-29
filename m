@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-138973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3893BAA3D32
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:54:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B082EAA3D36
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:54:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02BB9982B14
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:53:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 809E8466A2A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1687E2E337F;
-	Tue, 29 Apr 2025 23:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8C32E339E;
+	Tue, 29 Apr 2025 23:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mnf4uT0Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kaF+hCMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AFB2E3372;
-	Tue, 29 Apr 2025 23:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CE82E3394;
+	Tue, 29 Apr 2025 23:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745970640; cv=none; b=hOYmarzp7IsG4Xz+L+XrTSmHZbzubcXkEMdhrDrOyzmWVDXfESeFPsmzIIFpVQLbUwCixg2Y1fwKoB4Rc4zzrQreL3RMmFZsSfClMLhO9b2aCLAwLYOxiMq8eorUJXW/uqqFmVWbd8sB5wXBIIz9v1c7JcSTKhIEOcubOvI4xIw=
+	t=1745970642; cv=none; b=FKCWvJT8DvvIE6WjenkIippdYVNQvujJTXHa5uAQoSMSi2w58EARuXo09eMhIrHdWGgcVjyByCaWvaUGdn5EE2InsH4uP5HOMi9ORjnzXXZoooWbJBqiB0fzwtjKjJTBnE3zSPxUiPoEVcLIVQaf+aSgf3/2s1zqST8A8LxsF80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745970640; c=relaxed/simple;
-	bh=sdE0R1/X1K0Gxzc6kX2oq0qZ02hIV3EwRH4TKK6onP8=;
+	s=arc-20240116; t=1745970642; c=relaxed/simple;
+	bh=E3QxLlakm2Gr1puJo9qXMmbj9NvCCBFAlAbMWzgIMjc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=J96lUeLXGN5CQM4wjs0f2I26TQzorB7Z5Z6ou6IJSETbTKfsjQy5Bo9epUOp9xq0XwVIIXk1zBSIZJIRvdegALC3aKH94w7uT8yw8WPp3/0nM/1PBd1i7b30zaaG6Sf5rO8gYsw9u7xLWovr7+GZm4d5/TvvL8ds5VlRWfG9L5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mnf4uT0Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC750C4CEE3;
-	Tue, 29 Apr 2025 23:50:39 +0000 (UTC)
+	 MIME-Version; b=sYh6f9cxdrulND4HQ5WcwN4Kz60RPtoR0hJrIpObbUKeavmcn443b2uKc/2t5yJP7U1/Awx9JgY/gwFndMNGjfVjW+TXzgdcMiERZNAAoFbDyy3SD8bumMs0oLDWLjJ1jLvnV1O9kFvUT94mtGzfqISc1QOWQ0rBLgLUVlBTQ68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kaF+hCMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E1CC4CEED;
+	Tue, 29 Apr 2025 23:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745970640;
-	bh=sdE0R1/X1K0Gxzc6kX2oq0qZ02hIV3EwRH4TKK6onP8=;
+	s=k20201202; t=1745970642;
+	bh=E3QxLlakm2Gr1puJo9qXMmbj9NvCCBFAlAbMWzgIMjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mnf4uT0YmktcLrMfThLz0iwmwSg7K1XLjomhC+nCaDBGQMn7xqFqNgXZjrVXhXCvl
-	 a4KctshzHBqLKQBI4XeyeuZn4q7B90KfYbzbHonPe215jRofBlmxUBfsd8onV+N7Mx
-	 BPkruU5wKXbOSRAGZJtnPjGcwhAv0d6C4R35xCdAPhPEJRyHS0BUM9N9Bv5TF/D21d
-	 Pvg+2GDiEED9D+W6PrpzwStGm8mYmM4tcqC4g+vEMfOtam+VavMGRrMmxI+lMcGHYn
-	 TSycRL/6hW50J1OpZudeGjaad2nbQqPfyRhXEKpt04siIWMC2yb1WquSjdyV7ztuyn
-	 kXLj3K0amfbtg==
+	b=kaF+hCMYyiK4uQZtJFtIGvQFaLic1SSZrOunRQWcbpiB4Lc9/6FLyDrH1m4hziv+a
+	 dYxdl5pZjrXkvnoHI4xQH5WH3aOWZNmDuY3IUP7dxEzLriYvjv4msuC5Rs8oABN+tB
+	 wv2vDCyql6F0Vo1f/4g+cLEbyqmuvD2STW6d5Elc0Pnwpto70hd3SylTnfATP4UDEu
+	 xJ5LiLQRs2OevoyhhhuCPbJ436pubeRnFzOmmadhhGv+CNG6vGtkd/zAs5NWO0A0ev
+	 udc5S5YekbqLa4ynQ5/tQAmZHzGVGyBfk24JFqtumN/eRZgjGiFR3kfyCw5q7+wVlR
+	 pBgzqD4yqbFQA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: David Sterba <dsterba@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 17/39] dma-mapping: avoid potential unused data compilation warning
-Date: Tue, 29 Apr 2025 19:49:44 -0400
-Message-Id: <20250429235006.536648-17-sashal@kernel.org>
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 18/39] btrfs: tree-checker: adjust error code for header level check
+Date: Tue, 29 Apr 2025 19:49:45 -0400
+Message-Id: <20250429235006.536648-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250429235006.536648-1-sashal@kernel.org>
 References: <20250429235006.536648-1-sashal@kernel.org>
@@ -66,48 +67,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.4
 Content-Transfer-Encoding: 8bit
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit c9b19ea63036fc537a69265acea1b18dabd1cbd3 ]
+[ Upstream commit f1ab0171e9be96fd530329fa54761cff5e09ea95 ]
 
-When CONFIG_NEED_DMA_MAP_STATE is not defined, dma-mapping clients might
-report unused data compilation warnings for dma_unmap_*() calls
-arguments. Redefine macros for those calls to let compiler to notice that
-it is okay when the provided arguments are not used.
+The whole tree checker returns EUCLEAN, except the one check in
+btrfs_verify_level_key(). This was inherited from the function that was
+moved from disk-io.c in 2cac5af16537 ("btrfs: move
+btrfs_verify_level_key into tree-checker.c") but this should be unified
+with the rest.
 
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250415075659.428549-1-m.szyprowski@samsung.com
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dma-mapping.h | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/btrfs/tree-checker.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index b79925b1c4333..85ab710ec0e72 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -629,10 +629,14 @@ static inline int dma_mmap_wc(struct device *dev,
- #else
- #define DEFINE_DMA_UNMAP_ADDR(ADDR_NAME)
- #define DEFINE_DMA_UNMAP_LEN(LEN_NAME)
--#define dma_unmap_addr(PTR, ADDR_NAME)           (0)
--#define dma_unmap_addr_set(PTR, ADDR_NAME, VAL)  do { } while (0)
--#define dma_unmap_len(PTR, LEN_NAME)             (0)
--#define dma_unmap_len_set(PTR, LEN_NAME, VAL)    do { } while (0)
-+#define dma_unmap_addr(PTR, ADDR_NAME)           \
-+	({ typeof(PTR) __p __maybe_unused = PTR; 0; })
-+#define dma_unmap_addr_set(PTR, ADDR_NAME, VAL)  \
-+	do { typeof(PTR) __p __maybe_unused = PTR; } while (0)
-+#define dma_unmap_len(PTR, LEN_NAME)             \
-+	({ typeof(PTR) __p __maybe_unused = PTR; 0; })
-+#define dma_unmap_len_set(PTR, LEN_NAME, VAL)    \
-+	do { typeof(PTR) __p __maybe_unused = PTR; } while (0)
- #endif
+diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
+index 43979891f7c89..2b66a6130269a 100644
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -2235,7 +2235,7 @@ int btrfs_verify_level_key(struct extent_buffer *eb,
+ 		btrfs_err(fs_info,
+ "tree level mismatch detected, bytenr=%llu level expected=%u has=%u",
+ 			  eb->start, check->level, found_level);
+-		return -EIO;
++		return -EUCLEAN;
+ 	}
  
- #endif /* _LINUX_DMA_MAPPING_H */
+ 	if (!check->has_first_key)
 -- 
 2.39.5
 
