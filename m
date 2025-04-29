@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9771AA1532
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:24:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A973AA13C5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C219866FE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27DC61667D4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656C924E01D;
-	Tue, 29 Apr 2025 17:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A85229B05;
+	Tue, 29 Apr 2025 17:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q46+uDhG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nskUhpwA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2278F24397A;
-	Tue, 29 Apr 2025 17:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED0423C8D6;
+	Tue, 29 Apr 2025 17:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947118; cv=none; b=Y3VYQOUEMum4mR6KtaVZza7c6ET6IRigNVMnUo7Mi9mkPbyuefgWUqauMkZoWgqj89Xz8ZEGJwT8D4cPlSFnI+njLCgWg/MsvS3I+/V4D6M22xbtUqdLmaGCoZC4V4+Az0+tEv/ONKjolX63pNjfMSN6R4ro9mGDgrDi3M/Slz0=
+	t=1745946377; cv=none; b=bxLJbTi1TU0tSo8uW8UaIiy4w1AnnOX2DznVWKHjabQvsyGt5BsQ7Y/wDjJRh1fwROXSc8VD9eMadeeMuIbph4Ey30GlilBGcIuI11L6rmyOqwQZsPBsVKvqEDgQjfyYiy2XD3DqEbCNYYyB7wFtIJK1yI3ktd+sIBbPs8+JJAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947118; c=relaxed/simple;
-	bh=+9npQ6Lale+KaMfptes2W9SeNiFt4UM6x+brR74/1PQ=;
+	s=arc-20240116; t=1745946377; c=relaxed/simple;
+	bh=aQqetLqE0UIhKHxW/vii40IyshwQEcERJWLoY1N8BKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FFAqDLhRSKGG058/5tQiY4sxLTkdVFWyUHwc2vmL+BRkccWY4MsukxkUR/hwAe9oZvBuacHE6iQX5cq0x5KGU3SZvMOaUDc3lwDzOUdrG87FRmS+9GufXvlW+pW5ubHg7sKGDCg9ps8SPnzYheQkndvWJ231tkrVHwUO3rbFVMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q46+uDhG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FD0C4CEE3;
-	Tue, 29 Apr 2025 17:18:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A4wP0Q48ktqspvQWidMtca2PQSEZpqMcENaJVupUMnumBBKkkoYVoHyVUYzvf+/tKs27S+HERTutolWGbDhnRgF7jDLrUKPD+9ERmLuuF2FxcHaUX7NXZwF9vBWTRyPjKsz5PaxaDPzhuY3L9wj1CYd2wFy3VDdM8hGZmAx2i/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nskUhpwA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89386C4CEE3;
+	Tue, 29 Apr 2025 17:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947118;
-	bh=+9npQ6Lale+KaMfptes2W9SeNiFt4UM6x+brR74/1PQ=;
+	s=korg; t=1745946376;
+	bh=aQqetLqE0UIhKHxW/vii40IyshwQEcERJWLoY1N8BKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q46+uDhGdAEo4CzotKU7I47EANZJAObziheEDERxf7LJ/wCBTki5R3oxwQPzvcSFH
-	 0qM5oCM6dQoNzRNvRII5KfbVHA/VTIB8Tg4a17QohKpA1uh/GA9daUvrT4igP3jA3W
-	 TtLq0+LPb7JTFmGMfsiqS+wdo7ay60IeNCJiJPYI=
+	b=nskUhpwAEfsNv1wMiZR3GvBRDJkwdiHtfiI1eVC69OG3ZVdAwLcYIGrjyZjqCJ0UY
+	 7kipJwD7qQ80FMaS+4AMIdNxu4fJMpvzP9srcmyUTa1j+D4n+3kM++x9xIsHnq6yvS
+	 qhqKVSzV4P34qteOIZTC8D9WFrk+SYQEg7abKOMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guixin Liu <kanie@linux.alibaba.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Xiangyu Chen <xiangyu.chen@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 178/286] scsi: ufs: bsg: Set bsg_queue to NULL after removal
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 245/311] pwm: Let pwm_set_waveform() succeed even if lowlevel driver rounded up
 Date: Tue, 29 Apr 2025 18:41:22 +0200
-Message-ID: <20250429161115.227151652@linuxfoundation.org>
+Message-ID: <20250429161131.065560138@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guixin Liu <kanie@linux.alibaba.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit 1e95c798d8a7f70965f0f88d4657b682ff0ec75f upstream.
+[ Upstream commit 00e53d0f4baedd72196b65f00698b2a5a537dc2b ]
 
-Currently, this does not cause any issues, but I believe it is necessary to
-set bsg_queue to NULL after removing it to prevent potential use-after-free
-(UAF) access.
+Waveform parameters are supposed to be rounded down to the next value
+possible for the hardware. However when a requested value is too small,
+.round_waveform_tohw() is supposed to pick the next bigger value and
+return 1. Let pwm_set_waveform() behave in the same way.
 
-Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20241218014214.64533-3-kanie@linux.alibaba.com
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This creates consistency between pwm_set_waveform_might_sleep() with
+exact=false and pwm_round_waveform_might_sleep() +
+pwm_set_waveform_might_sleep() with exact=true.
+
+The PWM_DEBUG rounding check has to be adapted to only trigger if no
+uprounding happend.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Tested-by: Trevor Gamblin <tgamblin@baylibre.com>
+Link: https://lore.kernel.org/r/353dc6ae31be815e41fd3df89c257127ca0d1a09.1743844730.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/ufs/ufs_bsg.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/pwm/core.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/scsi/ufs/ufs_bsg.c
-+++ b/drivers/scsi/ufs/ufs_bsg.c
-@@ -175,6 +175,7 @@ void ufs_bsg_remove(struct ufs_hba *hba)
- 		return;
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index ccd54c089bab8..0e4df71c2cef1 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -322,7 +322,7 @@ static int __pwm_set_waveform(struct pwm_device *pwm,
+ 	const struct pwm_ops *ops = chip->ops;
+ 	char wfhw[WFHWSIZE];
+ 	struct pwm_waveform wf_rounded;
+-	int err;
++	int err, ret_tohw;
  
- 	bsg_remove_queue(hba->bsg_queue);
-+	hba->bsg_queue = NULL;
+ 	BUG_ON(WFHWSIZE < ops->sizeof_wfhw);
  
- 	device_del(bsg_dev);
- 	put_device(bsg_dev);
+@@ -332,16 +332,16 @@ static int __pwm_set_waveform(struct pwm_device *pwm,
+ 	if (!pwm_wf_valid(wf))
+ 		return -EINVAL;
+ 
+-	err = __pwm_round_waveform_tohw(chip, pwm, wf, &wfhw);
+-	if (err)
+-		return err;
++	ret_tohw = __pwm_round_waveform_tohw(chip, pwm, wf, &wfhw);
++	if (ret_tohw < 0)
++		return ret_tohw;
+ 
+ 	if ((IS_ENABLED(CONFIG_PWM_DEBUG) || exact) && wf->period_length_ns) {
+ 		err = __pwm_round_waveform_fromhw(chip, pwm, &wfhw, &wf_rounded);
+ 		if (err)
+ 			return err;
+ 
+-		if (IS_ENABLED(CONFIG_PWM_DEBUG) && !pwm_check_rounding(wf, &wf_rounded))
++		if (IS_ENABLED(CONFIG_PWM_DEBUG) && ret_tohw == 0 && !pwm_check_rounding(wf, &wf_rounded))
+ 			dev_err(&chip->dev, "Wrong rounding: requested %llu/%llu [+%llu], result %llu/%llu [+%llu]\n",
+ 				wf->duty_length_ns, wf->period_length_ns, wf->duty_offset_ns,
+ 				wf_rounded.duty_length_ns, wf_rounded.period_length_ns, wf_rounded.duty_offset_ns);
+@@ -382,7 +382,8 @@ static int __pwm_set_waveform(struct pwm_device *pwm,
+ 				wf_rounded.duty_length_ns, wf_rounded.period_length_ns, wf_rounded.duty_offset_ns,
+ 				wf_set.duty_length_ns, wf_set.period_length_ns, wf_set.duty_offset_ns);
+ 	}
+-	return 0;
++
++	return ret_tohw;
+ }
+ 
+ /**
+-- 
+2.39.5
+
 
 
 
