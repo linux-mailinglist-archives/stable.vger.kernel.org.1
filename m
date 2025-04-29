@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-137670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69EFFAA1479
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:16:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF0E3AA15EF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F2C5189925B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6829E9A1D15
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAAD24728A;
-	Tue, 29 Apr 2025 17:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584A72517AC;
+	Tue, 29 Apr 2025 17:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eq7RWASI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDyx72m3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A391244686;
-	Tue, 29 Apr 2025 17:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157412459EA;
+	Tue, 29 Apr 2025 17:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946768; cv=none; b=Igh/YNSoyCz+yxRYdxnbi6L+bZ41+52Az5byA5EUGsWom2lLlgrpKm+uwaX38ifm0uE+807YEtUWpGU46nc/i1WVRGsmx+kSQaAKURVOfJUjO10sFvhRRMU3AS14ZxqhqkrCz7fdfSsz3aI8tioWX+rai5qDIECimjwuPn9t1+k=
+	t=1745947534; cv=none; b=r30bIgkFMYb3P3FkCwLeTgyvBPO6unBEoPBm2G6OoCqOC0/qCAl+pvIXFaD8XgR6u0nrjJCxmnkE70A4r2bC/CEEb8l6sYHOxN/nSk3WSoYy8RWjRkhgbZ+Gn+XswGkmKP7K65iQ8fFnoKvVnOeP76r9G/1iuPagusVXoy3L4c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946768; c=relaxed/simple;
-	bh=6hzzxP4cNe2aIKihFVGEQCob0ws2SuhYTLJW9LwgUlI=;
+	s=arc-20240116; t=1745947534; c=relaxed/simple;
+	bh=11qJrq7XFR9MtHfpBjR+U0JXIUyHYmwDOTn5gXeghEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azL6wdFuQGpnTKUGyYTLTSFukNoculEe2src1JIfPBAEs2PhHQuQFYPgIjlu9SAyX6sgXLssj7zVH3g+19i5Qx7PgcVrxAawGdSDsu56ZeiE27ir6U81Xt71c6pqUXBrE6tvGfTAgSHGDHU3nfqj7+l0h+PQY5hCasPWRKO/0qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eq7RWASI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D72A1C4CEE3;
-	Tue, 29 Apr 2025 17:12:47 +0000 (UTC)
+	 MIME-Version; b=hLCEqqA+3jkzuaZiglOdc9aPtMALUOxA+rCEkERXSSWNYXXeJrqzPaD8AHjQwHJMlGy+1loozGi5AUOxJrqAEevbisnWktFLDmHCdMQvulCOvQYgQzCxyAXM+m6yWWNzxw8z8t8ezrrBpdTmci9EECIQnXDNcpUdXqMPP4NqYd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDyx72m3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7867BC4CEE3;
+	Tue, 29 Apr 2025 17:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946768;
-	bh=6hzzxP4cNe2aIKihFVGEQCob0ws2SuhYTLJW9LwgUlI=;
+	s=korg; t=1745947534;
+	bh=11qJrq7XFR9MtHfpBjR+U0JXIUyHYmwDOTn5gXeghEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eq7RWASIyAp0GUloB7YMt+FXJ9Tox2PumE4o5zeecIp6r1a+zapuan7IWHD9XCyLC
-	 NAo7aANXxjJEJ8kxEbiVmmCAMv5ayh9hQIehpsBVrTN6iABJHhFM67RY17Jl7d1FPm
-	 76M4QhoscqSuZoCeC5s5fpkzNeQI2hSjxvT2ahUQ=
+	b=xDyx72m3wXd7Bj0SNWkxqIg8esjTDih1jCohXulLZ2mHJzwGb616GPh68bQ8MwxgF
+	 xo5hmiNoejp4vqAVkFE+qNF2grYYCdEc3U6VoIYR8AeJlVZLeAIOMQkYfJjTOPOcII
+	 48AZ8dqmR0u1kDGIhTwzwC9HNFYwv5oIkB/wPh5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Dasu <kamal.dasu@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 062/286] mtd: rawnand: brcmnand: fix PM resume warning
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 025/280] of: resolver: Simplify of_resolve_phandles() using __free()
 Date: Tue, 29 Apr 2025 18:39:26 +0200
-Message-ID: <20250429161110.399020582@linuxfoundation.org>
+Message-ID: <20250429161116.134873836@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamal Dasu <kamal.dasu@broadcom.com>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-commit ddc210cf8b8a8be68051ad958bf3e2cef6b681c2 upstream.
+[ Upstream commit 5275e8b5293f65cc82a5ee5eab02dd573b911d6e ]
 
-Fixed warning on PM resume as shown below caused due to uninitialized
-struct nand_operation that checks chip select field :
-WARN_ON(op->cs >= nanddev_ntargets(&chip->base)
+Use the __free() cleanup to simplify of_resolve_phandles() and remove
+all the goto's.
 
-[   14.588522] ------------[ cut here ]------------
-[   14.588529] WARNING: CPU: 0 PID: 1392 at drivers/mtd/nand/raw/internals.h:139 nand_reset_op+0x1e0/0x1f8
-[   14.588553] Modules linked in: bdc udc_core
-[   14.588579] CPU: 0 UID: 0 PID: 1392 Comm: rtcwake Tainted: G        W          6.14.0-rc4-g5394eea10651 #16
-[   14.588590] Tainted: [W]=WARN
-[   14.588593] Hardware name: Broadcom STB (Flattened Device Tree)
-[   14.588598] Call trace:
-[   14.588604]  dump_backtrace from show_stack+0x18/0x1c
-[   14.588622]  r7:00000009 r6:0000008b r5:60000153 r4:c0fa558c
-[   14.588625]  show_stack from dump_stack_lvl+0x70/0x7c
-[   14.588639]  dump_stack_lvl from dump_stack+0x18/0x1c
-[   14.588653]  r5:c08d40b0 r4:c1003cb0
-[   14.588656]  dump_stack from __warn+0x84/0xe4
-[   14.588668]  __warn from warn_slowpath_fmt+0x18c/0x194
-[   14.588678]  r7:c08d40b0 r6:c1003cb0 r5:00000000 r4:00000000
-[   14.588681]  warn_slowpath_fmt from nand_reset_op+0x1e0/0x1f8
-[   14.588695]  r8:70c40dff r7:89705f41 r6:36b4a597 r5:c26c9444 r4:c26b0048
-[   14.588697]  nand_reset_op from brcmnand_resume+0x13c/0x150
-[   14.588714]  r9:00000000 r8:00000000 r7:c24f8010 r6:c228a3f8 r5:c26c94bc r4:c26b0040
-[   14.588717]  brcmnand_resume from platform_pm_resume+0x34/0x54
-[   14.588735]  r5:00000010 r4:c0840a50
-[   14.588738]  platform_pm_resume from dpm_run_callback+0x5c/0x14c
-[   14.588757]  dpm_run_callback from device_resume+0xc0/0x324
-[   14.588776]  r9:c24f8054 r8:c24f80a0 r7:00000000 r6:00000000 r5:00000010 r4:c24f8010
-[   14.588779]  device_resume from dpm_resume+0x130/0x160
-[   14.588799]  r9:c22539e4 r8:00000010 r7:c22bebb0 r6:c24f8010 r5:c22539dc r4:c22539b0
-[   14.588802]  dpm_resume from dpm_resume_end+0x14/0x20
-[   14.588822]  r10:c2204e40 r9:00000000 r8:c228a3fc r7:00000000 r6:00000003 r5:c228a414
-[   14.588826]  r4:00000010
-[   14.588828]  dpm_resume_end from suspend_devices_and_enter+0x274/0x6f8
-[   14.588848]  r5:c228a414 r4:00000000
-[   14.588851]  suspend_devices_and_enter from pm_suspend+0x228/0x2bc
-[   14.588868]  r10:c3502910 r9:c3501f40 r8:00000004 r7:c228a438 r6:c0f95e18 r5:00000000
-[   14.588871]  r4:00000003
-[   14.588874]  pm_suspend from state_store+0x74/0xd0
-[   14.588889]  r7:c228a438 r6:c0f934c8 r5:00000003 r4:00000003
-[   14.588892]  state_store from kobj_attr_store+0x1c/0x28
-[   14.588913]  r9:00000000 r8:00000000 r7:f09f9f08 r6:00000004 r5:c3502900 r4:c0283250
-[   14.588916]  kobj_attr_store from sysfs_kf_write+0x40/0x4c
-[   14.588936]  r5:c3502900 r4:c0d92a48
-[   14.588939]  sysfs_kf_write from kernfs_fop_write_iter+0x104/0x1f0
-[   14.588956]  r5:c3502900 r4:c3501f40
-[   14.588960]  kernfs_fop_write_iter from vfs_write+0x250/0x420
-[   14.588980]  r10:c0e14b48 r9:00000000 r8:c25f5780 r7:00443398 r6:f09f9f68 r5:c34f7f00
-[   14.588983]  r4:c042a88c
-[   14.588987]  vfs_write from ksys_write+0x74/0xe4
-[   14.589005]  r10:00000004 r9:c25f5780 r8:c02002fA0 r7:00000000 r6:00000000 r5:c34f7f00
-[   14.589008]  r4:c34f7f00
-[   14.589011]  ksys_write from sys_write+0x10/0x14
-[   14.589029]  r7:00000004 r6:004421c0 r5:00443398 r4:00000004
-[   14.589032]  sys_write from ret_fast_syscall+0x0/0x5c
-[   14.589044] Exception stack(0xf09f9fa8 to 0xf09f9ff0)
-[   14.589050] 9fa0:                   00000004 00443398 00000004 00443398 00000004 00000001
-[   14.589056] 9fc0: 00000004 00443398 004421c0 00000004 b6ecbd58 00000008 bebfbc38 0043eb78
-[   14.589062] 9fe0: 00440eb0 bebfbaf8 b6de18a0 b6e579e8
-[   14.589065] ---[ end trace 0000000000000000 ]---
-
-The fix uses the higher level nand_reset(chip, chipnr); where chipnr = 0, when
-doing PM resume operation in compliance with the controller support for single
-die nand chip. Switching from nand_reset_op() to nand_reset() implies more
-than just setting the cs field op->cs, it also reconfigures the data interface
-(ie. the timings). Tested and confirmed the NAND chip is in sync timing wise
-with host after the fix.
-
-Fixes: 97d90da8a886 ("mtd: nand: provide several helpers to do common NAND operations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Stable-dep-of: a46a0805635d ("of: resolver: Fix device node refcount leakage in of_resolve_phandles()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/resolver.c | 34 +++++++++++-----------------------
+ 1 file changed, 11 insertions(+), 23 deletions(-)
 
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -2914,7 +2914,7 @@ static int brcmnand_resume(struct device
- 		brcmnand_save_restore_cs_config(host, 1);
+diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
+index 5cf96776dd7d3..fce8bdac45f3e 100644
+--- a/drivers/of/resolver.c
++++ b/drivers/of/resolver.c
+@@ -250,24 +250,20 @@ static int adjust_local_phandle_references(struct device_node *local_fixups,
+ int of_resolve_phandles(struct device_node *overlay)
+ {
+ 	struct device_node *child, *local_fixups, *refnode;
+-	struct device_node *tree_symbols, *overlay_fixups;
++	struct device_node *overlay_fixups;
+ 	struct property *prop;
+ 	const char *refpath;
+ 	phandle phandle, phandle_delta;
+ 	int err;
  
- 		/* Reset the chip, required by some chips after power-up */
--		nand_reset_op(chip);
-+		nand_reset(chip, 0);
+-	tree_symbols = NULL;
+-
+ 	if (!overlay) {
+ 		pr_err("null overlay\n");
+-		err = -EINVAL;
+-		goto out;
++		return -EINVAL;
  	}
  
- 	return 0;
+ 	if (!of_node_check_flag(overlay, OF_DETACHED)) {
+ 		pr_err("overlay not detached\n");
+-		err = -EINVAL;
+-		goto out;
++		return -EINVAL;
+ 	}
+ 
+ 	phandle_delta = live_tree_max_phandle() + 1;
+@@ -279,7 +275,7 @@ int of_resolve_phandles(struct device_node *overlay)
+ 
+ 	err = adjust_local_phandle_references(local_fixups, overlay, phandle_delta);
+ 	if (err)
+-		goto out;
++		return err;
+ 
+ 	overlay_fixups = NULL;
+ 
+@@ -288,16 +284,13 @@ int of_resolve_phandles(struct device_node *overlay)
+ 			overlay_fixups = child;
+ 	}
+ 
+-	if (!overlay_fixups) {
+-		err = 0;
+-		goto out;
+-	}
++	if (!overlay_fixups)
++		return 0;
+ 
+-	tree_symbols = of_find_node_by_path("/__symbols__");
++	struct device_node __free(device_node) *tree_symbols = of_find_node_by_path("/__symbols__");
+ 	if (!tree_symbols) {
+ 		pr_err("no symbols in root of device tree.\n");
+-		err = -EINVAL;
+-		goto out;
++		return -EINVAL;
+ 	}
+ 
+ 	for_each_property_of_node(overlay_fixups, prop) {
+@@ -311,14 +304,12 @@ int of_resolve_phandles(struct device_node *overlay)
+ 		if (err) {
+ 			pr_err("node label '%s' not found in live devicetree symbols table\n",
+ 			       prop->name);
+-			goto out;
++			return err;
+ 		}
+ 
+ 		refnode = of_find_node_by_path(refpath);
+-		if (!refnode) {
+-			err = -ENOENT;
+-			goto out;
+-		}
++		if (!refnode)
++			return -ENOENT;
+ 
+ 		phandle = refnode->phandle;
+ 		of_node_put(refnode);
+@@ -328,11 +319,8 @@ int of_resolve_phandles(struct device_node *overlay)
+ 			break;
+ 	}
+ 
+-out:
+ 	if (err)
+ 		pr_err("overlay phandle fixup failed: %d\n", err);
+-	of_node_put(tree_symbols);
+-
+ 	return err;
+ }
+ EXPORT_SYMBOL_GPL(of_resolve_phandles);
+-- 
+2.39.5
+
 
 
 
