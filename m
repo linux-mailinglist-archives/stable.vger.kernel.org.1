@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A768BAA14A8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:18:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8E3AA1616
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FACF188C4DF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:15:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 492BF163C1B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA429252284;
-	Tue, 29 Apr 2025 17:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23B224503E;
+	Tue, 29 Apr 2025 17:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKTFa1jI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lr1MVXyw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D2625332E;
-	Tue, 29 Apr 2025 17:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEBB78F58;
+	Tue, 29 Apr 2025 17:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946909; cv=none; b=nXc0GGrk6/Nng+Nee7ZqIa9z/Etp4gOcAYLDql1ccaShJy1Dh5SNOTMg4XnWDIMi0jqGCwYbGbjAM7iZh6a3EOebzyn7vwVOMYc+ZL8HxwRU2lRQumjlomzhetz33jEpjWo8Iz9mhBLwtsINNMhVshZMgrfqko5bmOSXIru5Geo=
+	t=1745947769; cv=none; b=CMHtHYUnkr7gzpxwZlflRP9B2AP3rfiLe9Rpi52t1R84sje2lkUdc2UvYruscEXfNtVNZmh8HEgVfvfiOS6YLSb+fd8AHnP/drwoYuvDotA9czLa/9eI7hmqpLhezBGSR8iCJx6DjkkBuin6Dpq+8M5nizt28TbzvQk8Vbp8aME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946909; c=relaxed/simple;
-	bh=w1z04mstFzrLYqwMu/oxxvUiVejEq0VP633TliA3Bik=;
+	s=arc-20240116; t=1745947769; c=relaxed/simple;
+	bh=BTBsK2DVaKwCCzd/MnL7KiiEwxkLVBH536xApcG/7xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZYj/+4NXcpZPaolswESlngwCn/c09Bq1BtlDaF0m/VfvvNrI/IFPiQkDXFoKNgWDqYFbRHYfzSk+sELq6XR51ghnjweBzb6R65uc6iKNrvTG6LEB+pV76gA1Yu+/8U6i1YdAONJn/oTitG8+KemtUYnizfU8T+dnae6U/QwH+98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKTFa1jI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78744C4CEEF;
-	Tue, 29 Apr 2025 17:15:08 +0000 (UTC)
+	 MIME-Version; b=Drfw2/hTym1NePyJgH4G+1tHN6j8sFIievx1wDbMQ16X4vvep+lc2r44ugCZuKqML9sL/VSOOL+SX6YaHgMrJfl+5+N4TrSTQXbpLb4ZWmhk8/lAYIzbqzlwvmGqO3dkYi/XhMhwm4iWlUI3AZZLPKRUaarZM0ZvlYtU2/5Ln5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lr1MVXyw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20B1C4CEE9;
+	Tue, 29 Apr 2025 17:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946908;
-	bh=w1z04mstFzrLYqwMu/oxxvUiVejEq0VP633TliA3Bik=;
+	s=korg; t=1745947769;
+	bh=BTBsK2DVaKwCCzd/MnL7KiiEwxkLVBH536xApcG/7xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FKTFa1jIgfsEkvAVceULVkdKRR4XgdX17dEQqtS9gGfwGDYm5rbbjDDwNmQDUYJ+W
-	 to8MyDgiAc90dg8OZFPfAipuXhxmYTEk5ldo85MI4eWXcOhOIru5LpmmId9b6/SInd
-	 EPWIRn5DBrMy2WMU2ZjFV+ybmh+FokyZvEZigduE=
+	b=lr1MVXywnA6XCWtWk3RDJDU0QURH/FhwoFqGtxumY+LvommdyDQU02CozlA7EDry0
+	 5LpyzzLqgmRdQrrRFE2IWs/OxOIcWpzUVV37zCvqZk8cK7S9AU0xi0nNttRxP7E7be
+	 UphAwsix+qPCni0O7ABAuMmkrht/vs/9lB7JAoAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	syzbot+ed60da8d686dc709164c@syzkaller.appspotmail.com,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 109/286] RDMA/core: Silence oversized kvmalloc() warning
+Subject: [PATCH 6.12 072/280] tipc: fix NULL pointer dereference in tipc_mon_reinit_self()
 Date: Tue, 29 Apr 2025 18:40:13 +0200
-Message-ID: <20250429161112.342860676@linuxfoundation.org>
+Message-ID: <20250429161118.060635861@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +64,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Tung Nguyen <tung.quang.nguyen@est.tech>
 
-[ Upstream commit 9a0e6f15029e1a8a21e40f06fd05aa52b7f063de ]
+[ Upstream commit d63527e109e811ef11abb1c2985048fdb528b4cb ]
 
-syzkaller triggered an oversized kvmalloc() warning.
-Silence it by adding __GFP_NOWARN.
+syzbot reported:
 
-syzkaller log:
- WARNING: CPU: 7 PID: 518 at mm/util.c:665 __kvmalloc_node_noprof+0x175/0x180
- CPU: 7 UID: 0 PID: 518 Comm: c_repro Not tainted 6.11.0-rc6+ #6
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
- RIP: 0010:__kvmalloc_node_noprof+0x175/0x180
- RSP: 0018:ffffc90001e67c10 EFLAGS: 00010246
- RAX: 0000000000000100 RBX: 0000000000000400 RCX: ffffffff8149d46b
- RDX: 0000000000000000 RSI: ffff8881030fae80 RDI: 0000000000000002
- RBP: 000000712c800000 R08: 0000000000000100 R09: 0000000000000000
- R10: ffffc90001e67c10 R11: 0030ae0601000000 R12: 0000000000000000
- R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000000
- FS:  00007fde79159740(0000) GS:ffff88813bdc0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000020000180 CR3: 0000000105eb4005 CR4: 00000000003706b0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- Call Trace:
-  <TASK>
-  ib_umem_odp_get+0x1f6/0x390
-  mlx5_ib_reg_user_mr+0x1e8/0x450
-  ib_uverbs_reg_mr+0x28b/0x440
-  ib_uverbs_write+0x7d3/0xa30
-  vfs_write+0x1ac/0x6c0
-  ksys_write+0x134/0x170
-  ? __sanitizer_cov_trace_pc+0x1c/0x50
-  do_syscall_64+0x50/0x110
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+tipc: Node number set to 1055423674
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 3 UID: 0 PID: 6017 Comm: kworker/3:5 Not tainted 6.15.0-rc1-syzkaller-00246-g900241a5cc15 #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: events tipc_net_finalize_work
+RIP: 0010:tipc_mon_reinit_self+0x11c/0x210 net/tipc/monitor.c:719
+...
+RSP: 0018:ffffc9000356fb68 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000003ee87cba
+RDX: 0000000000000000 RSI: ffffffff8dbc56a7 RDI: ffff88804c2cc010
+RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000007
+R13: fffffbfff2111097 R14: ffff88804ead8000 R15: ffff88804ead9010
+FS:  0000000000000000(0000) GS:ffff888097ab9000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000f720eb00 CR3: 000000000e182000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ tipc_net_finalize+0x10b/0x180 net/tipc/net.c:140
+ process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
+ process_scheduled_works kernel/workqueue.c:3319 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
+ kthread+0x3c2/0x780 kernel/kthread.c:464
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+...
+RIP: 0010:tipc_mon_reinit_self+0x11c/0x210 net/tipc/monitor.c:719
+...
+RSP: 0018:ffffc9000356fb68 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000003ee87cba
+RDX: 0000000000000000 RSI: ffffffff8dbc56a7 RDI: ffff88804c2cc010
+RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000007
+R13: fffffbfff2111097 R14: ffff88804ead8000 R15: ffff88804ead9010
+FS:  0000000000000000(0000) GS:ffff888097ab9000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000f720eb00 CR3: 000000000e182000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
-Fixes: 37824952dc8f ("RDMA/odp: Use kvcalloc for the dma_list and page_list")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Link: https://patch.msgid.link/c6cb92379de668be94894f49c2cfa40e73f94d56.1742388096.git.leonro@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+There is a racing condition between workqueue created when enabling
+bearer and another thread created when disabling bearer right after
+that as follow:
+
+enabling_bearer                          | disabling_bearer
+---------------                          | ----------------
+tipc_disc_timeout()                      |
+{                                        | bearer_disable()
+ ...                                     | {
+ schedule_work(&tn->work);               |  tipc_mon_delete()
+ ...                                     |  {
+}                                        |   ...
+                                         |   write_lock_bh(&mon->lock);
+                                         |   mon->self = NULL;
+                                         |   write_unlock_bh(&mon->lock);
+                                         |   ...
+                                         |  }
+tipc_net_finalize_work()                 | }
+{                                        |
+ ...                                     |
+ tipc_net_finalize()                     |
+ {                                       |
+  ...                                    |
+  tipc_mon_reinit_self()                 |
+  {                                      |
+   ...                                   |
+   write_lock_bh(&mon->lock);            |
+   mon->self->addr = tipc_own_addr(net); |
+   write_unlock_bh(&mon->lock);          |
+   ...                                   |
+  }                                      |
+  ...                                    |
+ }                                       |
+ ...                                     |
+}                                        |
+
+'mon->self' is set to NULL in disabling_bearer thread and dereferenced
+later in enabling_bearer thread.
+
+This commit fixes this issue by validating 'mon->self' before assigning
+node address to it.
+
+Reported-by: syzbot+ed60da8d686dc709164c@syzkaller.appspotmail.com
+Fixes: 46cb01eeeb86 ("tipc: update mon's self addr when node addr generated")
+Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250417074826.578115-1-tung.quang.nguyen@est.tech
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/umem_odp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/tipc/monitor.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/umem_odp.c b/drivers/infiniband/core/umem_odp.c
-index af4af4789ef27..dd69b20ed286d 100644
---- a/drivers/infiniband/core/umem_odp.c
-+++ b/drivers/infiniband/core/umem_odp.c
-@@ -78,12 +78,14 @@ static inline int ib_init_umem_odp(struct ib_umem_odp *umem_odp,
- 
- 		npfns = (end - start) >> PAGE_SHIFT;
- 		umem_odp->pfn_list = kvcalloc(
--			npfns, sizeof(*umem_odp->pfn_list), GFP_KERNEL);
-+			npfns, sizeof(*umem_odp->pfn_list),
-+			GFP_KERNEL | __GFP_NOWARN);
- 		if (!umem_odp->pfn_list)
- 			return -ENOMEM;
- 
- 		umem_odp->dma_list = kvcalloc(
--			ndmas, sizeof(*umem_odp->dma_list), GFP_KERNEL);
-+			ndmas, sizeof(*umem_odp->dma_list),
-+			GFP_KERNEL | __GFP_NOWARN);
- 		if (!umem_odp->dma_list) {
- 			ret = -ENOMEM;
- 			goto out_pfn_list;
+diff --git a/net/tipc/monitor.c b/net/tipc/monitor.c
+index e2f19627e43d5..b45c5b91bc7af 100644
+--- a/net/tipc/monitor.c
++++ b/net/tipc/monitor.c
+@@ -716,7 +716,8 @@ void tipc_mon_reinit_self(struct net *net)
+ 		if (!mon)
+ 			continue;
+ 		write_lock_bh(&mon->lock);
+-		mon->self->addr = tipc_own_addr(net);
++		if (mon->self)
++			mon->self->addr = tipc_own_addr(net);
+ 		write_unlock_bh(&mon->lock);
+ 	}
+ }
 -- 
 2.39.5
 
