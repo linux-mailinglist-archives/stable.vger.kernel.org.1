@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-137263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4F5AA1275
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:53:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE967AA1690
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2219D1BA304C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 566753B2A63
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A3524C077;
-	Tue, 29 Apr 2025 16:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D973243958;
+	Tue, 29 Apr 2025 17:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZBpRkvT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndvlOcsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF2524C071;
-	Tue, 29 Apr 2025 16:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07C97E110;
+	Tue, 29 Apr 2025 17:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945547; cv=none; b=dnnmLFwiyYVUfjIBnw2EoqSaGrvb2+qQrQhrCgS6Xja5y6CfHuvjz/wXFZiJThViH0PVwaESPI669azLLjoj2xUtqJnpWY2+YDSAZ7GlOWprCGGqxN1w58IU8WNiRdRs1+fDOIrpZGxnVSnA/uT9F2ivEzgDrLleBab/WUjpsZg=
+	t=1745947930; cv=none; b=FpBZ2S+9YBvu/oSPBeddzmchGNRgcUJ/YgSZaIW1uKYxtur+vPoC6TNkNaoA3PP1LfDQXaotoCvSGC2/EmM9xgfjUus4VQ+NdsAGftwbf/79SIeFSlcsOxvl/aOW/fcQTxX17KUWm+l5zqvL7HvFEh6c7e3GQ54EUYQsfhIEbk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945547; c=relaxed/simple;
-	bh=z6wwGu5Nz4q+sgA3nKl7V3sl4hrwkMjsgoJMz+hWX58=;
+	s=arc-20240116; t=1745947930; c=relaxed/simple;
+	bh=2UhnSiXH3pIGkFp69ztW4pSWM03+hO8LS5ujWQ4B/Jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2YaZCq9wThHpKDH8E1UrhvdlvGURHppqzqkUt4ZVusz7Pq8lKLvkY3Z7rhfDBuxlFNujdgVGovswg+ooa6bqMEaCHaz2ijSJJ13jgL4dpBukCkvNIjTwMcqSYuSvKqHfNkxLftRdnBRca/NSGLnYaITpwR9f6IHHSHymwz4O8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZBpRkvT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922ADC4CEE3;
-	Tue, 29 Apr 2025 16:52:26 +0000 (UTC)
+	 MIME-Version; b=FS4CDDe8Ti962B8LtrsJMZ9uf3YK9tRzrsBwKnj0HxFztZS0DFJwQBfSq59g1QeV2VHeTh71SdkU5/zBLadBYrP4CB3y7JFdqVfyRqXSev0nsF2rSJ/FBVJ93grMnmjNP9hYlN7+MI9hropuLP5VfwDtY4megQXbsZ/LltQYePM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndvlOcsA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438ECC4CEE3;
+	Tue, 29 Apr 2025 17:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945547;
-	bh=z6wwGu5Nz4q+sgA3nKl7V3sl4hrwkMjsgoJMz+hWX58=;
+	s=korg; t=1745947930;
+	bh=2UhnSiXH3pIGkFp69ztW4pSWM03+hO8LS5ujWQ4B/Jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZBpRkvTaHoqdlZ4Vg2PN6qE9Jfd0A2r3dZrpprpvcmk49J6421E91I2V0FpLcH0b
-	 3MTExqDdFNYQnhoJtvH9QNc0bR2FXCXhm1uhYuz5KesmQfzulYU0T2ugF4IztTvhqt
-	 njVGOXpsCAFspnnU64B8qfn8HupwEYNANLxheIDE=
+	b=ndvlOcsA3IOz4bGtKZYMlBsmXrfdH4K5pc1SlYzSl2GFItsVrvrgO5eeJ9G1zy3rM
+	 yo2l4idXlQAo8LYohukJ/dNbm+643W7RA5guCQslO66FqmY+Ys7D5Qrqij97aA6DJr
+	 +AZ4WdELj/ckmXfq6YRi2Sn1OwxnKEDEn4cSKrHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
 	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 5.4 148/179] USB: storage: quirk for ADATA Portable HDD CH94
+Subject: [PATCH 6.12 148/280] USB: wdm: handle IO errors in wdm_wwan_port_start
 Date: Tue, 29 Apr 2025 18:41:29 +0200
-Message-ID: <20250429161055.375299003@linuxfoundation.org>
+Message-ID: <20250429161121.178907017@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Oliver Neukum <oneukum@suse.com>
 
-commit 9ab75eee1a056f896b87d139044dd103adc532b9 upstream.
+commit 9697f5efcf5fdea65b8390b5eb81bebe746ceedc upstream.
 
-Version 1.60 specifically needs this quirk.
-Version 2.00 is known good.
+In case submitting the URB fails we must undo
+what we've done so far.
 
+Fixes: cac6fb015f71 ("usb: class: cdc-wdm: WWAN framework integration")
 Cc: stable <stable@kernel.org>
 Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250403180004.343133-1-oneukum@suse.com
+Link: https://lore.kernel.org/r/20250401084749.175246-2-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_uas.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/class/cdc-wdm.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -83,6 +83,13 @@ UNUSUAL_DEV(0x0bc2, 0x331a, 0x0000, 0x99
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_REPORT_LUNS),
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -829,6 +829,7 @@ static struct usb_class_driver wdm_class
+ static int wdm_wwan_port_start(struct wwan_port *port)
+ {
+ 	struct wdm_device *desc = wwan_port_get_drvdata(port);
++	int rv;
  
-+/* Reported-by: Oliver Neukum <oneukum@suse.com> */
-+UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x0160,
-+		"ADATA",
-+		"Portable HDD CH94",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_NO_ATA_1X),
+ 	/* The interface is both exposed via the WWAN framework and as a
+ 	 * legacy usbmisc chardev. If chardev is already open, just fail
+@@ -848,7 +849,15 @@ static int wdm_wwan_port_start(struct ww
+ 	wwan_port_txon(port);
+ 
+ 	/* Start getting events */
+-	return usb_submit_urb(desc->validity, GFP_KERNEL);
++	rv = usb_submit_urb(desc->validity, GFP_KERNEL);
++	if (rv < 0) {
++		wwan_port_txoff(port);
++		desc->manage_power(desc->intf, 0);
++		/* this must be last lest we race with chardev open */
++		clear_bit(WDM_WWAN_IN_USE, &desc->flags);
++	}
 +
- /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
- UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x9999,
- 		"Initio Corporation",
++	return rv;
+ }
+ 
+ static void wdm_wwan_port_stop(struct wwan_port *port)
 
 
 
