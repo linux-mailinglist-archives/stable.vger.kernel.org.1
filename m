@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17637AA1716
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90AAFAA12CB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:58:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33FE27A01DE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2FC97A47AD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB028242D68;
-	Tue, 29 Apr 2025 17:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90151253346;
+	Tue, 29 Apr 2025 16:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iy+2HSOG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VL6gL8xU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6744C21ABC1;
-	Tue, 29 Apr 2025 17:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3858E253334;
+	Tue, 29 Apr 2025 16:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948612; cv=none; b=INMlpKvb0HmOCoG+StYhrse702N5v9DHxuCwUP2SgQvcOB0jKubggVXdDxH9DmY8RnM6/NN/I+nryzNDl1uQz8YSEmdty+PPDUdio59TFq85Y0LZtp63QXj/1Ty8ZU6cSwFKY9kztRKzj71zqkgiKuQleOP1aSuOzZj/sZKrf20=
+	t=1745945850; cv=none; b=XuirPXrndFSMvHucNKaNl0V5Wrtlkg+dFHZEFJyRDC1rMr0szlZlZtjDPcK7hwhBnQPB4+MZvKzeXuQjozTPtv6n4vzNxf4GH0rtkOFBTKGQT1eA23lcPdOFXLTSXqsreXS3Tdq0aMfrWhuXjlfuEgHgacDm/INhfxu/FbZQSsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948612; c=relaxed/simple;
-	bh=d9iUVIcb05VzhH2ztjcnKAuwqMZFcba7NNY7yttI7lY=;
+	s=arc-20240116; t=1745945850; c=relaxed/simple;
+	bh=hsA7nAGmkRh/Q9eC7kcwnzBzmaThCwd+71SBWmY3pxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPUKx6RZwSYwipAAoG5P/PZ2HBxQnCP0APSnbMrhnW3pJwuF12yOY+w3INQ/7G5fQaMCf41WszJFLxj0OEj6nN5sBjR/XO+10AbIk4YS2ioF8cq474ON26+RrcrLn8U4JBI32GAHFd7V7kT3LRmwBCwZKIcFY6qVy3NvfC4yCdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iy+2HSOG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8005C4CEE3;
-	Tue, 29 Apr 2025 17:43:30 +0000 (UTC)
+	 MIME-Version; b=E1BLhxfl1IvOHAM8Xy/MU2Wf2Vm1wblv/2fpGtaNDlmk/HympcPcgW+7XF8boJ1ISmSZoHIoTYXgGbxBxSPneQMfjEbMakrkmiFhItNji0Ipx5xqgxjHE6XYH5w7KrFl4Z/0KHN1Pd/EDORTCzW/OBwmCtWC2/7TgV/HDIGr5rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VL6gL8xU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDE0C4CEE9;
+	Tue, 29 Apr 2025 16:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948611;
-	bh=d9iUVIcb05VzhH2ztjcnKAuwqMZFcba7NNY7yttI7lY=;
+	s=korg; t=1745945850;
+	bh=hsA7nAGmkRh/Q9eC7kcwnzBzmaThCwd+71SBWmY3pxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iy+2HSOGpmafjBsm6PeMnqzsU+56E2TpljTq6ODUeCjrQqJcDZsK4sO4XgH+VK3uH
-	 9JM92a9CpqWwcmiFnvmeTo8Bvjkc4jhrAm8mUL8LKbFaLLN6GutTOcea34WN7AGGnY
-	 x6A1Ia0CML6dtmO5cMZDMhZye4dkUPBUyfMt3oDU=
+	b=VL6gL8xU2nOwynJCawmzMSh9sX6BBDw+8oW/QnDyXsjcdSZi24gig8glUNNjVXNBV
+	 Uqh4WuW+eFDD05ZcgkhSDORQg9gGTSjVvqmoKqtt1a4xtTRq1lUK2HeYwGCt1Bh3k6
+	 MxNUoIqOObsy3u/DHsKj/gK552ZO0myfEORKiux0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Pemberton <lists@philpem.me.uk>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 029/373] ata: libata-eh: Do not use ATAPI DMA for a device limited to PIO mode
-Date: Tue, 29 Apr 2025 18:38:26 +0200
-Message-ID: <20250429161124.334649667@linuxfoundation.org>
+Subject: [PATCH 6.14 070/311] net: dsa: mt7530: sync driver-specific behavior of MT7531 variants
+Date: Tue, 29 Apr 2025 18:38:27 +0200
+Message-ID: <20250429161123.910557898@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit 91ec84f8eaddbc93d7c62e363d68aeb7b89879c7 ]
+[ Upstream commit 497041d763016c2e8314d2f6a329a9b77c3797ca ]
 
-atapi_eh_request_sense() currently uses ATAPI DMA if the SATA controller
-has ATA_FLAG_PIO_DMA (PIO cmds via DMA) set.
+MT7531 standalone and MMIO variants found in MT7988 and EN7581 share
+most basic properties. Despite that, assisted_learning_on_cpu_port and
+mtu_enforcement_ingress were only applied for MT7531 but not for MT7988
+or EN7581, causing the expected issues on MMIO devices.
 
-However, ATA_FLAG_PIO_DMA is a flag that can be set by a low-level driver
-on a port at initialization time, before any devices are scanned.
+Apply both settings equally also for MT7988 and EN7581 by moving both
+assignments form mt7531_setup() to mt7531_setup_common().
 
-If a controller detects a connected device that only supports PIO, we set
-the flag ATA_DFLAG_PIO.
+This fixes unwanted flooding of packets due to unknown unicast
+during DA lookup, as well as issues with heterogenous MTU settings.
 
-Modify atapi_eh_request_sense() to not use ATAPI DMA if the connected
-device only supports PIO.
-
-Reported-by: Philip Pemberton <lists@philpem.me.uk>
-Closes: https://lore.kernel.org/linux-ide/c6722ee8-5e21-4169-af59-cbbae9edc02f@philpem.me.uk/
-Tested-by: Philip Pemberton <lists@philpem.me.uk>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250221015422.20687-2-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Fixes: 7f54cc9772ce ("net: dsa: mt7530: split-off common parts from mt7531_setup")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Chester A. Unal <chester.a.unal@arinc9.com>
+Link: https://patch.msgid.link/89ed7ec6d4fa0395ac53ad2809742bb1ce61ed12.1745290867.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-eh.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/dsa/mt7530.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 10742d72f44fb..f0b690b39bf7a 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -1479,8 +1479,15 @@ unsigned int atapi_eh_request_sense(struct ata_device *dev,
- 	tf.flags |= ATA_TFLAG_ISADDR | ATA_TFLAG_DEVICE;
- 	tf.command = ATA_CMD_PACKET;
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index 5883eb93efb11..22513f3d56db1 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -2541,6 +2541,9 @@ mt7531_setup_common(struct dsa_switch *ds)
+ 	struct mt7530_priv *priv = ds->priv;
+ 	int ret, i;
  
--	/* is it pointless to prefer PIO for "safety reasons"? */
--	if (ap->flags & ATA_FLAG_PIO_DMA) {
-+	/*
-+	 * Do not use DMA if the connected device only supports PIO, even if the
-+	 * port prefers PIO commands via DMA.
-+	 *
-+	 * Ideally, we should call atapi_check_dma() to check if it is safe for
-+	 * the LLD to use DMA for REQUEST_SENSE, but we don't have a qc.
-+	 * Since we can't check the command, perhaps we should only use pio?
-+	 */
-+	if ((ap->flags & ATA_FLAG_PIO_DMA) && !(dev->flags & ATA_DFLAG_PIO)) {
- 		tf.protocol = ATAPI_PROT_DMA;
- 		tf.feature |= ATAPI_PKT_DMA;
- 	} else {
++	ds->assisted_learning_on_cpu_port = true;
++	ds->mtu_enforcement_ingress = true;
++
+ 	mt753x_trap_frames(priv);
+ 
+ 	/* Enable and reset MIB counters */
+@@ -2688,9 +2691,6 @@ mt7531_setup(struct dsa_switch *ds)
+ 	if (ret)
+ 		return ret;
+ 
+-	ds->assisted_learning_on_cpu_port = true;
+-	ds->mtu_enforcement_ingress = true;
+-
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
