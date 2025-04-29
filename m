@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239A5AA14BD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:19:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C36E2AA1385
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B339F4C48D1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF80C1888B25
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A07325393F;
-	Tue, 29 Apr 2025 17:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC10424A06A;
+	Tue, 29 Apr 2025 17:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ye93wT19"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwOOlX9F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47067216605;
-	Tue, 29 Apr 2025 17:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4381DF73C;
+	Tue, 29 Apr 2025 17:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946994; cv=none; b=GS7s2fIaxTekphnl3+xZ2lzv9f67qS/WG6lNOQ06k6lfQ2fWtG8BNwH9aJ+k5bbcAr63OMCpP3os7yAZDIvn2CpUNPZodsdamDz+6c72/KIE+nGtP4IFVk0Mi32sa1UTxX+uEcOOYPqgWn0uQEsVxaH+OEgroydUfSIQnOipPDA=
+	t=1745946122; cv=none; b=ZR4k0hXWaCAplymh3fkgQQa9vmYT5mbh8ByvRQrOpJ/y1npCzCNjwXO2JP0Km1uFIw4vku/6O+5+gUM/iMcejXngiLqWlxCPPcfdKT43sQ768EnRFk1P5AyLa+pWZYvvBxi0HBBrguvbG7QfWM0HI+HbHeiKBOT7exPZ6CttAs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946994; c=relaxed/simple;
-	bh=N0SXPmlXWS+GgtJXsuDMKRFiroRd273mqOoiWFlr0VM=;
+	s=arc-20240116; t=1745946122; c=relaxed/simple;
+	bh=WxwJ6RO4I5fnsqOzgwzrsUZJ0vSTGwRyShSDnmrHVa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tf0I6EXdBQ2/nFviG0DPbmgPZQahgiOZImVlbWzaM21GSDwoGrdafXXYuI1tFmBCnA/26ESQLpAjA1bJUrnw+KhzTbqLhCFb+EKiMSbcHwQgivu7ls+SDn9PLTUKh7V6GxmRNm9KM99g+uqF1wCI93JnelHke1WWXI4xveP7lh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ye93wT19; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D8AC4CEE3;
-	Tue, 29 Apr 2025 17:16:33 +0000 (UTC)
+	 MIME-Version; b=ehPe6RjUsbLvJSOcG18GVdWaihGSqjRb1dvRmJ10CJafhbwGccM744CpEasTroeAIIPnn9s/a4cWIhsgX5hydF3BoY6vVJnoXlscShK7uhiVATCQPdvifp9FHdB0aszlmSBV0TEsZBf+OAVEncLqsEiJ75v8o5/bpB+f61vxZAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SwOOlX9F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2922AC4CEE3;
+	Tue, 29 Apr 2025 17:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946994;
-	bh=N0SXPmlXWS+GgtJXsuDMKRFiroRd273mqOoiWFlr0VM=;
+	s=korg; t=1745946122;
+	bh=WxwJ6RO4I5fnsqOzgwzrsUZJ0vSTGwRyShSDnmrHVa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ye93wT19c+yjGtoHQYZoexXqYi3qgWvbcWF0/Nrec7MMpXM0sk/xWcUXjYQylSWa2
-	 VLKu5/bFS/x9hJ2XQk+Xj06VwH3/Zqw3sA3s9yuQNTp5w5N+5boZl0m22xYZEUJmDj
-	 wqXdyD84M2R6L17vhLPJrgroyEPk0SK8+JMCAMMY=
+	b=SwOOlX9FQWtKbRZORarIRn1/d0ccxFQASpgbUPtBLZf2YKyE/51a58MCtlGBSq9r5
+	 5U2YlZtAZtkw78YN9H7i7hiPMvFnqU84h82jBLz6LZo/Q4dWB4bTNZoexSB/OWlAj8
+	 v99K4cESpHSnz21mMO0O35OtoHgW8m4FLVeNgMD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 5.10 096/286] PCI: Fix reference leak in pci_alloc_child_bus()
+	stable <stable@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.14 163/311] usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling
 Date: Tue, 29 Apr 2025 18:40:00 +0200
-Message-ID: <20250429161111.803522557@linuxfoundation.org>
+Message-ID: <20250429161127.718386757@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 1f2768b6a3ee77a295106e3a5d68458064923ede upstream.
+commit 8c531e0a8c2d82509ad97c6d3a1e6217c7ed136d upstream.
 
-If device_register(&child->dev) fails, call put_device() to explicitly
-release child->dev, per the comment at device_register().
+usb_phy_init() may return an error code if e.g. its implementation fails
+to prepare/enable some clocks. And properly rollback on probe error path
+by calling the counterpart usb_phy_shutdown().
 
-Found by code review.
+Found by Linux Verification Center (linuxtesting.org).
 
-Link: https://lore.kernel.org/r/20250202062357.872971-1-make24@iscas.ac.cn
-Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possible")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: stable@vger.kernel.org
+Fixes: be9cae2479f4 ("usb: chipidea: imx: Fix ULPI on imx53")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20250316102658.490340-4-pchelkin@ispras.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/probe.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/chipidea/ci_hdrc_imx.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1105,7 +1105,10 @@ static struct pci_bus *pci_alloc_child_b
- add_dev:
- 	pci_set_bus_msi_domain(child);
- 	ret = device_register(&child->dev);
--	WARN_ON(ret < 0);
-+	if (WARN_ON(ret < 0)) {
-+		put_device(&child->dev);
-+		return NULL;
-+	}
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -484,7 +484,11 @@ static int ci_hdrc_imx_probe(struct plat
+ 	    of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI) {
+ 		pdata.flags |= CI_HDRC_OVERRIDE_PHY_CONTROL;
+ 		data->override_phy_control = true;
+-		usb_phy_init(pdata.usb_phy);
++		ret = usb_phy_init(pdata.usb_phy);
++		if (ret) {
++			dev_err(dev, "Failed to init phy\n");
++			goto err_clk;
++		}
+ 	}
  
- 	pcibios_add_bus(child);
+ 	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
+@@ -493,7 +497,7 @@ static int ci_hdrc_imx_probe(struct plat
+ 	ret = imx_usbmisc_init(data->usbmisc_data);
+ 	if (ret) {
+ 		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
+-		goto err_clk;
++		goto phy_shutdown;
+ 	}
  
+ 	data->ci_pdev = ci_hdrc_add_device(dev,
+@@ -502,7 +506,7 @@ static int ci_hdrc_imx_probe(struct plat
+ 	if (IS_ERR(data->ci_pdev)) {
+ 		ret = PTR_ERR(data->ci_pdev);
+ 		dev_err_probe(dev, ret, "ci_hdrc_add_device failed\n");
+-		goto err_clk;
++		goto phy_shutdown;
+ 	}
+ 
+ 	if (data->usbmisc_data) {
+@@ -536,6 +540,9 @@ static int ci_hdrc_imx_probe(struct plat
+ 
+ disable_device:
+ 	ci_hdrc_remove_device(data->ci_pdev);
++phy_shutdown:
++	if (data->override_phy_control)
++		usb_phy_shutdown(data->phy);
+ err_clk:
+ 	clk_disable_unprepare(data->clk_wakeup);
+ err_wakeup_clk:
 
 
 
