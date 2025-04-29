@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A370AA1868
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:59:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2924FAA16DD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EACB4A0319
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31AD316AE48
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BBE12AE96;
-	Tue, 29 Apr 2025 17:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF0C1917E3;
+	Tue, 29 Apr 2025 17:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9PmNj/v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bf8KfDyS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0710A2512C6;
-	Tue, 29 Apr 2025 17:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEBD22DF91;
+	Tue, 29 Apr 2025 17:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949510; cv=none; b=hWZ3min1Y5iV79kZTQLJWB75dZ/7z7Ef1Jnn8r7I2higAoAijrN+xKZuBySBTrrNz2e3Qlj+lYdcCgXjL8t1IYgGPCU4LDlgMTSFFdLNICukvFFOtmxeyL3iDqRjO/g/TGoNLR/m4OwkdbpcdwYlA2msEon0ofkCHHeqJcxaKa8=
+	t=1745948397; cv=none; b=QeO0Az+/UrH6Y7dPOtTJuJZAj2YOlutxYnVNV+g3cFYqbtJP+jKgs9Fb6+3KB9kS3FgFYj+Ujm7fEfPU1G5Jo4m9HOa0i8vOu6iQ8U63IZ+suDb9ulOTAaa1X61xYDkRgiZGtiCCEvsuvnO5P3HL86+DIPye59nL0uUuuU6pNTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949510; c=relaxed/simple;
-	bh=aeuVLOPCkJZ7Mscr8vKlwdqUbHUKw98kfNTa+QQMhPM=;
+	s=arc-20240116; t=1745948397; c=relaxed/simple;
+	bh=Uq3kOkg5Re6q5tW8zZjdBo0P7jZIey35+v4HMUX8FcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kVbz4N+8NJ6mg4EmF8hG1Te2B1MyBRjBqRC/KYF/LNRf8AWRUbqHXkWlnHdhFgFbhplXiKearTECXMM5OOlmutkn7cIMpGpMgCz3cwsuX3E4eKlJvF/RjqYN8hoNLP348glBsZtewEbv7lr3sdOIzavHJIHxy0xcMR1wTQ6K21U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9PmNj/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78603C4CEE3;
-	Tue, 29 Apr 2025 17:58:29 +0000 (UTC)
+	 MIME-Version; b=Ub5bvbBu2zy7pMhCHUsJd5hqVuG0ot5mtjKg+mV5pFvb7Wbd6fR34M9558kZOON4ebUr1ViH6z5uSPl8p9wFaE2wVgrjHpVLvxJ5p8XnlJooc4YDFDkXpFbFHsZ8CZgs9MV78aMpf1IvTiiZwuHANMPR5mkix5viRBRJ0FmXVt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bf8KfDyS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCAEC4CEE3;
+	Tue, 29 Apr 2025 17:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949509;
-	bh=aeuVLOPCkJZ7Mscr8vKlwdqUbHUKw98kfNTa+QQMhPM=;
+	s=korg; t=1745948397;
+	bh=Uq3kOkg5Re6q5tW8zZjdBo0P7jZIey35+v4HMUX8FcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k9PmNj/v27aqIabEzR+fMNbEG1NS1PMOHzVBulC2duwQ1d5kVTe9OUYirlevXgugj
-	 l67+MnZWfQH5ecxJOyefD01MVQw5MRu4+xMlzMzcB3JusUTyoIH2rw81++Ayiz6kLk
-	 J9Z7aoVMg9RxeknjzoOz62AE6Q/6nLXcR92/Y6j8=
+	b=Bf8KfDySnpBsbSw9xKTQPH9NB7x6QqPijPGNfeA+9JCjcA+V4uCyag9LqYikpZ7NM
+	 BCad/q9cEAV67aFKQmDT/H66GETosXmVg0HGA91lLBa1Guisemj53Zq03E+r0AskaD
+	 O9L65V8bDsLsAk1LG6dXkaGn4InYOj13eM6cspdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Michael Mueller <mimu@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 340/373] KVM: s390: Dont use %pK through tracepoints
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.12 276/280] objtool: Silence more KCOV warnings, part 2
 Date: Tue, 29 Apr 2025 18:43:37 +0200
-Message-ID: <20250429161137.118122816@linuxfoundation.org>
+Message-ID: <20250429161126.426116042@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 6c9567e0850be2f0f94ab64fa6512413fd1a1eb1 ]
+commit 55c78035a1a8dfb05f1472018ce2a651701adb7d upstream.
 
-Restricted pointers ("%pK") are not meant to be used through TP_format().
-It can unintentionally expose security sensitive, raw pointer values.
+Similar to GCOV, KCOV can leave behind dead code and undefined behavior.
+Warnings related to those should be ignored.
 
-Use regular pointer formatting instead.
+The previous commit:
 
-Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Michael Mueller <mimu@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Message-ID: <20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  6b023c784204 ("objtool: Silence more KCOV warnings")
+
+... only did so for CONFIG_CGOV_KERNEL.  Also do it for CONFIG_KCOV, but
+for real this time.
+
+Fixes the following warning:
+
+  vmlinux.o: warning: objtool: synaptics_report_mt_data: unexpected end of section .text.synaptics_report_mt_data
+
+Fixes: 6b023c784204 ("objtool: Silence more KCOV warnings")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/a44ba16e194bcbc52c1cef3d3cd9051a62622723.1743481539.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202503282236.UhfRsF3B-lkp@intel.com/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kvm/trace-s390.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/Makefile.lib |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kvm/trace-s390.h b/arch/s390/kvm/trace-s390.h
-index 6f0209d45164f..9c5f546a2e1a3 100644
---- a/arch/s390/kvm/trace-s390.h
-+++ b/arch/s390/kvm/trace-s390.h
-@@ -56,7 +56,7 @@ TRACE_EVENT(kvm_s390_create_vcpu,
- 		    __entry->sie_block = sie_block;
- 		    ),
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -257,7 +257,7 @@ objtool-args-$(CONFIG_MITIGATION_SLS)
+ objtool-args-$(CONFIG_STACK_VALIDATION)			+= --stackval
+ objtool-args-$(CONFIG_HAVE_STATIC_CALL_INLINE)		+= --static-call
+ objtool-args-$(CONFIG_HAVE_UACCESS_VALIDATION)		+= --uaccess
+-objtool-args-$(CONFIG_GCOV_KERNEL)			+= --no-unreachable
++objtool-args-$(or $(CONFIG_GCOV_KERNEL),$(CONFIG_KCOV))	+= --no-unreachable
+ objtool-args-$(CONFIG_PREFIX_SYMBOLS)			+= --prefix=$(CONFIG_FUNCTION_PADDING_BYTES)
  
--	    TP_printk("create cpu %d at 0x%pK, sie block at 0x%pK",
-+	    TP_printk("create cpu %d at 0x%p, sie block at 0x%p",
- 		      __entry->id, __entry->vcpu, __entry->sie_block)
- 	);
- 
-@@ -255,7 +255,7 @@ TRACE_EVENT(kvm_s390_enable_css,
- 		    __entry->kvm = kvm;
- 		    ),
- 
--	    TP_printk("enabling channel I/O support (kvm @ %pK)\n",
-+	    TP_printk("enabling channel I/O support (kvm @ %p)\n",
- 		      __entry->kvm)
- 	);
- 
--- 
-2.39.5
-
+ objtool-args = $(objtool-args-y)					\
 
 
 
