@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FB9AA1A31
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62B33AA18D9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:05:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C5651887C0E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:17:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5DF698701C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198BB24889B;
-	Tue, 29 Apr 2025 18:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB6F25394B;
+	Tue, 29 Apr 2025 17:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeKVblVv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJ4E783e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8E2155A4E;
-	Tue, 29 Apr 2025 18:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35C4253934;
+	Tue, 29 Apr 2025 17:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950627; cv=none; b=cf0fsWFKVVui43F5mDy6WhTY1buXR09fJ1I88jrmz3Gw3pFhTUzxmDt8dpPsZNCZkxkEZhS0afxHqPPZvUhcuFsBpBse/3PJ6xn23V3CjcmDCN58tO6zEnlf6z7n47InsTVXIRWj4k8q/gESrwdVCsHMhYpSoFp2iyKDjM3zeUs=
+	t=1745949588; cv=none; b=uWEjzfZoqy6kjTdXM+2T6fUEDN7ttCvxDlvDROZaBBuEDiMy0MGaTDoHJD1GGDBk2efbFXJG7DHzXftq6eW9ihuqLqCFN9F9oepFL1oBmcCJTFEzZ3h3hFCulNS608i5ldpB2gnOAxIIKTHDrjuKgfePFp+mXQcoKtnE0syo2eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950627; c=relaxed/simple;
-	bh=6JFQocfNGQgnJkyZIOAs/qk7amQLFPN7vQ59sR1WdlQ=;
+	s=arc-20240116; t=1745949588; c=relaxed/simple;
+	bh=DqfbF0ocYrZ+dGmDyXSsdd5FLx0KHFongQhsqZHIL6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pzeF9V6lu8YycZBXft6I14kv/Pw4pdXaEfqQlcROKdgyb1UQ9judnevmIzTXOu0zObiD3m/kEf8aFpWzp/ld8nAJS/pw6utV0YKzS4FNir8YAv+Sf6jkXC0ZRgPKFV9XVpvzxaegZqhyxkf/nZgx7u8iSZ1H8Z0WKhg/qADJcT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeKVblVv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6EEC4CEE3;
-	Tue, 29 Apr 2025 18:17:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iyRoI7ZsiSwWzEL2Vg5zjnJ352XzE+cwT88UKGxyU8j2lbX0rCjicQQI6MtopBPgm41onL2IMjh6dRzFcZotEirEFrb/PdlgKrQngvyvtnL0wc4bgLnyvwJvvss80fqkLbGha7orbjvfZmBMtqH+HQbVXCjtEliJznHVb2GiKdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJ4E783e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C82DC4CEE3;
+	Tue, 29 Apr 2025 17:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950627;
-	bh=6JFQocfNGQgnJkyZIOAs/qk7amQLFPN7vQ59sR1WdlQ=;
+	s=korg; t=1745949588;
+	bh=DqfbF0ocYrZ+dGmDyXSsdd5FLx0KHFongQhsqZHIL6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WeKVblVvW0oLV6BIDYaSh2Ksj5/FnCRCF//3y+XNywPVnt+gKNo+lBZNBLTF+jS2S
-	 49qx9yQYedtC4mFjjZoPpGPBarN+iNT+jCTKFTUroL4u0KUtuchUrhLEye+7h4jrMd
-	 GHeadxj/nuNvVpihzYMKltisrb9PYK/7XYAYA5s8=
+	b=sJ4E783e/hax/2KUN9K3dW4XjyWwXzE7Kkn/zRWWK/KDkCpZsQjyjW4j33WUT5ElQ
+	 VZDqksLNOuh0L2NESHO17RmqQpm2hnW5Ty7D2rYMWvLlRUKb6QfMdl8GKlTlE2IO2h
+	 /YBGL3GBvkGU9BEa2iISOuOUELklyaT5a1P8xkR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	"stable@vger.kernel.org, Sasha Levin" <sashal@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaogang Chen <Xiaogang.Chen@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/204] udmabuf: fix a buf size overflow issue during udmabuf creation
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 366/373] net: dsa: mv88e6xxx: enable .port_set_policy() for 6320 family
 Date: Tue, 29 Apr 2025 18:44:03 +0200
-Message-ID: <20250429161105.759897550@linuxfoundation.org>
+Message-ID: <20250429161138.186119577@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaogang Chen <xiaogang.chen@amd.com>
+From: "Marek Beh�n" <kabel@kernel.org>
 
-[ Upstream commit 021ba7f1babd029e714d13a6bf2571b08af96d0f ]
+commit a2ef58e2c4aea4de166fc9832eb2b621e88c98d5 upstream.
 
-by casting size_limit_mb to u64  when calculate pglimit.
+Commit f3a2cd326e44 ("net: dsa: mv88e6xxx: introduce .port_set_policy")
+did not add the .port_set_policy() method for the 6320 family. Fix it.
 
-Signed-off-by: Xiaogang Chen<Xiaogang.Chen@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250321164126.329638-1-xiaogang.chen@amd.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f3a2cd326e44 ("net: dsa: mv88e6xxx: introduce .port_set_policy")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250317173250.28780-5-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/udmabuf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/mv88e6xxx/chip.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index d1fcdd1f9aaed..373282beeb606 100644
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -214,7 +214,7 @@ static long udmabuf_create(struct miscdevice *device,
- 	if (!ubuf)
- 		return -ENOMEM;
- 
--	pglimit = (size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
-+	pglimit = ((u64)size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
- 	for (i = 0; i < head->count; i++) {
- 		if (!IS_ALIGNED(list[i].offset, PAGE_SIZE))
- 			goto err;
--- 
-2.39.5
-
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -4597,6 +4597,7 @@ static const struct mv88e6xxx_ops mv88e6
+ 	.port_sync_link = mv88e6xxx_port_sync_link,
+ 	.port_set_speed_duplex = mv88e6185_port_set_speed_duplex,
+ 	.port_tag_remap = mv88e6095_port_tag_remap,
++	.port_set_policy = mv88e6352_port_set_policy,
+ 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
+ 	.port_set_ucast_flood = mv88e6352_port_set_ucast_flood,
+ 	.port_set_mcast_flood = mv88e6352_port_set_mcast_flood,
+@@ -4644,6 +4645,7 @@ static const struct mv88e6xxx_ops mv88e6
+ 	.port_sync_link = mv88e6xxx_port_sync_link,
+ 	.port_set_speed_duplex = mv88e6185_port_set_speed_duplex,
+ 	.port_tag_remap = mv88e6095_port_tag_remap,
++	.port_set_policy = mv88e6352_port_set_policy,
+ 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
+ 	.port_set_ucast_flood = mv88e6352_port_set_ucast_flood,
+ 	.port_set_mcast_flood = mv88e6352_port_set_mcast_flood,
 
 
 
