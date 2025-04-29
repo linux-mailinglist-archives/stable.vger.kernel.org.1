@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-138012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C0E7AA1635
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7859AAA13E6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E08E41686B3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77DAB18815C0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498AF253329;
-	Tue, 29 Apr 2025 17:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3765B2405E5;
+	Tue, 29 Apr 2025 17:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aaOfuSX9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9Y4RM6D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09029250C02;
-	Tue, 29 Apr 2025 17:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E7E211A0B;
+	Tue, 29 Apr 2025 17:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947837; cv=none; b=t9mTXscLbrYPEsQOi1irrbTLt6qfJazXt6FgnzYgYKWbUxa5IctYcq3yq472eqI9MIrhW9t2V7CWi8F0pBZTMvTbveTSKOOUhXNVMdOJdxa9eFYOMmREJ1M9UfZvVHkWiJhX3zgAPa1+oPuztGSNuNCWaeV0vQQvaELwrB5Aueo=
+	t=1745946394; cv=none; b=hXZgxU1pz7kWIhqGBLrHG0v3DFAYCZgb85nwolhLt6SUwDxBi3L0bZVnHu06JolOvcUoyekLEtkHLZ7sDWePHPfA9vGsFimhJbqpaRQ9MHTbt+D8JsT3isQj83uXGySdNMhBeEBjhJ+QNLG5uWhXl7UI6nIEELU1jfO/T75/wjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947837; c=relaxed/simple;
-	bh=U0TdRpUmbxeP+U5m5W3LxmATskm/GjD4ZWHt1kSz4m8=;
+	s=arc-20240116; t=1745946394; c=relaxed/simple;
+	bh=4Qt2wBqvlSbZ8lv2j1YHWjMaxg8fMANXQCgBUWdah2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fXAxOS3lhbLowy9Yhtti4G9xbD9+wAI8R9nLMjHPbG6i525rUVy/7XxwVVVV8VKmqF/f7O91WskS/wbCSOrGoCRZETeitXo/jR3b+HFclmWmBDd486V8MWmTzYLMKyERcst7XO2ET1IZpu/1gzWcqGDsxHUwzkOV3T8rX5G0zjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aaOfuSX9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236F9C4CEE9;
-	Tue, 29 Apr 2025 17:30:35 +0000 (UTC)
+	 MIME-Version; b=CnPm5ezbJ2U+0GLqqzQcCmCZof95BFRa13+E2XWwRqmyVbnXEO7oi77eAxUqxS+paVFtX2zlYYXMQwlBxxEH4p6z3itwtZ19C4M+mNrHXa51SulaBKgS/lm/KGOfcrbmIaC5hCW1ss4U+6XKaDK85qKSsChugV+o5dUkdeVAudI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9Y4RM6D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF9CC4CEE3;
+	Tue, 29 Apr 2025 17:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947836;
-	bh=U0TdRpUmbxeP+U5m5W3LxmATskm/GjD4ZWHt1kSz4m8=;
+	s=korg; t=1745946393;
+	bh=4Qt2wBqvlSbZ8lv2j1YHWjMaxg8fMANXQCgBUWdah2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aaOfuSX9kvAG7TmvWDF2p8j2sYFLMYxxwFzkhQ6gH+yW9vEkdtQ0h0n9qGPWaEZrM
-	 6cWIfqZaB4jrD0IC1TSYU1yDIB4WZXwA/2sR1cPRmusQ1/NdVzUCeBBIWSS6TgBUeW
-	 5mCzDtg/PtG8iByDs5Oq6whyu5+DToVDsB8hYiQs=
+	b=o9Y4RM6DoAEibXjYwkkycESnHVchrH5yw+/nvk/Ib36QU1KbrbPlfpwKNsQIr7zY6
+	 QPdB7mnBPRqccBbdxwc7XFhW9dFFz4teo5YFLDpYPHYzLZdEUCRlAvclXt7Ojp5tmE
+	 gRZ3C6KjS2VGCKLCquqZTqSgJ4SXMw9hdGVXppUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>
-Subject: [PATCH 6.12 118/280] ata: libata-scsi: Fix ata_msense_control_ata_feature()
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 222/311] objtool, panic: Disable SMAP in __stack_chk_fail()
 Date: Tue, 29 Apr 2025 18:40:59 +0200
-Message-ID: <20250429161119.938304993@linuxfoundation.org>
+Message-ID: <20250429161130.113365814@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 88474ad734fb2000805c63e01cc53ea930adf2c7 upstream.
+[ Upstream commit 72c774aa9d1e16bfd247096935e7dae194d84929 ]
 
-For the ATA features subpage of the control mode page, the T10 SAT-6
-specifications state that:
+__stack_chk_fail() can be called from uaccess-enabled code.  Make sure
+uaccess gets disabled before calling panic().
 
-For a MODE SENSE command, the SATL shall return the CDL_CTRL field value
-that was last set by an application client.
+Fixes the following warning:
 
-However, the function ata_msense_control_ata_feature() always sets the
-CDL_CTRL field to the 0x02 value to indicate support for the CDL T2A and
-T2B pages. This is thus incorrect and the value 0x02 must be reported
-only after the user enables the CDL feature, which is indicated with the
-ATA_DFLAG_CDL_ENABLED device flag. When this flag is not set, the
-CDL_CTRL field of the ATA feature subpage of the control mode page must
-report a value of 0x00.
+  kernel/trace/trace_branch.o: error: objtool: ftrace_likely_update+0x1ea: call to __stack_chk_fail() with UACCESS enabled
 
-Fix ata_msense_control_ata_feature() to report the correct values for
-the CDL_CTRL field, according to the enable/disable state of the device
-CDL feature.
-
-Fixes: df60f9c64576 ("scsi: ata: libata: Add ATA feature control sub-page translation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/a3e97e0119e1b04c725a8aa05f7bc83d98e657eb.1742852847.git.jpoimboe@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/panic.c        | 6 ++++++
+ tools/objtool/check.c | 5 ++++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -2325,8 +2325,8 @@ static unsigned int ata_msense_control_a
- 	 */
- 	put_unaligned_be16(ATA_FEATURE_SUB_MPAGE_LEN - 4, &buf[2]);
- 
--	if (dev->flags & ATA_DFLAG_CDL)
--		buf[4] = 0x02; /* Support T2A and T2B pages */
-+	if (dev->flags & ATA_DFLAG_CDL_ENABLED)
-+		buf[4] = 0x02; /* T2A and T2B pages enabled */
- 	else
- 		buf[4] = 0;
- 
+diff --git a/kernel/panic.c b/kernel/panic.c
+index d8635d5cecb25..f9f0c5148f6aa 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -832,9 +832,15 @@ device_initcall(register_warn_debugfs);
+  */
+ __visible noinstr void __stack_chk_fail(void)
+ {
++	unsigned long flags;
++
+ 	instrumentation_begin();
++	flags = user_access_save();
++
+ 	panic("stack-protector: Kernel stack is corrupted in: %pB",
+ 		__builtin_return_address(0));
++
++	user_access_restore(flags);
+ 	instrumentation_end();
+ }
+ EXPORT_SYMBOL(__stack_chk_fail);
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 0ca83c74c1f38..bbfd81f49802e 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -1189,12 +1189,15 @@ static const char *uaccess_safe_builtin[] = {
+ 	"__ubsan_handle_load_invalid_value",
+ 	/* STACKLEAK */
+ 	"stackleak_track_stack",
++	/* TRACE_BRANCH_PROFILING */
++	"ftrace_likely_update",
++	/* STACKPROTECTOR */
++	"__stack_chk_fail",
+ 	/* misc */
+ 	"csum_partial_copy_generic",
+ 	"copy_mc_fragile",
+ 	"copy_mc_fragile_handle_tail",
+ 	"copy_mc_enhanced_fast_string",
+-	"ftrace_likely_update", /* CONFIG_TRACE_BRANCH_PROFILING */
+ 	"rep_stos_alternative",
+ 	"rep_movs_alternative",
+ 	"__copy_user_nocache",
+-- 
+2.39.5
+
 
 
 
