@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-138036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF68AA164A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF98CAA14DA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3F3E188EF20
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8668F18964D3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461E8243958;
-	Tue, 29 Apr 2025 17:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49742522A8;
+	Tue, 29 Apr 2025 17:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vkL3bjXK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3i/QYKb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0187621883E;
-	Tue, 29 Apr 2025 17:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C1E248191;
+	Tue, 29 Apr 2025 17:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947910; cv=none; b=gRRHiKz90F6fP89BJ/1A99lryWI68rOLOqgYjK7Pu7FsqYIEQg+maeGQwxZVnhtSZGkYZm/9Cwhahynymj/cRa63+Ok3eqhA68EqyfclAuV3Mh93Sn5cqJlam7kO3HfUAjATNJwcye4DLJlfczt3dXVYEx5huI/zkxZ6NZ4AZ7E=
+	t=1745947000; cv=none; b=kp+A6cpUXbtmtXZ/jjZ8Y8v4fuz3wUf1pJtwBKvBoD822D3BrRITYXwDiVeuSjr0fw1HPQ+Ca+wk2Aa/hf/xoUdBGyeXmQ/oPJ+vOIhcQ1mRSF5VheK3hWlsKL5OswPKuohl7Yu0BOGi6aO/C8NR/A9wH4J7jv2iajDqJg/zado=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947910; c=relaxed/simple;
-	bh=VBoBhOAWxnV8xwNa6w+B0YURCCy1m4xCY7Fg55PC+F4=;
+	s=arc-20240116; t=1745947000; c=relaxed/simple;
+	bh=tIh6ITPi9SvjJ+M3FQqIo0ADUMoGyi3hJ0RlC0xNDro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuR1v4og4qkeIU9lYTFLlGucRzgKsJjgjiHKGbxJ8hcK9lPLrty5yAAAsTefstsZ9Nycv09pFmcz9bV4AEi5ZeJK39xvx2BGpXIhIH6n9E7uQoid0RpIvnt6MOiUlwvAbSoETv1oiOB7UoLgWqHDLDhbXRqbgXL9k8sbmBBA1iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vkL3bjXK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72740C4CEE3;
-	Tue, 29 Apr 2025 17:31:49 +0000 (UTC)
+	 MIME-Version; b=sg5CZn2SO+8Mo8IoUvbdlcT3DWgbVJ2L9RolN3EHKC4Z3opcZ7vkpXHZTNBI7ARyh0T+demMsEG3BK4dYNyqTjTVBxYVb3qdjMaBIhr/1T8vB9oP1w68dQsvoYPcwpHUUA6X7VY/ut6u/P2MgnpQ+OJI4nHs6SIojBObKGWpqd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3i/QYKb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C41EC4CEE9;
+	Tue, 29 Apr 2025 17:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947909;
-	bh=VBoBhOAWxnV8xwNa6w+B0YURCCy1m4xCY7Fg55PC+F4=;
+	s=korg; t=1745947000;
+	bh=tIh6ITPi9SvjJ+M3FQqIo0ADUMoGyi3hJ0RlC0xNDro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vkL3bjXKSOJ8jnvsXuYnrXdtTcit7Y0YIQCXylgpLJHnP8JqN8N6H8tVHTchDDAuD
-	 lHuRx6xbfsFoN/XqOPDPg1DqOiCirs+EJNVa9fYKlzWyUke1kHALHss2eIrSwEDrL5
-	 Gg6pFA+AfGyHvwjm/oWFH4F0Yw7i0Yd9eDNrScxQ=
+	b=K3i/QYKbGlwr4oblRzMEqQIQIIVHWS+HhjoD9nq/j0May/UegeZJQlUqiMuVwJA4B
+	 Xu9nswqeJssusHN0u5SsNBMPbtMCisBajqMBFpFtFrYPHvdPL8+JbonqZR8Cgsd1Lt
+	 B/Z4YfZfuEYjoMpUCYGaJzX5XoXC2UTaIvX1c+ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.12 102/280] drm: panel: jd9365da: fix reset signal polarity in unprepare
+	Denis Arefev <arefev@swemel.ru>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 139/286] drm/amd/pm/powerplay: Prevent division by zero
 Date: Tue, 29 Apr 2025 18:40:43 +0200
-Message-ID: <20250429161119.284703035@linuxfoundation.org>
+Message-ID: <20250429161113.590889142@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit 095c8e61f4c71cd4630ee11a82e82cc341b38464 upstream.
+commit 4b8c3c0d17c07f301011e2908fecd2ebdcfe3d1c upstream.
 
-commit a8972d5a49b4 ("drm: panel: jd9365da-h3: fix reset signal polarity")
-fixed reset signal polarity in jadard_dsi_probe() and jadard_prepare().
+The user can set any speed value.
+If speed is greater than UINT_MAX/8, division by zero is possible.
 
-It was not done in jadard_unprepare() because of an incorrect assumption
-about reset line handling in power off mode. After looking into the
-datasheet, it now appears that before disabling regulators, the reset line
-is deasserted first, and if reset_before_power_off_vcioo is true, then the
-reset line is asserted.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fix reset polarity by inverting gpiod_set_value() second argument in
-in jadard_unprepare().
-
-Fixes: 6b818c533dd8 ("drm: panel: Add Jadard JD9365DA-H3 DSI panel")
-Fixes: 2b976ad760dc ("drm/panel: jd9365da: Support for kd101ne3-40ti MIPI-DSI panel")
-Fixes: a8972d5a49b4 ("drm: panel: jd9365da-h3: fix reset signal polarity")
+Fixes: c52dcf49195d ("drm/amd/pp: Avoid divide-by-zero in fan_ctrl_set_fan_speed_rpm")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250417195507.778731-1-hugo@hugovil.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250417195507.778731-1-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c |    4 ++--
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-+++ b/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-@@ -129,11 +129,11 @@ static int jadard_unprepare(struct drm_p
- {
- 	struct jadard *jadard = panel_to_jadard(panel);
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
+@@ -311,10 +311,10 @@ int vega10_fan_ctrl_set_fan_speed_rpm(st
+ 	int result = 0;
  
--	gpiod_set_value(jadard->reset, 1);
-+	gpiod_set_value(jadard->reset, 0);
- 	msleep(120);
+ 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
+-	    speed == 0 ||
++	    (!speed || speed > UINT_MAX/8) ||
+ 	    (speed < hwmgr->thermal_controller.fanInfo.ulMinRPM) ||
+ 	    (speed > hwmgr->thermal_controller.fanInfo.ulMaxRPM))
+-		return -1;
++		return -EINVAL;
  
- 	if (jadard->desc->reset_before_power_off_vcioo) {
--		gpiod_set_value(jadard->reset, 0);
-+		gpiod_set_value(jadard->reset, 1);
- 
- 		usleep_range(1000, 2000);
- 	}
+ 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl))
+ 		result = vega10_fan_ctrl_stop_smc_fan_control(hwmgr);
 
 
 
