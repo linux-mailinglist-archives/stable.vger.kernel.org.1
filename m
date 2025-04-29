@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3916AA14EC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4F5AA1275
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:53:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49DFA166AE2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2219D1BA304C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771261C6B4;
-	Tue, 29 Apr 2025 17:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A3524C077;
+	Tue, 29 Apr 2025 16:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvnWx8B1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZBpRkvT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1815324291A;
-	Tue, 29 Apr 2025 17:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF2524C071;
+	Tue, 29 Apr 2025 16:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947142; cv=none; b=M9vtuxzhnVooAzI0AtStXV69sIuNzn7KsZg0kkyo+D9EB7u5nsYz/eZPb/0SYIN/519Kv0W+aybPgfWc4/ve2zu+g43KUdNe/wYXWC+IP4PzLAFPsvBRsgrkhR8RsDm7qQ6XNLFyK6tPIejfNMOGxndk2twxPIWoW2th+UMR3r0=
+	t=1745945547; cv=none; b=dnnmLFwiyYVUfjIBnw2EoqSaGrvb2+qQrQhrCgS6Xja5y6CfHuvjz/wXFZiJThViH0PVwaESPI669azLLjoj2xUtqJnpWY2+YDSAZ7GlOWprCGGqxN1w58IU8WNiRdRs1+fDOIrpZGxnVSnA/uT9F2ivEzgDrLleBab/WUjpsZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947142; c=relaxed/simple;
-	bh=Pjd03rHM5CXdXf2Tkjz8FmOEMTUNpg7RWwqJ++zNsnM=;
+	s=arc-20240116; t=1745945547; c=relaxed/simple;
+	bh=z6wwGu5Nz4q+sgA3nKl7V3sl4hrwkMjsgoJMz+hWX58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMc42oUyNow85nKWGNJG78VK1z1u/DNm7NHcHpuhHK7EDWiEpSeL19mwJTZsFlEjA3me7sCtkdwq7Efre6RH5FX9sNICdSrgUtuHxttS2hLW+2jPbF0Vg12VMtyFDpsVb/yi54a6hElqSFeQM2XeoK4UYiT/bai/4oWmv5I36NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvnWx8B1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A80EC4CEE3;
-	Tue, 29 Apr 2025 17:19:01 +0000 (UTC)
+	 MIME-Version; b=l2YaZCq9wThHpKDH8E1UrhvdlvGURHppqzqkUt4ZVusz7Pq8lKLvkY3Z7rhfDBuxlFNujdgVGovswg+ooa6bqMEaCHaz2ijSJJ13jgL4dpBukCkvNIjTwMcqSYuSvKqHfNkxLftRdnBRca/NSGLnYaITpwR9f6IHHSHymwz4O8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZBpRkvT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922ADC4CEE3;
+	Tue, 29 Apr 2025 16:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947142;
-	bh=Pjd03rHM5CXdXf2Tkjz8FmOEMTUNpg7RWwqJ++zNsnM=;
+	s=korg; t=1745945547;
+	bh=z6wwGu5Nz4q+sgA3nKl7V3sl4hrwkMjsgoJMz+hWX58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZvnWx8B1YLsYJQQALy3wIVVh7xc6QPVodfHA6lGfjYlnJ64lwGkoMC/hmPiMRtn3+
-	 wZ0/bHjpfRUvPLQ0XkUOIhbVdOfcCGAo67AztZtrOQM4ghDRMZmArNmdFUCpfmLzKV
-	 zQlxzkUoUQubpUhvs4JQlv5JkpZNT+W5z+GRhaR8=
+	b=bZBpRkvTaHoqdlZ4Vg2PN6qE9Jfd0A2r3dZrpprpvcmk49J6421E91I2V0FpLcH0b
+	 3MTExqDdFNYQnhoJtvH9QNc0bR2FXCXhm1uhYuz5KesmQfzulYU0T2ugF4IztTvhqt
+	 njVGOXpsCAFspnnU64B8qfn8HupwEYNANLxheIDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhishek Sahu <abhsahu@nvidia.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Feng Liu <Feng.Liu3@windriver.com>,
-	He Zhe <Zhe.He@windriver.com>
-Subject: [PATCH 5.10 185/286] vfio/pci: fix memory leak during D3hot to D0 transition
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 5.4 148/179] USB: storage: quirk for ADATA Portable HDD CH94
 Date: Tue, 29 Apr 2025 18:41:29 +0200
-Message-ID: <20250429161115.582857220@linuxfoundation.org>
+Message-ID: <20250429161055.375299003@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhishek Sahu <abhsahu@nvidia.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit eadf88ecf6ac7d6a9f47a76c6055d9a1987a8991 upstream.
+commit 9ab75eee1a056f896b87d139044dd103adc532b9 upstream.
 
-If 'vfio_pci_core_device::needs_pm_restore' is set (PCI device does
-not have No_Soft_Reset bit set in its PMCSR config register), then
-the current PCI state will be saved locally in
-'vfio_pci_core_device::pm_save' during D0->D3hot transition and same
-will be restored back during D3hot->D0 transition.
-For saving the PCI state locally, pci_store_saved_state() is being
-used and the pci_load_and_free_saved_state() will free the allocated
-memory.
+Version 1.60 specifically needs this quirk.
+Version 2.00 is known good.
 
-But for reset related IOCTLs, vfio driver calls PCI reset-related
-API's which will internally change the PCI power state back to D0. So,
-when the guest resumes, then it will get the current state as D0 and it
-will skip the call to vfio_pci_set_power_state() for changing the
-power state to D0 explicitly. In this case, the memory pointed by
-'pm_save' will never be freed. In a malicious sequence, the state changing
-to D3hot followed by VFIO_DEVICE_RESET/VFIO_DEVICE_PCI_HOT_RESET can be
-run in a loop and it can cause an OOM situation.
-
-This patch frees the earlier allocated memory first before overwriting
-'pm_save' to prevent the mentioned memory leak.
-
-Fixes: 51ef3a004b1e ("vfio/pci: Restore device state on PM transition")
-Signed-off-by: Abhishek Sahu <abhsahu@nvidia.com>
-Link: https://lore.kernel.org/r/20220217122107.22434-2-abhsahu@nvidia.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-[Minor context change fixed]
-Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250403180004.343133-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/pci/vfio_pci.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/usb/storage/unusual_uas.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/vfio/pci/vfio_pci.c
-+++ b/drivers/vfio/pci/vfio_pci.c
-@@ -299,6 +299,19 @@ int vfio_pci_set_power_state(struct vfio
- 	if (!ret) {
- 		/* D3 might be unsupported via quirk, skip unless in D3 */
- 		if (needs_save && pdev->current_state >= PCI_D3hot) {
-+			/*
-+			 * The current PCI state will be saved locally in
-+			 * 'pm_save' during the D3hot transition. When the
-+			 * device state is changed to D0 again with the current
-+			 * function, then pci_store_saved_state() will restore
-+			 * the state and will free the memory pointed by
-+			 * 'pm_save'. There are few cases where the PCI power
-+			 * state can be changed to D0 without the involvement
-+			 * of the driver. For these cases, free the earlier
-+			 * allocated memory first before overwriting 'pm_save'
-+			 * to prevent the memory leak.
-+			 */
-+			kfree(vdev->pm_save);
- 			vdev->pm_save = pci_store_saved_state(pdev);
- 		} else if (needs_restore) {
- 			pci_load_and_free_saved_state(pdev, &vdev->pm_save);
+--- a/drivers/usb/storage/unusual_uas.h
++++ b/drivers/usb/storage/unusual_uas.h
+@@ -83,6 +83,13 @@ UNUSUAL_DEV(0x0bc2, 0x331a, 0x0000, 0x99
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_NO_REPORT_LUNS),
+ 
++/* Reported-by: Oliver Neukum <oneukum@suse.com> */
++UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x0160,
++		"ADATA",
++		"Portable HDD CH94",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_NO_ATA_1X),
++
+ /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
+ UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x9999,
+ 		"Initio Corporation",
 
 
 
