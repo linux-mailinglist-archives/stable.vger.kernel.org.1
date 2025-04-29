@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E139AA14DE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04421AA1236
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FCC71BC152D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD4631BA20C0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D6D22A4F4;
-	Tue, 29 Apr 2025 17:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BDA24E000;
+	Tue, 29 Apr 2025 16:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcGGMYsv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGSle1zZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5CE24C098;
-	Tue, 29 Apr 2025 17:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DD324A06A;
+	Tue, 29 Apr 2025 16:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947015; cv=none; b=ZNPyN/6DCgEiNna9mW7ON1hxULVd+BhgDREZZFv8+rCwzf1YaTQSbA5zkwEXhTphLqSRZZZk6nJz73aZVVyqUr7qzfzj7OCrwOdkSYcWBU2huBjY7BQ2wZyOelSKpApQZlCawlXjPkx/0rsi90IIuvdT4BcOG0hgy18Z+mUZACk=
+	t=1745945424; cv=none; b=gRoYPpJOOR7v8A4F/UyJ6vRt4ZeVzCdJpMPadu/uWjJvSMF/7/rdft7jxE1G4475wxnCDyVoGMEl1CtxPrF+ydXq0JvKCjVl5hpm/OXoLTFUbZ6FWmvG4cXK2RCsLFMsJwnV0/q+IHPtt8cvcBdtA+M1KAc3P9ywoiItgfoGWtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947015; c=relaxed/simple;
-	bh=zCbc9xb6XgRw3gLP1t4B7HNLCHCf+LrQ9Av2BngNjIs=;
+	s=arc-20240116; t=1745945424; c=relaxed/simple;
+	bh=CMvyS22X/4+ehGRJgPbhA61Xk605VJy0scmzXYBsgCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cH1H9KNztkWdKWLcHLQKJpQVO/GuHP+bwKjGqVybAUim4/XqQZtXJy5smGik3zzkI3q0pnq8HoFFurazxMTISp4bTWMjwPb58z02RctQhYVG5rF5z26vYOmtUExZic8GXJcsnAnlWWN2N4HslQnAP/Twolx1rOlSBujjsf6TikY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcGGMYsv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35208C4CEE3;
-	Tue, 29 Apr 2025 17:16:54 +0000 (UTC)
+	 MIME-Version; b=akEytDJxTDge/kKG0VnaWZfEl67fhFKXwKMiUYnEhbewUGOZ5I7BnoPLwv3WQgMATDTkmrJ/4sGFZCb0xGY5mTRO3Muta2jgaQWps/b5kDVqK1B3QKBLLGHkKN8kQmK/B1IxeYo+UVzAFQmOsmyClx9avK8y5xK0CPpwT3nT2/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGSle1zZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96261C4CEEA;
+	Tue, 29 Apr 2025 16:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947014;
-	bh=zCbc9xb6XgRw3gLP1t4B7HNLCHCf+LrQ9Av2BngNjIs=;
+	s=korg; t=1745945424;
+	bh=CMvyS22X/4+ehGRJgPbhA61Xk605VJy0scmzXYBsgCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcGGMYsvjPntJJBF6KPkAkD9iSeSfN03FOyS4U8VrOsPVqQT24gnS9/4Jn7cOuhPE
-	 xPTScjaicEFP8w/0hImcClo1Lq5ZGnC7Qiz0Xj7yHNnL1bOVeKpPFK7bq5LJhw1G3K
-	 THX//OTWDL07oIxU4KMSpuqUhQNwxyOAbcSPu6rs=
+	b=pGSle1zZ6lggb0raqiVvkravZp9hb2v5Wn9+a+liCldCguGePEU/U65qcyaJucXCN
+	 M6WUZp0aWwbJV0Qj5mowb3+VnkKO4Ew42IW2iVtx0cfDAqSXBiR9+yXJBXm2ibi9w0
+	 yOtJA0Dh8psbdHI3dEB9xdmVNmdYp7pfMt5qMZRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 5.10 144/286] cpufreq: Reference count policy in cpufreq_update_limits()
+	Thorsten Leemhuis <linux@leemhuis.info>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	kdevops <kdevops@lists.linux.dev>
+Subject: [PATCH 5.4 107/179] module: sign with sha512 instead of sha1 by default
 Date: Tue, 29 Apr 2025 18:40:48 +0200
-Message-ID: <20250429161113.810325717@linuxfoundation.org>
+Message-ID: <20250429161053.731336325@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Thorsten Leemhuis <linux@leemhuis.info>
 
-commit 9e4e249018d208678888bdf22f6b652728106528 upstream.
+commit f3b93547b91ad849b58eb5ab2dd070950ad7beb3 upstream.
 
-Since acpi_processor_notify() can be called before registering a cpufreq
-driver or even in cases when a cpufreq driver is not registered at all,
-cpufreq_update_limits() needs to check if a cpufreq driver is present
-and prevent it from being unregistered.
+Switch away from using sha1 for module signing by default and use the
+more modern sha512 instead, which is what among others Arch, Fedora,
+RHEL, and Ubuntu are currently using for their kernels.
 
-For this purpose, make it call cpufreq_cpu_get() to obtain a cpufreq
-policy pointer for the given CPU and reference count the corresponding
-policy object, if present.
+Sha1 has not been considered secure against well-funded opponents since
+2005[1]; since 2011 the NIST and other organizations furthermore
+recommended its replacement[2]. This is why OpenSSL on RHEL9, Fedora
+Linux 41+[3], and likely some other current and future distributions
+reject the creation of sha1 signatures, which leads to a build error of
+allmodconfig configurations:
 
-Fixes: 5a25e3f7cc53 ("cpufreq: intel_pstate: Driver-specific handling of _PPC updates")
-Closes: https://lore.kernel.org/linux-acpi/Z-ShAR59cTow0KcR@mail-itl
-Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/1928789.tdWV9SEqCh@rjwysocki.net
-[do not use __free(cpufreq_cpu_put) in a backport]
-Signed-off-by: Marek Marczykowski-GÃ³recki <marmarek@invisiblethingslab.com>
+  80A20474797F0000:error:03000098:digital envelope routines:do_sigver_init:invalid digest:crypto/evp/m_sigver.c:342:
+  make[4]: *** [.../certs/Makefile:53: certs/signing_key.pem] Error 1
+  make[4]: *** Deleting file 'certs/signing_key.pem'
+  make[4]: *** Waiting for unfinished jobs....
+  make[3]: *** [.../scripts/Makefile.build:478: certs] Error 2
+  make[2]: *** [.../Makefile:1936: .] Error 2
+  make[1]: *** [.../Makefile:224: __sub-make] Error 2
+  make[1]: Leaving directory '...'
+  make: *** [Makefile:224: __sub-make] Error 2
+
+This change makes allmodconfig work again and sets a default that is
+more appropriate for current and future users, too.
+
+Link: https://www.schneier.com/blog/archives/2005/02/cryptanalysis_o.html [1]
+Link: https://csrc.nist.gov/projects/hash-functions [2]
+Link: https://fedoraproject.org/wiki/Changes/OpenSSLDistrustsha1SigVer [3]
+Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Tested-by: kdevops <kdevops@lists.linux.dev> [0]
+Link: https://github.com/linux-kdevops/linux-modules-kpd/actions/runs/11420092929/job/31775404330 [0]
+Link: https://lore.kernel.org/r/52ee32c0c92afc4d3263cea1f8a1cdc809728aff.1729088288.git.linux@leemhuis.info
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ init/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2593,10 +2593,18 @@ EXPORT_SYMBOL(cpufreq_update_policy);
-  */
- void cpufreq_update_limits(unsigned int cpu)
- {
-+	struct cpufreq_policy *policy;
-+
-+	policy = cpufreq_cpu_get(cpu);
-+	if (!policy)
-+		return;
-+
- 	if (cpufreq_driver->update_limits)
- 		cpufreq_driver->update_limits(cpu);
- 	else
- 		cpufreq_update_policy(cpu);
-+
-+	cpufreq_cpu_put(policy);
- }
- EXPORT_SYMBOL_GPL(cpufreq_update_limits);
- 
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -2077,6 +2077,7 @@ comment "Do not forget to sign required
+ choice
+ 	prompt "Which hash algorithm should modules be signed with?"
+ 	depends on MODULE_SIG
++	default MODULE_SIG_SHA512
+ 	help
+ 	  This determines which sort of hashing algorithm will be used during
+ 	  signature generation.  This algorithm _must_ be built into the kernel
 
 
 
