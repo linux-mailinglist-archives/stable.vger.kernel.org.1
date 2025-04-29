@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E92AA1940
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2CA9AA18E8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52A5A4E2D4A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08BAB9A40B6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6533F22AE68;
-	Tue, 29 Apr 2025 18:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546E12512C6;
+	Tue, 29 Apr 2025 18:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1dUOM1o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ry7Xx1Lm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A7A40C03;
-	Tue, 29 Apr 2025 18:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B3C3FFD;
+	Tue, 29 Apr 2025 18:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950056; cv=none; b=ZKgFL8am4pktC3z8VULpghrY0ES7UlizCxpCx3givCQ/UKjadCpfGX5srS3Y5NYnyBe68RPSsqDeIKcD5pdHq9tnyU0nmJA8oXZmfQEDhcIiHygVLrta99btqp38bku3Ks77nyCcCayjt198MW1LI87ZooADV1TnUBo4OrYoe3k=
+	t=1745949614; cv=none; b=cgkxZKzzIPy5JziB3A/X4XzmzgIYDkEO8LdWEyIUSYCTzq62N9EUL6ax5yVQ6YM6gurd8JgRVa9mm5GZhxWyeC9LnWXQgk6pIIy8DNOm+XkfBurRfnKjgok7B5Ei9NAgOZkEROvdMD0uZDSICGGbwHtuj+BvED8PpOCo5kGLbk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950056; c=relaxed/simple;
-	bh=twAfeZUaP2agdJqFkCSe7i4Kqe7Fzfp1j1ACQF2xrjs=;
+	s=arc-20240116; t=1745949614; c=relaxed/simple;
+	bh=Qc9kSb1FQHxbwIDfMnenj8ki59a4aTq3ho15MkJkzyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eWn80HPwS/TV+U7VDtk076un/BHlYGjgCukIiZG/ZFkPilj999/awCui/jsnsPkvPN/e2BlH6zCjpjJUIKHwLmdK3nh4GoQTJhr81PK4+8wC/LjXo8/ZzprUIxFtVGPxxBnPghFIkaedjt2qz/BBM4DT3xvvjKKrgc/asnrOxwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1dUOM1o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84781C4CEE3;
-	Tue, 29 Apr 2025 18:07:35 +0000 (UTC)
+	 MIME-Version; b=CyF8izLmEIPSX/DHCpTGmsH7AF/vZX1U0RWqj4sPmxXYqYpf/X10xzbLdrijhfTXeaTqwiDeqMSFgKmnNVy72gEzgdQskrhG+vwDuZn5oHJYpjq2o9z+hbFvhYJqLZHHVAGEBEFfX131F+OKnk0wmtwuCTTtaNzQ2bHA8gfJk5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ry7Xx1Lm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740ADC4CEE3;
+	Tue, 29 Apr 2025 18:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950056;
-	bh=twAfeZUaP2agdJqFkCSe7i4Kqe7Fzfp1j1ACQF2xrjs=;
+	s=korg; t=1745949613;
+	bh=Qc9kSb1FQHxbwIDfMnenj8ki59a4aTq3ho15MkJkzyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1dUOM1o9UpqPu9xzuUe8oQtZSy1hcYWfD29jMifSqezY9IFrBwi05qAFQQrBM5AA
-	 njfNb67cAnVx4M9GGR8K6duH0FJEoIfWOMWdnzuEGYRp6WcdfpS257kPAk5RFwCKoG
-	 yd6Mo3+qoPduR9ugGtKDCJVhd+zsGgbuqyv45FgI=
+	b=ry7Xx1LmAI0UoESBXoGq8XCLhxeihTVThcB8n1rXO/xfZU+iGmuLVf3ADyX992/SJ
+	 HPQVm5HOI2ifiVvhcLHiLptHZtrWGHEPmMrn/h3tjYLO8glERNRLhsio+JYuauNE3S
+	 xftn7ikYMMtXdKWEbcNZf8aMWLXdFKgjhHiPccI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Salomon Dushimirimana <salomondush@google.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/167] scsi: pm80xx: Set phy_attached to zero when device is gone
+	Ross Lagerwall <ross.lagerwall@citrix.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.15 373/373] PCI: Release resource invalidated by coalescing
 Date: Tue, 29 Apr 2025 18:44:10 +0200
-Message-ID: <20250429161057.474863330@linuxfoundation.org>
+Message-ID: <20250429161138.475585812@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Ross Lagerwall <ross.lagerwall@citrix.com>
 
-[ Upstream commit f7b705c238d1483f0a766e2b20010f176e5c0fb7 ]
+commit e54223275ba1bc6f704a6bab015fcd2ae4f72572 upstream.
 
-When a fatal error occurs, a phy down event may not be received to set
-phy->phy_attached to zero.
+When contiguous windows are coalesced by pci_register_host_bridge(), the
+second resource is expanded to include the first, and the first is
+invalidated and consequently not added to the bus. However, it remains in
+the resource hierarchy.  For example, these windows:
 
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
-Link: https://lore.kernel.org/r/20250319230305.3172920-1-salomondush@google.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  fec00000-fec7ffff : PCI Bus 0000:00
+  fec80000-fecbffff : PCI Bus 0000:00
+
+are coalesced into this, where the first resource remains in the tree with
+start/end zeroed out:
+
+  00000000-00000000 : PCI Bus 0000:00
+  fec00000-fecbffff : PCI Bus 0000:00
+
+In some cases (e.g. the Xen scratch region), this causes future calls to
+allocate_resource() to choose an inappropriate location which the caller
+cannot handle.
+
+Fix by releasing the zeroed-out resource and removing it from the resource
+hierarchy.
+
+[bhelgaas: commit log]
+Fixes: 7c3855c423b1 ("PCI: Coalesce host bridge contiguous apertures")
+Link: https://lore.kernel.org/r/20230525153248.712779-1-ross.lagerwall@citrix.com
+Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org	# v5.16+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/pm8001/pm8001_sas.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/probe.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
-index 8e3f2f9ddaacd..a87c3d7e3e5ca 100644
---- a/drivers/scsi/pm8001/pm8001_sas.c
-+++ b/drivers/scsi/pm8001/pm8001_sas.c
-@@ -720,6 +720,7 @@ static void pm8001_dev_gone_notify(struct domain_device *dev)
- 			spin_lock_irqsave(&pm8001_ha->lock, flags);
- 		}
- 		PM8001_CHIP_DISP->dereg_dev_req(pm8001_ha, device_id);
-+		pm8001_ha->phy[pm8001_dev->attached_phy].phy_attached = 0;
- 		pm8001_free_dev(pm8001_dev);
- 	} else {
- 		pm8001_dbg(pm8001_ha, DISC, "Found dev has gone.\n");
--- 
-2.39.5
-
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -999,8 +999,10 @@ static int pci_register_host_bridge(stru
+ 	resource_list_for_each_entry_safe(window, n, &resources) {
+ 		offset = window->offset;
+ 		res = window->res;
+-		if (!res->flags && !res->start && !res->end)
++		if (!res->flags && !res->start && !res->end) {
++			release_resource(res);
+ 			continue;
++		}
+ 
+ 		list_move_tail(&window->node, &bridge->windows);
+ 
 
 
 
