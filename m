@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5101DAA15E6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 678CDAA1480
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C44A63BF6EE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B300F16B780
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686B22517AF;
-	Tue, 29 Apr 2025 17:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E365B24397A;
+	Tue, 29 Apr 2025 17:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNQGtugI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvNUW5wt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F45D2459EA;
-	Tue, 29 Apr 2025 17:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B60221DA7;
+	Tue, 29 Apr 2025 17:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947540; cv=none; b=P0V4oVWbLmtxW2uTw1ahSerePW1X7Wtqbg0QjyOxv8q5dlT6CIubRJgHB0Tcpu+U655vU30L0K9bwzCplLKn1vi8Mq2dO7lIuQpUfLoQ8KJtzRhGZ2mV4zAxXhd/h45SC7Wf0gvpAV3ExN5yxe7kZ/or9Z5v07L0546BuH2iMmk=
+	t=1745946893; cv=none; b=MilZde4qd5n+k7tTf2HTcb0PVdHI/Q38lAs2aFJ83MkbgaxsNglBPVbiRACoSVOmt7FN6IYd+Ene/jgjUsyh/fQe5Ayn4SSH0Q/sCF4E7Fp7lAapj03SKi0t/CoaFXK7EL0h5s5/UTfVQPwzass5pyqUf6kDQ2ZWep4JrZOrSLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947540; c=relaxed/simple;
-	bh=fXHW/yQ+mFvPfHfeWErh3prKFBh6gpKxhWaH3jvb7Lc=;
+	s=arc-20240116; t=1745946893; c=relaxed/simple;
+	bh=IriIdFnnHwXQEhEJago4HWG5UmrK6Cu/lQIEXwne+Is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyMLTdXAT55euQKXr7LCEUuNmEoFugTGRwCR+lF6kDTeOKnBOb5LpWXKF85EbHuDymU0THgIA05pOPEPT4DsDUR72fksFRfvlzKdRrIKxIgNTXWNmp4E5sXfYLSrsc7ZL+5FALn2cNpMoirDHcCmwLq1A7RFZaCKxTDKkRwtns0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNQGtugI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8630CC4CEE3;
-	Tue, 29 Apr 2025 17:25:39 +0000 (UTC)
+	 MIME-Version; b=kRpXH4JfbUGRL2ZtjE7iMmflLx12SDGiCK1EUBwI3RcNTZ4mr5KzPKyO7uEtup0+uafHoVepOK+6gvJkeXPdevMKHt4VZlav5soTgx4XMM6AU9JFtuFjrW6s1Bt8k+810kliAsfHuZ4Aqhtq6lS866HkzgPU36YM8iM9kki+qpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvNUW5wt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13722C4CEE3;
+	Tue, 29 Apr 2025 17:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947540;
-	bh=fXHW/yQ+mFvPfHfeWErh3prKFBh6gpKxhWaH3jvb7Lc=;
+	s=korg; t=1745946893;
+	bh=IriIdFnnHwXQEhEJago4HWG5UmrK6Cu/lQIEXwne+Is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zNQGtugITohX0svMCCMoPdDtbzQG22yyB9khLjtxElSyd7MWYQf4gggDwm/i9GsH2
-	 p92HbrIGDrsabOVrbtoSZ1NlQ6+9WN1WnDO4+FPbrnBYOGOXO/IHqRqWGKf2UVOrid
-	 WIs2PnlnNV4Eyl2uDbmSxeFEbmPDJsjjFICm6Jwg=
+	b=BvNUW5wtJVz+31ytiynD4BcwJxpQ44O8YyBdEhxHviIw0enBXFMDTWB1kSc2gJF+x
+	 pfAFCNtTmMBrnea7y/I5iVfLp33hmQNTRY2hocMauvkdBHCrvOawUccA+JTnqBBBj4
+	 vVy+KnCp/HnhkgWqT1k+F8ZPtx23QxREyJRQ+4B0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/280] of: resolver: Fix device node refcount leakage in of_resolve_phandles()
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 063/286] media: streamzap: prevent processing IR data on URB failure
 Date: Tue, 29 Apr 2025 18:39:27 +0200
-Message-ID: <20250429161116.175375301@linuxfoundation.org>
+Message-ID: <20250429161110.438488893@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit a46a0805635d07de50c2ac71588345323c13b2f9 ]
+commit 549f6d348167fb2f7800ed7c8d4bce9630c74498 upstream.
 
-In of_resolve_phandles(), refcount of device node @local_fixups will be
-increased if the for_each_child_of_node() exits early, but nowhere to
-decrease the refcount, so cause refcount leakage for the node.
+If streamzap_callback() receives an urb with any non-critical error
+status, i.e. any error code other than -ECONNRESET, -ENOENT or -ESHUTDOWN,
+it will try to process IR data, ignoring a possible transfer failure.
 
-Fix by using __free() on @local_fixups.
+Make streamzap_callback() process IR data only when urb->status is 0.
+Move processing logic to a separate function to make code cleaner and
+more similar to the URB completion handlers in other RC drivers.
 
-Fixes: da56d04c806a ("of/resolver: Switch to new local fixups format.")
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 19770693c354 ("V4L/DVB: staging/lirc: add lirc_streamzap driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-9-93e3a2659aa7@quicinc.com
-[robh: Use __free() instead]
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/resolver.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/rc/streamzap.c |   68 ++++++++++++++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
-index fce8bdac45f3e..7d935908b5431 100644
---- a/drivers/of/resolver.c
-+++ b/drivers/of/resolver.c
-@@ -249,8 +249,9 @@ static int adjust_local_phandle_references(struct device_node *local_fixups,
-  */
- int of_resolve_phandles(struct device_node *overlay)
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -179,39 +179,10 @@ static void sz_push_half_space(struct st
+ 	sz_push_full_space(sz, value & SZ_SPACE_MASK);
+ }
+ 
+-/*
+- * streamzap_callback - usb IRQ handler callback
+- *
+- * This procedure is invoked on reception of data from
+- * the usb remote.
+- */
+-static void streamzap_callback(struct urb *urb)
++static void sz_process_ir_data(struct streamzap_ir *sz, int len)
  {
--	struct device_node *child, *local_fixups, *refnode;
-+	struct device_node *child, *refnode;
- 	struct device_node *overlay_fixups;
-+	struct device_node __free(device_node) *local_fixups = NULL;
- 	struct property *prop;
- 	const char *refpath;
- 	phandle phandle, phandle_delta;
--- 
-2.39.5
-
+-	struct streamzap_ir *sz;
+ 	unsigned int i;
+-	int len;
+-
+-	if (!urb)
+-		return;
+-
+-	sz = urb->context;
+-	len = urb->actual_length;
+-
+-	switch (urb->status) {
+-	case -ECONNRESET:
+-	case -ENOENT:
+-	case -ESHUTDOWN:
+-		/*
+-		 * this urb is terminated, clean up.
+-		 * sz might already be invalid at this point
+-		 */
+-		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
+-		return;
+-	default:
+-		break;
+-	}
+ 
+-	dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
+ 	for (i = 0; i < len; i++) {
+ 		dev_dbg(sz->dev, "sz->buf_in[%d]: %x\n",
+ 			i, (unsigned char)sz->buf_in[i]);
+@@ -264,6 +235,43 @@ static void streamzap_callback(struct ur
+ 	}
+ 
+ 	ir_raw_event_handle(sz->rdev);
++}
++
++/*
++ * streamzap_callback - usb IRQ handler callback
++ *
++ * This procedure is invoked on reception of data from
++ * the usb remote.
++ */
++static void streamzap_callback(struct urb *urb)
++{
++	struct streamzap_ir *sz;
++	int len;
++
++	if (!urb)
++		return;
++
++	sz = urb->context;
++	len = urb->actual_length;
++
++	switch (urb->status) {
++	case 0:
++		dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
++		sz_process_ir_data(sz, len);
++		break;
++	case -ECONNRESET:
++	case -ENOENT:
++	case -ESHUTDOWN:
++		/*
++		 * this urb is terminated, clean up.
++		 * sz might already be invalid at this point
++		 */
++		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
++		return;
++	default:
++		break;
++	}
++
+ 	usb_submit_urb(urb, GFP_ATOMIC);
+ 
+ 	return;
 
 
 
