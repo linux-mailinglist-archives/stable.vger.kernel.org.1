@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-137364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08093AA12F5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:00:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83495AA1322
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09B854A623F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:58:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112AC1BA6C91
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051092522BA;
-	Tue, 29 Apr 2025 16:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45E224EA90;
+	Tue, 29 Apr 2025 16:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4pwB7/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WomPLyC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E962528E4;
-	Tue, 29 Apr 2025 16:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827C324E000;
+	Tue, 29 Apr 2025 16:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945847; cv=none; b=E8bqPvH4mOto1xZN8mUdpGwBiS5KC1+FW1G5DT1i/WMYqFU7sk+ou1pRgx8XFNDFHqDXam0PI3JfC7ssY1M+INKlyw38wrfQM5KZgL/FpEQhHw6Q73Ql2JpvgFuwvXoRcE4m0uhUoz1S+/Cg/SuhUVPaMjRH2ceY1nwGJFMQPGg=
+	t=1745945881; cv=none; b=XYQYCExhoc25kyDniUfAMVJYuqai0yEZK/glk24ApIA8Oa/17f5y4WE1IYWJigmMlUb4w/iH1n/XNG3owVZv2Go6ERa/LSNOddbTSgNko2c1j03uAv/RnrTPPbeYf28rNXuj3vbeR016SPI51X9/anm6LENGNvO55x2PlpkQa+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945847; c=relaxed/simple;
-	bh=qmqFfx2CPot2lqoD1qgdVZ0b4rboO4XRkpVkKiaDJL4=;
+	s=arc-20240116; t=1745945881; c=relaxed/simple;
+	bh=voHCXKiJim7djPRlwbyhyUhc31BbdBFmkwpbV2IIG34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOH5tpHfQhMoWpisN4d8fVsrjJpVSTeP4XyA14OCiV5zzd+0PxGbiKpuqvlL5uIrTg7QFL+oT9vw6pnn8KlNAnLlH0Zb7QUgN7BMGNV8Yv9SWo8UQNE1e/k097JNbNxnFJKJrY95vOXCtwu6vJASGkR/hwYCiL7WxTYx6iZdPM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4pwB7/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941F0C4CEE3;
-	Tue, 29 Apr 2025 16:57:26 +0000 (UTC)
+	 MIME-Version; b=hlZtW21lfB3miC8r0e2ce1rRYaMyaO/7zqwfs+a7apfj3o0dtzzZVeHKM9z/e0XVvwet9x4jn9f3AU+McBs2i6PBnNsRzK+GZYyN1RbL/0ziRhnADTjDGGy9aFL7IeitBYtKV8Zb3XKV0tEdZWDwi723p7feQ8oSEFvxYVneSHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WomPLyC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB30C4CEE9;
+	Tue, 29 Apr 2025 16:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945847;
-	bh=qmqFfx2CPot2lqoD1qgdVZ0b4rboO4XRkpVkKiaDJL4=;
+	s=korg; t=1745945881;
+	bh=voHCXKiJim7djPRlwbyhyUhc31BbdBFmkwpbV2IIG34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4pwB7/+lPBijvAwsUzLhhBBP4eyklib9CLT1tKGrYsBNabutoV9TwNjL1O3O6Mnd
-	 3MF0Gy1k7gpFltNUtMOkKQ4XKNtHEAy+6YWw5BPQ38j1/P0FX3N1t2MCchmSJCbfEw
-	 fMPAW8iMTVwefyVsrXSM+MlBqLTrM57Z+BrHmr+c=
+	b=1WomPLyCeDwJMN9DFO4J4+TJKKcsyhojaeYgMpAB2UxhpHrR9vaAMS+8nuXUCeZSR
+	 cv6+6EE3SKaBBXzHYVHoxcqFtcVaOpGsfVN5MyXp6VDO+YiVKZMuPWYIg8bLs3gBnM
+	 Y+8EvMHAreqos3rhK/7w6KLgC/Qv769a9HZ4MGEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anastasia Kovaleva <a.kovaleva@yadro.com>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 052/311] scsi: core: Clear flags for scsi_cmnd that did not complete
-Date: Tue, 29 Apr 2025 18:38:09 +0200
-Message-ID: <20250429161123.170442790@linuxfoundation.org>
+Subject: [PATCH 6.14 053/311] scsi: ufs: core: Add NULL check in ufshcd_mcq_compl_pending_transfer()
+Date: Tue, 29 Apr 2025 18:38:10 +0200
+Message-ID: <20250429161123.212357893@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
 References: <20250429161121.011111832@linuxfoundation.org>
@@ -66,48 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anastasia Kovaleva <a.kovaleva@yadro.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 54bebe46871d4e56e05fcf55c1a37e7efa24e0a8 ]
+[ Upstream commit 08a966a917fe3d92150fa3cc15793ad5e57051eb ]
 
-Commands that have not been completed with scsi_done() do not clear the
-SCMD_INITIALIZED flag and therefore will not be properly reinitialized.
-Thus, the next time the scsi_cmnd structure is used, the command may
-fail in scsi_cmd_runtime_exceeded() due to the old jiffies_at_alloc
-value:
+Add a NULL check for the returned hwq pointer by ufshcd_mcq_req_to_hwq().
 
-  kernel: sd 16:0:1:84: [sdts] tag#405 timing out command, waited 720s
-  kernel: sd 16:0:1:84: [sdts] tag#405 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=66636s
+This is similar to the fix in commit 74736103fb41 ("scsi: ufs: core: Fix
+ufshcd_abort_one racing issue").
 
-Clear flags for commands that have not been completed by SCSI.
-
-Fixes: 4abafdc4360d ("block: remove the initialize_rq_fn blk_mq_ops method")
-Signed-off-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
-Link: https://lore.kernel.org/r/20250324084933.15932-2-a.kovaleva@yadro.com
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250412195909.315418-1-chenyuan0y@gmail.com
+Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_lib.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index f1cfe0bb89b20..7a31dae9aa82d 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -1253,8 +1253,12 @@ EXPORT_SYMBOL_GPL(scsi_alloc_request);
-  */
- static void scsi_cleanup_rq(struct request *rq)
- {
-+	struct scsi_cmnd *cmd = blk_mq_rq_to_pdu(rq);
-+
-+	cmd->flags = 0;
-+
- 	if (rq->rq_flags & RQF_DONTPREP) {
--		scsi_mq_uninit_cmd(blk_mq_rq_to_pdu(rq));
-+		scsi_mq_uninit_cmd(cmd);
- 		rq->rq_flags &= ~RQF_DONTPREP;
- 	}
- }
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 464f13da259aa..128e35a848b7b 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -5658,6 +5658,8 @@ static void ufshcd_mcq_compl_pending_transfer(struct ufs_hba *hba,
+ 			continue;
+ 
+ 		hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(cmd));
++		if (!hwq)
++			continue;
+ 
+ 		if (force_compl) {
+ 			ufshcd_mcq_compl_all_cqes_lock(hba, hwq);
 -- 
 2.39.5
 
