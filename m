@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-138862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 633A5AA1A04
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:17:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA3EFAA193F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 164071BC7C73
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 698994E2C0A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A270C253351;
-	Tue, 29 Apr 2025 18:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C90221D92;
+	Tue, 29 Apr 2025 18:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwSHiKOd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlpkW5Md"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60629240611;
-	Tue, 29 Apr 2025 18:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F50540C03;
+	Tue, 29 Apr 2025 18:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950587; cv=none; b=hqvYOw2CT3sFt0Vzacxf5mU7EuYoBU5d8jxBzOP6O+5H43aux37cO/fmOTWNLMTsYhAu+Vml7JDDh9Kxbn/YT2NpsIs8Xx2qbJCq/QG2Yj/u+nybjGBwxMD+uuEF7ISAk+4pEBqmb4rHUly5MU+6UpZn7IzGJfmJTNOQ2628KQU=
+	t=1745950053; cv=none; b=PNdiIIaA3rOg75rXnH3LeofYbnBoDvQ62xciiX8Sg29LW/I2i1u5SsDUq/LNu64YoMLX+8aS1kNB/rDhz4JObasUJ1VGwz9k9uqNjIGgc070duzlRzToQXye+1ecHrMvCVq2J2CaAPbdNp5YPAHBAQEJJhRJ1XnuP+Czpslakrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950587; c=relaxed/simple;
-	bh=le1wy0SHl2YCY/Uno4RnsBnQHG14COkNVosONSxaphA=;
+	s=arc-20240116; t=1745950053; c=relaxed/simple;
+	bh=PmIx5KU8d2k/1h0SS4o8krxBqWivU9VbsnDmm2pcfR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dUreb8VnE7bW4zdKkJvvMRoo9fDWW+iZQuwYbBWCCgrN2H0OeTr82ZP2e2h2ILhFw6+BjPO9q6E3KQrJn2hilRzpliB9AGNqmNJNCLGOrQz2HPAYVE2dso+U1xtXqaAQCyMsrruH0gvDrxDflo/V9+C0xXValizlyZp/XdZLbp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwSHiKOd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7B8C4CEE9;
-	Tue, 29 Apr 2025 18:16:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tLLgxb5mqlA+kqVoZxO0sop4kRWgA86clgo6I6WBihbV76JcB/Gno+u1rxWshnuoKFsi9g7XT4QDt0zKMvWZou8gkGRC89FNbZiPXU4OrN7GZ1MjSGY+K7v1xBZfE3EKc2fdpL6Ap9oAs1O/2dsNdj9bb0P7toQPhUMLFd4ZE+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlpkW5Md; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CA5C4CEE3;
+	Tue, 29 Apr 2025 18:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950587;
-	bh=le1wy0SHl2YCY/Uno4RnsBnQHG14COkNVosONSxaphA=;
+	s=korg; t=1745950052;
+	bh=PmIx5KU8d2k/1h0SS4o8krxBqWivU9VbsnDmm2pcfR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwSHiKOdiRESz7PGI0peCv+GMC80JJP1W/8o7yJSVpoZTvfBpI2Wp+agx4NDHIDbe
-	 jtuHe8EyZhCdkshEg9QaDBtci5OKTE1ShqwzIuxKcR+v+gr/LkBaksosUjRtNbfArT
-	 SMTR9y+U10cZnptFspTFDcUfovxO1KrUV3smn56Y=
+	b=rlpkW5MdG0huRztmh4X5RotUpjNFkNtil5EgpBDMHCuIWLKioEdVSin9rv5iCwL0Q
+	 0qluyUWuo4t0QNA4eX9Jh9xcCpRQVQt/tk/8OeY6Nh2iMybo+u2UtH2oKWNwqVoP9i
+	 /5xagNIEiqLKN2UhELhJeCv9A4X/V5vY6cJ7CWsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Michael Mueller <mimu@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 143/204] objtool, ASoC: codecs: wcd934x: Remove potential undefined behavior in wcd934x_slim_irq_handler()
-Date: Tue, 29 Apr 2025 18:43:51 +0200
-Message-ID: <20250429161105.277596114@linuxfoundation.org>
+Subject: [PATCH 6.1 124/167] KVM: s390: Dont use %pK through tracepoints
+Date: Tue, 29 Apr 2025 18:43:52 +0200
+Message-ID: <20250429161056.758474936@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,61 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 060aed9c0093b341480770457093449771cf1496 ]
+[ Upstream commit 6c9567e0850be2f0f94ab64fa6512413fd1a1eb1 ]
 
-If 'port_id' is negative, the shift counts in wcd934x_slim_irq_handler()
-also become negative, resulting in undefined behavior due to shift out
-of bounds.
+Restricted pointers ("%pK") are not meant to be used through TP_format().
+It can unintentionally expose security sensitive, raw pointer values.
 
-If I'm reading the code correctly, that appears to be not possible, but
-with KCOV enabled, Clang's range analysis isn't always able to determine
-that and generates undefined behavior.
+Use regular pointer formatting instead.
 
-As a result the code generation isn't optimal, and undefined behavior
-should be avoided regardless.  Improve code generation and remove the
-undefined behavior by converting the signed variables to unsigned.
-
-Fixes the following warning with UBSAN:
-
-  sound/soc/codecs/snd-soc-wcd934x.o: warning: objtool: .text.wcd934x_slim_irq_handler: unexpected end of section
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/7e863839ec7301bf9c0f429a03873d44e484c31c.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202503180044.oH9gyPeg-lkp@intel.com/
+Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Michael Mueller <mimu@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Message-ID: <20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd934x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kvm/trace-s390.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/wcd934x.c b/sound/soc/codecs/wcd934x.c
-index 1b6e376f3833c..fe222c4b74c00 100644
---- a/sound/soc/codecs/wcd934x.c
-+++ b/sound/soc/codecs/wcd934x.c
-@@ -2281,7 +2281,7 @@ static irqreturn_t wcd934x_slim_irq_handler(int irq, void *data)
- {
- 	struct wcd934x_codec *wcd = data;
- 	unsigned long status = 0;
--	int i, j, port_id;
-+	unsigned int i, j, port_id;
- 	unsigned int val, int_val = 0;
- 	irqreturn_t ret = IRQ_NONE;
- 	bool tx;
+diff --git a/arch/s390/kvm/trace-s390.h b/arch/s390/kvm/trace-s390.h
+index 6f0209d45164f..9c5f546a2e1a3 100644
+--- a/arch/s390/kvm/trace-s390.h
++++ b/arch/s390/kvm/trace-s390.h
+@@ -56,7 +56,7 @@ TRACE_EVENT(kvm_s390_create_vcpu,
+ 		    __entry->sie_block = sie_block;
+ 		    ),
+ 
+-	    TP_printk("create cpu %d at 0x%pK, sie block at 0x%pK",
++	    TP_printk("create cpu %d at 0x%p, sie block at 0x%p",
+ 		      __entry->id, __entry->vcpu, __entry->sie_block)
+ 	);
+ 
+@@ -255,7 +255,7 @@ TRACE_EVENT(kvm_s390_enable_css,
+ 		    __entry->kvm = kvm;
+ 		    ),
+ 
+-	    TP_printk("enabling channel I/O support (kvm @ %pK)\n",
++	    TP_printk("enabling channel I/O support (kvm @ %p)\n",
+ 		      __entry->kvm)
+ 	);
+ 
 -- 
 2.39.5
 
