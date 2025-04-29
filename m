@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04D4AA1784
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 754C5AA15D5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 922B89A2A24
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:44:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8EE99A0EA4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B383425332F;
-	Tue, 29 Apr 2025 17:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213B42522B0;
+	Tue, 29 Apr 2025 17:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZv2OECT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPA6dR+U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677F4253326;
-	Tue, 29 Apr 2025 17:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28AD2459C9;
+	Tue, 29 Apr 2025 17:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948648; cv=none; b=TduBcyw5dc0Yq5Aiix8boDO+8k6Ll6uhCBJtBHw1gytpl4O/73AQLavSTCcviXrU3c3xZRGtubH7EO3xIVOVVp+ugYDZiB/qLVOaEiBeUQbXmyMPsqoeClznNPeQbvK1/cKvFWFrbv9JuXUUMMZTbRM+VFrcEdch+yFlnZYN94k=
+	t=1745947502; cv=none; b=hI1di8iGBjEwWbD1PUfj4p2dCS3zkqHg0Z3Y2KdmzvbacI1DPWnNW0Qf73u34XDcBKX/FPkFjedI7RtY4k+o8qZg6iW1IVyhVKItkoeEZbf1z21or5L8xqqNHsy4il1g7lcggvKe7/m3/wHnRd7dUc3TRzPqph3Q9CkhTjdQvbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948648; c=relaxed/simple;
-	bh=p+WfWhvjyism/G6H1mOOskBzh/OM+ZrHwKHHVLu9yeA=;
+	s=arc-20240116; t=1745947502; c=relaxed/simple;
+	bh=71LHKA8drU+UzWBbkCjV5QFCyKQUeltATryz42TGPL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M0l5FVLjVNTyiMKTnezUUzrCAibZp/Je6tzi7+pxZB8oaPQ3vYSs6CjvZb4dWL6a1cnIga00TKxlIx32RWXVAetRHL7g3F/ZZ3w/H6ofDF++YZKD0F5u1i8iPWXeKq7Kd0Vovc7yw3LjeLJgaWR03AzaV+XVK6o31ScUF5zngdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZv2OECT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77886C4CEF0;
-	Tue, 29 Apr 2025 17:44:07 +0000 (UTC)
+	 MIME-Version; b=gu3Biy3mXmpXEeEPttDjhbxLyf0/4JbgAoW6tTXatoV6oABCGjaeZAft7u0kWBgkv0gKfEDmF3qlL5KSLxO14nj8HbdtQ3OSgB0vA1JUemf3pbADbCrdRFeLml4MZ1QU/WCmsWoWLsLt6gn9SrLRjowh9moHk4BnKnZtrTlAedY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPA6dR+U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4070FC4CEE3;
+	Tue, 29 Apr 2025 17:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948648;
-	bh=p+WfWhvjyism/G6H1mOOskBzh/OM+ZrHwKHHVLu9yeA=;
+	s=korg; t=1745947502;
+	bh=71LHKA8drU+UzWBbkCjV5QFCyKQUeltATryz42TGPL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TZv2OECT8XtmGgHLVpiuqh6ALEqxjYrpb5Qhe6Nbsku8chMK1ywJWf4iq7gdN3KA3
-	 6IOoes8D0ZgerH4I/CMH/wT/IPs5O41GfCx2MeB4AW+cR5wNR80Gp6mNKFDzdcY7vY
-	 2/UDW0SfSzdC1HZYNCP5RKpfSa6Wap9FDwOpaZWg=
+	b=FPA6dR+UOmwElbJHdW+TS1++qW+Zhb5yWTY+Cajhsv/m1NkiVpBPi09rqF52XLcSN
+	 GwgEZwMaR1/b49RRieaOIKJfvNgmqs77dU+arKkpblbQ9uMo5IaspXjZNW98d2VXMS
+	 Qg0v50W5igg6EJw9zHG4jXZGxPJl5riFckQZnlRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karina Yankevich <k.yankevich@omp.ru>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 071/373] media: v4l2-dv-timings: prevent possible overflow in v4l2_detect_gtf()
+	Li RongQing <lirongqing@baidu.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 007/280] PM: EM: use kfree_rcu() to simplify the code
 Date: Tue, 29 Apr 2025 18:39:08 +0200
-Message-ID: <20250429161126.065978552@linuxfoundation.org>
+Message-ID: <20250429161115.313971810@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karina Yankevich <k.yankevich@omp.ru>
+From: Li RongQing <lirongqing@baidu.com>
 
-commit 3edd1fc48d2c045e8259561797c89fe78f01717e upstream.
+[ Upstream commit 1618f635bdf56f3ac158171114e9bf18db234cbf ]
 
-In v4l2_detect_gtf(), it seems safer to cast the 32-bit image_width
-variable to the 64-bit type u64 before multiplying to avoid
-a possible overflow. The resulting object code even seems to
-look better, at least on x86_64.
+The callback function of call_rcu() just calls kfree(), so use
+kfree_rcu() instead of call_rcu() + callback function.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
-
-[Sergey: rewrote the patch subject/descripition]
-
-Fixes: c9bc9f50753d ("[media] v4l2-dv-timings: fix overflow in gtf timings calculation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Karina Yankevich <k.yankevich@omp.ru>
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/20250218082021.2766-1-lirongqing@baidu.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 3ee7be9e10dd ("PM: EM: Address RCU-related sparse warnings")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-dv-timings.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/power/energy_model.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-dv-timings.c
-+++ b/drivers/media/v4l2-core/v4l2-dv-timings.c
-@@ -764,7 +764,7 @@ bool v4l2_detect_gtf(unsigned int frame_
- 		u64 num;
- 		u32 den;
+diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+index 927cc55ba0b3d..e303d938637f1 100644
+--- a/kernel/power/energy_model.c
++++ b/kernel/power/energy_model.c
+@@ -161,14 +161,6 @@ static void em_debug_create_pd(struct device *dev) {}
+ static void em_debug_remove_pd(struct device *dev) {}
+ #endif
  
--		num = ((image_width * GTF_D_C_PRIME * (u64)hfreq) -
-+		num = (((u64)image_width * GTF_D_C_PRIME * hfreq) -
- 		      ((u64)image_width * GTF_D_M_PRIME * 1000));
- 		den = (hfreq * (100 - GTF_D_C_PRIME) + GTF_D_M_PRIME * 1000) *
- 		      (2 * GTF_CELL_GRAN);
-@@ -774,7 +774,7 @@ bool v4l2_detect_gtf(unsigned int frame_
- 		u64 num;
- 		u32 den;
+-static void em_destroy_table_rcu(struct rcu_head *rp)
+-{
+-	struct em_perf_table __rcu *table;
+-
+-	table = container_of(rp, struct em_perf_table, rcu);
+-	kfree(table);
+-}
+-
+ static void em_release_table_kref(struct kref *kref)
+ {
+ 	struct em_perf_table __rcu *table;
+@@ -176,7 +168,7 @@ static void em_release_table_kref(struct kref *kref)
+ 	/* It was the last owner of this table so we can free */
+ 	table = container_of(kref, struct em_perf_table, kref);
  
--		num = ((image_width * GTF_S_C_PRIME * (u64)hfreq) -
-+		num = (((u64)image_width * GTF_S_C_PRIME * hfreq) -
- 		      ((u64)image_width * GTF_S_M_PRIME * 1000));
- 		den = (hfreq * (100 - GTF_S_C_PRIME) + GTF_S_M_PRIME * 1000) *
- 		      (2 * GTF_CELL_GRAN);
+-	call_rcu(&table->rcu, em_destroy_table_rcu);
++	kfree_rcu(table, rcu);
+ }
+ 
+ /**
+-- 
+2.39.5
+
 
 
 
