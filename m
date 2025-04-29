@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-137840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108AAAA153A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:24:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 422C3AA18A7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88E3B4A8384
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:22:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4260F173A6E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD4A253332;
-	Tue, 29 Apr 2025 17:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC88221570;
+	Tue, 29 Apr 2025 18:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTjXk7Yz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPLwURz9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09736245007;
-	Tue, 29 Apr 2025 17:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298FF3FFD;
+	Tue, 29 Apr 2025 18:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947290; cv=none; b=ORhS4w9TDZbad3Dt6QLqGCdAdiIH8dsp3y2DOLWOeru/1lfGRVZqNWqzekDMD9JwkIYWzaXk1fOJQ2Myf5UGr3fM92+rRgtcI8N2hWdWV4Fvt6n3zxF5PvZB88u9YLjIoKNYm5nQlWbnC9RVa3Dulv2xnT/3OwEXiD7a5XdBQok=
+	t=1745949682; cv=none; b=mCtSAUR7b4olHSKZ2F5OwqN/vfEz6cHDAvcC8stWyEwFjh8E3NogxKHx7Un5QoSgbrFPC8XiHxdkP4KDOjqwe6QCL15FpkJ10mLAsiT/gaM9MbO8MuFWMdPDP+UFTYI7547NrkqSFG3qrAtnEtxZzLyrs4esdKUY3uMw+9ZeS7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947290; c=relaxed/simple;
-	bh=0yVc7Pze9kQQQVQyHMwmvkEjceBCUREtHThijEIOeiA=;
+	s=arc-20240116; t=1745949682; c=relaxed/simple;
+	bh=ZHMNslZZ8qBJBXpBND6YOEZGbaZsRSbmfrCksF/2VJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qyZqltGwDqjPvELCvdkCNbZGuTOva36rFqERa+DvShwkBkBP7j60X17YcNhg1rN0ufKxwooUWRh1tU+c2lSk1vGP+/UaAJXtmbNI/94sBKr2hydSBq0BM161uLNuZSQI41Y4nLGncRdaT3fNkH1Qm9zqwLVNbCVj8LZkTxjR0jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTjXk7Yz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F630C4CEE9;
-	Tue, 29 Apr 2025 17:21:29 +0000 (UTC)
+	 MIME-Version; b=e2C5R2VhmOH5qnQfPJpzuHhNv2Gjt9UI4hcPQ2qQJZA0/Dpo/fVQNkIoMivBoZbO76bc+0FAHrtSi5Fmizla8c8s9Pgqnj5wv7ivfLclMNmQmjqsg2Ho3nOXYEGXLoIgAdD10atMSBQRy3vSQKHPE+n/umHwRZgVVZ1z3MTU8zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPLwURz9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB39C4CEE3;
+	Tue, 29 Apr 2025 18:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947289;
-	bh=0yVc7Pze9kQQQVQyHMwmvkEjceBCUREtHThijEIOeiA=;
+	s=korg; t=1745949682;
+	bh=ZHMNslZZ8qBJBXpBND6YOEZGbaZsRSbmfrCksF/2VJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lTjXk7YzJ4ECL9HNWmlUJdm9B7Cslq3QTeYPKj8E0/6+0SYpWnGoN0yeash1aIPv8
-	 Y57LpIDzFLWC/3ofRCIzsVoHU+Bpk3REC0ZfgmgngA6MiwtnAk6ZiENiFQrvP3UkF9
-	 nwJSLKzvT3SNshBDYwLfjs98Y5+hTd/iSeqqPn/0=
+	b=DPLwURz9gXp126inLABddWxUKBQ+yIAGktJIySqORRzfOwQWmNfk1U/8NofmkvHmD
+	 xtBXvYAjszOlkZwUsiOAWyTfeRSkqGrsJcGgeWweU0swGJXlYW0CrAU0UlU32Q5sNe
+	 TSbjaWba8np34aGI02qlh8+nq7Qowv5oiM1AClD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Aishwarya TCV <aishwarya.tcv@arm.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 226/286] selftests/mm: generate a temporary mountpoint for cgroup filesystem
+Subject: [PATCH 6.1 022/167] clk: renesas: rzg2l: Add struct clk_hw_data
 Date: Tue, 29 Apr 2025 18:42:10 +0200
-Message-ID: <20250429161117.236326477@linuxfoundation.org>
+Message-ID: <20250429161052.649050491@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +62,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 9c02223e2d9df5cb37c51aedb78f3960294e09b5 ]
+[ Upstream commit 97c1c4ccda76d2919775d748cf223637cf0e82ae ]
 
-Currently if the filesystem for the cgroups version it wants to use is not
-mounted charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh tests
-will attempt to mount it on the hard coded path /dev/cgroup/memory,
-deleting that directory when the test finishes.  This will fail if there
-is not a preexisting directory at that path, and since the directory is
-deleted subsequent runs of the test will fail.  Instead of relying on this
-hard coded directory name use mktemp to generate a temporary directory to
-use as a mountpoint, fixing both the assumption and the disruption caused
-by deleting a preexisting directory.
+Add clk_hw_data struct that keeps the core part of the clock data.
+sd_hw_data embeds a member of type struct clk_hw_data along with other
+members (in the next commits).  This commit prepares the field for
+refactoring the SD MUX clock driver.
 
-This means that if the relevant cgroup filesystem is not already mounted
-then we rely on having coreutils (which provides mktemp) installed.  I
-suspect that many current users are relying on having things automounted
-by default, and given that the script relies on bash it's probably not an
-unreasonable requirement.
-
-Link: https://lkml.kernel.org/r/20250404-kselftest-mm-cgroup2-detection-v1-1-3dba6d32ba8c@kernel.org
-Fixes: 209376ed2a84 ("selftests/vm: make charge_reserved_hugetlb.sh work with existing cgroup setting")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Aishwarya TCV <aishwarya.tcv@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230929053915.1530607-9-claudiu.beznea@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Stable-dep-of: 7f22a298d926 ("clk: renesas: r9a07g043: Fix HP clock source for RZ/Five")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vm/charge_reserved_hugetlb.sh  | 4 ++--
- tools/testing/selftests/vm/hugetlb_reparenting_test.sh | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/clk/renesas/rzg2l-cpg.c | 52 +++++++++++++++++++++------------
+ 1 file changed, 34 insertions(+), 18 deletions(-)
 
-diff --git a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-index 28192ec98498f..c44226b4e0bfb 100644
---- a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-@@ -24,7 +24,7 @@ fi
- if [[ $cgroup2 ]]; then
-   cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
--    cgroup_path=/dev/cgroup/memory
-+    cgroup_path=$(mktemp -d)
-     mount -t cgroup2 none $cgroup_path
-     do_umount=1
-   fi
-@@ -32,7 +32,7 @@ if [[ $cgroup2 ]]; then
- else
-   cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
--    cgroup_path=/dev/cgroup/memory
-+    cgroup_path=$(mktemp -d)
-     mount -t cgroup memory,hugetlb $cgroup_path
-     do_umount=1
-   fi
-diff --git a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-index c665b16f1e370..a4123632942dd 100644
---- a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-+++ b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-@@ -19,7 +19,7 @@ fi
- if [[ $cgroup2 ]]; then
-   CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$CGROUP_ROOT" ]]; then
--    CGROUP_ROOT=/dev/cgroup/memory
-+    CGROUP_ROOT=$(mktemp -d)
-     mount -t cgroup2 none $CGROUP_ROOT
-     do_umount=1
-   fi
+diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
+index 5617040f307c4..2d298d94e1d85 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.c
++++ b/drivers/clk/renesas/rzg2l-cpg.c
+@@ -59,13 +59,29 @@
+ 
+ #define MAX_VCLK_FREQ		(148500000)
+ 
+-struct sd_hw_data {
++/**
++ * struct clk_hw_data - clock hardware data
++ * @hw: clock hw
++ * @conf: clock configuration (register offset, shift, width)
++ * @priv: CPG private data structure
++ */
++struct clk_hw_data {
+ 	struct clk_hw hw;
+ 	u32 conf;
+ 	struct rzg2l_cpg_priv *priv;
+ };
+ 
+-#define to_sd_hw_data(_hw)	container_of(_hw, struct sd_hw_data, hw)
++#define to_clk_hw_data(_hw)	container_of(_hw, struct clk_hw_data, hw)
++
++/**
++ * struct sd_hw_data - SD clock hardware data
++ * @hw_data: clock hw data
++ */
++struct sd_hw_data {
++	struct clk_hw_data hw_data;
++};
++
++#define to_sd_hw_data(_hw)	container_of(_hw, struct sd_hw_data, hw_data)
+ 
+ struct rzg2l_pll5_param {
+ 	u32 pl5_fracin;
+@@ -187,10 +203,10 @@ static int rzg2l_cpg_sd_clk_mux_determine_rate(struct clk_hw *hw,
+ 
+ static int rzg2l_cpg_sd_clk_mux_set_parent(struct clk_hw *hw, u8 index)
+ {
+-	struct sd_hw_data *hwdata = to_sd_hw_data(hw);
+-	struct rzg2l_cpg_priv *priv = hwdata->priv;
+-	u32 off = GET_REG_OFFSET(hwdata->conf);
+-	u32 shift = GET_SHIFT(hwdata->conf);
++	struct clk_hw_data *clk_hw_data = to_clk_hw_data(hw);
++	struct rzg2l_cpg_priv *priv = clk_hw_data->priv;
++	u32 off = GET_REG_OFFSET(clk_hw_data->conf);
++	u32 shift = GET_SHIFT(clk_hw_data->conf);
+ 	const u32 clk_src_266 = 2;
+ 	u32 msk, val, bitmask;
+ 	unsigned long flags;
+@@ -207,7 +223,7 @@ static int rzg2l_cpg_sd_clk_mux_set_parent(struct clk_hw *hw, u8 index)
+ 	 * The clock mux has 3 input clocks(533 MHz, 400 MHz, and 266 MHz), and
+ 	 * the index to value mapping is done by adding 1 to the index.
+ 	 */
+-	bitmask = (GENMASK(GET_WIDTH(hwdata->conf) - 1, 0) << shift) << 16;
++	bitmask = (GENMASK(GET_WIDTH(clk_hw_data->conf) - 1, 0) << shift) << 16;
+ 	msk = off ? CPG_CLKSTATUS_SELSDHI1_STS : CPG_CLKSTATUS_SELSDHI0_STS;
+ 	spin_lock_irqsave(&priv->rmw_lock, flags);
+ 	if (index != clk_src_266) {
+@@ -236,12 +252,12 @@ static int rzg2l_cpg_sd_clk_mux_set_parent(struct clk_hw *hw, u8 index)
+ 
+ static u8 rzg2l_cpg_sd_clk_mux_get_parent(struct clk_hw *hw)
+ {
+-	struct sd_hw_data *hwdata = to_sd_hw_data(hw);
+-	struct rzg2l_cpg_priv *priv = hwdata->priv;
+-	u32 val = readl(priv->base + GET_REG_OFFSET(hwdata->conf));
++	struct clk_hw_data *clk_hw_data = to_clk_hw_data(hw);
++	struct rzg2l_cpg_priv *priv = clk_hw_data->priv;
++	u32 val = readl(priv->base + GET_REG_OFFSET(clk_hw_data->conf));
+ 
+-	val >>= GET_SHIFT(hwdata->conf);
+-	val &= GENMASK(GET_WIDTH(hwdata->conf) - 1, 0);
++	val >>= GET_SHIFT(clk_hw_data->conf);
++	val &= GENMASK(GET_WIDTH(clk_hw_data->conf) - 1, 0);
+ 
+ 	return val ? val - 1 : 0;
+ }
+@@ -257,17 +273,17 @@ rzg2l_cpg_sd_mux_clk_register(const struct cpg_core_clk *core,
+ 			      void __iomem *base,
+ 			      struct rzg2l_cpg_priv *priv)
+ {
+-	struct sd_hw_data *clk_hw_data;
++	struct sd_hw_data *sd_hw_data;
+ 	struct clk_init_data init;
+ 	struct clk_hw *clk_hw;
+ 	int ret;
+ 
+-	clk_hw_data = devm_kzalloc(priv->dev, sizeof(*clk_hw_data), GFP_KERNEL);
+-	if (!clk_hw_data)
++	sd_hw_data = devm_kzalloc(priv->dev, sizeof(*sd_hw_data), GFP_KERNEL);
++	if (!sd_hw_data)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	clk_hw_data->priv = priv;
+-	clk_hw_data->conf = core->conf;
++	sd_hw_data->hw_data.priv = priv;
++	sd_hw_data->hw_data.conf = core->conf;
+ 
+ 	init.name = GET_SHIFT(core->conf) ? "sd1" : "sd0";
+ 	init.ops = &rzg2l_cpg_sd_clk_mux_ops;
+@@ -275,7 +291,7 @@ rzg2l_cpg_sd_mux_clk_register(const struct cpg_core_clk *core,
+ 	init.num_parents = core->num_parents;
+ 	init.parent_names = core->parent_names;
+ 
+-	clk_hw = &clk_hw_data->hw;
++	clk_hw = &sd_hw_data->hw_data.hw;
+ 	clk_hw->init = &init;
+ 
+ 	ret = devm_clk_hw_register(priv->dev, clk_hw);
 -- 
 2.39.5
 
