@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677D5AA16A1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D30AA180C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72AA5174DD2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 609961BC57BE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CC91C6B4;
-	Tue, 29 Apr 2025 17:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092FB2522BD;
+	Tue, 29 Apr 2025 17:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYtpDwfj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6WseMqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59F7215F7C;
-	Tue, 29 Apr 2025 17:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA54A250C0C;
+	Tue, 29 Apr 2025 17:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948168; cv=none; b=ruBBOnO1VmoLIF4uc9Ip/pryu1s2flUJGVeH3i6IJnM8pMNEfNw3stcMnWTQzkd4eRkmvYv+qL/fgdG2Jz2VJFLWdBgxBfLrigTjK6pIw8NUsOfhcDhPP4y4sqUBYopnPhN43uDwk0D5yFV7n7sM4xg0YNWL2HLk2CbUHRqObak=
+	t=1745949268; cv=none; b=B+iKtBoFwB9fG/BocpEg11CeTnp5r87BfbuZIqb3YlE9xTft4LEfLPxgSsJ7aD9f/JIO74yHEWbkr/NNF35W/UbwN5UUMF0afUryElCTc6uU9XbHgIQfVUzrGUUvXFZLYZIcg57f3NYvOxdtKglifXPqQyLRDSUzs9wLQTaex3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948168; c=relaxed/simple;
-	bh=XKWLwaoXubVH/19XUHJGFRWdyizHoVvpTEU9K2xNePc=;
+	s=arc-20240116; t=1745949268; c=relaxed/simple;
+	bh=GCh565sKjbgCJoRzzrGsZWJPa8d2yEgptN5iBAbgp4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KBWEK79/q1Sq/5OgljXJl7BVQlzoOB6e7QSF0ou3KlG5b5c+B8l/UpAT3UJqjFM+FTXCsLdTKOKidnXU67v9PiHxe69Gh2ufJZ8DrcDHKjNYIZvciM075pV8v8hMP3HflY+LIfIIeqbsdgmhSx71ndsGfmPVQ7xrXw+/2etRvkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYtpDwfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD8FC4CEE3;
-	Tue, 29 Apr 2025 17:36:08 +0000 (UTC)
+	 MIME-Version; b=XCrAzB46fcKkqg0YgpvADZ3aFwRv7xO7jMsIOzExAtAdOFZX+dUq8ODov+3Lo1KaCLUv5SfQrfr+02f+BBJNSwhjXi6DDCKTcH3Q3eukt3d+0shy3iBL8F1uQdPS+CLw9f1l7Tg/i+L9b9QOhaOcRhGfZvQYZIL4H4pNQOD2m9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6WseMqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A823C4CEE9;
+	Tue, 29 Apr 2025 17:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948168;
-	bh=XKWLwaoXubVH/19XUHJGFRWdyizHoVvpTEU9K2xNePc=;
+	s=korg; t=1745949268;
+	bh=GCh565sKjbgCJoRzzrGsZWJPa8d2yEgptN5iBAbgp4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QYtpDwfjh9iGcqe8PtkIygXJctCTk8INB33MdJBcEjhQ1StSlc+XfukA8h5WJNrM8
-	 6dHDWbglyZXwHtMan2jC9O7W1PWI27t+NkHlfFYoolPEVI7G5IRaRgv14NDSoJ6L1f
-	 dMROMIZh34Z2bkTH2prPz5d24bmTDLVO58m0t/pE=
+	b=l6WseMqyziIs9pBkF9MHGP+LaR3cKpOlGOGXJgn8a2t+42PX+5Quh9d+ovab/iV0U
+	 B3uh069aWT7auFha50H+L4IkxPazDLoZ3z/tmsXiWfsZ1LyI/gjeo3bEKQtHMzu+Ct
+	 hrPNu6x4qf7bnv2UUVYoibICJPDutbLXIyS/TVoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Michael Mueller <mimu@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 201/280] KVM: s390: Dont use %pK through tracepoints
+Subject: [PATCH 5.15 265/373] soc: samsung: exynos-chipid: Add NULL pointer check in exynos_chipid_probe()
 Date: Tue, 29 Apr 2025 18:42:22 +0200
-Message-ID: <20250429161123.351613347@linuxfoundation.org>
+Message-ID: <20250429161134.020576890@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 6c9567e0850be2f0f94ab64fa6512413fd1a1eb1 ]
+[ Upstream commit c8222ef6cf29dd7cad21643228f96535cc02b327 ]
 
-Restricted pointers ("%pK") are not meant to be used through TP_format().
-It can unintentionally expose security sensitive, raw pointer values.
+soc_dev_attr->revision could be NULL, thus,
+a pointer check is added to prevent potential NULL pointer dereference.
+This is similar to the fix in commit 3027e7b15b02
+("ice: Fix some null pointer dereference issues in ice_ptp.c").
 
-Use regular pointer formatting instead.
+This issue is found by our static analysis tool.
 
-Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Michael Mueller <mimu@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Message-ID: <20250217-restricted-pointers-s390-v1-1-0e4ace75d8aa@linutronix.de>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250212213518.69432-1-chenyuan0y@gmail.com
+Fixes: 3253b7b7cd44 ("soc: samsung: Add exynos chipid driver support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/trace-s390.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/samsung/exynos-chipid.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/s390/kvm/trace-s390.h b/arch/s390/kvm/trace-s390.h
-index 9ac92dbf680db..9e28f165c114c 100644
---- a/arch/s390/kvm/trace-s390.h
-+++ b/arch/s390/kvm/trace-s390.h
-@@ -56,7 +56,7 @@ TRACE_EVENT(kvm_s390_create_vcpu,
- 		    __entry->sie_block = sie_block;
- 		    ),
+diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
+index 133654f21251f..edcae687cd2a2 100644
+--- a/drivers/soc/samsung/exynos-chipid.c
++++ b/drivers/soc/samsung/exynos-chipid.c
+@@ -125,6 +125,8 @@ static int exynos_chipid_probe(struct platform_device *pdev)
  
--	    TP_printk("create cpu %d at 0x%pK, sie block at 0x%pK",
-+	    TP_printk("create cpu %d at 0x%p, sie block at 0x%p",
- 		      __entry->id, __entry->vcpu, __entry->sie_block)
- 	);
- 
-@@ -255,7 +255,7 @@ TRACE_EVENT(kvm_s390_enable_css,
- 		    __entry->kvm = kvm;
- 		    ),
- 
--	    TP_printk("enabling channel I/O support (kvm @ %pK)\n",
-+	    TP_printk("enabling channel I/O support (kvm @ %p)\n",
- 		      __entry->kvm)
- 	);
- 
+ 	soc_dev_attr->revision = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 						"%x", soc_info.revision);
++	if (!soc_dev_attr->revision)
++		return -ENOMEM;
+ 	soc_dev_attr->soc_id = product_id_to_soc_id(soc_info.product_id);
+ 	if (!soc_dev_attr->soc_id) {
+ 		pr_err("Unknown SoC\n");
 -- 
 2.39.5
 
