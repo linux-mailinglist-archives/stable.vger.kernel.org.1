@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-138980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD381AA3D4D
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:56:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F00AA3D51
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F5027ADC02
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:54:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EE5F188A4B8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596F02609C6;
-	Tue, 29 Apr 2025 23:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BC6272775;
+	Tue, 29 Apr 2025 23:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GFw7xcsa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l7AKq4d7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1231A2609EF;
-	Tue, 29 Apr 2025 23:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4217227276D;
+	Tue, 29 Apr 2025 23:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745970653; cv=none; b=mbykqxNqvhXebCJBVENb37rG9ZY1wuDIBRGfnrIRcYcvXWgpfHPOi/lDIB/j7y0LHMxAUc0XwpnrZn/8YbT6Q73+EDmXyZM2m4/r0THYAXIAjIm4c02iVX/7rHKlqJBiw64SPbHWTpmfu4YC+xRzVLuVcki7sU7IdlG3rRBe6CQ=
+	t=1745970655; cv=none; b=A3tg7OeHHvbhcMOAJ9ayC0fmMvHTFhQ9YfxBLMxRhDt07Sp7gEmvMknxVnnSz1gqJkbVGcNZxF9Fzsf6NiT6LtMg7zWXnb+jcbQG2/jr05uR4A+pDECvkimGpWrXOJfCYm0LGlJ7U4IrrX/9spc997r/379EeTpAY4xSMbNH84s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745970653; c=relaxed/simple;
-	bh=BKoPq7hKYiVRd3qb/NWCXj789wDEgmQZqkzbTJa/eJU=;
+	s=arc-20240116; t=1745970655; c=relaxed/simple;
+	bh=41ABFjClMBGA0nWlECmrZkLAQRu/08sJgg9YS19HDHI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HiHTFWrQJcebWzD5yHrSxw20oUhTmBjGb2UsDpWinhdA/UAc9zZ4G6nd4M4uc3QeQl5v+O+byq3MTsUilIeLDz3zshGKGlbOCY28vJGKznH4+ZvYHo3xmfST8XRWvQI9ZUuGRtr+IYVm29abNFUMTVNz18WsD0pUToNPr8r4uHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GFw7xcsa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962DDC4CEEF;
-	Tue, 29 Apr 2025 23:50:51 +0000 (UTC)
+	 MIME-Version; b=dyf8pdm3tJfvn0qruDBAhZIRSwIrNIqc32lP7c+IHwt5IvKfrGjycmkREV4jtaE/NOWHkBgh7oU4p9APZoSYUEXfxWILCbU4MNs7r44njZ4qHKPdyXtZbj4wzxdvDb+79jeJx+8+B7V7A9/xa+VvWs1HFu6RTy2bN4L0Op39bY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l7AKq4d7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0A4C4CEED;
+	Tue, 29 Apr 2025 23:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745970652;
-	bh=BKoPq7hKYiVRd3qb/NWCXj789wDEgmQZqkzbTJa/eJU=;
+	s=k20201202; t=1745970654;
+	bh=41ABFjClMBGA0nWlECmrZkLAQRu/08sJgg9YS19HDHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GFw7xcsadEzAR53xLWaSqT8i/FUK7veO54C40KiLXPwYCpQBlndla7+m4jNecYKYH
-	 N2gt+hCY+f32AsxtcWeviK8jsDnSAMxpFFXZmZ++ZBU8lzPlJzwxqoG3NpPrzt4nAe
-	 a0PlUmsiT2El9aSM1BiTi4fXEmvOriyuE9SFTH08tYucQS9WtBWv8KZLXNtiurDgD4
-	 flejFyE45Rz9sPavlMHXNYiYcdbuU7jfb2KtWb+LEbFwu5POiMLgn9+HbCLpoRUc7s
-	 fWkyOJY2qA8r5wcnQmct2osy087hF0F3ermFZFFX1SL7XGfKrwMrxKIk1PAN88VNJt
-	 7b0e6Uf/es04w==
+	b=l7AKq4d7kSsUoEn74CZ8OjHL9AVwzhFNu1ItjPLBBIl7EI4nt4o+VUncNFiGPVpHV
+	 8R5E/fM/Dvngh5WHAa7quTLnBC3pnGAvIJdE6KH9hxdazkrrYkav1tcLtODtWSjG0g
+	 HYJ8uRGA/KCpSBLSYrvScminuyCCxbMRkEwo7Oj9jNZJpMmNlxrshYeMDqoa2Dq10w
+	 HGshN2hSsH3NPKfnypPqWfSXpW+N4fjpTduXpSt+smIzitfYBnAzLfsaBtv9lL5Irt
+	 mAOFfioiDMRz++MqDS2lhlXXrbMzh8nW7nYoh/ErnN+TkrsXA9ocj5Ef5GB6gNhDpe
+	 LDljevX0apWCw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Balbir Singh <balbirs@nvidia.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	kernel test robot <lkp@intel.com>,
+Cc: Frederick Lawler <fred@cloudflare.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 24/39] dma-mapping: Fix warning reported for missing prototype
-Date: Tue, 29 Apr 2025 19:49:51 -0400
-Message-Id: <20250429235006.536648-24-sashal@kernel.org>
+	dmitry.kasatkin@gmail.com,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 25/39] ima: process_measurement() needlessly takes inode_lock() on MAY_READ
+Date: Tue, 29 Apr 2025 19:49:52 -0400
+Message-Id: <20250429235006.536648-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250429235006.536648-1-sashal@kernel.org>
 References: <20250429235006.536648-1-sashal@kernel.org>
@@ -67,64 +71,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.4
 Content-Transfer-Encoding: 8bit
 
-From: Balbir Singh <balbirs@nvidia.com>
+From: Frederick Lawler <fred@cloudflare.com>
 
-[ Upstream commit cae5572ec9261f752af834cdaaf5a0ba0afcf256 ]
+[ Upstream commit 30d68cb0c37ebe2dc63aa1d46a28b9163e61caa2 ]
 
-lkp reported a warning about missing prototype for a recent patch.
+On IMA policy update, if a measure rule exists in the policy,
+IMA_MEASURE is set for ima_policy_flags which makes the violation_check
+variable always true. Coupled with a no-action on MAY_READ for a
+FILE_CHECK call, we're always taking the inode_lock().
 
-The kernel-doc style comments are out of sync, move them to the right
-function.
+This becomes a performance problem for extremely heavy read-only workloads.
+Therefore, prevent this only in the case there's no action to be taken.
 
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Christoph Hellwig <hch@lst.de>
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202504190615.g9fANxHw-lkp@intel.com/
-
-Signed-off-by: Balbir Singh <balbirs@nvidia.com>
-[mszyprow: reformatted subject]
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20250422114034.3535515-1-balbirs@nvidia.com
+Signed-off-by: Frederick Lawler <fred@cloudflare.com>
+Acked-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/mapping.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ security/integrity/ima/ima_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 67da08fa67237..051a32988040f 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -910,14 +910,6 @@ int dma_set_coherent_mask(struct device *dev, u64 mask)
- }
- EXPORT_SYMBOL(dma_set_coherent_mask);
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index f3e7ac513db3f..f99ab1a3b0f09 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -245,7 +245,9 @@ static int process_measurement(struct file *file, const struct cred *cred,
+ 				&allowed_algos);
+ 	violation_check = ((func == FILE_CHECK || func == MMAP_CHECK ||
+ 			    func == MMAP_CHECK_REQPROT) &&
+-			   (ima_policy_flag & IMA_MEASURE));
++			   (ima_policy_flag & IMA_MEASURE) &&
++			   ((action & IMA_MEASURE) ||
++			    (file->f_mode & FMODE_WRITE)));
+ 	if (!action && !violation_check)
+ 		return 0;
  
--/**
-- * dma_addressing_limited - return if the device is addressing limited
-- * @dev:	device to check
-- *
-- * Return %true if the devices DMA mask is too small to address all memory in
-- * the system, else %false.  Lack of addressing bits is the prime reason for
-- * bounce buffering, but might not be the only one.
-- */
- static bool __dma_addressing_limited(struct device *dev)
- {
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
-@@ -931,6 +923,14 @@ static bool __dma_addressing_limited(struct device *dev)
- 	return !dma_direct_all_ram_mapped(dev);
- }
- 
-+/**
-+ * dma_addressing_limited - return if the device is addressing limited
-+ * @dev:	device to check
-+ *
-+ * Return %true if the devices DMA mask is too small to address all memory in
-+ * the system, else %false.  Lack of addressing bits is the prime reason for
-+ * bounce buffering, but might not be the only one.
-+ */
- bool dma_addressing_limited(struct device *dev)
- {
- 	if (!__dma_addressing_limited(dev))
 -- 
 2.39.5
 
