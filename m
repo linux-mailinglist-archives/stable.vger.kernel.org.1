@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25060AA1A0F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFDDEAA18F8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 733239C5004
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:12:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF8619A6437
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5A8253B71;
-	Tue, 29 Apr 2025 18:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE1021ABC6;
+	Tue, 29 Apr 2025 18:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMD5p7cS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxe5TObT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92DB16A94A;
-	Tue, 29 Apr 2025 18:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5B23FFD;
+	Tue, 29 Apr 2025 18:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950351; cv=none; b=IWRlWNcLV3bOOWgVWT2rwisYY6x95abFkY3a6IARe/XEOYKemEoWnyRcgJ58kgEtcYbP7rIMYZbSIgYP9+HKazmzITz5oPsZP06HWNsGqUgAS+XCuhAwHt2/4IPGc+cxC4GU/46KVnaxtCWGJNzx9i9aF1LHZXa86FmsKNiXQUk=
+	t=1745949670; cv=none; b=XshIUQkZPNHSB5gpt6Us4mno/bmLtVCo42a63mWiKVxL2Aup84LZifbgpUwB95TeMQtIFVBe9djzNqb0PAuO0PNqQ5TKvbLiYEIPnLHBQXIDFT8UQxRHD2bzx53G1alUYzu23JGT7a+rf9C3LQGwE6q7fAv8eHFXPwbrGk+Kjng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950351; c=relaxed/simple;
-	bh=QaumpdS/ooIMBTUBDlimVVDQrENMFdSmUf2DL6F+zlA=;
+	s=arc-20240116; t=1745949670; c=relaxed/simple;
+	bh=9Q7lRSuaS8ZOrYguDir/LAjYPGBPDF5ZMHjIAaHNX4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZhAdK0fZTmevZeo2vjEosfK4zHj7szQCaPS+aQnQdsWmZxOQAAvoP4CFdRLOCcOy9PZTzTAy+EIjPET1U9/CHZcOdx1xhwySatdMD7w2Hoq5XQl5/mavkk9cdcEuEj6W6tpxm1OPNxBFFRYhVvFUyGW/ub8OlMY8ja14gUbaA0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMD5p7cS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F07C4CEE3;
-	Tue, 29 Apr 2025 18:12:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZF7yxx028wd5O9Y6iAvBLYXHdV47bexvhtwNhVQB4EolxsZ4ajfX5q6HCWxozuBYLrNi5VoEzIGWfi5WHFq3wNfel47DYcQriZqDqBs3iwy/U9IETqUFJ2MW2kxJnfft8pwWoot9LXusa5AT/+48s9ATFoNKcPctZZ0W3xcuywg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxe5TObT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70DACC4CEE3;
+	Tue, 29 Apr 2025 18:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950351;
-	bh=QaumpdS/ooIMBTUBDlimVVDQrENMFdSmUf2DL6F+zlA=;
+	s=korg; t=1745949669;
+	bh=9Q7lRSuaS8ZOrYguDir/LAjYPGBPDF5ZMHjIAaHNX4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MMD5p7cSxhkM1PWNhejoXFYtXFC8CEHPr6+b67YA5hFSOPjGMBFzCC1FolwrpvEZL
-	 QoMwTdBkOjhRF4rYBgq/Vf05ReiamCChXxaJlQ71RwX8/RQ+w4wpojN3BMsmfac0VS
-	 ASFh6Nar1UX33s1PgsKuYZfqtDdTTqXCeGJFVfmo=
+	b=sxe5TObTVFxh2yqa8OCorqWz1JZDryPkCmzBhn3I3Dw/OUs7T1g4Aij/pw6vjWFp2
+	 j6aEZM9j92Ws6TEMs2yhaEJAPOYJKMjhK7jBkJ4+xEKUhS+1nZqhAy0IOxy+fKRraM
+	 zAACkUBCkgcldV5hVjCMuQrHFD/sD6awgGZWIyU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/204] s390/sclp: Allow user-space to provide PCI reports for optical modules
+Subject: [PATCH 6.1 019/167] backlight: led_bl: Convert to platform remove callback returning void
 Date: Tue, 29 Apr 2025 18:42:07 +0200
-Message-ID: <20250429161101.011052681@linuxfoundation.org>
+Message-ID: <20250429161052.529803476@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit e9ab04490667249633fb397be17db46a8fa6d130 ]
+[ Upstream commit c4c4fa57fd3cc00020152baa169337521f90b2ad ]
 
-The new SCLP action qualifier 3 is used by user-space code to provide
-optical module monitoring data to the platform.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Stable-dep-of: aa9f168d55dc ("s390/pci: Support mmap() of PCI resources except for ISM devices")
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/20230308073945.2336302-7-u.kleine-koenig@pengutronix.de
+Stable-dep-of: 276822a00db3 ("backlight: led_bl: Hold led_access lock when calling led_sysfs_disable()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp_pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/video/backlight/led_bl.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/s390/char/sclp_pci.c b/drivers/s390/char/sclp_pci.c
-index a3e5a5fb0c1e7..c3466a8c56bb5 100644
---- a/drivers/s390/char/sclp_pci.c
-+++ b/drivers/s390/char/sclp_pci.c
-@@ -27,6 +27,7 @@
- #define SCLP_ERRNOTIFY_AQ_RESET			0
- #define SCLP_ERRNOTIFY_AQ_REPAIR		1
- #define SCLP_ERRNOTIFY_AQ_INFO_LOG		2
-+#define SCLP_ERRNOTIFY_AQ_OPTICS_DATA		3
+diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
+index f54d256e2d548..a1b6a2ad73a07 100644
+--- a/drivers/video/backlight/led_bl.c
++++ b/drivers/video/backlight/led_bl.c
+@@ -217,7 +217,7 @@ static int led_bl_probe(struct platform_device *pdev)
+ 	return 0;
+ }
  
- static DEFINE_MUTEX(sclp_pci_mutex);
- static struct sclp_register sclp_pci_event = {
-@@ -116,6 +117,7 @@ static int sclp_pci_check_report(struct zpci_report_error_header *report)
- 	case SCLP_ERRNOTIFY_AQ_RESET:
- 	case SCLP_ERRNOTIFY_AQ_REPAIR:
- 	case SCLP_ERRNOTIFY_AQ_INFO_LOG:
-+	case SCLP_ERRNOTIFY_AQ_OPTICS_DATA:
- 		break;
- 	default:
- 		return -EINVAL;
+-static int led_bl_remove(struct platform_device *pdev)
++static void led_bl_remove(struct platform_device *pdev)
+ {
+ 	struct led_bl_data *priv = platform_get_drvdata(pdev);
+ 	struct backlight_device *bl = priv->bl_dev;
+@@ -228,8 +228,6 @@ static int led_bl_remove(struct platform_device *pdev)
+ 	led_bl_power_off(priv);
+ 	for (i = 0; i < priv->nb_leds; i++)
+ 		led_sysfs_enable(priv->leds[i]);
+-
+-	return 0;
+ }
+ 
+ static const struct of_device_id led_bl_of_match[] = {
+@@ -245,7 +243,7 @@ static struct platform_driver led_bl_driver = {
+ 		.of_match_table	= of_match_ptr(led_bl_of_match),
+ 	},
+ 	.probe		= led_bl_probe,
+-	.remove		= led_bl_remove,
++	.remove_new	= led_bl_remove,
+ };
+ 
+ module_platform_driver(led_bl_driver);
 -- 
 2.39.5
 
