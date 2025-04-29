@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-138902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A9DAA1A2F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA59AA195E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84CA7172A7F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:18:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71EFF16779F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE602517AC;
-	Tue, 29 Apr 2025 18:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A51A2459C5;
+	Tue, 29 Apr 2025 18:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zq5uNqT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYErmcID"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A152155A4E;
-	Tue, 29 Apr 2025 18:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DC0227E95;
+	Tue, 29 Apr 2025 18:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950718; cv=none; b=Xh0eNx2mzhgDh0Jiws3i3poh2pYL5/ibWFoEmN1yutl/9L7S3w8oTvi4Z13VY1I63uKcJby5D/uAaB29IiumbjbTNEZhhP+KcpIFk+IDewip9S9DORR5elfuFEpwRQ+XrxcOAdQyI0iHwSjycz4cChP53lyg1uBJid4Aa0/YiuM=
+	t=1745950156; cv=none; b=dDTAYBjO3ItgfGgNa2p4CL4HojMueuDHGnLxHh23ZGLsRRQdjzzE5iTapdbkNclMNJJ9V3btvxqPOn7OVfTFGsRa9JoxYTqpsvC277XsR6BGG9ragEcIkJYZ/Rfvxf59BDAR3PwjlCGHqB8C8ww3f/IL+nuCEXsiPvSTEww45pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950718; c=relaxed/simple;
-	bh=jQ0w0N8jvj+nshmZWw2Wyj2eEVtqSkW2iWrIdtPYOY4=;
+	s=arc-20240116; t=1745950156; c=relaxed/simple;
+	bh=nX9LIAqYYKtWXVHqDkLMWhnrN3NpJZYWeutBkOchVI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kpOL11k+pxcQI+zM1pxzWFji7r2f3K2SZi1EUdAiYDQb1gnY3oPCXzUJkrlbqqZZjlzPv7CxfTGIUEu5tyfuQ7wmq+nQsqyLA4j0IyubK5RsjL4l2AuMN/vvb5UiHMBk6tso92HEvxmq4NImwLC9wTM0+9/HemX2rY9w1S81DU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zq5uNqT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D537AC4CEE3;
-	Tue, 29 Apr 2025 18:18:37 +0000 (UTC)
+	 MIME-Version; b=f6Q8hxiYgoPF3OqX1nanX58KgX+Q6HuUr1soKF0jBgz7RG06RmL6HJtcl81EL7IxsgEjWage0iJzRDXWwr8ZHK36eRoxn/jp5ZuULbgX7o0qkHOMYvoOzbXfb16nUnrOqrKn66kiulgH/HYmH6oAY6yt+EXpCUUc7/Q44f01FUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYErmcID; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95BAC4CEE3;
+	Tue, 29 Apr 2025 18:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950718;
-	bh=jQ0w0N8jvj+nshmZWw2Wyj2eEVtqSkW2iWrIdtPYOY4=;
+	s=korg; t=1745950156;
+	bh=nX9LIAqYYKtWXVHqDkLMWhnrN3NpJZYWeutBkOchVI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0zq5uNqTiIeXTKd0ikaqOGtKZLlLGyk6gCQEvCsOcHU9i1ZRMkNk8Q6PHGXHipHiW
-	 j0tkLPdbk9lUlPPRY/pXaym+PZ1COjtnV5KQoAHv094zs6RnNSkI8DBgxe++Ueth4m
-	 B2fDq2IYbmPgPL/P0XhiV3px49cFXoRIzFHYEXLw=
+	b=TYErmcIDtV6o0xfRGFjjQjW5EhZe+722aux3ko6aAcKkBoRU93sTBPLxO3+ohlv23
+	 m30rwkcM7f1XtoQeYDLYYCsIEW52m9eZ8f3GPEQ5FcLlymcefk6REpRB81SpVDOgqW
+	 PiCuKUU93v/Z2LK6AMA0mf7JO3ds3+tek4d4JhaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunlong Xing <yunlong.xing@unisoc.com>,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/204] loop: aio inherit the ioprio of original request
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 162/167] phy: freescale: imx8m-pcie: Do CMN_RST just before PHY PLL lock check
 Date: Tue, 29 Apr 2025 18:44:30 +0200
-Message-ID: <20250429161106.838821747@linuxfoundation.org>
+Message-ID: <20250429161058.280269348@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunlong Xing <yunlong.xing@unisoc.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 1fdb8188c3d505452b40cdb365b1bb32be533a8e ]
+commit f89263b69731e0144d275fff777ee0dd92069200 upstream.
 
-Set cmd->iocb.ki_ioprio to the ioprio of loop device's request.
-The purpose is to inherit the original request ioprio in the aio
-flow.
+When enable initcall_debug together with higher debug level below.
+CONFIG_CONSOLE_LOGLEVEL_DEFAULT=9
+CONFIG_CONSOLE_LOGLEVEL_QUIET=9
+CONFIG_MESSAGE_LOGLEVEL_DEFAULT=7
 
-Signed-off-by: Yunlong Xing <yunlong.xing@unisoc.com>
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250414030159.501180-1-yunlong.xing@unisoc.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The initialization of i.MX8MP PCIe PHY might be timeout failed randomly.
+To fix this issue, adjust the sequence of the resets refer to the power
+up sequence listed below.
+
+i.MX8MP PCIe PHY power up sequence:
+                          /---------------------------------------------
+1.8v supply     ---------/
+                    /---------------------------------------------------
+0.8v supply     ---/
+
+                ---\ /--------------------------------------------------
+                    X        REFCLK Valid
+Reference Clock ---/ \--------------------------------------------------
+                             -------------------------------------------
+                             |
+i_init_restn    --------------
+                                    ------------------------------------
+                                    |
+i_cmn_rstn      ---------------------
+                                         -------------------------------
+                                         |
+o_pll_lock_done --------------------------
+
+Logs:
+imx6q-pcie 33800000.pcie: host bridge /soc@0/pcie@33800000 ranges:
+imx6q-pcie 33800000.pcie:       IO 0x001ff80000..0x001ff8ffff -> 0x0000000000
+imx6q-pcie 33800000.pcie:      MEM 0x0018000000..0x001fefffff -> 0x0018000000
+probe of clk_imx8mp_audiomix.reset.0 returned 0 after 1052 usecs
+probe of 30e20000.clock-controller returned 0 after 32971 usecs
+phy phy-32f00000.pcie-phy.4: phy poweron failed --> -110
+probe of 30e10000.dma-controller returned 0 after 10235 usecs
+imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
+dwhdmi-imx 32fd8000.hdmi: Detected HDMI TX controller v2.13a with HDCP (samsung_dw_hdmi_phy2)
+imx6q-pcie 33800000.pcie: probe with driver imx6q-pcie failed with error -110
+
+Fixes: dce9edff16ee ("phy: freescale: imx8m-pcie: Add i.MX8MP PCIe PHY support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+v2 changes:
+- Rebase to latest fixes branch of linux-phy git repo.
+- Richard's environment have problem and can't sent out patch. So I help
+post this fix patch.
+
+Link: https://lore.kernel.org/r/20241021155241.943665-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 ---
- drivers/block/loop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/freescale/phy-fsl-imx8m-pcie.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 8a6c1146df00f..455e2a2b149f4 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -441,7 +441,7 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
- 	cmd->iocb.ki_filp = file;
- 	cmd->iocb.ki_complete = lo_rw_aio_complete;
- 	cmd->iocb.ki_flags = IOCB_DIRECT;
--	cmd->iocb.ki_ioprio = IOPRIO_PRIO_VALUE(IOPRIO_CLASS_NONE, 0);
-+	cmd->iocb.ki_ioprio = req_get_ioprio(rq);
+--- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
++++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+@@ -143,11 +143,6 @@ static int imx8_pcie_phy_power_on(struct
+ 			   IMX8MM_GPR_PCIE_REF_CLK_PLL);
+ 	usleep_range(100, 200);
  
- 	if (rw == ITER_SOURCE)
- 		ret = call_write_iter(file, &cmd->iocb, &iter);
--- 
-2.39.5
-
+-	/* Do the PHY common block reset */
+-	regmap_update_bits(imx8_phy->iomuxc_gpr, IOMUXC_GPR14,
+-			   IMX8MM_GPR_PCIE_CMN_RST,
+-			   IMX8MM_GPR_PCIE_CMN_RST);
+-
+ 	switch (imx8_phy->drvdata->variant) {
+ 	case IMX8MP:
+ 		reset_control_deassert(imx8_phy->perst);
+@@ -158,6 +153,11 @@ static int imx8_pcie_phy_power_on(struct
+ 		break;
+ 	}
+ 
++	/* Do the PHY common block reset */
++	regmap_update_bits(imx8_phy->iomuxc_gpr, IOMUXC_GPR14,
++			   IMX8MM_GPR_PCIE_CMN_RST,
++			   IMX8MM_GPR_PCIE_CMN_RST);
++
+ 	/* Polling to check the phy is ready or not. */
+ 	ret = readl_poll_timeout(imx8_phy->base + IMX8MM_PCIE_PHY_CMN_REG75,
+ 				 val, val == PCIE_PHY_CMN_REG75_PLL_DONE,
 
 
 
