@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728B0AA175B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D05ECAA145C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 899D99A0FA4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66D131B63C80
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C5A2522BD;
-	Tue, 29 Apr 2025 17:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1764224A06A;
+	Tue, 29 Apr 2025 17:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Op9o72fX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCotcl1l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301012522AB;
-	Tue, 29 Apr 2025 17:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87E1221DA7;
+	Tue, 29 Apr 2025 17:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948521; cv=none; b=KLHg6RdBRjAltqojjPn3V1Cd49AU26VHFbdKR/oiOvxV62UGQyerT2FlXi8zjGUrC2vDuZRNEspILGarAmpegeYaclolk4y1sxxZ3KgZOFVEwsh79nFh75AMmhao5A5J9chPLm76uLuPlE83LCyGfOSMTRstEWEVr8BiZyT+ric=
+	t=1745946685; cv=none; b=BzMQJR+Jck2rdu4exmiMYsddyBCz+z/j+yraknLhtUG3lRlAy0sM9GgGXuWshzf1yL6TQL80tI1r/5VObMIrl3fZIgo42AFl3eN/HVNVKGffyynTOKcVfi4oFBZNfyqXcyo07xBIX/s1SK5FGg34IeNB+7pdf1E/Qly/yn9ruK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948521; c=relaxed/simple;
-	bh=PRxmphH85S2+EbZPPA5P0MYi92y4l0htbSrpNjG7Ers=;
+	s=arc-20240116; t=1745946685; c=relaxed/simple;
+	bh=J2nTXZ96p3eUKzXErhJuU/xUZ+nyZrFcbpMMuDHqXIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mJaUIh5pCQisfg7s9aNEliKkRHB2HRaxDwIh4u8XZm/DNKMedKOAfkNZzHtsBjXM/tM1SqSzwseROha0ITlS5v00wt2KtF7GQhirzg9YHdYFw+f2GZcwKX3ESsRxWn8/KoIuqzVBJhLpe4LoSTLRvaBu4vpcgTz+nskAgm0LolU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Op9o72fX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66D3C4CEE3;
-	Tue, 29 Apr 2025 17:42:00 +0000 (UTC)
+	 MIME-Version; b=arviPzmJMmZRxVwNr1csSSehvj6wRLsIrSnQXlNlTHUnTcbgeMrMP0QxeQWMwm4fRyY2Rh+Ndfr/z9a8R9B7Zya0K0395UiGzkfvVyI7CMFm/JTFZ599aDzh2MHTSoEf+HWMerH1yMbjbSogGmse8H7VuCpfOc1dXv4D9AQ0Asw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCotcl1l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F047EC4CEEE;
+	Tue, 29 Apr 2025 17:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948521;
-	bh=PRxmphH85S2+EbZPPA5P0MYi92y4l0htbSrpNjG7Ers=;
+	s=korg; t=1745946685;
+	bh=J2nTXZ96p3eUKzXErhJuU/xUZ+nyZrFcbpMMuDHqXIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Op9o72fXSogHxViFzV99JwuppX6gtIXpPPdr7hcy4Y2Z3XwaEfvOrBDX4LpQgXheZ
-	 i9X1lzgiOrxD56R6XGBwpZC91ds4KIZUnbmmIjSuLCfAaDX0TSFfrpicvcbxsz9Sa6
-	 3WNTCyiIxoZvX4yj227gbQsvpCdNGLIP/u2SOnAk=
+	b=pCotcl1lO5eDG4wMEixhLu7dOQS2U1NJ+yJzFiyFhPwwHXsneas0PLyWqmLDMicmS
+	 4tzQjzb7vCbODaXhxeX/1GWwpK3Y9M3z4G8K3O1X5J6pieGexDp0A64JzMNcdHArG5
+	 2irV+KkPGIdTW+a6Xb4xeo5QoGY1jxMItZ5PfDLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Daniel Wagner <wagi@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 034/373] scsi: st: Fix array overflow in st_setup()
+Subject: [PATCH 5.10 007/286] nvmet-fcloop: swap list_add_tail arguments
 Date: Tue, 29 Apr 2025 18:38:31 +0200
-Message-ID: <20250429161124.538476415@linuxfoundation.org>
+Message-ID: <20250429161108.159787742@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit a018d1cf990d0c339fe0e29b762ea5dc10567d67 ]
+[ Upstream commit 2b5f0c5bc819af2b0759a8fcddc1b39102735c0f ]
 
-Change the array size to follow parms size instead of a fixed value.
+The newly element to be added to the list is the first argument of
+list_add_tail. This fix is missing dcfad4ab4d67 ("nvmet-fcloop: swap
+the list_add_tail arguments").
 
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Closes: https://lore.kernel.org/linux-scsi/CALGdzuoubbra4xKOJcsyThdk5Y1BrAmZs==wbqjbkAgmKS39Aw@mail.gmail.com/
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250311112516.5548-2-Kai.Makisara@kolumbus.fi
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 437c0b824dbd ("nvme-fcloop: add target to host LS request support")
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 2 +-
+ drivers/nvme/target/fcloop.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 1551d533c7196..956b3b9c5aad5 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -4109,7 +4109,7 @@ static void validate_options(void)
-  */
- static int __init st_setup(char *str)
- {
--	int i, len, ints[5];
-+	int i, len, ints[ARRAY_SIZE(parms) + 1];
- 	char *stp;
- 
- 	stp = get_options(str, ARRAY_SIZE(ints), ints);
+diff --git a/drivers/nvme/target/fcloop.c b/drivers/nvme/target/fcloop.c
+index f2c5136bf2b82..f1aaabc5bec7d 100644
+--- a/drivers/nvme/target/fcloop.c
++++ b/drivers/nvme/target/fcloop.c
+@@ -478,7 +478,7 @@ fcloop_t2h_xmt_ls_rsp(struct nvme_fc_local_port *localport,
+ 	if (targetport) {
+ 		tport = targetport->private;
+ 		spin_lock(&tport->lock);
+-		list_add_tail(&tport->ls_list, &tls_req->ls_list);
++		list_add_tail(&tls_req->ls_list, &tport->ls_list);
+ 		spin_unlock(&tport->lock);
+ 		schedule_work(&tport->ls_work);
+ 	}
 -- 
 2.39.5
 
