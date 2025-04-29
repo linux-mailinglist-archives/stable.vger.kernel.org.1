@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 160D1AA19A4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461BFAA18F4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 163DB1766AD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:12:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A17473AC41D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802D225228D;
-	Tue, 29 Apr 2025 18:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB2821ABC6;
+	Tue, 29 Apr 2025 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNXHwIh8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lq9IqAMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE752AE72;
-	Tue, 29 Apr 2025 18:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2793FFD;
+	Tue, 29 Apr 2025 18:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950330; cv=none; b=FhiXupKr5N0I6vFDD/jbX5f23sf6Qp/DGmmD27bzKTX9oEZqP4rVZdPD19Z0waf+H8+mqFRtLXIrctTvpoLnW/kchW1VUynIPSgK8ZvR05mop/0SjRx1A271KUhjLj8Zt1pOtsaVlH9n03RMDlCFQphkj1Dxt5WXs0DHaNsTnEU=
+	t=1745949657; cv=none; b=WiU30bnDGbq87auARtiFGGA7H+5lDJ37vk9kY+aFIa5pNdgYsln4tzyhsPfcdhKoOm0YNi8Hon7ZrPtqvZk24ecUAt5cmubdn6dapMCyI3Iz6QHf0ci0h/fRihGUOWapbBmFBXOC1hTDmbfpcIZYU8IVppMIK3bWmtGI/8KjlZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950330; c=relaxed/simple;
-	bh=Qa+Qih/XfIUNanVcwWdCIA5FuCgpuKDAz1AKwKw7hxY=;
+	s=arc-20240116; t=1745949657; c=relaxed/simple;
+	bh=7T+xVb1gajI87nkH/DmLiVpss/dx1iozbLocXgO2XjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LCUPrDn+kh+Q4lt4wVXynKUcxwE6r55pGgkQl4yQfBMV3JvtQbG+YVa8rZkL1MLALdIHwxBH68iH7Jv7wdi3LZ1p6mtxAAwktaqgVvu8yUjyFTcSTj/x3M4aNl7nrbqFBg1mMXg+PDb4cWVOgq6riKXkNPfexc4QCVGqFHJmbk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNXHwIh8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0E2C4CEE3;
-	Tue, 29 Apr 2025 18:12:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f63lBfDYw89IxA7DULHi1y0okhY4Yu04J26GQb3axVK5TlpK+lKhAKPwV9lhXVV28fTNn2sDXWInhNl2xpc4gUiea8teBUZf5Nl2pp6x0/qkbGNoOblAOjfM7GVQi5Wfo0mVOAh2fdRz/NUN63QS9rRgS9MgIj/bq6xqMNCUR1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lq9IqAMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57854C4CEE3;
+	Tue, 29 Apr 2025 18:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950330;
-	bh=Qa+Qih/XfIUNanVcwWdCIA5FuCgpuKDAz1AKwKw7hxY=;
+	s=korg; t=1745949657;
+	bh=7T+xVb1gajI87nkH/DmLiVpss/dx1iozbLocXgO2XjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VNXHwIh8RvrLMlMGoUcCLksziNYK7eyiISrcEsgLWmTdFBaDXSBVgDNd5liU3/UfU
-	 7Unbrckv+gcz7G+eBxe2tFagBZYb83VCdK9XvqcgRTRyetPsLCewonw8U70PIwE2Rr
-	 IvCRAkLbxvqmD/FjFKhp/6NOaXzx+gyWcPkxYNEo=
+	b=lq9IqAMsunp7JaiHrcbMCmNRrlq5ZYrTNqp9aBil3jR8RXzhwS0Y798qPQ7aKbFH7
+	 95Rqjyio2TU0/OMxqQXvUqrDWUXKAs2/PztHRTNQw0Mi8U6fRTzaW8BqtLHR+3O+zr
+	 mrXZv3AORwJAGJSO3YCrz+te261AhuygdIt1vs7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/204] of: resolver: Fix device node refcount leakage in of_resolve_phandles()
-Date: Tue, 29 Apr 2025 18:42:02 +0200
-Message-ID: <20250429161100.806561737@linuxfoundation.org>
+Subject: [PATCH 6.1 015/167] net: dsa: mv88e6xxx: fix internal PHYs for 6320 family
+Date: Tue, 29 Apr 2025 18:42:03 +0200
+Message-ID: <20250429161052.367901782@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit a46a0805635d07de50c2ac71588345323c13b2f9 ]
+[ Upstream commit 52fdc41c3278c981066a461d03d5477ebfcf270c ]
 
-In of_resolve_phandles(), refcount of device node @local_fixups will be
-increased if the for_each_child_of_node() exits early, but nowhere to
-decrease the refcount, so cause refcount leakage for the node.
+Fix internal PHYs definition for the 6320 family, which has only 2
+internal PHYs (on ports 3 and 4).
 
-Fix by using __free() on @local_fixups.
-
-Fixes: da56d04c806a ("of/resolver: Switch to new local fixups format.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-9-93e3a2659aa7@quicinc.com
-[robh: Use __free() instead]
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: bc3931557d1d ("net: dsa: mv88e6xxx: Add number of internal PHYs")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.6.x
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250317173250.28780-7-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/resolver.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
-index 2dd19dc6987c7..d5c1b2a126a56 100644
---- a/drivers/of/resolver.c
-+++ b/drivers/of/resolver.c
-@@ -262,8 +262,9 @@ static int adjust_local_phandle_references(struct device_node *local_fixups,
-  */
- int of_resolve_phandles(struct device_node *overlay)
- {
--	struct device_node *child, *local_fixups, *refnode;
-+	struct device_node *child, *refnode;
- 	struct device_node *overlay_fixups;
-+	struct device_node __free(device_node) *local_fixups = NULL;
- 	struct property *prop;
- 	const char *refpath;
- 	phandle phandle, phandle_delta;
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index c1a322d6432c0..52dd00f2a83ca 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -6212,7 +6212,8 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_databases = 4096,
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+-		.num_internal_phys = 5,
++		.num_internal_phys = 2,
++		.internal_phys_offset = 3,
+ 		.num_gpio = 15,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x10,
+@@ -6237,7 +6238,8 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_databases = 4096,
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+-		.num_internal_phys = 5,
++		.num_internal_phys = 2,
++		.internal_phys_offset = 3,
+ 		.num_gpio = 15,
+ 		.max_vid = 4095,
+ 		.port_base_addr = 0x10,
 -- 
 2.39.5
 
