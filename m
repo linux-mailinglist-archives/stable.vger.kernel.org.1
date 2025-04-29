@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7A9AA1802
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B5CAA164D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5A7A3A6704
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B09289A38C9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E7F24E000;
-	Tue, 29 Apr 2025 17:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F1023F405;
+	Tue, 29 Apr 2025 17:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmILsHr+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FyRFoMWV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0412239072;
-	Tue, 29 Apr 2025 17:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F10521ABDB;
+	Tue, 29 Apr 2025 17:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948993; cv=none; b=VHSDEeobfeX2NsVrVLlm1xYW7ZIY+9NL2XMqHSzvqEPLHvO9MHYVL2YjeTsVgJ+tF0ASq9nuQRoMpcGxsdc9LkKNk9WH0UjGEzyp3n7lvO4FDtL1dd470OIbRGf1P4joOTmqd7Rs0BQMHNep1fhqSF4kJQDw86q9NIAuRuD/L/c=
+	t=1745947748; cv=none; b=figM7y3L8hYn7vjC2bj+qmqtt1UW38wKkK/rqTmftPF097thmcvJyUAt3km9/n/9ehGXiBtdU68Q35qjjaXwBFILDFizcZMBVhWIQqMqSZ1QptjuXQufGxHYkotlXGMe37sB93r7AFdrxc9MGRn+AXZ8+c3Nb5Lkm0c/Thu/suY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948993; c=relaxed/simple;
-	bh=QhrwSZf7kvSQhTkE8kATX9xr57Q9wPiGMO0VWB0qReo=;
+	s=arc-20240116; t=1745947748; c=relaxed/simple;
+	bh=CVAtSQDBI9kiyzJA3euki7chjFE407t1zbzJUDyUs3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqJjGRON3XM/AwmRgyZ5jXSMicm0Ud5cO6QUjhmVSu58m5vwz9QsKnxN4srqghFsIipOvChYrUSUOx4W9t0WFZSjh9iLlMa+DXBECdoptSb/YHlVd1DZkQ82OtX/56OAdsZ9pBKzDoqPIujgRKPQqX9ytp/EcOlf+B7RNJEaxvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmILsHr+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDCCC4CEE3;
-	Tue, 29 Apr 2025 17:49:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uvUi5itI3c9yCXk4yeSyij2pks6w/Dhsgyq6Gh2LH9NNQQh8LT7seScIwrv9yDI2+OoqVJWp/2Slu3WQ3/8Ha9NAnaLEs1B0znAojMftRN3lxfvW8RTrpR2nk/pcou1ujsldMDnbUu4OKYbDEP0eEDvGBMsAm18auwP7eRfHkjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FyRFoMWV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036F5C4CEE9;
+	Tue, 29 Apr 2025 17:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948993;
-	bh=QhrwSZf7kvSQhTkE8kATX9xr57Q9wPiGMO0VWB0qReo=;
+	s=korg; t=1745947748;
+	bh=CVAtSQDBI9kiyzJA3euki7chjFE407t1zbzJUDyUs3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kmILsHr+MTuDmwxlZsAT4p9rtMVfz5izBRWHqs60vhbcBg/bnwWDYRmW/7egKZgbK
-	 5QymlV3vSIa0aAuSauxuWKdQwYBbfquMa/oLzsFEp/p/LoKp3kdYK4Xq+29o4BjojT
-	 6wJR62S/dwsJyevuUsDheIe1fqULO8yVw9/pp874=
+	b=FyRFoMWVN7gqsbTI7sLmyPH5BVVSIn2zn7j1AkXfqKyr41vIxv4qwSVdoegAOcRTY
+	 9siwhol6iYrsFlc/9Sfrw+2oMYuIgGPL0g0XHc3hgoGpeccUWkKTiJmTvjdaObIs7O
+	 2DHgWYTHTCPQ8W+I+jMemcieNYAmAKSq5IL7Pyao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 156/373] ASoC: codecs:lpass-wsa-macro: Fix vi feedback rate
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Naveen N Rao <naveen@kernel.org>
+Subject: [PATCH 6.12 092/280] KVM: SVM: Disable AVIC on SNP-enabled system without HvInUseWrAllowed feature
 Date: Tue, 29 Apr 2025 18:40:33 +0200
-Message-ID: <20250429161129.565803488@linuxfoundation.org>
+Message-ID: <20250429161118.872352268@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,125 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 
-commit d7bff1415e85b889dc8908be6aedba8807ae5e37 upstream.
+commit d81cadbe164265337f149cf31c9462d7217c1eed upstream.
 
-Currently the VI feedback rate is set to fixed 8K, fix this by getting
-the correct rate from params_rate.
+On SNP-enabled system, VMRUN marks AVIC Backing Page as in-use while
+the guest is running for both secure and non-secure guest. Any hypervisor
+write to the in-use vCPU's AVIC backing page (e.g. to inject an interrupt)
+will generate unexpected #PF in the host.
 
-Without this patch incorrect rate will be set on the VI feedback
-recording resulting in rate miss match and audio artifacts.
+Currently, attempt to run AVIC guest would result in the following error:
 
-Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
-Cc: stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250403160209.21613-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+    BUG: unable to handle page fault for address: ff3a442e549cc270
+    #PF: supervisor write access in kernel mode
+    #PF: error_code(0x80000003) - RMP violation
+    PGD b6ee01067 P4D b6ee02067 PUD 10096d063 PMD 11c540063 PTE 80000001149cc163
+    SEV-SNP: PFN 0x1149cc unassigned, dumping non-zero entries in 2M PFN region: [0x114800 - 0x114a00]
+    ...
+
+Newer AMD system is enhanced to allow hypervisor to modify the backing page
+for non-secure guest on SNP-enabled system. This enhancement is available
+when the CPUID Fn8000_001F_EAX bit 30 is set (HvInUseWrAllowed).
+
+This table describes AVIC support matrix w.r.t. SNP enablement:
+
+               | Non-SNP system |     SNP system
+-----------------------------------------------------
+ Non-SNP guest |  AVIC Activate | AVIC Activate iff
+               |                | HvInuseWrAllowed=1
+-----------------------------------------------------
+     SNP guest |      N/A       |    Secure AVIC
+
+Therefore, check and disable AVIC in kvm_amd driver when the feature is not
+available on SNP-enabled system.
+
+See the AMD64 Architecture Programmer’s Manual (APM) Volume 2 for detail.
+(https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/
+programmer-references/40332.pdf)
+
+Fixes: 216d106c7ff7 ("x86/sev: Add SEV-SNP host initialization support")
+Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/20241104075845.7583-1-suravee.suthikulpanit@amd.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: Naveen N Rao <naveen@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/lpass-wsa-macro.c |   39 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 36 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/cpufeatures.h |    1 +
+ arch/x86/kvm/svm/avic.c            |    6 ++++++
+ 2 files changed, 7 insertions(+)
 
---- a/sound/soc/codecs/lpass-wsa-macro.c
-+++ b/sound/soc/codecs/lpass-wsa-macro.c
-@@ -62,6 +62,10 @@
- #define CDC_WSA_TX_SPKR_PROT_CLK_DISABLE	0
- #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK	GENMASK(3, 0)
- #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K	0
-+#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K	1
-+#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K	2
-+#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K	3
-+#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K	4
- #define CDC_WSA_TX0_SPKR_PROT_PATH_CFG0		(0x0248)
- #define CDC_WSA_TX1_SPKR_PROT_PATH_CTL		(0x0264)
- #define CDC_WSA_TX1_SPKR_PROT_PATH_CFG0		(0x0268)
-@@ -344,6 +348,7 @@ struct wsa_macro {
- 	int ear_spkr_gain;
- 	int spkr_gain_offset;
- 	int spkr_mode;
-+	u32 pcm_rate_vi;
- 	int is_softclip_on[WSA_MACRO_SOFTCLIP_MAX];
- 	int softclip_clk_users[WSA_MACRO_SOFTCLIP_MAX];
- 	struct regmap *regmap;
-@@ -967,6 +972,7 @@ static int wsa_macro_hw_params(struct sn
- 			       struct snd_soc_dai *dai)
- {
- 	struct snd_soc_component *component = dai->component;
-+	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
- 	int ret;
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -449,6 +449,7 @@
+ #define X86_FEATURE_SME_COHERENT	(19*32+10) /* AMD hardware-enforced cache coherency */
+ #define X86_FEATURE_DEBUG_SWAP		(19*32+14) /* "debug_swap" AMD SEV-ES full debug state swap support */
+ #define X86_FEATURE_SVSM		(19*32+28) /* "svsm" SVSM present */
++#define X86_FEATURE_HV_INUSE_WR_ALLOWED	(19*32+30) /* Allow Write to in-use hypervisor-owned pages */
  
- 	switch (substream->stream) {
-@@ -979,6 +985,11 @@ static int wsa_macro_hw_params(struct sn
- 			return ret;
- 		}
- 		break;
-+	case SNDRV_PCM_STREAM_CAPTURE:
-+		if (dai->id == WSA_MACRO_AIF_VI)
-+			wsa->pcm_rate_vi = params_rate(params);
-+
-+		break;
- 	default:
- 		break;
+ /* AMD-defined Extended Feature 2 EAX, CPUID level 0x80000021 (EAX), word 20 */
+ #define X86_FEATURE_NO_NESTED_DATA_BP	(20*32+ 0) /* No Nested Data Breakpoints */
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -1199,6 +1199,12 @@ bool avic_hardware_setup(void)
+ 		return false;
  	}
-@@ -1152,6 +1163,28 @@ static int wsa_macro_enable_vi_feedback(
- 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
- 	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
- 	u32 tx_reg0, tx_reg1;
-+	u32 rate_val;
-+
-+	switch (wsa->pcm_rate_vi) {
-+	case 8000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
-+		break;
-+	case 16000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K;
-+		break;
-+	case 24000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K;
-+		break;
-+	case 32000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K;
-+		break;
-+	case 48000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K;
-+		break;
-+	default:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
-+		break;
+ 
++	if (cc_platform_has(CC_ATTR_HOST_SEV_SNP) &&
++	    !boot_cpu_has(X86_FEATURE_HV_INUSE_WR_ALLOWED)) {
++		pr_warn("AVIC disabled: missing HvInUseWrAllowed on SNP-enabled system\n");
++		return false;
 +	}
- 
- 	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
- 		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
-@@ -1163,7 +1196,7 @@ static int wsa_macro_enable_vi_feedback(
- 
- 	switch (event) {
- 	case SND_SOC_DAPM_POST_PMU:
--			/* Enable V&I sensing */
-+		/* Enable V&I sensing */
- 		snd_soc_component_update_bits(component, tx_reg0,
- 					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
- 					      CDC_WSA_TX_SPKR_PROT_RESET);
-@@ -1172,10 +1205,10 @@ static int wsa_macro_enable_vi_feedback(
- 					      CDC_WSA_TX_SPKR_PROT_RESET);
- 		snd_soc_component_update_bits(component, tx_reg0,
- 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
--					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
-+					      rate_val);
- 		snd_soc_component_update_bits(component, tx_reg1,
- 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
--					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
-+					      rate_val);
- 		snd_soc_component_update_bits(component, tx_reg0,
- 					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
- 					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
++
+ 	if (boot_cpu_has(X86_FEATURE_AVIC)) {
+ 		pr_info("AVIC enabled\n");
+ 	} else if (force_avic) {
 
 
 
