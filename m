@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-137889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AFEAA15B7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5D6AA16BB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8CA69A020F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56305164958
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB38224EABF;
-	Tue, 29 Apr 2025 17:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A7C24E000;
+	Tue, 29 Apr 2025 17:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZLYIUos"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyAuw1ju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A747A2517A8;
-	Tue, 29 Apr 2025 17:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415AA22DF91;
+	Tue, 29 Apr 2025 17:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947440; cv=none; b=T2FfDSg4JLkzDUFVjYYCwYDdzDtdl/Uirzvod0L8t1HTVqQe4yHGLtcpmAQVFFA5oOgfW7cUuaHAjxQHWQsJS92LIhlDP/HRxot4g9FaaCIu5SIEeqWG115JzagHV/KE7RqtqU5Fi4TMetVVNJExWPZ7usPp5djZ8rGbNnI5eII=
+	t=1745948291; cv=none; b=i6rg+dOaPIR0fnrvq4PKZFypYbQ5TB6fnz3VH+5cDeG8ZvYJgz+lxZ3ofoz3CytRhxLfI72TB9TPxd6GlKpaUtUMhRwgL2pMwvj0P9ANoc6U/B1mmHxxWG/j3ISfShY6/cKlrQBWxFBa+wNoZ9gDzzW0uwGDgygb2VH4QuQyyVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947440; c=relaxed/simple;
-	bh=chbBEeRX4MGusOuWJfJ3TYUy1SyQV3tS5Ul76ryfDwE=;
+	s=arc-20240116; t=1745948291; c=relaxed/simple;
+	bh=Rz8TOQoceIVMs0jnICwryYKbTCele+69KkUzpU78bYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gt7TWO6pU/J41De4eVyLRklX3AX+j5HIqCKOjmgBfDej8abAozLq+znHsllpa5lrBvi6kpWiheW6Fc/6kG4rZW9pdkLyiaELglx7f20AP37QAf4RY3i5gNUC74faekkWxINw8JqiWCclDEqgLE2shGFKC6THwl6XQzNRligbPvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZLYIUos; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33156C4CEE3;
-	Tue, 29 Apr 2025 17:24:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KZyaSJZ187L9Fohm3q3o6YAynAqPYdaVtciFBICTm6z8re1r0LqiNLb2TjFg4rwfhjJzZob6Evt7qUeq+dOV29IUhzEKRhUe8vQWUIGlRrJyPULM9sRLVMaQAcE0h/QAbOk1RaQHr25Do3k/2XVK52IwOBzAoLu6Eu5c6nJ6HJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyAuw1ju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82AFC4CEE3;
+	Tue, 29 Apr 2025 17:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947440;
-	bh=chbBEeRX4MGusOuWJfJ3TYUy1SyQV3tS5Ul76ryfDwE=;
+	s=korg; t=1745948291;
+	bh=Rz8TOQoceIVMs0jnICwryYKbTCele+69KkUzpU78bYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZLYIUosuTGUHHrxRgDrz0J9VwCfXDwHVztxByGc9BVkFq424RWsbJ1n7oxIKYytr
-	 GUj6GoYHuI1FtDGqxSqu8nvQnBEH8VHMJEz79LXyObbTHLBeSlu2Du7W9uiMVytDsW
-	 dIKB1m1eYm+sH/OznT4njlldVPUeQWXAzGKYDHPM=
+	b=jyAuw1juer1zYlgLPQLtkha/6hHW2RZC7AIZR7mCTXIWXcY94v2BtzIdEWS4s3WC4
+	 4pm7Qn6/zfm+vtfWp9P7+TakDI6P/c0NRFhjRLrzPgnlZ33LAeUarVoZ+HpZDipCsq
+	 15JrxhD6fuaxHUN/TVnX5JIjW3tsyUbgOUfzNOWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.10 281/286] MIPS: cm: Fix warning if MIPS_CM is disabled
-Date: Tue, 29 Apr 2025 18:43:05 +0200
-Message-ID: <20250429161119.470164744@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 245/280] drm/amdgpu: use a dummy owner for sysfs triggered cleaner shaders v4
+Date: Tue, 29 Apr 2025 18:43:06 +0200
+Message-ID: <20250429161125.149411945@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,68 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From: Christian König <christian.koenig@amd.com>
 
-commit b73c3ccdca95c237750c981054997c71d33e09d7 upstream.
+[ Upstream commit 447fab30955cf7dba7dd563f42b67c02284860c8 ]
 
-Commit e27fbe16af5c ("MIPS: cm: Detect CM quirks from device tree")
-introduced
+Otherwise triggering sysfs multiple times without other submissions in
+between only runs the shader once.
 
-arch/mips/include/asm/mips-cm.h:119:13: error: ‘mips_cm_update_property’
-	defined but not used [-Werror=unused-function]
+v2: add some comment
+v3: re-add missing cast
+v4: squash in semicolon fix
 
-Fix this by making empty function implementation inline
-
-Fixes: e27fbe16af5c ("MIPS: cm: Detect CM quirks from device tree")
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8b2ae7d492675e8af8902f103364bef59382b935)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mips-cm.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -104,7 +104,7 @@ static inline bool mips_cm_present(void)
- #ifdef CONFIG_MIPS_CM
- extern void mips_cm_update_property(void);
- #else
--static void mips_cm_update_property(void) {}
-+static inline void mips_cm_update_property(void) {}
- #endif
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+index 05ebb8216a55a..3c2ac5f4e814b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+@@ -1426,9 +1426,11 @@ static int amdgpu_gfx_run_cleaner_shader_job(struct amdgpu_ring *ring)
+ 	struct amdgpu_device *adev = ring->adev;
+ 	struct drm_gpu_scheduler *sched = &ring->sched;
+ 	struct drm_sched_entity entity;
++	static atomic_t counter;
+ 	struct dma_fence *f;
+ 	struct amdgpu_job *job;
+ 	struct amdgpu_ib *ib;
++	void *owner;
+ 	int i, r;
  
- /**
+ 	/* Initialize the scheduler entity */
+@@ -1439,9 +1441,15 @@ static int amdgpu_gfx_run_cleaner_shader_job(struct amdgpu_ring *ring)
+ 		goto err;
+ 	}
+ 
+-	r = amdgpu_job_alloc_with_ib(ring->adev, &entity, NULL,
+-				     64, 0,
+-				     &job);
++	/*
++	 * Use some unique dummy value as the owner to make sure we execute
++	 * the cleaner shader on each submission. The value just need to change
++	 * for each submission and is otherwise meaningless.
++	 */
++	owner = (void *)(unsigned long)atomic_inc_return(&counter);
++
++	r = amdgpu_job_alloc_with_ib(ring->adev, &entity, owner,
++				     64, 0, &job);
+ 	if (r)
+ 		goto err;
+ 
+-- 
+2.39.5
+
 
 
 
