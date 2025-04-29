@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-137218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3AA5AA1256
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C52EAA1357
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 904CC3A64BA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A3287AFA66
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C85244679;
-	Tue, 29 Apr 2025 16:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408B924A047;
+	Tue, 29 Apr 2025 17:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLDAgEc9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQSZzRQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EF4215060;
-	Tue, 29 Apr 2025 16:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F041D24EAB2;
+	Tue, 29 Apr 2025 17:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945415; cv=none; b=IrfKE+N82lklb/xtxi9UmCtJuRK9XGpBu+Xw/cSFB1JC19XReBEluIoun4soLzcOsGPsVbBagtNxFfv/tL89S9FcvuUdyIEnQoiWhpnefegs+5KrIyzmsGdsdAYZfe1ipusN0Bsl5JUeE+SSeZmc+CzXn6F9JvRkei4kGQynkHw=
+	t=1745946262; cv=none; b=snETOxgEc7qibJtawVRNOHfWGu/6QkUiK1Yqz2V7wg/yBGPMFgsD8DtBUhjVtu9wxWquey4LzNO9KGRRX75cJv7NrQ/wG2Slbni6Nl9dbApcAfj2wKNAjr2vMEc1ifDMko8PY7heG5N/bzrAs20kBzWR1BL+swkxY4pCMVMezGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945415; c=relaxed/simple;
-	bh=DeuvOHXv0/FqG1Hzl2Fi9Eji11gaRUU+eu2yoKPRZuQ=;
+	s=arc-20240116; t=1745946262; c=relaxed/simple;
+	bh=X40NhaBLYC6l2H93B1/d37pnXsbmAhpFUUMyoCPY84A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T6FLmajqhOTdbgeJ4fsobZ6nDfffy+OvWnVHACf97NQmM0APFN2JzVm2X3+2NsmwLBp1FaCb0/Ou6DMJndetYsLbZx1hB+HJwPOZyGAnmm9GAU0/eYC6mTxmyNRZ89WK4A+bLI1JVHEcprBjpJ3qa0qM/zJoPKTH+ebw8pBtwT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLDAgEc9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C183DC4CEE3;
-	Tue, 29 Apr 2025 16:50:14 +0000 (UTC)
+	 MIME-Version; b=Aiag/2tI9USbz0gug5y2ewP2fh3uZ47xU9c61xzjzood3KDkIG6D5Nip2Dcp4T0s2DwlFUU2RAkNZTLW5LEiRXSmXnJyj1f7g72sWVr5y1Is9XORyjaRRy0k0LDS5mgWjZJnrKlSUZlvWJfhY98eYeQOEWZ9z5qBZD3ho6kza0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQSZzRQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5853DC4CEE3;
+	Tue, 29 Apr 2025 17:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945415;
-	bh=DeuvOHXv0/FqG1Hzl2Fi9Eji11gaRUU+eu2yoKPRZuQ=;
+	s=korg; t=1745946261;
+	bh=X40NhaBLYC6l2H93B1/d37pnXsbmAhpFUUMyoCPY84A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sLDAgEc9ynHfoJ/hYuGcNiPeKdB/EgHRutqb4YdMB5PecnFr/uWnVtFYEUTph51yj
-	 Fp96Xxele1HnsKLvv4TIjR/rOA238wzIhxVcVA7oC/szijZrG70C3gjP6RQXPGKi2r
-	 8MxnDFF2Aal01cqadPIQHNE3Fl96+znH7bKtGQoI=
+	b=bQSZzRQ26EFnA8l8DuDEobmxTaRT/RljQSIc43TtyB/XvVeINofQOj5AhI2wqa4VR
+	 z6qtmwNhRQ6WC+1fgtAa/wgxwaTPx4/jwevyyGPuSTs1P/TixNDw19H2FxFW1C3rkY
+	 5fRydiNZu2HkjYWhoo0ijcEF+vh/S0Sx9AjrnGUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiangsheng Hou <xiangsheng.hou@mediatek.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.4 104/179] virtiofs: add filesystem context source name check
+	kernel test robot <lkp@intel.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 208/311] dmaengine: bcm2835-dma: fix warning when CONFIG_PM=n
 Date: Tue, 29 Apr 2025 18:40:45 +0200
-Message-ID: <20250429161053.609893615@linuxfoundation.org>
+Message-ID: <20250429161129.525728382@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit a94fd938df2b1628da66b498aa0eeb89593bc7a2 upstream.
+[ Upstream commit 95032938c7c9b2e5ebb69f0ee10ebe340fa3af53 ]
 
-In certain scenarios, for example, during fuzz testing, the source
-name may be NULL, which could lead to a kernel panic. Therefore, an
-extra check for the source name should be added.
+The old SET_LATE_SYSTEM_SLEEP_PM_OPS macro cause a build warning
+when CONFIG_PM is disabled:
 
-Fixes: a62a8ef9d97d ("virtio-fs: add virtiofs filesystem")
-Cc: <stable@vger.kernel.org> # all LTS kernels
-Signed-off-by: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
-Link: https://lore.kernel.org/20250407115111.25535-1-xiangsheng.hou@mediatek.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+warning: 'bcm2835_dma_suspend_late' defined but not used [-Wunused-function]
+
+Change this to the modern replacement.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501071533.yrFb156H-lkp@intel.com/
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20250222095028.48818-1-wahrenst@gmx.net
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/virtio_fs.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/dma/bcm2835-dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/fuse/virtio_fs.c
-+++ b/fs/fuse/virtio_fs.c
-@@ -1206,6 +1206,9 @@ static int virtio_fs_get_tree(struct fs_
- 	struct fuse_conn *fc;
- 	int err;
+diff --git a/drivers/dma/bcm2835-dma.c b/drivers/dma/bcm2835-dma.c
+index 20b10c15c6967..0117bb2e8591b 100644
+--- a/drivers/dma/bcm2835-dma.c
++++ b/drivers/dma/bcm2835-dma.c
+@@ -893,7 +893,7 @@ static int bcm2835_dma_suspend_late(struct device *dev)
+ }
  
-+	if (!fsc->source)
-+		return invalf(fsc, "No source specified");
-+
- 	/* This gets a reference on virtio_fs object. This ptr gets installed
- 	 * in fc->iq->priv. Once fuse_conn is going away, it calls ->put()
- 	 * to drop the reference to this object.
+ static const struct dev_pm_ops bcm2835_dma_pm_ops = {
+-	SET_LATE_SYSTEM_SLEEP_PM_OPS(bcm2835_dma_suspend_late, NULL)
++	LATE_SYSTEM_SLEEP_PM_OPS(bcm2835_dma_suspend_late, NULL)
+ };
+ 
+ static int bcm2835_dma_probe(struct platform_device *pdev)
+-- 
+2.39.5
+
 
 
 
