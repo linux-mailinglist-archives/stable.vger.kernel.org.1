@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-137122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189FCAA11D3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:46:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 785C1AA143E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E31B4A5265
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCCC24C22D0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE47D2512ED;
-	Tue, 29 Apr 2025 16:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0261DF73C;
+	Tue, 29 Apr 2025 17:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0m0phUgY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSyRf9EP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A04824BC04;
-	Tue, 29 Apr 2025 16:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8820C242D6E;
+	Tue, 29 Apr 2025 17:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945125; cv=none; b=rzdOl5CMnYBiBTs9q0GUjxw+ZIbhg0lfBuA5HXdkKWzCFxQabfBuBAEwOzbX++ClFqhCfXvCRPpY3to9xCjTZElVU6yV2BDuz/40EDUuvxhK3IsA2g7QPj/8N9/TtxRMwD4ojOAsTySdyE8Agde5BwXIbuogbhXjMyfxqXwOpVY=
+	t=1745946718; cv=none; b=u1wVIEn1viLllr2HbLDxCMqO9Uy6xJjOrVl8Y7Kb4HNrEwy+usxl3CcmMFkpHwGttylH8rPte4fVvYpyOfYZAe2gY91hmk2ze200k6N9Nckmdi/16guVnBJcMejgR7FR1kFlAfwLmFbUoHOvmy31HQvUItwR0uqYV/bKTUUwT84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945125; c=relaxed/simple;
-	bh=eeAeEonLrNWCIiVRTIaWpy8EQ+5O3hduLc4DrEEn4PA=;
+	s=arc-20240116; t=1745946718; c=relaxed/simple;
+	bh=0/qIO4o7idbmJXwGO+QsZ+Zd0qPiAdvep2OEbVfIr2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nF2+d86vwZLx8IipACF0aqNTybN7wZnfbXF9Dsd6qwAJcW05a3CEY/d32UjahbAm4LloMxtuhPmwfShqYn6m34EWp4S1uKftq3DBqBLRV/O3YJ01akEoM15KluM7epZeB3BO1B1lLy+dC73sB6GsPYC8Ziy0x4g7nJN3BHvxbvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0m0phUgY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9323BC4CEED;
-	Tue, 29 Apr 2025 16:45:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RCtrEYjyGoJwcyasOBamPo21gY2o80mNTTYmY7ptYHGKpKoORaDxg2QepwdaBUXq8F9aAqkzH9nCkdkPMuGOKGT+SZiVR13v/0AoKewoiP8a8AmreHiViL0JZOKGlrluGA9CzUR/CbkglnneJmKQK2Wkj/mqWzsubGdy5uGMMLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSyRf9EP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11645C4CEE3;
+	Tue, 29 Apr 2025 17:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945125;
-	bh=eeAeEonLrNWCIiVRTIaWpy8EQ+5O3hduLc4DrEEn4PA=;
+	s=korg; t=1745946718;
+	bh=0/qIO4o7idbmJXwGO+QsZ+Zd0qPiAdvep2OEbVfIr2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0m0phUgYrmMf0lqXM6NOo3sH81MH9VgXcCv5HcLfhuRDGNd0THSOUvCT85kQ9ED/P
-	 M1jhbCGiQb/KPvQ+lu1G/HMNwW2uMFCEWfc83v7m66M3BPrRUUJZveLHreUpOMu33a
-	 s4K4eEOBCJmaOGDH81x1xN/PuoKFS6ruDaASwGA4=
+	b=BSyRf9EPx0UAAtvEmYAZigI0jo4HprgHuYLfjvOKsypCpZu3qgdLkaDrS7gdZrQML
+	 xhJ5y31zCE84PsDoeO6Mm+UR+ihCUFN5+JzpPBuMuX9reJfSnU5SmtpAb/vxrkMCbw
+	 b95rfEi/AiTylg3e1a3/ySSzzC0qsknQcqsCm3Sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	xen-devel@lists.xenproject.org,
-	Kees Cook <kees@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 010/179] xen/mcelog: Add __nonstring annotations for unterminated strings
+Subject: [PATCH 5.10 047/286] pwm: rcar: Improve register calculation
 Date: Tue, 29 Apr 2025 18:39:11 +0200
-Message-ID: <20250429161049.810888896@linuxfoundation.org>
+Message-ID: <20250429161109.795501395@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 1c3dfc7c6b0f551fdca3f7c1f1e4c73be8adb17d ]
+[ Upstream commit e7327c193014a4d8666e9c1cda09cf2c060518e8 ]
 
-When a character array without a terminating NUL character has a static
-initializer, GCC 15's -Wunterminated-string-initialization will only
-warn if the array lacks the "nonstring" attribute[1]. Mark the arrays
-with __nonstring to and correctly identify the char array as "not a C
-string" and thereby eliminate the warning.
+There were several issues in the function rcar_pwm_set_counter():
 
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Cc: xen-devel@lists.xenproject.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Acked-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250310222234.work.473-kees@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+ - The u64 values period_ns and duty_ns were cast to int on function
+   call which might loose bits on 32 bit architectures.
+   Fix: Make parameters to rcar_pwm_set_counter() u64
+ - The algorithm divided by the result of a division which looses
+   precision.
+   Fix: Make use of mul_u64_u64_div_u64()
+ - The calculated values were just masked to fit the respective register
+   fields which again might loose bits.
+   Fix: Explicitly check for overlow
+
+Implement the respective fixes.
+
+A side effect of fixing the 2nd issue is that there is no division by 0
+if clk_get_rate() returns 0.
+
+Fixes: ed6c1476bf7f ("pwm: Add support for R-Car PWM Timer")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/ab3dac794b2216cc1cc56d65c93dd164f8bd461b.1743501688.git.u.kleine-koenig@baylibre.com
+[ukleinek: Added an explicit #include <linux/bitfield.h> to please the
+0day build bot]
+Link: https://lore.kernel.org/oe-kbuild-all/202504031354.VJtxScP5-lkp@intel.com/
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/xen/interface/xen-mca.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-rcar.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/include/xen/interface/xen-mca.h b/include/xen/interface/xen-mca.h
-index 73a4ea714d937..5db6116cd042c 100644
---- a/include/xen/interface/xen-mca.h
-+++ b/include/xen/interface/xen-mca.h
-@@ -365,7 +365,7 @@ struct xen_mce {
- #define XEN_MCE_LOG_LEN 32
+diff --git a/drivers/pwm/pwm-rcar.c b/drivers/pwm/pwm-rcar.c
+index efe11e4e449e1..83da738954074 100644
+--- a/drivers/pwm/pwm-rcar.c
++++ b/drivers/pwm/pwm-rcar.c
+@@ -8,6 +8,7 @@
+  * - The hardware cannot generate a 0% duty cycle.
+  */
  
- struct xen_mce_log {
--	char signature[12]; /* "MACHINECHECK" */
-+	char signature[12] __nonstring; /* "MACHINECHECK" */
- 	unsigned len;	    /* = XEN_MCE_LOG_LEN */
- 	unsigned next;
- 	unsigned flags;
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/io.h>
+@@ -103,23 +104,24 @@ static void rcar_pwm_set_clock_control(struct rcar_pwm_chip *rp,
+ 	rcar_pwm_write(rp, value, RCAR_PWMCR);
+ }
+ 
+-static int rcar_pwm_set_counter(struct rcar_pwm_chip *rp, int div, int duty_ns,
+-				int period_ns)
++static int rcar_pwm_set_counter(struct rcar_pwm_chip *rp, int div, u64 duty_ns,
++				u64 period_ns)
+ {
+-	unsigned long long one_cycle, tmp;	/* 0.01 nanoseconds */
++	unsigned long long tmp;
+ 	unsigned long clk_rate = clk_get_rate(rp->clk);
+ 	u32 cyc, ph;
+ 
+-	one_cycle = NSEC_PER_SEC * 100ULL << div;
+-	do_div(one_cycle, clk_rate);
++	/* div <= 24 == RCAR_PWM_MAX_DIVISION, so the shift doesn't overflow. */
++	tmp = mul_u64_u64_div_u64(period_ns, clk_rate, (u64)NSEC_PER_SEC << div);
++	if (tmp > FIELD_MAX(RCAR_PWMCNT_CYC0_MASK))
++		tmp = FIELD_MAX(RCAR_PWMCNT_CYC0_MASK);
+ 
+-	tmp = period_ns * 100ULL;
+-	do_div(tmp, one_cycle);
+-	cyc = (tmp << RCAR_PWMCNT_CYC0_SHIFT) & RCAR_PWMCNT_CYC0_MASK;
++	cyc = FIELD_PREP(RCAR_PWMCNT_CYC0_MASK, tmp);
+ 
+-	tmp = duty_ns * 100ULL;
+-	do_div(tmp, one_cycle);
+-	ph = tmp & RCAR_PWMCNT_PH0_MASK;
++	tmp = mul_u64_u64_div_u64(duty_ns, clk_rate, (u64)NSEC_PER_SEC << div);
++	if (tmp > FIELD_MAX(RCAR_PWMCNT_PH0_MASK))
++		tmp = FIELD_MAX(RCAR_PWMCNT_PH0_MASK);
++	ph = FIELD_PREP(RCAR_PWMCNT_PH0_MASK, tmp);
+ 
+ 	/* Avoid prohibited setting */
+ 	if (cyc == 0 || ph == 0)
 -- 
 2.39.5
 
