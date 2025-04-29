@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 280EBAA19A6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 013CDAA1A3E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 650C23ACA94
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 050E21BC0FD9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28D824633C;
-	Tue, 29 Apr 2025 18:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B878B25333F;
+	Tue, 29 Apr 2025 18:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wY7Ga2QP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PX1hMKKi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5994820C488;
-	Tue, 29 Apr 2025 18:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75761219A63;
+	Tue, 29 Apr 2025 18:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950143; cv=none; b=RlgMV0UMS7/bQxUOsmYcFsLRHkL4u5JNEt4l7iw2VvNpmGTJYXiVzu44swsJp5ukrpCN5hoL77WMAS7BW5NXTZQgUi5Qu2YgfEOYaoVcB5J232r1LSk1wtIlPmNJo18X9phm7rzAJcW8U2t7nAYA0J3epzQ4WKRPXvdUGKbOEHA=
+	t=1745950702; cv=none; b=LgOcDjCjmTABcUGrt+xFgbW0rE6CJpvmpYa1ZnYKui5tTrzKKPPZMjSGjl9ryGusmhtvAKS8Y4YMXlB3z7b5t/AArzRN/igLzUmnN3wDC9l0kEdwq7YifRA+SSfwQok8Zg0TB40wV+KumI9RdfGlChgBZFLDOXlOfuI1hl6dfI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950143; c=relaxed/simple;
-	bh=O2IcuDTj2e/+wGr1bB5uwZalG4zquqcisEJOZyyIACs=;
+	s=arc-20240116; t=1745950702; c=relaxed/simple;
+	bh=eyDc49tMJcHYYP/Cv8hDoQwukqiwJ2/3BOMs9b3YVmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=au8QCGEmtqynKAZMOol30c0iAXSZ6BJsfkKzqI+Ane8wtK91MHlrG4mXDLIcED243M6McrW2zdEsXMJg7bfOA35KbhjXdSR5NyLUYgF+lGX1ZrMjhBuQgWsryd9v/4iXvuj1l6VRv8cXSymbrwYR+EJfJa8hhT+GZp1oSjRqt7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wY7Ga2QP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C108EC4CEE3;
-	Tue, 29 Apr 2025 18:09:02 +0000 (UTC)
+	 MIME-Version; b=ePE0eLlecbpTPMiVmgCwU1lL6dVV6tICwCC2VGWzh8fRi4ULW3RCjR4NAVzm7CLw7rntkVJAGJRh5iNsOMBMeiurRgWtlz2WjvVzh/aCvbGHgO6EybrbO/Kv3LojPFVdfyq0vlj7XZXIXBU9rDvkTw1RifVeMqFcqMyqPHD2ZP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PX1hMKKi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1A0C4CEE3;
+	Tue, 29 Apr 2025 18:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950143;
-	bh=O2IcuDTj2e/+wGr1bB5uwZalG4zquqcisEJOZyyIACs=;
+	s=korg; t=1745950702;
+	bh=eyDc49tMJcHYYP/Cv8hDoQwukqiwJ2/3BOMs9b3YVmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wY7Ga2QPFSpPAcQ7t3eqTRAi3jjdwROuKiGZ0kIUg6yNhEWTj58ANoTgHOLXaO5h/
-	 PU/KL4/bsAAOgRKpnzc/Fo+leelnWY1DfqqH53bA8IboZzJDUNHW30hRAxB0v+j014
-	 t6MgszmkFXaQ5DpMczZaHqDNGm5n4smphuC6P1xU=
+	b=PX1hMKKi2uHUAtNfIwHfThAZD7psybIZryVtoRBwXnvveZucZYufCDoaVL/GJMK/4
+	 fV5R3E6H0E6/rdmLA66tQd1FOQRPA6XdRhA/SBSDKH0U3LCubXLvUDF+tofOv9il7p
+	 Wm87KOoijYO0rnm9vwaMlC1jvQQ5Qv1pHUlpRswU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	"stable@vger.kernel.org, Sasha Levin" <sashal@kernel.org>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 158/167] net: dsa: mv88e6xxx: enable STU methods for 6320 family
+	Igor Pylypiv <ipylypiv@google.com>,
+	Salomon Dushimirimana <salomondush@google.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 178/204] scsi: pm80xx: Set phy_attached to zero when device is gone
 Date: Tue, 29 Apr 2025 18:44:26 +0200
-Message-ID: <20250429161058.117939597@linuxfoundation.org>
+Message-ID: <20250429161106.681727471@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Marek Behún" <kabel@kernel.org>
+From: Igor Pylypiv <ipylypiv@google.com>
 
-commit 1428a6109b20e356188c3fb027bdb7998cc2fb98 upstream.
+[ Upstream commit f7b705c238d1483f0a766e2b20010f176e5c0fb7 ]
 
-Commit c050f5e91b47 ("net: dsa: mv88e6xxx: Fill in STU support for all
-supported chips") introduced STU methods, but did not add them to the
-6320 family. Fix it.
+When a fatal error occurs, a phy down event may not be received to set
+phy->phy_attached to zero.
 
-Fixes: c050f5e91b47 ("net: dsa: mv88e6xxx: Fill in STU support for all supported chips")
-Signed-off-by: Marek BehÃºn <kabel@kernel.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-6-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
+Link: https://lore.kernel.org/r/20250319230305.3172920-1-salomondush@google.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/scsi/pm8001/pm8001_sas.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5200,6 +5200,8 @@ static const struct mv88e6xxx_ops mv88e6
- 	.reset = mv88e6352_g1_reset,
- 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
- 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
-+	.stu_getnext = mv88e6352_g1_stu_getnext,
-+	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
- 	.gpio_ops = &mv88e6352_gpio_ops,
- 	.avb_ops = &mv88e6352_avb_ops,
- 	.ptp_ops = &mv88e6352_ptp_ops,
-@@ -5248,6 +5250,8 @@ static const struct mv88e6xxx_ops mv88e6
- 	.reset = mv88e6352_g1_reset,
- 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
- 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
-+	.stu_getnext = mv88e6352_g1_stu_getnext,
-+	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
- 	.gpio_ops = &mv88e6352_gpio_ops,
- 	.avb_ops = &mv88e6352_avb_ops,
- 	.ptp_ops = &mv88e6352_ptp_ops,
-@@ -6218,6 +6222,7 @@ static const struct mv88e6xxx_info mv88e
- 		.internal_phys_offset = 3,
- 		.num_gpio = 15,
- 		.max_vid = 4095,
-+		.max_sid = 63,
- 		.port_base_addr = 0x10,
- 		.phy_base_addr = 0x0,
- 		.global1_addr = 0x1b,
-@@ -6244,6 +6249,7 @@ static const struct mv88e6xxx_info mv88e
- 		.internal_phys_offset = 3,
- 		.num_gpio = 15,
- 		.max_vid = 4095,
-+		.max_sid = 63,
- 		.port_base_addr = 0x10,
- 		.phy_base_addr = 0x0,
- 		.global1_addr = 0x1b,
+diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
+index ee2da8e49d4cf..a9d6dac413346 100644
+--- a/drivers/scsi/pm8001/pm8001_sas.c
++++ b/drivers/scsi/pm8001/pm8001_sas.c
+@@ -719,6 +719,7 @@ static void pm8001_dev_gone_notify(struct domain_device *dev)
+ 			spin_lock_irqsave(&pm8001_ha->lock, flags);
+ 		}
+ 		PM8001_CHIP_DISP->dereg_dev_req(pm8001_ha, device_id);
++		pm8001_ha->phy[pm8001_dev->attached_phy].phy_attached = 0;
+ 		pm8001_free_dev(pm8001_dev);
+ 	} else {
+ 		pm8001_dbg(pm8001_ha, DISC, "Found dev has gone.\n");
+-- 
+2.39.5
+
 
 
 
