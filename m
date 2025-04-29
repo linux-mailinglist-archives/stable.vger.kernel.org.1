@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7A4AA1552
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B836AA141F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 736263B48D5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1B483B1143
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B0824500A;
-	Tue, 29 Apr 2025 17:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7E922A81D;
+	Tue, 29 Apr 2025 17:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYOmvbeM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6d5kC9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E47E245007;
-	Tue, 29 Apr 2025 17:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0EC211A0B;
+	Tue, 29 Apr 2025 17:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947194; cv=none; b=AqGXGN3LbCE55g9fKIQvhAIxo+qQD1Xc2LV+q3F5QSbmdg0G79p9J23IWjJmeIL2GaFLef6OXfmdb/QcwXvDNWQue6rXEOHTB+f65pgN9Aybi0knNGaRdSBrfl7xwkWJkP5Evoa555sDzpnNgObi/wySumcIHQ/Rp3+ASeZKuLs=
+	t=1745946448; cv=none; b=On2xY0NPrE06Bta+70vaT7HrOqKYRdOUYvI54DRMBylWhxrRY84XPbJCLidWUZR5ORujr8S/lWMgcsFJBesFT/ctgeJkV/6Oo4wYs00mAMMXDallfjRIbSpJ+MzpaJTJChFNJuY9GZ19RllKOWH+pD3PSX0GVYzAaYCubFkMvIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947194; c=relaxed/simple;
-	bh=laBr2ZV0T08QQYvwxTca22NXs4pzAk5beqMdry+jrRI=;
+	s=arc-20240116; t=1745946448; c=relaxed/simple;
+	bh=Y21z6VkR9fCw4LN9kCQeS8E6KlGBC9PcPC4vjduyXs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OONOuRJcgUlFAUrp2r1bpwDs4u1+nGQ/nUtrKLOeyAusz9OjzvQZmJr7tBjjbHUtvfO/KUzEYvCJHy9cZ8Gp3keYK6hhRx+KskhfaD7HXmBmMS0K8JRU4g/fqZQbLgiTjQjO2Qbu5QyH24Q4LCDfALidIOAFP5+vaDOB4VJhkHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYOmvbeM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4E4C4CEE3;
-	Tue, 29 Apr 2025 17:19:53 +0000 (UTC)
+	 MIME-Version; b=CRLg/pLLMKWqpvsvNDjLr+9qgifWoiC5S5cpw/HGcNmNYdCHvPOr5Mu/uydDdYTFfeEw9r2tZfJgwscRBPU1r1KOMMwOTFtcfUUv4KLOS58YkjdVsQF8rHbgH3jsH9UnXWA2lA+Q1DxEIADizsVLUpf16x8Xc3PJT5+2Hk0ahDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6d5kC9R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22765C4CEE3;
+	Tue, 29 Apr 2025 17:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947194;
-	bh=laBr2ZV0T08QQYvwxTca22NXs4pzAk5beqMdry+jrRI=;
+	s=korg; t=1745946448;
+	bh=Y21z6VkR9fCw4LN9kCQeS8E6KlGBC9PcPC4vjduyXs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYOmvbeMbDlIfsHBICItDRUAxKqE1YI27pyYe6aVpTzXX9KABblqrjXuZpUhX8uWW
-	 gpMcua63s3pKQOtoPeHp5SJzqQ6rWhFZifqUIpSGgykrqTno1Zl0OLw+mhOWLGAlVB
-	 mSiozz52Qf/Tf4O96EEnza67Dsg/rrdwm0YmqfRE=
+	b=W6d5kC9RuwTAS8FKGFxumFR93c7P2dcPl4SxTpuzXPwMYQwVX9db0O1bM9AU0jW+A
+	 K4V+2IHO5o7Lj5Til0iDN4qkQS7GwNYfNWBzJ0gIThwqnDSEyR+EkoyXMzPC7zbrXb
+	 y6zkfV3Gs3rL92pM+DT6KkemMNaMmOvk2Jmi+aMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fritz Koenig <frkoenig@chromium.org>,
-	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 203/286] media: venus: Limit HFI sessions to the maximum supported
+Subject: [PATCH 6.14 270/311] scsi: ufs: exynos: Ensure pre_link() executes before exynos_ufs_phy_init()
 Date: Tue, 29 Apr 2025 18:41:47 +0200
-Message-ID: <20250429161116.312264089@linuxfoundation.org>
+Message-ID: <20250429161132.084723021@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-[ Upstream commit 20891170f339a8754312a877f3d17f0e5dadd599 ]
+[ Upstream commit 3d101165e72316775947d71321d97194f03dfef3 ]
 
-Currently we rely on firmware to return error when we reach the maximum
-supported number of sessions. But this errors are happened at reqbuf
-time which is a bit later. The more reasonable way looks like is to
-return the error on driver open.
+Ensure clocks are enabled before configuring unipro. Additionally move
+the pre_link() hook before the exynos_ufs_phy_init() calls. This means
+the register write sequence more closely resembles the ordering of the
+downstream driver.
 
-To achieve that modify hfi_session_create to return error when we reach
-maximum count of sessions and thus refuse open.
-
-Tested-by: Fritz Koenig <frkoenig@chromium.org>
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 9edaaa8e3e15 ("media: venus: hfi_parser: refactor hfi packet parsing logic")
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-1-96722cc2ba1b@linaro.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/core.h       |  1 +
- drivers/media/platform/qcom/venus/hfi.c        | 16 +++++++++++++---
- drivers/media/platform/qcom/venus/hfi_parser.c |  3 +++
- 3 files changed, 17 insertions(+), 3 deletions(-)
+ drivers/ufs/host/ufs-exynos.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/venus/core.h b/drivers/media/platform/qcom/venus/core.h
-index 75d0068033276..e56d7b8142152 100644
---- a/drivers/media/platform/qcom/venus/core.h
-+++ b/drivers/media/platform/qcom/venus/core.h
-@@ -96,6 +96,7 @@ struct venus_format {
- #define MAX_CAP_ENTRIES		32
- #define MAX_ALLOC_MODE_ENTRIES	16
- #define MAX_CODEC_NUM		32
-+#define MAX_SESSIONS		16
+diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
+index 5ea3f9beb1bd9..e77b3c63e6981 100644
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -1060,9 +1060,14 @@ static int exynos_ufs_pre_link(struct ufs_hba *hba)
+ 	exynos_ufs_config_intr(ufs, DFES_DEF_L4_ERRS, UNIPRO_L4);
+ 	exynos_ufs_set_unipro_pclk_div(ufs);
  
- struct raw_formats {
- 	u32 buftype;
-diff --git a/drivers/media/platform/qcom/venus/hfi.c b/drivers/media/platform/qcom/venus/hfi.c
-index 966b4d9b57a97..17da555905e98 100644
---- a/drivers/media/platform/qcom/venus/hfi.c
-+++ b/drivers/media/platform/qcom/venus/hfi.c
-@@ -178,6 +178,8 @@ static int wait_session_msg(struct venus_inst *inst)
- int hfi_session_create(struct venus_inst *inst, const struct hfi_inst_ops *ops)
- {
- 	struct venus_core *core = inst->core;
-+	bool max;
-+	int ret;
- 
- 	if (!ops)
- 		return -EINVAL;
-@@ -187,11 +189,19 @@ int hfi_session_create(struct venus_inst *inst, const struct hfi_inst_ops *ops)
- 	inst->ops = ops;
- 
- 	mutex_lock(&core->lock);
--	list_add_tail(&inst->list, &core->instances);
--	atomic_inc(&core->insts_count);
++	exynos_ufs_setup_clocks(hba, true, PRE_CHANGE);
 +
-+	max = atomic_add_unless(&core->insts_count, 1,
-+				core->max_sessions_supported);
-+	if (!max) {
-+		ret = -EAGAIN;
-+	} else {
-+		list_add_tail(&inst->list, &core->instances);
-+		ret = 0;
-+	}
+ 	/* unipro */
+ 	exynos_ufs_config_unipro(ufs);
+ 
++	if (ufs->drv_data->pre_link)
++		ufs->drv_data->pre_link(ufs);
 +
- 	mutex_unlock(&core->lock);
- 
--	return 0;
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(hfi_session_create);
- 
-diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
-index 32d2a9ed44003..94981a5e8e9af 100644
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -295,6 +295,9 @@ u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
- 		words_count--;
+ 	/* m-phy */
+ 	exynos_ufs_phy_init(ufs);
+ 	if (!(ufs->opts & EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR)) {
+@@ -1070,11 +1075,6 @@ static int exynos_ufs_pre_link(struct ufs_hba *hba)
+ 		exynos_ufs_config_phy_cap_attr(ufs);
  	}
  
-+	if (!core->max_sessions_supported)
-+		core->max_sessions_supported = MAX_SESSIONS;
-+
- 	parser_fini(inst, codecs, domain);
+-	exynos_ufs_setup_clocks(hba, true, PRE_CHANGE);
+-
+-	if (ufs->drv_data->pre_link)
+-		ufs->drv_data->pre_link(ufs);
+-
+ 	return 0;
+ }
  
- 	return HFI_ERR_NONE;
 -- 
 2.39.5
 
