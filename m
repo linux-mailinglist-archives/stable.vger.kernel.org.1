@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2929AA177B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDEFAA1390
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A855D1B66497
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DC5E3B0EEB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414FE2459FA;
-	Tue, 29 Apr 2025 17:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B22248191;
+	Tue, 29 Apr 2025 17:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pc5YH9DS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtcQXoe1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1ECEC148;
-	Tue, 29 Apr 2025 17:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7581DF73C;
+	Tue, 29 Apr 2025 17:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948883; cv=none; b=COBeCrv0OMKv3tdNrxrW9O3puIYXfFfD4+G3piHqKqBLPIu2IX7Mf5OcF5iU+cZeo6Pp/Q8+w5U7WXT/z+b1/udXPVoZzk+48LO+55Bj7mIbGtFsOQe/b82GTQQjWg/KgssbEnsux9LJAlZlPTfbNOuKWngx2sv8lS24k/Eg/hE=
+	t=1745946119; cv=none; b=psx0l6rm960Pk7uH53qqf8MUC0Nq9kYA0WUmUwGTX2X9l8tWOzzDW8gjnloJGrA5ATGFohxd2fxyh6xvE6EHow+EFxAMEJwGx38dkk63f+CkhEfEjvgJlvmp6dcj9PFo6JeyDF3tVUbEnH2QyoRPG7KxEw3SVEq6YrvBX6T6gnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948883; c=relaxed/simple;
-	bh=nGOqKGOve3ZvFlm5MMFfTzgqADYme3T6zYsSwKmutG8=;
+	s=arc-20240116; t=1745946119; c=relaxed/simple;
+	bh=KAHGqImCvNdJbT1jeeq79QcG9KJRpeu1NZtygy6X12A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDPbsrgBUtzdp1gDVXWsdJ0yJWudHxHSe8q6RwfYqtGiZSwS3b+tlDLa3pXnrL3e4wSt6u37/AOq6QAFG27Chrt8JKXS7AiL+IgL6iwe+pahlgp5DikD8cC13jLDZp//Hsdkq9sf1k+k069g8JX7ghnvFAR7NT7iwqkLfI/Y13I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pc5YH9DS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E4FC4CEE3;
-	Tue, 29 Apr 2025 17:48:02 +0000 (UTC)
+	 MIME-Version; b=VzikXgux4TwfUYGv/ru4T6i7FHTyN0U3AhHP1jTtLGyGZIc9y/Ag5GYZiwzCcWpr/H2UrgH3UK0e7XAMUEIajNgHLk6DHOeXLzVQqemCRILH48ekpIC+eSPnZ3dlGpb7RXc+18cQTNlIoegtsxOJc0hqXkE+KtW9c6pxCkXp0WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtcQXoe1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2953AC4CEE3;
+	Tue, 29 Apr 2025 17:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948882;
-	bh=nGOqKGOve3ZvFlm5MMFfTzgqADYme3T6zYsSwKmutG8=;
+	s=korg; t=1745946119;
+	bh=KAHGqImCvNdJbT1jeeq79QcG9KJRpeu1NZtygy6X12A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pc5YH9DSdS7JhSWpJ9e1fyRjzKXA/HDTAx7aq6OD+y16HVZJP6sjVQ2bmvrNZKoLh
-	 9BlexhAqt2kGSdERaAJGbnhDQCVoyQsn4mLRmX8ruW3ePfeI+XEc6KXXijl0DrZasn
-	 J61771IMMLLqXAYBLK57MKMTTOydvftYps1mO7Zs=
+	b=mtcQXoe1N43cx6j7NjElXL/oO6bKDS2YqLHS0V2XVOjgl1zDW2DNcREu981L/ZHak
+	 mu2I7JiC5pqdtviB0hi8WbStNCDd4qd2YL1TXJJ3lHqZhbYYEyPSCdLN2kvtI09sRz
+	 iSEAlEYpQD+3eJXqn1sj05scAJkzJrKca6QA9+uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.garry@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 122/373] scsi: hisi_sas: Factor out task prep and delivery code
+	stable <stable@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.14 162/311] usb: chipidea: ci_hdrc_imx: fix call balance of regulator routines
 Date: Tue, 29 Apr 2025 18:39:59 +0200
-Message-ID: <20250429161128.199709569@linuxfoundation.org>
+Message-ID: <20250429161127.677360937@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,410 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.garry@huawei.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit dc313f6b125b095d3d2683d94d5f69c8dc9bdc36 ]
+commit 8cab0e9a3f3e8d700179e0d6141643d54a267fd5 upstream.
 
-The task prep code is the same between the normal path (in
-hisi_sas_task_prep()) and the internal abort path, so factor is out into a
-common function.
+Upon encountering errors during the HSIC pinctrl handling section the
+regulator should be disabled.
 
-Link: https://lore.kernel.org/r/1639579061-179473-5-git-send-email-john.garry@huawei.com
-Signed-off-by: John Garry <john.garry@huawei.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 8aa580cd9284 ("scsi: hisi_sas: Enable force phy when SATA disk directly connected")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use devm_add_action_or_reset() to let the regulator-disabling routine be
+handled by device resource management stack.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 4d6141288c33 ("usb: chipidea: imx: pinctrl for HSIC is optional")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20250316102658.490340-3-pchelkin@ispras.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c | 281 ++++++++++++--------------
- 1 file changed, 124 insertions(+), 157 deletions(-)
+ drivers/usb/chipidea/ci_hdrc_imx.c |   25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index 321e6fae03adc..b9f4f7fadfd40 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -403,94 +403,20 @@ static int hisi_sas_dif_dma_map(struct hisi_hba *hisi_hba,
- 	return rc;
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -336,6 +336,13 @@ static int ci_hdrc_imx_notify_event(stru
+ 	return ret;
  }
  
--static int hisi_sas_task_prep(struct sas_task *task,
--			      struct hisi_sas_dq **dq_pointer,
--			      bool is_tmf, struct hisi_sas_tmf_task *tmf)
-+static
-+void hisi_sas_task_deliver(struct hisi_hba *hisi_hba,
-+			   struct hisi_sas_slot *slot,
-+			   struct hisi_sas_dq *dq,
-+			   struct hisi_sas_device *sas_dev,
-+			   struct hisi_sas_internal_abort *abort,
-+			   struct hisi_sas_tmf_task *tmf)
- {
--	struct domain_device *device = task->dev;
--	struct hisi_hba *hisi_hba = dev_to_hisi_hba(device);
--	struct hisi_sas_device *sas_dev = device->lldd_dev;
--	struct hisi_sas_port *port;
--	struct hisi_sas_slot *slot;
--	struct hisi_sas_cmd_hdr	*cmd_hdr_base;
--	struct asd_sas_port *sas_port = device->port;
--	struct device *dev = hisi_hba->dev;
--	int dlvry_queue_slot, dlvry_queue, rc, slot_idx;
--	int n_elem = 0, n_elem_dif = 0, n_elem_req = 0;
--	struct scsi_cmnd *scmd = NULL;
--	struct hisi_sas_dq *dq;
-+	struct hisi_sas_cmd_hdr *cmd_hdr_base;
-+	int dlvry_queue_slot, dlvry_queue;
-+	struct sas_task *task = slot->task;
- 	unsigned long flags;
- 	int wr_q_index;
- 
--	if (DEV_IS_GONE(sas_dev)) {
--		if (sas_dev)
--			dev_info(dev, "task prep: device %d not ready\n",
--				 sas_dev->device_id);
--		else
--			dev_info(dev, "task prep: device %016llx not ready\n",
--				 SAS_ADDR(device->sas_addr));
--
--		return -ECOMM;
--	}
--
--	if (task->uldd_task) {
--		struct ata_queued_cmd *qc;
--
--		if (dev_is_sata(device)) {
--			qc = task->uldd_task;
--			scmd = qc->scsicmd;
--		} else {
--			scmd = task->uldd_task;
--		}
--	}
--
--	if (scmd) {
--		unsigned int dq_index;
--		u32 blk_tag;
--
--		blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
--		dq_index = blk_mq_unique_tag_to_hwq(blk_tag);
--		*dq_pointer = dq = &hisi_hba->dq[dq_index];
--	} else {
--		struct Scsi_Host *shost = hisi_hba->shost;
--		struct blk_mq_queue_map *qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
--		int queue = qmap->mq_map[raw_smp_processor_id()];
--
--		*dq_pointer = dq = &hisi_hba->dq[queue];
--	}
--
--	port = to_hisi_sas_port(sas_port);
--	if (port && !port->port_attached) {
--		dev_info(dev, "task prep: %s port%d not attach device\n",
--			 (dev_is_sata(device)) ?
--			 "SATA/STP" : "SAS",
--			 device->port->id);
--
--		return -ECOMM;
--	}
--
--	rc = hisi_sas_dma_map(hisi_hba, task, &n_elem,
--			      &n_elem_req);
--	if (rc < 0)
--		goto prep_out;
--
--	if (!sas_protocol_ata(task->task_proto)) {
--		rc = hisi_sas_dif_dma_map(hisi_hba, &n_elem_dif, task);
--		if (rc < 0)
--			goto err_out_dma_unmap;
--	}
--
--	if (hisi_hba->hw->slot_index_alloc)
--		rc = hisi_hba->hw->slot_index_alloc(hisi_hba, device);
--	else
--		rc = hisi_sas_slot_index_alloc(hisi_hba, scmd);
--
--	if (rc < 0)
--		goto err_out_dif_dma_unmap;
--
--	slot_idx = rc;
--	slot = &hisi_hba->slot_info[slot_idx];
--
- 	spin_lock(&dq->lock);
- 	wr_q_index = dq->wr_point;
- 	dq->wr_point = (dq->wr_point + 1) % HISI_SAS_QUEUE_SLOTS;
-@@ -504,16 +430,13 @@ static int hisi_sas_task_prep(struct sas_task *task,
- 	dlvry_queue_slot = wr_q_index;
- 
- 	slot->device_id = sas_dev->device_id;
--	slot->n_elem = n_elem;
--	slot->n_elem_dif = n_elem_dif;
- 	slot->dlvry_queue = dlvry_queue;
- 	slot->dlvry_queue_slot = dlvry_queue_slot;
- 	cmd_hdr_base = hisi_hba->cmd_hdr[dlvry_queue];
- 	slot->cmd_hdr = &cmd_hdr_base[dlvry_queue_slot];
--	slot->task = task;
--	slot->port = port;
++static void ci_hdrc_imx_disable_regulator(void *arg)
++{
++	struct ci_hdrc_imx_data *data = arg;
 +
- 	slot->tmf = tmf;
--	slot->is_internal = is_tmf;
-+	slot->is_internal = tmf;
- 	task->lldd_task = slot;
- 
- 	memset(slot->cmd_hdr, 0, sizeof(struct hisi_sas_cmd_hdr));
-@@ -533,8 +456,14 @@ static int hisi_sas_task_prep(struct sas_task *task,
- 	case SAS_PROTOCOL_SATA | SAS_PROTOCOL_STP:
- 		hisi_sas_task_prep_ata(hisi_hba, slot);
- 		break;
-+	case SAS_PROTOCOL_NONE:
-+		if (abort) {
-+			hisi_sas_task_prep_abort(hisi_hba, abort, slot, sas_dev->device_id);
-+			break;
-+		}
-+	fallthrough;
- 	default:
--		dev_err(dev, "task prep: unknown/unsupported proto (0x%x)\n",
-+		dev_err(hisi_hba->dev, "task prep: unknown/unsupported proto (0x%x)\n",
- 			task->task_proto);
- 		break;
- 	}
-@@ -548,29 +477,22 @@ static int hisi_sas_task_prep(struct sas_task *task,
- 	spin_lock(&dq->lock);
- 	hisi_hba->hw->start_delivery(dq);
- 	spin_unlock(&dq->lock);
--
--	return 0;
--
--err_out_dif_dma_unmap:
--	if (!sas_protocol_ata(task->task_proto))
--		hisi_sas_dif_dma_unmap(hisi_hba, task, n_elem_dif);
--err_out_dma_unmap:
--	hisi_sas_dma_unmap(hisi_hba, task, n_elem,
--			   n_elem_req);
--prep_out:
--	dev_err(dev, "task prep: failed[%d]!\n", rc);
--	return rc;
- }
- 
- static int hisi_sas_task_exec(struct sas_task *task, gfp_t gfp_flags,
--			      bool is_tmf, struct hisi_sas_tmf_task *tmf)
-+			      struct hisi_sas_tmf_task *tmf)
++	regulator_disable(data->hsic_pad_regulator);
++}
++
+ static int ci_hdrc_imx_probe(struct platform_device *pdev)
  {
--	u32 rc;
--	struct hisi_hba *hisi_hba;
--	struct device *dev;
-+	int n_elem = 0, n_elem_dif = 0, n_elem_req = 0;
- 	struct domain_device *device = task->dev;
- 	struct asd_sas_port *sas_port = device->port;
-+	struct hisi_sas_device *sas_dev = device->lldd_dev;
-+	struct scsi_cmnd *scmd = NULL;
- 	struct hisi_sas_dq *dq = NULL;
-+	struct hisi_sas_port *port;
-+	struct hisi_hba *hisi_hba;
-+	struct hisi_sas_slot *slot;
-+	struct device *dev;
-+	int rc;
- 
- 	if (!sas_port) {
- 		struct task_status_struct *ts = &task->task_status;
-@@ -597,11 +519,94 @@ static int hisi_sas_task_exec(struct sas_task *task, gfp_t gfp_flags,
- 		up(&hisi_hba->sem);
+ 	struct ci_hdrc_imx_data *data;
+@@ -394,6 +401,13 @@ static int ci_hdrc_imx_probe(struct plat
+ 					"Failed to enable HSIC pad regulator\n");
+ 				goto err_put;
+ 			}
++			ret = devm_add_action_or_reset(dev,
++					ci_hdrc_imx_disable_regulator, data);
++			if (ret) {
++				dev_err(dev,
++					"Failed to add regulator devm action\n");
++				goto err_put;
++			}
+ 		}
  	}
  
-+	if (DEV_IS_GONE(sas_dev)) {
-+		if (sas_dev)
-+			dev_info(dev, "task prep: device %d not ready\n",
-+				 sas_dev->device_id);
-+		else
-+			dev_info(dev, "task prep: device %016llx not ready\n",
-+				 SAS_ADDR(device->sas_addr));
-+
-+		return -ECOMM;
-+	}
-+
-+	if (task->uldd_task) {
-+		struct ata_queued_cmd *qc;
-+
-+		if (dev_is_sata(device)) {
-+			qc = task->uldd_task;
-+			scmd = qc->scsicmd;
-+		} else {
-+			scmd = task->uldd_task;
-+		}
-+	}
-+
-+	if (scmd) {
-+		unsigned int dq_index;
-+		u32 blk_tag;
-+
-+		blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
-+		dq_index = blk_mq_unique_tag_to_hwq(blk_tag);
-+		dq = &hisi_hba->dq[dq_index];
-+	} else {
-+		struct Scsi_Host *shost = hisi_hba->shost;
-+		struct blk_mq_queue_map *qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
-+		int queue = qmap->mq_map[raw_smp_processor_id()];
-+
-+		dq = &hisi_hba->dq[queue];
-+	}
-+
-+	port = to_hisi_sas_port(sas_port);
-+	if (port && !port->port_attached) {
-+		dev_info(dev, "task prep: %s port%d not attach device\n",
-+			 (dev_is_sata(device)) ?
-+			 "SATA/STP" : "SAS",
-+			 device->port->id);
-+
-+		return -ECOMM;
-+	}
-+
-+	rc = hisi_sas_dma_map(hisi_hba, task, &n_elem,
-+			      &n_elem_req);
-+	if (rc < 0)
-+		goto prep_out;
-+
-+	if (!sas_protocol_ata(task->task_proto)) {
-+		rc = hisi_sas_dif_dma_map(hisi_hba, &n_elem_dif, task);
-+		if (rc < 0)
-+			goto err_out_dma_unmap;
-+	}
-+
-+	if (hisi_hba->hw->slot_index_alloc)
-+		rc = hisi_hba->hw->slot_index_alloc(hisi_hba, device);
-+	else
-+		rc = hisi_sas_slot_index_alloc(hisi_hba, scmd);
-+
-+	if (rc < 0)
-+		goto err_out_dif_dma_unmap;
-+
-+	slot = &hisi_hba->slot_info[rc];
-+	slot->n_elem = n_elem;
-+	slot->n_elem_dif = n_elem_dif;
-+	slot->task = task;
-+	slot->port = port;
-+
-+	slot->tmf = tmf;
-+	slot->is_internal = tmf;
-+
- 	/* protect task_prep and start_delivery sequence */
--	rc = hisi_sas_task_prep(task, &dq, is_tmf, tmf);
--	if (rc)
--		dev_err(dev, "task exec: failed[%d]!\n", rc);
-+	hisi_sas_task_deliver(hisi_hba, slot, dq, sas_dev, NULL, tmf);
+@@ -432,11 +446,11 @@ static int ci_hdrc_imx_probe(struct plat
  
-+	return 0;
-+
-+err_out_dif_dma_unmap:
-+	if (!sas_protocol_ata(task->task_proto))
-+		hisi_sas_dif_dma_unmap(hisi_hba, task, n_elem_dif);
-+err_out_dma_unmap:
-+	hisi_sas_dma_unmap(hisi_hba, task, n_elem,
-+				   n_elem_req);
-+prep_out:
-+	dev_err(dev, "task exec: failed[%d]!\n", rc);
- 	return rc;
- }
+ 	ret = imx_get_clks(dev);
+ 	if (ret)
+-		goto disable_hsic_regulator;
++		goto qos_remove_request;
  
-@@ -1089,7 +1094,7 @@ static void hisi_sas_dev_gone(struct domain_device *device)
+ 	ret = imx_prepare_enable_clks(dev);
+ 	if (ret)
+-		goto disable_hsic_regulator;
++		goto qos_remove_request;
  
- static int hisi_sas_queue_command(struct sas_task *task, gfp_t gfp_flags)
- {
--	return hisi_sas_task_exec(task, gfp_flags, 0, NULL);
-+	return hisi_sas_task_exec(task, gfp_flags, NULL);
- }
- 
- static int hisi_sas_phy_set_linkrate(struct hisi_hba *hisi_hba, int phy_no,
-@@ -1221,8 +1226,7 @@ static int hisi_sas_exec_internal_tmf_task(struct domain_device *device,
- 		task->slow_task->timer.expires = jiffies + TASK_TIMEOUT;
- 		add_timer(&task->slow_task->timer);
- 
--		res = hisi_sas_task_exec(task, GFP_KERNEL, 1, tmf);
--
-+		res = hisi_sas_task_exec(task, GFP_KERNEL, tmf);
- 		if (res) {
- 			del_timer(&task->slow_task->timer);
- 			dev_err(dev, "abort tmf: executing internal task failed: %d\n",
-@@ -1976,12 +1980,9 @@ hisi_sas_internal_abort_task_exec(struct hisi_hba *hisi_hba, int device_id,
- 	struct hisi_sas_device *sas_dev = device->lldd_dev;
- 	struct device *dev = hisi_hba->dev;
- 	struct hisi_sas_port *port;
--	struct hisi_sas_slot *slot;
- 	struct asd_sas_port *sas_port = device->port;
--	struct hisi_sas_cmd_hdr *cmd_hdr_base;
--	int dlvry_queue_slot, dlvry_queue, n_elem = 0, rc, slot_idx;
--	unsigned long flags;
--	int wr_q_index;
-+	struct hisi_sas_slot *slot;
-+	int slot_idx;
- 
- 	if (unlikely(test_bit(HISI_SAS_REJECT_CMD_BIT, &hisi_hba->flags)))
- 		return -EINVAL;
-@@ -1992,58 +1993,24 @@ hisi_sas_internal_abort_task_exec(struct hisi_hba *hisi_hba, int device_id,
- 	port = to_hisi_sas_port(sas_port);
- 
- 	/* simply get a slot and send abort command */
--	rc = hisi_sas_slot_index_alloc(hisi_hba, NULL);
--	if (rc < 0)
-+	slot_idx = hisi_sas_slot_index_alloc(hisi_hba, NULL);
-+	if (slot_idx < 0)
- 		goto err_out;
- 
--	slot_idx = rc;
- 	slot = &hisi_hba->slot_info[slot_idx];
--
--	spin_lock(&dq->lock);
--	wr_q_index = dq->wr_point;
--	dq->wr_point = (dq->wr_point + 1) % HISI_SAS_QUEUE_SLOTS;
--	list_add_tail(&slot->delivery, &dq->list);
--	spin_unlock(&dq->lock);
--	spin_lock(&sas_dev->lock);
--	list_add_tail(&slot->entry, &sas_dev->list);
--	spin_unlock(&sas_dev->lock);
--
--	dlvry_queue = dq->id;
--	dlvry_queue_slot = wr_q_index;
--
--	slot->device_id = sas_dev->device_id;
--	slot->n_elem = n_elem;
--	slot->dlvry_queue = dlvry_queue;
--	slot->dlvry_queue_slot = dlvry_queue_slot;
--	cmd_hdr_base = hisi_hba->cmd_hdr[dlvry_queue];
--	slot->cmd_hdr = &cmd_hdr_base[dlvry_queue_slot];
-+	slot->n_elem = 0;
- 	slot->task = task;
- 	slot->port = port;
- 	slot->is_internal = true;
--	task->lldd_task = slot;
- 
--	memset(slot->cmd_hdr, 0, sizeof(struct hisi_sas_cmd_hdr));
--	memset(hisi_sas_cmd_hdr_addr_mem(slot), 0, HISI_SAS_COMMAND_TABLE_SZ);
--	memset(hisi_sas_status_buf_addr_mem(slot), 0,
--	       sizeof(struct hisi_sas_err_record));
--
--	hisi_sas_task_prep_abort(hisi_hba, abort, slot, device_id);
--
--	spin_lock_irqsave(&task->task_state_lock, flags);
--	task->task_state_flags |= SAS_TASK_AT_INITIATOR;
--	spin_unlock_irqrestore(&task->task_state_lock, flags);
--	WRITE_ONCE(slot->ready, 1);
--	/* send abort command to the chip */
--	spin_lock(&dq->lock);
--	hisi_hba->hw->start_delivery(dq);
--	spin_unlock(&dq->lock);
-+	hisi_sas_task_deliver(hisi_hba, slot, dq, sas_dev, abort, NULL);
- 
- 	return 0;
- 
- err_out:
--	dev_err(dev, "internal abort task prep: failed[%d]!\n", rc);
-+	dev_err(dev, "internal abort task prep: failed[%d]!\n", slot_idx);
- 
--	return rc;
-+	return slot_idx;
- }
- 
- /**
--- 
-2.39.5
-
+ 	ret = clk_prepare_enable(data->clk_wakeup);
+ 	if (ret)
+@@ -526,10 +540,7 @@ err_clk:
+ 	clk_disable_unprepare(data->clk_wakeup);
+ err_wakeup_clk:
+ 	imx_disable_unprepare_clks(dev);
+-disable_hsic_regulator:
+-	if (data->hsic_pad_regulator)
+-		/* don't overwrite original ret (cf. EPROBE_DEFER) */
+-		regulator_disable(data->hsic_pad_regulator);
++qos_remove_request:
+ 	if (pdata.flags & CI_HDRC_PMQOS)
+ 		cpu_latency_qos_remove_request(&data->pm_qos_req);
+ 	data->ci_pdev = NULL;
+@@ -557,8 +568,6 @@ static void ci_hdrc_imx_remove(struct pl
+ 		clk_disable_unprepare(data->clk_wakeup);
+ 		if (data->plat_data->flags & CI_HDRC_PMQOS)
+ 			cpu_latency_qos_remove_request(&data->pm_qos_req);
+-		if (data->hsic_pad_regulator)
+-			regulator_disable(data->hsic_pad_regulator);
+ 	}
+ 	if (data->usbmisc_data)
+ 		put_device(data->usbmisc_data->dev);
 
 
 
