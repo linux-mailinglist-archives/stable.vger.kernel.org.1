@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23422AA1517
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F46AA13E0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 385373A3554
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4750D1BC103C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99ACA253327;
-	Tue, 29 Apr 2025 17:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51BF241664;
+	Tue, 29 Apr 2025 17:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGeFhKRs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsVlTlqh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D2E24397A;
-	Tue, 29 Apr 2025 17:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7588B23F413;
+	Tue, 29 Apr 2025 17:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947042; cv=none; b=JHRyhE50WtCayO79Bb2JSdXllX2/P7OkuG2VrPBYdRu7AODLNV33oHam3zEvtzo1rNgOyAAiGz8bTtbWKTCdF77LC9KXqpWeaD+K9EzIlfwF4CAwzG8AH1fV72t56SxSo2HzEMCeu4rjqZApx4yaNa4+4sz4UL1y2BsINbMvs0Y=
+	t=1745946385; cv=none; b=t4sNUOMavNjt4gKsBw0YoCMgk8L7yQ610LDAZfESjAxINCpYfN2Z7w7NnUjtzbzT6y07gvNN7EJ5CNJixYZ2ypCtZG2wAux9xzkKJU0VpAMFxPonHnWhK0X2gd+E6VVCHsYlj0Y7CW8akniSTg4NJMLh+06nIPzrogduBFXAbH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947042; c=relaxed/simple;
-	bh=NEvrXc83PR3lDpbujJ2O/+8KbFoXy85YZ5+/svu7+/8=;
+	s=arc-20240116; t=1745946385; c=relaxed/simple;
+	bh=GFMsx95B39vlBj3DY3KCFN4iXpg8VvMQP2YpMWH8uWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BY0cTIR/eLRyw80RYVYYnXb2rw3Zhb+ydLbkT2m/RszaFC/X8a6u7f/SZQDKVE5B02lYx2TGue/B2402eHnV6Ze5Dtmjhrk3LV3OpHvMwzHu8EP+G/fJJ+b4KSROdIO9zPWZZi3tSaHwWlIWPMVS6sW/PHV0pzNRxu8Z2jG5WgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGeFhKRs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA686C4CEE3;
-	Tue, 29 Apr 2025 17:17:21 +0000 (UTC)
+	 MIME-Version; b=LwC6848PvgUIkDbVzbCB7ltnw78T8GFK8qoZYnBR24ciIC8GOVa59E3BJp8iTaBsmp7wpcAM6hSb10Kll15U2Wl9YDsOJuNy3dhkDSj1gkVZTbNormBTO3JkHUH5ItkOvj1Rol9ywCdHr/LMB5JGO/7DU3CLcVIQpJ7mpUarwxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsVlTlqh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FD1C4CEE3;
+	Tue, 29 Apr 2025 17:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947042;
-	bh=NEvrXc83PR3lDpbujJ2O/+8KbFoXy85YZ5+/svu7+/8=;
+	s=korg; t=1745946385;
+	bh=GFMsx95B39vlBj3DY3KCFN4iXpg8VvMQP2YpMWH8uWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uGeFhKRsx85twjXdddTQAofrTp5mVAr25ZvmcPPyZZblKCdYiF4UjlGaTzvgpfq/5
-	 WIpzCdl1rkBTgxI35K8EspioWXJv2Y5Sue0cm1VF48DGIH9quoOWBw+dP+ycGgBuHY
-	 VBCDbxr1e6lWe4OH81IO+Rq8GutZxpc7Ot7pr0sQ=
+	b=IsVlTlqhpxgDK91yGybfuyrgL5Xa/E6uWX3ULaa70oGCu6mn27++w7lffP0Bmn3vU
+	 /avRtCcBSh5awAEj5nCBfPHo3YeC7x4RLcuXr16qLx0DXM481pz4zEiL6ws9MulmDm
+	 4Y+WllH+84Rm2iizlb+AXGsEbfqQt281ogjsOIHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 5.10 152/286] misc: pci_endpoint_test: Fix irq_type to convey the correct type
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 219/311] um: work around sched_yield not yielding in time-travel mode
 Date: Tue, 29 Apr 2025 18:40:56 +0200
-Message-ID: <20250429161114.136537840@linuxfoundation.org>
+Message-ID: <20250429161129.987500113@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-commit baaef0a274cfb75f9b50eab3ef93205e604f662c upstream.
+[ Upstream commit 887c5c12e80c8424bd471122d2e8b6b462e12874 ]
 
-There are two variables that indicate the interrupt type to be used
-in the next test execution, "irq_type" as global and "test->irq_type".
+sched_yield by a userspace may not actually cause scheduling in
+time-travel mode as no time has passed. In the case seen it appears to
+be a badly implemented userspace spinlock in ASAN. Unfortunately, with
+time-travel it causes an extreme slowdown or even deadlock depending on
+the kernel configuration (CONFIG_UML_MAX_USERSPACE_ITERATIONS).
 
-The global is referenced from pci_endpoint_test_get_irq() to preserve
-the current type for ioctl(PCITEST_GET_IRQTYPE).
+Work around it by accounting time to the process whenever it executes a
+sched_yield syscall.
 
-The type set in this function isn't reflected in the global "irq_type",
-so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
-
-As a result, the wrong type is displayed in old version of "pcitest"
-as follows:
-
-  - Result of running "pcitest -i 0"
-
-      SET IRQ TYPE TO LEGACY:         OKAY
-
-  - Result of running "pcitest -I"
-
-      GET IRQ TYPE:           MSI
-
-Whereas running the new version of "pcitest" in kselftest results in an
-error as follows:
-
-  #  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
-  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
-  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
-
-Fix this issue by propagating the current type to the global "irq_type".
-
-Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250225110252.28866-5-hayashi.kunihiko@socionext.com
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Link: https://patch.msgid.link/20250314130815.226872-1-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/pci_endpoint_test.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/um/include/linux/time-internal.h |  2 ++
+ arch/um/kernel/skas/syscall.c         | 11 +++++++++++
+ 2 files changed, 13 insertions(+)
 
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -718,6 +718,7 @@ static bool pci_endpoint_test_set_irq(st
- 	if (!pci_endpoint_test_request_irq(test))
- 		goto err;
+diff --git a/arch/um/include/linux/time-internal.h b/arch/um/include/linux/time-internal.h
+index b22226634ff60..138908b999d76 100644
+--- a/arch/um/include/linux/time-internal.h
++++ b/arch/um/include/linux/time-internal.h
+@@ -83,6 +83,8 @@ extern void time_travel_not_configured(void);
+ #define time_travel_del_event(...) time_travel_not_configured()
+ #endif /* CONFIG_UML_TIME_TRAVEL_SUPPORT */
  
-+	irq_type = test->irq_type;
- 	return true;
++extern unsigned long tt_extra_sched_jiffies;
++
+ /*
+  * Without CONFIG_UML_TIME_TRAVEL_SUPPORT this is a linker error if used,
+  * which is intentional since we really shouldn't link it in that case.
+diff --git a/arch/um/kernel/skas/syscall.c b/arch/um/kernel/skas/syscall.c
+index b09e85279d2b8..a5beaea2967ec 100644
+--- a/arch/um/kernel/skas/syscall.c
++++ b/arch/um/kernel/skas/syscall.c
+@@ -31,6 +31,17 @@ void handle_syscall(struct uml_pt_regs *r)
+ 		goto out;
  
- err:
+ 	syscall = UPT_SYSCALL_NR(r);
++
++	/*
++	 * If no time passes, then sched_yield may not actually yield, causing
++	 * broken spinlock implementations in userspace (ASAN) to hang for long
++	 * periods of time.
++	 */
++	if ((time_travel_mode == TT_MODE_INFCPU ||
++	     time_travel_mode == TT_MODE_EXTERNAL) &&
++	    syscall == __NR_sched_yield)
++		tt_extra_sched_jiffies += 1;
++
+ 	if (syscall >= 0 && syscall < __NR_syscalls) {
+ 		unsigned long ret = EXECUTE_SYSCALL(syscall, regs);
+ 
+-- 
+2.39.5
+
 
 
 
