@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-138101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD486AA1698
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9AAAA1435
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6E79165992
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5B7D3AE841
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3732522B4;
-	Tue, 29 Apr 2025 17:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A562472B0;
+	Tue, 29 Apr 2025 17:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8DgLqOR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGE2Klbe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640D8215F7C;
-	Tue, 29 Apr 2025 17:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D05522A81D;
+	Tue, 29 Apr 2025 17:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948157; cv=none; b=t+JlltNkxGT9l0EY2RRP046WICxMClXv3ivuvJ/fNtiAu+zRDYbx81vENC0lQbBU3J/eA8C7o4t7JQ76tvXEaWpG1G7l3qEAAxJ7RvT3OtBPdRpBjkxFbhb57uIJAg16MPD+XuYnqcYA5Fx4Y7i6OFrcXoTCAnTEEpagWoU+ves=
+	t=1745946497; cv=none; b=etaOGHaIjpQypUVmldi8deLHujx9fRNlZ7RHYhFft/F64yWyYo6bpcGWKnYF3XZBf0EFdJ9krapD8jJvCxJIfcY279XPqAuCKrTeNVuviXzKH/C5rkiJE9cRRYsNy+q1o4QvB/7nJjT0o0cNRXFgig8VoENv1xedLZUkEI2DdmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948157; c=relaxed/simple;
-	bh=lR/iRMmFa+c2IAK1RdZWcwvTl/bCp1c+DR89DjzMy90=;
+	s=arc-20240116; t=1745946497; c=relaxed/simple;
+	bh=GaZvHo1+h2mzvH0tg6aCaH6Nv/OYpLFCHhbm1ai9ltE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y/ptb196Dg10mnO5iW4kEEUg12JptTK0GwUhzsFni9wsO2Cd7bGuk+m9Qc1+ftwYE2gWSXEawvsUHFEP6jcFXB4kz7tlAUUh+6QCnBV16NR91XuThq0eUbrIQuruvzDDqS34BUMy5Tbf33f214nTtlLq9TEYhRp1+YmD1PgQqZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8DgLqOR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88C5C4CEE3;
-	Tue, 29 Apr 2025 17:35:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Hzrp7BHw7w1AU1R30sAzgYjUi+vgQDNGzHXz8rI/xox451neuPfZJQ961H5S/GMK9Qfhmluf5Lv2W8PYiwinuqvxkAeWGIlgrC9ZXtgrIhR9fCYnSaBJP4N57O+bw22ofHNUFWNJNt2S9Y8zXhv8spr+D8GtZ1AqcwajaD0X+pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGE2Klbe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D61C4CEE3;
+	Tue, 29 Apr 2025 17:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948157;
-	bh=lR/iRMmFa+c2IAK1RdZWcwvTl/bCp1c+DR89DjzMy90=;
+	s=korg; t=1745946497;
+	bh=GaZvHo1+h2mzvH0tg6aCaH6Nv/OYpLFCHhbm1ai9ltE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e8DgLqORO3IdyqRSIN0Zy0C6rX3ASldp7sO7m+YOrr9pXCDXd68JCMlryuk+RGhzj
-	 2Boq59qjYbCPzD2HxKwMV4Pi0vds8UpbUAlz1VdHneqpKr9hbqkChjrac3eXHlO4xu
-	 CjaXT/+0Q/nqOpxMhMzzrImGk/wJZLiksWVZLRLg=
+	b=cGE2KlbeyAv8XqMqtPRiK6vW0sU00bFf5N59VJMSC9QCvf1Et35D7/5ECmj2OMa12
+	 Pa/Ax+Ge38ZNcz/cUqNM0p+2UT3HKlE9Grp0TfHmnnkkqC+8KwidW5trO6B3vZtrwr
+	 kaxptB2KGpdvCbhxIsG+9q+yknLH26v0Hgu5OSl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	virtualization@lists.linux.dev,
-	linux-sound@vger.kernel.org,
-	kernel-team@android.com,
-	Betty Zhou <bettyzhou@google.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	John Stultz <jstultz@google.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 175/280] sound/virtio: Fix cancel_sync warnings on uninitialized work_structs
+Subject: [PATCH 6.14 279/311] platform/x86: x86-android-tablets: Add Vexia Edu Atla 10 tablet 5V data
 Date: Tue, 29 Apr 2025 18:41:56 +0200
-Message-ID: <20250429161122.271364047@linuxfoundation.org>
+Message-ID: <20250429161132.443013102@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,112 +60,148 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 3c7df2e27346eb40a0e86230db1ccab195c97cfe ]
+[ Upstream commit 59df54c67be3e587e4217bddd793350fbe8f5feb ]
 
-Betty reported hitting the following warning:
+The Vexia EDU ATLA 10 tablet comes in 2 different versions with
+significantly different mainboards. The only outward difference is that
+the charging barrel on one is marked 5V and the other is marked 9V.
 
-[    8.709131][  T221] WARNING: CPU: 2 PID: 221 at kernel/workqueue.c:4182
-...
-[    8.713282][  T221] Call trace:
-[    8.713365][  T221]  __flush_work+0x8d0/0x914
-[    8.713468][  T221]  __cancel_work_sync+0xac/0xfc
-[    8.713570][  T221]  cancel_work_sync+0x24/0x34
-[    8.713667][  T221]  virtsnd_remove+0xa8/0xf8 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
-[    8.713868][  T221]  virtsnd_probe+0x48c/0x664 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
-[    8.714035][  T221]  virtio_dev_probe+0x28c/0x390
-[    8.714139][  T221]  really_probe+0x1bc/0x4c8
-...
+Both are x86 ACPI tablets which ships with Android x86 as factory OS.
+with a DSDT which contains a bunch of I2C devices which are not actually
+there, causing various resource conflicts. Enumeration of these is skipped
+through the acpi_quirk_skip_i2c_client_enumeration().
 
-It seems we're hitting the error path in virtsnd_probe(), which
-triggers a virtsnd_remove() which iterates over the substreams
-calling cancel_work_sync() on the elapsed_period work_struct.
+Extend the existing support for the 9V version by adding support for
+manually instantiating the I2C devices which are actually present on
+the 5V version by adding the necessary device info to
+the x86-android-tablets module.
 
-Looking at the code, from earlier in:
-virtsnd_probe()->virtsnd_build_devs()->virtsnd_pcm_parse_cfg()
-
-We set snd->nsubstreams, allocate the snd->substreams, and if
-we then hit an error on the info allocation or something in
-virtsnd_ctl_query_info() fails, we will exit without having
-initialized the elapsed_period work_struct.
-
-When that error path unwinds we then call virtsnd_remove()
-which as long as the substreams array is allocated, will iterate
-through calling cancel_work_sync() on the uninitialized work
-struct hitting this warning.
-
-Takashi Iwai suggested this fix, which initializes the substreams
-structure right after allocation, so that if we hit the error
-paths we avoid trying to cleanup uninitialized data.
-
-Note: I have not yet managed to reproduce the issue myself, so
-this patch has had limited testing.
-
-Feedback or thoughts would be appreciated!
-
-Cc: Anton Yakovlev <anton.yakovlev@opensynergy.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: virtualization@lists.linux.dev
-Cc: linux-sound@vger.kernel.org
-Cc: kernel-team@android.com
-Reported-by: Betty Zhou <bettyzhou@google.com>
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: John Stultz <jstultz@google.com>
-Message-Id: <20250116194114.3375616-1-jstultz@google.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250407092017.273124-2-hdegoede@redhat.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/virtio/virtio_pcm.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ .../platform/x86/x86-android-tablets/dmi.c    | 12 ++++
+ .../platform/x86/x86-android-tablets/other.c  | 60 +++++++++++++++++++
+ .../x86-android-tablets/x86-android-tablets.h |  1 +
+ 3 files changed, 73 insertions(+)
 
-diff --git a/sound/virtio/virtio_pcm.c b/sound/virtio/virtio_pcm.c
-index 967e4c45be9bb..2f7c5e709f075 100644
---- a/sound/virtio/virtio_pcm.c
-+++ b/sound/virtio/virtio_pcm.c
-@@ -339,6 +339,21 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
- 	if (!snd->substreams)
- 		return -ENOMEM;
+diff --git a/drivers/platform/x86/x86-android-tablets/dmi.c b/drivers/platform/x86/x86-android-tablets/dmi.c
+index e43d482b17a35..278c6d151dc49 100644
+--- a/drivers/platform/x86/x86-android-tablets/dmi.c
++++ b/drivers/platform/x86/x86-android-tablets/dmi.c
+@@ -179,6 +179,18 @@ const struct dmi_system_id x86_android_tablet_ids[] __initconst = {
+ 		},
+ 		.driver_data = (void *)&peaq_c1010_info,
+ 	},
++	{
++		/* Vexia Edu Atla 10 tablet 5V version */
++		.matches = {
++			/* Having all 3 of these not set is somewhat unique */
++			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
++		},
++		.driver_data = (void *)&vexia_edu_atla10_5v_info,
++	},
+ 	{
+ 		/* Vexia Edu Atla 10 tablet 9V version */
+ 		.matches = {
+diff --git a/drivers/platform/x86/x86-android-tablets/other.c b/drivers/platform/x86/x86-android-tablets/other.c
+index 74dcac8d19d72..f7bd9f863c85e 100644
+--- a/drivers/platform/x86/x86-android-tablets/other.c
++++ b/drivers/platform/x86/x86-android-tablets/other.c
+@@ -598,6 +598,66 @@ const struct x86_dev_info whitelabel_tm800a550l_info __initconst = {
+ 	.gpiod_lookup_tables = whitelabel_tm800a550l_gpios,
+ };
  
-+	/*
-+	 * Initialize critical substream fields early in case we hit an
-+	 * error path and end up trying to clean up uninitialized structures
-+	 * elsewhere.
-+	 */
-+	for (i = 0; i < snd->nsubstreams; ++i) {
-+		struct virtio_pcm_substream *vss = &snd->substreams[i];
++/*
++ * Vexia EDU ATLA 10 tablet 5V, Android 4.4 + Guadalinex Ubuntu tablet
++ * distributed to schools in the Spanish Andalucía region.
++ */
++static const struct property_entry vexia_edu_atla10_5v_touchscreen_props[] = {
++	PROPERTY_ENTRY_U32("hid-descr-addr", 0x0000),
++	PROPERTY_ENTRY_U32("post-reset-deassert-delay-ms", 120),
++	{ }
++};
 +
-+		vss->snd = snd;
-+		vss->sid = i;
-+		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
-+		init_waitqueue_head(&vss->msg_empty);
-+		spin_lock_init(&vss->lock);
++static const struct software_node vexia_edu_atla10_5v_touchscreen_node = {
++	.properties = vexia_edu_atla10_5v_touchscreen_props,
++};
++
++static const struct x86_i2c_client_info vexia_edu_atla10_5v_i2c_clients[] __initconst = {
++	{
++		/* kxcjk1013 accelerometer */
++		.board_info = {
++			.type = "kxcjk1013",
++			.addr = 0x0f,
++			.dev_name = "kxcjk1013",
++		},
++		.adapter_path = "\\_SB_.I2C3",
++	}, {
++		/*  touchscreen controller */
++		.board_info = {
++			.type = "hid-over-i2c",
++			.addr = 0x38,
++			.dev_name = "FTSC1000",
++			.swnode = &vexia_edu_atla10_5v_touchscreen_node,
++		},
++		.adapter_path = "\\_SB_.I2C4",
++		.irq_data = {
++			.type = X86_ACPI_IRQ_TYPE_APIC,
++			.index = 0x44,
++			.trigger = ACPI_LEVEL_SENSITIVE,
++			.polarity = ACPI_ACTIVE_HIGH,
++		},
 +	}
++};
 +
- 	info = kcalloc(snd->nsubstreams, sizeof(*info), GFP_KERNEL);
- 	if (!info)
- 		return -ENOMEM;
-@@ -352,12 +367,6 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
- 		struct virtio_pcm_substream *vss = &snd->substreams[i];
- 		struct virtio_pcm *vpcm;
- 
--		vss->snd = snd;
--		vss->sid = i;
--		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
--		init_waitqueue_head(&vss->msg_empty);
--		spin_lock_init(&vss->lock);
--
- 		rc = virtsnd_pcm_build_hw(vss, &info[i]);
- 		if (rc)
- 			goto on_exit;
++static struct gpiod_lookup_table vexia_edu_atla10_5v_ft5416_gpios = {
++	.dev_id = "i2c-FTSC1000",
++	.table = {
++		GPIO_LOOKUP("INT33FC:01", 26, "reset", GPIO_ACTIVE_LOW),
++		{ }
++	},
++};
++
++static struct gpiod_lookup_table * const vexia_edu_atla10_5v_gpios[] = {
++	&vexia_edu_atla10_5v_ft5416_gpios,
++	NULL
++};
++
++const struct x86_dev_info vexia_edu_atla10_5v_info __initconst = {
++	.i2c_client_info = vexia_edu_atla10_5v_i2c_clients,
++	.i2c_client_count = ARRAY_SIZE(vexia_edu_atla10_5v_i2c_clients),
++	.gpiod_lookup_tables = vexia_edu_atla10_5v_gpios,
++};
++
+ /*
+  * Vexia EDU ATLA 10 tablet 9V, Android 4.2 + Guadalinex Ubuntu tablet
+  * distributed to schools in the Spanish Andalucía region.
+diff --git a/drivers/platform/x86/x86-android-tablets/x86-android-tablets.h b/drivers/platform/x86/x86-android-tablets/x86-android-tablets.h
+index 2204bbaf2ed5a..dcf8d49e3b5f4 100644
+--- a/drivers/platform/x86/x86-android-tablets/x86-android-tablets.h
++++ b/drivers/platform/x86/x86-android-tablets/x86-android-tablets.h
+@@ -127,6 +127,7 @@ extern const struct x86_dev_info nextbook_ares8_info;
+ extern const struct x86_dev_info nextbook_ares8a_info;
+ extern const struct x86_dev_info peaq_c1010_info;
+ extern const struct x86_dev_info whitelabel_tm800a550l_info;
++extern const struct x86_dev_info vexia_edu_atla10_5v_info;
+ extern const struct x86_dev_info vexia_edu_atla10_9v_info;
+ extern const struct x86_dev_info xiaomi_mipad2_info;
+ extern const struct dmi_system_id x86_android_tablet_ids[];
 -- 
 2.39.5
 
