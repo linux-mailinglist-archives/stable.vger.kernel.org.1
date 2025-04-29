@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-137555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705A0AA1388
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9787AA17F9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 780207B1C81
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E31EB4C6C28
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FBD241664;
-	Tue, 29 Apr 2025 17:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CA02517A6;
+	Tue, 29 Apr 2025 17:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pb1JmpC0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Nr0J0Mx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CB2211A0B;
-	Tue, 29 Apr 2025 17:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CE22512F3;
+	Tue, 29 Apr 2025 17:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946419; cv=none; b=odCroF6LvWrQ7hAwu+Ey4EVARqrAMhhooIJdnW9fqkudu7LJG967QrBKYEsvv3VLqK7WXsr0gMwvMEm9R4iPB2Y2g3LgsvrMxtgfFIB57goiFbCBBwENYS46+Ch0KavC10MRa3ww6DYohPq+Bdy82UCkGSkpi4VsHJczXbz5FUg=
+	t=1745949224; cv=none; b=fB98wl8cYq5joCuCPO/YDTO3GNl4fPF8JQoeMSe3KJ61GBMf9Y8E7tVmrwQxCzY6WIa6vmR9m81ndTNo87Uy0F0T+HHf1CxMxdBBp7meHbNn3aYA/LNQJRgXcBH369KvkvLB9eY6aHuQaVxqvYGaiioRohG+vQvsod0Ksa4iMF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946419; c=relaxed/simple;
-	bh=xwuhTkLsEGiUA1YKrqipas6iTrPjAsdQW7c5O5zSsoE=;
+	s=arc-20240116; t=1745949224; c=relaxed/simple;
+	bh=gfGPHWlm0vGnmasKqvVop0y6ESvmH5ML4e6zvkBZ8QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axZtPFhXLUb1Yb+/JiF2gR4iU0If63P0EvVhDx5MIiulOkzKtdXUfUOIoBv9kCxEC9xk4KbnXwzx5qd0Z0ex0nNZzcGL0qoUHaVwcZU4pdBdEZ2TzUvCmAd5SbVkM5syzPHjBeC10NvHzipF/MjFzPSyTHDAw5Z0YOdOjsGqdhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pb1JmpC0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B63C4CEE3;
-	Tue, 29 Apr 2025 17:06:58 +0000 (UTC)
+	 MIME-Version; b=MQpT880jC1HFWYEDnW4cX8kWnHOpQpGDwUtxr+tJ1MWC+dS1X34LxQ3yD1rp+UdeP7Ckd2O8cB47SkrDiJNJJKDYTZFIx9tA/nasJOp3PHoRJ0nWm4Ej1K5HprwGDZFIbGdWhT+7EluAsqBVXlVmONW2kUFl5msHbeOWykpNWHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Nr0J0Mx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B917C4CEE3;
+	Tue, 29 Apr 2025 17:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946418;
-	bh=xwuhTkLsEGiUA1YKrqipas6iTrPjAsdQW7c5O5zSsoE=;
+	s=korg; t=1745949223;
+	bh=gfGPHWlm0vGnmasKqvVop0y6ESvmH5ML4e6zvkBZ8QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pb1JmpC0dazNno1spIYPbFotmE0ynPdhushsKv5jHKbiWacn3HznfrpZFBl65AMt9
-	 5Ymc9nXTSbN5Klb3iZdbYBpwubSEEcrNsxertB2NtyDFClEEJvPBizpFu8z5Ji1Yq6
-	 UT/hXO5cC5KwlCh6lxSp9i5tZvIgsoCtA+CghR54=
+	b=2Nr0J0Mx5PuY9/wOmDvCSZ8pSJzL0wO20i0wA4ZzOYjsX/CabeNZAyy60i5vcgG8o
+	 SmSbEVQlc66iWUhkrByxuMX3/bUIkJ1/HKg4XjfctQjqWIvMwigzRFP2uW1Df7JVfF
+	 QgebcD8mNEI3Vfpvs75ehdp0nTY2qAXfd73i+YWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Amit Shah <amit.shah@amd.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 261/311] x86/bugs: Dont fill RSB on context switch with eIBRS
-Date: Tue, 29 Apr 2025 18:41:38 +0200
-Message-ID: <20250429161131.709470520@linuxfoundation.org>
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.15 222/373] smb: client: fix use-after-free bug in cifs_debug_data_proc_show()
+Date: Tue, 29 Apr 2025 18:41:39 +0200
+Message-ID: <20250429161132.284564166@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,118 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 27ce8299bc1ec6df8306073785ff82b30b3cc5ee ]
+commit d328c09ee9f15ee5a26431f5aad7c9239fa85e62 upstream.
 
-User->user Spectre v2 attacks (including RSB) across context switches
-are already mitigated by IBPB in cond_mitigation(), if enabled globally
-or if either the prev or the next task has opted in to protection.  RSB
-filling without IBPB serves no purpose for protecting user space, as
-indirect branches are still vulnerable.
+Skip SMB sessions that are being teared down
+(e.g. @ses->ses_status == SES_EXITING) in cifs_debug_data_proc_show()
+to avoid use-after-free in @ses.
 
-User->kernel RSB attacks are mitigated by eIBRS.  In which case the RSB
-filling on context switch isn't needed, so remove it.
+This fixes the following GPF when reading from /proc/fs/cifs/DebugData
+while mounting and umounting
 
-Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Reviewed-by: Amit Shah <amit.shah@amd.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://lore.kernel.org/r/98cdefe42180358efebf78e3b80752850c7a3e1b.1744148254.git.jpoimboe@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  [ 816.251274] general protection fault, probably for non-canonical
+  address 0x6b6b6b6b6b6b6d81: 0000 [#1] PREEMPT SMP NOPTI
+  ...
+  [  816.260138] Call Trace:
+  [  816.260329]  <TASK>
+  [  816.260499]  ? die_addr+0x36/0x90
+  [  816.260762]  ? exc_general_protection+0x1b3/0x410
+  [  816.261126]  ? asm_exc_general_protection+0x26/0x30
+  [  816.261502]  ? cifs_debug_tcon+0xbd/0x240 [cifs]
+  [  816.261878]  ? cifs_debug_tcon+0xab/0x240 [cifs]
+  [  816.262249]  cifs_debug_data_proc_show+0x516/0xdb0 [cifs]
+  [  816.262689]  ? seq_read_iter+0x379/0x470
+  [  816.262995]  seq_read_iter+0x118/0x470
+  [  816.263291]  proc_reg_read_iter+0x53/0x90
+  [  816.263596]  ? srso_alias_return_thunk+0x5/0x7f
+  [  816.263945]  vfs_read+0x201/0x350
+  [  816.264211]  ksys_read+0x75/0x100
+  [  816.264472]  do_syscall_64+0x3f/0x90
+  [  816.264750]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+  [  816.265135] RIP: 0033:0x7fd5e669d381
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ This patch removed lock/unlock operation due to ses_lock is
+not present in v5.15 and not ported yet. ses->status is protected
+by a global lock, cifs_tcp_ses_lock, in v5.15. ]
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 24 ++++++++++++------------
- arch/x86/mm/tlb.c          |  6 +++---
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ fs/cifs/cifs_debug.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 41b4d9018633e..9152285aaaf96 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1578,7 +1578,7 @@ static void __init spec_ctrl_disable_kernel_rrsba(void)
- 	rrsba_disabled = true;
- }
- 
--static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_mitigation mode)
-+static void __init spectre_v2_select_rsb_mitigation(enum spectre_v2_mitigation mode)
- {
- 	/*
- 	 * Similar to context switches, there are two types of RSB attacks
-@@ -1602,7 +1602,7 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
- 	 */
- 	switch (mode) {
- 	case SPECTRE_V2_NONE:
--		return;
-+		break;
- 
- 	case SPECTRE_V2_EIBRS:
- 	case SPECTRE_V2_EIBRS_LFENCE:
-@@ -1611,18 +1611,21 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
- 			pr_info("Spectre v2 / PBRSB-eIBRS: Retire a single CALL on VMEXIT\n");
- 			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 		}
--		return;
-+		break;
- 
- 	case SPECTRE_V2_RETPOLINE:
- 	case SPECTRE_V2_LFENCE:
- 	case SPECTRE_V2_IBRS:
--		pr_info("Spectre v2 / SpectreRSB : Filling RSB on VMEXIT\n");
-+		pr_info("Spectre v2 / SpectreRSB: Filling RSB on context switch and VMEXIT\n");
-+		setup_force_cpu_cap(X86_FEATURE_RSB_CTXSW);
- 		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
--		return;
--	}
-+		break;
- 
--	pr_warn_once("Unknown Spectre v2 mode, disabling RSB mitigation at VM exit");
--	dump_stack();
-+	default:
-+		pr_warn_once("Unknown Spectre v2 mode, disabling RSB mitigation\n");
-+		dump_stack();
-+		break;
-+	}
- }
- 
- /*
-@@ -1854,10 +1857,7 @@ static void __init spectre_v2_select_mitigation(void)
- 	 *
- 	 * FIXME: Is this pointless for retbleed-affected AMD?
- 	 */
--	setup_force_cpu_cap(X86_FEATURE_RSB_CTXSW);
--	pr_info("Spectre v2 / SpectreRSB mitigation: Filling RSB on context switch\n");
--
--	spectre_v2_determine_rsb_fill_type_at_vmexit(mode);
-+	spectre_v2_select_rsb_mitigation(mode);
- 
- 	/*
- 	 * Retpoline protects the kernel, but doesn't protect firmware.  IBRS
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 6cf881a942bbe..e491c75b2a688 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -389,9 +389,9 @@ static void cond_mitigation(struct task_struct *next)
- 	prev_mm = this_cpu_read(cpu_tlbstate.last_user_mm_spec);
- 
- 	/*
--	 * Avoid user/user BTB poisoning by flushing the branch predictor
--	 * when switching between processes. This stops one process from
--	 * doing Spectre-v2 attacks on another.
-+	 * Avoid user->user BTB/RSB poisoning by flushing them when switching
-+	 * between processes. This stops one process from doing Spectre-v2
-+	 * attacks on another.
- 	 *
- 	 * Both, the conditional and the always IBPB mode use the mm
- 	 * pointer to avoid the IBPB when switching between tasks of the
--- 
-2.39.5
-
+--- a/fs/cifs/cifs_debug.c
++++ b/fs/cifs/cifs_debug.c
+@@ -382,6 +382,8 @@ skip_rdma:
+ 		list_for_each(tmp2, &server->smb_ses_list) {
+ 			ses = list_entry(tmp2, struct cifs_ses,
+ 					 smb_ses_list);
++			if (ses->status == CifsExiting)
++				continue;
+ 			i++;
+ 			if ((ses->serverDomain == NULL) ||
+ 				(ses->serverOS == NULL) ||
 
 
 
