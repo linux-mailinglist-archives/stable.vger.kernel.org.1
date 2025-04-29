@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-137040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E62CAA0858
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 12:19:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B304DAA085D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 12:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CAEA4602FD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 10:19:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35F0A1B620D1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 10:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1BA2BD58E;
-	Tue, 29 Apr 2025 10:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AE229DB6C;
+	Tue, 29 Apr 2025 10:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YwRz7e0P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CRrY8wkx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C53C2BCF7E
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 10:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778A01DF73C
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 10:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745921989; cv=none; b=F+v7ch/dtjkYU7AwsA3/R4zzDeQE0UGrh0PQwXuyqx0rnBhkxTpItZZa30NeE8Dnrlo7suIe7bf8k5GC5uzNT7YVDNtWfTmRbhesfkMhlj1dER7kBLeNU9ncIn0hd6/81FElAy10vcAcQbpPVNAQmCGFFYdeZN/F+F8xqQjUpT0=
+	t=1745922071; cv=none; b=BRATPBLEDfTgkLZZx5eY++8jS7Csd1Yd1Rhc7B/7Z5fiYaJUtU2xWOMVmLYyZ7j3M64rzWb1eCI9+RVcH2U/43kZ+vrcOldbzSfsFkXKyyaIPUrtusjAQ+2prpHOAtHPFdU9SOeAjTApZJk5kfb0MBqZHZVQEF+yxtwMZAUfDtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745921989; c=relaxed/simple;
-	bh=ZnnR1opHoeqkU7NnaS4z2CSMYREwbdUIkemIpT+1vCg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=t9IX2Mk5dBe6qEsxSy3+BfKqaLfstqyr3r5c6iNjhvvGvAxKX7t4SUR4JjR5Xl0ask65uOxsXE5sKV852s/45Z/B3vw0bHDCGL71PCixWBedyu+pPCaVe2hVgITMLNJbq9SGocBHOOPPbxpjLwBObKAAL8kO1wWLauTDwepws08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YwRz7e0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5084FC4CEE3;
-	Tue, 29 Apr 2025 10:19:47 +0000 (UTC)
+	s=arc-20240116; t=1745922071; c=relaxed/simple;
+	bh=XEywyMwGbXRMSVcyHVf46uriX8FbSQh9ac2GYEv1J2o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=s9mOWqBZl56CXBtlMSpa9XilNRm8dtDvjXxTCsVuC8gb4dYirTzsajedS++/rmxrvjNUlk4tQ7yhnFs6TonAXphLrxR04mJVYXIJvYiB8x7ghLMDH29gKMmqUU2hZx+bwb876fYaBv1sg71DFrjzaNkAn7pjLnQyzLSHhUX0QIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CRrY8wkx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7594DC4CEE3;
+	Tue, 29 Apr 2025 10:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745921988;
-	bh=ZnnR1opHoeqkU7NnaS4z2CSMYREwbdUIkemIpT+1vCg=;
+	s=k20201202; t=1745922069;
+	bh=XEywyMwGbXRMSVcyHVf46uriX8FbSQh9ac2GYEv1J2o=;
 	h=From:To:Cc:Subject:Date:From;
-	b=YwRz7e0PIqX1W96dxIF6Y57Xo2wsATvfIHmA6PpCCHPQf/2zj5ZCoQkg1RlChuZwE
-	 YFWEjcyc5F7XpoUzKX4JTin7OevLvdxIg9YGLUqdiQTWii4ZwW4tnb2UPxFdslnPZr
-	 sTPm5twL+ogAEk2BplLFqmgemNBThoHd2GyaUj0cayezMHyvHvFFD7O4+9ni4V48xQ
-	 6TB00QhoxNqp+M657lyxoRT+0gaPa1Jqt0S0wnjaQ284iCtiOHc/Mf3bFYNyA2xq64
-	 k6qao8nyBoMEuLtxzlxoS20ERAr/ghp2cKKqU+Sey0C6sHQrxxA6w904bVh/OfQT2J
-	 xU/KJRNoFfNYQ==
+	b=CRrY8wkxDv6w9O1MgD9Y+vwNkfGohEZxQTYsNipWx+BcER8QFoGjDDwZiQR15O45v
+	 mRIQOBgI9FjpEfSDoWFzHLJUbpBnsRERbhp3dJ+fWiMZlr4Fi6LxxEyRLeW2nPPsvw
+	 iJmnmROEi/SHpqw2K5kqOOqRKYkbNDq54+sgtkS0H0UCqhzLB4XB2cSh79I07TUiil
+	 QS2phrq2nDYWcRIwOMdYwAtiKdqQLNAZWxGxIoSEzYxgbv8n6vKn+Qf8Mfw8HZbo0x
+	 sh7PFDuiKmETlw/NZpbFoZF/ozfy1F7ljK48DYpAZpNvH2cvlyCG+X/RJXqxjOCC1u
+	 Wwvl3sZw8oufQ==
 From: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -47,9 +47,9 @@ To: gregkh@linuxfoundation.org,
 Cc: ardb@kernel.org,
 	herbert@gondor.apana.org.au,
 	linus.walleij@linaro.org
-Subject: [PATCH 6.1.y] crypto: atmel-sha204a - Set hwrng quality to lowest possible
-Date: Tue, 29 Apr 2025 12:19:44 +0200
-Message-ID: <20250429101944.19440-1-kabel@kernel.org>
+Subject: [PATCH 5.15.y] crypto: atmel-sha204a - Set hwrng quality to lowest possible
+Date: Tue, 29 Apr 2025 12:21:06 +0200
+Message-ID: <20250429102106.19708-1-kabel@kernel.org>
 X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -75,14 +75,14 @@ Signed-off-by: Marek Behún <kabel@kernel.org>
 Acked-by: Ard Biesheuvel <ardb@kernel.org>
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ rebased for 6.1 ]
+[ rebased for 5.15 ]
 Signed-off-by: Marek Behún <kabel@kernel.org>
 ---
  drivers/crypto/atmel-sha204a.c | 7 ++++++-
  1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204a.c
-index a84b657598c6..51738c730717 100644
+index c96c14e7dab1..0ef92109ce22 100644
 --- a/drivers/crypto/atmel-sha204a.c
 +++ b/drivers/crypto/atmel-sha204a.c
 @@ -107,7 +107,12 @@ static int atmel_sha204a_probe(struct i2c_client *client,
