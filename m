@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-137487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D04AA1398
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2579BAA17A8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D4504C3C4E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DCA04C4450
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CDD251783;
-	Tue, 29 Apr 2025 17:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7837924BD02;
+	Tue, 29 Apr 2025 17:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wuhQEXlT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQMKAIbo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF3724E00D;
-	Tue, 29 Apr 2025 17:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3649F21ABC1;
+	Tue, 29 Apr 2025 17:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946212; cv=none; b=T9xUZ0x1ux5w0JmO2hZieQPcRcptA5rwf2MMCMJ5NwNtAxRBlQ2rCRiZU8cy9MCec5wTYZth/njUwXkMH9oUYLNFmN+6HvQ40Cm2yQ5zqk/VOANhKkxoIzLFBJXPDBkUyfoLE8EOiIOt5i0RIcGKr0J9paOzbSVLAZIO2GBzJOQ=
+	t=1745948978; cv=none; b=OwUGKWS4i/4DIXycqSyC3o25PKgnR7aJUJA7mOlI0AnzUGOOft/RTyNS7Dg7FRhwLbjg4XpYO/QK9vgILoCwlFsr+sMTZC5hmpStsqgms5s5fUWZKDi2ThjtB6G38TUbp9tM4Pf7ELN/5KB0eKPiH9Mg/KKn5IzY+EtdJLe1VgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946212; c=relaxed/simple;
-	bh=L16s0pgyKbfE78CSaQr7VAdFVgk7Z6nVtQgJ1ULIXZg=;
+	s=arc-20240116; t=1745948978; c=relaxed/simple;
+	bh=YPowWJL0VFpcoAINT4eN1r3gK4qzNpfch+9bAI2xGps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PdNdfcyMDEwSDqSe72GI6tC6ZPv3Dm70b4ofLPpJNX0tSXzPjLoVi3rQnupsgP2aXK1U2MD/9loooR7SdFmGpvSIEF2sIDVhdg9LXh9iA3gLlCOEiqKgdnE3+44OvJ3aIBBKpvb/3vD5XNu13pJ3doZLdPBqq0+fcRjae200mfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wuhQEXlT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E28C4CEE3;
-	Tue, 29 Apr 2025 17:03:32 +0000 (UTC)
+	 MIME-Version; b=SbtjoQq9CA1wHqkmC/8+ForAuau0zdWky8vsC+UPD82Ixo9+s8cfCn9/eI7GrGVbJzmoWE8KJxwom13j/oDXiWv0EP9Jt9R6LLIWdtjvlrU3kOvnE+C+02ugOD4hDlqnfgK3vc3/tlvK4FBoFUSRloGY3wa9aK8lurQ5TC3UQy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQMKAIbo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46854C4CEE3;
+	Tue, 29 Apr 2025 17:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946212;
-	bh=L16s0pgyKbfE78CSaQr7VAdFVgk7Z6nVtQgJ1ULIXZg=;
+	s=korg; t=1745948977;
+	bh=YPowWJL0VFpcoAINT4eN1r3gK4qzNpfch+9bAI2xGps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wuhQEXlToQBRG6+t+zIqssOaLFbLLcxNiDrEIei+67QT0GRNCHHhK6wsjrtsh1nG0
-	 NN2doO4KqecCkrZNY+pNuFTYu++TF1FLczmnH8xBJiXJXTi+uEzfATp/yj7JUw0Rof
-	 y9if+NYUnB48EAr8NxU08hRWEX+kWvRPSXnjGYQU=
+	b=HQMKAIboyp3NGL0dpjDZiy6IqVwkl+k52mQD7/e2wVbvz5267AV6G/U6lwqNvqQ1D
+	 CbGTRmn7Uwb80OOy6kI/V8ZxM8116TnY4xs/4Npqd1kG/yEovsrOg3o3kBalxCqlDM
+	 qBwlMJ6bNOsp6XoHNl8V4s4zv4OVSItjghhCYUfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Sewon Nam <swnam0729@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 193/311] bpf: bpftool: Setting error code in do_loader()
-Date: Tue, 29 Apr 2025 18:40:30 +0200
-Message-ID: <20250429161128.918584898@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 154/373] writeback: fix false warning in inode_to_wb()
+Date: Tue, 29 Apr 2025 18:40:31 +0200
+Message-ID: <20250429161129.488156590@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sewon Nam <swnam0729@gmail.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 02a4694107b4c830d4bd6d194e98b3ac0bc86f29 ]
+commit 9e888998ea4d22257b07ce911576509486fa0667 upstream.
 
-We are missing setting error code in do_loader() when
-bpf_object__open_file() fails. This means the command's exit status code
-will be successful, even though the operation failed. So make sure to
-return the correct error code. To maintain consistency with other
-locations where bpf_object__open_file() is called, return -1.
+inode_to_wb() is used also for filesystems that don't support cgroup
+writeback.  For these filesystems inode->i_wb is stable during the
+lifetime of the inode (it points to bdi->wb) and there's no need to hold
+locks protecting the inode->i_wb dereference.  Improve the warning in
+inode_to_wb() to not trigger for these filesystems.
 
-  [0] Closes: https://github.com/libbpf/bpftool/issues/156
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Sewon Nam <swnam0729@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Quentin Monnet <qmo@kernel.org>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/d3b5b4b4-19bb-4619-b4dd-86c958c4a367@stanley.mountain/t/#u
-Link: https://lore.kernel.org/bpf/20250311031238.14865-1-swnam0729@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
+Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/bpf/bpftool/prog.c | 1 +
+ include/linux/backing-dev.h |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
-index e71be67f1d865..52ffb74ae4e89 100644
---- a/tools/bpf/bpftool/prog.c
-+++ b/tools/bpf/bpftool/prog.c
-@@ -1928,6 +1928,7 @@ static int do_loader(int argc, char **argv)
- 
- 	obj = bpf_object__open_file(file, &open_opts);
- 	if (!obj) {
-+		err = -1;
- 		p_err("failed to open object file");
- 		goto err_close_obj;
- 	}
--- 
-2.39.5
-
+--- a/include/linux/backing-dev.h
++++ b/include/linux/backing-dev.h
+@@ -283,6 +283,7 @@ static inline struct bdi_writeback *inod
+ {
+ #ifdef CONFIG_LOCKDEP
+ 	WARN_ON_ONCE(debug_locks &&
++		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
+ 		     (!lockdep_is_held(&inode->i_lock) &&
+ 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
+ 		      !lockdep_is_held(&inode->i_wb->list_lock)));
 
 
 
