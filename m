@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-137870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E51C3AA15A2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7088AA180E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B41F63A81E5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0078317A6A8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C79254842;
-	Tue, 29 Apr 2025 17:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1659D25485B;
+	Tue, 29 Apr 2025 17:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7JrbUsT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktHQFvZx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512EF2459EA;
-	Tue, 29 Apr 2025 17:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A8C25484F;
+	Tue, 29 Apr 2025 17:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947381; cv=none; b=X1PvqzoA1oDBcI7ejITQHQLCnldM6z0UjFbdSbukDVg9EStCezGOepVYUvy072GWkgO7H0rQ4fD8u95jMwyKkqWoLjzPPjjYx5sOzxjnrhqObAm8H7r80KpurBahuntYwiZyXGPnt7/+cfaxasiW0Wjn8L/AHKfHcwghnV3jQmA=
+	t=1745949248; cv=none; b=IZJEQWcXTtLJzdtPNz9Mq0DwgS6LcLr5oc2oLuSkAj9XUyosMai+TgkePPjsOURaujnHNM7v4BzbjCVmaL9bs5Ebf7dDJz2saEJq32BSRymqwnvLUhWjTdhQEZJWqaDNtNWZ3h456Ch2pxMcmZR+NNnGcy4S3rz95PEWyuQiBmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947381; c=relaxed/simple;
-	bh=M/98Cbl8dvewrZVOvjFo7uTLs56LLN/ArBE1aOzVsIc=;
+	s=arc-20240116; t=1745949248; c=relaxed/simple;
+	bh=pO+0CGhKLmxoBVGKSoYzZNUZm5hoYfqdRTdVoLloqd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2XulY/ILZT+G5WilRLtj97NfosdXxEcwz/4yE/jdN9WuEBBx/Cu/1IqCRhwS3XhlM022gs4P9wMFEStbs+9IA/zpKh7mKLHvvdOeCp1LbsYwH4YvjneUG7IkZjbDxOrRcp/FMMOwhO7/jv/aKYeRm9Z4uKx1fhQFyozVbUUcPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7JrbUsT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF0BC4CEE3;
-	Tue, 29 Apr 2025 17:23:00 +0000 (UTC)
+	 MIME-Version; b=d046rEH+MxiCIXUDPLyhoS7xT+jB+xWwLQnSVlae5iNHb0ebXUzflfnwVYkEC5VQZiXqy9bmOqsgOOtSg8hRctHvoJnQsY9zxlVjIn4P3vgWacZ10l1kUk13p7zMGlGK0Le1wubJ1FBEjsc1kL+BwwdvA6XKbQ7ESqVW0/2X/Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktHQFvZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46190C4CEE9;
+	Tue, 29 Apr 2025 17:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947380;
-	bh=M/98Cbl8dvewrZVOvjFo7uTLs56LLN/ArBE1aOzVsIc=;
+	s=korg; t=1745949248;
+	bh=pO+0CGhKLmxoBVGKSoYzZNUZm5hoYfqdRTdVoLloqd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W7JrbUsTjjNXRpBoqevn3f1TBLXhjWN0rtqe1rUxtBUQhlcH53u15850U1pvsMmh5
-	 Fxl/D4iGNlILD3QTM1Lql+zR6JChhO+csgJaUxKgfpUxtIKTekdPE1dFCf4p+rdht/
-	 s+sSAteSOy5cRvdcZe7rOaL0iqyZb7ipuVh4QZok=
+	b=ktHQFvZxQDkUsqVFq8PaXDQRc1okVfAUFbDO61yKVfyWdmCkzzOMMsiO/RDxFOIrH
+	 lIp/olohSJX6MhSpRxzwMLYepRGVNzDXYQN6TWDpXmfZzUm+m8VwtrFB07VOviV/dK
+	 6DgMAOA0igjzW96kn5Z8M53JRKOFLav4fEkdJEfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Guan <hao.guan@siflower.com.cn>,
-	Qingfang Deng <qingfang.deng@siflower.com.cn>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 232/286] net: phy: leds: fix memory leak
+Subject: [PATCH 5.15 259/373] media: streamzap: fix race between device disconnection and urb callback
 Date: Tue, 29 Apr 2025 18:42:16 +0200
-Message-ID: <20250429161117.477279661@linuxfoundation.org>
+Message-ID: <20250429161133.775380874@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <qingfang.deng@siflower.com.cn>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit b7f0ee992adf601aa00c252418266177eb7ac2bc ]
+[ Upstream commit f656cfbc7a293a039d6a0c7100e1c846845148c1 ]
 
-A network restart test on a router led to an out-of-memory condition,
-which was traced to a memory leak in the PHY LED trigger code.
+Syzkaller has reported a general protection fault at function
+ir_raw_event_store_with_filter(). This crash is caused by a NULL pointer
+dereference of dev->raw pointer, even though it is checked for NULL in
+the same function, which means there is a race condition. It occurs due
+to the incorrect order of actions in the streamzap_disconnect() function:
+rc_unregister_device() is called before usb_kill_urb(). The dev->raw
+pointer is freed and set to NULL in rc_unregister_device(), and only
+after that usb_kill_urb() waits for in-progress requests to finish.
 
-The root cause is misuse of the devm API. The registration function
-(phy_led_triggers_register) is called from phy_attach_direct, not
-phy_probe, and the unregister function (phy_led_triggers_unregister)
-is called from phy_detach, not phy_remove. This means the register and
-unregister functions can be called multiple times for the same PHY
-device, but devm-allocated memory is not freed until the driver is
-unbound.
+If rc_unregister_device() is called while streamzap_callback() handler is
+not finished, this can lead to accessing freed resources. Thus
+rc_unregister_device() should be called after usb_kill_urb().
 
-This also prevents kmemleak from detecting the leak, as the devm API
-internally stores the allocated pointer.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Fix this by replacing devm_kzalloc/devm_kcalloc with standard
-kzalloc/kcalloc, and add the corresponding kfree calls in the unregister
-path.
-
-Fixes: 3928ee6485a3 ("net: phy: leds: Add support for "link" trigger")
-Fixes: 2e0bc452f472 ("net: phy: leds: add support for led triggers on phy link state change")
-Signed-off-by: Hao Guan <hao.guan@siflower.com.cn>
-Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250417032557.2929427-1-dqfext@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8e9e60640067 ("V4L/DVB: staging/lirc: port lirc_streamzap to ir-core")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=34008406ee9a31b13c73
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_led_triggers.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/media/rc/streamzap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/phy_led_triggers.c b/drivers/net/phy/phy_led_triggers.c
-index 59a94e07e7c55..ae28aa2f9a392 100644
---- a/drivers/net/phy/phy_led_triggers.c
-+++ b/drivers/net/phy/phy_led_triggers.c
-@@ -91,9 +91,8 @@ int phy_led_triggers_register(struct phy_device *phy)
- 	if (!phy->phy_num_led_triggers)
- 		return 0;
+diff --git a/drivers/media/rc/streamzap.c b/drivers/media/rc/streamzap.c
+index d4b38532c7b44..d31ee190301b3 100644
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -431,8 +431,8 @@ static void streamzap_disconnect(struct usb_interface *interface)
+ 	if (!sz)
+ 		return;
  
--	phy->led_link_trigger = devm_kzalloc(&phy->mdio.dev,
--					     sizeof(*phy->led_link_trigger),
--					     GFP_KERNEL);
-+	phy->led_link_trigger = kzalloc(sizeof(*phy->led_link_trigger),
-+					GFP_KERNEL);
- 	if (!phy->led_link_trigger) {
- 		err = -ENOMEM;
- 		goto out_clear;
-@@ -108,10 +107,9 @@ int phy_led_triggers_register(struct phy_device *phy)
- 	if (err)
- 		goto out_free_link;
+-	rc_unregister_device(sz->rdev);
+ 	usb_kill_urb(sz->urb_in);
++	rc_unregister_device(sz->rdev);
+ 	usb_free_urb(sz->urb_in);
+ 	usb_free_coherent(usbdev, sz->buf_in_len, sz->buf_in, sz->dma_in);
  
--	phy->phy_led_triggers = devm_kcalloc(&phy->mdio.dev,
--					    phy->phy_num_led_triggers,
--					    sizeof(struct phy_led_trigger),
--					    GFP_KERNEL);
-+	phy->phy_led_triggers = kcalloc(phy->phy_num_led_triggers,
-+					sizeof(struct phy_led_trigger),
-+					GFP_KERNEL);
- 	if (!phy->phy_led_triggers) {
- 		err = -ENOMEM;
- 		goto out_unreg_link;
-@@ -131,11 +129,11 @@ int phy_led_triggers_register(struct phy_device *phy)
- out_unreg:
- 	while (i--)
- 		phy_led_trigger_unregister(&phy->phy_led_triggers[i]);
--	devm_kfree(&phy->mdio.dev, phy->phy_led_triggers);
-+	kfree(phy->phy_led_triggers);
- out_unreg_link:
- 	phy_led_trigger_unregister(phy->led_link_trigger);
- out_free_link:
--	devm_kfree(&phy->mdio.dev, phy->led_link_trigger);
-+	kfree(phy->led_link_trigger);
- 	phy->led_link_trigger = NULL;
- out_clear:
- 	phy->phy_num_led_triggers = 0;
-@@ -149,8 +147,13 @@ void phy_led_triggers_unregister(struct phy_device *phy)
- 
- 	for (i = 0; i < phy->phy_num_led_triggers; i++)
- 		phy_led_trigger_unregister(&phy->phy_led_triggers[i]);
-+	kfree(phy->phy_led_triggers);
-+	phy->phy_led_triggers = NULL;
- 
--	if (phy->led_link_trigger)
-+	if (phy->led_link_trigger) {
- 		phy_led_trigger_unregister(phy->led_link_trigger);
-+		kfree(phy->led_link_trigger);
-+		phy->led_link_trigger = NULL;
-+	}
- }
- EXPORT_SYMBOL_GPL(phy_led_triggers_unregister);
 -- 
 2.39.5
 
