@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-137542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42EFAAA13C7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C26BDAA17FE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2146617B922
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9551D9A3AE5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721582472AA;
-	Tue, 29 Apr 2025 17:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2845324C083;
+	Tue, 29 Apr 2025 17:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWY4JlXC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3gJvUpC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCE2211A0B;
-	Tue, 29 Apr 2025 17:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9A222AE68;
+	Tue, 29 Apr 2025 17:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946380; cv=none; b=UNPlSw42aCGCSTP8HtgldkEzukr06xhKo7SfYEPym1mxA/MHvjARscbCMi+ryH2+2Va2kpt2npaTrpAdFiVHIlWCMyiUvQgIhrPdZsyKNEBoHfwXzjYfy3VxIkPr/KOKPa74AnuZC13r99V4kTkfuBe9kTZqAjvaetnq/ov7pD4=
+	t=1745948962; cv=none; b=cBdy6iq+y9/0R8LK+J+jJfBRag1G9E92Try+Tj6djg936p9Qv03NTM4KjvJ/H68Kb5cR6ufAq94QoQ6D/XLNUt6P6CnRn33SCd160Sv7nBceXDudH/I0tOfQAHYq2rnxg+CaktXOiniUdvULWqNS13NDRhr0uWiiuPbylcCx98Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946380; c=relaxed/simple;
-	bh=sH0rWO//qvCN3xo18oIiHQMv3Zr8UqSGyR+wyekfa1s=;
+	s=arc-20240116; t=1745948962; c=relaxed/simple;
+	bh=M1dhoYId87+ooVsspV94y9jI2+x2kQBnKEWXH5ksHwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iktSmhS5jFL1mGgqLWLugVXN5/Bkb5LIc7FHy7ywkAtForFQoTcBXdhEhAiKEvCQ2ropEUvPEKzKInNizW0aRZYDFcCAxAlAIYPs/XhmdaQ/riIQkD9w3U1OJFGXoyTCn9vYCu3CuZMyeprKOjy5pqKIUYtojLHiO6kNKXQKKQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aWY4JlXC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50182C4CEE3;
-	Tue, 29 Apr 2025 17:06:19 +0000 (UTC)
+	 MIME-Version; b=RUD3d3rJqO8Sv4oPty/h200nAcZgc9xVNSxtRZcMnKaXl9cRM/oDQ5yp4WYjps6W275RWesVWKQXRKAMXka8TGqwhkMO4jLEqOJqF+7pPYQGjc+oeoM7C85EkNYBfbeqmUrWIu3BIZV/uCz44RpRBZ7Ohhehtx/fVAEzNJIP5hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3gJvUpC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55783C4CEE3;
+	Tue, 29 Apr 2025 17:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946379;
-	bh=sH0rWO//qvCN3xo18oIiHQMv3Zr8UqSGyR+wyekfa1s=;
+	s=korg; t=1745948962;
+	bh=M1dhoYId87+ooVsspV94y9jI2+x2kQBnKEWXH5ksHwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aWY4JlXCdv76YpBIVdGt3iPjD4O2uHdRHBwWkPHTaaaDDNBhsZEdEGWNznbYkyzN8
-	 aUqze9jdd70/kcFVmDBwpXw04gEpbWy3uI2P7mpYjGPy6uBy0XBFITuZT9k6jiIiyr
-	 5yAdrmC90/TpG/snRJWGLg9frqpVJFL36aYEUGys=
+	b=b3gJvUpCjoI6FA9+DNh/Db0vmVGHcwKcXm6+3C84qYYKYgzrSDm5mBrFxieKuQ452
+	 z9L9Pr/ljM5Z5irciCoU3QZXX04L8C0MQ7erjyzTDTIw8RlUtDARaBofnaivub3QxC
+	 PqvV/SaKCT5Zk1CgnwJRkxIzz/HHi1/IYbLqBaxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 217/311] usb: host: xhci-plat: mvebu: use ->quirks instead of ->init_quirk() func
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Lanzano <lanzano.alex@gmail.com>
+Subject: [PATCH 5.15 177/373] drm/repaper: fix integer overflows in repeat functions
 Date: Tue, 29 Apr 2025 18:40:54 +0200
-Message-ID: <20250429161129.885451945@linuxfoundation.org>
+Message-ID: <20250429161130.451250351@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,88 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 64eb182d5f7a5ec30227bce4f6922ff663432f44 ]
+commit 4d098000ac193f359e6b8ca4801dbdbd6a27b41f upstream.
 
-Compatible "marvell,armada3700-xhci" match data uses the
-struct xhci_plat_priv::init_quirk() function pointer to add
-XHCI_RESET_ON_RESUME as quirk on XHCI.
+There are conditions, albeit somewhat unlikely, under which right hand
+expressions, calculating the end of time period in functions like
+repaper_frame_fixed_repeat(), may overflow.
 
-Instead, use the struct xhci_plat_priv::quirks field.
+For instance, if 'factor10x' in repaper_get_temperature() is high
+enough (170), as is 'epd->stage_time' in repaper_probe(), then the
+resulting value of 'end' will not fit in unsigned int expression.
 
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Link: https://lore.kernel.org/r/20250205-s2r-cdns-v7-1-13658a271c3c@bootlin.com
+Mitigate this by casting 'epd->factored_stage_time' to wider type before
+any multiplication is done.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 3589211e9b03 ("drm/tinydrm: Add RePaper e-ink driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250116134801.22067-1-n.zhandarovich@fintech.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mvebu.c | 10 ----------
- drivers/usb/host/xhci-mvebu.h |  6 ------
- drivers/usb/host/xhci-plat.c  |  2 +-
- 3 files changed, 1 insertion(+), 17 deletions(-)
+ drivers/gpu/drm/tiny/repaper.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-mvebu.c b/drivers/usb/host/xhci-mvebu.c
-index 87f1597a0e5ab..257e4d79971fd 100644
---- a/drivers/usb/host/xhci-mvebu.c
-+++ b/drivers/usb/host/xhci-mvebu.c
-@@ -73,13 +73,3 @@ int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd)
- 
- 	return 0;
- }
--
--int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd)
--{
--	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
--
--	/* Without reset on resume, the HC won't work at all */
--	xhci->quirks |= XHCI_RESET_ON_RESUME;
--
--	return 0;
--}
-diff --git a/drivers/usb/host/xhci-mvebu.h b/drivers/usb/host/xhci-mvebu.h
-index 3be021793cc8b..9d26e22c48422 100644
---- a/drivers/usb/host/xhci-mvebu.h
-+++ b/drivers/usb/host/xhci-mvebu.h
-@@ -12,16 +12,10 @@ struct usb_hcd;
- 
- #if IS_ENABLED(CONFIG_USB_XHCI_MVEBU)
- int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd);
--int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd);
- #else
- static inline int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd)
+--- a/drivers/gpu/drm/tiny/repaper.c
++++ b/drivers/gpu/drm/tiny/repaper.c
+@@ -454,7 +454,7 @@ static void repaper_frame_fixed_repeat(s
+ 				       enum repaper_stage stage)
  {
- 	return 0;
- }
--
--static inline int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd)
--{
--	return 0;
--}
- #endif
- #endif /* __LINUX_XHCI_MVEBU_H */
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index d85ffa9ffaa70..ff813dca2d1d3 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -106,7 +106,7 @@ static const struct xhci_plat_priv xhci_plat_marvell_armada = {
- };
+ 	u64 start = local_clock();
+-	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
++	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
  
- static const struct xhci_plat_priv xhci_plat_marvell_armada3700 = {
--	.init_quirk = xhci_mvebu_a3700_init_quirk,
-+	.quirks = XHCI_RESET_ON_RESUME,
- };
+ 	do {
+ 		repaper_frame_fixed(epd, fixed_value, stage);
+@@ -465,7 +465,7 @@ static void repaper_frame_data_repeat(st
+ 				      const u8 *mask, enum repaper_stage stage)
+ {
+ 	u64 start = local_clock();
+-	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
++	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
  
- static const struct xhci_plat_priv xhci_plat_brcm = {
--- 
-2.39.5
-
+ 	do {
+ 		repaper_frame_data(epd, image, mask, stage);
 
 
 
