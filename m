@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 250D0AA17B8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68840AA1375
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7EEC175AF1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04C127A7A29
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FDBC243964;
-	Tue, 29 Apr 2025 17:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6D7211A0B;
+	Tue, 29 Apr 2025 17:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PONJR41g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8Qqnujb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB9C221DA7;
-	Tue, 29 Apr 2025 17:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592282472AA;
+	Tue, 29 Apr 2025 17:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949032; cv=none; b=SPke+qyNekvsM11oAct7UjpPFbie8/mR0zkI06zRiNwBelVuj2+JWjZw7rYPyO3MmVMofpJQqVRXm9a1gnVqtSmHbWuhJjPrBdp+a/laAkZ5WVbSqd/vcil6kItAx1OoAgAXUeWhJTu7vcpHgta75KNpEZR65AJsRucAn0M1MkY=
+	t=1745946346; cv=none; b=qVc7qRPo4kCHRhxt/WCH0mvlcnUkDSvfdI7C+oPgdGlA8j8m49uQarAK5YfWMeDGxZht/KJ90c5jkhbCe7aK6mKvNvfB/bwah3PaG3PRPDghFq759Udvks6K5YZBRSVMxHc6PF2aDqZ7vXx7ssWF1jFPJbmah/ba2DT7LQmB+YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949032; c=relaxed/simple;
-	bh=/kUdBFxEsbsk9yNXXr/Lu+MShXNdh2/TCPAZTy7Qc2c=;
+	s=arc-20240116; t=1745946346; c=relaxed/simple;
+	bh=bDuENEKkosBijoZW7brsGamHoq/FeDWrvQjIQWKsitE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSkw6a/3wwbeOiBlHVk+XGpl2L5amC0yDebezc1B67Z6dyiASn2IotpHZBaNh26cAvGbP54mASOY/HKRQvsGIr+2U8xLGpO4QTvtE/mvldC072g4ojfVwfoKkoq0yqkZ0FwRpxxqCEIivWMOQ9IQSxaC+QDlRXb9erpWZEQmII0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PONJR41g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39A9C4CEE3;
-	Tue, 29 Apr 2025 17:50:31 +0000 (UTC)
+	 MIME-Version; b=C5gErPLmg3cY8ppS9dJPH8eihK9pMf1RLEGbOzcPWkn0ddVGfr4slcrTivp0enPFXuIa0UbxJgnu6xtojwmbPua1U9kSdoM04OyYOvbgwrwwUZtqxCVqiJaC/28ARYV2SDvkfXdYryfblbsyD9ck2LFo1v7UqQu669OqHPebf/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8Qqnujb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B8AC4CEE3;
+	Tue, 29 Apr 2025 17:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949032;
-	bh=/kUdBFxEsbsk9yNXXr/Lu+MShXNdh2/TCPAZTy7Qc2c=;
+	s=korg; t=1745946346;
+	bh=bDuENEKkosBijoZW7brsGamHoq/FeDWrvQjIQWKsitE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PONJR41gv+aQQvQT90r+1R9jo8tA7OcW/7dhQsOOb3m107a/A1CBUcQy+x9tqecy3
-	 wNdX69U3QYBmFq6qQtg7Kv3/33mA2kMR8uLuq8WPKPJqZpM1aax8dtGJKjGBmfJ7U3
-	 23BeiZvoTeRGzkVA3bbDKjpx/dAcy+TngPpFfryQ=
+	b=M8Qqnujb82VU5+PAm/6l4lUb+QYxwXlZQuofkebcetr6iAZecCOyNn+Ia5jacp1j6
+	 qh/8mmKZFBlEMTxw8LWChVSIznZMaoDBsU8s1KM4u1d+Jv/mTJuJIyw3uOi2nXJqp3
+	 AFnnOvN+igLLJx6XY7YYiyxFhjYY8rVzlAuQG7OQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 195/373] KVM: arm64: Calculate cptr_el2 traps on activating traps
-Date: Tue, 29 Apr 2025 18:41:12 +0200
-Message-ID: <20250429161131.191700218@linuxfoundation.org>
+	Xi Ruoyao <xry111@xry111.site>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 236/311] kbuild: add dependency from vmlinux to sorttable
+Date: Tue, 29 Apr 2025 18:41:13 +0200
+Message-ID: <20250429161130.691661569@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fuad Tabba <tabba@google.com>
+From: Xi Ruoyao <xry111@xry111.site>
 
-[ Upstream commit 2fd5b4b0e7b440602455b79977bfa64dea101e6c ]
+[ Upstream commit 82c09de2d4c472ab1b973e6e033671020691e637 ]
 
-Similar to VHE, calculate the value of cptr_el2 from scratch on
-activate traps. This removes the need to store cptr_el2 in every
-vcpu structure. Moreover, some traps, such as whether the guest
-owns the fp registers, need to be set on every vcpu run.
+Without this dependency it's really puzzling when we bisect for a "bad"
+commit in a series of sorttable change: when "git bisect" switches to
+another commit, "make" just does nothing to vmlinux.
 
-Reported-by: James Clark <james.clark@linaro.org>
-Fixes: 5294afdbf45a ("KVM: arm64: Exclude FP ownership from kvm_vcpu_arch")
-Signed-off-by: Fuad Tabba <tabba@google.com>
-Link: https://lore.kernel.org/r/20241216105057.579031-13-tabba@google.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/kvm_host.h |    1 -
- arch/arm64/kvm/arm.c              |    1 -
- arch/arm64/kvm/hyp/nvhe/switch.c  |   35 ++++++++++++++++++++++++++---------
- 3 files changed, 26 insertions(+), 11 deletions(-)
+ scripts/Makefile.vmlinux | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -301,7 +301,6 @@ struct kvm_vcpu_arch {
- 	/* Values of trap registers for the guest. */
- 	u64 hcr_el2;
- 	u64 mdcr_el2;
--	u64 cptr_el2;
+diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
+index 873caaa553134..fb79fd6b24654 100644
+--- a/scripts/Makefile.vmlinux
++++ b/scripts/Makefile.vmlinux
+@@ -79,6 +79,10 @@ ifdef CONFIG_DEBUG_INFO_BTF
+ vmlinux: $(RESOLVE_BTFIDS)
+ endif
  
- 	/* Values of trap registers for the host before guest entry. */
- 	u64 mdcr_el2_host;
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -1138,7 +1138,6 @@ static int kvm_arch_vcpu_ioctl_vcpu_init
- 	}
- 
- 	vcpu_reset_hcr(vcpu);
--	vcpu->arch.cptr_el2 = CPTR_EL2_DEFAULT;
- 
- 	/*
- 	 * Handle the "start in power-off" case.
---- a/arch/arm64/kvm/hyp/nvhe/switch.c
-+++ b/arch/arm64/kvm/hyp/nvhe/switch.c
-@@ -34,21 +34,38 @@ DEFINE_PER_CPU(struct kvm_host_data, kvm
- DEFINE_PER_CPU(struct kvm_cpu_context, kvm_hyp_ctxt);
- DEFINE_PER_CPU(unsigned long, kvm_hyp_vector);
- 
--static void __activate_traps(struct kvm_vcpu *vcpu)
-+static bool guest_owns_fp_regs(struct kvm_vcpu *vcpu)
- {
--	u64 val;
-+	return vcpu->arch.flags & KVM_ARM64_FP_ENABLED;
-+}
- 
--	___activate_traps(vcpu);
--	__activate_traps_common(vcpu);
-+static void __activate_cptr_traps(struct kvm_vcpu *vcpu)
-+{
-+	u64 val = CPTR_EL2_TAM;	/* Same bit irrespective of E2H */
- 
--	val = vcpu->arch.cptr_el2;
--	val |= CPTR_EL2_TTA | CPTR_EL2_TAM;
--	if (!update_fp_enabled(vcpu)) {
--		val |= CPTR_EL2_TFP | CPTR_EL2_TZ;
--		__activate_traps_fpsimd32(vcpu);
-+	/* !hVHE case upstream */
-+	if (1) {
-+		val |= CPTR_EL2_TTA | CPTR_NVHE_EL2_RES1;
++ifdef CONFIG_BUILDTIME_TABLE_SORT
++vmlinux: scripts/sorttable
++endif
 +
-+		if (!vcpu_has_sve(vcpu) || !guest_owns_fp_regs(vcpu))
-+			val |= CPTR_EL2_TZ;
-+
-+		if (!guest_owns_fp_regs(vcpu))
-+			val |= CPTR_EL2_TFP;
- 	}
- 
-+	if (!guest_owns_fp_regs(vcpu))
-+		__activate_traps_fpsimd32(vcpu);
-+
- 	write_sysreg(val, cptr_el2);
-+}
-+
-+static void __activate_traps(struct kvm_vcpu *vcpu)
-+{
-+	___activate_traps(vcpu);
-+	__activate_traps_common(vcpu);
-+	__activate_cptr_traps(vcpu);
-+
- 	write_sysreg(__this_cpu_read(kvm_hyp_vector), vbar_el2);
- 
- 	if (cpus_have_final_cap(ARM64_WORKAROUND_SPECULATIVE_AT)) {
+ # module.builtin.ranges
+ # ---------------------------------------------------------------------------
+ ifdef CONFIG_BUILTIN_MODULE_RANGES
+-- 
+2.39.5
+
 
 
 
