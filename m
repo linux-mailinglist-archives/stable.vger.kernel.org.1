@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B372AA131D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F63AA16E2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AC0C16A697
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 443591891455
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6C225178B;
-	Tue, 29 Apr 2025 16:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6AC2528ED;
+	Tue, 29 Apr 2025 17:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WfuGFMxb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEnjVAgw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9B0221719;
-	Tue, 29 Apr 2025 16:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F83227E95;
+	Tue, 29 Apr 2025 17:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945907; cv=none; b=WtliwUiJZXGLvn2xwRhE6EWb90rc2kd9fSjbFyt0uC45wwNotN+/FlHRQ6pctUWLHLkzbBGBGhRGwM5Ra1QAyqbu2MM+yadMQNsECZrS0rEBrXfADmuqRj2HoQN5HBRgatdFqxVuz4RfX8PH76ahIc7oNh3lPC+mPWSCP2Fq/q8=
+	t=1745948450; cv=none; b=ELAhL1wXeLt3lmOEKvwXGruPYdDG0KTX+PKYEaDYZJPpFL5ZeUPwHr9fZ8emmA3HZ7MI7qR0xa15gGYCqkevoOVHO2y3eIcEmLOzQVHim5pnVwlc6Any15paCODKZnSoN7S1L9mKqN+BjLAxfrMl4QnK+a+YyBGw64v8svfJDtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945907; c=relaxed/simple;
-	bh=VdTAPzc480X42yiE1TzgpaO2c0GKulVKfgSd4XVhZIE=;
+	s=arc-20240116; t=1745948450; c=relaxed/simple;
+	bh=H2FPHnH4KV+ld/XhjCM7wnZ7Ni+1cTv6AhFEhn93zjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E5KliiiCq8GC01e/H+l00rmTNyJNgs6t1EyiF+Zulmbfz68zvQxFdXGO+Q7Z3RjoJkg6/yHcfv7mthV3VichzZBYs6kbBw5uyhXkUduafNP1ja/GAGkzJ7fcEXO5l15ATMI2/Rs/DSS3L/nmffNagGLMiv8iuZV8Lx+Id8qluYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WfuGFMxb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0F9C4CEE9;
-	Tue, 29 Apr 2025 16:58:27 +0000 (UTC)
+	 MIME-Version; b=u4xj/9kABDMGY7VW+lzhYrc48rjiWudma+YkcsHWWRKX7vHFQZbNWJmwMRH7Wg4q8Wgt8M+e3Rug/ZsV4OjbXaQ1XLA4ndTN8/w/ffVfqJy7OKjrzoWhsLhsOJhwM26/owJQsA/HYoulLZ8g7rkumjmHkz97mwab+v//RCPVx+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEnjVAgw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D51C4CEE3;
+	Tue, 29 Apr 2025 17:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945907;
-	bh=VdTAPzc480X42yiE1TzgpaO2c0GKulVKfgSd4XVhZIE=;
+	s=korg; t=1745948450;
+	bh=H2FPHnH4KV+ld/XhjCM7wnZ7Ni+1cTv6AhFEhn93zjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WfuGFMxbHsB+syr24f/VWJ66/6OsfxSavt/jjSDP2U+QAoSe+NE0SbgaV0rgxIa/N
-	 e2ewHO9LvViZDo4bGnwOQPMEszKvfpc4N5rsFNWQYn33DnaWKm//4Z+I3CcB06mm4d
-	 Ey4eDFvYKd0aUr1XfhXt1sBv4ioUOPolz8wnKXKk=
+	b=wEnjVAgwGhSBV0LrilrVR84VsdZyQ43kVWr1EMSPznBx4loM0yyPIRzzx81UZMFmw
+	 7go0oH22xBH8ER0RpuqVoWv46lQXxT9X0bzSNQ6yjANQRXy0d93jp+rUQLIRCEexqt
+	 X3NQGGSc1aq+gMtXlACigLhr27N/oYHypPa8N5Yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 050/311] net/mlx5: Fix null-ptr-deref in mlx5_create_{inner_,}ttc_table()
-Date: Tue, 29 Apr 2025 18:38:07 +0200
-Message-ID: <20250429161123.076740736@linuxfoundation.org>
+Subject: [PATCH 5.15 011/373] umount: Allow superblock owners to force umount
+Date: Tue, 29 Apr 2025 18:38:08 +0200
+Message-ID: <20250429161123.598595551@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 91037037ee3d611ce17f39d75f79c7de394b122a ]
+[ Upstream commit e1ff7aa34dec7e650159fd7ca8ec6af7cc428d9f ]
 
-Add NULL check for mlx5_get_flow_namespace() returns in
-mlx5_create_inner_ttc_table() and mlx5_create_ttc_table() to prevent
-NULL pointer dereference.
+Loosen the permission check on forced umount to allow users holding
+CAP_SYS_ADMIN privileges in namespaces that are privileged with respect
+to the userns that originally mounted the filesystem.
 
-Fixes: 137f3d50ad2a ("net/mlx5: Support matching on l4_type for ttc_table")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250418023814.71789-2-bsdhenrymartin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Link: https://lore.kernel.org/r/12f212d4ef983714d065a6bb372fbb378753bf4c.1742315194.git.trond.myklebust@hammerspace.com
+Acked-by: "Eric W. Biederman" <ebiederm@xmission.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/namespace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-index 9f13cea164465..510879e1ba30e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
-@@ -636,6 +636,11 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
- 	}
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 22af4b6c737f4..642baef4d9aaa 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -1734,6 +1734,7 @@ static void warn_mandlock(void)
+ static int can_umount(const struct path *path, int flags)
+ {
+ 	struct mount *mnt = real_mount(path->mnt);
++	struct super_block *sb = path->dentry->d_sb;
  
- 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
-+	if (!ns) {
-+		kvfree(ttc);
-+		return ERR_PTR(-EOPNOTSUPP);
-+	}
-+
- 	groups = use_l4_type ? &inner_ttc_groups[TTC_GROUPS_USE_L4_TYPE] :
- 			       &inner_ttc_groups[TTC_GROUPS_DEFAULT];
- 
-@@ -709,6 +714,11 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
- 	}
- 
- 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
-+	if (!ns) {
-+		kvfree(ttc);
-+		return ERR_PTR(-EOPNOTSUPP);
-+	}
-+
- 	groups = use_l4_type ? &ttc_groups[TTC_GROUPS_USE_L4_TYPE] :
- 			       &ttc_groups[TTC_GROUPS_DEFAULT];
- 
+ 	if (!may_mount())
+ 		return -EPERM;
+@@ -1743,7 +1744,7 @@ static int can_umount(const struct path *path, int flags)
+ 		return -EINVAL;
+ 	if (mnt->mnt.mnt_flags & MNT_LOCKED) /* Check optimistically */
+ 		return -EINVAL;
+-	if (flags & MNT_FORCE && !capable(CAP_SYS_ADMIN))
++	if (flags & MNT_FORCE && !ns_capable(sb->s_user_ns, CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 	return 0;
+ }
 -- 
 2.39.5
 
