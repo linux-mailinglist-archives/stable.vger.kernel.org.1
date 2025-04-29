@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEDA4AA13BB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A44AA17EF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E0CA1BA69C9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8C249A57C8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDB5251788;
-	Tue, 29 Apr 2025 17:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F352221DA7;
+	Tue, 29 Apr 2025 17:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPCKx93j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFJjo3QH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39909248191;
-	Tue, 29 Apr 2025 17:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A88724BD02;
+	Tue, 29 Apr 2025 17:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946250; cv=none; b=nqL6e7Z6SiVEtJbBfTLoOW3vxUY018TCMyB6c31bjXc4F20Chtqjn3u77t1cy+R9qHKjFleigksLbCj9zCoTm3IgBEAX8xZWLkZw5bfZUaxcBVT8vq4r+cMdIFn8bHzDvwYGyDDKldSuk+6VtQSbStUJewCzoB0DQ2VrqD0sfto=
+	t=1745948919; cv=none; b=gqZ62OK9uFgCw7DhPiGumyP58huzOu4JpLQu0z6Ov0qiA2yksUSzLAMCOFlhngzhI/j9MPDrPHUmcefgjzHaHHhitN+LwINw5qR/sVAh1PirN6ZRdGZANDQ4e8J2MQxSwDa0Y1+wu9IE+GVZIo/vO4FQmAuU33P981TRm4w0x/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946250; c=relaxed/simple;
-	bh=UsGgrEonUwl8WQj+4qMU/rZlQEUub3K06SK/KtW74+c=;
+	s=arc-20240116; t=1745948919; c=relaxed/simple;
+	bh=/g8XxKqH/bEbSAFfguprWCCW5AgTGLLmIeGkDA975Vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bhLuCxqzrvZSVHCnzPryAkQxfLiQK8IsPPaggKidK8r3cY431d/lpNgGjVnj3z2mehxbDaJw7ga+6/2wF9i2N9Y1QTUiJa8C2uiakGyLkYdqoosXs9SX41qreF1/8hUzTbWr640GgQMRFutSqxQlqEAPiuEE4+UVLjdTbS/jMCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPCKx93j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0F5C4CEE3;
-	Tue, 29 Apr 2025 17:04:09 +0000 (UTC)
+	 MIME-Version; b=bgcPCJVylN7iLQ5I/+zWIzLj4KRWL3OI6heS084HZVJ6XAdrOYzT1ImLmmjQYRzYQsyB4UHZMBbiHE0bdqvtdnPN6gP4YHwq7Q83fRiITc9DmqN/0ekVI4jWxNyvwpUaNb6Ow96090xoH3VN4P60a7NhYJ8G30FbBY9wbm9mGBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFJjo3QH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2663C4CEE9;
+	Tue, 29 Apr 2025 17:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946249;
-	bh=UsGgrEonUwl8WQj+4qMU/rZlQEUub3K06SK/KtW74+c=;
+	s=korg; t=1745948919;
+	bh=/g8XxKqH/bEbSAFfguprWCCW5AgTGLLmIeGkDA975Vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aPCKx93jraih3/hdkwMiHBMfVXCjofMKcK/5zhhykpIq5hHGZKkfRnEN9P9KHaVAk
-	 yPRmIwF3fVRAVZHxG4TT6FM5gAfn9VRrD4HGUY2GVwT8dcnocvuP6awj2bS3qLBN3A
-	 QHB3DP9hzVHROXjDPQQbnF7SJYywgo92E0T91FPc=
+	b=AFJjo3QH2S27s21nwURUEAvRiXIwDir7t9KEKGvhQ3DIHvjvLzgIgQZTX/CMuifIS
+	 E1nSZIx1WG7QQ8w79aT+NqLQYD16FnXmKPewUgHxo48QmvF8JgNZ86mnXeFobfTSJl
+	 c8yqYJFrejkUbpapXXUd5DfF3J5REv8Y2z7ieEXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+e37dd1dfc814b10caa55@syzkaller.appspotmail.com
-Subject: [PATCH 6.14 204/311] fs/ntfs3: Fix WARNING in ntfs_extend_initialized_size
+	syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15 164/373] hfs/hfsplus: fix slab-out-of-bounds in hfs_bnode_read_key
 Date: Tue, 29 Apr 2025 18:40:41 +0200
-Message-ID: <20250429161129.366732748@linuxfoundation.org>
+Message-ID: <20250429161129.899608952@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit ff355926445897cc9fdea3b00611e514232c213c ]
+commit bb5e07cb927724e0b47be371fa081141cfb14414 upstream.
 
-Syzbot reported a WARNING in ntfs_extend_initialized_size.
-The data type of in->i_valid and to is u64 in ntfs_file_mmap().
-If their values are greater than LLONG_MAX, overflow will occur because
-the data types of the parameters valid and new_valid corresponding to
-the function ntfs_extend_initialized_size() are loff_t.
+Syzbot reported an issue in hfs subsystem:
 
-Before calling ntfs_extend_initialized_size() in the ntfs_file_mmap(),
-the "ni->i_valid < to" has been determined, so the same WARN_ON determination
-is not required in ntfs_extend_initialized_size().
-Just execute the ntfs_extend_initialized_size() in ntfs_extend() to make
-a WARN_ON check.
+BUG: KASAN: slab-out-of-bounds in memcpy_from_page include/linux/highmem.h:423 [inline]
+BUG: KASAN: slab-out-of-bounds in hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+BUG: KASAN: slab-out-of-bounds in hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+Write of size 94 at addr ffff8880123cd100 by task syz-executor237/5102
 
-Reported-and-tested-by: syzbot+e37dd1dfc814b10caa55@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e37dd1dfc814b10caa55
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+ memcpy_from_page include/linux/highmem.h:423 [inline]
+ hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+ hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+ hfs_brec_insert+0x7f3/0xbd0 fs/hfs/brec.c:159
+ hfs_cat_create+0x41d/0xa50 fs/hfs/catalog.c:118
+ hfs_mkdir+0x6c/0xe0 fs/hfs/dir.c:232
+ vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
+ do_mkdirat+0x264/0x3a0 fs/namei.c:4280
+ __do_sys_mkdir fs/namei.c:4300 [inline]
+ __se_sys_mkdir fs/namei.c:4298 [inline]
+ __x64_sys_mkdir+0x6c/0x80 fs/namei.c:4298
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fbdd6057a99
+
+Add a check for key length in hfs_bnode_read_key to prevent
+out-of-bounds memory access. If the key length is invalid, the
+key buffer is cleared, improving stability and reliability.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5f3a973ed3dfb85a6683
+Cc: stable@vger.kernel.org
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://lore.kernel.org/20241019191303.24048-1-kovalev@altlinux.org
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/file.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/hfs/bnode.c     |    6 ++++++
+ fs/hfsplus/bnode.c |    6 ++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index d884facc53166..9b6a3f8d2e7c5 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -430,6 +430,7 @@ static int ntfs_extend(struct inode *inode, loff_t pos, size_t count,
- 	}
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -70,6 +70,12 @@ void hfs_bnode_read_key(struct hfs_bnode
+ 	else
+ 		key_len = tree->max_key_len + 1;
  
- 	if (extend_init && !is_compressed(ni)) {
-+		WARN_ON(ni->i_valid >= pos);
- 		err = ntfs_extend_initialized_size(file, ni, ni->i_valid, pos);
- 		if (err)
- 			goto out;
--- 
-2.39.5
-
++	if (key_len > sizeof(hfs_btree_key) || key_len < 1) {
++		memset(key, 0, sizeof(hfs_btree_key));
++		pr_err("hfs: Invalid key length: %d\n", key_len);
++		return;
++	}
++
+ 	hfs_bnode_read(node, key, off, key_len);
+ }
+ 
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -69,6 +69,12 @@ void hfs_bnode_read_key(struct hfs_bnode
+ 	else
+ 		key_len = tree->max_key_len + 2;
+ 
++	if (key_len > sizeof(hfsplus_btree_key) || key_len < 1) {
++		memset(key, 0, sizeof(hfsplus_btree_key));
++		pr_err("hfsplus: Invalid key length: %d\n", key_len);
++		return;
++	}
++
+ 	hfs_bnode_read(node, key, off, key_len);
+ }
+ 
 
 
 
