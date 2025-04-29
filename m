@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-137683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF8CAA148E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E2A5AA11ED
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF7F218913EA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A1C87B0D3B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAFB1C6B4;
-	Tue, 29 Apr 2025 17:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25295246326;
+	Tue, 29 Apr 2025 16:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvhttlHa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAz0Rkfi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C57D21883E;
-	Tue, 29 Apr 2025 17:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F5322AE7C;
+	Tue, 29 Apr 2025 16:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946810; cv=none; b=IEcvfpaXSL0m+OZpXrq0X5rGV30wCQW5WG5d33BgkZ8Rrdrv+fDtiOXkwGJ5U34gwL/Eh+cjS84aGV5iLc/alQN4OFr/9cx7Vymex9YyLJdUMD3OZm0XWBozblZmGyKCU5d4IRW1PD9+22URTmSrHHGrP1mBTFyw9gghfK422xs=
+	t=1745945219; cv=none; b=Mn7ufcHtmGpNOvFY87cXGxah+3pXPCILGr4X+5eWjAIfu8BGJ8ZkgMoaaneN1JvNmUt9Nf0JZ+qlYne5xk/s5eQxMompVnYx2MTsOtWefHnesCj+umEgGJ1TYygEo4qS1p5FCet3YDAPi3ZvKtNO4DcLHBYHcZe3EHzhX+3FJUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946810; c=relaxed/simple;
-	bh=6HZUo9pHrfURPbQS8eJocFN8d+WH9pf52BlItf7IRv4=;
+	s=arc-20240116; t=1745945219; c=relaxed/simple;
+	bh=sxURhYTAy/XoBsbCL4RYu5flF5fvkOEJDYCGndlxg6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9GKf6MlTlvoToDyOuiduHcBdfoh/BKLfFDtvlp/A0uH9VQtqEVCUfhZzKFu5OaEcOwQjqgt10cIJSuUKiqSADmBJFsXjzoq9yi2pdCUMzN2WgqCbmqJ1dAGAYKrNQn8yk8H9kwIoRj22EYlLpT4lE4P9bsCEW//Zk4zJ9//IRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvhttlHa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD8FC4CEE3;
-	Tue, 29 Apr 2025 17:13:29 +0000 (UTC)
+	 MIME-Version; b=lwWWqSiGdJT+KPEsxm0Gi0cNWUdnPdrJUIFkDCNbvuzRjn6NI5EXoZGibhOwKteq5+PtuJwmDvqK7TWv1kY5GsE+yE2S0vswQlQv0ouLUeNo8gwFH4Lfn7bBY+D3lBSgoL5wdOBl6LwfKWOUJg7k+lbgJD9DwtYzxj/tewZTMRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAz0Rkfi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F11DC4CEE3;
+	Tue, 29 Apr 2025 16:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946810;
-	bh=6HZUo9pHrfURPbQS8eJocFN8d+WH9pf52BlItf7IRv4=;
+	s=korg; t=1745945219;
+	bh=sxURhYTAy/XoBsbCL4RYu5flF5fvkOEJDYCGndlxg6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MvhttlHabvp1MwwdxRfdzcBjszPKr+JKam692+y9GPOvaQtJOiik17xWSlQVI7V1U
-	 iPp3mrcRMS/6Ad7VaeoDq+0OXjufH9YkmGb++AnXmk9e+ZVi4Y+6MifxSaMFcQDrI7
-	 /7fnh3SNREf0cnwRbRlKWDPE9DNq/UE+mbVDVJmU=
+	b=bAz0RkfiZ4DWNtDG7M4Q4xGq95sG33KbnxNakEbh2Mb61+fzuuG3Lh84AbN9Pz3ZH
+	 rsNdhHTtUc8pRNlhhrg044JBSJoXji/OYTzx2B0QJwTuTppQXm/I5rXmw4w9aHHC9q
+	 6Ps/dnjkMxAapwxd4eI1UdFyBGrDmAaApPeImcFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Chenyuan Yang <chenyuan0y@gmail.com>
-Subject: [PATCH 5.10 077/286] mfd: ene-kb3930: Fix a potential NULL pointer dereference
+	Ben Dooks <ben.dooks@sifive.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 040/179] bpf: Add endian modifiers to fix endian warnings
 Date: Tue, 29 Apr 2025 18:39:41 +0200
-Message-ID: <20250429161111.017842348@linuxfoundation.org>
+Message-ID: <20250429161051.032306625@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Ben Dooks <ben.dooks@sifive.com>
 
-commit 4cdf1d2a816a93fa02f7b6b5492dc7f55af2a199 upstream.
+[ Upstream commit 96a233e600df351bcb06e3c20efe048855552926 ]
 
-The off_gpios could be NULL. Add missing check in the kb3930_probe().
-This is similar to the issue fixed in commit b1ba8bcb2d1f
-("backlight: hx8357: Fix potential NULL pointer dereference").
+A couple of the syscalls which load values (bpf_skb_load_helper_16() and
+bpf_skb_load_helper_32()) are using u16/u32 types which are triggering
+warnings as they are then converted from big-endian to CPU-endian. Fix
+these by making the types __be instead.
 
-This was detected by our static analysis tool.
+Fixes the following sparse warnings:
 
-Cc: stable@vger.kernel.org
-Fixes: ede6b2d1dfc0 ("mfd: ene-kb3930: Add driver for ENE KB3930 Embedded Controller")
-Suggested-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250224233736.1919739-1-chenyuan0y@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  net/core/filter.c:246:32: warning: cast to restricted __be16
+  net/core/filter.c:246:32: warning: cast to restricted __be16
+  net/core/filter.c:246:32: warning: cast to restricted __be16
+  net/core/filter.c:246:32: warning: cast to restricted __be16
+  net/core/filter.c:273:32: warning: cast to restricted __be32
+  net/core/filter.c:273:32: warning: cast to restricted __be32
+  net/core/filter.c:273:32: warning: cast to restricted __be32
+  net/core/filter.c:273:32: warning: cast to restricted __be32
+  net/core/filter.c:273:32: warning: cast to restricted __be32
+  net/core/filter.c:273:32: warning: cast to restricted __be32
+
+Signed-off-by: Ben Dooks <ben.dooks@sifive.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20220714105101.297304-1-ben.dooks@sifive.com
+Stable-dep-of: d4bac0288a2b ("bpf: support SKF_NET_OFF and SKF_LL_OFF on skb frags")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/ene-kb3930.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/filter.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mfd/ene-kb3930.c
-+++ b/drivers/mfd/ene-kb3930.c
-@@ -162,7 +162,7 @@ static int kb3930_probe(struct i2c_clien
- 			devm_gpiod_get_array_optional(dev, "off", GPIOD_IN);
- 		if (IS_ERR(ddata->off_gpios))
- 			return PTR_ERR(ddata->off_gpios);
--		if (ddata->off_gpios->ndescs < 2) {
-+		if (ddata->off_gpios && ddata->off_gpios->ndescs < 2) {
- 			dev_err(dev, "invalid off-gpios property\n");
- 			return -EINVAL;
- 		}
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 6ba1121a9f344..4406009ee163b 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -205,7 +205,7 @@ BPF_CALL_2(bpf_skb_load_helper_8_no_cache, const struct sk_buff *, skb,
+ BPF_CALL_4(bpf_skb_load_helper_16, const struct sk_buff *, skb, const void *,
+ 	   data, int, headlen, int, offset)
+ {
+-	u16 tmp, *ptr;
++	__be16 tmp, *ptr;
+ 	const int len = sizeof(tmp);
+ 
+ 	if (offset >= 0) {
+@@ -232,7 +232,7 @@ BPF_CALL_2(bpf_skb_load_helper_16_no_cache, const struct sk_buff *, skb,
+ BPF_CALL_4(bpf_skb_load_helper_32, const struct sk_buff *, skb, const void *,
+ 	   data, int, headlen, int, offset)
+ {
+-	u32 tmp, *ptr;
++	__be32 tmp, *ptr;
+ 	const int len = sizeof(tmp);
+ 
+ 	if (likely(offset >= 0)) {
+-- 
+2.39.5
+
 
 
 
