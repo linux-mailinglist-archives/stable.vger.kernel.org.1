@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-137956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC41EAA1617
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 584D8AA138E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46CFD9A27C2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88D1B188EA58
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82667244694;
-	Tue, 29 Apr 2025 17:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966D21FE468;
+	Tue, 29 Apr 2025 17:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CaNN1s5c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGfQdr+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9DC38FB0;
-	Tue, 29 Apr 2025 17:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A0B24A055;
+	Tue, 29 Apr 2025 17:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947645; cv=none; b=qeaIQrpCaUW1lOdn2+bk/AmCE8wgh43qvGme/vr6l3wShVg8/+sPnHtidSsqcBNP//6ScQ01ZtPn8FgnHEMGrU3ub0ciWdLTAwyrM8bXejMdM1C1SXvX3MJx6R/znzuLRmn1XUND9mN6DIAuuQSbPUqCM179tKNeH52s4g5qwqs=
+	t=1745946128; cv=none; b=SfjeYeMZ25ZVMooVwrioE3lLD4aPEu2FKLufFXIMXgup9d+m0DbW7bf02xLKnVTrHssivy+92KXixUy/ywzfWQAQ0nJQxNFnSpf0/aDUCoHd0fsKX4C6ey0q+awBOA2YW/Z5GYeJPqyjbHftyv2B9EDAJ/vpXfaE1r0hOSMeulQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947645; c=relaxed/simple;
-	bh=UVbnP2oxZi65tvT8FQ5CwtsQ0WWY5ZrtD8jBg+lI984=;
+	s=arc-20240116; t=1745946128; c=relaxed/simple;
+	bh=Y2Gylub7I5tcqYZ5PneFnbQN1Jqz1ZJe2yUlQLr/FCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nFF40vFcxndM613bhonE1TMsfq9kEL0qMkqtwotON/2T3d3tEzHWlQj9ij19I1t91w42rtxesiXiQfF9JTLSpN5cQedPdJN6kS6mn1t5ZzG2tXLCf53dNKdOC49qYBhSep9R2asTU4NAZ+KrjcnQsIby8Uo9/fzCkuEgSp717SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CaNN1s5c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA692C4CEE3;
-	Tue, 29 Apr 2025 17:27:24 +0000 (UTC)
+	 MIME-Version; b=H8SKRh53yZ72P3VM6zXdKTRdyzcZTIfiQef+s8r3lyeqLMo2vgTS0a77iC03nwcLAFEutXVf/4Ds0aFDdEyFLydkeSbXWPTZa+pNmncaZEyc54HYTP7a3ffuz7UzN+UAtakjA0wtWFRbqwSCnxQSRelwDxS0IZuVBerZgiyrsk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGfQdr+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2D6C4CEE3;
+	Tue, 29 Apr 2025 17:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947645;
-	bh=UVbnP2oxZi65tvT8FQ5CwtsQ0WWY5ZrtD8jBg+lI984=;
+	s=korg; t=1745946128;
+	bh=Y2Gylub7I5tcqYZ5PneFnbQN1Jqz1ZJe2yUlQLr/FCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CaNN1s5ciFvvJYQP4zEw2XFeE2XHrMia1ABblZI1rgHmkkg0NgEb2DsHv4hTcOvVf
-	 U6S0fPzfER+/+Jo5EG8iABasttEeEwWsxTSWthPhXTKOzkPsdMxWgl2JSASrCoSXhw
-	 1nXxjv7Y8cfdo4FHFhQBkoYmVAmyD3w68CPqwq/M=
+	b=AGfQdr+oFuebkoTB7YHvckoSYoLCyk8jUQPv4aN0itARPQQ7k61soGCki4FN0IO7k
+	 UUEFdcUTjhnNLS/+YtgiThOZGUjDslWPHCxqw9RwQfn+/CH4m/9wwTk6WkOVE5Ngcy
+	 gSSGVETvbnEPQf+Js3yJKsz/Lka9pWoQI7pGwaHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E8=A5=BF=E6=9C=A8=E9=87=8E=E7=BE=B0=E5=9F=BA?= <yanqiyu01@gmail.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/280] btrfs: zoned: return EIO on RAID1 block group write pointer mismatch
+	Frode Isaksen <frode@meta.com>,
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.14 165/311] usb: dwc3: gadget: check that event count does not exceed event buffer length
 Date: Tue, 29 Apr 2025 18:40:02 +0200
-Message-ID: <20250429161117.613231586@linuxfoundation.org>
+Message-ID: <20250429161127.801472160@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,154 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Frode Isaksen <frode@meta.com>
 
-[ Upstream commit b0c26f47992672661340dd6ea931240213016609 ]
+commit 63ccd26cd1f6600421795f6ca3e625076be06c9f upstream.
 
-There was a bug report about a NULL pointer dereference in
-__btrfs_add_free_space_zoned() that ultimately happens because a
-conversion from the default metadata profile DUP to a RAID1 profile on two
-disks.
+The event count is read from register DWC3_GEVNTCOUNT.
+There is a check for the count being zero, but not for exceeding the
+event buffer length.
+Check that event count does not exceed event buffer length,
+avoiding an out-of-bounds access when memcpy'ing the event.
+Crash log:
+Unable to handle kernel paging request at virtual address ffffffc0129be000
+pc : __memcpy+0x114/0x180
+lr : dwc3_check_event_buf+0xec/0x348
+x3 : 0000000000000030 x2 : 000000000000dfc4
+x1 : ffffffc0129be000 x0 : ffffff87aad60080
+Call trace:
+__memcpy+0x114/0x180
+dwc3_interrupt+0x24/0x34
 
-The stack trace has the following signature:
-
-  BTRFS error (device sdc): zoned: write pointer offset mismatch of zones in raid1 profile
-  BUG: kernel NULL pointer dereference, address: 0000000000000058
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-  RIP: 0010:__btrfs_add_free_space_zoned.isra.0+0x61/0x1a0
-  RSP: 0018:ffffa236b6f3f6d0 EFLAGS: 00010246
-  RAX: 0000000000000000 RBX: ffff96c8132f3400 RCX: 0000000000000001
-  RDX: 0000000010000000 RSI: 0000000000000000 RDI: ffff96c8132f3410
-  RBP: 0000000010000000 R08: 0000000000000003 R09: 0000000000000000
-  R10: 0000000000000000 R11: 00000000ffffffff R12: 0000000000000000
-  R13: ffff96c758f65a40 R14: 0000000000000001 R15: 000011aac0000000
-  FS: 00007fdab1cb2900(0000) GS:ffff96e60ca00000(0000) knlGS:0000000000000000
-  CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000000000058 CR3: 00000001a05ae000 CR4: 0000000000350ef0
-  Call Trace:
-  <TASK>
-  ? __die_body.cold+0x19/0x27
-  ? page_fault_oops+0x15c/0x2f0
-  ? exc_page_fault+0x7e/0x180
-  ? asm_exc_page_fault+0x26/0x30
-  ? __btrfs_add_free_space_zoned.isra.0+0x61/0x1a0
-  btrfs_add_free_space_async_trimmed+0x34/0x40
-  btrfs_add_new_free_space+0x107/0x120
-  btrfs_make_block_group+0x104/0x2b0
-  btrfs_create_chunk+0x977/0xf20
-  btrfs_chunk_alloc+0x174/0x510
-  ? srso_return_thunk+0x5/0x5f
-  btrfs_inc_block_group_ro+0x1b1/0x230
-  btrfs_relocate_block_group+0x9e/0x410
-  btrfs_relocate_chunk+0x3f/0x130
-  btrfs_balance+0x8ac/0x12b0
-  ? srso_return_thunk+0x5/0x5f
-  ? srso_return_thunk+0x5/0x5f
-  ? __kmalloc_cache_noprof+0x14c/0x3e0
-  btrfs_ioctl+0x2686/0x2a80
-  ? srso_return_thunk+0x5/0x5f
-  ? ioctl_has_perm.constprop.0.isra.0+0xd2/0x120
-  __x64_sys_ioctl+0x97/0xc0
-  do_syscall_64+0x82/0x160
-  ? srso_return_thunk+0x5/0x5f
-  ? __memcg_slab_free_hook+0x11a/0x170
-  ? srso_return_thunk+0x5/0x5f
-  ? kmem_cache_free+0x3f0/0x450
-  ? srso_return_thunk+0x5/0x5f
-  ? srso_return_thunk+0x5/0x5f
-  ? syscall_exit_to_user_mode+0x10/0x210
-  ? srso_return_thunk+0x5/0x5f
-  ? do_syscall_64+0x8e/0x160
-  ? sysfs_emit+0xaf/0xc0
-  ? srso_return_thunk+0x5/0x5f
-  ? srso_return_thunk+0x5/0x5f
-  ? seq_read_iter+0x207/0x460
-  ? srso_return_thunk+0x5/0x5f
-  ? vfs_read+0x29c/0x370
-  ? srso_return_thunk+0x5/0x5f
-  ? srso_return_thunk+0x5/0x5f
-  ? syscall_exit_to_user_mode+0x10/0x210
-  ? srso_return_thunk+0x5/0x5f
-  ? do_syscall_64+0x8e/0x160
-  ? srso_return_thunk+0x5/0x5f
-  ? exc_page_fault+0x7e/0x180
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7fdab1e0ca6d
-  RSP: 002b:00007ffeb2b60c80 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007fdab1e0ca6d
-  RDX: 00007ffeb2b60d80 RSI: 00000000c4009420 RDI: 0000000000000003
-  RBP: 00007ffeb2b60cd0 R08: 0000000000000000 R09: 0000000000000013
-  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  R13: 00007ffeb2b6343b R14: 00007ffeb2b60d80 R15: 0000000000000001
-  </TASK>
-  CR2: 0000000000000058
-  ---[ end trace 0000000000000000 ]---
-
-The 1st line is the most interesting here:
-
- BTRFS error (device sdc): zoned: write pointer offset mismatch of zones in raid1 profile
-
-When a RAID1 block-group is created and a write pointer mismatch between
-the disks in the RAID set is detected, btrfs sets the alloc_offset to the
-length of the block group marking it as full. Afterwards the code expects
-that a balance operation will evacuate the data in this block-group and
-repair the problems.
-
-But before this is possible, the new space of this block-group will be
-accounted in the free space cache. But in __btrfs_add_free_space_zoned()
-it is being checked if it is a initial creation of a block group and if
-not a reclaim decision will be made. But the decision if a block-group's
-free space accounting is done for an initial creation depends on if the
-size of the added free space is the whole length of the block-group and
-the allocation offset is 0.
-
-But as btrfs_load_block_group_zone_info() sets the allocation offset to
-the zone capacity (i.e. marking the block-group as full) this initial
-decision is not met, and the space_info pointer in the 'struct
-btrfs_block_group' has not yet been assigned.
-
-Fail creation of the block group and rely on manual user intervention to
-re-balance the filesystem.
-
-Afterwards the filesystem can be unmounted, mounted in degraded mode and
-the missing device can be removed after a full balance of the filesystem.
-
-Reported-by: 西木野羰基 <yanqiyu01@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/CAB_b4sBhDe3tscz=duVyhc9hNE+gu=B8CrgLO152uMyanR8BEA@mail.gmail.com/
-Fixes: b1934cd60695 ("btrfs: zoned: handle broken write pointer on zones")
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Frode Isaksen <frode@meta.com>
+Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250403072907.448524-1-fisaksen@baylibre.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/zoned.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/dwc3/gadget.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index 2bb7e32ad9458..2603c9d60fd21 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -1655,7 +1655,6 @@ int btrfs_load_block_group_zone_info(struct btrfs_block_group *cache, bool new)
- 		 * stripe.
- 		 */
- 		cache->alloc_offset = cache->zone_capacity;
--		ret = 0;
- 	}
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4564,6 +4564,12 @@ static irqreturn_t dwc3_check_event_buf(
+ 	if (!count)
+ 		return IRQ_NONE;
  
- out:
--- 
-2.39.5
-
++	if (count > evt->length) {
++		dev_err_ratelimited(dwc->dev, "invalid count(%u) > evt->length(%u)\n",
++			count, evt->length);
++		return IRQ_NONE;
++	}
++
+ 	evt->count = count;
+ 	evt->flags |= DWC3_EVENT_PENDING;
+ 
 
 
 
