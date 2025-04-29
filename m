@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63250AA16E3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:41:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08093AA12F5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:00:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D413188DA7C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09B854A623F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0DA252284;
-	Tue, 29 Apr 2025 17:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051092522BA;
+	Tue, 29 Apr 2025 16:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2vauu/A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4pwB7/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB04244686;
-	Tue, 29 Apr 2025 17:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E962528E4;
+	Tue, 29 Apr 2025 16:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948453; cv=none; b=RQSrfIWzmOzLfJbs2QfEffa1++9N/tTrSmFnIpC45xLq1CdZ90vg9vbPsufspI0NpgHvZ0h5o3aJbUdlFRHXQkbto/RnUHpI7P9gmy2rqMeQHCKm+An+v62xFaC26kWF7VMJ4dTMolVKLVTxt9M+HZ49PMiZfDaBRTZ5TJhH6Yo=
+	t=1745945847; cv=none; b=E8bqPvH4mOto1xZN8mUdpGwBiS5KC1+FW1G5DT1i/WMYqFU7sk+ou1pRgx8XFNDFHqDXam0PI3JfC7ssY1M+INKlyw38wrfQM5KZgL/FpEQhHw6Q73Ql2JpvgFuwvXoRcE4m0uhUoz1S+/Cg/SuhUVPaMjRH2ceY1nwGJFMQPGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948453; c=relaxed/simple;
-	bh=GAredgzsRt9CVbZkxIjsYQN5RQ5qoCQgqzw6+i+3Dp8=;
+	s=arc-20240116; t=1745945847; c=relaxed/simple;
+	bh=qmqFfx2CPot2lqoD1qgdVZ0b4rboO4XRkpVkKiaDJL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OOW6Jv8cehFWaiHMd7v0dBBpU8DRQ5JYlwos172FxWx9QhqudGcsp+O0SReTENSDpJuj/NhOdG328i8X8I1DdUc/JO5Ie6acFNTKSbNjxmS0scQ31oCCRb015mSQoSMw9wTvtD0JnHGZoOEvGWePeguliory2nzqIWXxORVRpDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2vauu/A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C78C4CEE3;
-	Tue, 29 Apr 2025 17:40:52 +0000 (UTC)
+	 MIME-Version; b=KOH5tpHfQhMoWpisN4d8fVsrjJpVSTeP4XyA14OCiV5zzd+0PxGbiKpuqvlL5uIrTg7QFL+oT9vw6pnn8KlNAnLlH0Zb7QUgN7BMGNV8Yv9SWo8UQNE1e/k097JNbNxnFJKJrY95vOXCtwu6vJASGkR/hwYCiL7WxTYx6iZdPM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4pwB7/+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941F0C4CEE3;
+	Tue, 29 Apr 2025 16:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948453;
-	bh=GAredgzsRt9CVbZkxIjsYQN5RQ5qoCQgqzw6+i+3Dp8=;
+	s=korg; t=1745945847;
+	bh=qmqFfx2CPot2lqoD1qgdVZ0b4rboO4XRkpVkKiaDJL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2vauu/AIf4ysDOWuhnbDaG8oV9S+FDDH2t0gvQ0GqdjA5bhSm3NUt7QcIR5I5rSG
-	 hihw5O+Z181yBXzC0tz16IDVhrjLOYDX1RLTeFaAWSouZljcJyiTRYyCk1LgPPcsFh
-	 t0eoizcqzczu0QO/ZYEq2AtnRvmE9/ehmyoYtgJU=
+	b=c4pwB7/+lPBijvAwsUzLhhBBP4eyklib9CLT1tKGrYsBNabutoV9TwNjL1O3O6Mnd
+	 3MF0Gy1k7gpFltNUtMOkKQ4XKNtHEAy+6YWw5BPQ38j1/P0FX3N1t2MCchmSJCbfEw
+	 fMPAW8iMTVwefyVsrXSM+MlBqLTrM57Z+BrHmr+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Anastasia Kovaleva <a.kovaleva@yadro.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 012/373] pm: cpupower: bench: Prevent NULL dereference on malloc failure
+Subject: [PATCH 6.14 052/311] scsi: core: Clear flags for scsi_cmnd that did not complete
 Date: Tue, 29 Apr 2025 18:38:09 +0200
-Message-ID: <20250429161123.639718071@linuxfoundation.org>
+Message-ID: <20250429161123.170442790@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Anastasia Kovaleva <a.kovaleva@yadro.com>
 
-[ Upstream commit 208baa3ec9043a664d9acfb8174b332e6b17fb69 ]
+[ Upstream commit 54bebe46871d4e56e05fcf55c1a37e7efa24e0a8 ]
 
-If malloc returns NULL due to low memory, 'config' pointer can be NULL.
-Add a check to prevent NULL dereference.
+Commands that have not been completed with scsi_done() do not clear the
+SCMD_INITIALIZED flag and therefore will not be properly reinitialized.
+Thus, the next time the scsi_cmnd structure is used, the command may
+fail in scsi_cmd_runtime_exceeded() due to the old jiffies_at_alloc
+value:
 
-Link: https://lore.kernel.org/r/20250219122715.3892223-1-quic_zhonhan@quicinc.com
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+  kernel: sd 16:0:1:84: [sdts] tag#405 timing out command, waited 720s
+  kernel: sd 16:0:1:84: [sdts] tag#405 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=66636s
+
+Clear flags for commands that have not been completed by SCSI.
+
+Fixes: 4abafdc4360d ("block: remove the initialize_rq_fn blk_mq_ops method")
+Signed-off-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
+Link: https://lore.kernel.org/r/20250324084933.15932-2-a.kovaleva@yadro.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/bench/parse.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/scsi_lib.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tools/power/cpupower/bench/parse.c b/tools/power/cpupower/bench/parse.c
-index e63dc11fa3a53..48e25be6e1635 100644
---- a/tools/power/cpupower/bench/parse.c
-+++ b/tools/power/cpupower/bench/parse.c
-@@ -120,6 +120,10 @@ FILE *prepare_output(const char *dirname)
- struct config *prepare_default_config()
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index f1cfe0bb89b20..7a31dae9aa82d 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -1253,8 +1253,12 @@ EXPORT_SYMBOL_GPL(scsi_alloc_request);
+  */
+ static void scsi_cleanup_rq(struct request *rq)
  {
- 	struct config *config = malloc(sizeof(struct config));
-+	if (!config) {
-+		perror("malloc");
-+		return NULL;
-+	}
- 
- 	dprintf("loading defaults\n");
- 
++	struct scsi_cmnd *cmd = blk_mq_rq_to_pdu(rq);
++
++	cmd->flags = 0;
++
+ 	if (rq->rq_flags & RQF_DONTPREP) {
+-		scsi_mq_uninit_cmd(blk_mq_rq_to_pdu(rq));
++		scsi_mq_uninit_cmd(cmd);
+ 		rq->rq_flags &= ~RQF_DONTPREP;
+ 	}
+ }
 -- 
 2.39.5
 
