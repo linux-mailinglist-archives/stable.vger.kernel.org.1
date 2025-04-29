@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-138442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D30AA180C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54BEEAA157A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 609961BC57BE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0292E985417
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092FB2522BD;
-	Tue, 29 Apr 2025 17:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812C82512F3;
+	Tue, 29 Apr 2025 17:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6WseMqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCy/6c8B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA54A250C0C;
-	Tue, 29 Apr 2025 17:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D02E24A07D;
+	Tue, 29 Apr 2025 17:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949268; cv=none; b=B+iKtBoFwB9fG/BocpEg11CeTnp5r87BfbuZIqb3YlE9xTft4LEfLPxgSsJ7aD9f/JIO74yHEWbkr/NNF35W/UbwN5UUMF0afUryElCTc6uU9XbHgIQfVUzrGUUvXFZLYZIcg57f3NYvOxdtKglifXPqQyLRDSUzs9wLQTaex3I=
+	t=1745947302; cv=none; b=MxMa2b/7G/SuYbMAmsd/WYyDtq+QRqqpeSKNub3w3HjwmTlqXkjR2HftjtKW0rVga30hcVk57x5dUsxpBdVLS3HhoDM+13mdGpVcCKodz9Y+P2IKrA9y9KVdSFwapRH9MOBvd+EvWmV651wo3Dkse9U3MtHho+HrsSbJolPdc4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949268; c=relaxed/simple;
-	bh=GCh565sKjbgCJoRzzrGsZWJPa8d2yEgptN5iBAbgp4Q=;
+	s=arc-20240116; t=1745947302; c=relaxed/simple;
+	bh=aClPNfefnA2MDJ9z+o2XfzsGSRNEkYSw+JxB3c0pMV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCrAzB46fcKkqg0YgpvADZ3aFwRv7xO7jMsIOzExAtAdOFZX+dUq8ODov+3Lo1KaCLUv5SfQrfr+02f+BBJNSwhjXi6DDCKTcH3Q3eukt3d+0shy3iBL8F1uQdPS+CLw9f1l7Tg/i+L9b9QOhaOcRhGfZvQYZIL4H4pNQOD2m9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6WseMqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A823C4CEE9;
-	Tue, 29 Apr 2025 17:54:27 +0000 (UTC)
+	 MIME-Version; b=PzFa0g473Nl1G7hI1yDYB62DtsIgp36BH716knqBEt0YczJWVgP+G7PTYdQdw8Vxmqxn3tr28Bb1IMtoyXaHPKz6FG3GNCLTwltDKGuWEULSR03azUJ20W9KYsQJ730eP+K1KC5dmArU0/IeG2yVm3JiIqFACMw2VUE6YS+Un+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCy/6c8B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A133AC4CEEA;
+	Tue, 29 Apr 2025 17:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949268;
-	bh=GCh565sKjbgCJoRzzrGsZWJPa8d2yEgptN5iBAbgp4Q=;
+	s=korg; t=1745947302;
+	bh=aClPNfefnA2MDJ9z+o2XfzsGSRNEkYSw+JxB3c0pMV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6WseMqyziIs9pBkF9MHGP+LaR3cKpOlGOGXJgn8a2t+42PX+5Quh9d+ovab/iV0U
-	 B3uh069aWT7auFha50H+L4IkxPazDLoZ3z/tmsXiWfsZ1LyI/gjeo3bEKQtHMzu+Ct
-	 hrPNu6x4qf7bnv2UUVYoibICJPDutbLXIyS/TVoM=
+	b=SCy/6c8BJP2QFRmb/nS1mnX1oV5W3ChIzRDmXL7wV1l1ekiGnNLpsarYnf0KlhRsT
+	 3yGi4k3rEqweJKE7esG71igaxKc3fmj55w0vfIdCSf2LfdTEWdSpaVCSnnhfG84Gn2
+	 bqK0ZYTtJ/CfhwE2ZiPGXjonhrIioCyVAzdn/hr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 265/373] soc: samsung: exynos-chipid: Add NULL pointer check in exynos_chipid_probe()
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 5.10 238/286] KVM: SVM: Allocate IR data using atomic allocation
 Date: Tue, 29 Apr 2025 18:42:22 +0200
-Message-ID: <20250429161134.020576890@linuxfoundation.org>
+Message-ID: <20250429161117.717734488@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit c8222ef6cf29dd7cad21643228f96535cc02b327 ]
+commit 7537deda36521fa8fff9133b39c46e31893606f2 upstream.
 
-soc_dev_attr->revision could be NULL, thus,
-a pointer check is added to prevent potential NULL pointer dereference.
-This is similar to the fix in commit 3027e7b15b02
-("ice: Fix some null pointer dereference issues in ice_ptp.c").
+Allocate SVM's interrupt remapping metadata using GFP_ATOMIC as
+svm_ir_list_add() is called with IRQs are disabled and irqfs.lock held
+when kvm_irq_routing_update() reacts to GSI routing changes.
 
-This issue is found by our static analysis tool.
-
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250212213518.69432-1-chenyuan0y@gmail.com
-Fixes: 3253b7b7cd44 ("soc: samsung: Add exynos chipid driver support")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/samsung/exynos-chipid.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kvm/svm/avic.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
-index 133654f21251f..edcae687cd2a2 100644
---- a/drivers/soc/samsung/exynos-chipid.c
-+++ b/drivers/soc/samsung/exynos-chipid.c
-@@ -125,6 +125,8 @@ static int exynos_chipid_probe(struct platform_device *pdev)
- 
- 	soc_dev_attr->revision = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 						"%x", soc_info.revision);
-+	if (!soc_dev_attr->revision)
-+		return -ENOMEM;
- 	soc_dev_attr->soc_id = product_id_to_soc_id(soc_info.product_id);
- 	if (!soc_dev_attr->soc_id) {
- 		pr_err("Unknown SoC\n");
--- 
-2.39.5
-
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -742,7 +742,7 @@ static int svm_ir_list_add(struct vcpu_s
+ 	 * Allocating new amd_iommu_pi_data, which will get
+ 	 * add to the per-vcpu ir_list.
+ 	 */
+-	ir = kzalloc(sizeof(struct amd_svm_iommu_ir), GFP_KERNEL_ACCOUNT);
++	ir = kzalloc(sizeof(struct amd_svm_iommu_ir), GFP_ATOMIC | __GFP_ACCOUNT);
+ 	if (!ir) {
+ 		ret = -ENOMEM;
+ 		goto out;
 
 
 
