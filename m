@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-138286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B844AA174F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A25BAAA1622
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCF601B68307
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49E7C9A2A85
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AD2242D73;
-	Tue, 29 Apr 2025 17:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01BB24503E;
+	Tue, 29 Apr 2025 17:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05VXVRrm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSi9oCya"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A80C148;
-	Tue, 29 Apr 2025 17:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF5C1FE468;
+	Tue, 29 Apr 2025 17:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948776; cv=none; b=R3tB441N8mz9O5zHxHkl+Zc+G/qjzP9Ry7D9gMdcQGMFBMi/sgx12YCb9KAGmuyHeUu0fmtA05efRzz711GPpHWFyOC9hSZ+Phs8zIMjVRBwvPa7GkL1WC5T5oj6FmOfvR1Ytg7lJLWZGGOCqbK/GkffvoEKknRBZAYfb2amBS0=
+	t=1745947681; cv=none; b=ET6R1QHbj8xynvw0dLYimu4o5gRu9USirFKMK8c8IhAy/ZQssdBqK/aUx7xB8qosfeaJegqhBVe/QhNQVYgHfPi4djP3vZqeZ6zfwb9vWYNBqyQZYK7CJRWW+0ciUPhvl//pWQKrTBKAwjZa0f5dc2xYXyCotbAnkCp+rLZxyK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948776; c=relaxed/simple;
-	bh=f12l8Ne9f8y+qHqctQBokTxLhI5j+HOmK1L3sYvmdVY=;
+	s=arc-20240116; t=1745947681; c=relaxed/simple;
+	bh=zTARzdI1Ikc0B2a3YeAEgCKl/huQw9DBJgMHWhoN7dY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J9o/eIdYe3l7khHe6vD/CXn05/p37Aik7abktx/6pnO4owPp5o5aSw6q6yF3GicvoIvqf5nmhZMa52U+dMzkB81ukobsi3qbAIAAPijEMnln0QiJvPnSLne++r/vWdtl3bKZAdFa1WvJFp3/kt3fF8q67dM/CojOdphL7muvVg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05VXVRrm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9023FC4CEE3;
-	Tue, 29 Apr 2025 17:46:15 +0000 (UTC)
+	 MIME-Version; b=Z4gnbXS/tZJ70xifAB2JC2WHE3rgtTEorpEHDK5PXe/YLh+36+JqNoFtEZwd6+ZgMCodVCXGPgnyURdE7/FE72j1T8oay8T75Od+9j68XnZRVxhlWVNZ7vptsYCtvPmzqBhuEwNg/JKQn+5Y/aVFpUoChxl52lLbGobNEHjRyMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSi9oCya; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E219DC4CEE9;
+	Tue, 29 Apr 2025 17:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948775;
-	bh=f12l8Ne9f8y+qHqctQBokTxLhI5j+HOmK1L3sYvmdVY=;
+	s=korg; t=1745947681;
+	bh=zTARzdI1Ikc0B2a3YeAEgCKl/huQw9DBJgMHWhoN7dY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=05VXVRrmPTLYKpEK/EMAlijFpNL6K2WVL9u+mwKi6umRhNqbA22fbDGBIBsJQj1wV
-	 BzBwYIY18JVPIWz6+byVMVvqW1Na122UPnIZbc7yBMVglJEjBgActcUn2ttj0twkl+
-	 TOYUaD3xbdkbX9b+37Ec5C1p9MVLCXnJNpODw3eo=
+	b=pSi9oCyalY9P7ChtVSFuRmG8iPUQBhkYi97XdCnMEw1djceuWoezBO4H9FfsULlex
+	 wTyhOq1A+kPeQTpAaSjY3s4G35AgKcTvT3D40rKda4/XcLZ0O8f3VhIc/1tqn8VYPN
+	 CaUODT6tU3T6o8wD587UWyDJF2XsGrQ95HXvCcfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 5.15 108/373] ntb: use 64-bit arithmetic for the MSI doorbell mask
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Chanho Park <chanho61.park@samsung.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 044/280] scsi: ufs: exynos: Disable iocc if dma-coherent property isnt set
 Date: Tue, 29 Apr 2025 18:39:45 +0200
-Message-ID: <20250429161127.616156610@linuxfoundation.org>
+Message-ID: <20250429161116.922860311@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-commit fd5625fc86922f36bedee5846fefd647b7e72751 upstream.
+[ Upstream commit f92bb7436802f8eb7ee72dc911a33c8897fde366 ]
 
-msi_db_mask is of type 'u64', still the standard 'int' arithmetic is
-performed to compute its value.
+If dma-coherent property isn't set then descriptors are non-cacheable
+and the iocc shareability bits should be disabled. Without this UFS can
+end up in an incompatible configuration and suffer from random cache
+related stability issues.
 
-While most of the ntb_hw drivers actually don't utilize the higher 32
-bits of the doorbell mask now, this may be the case for Switchtec - see
-switchtec_ntb_init_db().
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE static
-analysis tool.
-
-Fixes: 2b0569b3b7e6 ("NTB: Add MSI interrupt support to ntb_transport")
+Suggested-by: Bart Van Assche <bvanassche@acm.org>
+Fixes: cc52e15397cc ("scsi: ufs: ufs-exynos: Support ExynosAuto v9 UFS")
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-3-96722cc2ba1b@linaro.org
+Cc: Chanho Park <chanho61.park@samsung.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/ntb_transport.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/host/ufs-exynos.c | 17 +++++++++++++----
+ drivers/ufs/host/ufs-exynos.h |  3 ++-
+ 2 files changed, 15 insertions(+), 5 deletions(-)
 
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -1338,7 +1338,7 @@ static int ntb_transport_probe(struct nt
- 	qp_count = ilog2(qp_bitmap);
- 	if (nt->use_msi) {
- 		qp_count -= 1;
--		nt->msi_db_mask = 1 << qp_count;
-+		nt->msi_db_mask = BIT_ULL(qp_count);
- 		ntb_db_clear_mask(ndev, nt->msi_db_mask);
+diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
+index 453f1dee103c8..fd1ebb4fcd96c 100644
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -210,8 +210,8 @@ static int exynos_ufs_shareability(struct exynos_ufs *ufs)
+ 	/* IO Coherency setting */
+ 	if (ufs->sysreg) {
+ 		return regmap_update_bits(ufs->sysreg,
+-					  ufs->shareability_reg_offset,
+-					  ufs->iocc_mask, ufs->iocc_mask);
++					  ufs->iocc_offset,
++					  ufs->iocc_mask, ufs->iocc_val);
  	}
  
+ 	attr->tx_dif_p_nsec = 3200000;
+@@ -1147,13 +1147,22 @@ static int exynos_ufs_parse_dt(struct device *dev, struct exynos_ufs *ufs)
+ 		ufs->sysreg = NULL;
+ 	else {
+ 		if (of_property_read_u32_index(np, "samsung,sysreg", 1,
+-					       &ufs->shareability_reg_offset)) {
++					       &ufs->iocc_offset)) {
+ 			dev_warn(dev, "can't get an offset from sysreg. Set to default value\n");
+-			ufs->shareability_reg_offset = UFS_SHAREABILITY_OFFSET;
++			ufs->iocc_offset = UFS_SHAREABILITY_OFFSET;
+ 		}
+ 	}
+ 
+ 	ufs->iocc_mask = ufs->drv_data->iocc_mask;
++	/*
++	 * no 'dma-coherent' property means the descriptors are
++	 * non-cacheable so iocc shareability should be disabled.
++	 */
++	if (of_dma_is_coherent(dev->of_node))
++		ufs->iocc_val = ufs->iocc_mask;
++	else
++		ufs->iocc_val = 0;
++
+ 	ufs->pclk_avail_min = PCLK_AVAIL_MIN;
+ 	ufs->pclk_avail_max = PCLK_AVAIL_MAX;
+ 
+diff --git a/drivers/ufs/host/ufs-exynos.h b/drivers/ufs/host/ufs-exynos.h
+index ad49d9cdd5c12..d0b3df221503c 100644
+--- a/drivers/ufs/host/ufs-exynos.h
++++ b/drivers/ufs/host/ufs-exynos.h
+@@ -231,8 +231,9 @@ struct exynos_ufs {
+ 	ktime_t entry_hibern8_t;
+ 	const struct exynos_ufs_drv_data *drv_data;
+ 	struct regmap *sysreg;
+-	u32 shareability_reg_offset;
++	u32 iocc_offset;
+ 	u32 iocc_mask;
++	u32 iocc_val;
+ 
+ 	u32 opts;
+ #define EXYNOS_UFS_OPT_HAS_APB_CLK_CTRL		BIT(0)
+-- 
+2.39.5
+
 
 
 
