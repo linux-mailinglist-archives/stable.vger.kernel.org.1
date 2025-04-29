@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC1EAA1446
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B172DAA1368
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE78E169778
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2616C4C0EC0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D96248191;
-	Tue, 29 Apr 2025 17:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCBB22A81D;
+	Tue, 29 Apr 2025 17:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDd8MgCM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhNF12gg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8506C243364;
-	Tue, 29 Apr 2025 17:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBE07E110;
+	Tue, 29 Apr 2025 17:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946750; cv=none; b=SrhBwoVmAuqWuu1L+toEO1z8lgdtzUzvXrG+iPvC4i570eRfLaoyHxbZ/rR0iLxXqz+SJJUxE9CWa2RdO5P0GFax8Iw/NaFxOsNFY/9sTkj8k04nxTowCsOkhqjWtgLL47+1o7K+ZWvh/5z8a0smah111CxsBAV8G0d7ryBcdfM=
+	t=1745946099; cv=none; b=gOfaVjvPAUf+ttKkFUxloSVnVOiaVggSbCuL3V6j4t2nx135wz0lHzLDj8d/adWEEuR/FhfxjpP/7D6OrmwdCX98RHdl7Q8IxJH1EfaEZToFru1dm7BhAX/X/oA9X1vYlVypqzw51+cfdEYYoq86EKyS3uiLY0czmE1QSbhS/po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946750; c=relaxed/simple;
-	bh=WVl82863RtOHQMb404BDv2DXpYTS7QzWys4FXMkjKvE=;
+	s=arc-20240116; t=1745946099; c=relaxed/simple;
+	bh=PCeomyGnWVXdqEQjITpM1qECmpaCOCOz3utQttZqg2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IAv7wNk5NlbOQvmgxD17TP/og/JWRI1m0NEXJWyCA2GRHOrxIP8pMweX/tif7mZ3CNhkz+h4LQFCtMv5eDNxyX85MWyi3afzvyOj/flqqJgaQVk86B9VPByIb2Lzw3XwcjeZyYS1mXbDDsYDrdIX2vIMX9685iLRH7z+N+Z2YKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDd8MgCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0152C4CEE3;
-	Tue, 29 Apr 2025 17:12:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kFrAyxSmk9lPcUyE86247sAcXYYHxBkH/7HI7fuUhINXeUUDwR4ThIhbGkCrXcJmzhIYIbh1RXV40l3zRJAeUsMGc3+M90X8gfTRHWN+GiNNWrd5xXr3d1hAXsyyLbkYxm+Tcty//497Gs3I7rHgxfw/XBka1tBjY4WrtmDxn2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhNF12gg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44981C4CEE9;
+	Tue, 29 Apr 2025 17:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946750;
-	bh=WVl82863RtOHQMb404BDv2DXpYTS7QzWys4FXMkjKvE=;
+	s=korg; t=1745946099;
+	bh=PCeomyGnWVXdqEQjITpM1qECmpaCOCOz3utQttZqg2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rDd8MgCMk9M6mP1+9QE/+Yp6JVIvIikb4AAlzcaHccxlbUOvAK1QF9UkZ4CUQV8fq
-	 AcjYxfM8vxCjYe5cZsu1aAaCwA5L0oh/5ejmkyBRqFtTiq4+nWauHFbhKtveIb93Gh
-	 HOqmTNCXD1lisZCZVVFuJy7nFblTPL4ZeSttspHU=
+	b=yhNF12gg6XSFs0L1qNXVL1nX8Ks1Zs2aaS2aUxBlwZtXfYcYfnorZuzZMzLuDvmpA
+	 O+IgIk266ZW1jeAiJUfdUNLawN4MBSdQdUzFhfAHmOpv2BqngfHC5vYPbyiCdKcfHW
+	 VpaHlRrxzmNhOvL1EoQXNVVzTK1hiyoUVWHs6GRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 057/286] media: siano: Fix error handling in smsdvb_module_init()
+	=?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>,
+	Juergen Gross <jgross@suse.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.14 124/311] x86/mm: Fix _pgd_alloc() for Xen PV mode
 Date: Tue, 29 Apr 2025 18:39:21 +0200
-Message-ID: <20250429161110.193422646@linuxfoundation.org>
+Message-ID: <20250429161126.116304451@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: Juergen Gross <jgross@suse.com>
 
-commit 734ac57e47b3bdd140a1119e2c4e8e6f8ef8b33d upstream.
+commit 4ce385f56434f3810ef103e1baea357ddcc6667e upstream.
 
-The smsdvb_module_init() returns without checking the retval from
-smscore_register_hotplug().
-If the smscore_register_hotplug() failed, the module failed to install,
-leaving the smsdvb_debugfs not unregistered.
+Recently _pgd_alloc() was switched from using __get_free_pages() to
+pagetable_alloc_noprof(), which might return a compound page in case
+the allocation order is larger than 0.
 
-Fixes: 3f6b87cff66b ("[media] siano: allow showing the complete statistics via debugfs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Acked-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+On x86 this will be the case if CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
+is set, even if PTI has been disabled at runtime.
+
+When running as a Xen PV guest (this will always disable PTI), using
+a compound page for a PGD will result in VM_BUG_ON_PGFLAGS being
+triggered when the Xen code tries to pin the PGD.
+
+Fix the Xen issue together with the not needed 8k allocation for a
+PGD with PTI disabled by replacing PGD_ALLOCATION_ORDER with an
+inline helper returning the needed order for PGD allocations.
+
+Fixes: a9b3c355c2e6 ("asm-generic: pgalloc: provide generic __pgd_{alloc,free}")
+Reported-by: Petr Vaněk <arkamar@atlas.cz>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Petr Vaněk <arkamar@atlas.cz>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250422131717.25724-1-jgross%40suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/common/siano/smsdvb-main.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/include/asm/pgalloc.h     |   19 +++++++++++--------
+ arch/x86/kernel/machine_kexec_32.c |    4 ++--
+ arch/x86/mm/pgtable.c              |    4 ++--
+ arch/x86/platform/efi/efi_64.c     |    4 ++--
+ 4 files changed, 17 insertions(+), 14 deletions(-)
 
---- a/drivers/media/common/siano/smsdvb-main.c
-+++ b/drivers/media/common/siano/smsdvb-main.c
-@@ -1210,6 +1210,8 @@ static int __init smsdvb_module_init(voi
- 	smsdvb_debugfs_register();
+--- a/arch/x86/include/asm/pgalloc.h
++++ b/arch/x86/include/asm/pgalloc.h
+@@ -6,6 +6,8 @@
+ #include <linux/mm.h>		/* for struct page */
+ #include <linux/pagemap.h>
  
- 	rc = smscore_register_hotplug(smsdvb_hotplug);
-+	if (rc)
-+		smsdvb_debugfs_unregister();
++#include <asm/cpufeature.h>
++
+ #define __HAVE_ARCH_PTE_ALLOC_ONE
+ #define __HAVE_ARCH_PGD_FREE
+ #include <asm-generic/pgalloc.h>
+@@ -34,16 +36,17 @@ static inline void paravirt_release_p4d(
+  */
+ extern gfp_t __userpte_alloc_gfp;
  
- 	pr_debug("\n");
+-#ifdef CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
+ /*
+- * Instead of one PGD, we acquire two PGDs.  Being order-1, it is
+- * both 8k in size and 8k-aligned.  That lets us just flip bit 12
+- * in a pointer to swap between the two 4k halves.
++ * In case of Page Table Isolation active, we acquire two PGDs instead of one.
++ * Being order-1, it is both 8k in size and 8k-aligned.  That lets us just
++ * flip bit 12 in a pointer to swap between the two 4k halves.
+  */
+-#define PGD_ALLOCATION_ORDER 1
+-#else
+-#define PGD_ALLOCATION_ORDER 0
+-#endif
++static inline unsigned int pgd_allocation_order(void)
++{
++	if (cpu_feature_enabled(X86_FEATURE_PTI))
++		return 1;
++	return 0;
++}
  
+ /*
+  * Allocate and free page tables.
+--- a/arch/x86/kernel/machine_kexec_32.c
++++ b/arch/x86/kernel/machine_kexec_32.c
+@@ -42,7 +42,7 @@ static void load_segments(void)
+ 
+ static void machine_kexec_free_page_tables(struct kimage *image)
+ {
+-	free_pages((unsigned long)image->arch.pgd, PGD_ALLOCATION_ORDER);
++	free_pages((unsigned long)image->arch.pgd, pgd_allocation_order());
+ 	image->arch.pgd = NULL;
+ #ifdef CONFIG_X86_PAE
+ 	free_page((unsigned long)image->arch.pmd0);
+@@ -59,7 +59,7 @@ static void machine_kexec_free_page_tabl
+ static int machine_kexec_alloc_page_tables(struct kimage *image)
+ {
+ 	image->arch.pgd = (pgd_t *)__get_free_pages(GFP_KERNEL | __GFP_ZERO,
+-						    PGD_ALLOCATION_ORDER);
++						    pgd_allocation_order());
+ #ifdef CONFIG_X86_PAE
+ 	image->arch.pmd0 = (pmd_t *)get_zeroed_page(GFP_KERNEL);
+ 	image->arch.pmd1 = (pmd_t *)get_zeroed_page(GFP_KERNEL);
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -404,7 +404,7 @@ static inline pgd_t *_pgd_alloc(struct m
+ 	 * We allocate one page for pgd.
+ 	 */
+ 	if (!SHARED_KERNEL_PMD)
+-		return __pgd_alloc(mm, PGD_ALLOCATION_ORDER);
++		return __pgd_alloc(mm, pgd_allocation_order());
+ 
+ 	/*
+ 	 * Now PAE kernel is not running as a Xen domain. We can allocate
+@@ -424,7 +424,7 @@ static inline void _pgd_free(struct mm_s
+ 
+ static inline pgd_t *_pgd_alloc(struct mm_struct *mm)
+ {
+-	return __pgd_alloc(mm, PGD_ALLOCATION_ORDER);
++	return __pgd_alloc(mm, pgd_allocation_order());
+ }
+ 
+ static inline void _pgd_free(struct mm_struct *mm, pgd_t *pgd)
+--- a/arch/x86/platform/efi/efi_64.c
++++ b/arch/x86/platform/efi/efi_64.c
+@@ -73,7 +73,7 @@ int __init efi_alloc_page_tables(void)
+ 	gfp_t gfp_mask;
+ 
+ 	gfp_mask = GFP_KERNEL | __GFP_ZERO;
+-	efi_pgd = (pgd_t *)__get_free_pages(gfp_mask, PGD_ALLOCATION_ORDER);
++	efi_pgd = (pgd_t *)__get_free_pages(gfp_mask, pgd_allocation_order());
+ 	if (!efi_pgd)
+ 		goto fail;
+ 
+@@ -96,7 +96,7 @@ free_p4d:
+ 	if (pgtable_l5_enabled())
+ 		free_page((unsigned long)pgd_page_vaddr(*pgd));
+ free_pgd:
+-	free_pages((unsigned long)efi_pgd, PGD_ALLOCATION_ORDER);
++	free_pages((unsigned long)efi_pgd, pgd_allocation_order());
+ fail:
+ 	return -ENOMEM;
+ }
 
 
 
