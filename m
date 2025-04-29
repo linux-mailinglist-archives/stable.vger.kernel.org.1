@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-137341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2195DAA1301
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:01:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5796AA16ED
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 667C73BAE04
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:57:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D5CA7B4E8D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C46253350;
-	Tue, 29 Apr 2025 16:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBCE0251780;
+	Tue, 29 Apr 2025 17:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jg+jIGi/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGfkAR4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7323E24168A;
-	Tue, 29 Apr 2025 16:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7994A21ABC1;
+	Tue, 29 Apr 2025 17:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945779; cv=none; b=LXxvCi3SfbfmNR4JU/Dr6+xTIdD5btrHIGkUtsuMdhNR58QR9X9oRMBJ3Pxzkg+voMpVnt3AqLTUq2Qk7qyID5yANJgZ+O9ws2uFOZXfvdG6uC2tlaAfgUAH0oy1aDo/6XG3XMTjg0YFaRBS8arwTcW7K9a2ST5DBaxcO9vWrcU=
+	t=1745948497; cv=none; b=i5fBgbOVVxxxGbTcpa2Vzx2kb3rv5mwc2SKdJmOZ8a3d/Agp/DXN7YUomFralf1wOFSSHJ4mTHQk/7Mp6I8y7brmJ87gMC1RXDZEYZft/BFE9g9o4b11pd0EntJqArn0+H5LYgAznUQpMCnHdLl2n//FQiSI8+3BaLXu4praoww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945779; c=relaxed/simple;
-	bh=fybzU9QfMe3t2sJohRZZ/h7BZpi7PwRGQ75BS5HvuAU=;
+	s=arc-20240116; t=1745948497; c=relaxed/simple;
+	bh=bGVxme2Bwpn3/r1kfhmk2MEIvOOHnmGaZuXUtgkg/lU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mBlqQWqr2VlVCZ8J1sEw71pS46ZgmYAlfntOFk24PDeHGdK9ylodv4m9CwhyxK4EarOXCLXDE0ClzmcyOxzAdc6PLHimGqKm1eld2b6xn08P/Zbr5w6i0kewe+cn5HQO6SFoIFvVOkdjL3zaNG6RRkTCDNVbE3nMj98Pn1fLP2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jg+jIGi/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE76BC4CEE3;
-	Tue, 29 Apr 2025 16:56:18 +0000 (UTC)
+	 MIME-Version; b=GnT1rgXhPQzSnrmplFTEDLzmKNzPE20EGVnTa6oiA/QGzEAck4515/rntkpovtpCl9kMi7H1gbMslN4p3x1W9/DcVpv2M3Os+7b4gnnNyuCmenlfvXRcNlg5dRPf+bCTmJdcv/BTh0ofjvF3ieymJZYxxzqA/wN8OyzgfO8l+uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGfkAR4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC24C4CEE9;
+	Tue, 29 Apr 2025 17:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945779;
-	bh=fybzU9QfMe3t2sJohRZZ/h7BZpi7PwRGQ75BS5HvuAU=;
+	s=korg; t=1745948496;
+	bh=bGVxme2Bwpn3/r1kfhmk2MEIvOOHnmGaZuXUtgkg/lU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jg+jIGi/TwOa2mz3QL3AxoiUwps1eaWA11jKlQ8DovLLuLLrMaUeUnfYVAS9WhNu/
-	 ccxMAydEdvssarW6QrB5fokBn+MIBaVjAdZ2dGvki2oMnAIvPNoOC2qa08a9BDjvqC
-	 rmYHamg159AK1up/4ERENNyLjzziG0bALEstwHow=
+	b=lGfkAR4IUdVIOfyux7Ey6KZVC2IaLlfQjDWxt/6fWIGsJHVd9pCKxWc6wOMx/kxc/
+	 OD70zRCNg5d6IlV9wTtKP+rckCylBSIg6ogYWBJdMGQIYcvm7YlSYD35hMQDoclUQE
+	 ccQGeD5totZuA5gF4CDSSjSIwoTqk+NEBdY2u6vQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Waiman Long <longman@redhat.com>,
-	Kamalesh Babulal <kamalesh.babulal@oracle.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 046/311] cgroup/cpuset-v1: Add missing support for cpuset_v2_mode
+Subject: [PATCH 5.15 006/373] ata: sata_sx4: Drop pointless VPRINTK() calls and convert the remaining ones
 Date: Tue, 29 Apr 2025 18:38:03 +0200
-Message-ID: <20250429161122.909563256@linuxfoundation.org>
+Message-ID: <20250429161123.398113631@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +60,361 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T.J. Mercier <tjmercier@google.com>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit 1bf67c8fdbda21fadd564a12dbe2b13c1ea5eda7 ]
+[ Upstream commit bc21c1056d08525d9c5a5d74db4b8f14e6691991 ]
 
-Android has mounted the v1 cpuset controller using filesystem type
-"cpuset" (not "cgroup") since 2015 [1], and depends on the resulting
-behavior where the controller name is not added as a prefix for cgroupfs
-files. [2]
+Drop pointless VPRINTK() calls for setting up SG tables
+and convert the remaining calls to structured logging.
 
-Later, a problem was discovered where cpu hotplug onlining did not
-affect the cpuset/cpus files, which Android carried an out-of-tree patch
-to address for a while. An attempt was made to upstream this patch, but
-the recommendation was to use the "cpuset_v2_mode" mount option
-instead. [3]
-
-An effort was made to do so, but this fails with "cgroup: Unknown
-parameter 'cpuset_v2_mode'" because commit e1cba4b85daa ("cgroup: Add
-mount flag to enable cpuset to use v2 behavior in v1 cgroup") did not
-update the special cased cpuset_mount(), and only the cgroup (v1)
-filesystem type was updated.
-
-Add parameter parsing to the cpuset filesystem type so that
-cpuset_v2_mode works like the cgroup filesystem type:
-
-$ mkdir /dev/cpuset
-$ mount -t cpuset -ocpuset_v2_mode none /dev/cpuset
-$ mount|grep cpuset
-none on /dev/cpuset type cgroup (rw,relatime,cpuset,noprefix,cpuset_v2_mode,release_agent=/sbin/cpuset_release_agent)
-
-[1] https://cs.android.com/android/_/android/platform/system/core/+/b769c8d24fd7be96f8968aa4c80b669525b930d3
-[2] https://cs.android.com/android/platform/superproject/main/+/main:system/core/libprocessgroup/setup/cgroup_map_write.cpp;drc=2dac5d89a0f024a2d0cc46a80ba4ee13472f1681;l=192
-[3] https://lore.kernel.org/lkml/f795f8be-a184-408a-0b5a-553d26061385@redhat.com/T/
-
-Fixes: e1cba4b85daa ("cgroup: Add mount flag to enable cpuset to use v2 behavior in v1 cgroup")
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Acked-by: Waiman Long <longman@redhat.com>
-Reviewed-by: Kamalesh Babulal <kamalesh.babulal@oracle.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Stable-dep-of: 8d46a2708503 ("ata: sata_sx4: Add error handling in pdc20621_i2c_read()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/ata/sata_sx4.c | 105 +++++++++++++----------------------------
+ 1 file changed, 34 insertions(+), 71 deletions(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 81f078c059e86..68d58753c75c3 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -2339,9 +2339,37 @@ static struct file_system_type cgroup2_fs_type = {
- };
+diff --git a/drivers/ata/sata_sx4.c b/drivers/ata/sata_sx4.c
+index c95685f693a68..7b28334aa26a2 100644
+--- a/drivers/ata/sata_sx4.c
++++ b/drivers/ata/sata_sx4.c
+@@ -308,15 +308,9 @@ static inline void pdc20621_ata_sg(u8 *buf, unsigned int portno,
+ 	/* output ATA packet S/G table */
+ 	addr = PDC_20621_DIMM_BASE + PDC_20621_DIMM_DATA +
+ 	       (PDC_DIMM_DATA_STEP * portno);
+-	VPRINTK("ATA sg addr 0x%x, %d\n", addr, addr);
++
+ 	buf32[dw] = cpu_to_le32(addr);
+ 	buf32[dw + 1] = cpu_to_le32(total_len | ATA_PRD_EOT);
+-
+-	VPRINTK("ATA PSG @ %x == (0x%x, 0x%x)\n",
+-		PDC_20621_DIMM_BASE +
+-		       (PDC_DIMM_WINDOW_STEP * portno) +
+-		       PDC_DIMM_APKT_PRD,
+-		buf32[dw], buf32[dw + 1]);
+ }
  
- #ifdef CONFIG_CPUSETS_V1
-+enum cpuset_param {
-+	Opt_cpuset_v2_mode,
-+};
-+
-+static const struct fs_parameter_spec cpuset_fs_parameters[] = {
-+	fsparam_flag  ("cpuset_v2_mode", Opt_cpuset_v2_mode),
-+	{}
-+};
-+
-+static int cpuset_parse_param(struct fs_context *fc, struct fs_parameter *param)
-+{
-+	struct cgroup_fs_context *ctx = cgroup_fc2context(fc);
-+	struct fs_parse_result result;
-+	int opt;
-+
-+	opt = fs_parse(fc, cpuset_fs_parameters, param, &result);
-+	if (opt < 0)
-+		return opt;
-+
-+	switch (opt) {
-+	case Opt_cpuset_v2_mode:
-+		ctx->flags |= CGRP_ROOT_CPUSET_V2_MODE;
-+		return 0;
-+	}
-+	return -EINVAL;
-+}
-+
- static const struct fs_context_operations cpuset_fs_context_ops = {
- 	.get_tree	= cgroup1_get_tree,
- 	.free		= cgroup_fs_context_free,
-+	.parse_param	= cpuset_parse_param,
- };
+ static inline void pdc20621_host_sg(u8 *buf, unsigned int portno,
+@@ -332,12 +326,6 @@ static inline void pdc20621_host_sg(u8 *buf, unsigned int portno,
  
- /*
-@@ -2378,6 +2406,7 @@ static int cpuset_init_fs_context(struct fs_context *fc)
- static struct file_system_type cpuset_fs_type = {
- 	.name			= "cpuset",
- 	.init_fs_context	= cpuset_init_fs_context,
-+	.parameters		= cpuset_fs_parameters,
- 	.fs_flags		= FS_USERNS_MOUNT,
- };
- #endif
+ 	buf32[dw] = cpu_to_le32(addr);
+ 	buf32[dw + 1] = cpu_to_le32(total_len | ATA_PRD_EOT);
+-
+-	VPRINTK("HOST PSG @ %x == (0x%x, 0x%x)\n",
+-		PDC_20621_DIMM_BASE +
+-		       (PDC_DIMM_WINDOW_STEP * portno) +
+-		       PDC_DIMM_HPKT_PRD,
+-		buf32[dw], buf32[dw + 1]);
+ }
+ 
+ static inline unsigned int pdc20621_ata_pkt(struct ata_taskfile *tf,
+@@ -351,7 +339,6 @@ static inline unsigned int pdc20621_ata_pkt(struct ata_taskfile *tf,
+ 	unsigned int dimm_sg = PDC_20621_DIMM_BASE +
+ 			       (PDC_DIMM_WINDOW_STEP * portno) +
+ 			       PDC_DIMM_APKT_PRD;
+-	VPRINTK("ENTER, dimm_sg == 0x%x, %d\n", dimm_sg, dimm_sg);
+ 
+ 	i = PDC_DIMM_ATA_PKT;
+ 
+@@ -406,8 +393,6 @@ static inline void pdc20621_host_pkt(struct ata_taskfile *tf, u8 *buf,
+ 	unsigned int dimm_sg = PDC_20621_DIMM_BASE +
+ 			       (PDC_DIMM_WINDOW_STEP * portno) +
+ 			       PDC_DIMM_HPKT_PRD;
+-	VPRINTK("ENTER, dimm_sg == 0x%x, %d\n", dimm_sg, dimm_sg);
+-	VPRINTK("host_sg == 0x%x, %d\n", host_sg, host_sg);
+ 
+ 	dw = PDC_DIMM_HOST_PKT >> 2;
+ 
+@@ -424,14 +409,6 @@ static inline void pdc20621_host_pkt(struct ata_taskfile *tf, u8 *buf,
+ 	buf32[dw + 1] = cpu_to_le32(host_sg);
+ 	buf32[dw + 2] = cpu_to_le32(dimm_sg);
+ 	buf32[dw + 3] = 0;
+-
+-	VPRINTK("HOST PKT @ %x == (0x%x 0x%x 0x%x 0x%x)\n",
+-		PDC_20621_DIMM_BASE + (PDC_DIMM_WINDOW_STEP * portno) +
+-			PDC_DIMM_HOST_PKT,
+-		buf32[dw + 0],
+-		buf32[dw + 1],
+-		buf32[dw + 2],
+-		buf32[dw + 3]);
+ }
+ 
+ static void pdc20621_dma_prep(struct ata_queued_cmd *qc)
+@@ -447,8 +424,6 @@ static void pdc20621_dma_prep(struct ata_queued_cmd *qc)
+ 
+ 	WARN_ON(!(qc->flags & ATA_QCFLAG_DMAMAP));
+ 
+-	VPRINTK("ata%u: ENTER\n", ap->print_id);
+-
+ 	/* hard-code chip #0 */
+ 	mmio += PDC_CHIP0_OFS;
+ 
+@@ -492,7 +467,8 @@ static void pdc20621_dma_prep(struct ata_queued_cmd *qc)
+ 
+ 	readl(dimm_mmio);	/* MMIO PCI posting flush */
+ 
+-	VPRINTK("ata pkt buf ofs %u, prd size %u, mmio copied\n", i, sgt_len);
++	ata_port_dbg(ap, "ata pkt buf ofs %u, prd size %u, mmio copied\n",
++		     i, sgt_len);
+ }
+ 
+ static void pdc20621_nodata_prep(struct ata_queued_cmd *qc)
+@@ -504,8 +480,6 @@ static void pdc20621_nodata_prep(struct ata_queued_cmd *qc)
+ 	unsigned int portno = ap->port_no;
+ 	unsigned int i;
+ 
+-	VPRINTK("ata%u: ENTER\n", ap->print_id);
+-
+ 	/* hard-code chip #0 */
+ 	mmio += PDC_CHIP0_OFS;
+ 
+@@ -527,7 +501,7 @@ static void pdc20621_nodata_prep(struct ata_queued_cmd *qc)
+ 
+ 	readl(dimm_mmio);	/* MMIO PCI posting flush */
+ 
+-	VPRINTK("ata pkt buf ofs %u, mmio copied\n", i);
++	ata_port_dbg(ap, "ata pkt buf ofs %u, mmio copied\n", i);
+ }
+ 
+ static enum ata_completion_errors pdc20621_qc_prep(struct ata_queued_cmd *qc)
+@@ -633,8 +607,6 @@ static void pdc20621_packet_start(struct ata_queued_cmd *qc)
+ 	/* hard-code chip #0 */
+ 	mmio += PDC_CHIP0_OFS;
+ 
+-	VPRINTK("ata%u: ENTER\n", ap->print_id);
+-
+ 	wmb();			/* flush PRD, pkt writes */
+ 
+ 	port_ofs = PDC_20621_DIMM_BASE + (PDC_DIMM_WINDOW_STEP * port_no);
+@@ -645,7 +617,7 @@ static void pdc20621_packet_start(struct ata_queued_cmd *qc)
+ 
+ 		pdc20621_dump_hdma(qc);
+ 		pdc20621_push_hdma(qc, seq, port_ofs + PDC_DIMM_HOST_PKT);
+-		VPRINTK("queued ofs 0x%x (%u), seq %u\n",
++		ata_port_dbg(ap, "queued ofs 0x%x (%u), seq %u\n",
+ 			port_ofs + PDC_DIMM_HOST_PKT,
+ 			port_ofs + PDC_DIMM_HOST_PKT,
+ 			seq);
+@@ -656,7 +628,7 @@ static void pdc20621_packet_start(struct ata_queued_cmd *qc)
+ 		writel(port_ofs + PDC_DIMM_ATA_PKT,
+ 		       ap->ioaddr.cmd_addr + PDC_PKT_SUBMIT);
+ 		readl(ap->ioaddr.cmd_addr + PDC_PKT_SUBMIT);
+-		VPRINTK("submitted ofs 0x%x (%u), seq %u\n",
++		ata_port_dbg(ap, "submitted ofs 0x%x (%u), seq %u\n",
+ 			port_ofs + PDC_DIMM_ATA_PKT,
+ 			port_ofs + PDC_DIMM_ATA_PKT,
+ 			seq);
+@@ -696,14 +668,12 @@ static inline unsigned int pdc20621_host_intr(struct ata_port *ap,
+ 	u8 status;
+ 	unsigned int handled = 0;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	if ((qc->tf.protocol == ATA_PROT_DMA) &&	/* read */
+ 	    (!(qc->tf.flags & ATA_TFLAG_WRITE))) {
+ 
+ 		/* step two - DMA from DIMM to host */
+ 		if (doing_hdma) {
+-			VPRINTK("ata%u: read hdma, 0x%x 0x%x\n", ap->print_id,
++			ata_port_dbg(ap, "read hdma, 0x%x 0x%x\n",
+ 				readl(mmio + 0x104), readl(mmio + PDC_HDMA_CTLSTAT));
+ 			/* get drive status; clear intr; complete txn */
+ 			qc->err_mask |= ac_err_mask(ata_wait_idle(ap));
+@@ -714,7 +684,7 @@ static inline unsigned int pdc20621_host_intr(struct ata_port *ap,
+ 		/* step one - exec ATA command */
+ 		else {
+ 			u8 seq = (u8) (port_no + 1 + 4);
+-			VPRINTK("ata%u: read ata, 0x%x 0x%x\n", ap->print_id,
++			ata_port_dbg(ap, "read ata, 0x%x 0x%x\n",
+ 				readl(mmio + 0x104), readl(mmio + PDC_HDMA_CTLSTAT));
+ 
+ 			/* submit hdma pkt */
+@@ -729,7 +699,7 @@ static inline unsigned int pdc20621_host_intr(struct ata_port *ap,
+ 		/* step one - DMA from host to DIMM */
+ 		if (doing_hdma) {
+ 			u8 seq = (u8) (port_no + 1);
+-			VPRINTK("ata%u: write hdma, 0x%x 0x%x\n", ap->print_id,
++			ata_port_dbg(ap, "write hdma, 0x%x 0x%x\n",
+ 				readl(mmio + 0x104), readl(mmio + PDC_HDMA_CTLSTAT));
+ 
+ 			/* submit ata pkt */
+@@ -742,7 +712,7 @@ static inline unsigned int pdc20621_host_intr(struct ata_port *ap,
+ 
+ 		/* step two - execute ATA command */
+ 		else {
+-			VPRINTK("ata%u: write ata, 0x%x 0x%x\n", ap->print_id,
++			ata_port_dbg(ap, "write ata, 0x%x 0x%x\n",
+ 				readl(mmio + 0x104), readl(mmio + PDC_HDMA_CTLSTAT));
+ 			/* get drive status; clear intr; complete txn */
+ 			qc->err_mask |= ac_err_mask(ata_wait_idle(ap));
+@@ -755,7 +725,7 @@ static inline unsigned int pdc20621_host_intr(struct ata_port *ap,
+ 	} else if (qc->tf.protocol == ATA_PROT_NODATA) {
+ 
+ 		status = ata_sff_busy_wait(ap, ATA_BUSY | ATA_DRQ, 1000);
+-		DPRINTK("BUS_NODATA (drv_stat 0x%X)\n", status);
++		ata_port_dbg(ap, "BUS_NODATA (drv_stat 0x%X)\n", status);
+ 		qc->err_mask |= ac_err_mask(status);
+ 		ata_qc_complete(qc);
+ 		handled = 1;
+@@ -781,29 +751,21 @@ static irqreturn_t pdc20621_interrupt(int irq, void *dev_instance)
+ 	unsigned int handled = 0;
+ 	void __iomem *mmio_base;
+ 
+-	VPRINTK("ENTER\n");
+-
+-	if (!host || !host->iomap[PDC_MMIO_BAR]) {
+-		VPRINTK("QUICK EXIT\n");
++	if (!host || !host->iomap[PDC_MMIO_BAR])
+ 		return IRQ_NONE;
+-	}
+ 
+ 	mmio_base = host->iomap[PDC_MMIO_BAR];
+ 
+ 	/* reading should also clear interrupts */
+ 	mmio_base += PDC_CHIP0_OFS;
+ 	mask = readl(mmio_base + PDC_20621_SEQMASK);
+-	VPRINTK("mask == 0x%x\n", mask);
+ 
+-	if (mask == 0xffffffff) {
+-		VPRINTK("QUICK EXIT 2\n");
++	if (mask == 0xffffffff)
+ 		return IRQ_NONE;
+-	}
++
+ 	mask &= 0xffff;		/* only 16 tags possible */
+-	if (!mask) {
+-		VPRINTK("QUICK EXIT 3\n");
++	if (!mask)
+ 		return IRQ_NONE;
+-	}
+ 
+ 	spin_lock(&host->lock);
+ 
+@@ -816,7 +778,8 @@ static irqreturn_t pdc20621_interrupt(int irq, void *dev_instance)
+ 		else
+ 			ap = host->ports[port_no];
+ 		tmp = mask & (1 << i);
+-		VPRINTK("seq %u, port_no %u, ap %p, tmp %x\n", i, port_no, ap, tmp);
++		if (ap)
++			ata_port_dbg(ap, "seq %u, tmp %x\n", i, tmp);
+ 		if (tmp && ap) {
+ 			struct ata_queued_cmd *qc;
+ 
+@@ -829,10 +792,6 @@ static irqreturn_t pdc20621_interrupt(int irq, void *dev_instance)
+ 
+ 	spin_unlock(&host->lock);
+ 
+-	VPRINTK("mask == 0x%x\n", mask);
+-
+-	VPRINTK("EXIT\n");
+-
+ 	return IRQ_RETVAL(handled);
+ }
+ 
+@@ -1272,7 +1231,7 @@ static unsigned int pdc20621_dimm_init(struct ata_host *host)
+ 	/* Initialize Time Period Register */
+ 	writel(0xffffffff, mmio + PDC_TIME_PERIOD);
+ 	time_period = readl(mmio + PDC_TIME_PERIOD);
+-	VPRINTK("Time Period Register (0x40): 0x%x\n", time_period);
++	dev_dbg(host->dev, "Time Period Register (0x40): 0x%x\n", time_period);
+ 
+ 	/* Enable timer */
+ 	writel(PDC_TIMER_DEFAULT, mmio + PDC_TIME_CONTROL);
+@@ -1287,7 +1246,7 @@ static unsigned int pdc20621_dimm_init(struct ata_host *host)
+ 	*/
+ 
+ 	tcount = readl(mmio + PDC_TIME_COUNTER);
+-	VPRINTK("Time Counter Register (0x44): 0x%x\n", tcount);
++	dev_dbg(host->dev, "Time Counter Register (0x44): 0x%x\n", tcount);
+ 
+ 	/*
+ 	   If SX4 is on PCI-X bus, after 3 seconds, the timer counter
+@@ -1295,17 +1254,19 @@ static unsigned int pdc20621_dimm_init(struct ata_host *host)
+ 	*/
+ 	if (tcount >= PCI_X_TCOUNT) {
+ 		ticks = (time_period - tcount);
+-		VPRINTK("Num counters 0x%x (%d)\n", ticks, ticks);
++		dev_dbg(host->dev, "Num counters 0x%x (%d)\n", ticks, ticks);
+ 
+ 		clock = (ticks / 300000);
+-		VPRINTK("10 * Internal clk = 0x%x (%d)\n", clock, clock);
++		dev_dbg(host->dev, "10 * Internal clk = 0x%x (%d)\n",
++			clock, clock);
+ 
+ 		clock = (clock * 33);
+-		VPRINTK("10 * Internal clk * 33 = 0x%x (%d)\n", clock, clock);
++		dev_dbg(host->dev, "10 * Internal clk * 33 = 0x%x (%d)\n",
++			clock, clock);
+ 
+ 		/* PLL F Param (bit 22:16) */
+ 		fparam = (1400000 / clock) - 2;
+-		VPRINTK("PLL F Param: 0x%x (%d)\n", fparam, fparam);
++		dev_dbg(host->dev, "PLL F Param: 0x%x (%d)\n", fparam, fparam);
+ 
+ 		/* OD param = 0x2 (bit 31:30), R param = 0x5 (bit 29:25) */
+ 		pci_status = (0x8a001824 | (fparam << 16));
+@@ -1313,7 +1274,7 @@ static unsigned int pdc20621_dimm_init(struct ata_host *host)
+ 		pci_status = PCI_PLL_INIT;
+ 
+ 	/* Initialize PLL. */
+-	VPRINTK("pci_status: 0x%x\n", pci_status);
++	dev_dbg(host->dev, "pci_status: 0x%x\n", pci_status);
+ 	writel(pci_status, mmio + PDC_CTL_STATUS);
+ 	readl(mmio + PDC_CTL_STATUS);
+ 
+@@ -1325,15 +1286,16 @@ static unsigned int pdc20621_dimm_init(struct ata_host *host)
+ 		printk(KERN_ERR "Detect Local DIMM Fail\n");
+ 		return 1;	/* DIMM error */
+ 	}
+-	VPRINTK("Local DIMM Speed = %d\n", speed);
++	dev_dbg(host->dev, "Local DIMM Speed = %d\n", speed);
+ 
+ 	/* Programming DIMM0 Module Control Register (index_CID0:80h) */
+ 	size = pdc20621_prog_dimm0(host);
+-	VPRINTK("Local DIMM Size = %dMB\n", size);
++	dev_dbg(host->dev, "Local DIMM Size = %dMB\n", size);
+ 
+ 	/* Programming DIMM Module Global Control Register (index_CID0:88h) */
+ 	if (pdc20621_prog_dimm_global(host)) {
+-		printk(KERN_ERR "Programming DIMM Module Global Control Register Fail\n");
++		dev_err(host->dev,
++			"Programming DIMM Module Global Control Register Fail\n");
+ 		return 1;
+ 	}
+ 
+@@ -1370,13 +1332,14 @@ static unsigned int pdc20621_dimm_init(struct ata_host *host)
+ 
+ 	if (!pdc20621_i2c_read(host, PDC_DIMM0_SPD_DEV_ADDRESS,
+ 			       PDC_DIMM_SPD_TYPE, &spd0)) {
+-		pr_err("Failed in i2c read: device=%#x, subaddr=%#x\n",
++		dev_err(host->dev,
++			"Failed in i2c read: device=%#x, subaddr=%#x\n",
+ 		       PDC_DIMM0_SPD_DEV_ADDRESS, PDC_DIMM_SPD_TYPE);
+ 		return 1;
+ 	}
+ 	if (spd0 == 0x02) {
+ 		void *buf;
+-		VPRINTK("Start ECC initialization\n");
++		dev_dbg(host->dev, "Start ECC initialization\n");
+ 		addr = 0;
+ 		length = size * 1024 * 1024;
+ 		buf = kzalloc(ECC_ERASE_BUF_SZ, GFP_KERNEL);
+@@ -1388,7 +1351,7 @@ static unsigned int pdc20621_dimm_init(struct ata_host *host)
+ 			addr += ECC_ERASE_BUF_SZ;
+ 		}
+ 		kfree(buf);
+-		VPRINTK("Finish ECC initialization\n");
++		dev_dbg(host->dev, "Finish ECC initialization\n");
+ 	}
+ 	return 0;
+ }
 -- 
 2.39.5
 
