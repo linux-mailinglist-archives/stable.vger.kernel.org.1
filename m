@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-137336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F12AA12D7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:59:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAAEAAA1742
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA7E716ACE9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:57:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E2F33A57B0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273ED24A07B;
-	Tue, 29 Apr 2025 16:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394DF2528EC;
+	Tue, 29 Apr 2025 17:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqoxWesk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mO2sBazp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D763B25228D;
-	Tue, 29 Apr 2025 16:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E75253327;
+	Tue, 29 Apr 2025 17:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945764; cv=none; b=Ww9MvgAnjYQKqdHu5dWnJC++ORGCwC4+Kldxu4IoCCYg7udweFXewIa2d0LQQtxZQrqxR9vv6uAoWYK10nuGz0zd6fSLhu1d1KLpwGmW31sYNjmvCUHun43uQks/oZpKp3JHo46ql7y1qFP7hw5SEFfqRuMvI09SVxztsEWwZnw=
+	t=1745948445; cv=none; b=N4NZQjg8igpRIPPnpLCSAA8lSjajjrkEtRionq2fpsS7wb7nq+2H86ODdya9tCWIO27pBoT03ZijmVpJgiS7KVgSGbbMa340Qa8BQM7I1XcGsS8dlrWhPpPCg+RN6FkdehAJFRSnXFKssh2+pAsLqWjfzXQCCUefk1qs6FUgLaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945764; c=relaxed/simple;
-	bh=hM6kCd0JEMomFqVPLkQHZHy9e9LSvD93d/j3Ycj3W9E=;
+	s=arc-20240116; t=1745948445; c=relaxed/simple;
+	bh=LK3ndlAQ+ZFKCnfDbWGNDz2j/AOJTOg+CG7ImEMFtr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d3n6KnZTUzSigWpEC/QW0h6Vth8c9iHb+kg3RUAp36Zx8OmeIPcWhMgBAi2cIjMvCnJAQYCyTJa9NMeARUDPNhrrhiJARiFxC2IGtMFHv4ks8SpqI9eBd3Sie/Lt1RS41UMKVPGtzCF7qv/JwgM3OehvoLNGyQPMLl42Jb23tgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqoxWesk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685AEC4CEE3;
-	Tue, 29 Apr 2025 16:56:04 +0000 (UTC)
+	 MIME-Version; b=nGZVWSooocghyv2qjzmJ7Dh4V7uV7fGARUB6BfIEe59LTAt9n9ldmzPCn6/0B6aeoB88sxW1qtgNcwhSuLzP8lajN0d7UHQUlhe0lAPlFV/ou2pFfE+cu53IDJxGWJ8eBZXFvbG8y+qAJM+yGu0oSgdLx1Rp0WE+27Ddrw4K6XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mO2sBazp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A1DC4CEE9;
+	Tue, 29 Apr 2025 17:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945764;
-	bh=hM6kCd0JEMomFqVPLkQHZHy9e9LSvD93d/j3Ycj3W9E=;
+	s=korg; t=1745948444;
+	bh=LK3ndlAQ+ZFKCnfDbWGNDz2j/AOJTOg+CG7ImEMFtr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqoxWeskMpFvBTr2FwfBgHFLQmDBBMaM9W8Fw2fSbyPY678Lw5FkWo5AtNW+U1WCB
-	 3vABbwYP7+BpCoO0TaMXyLT4lhTDNbvoNemh9MjjlXiENIzk5MoqdH8WwQo8sipdBZ
-	 KOlCTAOFtjCCj5TM6jKjtyvSVIv8avc3waJeJmxg=
+	b=mO2sBazp/ZUS4qlK6L9nVFwCtACZKcrYPo+hD0f47HTRb4li8Wzi1kEy98muyr6Hr
+	 thy2x2w7vc9DbMMgoBOtnFKsy6z7xz1jf0x8TRWzGEW6qFHThNwPHQYxSsNj7Lp5yN
+	 hKFi61VceY83KF0Wt98jYKfgQPk/1tOefPz6lu0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 041/311] cpufreq: cppc: Fix invalid return value in .get() callback
+Subject: [PATCH 5.15 001/373] ata: pata_pxa: Fix potential NULL pointer dereference in pxa_ata_probe()
 Date: Tue, 29 Apr 2025 18:37:58 +0200
-Message-ID: <20250429161122.708870767@linuxfoundation.org>
+Message-ID: <20250429161123.187704166@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 2b8e6b58889c672e1ae3601d9b2b070be4dc2fbc ]
+[ Upstream commit ad320e408a8c95a282ab9c05cdf0c9b95e317985 ]
 
-Returning a negative error code in a function with an unsigned
-return type is a pretty bad idea. It is probably worse when the
-justification for the change is "our static analisys tool found it".
+devm_ioremap() returns NULL on error. Currently, pxa_ata_probe() does
+not check for this case, which can result in a NULL pointer dereference.
 
-Fixes: cf7de25878a1 ("cppc_cpufreq: Fix possible null pointer dereference")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Add NULL check after devm_ioremap() to prevent this issue.
+
+Fixes: 2dc6c6f15da9 ("[ARM] pata_pxa: DMA-capable PATA driver")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/pata_pxa.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 8f512448382f4..ba7c16c0e4756 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -749,7 +749,7 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
- 	int ret;
+diff --git a/drivers/ata/pata_pxa.c b/drivers/ata/pata_pxa.c
+index 41430f79663c1..3502bfb03c56c 100644
+--- a/drivers/ata/pata_pxa.c
++++ b/drivers/ata/pata_pxa.c
+@@ -223,10 +223,16 @@ static int pxa_ata_probe(struct platform_device *pdev)
  
- 	if (!policy)
--		return -ENODEV;
-+		return 0;
+ 	ap->ioaddr.cmd_addr	= devm_ioremap(&pdev->dev, cmd_res->start,
+ 						resource_size(cmd_res));
++	if (!ap->ioaddr.cmd_addr)
++		return -ENOMEM;
+ 	ap->ioaddr.ctl_addr	= devm_ioremap(&pdev->dev, ctl_res->start,
+ 						resource_size(ctl_res));
++	if (!ap->ioaddr.ctl_addr)
++		return -ENOMEM;
+ 	ap->ioaddr.bmdma_addr	= devm_ioremap(&pdev->dev, dma_res->start,
+ 						resource_size(dma_res));
++	if (!ap->ioaddr.bmdma_addr)
++		return -ENOMEM;
  
- 	cpu_data = policy->driver_data;
- 
+ 	/*
+ 	 * Adjust register offsets
 -- 
 2.39.5
 
