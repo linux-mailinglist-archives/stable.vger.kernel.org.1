@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CE0AA1681
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C7EAA152E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF19B170CD5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 871D01891BE0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDD722A4F4;
-	Tue, 29 Apr 2025 17:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1503C244683;
+	Tue, 29 Apr 2025 17:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/yPbx9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUZCYzzd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD8224729E;
-	Tue, 29 Apr 2025 17:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B1821ABDB;
+	Tue, 29 Apr 2025 17:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948079; cv=none; b=ZAOZI0fQ+9vewNfxunUoHpguZemMSJrbQVAlf2u1N/ZatTDJyHgdV3xVq2d8VaNu8sNp3ky6mUUuMAlVAwgLBwX4P+NpVDnEXeSQnW+mQAi0sKJVeffKoUok3zqojoK1rlbF6OHpxS3yNST3csZ92Ew+S+wfpaHNEl7lELeaUug=
+	t=1745947257; cv=none; b=cwkTrQwC6BFpqKCEKUDxdwOS5yFXCfOq8D+2CUXavx1cobXQ2Wz+C3MCa5/2gIFqRMCLSLZJ6J943SrSxYmp5VOK2+fS1mAYdqIgDgyzznkxLfbtx6syImYCy0QfRHAqo0cShqkoNgUUAe85JuAVgmGpRNNeNeJ3m1gobeXJG+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948079; c=relaxed/simple;
-	bh=nzvQWpEYxhBkIIXgB5anVf8Ge0Tnf3UKS+LFKch4Wkg=;
+	s=arc-20240116; t=1745947257; c=relaxed/simple;
+	bh=QZ+AGfn1r7Xxl0U5iYOyK7xnSvWOfx36C6AnFXrb6mg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otTXSPaOCJb8NpPhhN7A1T6QcFIkr7srdo8iU3vo+0KpiYRagljMujNp4iNky1eZS8M4IT04jjVs8VzHivFH9mW3qQuCSZrtCy/WJQH6ycZ7tjKORakJHASRk8Bs1pBNcgB+iW+0OuXkh3/I++d7/Gvyyd1/eAuQxo/gPbtpF5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/yPbx9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74473C4CEE9;
-	Tue, 29 Apr 2025 17:34:38 +0000 (UTC)
+	 MIME-Version; b=rK5RPA0fUoZQBxHv/V1BMZhMvrjYmyPIsP/iWnGuDgzbc049hvfa/6I4m3ql2Gd2nB+fYskk5dwjXBHWO66ooQsm82XVDSD+XWGde4ZZn/2ShRspyak4qeu9l8OWUAEjC0Xcfm8K57X1eyTQq04U5U9hdt/3iXw7IpGlKTiFJRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUZCYzzd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF69C4CEE3;
+	Tue, 29 Apr 2025 17:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948078;
-	bh=nzvQWpEYxhBkIIXgB5anVf8Ge0Tnf3UKS+LFKch4Wkg=;
+	s=korg; t=1745947257;
+	bh=QZ+AGfn1r7Xxl0U5iYOyK7xnSvWOfx36C6AnFXrb6mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/yPbx9RRdtpG0JD3eSLh0aGP7ywQ3p/UCe6Wz2WwzAdJXcE7CECLpoRp6md4QPU6
-	 /XxQYg3VPJoS1JCmC//F0CHwZbPmaIEA97DMRVVxF/NWo6eXFrjgeQg4Kctix16Ai8
-	 Aa13z7A7nbcQERPI/jQhPgI5KVETfKgn9bzD4vmE=
+	b=ZUZCYzzdykneaHIwZy65DYuTcEEp6Yj/Xw0HIte63/dEmU3+HT3MQEQKQAjferUG5
+	 ntepcKn+vcAQVsIO56igGrpPt/VTEH+cC1IISQxSH8NgkmTQ0YSE1Ba6yALgW+oczD
+	 K1SSOHV7GWH6auRS2j7Jh0ksU64v3zpcAoSmxCZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Lynema <lyz27@yahoo.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 185/280] thunderbolt: Scan retimers after device router has been enumerated
+Subject: [PATCH 5.10 222/286] PCI: Introduce domain_nr in pci_host_bridge
 Date: Tue, 29 Apr 2025 18:42:06 +0200
-Message-ID: <20250429161122.677801681@linuxfoundation.org>
+Message-ID: <20250429161117.075180457@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Boqun Feng <boqun.feng@gmail.com>
 
-[ Upstream commit 75749d2c1d8cef439f8b69fa1f4f36d0fc3193e6 ]
+[ Upstream commit 15d82ca23c996d50062286d27ed6a42a8105c04a ]
 
-Thomas reported connection issues on AMD system with Pluggable UD-4VPD
-dock. After some experiments it looks like the device has some sort of
-internal timeout that triggers reconnect. This is completely against the
-USB4 spec, as there is no requirement for the host to enumerate the
-device right away or even at all.
+Currently we retrieve the PCI domain number of the host bridge from the
+bus sysdata (or pci_config_window if PCI_DOMAINS_GENERIC=y). Actually
+we have the information at PCI host bridge probing time, and it makes
+sense that we store it into pci_host_bridge. One benefit of doing so is
+the requirement for supporting PCI on Hyper-V for ARM64, because the
+host bridge of Hyper-V doesn't have pci_config_window, whereas ARM64 is
+a PCI_DOMAINS_GENERIC=y arch, so we cannot retrieve the PCI domain
+number from pci_config_window on ARM64 Hyper-V guest.
 
-In Linux case the delay is caused by scanning of retimers on the link so
-we can work this around by doing the scanning after the device router
-has been enumerated.
+As the preparation for ARM64 Hyper-V PCI support, we introduce the
+domain_nr in pci_host_bridge and a sentinel value to allow drivers to
+set domain numbers properly at probing time. Currently
+CONFIG_PCI_DOMAINS_GENERIC=y archs are only users of this
+newly-introduced field.
 
-Reported-by: Thomas Lynema <lyz27@yahoo.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219748
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/r/20210726180657.142727-2-boqun.feng@gmail.com
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Stable-dep-of: 804443c1f278 ("PCI: Fix reference leak in pci_register_host_bridge()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/tb.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/pci/probe.c |  6 +++++-
+ include/linux/pci.h | 11 +++++++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
-index a7c6919fbf978..e1da433a9e7fb 100644
---- a/drivers/thunderbolt/tb.c
-+++ b/drivers/thunderbolt/tb.c
-@@ -1295,11 +1295,15 @@ static void tb_scan_port(struct tb_port *port)
- 		goto out_rpm_put;
- 	}
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 6439fc2e526c7..be7973e249cd7 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -595,6 +595,7 @@ static void pci_init_host_bridge(struct pci_host_bridge *bridge)
+ 	bridge->native_pme = 1;
+ 	bridge->native_ltr = 1;
+ 	bridge->native_dpc = 1;
++	bridge->domain_nr = PCI_DOMAIN_NR_NOT_SET;
  
--	tb_retimer_scan(port, true);
--
- 	sw = tb_switch_alloc(port->sw->tb, &port->sw->dev,
- 			     tb_downstream_route(port));
- 	if (IS_ERR(sw)) {
-+		/*
-+		 * Make the downstream retimers available even if there
-+		 * is no router connected.
-+		 */
-+		tb_retimer_scan(port, true);
-+
- 		/*
- 		 * If there is an error accessing the connected switch
- 		 * it may be connected to another domain. Also we allow
-@@ -1349,6 +1353,14 @@ static void tb_scan_port(struct tb_port *port)
- 	upstream_port = tb_upstream_port(sw);
- 	tb_configure_link(port, upstream_port, sw);
+ 	device_initialize(&bridge->dev);
+ }
+@@ -899,7 +900,10 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
+ 	bus->ops = bridge->ops;
+ 	bus->number = bus->busn_res.start = bridge->busnr;
+ #ifdef CONFIG_PCI_DOMAINS_GENERIC
+-	bus->domain_nr = pci_bus_find_domain_nr(bus, parent);
++	if (bridge->domain_nr == PCI_DOMAIN_NR_NOT_SET)
++		bus->domain_nr = pci_bus_find_domain_nr(bus, parent);
++	else
++		bus->domain_nr = bridge->domain_nr;
+ #endif
  
-+	/*
-+	 * Scan for downstream retimers. We only scan them after the
-+	 * router has been enumerated to avoid issues with certain
-+	 * Pluggable devices that expect the host to enumerate them
-+	 * within certain timeout.
-+	 */
-+	tb_retimer_scan(port, true);
+ 	b = pci_find_bus(pci_domain_nr(bus), bridge->busnr);
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 30bc462fb1964..a0fd1fe4189e4 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -538,6 +538,16 @@ static inline int pci_channel_offline(struct pci_dev *pdev)
+ 	return (pdev->error_state != pci_channel_io_normal);
+ }
+ 
++/*
++ * Currently in ACPI spec, for each PCI host bridge, PCI Segment
++ * Group number is limited to a 16-bit value, therefore (int)-1 is
++ * not a valid PCI domain number, and can be used as a sentinel
++ * value indicating ->domain_nr is not set by the driver (and
++ * CONFIG_PCI_DOMAINS_GENERIC=y archs will set it with
++ * pci_bus_find_domain_nr()).
++ */
++#define PCI_DOMAIN_NR_NOT_SET (-1)
 +
- 	/*
- 	 * CL0s and CL1 are enabled and supported together.
- 	 * Silently ignore CLx enabling in case CLx is not supported.
+ struct pci_host_bridge {
+ 	struct device	dev;
+ 	struct pci_bus	*bus;		/* Root bus */
+@@ -545,6 +555,7 @@ struct pci_host_bridge {
+ 	struct pci_ops	*child_ops;
+ 	void		*sysdata;
+ 	int		busnr;
++	int		domain_nr;
+ 	struct list_head windows;	/* resource_entry */
+ 	struct list_head dma_ranges;	/* dma ranges resource list */
+ 	u8 (*swizzle_irq)(struct pci_dev *, u8 *); /* Platform IRQ swizzler */
 -- 
 2.39.5
 
