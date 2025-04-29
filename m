@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-137546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26927AA13E3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3CCCAA1280
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:54:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F06B71883A32
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA012189118B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8A924728A;
-	Tue, 29 Apr 2025 17:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D35A250BFE;
+	Tue, 29 Apr 2025 16:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWc/Q8lD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yReTDcy/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091B8211A0B;
-	Tue, 29 Apr 2025 17:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC84246326;
+	Tue, 29 Apr 2025 16:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946391; cv=none; b=CCQ8oPr4yMDklgBmX8jlYGOnBkNsxmLLG8UixaQcf1St+xtbc07nxEwPG8QJl8+yyLinsfbEVljsL5kPD9Ork8h6FQOo/jufeIhQjduhG5XHkNaxMRsoEQcmsrLoW+Sl20grm8TF76dDZQw9dniEZoN1rX4+p/TE8l9GAfMV3FQ=
+	t=1745945568; cv=none; b=kG0GqnFs9OQ4QEm+n6mxXSsF02pTSA3nRGQ/xUTLJJUwisKAxzALE+xEqlvRwaEW80nO3y6p3DlYg1ZAe+IjZsuGUULhq2tUJ/zvdbkx6x4ofaAvOJtO2n25ALg2POG7ZMWQPdTRPLhp7BQd6P+kYz1QJ8wAiA1UwF2Tle1LQ4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946391; c=relaxed/simple;
-	bh=9vD1Tshq2693gFqSUektjmnjqg8/4y6QZkWWp6u9r+Q=;
+	s=arc-20240116; t=1745945568; c=relaxed/simple;
+	bh=ZKrnIPDzItLsnvncTpGTHTyLqwc7b40hkhwvN6SPIDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEOTCtDbm0zINyUTK85glxLKrlVgMG7+j9CU7m4tdwrDBAngvxt+20d/Bt/P65vuoWhd0M1M4wt9sjGqrHjx/mXIXl4mMkRk7sF2EVn7oyA/+QUoNIFyqSK3yrm6GyaG6XW48bbAiIZsVtooz3n15hYYodSD4BlDvgh3xmU6OTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWc/Q8lD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5AFC4CEE3;
-	Tue, 29 Apr 2025 17:06:30 +0000 (UTC)
+	 MIME-Version; b=J4tSzCvJTkeFe+AObctmvUbv3zDaSHGd5QbdTAG6szZEG+SiViCYm3cFpGE/qHtroKTepOIfUywxlLD4TEvanw1sYf1LobVqqXn3bwBkrk7eo9bAI3Z213l1bF91mlgUiRBEQLozWLIAquCRDyFMu5+K5bvNAx/BinDor2e0SuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yReTDcy/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643D1C4CEE3;
+	Tue, 29 Apr 2025 16:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946390;
-	bh=9vD1Tshq2693gFqSUektjmnjqg8/4y6QZkWWp6u9r+Q=;
+	s=korg; t=1745945568;
+	bh=ZKrnIPDzItLsnvncTpGTHTyLqwc7b40hkhwvN6SPIDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LWc/Q8lDYD1VnZvcb0RUHPldP/Gcwog0qyfEWQi5+XXez2XDY75Q9UGkZL/0MKXAZ
-	 uZfzcFQkQVYYegIazlJzQkDBoqo5N5zA8b+L62JamZTcsj5S5btVMJxdTQntWZJfbX
-	 gTJwub5hcNm1TanCk8RxDgZjBOlFvVaQRva5wZb4=
+	b=yReTDcy/7mV+sfSV9GeEDPTlSeJW5VYJ/cbGgQSVjEdXn5OhOAN2s0ARUMuqihvX3
+	 B5OcnuiWYeZZfAmsNG6ExV+u9zzLPtQiO8D8LW/HNNTWeeFoIxitjVmN5Pn4gAdJiH
+	 WoD5RBS5QQkaZ056A+eVi1R3oAOQ6pfIaVZw+7hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 221/311] objtool: Silence more KCOV warnings
+	Martin Kepplinger <martin.kepplinger@puri.sm>,
+	Felipe Balbi <balbi@kernel.org>
+Subject: [PATCH 5.4 117/179] usb: dwc3: support continuous runtime PM with dual role
 Date: Tue, 29 Apr 2025 18:40:58 +0200
-Message-ID: <20250429161130.072034407@linuxfoundation.org>
+Message-ID: <20250429161054.137820769@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Martin Kepplinger <martin.kepplinger@puri.sm>
 
-[ Upstream commit 6b023c7842048c4bbeede802f3cf36b96c7a8b25 ]
+commit c2cd3452d5f8b66d49a73138fba5baadd5b489bd upstream.
 
-In the past there were issues with KCOV triggering unreachable
-instruction warnings, which is why unreachable warnings are now disabled
-with CONFIG_KCOV.
+The DRD module calls dwc3_set_mode() on role switches, i.e. when a device is
+being plugged in. In order to support continuous runtime power management when
+plugging in / unplugging a cable, we need to call pm_runtime_get_sync() in
+this path.
 
-Now some new KCOV warnings are showing up with GCC 14:
-
-  vmlinux.o: warning: objtool: cpuset_write_resmask() falls through to next function cpuset_update_active_cpus.cold()
-  drivers/usb/core/driver.o: error: objtool: usb_deregister() falls through to next function usb_match_device()
-  sound/soc/codecs/snd-soc-wcd934x.o: warning: objtool: .text.wcd934x_slim_irq_handler: unexpected end of section
-
-All are caused by GCC KCOV not finishing an optimization, leaving behind
-a never-taken conditional branch to a basic block which falls through to
-the next function (or end of section).
-
-At a high level this is similar to the unreachable warnings mentioned
-above, in that KCOV isn't fully removing dead code.  Treat it the same
-way by adding these to the list of warnings to ignore with CONFIG_KCOV.
-
-Reported-by: Ingo Molnar <mingo@kernel.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/66a61a0b65d74e072d3dc02384e395edb2adc3c5.1742852846.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/Z9iTsI09AEBlxlHC@gmail.com
-Closes: https://lore.kernel.org/oe-kbuild-all/202503180044.oH9gyPeg-lkp@intel.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+Signed-off-by: Felipe Balbi <balbi@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/check.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/dwc3/core.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 7b535e119cafa..0ca83c74c1f38 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3490,6 +3490,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 			    !strncmp(func->name, "__pfx_", 6))
- 				return 0;
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -122,17 +122,19 @@ static void __dwc3_set_mode(struct work_
+ 	if (dwc->dr_mode != USB_DR_MODE_OTG)
+ 		return;
  
-+			if (file->ignore_unreachables)
-+				return 0;
++	pm_runtime_get_sync(dwc->dev);
 +
- 			WARN("%s() falls through to next function %s()",
- 			     func->name, insn_func(insn)->name);
- 			return 1;
-@@ -3709,6 +3712,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 		if (!next_insn) {
- 			if (state.cfi.cfa.base == CFI_UNDEFINED)
- 				return 0;
-+			if (file->ignore_unreachables)
-+				return 0;
-+
- 			WARN("%s: unexpected end of section", sec->name);
- 			return 1;
- 		}
--- 
-2.39.5
-
+ 	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_OTG)
+ 		dwc3_otg_update(dwc, 0);
+ 
+ 	if (!dwc->desired_dr_role)
+-		return;
++		goto out;
+ 
+ 	if (dwc->desired_dr_role == dwc->current_dr_role)
+-		return;
++		goto out;
+ 
+ 	if (dwc->desired_dr_role == DWC3_GCTL_PRTCAP_OTG && dwc->edev)
+-		return;
++		goto out;
+ 
+ 	switch (dwc->current_dr_role) {
+ 	case DWC3_GCTL_PRTCAP_HOST:
+@@ -196,6 +198,9 @@ static void __dwc3_set_mode(struct work_
+ 		break;
+ 	}
+ 
++out:
++	pm_runtime_mark_last_busy(dwc->dev);
++	pm_runtime_put_autosuspend(dwc->dev);
+ }
+ 
+ void dwc3_set_mode(struct dwc3 *dwc, u32 mode)
 
 
 
