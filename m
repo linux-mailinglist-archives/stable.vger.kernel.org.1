@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0B2AA12D2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:58:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9AE7AA12E0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:59:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2FC51886094
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:56:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1C523A5848
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F40E24EF6B;
-	Tue, 29 Apr 2025 16:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65C625487B;
+	Tue, 29 Apr 2025 16:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEhmhtP6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uiR1rCOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C59B241667;
-	Tue, 29 Apr 2025 16:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B71254875;
+	Tue, 29 Apr 2025 16:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945717; cv=none; b=blEztVzAc03tb9pa3X1ZiccWsr7ToYefOHSHbJbjKc/DWXJSCQFAPSpfTP0X5I3kupppZqcD0rmUbcpyRFRGRz3vYT62K6T3RbtFzRQeKlywWxgvmPY1Pf8JWvo0gTiyWvkVLrZse4qEEdFxfsCtl5s+x2dYrE/EogtGtrtGKHI=
+	t=1745945669; cv=none; b=LBSgSvoO/B2Udyk1ASVaKVD4+93M5jzS8VqSMAsvVkJYI6fv4LB1n8iWdxs3GzN23uYKeB2fZdksaVXFV4FPs+v2NqxrymkNEzX76lXnjaT9Jo9hFmUagULSVp0NQIKm7afKbBQa7uFiXHeaSPlaV1hNZsxEBznWoWs1TpFSb50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945717; c=relaxed/simple;
-	bh=KUcJsBPGSVTKyJvmZctl0NLwSmGvnduQAAlAQgYstPo=;
+	s=arc-20240116; t=1745945669; c=relaxed/simple;
+	bh=bWeyDxkvkm7mtz1kJ2fqMpQUoIfHr5yCJf5ukfIysTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EUx5clXBWMh2oao7wE+uZb1pHzTxgt3Ng3EwuEHalSTZK3VnQChwBhvgzG3O3GpUZQW8wBn5nu/ZbGJUpNuNzoKICz5qHXRBIvH4axgJejZStiVpmrNfgbgZ0zdT+NrsYFDvIzgVI2boMYOkJIdov9v72SsbM1EmRh3ZyGuH6R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEhmhtP6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F191C4CEE3;
-	Tue, 29 Apr 2025 16:55:16 +0000 (UTC)
+	 MIME-Version; b=hN2pG3+itf87SucD8ndb9QshHvh7cl48dBB1imuJzO1IFw0F2jj9ccHHyZgyWdqiXdUHp8y/f9ZoMbkD9T0sjnFp2E72UnvqB0cwd/f3OSqFqCB1ln2I2MsvDaTlw2jicL7d0ObeAcd0cmvcI711HPoAZWUuH1IOX5N2x7NdFEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uiR1rCOW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE570C4CEE3;
+	Tue, 29 Apr 2025 16:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945717;
-	bh=KUcJsBPGSVTKyJvmZctl0NLwSmGvnduQAAlAQgYstPo=;
+	s=korg; t=1745945669;
+	bh=bWeyDxkvkm7mtz1kJ2fqMpQUoIfHr5yCJf5ukfIysTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XEhmhtP6GP7RRlVPfiY8jBfFJsN4n2qhL6+2ts9Uhi6VfI5MBi6cCsw1BM9JD8sc/
-	 HnWWx2hC776pjvHVY4yE1sOhQIWUrtNPe6sZK89gUMmrEE/SUbFJsgpl5PnrBumOFu
-	 Or8rSQF8YnqN8EvUA8BSFpWZRR2FaOAoLK0MS9lM=
+	b=uiR1rCOWSwFOIZRFfFfsAIRGBB78CPaoGqq87d/ndW7S/0GhmERWafGo2dXANpdTf
+	 B+4qskEFkeOpgZ6o2LtzAncqwI7VAjDq4jUcLW0CIu485RWoPzLV9rrp/h8mrYgMim
+	 cjpuRzmE6QK2SvBTLA+J6lYn7RJ7R166luCzkdNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Jinjiang Tu <tujinjiang@huawei.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Nanyong Sun <sunnanyong@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>, kernel.org@web.codeaurora.org
-Subject: [PATCH 6.14 001/311] mm/vmscan: dont try to reclaim hwpoison folio
-Date: Tue, 29 Apr 2025 18:37:18 +0200
-Message-ID: <20250429161121.073658280@linuxfoundation.org>
+	patches@lists.linux.dev,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 002/311] soc: qcom: ice: introduce devm_of_qcom_ice_get
+Date: Tue, 29 Apr 2025 18:37:19 +0200
+Message-ID: <20250429161121.118356185@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
 References: <20250429161121.011111832@linuxfoundation.org>
@@ -70,104 +69,105 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit 1b0449544c6482179ac84530b61fc192a6527bfd ]
+[ Upstream commit 1c13d6060d612601a61423f2e8fbf9e48126acca ]
 
-Syzkaller reports a bug as follows:
+Callers of of_qcom_ice_get() leak the device reference taken by
+of_find_device_by_node(). Introduce devm variant for of_qcom_ice_get().
+Existing consumers need the ICE instance for the entire life of their
+device, thus exporting qcom_ice_put() is not required.
 
-Injecting memory failure for pfn 0x18b00e at process virtual address 0x20ffd000
-Memory failure: 0x18b00e: dirty swapcache page still referenced by 2 users
-Memory failure: 0x18b00e: recovery action for dirty swapcache page: Failed
-page: refcount:2 mapcount:0 mapping:0000000000000000 index:0x20ffd pfn:0x18b00e
-memcg:ffff0000dd6d9000
-anon flags: 0x5ffffe00482011(locked|dirty|arch_1|swapbacked|hwpoison|node=0|zone=2|lastcpupid=0xfffff)
-raw: 005ffffe00482011 dead000000000100 dead000000000122 ffff0000e232a7c9
-raw: 0000000000020ffd 0000000000000000 00000002ffffffff ffff0000dd6d9000
-page dumped because: VM_BUG_ON_FOLIO(!folio_test_uptodate(folio))
-------------[ cut here ]------------
-kernel BUG at mm/swap_state.c:184!
-Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
-Modules linked in:
-CPU: 0 PID: 60 Comm: kswapd0 Not tainted 6.6.0-gcb097e7de84e #3
-Hardware name: linux,dummy-virt (DT)
-pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : add_to_swap+0xbc/0x158
-lr : add_to_swap+0xbc/0x158
-sp : ffff800087f37340
-x29: ffff800087f37340 x28: fffffc00052c0380 x27: ffff800087f37780
-x26: ffff800087f37490 x25: ffff800087f37c78 x24: ffff800087f377a0
-x23: ffff800087f37c50 x22: 0000000000000000 x21: fffffc00052c03b4
-x20: 0000000000000000 x19: fffffc00052c0380 x18: 0000000000000000
-x17: 296f696c6f662865 x16: 7461646f7470755f x15: 747365745f6f696c
-x14: 6f6621284f494c4f x13: 0000000000000001 x12: ffff600036d8b97b
-x11: 1fffe00036d8b97a x10: ffff600036d8b97a x9 : dfff800000000000
-x8 : 00009fffc9274686 x7 : ffff0001b6c5cbd3 x6 : 0000000000000001
-x5 : ffff0000c25896c0 x4 : 0000000000000000 x3 : 0000000000000000
-x2 : 0000000000000000 x1 : ffff0000c25896c0 x0 : 0000000000000000
-Call trace:
- add_to_swap+0xbc/0x158
- shrink_folio_list+0x12ac/0x2648
- shrink_inactive_list+0x318/0x948
- shrink_lruvec+0x450/0x720
- shrink_node_memcgs+0x280/0x4a8
- shrink_node+0x128/0x978
- balance_pgdat+0x4f0/0xb20
- kswapd+0x228/0x438
- kthread+0x214/0x230
- ret_from_fork+0x10/0x20
-
-I can reproduce this issue with the following steps:
-
-1) When a dirty swapcache page is isolated by reclaim process and the
-   page isn't locked, inject memory failure for the page.
-   me_swapcache_dirty() clears uptodate flag and tries to delete from lru,
-   but fails.  Reclaim process will put the hwpoisoned page back to lru.
-
-2) The process that maps the hwpoisoned page exits, the page is deleted
-   the page will never be freed and will be in the lru forever.
-
-3) If we trigger a reclaim again and tries to reclaim the page,
-   add_to_swap() will trigger VM_BUG_ON_FOLIO due to the uptodate flag is
-   cleared.
-
-To fix it, skip the hwpoisoned page in shrink_folio_list().  Besides, the
-hwpoison folio may not be unmapped by hwpoison_user_mappings() yet, unmap
-it in shrink_folio_list(), otherwise the folio will fail to be unmaped by
-hwpoison_user_mappings() since the folio isn't in lru list.
-
-Link: https://lkml.kernel.org/r/20250318083939.987651-3-tujinjiang@huawei.com
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger,kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20250117-qcom-ice-fix-dev-leak-v2-1-1ffa5b6884cb@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: cbef7442fba5 ("mmc: sdhci-msm: fix dev reference leaked through of_qcom_ice_get")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmscan.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/soc/qcom/ice.c | 48 ++++++++++++++++++++++++++++++++++++++++++
+ include/soc/qcom/ice.h |  2 ++
+ 2 files changed, 50 insertions(+)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index fada3b35aff83..e9f3ae8158a66 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1112,6 +1112,13 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 		if (!folio_trylock(folio))
- 			goto keep;
+diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
+index 393d2d1d275f1..79e04bff3e331 100644
+--- a/drivers/soc/qcom/ice.c
++++ b/drivers/soc/qcom/ice.c
+@@ -11,6 +11,7 @@
+ #include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
++#include <linux/device.h>
+ #include <linux/iopoll.h>
+ #include <linux/of.h>
+ #include <linux/of_platform.h>
+@@ -324,6 +325,53 @@ struct qcom_ice *of_qcom_ice_get(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(of_qcom_ice_get);
  
-+		if (folio_contain_hwpoisoned_page(folio)) {
-+			unmap_poisoned_folio(folio, folio_pfn(folio), false);
-+			folio_unlock(folio);
-+			folio_put(folio);
-+			continue;
-+		}
++static void qcom_ice_put(const struct qcom_ice *ice)
++{
++	struct platform_device *pdev = to_platform_device(ice->dev);
 +
- 		VM_BUG_ON_FOLIO(folio_test_active(folio), folio);
- 
- 		nr_pages = folio_nr_pages(folio);
++	if (!platform_get_resource_byname(pdev, IORESOURCE_MEM, "ice"))
++		platform_device_put(pdev);
++}
++
++static void devm_of_qcom_ice_put(struct device *dev, void *res)
++{
++	qcom_ice_put(*(struct qcom_ice **)res);
++}
++
++/**
++ * devm_of_qcom_ice_get() - Devres managed helper to get an ICE instance from
++ * a DT node.
++ * @dev: device pointer for the consumer device.
++ *
++ * This function will provide an ICE instance either by creating one for the
++ * consumer device if its DT node provides the 'ice' reg range and the 'ice'
++ * clock (for legacy DT style). On the other hand, if consumer provides a
++ * phandle via 'qcom,ice' property to an ICE DT, the ICE instance will already
++ * be created and so this function will return that instead.
++ *
++ * Return: ICE pointer on success, NULL if there is no ICE data provided by the
++ * consumer or ERR_PTR() on error.
++ */
++struct qcom_ice *devm_of_qcom_ice_get(struct device *dev)
++{
++	struct qcom_ice *ice, **dr;
++
++	dr = devres_alloc(devm_of_qcom_ice_put, sizeof(*dr), GFP_KERNEL);
++	if (!dr)
++		return ERR_PTR(-ENOMEM);
++
++	ice = of_qcom_ice_get(dev);
++	if (!IS_ERR_OR_NULL(ice)) {
++		*dr = ice;
++		devres_add(dev, dr);
++	} else {
++		devres_free(dr);
++	}
++
++	return ice;
++}
++EXPORT_SYMBOL_GPL(devm_of_qcom_ice_get);
++
+ static int qcom_ice_probe(struct platform_device *pdev)
+ {
+ 	struct qcom_ice *engine;
+diff --git a/include/soc/qcom/ice.h b/include/soc/qcom/ice.h
+index 5870a94599a25..d5f6a228df659 100644
+--- a/include/soc/qcom/ice.h
++++ b/include/soc/qcom/ice.h
+@@ -34,4 +34,6 @@ int qcom_ice_program_key(struct qcom_ice *ice,
+ 			 int slot);
+ int qcom_ice_evict_key(struct qcom_ice *ice, int slot);
+ struct qcom_ice *of_qcom_ice_get(struct device *dev);
++struct qcom_ice *devm_of_qcom_ice_get(struct device *dev);
++
+ #endif /* __QCOM_ICE_H__ */
 -- 
 2.39.5
 
