@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE32AA1274
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:53:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7F7AA160C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 452343A94E4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB5891678C4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DA72472AA;
-	Tue, 29 Apr 2025 16:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22B6252284;
+	Tue, 29 Apr 2025 17:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtsCqNEr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wL6H8ft"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8E421772B;
-	Tue, 29 Apr 2025 16:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4A62459EA;
+	Tue, 29 Apr 2025 17:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945465; cv=none; b=LXBObIm1E2FQLLLZJXx8CJZgcGc/HSNyZwwdoE2ZiikHabM62HUihMeP/cSZxi/6UjFUQ1I23cytnqTdAcleitnOMXmT+47FRtRswxdZMIHXJn5tBP9cHU/e14JlRwOAugKLKbylS7dhsrFTgEkT9llpo8r14dFuzeYpe3/T1oc=
+	t=1745947745; cv=none; b=U0LoJinN4OA+EQSXhfsvc0dLvEQFN1eIgnmxetgxCpkQUiumq/IgG5HnxqvxMrATXrcVegX4zIe9e4pGvkIY4za/1RFyGbbL3VPph+HdFyYv2xKxc7fLkUOg5W3BYpKeUjYEckffmVZfxaJwWrT8UnD/BkPARRBdyM6YMmjJpCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945465; c=relaxed/simple;
-	bh=xKZbTEae3B5RAoajgA2A8JPLDxxfRramshGopkB1ADc=;
+	s=arc-20240116; t=1745947745; c=relaxed/simple;
+	bh=HSPLHliQV7cXiIP1TOiyyPoXtBf/4GNvfkjbeOL60+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jd0uLnssrcMaIBuhGW8FsVT6TLWWH6/OK2wLmvGVuceIkOUG0RpbtmgulsI9JNjDTF9zm+OhVdkaNy65kJ61aj9KFWuYDOEgIxt3xuyDHirvEUrD0SqtKqcAI3fQ8GbHLOqziOoniBc5d3/2ZHjENZRGUbRRqw+CNvSwbl02cbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtsCqNEr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2899FC4CEE3;
-	Tue, 29 Apr 2025 16:51:03 +0000 (UTC)
+	 MIME-Version; b=MBD0T7d/a6or7p4RATkVPomGehxRcBkTu01lzJGTlO0LDvzSXYh/+VJjgD7xubLpN7DMEGJP45AjAvKceoWxKsPpQgo6sb9jMMfRvGTsCcy+VUs3XRqrHgg7jVKchmNqy/h+WolRU8qG6uUDZVqhNNhR7odtMA6nbGVszl7iUjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wL6H8ft; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B703C4CEEA;
+	Tue, 29 Apr 2025 17:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945464;
-	bh=xKZbTEae3B5RAoajgA2A8JPLDxxfRramshGopkB1ADc=;
+	s=korg; t=1745947745;
+	bh=HSPLHliQV7cXiIP1TOiyyPoXtBf/4GNvfkjbeOL60+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NtsCqNErEXHnQoqauEKTvFsTVNsznV9ImvEygX1S1fArcPrPyKNBZH7CqGLefTp3f
-	 66SO2VF3gxmnB6gyKcyoL87bphut934ltVma7H5CCfVPmK5CX7F1RYnUsiSBKMxPYG
-	 aXzGpxpE2MRNs/iQbhiqggvCcztDbO3Pf92esoBg=
+	b=1wL6H8ftjDeGZY/+VpMjmBm8v9rKN8j6at+j0gODeFdSYG0pdn9oYBsxudUyLierG
+	 IyFcff1m+JNH2y4QDXrGFF1hpB4HIAKBiDstrOdXJyAhzwgexGmLSgv3WvFuCuDQuw
+	 b14UN6xKk+pmMdz5qoFsCwXWqnfmnhMUSQT3aSS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bert Karwatzki <spasswolf@web.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jinyang He <hejinyang@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 091/179] Revert "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
+Subject: [PATCH 6.12 091/280] LoongArch: Make do_xyz() exception handlers more robust
 Date: Tue, 29 Apr 2025 18:40:32 +0200
-Message-ID: <20250429161053.085365018@linuxfoundation.org>
+Message-ID: <20250429161118.832308762@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 0937cb5f345c79d702b4d0d744e2a2529b551cb2 ]
+[ Upstream commit cc73cc6bcdb5f959670e3ff9abdc62461452ddff ]
 
-This reverts commit a104042e2bf6528199adb6ca901efe7b60c2c27f.
+Currently, interrupts need to be disabled before single-step mode is
+set, it requires that CSR_PRMD_PIE be cleared in save_local_irqflag()
+which is called by setup_singlestep(), this is reasonable.
 
-Since the original bug seems to have been around for years,
-but a new issue was report with the fix, revert the fix for
-now. We have a couple of weeks to figure it out for this
-release, if needed.
+But in the first kprobe breakpoint exception, if the irq is enabled at
+the beginning of do_bp(), it will not be disabled at the end of do_bp()
+due to the CSR_PRMD_PIE has been cleared in save_local_irqflag(). So for
+this case, it may corrupt exception context when restoring the exception
+after do_bp() in handle_bp(), this is not reasonable.
 
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
-Fixes: a104042e2bf6 ("wifi: mac80211: Update skb's control block key in ieee80211_tx_dequeue()")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+In order to restore exception safely in handle_bp(), it needs to ensure
+the irq is disabled at the end of do_bp(), so just add a local variable
+to record the original interrupt status in the parent context, then use
+it as the check condition to enable and disable irq in do_bp().
+
+While at it, do the similar thing for other do_xyz() exception handlers
+to make them more robust.
+
+Fixes: 6d4cc40fb5f5 ("LoongArch: Add kprobes support")
+Suggested-by: Jinyang He <hejinyang@loongson.cn>
+Suggested-by: Huacai Chen <chenhuacai@loongson.cn>
+Co-developed-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/loongarch/kernel/traps.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index f8d72f3e4def8..461cff7b94ad7 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3661,7 +3661,6 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	 * The key can be removed while the packet was queued, so need to call
- 	 * this here to get the current key.
+diff --git a/arch/loongarch/kernel/traps.c b/arch/loongarch/kernel/traps.c
+index c57b4134f3e84..00424b7e34c15 100644
+--- a/arch/loongarch/kernel/traps.c
++++ b/arch/loongarch/kernel/traps.c
+@@ -553,9 +553,10 @@ asmlinkage void noinstr do_ale(struct pt_regs *regs)
+ 	die_if_kernel("Kernel ale access", regs);
+ 	force_sig_fault(SIGBUS, BUS_ADRALN, (void __user *)regs->csr_badvaddr);
+ #else
++	bool pie = regs_irqs_disabled(regs);
+ 	unsigned int *pc;
+ 
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_enable();
+ 
+ 	perf_sw_event(PERF_COUNT_SW_ALIGNMENT_FAULTS, 1, regs, regs->csr_badvaddr);
+@@ -582,7 +583,7 @@ asmlinkage void noinstr do_ale(struct pt_regs *regs)
+ 	die_if_kernel("Kernel ale access", regs);
+ 	force_sig_fault(SIGBUS, BUS_ADRALN, (void __user *)regs->csr_badvaddr);
+ out:
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_disable();
+ #endif
+ 	irqentry_exit(regs, state);
+@@ -614,12 +615,13 @@ static void bug_handler(struct pt_regs *regs)
+ asmlinkage void noinstr do_bce(struct pt_regs *regs)
+ {
+ 	bool user = user_mode(regs);
++	bool pie = regs_irqs_disabled(regs);
+ 	unsigned long era = exception_era(regs);
+ 	u64 badv = 0, lower = 0, upper = ULONG_MAX;
+ 	union loongarch_instruction insn;
+ 	irqentry_state_t state = irqentry_enter(regs);
+ 
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_enable();
+ 
+ 	current->thread.trap_nr = read_csr_excode();
+@@ -685,7 +687,7 @@ asmlinkage void noinstr do_bce(struct pt_regs *regs)
+ 	force_sig_bnderr((void __user *)badv, (void __user *)lower, (void __user *)upper);
+ 
+ out:
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_disable();
+ 
+ 	irqentry_exit(regs, state);
+@@ -703,11 +705,12 @@ asmlinkage void noinstr do_bce(struct pt_regs *regs)
+ asmlinkage void noinstr do_bp(struct pt_regs *regs)
+ {
+ 	bool user = user_mode(regs);
++	bool pie = regs_irqs_disabled(regs);
+ 	unsigned int opcode, bcode;
+ 	unsigned long era = exception_era(regs);
+ 	irqentry_state_t state = irqentry_enter(regs);
+ 
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_enable();
+ 
+ 	if (__get_inst(&opcode, (u32 *)era, user))
+@@ -773,7 +776,7 @@ asmlinkage void noinstr do_bp(struct pt_regs *regs)
+ 	}
+ 
+ out:
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_disable();
+ 
+ 	irqentry_exit(regs, state);
+@@ -1008,6 +1011,7 @@ static void init_restore_lbt(void)
+ 
+ asmlinkage void noinstr do_lbt(struct pt_regs *regs)
+ {
++	bool pie = regs_irqs_disabled(regs);
+ 	irqentry_state_t state = irqentry_enter(regs);
+ 
+ 	/*
+@@ -1017,7 +1021,7 @@ asmlinkage void noinstr do_lbt(struct pt_regs *regs)
+ 	 * (including the user using 'MOVGR2GCSR' to turn on TM, which
+ 	 * will not trigger the BTE), we need to check PRMD first.
  	 */
--	info->control.hw_key = NULL;
- 	r = ieee80211_tx_h_select_key(&tx);
- 	if (r != TX_CONTINUE) {
- 		ieee80211_free_txskb(&local->hw, skb);
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_enable();
+ 
+ 	if (!cpu_has_lbt) {
+@@ -1031,7 +1035,7 @@ asmlinkage void noinstr do_lbt(struct pt_regs *regs)
+ 	preempt_enable();
+ 
+ out:
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_disable();
+ 
+ 	irqentry_exit(regs, state);
 -- 
 2.39.5
 
