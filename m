@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-138642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF93AA18E6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2A4AA19C6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:15:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1618C1BC78B8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 719841C01521
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F58243964;
-	Tue, 29 Apr 2025 18:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE22252905;
+	Tue, 29 Apr 2025 18:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgMo93qW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rER1AMz0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38847221D92;
-	Tue, 29 Apr 2025 18:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BF0367;
+	Tue, 29 Apr 2025 18:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949894; cv=none; b=YdVEr0+6btD5F194pYZwr3RGpqcPW62HJGvEEM/zoDv30ndO5cXOXutxNAZpjACpnZb6Fllns1iSf5JHcDV74r0u0W44kP2vE8JPQAEBYuIyd16NI//K/XOsNCr6JKD02PODk40VqbAoSLHvlYh1Nb+U+OA9jcG6lWZ8wmF8jmM=
+	t=1745950393; cv=none; b=FrRse02kPIkz4VAkoOg26AAHjmhdBdMBnRPiPimM3ZWvoitocdA9vNqH8EnJrXdhWa2S1vInwExc4Mp2vnDgQdWn5xeffgxWOiTVKvV0tOkMAMSuVywaaM8oJWdJOnZAtzShoXDxWIFbrncUNmIFq4SxdaRHgCQ8t+g3pKQ1x/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949894; c=relaxed/simple;
-	bh=oCBE3xGyo7b1r5IFcMxvdLPtdPKjwVPERuMtpUCPKMY=;
+	s=arc-20240116; t=1745950393; c=relaxed/simple;
+	bh=t0v/hTLFyn/g7TNdbUikbM0GcjiXlTdnXHKrQT+/j0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oN1PiT+hBUZAcimb6OEI7wVcHimi2HWevC/a/HOUe88/NkeWe6bfPPvl6GUwnts5j5YsSMEusYSvEaSawex77fGzlZQ+h3EiMrfW2Oinl0t4wE/JODIZrv9yo/2kA+03g3O47KzY1oRlF9P81cxQLKUJ6kFpHvjFxboFIOQ1R6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgMo93qW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF41C4CEE3;
-	Tue, 29 Apr 2025 18:04:53 +0000 (UTC)
+	 MIME-Version; b=r+7Ue13k1dyhK9pPmcdX7IAkJqWSb76LLR7AXENY+cARKjmFxZvVwezWKfnW8EP6OIU2MEQNGz2OMX1h/anHfznnu9tbVw3MsMkp9RhLSHYbKhywQlyYNkvfrBQezYQfzF27xGYwpzwOpx49XwtA6CsSSn/kGR/t0eWjzocT7/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rER1AMz0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E798C4CEE9;
+	Tue, 29 Apr 2025 18:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949894;
-	bh=oCBE3xGyo7b1r5IFcMxvdLPtdPKjwVPERuMtpUCPKMY=;
+	s=korg; t=1745950393;
+	bh=t0v/hTLFyn/g7TNdbUikbM0GcjiXlTdnXHKrQT+/j0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cgMo93qWWs3i4RleNKwqYF8CvingAK6qU5VTQV2G0Se8oLMDhSo4bcf0631/3xfjz
-	 0OIdJdoT7nSAmd143m0PxjN32taqgHNe0Hv5HKyh1FfwjAX7gHd2Gt51WHX/cZsnht
-	 b7ZA8TUEcRnd3fskPvpW5t6e86oxvYCAI227C/0Y=
+	b=rER1AMz0ANdj/mc3l6MGPOen8m8OQzLa4oE8s9jfFmDHBUxLAdcXh9vwVMvaSjVWw
+	 eTXN4WGz6z19G55kPtxfchCIRgT0srxUaakfO1GK/xbrodN04akomb2FfNiOt/mHL0
+	 Q4bD01oQASKpTKv/DX2WGMlOzlPV6taPrMnBjTGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Ladislav Michl <ladis@triops.cz>
-Subject: [PATCH 6.1 061/167] wifi: rtw88: use ieee80211_purge_tx_queue() to purge TX skb
-Date: Tue, 29 Apr 2025 18:42:49 +0200
-Message-ID: <20250429161054.240292255@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 082/204] io_uring: fix sync handling of io_fallback_tw()
+Date: Tue, 29 Apr 2025 18:42:50 +0200
+Message-ID: <20250429161102.776038302@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 3e5e4a801aaf4283390cc34959c6c48f910ca5ea upstream.
+commit edd43f4d6f50ec3de55a0c9e9df6348d1da51965 upstream.
 
-When removing kernel modules by:
-   rmmod rtw88_8723cs rtw88_8703b rtw88_8723x rtw88_sdio rtw88_core
+A previous commit added a 'sync' parameter to io_fallback_tw(), which if
+true, means the caller wants to wait on the fallback thread handling it.
+But the logic is somewhat messed up, ensure that ctxs are swapped and
+flushed appropriately.
 
-Driver uses skb_queue_purge() to purge TX skb, but not report tx status
-causing "Have pending ack frames!" warning. Use ieee80211_purge_tx_queue()
-to correct this.
-
-Since ieee80211_purge_tx_queue() doesn't take locks, to prevent racing
-between TX work and purge TX queue, flush and destroy TX work in advance.
-
-   wlan0: deauthenticating from aa:f5:fd:60:4c:a8 by local
-     choice (Reason: 3=DEAUTH_LEAVING)
-   ------------[ cut here ]------------
-   Have pending ack frames!
-   WARNING: CPU: 3 PID: 9232 at net/mac80211/main.c:1691
-       ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
-   CPU: 3 PID: 9232 Comm: rmmod Tainted: G         C
-       6.10.1-200.fc40.aarch64 #1
-   Hardware name: pine64 Pine64 PinePhone Braveheart
-      (1.1)/Pine64 PinePhone Braveheart (1.1), BIOS 2024.01 01/01/2024
-   pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-   pc : ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
-   lr : ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
-   sp : ffff80008c1b37b0
-   x29: ffff80008c1b37b0 x28: ffff000003be8000 x27: 0000000000000000
-   x26: 0000000000000000 x25: ffff000003dc14b8 x24: ffff80008c1b37d0
-   x23: ffff000000ff9f80 x22: 0000000000000000 x21: 000000007fffffff
-   x20: ffff80007c7e93d8 x19: ffff00006e66f400 x18: 0000000000000000
-   x17: ffff7ffffd2b3000 x16: ffff800083fc0000 x15: 0000000000000000
-   x14: 0000000000000000 x13: 2173656d61726620 x12: 6b636120676e6964
-   x11: 0000000000000000 x10: 000000000000005d x9 : ffff8000802af2b0
-   x8 : ffff80008c1b3430 x7 : 0000000000000001 x6 : 0000000000000001
-   x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
-   x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000003be8000
-   Call trace:
-    ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
-    idr_for_each+0x74/0x110
-    ieee80211_free_hw+0x44/0xe8 [mac80211]
-    rtw_sdio_remove+0x9c/0xc0 [rtw88_sdio]
-    sdio_bus_remove+0x44/0x180
-    device_remove+0x54/0x90
-    device_release_driver_internal+0x1d4/0x238
-    driver_detach+0x54/0xc0
-    bus_remove_driver+0x78/0x108
-    driver_unregister+0x38/0x78
-    sdio_unregister_driver+0x2c/0x40
-    rtw_8723cs_driver_exit+0x18/0x1000 [rtw88_8723cs]
-    __do_sys_delete_module.isra.0+0x190/0x338
-    __arm64_sys_delete_module+0x1c/0x30
-    invoke_syscall+0x74/0x100
-    el0_svc_common.constprop.0+0x48/0xf0
-    do_el0_svc+0x24/0x38
-    el0_svc+0x3c/0x158
-    el0t_64_sync_handler+0x120/0x138
-    el0t_64_sync+0x194/0x198
-   ---[ end trace 0000000000000000 ]---
-
-Reported-by: Peter Robinson <pbrobinson@gmail.com>
-Closes: https://lore.kernel.org/linux-wireless/CALeDE9OAa56KMzgknaCD3quOgYuEHFx9_hcT=OFgmMAb+8MPyA@mail.gmail.com/
-Tested-by: Ping-Ke Shih <pkshih@realtek.com> # 8723DU
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240822014255.10211-2-pkshih@realtek.com
-Signed-off-by: Ladislav Michl <ladis@triops.cz>
+Cc: stable@vger.kernel.org
+Fixes: dfbe5561ae93 ("io_uring: flush offloaded and delayed task_work on exit")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c |    2 +-
- drivers/net/wireless/realtek/rtw88/tx.c   |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -2146,7 +2146,7 @@ void rtw_core_deinit(struct rtw_dev *rtw
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1247,21 +1247,22 @@ static __cold void io_fallback_tw(struct
+ 	while (node) {
+ 		req = container_of(node, struct io_kiocb, io_task_work.node);
+ 		node = node->next;
+-		if (sync && last_ctx != req->ctx) {
++		if (last_ctx != req->ctx) {
+ 			if (last_ctx) {
+-				flush_delayed_work(&last_ctx->fallback_work);
++				if (sync)
++					flush_delayed_work(&last_ctx->fallback_work);
+ 				percpu_ref_put(&last_ctx->refs);
+ 			}
+ 			last_ctx = req->ctx;
+ 			percpu_ref_get(&last_ctx->refs);
+ 		}
+-		if (llist_add(&req->io_task_work.node,
+-			      &req->ctx->fallback_llist))
+-			schedule_delayed_work(&req->ctx->fallback_work, 1);
++		if (llist_add(&req->io_task_work.node, &last_ctx->fallback_llist))
++			schedule_delayed_work(&last_ctx->fallback_work, 1);
+ 	}
  
- 	destroy_workqueue(rtwdev->tx_wq);
- 	spin_lock_irqsave(&rtwdev->tx_report.q_lock, flags);
--	skb_queue_purge(&rtwdev->tx_report.queue);
-+	ieee80211_purge_tx_queue(rtwdev->hw, &rtwdev->tx_report.queue);
- 	skb_queue_purge(&rtwdev->coex.queue);
- 	spin_unlock_irqrestore(&rtwdev->tx_report.q_lock, flags);
- 
---- a/drivers/net/wireless/realtek/rtw88/tx.c
-+++ b/drivers/net/wireless/realtek/rtw88/tx.c
-@@ -169,7 +169,7 @@ void rtw_tx_report_purge_timer(struct ti
- 	rtw_warn(rtwdev, "failed to get tx report from firmware\n");
- 
- 	spin_lock_irqsave(&tx_report->q_lock, flags);
--	skb_queue_purge(&tx_report->queue);
-+	ieee80211_purge_tx_queue(rtwdev->hw, &tx_report->queue);
- 	spin_unlock_irqrestore(&tx_report->q_lock, flags);
+ 	if (last_ctx) {
+-		flush_delayed_work(&last_ctx->fallback_work);
++		if (sync)
++			flush_delayed_work(&last_ctx->fallback_work);
+ 		percpu_ref_put(&last_ctx->refs);
+ 	}
  }
- 
 
 
 
