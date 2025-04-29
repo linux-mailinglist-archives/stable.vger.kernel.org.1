@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-138911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 160A0AA1A7C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:23:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D9DDAA1A72
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:22:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A8793B3A3B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:18:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27A2D4C1F0A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD403224234;
-	Tue, 29 Apr 2025 18:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9D625484F;
+	Tue, 29 Apr 2025 18:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08RstVyx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mt9roCJ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989BA245022;
-	Tue, 29 Apr 2025 18:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A45425332D;
+	Tue, 29 Apr 2025 18:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950746; cv=none; b=tT0cCG279n0SkioL+m04e0j1F3kqqN10K2RRrsmvVxge6joLSQbo/n7Ii5+HBbCV20mXRYXEA27gNnpT1R+CssGyiK82DISsGoJtNOLDy+MFVEz7nVqYNtSe6D90IhaG/ERbkjGt0ktrKRs1jU5GCEEleAL5lK/sUH2ZSPQfOEo=
+	t=1745950813; cv=none; b=Kdvq7m1mNl0/z90mYDS/vdR+zoMIXc434kHKldmpAmxh0PEcK5s5Vf1u29cW5q3neSp8KtYkvsGRHBhfBMeASSvfrORXY0+yx5/fEAsnXS13ahnssBc4wYvKF1iYIzeOL2iE/WEhg53mN0NwEPM9Dt7HPsl8/zh54hdBJpA9uws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950746; c=relaxed/simple;
-	bh=nCyUJqAys04/4bf+Y9dOS3OTZI0nGtA+PDnJ7Hr6jIo=;
+	s=arc-20240116; t=1745950813; c=relaxed/simple;
+	bh=ETYFIviWjs432JWpFcF/6fZA63oxdpTUREn7mA37K6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sr6lCUH1rtrI7yfPTG1vWMj8czPf7FmK/IbNJwTQBY1imez4Mi90DU7JZfdJRz79NphvOyFYJYcUVliLB06AZZBlW3K5HJEtu+VTz2k62ffABsnWZfe+hSmOkw/nvKXvUMWN7h0y4eSM9JOI5EUYn5nT6kOPbN3Dqy8f2oaY7tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08RstVyx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080D3C4CEE3;
-	Tue, 29 Apr 2025 18:19:05 +0000 (UTC)
+	 MIME-Version; b=nn5Q14f6PFeq5Op3nsbOyOSPC4Jhv2l7k2Bc5lZ+5C38rMLlCdyf+BoYXwRXZytFLJhHH05xwgP4FdAQfRDpNZTdWQvXkL73rdlGqSZHMnLz47uTrYfFwb4SUuW0wQOCJ5OsDDMwMJL3ARqLBKuIOYDlAkAvjzwZZWZdR5StvHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mt9roCJ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F74C4CEE3;
+	Tue, 29 Apr 2025 18:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950746;
-	bh=nCyUJqAys04/4bf+Y9dOS3OTZI0nGtA+PDnJ7Hr6jIo=;
+	s=korg; t=1745950812;
+	bh=ETYFIviWjs432JWpFcF/6fZA63oxdpTUREn7mA37K6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=08RstVyx+4Nb1RUpptsnkS76HlykkwZ4WhuDEI5arcRhcanKousYgK2ElMeK5EmNN
-	 r0OVy5TfduDBaHNuDaBOXIIN0g2jX1MuByJ4VrAB6HVhnr/hBONFgOG9uJNRjlrv8D
-	 GVnr2ckvF9UBLfORZWxHHaAxHVf3vKFIK2t4X6+g=
+	b=Mt9roCJ9bckq7cnf8VtEUPtP8lLmgBWvUFBvYQPRfEdp3+wtwS116g809xyNIBlM/
+	 4H3A1haCUb6ilQN9Mj64DpC4qQMDNnrnx+pLOOCqc0HCJGsTqtIY/7TUQtdsoRYQ+G
+	 oNcaftAMfmjHutJsypz/j/hbWa8iC/ver5P0tze8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 190/204] Revert "drivers: core: synchronize really_probe() and dev_uevent()"
-Date: Tue, 29 Apr 2025 18:44:38 +0200
-Message-ID: <20250429161107.154454440@linuxfoundation.org>
+Subject: [PATCH 6.6 191/204] driver core: introduce device_set_driver() helper
+Date: Tue, 29 Apr 2025 18:44:39 +0200
+Message-ID: <20250429161107.193740111@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
 References: <20250429161059.396852607@linuxfoundation.org>
@@ -67,52 +67,77 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit dc1771f718548f7d4b93991b174c6e7b5e1ba410 upstream.
+commit 04d3e5461c1f5cf8eec964ab64948ebed826e95e upstream.
 
-This reverts commit c0a40097f0bc81deafc15f9195d1fb54595cd6d0.
+In preparation to closing a race when reading driver pointer in
+dev_uevent() code, instead of setting device->driver pointer directly
+introduce device_set_driver() helper.
 
-Probing a device can take arbitrary long time. In the field we observed
-that, for example, probing a bad micro-SD cards in an external USB card
-reader (or maybe cards were good but cables were flaky) sometimes takes
-longer than 2 minutes due to multiple retries at various levels of the
-stack. We can not block uevent_show() method for that long because udev
-is reading that attribute very often and that blocks udev and interferes
-with booting of the system.
-
-The change that introduced locking was concerned with dev_uevent()
-racing with unbinding the driver. However we can handle it without
-locking (which will be done in subsequent patch).
-
-There was also claim that synchronization with probe() is needed to
-properly load USB drivers, however this is a red herring: the change
-adding the lock was introduced in May of last year and USB loading and
-probing worked properly for many years before that.
-
-Revert the harmful locking.
-
-Cc: stable@vger.kernel.org
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Link: https://lore.kernel.org/r/20250311052417.1846985-1-dmitry.torokhov@gmail.com
+Link: https://lore.kernel.org/r/20250311052417.1846985-2-dmitry.torokhov@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/base/base.h |    6 ++++++
+ drivers/base/core.c |    2 +-
+ drivers/base/dd.c   |    6 +++---
+ 3 files changed, 10 insertions(+), 4 deletions(-)
 
+--- a/drivers/base/base.h
++++ b/drivers/base/base.h
+@@ -179,6 +179,12 @@ int driver_add_groups(struct device_driv
+ void driver_remove_groups(struct device_driver *drv, const struct attribute_group **groups);
+ void device_driver_detach(struct device *dev);
+ 
++static inline void device_set_driver(struct device *dev, const struct device_driver *drv)
++{
++	// FIXME - this cast should not be needed "soon"
++	dev->driver = (struct device_driver *)drv;
++}
++
+ int devres_release_all(struct device *dev);
+ void device_block_probing(void);
+ void device_unblock_probing(void);
 --- a/drivers/base/core.c
 +++ b/drivers/base/core.c
-@@ -2672,11 +2672,8 @@ static ssize_t uevent_show(struct device
- 	if (!env)
- 		return -ENOMEM;
+@@ -3688,7 +3688,7 @@ done:
+ 	device_pm_remove(dev);
+ 	dpm_sysfs_remove(dev);
+  DPMError:
+-	dev->driver = NULL;
++	device_set_driver(dev, NULL);
+ 	bus_remove_device(dev);
+  BusError:
+ 	device_remove_attrs(dev);
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -550,7 +550,7 @@ static void device_unbind_cleanup(struct
+ 	arch_teardown_dma_ops(dev);
+ 	kfree(dev->dma_range_map);
+ 	dev->dma_range_map = NULL;
+-	dev->driver = NULL;
++	device_set_driver(dev, NULL);
+ 	dev_set_drvdata(dev, NULL);
+ 	if (dev->pm_domain && dev->pm_domain->dismiss)
+ 		dev->pm_domain->dismiss(dev);
+@@ -629,7 +629,7 @@ static int really_probe(struct device *d
+ 	}
  
--	/* Synchronize with really_probe() */
--	device_lock(dev);
- 	/* let the kset specific function add its keys */
- 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
--	device_unlock(dev);
- 	if (retval)
- 		goto out;
+ re_probe:
+-	dev->driver = drv;
++	device_set_driver(dev, drv);
  
+ 	/* If using pinctrl, bind pins now before probing */
+ 	ret = pinctrl_bind_pins(dev);
+@@ -1014,7 +1014,7 @@ static int __device_attach(struct device
+ 		if (ret == 0)
+ 			ret = 1;
+ 		else {
+-			dev->driver = NULL;
++			device_set_driver(dev, NULL);
+ 			ret = 0;
+ 		}
+ 	} else {
 
 
 
