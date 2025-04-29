@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-137568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBD7AA13FF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D27C6AA18A2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:02:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D63E188B926
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5363170C57
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354F822A81D;
-	Tue, 29 Apr 2025 17:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 168BE221D92;
+	Tue, 29 Apr 2025 18:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyOrfGdX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/smMmez"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A03127E18;
-	Tue, 29 Apr 2025 17:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F003FFD;
+	Tue, 29 Apr 2025 18:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946458; cv=none; b=EWMrUTnEYgMsoOUftCm5WFEIdYhICjsXRAag7IwBhN8lZf7mM1C8o9ZkcNgLUqTD1R+DmpQwA50fLbamDA0wY0pT/YKE+eo0KsxhQoxlr+iCA2kgrsYsC62QysSoGdMaRKgDSeGFkXbBqHBopd443aWMMv7Fz89IXZmnlY2kUP4=
+	t=1745949672; cv=none; b=C/+/xTXTL61NeEA9hdGb/PSBy36ba4IBB3oOMyWf2bWjU94Fpl075imbvMKAqcRlgzxRRqWQtXFhIlWqYrzT6XCZwL0SA1B33OxGrDb2JSI83oId+sOYBcbF7npRsBYGl7CJtiWSYrVjgZm9wSrweFyZY5dX3xhQbaS6Wj5Oe9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946458; c=relaxed/simple;
-	bh=OhjCo4NO5pI5NoO3T2Kh0MYMZzHXx+7nIVKjL0nxTlU=;
+	s=arc-20240116; t=1745949672; c=relaxed/simple;
+	bh=Uup06BL3b2HPnlZ3XGL1PSdyjSm/cYJgoivsGgiDlu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FAODOuJjdHb3vfpGv7Scoa4zRevM36/Vyi1xOmIwHFIQ1pP8CL2Lqt9eYqp/6flJZ9t8/b+qJxiPCcS3kpsnbkLBBm6E3Th32XIqO5PuK3DmURgJyTkrATBPmZyugqUfal/ObOgABo27I1qWx9fyTay5Mv/ZhSHPmJ8oPJ6P0Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyOrfGdX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574A9C4CEE3;
-	Tue, 29 Apr 2025 17:07:37 +0000 (UTC)
+	 MIME-Version; b=Sj9vQDPOUqtZf5jTgR1m7FYR7kmdhfx/iUGWmIXnaZMSDyaDlOgioVQLhokWD28AX7VuFfnMfoEAwEL2M8U85PKdBoHc1PwThiEmH7lq3kXpcDV8TVcXUbxAizmwO7GmjRatbwNvMmQU6IPXofjisLI/sVWoIp/zpEzxgNRPBVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/smMmez; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56960C4CEE3;
+	Tue, 29 Apr 2025 18:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946457;
-	bh=OhjCo4NO5pI5NoO3T2Kh0MYMZzHXx+7nIVKjL0nxTlU=;
+	s=korg; t=1745949672;
+	bh=Uup06BL3b2HPnlZ3XGL1PSdyjSm/cYJgoivsGgiDlu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jyOrfGdX04RBb4BkSSvA+76Q7KV2w00fUOjDoHiidIBCh7QwqgO1HHG0CRHGe9hbL
-	 xdrxIU9rs66EnZbMxeZdxxSR6s1mSHev2BGQx0jMDXR1FQlizA+fxvYix3dsMEKLi0
-	 /hMWbKX3T1vEtOY2qc1dRyKmB+292URfpQL1ILi0=
+	b=N/smMmezaeg+wRcA1TxuX/JaUdeGROMBlxUi+m2wCt/r0ftGECBGdqaK6ZY0WJHNz
+	 HVWkFttZqxr26dGrAJuZkOriwBLIq9TuQOA9G04L3S++f1TDD02Sk8lrLAqtzXeSRG
+	 4HOOt9RijKMQ+lRFgd/esZ02KIvu9n3RH/TZcsDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 273/311] scsi: ufs: exynos: gs101: Put UFS device in reset on .suspend()
+Subject: [PATCH 6.1 002/167] memcg: drain obj stock on cpu hotplug teardown
 Date: Tue, 29 Apr 2025 18:41:50 +0200
-Message-ID: <20250429161132.205288677@linuxfoundation.org>
+Message-ID: <20250429161051.846625904@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Shakeel Butt <shakeel.butt@linux.dev>
 
-[ Upstream commit cd4c0025069f16fc666c6ffc56c49c9b1154841f ]
+[ Upstream commit 9f01b4954490d4ccdbcc2b9be34a9921ceee9cbb ]
 
-GPIO_OUT[0] is connected to the reset pin of embedded UFS device.
-Before powering off the phy assert the reset signal.
+Currently on cpu hotplug teardown, only memcg stock is drained but we
+need to drain the obj stock as well otherwise we will miss the stats
+accumulated on the target cpu as well as the nr_bytes cached. The stats
+include MEMCG_KMEM, NR_SLAB_RECLAIMABLE_B & NR_SLAB_UNRECLAIMABLE_B. In
+addition we are leaking reference to struct obj_cgroup object.
 
-This is added as a gs101 specific suspend hook so as not to have any
-unintended consequences for other SoCs supported by this driver.
-
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-7-96722cc2ba1b@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lkml.kernel.org/r/20250310230934.2913113-1-shakeel.butt@linux.dev
+Fixes: bf4f059954dc ("mm: memcg/slab: obj_cgroup API")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-exynos.c | 10 ++++++++++
- drivers/ufs/host/ufs-exynos.h |  1 +
- 2 files changed, 11 insertions(+)
+ mm/memcontrol.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index b9fbc78be74ee..2436b9454480b 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -1700,6 +1700,12 @@ static void exynos_ufs_hibern8_notify(struct ufs_hba *hba,
- 	}
- }
- 
-+static int gs101_ufs_suspend(struct exynos_ufs *ufs)
-+{
-+	hci_writel(ufs, 0 << 0, HCI_GPIO_OUT);
-+	return 0;
-+}
-+
- static int exynos_ufs_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
- 	enum ufs_notify_change_status status)
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 3f7cab196eb62..8c586133abb7c 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2368,9 +2368,18 @@ static void drain_all_stock(struct mem_cgroup *root_memcg)
+ static int memcg_hotplug_cpu_dead(unsigned int cpu)
  {
-@@ -1708,6 +1714,9 @@ static int exynos_ufs_suspend(struct ufs_hba *hba, enum ufs_pm_op pm_op,
- 	if (status == PRE_CHANGE)
- 		return 0;
+ 	struct memcg_stock_pcp *stock;
++	struct obj_cgroup *old;
++	unsigned long flags;
  
-+	if (ufs->drv_data->suspend)
-+		ufs->drv_data->suspend(ufs);
+ 	stock = &per_cpu(memcg_stock, cpu);
 +
- 	if (!ufshcd_is_link_active(hba))
- 		phy_power_off(ufs->phy);
++	/* drain_obj_stock requires stock_lock */
++	local_lock_irqsave(&memcg_stock.stock_lock, flags);
++	old = drain_obj_stock(stock);
++	local_unlock_irqrestore(&memcg_stock.stock_lock, flags);
++
+ 	drain_stock(stock);
++	obj_cgroup_put(old);
  
-@@ -2170,6 +2179,7 @@ static const struct exynos_ufs_drv_data gs101_ufs_drvs = {
- 	.pre_link		= gs101_ufs_pre_link,
- 	.post_link		= gs101_ufs_post_link,
- 	.pre_pwr_change		= gs101_ufs_pre_pwr_change,
-+	.suspend		= gs101_ufs_suspend,
- };
- 
- static const struct of_device_id exynos_ufs_of_match[] = {
-diff --git a/drivers/ufs/host/ufs-exynos.h b/drivers/ufs/host/ufs-exynos.h
-index d0b3df221503c..3c6fe5132190a 100644
---- a/drivers/ufs/host/ufs-exynos.h
-+++ b/drivers/ufs/host/ufs-exynos.h
-@@ -192,6 +192,7 @@ struct exynos_ufs_drv_data {
- 				struct ufs_pa_layer_attr *pwr);
- 	int (*pre_hce_enable)(struct exynos_ufs *ufs);
- 	int (*post_hce_enable)(struct exynos_ufs *ufs);
-+	int (*suspend)(struct exynos_ufs *ufs);
- };
- 
- struct ufs_phy_time_cfg {
+ 	return 0;
+ }
 -- 
 2.39.5
 
