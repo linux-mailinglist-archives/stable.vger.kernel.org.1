@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-137379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B66AA1319
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 731F9AA1749
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 573AB16CA08
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A627D9A0185
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF732512E4;
-	Tue, 29 Apr 2025 16:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78532528EC;
+	Tue, 29 Apr 2025 17:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/aTumpd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXAcuSdI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989632472BC;
-	Tue, 29 Apr 2025 16:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8363F244664;
+	Tue, 29 Apr 2025 17:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945893; cv=none; b=fJHkK51m1VYZcx0/pdSx6y+uamTEyH4FYMibx6yjmX4witT5SW7z+VReAK8wtXt2xJbHj4DimwJ3iUHh205xxN6WPieQGpuzkpz93ZJOg4wvNcERqB5bh6q8vG1H5HtOrc1y3lboThYCBNCgqCqFp1d9IxjM75JRsLwVePcxWMc=
+	t=1745948461; cv=none; b=hX0zax1cS/6VjmhBtpLzHf4ChfwKTN/kCJJLziiveOddN7CZuI/jxdHL/1xlLx2HXfl8ZvlHAfirVkIYa+QDqQO12kHJf3UaySNDC3lc7s6bRiIkVj0SS++AWwVWGj1mmtxZZfpuTCDIg+dZFvOvIZiz6nidd5IcOwITUHGIig0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945893; c=relaxed/simple;
-	bh=n4CGrI5LRSK5xobipz2A1QEiBixpuDybeUKh9savUe0=;
+	s=arc-20240116; t=1745948461; c=relaxed/simple;
+	bh=fhPnWJJY583cZ15Ua3laYYAmNXuRZQbnnqrjQOPsAhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bUYtpYdlK1Jt2dPhofarecIjp1njLJwLAs/1kUA9HMRRuqi+6dlY93Gp0WVibhmPmW044RKWBT778NrdobtnJkhldnIFfctVgm2J0BhJxrIr1usuIwfeL3pcWxiNXIhdWeQlC0NNADL7TRTnMgbAyEL+t12WvbVrTjc65KDBUi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/aTumpd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260B6C4CEEA;
-	Tue, 29 Apr 2025 16:58:12 +0000 (UTC)
+	 MIME-Version; b=A9VmyTTwuoTYph82TEZjYwCPYr7K/uaylk1/xultypPQYnENrqGSohr5Tyoq4PqGplEf4vTZw6QlCRbg2JHQmdHbPGGrLL9aWmTW90Vc9JfBASoBfEoQLuuvMbNt+GCZEH83NvYjCxC76VbiDSpoCTMEj0Vu32q1zEJPihOqESw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXAcuSdI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2FAC4CEE3;
+	Tue, 29 Apr 2025 17:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945893;
-	bh=n4CGrI5LRSK5xobipz2A1QEiBixpuDybeUKh9savUe0=;
+	s=korg; t=1745948461;
+	bh=fhPnWJJY583cZ15Ua3laYYAmNXuRZQbnnqrjQOPsAhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/aTumpdbzVudXX5z+1GRuCwwkx6GIcT8Hp/t91ewMILjbnHdr3ORJ8E5mnL6LKsA
-	 95ARxlJAP5t+JRggdhAxlvv4lcsOF9M11t5r2e5hStStRZoKAB2XL4tVJmj1Fnco6h
-	 YuUyslo02REuCE++Z5iz0VKhi9KJTaaf1urxZ7Wk=
+	b=QXAcuSdI+tfeoHIycwYwOw55s6YAjspowYilr2eSrE1w1wGO3jVaS6ilpymdwv3Rl
+	 rgeZ5dn5Zk7YVzN/EqUkSsQRysBFLfiMwUpcBbdezOoPqhxx5YfPX4JfW2cgXTQwb7
+	 JOFtRiuO4KKnTMpkR7Hzmr9Wug51583MGkI5YLvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 055/311] net: enetc: refactor bulk flipping of RX buffers to separate function
+Subject: [PATCH 5.15 015/373] arm64: cputype: Add QCOM_CPU_PART_KRYO_3XX_GOLD
 Date: Tue, 29 Apr 2025 18:38:12 +0200
-Message-ID: <20250429161123.294166905@linuxfoundation.org>
+Message-ID: <20250429161123.760440956@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 1d587faa5be7e9785b682cc5f58ba8f4100c13ea ]
+[ Upstream commit 401c3333bb2396aa52e4121887a6f6a6e2f040bc ]
 
-This small snippet of code ensures that we do something with the array
-of RX software buffer descriptor elements after passing the skb to the
-stack. In this case, we see if the other half of the page is reusable,
-and if so, we "turn around" the buffers, making them directly usable by
-enetc_refill_rx_ring() without going to enetc_new_page().
+Add a definition for the Qualcomm Kryo 300-series Gold cores.
 
-We will need to perform this kind of buffer flipping from a new code
-path, i.e. from XDP_PASS. Currently, enetc_build_skb() does it there
-buffer by buffer, but in a subsequent change we will stop using
-enetc_build_skb() for XDP_PASS.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250417120005.3288549-3-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 020f0c8b3d39 ("net: enetc: fix frame corruption on bpf_xdp_adjust_head/tail() and XDP_PASS")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
+Link: https://lore.kernel.org/r/20241219131107.v3.1.I18e0288742871393228249a768e5d56ea65d93dc@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 9b333254c73ec..74721995cb1f9 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1850,6 +1850,16 @@ static void enetc_xdp_drop(struct enetc_bdr *rx_ring, int rx_ring_first,
- 	}
- }
- 
-+static void enetc_bulk_flip_buff(struct enetc_bdr *rx_ring, int rx_ring_first,
-+				 int rx_ring_last)
-+{
-+	while (rx_ring_first != rx_ring_last) {
-+		enetc_flip_rx_buff(rx_ring,
-+				   &rx_ring->rx_swbd[rx_ring_first]);
-+		enetc_bdr_idx_inc(rx_ring, &rx_ring_first);
-+	}
-+}
-+
- static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 				   struct napi_struct *napi, int work_limit,
- 				   struct bpf_prog *prog)
-@@ -1965,11 +1975,7 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 				enetc_xdp_drop(rx_ring, orig_i, i);
- 				rx_ring->stats.xdp_redirect_failures++;
- 			} else {
--				while (orig_i != i) {
--					enetc_flip_rx_buff(rx_ring,
--							   &rx_ring->rx_swbd[orig_i]);
--					enetc_bdr_idx_inc(rx_ring, &orig_i);
--				}
-+				enetc_bulk_flip_buff(rx_ring, orig_i, i);
- 				xdp_redirect_frm_cnt++;
- 				rx_ring->stats.xdp_redirect++;
- 			}
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 7dfaad0fa17b7..f3729ef92e570 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -111,6 +111,7 @@
+ #define QCOM_CPU_PART_KRYO		0x200
+ #define QCOM_CPU_PART_KRYO_2XX_GOLD	0x800
+ #define QCOM_CPU_PART_KRYO_2XX_SILVER	0x801
++#define QCOM_CPU_PART_KRYO_3XX_GOLD	0x802
+ #define QCOM_CPU_PART_KRYO_3XX_SILVER	0x803
+ #define QCOM_CPU_PART_KRYO_4XX_GOLD	0x804
+ #define QCOM_CPU_PART_KRYO_4XX_SILVER	0x805
+@@ -170,6 +171,7 @@
+ #define MIDR_QCOM_KRYO MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO)
+ #define MIDR_QCOM_KRYO_2XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_2XX_GOLD)
+ #define MIDR_QCOM_KRYO_2XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_2XX_SILVER)
++#define MIDR_QCOM_KRYO_3XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_3XX_GOLD)
+ #define MIDR_QCOM_KRYO_3XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_3XX_SILVER)
+ #define MIDR_QCOM_KRYO_4XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_GOLD)
+ #define MIDR_QCOM_KRYO_4XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_SILVER)
 -- 
 2.39.5
 
