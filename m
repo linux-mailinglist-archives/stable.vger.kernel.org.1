@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-137902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85408AA1590
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:28:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C39AA1833
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A7601BC447D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E055A7A63D7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0E524C08D;
-	Tue, 29 Apr 2025 17:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B338F252284;
+	Tue, 29 Apr 2025 17:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3AVq0/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZMq78KP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDEE24111D;
-	Tue, 29 Apr 2025 17:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2F9251783;
+	Tue, 29 Apr 2025 17:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947480; cv=none; b=jaLeQnD10wA1xSHeyRtnNsPLM3cjXEfHCJcjJGpoXjtlOvFWBinDAFZ8i6XQa89CgKmMEBmYI72erUpL/CBAWKfhxOcW8AuBMIq0fjcCW6Qj/v80wYzToCjg0Ozk46U0JbrcFmc76q1M7eao8mXdiTMbcGDCwTRS9JQQZfj7yNM=
+	t=1745949421; cv=none; b=MMyNMMGGVC1H5xAyhjiNEHxv8YBb/UGEYIMnlDaZd86ktg433KviDIuibnZEpwD0qsVjqdvwkk9jMEWskYznE3LlQohB1TrKYq8424TSqf6hAvx9Az86Pm1hUncldTG8I3TRbKmjZ62WLt0FBu2vhmoFx7qDmGojMoQ4CDL4sGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947480; c=relaxed/simple;
-	bh=72uk10cH46oEN2PydDukXYRspPFDNnyk5PQhzjnYGXk=;
+	s=arc-20240116; t=1745949421; c=relaxed/simple;
+	bh=CzQ1O7fAW5VGQTMa9XailTYjKR+gvwxE6Px/UnRzs2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=au34RXTKSVq53ayLqrSrpwMdGwXemVp2Px5NYJ+FVvRpVwUrFVGAugjbhJZJGvMPQFzSKVaNE2hUZiDPPfny+ofFv2P2bTRNyfuRlawsZYdLZla29R7W3iKu6gknOb3Pp0qDHGiIgnyRVEHue/Wrr9OGAAC2GSJBsxKl2Il1i7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3AVq0/f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEE2C4CEE3;
-	Tue, 29 Apr 2025 17:24:40 +0000 (UTC)
+	 MIME-Version; b=j9BhcaRBQBf3rNgW2ooPr9/R1IcQr/3bSetKpO2vWaIwU8RDm2Kkr3o5TAECzvSF7SslqUSWzNjs5Hcp2OWbnwAcOWQU28WiYFQZaOfWyIuIvKH/jbCdWS4IFG2Ze9NbZpNuV5Y8IrHyQUMKBehV8qIBUbFx3M1KzSlmrbyRI4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZMq78KP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6F8C4CEE3;
+	Tue, 29 Apr 2025 17:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947480;
-	bh=72uk10cH46oEN2PydDukXYRspPFDNnyk5PQhzjnYGXk=;
+	s=korg; t=1745949420;
+	bh=CzQ1O7fAW5VGQTMa9XailTYjKR+gvwxE6Px/UnRzs2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I3AVq0/fHmJW+lc8PzW83eotpqdYgC4BbD9ho1RxuQbCbBwW4WguxWjLaetlqe/qp
-	 N/AzH4mXqpfy3uxNt62tG2+C8+4yvLaGGYzGII5Z5tATx82tj9m5PRYHgDgNMxz4t4
-	 RGdAADDiwL4j/8Arwl6ieOcQ7jrnmsVF2L6cGCRU=
+	b=rZMq78KPRtZkMBX3pj703M/xMBJknexqcSGPWP4EZI++1JbAiJW1bjjEKUDu2mUq7
+	 QTNcBa7tuuNdgTtkQxB+3AcfMXrtEgusUZPq8x6YgMgyQpMKoBjX7Sgf4ikAlKpl0p
+	 uomxNbYywo0a9eyP9D3Rfugnt+pl69+IaSW6Ip9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Akhil P Oommen <quic_akhilpo@quicinc.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 258/286] dmaengine: dmatest: Fix dmatest waiting less when interrupted
+Subject: [PATCH 5.15 285/373] drm/msm/a6xx: Fix stale rpmh votes from GPU
 Date: Tue, 29 Apr 2025 18:42:42 +0200
-Message-ID: <20250429161118.531998939@linuxfoundation.org>
+Message-ID: <20250429161134.832663216@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Akhil P Oommen <quic_akhilpo@quicinc.com>
 
-[ Upstream commit e87ca16e99118ab4e130a41bdf12abbf6a87656c ]
+[ Upstream commit f561db72a663f8a73c2250bf3244ce1ce221bed7 ]
 
-Change the "wait for operation finish" logic to take interrupts into
-account.
+It was observed on sc7180 (A618 gpu) that GPU votes for GX rail and CNOC
+BCM nodes were not removed after GPU suspend. This was because we
+skipped sending 'prepare-slumber' request to gmu during suspend sequence
+in some cases. So, make sure we always call prepare-slumber hfi during
+suspend. Also, calling prepare-slumber without a prior oob-gpu handshake
+messes up gmu firmware's internal state. So, do that when required.
 
-When using dmatest with idxd DMA engine, it's possible that during
-longer tests, the interrupt notifying the finish of an operation
-happens during wait_event_freezable_timeout(), which causes dmatest to
-cleanup all the resources, some of which might still be in use.
-
-This fix ensures that the wait logic correctly handles interrupts,
-preventing premature cleanup of resources.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202502171134.8c403348-lkp@intel.com
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20250305230007.590178-1-vinicius.gomes@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/639569/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dmatest.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 72 +++++++++++++++------------
+ 1 file changed, 39 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/dma/dmatest.c b/drivers/dma/dmatest.c
-index a3a172173e345..915724fd7ea6f 100644
---- a/drivers/dma/dmatest.c
-+++ b/drivers/dma/dmatest.c
-@@ -825,9 +825,9 @@ static int dmatest_func(void *data)
- 		} else {
- 			dma_async_issue_pending(chan);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index ea59c54437dec..f1daa923f3469 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -1066,49 +1066,50 @@ static void a6xx_gmu_shutdown(struct a6xx_gmu *gmu)
+ 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
+ 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
+ 	u32 val;
++	int ret;
  
--			wait_event_freezable_timeout(thread->done_wait,
--					done->done,
--					msecs_to_jiffies(params->timeout));
-+			wait_event_timeout(thread->done_wait,
-+					   done->done,
-+					   msecs_to_jiffies(params->timeout));
+ 	/*
+-	 * The GMU may still be in slumber unless the GPU started so check and
+-	 * skip putting it back into slumber if so
++	 * GMU firmware's internal power state gets messed up if we send "prepare_slumber" hfi when
++	 * oob_gpu handshake wasn't done after the last wake up. So do a dummy handshake here when
++	 * required
+ 	 */
+-	val = gmu_read(gmu, REG_A6XX_GPU_GMU_CX_GMU_RPMH_POWER_STATE);
++	if (adreno_gpu->base.needs_hw_init) {
++		if (a6xx_gmu_set_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET))
++			goto force_off;
  
- 			status = dma_async_is_tx_complete(chan, cookie, NULL,
- 							  NULL);
+-	if (val != 0xf) {
+-		int ret = a6xx_gmu_wait_for_idle(gmu);
++		a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET);
++	}
+ 
+-		/* If the GMU isn't responding assume it is hung */
+-		if (ret) {
+-			a6xx_gmu_force_off(gmu);
+-			return;
+-		}
++	ret = a6xx_gmu_wait_for_idle(gmu);
+ 
+-		a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
++	/* If the GMU isn't responding assume it is hung */
++	if (ret)
++		goto force_off;
+ 
+-		/* tell the GMU we want to slumber */
+-		ret = a6xx_gmu_notify_slumber(gmu);
+-		if (ret) {
+-			a6xx_gmu_force_off(gmu);
+-			return;
+-		}
++	a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
+ 
+-		ret = gmu_poll_timeout(gmu,
+-			REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
+-			!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
+-			100, 10000);
++	/* tell the GMU we want to slumber */
++	ret = a6xx_gmu_notify_slumber(gmu);
++	if (ret)
++		goto force_off;
+ 
+-		/*
+-		 * Let the user know we failed to slumber but don't worry too
+-		 * much because we are powering down anyway
+-		 */
++	ret = gmu_poll_timeout(gmu,
++		REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
++		!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
++		100, 10000);
+ 
+-		if (ret)
+-			DRM_DEV_ERROR(gmu->dev,
+-				"Unable to slumber GMU: status = 0%x/0%x\n",
+-				gmu_read(gmu,
+-					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
+-				gmu_read(gmu,
+-					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
+-	}
++	/*
++	 * Let the user know we failed to slumber but don't worry too
++	 * much because we are powering down anyway
++	 */
++
++	if (ret)
++		DRM_DEV_ERROR(gmu->dev,
++			"Unable to slumber GMU: status = 0%x/0%x\n",
++			gmu_read(gmu,
++				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
++			gmu_read(gmu,
++				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
+ 
+ 	/* Turn off HFI */
+ 	a6xx_hfi_stop(gmu);
+@@ -1118,6 +1119,11 @@ static void a6xx_gmu_shutdown(struct a6xx_gmu *gmu)
+ 
+ 	/* Tell RPMh to power off the GPU */
+ 	a6xx_rpmh_stop(gmu);
++
++	return;
++
++force_off:
++	a6xx_gmu_force_off(gmu);
+ }
+ 
+ 
 -- 
 2.39.5
 
