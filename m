@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3883EAA171D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 940C9AA1469
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 493E11604A3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:43:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCE2918896FB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3632924C067;
-	Tue, 29 Apr 2025 17:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7985B24BC1A;
+	Tue, 29 Apr 2025 17:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GlzIGADi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKW+QFG2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A7C22A81D;
-	Tue, 29 Apr 2025 17:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351FA242D9A;
+	Tue, 29 Apr 2025 17:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948634; cv=none; b=pjSKazTH3cRtfNV4qmBjVNV9Vdx1wd3jN2e2lFmM8Fj5z0VLjm+g06tYzB7Xlqznj3WMa53y5NcD8IkNawG8ACAQYbVKI/wKHSlDgsJbulcSp6aPdtQTvMdyWO5XXQPaE7UGhhkkMHlLsWrMVZIsM6kSuoPCRxoo7l+ZVkx28/0=
+	t=1745946701; cv=none; b=PkS4N9UAnfGuIzcn5XimaFX93aWgKO92SL6ch7yln3lOqEa2iBl3zaipMOCiMW0Zq4Po+qtmR5JAboxPDrZAAepzKwHvmw0OdGzW+H3L3pfAJoZW9irKXzBgbZ4zadOtsyg5Rmw91cdtibOngAz99orA5eW0EsLTXVbVjXySCGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948634; c=relaxed/simple;
-	bh=PEwswlwlZvTdB77H/socxRDAfTqeyiDFxobOmAARZtM=;
+	s=arc-20240116; t=1745946701; c=relaxed/simple;
+	bh=zqxZOAFb3tbjVFsJDmDFmgHBzxChgBVkSh2YIsKuQeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDxa/KGtp58/IOLwfZHu6k+Itujpzl4E6AGOC+MboDLwnsA6xuJv5wvtxC7mlYJ4ewqS6cXcH6JuaLVZ7QQGDP0BX1Xa90S4pNBotd2W1MbHJIs7lWnZLxqUg0rqag2l9ck5P2hLyhZ2BphqS1U/8idxq4bb/ISc/756mbcmIh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GlzIGADi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D8DC4CEE3;
-	Tue, 29 Apr 2025 17:43:53 +0000 (UTC)
+	 MIME-Version; b=sYE73m2FahiYJGwR3+lOlWCa4xFlPnUQ5OlDdfEDKUyM2IR0SG50I+VQtTsnq3HGTy3xG39e5Ze9C63/hxsClfYfH9i2U69+Lv7ameNMm7Rb7mA6Csj3QA7sK6oHbbeCRBro3X2p1STEFU/cIsBybbE53dPLO4FLRK5DIC9bajk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKW+QFG2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F6CC4CEE3;
+	Tue, 29 Apr 2025 17:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948633;
-	bh=PEwswlwlZvTdB77H/socxRDAfTqeyiDFxobOmAARZtM=;
+	s=korg; t=1745946701;
+	bh=zqxZOAFb3tbjVFsJDmDFmgHBzxChgBVkSh2YIsKuQeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GlzIGADiPu5MmUOSL9uQxp0It37zry2bXFqZBljxt0tIFIExn5fxIrXgB/4xItmzM
-	 rEbp1zgeaUHd9sbwfmdlFQEvqcnJW9//xCgb0sdpC/n+Hq72sM+jizriNjbeP5D4Ut
-	 iTn4686im3dfLsTGSJH+Exl1mqRwDqNXxQE/G1HQ=
+	b=pKW+QFG2TrA99v+1VMI9kzmaOzcm3QRPrHmrhmlg6Fhru6ciUAi15vu6sXsDU1w15
+	 Vk1j0wxSEtzRFJ0aHSFkTN9CyOLmIyEwMUts8hPwJsB95UrnMavUP7Pbg8pjM6TBXx
+	 G+h70wEbd4lzWPykJcKmsK2D5lYWKQ48guzNDEP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Bauer <sbauer@quicinc.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Trilok Soni <quic_tsoni@quicinc.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 5.15 067/373] arm64: errata: Add KRYO 2XX/3XX/4XX silver cores to Spectre BHB safe list
-Date: Tue, 29 Apr 2025 18:39:04 +0200
-Message-ID: <20250429161125.890531447@linuxfoundation.org>
+	Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 041/286] drm/amdkfd: Fix pqm_destroy_queue race with GPU reset
+Date: Tue, 29 Apr 2025 18:39:05 +0200
+Message-ID: <20250429161109.552346515@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Philip Yang <Philip.Yang@amd.com>
 
-commit 0c9fc6e652cd5aed48c5f700c32b7642bea7f453 upstream.
+[ Upstream commit 7919b4cad5545ed93778f11881ceee72e4dbed66 ]
 
-Qualcomm has confirmed that, much like Cortex A53 and A55, KRYO
-2XX/3XX/4XX silver cores are unaffected by Spectre BHB. Add them to
-the safe list.
+If GPU in reset, destroy_queue return -EIO, pqm_destroy_queue should
+delete the queue from process_queue_list and free the resource.
 
-Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
-Cc: stable@vger.kernel.org
-Cc: Scott Bauer <sbauer@quicinc.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
-Link: https://lore.kernel.org/r/20250107120555.v4.3.Iab8dbfb5c9b1e143e7a29f410bce5f9525a0ba32@changeid
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/proton-pack.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -854,6 +854,9 @@ static bool is_spectre_bhb_safe(int scop
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A510),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A520),
- 		MIDR_ALL_VERSIONS(MIDR_BRAHMA_B53),
-+		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_2XX_SILVER),
-+		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_3XX_SILVER),
-+		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_SILVER),
- 		{},
- 	};
- 	static bool all_safe = true;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+index 43c07ac2c6fce..cabe0012ab5b1 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+@@ -384,7 +384,7 @@ int pqm_destroy_queue(struct process_queue_manager *pqm, unsigned int qid)
+ 			pr_err("Pasid 0x%x destroy queue %d failed, ret %d\n",
+ 				pqm->process->pasid,
+ 				pqn->q->properties.queue_id, retval);
+-			if (retval != -ETIME)
++			if (retval != -ETIME && retval != -EIO)
+ 				goto err_destroy_queue;
+ 		}
+ 
+-- 
+2.39.5
+
 
 
 
