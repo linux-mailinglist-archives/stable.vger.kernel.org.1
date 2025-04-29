@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173C0AA1772
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E76AA13A1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 152B81BC3FB8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D0EA1888920
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D7224E4A9;
-	Tue, 29 Apr 2025 17:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BAE250C15;
+	Tue, 29 Apr 2025 17:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHfYbl6o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgpPdp1x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32CC2528F1;
-	Tue, 29 Apr 2025 17:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4212A24BC1A;
+	Tue, 29 Apr 2025 17:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948836; cv=none; b=oWloOTFSb60i8PwKoYRrhzaCnXmL6aJSRQba2QDmqTbzJfSLFVKP267VSj8m4cOd5PRdzfOZsQJFpcj9oPMqP2LNf5P9vsaHs4xuGUxvoerCNfhvA3M6Sh/2AowP2wrhOlQqfeOfomWa4sshv6McJImGyMOsGv59ekGPjkVngPE=
+	t=1745946152; cv=none; b=cWfScBOFs07STzw0NCnFQ+Wh+CKB3e4PJjZuj7pRIgvzdhN+ZQUf8eS2Mm14PXpgw4+c+yhk91Dx8KJlMUn+sXdsFPOqVjiPKlz0XT4xiASXO91o0kfVjHOzfvSpVNdyFqFxKQSn6YFivfvtmFvKfwRiR9ZcbwHgNy3bnepkUKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948836; c=relaxed/simple;
-	bh=0dKhmXcJEMA6Y+10g+u5oEpeKMJOQR+ICARTUFrzxTA=;
+	s=arc-20240116; t=1745946152; c=relaxed/simple;
+	bh=AJ7rXWnGdOk2RIr4V8svv5blRr7543UuG0yZeQdzwuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQeINPCuOV1uhp/fTi5ikS2jcrwcgCz+XhkF0a/1YeI57XFFuA9PDodo8PoRgPIQ/fGiROUeXEafYtrg8B/EgkD6uAi9RrnEUDMDHi6KbKK2Q3rB3Eery/SqvNQxF+h/Z2s7sO2IgD2v7c2AI1BTe7vpUa8rgVSzz1qzsoOND6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHfYbl6o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35176C4CEE9;
-	Tue, 29 Apr 2025 17:47:16 +0000 (UTC)
+	 MIME-Version; b=s8uh9nDiCf8PimUkUe+41nOzRo9WLgsNZxqas+14kEjehu1OoUzL1VVeHttbarLVBJ6XFmfE90q48eTFfiGkd2WZtPsygM1+Y5XHSL1DFZq7e9oj1oucwY/li/GAMdGgjQRFfED54+LUo083wMwDRaP8Hvu/3cILohkwYfqirfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgpPdp1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B11C4CEE3;
+	Tue, 29 Apr 2025 17:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948836;
-	bh=0dKhmXcJEMA6Y+10g+u5oEpeKMJOQR+ICARTUFrzxTA=;
+	s=korg; t=1745946151;
+	bh=AJ7rXWnGdOk2RIr4V8svv5blRr7543UuG0yZeQdzwuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHfYbl6oZjmjx60voAR36U5w9swR/OA7aKh8kfO5G6vgoe+uHx0CzbUyjvdnrEPaw
-	 iJnjkzmoComTCpGhWkNqWycVc+kzS8GfWlrAhnXdteYVzWNp0d5KBiiaAysLNmOHxB
-	 RxkfHaH1vTqZ942PWHpQut6IzMKIVtaBzLeVSImI=
+	b=XgpPdp1x1vaIv/XVkC4hIlSNmwRAUwNcALs1twl9r/Sb3e6StsLV5WnUgKMT1Lf6R
+	 uyaIPiUY+2jYkYxP5T/Lr9SE98yM0Tqw5AEBetGp9Sm30+B4X3u06JatxPN40vhHQZ
+	 FTmPM+csEaaf09rxCOWkdHcs/aOZXgvBjIbaY7/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Coly Li <colyli@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 132/373] md/raid10: fix missing discard IO accounting
+	stable <stable@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.14 172/311] usb: typec: class: Unlocked on error in typec_register_partner()
 Date: Tue, 29 Apr 2025 18:40:09 +0200
-Message-ID: <20250429161128.596931365@linuxfoundation.org>
+Message-ID: <20250429161128.078155409@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit d05af90d6218e9c8f1c2026990c3f53c1b41bfb0 ]
+commit 429a98abfc01d3d4378b7a00969437dc3e8f647c upstream.
 
-md_account_bio() is not called from raid10_handle_discard(), now that we
-handle bitmap inside md_account_bio(), also fix missing
-bitmap_startwrite for discard.
+We recently added some locking to this function but this error path
+was accidentally missed.  Unlock before returning.
 
-Test whole disk discard for 20G raid10:
-
-Before:
-Device   d/s     dMB/s   drqm/s  %drqm d_await dareq-sz
-md0    48.00     16.00     0.00   0.00    5.42   341.33
-
-After:
-Device   d/s     dMB/s   drqm/s  %drqm d_await dareq-sz
-md0    68.00  20462.00     0.00   0.00    2.65 308133.65
-
-Link: https://lore.kernel.org/linux-raid/20250325015746.3195035-1-yukuai1@huaweicloud.com
-Fixes: 528bc2cf2fcc ("md/raid10: enable io accounting")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Coly Li <colyli@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ec27386de23a ("usb: typec: class: Fix NULL pointer access")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/Z_44tOtmml89wQcM@stanley.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c | 1 +
+ drivers/usb/typec/class.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index bdd5a564e3191..e6c0e24cb9ae2 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1771,6 +1771,7 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
- 	 * The discard bio returns only first r10bio finishes
- 	 */
- 	if (first_copy) {
-+		md_account_bio(mddev, &bio);
- 		r10_bio->master_bio = bio;
- 		set_bit(R10BIO_Discard, &r10_bio->state);
- 		first_copy = false;
--- 
-2.39.5
-
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -1056,6 +1056,7 @@ struct typec_partner *typec_register_par
+ 	ret = device_register(&partner->dev);
+ 	if (ret) {
+ 		dev_err(&port->dev, "failed to register partner (%d)\n", ret);
++		mutex_unlock(&port->partner_link_lock);
+ 		put_device(&partner->dev);
+ 		return ERR_PTR(ret);
+ 	}
 
 
 
