@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-137395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FBB4AA1347
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3CFEAA173D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D8F7981A41
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11A117A4910
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7C124113C;
-	Tue, 29 Apr 2025 16:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE8E24BD02;
+	Tue, 29 Apr 2025 17:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmiX+8wg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNIdko3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8162215060;
-	Tue, 29 Apr 2025 16:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF131D7E35;
+	Tue, 29 Apr 2025 17:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945939; cv=none; b=DLHol53s2qX4ERMAGazf8Eg62pb30Jfbql5gZ1Wv9vb/+7lKDrOYXLu28kNzSSsi8KGsd9YIgWa7QhzBYx445JdtS+dBGz+eSh5ltAIxO5InIxWrNMjDoOQokrZ5XBzpiMR0LUkhmtTMayBU/UH5LjXzw4nfMSuvOO7Yd0mPtQ0=
+	t=1745948719; cv=none; b=JPrlYRocjEL6tgJhiqM0Dlnj1+t7qFV7DILr5gg9Y9N8cs5pc+r0vk6CaC23Gu1eMVDZ+Z8PgECLlGWBBB4+SmNOOHoMMYZ/WRANQYctR2Am88qf7EsJ9uJ+Dml2Ekp+HH8E+ZrT59S7Y7lsjN594ho5dm3HHIvJzxcN0EnqiZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945939; c=relaxed/simple;
-	bh=FnUDNVu6mqMwkLS+rcfUiA1Dhfjj7oKxFl7RsKs8S4I=;
+	s=arc-20240116; t=1745948719; c=relaxed/simple;
+	bh=O7wQPOKvoBJJaqTfF3CKJNw6mffg4EF8oMuDiU3Mcl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgLg2TdaXyWqPzAcuLdHT8xbaBXzBVq9pAgQrrB/ZE6j0y3LBWQTQzAHeGU6dzdLJcT97NKVZjNaoL6kxqsulpoWzzQ3pX5PYevB1b+wOC0AdJHaIbugdDIMC84HoLPmXJxZT0FwjOFdVW0YkPgjVfSK6rumcDc4v6Y6CW+gmSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmiX+8wg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B75C4CEE3;
-	Tue, 29 Apr 2025 16:58:59 +0000 (UTC)
+	 MIME-Version; b=d/JA5KA3MGlQhOkYCoA1aujOgnc3tFde+WvrNKhWDxmwrvikKwJQRHmzYhO6dxnxfXj+bJMaBG94wOy5X1Q96u8cgzh0gL8HhuFSoORdZAAP0xxAO7ISwWD12MjUTcJuHUiaYc+TEhwTJGpXOyACwkSOYN19gxOl1TwRj30vvNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PNIdko3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E9AC4CEE3;
+	Tue, 29 Apr 2025 17:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945939;
-	bh=FnUDNVu6mqMwkLS+rcfUiA1Dhfjj7oKxFl7RsKs8S4I=;
+	s=korg; t=1745948719;
+	bh=O7wQPOKvoBJJaqTfF3CKJNw6mffg4EF8oMuDiU3Mcl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HmiX+8wgB2yHvoID3qeR0ABjoOLIEtqqpdQzCnV1qUAm0SuZQl+B870Kboiil5XxV
-	 D5Ea2QwmS2HFzcQT7c7H8bMjkrAvNEwZucUSZr3mHbaoUAmx4cdgA4Tx+HeR5CQWca
-	 I6RcCfOpg8/jvQYtaM7P9zdKpktN168FXkHxElWY=
+	b=PNIdko3YYfpkYv+uBA5b/I8GP+OWwgOmlqqiHWS4kC5mNquVBwmbKfZWn8UYv+uF8
+	 JZSiZl/kzfpzblR9bHY8GYSeDjUzLSKU0S9u5sYg1bKBxZJ7eLNRKUIkAg82/Ly/IO
+	 MFOzUfv37oCgkXaIT4JWGgo/lBP9a4wpiuuFKNcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinyang He <hejinyang@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Tianyang Zhang <zhangtianyang@loongson.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 101/311] LoongArch: Make do_xyz() exception handlers more robust
+	Matthew Majewski <mattwmajewski@gmail.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 061/373] media: vim2m: print device name after registering device
 Date: Tue, 29 Apr 2025 18:38:58 +0200
-Message-ID: <20250429161125.176309388@linuxfoundation.org>
+Message-ID: <20250429161125.634608500@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,145 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Matthew Majewski <mattwmajewski@gmail.com>
 
-[ Upstream commit cc73cc6bcdb5f959670e3ff9abdc62461452ddff ]
+commit 143d75583f2427f3a97dba62413c4f0604867ebf upstream.
 
-Currently, interrupts need to be disabled before single-step mode is
-set, it requires that CSR_PRMD_PIE be cleared in save_local_irqflag()
-which is called by setup_singlestep(), this is reasonable.
+Move the v4l2_info() call displaying the video device name after the
+device is actually registered.
 
-But in the first kprobe breakpoint exception, if the irq is enabled at
-the beginning of do_bp(), it will not be disabled at the end of do_bp()
-due to the CSR_PRMD_PIE has been cleared in save_local_irqflag(). So for
-this case, it may corrupt exception context when restoring the exception
-after do_bp() in handle_bp(), this is not reasonable.
+This fixes a bug where the driver was always displaying "/dev/video0"
+since it was reading from the vfd before it was registered.
 
-In order to restore exception safely in handle_bp(), it needs to ensure
-the irq is disabled at the end of do_bp(), so just add a local variable
-to record the original interrupt status in the parent context, then use
-it as the check condition to enable and disable irq in do_bp().
-
-While at it, do the similar thing for other do_xyz() exception handlers
-to make them more robust.
-
-Fixes: 6d4cc40fb5f5 ("LoongArch: Add kprobes support")
-Suggested-by: Jinyang He <hejinyang@loongson.cn>
-Suggested-by: Huacai Chen <chenhuacai@loongson.cn>
-Co-developed-by: Tianyang Zhang <zhangtianyang@loongson.cn>
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cf7f34777a5b ("media: vim2m: Register video device after setting up internals")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthew Majewski <mattwmajewski@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/traps.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/media/test-drivers/vim2m.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/loongarch/kernel/traps.c b/arch/loongarch/kernel/traps.c
-index 2ec3106c0da3d..47fc2de6d1501 100644
---- a/arch/loongarch/kernel/traps.c
-+++ b/arch/loongarch/kernel/traps.c
-@@ -553,9 +553,10 @@ asmlinkage void noinstr do_ale(struct pt_regs *regs)
- 	die_if_kernel("Kernel ale access", regs);
- 	force_sig_fault(SIGBUS, BUS_ADRALN, (void __user *)regs->csr_badvaddr);
- #else
-+	bool pie = regs_irqs_disabled(regs);
- 	unsigned int *pc;
+--- a/drivers/media/test-drivers/vim2m.c
++++ b/drivers/media/test-drivers/vim2m.c
+@@ -1321,9 +1321,6 @@ static int vim2m_probe(struct platform_d
+ 	vfd->v4l2_dev = &dev->v4l2_dev;
  
--	if (regs->csr_prmd & CSR_PRMD_PIE)
-+	if (!pie)
- 		local_irq_enable();
+ 	video_set_drvdata(vfd, dev);
+-	v4l2_info(&dev->v4l2_dev,
+-		  "Device registered as /dev/video%d\n", vfd->num);
+-
+ 	platform_set_drvdata(pdev, dev);
  
- 	perf_sw_event(PERF_COUNT_SW_ALIGNMENT_FAULTS, 1, regs, regs->csr_badvaddr);
-@@ -582,7 +583,7 @@ asmlinkage void noinstr do_ale(struct pt_regs *regs)
- 	die_if_kernel("Kernel ale access", regs);
- 	force_sig_fault(SIGBUS, BUS_ADRALN, (void __user *)regs->csr_badvaddr);
- out:
--	if (regs->csr_prmd & CSR_PRMD_PIE)
-+	if (!pie)
- 		local_irq_disable();
- #endif
- 	irqentry_exit(regs, state);
-@@ -621,12 +622,13 @@ static void bug_handler(struct pt_regs *regs)
- asmlinkage void noinstr do_bce(struct pt_regs *regs)
- {
- 	bool user = user_mode(regs);
-+	bool pie = regs_irqs_disabled(regs);
- 	unsigned long era = exception_era(regs);
- 	u64 badv = 0, lower = 0, upper = ULONG_MAX;
- 	union loongarch_instruction insn;
- 	irqentry_state_t state = irqentry_enter(regs);
- 
--	if (regs->csr_prmd & CSR_PRMD_PIE)
-+	if (!pie)
- 		local_irq_enable();
- 
- 	current->thread.trap_nr = read_csr_excode();
-@@ -692,7 +694,7 @@ asmlinkage void noinstr do_bce(struct pt_regs *regs)
- 	force_sig_bnderr((void __user *)badv, (void __user *)lower, (void __user *)upper);
- 
- out:
--	if (regs->csr_prmd & CSR_PRMD_PIE)
-+	if (!pie)
- 		local_irq_disable();
- 
- 	irqentry_exit(regs, state);
-@@ -710,11 +712,12 @@ asmlinkage void noinstr do_bce(struct pt_regs *regs)
- asmlinkage void noinstr do_bp(struct pt_regs *regs)
- {
- 	bool user = user_mode(regs);
-+	bool pie = regs_irqs_disabled(regs);
- 	unsigned int opcode, bcode;
- 	unsigned long era = exception_era(regs);
- 	irqentry_state_t state = irqentry_enter(regs);
- 
--	if (regs->csr_prmd & CSR_PRMD_PIE)
-+	if (!pie)
- 		local_irq_enable();
- 
- 	if (__get_inst(&opcode, (u32 *)era, user))
-@@ -780,7 +783,7 @@ asmlinkage void noinstr do_bp(struct pt_regs *regs)
+ 	dev->m2m_dev = v4l2_m2m_init(&m2m_ops);
+@@ -1350,6 +1347,9 @@ static int vim2m_probe(struct platform_d
+ 		goto error_m2m;
  	}
  
- out:
--	if (regs->csr_prmd & CSR_PRMD_PIE)
-+	if (!pie)
- 		local_irq_disable();
- 
- 	irqentry_exit(regs, state);
-@@ -1015,6 +1018,7 @@ static void init_restore_lbt(void)
- 
- asmlinkage void noinstr do_lbt(struct pt_regs *regs)
- {
-+	bool pie = regs_irqs_disabled(regs);
- 	irqentry_state_t state = irqentry_enter(regs);
- 
- 	/*
-@@ -1024,7 +1028,7 @@ asmlinkage void noinstr do_lbt(struct pt_regs *regs)
- 	 * (including the user using 'MOVGR2GCSR' to turn on TM, which
- 	 * will not trigger the BTE), we need to check PRMD first.
- 	 */
--	if (regs->csr_prmd & CSR_PRMD_PIE)
-+	if (!pie)
- 		local_irq_enable();
- 
- 	if (!cpu_has_lbt) {
-@@ -1038,7 +1042,7 @@ asmlinkage void noinstr do_lbt(struct pt_regs *regs)
- 	preempt_enable();
- 
- out:
--	if (regs->csr_prmd & CSR_PRMD_PIE)
-+	if (!pie)
- 		local_irq_disable();
- 
- 	irqentry_exit(regs, state);
--- 
-2.39.5
-
++	v4l2_info(&dev->v4l2_dev,
++		  "Device registered as /dev/video%d\n", vfd->num);
++
+ #ifdef CONFIG_MEDIA_CONTROLLER
+ 	ret = v4l2_m2m_register_media_controller(dev->m2m_dev, vfd,
+ 						 MEDIA_ENT_F_PROC_VIDEO_SCALER);
 
 
 
