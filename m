@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E176AA172C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A84C6AA18BE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF3305A4E3D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C81823AA760
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84D82517A4;
-	Tue, 29 Apr 2025 17:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCA62512E8;
+	Tue, 29 Apr 2025 17:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0Thxx/7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmDsAgvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A455F22DF91;
-	Tue, 29 Apr 2025 17:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED9E2AE96;
+	Tue, 29 Apr 2025 17:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948394; cv=none; b=KZyYAqVuVxY8tOMAD/n5fmpFHD7BUdhNub+rMEAlHpX9jqkNzNKnuzyUyzX77ZokFDBzS8nB8NCORYDJyE6hu9Sh26Z60QVhhC2JlG5ykhk0m6wz64lU/MXAUdBAwamHi8DBvOjaDozljWbY/zTN/6qGtOQ9GozAg7f5etWUddY=
+	t=1745949504; cv=none; b=OStWp31jmtJwTUkI9COP2GHBhFFjv4+CpkbCop3p9qxfUlo4WdqsWlUNO/EPlnIH+K83kLw86f6mM6G/X/6vclMbaCDQgrRLcNULPlGr1X5ZD6T4uSe9FzctAGxJUJ3bGkMUk8HWvp6JfYdhk39tHy/hn4g/AvK+SV5dh/rS8Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948394; c=relaxed/simple;
-	bh=o0IPVyEaQ20q9mEW2Or4q+ii/2kgzkDsBMa0B2/XgAI=;
+	s=arc-20240116; t=1745949504; c=relaxed/simple;
+	bh=HAH2yo4p2xhlDJVA1gU0AGUsOsah+PSzXsRjJVOZF6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hRrY2wbtQ4geXa49o+KlGKi9C1vA0sKTuD44RxjiymFD7RMHmTZPo6iVoI3zeaDwpCRmTn1wf86p8TsjFkOwl4faJ6m0DuGNzCmvxFiGvSdo79Utbhcf9ODffnXEGyQ6YW2XXI1FPE7ejv/QEu65uSz3GBKia5VowWPYTYfBha0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0Thxx/7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE87C4CEE3;
-	Tue, 29 Apr 2025 17:39:53 +0000 (UTC)
+	 MIME-Version; b=QR3XcK5mKv5+dhJTkZWjazjcUu/mNQoq44DBTWb7Ker36M+0NpjoiQavoD2oI7vZlto1xPA7szIUcAHSiJgXN6xWjyWFzXySTH/+IALDjf8tTxLHEDdv5Oj0vgrP0Ayd6wAV6GbaPFyW9ixOZwzmlccbgimbRqZPmnPk1HMmdQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmDsAgvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA4AC4CEE3;
+	Tue, 29 Apr 2025 17:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948394;
-	bh=o0IPVyEaQ20q9mEW2Or4q+ii/2kgzkDsBMa0B2/XgAI=;
+	s=korg; t=1745949503;
+	bh=HAH2yo4p2xhlDJVA1gU0AGUsOsah+PSzXsRjJVOZF6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b0Thxx/7Bw/Z5XvcMOPzegmQKjX4RWE3WDGtquYYaWs0o3yr/EIhWhAyrTFXlpOZd
-	 gUSz3Eah39cYIOwh1Kh5QZvUmnZdKAdk3GLpOW7NXk1YIujhZqt1abjAfotlNynQR6
-	 9Xpjo8GmASaP4QVU3WSJ1TxU0GSGr3xTpvz0rEe0=
+	b=DmDsAgvqjUv63gPSLUvehpMkMNjykZ+mFFHeAP3EhRhEU/BroliwDBAFGBsbKgie8
+	 A1TUQGgNTeZtNoREtgWH9fQx5csvItta07lfhuzjOfHlYUI2XNjMd0eXDX6ze43w3M
+	 5VfZmnyKOoxnQbPo2Zwq+hHWztRwme1WxtTXU2QE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Oleg Nesterov <oleg@redhat.com>,
 	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.12 275/280] objtool: Ignore end-of-section jumps for KCOV/GCOV
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 339/373] sched/isolation: Make CONFIG_CPU_ISOLATION depend on CONFIG_SMP
 Date: Tue, 29 Apr 2025 18:43:36 +0200
-Message-ID: <20250429161126.385173501@linuxfoundation.org>
+Message-ID: <20250429161137.075900893@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 0d7597749f5a3ac67851d3836635d084df15fb66 upstream.
+[ Upstream commit 975776841e689dd8ba36df9fa72ac3eca3c2957a ]
 
-When KCOV or GCOV is enabled, dead code can be left behind, in which
-case objtool silences unreachable and undefined behavior (fallthrough)
-warnings.
+kernel/sched/isolation.c obviously makes no sense without CONFIG_SMP, but
+the Kconfig entry we have right now:
 
-Fallthrough warnings, and their variant "end of section" warnings, were
-silenced with the following commit:
+	config CPU_ISOLATION
+		bool "CPU isolation"
+		depends on SMP || COMPILE_TEST
 
-  6b023c784204 ("objtool: Silence more KCOV warnings")
+allows the creation of pointless .config's which cause
+build failures.
 
-Another variant of a fallthrough warning is a jump to the end of a
-function.  If that function happens to be at the end of a section, the
-jump destination doesn't actually exist.
-
-Normally that would be a fatal objtool error, but for KCOV/GCOV it's
-just another undefined behavior fallthrough.  Silence it like the
-others.
-
-Fixes the following warning:
-
-  drivers/iommu/dma-iommu.o: warning: objtool: iommu_dma_sw_msi+0x92: can't find jump dest instruction at .text+0x54d5
-
-Fixes: 6b023c784204 ("objtool: Silence more KCOV warnings")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/08fbe7d7e1e20612206f1df253077b94f178d93e.1743481539.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/314f8809-cd59-479b-97d7-49356bf1c8d1@infradead.org/
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- tools/objtool/check.c |   22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+Link: https://lore.kernel.org/r/20250330134955.GA7910@redhat.com
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1570,6 +1570,8 @@ static int add_jump_destinations(struct
- 	unsigned long dest_off;
+Closes: https://lore.kernel.org/oe-kbuild-all/202503260646.lrUqD3j5-lkp@intel.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ init/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index 4c9cacc866d4c..b66259bfd2352 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -674,7 +674,7 @@ endmenu # "CPU/Task time and stats accounting"
  
- 	for_each_insn(file, insn) {
-+		struct symbol *func = insn_func(insn);
-+
- 		if (insn->jump_dest) {
- 			/*
- 			 * handle_group_alt() may have previously set
-@@ -1593,7 +1595,7 @@ static int add_jump_destinations(struct
- 		} else if (reloc->sym->return_thunk) {
- 			add_return_call(file, insn, true);
- 			continue;
--		} else if (insn_func(insn)) {
-+		} else if (func) {
- 			/*
- 			 * External sibling call or internal sibling call with
- 			 * STT_FUNC reloc.
-@@ -1626,6 +1628,15 @@ static int add_jump_destinations(struct
- 				continue;
- 			}
- 
-+			/*
-+			 * GCOV/KCOV dead code can jump to the end of the
-+			 * function/section.
-+			 */
-+			if (file->ignore_unreachables && func &&
-+			    dest_sec == insn->sec &&
-+			    dest_off == func->offset + func->len)
-+				continue;
-+
- 			WARN_INSN(insn, "can't find jump dest instruction at %s+0x%lx",
- 				  dest_sec->name, dest_off);
- 			return -1;
-@@ -1650,8 +1661,7 @@ static int add_jump_destinations(struct
- 		/*
- 		 * Cross-function jump.
- 		 */
--		if (insn_func(insn) && insn_func(jump_dest) &&
--		    insn_func(insn) != insn_func(jump_dest)) {
-+		if (func && insn_func(jump_dest) && func != insn_func(jump_dest)) {
- 
- 			/*
- 			 * For GCC 8+, create parent/child links for any cold
-@@ -1668,10 +1678,10 @@ static int add_jump_destinations(struct
- 			 * case where the parent function's only reference to a
- 			 * subfunction is through a jump table.
- 			 */
--			if (!strstr(insn_func(insn)->name, ".cold") &&
-+			if (!strstr(func->name, ".cold") &&
- 			    strstr(insn_func(jump_dest)->name, ".cold")) {
--				insn_func(insn)->cfunc = insn_func(jump_dest);
--				insn_func(jump_dest)->pfunc = insn_func(insn);
-+				func->cfunc = insn_func(jump_dest);
-+				insn_func(jump_dest)->pfunc = func;
- 			}
- 		}
- 
+ config CPU_ISOLATION
+ 	bool "CPU isolation"
+-	depends on SMP || COMPILE_TEST
++	depends on SMP
+ 	default y
+ 	help
+ 	  Make sure that CPUs running critical tasks are not disturbed by
+-- 
+2.39.5
+
 
 
 
