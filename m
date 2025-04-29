@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 201FCAA192F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47DF0AA1A1D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5214F4C06EB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:06:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E2DC17EC49
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6248024397A;
-	Tue, 29 Apr 2025 18:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0117253334;
+	Tue, 29 Apr 2025 18:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLc535+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9ApJ+3s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205B01A5BBB;
-	Tue, 29 Apr 2025 18:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCEF155A4E;
+	Tue, 29 Apr 2025 18:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949963; cv=none; b=bn92EAa0CmdKHZzKjIkp/nTeJE3nUNyCXlLjSmVMt6s7gY7WUn3+x8qSST+ILUSdTQhHneSfOZUcM+uxy2RcyyQeZvFK+E6r516MFaZ7zoukED7/XsVhU2Xny1rB533LhWzpHBPhOfPV0mgv6XL9sc+/S6FUgmgWHWJSzPYy+TQ=
+	t=1745950647; cv=none; b=OGTBDRLPXRsUge+y0P6TjUBlHWrOM7JU8b+fYvH5QCtCMHg+MIOTqW/ZjhGg7X8zj4bedNpRzhUGHk5jeftdzcfiKNFFR99xuZ8eFAQ6RHa/TlTRqZ/fi+THUrAwyH0FlCWgJoynmrGBKhZCxWW7X496if7Sx/i6k2V5+9b6hB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949963; c=relaxed/simple;
-	bh=uDIU7TwmsW3ef5b1wqiLMq/2hoIGI0w9iFX6uuIcqaY=;
+	s=arc-20240116; t=1745950647; c=relaxed/simple;
+	bh=PAmnzfKLf+PVr4FDh2xO29/EVIDaBz4k2aqA1/4Sfdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utws+nQb1XTjGoFi7q8L8v5skM4vWvleh4ugRWo2bwOp+RoQ+8Lqm0+NR8pIWdn9xC93lWnUoP42nm2Wa0Vmq47OUXDVfU6/w/aFBsDV0ZkY5eWGko15ZTOxVwXcH5HvskATQEJm3PFrJVAvntaYk8betJRmtE3h6ocB22mzUow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLc535+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4022C4CEE3;
-	Tue, 29 Apr 2025 18:06:02 +0000 (UTC)
+	 MIME-Version; b=VreAKqIU4dmYxw0s4a0HHOGfeZFnjG3gZBVJcMVPgSgiAqobvMo6JgNsmcp7JTDBseXt7PR2nNWUYcXnLAn/ZLnqc4+bVpECbQ7JHpAUXikSQtC7mkeULfqg6LPL+lFdPQk9dZi1DefjfdHTIol8gYL9VgmiXHe554zX3XNS348=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9ApJ+3s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F62C4CEE3;
+	Tue, 29 Apr 2025 18:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949963;
-	bh=uDIU7TwmsW3ef5b1wqiLMq/2hoIGI0w9iFX6uuIcqaY=;
+	s=korg; t=1745950647;
+	bh=PAmnzfKLf+PVr4FDh2xO29/EVIDaBz4k2aqA1/4Sfdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dLc535+unApEH4uusPknk7AzRnYhwK0SUo8Pw747541LQTi1fhZxr/vO0J1HMwF+z
-	 CO0ZypPsPXg48Lpqibai5C/3sFOVpUSnRPdlGCm5wPtBEqaG42TXeRC8rYxuUfe0sj
-	 PcU6Y32lYmrP5kJKP0G6WbvjkqkgP4I4ti0i0zps=
+	b=F9ApJ+3sfvSF2zLIcvdDaY4zvl8lw7GdcqIRsoFpqWMNs19IfN/gGsLw8aJK1Uah+
+	 S7og8LJNZHc9WZ8o9ElWw/Q2teuoU5GoiilhRXenFvUuClQuMYsdWZ9xPzzJuNNYF+
+	 xXSh26fz2lVtGf35tL0X+Ta6Qd+7oIQzZqxf2GY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/167] usb: gadget: aspeed: Add NULL pointer check in ast_vhub_init_dev()
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+e37dd1dfc814b10caa55@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 132/204] fs/ntfs3: Fix WARNING in ntfs_extend_initialized_size
 Date: Tue, 29 Apr 2025 18:43:40 +0200
-Message-ID: <20250429161056.272151788@linuxfoundation.org>
+Message-ID: <20250429161104.828597361@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 8c75f3e6a433d92084ad4e78b029ae680865420f ]
+[ Upstream commit ff355926445897cc9fdea3b00611e514232c213c ]
 
-The variable d->name, returned by devm_kasprintf(), could be NULL.
-A pointer check is added to prevent potential NULL pointer dereference.
-This is similar to the fix in commit 3027e7b15b02
-("ice: Fix some null pointer dereference issues in ice_ptp.c").
+Syzbot reported a WARNING in ntfs_extend_initialized_size.
+The data type of in->i_valid and to is u64 in ntfs_file_mmap().
+If their values are greater than LLONG_MAX, overflow will occur because
+the data types of the parameters valid and new_valid corresponding to
+the function ntfs_extend_initialized_size() are loff_t.
 
-This issue is found by our static analysis tool
+Before calling ntfs_extend_initialized_size() in the ntfs_file_mmap(),
+the "ni->i_valid < to" has been determined, so the same WARN_ON determination
+is not required in ntfs_extend_initialized_size().
+Just execute the ntfs_extend_initialized_size() in ntfs_extend() to make
+a WARN_ON check.
 
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250311012705.1233829-1-chenyuan0y@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-and-tested-by: syzbot+e37dd1dfc814b10caa55@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e37dd1dfc814b10caa55
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/aspeed-vhub/dev.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ntfs3/file.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/gadget/udc/aspeed-vhub/dev.c b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-index 4f3bc27c1c628..73664a123c7a0 100644
---- a/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-+++ b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
-@@ -549,6 +549,9 @@ int ast_vhub_init_dev(struct ast_vhub *vhub, unsigned int idx)
- 	d->vhub = vhub;
- 	d->index = idx;
- 	d->name = devm_kasprintf(parent, GFP_KERNEL, "port%d", idx+1);
-+	if (!d->name)
-+		return -ENOMEM;
-+
- 	d->regs = vhub->regs + 0x100 + 0x10 * idx;
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index 2ecd0303f9421..4aea458216117 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -335,6 +335,7 @@ static int ntfs_extend(struct inode *inode, loff_t pos, size_t count,
+ 	}
  
- 	ast_vhub_init_ep0(vhub, &d->ep0, d);
+ 	if (extend_init && !is_compressed(ni)) {
++		WARN_ON(ni->i_valid >= pos);
+ 		err = ntfs_extend_initialized_size(file, ni, ni->i_valid, pos);
+ 		if (err)
+ 			goto out;
 -- 
 2.39.5
 
