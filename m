@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-137267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9103AA127D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:54:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA838AA166C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6576188C156
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBD629A3F72
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E4B25228D;
-	Tue, 29 Apr 2025 16:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1567B25332E;
+	Tue, 29 Apr 2025 17:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nX8yCs+v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="laKQehpg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30492517BC;
-	Tue, 29 Apr 2025 16:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4562253329;
+	Tue, 29 Apr 2025 17:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945559; cv=none; b=OTmpkpJqRrTY6EtEnHgq0rImYuhx5bXeg/z/c4d1eNJ2ZsynvkPI8MSL0Ywauic7x/jKuJzFXiRXrWh8PcdcOthpRqngbbB49Fnd7UeoFWvPVSy5RM6uOSny2KbS3yRPuBb1duNHyeE9fatyfkYfTwoR1zAERVFKyak5zVIdTbE=
+	t=1745947858; cv=none; b=mcgq6penVbKat1LEdIFdCCVKPMd7yhKV9xGjWovp0bJ3MvdqRBt11qq7s3sosd0bo8ByC0It1sVX8zmj9aB+4/GcImycYUj0KCB2RgWqKL7Dr8Ujv4YMrbsWJncrlTzsDzC1EyFRQOAflprC8DOBcMya23QJbFQFa5M5vz9gH+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945559; c=relaxed/simple;
-	bh=9C9/CVwX8/XQ5NHoy4qlqtz+LyJBmgI64ee86gDSMeo=;
+	s=arc-20240116; t=1745947858; c=relaxed/simple;
+	bh=XoMIJNadlmnNnVCB7vwJDHWOWWkC9yo6fJqNxgq0tW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JtpBdxLWjodlEvKjAoLKE2lQaGnqrcAoDkOjYY/1aeiOvEEugds5BLe63JfWkPfKl3DaSZdF+S+8EanzTMojB5uHwceimD1doqhim5ZV/1CFz4kgCZh4Ziferqp4AZxoijX8gWv15zteQ0mAVI2BTYosgjfotXbkBTDg4hjgwRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nX8yCs+v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F649C4CEE9;
-	Tue, 29 Apr 2025 16:52:38 +0000 (UTC)
+	 MIME-Version; b=rDo/4EEENF+a2BEHtAJuuj3K9eqSlderA6pHj3ErKLT4z5b/ub+ioZfNga7r1NZCprX3IaBGGVLp7tFwBXQGYVaBvUTdOdb5I9PZ0WXjh9FgjFUx7qc6n6Y+DYeW/bY0VlqOiQy64jwXftWP7D7DQEd5Jy2uux0ly6I2Sgds2Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=laKQehpg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331D4C4CEE3;
+	Tue, 29 Apr 2025 17:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945559;
-	bh=9C9/CVwX8/XQ5NHoy4qlqtz+LyJBmgI64ee86gDSMeo=;
+	s=korg; t=1745947858;
+	bh=XoMIJNadlmnNnVCB7vwJDHWOWWkC9yo6fJqNxgq0tW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nX8yCs+vQR1gfR+tWKE1iZYLXvCCOGiMluRJM3zYqkzhwy9OOqFXOpDaZvMsLHHfW
-	 8arvu6XAsnYizkmAf4K817qpTixCbep5vErLXK2qT6jMoZfrBa7Z5n9JTA0ClTOfEj
-	 XeLlFp4IEqxYavICd2J5kLi9nawyWzdIYb8DPb6I=
+	b=laKQehpglT8z5NSwf6bE2VfzV8kLWMXbkTT0LJfGJ74zTUasyxb5ywTtLLlc05Hch
+	 JDENqXOwhPRu3mAgnDYtwDrjNrtQLFkOOPe46mP0UeY9iYgW3pcv1JmdxDEYae4ctM
+	 eY93oK9hcKzjasDkJnTIJ8nlDgdXUVh3XbPcYAuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.4 124/179] MIPS: dec: Declare which_prom() as static
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 124/280] KVM: x86: Reset IRTE to host control if *new* route isnt postable
 Date: Tue, 29 Apr 2025 18:41:05 +0200
-Message-ID: <20250429161054.414166000@linuxfoundation.org>
+Message-ID: <20250429161120.194565766@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +59,185 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 55fa5868519bc48a7344a4c070efa2f4468f2167 upstream.
+commit 9bcac97dc42d2f4da8229d18feb0fe2b1ce523a2 upstream.
 
-Declare which_prom() as static to suppress gcc compiler warning that
-'missing-prototypes'. This function is not intended to be called
-from other parts.
+Restore an IRTE back to host control (remapped or posted MSI mode) if the
+*new* GSI route prevents posting the IRQ directly to a vCPU, regardless of
+the GSI routing type.  Updating the IRTE if and only if the new GSI is an
+MSI results in KVM leaving an IRTE posting to a vCPU.
 
-Fix follow error with gcc-14 when -Werror:
+The dangling IRTE can result in interrupts being incorrectly delivered to
+the guest, and in the worst case scenario can result in use-after-free,
+e.g. if the VM is torn down, but the underlying host IRQ isn't freed.
 
-arch/mips/dec/prom/init.c:45:13: error: no previous prototype for ‘which_prom’ [-Werror=missing-prototypes]
-   45 | void __init which_prom(s32 magic, s32 *prom_vec)
-      |             ^~~~~~~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:207: arch/mips/dec/prom/init.o] Error 1
-make[5]: *** [scripts/Makefile.build:465: arch/mips/dec/prom] Error 2
-make[5]: *** Waiting for unfinished jobs....
-
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: efc644048ecd ("KVM: x86: Update IRTE for posted-interrupts")
+Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-3-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/dec/prom/init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/avic.c        |   58 +++++++++++++++++++++--------------------
+ arch/x86/kvm/vmx/posted_intr.c |   28 +++++++------------
+ 2 files changed, 41 insertions(+), 45 deletions(-)
 
---- a/arch/mips/dec/prom/init.c
-+++ b/arch/mips/dec/prom/init.c
-@@ -42,7 +42,7 @@ int (*__pmax_close)(int);
-  * Detect which PROM the DECSTATION has, and set the callback vectors
-  * appropriately.
-  */
--void __init which_prom(s32 magic, s32 *prom_vec)
-+static void __init which_prom(s32 magic, s32 *prom_vec)
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -896,6 +896,7 @@ int avic_pi_update_irte(struct kvm *kvm,
  {
- 	/*
- 	 * No sign of the REX PROM's magic number means we assume a non-REX
+ 	struct kvm_kernel_irq_routing_entry *e;
+ 	struct kvm_irq_routing_table *irq_rt;
++	bool enable_remapped_mode = true;
+ 	int idx, ret = 0;
+ 
+ 	if (!kvm_arch_has_assigned_device(kvm) ||
+@@ -933,6 +934,8 @@ int avic_pi_update_irte(struct kvm *kvm,
+ 		    kvm_vcpu_apicv_active(&svm->vcpu)) {
+ 			struct amd_iommu_pi_data pi;
+ 
++			enable_remapped_mode = false;
++
+ 			/* Try to enable guest_mode in IRTE */
+ 			pi.base = __sme_set(page_to_phys(svm->avic_backing_page) &
+ 					    AVIC_HPA_MASK);
+@@ -951,33 +954,6 @@ int avic_pi_update_irte(struct kvm *kvm,
+ 			 */
+ 			if (!ret && pi.is_guest_mode)
+ 				svm_ir_list_add(svm, &pi);
+-		} else {
+-			/* Use legacy mode in IRTE */
+-			struct amd_iommu_pi_data pi;
+-
+-			/**
+-			 * Here, pi is used to:
+-			 * - Tell IOMMU to use legacy mode for this interrupt.
+-			 * - Retrieve ga_tag of prior interrupt remapping data.
+-			 */
+-			pi.prev_ga_tag = 0;
+-			pi.is_guest_mode = false;
+-			ret = irq_set_vcpu_affinity(host_irq, &pi);
+-
+-			/**
+-			 * Check if the posted interrupt was previously
+-			 * setup with the guest_mode by checking if the ga_tag
+-			 * was cached. If so, we need to clean up the per-vcpu
+-			 * ir_list.
+-			 */
+-			if (!ret && pi.prev_ga_tag) {
+-				int id = AVIC_GATAG_TO_VCPUID(pi.prev_ga_tag);
+-				struct kvm_vcpu *vcpu;
+-
+-				vcpu = kvm_get_vcpu_by_id(kvm, id);
+-				if (vcpu)
+-					svm_ir_list_del(to_svm(vcpu), &pi);
+-			}
+ 		}
+ 
+ 		if (!ret && svm) {
+@@ -993,6 +969,34 @@ int avic_pi_update_irte(struct kvm *kvm,
+ 	}
+ 
+ 	ret = 0;
++	if (enable_remapped_mode) {
++		/* Use legacy mode in IRTE */
++		struct amd_iommu_pi_data pi;
++
++		/**
++		 * Here, pi is used to:
++		 * - Tell IOMMU to use legacy mode for this interrupt.
++		 * - Retrieve ga_tag of prior interrupt remapping data.
++		 */
++		pi.prev_ga_tag = 0;
++		pi.is_guest_mode = false;
++		ret = irq_set_vcpu_affinity(host_irq, &pi);
++
++		/**
++		 * Check if the posted interrupt was previously
++		 * setup with the guest_mode by checking if the ga_tag
++		 * was cached. If so, we need to clean up the per-vcpu
++		 * ir_list.
++		 */
++		if (!ret && pi.prev_ga_tag) {
++			int id = AVIC_GATAG_TO_VCPUID(pi.prev_ga_tag);
++			struct kvm_vcpu *vcpu;
++
++			vcpu = kvm_get_vcpu_by_id(kvm, id);
++			if (vcpu)
++				svm_ir_list_del(to_svm(vcpu), &pi);
++		}
++	}
+ out:
+ 	srcu_read_unlock(&kvm->irq_srcu, idx);
+ 	return ret;
+--- a/arch/x86/kvm/vmx/posted_intr.c
++++ b/arch/x86/kvm/vmx/posted_intr.c
+@@ -274,6 +274,7 @@ int vmx_pi_update_irte(struct kvm *kvm,
+ {
+ 	struct kvm_kernel_irq_routing_entry *e;
+ 	struct kvm_irq_routing_table *irq_rt;
++	bool enable_remapped_mode = true;
+ 	struct kvm_lapic_irq irq;
+ 	struct kvm_vcpu *vcpu;
+ 	struct vcpu_data vcpu_info;
+@@ -312,21 +313,8 @@ int vmx_pi_update_irte(struct kvm *kvm,
+ 
+ 		kvm_set_msi_irq(kvm, e, &irq);
+ 		if (!kvm_intr_is_single_vcpu(kvm, &irq, &vcpu) ||
+-		    !kvm_irq_is_postable(&irq)) {
+-			/*
+-			 * Make sure the IRTE is in remapped mode if
+-			 * we don't handle it in posted mode.
+-			 */
+-			ret = irq_set_vcpu_affinity(host_irq, NULL);
+-			if (ret < 0) {
+-				printk(KERN_INFO
+-				   "failed to back to remapped mode, irq: %u\n",
+-				   host_irq);
+-				goto out;
+-			}
+-
++		    !kvm_irq_is_postable(&irq))
+ 			continue;
+-		}
+ 
+ 		vcpu_info.pi_desc_addr = __pa(vcpu_to_pi_desc(vcpu));
+ 		vcpu_info.vector = irq.vector;
+@@ -334,11 +322,12 @@ int vmx_pi_update_irte(struct kvm *kvm,
+ 		trace_kvm_pi_irte_update(host_irq, vcpu->vcpu_id, e->gsi,
+ 				vcpu_info.vector, vcpu_info.pi_desc_addr, set);
+ 
+-		if (set)
+-			ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
+-		else
+-			ret = irq_set_vcpu_affinity(host_irq, NULL);
++		if (!set)
++			continue;
+ 
++		enable_remapped_mode = false;
++
++		ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
+ 		if (ret < 0) {
+ 			printk(KERN_INFO "%s: failed to update PI IRTE\n",
+ 					__func__);
+@@ -346,6 +335,9 @@ int vmx_pi_update_irte(struct kvm *kvm,
+ 		}
+ 	}
+ 
++	if (enable_remapped_mode)
++		ret = irq_set_vcpu_affinity(host_irq, NULL);
++
+ 	ret = 0;
+ out:
+ 	srcu_read_unlock(&kvm->irq_srcu, idx);
 
 
 
