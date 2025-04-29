@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8129AA19CA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:15:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D16BDAA1947
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 980701C0172E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AFCB9C2F0B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255DA188A0E;
-	Tue, 29 Apr 2025 18:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF0440C03;
+	Tue, 29 Apr 2025 18:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJFchMtD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AS0Ew6AZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60CACA5A;
-	Tue, 29 Apr 2025 18:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD34422AE68;
+	Tue, 29 Apr 2025 18:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950415; cv=none; b=Me+sfnglaeOJXORvaCevrya7ViYBhv6i83CaRIVuV0x0cYUp4xQ3DDMo+2O23XHWgP5NUbRW/uhZkpNznKzWtwzTEU6fgwL3M+X4DNWkZ7CNENcLcvNioP9Dvx88vc7smGbLk81AdUIZTx8E+ZbjvVwFIhGn9bf+4RL8ATr4Chc=
+	t=1745949821; cv=none; b=PO/Ni6HWAQTAPGXDyyMOmS/5TU3jmTX/X2+Nl153puyW233yPG1OI0HPSdWDs/+U0h3sxMvCpYyBxG0i8GHovJhuRIzTeZX4mdDP8LllNNf6EYC3JZ+EhuuckaAxocVfXV6PgMCOlEb8obViESMRz9jLLUyRAJRrNEEAMXj9Ljw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950415; c=relaxed/simple;
-	bh=pOihYjmsCJiuwyp1aKEIYLXxBtzOGCm8DPxLm/RAsWg=;
+	s=arc-20240116; t=1745949821; c=relaxed/simple;
+	bh=+UVkSInoFcLxwOi9O7gRoCGilpI2xGBYYNE5A2sxkMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBxX9EycIe9gwjER0ArnSzxibZXAGAsJZb6cqgkVojC60MBKMEsSb4gojHlXk/YYJkyDy25U1t7mJs6LwJHClykdnvH2EQgdkf00wmqpnV06yVih9vUW4bLV6oruCg2n57Mb3Ewsa2RDH8kiTU3HgEs7k0Kjco0pa3Oa1iXBA+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJFchMtD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD33C4CEE3;
-	Tue, 29 Apr 2025 18:13:35 +0000 (UTC)
+	 MIME-Version; b=g4jTkgxgdH6C96ovRsTbAdqVlJCG0X2vKzdyeqMlBtUjua95CHbrZDNulQamY9bFe0HG9guNZl9t3Po2fT0Z3RiAl1E0fcmwbtdrTTYkl3OBMO4YYWwGEL/hhhZKwKkHd3/199gDxRpTKusq7SgZqCLVEjz6LhuTWdJH61pOCzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AS0Ew6AZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F1FC4CEE3;
+	Tue, 29 Apr 2025 18:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950415;
-	bh=pOihYjmsCJiuwyp1aKEIYLXxBtzOGCm8DPxLm/RAsWg=;
+	s=korg; t=1745949821;
+	bh=+UVkSInoFcLxwOi9O7gRoCGilpI2xGBYYNE5A2sxkMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HJFchMtDH/mqouNUGRMkEXBtFyS30RI9zLMWpThnCpHOoY3FbxSpAtwJGmMcV6mzm
-	 KSiXSkt/LRejGfiXi8l6u+/yMl+eJzz0pltuuyaigF0DOJTdjn2kFdotJaXOrC5PHT
-	 P+oWAJoDtNkKbQcGOe0Ow5vE8k1SGRYyiJPShOvc=
+	b=AS0Ew6AZDMomkKs98m4rWsV+VyHPKzaKIJGcbuELWl1VMUT50RFCxFJUNrbh+jWo1
+	 xPJ0Y/ByBk5Y34JAIBDufmGEuFKSGcvX4MMN6ztdqZCeNfheByrq44HIX2zyVOKFMD
+	 qKHT0BRAlddxvj8uoqPLXp2s78Pyegt25yJKr6Ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>
-Subject: [PATCH 6.6 088/204] ata: libata-scsi: Fix ata_msense_control_ata_feature()
+	Peter Xu <peterx@redhat.com>,
+	Hongchen Zhang <zhanghongchen@loongson.cn>,
+	Ming Wang <wangming01@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 068/167] LoongArch: Return NULL from huge_pte_offset() for invalid PMD
 Date: Tue, 29 Apr 2025 18:42:56 +0200
-Message-ID: <20250429161103.025754698@linuxfoundation.org>
+Message-ID: <20250429161054.522428367@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Ming Wang <wangming01@loongson.cn>
 
-commit 88474ad734fb2000805c63e01cc53ea930adf2c7 upstream.
+commit bd51834d1cf65a2c801295d230c220aeebf87a73 upstream.
 
-For the ATA features subpage of the control mode page, the T10 SAT-6
-specifications state that:
+LoongArch's huge_pte_offset() currently returns a pointer to a PMD slot
+even if the underlying entry points to invalid_pte_table (indicating no
+mapping). Callers like smaps_hugetlb_range() fetch this invalid entry
+value (the address of invalid_pte_table) via this pointer.
 
-For a MODE SENSE command, the SATL shall return the CDL_CTRL field value
-that was last set by an application client.
+The generic is_swap_pte() check then incorrectly identifies this address
+as a swap entry on LoongArch, because it satisfies the "!pte_present()
+&& !pte_none()" conditions. This misinterpretation, combined with a
+coincidental match by is_migration_entry() on the address bits, leads to
+kernel crashes in pfn_swap_entry_to_page().
 
-However, the function ata_msense_control_ata_feature() always sets the
-CDL_CTRL field to the 0x02 value to indicate support for the CDL T2A and
-T2B pages. This is thus incorrect and the value 0x02 must be reported
-only after the user enables the CDL feature, which is indicated with the
-ATA_DFLAG_CDL_ENABLED device flag. When this flag is not set, the
-CDL_CTRL field of the ATA feature subpage of the control mode page must
-report a value of 0x00.
+Fix this at the architecture level by modifying huge_pte_offset() to
+check the PMD entry's content using pmd_none() before returning. If the
+entry is invalid (i.e., it points to invalid_pte_table), return NULL
+instead of the pointer to the slot.
 
-Fix ata_msense_control_ata_feature() to report the correct values for
-the CDL_CTRL field, according to the enable/disable state of the device
-CDL feature.
-
-Fixes: df60f9c64576 ("scsi: ata: libata: Add ATA feature control sub-page translation")
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+Acked-by: Peter Xu <peterx@redhat.com>
+Co-developed-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Signed-off-by: Ming Wang <wangming01@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/mm/hugetlbpage.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -2354,8 +2354,8 @@ static unsigned int ata_msense_control_a
- 	 */
- 	put_unaligned_be16(ATA_FEATURE_SUB_MPAGE_LEN - 4, &buf[2]);
+--- a/arch/loongarch/mm/hugetlbpage.c
++++ b/arch/loongarch/mm/hugetlbpage.c
+@@ -47,7 +47,7 @@ pte_t *huge_pte_offset(struct mm_struct
+ 				pmd = pmd_offset(pud, addr);
+ 		}
+ 	}
+-	return (pte_t *) pmd;
++	return pmd_none(pmdp_get(pmd)) ? NULL : (pte_t *) pmd;
+ }
  
--	if (dev->flags & ATA_DFLAG_CDL)
--		buf[4] = 0x02; /* Support T2A and T2B pages */
-+	if (dev->flags & ATA_DFLAG_CDL_ENABLED)
-+		buf[4] = 0x02; /* T2A and T2B pages enabled */
- 	else
- 		buf[4] = 0;
- 
+ /*
 
 
 
