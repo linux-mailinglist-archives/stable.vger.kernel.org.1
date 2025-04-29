@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164EEAA1893
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:02:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1336AA1507
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9C24188CEA9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:01:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD8A016EFF1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF20E248883;
-	Tue, 29 Apr 2025 18:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89CB242D94;
+	Tue, 29 Apr 2025 17:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOaKni4R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UV0hCc5e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDB4224222;
-	Tue, 29 Apr 2025 18:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779BD21ABDB;
+	Tue, 29 Apr 2025 17:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949697; cv=none; b=hE6wwMgzBIHSpJ1ayG7rm+KXE9TTQHCnpXyRl4IDO3mb7jGp+9/MVP5VCZrsZCBNO9TaDc4NN4jNlVJNgE3RFIjP8SiAfexBolIHMOJXIOsbEOC+TbHOleqy/VPal86/76ysX7+auH8vp2olrkX0NzK/Lq6MGOqwbRNaJVh4tTk=
+	t=1745947214; cv=none; b=W3V+vfYJalgbmNXiMMhUO4RcUhNmwz+gc7Ish0Dt7igejaix+v53HZX0oBRChjw7q66q9ZtYKcpuFNqpMkwSXlytHveaS1uyhf/9d8oEn7lxazvs7aew2jmepKJLi+HlfKMA5o4Rf88Fazzq3ZGZsu5LTAB9z0c3Q0GVl/V6oSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949697; c=relaxed/simple;
-	bh=W7DLyXstXVJzbk+9bKWuZIb3os1QuCSgSJis3n3CA14=;
+	s=arc-20240116; t=1745947214; c=relaxed/simple;
+	bh=x6ZilYUKeLZ1r6iKlLYNXZbQ2xRpXpQTKUXWLlDFOic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RXJsWiz/dvNQcFwDruLF4RrbRVXiNAGR4PaCO8LMrKV4wm+VTiagwm1Ngmnp/NWHAXtGXxQ5Vb4LKQFE83TAExE1VEBG4MpMzkqkYz3OGPBjwTeOKgz3tgCWvZih1gjisg8+THCWSsGsk+5KdVefRTHjadOavvJy+Rrs/k0/Gns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOaKni4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4748C4CEE3;
-	Tue, 29 Apr 2025 18:01:36 +0000 (UTC)
+	 MIME-Version; b=G+pXRMfQI2cG/nKuab7K8K5trvUrjXc6OD6Q40CE6Huz6L7aQu0JxVQdB6gPTuVbZ8C03XRzP5X/2XLNUFBRLQHSQbJR0CKweaNG+hcBhvR3T6jy33fpytqIkQbhwN4pWh4AXwzdvbFTmuQk+G/OpmPQ17Iqa/Xr5tjZdmru3/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UV0hCc5e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8E3C4CEE9;
+	Tue, 29 Apr 2025 17:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949697;
-	bh=W7DLyXstXVJzbk+9bKWuZIb3os1QuCSgSJis3n3CA14=;
+	s=korg; t=1745947214;
+	bh=x6ZilYUKeLZ1r6iKlLYNXZbQ2xRpXpQTKUXWLlDFOic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hOaKni4RU3pS7q5P9sOmxPUDCqxyhc0Jg1I0AWA+NL0cE2ftxaTg55eQma7PFMMZu
-	 Gs+iMiMMqTaiBPLTCvxDRLBRyDoIHJXlPEX1jdCzgOez3cEUVeLgZwPRVc/fRVY1zp
-	 izUg/F6N3vTUHwJAsf/+2ALN9ciZxhSWJlajzasI=
+	b=UV0hCc5ep5cAAjnLoSmVP3oaf3Fy3rx85A21+/hGix1IanewKD3eHafsQ/4ZeCgVV
+	 RKKNQxSd3A2SsplfrPxotCvWWAXc0JvU3RxxUX4XamlLADrw5V671wvlSYKkRegwt9
+	 a5UaJxvM/ZMO69quCCd360LWZ0R0XUC4Klw/BGD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/167] tracing: Add __string_len() example
+Subject: [PATCH 5.10 209/286] media: venus: Get codecs and capabilities from hfi platform
 Date: Tue, 29 Apr 2025 18:41:53 +0200
-Message-ID: <20250429161051.966318846@linuxfoundation.org>
+Message-ID: <20250429161116.549426789@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Stanimir Varbanov <stanimir.varbanov@linaro.org>
 
-[ Upstream commit dd6ae6d90a84d4bec49887c7aa2b22aa1c8b2897 ]
+[ Upstream commit e29929266be1ac0e40121f56b5c13b52c281db06 ]
 
-There's no example code that uses __string_len(), and since the sample
-code is used for testing the event logic, add a use case.
+Wire up hfi platform codec and capabilities instead of
+getting them from firmware.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240223152827.5f9f78e2@gandalf.local.home
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: ea8d7647f9dd ("tracing: Verify event formats that have "%*p.."")
+Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: 9edaaa8e3e15 ("media: venus: hfi_parser: refactor hfi packet parsing logic")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/trace_events/trace-events-sample.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../media/platform/qcom/venus/hfi_parser.c    | 38 +++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/samples/trace_events/trace-events-sample.h b/samples/trace_events/trace-events-sample.h
-index 1c6b843b8c4ee..04541dfbd44cc 100644
---- a/samples/trace_events/trace-events-sample.h
-+++ b/samples/trace_events/trace-events-sample.h
-@@ -302,6 +302,7 @@ TRACE_EVENT(foo_bar,
- 		__bitmask(	cpus,	num_possible_cpus()	)
- 		__cpumask(	cpum				)
- 		__vstring(	vstr,	fmt,	va		)
-+		__string_len(	lstr,	foo,	bar / 2 < strlen(foo) ? bar / 2 : strlen(foo) )
- 	),
+diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
+index be9a58ef04d86..7a2915befdb83 100644
+--- a/drivers/media/platform/qcom/venus/hfi_parser.c
++++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+@@ -245,11 +245,49 @@ static void parser_fini(struct venus_inst *inst, u32 codecs, u32 domain)
+ 	}
+ }
  
- 	TP_fast_assign(
-@@ -310,12 +311,13 @@ TRACE_EVENT(foo_bar,
- 		memcpy(__get_dynamic_array(list), lst,
- 		       __length_of(lst) * sizeof(int));
- 		__assign_str(str, string);
-+		__assign_str(lstr, foo);
- 		__assign_vstr(vstr, fmt, va);
- 		__assign_bitmask(cpus, cpumask_bits(mask), num_possible_cpus());
- 		__assign_cpumask(cpum, cpumask_bits(mask));
- 	),
++static int hfi_platform_parser(struct venus_core *core, struct venus_inst *inst)
++{
++	const struct hfi_platform *plat;
++	const struct hfi_plat_caps *caps = NULL;
++	u32 enc_codecs, dec_codecs, count;
++	unsigned int entries;
++
++	if (inst)
++		return 0;
++
++	plat = hfi_platform_get(core->res->hfi_version);
++	if (!plat)
++		return -EINVAL;
++
++	if (plat->codecs)
++		plat->codecs(&enc_codecs, &dec_codecs, &count);
++
++	if (plat->capabilities)
++		caps = plat->capabilities(&entries);
++
++	if (!caps || !entries || !count)
++		return -EINVAL;
++
++	core->enc_codecs = enc_codecs;
++	core->dec_codecs = dec_codecs;
++	core->codecs_count = count;
++	core->max_sessions_supported = MAX_SESSIONS;
++	memset(core->caps, 0, sizeof(*caps) * MAX_CODEC_NUM);
++	memcpy(core->caps, caps, sizeof(*caps) * entries);
++
++	return 0;
++}
++
+ u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
+ 	       u32 size)
+ {
+ 	unsigned int words_count = size >> 2;
+ 	u32 *word = buf, *data, codecs = 0, domain = 0;
++	int ret;
++
++	ret = hfi_platform_parser(core, inst);
++	if (!ret)
++		return HFI_ERR_NONE;
  
--	TP_printk("foo %s %d %s %s %s %s (%s) (%s) %s", __entry->foo, __entry->bar,
-+	TP_printk("foo %s %d %s %s %s %s %s (%s) (%s) %s", __entry->foo, __entry->bar,
- 
- /*
-  * Notice here the use of some helper functions. This includes:
-@@ -359,7 +361,8 @@ TRACE_EVENT(foo_bar,
- 		  __print_array(__get_dynamic_array(list),
- 				__get_dynamic_array_len(list) / sizeof(int),
- 				sizeof(int)),
--		  __get_str(str), __get_bitmask(cpus), __get_cpumask(cpum),
-+		  __get_str(str), __get_str(lstr),
-+		  __get_bitmask(cpus), __get_cpumask(cpum),
- 		  __get_str(vstr))
- );
- 
+ 	if (size % 4)
+ 		return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
 -- 
 2.39.5
 
