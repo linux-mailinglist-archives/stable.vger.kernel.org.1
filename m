@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5064AA145E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F98AA16FF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C6A31B64E49
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:11:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7519F164B4D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8712023C8D6;
-	Tue, 29 Apr 2025 17:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415582528E8;
+	Tue, 29 Apr 2025 17:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7Uxv0pK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlEoZ+uQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5F71DF73C;
-	Tue, 29 Apr 2025 17:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3761227E95;
+	Tue, 29 Apr 2025 17:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946688; cv=none; b=Eo80CcQsHTeUp8tPuwvo5HOGp3hH2oN10dsJz7uJs0naUvxL9X2qJ7lyYmO73qqBrv0f2M5rYpRj3/hLqgCK38qJXbY9cDn1mpZtvsFs2l4a6tQ8GuESz9gtIhTssGxbdnGYhqL0C0N31kRcAowT/f5zVlWuHahzpZ/5bBgnCvk=
+	t=1745948524; cv=none; b=r/FrRNz0xAa4//UobCE4uAEmM4nUCktYv97iP/ubx+6EMe+ok4K3GRuZwIM1QwOXi8UGV7s8fyiy/8WA40HouTfe8CpvObUeE9RNFN7wkh3HjBBRN+OYCJNcD//ahEIEjApO+YCGyzjMmKeeTEDAIM3LkJLFP6ZV6ZeyrJ7N9Oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946688; c=relaxed/simple;
-	bh=y+qaibwtMKyTMHBbE4Wc/5wad6EqNSH4gfndDLn8E+I=;
+	s=arc-20240116; t=1745948524; c=relaxed/simple;
+	bh=cGJHWs9EkGbR86yYBCWN6Lp89ODULDhJqP2zu0RhEQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c8GbKWfixjJzA791RR0t6O0d1A6PcnIW7F3Y3rv58XxypSC4TkyWB821zlSw3JQp4zq18y8mJnvdUMNc73dhYlKHXsXh5mBwos4OiPIk/GeLUj6PGTHxNBWqoVxSKEHcqe+mngqQJOPXZUUq+fnUE3hbOPROEyZbO0Ispqn3pM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7Uxv0pK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5534C4CEE3;
-	Tue, 29 Apr 2025 17:11:27 +0000 (UTC)
+	 MIME-Version; b=ZZYPyotvtKxLUbm2LPcck9T1fpM6baIxJ5gQrTOjbEZVYPr+KN40nR8JAf311UhlRySohIxJy8KmiL/qcyK0py797ji5Ev3SKYpBx3cbWlf0FDAIMJAoxnJwQNKoav5hDaA2Q+tMFlyxCZzIHLahvUUqIOyGLP9sa9HZtX7Wze0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlEoZ+uQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B429C4CEE3;
+	Tue, 29 Apr 2025 17:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946688;
-	bh=y+qaibwtMKyTMHBbE4Wc/5wad6EqNSH4gfndDLn8E+I=;
+	s=korg; t=1745948523;
+	bh=cGJHWs9EkGbR86yYBCWN6Lp89ODULDhJqP2zu0RhEQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7Uxv0pK3s60U031BBYtVLo+J29YQGptFsGsh+ltbL5zxpnsf7eZL12F0lLNJscNL
-	 AgUQhO379Q0U3eYtuqAJTx8vWIy4DWWGEgB86bhpHKQ7ScTvbirIGCDS6D4+z5EUmx
-	 /gwt3hNy/mfj5SdREVgbPUVqV/7DjTlZdODLmdys=
+	b=WlEoZ+uQeEfMBNiyJ+k5/dcogt04tNCMAl9+waByajNOfjLy+Y9Cfr+G+LAWTbllJ
+	 fycWuewEKC+jfyE74JIcEIsX/URS+tI71iUPGAIcGFOSwWeT7mOrbkfx3px7mas1bB
+	 yTXRvgF/YWzGtiM0NYhoMRomw3key+5Sv1Gcxu8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 008/286] net: ppp: Add bound checking for skb data on ppp_sync_txmung
+Subject: [PATCH 5.15 035/373] wifi: mt76: mt76x2u: add TP-Link TL-WDN6200 ID to device table
 Date: Tue, 29 Apr 2025 18:38:32 +0200
-Message-ID: <20250429161108.197791791@linuxfoundation.org>
+Message-ID: <20250429161124.578902989@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-[ Upstream commit aabc6596ffb377c4c9c8f335124b92ea282c9821 ]
+[ Upstream commit 06cccc2ebbe6c8a20f714f3a0ff3ff489d3004bb ]
 
-Ensure we have enough data in linear buffer from skb before accessing
-initial bytes. This prevents potential out-of-bounds accesses
-when processing short packets.
+The TP-Link TL-WDN6200 "Driverless" version cards use a MT7612U chipset.
 
-When ppp_sync_txmung receives an incoming package with an empty
-payload:
-(remote) gef➤  p *(struct pppoe_hdr *) (skb->head + skb->network_header)
-$18 = {
-	type = 0x1,
-	ver = 0x1,
-	code = 0x0,
-	sid = 0x2,
-        length = 0x0,
-	tag = 0xffff8880371cdb96
-}
+Add the USB ID to mt76x2u driver.
 
-from the skb struct (trimmed)
-      tail = 0x16,
-      end = 0x140,
-      head = 0xffff88803346f400 "4",
-      data = 0xffff88803346f416 ":\377",
-      truesize = 0x380,
-      len = 0x0,
-      data_len = 0x0,
-      mac_len = 0xe,
-      hdr_len = 0x0,
-
-it is not safe to access data[2].
-
-Reported-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=29fc8991b0ecb186cf40
-Tested-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Link: https://patch.msgid.link/20250408-bound-checking-ppp_txmung-v2-1-94bb6e1b92d0@arnaud-lcm.com
-[pabeni@redhat.com: fixed subj typo]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Link: https://patch.msgid.link/20250317102235.1421726-1-uwu@icenowy.me
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_synctty.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
-index 7174316362758..11725cab4912b 100644
---- a/drivers/net/ppp/ppp_synctty.c
-+++ b/drivers/net/ppp/ppp_synctty.c
-@@ -517,6 +517,11 @@ ppp_sync_txmunge(struct syncppp *ap, struct sk_buff *skb)
- 	unsigned char *data;
- 	int islcp;
- 
-+	/* Ensure we can safely access protocol field and LCP code */
-+	if (!pskb_may_pull(skb, 3)) {
-+		kfree_skb(skb);
-+		return NULL;
-+	}
- 	data  = skb->data;
- 	proto = get_unaligned_be16(data);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+index 2575369e44e20..9369515f36a3a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -21,6 +21,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
+ 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
+ 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
+ 	{ USB_DEVICE(0x045e, 0x02fe) },	/* XBox One Wireless Adapter */
++	{ USB_DEVICE(0x2357, 0x0137) },	/* TP-Link TL-WDN6200 */
+ 	{ },
+ };
  
 -- 
 2.39.5
