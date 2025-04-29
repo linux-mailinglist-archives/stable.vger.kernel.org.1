@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-138179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B5EAA16D8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2184AA1862
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0F4F1899712
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8A4217B34D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C621251780;
-	Tue, 29 Apr 2025 17:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1E6247280;
+	Tue, 29 Apr 2025 17:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huRlL5kk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFmAX7UW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294521917E3;
-	Tue, 29 Apr 2025 17:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CED2AE96;
+	Tue, 29 Apr 2025 17:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948420; cv=none; b=qsHnAf5LFzefAffLqDO3rT5jgs1vOoSsvzCrl3Xv+hvqFKQcV80LynUAonwAsItkJ10O5zuIipafKyEiV4FJyaSmPdhSyTlz0/HhkQ6WmpcTBd6/0Hz8XITVpS+GHufuJHcppVdWIGMzIl7Fd1DbkBmZsWGqmjV+x9q/GB7lGhE=
+	t=1745949480; cv=none; b=EzCmu3e8sO05PQZhHEsWjE6OtUSS4qAYtGHyqueRSFkRBJ+5axqNw4tt+1OAx5M2VWfMQpVnOYRv6fPWeZs6grQZAeAwke/l47BZvTiCDSbPEFQyfPvAfFqIkI067/AimvPCqgKQatQXvp6RVN1LWPg46UBZw1bMvSAQEzb3/WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948420; c=relaxed/simple;
-	bh=9JMgEPd/otdSbJ0s8WLEDI9siMgh1bCE80fLRJX1fyo=;
+	s=arc-20240116; t=1745949480; c=relaxed/simple;
+	bh=UfDASlu8O+YBtkFq9UnyYJf775ozLSENVdFXDBm+54w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BoLquwKBvHKYkRFAq0lJB0ytPWug6pO3xU5hG1Pvn7AewRowIDxrv71sv38dh1fsZnpXqK91R0LWwwQckRgqw3e9qJrdQfQEk7xcz1j6fQjiV5Dxl/5gf5lNZXF6OHyOGiYrcxYCy+hiny576QVzeP8mCW8aLq/miQKRsq4WXOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huRlL5kk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DF4C4CEE3;
-	Tue, 29 Apr 2025 17:40:19 +0000 (UTC)
+	 MIME-Version; b=KPMVuQ8HMXMLZjoBR9jfL5VgDNXaPuWQP1uG6h4fq2XXa+laThqxzM+y1uhHDRgJ5RCYmoUo0lRvKtYh9j72VZcM3c1Hh+Yr4Sm4GpQ3HKcJ/5y5eqIueBaTGdv+7T0g3g7CciJ7u3re1VIMLvWD/IV3W6JCDmNP9DljzSQvOco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFmAX7UW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04DD4C4CEE3;
+	Tue, 29 Apr 2025 17:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948420;
-	bh=9JMgEPd/otdSbJ0s8WLEDI9siMgh1bCE80fLRJX1fyo=;
+	s=korg; t=1745949480;
+	bh=UfDASlu8O+YBtkFq9UnyYJf775ozLSENVdFXDBm+54w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=huRlL5kkCwEEqaCA19U3B7ZPLJFu+EGjt8XzIotvmAWkLO2bhq2Ry/WP0bP0GHrYt
-	 gFkHHD18W49cqS/9fXg+5V0e6h9TVSkGv9BjQkgGACgwxmB5cOgvYMtV2IFtbnQBQO
-	 GVo3JwG2S5dmT253hO2w0CIEMNPHReIGrRbBJyfA=
+	b=kFmAX7UWvaMrtEuetODWgoa44thM9EywLIOUntDonIJafVbc0RkyXI3i2ctECLUjj
+	 ohWmTpDg8NCWEi+a7AAfZ3fpKDHy7naSPtZcETOzsSsv1N4ghECPdO4IBuf5+KTUre
+	 zAKbD9hsCC/QJ9FiMleLQ2qPETlZYCXw25BWrG9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	"stable@vger.kernel.org, Sasha Levin" <sashal@kernel.org>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 268/280] net: dsa: mv88e6xxx: enable STU methods for 6320 family
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	virtualization@lists.linux.dev,
+	linux-sound@vger.kernel.org,
+	kernel-team@android.com,
+	Betty Zhou <bettyzhou@google.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	John Stultz <jstultz@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 332/373] sound/virtio: Fix cancel_sync warnings on uninitialized work_structs
 Date: Tue, 29 Apr 2025 18:43:29 +0200
-Message-ID: <20250429161126.099934959@linuxfoundation.org>
+Message-ID: <20250429161136.784794970@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +68,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Marek Behún" <kabel@kernel.org>
+From: John Stultz <jstultz@google.com>
 
-commit 1428a6109b20e356188c3fb027bdb7998cc2fb98 upstream.
+[ Upstream commit 3c7df2e27346eb40a0e86230db1ccab195c97cfe ]
 
-Commit c050f5e91b47 ("net: dsa: mv88e6xxx: Fill in STU support for all
-supported chips") introduced STU methods, but did not add them to the
-6320 family. Fix it.
+Betty reported hitting the following warning:
 
-Fixes: c050f5e91b47 ("net: dsa: mv88e6xxx: Fill in STU support for all supported chips")
-Signed-off-by: Marek BehÃºn <kabel@kernel.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-6-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[    8.709131][  T221] WARNING: CPU: 2 PID: 221 at kernel/workqueue.c:4182
+...
+[    8.713282][  T221] Call trace:
+[    8.713365][  T221]  __flush_work+0x8d0/0x914
+[    8.713468][  T221]  __cancel_work_sync+0xac/0xfc
+[    8.713570][  T221]  cancel_work_sync+0x24/0x34
+[    8.713667][  T221]  virtsnd_remove+0xa8/0xf8 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
+[    8.713868][  T221]  virtsnd_probe+0x48c/0x664 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
+[    8.714035][  T221]  virtio_dev_probe+0x28c/0x390
+[    8.714139][  T221]  really_probe+0x1bc/0x4c8
+...
+
+It seems we're hitting the error path in virtsnd_probe(), which
+triggers a virtsnd_remove() which iterates over the substreams
+calling cancel_work_sync() on the elapsed_period work_struct.
+
+Looking at the code, from earlier in:
+virtsnd_probe()->virtsnd_build_devs()->virtsnd_pcm_parse_cfg()
+
+We set snd->nsubstreams, allocate the snd->substreams, and if
+we then hit an error on the info allocation or something in
+virtsnd_ctl_query_info() fails, we will exit without having
+initialized the elapsed_period work_struct.
+
+When that error path unwinds we then call virtsnd_remove()
+which as long as the substreams array is allocated, will iterate
+through calling cancel_work_sync() on the uninitialized work
+struct hitting this warning.
+
+Takashi Iwai suggested this fix, which initializes the substreams
+structure right after allocation, so that if we hit the error
+paths we avoid trying to cleanup uninitialized data.
+
+Note: I have not yet managed to reproduce the issue myself, so
+this patch has had limited testing.
+
+Feedback or thoughts would be appreciated!
+
+Cc: Anton Yakovlev <anton.yakovlev@opensynergy.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: virtualization@lists.linux.dev
+Cc: linux-sound@vger.kernel.org
+Cc: kernel-team@android.com
+Reported-by: Betty Zhou <bettyzhou@google.com>
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: John Stultz <jstultz@google.com>
+Message-Id: <20250116194114.3375616-1-jstultz@google.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/virtio/virtio_pcm.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5213,6 +5213,8 @@ static const struct mv88e6xxx_ops mv88e6
- 	.reset = mv88e6352_g1_reset,
- 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
- 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
-+	.stu_getnext = mv88e6352_g1_stu_getnext,
-+	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
- 	.gpio_ops = &mv88e6352_gpio_ops,
- 	.avb_ops = &mv88e6352_avb_ops,
- 	.ptp_ops = &mv88e6352_ptp_ops,
-@@ -5263,6 +5265,8 @@ static const struct mv88e6xxx_ops mv88e6
- 	.reset = mv88e6352_g1_reset,
- 	.vtu_getnext = mv88e6352_g1_vtu_getnext,
- 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
-+	.stu_getnext = mv88e6352_g1_stu_getnext,
-+	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
- 	.gpio_ops = &mv88e6352_gpio_ops,
- 	.avb_ops = &mv88e6352_avb_ops,
- 	.ptp_ops = &mv88e6352_ptp_ops,
-@@ -6258,6 +6262,7 @@ static const struct mv88e6xxx_info mv88e
- 		.num_internal_phys = 5,
- 		.num_gpio = 15,
- 		.max_vid = 4095,
-+		.max_sid = 63,
- 		.port_base_addr = 0x10,
- 		.phy_base_addr = 0x0,
- 		.global1_addr = 0x1b,
-@@ -6283,6 +6288,7 @@ static const struct mv88e6xxx_info mv88e
- 		.num_internal_phys = 5,
- 		.num_gpio = 15,
- 		.max_vid = 4095,
-+		.max_sid = 63,
- 		.port_base_addr = 0x10,
- 		.phy_base_addr = 0x0,
- 		.global1_addr = 0x1b,
+diff --git a/sound/virtio/virtio_pcm.c b/sound/virtio/virtio_pcm.c
+index c10d91fff2fb0..1ddec1f4f05d5 100644
+--- a/sound/virtio/virtio_pcm.c
++++ b/sound/virtio/virtio_pcm.c
+@@ -337,6 +337,21 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
+ 	if (!snd->substreams)
+ 		return -ENOMEM;
+ 
++	/*
++	 * Initialize critical substream fields early in case we hit an
++	 * error path and end up trying to clean up uninitialized structures
++	 * elsewhere.
++	 */
++	for (i = 0; i < snd->nsubstreams; ++i) {
++		struct virtio_pcm_substream *vss = &snd->substreams[i];
++
++		vss->snd = snd;
++		vss->sid = i;
++		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
++		init_waitqueue_head(&vss->msg_empty);
++		spin_lock_init(&vss->lock);
++	}
++
+ 	info = kcalloc(snd->nsubstreams, sizeof(*info), GFP_KERNEL);
+ 	if (!info)
+ 		return -ENOMEM;
+@@ -350,12 +365,6 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
+ 		struct virtio_pcm_substream *vss = &snd->substreams[i];
+ 		struct virtio_pcm *vpcm;
+ 
+-		vss->snd = snd;
+-		vss->sid = i;
+-		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
+-		init_waitqueue_head(&vss->msg_empty);
+-		spin_lock_init(&vss->lock);
+-
+ 		rc = virtsnd_pcm_build_hw(vss, &info[i]);
+ 		if (rc)
+ 			goto on_exit;
+-- 
+2.39.5
+
 
 
 
