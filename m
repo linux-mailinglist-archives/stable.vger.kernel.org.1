@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-138506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC2FAA18B0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0540FAA1860
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:59:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB36A3A56A0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8181E1750FF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C39216605;
-	Tue, 29 Apr 2025 17:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA94247280;
+	Tue, 29 Apr 2025 17:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZrWBFnE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7em14FD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D922AE96;
-	Tue, 29 Apr 2025 17:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6F9243964;
+	Tue, 29 Apr 2025 17:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949468; cv=none; b=dVuFDfV9hcECLx72dV60YrlD9hWjBUwdvhD64+pg0Abj6aN56urccgRVl7GXPfpu8qJ23HXoRpF8CdIEGZL6ZX/4X85i6N1JR5wITveGskVkWuSpjrWvxeGTuJPayRWYJLjRu3EA0CgttxMFwBqbgRPPOKN+HtgeN3L9gYabXAc=
+	t=1745949474; cv=none; b=K1CpC0ofDNU7qMx8Q/tYJ++L6widDrwjajaE4qgk/+76S2E00Zx+pWEn1+kNY4qMU7K3tFpmoqzuZeNw/C8Dn0Mf71fXOFFHz+/MZzt7XvvjI3favvqYBYWuaXNkHaXYYuSr/TqxFqgs6+1RvTqYkRLcH5ueesXS0hWHPabmLrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949468; c=relaxed/simple;
-	bh=ypu7z+GZfqcohkrN16gc7CNEwMNYXN2WpLzNxXVC3so=;
+	s=arc-20240116; t=1745949474; c=relaxed/simple;
+	bh=3LKYrr+eyka/VFxdzepxoLr2yoWK9NV2Ce5m1aGy/Yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBTzueJSYwR7xi4Bn0sV1zSQROIsqO5gDnvDldzeZ237eDp1G/RlfPVG6D8oaZhPYa4la7Gjhf1E9bNmJJUaBpCbORaEqhg35lQ7w6s2Cte7+EW+nHQn4riGnth4pO5A/Vp/3XesDgHaJuUxbJ+oNVzkr6ElRDzxKNJeTYutMv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZrWBFnE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28859C4CEE3;
-	Tue, 29 Apr 2025 17:57:47 +0000 (UTC)
+	 MIME-Version; b=RA1CPVHWMV5xb2fmdtr+EuSrLWuuHPovlBR66SRxqNDDh50gp09FG3do8KYjHQQxkqzMNX2p/HMzXx3Tyfb/FqGwCpm/rDjaTXw9cZZEC4NeHvLA3aooBbfST5aeI0RcdxCF7wQ/ycUp5W6MEt5hx47HaSnEj1nNMt+zyVmimfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7em14FD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBAEBC4CEE9;
+	Tue, 29 Apr 2025 17:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949468;
-	bh=ypu7z+GZfqcohkrN16gc7CNEwMNYXN2WpLzNxXVC3so=;
+	s=korg; t=1745949474;
+	bh=3LKYrr+eyka/VFxdzepxoLr2yoWK9NV2Ce5m1aGy/Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EZrWBFnEEXU/Fga9a47y99GHJsTr+r5sWyJ5PFZgQUYGE7VL0qVrIOFIf3T3h2YwS
-	 70YsK2J7cnrH/6ZI0B+E3XCSNaVz3zas/RmSVbE6GuNXfQVajrkos2J9MwV1f19PDs
-	 TZx90IqcvCIG8uUqPW71ZOKWcuFA+pNv/ENBJ+xk=
+	b=w7em14FDGagqHwOjU5GQ1lrgdA9USFRZqbPt60KOEt8C5ywydTHzkj70MyE81mW2Z
+	 WqgiN2wcc4fcEicFSVMAHXeKrwf/mM16PTWUlLrObWb2nwikV/fYykCumxLorLZpuV
+	 +TrAtBMLXLfbfUml/bA6X5tA+JZsiw22HWUC+tc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@mailbox.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 329/373] usb: host: max3421-hcd: Add missing spi_device_id table
-Date: Tue, 29 Apr 2025 18:43:26 +0200
-Message-ID: <20250429161136.667810118@linuxfoundation.org>
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+e37dd1dfc814b10caa55@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 330/373] fs/ntfs3: Fix WARNING in ntfs_extend_initialized_size
+Date: Tue, 29 Apr 2025 18:43:27 +0200
+Message-ID: <20250429161136.706827552@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
 References: <20250429161123.119104857@linuxfoundation.org>
@@ -65,49 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Stein <alexander.stein@mailbox.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 41d5e3806cf589f658f92c75195095df0b66f66a ]
+[ Upstream commit ff355926445897cc9fdea3b00611e514232c213c ]
 
-"maxim,max3421" DT compatible is missing its SPI device ID entry, not
-allowing module autoloading and leading to the following message:
- "SPI driver max3421-hcd has no spi_device_id for maxim,max3421"
+Syzbot reported a WARNING in ntfs_extend_initialized_size.
+The data type of in->i_valid and to is u64 in ntfs_file_mmap().
+If their values are greater than LLONG_MAX, overflow will occur because
+the data types of the parameters valid and new_valid corresponding to
+the function ntfs_extend_initialized_size() are loff_t.
 
-Fix this by adding the spi_device_id table.
+Before calling ntfs_extend_initialized_size() in the ntfs_file_mmap(),
+the "ni->i_valid < to" has been determined, so the same WARN_ON determination
+is not required in ntfs_extend_initialized_size().
+Just execute the ntfs_extend_initialized_size() in ntfs_extend() to make
+a WARN_ON check.
 
-Signed-off-by: Alexander Stein <alexander.stein@mailbox.org>
-Link: https://lore.kernel.org/r/20250128195114.56321-1-alexander.stein@mailbox.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-and-tested-by: syzbot+e37dd1dfc814b10caa55@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e37dd1dfc814b10caa55
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/max3421-hcd.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ntfs3/file.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
-index 6d95b90683bc8..37a5914f79871 100644
---- a/drivers/usb/host/max3421-hcd.c
-+++ b/drivers/usb/host/max3421-hcd.c
-@@ -1956,6 +1956,12 @@ max3421_remove(struct spi_device *spi)
- 	return 0;
- }
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index 2d5d234a4533d..74cf9c51e3228 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -435,6 +435,7 @@ static int ntfs_extend(struct inode *inode, loff_t pos, size_t count,
+ 	}
  
-+static const struct spi_device_id max3421_spi_ids[] = {
-+	{ "max3421" },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(spi, max3421_spi_ids);
-+
- static const struct of_device_id max3421_of_match_table[] = {
- 	{ .compatible = "maxim,max3421", },
- 	{},
-@@ -1965,6 +1971,7 @@ MODULE_DEVICE_TABLE(of, max3421_of_match_table);
- static struct spi_driver max3421_driver = {
- 	.probe		= max3421_probe,
- 	.remove		= max3421_remove,
-+	.id_table	= max3421_spi_ids,
- 	.driver		= {
- 		.name	= "max3421-hcd",
- 		.of_match_table = of_match_ptr(max3421_of_match_table),
+ 	if (extend_init && !is_compressed(ni)) {
++		WARN_ON(ni->i_valid >= pos);
+ 		err = ntfs_extend_initialized_size(file, ni, ni->i_valid, pos);
+ 		if (err)
+ 			goto out;
 -- 
 2.39.5
 
