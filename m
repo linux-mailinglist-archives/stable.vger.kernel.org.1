@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB111AA15AF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA20FAA167E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4B2D9879E3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 065757A82E0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349F2252905;
-	Tue, 29 Apr 2025 17:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC52C2512D8;
+	Tue, 29 Apr 2025 17:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMQAYkE0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCw7fePK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DF52512E8;
-	Tue, 29 Apr 2025 17:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6827E24A07D;
+	Tue, 29 Apr 2025 17:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947400; cv=none; b=OZ0ECqtSrGeGEnjVrs5cGer1TSoEufz/UZflY/Kjfgf9Y0D3p0ahRkLNqNOB9zcXwnBwxdoC15dCJy5bPplTnuOMBMypLlPSRMbW7IF9JcoNOSLlFuKy5ERu6Kr9ZqWh9lrTMwmR1Iz7oDbeCPoBnFfp+NEq6PrMEMScK89IFyo=
+	t=1745948279; cv=none; b=toMMdnkTHs0G0X0ClOdaJTpWZVsMkjBuy9oSTbXN0hKkFDBEGbPO+dlTdtBTRKx1Km1m7pkhWPAPWLP3hXsJy/F96+e2evxoFvjlqQwzwPllgVppcQn3p7DBarF9yHJUtEWVMF1rqE1z5moxesHxbuARH9AprAPY8f+9iAEncfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947400; c=relaxed/simple;
-	bh=NNVR1LrHEUiwrPY5UJHyIT/+EcFSqr4KjuFmg2trLF0=;
+	s=arc-20240116; t=1745948279; c=relaxed/simple;
+	bh=5QUmHhEItUyA3sa+rwI83vHw1DezEn2cdqSgA1tuF6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZmVvweb94MMAJSR5d+mUdXEoxI7icpEuKVJTlao+K4eShAYnKrbWiEgo2Mr8vh7CF6e79dzEXCW+YErJlIe8XPBqKwkIujM4Eb0Lpy3NmZG7i68BnrJVNGGdrEp0Gp8gYQO56GOEv78pEJhwrS3BK2uRWqK1Zn4Mth9mZSoxvck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMQAYkE0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EB6C4CEE3;
-	Tue, 29 Apr 2025 17:23:19 +0000 (UTC)
+	 MIME-Version; b=WgExOFyG/UaIleuR3UckJVtNqEstrWnZGZQXN2ukRprfARPUq/lQbpP9z791ciiPk1e4DuzN7QCA2jvXWQdZNcnlss7iZ4eVAfBBlY1ryZYwbsouTX0gWBBPeQY2P1b0LrTCZ7Wxy1qkSO6IVEBPJxPskLf+2kNPjCletJYO/zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCw7fePK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B222C4CEEA;
+	Tue, 29 Apr 2025 17:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947399;
-	bh=NNVR1LrHEUiwrPY5UJHyIT/+EcFSqr4KjuFmg2trLF0=;
+	s=korg; t=1745948278;
+	bh=5QUmHhEItUyA3sa+rwI83vHw1DezEn2cdqSgA1tuF6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OMQAYkE0Pb6IrpsOYJhAMZW6PQAzvYLSDd7q7tZvqgB8PwU1M243zR0TQm+J5/heQ
-	 bhqkPABvAcaU6hEUoLtzCZxJftEeXqMH5bB1NeNSVSQsvcif363z2Y5w+RuQqm70fy
-	 07JIKy5oazxzTE1oBWB1bYBuOLTFuPqJVSgNqdao=
+	b=TCw7fePKtTIrW8F+UK0SIAgHLXD5F4BNuuI7YUPUA4c809CHZ8dI/3EVTwmvtT1xM
+	 gDetE0uXbTVLvQ2GVTE2Ibu+xknoEIMMw3Adm0I0S28dzPtrgiIaMpZvIzE2fWSney
+	 +LS4blBA9lGiFCJUY8LW3sD3zl0MWh1HFZCVS/Kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Igor Pylypiv <ipylypiv@google.com>,
+	Salomon Dushimirimana <salomondush@google.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 269/286] nvme: re-read ANA log page after ns scan completes
-Date: Tue, 29 Apr 2025 18:42:53 +0200
-Message-ID: <20250429161118.986607596@linuxfoundation.org>
+Subject: [PATCH 6.12 233/280] scsi: pm80xx: Set phy_attached to zero when device is gone
+Date: Tue, 29 Apr 2025 18:42:54 +0200
+Message-ID: <20250429161124.651767590@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Igor Pylypiv <ipylypiv@google.com>
 
-[ Upstream commit 62baf70c327444338c34703c71aa8cc8e4189bd6 ]
+[ Upstream commit f7b705c238d1483f0a766e2b20010f176e5c0fb7 ]
 
-When scanning for new namespaces we might have missed an ANA AEN.
+When a fatal error occurs, a phy down event may not be received to set
+phy->phy_attached to zero.
 
-The NVMe base spec (NVMe Base Specification v2.1, Figure 151 'Asynchonous
-Event Information - Notice': Asymmetric Namespace Access Change) states:
-
-  A controller shall not send this even if an Attached Namespace
-  Attribute Changed asynchronous event [...] is sent for the same event.
-
-so we need to re-read the ANA log page after we rescanned the namespace
-list to update the ANA states of the new namespaces.
-
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
+Link: https://lore.kernel.org/r/20250319230305.3172920-1-salomondush@google.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/scsi/pm8001/pm8001_sas.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 94225ffd4643d..5f22f8e8dce7c 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4270,6 +4270,11 @@ static void nvme_scan_work(struct work_struct *work)
- 	/* Requeue if we have missed AENs */
- 	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
- 		nvme_queue_scan(ctrl);
-+#ifdef CONFIG_NVME_MULTIPATH
-+	else
-+		/* Re-read the ANA log page to not miss updates */
-+		queue_work(nvme_wq, &ctrl->ana_work);
-+#endif
- }
- 
- /*
+diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
+index ee2da8e49d4cf..a9d6dac413346 100644
+--- a/drivers/scsi/pm8001/pm8001_sas.c
++++ b/drivers/scsi/pm8001/pm8001_sas.c
+@@ -719,6 +719,7 @@ static void pm8001_dev_gone_notify(struct domain_device *dev)
+ 			spin_lock_irqsave(&pm8001_ha->lock, flags);
+ 		}
+ 		PM8001_CHIP_DISP->dereg_dev_req(pm8001_ha, device_id);
++		pm8001_ha->phy[pm8001_dev->attached_phy].phy_attached = 0;
+ 		pm8001_free_dev(pm8001_dev);
+ 	} else {
+ 		pm8001_dbg(pm8001_ha, DISC, "Found dev has gone.\n");
 -- 
 2.39.5
 
