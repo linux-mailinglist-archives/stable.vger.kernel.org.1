@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-137762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34ED0AA14ED
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0E7AA1635
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82DAC189FFD2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E08E41686B3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BBA24113A;
-	Tue, 29 Apr 2025 17:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498AF253329;
+	Tue, 29 Apr 2025 17:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0yzfQGq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aaOfuSX9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0EB25178C;
-	Tue, 29 Apr 2025 17:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09029250C02;
+	Tue, 29 Apr 2025 17:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947051; cv=none; b=pc3R1vANBY0NMPHL+XQJ5ZSEhvE3DAlgVD4C3Qqb3ftgVvhvgZqg/Zj8G5sa6zxOR5wUDz/5U2/fi3Xmuwk2O4RcLw/V9K7Nm1Xmp30ZDuiEUvRsw2u7JeZ4fMNg4cZw0i3MptufJoTB2Vn0yhbboCOoHJode+/np4iKomkK6pE=
+	t=1745947837; cv=none; b=t9mTXscLbrYPEsQOi1irrbTLt6qfJazXt6FgnzYgYKWbUxa5IctYcq3yq472eqI9MIrhW9t2V7CWi8F0pBZTMvTbveTSKOOUhXNVMdOJdxa9eFYOMmREJ1M9UfZvVHkWiJhX3zgAPa1+oPuztGSNuNCWaeV0vQQvaELwrB5Aueo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947051; c=relaxed/simple;
-	bh=lY0m13+f1HoCvVXg13XLEm42isQ1BDo1lAprtzdWQGg=;
+	s=arc-20240116; t=1745947837; c=relaxed/simple;
+	bh=U0TdRpUmbxeP+U5m5W3LxmATskm/GjD4ZWHt1kSz4m8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lCHHNvxPk/Lsa19Th40eBYH1ubbfizOWqINCzmlioZEtBNwZhrL6OVDADPwS6NiNf6iDkQe4VsJ1Lux87VuzXcEiso73vIGlOFg5YtJy5qn+qxcMGoZ7IxdsZPtYCuGSj8LZ90A0Pxzw1KOQmINnt4HZzig10T43A1svlerLDdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0yzfQGq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6210C4CEE3;
-	Tue, 29 Apr 2025 17:17:30 +0000 (UTC)
+	 MIME-Version; b=fXAxOS3lhbLowy9Yhtti4G9xbD9+wAI8R9nLMjHPbG6i525rUVy/7XxwVVVV8VKmqF/f7O91WskS/wbCSOrGoCRZETeitXo/jR3b+HFclmWmBDd486V8MWmTzYLMKyERcst7XO2ET1IZpu/1gzWcqGDsxHUwzkOV3T8rX5G0zjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aaOfuSX9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236F9C4CEE9;
+	Tue, 29 Apr 2025 17:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947051;
-	bh=lY0m13+f1HoCvVXg13XLEm42isQ1BDo1lAprtzdWQGg=;
+	s=korg; t=1745947836;
+	bh=U0TdRpUmbxeP+U5m5W3LxmATskm/GjD4ZWHt1kSz4m8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h0yzfQGqeKz3DQrGrtjOXwNT/ZmwpshvpQSDIVsUp0wIr2qTwXz/teV6J3b31BBt3
-	 56EEW7iVtuwNo+OGUsWfV8ghjJZBL5zAPPN2+wS96ZjAbTMoYAfvZo+8c0nFSckwGs
-	 6LdkZckcf6mrKZt2Uk6AZ6bTag1Y2XnE5hhXeHBA=
+	b=aaOfuSX9kvAG7TmvWDF2p8j2sYFLMYxxwFzkhQ6gH+yW9vEkdtQ0h0n9qGPWaEZrM
+	 6cWIfqZaB4jrD0IC1TSYU1yDIB4WZXwA/2sR1cPRmusQ1/NdVzUCeBBIWSS6TgBUeW
+	 5mCzDtg/PtG8iByDs5Oq6whyu5+DToVDsB8hYiQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Breno Leitao <leitao@debian.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Cliff Liu <donghua.liu@windriver.com>,
-	He Zhe <Zhe.He@windriver.com>
-Subject: [PATCH 5.10 155/286] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>
+Subject: [PATCH 6.12 118/280] ata: libata-scsi: Fix ata_msense_control_ata_feature()
 Date: Tue, 29 Apr 2025 18:40:59 +0200
-Message-ID: <20250429161114.260362565@linuxfoundation.org>
+Message-ID: <20250429161119.938304993@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 0974d03eb479384466d828d65637814bee6b26d7 upstream.
+commit 88474ad734fb2000805c63e01cc53ea930adf2c7 upstream.
 
-Smatch warns:
+For the ATA features subpage of the control mode page, the T10 SAT-6
+specifications state that:
 
-  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
-  spectre issue 'args.args' [r] (local cap)
+For a MODE SENSE command, the SATL shall return the CDL_CTRL field value
+that was last set by an application client.
 
-The 'nargs' and 'nret' locals come directly from a user-supplied
-buffer and are used as indexes into a small stack-based array and as
-inputs to copy_to_user() after they are subject to bounds checks.
+However, the function ata_msense_control_ata_feature() always sets the
+CDL_CTRL field to the 0x02 value to indicate support for the CDL T2A and
+T2B pages. This is thus incorrect and the value 0x02 must be reported
+only after the user enables the CDL feature, which is indicated with the
+ATA_DFLAG_CDL_ENABLED device flag. When this flag is not set, the
+CDL_CTRL field of the ATA feature subpage of the control mode page must
+report a value of 0x00.
 
-Use array_index_nospec() after the bounds checks to clamp these values
-for speculative execution.
+Fix ata_msense_control_ata_feature() to report the correct values for
+the CDL_CTRL field, according to the enable/disable state of the device
+CDL feature.
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
-[Minor context change fixed]
-Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
+Fixes: df60f9c64576 ("scsi: ata: libata: Add ATA feature control sub-page translation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/rtas.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/ata/libata-scsi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -16,6 +16,7 @@
- #include <linux/capability.h>
- #include <linux/delay.h>
- #include <linux/cpu.h>
-+#include <linux/nospec.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
- #include <linux/completion.h>
-@@ -1173,6 +1174,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args _
- 	    || nargs + nret > ARRAY_SIZE(args.args))
- 		return -EINVAL;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -2325,8 +2325,8 @@ static unsigned int ata_msense_control_a
+ 	 */
+ 	put_unaligned_be16(ATA_FEATURE_SUB_MPAGE_LEN - 4, &buf[2]);
  
-+	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
-+	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
-+
- 	/* Copy in args. */
- 	if (copy_from_user(args.args, uargs->args,
- 			   nargs * sizeof(rtas_arg_t)) != 0)
+-	if (dev->flags & ATA_DFLAG_CDL)
+-		buf[4] = 0x02; /* Support T2A and T2B pages */
++	if (dev->flags & ATA_DFLAG_CDL_ENABLED)
++		buf[4] = 0x02; /* T2A and T2B pages enabled */
+ 	else
+ 		buf[4] = 0;
+ 
 
 
 
