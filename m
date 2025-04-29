@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FAAAA13A8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1823AA167A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 149747A2ADB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FE601887AAC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5021C6B4;
-	Tue, 29 Apr 2025 17:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF232512D8;
+	Tue, 29 Apr 2025 17:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0vuj3Ea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVbpbjRE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18DF22A81D;
-	Tue, 29 Apr 2025 17:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A91524729E;
+	Tue, 29 Apr 2025 17:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946504; cv=none; b=EXRDXZZJHZzAx2f0czaNHzNHjLPuj4k9LxiFQJ0zqRjMY6c12TN9gwEI1r8yaGLwGwvrOvmrL7B0rm/PQ3wM7z/EW+lWFHhczpR8HNuIa7qu700jtgM9d1rVX/71fb+c9zvyiSOibmFr7uTUZtLaAFtJLrgWXci3gJB0HT3PB1Y=
+	t=1745948082; cv=none; b=AcPVJzL7zWA4BhRB+eNgA+m7Y9VrQLoOjKRnd36L2J8QOjencXcQnaiSCW9UkyH9JhpDKFIiAWKJ4obd9+Wmt+ZAR++XwPSG5JjLkvRcSRh+CWxRdiMpX0U7GZFFMiyrCbT5YPQl72fdCMddxapl3ZbkLkZOlgFpwZ2cQfaEw7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946504; c=relaxed/simple;
-	bh=xd0K4xUxtZ9DDlz+3Juv0zYjyooiJc+WM/aavORjJDQ=;
+	s=arc-20240116; t=1745948082; c=relaxed/simple;
+	bh=TEfCvMM0grEnEoOtMP6EEUOfbHhBYNENUDZKs9AfQs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EpamxDNy5lpg70jgtyKLxiub/9E/APZMoXC4A67HxsU1fkb9/yBo/zCrIfPvysvfXmNkWiRlXWWEaPq1Lx4aM0NFNXQWlwZNEx5CDxygKr0zTO6oghF1TBKgY8Keb7jVFapBDQduEuc7REhJABPKV9twJZ4zpUsh+zNui6gYSr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0vuj3Ea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B60C4CEE9;
-	Tue, 29 Apr 2025 17:08:23 +0000 (UTC)
+	 MIME-Version; b=ZWl9A0hvvCa0NdmTKz66iBFfHaIMz5AIJNWWV8d9zxlFwwptcgdZNzi6qwkb5U82HD2cRLUzG0y26AG1k2TBODOE7GptryCfpHZ0OzNlagZzdfUBM5jBe68T8tJ0hE7JzvtC2BheOiYR4ajdw2qg/i+pxX2ovpRCiyDVTz/BWC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVbpbjRE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52DF8C4CEE3;
+	Tue, 29 Apr 2025 17:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946503;
-	bh=xd0K4xUxtZ9DDlz+3Juv0zYjyooiJc+WM/aavORjJDQ=;
+	s=korg; t=1745948081;
+	bh=TEfCvMM0grEnEoOtMP6EEUOfbHhBYNENUDZKs9AfQs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0vuj3Eat4AwiNI7p/MwZBNXAd9GaospKibyN8seAVCv0xhgVYzGzab8m6apfYNGa
-	 65h/vH4ozeZ4mB9JY7fKXpWY19MAzrMOgo7xH52wpnT2ALr9Y+u20IUynykMVYfj6x
-	 6kQnK+cx+516xKpWvOASGYRA/lMn+xsfhutUcdXc=
+	b=nVbpbjREWhEEhYnK/HCAJO+p+PASXe6NtyofK78Aw790/G1nYNLrdMEkI6b51jqAs
+	 vm28nbrFK7cCWKET4bcfkcZaCBYQPazMYWZ5BmE+ZuQFWqmzzhAG2iiyy9dDrdK3qq
+	 zH8ZwKSQS9nIRGr41PzZX6sSGYh+sSSa/S3qK1iM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meir Elisha <meir.elisha@volumez.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 289/311] md/raid1: Add check for missing source disk in process_checks()
-Date: Tue, 29 Apr 2025 18:42:06 +0200
-Message-ID: <20250429161132.842909451@linuxfoundation.org>
+Subject: [PATCH 6.12 186/280] um: work around sched_yield not yielding in time-travel mode
+Date: Tue, 29 Apr 2025 18:42:07 +0200
+Message-ID: <20250429161122.718302896@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meir Elisha <meir.elisha@volumez.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit b7c178d9e57c8fd4238ff77263b877f6f16182ba ]
+[ Upstream commit 887c5c12e80c8424bd471122d2e8b6b462e12874 ]
 
-During recovery/check operations, the process_checks function loops
-through available disks to find a 'primary' source with successfully
-read data.
+sched_yield by a userspace may not actually cause scheduling in
+time-travel mode as no time has passed. In the case seen it appears to
+be a badly implemented userspace spinlock in ASAN. Unfortunately, with
+time-travel it causes an extreme slowdown or even deadlock depending on
+the kernel configuration (CONFIG_UML_MAX_USERSPACE_ITERATIONS).
 
-If no suitable source disk is found after checking all possibilities,
-the 'primary' index will reach conf->raid_disks * 2. Add an explicit
-check for this condition after the loop. If no source disk was found,
-print an error message and return early to prevent further processing
-without a valid primary source.
+Work around it by accounting time to the process whenever it executes a
+sched_yield syscall.
 
-Link: https://lore.kernel.org/linux-raid/20250408143808.1026534-1-meir.elisha@volumez.com
-Signed-off-by: Meir Elisha <meir.elisha@volumez.com>
-Suggested-and-reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Link: https://patch.msgid.link/20250314130815.226872-1-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ arch/um/include/linux/time-internal.h |  2 ++
+ arch/um/kernel/skas/syscall.c         | 11 +++++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 15829ab192d2b..7373dff023d0f 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -2199,14 +2199,9 @@ static int fix_sync_read_error(struct r1bio *r1_bio)
- 				if (!rdev_set_badblocks(rdev, sect, s, 0))
- 					abort = 1;
- 			}
--			if (abort) {
--				conf->recovery_disabled =
--					mddev->recovery_disabled;
--				set_bit(MD_RECOVERY_INTR, &mddev->recovery);
--				md_done_sync(mddev, r1_bio->sectors, 0);
--				put_buf(r1_bio);
-+			if (abort)
- 				return 0;
--			}
+diff --git a/arch/um/include/linux/time-internal.h b/arch/um/include/linux/time-internal.h
+index b22226634ff60..138908b999d76 100644
+--- a/arch/um/include/linux/time-internal.h
++++ b/arch/um/include/linux/time-internal.h
+@@ -83,6 +83,8 @@ extern void time_travel_not_configured(void);
+ #define time_travel_del_event(...) time_travel_not_configured()
+ #endif /* CONFIG_UML_TIME_TRAVEL_SUPPORT */
+ 
++extern unsigned long tt_extra_sched_jiffies;
 +
- 			/* Try next page */
- 			sectors -= s;
- 			sect += s;
-@@ -2345,10 +2340,21 @@ static void sync_request_write(struct mddev *mddev, struct r1bio *r1_bio)
- 	int disks = conf->raid_disks * 2;
- 	struct bio *wbio;
+ /*
+  * Without CONFIG_UML_TIME_TRAVEL_SUPPORT this is a linker error if used,
+  * which is intentional since we really shouldn't link it in that case.
+diff --git a/arch/um/kernel/skas/syscall.c b/arch/um/kernel/skas/syscall.c
+index b09e85279d2b8..a5beaea2967ec 100644
+--- a/arch/um/kernel/skas/syscall.c
++++ b/arch/um/kernel/skas/syscall.c
+@@ -31,6 +31,17 @@ void handle_syscall(struct uml_pt_regs *r)
+ 		goto out;
  
--	if (!test_bit(R1BIO_Uptodate, &r1_bio->state))
--		/* ouch - failed to read all of that. */
--		if (!fix_sync_read_error(r1_bio))
-+	if (!test_bit(R1BIO_Uptodate, &r1_bio->state)) {
-+		/*
-+		 * ouch - failed to read all of that.
-+		 * No need to fix read error for check/repair
-+		 * because all member disks are read.
-+		 */
-+		if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery) ||
-+		    !fix_sync_read_error(r1_bio)) {
-+			conf->recovery_disabled = mddev->recovery_disabled;
-+			set_bit(MD_RECOVERY_INTR, &mddev->recovery);
-+			md_done_sync(mddev, r1_bio->sectors, 0);
-+			put_buf(r1_bio);
- 			return;
-+		}
-+	}
+ 	syscall = UPT_SYSCALL_NR(r);
++
++	/*
++	 * If no time passes, then sched_yield may not actually yield, causing
++	 * broken spinlock implementations in userspace (ASAN) to hang for long
++	 * periods of time.
++	 */
++	if ((time_travel_mode == TT_MODE_INFCPU ||
++	     time_travel_mode == TT_MODE_EXTERNAL) &&
++	    syscall == __NR_sched_yield)
++		tt_extra_sched_jiffies += 1;
++
+ 	if (syscall >= 0 && syscall < __NR_syscalls) {
+ 		unsigned long ret = EXECUTE_SYSCALL(syscall, regs);
  
- 	if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery))
- 		process_checks(r1_bio);
 -- 
 2.39.5
 
