@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90180AA1661
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E01C6AA1230
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 782143A5CEB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D474165BD8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55E82459EA;
-	Tue, 29 Apr 2025 17:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076F6244679;
+	Tue, 29 Apr 2025 16:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOvNZQUV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CV+zLhty"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718CE23F405;
-	Tue, 29 Apr 2025 17:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F69126BF7;
+	Tue, 29 Apr 2025 16:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947783; cv=none; b=ra1LTwaX6Nh6zTnivg8cbXpJTJINHW37lFQWVnU6NSYKDzpDjaREtttt/2+bih69OqEjCcrDfMCSqqJiGkpGNtq1m853vBmgzCU2LkI6WMvomOWtU36Ki+njcqNIQR3TI5m9aQP7kqlbELR8EZpEopBI6DrYUvpJy91NWGRHBvA=
+	t=1745945407; cv=none; b=IddCUwNbYBrj3lvxu/yL6l3tkZAjZO/zV7+AvqH76d4xtkiPt+XlP6+HFTfyTurCtBpBg37gr/T1w6sV3CTSVUS6SiLtA+o5eCxjeZj2lUEklIIaKLJiZFySIOFPjhVAFpwaxE5O9GimFVYi5h6NpEGPI47ROJ2albpdLhIyTu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947783; c=relaxed/simple;
-	bh=1N+hWieRGA3WvuqvDEbVSHyq6sI6ZZu/hL6g38P4xZU=;
+	s=arc-20240116; t=1745945407; c=relaxed/simple;
+	bh=sW4wsm5YdhqOhg40bq8dK1e39o0iaPgRx/SBl0KvLMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTfjYXx7OkvTm0kpWYd2qIWyU+pnjIZbPbeYfTNh91p/GZlw+34DrGpz7/8atsqmW8MjB9ODI1nodaavgyVhz8UcoH6/w1h/DaXGiFEIsNxp8DmEXmokH4dmBhB3EW7FsbwgaZ07+G6wNMBhYwcv1lgZr91JncCrqhzErzHNId4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOvNZQUV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B27C4CEE9;
-	Tue, 29 Apr 2025 17:29:41 +0000 (UTC)
+	 MIME-Version; b=gRyOJCbxfjzCshlHSk6ijHLUmp15n+fklQCHtYO9IO649eReEiRVj5C/Ny/aO5pQUc0eBC3ekDZRzRNzbjQmBDAGzHrFxinFxiyfgduX4OlG8SJaOlo07sH/3CKXkWkSb5HJOKzyZIsy9aLqii0xI6Mspq0l2mc1Lg0TZllr2ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CV+zLhty; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC06AC4CEE3;
+	Tue, 29 Apr 2025 16:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947783;
-	bh=1N+hWieRGA3WvuqvDEbVSHyq6sI6ZZu/hL6g38P4xZU=;
+	s=korg; t=1745945406;
+	bh=sW4wsm5YdhqOhg40bq8dK1e39o0iaPgRx/SBl0KvLMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iOvNZQUVBtRhQZje13cxovPfEXKzYMhiZT0XkskJf0rFRoN01HKPMWxd37URu9+BQ
-	 DegQLTbUbVQGbXzPN69xg0ppGUJSy3YQ7Hfq58o7pEQTuy3jQNlcs/AdY49H/V4nQZ
-	 VG2EHAOC39kYWFDSTP3L24ZXkNYmEDbjJXPSkPpU=
+	b=CV+zLhtytWC7LpVSgmlpk7ocUTTSoPsOCkpQzV7ee6uBCZs+0JnuupsEQTn2KSd2h
+	 eUvQtdfXwQtiFlAhnOv+kM2gbvF+onfgdhpVs8kVay53evR7OAO2MFLfzNnHQLPsMg
+	 6DMn3bm9cXk9EOuYnS02nh36KcLz/tbt0ECO97hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benno Lossin <benno.lossin@proton.me>,
-	Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.12 101/280] rust: firmware: Use `ffi::c_char` type in `FwFunc`
-Date: Tue, 29 Apr 2025 18:40:42 +0200
-Message-ID: <20250429161119.244779587@linuxfoundation.org>
+	syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.4 102/179] isofs: Prevent the use of too small fid
+Date: Tue, 29 Apr 2025 18:40:43 +0200
+Message-ID: <20250429161053.529971351@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit 53bd97801632c940767f4c8407c2cbdeb56b40e7 upstream.
+commit 0405d4b63d082861f4eaff9d39c78ee9dc34f845 upstream.
 
-The `FwFunc` struct contains an function with a char pointer argument,
-for which a `*const u8` pointer was used. This is not really the
-"proper" type for this, so use a `*const kernel::ffi::c_char` pointer
-instead.
+syzbot reported a slab-out-of-bounds Read in isofs_fh_to_parent. [1]
 
-This has no real functionality changes, since now `kernel::ffi::c_char`
-(which bindgen uses for `char`) is now a type alias to `u8` anyways,
-but before commit 1bae8729e50a ("rust: map `long` to `isize` and `char`
-to `u8`") the concrete type of `kernel::ffi::c_char` depended on the
-architecture (However all supported architectures at the time mapped to
-`i8`).
+The handle_bytes value passed in by the reproducing program is equal to 12.
+In handle_to_path(), only 12 bytes of memory are allocated for the structure
+file_handle->f_handle member, which causes an out-of-bounds access when
+accessing the member parent_block of the structure isofs_fid in isofs,
+because accessing parent_block requires at least 16 bytes of f_handle.
+Here, fh_len is used to indirectly confirm that the value of handle_bytes
+is greater than 3 before accessing parent_block.
 
-This caused problems on the v6.13 tag when building for 32 bit arm (with
-my patches), since back then `*const i8` was used in the function
-argument and the function that bindgen generated used
-`*const core::ffi::c_char` which Rust mapped to `*const u8` on 32 bit
-arm. The stable v6.13.y branch does not have this issue since commit
-1bae8729e50a ("rust: map `long` to `isize` and `char` to `u8`") was
-backported.
+[1]
+BUG: KASAN: slab-out-of-bounds in isofs_fh_to_parent+0x1b8/0x210 fs/isofs/export.c:183
+Read of size 4 at addr ffff0000cc030d94 by task syz-executor215/6466
+CPU: 1 UID: 0 PID: 6466 Comm: syz-executor215 Not tainted 6.14.0-rc7-syzkaller-ga2392f333575 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Call trace:
+ show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:466 (C)
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:408 [inline]
+ print_report+0x198/0x550 mm/kasan/report.c:521
+ kasan_report+0xd8/0x138 mm/kasan/report.c:634
+ __asan_report_load4_noabort+0x20/0x2c mm/kasan/report_generic.c:380
+ isofs_fh_to_parent+0x1b8/0x210 fs/isofs/export.c:183
+ exportfs_decode_fh_raw+0x2dc/0x608 fs/exportfs/expfs.c:523
+ do_handle_to_path+0xa0/0x198 fs/fhandle.c:257
+ handle_to_path fs/fhandle.c:385 [inline]
+ do_handle_open+0x8cc/0xb8c fs/fhandle.c:403
+ __do_sys_open_by_handle_at fs/fhandle.c:443 [inline]
+ __se_sys_open_by_handle_at fs/fhandle.c:434 [inline]
+ __arm64_sys_open_by_handle_at+0x80/0x94 fs/fhandle.c:434
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
+ el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
+ el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
 
-This caused the following build error:
-```
-error[E0308]: mismatched types
-  --> rust/kernel/firmware.rs:20:4
-   |
-20 |         Self(bindings::request_firmware)
-   |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
-   |         |
-   |         arguments to this function are incorrect
-   |
-   = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
-                 found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {request_firmware}`
-note: tuple struct defined here
-  --> rust/kernel/firmware.rs:14:8
-   |
-14 | struct FwFunc(
-   |        ^^^^^^
+Allocated by task 6466:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x40/0x78 mm/kasan/common.c:68
+ kasan_save_alloc_info+0x40/0x50 mm/kasan/generic.c:562
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0xac/0xc4 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __do_kmalloc_node mm/slub.c:4294 [inline]
+ __kmalloc_noprof+0x32c/0x54c mm/slub.c:4306
+ kmalloc_noprof include/linux/slab.h:905 [inline]
+ handle_to_path fs/fhandle.c:357 [inline]
+ do_handle_open+0x5a4/0xb8c fs/fhandle.c:403
+ __do_sys_open_by_handle_at fs/fhandle.c:443 [inline]
+ __se_sys_open_by_handle_at fs/fhandle.c:434 [inline]
+ __arm64_sys_open_by_handle_at+0x80/0x94 fs/fhandle.c:434
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
+ el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
+ el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
 
-error[E0308]: mismatched types
-  --> rust/kernel/firmware.rs:24:14
-   |
-24 |         Self(bindings::firmware_request_nowarn)
-   |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
-   |         |
-   |         arguments to this function are incorrect
-   |
-   = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
-                 found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {firmware_request_nowarn}`
-note: tuple struct defined here
-  --> rust/kernel/firmware.rs:14:8
-   |
-14 | struct FwFunc(
-   |        ^^^^^^
-
-error[E0308]: mismatched types
-  --> rust/kernel/firmware.rs:64:45
-   |
-64 |         let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), dev.as_raw()) };
-   |                            ------           ^^^^^^^^^^^^^^^^^^ expected `*const i8`, found `*const u8`
-   |                            |
-   |                            arguments to this function are incorrect
-   |
-   = note: expected raw pointer `*const i8`
-              found raw pointer `*const u8`
-
-error: aborting due to 3 previous errors
-```
-
-Fixes: de6582833db0 ("rust: add firmware abstractions")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://lore.kernel.org/r/20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com
-[ Add firmware prefix to commit subject. - Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Reported-by: syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4d7cd7dd0ce1aa8d5c65
+Tested-by: syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com
+CC: stable@vger.kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/tencent_9C8CB8A7E7C6C512C7065DC98B6EDF6EC606@qq.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/firmware.rs | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/isofs/export.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-index f04b058b09b2..2494c96e105f 100644
---- a/rust/kernel/firmware.rs
-+++ b/rust/kernel/firmware.rs
-@@ -4,7 +4,7 @@
- //!
- //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
+--- a/fs/isofs/export.c
++++ b/fs/isofs/export.c
+@@ -180,7 +180,7 @@ static struct dentry *isofs_fh_to_parent
+ 		return NULL;
  
--use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
-+use crate::{bindings, device::Device, error::Error, error::Result, ffi, str::CStr};
- use core::ptr::NonNull;
- 
- /// # Invariants
-@@ -12,7 +12,11 @@
- /// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
- /// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
- struct FwFunc(
--    unsafe extern "C" fn(*mut *const bindings::firmware, *const u8, *mut bindings::device) -> i32,
-+    unsafe extern "C" fn(
-+        *mut *const bindings::firmware,
-+        *const ffi::c_char,
-+        *mut bindings::device,
-+    ) -> i32,
- );
- 
- impl FwFunc {
--- 
-2.49.0
-
+ 	return isofs_export_iget(sb,
+-			fh_len > 2 ? ifid->parent_block : 0,
++			fh_len > 3 ? ifid->parent_block : 0,
+ 			ifid->parent_offset,
+ 			fh_len > 4 ? ifid->parent_generation : 0);
+ }
 
 
 
