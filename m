@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-138163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CA18AA16D6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ECECAA1582
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A6D6177398
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 229681BA263A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945AD24A07D;
-	Tue, 29 Apr 2025 17:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32612472B4;
+	Tue, 29 Apr 2025 17:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PmIPAQ91"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsgfmaAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516B8242D68;
-	Tue, 29 Apr 2025 17:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12B9224AE6;
+	Tue, 29 Apr 2025 17:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948369; cv=none; b=dXyfLKoxqVpoij2bPk3+mn7Us1v1TmBQ/SOPD0GhPhZXqVeT/pTRRtTCwc4PcpXXoBWoCKdOgPs8X5KWYA3jbzgGpq+rLjNZLMcoiMPx9JX9UrpptEGwLFEuM3j4S2ICSan5LDKgTfKWZ/fAQ9w+NFZGRJCr7G8m8NZu6PKZUyQ=
+	t=1745947416; cv=none; b=MbP3R1plGHWFwpbiuKORD4y8if0RE1adHScytSuEteLggjCPBYDps3btE2NTtWa0EwNNEsQgTQt4P4rott42crjlPSL1O7D2UZnA/758e8tNniR5WZiDGNYiYQtdN7J9sXrpE0q27LKancsn8DcJFhgr07pP/qxVRKLwZV+PUkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948369; c=relaxed/simple;
-	bh=Teq8lZJxH9++6iu4OPpS6O2pFTWlmmpf2rbU92tnMV8=;
+	s=arc-20240116; t=1745947416; c=relaxed/simple;
+	bh=4iLCmCD8C+v5KEd4io0H4a6NDR/c+WgzkO//1GT/5So=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=huJzslM/sG+Z0dgdz/q7appj5gvkYI29GawwEi1SyE88W6TS6zksGqdTweipuCMwdvQ7Neddqj8plHX5U5W1KkFWm3JqQ7v+fRXP5yLcIdK7RUE+HkSOTxhlITRiFK3yM+hnmKM13kiS2WR79bA1rwRonoWGS2HNVULG+bpfmwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PmIPAQ91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC938C4CEE3;
-	Tue, 29 Apr 2025 17:39:27 +0000 (UTC)
+	 MIME-Version; b=Bay09axDOrSuhsbvwtOd+8A0Vikc9w86fKogEEzQ2LYiv8tWH15aASgZfk1XDHt8R/JiYtseFZe1SVRd5plxBxWcDP7C90It5VynnnVdMCHsgs03othtWoqE8wvr/rgXEyPZCaNBGZgtXu+/w3JpPYfYcC9njfuu2NYF4CShG3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsgfmaAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B307BC4CEE3;
+	Tue, 29 Apr 2025 17:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948368;
-	bh=Teq8lZJxH9++6iu4OPpS6O2pFTWlmmpf2rbU92tnMV8=;
+	s=korg; t=1745947416;
+	bh=4iLCmCD8C+v5KEd4io0H4a6NDR/c+WgzkO//1GT/5So=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PmIPAQ91F81cE6Jg87svkJIEuzge6r5GcadR3BAo/sNzRv0FLfetz9/JdXvrkroDz
-	 Kzb7oFq+GpRR7aC22L13u8Btw92GfkeyjXN4LhddXk0TWRoqXEl7+t5bHDmD1aerNj
-	 RKJAgAcYsc8ok5AHdIfKjPHKlLDfbq3muKC62NIM=
+	b=zsgfmaADMm1WxDIGsDuwzTg+AfwOA0Smg0Dgm3AOW2LeFLm57EC6RtuoZpJoMEHeY
+	 kQ66azqERETiFB2W9bVA1Gzb8KHCToVH+fvw+l8dIU1Jg6Byoh7m/jFDAI5rK7yG2L
+	 ND/SYMZdTFWiySUPg4qMlYzkTLkpz2n4bNv5hpKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gou Hao <gouhao@uniontech.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Christoph Hellwig <hch@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 237/280] iomap: skip unnecessary ifs_block_is_uptodate check
+Subject: [PATCH 5.10 274/286] ext4: make block validity check resistent to sb bh corruption
 Date: Tue, 29 Apr 2025 18:42:58 +0200
-Message-ID: <20250429161124.819675175@linuxfoundation.org>
+Message-ID: <20250429161119.190695374@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gou Hao <gouhao@uniontech.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit 8e3c15ee0d292c413c66fe10201d1b035a0bea72 ]
+[ Upstream commit ccad447a3d331a239477c281533bacb585b54a98 ]
 
-In iomap_adjust_read_range, i is either the first !uptodate block, or it
-is past last for the second loop looking for trailing uptodate blocks.
-Assuming there's no overflow (there's no combination of huge folios and
-tiny blksize) then yeah, there is no point in retesting that the same
-block pointed to by i is uptodate since we hold the folio lock so nobody
-else could have set it uptodate.
+Block validity checks need to be skipped in case they are called
+for journal blocks since they are part of system's protected
+zone.
 
-Signed-off-by: Gou Hao <gouhao@uniontech.com>
-Link: https://lore.kernel.org/20250410071236.16017-1-gouhao@uniontech.com
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Currently, this is done by checking inode->ino against
+sbi->s_es->s_journal_inum, which is a direct read from the ext4 sb
+buffer head. If someone modifies this underneath us then the
+s_journal_inum field might get corrupted. To prevent against this,
+change the check to directly compare the inode with journal->j_inode.
+
+**Slight change in behavior**: During journal init path,
+check_block_validity etc might be called for journal inode when
+sbi->s_journal is not set yet. In this case we now proceed with
+ext4_inode_block_valid() instead of returning early. Since systems zones
+have not been set yet, it is okay to proceed so we can perform basic
+checks on the blocks.
+
+Suggested-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/0c06bc9ebfcd6ccfed84a36e79147bf45ff5adc1.1743142920.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/block_validity.c | 5 ++---
+ fs/ext4/inode.c          | 7 ++++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 1bad460275ebe..d4b990938399c 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -263,7 +263,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
- 		}
+diff --git a/fs/ext4/block_validity.c b/fs/ext4/block_validity.c
+index 295e89d93295e..5d5befac5622b 100644
+--- a/fs/ext4/block_validity.c
++++ b/fs/ext4/block_validity.c
+@@ -353,10 +353,9 @@ int ext4_check_blockref(const char *function, unsigned int line,
+ {
+ 	__le32 *bref = p;
+ 	unsigned int blk;
++	journal_t *journal = EXT4_SB(inode->i_sb)->s_journal;
  
- 		/* truncate len if we find any trailing uptodate block(s) */
--		for ( ; i <= last; i++) {
-+		while (++i <= last) {
- 			if (ifs_block_is_uptodate(ifs, i)) {
- 				plen -= (last - i + 1) * block_size;
- 				last = i - 1;
+-	if (ext4_has_feature_journal(inode->i_sb) &&
+-	    (inode->i_ino ==
+-	     le32_to_cpu(EXT4_SB(inode->i_sb)->s_es->s_journal_inum)))
++	if (journal && inode == journal->j_inode)
+ 		return 0;
+ 
+ 	while (bref < p+max) {
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 52d68edb6a09b..15d020279d3bd 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -409,10 +409,11 @@ static int __check_block_validity(struct inode *inode, const char *func,
+ 				unsigned int line,
+ 				struct ext4_map_blocks *map)
+ {
+-	if (ext4_has_feature_journal(inode->i_sb) &&
+-	    (inode->i_ino ==
+-	     le32_to_cpu(EXT4_SB(inode->i_sb)->s_es->s_journal_inum)))
++	journal_t *journal = EXT4_SB(inode->i_sb)->s_journal;
++
++	if (journal && inode == journal->j_inode)
+ 		return 0;
++
+ 	if (!ext4_inode_block_valid(inode, map->m_pblk, map->m_len)) {
+ 		ext4_error_inode(inode, func, line, map->m_pblk,
+ 				 "lblock %lu mapped to illegal pblock %llu "
 -- 
 2.39.5
 
