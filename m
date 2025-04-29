@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-138790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7107AA1A14
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D53AA198C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:13:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDFB29C5173
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:12:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67E9E4C090F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2262D2517A6;
-	Tue, 29 Apr 2025 18:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C96E25486E;
+	Tue, 29 Apr 2025 18:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jugejNsK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aE5o9Ka6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA768224222;
-	Tue, 29 Apr 2025 18:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A05525228D;
+	Tue, 29 Apr 2025 18:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950358; cv=none; b=Oq/2mfv65YMBQ9kOYskajq3sREZwcuEuwdzDxSY2OML9Ye1MjfjEyZ5URpzdINdLHnp1KrfU9lfNOXrNZxbtnjqaih88RT6JHPqrns95RxpWr6bALfrZ9fabYzu3n9rQ+e3nZvgq/S3490oG0lUz7bJ47V1O8ge4AGKzr8xWUYM=
+	t=1745950264; cv=none; b=g9YMfdfICOj/hLYUZg5Sm/6PulyOq5n30x6cWJhFom/twRnIrwMPi3XZFpjH35KgY/U232VslHfuFxSw/tvNRN0FYZ8nWKZDfvWf3ywguQSNVhYK2ZIEmz9HfbSl6qCadms/yTKRi1Ch3zYpaOYGK+Sbj3jIZ/XKBc6JyHd1BO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950358; c=relaxed/simple;
-	bh=1oAOYeKK7LEf/4Agk00s58dGS1tBSpp5KXZDVed2v8w=;
+	s=arc-20240116; t=1745950264; c=relaxed/simple;
+	bh=EHssN/Tudz59hnRdokEC+lDs6rKfXs/v+MVsxFpjqN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcoy6n2vboQyan5Jf7jEpTTKJSGKOYga3bwctz8sShuxNfT8H9vp3+X3rdqtq2saAW6a98bS9PGwmilulAVNsk7H2G0T8qUmU2niR6BGqOnfjNbY8N6H/agDXhb973wQoYcy6phgFtSLef8DbEkxXmcn0gglWcC39K6P20/661I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jugejNsK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53877C4CEE3;
-	Tue, 29 Apr 2025 18:12:38 +0000 (UTC)
+	 MIME-Version; b=Bk/JIgt6oJEYJbRm1eU0f+fyK+NyLg+BI0bMtBfFJCDGlz/8CIOyaVl+2GfKryNAu3+OMXtYb/VPvpeNo44BJm92+JFr7FNO/sDZ46HBb6KsU8cxOwKG4CaIDRMuY5/dtJ0wqznnO5L0NYRJZR2tqLTpKtAQSsJAnAsMpeK8ySk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aE5o9Ka6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C942BC4CEE3;
+	Tue, 29 Apr 2025 18:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950358;
-	bh=1oAOYeKK7LEf/4Agk00s58dGS1tBSpp5KXZDVed2v8w=;
+	s=korg; t=1745950264;
+	bh=EHssN/Tudz59hnRdokEC+lDs6rKfXs/v+MVsxFpjqN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jugejNsKAYBoEkLTAxhsyDTpKqgMbuex/AZMLS1TYe/NihxHvkoICEsFB8CBWTzXf
-	 OpUYOLJUaAC5aaRvWbjJ01GVtGdk6Ux4V0QINMqhtuJLWYTNGxj8TpRYzCCleIt5Ws
-	 0EpcFHK6GX1+ul5eSJatuIi7KKim/9oTrKEuRWIE=
+	b=aE5o9Ka6x+gCFVv10w/I/DAmdomLUYxdN9nihncuv+Yc8AQt+7y/CXdY+04fiiPXy
+	 wp0JtQ0ywgYWje2kN1Je2gxOoaeh2enIrFkn1Cx5PVT/3CYOuoIjiGvo7Y0p/1zDxw
+	 CrC0SnH1Q0RvpkDyd+5wDW/aBObyg49E7BzqrkZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Hien Huynh <hien.huynh.px@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/204] clk: renesas: r9a07g04[34]: Fix typo for sel_shdi variable
-Date: Tue, 29 Apr 2025 18:41:59 +0200
-Message-ID: <20250429161100.690058844@linuxfoundation.org>
+Subject: [PATCH 6.6 032/204] clk: renesas: r9a07g043: Fix HP clock source for RZ/Five
+Date: Tue, 29 Apr 2025 18:42:00 +0200
+Message-ID: <20250429161100.728755599@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
 References: <20250429161059.396852607@linuxfoundation.org>
@@ -66,73 +67,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 46fb5dd9ca289953fa791b2bb060dac7f8002ae0 ]
+[ Upstream commit 7f22a298d926664b51fcfe2f8ea5feb7f8b79952 ]
 
-Fix typo for sel_shdi variable.
+According to the Rev.1.20 hardware manual for the RZ/Five SoC, the clock
+source for HP is derived from PLL6 divided by 2.  Correct the
+implementation by configuring HP as a fixed clock source instead of a
+MUX.
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+The `CPG_PL6_ETH_SSEL' register, which is available on the RZ/G2UL SoC,
+is not present on the RZ/Five SoC, necessitating this change.
+
+Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Five SoC")
+Cc: stable@vger.kernel.org
+Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20240131102930.1841901-3-claudiu.beznea.uj@bp.renesas.com
+Link: https://lore.kernel.org/20250127173159.34572-1-prabhakar.mahadev-lad.rj@bp.renesas.com
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Stable-dep-of: 7f22a298d926 ("clk: renesas: r9a07g043: Fix HP clock source for RZ/Five")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a07g043-cpg.c | 6 +++---
- drivers/clk/renesas/r9a07g044-cpg.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/clk/renesas/r9a07g043-cpg.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/drivers/clk/renesas/r9a07g043-cpg.c b/drivers/clk/renesas/r9a07g043-cpg.c
-index 9ad7ceb3ab1ba..3a717dcecba56 100644
+index 3a717dcecba56..865d47800791b 100644
 --- a/drivers/clk/renesas/r9a07g043-cpg.c
 +++ b/drivers/clk/renesas/r9a07g043-cpg.c
-@@ -87,7 +87,7 @@ static const struct clk_div_table dtable_1_32[] = {
+@@ -86,7 +86,9 @@ static const struct clk_div_table dtable_1_32[] = {
+ 
  /* Mux clock tables */
  static const char * const sel_pll3_3[] = { ".pll3_533", ".pll3_400" };
++#ifdef CONFIG_ARM64
  static const char * const sel_pll6_2[]	= { ".pll6_250", ".pll5_250" };
--static const char * const sel_shdi[] = { ".clk_533", ".clk_400", ".clk_266" };
-+static const char * const sel_sdhi[] = { ".clk_533", ".clk_400", ".clk_266" };
++#endif
+ static const char * const sel_sdhi[] = { ".clk_533", ".clk_400", ".clk_266" };
  
  static const u32 mtable_sdhi[] = { 1, 2, 3 };
- 
-@@ -136,9 +136,9 @@ static const struct cpg_core_clk r9a07g043_core_clks[] __initconst = {
+@@ -133,7 +135,12 @@ static const struct cpg_core_clk r9a07g043_core_clks[] __initconst = {
+ 	DEF_DIV("P2", R9A07G043_CLK_P2, CLK_PLL3_DIV2_4_2, DIVPL3A, dtable_1_32),
+ 	DEF_FIXED("M0", R9A07G043_CLK_M0, CLK_PLL3_DIV2_4, 1, 1),
+ 	DEF_FIXED("ZT", R9A07G043_CLK_ZT, CLK_PLL3_DIV2_4_2, 1, 1),
++#ifdef CONFIG_ARM64
  	DEF_MUX("HP", R9A07G043_CLK_HP, SEL_PLL6_2, sel_pll6_2),
++#endif
++#ifdef CONFIG_RISCV
++	DEF_FIXED("HP", R9A07G043_CLK_HP, CLK_PLL6_250, 1, 1),
++#endif
  	DEF_FIXED("SPI0", R9A07G043_CLK_SPI0, CLK_DIV_PLL3_C, 1, 2),
  	DEF_FIXED("SPI1", R9A07G043_CLK_SPI1, CLK_DIV_PLL3_C, 1, 4),
--	DEF_SD_MUX("SD0", R9A07G043_CLK_SD0, SEL_SDHI0, SEL_SDHI0_STS, sel_shdi,
-+	DEF_SD_MUX("SD0", R9A07G043_CLK_SD0, SEL_SDHI0, SEL_SDHI0_STS, sel_sdhi,
- 		   mtable_sdhi, 0, rzg2l_cpg_sd_clk_mux_notifier),
--	DEF_SD_MUX("SD1", R9A07G043_CLK_SD1, SEL_SDHI1, SEL_SDHI1_STS, sel_shdi,
-+	DEF_SD_MUX("SD1", R9A07G043_CLK_SD1, SEL_SDHI1, SEL_SDHI1_STS, sel_sdhi,
- 		   mtable_sdhi, 0, rzg2l_cpg_sd_clk_mux_notifier),
- 	DEF_FIXED("SD0_DIV4", CLK_SD0_DIV4, R9A07G043_CLK_SD0, 1, 4),
- 	DEF_FIXED("SD1_DIV4", CLK_SD1_DIV4, R9A07G043_CLK_SD1, 1, 4),
-diff --git a/drivers/clk/renesas/r9a07g044-cpg.c b/drivers/clk/renesas/r9a07g044-cpg.c
-index bc822b9fd7ce6..48404cafea3f5 100644
---- a/drivers/clk/renesas/r9a07g044-cpg.c
-+++ b/drivers/clk/renesas/r9a07g044-cpg.c
-@@ -106,7 +106,7 @@ static const struct clk_div_table dtable_16_128[] = {
- static const char * const sel_pll3_3[] = { ".pll3_533", ".pll3_400" };
- static const char * const sel_pll5_4[] = { ".pll5_foutpostdiv", ".pll5_fout1ph0" };
- static const char * const sel_pll6_2[]	= { ".pll6_250", ".pll5_250" };
--static const char * const sel_shdi[] = { ".clk_533", ".clk_400", ".clk_266" };
-+static const char * const sel_sdhi[] = { ".clk_533", ".clk_400", ".clk_266" };
- static const char * const sel_gpu2[] = { ".pll6", ".pll3_div2_2" };
- 
- static const u32 mtable_sdhi[] = { 1, 2, 3 };
-@@ -176,9 +176,9 @@ static const struct {
- 		DEF_MUX("HP", R9A07G044_CLK_HP, SEL_PLL6_2, sel_pll6_2),
- 		DEF_FIXED("SPI0", R9A07G044_CLK_SPI0, CLK_DIV_PLL3_C, 1, 2),
- 		DEF_FIXED("SPI1", R9A07G044_CLK_SPI1, CLK_DIV_PLL3_C, 1, 4),
--		DEF_SD_MUX("SD0", R9A07G044_CLK_SD0, SEL_SDHI0, SEL_SDHI0_STS, sel_shdi,
-+		DEF_SD_MUX("SD0", R9A07G044_CLK_SD0, SEL_SDHI0, SEL_SDHI0_STS, sel_sdhi,
- 			   mtable_sdhi, 0, rzg2l_cpg_sd_clk_mux_notifier),
--		DEF_SD_MUX("SD1", R9A07G044_CLK_SD1, SEL_SDHI1, SEL_SDHI1_STS, sel_shdi,
-+		DEF_SD_MUX("SD1", R9A07G044_CLK_SD1, SEL_SDHI1, SEL_SDHI1_STS, sel_sdhi,
- 			   mtable_sdhi, 0, rzg2l_cpg_sd_clk_mux_notifier),
- 		DEF_FIXED("SD0_DIV4", CLK_SD0_DIV4, R9A07G044_CLK_SD0, 1, 4),
- 		DEF_FIXED("SD1_DIV4", CLK_SD1_DIV4, R9A07G044_CLK_SD1, 1, 4),
+ 	DEF_SD_MUX("SD0", R9A07G043_CLK_SD0, SEL_SDHI0, SEL_SDHI0_STS, sel_sdhi,
 -- 
 2.39.5
 
