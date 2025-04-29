@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-138140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C386AA16BA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D096AA18A4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A71A0188BDF2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:38:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA4D59C28DA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F6C244670;
-	Tue, 29 Apr 2025 17:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99E6253951;
+	Tue, 29 Apr 2025 17:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kW9rrtjU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDo71n8o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2069B22172E;
-	Tue, 29 Apr 2025 17:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4870243371;
+	Tue, 29 Apr 2025 17:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948288; cv=none; b=l4fQ0RYrHna08YsyjsL9+Kh0KQxtjgwj03cyY2CPOI9JA/Z8Fy64u5eD+1gaEjOVMXJ0dBH863wHBjyuVqiMObKIifwzr/lK6gFrKk0z9TdHNVU1wqWbLFalASi9OqXZ1sTN7HHdgDDAeHnwawLwZF34mEt7uJ0E2TQlUHKLLyQ=
+	t=1745949405; cv=none; b=WQ8kEuqBGU9kmcREQRFveJ9EYRGtZud3MItZE79fZPJECxPU80EzM5TSPj79QDJZFepv3v0VXK7c/XFEZQbiaoMVLh61+w36lcplxu7bZ8jEmTukVuRUJ3kEznPpQdLYYxFfw2RkqqoGV2SdLf8gzCE0Yqt0o5qcuLu/yszimGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948288; c=relaxed/simple;
-	bh=isEw3xkvzfcKcLb0zXbpxUvDox4XxMAmBYVemyO+Muc=;
+	s=arc-20240116; t=1745949405; c=relaxed/simple;
+	bh=wisAJ8Vh+Cl72J5aa22mqjBBFVJz8tWqG25xzkyjiz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VeFf1GHIHHv2S5hiGdktDzvFM639yYNmjmAk4noCC3ah9pMdU8tAUgtRBgKbd+sRHHsKKx8rwHQ1VJKsG9rRRRWsTWhcWvpKdGXa95kqQC8RrA6W2e7zdCaiXszAEhbNKVWSSUvSEEm1Bsf26KBHbJEweu4recCn5TNWGm04iFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kW9rrtjU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7204C4CEE3;
-	Tue, 29 Apr 2025 17:38:07 +0000 (UTC)
+	 MIME-Version; b=D0HDFMxk2ofasHxwJteEL72qWGL4EZmQOpt+7ISkFIImGQzlxgcMo+QWl1ru4XdBcXzI2uO9f70FpGeSOvyObpSTAGU06tE2jh+rco/vJaBB5LlJUOU6TTBY6r5yMk5Wbi1PUseYBAPyOHB7QWB7FyPnnIq269dqJ6ZfV0xgY2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDo71n8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9F7C4CEE3;
+	Tue, 29 Apr 2025 17:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948288;
-	bh=isEw3xkvzfcKcLb0zXbpxUvDox4XxMAmBYVemyO+Muc=;
+	s=korg; t=1745949405;
+	bh=wisAJ8Vh+Cl72J5aa22mqjBBFVJz8tWqG25xzkyjiz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kW9rrtjUr6H/iz68zzxVD+vLEBnDOg+CGEtHOPk4ofEJDmjDCj1RDsG6ZIjEkDLzl
-	 Uo6TLWRwcOxiIYIRFDfFeTeM6v6KOKYcAhHUpn7aJuQ1z3HIIVV4I+MgirZjp4g/A/
-	 rxRMrBHC6sUIcISbhX33lJZ188vhLifoRYRDYD24=
+	b=EDo71n8oRkxQBLkIor/xVM13Yo0eauImlf2tZ78zKaonC3xJe47r+MGP5n9lcK/zZ
+	 85d6NysDWuukwBE1fbSUkQ6OCF6kUgLokf4wCDov+acmfjgeEh2URXu3SPSdazkzkj
+	 bDarsfwbGtYT4vgeC9FcSHrsbb0I2/o+WuIsmDAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meir Elisha <meir.elisha@volumez.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 244/280] md/raid1: Add check for missing source disk in process_checks()
+	Adam Xue <zxue@semtech.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 308/373] USB: serial: option: add Sierra Wireless EM9291
 Date: Tue, 29 Apr 2025 18:43:05 +0200
-Message-ID: <20250429161125.109376778@linuxfoundation.org>
+Message-ID: <20250429161135.783822706@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meir Elisha <meir.elisha@volumez.com>
+From: Adam Xue <zxue@semtech.com>
 
-[ Upstream commit b7c178d9e57c8fd4238ff77263b877f6f16182ba ]
+commit 968e1cbb1f6293c3add9607f80b5ce3d29f57583 upstream.
 
-During recovery/check operations, the process_checks function loops
-through available disks to find a 'primary' source with successfully
-read data.
+Add Sierra Wireless EM9291.
 
-If no suitable source disk is found after checking all possibilities,
-the 'primary' index will reach conf->raid_disks * 2. Add an explicit
-check for this condition after the loop. If no source disk was found,
-print an error message and return early to prevent further processing
-without a valid primary source.
+Interface 0: MBIM control
+          1: MBIM data
+          3: AT port
+          4: Diagnostic port
 
-Link: https://lore.kernel.org/linux-raid/20250408143808.1026534-1-meir.elisha@volumez.com
-Signed-off-by: Meir Elisha <meir.elisha@volumez.com>
-Suggested-and-reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1199 ProdID=90e3 Rev=00.06
+S:  Manufacturer=Sierra Wireless, Incorporated
+S:  Product=Sierra Wireless EM9291
+S:  SerialNumber=xxxxxxxxxxxxxxxx
+C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=(none)
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Adam Xue <zxue@semtech.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid1.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 8a994a1975ca7..6b6cd753d61a9 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -2156,14 +2156,9 @@ static int fix_sync_read_error(struct r1bio *r1_bio)
- 				if (!rdev_set_badblocks(rdev, sect, s, 0))
- 					abort = 1;
- 			}
--			if (abort) {
--				conf->recovery_disabled =
--					mddev->recovery_disabled;
--				set_bit(MD_RECOVERY_INTR, &mddev->recovery);
--				md_done_sync(mddev, r1_bio->sectors, 0);
--				put_buf(r1_bio);
-+			if (abort)
- 				return 0;
--			}
-+
- 			/* Try next page */
- 			sectors -= s;
- 			sect += s;
-@@ -2302,10 +2297,21 @@ static void sync_request_write(struct mddev *mddev, struct r1bio *r1_bio)
- 	int disks = conf->raid_disks * 2;
- 	struct bio *wbio;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -611,6 +611,7 @@ static void option_instat_callback(struc
+ /* Sierra Wireless products */
+ #define SIERRA_VENDOR_ID			0x1199
+ #define SIERRA_PRODUCT_EM9191			0x90d3
++#define SIERRA_PRODUCT_EM9291			0x90e3
  
--	if (!test_bit(R1BIO_Uptodate, &r1_bio->state))
--		/* ouch - failed to read all of that. */
--		if (!fix_sync_read_error(r1_bio))
-+	if (!test_bit(R1BIO_Uptodate, &r1_bio->state)) {
-+		/*
-+		 * ouch - failed to read all of that.
-+		 * No need to fix read error for check/repair
-+		 * because all member disks are read.
-+		 */
-+		if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery) ||
-+		    !fix_sync_read_error(r1_bio)) {
-+			conf->recovery_disabled = mddev->recovery_disabled;
-+			set_bit(MD_RECOVERY_INTR, &mddev->recovery);
-+			md_done_sync(mddev, r1_bio->sectors, 0);
-+			put_buf(r1_bio);
- 			return;
-+		}
-+	}
- 
- 	if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery))
- 		process_checks(r1_bio);
--- 
-2.39.5
-
+ /* UNISOC (Spreadtrum) products */
+ #define UNISOC_VENDOR_ID			0x1782
+@@ -2432,6 +2433,8 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
 
 
 
