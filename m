@@ -1,130 +1,118 @@
-Return-Path: <stable+bounces-138951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD34AA1CA5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:07:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E94A3AA3BBE
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 00:52:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CE344E1367
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 21:07:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D15145A7E70
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 22:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC7426B2D5;
-	Tue, 29 Apr 2025 21:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E533C30;
+	Tue, 29 Apr 2025 22:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NZNev/tF"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KZmZA1Hr"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B2926A1CF;
-	Tue, 29 Apr 2025 21:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2869826988C
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 22:52:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745960835; cv=none; b=TtKFnxs0g2viV65QBUF32Vp28OFaHVtozOcO8sfvKK4//9ZiZulp55I/uFalEWN4aM65bUVohB8VmI29os/fhcasJ5xBj3vyK3PgBSlxFtJSZ2QHk1LvzTZUW9DoYjz3HR0gHofsPNA6kS9e5Be/1h4xCNCa/7SZmCvHyD+LmH4=
+	t=1745967125; cv=none; b=a83hZG1UrsT8Ov8f/vl3pWWCPY2NNe7BkD+fVUrTaS06BoHxdCIOalLTCEdU4F5jeILW1xiXa49CAniXCkyHqLfFqQnyhBNEhW7jAhwesLR3XTwZuZYQLH+++KSqsCcsves0Iqrhuu8SjODSvgEEZbntllK9fpHlFA++btMowvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745960835; c=relaxed/simple;
-	bh=h4MHEOtVAPe0EKg+ia3xAD0U97c9p61TQFT9WGEXj3A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QXKlTHfxGXwzqj7Gvp6mPolDBoTmidpCmyMPakhxw8vpZNOF6dVuPSTZcF4f9QFwtFr1uIl7RnJkjC+oTXRUjHjq9x45eCqukzYodC4l1edPBxwnxUzSElH+hbiOcfXMghGo41ZTm2IY/LjI8YkONgltxtBJwfaK/4LJo7lbeL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NZNev/tF; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745960833; x=1777496833;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=h4MHEOtVAPe0EKg+ia3xAD0U97c9p61TQFT9WGEXj3A=;
-  b=NZNev/tFO12qk6QLVabcuu0HqCdkVxhW745MFxytRqnttoyXeF2n1gKb
-   HDzMIQYMJR0dq63HH2c6qYSpwbNh6t4AtSZIWJmf7y4sBxEatqpmatfCe
-   kpQk6/dPtROTEdawRnRjMZXApoEZofdmWCLEvlxBi+cwSDthfNXLH1SmY
-   f53aIkXW8HT0eJ+a6bKNSq5uJggQsvy0gqM329uGnlzE+X1Y+FmwkoeRv
-   u+9q5irlkLU90+TRozJhb5SumfLL9LlgJr+IoW4N8HqUSAUNHGhWLTD00
-   4yDuPsMc/TRdPFtnjEoAQvp/3s5pGtQouGo5FVb8D4l2WezX/x+KhzQCa
-   Q==;
-X-CSE-ConnectionGUID: 8qSY/Xf0QXOld/3+D+A9aQ==
-X-CSE-MsgGUID: GHK8nw0YRDmctabP4prZZw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="50260959"
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; 
-   d="scan'208";a="50260959"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2025 14:07:12 -0700
-X-CSE-ConnectionGUID: YklolNELTnWcT0QB1z6VkQ==
-X-CSE-MsgGUID: r7aJJeZ6Q72Oy+gmLUqqQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; 
-   d="scan'208";a="134925019"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.16])
-  by orviesa008.jf.intel.com with ESMTP; 29 Apr 2025 14:07:13 -0700
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To: rafael@kernel.org,
-	viresh.kumar@linaro.org
-Cc: linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode
-Date: Tue, 29 Apr 2025 14:07:11 -0700
-Message-ID: <20250429210711.255185-1-srinivas.pandruvada@linux.intel.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1745967125; c=relaxed/simple;
+	bh=2Ojmxvs6675NjSVuqKUpkCNvtSnX8cK2Q8B/hEgAo84=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=JzNm6g4z5djhWOwdcDNMsCTGeOKz4ZNkU2RKZNGDpagvuOAggqLUqzwd72SI8KnnNbMHaEfQF+lkFd43il12NcqV8USxCGbvnwJOqcXup2D3R1gwB1pERUltWIr72+4LEyjtKu8mzPmsQaPBArp/t/uGtJOazpRu7daEzbSDHqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KZmZA1Hr; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-736b2a25d9fso4457448b3a.0
+        for <stable@vger.kernel.org>; Tue, 29 Apr 2025 15:52:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745967123; x=1746571923; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kOfWWKlG9HXvLLFw0Ifg67i040d4sRpJ/e0Ey2hp+hs=;
+        b=KZmZA1HrlZ8FI/EntU097qK6z86Z/xG+dc0IDiRojm0jog0bFU/pksYpCvLvZJqZPk
+         NMNn2/rf5Jt64d6hieboYmyiSpIzahEPETe3KaMK6xxs17SgNE6KOntncI2QoFO6Q+Hx
+         D7Uqc7G2qbVFntF5v1yGNQqODjwaaN9ZxMuL0qagdlisS/wC8a1RnVIH2ysVuRok1z4d
+         rS4I3q7lNPuJVbSmqKzoqG0DqDONMLIuor8shXYfRq8DMAhhs++fx8nqqdiezBqpQpyV
+         xaKocsO6Z9dEhN9Fhf7Xsh39Ici9ce2gmG4KTT8TTXwFO3Hz4tRjvtTKHzcXvr4NVQah
+         yOtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745967123; x=1746571923;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kOfWWKlG9HXvLLFw0Ifg67i040d4sRpJ/e0Ey2hp+hs=;
+        b=BlFSsJg7MCfhSQmhZPwYQsmDUzh7RhIrAfrMXESN0Ead7RDBn/9UQRUic3OyvleF1H
+         W/cHoY+TfPhLYU6GQU50ziTFmQuaYOhOlirA2t537JpH+TV9Kha27+ejIN4k4sWbMJoR
+         dESotrUfAeGavRcc9BuUs47S3DF6I3WSuWan3KPUGEif8hVI3fv2KyWNo3xJB7FATy4x
+         bR3pHC9pXfKP1AWWSZf21XuP7oif/LHDVwvBGOqsUbfniarJp9HgZxhmV7smGYccdkJS
+         akNA81Jnlreh2oN6gNuBO7MkQTgDoB5lYx3jHC5RGPFOf9nWOjWPtWkfm8YmQuBxpw60
+         0JHg==
+X-Gm-Message-State: AOJu0Yw+jllsa49K/Xehe/qCUFBFfTOO58FW8tN4bsqXcMHiTx8kjs7B
+	FYhoeSri2PTtmolC/Lz0zYY+PeYQQF0ujZHfiRztKKMoJpbpcadvuvqdRiznLMjf3Yj1NF3AQlb
+	5DvLNTLAo5Aaq7e9kFJAFbo09Gs/q4q+T6G6x40a5HZqPdN8jy/KPjkY0dyvi6Nd10YlKoPY80m
+	jgGwKdTwvNoaDQqwzKHCHuY0Sn+toL7VySSHHvnHZbN2g=
+X-Google-Smtp-Source: AGHT+IHJTrKOavHq60DaEmufz0Pxe9awvZIoqEAwzn6wg8tvpb679zUcOpMDVDJLN+fCuGfAVrtwmC6X4Kyp+Q==
+X-Received: from pfay38.prod.google.com ([2002:a05:6a00:1826:b0:736:38af:afeb])
+ (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:2d0b:b0:736:3fa8:cf7b with SMTP id d2e1a72fcca58-740389cda1fmr1190172b3a.13.1745967123232;
+ Tue, 29 Apr 2025 15:52:03 -0700 (PDT)
+Date: Tue, 29 Apr 2025 22:51:58 +0000
+In-Reply-To: <2025042803-deflected-overdue-01a5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <2025042803-deflected-overdue-01a5@gregkh>
+X-Mailer: git-send-email 2.49.0.901.g37484f566f-goog
+Message-ID: <20250429225158.3920681-1-cmllamas@google.com>
+Subject: [PATCH 6.12.y] binder: fix offset calculation in debug log
+From: Carlos Llamas <cmllamas@google.com>
+To: stable@vger.kernel.org, gregkh@linuxfoundation.org
+Cc: cmllamas@google.com, ynaffit@google.com, stable <stable@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-When turbo mode is unavailable on a Skylake-X system, executing the
-command:
-"echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo"
-results in an unchecked MSR access error: WRMSR to 0x199
-(attempted to write 0x0000000100001300).
+commit 170d1a3738908eef6a0dbf378ea77fb4ae8e294d upstream.
 
-This issue was reproduced on an OEM (Original Equipment Manufacturer)
-system and is not a common problem across all Skylake-X systems.
+The vma start address should be substracted from the buffer's user data
+address and not the other way around.
 
-This error occurs because the MSR 0x199 Turbo Engage Bit (bit 32) is set
-when turbo mode is disabled. The issue arises when intel_pstate fails to
-detect that turbo mode is disabled. Here intel_pstate relies on
-MSR_IA32_MISC_ENABLE bit 38 to determine the status of turbo mode.
-However, on this system, bit 38 is not set even when turbo mode is
-disabled.
-
-According to the Intel Software Developer's Manual (SDM), the BIOS sets
-this bit during platform initialization to enable or disable
-opportunistic processor performance operations. Logically, this bit
-should be set in such cases. However, the SDM also specifies that "OS and
-applications must use CPUID leaf 06H to detect processors with
-opportunistic processor performance operations enabled."
-
-Therefore, in addition to checking MSR_IA32_MISC_ENABLE bit 38, verify
-that CPUID.06H:EAX[1] is 0 to accurately determine if turbo mode is
-disabled.
-
-Fixes: 4521e1a0ce17 ("cpufreq: intel_pstate: Reflect current no_turbo state correctly")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: stable@vger.kernel.org
+Cc: Tiffany Y. Yang <ynaffit@google.com>
+Cc: stable <stable@kernel.org>
+Fixes: 162c79731448 ("binder: avoid user addresses in debug logs")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Tiffany Y. Yang <ynaffit@google.com>
+Link: https://lore.kernel.org/r/20250325184902.587138-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[cmllamas: fix conflicts due to alloc->buffer renaming]
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 ---
- drivers/cpufreq/intel_pstate.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/android/binder.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index f41ed0b9e610..ba9bf06f1c77 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -598,6 +598,9 @@ static bool turbo_is_disabled(void)
- {
- 	u64 misc_en;
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index ef353ca13c35..bdf09e8b898d 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -6374,7 +6374,7 @@ static void print_binder_transaction_ilocked(struct seq_file *m,
+ 		seq_printf(m, " node %d", buffer->target_node->debug_id);
+ 	seq_printf(m, " size %zd:%zd offset %lx\n",
+ 		   buffer->data_size, buffer->offsets_size,
+-		   proc->alloc.buffer - buffer->user_data);
++		   buffer->user_data - proc->alloc.buffer);
+ }
  
-+	if (!cpu_feature_enabled(X86_FEATURE_IDA))
-+		return true;
-+
- 	rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
- 
- 	return !!(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
+ static void print_binder_work_ilocked(struct seq_file *m,
 -- 
-2.48.1
+2.49.0.901.g37484f566f-goog
 
 
