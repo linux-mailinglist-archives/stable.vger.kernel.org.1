@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-137519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6095AA136B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91EC0AA17C5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 311AB7AFA4E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF49B460573
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D09221719;
-	Tue, 29 Apr 2025 17:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55FD2512D8;
+	Tue, 29 Apr 2025 17:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBlf9y1y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vf19NZJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDB57E110;
-	Tue, 29 Apr 2025 17:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8371F21ABC1;
+	Tue, 29 Apr 2025 17:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946310; cv=none; b=tQlJyA4j7GQhuOCGOkyoMwnTY2gjS0a7KDOdC+ui1wxRIExntg0ZNghTnSSJyHQDQV8h7gddHIrl8tRlmSl6nsrzrn6v3Qctw/fjnZtQTpF+1OmptBd43Mp2C/TAMhxfhu0aLNmyJfqvn/YmRKwGZFKmVz7bPB+RrdiqJHJ/3Do=
+	t=1745949062; cv=none; b=o4KHh0RXiIgCJdBOfR7pX0f05QS5SEvUwLg/Pkd+1tCuroTpSswSHsp6fT1ol8nunV7eZdXAXHGnZv2RAwsscRHYWHxTGk1ZuYlPrsZ7S9s4ajVNsTp36Pg1t6OeaGwWRYxPamVsYCudUHXHj73zFxaFrWhjYK3cjEud6X/HyOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946310; c=relaxed/simple;
-	bh=oWnzb5P8Udu8z/rjGHITB6cmMXL7psJbxxM2bJZsfpQ=;
+	s=arc-20240116; t=1745949062; c=relaxed/simple;
+	bh=sFe8QJOiN5/ONOr/xy3cZGoG8kNFRCrXn+8C7xndreM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q5gR2EPMHUnDa0a1XXXmo85xa6g8AdkjvcHoh3CP/8AUyD8H3KhpqUs2BmTn1/c3ZJgsyFnVjZRUJLr+w5SNMKJgLihpY+wdQ7bQMtbAuJkxIt89foLTAwKc0NuohmtsAaaEBKNZwEUfykPhR4v1YPT4nzKa90tku7JMKCxSEQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBlf9y1y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008B5C4CEEA;
-	Tue, 29 Apr 2025 17:05:09 +0000 (UTC)
+	 MIME-Version; b=mCt68FH0gSYteBVTM0whZKvHhrhi7vBpnRDCmcrKXdS1AzmDKn/ZRmN7sbj84tDEVenK7Ej2Ek5REcKYleF8Tq4RRFIQnM7YY810mZaCWTcjMAcQVW2oV7HMxxcS9Cjsb8vB5CzGcp280oaczkPq8yLmyOHYybTfAhJCa6bAL1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vf19NZJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8D2C4CEE3;
+	Tue, 29 Apr 2025 17:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946310;
-	bh=oWnzb5P8Udu8z/rjGHITB6cmMXL7psJbxxM2bJZsfpQ=;
+	s=korg; t=1745949062;
+	bh=sFe8QJOiN5/ONOr/xy3cZGoG8kNFRCrXn+8C7xndreM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cBlf9y1ywvm/EVuHVMmf2hJP9I5RTYOL6wdxgBAnd+ePW7OCt6xCC5fKJLln1khZw
-	 PzDHZHsGCB9HytRUFUwf9PR5cTVr1120n+hgZGrLDkwHWd1DEawEgp1LDUWsdKtaW+
-	 ySQgzLlOXVjMfPT9tapARLdRnwu2EqirLi2n1V88=
+	b=Vf19NZJBhB2mh6pLhsldwY8c1WdKx+sOWxHpIj1HEezwKbXu4lmx7Mj6qegUfyCeC
+	 hO4siOpntek6dcq7jTxJH7M/3RmC4wq3cD6Iro17Vru+/AH6VKUu8qRApRj9O1FO7k
+	 5th1Z7g0Seki118NjnN7BrqcB1VJjY1wFHh2Ihc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 225/311] objtool, lkdtm: Obfuscate the do_nothing() pointer
+	stable@kernel.org,
+	Rolf Eike Beer <eb@emlix.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Subject: [PATCH 5.15 185/373] drm/sti: remove duplicate object names
 Date: Tue, 29 Apr 2025 18:41:02 +0200
-Message-ID: <20250429161130.242296436@linuxfoundation.org>
+Message-ID: <20250429161130.770353280@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Rolf Eike Beer <eb@emlix.com>
 
-[ Upstream commit 05026ea01e95ffdeb0e5ac8fb7fb1b551e3a8726 ]
+commit 7fb6afa9125fc111478615e24231943c4f76cc2e upstream.
 
-If execute_location()'s memcpy of do_nothing() gets inlined and unrolled
-by the compiler, it copies one word at a time:
+When merging 2 drivers common object files were not deduplicated.
 
-    mov    0x0(%rip),%rax    R_X86_64_PC32    .text+0x1374
-    mov    %rax,0x38(%rbx)
-    mov    0x0(%rip),%rax    R_X86_64_PC32    .text+0x136c
-    mov    %rax,0x30(%rbx)
-    ...
-
-Those .text references point to the middle of the function, causing
-objtool to complain about their lack of ENDBR.
-
-Prevent that by resolving the function pointer at runtime rather than
-build time.  This fixes the following warning:
-
-  drivers/misc/lkdtm/lkdtm.o: warning: objtool: execute_location+0x23: relocation to !ENDBR: .text+0x1378
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/30b9abffbddeb43c4f6320b1270fa9b4d74c54ed.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202503191453.uFfxQy5R-lkp@intel.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dcec16efd677 ("drm/sti: Build monolithic driver")
+Cc: stable@kernel.org
+Signed-off-by: Rolf Eike Beer <eb@emlix.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/1920148.tdWV9SEqCh@devpool47.emlix.com
+Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/lkdtm/perms.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/sti/Makefile |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-index 5b861dbff27e9..6c24426104ba6 100644
---- a/drivers/misc/lkdtm/perms.c
-+++ b/drivers/misc/lkdtm/perms.c
-@@ -28,6 +28,13 @@ static const unsigned long rodata = 0xAA55AA55;
- /* This is marked __ro_after_init, so it should ultimately be .rodata. */
- static unsigned long ro_after_init __ro_after_init = 0x55AA5500;
- 
-+/*
-+ * This is a pointer to do_nothing() which is initialized at runtime rather
-+ * than build time to avoid objtool IBT validation warnings caused by an
-+ * inlined unrolled memcpy() in execute_location().
-+ */
-+static void __ro_after_init *do_nothing_ptr;
-+
- /*
-  * This just returns to the caller. It is designed to be copied into
-  * non-executable memory regions.
-@@ -65,13 +72,12 @@ static noinline __nocfi void execute_location(void *dst, bool write)
- {
- 	void (*func)(void);
- 	func_desc_t fdesc;
--	void *do_nothing_text = dereference_function_descriptor(do_nothing);
- 
--	pr_info("attempting ok execution at %px\n", do_nothing_text);
-+	pr_info("attempting ok execution at %px\n", do_nothing_ptr);
- 	do_nothing();
- 
- 	if (write == CODE_WRITE) {
--		memcpy(dst, do_nothing_text, EXEC_SIZE);
-+		memcpy(dst, do_nothing_ptr, EXEC_SIZE);
- 		flush_icache_range((unsigned long)dst,
- 				   (unsigned long)dst + EXEC_SIZE);
- 	}
-@@ -267,6 +273,8 @@ static void lkdtm_ACCESS_NULL(void)
- 
- void __init lkdtm_perms_init(void)
- {
-+	do_nothing_ptr = dereference_function_descriptor(do_nothing);
-+
- 	/* Make sure we can write to __ro_after_init values during __init */
- 	ro_after_init |= 0xAA;
- }
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/sti/Makefile
++++ b/drivers/gpu/drm/sti/Makefile
+@@ -7,8 +7,6 @@ sti-drm-y := \
+ 	sti_compositor.o \
+ 	sti_crtc.o \
+ 	sti_plane.o \
+-	sti_crtc.o \
+-	sti_plane.o \
+ 	sti_hdmi.o \
+ 	sti_hdmi_tx3g4c28phy.o \
+ 	sti_dvo.o \
 
 
 
