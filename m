@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE580AA1996
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 796EEAA18DB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:05:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AC6E4E16BB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:12:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA9EE4E25EC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8762550B4;
-	Tue, 29 Apr 2025 18:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D115D2517A6;
+	Tue, 29 Apr 2025 18:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="meptvIPJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9K3/l/8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F562550B2;
-	Tue, 29 Apr 2025 18:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC2224111D;
+	Tue, 29 Apr 2025 18:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950288; cv=none; b=Dtvx2iEX0ZXtZ027XqZR1IRGmXWZBO7Rf+W7hpzPhKTWxLOW+KJGxblZpRPyikUU0QM1J7Zf0r4wvrkgA8xotlkxv7tzKVDlH9KRVYx0PVqDiI7fzVSMKl97Dqwa0NVSfn0eQMe9iEZlc8YN0utxHqLAHmqkRmpu1IIb+Sg/cUg=
+	t=1745949793; cv=none; b=UCTExALsP/JZhZyMU/7Iyg05wxCFOBR0wwW5v0QP2Gtd63ajD8/YSlRYVT87V9OZcVnJJLZDkod5t93xw7aDG0Dlf5CwIa5wAGMOkdjEebLxp7ucWcAN12bz4zFTjdW+p3N6uv4TYQNd+9omKrCi8nlMxOhSMTeQKO4z9bCtnTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950288; c=relaxed/simple;
-	bh=zjbITz/2efdp2bcEyp2C+99e+KNgRtHecN3fVyIubnY=;
+	s=arc-20240116; t=1745949793; c=relaxed/simple;
+	bh=5cp0Y2Q/7WxhuN1c0UN70T6fGjLEsfvIIWAZuGCa3AY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gMM+PlIGYTqve7sj1QstUNtOscBK+fYrS1u8l9AdUzccaGn1le62KkXaF8g/r2+PC4seAayTu5qF3QINY80Ho5Q7g6oLoVE+wpAVKJe13z0iW6OnEfbR9t4f+nHwqQbh7Y6UCR8x1G8v7gdQAoqav8aHj8CkKUDlo9jqzq2F4xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meptvIPJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7E4C4CEE3;
-	Tue, 29 Apr 2025 18:11:27 +0000 (UTC)
+	 MIME-Version; b=GJNAi0VGA+jubXq6bUNCsPZ66OobpawQMNu6mt9ANsqOQUWhW3W9etgxa9lEAqxII34AD988PxBiCwujziS7pv7SfrQCjwk/gwhI1lOKWtYjorR84y8FUPCaD8aNwJCGY9a/6GqfRsYdbXAXYYOf3MGuEcsT6py/dVR7U1VCKm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9K3/l/8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0734C4CEE3;
+	Tue, 29 Apr 2025 18:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950288;
-	bh=zjbITz/2efdp2bcEyp2C+99e+KNgRtHecN3fVyIubnY=;
+	s=korg; t=1745949793;
+	bh=5cp0Y2Q/7WxhuN1c0UN70T6fGjLEsfvIIWAZuGCa3AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=meptvIPJp7ppTGWkSN5SFLArSO7lNwHAQAtujfuD8VnXzQv+BV8eudWETyUaAvqPF
-	 FiTyDOrZPKqc8ExEL22lJDVrYmbKLM+vUETs5cHBaRfacYJFi9mALB8b2eUstVfRpK
-	 ZRDSDaefMiWowM+yx6rPRmnx3ry1wtgz+Bg2qzvA=
+	b=b9K3/l/8wu/40UFmYFs19ihrgTzrMGcTZEo0FrrQmkFCLjPvU0GxzodOpNQVq051m
+	 dIfrBzkBhHcYDs2alXMy/0kL5QKh4GN3m6zDcdi0en1VOAd0kQW7DCVfj7El7eRfDe
+	 /ev1GgAvVa/+lQhhmrArFAynQ+MMHVbevGMEMCtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/204] cpufreq: scmi: Fix null-ptr-deref in scmi_cpufreq_get_rate()
-Date: Tue, 29 Apr 2025 18:42:16 +0200
-Message-ID: <20250429161101.372764880@linuxfoundation.org>
+Subject: [PATCH 6.1 029/167] of: resolver: Fix device node refcount leakage in of_resolve_phandles()
+Date: Tue, 29 Apr 2025 18:42:17 +0200
+Message-ID: <20250429161052.928291952@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 484d3f15cc6cbaa52541d6259778e715b2c83c54 ]
+[ Upstream commit a46a0805635d07de50c2ac71588345323c13b2f9 ]
 
-cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
-in the policy->cpus mask. scmi_cpufreq_get_rate() does not check for
-this case, which results in a NULL pointer dereference.
+In of_resolve_phandles(), refcount of device node @local_fixups will be
+increased if the for_each_child_of_node() exits early, but nowhere to
+decrease the refcount, so cause refcount leakage for the node.
 
-Add NULL check after cpufreq_cpu_get_raw() to prevent this issue.
+Fix by using __free() on @local_fixups.
 
-Fixes: 99d6bdf33877 ("cpufreq: add support for CPU DVFS based on SCMI message protocol")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: da56d04c806a ("of/resolver: Switch to new local fixups format.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-9-93e3a2659aa7@quicinc.com
+[robh: Use __free() instead]
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/scmi-cpufreq.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/of/resolver.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
-index 079940c69ee0b..e4989764efe2a 100644
---- a/drivers/cpufreq/scmi-cpufreq.c
-+++ b/drivers/cpufreq/scmi-cpufreq.c
-@@ -33,11 +33,17 @@ static const struct scmi_perf_proto_ops *perf_ops;
- 
- static unsigned int scmi_cpufreq_get_rate(unsigned int cpu)
+diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
+index 2dd19dc6987c7..d5c1b2a126a56 100644
+--- a/drivers/of/resolver.c
++++ b/drivers/of/resolver.c
+@@ -262,8 +262,9 @@ static int adjust_local_phandle_references(struct device_node *local_fixups,
+  */
+ int of_resolve_phandles(struct device_node *overlay)
  {
--	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
--	struct scmi_data *priv = policy->driver_data;
-+	struct cpufreq_policy *policy;
-+	struct scmi_data *priv;
- 	unsigned long rate;
- 	int ret;
- 
-+	policy = cpufreq_cpu_get_raw(cpu);
-+	if (unlikely(!policy))
-+		return 0;
-+
-+	priv = policy->driver_data;
-+
- 	ret = perf_ops->freq_get(ph, priv->domain_id, &rate, false);
- 	if (ret)
- 		return 0;
+-	struct device_node *child, *local_fixups, *refnode;
++	struct device_node *child, *refnode;
+ 	struct device_node *overlay_fixups;
++	struct device_node __free(device_node) *local_fixups = NULL;
+ 	struct property *prop;
+ 	const char *refpath;
+ 	phandle phandle, phandle_delta;
 -- 
 2.39.5
 
