@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-137849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725E1AA159A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:29:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4A5AA1673
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1DAB986119
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8387F7B1C37
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD4A252914;
-	Tue, 29 Apr 2025 17:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B4D1C6B4;
+	Tue, 29 Apr 2025 17:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12dr4f39"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AfLHRt7Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF6321ABDB;
-	Tue, 29 Apr 2025 17:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2363222DF91;
+	Tue, 29 Apr 2025 17:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947313; cv=none; b=ZHmMO3KvV3NQr26Tik+HKwN+PX5v75cyBspMMYm3DI+GHSxJ2EH1geegCoI+AP0zr1TOVrPhOhPyh7fgwgMAfl7Af8kKSrKNHDBXkAVLZ3KYPwArNim5kSrFUuW5LrdXx2wcMcl2vPzBpaFPxZmrNIqaFpPHx8BU95Eibxzz4/I=
+	t=1745948259; cv=none; b=rRm/RiCcGd4XqNMa5o8ZCcze1fBLKRC+urOXpb8O86Qer+LnRp7VRuzR5WLHrMjPBNX/OYdrBTZsPctPx5IxoqYgSOn9Ib9bk91BrjEDEM9n9D6wEVCXkrL1HfSzswZabh5erw3Iy07+HaSlca3NkxvIu9lb1RK+hwBg9viPLq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947313; c=relaxed/simple;
-	bh=P7ynSTSQPdB/L/RhnstJ7YvvU1en3FxUMY2MIUQ0NcE=;
+	s=arc-20240116; t=1745948259; c=relaxed/simple;
+	bh=hmdW49U03dzG9l9vNZwD57K77OOyMKZ4QLO3vjz8aCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a26pGWzFTMRfLM9y2+xfgs0XaMQXesoEqeg0hcfRIVug4DAFwKUVizdey5kvAui/8gFI3NfLLMiEhkF5Ss3bJErg+XHMuPpT1IjIbhG1JNVA1FOyBG9F1p2TvdMhA7snNeEr6dJ7KLHLuEP6xYIHX8Ihp2cW0s0Xn1ddXtQ0mjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12dr4f39; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BFCC4CEE3;
-	Tue, 29 Apr 2025 17:21:52 +0000 (UTC)
+	 MIME-Version; b=n8HmHkL0/Bpgl4V2ZZ7jLbH05NutyltnXrTrUh4nI9pGs4J6m3E7ccebneGHGRB0nUJrEaPNtn6/ZTm7/z6FK96DgCewyFEm6YVLSNIw9In6kyxUc37Oq63qkZeusWFtBHod77/n3GJHjMCFgREGqS4Mclmu3E+0GWkg20E1yJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AfLHRt7Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FA0C4CEE3;
+	Tue, 29 Apr 2025 17:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947313;
-	bh=P7ynSTSQPdB/L/RhnstJ7YvvU1en3FxUMY2MIUQ0NcE=;
+	s=korg; t=1745948258;
+	bh=hmdW49U03dzG9l9vNZwD57K77OOyMKZ4QLO3vjz8aCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=12dr4f39uZC36csNpkYnBMNt35XgjGRq4ZbPWNnWl9/44L9koD0zpnAGhMl0aHCDg
-	 a3mHWgxRz+fJp751mGvlz+L6Jot7hg3KzVA2ivgPcuZFYgEai2IwrYG/KnYnAObXQg
-	 x5fSTWRer8yI3n+B/oM23V3aO3OdKS7UKzJLhUns=
+	b=AfLHRt7Yy+RyfcIzM0kZaQyvJnSh2u2WHozBEywmjo/nV6KNiE8/CNGI2qeQRSew1
+	 Nyyz0akesiCpPmv76j++Q80kXGZaS+E2be8uG+BfHGtQxmZt45YKdyVEuEeN6yGT9k
+	 H7XMfWzAj23CR8xsINVw0arozNEE2s5CcE1rXjFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 5.10 242/286] KVM: x86: Reset IRTE to host control if *new* route isnt postable
+	syzbot+ff3aa851d46ab82953a3@syzkaller.appspotmail.com,
+	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 205/280] perf/core: Fix WARN_ON(!ctx) in __free_event() for partial init
 Date: Tue, 29 Apr 2025 18:42:26 +0200
-Message-ID: <20250429161117.879331615@linuxfoundation.org>
+Message-ID: <20250429161123.519953209@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,183 +68,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 
-commit 9bcac97dc42d2f4da8229d18feb0fe2b1ce523a2 upstream.
+[ Upstream commit 0ba3a4ab76fd3367b9cb680cad70182c896c795c ]
 
-Restore an IRTE back to host control (remapped or posted MSI mode) if the
-*new* GSI route prevents posting the IRQ directly to a vCPU, regardless of
-the GSI routing type.  Updating the IRTE if and only if the new GSI is an
-MSI results in KVM leaving an IRTE posting to a vCPU.
+Move the get_ctx(child_ctx) call and the child_event->ctx assignment to
+occur immediately after the child event is allocated. Ensure that
+child_event->ctx is non-NULL before any subsequent error path within
+inherit_event calls free_event(), satisfying the assumptions of the
+cleanup code.
 
-The dangling IRTE can result in interrupts being incorrectly delivered to
-the guest, and in the worst case scenario can result in use-after-free,
-e.g. if the VM is torn down, but the underlying host IRQ isn't freed.
+Details:
 
-Fixes: efc644048ecd ("KVM: x86: Update IRTE for posted-interrupts")
-Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-3-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+There's no clear Fixes tag, because this bug is a side-effect of
+multiple interacting commits over time (up to 15 years old), not
+a single regression.
+
+The code initially incremented refcount then assigned context
+immediately after the child_event was created. Later, an early
+validity check for child_event was added before the
+refcount/assignment. Even later, a WARN_ON_ONCE() cleanup check was
+added, assuming event->ctx is valid if the pmu_ctx is valid.
+The problem is that the WARN_ON_ONCE() could trigger after the initial
+check passed but before child_event->ctx was assigned, violating its
+precondition. The solution is to assign child_event->ctx right after
+its initial validation. This ensures the context exists for any
+subsequent checks or cleanup routines, resolving the WARN_ON_ONCE().
+
+To resolve it, defer the refcount update and child_event->ctx assignment
+directly after child_event->pmu_ctx is set but before checking if the
+parent event is orphaned. The cleanup routine depends on
+event->pmu_ctx being non-NULL before it verifies event->ctx is
+non-NULL. This also maintains the author's original intent of passing
+in child_ctx to find_get_pmu_context before its refcount/assignment.
+
+[ mingo: Expanded the changelog from another email by Gabriel Shahrouzi. ]
+
+Reported-by: syzbot+ff3aa851d46ab82953a3@syzkaller.appspotmail.com
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Link: https://lore.kernel.org/r/20250405203036.582721-1-gshahrouzi@gmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ff3aa851d46ab82953a3
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/avic.c        |   58 +++++++++++++++++++++--------------------
- arch/x86/kvm/vmx/posted_intr.c |   28 +++++++------------
- 2 files changed, 41 insertions(+), 45 deletions(-)
+ kernel/events/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -806,6 +806,7 @@ int svm_update_pi_irte(struct kvm *kvm,
- {
- 	struct kvm_kernel_irq_routing_entry *e;
- 	struct kvm_irq_routing_table *irq_rt;
-+	bool enable_remapped_mode = true;
- 	int idx, ret = 0;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 97af53c43608e..edafe9fc4bdd0 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -13661,6 +13661,9 @@ inherit_event(struct perf_event *parent_event,
+ 	if (IS_ERR(child_event))
+ 		return child_event;
  
- 	if (!kvm_arch_has_assigned_device(kvm) ||
-@@ -843,6 +844,8 @@ int svm_update_pi_irte(struct kvm *kvm,
- 		    kvm_vcpu_apicv_active(&svm->vcpu)) {
- 			struct amd_iommu_pi_data pi;
- 
-+			enable_remapped_mode = false;
++	get_ctx(child_ctx);
++	child_event->ctx = child_ctx;
 +
- 			/* Try to enable guest_mode in IRTE */
- 			pi.base = __sme_set(page_to_phys(svm->avic_backing_page) &
- 					    AVIC_HPA_MASK);
-@@ -861,33 +864,6 @@ int svm_update_pi_irte(struct kvm *kvm,
- 			 */
- 			if (!ret && pi.is_guest_mode)
- 				svm_ir_list_add(svm, &pi);
--		} else {
--			/* Use legacy mode in IRTE */
--			struct amd_iommu_pi_data pi;
--
--			/**
--			 * Here, pi is used to:
--			 * - Tell IOMMU to use legacy mode for this interrupt.
--			 * - Retrieve ga_tag of prior interrupt remapping data.
--			 */
--			pi.prev_ga_tag = 0;
--			pi.is_guest_mode = false;
--			ret = irq_set_vcpu_affinity(host_irq, &pi);
--
--			/**
--			 * Check if the posted interrupt was previously
--			 * setup with the guest_mode by checking if the ga_tag
--			 * was cached. If so, we need to clean up the per-vcpu
--			 * ir_list.
--			 */
--			if (!ret && pi.prev_ga_tag) {
--				int id = AVIC_GATAG_TO_VCPUID(pi.prev_ga_tag);
--				struct kvm_vcpu *vcpu;
--
--				vcpu = kvm_get_vcpu_by_id(kvm, id);
--				if (vcpu)
--					svm_ir_list_del(to_svm(vcpu), &pi);
--			}
- 		}
- 
- 		if (!ret && svm) {
-@@ -903,6 +879,34 @@ int svm_update_pi_irte(struct kvm *kvm,
+ 	pmu_ctx = find_get_pmu_context(child_event->pmu, child_ctx, child_event);
+ 	if (IS_ERR(pmu_ctx)) {
+ 		free_event(child_event);
+@@ -13683,8 +13686,6 @@ inherit_event(struct perf_event *parent_event,
+ 		return NULL;
  	}
  
- 	ret = 0;
-+	if (enable_remapped_mode) {
-+		/* Use legacy mode in IRTE */
-+		struct amd_iommu_pi_data pi;
-+
-+		/**
-+		 * Here, pi is used to:
-+		 * - Tell IOMMU to use legacy mode for this interrupt.
-+		 * - Retrieve ga_tag of prior interrupt remapping data.
-+		 */
-+		pi.prev_ga_tag = 0;
-+		pi.is_guest_mode = false;
-+		ret = irq_set_vcpu_affinity(host_irq, &pi);
-+
-+		/**
-+		 * Check if the posted interrupt was previously
-+		 * setup with the guest_mode by checking if the ga_tag
-+		 * was cached. If so, we need to clean up the per-vcpu
-+		 * ir_list.
-+		 */
-+		if (!ret && pi.prev_ga_tag) {
-+			int id = AVIC_GATAG_TO_VCPUID(pi.prev_ga_tag);
-+			struct kvm_vcpu *vcpu;
-+
-+			vcpu = kvm_get_vcpu_by_id(kvm, id);
-+			if (vcpu)
-+				svm_ir_list_del(to_svm(vcpu), &pi);
-+		}
-+	}
- out:
- 	srcu_read_unlock(&kvm->irq_srcu, idx);
- 	return ret;
---- a/arch/x86/kvm/vmx/posted_intr.c
-+++ b/arch/x86/kvm/vmx/posted_intr.c
-@@ -255,6 +255,7 @@ int pi_update_irte(struct kvm *kvm, unsi
- {
- 	struct kvm_kernel_irq_routing_entry *e;
- 	struct kvm_irq_routing_table *irq_rt;
-+	bool enable_remapped_mode = true;
- 	struct kvm_lapic_irq irq;
- 	struct kvm_vcpu *vcpu;
- 	struct vcpu_data vcpu_info;
-@@ -293,21 +294,8 @@ int pi_update_irte(struct kvm *kvm, unsi
- 
- 		kvm_set_msi_irq(kvm, e, &irq);
- 		if (!kvm_intr_is_single_vcpu(kvm, &irq, &vcpu) ||
--		    !kvm_irq_is_postable(&irq)) {
--			/*
--			 * Make sure the IRTE is in remapped mode if
--			 * we don't handle it in posted mode.
--			 */
--			ret = irq_set_vcpu_affinity(host_irq, NULL);
--			if (ret < 0) {
--				printk(KERN_INFO
--				   "failed to back to remapped mode, irq: %u\n",
--				   host_irq);
--				goto out;
--			}
+-	get_ctx(child_ctx);
 -
-+		    !kvm_irq_is_postable(&irq))
- 			continue;
--		}
- 
- 		vcpu_info.pi_desc_addr = __pa(&to_vmx(vcpu)->pi_desc);
- 		vcpu_info.vector = irq.vector;
-@@ -315,11 +303,12 @@ int pi_update_irte(struct kvm *kvm, unsi
- 		trace_kvm_pi_irte_update(host_irq, vcpu->vcpu_id, e->gsi,
- 				vcpu_info.vector, vcpu_info.pi_desc_addr, set);
- 
--		if (set)
--			ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
--		else
--			ret = irq_set_vcpu_affinity(host_irq, NULL);
-+		if (!set)
-+			continue;
- 
-+		enable_remapped_mode = false;
-+
-+		ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
- 		if (ret < 0) {
- 			printk(KERN_INFO "%s: failed to update PI IRTE\n",
- 					__func__);
-@@ -327,6 +316,9 @@ int pi_update_irte(struct kvm *kvm, unsi
- 		}
+ 	/*
+ 	 * Make the child state follow the state of the parent event,
+ 	 * not its attr.disabled bit.  We hold the parent's mutex,
+@@ -13705,7 +13706,6 @@ inherit_event(struct perf_event *parent_event,
+ 		local64_set(&hwc->period_left, sample_period);
  	}
  
-+	if (enable_remapped_mode)
-+		ret = irq_set_vcpu_affinity(host_irq, NULL);
-+
- 	ret = 0;
- out:
- 	srcu_read_unlock(&kvm->irq_srcu, idx);
+-	child_event->ctx = child_ctx;
+ 	child_event->overflow_handler = parent_event->overflow_handler;
+ 	child_event->overflow_handler_context
+ 		= parent_event->overflow_handler_context;
+-- 
+2.39.5
+
 
 
 
