@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-138969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F5A3AA3D33
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:54:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4154EAA3D29
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:53:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71D48188899C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:53:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39BBC9A2E9B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CF82DEBAD;
-	Tue, 29 Apr 2025 23:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DEC2DFA23;
+	Tue, 29 Apr 2025 23:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QztmpYvk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iN2HqKnb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40E62DEBA7;
-	Tue, 29 Apr 2025 23:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803CD24676C;
+	Tue, 29 Apr 2025 23:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745970635; cv=none; b=o48Tl92kGB8Qwu+jx5FoBhqCa79KVBdfnxDyR6KhVvom7IklsY9QBgdyz0g0H8FivXbt9pNZUaXQf99JYgTCGzl9J5mRBlORXXh/gp/u1GYEbA1wDY8FHeZucfKSBW3jYhzzhI1CXyo+l68ra6klhOmwdLvU/WSdqQo+0jt3+Uk=
+	t=1745970636; cv=none; b=bdR0QpcW8NwzD/PV2suFMSmpVptNfOlUcaC63LDbyAD4+QzQ983fMqO+K/ZZCE6tU9xJqskrbU4J7isobEQSSAC0D4APlNWPsuWxWLqA3uFv6Zc5WCiPqefYEY2HA57TmfAkXBuouSIVLKeFiaWYSV0qJpz6FAzYqRVUkHe3vi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745970635; c=relaxed/simple;
-	bh=Az7+hH/x8eP639b3AoT+1hZc6ycTHyqSF371zwy9ceU=;
+	s=arc-20240116; t=1745970636; c=relaxed/simple;
+	bh=6ZEJnPaJpOwZ0QFduELFZTqeO/rARVUjGYJCAGrpGMU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tic9haf5pxPjaaP3tIN7Enm73YTbCnSB2bFO4ucKfxbf3Np51+g45LB45UR/ybAek+oj158ALi7ddb1BsXhXlKqeWUQC/hFGTLmQhr6ymbhEFn2vLXEeUPbG750M3rvDTbpRsg31/wyMFX6G82d6ijCXIonV0l9eGt0LrrswPqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QztmpYvk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00772C4CEEB;
-	Tue, 29 Apr 2025 23:50:32 +0000 (UTC)
+	 MIME-Version; b=qBRETJE1f7LdTbdYSO+go3DAdBTUEsKXAumrPv7a9T3VfblRbX3wT/ldJfMH3yma8iFyHlMpSkYawVrddqP2pJJJsBROW2hBfxr4Un7lTC+3WiauFvuHLSZS87cWGsHaPoa5brrHPLdRm//hjuZocw7ZnDwo4cWJFs9Z369y5Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iN2HqKnb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED9DC4CEE3;
+	Tue, 29 Apr 2025 23:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745970634;
-	bh=Az7+hH/x8eP639b3AoT+1hZc6ycTHyqSF371zwy9ceU=;
+	s=k20201202; t=1745970636;
+	bh=6ZEJnPaJpOwZ0QFduELFZTqeO/rARVUjGYJCAGrpGMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QztmpYvkjZ0Ny/ngYulMKoqvjjIy9kX/nhUOPaq1Xnx8PP7Qe6ULVTvmmVYK9ndra
-	 UDH3FkgzR/nmfG777NfNXG1J7xYAtCHR6aRosOng8+4yHocgs0rBRcudxLQBKNja9a
-	 DfgKnhZ//lBzp3RC3LdG/Yw1/qep9p+O8YPnngY9e3L+XtK+MDcIr+udTixIyFaXSU
-	 DS0izhqRiO2KIiB7Yw/41qmU+NzNntcwF9EIjRJNbp1FdGS8tNwfJYexq4SYvAWQbY
-	 ACEi6lpFnRRmeY2s0EGJjsmosKhCqnFGfjhcaQkxtUzb4wWWILLHFFLvE8un8CDzeZ
-	 N8cOguafDa4LQ==
+	b=iN2HqKnbIhPi9gQVcLr9VQqdBgxeyaHJyShNHbB7vOcPNhiJsrbfaC4Ulsw7NTjad
+	 KMx9gdK3JjQ9EUwwetbTs5HAt/vnbg/mU/awGC1IPifNZNLfMVlsQpAynj02jatxMt
+	 NtEvYbqKfeFdA+0EG0iby9FxsdC+xkZdIIzwo3PX43AOsmLqdZHxfie06L83KfBtpX
+	 LSO5Hw0E5ikXQ0uEPg6p7aqygi0EKpJOXvs/IPMdiK7Va2+TkEbjdwYHtNEC0kJFZD
+	 SEl9sEa40AyyyYSeMkRdlJGDZSl7clx68DeCykJ61LhbZpbVRoiUBdT81jM4njI9ZL
+	 C8JELGW8BlZPA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.14 13/39] intel_th: avoid using deprecated page->mapping, index fields
-Date: Tue, 29 Apr 2025 19:49:40 -0400
-Message-Id: <20250429235006.536648-13-sashal@kernel.org>
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	dakr@kernel.org
+Subject: [PATCH AUTOSEL 6.14 14/39] driver core: introduce device_set_driver() helper
+Date: Tue, 29 Apr 2025 19:49:41 -0400
+Message-Id: <20250429235006.536648-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250429235006.536648-1-sashal@kernel.org>
 References: <20250429235006.536648-1-sashal@kernel.org>
@@ -65,143 +67,87 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.4
 Content-Transfer-Encoding: 8bit
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 8e553520596bbd5ce832e26e9d721e6a0c797b8b ]
+[ Upstream commit 04d3e5461c1f5cf8eec964ab64948ebed826e95e ]
 
-The struct page->mapping, index fields are deprecated and soon to be only
-available as part of a folio.
+In preparation to closing a race when reading driver pointer in
+dev_uevent() code, instead of setting device->driver pointer directly
+introduce device_set_driver() helper.
 
-It is likely the intel_th code which sets page->mapping, index is was
-implemented out of concern that some aspect of the page fault logic may
-encounter unexpected problems should they not.
-
-However, the appropriate interface for inserting kernel-allocated memory is
-vm_insert_page() in a VM_MIXEDMAP. By using the helper function
-vmf_insert_mixed() we can do this with minimal churn in the existing fault
-handler.
-
-By doing so, we bypass the remainder of the faulting logic. The pages are
-still pinned so there is no possibility of anything unexpected being done
-with the pages once established.
-
-It would also be reasonable to pre-map everything on fault, however to
-minimise churn we retain the fault handler.
-
-We also eliminate all code which clears page->mapping on teardown as this
-has now become unnecessary.
-
-The MSU code relies on faulting to function correctly, so is by definition
-dependent on CONFIG_MMU. We avoid spurious reports about compilation
-failure for unsupported platforms by making this requirement explicit in
-Kconfig as part of this change too.
-
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Link: https://lore.kernel.org/r/20250331125608.60300-1-lorenzo.stoakes@oracle.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20250311052417.1846985-2-dmitry.torokhov@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/intel_th/Kconfig |  1 +
- drivers/hwtracing/intel_th/msu.c   | 31 +++++++-----------------------
- 2 files changed, 8 insertions(+), 24 deletions(-)
+ drivers/base/base.h | 6 ++++++
+ drivers/base/core.c | 2 +-
+ drivers/base/dd.c   | 7 +++----
+ 3 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwtracing/intel_th/Kconfig b/drivers/hwtracing/intel_th/Kconfig
-index 4b6359326ede9..4f7d2b6d79e29 100644
---- a/drivers/hwtracing/intel_th/Kconfig
-+++ b/drivers/hwtracing/intel_th/Kconfig
-@@ -60,6 +60,7 @@ config INTEL_TH_STH
+diff --git a/drivers/base/base.h b/drivers/base/base.h
+index 0042e4774b0ce..eb203cf8370bc 100644
+--- a/drivers/base/base.h
++++ b/drivers/base/base.h
+@@ -180,6 +180,12 @@ int driver_add_groups(const struct device_driver *drv, const struct attribute_gr
+ void driver_remove_groups(const struct device_driver *drv, const struct attribute_group **groups);
+ void device_driver_detach(struct device *dev);
  
- config INTEL_TH_MSU
- 	tristate "Intel(R) Trace Hub Memory Storage Unit"
-+	depends on MMU
- 	help
- 	  Memory Storage Unit (MSU) trace output device enables
- 	  storing STP traces to system memory. It supports single
-diff --git a/drivers/hwtracing/intel_th/msu.c b/drivers/hwtracing/intel_th/msu.c
-index bf99d79a41920..7163950eb3719 100644
---- a/drivers/hwtracing/intel_th/msu.c
-+++ b/drivers/hwtracing/intel_th/msu.c
-@@ -19,6 +19,7 @@
- #include <linux/io.h>
- #include <linux/workqueue.h>
- #include <linux/dma-mapping.h>
-+#include <linux/pfn_t.h>
- 
- #ifdef CONFIG_X86
- #include <asm/set_memory.h>
-@@ -976,7 +977,6 @@ static void msc_buffer_contig_free(struct msc *msc)
- 	for (off = 0; off < msc->nr_pages << PAGE_SHIFT; off += PAGE_SIZE) {
- 		struct page *page = virt_to_page(msc->base + off);
- 
--		page->mapping = NULL;
- 		__free_page(page);
++static inline void device_set_driver(struct device *dev, const struct device_driver *drv)
++{
++	// FIXME - this cast should not be needed "soon"
++	dev->driver = (struct device_driver *)drv;
++}
++
+ int devres_release_all(struct device *dev);
+ void device_block_probing(void);
+ void device_unblock_probing(void);
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 2fde698430dff..4a23dc8e2cdaf 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3700,7 +3700,7 @@ int device_add(struct device *dev)
+ 	device_pm_remove(dev);
+ 	dpm_sysfs_remove(dev);
+  DPMError:
+-	dev->driver = NULL;
++	device_set_driver(dev, NULL);
+ 	bus_remove_device(dev);
+  BusError:
+ 	device_remove_attrs(dev);
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index f0e4b4aba885c..b526e0e0f52d7 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -550,7 +550,7 @@ static void device_unbind_cleanup(struct device *dev)
+ 	arch_teardown_dma_ops(dev);
+ 	kfree(dev->dma_range_map);
+ 	dev->dma_range_map = NULL;
+-	dev->driver = NULL;
++	device_set_driver(dev, NULL);
+ 	dev_set_drvdata(dev, NULL);
+ 	if (dev->pm_domain && dev->pm_domain->dismiss)
+ 		dev->pm_domain->dismiss(dev);
+@@ -629,8 +629,7 @@ static int really_probe(struct device *dev, const struct device_driver *drv)
  	}
  
-@@ -1158,9 +1158,6 @@ static void __msc_buffer_win_free(struct msc *msc, struct msc_window *win)
- 	int i;
+ re_probe:
+-	// FIXME - this cast should not be needed "soon"
+-	dev->driver = (struct device_driver *)drv;
++	device_set_driver(dev, drv);
  
- 	for_each_sg(win->sgt->sgl, sg, win->nr_segs, i) {
--		struct page *page = msc_sg_page(sg);
--
--		page->mapping = NULL;
- 		dma_free_coherent(msc_dev(win->msc)->parent->parent, PAGE_SIZE,
- 				  sg_virt(sg), sg_dma_address(sg));
- 	}
-@@ -1601,22 +1598,10 @@ static void msc_mmap_close(struct vm_area_struct *vma)
- {
- 	struct msc_iter *iter = vma->vm_file->private_data;
- 	struct msc *msc = iter->msc;
--	unsigned long pg;
- 
- 	if (!atomic_dec_and_mutex_lock(&msc->mmap_count, &msc->buf_mutex))
- 		return;
- 
--	/* drop page _refcounts */
--	for (pg = 0; pg < msc->nr_pages; pg++) {
--		struct page *page = msc_buffer_get_page(msc, pg);
--
--		if (WARN_ON_ONCE(!page))
--			continue;
--
--		if (page->mapping)
--			page->mapping = NULL;
--	}
--
- 	/* last mapping -- drop user_count */
- 	atomic_dec(&msc->user_count);
- 	mutex_unlock(&msc->buf_mutex);
-@@ -1626,16 +1611,14 @@ static vm_fault_t msc_mmap_fault(struct vm_fault *vmf)
- {
- 	struct msc_iter *iter = vmf->vma->vm_file->private_data;
- 	struct msc *msc = iter->msc;
-+	struct page *page;
- 
--	vmf->page = msc_buffer_get_page(msc, vmf->pgoff);
--	if (!vmf->page)
-+	page = msc_buffer_get_page(msc, vmf->pgoff);
-+	if (!page)
- 		return VM_FAULT_SIGBUS;
- 
--	get_page(vmf->page);
--	vmf->page->mapping = vmf->vma->vm_file->f_mapping;
--	vmf->page->index = vmf->pgoff;
--
--	return 0;
-+	get_page(page);
-+	return vmf_insert_mixed(vmf->vma, vmf->address, page_to_pfn_t(page));
- }
- 
- static const struct vm_operations_struct msc_mmap_ops = {
-@@ -1676,7 +1659,7 @@ static int intel_th_msc_mmap(struct file *file, struct vm_area_struct *vma)
- 		atomic_dec(&msc->user_count);
- 
- 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
--	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTCOPY);
-+	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTCOPY | VM_MIXEDMAP);
- 	vma->vm_ops = &msc_mmap_ops;
- 	return ret;
- }
+ 	/* If using pinctrl, bind pins now before probing */
+ 	ret = pinctrl_bind_pins(dev);
+@@ -1014,7 +1013,7 @@ static int __device_attach(struct device *dev, bool allow_async)
+ 		if (ret == 0)
+ 			ret = 1;
+ 		else {
+-			dev->driver = NULL;
++			device_set_driver(dev, NULL);
+ 			ret = 0;
+ 		}
+ 	} else {
 -- 
 2.39.5
 
