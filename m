@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6E0AA148F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D78DAA121A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07148188C2DE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52F3D980A9C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACDD24729E;
-	Tue, 29 Apr 2025 17:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F52C24466C;
+	Tue, 29 Apr 2025 16:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnNO/osL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZb/th3J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E6B27453;
-	Tue, 29 Apr 2025 17:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAD224113C;
+	Tue, 29 Apr 2025 16:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946828; cv=none; b=fV2OOq13jujDgzlEorokbuHC9lKugVMdypfp+06ngiPJD+MIbqo0GvmkCMi1SyaDoIokGK0HjYBmazhgOMOTqFUUQUBanolyDOjP0LN46ij6Kxk/i22BO6gWixVvtZHkxZL7mOGbLow6/WXc8l/ZhopxdzNR3/EpcMxulNkKxNg=
+	t=1745945276; cv=none; b=AzAgc8ac0XEb+c3pgmr09AKk6wUMtvS29DN+sn23CQ9Bt8DDl2rwmCw12whUsfFC3B+CRzGnrrpjUbP2OBfc9PBD8ZcmtaZvtZUYetZbHMY0CGgIkPL7Z5lQb3nwjmLFHJNDZ520oXKmXROwm3pRkTngzxd3qvTuimIKO/bxmJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946828; c=relaxed/simple;
-	bh=seYGX9VBdniFV++2oEqHMUaNz3QQY593ob2+LAYJ3Js=;
+	s=arc-20240116; t=1745945276; c=relaxed/simple;
+	bh=0xmQUzT+rB9SS2SDGiQOS7khsXZiCCAVfQNLod2Z3Y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BLsLsJOTwZ6gb/cXhpD7fSOZCwiwYixM4tj40rwdgK+tYdFP0G3BPVAIYb+aRwQPxgDRCSLLfX1U4Ky8biOZML8iNJSiUREaJgcNwZgdWANAXuGzkLZ9w7CnfCoxb4iFt9TrnCTjcVCnyC9Q2E8lA/iwlJNPKfoZQu+Wm55sWcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnNO/osL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6B8C4CEE3;
-	Tue, 29 Apr 2025 17:13:47 +0000 (UTC)
+	 MIME-Version; b=JdO1qgxSpMMzxJHSsG8stMQOEr20hnLGVx7Roqc8NDqccZPa2gODofxhkiYH//Tm/3uzCk8Fh0naqRFKB581KXIu3VELX5XNwNFN3jepJaDDOF308QBsVt8SL/wWGe/RorUpzcPKscGN+GylX7RM7DtG8T1zvxb2zfcaaC6Cnrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZb/th3J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B15C4CEE3;
+	Tue, 29 Apr 2025 16:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946828;
-	bh=seYGX9VBdniFV++2oEqHMUaNz3QQY593ob2+LAYJ3Js=;
+	s=korg; t=1745945275;
+	bh=0xmQUzT+rB9SS2SDGiQOS7khsXZiCCAVfQNLod2Z3Y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nnNO/osLm3tzXtMhCgSYNpRbSsUV92AnPWcAmMhgNEaa8DMWKPuptG8k0wAOdLN8d
-	 iTWXvNIIFlURoHLgM0GL1PwPCOBaOu3EPexsFSfvlMvJVPhzphm/RZl3caLgzVfM4V
-	 976dqtYa7AfiKp1gaXzEqkX1DYX8WsFw06b+NDyg=
+	b=CZb/th3JyIPzX+ekKQpNUbYYaxAw4uCwAc3qRp7/JhEIqHyYCO3mkS7W+zFgSmk3z
+	 zgEf79vbeZR6jAT1/y95Nin9NrdFzOa8oVEa0uo14wA2dGtnXoKATun4tbzqLf7lvi
+	 DpJnhqXCGSVZ7XWWRA26zLmg9fZnzsvXqdOetADU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 065/286] media: i2c: ov7251: Set enable GPIO low in probe
+	Gabriele Paoloni <gpaoloni@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 028/179] tracing: fix return value in __ftrace_event_enable_disable for TRACE_REG_UNREGISTER
 Date: Tue, 29 Apr 2025 18:39:29 +0200
-Message-ID: <20250429161110.518289057@linuxfoundation.org>
+Message-ID: <20250429161050.553222349@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Gabriele Paoloni <gpaoloni@redhat.com>
 
-commit a1963698d59cec83df640ded343af08b76c8e9c5 upstream.
+[ Upstream commit 0c588ac0ca6c22b774d9ad4a6594681fdfa57d9d ]
 
-Set the enable GPIO low when acquiring it.
+When __ftrace_event_enable_disable invokes the class callback to
+unregister the event, the return value is not reported up to the
+caller, hence leading to event unregister failures being silently
+ignored.
 
-Fixes: d30bb512da3d ("media: Add a driver for the ov7251 camera sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch assigns the ret variable to the invocation of the
+event unregister callback, so that its return value is stored
+and reported to the caller, and it raises a warning in case
+of error.
+
+Link: https://lore.kernel.org/20250321170821.101403-1-gpaoloni@redhat.com
+Signed-off-by: Gabriele Paoloni <gpaoloni@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov7251.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_events.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/i2c/ov7251.c
-+++ b/drivers/media/i2c/ov7251.c
-@@ -1330,7 +1330,7 @@ static int ov7251_probe(struct i2c_clien
- 		return PTR_ERR(ov7251->analog_regulator);
- 	}
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 958789fe4cef7..77df1e28fa329 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -405,7 +405,9 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
+ 				clear_bit(EVENT_FILE_FL_RECORDED_TGID_BIT, &file->flags);
+ 			}
  
--	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_HIGH);
-+	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_LOW);
- 	if (IS_ERR(ov7251->enable_gpio)) {
- 		dev_err(dev, "cannot get enable gpio\n");
- 		return PTR_ERR(ov7251->enable_gpio);
+-			call->class->reg(call, TRACE_REG_UNREGISTER, file);
++			ret = call->class->reg(call, TRACE_REG_UNREGISTER, file);
++
++			WARN_ON_ONCE(ret);
+ 		}
+ 		/* If in SOFT_MODE, just set the SOFT_DISABLE_BIT, else clear it */
+ 		if (file->flags & EVENT_FILE_FL_SOFT_MODE)
+-- 
+2.39.5
+
 
 
 
