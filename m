@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8808AAA14A7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:18:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40895AA1240
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 216384C41F4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC0633BCDA1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B90D2472B4;
-	Tue, 29 Apr 2025 17:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E7F2459C9;
+	Tue, 29 Apr 2025 16:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ivn4A7sG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVbb+WxI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EC7250C15;
-	Tue, 29 Apr 2025 17:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E37246326;
+	Tue, 29 Apr 2025 16:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946945; cv=none; b=RCMrZgImuEXgxJcjlU3SluRKGa6tyZeupkD60yNlRrsJ9AmDS4CobqaYgJvG013twSRj4HNV+jROWEOsgsvqBqgc7Hf6BFkbdUGfV7kLgzyhTQRoFggP5/2e/teD6nlSSUPX6xOK4gM0/hYW+V5MfUafiiVttYKPgGusUwb6smI=
+	t=1745945356; cv=none; b=SIyIPxrzTY0uKTTsHYA8NKwhs7OSg3IMtwH7REn/4UlriLX/10TpvndHDiEXnveiypr+rCy4Jo24ihYtoA5d6yB9iQ6O9gCkY85ilKHFsxy+TnEuLRKn3QyUV6sInKI1WIff6Q2jEUxCuxq1a1CEMUJqZAZb8N6JYeMAPu38wMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946945; c=relaxed/simple;
-	bh=VXBvA0+FaDkRWMEitkoYgbTT0wEMpgvPO8tITebQ8tI=;
+	s=arc-20240116; t=1745945356; c=relaxed/simple;
+	bh=zeFe5InySFGkN1fEOLpk5U4khUSFBb8ZW+NdQNH5XoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LmgY5ak6rlQiTS97ihvHyaMgYNUzEa3vBc7KV7/SG6UcmOsjh7NGu7jgCqsJMCpmiLI5YXv+VqQeKCFIvSwNprD2Nh7cZ7dZr9gMxkQfDLysr8R1h3YTpw1BgJ9mM7+5DtJoubt8VpJwbD6LaLgcmLYwdwhnpS6yDlI9ybQxu6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ivn4A7sG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04BBC4CEE3;
-	Tue, 29 Apr 2025 17:15:44 +0000 (UTC)
+	 MIME-Version; b=FYMxECAbrQEwRp/EZ0waM9lRDd8RKkAwn83GHG3CEvG05pI635SsdCa/NT0dxdZDWN9zB3tD4EQwt28eBwWkr1IXBBhTaA04IMacW244yae+abGb2SC4+HQoJ2hd//ny2bn2tKnA+UGDHFgRjOLMmd1h4AN4q9j7A0Putezm+Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVbb+WxI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B70BC4CEE3;
+	Tue, 29 Apr 2025 16:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946945;
-	bh=VXBvA0+FaDkRWMEitkoYgbTT0wEMpgvPO8tITebQ8tI=;
+	s=korg; t=1745945356;
+	bh=zeFe5InySFGkN1fEOLpk5U4khUSFBb8ZW+NdQNH5XoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ivn4A7sG+KfGfj2pmeTu3tc+m13T9+CsqECXaaiwR2ZkjI90Yp/CGrgfYyHhT4ZL8
-	 2+9KGnEkBB9p6IZLNzcVs1xozs1ERLiKdscnRFIGHTSJxQz8+OWUSARor0QM2Lnv51
-	 8AkRw9cAi7RU/1Vnc65OM3B6oN5gYd99HhR85vRI=
+	b=wVbb+WxIVHJMhCcNGWAZcw54exqvtUhHhx4hGskqXHsZnSvSvhJ3TbLJMB0S49B8Z
+	 nttIy/4yn/4Ho4/mirw7uurTLzpxRrhl5LrB75oqeoFq3I6cKkZhS62hruarbFoi5z
+	 8xv5KgyicVgTlDmOp7NWcwRhoHFLrtosTsfa8ses=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/286] cpufreq/sched: Fix the usage of CPUFREQ_NEED_UPDATE_LIMITS
+Subject: [PATCH 5.4 083/179] wifi: at76c50x: fix use after free access in at76_disconnect
 Date: Tue, 29 Apr 2025 18:40:24 +0200
-Message-ID: <20250429161112.794258965@linuxfoundation.org>
+Message-ID: <20250429161052.763807045@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-[ Upstream commit cfde542df7dd51d26cf667f4af497878ddffd85a ]
+[ Upstream commit 27c7e63b3cb1a20bb78ed4a36c561ea4579fd7da ]
 
-Commit 8e461a1cb43d ("cpufreq: schedutil: Fix superfluous updates caused
-by need_freq_update") modified sugov_should_update_freq() to set the
-need_freq_update flag only for drivers with CPUFREQ_NEED_UPDATE_LIMITS
-set, but that flag generally needs to be set when the policy limits
-change because the driver callback may need to be invoked for the new
-limits to take effect.
+The memory pointed to by priv is freed at the end of at76_delete_device
+function (using ieee80211_free_hw). But the code then accesses the udev
+field of the freed object to put the USB device. This may also lead to a
+memory leak of the usb device. Fix this by using udev from interface.
 
-However, if the return value of cpufreq_driver_resolve_freq() after
-applying the new limits is still equal to the previously selected
-frequency, the driver callback needs to be invoked only in the case
-when CPUFREQ_NEED_UPDATE_LIMITS is set (which means that the driver
-specifically wants its callback to be invoked every time the policy
-limits change).
-
-Update the code accordingly to avoid missing policy limits changes for
-drivers without CPUFREQ_NEED_UPDATE_LIMITS.
-
-Fixes: 8e461a1cb43d ("cpufreq: schedutil: Fix superfluous updates caused by need_freq_update")
-Closes: https://lore.kernel.org/lkml/Z_Tlc6Qs-tYpxWYb@linaro.org/
-Reported-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/3010358.e9J7NaK4W3@rjwysocki.net
+Fixes: 29e20aa6c6af ("at76c50x-usb: fix use after free on failure path in at76_probe()")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Link: https://patch.msgid.link/20250330103110.44080-1-abdun.nihaal@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/cpufreq_schedutil.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/net/wireless/atmel/at76c50x-usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index d8b9e1d25200f..c1307bbdc291b 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -90,7 +90,7 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
+diff --git a/drivers/net/wireless/atmel/at76c50x-usb.c b/drivers/net/wireless/atmel/at76c50x-usb.c
+index db2c3b8d491e5..c9ee3d4c8fa61 100644
+--- a/drivers/net/wireless/atmel/at76c50x-usb.c
++++ b/drivers/net/wireless/atmel/at76c50x-usb.c
+@@ -2554,7 +2554,7 @@ static void at76_disconnect(struct usb_interface *interface)
  
- 	if (unlikely(sg_policy->limits_changed)) {
- 		sg_policy->limits_changed = false;
--		sg_policy->need_freq_update = cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS);
-+		sg_policy->need_freq_update = true;
- 		return true;
- 	}
+ 	wiphy_info(priv->hw->wiphy, "disconnecting\n");
+ 	at76_delete_device(priv);
+-	usb_put_dev(priv->udev);
++	usb_put_dev(interface_to_usbdev(interface));
+ 	dev_info(&interface->dev, "disconnected\n");
+ }
  
-@@ -102,10 +102,22 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
- static bool sugov_update_next_freq(struct sugov_policy *sg_policy, u64 time,
- 				   unsigned int next_freq)
- {
--	if (sg_policy->need_freq_update)
-+	if (sg_policy->need_freq_update) {
- 		sg_policy->need_freq_update = false;
--	else if (sg_policy->next_freq == next_freq)
-+		/*
-+		 * The policy limits have changed, but if the return value of
-+		 * cpufreq_driver_resolve_freq() after applying the new limits
-+		 * is still equal to the previously selected frequency, the
-+		 * driver callback need not be invoked unless the driver
-+		 * specifically wants that to happen on every update of the
-+		 * policy limits.
-+		 */
-+		if (sg_policy->next_freq == next_freq &&
-+		    !cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS))
-+			return false;
-+	} else if (sg_policy->next_freq == next_freq) {
- 		return false;
-+	}
- 
- 	sg_policy->next_freq = next_freq;
- 	sg_policy->last_freq_update_time = time;
 -- 
 2.39.5
 
