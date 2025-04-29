@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0994AA19A8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58F84AA18F5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50D8A4E1AEA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:12:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C35989A4364
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4A8253358;
-	Tue, 29 Apr 2025 18:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E423224222;
+	Tue, 29 Apr 2025 18:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16We9fjv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8Oe7OCw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8840A24E4BF;
-	Tue, 29 Apr 2025 18:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF531ACED7;
+	Tue, 29 Apr 2025 18:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950339; cv=none; b=CWTDDw2Q0KYPmN4xv9p17f1MGUnLvbNOLDmZ4pk3t43EZQXu1gwKk/P4Kcpi20hxwh6IKqSaXnaOR147O4PbXUTFwmJzlCDFUYfrWIqYhvWRJvF7rbIpy/lB5FzdXHiKB8Qqge7ZKBM6DeXz99beomYay29/x181utqj6NN9tnQ=
+	t=1745949661; cv=none; b=tiVlF13g1VfhYKeqfyOyzCzo21YkYzds5QLNCVlrp0GouRva2I0ZorAMElZtT/4jv58/gXR/0YQAtTKnQ+WDm1csoc7b8z0hPMIMoS/iKXpFC9u+vVJL5P7CfmlRmb1KAMCpCgvouPW0lUIawiyIRb9ppLQ31Us6HPdSkX3yRvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950339; c=relaxed/simple;
-	bh=r/BfWwW3mtkgU5ksuOY4XnoKfUxe8VOdN0yWimA2TaM=;
+	s=arc-20240116; t=1745949661; c=relaxed/simple;
+	bh=AcVNJEiJsUeghMFon+yU253+c/0M47ycjNemESXYd4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FCZZTAZHOIQNeFUv+/jm5ymA5bs7GLlRZUw0H6BCZzPWbRs4V7hbnfLB9HM6cfdBCekT/14q5pMcv5OkNoSeEZILPnTdk7k8zUwgaRVafkfVY/GxSAzf6QvI1HYE5pA9uxBEhQOPrsT6WKfwIEFzWEzp6xPDlyyyG8mmjvCpHHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16We9fjv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CC6C4CEE3;
-	Tue, 29 Apr 2025 18:12:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JopQBsTSQsFgFIIdnFLMvJObCst3r8/u2bAuzj4vRAi4JtuV6sBWJO0TK3hKSMf12/cqb4y1GjUujOLyetEEPcXai7nvR8j3xd7x3pB6x5t+irkhPvuEIo1PzTh6oYIvtRKaQZ7aApkJvMmA0sCXZyRKdUuggMQOoSRr8+hdE/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8Oe7OCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCF7C4CEE3;
+	Tue, 29 Apr 2025 18:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950339;
-	bh=r/BfWwW3mtkgU5ksuOY4XnoKfUxe8VOdN0yWimA2TaM=;
+	s=korg; t=1745949660;
+	bh=AcVNJEiJsUeghMFon+yU253+c/0M47ycjNemESXYd4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=16We9fjv0xCL1O7aAbnX8bJ0V9s/3bFJJ9QWa1FSq1CnFWP2jviuD0HWzNt6d9tVa
-	 v7WSvuVAtA4A5X+6iqYO5JXPqDh0CFRIIBnjtHiHTlbFzTKyHd10ZXEugi0OMtbw9e
-	 3ZHvikbcUfagj9MeKn+N0pagcrTiwN5VzA0Z0KR0=
+	b=N8Oe7OCwLTiX7+JGUWUinxMQH/hMO5090LDf2vMU4UVMNGvfbdmw1/P6wA3g5qQo0
+	 XXyyIJEEljxyy9V2cG7J3C0ednzzLTXd18UCQjfU0YhXSSm1GVszLQ+vgUAMO3JxFg
+	 uBLB7AVid43BqEkUN7fgqpaArlFHzOoRvMhr6R1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/204] PCI: Fix reference leak in pci_register_host_bridge()
-Date: Tue, 29 Apr 2025 18:42:03 +0200
-Message-ID: <20250429161100.847233849@linuxfoundation.org>
+Subject: [PATCH 6.1 016/167] net: dsa: mv88e6xxx: fix VTU methods for 6320 family
+Date: Tue, 29 Apr 2025 18:42:04 +0200
+Message-ID: <20250429161052.408059767@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit 804443c1f27883926de94c849d91f5b7d7d696e9 ]
+[ Upstream commit f9a457722cf5e3534be5ffab549d6b49737fca72 ]
 
-If device_register() fails, call put_device() to give up the reference to
-avoid a memory leak, per the comment at device_register().
+The VTU registers of the 6320 family use the 6352 semantics, not 6185.
+Fix it.
 
-Found by code review.
-
-Link: https://lore.kernel.org/r/20250225021440.3130264-1-make24@iscas.ac.cn
-Fixes: 37d6a0a6f470 ("PCI: Add pci_register_host_bridge() interface")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-[bhelgaas: squash Dan Carpenter's double free fix from
-https://lore.kernel.org/r/db806a6c-a91b-4e5a-a84b-6b7e01bdac85@stanley.mountain]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
+Fixes: b8fee9571063 ("net: dsa: mv88e6xxx: add VLAN Get Next support")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.15.x
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250317173250.28780-2-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/probe.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 8e5d818c29a98..b7cec139d816b 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -885,6 +885,7 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- 	resource_size_t offset, next_offset;
- 	LIST_HEAD(resources);
- 	struct resource *res, *next_res;
-+	bool bus_registered = false;
- 	char addr[64], *fmt;
- 	const char *name;
- 	int err;
-@@ -948,6 +949,7 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- 	name = dev_name(&bus->dev);
- 
- 	err = device_register(&bus->dev);
-+	bus_registered = true;
- 	if (err)
- 		goto unregister;
- 
-@@ -1031,12 +1033,15 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- unregister:
- 	put_device(&bridge->dev);
- 	device_del(&bridge->dev);
--
- free:
- #ifdef CONFIG_PCI_DOMAINS_GENERIC
- 	pci_bus_release_domain_nr(bus, parent);
- #endif
--	kfree(bus);
-+	if (bus_registered)
-+		put_device(&bus->dev);
-+	else
-+		kfree(bus);
-+
- 	return err;
- }
- 
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 52dd00f2a83ca..0541c9a7fc49a 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -5197,8 +5197,8 @@ static const struct mv88e6xxx_ops mv88e6320_ops = {
+ 	.hardware_reset_pre = mv88e6xxx_g2_eeprom_wait,
+ 	.hardware_reset_post = mv88e6xxx_g2_eeprom_wait,
+ 	.reset = mv88e6352_g1_reset,
+-	.vtu_getnext = mv88e6185_g1_vtu_getnext,
+-	.vtu_loadpurge = mv88e6185_g1_vtu_loadpurge,
++	.vtu_getnext = mv88e6352_g1_vtu_getnext,
++	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
+ 	.gpio_ops = &mv88e6352_gpio_ops,
+ 	.avb_ops = &mv88e6352_avb_ops,
+ 	.ptp_ops = &mv88e6352_ptp_ops,
+@@ -5244,8 +5244,8 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
+ 	.hardware_reset_pre = mv88e6xxx_g2_eeprom_wait,
+ 	.hardware_reset_post = mv88e6xxx_g2_eeprom_wait,
+ 	.reset = mv88e6352_g1_reset,
+-	.vtu_getnext = mv88e6185_g1_vtu_getnext,
+-	.vtu_loadpurge = mv88e6185_g1_vtu_loadpurge,
++	.vtu_getnext = mv88e6352_g1_vtu_getnext,
++	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
+ 	.gpio_ops = &mv88e6352_gpio_ops,
+ 	.avb_ops = &mv88e6352_avb_ops,
+ 	.ptp_ops = &mv88e6352_ptp_ops,
 -- 
 2.39.5
 
