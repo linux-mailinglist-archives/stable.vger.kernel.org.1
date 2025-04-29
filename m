@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-137436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 229A8AA136F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25D60AA1634
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA333189C0F6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D30C19A3181
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A79B23F413;
-	Tue, 29 Apr 2025 17:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F620250C08;
+	Tue, 29 Apr 2025 17:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpCKtcij"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiCIzmYX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0622C7E110;
-	Tue, 29 Apr 2025 17:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10F824C098;
+	Tue, 29 Apr 2025 17:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946061; cv=none; b=DhUMlFhuV//rAYFnUilf1jDoL1fwuzEZ8cZpR24Hal7TpfkAjzWVolL6+UoW5jQmXWzJtbtgyH5us4qopxQWxXbJ2oUuqhesuRZpsotYpllctivzyks+XFGIsWXrTfE81ibc/rENGJHBmQss81kDejeSO3jnqjeRqcw6DuR+WZ8=
+	t=1745947691; cv=none; b=qZPrDVv4zSkL/oTr5b1unD5qrYH+4AqLk0XiMo6rQEHwda48TOvk7mw91wALJZh9QT6c3BA3B+8kI7zHQ6/F1fd1byQKANJh5AluZBs0XfII2zlDsqVLdf16CrcuqvO4V43UrIyPD2NuYTLpzepIj97QWDy3Ic+UC3V7IglnrNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946061; c=relaxed/simple;
-	bh=cFHHZJTbvRJObdDHim3kZdQQheIYmYqj90UbJWf+3qg=;
+	s=arc-20240116; t=1745947691; c=relaxed/simple;
+	bh=p8gbg2jOKpX6fxMe4XPINKyc41oLkJX6C4HYv6WC8Sk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pw9JCTRoZrxx1t0X6/gL7SRK37lfq2v1CORT8AaUoExn91tCfVuz1bJOOd199AmMnD/ybhRVrrsBQYsLPkfYi0AjSwhGZVmHkNsBF2k17L+A7eeoeF2UFE6duCqveU9QoNpJRDmNzUGvkcjzudSZYvXdIsIGRYwZ5Mozp6xxltE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpCKtcij; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830F0C4CEE3;
-	Tue, 29 Apr 2025 17:01:00 +0000 (UTC)
+	 MIME-Version; b=sAVsh9lMyL21rIYQKIu91tyIc2rCL/8flbEW7iskoop6UDaa6f3UrP9D8CxLirqu3H/nw+nxrh2h9JjK/HthTf3UUYKMpPFM4QE1QyNJpiQFkC4xaHv+V/FWNValz4IBFNl0mi3fkZ+s4/3uX7ItUJRBETkN0UKnw1E4OPfjT74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiCIzmYX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E06C4CEEE;
+	Tue, 29 Apr 2025 17:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946060;
-	bh=cFHHZJTbvRJObdDHim3kZdQQheIYmYqj90UbJWf+3qg=;
+	s=korg; t=1745947691;
+	bh=p8gbg2jOKpX6fxMe4XPINKyc41oLkJX6C4HYv6WC8Sk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vpCKtcijnu3mjL/jjCzdh+kKsQHkim65N/4VoLC74pW8jSioPW9coUP/SYmRPML2K
-	 hH77Xd0Q2xz/YBNXJp8+wiY0GdY7gl5/sc3LNfag/WHbhTauZBnAxrIhEE1x45XeVL
-	 +la0YkZWjUqdog0n3cJKfryf5fgUzLdET8XHZFGw=
+	b=yiCIzmYXULBlIxQKFoijgKDicEiT9DsSNnWiTT43AuO4MuFYVacns5YDsexTiTH3c
+	 RSYo7lW0aELo6kroGocHQs2iDpnVD+EXItCZnxLUJ0PVSb0q4g1MjZ45jp1O8JteSG
+	 XSA+W1iKyDtAKmrWx/+mmNOViIapO5HBaOHyW7fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.14 141/311] USB: storage: quirk for ADATA Portable HDD CH94
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 037/280] ksmbd: add netdev-up/down event debug print
 Date: Tue, 29 Apr 2025 18:39:38 +0200
-Message-ID: <20250429161126.813342093@linuxfoundation.org>
+Message-ID: <20250429161116.639916303@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 9ab75eee1a056f896b87d139044dd103adc532b9 upstream.
+[ Upstream commit 5f3f274e2ce68999b49901de4794c4b04125b154 ]
 
-Version 1.60 specifically needs this quirk.
-Version 2.00 is known good.
+Add netdev-up/down event debug print to find what netdev is connected or
+disconnected.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250403180004.343133-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 21a4e47578d4 ("ksmbd: fix use-after-free in __smb2_lease_break_noti()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/unusual_uas.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/smb/server/transport_tcp.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -83,6 +83,13 @@ UNUSUAL_DEV(0x0bc2, 0x331a, 0x0000, 0x99
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_REPORT_LUNS),
- 
-+/* Reported-by: Oliver Neukum <oneukum@suse.com> */
-+UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x0160,
-+		"ADATA",
-+		"Portable HDD CH94",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_NO_ATA_1X),
-+
- /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
- UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x9999,
- 		"Initio Corporation",
+diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
+index cc77ad4f765a9..0d9007285e30b 100644
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -521,6 +521,8 @@ static int ksmbd_netdev_event(struct notifier_block *nb, unsigned long event,
+ 				found = 1;
+ 				if (iface->state != IFACE_STATE_DOWN)
+ 					break;
++				ksmbd_debug(CONN, "netdev-up event: netdev(%s) is going up\n",
++					    iface->name);
+ 				ret = create_socket(iface);
+ 				if (ret)
+ 					return NOTIFY_OK;
+@@ -531,6 +533,8 @@ static int ksmbd_netdev_event(struct notifier_block *nb, unsigned long event,
+ 			iface = alloc_iface(kstrdup(netdev->name, KSMBD_DEFAULT_GFP));
+ 			if (!iface)
+ 				return NOTIFY_OK;
++			ksmbd_debug(CONN, "netdev-up event: netdev(%s) is going up\n",
++				    iface->name);
+ 			ret = create_socket(iface);
+ 			if (ret)
+ 				break;
+@@ -540,6 +544,8 @@ static int ksmbd_netdev_event(struct notifier_block *nb, unsigned long event,
+ 		list_for_each_entry(iface, &iface_list, entry) {
+ 			if (!strcmp(iface->name, netdev->name) &&
+ 			    iface->state == IFACE_STATE_CONFIGURED) {
++				ksmbd_debug(CONN, "netdev-down event: netdev(%s) is going down\n",
++						iface->name);
+ 				tcp_stop_kthread(iface->ksmbd_kthread);
+ 				iface->ksmbd_kthread = NULL;
+ 				mutex_lock(&iface->sock_release_lock);
+-- 
+2.39.5
+
 
 
 
