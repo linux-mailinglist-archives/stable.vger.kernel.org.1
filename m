@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3588AA18CB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:04:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38AC3AA13FC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E153F1761FF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C5D71670A1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2A7248889;
-	Tue, 29 Apr 2025 18:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3837B2472B0;
+	Tue, 29 Apr 2025 17:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJ1nyn7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lmeh0OBS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3963824111D;
-	Tue, 29 Apr 2025 18:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89D7241664;
+	Tue, 29 Apr 2025 17:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949749; cv=none; b=N1UVCe7EQGxbK53JDM/MIuEmPMQdFm4XpbpUo7v7l4C/qInawvWZBt8AIz4cfdh3d0ZVClJl4zC5P3dPPo998L/StpfGpez/EA6JQr9pR8SoDtuiRFXufaknjcb/iQcv12RqXLzb4BYDG0Smp5xUbULoMGNn6mfUl2jZbHVpLU4=
+	t=1745946535; cv=none; b=OdM7hUaPRpnCZGdp7U63hp8z/Zk7WpsVwxk3JKrTUw4EgA/b5xZ5mD5JioAorY7AmFZTDVCG98A3cTFBY+cSf8HxhZ+IkekTbg2D6KLQEVHo/UyI1b2EfU5ejkL+4/MKMRU1WRps38XDSdLSRxLa0Xq/J6mOE+xnYkaDgQNojyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949749; c=relaxed/simple;
-	bh=SvbZXoGtCq6SLACmBzk0LWIjrH0KW7FD3xPGb9Vh5GE=;
+	s=arc-20240116; t=1745946535; c=relaxed/simple;
+	bh=mzsb1DrgRBwSsSLdOzoyPf3Bk7yWPn/FUuoAuvKiX6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XafdEYVO6DaeZ2GGwhL0wRULaqCB9cXlYOQv5LV6jQqWG4Ho2HWJcdQ4CczwYJ4EVle+5YGiKW4/27+4TDUKxZaNB9DsJhVE8ac6Lj2sPUTPMGWSAkiPpjuIgpqi50sFXFWbiKR+mqT/ira1ZFeV6fAdYDeFNIqrR+v6Z3Fwi6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJ1nyn7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61D6C4CEE3;
-	Tue, 29 Apr 2025 18:02:28 +0000 (UTC)
+	 MIME-Version; b=kDz1hpQZ6g35p5hrTfdaC5UcCL/ibUQ93WTxo9ETDTPCMOetUtxquYbWYio4VTJkOe4LJmDDo0fiQB4rak9VzQyhzKljfclq8Yr9ibdUTBVXj2PyWWMXbKjvp+hdHoDffsEuvPQxdxacxgWs9dpA3CcahhRz2kBusYhVGMf2prU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmeh0OBS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7348DC4CEE3;
+	Tue, 29 Apr 2025 17:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949749;
-	bh=SvbZXoGtCq6SLACmBzk0LWIjrH0KW7FD3xPGb9Vh5GE=;
+	s=korg; t=1745946534;
+	bh=mzsb1DrgRBwSsSLdOzoyPf3Bk7yWPn/FUuoAuvKiX6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJ1nyn7xAYnU6AQoHpvgfrYT8iPCESIlVr84Cqph2BnylvFnxF/IYPr8IGPaO1M5n
-	 wDFtgWaY7aOhe+LYP1ky6cF4VNN/j8sH6MxmYlA+aXKw7BEXVjvcwuEqAHEzvTgP4v
-	 QsbimNXpTNzc0VrqUCslv48tY3MPnxnJI0rB2r2k=
+	b=lmeh0OBSVkgXV7xnEIWoz3+4hAx9RUMSrvkyMB08keM1bL6UCOIgJ6/C6pmZtpvor
+	 wdLmwwnKEkfyjssQixGYdsCQWsmm3JroVxdSdekI3KWIyUy9E0JmZ8koV1+HNWKKCV
+	 xHj1DKDFXoqP26hSwS1BTeDaoXTigDtjZMdJJ/f4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hien Huynh <hien.huynh.px@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/167] clk: renesas: r9a07g043: Fix HP clock source for RZ/Five
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.14 298/311] driver core: fix potential NULL pointer dereference in dev_uevent()
 Date: Tue, 29 Apr 2025 18:42:15 +0200
-Message-ID: <20250429161052.846431591@linuxfoundation.org>
+Message-ID: <20250429161133.209321190@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +61,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 7f22a298d926664b51fcfe2f8ea5feb7f8b79952 ]
+commit 18daa52418e7e4629ed1703b64777294209d2622 upstream.
 
-According to the Rev.1.20 hardware manual for the RZ/Five SoC, the clock
-source for HP is derived from PLL6 divided by 2.  Correct the
-implementation by configuring HP as a fixed clock source instead of a
-MUX.
+If userspace reads "uevent" device attribute at the same time as another
+threads unbinds the device from its driver, change to dev->driver from a
+valid pointer to NULL may result in crash. Fix this by using READ_ONCE()
+when fetching the pointer, and take bus' drivers klist lock to make sure
+driver instance will not disappear while we access it.
 
-The `CPG_PL6_ETH_SSEL' register, which is available on the RZ/G2UL SoC,
-is not present on the RZ/Five SoC, necessitating this change.
+Use WRITE_ONCE() when setting the driver pointer to ensure there is no
+tearing.
 
-Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Five SoC")
-Cc: stable@vger.kernel.org
-Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250127173159.34572-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20250311052417.1846985-3-dmitry.torokhov@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/renesas/r9a07g043-cpg.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/base/base.h |   13 ++++++++++++-
+ drivers/base/bus.c  |    2 +-
+ drivers/base/core.c |   33 +++++++++++++++++++++++++++++++--
+ 3 files changed, 44 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/renesas/r9a07g043-cpg.c b/drivers/clk/renesas/r9a07g043-cpg.c
-index 1526de808576e..ac60251d72845 100644
---- a/drivers/clk/renesas/r9a07g043-cpg.c
-+++ b/drivers/clk/renesas/r9a07g043-cpg.c
-@@ -86,7 +86,9 @@ static const struct clk_div_table dtable_1_32[] = {
+--- a/drivers/base/base.h
++++ b/drivers/base/base.h
+@@ -73,6 +73,7 @@ static inline void subsys_put(struct sub
+ 		kset_put(&sp->subsys);
+ }
  
- /* Mux clock tables */
- static const char * const sel_pll3_3[] = { ".pll3_533", ".pll3_400" };
-+#ifdef CONFIG_ARM64
- static const char * const sel_pll6_2[]	= { ".pll6_250", ".pll5_250" };
-+#endif
- static const char * const sel_sdhi[] = { ".clk_533", ".clk_400", ".clk_266" };
++struct subsys_private *bus_to_subsys(const struct bus_type *bus);
+ struct subsys_private *class_to_subsys(const struct class *class);
  
- static const u32 mtable_sdhi[] = { 1, 2, 3 };
-@@ -133,7 +135,12 @@ static const struct cpg_core_clk r9a07g043_core_clks[] __initconst = {
- 	DEF_DIV("P2", R9A07G043_CLK_P2, CLK_PLL3_DIV2_4_2, DIVPL3A, dtable_1_32),
- 	DEF_FIXED("M0", R9A07G043_CLK_M0, CLK_PLL3_DIV2_4, 1, 1),
- 	DEF_FIXED("ZT", R9A07G043_CLK_ZT, CLK_PLL3_DIV2_4_2, 1, 1),
-+#ifdef CONFIG_ARM64
- 	DEF_MUX("HP", R9A07G043_CLK_HP, SEL_PLL6_2, sel_pll6_2),
-+#endif
-+#ifdef CONFIG_RISCV
-+	DEF_FIXED("HP", R9A07G043_CLK_HP, CLK_PLL6_250, 1, 1),
-+#endif
- 	DEF_FIXED("SPI0", R9A07G043_CLK_SPI0, CLK_DIV_PLL3_C, 1, 2),
- 	DEF_FIXED("SPI1", R9A07G043_CLK_SPI1, CLK_DIV_PLL3_C, 1, 4),
- 	DEF_SD_MUX("SD0", R9A07G043_CLK_SD0, SEL_SDHI0, SEL_SDHI0_STS, sel_sdhi,
--- 
-2.39.5
-
+ struct driver_private {
+@@ -182,8 +183,18 @@ void device_driver_detach(struct device
+ 
+ static inline void device_set_driver(struct device *dev, const struct device_driver *drv)
+ {
++	/*
++	 * Majority (all?) read accesses to dev->driver happens either
++	 * while holding device lock or in bus/driver code that is only
++	 * invoked when the device is bound to a driver and there is no
++	 * concern of the pointer being changed while it is being read.
++	 * However when reading device's uevent file we read driver pointer
++	 * without taking device lock (so we do not block there for
++	 * arbitrary amount of time). We use WRITE_ONCE() here to prevent
++	 * tearing so that READ_ONCE() can safely be used in uevent code.
++	 */
+ 	// FIXME - this cast should not be needed "soon"
+-	dev->driver = (struct device_driver *)drv;
++	WRITE_ONCE(dev->driver, (struct device_driver *)drv);
+ }
+ 
+ int devres_release_all(struct device *dev);
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -57,7 +57,7 @@ static int __must_check bus_rescan_devic
+  * NULL.  A call to subsys_put() must be done when finished with the pointer in
+  * order for it to be properly freed.
+  */
+-static struct subsys_private *bus_to_subsys(const struct bus_type *bus)
++struct subsys_private *bus_to_subsys(const struct bus_type *bus)
+ {
+ 	struct subsys_private *sp = NULL;
+ 	struct kobject *kobj;
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2624,6 +2624,35 @@ static const char *dev_uevent_name(const
+ 	return NULL;
+ }
+ 
++/*
++ * Try filling "DRIVER=<name>" uevent variable for a device. Because this
++ * function may race with binding and unbinding the device from a driver,
++ * we need to be careful. Binding is generally safe, at worst we miss the
++ * fact that the device is already bound to a driver (but the driver
++ * information that is delivered through uevents is best-effort, it may
++ * become obsolete as soon as it is generated anyways). Unbinding is more
++ * risky as driver pointer is transitioning to NULL, so READ_ONCE() should
++ * be used to make sure we are dealing with the same pointer, and to
++ * ensure that driver structure is not going to disappear from under us
++ * we take bus' drivers klist lock. The assumption that only registered
++ * driver can be bound to a device, and to unregister a driver bus code
++ * will take the same lock.
++ */
++static void dev_driver_uevent(const struct device *dev, struct kobj_uevent_env *env)
++{
++	struct subsys_private *sp = bus_to_subsys(dev->bus);
++
++	if (sp) {
++		scoped_guard(spinlock, &sp->klist_drivers.k_lock) {
++			struct device_driver *drv = READ_ONCE(dev->driver);
++			if (drv)
++				add_uevent_var(env, "DRIVER=%s", drv->name);
++		}
++
++		subsys_put(sp);
++	}
++}
++
+ static int dev_uevent(const struct kobject *kobj, struct kobj_uevent_env *env)
+ {
+ 	const struct device *dev = kobj_to_dev(kobj);
+@@ -2655,8 +2684,8 @@ static int dev_uevent(const struct kobje
+ 	if (dev->type && dev->type->name)
+ 		add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
+ 
+-	if (dev->driver)
+-		add_uevent_var(env, "DRIVER=%s", dev->driver->name);
++	/* Add "DRIVER=%s" variable if the device is bound to a driver */
++	dev_driver_uevent(dev, env);
+ 
+ 	/* Add common DT information about the device */
+ 	of_device_uevent(dev, env);
 
 
 
