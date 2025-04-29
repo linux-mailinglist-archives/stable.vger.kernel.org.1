@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF40AA1203
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E7D8AA14D7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 682A84A6A70
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 750DC189B9F6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8160A244679;
-	Tue, 29 Apr 2025 16:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95D925392F;
+	Tue, 29 Apr 2025 17:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdCyy4TO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NMZvrvD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F450229B05;
-	Tue, 29 Apr 2025 16:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961B2216605;
+	Tue, 29 Apr 2025 17:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945294; cv=none; b=VInFMbeqLSRx4xui8BoHxviKyWORo8K6NWvztgR9dbWFoOgiVzXhAlkF7A1eeBVhfziyQVtLXdLUYyuQqzVvAIkONF1H5VDEURo7QJu+kKhXzplWAC2PbEnaVjtoQZ8uhHeX/hAp1Ex4r4VO0lsdKtP7MXJQAxpGNlrI6l5dsCg=
+	t=1745946982; cv=none; b=idX4zIwzlybWKg8gu4Yg349SRNhPkUP9Xh8MhIlPvmUt+GdE1Bd/YDRqI4QTG9PFCYdfBgS4wp8xzk0bdlyM68TfNT0S60nzgwjzAltSPMsCZDG5hYdY9D7e7xLFRIT99pjs9B6yPKaRyZBXRQl8xUaeTGpQRSvaCx0Tz4PO6T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945294; c=relaxed/simple;
-	bh=0AK9ORFKuxa2qB3D0W/CaIZN7g2CF7Ucok8J8OJ9ync=;
+	s=arc-20240116; t=1745946982; c=relaxed/simple;
+	bh=T3ma/iRZ/D2EQz5Nkpy2kMRVMJ4Fvqd2QthQNncjcDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XKdpEhPCD996VnI6/i32LLB5folnJZDPRXgqN+4pM6HEpjY4L2h6kCPukvQdKlMh3nGu92El7C9gRYWCKvxcWHtNZgPpCqlCpcNcv7jzUqvzY94Hy3r42+mAQg9VMkJ9FaSxB30BG2XQS8C83fezLt26iS5mK1qsUs8qiXdlpAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdCyy4TO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3133C4CEE3;
-	Tue, 29 Apr 2025 16:48:13 +0000 (UTC)
+	 MIME-Version; b=VoqoYHTSEMw7yWdyOcjog2YBolqg9OhNQthnqnbb8aXUazdz186SiZzgZtl461J4HKh6rm/+CrxbM2CGTEkBoJZWuVbAZN/JUcpVzIu0zJjqIGiPsW6gvKreyWCO+k/ZehzcKwqifAs0U+kQr/sKA7udJIuRpkKEb1ytcvW6yLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NMZvrvD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB35C4CEE9;
+	Tue, 29 Apr 2025 17:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945294;
-	bh=0AK9ORFKuxa2qB3D0W/CaIZN7g2CF7Ucok8J8OJ9ync=;
+	s=korg; t=1745946982;
+	bh=T3ma/iRZ/D2EQz5Nkpy2kMRVMJ4Fvqd2QthQNncjcDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HdCyy4TOChz90l9bDjiiEL6JA97wmV3nAg7WFuVfYbqqH6QFa0vylcGQwTHmZykBW
-	 j7re5smkaJ/wRJnUW/pDYjUO4cuoMx01eZ0qsF+DBx1CcSyCXk1FKLZw/W5nOj2lx4
-	 w1njPgO7VZfEWw8/m589RBPT9GLsjNRQJZt5KKqk=
+	b=2NMZvrvD0vliatIAZDH6eqlNmMiAg5yz9ovW0PxkhPyxPeZ2VmTqw1Ozhs+GdE3y/
+	 OtGzBgkr0hsJ/bj19Iw1oVzN2OrcU1/ijefObWxadHU4UcH8yOsMckzKJrA6UGn6uy
+	 6obO1R/sq6kU4DjfZDwHIEjNWOdOvRP4GSdedcC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YH Huang <yh.huang@mediatek.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 5.4 065/179] arm64: dts: mediatek: mt8173: Fix disp-pwm compatible string
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 102/286] wifi: at76c50x: fix use after free access in at76_disconnect
 Date: Tue, 29 Apr 2025 18:40:06 +0200
-Message-ID: <20250429161052.040736335@linuxfoundation.org>
+Message-ID: <20250429161112.052038931@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-commit 46ad36002088eff8fc5cae200aa42ae9f9310ddd upstream.
+[ Upstream commit 27c7e63b3cb1a20bb78ed4a36c561ea4579fd7da ]
 
-The MT8173 disp-pwm device should have only one compatible string, based
-on the following DT validation error:
+The memory pointed to by priv is freed at the end of at76_delete_device
+function (using ieee80211_free_hw). But the code then accesses the udev
+field of the freed object to put the USB device. This may also lead to a
+memory leak of the usb device. Fix this by using udev from interface.
 
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401e000: compatible: 'oneOf' conditional failed, one must be fixed:
-	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' was expected
-	    'mediatek,mt8183-disp-pwm' was expected
-	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401f000: compatible: 'oneOf' conditional failed, one must be fixed:
-	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' was expected
-	    'mediatek,mt8183-disp-pwm' was expected
-	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
-
-Drop the extra "mediatek,mt6595-disp-pwm" compatible string.
-
-Fixes: 61aee9342514 ("arm64: dts: mt8173: add MT8173 display PWM driver support node")
-Cc: YH Huang <yh.huang@mediatek.com>
-Cc: stable@vger.kernel.org # v4.5+
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250108083424.2732375-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 29e20aa6c6af ("at76c50x-usb: fix use after free on failure path in at76_probe()")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Link: https://patch.msgid.link/20250330103110.44080-1-abdun.nihaal@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173.dtsi |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/wireless/atmel/at76c50x-usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-@@ -1161,8 +1161,7 @@
- 		};
+diff --git a/drivers/net/wireless/atmel/at76c50x-usb.c b/drivers/net/wireless/atmel/at76c50x-usb.c
+index 4042578000331..706de33d0ed49 100644
+--- a/drivers/net/wireless/atmel/at76c50x-usb.c
++++ b/drivers/net/wireless/atmel/at76c50x-usb.c
+@@ -2553,7 +2553,7 @@ static void at76_disconnect(struct usb_interface *interface)
  
- 		pwm0: pwm@1401e000 {
--			compatible = "mediatek,mt8173-disp-pwm",
--				     "mediatek,mt6595-disp-pwm";
-+			compatible = "mediatek,mt8173-disp-pwm";
- 			reg = <0 0x1401e000 0 0x1000>;
- 			#pwm-cells = <2>;
- 			clocks = <&mmsys CLK_MM_DISP_PWM026M>,
-@@ -1172,8 +1171,7 @@
- 		};
+ 	wiphy_info(priv->hw->wiphy, "disconnecting\n");
+ 	at76_delete_device(priv);
+-	usb_put_dev(priv->udev);
++	usb_put_dev(interface_to_usbdev(interface));
+ 	dev_info(&interface->dev, "disconnected\n");
+ }
  
- 		pwm1: pwm@1401f000 {
--			compatible = "mediatek,mt8173-disp-pwm",
--				     "mediatek,mt6595-disp-pwm";
-+			compatible = "mediatek,mt8173-disp-pwm";
- 			reg = <0 0x1401f000 0 0x1000>;
- 			#pwm-cells = <2>;
- 			clocks = <&mmsys CLK_MM_DISP_PWM126M>,
+-- 
+2.39.5
+
 
 
 
