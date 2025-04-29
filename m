@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5FAEAA138B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F38E5AA1733
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9001F984111
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5451A46408E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A0923F413;
-	Tue, 29 Apr 2025 17:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4EE24397A;
+	Tue, 29 Apr 2025 17:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vN5ztzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfD4AJWc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C4B7E110;
-	Tue, 29 Apr 2025 17:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07899227E95;
+	Tue, 29 Apr 2025 17:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946102; cv=none; b=UQ/DPfLvojpYIooWgKNAvE01AvHqGRqWUMkFl+hIiuLio8yOkos+20LDXGZwxHTA+3OhxIn/hwBL3/exHXoEMOL3CBJlmmrec906cQnU2W2LLTUtaPGm2HOVlWCBNpoIV3N+kXu/sHYV1QYM8cAJ+HiA1x58fBSgGu4d419xY9M=
+	t=1745948670; cv=none; b=C9UgzCHLhBviPP9uZdTvXva4ldLvdWEbfWi2Xyy+C9q+NpJ1ZzYX/3Ami1/+RBQJhsf+aiQhCtKGyia3Zk1YnqFZkNFfIcnBSx8xRZxz+QBYYvdftPKK5VEYBrvtoczsVmoLOGeCk2zUhJruizXzW8q4ReX37453uDONv6cGg80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946102; c=relaxed/simple;
-	bh=pYdr3lBozU0H6i3zJasZMv+dNslUFrVvo1tet2WUH9k=;
+	s=arc-20240116; t=1745948670; c=relaxed/simple;
+	bh=NfBt+nbUkQLw9tGRKT2jNov6Svk5DXU8hNbUNf4x6mY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hx6VRtbzSSte5/ASh0c8RQzrXAVLgLcheXqMtimw++d9SIE6xH4eXnQ5B+Wc3V2LL5c3+xbbBfbpCuSCb1Z9MH5YzfNyTC8f0Y7kffa0Q4GPzjy6S+J2Y6XBosFBu8ZgRBxuEuc73rsRtab06X7C4GMvs6COe9jMx+6VPICKick=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vN5ztzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38233C4CEE3;
-	Tue, 29 Apr 2025 17:01:42 +0000 (UTC)
+	 MIME-Version; b=QlTkNTjQUy8REsmuIwL4LdZfsQDGHwVu3GqQg498RaOF/ShT2UncVlxxDqtIwNjfQMOItapD6U2Ve43oer+h3zwlPZkak3hgqPbuW1lXmCTvruEFUMVtaboIEjV/2lWpmtoaaInWFtTOqPyjxPDxuMYcl7zuY7abJuxLujI9YTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfD4AJWc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F092C4CEE9;
+	Tue, 29 Apr 2025 17:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946102;
-	bh=pYdr3lBozU0H6i3zJasZMv+dNslUFrVvo1tet2WUH9k=;
+	s=korg; t=1745948669;
+	bh=NfBt+nbUkQLw9tGRKT2jNov6Svk5DXU8hNbUNf4x6mY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1vN5ztzm3nVGoltDMd1ZmFoRurOET5MENJo2JaRD4aZRP3BpAgbTjoRklTF6diXZG
-	 dPjJLUof9er/GmPFI1+oyIi6h+g+ZaCneWZV6Xf0Xz/TtCsVNk8+pgLpo3cmJQCzvn
-	 mu3CbQp1X+HXkV0yMGRoCx+jL8CWYiC478tAn5Ho=
+	b=yfD4AJWcLDTigj3RBSmvE/C5f73Rt72mL0EbCo1CQJY/kqEkd0PXZ5HoL4l7jRcFP
+	 iULivcfeZE7ZfvW1N8LsWcbajDo/SZ/JHF7xLczYnysV73phK7PmqUiv+8+V4TKwmh
+	 Fpb4YqjtAL137OAaUCfp7zzxvH5AZMSxJvIc1uuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fiona Klute <fiona.klute@gmx.de>,
-	kernel-list@raspberrypi.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.14 115/311] net: phy: microchip: force IRQ polling mode for lan88xx
-Date: Tue, 29 Apr 2025 18:39:12 +0200
-Message-ID: <20250429161125.752058597@linuxfoundation.org>
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 076/373] media: venus: hfi_parser: add check to avoid out of bound access
+Date: Tue, 29 Apr 2025 18:39:13 +0200
+Message-ID: <20250429161126.282117190@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fiona Klute <fiona.klute@gmx.de>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-commit 30a41ed32d3088cd0d682a13d7f30b23baed7e93 upstream.
+commit 172bf5a9ef70a399bb227809db78442dc01d9e48 upstream.
 
-With lan88xx based devices the lan78xx driver can get stuck in an
-interrupt loop while bringing the device up, flooding the kernel log
-with messages like the following:
+There is a possibility that init_codecs is invoked multiple times during
+manipulated payload from video firmware. In such case, if codecs_count
+can get incremented to value more than MAX_CODEC_NUM, there can be OOB
+access. Reset the count so that it always starts from beginning.
 
-lan78xx 2-3:1.0 enp1s0u3: kevent 4 may have been dropped
-
-Removing interrupt support from the lan88xx PHY driver forces the
-driver to use polling instead, which avoids the problem.
-
-The issue has been observed with Raspberry Pi devices at least since
-4.14 (see [1], bug report for their downstream kernel), as well as
-with Nvidia devices [2] in 2020, where disabling interrupts was the
-vendor-suggested workaround (together with the claim that phylib
-changes in 4.9 made the interrupt handling in lan78xx incompatible).
-
-Iperf reports well over 900Mbits/sec per direction with client in
---dualtest mode, so there does not seem to be a significant impact on
-throughput (lan88xx device connected via switch to the peer).
-
-[1] https://github.com/raspberrypi/linux/issues/2447
-[2] https://forums.developer.nvidia.com/t/jetson-xavier-and-lan7800-problem/142134/11
-
-Link: https://lore.kernel.org/0901d90d-3f20-4a10-b680-9c978e04ddda@lunn.ch
-Fixes: 792aec47d59d ("add microchip LAN88xx phy driver")
-Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-Cc: kernel-list@raspberrypi.com
 Cc: stable@vger.kernel.org
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250416102413.30654-1-fiona.klute@gmx.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/microchip.c |   46 ++------------------------------------------
- 1 file changed, 3 insertions(+), 43 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_parser.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -37,47 +37,6 @@ static int lan88xx_write_page(struct phy
- 	return __phy_write(phydev, LAN88XX_EXT_PAGE_ACCESS, page);
- }
+--- a/drivers/media/platform/qcom/venus/hfi_parser.c
++++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+@@ -19,6 +19,8 @@ static void init_codecs(struct venus_cor
+ 	struct hfi_plat_caps *caps = core->caps, *cap;
+ 	unsigned long bit;
  
--static int lan88xx_phy_config_intr(struct phy_device *phydev)
--{
--	int rc;
--
--	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
--		/* unmask all source and clear them before enable */
--		rc = phy_write(phydev, LAN88XX_INT_MASK, 0x7FFF);
--		rc = phy_read(phydev, LAN88XX_INT_STS);
--		rc = phy_write(phydev, LAN88XX_INT_MASK,
--			       LAN88XX_INT_MASK_MDINTPIN_EN_ |
--			       LAN88XX_INT_MASK_LINK_CHANGE_);
--	} else {
--		rc = phy_write(phydev, LAN88XX_INT_MASK, 0);
--		if (rc)
--			return rc;
--
--		/* Ack interrupts after they have been disabled */
--		rc = phy_read(phydev, LAN88XX_INT_STS);
--	}
--
--	return rc < 0 ? rc : 0;
--}
--
--static irqreturn_t lan88xx_handle_interrupt(struct phy_device *phydev)
--{
--	int irq_status;
--
--	irq_status = phy_read(phydev, LAN88XX_INT_STS);
--	if (irq_status < 0) {
--		phy_error(phydev);
--		return IRQ_NONE;
--	}
--
--	if (!(irq_status & LAN88XX_INT_STS_LINK_CHANGE_))
--		return IRQ_NONE;
--
--	phy_trigger_machine(phydev);
--
--	return IRQ_HANDLED;
--}
--
- static int lan88xx_suspend(struct phy_device *phydev)
- {
- 	struct lan88xx_priv *priv = phydev->priv;
-@@ -528,8 +487,9 @@ static struct phy_driver microchip_phy_d
- 	.config_aneg	= lan88xx_config_aneg,
- 	.link_change_notify = lan88xx_link_change_notify,
++	core->codecs_count = 0;
++
+ 	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
+ 		return;
  
--	.config_intr	= lan88xx_phy_config_intr,
--	.handle_interrupt = lan88xx_handle_interrupt,
-+	/* Interrupt handling is broken, do not define related
-+	 * functions to force polling.
-+	 */
- 
- 	.suspend	= lan88xx_suspend,
- 	.resume		= genphy_resume,
 
 
 
