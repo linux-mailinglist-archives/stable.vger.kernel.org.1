@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9103AA1A5B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1207AA1997
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:13:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 800F59C0FFA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DED3B9A6643
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB38253F12;
-	Tue, 29 Apr 2025 18:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3535C24E4BF;
+	Tue, 29 Apr 2025 18:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7q+H5LP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXgMRKBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9749E253334;
-	Tue, 29 Apr 2025 18:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E574621ABC1;
+	Tue, 29 Apr 2025 18:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950596; cv=none; b=SsNG8VwmqFW1Af8+fK77GIkPgmLk3S6KKep4oFt3s7jFEMpk4Ixog5F0qeZZfbqpSZAWDgyiR96+R49VBsxC8+g/Rd+5/63dEGjrAS9Z4bDem1f9j6JWkubjznpTuBwmgXUnzqz/lkUbyHp2QSqZnbPNy8FQprc2+/CSLMQsPz8=
+	t=1745950099; cv=none; b=E1IwVnLZfzGhBx9xd0R2NulXUPVuHZeY7fPHGpiwbvcRKwUHrGsT2OWzSfsvcbc64m/bRUg1uukE+LBiiW/noYsud80OGBYAwQd4ZvvGpq/NnLJGInwN2rFPBQJFvrnLQ314PDQEET8KrGSh8W7p3KfgnofDJU2JTnXkpUgoF5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950596; c=relaxed/simple;
-	bh=bBJmSuIzi7X5t+Q7SBv/lGZJut5cA71cLiiTO+BlXxM=;
+	s=arc-20240116; t=1745950099; c=relaxed/simple;
+	bh=ffjcPUxAwvlw9Rsj535FNnjSSvbcT3GdFQVJOCha1j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVL/NaCT5UoE4OiADxjCz3D59mmH4nJXw9Jqmbdko4QctPMBbu1sy+ySftV6vYGVRypZ5aPU9WWCRAqGIkm8HLt4o+LLcYAbgLUjmRz5/rCSUpebIrp0L7BZhfip1/G4LOpDtnk3t1rUDxktVULtW+qhKvYaz4YkPvMmoTFT+y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7q+H5LP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2016AC4CEE9;
-	Tue, 29 Apr 2025 18:16:35 +0000 (UTC)
+	 MIME-Version; b=RBXCWhFKnp/rsSSgDwKtw7ejClHYGCMFbWtxc5/Q2JfJdNhcl4xaRpgt2s4aZ/D+77szIjDXN2P9Vb4i+eRqi/9ZVg7cFpKhdHJKmHCMO0xv9XcyThx5Ot3gR5AeV5oDYK6VazeCPDqPADeehEQjxl4RCd5AtMEk58zGIgC9X3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXgMRKBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5498DC4CEE3;
+	Tue, 29 Apr 2025 18:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950596;
-	bh=bBJmSuIzi7X5t+Q7SBv/lGZJut5cA71cLiiTO+BlXxM=;
+	s=korg; t=1745950098;
+	bh=ffjcPUxAwvlw9Rsj535FNnjSSvbcT3GdFQVJOCha1j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7q+H5LP4tmJVkv5cU+Qnr/2ckl0R/HkJUNphxVZJyeNFbLUnmd6sFgLycT6B+X7X
-	 OOMNa49QneYQSjuNXwrwwLObqFRi3GPNxTDSwRrvlK71Mm5IBZ4lfFuZ9kTA4Ala11
-	 h2VlTg3ey3oKpGsgG+l1rJdE9KHo7Wfa5dpEUAdo=
+	b=WXgMRKBvbZikKs2tnKbb75WZ68A3yX45SsMlc4lSP5YJBtnLBPLzIgnRxBk0v/Be0
+	 TmG9RH8VYobAdfgK/lxb4S8hq9T6+JqzIVeVrE8AUyC3UG6Ar00Zqk8DFQ584jTIoj
+	 ExOt9YBOJIeVhpg3l9E9n8owEHjAVzY2TQK0343I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Uday Shankar <ushankar@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 146/204] qibfs: fix _another_ leak
+Subject: [PATCH 6.1 126/167] selftests: ublk: fix test_stripe_04
 Date: Tue, 29 Apr 2025 18:43:54 +0200
-Message-ID: <20250429161105.397950483@linuxfoundation.org>
+Message-ID: <20250429161056.838202552@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit bdb43af4fdb39f844ede401bdb1258f67a580a27 ]
+[ Upstream commit 72070e57b0a518ec8e562a2b68fdfc796ef5c040 ]
 
-failure to allocate inode => leaked dentry...
+Commit 57ed58c13256 ("selftests: ublk: enable zero copy for stripe target")
+added test entry of test_stripe_04, but forgot to add the test script.
 
-this one had been there since the initial merge; to be fair,
-if we are that far OOM, the odds of failing at that particular
-allocation are low...
+So fix the test by adding the script file.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Reported-by: Uday Shankar <ushankar@purestorage.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Uday Shankar <ushankar@purestorage.com>
+Link: https://lore.kernel.org/r/20250404001849.1443064-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/qib/qib_fs.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../testing/selftests/ublk/test_stripe_04.sh  | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+ create mode 100755 tools/testing/selftests/ublk/test_stripe_04.sh
 
-diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
-index 11155e0fb8395..35d777976c295 100644
---- a/drivers/infiniband/hw/qib/qib_fs.c
-+++ b/drivers/infiniband/hw/qib/qib_fs.c
-@@ -55,6 +55,7 @@ static int qibfs_mknod(struct inode *dir, struct dentry *dentry,
- 	struct inode *inode = new_inode(dir->i_sb);
- 
- 	if (!inode) {
-+		dput(dentry);
- 		error = -EPERM;
- 		goto bail;
- 	}
+diff --git a/tools/testing/selftests/ublk/test_stripe_04.sh b/tools/testing/selftests/ublk/test_stripe_04.sh
+new file mode 100755
+index 0000000000000..1f2b642381d17
+--- /dev/null
++++ b/tools/testing/selftests/ublk/test_stripe_04.sh
+@@ -0,0 +1,24 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++. "$(cd "$(dirname "$0")" && pwd)"/test_common.sh
++
++TID="stripe_04"
++ERR_CODE=0
++
++_prep_test "stripe" "mkfs & mount & umount on zero copy"
++
++backfile_0=$(_create_backfile 256M)
++backfile_1=$(_create_backfile 256M)
++dev_id=$(_add_ublk_dev -t stripe -z -q 2 "$backfile_0" "$backfile_1")
++_check_add_dev $TID $? "$backfile_0" "$backfile_1"
++
++_mkfs_mount_test /dev/ublkb"${dev_id}"
++ERR_CODE=$?
++
++_cleanup_test "stripe"
++
++_remove_backfile "$backfile_0"
++_remove_backfile "$backfile_1"
++
++_show_result $TID $ERR_CODE
 -- 
 2.39.5
 
