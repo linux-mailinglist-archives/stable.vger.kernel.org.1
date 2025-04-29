@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8061EAA1351
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C05AA11EC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E8A94A7025
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4EE74A55C0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C6582C60;
-	Tue, 29 Apr 2025 17:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495A724A06A;
+	Tue, 29 Apr 2025 16:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOPubVub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k41rzmgu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FC52459C9;
-	Tue, 29 Apr 2025 17:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B46126C17;
+	Tue, 29 Apr 2025 16:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946064; cv=none; b=XGwoXSuj1vNliRKVGpoQCCjNxx7OOHd1cscoVT+MxzQFycyajuMlnZbEWPJPubOaa7AG1VtF/EN0zvNASxwnpgcYxkaq1OPC3sEaDVa/RtKW3ClyZ3rie4jWuzQboQy8vIC4OYda9Rrr90k8A0+YPyB6TNJI2j86Z1wfSMfrb5k=
+	t=1745945211; cv=none; b=eREIikuhLmyB7RIKsSXZUtIlb8tpCz1ejDsqVsDqnCRRFk2OEAL9omtJirsAIya8k4awMG1yy0KBTsX9eTMFQKerzGr6yss0thB8ZyTSuCDkAqHzI8ycPNzcYUHG4Zm9Dg+eqCcWU40F+gkhThss2shHmCEmN2t40iVQTpyBh+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946064; c=relaxed/simple;
-	bh=qcCORAX05tjvsd7TTW7q2u6Tntjvd8JSU4UxPiSfMQ8=;
+	s=arc-20240116; t=1745945211; c=relaxed/simple;
+	bh=9qDXfpdnl4y6iqaqBzgwRpEbwMoLEYA0ikcQAQ0/Fgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o2VriGitbBPgJvMzXUyBsZkXFCmpY1U4rByxzl8Ad+r8TbuW1xEKZpK+Gv5ygOH8P7ochFvmybsRzwNoMQN5cG9U4iL/hV/HNQ7vhWE3SYrfxSk3wa39g1lwM8/c6JYPzDo7r+Jdyf9yFlwnNezUKg7hTTOoPN13TTp9JDC6FAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOPubVub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F902C4CEE3;
-	Tue, 29 Apr 2025 17:01:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QP+k+L0iYQZ7OpnpykxL9aVjas579uIG/FSOKVK27um89FqLT6dQRDlLQBRbGuxmy65+1gKbTBuhAhGfe2RJm7ukKuxrslG7k15Q8cnc7HCFN52K9+f4Ex1Mcjb5Ii2NFMibFu4p2WeYFWmHFuekghxR4BXZzJWJerJkUYVGNN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k41rzmgu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6595DC4CEE9;
+	Tue, 29 Apr 2025 16:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946064;
-	bh=qcCORAX05tjvsd7TTW7q2u6Tntjvd8JSU4UxPiSfMQ8=;
+	s=korg; t=1745945210;
+	bh=9qDXfpdnl4y6iqaqBzgwRpEbwMoLEYA0ikcQAQ0/Fgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QOPubVubozKciCkVeBVuIOkN/gtxVK6owGWBBjLyAm1++LsJ7o473DLcP4S0GXXro
-	 oTarZgBOsRsOnkpqbOf9JmK4Io7FiB61/ljSbtkGK7g7Pnw4wMOqwmVMlejh5zsDeN
-	 kwo8p85s3Nne9NCDr/wvUX4IggeAaKSfRLm7PWMc=
+	b=k41rzmguxE0f3Fc/mCgid11pfjKEN4c44RsrtHbdwgQpXAoVmvNs6I8lOYu1qSgH4
+	 E8WsVtfguGsh5upvE3F5H/S4bHJAJbxfGo5KgSpqu741tBPDuanpbm0gG0oif4rdDO
+	 W0jct7wY1n51a9YMw5sQpFBsPw5aZ0MMz1yfAj6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.14 142/311] scsi: Improve CDL control
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 038/179] pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()
 Date: Tue, 29 Apr 2025 18:39:39 +0200
-Message-ID: <20250429161126.852633064@linuxfoundation.org>
+Message-ID: <20250429161050.955763819@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 14a3cc755825ef7b34c986aa2786ea815023e9c5 upstream.
+[ Upstream commit 7ca59947b5fcf94e7ea4029d1bd0f7c41500a161 ]
 
-With ATA devices supporting the CDL feature, using CDL requires that the
-feature be enabled with a SET FEATURES command. This command is issued
-as the translated command for the MODE SELECT command issued by
-scsi_cdl_enable() when the user enables CDL through the device
-cdl_enable sysfs attribute.
+With CONFIG_COMPILE_TEST && !CONFIG_HAVE_CLK, pwm_mediatek_config() has a
+divide-by-zero in the following line:
 
-However, the implementation of scsi_cdl_enable() always issues a MODE
-SELECT command for ATA devices when the enable argument is true, even if
-CDL is already enabled on the device. While this does not cause any
-issue with using CDL descriptors with read/write commands (the CDL
-feature will be enabled on the drive), issuing the MODE SELECT command
-even when the device CDL feature is already enabled will cause a reset
-of the ATA device CDL statistics log page (as defined in ACS, any CDL
-enable action must reset the device statistics).
+	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
 
-Avoid this needless actions (and the implied statistics log page reset)
-by modifying scsi_cdl_enable() to issue the MODE SELECT command to
-enable CDL if and only if CDL is not reported as already enabled on the
-device.
+due to the fact that the !CONFIG_HAVE_CLK version of clk_get_rate()
+returns zero.
 
-And while at it, simplify the initialization of the is_ata boolean
-variable and move the declaration of the scsi mode data and sense header
-variables to within the scope of ATA device handling.
+This is presumably just a theoretical problem: COMPILE_TEST overrides
+the dependency on RALINK which would select COMMON_CLK.  Regardless it's
+a good idea to check for the error explicitly to avoid divide-by-zero.
 
-Fixes: 1b22cfb14142 ("scsi: core: Allow enabling and disabling command duration limits")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes the following warning:
+
+  drivers/pwm/pwm-mediatek.o: warning: objtool: .text: unexpected end of section
+
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/fb56444939325cc173e752ba199abd7aeae3bf12.1742852847.git.jpoimboe@kernel.org
+[ukleinek: s/CONFIG_CLK/CONFIG_HAVE_CLK/]
+Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/9e78a0796acba3435553ed7db1c7965dcffa6215.1743501688.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi.c |   36 ++++++++++++++++++++++++------------
- 1 file changed, 24 insertions(+), 12 deletions(-)
+ drivers/pwm/pwm-mediatek.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/scsi.c
-+++ b/drivers/scsi/scsi.c
-@@ -695,26 +695,23 @@ void scsi_cdl_check(struct scsi_device *
-  */
- int scsi_cdl_enable(struct scsi_device *sdev, bool enable)
- {
--	struct scsi_mode_data data;
--	struct scsi_sense_hdr sshdr;
--	struct scsi_vpd *vpd;
--	bool is_ata = false;
- 	char buf[64];
-+	bool is_ata;
+diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
+index 2bece32e62dad..b2a2e1f501682 100644
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -125,21 +125,25 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
+ 	u32 clkdiv = 0, cnt_period, cnt_duty, reg_width = PWMDWIDTH,
+ 	    reg_thres = PWMTHRES;
++	unsigned long clk_rate;
+ 	u64 resolution;
  	int ret;
  
- 	if (!sdev->cdl_supported)
- 		return -EOPNOTSUPP;
+ 	ret = pwm_mediatek_clk_enable(chip, pwm);
+-
+ 	if (ret < 0)
+ 		return ret;
  
- 	rcu_read_lock();
--	vpd = rcu_dereference(sdev->vpd_pg89);
--	if (vpd)
--		is_ata = true;
-+	is_ata = rcu_dereference(sdev->vpd_pg89);
- 	rcu_read_unlock();
- 
- 	/*
- 	 * For ATA devices, CDL needs to be enabled with a SET FEATURES command.
- 	 */
- 	if (is_ata) {
-+		struct scsi_mode_data data;
-+		struct scsi_sense_hdr sshdr;
- 		char *buf_data;
- 		int len;
- 
-@@ -723,16 +720,30 @@ int scsi_cdl_enable(struct scsi_device *
- 		if (ret)
- 			return -EINVAL;
- 
--		/* Enable CDL using the ATA feature page */
-+		/* Enable or disable CDL using the ATA feature page */
- 		len = min_t(size_t, sizeof(buf),
- 			    data.length - data.header_length -
- 			    data.block_descriptor_length);
- 		buf_data = buf + data.header_length +
- 			data.block_descriptor_length;
--		if (enable)
--			buf_data[4] = 0x02;
--		else
--			buf_data[4] = 0;
++	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
++	if (!clk_rate)
++		return -EINVAL;
 +
-+		/*
-+		 * If we want to enable CDL and CDL is already enabled on the
-+		 * device, do nothing. This avoids needlessly resetting the CDL
-+		 * statistics on the device as that is implied by the CDL enable
-+		 * action. Similar to this, there is no need to do anything if
-+		 * we want to disable CDL and CDL is already disabled.
-+		 */
-+		if (enable) {
-+			if ((buf_data[4] & 0x03) == 0x02)
-+				goto out;
-+			buf_data[4] &= ~0x03;
-+			buf_data[4] |= 0x02;
-+		} else {
-+			if ((buf_data[4] & 0x03) == 0x00)
-+				goto out;
-+			buf_data[4] &= ~0x03;
-+		}
+ 	/* Make sure we use the bus clock and not the 26MHz clock */
+ 	if (pc->soc->has_ck_26m_sel)
+ 		writel(0, pc->regs + PWM_CK_26M_SEL);
  
- 		ret = scsi_mode_select(sdev, 1, 0, buf_data, len, 5 * HZ, 3,
- 				       &data, &sshdr);
-@@ -744,6 +755,7 @@ int scsi_cdl_enable(struct scsi_device *
- 		}
- 	}
+ 	/* Using resolution in picosecond gets accuracy higher */
+ 	resolution = (u64)NSEC_PER_SEC * 1000;
+-	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
++	do_div(resolution, clk_rate);
  
-+out:
- 	sdev->cdl_enable = enable;
- 
- 	return 0;
+ 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
+ 	while (cnt_period > 8191) {
+-- 
+2.39.5
+
 
 
 
