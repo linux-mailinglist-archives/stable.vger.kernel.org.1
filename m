@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-138647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86043AA191E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C713AA19C1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:15:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A6A04A130F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B30504E070D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D52640C03;
-	Tue, 29 Apr 2025 18:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55CB155333;
+	Tue, 29 Apr 2025 18:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yP+9R1V1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5yZVj1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3635E21ABC6;
-	Tue, 29 Apr 2025 18:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE6E227BA9;
+	Tue, 29 Apr 2025 18:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949910; cv=none; b=k5xL/dkzzqm/CwhrI+5d7O3Au9dX5eVIPL4PlRy95fniV2mvckoUhZBW9JSMuKDDVTgByIwjr9yVAWBPnKcXKpoEcstK1r5U8JoiyWZquock7M94zAWaaZ1aagcPXn0VysefsXgRKpEH1/RxmngQERy2iMGvEsGTQlMsNcbcBpI=
+	t=1745950409; cv=none; b=FdiS1wAMB3b6FGMAPKvwGu5undp/lLl+5urc0mJV0L66LICd1HR7J3+IC2NeqmhXsfbbJTmfIZFS1gmg8r0U29GRc6dAAwkoiJcjh8xOh4jR4cVhgC/PCBxSQkRGy/L0/hQAPTMp/t8QFuYb5NhIJ1Atewh5Q1WsjQ13xDEMPA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949910; c=relaxed/simple;
-	bh=hCowllin2l6oyD+PTfW5FRnnJxOEm2SoAf2jFPToG5E=;
+	s=arc-20240116; t=1745950409; c=relaxed/simple;
+	bh=8Xz3RWIS7WRA7h57vLLo5SUkIR0J6nWT6U+mQhHsWYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+Bv24WuMoTDAelBiZo7ahN3tuOMAdwGp478Kh1XUChBR+Kfqru1PeabFe99RAqv8RMyVTPw4Uv206pnwg0egmVa3x50vsU55oel5ppWpc7oZ+Dl+M76dIvIu0AEKcw4s4Zi8wJ/jU2cZ3zLqyKhzf+xgTY3oaz1/D8uip8vE5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yP+9R1V1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977D4C4CEE3;
-	Tue, 29 Apr 2025 18:05:09 +0000 (UTC)
+	 MIME-Version; b=kf3ODLSgItmN1/yQI4pg/h+dxj3IUgtIccvtF40xjjBoTXvdITbiCmhp3fStGMkTgxKdhQRjj6LtqbuyUEUDKlh1JgdX+bKQonLsPkMN6h3T5SVsQqbcE66GK0auno9xE2BrM0DKrqh/KnxLOjTet+XF+6SJTsuf2zEaWGsNnak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5yZVj1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2180C4CEE3;
+	Tue, 29 Apr 2025 18:13:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949910;
-	bh=hCowllin2l6oyD+PTfW5FRnnJxOEm2SoAf2jFPToG5E=;
+	s=korg; t=1745950409;
+	bh=8Xz3RWIS7WRA7h57vLLo5SUkIR0J6nWT6U+mQhHsWYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yP+9R1V1DY1gYHnBBuzehmTUfEJA13IKX6edCq8BHB7/pQdH+ZFbAsSbWGKA8X6QR
-	 CKrQYUfV1IuNXHSfl7x56+airLDoIv0Cn64+LeIH7RSOhYPs4PQlt/KXrqjJWWrFiK
-	 d6Tv3JWAr5uH0YsgnmPvJe8YJyuhaEcw10orQXrY=
+	b=k5yZVj1mOQeFFm4x+vkDK4+2IX9DzcVl9IVkpjEq6fogWCdqSr5wLklbyGD4C1dza
+	 kFzk4D9RPGTyxxZjOM5J5k+zAlZWVpxGtEMtjvg7BBhJupgonBUnTucMYNyt+HllqW
+	 cnTffotgb6SAvgM4J+Xmo5/MEFbZIbth5cLDahPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Mark Broadworth <mark.broadworth@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 066/167] drm/amd/display: Fix gpu reset in multidisplay config
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>
+Subject: [PATCH 6.6 086/204] ata: libata-scsi: Improve CDL control
 Date: Tue, 29 Apr 2025 18:42:54 +0200
-Message-ID: <20250429161054.444529340@linuxfoundation.org>
+Message-ID: <20250429161102.943099522@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 7eb287beeb60be1e4437be2b4e4e9f0da89aab97 upstream.
+commit 17e897a456752ec9c2d7afb3d9baf268b442451b upstream.
 
-[Why]
-The indexing of stream_status in dm_gpureset_commit_state() is incorrect.
-That leads to asserts in multi-display configuration after gpu reset.
+With ATA devices supporting the CDL feature, using CDL requires that the
+feature be enabled with a SET FEATURES command. This command is issued
+as the translated command for the MODE SELECT command issued by
+scsi_cdl_enable() when the user enables CDL through the device
+cdl_enable sysfs attribute.
 
-[How]
-Adjust the indexing logic to align stream_status with surface_updates.
+Currently, ata_mselect_control_ata_feature() always translates a MODE
+SELECT command for the ATA features subpage of the control mode page to
+a SET FEATURES command to enable or disable CDL based on the cdl_ctrl
+field. However, there is no need to issue the SET FEATURES command if:
+1) The MODE SELECT command requests disabling CDL and CDL is already
+   disabled.
+2) The MODE SELECT command requests enabling CDL and CDL is already
+   enabled.
 
-Fixes: cdaae8371aa9 ("drm/amd/display: Handle GPU reset for DC block")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3808
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Mark Broadworth <mark.broadworth@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d91bc901398741d317d9b55c59ca949d4bc7394b)
+Fix ata_mselect_control_ata_feature() to issue the SET FEATURES command
+only when necessary. Since enabling CDL also implies a reset of the CDL
+statistics log page, avoiding useless CDL enable operations also avoids
+clearing the CDL statistics log.
+
+Also add debug messages to clearly signal when CDL is being enabled or
+disabled using a SET FEATURES command.
+
+Fixes: df60f9c64576 ("scsi: ata: libata: Add ATA feature control sub-page translation")
 Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/ata/libata-scsi.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2795,16 +2795,16 @@ static void dm_gpureset_commit_state(str
- 	for (k = 0; k < dc_state->stream_count; k++) {
- 		bundle->stream_update.stream = dc_state->streams[k];
- 
--		for (m = 0; m < dc_state->stream_status->plane_count; m++) {
-+		for (m = 0; m < dc_state->stream_status[k].plane_count; m++) {
- 			bundle->surface_updates[m].surface =
--				dc_state->stream_status->plane_states[m];
-+				dc_state->stream_status[k].plane_states[m];
- 			bundle->surface_updates[m].surface->force_full_update =
- 				true;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -3787,17 +3787,27 @@ static unsigned int ata_mselect_control_
+ 	/* Check cdl_ctrl */
+ 	switch (buf[0] & 0x03) {
+ 	case 0:
+-		/* Disable CDL */
++		/* Disable CDL if it is enabled */
++		if (!(dev->flags & ATA_DFLAG_CDL_ENABLED))
++			return 0;
++		ata_dev_dbg(dev, "Disabling CDL\n");
+ 		cdl_action = 0;
+ 		dev->flags &= ~ATA_DFLAG_CDL_ENABLED;
+ 		break;
+ 	case 0x02:
+-		/* Enable CDL T2A/T2B: NCQ priority must be disabled */
++		/*
++		 * Enable CDL if not already enabled. Since this is mutually
++		 * exclusive with NCQ priority, allow this only if NCQ priority
++		 * is disabled.
++		 */
++		if (dev->flags & ATA_DFLAG_CDL_ENABLED)
++			return 0;
+ 		if (dev->flags & ATA_DFLAG_NCQ_PRIO_ENABLED) {
+ 			ata_dev_err(dev,
+ 				"NCQ priority must be disabled to enable CDL\n");
+ 			return -EINVAL;
  		}
- 
- 		update_planes_and_stream_adapter(dm->dc,
- 					 UPDATE_TYPE_FULL,
--					 dc_state->stream_status->plane_count,
-+					 dc_state->stream_status[k].plane_count,
- 					 dc_state->streams[k],
- 					 &bundle->stream_update,
- 					 bundle->surface_updates);
++		ata_dev_dbg(dev, "Enabling CDL\n");
+ 		cdl_action = 1;
+ 		dev->flags |= ATA_DFLAG_CDL_ENABLED;
+ 		break;
 
 
 
