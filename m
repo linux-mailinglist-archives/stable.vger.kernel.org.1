@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B507AA1337
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:03:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB46AA1619
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A7BB17F8A5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9AA95A4D08
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7753D2459EE;
-	Tue, 29 Apr 2025 16:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603DF24BC1A;
+	Tue, 29 Apr 2025 17:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYL2hmH5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qv7vm8gd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359FC82C60;
-	Tue, 29 Apr 2025 16:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE1D1FE468;
+	Tue, 29 Apr 2025 17:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945981; cv=none; b=n/mvYg2XZuDhjRNl+WI3E6TmSGrTeYcXIL9N+vGA6aa/wYXJD/DPpdNrYfy4NjNZubyB3LE2FHVI5whCRtsyKUXKoGjmMumC0tT5NflorxKu8JkStBdB9nQx+oONRuA9iPkFTW2cyHKX7CkkzTuBJVe8yu53puO3w3f7fGEcEPw=
+	t=1745947570; cv=none; b=HJk1n5Q6CjDx08XPAkjx7Ju2+ikM7QUKT2T58NWPDT8iJi5T22Wb7ISfTAoaMwAXNLEahiVpBdjTuy3CQich0cojz1PkpaLWoyqvPa1LKqOvprwUmBrx3rrslcLDtD2z1z/sRADStf1NC3CZ5mNEhhCZ5pCF0ElFraz3Sli7Pns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945981; c=relaxed/simple;
-	bh=Q/hU/vVd6hLM/Y72H/ms/X/ifcjwPJ28MGQzMXMIXoo=;
+	s=arc-20240116; t=1745947570; c=relaxed/simple;
+	bh=bs54ismHY8OS1sxOp0oNzhpoxMGHRF9XJaykjwSJldc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PoTKl1uqidgx0GrqDDoyiIHqoMj7KrX51tb2OsDj/6GxWrte1pfUpgthQRPusexD8VuMalCln4mHTTRr45GQByBjt+tMTtYuL7H272r9sfFpvmniZglhSPDlYRuoOh9S3AvFV2UA5hI8PWK+pun9P8DOJLi37/DQrffIXly75lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYL2hmH5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED06C4CEE3;
-	Tue, 29 Apr 2025 16:59:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m74qwqFU1bfcrhBxuw5O26Wrg7M7sHt3OlYhbApxe49vRjLgC35HBS2Phm+9KfmXoaTqmm9IgGdWQJIvTLyWf8Ti85COEquyTqZrwGeQWTsGaAiHlETDqXqlh1a9FtvrGT3qhfww8KKDI4XFs7+cUY4lcjylVS6NVmCluSv/3yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qv7vm8gd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E186C4CEE3;
+	Tue, 29 Apr 2025 17:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945981;
-	bh=Q/hU/vVd6hLM/Y72H/ms/X/ifcjwPJ28MGQzMXMIXoo=;
+	s=korg; t=1745947570;
+	bh=bs54ismHY8OS1sxOp0oNzhpoxMGHRF9XJaykjwSJldc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gYL2hmH5a3+M53zyUUgtJ70QXeSUvNqgUkoyMWpYMVDUJ/LmZoWug6uyDSQT0RmLq
-	 UgTde/YMSR+AHoWLqQA6IMqDQTIryMn26ZPlQgDfc4rYdh9DMJnLU5u3XVeKKiZ7M1
-	 Y9vGPM7sYLphC31NA2ayJMheK2bJ3o9iGXnHXwoM=
+	b=Qv7vm8gdwsyJa7rcIrQDF+jZXFObA4RoSnp4n5d4dcS67XGFp2HjreQn4yVcXy0eN
+	 LOHt53LOMdTIGa7F/jEMf2msUQYHNtJyNF1PQ5LjoSEIFak2Q++ugXYvhCSnUN2BLx
+	 scq1G8NSrg3gNuSINcqhTUO6YU3lAecnMHto+Fjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Nepomnyashih <sdl@nppct.ru>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.14 113/311] xen-netfront: handle NULL returned by xdp_convert_buff_to_frame()
+	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 009/280] media: i2c: imx214: Use subdev active state
 Date: Tue, 29 Apr 2025 18:39:10 +0200
-Message-ID: <20250429161125.661570654@linuxfoundation.org>
+Message-ID: <20250429161115.458650157@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,72 +61,336 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Nepomnyashih <sdl@nppct.ru>
+From: André Apitzsch <git@apitzsch.eu>
 
-commit cc3628dcd851ddd8d418bf0c897024b4621ddc92 upstream.
+[ Upstream commit b6832ff659f55f86198bb8de40f278a20bda0920 ]
 
-The function xdp_convert_buff_to_frame() may return NULL if it fails
-to correctly convert the XDP buffer into an XDP frame due to memory
-constraints, internal errors, or invalid data. Failing to check for NULL
-may lead to a NULL pointer dereference if the result is used later in
-processing, potentially causing crashes, data corruption, or undefined
-behavior.
+Port the imx214 sensor driver to use the subdev active state.
 
-On XDP redirect failure, the associated page must be released explicitly
-if it was previously retained via get_page(). Failing to do so may result
-in a memory leak, as the pages reference count is not decremented.
+Move all the format configuration to the subdevice state and simplify
+the format handling, locking and initialization.
 
-Cc: stable@vger.kernel.org # v5.9+
-Fixes: 6c5aa6fc4def ("xen networking: add basic XDP support for xen-netfront")
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
-Link: https://patch.msgid.link/20250417122118.1009824-1-sdl@nppct.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While at it, simplify imx214_start_streaming() by removing unneeded goto
+statements and the corresponding error label.
+
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Stable-dep-of: acc294519f17 ("media: i2c: imx214: Fix link frequency validation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netfront.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/media/i2c/imx214.c | 155 ++++++++++++-------------------------
+ 1 file changed, 50 insertions(+), 105 deletions(-)
 
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -985,20 +985,27 @@ static u32 xennet_run_xdp(struct netfron
- 	act = bpf_prog_run_xdp(prog, xdp);
- 	switch (act) {
- 	case XDP_TX:
--		get_page(pdata);
- 		xdpf = xdp_convert_buff_to_frame(xdp);
-+		if (unlikely(!xdpf)) {
-+			trace_xdp_exception(queue->info->netdev, prog, act);
-+			break;
-+		}
-+		get_page(pdata);
- 		err = xennet_xdp_xmit(queue->info->netdev, 1, &xdpf, 0);
--		if (unlikely(!err))
-+		if (unlikely(err <= 0)) {
-+			if (err < 0)
-+				trace_xdp_exception(queue->info->netdev, prog, act);
- 			xdp_return_frame_rx_napi(xdpf);
--		else if (unlikely(err < 0))
--			trace_xdp_exception(queue->info->netdev, prog, act);
-+		}
- 		break;
- 	case XDP_REDIRECT:
- 		get_page(pdata);
- 		err = xdp_do_redirect(queue->info->netdev, xdp, prog);
- 		*need_xdp_flush = true;
--		if (unlikely(err))
-+		if (unlikely(err)) {
- 			trace_xdp_exception(queue->info->netdev, prog, act);
-+			xdp_return_buff(xdp);
-+		}
- 		break;
- 	case XDP_PASS:
- 	case XDP_DROP:
+diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+index 6a393e18267f4..af6a3859c3f13 100644
+--- a/drivers/media/i2c/imx214.c
++++ b/drivers/media/i2c/imx214.c
+@@ -59,8 +59,6 @@ struct imx214 {
+ 
+ 	struct v4l2_subdev sd;
+ 	struct media_pad pad;
+-	struct v4l2_mbus_framefmt fmt;
+-	struct v4l2_rect crop;
+ 
+ 	struct v4l2_ctrl_handler ctrls;
+ 	struct v4l2_ctrl *pixel_rate;
+@@ -71,12 +69,6 @@ struct imx214 {
+ 	struct regulator_bulk_data	supplies[IMX214_NUM_SUPPLIES];
+ 
+ 	struct gpio_desc *enable_gpio;
+-
+-	/*
+-	 * Serialize control access, get/set format, get selection
+-	 * and start streaming.
+-	 */
+-	struct mutex mutex;
+ };
+ 
+ struct reg_8 {
+@@ -490,6 +482,22 @@ static int __maybe_unused imx214_power_off(struct device *dev)
+ 	return 0;
+ }
+ 
++static void imx214_update_pad_format(struct imx214 *imx214,
++				     const struct imx214_mode *mode,
++				     struct v4l2_mbus_framefmt *fmt, u32 code)
++{
++	fmt->code = IMX214_MBUS_CODE;
++	fmt->width = mode->width;
++	fmt->height = mode->height;
++	fmt->field = V4L2_FIELD_NONE;
++	fmt->colorspace = V4L2_COLORSPACE_SRGB;
++	fmt->ycbcr_enc = V4L2_MAP_YCBCR_ENC_DEFAULT(fmt->colorspace);
++	fmt->quantization = V4L2_MAP_QUANTIZATION_DEFAULT(true,
++							  fmt->colorspace,
++							  fmt->ycbcr_enc);
++	fmt->xfer_func = V4L2_MAP_XFER_FUNC_DEFAULT(fmt->colorspace);
++}
++
+ static int imx214_enum_mbus_code(struct v4l2_subdev *sd,
+ 				 struct v4l2_subdev_state *sd_state,
+ 				 struct v4l2_subdev_mbus_code_enum *code)
+@@ -549,52 +557,6 @@ static const struct v4l2_subdev_core_ops imx214_core_ops = {
+ #endif
+ };
+ 
+-static struct v4l2_mbus_framefmt *
+-__imx214_get_pad_format(struct imx214 *imx214,
+-			struct v4l2_subdev_state *sd_state,
+-			unsigned int pad,
+-			enum v4l2_subdev_format_whence which)
+-{
+-	switch (which) {
+-	case V4L2_SUBDEV_FORMAT_TRY:
+-		return v4l2_subdev_state_get_format(sd_state, pad);
+-	case V4L2_SUBDEV_FORMAT_ACTIVE:
+-		return &imx214->fmt;
+-	default:
+-		return NULL;
+-	}
+-}
+-
+-static int imx214_get_format(struct v4l2_subdev *sd,
+-			     struct v4l2_subdev_state *sd_state,
+-			     struct v4l2_subdev_format *format)
+-{
+-	struct imx214 *imx214 = to_imx214(sd);
+-
+-	mutex_lock(&imx214->mutex);
+-	format->format = *__imx214_get_pad_format(imx214, sd_state,
+-						  format->pad,
+-						  format->which);
+-	mutex_unlock(&imx214->mutex);
+-
+-	return 0;
+-}
+-
+-static struct v4l2_rect *
+-__imx214_get_pad_crop(struct imx214 *imx214,
+-		      struct v4l2_subdev_state *sd_state,
+-		      unsigned int pad, enum v4l2_subdev_format_whence which)
+-{
+-	switch (which) {
+-	case V4L2_SUBDEV_FORMAT_TRY:
+-		return v4l2_subdev_state_get_crop(sd_state, pad);
+-	case V4L2_SUBDEV_FORMAT_ACTIVE:
+-		return &imx214->crop;
+-	default:
+-		return NULL;
+-	}
+-}
+-
+ static int imx214_set_format(struct v4l2_subdev *sd,
+ 			     struct v4l2_subdev_state *sd_state,
+ 			     struct v4l2_subdev_format *format)
+@@ -604,34 +566,20 @@ static int imx214_set_format(struct v4l2_subdev *sd,
+ 	struct v4l2_rect *__crop;
+ 	const struct imx214_mode *mode;
+ 
+-	mutex_lock(&imx214->mutex);
+-
+-	__crop = __imx214_get_pad_crop(imx214, sd_state, format->pad,
+-				       format->which);
+-
+ 	mode = v4l2_find_nearest_size(imx214_modes,
+ 				      ARRAY_SIZE(imx214_modes), width, height,
+ 				      format->format.width,
+ 				      format->format.height);
+ 
+-	__crop->width = mode->width;
+-	__crop->height = mode->height;
+-
+-	__format = __imx214_get_pad_format(imx214, sd_state, format->pad,
+-					   format->which);
+-	__format->width = __crop->width;
+-	__format->height = __crop->height;
+-	__format->code = IMX214_MBUS_CODE;
+-	__format->field = V4L2_FIELD_NONE;
+-	__format->colorspace = V4L2_COLORSPACE_SRGB;
+-	__format->ycbcr_enc = V4L2_MAP_YCBCR_ENC_DEFAULT(__format->colorspace);
+-	__format->quantization = V4L2_MAP_QUANTIZATION_DEFAULT(true,
+-				__format->colorspace, __format->ycbcr_enc);
+-	__format->xfer_func = V4L2_MAP_XFER_FUNC_DEFAULT(__format->colorspace);
++	imx214_update_pad_format(imx214, mode, &format->format,
++				 format->format.code);
++	__format = v4l2_subdev_state_get_format(sd_state, 0);
+ 
+-	format->format = *__format;
++	*__format = format->format;
+ 
+-	mutex_unlock(&imx214->mutex);
++	__crop = v4l2_subdev_state_get_crop(sd_state, 0);
++	__crop->width = mode->width;
++	__crop->height = mode->height;
+ 
+ 	return 0;
+ }
+@@ -640,14 +588,9 @@ static int imx214_get_selection(struct v4l2_subdev *sd,
+ 				struct v4l2_subdev_state *sd_state,
+ 				struct v4l2_subdev_selection *sel)
+ {
+-	struct imx214 *imx214 = to_imx214(sd);
+-
+ 	switch (sel->target) {
+ 	case V4L2_SEL_TGT_CROP:
+-		mutex_lock(&imx214->mutex);
+-		sel->r = *__imx214_get_pad_crop(imx214, sd_state, sel->pad,
+-						sel->which);
+-		mutex_unlock(&imx214->mutex);
++		sel->r = *v4l2_subdev_state_get_crop(sd_state, 0);
+ 		return 0;
+ 
+ 	case V4L2_SEL_TGT_NATIVE_SIZE:
+@@ -826,40 +769,35 @@ static int imx214_write_table(struct imx214 *imx214,
+ 
+ static int imx214_start_streaming(struct imx214 *imx214)
+ {
++	const struct v4l2_mbus_framefmt *fmt;
++	struct v4l2_subdev_state *state;
+ 	const struct imx214_mode *mode;
+ 	int ret;
+ 
+-	mutex_lock(&imx214->mutex);
+ 	ret = imx214_write_table(imx214, mode_table_common);
+ 	if (ret < 0) {
+ 		dev_err(imx214->dev, "could not sent common table %d\n", ret);
+-		goto error;
++		return ret;
+ 	}
+ 
+-	mode = v4l2_find_nearest_size(imx214_modes,
+-				ARRAY_SIZE(imx214_modes), width, height,
+-				imx214->fmt.width, imx214->fmt.height);
++	state = v4l2_subdev_get_locked_active_state(&imx214->sd);
++	fmt = v4l2_subdev_state_get_format(state, 0);
++	mode = v4l2_find_nearest_size(imx214_modes, ARRAY_SIZE(imx214_modes),
++				      width, height, fmt->width, fmt->height);
+ 	ret = imx214_write_table(imx214, mode->reg_table);
+ 	if (ret < 0) {
+ 		dev_err(imx214->dev, "could not sent mode table %d\n", ret);
+-		goto error;
++		return ret;
+ 	}
+ 	ret = __v4l2_ctrl_handler_setup(&imx214->ctrls);
+ 	if (ret < 0) {
+ 		dev_err(imx214->dev, "could not sync v4l2 controls\n");
+-		goto error;
++		return ret;
+ 	}
+ 	ret = regmap_write(imx214->regmap, IMX214_REG_MODE_SELECT, IMX214_MODE_STREAMING);
+-	if (ret < 0) {
++	if (ret < 0)
+ 		dev_err(imx214->dev, "could not sent start table %d\n", ret);
+-		goto error;
+-	}
+ 
+-	mutex_unlock(&imx214->mutex);
+-	return 0;
+-
+-error:
+-	mutex_unlock(&imx214->mutex);
+ 	return ret;
+ }
+ 
+@@ -877,6 +815,7 @@ static int imx214_stop_streaming(struct imx214 *imx214)
+ static int imx214_s_stream(struct v4l2_subdev *subdev, int enable)
+ {
+ 	struct imx214 *imx214 = to_imx214(subdev);
++	struct v4l2_subdev_state *state;
+ 	int ret;
+ 
+ 	if (enable) {
+@@ -884,7 +823,9 @@ static int imx214_s_stream(struct v4l2_subdev *subdev, int enable)
+ 		if (ret < 0)
+ 			return ret;
+ 
++		state = v4l2_subdev_lock_and_get_active_state(subdev);
+ 		ret = imx214_start_streaming(imx214);
++		v4l2_subdev_unlock_state(state);
+ 		if (ret < 0)
+ 			goto err_rpm_put;
+ 	} else {
+@@ -948,7 +889,7 @@ static const struct v4l2_subdev_pad_ops imx214_subdev_pad_ops = {
+ 	.enum_mbus_code = imx214_enum_mbus_code,
+ 	.enum_frame_size = imx214_enum_frame_size,
+ 	.enum_frame_interval = imx214_enum_frame_interval,
+-	.get_fmt = imx214_get_format,
++	.get_fmt = v4l2_subdev_get_fmt,
+ 	.set_fmt = imx214_set_format,
+ 	.get_selection = imx214_get_selection,
+ 	.get_frame_interval = imx214_get_frame_interval,
+@@ -1079,9 +1020,6 @@ static int imx214_probe(struct i2c_client *client)
+ 	if (ret < 0)
+ 		goto error_power_off;
+ 
+-	mutex_init(&imx214->mutex);
+-	imx214->ctrls.lock = &imx214->mutex;
+-
+ 	imx214->sd.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
+ 	imx214->pad.flags = MEDIA_PAD_FL_SOURCE;
+ 	imx214->sd.dev = &client->dev;
+@@ -1093,7 +1031,12 @@ static int imx214_probe(struct i2c_client *client)
+ 		goto free_ctrl;
+ 	}
+ 
+-	imx214_entity_init_state(&imx214->sd, NULL);
++	imx214->sd.state_lock = imx214->ctrls.lock;
++	ret = v4l2_subdev_init_finalize(&imx214->sd);
++	if (ret < 0) {
++		dev_err(dev, "subdev init error: %d\n", ret);
++		goto free_entity;
++	}
+ 
+ 	pm_runtime_set_active(imx214->dev);
+ 	pm_runtime_enable(imx214->dev);
+@@ -1101,20 +1044,22 @@ static int imx214_probe(struct i2c_client *client)
+ 	ret = v4l2_async_register_subdev_sensor(&imx214->sd);
+ 	if (ret < 0) {
+ 		dev_err(dev, "could not register v4l2 device\n");
+-		goto free_entity;
++		goto error_subdev_cleanup;
+ 	}
+ 
+ 	pm_runtime_idle(imx214->dev);
+ 
+ 	return 0;
+ 
+-free_entity:
++error_subdev_cleanup:
+ 	pm_runtime_disable(imx214->dev);
+ 	pm_runtime_set_suspended(&client->dev);
++	v4l2_subdev_cleanup(&imx214->sd);
++
++free_entity:
+ 	media_entity_cleanup(&imx214->sd.entity);
+ 
+ free_ctrl:
+-	mutex_destroy(&imx214->mutex);
+ 	v4l2_ctrl_handler_free(&imx214->ctrls);
+ 
+ error_power_off:
+@@ -1129,9 +1074,9 @@ static void imx214_remove(struct i2c_client *client)
+ 	struct imx214 *imx214 = to_imx214(sd);
+ 
+ 	v4l2_async_unregister_subdev(&imx214->sd);
++	v4l2_subdev_cleanup(sd);
+ 	media_entity_cleanup(&imx214->sd.entity);
+ 	v4l2_ctrl_handler_free(&imx214->ctrls);
+-	mutex_destroy(&imx214->mutex);
+ 	pm_runtime_disable(&client->dev);
+ 	if (!pm_runtime_status_suspended(&client->dev)) {
+ 		imx214_power_off(imx214->dev);
+-- 
+2.39.5
+
 
 
 
