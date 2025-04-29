@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-138219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C54AA170A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EABFEAA1318
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC3761B675B0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58FF13B6111
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B868A221719;
-	Tue, 29 Apr 2025 17:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E5C25178C;
+	Tue, 29 Apr 2025 16:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PIRfsY0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eo2g5tCw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744E221ABC1;
-	Tue, 29 Apr 2025 17:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A042472B9;
+	Tue, 29 Apr 2025 16:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948548; cv=none; b=mOPY102T8bf4tkwqBuMcwFUFfprS5u2HN72DfyV5NSZPlcS6T4yROwCG4sSWHxV9zD0LJYpkPeWOwb8mEgO/KzB3Lu5dqmN3F7dh774SnzFCgfkZjbIqoBFrCafGS6f1dQO1/3MILQ35MtqySpn5g9jGczGJ2fgpDvpoCF5EaRI=
+	t=1745945829; cv=none; b=H23ueVmkFGDF5ynXVRTFaQOz0dI66xH4exBQaKjQfI1QBqI6bnFFHIxEPD3IoVI5dIfKTGX/tq/fG9Kxuax+uGzM1AI5mawNMTHtunrP8rgf5MZSK6Ww1/dwGM+tDB+1qEWrm/0PLuRtudq4zbVyDE/JUs54g3P/fT2sNJM5tHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948548; c=relaxed/simple;
-	bh=A5bUPLL9u02d/NB0dqUO0DZgDKD9wF7Fx+VMG7w6QwE=;
+	s=arc-20240116; t=1745945829; c=relaxed/simple;
+	bh=7hJqpmhpyD8boIXLfd5J4pBMCuoV0vxS4A9ebKX3f14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bS4/nWmbj21PtzMz0zT3WuTKxsIw4x8HEQxFl8yvmtO2I+GQV4hQWbpPKBe+4WXyKnIy3TDLQvNWT8BG/0/cSoPhQFELohXhKRJBrHwER5isW5/tuI5wRJxu3iSrY1vuoBTUnCqAn8gt7+E0jXfU/EPEHKlV5uW6AR0R2OI0FEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PIRfsY0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AA1C4CEE3;
-	Tue, 29 Apr 2025 17:42:27 +0000 (UTC)
+	 MIME-Version; b=uX7QzeX4tPE+H5lCxlyVjmr2bH9RTrzO0r2lNFk5iLJDTn/IIFoS8WqHqZ5ChZmA+RO3f1irsg0hZx7m3DtdDAC86oYlJ+H7A88Pff1+f/Efww/w70+xSdc5Wm06Ar9EwE9ZlikYde73XP8YSd6uf+X9+x3jahbYcutpJ57aGbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eo2g5tCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95ABBC4CEE3;
+	Tue, 29 Apr 2025 16:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948548;
-	bh=A5bUPLL9u02d/NB0dqUO0DZgDKD9wF7Fx+VMG7w6QwE=;
+	s=korg; t=1745945828;
+	bh=7hJqpmhpyD8boIXLfd5J4pBMCuoV0vxS4A9ebKX3f14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PIRfsY0P1wMNM13Fa1TTxyuo1APRR1E1hxbgNoCqzpGA3vo57p0c/BTEzIAfC1EXI
-	 WSYJ0HZ+cQZQZMp0yY/CyNEiEzQe2bFSrgvd09CW2pha0zfbvDRWtojVp7tYokiZoe
-	 G7DBMfBCe7gZ5OEYgn4+Q/ESFNzh17fq3LUeJn44=
+	b=Eo2g5tCwoxHJyDVdxbBLw4HtqDSwVytb8Kc6S1p8anDC85rWtj1hneAz7zsvp9gmu
+	 hu8xy/xepNYvAVz8TQHPRWbf3gKnzHSskwWREsQEfU7Q+LlCYt6//cPpC2lkiIdKDY
+	 f+WGIVZqUsduuEEJzLzyoSPgtDYnhZzTothPrQ78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	syzbot+df6cdcb35904203d2b6d@syzkaller.appspotmail.com,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 024/373] jfs: Fix uninit-value access of imap allocated in the diMount() function
+Subject: [PATCH 6.14 064/311] virtio-net: disable delayed refill when pausing rx
 Date: Tue, 29 Apr 2025 18:38:21 +0200
-Message-ID: <20250429161124.126505917@linuxfoundation.org>
+Message-ID: <20250429161123.661836655@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +64,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit 9629d7d66c621671d9a47afe27ca9336bfc8a9ea ]
+[ Upstream commit 4bc12818b363bd30f0f7348dd9ab077290a637ae ]
 
-syzbot reports that hex_dump_to_buffer is using uninit-value:
+When pausing rx (e.g. set up xdp, xsk pool, rx resize), we call
+napi_disable() on the receive queue's napi. In delayed refill_work, it
+also calls napi_disable() on the receive queue's napi.  When
+napi_disable() is called on an already disabled napi, it will sleep in
+napi_disable_locked while still holding the netdev_lock. As a result,
+later napi_enable gets stuck too as it cannot acquire the netdev_lock.
+This leads to refill_work and the pause-then-resume tx are stuck
+altogether.
 
-=====================================================
-BUG: KMSAN: uninit-value in hex_dump_to_buffer+0x888/0x1100 lib/hexdump.c:171
-hex_dump_to_buffer+0x888/0x1100 lib/hexdump.c:171
-print_hex_dump+0x13d/0x3e0 lib/hexdump.c:276
-diFree+0x5ba/0x4350 fs/jfs/jfs_imap.c:876
-jfs_evict_inode+0x510/0x550 fs/jfs/inode.c:156
-evict+0x723/0xd10 fs/inode.c:796
-iput_final fs/inode.c:1946 [inline]
-iput+0x97b/0xdb0 fs/inode.c:1972
-txUpdateMap+0xf3e/0x1150 fs/jfs/jfs_txnmgr.c:2367
-txLazyCommit fs/jfs/jfs_txnmgr.c:2664 [inline]
-jfs_lazycommit+0x627/0x11d0 fs/jfs/jfs_txnmgr.c:2733
-kthread+0x6b9/0xef0 kernel/kthread.c:464
-ret_from_fork+0x6d/0x90 arch/x86/kernel/process.c:148
-ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+This scenario can be reproducible by binding a XDP socket to virtio-net
+interface without setting up the fill ring. As a result, try_fill_recv
+will fail until the fill ring is set up and refill_work is scheduled.
 
-Uninit was created at:
-slab_post_alloc_hook mm/slub.c:4121 [inline]
-slab_alloc_node mm/slub.c:4164 [inline]
-__kmalloc_cache_noprof+0x8e3/0xdf0 mm/slub.c:4320
-kmalloc_noprof include/linux/slab.h:901 [inline]
-diMount+0x61/0x7f0 fs/jfs/jfs_imap.c:105
-jfs_mount+0xa8e/0x11d0 fs/jfs/jfs_mount.c:176
-jfs_fill_super+0xa47/0x17c0 fs/jfs/super.c:523
-get_tree_bdev_flags+0x6ec/0x910 fs/super.c:1636
-get_tree_bdev+0x37/0x50 fs/super.c:1659
-jfs_get_tree+0x34/0x40 fs/jfs/super.c:635
-vfs_get_tree+0xb1/0x5a0 fs/super.c:1814
-do_new_mount+0x71f/0x15e0 fs/namespace.c:3560
-path_mount+0x742/0x1f10 fs/namespace.c:3887
-do_mount fs/namespace.c:3900 [inline]
-__do_sys_mount fs/namespace.c:4111 [inline]
-__se_sys_mount+0x71f/0x800 fs/namespace.c:4088
-__x64_sys_mount+0xe4/0x150 fs/namespace.c:4088
-x64_sys_call+0x39bf/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:166
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x77/0x7f
-=====================================================
+This commit adds virtnet_rx_(pause/resume)_all helpers and fixes up the
+virtnet_rx_resume to disable future and cancel all inflights delayed
+refill_work before calling napi_disable() to pause the rx.
 
-The reason is that imap is not properly initialized after memory
-allocation. It will cause the snprintf() function to write uninitialized
-data into linebuf within hex_dump_to_buffer().
-
-Fix this by using kzalloc instead of kmalloc to clear its content at the
-beginning in diMount().
-
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Reported-by: syzbot+df6cdcb35904203d2b6d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/67b5d07e.050a0220.14d86d.00e6.GAE@google.com/
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: 413f0271f396 ("net: protect NAPI enablement with netdev_lock()")
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://patch.msgid.link/20250417072806.18660-2-minhquangbui99@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_imap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/virtio_net.c | 69 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 57 insertions(+), 12 deletions(-)
 
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index c72e97f065798..309b5f6e977d7 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -102,7 +102,7 @@ int diMount(struct inode *ipimap)
- 	 * allocate/initialize the in-memory inode map control structure
- 	 */
- 	/* allocate the in-memory inode map control structure. */
--	imap = kmalloc(sizeof(struct inomap), GFP_KERNEL);
-+	imap = kzalloc(sizeof(struct inomap), GFP_KERNEL);
- 	if (imap == NULL)
- 		return -ENOMEM;
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 44dbb991787ed..3e4896d9537ee 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3318,7 +3318,8 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	return NETDEV_TX_OK;
+ }
  
+-static void virtnet_rx_pause(struct virtnet_info *vi, struct receive_queue *rq)
++static void __virtnet_rx_pause(struct virtnet_info *vi,
++			       struct receive_queue *rq)
+ {
+ 	bool running = netif_running(vi->dev);
+ 
+@@ -3328,17 +3329,63 @@ static void virtnet_rx_pause(struct virtnet_info *vi, struct receive_queue *rq)
+ 	}
+ }
+ 
+-static void virtnet_rx_resume(struct virtnet_info *vi, struct receive_queue *rq)
++static void virtnet_rx_pause_all(struct virtnet_info *vi)
++{
++	int i;
++
++	/*
++	 * Make sure refill_work does not run concurrently to
++	 * avoid napi_disable race which leads to deadlock.
++	 */
++	disable_delayed_refill(vi);
++	cancel_delayed_work_sync(&vi->refill);
++	for (i = 0; i < vi->max_queue_pairs; i++)
++		__virtnet_rx_pause(vi, &vi->rq[i]);
++}
++
++static void virtnet_rx_pause(struct virtnet_info *vi, struct receive_queue *rq)
++{
++	/*
++	 * Make sure refill_work does not run concurrently to
++	 * avoid napi_disable race which leads to deadlock.
++	 */
++	disable_delayed_refill(vi);
++	cancel_delayed_work_sync(&vi->refill);
++	__virtnet_rx_pause(vi, rq);
++}
++
++static void __virtnet_rx_resume(struct virtnet_info *vi,
++				struct receive_queue *rq,
++				bool refill)
+ {
+ 	bool running = netif_running(vi->dev);
+ 
+-	if (!try_fill_recv(vi, rq, GFP_KERNEL))
++	if (refill && !try_fill_recv(vi, rq, GFP_KERNEL))
+ 		schedule_delayed_work(&vi->refill, 0);
+ 
+ 	if (running)
+ 		virtnet_napi_enable(rq);
+ }
+ 
++static void virtnet_rx_resume_all(struct virtnet_info *vi)
++{
++	int i;
++
++	enable_delayed_refill(vi);
++	for (i = 0; i < vi->max_queue_pairs; i++) {
++		if (i < vi->curr_queue_pairs)
++			__virtnet_rx_resume(vi, &vi->rq[i], true);
++		else
++			__virtnet_rx_resume(vi, &vi->rq[i], false);
++	}
++}
++
++static void virtnet_rx_resume(struct virtnet_info *vi, struct receive_queue *rq)
++{
++	enable_delayed_refill(vi);
++	__virtnet_rx_resume(vi, rq, true);
++}
++
+ static int virtnet_rx_resize(struct virtnet_info *vi,
+ 			     struct receive_queue *rq, u32 ring_num)
+ {
+@@ -5939,12 +5986,12 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
+ 	if (prog)
+ 		bpf_prog_add(prog, vi->max_queue_pairs - 1);
+ 
++	virtnet_rx_pause_all(vi);
++
+ 	/* Make sure NAPI is not using any XDP TX queues for RX. */
+ 	if (netif_running(dev)) {
+-		for (i = 0; i < vi->max_queue_pairs; i++) {
+-			virtnet_napi_disable(&vi->rq[i]);
++		for (i = 0; i < vi->max_queue_pairs; i++)
+ 			virtnet_napi_tx_disable(&vi->sq[i]);
+-		}
+ 	}
+ 
+ 	if (!prog) {
+@@ -5976,13 +6023,12 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
+ 		vi->xdp_enabled = false;
+ 	}
+ 
++	virtnet_rx_resume_all(vi);
+ 	for (i = 0; i < vi->max_queue_pairs; i++) {
+ 		if (old_prog)
+ 			bpf_prog_put(old_prog);
+-		if (netif_running(dev)) {
+-			virtnet_napi_enable(&vi->rq[i]);
++		if (netif_running(dev))
+ 			virtnet_napi_tx_enable(&vi->sq[i]);
+-		}
+ 	}
+ 
+ 	return 0;
+@@ -5994,11 +6040,10 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
+ 			rcu_assign_pointer(vi->rq[i].xdp_prog, old_prog);
+ 	}
+ 
++	virtnet_rx_resume_all(vi);
+ 	if (netif_running(dev)) {
+-		for (i = 0; i < vi->max_queue_pairs; i++) {
+-			virtnet_napi_enable(&vi->rq[i]);
++		for (i = 0; i < vi->max_queue_pairs; i++)
+ 			virtnet_napi_tx_enable(&vi->sq[i]);
+-		}
+ 	}
+ 	if (prog)
+ 		bpf_prog_sub(prog, vi->max_queue_pairs - 1);
 -- 
 2.39.5
 
