@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73984AA1261
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A421DAA1411
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D6B416C0F3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:52:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71E12980248
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48590215060;
-	Tue, 29 Apr 2025 16:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBB623F413;
+	Tue, 29 Apr 2025 17:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMGbM2ML"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nouWPjWD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0535224113C;
-	Tue, 29 Apr 2025 16:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C639211A0B;
+	Tue, 29 Apr 2025 17:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945529; cv=none; b=ktJnCCWh9hiSDVFBm00QcD0OtUgo/cgyb7nxcStmedHfPCpmeBDWbiiET4UvibIzZu7fWcbNQhtD/9cMjL4O0+E7QXxzK3xIOYgwhTmVR9hK/RUzwSnz/FI5Hbt8L5zQoAwpMy/jlvmWlBoCqui1W8hMUARfuWitDCvHVpr3FYE=
+	t=1745946433; cv=none; b=DJaqfpmuvgf2ZnWWBFzRankwMP+kTB16VilbzZPpV2BKqWR/xbxcoX2SKP8ktDoNN43tbllHNgXmGFcW7u2YcFHcvqKTiaZYq+xseaCJ8JksKPMR7b4In/jfbRy5B8Biy257wzOT1KjU5+MGFVn1NNzZLg5v7R3JYUvT3vnIiU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945529; c=relaxed/simple;
-	bh=eG5nbBndONWtHhGyluz0aOQHWEc/wpZo7J8TePD8qG0=;
+	s=arc-20240116; t=1745946433; c=relaxed/simple;
+	bh=sNlvuSqtNnjoffiLglioY1P9X0Bl9NrdjO3fsryDajI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBlffSXnNJP9nP2qK2vCSI6P+sZU+mensi1LAQS8Qh/bs/i2OD/Vscas87O/IvTscVgGcS6WdshyUg7WY1Vx46eo3rwxC5ptPTYQTuZGRvnwNjJhFjVc63M3IW9QtfQTmnrY6l1rTPIdC7aajEkApRiiupw4IOB7+OLt2Q6/QMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMGbM2ML; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F369C4CEE3;
-	Tue, 29 Apr 2025 16:52:08 +0000 (UTC)
+	 MIME-Version; b=eJSf2V7RCZ+AE8GHUwiRaNmrIahQKkohwZi748Uj3Of2Kug9QqY/9fQ3gvMamEUtnc3pYlEMaJqQTwCk1XBuLHenzHOnux4hx52lv18cX120Q+l3t4UZ7dT3KS67Qrxg8L9i2En8FaBVX/uZrmCBYj6UAqoTgcGwU4YGLbwi62c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nouWPjWD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D24C4CEE3;
+	Tue, 29 Apr 2025 17:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945528;
-	bh=eG5nbBndONWtHhGyluz0aOQHWEc/wpZo7J8TePD8qG0=;
+	s=korg; t=1745946433;
+	bh=sNlvuSqtNnjoffiLglioY1P9X0Bl9NrdjO3fsryDajI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMGbM2ML3I6p7DeA8xYifSVpBosj8MVX/ZqD4EwCkkyIq8Pj1I0OMlMILsgbnk9xN
-	 2rGf0+aJw54n6aApsdb1RtiK8m61/ZTd+gfOlwdb10X8lBdclrIv+kB8/ir5GsP+RQ
-	 CoG3hNJcVg8mtILZ2ZA0UhxMVBs2RI17cH6X6aUc=
+	b=nouWPjWDJ+RzXRDjZwp0d2sWJDTTQg9TZaup9jNccp1l+QjYiQJqnS1PwZzSRJPNn
+	 istbZC6iryac1EkxntgOPtOx0kePrkB5ueo6jZtC3xwGd00am/4gzRUt5mQAl/hgx8
+	 be17TSfeyuM1x/KsaXYYxMySKwZlksDowTZHDdQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ed60da8d686dc709164c@syzkaller.appspotmail.com,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 143/179] tipc: fix NULL pointer dereference in tipc_mon_reinit_self()
-Date: Tue, 29 Apr 2025 18:41:24 +0200
-Message-ID: <20250429161055.179067375@linuxfoundation.org>
+Subject: [PATCH 6.14 248/311] ACPI: EC: Set ec_no_wakeup for Lenovo Go S
+Date: Tue, 29 Apr 2025 18:41:25 +0200
+Message-ID: <20250429161131.186092055@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tung Nguyen <tung.quang.nguyen@est.tech>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit d63527e109e811ef11abb1c2985048fdb528b4cb ]
+[ Upstream commit b988685388effd648150aab272533f833a2a70f0 ]
 
-syzbot reported:
+When AC adapter is unplugged or plugged in EC wakes from HW sleep but
+APU doesn't enter back into HW sleep.
 
-tipc: Node number set to 1055423674
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 3 UID: 0 PID: 6017 Comm: kworker/3:5 Not tainted 6.15.0-rc1-syzkaller-00246-g900241a5cc15 #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Workqueue: events tipc_net_finalize_work
-RIP: 0010:tipc_mon_reinit_self+0x11c/0x210 net/tipc/monitor.c:719
-...
-RSP: 0018:ffffc9000356fb68 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000003ee87cba
-RDX: 0000000000000000 RSI: ffffffff8dbc56a7 RDI: ffff88804c2cc010
-RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000007
-R13: fffffbfff2111097 R14: ffff88804ead8000 R15: ffff88804ead9010
-FS:  0000000000000000(0000) GS:ffff888097ab9000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000f720eb00 CR3: 000000000e182000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- tipc_net_finalize+0x10b/0x180 net/tipc/net.c:140
- process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c2/0x780 kernel/kthread.c:464
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-...
-RIP: 0010:tipc_mon_reinit_self+0x11c/0x210 net/tipc/monitor.c:719
-...
-RSP: 0018:ffffc9000356fb68 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000003ee87cba
-RDX: 0000000000000000 RSI: ffffffff8dbc56a7 RDI: ffff88804c2cc010
-RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000007
-R13: fffffbfff2111097 R14: ffff88804ead8000 R15: ffff88804ead9010
-FS:  0000000000000000(0000) GS:ffff888097ab9000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000f720eb00 CR3: 000000000e182000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+The reason this happens is that, when the APU exits HW sleep, the power
+rails controlled by the EC will power up the TCON.  The TCON has a GPIO
+that will be toggled at this time.  The GPIO is not marked as a wakeup
+source, but the GPIO controller still has an unserviced interrupt.
+Unserviced interrupts will block entering HW sleep again. Clearing the
+GPIO doesn't help as the TCON continues to assert it until it's been
+initialized by i2c-hid.
 
-There is a racing condition between workqueue created when enabling
-bearer and another thread created when disabling bearer right after
-that as follow:
+Fixing this would require TCON F/W changes and it's already broken in
+the wild on production hardware.
 
-enabling_bearer                          | disabling_bearer
----------------                          | ----------------
-tipc_disc_timeout()                      |
-{                                        | bearer_disable()
- ...                                     | {
- schedule_work(&tn->work);               |  tipc_mon_delete()
- ...                                     |  {
-}                                        |   ...
-                                         |   write_lock_bh(&mon->lock);
-                                         |   mon->self = NULL;
-                                         |   write_unlock_bh(&mon->lock);
-                                         |   ...
-                                         |  }
-tipc_net_finalize_work()                 | }
-{                                        |
- ...                                     |
- tipc_net_finalize()                     |
- {                                       |
-  ...                                    |
-  tipc_mon_reinit_self()                 |
-  {                                      |
-   ...                                   |
-   write_lock_bh(&mon->lock);            |
-   mon->self->addr = tipc_own_addr(net); |
-   write_unlock_bh(&mon->lock);          |
-   ...                                   |
-  }                                      |
-  ...                                    |
- }                                       |
- ...                                     |
-}                                        |
+To avoid triggering this issue add a quirk to avoid letting EC wake
+up system at all.  The power button still works properly on this system.
 
-'mon->self' is set to NULL in disabling_bearer thread and dereferenced
-later in enabling_bearer thread.
-
-This commit fixes this issue by validating 'mon->self' before assigning
-node address to it.
-
-Reported-by: syzbot+ed60da8d686dc709164c@syzkaller.appspotmail.com
-Fixes: 46cb01eeeb86 ("tipc: update mon's self addr when node addr generated")
-Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250417074826.578115-1-tung.quang.nguyen@est.tech
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3929
+Link: https://github.com/bazzite-org/patchwork/commit/95b93b2852718ee1e808c72e6b1836da4a95fc63
+Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20250401133858.1892077-1-superm1@kernel.org
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/monitor.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/acpi/ec.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/net/tipc/monitor.c b/net/tipc/monitor.c
-index 0b9ad3b5ff18a..2e63d5f82b784 100644
---- a/net/tipc/monitor.c
-+++ b/net/tipc/monitor.c
-@@ -677,7 +677,8 @@ void tipc_mon_reinit_self(struct net *net)
- 		if (!mon)
- 			continue;
- 		write_lock_bh(&mon->lock);
--		mon->self->addr = tipc_own_addr(net);
-+		if (mon->self)
-+			mon->self->addr = tipc_own_addr(net);
- 		write_unlock_bh(&mon->lock);
- 	}
- }
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 8db09d81918fb..3c5f34892734e 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -2301,6 +2301,34 @@ static const struct dmi_system_id acpi_ec_no_wakeup[] = {
+ 			DMI_MATCH(DMI_PRODUCT_FAMILY, "103C_5336AN HP ZHAN 66 Pro"),
+ 		},
+ 	},
++	/*
++	 * Lenovo Legion Go S; touchscreen blocks HW sleep when woken up from EC
++	 * https://gitlab.freedesktop.org/drm/amd/-/issues/3929
++	 */
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83L3"),
++		}
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83N6"),
++		}
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83Q2"),
++		}
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
++		}
++	},
+ 	{ },
+ };
+ 
 -- 
 2.39.5
 
