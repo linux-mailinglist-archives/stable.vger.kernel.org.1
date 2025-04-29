@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-137885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7695FAA1586
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB859AA1846
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F3CD1BA46E7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 944BF1BA34A2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FF02522BD;
-	Tue, 29 Apr 2025 17:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1400C251793;
+	Tue, 29 Apr 2025 17:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbxrFevR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sOaaN8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9376F24C08D;
-	Tue, 29 Apr 2025 17:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61FC2459C5;
+	Tue, 29 Apr 2025 17:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947428; cv=none; b=K++uSlOX65+4Nj0tmk39eTb1I2lfVjyPN8N1ZHmeCm91mfg5BjluFcPHHTGpY1VQb/MjLq29YCS2z5YUlnmOvYFhleLvexicSQLgBgssM/Yu/amTL6O23l3v+mhs437tnK5i5DZ+fl5VExb2cECrbbjvRTpGBv2XU/3l7ADrPoM=
+	t=1745949430; cv=none; b=pAZafV7pgfeCBp7IuU/K2PyO9gASGUx1XB+LV0x2IvuXX9B/dvClog5xrj5R0q4soyQTybGyOBrMfJx6BxpqbSGakmDyrmHn3lx+bt6hdDH/RxZEZom/hINy26kjH1j5VYZJRS+iT+/BUU+a6bZDcFlwES/kZozzzMTDmyNRy+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947428; c=relaxed/simple;
-	bh=Wfb8rRFluUXF757kun7w+kGUbl+nCI7XpjyGQSOp5Ek=;
+	s=arc-20240116; t=1745949430; c=relaxed/simple;
+	bh=S4LCjiGgsLvPpq1O2IBEOm6ccDlFJUnXhKAxIhz5Nqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oya2A/fqvGDPKIsjbee7QFxiXgNMETpfd6tjWw5miKnbRYflOy6nJQc1pMtMzduQUwshfiukU07efJPw+9FsP3OsnhS9Z8Ol+AY1F8+PL9/e1ZYErPG0im1c/JNsJFstFSmKeUAICm6GBonaq2lwa+UlQXBzFD8sq18CdJCX25U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbxrFevR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050E1C4CEE3;
-	Tue, 29 Apr 2025 17:23:47 +0000 (UTC)
+	 MIME-Version; b=tYCOtx6iAqfdpeNAwlopJgf3b4jhu59i7gJc/Sg9K+UQRn0EF0tyCgM/bGpc7m3tV2El5O3RB1lRDgg9SkP+74/WLWi/F57K/hJrtqV432xlVR1Q8jwQcMhVKTix255xJ/YhyNDtCWZRT6BewQfxMQj6JfMpUZjO5aRI/laLfgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sOaaN8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A644C4CEE3;
+	Tue, 29 Apr 2025 17:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947428;
-	bh=Wfb8rRFluUXF757kun7w+kGUbl+nCI7XpjyGQSOp5Ek=;
+	s=korg; t=1745949430;
+	bh=S4LCjiGgsLvPpq1O2IBEOm6ccDlFJUnXhKAxIhz5Nqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XbxrFevRmDzwtrSJBQqS5NdZsv8EkaNfpgQuyh3tufs6u741QtJ6J5IJZJttUh77l
-	 Xiev+CBSKlPCHoMtXB7P25zei/FPvt6Vc8mjoX1RgZtp5zC+2SN1X352eP5dW+MDIo
-	 tMKaHS/LKRqTPX9W8NCkdDj/BtYu3aTB0tVe7NW8=
+	b=1sOaaN8x2F7zF9IFmGd0dk8b/vT0SsrnWFMq95aOK/Y+V9HH/fIXzR2UIkakDlMl1
+	 eOfuwLiut2qV/b0a4alDcgqZj5DcWoJsrYSksDc93HN/hUepL3rcAnDtb1gzbkyHif
+	 XMStfbX5AbTCY4OOmbYbasSr3Wq+Bs8xXrxpIYqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 260/286] objtool, ASoC: codecs: wcd934x: Remove potential undefined behavior in wcd934x_slim_irq_handler()
-Date: Tue, 29 Apr 2025 18:42:44 +0200
-Message-ID: <20250429161118.613372283@linuxfoundation.org>
+Subject: [PATCH 5.15 288/373] cpufreq: scpi: Fix null-ptr-deref in scpi_cpufreq_get_rate()
+Date: Tue, 29 Apr 2025 18:42:45 +0200
+Message-ID: <20250429161134.959284283@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,59 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 060aed9c0093b341480770457093449771cf1496 ]
+[ Upstream commit 73b24dc731731edf762f9454552cb3a5b7224949 ]
 
-If 'port_id' is negative, the shift counts in wcd934x_slim_irq_handler()
-also become negative, resulting in undefined behavior due to shift out
-of bounds.
+cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
+in the policy->cpus mask. scpi_cpufreq_get_rate() does not check for
+this case, which results in a NULL pointer dereference.
 
-If I'm reading the code correctly, that appears to be not possible, but
-with KCOV enabled, Clang's range analysis isn't always able to determine
-that and generates undefined behavior.
-
-As a result the code generation isn't optimal, and undefined behavior
-should be avoided regardless.  Improve code generation and remove the
-undefined behavior by converting the signed variables to unsigned.
-
-Fixes the following warning with UBSAN:
-
-  sound/soc/codecs/snd-soc-wcd934x.o: warning: objtool: .text.wcd934x_slim_irq_handler: unexpected end of section
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/7e863839ec7301bf9c0f429a03873d44e484c31c.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202503180044.oH9gyPeg-lkp@intel.com/
+Fixes: 343a8d17fa8d ("cpufreq: scpi: remove arm_big_little dependency")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd934x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/scpi-cpufreq.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/wcd934x.c b/sound/soc/codecs/wcd934x.c
-index 104751ac6cd14..8580f5e95ccf6 100644
---- a/sound/soc/codecs/wcd934x.c
-+++ b/sound/soc/codecs/wcd934x.c
-@@ -2188,7 +2188,7 @@ static irqreturn_t wcd934x_slim_irq_handler(int irq, void *data)
+diff --git a/drivers/cpufreq/scpi-cpufreq.c b/drivers/cpufreq/scpi-cpufreq.c
+index 35b20c74dbfc7..f111f1f3bf38d 100644
+--- a/drivers/cpufreq/scpi-cpufreq.c
++++ b/drivers/cpufreq/scpi-cpufreq.c
+@@ -37,9 +37,16 @@ static struct scpi_ops *scpi_ops;
+ 
+ static unsigned int scpi_cpufreq_get_rate(unsigned int cpu)
  {
- 	struct wcd934x_codec *wcd = data;
- 	unsigned long status = 0;
--	int i, j, port_id;
-+	unsigned int i, j, port_id;
- 	unsigned int val, int_val = 0;
- 	irqreturn_t ret = IRQ_NONE;
- 	bool tx;
+-	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
+-	struct scpi_data *priv = policy->driver_data;
+-	unsigned long rate = clk_get_rate(priv->clk);
++	struct cpufreq_policy *policy;
++	struct scpi_data *priv;
++	unsigned long rate;
++
++	policy = cpufreq_cpu_get_raw(cpu);
++	if (unlikely(!policy))
++		return 0;
++
++	priv = policy->driver_data;
++	rate = clk_get_rate(priv->clk);
+ 
+ 	return rate / 1000;
+ }
 -- 
 2.39.5
 
