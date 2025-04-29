@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D78DAA121A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55645AA1761
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52F3D980A9C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A47D189DC29
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F52C24466C;
-	Tue, 29 Apr 2025 16:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C94E242D73;
+	Tue, 29 Apr 2025 17:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZb/th3J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZR1zr4I4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAD224113C;
-	Tue, 29 Apr 2025 16:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA6821ABC1;
+	Tue, 29 Apr 2025 17:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945276; cv=none; b=AzAgc8ac0XEb+c3pgmr09AKk6wUMtvS29DN+sn23CQ9Bt8DDl2rwmCw12whUsfFC3B+CRzGnrrpjUbP2OBfc9PBD8ZcmtaZvtZUYetZbHMY0CGgIkPL7Z5lQb3nwjmLFHJNDZ520oXKmXROwm3pRkTngzxd3qvTuimIKO/bxmJo=
+	t=1745948807; cv=none; b=A0zJDBKMXN91YCDyal4rGiMz78N9HBgAePoJAgiK5NwQ4VaP3EO76eAyA5mapJEj0h1eDtPm/Q0PGlAbIYIaXHf5y7IO5xUhFFy0mxHjc9pXq5jUWWUPn+bbjTUjRuMVGJQag3Rh8FUyboQjUApf7ipaNi2xVqY2m79J3vv/k58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945276; c=relaxed/simple;
-	bh=0xmQUzT+rB9SS2SDGiQOS7khsXZiCCAVfQNLod2Z3Y8=;
+	s=arc-20240116; t=1745948807; c=relaxed/simple;
+	bh=G098tH7J2Ed9UNpRZp1w7HZ2SuZR1KDzXliGxCCCi5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JdO1qgxSpMMzxJHSsG8stMQOEr20hnLGVx7Roqc8NDqccZPa2gODofxhkiYH//Tm/3uzCk8Fh0naqRFKB581KXIu3VELX5XNwNFN3jepJaDDOF308QBsVt8SL/wWGe/RorUpzcPKscGN+GylX7RM7DtG8T1zvxb2zfcaaC6Cnrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZb/th3J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B15C4CEE3;
-	Tue, 29 Apr 2025 16:47:55 +0000 (UTC)
+	 MIME-Version; b=fE+ns6pLf1fHcE4pp7w4AaHLMbgJuCTnI9HdMtoemp8ggB7oHsL+pMNZIMAatcDZOuXXWxOTTsm7vxZs1ZE9Oq7V/0bEmX+ULsr9N1yISXtlN6hitTPK0fAR/mr1if1LyzssRwWJk+crKxSZ5NuwVlRYpT8NzpC2Dt76EHnxPsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZR1zr4I4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C95C4CEE3;
+	Tue, 29 Apr 2025 17:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945275;
-	bh=0xmQUzT+rB9SS2SDGiQOS7khsXZiCCAVfQNLod2Z3Y8=;
+	s=korg; t=1745948807;
+	bh=G098tH7J2Ed9UNpRZp1w7HZ2SuZR1KDzXliGxCCCi5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CZb/th3JyIPzX+ekKQpNUbYYaxAw4uCwAc3qRp7/JhEIqHyYCO3mkS7W+zFgSmk3z
-	 zgEf79vbeZR6jAT1/y95Nin9NrdFzOa8oVEa0uo14wA2dGtnXoKATun4tbzqLf7lvi
-	 DpJnhqXCGSVZ7XWWRA26zLmg9fZnzsvXqdOetADU=
+	b=ZR1zr4I45HDxIBUGIx/RHijl3S3Nzc/DhvsR9MRWLXdvLgyRaSk9C+u70ups2uDFB
+	 6voWyYIML457lZsHwlLFvqNYnvK74uBrk0ankaCUFDRJBNDB0iQdTPnVEv471i+IWu
+	 nq6zlW+rxt12eEQwCYUT9t9tp6CCxpFjnimMFUIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriele Paoloni <gpaoloni@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 028/179] tracing: fix return value in __ftrace_event_enable_disable for TRACE_REG_UNREGISTER
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH 5.15 092/373] locking/lockdep: Decrease nr_unused_locks if lock unused in zap_class()
 Date: Tue, 29 Apr 2025 18:39:29 +0200
-Message-ID: <20250429161050.553222349@linuxfoundation.org>
+Message-ID: <20250429161126.945027696@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Paoloni <gpaoloni@redhat.com>
+From: Boqun Feng <boqun.feng@gmail.com>
 
-[ Upstream commit 0c588ac0ca6c22b774d9ad4a6594681fdfa57d9d ]
+commit 495f53d5cca0f939eaed9dca90b67e7e6fb0e30c upstream.
 
-When __ftrace_event_enable_disable invokes the class callback to
-unregister the event, the return value is not reported up to the
-caller, hence leading to event unregister failures being silently
-ignored.
+Currently, when a lock class is allocated, nr_unused_locks will be
+increased by 1, until it gets used: nr_unused_locks will be decreased by
+1 in mark_lock(). However, one scenario is missed: a lock class may be
+zapped without even being used once. This could result into a situation
+that nr_unused_locks != 0 but no unused lock class is active in the
+system, and when `cat /proc/lockdep_stats`, a WARN_ON() will
+be triggered in a CONFIG_DEBUG_LOCKDEP=y kernel:
 
-This patch assigns the ret variable to the invocation of the
-event unregister callback, so that its return value is stored
-and reported to the caller, and it raises a warning in case
-of error.
+  [...] DEBUG_LOCKS_WARN_ON(debug_atomic_read(nr_unused_locks) != nr_unused)
+  [...] WARNING: CPU: 41 PID: 1121 at kernel/locking/lockdep_proc.c:283 lockdep_stats_show+0xba9/0xbd0
 
-Link: https://lore.kernel.org/20250321170821.101403-1-gpaoloni@redhat.com
-Signed-off-by: Gabriele Paoloni <gpaoloni@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And as a result, lockdep will be disabled after this.
+
+Therefore, nr_unused_locks needs to be accounted correctly at
+zap_class() time.
+
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250326180831.510348-1-boqun.feng@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/locking/lockdep.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 958789fe4cef7..77df1e28fa329 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -405,7 +405,9 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 				clear_bit(EVENT_FILE_FL_RECORDED_TGID_BIT, &file->flags);
- 			}
- 
--			call->class->reg(call, TRACE_REG_UNREGISTER, file);
-+			ret = call->class->reg(call, TRACE_REG_UNREGISTER, file);
-+
-+			WARN_ON_ONCE(ret);
- 		}
- 		/* If in SOFT_MODE, just set the SOFT_DISABLE_BIT, else clear it */
- 		if (file->flags & EVENT_FILE_FL_SOFT_MODE)
--- 
-2.39.5
-
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -5982,6 +5982,9 @@ static void zap_class(struct pending_fre
+ 		hlist_del_rcu(&class->hash_entry);
+ 		WRITE_ONCE(class->key, NULL);
+ 		WRITE_ONCE(class->name, NULL);
++		/* Class allocated but not used, -1 in nr_unused_locks */
++		if (class->usage_mask == 0)
++			debug_atomic_dec(nr_unused_locks);
+ 		nr_lock_classes--;
+ 		__clear_bit(class - lock_classes, lock_classes_in_use);
+ 		if (class - lock_classes == max_lock_class_idx)
 
 
 
