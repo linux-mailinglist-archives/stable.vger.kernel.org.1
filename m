@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC1EAA17A1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:49:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98961AA1212
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 618C83BAF43
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76E811BA2611
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE04A24C098;
-	Tue, 29 Apr 2025 17:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2AD124C098;
+	Tue, 29 Apr 2025 16:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fm8U0DN9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gp+Id2Md"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8886B24DFF3;
-	Tue, 29 Apr 2025 17:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B0D23C8D6;
+	Tue, 29 Apr 2025 16:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948736; cv=none; b=b33jsD+ruE1zQGp8eGK0m20VI/ywl/LPXmA4wk8VAnsXutDtrcCRE/OZdVV4qXcn4M8pgpPtKzf8DyUdAzDSBeMaqPQ21lPWeWs8OuYPYs96bqE7JsdxKFHcsx4l1VF4zMV9eZRsAPKVNSIbYq6WUQcR4xLFjm64hU+LZ6Q+qrU=
+	t=1745945266; cv=none; b=VKdZcU9JVsCAdxCuKZZvXJyL1raBFKRDaJpwIzt4lolr7p/vmSdkolhLtrWNeu4qhdPsWpoC8/EvzHSshnfHlFFSo63zhjH6fCvIksDIriYKrvurl9GHfBYbvFIiuJxyrIqw6hAvW69xjkf7hmHHlbwMCUoA1CiTdu+XtqJVXHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948736; c=relaxed/simple;
-	bh=1dyTQkL2RGr94G/A83fwLKrIA3BUQ+KG/ngEDV8UzwE=;
+	s=arc-20240116; t=1745945266; c=relaxed/simple;
+	bh=8IRjGLWMKnyLArvctRDAF/NCTvmLA0Z1c5Zae48Wdlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B7BSZzVvMsaLRMvUPUCiBjDmzssX9dtfj634z1EnqM3OuJYkXFTHACjo81I/X8E9iRXRVvi4jiWv1akGZcFqMq2SH6FcTvLL8tg5fZsuoweEk929VpkubTG1yeGrjGXBTFiqQRD4v0HKmJs6lFPl2hWOj5DC/FMSD2xzBmaIG0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fm8U0DN9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6F2C4CEE3;
-	Tue, 29 Apr 2025 17:45:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hfLYFN6Ij9nmFoizwhwIkn0VIso5boxgSxBVSwi3fJUjtQOB4OZqhVyi28Otnt0YMftgoOy21uBRIXIO+bsdxhBvIvWhhZbgM1PQIL2gzQSQqfrBmGrkDiEeRaDJzhQGC9IEKGkPXB+uVOckoQwmlkRGLXjRxQiD85ZDOFrMP5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gp+Id2Md; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEEDC4CEE3;
+	Tue, 29 Apr 2025 16:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948736;
-	bh=1dyTQkL2RGr94G/A83fwLKrIA3BUQ+KG/ngEDV8UzwE=;
+	s=korg; t=1745945266;
+	bh=8IRjGLWMKnyLArvctRDAF/NCTvmLA0Z1c5Zae48Wdlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fm8U0DN9cE9u5STt5Aj/L0hmKQqxFWhJO7LRaOVrEAOclNvf4WModjRfR9PTDnhPd
-	 h2dcfkoWAFHwXfxE0n+cwwhA3dmIQr+gqTEaL0bhrS7AOEI7wvXXfserD7+OWLMt3b
-	 fJahxB8E37thqrTDeFqwE0PKaByGQ0PUCAGEbezE=
+	b=Gp+Id2Md3/HnEH+X3hRFbehaFPmK2rOCcmvHqo7IFIp3LWkTqa+F8g1OvsBRIQnN8
+	 YFrIw/fNSHiW6B9Cn0mXSjpBSaoceKd/CjvfPr+SKFUR7TFnw4e9WEUs3gV03I2IkS
+	 RchgcYb4CMt/ugaUtUVW7g7pPW7oz1M9p5bLf0O8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.15 089/373] i3c: Add NULL pointer check in i3c_master_queue_ibi()
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 025/179] scsi: st: Fix array overflow in st_setup()
 Date: Tue, 29 Apr 2025 18:39:26 +0200
-Message-ID: <20250429161126.823377957@linuxfoundation.org>
+Message-ID: <20250429161050.429884961@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-commit bd496a44f041da9ef3afe14d1d6193d460424e91 upstream.
+[ Upstream commit a018d1cf990d0c339fe0e29b762ea5dc10567d67 ]
 
-The I3C master driver may receive an IBI from a target device that has not
-been probed yet. In such cases, the master calls `i3c_master_queue_ibi()`
-to queue an IBI work task, leading to "Unable to handle kernel read from
-unreadable memory" and resulting in a kernel panic.
+Change the array size to follow parms size instead of a fixed value.
 
-Typical IBI handling flow:
-1. The I3C master scans target devices and probes their respective drivers.
-2. The target device driver calls `i3c_device_request_ibi()` to enable IBI
-   and assigns `dev->ibi = ibi`.
-3. The I3C master receives an IBI from the target device and calls
-   `i3c_master_queue_ibi()` to queue the target device driver’s IBI
-   handler task.
-
-However, since target device events are asynchronous to the I3C probe
-sequence, step 3 may occur before step 2, causing `dev->ibi` to be `NULL`,
-leading to a kernel panic.
-
-Add a NULL pointer check in `i3c_master_queue_ibi()` to prevent accessing
-an uninitialized `dev->ibi`, ensuring stability.
-
-Fixes: 3a379bbcea0af ("i3c: Add core I3C infrastructure")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/lkml/Z9gjGYudiYyl3bSe@lizhi-Precision-Tower-5810/
-Signed-off-by: Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250326123047.2797946-1-manjunatha.venkatesh@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Closes: https://lore.kernel.org/linux-scsi/CALGdzuoubbra4xKOJcsyThdk5Y1BrAmZs==wbqjbkAgmKS39Aw@mail.gmail.com/
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250311112516.5548-2-Kai.Makisara@kolumbus.fi
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/st.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2240,6 +2240,9 @@ static void i3c_master_unregister_i3c_de
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 49e149d28954a..2b5e3e2ba3b8b 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -4124,7 +4124,7 @@ static void validate_options(void)
   */
- void i3c_master_queue_ibi(struct i3c_dev_desc *dev, struct i3c_ibi_slot *slot)
+ static int __init st_setup(char *str)
  {
-+	if (!dev->ibi || !slot)
-+		return;
-+
- 	atomic_inc(&dev->ibi->pending_ibis);
- 	queue_work(dev->common.master->wq, &slot->work);
- }
+-	int i, len, ints[5];
++	int i, len, ints[ARRAY_SIZE(parms) + 1];
+ 	char *stp;
+ 
+ 	stp = get_options(str, ARRAY_SIZE(ints), ints);
+-- 
+2.39.5
+
 
 
 
