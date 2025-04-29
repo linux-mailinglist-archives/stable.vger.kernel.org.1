@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-137811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E757AA1553
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6CFAA1830
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C1C45A397A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A2FB9A54AE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1230224337C;
-	Tue, 29 Apr 2025 17:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C792517A6;
+	Tue, 29 Apr 2025 17:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzTAEICB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2b7BOS3+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C427E21ADC7;
-	Tue, 29 Apr 2025 17:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D072459C5;
+	Tue, 29 Apr 2025 17:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947200; cv=none; b=p9HHF9xfQx3tiiNTPw1sgRSIkYdtvk0/2H0XDuR16d+umVM0R4bubBxDT5rXVQ0oemgR1PemFjgVFGDzzSD2fOgFKNQ0jRRvq0nEOnZjv/XzYiEjYjAAA958xp25/EMvlw8pB0N0jnWurLXFGdq8n8hIklDGZUp7Ww4gyeUQbYc=
+	t=1745949159; cv=none; b=NuV9JPUF5alz+i9sR1d43QJ0G4DkR6rksW5EdcqD9AKJBbFX2ZH+WHXeLGy7G60jFIl400gnruycznuhtC1Mlfst8dRtqNUYLMBqmYr//018JKDAUsJSHPSfRwuR4bPr4dIdfTtCHBfMSbuBaMdPd0+m1wSNQ/5ZdVbVgmekG0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947200; c=relaxed/simple;
-	bh=kfh85hfAbChhk57YnAuxT+YHa14lP4e1UxBMeWxV1v4=;
+	s=arc-20240116; t=1745949159; c=relaxed/simple;
+	bh=/vQ0UzKPwuFHnnm1RLfV2racaT5LQazjGZ9vgFEz+P4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5GzrU+tlsw2hxY9XNJJmjH37vU0JvlQeaZdbguytnifnnSaHU/QpO3jq6So8yI4jGYbSp5qE4U0HP3IYYKImBpHAWu+KNr+du6bLw/ncXPvuHZPGrvQCXDKfkPHhCfA8m5+eV5V0jONweKGyygLgSA3El61BozwzO9ZF2Jy2CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzTAEICB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4979C4CEE3;
-	Tue, 29 Apr 2025 17:19:59 +0000 (UTC)
+	 MIME-Version; b=lBI4tvViwQ++yTZsCJsv1aSyJT5M+7TaC8COfM63kgyzr7vE2pQEl3uPL+GFESuZR2+fkehP7U6tdgYxs5i7iSkFG5uMSvKgh8lGLOR7Ls3V5akptVDkwNvxck3rnztAAFeazDYRiTBOHJsnxqs39YMuwATwejXlqKHpY10jxFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2b7BOS3+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD37EC4CEE3;
+	Tue, 29 Apr 2025 17:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947200;
-	bh=kfh85hfAbChhk57YnAuxT+YHa14lP4e1UxBMeWxV1v4=;
+	s=korg; t=1745949159;
+	bh=/vQ0UzKPwuFHnnm1RLfV2racaT5LQazjGZ9vgFEz+P4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DzTAEICBNHChlyxkuzbzALuuWEW4P29e9QGZObYbaICjGd/DDXhe6OMprHjYWH8Kr
-	 yryrQiscQgPmCgxvd44VxF2wNCv7iOJ2T4jPbo6Bc+FWce/7tCSG13Njo6mbmiJi3J
-	 R2mC9IHggPsrIT1+VMFV6COCzK2r7QK5GdMd9XnE=
+	b=2b7BOS3+qxfItv+WEmhj+eaS+Xb4xwex773e+wM1rqwS3IDSJTEK524uOo5xzTsW7
+	 onInwkSHFx5eJxWYFCxxI5Ux8ovr0sbhgvf7c50POCkn3dSpC72EhqWx6NN47KHViQ
+	 KaBCX2cJC76nW1eIZKOvQ113VnETU9llxiJM4NU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 205/286] media: venus: pm_helpers: Check instance state when calculate instance frequency
+	Yu Kuai <yukuai3@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Bin Lan <bin.lan.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.15 232/373] blk-cgroup: support to track if policy is online
 Date: Tue, 29 Apr 2025 18:41:49 +0200
-Message-ID: <20250429161116.390281895@linuxfoundation.org>
+Message-ID: <20250429161132.686642769@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +65,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit d33a94412ed1081f30d904cab54faea7c7b839fc ]
+commit dfd6200a095440b663099d8d42f1efb0175a1ce3 upstream.
 
-Skip calculating instance frequency if it is not in running state.
+A new field 'online' is added to blkg_policy_data to fix following
+2 problem:
 
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 9edaaa8e3e15 ("media: venus: hfi_parser: refactor hfi packet parsing logic")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1) In blkcg_activate_policy(), if pd_alloc_fn() with 'GFP_NOWAIT'
+   failed, 'queue_lock' will be dropped and pd_alloc_fn() will try again
+   without 'GFP_NOWAIT'. In the meantime, remove cgroup can race with
+   it, and pd_offline_fn() will be called without pd_init_fn() and
+   pd_online_fn(). This way null-ptr-deference can be triggered.
+
+2) In order to synchronize pd_free_fn() from blkg_free_workfn() and
+   blkcg_deactivate_policy(), 'list_del_init(&blkg->q_node)' will be
+   delayed to blkg_free_workfn(), hence pd_offline_fn() can be called
+   first in blkg_destroy(), and then blkcg_deactivate_policy() will
+   call it again, we must prevent it.
+
+The new field 'online' will be set after pd_online_fn() and will be
+cleared after pd_offline_fn(), in the meantime pd_offline_fn() will only
+be called if 'online' is set.
+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230119110350.2287325-3-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/pm_helpers.c | 3 +++
- 1 file changed, 3 insertions(+)
+ block/blk-cgroup.c         |   24 +++++++++++++++++-------
+ include/linux/blk-cgroup.h |    1 +
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/venus/pm_helpers.c b/drivers/media/platform/qcom/venus/pm_helpers.c
-index fd55352d743ee..12c5811fefdf9 100644
---- a/drivers/media/platform/qcom/venus/pm_helpers.c
-+++ b/drivers/media/platform/qcom/venus/pm_helpers.c
-@@ -937,6 +937,9 @@ static unsigned long calculate_inst_freq(struct venus_inst *inst,
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -192,6 +192,7 @@ static struct blkcg_gq *blkg_alloc(struc
+ 		blkg->pd[i] = pd;
+ 		pd->blkg = blkg;
+ 		pd->plid = i;
++		pd->online = false;
+ 	}
  
- 	mbs_per_sec = load_per_instance(inst) / fps;
+ 	return blkg;
+@@ -289,8 +290,11 @@ static struct blkcg_gq *blkg_create(stru
+ 		for (i = 0; i < BLKCG_MAX_POLS; i++) {
+ 			struct blkcg_policy *pol = blkcg_policy[i];
  
-+	if (inst->state != INST_START)
-+		return 0;
-+
- 	vpp_freq = mbs_per_sec * inst->clk_data.codec_freq_data->vpp_freq;
- 	/* 21 / 20 is overhead factor */
- 	vpp_freq += vpp_freq / 20;
--- 
-2.39.5
-
+-			if (blkg->pd[i] && pol->pd_online_fn)
+-				pol->pd_online_fn(blkg->pd[i]);
++			if (blkg->pd[i]) {
++				if (pol->pd_online_fn)
++					pol->pd_online_fn(blkg->pd[i]);
++				blkg->pd[i]->online = true;
++			}
+ 		}
+ 	}
+ 	blkg->online = true;
+@@ -390,8 +394,11 @@ static void blkg_destroy(struct blkcg_gq
+ 	for (i = 0; i < BLKCG_MAX_POLS; i++) {
+ 		struct blkcg_policy *pol = blkcg_policy[i];
+ 
+-		if (blkg->pd[i] && pol->pd_offline_fn)
+-			pol->pd_offline_fn(blkg->pd[i]);
++		if (blkg->pd[i] && blkg->pd[i]->online) {
++			if (pol->pd_offline_fn)
++				pol->pd_offline_fn(blkg->pd[i]);
++			blkg->pd[i]->online = false;
++		}
+ 	}
+ 
+ 	blkg->online = false;
+@@ -1367,6 +1374,7 @@ retry:
+ 		blkg->pd[pol->plid] = pd;
+ 		pd->blkg = blkg;
+ 		pd->plid = pol->plid;
++		pd->online = false;
+ 	}
+ 
+ 	/* all allocated, init in the same order */
+@@ -1374,9 +1382,11 @@ retry:
+ 		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
+ 			pol->pd_init_fn(blkg->pd[pol->plid]);
+ 
+-	if (pol->pd_online_fn)
+-		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
++	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
++		if (pol->pd_online_fn)
+ 			pol->pd_online_fn(blkg->pd[pol->plid]);
++		blkg->pd[pol->plid]->online = true;
++	}
+ 
+ 	__set_bit(pol->plid, q->blkcg_pols);
+ 	ret = 0;
+@@ -1438,7 +1448,7 @@ void blkcg_deactivate_policy(struct requ
+ 
+ 		spin_lock(&blkcg->lock);
+ 		if (blkg->pd[pol->plid]) {
+-			if (pol->pd_offline_fn)
++			if (blkg->pd[pol->plid]->online && pol->pd_offline_fn)
+ 				pol->pd_offline_fn(blkg->pd[pol->plid]);
+ 			pol->pd_free_fn(blkg->pd[pol->plid]);
+ 			blkg->pd[pol->plid] = NULL;
+--- a/include/linux/blk-cgroup.h
++++ b/include/linux/blk-cgroup.h
+@@ -92,6 +92,7 @@ struct blkg_policy_data {
+ 	/* the blkg and policy id this per-policy data belongs to */
+ 	struct blkcg_gq			*blkg;
+ 	int				plid;
++	bool				online;
+ };
+ 
+ /*
 
 
 
