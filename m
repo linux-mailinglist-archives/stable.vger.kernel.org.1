@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E03AEAA1327
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:03:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032ABAA1429
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E1D217226E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DBAD7B4B27
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC2D242934;
-	Tue, 29 Apr 2025 16:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF37F24A055;
+	Tue, 29 Apr 2025 17:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMxIZIKG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZuAwGzNT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DB5215060;
-	Tue, 29 Apr 2025 16:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E49A243364;
+	Tue, 29 Apr 2025 17:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945936; cv=none; b=KtZXCcRhuHjwWT6ggWNhLzvWdGtYEhNb8fkH7m03KK8G1b3x7VN51lZ6+qPPrCDagrJj/OgQkYJoBTZEPBlLOsQKYQMkymb/mJKTTU3inHP3sdChvu3l+2GMONGb7njkMsiX3bM9lKa3a6RfJyzf/20oSsKO4ZXHgOWwG65MZsU=
+	t=1745946762; cv=none; b=SC+h6nV/n7s1jnQ/fhEmTi2avFALArs8jZe0wp2xnYRXqaAAZXXlSvhq/nDvvWzTdA1kr/f5uWd8dCCYpIxUR27DpVL02+P50gEVaLar4qZW/h62f+YDDgOeQ4DLbiN9QHZAJruv+loPCfsx+XfUSMsoxj1LIu9QJrHtcR0Dexc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945936; c=relaxed/simple;
-	bh=7V14beKryKiEyQsF/f1vLKaXByvfDatq2d/puiPpB+s=;
+	s=arc-20240116; t=1745946762; c=relaxed/simple;
+	bh=GTSaz3d9cY3dtNtD6cAytwYXCgb3MRBaG8sh9mF3h4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlq9zWMR7JFkniLmTI7Ymn3wa1FxK3FAS42/B66xUn1ZIIrpBn+y1p1pyYshIHm+fqXsXQJgTMFe4D/3En83JbYPWOkkiEVcRlsZ3Vz+b5lZ849FPmIU3+h1rmHWBIOzh2Z762P8Hn8Ng6SPlEAtyVvsrKDPc4zkboT3Sn5VSU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMxIZIKG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E59EC4CEE3;
-	Tue, 29 Apr 2025 16:58:55 +0000 (UTC)
+	 MIME-Version; b=mt3AClkBNZbehKtMw2jaT/mKkzkXwTDjdszBbqck4zWlZtzq95kdrfQky/nZlXsP5JiuPl3jMAW8Vz86JnDliu2LlSQ3T20sUZ3ZwLXyaF/PhBwRAvJxGlv6gMxJprzETVABkFENeOQlBtwW4mypLwJL/0K/R0HcezQsNQAVOFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZuAwGzNT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AEAC4CEE3;
+	Tue, 29 Apr 2025 17:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945936;
-	bh=7V14beKryKiEyQsF/f1vLKaXByvfDatq2d/puiPpB+s=;
+	s=korg; t=1745946762;
+	bh=GTSaz3d9cY3dtNtD6cAytwYXCgb3MRBaG8sh9mF3h4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sMxIZIKGYp2UQ7NlkHdfACmfi477Wwfgn6LiHhT40fObNWYfVLGH8EqtTe1q4B97Z
-	 Vbb0D0oOdTIva0cWWoo2F2ywtcj4wbNdOB9DuEuNLVRSxULX/+cMUY+ZTwp3vnTCpI
-	 jg1S3ptBQgbwKy4zbA9klHXnsrV8JniYe0QXh7p4=
+	b=ZuAwGzNTUbhIi4JSARvXAEN1KP54zmD7usDWYxYM4AL+/99yw52KqhBGuxfthvrWp
+	 XzmoC9j68IcmDLIUIrQY1TkPO+UlgNNEcM6iSPEcOM0xJRht/OBszq5VIdJuZ6w3Jp
+	 VhYPLRjvM2IIRlxyWRpGWQaIiojTA+HDYsZ3GYsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Gabriele Paoloni <gpaoloni@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 100/311] LoongArch: Make regs_irqs_disabled() more clear
-Date: Tue, 29 Apr 2025 18:38:57 +0200
-Message-ID: <20250429161125.136143852@linuxfoundation.org>
+Subject: [PATCH 5.10 034/286] tracing: fix return value in __ftrace_event_enable_disable for TRACE_REG_UNREGISTER
+Date: Tue, 29 Apr 2025 18:38:58 +0200
+Message-ID: <20250429161109.260573066@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Gabriele Paoloni <gpaoloni@redhat.com>
 
-[ Upstream commit bb0511d59db9b3e40c8d51f0d151ccd0fd44071d ]
+[ Upstream commit 0c588ac0ca6c22b774d9ad4a6594681fdfa57d9d ]
 
-In the current code, the definition of regs_irqs_disabled() is actually
-"!(regs->csr_prmd & CSR_CRMD_IE)" because arch_irqs_disabled_flags() is
-defined as "!(flags & CSR_CRMD_IE)", it looks a little strange.
+When __ftrace_event_enable_disable invokes the class callback to
+unregister the event, the return value is not reported up to the
+caller, hence leading to event unregister failures being silently
+ignored.
 
-Define regs_irqs_disabled() as !(regs->csr_prmd & CSR_PRMD_PIE) directly
-to make it more clear, no functional change.
+This patch assigns the ret variable to the invocation of the
+event unregister callback, so that its return value is stored
+and reported to the caller, and it raises a warning in case
+of error.
 
-While at it, the return value of regs_irqs_disabled() is true or false,
-so change its type to reflect that and also make it always inline.
-
-Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lore.kernel.org/20250321170821.101403-1-gpaoloni@redhat.com
+Signed-off-by: Gabriele Paoloni <gpaoloni@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/ptrace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/trace_events.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/include/asm/ptrace.h b/arch/loongarch/include/asm/ptrace.h
-index f3ddaed9ef7f0..a5b63c84f8541 100644
---- a/arch/loongarch/include/asm/ptrace.h
-+++ b/arch/loongarch/include/asm/ptrace.h
-@@ -33,9 +33,9 @@ struct pt_regs {
- 	unsigned long __last[];
- } __aligned(8);
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 4b5a8d7275be7..92693e2140a94 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -411,7 +411,9 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
+ 				clear_bit(EVENT_FILE_FL_RECORDED_TGID_BIT, &file->flags);
+ 			}
  
--static inline int regs_irqs_disabled(struct pt_regs *regs)
-+static __always_inline bool regs_irqs_disabled(struct pt_regs *regs)
- {
--	return arch_irqs_disabled_flags(regs->csr_prmd);
-+	return !(regs->csr_prmd & CSR_PRMD_PIE);
- }
- 
- static inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
+-			call->class->reg(call, TRACE_REG_UNREGISTER, file);
++			ret = call->class->reg(call, TRACE_REG_UNREGISTER, file);
++
++			WARN_ON_ONCE(ret);
+ 		}
+ 		/* If in SOFT_MODE, just set the SOFT_DISABLE_BIT, else clear it */
+ 		if (file->flags & EVENT_FILE_FL_SOFT_MODE)
 -- 
 2.39.5
 
