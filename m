@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678CDAA1480
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C923AA11FB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B300F16B780
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 286B44A581A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E365B24397A;
-	Tue, 29 Apr 2025 17:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D9D23C8D6;
+	Tue, 29 Apr 2025 16:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvNUW5wt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVwhZ/Yz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B60221DA7;
-	Tue, 29 Apr 2025 17:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75B22459C9;
+	Tue, 29 Apr 2025 16:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946893; cv=none; b=MilZde4qd5n+k7tTf2HTcb0PVdHI/Q38lAs2aFJ83MkbgaxsNglBPVbiRACoSVOmt7FN6IYd+Ene/jgjUsyh/fQe5Ayn4SSH0Q/sCF4E7Fp7lAapj03SKi0t/CoaFXK7EL0h5s5/UTfVQPwzass5pyqUf6kDQ2ZWep4JrZOrSLQ=
+	t=1745945269; cv=none; b=fF8SWSHvQpE8uq5VNm8+ARNgJe/VNiJfodfSZv6SegEhgo83UP6YCRw1Ejd/Sh174lQIHvPyX4wNAOtdVslPI2PjnqVnINqIQ8ZUuEdZqPcLVFc/M9cMponPC1QCiV3G7ET/qm1IgecPP5PLwj+/2602Fc2FNwSUqi6+C7I9wyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946893; c=relaxed/simple;
-	bh=IriIdFnnHwXQEhEJago4HWG5UmrK6Cu/lQIEXwne+Is=;
+	s=arc-20240116; t=1745945269; c=relaxed/simple;
+	bh=VqVV+9bMkp8DGRtOScsvF3NrSB3xAFOaL/P+D6SQNTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kRpXH4JfbUGRL2ZtjE7iMmflLx12SDGiCK1EUBwI3RcNTZ4mr5KzPKyO7uEtup0+uafHoVepOK+6gvJkeXPdevMKHt4VZlav5soTgx4XMM6AU9JFtuFjrW6s1Bt8k+810kliAsfHuZ4Aqhtq6lS866HkzgPU36YM8iM9kki+qpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvNUW5wt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13722C4CEE3;
-	Tue, 29 Apr 2025 17:14:52 +0000 (UTC)
+	 MIME-Version; b=gyZ2zFm1iJGpGMo3GwTBb5F91+agMO0GlAwsdsdzgF+96FcC/0nnyPTjC9MboWfs2YWtfz7sPKJgJ4rJDPV7fz47L3rsLL7++e7X0aqbNp1ufVwF9/vneWXcGEjBL/kJvOYqZifKRWQ5F8OL+AWYw45I2Tc/8uklG3FzXldkGcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVwhZ/Yz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16560C4CEE3;
+	Tue, 29 Apr 2025 16:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946893;
-	bh=IriIdFnnHwXQEhEJago4HWG5UmrK6Cu/lQIEXwne+Is=;
+	s=korg; t=1745945269;
+	bh=VqVV+9bMkp8DGRtOScsvF3NrSB3xAFOaL/P+D6SQNTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BvNUW5wtJVz+31ytiynD4BcwJxpQ44O8YyBdEhxHviIw0enBXFMDTWB1kSc2gJF+x
-	 pfAFCNtTmMBrnea7y/I5iVfLp33hmQNTRY2hocMauvkdBHCrvOawUccA+JTnqBBBj4
-	 vVy+KnCp/HnhkgWqT1k+F8ZPtx23QxREyJRQ+4B0=
+	b=sVwhZ/YzJmgRynVY87H3nVFLwv4xGGxSFteZ4weoPzugySElPe4RMRsAOR3nkEfg3
+	 WljZgyIb6xJp1srM2dIDLjXgl6MD/Dw+sf54yoIckz3Ki9kdMDkIK2CHA9eaDXQohd
+	 z4NMQXr34F0/gEMn5UFv7G9Ak828YxNEqxWPB6Zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 063/286] media: streamzap: prevent processing IR data on URB failure
+	Icenowy Zheng <uwu@icenowy.me>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 026/179] wifi: mt76: mt76x2u: add TP-Link TL-WDN6200 ID to device table
 Date: Tue, 29 Apr 2025 18:39:27 +0200
-Message-ID: <20250429161110.438488893@linuxfoundation.org>
+Message-ID: <20250429161050.469225992@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-commit 549f6d348167fb2f7800ed7c8d4bce9630c74498 upstream.
+[ Upstream commit 06cccc2ebbe6c8a20f714f3a0ff3ff489d3004bb ]
 
-If streamzap_callback() receives an urb with any non-critical error
-status, i.e. any error code other than -ECONNRESET, -ENOENT or -ESHUTDOWN,
-it will try to process IR data, ignoring a possible transfer failure.
+The TP-Link TL-WDN6200 "Driverless" version cards use a MT7612U chipset.
 
-Make streamzap_callback() process IR data only when urb->status is 0.
-Move processing logic to a separate function to make code cleaner and
-more similar to the URB completion handlers in other RC drivers.
+Add the USB ID to mt76x2u driver.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 19770693c354 ("V4L/DVB: staging/lirc: add lirc_streamzap driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Link: https://patch.msgid.link/20250317102235.1421726-1-uwu@icenowy.me
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/streamzap.c |   68 ++++++++++++++++++++++++-------------------
- 1 file changed, 38 insertions(+), 30 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/rc/streamzap.c
-+++ b/drivers/media/rc/streamzap.c
-@@ -179,39 +179,10 @@ static void sz_push_half_space(struct st
- 	sz_push_full_space(sz, value & SZ_SPACE_MASK);
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+index 96a2b7ba6764b..8c392d55d59ba 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -19,6 +19,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
+ 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
+ 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
+ 	{ USB_DEVICE(0x045e, 0x02fe) },	/* XBox One Wireless Adapter */
++	{ USB_DEVICE(0x2357, 0x0137) },	/* TP-Link TL-WDN6200 */
+ 	{ },
+ };
  
--/*
-- * streamzap_callback - usb IRQ handler callback
-- *
-- * This procedure is invoked on reception of data from
-- * the usb remote.
-- */
--static void streamzap_callback(struct urb *urb)
-+static void sz_process_ir_data(struct streamzap_ir *sz, int len)
- {
--	struct streamzap_ir *sz;
- 	unsigned int i;
--	int len;
--
--	if (!urb)
--		return;
--
--	sz = urb->context;
--	len = urb->actual_length;
--
--	switch (urb->status) {
--	case -ECONNRESET:
--	case -ENOENT:
--	case -ESHUTDOWN:
--		/*
--		 * this urb is terminated, clean up.
--		 * sz might already be invalid at this point
--		 */
--		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
--		return;
--	default:
--		break;
--	}
- 
--	dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
- 	for (i = 0; i < len; i++) {
- 		dev_dbg(sz->dev, "sz->buf_in[%d]: %x\n",
- 			i, (unsigned char)sz->buf_in[i]);
-@@ -264,6 +235,43 @@ static void streamzap_callback(struct ur
- 	}
- 
- 	ir_raw_event_handle(sz->rdev);
-+}
-+
-+/*
-+ * streamzap_callback - usb IRQ handler callback
-+ *
-+ * This procedure is invoked on reception of data from
-+ * the usb remote.
-+ */
-+static void streamzap_callback(struct urb *urb)
-+{
-+	struct streamzap_ir *sz;
-+	int len;
-+
-+	if (!urb)
-+		return;
-+
-+	sz = urb->context;
-+	len = urb->actual_length;
-+
-+	switch (urb->status) {
-+	case 0:
-+		dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
-+		sz_process_ir_data(sz, len);
-+		break;
-+	case -ECONNRESET:
-+	case -ENOENT:
-+	case -ESHUTDOWN:
-+		/*
-+		 * this urb is terminated, clean up.
-+		 * sz might already be invalid at this point
-+		 */
-+		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
-+		return;
-+	default:
-+		break;
-+	}
-+
- 	usb_submit_urb(urb, GFP_ATOMIC);
- 
- 	return;
+-- 
+2.39.5
+
 
 
 
