@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-138001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C67EAA161E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:34:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92274AA1778
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D68E716CC95
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22730189C6B9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04ABE2512DE;
-	Tue, 29 Apr 2025 17:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA2424BD02;
+	Tue, 29 Apr 2025 17:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kn5oKyPo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMAGFqr2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49EF23E340;
-	Tue, 29 Apr 2025 17:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADED243964;
+	Tue, 29 Apr 2025 17:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947798; cv=none; b=EvvJcPdzsPi2Hf1E1wXsDZ+lLrQR5UduEexk69SMWFosDW3bxF/UKP2CoscSqWTfd+HxJNuhqUU5JEKsHinHNJsCfJlPk9VkshA2lMuGmhrSolHIivyCvhg3gi7XTjkadg9C1LP3U/8+lJdMxtHivBnEDkNG7ibOaU48sJOWfWk=
+	t=1745948862; cv=none; b=Ht1sNGv81OF5jMZ+Z8tx0XNkx57g5DFHEOhR+ucUo2sNhgP8qYhfnyfBvJyXV+/8cFBujK1Fjexe3QX5AdYhwmoVca2mXgH+QGhpSX1q4AVYxYYeSaVCdPHoQWNmHJv/EPf4S1lDZYYExO5BaVJGbKlA2+LMggqbd5YW8OtdKPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947798; c=relaxed/simple;
-	bh=USOZX0tpI2ZMmuIiibumQPk6/73eEMX2HOxSE6buXu0=;
+	s=arc-20240116; t=1745948862; c=relaxed/simple;
+	bh=aFgmYx5/Vng4HAhShl7TjYqNtffjoTTBk2NyrT5QCIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebtMtJtp81Nu3D/B2TiM2AuYXHUUAvEHHl6LNLDjDTDY0H6cBg3iuyY9wQ9XQxJhphneZF9igBHCrQ/8ozIw3ejySUediscQZjSp+x5UsPI6bc77KgCXo6dJP7RRB6YxJUfsZNvZeovXpU3mP8t18CFZVLygw7//3EBPAuiVjPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kn5oKyPo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA571C4CEE9;
-	Tue, 29 Apr 2025 17:29:57 +0000 (UTC)
+	 MIME-Version; b=LkvbRNeLeKUzzkuQIqoYdbbjM37XUBwnjzLtLihwUSnHMFBVaWwUZB+WhHhE4SCNGY3Iro6kVdArb0bRS5xj2TJt24DSRmDC5IVIelSOYN9KHgd0/7Hiq8cE0SrGdHK1Bz/qHCHaj+CKVAawv0t/ICTqboW6KJbvgOzqC862a1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMAGFqr2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFCA0C4CEE3;
+	Tue, 29 Apr 2025 17:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947798;
-	bh=USOZX0tpI2ZMmuIiibumQPk6/73eEMX2HOxSE6buXu0=;
+	s=korg; t=1745948862;
+	bh=aFgmYx5/Vng4HAhShl7TjYqNtffjoTTBk2NyrT5QCIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kn5oKyPoe2TJBUs2c/k2iE6lySPZHfnODn9gLZ0NuCRHPIrgIgBgXwr0EN5KmbdxH
-	 uIon/UYmgJts1RRhvSFpXFnzwa0GyvBG4rTSD+nlqTl7G0kJimdeje31pODXLHRQQl
-	 X0RE59VKGJEJuWIld+nsRZ/eGYdyTtdod7u+XDFs=
+	b=bMAGFqr2Kf4y1V835d04rSVOCa6jlgcBpEAx+Ekl0Tiyl5ILCOZ18kvgJGkuIrHag
+	 DIh6GRsh3bjMh1bZP/2iYa6UkHDo7fGODBFeUYvEvQGie6Lw+PdaTbARh5epH4sbak
+	 nnHr6ggqE1Mfp0MNosLmKPB1ImZq9VtDBFxBXPr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Christopher S M Hall <christopher.s.hall@intel.com>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/280] net_sched: hfsc: Fix a potential UAF in hfsc_dequeue() too
-Date: Tue, 29 Apr 2025 18:40:17 +0200
-Message-ID: <20250429161118.218553672@linuxfoundation.org>
+Subject: [PATCH 5.15 141/373] igc: move ktime snapshot into PTM retry loop
+Date: Tue, 29 Apr 2025 18:40:18 +0200
+Message-ID: <20250429161128.969009475@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +68,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Christopher S M Hall <christopher.s.hall@intel.com>
 
-[ Upstream commit 6ccbda44e2cc3d26fd22af54c650d6d5d801addf ]
+[ Upstream commit cd7f7328d691937102732f39f97ead35b15bf803 ]
 
-Similarly to the previous patch, we need to safe guard hfsc_dequeue()
-too. But for this one, we don't have a reliable reproducer.
+Move ktime_get_snapshot() into the loop. If a retry does occur, a more
+recent snapshot will result in a more accurate cross-timestamp.
 
-Fixes: 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2 ("Linux-2.6.12-rc2")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20250417184732.943057-3-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a90ec8483732 ("igc: Add support for PTP getcrosststamp()")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
+Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index e730d3f791c24..5bb4ab9941d6e 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1637,10 +1637,16 @@ hfsc_dequeue(struct Qdisc *sch)
- 		if (cl->qdisc->q.qlen != 0) {
- 			/* update ed */
- 			next_len = qdisc_peek_len(cl->qdisc);
--			if (realtime)
--				update_ed(cl, next_len);
--			else
--				update_d(cl, next_len);
-+			/* Check queue length again since some qdisc implementations
-+			 * (e.g., netem/codel) might empty the queue during the peek
-+			 * operation.
-+			 */
-+			if (cl->qdisc->q.qlen != 0) {
-+				if (realtime)
-+					update_ed(cl, next_len);
-+				else
-+					update_d(cl, next_len);
-+			}
- 		} else {
- 			/* the class becomes passive */
- 			eltree_remove(cl);
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index d0363bd68e5ed..863669192301e 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -886,16 +886,16 @@ static int igc_phc_get_syncdevicetime(ktime_t *device,
+ 	int err, count = 100;
+ 	ktime_t t1, t2_curr;
+ 
+-	/* Get a snapshot of system clocks to use as historic value. */
+-	ktime_get_snapshot(&adapter->snapshot);
+-
++	/* Doing this in a loop because in the event of a
++	 * badly timed (ha!) system clock adjustment, we may
++	 * get PTM errors from the PCI root, but these errors
++	 * are transitory. Repeating the process returns valid
++	 * data eventually.
++	 */
+ 	do {
+-		/* Doing this in a loop because in the event of a
+-		 * badly timed (ha!) system clock adjustment, we may
+-		 * get PTM errors from the PCI root, but these errors
+-		 * are transitory. Repeating the process returns valid
+-		 * data eventually.
+-		 */
++		/* Get a snapshot of system clocks to use as historic value. */
++		ktime_get_snapshot(&adapter->snapshot);
++
+ 		igc_ptm_trigger(hw);
+ 
+ 		err = readx_poll_timeout(rd32, IGC_PTM_STAT, stat,
 -- 
 2.39.5
 
