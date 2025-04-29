@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-138828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC4F0AA1A3F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93573AA197E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:12:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33547980B2E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D4A13AD0C4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363C524728A;
-	Tue, 29 Apr 2025 18:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72F2221D92;
+	Tue, 29 Apr 2025 18:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Htn5WwaU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlVrV0Fk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F403FFD;
-	Tue, 29 Apr 2025 18:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75ADB2AE96;
+	Tue, 29 Apr 2025 18:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950479; cv=none; b=Pphlue0oCn/LbVv9Kr6SzqxNXQ0YHuAA6uCv7t5yEppf97th3mHnyAIHaooXPWjnCiT39MIVlQ0Tk55eLfXymM4uGCDNYyFN6gds7QW4Z+6RwHTdHjDBpfJiGuPXLrE3gRsipzcQpVp/FUq3FRP/11NkMn0zTrvEflR/0hsL4EU=
+	t=1745950015; cv=none; b=rgco6lNpz5wsoLikut6jl0X+UcAlhczzFEnfZhQonw+//WEyk44f2IfJWzK6ICbIsbVNiDrv75dyCmtTbYFv+GsmiYizJ8G7vWaKAhgmaYnXs+KqACQ7/GTV6N8gkzvj0DFsUv4dHwWgodFjvyc6lPTx17u304TN5vIWIslzFH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950479; c=relaxed/simple;
-	bh=DP9jchkVvIiHdYoYAHh12YBXQJVCI0TuLA4xA/IHSDA=;
+	s=arc-20240116; t=1745950015; c=relaxed/simple;
+	bh=5jOqHz4vaNzTnGPC/56DE3KLaOJ2Jlc4mE/tZzE0HBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Un+d/iEgB0dpMj3owDOz2ZjMDmrUIZAWRWU63mCCam6q++HY7+qGl/04tEe1kCkLNklJcMuE6oVpOprffy4wWW3LQqTS5ttJTEVPcOaDqobYAaoCUeIefyJDtqIdTmwJdMMS4APuEQnjnZPzusU2wJfJnVSsMP2SLEpJnoFnxzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Htn5WwaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F997C4CEE3;
-	Tue, 29 Apr 2025 18:14:38 +0000 (UTC)
+	 MIME-Version; b=Es+rReb6mrUnyH1yIRrU03iS7VmOi9kWnetFjfPeUM3wJp8L1vR9Z4s8LoeVRakgUu8bbk1CIzPR/AmcOQF/iTYYT25Me3/MZ9DTRv9q76TGunyVUuT5tuW0vh/vj55bzPuS7ql8orRH5sYSqkdBtzseHPU+/BD8LZBjqbjIh7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlVrV0Fk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10A3C4CEE3;
+	Tue, 29 Apr 2025 18:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950478;
-	bh=DP9jchkVvIiHdYoYAHh12YBXQJVCI0TuLA4xA/IHSDA=;
+	s=korg; t=1745950015;
+	bh=5jOqHz4vaNzTnGPC/56DE3KLaOJ2Jlc4mE/tZzE0HBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Htn5WwaU4u+4YoAgM7G1OGpkI8YUIA/o9REgrauvNX5Xpz3kA8b30IVOedSPh4ilJ
-	 JXUa2MWIcvoO62xbSc1UmNvCXK/97FuUNxRvkPjUgvwucOvSLWABx4U46H+L66p+DX
-	 lQis0/4WtT2xMn05eRNYKL8X+5KcnomKkKLKU5pQ=
+	b=mlVrV0FkbRUxyYmpgx5xdFNnRFkmfjXcL5KgptHfzCI4yzR0ZbdxZupTrTfy5rKPC
+	 f2c853FJ4bx8FMqK2pJ3EupVIMgzAvFUlaoo2S2dM1CaTm62CwhvFYQjgXUDHIZspO
+	 UzHKoeFakkVjd9kgKIn/2Px2AMQlDvAKZ4TND16g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mike Looijmans <mike.looijmans@topic.nl>,
 	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
 	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 109/204] usb: dwc3: xilinx: Prevent spike in reset signal
+Subject: [PATCH 6.1 089/167] usb: dwc3: xilinx: Prevent spike in reset signal
 Date: Tue, 29 Apr 2025 18:43:17 +0200
-Message-ID: <20250429161103.899174018@linuxfoundation.org>
+Message-ID: <20250429161055.353567805@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -117,7 +117,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/usb/dwc3/dwc3-xilinx.c
 +++ b/drivers/usb/dwc3/dwc3-xilinx.c
-@@ -207,15 +207,13 @@ static int dwc3_xlnx_init_zynqmp(struct
+@@ -208,15 +208,13 @@ static int dwc3_xlnx_init_zynqmp(struct
  
  skip_usb3_phy:
  	/* ulpi reset via gpio-modepin or gpio-framework driver */
