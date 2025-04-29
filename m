@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1336FAA120C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 863BFAA15C6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A84494A6AFB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 323991886233
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9169924113A;
-	Tue, 29 Apr 2025 16:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED94F2459C9;
+	Tue, 29 Apr 2025 17:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0N6ukxW9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXtXv5Xe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5009C24113C;
-	Tue, 29 Apr 2025 16:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E4A18BBBB;
+	Tue, 29 Apr 2025 17:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945316; cv=none; b=dNBQ82rMJpZFIVoWa7hXefaulZY0yBWlWd6YU6OuqbHJIC/w2bLeYbYK/8VqmbYqy7iSEAg6vil9PR6rkSdTHggmNlsTmINCvf2OOpGK1uaB66L0E+UTuwKSrcJA+IcRM+keqYpJOTyKN9axHkIm8RaJgD0N1nwsMlw2U1+8auU=
+	t=1745947620; cv=none; b=BvFv3DzhWXnMhPfdhF5EJ8R4yGgAfEmIeXRhtprA3yl7cp1Y8BC6atDjcPRBJoZwveNsBA/NVtixdVwznIsDAXFVfFvfJNwxPcxGq44yCqKpJFJeR5NUZh+GEjj/2j5LpDfzdZICcKwbHwIXgSoqXax81V54nBz5WqieAvcjWjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945316; c=relaxed/simple;
-	bh=KyGmg8+6APYLqAlQRowjJsAFhv2tn3lxSk+7vct7xQY=;
+	s=arc-20240116; t=1745947620; c=relaxed/simple;
+	bh=KMk6LRWbQUDEzphhG5IWSU5GdG8zV5fT2Qr3laPPFnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bVVawTcuJ30C6wTsT7xmFUgPhFPQ/EWV1qYhTXmgGpMRlfuxrJbAvFJPGlE5Syve5EefurI5R4IcD5qWH3c6uzxizJ4KgpcyidoQVPgkbbkFdQw0cIsVJjg6UEEesqB5LvBDzUqFu2LKix86+FdypYmBy6cofwN3qQIcGkyyD2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0N6ukxW9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC46C4CEE3;
-	Tue, 29 Apr 2025 16:48:35 +0000 (UTC)
+	 MIME-Version; b=QoRzPDnIekl17SvRLWZrmZShgrVHqp+oLe4XSsiIrRjX14r1Q+o6DmMsi4MTNMRhMJ5SA/QL/u6+573oAJINfoXp2ut+8/MWJgMvZn2bNfPBaUDpNPwvHQkwHig2woKK6GtgQn6DBr7LPYcz3Glk7c2vsUOWPQt5MxFSNWqPo8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXtXv5Xe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 208A2C4CEE3;
+	Tue, 29 Apr 2025 17:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945315;
-	bh=KyGmg8+6APYLqAlQRowjJsAFhv2tn3lxSk+7vct7xQY=;
+	s=korg; t=1745947620;
+	bh=KMk6LRWbQUDEzphhG5IWSU5GdG8zV5fT2Qr3laPPFnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0N6ukxW9cEI+1LkMbCy960MC+Daf7aJxevkHt6nrAYn59iMDRJlQWsjhog32xkMPh
-	 Fw6VH+HQ65D5yEXqd6o8sL3OGs+la95Dy3LjLV7MU99kXQUqjDK8e0zWEyrkII0zFL
-	 mDb28n+vqH2/wSKuN+nGNofVicUUaUVvXDdBpqrQ=
+	b=oXtXv5XenFwtLEwkj+CXifBb09yU1VegGWMg8c1+ayj5tiS3lifQKSfUgG1MJctXD
+	 GKhSH6DzX9T2Mr6dBdFBeRTCMZy/4PwcHhdH3Yf3aRF+1hQtlruJeiNzY8W7FBPt2R
+	 aVEMO2sPCwgo4rV+lB5W5I1wSDQ2+QN6AX434o/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.4 054/179] media: i2c: ov7251: Introduce 1 ms delay between regulators and en GPIO
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 054/280] cpufreq: scmi: Fix null-ptr-deref in scmi_cpufreq_get_rate()
 Date: Tue, 29 Apr 2025 18:39:55 +0200
-Message-ID: <20250429161051.583572585@linuxfoundation.org>
+Message-ID: <20250429161117.331348621@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-commit 3d391292cdd53984ec1b9a1f6182a62a62751e03 upstream.
+[ Upstream commit 484d3f15cc6cbaa52541d6259778e715b2c83c54 ]
 
-Lift the xshutdown (enable) GPIO 1 ms after enabling the regulators, as
-required by the sensor's power-up sequence.
+cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
+in the policy->cpus mask. scmi_cpufreq_get_rate() does not check for
+this case, which results in a NULL pointer dereference.
 
-Fixes: d30bb512da3d ("media: Add a driver for the ov7251 camera sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add NULL check after cpufreq_cpu_get_raw() to prevent this issue.
+
+Fixes: 99d6bdf33877 ("cpufreq: add support for CPU DVFS based on SCMI message protocol")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov7251.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/cpufreq/scmi-cpufreq.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/media/i2c/ov7251.c
-+++ b/drivers/media/i2c/ov7251.c
-@@ -748,6 +748,8 @@ static int ov7251_set_power_on(struct ov
- 		return ret;
- 	}
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index 07d6f9a9b7c82..7e7c1613a67c6 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -34,11 +34,17 @@ static struct cpufreq_driver scmi_cpufreq_driver;
  
-+	usleep_range(1000, 1100);
+ static unsigned int scmi_cpufreq_get_rate(unsigned int cpu)
+ {
+-	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
+-	struct scmi_data *priv = policy->driver_data;
++	struct cpufreq_policy *policy;
++	struct scmi_data *priv;
+ 	unsigned long rate;
+ 	int ret;
+ 
++	policy = cpufreq_cpu_get_raw(cpu);
++	if (unlikely(!policy))
++		return 0;
 +
- 	gpiod_set_value_cansleep(ov7251->enable_gpio, 1);
- 
- 	/* wait at least 65536 external clock cycles */
++	priv = policy->driver_data;
++
+ 	ret = perf_ops->freq_get(ph, priv->domain_id, &rate, false);
+ 	if (ret)
+ 		return 0;
+-- 
+2.39.5
+
 
 
 
