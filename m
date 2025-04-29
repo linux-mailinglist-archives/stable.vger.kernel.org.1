@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8B9AA191F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 670CCAA1A34
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D50CF1BA3C5C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD37818893B3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BD124397A;
-	Tue, 29 Apr 2025 18:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9866425332D;
+	Tue, 29 Apr 2025 18:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIhPevMZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQoIBtIE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F30F40C03;
-	Tue, 29 Apr 2025 18:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572CC155A4E;
+	Tue, 29 Apr 2025 18:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950040; cv=none; b=njG3F6ad+mTPI1Cpe2lGV19kqKHmZrEIfb6ZYZNXcsnyolNZEEgnR0VbPrjz8G9rNHbD3QtkGg2dyDogCgi614XHcZi9IEbmAm3SBs98mVfIPiQZBOmAHhisxflTK1nqj7Sx2Cjm3balh3Fz1y8kxVbKwhyQ9QhFx4olKiVK1Yw=
+	t=1745950641; cv=none; b=ljTgKvRVPJYLqFLzAuzlkkWrIpAvE5Y+m1h8xH7gbq9WPn5A1UHhcbKogBosgv4Erl/UcpVi+KeeG6sutnWduIzMs4S8fDlT1Hr+pP8E8EhpBvOPR3lYXBrKaZPDs1yXanPqAO6VAtFkhbXSdoCui7c/cUbYLLfWt88D1bgN3rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950040; c=relaxed/simple;
-	bh=MLZ32R8dqj19H184XbTIA+MhLmtmzCTmee7gIi10zLQ=;
+	s=arc-20240116; t=1745950641; c=relaxed/simple;
+	bh=++mJA97+LfkL8YxIZXBni2j5UUu1I4bXB63le8jseDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WckZZRcCSUFEqSSmpVphhL8hRSLUbedP5PB303Yqkctxews7RIlijuPjWq6gQ6hSXRBqE7gWbkjOAkLnxlWTVhNPtkazsFMlb7KjjofYze2rwsGP1C44cvFrkZ8M40vEUT0JqU2mMQ5/2JXpszOjwkuvCz7RNX1JwZfWug9PhDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIhPevMZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E65C4CEEA;
-	Tue, 29 Apr 2025 18:07:19 +0000 (UTC)
+	 MIME-Version; b=a2DkJJfeymxciTMmaVPmeJfYNcGkaUzKbfPDHSN/dBeh5Yo6Ea1+mpMUy9p5WbjwQyFHx3TwP9ju5V3dGIk3e9/COL/uAAbL6yZSoTnenovAnmY/RrcbtrXPyj42x74n6HWR7SFIlLm5MIDdD0J2WBRASHmXoyg4REx5WpdnGmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQoIBtIE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE74C4CEE3;
+	Tue, 29 Apr 2025 18:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950040;
-	bh=MLZ32R8dqj19H184XbTIA+MhLmtmzCTmee7gIi10zLQ=;
+	s=korg; t=1745950641;
+	bh=++mJA97+LfkL8YxIZXBni2j5UUu1I4bXB63le8jseDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tIhPevMZURHbBgqvzW4Re+Ok6ec6kgUy9C1aRJD2MKUtKwrGepUPK6s/QN292WTzZ
-	 lSUD0cPom+85eVwdH/iY9+Ov5b4DsjlDCVchF554pjKFm8N0AFP+hPDQ13EKZ+rsWA
-	 aLJGHGyqdCNzA8rny/sy3wsX/t7ZBkyls+e0OkmQ=
+	b=xQoIBtIEaAtJVGdl4iCsK3i+dDbU3NliUexAnFk1WgtNvuirUUZ0L5jpKO3+F6kJq
+	 tl/hJhrlvclow4fQc8g41DYyqLhznBmEWwMT8CdBPGIqBA5PODWfGYbF0TJMdktDZV
+	 v9Hv0KzNU/+ITwKrL/rprwidaWQzVc5mG6OxY/Xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
+	Jan Beulich <jbeulich@suse.com>,
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/167] nvmet-fc: put ref when assoc->del_work is already scheduled
+Subject: [PATCH 6.6 158/204] xen: Change xen-acpi-processor dom0 dependency
 Date: Tue, 29 Apr 2025 18:44:06 +0200
-Message-ID: <20250429161057.312006062@linuxfoundation.org>
+Message-ID: <20250429161105.878160561@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-[ Upstream commit 70289ae5cac4d3a39575405aaf63330486cea030 ]
+[ Upstream commit 0f2946bb172632e122d4033e0b03f85230a29510 ]
 
-Do not leak the tgtport reference when the work is already scheduled.
+xen-acpi-processor functions under a PVH dom0 with only a
+xen_initial_domain() runtime check.  Change the Kconfig dependency from
+PV dom0 to generic dom0 to reflect that.
 
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Suggested-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Tested-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250331172913.51240-1-jason.andryuk@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/xen/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
-index 68ff9540e2d13..570c58d2b5a58 100644
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -1091,7 +1091,8 @@ static void
- nvmet_fc_schedule_delete_assoc(struct nvmet_fc_tgt_assoc *assoc)
- {
- 	nvmet_fc_tgtport_get(assoc->tgtport);
--	queue_work(nvmet_wq, &assoc->del_work);
-+	if (!queue_work(nvmet_wq, &assoc->del_work))
-+		nvmet_fc_tgtport_put(assoc->tgtport);
- }
+diff --git a/drivers/xen/Kconfig b/drivers/xen/Kconfig
+index d43153fec18ea..af5c214b22069 100644
+--- a/drivers/xen/Kconfig
++++ b/drivers/xen/Kconfig
+@@ -278,7 +278,7 @@ config XEN_PRIVCMD_IRQFD
  
- static struct nvmet_fc_tgt_assoc *
+ config XEN_ACPI_PROCESSOR
+ 	tristate "Xen ACPI processor"
+-	depends on XEN && XEN_PV_DOM0 && X86 && ACPI_PROCESSOR && CPU_FREQ
++	depends on XEN && XEN_DOM0 && X86 && ACPI_PROCESSOR && CPU_FREQ
+ 	default m
+ 	help
+ 	  This ACPI processor uploads Power Management information to the Xen
 -- 
 2.39.5
 
