@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA64AA1555
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB8AAA18C0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 094C04C5C8B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CA394E0519
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4E0254877;
-	Tue, 29 Apr 2025 17:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0229253F1C;
+	Tue, 29 Apr 2025 18:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fw/A9++L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGORGjrN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A651D254871;
-	Tue, 29 Apr 2025 17:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C173253B71;
+	Tue, 29 Apr 2025 18:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947307; cv=none; b=frP2GwmFwfwOCKWSFJgZntrP/3Lb6NlPQ+2f2T0nxo0hD5eVR5pnrRro+NJcnAZoSTUZTcj/EVFjV/UdktSOF369uX0TysSBQS0KAPDeqV6tRhF/xItzI/97nLHeGyZIlU8vreI1YbCYKY045NoMQL6K5zI89G8I10pMbc58gq8=
+	t=1745949721; cv=none; b=N/mniytqIzgJbR+XKKUJjJWNZb7t42dNBd8520wFfkVmCaAATwNrgVhUp7AGuagbtvrwyxq9b4DI0VaCGzSPz263673WhAqmHcmQmll1eVbCwURys8tBNYl7r8F9CBjdDrGDfMq0XxyurFx9pyzD2NuMVq/Tj34DcYkIVbqTfNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947307; c=relaxed/simple;
-	bh=zD7TfDMr1g2WU4oew8hDGdlB8oFjm1SwFjpD90jnGbU=;
+	s=arc-20240116; t=1745949721; c=relaxed/simple;
+	bh=IG5/Xj7eoZ1fqtnJ9q/4sVJq209VpgVgSO1Ctwx9JWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TzBrbXQ72vookScny0afuBI7bmkxcZyNPjqa/wayQq3INGgA73DGjmal0sRHKBV1o7kiN5Xeyu0kZWOIZluzIf4EuHC1/CQq/2q1ay6zrh7XjN+w2DUZYAuQpCfyYrL/du4GXsiN42izUbpTN0m4pAs7DxFTU3OncYPrrW3r164=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fw/A9++L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFE3C4CEEA;
-	Tue, 29 Apr 2025 17:21:46 +0000 (UTC)
+	 MIME-Version; b=BBr3VD7jx4WZZAVxh6hPzouHvnwunjfwimNYuzWPyNfE44v/Zm87eq3bduqiSPDKyDY+oV2FZi+7FL9UJIs4ZNgeV1oG6j1TjHS2FjqoaA6P63RyEL1MPh7SLIRqhEGR92cxDZJ2MboJnncLjs2GQU2Bh4NllwD4SPXERamQvXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGORGjrN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8A8C4CEE3;
+	Tue, 29 Apr 2025 18:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947307;
-	bh=zD7TfDMr1g2WU4oew8hDGdlB8oFjm1SwFjpD90jnGbU=;
+	s=korg; t=1745949721;
+	bh=IG5/Xj7eoZ1fqtnJ9q/4sVJq209VpgVgSO1Ctwx9JWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fw/A9++L+Zqv8iqU0UV0yj5NhPVTT1Y3fFy7nnEAaMxUjLzC1y+nZEQ5Fi84NLNPg
-	 wrsnX4qShTP/MVU6V5/a6wxc/v22jYMG2nW8ElzGlOR/ID8dvO+rvVUXvSHoLxyT5p
-	 Jby7NJishoRG6naqmVY3JhUekiPh7ZznZehc676Y=
+	b=iGORGjrNsXMGT8enXP0Slez/hG+O1ol+U8Q5rFRLoe1z0vZqS9yeBoXDamIO6OwWs
+	 AFAPw8Qw6Cmwrx5hnHwf0qM9zR+OwjXkg47DO7snnxNU41IMzC032zYttCUAyGwYbh
+	 qjb5v+lC5g5j2jO2SzoII9jcv/GYB/fxpwlrpjVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 5.10 240/286] USB: storage: quirk for ADATA Portable HDD CH94
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 036/167] phy: freescale: imx8m-pcie: assert phy reset and perst in power off
 Date: Tue, 29 Apr 2025 18:42:24 +0200
-Message-ID: <20250429161117.799239162@linuxfoundation.org>
+Message-ID: <20250429161053.216708523@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit 9ab75eee1a056f896b87d139044dd103adc532b9 upstream.
+[ Upstream commit aecb63e88c5e5fb9afb782a1577264c76f179af9 ]
 
-Version 1.60 specifically needs this quirk.
-Version 2.00 is known good.
+Ensure the PHY reset and perst is asserted during power-off to
+guarantee it is in a reset state upon repeated power-on calls. This
+resolves an issue where the PHY may not properly initialize during
+subsequent power-on cycles. Power-on will deassert the reset at the
+appropriate time after tuning the PHY parameters.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250403180004.343133-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+During suspend/resume cycles, we observed that the PHY PLL failed to
+lock during resume when the CPU temperature increased from 65C to 75C.
+The observed errors were:
+  phy phy-32f00000.pcie-phy.3: phy poweron failed --> -110
+  imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
+  imx6q-pcie 33800000.pcie: PM: dpm_run_callback(): genpd_resume_noirq+0x0/0x80 returns -110
+  imx6q-pcie 33800000.pcie: PM: failed to resume noirq: error -110
+
+This resulted in a complete CPU freeze, which is resolved by ensuring
+the PHY is in reset during power-on, thus preventing PHY PLL failures.
+
+Cc: stable@vger.kernel.org
+Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie standalone phy driver")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250305144355.20364-3-eichest@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/unusual_uas.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -83,6 +83,13 @@ UNUSUAL_DEV(0x0bc2, 0x331a, 0x0000, 0x99
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_REPORT_LUNS),
+diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+index 0082de17cf4de..8f9db654019e9 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
++++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+@@ -165,6 +165,16 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+ 	return ret;
+ }
  
-+/* Reported-by: Oliver Neukum <oneukum@suse.com> */
-+UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x0160,
-+		"ADATA",
-+		"Portable HDD CH94",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_NO_ATA_1X),
++static int imx8_pcie_phy_power_off(struct phy *phy)
++{
++	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
 +
- /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
- UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x9999,
- 		"Initio Corporation",
++	reset_control_assert(imx8_phy->reset);
++	reset_control_assert(imx8_phy->perst);
++
++	return 0;
++}
++
+ static int imx8_pcie_phy_init(struct phy *phy)
+ {
+ 	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
+@@ -185,6 +195,7 @@ static const struct phy_ops imx8_pcie_phy_ops = {
+ 	.init		= imx8_pcie_phy_init,
+ 	.exit		= imx8_pcie_phy_exit,
+ 	.power_on	= imx8_pcie_phy_power_on,
++	.power_off	= imx8_pcie_phy_power_off,
+ 	.owner		= THIS_MODULE,
+ };
+ 
+-- 
+2.39.5
+
 
 
 
