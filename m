@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-137491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C7AAA13AE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC7AAA160D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F7851BA40BE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4053716809A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A5F24A047;
-	Tue, 29 Apr 2025 17:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DB424A07D;
+	Tue, 29 Apr 2025 17:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8RIjXYU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jp8jzL+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB0E2405E5;
-	Tue, 29 Apr 2025 17:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9CC78F58;
+	Tue, 29 Apr 2025 17:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946225; cv=none; b=p21Y3LCe2z6am3/dWieC+iJ+oF4m2RxS3Hu82Q7N/CSDTwiInBOHTvNswwqXDJ5V9DGKCJWQ52jCdEhYbJ5MIq4ACsEog5OxZb0JURKQhVHHRj2CxEC7pVwxHvBpNOGrj9NQE2Xuaah7FQEF3QphU8IAZyAKL7T23OopiCiN47Y=
+	t=1745947751; cv=none; b=Iid6PGVmel+AhvmEGNondKU4CzUkCHNlAKHs90jAyIW3B5eTd9FwziAExQPRLd7IrqAFDxg2mjzg2RTy6PeGjbK4TXG7iSdx1OOevfgZI0boEPRiD7E38khe9iLja1ZP2Bh8ZeRIx/ja9XZuFhOfjuZiu/SHFaEQvQiFgjHS3+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946225; c=relaxed/simple;
-	bh=uQtCSSJx3AKqYyEN9Ihx+iQQq6dQRuGvd+G3+wK2Bp8=;
+	s=arc-20240116; t=1745947751; c=relaxed/simple;
+	bh=K0LBvZrDu1HuikThZ+G9jY08VLn/8g6QFhOcWQgBfDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Temp+0oNDDSNBsKdi4SU9dL0h5BkkJqSsnk08k68J54ArUvDfrOUyOy6iz3zol8eh78CuwrmJjV+iMOqNQIme8G/MFw3ULYrr35N5WLSqc7kk6niO+g9vdejr3u+B+85MOZEHx2LjJgu0jNAol0fGNAYu7NQ/vJzXD0Xe4ln26M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8RIjXYU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E446C4CEE3;
-	Tue, 29 Apr 2025 17:03:43 +0000 (UTC)
+	 MIME-Version; b=RIzqgTSF3BAiSwlCELgwgd67udxysWg3iO4kqq27Gdilg7x/S+lGcExNRqst7NqmKUdFfvVFUqEEQdZlDikMQk1dzETcdAXgx+tny4FKPCMK2JtqaKzRh6B3axE5aVqtWRWj1qQJ18Gsx023wBo7gSeKzqi//T480bbyGbxsa7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jp8jzL+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C54ADC4CEE9;
+	Tue, 29 Apr 2025 17:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946224;
-	bh=uQtCSSJx3AKqYyEN9Ihx+iQQq6dQRuGvd+G3+wK2Bp8=;
+	s=korg; t=1745947751;
+	bh=K0LBvZrDu1HuikThZ+G9jY08VLn/8g6QFhOcWQgBfDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O8RIjXYUhL2EccS+7jqkaDkHKFRWKmCs0iHFnNe3Pyo4oFyAx76q0An0BlzK58l4f
-	 NGGbchEyi8e0rZJPbxRQaIlbXS51NnUU167qoNXLeD3PVv29TeBKYIpY6XCP5ww8bV
-	 aNFHujMg/xD7qYSaHZnMUNFH+BOLParqVKqZYoJ8=
+	b=Jp8jzL+MWgvqEII6DK7ZM7mTuO1kc7rsozCI4x87JYZ+BZmGDn1Z97g6mofph4TAq
+	 Q2YvpXZPSKaslIpxwDMKOXtgc+r1SjdJ3XVl87NSbvrXZUePT6O+Vz+Y4jkG1D0LeB
+	 RLNSrW67JGLJIKFmxpNdK87sfX7cyZ0nj3sOz3bg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robbie King <robbiek@xsightlabs.com>,
-	Huisong Li <lihuisong@huawei.com>,
-	Adam Young <admiyo@os.amperecomputing.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 197/311] mailbox: pcc: Always clear the platform ack interrupt first
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.12 093/280] netfilter: fib: avoid lookup if socket is available
 Date: Tue, 29 Apr 2025 18:40:34 +0200
-Message-ID: <20250429161129.084127879@linuxfoundation.org>
+Message-ID: <20250429161118.912386855@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,111 +61,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit cf1338c0e02880cd235a4590eeb15e2039c873bc ]
+commit eaaff9b6702e99be5d79135f2afa9fc48a0d59e0 upstream.
 
-The PCC mailbox interrupt handler (pcc_mbox_irq()) currently checks
-for command completion flags and any error status before clearing the
-interrupt.
+In case the fib match is used from the input hook we can avoid the fib
+lookup if early demux assigned a socket for us: check that the input
+interface matches sk-cached one.
 
-The below sequence highlights an issue in the handling of PCC mailbox
-interrupts, specifically when dealing with doorbell notifications and
-acknowledgment between the OSPM and the platform where type3 and type4
-channels are sharing the interrupt.
+Rework the existing 'lo bypass' logic to first check sk, then
+for loopback interface type to elide the fib lookup.
 
--------------------------------------------------------------------------
-| T |       Platform Firmware         |    OSPM/Linux PCC driver        |
-|---|---------------------------------|---------------------------------|
-| 1 |                                 | Build message in shmem          |
-| 2 |                                 | Ring Type3 chan doorbell        |
-| 3 | Receives the doorbell interrupt |                                 |
-| 4 | Process the message from OSPM   |                                 |
-| 5 | Build response for the message  |                                 |
-| 6 | Ring Platform ACK interrupt on  |                                 |
-|   |  Type3 chan to OSPM             | Received the interrupt          |
-| 7 | Build Notification in Type4 Chan|                                 |
-| 8 |                                 | Start processing interrupt in   |
-|   |                                 |  pcc_mbox_irq() handler         |
-| 9 |                                 | Enter PCC handler for Type4 chan|
-|10 |                                 | Check command complete cleared  |
-|11 |                                 | Read the notification           |
-|12 |                                 | Clear Platform ACK interrupt    |
-|   | No effect from the previous step yet as the Platform ACK          |
-|   |  interrupt has not yet been triggered for this channel            |
-|13 | Ring Platform ACK interrupt on  |                                 |
-|   | Type4 chan to OSPM              |                                 |
-|14 |                                 | Enter PCC handler for Type3 chan|
-|15 |                                 | Command complete is set.        |
-|16 |                                 | Read the response.              |
-|17 |                                 | Clear Platform ACK interrupt    |
-|18 |                                 | Leave PCC handler for Type3     |
-|19 |                                 | Leave pcc_mbox_irq() handler    |
-|20 |                                 | Re-enter pcc_mbox_irq() handler |
-|21 |                                 | Enter PCC handler for Type4 chan|
-|22 |                                 | Leave PCC handler for Type4 chan|
-|23 |                                 | Enter PCC handler for Type3 chan|
-|24 |                                 | Leave PCC handler for Type3 chan|
-|25 |                                 | Leave pcc_mbox_irq() handler    |
--------------------------------------------------------------------------
+This speeds up fib matching a little, before:
+93.08 GBit/s (no rules at all)
+75.1  GBit/s ("fib saddr . iif oif missing drop" in prerouting)
+75.62 GBit/s ("fib saddr . iif oif missing drop" in input)
 
-The key issue occurs when OSPM tries to acknowledge platform ack
-interrupt for a notification which is ready to be read and processed
-but the interrupt itself is not yet triggered by the platform.
+After:
+92.48 GBit/s (no rules at all)
+75.62 GBit/s (fib rule in prerouting)
+90.37 GBit/s (fib rule in input).
 
-This ineffective acknowledgment leads to an issue later in time where
-the interrupt remains pending as we exit the interrupt handler without
-clearing the platform ack interrupt as there is no pending response or
-notification. The interrupt acknowledgment order is incorrect.
+Numbers for the 'no rules' and 'prerouting' are expected to
+closely match in-between runs, the 3rd/input test case exercises the
+the 'avoid lookup if cached ifindex in sk matches' case.
 
-To resolve this issue, the platform acknowledgment interrupt should
-always be cleared before processing the interrupt for any notifications
-or response.
+Test used iperf3 via veth interface, lo can't be used due to existing
+loopback test.
 
-Reported-by: Robbie King <robbiek@xsightlabs.com>
-Reviewed-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Adam Young <admiyo@os.amperecomputing.com>
-Tested-by: Robbie King <robbiek@xsightlabs.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/pcc.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/net/netfilter/nft_fib.h   |   21 +++++++++++++++++++++
+ net/ipv4/netfilter/nft_fib_ipv4.c |   11 +++++------
+ net/ipv6/netfilter/nft_fib_ipv6.c |   19 ++++++++++---------
+ 3 files changed, 36 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 8fd4d0f79b090..f8215a8f656a4 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -313,6 +313,10 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 	int ret;
+--- a/include/net/netfilter/nft_fib.h
++++ b/include/net/netfilter/nft_fib.h
+@@ -18,6 +18,27 @@ nft_fib_is_loopback(const struct sk_buff
+ 	return skb->pkt_type == PACKET_LOOPBACK || in->flags & IFF_LOOPBACK;
+ }
  
- 	pchan = chan->con_priv;
++static inline bool nft_fib_can_skip(const struct nft_pktinfo *pkt)
++{
++	const struct net_device *indev = nft_in(pkt);
++	const struct sock *sk;
 +
-+	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
-+		return IRQ_NONE;
++	switch (nft_hook(pkt)) {
++	case NF_INET_PRE_ROUTING:
++	case NF_INET_INGRESS:
++	case NF_INET_LOCAL_IN:
++		break;
++	default:
++		return false;
++	}
 +
- 	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
- 	    !pchan->chan_in_use)
- 		return IRQ_NONE;
-@@ -330,9 +334,6 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 		return IRQ_NONE;
++	sk = pkt->skb->sk;
++	if (sk && sk_fullsock(sk))
++	       return sk->sk_rx_dst_ifindex == indev->ifindex;
++
++	return nft_fib_is_loopback(pkt->skb, indev);
++}
++
+ int nft_fib_dump(struct sk_buff *skb, const struct nft_expr *expr, bool reset);
+ int nft_fib_init(const struct nft_ctx *ctx, const struct nft_expr *expr,
+ 		 const struct nlattr * const tb[]);
+--- a/net/ipv4/netfilter/nft_fib_ipv4.c
++++ b/net/ipv4/netfilter/nft_fib_ipv4.c
+@@ -70,6 +70,11 @@ void nft_fib4_eval(const struct nft_expr
+ 	const struct net_device *oif;
+ 	const struct net_device *found;
+ 
++	if (nft_fib_can_skip(pkt)) {
++		nft_fib_store_result(dest, priv, nft_in(pkt));
++		return;
++	}
++
+ 	/*
+ 	 * Do not set flowi4_oif, it restricts results (for example, asking
+ 	 * for oif 3 will get RTN_UNICAST result even if the daddr exits
+@@ -84,12 +89,6 @@ void nft_fib4_eval(const struct nft_expr
+ 	else
+ 		oif = NULL;
+ 
+-	if (nft_hook(pkt) == NF_INET_PRE_ROUTING &&
+-	    nft_fib_is_loopback(pkt->skb, nft_in(pkt))) {
+-		nft_fib_store_result(dest, priv, nft_in(pkt));
+-		return;
+-	}
+-
+ 	iph = skb_header_pointer(pkt->skb, noff, sizeof(_iph), &_iph);
+ 	if (!iph) {
+ 		regs->verdict.code = NFT_BREAK;
+--- a/net/ipv6/netfilter/nft_fib_ipv6.c
++++ b/net/ipv6/netfilter/nft_fib_ipv6.c
+@@ -170,6 +170,11 @@ void nft_fib6_eval(const struct nft_expr
+ 	struct rt6_info *rt;
+ 	int lookup_flags;
+ 
++	if (nft_fib_can_skip(pkt)) {
++		nft_fib_store_result(dest, priv, nft_in(pkt));
++		return;
++	}
++
+ 	if (priv->flags & NFTA_FIB_F_IIF)
+ 		oif = nft_in(pkt);
+ 	else if (priv->flags & NFTA_FIB_F_OIF)
+@@ -181,17 +186,13 @@ void nft_fib6_eval(const struct nft_expr
+ 		return;
  	}
  
--	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
--		return IRQ_NONE;
+-	lookup_flags = nft_fib6_flowi_init(&fl6, priv, pkt, oif, iph);
 -
- 	/*
- 	 * Clear this flag after updating interrupt ack register and just
- 	 * before mbox_chan_received_data() which might call pcc_send_data()
--- 
-2.39.5
-
+-	if (nft_hook(pkt) == NF_INET_PRE_ROUTING ||
+-	    nft_hook(pkt) == NF_INET_INGRESS) {
+-		if (nft_fib_is_loopback(pkt->skb, nft_in(pkt)) ||
+-		    nft_fib_v6_skip_icmpv6(pkt->skb, pkt->tprot, iph)) {
+-			nft_fib_store_result(dest, priv, nft_in(pkt));
+-			return;
+-		}
++	if (nft_fib_v6_skip_icmpv6(pkt->skb, pkt->tprot, iph)) {
++		nft_fib_store_result(dest, priv, nft_in(pkt));
++		return;
+ 	}
+ 
++	lookup_flags = nft_fib6_flowi_init(&fl6, priv, pkt, oif, iph);
++
+ 	*dest = 0;
+ 	rt = (void *)ip6_route_lookup(nft_net(pkt), &fl6, pkt->skb,
+ 				      lookup_flags);
 
 
 
