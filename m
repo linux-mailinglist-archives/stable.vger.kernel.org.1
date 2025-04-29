@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-138004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA693AA1668
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E14AA13A9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 601019876A0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C35CD5A601E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6662E242D6A;
-	Tue, 29 Apr 2025 17:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5C7250BFE;
+	Tue, 29 Apr 2025 17:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANcDy8Vz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neppbEOy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25238250C15;
-	Tue, 29 Apr 2025 17:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5748246326;
+	Tue, 29 Apr 2025 17:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947810; cv=none; b=ucEbRIKlxiqC7/4Y7CrDyfhs2IpgYvG7FoIpBP9s4RjN+oDE9JnBukL0XoBW32Gn7h53Kh7NG8rGXoMYbkRsp88jpUSwCU0ldkgWkuWciaVxlRcCGshhCyXNpx4XvJYJ8uKr5b0sqgmycV3XNheSBze4uAeDQIvO0ONr4emwTWY=
+	t=1745946155; cv=none; b=Uj4/6tCgQOcAYTzrXuGG8GeXjuPigoX+Mdpy+G5OxDsHSwWahHNCA3wSbLG/mHk9gt6/bxZKjWl6RkyZcCP7ccdXkXB/Ymh4GDZdX+wm0dC5+HjTcpeNCsfRIBfDBIClPLde03XrsTSXNu1abBE8eJKu20NTR5XkAnCGPxD68lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947810; c=relaxed/simple;
-	bh=Pnqej/TGd8CeXl3hXA8/yFyJpZXlKM9OgsSm+ZV8reI=;
+	s=arc-20240116; t=1745946155; c=relaxed/simple;
+	bh=uBgtejF6uvw19pZzQ9fDS7CLi8laSvrdpwBs10JCmis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/LqyNtJ+dMSngJqaAjurWFNemMx4ruKV9uoNXCn67JLaCrXv2Yjw5m2qDThLJTPyt7bZRxTZlDyyBkGAQGVhdCquPU4exWx4/n3Y6fDRnhcVLQkgHG7+7fg9vy8SSsJ+5uy0dzFmdRLr2U6GuQ3np15VCgIgac7UQAaDOe3xBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANcDy8Vz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4171C4CEEA;
-	Tue, 29 Apr 2025 17:30:09 +0000 (UTC)
+	 MIME-Version; b=KM2JwcOUngcGUPxmWD+Sx/6D8cRh8mI3AzRvbhgHRPYRESrIe7iC6TaTLbV0drZO3mLgorVjPKek1khZPqVrx52iCARRSj8MGqHZG+uitzi58WNELUYXhV942HLeN13XRMNoHzjcqFtvojB+OBC6u2/RpDxlX/g/LN1QIY8iWIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neppbEOy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64215C4CEEE;
+	Tue, 29 Apr 2025 17:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947810;
-	bh=Pnqej/TGd8CeXl3hXA8/yFyJpZXlKM9OgsSm+ZV8reI=;
+	s=korg; t=1745946154;
+	bh=uBgtejF6uvw19pZzQ9fDS7CLi8laSvrdpwBs10JCmis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ANcDy8VzZE1/bynFOAEsjTA1tIHAiYska9wfuUXU9NvK+aVnAqujPNvY3hLTz24Sb
-	 xVVEadbMuEF4M9AppsR9jDtQMw6aCFmyCNIPwbg/VN7OB70H/A4WCxqzKncbhPCsdw
-	 duq50d7KumBF/Yikk/7X5r2Er0KKZCTGao1q3yA0=
+	b=neppbEOyxsZvhMucqUHlZq9L8xONtD/isZMfGzeItPO3dEcK2Ukekxt3u6WjXq2LK
+	 c+6waM65cXwwPc3GRuJ9w4I4E2XaW9NlhdOw4A1jWhLcca0MHKcOH/7Xim7g8bdwyr
+	 W9Ol0sTkuIu5ETpYfGx0KL0lda4JmhixT5T04P+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/280] scsi: ufs: core: Add NULL check in ufshcd_mcq_compl_pending_transfer()
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.14 173/311] USB: wdm: handle IO errors in wdm_wwan_port_start
 Date: Tue, 29 Apr 2025 18:40:10 +0200
-Message-ID: <20250429161117.932958542@linuxfoundation.org>
+Message-ID: <20250429161128.118385834@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 08a966a917fe3d92150fa3cc15793ad5e57051eb ]
+commit 9697f5efcf5fdea65b8390b5eb81bebe746ceedc upstream.
 
-Add a NULL check for the returned hwq pointer by ufshcd_mcq_req_to_hwq().
+In case submitting the URB fails we must undo
+what we've done so far.
 
-This is similar to the fix in commit 74736103fb41 ("scsi: ufs: core: Fix
-ufshcd_abort_one racing issue").
-
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250412195909.315418-1-chenyuan0y@gmail.com
-Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cac6fb015f71 ("usb: class: cdc-wdm: WWAN framework integration")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250401084749.175246-2-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/class/cdc-wdm.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 89fc0b5662919..8d4a5b8371b63 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -5689,6 +5689,8 @@ static void ufshcd_mcq_compl_pending_transfer(struct ufs_hba *hba,
- 			continue;
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -829,6 +829,7 @@ static struct usb_class_driver wdm_class
+ static int wdm_wwan_port_start(struct wwan_port *port)
+ {
+ 	struct wdm_device *desc = wwan_port_get_drvdata(port);
++	int rv;
  
- 		hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(cmd));
-+		if (!hwq)
-+			continue;
+ 	/* The interface is both exposed via the WWAN framework and as a
+ 	 * legacy usbmisc chardev. If chardev is already open, just fail
+@@ -848,7 +849,15 @@ static int wdm_wwan_port_start(struct ww
+ 	wwan_port_txon(port);
  
- 		if (force_compl) {
- 			ufshcd_mcq_compl_all_cqes_lock(hba, hwq);
--- 
-2.39.5
-
+ 	/* Start getting events */
+-	return usb_submit_urb(desc->validity, GFP_KERNEL);
++	rv = usb_submit_urb(desc->validity, GFP_KERNEL);
++	if (rv < 0) {
++		wwan_port_txoff(port);
++		desc->manage_power(desc->intf, 0);
++		/* this must be last lest we race with chardev open */
++		clear_bit(WDM_WWAN_IN_USE, &desc->flags);
++	}
++
++	return rv;
+ }
+ 
+ static void wdm_wwan_port_stop(struct wwan_port *port)
 
 
 
