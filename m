@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A18F2AA136C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65128AA1743
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 274391896846
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA8A81B64FAB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB95423F413;
-	Tue, 29 Apr 2025 17:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D592512C6;
+	Tue, 29 Apr 2025 17:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGnHyoAu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYjQRQln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B1182C60;
-	Tue, 29 Apr 2025 17:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6B2C148;
+	Tue, 29 Apr 2025 17:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946052; cv=none; b=LCsxuK6ehZ9gRLQ/wFvcfPXV/hSgtLbEGx7J2rpIBksUQsSI586RThG8on2SLlDQwQxkArKqXT1tEuwDRjQHeIKLTZXroncCNS0YtIjeOh2WnIcZ62CWFWci9KgRwh6FI4Amvbjbq2K/K0XbSmRHAgX84dsWuMfCJdlFcpmhGEw=
+	t=1745948740; cv=none; b=HpTX+liDnQHpBCMTiEGw5ejAH/gh5HzxcqeRA3fEmhX+qDZVxH0oBpNIm53gLaoriq4JzzRgD5Citz9/kCVymcInllIbjCY/0meJwduIaK0Je64i4RzbNE9FPJ9MAEIA0AkJUozAv0GPBMVY1rOKJJM+cGu9GC1TngEuL16oty8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946052; c=relaxed/simple;
-	bh=7OHohXc7NMIQXcBJ6XLtVfH5LVxneYJ9xTKld/SXRp8=;
+	s=arc-20240116; t=1745948740; c=relaxed/simple;
+	bh=7FUY+z8QC3OWU9tZw8NomU1KRRKZfvAJKTvP47IUfas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tqWnhyVrtaqZFfDKlSSuFN57pib+OkJzxwwAxw1pZS71vxvH/J7HXzMW9azp3b3wEjZOl1ZFs0Zyof3TyyIFC5s3QHZzwVDAXVW9dnB6QsH2A1ImK8GUHhRbZaA3ZUiHgJgKhtKOiL9eQIToFBXCjwHKBPznGba+04yhRYVR9o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGnHyoAu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80F9C4CEE3;
-	Tue, 29 Apr 2025 17:00:51 +0000 (UTC)
+	 MIME-Version; b=sRpF1ClemODew/l1RpgOmvMIYjBcWKDj/audiQDTQ+cdtcbuJABdowOUSptqpL37mIiAjrthFzPla3Z5z2ZwhdCl532JOVD+7TL4BZ8TU6XZjUtHw8YchCgYlCbhnHb6FqkRzBKBopA4o4whKRVKFnxK3eOqaWS8W6WeIcshqZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYjQRQln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D32C4CEE3;
+	Tue, 29 Apr 2025 17:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946052;
-	bh=7OHohXc7NMIQXcBJ6XLtVfH5LVxneYJ9xTKld/SXRp8=;
+	s=korg; t=1745948740;
+	bh=7FUY+z8QC3OWU9tZw8NomU1KRRKZfvAJKTvP47IUfas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RGnHyoAuXF6A0lyQAsxUgclgvrAgpVlttxYQFXEuGkFfO08CSsGzLwTeRY7KBhNi5
-	 EGW6aot4D4aFBnbZC3AogZwGNxGcLlahqjSV4VIuLoA8niQ7tKJW9ZKgLirVQh/Gex
-	 FpeYwpsQPIXNnH3XI6Zt2nMCq9RHqzyTw4f5RhRg=
+	b=TYjQRQlnC7XgLxAmpbovgyZia5g4errGpYepcsyex1Og51sZs6GJdaONa9oftGBLw
+	 uCbdMgM+RW93Moefr+Ta7QVYE0Tr0m8HBcs8TFXO77FQhrgzXaNSe7rUxSPiBxtYKp
+	 vAQxIJGMmE7rmOa8EXaT+bQryrnbzHGpk+AAkdao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>
-Subject: [PATCH 6.14 138/311] ata: libata-scsi: Improve CDL control
+	YH Huang <yh.huang@mediatek.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 5.15 098/373] arm64: dts: mediatek: mt8173: Fix disp-pwm compatible string
 Date: Tue, 29 Apr 2025 18:39:35 +0200
-Message-ID: <20250429161126.689136120@linuxfoundation.org>
+Message-ID: <20250429161127.187462041@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-commit 17e897a456752ec9c2d7afb3d9baf268b442451b upstream.
+commit 46ad36002088eff8fc5cae200aa42ae9f9310ddd upstream.
 
-With ATA devices supporting the CDL feature, using CDL requires that the
-feature be enabled with a SET FEATURES command. This command is issued
-as the translated command for the MODE SELECT command issued by
-scsi_cdl_enable() when the user enables CDL through the device
-cdl_enable sysfs attribute.
+The MT8173 disp-pwm device should have only one compatible string, based
+on the following DT validation error:
 
-Currently, ata_mselect_control_ata_feature() always translates a MODE
-SELECT command for the ATA features subpage of the control mode page to
-a SET FEATURES command to enable or disable CDL based on the cdl_ctrl
-field. However, there is no need to issue the SET FEATURES command if:
-1) The MODE SELECT command requests disabling CDL and CDL is already
-   disabled.
-2) The MODE SELECT command requests enabling CDL and CDL is already
-   enabled.
+    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401e000: compatible: 'oneOf' conditional failed, one must be fixed:
+	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' was expected
+	    'mediatek,mt8183-disp-pwm' was expected
+	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
+    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401f000: compatible: 'oneOf' conditional failed, one must be fixed:
+	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' was expected
+	    'mediatek,mt8183-disp-pwm' was expected
+	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
 
-Fix ata_mselect_control_ata_feature() to issue the SET FEATURES command
-only when necessary. Since enabling CDL also implies a reset of the CDL
-statistics log page, avoiding useless CDL enable operations also avoids
-clearing the CDL statistics log.
+Drop the extra "mediatek,mt6595-disp-pwm" compatible string.
 
-Also add debug messages to clearly signal when CDL is being enabled or
-disabled using a SET FEATURES command.
-
-Fixes: df60f9c64576 ("scsi: ata: libata: Add ATA feature control sub-page translation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+Fixes: 61aee9342514 ("arm64: dts: mt8173: add MT8173 display PWM driver support node")
+Cc: YH Huang <yh.huang@mediatek.com>
+Cc: stable@vger.kernel.org # v4.5+
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250108083424.2732375-2-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8173.dtsi |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -3909,17 +3909,27 @@ static unsigned int ata_mselect_control_
- 	/* Check cdl_ctrl */
- 	switch (buf[0] & 0x03) {
- 	case 0:
--		/* Disable CDL */
-+		/* Disable CDL if it is enabled */
-+		if (!(dev->flags & ATA_DFLAG_CDL_ENABLED))
-+			return 0;
-+		ata_dev_dbg(dev, "Disabling CDL\n");
- 		cdl_action = 0;
- 		dev->flags &= ~ATA_DFLAG_CDL_ENABLED;
- 		break;
- 	case 0x02:
--		/* Enable CDL T2A/T2B: NCQ priority must be disabled */
-+		/*
-+		 * Enable CDL if not already enabled. Since this is mutually
-+		 * exclusive with NCQ priority, allow this only if NCQ priority
-+		 * is disabled.
-+		 */
-+		if (dev->flags & ATA_DFLAG_CDL_ENABLED)
-+			return 0;
- 		if (dev->flags & ATA_DFLAG_NCQ_PRIO_ENABLED) {
- 			ata_dev_err(dev,
- 				"NCQ priority must be disabled to enable CDL\n");
- 			return -EINVAL;
- 		}
-+		ata_dev_dbg(dev, "Enabling CDL\n");
- 		cdl_action = 1;
- 		dev->flags |= ATA_DFLAG_CDL_ENABLED;
- 		break;
+--- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
+@@ -1260,8 +1260,7 @@
+ 		};
+ 
+ 		pwm0: pwm@1401e000 {
+-			compatible = "mediatek,mt8173-disp-pwm",
+-				     "mediatek,mt6595-disp-pwm";
++			compatible = "mediatek,mt8173-disp-pwm";
+ 			reg = <0 0x1401e000 0 0x1000>;
+ 			#pwm-cells = <2>;
+ 			clocks = <&mmsys CLK_MM_DISP_PWM026M>,
+@@ -1271,8 +1270,7 @@
+ 		};
+ 
+ 		pwm1: pwm@1401f000 {
+-			compatible = "mediatek,mt8173-disp-pwm",
+-				     "mediatek,mt6595-disp-pwm";
++			compatible = "mediatek,mt8173-disp-pwm";
+ 			reg = <0 0x1401f000 0 0x1000>;
+ 			#pwm-cells = <2>;
+ 			clocks = <&mmsys CLK_MM_DISP_PWM126M>,
 
 
 
