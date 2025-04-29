@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B563AA1787
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF40AA1203
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CD364C3A4D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 682A84A6A70
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB1924DFF3;
-	Tue, 29 Apr 2025 17:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8160A244679;
+	Tue, 29 Apr 2025 16:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRi+Cb8o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdCyy4TO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A836B221DA7;
-	Tue, 29 Apr 2025 17:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F450229B05;
+	Tue, 29 Apr 2025 16:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948903; cv=none; b=f1T5IcgxcApxAtsPmerVVQp/Wy3LHNOgxh23Vp+Re8YM1zd7451NQB/92/9sbJefNJC1JN8kHoywMMcD/hw/7p7cYADBRO/iyvjlwnBK+6GGyhBDrTPT/Jsr5zEK5P2zIZuCTa6DUel7Br2jmxMzlNehpbcF2riYGDMVdBQtAmc=
+	t=1745945294; cv=none; b=VInFMbeqLSRx4xui8BoHxviKyWORo8K6NWvztgR9dbWFoOgiVzXhAlkF7A1eeBVhfziyQVtLXdLUYyuQqzVvAIkONF1H5VDEURo7QJu+kKhXzplWAC2PbEnaVjtoQZ8uhHeX/hAp1Ex4r4VO0lsdKtP7MXJQAxpGNlrI6l5dsCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948903; c=relaxed/simple;
-	bh=pxr/Kihf3iYJl/jE71B5l92ttWdzltrlfLSQrJ9Ysxo=;
+	s=arc-20240116; t=1745945294; c=relaxed/simple;
+	bh=0AK9ORFKuxa2qB3D0W/CaIZN7g2CF7Ucok8J8OJ9ync=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYdrNzluBnjGkgl5jGAK+r3GXtx0hFvtu4+viir/izKvJc2s0cdTrOATHO9HRMsAtTkaj3FT7Rp3he0k3d15UG7Csiy3Zd+HjW0JVEPTQiySA9ehkawD946pEw58gSFjHqKWK8ekLEZU5FC3Zpr04TZnBL4vYS1ZuR+bs5l4eII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRi+Cb8o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38613C4CEE3;
-	Tue, 29 Apr 2025 17:48:23 +0000 (UTC)
+	 MIME-Version; b=XKdpEhPCD996VnI6/i32LLB5folnJZDPRXgqN+4pM6HEpjY4L2h6kCPukvQdKlMh3nGu92El7C9gRYWCKvxcWHtNZgPpCqlCpcNcv7jzUqvzY94Hy3r42+mAQg9VMkJ9FaSxB30BG2XQS8C83fezLt26iS5mK1qsUs8qiXdlpAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdCyy4TO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3133C4CEE3;
+	Tue, 29 Apr 2025 16:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948903;
-	bh=pxr/Kihf3iYJl/jE71B5l92ttWdzltrlfLSQrJ9Ysxo=;
+	s=korg; t=1745945294;
+	bh=0AK9ORFKuxa2qB3D0W/CaIZN7g2CF7Ucok8J8OJ9ync=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TRi+Cb8oVFya14IWyTD8CSB+iZrHYIwJJK313NH+JSRsvg5uexr+1Zz/WfxLg+p1Y
-	 BL9464JW98e3DUAXMSsBty8rxf+rX5ONGAvoyT0ggZXr4oplwrkU8cp0evVrp0lL9u
-	 GTSD3MiIkFfH8d0Db8rhf8myvkroumeisYFvgl1c=
+	b=HdCyy4TOChz90l9bDjiiEL6JA97wmV3nAg7WFuVfYbqqH6QFa0vylcGQwTHmZykBW
+	 j7re5smkaJ/wRJnUW/pDYjUO4cuoMx01eZ0qsF+DBx1CcSyCXk1FKLZw/W5nOj2lx4
+	 w1njPgO7VZfEWw8/m589RBPT9GLsjNRQJZt5KKqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 128/373] wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()
-Date: Tue, 29 Apr 2025 18:40:05 +0200
-Message-ID: <20250429161128.436695769@linuxfoundation.org>
+	YH Huang <yh.huang@mediatek.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 5.4 065/179] arm64: dts: mediatek: mt8173: Fix disp-pwm compatible string
+Date: Tue, 29 Apr 2025 18:40:06 +0200
+Message-ID: <20250429161052.040736335@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit a104042e2bf6528199adb6ca901efe7b60c2c27f ]
+commit 46ad36002088eff8fc5cae200aa42ae9f9310ddd upstream.
 
-The ieee80211 skb control block key (set when skb was queued) could have
-been removed before ieee80211_tx_dequeue() call. ieee80211_tx_dequeue()
-already called ieee80211_tx_h_select_key() to get the current key, but
-the latter do not update the key in skb control block in case it is
-NULL. Because some drivers actually use this key in their TX callbacks
-(e.g. ath1{1,2}k_mac_op_tx()) this could lead to the use after free
-below:
+The MT8173 disp-pwm device should have only one compatible string, based
+on the following DT validation error:
 
-  BUG: KASAN: slab-use-after-free in ath11k_mac_op_tx+0x590/0x61c
-  Read of size 4 at addr ffffff803083c248 by task kworker/u16:4/1440
+    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401e000: compatible: 'oneOf' conditional failed, one must be fixed:
+	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' was expected
+	    'mediatek,mt8183-disp-pwm' was expected
+	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
+    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401f000: compatible: 'oneOf' conditional failed, one must be fixed:
+	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' was expected
+	    'mediatek,mt8183-disp-pwm' was expected
+	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
 
-  CPU: 3 UID: 0 PID: 1440 Comm: kworker/u16:4 Not tainted 6.13.0-ge128f627f404 #2
-  Hardware name: HW (DT)
-  Workqueue: bat_events batadv_send_outstanding_bcast_packet
-  Call trace:
-   show_stack+0x14/0x1c (C)
-   dump_stack_lvl+0x58/0x74
-   print_report+0x164/0x4c0
-   kasan_report+0xac/0xe8
-   __asan_report_load4_noabort+0x1c/0x24
-   ath11k_mac_op_tx+0x590/0x61c
-   ieee80211_handle_wake_tx_queue+0x12c/0x1c8
-   ieee80211_queue_skb+0xdcc/0x1b4c
-   ieee80211_tx+0x1ec/0x2bc
-   ieee80211_xmit+0x224/0x324
-   __ieee80211_subif_start_xmit+0x85c/0xcf8
-   ieee80211_subif_start_xmit+0xc0/0xec4
-   dev_hard_start_xmit+0xf4/0x28c
-   __dev_queue_xmit+0x6ac/0x318c
-   batadv_send_skb_packet+0x38c/0x4b0
-   batadv_send_outstanding_bcast_packet+0x110/0x328
-   process_one_work+0x578/0xc10
-   worker_thread+0x4bc/0xc7c
-   kthread+0x2f8/0x380
-   ret_from_fork+0x10/0x20
+Drop the extra "mediatek,mt6595-disp-pwm" compatible string.
 
-  Allocated by task 1906:
-   kasan_save_stack+0x28/0x4c
-   kasan_save_track+0x1c/0x40
-   kasan_save_alloc_info+0x3c/0x4c
-   __kasan_kmalloc+0xac/0xb0
-   __kmalloc_noprof+0x1b4/0x380
-   ieee80211_key_alloc+0x3c/0xb64
-   ieee80211_add_key+0x1b4/0x71c
-   nl80211_new_key+0x2b4/0x5d8
-   genl_family_rcv_msg_doit+0x198/0x240
-  <...>
-
-  Freed by task 1494:
-   kasan_save_stack+0x28/0x4c
-   kasan_save_track+0x1c/0x40
-   kasan_save_free_info+0x48/0x94
-   __kasan_slab_free+0x48/0x60
-   kfree+0xc8/0x31c
-   kfree_sensitive+0x70/0x80
-   ieee80211_key_free_common+0x10c/0x174
-   ieee80211_free_keys+0x188/0x46c
-   ieee80211_stop_mesh+0x70/0x2cc
-   ieee80211_leave_mesh+0x1c/0x60
-   cfg80211_leave_mesh+0xe0/0x280
-   cfg80211_leave+0x1e0/0x244
-  <...>
-
-Reset SKB control block key before calling ieee80211_tx_h_select_key()
-to avoid that.
-
-Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Link: https://patch.msgid.link/06aa507b853ca385ceded81c18b0a6dd0f081bc8.1742833382.git.repk@triplefau.lt
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 61aee9342514 ("arm64: dts: mt8173: add MT8173 display PWM driver support node")
+Cc: YH Huang <yh.huang@mediatek.com>
+Cc: stable@vger.kernel.org # v4.5+
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250108083424.2732375-2-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/tx.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/mediatek/mt8173.dtsi |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index c4e6fbe4343ee..0a658e747798b 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3704,6 +3704,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	 * The key can be removed while the packet was queued, so need to call
- 	 * this here to get the current key.
- 	 */
-+	info->control.hw_key = NULL;
- 	r = ieee80211_tx_h_select_key(&tx);
- 	if (r != TX_CONTINUE) {
- 		ieee80211_free_txskb(&local->hw, skb);
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
+@@ -1161,8 +1161,7 @@
+ 		};
+ 
+ 		pwm0: pwm@1401e000 {
+-			compatible = "mediatek,mt8173-disp-pwm",
+-				     "mediatek,mt6595-disp-pwm";
++			compatible = "mediatek,mt8173-disp-pwm";
+ 			reg = <0 0x1401e000 0 0x1000>;
+ 			#pwm-cells = <2>;
+ 			clocks = <&mmsys CLK_MM_DISP_PWM026M>,
+@@ -1172,8 +1171,7 @@
+ 		};
+ 
+ 		pwm1: pwm@1401f000 {
+-			compatible = "mediatek,mt8173-disp-pwm",
+-				     "mediatek,mt6595-disp-pwm";
++			compatible = "mediatek,mt8173-disp-pwm";
+ 			reg = <0 0x1401f000 0 0x1000>;
+ 			#pwm-cells = <2>;
+ 			clocks = <&mmsys CLK_MM_DISP_PWM126M>,
 
 
 
