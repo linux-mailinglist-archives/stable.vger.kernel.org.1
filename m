@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-137222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB71AA1238
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D83AA17FC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:54:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 096221BA2A79
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CAFC3AB5C8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E5B215060;
-	Tue, 29 Apr 2025 16:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D11E25178C;
+	Tue, 29 Apr 2025 17:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIgs3ugJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqBY3Oec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C753D243364;
-	Tue, 29 Apr 2025 16:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF37C239072;
+	Tue, 29 Apr 2025 17:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945426; cv=none; b=KXYEiBOWYJg1LlF8AptPLeQJ56VQYunxHkRuAWUPH/zfYBk+0cMuaBjXtnZ8fp2sMSOQKpWz7vN/mQ6D8kzHeCZt901cVj4oxaa7NNomB91e3ZBkWaRDz/lZLYrX/Cv1CCy3tHtyBMPvv2uj+HkMMTh0HZRnTWNaDgON1cF3Gv8=
+	t=1745948948; cv=none; b=ofn8phgIPNE+RHiU5oVh6KK+C8bxd+00XSY0udkPYO8h5cUXhbOqg5KZR3TPX2wBBrM/WZFgesy+Krs0qz4z8rPfPagiQcaQlnHV+g4yhcqBwdDR8UQqbhwXSnmbK5MedFULhXOHG05vaRFoEaImxBYxtkzQplcAS5+atU6wic4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945426; c=relaxed/simple;
-	bh=jSQQJ6d6MyKByPgfu5UxgPovwba2SfKyHJYO7ZH5Fvc=;
+	s=arc-20240116; t=1745948948; c=relaxed/simple;
+	bh=AFU/xwxuea5PcENdWqbXZT0s+foOgV29P+DSPaN3Njg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aClmc9u0HzIFYyKyL1lAGJlY7fTKJCtK6XMZLMTZdxFIX9rd6xEMYuH48A9mHWsbIgXoZK76U2LuWgdPedW6HVVKr62Yd3/9tIVWSmu+BxRUU+3AMEEEVXb/3k3LTMpXRQobpeuA2vKDQQP6Hd0lX7X5XZR6FtrcUX7qBLHOr0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIgs3ugJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAB9C4CEE3;
-	Tue, 29 Apr 2025 16:50:26 +0000 (UTC)
+	 MIME-Version; b=ppI2UUnSRDAvLCDS2jOiDOR8HrT1jca9kzeX98WE5+l896o717k0ERbDLnQeVf2Ssc6e3klkfYpmryicJN3of2tWaFt7GjnKDpBJXU4bK8yP1ABk3+vHaa19cpddnOieCHSHypxvJNF8dODFkeLndm/qTuXhsXRk0sevqAFVZuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqBY3Oec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F727C4CEE3;
+	Tue, 29 Apr 2025 17:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945426;
-	bh=jSQQJ6d6MyKByPgfu5UxgPovwba2SfKyHJYO7ZH5Fvc=;
+	s=korg; t=1745948947;
+	bh=AFU/xwxuea5PcENdWqbXZT0s+foOgV29P+DSPaN3Njg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aIgs3ugJ7WV7Ml8Vdy74sdf8vXookvEO4vYllCfnqEXuElSciKfX/MfyWjKARTezH
-	 6aPSWIvd9Zx/WKuERGB/vimfw1h0a5SaX0cm7msPqount9rJly5W5ybdgVN3/CFJPt
-	 OyA02SAvpP1MlWTfmmnOntCVr6zO6poytCfV+CrE=
+	b=oqBY3Oec40JGkNE7pfjwvM5cIlpx1wzsLkp+Y6vG6b2UW9DDdv7FGqbetd6h/JI2S
+	 YoTq9v89kUQNpdSQCnpiU9pgWAwtKBXAUa3TTVGpCy842N++Keo33O0M1fk8/3Jddp
+	 Ggb9lIXK64fkpZcgreUFUjRIxSfFn1ic6RJwNtzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Lanzano <lanzano.alex@gmail.com>
-Subject: [PATCH 5.4 108/179] drm/repaper: fix integer overflows in repeat functions
+	Xiangsheng Hou <xiangsheng.hou@mediatek.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15 172/373] virtiofs: add filesystem context source name check
 Date: Tue, 29 Apr 2025 18:40:49 +0200
-Message-ID: <20250429161053.773267259@linuxfoundation.org>
+Message-ID: <20250429161130.248706794@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
 
-commit 4d098000ac193f359e6b8ca4801dbdbd6a27b41f upstream.
+commit a94fd938df2b1628da66b498aa0eeb89593bc7a2 upstream.
 
-There are conditions, albeit somewhat unlikely, under which right hand
-expressions, calculating the end of time period in functions like
-repaper_frame_fixed_repeat(), may overflow.
+In certain scenarios, for example, during fuzz testing, the source
+name may be NULL, which could lead to a kernel panic. Therefore, an
+extra check for the source name should be added.
 
-For instance, if 'factor10x' in repaper_get_temperature() is high
-enough (170), as is 'epd->stage_time' in repaper_probe(), then the
-resulting value of 'end' will not fit in unsigned int expression.
-
-Mitigate this by casting 'epd->factored_stage_time' to wider type before
-any multiplication is done.
-
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 3589211e9b03 ("drm/tinydrm: Add RePaper e-ink driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250116134801.22067-1-n.zhandarovich@fintech.ru
+Fixes: a62a8ef9d97d ("virtio-fs: add virtiofs filesystem")
+Cc: <stable@vger.kernel.org> # all LTS kernels
+Signed-off-by: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
+Link: https://lore.kernel.org/20250407115111.25535-1-xiangsheng.hou@mediatek.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/repaper.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/fuse/virtio_fs.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/tiny/repaper.c
-+++ b/drivers/gpu/drm/tiny/repaper.c
-@@ -454,7 +454,7 @@ static void repaper_frame_fixed_repeat(s
- 				       enum repaper_stage stage)
- {
- 	u64 start = local_clock();
--	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
-+	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
+--- a/fs/fuse/virtio_fs.c
++++ b/fs/fuse/virtio_fs.c
+@@ -1431,6 +1431,9 @@ static int virtio_fs_get_tree(struct fs_
+ 	unsigned int virtqueue_size;
+ 	int err = -EIO;
  
- 	do {
- 		repaper_frame_fixed(epd, fixed_value, stage);
-@@ -465,7 +465,7 @@ static void repaper_frame_data_repeat(st
- 				      const u8 *mask, enum repaper_stage stage)
- {
- 	u64 start = local_clock();
--	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
-+	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
- 
- 	do {
- 		repaper_frame_data(epd, image, mask, stage);
++	if (!fsc->source)
++		return invalf(fsc, "No source specified");
++
+ 	/* This gets a reference on virtio_fs object. This ptr gets installed
+ 	 * in fc->iq->priv. Once fuse_conn is going away, it calls ->put()
+ 	 * to drop the reference to this object.
 
 
 
