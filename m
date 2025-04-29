@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-138395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B8CAA17D0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9103AA127D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40C074C5B56
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6576188C156
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F86D2472B9;
-	Tue, 29 Apr 2025 17:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E4B25228D;
+	Tue, 29 Apr 2025 16:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdPXr9HK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nX8yCs+v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D077522AE68;
-	Tue, 29 Apr 2025 17:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30492517BC;
+	Tue, 29 Apr 2025 16:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949112; cv=none; b=eyK9xXdOI2G9tAng/we8C4iADSmvQDL5jaXdKM2KBuUPCTnP/sSMhYvhHWHf9fqIgw5yVq2iiG4BFtAI349jlFJXO7Z5WPVDvLYu37zjvazOf2aZD1NiOSlP5OzENBUkBmJUztXd2uwxQO24giCPjXjOFbxW9lkPSmsz8XZqL2o=
+	t=1745945559; cv=none; b=OTmpkpJqRrTY6EtEnHgq0rImYuhx5bXeg/z/c4d1eNJ2ZsynvkPI8MSL0Ywauic7x/jKuJzFXiRXrWh8PcdcOthpRqngbbB49Fnd7UeoFWvPVSy5RM6uOSny2KbS3yRPuBb1duNHyeE9fatyfkYfTwoR1zAERVFKyak5zVIdTbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949112; c=relaxed/simple;
-	bh=8xDundAfZRFXGu55LaL0LXk0YyN4kTWs97em5FEsx3M=;
+	s=arc-20240116; t=1745945559; c=relaxed/simple;
+	bh=9C9/CVwX8/XQ5NHoy4qlqtz+LyJBmgI64ee86gDSMeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bSn1H8Yrl0wViQaK8zv1e2yu22XPMzgFeRPpKKCg1M7M53dVP+SknxIhExiPYvbxi9TLXKQJ9NCHwK2ccGA1oOwsNIUrwr7oftImzN4FselV/DZ0VemNdqtwyP0kmIBKhl9BlhcCAL18NbfjHf6B+//gSDptAqoCYcJBAgNawRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdPXr9HK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CC2C4CEE3;
-	Tue, 29 Apr 2025 17:51:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JtpBdxLWjodlEvKjAoLKE2lQaGnqrcAoDkOjYY/1aeiOvEEugds5BLe63JfWkPfKl3DaSZdF+S+8EanzTMojB5uHwceimD1doqhim5ZV/1CFz4kgCZh4Ziferqp4AZxoijX8gWv15zteQ0mAVI2BTYosgjfotXbkBTDg4hjgwRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nX8yCs+v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F649C4CEE9;
+	Tue, 29 Apr 2025 16:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949112;
-	bh=8xDundAfZRFXGu55LaL0LXk0YyN4kTWs97em5FEsx3M=;
+	s=korg; t=1745945559;
+	bh=9C9/CVwX8/XQ5NHoy4qlqtz+LyJBmgI64ee86gDSMeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pdPXr9HKRlQobVTYqHs1DTCWKkROyGEtcHljNsaKORtC24lB+QH1gJPl8j6DQonKr
-	 +4rI5iIoWBCuSH5fjAU3EPaoG+zCijU/WmkLGdUMhgqDbw/z7anajuOSttpu4B9Fi0
-	 kpSAAtlvgK7jQqPHsyS3vEAraOdfuuKXhS4lxS3w=
+	b=nX8yCs+vQR1gfR+tWKE1iZYLXvCCOGiMluRJM3zYqkzhwy9OOqFXOpDaZvMsLHHfW
+	 8arvu6XAsnYizkmAf4K817qpTixCbep5vErLXK2qT6jMoZfrBa7Z5n9JTA0ClTOfEj
+	 XeLlFp4IEqxYavICd2J5kLi9nawyWzdIYb8DPb6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 5.15 188/373] KVM: arm64: Discard any SVE state when entering KVM guests
+	WangYuli <wangyuli@uniontech.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.4 124/179] MIPS: dec: Declare which_prom() as static
 Date: Tue, 29 Apr 2025 18:41:05 +0200
-Message-ID: <20250429161130.896599660@linuxfoundation.org>
+Message-ID: <20250429161054.414166000@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 93ae6b01bafee8fa385aa25ee7ebdb40057f6abe ]
+commit 55fa5868519bc48a7344a4c070efa2f4468f2167 upstream.
 
-Since 8383741ab2e773a99 (KVM: arm64: Get rid of host SVE tracking/saving)
-KVM has not tracked the host SVE state, relying on the fact that we
-currently disable SVE whenever we perform a syscall. This may not be true
-in future since performance optimisation may result in us keeping SVE
-enabled in order to avoid needing to take access traps to reenable it.
-Handle this by clearing TIF_SVE and converting the stored task state to
-FPSIMD format when preparing to run the guest.  This is done with a new
-call fpsimd_kvm_prepare() to keep the direct state manipulation
-functions internal to fpsimd.c.
+Declare which_prom() as static to suppress gcc compiler warning that
+'missing-prototypes'. This function is not intended to be called
+from other parts.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221115094640.112848-2-broonie@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: trivial backport to v6.1 ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix follow error with gcc-14 when -Werror:
+
+arch/mips/dec/prom/init.c:45:13: error: no previous prototype for ‘which_prom’ [-Werror=missing-prototypes]
+   45 | void __init which_prom(s32 magic, s32 *prom_vec)
+      |             ^~~~~~~~~~
+cc1: all warnings being treated as errors
+make[6]: *** [scripts/Makefile.build:207: arch/mips/dec/prom/init.o] Error 1
+make[5]: *** [scripts/Makefile.build:465: arch/mips/dec/prom] Error 2
+make[5]: *** Waiting for unfinished jobs....
+
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/fpsimd.h |    1 +
- arch/arm64/kernel/fpsimd.c      |   23 +++++++++++++++++++++++
- arch/arm64/kvm/fpsimd.c         |    4 +++-
- 3 files changed, 27 insertions(+), 1 deletion(-)
+ arch/mips/dec/prom/init.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/fpsimd.h
-+++ b/arch/arm64/include/asm/fpsimd.h
-@@ -44,6 +44,7 @@ extern void fpsimd_signal_preserve_curre
- extern void fpsimd_preserve_current_state(void);
- extern void fpsimd_restore_current_state(void);
- extern void fpsimd_update_current_state(struct user_fpsimd_state const *state);
-+extern void fpsimd_kvm_prepare(void);
- 
- extern void fpsimd_bind_state_to_cpu(struct user_fpsimd_state *state,
- 				     void *sve_state, unsigned int sve_vl);
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1109,6 +1109,29 @@ void fpsimd_signal_preserve_current_stat
- }
- 
- /*
-+ * Called by KVM when entering the guest.
-+ */
-+void fpsimd_kvm_prepare(void)
-+{
-+	if (!system_supports_sve())
-+		return;
-+
-+	/*
-+	 * KVM does not save host SVE state since we can only enter
-+	 * the guest from a syscall so the ABI means that only the
-+	 * non-saved SVE state needs to be saved.  If we have left
-+	 * SVE enabled for performance reasons then update the task
-+	 * state to be FPSIMD only.
-+	 */
-+	get_cpu_fpsimd_context();
-+
-+	if (test_and_clear_thread_flag(TIF_SVE))
-+		sve_to_fpsimd(current);
-+
-+	put_cpu_fpsimd_context();
-+}
-+
-+/*
-  * Associate current's FPSIMD context with this cpu
-  * The caller must have ownership of the cpu FPSIMD context before calling
-  * this function.
---- a/arch/arm64/kvm/fpsimd.c
-+++ b/arch/arm64/kvm/fpsimd.c
-@@ -70,12 +70,14 @@ error:
- void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
+--- a/arch/mips/dec/prom/init.c
++++ b/arch/mips/dec/prom/init.c
+@@ -42,7 +42,7 @@ int (*__pmax_close)(int);
+  * Detect which PROM the DECSTATION has, and set the callback vectors
+  * appropriately.
+  */
+-void __init which_prom(s32 magic, s32 *prom_vec)
++static void __init which_prom(s32 magic, s32 *prom_vec)
  {
- 	BUG_ON(!current->mm);
--	BUG_ON(test_thread_flag(TIF_SVE));
- 
- 	vcpu->arch.flags &= ~KVM_ARM64_FP_ENABLED;
- 	vcpu->arch.flags |= KVM_ARM64_FP_HOST;
- 
-+	fpsimd_kvm_prepare();
-+
- 	vcpu->arch.flags &= ~KVM_ARM64_HOST_SVE_ENABLED;
-+
- 	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
- 		vcpu->arch.flags |= KVM_ARM64_HOST_SVE_ENABLED;
- }
+ 	/*
+ 	 * No sign of the REX PROM's magic number means we assume a non-REX
 
 
 
