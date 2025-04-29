@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2446CAA18BF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:04:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D888AA1549
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D56793A9EF7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A2BD7A655D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200C924DFF3;
-	Tue, 29 Apr 2025 17:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B6225333F;
+	Tue, 29 Apr 2025 17:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="er+m39SZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEsZdQCq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11EB216605;
-	Tue, 29 Apr 2025 17:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C77247280;
+	Tue, 29 Apr 2025 17:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949506; cv=none; b=FAyoivcYuxTzCheQeS+suqE+969MVLwZ5e8f371j1BtlTmnW3Qsa+nVujGbnqqFAaPVeceCrTE60a+I0GpZYI0qBJFeXU9ZRlbaISYe+EhG/QCkoODyiG7UgohtQbJ3wZi78B9QkJ2nvpm3KhqaQIauau8jGan445ycHiTZ3HgE=
+	t=1745947457; cv=none; b=IHIaVh2Bk6An/hdcAdl5a5LX+zOfzcTWIr16aVeKFJ4UoCnZb789YaBJacTU9Iisu8ZJV88XIaDUpv4tZibXi1wnO8l1tjXEOxIQJDZo7amOHx/mNU01/ioSXctrqDV010MMpK1opt+LIifRGHrS+fTzYPUJ0cxgArCWFCuJoLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949506; c=relaxed/simple;
-	bh=h6AXX1zofSaBzuQPqFjJVSUV3T246lIKx+UIme0KeGE=;
+	s=arc-20240116; t=1745947457; c=relaxed/simple;
+	bh=pUhAbxFBNvVFKpeeY7PadJDHBxLVdnHDwpjMcMMauwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qEuLH5olcnHO2dUoHF6BZFOFFWeOIFsTF4RrpXQmAyY8oKQLBI+MTpRJBHXZUE8f6oTXuieJETznEdu2RnwEESKgB3jZFw/hFUjqMi3/1PrdpJ87LPu1ayimK1fd3yRinYDZmUdvtTldb+XN9raQlQaUwx7F7FWKnZUB7c1djeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=er+m39SZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE2FC4CEE3;
-	Tue, 29 Apr 2025 17:58:26 +0000 (UTC)
+	 MIME-Version; b=S5sZulgFInqBY/sQDawHd5epKq6m4a6te/24T7GtalSiXkdr+ccPdYpsb1Wh2YhFllHkZ7/v326yXUCDJsxZySFewxtIOlxG3wlO5gS987KRI5pLRfIJ7c9jVWMxKX9ug+6+BBeuuH3KG/huJtk10cNpJOHGcnFOx5o0iCyAEko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEsZdQCq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20597C4CEE3;
+	Tue, 29 Apr 2025 17:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949506;
-	bh=h6AXX1zofSaBzuQPqFjJVSUV3T246lIKx+UIme0KeGE=;
+	s=korg; t=1745947456;
+	bh=pUhAbxFBNvVFKpeeY7PadJDHBxLVdnHDwpjMcMMauwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=er+m39SZDG1MG5DbGKXAjm3bLZjDKZuiHkUOGpZ4fhwGrkLLeYhx+BT9zboXs9ksu
-	 m7trj45UYk8CgI8dbAh51UfhKs/JzG2kCzZrsgCSb3EETBE6HO69aoHqMcnn/+bQXU
-	 X8rg47kmBZ0zaY9YlyKi3ccEPRonzt66nNPtjNl4=
+	b=XEsZdQCq+tiTfTfi9Fswi/0F0EYdWZjWT9VqdumJju6uyPMTqK4RhfhjseNCreQfz
+	 +hhiDkCTGVpPgZb3AtS4dpnCKrQL64e2L9aGY5a33GAvNpmlVmZJyBZaeRXIsbiT/3
+	 RzrzOMz45lHaX7HaOCNL/qzqs2gDSoo/dc0Fo3Tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 5.15 313/373] usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling
+	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 5.10 286/286] media: venus: hfi_parser: Check for instance after hfi platform get
 Date: Tue, 29 Apr 2025 18:43:10 +0200
-Message-ID: <20250429161135.983596332@linuxfoundation.org>
+Message-ID: <20250429161119.675569512@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Stanimir Varbanov <stanimir.varbanov@linaro.org>
 
-commit 8c531e0a8c2d82509ad97c6d3a1e6217c7ed136d upstream.
+commit 9b5d8fd580caa898c6e1b8605c774f2517f786ab upstream.
 
-usb_phy_init() may return an error code if e.g. its implementation fails
-to prepare/enable some clocks. And properly rollback on probe error path
-by calling the counterpart usb_phy_shutdown().
+The inst function argument is != NULL only for Venus v1 and
+we did not migrate v1 to a hfi_platform abstraction yet. So
+check for instance != NULL only after hfi_platform_get returns
+no error.
 
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: be9cae2479f4 ("usb: chipidea: imx: Fix ULPI on imx53")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20250316102658.490340-4-pchelkin@ispras.ru
+Fixes: e29929266be1 ("media: venus: Get codecs and capabilities from hfi platform")
+Cc: stable@vger.kernel.org # v5.12
+Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/chipidea/ci_hdrc_imx.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_parser.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -461,7 +461,11 @@ static int ci_hdrc_imx_probe(struct plat
- 	    of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI) {
- 		pdata.flags |= CI_HDRC_OVERRIDE_PHY_CONTROL;
- 		data->override_phy_control = true;
--		usb_phy_init(pdata.usb_phy);
-+		ret = usb_phy_init(pdata.usb_phy);
-+		if (ret) {
-+			dev_err(dev, "Failed to init phy\n");
-+			goto err_clk;
-+		}
- 	}
+--- a/drivers/media/platform/qcom/venus/hfi_parser.c
++++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+@@ -269,13 +269,13 @@ static int hfi_platform_parser(struct ve
+ 	u32 enc_codecs, dec_codecs, count = 0;
+ 	unsigned int entries;
  
- 	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
-@@ -470,7 +474,7 @@ static int ci_hdrc_imx_probe(struct plat
- 	ret = imx_usbmisc_init(data->usbmisc_data);
- 	if (ret) {
- 		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
--		goto err_clk;
-+		goto phy_shutdown;
- 	}
+-	if (inst)
+-		return 0;
+-
+ 	plat = hfi_platform_get(core->res->hfi_version);
+ 	if (!plat)
+ 		return -EINVAL;
  
- 	data->ci_pdev = ci_hdrc_add_device(dev,
-@@ -479,7 +483,7 @@ static int ci_hdrc_imx_probe(struct plat
- 	if (IS_ERR(data->ci_pdev)) {
- 		ret = PTR_ERR(data->ci_pdev);
- 		dev_err_probe(dev, ret, "ci_hdrc_add_device failed\n");
--		goto err_clk;
-+		goto phy_shutdown;
- 	}
++	if (inst)
++		return 0;
++
+ 	if (plat->codecs)
+ 		plat->codecs(&enc_codecs, &dec_codecs, &count);
  
- 	if (data->usbmisc_data) {
-@@ -513,6 +517,9 @@ static int ci_hdrc_imx_probe(struct plat
- 
- disable_device:
- 	ci_hdrc_remove_device(data->ci_pdev);
-+phy_shutdown:
-+	if (data->override_phy_control)
-+		usb_phy_shutdown(data->phy);
- err_clk:
- 	imx_disable_unprepare_clks(dev);
- qos_remove_request:
 
 
 
