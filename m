@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6FBAA1618
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 247D9AA14D2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:20:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BE00169358
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E3F34C4F88
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AD7242D73;
-	Tue, 29 Apr 2025 17:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745672459EA;
+	Tue, 29 Apr 2025 17:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjMvK2KL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMzkzhc9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C0778F58;
-	Tue, 29 Apr 2025 17:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311A421ADC7;
+	Tue, 29 Apr 2025 17:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947766; cv=none; b=GcbJrHYDcvcL/u2LjPtgQmLvSz7rbmJ96+cJmJqi2W199427hNOhRgNk8ZKZiTqFVAkONCQw1IsECJ1Sox5tIBrB8zBmCgu0drhXYcDuBkT9QoEEr7zJ/cB8Pw52OD1WDZgr5sx5NPeCb960ZbrTrFi4Bj+zS3pth5j6E1VMC04=
+	t=1745947079; cv=none; b=sPPxcaRXrytLP3HsjcKsZ4pYR3VxWD/DrexAGUWWYq/QO76wqYwjxQiAlHUev/rowZwcii7VGUAih02VgQJboTvxzA0gdA9MFSqS31fhHFWvnp6KKkMS9yGZAU39x8HpSeP9doUA3CBYlKJdnQI0NdsfQxWmx4cBerN2qkyuWP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947766; c=relaxed/simple;
-	bh=UYYNHDv6r5vT5WG9XELNZYW3ySMdAfJgoPhTEDl7OYo=;
+	s=arc-20240116; t=1745947079; c=relaxed/simple;
+	bh=u2zNfRklNcoREC3xC6NU19w5yAGxz5EVCpeXuqb3Ix8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tkwNLYaJrB7wnJPP5LOsxqEFxlHHAY95mEiO3bq54+63rCxv+yd0aC8xKsLPbogwBz8S0Or179nECnAaSGU1zsY2KhALrI9wkpKklk8eGH/i8rV3stXsWhaMvyRqZ3wlePX8kudzoQ/jVJwbPCcz5YBGJBS4YuUZbpbQH3lSyWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjMvK2KL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC16C4CEE9;
-	Tue, 29 Apr 2025 17:29:25 +0000 (UTC)
+	 MIME-Version; b=TdtD1Two8V6EyIm5TE0ipD4TIuDIEsDt9sl54/ntVy33VN2amFfEmBkQBbKyzLCMT8WeNVkvPgELGmoNVf9rXgpvKXLTSnHKIxtfzGRmUen/YzWxARR6f03tLVsn7k+sHVGqr7wH0cAx+gmEKZpt2GqQAvdC2MfLtehul8SB4+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMzkzhc9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351F3C4CEE3;
+	Tue, 29 Apr 2025 17:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947766;
-	bh=UYYNHDv6r5vT5WG9XELNZYW3ySMdAfJgoPhTEDl7OYo=;
+	s=korg; t=1745947078;
+	bh=u2zNfRklNcoREC3xC6NU19w5yAGxz5EVCpeXuqb3Ix8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gjMvK2KLroc45meIJoLWsvPSltb3U8R71mEkI2JJoY0xXoeixWBwmu/hH7uqP5/6D
-	 c0XwOQ6cgvKlIlV7xY04hLlcBkdI2LOfjk0ZdQG3xGT010XtfBs7AEqXYd4lj0XtSR
-	 Hb9QvZqDJYoE0/+f+b58nXHbCrj16ngFbtMHw1Bc=
+	b=aMzkzhc9OTIhnkMT2WUJ+hV1u8W2TgiQ81W0XBsFq+RoxWzGQJYRppu9MueD4a9xA
+	 EbhV+wks1AtRf90VE6SbNGTfZwlcMR9oGrnv1hLYrCKKS9bVbUuaFrpTRkdBVLofFy
+	 4psFba4EKyb8GTZ9QbxDwkDc9/412i/kwJGW2Kvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 098/280] net: selftests: initialize TCP header and skb payload with zero
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <a.p.zijlstra@chello.nl>
+Subject: [PATCH 5.10 135/286] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SNR
 Date: Tue, 29 Apr 2025 18:40:39 +0200
-Message-ID: <20250429161119.122555782@linuxfoundation.org>
+Message-ID: <20250429161113.426528374@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit 9e8d1013b0c38910cbc9e60de74dbe883878469d upstream.
+commit 96a720db59ab330c8562b2437153faa45dac705f upstream.
 
-Zero-initialize TCP header via memset() to avoid garbage values that
-may affect checksum or behavior during test transmission.
+There was a mistake in the SNR uncore spec. The counter increments for
+every 32 bytes of data sent from the IO agent to the SOC, not 4 bytes
+which was documented in the spec.
 
-Also zero-fill allocated payload and padding regions using memset()
-after skb_put(), ensuring deterministic content for all outgoing
-test packets.
+The event list has been updated:
 
-Fixes: 3e1e58d64c3d ("net: add generic selftest support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+  "EventName": "UNC_IIO_BANDWIDTH_IN.PART0_FREERUN",
+  "BriefDescription": "Free running counter that increments for every 32
+		       bytes of data sent from the IO agent to the SOC",
+
+Update the scale of the IIO bandwidth in free running counters as well.
+
+Fixes: 210cc5f9db7a ("perf/x86/intel/uncore: Add uncore support for Snow Ridge server")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250416160125.2914724-1-o.rempel@pengutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20250416142426.3933977-1-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- net/core/selftests.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/net/core/selftests.c
-+++ b/net/core/selftests.c
-@@ -100,10 +100,10 @@ static struct sk_buff *net_test_get_skb(
- 	ehdr->h_proto = htons(ETH_P_IP);
- 
- 	if (attr->tcp) {
-+		memset(thdr, 0, sizeof(*thdr));
- 		thdr->source = htons(attr->sport);
- 		thdr->dest = htons(attr->dport);
- 		thdr->doff = sizeof(struct tcphdr) / 4;
--		thdr->check = 0;
- 	} else {
- 		uhdr->source = htons(attr->sport);
- 		uhdr->dest = htons(attr->dport);
-@@ -144,10 +144,18 @@ static struct sk_buff *net_test_get_skb(
- 	attr->id = net_test_next_id;
- 	shdr->id = net_test_next_id++;
- 
--	if (attr->size)
--		skb_put(skb, attr->size);
--	if (attr->max_size && attr->max_size > skb->len)
--		skb_put(skb, attr->max_size - skb->len);
-+	if (attr->size) {
-+		void *payload = skb_put(skb, attr->size);
-+
-+		memset(payload, 0, attr->size);
-+	}
-+
-+	if (attr->max_size && attr->max_size > skb->len) {
-+		size_t pad_len = attr->max_size - skb->len;
-+		void *pad = skb_put(skb, pad_len);
-+
-+		memset(pad, 0, pad_len);
-+	}
- 
- 	skb->csum = 0;
- 	skb->ip_summed = CHECKSUM_PARTIAL;
+---
+ arch/x86/events/intel/uncore_snbep.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -4487,28 +4487,28 @@ static struct uncore_event_desc snr_unco
+ 	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
+ 	/* Free-Running IIO BANDWIDTH IN Counters */
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
+ 	{ /* end: all zeroes */ },
+ };
 
 
 
