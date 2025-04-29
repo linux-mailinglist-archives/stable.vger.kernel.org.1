@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750FCAA17A6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 484DCAA1263
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C619461B29
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64064980C72
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59FC22AE68;
-	Tue, 29 Apr 2025 17:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E95F243364;
+	Tue, 29 Apr 2025 16:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hx5b7A2N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbp6SJfq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD65239072;
-	Tue, 29 Apr 2025 17:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A79923FC7D;
+	Tue, 29 Apr 2025 16:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948968; cv=none; b=lTG16nc9apx/tjVtAZGDeuk/laFlXbUAnPuPRCSJ9nIRS857qVSikdA3VxrP2SsRY9LeEcs+7DXxpq1R6nepAy9B7atbj41EQ49QWXyMFMl88Zc8kwYzoB3vABO8jyjtCOWvddFqq9RLrv8R/tRq/Vcva3WZ1x317bM0mIK+j74=
+	t=1745945453; cv=none; b=txSgO+fEVOIztrI3h+Wct+QiuwbiBKPkEJ699CdnG3Qfpb1YQ/FD4xRV0+Yosz1x2IGiIGwqISqgjjUdE5QQ2MWl2LWwr772cYSW/V9UDbXfaEfaQ1rSx/yTyDoQc7Ibrc2CtRmsh7VtsH+nfEpdLK7OICfNPffL6LL1xb5n0K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948968; c=relaxed/simple;
-	bh=G84E59k0Sg/gaDOO8qi/F1q20fp97XS+1TlrHNd9Elw=;
+	s=arc-20240116; t=1745945453; c=relaxed/simple;
+	bh=WPhD71Ha8+iEe8GbMVO7wR8HIMYmJXfV+7/H59tZ0kE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ls25/QRvpUzrE8UR/BU1UCGelzyt7JcBmCJOnEv/L8c/w7nYKQ1lbMFzd3foXFDcCsE8TSnsHT3MEg6Di2+5839z5pcP5cTZOpQsFrethS1oxk8fMTmtoVgu+3rXhuX38wGYhA9LXDar8OZvzGfLLQ4eOP+4Qf7I0HAJDRS/RyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hx5b7A2N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCF4C4CEE3;
-	Tue, 29 Apr 2025 17:49:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sE/uZ36VwdNBma/hH5J19SseN1AozRokS5Lf9+301dsbVpHRWmlGFWBSUjbrCCLS9vy2S0vG5BjBvn1xTcQH+lXHXCv/hDOocTu/joeDT3VJT6jqFN1oStU/IhlCZU4jLfwkmPT+mcoZTwPM/icjfXFkhtx+xvKtFmMMG9SMoME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbp6SJfq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5E4C4CEE3;
+	Tue, 29 Apr 2025 16:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948968;
-	bh=G84E59k0Sg/gaDOO8qi/F1q20fp97XS+1TlrHNd9Elw=;
+	s=korg; t=1745945452;
+	bh=WPhD71Ha8+iEe8GbMVO7wR8HIMYmJXfV+7/H59tZ0kE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hx5b7A2NZJmhfkpiDZp6Xc+ZNNrlWgMHWhr7JdA+xTzLuJnp5bPXWrBUSTJyqywAA
-	 OPHrno0m7pocNPch+I58lM6hwxdANZVss5+DjkWfE1y/Rqagm2XiNq0zqSTm045CmM
-	 ciEqjCu9P2N0KhB+UCtOHYHKc0mJdUj47baClesI=
+	b=jbp6SJfqqSLBnZR293rNN7M+C8vYb7FSvcOoKmb3KOe1cbW7zInBjx7c1IqC1taDv
+	 hpoZ5Wfsl80z94FmbYyiNlU13AQiWrXg6lVOfY+9EP6ZZLuWQhJCxrTVhMKZCqcX8+
+	 tpURdQc0UhS42oJRqNCrFFcFM/clmh6XFQDhmtx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 179/373] drm/amd/pm/powerplay: Prevent division by zero
-Date: Tue, 29 Apr 2025 18:40:56 +0200
-Message-ID: <20250429161130.531924349@linuxfoundation.org>
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 5.4 116/179] misc: pci_endpoint_test: Fix irq_type to convey the correct type
+Date: Tue, 29 Apr 2025 18:40:57 +0200
+Message-ID: <20250429161054.096046124@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,45 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit 4b8c3c0d17c07f301011e2908fecd2ebdcfe3d1c upstream.
+commit baaef0a274cfb75f9b50eab3ef93205e604f662c upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+There are two variables that indicate the interrupt type to be used
+in the next test execution, "irq_type" as global and "test->irq_type".
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+The global is referenced from pci_endpoint_test_get_irq() to preserve
+the current type for ioctl(PCITEST_GET_IRQTYPE).
 
-Fixes: c52dcf49195d ("drm/amd/pp: Avoid divide-by-zero in fan_ctrl_set_fan_speed_rpm")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The type set in this function isn't reflected in the global "irq_type",
+so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
+
+As a result, the wrong type is displayed in old version of "pcitest"
+as follows:
+
+  - Result of running "pcitest -i 0"
+
+      SET IRQ TYPE TO LEGACY:         OKAY
+
+  - Result of running "pcitest -I"
+
+      GET IRQ TYPE:           MSI
+
+Whereas running the new version of "pcitest" in kselftest results in an
+error as follows:
+
+  #  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
+
+Fix this issue by propagating the current type to the global "irq_type".
+
+Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250225110252.28866-5-hayashi.kunihiko@socionext.com
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/pci_endpoint_test.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
-@@ -307,10 +307,10 @@ int vega10_fan_ctrl_set_fan_speed_rpm(st
- 	int result = 0;
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -577,6 +577,7 @@ static bool pci_endpoint_test_set_irq(st
+ 	if (!pci_endpoint_test_request_irq(test))
+ 		goto err;
  
- 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
--	    speed == 0 ||
-+	    (!speed || speed > UINT_MAX/8) ||
- 	    (speed < hwmgr->thermal_controller.fanInfo.ulMinRPM) ||
- 	    (speed > hwmgr->thermal_controller.fanInfo.ulMaxRPM))
--		return -1;
-+		return -EINVAL;
++	irq_type = test->irq_type;
+ 	return true;
  
- 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl))
- 		result = vega10_fan_ctrl_stop_smc_fan_control(hwmgr);
+ err:
 
 
 
