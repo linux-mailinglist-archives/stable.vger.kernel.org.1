@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0545FAA13DE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E93CAA1501
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDDEC17751B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C2EE16DE8F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C27241664;
-	Tue, 29 Apr 2025 17:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2D324C077;
+	Tue, 29 Apr 2025 17:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tu1bynPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qp7ZZgdn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9329922A81D;
-	Tue, 29 Apr 2025 17:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B53F24113C;
+	Tue, 29 Apr 2025 17:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946451; cv=none; b=KiH+lUZZqmCl/X6VvEcW7rEJrdemGrDofZKCSJ32DiNpUV9HlemKx4aBB2xPIprO6Gy5B0p1oQucwcVlZD/D7wSqzMw7lGskA+lsKthdoiMa/w/WtPzPkYRIl51S8a0Ti0AMphVoCev33f1P/KNxC2fVy1vJeJmhYgsVpuUEyS4=
+	t=1745947197; cv=none; b=tiTPnGkWRGOYBQnYcVmZ4FhI9EfkVbWa7fA5Gz/7CR6I9HaFDMykUAfKFx7JyvenohThbzz1jUS8Bdd//fFmzh00s+S/L3f5DBLiVwSFVjg2MnHEX8DrGi5M4lmY/eLMoSNnQUAI/nMRayuQtINLzgfyQFkM5LB1P7546lgMa2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946451; c=relaxed/simple;
-	bh=abHBS2kT72fE0XOEMVhG4T7Bctp+ry+1c9hY10hg8Qo=;
+	s=arc-20240116; t=1745947197; c=relaxed/simple;
+	bh=m8AmfNs6Kr6v+JhTcJCV3TULGj8Xp+hRgI/9Xbk8e0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q+MWp7vbUZM10Uel1aCKgrsUVhVDc10AjM+Nfy7R44PL8HSlX+oDYaKt+7hCs67GHnrhEAYEBlpJijM21NaQ7e/PRkuhlmgAj0g4rcFdWX256jMiJBHjCUV3/C5+QrcY9xrCGDyhQnJ5TLca9C6OpHexsvWJ6awEa1wchXtb6GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tu1bynPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C69AC4CEE3;
-	Tue, 29 Apr 2025 17:07:30 +0000 (UTC)
+	 MIME-Version; b=hbrouQdEoNWA95M44wDquEPxBDjmr2eRr0XoZdP28Ys6ku5kwcdJbbnmuMrNNSuO+AblcBj1vE66PtHuqGZ35K8w6yPhjvmCOIkE1VH1lpkQzXuXpc51Da5jVFhVPj9UTVHXUq+0lTEq+7wVaRvu0+Tueo4Q/sRQ0RXpKvq4s+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qp7ZZgdn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5DCC4CEE9;
+	Tue, 29 Apr 2025 17:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946451;
-	bh=abHBS2kT72fE0XOEMVhG4T7Bctp+ry+1c9hY10hg8Qo=;
+	s=korg; t=1745947197;
+	bh=m8AmfNs6Kr6v+JhTcJCV3TULGj8Xp+hRgI/9Xbk8e0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tu1bynPe9DxrYdgGiHCt7PoJuumg7PLuPOyGwMcX20hRJgwdCnIFuq4YJTunlaLsS
-	 4Arsbpp63bgJqXrWT7G/I5GU3cGS8k6pR/CRPJArVrvoxfZj7kdZ57MlqWaCQwJkmh
-	 dQuXAVKI6rGvy9MVMP25KH0Cqrb0SH2Ym8mYzerk=
+	b=Qp7ZZgdnSlbWwz6cY3GlQCU+FtqTrLlC2eWTY21+QnVvQBJTOOrOcRLUmw+TaTmvk
+	 h/U++c79wmHVM8SDL47sHEyBHsMey3v8Hk5Oz2sttycpxrrgoOnyr0MBec3UQi5SUU
+	 EyvgubGZRjwKVvmz3Y431FM3ETVj/OFHn+OX6IVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Fritz Koenig <frkoenig@chromium.org>,
+	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 271/311] scsi: ufs: exynos: Enable PRDT pre-fetching with UFSHCD_CAP_CRYPTO
+Subject: [PATCH 5.10 204/286] media: venus: hfi: Correct session init return error
 Date: Tue, 29 Apr 2025 18:41:48 +0200
-Message-ID: <20250429161132.125237744@linuxfoundation.org>
+Message-ID: <20250429161116.351470831@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Stanimir Varbanov <stanimir.varbanov@linaro.org>
 
-[ Upstream commit deac9ad496ec17e1ec06848964ecc635bdaca703 ]
+[ Upstream commit e922a33e0228fa314ffc4f70b3b9ffbc4aad1bbe ]
 
-PRDT_PREFETCH_ENABLE[31] bit should be set when desctype field of
-fmpsecurity0 register is type2 (double file encryption) or type3
-(support for file and disk encryption). Setting this bit enables PRDT
-pre-fetching on both TXPRDT and RXPRDT.
+The hfi_session_init can be called many times and it returns
+EINVAL when the session was already initialized. This error code
+(EINVAL) is confusing for the callers. Change hfi_session_init to
+return EALREADY error code when the session has been already
+initialized.
 
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-5-96722cc2ba1b@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Tested-by: Fritz Koenig <frkoenig@chromium.org>
+Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: 9edaaa8e3e15 ("media: venus: hfi_parser: refactor hfi packet parsing logic")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-exynos.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/venus/hfi.c  | 2 +-
+ drivers/media/platform/qcom/venus/vdec.c | 2 +-
+ drivers/media/platform/qcom/venus/venc.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index e77b3c63e6981..ac71b878d872f 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -34,7 +34,7 @@
-  * Exynos's Vendor specific registers for UFSHCI
-  */
- #define HCI_TXPRDT_ENTRY_SIZE	0x00
--#define PRDT_PREFECT_EN		BIT(31)
-+#define PRDT_PREFETCH_EN	BIT(31)
- #define HCI_RXPRDT_ENTRY_SIZE	0x04
- #define HCI_1US_TO_CNT_VAL	0x0C
- #define CNT_VAL_1US_MASK	0x3FF
-@@ -1098,12 +1098,17 @@ static int exynos_ufs_post_link(struct ufs_hba *hba)
- 	struct exynos_ufs *ufs = ufshcd_get_variant(hba);
- 	struct phy *generic_phy = ufs->phy;
- 	struct exynos_ufs_uic_attr *attr = ufs->drv_data->uic_attr;
-+	u32 val = ilog2(DATA_UNIT_SIZE);
+diff --git a/drivers/media/platform/qcom/venus/hfi.c b/drivers/media/platform/qcom/venus/hfi.c
+index 17da555905e98..5fd53227c2c0b 100644
+--- a/drivers/media/platform/qcom/venus/hfi.c
++++ b/drivers/media/platform/qcom/venus/hfi.c
+@@ -212,7 +212,7 @@ int hfi_session_init(struct venus_inst *inst, u32 pixfmt)
+ 	int ret;
  
- 	exynos_ufs_establish_connt(ufs);
- 	exynos_ufs_fit_aggr_timeout(ufs);
+ 	if (inst->state != INST_UNINIT)
+-		return -EINVAL;
++		return -EALREADY;
  
- 	hci_writel(ufs, 0xa, HCI_DATA_REORDER);
--	hci_writel(ufs, ilog2(DATA_UNIT_SIZE), HCI_TXPRDT_ENTRY_SIZE);
-+
-+	if (hba->caps & UFSHCD_CAP_CRYPTO)
-+		val |= PRDT_PREFETCH_EN;
-+	hci_writel(ufs, val, HCI_TXPRDT_ENTRY_SIZE);
-+
- 	hci_writel(ufs, ilog2(DATA_UNIT_SIZE), HCI_RXPRDT_ENTRY_SIZE);
- 	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
- 	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
+ 	inst->hfi_codec = to_codec_type(pixfmt);
+ 	reinit_completion(&inst->done);
+diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
+index d91030a134c0e..6e9b62645e917 100644
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -768,7 +768,7 @@ static int vdec_session_init(struct venus_inst *inst)
+ 	int ret;
+ 
+ 	ret = hfi_session_init(inst, inst->fmt_out->pixfmt);
+-	if (ret == -EINVAL)
++	if (ret == -EALREADY)
+ 		return 0;
+ 	else if (ret)
+ 		return ret;
+diff --git a/drivers/media/platform/qcom/venus/venc.c b/drivers/media/platform/qcom/venus/venc.c
+index 18d20b4ca2cfd..9f1b02e31b98c 100644
+--- a/drivers/media/platform/qcom/venus/venc.c
++++ b/drivers/media/platform/qcom/venus/venc.c
+@@ -727,7 +727,7 @@ static int venc_init_session(struct venus_inst *inst)
+ 	int ret;
+ 
+ 	ret = hfi_session_init(inst, inst->fmt_cap->pixfmt);
+-	if (ret == -EINVAL)
++	if (ret == -EALREADY)
+ 		return 0;
+ 	else if (ret)
+ 		return ret;
 -- 
 2.39.5
 
