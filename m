@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-137794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A87AA1508
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D3BAA15E7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FEFC1BA4272
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB13A7A67E6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9417C23FC7D;
-	Tue, 29 Apr 2025 17:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D68242D94;
+	Tue, 29 Apr 2025 17:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUUBTnLM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+V+fsN6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C4021ADC7;
-	Tue, 29 Apr 2025 17:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E71421883E;
+	Tue, 29 Apr 2025 17:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947148; cv=none; b=Plubg79vNJ/yjmgE6xNZ+2xaaTpODRzWQQ94ebVVQ3YqRh1GlkP8zvQBbkaqFlnUpMbGxRJ/Yvtzdhtx9sfkVozNeUspj49jQlulnfcfev657mnBvJGhMc8aj8fdmJF57PZZ/6j4yoNN3YfSPFeUm+b5ceXlQQh3pM6PoUhM6Fw=
+	t=1745947939; cv=none; b=qbzZJWLKxYyLXKhKj/M5zs+gAFQg2aCQQkZqI89BHW9LcKUa7INUQgHUxUY+/3NNeKSw560gZPzvq7HkpsALrvV4RuhYEwLSwMX2DCpAb5VkLWNoijLDijf7QNc2m+9+5JAZFmGFoGEhXOdeBdTT+BRuV0CpWR945IYmBFQlHno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947148; c=relaxed/simple;
-	bh=9OoWsTUF7DZ/qHC77RC55WHBgMxnCX7G8qoNPGVdKM8=;
+	s=arc-20240116; t=1745947939; c=relaxed/simple;
+	bh=2RxM8alxVG6n+hNYHd+5KKy4DlXETaHWykob08/MBpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQd4IK90EBGw2lH/k+8NVnGpuJ38mH5mGTc9f3Ds1y/zxUIfs3Vl8ETWMQcl7iz8FUghMDbiucORHPXW9kyxGlUk41C/WxYrUJHwNI/oTUE0K58arpZN8VTi3vi8apnSYTRCxF6F1O8xmmcrNrRnZldhR9KPMlublhtzEMK0vYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUUBTnLM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3429C4CEE3;
-	Tue, 29 Apr 2025 17:19:07 +0000 (UTC)
+	 MIME-Version; b=EnONIzgNUbsTlngI1vHuJpuVuPYY+pWkn8z4vL04WOtGUCmnk5wMlh/r7/aM7gSQYakHspwpY9A9S3qYPuwhGyV0x99UzMPpxGYLyPxVN8k3Ko8U0OD5zpKtDDVatN4aX0A5IfZb9uk8bjgnzoOP5/PZlOBSgESfguV+QlXJ7+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+V+fsN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE368C4CEE3;
+	Tue, 29 Apr 2025 17:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947148;
-	bh=9OoWsTUF7DZ/qHC77RC55WHBgMxnCX7G8qoNPGVdKM8=;
+	s=korg; t=1745947939;
+	bh=2RxM8alxVG6n+hNYHd+5KKy4DlXETaHWykob08/MBpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SUUBTnLMLZGiz+ODSznoHRdtwIIy4XzuY8wL2jAT8GkMi/09oNMqB0oiXwid5BKYF
-	 dVhUZGSFUbgWg5Z+JYEwrENwGG+OEYv8QZQMY2A+qHzFwIEePetXmOYg/yruimKR27
-	 r1GT5bruOjxYr/QXE/krzHiQdXNSI67wKSRn2yBg=
+	b=v+V+fsN6dtm+zRoPr402dYGJoLotbxvDp17+esUl5umgpqcWTL3ABS6r6zvlxQYO4
+	 oQYWKsPVyxyd5qC+hMInzshu7aGX3NdLqXDWoVR9pf0Za4aPW47gmokA7mIrG1EYn/
+	 kE8v1N4HBBHhYM8NVaptp+J8VBvAAiYiNBzufhmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wilson <chris.p.wilson@intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Zhi Yang <Zhi.Yang@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 187/286] drm/i915/gt: Cleanup partial engine discovery failures
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.12 150/280] USB: wdm: wdm_wwan_port_tx_complete mutex in atomic context
 Date: Tue, 29 Apr 2025 18:41:31 +0200
-Message-ID: <20250429161115.661003656@linuxfoundation.org>
+Message-ID: <20250429161121.258253796@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Wilson <chris.p.wilson@intel.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 78a033433a5ae4fee85511ee075bc9a48312c79e upstream.
+commit 1fdc4dca350c0b8ada0b8ebf212504e1ad55e511 upstream.
 
-If we abort driver initialisation in the middle of gt/engine discovery,
-some engines will be fully setup and some not. Those incompletely setup
-engines only have 'engine->release == NULL' and so will leak any of the
-common objects allocated.
+wdm_wwan_port_tx_complete is called from a completion
+handler with irqs disabled and possible in IRQ context
+usb_autopm_put_interface can take a mutex.
+Hence usb_autopm_put_interface_async must be used.
 
-v2:
- - Drop the destroy_pinned_context() helper for now.  It's not really
-   worth it with just a single callsite at the moment.  (Janusz)
-
-Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220915232654.3283095-2-matthew.d.roper@intel.com
-Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: cac6fb015f71 ("usb: class: cdc-wdm: WWAN framework integration")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250401084749.175246-4-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/intel_engine_cs.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/class/cdc-wdm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-@@ -904,8 +904,13 @@ int intel_engines_init(struct intel_gt *
- 			return err;
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -879,7 +879,7 @@ static void wdm_wwan_port_tx_complete(st
+ 	struct sk_buff *skb = urb->context;
+ 	struct wdm_device *desc = skb_shinfo(skb)->destructor_arg;
  
- 		err = setup(engine);
--		if (err)
-+		if (err) {
-+			intel_engine_cleanup_common(engine);
- 			return err;
-+		}
-+
-+		/* The backend should now be responsible for cleanup */
-+		GEM_BUG_ON(engine->release == NULL);
- 
- 		err = engine_init_common(engine);
- 		if (err)
+-	usb_autopm_put_interface(desc->intf);
++	usb_autopm_put_interface_async(desc->intf);
+ 	wwan_port_txon(desc->wwanp);
+ 	kfree_skb(skb);
+ }
 
 
 
