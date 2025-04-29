@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0073EAA17C4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC81AA13FE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 539211BC5424
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52CED983777
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCDA24C083;
-	Tue, 29 Apr 2025 17:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23222459E1;
+	Tue, 29 Apr 2025 17:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3S+GQam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnwO1uTc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C269239072;
-	Tue, 29 Apr 2025 17:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983277E110;
+	Tue, 29 Apr 2025 17:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949059; cv=none; b=eH49yewupmn5Xulo7MI0gSmahQJEhPWqWoLP+VuCdLUM9KJJH/sP8hAm3XH3q5DeAAkzx0ZIQX8s+0AwS/XtZOZBM3EGA3Mi2iCeK0/0nzTZ0j6o6qg1pe/iqsflElzLywe2zngd4QOz4lf7akOWEzOU6yy6JfJZO2PvHgkLRrY=
+	t=1745946365; cv=none; b=HEhA8mVJ/b/7pV/mGwFf9LBSIUElZbNcxFQ8264ZdRtfIaVOKVd7c0oBjshXD1pSoTVRjX9lwh8E9PTSDe6sNtGwf3GgqT/6EkhDbB0tG7r4GGWTVOIzpPLXspvIhPFL/HspG5FR7omtQL9RBSPivNd5G1nbpdPsS0f6jzbWpts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949059; c=relaxed/simple;
-	bh=2yoBz1D4OJprBtB1jR1P3VRo/4TdkvpWjRnYE2ALZ1U=;
+	s=arc-20240116; t=1745946365; c=relaxed/simple;
+	bh=geBvChX24ZYnvgM0TvKAzE5v6Yg4ZSeHNHl90RR0xIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kiaMr0gjdBbEtD7UITPBr4FKgHTzYzFD9tU95BK+cVoH7a+xA9kijxWHRV74s0HnvprPPu1gcPbkcTbGLXpuCiqGUBwFKS3yB+43KbuNhK7dk15u3GKS9D5qyEeTcsRVCK85lJ4USAgf7DhV/8AX/9avmZ++oCw4IZiPCS3d6Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3S+GQam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A039BC4CEE3;
-	Tue, 29 Apr 2025 17:50:58 +0000 (UTC)
+	 MIME-Version; b=uo+8gJ99WJZCuIOnfE19mgzhM1+ymD1MEVkopfe5rXyLe7HjhF7M7FjVadqOTM61Yd9MZc6a9tUESIRkGv/+bBbD3MDM/6YwZE610/rlDZtHmD/Uimui07xO38OTRkuigcWiv9k3PQi617FPDB4983nQriax+loZg1pmUy3+sRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnwO1uTc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172FAC4CEE9;
+	Tue, 29 Apr 2025 17:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949059;
-	bh=2yoBz1D4OJprBtB1jR1P3VRo/4TdkvpWjRnYE2ALZ1U=;
+	s=korg; t=1745946365;
+	bh=geBvChX24ZYnvgM0TvKAzE5v6Yg4ZSeHNHl90RR0xIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3S+GQamoUMds/wi+/pL+WzB0OmGagj561S2xk3c1QcsyP7GZVz37AzZFI0DPxCta
-	 HWh+mY9ESPtJitNglNO/9t4ljOQOALKHvdV+g/ViZimR7hqj2oXMnNK+jX7UPUKihL
-	 b2155KDjevpmAW3OTPPXZjh0H1m/zytzkHq7CkCA=
+	b=UnwO1uTcy1eQjx7LZ6lBql0y5DJrYPRyQLhDtebmoZ2gR/V7WZFPrhczjbFYpY45Q
+	 8VBT22XkdXyqzMHUQWxRirNCPRkLERUR0ad+GfjyurWOrInVR9YSh6U4jJ5vIbIGiw
+	 IO8QcYdG2LUlWMuigFTSZ6XCzctT3GC7lIu2KVMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 5.15 202/373] misc: pci_endpoint_test: Fix irq_type to convey the correct type
+	Uday Shankar <ushankar@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 242/311] selftests: ublk: fix test_stripe_04
 Date: Tue, 29 Apr 2025 18:41:19 +0200
-Message-ID: <20250429161131.475079853@linuxfoundation.org>
+Message-ID: <20250429161130.933398707@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit baaef0a274cfb75f9b50eab3ef93205e604f662c upstream.
+[ Upstream commit 72070e57b0a518ec8e562a2b68fdfc796ef5c040 ]
 
-There are two variables that indicate the interrupt type to be used
-in the next test execution, "irq_type" as global and "test->irq_type".
+Commit 57ed58c13256 ("selftests: ublk: enable zero copy for stripe target")
+added test entry of test_stripe_04, but forgot to add the test script.
 
-The global is referenced from pci_endpoint_test_get_irq() to preserve
-the current type for ioctl(PCITEST_GET_IRQTYPE).
+So fix the test by adding the script file.
 
-The type set in this function isn't reflected in the global "irq_type",
-so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
-
-As a result, the wrong type is displayed in old version of "pcitest"
-as follows:
-
-  - Result of running "pcitest -i 0"
-
-      SET IRQ TYPE TO LEGACY:         OKAY
-
-  - Result of running "pcitest -I"
-
-      GET IRQ TYPE:           MSI
-
-Whereas running the new version of "pcitest" in kselftest results in an
-error as follows:
-
-  #  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
-  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
-  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
-
-Fix this issue by propagating the current type to the global "irq_type".
-
-Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250225110252.28866-5-hayashi.kunihiko@socionext.com
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Uday Shankar <ushankar@purestorage.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Uday Shankar <ushankar@purestorage.com>
+Link: https://lore.kernel.org/r/20250404001849.1443064-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/pci_endpoint_test.c |    1 +
- 1 file changed, 1 insertion(+)
+ .../testing/selftests/ublk/test_stripe_04.sh  | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+ create mode 100755 tools/testing/selftests/ublk/test_stripe_04.sh
 
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -717,6 +717,7 @@ static bool pci_endpoint_test_set_irq(st
- 	if (!pci_endpoint_test_request_irq(test))
- 		goto err;
- 
-+	irq_type = test->irq_type;
- 	return true;
- 
- err:
+diff --git a/tools/testing/selftests/ublk/test_stripe_04.sh b/tools/testing/selftests/ublk/test_stripe_04.sh
+new file mode 100755
+index 0000000000000..1f2b642381d17
+--- /dev/null
++++ b/tools/testing/selftests/ublk/test_stripe_04.sh
+@@ -0,0 +1,24 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++. "$(cd "$(dirname "$0")" && pwd)"/test_common.sh
++
++TID="stripe_04"
++ERR_CODE=0
++
++_prep_test "stripe" "mkfs & mount & umount on zero copy"
++
++backfile_0=$(_create_backfile 256M)
++backfile_1=$(_create_backfile 256M)
++dev_id=$(_add_ublk_dev -t stripe -z -q 2 "$backfile_0" "$backfile_1")
++_check_add_dev $TID $? "$backfile_0" "$backfile_1"
++
++_mkfs_mount_test /dev/ublkb"${dev_id}"
++ERR_CODE=$?
++
++_cleanup_test "stripe"
++
++_remove_backfile "$backfile_0"
++_remove_backfile "$backfile_1"
++
++_show_result $TID $ERR_CODE
+-- 
+2.39.5
+
 
 
 
