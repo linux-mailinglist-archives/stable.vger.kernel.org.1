@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-137868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98313AA15AC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9273CAA1686
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C3CC98670A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3A4F166D63
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A333253F34;
-	Tue, 29 Apr 2025 17:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BFC4242D94;
+	Tue, 29 Apr 2025 17:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sx+ZH7q7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/VVatIM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB740253F31;
-	Tue, 29 Apr 2025 17:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCAC82C60;
+	Tue, 29 Apr 2025 17:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947375; cv=none; b=QLezRNbdJyHBmskLMGIPWgAe9wFO5c1df1CDTmXh1Wfckq/CjM5GxmfUagWIyYa1lf0d0vr4JV8gatdQ4pycZavHcqheqJJEBaInXJ+D6VPgNWUHDnHc89mH6SNgg3aRLIB/WxueuSCjaZM4OuKkXhYp/yvAN2/d3+Z+MLlcxKw=
+	t=1745948112; cv=none; b=ODwwnOUkF5WYu4Eg6q7VRYstLr8k+ExwMqAsFOvk36XTR8hN/R45DpiVI4NNu8msggfoV8mfTgpQJoduvmVJ5hnTRScOnIQKXsatXhRAiz01cyTQKXnawZNSmAiT8P+2NZWjQEPB0UNLYO/m/ONazhF156fXv4lQ82hWgCbmb/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947375; c=relaxed/simple;
-	bh=0jLidGhWp4drxHMu7Kg5YGRBKsJL9VR5jIISR+/AUpo=;
+	s=arc-20240116; t=1745948112; c=relaxed/simple;
+	bh=KQO0KRi5YvSe3AXskTM4+jq3o2+k+TaMmZ+spq+oNYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=saGw1moQ5ZELbY20h1qiKapXzV93/KT2NtbnACJNBgoei+rT6h049ra5aQQLYDTmihfulUxuWU444VVbzYuTYYxYrw0CGyB0IkIuvrCdQ1C5J8lA6rP2PhPlClojo4NiBT/YRjI9oxrFAQOmZsV8WeWGHrW7051TOytdL3B9HRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sx+ZH7q7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A1DC4CEE3;
-	Tue, 29 Apr 2025 17:22:54 +0000 (UTC)
+	 MIME-Version; b=eyc2CffIwzGudlE0KmJhA+0OMmS0IDC2KnEDFLdqbZvwgp0fWqbhk8dSZ20tcbtV1z9ayxRTr8Trs5RIn33QhMpLKN4e8cP1l4TTPwBYWHRnrOze47stQQzv1P0ZKyqMbpG+dPG7bigioPeOzNhgHW34XYKZSXuwIdC7MdlQ6CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/VVatIM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9CEC4CEE3;
+	Tue, 29 Apr 2025 17:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947374;
-	bh=0jLidGhWp4drxHMu7Kg5YGRBKsJL9VR5jIISR+/AUpo=;
+	s=korg; t=1745948112;
+	bh=KQO0KRi5YvSe3AXskTM4+jq3o2+k+TaMmZ+spq+oNYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sx+ZH7q7xdiKWdtAlqT2lFu3/VcrWGA7kN4Mb3YQMoJx5MoZg6aOmIPlOnWLqZAzS
-	 0RnLlWDGB58xdKGpOpEgZ1IHCrjClMEDdQR/T0s6MLCZN+Y1qnGVbHA1xwSSaG8f6+
-	 9XKeSgEFryB2DydfKmyp2bhP9Bm4Wjc8zpNhl8Gg=
+	b=y/VVatIM2U9B0hMVrvaOh6tjZO+qlzqwYDXVoN2Iz3TwSv/eIydOGN53Vj+S+xhko
+	 MlmoOn7Wo723l2+FD4GtFA9tuzrSPttEO6RQnFALT8xZJtixE6aq7ad7ntYNSHi+TU
+	 9+AIzFEZ+uKqJ2W0dZDWI9oD1FIdXo85w9pwRKW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	kernel test robot <lkp@intel.com>,
 	Arnd Bergmann <arnd@arndb.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jon Mason <jdmason@kudzu.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 230/286] dma/contiguous: avoid warning about unused size_bytes
+Subject: [PATCH 6.12 193/280] ntb: reduce stack usage in idt_scan_mws
 Date: Tue, 29 Apr 2025 18:42:14 +0200
-Message-ID: <20250429161117.398311921@linuxfoundation.org>
+Message-ID: <20250429161123.000152740@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit d7b98ae5221007d3f202746903d4c21c7caf7ea9 ]
+[ Upstream commit aff12700b8dd7422bfe2277696e192af4df9de8f ]
 
-When building with W=1, this variable is unused for configs with
-CONFIG_CMA_SIZE_SEL_PERCENTAGE=y:
+idt_scan_mws() puts a large fixed-size array on the stack and copies
+it into a smaller dynamically allocated array at the end. On 32-bit
+targets, the fixed size can easily exceed the warning limit for
+possible stack overflow:
 
-kernel/dma/contiguous.c:67:26: error: 'size_bytes' defined but not used [-Werror=unused-const-variable=]
+drivers/ntb/hw/idt/ntb_hw_idt.c:1041:27: error: stack frame size (1032) exceeds limit (1024) in 'idt_scan_mws' [-Werror,-Wframe-larger-than]
 
-Change this to a macro to avoid the warning.
+Change it to instead just always use dynamic allocation for the
+array from the start. It's too big for the stack, but not actually
+all that much for a permanent allocation.
 
-Fixes: c64be2bb1c6e ("drivers: add Contiguous Memory Allocator")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202205111109.PiKTruEj-lkp@intel.com/
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20250409151557.3890443-1-arnd@kernel.org
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/contiguous.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/ntb/hw/idt/ntb_hw_idt.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
-index 16b95ff12e4df..3a4e094e4b1fb 100644
---- a/kernel/dma/contiguous.c
-+++ b/kernel/dma/contiguous.c
-@@ -69,8 +69,7 @@ struct cma *dma_contiguous_default_area;
-  * Users, who want to set the size of global CMA area for their system
-  * should use cma= kernel parameter.
-  */
--static const phys_addr_t size_bytes __initconst =
--	(phys_addr_t)CMA_SIZE_MBYTES * SZ_1M;
-+#define size_bytes ((phys_addr_t)CMA_SIZE_MBYTES * SZ_1M)
- static phys_addr_t  size_cmdline __initdata = -1;
- static phys_addr_t base_cmdline __initdata;
- static phys_addr_t limit_cmdline __initdata;
+diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
+index 6fc9dfe824747..419de7038570d 100644
+--- a/drivers/ntb/hw/idt/ntb_hw_idt.c
++++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
+@@ -1041,7 +1041,7 @@ static inline char *idt_get_mw_name(enum idt_mw_type mw_type)
+ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 				       unsigned char *mw_cnt)
+ {
+-	struct idt_mw_cfg mws[IDT_MAX_NR_MWS], *ret_mws;
++	struct idt_mw_cfg *mws;
+ 	const struct idt_ntb_bar *bars;
+ 	enum idt_mw_type mw_type;
+ 	unsigned char widx, bidx, en_cnt;
+@@ -1049,6 +1049,11 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 	int aprt_size;
+ 	u32 data;
+ 
++	mws = devm_kcalloc(&ndev->ntb.pdev->dev, IDT_MAX_NR_MWS,
++			   sizeof(*mws), GFP_KERNEL);
++	if (!mws)
++		return ERR_PTR(-ENOMEM);
++
+ 	/* Retrieve the array of the BARs registers */
+ 	bars = portdata_tbl[port].bars;
+ 
+@@ -1103,16 +1108,7 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 		}
+ 	}
+ 
+-	/* Allocate memory for memory window descriptors */
+-	ret_mws = devm_kcalloc(&ndev->ntb.pdev->dev, *mw_cnt, sizeof(*ret_mws),
+-			       GFP_KERNEL);
+-	if (!ret_mws)
+-		return ERR_PTR(-ENOMEM);
+-
+-	/* Copy the info of detected memory windows */
+-	memcpy(ret_mws, mws, (*mw_cnt)*sizeof(*ret_mws));
+-
+-	return ret_mws;
++	return mws;
+ }
+ 
+ /*
 -- 
 2.39.5
 
