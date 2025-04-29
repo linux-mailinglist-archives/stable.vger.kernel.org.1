@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3CFEAA173D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D221AA1329
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:03:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11A117A4910
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:44:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07D121733D3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE8E24BD02;
-	Tue, 29 Apr 2025 17:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDBD24BBE4;
+	Tue, 29 Apr 2025 16:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNIdko3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eraz9dk2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF131D7E35;
-	Tue, 29 Apr 2025 17:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976CC248866;
+	Tue, 29 Apr 2025 16:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948719; cv=none; b=JPrlYRocjEL6tgJhiqM0Dlnj1+t7qFV7DILr5gg9Y9N8cs5pc+r0vk6CaC23Gu1eMVDZ+Z8PgECLlGWBBB4+SmNOOHoMMYZ/WRANQYctR2Am88qf7EsJ9uJ+Dml2Ekp+HH8E+ZrT59S7Y7lsjN594ho5dm3HHIvJzxcN0EnqiZ8=
+	t=1745945945; cv=none; b=spS+0h/X2FGTP9O0TRVv6X6y6eKX/OePNLHkaIjg+VjVJSgRakDBNJdu7OCTtu95GiMlYWJp/cqzhCwXA1pipwZDwqtmj1ghixqSlsdywJQ6gCHgL2GOFr9tgdCzwpjDIyW3TgSXiJtqDwkwOeTTEG8B85vYjrJm6aSSY7fE4OM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948719; c=relaxed/simple;
-	bh=O7wQPOKvoBJJaqTfF3CKJNw6mffg4EF8oMuDiU3Mcl8=;
+	s=arc-20240116; t=1745945945; c=relaxed/simple;
+	bh=z9bDdnp9gZxTNNJquiDaxb4iKmUmOw7sowIRA4JPP5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/JA5KA3MGlQhOkYCoA1aujOgnc3tFde+WvrNKhWDxmwrvikKwJQRHmzYhO6dxnxfXj+bJMaBG94wOy5X1Q96u8cgzh0gL8HhuFSoORdZAAP0xxAO7ISwWD12MjUTcJuHUiaYc+TEhwTJGpXOyACwkSOYN19gxOl1TwRj30vvNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PNIdko3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E9AC4CEE3;
-	Tue, 29 Apr 2025 17:45:18 +0000 (UTC)
+	 MIME-Version; b=XLUGcSFl4T2aPImspBYnpxruuVMWK0kS09tHsnz6/mhJTlynQHZfMOXqFYyuhvaMxlIKRB1rVAfWTUkVbbA57Yty3mAHtqx67t2D0RQtSYn42IYYD41wg5BCVyyWJy92iXCCdaNfWt9l/wVIQLXAJmOSxj71lsYm+Fn6Cff8lVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eraz9dk2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A889C4CEE3;
+	Tue, 29 Apr 2025 16:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948719;
-	bh=O7wQPOKvoBJJaqTfF3CKJNw6mffg4EF8oMuDiU3Mcl8=;
+	s=korg; t=1745945945;
+	bh=z9bDdnp9gZxTNNJquiDaxb4iKmUmOw7sowIRA4JPP5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PNIdko3YYfpkYv+uBA5b/I8GP+OWwgOmlqqiHWS4kC5mNquVBwmbKfZWn8UYv+uF8
-	 JZSiZl/kzfpzblR9bHY8GYSeDjUzLSKU0S9u5sYg1bKBxZJ7eLNRKUIkAg82/Ly/IO
-	 MFOzUfv37oCgkXaIT4JWGgo/lBP9a4wpiuuFKNcw=
+	b=Eraz9dk2bTHJXTVgLRP+9mcqhY54MCLZFEL5L7LLSti4J7aqBZSCc3GbwSLNu7Ghu
+	 T7fwqpABtLoHFFgkQgj0uY55PDRI+rHA/bzOd6TpQon3qpxWu3acsJl/nrm8QMjRNz
+	 zAwvy5lVwXBKq/bPB6ElYwTrBrkwFW4m8FIsf7EA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Majewski <mattwmajewski@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 061/373] media: vim2m: print device name after registering device
-Date: Tue, 29 Apr 2025 18:38:58 +0200
-Message-ID: <20250429161125.634608500@linuxfoundation.org>
+	Omar Sandoval <osandov@fb.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 102/311] sched/eevdf: Fix se->slice being set to U64_MAX and resulting crash
+Date: Tue, 29 Apr 2025 18:38:59 +0200
+Message-ID: <20250429161125.215831187@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Majewski <mattwmajewski@gmail.com>
+From: Omar Sandoval <osandov@fb.com>
 
-commit 143d75583f2427f3a97dba62413c4f0604867ebf upstream.
+[ Upstream commit bbce3de72be56e4b5f68924b7da9630cc89aa1a8 ]
 
-Move the v4l2_info() call displaying the video device name after the
-device is actually registered.
+There is a code path in dequeue_entities() that can set the slice of a
+sched_entity to U64_MAX, which sometimes results in a crash.
 
-This fixes a bug where the driver was always displaying "/dev/video0"
-since it was reading from the vfd before it was registered.
+The offending case is when dequeue_entities() is called to dequeue a
+delayed group entity, and then the entity's parent's dequeue is delayed.
+In that case:
 
-Fixes: cf7f34777a5b ("media: vim2m: Register video device after setting up internals")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Majewski <mattwmajewski@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1. In the if (entity_is_task(se)) else block at the beginning of
+   dequeue_entities(), slice is set to
+   cfs_rq_min_slice(group_cfs_rq(se)). If the entity was delayed, then
+   it has no queued tasks, so cfs_rq_min_slice() returns U64_MAX.
+2. The first for_each_sched_entity() loop dequeues the entity.
+3. If the entity was its parent's only child, then the next iteration
+   tries to dequeue the parent.
+4. If the parent's dequeue needs to be delayed, then it breaks from the
+   first for_each_sched_entity() loop _without updating slice_.
+5. The second for_each_sched_entity() loop sets the parent's ->slice to
+   the saved slice, which is still U64_MAX.
+
+This throws off subsequent calculations with potentially catastrophic
+results. A manifestation we saw in production was:
+
+6. In update_entity_lag(), se->slice is used to calculate limit, which
+   ends up as a huge negative number.
+7. limit is used in se->vlag = clamp(vlag, -limit, limit). Because limit
+   is negative, vlag > limit, so se->vlag is set to the same huge
+   negative number.
+8. In place_entity(), se->vlag is scaled, which overflows and results in
+   another huge (positive or negative) number.
+9. The adjusted lag is subtracted from se->vruntime, which increases or
+   decreases se->vruntime by a huge number.
+10. pick_eevdf() calls entity_eligible()/vruntime_eligible(), which
+    incorrectly returns false because the vruntime is so far from the
+    other vruntimes on the queue, causing the
+    (vruntime - cfs_rq->min_vruntime) * load calulation to overflow.
+11. Nothing appears to be eligible, so pick_eevdf() returns NULL.
+12. pick_next_entity() tries to dereference the return value of
+    pick_eevdf() and crashes.
+
+Dumping the cfs_rq states from the core dumps with drgn showed tell-tale
+huge vruntime ranges and bogus vlag values, and I also traced se->slice
+being set to U64_MAX on live systems (which was usually "benign" since
+the rest of the runqueue needed to be in a particular state to crash).
+
+Fix it in dequeue_entities() by always setting slice from the first
+non-empty cfs_rq.
+
+Fixes: aef6987d8954 ("sched/eevdf: Propagate min_slice up the cgroup hierarchy")
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lkml.kernel.org/r/f0c2d1072be229e1bdddc73c0703919a8b00c652.1745570998.git.osandov@fb.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vim2m.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/sched/fair.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/media/test-drivers/vim2m.c
-+++ b/drivers/media/test-drivers/vim2m.c
-@@ -1321,9 +1321,6 @@ static int vim2m_probe(struct platform_d
- 	vfd->v4l2_dev = &dev->v4l2_dev;
- 
- 	video_set_drvdata(vfd, dev);
--	v4l2_info(&dev->v4l2_dev,
--		  "Device registered as /dev/video%d\n", vfd->num);
--
- 	platform_set_drvdata(pdev, dev);
- 
- 	dev->m2m_dev = v4l2_m2m_init(&m2m_ops);
-@@ -1350,6 +1347,9 @@ static int vim2m_probe(struct platform_d
- 		goto error_m2m;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 89c7260103e18..3d9b68a347b76 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -7083,9 +7083,6 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 		h_nr_idle = task_has_idle_policy(p);
+ 		if (task_sleep || task_delayed || !se->sched_delayed)
+ 			h_nr_runnable = 1;
+-	} else {
+-		cfs_rq = group_cfs_rq(se);
+-		slice = cfs_rq_min_slice(cfs_rq);
  	}
  
-+	v4l2_info(&dev->v4l2_dev,
-+		  "Device registered as /dev/video%d\n", vfd->num);
-+
- #ifdef CONFIG_MEDIA_CONTROLLER
- 	ret = v4l2_m2m_register_media_controller(dev->m2m_dev, vfd,
- 						 MEDIA_ENT_F_PROC_VIDEO_SCALER);
+ 	for_each_sched_entity(se) {
+@@ -7095,6 +7092,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 			if (p && &p->se == se)
+ 				return -1;
+ 
++			slice = cfs_rq_min_slice(cfs_rq);
+ 			break;
+ 		}
+ 
+-- 
+2.39.5
+
 
 
 
