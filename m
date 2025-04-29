@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-138092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02490AA1683
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 120ABAA15A3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49DD4188DA50
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:35:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04FB9987829
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6875251793;
-	Tue, 29 Apr 2025 17:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECE92459C9;
+	Tue, 29 Apr 2025 17:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+SpObRp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4gDvkXr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7465182C60;
-	Tue, 29 Apr 2025 17:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8742517A6;
+	Tue, 29 Apr 2025 17:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948123; cv=none; b=EESaM45zjVAeRb+uJp4i21mqFvrXzHv3L+bdwaNmKc4xU0z6SQ4bRFM5JOFjkng9g2pfEU5r6UB6jEarzAUnq1bWQfjqvRRIypJJQP/xDcMydiwrCTNnppw3LlF/fMLDpJIZRmuFl0P/xxDIctV/XpuwEDAf7FNwPGHJMEVnrhU=
+	t=1745947384; cv=none; b=OmGqH9o+/1kBFWaEE0LmdHCqn7n9KCLdF/pSvNWc3J3Sg/X0hB6WXqD9aCyjPZ7tYXAyODU7Yl8PX8ZgLmOUT8u9Ptc1nwwag4/TdtcwRx0yExRBl+MqatCPvA4CwVbSMg6bPKuhrz67zRCAi951xOHpdm+hYmq9HsqoWM2CoP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948123; c=relaxed/simple;
-	bh=wIrMPVTNdyLSwFyCgONOO+29GPPz99gCVYQy9MHIxow=;
+	s=arc-20240116; t=1745947384; c=relaxed/simple;
+	bh=BMN0W2cRyqsIw/IkEVhPHOJU+COdmMhKcD15rjWOe8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YJFRKj/q8lfAg4CxHzAKXhZxyibeWEAOxomAZWJ/2Ldi4NTvvV3dmCFEwjxZGMCqOoPWh/Pexh5PBQZMQOjbkZ+4v9wDxe8MVtslQYtUxStmGr8SJhqpB/RynbP3dbRe3YbF0dHQO9FQXdfXSFGXvOY7TSRqPbIuSBaXNCjS5o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+SpObRp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9545DC4CEE3;
-	Tue, 29 Apr 2025 17:35:22 +0000 (UTC)
+	 MIME-Version; b=XrFGnr/Pnso8Pa+JeCRIxondwQ3OZHT8fh/l34w2Y2LAqpik0Ik/dVCaGvEwrq2ldet+AU5aTK8oEcX82mTfVUpGmO9/HGzgpiI8BXpSquqaWVR8/kmTJY8c+Psn13ZeKiMI8ShMAOfSV0/N/NmOcKSAp7npx9w07eC7PldbSK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4gDvkXr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7428DC4CEE3;
+	Tue, 29 Apr 2025 17:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948122;
-	bh=wIrMPVTNdyLSwFyCgONOO+29GPPz99gCVYQy9MHIxow=;
+	s=korg; t=1745947383;
+	bh=BMN0W2cRyqsIw/IkEVhPHOJU+COdmMhKcD15rjWOe8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+SpObRp8CF928fUfYAmR4m4Nus9nn1fRz66B40v/OkJqskVgK8QS5MWuARZz9sTC
-	 qbHNKteDDgpE77bx6qrVPJPIR9mzsir4j1lQva+YtFodxqkrmczm6aLWMtfaaGAZTC
-	 1/cIWiZEeg6WcT7a7jbWj9YpMMHX0l84ypLW76Vo=
+	b=K4gDvkXrEKLFn+JdQET+MGl8f9ZkURbPCyWHhS4aDoYCxN1hpggHUyiJ1nnOcW/G8
+	 toMpMfI3ettMtFhNfeTut7kmWHgue/xyXgsRTu2gqY1qocUIDkmdoLFsLWoYTXJ2AD
+	 Qiun6DeTc/jOLlAkbdkCmi/huHk7885pMedzty28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com,
-	syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com,
-	Ignacio Encinas <ignacio@iencinas.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	syzbot+ed60da8d686dc709164c@syzkaller.appspotmail.com,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 196/280] 9p/trans_fd: mark concurrent read and writes to p9_conn->err
+Subject: [PATCH 5.10 233/286] tipc: fix NULL pointer dereference in tipc_mon_reinit_self()
 Date: Tue, 29 Apr 2025 18:42:17 +0200
-Message-ID: <20250429161123.131235788@linuxfoundation.org>
+Message-ID: <20250429161117.516533263@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +64,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignacio Encinas <ignacio@iencinas.com>
+From: Tung Nguyen <tung.quang.nguyen@est.tech>
 
-[ Upstream commit fbc0283fbeae27b88448c90305e738991457fee2 ]
+[ Upstream commit d63527e109e811ef11abb1c2985048fdb528b4cb ]
 
-Writes for the error value of a connection are spinlock-protected inside
-p9_conn_cancel, but lockless reads are present elsewhere to avoid
-performing unnecessary work after an error has been met.
+syzbot reported:
 
-Mark the write and lockless reads to make KCSAN happy. Mark the write as
-exclusive following the recommendation in "Lock-Protected Writes with
-Lockless Reads" in tools/memory-model/Documentation/access-marking.txt
-while we are at it.
+tipc: Node number set to 1055423674
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 3 UID: 0 PID: 6017 Comm: kworker/3:5 Not tainted 6.15.0-rc1-syzkaller-00246-g900241a5cc15 #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: events tipc_net_finalize_work
+RIP: 0010:tipc_mon_reinit_self+0x11c/0x210 net/tipc/monitor.c:719
+...
+RSP: 0018:ffffc9000356fb68 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000003ee87cba
+RDX: 0000000000000000 RSI: ffffffff8dbc56a7 RDI: ffff88804c2cc010
+RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000007
+R13: fffffbfff2111097 R14: ffff88804ead8000 R15: ffff88804ead9010
+FS:  0000000000000000(0000) GS:ffff888097ab9000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000f720eb00 CR3: 000000000e182000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ tipc_net_finalize+0x10b/0x180 net/tipc/net.c:140
+ process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
+ process_scheduled_works kernel/workqueue.c:3319 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
+ kthread+0x3c2/0x780 kernel/kthread.c:464
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+...
+RIP: 0010:tipc_mon_reinit_self+0x11c/0x210 net/tipc/monitor.c:719
+...
+RSP: 0018:ffffc9000356fb68 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000003ee87cba
+RDX: 0000000000000000 RSI: ffffffff8dbc56a7 RDI: ffff88804c2cc010
+RBP: dffffc0000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000007
+R13: fffffbfff2111097 R14: ffff88804ead8000 R15: ffff88804ead9010
+FS:  0000000000000000(0000) GS:ffff888097ab9000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000f720eb00 CR3: 000000000e182000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 
-Mark p9_fd_request and p9_conn_cancel m->err reads despite the fact that
-they do not race with concurrent writes for stylistic reasons.
+There is a racing condition between workqueue created when enabling
+bearer and another thread created when disabling bearer right after
+that as follow:
 
-Reported-by: syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com
-Reported-by: syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com
-Signed-off-by: Ignacio Encinas <ignacio@iencinas.com>
-Message-ID: <20250318-p9_conn_err_benign_data_race-v3-1-290bb18335cc@iencinas.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+enabling_bearer                          | disabling_bearer
+---------------                          | ----------------
+tipc_disc_timeout()                      |
+{                                        | bearer_disable()
+ ...                                     | {
+ schedule_work(&tn->work);               |  tipc_mon_delete()
+ ...                                     |  {
+}                                        |   ...
+                                         |   write_lock_bh(&mon->lock);
+                                         |   mon->self = NULL;
+                                         |   write_unlock_bh(&mon->lock);
+                                         |   ...
+                                         |  }
+tipc_net_finalize_work()                 | }
+{                                        |
+ ...                                     |
+ tipc_net_finalize()                     |
+ {                                       |
+  ...                                    |
+  tipc_mon_reinit_self()                 |
+  {                                      |
+   ...                                   |
+   write_lock_bh(&mon->lock);            |
+   mon->self->addr = tipc_own_addr(net); |
+   write_unlock_bh(&mon->lock);          |
+   ...                                   |
+  }                                      |
+  ...                                    |
+ }                                       |
+ ...                                     |
+}                                        |
+
+'mon->self' is set to NULL in disabling_bearer thread and dereferenced
+later in enabling_bearer thread.
+
+This commit fixes this issue by validating 'mon->self' before assigning
+node address to it.
+
+Reported-by: syzbot+ed60da8d686dc709164c@syzkaller.appspotmail.com
+Fixes: 46cb01eeeb86 ("tipc: update mon's self addr when node addr generated")
+Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250417074826.578115-1-tung.quang.nguyen@est.tech
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/trans_fd.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ net/tipc/monitor.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index 196060dc6138a..791e4868f2d4e 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -191,12 +191,13 @@ static void p9_conn_cancel(struct p9_conn *m, int err)
- 
- 	spin_lock(&m->req_lock);
- 
--	if (m->err) {
-+	if (READ_ONCE(m->err)) {
- 		spin_unlock(&m->req_lock);
- 		return;
+diff --git a/net/tipc/monitor.c b/net/tipc/monitor.c
+index 1d90f39129ca0..ba0a308d41d85 100644
+--- a/net/tipc/monitor.c
++++ b/net/tipc/monitor.c
+@@ -685,7 +685,8 @@ void tipc_mon_reinit_self(struct net *net)
+ 		if (!mon)
+ 			continue;
+ 		write_lock_bh(&mon->lock);
+-		mon->self->addr = tipc_own_addr(net);
++		if (mon->self)
++			mon->self->addr = tipc_own_addr(net);
+ 		write_unlock_bh(&mon->lock);
  	}
- 
--	m->err = err;
-+	WRITE_ONCE(m->err, err);
-+	ASSERT_EXCLUSIVE_WRITER(m->err);
- 
- 	list_for_each_entry_safe(req, rtmp, &m->req_list, req_list) {
- 		list_move(&req->req_list, &cancel_list);
-@@ -283,7 +284,7 @@ static void p9_read_work(struct work_struct *work)
- 
- 	m = container_of(work, struct p9_conn, rq);
- 
--	if (m->err < 0)
-+	if (READ_ONCE(m->err) < 0)
- 		return;
- 
- 	p9_debug(P9_DEBUG_TRANS, "start mux %p pos %zd\n", m, m->rc.offset);
-@@ -450,7 +451,7 @@ static void p9_write_work(struct work_struct *work)
- 
- 	m = container_of(work, struct p9_conn, wq);
- 
--	if (m->err < 0) {
-+	if (READ_ONCE(m->err) < 0) {
- 		clear_bit(Wworksched, &m->wsched);
- 		return;
- 	}
-@@ -622,7 +623,7 @@ static void p9_poll_mux(struct p9_conn *m)
- 	__poll_t n;
- 	int err = -ECONNRESET;
- 
--	if (m->err < 0)
-+	if (READ_ONCE(m->err) < 0)
- 		return;
- 
- 	n = p9_fd_poll(m->client, NULL, &err);
-@@ -665,6 +666,7 @@ static void p9_poll_mux(struct p9_conn *m)
- static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
- {
- 	__poll_t n;
-+	int err;
- 	struct p9_trans_fd *ts = client->trans;
- 	struct p9_conn *m = &ts->conn;
- 
-@@ -673,9 +675,10 @@ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
- 
- 	spin_lock(&m->req_lock);
- 
--	if (m->err < 0) {
-+	err = READ_ONCE(m->err);
-+	if (err < 0) {
- 		spin_unlock(&m->req_lock);
--		return m->err;
-+		return err;
- 	}
- 
- 	WRITE_ONCE(req->status, REQ_STATUS_UNSENT);
+ }
 -- 
 2.39.5
 
