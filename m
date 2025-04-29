@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4388AAA1908
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C35AA19BE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:15:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C630E17395F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C05264C14F1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B79E22AE68;
-	Tue, 29 Apr 2025 18:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B222528ED;
+	Tue, 29 Apr 2025 18:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyH9o5D+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnSxuZRW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC92140C03;
-	Tue, 29 Apr 2025 18:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E0D1519A6;
+	Tue, 29 Apr 2025 18:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949850; cv=none; b=HS3Gfxtv2V7Vm7uEPPD/IsPsTFNc5OoCBGKMTMGhL+o9M4f5zkEAolTeSbDlYisI2jhWxXpnWoq7sAPVpBFxdTQj/YgMM6XvEa+iMdn7yjW5DqLGKGZnP+jPrmycRM0evJGm2RNFBPF8j6D5tFJbt9+U2qaCc/riBozM0vCx70o=
+	t=1745950387; cv=none; b=XmOUFXZXqRfxBuRXJmkaXEeAXYVFo8sgs0m8q3DwEDuOcf4+pYoSbtKmeCk3ID1M8ufv5pfAuR58QNl8CXXTym42gtFqtNJITdjCiUzQFDvmcJSOdO2NvhOz13eV1XUOBiV4mfaQJZq6uYe8/QOM/c+xX7xsLTuja2fhYEYIlO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949850; c=relaxed/simple;
-	bh=4UgokZSMM9YD3jmw3T9OtKDf5FIKHW5BDmp64hyi0GI=;
+	s=arc-20240116; t=1745950387; c=relaxed/simple;
+	bh=ar1CzgXaX5HIiJmT+Wc8fKs4urOyZCuUjHV0xI/am1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rDzzaQ8vjvECQODICc0knzM473yLxi9SV4vCmbRxF0dVpLt61o7ZIQ+iPToginzLMIMXa6BYMBKapaxg7oUtWE7kVUCVn0tiFWR9ftitH0KY+Ym4RVreXpfMEz9pz7V7pEd8QzknE/9VH+hULu/SCbAj4hWatQ3bJNvNO/N7/zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyH9o5D+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5A4C4CEE3;
-	Tue, 29 Apr 2025 18:04:09 +0000 (UTC)
+	 MIME-Version; b=R8Vjk/vEzItSSp/2DqP+X9A9bZYZnlMaVwiPsrIkHjonLyxxvdR+NX9Mgalvh5Uocn4ayedSbyBuVYkmqWyjwkIh7ZzzS9Iw9xQGDxUKCOwv2DaKFG8yCWKHi9WfN2NHNftgLk46CI+wwT8CIh97KVwm9R/lp1YqKdW8H9WQ2pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnSxuZRW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1CAC4CEE3;
+	Tue, 29 Apr 2025 18:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949849;
-	bh=4UgokZSMM9YD3jmw3T9OtKDf5FIKHW5BDmp64hyi0GI=;
+	s=korg; t=1745950387;
+	bh=ar1CzgXaX5HIiJmT+Wc8fKs4urOyZCuUjHV0xI/am1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TyH9o5D+he2F9KDC1Sw3EVswzM6sQ1XG9H27CXVD9ng/YrVCSKHSKz2n1+/x7Eb5C
-	 DFePvo8vJPRW0r5nWTa+5EqfgszHIoUpfQ9rTHL2eYy7+UZWN90Hkf1wUriwx+1OM2
-	 d+wb2nzBek9ntzhG4Jp8OlLIOCBk8igI9hyaDdug=
+	b=PnSxuZRWia9c+qJjmeK6/EzqB9PLdoigcgg7PpIwF2ykcGCV8h/zAJEcmAQos1LaF
+	 l+1+Z3ZAs1l+C2+oFoUCaCmxX++9/6+FvJ3bnDW+RFogL5rypKsl4AmnM+ny7A5VoL
+	 bElIhcAy3SFyeT+hfQCRcF/DebozU2MB4MvcGOKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/167] LoongArch: Make regs_irqs_disabled() more clear
-Date: Tue, 29 Apr 2025 18:42:47 +0200
-Message-ID: <20250429161054.156855044@linuxfoundation.org>
+	Peter Xu <peterx@redhat.com>,
+	Hongchen Zhang <zhanghongchen@loongson.cn>,
+	Ming Wang <wangming01@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 080/204] LoongArch: Return NULL from huge_pte_offset() for invalid PMD
+Date: Tue, 29 Apr 2025 18:42:48 +0200
+Message-ID: <20250429161102.692805610@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Ming Wang <wangming01@loongson.cn>
 
-[ Upstream commit bb0511d59db9b3e40c8d51f0d151ccd0fd44071d ]
+commit bd51834d1cf65a2c801295d230c220aeebf87a73 upstream.
 
-In the current code, the definition of regs_irqs_disabled() is actually
-"!(regs->csr_prmd & CSR_CRMD_IE)" because arch_irqs_disabled_flags() is
-defined as "!(flags & CSR_CRMD_IE)", it looks a little strange.
+LoongArch's huge_pte_offset() currently returns a pointer to a PMD slot
+even if the underlying entry points to invalid_pte_table (indicating no
+mapping). Callers like smaps_hugetlb_range() fetch this invalid entry
+value (the address of invalid_pte_table) via this pointer.
 
-Define regs_irqs_disabled() as !(regs->csr_prmd & CSR_PRMD_PIE) directly
-to make it more clear, no functional change.
+The generic is_swap_pte() check then incorrectly identifies this address
+as a swap entry on LoongArch, because it satisfies the "!pte_present()
+&& !pte_none()" conditions. This misinterpretation, combined with a
+coincidental match by is_migration_entry() on the address bits, leads to
+kernel crashes in pfn_swap_entry_to_page().
 
-While at it, the return value of regs_irqs_disabled() is true or false,
-so change its type to reflect that and also make it always inline.
+Fix this at the architecture level by modifying huge_pte_offset() to
+check the PMD entry's content using pmd_none() before returning. If the
+entry is invalid (i.e., it points to invalid_pte_table), return NULL
+instead of the pointer to the slot.
 
-Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: stable@vger.kernel.org
+Acked-by: Peter Xu <peterx@redhat.com>
+Co-developed-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Signed-off-by: Ming Wang <wangming01@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/ptrace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/mm/hugetlbpage.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/include/asm/ptrace.h b/arch/loongarch/include/asm/ptrace.h
-index 59c4608de91db..f5d9096d18aa1 100644
---- a/arch/loongarch/include/asm/ptrace.h
-+++ b/arch/loongarch/include/asm/ptrace.h
-@@ -32,9 +32,9 @@ struct pt_regs {
- 	unsigned long __last[];
- } __aligned(8);
- 
--static inline int regs_irqs_disabled(struct pt_regs *regs)
-+static __always_inline bool regs_irqs_disabled(struct pt_regs *regs)
- {
--	return arch_irqs_disabled_flags(regs->csr_prmd);
-+	return !(regs->csr_prmd & CSR_PRMD_PIE);
+--- a/arch/loongarch/mm/hugetlbpage.c
++++ b/arch/loongarch/mm/hugetlbpage.c
+@@ -47,7 +47,7 @@ pte_t *huge_pte_offset(struct mm_struct
+ 				pmd = pmd_offset(pud, addr);
+ 		}
+ 	}
+-	return (pte_t *) pmd;
++	return pmd_none(pmdp_get(pmd)) ? NULL : (pte_t *) pmd;
  }
  
- static inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
--- 
-2.39.5
-
+ int pmd_huge(pmd_t pmd)
 
 
 
