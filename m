@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-138390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D923AA17CE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD54AA1407
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB89317D116
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8ADD1885A7A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219CB24C083;
-	Tue, 29 Apr 2025 17:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82CD23C8D6;
+	Tue, 29 Apr 2025 17:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRVHHvck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROeoLn4V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30EB22AE68;
-	Tue, 29 Apr 2025 17:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F0F1C6B4;
+	Tue, 29 Apr 2025 17:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949096; cv=none; b=RNksxpxBJvzE6+9fcgRvIfLirHtJ3+m5E+B5T5Hp0UWONlPoH2yz0ftoRSDw9t5EddTVHZlMG2PUZ5tjuqYq653WCLtwf/jIkQxwNmC5VpPfrMPSh4BQGqBro6mWijWh6GjlX+yza2hL+KtyRBrhjOHv5DnPxlyU85sz09X2EWc=
+	t=1745946482; cv=none; b=bo5SLHBeOiCl/5KTu+fq8vAlJyfwUjIlMtOTHgDDETl28Xp7FGvPUsUZm5wWEIN2PDu1AmVwmNTuODuu7xq2DJij5T1HcVsI4YPSq4xXy4NMPBWwANBIiYs0+ZjbkVoIdGUBKf7hjJnBpVv7cmhf5T4XPQAdRSl7XOecBUGGuOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949096; c=relaxed/simple;
-	bh=jDU3XUbmvsU4WkVZcD9oahoOPlwxmJ2LchvHTEJdxo8=;
+	s=arc-20240116; t=1745946482; c=relaxed/simple;
+	bh=Xb9LsUnChG4R2FBg8sN/zVNtdMWLlSj550pwUeYPOic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lhmvaLTCSMGxY9T43msN13V3ftFsjr0dRprwmpEyD/5tBHrpo+nIpdGrxAmS1fA1TAJNu7rCko2x2vU6ogNS3uDpRivj/s9TVNB/8hkGZj/aeM0akAMvNPmJvguwxhApLe5XZbxyM+R8fO1VgZIRiD9neBB0jB6qwaI7LA+cr/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRVHHvck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D68CC4CEE3;
-	Tue, 29 Apr 2025 17:51:35 +0000 (UTC)
+	 MIME-Version; b=InCk4lXqDHXXb6eeWAoNZPMJEujOoUFO1wR5xLkPIyBuBsJFzXqy8vdMoAQmtTjJmrJQu7xNimm6LuncuzXCbRiXd6nHaJqY4fw7NlSJSoALo+arDBlsJ8Fgjrkk5vZ+MuNybmV/LsDLGHl/ZBoCWP0j7iV9MpyB7z5Zd81IKic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROeoLn4V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFEBC4CEE3;
+	Tue, 29 Apr 2025 17:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949096;
-	bh=jDU3XUbmvsU4WkVZcD9oahoOPlwxmJ2LchvHTEJdxo8=;
+	s=korg; t=1745946482;
+	bh=Xb9LsUnChG4R2FBg8sN/zVNtdMWLlSj550pwUeYPOic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRVHHvckPhCA/MQTTjiDO4VzmiO7kTg+vquS993GIUNSOyBgP+xU4btsDQhndtrsG
-	 0hXvrezMdeuAX0mZR5tQEIVYP38FB1CMBzaIZ5sx9hFIbaYXeOdNbfyIkWPLJ27Jrq
-	 CMUoN2VLNmpBUAKHFdLF3Tx+FtHjDLkDcB9x/s/w=
+	b=ROeoLn4VbCZTHu4a5CZTvVFrv87kZ8OCAAU2Te+FFo9DtXl6p6g7vmT0Oui1apr1/
+	 mk++NiEPwYwgEdrxrgxNmwl2Td90U/XFa69xP6W/8+Qj6nLtX2yIAH1BlK7IlEt414
+	 oL451DoDWAjzXkMgJL4pwlRquk+LeRPGMuD/051s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kang Yang <quic_kangyang@quicinc.com>,
-	David Ruth <druth@chromium.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 5.15 212/373] wifi: ath10k: avoid NULL pointer error during sdio remove
+	Julia Filipchuk <julia.filipchuk@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 252/311] drm/xe/xe3lpg: Apply Wa_14022293748, Wa_22019794406
 Date: Tue, 29 Apr 2025 18:41:29 +0200
-Message-ID: <20250429161131.881864116@linuxfoundation.org>
+Message-ID: <20250429161131.350987779@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +62,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kang Yang <quic_kangyang@quicinc.com>
+From: Julia Filipchuk <julia.filipchuk@intel.com>
 
-commit 95c38953cb1ecf40399a676a1f85dfe2b5780a9a upstream.
+[ Upstream commit 00e0ae4f1f872800413c819f8a2a909dc29cdc35 ]
 
-When running 'rmmod ath10k', ath10k_sdio_remove() will free sdio
-workqueue by destroy_workqueue(). But if CONFIG_INIT_ON_FREE_DEFAULT_ON
-is set to yes, kernel panic will happen:
-Call trace:
- destroy_workqueue+0x1c/0x258
- ath10k_sdio_remove+0x84/0x94
- sdio_bus_remove+0x50/0x16c
- device_release_driver_internal+0x188/0x25c
- device_driver_detach+0x20/0x2c
+Extend Wa_14022293748, Wa_22019794406 to Xe3_LPG
 
-This is because during 'rmmod ath10k', ath10k_sdio_remove() will call
-ath10k_core_destroy() before destroy_workqueue(). wiphy_dev_release()
-will finally be called in ath10k_core_destroy(). This function will free
-struct cfg80211_registered_device *rdev and all its members, including
-wiphy, dev and the pointer of sdio workqueue. Then the pointer of sdio
-workqueue will be set to NULL due to CONFIG_INIT_ON_FREE_DEFAULT_ON.
-
-After device release, destroy_workqueue() will use NULL pointer then the
-kernel panic happen.
-
-Call trace:
-ath10k_sdio_remove
-  ->ath10k_core_unregister
-    ……
-    ->ath10k_core_stop
-      ->ath10k_hif_stop
-        ->ath10k_sdio_irq_disable
-    ->ath10k_hif_power_down
-      ->del_timer_sync(&ar_sdio->sleep_timer)
-  ->ath10k_core_destroy
-    ->ath10k_mac_destroy
-      ->ieee80211_free_hw
-        ->wiphy_free
-    ……
-          ->wiphy_dev_release
-  ->destroy_workqueue
-
-Need to call destroy_workqueue() before ath10k_core_destroy(), free
-the work queue buffer first and then free pointer of work queue by
-ath10k_core_destroy(). This order matches the error path order in
-ath10k_sdio_probe().
-
-No work will be queued on sdio workqueue between it is destroyed and
-ath10k_core_destroy() is called. Based on the call_stack above, the
-reason is:
-Only ath10k_sdio_sleep_timer_handler(), ath10k_sdio_hif_tx_sg() and
-ath10k_sdio_irq_disable() will queue work on sdio workqueue.
-Sleep timer will be deleted before ath10k_core_destroy() in
-ath10k_hif_power_down().
-ath10k_sdio_irq_disable() only be called in ath10k_hif_stop().
-ath10k_core_unregister() will call ath10k_hif_power_down() to stop hif
-bus, so ath10k_sdio_hif_tx_sg() won't be called anymore.
-
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
-
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Tested-by: David Ruth <druth@chromium.org>
-Reviewed-by: David Ruth <druth@chromium.org>
-Link: https://patch.msgid.link/20241008022246.1010-1-quic_kangyang@quicinc.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Julia Filipchuk <julia.filipchuk@intel.com>
+Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Link: https://lore.kernel.org/r/20250325224310.1455499-1-julia.filipchuk@intel.com
+(cherry picked from commit 32af900f2c6b1846fd3ede8ad36dd180d7e4ae70)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/sdio.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_wa_oob.rules | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -3,6 +3,7 @@
-  * Copyright (c) 2004-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2012,2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2016-2017 Erik Stromdahl <erik.stromdahl@gmail.com>
-+ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include <linux/module.h>
-@@ -2648,9 +2649,9 @@ static void ath10k_sdio_remove(struct sd
- 
- 	netif_napi_del(&ar->napi);
- 
--	ath10k_core_destroy(ar);
--
- 	destroy_workqueue(ar_sdio->workqueue);
-+
-+	ath10k_core_destroy(ar);
- }
- 
- static const struct sdio_device_id ath10k_sdio_devices[] = {
+diff --git a/drivers/gpu/drm/xe/xe_wa_oob.rules b/drivers/gpu/drm/xe/xe_wa_oob.rules
+index 40438c3d9b723..32d3853b08ec8 100644
+--- a/drivers/gpu/drm/xe/xe_wa_oob.rules
++++ b/drivers/gpu/drm/xe/xe_wa_oob.rules
+@@ -30,8 +30,10 @@
+ 13011645652	GRAPHICS_VERSION(2004)
+ 14022293748	GRAPHICS_VERSION(2001)
+ 		GRAPHICS_VERSION(2004)
++		GRAPHICS_VERSION_RANGE(3000, 3001)
+ 22019794406	GRAPHICS_VERSION(2001)
+ 		GRAPHICS_VERSION(2004)
++		GRAPHICS_VERSION_RANGE(3000, 3001)
+ 22019338487	MEDIA_VERSION(2000)
+ 		GRAPHICS_VERSION(2001)
+ 		MEDIA_VERSION(3000), MEDIA_STEP(A0, B0), FUNC(xe_rtp_match_not_sriov_vf)
+-- 
+2.39.5
+
 
 
 
