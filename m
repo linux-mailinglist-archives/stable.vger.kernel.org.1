@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAAD7AA146B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB555AA11DD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44384188D67F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E95297B41B2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845F3248878;
-	Tue, 29 Apr 2025 17:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197B12459C9;
+	Tue, 29 Apr 2025 16:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUh5nVQs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzvSTXoJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFDA221DA7;
-	Tue, 29 Apr 2025 17:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23A5244679;
+	Tue, 29 Apr 2025 16:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946710; cv=none; b=hBT72Bx7+oXZzAjhbN6cLO3TAc0dIq9g3IAGEi5SJ02Ec9j584JBuQwFb8qEQXVxYD3YpHZSTHsfTr8rx9Os/RVFNyfD3MGa7oOXrrUAFi9vWH3pqno0JTTTCQLECPvHu44MgTnwnS+UjScXJWKpAA0H0MHwAPX6nkoweag2YSs=
+	t=1745945167; cv=none; b=N2TlN7CLr+h1x8TuLqt5KU83U1m7HFEk5YoKMCX6FfxHgM4U9LJjQfW0W88t0T0UYVwlRC7CZgEP8P2wH50aWnexlVgNeUgDs+5Xynk72EnU4Smcj8/45S2805QPRTBd+GS6bX5VFRLpkdaokjC1F5RXyC39LAONhgyUNwiVkzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946710; c=relaxed/simple;
-	bh=PLfxIup9cKXifnUqqiC1dFlrpU1wRK/AuDoMFKjQC6M=;
+	s=arc-20240116; t=1745945167; c=relaxed/simple;
+	bh=ToSindjh371pNdM8VUC/yxebkY8YHvpLoV8jQX8QgOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FrxYf/opraVMSrGBngyOX6kPL7CGHBHH4cwK/CySN4nqDPIBmmJCh6oblstTIDAo1Hd7Gf24FvqvfuVh7UdrhL6l2QcoaR+wElnkG/BqEm23RkXxKxOXKhW4CAcsxDszRyA1U9UUmSFk4X6aWRiv719wqbRhn8lx1dmQZCLOBGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUh5nVQs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB40C4CEE3;
-	Tue, 29 Apr 2025 17:11:49 +0000 (UTC)
+	 MIME-Version; b=f+s2SdiRIzVqoDD/l/UE4Y4I4gBwxppgK3EZVjpz3UaGRs5Rg5LVEXebtR65XE6x6xP7JyovukIQValZvr9s8XPugZboKkTimhw5FfPa6eQAe5mGBazorSsBbxjdHNdRnIpnQTz+y+1f2B8xC2MbF8kX9IWC3pj5Kv3qcUS1Jfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzvSTXoJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B2DC4CEE3;
+	Tue, 29 Apr 2025 16:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946710;
-	bh=PLfxIup9cKXifnUqqiC1dFlrpU1wRK/AuDoMFKjQC6M=;
+	s=korg; t=1745945167;
+	bh=ToSindjh371pNdM8VUC/yxebkY8YHvpLoV8jQX8QgOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OUh5nVQsJXkpKehbW4ElnwV5Il4ogHbpElFFHdFs0UsodaFHAG0ep0uBOAc93tsFO
-	 1ZQVHZJaSqWuDFKCdudv+iPFKDkkrY4hn9N/QuCF7btoLe90VZMF17Rybq+hAOa7TP
-	 Decj4bIVZvcZknbgppDFBhNkOlYyysrsyViWKYTM=
+	b=KzvSTXoJ/4vqTkLnxnLKHyJJFHhJEnNQ3NdCuntIXddwyNuRvE7xqwlN2b61a4acN
+	 PKWGKy6txBJKu4mhc4LW9lljdTpGJRTb1Vc6lcYNiFQi6CX6/JZZmvCdDnX6zdOvW8
+	 0wP9duplD5DwtYcf50sRhoRLG67cS4wbDJ0CaOyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabien Parent <fparent@baylibre.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/286] pwm: mediatek: Always use bus clock
+Subject: [PATCH 5.4 007/179] pm: cpupower: bench: Prevent NULL dereference on malloc failure
 Date: Tue, 29 Apr 2025 18:39:08 +0200
-Message-ID: <20250429161109.674061274@linuxfoundation.org>
+Message-ID: <20250429161049.689942542@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabien Parent <fparent@baylibre.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit 0c0ead76235db0bcfaab83f04db546995449d002 ]
+[ Upstream commit 208baa3ec9043a664d9acfb8174b332e6b17fb69 ]
 
-The MediaTek PWM IP can sometimes use the 26 MHz source clock to
-generate the PWM signal, but the driver currently assumes that we always
-use the PWM bus clock to generate the PWM signal.
+If malloc returns NULL due to low memory, 'config' pointer can be NULL.
+Add a check to prevent NULL dereference.
 
-This commit modifies the PWM driver in order to force the PWM IP to
-always use the bus clock as source clock.
-
-I do not have the datasheet of all the MediaTek SoC, so I don't know if
-the register to choose the source clock is present in all the SoCs or
-only in subset. As a consequence I made this change optional by using a
-platform data paremeter to says whether this register is supported or
-not. On all the SoCs I don't have the datasheet (MT2712, MT7622, MT7623,
-MT7628, MT7629) I kept the behavior to be the same as before this
-change.
-
-Signed-off-by: Fabien Parent <fparent@baylibre.com>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-Stable-dep-of: 7ca59947b5fc ("pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()")
+Link: https://lore.kernel.org/r/20250219122715.3892223-1-quic_zhonhan@quicinc.com
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-mediatek.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/power/cpupower/bench/parse.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
-index ab001ce55178e..108881619aea1 100644
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -30,12 +30,14 @@
- #define PWM45DWIDTH_FIXUP	0x30
- #define PWMTHRES		0x30
- #define PWM45THRES_FIXUP	0x34
-+#define PWM_CK_26M_SEL		0x210
+diff --git a/tools/power/cpupower/bench/parse.c b/tools/power/cpupower/bench/parse.c
+index e63dc11fa3a53..48e25be6e1635 100644
+--- a/tools/power/cpupower/bench/parse.c
++++ b/tools/power/cpupower/bench/parse.c
+@@ -120,6 +120,10 @@ FILE *prepare_output(const char *dirname)
+ struct config *prepare_default_config()
+ {
+ 	struct config *config = malloc(sizeof(struct config));
++	if (!config) {
++		perror("malloc");
++		return NULL;
++	}
  
- #define PWM_CLK_DIV_MAX		7
+ 	dprintf("loading defaults\n");
  
- struct pwm_mediatek_of_data {
- 	unsigned int num_pwms;
- 	bool pwm45_fixup;
-+	bool has_ck_26m_sel;
- };
- 
- /**
-@@ -132,6 +134,10 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	if (ret < 0)
- 		return ret;
- 
-+	/* Make sure we use the bus clock and not the 26MHz clock */
-+	if (pc->soc->has_ck_26m_sel)
-+		writel(0, pc->regs + PWM_CK_26M_SEL);
-+
- 	/* Using resolution in picosecond gets accuracy higher */
- 	resolution = (u64)NSEC_PER_SEC * 1000;
- 	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
-@@ -281,31 +287,37 @@ static int pwm_mediatek_remove(struct platform_device *pdev)
- static const struct pwm_mediatek_of_data mt2712_pwm_data = {
- 	.num_pwms = 8,
- 	.pwm45_fixup = false,
-+	.has_ck_26m_sel = false,
- };
- 
- static const struct pwm_mediatek_of_data mt7622_pwm_data = {
- 	.num_pwms = 6,
- 	.pwm45_fixup = false,
-+	.has_ck_26m_sel = false,
- };
- 
- static const struct pwm_mediatek_of_data mt7623_pwm_data = {
- 	.num_pwms = 5,
- 	.pwm45_fixup = true,
-+	.has_ck_26m_sel = false,
- };
- 
- static const struct pwm_mediatek_of_data mt7628_pwm_data = {
- 	.num_pwms = 4,
- 	.pwm45_fixup = true,
-+	.has_ck_26m_sel = false,
- };
- 
- static const struct pwm_mediatek_of_data mt7629_pwm_data = {
- 	.num_pwms = 1,
- 	.pwm45_fixup = false,
-+	.has_ck_26m_sel = false,
- };
- 
- static const struct pwm_mediatek_of_data mt8516_pwm_data = {
- 	.num_pwms = 5,
- 	.pwm45_fixup = false,
-+	.has_ck_26m_sel = true,
- };
- 
- static const struct of_device_id pwm_mediatek_of_match[] = {
 -- 
 2.39.5
 
