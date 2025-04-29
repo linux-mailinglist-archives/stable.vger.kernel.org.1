@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-137082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2CEAA0C1E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 14:50:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EA11AA0C1F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 14:50:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3724D7A51D8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 12:49:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71D5D46401A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 12:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271CC2C2585;
-	Tue, 29 Apr 2025 12:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD6620E023;
+	Tue, 29 Apr 2025 12:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dC5oCmZv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pi/cyBjv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE642701C4
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 12:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACE42701C4
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 12:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745931044; cv=none; b=aEthygyQ5Sztoe1V4H6nZk4+sXm7CackfvYH9BNOEMX65k264JuvXs3NcwyNppcdc5UCytruav8O7nRInZzEL5iDxO1VI/g/uH0adJenmDl5/uoKrP+Nj/1xxTK23LL5okgc79vxlQT5q46evsgwHMnPSDoPuwJz9uf5oapQxnw=
+	t=1745931049; cv=none; b=TDmFu10SSGN8GxEGpyho8EkLAr4rlIo9ff+PbTlrcnKdxUtxmC95iO3FmDGzivAtjNZqD2wSyQNfovE8OAMqowPNOjEexhx9+RV6BviQViAepd9ihaaWZz+97otslB0OT4o7wKibdX2SBqIRFQsj1MYKNi/ArCmJ1NHqXwC6o/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745931044; c=relaxed/simple;
-	bh=J6wRspDOFyEG4lmKDS8+NY+JlzpHKfqY78iGztijsvk=;
+	s=arc-20240116; t=1745931049; c=relaxed/simple;
+	bh=wz8X5FU0eRofZ+2PkODensp6mt+lqr4dt7jfLCNz4hQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OC32C8S26EDnLb6uWZsWvuNCFE4NJhinAQyMdd0x68HeQ4/oKbiufgWaGBgndSxWGF1RGBM5EH6ifijuZBCv768H24g1wHXb1qWF4asxc2T7kF6WbxE2ttUdP8Lcvl2ximy2Zq2oJ9yJl1qANt1422PDtLajerk9u+N2p3jYru8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dC5oCmZv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B7AC4CEE3;
-	Tue, 29 Apr 2025 12:50:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jL0HhAAqi5HD62etSH08t/TlXqAV4ri7PrjCHqD8lmXpet0JUa3wfdtIFgF27OxE+J5BKhrIe4S2qhKvHhY4ro//sqYz4/H4jO36U9uLB/IUY7xvXIGnwtCPFlFuztEBl57SqD/DnCXFvxzhxU66Aw4nz3WRUaKhRA/5zJLR8h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pi/cyBjv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C253AC4CEE3;
+	Tue, 29 Apr 2025 12:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745931044;
-	bh=J6wRspDOFyEG4lmKDS8+NY+JlzpHKfqY78iGztijsvk=;
+	s=k20201202; t=1745931049;
+	bh=wz8X5FU0eRofZ+2PkODensp6mt+lqr4dt7jfLCNz4hQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dC5oCmZvVmQV1xpY1J4eTtYKhWuPhB1TOYnfM54xiHFHfHI1UWCxqi6LhfO02xMZ8
-	 4EqRLXIzXmGBXz8sfyxRwxvmGNcWnRltbfgDYj+Mk8/bAUbkIVWiDtNWalGe7xXB/Q
-	 nDHMU9mtX18YZkP7QjLTwCm7nPNHeuUjnbVUAOdJo9R9Z4McHxPr+a11XoAaSuiT7I
-	 SbtbdhdYSkM3SPT6hvz9yR2Q4sS+O+UJL0ExZjB+ddVH1jlKu3X9DMFTssRQfy6Zfo
-	 vAEnZfSUlUM7ZavqCfQe5Eeu3WM40Bx11CdPDI8T5PhVxchRWr0dzsx/j8GTv7mErh
-	 YNhfo+3h8ZMXQ==
+	b=Pi/cyBjvLzfYAgxQ+lYmIuUiK7oiX1wMekEUAQUGBDw1qtfgPA9B0c0istPyMhqSi
+	 stO+Sv4W7mEKSW1Gy9xQT4UF8wvrAormfwK92uZjRAg14+bjb4Iiv1nsOnItBUicUP
+	 wqoBFs3UFAD9/F1E+CS9WEBPq0BMn9wXw6TQf8VEzDIN+DctGBMpvpE/cKmcUyJRZ3
+	 s4p3vVqz3H8UDrNOl5en+3a4l4xnrkaUMGVCfkGIw3WOkypLmqPyy9OYMp4aYWOEYk
+	 SskbRt2cQYqA8zN2Qc9FhqqCtftOGPythFwsBmsHHHBMWNe/wDO1Sl6BHjJ/DO9rM7
+	 K1dxfBcWHzIpg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+Cc: jianqi.ren.cn@windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y 3/4] net: dsa: mv88e6xxx: enable .port_set_policy() for 6320 family
-Date: Tue, 29 Apr 2025 08:50:40 -0400
-Message-Id: <20250429005326-e61b5d3cf417063c@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y v2] net/sched: act_mirred: don't override retval if we already lost the skb
+Date: Tue, 29 Apr 2025 08:50:45 -0400
+Message-Id: <20250429004035-abcce9e84c34be5e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250428081854.3641-3-kabel@kernel.org>
+In-Reply-To:  <20250428074550.4155739-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,37 +67,26 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: a2ef58e2c4aea4de166fc9832eb2b621e88c98d5
+The upstream commit SHA1 provided is correct: 166c2c8a6a4dc2e4ceba9e10cfe81c3e469e3210
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Jakub Kicinski<kuba@kernel.org>
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: a0898cf9a38d)
-6.12.y | Not found
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 28cdbbd38a44)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  a2ef58e2c4aea ! 1:  2746495add794 net: dsa: mv88e6xxx: enable .port_set_policy() for 6320 family
-    @@ Metadata
-      ## Commit message ##
-         net: dsa: mv88e6xxx: enable .port_set_policy() for 6320 family
-     
-    +    commit a2ef58e2c4aea4de166fc9832eb2b621e88c98d5 upstream.
-    +
-         Commit f3a2cd326e44 ("net: dsa: mv88e6xxx: introduce .port_set_policy")
-         did not add the .port_set_policy() method for the 6320 family. Fix it.
-     
-         Fixes: f3a2cd326e44 ("net: dsa: mv88e6xxx: introduce .port_set_policy")
-         Signed-off-by: Marek Behún <kabel@kernel.org>
-    -    Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-    -    Link: https://patch.msgid.link/20250317173250.28780-5-kabel@kernel.org
-    -    Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-     
-      ## drivers/net/dsa/mv88e6xxx/chip.c ##
-     @@ drivers/net/dsa/mv88e6xxx/chip.c: static const struct mv88e6xxx_ops mv88e6320_ops = {
+1:  166c2c8a6a4dc < -:  ------------- net/sched: act_mirred: don't override retval if we already lost the skb
+-:  ------------- > 1:  c4da0f421ec02 net/sched: act_mirred: don't override retval if we already lost the skb
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
