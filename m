@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B11FAA1389
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F6DCAA14C9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:20:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFF3B4C3300
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 975FD3BB5F1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F6724A067;
-	Tue, 29 Apr 2025 17:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C7724A06A;
+	Tue, 29 Apr 2025 17:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3XDrJF7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rjww0kEH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A71246326;
-	Tue, 29 Apr 2025 17:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BC6251783;
+	Tue, 29 Apr 2025 17:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946161; cv=none; b=FXHYd7H/h2sAtQz21rYxMrnG4gJ4vBR5FsPzlfOHtCIfcKSSLxxb6AG6a3ASFn4uPxkZmRbVZlHyP6c0l++JQzX2rHwDj8VEDXx2G4EniiwT5BsWoWbnJJEs73wQb6WN+cNx35O29rDtSuySTZjowp78P9zSDAaqBgoMxj2ky2M=
+	t=1745946906; cv=none; b=BTqW5bBqmh7JrdicjiU8o7fAUO5rYR8mX6nPM7JwfcPNWUiZ4HhLpk+6bGOC/MIlzJRprl9jTr2FNVDZbHl9e4XQIfHwwp3bLVDJy6cyuXb8K1n+yLdcGv4prkgltcDfQ1QV7R6b/ZJhWKZI4qZdWs544ZPEESlAg9wG6S7sX+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946161; c=relaxed/simple;
-	bh=w+AMD5QeMTEaf6tcvzH/kTW4MUvmKVHI92MG3vTaQqQ=;
+	s=arc-20240116; t=1745946906; c=relaxed/simple;
+	bh=O5u2oNX6UaQRcmTj2Nx2k3mhJAZgThx7FSVQiT4Pmf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h9NxMoQ7Sl14FXVPyh7y9KznZ2eE5L2TgW8YskaIbBE5SjvhSxrSZWd+aINtxDbIF1yIposqs41xEtNlT/NLzvMYe9CCs9ZoXyEiDfnMtCqf89HM3qIAiX+nURl4ILmJc6Mi4c+w5Huhj55RRGJWqB+GuQddnyDV02b/3xIj2g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3XDrJF7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB196C4CEE3;
-	Tue, 29 Apr 2025 17:02:40 +0000 (UTC)
+	 MIME-Version; b=MGW8l7Zju6ki/VTFBNHFPyKo6TrMbp2wwVB7abTSXLP58DvhzXBfqTHHTty7XcCaYPTi++C0U27iX1ZyHYNwrs/en5avrEHV6v6OIjKcfL81uo1qJYHw+AR4uYGSqgtIYrwvncPxJsu5XTNNL/keQzRdddnI7bo6nn5mJO0qxyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rjww0kEH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CDCC4AF0C;
+	Tue, 29 Apr 2025 17:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946161;
-	bh=w+AMD5QeMTEaf6tcvzH/kTW4MUvmKVHI92MG3vTaQqQ=;
+	s=korg; t=1745946905;
+	bh=O5u2oNX6UaQRcmTj2Nx2k3mhJAZgThx7FSVQiT4Pmf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x3XDrJF7dUS3tsWVckPyx9aIpBi5Stf39wNbLHrC8PdtfAhlbtmlw0hwbJiUwCFi7
-	 IYDrLBGHufvWOHMvhlWQVaWl54Kn6zTpE0JIJFrdxHOouuwqx3QdOv3+oYuAPlJmuC
-	 R5X735PUoLweXlkMhoogCs5AMHsNqpyyEaBLkHik=
+	b=Rjww0kEH++F8/v3r+dOHRQW57pTD/l1fvgdn0NiDpp1hcnqaHUrb3zsMgivmHjW0U
+	 Xct1igXT9KEjvVdxZcRjsyH47aeQ/JSNbJg3HE/O+tbRK9Q6H3ELLgqlu3Z92UFgL2
+	 z3DtdxP/kaI5Kp2DlqcEROCroToewbwg9kpRM5IM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.14 175/311] USB: wdm: wdm_wwan_port_tx_complete mutex in atomic context
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 108/286] RDMA/hns: Fix wrong maximum DMA segment size
 Date: Tue, 29 Apr 2025 18:40:12 +0200
-Message-ID: <20250429161128.198684566@linuxfoundation.org>
+Message-ID: <20250429161112.301108272@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-commit 1fdc4dca350c0b8ada0b8ebf212504e1ad55e511 upstream.
+[ Upstream commit 9beb2c91fb86e0be70a5833c6730441fa3c9efa8 ]
 
-wdm_wwan_port_tx_complete is called from a completion
-handler with irqs disabled and possible in IRQ context
-usb_autopm_put_interface can take a mutex.
-Hence usb_autopm_put_interface_async must be used.
+Set maximum DMA segment size to 2G instead of UINT_MAX due to HW limit.
 
-Fixes: cac6fb015f71 ("usb: class: cdc-wdm: WWAN framework integration")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250401084749.175246-4-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e0477b34d9d1 ("RDMA: Explicitly pass in the dma_device to ib_register_device")
+Link: https://patch.msgid.link/r/20250327114724.3454268-3-huangjunxian6@hisilicon.com
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-wdm.c |    2 +-
+ drivers/infiniband/hw/hns/hns_roce_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -879,7 +879,7 @@ static void wdm_wwan_port_tx_complete(st
- 	struct sk_buff *skb = urb->context;
- 	struct wdm_device *desc = skb_shinfo(skb)->destructor_arg;
- 
--	usb_autopm_put_interface(desc->intf);
-+	usb_autopm_put_interface_async(desc->intf);
- 	wwan_port_txon(desc->wwanp);
- 	kfree_skb(skb);
- }
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index f520e43e4e146..3c79668c6b3b5 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -552,7 +552,7 @@ static int hns_roce_register_device(struct hns_roce_dev *hr_dev)
+ 		if (ret)
+ 			return ret;
+ 	}
+-	dma_set_max_seg_size(dev, UINT_MAX);
++	dma_set_max_seg_size(dev, SZ_2G);
+ 	ret = ib_register_device(ib_dev, "hns_%d", dev);
+ 	if (ret) {
+ 		dev_err(dev, "ib_register_device failed!\n");
+-- 
+2.39.5
+
 
 
 
