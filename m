@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5FAAA15F7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2BCAA17B3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D858B177746
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91142160FDB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6424923F405;
-	Tue, 29 Apr 2025 17:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEEC250C0C;
+	Tue, 29 Apr 2025 17:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhqOqUj5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQnT5S3h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224FA1FE468;
-	Tue, 29 Apr 2025 17:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0EF21ABC1;
+	Tue, 29 Apr 2025 17:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947722; cv=none; b=dmwXV+N/7e4LrEjTUSpPEjux9AwYo0hdicq8yUzsg6q8JWgNjAshaMjPZbBrmvIsLeuMqOcmq1ngJdTNwBEcDBcAd9TGBGQkjrSEVnFVpkS6TpT4RXvad/EnWZWbCE7EflcaJNausEpQHFREqEDe8LnOkNdKpwDDrAbP05+QSKM=
+	t=1745949015; cv=none; b=N3R71gvFI5+DVPwjAEuDk8Iyywn72BRXxm0CwdkDd5M6YgBEXqMLrktdb8d8+eFLlSsnh70uW0/G0CjyWWeU+HM2KJQIFFs9hQMntcE197cQ23NIsj4p7VKYzE6Sft0RW+a/7pv2YJ2VKA8r7wR424hDYXBNkcf0r0g52H9KDM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947722; c=relaxed/simple;
-	bh=VB8NGSiMNi9U1eV9qZqCCe8fo4ZBuSjFy0LYf0RhoH8=;
+	s=arc-20240116; t=1745949015; c=relaxed/simple;
+	bh=GVKoTZdJ7wwxkaTAvXK/o5NesNo0GaQKE2HHqmr/2AM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TAFzZ/U//GSwy/1F53raguyHJl+h6X69YdqsliZAvTEYUh+1cCk4UU41jIciDsohP9z7U6Fp9NJVG2qUebybY8AxmDfoVeERp9GzIpEyAVgxjOhOG4XZlkNdMca8KZEGmfougvrDygLe5QzpklWkdhT2v+H3xXAY+bqM1miGYCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhqOqUj5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6EDC4CEE9;
-	Tue, 29 Apr 2025 17:28:41 +0000 (UTC)
+	 MIME-Version; b=CEmz14c8+S6Ikvp74lq0FSaP64vgYTzdMd0Prvbo2IXMcZF0+fkexPiYITaBsTp+OZE+VmypvC8iNub0ksMf3ntvR6hmdCzfU+U8pZpNyUP3u7t/poX6wuISbo1DlRqP+qIiXnygFEx0PMUgOPjq22OtUrpQ2uK20B00tCxDhMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQnT5S3h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C1DC4CEE3;
+	Tue, 29 Apr 2025 17:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947722;
-	bh=VB8NGSiMNi9U1eV9qZqCCe8fo4ZBuSjFy0LYf0RhoH8=;
+	s=korg; t=1745949015;
+	bh=GVKoTZdJ7wwxkaTAvXK/o5NesNo0GaQKE2HHqmr/2AM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JhqOqUj5QkFLW2Ce/VGOoV9go1hmuv0sWLwLEbndLR5NHiSMhoUjXkr36Pb8wYhFv
-	 /Q4pCDawlwkfkK9TEf+kAkmbvRMq5gih4lLx4H+T/W6jXVHBGToF583gRX/XSntXtk
-	 SgOJoJbxYNqmyKAUib3jOJC75jZNvmRuYtrMdGOo=
+	b=JQnT5S3hz/VKTd667e0Tnh5nx17o8KzNqlWitiKYbdGQ7iTrNAYN9KprIlS2fs9Vc
+	 pEP1+EVqwPKmohA61di9KqWyKtxutdyf/lSkMt7HCDpOIy9LJ88ZXSwYkZTbyOUf9P
+	 PmMq4+tOrwo1meJuVG+YNiEIEXbg0kvtfxV2Q5ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	WangYuli <wangyuli@uniontech.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 086/280] splice: remove duplicate noinline from pipe_clear_nowait
-Date: Tue, 29 Apr 2025 18:40:27 +0200
-Message-ID: <20250429161118.629754905@linuxfoundation.org>
+Subject: [PATCH 5.15 151/373] riscv: KGDB: Do not inline arch_kgdb_breakpoint()
+Date: Tue, 29 Apr 2025 18:40:28 +0200
+Message-ID: <20250429161129.366774788@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T.J. Mercier <tjmercier@google.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit e6f141b332ddd9007756751b6afd24f799488fd8 ]
+[ Upstream commit 3af4bec9c1db3f003be4d5ae09b6a737e4be1612 ]
 
-pipe_clear_nowait has two noinline macros, but we only need one.
+The arch_kgdb_breakpoint() function defines the kgdb_compiled_break
+symbol using inline assembly.
 
-I checked the whole tree, and this is the only occurrence:
+There's a potential issue where the compiler might inline
+arch_kgdb_breakpoint(), which would then define the kgdb_compiled_break
+symbol multiple times, leading to fail to link vmlinux.o.
 
-$ grep -r "noinline .* noinline"
-fs/splice.c:static noinline void noinline pipe_clear_nowait(struct file *file)
-$
+This isn't merely a potential compilation problem. The intent here
+is to determine the global symbol address of kgdb_compiled_break,
+and if this function is inlined multiple times, it would logically
+be a grave error.
 
-Fixes: 0f99fc513ddd ("splice: clear FMODE_NOWAIT on file if splice/vmsplice is used")
-Signed-off-by: "T.J. Mercier" <tjmercier@google.com>
-Link: https://lore.kernel.org/20250423180025.2627670-1-tjmercier@google.com
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
+Link: https://lore.kernel.org/all/5b0adf9b-2b22-43fe-ab74-68df94115b9a@ghiti.fr/
+Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
+Fixes: fe89bd2be866 ("riscv: Add KGDB support")
+Co-developed-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/F22359AFB6FF9FD8+20250411073222.56820-1-wangyuli@uniontech.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/splice.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/kgdb.h | 9 +--------
+ arch/riscv/kernel/kgdb.c      | 8 ++++++++
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/fs/splice.c b/fs/splice.c
-index 06232d7e505f6..38f8c94267315 100644
---- a/fs/splice.c
-+++ b/fs/splice.c
-@@ -45,7 +45,7 @@
-  * here if set to avoid blocking other users of this pipe if splice is
-  * being done on it.
-  */
--static noinline void noinline pipe_clear_nowait(struct file *file)
-+static noinline void pipe_clear_nowait(struct file *file)
- {
- 	fmode_t fmode = READ_ONCE(file->f_mode);
+diff --git a/arch/riscv/include/asm/kgdb.h b/arch/riscv/include/asm/kgdb.h
+index 46677daf708bd..cc11c4544cffd 100644
+--- a/arch/riscv/include/asm/kgdb.h
++++ b/arch/riscv/include/asm/kgdb.h
+@@ -19,16 +19,9 @@
  
+ #ifndef	__ASSEMBLY__
+ 
++void arch_kgdb_breakpoint(void);
+ extern unsigned long kgdb_compiled_break;
+ 
+-static inline void arch_kgdb_breakpoint(void)
+-{
+-	asm(".global kgdb_compiled_break\n"
+-	    ".option norvc\n"
+-	    "kgdb_compiled_break: ebreak\n"
+-	    ".option rvc\n");
+-}
+-
+ #endif /* !__ASSEMBLY__ */
+ 
+ #define DBG_REG_ZERO "zero"
+diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
+index 963ed7edcff26..b0db3350d243b 100644
+--- a/arch/riscv/kernel/kgdb.c
++++ b/arch/riscv/kernel/kgdb.c
+@@ -273,6 +273,14 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ 	regs->epc = pc;
+ }
+ 
++noinline void arch_kgdb_breakpoint(void)
++{
++	asm(".global kgdb_compiled_break\n"
++	    ".option norvc\n"
++	    "kgdb_compiled_break: ebreak\n"
++	    ".option rvc\n");
++}
++
+ void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
+ 				char *remcom_out_buffer)
+ {
 -- 
 2.39.5
 
