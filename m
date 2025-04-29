@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B773AA1696
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57580AA1434
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C75F17354C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A99B11893EC8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1836F2528FB;
-	Tue, 29 Apr 2025 17:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689BF213E67;
+	Tue, 29 Apr 2025 17:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mYJWyyw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAnNeXME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67942459FE;
-	Tue, 29 Apr 2025 17:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AC6241664;
+	Tue, 29 Apr 2025 17:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948153; cv=none; b=I5CwWK5IcLi5Iszd1zwdlrKzFT3pqXknUOxeHkre+IVf12Ovp1kLKXtZ4gmz9pz8OeXXMR1cOIX21nOsyjRoT9gNmbuU/6h6l4XEicpkR9s4/NRoE78sKWGPmwFAcGKrDQ9MsdvxH4lr3iOeBOJJrGRZxjzCiAnwWytFwyAcjSU=
+	t=1745946592; cv=none; b=ZvBjwt7tTmy9vrpVTt8YKgkB7wRRGlhYJ3jHY5+OyThLabpt5aD90gycNKeySWJsSwckIMhQItXADnM51DyHlewpPaZuz2pCTPxN9ta4WSucAH7AtVFyEJwoXXH0tJW2bUhvAbmafrnB72B8AZ7ZScu9hYC//sLmaFXAlG17aHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948153; c=relaxed/simple;
-	bh=5y9H/H6q/QxZQ4rjbkOYjFtlBlzv0v0ZJId/CbxkK48=;
+	s=arc-20240116; t=1745946592; c=relaxed/simple;
+	bh=3C6H9/gJK7MrTt+KzyTXdYMewkSDnoMLrcD2e1NS4eQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FkeBy3C3TvcYHOGXMul0gMg0aAZ4v8Xjfm2XG7M7ooL/T/p1S2Eck9sysJmzMLskRoWyF/AgoMOXF+TIJ5jHw/0oCd8FfQEe0BVJczp289drlxZX2qztksZYAoM0Ij4rB2JgE5c6mu8j/iPCYzkp4+X05QlZj/LRFO/ZEnraqxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mYJWyyw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A34CC4CEE9;
-	Tue, 29 Apr 2025 17:35:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WweL8bcgjGMvQeU6sDbo2Mhn74CWVlnMySCYBAP45+SuKUeMRNiufvKHJSRRaGoluAbY8wKCTP9KgzUXD+b/6jYmDmFGRfmZ1nN3KJbg7D6EeBe7brY4uroDVc0Lf46HGTLDqNxREbKp3v1fhj8zHrPp8JIX9NJrQEpl0roWmbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAnNeXME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94563C4CEE3;
+	Tue, 29 Apr 2025 17:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948153;
-	bh=5y9H/H6q/QxZQ4rjbkOYjFtlBlzv0v0ZJId/CbxkK48=;
+	s=korg; t=1745946592;
+	bh=3C6H9/gJK7MrTt+KzyTXdYMewkSDnoMLrcD2e1NS4eQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0mYJWyyw1zX4ZOFF+3DJnDfrjZago7aeFZRdf5Vx5OadSDFb88wFLtoTrsVRte6bg
-	 M1+K+Fqu5Okt0GxTtDv6QdCr57ff8H9NzIyA1S6f+QItcH3aRIYe9H/vZUM7bx9wti
-	 Snq0SdRGPVsQVdcnpSoRxc+DEW72+GWMu46fRiMM=
+	b=nAnNeXMEMFG5WfVJRQesHJ6nXbSzPzr2hjuZ7UA9IgXUL0B6XpV7Q+Uo3TAFdNfyQ
+	 zW5jtYBIrE0U9u7gL3iLmBM1aB83bd8F5pN9ptvvTI2WRULnF9jDJu+uA17d19grpk
+	 UowaxW3HKhwGWuqORr5eq4Y85rzO352sXnSL0O30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ferry Toth <fntoth@gmail.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 174/280] usb: dwc3: gadget: Avoid using reserved endpoints on Intel Merrifield
+Subject: [PATCH 6.14 278/311] platform/x86: x86-android-tablets: Add "9v" to Vexia EDU ATLA 10 tablet symbols
 Date: Tue, 29 Apr 2025 18:41:55 +0200
-Message-ID: <20250429161122.231595939@linuxfoundation.org>
+Message-ID: <20250429161132.404070009@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,227 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 461f24bff86808ee5fbfe74751a825f8a7ab24e0 ]
+[ Upstream commit 3343b086c7035222c24956780ea4423655cad6d2 ]
 
-Intel Merrifield SoC uses these endpoints for tracing and they cannot
-be re-allocated if being used because the side band flow control signals
-are hard wired to certain endpoints:
+The Vexia EDU ATLA 10 tablet comes in 2 different versions with
+significantly different mainboards. The only outward difference is that
+the charging barrel on one is marked 5V and the other is marked 9V.
 
-• 1 High BW Bulk IN (IN#1) (RTIT)
-• 1 1KB BW Bulk IN (IN#8) + 1 1KB BW Bulk OUT (Run Control) (OUT#8)
+Both need to be handled by the x86-android-tablets code. Add 9v to
+the symbols for the existing support for the 9V Vexia EDU ATLA 10 tablet
+symbols to prepare for adding support for the 5V version.
 
-In device mode, since RTIT (EP#1) and EXI/RunControl (EP#8) uses
-External Buffer Control (EBC) mode, these endpoints are to be mapped to
-EBC mode (to be done by EXI target driver). Additionally TRB for RTIT
-and EXI are maintained in STM (System Trace Module) unit and the EXI
-target driver will as well configure the TRB location for EP #1 IN
-and EP#8 (IN and OUT). Since STM/PTI and EXI hardware blocks manage
-these endpoints and interface to OTG3 controller through EBC interface,
-there is no need to enable any events (such as XferComplete etc)
-for these end points.
+All this patch does is s/vexia_edu_atla10_info/vexia_edu_atla10_9v_info/.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: Ferry Toth <fntoth@gmail.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250212193116.2487289-5-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20250407092017.273124-1-hdegoede@redhat.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../platform/x86/x86-android-tablets/dmi.c    |  2 +-
+ .../platform/x86/x86-android-tablets/other.c  | 64 +++++++++----------
+ .../x86-android-tablets/x86-android-tablets.h |  2 +-
+ 3 files changed, 34 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/usb/dwc3/dwc3-pci.c b/drivers/usb/dwc3/dwc3-pci.c
-index 052852f801467..54a4ee2b90b7f 100644
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -148,11 +148,21 @@ static const struct property_entry dwc3_pci_intel_byt_properties[] = {
- 	{}
+diff --git a/drivers/platform/x86/x86-android-tablets/dmi.c b/drivers/platform/x86/x86-android-tablets/dmi.c
+index 3e5fa3b6e2fdf..e43d482b17a35 100644
+--- a/drivers/platform/x86/x86-android-tablets/dmi.c
++++ b/drivers/platform/x86/x86-android-tablets/dmi.c
+@@ -187,7 +187,7 @@ const struct dmi_system_id x86_android_tablet_ids[] __initconst = {
+ 			/* Above strings are too generic, also match on BIOS date */
+ 			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
+ 		},
+-		.driver_data = (void *)&vexia_edu_atla10_info,
++		.driver_data = (void *)&vexia_edu_atla10_9v_info,
+ 	},
+ 	{
+ 		/* Whitelabel (sold as various brands) TM800A550L */
+diff --git a/drivers/platform/x86/x86-android-tablets/other.c b/drivers/platform/x86/x86-android-tablets/other.c
+index 1d93d9edb23f4..74dcac8d19d72 100644
+--- a/drivers/platform/x86/x86-android-tablets/other.c
++++ b/drivers/platform/x86/x86-android-tablets/other.c
+@@ -599,62 +599,62 @@ const struct x86_dev_info whitelabel_tm800a550l_info __initconst = {
  };
  
-+/*
-+ * Intel Merrifield SoC uses these endpoints for tracing and they cannot
-+ * be re-allocated if being used because the side band flow control signals
-+ * are hard wired to certain endpoints:
-+ * - 1 High BW Bulk IN (IN#1) (RTIT)
-+ * - 1 1KB BW Bulk IN (IN#8) + 1 1KB BW Bulk OUT (Run Control) (OUT#8)
-+ */
-+static const u8 dwc3_pci_mrfld_reserved_endpoints[] = { 3, 16, 17 };
-+
- static const struct property_entry dwc3_pci_mrfld_properties[] = {
- 	PROPERTY_ENTRY_STRING("dr_mode", "otg"),
- 	PROPERTY_ENTRY_STRING("linux,extcon-name", "mrfld_bcove_pwrsrc"),
- 	PROPERTY_ENTRY_BOOL("snps,dis_u3_susphy_quirk"),
- 	PROPERTY_ENTRY_BOOL("snps,dis_u2_susphy_quirk"),
-+	PROPERTY_ENTRY_U8_ARRAY("snps,reserved-endpoints", dwc3_pci_mrfld_reserved_endpoints),
- 	PROPERTY_ENTRY_BOOL("snps,usb2-gadget-lpm-disable"),
- 	PROPERTY_ENTRY_BOOL("linux,sysdev_is_parent"),
- 	{}
+ /*
+- * Vexia EDU ATLA 10 tablet, Android 4.2 / 4.4 + Guadalinex Ubuntu tablet
++ * Vexia EDU ATLA 10 tablet 9V, Android 4.2 + Guadalinex Ubuntu tablet
+  * distributed to schools in the Spanish Andalucía region.
+  */
+ static const char * const crystal_cove_pwrsrc_psy[] = { "crystal_cove_pwrsrc" };
+ 
+-static const struct property_entry vexia_edu_atla10_ulpmc_props[] = {
++static const struct property_entry vexia_edu_atla10_9v_ulpmc_props[] = {
+ 	PROPERTY_ENTRY_STRING_ARRAY("supplied-from", crystal_cove_pwrsrc_psy),
+ 	{ }
+ };
+ 
+-static const struct software_node vexia_edu_atla10_ulpmc_node = {
+-	.properties = vexia_edu_atla10_ulpmc_props,
++static const struct software_node vexia_edu_atla10_9v_ulpmc_node = {
++	.properties = vexia_edu_atla10_9v_ulpmc_props,
+ };
+ 
+-static const char * const vexia_edu_atla10_accel_mount_matrix[] = {
++static const char * const vexia_edu_atla10_9v_accel_mount_matrix[] = {
+ 	"0", "-1", "0",
+ 	"1", "0", "0",
+ 	"0", "0", "1"
+ };
+ 
+-static const struct property_entry vexia_edu_atla10_accel_props[] = {
+-	PROPERTY_ENTRY_STRING_ARRAY("mount-matrix", vexia_edu_atla10_accel_mount_matrix),
++static const struct property_entry vexia_edu_atla10_9v_accel_props[] = {
++	PROPERTY_ENTRY_STRING_ARRAY("mount-matrix", vexia_edu_atla10_9v_accel_mount_matrix),
+ 	{ }
+ };
+ 
+-static const struct software_node vexia_edu_atla10_accel_node = {
+-	.properties = vexia_edu_atla10_accel_props,
++static const struct software_node vexia_edu_atla10_9v_accel_node = {
++	.properties = vexia_edu_atla10_9v_accel_props,
+ };
+ 
+-static const struct property_entry vexia_edu_atla10_touchscreen_props[] = {
++static const struct property_entry vexia_edu_atla10_9v_touchscreen_props[] = {
+ 	PROPERTY_ENTRY_U32("hid-descr-addr", 0x0000),
+ 	PROPERTY_ENTRY_U32("post-reset-deassert-delay-ms", 120),
+ 	{ }
+ };
+ 
+-static const struct software_node vexia_edu_atla10_touchscreen_node = {
+-	.properties = vexia_edu_atla10_touchscreen_props,
++static const struct software_node vexia_edu_atla10_9v_touchscreen_node = {
++	.properties = vexia_edu_atla10_9v_touchscreen_props,
+ };
+ 
+-static const struct property_entry vexia_edu_atla10_pmic_props[] = {
++static const struct property_entry vexia_edu_atla10_9v_pmic_props[] = {
+ 	PROPERTY_ENTRY_BOOL("linux,register-pwrsrc-power_supply"),
+ 	{ }
+ };
+ 
+-static const struct software_node vexia_edu_atla10_pmic_node = {
+-	.properties = vexia_edu_atla10_pmic_props,
++static const struct software_node vexia_edu_atla10_9v_pmic_node = {
++	.properties = vexia_edu_atla10_9v_pmic_props,
+ };
+ 
+-static const struct x86_i2c_client_info vexia_edu_atla10_i2c_clients[] __initconst = {
++static const struct x86_i2c_client_info vexia_edu_atla10_9v_i2c_clients[] __initconst = {
+ 	{
+ 		/* I2C attached embedded controller, used to access fuel-gauge */
+ 		.board_info = {
+ 			.type = "vexia_atla10_ec",
+ 			.addr = 0x76,
+ 			.dev_name = "ulpmc",
+-			.swnode = &vexia_edu_atla10_ulpmc_node,
++			.swnode = &vexia_edu_atla10_9v_ulpmc_node,
+ 		},
+ 		.adapter_path = "0000:00:18.1",
+ 	}, {
+@@ -679,7 +679,7 @@ static const struct x86_i2c_client_info vexia_edu_atla10_i2c_clients[] __initcon
+ 			.type = "kxtj21009",
+ 			.addr = 0x0f,
+ 			.dev_name = "kxtj21009",
+-			.swnode = &vexia_edu_atla10_accel_node,
++			.swnode = &vexia_edu_atla10_9v_accel_node,
+ 		},
+ 		.adapter_path = "0000:00:18.5",
+ 	}, {
+@@ -688,7 +688,7 @@ static const struct x86_i2c_client_info vexia_edu_atla10_i2c_clients[] __initcon
+ 			.type = "hid-over-i2c",
+ 			.addr = 0x38,
+ 			.dev_name = "FTSC1000",
+-			.swnode = &vexia_edu_atla10_touchscreen_node,
++			.swnode = &vexia_edu_atla10_9v_touchscreen_node,
+ 		},
+ 		.adapter_path = "0000:00:18.6",
+ 		.irq_data = {
+@@ -703,7 +703,7 @@ static const struct x86_i2c_client_info vexia_edu_atla10_i2c_clients[] __initcon
+ 			.type = "intel_soc_pmic_crc",
+ 			.addr = 0x6e,
+ 			.dev_name = "intel_soc_pmic_crc",
+-			.swnode = &vexia_edu_atla10_pmic_node,
++			.swnode = &vexia_edu_atla10_9v_pmic_node,
+ 		},
+ 		.adapter_path = "0000:00:18.7",
+ 		.irq_data = {
+@@ -715,7 +715,7 @@ static const struct x86_i2c_client_info vexia_edu_atla10_i2c_clients[] __initcon
+ 	}
+ };
+ 
+-static const struct x86_serdev_info vexia_edu_atla10_serdevs[] __initconst = {
++static const struct x86_serdev_info vexia_edu_atla10_9v_serdevs[] __initconst = {
+ 	{
+ 		.ctrl.pci.devfn = PCI_DEVFN(0x1e, 3),
+ 		.ctrl_devname = "serial0",
+@@ -723,7 +723,7 @@ static const struct x86_serdev_info vexia_edu_atla10_serdevs[] __initconst = {
+ 	},
+ };
+ 
+-static struct gpiod_lookup_table vexia_edu_atla10_ft5416_gpios = {
++static struct gpiod_lookup_table vexia_edu_atla10_9v_ft5416_gpios = {
+ 	.dev_id = "i2c-FTSC1000",
+ 	.table = {
+ 		GPIO_LOOKUP("INT33FC:00", 60, "reset", GPIO_ACTIVE_LOW),
+@@ -731,12 +731,12 @@ static struct gpiod_lookup_table vexia_edu_atla10_ft5416_gpios = {
+ 	},
+ };
+ 
+-static struct gpiod_lookup_table * const vexia_edu_atla10_gpios[] = {
+-	&vexia_edu_atla10_ft5416_gpios,
++static struct gpiod_lookup_table * const vexia_edu_atla10_9v_gpios[] = {
++	&vexia_edu_atla10_9v_ft5416_gpios,
+ 	NULL
+ };
+ 
+-static int __init vexia_edu_atla10_init(struct device *dev)
++static int __init vexia_edu_atla10_9v_init(struct device *dev)
+ {
+ 	struct pci_dev *pdev;
+ 	int ret;
+@@ -760,13 +760,13 @@ static int __init vexia_edu_atla10_init(struct device *dev)
+ 	return 0;
+ }
+ 
+-const struct x86_dev_info vexia_edu_atla10_info __initconst = {
+-	.i2c_client_info = vexia_edu_atla10_i2c_clients,
+-	.i2c_client_count = ARRAY_SIZE(vexia_edu_atla10_i2c_clients),
+-	.serdev_info = vexia_edu_atla10_serdevs,
+-	.serdev_count = ARRAY_SIZE(vexia_edu_atla10_serdevs),
+-	.gpiod_lookup_tables = vexia_edu_atla10_gpios,
+-	.init = vexia_edu_atla10_init,
++const struct x86_dev_info vexia_edu_atla10_9v_info __initconst = {
++	.i2c_client_info = vexia_edu_atla10_9v_i2c_clients,
++	.i2c_client_count = ARRAY_SIZE(vexia_edu_atla10_9v_i2c_clients),
++	.serdev_info = vexia_edu_atla10_9v_serdevs,
++	.serdev_count = ARRAY_SIZE(vexia_edu_atla10_9v_serdevs),
++	.gpiod_lookup_tables = vexia_edu_atla10_9v_gpios,
++	.init = vexia_edu_atla10_9v_init,
+ 	.use_pci = true,
+ };
+ 
+diff --git a/drivers/platform/x86/x86-android-tablets/x86-android-tablets.h b/drivers/platform/x86/x86-android-tablets/x86-android-tablets.h
+index 63a38a0069bae..2204bbaf2ed5a 100644
+--- a/drivers/platform/x86/x86-android-tablets/x86-android-tablets.h
++++ b/drivers/platform/x86/x86-android-tablets/x86-android-tablets.h
+@@ -127,7 +127,7 @@ extern const struct x86_dev_info nextbook_ares8_info;
+ extern const struct x86_dev_info nextbook_ares8a_info;
+ extern const struct x86_dev_info peaq_c1010_info;
+ extern const struct x86_dev_info whitelabel_tm800a550l_info;
+-extern const struct x86_dev_info vexia_edu_atla10_info;
++extern const struct x86_dev_info vexia_edu_atla10_9v_info;
+ extern const struct x86_dev_info xiaomi_mipad2_info;
+ extern const struct dmi_system_id x86_android_tablet_ids[];
+ 
 -- 
 2.39.5
 
