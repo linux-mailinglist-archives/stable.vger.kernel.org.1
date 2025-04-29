@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-137621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8EF0AA141C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB4CAA170C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFE334A2647
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:10:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 616B71BA5E71
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0DD2441A6;
-	Tue, 29 Apr 2025 17:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8555244686;
+	Tue, 29 Apr 2025 17:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqEEudFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtUkrukq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5DE1DF73C;
-	Tue, 29 Apr 2025 17:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65549221719;
+	Tue, 29 Apr 2025 17:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946619; cv=none; b=EVz/8PCir2bxY3Vvytbord97Fv+47DLgPnQjIDp69FZtmaczMNHN1MqYVbVs4mocHYefXN7LHVv6T42k+rwIkenCRfIF/dfdB+ekbI3GPUPeog6xJvPKUhx/FdDDg4lPp9JvB3HkiHFrhgsPt8y7DdYm+1LR+pzw4r8Bih+5x0k=
+	t=1745948558; cv=none; b=jt+OP1LkMfZTvowMcpfK8CHoF/pMN6nFP2Ex6ziKtJKh+Y/9o9iUnriFvs/GNh1NW9p1YDYorHRu9HUP7agVYpQouxwv1kYdEaEIDsatU1CWH1+eWSGYARohtu51NycyNVUfJvWWv3sunpbhtibllvvmmIoHzPNebycqbLs0km8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946619; c=relaxed/simple;
-	bh=ujXrskDNZHgj626E99wTkIz+7xP0UBqFdz7sY1XuAGk=;
+	s=arc-20240116; t=1745948558; c=relaxed/simple;
+	bh=vcz7CZIybu1mU67MeliyXRSd4mo6Ki2r5XIdl0GNSN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DyDbxpdTe0hMt6YaLRxq2vOHPgLxrYRUmPMneGnZhEmRN7bNt/TKacN4K0UVZdOuaeq50TeGExfPyAG+82pEju46H1H8A1QOwtQDy8SSi0aiDUfGUKLt3RJAgsr0cJz6QvNcReB8e7hQTjtEOu8ZgMlE99LnpRt3Pv5tGM9/O38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqEEudFz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9D2C4CEE3;
-	Tue, 29 Apr 2025 17:10:18 +0000 (UTC)
+	 MIME-Version; b=tjhMjchrZ9+3WSo1tXYXjFxCo0cNEzcZ8f5OinSTcekO5r8Jrrhru0fuqZ66GtxgFjO6lgAXKa50dB1olYPZOZkdICvgZOpkMoP4hsr0Kw8NTubPbnbfbBrs9g0y0+xFIptlOgSf4LVOeT4+lyjhnYBflub81UG+tX2cdZlVRZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtUkrukq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7CDC4CEE3;
+	Tue, 29 Apr 2025 17:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946619;
-	bh=ujXrskDNZHgj626E99wTkIz+7xP0UBqFdz7sY1XuAGk=;
+	s=korg; t=1745948557;
+	bh=vcz7CZIybu1mU67MeliyXRSd4mo6Ki2r5XIdl0GNSN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oqEEudFz3qDRdkTCuQkShg6i9f9D0YI5z+w5aWy4xD10KCEg/KmhN9YDDV3myyCoI
-	 3Y0Jh+R/eUM+PAoSoKiN/avGb+1SCxhV0JPCf06rcpiQJi635OCOjSr4coHqu2YCnh
-	 KIRzFm/1tbfk0XZAhlg3/VoXrD13nqQLr0lEvE00=
+	b=KtUkrukq6DHr8zd7QC4YrH9JC/ohHpiMQwiLarSXvg2C1RuNEk2O6xBVmIv3gkBhi
+	 ryVBDEiqtbo76PnFLt2Pmtd88u1aVIsa9UPQWVr0qYHOvcqf+v8WFGjT/ek+PiIXKy
+	 1Q4IgjxmgBxEJDwT9BDi4mmfzXHQNZfycGcZt8co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	xen-devel@lists.xenproject.org,
-	Kees Cook <kees@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 015/286] xen/mcelog: Add __nonstring annotations for unterminated strings
-Date: Tue, 29 Apr 2025 18:38:39 +0200
-Message-ID: <20250429161108.478251295@linuxfoundation.org>
+Subject: [PATCH 5.15 043/373] drm/bridge: panel: forbid initializing a panel with unknown connector type
+Date: Tue, 29 Apr 2025 18:38:40 +0200
+Message-ID: <20250429161124.899298850@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit 1c3dfc7c6b0f551fdca3f7c1f1e4c73be8adb17d ]
+[ Upstream commit b296955b3a740ecc8b3b08e34fd64f1ceabb8fb4 ]
 
-When a character array without a terminating NUL character has a static
-initializer, GCC 15's -Wunterminated-string-initialization will only
-warn if the array lacks the "nonstring" attribute[1]. Mark the arrays
-with __nonstring to and correctly identify the char array as "not a C
-string" and thereby eliminate the warning.
+Having an DRM_MODE_CONNECTOR_Unknown connector type is considered bad, and
+drm_panel_bridge_add_typed() and derivatives are deprecated for this.
 
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Cc: xen-devel@lists.xenproject.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Acked-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250310222234.work.473-kees@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+drm_panel_init() won't prevent initializing a panel with a
+DRM_MODE_CONNECTOR_Unknown connector type. Luckily there are no in-tree
+users doing it, so take this as an opportinuty to document a valid
+connector type must be passed.
+
+Returning an error if this rule is violated is not possible because
+drm_panel_init() is a void function. Add at least a warning to make any
+violations noticeable, especially to non-upstream drivers.
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250214-drm-assorted-cleanups-v7-5-88ca5827d7af@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/xen/interface/xen-mca.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_panel.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/xen/interface/xen-mca.h b/include/xen/interface/xen-mca.h
-index 7483a78d24251..20a3b320d1a58 100644
---- a/include/xen/interface/xen-mca.h
-+++ b/include/xen/interface/xen-mca.h
-@@ -371,7 +371,7 @@ struct xen_mce {
- #define XEN_MCE_LOG_LEN 32
- 
- struct xen_mce_log {
--	char signature[12]; /* "MACHINECHECK" */
-+	char signature[12] __nonstring; /* "MACHINECHECK" */
- 	unsigned len;	    /* = XEN_MCE_LOG_LEN */
- 	unsigned next;
- 	unsigned flags;
+diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
+index 7fd3de89ed079..acd29b4f43f84 100644
+--- a/drivers/gpu/drm/drm_panel.c
++++ b/drivers/gpu/drm/drm_panel.c
+@@ -49,7 +49,7 @@ static LIST_HEAD(panel_list);
+  * @dev: parent device of the panel
+  * @funcs: panel operations
+  * @connector_type: the connector type (DRM_MODE_CONNECTOR_*) corresponding to
+- *	the panel interface
++ *	the panel interface (must NOT be DRM_MODE_CONNECTOR_Unknown)
+  *
+  * Initialize the panel structure for subsequent registration with
+  * drm_panel_add().
+@@ -57,6 +57,9 @@ static LIST_HEAD(panel_list);
+ void drm_panel_init(struct drm_panel *panel, struct device *dev,
+ 		    const struct drm_panel_funcs *funcs, int connector_type)
+ {
++	if (connector_type == DRM_MODE_CONNECTOR_Unknown)
++		DRM_WARN("%s: %s: a valid connector type is required!\n", __func__, dev_name(dev));
++
+ 	INIT_LIST_HEAD(&panel->list);
+ 	panel->dev = dev;
+ 	panel->funcs = funcs;
 -- 
 2.39.5
 
