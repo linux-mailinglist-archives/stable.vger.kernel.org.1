@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-137524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAF1FAA13B8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7C1AA1502
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69DC71671BB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C473B1BC1E0E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC1D22A81D;
-	Tue, 29 Apr 2025 17:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B47324C077;
+	Tue, 29 Apr 2025 17:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpT7kH1N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUWUt+0u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C29A1DF73C;
-	Tue, 29 Apr 2025 17:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BA3245007;
+	Tue, 29 Apr 2025 17:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946326; cv=none; b=pMSTqJFRCOx5qFpHuDVG6mSDdaZyEp6YeLVCNHrANca/rWzUX+27pDKxNPVG9xnBs6fIQ2NeP7pHJz+GopOQFfTNHj6gAQ3clGaMHMqX0xrmrCE8PG/jkSjcD/Vh0SvraYAVQraKkq/KD3Q/aDEiFVmPeW2Rm4007/W/uBA/1hY=
+	t=1745947127; cv=none; b=DhcFe8Gv5rWSbLGdJId0/J/NwVtupsVHCPxs2gsyYBvxLRqEPYJ7bKkZGAosLf6Xn8QlIlzXj60GtizSFUAALtSsJHIXYNA+soKuDJH82xG4xVoD1AJWZYNJz4e8sMNVWqA5L2Uzf1jd6c6RC24fffyjJJItRj2xtfpSpTgvyQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946326; c=relaxed/simple;
-	bh=DptZ6pdtBrtz9fEeA3A9w6E9zOwN0FNiYxmXQ66XZbk=;
+	s=arc-20240116; t=1745947127; c=relaxed/simple;
+	bh=K5SjMNObJIdcKQ6N6st9k7TFh8SWF8+W47A//3TINhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NL5KGStguKtJwIlf0UIN/zMlN19wHuEMfMQZ9eAeK77JSRXmpBnOI9kcoK6tm93HyMHsKSXXlEyU/KZaFm9ZktHoyLlbdv9Qz2wvu/UmL73KdogwViYUerJhXyVfNAUCvbjTZi/5b+n+RbmYJJ6nfX6cDG7NXwq/dJ4TDx4BVvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpT7kH1N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFEAC4CEE3;
-	Tue, 29 Apr 2025 17:05:25 +0000 (UTC)
+	 MIME-Version; b=mF/G+3il64NkXfdq1rnoiVdxn+KaLhCEgmQea4og9ZgGf2Z/Mw1Hc2+i8qKDoIpb6DFJzwxj1jsIxDuQV8jfgsrbe3vNREdFmDEN5XVr45BkMyUpCIijekKzpZ9Phk1m434ICXmwQb6v+hBdRjvRzJBVf25srMlTbky2IbncrBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUWUt+0u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7C7C4CEE3;
+	Tue, 29 Apr 2025 17:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946325;
-	bh=DptZ6pdtBrtz9fEeA3A9w6E9zOwN0FNiYxmXQ66XZbk=;
+	s=korg; t=1745947126;
+	bh=K5SjMNObJIdcKQ6N6st9k7TFh8SWF8+W47A//3TINhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SpT7kH1NMwXHKnSq1fTvJ53wExyw9sZVpKi2xSVw/z9Vzs9DTSNZFv7cck7rKW+6u
-	 fVKvKo6oNvV49v6+wnURx1eq0bqXe59WbBpHZiKbfEA5udPEP50v4sGtHh8HCLKePP
-	 USwjUbGSqiNj/V86NvkA4P8EllgnKJ8VAtt7jCVU=
+	b=XUWUt+0uIW70d8Tc0DeY3Act5IAvG+R8vSNg4+fnD7NmW3niSv8fw/oFGSnoJi02Q
+	 zXxije5vipV9jYgE1Ub2UdlbxRjPgN8lw7j+Kk28JEslJsn2HekY0R9QTSVfsSw0d9
+	 8JzkA8rhC6EkVTC3CzrwlkaT8qr7YUbcJA2NEqBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@mit.edu>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 230/311] 9p/net: fix improper handling of bogus negative read/write replies
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Zhang Xiaoxu <zhangxiaoxu5@huawei.com>,
+	Steve French <stfrench@microsoft.com>,
+	He Zhe <zhe.he@windriver.com>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>
+Subject: [PATCH 5.10 163/286] cifs: Fix UAF in cifs_demultiplex_thread()
 Date: Tue, 29 Apr 2025 18:41:07 +0200
-Message-ID: <20250429161130.453533255@linuxfoundation.org>
+Message-ID: <20250429161114.589713698@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,144 +64,254 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <asmadeus@codewreck.org>
+From: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 
-[ Upstream commit d0259a856afca31d699b706ed5e2adf11086c73b ]
+commit d527f51331cace562393a8038d870b3e9916686f upstream.
 
-In p9_client_write() and p9_client_read_once(), if the server
-incorrectly replies with success but a negative write/read count then we
-would consider written (negative) <= rsize (positive) because both
-variables were signed.
+There is a UAF when xfstests on cifs:
 
-Make variables unsigned to avoid this problem.
+  BUG: KASAN: use-after-free in smb2_is_network_name_deleted+0x27/0x160
+  Read of size 4 at addr ffff88810103fc08 by task cifsd/923
 
-The reproducer linked below now fails with the following error instead
-of a null pointer deref:
-9pnet: bogus RWRITE count (4294967295 > 3)
+  CPU: 1 PID: 923 Comm: cifsd Not tainted 6.1.0-rc4+ #45
+  ...
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x34/0x44
+   print_report+0x171/0x472
+   kasan_report+0xad/0x130
+   kasan_check_range+0x145/0x1a0
+   smb2_is_network_name_deleted+0x27/0x160
+   cifs_demultiplex_thread.cold+0x172/0x5a4
+   kthread+0x165/0x1a0
+   ret_from_fork+0x1f/0x30
+   </TASK>
 
-Reported-by: Robert Morris <rtm@mit.edu>
-Closes: https://lore.kernel.org/16271.1734448631@26-5-164.dynamic.csail.mit.edu
-Message-ID: <20250319-9p_unsigned_rw-v3-1-71327f1503d0@codewreck.org>
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  Allocated by task 923:
+   kasan_save_stack+0x1e/0x40
+   kasan_set_track+0x21/0x30
+   __kasan_slab_alloc+0x54/0x60
+   kmem_cache_alloc+0x147/0x320
+   mempool_alloc+0xe1/0x260
+   cifs_small_buf_get+0x24/0x60
+   allocate_buffers+0xa1/0x1c0
+   cifs_demultiplex_thread+0x199/0x10d0
+   kthread+0x165/0x1a0
+   ret_from_fork+0x1f/0x30
+
+  Freed by task 921:
+   kasan_save_stack+0x1e/0x40
+   kasan_set_track+0x21/0x30
+   kasan_save_free_info+0x2a/0x40
+   ____kasan_slab_free+0x143/0x1b0
+   kmem_cache_free+0xe3/0x4d0
+   cifs_small_buf_release+0x29/0x90
+   SMB2_negotiate+0x8b7/0x1c60
+   smb2_negotiate+0x51/0x70
+   cifs_negotiate_protocol+0xf0/0x160
+   cifs_get_smb_ses+0x5fa/0x13c0
+   mount_get_conns+0x7a/0x750
+   cifs_mount+0x103/0xd00
+   cifs_smb3_do_mount+0x1dd/0xcb0
+   smb3_get_tree+0x1d5/0x300
+   vfs_get_tree+0x41/0xf0
+   path_mount+0x9b3/0xdd0
+   __x64_sys_mount+0x190/0x1d0
+   do_syscall_64+0x35/0x80
+   entry_SYSCALL_64_after_hwframe+0x46/0xb0
+
+The UAF is because:
+
+ mount(pid: 921)               | cifsd(pid: 923)
+-------------------------------|-------------------------------
+                               | cifs_demultiplex_thread
+SMB2_negotiate                 |
+ cifs_send_recv                |
+  compound_send_recv           |
+   smb_send_rqst               |
+    wait_for_response          |
+     wait_event_state      [1] |
+                               |  standard_receive3
+                               |   cifs_handle_standard
+                               |    handle_mid
+                               |     mid->resp_buf = buf;  [2]
+                               |     dequeue_mid           [3]
+     KILL the process      [4] |
+    resp_iov[i].iov_base = buf |
+ free_rsp_buf              [5] |
+                               |   is_network_name_deleted [6]
+                               |   callback
+
+1. After send request to server, wait the response until
+    mid->mid_state != SUBMITTED;
+2. Receive response from server, and set it to mid;
+3. Set the mid state to RECEIVED;
+4. Kill the process, the mid state already RECEIVED, get 0;
+5. Handle and release the negotiate response;
+6. UAF.
+
+It can be easily reproduce with add some delay in [3] - [6].
+
+Only sync call has the problem since async call's callback is
+executed in cifsd process.
+
+Add an extra state to mark the mid state to READY before wakeup the
+waitter, then it can get the resp safely.
+
+Fixes: ec637e3ffb6b ("[CIFS] Avoid extra large buffer allocation (and memcpy) in cifs_readpages")
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[fs/cifs was moved to fs/smb/client since
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb").
+We apply the patch to fs/cifs with some minor context changes.]
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/9p/client.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ fs/cifs/cifsglob.h  |    1 +
+ fs/cifs/transport.c |   34 +++++++++++++++++++++++-----------
+ 2 files changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/net/9p/client.c b/net/9p/client.c
-index 09f8ced9f8bb7..52a5497cfca79 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1548,7 +1548,8 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
- 	struct p9_client *clnt = fid->clnt;
- 	struct p9_req_t *req;
- 	int count = iov_iter_count(to);
--	int rsize, received, non_zc = 0;
-+	u32 rsize, received;
-+	bool non_zc = false;
- 	char *dataptr;
+--- a/fs/cifs/cifsglob.h
++++ b/fs/cifs/cifsglob.h
+@@ -1768,6 +1768,7 @@ static inline bool is_retryable_error(in
+ #define   MID_RETRY_NEEDED      8 /* session closed while this request out */
+ #define   MID_RESPONSE_MALFORMED 0x10
+ #define   MID_SHUTDOWN		 0x20
++#define   MID_RESPONSE_READY 0x40 /* ready for other process handle the rsp */
  
- 	*err = 0;
-@@ -1571,7 +1572,7 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
- 				       0, 11, "dqd", fid->fid,
- 				       offset, rsize);
- 	} else {
--		non_zc = 1;
-+		non_zc = true;
- 		req = p9_client_rpc(clnt, P9_TREAD, "dqd", fid->fid, offset,
- 				    rsize);
- 	}
-@@ -1592,11 +1593,11 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, struct iov_iter *to,
- 		return 0;
- 	}
- 	if (rsize < received) {
--		pr_err("bogus RREAD count (%d > %d)\n", received, rsize);
-+		pr_err("bogus RREAD count (%u > %u)\n", received, rsize);
- 		received = rsize;
- 	}
- 
--	p9_debug(P9_DEBUG_9P, "<<< RREAD count %d\n", received);
-+	p9_debug(P9_DEBUG_9P, "<<< RREAD count %u\n", received);
- 
- 	if (non_zc) {
- 		int n = copy_to_iter(dataptr, received, to);
-@@ -1623,9 +1624,9 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 	*err = 0;
- 
- 	while (iov_iter_count(from)) {
--		int count = iov_iter_count(from);
--		int rsize = fid->iounit;
--		int written;
-+		size_t count = iov_iter_count(from);
-+		u32 rsize = fid->iounit;
-+		u32 written;
- 
- 		if (!rsize || rsize > clnt->msize - P9_IOHDRSZ)
- 			rsize = clnt->msize - P9_IOHDRSZ;
-@@ -1633,7 +1634,7 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 		if (count < rsize)
- 			rsize = count;
- 
--		p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %d (/%d)\n",
-+		p9_debug(P9_DEBUG_9P, ">>> TWRITE fid %d offset %llu count %u (/%zu)\n",
- 			 fid->fid, offset, rsize, count);
- 
- 		/* Don't bother zerocopy for small IO (< 1024) */
-@@ -1659,11 +1660,11 @@ p9_client_write(struct p9_fid *fid, u64 offset, struct iov_iter *from, int *err)
- 			break;
- 		}
- 		if (rsize < written) {
--			pr_err("bogus RWRITE count (%d > %d)\n", written, rsize);
-+			pr_err("bogus RWRITE count (%u > %u)\n", written, rsize);
- 			written = rsize;
- 		}
- 
--		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %d\n", written);
-+		p9_debug(P9_DEBUG_9P, "<<< RWRITE count %u\n", written);
- 
- 		p9_req_put(clnt, req);
- 		iov_iter_revert(from, count - written - iov_iter_count(from));
-@@ -2098,7 +2099,8 @@ EXPORT_SYMBOL_GPL(p9_client_xattrcreate);
- 
- int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
+ /* Flags */
+ #define   MID_WAIT_CANCELLED	 1 /* Cancelled while waiting for response */
+--- a/fs/cifs/transport.c
++++ b/fs/cifs/transport.c
+@@ -47,6 +47,8 @@
+ void
+ cifs_wake_up_task(struct mid_q_entry *mid)
  {
--	int err, rsize, non_zc = 0;
-+	int err, non_zc = 0;
-+	u32 rsize;
- 	struct p9_client *clnt;
- 	struct p9_req_t *req;
- 	char *dataptr;
-@@ -2107,7 +2109,7 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
++	if (mid->mid_state == MID_RESPONSE_RECEIVED)
++		mid->mid_state = MID_RESPONSE_READY;
+ 	wake_up_process(mid->callback_data);
+ }
  
- 	iov_iter_kvec(&to, ITER_DEST, &kv, 1, count);
+@@ -99,7 +101,8 @@ static void _cifs_mid_q_entry_release(st
+ 	struct TCP_Server_Info *server = midEntry->server;
  
--	p9_debug(P9_DEBUG_9P, ">>> TREADDIR fid %d offset %llu count %d\n",
-+	p9_debug(P9_DEBUG_9P, ">>> TREADDIR fid %d offset %llu count %u\n",
- 		 fid->fid, offset, count);
+ 	if (midEntry->resp_buf && (midEntry->mid_flags & MID_WAIT_CANCELLED) &&
+-	    midEntry->mid_state == MID_RESPONSE_RECEIVED &&
++	    (midEntry->mid_state == MID_RESPONSE_RECEIVED ||
++	     midEntry->mid_state == MID_RESPONSE_READY) &&
+ 	    server->ops->handle_cancelled_mid)
+ 		server->ops->handle_cancelled_mid(midEntry, server);
  
- 	clnt = fid->clnt;
-@@ -2142,11 +2144,11 @@ int p9_client_readdir(struct p9_fid *fid, char *data, u32 count, u64 offset)
- 		goto free_and_error;
+@@ -733,7 +736,8 @@ wait_for_response(struct TCP_Server_Info
+ 	int error;
+ 
+ 	error = wait_event_freezekillable_unsafe(server->response_q,
+-				    midQ->mid_state != MID_REQUEST_SUBMITTED);
++				    midQ->mid_state != MID_REQUEST_SUBMITTED &&
++				    midQ->mid_state != MID_RESPONSE_RECEIVED);
+ 	if (error < 0)
+ 		return -ERESTARTSYS;
+ 
+@@ -885,7 +889,7 @@ cifs_sync_mid_result(struct mid_q_entry
+ 
+ 	spin_lock(&GlobalMid_Lock);
+ 	switch (mid->mid_state) {
+-	case MID_RESPONSE_RECEIVED:
++	case MID_RESPONSE_READY:
+ 		spin_unlock(&GlobalMid_Lock);
+ 		return rc;
+ 	case MID_RETRY_NEEDED:
+@@ -984,6 +988,9 @@ cifs_compound_callback(struct mid_q_entr
+ 	credits.instance = server->reconnect_instance;
+ 
+ 	add_credits(server, &credits, mid->optype);
++
++	if (mid->mid_state == MID_RESPONSE_RECEIVED)
++		mid->mid_state = MID_RESPONSE_READY;
+ }
+ 
+ static void
+@@ -1172,7 +1179,8 @@ compound_send_recv(const unsigned int xi
+ 			send_cancel(server, &rqst[i], midQ[i]);
+ 			spin_lock(&GlobalMid_Lock);
+ 			midQ[i]->mid_flags |= MID_WAIT_CANCELLED;
+-			if (midQ[i]->mid_state == MID_REQUEST_SUBMITTED) {
++			if (midQ[i]->mid_state == MID_REQUEST_SUBMITTED ||
++			    midQ[i]->mid_state == MID_RESPONSE_RECEIVED) {
+ 				midQ[i]->callback = cifs_cancelled_callback;
+ 				cancelled_mid[i] = true;
+ 				credits[i].value = 0;
+@@ -1193,7 +1201,7 @@ compound_send_recv(const unsigned int xi
+ 		}
+ 
+ 		if (!midQ[i]->resp_buf ||
+-		    midQ[i]->mid_state != MID_RESPONSE_RECEIVED) {
++		    midQ[i]->mid_state != MID_RESPONSE_READY) {
+ 			rc = -EIO;
+ 			cifs_dbg(FYI, "Bad MID state?\n");
+ 			goto out;
+@@ -1372,7 +1380,8 @@ SendReceive(const unsigned int xid, stru
+ 	if (rc != 0) {
+ 		send_cancel(server, &rqst, midQ);
+ 		spin_lock(&GlobalMid_Lock);
+-		if (midQ->mid_state == MID_REQUEST_SUBMITTED) {
++		if (midQ->mid_state == MID_REQUEST_SUBMITTED ||
++		    midQ->mid_state == MID_RESPONSE_RECEIVED) {
+ 			/* no longer considered to be "in-flight" */
+ 			midQ->callback = DeleteMidQEntry;
+ 			spin_unlock(&GlobalMid_Lock);
+@@ -1389,7 +1398,7 @@ SendReceive(const unsigned int xid, stru
  	}
- 	if (rsize < count) {
--		pr_err("bogus RREADDIR count (%d > %d)\n", count, rsize);
-+		pr_err("bogus RREADDIR count (%u > %u)\n", count, rsize);
- 		count = rsize;
- 	}
  
--	p9_debug(P9_DEBUG_9P, "<<< RREADDIR count %d\n", count);
-+	p9_debug(P9_DEBUG_9P, "<<< RREADDIR count %u\n", count);
+ 	if (!midQ->resp_buf || !out_buf ||
+-	    midQ->mid_state != MID_RESPONSE_RECEIVED) {
++	    midQ->mid_state != MID_RESPONSE_READY) {
+ 		rc = -EIO;
+ 		cifs_server_dbg(VFS, "Bad MID state?\n");
+ 		goto out;
+@@ -1509,13 +1518,15 @@ SendReceiveBlockingLock(const unsigned i
  
- 	if (non_zc)
- 		memmove(data, dataptr, count);
--- 
-2.39.5
-
+ 	/* Wait for a reply - allow signals to interrupt. */
+ 	rc = wait_event_interruptible(server->response_q,
+-		(!(midQ->mid_state == MID_REQUEST_SUBMITTED)) ||
++		(!(midQ->mid_state == MID_REQUEST_SUBMITTED ||
++		   midQ->mid_state == MID_RESPONSE_RECEIVED)) ||
+ 		((server->tcpStatus != CifsGood) &&
+ 		 (server->tcpStatus != CifsNew)));
+ 
+ 	/* Were we interrupted by a signal ? */
+ 	if ((rc == -ERESTARTSYS) &&
+-		(midQ->mid_state == MID_REQUEST_SUBMITTED) &&
++		(midQ->mid_state == MID_REQUEST_SUBMITTED ||
++		 midQ->mid_state == MID_RESPONSE_RECEIVED) &&
+ 		((server->tcpStatus == CifsGood) ||
+ 		 (server->tcpStatus == CifsNew))) {
+ 
+@@ -1545,7 +1556,8 @@ SendReceiveBlockingLock(const unsigned i
+ 		if (rc) {
+ 			send_cancel(server, &rqst, midQ);
+ 			spin_lock(&GlobalMid_Lock);
+-			if (midQ->mid_state == MID_REQUEST_SUBMITTED) {
++			if (midQ->mid_state == MID_REQUEST_SUBMITTED ||
++			    midQ->mid_state == MID_RESPONSE_RECEIVED) {
+ 				/* no longer considered to be "in-flight" */
+ 				midQ->callback = DeleteMidQEntry;
+ 				spin_unlock(&GlobalMid_Lock);
+@@ -1563,7 +1575,7 @@ SendReceiveBlockingLock(const unsigned i
+ 		return rc;
+ 
+ 	/* rcvd frame is ok */
+-	if (out_buf == NULL || midQ->mid_state != MID_RESPONSE_RECEIVED) {
++	if (out_buf == NULL || midQ->mid_state != MID_RESPONSE_READY) {
+ 		rc = -EIO;
+ 		cifs_tcon_dbg(VFS, "Bad MID state?\n");
+ 		goto out;
 
 
 
