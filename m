@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-138713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F2CAA199C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F09B6AA191A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:07:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B91F69A6E11
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AF9918936F6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3C722AE68;
-	Tue, 29 Apr 2025 18:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78EB227E95;
+	Tue, 29 Apr 2025 18:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOJVkc6O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqDAVWBV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFEE20C488;
-	Tue, 29 Apr 2025 18:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865EE2AE96;
+	Tue, 29 Apr 2025 18:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950118; cv=none; b=rLQt+EfUOq7SspGWEKTv3FUZcbcLsWkqJBkVeSXjD+v5p3S+2MIIQnqu6zJ4L6AZb3Uv0Q95WiofWOSs1sBc8OPCTZY4VbVueOgoxdnkQm102vLjXxBA5WNsdA8Jf2ofXT7yLw2hF5zwXrjgRepPs9V0ducK6/htJnOx+yzcM9Y=
+	t=1745950018; cv=none; b=Ghf7oB7U6RWOh8otua12e1DUkUAFU3hXbVUHlc95j8Xby2YuIQ5y6z6eKI5MkAVI29gcpXxXNwqCmB4OFOXH6fwUpSJuZv1WyIB0Gd34ysB+OLu7MrsDU0u0bVz0HM+BDoZPBdkP3ke29Z4hkuTUW/9A+oGEU1ImXmUa5u9j/8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950118; c=relaxed/simple;
-	bh=qXQBp7YfNYYWFn4JeLwdun329a5gxmuwvY1N5qKI2iU=;
+	s=arc-20240116; t=1745950018; c=relaxed/simple;
+	bh=KSklmJWXG2mjd3DsSL0R4p6+YfyQ2vW/P7BvUZM59Yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eCfnPI6oQZqAdGsp3l6rOTCN5wX4k8VRgmscs8kwJ63NwSlKxdqQKKjGpMPU5fJlpVPb/vivh8g2MX4ymDVH92bqjwCgL7hlnj21Zxyy4oc1/glSngCVhnrWky10BssoaQ9dgsovXhzU8Q2nSJloDxfe6b/kP+UvA2ztgA7mIWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOJVkc6O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461BFC4CEE3;
-	Tue, 29 Apr 2025 18:08:37 +0000 (UTC)
+	 MIME-Version; b=AF74N5ia/mOueRhlfm/sPOmAnjioKvEnsKlj//N6f7TpEhERtn+sc/RL42e5R/vJX5xMe14B0yFSfZY1S6RFjbbA/4GvXhRHqKbDqIuE/Gv6SJUeE3DwQgMgB8TEzvjzkWWSkwFXeyWtqQFppKk7veYrjOxQPUp7RCf/o3ozzmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqDAVWBV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA57AC4CEE3;
+	Tue, 29 Apr 2025 18:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950117;
-	bh=qXQBp7YfNYYWFn4JeLwdun329a5gxmuwvY1N5qKI2iU=;
+	s=korg; t=1745950018;
+	bh=KSklmJWXG2mjd3DsSL0R4p6+YfyQ2vW/P7BvUZM59Yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOJVkc6OsHAhKsEunNNFFyFAOx+wqXjb2Q2B87ANYkeFmBjST8fFO7K1/TAvJI9uO
-	 gNMZQ1HXGIF3Ia5LR4dRZNVBSvmDT+7cDB2IfJvQrzsNI23pT7bMLmksWPejIXWqth
-	 JabuRurgBWm8P3JqJvAdZdDlXV372T7HvgtKo5d0=
+	b=gqDAVWBVUXVC4gR0doskdG+n8eRM1Dx2C1KHtXraUbPc9GHJFM+lJ1aO3XCQt7kbi
+	 6lu/EQMAJ96X3vdbphZIQb0IX0QwD70laWOA7oSCJaU6Q8pIA0dnjbWJ1QQOQUm4Wv
+	 z/SrdM8k73xjlXSQhvY4xp3BwlXI5geUGL7A08ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Stockmann <lukas.stockmann@siemens.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	kernel test robot <lkp@intel.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/167] rtc: pcf85063: do a SW reset if POR failed
-Date: Tue, 29 Apr 2025 18:43:50 +0200
-Message-ID: <20250429161056.679252748@linuxfoundation.org>
+Subject: [PATCH 6.1 123/167] sched/isolation: Make CONFIG_CPU_ISOLATION depend on CONFIG_SMP
+Date: Tue, 29 Apr 2025 18:43:51 +0200
+Message-ID: <20250429161056.718847157@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
 References: <20250429161051.743239894@linuxfoundation.org>
@@ -67,76 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lukas Stockmann <lukas.stockmann@siemens.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 2b7cbd98495f6ee4cd6422fe77828a19e9edf87f ]
+[ Upstream commit 975776841e689dd8ba36df9fa72ac3eca3c2957a ]
 
-Power-on Reset has a documented issue in PCF85063, refer to its datasheet,
-section "Software reset":
+kernel/sched/isolation.c obviously makes no sense without CONFIG_SMP, but
+the Kconfig entry we have right now:
 
-"There is a low probability that some devices will have corruption of the
-registers after the automatic power-on reset if the device is powered up
-with a residual VDD level. It is required that the VDD starts at zero volts
-at power up or upon power cycling to ensure that there is no corruption of
-the registers. If this is not possible, a reset must be initiated after
-power-up (i.e. when power is stable) with the software reset command"
+	config CPU_ISOLATION
+		bool "CPU isolation"
+		depends on SMP || COMPILE_TEST
 
-Trigger SW reset if there is an indication that POR has failed.
+allows the creation of pointless .config's which cause
+build failures.
 
-Link: https://www.nxp.com/docs/en/data-sheet/PCF85063A.pdf
-Signed-off-by: Lukas Stockmann <lukas.stockmann@siemens.com>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://lore.kernel.org/r/20250120093451.30778-1-alexander.sverdlin@siemens.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250330134955.GA7910@redhat.com
+
+Closes: https://lore.kernel.org/oe-kbuild-all/202503260646.lrUqD3j5-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf85063.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ init/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-pcf85063.c b/drivers/rtc/rtc-pcf85063.c
-index 6ffdc10b32d32..4a29b44e75e6a 100644
---- a/drivers/rtc/rtc-pcf85063.c
-+++ b/drivers/rtc/rtc-pcf85063.c
-@@ -35,6 +35,7 @@
- #define PCF85063_REG_CTRL1_CAP_SEL	BIT(0)
- #define PCF85063_REG_CTRL1_STOP		BIT(5)
- #define PCF85063_REG_CTRL1_EXT_TEST	BIT(7)
-+#define PCF85063_REG_CTRL1_SWR		0x58
+diff --git a/init/Kconfig b/init/Kconfig
+index b6786ddc88a80..8b6a2848da4a5 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -678,7 +678,7 @@ endmenu # "CPU/Task time and stats accounting"
  
- #define PCF85063_REG_CTRL2		0x01
- #define PCF85063_CTRL2_AF		BIT(6)
-@@ -606,7 +607,7 @@ static int pcf85063_probe(struct i2c_client *client)
- 
- 	i2c_set_clientdata(client, pcf85063);
- 
--	err = regmap_read(pcf85063->regmap, PCF85063_REG_CTRL1, &tmp);
-+	err = regmap_read(pcf85063->regmap, PCF85063_REG_SC, &tmp);
- 	if (err) {
- 		dev_err(&client->dev, "RTC chip is not present\n");
- 		return err;
-@@ -616,6 +617,22 @@ static int pcf85063_probe(struct i2c_client *client)
- 	if (IS_ERR(pcf85063->rtc))
- 		return PTR_ERR(pcf85063->rtc);
- 
-+	/*
-+	 * If a Power loss is detected, SW reset the device.
-+	 * From PCF85063A datasheet:
-+	 * There is a low probability that some devices will have corruption
-+	 * of the registers after the automatic power-on reset...
-+	 */
-+	if (tmp & PCF85063_REG_SC_OS) {
-+		dev_warn(&client->dev,
-+			 "POR issue detected, sending a SW reset\n");
-+		err = regmap_write(pcf85063->regmap, PCF85063_REG_CTRL1,
-+				   PCF85063_REG_CTRL1_SWR);
-+		if (err < 0)
-+			dev_warn(&client->dev,
-+				 "SW reset failed, trying to continue\n");
-+	}
-+
- 	err = pcf85063_load_capacitance(pcf85063, client->dev.of_node,
- 					config->force_cap_7000 ? 7000 : 0);
- 	if (err < 0)
+ config CPU_ISOLATION
+ 	bool "CPU isolation"
+-	depends on SMP || COMPILE_TEST
++	depends on SMP
+ 	default y
+ 	help
+ 	  Make sure that CPUs running critical tasks are not disturbed by
 -- 
 2.39.5
 
