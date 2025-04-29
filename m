@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-138251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5FB3AA1786
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E12AEAA1722
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:44:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A58A79A2C1B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:44:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF9F17A79E7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28260221719;
-	Tue, 29 Apr 2025 17:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B620D242D68;
+	Tue, 29 Apr 2025 17:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jlkj1GoG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bozp8UHw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACB6227E95;
-	Tue, 29 Apr 2025 17:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E2C221719;
+	Tue, 29 Apr 2025 17:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948659; cv=none; b=fYB0v4m0cSRHE28LeMDefPc+dR4yv7a5xYbNd/y6mNeVnsBCwyFTXjLtVHrK20bIz+FLFI++p5rhtFm/34b82qZ+h+FTMOS2uRUzWqPJEc+ujUnQhbxy3RTLdukUUaQXX1UWXB6J4aCoBa6qA38owSyf7X+4bmrGbM/dL7VxsTA=
+	t=1745948666; cv=none; b=m6HVP9PSAAWpLdZZ7d2dTTC9sKJMVtyRcGgk8uHn5/8gaPZ8yI2QXfwC5m+GYU9smeR0xRvb0cpUoKiNQ78W8adGcGxKP0o3h2E9Fa3ygLN9fNOivigVyVtJquaXt2NoVecmlgfFX5K0+tcaFfN7/66yf1cq8GZMaybtNjLQOh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948659; c=relaxed/simple;
-	bh=Ee4/o76BkEvnXcngJXa37dR/jFQFQh+XXv5aHHr/tRI=;
+	s=arc-20240116; t=1745948666; c=relaxed/simple;
+	bh=BdaT+hvFSX+0+PZHSpV9WQpHsJKX4YphtuNFXJ+lnz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZSPNHlgabV4LNf/qKrSur6Sma5JMmB1CuOOaZLwmk+c2egm8W/AhlEZltHoDTSvTZ0YvPNO9k+Htt4JDtuQHCVwYWZgXBU7sipP0MzBAQCwJbRJXZ5NFlAnwwvWxhiSW+4CCdK3q0kfCuDisorpX2nWVbrdthdOU8uHGf+RAlOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jlkj1GoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4899C4CEEF;
-	Tue, 29 Apr 2025 17:44:18 +0000 (UTC)
+	 MIME-Version; b=ZWFnfJfm6nhN11hiTmP+y4OVCWhXn6cxbCrT0wocrb3hUdjv638J9weJDuGnfM81kIExzra4jbE/aGM4W37ki0Yw4TenE3j5s/ZB5KH5al/Dx4ZlEB6OIPYmrEiPOn0tW8QC2wdJiyzDidgKySvbeKkSpnY7GukRYmYXCylaP2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bozp8UHw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0569DC4CEE3;
+	Tue, 29 Apr 2025 17:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948659;
-	bh=Ee4/o76BkEvnXcngJXa37dR/jFQFQh+XXv5aHHr/tRI=;
+	s=korg; t=1745948666;
+	bh=BdaT+hvFSX+0+PZHSpV9WQpHsJKX4YphtuNFXJ+lnz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jlkj1GoG7x9PRPkeow+uxbO1tIx42boHa+Eri/Nfw/uj/1ToFYyiDM+ZrX21CXiWy
-	 gbHCgFDGTHqEQcdo1MCiXmsoTEhrF9LZ+45s6whiOAiVeXNYb/vyu8J3p8CNTDvlpU
-	 +2xs2AJtdz8+LFDfZeAAPxQU2qLpwuRfn3KqKPlA=
+	b=Bozp8UHwj/n80fMWFeufC9wKi/flRv6AH2ExWZXtUh64VvZ/JgbBYyPUPSlJOd/u0
+	 DXwYBY8FJuTd2ISyDyEawxqoVL/+ctd4GnAmWLVYOArX4JYvPMejccahDi/d+UTSeN
+	 VGI7CJAW5zRYESUQ3QA7/3BerHJ5377nXoktq6gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 074/373] media: i2c: ov7251: Set enable GPIO low in probe
-Date: Tue, 29 Apr 2025 18:39:11 +0200
-Message-ID: <20250429161126.197228498@linuxfoundation.org>
+Subject: [PATCH 5.15 075/373] media: i2c: ov7251: Introduce 1 ms delay between regulators and en GPIO
+Date: Tue, 29 Apr 2025 18:39:12 +0200
+Message-ID: <20250429161126.236786758@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
 References: <20250429161123.119104857@linuxfoundation.org>
@@ -68,9 +68,10 @@ Content-Transfer-Encoding: 8bit
 
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit a1963698d59cec83df640ded343af08b76c8e9c5 upstream.
+commit 3d391292cdd53984ec1b9a1f6182a62a62751e03 upstream.
 
-Set the enable GPIO low when acquiring it.
+Lift the xshutdown (enable) GPIO 1 ms after enabling the regulators, as
+required by the sensor's power-up sequence.
 
 Fixes: d30bb512da3d ("media: Add a driver for the ov7251 camera sensor")
 Cc: stable@vger.kernel.org
@@ -79,20 +80,20 @@ Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov7251.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ov7251.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
 --- a/drivers/media/i2c/ov7251.c
 +++ b/drivers/media/i2c/ov7251.c
-@@ -1333,7 +1333,7 @@ static int ov7251_probe(struct i2c_clien
- 		return PTR_ERR(ov7251->analog_regulator);
+@@ -748,6 +748,8 @@ static int ov7251_set_power_on(struct ov
+ 		return ret;
  	}
  
--	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_HIGH);
-+	ov7251->enable_gpio = devm_gpiod_get(dev, "enable", GPIOD_OUT_LOW);
- 	if (IS_ERR(ov7251->enable_gpio)) {
- 		dev_err(dev, "cannot get enable gpio\n");
- 		return PTR_ERR(ov7251->enable_gpio);
++	usleep_range(1000, 1100);
++
+ 	gpiod_set_value_cansleep(ov7251->enable_gpio, 1);
+ 
+ 	/* wait at least 65536 external clock cycles */
 
 
 
