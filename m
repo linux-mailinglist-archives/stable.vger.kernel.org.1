@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-137706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC588AA14B7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:19:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E370FAA15FE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 685043B2F4B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 801AB5A12E2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A688922A81D;
-	Tue, 29 Apr 2025 17:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA3C24C098;
+	Tue, 29 Apr 2025 17:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9RkJvJR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJf1Ih1b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6599E27453;
-	Tue, 29 Apr 2025 17:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4768E2472BC;
+	Tue, 29 Apr 2025 17:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946881; cv=none; b=GG5doV5715gII9cJHR5sZj8mBM+WRd+LdBXDXWmsCLXqVtkoxMb4LDIHAmSP1Y/YZvybXSoHNC9ZJvN7M+OrGw7QLygItBVy4U4Ipk3AcR/ozU2L/A+F5G9c8omXDvuR9Fz1kIDz5/xUYmAQTPq3gpKENsqM1KBvttLeeDJkxHk=
+	t=1745947558; cv=none; b=RLcgtUa5xD4v3lWa4Glm3Iqcj/jOJCOYyx0dZD8Wkx/rD/CZ+iMaUxwN93VcwJOnJcKFB3bJHaLTmzTFgh+B3e3VbmncNvTWQQPYk5aVBGP8nZNo5mjImy2PmOPm0bdRLZS5Y0DHyp0c2blizU9MBqzsKeERa5oN9lui2QWwwFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946881; c=relaxed/simple;
-	bh=+jlIpaCybw1sXJ7PnK/ZBurWCCi1SDDwIwN0avueieA=;
+	s=arc-20240116; t=1745947558; c=relaxed/simple;
+	bh=rg71rUAoA4FBVMV2DJOCzw7RkWuI9nB+ommm6MLTh1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rk+tk+N4HzpsgiuYcnHMXOSklaNoDkMpCtdZjJDEC07eF42GvV7cGduzJHJLn2fxHQiK6R1y5jJ86fuSqIw2RDV9CYmEQTp+8yRpwIfPHb5hqCrNitrGFSFT3jBAkS72bKFR3fpCC4KWIzuHfj3uvO/mjYuDm488m3LSzmsEq9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9RkJvJR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C19C4CEE3;
-	Tue, 29 Apr 2025 17:14:40 +0000 (UTC)
+	 MIME-Version; b=HvPqjfqpwFgh1t93VcqA+kNopFtpVDC2EmZClk5cAfbUAPUAlPmxIVDNronAYyQPXP3IBDyGGMI3b8XjhvLUQ8Qgs7mTulzQgWkDsgqrMcAyltB3eYNJGGCMAQ+WjmBj0zAWt6JFwMulVih6POOUizUCwTATJMqABuTSQX9N6Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJf1Ih1b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8F4C4CEE3;
+	Tue, 29 Apr 2025 17:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946881;
-	bh=+jlIpaCybw1sXJ7PnK/ZBurWCCi1SDDwIwN0avueieA=;
+	s=korg; t=1745947557;
+	bh=rg71rUAoA4FBVMV2DJOCzw7RkWuI9nB+ommm6MLTh1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t9RkJvJRRIyLPlpYQeBTRBPjPriVrMDJaNRsFtC8WoCiZhP4I1xdHWe0iXuKRIXui
-	 XmsnnmCg3IuZMCmCiqdcl39R/r9ItSTtqS4lyFtsc7DW1FQ/LDEuv9tCIRjFHSIYSF
-	 mL660vzWC4Pf90AnHiSh9hr1BabjrUQNYXWCvZHQ=
+	b=RJf1Ih1bRW+w3I5xN4ZFb+n3WxmfZE7ve7aVQCmB/K/Zo7bYXpy27jIVzxeCfS25D
+	 MMNrAqTcLMQI0/YOUXHvZ1mJvIQbFWeACjUnWRcpoaSAWcm9gn6c1dxp8eulSwTtut
+	 Udzf7KSbVtVn3nV5Nhq3xdwwhAZO8L1/abZ4M46E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 069/286] mtd: Replace kcalloc() with devm_kcalloc()
+	Daniel Gomez <da.gomez@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Juergen Gross <jgross@suse.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 032/280] PCI/MSI: Handle the NOMASK flag correctly for all PCI/MSI backends
 Date: Tue, 29 Apr 2025 18:39:33 +0200
-Message-ID: <20250429161110.690032896@linuxfoundation.org>
+Message-ID: <20250429161116.436680500@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +65,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 1b61a59876f0eafc19b23007c522ee407f55dbec upstream.
+[ Upstream commit 3ece3e8e5976c49c3f887e5923f998eabd54ff40 ]
 
-Replace kcalloc() with devm_kcalloc() to prevent memory leaks in case of
-errors.
+The conversion of the XEN specific global variable pci_msi_ignore_mask to a
+MSI domain flag, missed the facts that:
 
-Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
-Cc: stable@vger.kernel.org # v5.10+
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    1) Legacy architectures do not provide a interrupt domain
+    2) Parent MSI domains do not necessarily have a domain info attached
+
+Both cases result in an unconditional NULL pointer dereference. This was
+unfortunatly missed in review and testing revealed it late.
+
+Cure this by using the existing pci_msi_domain_supports() helper, which
+handles all possible cases correctly.
+
+Fixes: c3164d2e0d18 ("PCI/MSI: Convert pci_msi_ignore_mask to per MSI domain flag")
+Reported-by: Daniel Gomez <da.gomez@kernel.org>
+Reported-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Tested-by: Borislav Petkov <bp@alien8.de>
+Tested-by: Daniel Gomez <da.gomez@kernel.org>
+Link: https://lore.kernel.org/all/87iknwyp2o.ffs@tglx
+Closes: https://lore.kernel.org/all/qn7fzggcj6qe6r6gdbwcz23pzdz2jx64aldccmsuheabhmjgrt@tawf5nfwuvw7
+Stable-dep-of: cf761e3dacc6 ("PCI/MSI: Add an option to write MSIX ENTRY_DATA before any reads")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/mtdpstore.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/pci/msi/msi.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
---- a/drivers/mtd/mtdpstore.c
-+++ b/drivers/mtd/mtdpstore.c
-@@ -417,11 +417,11 @@ static void mtdpstore_notify_add(struct
+diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
+index 4c8c2b57b5f61..6569ba3577fe6 100644
+--- a/drivers/pci/msi/msi.c
++++ b/drivers/pci/msi/msi.c
+@@ -285,8 +285,6 @@ static void pci_msi_set_enable(struct pci_dev *dev, int enable)
+ static int msi_setup_msi_desc(struct pci_dev *dev, int nvec,
+ 			      struct irq_affinity_desc *masks)
+ {
+-	const struct irq_domain *d = dev_get_msi_domain(&dev->dev);
+-	const struct msi_domain_info *info = d->host_data;
+ 	struct msi_desc desc;
+ 	u16 control;
+ 
+@@ -297,7 +295,7 @@ static int msi_setup_msi_desc(struct pci_dev *dev, int nvec,
+ 	/* Lies, damned lies, and MSIs */
+ 	if (dev->dev_flags & PCI_DEV_FLAGS_HAS_MSI_MASKING)
+ 		control |= PCI_MSI_FLAGS_MASKBIT;
+-	if (info->flags & MSI_FLAG_NO_MASK)
++	if (pci_msi_domain_supports(dev, MSI_FLAG_NO_MASK, DENY_LEGACY))
+ 		control &= ~PCI_MSI_FLAGS_MASKBIT;
+ 
+ 	desc.nvec_used			= nvec;
+@@ -605,20 +603,18 @@ static void __iomem *msix_map_region(struct pci_dev *dev,
+  */
+ void msix_prepare_msi_desc(struct pci_dev *dev, struct msi_desc *desc)
+ {
+-	const struct irq_domain *d = dev_get_msi_domain(&dev->dev);
+-	const struct msi_domain_info *info = d->host_data;
+-
+ 	desc->nvec_used				= 1;
+ 	desc->pci.msi_attrib.is_msix		= 1;
+ 	desc->pci.msi_attrib.is_64		= 1;
+ 	desc->pci.msi_attrib.default_irq	= dev->irq;
+ 	desc->pci.mask_base			= dev->msix_base;
+-	desc->pci.msi_attrib.can_mask		= !(info->flags & MSI_FLAG_NO_MASK) &&
+-						  !desc->pci.msi_attrib.is_virtual;
+ 
+-	if (desc->pci.msi_attrib.can_mask) {
++
++	if (!pci_msi_domain_supports(dev, MSI_FLAG_NO_MASK, DENY_LEGACY) &&
++	    !desc->pci.msi_attrib.is_virtual) {
+ 		void __iomem *addr = pci_msix_desc_addr(desc);
+ 
++		desc->pci.msi_attrib.can_mask = 1;
+ 		desc->pci.msix_ctrl = readl(addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
  	}
- 
- 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
--	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
--	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->rmmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->usedmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
- 
- 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
--	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
- 
- 	cxt->dev.total_size = mtd->size;
- 	/* just support dmesg right now */
-@@ -527,9 +527,6 @@ static void mtdpstore_notify_remove(stru
- 	mtdpstore_flush_removed(cxt);
- 
- 	unregister_pstore_device(&cxt->dev);
--	kfree(cxt->badmap);
--	kfree(cxt->usedmap);
--	kfree(cxt->rmmap);
- 	cxt->mtd = NULL;
- 	cxt->index = -1;
  }
+@@ -715,8 +711,6 @@ static int msix_setup_interrupts(struct pci_dev *dev, struct msix_entry *entries
+ static int msix_capability_init(struct pci_dev *dev, struct msix_entry *entries,
+ 				int nvec, struct irq_affinity *affd)
+ {
+-	const struct irq_domain *d = dev_get_msi_domain(&dev->dev);
+-	const struct msi_domain_info *info = d->host_data;
+ 	int ret, tsize;
+ 	u16 control;
+ 
+@@ -747,7 +741,7 @@ static int msix_capability_init(struct pci_dev *dev, struct msix_entry *entries,
+ 	/* Disable INTX */
+ 	pci_intx_for_msi(dev, 0);
+ 
+-	if (!(info->flags & MSI_FLAG_NO_MASK)) {
++	if (!pci_msi_domain_supports(dev, MSI_FLAG_NO_MASK, DENY_LEGACY)) {
+ 		/*
+ 		 * Ensure that all table entries are masked to prevent
+ 		 * stale entries from firing in a crash kernel.
+-- 
+2.39.5
+
 
 
 
