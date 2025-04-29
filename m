@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC90AA1431
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA24AA17F2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 719251893156
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 579CE7A2C5B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A392459E1;
-	Tue, 29 Apr 2025 17:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BDD8250C0C;
+	Tue, 29 Apr 2025 17:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCrWIwCE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNxZ/Tz9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E0B221719;
-	Tue, 29 Apr 2025 17:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3AE2B2DA;
+	Tue, 29 Apr 2025 17:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946580; cv=none; b=TE8ox1wR4vaLlCcYF0q47NbzEWZpY0fG09TSRr7tP28/OQfknpErFjjzrMGkazndUn9kD5t9TcJUsqXdsOzP6BGOezelS9WiCL4xa51U+RD8NTTv3BcgSgeAZl9wSTMZNFXfX6khqjZ+BiDC/AJHqci1rp6YeSlZLOae4/dKTk4=
+	t=1745949204; cv=none; b=qe5jJuwkl7hzpdneqIVZpPpkzpaO6lLpXK+lYwT3OQQd/tIjcdjbKrk5LtTmB90P7gqR4/nFKxXXn4SB8Mg3fLaoIm7mtXYfH8Go7KbNaAh5d4bEgOFg9np1mecdM07YVm9dbB3yKdgre7kKDGcIgKuBATO/XhIHQK1eDO9dUi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946580; c=relaxed/simple;
-	bh=5gOaQtnGFt4VHW8VeHgSeWT/A95hHPxVWueUWBUt9HA=;
+	s=arc-20240116; t=1745949204; c=relaxed/simple;
+	bh=x+GTstSXba4JlaXNaxuzX4gCTIqIW70ABQBZO5qIxnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R11b4nRMKlFvOhEGbhKle72YP+fmYUHcQ/2OUhRY2f11Ek2A1slzbnsbo/vfZnK5qrW3qTL2gkcmNjiTlckKjxE7JXTayivqoyLOuOSL15bqu7hZ45a8dazElAnBAQs9Z5mFPaRQB2Z9kOumlPYkYcXKxkODJfSYZUKYstLfy48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCrWIwCE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A4FC4CEE3;
-	Tue, 29 Apr 2025 17:09:39 +0000 (UTC)
+	 MIME-Version; b=Abco4lkkT5q0Kx/tj7oyJEmAMi0KAkKPUVcO+fhG68HEoxmInOTMJQjccqYaWioQ+54P3lHT0Nme2Lii6LHC+33VzIPxzo7bhyFBpPGf3wetnNZMz20sMBbdcZhW8hj+dqYPIwcoy5PUn2MsWr5Yj8e7NdQBg3hFS+il9WgQx1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNxZ/Tz9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E094C4CEE3;
+	Tue, 29 Apr 2025 17:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946580;
-	bh=5gOaQtnGFt4VHW8VeHgSeWT/A95hHPxVWueUWBUt9HA=;
+	s=korg; t=1745949203;
+	bh=x+GTstSXba4JlaXNaxuzX4gCTIqIW70ABQBZO5qIxnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCrWIwCEfCEGayJnCzukJH+gE+yIMhfEfXhHVIJ2f5Ol5D1xwqtT4rRgG6ICbh/Ws
-	 XMm6uGa9100Gxt8A1J99o/yD5zJNdUmXAeyGCe9ojVbwjoMmSppKy7xatJNaAfuM11
-	 1sEGftnXoDB3DAVdgw/rBZMG3aoNbzfGz+HtYiHA=
+	b=qNxZ/Tz9MLUl6AugIZzItN4sLUWz3i2CaRrhn74QFzeAIPB0Y6jT61Pe2JowikJ/m
+	 +8nauXU/ntT1UiZxHMNrbkks4XuxxNSwbylrLZScAqlDucs5VloH8F8nl9w4mPaUw3
+	 EdmLhH5HtAOXc30gLp8c/xO3XATKOOB5cAoa0Nbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 284/311] spi: tegra210-quad: use WARN_ON_ONCE instead of WARN_ON for timeouts
+	syzbot+61be3359d2ee3467e7e4@syzkaller.appspotmail.com,
+	Pei Li <peili.dev@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Zhi Yang <Zhi.Yang@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.15 244/373] jfs: Fix shift-out-of-bounds in dbDiscardAG
 Date: Tue, 29 Apr 2025 18:42:01 +0200
-Message-ID: <20250429161132.642434080@linuxfoundation.org>
+Message-ID: <20250429161133.164813982@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Pei Li <peili.dev@gmail.com>
 
-[ Upstream commit 41c721fc093938745d116c3a21326a0ee03bb491 ]
+commit 7063b80268e2593e58bee8a8d709c2f3ff93e2f2 upstream.
 
-Some machines with tegra_qspi_combined_seq_xfer hardware issues generate
-excessive kernel warnings, severely polluting the logs:
+When searching for the next smaller log2 block, BLKSTOL2() returned 0,
+causing shift exponent -1 to be negative.
 
-    dmesg | grep -i "WARNING:.*tegra_qspi_transfer_one_message" | wc -l
-    94451
+This patch fixes the issue by exiting the loop directly when negative
+shift is found.
 
-This patch replaces WARN_ON with WARN_ON_ONCE for timeout conditions to
-reduce log spam. The subsequent error message still prints on each
-occurrence, providing sufficient information about the failure, while
-the stack trace is only needed once for debugging purposes.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20250401-tegra-v2-1-126c293ec047@debian.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+61be3359d2ee3467e7e4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=61be3359d2ee3467e7e4
+Signed-off-by: Pei Li <peili.dev@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/jfs_dmap.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 08e49a8768943..2d320fbb8875f 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1117,7 +1117,7 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 					(&tqspi->xfer_completion,
- 					QSPI_DMA_TIMEOUT);
- 
--			if (WARN_ON(ret == 0)) {
-+			if (WARN_ON_ONCE(ret == 0)) {
- 				dev_err(tqspi->dev, "QSPI Transfer failed with timeout: %d\n",
- 					ret);
- 				if (tqspi->is_curr_dma_xfer &&
--- 
-2.39.5
-
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1698,6 +1698,8 @@ s64 dbDiscardAG(struct inode *ip, int ag
+ 		} else if (rc == -ENOSPC) {
+ 			/* search for next smaller log2 block */
+ 			l2nb = BLKSTOL2(nblocks) - 1;
++			if (unlikely(l2nb < 0))
++				break;
+ 			nblocks = 1LL << l2nb;
+ 		} else {
+ 			/* Trim any already allocated blocks */
 
 
 
