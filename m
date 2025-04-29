@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-138422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA24AA17F2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49ED3AA1882
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 579CE7A2C5B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:52:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 343E67ADE60
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BDD8250C0C;
-	Tue, 29 Apr 2025 17:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BA8221D92;
+	Tue, 29 Apr 2025 18:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNxZ/Tz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7jyPa0E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3AE2B2DA;
-	Tue, 29 Apr 2025 17:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3DC3FFD;
+	Tue, 29 Apr 2025 18:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949204; cv=none; b=qe5jJuwkl7hzpdneqIVZpPpkzpaO6lLpXK+lYwT3OQQd/tIjcdjbKrk5LtTmB90P7gqR4/nFKxXXn4SB8Mg3fLaoIm7mtXYfH8Go7KbNaAh5d4bEgOFg9np1mecdM07YVm9dbB3yKdgre7kKDGcIgKuBATO/XhIHQK1eDO9dUi0=
+	t=1745949654; cv=none; b=eN2CH1kdWoFNW7zfxzeF01KfswtHaqPT1aKYDBoUy0etoBtIsBaUHGAkrHkzKoT/fAYfRwAh8L0EnXfQiCE33nYskw4mSxIcgQ7BzFw217iBXrs0hDpGJ+hOat4f0Mvfxzbbpi/UsTMdnVYLyhsw0hUNMZZZ6itNofA3E8loDjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949204; c=relaxed/simple;
-	bh=x+GTstSXba4JlaXNaxuzX4gCTIqIW70ABQBZO5qIxnU=;
+	s=arc-20240116; t=1745949654; c=relaxed/simple;
+	bh=Gtc+4jiHd4mKXEOZ5hYIqvBzUA22SY7/nJZvWPvD5Tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Abco4lkkT5q0Kx/tj7oyJEmAMi0KAkKPUVcO+fhG68HEoxmInOTMJQjccqYaWioQ+54P3lHT0Nme2Lii6LHC+33VzIPxzo7bhyFBpPGf3wetnNZMz20sMBbdcZhW8hj+dqYPIwcoy5PUn2MsWr5Yj8e7NdQBg3hFS+il9WgQx1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNxZ/Tz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E094C4CEE3;
-	Tue, 29 Apr 2025 17:53:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oapj2p+GXZG3dZ0zVXqdJ127f24DYSq6L5XOZBq82uqBDrLov/pZm/YaVVtKxO8NzzPjKrmcMHGWF6XQm9vVcNo+rcn8jkeAw+M04L+LMAnA8nYCs/5d9M1TMi2o7xLg7hzlLwo9foebv3OD6t+Mb4oTnujtfSUQzjee1opP0Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7jyPa0E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DACDC4CEE3;
+	Tue, 29 Apr 2025 18:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949203;
-	bh=x+GTstSXba4JlaXNaxuzX4gCTIqIW70ABQBZO5qIxnU=;
+	s=korg; t=1745949654;
+	bh=Gtc+4jiHd4mKXEOZ5hYIqvBzUA22SY7/nJZvWPvD5Tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qNxZ/Tz9MLUl6AugIZzItN4sLUWz3i2CaRrhn74QFzeAIPB0Y6jT61Pe2JowikJ/m
-	 +8nauXU/ntT1UiZxHMNrbkks4XuxxNSwbylrLZScAqlDucs5VloH8F8nl9w4mPaUw3
-	 EdmLhH5HtAOXc30gLp8c/xO3XATKOOB5cAoa0Nbc=
+	b=h7jyPa0Er10fIBbYVHSjxkv0IVnQiI0MHyeky6CxBzMyZO+glZZGGvUF8m6LEs3f6
+	 7PJoOwz1sevHdX9055NgXiiZLJFPsbeXRH5xUgqsLeGXOavIzsPscHSXQwZAGOpaIL
+	 Lj1u5sfODqZCdC4j6FGvw9rAN3AMJbeaMwiivmyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+61be3359d2ee3467e7e4@syzkaller.appspotmail.com,
-	Pei Li <peili.dev@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Zhi Yang <Zhi.Yang@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.15 244/373] jfs: Fix shift-out-of-bounds in dbDiscardAG
-Date: Tue, 29 Apr 2025 18:42:01 +0200
-Message-ID: <20250429161133.164813982@linuxfoundation.org>
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 014/167] net: dsa: mv88e6xxx: add field to specify internal phys layout
+Date: Tue, 29 Apr 2025 18:42:02 +0200
+Message-ID: <20250429161052.328815989@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Li <peili.dev@gmail.com>
+From: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-commit 7063b80268e2593e58bee8a8d709c2f3ff93e2f2 upstream.
+[ Upstream commit 3ba89b28adb21a5d5d78e905e2c3972816606bb4 ]
 
-When searching for the next smaller log2 block, BLKSTOL2() returned 0,
-causing shift exponent -1 to be negative.
+mv88e6xxx currently assumes that switch equipped with internal phys have
+those phys mapped contiguously starting from port 0 (see
+mv88e6xxx_phy_is_internal). However, some switches have internal PHYs but
+NOT starting from port 0. For example 88e6393X, 88E6193X and 88E6191X have
+integrated PHYs available on ports 1 to 8
+To properly support this offset, add a new field to allow specifying an
+internal PHYs layout. If field is not set, default layout is assumed (start
+at port 0)
 
-This patch fixes the issue by exiting the loop directly when negative
-shift is found.
-
-Reported-by: syzbot+61be3359d2ee3467e7e4@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=61be3359d2ee3467e7e4
-Signed-off-by: Pei Li <peili.dev@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 52fdc41c3278 ("net: dsa: mv88e6xxx: fix internal PHYs for 6320 family")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/dsa/mv88e6xxx/chip.c    | 4 +++-
+ drivers/net/dsa/mv88e6xxx/chip.h    | 5 +++++
+ drivers/net/dsa/mv88e6xxx/global2.c | 5 ++++-
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1698,6 +1698,8 @@ s64 dbDiscardAG(struct inode *ip, int ag
- 		} else if (rc == -ENOSPC) {
- 			/* search for next smaller log2 block */
- 			l2nb = BLKSTOL2(nblocks) - 1;
-+			if (unlikely(l2nb < 0))
-+				break;
- 			nblocks = 1LL << l2nb;
- 		} else {
- 			/* Trim any already allocated blocks */
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index cabf97a902b52..c1a322d6432c0 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -472,7 +472,9 @@ static int mv88e6xxx_port_setup_mac(struct mv88e6xxx_chip *chip, int port,
+ 
+ static int mv88e6xxx_phy_is_internal(struct mv88e6xxx_chip *chip, int port)
+ {
+-	return port < chip->info->num_internal_phys;
++	return port >= chip->info->internal_phys_offset &&
++		port < chip->info->num_internal_phys +
++			chip->info->internal_phys_offset;
+ }
+ 
+ static int mv88e6xxx_port_ppu_updates(struct mv88e6xxx_chip *chip, int port)
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
+index b34e96e689d5c..4a8b56ed1bd6c 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.h
++++ b/drivers/net/dsa/mv88e6xxx/chip.h
+@@ -167,6 +167,11 @@ struct mv88e6xxx_info {
+ 
+ 	/* Supports PTP */
+ 	bool ptp_support;
++
++	/* Internal PHY start index. 0 means that internal PHYs range starts at
++	 * port 0, 1 means internal PHYs range starts at port 1, etc
++	 */
++	unsigned int internal_phys_offset;
+ };
+ 
+ struct mv88e6xxx_atu_entry {
+diff --git a/drivers/net/dsa/mv88e6xxx/global2.c b/drivers/net/dsa/mv88e6xxx/global2.c
+index 79954e580c335..8480d08e6f944 100644
+--- a/drivers/net/dsa/mv88e6xxx/global2.c
++++ b/drivers/net/dsa/mv88e6xxx/global2.c
+@@ -1184,9 +1184,12 @@ int mv88e6xxx_g2_irq_setup(struct mv88e6xxx_chip *chip)
+ int mv88e6xxx_g2_irq_mdio_setup(struct mv88e6xxx_chip *chip,
+ 				struct mii_bus *bus)
+ {
++	int phy_start = chip->info->internal_phys_offset;
++	int phy_end = chip->info->internal_phys_offset +
++		      chip->info->num_internal_phys;
+ 	int phy, irq;
+ 
+-	for (phy = 0; phy < chip->info->num_internal_phys; phy++) {
++	for (phy = phy_start; phy < phy_end; phy++) {
+ 		irq = irq_find_mapping(chip->g2_irq.domain, phy);
+ 		if (irq < 0)
+ 			return irq;
+-- 
+2.39.5
+
 
 
 
