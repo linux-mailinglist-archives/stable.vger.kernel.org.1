@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49CEBAA14F6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4037AA13EC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72D0F168154
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87F721884C01
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972C9221DA7;
-	Tue, 29 Apr 2025 17:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179F7241664;
+	Tue, 29 Apr 2025 17:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9BLiu7v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGCk++0p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559AF216605;
-	Tue, 29 Apr 2025 17:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D4524113C;
+	Tue, 29 Apr 2025 17:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947157; cv=none; b=sulyILuNbZw2xlWj77L6XBxgcKGka8rwcDOSE3c3OA69TU3rtm+RVQZ3mpZlKm6LgVQFR9+cqugWx2LrzIic0jLEklXxc0NW9ODxRwLZMW90yeOj9SY0VZ+X1rB8ZHQPPumaBaC0KKzlOs+SgSpSp02P33hpPimufGH7p7gFI5U=
+	t=1745946409; cv=none; b=sywzndgTcSq/RXOybJ/mGvIjqnMkH7yVJRrE2ZPRANrFHWCuSZHOmhv9Za8OPSqkdwocul/W1pJk/G/yTdPZAaSk7YjQgvX7G6XYM38cpoULOJsdx8EaYPte33fwjg6Bbqwe/ine0hb8oymOU5asdWRFO5FxX3eGAcVT9gjmkFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947157; c=relaxed/simple;
-	bh=lnhSOHg20twpGtvdabSg42qO6On6uwzTLYn3dftFQ5c=;
+	s=arc-20240116; t=1745946409; c=relaxed/simple;
+	bh=kBDoPAtEBVo77Pr1a89w7q7OIpbb5v2kDBtAqeUx1Ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gvBQIHgr5I12/9v5afWV1VcS8mJ8ArieTds3rsztSAyYR0d44j6vx3N7Q7t38FlMMt2Lrs6sVrgQtdVUPZSpeQle6a2t12wucCO8OgZ4i7QbQ1g79IAPWSfqhITi8HR74es/WmG9CH2BHg5nG/VZHnb75hRyAkAy0CGlNlyge60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9BLiu7v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDCCC4CEE9;
-	Tue, 29 Apr 2025 17:19:16 +0000 (UTC)
+	 MIME-Version; b=s+ghGyzEehMI3/IXPbLBwOKjDu0Fpd64/wPmXqE72PAFNvxKYzqB2ir4yzlzeCSaHCk4InrqGL2hQ9bJAYb7G4Z8ByqGdc4Qgyw+HZk4ZP5NQhrhjvO8f/givaQoh5cYR3gYfn5lTqdfRrWUIleXAHEKRFbd18gw/vgwcoD40g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGCk++0p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E02C4CEE3;
+	Tue, 29 Apr 2025 17:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947157;
-	bh=lnhSOHg20twpGtvdabSg42qO6On6uwzTLYn3dftFQ5c=;
+	s=korg; t=1745946409;
+	bh=kBDoPAtEBVo77Pr1a89w7q7OIpbb5v2kDBtAqeUx1Ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L9BLiu7vtZCxPgAFuuzFIxxyNCKOo6WtH4yiC3fSuSGxPiQpDhXrC/636OimCoNax
-	 Q2gR8OPJTiRcPoO7mD8DQbVrQ7sDmdQJwcu2ygT0VC0nVPtODa7HCagrudBU3JsGBr
-	 o+cT67aJ/GEDfXMJCSd4TZiWfgYpnGHbaa8exYBI=
+	b=TGCk++0pc6F2rwvh9vzJQIB7g6FVC+21E6NPJzNQPWKRN9FHLSKw+SuAat5S8yqp2
+	 smi5yIaJQGEv/7KtKFnc/8UyHK1iOV2uy0LzqZMfO299lkNXGgBasITSGoPgg8hark
+	 cPCjIyYIJBlLsrS5CpZj3G0sj9+3JLDir8QySAew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Feng Liu <Feng.Liu3@windriver.com>,
-	He Zhe <Zhe.He@windriver.com>
-Subject: [PATCH 5.10 190/286] drivers: staging: rtl8723bs: Fix deadlock in rtw_surveydone_event_callback()
-Date: Tue, 29 Apr 2025 18:41:34 +0200
-Message-ID: <20250429161115.785008219@linuxfoundation.org>
+	Yi Lai <yi1.lai@intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 258/311] selftests/mincore: Allow read-ahead pages to reach the end of the file
+Date: Tue, 29 Apr 2025 18:41:35 +0200
+Message-ID: <20250429161131.588489297@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-commit cc7ad0d77b51c872d629bcd98aea463a3c4109e7 upstream.
+[ Upstream commit 197c1eaa7ba633a482ed7588eea6fd4aa57e08d4 ]
 
-There is a deadlock in rtw_surveydone_event_callback(),
-which is shown below:
+When running the mincore_selftest on a system with an XFS file system, it
+failed the "check_file_mmap" test case due to the read-ahead pages reaching
+the end of the file. The failure log is as below:
 
-   (Thread 1)                  |      (Thread 2)
-                               | _set_timer()
-rtw_surveydone_event_callback()|  mod_timer()
- spin_lock_bh() //(1)          |  (wait a time)
- ...                           | rtw_scan_timeout_handler()
- del_timer_sync()              |  spin_lock_bh() //(2)
- (wait timer to stop)          |  ...
+   RUN           global.check_file_mmap ...
+  mincore_selftest.c:264:check_file_mmap:Expected i (1024) < vec_size (1024)
+  mincore_selftest.c:265:check_file_mmap:Read-ahead pages reached the end of the file
+  check_file_mmap: Test failed
+           FAIL  global.check_file_mmap
 
-We hold pmlmepriv->lock in position (1) of thread 1 and use
-del_timer_sync() to wait timer to stop, but timer handler
-also need pmlmepriv->lock in position (2) of thread 2.
-As a result, rtw_surveydone_event_callback() will block forever.
+This is because the read-ahead window size of the XFS file system on this
+machine is 4 MB, which is larger than the size from the #PF address to the
+end of the file. As a result, all the pages for this file are populated.
 
-This patch extracts del_timer_sync() from the protection of
-spin_lock_bh(), which could let timer handler to obtain
-the needed lock. What`s more, we change spin_lock_bh() in
-rtw_scan_timeout_handler() to spin_lock_irq(). Otherwise,
-spin_lock_bh() will also cause deadlock() in timer handler.
+  blockdev --getra /dev/nvme0n1p5
+    8192
+  blockdev --getbsz /dev/nvme0n1p5
+    512
 
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://lore.kernel.org/r/20220409061836.60529-1-duoming@zju.edu.cn
-[Minor context change fixed]
-Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This issue can be fixed by extending the current FILE_SIZE 4MB to a larger
+number, but it will still fail if the read-ahead window size of the file
+system is larger enough. Additionally, in the real world, read-ahead pages
+reaching the end of the file can happen and is an expected behavior.
+Therefore, allowing read-ahead pages to reach the end of the file is a
+better choice for the "check_file_mmap" test case.
+
+Link: https://lore.kernel.org/r/20250311080940.21413-1-qiuxu.zhuo@intel.com
+Reported-by: Yi Lai <yi1.lai@intel.com>
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_mlme.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mincore/mincore_selftest.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-@@ -826,7 +826,9 @@ void rtw_surveydone_event_callback(struc
- 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("rtw_surveydone_event_callback: fw_state:%x\n\n", get_fwstate(pmlmepriv)));
+diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
+index 0fd4b00bd345b..17ed3e9917ca1 100644
+--- a/tools/testing/selftests/mincore/mincore_selftest.c
++++ b/tools/testing/selftests/mincore/mincore_selftest.c
+@@ -261,9 +261,6 @@ TEST(check_file_mmap)
+ 		TH_LOG("No read-ahead pages found in memory");
+ 	}
  
- 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY)) {
-+		spin_unlock_bh(&pmlmepriv->lock);
- 		del_timer_sync(&pmlmepriv->scan_to_timer);
-+		spin_lock_bh(&pmlmepriv->lock);
- 		_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY);
- 	} else {
- 
-@@ -1753,11 +1755,11 @@ void rtw_scan_timeout_handler(struct tim
- 
- 	DBG_871X(FUNC_ADPT_FMT" fw_state =%x\n", FUNC_ADPT_ARG(adapter), get_fwstate(pmlmepriv));
- 
--	spin_lock_bh(&pmlmepriv->lock);
-+	spin_lock_irq(&pmlmepriv->lock);
- 
- 	_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY);
- 
--	spin_unlock_bh(&pmlmepriv->lock);
-+	spin_unlock_irq(&pmlmepriv->lock);
- 
- 	rtw_indicate_scan_done(adapter, true);
- }
+-	EXPECT_LT(i, vec_size) {
+-		TH_LOG("Read-ahead pages reached the end of the file");
+-	}
+ 	/*
+ 	 * End of the readahead window. The rest of the pages shouldn't
+ 	 * be in memory.
+-- 
+2.39.5
+
 
 
 
