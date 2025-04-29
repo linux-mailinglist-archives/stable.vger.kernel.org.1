@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-137972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF76AA15F0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF05AA1222
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6954717510C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAF5592587F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC992472B4;
-	Tue, 29 Apr 2025 17:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B142472AA;
+	Tue, 29 Apr 2025 16:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYAAtDCI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/X6W2kY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB5338FB0;
-	Tue, 29 Apr 2025 17:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC2E24113A;
+	Tue, 29 Apr 2025 16:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947694; cv=none; b=A1UJ6Lg9wd0c2cYktqzA8uTDom1fJv3ARZXa5yiPw0kCB63ktRrSd5tqvGm5NrtBgq9dPQSGIGpUty4DIcaH9r6cUOPde6pEqlM+c4q0wa91a0yGWY95ZxKfLTpbM4tzvadNIfj7wug9AMMTXLP09yKh1Df4G6eg/ds9dHOqu9U=
+	t=1745945309; cv=none; b=lxXCig9+EkJE5RsOK8caB0SIcBZDxjMsnHCeurwhu0daMZtyoeHFebaV1JIECmbcdoKXfIlOtFTHI3WXWKVKv2AL9UIcuzoOAiG2wN27QFbWsd1KwijWkBt0IcLKBi+9QAUL2xsqp/T/R9gQgEVK2cr5AaqntXBPZlnPQ/ZTrkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947694; c=relaxed/simple;
-	bh=xeOOMGcQ9+BrmMAS+47vErxsL1uDjqy5DuVtgCSdYjE=;
+	s=arc-20240116; t=1745945309; c=relaxed/simple;
+	bh=N92rpo51WZ/QI1B0mtfQ93SAxvSYGFQSVqja7vuPC/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RW6KsBt0b0iXvrR3yU4mx/dRqF0q7ScPZGChhvn+82VH3eOo1sJirHWHB7NRWLO6rhbU0ldEH1AWcTzQYj/avs1eh8xCylMHsblkV8soqMLKv3m3Um+M1RKQaWzbdIbY6WsbpoK7JMFL5oiUOehjZGluq7eeEH9InwZP7XFW6g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYAAtDCI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430CEC4CEE9;
-	Tue, 29 Apr 2025 17:28:14 +0000 (UTC)
+	 MIME-Version; b=A9XCBqZ93NyAJChry5Nc84xadb3OvxWBZatbbGNTzQKjO5t8KO+Yayh1qSM3iOEqnhyOlEZumLs7mzBq8T6tjKFX/7/PheNK/T5C5bvQyZEwDB3ehPc1wztvR/uSSRggUtkjeQxR33lmcGlL933wE63hcHBFxfjszCg6+5GVKxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/X6W2kY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E4BC4CEE3;
+	Tue, 29 Apr 2025 16:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947694;
-	bh=xeOOMGcQ9+BrmMAS+47vErxsL1uDjqy5DuVtgCSdYjE=;
+	s=korg; t=1745945309;
+	bh=N92rpo51WZ/QI1B0mtfQ93SAxvSYGFQSVqja7vuPC/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TYAAtDCI9xN96w50ec87uwnGh9Yazpvg1p3bPeWFRsKJZYRLQtWlxc2gGc/Duf/nN
-	 8QOA+0/8om8bIZWzils+0jMc6pZYePTbf9nhnKnZxABqa71lzryOrrtjGL3OBmVELj
-	 5JHi2vnSFIqu9XODvxDGy29EJAQRp3tV0dysyCz0=
+	b=h/X6W2kYZu0GxPIAeFg0QL+1N6CMuP+TIQZZ+wsJOQ3iG8OIXRCOyizJAQOzpbdaF
+	 s8ZhU2bpO2XW7zTdg8pqU304j8aDx4e7sp4/86uy5CyDNDaSL36ZIXbKbsNFYpa+mQ
+	 aRyDZluvDeYjcgbmeVa7+WKzoCZTSILUW+QDyoMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/280] net: lwtunnel: disable BHs when required
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.4 070/179] crypto: ccp - Fix check for the primary ASP device
 Date: Tue, 29 Apr 2025 18:40:11 +0200
-Message-ID: <20250429161117.972499882@linuxfoundation.org>
+Message-ID: <20250429161052.250437115@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,125 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-[ Upstream commit c03a49f3093a4903c8a93c8b5c9a297b5343b169 ]
+commit 07bb097b92b987db518e72525b515d77904e966e upstream.
 
-In lwtunnel_{output|xmit}(), dev_xmit_recursion() may be called in
-preemptible scope for PREEMPT kernels. This patch disables BHs before
-calling dev_xmit_recursion(). BHs are re-enabled only at the end, since
-we must ensure the same CPU is used for both dev_xmit_recursion_inc()
-and dev_xmit_recursion_dec() (and any other recursion levels in some
-cases) in order to maintain valid per-cpu counters.
+Currently, the ASP primary device check does not have support for PCI
+domains, and, as a result, when the system is configured with PCI domains
+(PCI segments) the wrong device can be selected as primary. This results
+in commands submitted to the device timing out and failing. The device
+check also relies on specific device and function assignments that may
+not hold in the future.
 
-Reported-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAADnVQJFWn3dBFJtY+ci6oN1pDFL=TzCmNbRgey7MdYxt_AP2g@mail.gmail.com/
-Reported-by: Eduard Zingerman <eddyz87@gmail.com>
-Closes: https://lore.kernel.org/netdev/m2h62qwf34.fsf@gmail.com/
-Fixes: 986ffb3a57c5 ("net: lwtunnel: fix recursion loops")
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250416160716.8823-1-justin.iurman@uliege.be
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the primary ASP device check to include support for PCI domains and
+to perform proper checking of the Bus/Device/Function positions.
+
+Fixes: 2a6170dfe755 ("crypto: ccp: Add Platform Security Processor (PSP) device support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/lwtunnel.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ drivers/crypto/ccp/sp-pci.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/lwtunnel.c b/net/core/lwtunnel.c
-index 4417a18b3e951..f63586c9ce021 100644
---- a/net/core/lwtunnel.c
-+++ b/net/core/lwtunnel.c
-@@ -332,6 +332,8 @@ int lwtunnel_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	struct dst_entry *dst;
- 	int ret;
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -118,14 +118,17 @@ static bool sp_pci_is_master(struct sp_d
+ 	pdev_new = to_pci_dev(dev_new);
+ 	pdev_cur = to_pci_dev(dev_cur);
  
-+	local_bh_disable();
+-	if (pdev_new->bus->number < pdev_cur->bus->number)
+-		return true;
++	if (pci_domain_nr(pdev_new->bus) != pci_domain_nr(pdev_cur->bus))
++		return pci_domain_nr(pdev_new->bus) < pci_domain_nr(pdev_cur->bus);
+ 
+-	if (PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn))
+-		return true;
++	if (pdev_new->bus->number != pdev_cur->bus->number)
++		return pdev_new->bus->number < pdev_cur->bus->number;
+ 
+-	if (PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn))
+-		return true;
++	if (PCI_SLOT(pdev_new->devfn) != PCI_SLOT(pdev_cur->devfn))
++		return PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn);
 +
- 	if (dev_xmit_recursion()) {
- 		net_crit_ratelimited("%s(): recursion limit reached on datapath\n",
- 				     __func__);
-@@ -347,8 +349,10 @@ int lwtunnel_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	lwtstate = dst->lwtstate;
++	if (PCI_FUNC(pdev_new->devfn) != PCI_FUNC(pdev_cur->devfn))
++		return PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn);
  
- 	if (lwtstate->type == LWTUNNEL_ENCAP_NONE ||
--	    lwtstate->type > LWTUNNEL_ENCAP_MAX)
--		return 0;
-+	    lwtstate->type > LWTUNNEL_ENCAP_MAX) {
-+		ret = 0;
-+		goto out;
-+	}
- 
- 	ret = -EOPNOTSUPP;
- 	rcu_read_lock();
-@@ -363,11 +367,13 @@ int lwtunnel_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	if (ret == -EOPNOTSUPP)
- 		goto drop;
- 
--	return ret;
-+	goto out;
- 
- drop:
- 	kfree_skb(skb);
- 
-+out:
-+	local_bh_enable();
- 	return ret;
+ 	return false;
  }
- EXPORT_SYMBOL_GPL(lwtunnel_output);
-@@ -379,6 +385,8 @@ int lwtunnel_xmit(struct sk_buff *skb)
- 	struct dst_entry *dst;
- 	int ret;
- 
-+	local_bh_disable();
-+
- 	if (dev_xmit_recursion()) {
- 		net_crit_ratelimited("%s(): recursion limit reached on datapath\n",
- 				     __func__);
-@@ -395,8 +403,10 @@ int lwtunnel_xmit(struct sk_buff *skb)
- 	lwtstate = dst->lwtstate;
- 
- 	if (lwtstate->type == LWTUNNEL_ENCAP_NONE ||
--	    lwtstate->type > LWTUNNEL_ENCAP_MAX)
--		return 0;
-+	    lwtstate->type > LWTUNNEL_ENCAP_MAX) {
-+		ret = 0;
-+		goto out;
-+	}
- 
- 	ret = -EOPNOTSUPP;
- 	rcu_read_lock();
-@@ -411,11 +421,13 @@ int lwtunnel_xmit(struct sk_buff *skb)
- 	if (ret == -EOPNOTSUPP)
- 		goto drop;
- 
--	return ret;
-+	goto out;
- 
- drop:
- 	kfree_skb(skb);
- 
-+out:
-+	local_bh_enable();
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(lwtunnel_xmit);
-@@ -427,6 +439,8 @@ int lwtunnel_input(struct sk_buff *skb)
- 	struct dst_entry *dst;
- 	int ret;
- 
-+	DEBUG_NET_WARN_ON_ONCE(!in_softirq());
-+
- 	if (dev_xmit_recursion()) {
- 		net_crit_ratelimited("%s(): recursion limit reached on datapath\n",
- 				     __func__);
--- 
-2.39.5
-
 
 
 
