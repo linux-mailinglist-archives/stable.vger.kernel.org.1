@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9861EAA17BB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C645AA13BE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B24931679D0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD0C316C742
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920F82472B9;
-	Tue, 29 Apr 2025 17:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B23211A0B;
+	Tue, 29 Apr 2025 17:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmZ1WwzW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJuxP4wi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E857221DA7;
-	Tue, 29 Apr 2025 17:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A5F82C60;
+	Tue, 29 Apr 2025 17:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949049; cv=none; b=pvxrE56trt741mz3aICnARFtRmaTYefLvXHPrNL6yqe8rHFK3qvp4Qq1U/oSbrrrH9ALaLpyWY1VEOmPzdZd3ietJJ2JZkaWORu/u8fmspYzQLKxePY4tGuvcUDLXRvDXm1xwZkt4FUQ1S3QRx2L8aYZfdbPJjJhIs/F9l1Quqk=
+	t=1745946355; cv=none; b=J1pSolScnXzRhXNPZQPtqMZV2eQn2gxmZD3bNSLdPP88pwCSV8sOygvouhLYzKf/srozBW9zCjbrzJQPugidPjRGHhCg4tFdPjADYwqmqjIJmyGiot8Nq9fxNXmUghpG+K6v3NidG6hNN2Tz2JGmiQ7HHJ+UYc8sbI9S0fop704=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949049; c=relaxed/simple;
-	bh=AjhRstLQ3bkyH6Mo+TSRnoxLMEqgj2Sjxhx1UgcOpzI=;
+	s=arc-20240116; t=1745946355; c=relaxed/simple;
+	bh=J00H3NN8d26UDaT5Yjym8xQ9iwUF+NCcMpD52zZmeio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PEOtu6mgF4DhttxzmaivSrPDTMjOLSka7Wb//BfIrFiU7mJyDZ8GdBHq5dfTkAGyzWoJhYU9+EffbazR0p41cDGP4ipof/KLOzx7RKHKHrWS9WbQHl3ys9XihNYgwLkchxglCe3ypFm1G/65+OE0xE7jaNJt2lib/KsY85ZL+Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmZ1WwzW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B00C4CEE3;
-	Tue, 29 Apr 2025 17:50:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aM+kbNCsnJZ7Cm9q9XvZSxzmMsin6RS3Y8MrPDCguxBgywacuaPb/kzuuYrQnecKNOIXmzNSucN4VjJ8pAUwtIs+npI6xNO7wNWBg1ooVKyOmAV88jKk4Y0wu+o6m7TVOypBkeCwfS2v3jxMYU4lDUaJAYg2LvUlGIaU4zq4aGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJuxP4wi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDB5C4CEE3;
+	Tue, 29 Apr 2025 17:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949049;
-	bh=AjhRstLQ3bkyH6Mo+TSRnoxLMEqgj2Sjxhx1UgcOpzI=;
+	s=korg; t=1745946355;
+	bh=J00H3NN8d26UDaT5Yjym8xQ9iwUF+NCcMpD52zZmeio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HmZ1WwzWrLy5m2Vyips50Sa+Dc0YuAHO6c5utio0uDZo9Vqb8ZcnzB/pUs79yacQY
-	 Z4fdK/vTkz8uKOH47PImPOrr5WIxvjDI20jZ1+hYr94e8IPGup8tgK9sbHvthEdr+O
-	 XNfy1KMgAL8JacmzC/3VbKGNbazDfxLlGX6hFPTQ=
+	b=xJuxP4wiWuF9HdIrCZRI85sRyNEStQd90wXDqIOE2NwxUBcNKFazggKqHE0fpWbbu
+	 LRGk7KCpqCt5V7a9GJt6O7Z+gzaRfhQQXINQAeakKJ8EVQ0gDCKGryHl2hX5FM0W8+
+	 R6vnNeFXWWMIe9WULUkyAXQKNvqmsOY6hVqdyvh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 199/373] mptcp: sockopt: fix getting IPV6_V6ONLY
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Michael Mueller <mimu@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 239/311] KVM: s390: Dont use %pK through debug printing
 Date: Tue, 29 Apr 2025 18:41:16 +0200
-Message-ID: <20250429161131.354131679@linuxfoundation.org>
+Message-ID: <20250429161130.812992260@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +61,143 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 8c39633759885b6ff85f6d96cf445560e74df5e8 upstream.
+[ Upstream commit 0c7fbae5bc782429c97d68dc40fb126748d7e352 ]
 
-When adding a socket option support in MPTCP, both the get and set parts
-are supposed to be implemented.
+Restricted pointers ("%pK") are only meant to be used when directly
+printing to a file from task context.
+Otherwise it can unintentionally expose security sensitive,
+raw pointer values.
 
-IPV6_V6ONLY support for the setsockopt part has been added a while ago,
-but it looks like the get part got forgotten. It should have been
-present as a way to verify a setting has been set as expected, and not
-to act differently from TCP or any other socket types.
+Use regular pointer formatting instead.
 
-Not supporting this getsockopt(IPV6_V6ONLY) blocks some apps which want
-to check the default value, before doing extra actions. On Linux, the
-default value is 0, but this can be changed with the net.ipv6.bindv6only
-sysctl knob. On Windows, it is set to 1 by default. So supporting the
-get part, like for all other socket options, is important.
-
-Everything was in place to expose it, just the last step was missing.
-Only new code is added to cover this specific getsockopt(), that seems
-safe.
-
-Fixes: c9b95a135987 ("mptcp: support IPV6_V6ONLY setsockopt")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/550
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-2-122dbb249db3@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflicts in sockopt.c in the context, because commit 3b1e21eb60e8
-  ("mptcp: getsockopt: add support for IP_TOS") is not in this release.
-  The conflicts are in the context, the new helper can be added without
-  issue. It depends on mptcp_put_int_option() which has been added via
-  another backport, see commit 874aae15fbef ("mptcp: fix full TCP
-  keep-alive support"). ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Michael Mueller <mimu@linux.ibm.com>
+Tested-by: Michael Mueller <mimu@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250217-restricted-pointers-s390-v1-2-0e4ace75d8aa@linutronix.de
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Message-ID: <20250217-restricted-pointers-s390-v1-2-0e4ace75d8aa@linutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/sockopt.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/s390/kvm/intercept.c |  2 +-
+ arch/s390/kvm/interrupt.c |  8 ++++----
+ arch/s390/kvm/kvm-s390.c  | 10 +++++-----
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -793,6 +793,20 @@ static int mptcp_getsockopt_sol_tcp(stru
- 	return -EOPNOTSUPP;
+diff --git a/arch/s390/kvm/intercept.c b/arch/s390/kvm/intercept.c
+index 610dd44a948b2..a06a000f196ce 100644
+--- a/arch/s390/kvm/intercept.c
++++ b/arch/s390/kvm/intercept.c
+@@ -95,7 +95,7 @@ static int handle_validity(struct kvm_vcpu *vcpu)
+ 
+ 	vcpu->stat.exit_validity++;
+ 	trace_kvm_s390_intercept_validity(vcpu, viwhy);
+-	KVM_EVENT(3, "validity intercept 0x%x for pid %u (kvm 0x%pK)", viwhy,
++	KVM_EVENT(3, "validity intercept 0x%x for pid %u (kvm 0x%p)", viwhy,
+ 		  current->pid, vcpu->kvm);
+ 
+ 	/* do not warn on invalid runtime instrumentation mode */
+diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
+index 07ff0e10cb7f5..c0558f0540073 100644
+--- a/arch/s390/kvm/interrupt.c
++++ b/arch/s390/kvm/interrupt.c
+@@ -3161,7 +3161,7 @@ void kvm_s390_gisa_clear(struct kvm *kvm)
+ 	if (!gi->origin)
+ 		return;
+ 	gisa_clear_ipm(gi->origin);
+-	VM_EVENT(kvm, 3, "gisa 0x%pK cleared", gi->origin);
++	VM_EVENT(kvm, 3, "gisa 0x%p cleared", gi->origin);
  }
  
-+static int mptcp_getsockopt_v6(struct mptcp_sock *msk, int optname,
-+			       char __user *optval, int __user *optlen)
-+{
-+	struct sock *sk = (void *)msk;
-+
-+	switch (optname) {
-+	case IPV6_V6ONLY:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+					    sk->sk_ipv6only);
-+	}
-+
-+	return -EOPNOTSUPP;
-+}
-+
- int mptcp_getsockopt(struct sock *sk, int level, int optname,
- 		     char __user *optval, int __user *option)
- {
-@@ -813,6 +827,8 @@ int mptcp_getsockopt(struct sock *sk, in
- 	if (ssk)
- 		return tcp_getsockopt(ssk, level, optname, optval, option);
+ void kvm_s390_gisa_init(struct kvm *kvm)
+@@ -3178,7 +3178,7 @@ void kvm_s390_gisa_init(struct kvm *kvm)
+ 	gi->timer.function = gisa_vcpu_kicker;
+ 	memset(gi->origin, 0, sizeof(struct kvm_s390_gisa));
+ 	gi->origin->next_alert = (u32)virt_to_phys(gi->origin);
+-	VM_EVENT(kvm, 3, "gisa 0x%pK initialized", gi->origin);
++	VM_EVENT(kvm, 3, "gisa 0x%p initialized", gi->origin);
+ }
  
-+	if (level == SOL_IPV6)
-+		return mptcp_getsockopt_v6(msk, optname, optval, option);
- 	if (level == SOL_TCP)
- 		return mptcp_getsockopt_sol_tcp(msk, optname, optval, option);
- 	return -EOPNOTSUPP;
+ void kvm_s390_gisa_enable(struct kvm *kvm)
+@@ -3219,7 +3219,7 @@ void kvm_s390_gisa_destroy(struct kvm *kvm)
+ 		process_gib_alert_list();
+ 	hrtimer_cancel(&gi->timer);
+ 	gi->origin = NULL;
+-	VM_EVENT(kvm, 3, "gisa 0x%pK destroyed", gisa);
++	VM_EVENT(kvm, 3, "gisa 0x%p destroyed", gisa);
+ }
+ 
+ void kvm_s390_gisa_disable(struct kvm *kvm)
+@@ -3468,7 +3468,7 @@ int __init kvm_s390_gib_init(u8 nisc)
+ 		}
+ 	}
+ 
+-	KVM_EVENT(3, "gib 0x%pK (nisc=%d) initialized", gib, gib->nisc);
++	KVM_EVENT(3, "gib 0x%p (nisc=%d) initialized", gib, gib->nisc);
+ 	goto out;
+ 
+ out_unreg_gal:
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index 020502af7dc98..8b8e2173fe829 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -1020,7 +1020,7 @@ static int kvm_s390_set_mem_control(struct kvm *kvm, struct kvm_device_attr *att
+ 		}
+ 		mutex_unlock(&kvm->lock);
+ 		VM_EVENT(kvm, 3, "SET: max guest address: %lu", new_limit);
+-		VM_EVENT(kvm, 3, "New guest asce: 0x%pK",
++		VM_EVENT(kvm, 3, "New guest asce: 0x%p",
+ 			 (void *) kvm->arch.gmap->asce);
+ 		break;
+ 	}
+@@ -3464,7 +3464,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ 		kvm_s390_gisa_init(kvm);
+ 	INIT_LIST_HEAD(&kvm->arch.pv.need_cleanup);
+ 	kvm->arch.pv.set_aside = NULL;
+-	KVM_EVENT(3, "vm 0x%pK created by pid %u", kvm, current->pid);
++	KVM_EVENT(3, "vm 0x%p created by pid %u", kvm, current->pid);
+ 
+ 	return 0;
+ out_err:
+@@ -3527,7 +3527,7 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+ 	kvm_s390_destroy_adapters(kvm);
+ 	kvm_s390_clear_float_irqs(kvm);
+ 	kvm_s390_vsie_destroy(kvm);
+-	KVM_EVENT(3, "vm 0x%pK destroyed", kvm);
++	KVM_EVENT(3, "vm 0x%p destroyed", kvm);
+ }
+ 
+ /* Section: vcpu related */
+@@ -3648,7 +3648,7 @@ static int sca_switch_to_extended(struct kvm *kvm)
+ 
+ 	free_page((unsigned long)old_sca);
+ 
+-	VM_EVENT(kvm, 2, "Switched to ESCA (0x%pK -> 0x%pK)",
++	VM_EVENT(kvm, 2, "Switched to ESCA (0x%p -> 0x%p)",
+ 		 old_sca, kvm->arch.sca);
+ 	return 0;
+ }
+@@ -4025,7 +4025,7 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ 			goto out_free_sie_block;
+ 	}
+ 
+-	VM_EVENT(vcpu->kvm, 3, "create cpu %d at 0x%pK, sie block at 0x%pK",
++	VM_EVENT(vcpu->kvm, 3, "create cpu %d at 0x%p, sie block at 0x%p",
+ 		 vcpu->vcpu_id, vcpu, vcpu->arch.sie_block);
+ 	trace_kvm_s390_create_vcpu(vcpu->vcpu_id, vcpu, vcpu->arch.sie_block);
+ 
+-- 
+2.39.5
+
 
 
 
