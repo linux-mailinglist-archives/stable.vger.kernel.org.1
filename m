@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-137245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC6FAA125B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52958AA1511
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5976A18907BD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:51:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89A54189A75A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B42C21772B;
-	Tue, 29 Apr 2025 16:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4874724291A;
+	Tue, 29 Apr 2025 17:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlQJwP++"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D0IjMb9m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CF92472AC;
-	Tue, 29 Apr 2025 16:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DA921ABDB;
+	Tue, 29 Apr 2025 17:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945494; cv=none; b=bzOc/iqtkc6CAOkB+1ya3mew8wOL1UTf+neyc/XHlxBfrdoUnBwjv7N6A2bIY21UCFgw+lOzHWa6n+CbEd2d8IjGIUmFDMIOBjMdEuJ4DzMZ3yXVquNZ6yIfZWxKj43PZPH9Cj4NPyeErWdRaUD+MIdxx5JgtJVtbYxveKcGmt8=
+	t=1745947182; cv=none; b=eeOD61MVV9f1SzH4z+cwWZ7+nDgZ1+kFg146jClDWJdGMmTw9HFHB41rkYnM7Ld97pzKpwl6cqKQ/PeqcGpl9HMy7S+5Omm/wcXFTCIJk1hgLyx4I2WzEkE8/aEZ68OD7EMINxx2MxQWeuO8pB1ui/cmYmVwDmQuOdoZjSPLaYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945494; c=relaxed/simple;
-	bh=o+YbX2gfYVe3/UPmojUSTZfbv7GRtCkDEd4TyLVZDss=;
+	s=arc-20240116; t=1745947182; c=relaxed/simple;
+	bh=mPNT4DKM+f5efkyrolEWiDARQ9ZRwh3oLkejb29+VBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHt3YtCHNd2Nf8FDmfDdCH/xlKKwzY172dmFhATYOL/4Kf88K+IC619TDnDpIkCN063yYQRDqZ0cHAC3ycn3qNfmNEhfyFO/pqhGnjr2J5g9qraGXKCTZ7quavlEuWDpL7m3iGXPnaLVKNQAd49YHPI2ONnHZ2W5K5xu+3q3cLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlQJwP++; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0ABBC4CEE3;
-	Tue, 29 Apr 2025 16:51:33 +0000 (UTC)
+	 MIME-Version; b=USVaK+foIWQitndTZJYSyxmIKgmyEz8NgxoT53hREUVqHwHtGjEWgBKN5OV+u5aNJb1gnjC5EzcDNp0c175SydayWtsam7LpSyvWzZuZX5R46JGedHDMrMcCKgMmb35NupH41wQJKXsXzT694bfCywJln03U5A1XAtV/xDgvT30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D0IjMb9m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8356BC4CEE3;
+	Tue, 29 Apr 2025 17:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945494;
-	bh=o+YbX2gfYVe3/UPmojUSTZfbv7GRtCkDEd4TyLVZDss=;
+	s=korg; t=1745947181;
+	bh=mPNT4DKM+f5efkyrolEWiDARQ9ZRwh3oLkejb29+VBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rlQJwP++IpKpgvzYfEqUCUNjQuSAwvncok+I7osDyFrm/Xhpy1jM7oxxd0QZmMbTL
-	 rYaU+Bqkd02xWbMFptUmpXp0qO0ZtyglU2NFjyaXUFukz29OJzkJGM8DukTlGwCvdE
-	 Mb6MbP+PAhoutAqpv5xFAgPUQv33Z7qwi5LcIbbQ=
+	b=D0IjMb9mDNYTfxxYFwOU1EKpx4mUXNv6Qq0te9hQp9z8A8qtl71XIXvzKjwpGyrEy
+	 kcaxtxXWfUoOuvR0jzQGb78Noq91ew+FrVj6zvDHuAaijWxpZOxm+6FkziGoglTQVJ
+	 IYFeQP8mWbO5gS2BkK11hPvVJq8FxBA/Zt5tnVHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Acs <acsjakub@amazon.de>,
-	Theodore Tso <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	linux-ext4@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mahmoud Adam <mngyadam@amazon.com>,
-	security@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 132/179] ext4: fix OOB read when checking dotdot dir
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Cliff Liu <donghua.liu@windriver.com>,
+	He Zhe <Zhe.He@windriver.com>
+Subject: [PATCH 5.10 169/286] bpf: Check rcu_read_lock_trace_held() before calling bpf map helpers
 Date: Tue, 29 Apr 2025 18:41:13 +0200
-Message-ID: <20250429161054.732659274@linuxfoundation.org>
+Message-ID: <20250429161114.836721622@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,110 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Acs, Jakub <acsjakub@amazon.de>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit d5e206778e96e8667d3bde695ad372c296dc9353 ]
+commit 169410eba271afc9f0fb476d996795aa26770c6d upstream.
 
-Mounting a corrupted filesystem with directory which contains '.' dir
-entry with rec_len == block size results in out-of-bounds read (later
-on, when the corrupted directory is removed).
+These three bpf_map_{lookup,update,delete}_elem() helpers are also
+available for sleepable bpf program, so add the corresponding lock
+assertion for sleepable bpf program, otherwise the following warning
+will be reported when a sleepable bpf program manipulates bpf map under
+interpreter mode (aka bpf_jit_enable=0):
 
-ext4_empty_dir() assumes every ext4 directory contains at least '.'
-and '..' as directory entries in the first data block. It first loads
-the '.' dir entry, performs sanity checks by calling ext4_check_dir_entry()
-and then uses its rec_len member to compute the location of '..' dir
-entry (in ext4_next_entry). It assumes the '..' dir entry fits into the
-same data block.
+  WARNING: CPU: 3 PID: 4985 at kernel/bpf/helpers.c:40 ......
+  CPU: 3 PID: 4985 Comm: test_progs Not tainted 6.6.0+ #2
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996) ......
+  RIP: 0010:bpf_map_lookup_elem+0x54/0x60
+  ......
+  Call Trace:
+   <TASK>
+   ? __warn+0xa5/0x240
+   ? bpf_map_lookup_elem+0x54/0x60
+   ? report_bug+0x1ba/0x1f0
+   ? handle_bug+0x40/0x80
+   ? exc_invalid_op+0x18/0x50
+   ? asm_exc_invalid_op+0x1b/0x20
+   ? __pfx_bpf_map_lookup_elem+0x10/0x10
+   ? rcu_lockdep_current_cpu_online+0x65/0xb0
+   ? rcu_is_watching+0x23/0x50
+   ? bpf_map_lookup_elem+0x54/0x60
+   ? __pfx_bpf_map_lookup_elem+0x10/0x10
+   ___bpf_prog_run+0x513/0x3b70
+   __bpf_prog_run32+0x9d/0xd0
+   ? __bpf_prog_enter_sleepable_recur+0xad/0x120
+   ? __bpf_prog_enter_sleepable_recur+0x3e/0x120
+   bpf_trampoline_6442580665+0x4d/0x1000
+   __x64_sys_getpgid+0x5/0x30
+   ? do_syscall_64+0x36/0xb0
+   entry_SYSCALL_64_after_hwframe+0x6e/0x76
+   </TASK>
 
-If the rec_len of '.' is precisely one block (4KB), it slips through the
-sanity checks (it is considered the last directory entry in the data
-block) and leaves "struct ext4_dir_entry_2 *de" point exactly past the
-memory slot allocated to the data block. The following call to
-ext4_check_dir_entry() on new value of de then dereferences this pointer
-which results in out-of-bounds mem access.
-
-Fix this by extending __ext4_check_dir_entry() to check for '.' dir
-entries that reach the end of data block. Make sure to ignore the phony
-dir entries for checksum (by checking name_len for non-zero).
-
-Note: This is reported by KASAN as use-after-free in case another
-structure was recently freed from the slot past the bound, but it is
-really an OOB read.
-
-This issue was found by syzkaller tool.
-
-Call Trace:
-[   38.594108] BUG: KASAN: slab-use-after-free in __ext4_check_dir_entry+0x67e/0x710
-[   38.594649] Read of size 2 at addr ffff88802b41a004 by task syz-executor/5375
-[   38.595158]
-[   38.595288] CPU: 0 UID: 0 PID: 5375 Comm: syz-executor Not tainted 6.14.0-rc7 #1
-[   38.595298] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[   38.595304] Call Trace:
-[   38.595308]  <TASK>
-[   38.595311]  dump_stack_lvl+0xa7/0xd0
-[   38.595325]  print_address_description.constprop.0+0x2c/0x3f0
-[   38.595339]  ? __ext4_check_dir_entry+0x67e/0x710
-[   38.595349]  print_report+0xaa/0x250
-[   38.595359]  ? __ext4_check_dir_entry+0x67e/0x710
-[   38.595368]  ? kasan_addr_to_slab+0x9/0x90
-[   38.595378]  kasan_report+0xab/0xe0
-[   38.595389]  ? __ext4_check_dir_entry+0x67e/0x710
-[   38.595400]  __ext4_check_dir_entry+0x67e/0x710
-[   38.595410]  ext4_empty_dir+0x465/0x990
-[   38.595421]  ? __pfx_ext4_empty_dir+0x10/0x10
-[   38.595432]  ext4_rmdir.part.0+0x29a/0xd10
-[   38.595441]  ? __dquot_initialize+0x2a7/0xbf0
-[   38.595455]  ? __pfx_ext4_rmdir.part.0+0x10/0x10
-[   38.595464]  ? __pfx___dquot_initialize+0x10/0x10
-[   38.595478]  ? down_write+0xdb/0x140
-[   38.595487]  ? __pfx_down_write+0x10/0x10
-[   38.595497]  ext4_rmdir+0xee/0x140
-[   38.595506]  vfs_rmdir+0x209/0x670
-[   38.595517]  ? lookup_one_qstr_excl+0x3b/0x190
-[   38.595529]  do_rmdir+0x363/0x3c0
-[   38.595537]  ? __pfx_do_rmdir+0x10/0x10
-[   38.595544]  ? strncpy_from_user+0x1ff/0x2e0
-[   38.595561]  __x64_sys_unlinkat+0xf0/0x130
-[   38.595570]  do_syscall_64+0x5b/0x180
-[   38.595583]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: ac27a0ec112a0 ("[PATCH] ext4: initial copy of files from ext3")
-Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-Cc: Theodore Ts'o <tytso@mit.edu>
-Cc: Andreas Dilger <adilger.kernel@dilger.ca>
-Cc: linux-ext4@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Mahmoud Adam <mngyadam@amazon.com>
-Cc: stable@vger.kernel.org
-Cc: security@kernel.org
-Link: https://patch.msgid.link/b3ae36a6794c4a01944c7d70b403db5b@amazon.de
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20231204140425.1480317-2-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[Minor conflict resolved due to code context change.]
+Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
+Signed-off-by: He Zhe <Zhe.He@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/dir.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/bpf/helpers.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ext4/dir.c b/fs/ext4/dir.c
-index c4f7fd22a907c..567c47cf4f20c 100644
---- a/fs/ext4/dir.c
-+++ b/fs/ext4/dir.c
-@@ -88,6 +88,9 @@ int __ext4_check_dir_entry(const char *function, unsigned int line,
- 	else if (unlikely(le32_to_cpu(de->inode) >
- 			le32_to_cpu(EXT4_SB(dir->i_sb)->s_es->s_inodes_count)))
- 		error_msg = "inode out of bounds";
-+	else if (unlikely(next_offset == size && de->name_len == 1 &&
-+			  de->name[0] == '.'))
-+		error_msg = "'.' directory cannot be the last in data block";
- 	else
- 		return 0;
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -3,6 +3,7 @@
+  */
+ #include <linux/bpf.h>
+ #include <linux/rcupdate.h>
++#include <linux/rcupdate_trace.h>
+ #include <linux/random.h>
+ #include <linux/smp.h>
+ #include <linux/topology.h>
+@@ -24,12 +25,12 @@
+  *
+  * Different map implementations will rely on rcu in map methods
+  * lookup/update/delete, therefore eBPF programs must run under rcu lock
+- * if program is allowed to access maps, so check rcu_read_lock_held in
+- * all three functions.
++ * if program is allowed to access maps, so check rcu_read_lock_held() or
++ * rcu_read_lock_trace_held() in all three functions.
+  */
+ BPF_CALL_2(bpf_map_lookup_elem, struct bpf_map *, map, void *, key)
+ {
+-	WARN_ON_ONCE(!rcu_read_lock_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held());
+ 	return (unsigned long) map->ops->map_lookup_elem(map, key);
+ }
  
--- 
-2.39.5
-
+@@ -45,7 +46,7 @@ const struct bpf_func_proto bpf_map_look
+ BPF_CALL_4(bpf_map_update_elem, struct bpf_map *, map, void *, key,
+ 	   void *, value, u64, flags)
+ {
+-	WARN_ON_ONCE(!rcu_read_lock_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held());
+ 	return map->ops->map_update_elem(map, key, value, flags);
+ }
+ 
+@@ -62,7 +63,7 @@ const struct bpf_func_proto bpf_map_upda
+ 
+ BPF_CALL_2(bpf_map_delete_elem, struct bpf_map *, map, void *, key)
+ {
+-	WARN_ON_ONCE(!rcu_read_lock_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held());
+ 	return map->ops->map_delete_elem(map, key);
+ }
+ 
 
 
 
