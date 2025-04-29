@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-137782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BDF6AA14D8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64B8AA128D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 168A74C3F80
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C77C3BF55E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E3F2472B4;
-	Tue, 29 Apr 2025 17:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C6D21772B;
+	Tue, 29 Apr 2025 16:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEiLuj1k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKU/O+r+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74EB221DA7;
-	Tue, 29 Apr 2025 17:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F429215060;
+	Tue, 29 Apr 2025 16:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947111; cv=none; b=Lv6xu+pjga9rbY0F/898GHI8PKZtsGNJmOZY6JPa5blrfrztRBJcL6oXAyFhxBH8xqrUYc7aM74UDYC+y1NfPjGQm4mW8cgLrPmK/fpqhfp6ZQqnAVxcJgIbjf8tHwqg3n4UhHr++/ktcyoWhCVicWClYZeOAvG5kR/qS99pIwY=
+	t=1745945520; cv=none; b=SOCQpNjEVv96UmCMAFK32KA6v46siIwCMN4mtDg0HvcR9CETbrLHAOTYVNKoqFKE9oFfAkvuXcEK9P3X7Duk7xXRMwhjqVWdECYfycoq+Dl3jVmqThieBTvWyV1KepkrtLDjDGgRVjwLt3UyO+EFHSEThoOZTJvp0BJw2ZsItAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947111; c=relaxed/simple;
-	bh=YYU5FledBKiGgQXnCsOu/roEzrfyatemB7vaFOxPn54=;
+	s=arc-20240116; t=1745945520; c=relaxed/simple;
+	bh=1D2jm8fEyMDydKCml+pvyezdVihBKOEEwhAk9wwsDtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llDDT5Fcf1/YQeHBTKWN6ljqg8YMgcpgutkxUXKqJUaJc0jkU/zJ+/6kt/zMYQHc156duHUZmMLlrUDQg3ABL4+7MAC0Z0b6vpYGD4bd3oW90eZXQldqYSBpLK67VZ9xELuypKU+r4o2+ZIRt5ztj48by4J2IYtktYt64DTlsEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEiLuj1k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A21C4CEEE;
-	Tue, 29 Apr 2025 17:18:31 +0000 (UTC)
+	 MIME-Version; b=L3KWFkyBZsCVjzY/1gqoXCrVrZjpFOFZVx5OdPsG/S71YiOb/wZjSeFlyv2mVNaHWqfKHA9u6cX8vDXT6C0mU47aYx6SxLnzH+Rv//wnXdd+aoODQRqxsceRvtHgGOIhMgob3egr5emUZdah7izi7XOgll5X8o0bacAg07R8bps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKU/O+r+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA82C4CEE3;
+	Tue, 29 Apr 2025 16:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947111;
-	bh=YYU5FledBKiGgQXnCsOu/roEzrfyatemB7vaFOxPn54=;
+	s=korg; t=1745945519;
+	bh=1D2jm8fEyMDydKCml+pvyezdVihBKOEEwhAk9wwsDtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FEiLuj1kmxr9m0pXmvwOIDKWw4xGe/C+ylhQki3JrHNfiXvYh1/c25qz5i8tPJ+66
-	 +3oGBiSc9wTIic/iAaxOFNN/IDk/t4cx6Ul1kOOofm2AcZWRuzjAPKW7yqkPsA5Gr1
-	 BpTWefT4rpdcGPXjXs1cM5yIl6jIgKrNk7OasK+I=
+	b=oKU/O+r+qJm1ag67fsd1VTmonFC3KJk0MaVqqjC2sEQ/p9ppXPPJj2UWhDvaxv48F
+	 GnhNm0+Rioc607ZwZrKSWOQxEXbtbqGqjOaDOebSMDQKcKsDKjJPd3T2hKJPWE7qzt
+	 TZCrjGFqJXlzmx+QHoN01LssqAfeNNOEONWMOcnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Friedrich Weber <f.weber@proxmox.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Carlos Soto <carlos.soto@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH 5.10 176/286] openvswitch: fix lockup on tx to unregistering netdev with carrier
-Date: Tue, 29 Apr 2025 18:41:20 +0200
-Message-ID: <20250429161115.138401605@linuxfoundation.org>
+	Denis Arefev <arefev@swemel.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 140/179] drm/amd/pm: Prevent division by zero
+Date: Tue, 29 Apr 2025 18:41:21 +0200
+Message-ID: <20250429161055.060706324@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit 47e55e4b410f7d552e43011baa5be1aab4093990 upstream.
+[ Upstream commit 4e3d9508c056d7e0a56b58d5c81253e2a0d22b6c ]
 
-Commit in a fixes tag attempted to fix the issue in the following
-sequence of calls:
+The user can set any speed value.
+If speed is greater than UINT_MAX/8, division by zero is possible.
 
-    do_output
-    -> ovs_vport_send
-       -> dev_queue_xmit
-          -> __dev_queue_xmit
-             -> netdev_core_pick_tx
-                -> skb_tx_hash
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-When device is unregistering, the 'dev->real_num_tx_queues' goes to
-zero and the 'while (unlikely(hash >= qcount))' loop inside the
-'skb_tx_hash' becomes infinite, locking up the core forever.
-
-But unfortunately, checking just the carrier status is not enough to
-fix the issue, because some devices may still be in unregistering
-state while reporting carrier status OK.
-
-One example of such device is a net/dummy.  It sets carrier ON
-on start, but it doesn't implement .ndo_stop to set the carrier off.
-And it makes sense, because dummy doesn't really have a carrier.
-Therefore, while this device is unregistering, it's still easy to hit
-the infinite loop in the skb_tx_hash() from the OVS datapath.  There
-might be other drivers that do the same, but dummy by itself is
-important for the OVS ecosystem, because it is frequently used as a
-packet sink for tcpdump while debugging OVS deployments.  And when the
-issue is hit, the only way to recover is to reboot.
-
-Fix that by also checking if the device is running.  The running
-state is handled by the net core during unregistering, so it covers
-unregistering case better, and we don't really need to send packets
-to devices that are not running anyway.
-
-While only checking the running state might be enough, the carrier
-check is preserved.  The running and the carrier states seem disjoined
-throughout the code and different drivers.  And other core functions
-like __dev_direct_xmit() check both before attempting to transmit
-a packet.  So, it seems safer to check both flags in OVS as well.
-
-Fixes: 066b86787fa3 ("net: openvswitch: fix race on port output")
-Reported-by: Friedrich Weber <f.weber@proxmox.com>
-Closes: https://mail.openvswitch.org/pipermail/ovs-discuss/2025-January/053423.html
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Tested-by: Friedrich Weber <f.weber@proxmox.com>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20250109122225.4034688-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 031db09017da ("drm/amd/powerplay/vega20: enable fan RPM and pwm settings V2")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Carlos Soto <carlos.soto@broadcom.com>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/actions.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/powerplay/hwmgr/vega20_thermal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -912,7 +912,9 @@ static void do_output(struct datapath *d
- {
- 	struct vport *vport = ovs_vport_rcu(dp, out_port);
+diff --git a/drivers/gpu/drm/amd/powerplay/hwmgr/vega20_thermal.c b/drivers/gpu/drm/amd/powerplay/hwmgr/vega20_thermal.c
+index ce56b93871e8f..d057c6f7e1fce 100644
+--- a/drivers/gpu/drm/amd/powerplay/hwmgr/vega20_thermal.c
++++ b/drivers/gpu/drm/amd/powerplay/hwmgr/vega20_thermal.c
+@@ -189,7 +189,7 @@ int vega20_fan_ctrl_set_fan_speed_rpm(struct pp_hwmgr *hwmgr, uint32_t speed)
+ 	uint32_t tach_period, crystal_clock_freq;
+ 	int result = 0;
  
--	if (likely(vport && netif_carrier_ok(vport->dev))) {
-+	if (likely(vport &&
-+		   netif_running(vport->dev) &&
-+		   netif_carrier_ok(vport->dev))) {
- 		u16 mru = OVS_CB(skb)->mru;
- 		u32 cutlen = OVS_CB(skb)->cutlen;
+-	if (!speed)
++	if (!speed || speed > UINT_MAX/8)
+ 		return -EINVAL;
  
+ 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl)) {
+-- 
+2.39.5
+
 
 
 
