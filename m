@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-137744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C869AA1496
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C7AAA13AE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 339A97AF41F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F7851BA40BE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98A2253949;
-	Tue, 29 Apr 2025 17:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A5F24A047;
+	Tue, 29 Apr 2025 17:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gyhn1UI6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8RIjXYU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C8D24E000;
-	Tue, 29 Apr 2025 17:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB0E2405E5;
+	Tue, 29 Apr 2025 17:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946997; cv=none; b=VUVPu+sQBK6Dq/t7KLumLx8l7yuqO0sE6+zHixZ44dANop9OjO8259enlfsKPX6gTXcrTKpFdzf+ktyD4BjNqBnryargcVjNWC8GY1q3irSZFFebgEC4xHe/EauVlfKLviCMrUGpRyec5RohVg4VZEPKDipAfmCO/mZwGHKA+2I=
+	t=1745946225; cv=none; b=p21Y3LCe2z6am3/dWieC+iJ+oF4m2RxS3Hu82Q7N/CSDTwiInBOHTvNswwqXDJ5V9DGKCJWQ52jCdEhYbJ5MIq4ACsEog5OxZb0JURKQhVHHRj2CxEC7pVwxHvBpNOGrj9NQE2Xuaah7FQEF3QphU8IAZyAKL7T23OopiCiN47Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946997; c=relaxed/simple;
-	bh=2UGkvth57wxrG5q0wdhFBY1jJOnsgQNYfv7wysRxvYc=;
+	s=arc-20240116; t=1745946225; c=relaxed/simple;
+	bh=uQtCSSJx3AKqYyEN9Ihx+iQQq6dQRuGvd+G3+wK2Bp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1KW6Dsfwinmfe4W39bIrB9hL55AfQe7HRk3+1JFQjxUc5WShkajak1xJmswKTTeMQLLUWZYEvsJb/YKtWbjTD9w0UnHa9I+45gxGPzt7AH12HqQ7QH5rwm8WLGqDamRLCA2f3YInWxAroMYksptaOS1LjdVnVMeyUfNidBJT4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gyhn1UI6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC544C4CEE3;
-	Tue, 29 Apr 2025 17:16:36 +0000 (UTC)
+	 MIME-Version; b=Temp+0oNDDSNBsKdi4SU9dL0h5BkkJqSsnk08k68J54ArUvDfrOUyOy6iz3zol8eh78CuwrmJjV+iMOqNQIme8G/MFw3ULYrr35N5WLSqc7kk6niO+g9vdejr3u+B+85MOZEHx2LjJgu0jNAol0fGNAYu7NQ/vJzXD0Xe4ln26M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8RIjXYU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E446C4CEE3;
+	Tue, 29 Apr 2025 17:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946997;
-	bh=2UGkvth57wxrG5q0wdhFBY1jJOnsgQNYfv7wysRxvYc=;
+	s=korg; t=1745946224;
+	bh=uQtCSSJx3AKqYyEN9Ihx+iQQq6dQRuGvd+G3+wK2Bp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gyhn1UI6zfy3yKVHZv+Vb/ebjxTht/Aci5vOuFezjKVPepPKzoSqF9ALu7Yz+NJAa
-	 MgRzEpql3WgfGvij+RVNqg3FMK6vve9fxSVt2+7QFL/ia126t7eoOQlKnSwt1AwY6B
-	 5NDBZW6PFAbfweN4ubsRVzBkiQHEaUZtoD23+TNM=
+	b=O8RIjXYUhL2EccS+7jqkaDkHKFRWKmCs0iHFnNe3Pyo4oFyAx76q0An0BlzK58l4f
+	 NGGbchEyi8e0rZJPbxRQaIlbXS51NnUU167qoNXLeD3PVv29TeBKYIpY6XCP5ww8bV
+	 aNFHujMg/xD7qYSaHZnMUNFH+BOLParqVKqZYoJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.10 130/286] isofs: Prevent the use of too small fid
+	Robbie King <robbiek@xsightlabs.com>,
+	Huisong Li <lihuisong@huawei.com>,
+	Adam Young <admiyo@os.amperecomputing.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 197/311] mailbox: pcc: Always clear the platform ack interrupt first
 Date: Tue, 29 Apr 2025 18:40:34 +0200
-Message-ID: <20250429161113.214317430@linuxfoundation.org>
+Message-ID: <20250429161129.084127879@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +65,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-commit 0405d4b63d082861f4eaff9d39c78ee9dc34f845 upstream.
+[ Upstream commit cf1338c0e02880cd235a4590eeb15e2039c873bc ]
 
-syzbot reported a slab-out-of-bounds Read in isofs_fh_to_parent. [1]
+The PCC mailbox interrupt handler (pcc_mbox_irq()) currently checks
+for command completion flags and any error status before clearing the
+interrupt.
 
-The handle_bytes value passed in by the reproducing program is equal to 12.
-In handle_to_path(), only 12 bytes of memory are allocated for the structure
-file_handle->f_handle member, which causes an out-of-bounds access when
-accessing the member parent_block of the structure isofs_fid in isofs,
-because accessing parent_block requires at least 16 bytes of f_handle.
-Here, fh_len is used to indirectly confirm that the value of handle_bytes
-is greater than 3 before accessing parent_block.
+The below sequence highlights an issue in the handling of PCC mailbox
+interrupts, specifically when dealing with doorbell notifications and
+acknowledgment between the OSPM and the platform where type3 and type4
+channels are sharing the interrupt.
 
-[1]
-BUG: KASAN: slab-out-of-bounds in isofs_fh_to_parent+0x1b8/0x210 fs/isofs/export.c:183
-Read of size 4 at addr ffff0000cc030d94 by task syz-executor215/6466
-CPU: 1 UID: 0 PID: 6466 Comm: syz-executor215 Not tainted 6.14.0-rc7-syzkaller-ga2392f333575 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Call trace:
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:466 (C)
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0x198/0x550 mm/kasan/report.c:521
- kasan_report+0xd8/0x138 mm/kasan/report.c:634
- __asan_report_load4_noabort+0x20/0x2c mm/kasan/report_generic.c:380
- isofs_fh_to_parent+0x1b8/0x210 fs/isofs/export.c:183
- exportfs_decode_fh_raw+0x2dc/0x608 fs/exportfs/expfs.c:523
- do_handle_to_path+0xa0/0x198 fs/fhandle.c:257
- handle_to_path fs/fhandle.c:385 [inline]
- do_handle_open+0x8cc/0xb8c fs/fhandle.c:403
- __do_sys_open_by_handle_at fs/fhandle.c:443 [inline]
- __se_sys_open_by_handle_at fs/fhandle.c:434 [inline]
- __arm64_sys_open_by_handle_at+0x80/0x94 fs/fhandle.c:434
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
+-------------------------------------------------------------------------
+| T |       Platform Firmware         |    OSPM/Linux PCC driver        |
+|---|---------------------------------|---------------------------------|
+| 1 |                                 | Build message in shmem          |
+| 2 |                                 | Ring Type3 chan doorbell        |
+| 3 | Receives the doorbell interrupt |                                 |
+| 4 | Process the message from OSPM   |                                 |
+| 5 | Build response for the message  |                                 |
+| 6 | Ring Platform ACK interrupt on  |                                 |
+|   |  Type3 chan to OSPM             | Received the interrupt          |
+| 7 | Build Notification in Type4 Chan|                                 |
+| 8 |                                 | Start processing interrupt in   |
+|   |                                 |  pcc_mbox_irq() handler         |
+| 9 |                                 | Enter PCC handler for Type4 chan|
+|10 |                                 | Check command complete cleared  |
+|11 |                                 | Read the notification           |
+|12 |                                 | Clear Platform ACK interrupt    |
+|   | No effect from the previous step yet as the Platform ACK          |
+|   |  interrupt has not yet been triggered for this channel            |
+|13 | Ring Platform ACK interrupt on  |                                 |
+|   | Type4 chan to OSPM              |                                 |
+|14 |                                 | Enter PCC handler for Type3 chan|
+|15 |                                 | Command complete is set.        |
+|16 |                                 | Read the response.              |
+|17 |                                 | Clear Platform ACK interrupt    |
+|18 |                                 | Leave PCC handler for Type3     |
+|19 |                                 | Leave pcc_mbox_irq() handler    |
+|20 |                                 | Re-enter pcc_mbox_irq() handler |
+|21 |                                 | Enter PCC handler for Type4 chan|
+|22 |                                 | Leave PCC handler for Type4 chan|
+|23 |                                 | Enter PCC handler for Type3 chan|
+|24 |                                 | Leave PCC handler for Type3 chan|
+|25 |                                 | Leave pcc_mbox_irq() handler    |
+-------------------------------------------------------------------------
 
-Allocated by task 6466:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x40/0x78 mm/kasan/common.c:68
- kasan_save_alloc_info+0x40/0x50 mm/kasan/generic.c:562
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0xac/0xc4 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4294 [inline]
- __kmalloc_noprof+0x32c/0x54c mm/slub.c:4306
- kmalloc_noprof include/linux/slab.h:905 [inline]
- handle_to_path fs/fhandle.c:357 [inline]
- do_handle_open+0x5a4/0xb8c fs/fhandle.c:403
- __do_sys_open_by_handle_at fs/fhandle.c:443 [inline]
- __se_sys_open_by_handle_at fs/fhandle.c:434 [inline]
- __arm64_sys_open_by_handle_at+0x80/0x94 fs/fhandle.c:434
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
+The key issue occurs when OSPM tries to acknowledge platform ack
+interrupt for a notification which is ready to be read and processed
+but the interrupt itself is not yet triggered by the platform.
 
-Reported-by: syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4d7cd7dd0ce1aa8d5c65
-Tested-by: syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com
-CC: stable@vger.kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/tencent_9C8CB8A7E7C6C512C7065DC98B6EDF6EC606@qq.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This ineffective acknowledgment leads to an issue later in time where
+the interrupt remains pending as we exit the interrupt handler without
+clearing the platform ack interrupt as there is no pending response or
+notification. The interrupt acknowledgment order is incorrect.
+
+To resolve this issue, the platform acknowledgment interrupt should
+always be cleared before processing the interrupt for any notifications
+or response.
+
+Reported-by: Robbie King <robbiek@xsightlabs.com>
+Reviewed-by: Huisong Li <lihuisong@huawei.com>
+Tested-by: Huisong Li <lihuisong@huawei.com>
+Tested-by: Adam Young <admiyo@os.amperecomputing.com>
+Tested-by: Robbie King <robbiek@xsightlabs.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/isofs/export.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mailbox/pcc.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/isofs/export.c
-+++ b/fs/isofs/export.c
-@@ -180,7 +180,7 @@ static struct dentry *isofs_fh_to_parent
- 		return NULL;
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index 8fd4d0f79b090..f8215a8f656a4 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -313,6 +313,10 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ 	int ret;
  
- 	return isofs_export_iget(sb,
--			fh_len > 2 ? ifid->parent_block : 0,
-+			fh_len > 3 ? ifid->parent_block : 0,
- 			ifid->parent_offset,
- 			fh_len > 4 ? ifid->parent_generation : 0);
- }
+ 	pchan = chan->con_priv;
++
++	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
++		return IRQ_NONE;
++
+ 	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
+ 	    !pchan->chan_in_use)
+ 		return IRQ_NONE;
+@@ -330,9 +334,6 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ 		return IRQ_NONE;
+ 	}
+ 
+-	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
+-		return IRQ_NONE;
+-
+ 	/*
+ 	 * Clear this flag after updating interrupt ack register and just
+ 	 * before mbox_chan_received_data() which might call pcc_send_data()
+-- 
+2.39.5
+
 
 
 
