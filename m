@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF67AA15A7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56068AA11E3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:46:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B3101648C7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 981417ACCF0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CB618BBBB;
-	Tue, 29 Apr 2025 17:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBF124EABF;
+	Tue, 29 Apr 2025 16:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3zDbfsJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5S1CQcq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFFC242D94;
-	Tue, 29 Apr 2025 17:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F3D24E4AD;
+	Tue, 29 Apr 2025 16:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947518; cv=none; b=YXovCHRr/aIHLI1cDxDum+hoLgAuHhZ4HXHm+eevfcDF4kiY4aZ5pp3mhF6ziYdlbX0aKYKRMvEAeO4+w7yMTUoMM1KIFt5Rep8sbaUkHt8sYduyn4owY7UiCdQeeoq0xeLfhCl32OVc95k5cui4PtvX23mx73nUGQJHiRwxB84=
+	t=1745945182; cv=none; b=NrFMZ1rSAa1EbUe5YfPNpBDfUTZ418rxv0NKsFSGaV+/a6pEKqqqU3f/kX4/a8f5Q2708fsfbVUN5JjaRUfZMF7Xhc5OKM8wd/u85/KsUwWpXBJobtWigUIaKXKvcCHqBHU/VXqJtFDWUwQaGUONeTv64loNkIi1aTogNA0nzFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947518; c=relaxed/simple;
-	bh=x6TKW57JOqacvPuZGsuKKDMgfG+zTnJF0w5/iU7FRio=;
+	s=arc-20240116; t=1745945182; c=relaxed/simple;
+	bh=t/o0brppmoptkL4MQ8yJrqWlGJ1fdhYv4IJI1VQcx5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KF8wQXAY1u7dDg2+Zf0cwGhxzIsiWsCjsL3R3fVX8bTop8yhzr2sCDV7qYgrqwuR1mRRGTSVn3r4q0l0cMa9kVO/FOMUka4D3+f7MhoaHrQ39Yx1spwLC5+MqYLiiFNP1B05PGQpEqrLn75NvvV/oS9qUQWBhwvlXubg6n7wwdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3zDbfsJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C007EC4CEF2;
-	Tue, 29 Apr 2025 17:25:17 +0000 (UTC)
+	 MIME-Version; b=hHCn6zWsOEnHucQ207tf8lcjEjYTTQP+XZ7fWOBZVqooty3KTxbi3vp0PSu/PgyiWFgVraXJANalB93SnDcIvwfXMkJ25zmcNT282SRyGnSpOZOYaq/KlCeWCSozNMr9BKaFnD8z5xNg/yUyOskG5F8M4Glt6/2ESHW6jw4TblU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5S1CQcq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A2CC4CEE9;
+	Tue, 29 Apr 2025 16:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947518;
-	bh=x6TKW57JOqacvPuZGsuKKDMgfG+zTnJF0w5/iU7FRio=;
+	s=korg; t=1745945180;
+	bh=t/o0brppmoptkL4MQ8yJrqWlGJ1fdhYv4IJI1VQcx5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3zDbfsJfrQEvotxG8BSuv8tuZKt2wdp02jSxzsNFDr9y4K5sImvIMRqS2Z3Ebs5a
-	 MuBL6jwoYKwK+0ox6u1ybeJAvVfFx+2OgBmMUSDb5BMUByDtW6piBJTCAbGBZdS+8P
-	 Uxib3olpZKJrNOcTCTwrRDHHhqvBzAqho940EG2s=
+	b=Y5S1CQcqvTScLV06tMD3r9qAHhjUaS6SH5p//TAGFnrJwcm0Tc6EAT3ndNHDUbK/V
+	 49amY9est6YE0hUVZ0Xqk49F5w1xErFTNzBJnXRqA1U3exKu+ttWZp/WFNfnFVCpKV
+	 6OeYgafwxEarnebfQSYKLSATvlyCVGl9sHiatY0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/280] net: dsa: mv88e6xxx: fix VTU methods for 6320 family
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+7c808908291a569281a9@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 020/179] jfs: add sanity check for agwidth in dbMount
 Date: Tue, 29 Apr 2025 18:39:21 +0200
-Message-ID: <20250429161115.921350352@linuxfoundation.org>
+Message-ID: <20250429161050.225187189@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit f9a457722cf5e3534be5ffab549d6b49737fca72 ]
+[ Upstream commit ddf2846f22e8575d6b4b6a66f2100f168b8cd73d ]
 
-The VTU registers of the 6320 family use the 6352 semantics, not 6185.
-Fix it.
+The width in dmapctl of the AG is zero, it trigger a divide error when
+calculating the control page level in dbAllocAG.
 
-Fixes: b8fee9571063 ("net: dsa: mv88e6xxx: add VLAN Get Next support")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.15.x
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-2-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To avoid this issue, add a check for agwidth in dbAllocAG.
+
+Reported-and-tested-by: syzbot+7c808908291a569281a9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7c808908291a569281a9
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/jfs/jfs_dmap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index df1df60154121..28967a338aa94 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5210,8 +5210,8 @@ static const struct mv88e6xxx_ops mv88e6320_ops = {
- 	.hardware_reset_pre = mv88e6xxx_g2_eeprom_wait,
- 	.hardware_reset_post = mv88e6xxx_g2_eeprom_wait,
- 	.reset = mv88e6352_g1_reset,
--	.vtu_getnext = mv88e6185_g1_vtu_getnext,
--	.vtu_loadpurge = mv88e6185_g1_vtu_loadpurge,
-+	.vtu_getnext = mv88e6352_g1_vtu_getnext,
-+	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
- 	.gpio_ops = &mv88e6352_gpio_ops,
- 	.avb_ops = &mv88e6352_avb_ops,
- 	.ptp_ops = &mv88e6352_ptp_ops,
-@@ -5259,8 +5259,8 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	.hardware_reset_pre = mv88e6xxx_g2_eeprom_wait,
- 	.hardware_reset_post = mv88e6xxx_g2_eeprom_wait,
- 	.reset = mv88e6352_g1_reset,
--	.vtu_getnext = mv88e6185_g1_vtu_getnext,
--	.vtu_loadpurge = mv88e6185_g1_vtu_loadpurge,
-+	.vtu_getnext = mv88e6352_g1_vtu_getnext,
-+	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
- 	.gpio_ops = &mv88e6352_gpio_ops,
- 	.avb_ops = &mv88e6352_avb_ops,
- 	.ptp_ops = &mv88e6352_ptp_ops,
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index d4e26744b2005..d161bbafe77f6 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -204,6 +204,10 @@ int dbMount(struct inode *ipbmap)
+ 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
+ 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
+ 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
++	if (!bmp->db_agwidth) {
++		err = -EINVAL;
++		goto err_release_metapage;
++	}
+ 	bmp->db_agstart = le32_to_cpu(dbmp_le->dn_agstart);
+ 	bmp->db_agl2size = le32_to_cpu(dbmp_le->dn_agl2size);
+ 	if (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG ||
 -- 
 2.39.5
 
