@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-138271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C5B7AA179F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:49:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD80BAA1457
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD317982DFE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8AF64A293B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266AE242D68;
-	Tue, 29 Apr 2025 17:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A243D24A06A;
+	Tue, 29 Apr 2025 17:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5sAIRod"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTYg6kti"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AF4C148;
-	Tue, 29 Apr 2025 17:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA19248878;
+	Tue, 29 Apr 2025 17:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948725; cv=none; b=qBQlzneGPXqYfjknSQLJx5GKaJJBpPb6pnwYKdHSboKzUo/y40e74XzaJji8X6AuDGhO0mfwf/M7mpNqorYc8oqnREOFH+J/RxKsdzTEZO3Z8p1sqv8/Zi2ZgrgbqGsOOI6UBGAz+L99DvNKFFgO0bPLrbDC227wa9G2nSwQ1sM=
+	t=1745946776; cv=none; b=FQF0YqKa9cNCfnRPv5RY/2oOGpWJTgysxkS3gJOohid6AIX0cxgs7Zlig0L7djoy1I9uZFw7UctsVjBMRKCfAVJScuieptrywG2ewUo8zGQ5WDn9ZAJzs7FufKPvdmHD/upnXINHYcoE4TEAJwXti7arcTC/Qgl7bDussjxcxmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948725; c=relaxed/simple;
-	bh=iWkRD9PNMLwIbsACrj0qXMtAATSkEeqTYUiIbnRUlJA=;
+	s=arc-20240116; t=1745946776; c=relaxed/simple;
+	bh=IjJDTjDRbmC3EVZ3cvaiA3Ny5y9JfKAi8pHXz/4ctIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kb9H5GhE9hNihH59jwhaRP4PDGlPdHdbPcawUtCEzgUdiJWxbbdj4hQnpvRQvEfR6nQiu+0bE64lzLVJ2pFB6Ub17lF0Rw5VwhP2o/J4i6J6b/qqNfv5n6jmtLFKJNpZNw6NcmbhUXU77NCS2cNz0XoaKomtf/DL9ikjmG2bH5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5sAIRod; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D62FC4CEE3;
-	Tue, 29 Apr 2025 17:45:25 +0000 (UTC)
+	 MIME-Version; b=QjIyI30KKh4qDdcefKcbQtoMj9rRpdtxnahcPd3YLbYl8eULXmHFour4HV7ysKCYpwmOMrKPI+O+xvlCBvZooD8nODZr00/FemSD5+IOjZQaotM84KJJaNIRDCKaPkvDnNYq4jCSwslTUibGnHEI1aYyB0+zkppGxn7X2AFcXvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTYg6kti; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB05C4CEE3;
+	Tue, 29 Apr 2025 17:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948725;
-	bh=iWkRD9PNMLwIbsACrj0qXMtAATSkEeqTYUiIbnRUlJA=;
+	s=korg; t=1745946774;
+	bh=IjJDTjDRbmC3EVZ3cvaiA3Ny5y9JfKAi8pHXz/4ctIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5sAIRodmYXZDfUobWx8a0rv+mgji/k3rY0jw+NyaxD+LMd8ua0E2EVqOvJhK9Au8
-	 drZwYnTcr65XugoZsqMPwrmZVU9vLdvkaOOne/rqjocNMqIeOWsbXOggUwBpwxQMtG
-	 bj42XtbU8Iud19YgGS0OvMSIMtARQHC/k2AbqZew=
+	b=MTYg6ktiCbzqSjd2622bJcYrNnannUNBip8vXP2OdJMvKRjHzMKFWsLL7qEYbXmvK
+	 XUD6ZTJWz8B2lBI8L5wKyEFNKlID5SrvfzfAUfY45T1EyYmAZe/C/ln6y6i9tyhqsM
+	 gCMMHLCMnewYHFokN0kaGqwi06WwzokmcfoSScPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.15 063/373] xenfs/xensyms: respect hypervisors "next" indication
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 036/286] drm: allow encoder mode_set even when connectors change for crtc
 Date: Tue, 29 Apr 2025 18:39:00 +0200
-Message-ID: <20250429161125.727210331@linuxfoundation.org>
+Message-ID: <20250429161109.346071664@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-commit 5c4e79e29a9fe4ea132118ac40c2bc97cfe23077 upstream.
+[ Upstream commit 7e182cb4f5567f53417b762ec0d679f0b6f0039d ]
 
-The interface specifies the symnum field as an input and output; the
-hypervisor sets it to the next sequential symbol's index. xensyms_next()
-incrementing the position explicitly (and xensyms_next_sym()
-decrementing it to "rewind") is only correct as long as the sequence of
-symbol indexes is non-sparse. Use the hypervisor-supplied value instead
-to update the position in xensyms_next(), and use the saved incoming
-index in xensyms_next_sym().
+In certain use-cases, a CRTC could switch between two encoders
+and because the mode being programmed on the CRTC remains
+the same during this switch, the CRTC's mode_changed remains false.
+In such cases, the encoder's mode_set also gets skipped.
 
-Cc: stable@kernel.org
-Fixes: a11f4f0a4e18 ("xen: xensyms support")
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <15d5e7fa-ec5d-422f-9319-d28bed916349@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Skipping mode_set on the encoder for such cases could cause an issue
+because even though the same CRTC mode was being used, the encoder
+type could have changed like the CRTC could have switched from a
+real time encoder to a writeback encoder OR vice-versa.
+
+Allow encoder's mode_set to happen even when connectors changed on a
+CRTC and not just when the mode changed.
+
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241211-abhinavk-modeset-fix-v3-1-0de4bf3e7c32@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/xenfs/xensyms.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_atomic_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/xen/xenfs/xensyms.c
-+++ b/drivers/xen/xenfs/xensyms.c
-@@ -48,7 +48,7 @@ static int xensyms_next_sym(struct xensy
- 			return -ENOMEM;
+diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
+index 0fde260b7edd8..dee3b81dec587 100644
+--- a/drivers/gpu/drm/drm_atomic_helper.c
++++ b/drivers/gpu/drm/drm_atomic_helper.c
+@@ -1268,7 +1268,7 @@ crtc_set_mode(struct drm_device *dev, struct drm_atomic_state *old_state)
+ 		mode = &new_crtc_state->mode;
+ 		adjusted_mode = &new_crtc_state->adjusted_mode;
  
- 		set_xen_guest_handle(symdata->name, xs->name);
--		symdata->symnum--; /* Rewind */
-+		symdata->symnum = symnum; /* Rewind */
+-		if (!new_crtc_state->mode_changed)
++		if (!new_crtc_state->mode_changed && !new_crtc_state->connectors_changed)
+ 			continue;
  
- 		ret = HYPERVISOR_platform_op(&xs->op);
- 		if (ret < 0)
-@@ -78,7 +78,7 @@ static void *xensyms_next(struct seq_fil
- {
- 	struct xensyms *xs = (struct xensyms *)m->private;
- 
--	xs->op.u.symdata.symnum = ++(*pos);
-+	*pos = xs->op.u.symdata.symnum;
- 
- 	if (xensyms_next_sym(xs))
- 		return NULL;
+ 		DRM_DEBUG_ATOMIC("modeset on [ENCODER:%d:%s]\n",
+-- 
+2.39.5
+
 
 
 
