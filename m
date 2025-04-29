@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-138432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC5DAA1855
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 463EEAA1654
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFB409A5E14
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:54:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAD40169315
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C200C2522AA;
-	Tue, 29 Apr 2025 17:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BD87E110;
+	Tue, 29 Apr 2025 17:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qG/dz3KS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlquNlHh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E21625332D;
-	Tue, 29 Apr 2025 17:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B066B21883E;
+	Tue, 29 Apr 2025 17:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949233; cv=none; b=jIHY3ZZrCJ2F2LcbGtnKPqHIZ9BZtG0W9kT/EWJxsWLKJC25hetPibvIAsYx4hwVHuPojpZ3Q1c4vvoMxYJf5sxGZdRqH2a+31xe0+6J0F6DKBgAmea0XLQuPIteQaGPYKp7SFQzEEmzZwUuGt9Jvrfj41IrTZpQ3F+z7nAmMvw=
+	t=1745947944; cv=none; b=AI7bKt6SZcLsBzq+zNxUilUCqRXPadbwU7VKqKo7kqo7DMpEZ4GVW7AjNEFNZ9cB2MxHs8G8dlIRE+1U0HBwekLBtQHS33ypuba88JRps3mzDyW53dXCQeyHL3ME6ilxAka2yfAItTw6FpUGMauGEt+7+pLgwDJv4WN/ekz/C3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949233; c=relaxed/simple;
-	bh=7xa2vWcf/0d3q4uhco7rADcOws83RaB6VEI21gxYn0k=;
+	s=arc-20240116; t=1745947944; c=relaxed/simple;
+	bh=BR8B/YQDhRHkD9hEityDdqrn6zSVJQwJziEvq83ETHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gStOY789XBgCeONFfiT5Wl5x/wEIC6dwti+ai5wP2E5zlL12zE4tDzgmvmO3hQNdA2wzSgfHQM/LM39IQUjYnESxNFoc2La5yJNS94WKEruTbIrcasT5i1SVC/z5nGfpg03Lr/S+tt8fV/Atm8R6E9loI8BZHkuAeGKqgxcbEgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qG/dz3KS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFE1C4CEE3;
-	Tue, 29 Apr 2025 17:53:52 +0000 (UTC)
+	 MIME-Version; b=GluerpG/MtgjUx1sgkQm4fkDC+9Ce8D8ibMsuCLhZzaFzAXiRdjKgttANTHfdB2HZaGPsgp3CEkRRzOdcSp9FGcPvsm++UT6WfCjJdBTKs5Xqp+dJJprRYpxERfXeJghl4djGYdZCT3pUraUnhztr3l3iaVFhOgEfYFxcqiFgjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlquNlHh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC5BC4CEE3;
+	Tue, 29 Apr 2025 17:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949233;
-	bh=7xa2vWcf/0d3q4uhco7rADcOws83RaB6VEI21gxYn0k=;
+	s=korg; t=1745947944;
+	bh=BR8B/YQDhRHkD9hEityDdqrn6zSVJQwJziEvq83ETHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qG/dz3KSD3hAKhEuSKnn4HOu/Sxp9COQJWjiZBYPiacgDyhMtdy1FoCwLN5ksLlL8
-	 9uLq5jsi1ZzB96HxXUedOnQ9HA7e0YQ4a/t3R0nIZ71N65w/9Z4Sp4iKb11WugLs3b
-	 Zknztkr6E0qRRbiF/EWyZnIQS3ZohJKvtTEq7mKw=
+	b=FlquNlHhUa9OLjrvsbrsq9+Pzv8f4QLctmIGHc2nboscHB1fki+0dsPwbYzN8BWEm
+	 OUZDMDMksU0cPGC/wlHnJND6fhFT7yqRiF/vfD6sMR/xM3urxeRFxMqw66JiI2zyM6
+	 3FZKElUuN3Cz0gH3fly7LqlWh3ZcJ2PA1MZ1lRqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Zhi Yang <Zhi.Yang@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.15 215/373] drm/amd/display: Add null checks for stream and plane before dereferencing
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.12 151/280] USB: wdm: add annotation
 Date: Tue, 29 Apr 2025 18:41:32 +0200
-Message-ID: <20250429161132.001659857@linuxfoundation.org>
+Message-ID: <20250429161121.298775289@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,58 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 15c2990e0f0108b9c3752d7072a97d45d4283aea upstream.
+commit 73e9cc1ffd3650b12c4eb059dfdafd56e725ceda upstream.
 
-This commit adds null checks for the 'stream' and 'plane' variables in
-the dcn30_apply_idle_power_optimizations function. These variables were
-previously assumed to be null at line 922, but they were used later in
-the code without checking if they were null. This could potentially lead
-to a null pointer dereference, which would cause a crash.
+This is not understandable without a comment on endianness
 
-The null checks ensure that 'stream' and 'plane' are not null before
-they are used, preventing potential crashes.
-
-Fixes the below static smatch checker:
-drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:938 dcn30_apply_idle_power_optimizations() error: we previously assumed 'stream' could be null (see line 922)
-drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:940 dcn30_apply_idle_power_optimizations() error: we previously assumed 'plane' could be null (see line 922)
-
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Cc: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Hersen Wu <hersenxs.wu@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: afba937e540c9 ("USB: CDC WDM driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250401084749.175246-5-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/class/cdc-wdm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-@@ -784,6 +784,9 @@ bool dcn30_apply_idle_power_optimization
- 			stream = dc->current_state->streams[0];
- 			plane = (stream ? dc->current_state->stream_status[0].plane_states[0] : NULL);
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -909,7 +909,7 @@ static int wdm_wwan_port_tx(struct wwan_
+ 	req->bRequestType = (USB_DIR_OUT | USB_TYPE_CLASS | USB_RECIP_INTERFACE);
+ 	req->bRequest = USB_CDC_SEND_ENCAPSULATED_COMMAND;
+ 	req->wValue = 0;
+-	req->wIndex = desc->inum;
++	req->wIndex = desc->inum; /* already converted */
+ 	req->wLength = cpu_to_le16(skb->len);
  
-+			if (!stream || !plane)
-+				return false;
-+
- 			if (stream && plane) {
- 				cursor_cache_enable = stream->cursor_position.enable &&
- 						plane->address.grph.cursor_cache_addr.quad_part;
+ 	skb_shinfo(skb)->destructor_arg = desc;
 
 
 
