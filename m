@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-137573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57FB0AA139E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82332AA17EC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8058C7B4F8F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1177B18974A1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5A72472AA;
-	Tue, 29 Apr 2025 17:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCB82517A6;
+	Tue, 29 Apr 2025 17:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxW9wviR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzloSlZl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D9022A81D;
-	Tue, 29 Apr 2025 17:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A362472B9;
+	Tue, 29 Apr 2025 17:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946473; cv=none; b=a1jL9RdsnfzHm4fmxl2XVHzFj7rFj948dHBriyThcgKuUdShgSXHvQOh18JiMgD8uKQ1Tpu593GTelj9VSpHNy0CJ+s7OTd4LJNdgoim8oJuAKakB5W3HAY0hJsgkLoI02Z95HPIjD8nYryY81jRZcXcXaPgjdptfygbK3NVYO0=
+	t=1745949183; cv=none; b=i4GYvpsgOEFV7ngbifFBo2wNaoer+cdhvrpDRNtYtpPtkoRCRCYxcBCa+aCsA9wXimfyyQG4vmAAF18hny7Su0GhfizLyWwJPCe7+cKGUJPKkJCr5qdVXAjK7UySfNp5jAUVm3X+PiUvVEJVrc0aOIAU+FEVu7mHb1ijzkOM3C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946473; c=relaxed/simple;
-	bh=MGV8m78+KD7zEnlmMKaNAlZJASIqf54v1UG+sPm2JXg=;
+	s=arc-20240116; t=1745949183; c=relaxed/simple;
+	bh=RxmeUxeZDXwU04olAIRMBMDObbjHI66zcqt0MeyrWNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYRJIbhy1tyACJfIkFLxUYtBX8nnY0oC1pKPiT8bCsmfvn/5PS8K+xqqWZl2mqSb3tXZTIvVnqwaI0Ie1oWcMFFr0o3ictfw+cgAuMFxIYVBjw24KpwgPfHqbgm0oMzQ/JoRQKLTQpHtmRaAjch6A0L9PYS+gZf0gGHQL8erWd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxW9wviR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D50DC4CEEA;
-	Tue, 29 Apr 2025 17:07:52 +0000 (UTC)
+	 MIME-Version; b=IpptjxskqiAqODT7dGwnSHgjb5fOmxI4nuuMNUIPDkSegd+BObJPgU6G2Nlimww90NVK/enQqQas2yVNY5XFm26mDKX0LOQdCYn3V4S5Fxl2HCWSyTuUXwrKvuCxiOXk7/G7Pd5TSM99doeWqIPpye6ZBzviNMC8rYhMiD60078=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzloSlZl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48A2C4CEE3;
+	Tue, 29 Apr 2025 17:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946473;
-	bh=MGV8m78+KD7zEnlmMKaNAlZJASIqf54v1UG+sPm2JXg=;
+	s=korg; t=1745949183;
+	bh=RxmeUxeZDXwU04olAIRMBMDObbjHI66zcqt0MeyrWNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gxW9wviR/jGeqaxHXysTCYnG92nSbN6rger9651svMhZQoof+4tQV0sMzmMzv1kYq
-	 76BYU5SFcGRJoSR8fGSmJQRvbOVl/C3bAGUKkJoU4GCi658J0+JlnrI6zOR1kxBJcQ
-	 VGVWv041YkBJCLXpjt1GAHr3pc3bKllHdWfRN4XQ=
+	b=xzloSlZlcUVbp/O+2W9KFC/qRPR2LIZ5LV6jgVRUyX1wgZkOpQl0ofibDgLcbQpG1
+	 2KsicU7mopjEJIFKiTb2rAyxiKSomJrzbErsQpVqsOAETeT+7QaP26m86bGafen1RY
+	 JX4lBzqIB/RlfbbHvIk1hSLRlw9apFxGTa9mBiqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Fernando Fernandez Mancera <ffmancera@riseup.net>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 277/311] x86/i8253: Call clockevent_i8253_disable() with interrupts disabled
+	Friedrich Weber <f.weber@proxmox.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Carlos Soto <carlos.soto@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 5.15 237/373] openvswitch: fix lockup on tx to unregistering netdev with carrier
 Date: Tue, 29 Apr 2025 18:41:54 +0200
-Message-ID: <20250429161132.364554999@linuxfoundation.org>
+Message-ID: <20250429161132.885960727@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +66,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <ffmancera@riseup.net>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit 3940f5349b476197fb079c5aa19c9a988de64efb ]
+commit 47e55e4b410f7d552e43011baa5be1aab4093990 upstream.
 
-There's a lockdep false positive warning related to i8253_lock:
+Commit in a fixes tag attempted to fix the issue in the following
+sequence of calls:
 
-  WARNING: HARDIRQ-safe -> HARDIRQ-unsafe lock order detected
-  ...
-  systemd-sleep/3324 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
-  ffffffffb2c23398 (i8253_lock){+.+.}-{2:2}, at: pcspkr_event+0x3f/0xe0 [pcspkr]
+    do_output
+    -> ovs_vport_send
+       -> dev_queue_xmit
+          -> __dev_queue_xmit
+             -> netdev_core_pick_tx
+                -> skb_tx_hash
 
-  ...
-  ... which became HARDIRQ-irq-unsafe at:
-  ...
-    lock_acquire+0xd0/0x2f0
-    _raw_spin_lock+0x30/0x40
-    clockevent_i8253_disable+0x1c/0x60
-    pit_timer_init+0x25/0x50
-    hpet_time_init+0x46/0x50
-    x86_late_time_init+0x1b/0x40
-    start_kernel+0x962/0xa00
-    x86_64_start_reservations+0x24/0x30
-    x86_64_start_kernel+0xed/0xf0
-    common_startup_64+0x13e/0x141
-  ...
+When device is unregistering, the 'dev->real_num_tx_queues' goes to
+zero and the 'while (unlikely(hash >= qcount))' loop inside the
+'skb_tx_hash' becomes infinite, locking up the core forever.
 
-Lockdep complains due pit_timer_init() using the lock in an IRQ-unsafe
-fashion, but it's a false positive, because there is no deadlock
-possible at that point due to init ordering: at the point where
-pit_timer_init() is called there is no other possible usage of
-i8253_lock because the system is still in the very early boot stage
-with no interrupts.
+But unfortunately, checking just the carrier status is not enough to
+fix the issue, because some devices may still be in unregistering
+state while reporting carrier status OK.
 
-But in any case, pit_timer_init() should disable interrupts before
-calling clockevent_i8253_disable() out of general principle, and to
-keep lockdep working even in this scenario.
+One example of such device is a net/dummy.  It sets carrier ON
+on start, but it doesn't implement .ndo_stop to set the carrier off.
+And it makes sense, because dummy doesn't really have a carrier.
+Therefore, while this device is unregistering, it's still easy to hit
+the infinite loop in the skb_tx_hash() from the OVS datapath.  There
+might be other drivers that do the same, but dummy by itself is
+important for the OVS ecosystem, because it is frequently used as a
+packet sink for tcpdump while debugging OVS deployments.  And when the
+issue is hit, the only way to recover is to reboot.
 
-Use scoped_guard() for that, as suggested by Thomas Gleixner.
+Fix that by also checking if the device is running.  The running
+state is handled by the net core during unregistering, so it covers
+unregistering case better, and we don't really need to send packets
+to devices that are not running anyway.
 
-[ mingo: Cleaned up the changelog. ]
+While only checking the running state might be enough, the carrier
+check is preserved.  The running and the carrier states seem disjoined
+throughout the code and different drivers.  And other core functions
+like __dev_direct_xmit() check both before attempting to transmit
+a packet.  So, it seems safer to check both flags in OVS as well.
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/Z-uwd4Bnn7FcCShX@gmail.com
+Fixes: 066b86787fa3 ("net: openvswitch: fix race on port output")
+Reported-by: Friedrich Weber <f.weber@proxmox.com>
+Closes: https://mail.openvswitch.org/pipermail/ovs-discuss/2025-January/053423.html
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Tested-by: Friedrich Weber <f.weber@proxmox.com>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20250109122225.4034688-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Carlos Soto <carlos.soto@broadcom.com>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/i8253.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/openvswitch/actions.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/i8253.c b/arch/x86/kernel/i8253.c
-index 80e262bb627fe..cb9852ad60989 100644
---- a/arch/x86/kernel/i8253.c
-+++ b/arch/x86/kernel/i8253.c
-@@ -46,7 +46,8 @@ bool __init pit_timer_init(void)
- 		 * VMMs otherwise steal CPU time just to pointlessly waggle
- 		 * the (masked) IRQ.
- 		 */
--		clockevent_i8253_disable();
-+		scoped_guard(irq)
-+			clockevent_i8253_disable();
- 		return false;
- 	}
- 	clockevent_i8253_init(true);
--- 
-2.39.5
-
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -913,7 +913,9 @@ static void do_output(struct datapath *d
+ {
+ 	struct vport *vport = ovs_vport_rcu(dp, out_port);
+ 
+-	if (likely(vport && netif_carrier_ok(vport->dev))) {
++	if (likely(vport &&
++		   netif_running(vport->dev) &&
++		   netif_carrier_ok(vport->dev))) {
+ 		u16 mru = OVS_CB(skb)->mru;
+ 		u32 cutlen = OVS_CB(skb)->cutlen;
+ 
 
 
 
