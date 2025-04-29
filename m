@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14F9AA1707
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 717BEAA1460
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95F7A3A9963
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:37:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB7013B379F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4132D21ABB7;
-	Tue, 29 Apr 2025 17:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B684924728A;
+	Tue, 29 Apr 2025 17:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVEa/BTY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fty/GdgD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12B622172E;
-	Tue, 29 Apr 2025 17:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750C222A81D;
+	Tue, 29 Apr 2025 17:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948265; cv=none; b=TTcEk1DUVwW6PE+lUgIn6FtpW1X0rHbjmHXc+W9M50EYP5vI8L3qAFUKiqbu0l7d+vJqwJ3NCM7xe0ZkkCfjQlziA35kIDrHG8YtvnUUiasB9BRcU/g03wBjCcjrvD4QX2pNrWHolfp0dFTY+xwFeu3KlpRSo3JwvhjyDYQvcy0=
+	t=1745946595; cv=none; b=GIte3OLEBwDYrNnN/bAjfJ97xcjZgY9ZD7qs1mgfm3x/ghb7pzH1n3ELuHFDieEA+8nazCix1zZyXbfSh+DhIRVN1Inq7Oy/pGCY0NUk+VdYpM3LHKooAMCWVfVpKDv5waKDNUMm3ACbSH7bfA6XJgB7GnrGhNuII9F2JfE95io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948265; c=relaxed/simple;
-	bh=Aa8jP6Bv/iEZQ4u0TU6dFp8fFiJqJV5i5VAgUPqYOi8=;
+	s=arc-20240116; t=1745946595; c=relaxed/simple;
+	bh=dR9eVEHnys1vpJppULb1+Wmdwlh35JxDFjRaINSwJ0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdzjtID2RMcALzC1Ph6FFMSGUD0rN0iKgmU3GhQqDmQ7y4qiavIG5Rgm4hZeLiXCmS6lut5qOVITjkEI4XQi6evxXgoPfIFMWEBIcuUoDGqAQTPmzH6//5iLKFwn9/rwq0V/QIdbZZMi+rphq25ExWjk2IOUof9SL0/WMMZD69A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVEa/BTY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A6BC4CEE3;
-	Tue, 29 Apr 2025 17:37:44 +0000 (UTC)
+	 MIME-Version; b=OHrU7FSt7GGWjBbLSXawcRg331yWz+/4To4SCmUOtsBVHagV1udBkkhBjTHws9JdDjWbo5RTwLe+zBz7v8DP6/q4LKqrXM2kHRCWdxKclA1m95qZ1GNUN/tSvzZLlg1qKT1tvEHVbrI9w/CTU/obOzndsGGL/SmX9qQlzGRa4po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fty/GdgD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D92C4CEE3;
+	Tue, 29 Apr 2025 17:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948264;
-	bh=Aa8jP6Bv/iEZQ4u0TU6dFp8fFiJqJV5i5VAgUPqYOi8=;
+	s=korg; t=1745946594;
+	bh=dR9eVEHnys1vpJppULb1+Wmdwlh35JxDFjRaINSwJ0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVEa/BTYk5Wp/MpwFVx2xpnGe9wAKjDLZlubPWW8bWpTaZTczFzkppEIMaVf+QHgL
-	 tzdTAciQd7YYjmI8+D2snHUlomcZZ5WQedZfGYqOJADVkxWy5JAISTMqA9SWrfAEAO
-	 1v+xx1CA/8si9I1QSFGYu3pVj6X6XeZWRiME9Cu4=
+	b=fty/GdgDC03W9O2bwRHZss5NBYL65pessvOvgCllxt/VXceU/nJGjplEi5OMQAAiV
+	 j2JAzkMbsge9skmY9rYWZXwQTFE0oVjgV3pI8vL2KQOUblkKkNvfV/hiWFU+RwegQv
+	 7YVi7/AqXFzypZ1rw7lEM8e78PYiDuIHcQWzxU/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 207/280] nvme: requeue namespace scan on missed AENs
+	kernel test robot <lkp@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.14 311/311] crypto: Kconfig - Select LIB generic option
 Date: Tue, 29 Apr 2025 18:42:28 +0200
-Message-ID: <20250429161123.600823696@linuxfoundation.org>
+Message-ID: <20250429161133.731791691@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 9546ad1a9bda7362492114f5866b95b0ac4a100e ]
+commit 98330b9a61506de7df0d1725122111909c157864 upstream.
 
-Scanning for namespaces can take some time, so if the target is
-reconfigured while the scan is running we may miss a Attached Namespace
-Attribute Changed AEN.
+Select the generic LIB options if the Crypto API algorithm is
+enabled.  Otherwise this may lead to a build failure as the Crypto
+API algorithm always uses the generic implementation.
 
-Check if the NVME_AER_NOTICE_NS_CHANGED bit is set once the scan has
-finished, and requeue scanning to pick up any missed change.
-
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 17ec3e71ba79 ("crypto: lib/Kconfig - Hide arch options from user")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202503022113.79uEtUuy-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202503022115.9OOyDR5A-lkp@intel.com/
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ crypto/Kconfig |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 9bdf6fc53697c..587385b59b865 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4273,6 +4273,10 @@ static void nvme_scan_work(struct work_struct *work)
- 			nvme_scan_ns_sequential(ctrl);
- 	}
- 	mutex_unlock(&ctrl->scan_lock);
-+
-+	/* Requeue if we have missed AENs */
-+	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
-+		nvme_queue_scan(ctrl);
- }
+--- a/crypto/Kconfig
++++ b/crypto/Kconfig
+@@ -317,6 +317,7 @@ config CRYPTO_ECRDSA
+ config CRYPTO_CURVE25519
+ 	tristate "Curve25519"
+ 	select CRYPTO_KPP
++	select CRYPTO_LIB_CURVE25519_GENERIC
+ 	select CRYPTO_LIB_CURVE25519_INTERNAL
+ 	help
+ 	  Curve25519 elliptic curve (RFC7748)
+@@ -615,6 +616,7 @@ config CRYPTO_ARC4
  
- /*
--- 
-2.39.5
-
+ config CRYPTO_CHACHA20
+ 	tristate "ChaCha"
++	select CRYPTO_LIB_CHACHA_GENERIC
+ 	select CRYPTO_LIB_CHACHA_INTERNAL
+ 	select CRYPTO_SKCIPHER
+ 	help
+@@ -936,6 +938,7 @@ config CRYPTO_POLYVAL
+ config CRYPTO_POLY1305
+ 	tristate "Poly1305"
+ 	select CRYPTO_HASH
++	select CRYPTO_LIB_POLY1305_GENERIC
+ 	select CRYPTO_LIB_POLY1305_INTERNAL
+ 	help
+ 	  Poly1305 authenticator algorithm (RFC7539)
 
 
 
