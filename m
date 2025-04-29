@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-137697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD39AA1475
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:16:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2557DAA15C5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6957F1649C2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7C78188E59A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6492472B4;
-	Tue, 29 Apr 2025 17:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46E124EF6B;
+	Tue, 29 Apr 2025 17:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHgTG4UR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2L9cIA64"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF6121883E;
-	Tue, 29 Apr 2025 17:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819EA2459EA;
+	Tue, 29 Apr 2025 17:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946854; cv=none; b=c5R5ykw//Hx0EhQCNrMF7w0iH5kdXUSERunYMyabk9UyDTHYofv5kO/I7cBiU0x7uGjpZC7WfJOoHvpjp6QTdKdkGeS0V+nMJ/l1MuluacMYPSghUNdHrT530wI2USgxN7xP1NkhOO5SkMDWFAQOwBBXGunIWX879EMmU+2RBrU=
+	t=1745947617; cv=none; b=DBEkA42Q6PyWluyeO20Hi26hEitJAM3TpQkhEtGfdWD9+J2fm52/CEFuNVCLB7PrPqwLaXK4Ncr8gdyhRMDIrDxb54edJXnHVbRliAwljlaYLo8gHvABZ/stm/Cj4gx9ki5IESmfDJMTYk1bcJtS+GJ/YNuGMVA/2WLIxOEsIKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946854; c=relaxed/simple;
-	bh=v7y6mo/fKM0RHzMB6Vqd0XE6BmfilyVZqhNdym6Apto=;
+	s=arc-20240116; t=1745947617; c=relaxed/simple;
+	bh=PH6J1WyMC/D8h4xM9cB5Y+XHHuQR9gxIcM5EBlJpVnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRYlNzIhdUcoiSXnAY2ey0yE7ssD25gpvc7uirE7KE0RbdbI4uB/eeVu3VuBIfnGUDAkc1p4Tb0o0qspE6e6c5GTMugDNyOr1Fsr8Xf9FMjuMbzupia+8xlt0NqeYN3CKvggyyhS3sgf4jhTGYC2gX4IkNjxvlbGLMhQY2gpb2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHgTG4UR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F15C4CEE3;
-	Tue, 29 Apr 2025 17:14:13 +0000 (UTC)
+	 MIME-Version; b=CFDb3qRa/mBNLLGemshKsBNKS8NTfF2f5zOwaVAS4FNVrK8/oNpPVKDEaV18Mx1A7IBMFBg/6cV4FvRxsydtnkf50yAaiPvlFVEUBQCe7sfyw/dcGXyGjnRsE9mKfwndm0KLvskzA3SCDtR12V3UVWIxNsXxycRwrapVe7rMSvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2L9cIA64; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3BCC4CEEA;
+	Tue, 29 Apr 2025 17:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946854;
-	bh=v7y6mo/fKM0RHzMB6Vqd0XE6BmfilyVZqhNdym6Apto=;
+	s=korg; t=1745947617;
+	bh=PH6J1WyMC/D8h4xM9cB5Y+XHHuQR9gxIcM5EBlJpVnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jHgTG4URETzVfeVn7eQiktiQgeTbe25dDGV4lz9XPKOk0aLPISjm+Lpf6MIZyQR7W
-	 lkzwDjOcFPaavRFcuDT5I4oBqhlWXvXc5uw/rBmoohCiaVcw+q/RLx7Y5qdSHaFmew
-	 SgvhKw9emqmk+m5QxBOm3umG8dBceLOX4jqmBQrM=
+	b=2L9cIA64VMLY13KfrrZl/QFFMdX0VfZvOpqBlFugRmC7VUPv5FAjR97fLsQPLhRV1
+	 zbFy8IjabPQm7pGAd0Crwh30rHHMUlPGrvP+gTOn/drSgvOggZfqGvMaxVVklRU6EW
+	 DG53LQEAYSP7wMGzwDNFOI0yHdSS4F2ZEWet47qQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 5.10 090/286] gpio: zynq: Fix wakeup source leaks on device unbind
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 053/280] cpufreq: apple-soc: Fix null-ptr-deref in apple_soc_cpufreq_get_rate()
 Date: Tue, 29 Apr 2025 18:39:54 +0200
-Message-ID: <20250429161111.560693376@linuxfoundation.org>
+Message-ID: <20250429161117.292469328@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-commit c5672e310ad971d408752fce7596ed27adc6008f upstream.
+[ Upstream commit 9992649f6786921873a9b89dafa5e04d8c5fef2b ]
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.
+cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
+in the policy->cpus mask. apple_soc_cpufreq_get_rate() does not check
+for this case, which results in a NULL pointer dereference.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250406202245.53854-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6286bbb40576 ("cpufreq: apple-soc: Add new driver to control Apple SoC CPU P-states")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-zynq.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/apple-soc-cpufreq.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/gpio/gpio-zynq.c
-+++ b/drivers/gpio/gpio-zynq.c
-@@ -1016,6 +1016,7 @@ static int zynq_gpio_remove(struct platf
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0)
- 		dev_warn(&pdev->dev, "pm_runtime_get_sync() Failed\n");
-+	device_init_wakeup(&pdev->dev, 0);
- 	gpiochip_remove(&gpio->chip);
- 	clk_disable_unprepare(gpio->clk);
- 	device_set_wakeup_capable(&pdev->dev, 0);
+diff --git a/drivers/cpufreq/apple-soc-cpufreq.c b/drivers/cpufreq/apple-soc-cpufreq.c
+index 4dcacab9b4bf2..ddf7dcb3e9b0b 100644
+--- a/drivers/cpufreq/apple-soc-cpufreq.c
++++ b/drivers/cpufreq/apple-soc-cpufreq.c
+@@ -103,11 +103,17 @@ static const struct of_device_id apple_soc_cpufreq_of_match[] __maybe_unused = {
+ 
+ static unsigned int apple_soc_cpufreq_get_rate(unsigned int cpu)
+ {
+-	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
+-	struct apple_cpu_priv *priv = policy->driver_data;
++	struct cpufreq_policy *policy;
++	struct apple_cpu_priv *priv;
+ 	struct cpufreq_frequency_table *p;
+ 	unsigned int pstate;
+ 
++	policy = cpufreq_cpu_get_raw(cpu);
++	if (unlikely(!policy))
++		return 0;
++
++	priv = policy->driver_data;
++
+ 	if (priv->info->cur_pstate_mask) {
+ 		u64 reg = readq_relaxed(priv->reg_base + APPLE_DVFS_STATUS);
+ 
+-- 
+2.39.5
+
 
 
 
