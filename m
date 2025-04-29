@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D97AA1874
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FAAAA13A8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F84A9A73AB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 149747A2ADB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA4625334C;
-	Tue, 29 Apr 2025 17:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5021C6B4;
+	Tue, 29 Apr 2025 17:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jat9IhYI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0vuj3Ea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD51A250C0C;
-	Tue, 29 Apr 2025 17:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18DF22A81D;
+	Tue, 29 Apr 2025 17:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949274; cv=none; b=c36+Df6iFi3h2WCu9LLApktnve8Go3AUkRTuHKBW37Uocc5duN+51KF5DpPesOvH9Jzz8PMWWMC3CASSNIOagBcQKsgXi49JavDSk0lpzvoEhlWisQN4sm/Ak8hob9AQHo95ozX1+hPm/T6bLa6VIAHlMFE1Zp0k/HA4LT4+Ao4=
+	t=1745946504; cv=none; b=EXRDXZZJHZzAx2f0czaNHzNHjLPuj4k9LxiFQJ0zqRjMY6c12TN9gwEI1r8yaGLwGwvrOvmrL7B0rm/PQ3wM7z/EW+lWFHhczpR8HNuIa7qu700jtgM9d1rVX/71fb+c9zvyiSOibmFr7uTUZtLaAFtJLrgWXci3gJB0HT3PB1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949274; c=relaxed/simple;
-	bh=nKNVZd3rBOtYMoShXaJHSVL9NZ3LiBCMHE68hO2xJCU=;
+	s=arc-20240116; t=1745946504; c=relaxed/simple;
+	bh=xd0K4xUxtZ9DDlz+3Juv0zYjyooiJc+WM/aavORjJDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+ZmzpW4uDXcOxwjIVarErgFmuSKxh3H0FN/tCY+pZl9JLWDcEPSU0Vj9iQe0LirHckbQDmVjX7sC+LuLHWs/qUma+DAHVjBoC2Bd92pBCFgGVzqcJHqaLhsETbT24Y0jUe18ok7xykdwdWQJV9URrJa2GQhBJYOespNhrWR/iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jat9IhYI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33222C4CEE3;
-	Tue, 29 Apr 2025 17:54:34 +0000 (UTC)
+	 MIME-Version; b=EpamxDNy5lpg70jgtyKLxiub/9E/APZMoXC4A67HxsU1fkb9/yBo/zCrIfPvysvfXmNkWiRlXWWEaPq1Lx4aM0NFNXQWlwZNEx5CDxygKr0zTO6oghF1TBKgY8Keb7jVFapBDQduEuc7REhJABPKV9twJZ4zpUsh+zNui6gYSr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0vuj3Ea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B60C4CEE9;
+	Tue, 29 Apr 2025 17:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949274;
-	bh=nKNVZd3rBOtYMoShXaJHSVL9NZ3LiBCMHE68hO2xJCU=;
+	s=korg; t=1745946503;
+	bh=xd0K4xUxtZ9DDlz+3Juv0zYjyooiJc+WM/aavORjJDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jat9IhYIg3392/pGDzksSqCaHIQNZNzzHWxPP6TDbs+5AUu4OdcMQgYlht1Jx+o2O
-	 K2eCYd/2CHx9/XTT4dBaG8ucEoqzKIDRtuQYzavZdmBe6ZTem8351+5SHHa19q3H9y
-	 pR1TnZ6wAPOElJhzrdJLuTM0fJoBWigmKrHvgMuc=
+	b=S0vuj3Eat4AwiNI7p/MwZBNXAd9GaospKibyN8seAVCv0xhgVYzGzab8m6apfYNGa
+	 65h/vH4ozeZ4mB9JY7fKXpWY19MAzrMOgo7xH52wpnT2ALr9Y+u20IUynykMVYfj6x
+	 6kQnK+cx+516xKpWvOASGYRA/lMn+xsfhutUcdXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Cliff Liu <donghua.liu@windriver.com>,
-	He Zhe <Zhe.He@windriver.com>
-Subject: [PATCH 5.15 249/373] f2fs: check validation of fault attrs in f2fs_build_fault_attr()
+	Meir Elisha <meir.elisha@volumez.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 289/311] md/raid1: Add check for missing source disk in process_checks()
 Date: Tue, 29 Apr 2025 18:42:06 +0200
-Message-ID: <20250429161133.366159417@linuxfoundation.org>
+Message-ID: <20250429161132.842909451@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,140 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Meir Elisha <meir.elisha@volumez.com>
 
-commit 4ed886b187f47447ad559619c48c086f432d2b77 upstream.
+[ Upstream commit b7c178d9e57c8fd4238ff77263b877f6f16182ba ]
 
-- It missed to check validation of fault attrs in parse_options(),
-let's fix to add check condition in f2fs_build_fault_attr().
-- Use f2fs_build_fault_attr() in __sbi_store() to clean up code.
+During recovery/check operations, the process_checks function loops
+through available disks to find a 'primary' source with successfully
+read data.
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If no suitable source disk is found after checking all possibilities,
+the 'primary' index will reach conf->raid_disks * 2. Add an explicit
+check for this condition after the loop. If no source disk was found,
+print an error message and return early to prevent further processing
+without a valid primary source.
+
+Link: https://lore.kernel.org/linux-raid/20250408143808.1026534-1-meir.elisha@volumez.com
+Signed-off-by: Meir Elisha <meir.elisha@volumez.com>
+Suggested-and-reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h  |   12 ++++++++----
- fs/f2fs/super.c |   27 ++++++++++++++++++++-------
- fs/f2fs/sysfs.c |   14 ++++++++++----
- 3 files changed, 38 insertions(+), 15 deletions(-)
+ drivers/md/raid1.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -64,7 +64,7 @@ enum {
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 15829ab192d2b..7373dff023d0f 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -2199,14 +2199,9 @@ static int fix_sync_read_error(struct r1bio *r1_bio)
+ 				if (!rdev_set_badblocks(rdev, sect, s, 0))
+ 					abort = 1;
+ 			}
+-			if (abort) {
+-				conf->recovery_disabled =
+-					mddev->recovery_disabled;
+-				set_bit(MD_RECOVERY_INTR, &mddev->recovery);
+-				md_done_sync(mddev, r1_bio->sectors, 0);
+-				put_buf(r1_bio);
++			if (abort)
+ 				return 0;
+-			}
++
+ 			/* Try next page */
+ 			sectors -= s;
+ 			sect += s;
+@@ -2345,10 +2340,21 @@ static void sync_request_write(struct mddev *mddev, struct r1bio *r1_bio)
+ 	int disks = conf->raid_disks * 2;
+ 	struct bio *wbio;
  
- struct f2fs_fault_info {
- 	atomic_t inject_ops;
--	unsigned int inject_rate;
-+	int inject_rate;
- 	unsigned int inject_type;
- };
- 
-@@ -4373,10 +4373,14 @@ static inline bool f2fs_need_verity(cons
- }
- 
- #ifdef CONFIG_F2FS_FAULT_INJECTION
--extern void f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned int rate,
--							unsigned int type);
-+extern int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
-+							unsigned long type);
- #else
--#define f2fs_build_fault_attr(sbi, rate, type)		do { } while (0)
-+static int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
-+							unsigned long type)
-+{
-+	return 0;
-+}
- #endif
- 
- static inline bool is_journalled_quota(struct f2fs_sb_info *sbi)
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -61,21 +61,31 @@ const char *f2fs_fault_name[FAULT_MAX] =
- 	[FAULT_DQUOT_INIT]	= "dquot initialize",
- };
- 
--void f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned int rate,
--							unsigned int type)
-+int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
-+							unsigned long type)
- {
- 	struct f2fs_fault_info *ffi = &F2FS_OPTION(sbi).fault_info;
- 
- 	if (rate) {
-+		if (rate > INT_MAX)
-+			return -EINVAL;
- 		atomic_set(&ffi->inject_ops, 0);
--		ffi->inject_rate = rate;
-+		ffi->inject_rate = (int)rate;
- 	}
- 
--	if (type)
--		ffi->inject_type = type;
-+	if (type) {
-+		if (type >= BIT(FAULT_MAX))
-+			return -EINVAL;
-+		ffi->inject_type = (unsigned int)type;
+-	if (!test_bit(R1BIO_Uptodate, &r1_bio->state))
+-		/* ouch - failed to read all of that. */
+-		if (!fix_sync_read_error(r1_bio))
++	if (!test_bit(R1BIO_Uptodate, &r1_bio->state)) {
++		/*
++		 * ouch - failed to read all of that.
++		 * No need to fix read error for check/repair
++		 * because all member disks are read.
++		 */
++		if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery) ||
++		    !fix_sync_read_error(r1_bio)) {
++			conf->recovery_disabled = mddev->recovery_disabled;
++			set_bit(MD_RECOVERY_INTR, &mddev->recovery);
++			md_done_sync(mddev, r1_bio->sectors, 0);
++			put_buf(r1_bio);
+ 			return;
++		}
 +	}
  
- 	if (!rate && !type)
- 		memset(ffi, 0, sizeof(struct f2fs_fault_info));
-+	else
-+		f2fs_info(sbi,
-+			"build fault injection attr: rate: %lu, type: 0x%lx",
-+								rate, type);
-+	return 0;
- }
- #endif
- 
-@@ -901,14 +911,17 @@ static int parse_options(struct super_bl
- 		case Opt_fault_injection:
- 			if (args->from && match_int(args, &arg))
- 				return -EINVAL;
--			f2fs_build_fault_attr(sbi, arg, F2FS_ALL_FAULT_TYPE);
-+			if (f2fs_build_fault_attr(sbi, arg,
-+					F2FS_ALL_FAULT_TYPE))
-+				return -EINVAL;
- 			set_opt(sbi, FAULT_INJECTION);
- 			break;
- 
- 		case Opt_fault_type:
- 			if (args->from && match_int(args, &arg))
- 				return -EINVAL;
--			f2fs_build_fault_attr(sbi, 0, arg);
-+			if (f2fs_build_fault_attr(sbi, 0, arg))
-+				return -EINVAL;
- 			set_opt(sbi, FAULT_INJECTION);
- 			break;
- #else
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -407,10 +407,16 @@ out:
- 	if (ret < 0)
- 		return ret;
- #ifdef CONFIG_F2FS_FAULT_INJECTION
--	if (a->struct_type == FAULT_INFO_TYPE && t >= (1 << FAULT_MAX))
--		return -EINVAL;
--	if (a->struct_type == FAULT_INFO_RATE && t >= UINT_MAX)
--		return -EINVAL;
-+	if (a->struct_type == FAULT_INFO_TYPE) {
-+		if (f2fs_build_fault_attr(sbi, 0, t))
-+			return -EINVAL;
-+		return count;
-+	}
-+	if (a->struct_type == FAULT_INFO_RATE) {
-+		if (f2fs_build_fault_attr(sbi, t, 0))
-+			return -EINVAL;
-+		return count;
-+	}
- #endif
- 	if (a->struct_type == RESERVED_BLOCKS) {
- 		spin_lock(&sbi->stat_lock);
+ 	if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery))
+ 		process_checks(r1_bio);
+-- 
+2.39.5
+
 
 
 
