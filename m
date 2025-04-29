@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA28AA1547
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC58AA1854
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EE7B7A6298
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D8B0188C95C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD13251791;
-	Tue, 29 Apr 2025 17:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD68A240611;
+	Tue, 29 Apr 2025 17:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U9i+d/aN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGpLCLYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D95247280;
-	Tue, 29 Apr 2025 17:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C492AE96;
+	Tue, 29 Apr 2025 17:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947453; cv=none; b=gLYXuP65HBQGHQKNqxor7LtpXvogLvH7fTd+BL+8pCLntnoIdEr+xhuURcGNYCPmiQQPBgz05Ow61r0zCOrrjPSMkoEyFiq487pTPXmBUAshz25072Rdcn07rELjmjwJGHj3c0rCLSu9nyrBMDEJTJufKE9BZhXfqhF+IWFZxwE=
+	t=1745949471; cv=none; b=HZ+SfE210Fex6g/XU9bWY6Zbjf3dd4U92Z+29ELNsG+MGRLskNMIIW/AUX8U4k1uaQPj1lrdngzmUOK3YOrPOuV6qiqZvANfCiJrMlmEmf40YtuJE6kV+5+i8Wx4ALZH8vh2sSjQ90tRldbzCs8nlxjP+8KegS+JlqR7OeyDly4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947453; c=relaxed/simple;
-	bh=PGzjBPu36/8xmyl1zwlxPhwzqtEW5JCG6DrWgZwavEs=;
+	s=arc-20240116; t=1745949471; c=relaxed/simple;
+	bh=j5Qzfdcxiwf4iYBrUbLEYR5fusepHYRwe5bBAPz04EA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DW4DNN6s3SuGhv2aBK5jpSraGwc8VQ20iXMw9H5v6bF3QOIc6+2ro9kDovDh+QpOG0LuyBUE2N7P9lOfDbU664DinNzlRaY/lJRFBqmdagNZz5JU3owTxyiu6Hsy3AJBSGWaZl8EMiqPgED3t0a4vAv6nfuODmMkcut8ejAOLSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U9i+d/aN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB14FC4CEE3;
-	Tue, 29 Apr 2025 17:24:12 +0000 (UTC)
+	 MIME-Version; b=cslp/ViKjk8GUWzkExcz203+BTG8RZz5YzyUdGO1TUKTQPGbpg41zosrILkVcVSBJQ7IwOdj2ocWH/LPhyNfbtqK2jJO3aMcI7Tv9ffNUFHGVArs4IhYbO5qET6dyF3Exi73hruZTJhNTUooOM96hWxpq0wjqqj0lkMr/HChfJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGpLCLYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECAB4C4CEE3;
+	Tue, 29 Apr 2025 17:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947453;
-	bh=PGzjBPu36/8xmyl1zwlxPhwzqtEW5JCG6DrWgZwavEs=;
+	s=korg; t=1745949471;
+	bh=j5Qzfdcxiwf4iYBrUbLEYR5fusepHYRwe5bBAPz04EA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U9i+d/aN1ci8PLLoOjDV5iIsLWPhbpIYxMv5pLW7pUs9grpkjuOSOLTwIQXRnX9Vo
-	 Cgy8bQGijQO5imi+5JJ6YXxw/OD6JnCWdIIdpYSmfJX4j/FVBtCFnX2TdRvILSfIjc
-	 v+UkwbvoYt/kxHfR4SMvyAwGhbj2Vi8Flzh85U8I=
+	b=KGpLCLYFKr+483z5tYAKYbNTYpSZEZ7oaz7yL2U7ow9diUqCakkj25qam2ags+Y+y
+	 C3uDlEMqS67+2Jj9aOeZV/OH/KdfS/t9b2Sm1pbbbyyYk9v9qkLeft0ERttE57dNnJ
+	 +lU5kGEwuJsvQfSVJB9f6Yv6ei3HvIdoEprUAJ0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.king@canonical.com>,
-	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 5.10 285/286] media: venus: Fix uninitialized variable count being checked for zero
+	stable <stable@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 5.15 312/373] usb: chipidea: ci_hdrc_imx: fix call balance of regulator routines
 Date: Tue, 29 Apr 2025 18:43:09 +0200
-Message-ID: <20250429161119.635131259@linuxfoundation.org>
+Message-ID: <20250429161135.942726220@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit c5b14df7a80acadbbd184808dc3f519fbb2ab96c upstream.
+commit 8cab0e9a3f3e8d700179e0d6141643d54a267fd5 upstream.
 
-In the case where plat->codecs is NULL the variable count is uninitialized
-but is being checked to see if it is 0. Fix this by initializing
-count to 0.
+Upon encountering errors during the HSIC pinctrl handling section the
+regulator should be disabled.
 
-Addresses-Coverity: ("Uninitialized scalar variable")
+Use devm_add_action_or_reset() to let the regulator-disabling routine be
+handled by device resource management stack.
 
-Fixes: e29929266be1 ("media: venus: Get codecs and capabilities from hfi platform")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 4d6141288c33 ("usb: chipidea: imx: pinctrl for HSIC is optional")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20250316102658.490340-3-pchelkin@ispras.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_parser.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/chipidea/ci_hdrc_imx.c |   25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -266,7 +266,7 @@ static int hfi_platform_parser(struct ve
- {
- 	const struct hfi_platform *plat;
- 	const struct hfi_plat_caps *caps = NULL;
--	u32 enc_codecs, dec_codecs, count;
-+	u32 enc_codecs, dec_codecs, count = 0;
- 	unsigned int entries;
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -322,6 +322,13 @@ static int ci_hdrc_imx_notify_event(stru
+ 	return ret;
+ }
  
- 	if (inst)
++static void ci_hdrc_imx_disable_regulator(void *arg)
++{
++	struct ci_hdrc_imx_data *data = arg;
++
++	regulator_disable(data->hsic_pad_regulator);
++}
++
+ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ {
+ 	struct ci_hdrc_imx_data *data;
+@@ -379,6 +386,13 @@ static int ci_hdrc_imx_probe(struct plat
+ 					"Failed to enable HSIC pad regulator\n");
+ 				goto err_put;
+ 			}
++			ret = devm_add_action_or_reset(dev,
++					ci_hdrc_imx_disable_regulator, data);
++			if (ret) {
++				dev_err(dev,
++					"Failed to add regulator devm action\n");
++				goto err_put;
++			}
+ 		}
+ 	}
+ 
+@@ -417,11 +431,11 @@ static int ci_hdrc_imx_probe(struct plat
+ 
+ 	ret = imx_get_clks(dev);
+ 	if (ret)
+-		goto disable_hsic_regulator;
++		goto qos_remove_request;
+ 
+ 	ret = imx_prepare_enable_clks(dev);
+ 	if (ret)
+-		goto disable_hsic_regulator;
++		goto qos_remove_request;
+ 
+ 	data->phy = devm_usb_get_phy_by_phandle(dev, "fsl,usbphy", 0);
+ 	if (IS_ERR(data->phy)) {
+@@ -501,10 +515,7 @@ disable_device:
+ 	ci_hdrc_remove_device(data->ci_pdev);
+ err_clk:
+ 	imx_disable_unprepare_clks(dev);
+-disable_hsic_regulator:
+-	if (data->hsic_pad_regulator)
+-		/* don't overwrite original ret (cf. EPROBE_DEFER) */
+-		regulator_disable(data->hsic_pad_regulator);
++qos_remove_request:
+ 	if (pdata.flags & CI_HDRC_PMQOS)
+ 		cpu_latency_qos_remove_request(&data->pm_qos_req);
+ 	data->ci_pdev = NULL;
+@@ -531,8 +542,6 @@ static void ci_hdrc_imx_remove(struct pl
+ 		imx_disable_unprepare_clks(&pdev->dev);
+ 		if (data->plat_data->flags & CI_HDRC_PMQOS)
+ 			cpu_latency_qos_remove_request(&data->pm_qos_req);
+-		if (data->hsic_pad_regulator)
+-			regulator_disable(data->hsic_pad_regulator);
+ 	}
+ 	if (data->usbmisc_data)
+ 		put_device(data->usbmisc_data->dev);
 
 
 
