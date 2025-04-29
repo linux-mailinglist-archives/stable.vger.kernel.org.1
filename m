@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70103AA177D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 239A5AA14BD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D36434C1D35
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B339F4C48D1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA30243964;
-	Tue, 29 Apr 2025 17:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A07325393F;
+	Tue, 29 Apr 2025 17:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClBqtrVG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ye93wT19"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA531C148;
-	Tue, 29 Apr 2025 17:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47067216605;
+	Tue, 29 Apr 2025 17:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948890; cv=none; b=URbNJW/fbzjkiiAGLV8XPJoqBL5arz2VLlXZbG0iVOu0HGkPGMrUFf2x5tg/6o9ODqOG3ASI9Sea6dtKoeMHfJ+9RpskrAth6RMGh3WZuhiRgQvFYdtvVTYdEQchPZ5hsiQ4XQrj2/FTy1jrDGjNCp8NoLieujalLlzvvN9DQ1s=
+	t=1745946994; cv=none; b=GS7s2fIaxTekphnl3+xZ2lzv9f67qS/WG6lNOQ06k6lfQ2fWtG8BNwH9aJ+k5bbcAr63OMCpP3os7yAZDIvn2CpUNPZodsdamDz+6c72/KIE+nGtP4IFVk0Mi32sa1UTxX+uEcOOYPqgWn0uQEsVxaH+OEgroydUfSIQnOipPDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948890; c=relaxed/simple;
-	bh=eMKoWRJMjG8VwyEMLqO44TUZHrzkiB7wNKxohLYjLik=;
+	s=arc-20240116; t=1745946994; c=relaxed/simple;
+	bh=N0SXPmlXWS+GgtJXsuDMKRFiroRd273mqOoiWFlr0VM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SxAepsk4UGXy/KL14G+hhxP1YaXhTBkrcN7QkVI7RDs/cxOTyrnLgnWxX27FdijIOqBtWKqQ8LgYnM0Etl+nvaeqXH4L1rUWyL31/Wn74wUO82IBAJKzi+EZxqnPjYRwl2Zm9e528ipYOqPui63Ea0UHYNlt/i0hgdZ/nMjH2WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClBqtrVG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB7DC4CEE3;
-	Tue, 29 Apr 2025 17:48:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tf0I6EXdBQ2/nFviG0DPbmgPZQahgiOZImVlbWzaM21GSDwoGrdafXXYuI1tFmBCnA/26ESQLpAjA1bJUrnw+KhzTbqLhCFb+EKiMSbcHwQgivu7ls+SDn9PLTUKh7V6GxmRNm9KM99g+uqF1wCI93JnelHke1WWXI4xveP7lh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ye93wT19; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D8AC4CEE3;
+	Tue, 29 Apr 2025 17:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948890;
-	bh=eMKoWRJMjG8VwyEMLqO44TUZHrzkiB7wNKxohLYjLik=;
+	s=korg; t=1745946994;
+	bh=N0SXPmlXWS+GgtJXsuDMKRFiroRd273mqOoiWFlr0VM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClBqtrVGJoUEqKREIDmD5NVpDNOfrSmmXNfUrsl0RkEU63wpHeu0NRcPOBXgbIRpC
-	 kErwXVKkHwY5xkwvItRPicT8+tXAXiAAG81ZQ0JI6OznTpAcTl//qKbmGsWbbm4z7y
-	 jztHpUNGPCoAg32yz6n8n3K9J3jzdrO1ak7FjooM=
+	b=Ye93wT19c+yjGtoHQYZoexXqYi3qgWvbcWF0/Nrec7MMpXM0sk/xWcUXjYQylSWa2
+	 VLKu5/bFS/x9hJ2XQk+Xj06VwH3/Zqw3sA3s9yuQNTp5w5N+5boZl0m22xYZEUJmDj
+	 wqXdyD84M2R6L17vhLPJrgroyEPk0SK8+JMCAMMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	John Garry <john.garry@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 123/373] scsi: hisi_sas: Fix setting of hisi_sas_slot.is_internal
+	Ma Ke <make24@iscas.ac.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 5.10 096/286] PCI: Fix reference leak in pci_alloc_child_bus()
 Date: Tue, 29 Apr 2025 18:40:00 +0200
-Message-ID: <20250429161128.238796621@linuxfoundation.org>
+Message-ID: <20250429161111.803522557@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.garry@huawei.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit c763ec4c10f78678d6d4415646237f07109a5a5f ]
+commit 1f2768b6a3ee77a295106e3a5d68458064923ede upstream.
 
-The hisi_sas_slot.is_internal member is not set properly for ATA commands
-which the driver sends directly. A TMF struct pointer is normally used as a
-test to set this, but it is NULL for those commands. It's not ideal, but
-pass an empty TMF struct to set that member properly.
+If device_register(&child->dev) fails, call put_device() to explicitly
+release child->dev, per the comment at device_register().
 
-Link: https://lore.kernel.org/r/1643627607-138785-1-git-send-email-john.garry@huawei.com
-Fixes: dc313f6b125b ("scsi: hisi_sas: Factor out task prep and delivery code")
-Reported-by: Xiang Chen <chenxiang66@hisilicon.com>
-Signed-off-by: John Garry <john.garry@huawei.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 8aa580cd9284 ("scsi: hisi_sas: Enable force phy when SATA disk directly connected")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by code review.
+
+Link: https://lore.kernel.org/r/20250202062357.872971-1-make24@iscas.ac.cn
+Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possible")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/pci/probe.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index b9f4f7fadfd40..9663492e566d1 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -408,8 +408,7 @@ void hisi_sas_task_deliver(struct hisi_hba *hisi_hba,
- 			   struct hisi_sas_slot *slot,
- 			   struct hisi_sas_dq *dq,
- 			   struct hisi_sas_device *sas_dev,
--			   struct hisi_sas_internal_abort *abort,
--			   struct hisi_sas_tmf_task *tmf)
-+			   struct hisi_sas_internal_abort *abort)
- {
- 	struct hisi_sas_cmd_hdr *cmd_hdr_base;
- 	int dlvry_queue_slot, dlvry_queue;
-@@ -435,8 +434,6 @@ void hisi_sas_task_deliver(struct hisi_hba *hisi_hba,
- 	cmd_hdr_base = hisi_hba->cmd_hdr[dlvry_queue];
- 	slot->cmd_hdr = &cmd_hdr_base[dlvry_queue_slot];
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1105,7 +1105,10 @@ static struct pci_bus *pci_alloc_child_b
+ add_dev:
+ 	pci_set_bus_msi_domain(child);
+ 	ret = device_register(&child->dev);
+-	WARN_ON(ret < 0);
++	if (WARN_ON(ret < 0)) {
++		put_device(&child->dev);
++		return NULL;
++	}
  
--	slot->tmf = tmf;
--	slot->is_internal = tmf;
- 	task->lldd_task = slot;
+ 	pcibios_add_bus(child);
  
- 	memset(slot->cmd_hdr, 0, sizeof(struct hisi_sas_cmd_hdr));
-@@ -595,7 +592,7 @@ static int hisi_sas_task_exec(struct sas_task *task, gfp_t gfp_flags,
- 	slot->is_internal = tmf;
- 
- 	/* protect task_prep and start_delivery sequence */
--	hisi_sas_task_deliver(hisi_hba, slot, dq, sas_dev, NULL, tmf);
-+	hisi_sas_task_deliver(hisi_hba, slot, dq, sas_dev, NULL);
- 
- 	return 0;
- 
-@@ -1333,12 +1330,13 @@ static int hisi_sas_softreset_ata_disk(struct domain_device *device)
- 	struct hisi_hba *hisi_hba = dev_to_hisi_hba(device);
- 	struct device *dev = hisi_hba->dev;
- 	int s = sizeof(struct host_to_dev_fis);
-+	struct hisi_sas_tmf_task tmf = {};
- 
- 	ata_for_each_link(link, ap, EDGE) {
- 		int pmp = sata_srst_pmp(link);
- 
- 		hisi_sas_fill_ata_reset_cmd(link->device, 1, pmp, fis);
--		rc = hisi_sas_exec_internal_tmf_task(device, fis, s, NULL);
-+		rc = hisi_sas_exec_internal_tmf_task(device, fis, s, &tmf);
- 		if (rc != TMF_RESP_FUNC_COMPLETE)
- 			break;
- 	}
-@@ -1349,7 +1347,7 @@ static int hisi_sas_softreset_ata_disk(struct domain_device *device)
- 
- 			hisi_sas_fill_ata_reset_cmd(link->device, 0, pmp, fis);
- 			rc = hisi_sas_exec_internal_tmf_task(device, fis,
--							     s, NULL);
-+							     s, &tmf);
- 			if (rc != TMF_RESP_FUNC_COMPLETE)
- 				dev_err(dev, "ata disk %016llx de-reset failed\n",
- 					SAS_ADDR(device->sas_addr));
-@@ -2003,7 +2001,7 @@ hisi_sas_internal_abort_task_exec(struct hisi_hba *hisi_hba, int device_id,
- 	slot->port = port;
- 	slot->is_internal = true;
- 
--	hisi_sas_task_deliver(hisi_hba, slot, dq, sas_dev, abort, NULL);
-+	hisi_sas_task_deliver(hisi_hba, slot, dq, sas_dev, abort);
- 
- 	return 0;
- 
--- 
-2.39.5
-
 
 
 
