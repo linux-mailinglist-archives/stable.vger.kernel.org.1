@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49CEAA140A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B90E8AA1810
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53D01174905
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A3801BC58A2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DEE24E4AF;
-	Tue, 29 Apr 2025 17:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CED253354;
+	Tue, 29 Apr 2025 17:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KeDHg+oc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOKd8D42"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E35221703;
-	Tue, 29 Apr 2025 17:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFD4215060;
+	Tue, 29 Apr 2025 17:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946562; cv=none; b=lUX4X/xtg1BaG2qND6VSDA/bgFEdT1ExFMWXcZTNC+gQ536E5CgqnQiyCjpMVdcG5U2jQH9AxL1+iC3AsGAvgHsrFBODkVgXJ6vQQM122C43Q3/qlUDlnVEVYEkPHhYlM3JeDGaXIhJw1fNsfltoe0mqX5HnoGs222RviQYYmBA=
+	t=1745949280; cv=none; b=H/3xNpYfU0eVbGlhZBcEvGj2i6mTNUJOXKcZjsjc7PYwinuYP8ob3K4ASFWlDXZfiiB6JTSBrFuKW3rXtlKcYnTwB0N6PS/v7mT56lMLqjs5kdzui6NfN6ZVD4AhltM3Z0XhF9+DteB5eUuEd6xFDNjGTjLgDnMfe8fdycTaulI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946562; c=relaxed/simple;
-	bh=p8Q9D0hwDOmyXBLoxpAaqfAXaIN6FZif41VJsP+X+dY=;
+	s=arc-20240116; t=1745949280; c=relaxed/simple;
+	bh=5N6EVp7o0GgjefxHnQ0J63yYgHlQA3ZI1Ho+yEkIjkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcNYeVvTvaLiMoD+b63ZLOD1sGai8XLEqUI81r3yJsdw6NwlwPMiUSpvaSm8D9VQYZu79lgLFjRBWP/nhcjGOX7/0akhGDwm3WDyQTvz6l6/F1zpZl6CjnxNiHchl3c3msElAh7HbGnURU5ImCvlDYcZ4cZSchlQ5n1DN8whnzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KeDHg+oc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62343C4CEEE;
-	Tue, 29 Apr 2025 17:09:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rQgVZBe557qsH9Zp6QBQ5XdON12dTWLRmvIURloDJo9y8H4L2In0W7P7gYeFTfDUmkO8lmsqIRYrv9VYuN1PKrBP1AgSCd8IuhzCD/VCTvgqmitdOQn6CUBlIElQ8NOLTShWzFOJ3aYh0ivtN7iyvZ5h6SA/+GSIcxZPn1Rc0NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOKd8D42; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5815BC4CEE3;
+	Tue, 29 Apr 2025 17:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946561;
-	bh=p8Q9D0hwDOmyXBLoxpAaqfAXaIN6FZif41VJsP+X+dY=;
+	s=korg; t=1745949280;
+	bh=5N6EVp7o0GgjefxHnQ0J63yYgHlQA3ZI1Ho+yEkIjkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KeDHg+ocq2HHfiVzU91U3QuwNqmKG86IdBn1al+Xi9ggwlC4qz2w74Vsxhj1SRsBk
-	 53cbuJH44IBW1Mjw+ZWiZ6KZN+CSlE2BRSf/z5hNLPxTJN63/KulYJjYqBD9KCbUZA
-	 LJf8U5Opg9y+uwL6LagLN/kfieiFVsupTa9fFfAE=
+	b=VOKd8D42gaxJoiHgCNB11blPaj5ImS8OOLa3l7RC7LlWuBH/LA/WuN4HgAeqkBmFJ
+	 D8QBOvtEOWPKK4DugYf/srw7o1OD+p/Ic/mjtZx3fYgQStFI6OpftCQ5+/NjhaSB1k
+	 5ekRggtGK2v0SFAPFgOqgpApchYF3/zj9HORXfD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Srikanth Aithal <sraithal@amd.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>
-Subject: [PATCH 6.14 307/311] nvme: fixup scan failure for non-ANA multipath controllers
-Date: Tue, 29 Apr 2025 18:42:24 +0200
-Message-ID: <20250429161133.571598395@linuxfoundation.org>
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 268/373] backlight: led_bl: Convert to platform remove callback returning void
+Date: Tue, 29 Apr 2025 18:42:25 +0200
+Message-ID: <20250429161134.145741327@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 26d7fb4fd4ca1180e2fa96587dea544563b4962a upstream.
+[ Upstream commit c4c4fa57fd3cc00020152baa169337521f90b2ad ]
 
-Commit 62baf70c3274 caused the ANA log page to be re-read, even on
-controllers that do not support ANA.  While this should generally
-harmless, some controllers hang on the unsupported log page and
-never finish probing.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-Fixes: 62baf70c3274 ("nvme: re-read ANA log page after ns scan completes")
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Tested-by: Srikanth Aithal <sraithal@amd.com>
-[hch: more detailed commit message]
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/20230308073945.2336302-7-u.kleine-koenig@pengutronix.de
+Stable-dep-of: 276822a00db3 ("backlight: led_bl: Hold led_access lock when calling led_sysfs_disable()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/backlight/led_bl.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4297,7 +4297,7 @@ static void nvme_scan_work(struct work_s
- 	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
- 		nvme_queue_scan(ctrl);
- #ifdef CONFIG_NVME_MULTIPATH
--	else
-+	else if (ctrl->ana_log_buf)
- 		/* Re-read the ANA log page to not miss updates */
- 		queue_work(nvme_wq, &ctrl->ana_work);
- #endif
+diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
+index f54d256e2d548..a1b6a2ad73a07 100644
+--- a/drivers/video/backlight/led_bl.c
++++ b/drivers/video/backlight/led_bl.c
+@@ -217,7 +217,7 @@ static int led_bl_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static int led_bl_remove(struct platform_device *pdev)
++static void led_bl_remove(struct platform_device *pdev)
+ {
+ 	struct led_bl_data *priv = platform_get_drvdata(pdev);
+ 	struct backlight_device *bl = priv->bl_dev;
+@@ -228,8 +228,6 @@ static int led_bl_remove(struct platform_device *pdev)
+ 	led_bl_power_off(priv);
+ 	for (i = 0; i < priv->nb_leds; i++)
+ 		led_sysfs_enable(priv->leds[i]);
+-
+-	return 0;
+ }
+ 
+ static const struct of_device_id led_bl_of_match[] = {
+@@ -245,7 +243,7 @@ static struct platform_driver led_bl_driver = {
+ 		.of_match_table	= of_match_ptr(led_bl_of_match),
+ 	},
+ 	.probe		= led_bl_probe,
+-	.remove		= led_bl_remove,
++	.remove_new	= led_bl_remove,
+ };
+ 
+ module_platform_driver(led_bl_driver);
+-- 
+2.39.5
+
 
 
 
