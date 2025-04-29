@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-138405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B17AAA17E3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D433EAA13FB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ABA84C64F3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:52:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3931188AC0D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF482512F3;
-	Tue, 29 Apr 2025 17:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997FC24887D;
+	Tue, 29 Apr 2025 17:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2p+B3agu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgIUFlgf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA882252914;
-	Tue, 29 Apr 2025 17:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A482459E1;
+	Tue, 29 Apr 2025 17:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949148; cv=none; b=TMVOI7xAb4C7PRWw9GgGSQw8coHydkTVBgf97mYbUYg9/vVUG7jImOyg3xNijHIcGttlW7xkESNqt2NSb6jfWDuzzy6MhbRwajqzO2FwtLTIdSOE6lvHGYKt6jOBejjLzctooEq5yGWxhZDUGZZx3yb68JJVXT89RT3CS/Te024=
+	t=1745946442; cv=none; b=SGNmqO9XshkyCD2xkPr9Jt1S461xETH63m/FTROxtOI90Rg59kprhEsxNFf29i3VZiyOYQx6MQ1GNwpSrqXJV6sQG6DVc83vzFDu7u9kcJsO8DOSnaUj9pozryemRBsIySWqAPk039gWvS0wAQ9Jg5WcWE22iA2c7cAhQKB4vr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949148; c=relaxed/simple;
-	bh=phrDytaEYvP53PjBiC0kavcxSh/eyVZDEw2lPicEds0=;
+	s=arc-20240116; t=1745946442; c=relaxed/simple;
+	bh=CA+dCEQ7q9Za116laFTyUvqMJpPg5++xEvY6pKxAcx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9sgDfolX3aUA8dpr045pyHmFxLow3wjWDun90REBRvtFUyA+9Rn0qdc3YM3O1ij4YK4BCDeyK8eLXSkL/hDimpZhGqesPwhCUH308oiCydjvPBr9XF0oGtI6UoAWmH7spyLNdh7eDEP0D0tIV5GE+ID5gospX3/Ye1ge/gqcKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2p+B3agu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1237DC4CEE3;
-	Tue, 29 Apr 2025 17:52:26 +0000 (UTC)
+	 MIME-Version; b=i8SWGyc2rOrgI2U9radXaXeUdZKK8VlEPk6PDLuI8K3v/MUl9CcjyIFHdckIMLr9zcW7VLu3xlcuZA1XoIQ7Sq5tNwhHRM3nsvi/OdYsvuo/ts+p2IyVVKm+4fXn/zZnAl7qXYdEPNdyj4qFiQfR7FdCOESb2QBemm/qAwyZPa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgIUFlgf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA748C4CEE3;
+	Tue, 29 Apr 2025 17:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949147;
-	bh=phrDytaEYvP53PjBiC0kavcxSh/eyVZDEw2lPicEds0=;
+	s=korg; t=1745946442;
+	bh=CA+dCEQ7q9Za116laFTyUvqMJpPg5++xEvY6pKxAcx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2p+B3aguH/DwFplS/pG1CDjly8aRdzH+/QRO/HdJtqvX+DZdnVHT/tapyAta0n9LW
-	 yk1xiTNGAyBKf2dX4TclaML0UHtW2HR9DEfj/Zq9QzwDT+dqQNE9liDs8FmODfkVui
-	 kSO9N1OVc5O1UTuJsTKj5PTuWjqpk8DoZTtlWHJc=
+	b=FgIUFlgfiCkWbLKbr7fqnDCNoo5R64jEwvAwjhmvwO8+kNFPROcCGLriee8Jhs705
+	 ek2xPDYYPl7qNFeCfgAwX1TU2k+vzKTRghlNrW1CfO608mjyjbSg/BH2lf46v63Bcm
+	 Tef/jhOTMHsbPDxRAfx7DSyLEK7GmdMUVLxiMKqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.15 228/373] smb: client: fix potential UAF in cifs_stats_proc_show()
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 268/311] ext4: make block validity check resistent to sb bh corruption
 Date: Tue, 29 Apr 2025 18:41:45 +0200
-Message-ID: <20250429161132.524396507@linuxfoundation.org>
+Message-ID: <20250429161132.005857130@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +65,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-commit 0865ffefea197b437ba78b5dd8d8e256253efd65 upstream.
+[ Upstream commit ccad447a3d331a239477c281533bacb585b54a98 ]
 
-Skip sessions that are being teared down (status == SES_EXITING) to
-avoid UAF.
+Block validity checks need to be skipped in case they are called
+for journal blocks since they are part of system's protected
+zone.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ cifs_debug.c was moved from fs/cifs to fs/smb/client since
-  38c8a9a52082 ("smb: move client and server files to common directory fs/smb").
-  The cifs_ses_exiting() was introduced to cifs_debug.c since
-  ca545b7f0823 ("smb: client: fix potential UAF in cifs_debug_files_proc_show()")
-  which has been sent to upstream already. ]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Currently, this is done by checking inode->ino against
+sbi->s_es->s_journal_inum, which is a direct read from the ext4 sb
+buffer head. If someone modifies this underneath us then the
+s_journal_inum field might get corrupted. To prevent against this,
+change the check to directly compare the inode with journal->j_inode.
+
+**Slight change in behavior**: During journal init path,
+check_block_validity etc might be called for journal inode when
+sbi->s_journal is not set yet. In this case we now proceed with
+ext4_inode_block_valid() instead of returning early. Since systems zones
+have not been set yet, it is okay to proceed so we can perform basic
+checks on the blocks.
+
+Suggested-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/0c06bc9ebfcd6ccfed84a36e79147bf45ff5adc1.1743142920.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/cifs_debug.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/block_validity.c | 5 ++---
+ fs/ext4/inode.c          | 7 ++++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/fs/cifs/cifs_debug.c
-+++ b/fs/cifs/cifs_debug.c
-@@ -613,6 +613,8 @@ static int cifs_stats_proc_show(struct s
- 		list_for_each(tmp2, &server->smb_ses_list) {
- 			ses = list_entry(tmp2, struct cifs_ses,
- 					 smb_ses_list);
-+			if (cifs_ses_exiting(ses))
-+				continue;
- 			list_for_each(tmp3, &ses->tcon_list) {
- 				tcon = list_entry(tmp3,
- 						  struct cifs_tcon,
+diff --git a/fs/ext4/block_validity.c b/fs/ext4/block_validity.c
+index 87ee3a17bd29c..e8c5525afc67a 100644
+--- a/fs/ext4/block_validity.c
++++ b/fs/ext4/block_validity.c
+@@ -351,10 +351,9 @@ int ext4_check_blockref(const char *function, unsigned int line,
+ {
+ 	__le32 *bref = p;
+ 	unsigned int blk;
++	journal_t *journal = EXT4_SB(inode->i_sb)->s_journal;
+ 
+-	if (ext4_has_feature_journal(inode->i_sb) &&
+-	    (inode->i_ino ==
+-	     le32_to_cpu(EXT4_SB(inode->i_sb)->s_es->s_journal_inum)))
++	if (journal && inode == journal->j_inode)
+ 		return 0;
+ 
+ 	while (bref < p+max) {
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 4108b7d1696ff..74c5e2a381a6b 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -383,10 +383,11 @@ static int __check_block_validity(struct inode *inode, const char *func,
+ 				unsigned int line,
+ 				struct ext4_map_blocks *map)
+ {
+-	if (ext4_has_feature_journal(inode->i_sb) &&
+-	    (inode->i_ino ==
+-	     le32_to_cpu(EXT4_SB(inode->i_sb)->s_es->s_journal_inum)))
++	journal_t *journal = EXT4_SB(inode->i_sb)->s_journal;
++
++	if (journal && inode == journal->j_inode)
+ 		return 0;
++
+ 	if (!ext4_inode_block_valid(inode, map->m_pblk, map->m_len)) {
+ 		ext4_error_inode(inode, func, line, map->m_pblk,
+ 				 "lblock %lu mapped to illegal pblock %llu "
+-- 
+2.39.5
+
 
 
 
