@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-137191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF4DAA121E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 104BCAA1474
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:16:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1A9D1BA035E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 272F07B6AA5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78114246326;
-	Tue, 29 Apr 2025 16:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBCC24E016;
+	Tue, 29 Apr 2025 17:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoNQxbou"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HE6fuQnu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356A2244679;
-	Tue, 29 Apr 2025 16:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C6525335B;
+	Tue, 29 Apr 2025 17:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945335; cv=none; b=TI8NRSsX9DYjqz1HVFgkJXiE1d533wcoWI9Y6b2RuqOlHclafIKPKx75ZJ9WXM2ZuluAKA6Foem0pX8xA7fgk2TEjzH1tox3aUq8dUpaKkqAScZlxWh2hl0BqFLMceMNQeePRskCmM188F1s3XaAYI97IBGx/cHOP9In+q5jKmM=
+	t=1745946924; cv=none; b=ikQ+7f3FqBZwXyaL3yAZh5DgLj1Dj7nYpG99NWHIj37ppWxsSj8RFkUZvMe+7V1hmshNEzgCkG4OE994dAeNULrPwQmQXmkgUMTcct62Q2CMFBFr8z5HZ3sHcFL398NJGWCvdyV0HBRQN59VwgMHoipRT1tyGZz2Nv9+ebpmKFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945335; c=relaxed/simple;
-	bh=8Z6SxilebrmauUxcwKsU0vEUUEPeCNUj8Tn2wSrOGvg=;
+	s=arc-20240116; t=1745946924; c=relaxed/simple;
+	bh=W6huTy9JSgHofTCF9+MDUB0DBOOC4lgtbvXAmKVVNB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G4WzhD0YpGWWrHyO0I4NqI746acGc+BxHJrhsrueT5OurBN/Od9v9duvvciy2OB/PWnNiHT//GxfmPmo6DYKPWxCwRQOmf1kJ89XYPYDXEeAy+z3epOktad+HBTRNx546gz/5nI+3OfWU8FdGJppjx5cb3EsXmAV7UAF8F7zWHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoNQxbou; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35459C4CEE3;
-	Tue, 29 Apr 2025 16:48:54 +0000 (UTC)
+	 MIME-Version; b=HdnUTYQliIgity9g0DnmjhmlfogZDBeLSnFoPUi/UdZk4TQlrt6x1kZsPPgufA9kPSvVvjRfwjSR10fdNLDqlb4Gk2hVSmyRrPBAJIlzRR3v6xKpoK8aJSnsPUNEFBuowd5aeCufP0kRcFoqEHsSC4+TMk28IVZhPv/9KrZ8bqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HE6fuQnu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1945FC4CEEA;
+	Tue, 29 Apr 2025 17:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945334;
-	bh=8Z6SxilebrmauUxcwKsU0vEUUEPeCNUj8Tn2wSrOGvg=;
+	s=korg; t=1745946924;
+	bh=W6huTy9JSgHofTCF9+MDUB0DBOOC4lgtbvXAmKVVNB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DoNQxbouCqVO1zuyioXkzAPDNJWfVPyuj/6aeYJ7N4JrASRjhHXJtT1XiaecBWvIY
-	 m1rv38ip9x7gikhgYEXMxqG8EG4qA13dgSUxkIYtGdKiCvDIduMQ8Oz7WDl2UMAtVT
-	 YXntiW2nQDHBu1FcyJBf0XLSbaiXBwvfUBlbYIDY=
+	b=HE6fuQnuozOfgByrRB3TY3VBWJbP4DfrMnMFQPfrnC7TTWQ2LW7AO7W/BurLKPNRr
+	 1f3odGWdS+HFIZJ1tzXMg1w8InrDlQ/yOUE7JCdc3/KgdEaU2x2H0w6MkyKmn8wIKa
+	 Ilj5a6yd0MQSgXj8zcchtUz9UlG9r1+ZohoAdMCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 5.4 077/179] of/irq: Fix device node refcount leakages in of_irq_init()
+	Christopher S M Hall <christopher.s.hall@intel.com>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 114/286] igc: cleanup PTP module if probe fails
 Date: Tue, 29 Apr 2025 18:40:18 +0200
-Message-ID: <20250429161052.528026267@linuxfoundation.org>
+Message-ID: <20250429161112.546874614@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +66,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Christopher S M Hall <christopher.s.hall@intel.com>
 
-commit 708124d9e6e7ac5ebf927830760679136b23fdf0 upstream.
+[ Upstream commit 1f025759ba394dd53e434d2668cb0597886d9b69 ]
 
-of_irq_init() will leak interrupt controller device node refcounts
-in two places as explained below:
+Make sure that the PTP module is cleaned up if the igc_probe() fails by
+calling igc_ptp_stop() on exit.
 
-1) Leak refcounts of both @desc->dev and @desc->interrupt_parent when
-   suffers @desc->irq_init_cb() failure.
-2) Leak refcount of @desc->interrupt_parent when cleans up list
-   @intc_desc_list in the end.
-
-Refcounts of both @desc->dev and @desc->interrupt_parent were got in
-the first loop, but of_irq_init() does not put them before kfree(@desc)
-in places mentioned above, so causes refcount leakages.
-
-Fix by putting refcounts involved before kfree(@desc).
-
-Fixes: 8363ccb917c6 ("of/irq: add missing of_node_put")
-Fixes: c71a54b08201 ("of/irq: introduce of_irq_init")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-7-93e3a2659aa7@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d89f88419f99 ("igc: Add skeletal frame for Intel(R) 2.5G Ethernet Controller support")
+Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
+Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/irq.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -555,6 +555,8 @@ void __init of_irq_init(const struct of_
- 						desc->interrupt_parent);
- 			if (ret) {
- 				of_node_clear_flag(desc->dev, OF_POPULATED);
-+				of_node_put(desc->interrupt_parent);
-+				of_node_put(desc->dev);
- 				kfree(desc);
- 				continue;
- 			}
-@@ -585,6 +587,7 @@ void __init of_irq_init(const struct of_
- err:
- 	list_for_each_entry_safe(desc, temp_desc, &intc_desc_list, list) {
- 		list_del(&desc->list);
-+		of_node_put(desc->interrupt_parent);
- 		of_node_put(desc->dev);
- 		kfree(desc);
- 	}
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 65cf7035b02d5..7593e8b7469c5 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -5405,6 +5405,7 @@ static int igc_probe(struct pci_dev *pdev,
+ 
+ err_register:
+ 	igc_release_hw_control(adapter);
++	igc_ptp_stop(adapter);
+ err_eeprom:
+ 	if (!igc_check_reset_block(hw))
+ 		igc_reset_phy(hw);
+-- 
+2.39.5
+
 
 
 
