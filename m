@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-138284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823F5AA17AD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E72FAA14AA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:19:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ADF5985A21
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8CA63AC590
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A569A24BD02;
-	Tue, 29 Apr 2025 17:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E2A2459E1;
+	Tue, 29 Apr 2025 17:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAgEoPn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7FtsOSS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E11132103;
-	Tue, 29 Apr 2025 17:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2ACA1C6B4;
+	Tue, 29 Apr 2025 17:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948768; cv=none; b=Zq3NsV39xxi+WLzZ1WFTqouDbqUDYsqxyBJRfrfcWpfW2cB3sfgp+4lxF28WiX9kPyIN6adk+p+elspymmQUz+RR/TjOJNMRPVrx4O+FzYCHKXQSr1oZ1kG9u8sY+a6cWv3vsEl2V/SSJQYcX77zya5iCiZaAl2NAj0lPjEnzFg=
+	t=1745946820; cv=none; b=MvUdQRcCMcMAY4W7ZPWro5vHW4xUu/3rH9Pqp5MsQ0O6K+aglGNF+P5fga/UNdJYVaoIhUmGcnSyhRhsqTj0Nit8KoV6n9Il0oY/EFQmIBHfPl3Skef69bHKhFLuzCFU6RUqthB0osjZEInPjiF4RCttR0H4axfQ6ghWlDtzUao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948768; c=relaxed/simple;
-	bh=wDWh7O2mR2dXX00IYwv55rmD2npTf3KgqeJ1Mteu5tQ=;
+	s=arc-20240116; t=1745946820; c=relaxed/simple;
+	bh=RLHjf1OnwxE1P/Z+ZdefD1WmtJLI0mBSDTp8SBM/fJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EUQOiwm6ashKl7oQzPluNmiCdTudWBz7ouKmBcd4nCArwR3IuoMqdF97v9o0N8SySgY0KF8aJGOQiKB6Ip2TCPQFmyMejDYXKmpLtup5yTr2ba9Nid4BpE+Ph5Fxzf7wzYBArLvDH1EHksTvxYtPeqt/adDMNZ5Lx8D5SCj7bik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAgEoPn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA36BC4CEE3;
-	Tue, 29 Apr 2025 17:46:07 +0000 (UTC)
+	 MIME-Version; b=W1ib1+bmEH4wAZXggGMAVMXXRUCharV6GvQ0a8BbuFwah1rCpaBIm3H3XkWpCsWd7QjGPf6EssS5w6Z6qU2iaZnP7gUlif6WBysmW7QJh/gI4VSwiniNub6bSQR2XWU0QKncFSFKSX0rl6qs1pr6Lgpxn1peKzQxeLkW1Qcsaz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7FtsOSS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D23C4CEE3;
+	Tue, 29 Apr 2025 17:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948768;
-	bh=wDWh7O2mR2dXX00IYwv55rmD2npTf3KgqeJ1Mteu5tQ=;
+	s=korg; t=1745946819;
+	bh=RLHjf1OnwxE1P/Z+ZdefD1WmtJLI0mBSDTp8SBM/fJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zAgEoPn4AgRHu5HfFBhEqgAzoe2Tzjd3wqvbxcFJqrU42rYQ/S11jPmC3yNPT6IAI
-	 vYltYNc0KvIAKrC9hnnLRy5mC/K89LB0RNQifDlRS4cQfd634FRqWLirCIMIJRb4Zr
-	 CtTuc/Z/bRF0xLwLbqmlzr9HaV4qBzuNqVSu2+uk=
+	b=Z7FtsOSSaqVvq2XNa8O0wmMPoRL5jc9cAQ0p0o4RSuc2H+89kuq9vSgJ1U+TkpxpV
+	 NPvqB4T6YPjNdRSEdom7mgSCt7oVaRjYclFy51Ws5HVwBxsVeN49UHgtb9P2cKhlYu
+	 SSJbG7l7dUNTRbqDxzCyZDT2qXirHwHNj0Pae36I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 5.15 107/373] gpio: zynq: Fix wakeup source leaks on device unbind
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.10 080/286] mtd: inftlcore: Add error check for inftl_read_oob()
 Date: Tue, 29 Apr 2025 18:39:44 +0200
-Message-ID: <20250429161127.572873954@linuxfoundation.org>
+Message-ID: <20250429161111.141980111@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit c5672e310ad971d408752fce7596ed27adc6008f upstream.
+commit d027951dc85cb2e15924c980dc22a6754d100c7c upstream.
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.
+In INFTL_findwriteunit(), the return value of inftl_read_oob()
+need to be checked. A proper implementation can be
+found in INFTL_deleteblock(). The status will be set as
+SECTOR_IGNORE to break from the while-loop correctly
+if the inftl_read_oob() fails.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250406202245.53854-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: 8593fbc68b0d ("[MTD] Rework the out of band handling completely")
+Cc: stable@vger.kernel.org # v2.6+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-zynq.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/inftlcore.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/gpio/gpio-zynq.c
-+++ b/drivers/gpio/gpio-zynq.c
-@@ -1012,6 +1012,7 @@ static int zynq_gpio_remove(struct platf
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0)
- 		dev_warn(&pdev->dev, "pm_runtime_get_sync() Failed\n");
-+	device_init_wakeup(&pdev->dev, 0);
- 	gpiochip_remove(&gpio->chip);
- 	clk_disable_unprepare(gpio->clk);
- 	device_set_wakeup_capable(&pdev->dev, 0);
+--- a/drivers/mtd/inftlcore.c
++++ b/drivers/mtd/inftlcore.c
+@@ -482,10 +482,11 @@ static inline u16 INFTL_findwriteunit(st
+ 		silly = MAX_LOOPS;
+ 
+ 		while (thisEUN <= inftl->lastEUN) {
+-			inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
+-				       blockofs, 8, &retlen, (char *)&bci);
+-
+-			status = bci.Status | bci.Status1;
++			if (inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
++				       blockofs, 8, &retlen, (char *)&bci) < 0)
++				status = SECTOR_IGNORE;
++			else
++				status = bci.Status | bci.Status1;
+ 			pr_debug("INFTL: status of block %d in EUN %d is %x\n",
+ 					block , writeEUN, status);
+ 
 
 
 
