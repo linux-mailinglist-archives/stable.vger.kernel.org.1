@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-137603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDC6AA1454
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F24AA1674
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FB563BC6C3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F14716D264
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787BC24A067;
-	Tue, 29 Apr 2025 17:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186AB253327;
+	Tue, 29 Apr 2025 17:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZ2XTwa4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Py8ZwP9n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357B023C8D6;
-	Tue, 29 Apr 2025 17:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82B7215F7C;
+	Tue, 29 Apr 2025 17:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946565; cv=none; b=eWMY+IpLPMYV2j2NLhPO+mTG+FKwZ23zJUdApoXwWiKUm5UxhoNn18t1wyypto81/muF/+rNFKOenr5lT5Ym1KSAnO2+HieBRKKiybn520A8Zw2rTbdAqIBxFyRpXpEeBLUjXiuYDhcvC03Sg5B32NvPJHU7btOTPExW0C9PlMY=
+	t=1745948042; cv=none; b=b1aPh36JZl71ByjUypyJ0clbYkEmLWFBx2mqPJP5ORn0KL8ia94Bvg4WokXXlfPL2VZw4fisO8hjABDSqBV8RfasaqCEdtPQxow8fenqsserv/1IpFSeat7vd1EjC7oitWcy9eIKUUqL5+2JwsaZSBkGqayq8T5adOM267WUC30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946565; c=relaxed/simple;
-	bh=IXY8bwPL9mXWiEgYADCfFSbGyTQ9FpWhJDmX4cCOlEY=;
+	s=arc-20240116; t=1745948042; c=relaxed/simple;
+	bh=X6nZXCwuWkydgbONGjLsdRE2uTkFxspzLEZ1los9m68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NIpEI4eymjcldPXuwjDhl33+gh/kbZZTmdHRCOPeBSmNE/4AOazMDXj86KdmLCbBRFYrP0J4SxZU6n8wK/euuqFl815dRcbRwZs0b9OON1yuFoG6cnhCsdgNn0LYn0vOJ/HPI8bz5BqAZjoR5pszd8zP+S9g9fR7f4uSIpE1cQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZ2XTwa4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B9FC4CEE3;
-	Tue, 29 Apr 2025 17:09:24 +0000 (UTC)
+	 MIME-Version; b=P4dhqkp15THbX5b97I8TZvm/UvaNp3mkW0IIBxU+P9v6omNZzTVSQ9PK2KM8e7eVSGYc0g1ckLWIFeekAE9V/TUnReL9ZM8Mm7rkoqZTcNRC3TWrPW/hdCuh1ubETDOB4ZXZpvfT2TPrY45iw6K85E1s2lPv9sTDp5l6PwUEv5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Py8ZwP9n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52724C4CEE3;
+	Tue, 29 Apr 2025 17:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946565;
-	bh=IXY8bwPL9mXWiEgYADCfFSbGyTQ9FpWhJDmX4cCOlEY=;
+	s=korg; t=1745948042;
+	bh=X6nZXCwuWkydgbONGjLsdRE2uTkFxspzLEZ1los9m68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZ2XTwa4Agsge7I2Df4zNU33UIHx5Clbw8mH0pLv0nJwCGL2uXlysrtQ1du2Hd+Nu
-	 tK1O7z1Ggaf8bdVEU1dAjSwAusAAFrW3YHEa8QMOPJ9Mwg3GkzDYq3ITthHTN+G5tz
-	 PHSTCSr4ppq0AaBKju7NOqgjN21AFIkKAEph9Kdo=
+	b=Py8ZwP9n/NR8zt1ljhS/8lE/jeaoL1QjO++mlQ2ViDmcrB2nPCtCCLj4dhIjF8Mp1
+	 61FHhvUPuWXL0SZ4aVK8sy8zOhU1S8OwbM2BT7K27+lRPrhME94FMoG8+/xBtkTC76
+	 y/+9McmYg9eYJkv6flBLNer5dx+cn7DurWcjsmco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gou Hao <gouhao@uniontech.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Christoph Hellwig <hch@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 281/311] iomap: skip unnecessary ifs_block_is_uptodate check
+Subject: [PATCH 6.12 177/280] usb: xhci: Fix isochronous Ring Underrun/Overrun event handling
 Date: Tue, 29 Apr 2025 18:41:58 +0200
-Message-ID: <20250429161132.523529783@linuxfoundation.org>
+Message-ID: <20250429161122.350363777@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gou Hao <gouhao@uniontech.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit 8e3c15ee0d292c413c66fe10201d1b035a0bea72 ]
+[ Upstream commit 906dec15b9b321b546fd31a3c99ffc13724c7af4 ]
 
-In iomap_adjust_read_range, i is either the first !uptodate block, or it
-is past last for the second loop looking for trailing uptodate blocks.
-Assuming there's no overflow (there's no combination of huge folios and
-tiny blksize) then yeah, there is no point in retesting that the same
-block pointed to by i is uptodate since we hold the folio lock so nobody
-else could have set it uptodate.
+The TRB pointer of these events points at enqueue at the time of error
+occurrence on xHCI 1.1+ HCs or it's NULL on older ones. By the time we
+are handling the event, a new TD may be queued at this ring position.
 
-Signed-off-by: Gou Hao <gouhao@uniontech.com>
-Link: https://lore.kernel.org/20250410071236.16017-1-gouhao@uniontech.com
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+I can trigger this race by rising interrupt moderation to increase IRQ
+handling delay. Similar delay may occur naturally due to system load.
+
+If this ever happens after a Missed Service Error, missed TDs will be
+skipped and the new TD processed as if it matched the event. It could
+be given back prematurely, risking data loss or buffer UAF by the xHC.
+
+Don't complete TDs on xrun events and don't warn if queued TDs don't
+match the event's TRB pointer, which can be NULL or a link/no-op TRB.
+Don't warn if there are no queued TDs at all.
+
+Now that it's safe, also handle xrun events if the skip flag is clear.
+This ensures completion of any TD stuck in 'error mid TD' state right
+before the xrun event, which could happen if a driver submits a finite
+number of URBs to a buggy HC and then an error occurs on the last TD.
+
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250306144954.3507700-6-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-ring.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index d303e6c8900cd..a47e3afd724ca 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -263,7 +263,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
- 		}
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 7001f9725cf7c..6eb297b168fa4 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2662,6 +2662,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 	int status = -EINPROGRESS;
+ 	struct xhci_ep_ctx *ep_ctx;
+ 	u32 trb_comp_code;
++	bool ring_xrun_event = false;
  
- 		/* truncate len if we find any trailing uptodate block(s) */
--		for ( ; i <= last; i++) {
-+		while (++i <= last) {
- 			if (ifs_block_is_uptodate(ifs, i)) {
- 				plen -= (last - i + 1) * block_size;
- 				last = i - 1;
+ 	slot_id = TRB_TO_SLOT_ID(le32_to_cpu(event->flags));
+ 	ep_index = TRB_TO_EP_ID(le32_to_cpu(event->flags)) - 1;
+@@ -2768,14 +2769,12 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 		 * Underrun Event for OUT Isoch endpoint.
+ 		 */
+ 		xhci_dbg(xhci, "Underrun event on slot %u ep %u\n", slot_id, ep_index);
+-		if (ep->skip)
+-			break;
+-		return 0;
++		ring_xrun_event = true;
++		break;
+ 	case COMP_RING_OVERRUN:
+ 		xhci_dbg(xhci, "Overrun event on slot %u ep %u\n", slot_id, ep_index);
+-		if (ep->skip)
+-			break;
+-		return 0;
++		ring_xrun_event = true;
++		break;
+ 	case COMP_MISSED_SERVICE_ERROR:
+ 		/*
+ 		 * When encounter missed service error, one or more isoc tds
+@@ -2851,6 +2850,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 		 */
+ 		if (trb_comp_code != COMP_STOPPED &&
+ 		    trb_comp_code != COMP_STOPPED_LENGTH_INVALID &&
++		    !ring_xrun_event &&
+ 		    !ep_ring->last_td_was_short) {
+ 			xhci_warn(xhci, "Event TRB for slot %u ep %u with no TDs queued\n",
+ 				  slot_id, ep_index);
+@@ -2885,6 +2885,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 				goto check_endpoint_halted;
+ 			}
+ 
++			/* TD was queued after xrun, maybe xrun was on a link, don't panic yet */
++			if (ring_xrun_event)
++				return 0;
++
+ 			/*
+ 			 * Skip the Force Stopped Event. The 'ep_trb' of FSE is not in the current
+ 			 * TD pointed by 'ep_ring->dequeue' because that the hardware dequeue
+@@ -2931,6 +2935,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
+ 	 */
+ 	} while (ep->skip);
+ 
++	/* Get out if a TD was queued at enqueue after the xrun occurred */
++	if (ring_xrun_event)
++		return 0;
++
+ 	if (trb_comp_code == COMP_SHORT_PACKET)
+ 		ep_ring->last_td_was_short = true;
+ 	else
 -- 
 2.39.5
 
