@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7DD8AA19F9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:17:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F7CAA1969
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E57354C2C84
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:15:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91B8E3AC396
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9238253F21;
-	Tue, 29 Apr 2025 18:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE31248866;
+	Tue, 29 Apr 2025 18:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBXowlaF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxrX7SKF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3E1253B71;
-	Tue, 29 Apr 2025 18:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3E121ABC6;
+	Tue, 29 Apr 2025 18:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950539; cv=none; b=guMYow2kzEf+gu4d+GBuRaL8IS0VzzIF27lvWBKXMHSw7p+efJx5ZcAuE80LlUdISI1VxJUBpYcDn/nasWzSa8zjOUoSY6H53ioCVBF5Tq5sGz52IrDVjRSllO/k9mXQoI/AeyuXJQfY0VX0CYBbL9ONVqA/ZNiZLlYiwxAvIOA=
+	t=1745949938; cv=none; b=eIEcp+nWuxHgIkkpUDgBAKbvO1/zsR0f3PxNryYOMO21eiOSf7NwcB70sd0YHUpwqnMUdcdHBazZeb5E16Okgi/xaoMdYMrjIqaqNWGohpAuTeKAIqyUeMW6QQKkgrhe85ASo2MdVH8s+RnHTTisNSCYvTqO8T0ELtPNVsxt6XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950539; c=relaxed/simple;
-	bh=nLaq6WgnEYcOqlAuG0T80BJXCZ/1LxN0bGvXqwGGHto=;
+	s=arc-20240116; t=1745949938; c=relaxed/simple;
+	bh=O+bA6K/fspM+49XFcBCTVDjw+uKjNfhpw5320+5NNQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rppi1zy7PzE213oHSyeZzwolDE1kl19f5fDs6dnx7Kgna2Z9uASrloyQ6f8iv1pI0uDpcdoaHm42+neuaDLOi2E5mjXkCzMjTzcKJ7XfEd8pYCfKMcpX1/BbCqqBISvm1zeSeySOFFhbfBd8s4u/kBypRkC/dxC1bYRtzZjhSLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBXowlaF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A10DC4CEE3;
-	Tue, 29 Apr 2025 18:15:38 +0000 (UTC)
+	 MIME-Version; b=RPC0ViQSjvIXpEsOdwrH3oM9MgxxY838f2WwRUbIkdL9+DuExRauQo00MWV4uIyGGDAuXM/al3WB5GBbtVoC+C2Zuo9XGGoGj/r0TsdoAhITEZ9icfL3ALC1HxQwpNSu5AQzQP5MrrGCTznwleIAxu5b9TRG5vtMkfubfyZ59x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxrX7SKF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F284C4CEE3;
+	Tue, 29 Apr 2025 18:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950538;
-	bh=nLaq6WgnEYcOqlAuG0T80BJXCZ/1LxN0bGvXqwGGHto=;
+	s=korg; t=1745949938;
+	bh=O+bA6K/fspM+49XFcBCTVDjw+uKjNfhpw5320+5NNQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XBXowlaFEVo9EhMjCn38g04vf0OutHAksK/YJCx4kzvFfZl2L5ggR43aClXE0K0zI
-	 sJOx4MQUi2/JoO25Et7Ld2dp6sVJ35IfwlkuQAGNqJLWRA7OcclljjeQk0CzCE3Xas
-	 Cu3zaschDuv5+NvGvUEQ7Nhu61teVcHjWD3TY2Jg=
+	b=HxrX7SKFmBpBTUf0lqerHnxijLWtyPPtOEhCJI6MudmKQGfbWffh0FvwdiPkveBkW
+	 8qQgcdlapon3Ub7gc5cfDpQwS7jMYZXWVAwro0p4S0Te2o2gicXNzqgUQ2O3hN3JFu
+	 ma+UENLH/zKTXYxBGlPtHXVnF6mJIi/xA4+1BqCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Stein <alexander.stein@mailbox.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 125/204] s390/tty: Fix a potential memory leak bug
+Subject: [PATCH 6.1 105/167] usb: host: max3421-hcd: Add missing spi_device_id table
 Date: Tue, 29 Apr 2025 18:43:33 +0200
-Message-ID: <20250429161104.545983420@linuxfoundation.org>
+Message-ID: <20250429161055.995553059@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Alexander Stein <alexander.stein@mailbox.org>
 
-[ Upstream commit ad9bb8f049717d64c5e62b2a44954be9f681c65b ]
+[ Upstream commit 41d5e3806cf589f658f92c75195095df0b66f66a ]
 
-The check for get_zeroed_page() leads to a direct return
-and overlooked the memory leak caused by loop allocation.
-Add a free helper to free spaces allocated by get_zeroed_page().
+"maxim,max3421" DT compatible is missing its SPI device ID entry, not
+allowing module autoloading and leading to the following message:
+ "SPI driver max3421-hcd has no spi_device_id for maxim,max3421"
 
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250218034104.2436469-1-haoxiang_li2024@163.com
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Fix this by adding the spi_device_id table.
+
+Signed-off-by: Alexander Stein <alexander.stein@mailbox.org>
+Link: https://lore.kernel.org/r/20250128195114.56321-1-alexander.stein@mailbox.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp_tty.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/usb/host/max3421-hcd.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/s390/char/sclp_tty.c b/drivers/s390/char/sclp_tty.c
-index 892c18d2f87e9..d3edacb6ee148 100644
---- a/drivers/s390/char/sclp_tty.c
-+++ b/drivers/s390/char/sclp_tty.c
-@@ -490,6 +490,17 @@ static const struct tty_operations sclp_ops = {
- 	.flush_buffer = sclp_tty_flush_buffer,
- };
+diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
+index ab12d76b01fbe..8aaafba058aa9 100644
+--- a/drivers/usb/host/max3421-hcd.c
++++ b/drivers/usb/host/max3421-hcd.c
+@@ -1955,6 +1955,12 @@ max3421_remove(struct spi_device *spi)
+ 	usb_put_hcd(hcd);
+ }
  
-+/* Release allocated pages. */
-+static void __init __sclp_tty_free_pages(void)
-+{
-+	struct list_head *page, *p;
++static const struct spi_device_id max3421_spi_ids[] = {
++	{ "max3421" },
++	{ },
++};
++MODULE_DEVICE_TABLE(spi, max3421_spi_ids);
 +
-+	list_for_each_safe(page, p, &sclp_tty_pages) {
-+		list_del(page);
-+		free_page((unsigned long)page);
-+	}
-+}
-+
- static int __init
- sclp_tty_init(void)
- {
-@@ -516,6 +527,7 @@ sclp_tty_init(void)
- 	for (i = 0; i < MAX_KMEM_PAGES; i++) {
- 		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 		if (page == NULL) {
-+			__sclp_tty_free_pages();
- 			tty_driver_kref_put(driver);
- 			return -ENOMEM;
- 		}
+ static const struct of_device_id max3421_of_match_table[] = {
+ 	{ .compatible = "maxim,max3421", },
+ 	{},
+@@ -1964,6 +1970,7 @@ MODULE_DEVICE_TABLE(of, max3421_of_match_table);
+ static struct spi_driver max3421_driver = {
+ 	.probe		= max3421_probe,
+ 	.remove		= max3421_remove,
++	.id_table	= max3421_spi_ids,
+ 	.driver		= {
+ 		.name	= "max3421-hcd",
+ 		.of_match_table = of_match_ptr(max3421_of_match_table),
 -- 
 2.39.5
 
