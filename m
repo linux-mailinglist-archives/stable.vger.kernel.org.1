@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-138593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C91AA192B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF16AA19D4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:16:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0373D9C07DD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BF661BC79E3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A42325332E;
-	Tue, 29 Apr 2025 18:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CAA91519A6;
+	Tue, 29 Apr 2025 18:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNInZ1V2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GBtObRU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3844524502C;
-	Tue, 29 Apr 2025 18:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C4E3FFD;
+	Tue, 29 Apr 2025 18:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949740; cv=none; b=lMUi2leFjnX0m5aKWlXkjvaNqsCLHbQIh/8sPaWqKHJUj5TbkAxny8wOc6rDCjs5pGB9DEMlQnLjkAt45zr8B3IFHZ14acKZ7eMQ9UW4apD+hMJr2IoDVd42MyLvMp6e5ecXqjZr1ludgsL88y48VQ7V0joJHOSReMGPlPH6m24=
+	t=1745950460; cv=none; b=iM48kczUPxfTgrMuef3iktPJTSU+LExTRK8zk6vSY0hF6jN7WPvSOiM+sE1MSge7uUWi2wUVz1CByt17Td3JfEI3yEP1p9LOM6AxIxP7dWAKMDWPDJQYQEjSZYOJH/WzbTikTVG4sycjW4uvljhpnQXwtwRd7+RwxbXb86oiIys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949740; c=relaxed/simple;
-	bh=ptpwMN3JSEuBD4VnSbwuVrZtSmbmazrIskRxk0qtZ64=;
+	s=arc-20240116; t=1745950460; c=relaxed/simple;
+	bh=3uvhvQRj2FNgiVlp5Hx8yOgMA3IhWuxUaTX8XhQBU1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKMphwWz27jhgfKf6NNOGlsp40P4l6XQQ43ED4DAQvk0Y2ZTRYaORWH2MpBz9rVjouiwIkmFI3WYgrsvUH4rRKmQlw5RhwlBTfmIAdp6yTRtTSKMCp9vMjtm8NSkNBt51jBnNOEZgahHq7MOZayOesji12xQ2W0Djo5bW3XOsMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNInZ1V2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3183C4CEE3;
-	Tue, 29 Apr 2025 18:02:19 +0000 (UTC)
+	 MIME-Version; b=GWoNHxWO/90vrmLQHfoCNorbXMiJZkvDJSDaUlt7VR0Enc7K5RzQyEQVSQdjnjAcnl44kYG3jJh/TuvgVUOm0wS17qggkpnWW5NkdgxxiW3ayexDHxaDihTbpU8IN0bgK2FSKpTQ9+PbhzbUg1k+qsmdBx14DzCgPPDtQMv5r9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GBtObRU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0DBC4CEE3;
+	Tue, 29 Apr 2025 18:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949740;
-	bh=ptpwMN3JSEuBD4VnSbwuVrZtSmbmazrIskRxk0qtZ64=;
+	s=korg; t=1745950460;
+	bh=3uvhvQRj2FNgiVlp5Hx8yOgMA3IhWuxUaTX8XhQBU1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NNInZ1V2N1mhj3MJzrKaSxijdG+s6M5zJZ2N5kzE4gtkCU2c1BRZXwd7XGwwyZBiB
-	 r5zzNuU/Ey+YdMiWKRKxTzmHFgi+n9mCKGFEtPtOSfdENyPc/YIk4LF3xi7LjY92f3
-	 ByxDEWJsIQRRhoKr6aPzZstNYnkg5+jLlEdi7oEw=
+	b=1GBtObRUe+m8/R+GzhQDUDSuHNGGZihiJzCEpmkW0ULWsHRY4QACiGcyRJQr0wN4Z
+	 IAxSwOFeNUwN1fZJHVP2LlA4AwULtvpe5/RqsgJD1oQhKGy6NAiT5OgYW4H/CBCzXg
+	 +5LrLF5yPait1CtWw4g+bTim7J4VlY3yKQ9wzhAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Aishwarya TCV <aishwarya.tcv@arm.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Simon Horman <horms@kernel.org>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/167] selftests/mm: generate a temporary mountpoint for cgroup filesystem
-Date: Tue, 29 Apr 2025 18:42:30 +0200
-Message-ID: <20250429161053.462503356@linuxfoundation.org>
+Subject: [PATCH 6.6 063/204] pds_core: Remove unnecessary check in pds_client_adminq_cmd()
+Date: Tue, 29 Apr 2025 18:42:31 +0200
+Message-ID: <20250429161102.007581981@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit 9c02223e2d9df5cb37c51aedb78f3960294e09b5 ]
+[ Upstream commit f9559d818205a4a0b9cd87181ef46e101ea11157 ]
 
-Currently if the filesystem for the cgroups version it wants to use is not
-mounted charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh tests
-will attempt to mount it on the hard coded path /dev/cgroup/memory,
-deleting that directory when the test finishes.  This will fail if there
-is not a preexisting directory at that path, and since the directory is
-deleted subsequent runs of the test will fail.  Instead of relying on this
-hard coded directory name use mktemp to generate a temporary directory to
-use as a mountpoint, fixing both the assumption and the disruption caused
-by deleting a preexisting directory.
+When the pds_core driver was first created there were some race
+conditions around using the adminq, especially for client drivers.
+To reduce the possibility of a race condition there's a check
+against pf->state in pds_client_adminq_cmd(). This is problematic
+for a couple of reasons:
 
-This means that if the relevant cgroup filesystem is not already mounted
-then we rely on having coreutils (which provides mktemp) installed.  I
-suspect that many current users are relying on having things automounted
-by default, and given that the script relies on bash it's probably not an
-unreasonable requirement.
+1. The PDSC_S_INITING_DRIVER bit is set during probe, but not
+   cleared until after everything in probe is complete, which
+   includes creating the auxiliary devices. For pds_fwctl this
+   means it can't make any adminq commands until after pds_core's
+   probe is complete even though the adminq is fully up by the
+   time pds_fwctl's auxiliary device is created.
 
-Link: https://lkml.kernel.org/r/20250404-kselftest-mm-cgroup2-detection-v1-1-3dba6d32ba8c@kernel.org
-Fixes: 209376ed2a84 ("selftests/vm: make charge_reserved_hugetlb.sh work with existing cgroup setting")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Aishwarya TCV <aishwarya.tcv@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+2. The race conditions around using the adminq have been fixed
+   and this path is already protected against client drivers
+   calling pds_client_adminq_cmd() if the adminq isn't ready,
+   i.e. see pdsc_adminq_post() -> pdsc_adminq_inc_if_up().
+
+Fix this by removing the pf->state check in pds_client_adminq_cmd()
+because invalid accesses to pds_core's adminq is already handled by
+pdsc_adminq_post()->pdsc_adminq_inc_if_up().
+
+Fixes: 10659034c622 ("pds_core: add the aux client API")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250421174606.3892-4-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vm/charge_reserved_hugetlb.sh  | 4 ++--
- tools/testing/selftests/vm/hugetlb_reparenting_test.sh | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/amd/pds_core/auxbus.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-index 8e00276b4e69b..dc3fc438b3d9e 100644
---- a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-@@ -27,7 +27,7 @@ fi
- if [[ $cgroup2 ]]; then
-   cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
--    cgroup_path=/dev/cgroup/memory
-+    cgroup_path=$(mktemp -d)
-     mount -t cgroup2 none $cgroup_path
-     do_umount=1
-   fi
-@@ -35,7 +35,7 @@ if [[ $cgroup2 ]]; then
- else
-   cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
--    cgroup_path=/dev/cgroup/memory
-+    cgroup_path=$(mktemp -d)
-     mount -t cgroup memory,hugetlb $cgroup_path
-     do_umount=1
-   fi
-diff --git a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-index 14d26075c8635..302f2c7003f03 100644
---- a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-+++ b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-@@ -22,7 +22,7 @@ fi
- if [[ $cgroup2 ]]; then
-   CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$CGROUP_ROOT" ]]; then
--    CGROUP_ROOT=/dev/cgroup/memory
-+    CGROUP_ROOT=$(mktemp -d)
-     mount -t cgroup2 none $CGROUP_ROOT
-     do_umount=1
-   fi
+diff --git a/drivers/net/ethernet/amd/pds_core/auxbus.c b/drivers/net/ethernet/amd/pds_core/auxbus.c
+index fd1a5149c0031..fb7a5403e630d 100644
+--- a/drivers/net/ethernet/amd/pds_core/auxbus.c
++++ b/drivers/net/ethernet/amd/pds_core/auxbus.c
+@@ -107,9 +107,6 @@ int pds_client_adminq_cmd(struct pds_auxiliary_dev *padev,
+ 	dev_dbg(pf->dev, "%s: %s opcode %d\n",
+ 		__func__, dev_name(&padev->aux_dev.dev), req->opcode);
+ 
+-	if (pf->state)
+-		return -ENXIO;
+-
+ 	/* Wrap the client's request */
+ 	cmd.client_request.opcode = PDS_AQ_CMD_CLIENT_CMD;
+ 	cmd.client_request.client_id = cpu_to_le16(padev->client_id);
 -- 
 2.39.5
 
