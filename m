@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-137427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1F5AA137A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09920AA1762
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A02D33A89B2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BCAA1A8233E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E8724EAB2;
-	Tue, 29 Apr 2025 17:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE557C148;
+	Tue, 29 Apr 2025 17:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmAnAWBp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6N2JsfP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3962124A07B;
-	Tue, 29 Apr 2025 17:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC79D24BD02;
+	Tue, 29 Apr 2025 17:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946035; cv=none; b=uaASaiurPksMo4bZHh7DyYsXJ2Do2mUb/CrgrOhBXUwOqvdl5HbgdPqA3FudB5+p/Xx/mw8oljkbDFmVe5qyH2aFtldoINvbltSINOu7lrSV1MsOSPoWwRoj0VlCDLS4TVwLR3nYUIJMLrWYnK1a6nQH6hEkGbrhydvvMff3plU=
+	t=1745948809; cv=none; b=FkS4k/stD8LdJueRSCns35DTR9sPFp+4qyI4dDyOf5gy/9bLoVeMXbVZkKp3QrPbV+ldvRM5lhLX5izvMyQ5/MeUO9p0UEAciO6CZPu4Fhe9fwArktjiOSl4S0aCm3qps3nGujr0Dhuc7+jZG4ONYMj/a7JOGFKkhVQZBrc3Zko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946035; c=relaxed/simple;
-	bh=jLWy7fSX+0GmsbJsMquAqHIaI5rrlVmd4vqRIRpKR/E=;
+	s=arc-20240116; t=1745948809; c=relaxed/simple;
+	bh=TgUt9oMsA19oNT1taEXpRhF9dQMvSt4cY3vRqcMjMUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SntuwPGk9zw+QqU+yGLDr1Psw2t9Q5talJd660i0Ev10YFzDd5T+ZXV3Wt03SZ9pKAMyJbOBY9nvb2q+mut0HBj8mf5uzMDqh63ZK9k2IccxXSjtjS0GOKf00/n/J1y5S274QoO/tZzkb86mM7SyckbUoNnKotLtacL0qKXDOhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmAnAWBp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA468C4CEE3;
-	Tue, 29 Apr 2025 17:00:34 +0000 (UTC)
+	 MIME-Version; b=NxvpbF/u0H2ZyNYhRCPyim4h83jFjaLfubONtH2OnnmR9zcEDDNRQda8C9y4h1L/w3ucq/q8LeW70oNfJL1gwFosntQ3/+olyz/wquRagQ+kGnNbxEgKY8wPsrtKY+4/3k6DHNva/h+6FRGhXdYYz7Lsh6ayXXdHVZ6UZSJO5Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6N2JsfP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4120DC4CEE3;
+	Tue, 29 Apr 2025 17:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946035;
-	bh=jLWy7fSX+0GmsbJsMquAqHIaI5rrlVmd4vqRIRpKR/E=;
+	s=korg; t=1745948809;
+	bh=TgUt9oMsA19oNT1taEXpRhF9dQMvSt4cY3vRqcMjMUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KmAnAWBpEA5wH4YBnUBd2Tx8w9EGGhaA6R3ANk/fviC9rKcgE2xb+Ho6C+YaIZLn5
-	 3z+Mi86LvdgBjQj/D2F4QnOTBxAzIh7WopkdhmKoRuWAFbNVBi6iQeI37hQW+zGpfg
-	 6+4cSlFX4a2THc6Tsn66hL1eN7+x9FSUzbt9xGy8=
+	b=K6N2JsfPUavuDxayGI21chNS/p0ERl5i0MbKf67X+HYuHEA9PbynWSH+HL18OW0Fb
+	 OA73t/VYa1m81UHoc6a4Rd7SPf/1CeXxoNsgXy2wE3EL5+M8I3g6kLIGJn5TAbTLi8
+	 A2UYqRUPloXv3cBkzNPvw9CGAM26n1qfOI6xEQHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.14 133/311] LoongArch: KVM: Fix PMU pass-through issue if VM exits to host finally
+	T Pratham <t-pratham@ti.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Jens Axboe <axboe@kernel.dk>,
+	Kamlesh Gurudasani <kamlesh@ti.com>,
+	Praneeth Bajjuri <praneeth@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 093/373] lib: scatterlist: fix sg_split_phys to preserve original scatterlist offsets
 Date: Tue, 29 Apr 2025 18:39:30 +0200
-Message-ID: <20250429161126.487975804@linuxfoundation.org>
+Message-ID: <20250429161126.984531227@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +66,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: T Pratham <t-pratham@ti.com>
 
-commit 5add0dbbebd60628b55e5eb8426612dedab7311a upstream.
+commit 8b46fdaea819a679da176b879e7b0674a1161a5e upstream.
 
-In function kvm_pre_enter_guest(), it prepares to enter guest and check
-whether there are pending signals or events. And it will not enter guest
-if there are, PMU pass-through preparation for guest should be cancelled
-and host should own PMU hardware.
+The split_sg_phys function was incorrectly setting the offsets of all
+scatterlist entries (except the first) to 0.  Only the first scatterlist
+entry's offset and length needs to be modified to account for the skip.
+Setting the rest entries' offsets to 0 could lead to incorrect data
+access.
 
-Cc: stable@vger.kernel.org
-Fixes: f4e40ea9f78f ("LoongArch: KVM: Add PMU support for guest")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+I am using this function in a crypto driver that I'm currently developing
+(not yet sent to mailing list).  During testing, it was observed that the
+output scatterlists (except the first one) contained incorrect garbage
+data.
+
+I narrowed this issue down to the call of sg_split().  Upon debugging
+inside this function, I found that this resetting of offset is the cause
+of the problem, causing the subsequent scatterlists to point to incorrect
+memory locations in a page.  By removing this code, I am obtaining
+expected data in all the split output scatterlists.  Thus, this was indeed
+causing observable runtime effects!
+
+This patch removes the offending code, ensuring that the page offsets in
+the input scatterlist are preserved in the output scatterlist.
+
+Link: https://lkml.kernel.org/r/20250319111437.1969903-1-t-pratham@ti.com
+Fixes: f8bcbe62acd0 ("lib: scatterlist: add sg splitting function")
+Signed-off-by: T Pratham <t-pratham@ti.com>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Kamlesh Gurudasani <kamlesh@ti.com>
+Cc: Praneeth Bajjuri <praneeth@ti.com>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kvm/vcpu.c |    1 +
- 1 file changed, 1 insertion(+)
+ lib/sg_split.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -294,6 +294,7 @@ static int kvm_pre_enter_guest(struct kv
- 		vcpu->arch.aux_inuse &= ~KVM_LARCH_SWCSR_LATEST;
- 
- 		if (kvm_request_pending(vcpu) || xfer_to_guest_mode_work_pending()) {
-+			kvm_lose_pmu(vcpu);
- 			/* make sure the vcpu mode has been written */
- 			smp_store_mb(vcpu->mode, OUTSIDE_GUEST_MODE);
- 			local_irq_enable();
+--- a/lib/sg_split.c
++++ b/lib/sg_split.c
+@@ -88,8 +88,6 @@ static void sg_split_phys(struct sg_spli
+ 			if (!j) {
+ 				out_sg->offset += split->skip_sg0;
+ 				out_sg->length -= split->skip_sg0;
+-			} else {
+-				out_sg->offset = 0;
+ 			}
+ 			sg_dma_address(out_sg) = 0;
+ 			sg_dma_len(out_sg) = 0;
 
 
 
