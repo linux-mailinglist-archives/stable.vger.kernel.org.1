@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E649AA155F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1216DAA182C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CCA01724D5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BFC74A26D6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5142517BE;
-	Tue, 29 Apr 2025 17:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D53253941;
+	Tue, 29 Apr 2025 17:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qN56ZU0S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUQ8ad7o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5929F2459EC;
-	Tue, 29 Apr 2025 17:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C62E25392F;
+	Tue, 29 Apr 2025 17:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947317; cv=none; b=qmC/Vjc7rjk6IQpP2i5ITbVVFBW+VwTIDhWRYeHwgDxNOKqG8CXziOiC1HMmQNApcSKFkN8icYACNxdFeFD9WVcw/OqCJ3b+c879tUlttsjBbXjGipwFS8bVoUiaUzTk/464UzM7v4NB0gtYRDuo4INjpBt1gGSiyqy8UjeGicI=
+	t=1745949287; cv=none; b=V73ybwmuYJl64nT5/wxkuZLe1OaEsQO6vc5U8aGteI+jkM6PPr+LRY3WSs0LR1zs2OQ6FzvPHNLEEl7XPXnMrlsI3MA68B25ewKRafMiLn9b6YjzEAZcnLe9Do0EGWdohH2tf3rkE6EEjMM7C6txJwzLTYL56NXqNtPrgT1geuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947317; c=relaxed/simple;
-	bh=+OIy3H3qUket8mn1JKZaBaf/m/A/zKPv5kaHRzMlBn8=;
+	s=arc-20240116; t=1745949287; c=relaxed/simple;
+	bh=tgQukymdsI5znZszaY9qaUUDonaK04D53Edu+It52SE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fljc6nYo02Kj9X9IeT/x3Ic0zoQl/3e2aiy90k3Y7GYaSTnxAw4WWbpaBW43A7Y2hX0lIIWMHc32WMaAbtkJ8tO/Gmn0aYCmEPypxIuISeCRgYijdm7qsT5rlpKH8sFbXTJmHEqrHBdlJKovLqT79E1iyMoioABnYobeI0SdSdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qN56ZU0S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536F8C4CEE3;
-	Tue, 29 Apr 2025 17:21:55 +0000 (UTC)
+	 MIME-Version; b=a4KJhiNCUcQepb++jjf2h4wSc4+bnJzO/juwf4e+BCPm3PlDfpiohu1ZbMMvBZHpoRcE1GMXqWM8NHOcIB94iAZFORfWMr9ADdRxuXs0r0TM4CJRkml9oUd5LkxdpxO9qAxKWNkTnAxmnqBsWZbtbIv70XZxIVLjZMIo/JmNz8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUQ8ad7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F49C4CEE3;
+	Tue, 29 Apr 2025 17:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947316;
-	bh=+OIy3H3qUket8mn1JKZaBaf/m/A/zKPv5kaHRzMlBn8=;
+	s=korg; t=1745949286;
+	bh=tgQukymdsI5znZszaY9qaUUDonaK04D53Edu+It52SE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qN56ZU0S13T+ZEaREXIA1jSVVoPJUN92OZQlYF3DOftLyQgPlZi+nvKkTMScOJSym
-	 Clpxz2/u5A4iCQt9GU9RmDfT1LOQ2JRqdEZ+DS1b8fCKRvwKPFkCo2oMAJLIHM/Su9
-	 y3GCePasZcgcSVzHqv19I3dDG+t2UzAUGDzzhETU=
+	b=RUQ8ad7ol0nUI8kcGPzXFyKtNPC9oYnwYOzNCHVebo9GKoaQUKBUCMP5L9k5R1KUM
+	 zp0Msta1heMbHn4GO50ilDMp6Zubn+lNcsXfQaW/E2uDTJBHb3e4pRISJtQtRmhrdS
+	 5k6KGi2xeuWreo3FrEyglyJf1ZxY9e6jD/Et0x5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryo Takakura <ryotkkr98@gmail.com>,
-	Petr Mladek <pmladek@suse.com>,
-	John Ogness <john.ogness@linutronix.de>
-Subject: [PATCH 5.10 243/286] serial: sifive: lock port in startup()/shutdown() callbacks
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	"Paulo Alcantara (SUSE)" <pc@cjr.nz>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 270/373] cifs: print TIDs as hex
 Date: Tue, 29 Apr 2025 18:42:27 +0200
-Message-ID: <20250429161117.919285452@linuxfoundation.org>
+Message-ID: <20250429161134.225447722@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryo Takakura <ryotkkr98@gmail.com>
+From: Enzo Matsumiya <ematsumiya@suse.de>
 
-commit e1ca3ff28ab1e2c1e70713ef3fa7943c725742c3 upstream.
+[ Upstream commit 71081e7ac16c93acdd18afa65daa468620bb1b64 ]
 
-startup()/shutdown() callbacks access SIFIVE_SERIAL_IE_OFFS.
-The register is also accessed from write() callback.
+Makes these debug messages easier to read
 
-If console were printing and startup()/shutdown() callback
-gets called, its access to the register could be overwritten.
-
-Add port->lock to startup()/shutdown() callbacks to make sure
-their access to SIFIVE_SERIAL_IE_OFFS is synchronized against
-write() callback.
-
-Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Rule: add
-Link: https://lore.kernel.org/stable/20250330003522.386632-1-ryotkkr98%40gmail.com
-Link: https://lore.kernel.org/r/20250412001847.183221-1-ryotkkr98@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
+Reviewed-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: b4885bd5935b ("cifs: avoid NULL pointer dereference in dbg call")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sifive.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/cifs/connect.c  | 2 +-
+ fs/cifs/smb2misc.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/sifive.c
-+++ b/drivers/tty/serial/sifive.c
-@@ -596,8 +596,11 @@ static void sifive_serial_break_ctl(stru
- static int sifive_serial_startup(struct uart_port *port)
- {
- 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
-+	unsigned long flags;
+diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
+index 96788385e1e73..51ceaf9ea3151 100644
+--- a/fs/cifs/connect.c
++++ b/fs/cifs/connect.c
+@@ -1683,7 +1683,7 @@ cifs_setup_ipc(struct cifs_ses *ses, struct smb3_fs_context *ctx)
+ 		goto out;
+ 	}
  
-+	uart_port_lock_irqsave(&ssp->port, &flags);
- 	__ssp_enable_rxwm(ssp);
-+	uart_port_unlock_irqrestore(&ssp->port, flags);
+-	cifs_dbg(FYI, "IPC tcon rc = %d ipc tid = %d\n", rc, tcon->tid);
++	cifs_dbg(FYI, "IPC tcon rc=%d ipc tid=0x%x\n", rc, tcon->tid);
  
- 	return 0;
- }
-@@ -605,9 +608,12 @@ static int sifive_serial_startup(struct
- static void sifive_serial_shutdown(struct uart_port *port)
- {
- 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
-+	unsigned long flags;
+ 	ses->tcon_ipc = tcon;
+ out:
+diff --git a/fs/cifs/smb2misc.c b/fs/cifs/smb2misc.c
+index 89a2f38f17f37..12b6684f2d372 100644
+--- a/fs/cifs/smb2misc.c
++++ b/fs/cifs/smb2misc.c
+@@ -791,7 +791,7 @@ smb2_handle_cancelled_close(struct cifs_tcon *tcon, __u64 persistent_fid,
+ 		if (tcon->ses)
+ 			server = tcon->ses->server;
  
-+	uart_port_lock_irqsave(&ssp->port, &flags);
- 	__ssp_disable_rxwm(ssp);
- 	__ssp_disable_txwm(ssp);
-+	uart_port_unlock_irqrestore(&ssp->port, flags);
- }
+-		cifs_server_dbg(FYI, "tid=%u: tcon is closing, skipping async close retry of fid %llu %llu\n",
++		cifs_server_dbg(FYI, "tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
+ 				tcon->tid, persistent_fid, volatile_fid);
  
- /**
+ 		return 0;
+-- 
+2.39.5
+
 
 
 
