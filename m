@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C1ACAA19BA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED2DAA1934
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C80964C0242
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EFE79C1F32
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91443250C0C;
-	Tue, 29 Apr 2025 18:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86CD24633C;
+	Tue, 29 Apr 2025 18:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orTd6UBt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06OevMAa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E901155A4E;
-	Tue, 29 Apr 2025 18:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944A521ABC8;
+	Tue, 29 Apr 2025 18:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950371; cv=none; b=tmegMYDVBEilqXcITioyrK1O/UDr06GgTDFzFS9WQlCgFfFVn3E1W9TZdY7oT63MEBFq1FMxVjJmTf7Hlh6ZoHdHpKI4rL0vF28P+Y/xhLPsACfouVLnL8KXDJjG+g7OxjZk9yC7ikwiZvrjLeg15CAVhpjA1zjtIbdFH3Ngf5w=
+	t=1745949790; cv=none; b=swLX3jjV+4w7gkR4yLud82WkxByBlenI+nUzbOCrMU+PC5e346OABD0DGCgA0rCrd6NgO5bJAlANITitjqPOMsRKzxribEOMn7G9lv5291rs6n1dqie1/pzSQphkpXtBgpLVcew5W/vz7HdKaAoG6LY0cixf0HdXuZkBlWFZl2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950371; c=relaxed/simple;
-	bh=Sc5t6OHf5Fsj3EnW9lnjBqwHWnHU6Kjq1VYCjhveSeU=;
+	s=arc-20240116; t=1745949790; c=relaxed/simple;
+	bh=CCeM/LjF39TYMEKv3nZCv7H9a5JdOW8Og3tZtJW+CMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q1VjUOHHs3+KVXC2cyYeuXvC3tSrT1HwqIBnceNNs1isRzAiZ68LRwg88cdU6/9eXNuTbyISYCRXjaUm0q6hcR6Zr2YXluMx4kkVZz6/BF/EliKoQblp6ByObRHU6uv6gMzhXHIEjI1D0tFQbDrS4n8UJbbVayZh8bp6kp/9jbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orTd6UBt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E34C4CEE3;
-	Tue, 29 Apr 2025 18:12:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZuF7k2BHLLf/32o4bAdj4Tap61a2NwNBGsUV8HK7lO4KWV6XB3mChUQDgb+e8HhUuWt2QY+iU38yaleq41PA5QhTNfBcKEGNWffK5Lkx+lt/nj77w8lXKC9mYGQuyUx+e+i2MGpq50BWSAJjdPDy6bdbWL0n+/sKxZ2tuv8MnOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06OevMAa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03713C4CEE3;
+	Tue, 29 Apr 2025 18:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950371;
-	bh=Sc5t6OHf5Fsj3EnW9lnjBqwHWnHU6Kjq1VYCjhveSeU=;
+	s=korg; t=1745949790;
+	bh=CCeM/LjF39TYMEKv3nZCv7H9a5JdOW8Og3tZtJW+CMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=orTd6UBtHL+qh8GkG2/03mtI4rIfp2kS5/bs3nqKP5rYodTuwMGep44wXAaQe+Q++
-	 +AbUTndctiYiXa5NwCE+AQR7YlPFbsSzVhb7FmJnQc0I83dtoUAuELyagCqMWkwjPD
-	 D+4zdeS6LQ+6YVeJpnt74V7pHTqAv5MYwKzv4MSc=
+	b=06OevMAatQGdXSKUBTWDszbgeXfTPGDaWI6Ib+9z+Gks4YLaj5fBHfFJtmuOssMiU
+	 ZK8UBc7TlXt/iOkSI3pITGTph0iy4N5g5QThIUSQYmc/o5k8oFgp5uv83FkJLv1Dgp
+	 GM4OiO+C94BGhWgdRzd5hpfiIPMNgaLe+L6bRd5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 075/204] net: selftests: initialize TCP header and skb payload with zero
-Date: Tue, 29 Apr 2025 18:42:43 +0200
-Message-ID: <20250429161102.492848066@linuxfoundation.org>
+	Guo Ren <guoren@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 056/167] riscv: uprobes: Add missing fence.i after building the XOL buffer
+Date: Tue, 29 Apr 2025 18:42:44 +0200
+Message-ID: <20250429161054.033022169@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-commit 9e8d1013b0c38910cbc9e60de74dbe883878469d upstream.
+[ Upstream commit 7d1d19a11cfbfd8bae1d89cc010b2cc397cd0c48 ]
 
-Zero-initialize TCP header via memset() to avoid garbage values that
-may affect checksum or behavior during test transmission.
+The XOL (execute out-of-line) buffer is used to single-step the
+replaced instruction(s) for uprobes. The RISC-V port was missing a
+proper fence.i (i$ flushing) after constructing the XOL buffer, which
+can result in incorrect execution of stale/broken instructions.
 
-Also zero-fill allocated payload and padding regions using memset()
-after skb_put(), ensuring deterministic content for all outgoing
-test packets.
+This was found running the BPF selftests "test_progs:
+uprobe_autoattach, attach_probe" on the Spacemit K1/X60, where the
+uprobes tests randomly blew up.
 
-Fixes: 3e1e58d64c3d ("net: add generic selftest support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250416160125.2914724-1-o.rempel@pengutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Guo Ren <guoren@kernel.org>
+Fixes: 74784081aac8 ("riscv: Add uprobes supported")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20250419111402.1660267-2-bjorn@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/selftests.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ arch/riscv/kernel/probes/uprobes.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
---- a/net/core/selftests.c
-+++ b/net/core/selftests.c
-@@ -100,10 +100,10 @@ static struct sk_buff *net_test_get_skb(
- 	ehdr->h_proto = htons(ETH_P_IP);
+diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
+index 194f166b2cc40..0d18ee53fd649 100644
+--- a/arch/riscv/kernel/probes/uprobes.c
++++ b/arch/riscv/kernel/probes/uprobes.c
+@@ -161,6 +161,7 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 	/* Initialize the slot */
+ 	void *kaddr = kmap_atomic(page);
+ 	void *dst = kaddr + (vaddr & ~PAGE_MASK);
++	unsigned long start = (unsigned long)dst;
  
- 	if (attr->tcp) {
-+		memset(thdr, 0, sizeof(*thdr));
- 		thdr->source = htons(attr->sport);
- 		thdr->dest = htons(attr->dport);
- 		thdr->doff = sizeof(struct tcphdr) / 4;
--		thdr->check = 0;
- 	} else {
- 		uhdr->source = htons(attr->sport);
- 		uhdr->dest = htons(attr->dport);
-@@ -144,10 +144,18 @@ static struct sk_buff *net_test_get_skb(
- 	attr->id = net_test_next_id;
- 	shdr->id = net_test_next_id++;
+ 	memcpy(dst, src, len);
  
--	if (attr->size)
--		skb_put(skb, attr->size);
--	if (attr->max_size && attr->max_size > skb->len)
--		skb_put(skb, attr->max_size - skb->len);
-+	if (attr->size) {
-+		void *payload = skb_put(skb, attr->size);
-+
-+		memset(payload, 0, attr->size);
-+	}
-+
-+	if (attr->max_size && attr->max_size > skb->len) {
-+		size_t pad_len = attr->max_size - skb->len;
-+		void *pad = skb_put(skb, pad_len);
-+
-+		memset(pad, 0, pad_len);
-+	}
+@@ -170,13 +171,6 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 		*(uprobe_opcode_t *)dst = __BUG_INSN_32;
+ 	}
  
- 	skb->csum = 0;
- 	skb->ip_summed = CHECKSUM_PARTIAL;
++	flush_icache_range(start, start + len);
+ 	kunmap_atomic(kaddr);
+-
+-	/*
+-	 * We probably need flush_icache_user_page() but it needs vma.
+-	 * This should work on most of architectures by default. If
+-	 * architecture needs to do something different it can define
+-	 * its own version of the function.
+-	 */
+-	flush_dcache_page(page);
+ }
+-- 
+2.39.5
+
 
 
 
