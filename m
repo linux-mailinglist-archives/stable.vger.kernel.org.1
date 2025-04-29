@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-137802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3BDAAA14F9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB632AA17B0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF23E169E92
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C0001BC5183
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A27024397A;
-	Tue, 29 Apr 2025 17:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77F024BD02;
+	Tue, 29 Apr 2025 17:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiCV0MLP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HI7un3yv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC29C1C6B4;
-	Tue, 29 Apr 2025 17:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53E9221DA7;
+	Tue, 29 Apr 2025 17:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947172; cv=none; b=Z20h3Srse9+cRixc005unx/qj9l8+LM4BvSKeXSbcuPmai8vESJKq+QPPG+m8DhlS/mUemdUvFjbbho9Mly7cF5Wm6BqKeZ4isbkI7CLlKTSzBhe4VxSi0U2ye25cD7KePFYCVkNcts1nS41nspP0r5sMp678fZ+eMBN2PjN7Sc=
+	t=1745949023; cv=none; b=YrNsmTgY0/szjHSx46Pe5imthk37RfHhLuymYHOpsW1thpbZXrlwatZE1VJFw591QirOvL9fD6JBDz5mE+3vP+fVP7XlMbixrFuWK4GNZpn2dz3KgO7TDuD871epSPfFFovagjQaF3bccdVG3LcLtXP+h/j3yshcupyF6XjQK6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947172; c=relaxed/simple;
-	bh=Ckjqx8iwWr7q1b3C1JNLGQEZUwzH0mVCQ5oPHBg1X2Y=;
+	s=arc-20240116; t=1745949023; c=relaxed/simple;
+	bh=bhDLgdOS2CdJOMn9B2z27ExmfkmqxnBvKxE4rz3C/OM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTSKrm9vy8+sH3cTkF19kX63UpSP2VKgT8ZguVmcHqFBL6yeQla72VhLs/D5v/rZLZRfdidmmLbQnIaOxQ0gQ9CYQkpN86hw/YCKBozCVdP+mMHYVNliPJyCSxx71kBKCyEVUlh06ZSZDMd5s1+DPhcH+0QZBIf7yMQjXcDVAX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiCV0MLP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362A4C4CEE3;
-	Tue, 29 Apr 2025 17:19:32 +0000 (UTC)
+	 MIME-Version; b=RtvdCjA3W55UcDsvTR9VD+3EZB3t55y3cKsqzzZEiuH93qJV+Y2GJYQVuP7rBhIbvHl/s3h2O23sj6OPboM+YTI6+VOIzByzqr0iVzwcsAm+rGJh0krs+eY4fKTsFqmMVIzovdx2IPZ5C9a7ezsnwZqumvVRL2BWwt/tZL6nU8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HI7un3yv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386DBC4CEE3;
+	Tue, 29 Apr 2025 17:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947172;
-	bh=Ckjqx8iwWr7q1b3C1JNLGQEZUwzH0mVCQ5oPHBg1X2Y=;
+	s=korg; t=1745949023;
+	bh=bhDLgdOS2CdJOMn9B2z27ExmfkmqxnBvKxE4rz3C/OM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HiCV0MLP5sspxDFt4G80egc6NgopeNP+fGCZG+BnAzDNR8HAmGnnEb8PKCV6oEaf7
-	 zDUh2qkf8E4qOytzELbshOmfpiK6CRQFYpEnAkAmNkmh3qdPnpOG0t/mdhTEwuZHLr
-	 gondpcIStR1XSGvLUHfxP6kR5G6KsEALJLRpi5XE=
+	b=HI7un3yvU4lqrvI4SwFLSWoiaMPWHhL6R3FMCBsv4HT42BKvq54BuC4n4KxmtBVjG
+	 DRyM/ZhOiKptK0mf59VMaHxKC9Nw++7jKmi7EW0iMVKLxoaMO82PVnsY6X60dIn5Na
+	 ef8KMi/lhNrk8Nv9Vg5LXuXVNuIvJOhePpVD0bUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Steve French <stfrench@microsoft.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 166/286] smb: client: fix UAF in async decryption
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 5.15 193/373] KVM: arm64: Remove host FPSIMD saving for non-protected KVM
 Date: Tue, 29 Apr 2025 18:41:10 +0200
-Message-ID: <20250429161114.714500176@linuxfoundation.org>
+Message-ID: <20250429161131.107038205@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,194 +66,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Enzo Matsumiya <ematsumiya@suse.de>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit b0abcd65ec545701b8793e12bc27dc98042b151a upstream.
+[ Upstream commit 8eca7f6d5100b6997df4f532090bc3f7e0203bef ]
 
-Doing an async decryption (large read) crashes with a
-slab-use-after-free way down in the crypto API.
+Now that the host eagerly saves its own FPSIMD/SVE/SME state,
+non-protected KVM never needs to save the host FPSIMD/SVE/SME state,
+and the code to do this is never used. Protected KVM still needs to
+save/restore the host FPSIMD/SVE state to avoid leaking guest state to
+the host (and to avoid revealing to the host whether the guest used
+FPSIMD/SVE/SME), and that code needs to be retained.
 
-Reproducer:
-    # mount.cifs -o ...,seal,esize=1 //srv/share /mnt
-    # dd if=/mnt/largefile of=/dev/null
-    ...
-    [  194.196391] ==================================================================
-    [  194.196844] BUG: KASAN: slab-use-after-free in gf128mul_4k_lle+0xc1/0x110
-    [  194.197269] Read of size 8 at addr ffff888112bd0448 by task kworker/u77:2/899
-    [  194.197707]
-    [  194.197818] CPU: 12 UID: 0 PID: 899 Comm: kworker/u77:2 Not tainted 6.11.0-lku-00028-gfca3ca14a17a-dirty #43
-    [  194.198400] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-3-gd478f380-prebuilt.qemu.org 04/01/2014
-    [  194.199046] Workqueue: smb3decryptd smb2_decrypt_offload [cifs]
-    [  194.200032] Call Trace:
-    [  194.200191]  <TASK>
-    [  194.200327]  dump_stack_lvl+0x4e/0x70
-    [  194.200558]  ? gf128mul_4k_lle+0xc1/0x110
-    [  194.200809]  print_report+0x174/0x505
-    [  194.201040]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-    [  194.201352]  ? srso_return_thunk+0x5/0x5f
-    [  194.201604]  ? __virt_addr_valid+0xdf/0x1c0
-    [  194.201868]  ? gf128mul_4k_lle+0xc1/0x110
-    [  194.202128]  kasan_report+0xc8/0x150
-    [  194.202361]  ? gf128mul_4k_lle+0xc1/0x110
-    [  194.202616]  gf128mul_4k_lle+0xc1/0x110
-    [  194.202863]  ghash_update+0x184/0x210
-    [  194.203103]  shash_ahash_update+0x184/0x2a0
-    [  194.203377]  ? __pfx_shash_ahash_update+0x10/0x10
-    [  194.203651]  ? srso_return_thunk+0x5/0x5f
-    [  194.203877]  ? crypto_gcm_init_common+0x1ba/0x340
-    [  194.204142]  gcm_hash_assoc_remain_continue+0x10a/0x140
-    [  194.204434]  crypt_message+0xec1/0x10a0 [cifs]
-    [  194.206489]  ? __pfx_crypt_message+0x10/0x10 [cifs]
-    [  194.208507]  ? srso_return_thunk+0x5/0x5f
-    [  194.209205]  ? srso_return_thunk+0x5/0x5f
-    [  194.209925]  ? srso_return_thunk+0x5/0x5f
-    [  194.210443]  ? srso_return_thunk+0x5/0x5f
-    [  194.211037]  decrypt_raw_data+0x15f/0x250 [cifs]
-    [  194.212906]  ? __pfx_decrypt_raw_data+0x10/0x10 [cifs]
-    [  194.214670]  ? srso_return_thunk+0x5/0x5f
-    [  194.215193]  smb2_decrypt_offload+0x12a/0x6c0 [cifs]
+Remove the unused code and data structures.
 
-This is because TFM is being used in parallel.
+To avoid the need for a stub copy of kvm_hyp_save_fpsimd_host() in the
+VHE hyp code, the nVHE/hVHE version is moved into the shared switch
+header, where it is only invoked when KVM is in protected mode.
 
-Fix this by allocating a new AEAD TFM for async decryption, but keep
-the existing one for synchronous READ cases (similar to what is done
-in smb3_calc_signature()).
-
-Also remove the calls to aead_request_set_callback() and
-crypto_wait_req() since it's always going to be a synchronous operation.
-
-Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[In linux-5.10, dec and enc fields are named ccmaesdecrypt and ccmaesencrypt.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Tested-by: Mark Brown <broonie@kernel.org>
+Acked-by: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Fuad Tabba <tabba@google.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20250210195226.1215254-3-mark.rutland@arm.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/smb2ops.c |   48 ++++++++++++++++++++++++++++--------------------
- fs/cifs/smb2pdu.c |    6 ++++++
- 2 files changed, 34 insertions(+), 20 deletions(-)
+ arch/arm64/include/asm/kvm_host.h       |    1 -
+ arch/arm64/kvm/fpsimd.c                 |    1 -
+ arch/arm64/kvm/hyp/include/hyp/switch.h |    6 +-----
+ 3 files changed, 1 insertion(+), 7 deletions(-)
 
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -4291,7 +4291,7 @@ smb2_get_enc_key(struct TCP_Server_Info
-  */
- static int
- crypt_message(struct TCP_Server_Info *server, int num_rqst,
--	      struct smb_rqst *rqst, int enc)
-+	      struct smb_rqst *rqst, int enc, struct crypto_aead *tfm)
- {
- 	struct smb2_transform_hdr *tr_hdr =
- 		(struct smb2_transform_hdr *)rqst[0].rq_iov[0].iov_base;
-@@ -4302,8 +4302,6 @@ crypt_message(struct TCP_Server_Info *se
- 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
- 	struct aead_request *req;
- 	u8 *iv;
--	DECLARE_CRYPTO_WAIT(wait);
--	struct crypto_aead *tfm;
- 	unsigned int crypt_len = le32_to_cpu(tr_hdr->OriginalMessageSize);
- 	void *creq;
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -333,7 +333,6 @@ struct kvm_vcpu_arch {
+ 	struct kvm_guest_debug_arch external_debug_state;
  
-@@ -4314,15 +4312,6 @@ crypt_message(struct TCP_Server_Info *se
- 		return rc;
+ 	struct thread_info *host_thread_info;	/* hyp VA */
+-	struct user_fpsimd_state *host_fpsimd_state;	/* hyp VA */
+ 
+ 	struct {
+ 		/* {Break,watch}point registers */
+--- a/arch/arm64/kvm/fpsimd.c
++++ b/arch/arm64/kvm/fpsimd.c
+@@ -55,7 +55,6 @@ int kvm_arch_vcpu_run_map_fp(struct kvm_
  	}
  
--	rc = smb3_crypto_aead_allocate(server);
--	if (rc) {
--		cifs_server_dbg(VFS, "%s: crypto alloc failed\n", __func__);
--		return rc;
+ 	vcpu->arch.host_thread_info = kern_hyp_va(ti);
+-	vcpu->arch.host_fpsimd_state = kern_hyp_va(fpsimd);
+ error:
+ 	return ret;
+ }
+--- a/arch/arm64/kvm/hyp/include/hyp/switch.h
++++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+@@ -251,11 +251,7 @@ static inline bool __hyp_handle_fpsimd(s
+ 	}
+ 	isb();
+ 
+-	if (vcpu->arch.flags & KVM_ARM64_FP_HOST) {
+-		__fpsimd_save_state(vcpu->arch.host_fpsimd_state);
+-		vcpu->arch.flags &= ~KVM_ARM64_FP_HOST;
 -	}
 -
--	tfm = enc ? server->secmech.ccmaesencrypt :
--						server->secmech.ccmaesdecrypt;
--
- 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
- 		(server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
- 		rc = crypto_aead_setkey(tfm, key, SMB3_GCM256_CRYPTKEY_SIZE);
-@@ -4361,11 +4350,7 @@ crypt_message(struct TCP_Server_Info *se
- 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
- 	aead_request_set_ad(req, assoc_data_len);
- 
--	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
--				  crypto_req_done, &wait);
--
--	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req)
--				: crypto_aead_decrypt(req), &wait);
-+	rc = enc ? crypto_aead_encrypt(req) : crypto_aead_decrypt(req);
- 
- 	if (!rc && enc)
- 		memcpy(&tr_hdr->Signature, sign, SMB2_SIGNATURE_SIZE);
-@@ -4454,7 +4439,7 @@ smb3_init_transform_rq(struct TCP_Server
- 	/* fill the 1st iov with a transform header */
- 	fill_transform_hdr(tr_hdr, orig_len, old_rq, server->cipher_type);
- 
--	rc = crypt_message(server, num_rqst, new_rq, 1);
-+	rc = crypt_message(server, num_rqst, new_rq, 1, server->secmech.ccmaesencrypt);
- 	cifs_dbg(FYI, "Encrypt message returned %d\n", rc);
- 	if (rc)
- 		goto err_free;
-@@ -4480,8 +4465,9 @@ decrypt_raw_data(struct TCP_Server_Info
- 		 unsigned int npages, unsigned int page_data_size,
- 		 bool is_offloaded)
- {
--	struct kvec iov[2];
-+	struct crypto_aead *tfm;
- 	struct smb_rqst rqst = {NULL};
-+	struct kvec iov[2];
- 	int rc;
- 
- 	iov[0].iov_base = buf;
-@@ -4496,9 +4482,31 @@ decrypt_raw_data(struct TCP_Server_Info
- 	rqst.rq_pagesz = PAGE_SIZE;
- 	rqst.rq_tailsz = (page_data_size % PAGE_SIZE) ? : PAGE_SIZE;
- 
--	rc = crypt_message(server, 1, &rqst, 0);
-+	if (is_offloaded) {
-+		if ((server->cipher_type == SMB2_ENCRYPTION_AES128_GCM) ||
-+		    (server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
-+			tfm = crypto_alloc_aead("gcm(aes)", 0, 0);
-+		else
-+			tfm = crypto_alloc_aead("ccm(aes)", 0, 0);
-+		if (IS_ERR(tfm)) {
-+			rc = PTR_ERR(tfm);
-+			cifs_server_dbg(VFS, "%s: Failed alloc decrypt TFM, rc=%d\n", __func__, rc);
-+
-+			return rc;
-+		}
-+	} else {
-+		if (unlikely(!server->secmech.ccmaesdecrypt))
-+			return -EIO;
-+
-+		tfm = server->secmech.ccmaesdecrypt;
-+	}
-+
-+	rc = crypt_message(server, 1, &rqst, 0, tfm);
- 	cifs_dbg(FYI, "Decrypt message returned %d\n", rc);
- 
-+	if (is_offloaded)
-+		crypto_free_aead(tfm);
-+
- 	if (rc)
- 		return rc;
- 
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -998,6 +998,12 @@ SMB2_negotiate(const unsigned int xid, s
- 		else
- 			cifs_server_dbg(VFS, "Missing expected negotiate contexts\n");
- 	}
-+
-+	if (server->cipher_type && !rc) {
-+		rc = smb3_crypto_aead_allocate(server);
-+		if (rc)
-+			cifs_server_dbg(VFS, "%s: crypto alloc failed, rc=%d\n", __func__, rc);
-+	}
- neg_exit:
- 	free_rsp_buf(resp_buftype, rsp);
- 	return rc;
++	/* Restore the guest state */
+ 	if (sve_guest)
+ 		__hyp_sve_restore_guest(vcpu);
+ 	else
 
 
 
