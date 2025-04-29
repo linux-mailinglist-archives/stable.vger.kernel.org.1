@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EBC9AA18BB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F3BAA173C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 944A23A82FE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B07C0982446
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F7C2512D8;
-	Tue, 29 Apr 2025 17:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2983A252912;
+	Tue, 29 Apr 2025 17:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5Cg+Nbd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbyPf6JU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BDD2AE96;
-	Tue, 29 Apr 2025 17:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BE7252905;
+	Tue, 29 Apr 2025 17:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949497; cv=none; b=rnfObcUL6jg/gb2AjmOHCIhPgx2G5F0/fBaxlbekePLw/IFXZGraRwh3P4PRerXKujsj2Nsx6ti66vfZbyo552Xdrv2zzH/jbwNMB+Ud0iclewlsmLy011G0nicfKnQFQpWaVuypPmRTRLinvYoGPe20xn8QygXbiBpua35AFZ0=
+	t=1745948438; cv=none; b=dfnsaOH/ZypkQ9uvOWH1Eq4zO5DSCoUE4Yyt6cfONfMWZr4KidEeV+pDXxn99oEHJ/JAL8WN8q3V9ryBibEEiAJUrw+6mf/Rla5JiOjl95JW3XrKBrB9BRRzNYO9UMo3Gu3bMV8I9EVY2r2XuZ5nmjpUH+/OFzQ27S6yt6Nu1HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949497; c=relaxed/simple;
-	bh=tRVg9xxTS6+KpLVSOFSY38YtrmbnvoMIJZ+SgAZvBIY=;
+	s=arc-20240116; t=1745948438; c=relaxed/simple;
+	bh=di7n3BbnPrKiTIIKmf6mLAZhAlHCezP1es4fCYnEwrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBz8Agu3dwcgi2fJcafWkZqmT4BfvUtwuPzPUxzvjx5zVDeYKuBFVqv84b+15PEfbH9/lHd6qRmE37bauVx4StoVCSBQ6hIejzq/I3kAya4sZ/EIsKpPioRQj0L0LVRInfZc+RyGIkAxHUF8DwcV7n6dBM7IXfIsDaVbL523Uyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5Cg+Nbd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23154C4CEE3;
-	Tue, 29 Apr 2025 17:58:16 +0000 (UTC)
+	 MIME-Version; b=gDcoH8vkbm4PVzFABAaZBXnweucpYmk6pQKL9m6uG2GlglmYEzy1WQBNzxvNhmmuYIjDW6xdlj9fyIbXloU0CHKg2CLlfQzDaWW0kOhA3rfS8o7jpfNvAj86E/a36PpXmOCdbz1b86dmJbnbJmwvv21/n8P1Rt3wA0Zci8+5ag8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbyPf6JU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635DDC4CEE3;
+	Tue, 29 Apr 2025 17:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949497;
-	bh=tRVg9xxTS6+KpLVSOFSY38YtrmbnvoMIJZ+SgAZvBIY=;
+	s=korg; t=1745948438;
+	bh=di7n3BbnPrKiTIIKmf6mLAZhAlHCezP1es4fCYnEwrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l5Cg+NbdkNkThISdaJt2XRSzGbMca0/h3Ludsi60LN/+v49K3V7B/4XrdA8nHrAhK
-	 s1YLRPo54HPUo5/pYEu4QFVlJQMqmsL/3LiKnvSnGOO5+fZIBXprIfbA7PhyxKVsHp
-	 phsr70Dd10xzdkPUtmI1homu4Xvgo5fBMbsa9BPc=
+	b=JbyPf6JUe5/mKLGs26H+DGfBeF2bVpQB5dHyLNVcckUolyq6wxgDNnKCg8eYyVnK1
+	 0TlVBT5pvhy/YF6cYHRAvSBWMXB0Fo4FWaN7vcI5blRySk+84qDrSj2RRInXRFm01+
+	 s0IOV+5ItKndyVka9Yu3Q2iZ6kzGv18yXhFEN1k4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 337/373] qibfs: fix _another_ leak
+	Hannes Reinecke <hare@kernel.org>,
+	Srikanth Aithal <sraithal@amd.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>
+Subject: [PATCH 6.12 273/280] nvme: fixup scan failure for non-ANA multipath controllers
 Date: Tue, 29 Apr 2025 18:43:34 +0200
-Message-ID: <20250429161136.987780833@linuxfoundation.org>
+Message-ID: <20250429161126.304956889@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Hannes Reinecke <hare@kernel.org>
 
-[ Upstream commit bdb43af4fdb39f844ede401bdb1258f67a580a27 ]
+commit 26d7fb4fd4ca1180e2fa96587dea544563b4962a upstream.
 
-failure to allocate inode => leaked dentry...
+Commit 62baf70c3274 caused the ANA log page to be re-read, even on
+controllers that do not support ANA.  While this should generally
+harmless, some controllers hang on the unsupported log page and
+never finish probing.
 
-this one had been there since the initial merge; to be fair,
-if we are that far OOM, the odds of failing at that particular
-allocation are low...
-
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 62baf70c3274 ("nvme: re-read ANA log page after ns scan completes")
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Tested-by: Srikanth Aithal <sraithal@amd.com>
+[hch: more detailed commit message]
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/qib/qib_fs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/host/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
-index 8665e506404f9..774037ea44a92 100644
---- a/drivers/infiniband/hw/qib/qib_fs.c
-+++ b/drivers/infiniband/hw/qib/qib_fs.c
-@@ -56,6 +56,7 @@ static int qibfs_mknod(struct inode *dir, struct dentry *dentry,
- 	struct inode *inode = new_inode(dir->i_sb);
- 
- 	if (!inode) {
-+		dput(dentry);
- 		error = -EPERM;
- 		goto bail;
- 	}
--- 
-2.39.5
-
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4278,7 +4278,7 @@ static void nvme_scan_work(struct work_s
+ 	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
+ 		nvme_queue_scan(ctrl);
+ #ifdef CONFIG_NVME_MULTIPATH
+-	else
++	else if (ctrl->ana_log_buf)
+ 		/* Re-read the ANA log page to not miss updates */
+ 		queue_work(nvme_wq, &ctrl->ana_work);
+ #endif
 
 
 
