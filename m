@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-138666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B533AA1972
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:11:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C06AA1A20
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BB1C9A409C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 481FA4C11C3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7978522AE68;
-	Tue, 29 Apr 2025 18:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25AA2517A8;
+	Tue, 29 Apr 2025 18:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6tkc8rF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVs+fVdW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E5240C03;
-	Tue, 29 Apr 2025 18:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78984240611;
+	Tue, 29 Apr 2025 18:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949970; cv=none; b=WlTn0jGGBvsJVSFp5hEydMA8q0AP2Mr/f32VIJ3nYXH4JNHfdblGgk88aiGyPZ0VGLc69Kcq4J2tbgSTCPYZF8+qmafoVddcKhmxpgmhShaNwwAXUF0iCVMC2zp/jwlbd+dC3szDWHaOjgggLoy+bDgvMiRc4TdnRO61sOb0D+Y=
+	t=1745950657; cv=none; b=gPoG+wgzXLJHC1WLeDp8R3w14GOcu2VPGfdevzQThQQStE2m0IrqpppQ33vEVlK2Y3mIMnsp6uIXnkRcdaHywZNJZXXILRo+avltsfwH42PatD4NV3Cu7PhcPwZZvbV942BOmLSnhXJ6BQxv4e3MZIRLPq2vq45oZL6DrVZntOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949970; c=relaxed/simple;
-	bh=rB2+jNARo4qHbCMhqm1OhL6QPde4khc9NPJp8hIhngI=;
+	s=arc-20240116; t=1745950657; c=relaxed/simple;
+	bh=MaAak02TOo5OtODB/zK0OfSOjp7uSiByUW2GLbri97M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dsuwK+iA0ly77nr6SDov+IjaepieOt1655wbjS1/AGwja8BYHHZdvf8eSMyPq5FLTmUwl6xAxnbDaNEypYN7YAGpbINE5tzS/xGOH9whUG9Z9+H99FJXbOPk4qBZP6Vnx2dXwhSWGpSytr0DjGCsn7mfHjIbtbQn+7u2U4no3T8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6tkc8rF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1516C4CEE9;
-	Tue, 29 Apr 2025 18:06:09 +0000 (UTC)
+	 MIME-Version; b=TqFcB2E/kpT0IhBcdT8xwxK9UbB2ms6Y0VXEnOEIKY021257Sb/+ks40nJ9AX8V6EoAuJmw2I1dK3MziclHGzRGfANN/b9SI7fw5vaNADxJhYBnPT6d7Mc3s+JwQ59T1K3ss42A9F/ocetO9RpSRfmvynuoOSIiyhaCgnwiIwrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVs+fVdW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B11EC4CEE3;
+	Tue, 29 Apr 2025 18:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949970;
-	bh=rB2+jNARo4qHbCMhqm1OhL6QPde4khc9NPJp8hIhngI=;
+	s=korg; t=1745950657;
+	bh=MaAak02TOo5OtODB/zK0OfSOjp7uSiByUW2GLbri97M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z6tkc8rFT4UaegwCdkaAFs+5GzotDQwcO3aB44xRwyqE5++oO4nmVQukvRC+Dzviu
-	 WchpiE3HkPdWulMhzINL6jH8WdZ+64TX0+rv2cpAcz9mp3EUw/j4ne7mDGBWbOEzYD
-	 8xppgpQ00QNidDL6oO5eZXo1wHz5uuZhADCgcEjg=
+	b=HVs+fVdW4HFj/y2RdAcqinOYk6moDG91MaFq6tLkWb6N9LOinlox/yKVcqHGVoFgt
+	 2LCLkphL8jiSKz2A17XS+4nzTlDTcKFFg6ctEitc3mqe5vwGxE/TdM5/YZnh2hzSsU
+	 DdBv+krOoxXvX5nYqxNJZ5Z03S2Nz8u/k4VPIozk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Lynema <lyz27@yahoo.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	virtualization@lists.linux.dev,
+	linux-sound@vger.kernel.org,
+	kernel-team@android.com,
+	Betty Zhou <bettyzhou@google.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	John Stultz <jstultz@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 114/167] thunderbolt: Scan retimers after device router has been enumerated
-Date: Tue, 29 Apr 2025 18:43:42 +0200
-Message-ID: <20250429161056.351216157@linuxfoundation.org>
+Subject: [PATCH 6.6 135/204] sound/virtio: Fix cancel_sync warnings on uninitialized work_structs
+Date: Tue, 29 Apr 2025 18:43:43 +0200
+Message-ID: <20250429161104.950441258@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +70,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: John Stultz <jstultz@google.com>
 
-[ Upstream commit 75749d2c1d8cef439f8b69fa1f4f36d0fc3193e6 ]
+[ Upstream commit 3c7df2e27346eb40a0e86230db1ccab195c97cfe ]
 
-Thomas reported connection issues on AMD system with Pluggable UD-4VPD
-dock. After some experiments it looks like the device has some sort of
-internal timeout that triggers reconnect. This is completely against the
-USB4 spec, as there is no requirement for the host to enumerate the
-device right away or even at all.
+Betty reported hitting the following warning:
 
-In Linux case the delay is caused by scanning of retimers on the link so
-we can work this around by doing the scanning after the device router
-has been enumerated.
+[    8.709131][  T221] WARNING: CPU: 2 PID: 221 at kernel/workqueue.c:4182
+...
+[    8.713282][  T221] Call trace:
+[    8.713365][  T221]  __flush_work+0x8d0/0x914
+[    8.713468][  T221]  __cancel_work_sync+0xac/0xfc
+[    8.713570][  T221]  cancel_work_sync+0x24/0x34
+[    8.713667][  T221]  virtsnd_remove+0xa8/0xf8 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
+[    8.713868][  T221]  virtsnd_probe+0x48c/0x664 [virtio_snd ab15f34d0dd772f6d11327e08a81d46dc9c36276]
+[    8.714035][  T221]  virtio_dev_probe+0x28c/0x390
+[    8.714139][  T221]  really_probe+0x1bc/0x4c8
+...
 
-Reported-by: Thomas Lynema <lyz27@yahoo.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219748
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+It seems we're hitting the error path in virtsnd_probe(), which
+triggers a virtsnd_remove() which iterates over the substreams
+calling cancel_work_sync() on the elapsed_period work_struct.
+
+Looking at the code, from earlier in:
+virtsnd_probe()->virtsnd_build_devs()->virtsnd_pcm_parse_cfg()
+
+We set snd->nsubstreams, allocate the snd->substreams, and if
+we then hit an error on the info allocation or something in
+virtsnd_ctl_query_info() fails, we will exit without having
+initialized the elapsed_period work_struct.
+
+When that error path unwinds we then call virtsnd_remove()
+which as long as the substreams array is allocated, will iterate
+through calling cancel_work_sync() on the uninitialized work
+struct hitting this warning.
+
+Takashi Iwai suggested this fix, which initializes the substreams
+structure right after allocation, so that if we hit the error
+paths we avoid trying to cleanup uninitialized data.
+
+Note: I have not yet managed to reproduce the issue myself, so
+this patch has had limited testing.
+
+Feedback or thoughts would be appreciated!
+
+Cc: Anton Yakovlev <anton.yakovlev@opensynergy.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: virtualization@lists.linux.dev
+Cc: linux-sound@vger.kernel.org
+Cc: kernel-team@android.com
+Reported-by: Betty Zhou <bettyzhou@google.com>
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: John Stultz <jstultz@google.com>
+Message-Id: <20250116194114.3375616-1-jstultz@google.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/tb.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ sound/virtio/virtio_pcm.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
-index c592032657a1e..0668e1645bc50 100644
---- a/drivers/thunderbolt/tb.c
-+++ b/drivers/thunderbolt/tb.c
-@@ -640,11 +640,15 @@ static void tb_scan_port(struct tb_port *port)
- 		goto out_rpm_put;
- 	}
+diff --git a/sound/virtio/virtio_pcm.c b/sound/virtio/virtio_pcm.c
+index c10d91fff2fb0..1ddec1f4f05d5 100644
+--- a/sound/virtio/virtio_pcm.c
++++ b/sound/virtio/virtio_pcm.c
+@@ -337,6 +337,21 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
+ 	if (!snd->substreams)
+ 		return -ENOMEM;
  
--	tb_retimer_scan(port, true);
--
- 	sw = tb_switch_alloc(port->sw->tb, &port->sw->dev,
- 			     tb_downstream_route(port));
- 	if (IS_ERR(sw)) {
-+		/*
-+		 * Make the downstream retimers available even if there
-+		 * is no router connected.
-+		 */
-+		tb_retimer_scan(port, true);
-+
- 		/*
- 		 * If there is an error accessing the connected switch
- 		 * it may be connected to another domain. Also we allow
-@@ -704,6 +708,14 @@ static void tb_scan_port(struct tb_port *port)
- 	tb_switch_lane_bonding_enable(sw);
- 	/* Set the link configured */
- 	tb_switch_configure_link(sw);
 +	/*
-+	 * Scan for downstream retimers. We only scan them after the
-+	 * router has been enumerated to avoid issues with certain
-+	 * Pluggable devices that expect the host to enumerate them
-+	 * within certain timeout.
++	 * Initialize critical substream fields early in case we hit an
++	 * error path and end up trying to clean up uninitialized structures
++	 * elsewhere.
 +	 */
-+	tb_retimer_scan(port, true);
++	for (i = 0; i < snd->nsubstreams; ++i) {
++		struct virtio_pcm_substream *vss = &snd->substreams[i];
 +
- 	/*
- 	 * CL0s and CL1 are enabled and supported together.
- 	 * Silently ignore CLx enabling in case CLx is not supported.
++		vss->snd = snd;
++		vss->sid = i;
++		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
++		init_waitqueue_head(&vss->msg_empty);
++		spin_lock_init(&vss->lock);
++	}
++
+ 	info = kcalloc(snd->nsubstreams, sizeof(*info), GFP_KERNEL);
+ 	if (!info)
+ 		return -ENOMEM;
+@@ -350,12 +365,6 @@ int virtsnd_pcm_parse_cfg(struct virtio_snd *snd)
+ 		struct virtio_pcm_substream *vss = &snd->substreams[i];
+ 		struct virtio_pcm *vpcm;
+ 
+-		vss->snd = snd;
+-		vss->sid = i;
+-		INIT_WORK(&vss->elapsed_period, virtsnd_pcm_period_elapsed);
+-		init_waitqueue_head(&vss->msg_empty);
+-		spin_lock_init(&vss->lock);
+-
+ 		rc = virtsnd_pcm_build_hw(vss, &info[i]);
+ 		if (rc)
+ 			goto on_exit;
 -- 
 2.39.5
 
