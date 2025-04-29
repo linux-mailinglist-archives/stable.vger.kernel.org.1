@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-137764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD865AA14EF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6095AA136B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E03511A80926
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 311AB7AFA4E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BE1252296;
-	Tue, 29 Apr 2025 17:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D09221719;
+	Tue, 29 Apr 2025 17:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBzVNf8+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBlf9y1y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C849124E016;
-	Tue, 29 Apr 2025 17:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDB57E110;
+	Tue, 29 Apr 2025 17:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947057; cv=none; b=E10QxNzVe0Yu11LucVMKGIuTQnlfk1M9PnmAT1b0iS+4EUoVeNLXNBCvRvJ5I5IaRiJtW8h9+pRL2uBYYmS8rqbltMDPVeXUScTDxxks1Qox/I9vmTKwOhZneF+lBNyWiM5Kxgeq1fsbuEN/8A1saTJdR1yoE+9uqFVtCspDQ6k=
+	t=1745946310; cv=none; b=tQlJyA4j7GQhuOCGOkyoMwnTY2gjS0a7KDOdC+ui1wxRIExntg0ZNghTnSSJyHQDQV8h7gddHIrl8tRlmSl6nsrzrn6v3Qctw/fjnZtQTpF+1OmptBd43Mp2C/TAMhxfhu0aLNmyJfqvn/YmRKwGZFKmVz7bPB+RrdiqJHJ/3Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947057; c=relaxed/simple;
-	bh=DKAiB+heF/LtY6sFUaRpdAgqUIRUJhUvFA4uB6YThXo=;
+	s=arc-20240116; t=1745946310; c=relaxed/simple;
+	bh=oWnzb5P8Udu8z/rjGHITB6cmMXL7psJbxxM2bJZsfpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u0CP2vJUH1sXOZZLB3Fit9Atg2oMHLJAXzP93d9ZLgx9ckbOIoohSO3eeCk46KLv7zYOX3rA4k86dzd6CwbzHhNbqMaaXV5wcwuzb76nZZx5l/0rpLraJyYewh6LmSHRllg/lktenKly7yRt6lzNJ2v8JDL5lhIyskVTlE/rigk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBzVNf8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C763FC4CEE3;
-	Tue, 29 Apr 2025 17:17:36 +0000 (UTC)
+	 MIME-Version; b=q5gR2EPMHUnDa0a1XXXmo85xa6g8AdkjvcHoh3CP/8AUyD8H3KhpqUs2BmTn1/c3ZJgsyFnVjZRUJLr+w5SNMKJgLihpY+wdQ7bQMtbAuJkxIt89foLTAwKc0NuohmtsAaaEBKNZwEUfykPhR4v1YPT4nzKa90tku7JMKCxSEQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBlf9y1y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008B5C4CEEA;
+	Tue, 29 Apr 2025 17:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947057;
-	bh=DKAiB+heF/LtY6sFUaRpdAgqUIRUJhUvFA4uB6YThXo=;
+	s=korg; t=1745946310;
+	bh=oWnzb5P8Udu8z/rjGHITB6cmMXL7psJbxxM2bJZsfpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tBzVNf8+C9lOOzeojLHupvHs29ZUdgcso8j54mwaSrTLZgW93nJZs/C1SdX3wOIDp
-	 Re+YhNaM5PWMID9fMGwvFBbhb5hQ9JhloZ126mpgTd1gL0vftZfJdDnVwi35D6hINP
-	 frZIEw9Lr1bjGriaExz+/o56rmT4cn4DUFsKk9uw=
+	b=cBlf9y1ywvm/EVuHVMmf2hJP9I5RTYOL6wdxgBAnd+ePW7OCt6xCC5fKJLln1khZw
+	 PzDHZHsGCB9HytRUFUwf9PR5cTVr1120n+hgZGrLDkwHWd1DEawEgp1LDUWsdKtaW+
+	 ySQgzLlOXVjMfPT9tapARLdRnwu2EqirLi2n1V88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kang Yang <quic_kangyang@quicinc.com>,
-	David Ruth <druth@chromium.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 5.10 157/286] wifi: ath10k: avoid NULL pointer error during sdio remove
-Date: Tue, 29 Apr 2025 18:41:01 +0200
-Message-ID: <20250429161114.343210290@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 225/311] objtool, lkdtm: Obfuscate the do_nothing() pointer
+Date: Tue, 29 Apr 2025 18:41:02 +0200
+Message-ID: <20250429161130.242296436@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +64,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kang Yang <quic_kangyang@quicinc.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 95c38953cb1ecf40399a676a1f85dfe2b5780a9a upstream.
+[ Upstream commit 05026ea01e95ffdeb0e5ac8fb7fb1b551e3a8726 ]
 
-When running 'rmmod ath10k', ath10k_sdio_remove() will free sdio
-workqueue by destroy_workqueue(). But if CONFIG_INIT_ON_FREE_DEFAULT_ON
-is set to yes, kernel panic will happen:
-Call trace:
- destroy_workqueue+0x1c/0x258
- ath10k_sdio_remove+0x84/0x94
- sdio_bus_remove+0x50/0x16c
- device_release_driver_internal+0x188/0x25c
- device_driver_detach+0x20/0x2c
+If execute_location()'s memcpy of do_nothing() gets inlined and unrolled
+by the compiler, it copies one word at a time:
 
-This is because during 'rmmod ath10k', ath10k_sdio_remove() will call
-ath10k_core_destroy() before destroy_workqueue(). wiphy_dev_release()
-will finally be called in ath10k_core_destroy(). This function will free
-struct cfg80211_registered_device *rdev and all its members, including
-wiphy, dev and the pointer of sdio workqueue. Then the pointer of sdio
-workqueue will be set to NULL due to CONFIG_INIT_ON_FREE_DEFAULT_ON.
+    mov    0x0(%rip),%rax    R_X86_64_PC32    .text+0x1374
+    mov    %rax,0x38(%rbx)
+    mov    0x0(%rip),%rax    R_X86_64_PC32    .text+0x136c
+    mov    %rax,0x30(%rbx)
+    ...
 
-After device release, destroy_workqueue() will use NULL pointer then the
-kernel panic happen.
+Those .text references point to the middle of the function, causing
+objtool to complain about their lack of ENDBR.
 
-Call trace:
-ath10k_sdio_remove
-  ->ath10k_core_unregister
-    ……
-    ->ath10k_core_stop
-      ->ath10k_hif_stop
-        ->ath10k_sdio_irq_disable
-    ->ath10k_hif_power_down
-      ->del_timer_sync(&ar_sdio->sleep_timer)
-  ->ath10k_core_destroy
-    ->ath10k_mac_destroy
-      ->ieee80211_free_hw
-        ->wiphy_free
-    ……
-          ->wiphy_dev_release
-  ->destroy_workqueue
+Prevent that by resolving the function pointer at runtime rather than
+build time.  This fixes the following warning:
 
-Need to call destroy_workqueue() before ath10k_core_destroy(), free
-the work queue buffer first and then free pointer of work queue by
-ath10k_core_destroy(). This order matches the error path order in
-ath10k_sdio_probe().
+  drivers/misc/lkdtm/lkdtm.o: warning: objtool: execute_location+0x23: relocation to !ENDBR: .text+0x1378
 
-No work will be queued on sdio workqueue between it is destroyed and
-ath10k_core_destroy() is called. Based on the call_stack above, the
-reason is:
-Only ath10k_sdio_sleep_timer_handler(), ath10k_sdio_hif_tx_sg() and
-ath10k_sdio_irq_disable() will queue work on sdio workqueue.
-Sleep timer will be deleted before ath10k_core_destroy() in
-ath10k_hif_power_down().
-ath10k_sdio_irq_disable() only be called in ath10k_hif_stop().
-ath10k_core_unregister() will call ath10k_hif_power_down() to stop hif
-bus, so ath10k_sdio_hif_tx_sg() won't be called anymore.
-
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
-
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Tested-by: David Ruth <druth@chromium.org>
-Reviewed-by: David Ruth <druth@chromium.org>
-Link: https://patch.msgid.link/20241008022246.1010-1-quic_kangyang@quicinc.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/30b9abffbddeb43c4f6320b1270fa9b4d74c54ed.1742852847.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202503191453.uFfxQy5R-lkp@intel.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/sdio.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/misc/lkdtm/perms.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -3,6 +3,7 @@
-  * Copyright (c) 2004-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2012,2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2016-2017 Erik Stromdahl <erik.stromdahl@gmail.com>
-+ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
+index 5b861dbff27e9..6c24426104ba6 100644
+--- a/drivers/misc/lkdtm/perms.c
++++ b/drivers/misc/lkdtm/perms.c
+@@ -28,6 +28,13 @@ static const unsigned long rodata = 0xAA55AA55;
+ /* This is marked __ro_after_init, so it should ultimately be .rodata. */
+ static unsigned long ro_after_init __ro_after_init = 0x55AA5500;
  
- #include <linux/module.h>
-@@ -2649,9 +2650,9 @@ static void ath10k_sdio_remove(struct sd
- 
- 	netif_napi_del(&ar->napi);
- 
--	ath10k_core_destroy(ar);
--
- 	destroy_workqueue(ar_sdio->workqueue);
++/*
++ * This is a pointer to do_nothing() which is initialized at runtime rather
++ * than build time to avoid objtool IBT validation warnings caused by an
++ * inlined unrolled memcpy() in execute_location().
++ */
++static void __ro_after_init *do_nothing_ptr;
 +
-+	ath10k_core_destroy(ar);
- }
+ /*
+  * This just returns to the caller. It is designed to be copied into
+  * non-executable memory regions.
+@@ -65,13 +72,12 @@ static noinline __nocfi void execute_location(void *dst, bool write)
+ {
+ 	void (*func)(void);
+ 	func_desc_t fdesc;
+-	void *do_nothing_text = dereference_function_descriptor(do_nothing);
  
- static const struct sdio_device_id ath10k_sdio_devices[] = {
+-	pr_info("attempting ok execution at %px\n", do_nothing_text);
++	pr_info("attempting ok execution at %px\n", do_nothing_ptr);
+ 	do_nothing();
+ 
+ 	if (write == CODE_WRITE) {
+-		memcpy(dst, do_nothing_text, EXEC_SIZE);
++		memcpy(dst, do_nothing_ptr, EXEC_SIZE);
+ 		flush_icache_range((unsigned long)dst,
+ 				   (unsigned long)dst + EXEC_SIZE);
+ 	}
+@@ -267,6 +273,8 @@ static void lkdtm_ACCESS_NULL(void)
+ 
+ void __init lkdtm_perms_init(void)
+ {
++	do_nothing_ptr = dereference_function_descriptor(do_nothing);
++
+ 	/* Make sure we can write to __ro_after_init values during __init */
+ 	ro_after_init |= 0xAA;
+ }
+-- 
+2.39.5
+
 
 
 
