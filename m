@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-137820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF17EAA155C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D55AA1836
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ADB33B299E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EED43AB856
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B792459EA;
-	Tue, 29 Apr 2025 17:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0959222AE68;
+	Tue, 29 Apr 2025 17:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4mclVRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8iU+d0v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0C824466C;
-	Tue, 29 Apr 2025 17:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92D82B2DA;
+	Tue, 29 Apr 2025 17:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947230; cv=none; b=eQiU/2tuEmOjR9Y4E8fcVP5qDHAza0t1/2KNptYCGnDvfhSRZRsGCmWO/EEUuc+o/yawMLAh1ThcpOBaVwsLNVnRIaPLWJ1yr+3I33xvQj74GaETBnNgG0w5d1ZIcxNZ+zgLVPdEf0wlbiYSXUPPrXcewijNy1fk5vRE/fVkIq4=
+	t=1745949191; cv=none; b=CXq5pgS/5ux2koQFq1L54LP0D2XiFim5aMAhkzVFyRwrrl3EFEISJq9VrIihi4/JDdZJgDIcKzJBtUlgOFUuhq4qt0JLX1TxijkZ+u+UuVL27RdvfI955SHY6XWsNBprx+0y/dEfyq738rRVqusab3P1Ax1Fy8UI5MxVb7y1fwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947230; c=relaxed/simple;
-	bh=XGZFgJ3IuGuA1PELuqpb7AGS0jR+nywRwNGlbQCEE9A=;
+	s=arc-20240116; t=1745949191; c=relaxed/simple;
+	bh=rxFBamizUuWBJoZdnEbWP0zxhLZblGJQCH8OhIZAii8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TN4OPxMX/M2dYA4Wlp+rxrbS4dc1wiNsESnx9eug2hw63GWEgmFfa0v75IbDoJzc9MAo7ut3rCoVcyu1aCsGr6d7RaKOu3DXOyZL6jUbv6oUOzDqBg6nR3zaprmP4CILrkh3SSEnRmk4lKrogVC+hbPxtc+zrqvp2nuogmlk/mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4mclVRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ACCC4CEE3;
-	Tue, 29 Apr 2025 17:20:29 +0000 (UTC)
+	 MIME-Version; b=XOUhUMMUpSVLE15+Z5CiCSmAbjMC9Qc/98JFjnbuAQqqM/MwmCMO5VxvMTBmxKopXjbRD7SvWuIwS2ikiGHaLc4qQm6iM03VL0gw8F8dg6IaomWLiY21IHwwZ7jwj62mX+QO0jbZj3oSWrl8Mj4ZHlkxJaUkt7WbdW1IUYLwP/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8iU+d0v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235B9C4CEE3;
+	Tue, 29 Apr 2025 17:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947230;
-	bh=XGZFgJ3IuGuA1PELuqpb7AGS0jR+nywRwNGlbQCEE9A=;
+	s=korg; t=1745949191;
+	bh=rxFBamizUuWBJoZdnEbWP0zxhLZblGJQCH8OhIZAii8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4mclVRkKPx2AXXJF36UmqJ2vEU9k7m8IW6IkbFtnvvo0ifiRAEWDNXTetkxM+rBQ
-	 S4VxzkdWdoAaw7yhTaYuHiTAkPs4cR8ilx70CrTctOnc7TjQQIqapFkbEeJCWJB/QG
-	 Q4enXnQqbh1gha5CzMmY+lEcSRt1JtEjFnrVPgaM=
+	b=Z8iU+d0vX2o5RVE2IPspjgm+G3A8gg17BQDASBhenJaMTuTefXqYasZ488vslBpNE
+	 Oj16adpMk1W3XvJQoV+OCzwqMtL8WGa1pCABuUkz8jihnrPgUIudrmmuVRhqwuTcC6
+	 5T4FUHserwv3D5U0m6E+8pkvORhi4WQj8dPjgCc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Pankaj Dubey <pankaj.dubey@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 213/286] soc: samsung: exynos-chipid: convert to driver and merge exynos-asv
+	Ilya Maximets <i.maximets@ovn.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.15 240/373] net: defer final struct net free in netns dismantle
 Date: Tue, 29 Apr 2025 18:41:57 +0200
-Message-ID: <20250429161116.711114025@linuxfoundation.org>
+Message-ID: <20250429161133.006120847@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,375 +66,222 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzk@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 352bfbb3e0230c96b2bce00d2ac3f0de303cc7b6 ]
+commit 0f6ede9fbc747e2553612271bce108f7517e7a45 upstream.
 
-The Exynos Chip ID driver on Exynos SoCs has so far only informational
-purpose - to expose the SoC device in sysfs.  No other drivers depend on
-it so there is really no benefit of initializing it early.
+Ilya reported a slab-use-after-free in dst_destroy [1]
 
-The code would be the most flexible if converted to a regular driver.
-However there is already another driver - Exynos ASV (Adaptive Supply
-Voltage) - which binds to the device node of Chip ID.
+Issue is in xfrm6_net_init() and xfrm4_net_init() :
 
-The solution is to convert the Exynos Chip ID to a built in driver and
-merge the Exynos ASV into it.
+They copy xfrm[46]_dst_ops_template into net->xfrm.xfrm[46]_dst_ops.
 
-This has several benefits:
-1. Although the Exynos ASV driver binds to a device node present in all
-   Exynos DTS (generic compatible), it fails to probe except on the
-   supported ones (only Exynos5422).  This means that the regular boot
-   process has a planned/normal device probe failure.
+But net structure might be freed before all the dst callbacks are
+called. So when dst_destroy() calls later :
 
-   Merging the ASV into Chip ID will remove this probe failure because
-   the final driver will always bind, just with disabled ASV features.
+if (dst->ops->destroy)
+    dst->ops->destroy(dst);
 
-2. Allows to use dev_info() as the SoC bus is present (since
-   core_initcall).
+dst->ops points to the old net->xfrm.xfrm[46]_dst_ops, which has been freed.
 
-3. Could speed things up because of execution of Chip ID code in a SMP
-   environment (after bringing up secondary CPUs, unlike early_initcall),
-   This reduces the amount of work to be done early, when the kernel has
-   to bring up critical devices.
+See a relevant issue fixed in :
 
-5. Makes the Chip ID code defer-probe friendly,
+ac888d58869b ("net: do not delay dst_entries_add() in dst_release()")
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://lore.kernel.org/r/20201207190517.262051-5-krzk@kernel.org
-Reviewed-by: Pankaj Dubey <pankaj.dubey@samsung.com>
-Stable-dep-of: c8222ef6cf29 ("soc: samsung: exynos-chipid: Add NULL pointer check in exynos_chipid_probe()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A fix is to queue the 'struct net' to be freed after one
+another cleanup_net() round (and existing rcu_barrier())
+
+[1]
+
+BUG: KASAN: slab-use-after-free in dst_destroy (net/core/dst.c:112)
+Read of size 8 at addr ffff8882137ccab0 by task swapper/37/0
+Dec 03 05:46:18 kernel:
+CPU: 37 UID: 0 PID: 0 Comm: swapper/37 Kdump: loaded Not tainted 6.12.0 #67
+Hardware name: Red Hat KVM/RHEL, BIOS 1.16.1-1.el9 04/01/2014
+Call Trace:
+ <IRQ>
+dump_stack_lvl (lib/dump_stack.c:124)
+print_address_description.constprop.0 (mm/kasan/report.c:378)
+? dst_destroy (net/core/dst.c:112)
+print_report (mm/kasan/report.c:489)
+? dst_destroy (net/core/dst.c:112)
+? kasan_addr_to_slab (mm/kasan/common.c:37)
+kasan_report (mm/kasan/report.c:603)
+? dst_destroy (net/core/dst.c:112)
+? rcu_do_batch (kernel/rcu/tree.c:2567)
+dst_destroy (net/core/dst.c:112)
+rcu_do_batch (kernel/rcu/tree.c:2567)
+? __pfx_rcu_do_batch (kernel/rcu/tree.c:2491)
+? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4339 kernel/locking/lockdep.c:4406)
+rcu_core (kernel/rcu/tree.c:2825)
+handle_softirqs (kernel/softirq.c:554)
+__irq_exit_rcu (kernel/softirq.c:589 kernel/softirq.c:428 kernel/softirq.c:637)
+irq_exit_rcu (kernel/softirq.c:651)
+sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1049 arch/x86/kernel/apic/apic.c:1049)
+ </IRQ>
+ <TASK>
+asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:702)
+RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:743)
+Code: 00 4d 29 c8 4c 01 c7 4c 29 c2 e9 6e ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 0f 00 2d c7 c9 27 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90
+RSP: 0018:ffff888100d2fe00 EFLAGS: 00000246
+RAX: 00000000001870ed RBX: 1ffff110201a5fc2 RCX: ffffffffb61a3e46
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffffb3d4d123
+RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed11c7e1835d
+R10: ffff888e3f0c1aeb R11: 0000000000000000 R12: 0000000000000000
+R13: ffff888100d20000 R14: dffffc0000000000 R15: 0000000000000000
+? ct_kernel_exit.constprop.0 (kernel/context_tracking.c:148)
+? cpuidle_idle_call (kernel/sched/idle.c:186)
+default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
+cpuidle_idle_call (kernel/sched/idle.c:186)
+? __pfx_cpuidle_idle_call (kernel/sched/idle.c:168)
+? lock_release (kernel/locking/lockdep.c:467 kernel/locking/lockdep.c:5848)
+? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4347 kernel/locking/lockdep.c:4406)
+? tsc_verify_tsc_adjust (arch/x86/kernel/tsc_sync.c:59)
+do_idle (kernel/sched/idle.c:326)
+cpu_startup_entry (kernel/sched/idle.c:423 (discriminator 1))
+start_secondary (arch/x86/kernel/smpboot.c:202 arch/x86/kernel/smpboot.c:282)
+? __pfx_start_secondary (arch/x86/kernel/smpboot.c:232)
+? soft_restart_cpu (arch/x86/kernel/head_64.S:452)
+common_startup_64 (arch/x86/kernel/head_64.S:414)
+ </TASK>
+Dec 03 05:46:18 kernel:
+Allocated by task 12184:
+kasan_save_stack (mm/kasan/common.c:48)
+kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
+__kasan_slab_alloc (mm/kasan/common.c:319 mm/kasan/common.c:345)
+kmem_cache_alloc_noprof (mm/slub.c:4085 mm/slub.c:4134 mm/slub.c:4141)
+copy_net_ns (net/core/net_namespace.c:421 net/core/net_namespace.c:480)
+create_new_namespaces (kernel/nsproxy.c:110)
+unshare_nsproxy_namespaces (kernel/nsproxy.c:228 (discriminator 4))
+ksys_unshare (kernel/fork.c:3313)
+__x64_sys_unshare (kernel/fork.c:3382)
+do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+Dec 03 05:46:18 kernel:
+Freed by task 11:
+kasan_save_stack (mm/kasan/common.c:48)
+kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
+kasan_save_free_info (mm/kasan/generic.c:582)
+__kasan_slab_free (mm/kasan/common.c:271)
+kmem_cache_free (mm/slub.c:4579 mm/slub.c:4681)
+cleanup_net (net/core/net_namespace.c:456 net/core/net_namespace.c:446 net/core/net_namespace.c:647)
+process_one_work (kernel/workqueue.c:3229)
+worker_thread (kernel/workqueue.c:3304 kernel/workqueue.c:3391)
+kthread (kernel/kthread.c:389)
+ret_from_fork (arch/x86/kernel/process.c:147)
+ret_from_fork_asm (arch/x86/entry/entry_64.S:257)
+Dec 03 05:46:18 kernel:
+Last potentially related work creation:
+kasan_save_stack (mm/kasan/common.c:48)
+__kasan_record_aux_stack (mm/kasan/generic.c:541)
+insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
+__queue_work (kernel/workqueue.c:2340)
+queue_work_on (kernel/workqueue.c:2391)
+xfrm_policy_insert (net/xfrm/xfrm_policy.c:1610)
+xfrm_add_policy (net/xfrm/xfrm_user.c:2116)
+xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
+netlink_rcv_skb (net/netlink/af_netlink.c:2536)
+xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
+netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
+netlink_sendmsg (net/netlink/af_netlink.c:1886)
+sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
+vfs_write (fs/read_write.c:590 fs/read_write.c:683)
+ksys_write (fs/read_write.c:736)
+do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+Dec 03 05:46:18 kernel:
+Second to last potentially related work creation:
+kasan_save_stack (mm/kasan/common.c:48)
+__kasan_record_aux_stack (mm/kasan/generic.c:541)
+insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
+__queue_work (kernel/workqueue.c:2340)
+queue_work_on (kernel/workqueue.c:2391)
+__xfrm_state_insert (./include/linux/workqueue.h:723 net/xfrm/xfrm_state.c:1150 net/xfrm/xfrm_state.c:1145 net/xfrm/xfrm_state.c:1513)
+xfrm_state_update (./include/linux/spinlock.h:396 net/xfrm/xfrm_state.c:1940)
+xfrm_add_sa (net/xfrm/xfrm_user.c:912)
+xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
+netlink_rcv_skb (net/netlink/af_netlink.c:2536)
+xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
+netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
+netlink_sendmsg (net/netlink/af_netlink.c:1886)
+sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
+vfs_write (fs/read_write.c:590 fs/read_write.c:683)
+ksys_write (fs/read_write.c:736)
+do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+Fixes: a8a572a6b5f2 ("xfrm: dst_entries_init() per-net dst_ops")
+Reported-by: Ilya Maximets <i.maximets@ovn.org>
+Closes: https://lore.kernel.org/netdev/CANn89iKKYDVpB=MtmfH7nyv2p=rJWSLedO5k7wSZgtY_tO8WQg@mail.gmail.com/T/#m02c98c3009fe66382b73cfb4db9cf1df6fab3fbf
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20241204125455.3871859-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[Minor conflict resolved due to code context change.]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-exynos/Kconfig        |  1 -
- drivers/soc/samsung/Kconfig         | 12 +++--
- drivers/soc/samsung/Makefile        |  3 +-
- drivers/soc/samsung/exynos-asv.c    | 45 +++++--------------
- drivers/soc/samsung/exynos-asv.h    |  2 +
- drivers/soc/samsung/exynos-chipid.c | 69 ++++++++++++++++++++---------
- 6 files changed, 67 insertions(+), 65 deletions(-)
+ include/net/net_namespace.h |    1 +
+ net/core/net_namespace.c    |   21 ++++++++++++++++++++-
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-exynos/Kconfig b/arch/arm/mach-exynos/Kconfig
-index b5df98ee5d176..4b554cc8fa58a 100644
---- a/arch/arm/mach-exynos/Kconfig
-+++ b/arch/arm/mach-exynos/Kconfig
-@@ -13,7 +13,6 @@ menuconfig ARCH_EXYNOS
- 	select ARM_GIC
- 	select EXYNOS_IRQ_COMBINER
- 	select COMMON_CLK_SAMSUNG
--	select EXYNOS_ASV
- 	select EXYNOS_CHIPID
- 	select EXYNOS_THERMAL
- 	select EXYNOS_PMU
-diff --git a/drivers/soc/samsung/Kconfig b/drivers/soc/samsung/Kconfig
-index fc7f48a922881..5745d7e5908e9 100644
---- a/drivers/soc/samsung/Kconfig
-+++ b/drivers/soc/samsung/Kconfig
-@@ -7,21 +7,19 @@ menuconfig SOC_SAMSUNG
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -80,6 +80,7 @@ struct net {
+ 						 * or to unregister pernet ops
+ 						 * (pernet_ops_rwsem write locked).
+ 						 */
++	struct llist_node	defer_free_list;
+ 	struct llist_node	cleanup_list;	/* namespaces on death row */
  
- if SOC_SAMSUNG
- 
--config EXYNOS_ASV
--	bool "Exynos Adaptive Supply Voltage support" if COMPILE_TEST
--	depends on (ARCH_EXYNOS && EXYNOS_CHIPID) || COMPILE_TEST
--	select EXYNOS_ASV_ARM if ARM && ARCH_EXYNOS
--
- # There is no need to enable these drivers for ARMv8
- config EXYNOS_ASV_ARM
- 	bool "Exynos ASV ARMv7-specific driver extensions" if COMPILE_TEST
--	depends on EXYNOS_ASV
-+	depends on EXYNOS_CHIPID
- 
- config EXYNOS_CHIPID
--	bool "Exynos Chipid controller driver" if COMPILE_TEST
-+	bool "Exynos ChipID controller and ASV driver" if COMPILE_TEST
- 	depends on ARCH_EXYNOS || COMPILE_TEST
-+	select EXYNOS_ASV_ARM if ARM && ARCH_EXYNOS
- 	select MFD_SYSCON
- 	select SOC_BUS
-+	help
-+	  Support for Samsung Exynos SoC ChipID and Adaptive Supply Voltage.
- 
- config EXYNOS_PMU
- 	bool "Exynos PMU controller driver" if COMPILE_TEST
-diff --git a/drivers/soc/samsung/Makefile b/drivers/soc/samsung/Makefile
-index 59e8e9453f27c..0c523a8de4ebf 100644
---- a/drivers/soc/samsung/Makefile
-+++ b/drivers/soc/samsung/Makefile
-@@ -1,9 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0
- 
--obj-$(CONFIG_EXYNOS_ASV)	+= exynos-asv.o
- obj-$(CONFIG_EXYNOS_ASV_ARM)	+= exynos5422-asv.o
- 
--obj-$(CONFIG_EXYNOS_CHIPID)	+= exynos-chipid.o
-+obj-$(CONFIG_EXYNOS_CHIPID)	+= exynos-chipid.o exynos-asv.o
- obj-$(CONFIG_EXYNOS_PMU)	+= exynos-pmu.o
- 
- obj-$(CONFIG_EXYNOS_PMU_ARM_DRIVERS)	+= exynos3250-pmu.o exynos4-pmu.o \
-diff --git a/drivers/soc/samsung/exynos-asv.c b/drivers/soc/samsung/exynos-asv.c
-index 5daeadc363829..d60af8acc3916 100644
---- a/drivers/soc/samsung/exynos-asv.c
-+++ b/drivers/soc/samsung/exynos-asv.c
-@@ -2,7 +2,9 @@
- /*
-  * Copyright (c) 2019 Samsung Electronics Co., Ltd.
-  *	      http://www.samsung.com/
-+ * Copyright (c) 2020 Krzysztof Kozlowski <krzk@kernel.org>
-  * Author: Sylwester Nawrocki <s.nawrocki@samsung.com>
-+ * Author: Krzysztof Kozlowski <krzk@kernel.org>
-  *
-  * Samsung Exynos SoC Adaptive Supply Voltage support
-  */
-@@ -10,12 +12,7 @@
- #include <linux/cpu.h>
- #include <linux/device.h>
- #include <linux/errno.h>
--#include <linux/init.h>
--#include <linux/mfd/syscon.h>
--#include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
--#include <linux/platform_device.h>
- #include <linux/pm_opp.h>
- #include <linux/regmap.h>
- #include <linux/soc/samsung/exynos-chipid.h>
-@@ -111,7 +108,7 @@ static int exynos_asv_update_opps(struct exynos_asv *asv)
- 	return	0;
+ #ifdef CONFIG_KEYS
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -440,11 +440,28 @@ out_free:
+ 	goto out;
  }
  
--static int exynos_asv_probe(struct platform_device *pdev)
-+int exynos_asv_init(struct device *dev, struct regmap *regmap)
- {
- 	int (*probe_func)(struct exynos_asv *asv);
- 	struct exynos_asv *asv;
-@@ -119,21 +116,16 @@ static int exynos_asv_probe(struct platform_device *pdev)
- 	u32 product_id = 0;
- 	int ret, i;
- 
--	asv = devm_kzalloc(&pdev->dev, sizeof(*asv), GFP_KERNEL);
-+	asv = devm_kzalloc(dev, sizeof(*asv), GFP_KERNEL);
- 	if (!asv)
- 		return -ENOMEM;
- 
--	asv->chipid_regmap = device_node_to_regmap(pdev->dev.of_node);
--	if (IS_ERR(asv->chipid_regmap)) {
--		dev_err(&pdev->dev, "Could not find syscon regmap\n");
--		return PTR_ERR(asv->chipid_regmap);
--	}
--
-+	asv->chipid_regmap = regmap;
-+	asv->dev = dev;
- 	ret = regmap_read(asv->chipid_regmap, EXYNOS_CHIPID_REG_PRO_ID,
- 			  &product_id);
- 	if (ret < 0) {
--		dev_err(&pdev->dev, "Cannot read revision from ChipID: %d\n",
--			ret);
-+		dev_err(dev, "Cannot read revision from ChipID: %d\n", ret);
- 		return -ENODEV;
- 	}
- 
-@@ -142,7 +134,9 @@ static int exynos_asv_probe(struct platform_device *pdev)
- 		probe_func = exynos5422_asv_init;
- 		break;
- 	default:
--		return -ENODEV;
-+		dev_dbg(dev, "No ASV support for this SoC\n");
-+		devm_kfree(dev, asv);
-+		return 0;
- 	}
- 
- 	cpu_dev = get_cpu_device(0);
-@@ -150,14 +144,11 @@ static int exynos_asv_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		return -EPROBE_DEFER;
- 
--	ret = of_property_read_u32(pdev->dev.of_node, "samsung,asv-bin",
-+	ret = of_property_read_u32(dev->of_node, "samsung,asv-bin",
- 				   &asv->of_bin);
- 	if (ret < 0)
- 		asv->of_bin = -EINVAL;
- 
--	asv->dev = &pdev->dev;
--	dev_set_drvdata(&pdev->dev, asv);
--
- 	for (i = 0; i < ARRAY_SIZE(asv->subsys); i++)
- 		asv->subsys[i].asv = asv;
- 
-@@ -167,17 +158,3 @@ static int exynos_asv_probe(struct platform_device *pdev)
- 
- 	return exynos_asv_update_opps(asv);
- }
--
--static const struct of_device_id exynos_asv_of_device_ids[] = {
--	{ .compatible = "samsung,exynos4210-chipid" },
--	{}
--};
--
--static struct platform_driver exynos_asv_driver = {
--	.driver = {
--		.name = "exynos-asv",
--		.of_match_table = exynos_asv_of_device_ids,
--	},
--	.probe	= exynos_asv_probe,
--};
--module_platform_driver(exynos_asv_driver);
-diff --git a/drivers/soc/samsung/exynos-asv.h b/drivers/soc/samsung/exynos-asv.h
-index 3fd1f2acd9995..dcbe154db31e0 100644
---- a/drivers/soc/samsung/exynos-asv.h
-+++ b/drivers/soc/samsung/exynos-asv.h
-@@ -68,4 +68,6 @@ static inline u32 exynos_asv_opp_get_frequency(const struct exynos_asv_subsys *s
- 	return __asv_get_table_entry(&subsys->table, level, 0);
- }
- 
-+int exynos_asv_init(struct device *dev, struct regmap *regmap);
++static LLIST_HEAD(defer_free_list);
 +
- #endif /* __LINUX_SOC_EXYNOS_ASV_H */
-diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
-index 0f2de1b016a59..2ab6ce71e9be5 100644
---- a/drivers/soc/samsung/exynos-chipid.c
-+++ b/drivers/soc/samsung/exynos-chipid.c
-@@ -2,20 +2,28 @@
- /*
-  * Copyright (c) 2019 Samsung Electronics Co., Ltd.
-  *	      http://www.samsung.com/
-+ * Copyright (c) 2020 Krzysztof Kozlowski <krzk@kernel.org>
-  *
-  * Exynos - CHIP ID support
-  * Author: Pankaj Dubey <pankaj.dubey@samsung.com>
-  * Author: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-+ * Author: Krzysztof Kozlowski <krzk@kernel.org>
-+ *
-+ * Samsung Exynos SoC Adaptive Supply Voltage and Chip ID support
-  */
- 
--#include <linux/io.h>
-+#include <linux/device.h>
-+#include <linux/errno.h>
- #include <linux/mfd/syscon.h>
- #include <linux/of.h>
-+#include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
- #include <linux/soc/samsung/exynos-chipid.h>
- #include <linux/sys_soc.h>
- 
-+#include "exynos-asv.h"
-+
- static const struct exynos_soc_id {
- 	const char *name;
- 	unsigned int id;
-@@ -45,25 +53,17 @@ static const char * __init product_id_to_soc_id(unsigned int product_id)
- 	return NULL;
- }
- 
--static int __init exynos_chipid_early_init(void)
-+static int exynos_chipid_probe(struct platform_device *pdev)
- {
- 	struct soc_device_attribute *soc_dev_attr;
- 	struct soc_device *soc_dev;
- 	struct device_node *root;
--	struct device_node *syscon;
- 	struct regmap *regmap;
- 	u32 product_id;
- 	u32 revision;
- 	int ret;
- 
--	syscon = of_find_compatible_node(NULL, NULL,
--					 "samsung,exynos4210-chipid");
--	if (!syscon)
--		return -ENODEV;
--
--	regmap = device_node_to_regmap(syscon);
--	of_node_put(syscon);
--
-+	regmap = device_node_to_regmap(pdev->dev.of_node);
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
- 
-@@ -73,7 +73,8 @@ static int __init exynos_chipid_early_init(void)
- 
- 	revision = product_id & EXYNOS_REV_MASK;
- 
--	soc_dev_attr = kzalloc(sizeof(*soc_dev_attr), GFP_KERNEL);
-+	soc_dev_attr = devm_kzalloc(&pdev->dev, sizeof(*soc_dev_attr),
-+				    GFP_KERNEL);
- 	if (!soc_dev_attr)
- 		return -ENOMEM;
- 
-@@ -83,20 +84,24 @@ static int __init exynos_chipid_early_init(void)
- 	of_property_read_string(root, "model", &soc_dev_attr->machine);
- 	of_node_put(root);
- 
--	soc_dev_attr->revision = kasprintf(GFP_KERNEL, "%x", revision);
-+	soc_dev_attr->revision = devm_kasprintf(&pdev->dev, GFP_KERNEL,
-+						"%x", revision);
- 	soc_dev_attr->soc_id = product_id_to_soc_id(product_id);
- 	if (!soc_dev_attr->soc_id) {
- 		pr_err("Unknown SoC\n");
--		ret = -ENODEV;
--		goto err;
-+		return -ENODEV;
- 	}
- 
- 	/* please note that the actual registration will be deferred */
- 	soc_dev = soc_device_register(soc_dev_attr);
--	if (IS_ERR(soc_dev)) {
--		ret = PTR_ERR(soc_dev);
-+	if (IS_ERR(soc_dev))
-+		return PTR_ERR(soc_dev);
-+
-+	ret = exynos_asv_init(&pdev->dev, regmap);
-+	if (ret)
- 		goto err;
--	}
-+
-+	platform_set_drvdata(pdev, soc_dev);
- 
- 	dev_info(soc_device_to_device(soc_dev),
- 		 "Exynos: CPU[%s] PRO_ID[0x%x] REV[0x%x] Detected\n",
-@@ -105,9 +110,31 @@ static int __init exynos_chipid_early_init(void)
- 	return 0;
- 
- err:
--	kfree(soc_dev_attr->revision);
--	kfree(soc_dev_attr);
-+	soc_device_unregister(soc_dev);
-+
- 	return ret;
- }
- 
--arch_initcall(exynos_chipid_early_init);
-+static int exynos_chipid_remove(struct platform_device *pdev)
++static void net_complete_free(void)
 +{
-+	struct soc_device *soc_dev = platform_get_drvdata(pdev);
++	struct llist_node *kill_list;
++	struct net *net, *next;
 +
-+	soc_device_unregister(soc_dev);
++	/* Get the list of namespaces to free from last round. */
++	kill_list = llist_del_all(&defer_free_list);
 +
-+	return 0;
++	llist_for_each_entry_safe(net, next, kill_list, defer_free_list)
++		kmem_cache_free(net_cachep, net);
++
 +}
 +
-+static const struct of_device_id exynos_chipid_of_device_ids[] = {
-+	{ .compatible = "samsung,exynos4210-chipid" },
-+	{}
-+};
+ static void net_free(struct net *net)
+ {
+ 	if (refcount_dec_and_test(&net->passive)) {
+ 		kfree(rcu_access_pointer(net->gen));
+-		kmem_cache_free(net_cachep, net);
 +
-+static struct platform_driver exynos_chipid_driver = {
-+	.driver = {
-+		.name = "exynos-chipid",
-+		.of_match_table = exynos_chipid_of_device_ids,
-+	},
-+	.probe	= exynos_chipid_probe,
-+	.remove	= exynos_chipid_remove,
-+};
-+builtin_platform_driver(exynos_chipid_driver);
--- 
-2.39.5
-
++		/* Wait for an extra rcu_barrier() before final free. */
++		llist_add(&net->defer_free_list, &defer_free_list);
+ 	}
+ }
+ 
+@@ -628,6 +645,8 @@ static void cleanup_net(struct work_stru
+ 	 */
+ 	rcu_barrier();
+ 
++	net_complete_free();
++
+ 	/* Finally it is safe to free my network namespace structure */
+ 	list_for_each_entry_safe(net, tmp, &net_exit_list, exit_list) {
+ 		list_del_init(&net->exit_list);
 
 
 
