@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE7ACAA1708
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F863AA144B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CC467B6D86
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3486189C5E7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D5322A81D;
-	Tue, 29 Apr 2025 17:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3082472AA;
+	Tue, 29 Apr 2025 17:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q39A/Rc5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reRYfzEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A479421ABC1;
-	Tue, 29 Apr 2025 17:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88550241664;
+	Tue, 29 Apr 2025 17:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948583; cv=none; b=DQ1auS/CWMHQem+/Vkj3naJPqKJ28l59nxxKagq7ZPhzOnuN+hzjwbJUbxrnaySxZuFuhz+0VavqHqw6AzOtSdcuP2zZqyZOjCbAZ0zRJihnZzxFDs1lWv57ywCk8gnX0a5HtIICBjEuz34JD4z9g8Xh3grAa0m2jvSQ9QKsG8c=
+	t=1745946654; cv=none; b=up/MvC2WzDblj2lhLk/8dX1UdWFbrREOV1kB1/K0gv/18d73K5IApZobUIGAKjDYDqCCbaLXNvnfd3/OrvszIrIZiZncxD26CbcTx1mJNrAP6BXnnejFmZGOBLML/olIelQqvqqZTyZJjRig+tcqCyDxVklU1OHteGNb5y1P2kY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948583; c=relaxed/simple;
-	bh=4NUez06L3Rn3qRLSjWA9zMTrRFR4afJEDbYuhrJndTA=;
+	s=arc-20240116; t=1745946654; c=relaxed/simple;
+	bh=75Lyl9qHlfmarw9LTIwH4wXuo8taYrct8RHzN0iiaYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DiKNGbrWKsYETBTUXSiGyLJZGzM47/rc/xa8nFuYHgrJjT0uNKGorrOevWOoep4jfidc2pJnMq/VJ9EIW/Ji26uq8tSh5+abR5s13aU3T9vDrNVXHIvMrfBW6kG0AVaR04gwxAV+VcgY5x0EV3gqbxXuJU2WLDkEOvEHP/PU5B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q39A/Rc5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A06C4CEE3;
-	Tue, 29 Apr 2025 17:43:02 +0000 (UTC)
+	 MIME-Version; b=igjFc6lZBSQPbDoLYsEzUzxdkzIfcitDNDIltK2A4jaCvQC2moUirEymP11RNdiXlAPvj1qwZj450cSkQCVCthqwLYs59NRnSsQDmRxGtI7f6nLnv5oEoqxEwAQzMATnSKpqowVz8GFhABOLiuYMZUx2MCR63PXS+FW0ddSoVDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reRYfzEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC89BC4CEE3;
+	Tue, 29 Apr 2025 17:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948583;
-	bh=4NUez06L3Rn3qRLSjWA9zMTrRFR4afJEDbYuhrJndTA=;
+	s=korg; t=1745946654;
+	bh=75Lyl9qHlfmarw9LTIwH4wXuo8taYrct8RHzN0iiaYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q39A/Rc5ql6fzF52coZcyehBgTl0oerBWdq9/Z8HSXUgJZCtobSkzKeOFTpA7EZpU
-	 LLfZBcc6fng6o+OKLDTp3ts6y0t2Y2j+5HUq9LJ16u0AKkTDXeeGi51/xJ2DVbTJnw
-	 Zyh7lW1rJEDlbWM9dDHgiE1YpA6zi1ME3Eb/OCnw=
+	b=reRYfzEaxzrNLfu8NHiQok6L7uyv3yl1WGvwfCcxC8LZk1dYXYW8MwvWN9IJ79J53
+	 5VNCQZrcmAXxPFfFoqstVZKMOkmWUdwiZtoEmWtQ+6q+y/a5JXUi5JAaa4s7md2WqQ
+	 Ifur9pWi0BhKPvkRZT0MpYQOgrMmTem6sgP19nkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 051/373] pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()
-Date: Tue, 29 Apr 2025 18:38:48 +0200
-Message-ID: <20250429161125.231073836@linuxfoundation.org>
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+7c808908291a569281a9@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 025/286] jfs: add sanity check for agwidth in dbMount
+Date: Tue, 29 Apr 2025 18:38:49 +0200
+Message-ID: <20250429161108.887759560@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 7ca59947b5fcf94e7ea4029d1bd0f7c41500a161 ]
+[ Upstream commit ddf2846f22e8575d6b4b6a66f2100f168b8cd73d ]
 
-With CONFIG_COMPILE_TEST && !CONFIG_HAVE_CLK, pwm_mediatek_config() has a
-divide-by-zero in the following line:
+The width in dmapctl of the AG is zero, it trigger a divide error when
+calculating the control page level in dbAllocAG.
 
-	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
+To avoid this issue, add a check for agwidth in dbAllocAG.
 
-due to the fact that the !CONFIG_HAVE_CLK version of clk_get_rate()
-returns zero.
-
-This is presumably just a theoretical problem: COMPILE_TEST overrides
-the dependency on RALINK which would select COMMON_CLK.  Regardless it's
-a good idea to check for the error explicitly to avoid divide-by-zero.
-
-Fixes the following warning:
-
-  drivers/pwm/pwm-mediatek.o: warning: objtool: .text: unexpected end of section
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/fb56444939325cc173e752ba199abd7aeae3bf12.1742852847.git.jpoimboe@kernel.org
-[ukleinek: s/CONFIG_CLK/CONFIG_HAVE_CLK/]
-Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/9e78a0796acba3435553ed7db1c7965dcffa6215.1743501688.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Reported-and-tested-by: syzbot+7c808908291a569281a9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7c808908291a569281a9
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-mediatek.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/jfs/jfs_dmap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
-index f8f9a74891293..bb764428bfe76 100644
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -120,21 +120,25 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
- 	u32 clkdiv = 0, cnt_period, cnt_duty, reg_width = PWMDWIDTH,
- 	    reg_thres = PWMTHRES;
-+	unsigned long clk_rate;
- 	u64 resolution;
- 	int ret;
- 
- 	ret = pwm_mediatek_clk_enable(chip, pwm);
--
- 	if (ret < 0)
- 		return ret;
- 
-+	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
-+	if (!clk_rate)
-+		return -EINVAL;
-+
- 	/* Make sure we use the bus clock and not the 26MHz clock */
- 	if (pc->soc->has_ck_26m_sel)
- 		writel(0, pc->regs + PWM_CK_26M_SEL);
- 
- 	/* Using resolution in picosecond gets accuracy higher */
- 	resolution = (u64)NSEC_PER_SEC * 1000;
--	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
-+	do_div(resolution, clk_rate);
- 
- 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
- 	while (cnt_period > 8191) {
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 3cc10f9bf9f8b..8f4c55c711ba0 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -204,6 +204,10 @@ int dbMount(struct inode *ipbmap)
+ 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
+ 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
+ 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
++	if (!bmp->db_agwidth) {
++		err = -EINVAL;
++		goto err_release_metapage;
++	}
+ 	bmp->db_agstart = le32_to_cpu(dbmp_le->dn_agstart);
+ 	bmp->db_agl2size = le32_to_cpu(dbmp_le->dn_agl2size);
+ 	if (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG ||
 -- 
 2.39.5
 
