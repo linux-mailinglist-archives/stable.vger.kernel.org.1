@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56541AA165B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 958EDAA14F8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54BCA1881762
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48FF51694AB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60167E110;
-	Tue, 29 Apr 2025 17:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A1D24113C;
+	Tue, 29 Apr 2025 17:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCumcZ68"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmmOxHar"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F45E82C60;
-	Tue, 29 Apr 2025 17:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B493321ABDB;
+	Tue, 29 Apr 2025 17:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947960; cv=none; b=nwOj1/7d8zghgiwZoP+z9Ehao8hxLBlkoD9bSf4sR5FUIonglTrmxF5MN12YVYVH3yaf2yxpH74BeqUp6h8AeWDkx2BwBtzg25gsMQ4fppnALwsKIgyDiPnAbPggmM//IfEW31FBo2vaKs6UujPtv7PX59nLpJ+v+yRrJwhghwA=
+	t=1745947166; cv=none; b=JxDnY+Fszz0/9O3OCzKKeXPuFtKiXvj6BrLY/s5t/1Zg9FVIQUZz2XWPgr05UQI+HlAYrpHOnfbdsmImYsA8r+5MIbIDhDFcu3dqYS5ZuJhJPtjg5+4Yzwo032BOfR0pCPrHYBwULFUn4ciqkH3ajMyg83NEoek/OMKl9LEC1dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947960; c=relaxed/simple;
-	bh=yb/YX1ihEQvL07FFAQzJ4uOrzj4uUh0gwhuzH3bxo1g=;
+	s=arc-20240116; t=1745947166; c=relaxed/simple;
+	bh=qYpHFr2l5P2mIz7Zi0kpcaPEiRoCiUw7Dr8t3T5O4l8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXLVwERP0/99sAoXDIECnbL36tNclds8kCN0BkIaFjcYQDC6ttz/ECkKXlg+iYzU1v+mLLWLF7cC8Dm0bas9SEP6hh92pj9AYOhDpOa7SDsQfN1Pr2FD6IylNqqHT1RwiqjDKfsePHTtLSjQDMHCACP92QUklF//oghXIP89bPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCumcZ68; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E85C4CEE9;
-	Tue, 29 Apr 2025 17:32:39 +0000 (UTC)
+	 MIME-Version; b=MKgYD3O9iJ3LKgEqNAEwoKo8qO9DcOCV4lFQAN3Gxstlcc82fkSalZYJeAr1CKYGCeUgQXAGf2V6zNoRx2dkVYpOOuR7ViFGDZAVhEQbOlNU9ZwkDT2vTkm2UIWdWMFp5oWC8iiYvy4uImaioo21gUy2AAwrZEzq+tcbwF1hDck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmmOxHar; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3BAC4CEE3;
+	Tue, 29 Apr 2025 17:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947960;
-	bh=yb/YX1ihEQvL07FFAQzJ4uOrzj4uUh0gwhuzH3bxo1g=;
+	s=korg; t=1745947166;
+	bh=qYpHFr2l5P2mIz7Zi0kpcaPEiRoCiUw7Dr8t3T5O4l8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MCumcZ680J/6lmNLwz/Fg2zHIjjAokeuKl/yR9CIdM7p4z4dlvpW8GkArYiD+LtZY
-	 b1Wgv0TalgplGaY+cQUdBbnQPCJbZ0gLseSDsowCgcwbSgIs9eiC5MZneb3t24wybD
-	 8JWga+2y+IZm9vawPvZrvO+32/8e6lCL2Peac1x8=
+	b=DmmOxHarmsz5BDImgiYvMcpOXw7SOytyG+DzAloTMugP9BDIM4TvdYmClvimBDC0E
+	 P/7pJ+R+himJu39JWNDhDI/AXdeYkaCE2lAdA35RGAxWlcB5Nnu3DraTbuqCPFXAXY
+	 5cO4RUfilWFUMHi0kgM1BWzpH2J/LzWATdTESsvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 155/280] MIPS: cm: Detect CM quirks from device tree
+	Kunwu Chan <chentao@kylinos.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Feng Liu <Feng.Liu3@windriver.com>,
+	He Zhe <Zhe.He@windriver.com>
+Subject: [PATCH 5.10 192/286] pmdomain: ti: Add a null pointer check to the omap_prm_domain_init
 Date: Tue, 29 Apr 2025 18:41:36 +0200
-Message-ID: <20250429161121.462502681@linuxfoundation.org>
+Message-ID: <20250429161115.865681539@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit e27fbe16af5cfc40639de4ced67d1a866a1953e9 ]
+commit 5d7f58ee08434a33340f75ac7ac5071eea9673b3 upstream.
 
-Some information that should be retrieved at runtime for the Coherence
-Manager can be either absent or wrong. This patch allows checking if
-some of this information is available from the device tree and updates
-the internal variable accordingly.
+devm_kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-For now, only the compatible string associated with the broken HCI is
-being retrieved.
-
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20240118054257.200814-1-chentao@kylinos.cn
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[Minor context change fixed]
+Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
+Signed-off-by: He Zhe <Zhe.He@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/mips-cm.h | 22 ++++++++++++++++++++++
- arch/mips/kernel/mips-cm.c      | 14 ++++++++++++++
- 2 files changed, 36 insertions(+)
+ drivers/soc/ti/omap_prm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index 1e782275850a3..6a1de2ebc7b80 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -59,6 +59,16 @@ extern phys_addr_t mips_cm_l2sync_phys_base(void);
-  */
- extern int mips_cm_is64;
+--- a/drivers/soc/ti/omap_prm.c
++++ b/drivers/soc/ti/omap_prm.c
+@@ -381,6 +381,8 @@ static int omap_prm_domain_init(struct d
+ 	data = prm->data;
+ 	name = devm_kasprintf(dev, GFP_KERNEL, "prm_%s",
+ 			      data->name);
++	if (!name)
++		return -ENOMEM;
  
-+/*
-+ * mips_cm_is_l2_hci_broken  - determine if HCI is broken
-+ *
-+ * Some CM reports show that Hardware Cache Initialization is
-+ * complete, but in reality it's not the case. They also incorrectly
-+ * indicate that Hardware Cache Initialization is supported. This
-+ * flags allows warning about this broken feature.
-+ */
-+extern bool mips_cm_is_l2_hci_broken;
-+
- /**
-  * mips_cm_error_report - Report CM cache errors
-  */
-@@ -97,6 +107,18 @@ static inline bool mips_cm_present(void)
- #endif
- }
- 
-+/**
-+ * mips_cm_update_property - update property from the device tree
-+ *
-+ * Retrieve the properties from the device tree if a CM node exist and
-+ * update the internal variable based on this.
-+ */
-+#ifdef CONFIG_MIPS_CM
-+extern void mips_cm_update_property(void);
-+#else
-+static void mips_cm_update_property(void) {}
-+#endif
-+
- /**
-  * mips_cm_has_l2sync - determine whether an L2-only sync region is present
-  *
-diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
-index 3eb2cfb893e19..9cfabaa94d010 100644
---- a/arch/mips/kernel/mips-cm.c
-+++ b/arch/mips/kernel/mips-cm.c
-@@ -5,6 +5,7 @@
-  */
- 
- #include <linux/errno.h>
-+#include <linux/of.h>
- #include <linux/percpu.h>
- #include <linux/spinlock.h>
- 
-@@ -14,6 +15,7 @@
- void __iomem *mips_gcr_base;
- void __iomem *mips_cm_l2sync_base;
- int mips_cm_is64;
-+bool mips_cm_is_l2_hci_broken;
- 
- static char *cm2_tr[8] = {
- 	"mem",	"gcr",	"gic",	"mmio",
-@@ -237,6 +239,18 @@ static void mips_cm_probe_l2sync(void)
- 	mips_cm_l2sync_base = ioremap(addr, MIPS_CM_L2SYNC_SIZE);
- }
- 
-+void mips_cm_update_property(void)
-+{
-+	struct device_node *cm_node;
-+
-+	cm_node = of_find_compatible_node(of_root, NULL, "mobileye,eyeq6-cm");
-+	if (!cm_node)
-+		return;
-+	pr_info("HCI (Hardware Cache Init for the L2 cache) in GCR_L2_RAM_CONFIG from the CM3 is broken");
-+	mips_cm_is_l2_hci_broken = true;
-+	of_node_put(cm_node);
-+}
-+
- int mips_cm_probe(void)
- {
- 	phys_addr_t addr;
--- 
-2.39.5
-
+ 	prmd->dev = dev;
+ 	prmd->prm = prm;
 
 
 
