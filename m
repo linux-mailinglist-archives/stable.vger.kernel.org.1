@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-137421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F913AA133F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 627C1AA179E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:49:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2B514A1BFB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A90579A3FFF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB4422A81D;
-	Tue, 29 Apr 2025 17:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96452522AA;
+	Tue, 29 Apr 2025 17:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATJainuk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grY2V8/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC0D78F58;
-	Tue, 29 Apr 2025 17:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DA424BD02;
+	Tue, 29 Apr 2025 17:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946018; cv=none; b=WkIlXEvYgn6JKQu0mfpyl1N3GcDo0/q6VK1C1PI8P6oFJ5dTRjIR+03shEZwOm06UGw1Iz3gHmjSllMzsobden7NtC8ZBbj8eDMNM6lvualDmRMYoUgL9X3VhhWe06p14Kd7vuNWm4e+FlsfEKWsF40z4NSsZRH9l0yVAwKZ4eQ=
+	t=1745948710; cv=none; b=tW6ujwKPYAevKjZ3k8s7vXejbudZkGltWxIAtHvzW8Wnf7QIxw0ZxCprEUd0bJAJKJCBCSfDafVY0QTC58unzmTNUMa1JuuFay5dVa4+CCUdftDzgweSH3ZoRBYsQKf4igdmxljuCqiQ6h4WCdk6XF51Pv5vrmGbQWNccYSW50k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946018; c=relaxed/simple;
-	bh=Ju9aScZZyGdXKDqwXbvIWoOLtMKq+ISNvIz9Q+fVZfk=;
+	s=arc-20240116; t=1745948710; c=relaxed/simple;
+	bh=FCGZ/+WNy6Oliy/+Q8AvQGot0MJjETgVU9id5LanNEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jh1szksahVYuydNkG/vnkyEpawUlTafxibjqsjUic7FDQCi7MM0260szobD8B+6uUvwLoXl4OD+hRyHBM1GSIr5HE2iJA5vrIV9KMMYzcaWotZRYis/6U4CXcNYy8cFy2s1aytvUwSbIzffL5JGusRV3SHc/2LlQtAmL30vO9X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATJainuk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380B4C4CEE3;
-	Tue, 29 Apr 2025 17:00:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BgAQlEiXpkLtFVS5nUmxUaKCc4fqM7J33EYvqGGGPYrTNoNXrWXclcTvWa+qs7skkV5xb8XtuBnRtZyUhg9AwENwhM8z4T+tyeBGrtXyEswSEItaOyT6CzZT+TyuHoeZeJm7poHR2fzSLGHKcFaLk8NW3CTOs1frWoSMj8U6JGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grY2V8/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5438C4CEE3;
+	Tue, 29 Apr 2025 17:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946017;
-	bh=Ju9aScZZyGdXKDqwXbvIWoOLtMKq+ISNvIz9Q+fVZfk=;
+	s=korg; t=1745948710;
+	bh=FCGZ/+WNy6Oliy/+Q8AvQGot0MJjETgVU9id5LanNEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ATJainukEX11u6mDajxxYzs2JTt0sVjFnrk9aX2udolMoLn5ILyRovwSo09F6IWr9
-	 LP/+bpWiJWTKApBmXoZTrMR+YFQWcw9JG+XlrC/Nt1vWG43BG5cDi4wV+wbGTm9iLt
-	 R77FfqBEygHzwYMhrlMZg5TvSUC+o/szA11ecFKg=
+	b=grY2V8/DyBqsKEmNQ2LyQFNxezHdANDwq2nDRq9L2gX18tbjtoQ5v9Cv7tGGMsFUM
+	 D7TjddpuxW99IqVWOuiZ/hS65G0SLm413Ys8mvLZBjSFvtzbI+kPgOEv7WKT9GLGgd
+	 c4JGdioOlfUy+od0ylWPcLX9qis6mhUeR+o0o3Gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Tiffany Y. Yang" <ynaffit@google.com>,
-	stable <stable@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.14 127/311] binder: fix offset calculation in debug log
+	Cong Meng <cong.meng@oracle.com>,
+	Si-Wei Liu <si-wei.liu@oracle.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>
+Subject: [PATCH 5.15 087/373] vdpa/mlx5: Fix oversized null mkey longer than 32bit
 Date: Tue, 29 Apr 2025 18:39:24 +0200
-Message-ID: <20250429161126.240233855@linuxfoundation.org>
+Message-ID: <20250429161126.743803061@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +63,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Si-Wei Liu <si-wei.liu@oracle.com>
 
-commit 170d1a3738908eef6a0dbf378ea77fb4ae8e294d upstream.
+commit a6097e0a54a5c24f8d577ffecbc35289ae281c2e upstream.
 
-The vma start address should be substracted from the buffer's user data
-address and not the other way around.
+create_user_mr() has correct code to count the number of null keys
+used to fill in a hole for the memory map. However, fill_indir()
+does not follow the same to cap the range up to the 1GB limit
+correspondingly. Fill in more null keys for the gaps in between,
+so that null keys are correctly populated.
 
-Cc: Tiffany Y. Yang <ynaffit@google.com>
-Cc: stable <stable@kernel.org>
-Fixes: 162c79731448 ("binder: avoid user addresses in debug logs")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Tiffany Y. Yang <ynaffit@google.com>
-Link: https://lore.kernel.org/r/20250325184902.587138-1-cmllamas@google.com
+Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
+Cc: stable@vger.kernel.org
+Reported-by: Cong Meng <cong.meng@oracle.com>
+Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20250220193732.521462-2-dtatulea@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vdpa/mlx5/core/mr.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -6373,7 +6373,7 @@ static void print_binder_transaction_ilo
- 		seq_printf(m, " node %d", buffer->target_node->debug_id);
- 	seq_printf(m, " size %zd:%zd offset %lx\n",
- 		   buffer->data_size, buffer->offsets_size,
--		   proc->alloc.vm_start - buffer->user_data);
-+		   buffer->user_data - proc->alloc.vm_start);
- }
- 
- static void print_binder_work_ilocked(struct seq_file *m,
+--- a/drivers/vdpa/mlx5/core/mr.c
++++ b/drivers/vdpa/mlx5/core/mr.c
+@@ -166,9 +166,12 @@ again:
+ 			klm->bcount = cpu_to_be32(klm_bcount(dmr->end - dmr->start));
+ 			preve = dmr->end;
+ 		} else {
++			u64 bcount = min_t(u64, dmr->start - preve, MAX_KLM_SIZE);
++
+ 			klm->key = cpu_to_be32(mvdev->res.null_mkey);
+-			klm->bcount = cpu_to_be32(klm_bcount(dmr->start - preve));
+-			preve = dmr->start;
++			klm->bcount = cpu_to_be32(klm_bcount(bcount));
++			preve += bcount;
++
+ 			goto again;
+ 		}
+ 	}
 
 
 
