@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013CDAA1A3E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E8DAA19A7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 050E21BC0FD9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:18:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 969F53AC5B6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B878B25333F;
-	Tue, 29 Apr 2025 18:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DF82475CB;
+	Tue, 29 Apr 2025 18:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PX1hMKKi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZ5vnhoD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75761219A63;
-	Tue, 29 Apr 2025 18:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A246D20C488;
+	Tue, 29 Apr 2025 18:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950702; cv=none; b=LgOcDjCjmTABcUGrt+xFgbW0rE6CJpvmpYa1ZnYKui5tTrzKKPPZMjSGjl9ryGusmhtvAKS8Y4YMXlB3z7b5t/AArzRN/igLzUmnN3wDC9l0kEdwq7YifRA+SSfwQok8Zg0TB40wV+KumI9RdfGlChgBZFLDOXlOfuI1hl6dfI8=
+	t=1745950146; cv=none; b=WK0DvIEwtX3mp/+iw7n2aUPN7KQnPOXK96dWCsmhzk/s64r104mo0klF9u/a1wpj68lUnfea65p8kEIo0jyY1RfoTOMUdHGPfoObz+rsHL96U0DWSFToogKwfyLNrYlw5ripsMNrhJneD2ilJVms1xatc7Uq3frJFJuDnaS8lc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950702; c=relaxed/simple;
-	bh=eyDc49tMJcHYYP/Cv8hDoQwukqiwJ2/3BOMs9b3YVmQ=;
+	s=arc-20240116; t=1745950146; c=relaxed/simple;
+	bh=+pOsFKOQjCadx5T0vSOi+b2R+O4z8XXkSTTy1LtT0do=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ePE0eLlecbpTPMiVmgCwU1lL6dVV6tICwCC2VGWzh8fRi4ULW3RCjR4NAVzm7CLw7rntkVJAGJRh5iNsOMBMeiurRgWtlz2WjvVzh/aCvbGHgO6EybrbO/Kv3LojPFVdfyq0vlj7XZXIXBU9rDvkTw1RifVeMqFcqMyqPHD2ZP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PX1hMKKi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1A0C4CEE3;
-	Tue, 29 Apr 2025 18:18:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BMaVoylpjcKcOyM2MJNaYZA+LVH+bkVbJY5CX6Q3wX3bNUF8KGdb89CU88nPGAbxw7mW3jAPHr1mEQjl5/P3QPvA7r/t9FWOgWU3DyvKL51prSsMPix9xkOPtwOCWOxCW0P4tvhSWCmAXQBpe51Jm3mJaKU0le65bhJ80lsBbvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZ5vnhoD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F12DC4CEE9;
+	Tue, 29 Apr 2025 18:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950702;
-	bh=eyDc49tMJcHYYP/Cv8hDoQwukqiwJ2/3BOMs9b3YVmQ=;
+	s=korg; t=1745950146;
+	bh=+pOsFKOQjCadx5T0vSOi+b2R+O4z8XXkSTTy1LtT0do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PX1hMKKi2uHUAtNfIwHfThAZD7psybIZryVtoRBwXnvveZucZYufCDoaVL/GJMK/4
-	 fV5R3E6H0E6/rdmLA66tQd1FOQRPA6XdRhA/SBSDKH0U3LCubXLvUDF+tofOv9il7p
-	 Wm87KOoijYO0rnm9vwaMlC1jvQQ5Qv1pHUlpRswU=
+	b=eZ5vnhoDsn5xbyUbB4BgAt8tdjqmg0ksZDsnfbQE6UXWgyWsPIjqaneCIzR9TsAGR
+	 QUa7Ktvmb2LFe6rMoewG5lDs8+DLAwwszj3d9uF2rCBF8FDXjQDBrlNiqMI6tJP+T/
+	 t/5BBHgZJvTwfsNvVfroPfdZxf3WHss2eCY99nBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Salomon Dushimirimana <salomondush@google.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 178/204] scsi: pm80xx: Set phy_attached to zero when device is gone
-Date: Tue, 29 Apr 2025 18:44:26 +0200
-Message-ID: <20250429161106.681727471@linuxfoundation.org>
+	=?UTF-8?q?Toke=20H=F8iland-J=F8rgensen?= <toke@kernel.org>,
+	=?UTF-8?q?Ricardo=20Ca=F1uelo=20Navarro?= <rcn@igalia.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 6.1 159/167] xdp: Reset bpf_redirect_info before running a xdps BPF prog.
+Date: Tue, 29 Apr 2025 18:44:27 +0200
+Message-ID: <20250429161058.159265365@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit f7b705c238d1483f0a766e2b20010f176e5c0fb7 ]
+Ricardo reported a KASAN discovered use after free in v6.6-stable.
 
-When a fatal error occurs, a phy down event may not be received to set
-phy->phy_attached to zero.
+The syzbot starts a BPF program via xdp_test_run_batch() which assigns
+ri->tgt_value via dev_hash_map_redirect() and the return code isn't
+XDP_REDIRECT it looks like nonsense. So the output in
+bpf_warn_invalid_xdp_action() appears once.
+Then the TUN driver runs another BPF program (on the same CPU) which
+returns XDP_REDIRECT without setting ri->tgt_value first. It invokes
+bpf_trace_printk() to print four characters and obtain the required
+return value. This is enough to get xdp_do_redirect() invoked which
+then accesses the pointer in tgt_value which might have been already
+deallocated.
 
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
-Link: https://lore.kernel.org/r/20250319230305.3172920-1-salomondush@google.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This problem does not affect upstream because since commit
+	401cb7dae8130 ("net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.")
+
+the per-CPU variable is referenced via task's task_struct and exists on
+the stack during NAPI callback. Therefore it is cleared once before the
+first invocation and remains valid within the RCU section of the NAPI
+callback.
+
+Instead of performing the huge backport of the commit (plus its fix ups)
+here is an alternative version which only resets the variable in
+question prior invoking the BPF program.
+
+Acked-by: Toke Høiland-Jørgensen <toke@kernel.org>
+Reported-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
+Closes: https://lore.kernel.org/all/20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-0-360efec441ba@igalia.com/
+Fixes: 97f91a7cf04ff ("bpf: add bpf_redirect_map helper routine")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/pm8001/pm8001_sas.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/filter.h |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
-index ee2da8e49d4cf..a9d6dac413346 100644
---- a/drivers/scsi/pm8001/pm8001_sas.c
-+++ b/drivers/scsi/pm8001/pm8001_sas.c
-@@ -719,6 +719,7 @@ static void pm8001_dev_gone_notify(struct domain_device *dev)
- 			spin_lock_irqsave(&pm8001_ha->lock, flags);
- 		}
- 		PM8001_CHIP_DISP->dereg_dev_req(pm8001_ha, device_id);
-+		pm8001_ha->phy[pm8001_dev->attached_phy].phy_attached = 0;
- 		pm8001_free_dev(pm8001_dev);
- 	} else {
- 		pm8001_dbg(pm8001_ha, DISC, "Found dev has gone.\n");
--- 
-2.39.5
-
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -775,7 +775,14 @@ static __always_inline u32 bpf_prog_run_
+ 	 * under local_bh_disable(), which provides the needed RCU protection
+ 	 * for accessing map entries.
+ 	 */
+-	u32 act = __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
++	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
++	u32 act;
++
++	if (ri->map_id || ri->map_type) {
++		ri->map_id = 0;
++		ri->map_type = BPF_MAP_TYPE_UNSPEC;
++	}
++	act = __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
+ 
+ 	if (static_branch_unlikely(&bpf_master_redirect_enabled_key)) {
+ 		if (act == XDP_TX && netif_is_bond_slave(xdp->rxq->dev))
 
 
 
