@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-138502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320F4AA184F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 011FEAA16D0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E1C818888E7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C796167B83
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2314B242D73;
-	Tue, 29 Apr 2025 17:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23487244686;
+	Tue, 29 Apr 2025 17:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IThvcUlz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qO2Gg2Yz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43A9215F6C;
-	Tue, 29 Apr 2025 17:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D480622DF91;
+	Tue, 29 Apr 2025 17:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949455; cv=none; b=m+zlr91ukDSpUfgcqBzr57CctxSGLC4T8Ha3yMmqqpPy96TX1D6g4zLRfFkzxlBBJWnxb7HkdVstqsAURpLV7FUiLDBzugp0RtXTgs+h8j3cP54wsxQrhUSulWmLpuHq9dw9zRuZT6/A+TFATyFZsnNV9GIwU0+QmPP9FKiZrwE=
+	t=1745948351; cv=none; b=CcgdGpDq4SPicvo1SQqaCXfll20/kZVwTO27HEfxtoonalROIlliizjhEreOwo6S74QlWrWos6V8eUE5pw8GuCKSMzbTOJ9irgLaNcuDnUv2UHvo8OuHtQOybxOJKN6L/X4N4x3d16Ycu1cmH7PdwhJB05hnYJOhKE2EnXIAgqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949455; c=relaxed/simple;
-	bh=nUZrymyCbLA0C/g/SORRUSYiq/+urrdJbexRvZjMvCU=;
+	s=arc-20240116; t=1745948351; c=relaxed/simple;
+	bh=SP/ss1cjl2SAiKQ48BgV8gikIV63W+PlOUC4cy25GQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EnIJa2kygEj2h61rDblJnVd10qthQlchrAGWWr6jeLZ0E4c9Dq5SF5xnjOXyPvWRHStCC09CwT5b+3Cf3EmLRl31FWHOMxw+P5KwRaBo64qHTREsE9RhsuqBghwrDM11rAChlYI5VHwIudRr+lNYtVGllToGv3xeR7NHkljNUoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IThvcUlz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD1CC4CEE3;
-	Tue, 29 Apr 2025 17:57:35 +0000 (UTC)
+	 MIME-Version; b=rnLGEbuzUoLeWZgLMz9s2KiB8AH8HayK17/14hgmrgyt4JOwlFYO7AXr1Yufk40/SUJ/TfXsJ8c80EjgvQMjGzbWMzgN1k2w9PgYXyKKpo+FGpG3HquJzFAahjU0RhTTxUyMAdXt/r7UcLb+tjL+BMvRJ68d42z2c996AcYMI1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qO2Gg2Yz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A4FC4CEE3;
+	Tue, 29 Apr 2025 17:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949455;
-	bh=nUZrymyCbLA0C/g/SORRUSYiq/+urrdJbexRvZjMvCU=;
+	s=korg; t=1745948351;
+	bh=SP/ss1cjl2SAiKQ48BgV8gikIV63W+PlOUC4cy25GQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IThvcUlzyJWK2xDTDj52rOIuoJQcBZrnj3rnmk+w6riE3xlkI9BJaJ1sC3EV3RYKO
-	 efb9PI6TnSKYrIgx9b56H7vFLAmiDTtyEgqIWSscQnq0A4Qc/WaPwxxATFjM8/gBDE
-	 qklz7Xbydjfcx3BcilBSuuynFef7Mt4TZeeDA4Hw=
+	b=qO2Gg2YzxNHIO9Cgyu2//wRNue3+qmM3FBXMFGc4hHs3ayeZBrTkS792anurXQvb8
+	 qe6+PbWnpji7sCq/pUEfHsbLnDrWSHnWxcIffbRRz3M+QWb/IGcEtS71mCtGXL193g
+	 Hl24kw1/d61JBxe5+lTAJ3fsqbfuhXYPMAGshyzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 325/373] clk: check for disabled clock-provider in of_clk_get_hw_from_clkspec()
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.12 261/280] comedi: jr3_pci: Fix synchronous deletion of timer
 Date: Tue, 29 Apr 2025 18:43:22 +0200
-Message-ID: <20250429161136.505379848@linuxfoundation.org>
+Message-ID: <20250429161125.813887651@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit b20150d499b3ee5c2d632fbc5ac94f98dd33accf ]
+commit 44d9b3f584c59a606b521e7274e658d5b866c699 upstream.
 
-of_clk_get_hw_from_clkspec() checks all available clock-providers by
-comparing their of nodes to the one from the clkspec. If no matching
-clock provider is found, the function returns -EPROBE_DEFER to cause a
-re-check at a later date. If a matching clock provider is found, an
-authoritative answer can be retrieved from it whether the clock exists
-or not.
+When `jr3_pci_detach()` is called during device removal, it calls
+`timer_delete_sync()` to stop the timer, but the timer expiry function
+always reschedules the timer, so the synchronization is ineffective.
 
-This does not take into account that the clock-provider may never
-appear, because it's node is disabled. This can happen when a clock is
-optional, provided by a separate block which never gets enabled.
+Call `timer_shutdown_sync()` instead.  It does not matter that the timer
+expiry function pointer is cleared, because the device is being removed.
 
-One example of this happening is the rk3588's VOP, which has optional
-additional display clocks coming from PLLs inside the hdmiphy blocks.
-These can be used for better rates, but the system will also work
-without them.
-
-The problem around that is described in the followups to[1]. As we
-already know the of node of the presumed clock provider, add a check via
-of_device_is_available() whether this is a "valid" device node. This
-prevents eternal defer loops.
-
-Link: https://lore.kernel.org/dri-devel/20250215-vop2-hdmi1-disp-modes-v1-3-81962a7151d6@collabora.com/ [1]
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Tested-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250222223733.2990179-1-heiko@sntech.de
-[sboyd@kernel.org: Reword commit text a bit]
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 07b509e6584a5 ("Staging: comedi: add jr3_pci driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250415123901.13483-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/comedi/drivers/jr3_pci.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index dc2bcf58fc107..13f7e2ea644d9 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -4993,6 +4993,10 @@ of_clk_get_hw_from_clkspec(struct of_phandle_args *clkspec)
- 	if (!clkspec)
- 		return ERR_PTR(-EINVAL);
+--- a/drivers/comedi/drivers/jr3_pci.c
++++ b/drivers/comedi/drivers/jr3_pci.c
+@@ -758,7 +758,7 @@ static void jr3_pci_detach(struct comedi
+ 	struct jr3_pci_dev_private *devpriv = dev->private;
  
-+	/* Check if node in clkspec is in disabled/fail state */
-+	if (!of_device_is_available(clkspec->np))
-+		return ERR_PTR(-ENOENT);
-+
- 	mutex_lock(&of_clk_mutex);
- 	list_for_each_entry(provider, &of_clk_providers, link) {
- 		if (provider->node == clkspec->np) {
--- 
-2.39.5
-
+ 	if (devpriv)
+-		del_timer_sync(&devpriv->timer);
++		timer_shutdown_sync(&devpriv->timer);
+ 
+ 	comedi_pci_detach(dev);
+ }
 
 
 
