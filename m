@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-138849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4103EAA19F5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:17:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26854AA18DA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:05:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DDF81C016D1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 095301BC7636
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA94253321;
-	Tue, 29 Apr 2025 18:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFBE253328;
+	Tue, 29 Apr 2025 18:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dwDXW+1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vk3Z5ViN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB19221FAE;
-	Tue, 29 Apr 2025 18:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA85253322;
+	Tue, 29 Apr 2025 18:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950548; cv=none; b=Y32jQxVI3btG/4xeAVylkDmFbQLoIoP/RTc+e6A0dRbmXfaFlp+FziSalg/gTaIGAsb+b71AmKIMom7ngn0d5SkqBEl52669r4fMVGIetlmM6EnMKCkQ0jJGmSCZdYXxrxY3yG8uVwaQgC0h1x+2Ia4QiOSdA+qYOacKrdaoogQ=
+	t=1745949865; cv=none; b=M7i/CjaeDs8L0EmOnkw/tajV44L8VquE7yHm0YRLDMINFpS40wJfTkjGmghHW0xmBBfuBaNdk6hIE9V1Cb8RSvFHTOBfslZjveQ/1MzDocQ+5Ia9JE1f529CgSu3dlXIyRZxw10CAEeNUMrcMzqQwpnMCQZUALOA8DoiEeBG0RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950548; c=relaxed/simple;
-	bh=UZJNZzOXTYEMLw/6ah8XrSLxVloLdfsEWWqLgycHDlU=;
+	s=arc-20240116; t=1745949865; c=relaxed/simple;
+	bh=9FWAKZfmybK/puIi2Ir/XI8jY4ttXsKJFnUSB62fMNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWLk9ErrHabqtOECU8xtCdj06D6+6QDEj9NxfCRG6/V6tjVfkjliZ2ILkp6Ubsm8Pjl/HoAP8Io2IaWY94gpJy/U3xxpbMSAg7LjXicaJEKNO9E/Q8F8LjToXxp3fZ1mP/qtdtdFQ6U4xdQf0g9cpdOxmSgD0vuLq8PzwR723/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dwDXW+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B835AC4CEE9;
-	Tue, 29 Apr 2025 18:15:47 +0000 (UTC)
+	 MIME-Version; b=T7dGj52AGxVmV9HP1I9/zqEV/gdkg5zmOR9SAfvlJKvpVdEmFvHiOuovSc/sV/5VSSYELgeiAehQkY5UZtx1MImr/wynPXGCxzgD7454An+MGf7VwFi6S6UfzTahm9gZhoUjekSwozaZbKe9XtUausd093nA/zuka0dclJf4H2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vk3Z5ViN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9B3C4CEE9;
+	Tue, 29 Apr 2025 18:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950548;
-	bh=UZJNZzOXTYEMLw/6ah8XrSLxVloLdfsEWWqLgycHDlU=;
+	s=korg; t=1745949865;
+	bh=9FWAKZfmybK/puIi2Ir/XI8jY4ttXsKJFnUSB62fMNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1dwDXW+1zjMV3SSQW5+qoGgqYn/Npc9HnRztL0rFaMHV0JmZ3WiIGSrV9fhppYKrM
-	 98ZYyd86s8oSiCA5Mp1NA5h3ds7I26sj1kPgn0Hhs8lCSCAKjA4uRGs2O7isC01eCh
-	 ZDg2h3gZn2TfMSkZa5VWf8MZEf6bQiz115N/+zpg=
+	b=Vk3Z5ViNko+iKdRwUyGv8j+0qtkd6B4ze5uWTrIg292ZzUJd5q2iMNywxnjp9/t3Z
+	 wNHZsTWggc0xdsNGtnu/Ko55xTMCd7jTdqJOA+QYJZhpa1+bXRi0+57dLMM9Ph4RI0
+	 xlY1XHRHdyTf39R1w0nbu0XBMd8ixcZ10EQAtfvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Adam Xue <zxue@semtech.com>,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 100/204] USB: serial: option: add Sierra Wireless EM9291
-Date: Tue, 29 Apr 2025 18:43:08 +0200
-Message-ID: <20250429161103.525687937@linuxfoundation.org>
+Subject: [PATCH 6.1 081/167] USB: serial: option: add Sierra Wireless EM9291
+Date: Tue, 29 Apr 2025 18:43:09 +0200
+Message-ID: <20250429161055.038519070@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
