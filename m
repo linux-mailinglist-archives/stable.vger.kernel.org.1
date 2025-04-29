@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-138680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D9BAA190A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BADE3AA18ED
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D59C7AB219
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A3F91BC74C8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F1C20C488;
-	Tue, 29 Apr 2025 18:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C9022AE68;
+	Tue, 29 Apr 2025 18:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xsp5Pcj3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1GpYHCs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EB22AE96;
-	Tue, 29 Apr 2025 18:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20BA2AE96;
+	Tue, 29 Apr 2025 18:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950012; cv=none; b=JOzme0HCkJkwfdMeztmPrCwTj9Ik1cqDWR4tkshj1XvEu4NWiDuzPxVWbBJY97L2TCoEGc+9LjTUSuYH5KWKszv93jeopMR3Rz1Yb6Lx+F+tfNVz97aUk/+oiisfY7VaHCqtirMclPzx1eB/XNE+muPRJLS4cIqpxdGzALKwPS8=
+	t=1745949919; cv=none; b=FBH3ozi9yZ0P3x9d5dxQYvU7FegS4mku8DqNeF4cz+e4Q44MSNd36DUxSI6w4mKYonGxVXcE8uThal4IK3kr6Fad3wgUzi8VkrnBs/rkPQPLZmJMu3alDVtKvA3lMx1oJyprq81KvlKFt7r5mN5m8Td763yFjtnATnLqJZhWH9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950012; c=relaxed/simple;
-	bh=Ebs28hNrZ3dbAnTBrsjae0QXFzdjSwn33c0QTrLnT/8=;
+	s=arc-20240116; t=1745949919; c=relaxed/simple;
+	bh=/eSjBWNWBF/H6nwW5T8COVcoH213j2EENkx/sOHnMx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BRhUOYSTN2tt6R3XjsLedFEAbj8qwZYqf6K+/pJbFu3Cg+dEMDlfMpVtx/5gyQ0fJpmWV/xHesCXvituoCknxLpmuqEqSfr7oDHQ8hzsArUA3F7pTFBpxQAKDNSXh3SLTOrh4aVtkD60ryQ64CRYN+zBHXplaO3VYySaWlKDBqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xsp5Pcj3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A86C4CEE3;
-	Tue, 29 Apr 2025 18:06:51 +0000 (UTC)
+	 MIME-Version; b=DmzfQj8AIsbEjgWX65Ll/EHXcUp75aAoi81qFvh0qmmg/ZiDX94TtxQmdVdX6dkBd4DxCDNCo+//H96sBHAvMDhJrjZeqW3OPD0cJuhvi7iuP5z6J4+egVo2ArW8Qo58zXda4WchxfeuLnf82vn3YYGiNP5xgPOKnJkZ1MtPGTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1GpYHCs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E32C4CEE3;
+	Tue, 29 Apr 2025 18:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950012;
-	bh=Ebs28hNrZ3dbAnTBrsjae0QXFzdjSwn33c0QTrLnT/8=;
+	s=korg; t=1745949919;
+	bh=/eSjBWNWBF/H6nwW5T8COVcoH213j2EENkx/sOHnMx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xsp5Pcj3PDdRi4cr9Koy7gPH/Vb/pUbudzJODel9cV1M4BuMQS1m4ITLMnPYlJOX4
-	 12xYRTbdhSGwtFhrMaRmnnmBPDD1cw86OB8R75liHFNzmmTusZcVEDIr/5SUQTMTNd
-	 zDlPc4Z021Zh0MtSlub7qp2YX95RmegqfZKdqOd4=
+	b=y1GpYHCsUhnKgX3ijcLapKzOFpBkfwLDfIMF9gpnWCG1kViFeXpUg43eTbpYdUEBw
+	 z/cf8x7IaMkdw3cq9PGfL3n7dGC3SCjNzvayCWUvT6QwWadOXtXBVZvuIhzVna3wg2
+	 PEuk6vndz4UPVbFdcHz24+MZ7zsHZzszoXjH87KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/167] MIPS: cm: Detect CM quirks from device tree
-Date: Tue, 29 Apr 2025 18:43:26 +0200
-Message-ID: <20250429161055.717468740@linuxfoundation.org>
+Subject: [PATCH 6.1 099/167] crypto: null - Use spin lock instead of mutex
+Date: Tue, 29 Apr 2025 18:43:27 +0200
+Message-ID: <20250429161055.757434707@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
 References: <20250429161051.743239894@linuxfoundation.org>
@@ -66,105 +66,99 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit e27fbe16af5cfc40639de4ced67d1a866a1953e9 ]
+[ Upstream commit dcc47a028c24e793ce6d6efebfef1a1e92f80297 ]
 
-Some information that should be retrieved at runtime for the Coherence
-Manager can be either absent or wrong. This patch allows checking if
-some of this information is available from the device tree and updates
-the internal variable accordingly.
+As the null algorithm may be freed in softirq context through
+af_alg, use spin locks instead of mutexes to protect the default
+null algorithm.
 
-For now, only the compatible string associated with the broken HCI is
-being retrieved.
-
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Reported-by: syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mips-cm.h | 22 ++++++++++++++++++++++
- arch/mips/kernel/mips-cm.c      | 14 ++++++++++++++
- 2 files changed, 36 insertions(+)
+ crypto/crypto_null.c | 39 ++++++++++++++++++++++++++-------------
+ 1 file changed, 26 insertions(+), 13 deletions(-)
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index 696b40beb774f..0f31324998c0a 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -47,6 +47,16 @@ extern phys_addr_t __mips_cm_phys_base(void);
-  */
- extern int mips_cm_is64;
+diff --git a/crypto/crypto_null.c b/crypto/crypto_null.c
+index 5b84b0f7cc178..3378670286535 100644
+--- a/crypto/crypto_null.c
++++ b/crypto/crypto_null.c
+@@ -17,10 +17,10 @@
+ #include <crypto/internal/skcipher.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+-#include <linux/mm.h>
++#include <linux/spinlock.h>
+ #include <linux/string.h>
  
-+/*
-+ * mips_cm_is_l2_hci_broken  - determine if HCI is broken
-+ *
-+ * Some CM reports show that Hardware Cache Initialization is
-+ * complete, but in reality it's not the case. They also incorrectly
-+ * indicate that Hardware Cache Initialization is supported. This
-+ * flags allows warning about this broken feature.
-+ */
-+extern bool mips_cm_is_l2_hci_broken;
-+
- /**
-  * mips_cm_error_report - Report CM cache errors
-  */
-@@ -85,6 +95,18 @@ static inline bool mips_cm_present(void)
- #endif
- }
+-static DEFINE_MUTEX(crypto_default_null_skcipher_lock);
++static DEFINE_SPINLOCK(crypto_default_null_skcipher_lock);
+ static struct crypto_sync_skcipher *crypto_default_null_skcipher;
+ static int crypto_default_null_skcipher_refcnt;
  
-+/**
-+ * mips_cm_update_property - update property from the device tree
-+ *
-+ * Retrieve the properties from the device tree if a CM node exist and
-+ * update the internal variable based on this.
-+ */
-+#ifdef CONFIG_MIPS_CM
-+extern void mips_cm_update_property(void);
-+#else
-+static void mips_cm_update_property(void) {}
-+#endif
-+
- /**
-  * mips_cm_has_l2sync - determine whether an L2-only sync region is present
-  *
-diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
-index b4f7d950c8468..e21c2fd761674 100644
---- a/arch/mips/kernel/mips-cm.c
-+++ b/arch/mips/kernel/mips-cm.c
-@@ -5,6 +5,7 @@
-  */
+@@ -152,23 +152,32 @@ MODULE_ALIAS_CRYPTO("cipher_null");
  
- #include <linux/errno.h>
-+#include <linux/of.h>
- #include <linux/percpu.h>
- #include <linux/spinlock.h>
- 
-@@ -14,6 +15,7 @@
- void __iomem *mips_gcr_base;
- void __iomem *mips_cm_l2sync_base;
- int mips_cm_is64;
-+bool mips_cm_is_l2_hci_broken;
- 
- static char *cm2_tr[8] = {
- 	"mem",	"gcr",	"gic",	"mmio",
-@@ -238,6 +240,18 @@ static void mips_cm_probe_l2sync(void)
- 	mips_cm_l2sync_base = ioremap(addr, MIPS_CM_L2SYNC_SIZE);
- }
- 
-+void mips_cm_update_property(void)
-+{
-+	struct device_node *cm_node;
-+
-+	cm_node = of_find_compatible_node(of_root, NULL, "mobileye,eyeq6-cm");
-+	if (!cm_node)
-+		return;
-+	pr_info("HCI (Hardware Cache Init for the L2 cache) in GCR_L2_RAM_CONFIG from the CM3 is broken");
-+	mips_cm_is_l2_hci_broken = true;
-+	of_node_put(cm_node);
-+}
-+
- int mips_cm_probe(void)
+ struct crypto_sync_skcipher *crypto_get_default_null_skcipher(void)
  {
- 	phys_addr_t addr;
++	struct crypto_sync_skcipher *ntfm = NULL;
+ 	struct crypto_sync_skcipher *tfm;
+ 
+-	mutex_lock(&crypto_default_null_skcipher_lock);
++	spin_lock_bh(&crypto_default_null_skcipher_lock);
+ 	tfm = crypto_default_null_skcipher;
+ 
+ 	if (!tfm) {
+-		tfm = crypto_alloc_sync_skcipher("ecb(cipher_null)", 0, 0);
+-		if (IS_ERR(tfm))
+-			goto unlock;
+-
+-		crypto_default_null_skcipher = tfm;
++		spin_unlock_bh(&crypto_default_null_skcipher_lock);
++
++		ntfm = crypto_alloc_sync_skcipher("ecb(cipher_null)", 0, 0);
++		if (IS_ERR(ntfm))
++			return ntfm;
++
++		spin_lock_bh(&crypto_default_null_skcipher_lock);
++		tfm = crypto_default_null_skcipher;
++		if (!tfm) {
++			tfm = ntfm;
++			ntfm = NULL;
++			crypto_default_null_skcipher = tfm;
++		}
+ 	}
+ 
+ 	crypto_default_null_skcipher_refcnt++;
++	spin_unlock_bh(&crypto_default_null_skcipher_lock);
+ 
+-unlock:
+-	mutex_unlock(&crypto_default_null_skcipher_lock);
++	crypto_free_sync_skcipher(ntfm);
+ 
+ 	return tfm;
+ }
+@@ -176,12 +185,16 @@ EXPORT_SYMBOL_GPL(crypto_get_default_null_skcipher);
+ 
+ void crypto_put_default_null_skcipher(void)
+ {
+-	mutex_lock(&crypto_default_null_skcipher_lock);
++	struct crypto_sync_skcipher *tfm = NULL;
++
++	spin_lock_bh(&crypto_default_null_skcipher_lock);
+ 	if (!--crypto_default_null_skcipher_refcnt) {
+-		crypto_free_sync_skcipher(crypto_default_null_skcipher);
++		tfm = crypto_default_null_skcipher;
+ 		crypto_default_null_skcipher = NULL;
+ 	}
+-	mutex_unlock(&crypto_default_null_skcipher_lock);
++	spin_unlock_bh(&crypto_default_null_skcipher_lock);
++
++	crypto_free_sync_skcipher(tfm);
+ }
+ EXPORT_SYMBOL_GPL(crypto_put_default_null_skcipher);
+ 
 -- 
 2.39.5
 
