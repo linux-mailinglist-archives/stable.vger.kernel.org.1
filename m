@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0F2AA142E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 725E1AA159A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 670F81892841
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1DAB986119
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBDD24889B;
-	Tue, 29 Apr 2025 17:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD4A252914;
+	Tue, 29 Apr 2025 17:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auN83eYU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12dr4f39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF4B221719;
-	Tue, 29 Apr 2025 17:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF6321ABDB;
+	Tue, 29 Apr 2025 17:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946571; cv=none; b=L6NaMKGQAqY1mRxPpkQMVsmaGpFymYC/ogAgqjmwH0HMRHIrJuby7CRtY5jYL+DXaWGmt9bXA8CC1EQ83qF7srW5cEFkI3bUlChXWIpT6MbvJCK/MjhtbJzFiuHsogOMPBg14TFxdiDN1Rpu7bdQc7y1hNexR9qY0P1JR7C7JjE=
+	t=1745947313; cv=none; b=ZHmMO3KvV3NQr26Tik+HKwN+PX5v75cyBspMMYm3DI+GHSxJ2EH1geegCoI+AP0zr1TOVrPhOhPyh7fgwgMAfl7Af8kKSrKNHDBXkAVLZ3KYPwArNim5kSrFUuW5LrdXx2wcMcl2vPzBpaFPxZmrNIqaFpPHx8BU95Eibxzz4/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946571; c=relaxed/simple;
-	bh=QEJ0SZJy/fCHG4UVAXahwhBXEyzAcnstFTnDYNmpdFc=;
+	s=arc-20240116; t=1745947313; c=relaxed/simple;
+	bh=P7ynSTSQPdB/L/RhnstJ7YvvU1en3FxUMY2MIUQ0NcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfRfkDjjbIe7R7ev/t0nJsbEuXjXsw4bBU3KU/4WdmWPlaeyR3/I0VCeHkQWq79Wkg/kYIhezUCMd4USxbxMiWtUgedwh7C0SwxeePufARpMTAbNvVPyhjN9jFAr0NzmpWVMqYPZQozp6cUxRTgy5Ng7Be2hN3xM06jBfjQrfKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auN83eYU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F84C4CEE3;
-	Tue, 29 Apr 2025 17:09:30 +0000 (UTC)
+	 MIME-Version; b=a26pGWzFTMRfLM9y2+xfgs0XaMQXesoEqeg0hcfRIVug4DAFwKUVizdey5kvAui/8gFI3NfLLMiEhkF5Ss3bJErg+XHMuPpT1IjIbhG1JNVA1FOyBG9F1p2TvdMhA7snNeEr6dJ7KLHLuEP6xYIHX8Ihp2cW0s0Xn1ddXtQ0mjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12dr4f39; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BFCC4CEE3;
+	Tue, 29 Apr 2025 17:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946570;
-	bh=QEJ0SZJy/fCHG4UVAXahwhBXEyzAcnstFTnDYNmpdFc=;
+	s=korg; t=1745947313;
+	bh=P7ynSTSQPdB/L/RhnstJ7YvvU1en3FxUMY2MIUQ0NcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=auN83eYUC34Wrzrqe38ov3GS+2wG5bt/BUKmrQSlK8/m6bj246Y0EjlaGkiWl+UNC
-	 MGoZdbaZywO+mghgRph+M5vChZdlyVcQru5QyUt/NIq/cSsIO7YaahDFR6LXxj+h01
-	 lf8qsxs89OrcsEM0iJzAMjenBnkUsvw9s4WdXfyI=
+	b=12dr4f39uZC36csNpkYnBMNt35XgjGRq4ZbPWNnWl9/44L9koD0zpnAGhMl0aHCDg
+	 a3mHWgxRz+fJp751mGvlz+L6Jot7hg3KzVA2ivgPcuZFYgEai2IwrYG/KnYnAObXQg
+	 x5fSTWRer8yI3n+B/oM23V3aO3OdKS7UKzJLhUns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.14 309/311] objtool: Ignore end-of-section jumps for KCOV/GCOV
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 5.10 242/286] KVM: x86: Reset IRTE to host control if *new* route isnt postable
 Date: Tue, 29 Apr 2025 18:42:26 +0200
-Message-ID: <20250429161133.651156751@linuxfoundation.org>
+Message-ID: <20250429161117.879331615@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +61,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 0d7597749f5a3ac67851d3836635d084df15fb66 upstream.
+commit 9bcac97dc42d2f4da8229d18feb0fe2b1ce523a2 upstream.
 
-When KCOV or GCOV is enabled, dead code can be left behind, in which
-case objtool silences unreachable and undefined behavior (fallthrough)
-warnings.
+Restore an IRTE back to host control (remapped or posted MSI mode) if the
+*new* GSI route prevents posting the IRQ directly to a vCPU, regardless of
+the GSI routing type.  Updating the IRTE if and only if the new GSI is an
+MSI results in KVM leaving an IRTE posting to a vCPU.
 
-Fallthrough warnings, and their variant "end of section" warnings, were
-silenced with the following commit:
+The dangling IRTE can result in interrupts being incorrectly delivered to
+the guest, and in the worst case scenario can result in use-after-free,
+e.g. if the VM is torn down, but the underlying host IRQ isn't freed.
 
-  6b023c784204 ("objtool: Silence more KCOV warnings")
-
-Another variant of a fallthrough warning is a jump to the end of a
-function.  If that function happens to be at the end of a section, the
-jump destination doesn't actually exist.
-
-Normally that would be a fatal objtool error, but for KCOV/GCOV it's
-just another undefined behavior fallthrough.  Silence it like the
-others.
-
-Fixes the following warning:
-
-  drivers/iommu/dma-iommu.o: warning: objtool: iommu_dma_sw_msi+0x92: can't find jump dest instruction at .text+0x54d5
-
-Fixes: 6b023c784204 ("objtool: Silence more KCOV warnings")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/08fbe7d7e1e20612206f1df253077b94f178d93e.1743481539.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/314f8809-cd59-479b-97d7-49356bf1c8d1@infradead.org/
+Fixes: efc644048ecd ("KVM: x86: Update IRTE for posted-interrupts")
+Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-3-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/check.c |   22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ arch/x86/kvm/svm/avic.c        |   58 +++++++++++++++++++++--------------------
+ arch/x86/kvm/vmx/posted_intr.c |   28 +++++++------------
+ 2 files changed, 41 insertions(+), 45 deletions(-)
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1482,6 +1482,8 @@ static int add_jump_destinations(struct
- 	unsigned long dest_off;
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -806,6 +806,7 @@ int svm_update_pi_irte(struct kvm *kvm,
+ {
+ 	struct kvm_kernel_irq_routing_entry *e;
+ 	struct kvm_irq_routing_table *irq_rt;
++	bool enable_remapped_mode = true;
+ 	int idx, ret = 0;
  
- 	for_each_insn(file, insn) {
-+		struct symbol *func = insn_func(insn);
+ 	if (!kvm_arch_has_assigned_device(kvm) ||
+@@ -843,6 +844,8 @@ int svm_update_pi_irte(struct kvm *kvm,
+ 		    kvm_vcpu_apicv_active(&svm->vcpu)) {
+ 			struct amd_iommu_pi_data pi;
+ 
++			enable_remapped_mode = false;
 +
- 		if (insn->jump_dest) {
- 			/*
- 			 * handle_group_alt() may have previously set
-@@ -1505,7 +1507,7 @@ static int add_jump_destinations(struct
- 		} else if (reloc->sym->return_thunk) {
- 			add_return_call(file, insn, true);
- 			continue;
--		} else if (insn_func(insn)) {
-+		} else if (func) {
- 			/*
- 			 * External sibling call or internal sibling call with
- 			 * STT_FUNC reloc.
-@@ -1538,6 +1540,15 @@ static int add_jump_destinations(struct
- 				continue;
- 			}
- 
-+			/*
-+			 * GCOV/KCOV dead code can jump to the end of the
-+			 * function/section.
-+			 */
-+			if (file->ignore_unreachables && func &&
-+			    dest_sec == insn->sec &&
-+			    dest_off == func->offset + func->len)
-+				continue;
-+
- 			WARN_INSN(insn, "can't find jump dest instruction at %s+0x%lx",
- 				  dest_sec->name, dest_off);
- 			return -1;
-@@ -1562,8 +1573,7 @@ static int add_jump_destinations(struct
- 		/*
- 		 * Cross-function jump.
- 		 */
--		if (insn_func(insn) && insn_func(jump_dest) &&
--		    insn_func(insn) != insn_func(jump_dest)) {
-+		if (func && insn_func(jump_dest) && func != insn_func(jump_dest)) {
- 
- 			/*
- 			 * For GCC 8+, create parent/child links for any cold
-@@ -1580,10 +1590,10 @@ static int add_jump_destinations(struct
- 			 * case where the parent function's only reference to a
- 			 * subfunction is through a jump table.
+ 			/* Try to enable guest_mode in IRTE */
+ 			pi.base = __sme_set(page_to_phys(svm->avic_backing_page) &
+ 					    AVIC_HPA_MASK);
+@@ -861,33 +864,6 @@ int svm_update_pi_irte(struct kvm *kvm,
  			 */
--			if (!strstr(insn_func(insn)->name, ".cold") &&
-+			if (!strstr(func->name, ".cold") &&
- 			    strstr(insn_func(jump_dest)->name, ".cold")) {
--				insn_func(insn)->cfunc = insn_func(jump_dest);
--				insn_func(jump_dest)->pfunc = insn_func(insn);
-+				func->cfunc = insn_func(jump_dest);
-+				insn_func(jump_dest)->pfunc = func;
- 			}
+ 			if (!ret && pi.is_guest_mode)
+ 				svm_ir_list_add(svm, &pi);
+-		} else {
+-			/* Use legacy mode in IRTE */
+-			struct amd_iommu_pi_data pi;
+-
+-			/**
+-			 * Here, pi is used to:
+-			 * - Tell IOMMU to use legacy mode for this interrupt.
+-			 * - Retrieve ga_tag of prior interrupt remapping data.
+-			 */
+-			pi.prev_ga_tag = 0;
+-			pi.is_guest_mode = false;
+-			ret = irq_set_vcpu_affinity(host_irq, &pi);
+-
+-			/**
+-			 * Check if the posted interrupt was previously
+-			 * setup with the guest_mode by checking if the ga_tag
+-			 * was cached. If so, we need to clean up the per-vcpu
+-			 * ir_list.
+-			 */
+-			if (!ret && pi.prev_ga_tag) {
+-				int id = AVIC_GATAG_TO_VCPUID(pi.prev_ga_tag);
+-				struct kvm_vcpu *vcpu;
+-
+-				vcpu = kvm_get_vcpu_by_id(kvm, id);
+-				if (vcpu)
+-					svm_ir_list_del(to_svm(vcpu), &pi);
+-			}
  		}
  
+ 		if (!ret && svm) {
+@@ -903,6 +879,34 @@ int svm_update_pi_irte(struct kvm *kvm,
+ 	}
+ 
+ 	ret = 0;
++	if (enable_remapped_mode) {
++		/* Use legacy mode in IRTE */
++		struct amd_iommu_pi_data pi;
++
++		/**
++		 * Here, pi is used to:
++		 * - Tell IOMMU to use legacy mode for this interrupt.
++		 * - Retrieve ga_tag of prior interrupt remapping data.
++		 */
++		pi.prev_ga_tag = 0;
++		pi.is_guest_mode = false;
++		ret = irq_set_vcpu_affinity(host_irq, &pi);
++
++		/**
++		 * Check if the posted interrupt was previously
++		 * setup with the guest_mode by checking if the ga_tag
++		 * was cached. If so, we need to clean up the per-vcpu
++		 * ir_list.
++		 */
++		if (!ret && pi.prev_ga_tag) {
++			int id = AVIC_GATAG_TO_VCPUID(pi.prev_ga_tag);
++			struct kvm_vcpu *vcpu;
++
++			vcpu = kvm_get_vcpu_by_id(kvm, id);
++			if (vcpu)
++				svm_ir_list_del(to_svm(vcpu), &pi);
++		}
++	}
+ out:
+ 	srcu_read_unlock(&kvm->irq_srcu, idx);
+ 	return ret;
+--- a/arch/x86/kvm/vmx/posted_intr.c
++++ b/arch/x86/kvm/vmx/posted_intr.c
+@@ -255,6 +255,7 @@ int pi_update_irte(struct kvm *kvm, unsi
+ {
+ 	struct kvm_kernel_irq_routing_entry *e;
+ 	struct kvm_irq_routing_table *irq_rt;
++	bool enable_remapped_mode = true;
+ 	struct kvm_lapic_irq irq;
+ 	struct kvm_vcpu *vcpu;
+ 	struct vcpu_data vcpu_info;
+@@ -293,21 +294,8 @@ int pi_update_irte(struct kvm *kvm, unsi
+ 
+ 		kvm_set_msi_irq(kvm, e, &irq);
+ 		if (!kvm_intr_is_single_vcpu(kvm, &irq, &vcpu) ||
+-		    !kvm_irq_is_postable(&irq)) {
+-			/*
+-			 * Make sure the IRTE is in remapped mode if
+-			 * we don't handle it in posted mode.
+-			 */
+-			ret = irq_set_vcpu_affinity(host_irq, NULL);
+-			if (ret < 0) {
+-				printk(KERN_INFO
+-				   "failed to back to remapped mode, irq: %u\n",
+-				   host_irq);
+-				goto out;
+-			}
+-
++		    !kvm_irq_is_postable(&irq))
+ 			continue;
+-		}
+ 
+ 		vcpu_info.pi_desc_addr = __pa(&to_vmx(vcpu)->pi_desc);
+ 		vcpu_info.vector = irq.vector;
+@@ -315,11 +303,12 @@ int pi_update_irte(struct kvm *kvm, unsi
+ 		trace_kvm_pi_irte_update(host_irq, vcpu->vcpu_id, e->gsi,
+ 				vcpu_info.vector, vcpu_info.pi_desc_addr, set);
+ 
+-		if (set)
+-			ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
+-		else
+-			ret = irq_set_vcpu_affinity(host_irq, NULL);
++		if (!set)
++			continue;
+ 
++		enable_remapped_mode = false;
++
++		ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
+ 		if (ret < 0) {
+ 			printk(KERN_INFO "%s: failed to update PI IRTE\n",
+ 					__func__);
+@@ -327,6 +316,9 @@ int pi_update_irte(struct kvm *kvm, unsi
+ 		}
+ 	}
+ 
++	if (enable_remapped_mode)
++		ret = irq_set_vcpu_affinity(host_irq, NULL);
++
+ 	ret = 0;
+ out:
+ 	srcu_read_unlock(&kvm->irq_srcu, idx);
 
 
 
