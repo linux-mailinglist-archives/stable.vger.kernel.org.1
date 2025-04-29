@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9CD2AA13A5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91543AA17D3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A170189F30B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41C019A4D68
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D930248191;
-	Tue, 29 Apr 2025 17:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949F0243964;
+	Tue, 29 Apr 2025 17:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6BkxCBR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8Xo7SFI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0771FE468;
-	Tue, 29 Apr 2025 17:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA87C148;
+	Tue, 29 Apr 2025 17:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946176; cv=none; b=oOJ0SfMoPmllA0/LYFXtu3stQEM1orj2B9o+dowj4F88eJuH14eNh0YZa3TpSHoza0nXtBETVLK4+ACMMZlXsDHV/QzdtCZ1scEvqBLRdw1WJbEgpatmQRPNKLDDLj5D4AvpFDTOn54sl4caCCt6nu06r1jHhXFBHTd9VQ3889A=
+	t=1745948857; cv=none; b=mzvUTYRgJ/aWZQUxz+98GhAwxr77ORfBuN+xDpDYG+FiUGDjvCfXi0V7ZHaAi2uHRzgH1Qa7vua5MLNTh31zFOehKjMaLm1aG2DypNxSMzZZIL0GsYXltO8FlMc57UPXYP7tMkpb3zBne1Hk1TbVxlagDQ2UqNGXNtGK0INMjdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946176; c=relaxed/simple;
-	bh=l8fRDIY0Dr5oAPLOdiOFk/w34WVYlT0w0WdIGHe2B7M=;
+	s=arc-20240116; t=1745948857; c=relaxed/simple;
+	bh=I1EaBKrjgHZAj5j0L4hvhLGhMCUomZmMwQ187dymnHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdcmRU/ivF7ng6/+UWfAJYd7dTSiHd2Q9CzIgKdbkMaRcjEmceuMZNee3D1IYSPpXoO5InARnFFoGcMg3tAKUJNjaEC9909YyY8afgWsKFkfUwvUA/3SvJH32OKIexcg9TGe65A3jNTroLUtLg5uPUDz2tJ8iHp9/yeCDqJtZEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6BkxCBR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D108AC4CEE3;
-	Tue, 29 Apr 2025 17:02:55 +0000 (UTC)
+	 MIME-Version; b=AYY4mtoqqA9zoINMM5tgrbQuLcuRDKbH2iNI6bQ5pM95qIJfkas4fs1EBFoV+raszWgfJGEU4SuVn5co0sZEFAxrNS40ZNrYNiMBJ85FAJMfnl7P5O/TMxO5fozqGd4Z1kh2moNhuxMeXCGs1JUWhuHB7h0eGy4NKcyOObD52f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8Xo7SFI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C877CC4CEEA;
+	Tue, 29 Apr 2025 17:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946176;
-	bh=l8fRDIY0Dr5oAPLOdiOFk/w34WVYlT0w0WdIGHe2B7M=;
+	s=korg; t=1745948857;
+	bh=I1EaBKrjgHZAj5j0L4hvhLGhMCUomZmMwQ187dymnHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6BkxCBRVNsrdE1enJYANkpCNuQX2zEX/tPPdAwmLWyEECbyXCQqXQtV7ZL4oHwJb
-	 nWifaHSfsPqt3pywv7NZM8znuqDy4RHjKWXbopKWyPoWR3wtiPaV3Di2Vdk0nz1z6a
-	 Ezn1FUURYXTnzCNLE0HrqDqEfWNnt87Cp8TkzpBQ=
+	b=l8Xo7SFI/z51jhhlwpmCUgObYMQAr/mmKNGbvTKQVmEKj/KUefcCkAq3ffKeyPNJv
+	 ASiUH2B4mo56M4NOvNTnZRRuVqXMfDsKFVIM+ZMN6JeDKKThulq5Duy/AZdoIarrZ1
+	 IpuFNnbSfcfWAHyX64qdNX4k3xYlkO3S03459/hE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Bert Karwatzki <spasswolf@web.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 179/311] pinctrl: renesas: rza2: Fix potential NULL pointer dereference
+Subject: [PATCH 5.15 139/373] Revert "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
 Date: Tue, 29 Apr 2025 18:40:16 +0200
-Message-ID: <20250429161128.357783319@linuxfoundation.org>
+Message-ID: <20250429161128.886432829@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit f752ee5b5b86b5f88a5687c9eb0ef9b39859b908 ]
+[ Upstream commit 0937cb5f345c79d702b4d0d744e2a2529b551cb2 ]
 
-`chip.label` in rza2_gpio_register() could be NULL.
-Add the missing check.
+This reverts commit a104042e2bf6528199adb6ca901efe7b60c2c27f.
 
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Link: https://lore.kernel.org/20250210232552.1545887-1-chenyuan0y@gmail.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Since the original bug seems to have been around for years,
+but a new issue was report with the fix, revert the fix for
+now. We have a couple of weeks to figure it out for this
+release, if needed.
+
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
+Fixes: a104042e2bf6 ("wifi: mac80211: Update skb's control block key in ieee80211_tx_dequeue()")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rza2.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/tx.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rza2.c b/drivers/pinctrl/renesas/pinctrl-rza2.c
-index 8b36161c7c502..3b58129638500 100644
---- a/drivers/pinctrl/renesas/pinctrl-rza2.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rza2.c
-@@ -246,6 +246,9 @@ static int rza2_gpio_register(struct rza2_pinctrl_priv *priv)
- 	int ret;
- 
- 	chip.label = devm_kasprintf(priv->dev, GFP_KERNEL, "%pOFn", np);
-+	if (!chip.label)
-+		return -ENOMEM;
-+
- 	chip.parent = priv->dev;
- 	chip.ngpio = priv->npins;
- 
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 0a658e747798b..c4e6fbe4343ee 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3704,7 +3704,6 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	 * The key can be removed while the packet was queued, so need to call
+ 	 * this here to get the current key.
+ 	 */
+-	info->control.hw_key = NULL;
+ 	r = ieee80211_tx_h_select_key(&tx);
+ 	if (r != TX_CONTINUE) {
+ 		ieee80211_free_txskb(&local->hw, skb);
 -- 
 2.39.5
 
