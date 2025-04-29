@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04421AA1236
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4B0AA1685
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD4631BA20C0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DB0E5A1F03
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BDA24E000;
-	Tue, 29 Apr 2025 16:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864E32512D8;
+	Tue, 29 Apr 2025 17:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGSle1zZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTyXKMUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DD324A06A;
-	Tue, 29 Apr 2025 16:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D451F4736;
+	Tue, 29 Apr 2025 17:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945424; cv=none; b=gRoYPpJOOR7v8A4F/UyJ6vRt4ZeVzCdJpMPadu/uWjJvSMF/7/rdft7jxE1G4475wxnCDyVoGMEl1CtxPrF+ydXq0JvKCjVl5hpm/OXoLTFUbZ6FWmvG4cXK2RCsLFMsJwnV0/q+IHPtt8cvcBdtA+M1KAc3P9ywoiItgfoGWtg=
+	t=1745947895; cv=none; b=iyqmdf+r6nGarOdlEgbnkXKbVgFzu+d/bkuuSiYKubJnkcQGyjI8FQiKrSFRt4LFkW0pfZTUExUzqFmr1ESafm7ZeATLVnwsYeo4lOR7Q5Fc4Um+4Hhy5ukOl5CMY5I+k0UQ5OeT9jIPFtI1++XxEL5x5EivxEaRHLK9a0ceUTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945424; c=relaxed/simple;
-	bh=CMvyS22X/4+ehGRJgPbhA61Xk605VJy0scmzXYBsgCI=;
+	s=arc-20240116; t=1745947895; c=relaxed/simple;
+	bh=+Ol5LLr+CE3dGNdwF1gEugbW8RDk6E17oUT8dbkVWic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=akEytDJxTDge/kKG0VnaWZfEl67fhFKXwKMiUYnEhbewUGOZ5I7BnoPLwv3WQgMATDTkmrJ/4sGFZCb0xGY5mTRO3Muta2jgaQWps/b5kDVqK1B3QKBLLGHkKN8kQmK/B1IxeYo+UVzAFQmOsmyClx9avK8y5xK0CPpwT3nT2/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGSle1zZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96261C4CEEA;
-	Tue, 29 Apr 2025 16:50:23 +0000 (UTC)
+	 MIME-Version; b=qNqN3Ay0V0CGwNTt/SjlG5nbzOCkNK7wi59zrdA2enwX+lRmKtBXjESmNpZsfSKYFBag5W0UF1jz3Jy8CgZmpsUnOCzQdOaUQW7EWMOPdF1ftcn6mlNZOH6urtL97pYDUOy6G3qX6HXxPPdLxzf4zkx7aVteocN548sm/QcCaqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTyXKMUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB950C4CEE3;
+	Tue, 29 Apr 2025 17:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945424;
-	bh=CMvyS22X/4+ehGRJgPbhA61Xk605VJy0scmzXYBsgCI=;
+	s=korg; t=1745947895;
+	bh=+Ol5LLr+CE3dGNdwF1gEugbW8RDk6E17oUT8dbkVWic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGSle1zZ6lggb0raqiVvkravZp9hb2v5Wn9+a+liCldCguGePEU/U65qcyaJucXCN
-	 M6WUZp0aWwbJV0Qj5mowb3+VnkKO4Ew42IW2iVtx0cfDAqSXBiR9+yXJBXm2ibi9w0
-	 yOtJA0Dh8psbdHI3dEB9xdmVNmdYp7pfMt5qMZRM=
+	b=mTyXKMUGGeMDjvCtpchPvQk883ZK6x01wdKDoUs870W23/RnSrGzDt/uz/jpAHBT8
+	 ljgTl4ASuNI5eqbFSYDo0LXglWSIs4IHspu0plHhr5744RsBYYMT/K+JhiVe9dzm2M
+	 QtsOYGp4OCZo/yNSbOO8UAjq3teGmmhU/4yc56ZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Leemhuis <linux@leemhuis.info>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	kdevops <kdevops@lists.linux.dev>
-Subject: [PATCH 5.4 107/179] module: sign with sha512 instead of sha1 by default
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 107/280] LoongArch: Handle fp, lsx, lasx and lbt assembly symbols
 Date: Tue, 29 Apr 2025 18:40:48 +0200
-Message-ID: <20250429161053.731336325@linuxfoundation.org>
+Message-ID: <20250429161119.485270684@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,214 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Leemhuis <linux@leemhuis.info>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit f3b93547b91ad849b58eb5ab2dd070950ad7beb3 upstream.
+commit 2ef174b13344b3b4554d3d28e6f9e2a2c1d3138f upstream.
 
-Switch away from using sha1 for module signing by default and use the
-more modern sha512 instead, which is what among others Arch, Fedora,
-RHEL, and Ubuntu are currently using for their kernels.
+Like the other relevant symbols, export some fp, lsx, lasx and lbt
+assembly symbols and put the function declarations in header files
+rather than source files.
 
-Sha1 has not been considered secure against well-funded opponents since
-2005[1]; since 2011 the NIST and other organizations furthermore
-recommended its replacement[2]. This is why OpenSSL on RHEL9, Fedora
-Linux 41+[3], and likely some other current and future distributions
-reject the creation of sha1 signatures, which leads to a build error of
-allmodconfig configurations:
+While at it, use "asmlinkage" for the other existing C prototypes
+of assembly functions and also do not use the "extern" keyword with
+function declarations according to the document coding-style.rst.
 
-  80A20474797F0000:error:03000098:digital envelope routines:do_sigver_init:invalid digest:crypto/evp/m_sigver.c:342:
-  make[4]: *** [.../certs/Makefile:53: certs/signing_key.pem] Error 1
-  make[4]: *** Deleting file 'certs/signing_key.pem'
-  make[4]: *** Waiting for unfinished jobs....
-  make[3]: *** [.../scripts/Makefile.build:478: certs] Error 2
-  make[2]: *** [.../Makefile:1936: .] Error 2
-  make[1]: *** [.../Makefile:224: __sub-make] Error 2
-  make[1]: Leaving directory '...'
-  make: *** [Makefile:224: __sub-make] Error 2
-
-This change makes allmodconfig work again and sets a default that is
-more appropriate for current and future users, too.
-
-Link: https://www.schneier.com/blog/archives/2005/02/cryptanalysis_o.html [1]
-Link: https://csrc.nist.gov/projects/hash-functions [2]
-Link: https://fedoraproject.org/wiki/Changes/OpenSSLDistrustsha1SigVer [3]
-Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Tested-by: kdevops <kdevops@lists.linux.dev> [0]
-Link: https://github.com/linux-kdevops/linux-modules-kpd/actions/runs/11420092929/job/31775404330 [0]
-Link: https://lore.kernel.org/r/52ee32c0c92afc4d3263cea1f8a1cdc809728aff.1729088288.git.linux@leemhuis.info
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Cc: stable@vger.kernel.org # 6.6+
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ arch/loongarch/include/asm/fpu.h |   37 ++++++++++++++++++++++---------------
+ arch/loongarch/include/asm/lbt.h |   10 +++++++---
+ arch/loongarch/kernel/fpu.S      |    6 ++++++
+ arch/loongarch/kernel/lbt.S      |    4 ++++
+ arch/loongarch/kernel/signal.c   |   21 ---------------------
+ 5 files changed, 39 insertions(+), 39 deletions(-)
 
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -2077,6 +2077,7 @@ comment "Do not forget to sign required
- choice
- 	prompt "Which hash algorithm should modules be signed with?"
- 	depends on MODULE_SIG
-+	default MODULE_SIG_SHA512
- 	help
- 	  This determines which sort of hashing algorithm will be used during
- 	  signature generation.  This algorithm _must_ be built into the kernel
+--- a/arch/loongarch/include/asm/fpu.h
++++ b/arch/loongarch/include/asm/fpu.h
+@@ -22,22 +22,29 @@
+ struct sigcontext;
+ 
+ #define kernel_fpu_available() cpu_has_fpu
+-extern void kernel_fpu_begin(void);
+-extern void kernel_fpu_end(void);
+ 
+-extern void _init_fpu(unsigned int);
+-extern void _save_fp(struct loongarch_fpu *);
+-extern void _restore_fp(struct loongarch_fpu *);
+-
+-extern void _save_lsx(struct loongarch_fpu *fpu);
+-extern void _restore_lsx(struct loongarch_fpu *fpu);
+-extern void _init_lsx_upper(void);
+-extern void _restore_lsx_upper(struct loongarch_fpu *fpu);
+-
+-extern void _save_lasx(struct loongarch_fpu *fpu);
+-extern void _restore_lasx(struct loongarch_fpu *fpu);
+-extern void _init_lasx_upper(void);
+-extern void _restore_lasx_upper(struct loongarch_fpu *fpu);
++void kernel_fpu_begin(void);
++void kernel_fpu_end(void);
++
++asmlinkage void _init_fpu(unsigned int);
++asmlinkage void _save_fp(struct loongarch_fpu *);
++asmlinkage void _restore_fp(struct loongarch_fpu *);
++asmlinkage int _save_fp_context(void __user *fpregs, void __user *fcc, void __user *csr);
++asmlinkage int _restore_fp_context(void __user *fpregs, void __user *fcc, void __user *csr);
++
++asmlinkage void _save_lsx(struct loongarch_fpu *fpu);
++asmlinkage void _restore_lsx(struct loongarch_fpu *fpu);
++asmlinkage void _init_lsx_upper(void);
++asmlinkage void _restore_lsx_upper(struct loongarch_fpu *fpu);
++asmlinkage int _save_lsx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
++asmlinkage int _restore_lsx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
++
++asmlinkage void _save_lasx(struct loongarch_fpu *fpu);
++asmlinkage void _restore_lasx(struct loongarch_fpu *fpu);
++asmlinkage void _init_lasx_upper(void);
++asmlinkage void _restore_lasx_upper(struct loongarch_fpu *fpu);
++asmlinkage int _save_lasx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
++asmlinkage int _restore_lasx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
+ 
+ static inline void enable_lsx(void);
+ static inline void disable_lsx(void);
+--- a/arch/loongarch/include/asm/lbt.h
++++ b/arch/loongarch/include/asm/lbt.h
+@@ -12,9 +12,13 @@
+ #include <asm/loongarch.h>
+ #include <asm/processor.h>
+ 
+-extern void _init_lbt(void);
+-extern void _save_lbt(struct loongarch_lbt *);
+-extern void _restore_lbt(struct loongarch_lbt *);
++asmlinkage void _init_lbt(void);
++asmlinkage void _save_lbt(struct loongarch_lbt *);
++asmlinkage void _restore_lbt(struct loongarch_lbt *);
++asmlinkage int _save_lbt_context(void __user *regs, void __user *eflags);
++asmlinkage int _restore_lbt_context(void __user *regs, void __user *eflags);
++asmlinkage int _save_ftop_context(void __user *ftop);
++asmlinkage int _restore_ftop_context(void __user *ftop);
+ 
+ static inline int is_lbt_enabled(void)
+ {
+--- a/arch/loongarch/kernel/fpu.S
++++ b/arch/loongarch/kernel/fpu.S
+@@ -458,6 +458,7 @@ SYM_FUNC_START(_save_fp_context)
+ 	li.w		a0, 0				# success
+ 	jr		ra
+ SYM_FUNC_END(_save_fp_context)
++EXPORT_SYMBOL_GPL(_save_fp_context)
+ 
+ /*
+  * a0: fpregs
+@@ -471,6 +472,7 @@ SYM_FUNC_START(_restore_fp_context)
+ 	li.w		a0, 0				# success
+ 	jr		ra
+ SYM_FUNC_END(_restore_fp_context)
++EXPORT_SYMBOL_GPL(_restore_fp_context)
+ 
+ /*
+  * a0: fpregs
+@@ -484,6 +486,7 @@ SYM_FUNC_START(_save_lsx_context)
+ 	li.w	a0, 0					# success
+ 	jr	ra
+ SYM_FUNC_END(_save_lsx_context)
++EXPORT_SYMBOL_GPL(_save_lsx_context)
+ 
+ /*
+  * a0: fpregs
+@@ -497,6 +500,7 @@ SYM_FUNC_START(_restore_lsx_context)
+ 	li.w	a0, 0					# success
+ 	jr	ra
+ SYM_FUNC_END(_restore_lsx_context)
++EXPORT_SYMBOL_GPL(_restore_lsx_context)
+ 
+ /*
+  * a0: fpregs
+@@ -510,6 +514,7 @@ SYM_FUNC_START(_save_lasx_context)
+ 	li.w	a0, 0					# success
+ 	jr	ra
+ SYM_FUNC_END(_save_lasx_context)
++EXPORT_SYMBOL_GPL(_save_lasx_context)
+ 
+ /*
+  * a0: fpregs
+@@ -523,6 +528,7 @@ SYM_FUNC_START(_restore_lasx_context)
+ 	li.w	a0, 0					# success
+ 	jr	ra
+ SYM_FUNC_END(_restore_lasx_context)
++EXPORT_SYMBOL_GPL(_restore_lasx_context)
+ 
+ .L_fpu_fault:
+ 	li.w	a0, -EFAULT				# failure
+--- a/arch/loongarch/kernel/lbt.S
++++ b/arch/loongarch/kernel/lbt.S
+@@ -90,6 +90,7 @@ SYM_FUNC_START(_save_lbt_context)
+ 	li.w		a0, 0			# success
+ 	jr		ra
+ SYM_FUNC_END(_save_lbt_context)
++EXPORT_SYMBOL_GPL(_save_lbt_context)
+ 
+ /*
+  * a0: scr
+@@ -110,6 +111,7 @@ SYM_FUNC_START(_restore_lbt_context)
+ 	li.w		a0, 0			# success
+ 	jr		ra
+ SYM_FUNC_END(_restore_lbt_context)
++EXPORT_SYMBOL_GPL(_restore_lbt_context)
+ 
+ /*
+  * a0: ftop
+@@ -120,6 +122,7 @@ SYM_FUNC_START(_save_ftop_context)
+ 	li.w		a0, 0			# success
+ 	jr		ra
+ SYM_FUNC_END(_save_ftop_context)
++EXPORT_SYMBOL_GPL(_save_ftop_context)
+ 
+ /*
+  * a0: ftop
+@@ -150,6 +153,7 @@ SYM_FUNC_START(_restore_ftop_context)
+ 	li.w		a0, 0			# success
+ 	jr		ra
+ SYM_FUNC_END(_restore_ftop_context)
++EXPORT_SYMBOL_GPL(_restore_ftop_context)
+ 
+ .L_lbt_fault:
+ 	li.w		a0, -EFAULT		# failure
+--- a/arch/loongarch/kernel/signal.c
++++ b/arch/loongarch/kernel/signal.c
+@@ -51,27 +51,6 @@
+ #define lock_lbt_owner()	({ preempt_disable(); pagefault_disable(); })
+ #define unlock_lbt_owner()	({ pagefault_enable(); preempt_enable(); })
+ 
+-/* Assembly functions to move context to/from the FPU */
+-extern asmlinkage int
+-_save_fp_context(void __user *fpregs, void __user *fcc, void __user *csr);
+-extern asmlinkage int
+-_restore_fp_context(void __user *fpregs, void __user *fcc, void __user *csr);
+-extern asmlinkage int
+-_save_lsx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
+-extern asmlinkage int
+-_restore_lsx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
+-extern asmlinkage int
+-_save_lasx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
+-extern asmlinkage int
+-_restore_lasx_context(void __user *fpregs, void __user *fcc, void __user *fcsr);
+-
+-#ifdef CONFIG_CPU_HAS_LBT
+-extern asmlinkage int _save_lbt_context(void __user *regs, void __user *eflags);
+-extern asmlinkage int _restore_lbt_context(void __user *regs, void __user *eflags);
+-extern asmlinkage int _save_ftop_context(void __user *ftop);
+-extern asmlinkage int _restore_ftop_context(void __user *ftop);
+-#endif
+-
+ struct rt_sigframe {
+ 	struct siginfo rs_info;
+ 	struct ucontext rs_uctx;
 
 
 
