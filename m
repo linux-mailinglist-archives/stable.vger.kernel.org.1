@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-137810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E93CAA1501
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 505E8AA127C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C2EE16DE8F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 734727A776A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2D324C077;
-	Tue, 29 Apr 2025 17:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19AD02517AB;
+	Tue, 29 Apr 2025 16:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qp7ZZgdn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhBR2ExX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B53F24113C;
-	Tue, 29 Apr 2025 17:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F9224E019;
+	Tue, 29 Apr 2025 16:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947197; cv=none; b=tiTPnGkWRGOYBQnYcVmZ4FhI9EfkVbWa7fA5Gz/7CR6I9HaFDMykUAfKFx7JyvenohThbzz1jUS8Bdd//fFmzh00s+S/L3f5DBLiVwSFVjg2MnHEX8DrGi5M4lmY/eLMoSNnQUAI/nMRayuQtINLzgfyQFkM5LB1P7546lgMa2U=
+	t=1745945598; cv=none; b=O+AXRf5ESREcP0CF58XtuOc3jchmkrK4wrY/NPOuOAUBpnmqNKx39LQDjT14EGBjB7trRxfi5tv9GPOhvmtIDZL9OtblAiKCD0z6C7RS6RmJWr2IQWbGMF+NmlrUafHGE4NB18decVfqJ18mYt7HIAyQ/huXhSNjG9f+H4hEUBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947197; c=relaxed/simple;
-	bh=m8AmfNs6Kr6v+JhTcJCV3TULGj8Xp+hRgI/9Xbk8e0k=;
+	s=arc-20240116; t=1745945598; c=relaxed/simple;
+	bh=off9L7+EJAMkfV37kYVBFGGcQOvguauvVkBsPaddJOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hbrouQdEoNWA95M44wDquEPxBDjmr2eRr0XoZdP28Ys6ku5kwcdJbbnmuMrNNSuO+AblcBj1vE66PtHuqGZ35K8w6yPhjvmCOIkE1VH1lpkQzXuXpc51Da5jVFhVPj9UTVHXUq+0lTEq+7wVaRvu0+Tueo4Q/sRQ0RXpKvq4s+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qp7ZZgdn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5DCC4CEE9;
-	Tue, 29 Apr 2025 17:19:56 +0000 (UTC)
+	 MIME-Version; b=otokelUv1qeY4zrNEqv6VdrU2PbSu/RsvEC0guIt6qfbtpVgAFwncSJ92avOyCU6LAe77UTqNP+h1oB8b0fsguQTcS6CgxM9I946z0ZpBPZDampK1TtIkrqj6dbkBui62puTVEdZFcO6p9faEUc05F5XGERk5yAgNIirJMk7/7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhBR2ExX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01727C4CEE3;
+	Tue, 29 Apr 2025 16:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947197;
-	bh=m8AmfNs6Kr6v+JhTcJCV3TULGj8Xp+hRgI/9Xbk8e0k=;
+	s=korg; t=1745945598;
+	bh=off9L7+EJAMkfV37kYVBFGGcQOvguauvVkBsPaddJOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qp7ZZgdnSlbWwz6cY3GlQCU+FtqTrLlC2eWTY21+QnVvQBJTOOrOcRLUmw+TaTmvk
-	 h/U++c79wmHVM8SDL47sHEyBHsMey3v8Hk5Oz2sttycpxrrgoOnyr0MBec3UQi5SUU
-	 EyvgubGZRjwKVvmz3Y431FM3ETVj/OFHn+OX6IVw=
+	b=xhBR2ExXXTatDHP6ygDskd2QBb7N94K38HNbBhK7uhPRtN2s36dvp1mMgf6BmBQOZ
+	 8Qiw+/z2ucA+Y2Yg65u6Td+BAr8QN3tRY9rFkjpF5WdUot9G7cLAuxZB8X90ADAIkT
+	 AkIC+STSaLCDg/ftUG4Oe8WSNPC1lGJioG9GavQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fritz Koenig <frkoenig@chromium.org>,
-	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jon Mason <jdmason@kudzu.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 204/286] media: venus: hfi: Correct session init return error
+Subject: [PATCH 5.4 167/179] ntb: reduce stack usage in idt_scan_mws
 Date: Tue, 29 Apr 2025 18:41:48 +0200
-Message-ID: <20250429161116.351470831@linuxfoundation.org>
+Message-ID: <20250429161056.145644741@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit e922a33e0228fa314ffc4f70b3b9ffbc4aad1bbe ]
+[ Upstream commit aff12700b8dd7422bfe2277696e192af4df9de8f ]
 
-The hfi_session_init can be called many times and it returns
-EINVAL when the session was already initialized. This error code
-(EINVAL) is confusing for the callers. Change hfi_session_init to
-return EALREADY error code when the session has been already
-initialized.
+idt_scan_mws() puts a large fixed-size array on the stack and copies
+it into a smaller dynamically allocated array at the end. On 32-bit
+targets, the fixed size can easily exceed the warning limit for
+possible stack overflow:
 
-Tested-by: Fritz Koenig <frkoenig@chromium.org>
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 9edaaa8e3e15 ("media: venus: hfi_parser: refactor hfi packet parsing logic")
+drivers/ntb/hw/idt/ntb_hw_idt.c:1041:27: error: stack frame size (1032) exceeds limit (1024) in 'idt_scan_mws' [-Werror,-Wframe-larger-than]
+
+Change it to instead just always use dynamic allocation for the
+array from the start. It's too big for the stack, but not actually
+all that much for a permanent allocation.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202205111109.PiKTruEj-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/hfi.c  | 2 +-
- drivers/media/platform/qcom/venus/vdec.c | 2 +-
- drivers/media/platform/qcom/venus/venc.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/ntb/hw/idt/ntb_hw_idt.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/venus/hfi.c b/drivers/media/platform/qcom/venus/hfi.c
-index 17da555905e98..5fd53227c2c0b 100644
---- a/drivers/media/platform/qcom/venus/hfi.c
-+++ b/drivers/media/platform/qcom/venus/hfi.c
-@@ -212,7 +212,7 @@ int hfi_session_init(struct venus_inst *inst, u32 pixfmt)
- 	int ret;
+diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
+index a0091900b0cfb..c74d958ffc62f 100644
+--- a/drivers/ntb/hw/idt/ntb_hw_idt.c
++++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
+@@ -1041,7 +1041,7 @@ static inline char *idt_get_mw_name(enum idt_mw_type mw_type)
+ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 				       unsigned char *mw_cnt)
+ {
+-	struct idt_mw_cfg mws[IDT_MAX_NR_MWS], *ret_mws;
++	struct idt_mw_cfg *mws;
+ 	const struct idt_ntb_bar *bars;
+ 	enum idt_mw_type mw_type;
+ 	unsigned char widx, bidx, en_cnt;
+@@ -1049,6 +1049,11 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 	int aprt_size;
+ 	u32 data;
  
- 	if (inst->state != INST_UNINIT)
--		return -EINVAL;
-+		return -EALREADY;
++	mws = devm_kcalloc(&ndev->ntb.pdev->dev, IDT_MAX_NR_MWS,
++			   sizeof(*mws), GFP_KERNEL);
++	if (!mws)
++		return ERR_PTR(-ENOMEM);
++
+ 	/* Retrieve the array of the BARs registers */
+ 	bars = portdata_tbl[port].bars;
  
- 	inst->hfi_codec = to_codec_type(pixfmt);
- 	reinit_completion(&inst->done);
-diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
-index d91030a134c0e..6e9b62645e917 100644
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -768,7 +768,7 @@ static int vdec_session_init(struct venus_inst *inst)
- 	int ret;
+@@ -1103,16 +1108,7 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
+ 		}
+ 	}
  
- 	ret = hfi_session_init(inst, inst->fmt_out->pixfmt);
--	if (ret == -EINVAL)
-+	if (ret == -EALREADY)
- 		return 0;
- 	else if (ret)
- 		return ret;
-diff --git a/drivers/media/platform/qcom/venus/venc.c b/drivers/media/platform/qcom/venus/venc.c
-index 18d20b4ca2cfd..9f1b02e31b98c 100644
---- a/drivers/media/platform/qcom/venus/venc.c
-+++ b/drivers/media/platform/qcom/venus/venc.c
-@@ -727,7 +727,7 @@ static int venc_init_session(struct venus_inst *inst)
- 	int ret;
+-	/* Allocate memory for memory window descriptors */
+-	ret_mws = devm_kcalloc(&ndev->ntb.pdev->dev, *mw_cnt, sizeof(*ret_mws),
+-			       GFP_KERNEL);
+-	if (!ret_mws)
+-		return ERR_PTR(-ENOMEM);
+-
+-	/* Copy the info of detected memory windows */
+-	memcpy(ret_mws, mws, (*mw_cnt)*sizeof(*ret_mws));
+-
+-	return ret_mws;
++	return mws;
+ }
  
- 	ret = hfi_session_init(inst, inst->fmt_cap->pixfmt);
--	if (ret == -EINVAL)
-+	if (ret == -EALREADY)
- 		return 0;
- 	else if (ret)
- 		return ret;
+ /*
 -- 
 2.39.5
 
