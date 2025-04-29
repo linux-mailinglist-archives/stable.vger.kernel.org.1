@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FA1AA152C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA40BAA17F4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32C6B1890027
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:21:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B2441BC2D56
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA240245007;
-	Tue, 29 Apr 2025 17:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223FE24DFF3;
+	Tue, 29 Apr 2025 17:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOAwwFT+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Zgx+GKx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BDA21ABDB;
-	Tue, 29 Apr 2025 17:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23C122AE68;
+	Tue, 29 Apr 2025 17:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947248; cv=none; b=Gjxfpn6hu0/qLeprdBIv3FkQ+fyCFxuCtoOQellDFgzLP87t9QjaqDYeF35qCF2gwYjAoJ8neMNpx9n9aWSGMUwcdliXOW68Pcs9i3cMmwEDvHmoB7bsK1nf+UjUV1N61cRUeyla2sH8OJsKXYdQFp9madcOZRR0WSks+f5xAGE=
+	t=1745949211; cv=none; b=vES/ktPHm2PRCsfFP0DjspXeZylNwjr8PvQ/smT5h7k7GX//jN6F8osOde+myd9zC+7jeMQgeG5rjUigwfmjqRQUgDPef+gQb0EV1Ny8Dw8s0VNhhvtvtMbq1KJ8q0mdvdOfIH8pr1tpG6gfAF6bKjqfoyB8OkxfoRJdN7qySQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947248; c=relaxed/simple;
-	bh=f3u+l5icYdG7KnNdskH/WSP7B79pq0jvsUqIwUhAOAk=;
+	s=arc-20240116; t=1745949211; c=relaxed/simple;
+	bh=870Zqz8rtEdCoSW8xRVdOs93I4hs9zsgUjLSEqSqatI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdimplg4+zDUMiBYagJZtOh02Ie0tLKjY4QTt/pv6a0Q+Mgk7HeBR4pR3pZfIdlxpuRX4IJL/cIPuVAvkyXa3yJj6k/sT5XthjU4gyYeVg6XIMzL37/PGFN+U4bN5NNB7Hyiavg6VhbK8Gc0m/VwBDPaqsdmM3/r5wf/UWd4A8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOAwwFT+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B151C4CEE3;
-	Tue, 29 Apr 2025 17:20:47 +0000 (UTC)
+	 MIME-Version; b=UJyQSOjp6+D4ZlnAs0Q4XQzZi3gZCEdRkEo6fb9LXBFQXfkgYZBopSxVswXsHtCDp3mrfnr/lYi8FVg4WPEcZ3xM22+KcQqOHLxWgUmz4pmDMih+RNsksfRM9B081v8dKuZHblvyDkkuqdQyHsPWGmjraFJsUR+8m8xv/yxLjBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Zgx+GKx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62889C4CEE3;
+	Tue, 29 Apr 2025 17:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947248;
-	bh=f3u+l5icYdG7KnNdskH/WSP7B79pq0jvsUqIwUhAOAk=;
+	s=korg; t=1745949211;
+	bh=870Zqz8rtEdCoSW8xRVdOs93I4hs9zsgUjLSEqSqatI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JOAwwFT+e7hYJOrFG89q5EypSJ92x+3f6k5OFNf9v+CbP4n2oAMWSqJGpEyqOoOrE
-	 CCABS+vevQ7OO9oZbVNsDdQmcA4S3IoLozpKpUGVWoL9UODndjXtKi4jBgYSOCY/Fc
-	 tXibmc0d7b6Zdo1hjc7SjgA9PCAE76AuhG/672rw=
+	b=1Zgx+GKx4P69BURAyLNjZmbx5vnak5TvbtgvcyN5orlYhJVzth0/aFPEfbHs0FHHY
+	 5RVjcffXCHIu39ib8pqxZ+2rItLtCittXHrEoa/kf1ydDIn2EPSwBwEIAu/UQhnZuO
+	 S2L0aQBRYOnyWk0nYsRYPIa0OWopUfq+bCbPs3lQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 219/286] backlight: led_bl: Hold led_access lock when calling led_sysfs_disable()
+	Chris Wilson <chris.p.wilson@intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Zhi Yang <Zhi.Yang@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.15 246/373] drm/i915/gt: Cleanup partial engine discovery failures
 Date: Tue, 29 Apr 2025 18:42:03 +0200
-Message-ID: <20250429161116.955469616@linuxfoundation.org>
+Message-ID: <20250429161133.244014371@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Chris Wilson <chris.p.wilson@intel.com>
 
-[ Upstream commit 276822a00db3c1061382b41e72cafc09d6a0ec30 ]
+commit 78a033433a5ae4fee85511ee075bc9a48312c79e upstream.
 
-Lockdep detects the following issue on led-backlight removal:
-  [  142.315935] ------------[ cut here ]------------
-  [  142.315954] WARNING: CPU: 2 PID: 292 at drivers/leds/led-core.c:455 led_sysfs_enable+0x54/0x80
-  ...
-  [  142.500725] Call trace:
-  [  142.503176]  led_sysfs_enable+0x54/0x80 (P)
-  [  142.507370]  led_bl_remove+0x80/0xa8 [led_bl]
-  [  142.511742]  platform_remove+0x30/0x58
-  [  142.515501]  device_remove+0x54/0x90
-  ...
+If we abort driver initialisation in the middle of gt/engine discovery,
+some engines will be fully setup and some not. Those incompletely setup
+engines only have 'engine->release == NULL' and so will leak any of the
+common objects allocated.
 
-Indeed, led_sysfs_enable() has to be called with the led_access
-lock held.
+v2:
+ - Drop the destroy_pinned_context() helper for now.  It's not really
+   worth it with just a single callsite at the moment.  (Janusz)
 
-Hold the lock when calling led_sysfs_disable().
-
-Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20250122091914.309533-1-herve.codina@bootlin.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chris Wilson <chris.p.wilson@intel.com>
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20220915232654.3283095-2-matthew.d.roper@intel.com
+Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/backlight/led_bl.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/gt/intel_engine_cs.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -226,8 +226,11 @@ static int led_bl_remove(struct platform
- 	backlight_device_unregister(bl);
+--- a/drivers/gpu/drm/i915/gt/intel_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
+@@ -983,8 +983,13 @@ int intel_engines_init(struct intel_gt *
+ 			return err;
  
- 	led_bl_power_off(priv);
--	for (i = 0; i < priv->nb_leds; i++)
-+	for (i = 0; i < priv->nb_leds; i++) {
-+		mutex_lock(&priv->leds[i]->led_access);
- 		led_sysfs_enable(priv->leds[i]);
-+		mutex_unlock(&priv->leds[i]->led_access);
-+	}
+ 		err = setup(engine);
+-		if (err)
++		if (err) {
++			intel_engine_cleanup_common(engine);
+ 			return err;
++		}
++
++		/* The backend should now be responsible for cleanup */
++		GEM_BUG_ON(engine->release == NULL);
  
- 	return 0;
- }
+ 		err = engine_init_common(engine);
+ 		if (err)
 
 
 
