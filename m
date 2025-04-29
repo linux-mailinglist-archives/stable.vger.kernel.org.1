@@ -1,150 +1,95 @@
-Return-Path: <stable+bounces-138940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48EC2AA1AFF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:58:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB65CAA1B13
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 21:02:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE4304A2C07
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:58:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B8599A776A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A0C2522A0;
-	Tue, 29 Apr 2025 18:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C88F250C15;
+	Tue, 29 Apr 2025 19:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="gM26QAy9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WR10Z9Xd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5489A2139B5
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 18:58:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A5378F54;
+	Tue, 29 Apr 2025 19:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745953131; cv=none; b=juxCDJIY0RagPgAIunrh2AUIzw7CQ2LvnueaOw1/Gh69a78qLJtrPhlR5B2VeUxhI43+zHm3ZQxU/WCwynzscvkMIB20TWv1MsCMZsAS9ejVYa2HLrbO1EJzYer+kTjhBWipzLBLgjpQuzVzP3ahNxYd2ENoeoDSdP0rpGpWsmI=
+	t=1745953333; cv=none; b=dQHwkMqqKF8TcpacYQ2dKX/cWn6a2Pz27o2jRn79rEruEotbbNNlSzHZnmTisjqmuf7783+tAikb9uSXC79GCRw6ReHd6Z0Y4EiX84ooyR4tMZT8uWCOdQFcqwea7KbXEZWU7RmVPiwAz957WCmvg2Bnmtsyz7ulUaOxoJAHV/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745953131; c=relaxed/simple;
-	bh=8DWUkgowi58Q+C6KSwBRblI0nmvZQfHYlZ0o/INoJlQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aRjquge9oaENqypLpq4Tw1PORSgjLVt6oGB+S23UvbgmABRgnjNu9vt9RC4a3pJ9qZD6ax5181Y6SRvbw2flp2IXHTm3JKS/evdDsOhPyTuPoRgr2ZmBTUSP9VpEe+KUFPEOa2JQfCERDAgONzLrOn4AH/CXqqy5M4kzlTJunK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=gM26QAy9; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43d0782d787so39728065e9.0
-        for <stable@vger.kernel.org>; Tue, 29 Apr 2025 11:58:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1745953127; x=1746557927; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mJ5gLIKdEnlHfp/ZM9aOKHXL04cwNu47lJLmXXaF2II=;
-        b=gM26QAy9PFPVm0t2wYMjzl6cRHjV9vLdBez/1mkvChOBElSY8hLmeBOZFeBryMplf1
-         3E61LQR9LXd/OJ+PGjeah+7n2elVhTl/B5NLh2Pfq3Kx3GaB4c9cmV1n56Moyyd5ohzq
-         GuJnrOPXnJr98ci7GzaFY1cwUdIR+pmqML6fC/sbKFNWathDmCqpfW6axtX+iR5loYUa
-         SS+HhnI/6Rka0V0zS3OyXOFOPDqdL+rYDa89p1hx69vopna0/fIdhpkz76KEk1z6pEJY
-         zI3GmzTXngjzuKjQIuV2lK0aK47uWjXDWv5JNtVE4cpZghxFjkwu7pPfb9EF0aGpVjIh
-         HyEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745953127; x=1746557927;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mJ5gLIKdEnlHfp/ZM9aOKHXL04cwNu47lJLmXXaF2II=;
-        b=ShuJ6Nh4J+hU0lGPf/WO4/d0r+1VXa6Pl7S2X8b2yL/vCl+D2xMWVnVPQadYP8H3zB
-         d0cHh+xYxYFEnwsmc/nq+KNElZGaCUJ3WD/jPJEfw3AqR6dzWCtl7dLemP3KFjsKmJMI
-         06J0Pr0pHjkBesdgK1ugGxPT+dyOtPKkaf77mf3Yc/HG5ehWrsVi0kvHSszIux/fy6P0
-         G4pyDnMK1LIYayGwPAvJxXHEk55v3v78ntF+r80hYAHNIqE5UY2/Y/eGavr66TRYRnY9
-         YRYuQy176Z+ed1sKu35L3vpJVMWpoMSAwxJ8FJf9ovgrd7EO10i1WuqZF6oqCoLuQosS
-         uGaw==
-X-Forwarded-Encrypted: i=1; AJvYcCV2SJipN/3DIK7GgIkqscJ2XUBG+aWMJN7nPX62+NksXcYo6wRHypUkql7/G7L2yqHfBppt5to=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHsE+SLRQnwRTBVrlV21/NRFUPs+IM/S3BTFBjv3E61SKzwFNS
-	09zIVzs/JYYnB5DZk6dTxMJF6edZ/fkM8j2L/J+0lJbl3Ndrn5IHGi5nVD5+g7c=
-X-Gm-Gg: ASbGncuW8e+otBEBeihKwuT2kKfJL0ERO65EzG3SNNzNBmdy3iRE4DKDqMXTr1gEGnG
-	dq4VlWQ80UVQWX6pnOOVK07Fp4TFpAXCKNVcR9muJblZC9vhZmaQ5cb1z11/4qs27rnfkTbv2/b
-	G5dxZe0R7As8J8E/+Y0YF7eCsKjUIRatJLqvcnZCW1nM0sQSESol0Y1jRghdkWR0ti4Lms4pG90
-	Te+1Rw3egGlpqIMLVZjUZLx2zplZs0tFPSKjsjbwPg34tBaAdtGgONKFCZT0BdlfitbNODpBp6W
-	UyeIAkDBrekrpb/WvxEZB63X+hnFNiYuuwyeI30Dwneh+iFhevK1e4np/OZ1ixYA8P4ACB82PNJ
-	JcCDYsooiGxjHnvXExCCG7kCODgwdn5D8iKgVzFUZ
-X-Google-Smtp-Source: AGHT+IEZMwWz0zdMJ9NDjk9O5Asf64JDL54V1y9NgXWNtSz5RkuH7RmJD1LO2QHqy0LDF2oJCsnupg==
-X-Received: by 2002:a05:600c:540e:b0:43c:f44c:72a6 with SMTP id 5b1f17b1804b1-441b1f35c1dmr3839765e9.2.1745953127536;
-        Tue, 29 Apr 2025 11:58:47 -0700 (PDT)
-Received: from raven.intern.cm-ag (p200300dc6f46c100023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f46:c100:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-440a530a6e9sm165643035e9.16.2025.04.29.11.58.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Apr 2025 11:58:47 -0700 (PDT)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>,
-	Joe Damato <jdamato@fastly.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] fs/eventpoll: fix endless busy loop after timeout has expired
-Date: Tue, 29 Apr 2025 20:58:27 +0200
-Message-ID: <20250429185827.3564438-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.47.2
+	s=arc-20240116; t=1745953333; c=relaxed/simple;
+	bh=2nAjN+lDJpPG/3AFkNBwRGaeoQ2au71DtIzMd+k6ns8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HTpKFw375gQRK9vZRRCvJnOduGVwOelYqIywTE6u2wrfgQD2OxDGyxtzqd+vwqoG6hag6Mq6KcQHLC7M4qYURDN4iwosceyIbEOt7joAfdWpAiBbOG/JR+NJx5GoCKIy17mNXVQdt7SS+M0zDgJ5IHJyo5kDw4OL0ySsL8UU7kI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WR10Z9Xd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D66C4CEE3;
+	Tue, 29 Apr 2025 19:02:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745953332;
+	bh=2nAjN+lDJpPG/3AFkNBwRGaeoQ2au71DtIzMd+k6ns8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=WR10Z9XdtTt53b6JY3mS283JRh2MzxwfiXpdUtmsSCjRRfAn29RhPFZaPbIS/KT8d
+	 uror/Fcz/WeEbnT4hlZbC1Qirj3pOHbRNwLMxjFN7BITpKKEeBzhWSnpwvP/T7eOAz
+	 3NSGUnanz2EQzMLxpkzKkreVeOGalwgg7SoHtHB4FpFXI7QyfEPTQ88JmOZB0pEzMC
+	 J2jD4crcvbTYZdCZOiEFSXq0sFiwfi1UKDVxwm/ijx8Gkw4q2fXQtzrSeez6rJVnHQ
+	 RyZYLqQZVN2ZTdq3kFOfppcv+/FBC2KunYVwuueiwZCg78RkGkC/2h8td2hhBOj7pW
+	 Y+3HHlLGCPQoA==
+Date: Tue, 29 Apr 2025 12:02:10 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Da Xue <da@lessconfused.com>
+Cc: Simon Horman <horms@kernel.org>, Da Xue <da@libre.computer>, Andrew Lunn
+ <andrew@lunn.ch>, Neil Armstrong <neil.armstrong@linaro.org>, Martin
+ Blumenstingl <martin.blumenstingl@googlemail.com>, Kevin Hilman
+ <khilman@baylibre.com>, Russell King <linux@armlinux.org.uk>,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet
+ <edumazet@google.com>, netdev@vger.kernel.org, Jerome Brunet
+ <jbrunet@baylibre.com>, linux-amlogic@lists.infradead.org, Paolo Abeni
+ <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+ linux-arm-kernel@lists.infradead.org, Heiner Kallweit
+ <hkallweit1@gmail.com>
+Subject: Re: [PATCH v3] net: mdio: mux-meson-gxl: set reversed bit when
+ using internal phy
+Message-ID: <20250429120210.0aa6fa81@kernel.org>
+In-Reply-To: <CACdvmAhcBmoDNyuu0npZzyExfhyLKdyPw9HvHvV+OdADxEfJJQ@mail.gmail.com>
+References: <20250425192009.1439508-1-da@libre.computer>
+	<20250428181242.GG3339421@horms.kernel.org>
+	<CACdvmAhcBmoDNyuu0npZzyExfhyLKdyPw9HvHvV+OdADxEfJJQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-After commit 0a65bc27bd64 ("eventpoll: Set epoll timeout if it's in
-the future"), the following program would immediately enter a busy
-loop in the kernel:
+On Mon, 28 Apr 2025 20:44:14 -0400 Da Xue wrote:
+> > On Fri, Apr 25, 2025 at 03:20:09PM -0400, Da Xue wrote:  
+> > > This bit is necessary to receive packets from the internal PHY.
+> > > Without this bit set, no activity occurs on the interface.
+> > >
+> > > Normally u-boot sets this bit, but if u-boot is compiled without
+> > > net support, the interface will be up but without any activity.
+> > >
+> > > The vendor SDK sets this bit along with the PHY_ID bits.  
+> >
+> > I'd like to clarify that:
+> > Without this patch the writel the patch is modifying will clear the PHY_ID bit.
+> > But despite that the system works if at some point (uboot) set the PHY_ID bit?  
+> 
+> Correct. If this is set once, it will work until the IP is powered
+> down or reset.
+> If u-boot does not set it, Linux will not set it and the IP will not work.
+> If u-boot does set it, the IP will not work after suspend-resume since
+> the IP is reset.
+> Thus, we need to set it on the Linux side when bringing up the interface.
 
-```
-int main() {
-  int e = epoll_create1(0);
-  struct epoll_event event = {.events = EPOLLIN};
-  epoll_ctl(e, EPOLL_CTL_ADD, 0, &event);
-  const struct timespec timeout = {.tv_nsec = 1};
-  epoll_pwait2(e, &event, 1, &timeout, 0);
-}
-```
-
-This happens because the given (non-zero) timeout of 1 nanosecond
-usually expires before ep_poll() is entered and then
-ep_schedule_timeout() returns false, but `timed_out` is never set
-because the code line that sets it is skipped.  This quickly turns
-into a soft lockup, RCU stalls and deadlocks, inflicting severe
-headaches to the whole system.
-
-When the timeout has expired, we don't need to schedule a hrtimer, but
-we should set the `timed_out` variable.  Therefore, I suggest moving
-the ep_schedule_timeout() check into the `timed_out` expression
-instead of skipping it.
-
-Fixes: 0a65bc27bd64 ("eventpoll: Set epoll timeout if it's in the future")
-Cc: Joe Damato <jdamato@fastly.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
----
- fs/eventpoll.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 4bc264b854c4..d4dbffdedd08 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -2111,9 +2111,10 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 
- 		write_unlock_irq(&ep->lock);
- 
--		if (!eavail && ep_schedule_timeout(to))
--			timed_out = !schedule_hrtimeout_range(to, slack,
--							      HRTIMER_MODE_ABS);
-+		if (!eavail)
-+			timed_out = !ep_schedule_timeout(to) ||
-+				!schedule_hrtimeout_range(to, slack,
-+							  HRTIMER_MODE_ABS);
- 		__set_current_state(TASK_RUNNING);
- 
- 		/*
--- 
-2.47.2
-
+Added to the commit message when applying, thank you both!
 
