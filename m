@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-138827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209ADAA19E1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:16:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E4FAA1918
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 600D317101E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 701004A0556
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8AE215F6C;
-	Tue, 29 Apr 2025 18:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E3A24C098;
+	Tue, 29 Apr 2025 18:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBfqYEC9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oZssgSE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499CC3FFD;
-	Tue, 29 Apr 2025 18:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453402AE96;
+	Tue, 29 Apr 2025 18:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950476; cv=none; b=KheIQd2dQTjsq0fcToybe6khDvjc6gg4Bgi3ORfdEC59Zdg6rssS2s5UcTqrXln1KQTOsB6xHU0xrH7MbwKNlMuGGeS+pY6f0hyepb/sBtDofVy0zlGPiFS9jSbiBLJYXJS7wIda4TZtbh16Bia7nrvYodyiCnWnvPbmC1fYw7Y=
+	t=1745949891; cv=none; b=jlvXODWK4+m4VC8AuSFiYWDriUmTWy6dPXUDq+osDmL7IWG7LwFHlCSrE/SP6RjfES8F/1tB1pnRbkdRSJ5Wp4HzZBDx11LEgOSYQzbWW70WN/f5S56jY8cCdp1fAMP3mZnj01afxsCwPY/xpdFc8gqrd4Wm+eSrwGqZpNOBH4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950476; c=relaxed/simple;
-	bh=r0LphsKWiQ+jFhW7Ktx7A2Z/sIRs7n1qO4SZ/pW/i1g=;
+	s=arc-20240116; t=1745949891; c=relaxed/simple;
+	bh=Ipai51g7IyPyaZusXK5fQqwUq8LFc/w2DNauzjHeYaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEoYnroV5yIZxDTUx8tZA2u0yZYIUTD5nDYXCiI085NDZsqg5fV3VGHkf8da7n2naAhe6esuOivW8EY8eLHxhz3hB0xGGCta6KvnteN2GYKo++5IOxGAdptC4WYhn2KmiiQYjWsz91Qh998VCNuhlV+43fZVR/LkTHGpix6U+UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBfqYEC9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E944C4CEE3;
-	Tue, 29 Apr 2025 18:14:35 +0000 (UTC)
+	 MIME-Version; b=bHK3bArI/gpQh87/pm2zt5qhAz4aUVJWk2XUewH4N+CmYu9lh9zfzmyLN4uPL1udln4onS+Wdbxmy/mnJGsSWYS++IVOH00+76cCjNAzIDkwij7nCPKTbMjk0czYmrEvs6H7lVC3IbEph2dTgyK3FynAkFdwKBkRs5lb2/ZiQAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oZssgSE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EDFC4CEE3;
+	Tue, 29 Apr 2025 18:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950475;
-	bh=r0LphsKWiQ+jFhW7Ktx7A2Z/sIRs7n1qO4SZ/pW/i1g=;
+	s=korg; t=1745949891;
+	bh=Ipai51g7IyPyaZusXK5fQqwUq8LFc/w2DNauzjHeYaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FBfqYEC9ip8MJVOw4LKj6VoEjDD2Ge4ueCmyHWH9drKAmkAYXbh7tuM9q69/A0cv1
-	 Qes2A0IiKqVsWelxMkHWNtFpJFfYoikI0MYzv5v2mRYzfFMGDfyhJSXQzQ+T9nX9xa
-	 IojZDiCLMskwF0q0zTD+BjtFGz6PtJkUntmhVJXs=
+	b=0oZssgSEsscrECWk9mGlpeiBLFaZy/gJYVmle2AtVOk2NUYenckaEEPIk316z6Z7x
+	 DwNmAhf3tCXWvHib0jTYiYdm/NG1Cz4aCCn4pgZrWar09d+brADJ8XlARTudUGUZP/
+	 Aw90WgtElg4//xjpjUbypk9QgmCOrFy+5Hbj/aq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Frode Isaksen <frode@meta.com>,
 	stable <stable@kernel.org>,
 	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 108/204] usb: dwc3: gadget: check that event count does not exceed event buffer length
+Subject: [PATCH 6.1 088/167] usb: dwc3: gadget: check that event count does not exceed event buffer length
 Date: Tue, 29 Apr 2025 18:43:16 +0200
-Message-ID: <20250429161103.851065206@linuxfoundation.org>
+Message-ID: <20250429161055.314454903@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -97,7 +97,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/usb/dwc3/gadget.c
 +++ b/drivers/usb/dwc3/gadget.c
-@@ -4570,6 +4570,12 @@ static irqreturn_t dwc3_check_event_buf(
+@@ -4409,6 +4409,12 @@ static irqreturn_t dwc3_check_event_buf(
  	if (!count)
  		return IRQ_NONE;
  
