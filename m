@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-138249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DD0AA1731
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2536AA11DF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:46:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A6E017C860
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:44:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B51894A5509
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910DB2517A8;
-	Tue, 29 Apr 2025 17:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7977D2472AC;
+	Tue, 29 Apr 2025 16:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTNiW61p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyayIQU/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA6624397A;
-	Tue, 29 Apr 2025 17:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19ECC216E30;
+	Tue, 29 Apr 2025 16:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948652; cv=none; b=bFf3pZj20yueRp3Q/jtIS/AGWicOdsVQbo0mFXEdLCw1qIjtKmlEHwjFz/eBc2MF/xSQfNNesyJgSi3U8yqtu2vNdgfzOusm64UvFtwjxq1BvpSAlHBzLBOiDXFjGz5n74nCLdwIR04i4+7wc0SgtKjNM9z0UuTFG5ao4ce/MPA=
+	t=1745945171; cv=none; b=QgN9sInUR/hmLLj7YbMBjtG7fy3wkQm/sSTNGmjn6X+PphEOApnp2dndCSlsY4+mdmNdNIB253Vi+WEG5qBMua9OQGSVZtWqouHo6hrshuDG1zgCVuf8yh0aVPJU1X+Hb83sOGbpgmGphU9RT1jwRrntYOv9LPPYPYkzGX+CB04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948652; c=relaxed/simple;
-	bh=npYWyG8DbKFkaAv47UsiPDLGmJO11y1EH/5UUM995sY=;
+	s=arc-20240116; t=1745945171; c=relaxed/simple;
+	bh=PuyHt2z5ws0Bj3PmcY76iOFfGqQcCidK9QZfL9729/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g3p/MdYfs1HID69rvS9UXkEibcNUb9xoK2fIb2qbup23Z6EuhXmUTF64vnM4ki4OzcE7IVB7e3VZ5U3+TCi7vMNohbyhZnPQpX9thU6nEb7a0zKQzq6EZvrIxfrmoUeKpRb38BQQ4DQFI+u4rUryH9jKIpSOmWvG7ut6lWCab6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTNiW61p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A60C4CEF5;
-	Tue, 29 Apr 2025 17:44:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gBpTwVM1r8IheftobvwjceUL7e6cQBnHQMaCjm/HahTVl+XNK7S2Wnx88wbyy+5N06AwY47OHeBFHVULhVHzI58TO/PomOdDFfDVeKG1AAIto9AqmTF4h9VVlG0FSos1cd3K9hl8FkEPAKSv3Qij8C54bHMPW1+AoYMmQs2SPPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyayIQU/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7511BC4CEE3;
+	Tue, 29 Apr 2025 16:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948652;
-	bh=npYWyG8DbKFkaAv47UsiPDLGmJO11y1EH/5UUM995sY=;
+	s=korg; t=1745945170;
+	bh=PuyHt2z5ws0Bj3PmcY76iOFfGqQcCidK9QZfL9729/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTNiW61pmlsxm3s5/dSUpM9OgsFCwajrDslBEO1DJqrrUUDStbueQf/4VvCrXuRRS
-	 iKDNrTiTkbu6zt6+Z8FJ58PtIUkY95UA61nfoFRDxCK9rSymgrX6U119jjPvKGprmg
-	 fb7lTt/BDlDb428+GnrfbvY5qV92dBeYMbsUzCD4=
+	b=YyayIQU/IWnXVhuOkwZ9zQEMfn7kuqjBPu0qaOPq0ZvOHr3IpdKTP3l8bfc3bWEzB
+	 5K1eUvRIV7noqckPTlt4iVyZYVKbQJVrmQ6/QK+8pB8I5ZX525b6evZDnTI4Ngi3yz
+	 uVizybvXBXkGevX8jfT0EMU5hEsZlTt0ZPhmyqIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 072/373] media: i2c: ccs: Set the devices runtime PM status correctly in remove
+	Max Grobecker <max@grobecker.info>,
+	Ingo Molnar <mingo@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Borislav Petkov <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 008/179] x86/cpu: Dont clear X86_FEATURE_LAHF_LM flag in init_amd_k8() on AMD when running in a virtual machine
 Date: Tue, 29 Apr 2025 18:39:09 +0200
-Message-ID: <20250429161126.106565274@linuxfoundation.org>
+Message-ID: <20250429161049.730192467@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +62,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Max Grobecker <max@grobecker.info>
 
-commit e04604583095faf455b3490b004254a225fd60d4 upstream.
+[ Upstream commit a4248ee16f411ac1ea7dfab228a6659b111e3d65 ]
 
-Set the device's runtime PM status to suspended in device removal only if
-it wasn't suspended already.
+When running in a virtual machine, we might see the original hardware CPU
+vendor string (i.e. "AuthenticAMD"), but a model and family ID set by the
+hypervisor. In case we run on AMD hardware and the hypervisor sets a model
+ID < 0x14, the LAHF cpu feature is eliminated from the the list of CPU
+capabilities present to circumvent a bug with some BIOSes in conjunction with
+AMD K8 processors.
 
-Fixes: 9447082ae666 ("[media] smiapp: Implement power-on and power-off sequences without runtime PM")
-Cc: stable@vger.kernel.org # for >= v5.15
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Parsing the flags list from /proc/cpuinfo seems to be happening mostly in
+bash scripts and prebuilt Docker containers, as it does not need to have
+additionals tools present – even though more reliable ways like using "kcpuid",
+which calls the CPUID instruction instead of parsing a list, should be preferred.
+Scripts, that use /proc/cpuinfo to determine if the current CPU is
+"compliant" with defined microarchitecture levels like x86-64-v2 will falsely
+claim the CPU is incapable of modern CPU instructions when "lahf_lm" is missing
+in that flags list.
+
+This can prevent some docker containers from starting or build scripts to create
+unoptimized binaries.
+
+Admittably, this is more a small inconvenience than a severe bug in the kernel
+and the shoddy scripts that rely on parsing /proc/cpuinfo
+should be fixed instead.
+
+This patch adds an additional check to see if we're running inside a
+virtual machine (X86_FEATURE_HYPERVISOR is present), which, to my
+understanding, can't be present on a real K8 processor as it was introduced
+only with the later/other Athlon64 models.
+
+Example output with the "lahf_lm" flag missing in the flags list
+(should be shown between "hypervisor" and "abm"):
+
+    $ cat /proc/cpuinfo
+    processor       : 0
+    vendor_id       : AuthenticAMD
+    cpu family      : 15
+    model           : 6
+    model name      : Common KVM processor
+    stepping        : 1
+    microcode       : 0x1000065
+    cpu MHz         : 2599.998
+    cache size      : 512 KB
+    physical id     : 0
+    siblings        : 1
+    core id         : 0
+    cpu cores       : 1
+    apicid          : 0
+    initial apicid  : 0
+    fpu             : yes
+    fpu_exception   : yes
+    cpuid level     : 13
+    wp              : yes
+    flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca
+                      cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx rdtscp
+                      lm rep_good nopl cpuid extd_apicid tsc_known_freq pni
+                      pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe popcnt
+                      tsc_deadline_timer aes xsave avx f16c hypervisor abm
+                      3dnowprefetch vmmcall bmi1 avx2 bmi2 xsaveopt
+
+... while kcpuid shows the feature to be present in the CPU:
+
+    # kcpuid -d | grep lahf
+         lahf_lm             - LAHF/SAHF available in 64-bit mode
+
+[ mingo: Updated the comment a bit, incorporated Boris's review feedback. ]
+
+Signed-off-by: Max Grobecker <max@grobecker.info>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ccs/ccs-core.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/amd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/ccs/ccs-core.c
-+++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -3677,9 +3677,10 @@ static int ccs_remove(struct i2c_client
- 	v4l2_async_unregister_subdev(subdev);
- 
- 	pm_runtime_disable(&client->dev);
--	if (!pm_runtime_status_suspended(&client->dev))
-+	if (!pm_runtime_status_suspended(&client->dev)) {
- 		ccs_power_off(&client->dev);
--	pm_runtime_set_suspended(&client->dev);
-+		pm_runtime_set_suspended(&client->dev);
-+	}
- 
- 	for (i = 0; i < sensor->ssds_used; i++) {
- 		v4l2_device_unregister_subdev(&sensor->ssds[i].sd);
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 533451498c8f8..9bcc099484c89 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -808,7 +808,7 @@ static void init_amd_k8(struct cpuinfo_x86 *c)
+ 	 * (model = 0x14) and later actually support it.
+ 	 * (AMD Erratum #110, docId: 25759).
+ 	 */
+-	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM)) {
++	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM) && !cpu_has(c, X86_FEATURE_HYPERVISOR)) {
+ 		clear_cpu_cap(c, X86_FEATURE_LAHF_LM);
+ 		if (!rdmsrl_amd_safe(0xc001100d, &value)) {
+ 			value &= ~BIT_64(32);
+-- 
+2.39.5
+
 
 
 
