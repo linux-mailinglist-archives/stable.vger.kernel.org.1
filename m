@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032ABAA1429
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FBB4AA1347
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DBAD7B4B27
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:11:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D8F7981A41
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF37F24A055;
-	Tue, 29 Apr 2025 17:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7C124113C;
+	Tue, 29 Apr 2025 16:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZuAwGzNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmiX+8wg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E49A243364;
-	Tue, 29 Apr 2025 17:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8162215060;
+	Tue, 29 Apr 2025 16:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946762; cv=none; b=SC+h6nV/n7s1jnQ/fhEmTi2avFALArs8jZe0wp2xnYRXqaAAZXXlSvhq/nDvvWzTdA1kr/f5uWd8dCCYpIxUR27DpVL02+P50gEVaLar4qZW/h62f+YDDgOeQ4DLbiN9QHZAJruv+loPCfsx+XfUSMsoxj1LIu9QJrHtcR0Dexc=
+	t=1745945939; cv=none; b=DLHol53s2qX4ERMAGazf8Eg62pb30Jfbql5gZ1Wv9vb/+7lKDrOYXLu28kNzSSsi8KGsd9YIgWa7QhzBYx445JdtS+dBGz+eSh5ltAIxO5InIxWrNMjDoOQokrZ5XBzpiMR0LUkhmtTMayBU/UH5LjXzw4nfMSuvOO7Yd0mPtQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946762; c=relaxed/simple;
-	bh=GTSaz3d9cY3dtNtD6cAytwYXCgb3MRBaG8sh9mF3h4I=;
+	s=arc-20240116; t=1745945939; c=relaxed/simple;
+	bh=FnUDNVu6mqMwkLS+rcfUiA1Dhfjj7oKxFl7RsKs8S4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mt3AClkBNZbehKtMw2jaT/mKkzkXwTDjdszBbqck4zWlZtzq95kdrfQky/nZlXsP5JiuPl3jMAW8Vz86JnDliu2LlSQ3T20sUZ3ZwLXyaF/PhBwRAvJxGlv6gMxJprzETVABkFENeOQlBtwW4mypLwJL/0K/R0HcezQsNQAVOFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZuAwGzNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AEAC4CEE3;
-	Tue, 29 Apr 2025 17:12:42 +0000 (UTC)
+	 MIME-Version; b=AgLg2TdaXyWqPzAcuLdHT8xbaBXzBVq9pAgQrrB/ZE6j0y3LBWQTQzAHeGU6dzdLJcT97NKVZjNaoL6kxqsulpoWzzQ3pX5PYevB1b+wOC0AdJHaIbugdDIMC84HoLPmXJxZT0FwjOFdVW0YkPgjVfSK6rumcDc4v6Y6CW+gmSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmiX+8wg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B75C4CEE3;
+	Tue, 29 Apr 2025 16:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946762;
-	bh=GTSaz3d9cY3dtNtD6cAytwYXCgb3MRBaG8sh9mF3h4I=;
+	s=korg; t=1745945939;
+	bh=FnUDNVu6mqMwkLS+rcfUiA1Dhfjj7oKxFl7RsKs8S4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZuAwGzNTUbhIi4JSARvXAEN1KP54zmD7usDWYxYM4AL+/99yw52KqhBGuxfthvrWp
-	 XzmoC9j68IcmDLIUIrQY1TkPO+UlgNNEcM6iSPEcOM0xJRht/OBszq5VIdJuZ6w3Jp
-	 VhYPLRjvM2IIRlxyWRpGWQaIiojTA+HDYsZ3GYsU=
+	b=HmiX+8wgB2yHvoID3qeR0ABjoOLIEtqqpdQzCnV1qUAm0SuZQl+B870Kboiil5XxV
+	 D5Ea2QwmS2HFzcQT7c7H8bMjkrAvNEwZucUSZr3mHbaoUAmx4cdgA4Tx+HeR5CQWca
+	 I6RcCfOpg8/jvQYtaM7P9zdKpktN168FXkHxElWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriele Paoloni <gpaoloni@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Jinyang He <hejinyang@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 034/286] tracing: fix return value in __ftrace_event_enable_disable for TRACE_REG_UNREGISTER
+Subject: [PATCH 6.14 101/311] LoongArch: Make do_xyz() exception handlers more robust
 Date: Tue, 29 Apr 2025 18:38:58 +0200
-Message-ID: <20250429161109.260573066@linuxfoundation.org>
+Message-ID: <20250429161125.176309388@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Paoloni <gpaoloni@redhat.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 0c588ac0ca6c22b774d9ad4a6594681fdfa57d9d ]
+[ Upstream commit cc73cc6bcdb5f959670e3ff9abdc62461452ddff ]
 
-When __ftrace_event_enable_disable invokes the class callback to
-unregister the event, the return value is not reported up to the
-caller, hence leading to event unregister failures being silently
-ignored.
+Currently, interrupts need to be disabled before single-step mode is
+set, it requires that CSR_PRMD_PIE be cleared in save_local_irqflag()
+which is called by setup_singlestep(), this is reasonable.
 
-This patch assigns the ret variable to the invocation of the
-event unregister callback, so that its return value is stored
-and reported to the caller, and it raises a warning in case
-of error.
+But in the first kprobe breakpoint exception, if the irq is enabled at
+the beginning of do_bp(), it will not be disabled at the end of do_bp()
+due to the CSR_PRMD_PIE has been cleared in save_local_irqflag(). So for
+this case, it may corrupt exception context when restoring the exception
+after do_bp() in handle_bp(), this is not reasonable.
 
-Link: https://lore.kernel.org/20250321170821.101403-1-gpaoloni@redhat.com
-Signed-off-by: Gabriele Paoloni <gpaoloni@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+In order to restore exception safely in handle_bp(), it needs to ensure
+the irq is disabled at the end of do_bp(), so just add a local variable
+to record the original interrupt status in the parent context, then use
+it as the check condition to enable and disable irq in do_bp().
+
+While at it, do the similar thing for other do_xyz() exception handlers
+to make them more robust.
+
+Fixes: 6d4cc40fb5f5 ("LoongArch: Add kprobes support")
+Suggested-by: Jinyang He <hejinyang@loongson.cn>
+Suggested-by: Huacai Chen <chenhuacai@loongson.cn>
+Co-developed-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/traps.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 4b5a8d7275be7..92693e2140a94 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -411,7 +411,9 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 				clear_bit(EVENT_FILE_FL_RECORDED_TGID_BIT, &file->flags);
- 			}
+diff --git a/arch/loongarch/kernel/traps.c b/arch/loongarch/kernel/traps.c
+index 2ec3106c0da3d..47fc2de6d1501 100644
+--- a/arch/loongarch/kernel/traps.c
++++ b/arch/loongarch/kernel/traps.c
+@@ -553,9 +553,10 @@ asmlinkage void noinstr do_ale(struct pt_regs *regs)
+ 	die_if_kernel("Kernel ale access", regs);
+ 	force_sig_fault(SIGBUS, BUS_ADRALN, (void __user *)regs->csr_badvaddr);
+ #else
++	bool pie = regs_irqs_disabled(regs);
+ 	unsigned int *pc;
  
--			call->class->reg(call, TRACE_REG_UNREGISTER, file);
-+			ret = call->class->reg(call, TRACE_REG_UNREGISTER, file);
-+
-+			WARN_ON_ONCE(ret);
- 		}
- 		/* If in SOFT_MODE, just set the SOFT_DISABLE_BIT, else clear it */
- 		if (file->flags & EVENT_FILE_FL_SOFT_MODE)
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_enable();
+ 
+ 	perf_sw_event(PERF_COUNT_SW_ALIGNMENT_FAULTS, 1, regs, regs->csr_badvaddr);
+@@ -582,7 +583,7 @@ asmlinkage void noinstr do_ale(struct pt_regs *regs)
+ 	die_if_kernel("Kernel ale access", regs);
+ 	force_sig_fault(SIGBUS, BUS_ADRALN, (void __user *)regs->csr_badvaddr);
+ out:
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_disable();
+ #endif
+ 	irqentry_exit(regs, state);
+@@ -621,12 +622,13 @@ static void bug_handler(struct pt_regs *regs)
+ asmlinkage void noinstr do_bce(struct pt_regs *regs)
+ {
+ 	bool user = user_mode(regs);
++	bool pie = regs_irqs_disabled(regs);
+ 	unsigned long era = exception_era(regs);
+ 	u64 badv = 0, lower = 0, upper = ULONG_MAX;
+ 	union loongarch_instruction insn;
+ 	irqentry_state_t state = irqentry_enter(regs);
+ 
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_enable();
+ 
+ 	current->thread.trap_nr = read_csr_excode();
+@@ -692,7 +694,7 @@ asmlinkage void noinstr do_bce(struct pt_regs *regs)
+ 	force_sig_bnderr((void __user *)badv, (void __user *)lower, (void __user *)upper);
+ 
+ out:
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_disable();
+ 
+ 	irqentry_exit(regs, state);
+@@ -710,11 +712,12 @@ asmlinkage void noinstr do_bce(struct pt_regs *regs)
+ asmlinkage void noinstr do_bp(struct pt_regs *regs)
+ {
+ 	bool user = user_mode(regs);
++	bool pie = regs_irqs_disabled(regs);
+ 	unsigned int opcode, bcode;
+ 	unsigned long era = exception_era(regs);
+ 	irqentry_state_t state = irqentry_enter(regs);
+ 
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_enable();
+ 
+ 	if (__get_inst(&opcode, (u32 *)era, user))
+@@ -780,7 +783,7 @@ asmlinkage void noinstr do_bp(struct pt_regs *regs)
+ 	}
+ 
+ out:
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_disable();
+ 
+ 	irqentry_exit(regs, state);
+@@ -1015,6 +1018,7 @@ static void init_restore_lbt(void)
+ 
+ asmlinkage void noinstr do_lbt(struct pt_regs *regs)
+ {
++	bool pie = regs_irqs_disabled(regs);
+ 	irqentry_state_t state = irqentry_enter(regs);
+ 
+ 	/*
+@@ -1024,7 +1028,7 @@ asmlinkage void noinstr do_lbt(struct pt_regs *regs)
+ 	 * (including the user using 'MOVGR2GCSR' to turn on TM, which
+ 	 * will not trigger the BTE), we need to check PRMD first.
+ 	 */
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_enable();
+ 
+ 	if (!cpu_has_lbt) {
+@@ -1038,7 +1042,7 @@ asmlinkage void noinstr do_lbt(struct pt_regs *regs)
+ 	preempt_enable();
+ 
+ out:
+-	if (regs->csr_prmd & CSR_PRMD_PIE)
++	if (!pie)
+ 		local_irq_disable();
+ 
+ 	irqentry_exit(regs, state);
 -- 
 2.39.5
 
