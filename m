@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-137726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51EF0AA14E7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C69AA13B0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0E3D984E27
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8432D175D62
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A372528E4;
-	Tue, 29 Apr 2025 17:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773E1241664;
+	Tue, 29 Apr 2025 17:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVvsVxyJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/ornQxD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756AD2472B4;
-	Tue, 29 Apr 2025 17:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D7D2405E5;
+	Tue, 29 Apr 2025 17:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946942; cv=none; b=iLc58ABI1dmh9CSdmw4bxFRkKe62wUHGmDbbpmLjx2Exp/fL/wOfEc/5E0IF5KPpZSRzl5WWlsiFFYKza+UZd2WboIrP46Vs2XDU18/+Krt/WwMGm5Ro9AYZIkqDp3ayX/zoZJ4wvkMh5W3nd92vCFFOUhn7b30ZFWX4oQS+l0I=
+	t=1745946286; cv=none; b=QSvnSLdUcCSJOdU88MGM97fTfcF2jxeE9Nn3jxTzqg5eEn8UBDUoPC1zJyLAXe9RIP4dF/EomfZf/BkEgA7BwD95oT4I+4wd2h5ns46md84Ucwg1Gi2RlZ/qdOCqj1bMcwtKnYiDQYezEmEwUb2HyhkEgT83+ZTqBa+xbRTqwhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946942; c=relaxed/simple;
-	bh=DrplOJlCq5THQGtn/R7xrX1Ydzm4VnWPYJ/5Z+ejzQE=;
+	s=arc-20240116; t=1745946286; c=relaxed/simple;
+	bh=w4R3HNG+nMy+56EchB675hEwGD+YiJRg6ftx+ko+Xws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cNEblTiavPPl9Pg6dKUXpVSFbEYiVAtOkX86cA5zxdhRWqUuQeGOpOGfjvTagJvMRwpY98IbiVn2MZJwJYiMlB1jTPFPdHcnUNTOLv//UmEIjwwo16KLZgbTTXgecv8wP8AIdS0IUMVfwhi7XJ+n0mq6+xSumo0QGnlmtbnbmKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVvsVxyJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F7BC4CEE3;
-	Tue, 29 Apr 2025 17:15:41 +0000 (UTC)
+	 MIME-Version; b=WBOBmEJkpADhXcvzNs2aiiRIP+oEYqG6Kx199dazwzWtd3+ponJfEJ2AD+HQu8QgkJR0xXUPyx2WMeeGbsUWZC8MPgR3VLEyin8CwzG46X1k6213eeRr3tr546rr79ope895YnkItlCJFDqZpZSlJri46UZWygb7yzoeTT+IVQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/ornQxD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EA6C4CEE3;
+	Tue, 29 Apr 2025 17:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946942;
-	bh=DrplOJlCq5THQGtn/R7xrX1Ydzm4VnWPYJ/5Z+ejzQE=;
+	s=korg; t=1745946286;
+	bh=w4R3HNG+nMy+56EchB675hEwGD+YiJRg6ftx+ko+Xws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lVvsVxyJBYwgWoQhLuVLu4ziOEgTkogIE+7qA2CJxi6IUfdHwZCnbVJL/77G3xpjv
-	 ATz95y46xo4VAVRX6zvsQJrBBYkx02ZMU+dALs4Se2dL3+PKEDZmoF7pHEp7SrEf9m
-	 anQQBWmh1EWkyQ+TEQKqyBtXnZmYi1uZbW/A1xJA=
+	b=H/ornQxDx/j5ZKR1wc3raE3sS9F7Jv5h8UsBRWyirU/N/uC9U269wGRgm1L5LfwPm
+	 LIUGkaC9Xz6GEF3cTkenHrqrnTqUg0WftmmOdoA6Dev5dFURo0sAUy0tQza6yv6Mtl
+	 Cs6KbJ2N/ymGwA7DeiaDV8BwZTxlla+Apf2Fw/zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	WangYuli <wangyuli@uniontech.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/286] riscv: KGDB: Remove ".option norvc/.option rvc" for kgdb_compiled_break
+Subject: [PATCH 6.14 186/311] bpf: Fix deadlock between rcu_tasks_trace and event_mutex.
 Date: Tue, 29 Apr 2025 18:40:23 +0200
-Message-ID: <20250429161112.752106143@linuxfoundation.org>
+Message-ID: <20250429161128.637727766@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Alexei Starovoitov <ast@kernel.org>
 
-[ Upstream commit 550c2aa787d1b06efcb11de1877354502a1237f2 ]
+[ Upstream commit 4580f4e0ebdf8dc8d506ae926b88510395a0c1d1 ]
 
-[ Quoting Samuel Holland: ]
+Fix the following deadlock:
+CPU A
+_free_event()
+  perf_kprobe_destroy()
+    mutex_lock(&event_mutex)
+      perf_trace_event_unreg()
+        synchronize_rcu_tasks_trace()
 
-  This is a separate issue, but using ".option rvc" here is a bug.
-  It will unconditionally enable the C extension for the rest of
-  the file, even if the kernel is being built with CONFIG_RISCV_ISA_C=n.
+There are several paths where _free_event() grabs event_mutex
+and calls sync_rcu_tasks_trace. Above is one such case.
 
-[ Quoting Palmer Dabbelt: ]
+CPU B
+bpf_prog_test_run_syscall()
+  rcu_read_lock_trace()
+    bpf_prog_run_pin_on_cpu()
+      bpf_prog_load()
+        bpf_tracing_func_proto()
+          trace_set_clr_event()
+            mutex_lock(&event_mutex)
 
-  We're just looking at the address of kgdb_compiled_break, so it's
-  fine if it ends up as a c.ebreak.
+Delegate trace_set_clr_event() to workqueue to avoid
+such lock dependency.
 
-[ Quoting Alexandre Ghiti: ]
-
-  .option norvc is used to prevent the assembler from using compressed
-  instructions, but it's generally used when we need to ensure the
-  size of the instructions that are used, which is not the case here
-  as noted by Palmer since we only care about the address. So yes
-  it will work fine with C enabled :)
-
-So let's just remove them all.
-
-Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
-Link: https://lore.kernel.org/all/mhng-69513841-5068-441d-be8f-2aeebdc56a08@palmer-ri-x1c9a/
-Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
-Fixes: fe89bd2be866 ("riscv: Add KGDB support")
-Cc: Samuel Holland <samuel.holland@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/8B431C6A4626225C+20250411073222.56820-2-wangyuli@uniontech.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250224221637.4780-1-alexei.starovoitov@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/kgdb.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ kernel/trace/bpf_trace.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
-index b0db3350d243b..1d83b36967212 100644
---- a/arch/riscv/kernel/kgdb.c
-+++ b/arch/riscv/kernel/kgdb.c
-@@ -276,9 +276,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
- noinline void arch_kgdb_breakpoint(void)
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index a612f6f182e51..13bef2462e94b 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -392,7 +392,7 @@ static const struct bpf_func_proto bpf_trace_printk_proto = {
+ 	.arg2_type	= ARG_CONST_SIZE,
+ };
+ 
+-static void __set_printk_clr_event(void)
++static void __set_printk_clr_event(struct work_struct *work)
  {
- 	asm(".global kgdb_compiled_break\n"
--	    ".option norvc\n"
--	    "kgdb_compiled_break: ebreak\n"
--	    ".option rvc\n");
-+	    "kgdb_compiled_break: ebreak\n");
+ 	/*
+ 	 * This program might be calling bpf_trace_printk,
+@@ -405,10 +405,11 @@ static void __set_printk_clr_event(void)
+ 	if (trace_set_clr_event("bpf_trace", "bpf_trace_printk", 1))
+ 		pr_warn_ratelimited("could not enable bpf_trace_printk events");
+ }
++static DECLARE_WORK(set_printk_work, __set_printk_clr_event);
+ 
+ const struct bpf_func_proto *bpf_get_trace_printk_proto(void)
+ {
+-	__set_printk_clr_event();
++	schedule_work(&set_printk_work);
+ 	return &bpf_trace_printk_proto;
  }
  
- void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
+@@ -451,7 +452,7 @@ static const struct bpf_func_proto bpf_trace_vprintk_proto = {
+ 
+ const struct bpf_func_proto *bpf_get_trace_vprintk_proto(void)
+ {
+-	__set_printk_clr_event();
++	schedule_work(&set_printk_work);
+ 	return &bpf_trace_vprintk_proto;
+ }
+ 
 -- 
 2.39.5
 
