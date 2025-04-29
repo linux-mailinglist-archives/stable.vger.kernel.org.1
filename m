@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-138388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C069EAA17CC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99515AA1650
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24FC54C61CA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCD9316707D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E71824EAB2;
-	Tue, 29 Apr 2025 17:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EE623CEF9;
+	Tue, 29 Apr 2025 17:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APnsfyDg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKESua85"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B122472B9;
-	Tue, 29 Apr 2025 17:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915B682C60;
+	Tue, 29 Apr 2025 17:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949089; cv=none; b=d+avFzaJVd0d7TDWs4080Rj8gALtN90XR22sOJCy1bFKYSRLoKGIqiW37um9XhKcvj9/as6j3s4iCetHlBK0mIJNP3vACpVE7v7BER3o+9mzw7C/wap3VG8eVXZQJ27nVgxs1cMgoH3V/1SkUGcCLUPGv2oXDh4UR5mZ1WVXrmY=
+	t=1745947924; cv=none; b=PVNiYWfijg2psEB94AWsA2eMRdIe6sF/v5TE2QMqZBi6DDY0kcc+Ma9q1L6oHY3iePqeTSwsxLwbir7YCLVyMq7NKqtG4NGCrYRk9ONaIxwdFZwaWGHt8T5Kj1My2icZSSkjU9m7VmBS3xmzIao7G7m4PwhwmTpBctkHV1qpdbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949089; c=relaxed/simple;
-	bh=wogJ+Ds91KAvssFspM3aMszO4fUbX+i/Hmcpomg2BMg=;
+	s=arc-20240116; t=1745947924; c=relaxed/simple;
+	bh=ySs35wza1L4UWzOWoNFUXKuN6nwMvx+AkIXlxghx6fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fuE+jIm6XG3bStJzfPiTNvL2V8hCExI8iybC/GLfu1Z4hTk7ByaTE+UcYTHjWhNPO5ghvwwPU9Vzn8CU5JP2K/iU1/CKrT15raSSdjYMAcGWYmX8ivzEfvtqLmEHSMmBAuczZK8Z85OihOuxlbjbuGNS2uog7AR1OwIH1FqExoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APnsfyDg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53EDC4CEE3;
-	Tue, 29 Apr 2025 17:51:27 +0000 (UTC)
+	 MIME-Version; b=QNetYU9qyiwS5BbbaDQTlh1XbYY9nC9ok1jhbbfRedTJ+FI9QKRc3FG9/gKjssl5sbR9pd6SWJXuguzrudzINTo1K9dHT8f+qdDaB2Fv41wrolce6PeKuAvbWz1NNofLyyBeMbSAcKWJyZsHVrHYWdhhmZ646boCvbc1+8j9+IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKESua85; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D42C4CEE3;
+	Tue, 29 Apr 2025 17:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949089;
-	bh=wogJ+Ds91KAvssFspM3aMszO4fUbX+i/Hmcpomg2BMg=;
+	s=korg; t=1745947924;
+	bh=ySs35wza1L4UWzOWoNFUXKuN6nwMvx+AkIXlxghx6fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APnsfyDgPt5Yt3L8ceTOA61+k2PkCiufJ3nSOfyCWHMKvQgMENtwQCYObrYy05i97
-	 Xnhx+fczzR5iY70bIb9Cq4UEBcG0M3wm76q3Mq8DJ8S+KJ/bQOyv0KM+Ff3aIMfY+e
-	 JSs3ZNF+vrygwqjZuqZ9W43yGkf1PH8u8pwwEqJo=
+	b=ZKESua852mNMKquW3yFBsB7OD2tG45y4XfVtnT69MCPZPAxjP0YW3+KOs3y6kaElr
+	 8tsTTWsjwB/YsG4FNwNvMVCkkrJ/PWDymQYIrZ5mS71t60kMqJoECLLriI4BnNwIbd
+	 zu/y6Fet1FIWXeOiMU2j0j+7cKG+PTw4nitbVvTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Breno Leitao <leitao@debian.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Cliff Liu <donghua.liu@windriver.com>,
-	He Zhe <Zhe.He@windriver.com>
-Subject: [PATCH 5.15 210/373] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
+	stable <stable@kernel.org>,
+	Miao Li <limiao@kylinos.cn>,
+	Lei Huang <huanglei@kylinos.cn>
+Subject: [PATCH 6.12 146/280] usb: quirks: Add delay init quirk for SanDisk 3.2Gen1 Flash Drive
 Date: Tue, 29 Apr 2025 18:41:27 +0200
-Message-ID: <20250429161131.801562074@linuxfoundation.org>
+Message-ID: <20250429161121.099869867@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Miao Li <limiao@kylinos.cn>
 
-commit 0974d03eb479384466d828d65637814bee6b26d7 upstream.
+commit 37ffdbd695c02189dbf23d6e7d2385e0299587ca upstream.
 
-Smatch warns:
+The SanDisk 3.2Gen1 Flash Drive, which VID:PID is in 0781:55a3,
+just like Silicon Motion Flash Drive:
+https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
+also needs the DELAY_INIT quirk, or it will randomly work incorrectly
+(e.g.: lsusb and can't list this device info) when connecting Huawei
+hisi platforms and doing thousand of reboot test circles.
 
-  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
-  spectre issue 'args.args' [r] (local cap)
-
-The 'nargs' and 'nret' locals come directly from a user-supplied
-buffer and are used as indexes into a small stack-based array and as
-inputs to copy_to_user() after they are subject to bounds checks.
-
-Use array_index_nospec() after the bounds checks to clamp these values
-for speculative execution.
-
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
-[Minor context change fixed]
-Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miao Li <limiao@kylinos.cn>
+Signed-off-by: Lei Huang <huanglei@kylinos.cn>
+Link: https://lore.kernel.org/r/20250414062935.159024-1-limiao870622@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/rtas.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -16,6 +16,7 @@
- #include <linux/capability.h>
- #include <linux/delay.h>
- #include <linux/cpu.h>
-+#include <linux/nospec.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
- #include <linux/completion.h>
-@@ -1076,6 +1077,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args _
- 	    || nargs + nret > ARRAY_SIZE(args.args))
- 		return -EINVAL;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -369,6 +369,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0781, 0x5583), .driver_info = USB_QUIRK_NO_LPM },
+ 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
  
-+	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
-+	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
++	/* SanDisk Corp. SanDisk 3.2Gen1 */
++	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
 +
- 	/* Copy in args. */
- 	if (copy_from_user(args.args, uargs->args,
- 			   nargs * sizeof(rtas_arg_t)) != 0)
+ 	/* Realforce 87U Keyboard */
+ 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
+ 
 
 
 
