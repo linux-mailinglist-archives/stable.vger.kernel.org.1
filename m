@@ -1,56 +1,72 @@
-Return-Path: <stable+bounces-137971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D60AA1634
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11610AA17A5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D30C19A3181
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48A1D3BB33A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F620250C08;
-	Tue, 29 Apr 2025 17:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9282135DD;
+	Tue, 29 Apr 2025 17:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiCIzmYX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KEznZR8U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10F824C098;
-	Tue, 29 Apr 2025 17:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8C9C148;
+	Tue, 29 Apr 2025 17:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947691; cv=none; b=qZPrDVv4zSkL/oTr5b1unD5qrYH+4AqLk0XiMo6rQEHwda48TOvk7mw91wALJZh9QT6c3BA3B+8kI7zHQ6/F1fd1byQKANJh5AluZBs0XfII2zlDsqVLdf16CrcuqvO4V43UrIyPD2NuYTLpzepIj97QWDy3Ic+UC3V7IglnrNM=
+	t=1745948750; cv=none; b=EEjGni2UxHppw3y4wR0QUo78pBa1p0brd9tsXy6aHLokd4P/cPBHLOPayRSs8/M/MqP5w000aaDuXYvT4ZdOvTkPUqKcz3wXwzkrepmEsRGKLj4Yt2sfT0Y2KK/D0qMh/SAAOc3/TSp/xtPMQoGYARl6XUlU0+3sXbTFA8ToWzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947691; c=relaxed/simple;
-	bh=p8gbg2jOKpX6fxMe4XPINKyc41oLkJX6C4HYv6WC8Sk=;
+	s=arc-20240116; t=1745948750; c=relaxed/simple;
+	bh=Gt//bfCqD2BiHvcUUM+DAfT1mbNBufPIGiQHNz+jpOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sAVsh9lMyL21rIYQKIu91tyIc2rCL/8flbEW7iskoop6UDaa6f3UrP9D8CxLirqu3H/nw+nxrh2h9JjK/HthTf3UUYKMpPFM4QE1QyNJpiQFkC4xaHv+V/FWNValz4IBFNl0mi3fkZ+s4/3uX7ItUJRBETkN0UKnw1E4OPfjT74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiCIzmYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E06C4CEEE;
-	Tue, 29 Apr 2025 17:28:11 +0000 (UTC)
+	 MIME-Version; b=b6LOeTAq6fbAVfbL/OVTGmbL+b5AypCIrm3Hz540LGBARy22uiiIKu7GtxDpT6l7BmHtg7Dk5OmCwvrR9B/IO6dUQRWPUFziK0Ru57fHUXO8OKU5u8pnSiSnbMF9RID1SF3bOHL2Ye+xNEi/yhyXLIe1Pyeja0oXyfny3DAPdcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KEznZR8U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27E5C4CEE3;
+	Tue, 29 Apr 2025 17:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947691;
-	bh=p8gbg2jOKpX6fxMe4XPINKyc41oLkJX6C4HYv6WC8Sk=;
+	s=korg; t=1745948750;
+	bh=Gt//bfCqD2BiHvcUUM+DAfT1mbNBufPIGiQHNz+jpOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yiCIzmYXULBlIxQKFoijgKDicEiT9DsSNnWiTT43AuO4MuFYVacns5YDsexTiTH3c
-	 RSYo7lW0aELo6kroGocHQs2iDpnVD+EXItCZnxLUJ0PVSb0q4g1MjZ45jp1O8JteSG
-	 XSA+W1iKyDtAKmrWx/+mmNOViIapO5HBaOHyW7fs=
+	b=KEznZR8U21XyfHB5DER6Eoo82gdDTNXYLX8veSsb7Z+KO236uiVuJO9TgHQ/9zL9d
+	 g5m5ooBkrMMcTH8pyylCBMlUmONE+z5iExEJVUygWH7hg31Ddplvh1cWVT+LsG0215
+	 OdSrKMhcDrCaKxU9NGSsqCAQzlXyKzsq20uTrLas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/280] ksmbd: add netdev-up/down event debug print
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Borislav Betkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ruidong Tian <tianruidong@linux.alibaba.com>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 101/373] mm/hwpoison: do not send SIGBUS to processes with recovered clean pages
 Date: Tue, 29 Apr 2025 18:39:38 +0200
-Message-ID: <20250429161116.639916303@linuxfoundation.org>
+Message-ID: <20250429161127.311113048@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +78,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit 5f3f274e2ce68999b49901de4794c4b04125b154 ]
+commit aaf99ac2ceb7c974f758a635723eeaf48596388e upstream.
 
-Add netdev-up/down event debug print to find what netdev is connected or
-disconnected.
+When an uncorrected memory error is consumed there is a race between the
+CMCI from the memory controller reporting an uncorrected error with a UCNA
+signature, and the core reporting and SRAR signature machine check when
+the data is about to be consumed.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 21a4e47578d4 ("ksmbd: fix use-after-free in __smb2_lease_break_noti()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- Background: why *UN*corrected errors tied to *C*MCI in Intel platform [1]
+
+Prior to Icelake memory controllers reported patrol scrub events that
+detected a previously unseen uncorrected error in memory by signaling a
+broadcast machine check with an SRAO (Software Recoverable Action
+Optional) signature in the machine check bank.  This was overkill because
+it's not an urgent problem that no core is on the verge of consuming that
+bad data.  It's also found that multi SRAO UCE may cause nested MCE
+interrupts and finally become an IERR.
+
+Hence, Intel downgrades the machine check bank signature of patrol scrub
+from SRAO to UCNA (Uncorrected, No Action required), and signal changed to
+#CMCI.  Just to add to the confusion, Linux does take an action (in
+uc_decode_notifier()) to try to offline the page despite the UC*NA*
+signature name.
+
+- Background: why #CMCI and #MCE race when poison is consuming in Intel platform [1]
+
+Having decided that CMCI/UCNA is the best action for patrol scrub errors,
+the memory controller uses it for reads too.  But the memory controller is
+executing asynchronously from the core, and can't tell the difference
+between a "real" read and a speculative read.  So it will do CMCI/UCNA if
+an error is found in any read.
+
+Thus:
+
+1) Core is clever and thinks address A is needed soon, issues a speculative read.
+2) Core finds it is going to use address A soon after sending the read request
+3) The CMCI from the memory controller is in a race with MCE from the core
+   that will soon try to retire the load from address A.
+
+Quite often (because speculation has got better) the CMCI from the memory
+controller is delivered before the core is committed to the instruction
+reading address A, so the interrupt is taken, and Linux offlines the page
+(marking it as poison).
+
+- Why user process is killed for instr case
+
+Commit 046545a661af ("mm/hwpoison: fix error page recovered but reported
+"not recovered"") tries to fix noise message "Memory error not recovered"
+and skips duplicate SIGBUSs due to the race.  But it also introduced a bug
+that kill_accessing_process() return -EHWPOISON for instr case, as result,
+kill_me_maybe() send a SIGBUS to user process.
+
+If the CMCI wins that race, the page is marked poisoned when
+uc_decode_notifier() calls memory_failure().  For dirty pages,
+memory_failure() invokes try_to_unmap() with the TTU_HWPOISON flag,
+converting the PTE to a hwpoison entry.  As a result,
+kill_accessing_process():
+
+- call walk_page_range() and return 1 regardless of whether
+  try_to_unmap() succeeds or fails,
+- call kill_proc() to make sure a SIGBUS is sent
+- return -EHWPOISON to indicate that SIGBUS is already sent to the
+  process and kill_me_maybe() doesn't have to send it again.
+
+However, for clean pages, the TTU_HWPOISON flag is cleared, leaving the
+PTE unchanged and not converted to a hwpoison entry.  Conversely, for
+clean pages where PTE entries are not marked as hwpoison,
+kill_accessing_process() returns -EFAULT, causing kill_me_maybe() to send
+a SIGBUS.
+
+Console log looks like this:
+
+    Memory failure: 0x827ca68: corrupted page was clean: dropped without side effects
+    Memory failure: 0x827ca68: recovery action for clean LRU page: Recovered
+    Memory failure: 0x827ca68: already hardware poisoned
+    mce: Memory error not recovered
+
+To fix it, return 0 for "corrupted page was clean", preventing an
+unnecessary SIGBUS to user process.
+
+[1] https://lore.kernel.org/lkml/20250217063335.22257-1-xueshuai@linux.alibaba.com/T/#mba94f1305b3009dd340ce4114d3221fe810d1871
+Link: https://lkml.kernel.org/r/20250312112852.82415-3-xueshuai@linux.alibaba.com
+Fixes: 046545a661af ("mm/hwpoison: fix error page recovered but reported "not recovered"")
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Tested-by: Tony Luck <tony.luck@intel.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ruidong Tian <tianruidong@linux.alibaba.com>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: Yazen Ghannam <yazen.ghannam@amd.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_tcp.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/memory-failure.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index cc77ad4f765a9..0d9007285e30b 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -521,6 +521,8 @@ static int ksmbd_netdev_event(struct notifier_block *nb, unsigned long event,
- 				found = 1;
- 				if (iface->state != IFACE_STATE_DOWN)
- 					break;
-+				ksmbd_debug(CONN, "netdev-up event: netdev(%s) is going up\n",
-+					    iface->name);
- 				ret = create_socket(iface);
- 				if (ret)
- 					return NOTIFY_OK;
-@@ -531,6 +533,8 @@ static int ksmbd_netdev_event(struct notifier_block *nb, unsigned long event,
- 			iface = alloc_iface(kstrdup(netdev->name, KSMBD_DEFAULT_GFP));
- 			if (!iface)
- 				return NOTIFY_OK;
-+			ksmbd_debug(CONN, "netdev-up event: netdev(%s) is going up\n",
-+				    iface->name);
- 			ret = create_socket(iface);
- 			if (ret)
- 				break;
-@@ -540,6 +544,8 @@ static int ksmbd_netdev_event(struct notifier_block *nb, unsigned long event,
- 		list_for_each_entry(iface, &iface_list, entry) {
- 			if (!strcmp(iface->name, netdev->name) &&
- 			    iface->state == IFACE_STATE_CONFIGURED) {
-+				ksmbd_debug(CONN, "netdev-down event: netdev(%s) is going down\n",
-+						iface->name);
- 				tcp_stop_kthread(iface->ksmbd_kthread);
- 				iface->ksmbd_kthread = NULL;
- 				mutex_lock(&iface->sock_release_lock);
--- 
-2.39.5
-
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -707,12 +707,17 @@ static int kill_accessing_process(struct
+ 	mmap_read_lock(p->mm);
+ 	ret = walk_page_range(p->mm, 0, TASK_SIZE, &hwp_walk_ops,
+ 			      (void *)&priv);
++	/*
++	 * ret = 1 when CMCI wins, regardless of whether try_to_unmap()
++	 * succeeds or fails, then kill the process with SIGBUS.
++	 * ret = 0 when poison page is a clean page and it's dropped, no
++	 * SIGBUS is needed.
++	 */
+ 	if (ret == 1 && priv.tk.addr)
+ 		kill_proc(&priv.tk, pfn, flags);
+-	else
+-		ret = 0;
+ 	mmap_read_unlock(p->mm);
+-	return ret > 0 ? -EHWPOISON : -EFAULT;
++
++	return ret > 0 ? -EHWPOISON : 0;
+ }
+ 
+ static const char *action_name[] = {
 
 
 
