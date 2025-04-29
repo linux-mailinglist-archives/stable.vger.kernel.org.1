@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-137125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D165AA11D6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:46:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9343BAA15BD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A4C01B681AB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 749424C5051
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F8C2472AC;
-	Tue, 29 Apr 2025 16:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D266424EABF;
+	Tue, 29 Apr 2025 17:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7B8m/Kd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrMtIXOz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8A424113A;
-	Tue, 29 Apr 2025 16:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DA521ADC7;
+	Tue, 29 Apr 2025 17:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945134; cv=none; b=bDhZLJLNUXNYOQ9kp4rztv5AGaJlQtQJ+mzAI+aYWAFXPoRhow4FlqnOmLsDsbYMrbRqYwNPXw7ygr0zXNA/Q3scyRLU8F+aJhVvZiudgsIR3pWAg9h1HJ6AaIqAogxqWD/se0jXaQ6Aad40irL+JcW3ScXgrAlh6H64qzj4oqk=
+	t=1745947588; cv=none; b=DPnyPWx12T6WLZ/60Jfj6/46CFfaIl7Fmu0LybmDbdsdWMEPreEszhtG2RpGDYX7MRW221WlD3HWn6GnKQTjzwNGjUzqQhcuqKEZLvCSY/gK5WNf662z6cl6zm6bVLw513IJn1Zq3mNwDFjrUo5nvPpOQIgFD1axmQrl3FEiPj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945134; c=relaxed/simple;
-	bh=HdI/28dXv1xt7VfGW/7Klhh4s0Nr1Qiug1i1FDkzeH8=;
+	s=arc-20240116; t=1745947588; c=relaxed/simple;
+	bh=XyLrUgO8H0Vi04LwxFLx+FuUpdCXIc93vCUUkhvjZMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qzKhlO0GMs7dyNFwTzFz5mOZEo99EotiHFZaxu6+1Wz5ZDkKdt6Sh5A1xL/ORmBOXiQxMbg6CzveOTGmPLcIf5J2PCjWtCNqE0KiMxBFToYNi1mAnSmYf1o29ajx9MIOIteESGF50+T69NM9fvU2P8sXt0D3/KTFsvgz1MOgfp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7B8m/Kd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0567C4CEE3;
-	Tue, 29 Apr 2025 16:45:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n5mX8keeSACZk4lHePcs9GpexUJ1QWgUcCDIb/DkTdXZuE6GRBPt5KOcHZ7VgbMOaX6zg8pRM3cjn691UhCZQt5+QWcqpi701cYeOPG+tp/orGSAiBZN0EUQ83B7K6j4mPNzIg/xdILIdDHjh0yzNE4nJtipbZqDf2f5WiieGDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrMtIXOz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED430C4CEE3;
+	Tue, 29 Apr 2025 17:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945134;
-	bh=HdI/28dXv1xt7VfGW/7Klhh4s0Nr1Qiug1i1FDkzeH8=;
+	s=korg; t=1745947588;
+	bh=XyLrUgO8H0Vi04LwxFLx+FuUpdCXIc93vCUUkhvjZMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A7B8m/KdHq0qGeRYubOCqnOW4Ap1L6BON3Rs6UWFG4lPSX8uhVg9dw+ZowroElue1
-	 hABtyze7Stn4oa3c7iApkJzmX3rRToYV9/qyL9w1NOttrzmpb9bSzeoqgSz+mqLZFA
-	 Ms2T7DCcQ9oMV5kl7LM0fPr9O/dsBlPoMOp+YCiA=
+	b=BrMtIXOzr6E9JKE6R6lKbEThjxfnNuF/47smuoMAp4aG856xJ8Gx659R4niWnRJZ0
+	 qJD0/zvPCeJbg38/nA5GC+I+Xo14PR6gB9ujmmqKEOENo05tzJ3Ns2o/Oyzv0mUni3
+	 r+Gnd1hbW+XHtSjf7worr8RuWDNGEDR8oT5/6wjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nolan Nicholson <nolananicholson@gmail.com>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 013/179] HID: pidff: Fix null pointer dereference in pidff_find_fields
-Date: Tue, 29 Apr 2025 18:39:14 +0200
-Message-ID: <20250429161049.930230080@linuxfoundation.org>
+Subject: [PATCH 6.12 014/280] media: i2c: imx214: Fix link frequency validation
+Date: Tue, 29 Apr 2025 18:39:15 +0200
+Message-ID: <20250429161115.666519589@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,66 +65,96 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <forest10pl@gmail.com>
+From: André Apitzsch <git@apitzsch.eu>
 
-[ Upstream commit 22a05462c3d0eee15154faf8d13c49e6295270a5 ]
+[ Upstream commit acc294519f1749041e1b8c74d46bbf6c57d8b061 ]
 
-This function triggered a null pointer dereference if used to search for
-a report that isn't implemented on the device. This happened both for
-optional and required reports alike.
+The driver defines IMX214_DEFAULT_LINK_FREQ 480000000, and then
+IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10),
+which works out as 384MPix/s. (The 8 is 4 lanes and DDR.)
 
-The same logic was applied to pidff_find_special_field and although
-pidff_init_fields should return an error earlier if one of the required
-reports is missing, future modifications could change this logic and
-resurface this possible null pointer dereference again.
+Parsing the PLL registers with the defined 24MHz input. We're in single
+PLL mode, so MIPI frequency is directly linked to pixel rate.  VTCK ends
+up being 1200MHz, and VTPXCK and OPPXCK both are 120MHz.  Section 5.3
+"Frame rate calculation formula" says "Pixel rate
+[pixels/s] = VTPXCK [MHz] * 4", so 120 * 4 = 480MPix/s, which basically
+agrees with my number above.
 
-LKML bug report:
-https://lore.kernel.org/all/CAL-gK7f5=R0nrrQdPtaZZr1fd-cdAMbDMuZ_NLA8vM0SX+nGSw@mail.gmail.com
+3.1.4. MIPI global timing setting says "Output bitrate = OPPXCK * reg
+0x113[7:0]", so 120MHz * 10, or 1200Mbit/s. That would be a link
+frequency of 600MHz due to DDR.
+That also matches to 480MPix/s * 10bpp / 4 lanes / 2 for DDR.
 
-Reported-by: Nolan Nicholson <nolananicholson@gmail.com>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Keep the previous link frequency for backward compatibility.
+
+Acked-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+Fixes: 436190596241 ("media: imx214: Add imx214 camera sensor driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/media/i2c/imx214.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -772,6 +772,11 @@ static int pidff_find_fields(struct pidf
- {
- 	int i, j, k, found;
+diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+index fdc2dfb4ebcdd..bdf2396c2482b 100644
+--- a/drivers/media/i2c/imx214.c
++++ b/drivers/media/i2c/imx214.c
+@@ -27,7 +27,9 @@
+ #define IMX214_REG_FAST_STANDBY_CTRL	CCI_REG8(0x0106)
  
-+	if (!report) {
-+		pr_debug("pidff_find_fields, null report\n");
-+		return -1;
-+	}
-+
- 	for (k = 0; k < count; k++) {
- 		found = 0;
- 		for (i = 0; i < report->maxfield; i++) {
-@@ -885,6 +890,11 @@ static struct hid_field *pidff_find_spec
- {
- 	int i;
+ #define IMX214_DEFAULT_CLK_FREQ	24000000
+-#define IMX214_DEFAULT_LINK_FREQ 480000000
++#define IMX214_DEFAULT_LINK_FREQ	600000000
++/* Keep wrong link frequency for backward compatibility */
++#define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
+ #define IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10)
+ #define IMX214_FPS 30
+ #define IMX214_MBUS_CODE MEDIA_BUS_FMT_SRGGB10_1X10
+@@ -965,18 +967,26 @@ static int imx214_parse_fwnode(struct device *dev)
+ 		goto done;
+ 	}
  
-+	if (!report) {
-+		pr_debug("pidff_find_special_field, null report\n");
-+		return NULL;
-+	}
+-	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++)
++	if (bus_cfg.nr_of_link_frequencies != 1)
++		dev_warn(dev, "Only one link-frequency supported, please review your DT. Continuing anyway\n");
 +
- 	for (i = 0; i < report->maxfield; i++) {
- 		if (report->field[i]->logical == (HID_UP_PID | usage) &&
- 		    report->field[i]->report_count > 0) {
++	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++) {
+ 		if (bus_cfg.link_frequencies[i] == IMX214_DEFAULT_LINK_FREQ)
+ 			break;
+-
+-	if (i == bus_cfg.nr_of_link_frequencies) {
+-		dev_err_probe(dev, -EINVAL,
+-			      "link-frequencies %d not supported, Please review your DT\n",
+-			      IMX214_DEFAULT_LINK_FREQ);
+-		ret = -EINVAL;
+-		goto done;
++		if (bus_cfg.link_frequencies[i] ==
++		    IMX214_DEFAULT_LINK_FREQ_LEGACY) {
++			dev_warn(dev,
++				 "link-frequencies %d not supported, please review your DT. Continuing anyway\n",
++				 IMX214_DEFAULT_LINK_FREQ);
++			break;
++		}
+ 	}
+ 
++	if (i == bus_cfg.nr_of_link_frequencies)
++		ret = dev_err_probe(dev, -EINVAL,
++				    "link-frequencies %d not supported, please review your DT\n",
++				    IMX214_DEFAULT_LINK_FREQ);
++
+ done:
+ 	v4l2_fwnode_endpoint_free(&bus_cfg);
+ 	fwnode_handle_put(endpoint);
+-- 
+2.39.5
+
 
 
 
