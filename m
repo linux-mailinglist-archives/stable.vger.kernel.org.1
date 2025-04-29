@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD1BAA16A9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0073EAA17C4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 926D63BF747
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:33:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 539211BC5424
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E557E110;
-	Tue, 29 Apr 2025 17:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCDA24C083;
+	Tue, 29 Apr 2025 17:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wR9lL7M/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3S+GQam"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B823482C60;
-	Tue, 29 Apr 2025 17:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C269239072;
+	Tue, 29 Apr 2025 17:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948011; cv=none; b=NEWRekcZmr0mFK0j7vxmpGlm3xFKot6qQq/oRowKdjGw7pMgHNgMZYsnhvItQ+3bwLkkavIWleypo/Y56sRI/XWg5uyonqWRUYgK8JogfWz0RFmlwMLm0Eryrv8m4UIrIdScQMGtR/5DclTJ+JSX5XV7vKsZhnvITM06oqhkI+A=
+	t=1745949059; cv=none; b=eH49yewupmn5Xulo7MI0gSmahQJEhPWqWoLP+VuCdLUM9KJJH/sP8hAm3XH3q5DeAAkzx0ZIQX8s+0AwS/XtZOZBM3EGA3Mi2iCeK0/0nzTZ0j6o6qg1pe/iqsflElzLywe2zngd4QOz4lf7akOWEzOU6yy6JfJZO2PvHgkLRrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948011; c=relaxed/simple;
-	bh=LLTJ8PpbUiw6abML2TjdVj2tsqsxR0wep9bgKUkmNqg=;
+	s=arc-20240116; t=1745949059; c=relaxed/simple;
+	bh=2yoBz1D4OJprBtB1jR1P3VRo/4TdkvpWjRnYE2ALZ1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXdkxutbWLNTDs0zBvZF0KK1UbYG3wfMuoyGfs/2E6U7a/DK8Nok5q3x+xq7l/ny6ssJX2BfC3UelWdA9euAvUcVU6YDrrSkToHBhDCiTZ2h0sX5R5p5m2AS8mn8X76fAPcqFOfPg3Yip9ri/vSi5T+0zgdrGm6osAMNekSM4Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wR9lL7M/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F0CC4CEE3;
-	Tue, 29 Apr 2025 17:33:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kiaMr0gjdBbEtD7UITPBr4FKgHTzYzFD9tU95BK+cVoH7a+xA9kijxWHRV74s0HnvprPPu1gcPbkcTbGLXpuCiqGUBwFKS3yB+43KbuNhK7dk15u3GKS9D5qyEeTcsRVCK85lJ4USAgf7DhV/8AX/9avmZ++oCw4IZiPCS3d6Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3S+GQam; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A039BC4CEE3;
+	Tue, 29 Apr 2025 17:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948011;
-	bh=LLTJ8PpbUiw6abML2TjdVj2tsqsxR0wep9bgKUkmNqg=;
+	s=korg; t=1745949059;
+	bh=2yoBz1D4OJprBtB1jR1P3VRo/4TdkvpWjRnYE2ALZ1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wR9lL7M/MXJuKFELOVc4o9HPUeaPk9c3qHK+kjEsY4UyQ0H3l7whqNBSwuTmBh9vX
-	 nPTs9lLH/0b7v/HJaLL7eYDehJYIpN+hUEdfHpvmUfOtYsUlP73ifWWAI9mmR58O92
-	 USJCt7rmcWpDG9qE4vsm2+H0S+SijPg2HLmMJ76w=
+	b=P3S+GQamoUMds/wi+/pL+WzB0OmGagj561S2xk3c1QcsyP7GZVz37AzZFI0DPxCta
+	 HWh+mY9ESPtJitNglNO/9t4ljOQOALKHvdV+g/ViZimR7hqj2oXMnNK+jX7UPUKihL
+	 b2155KDjevpmAW3OTPPXZjh0H1m/zytzkHq7CkCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ralph Siemsen <ralph.siemsen@linaro.org>,
-	Peter Chen <peter.chen@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 6.12 138/280] usb: cdns3: Fix deadlock when using NCM gadget
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 5.15 202/373] misc: pci_endpoint_test: Fix irq_type to convey the correct type
 Date: Tue, 29 Apr 2025 18:41:19 +0200
-Message-ID: <20250429161120.774217600@linuxfoundation.org>
+Message-ID: <20250429161131.475079853@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ralph Siemsen <ralph.siemsen@linaro.org>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit a1059896f2bfdcebcdc7153c3be2307ea319501f upstream.
+commit baaef0a274cfb75f9b50eab3ef93205e604f662c upstream.
 
-The cdns3 driver has the same NCM deadlock as fixed in cdnsp by commit
-58f2fcb3a845 ("usb: cdnsp: Fix deadlock issue during using NCM gadget").
+There are two variables that indicate the interrupt type to be used
+in the next test execution, "irq_type" as global and "test->irq_type".
 
-Under PREEMPT_RT the deadlock can be readily triggered by heavy network
-traffic, for example using "iperf --bidir" over NCM ethernet link.
+The global is referenced from pci_endpoint_test_get_irq() to preserve
+the current type for ioctl(PCITEST_GET_IRQTYPE).
 
-The deadlock occurs because the threaded interrupt handler gets
-preempted by a softirq, but both are protected by the same spinlock.
-Prevent deadlock by disabling softirq during threaded irq handler.
+The type set in this function isn't reflected in the global "irq_type",
+so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
 
-Cc: stable <stable@kernel.org>
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Ralph Siemsen <ralph.siemsen@linaro.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20250318-rfs-cdns3-deadlock-v2-1-bfd9cfcee732@linaro.org
+As a result, the wrong type is displayed in old version of "pcitest"
+as follows:
+
+  - Result of running "pcitest -i 0"
+
+      SET IRQ TYPE TO LEGACY:         OKAY
+
+  - Result of running "pcitest -I"
+
+      GET IRQ TYPE:           MSI
+
+Whereas running the new version of "pcitest" in kselftest results in an
+error as follows:
+
+  #  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
+
+Fix this issue by propagating the current type to the global "irq_type".
+
+Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250225110252.28866-5-hayashi.kunihiko@socionext.com
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdns3-gadget.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/misc/pci_endpoint_test.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -1963,6 +1963,7 @@ static irqreturn_t cdns3_device_thread_i
- 	unsigned int bit;
- 	unsigned long reg;
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -717,6 +717,7 @@ static bool pci_endpoint_test_set_irq(st
+ 	if (!pci_endpoint_test_request_irq(test))
+ 		goto err;
  
-+	local_bh_disable();
- 	spin_lock_irqsave(&priv_dev->lock, flags);
++	irq_type = test->irq_type;
+ 	return true;
  
- 	reg = readl(&priv_dev->regs->usb_ists);
-@@ -2004,6 +2005,7 @@ static irqreturn_t cdns3_device_thread_i
- irqend:
- 	writel(~0, &priv_dev->regs->ep_ien);
- 	spin_unlock_irqrestore(&priv_dev->lock, flags);
-+	local_bh_enable();
- 
- 	return ret;
- }
+ err:
 
 
 
