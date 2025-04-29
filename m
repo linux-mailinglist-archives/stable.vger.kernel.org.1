@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-138829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE91AA19E3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:16:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB056AA18EB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B666A172026
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 293381BC7429
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE702215F6C;
-	Tue, 29 Apr 2025 18:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB8A21ABC8;
+	Tue, 29 Apr 2025 18:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFQFwvpn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLYr0fte"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7443FFD;
-	Tue, 29 Apr 2025 18:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B6D2AE96;
+	Tue, 29 Apr 2025 18:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950482; cv=none; b=VKEsAcgjZHIwpCsGCTq10wyCy38+3BzYUM7LHuqlOad6zeRN2EVOJkcni1CLO/3qkEk154dcYNtwvYJHkv/Mtj9lep9HheoKmAt9yMKtCVIWJwVUDIizLyPQW7DhorfyZkxNX9pAkl8cfjHFZ2t2zGx1s4HOsOTvkMMLJS/AJX4=
+	t=1745949916; cv=none; b=udRHn52CuzA1KiQYKchdrTnMPk2gX+zALt2rR6TJPOPM8E5XdYu6SQMaNsom43TjcO0mDZmFViX1zgpAJgud1e9GEdr6OR2Z5Qau76Y6kwo9PJpqaBTId/4StO0JHpNuOrjK6oXbp3NidcUYiVjfBo1rya/MBmMech7fMRnsdx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950482; c=relaxed/simple;
-	bh=2hJMBLXHw7LW/WMpl29g9zg5JZrtQcSLHcUy3O8F55E=;
+	s=arc-20240116; t=1745949916; c=relaxed/simple;
+	bh=6aJlFYi0n1hgC+wdu+I0R2DZP1O+71PHB/3U+Byqx/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jRIOAZc4shsN0Xbz+biDv+de9gfI1HcUiudUaOCd01ssh3UJF6LXOPzq0pMT0P+51IE0MyPGtn94qVa/2U1Rn1p2U0wG9VduCBdJ6ukzhfendeJfgbKdE2z89NiIZo3sj7hEaKLNP3RIUpqIZj5tTjQpUXeLNQRaFve5951mY0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFQFwvpn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DC8C4CEE3;
-	Tue, 29 Apr 2025 18:14:41 +0000 (UTC)
+	 MIME-Version; b=BlmikwTjp0E7l54Lh8/qQoJ3gkR9ylC+FQba7NqvvnuGubTCR2NigYffY4k+AZsMo67FnNZXhayAHAeNkNktn6AoJJZgI8EOrD3V3QqxAfvuMzELRHygNI+hZescDj5D6FLlYDzG5/ttL0nsNYo3wl9eklt5yr3F28OPW0dtFD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLYr0fte; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC30CC4CEE3;
+	Tue, 29 Apr 2025 18:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950482;
-	bh=2hJMBLXHw7LW/WMpl29g9zg5JZrtQcSLHcUy3O8F55E=;
+	s=korg; t=1745949916;
+	bh=6aJlFYi0n1hgC+wdu+I0R2DZP1O+71PHB/3U+Byqx/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WFQFwvpnBg140HnuSmdUYTnEYSOZQbcXZ4wraiUEvQ5qhBqtl+7pVw24b/o6gdIz9
-	 hWIhJXQIBbBAKthvAMYNGMnpOJxNUEPTA7ys62TsBvp4P58joClSvi0DHcdxxXfpKp
-	 6UbSCiavlv+wsGV6f7rZhMgFvADQ0q5TTTJvZUMs=
+	b=ZLYr0fteOfY5qJVurw7NIRqfocd1C0sxxGpK+b7cCulRK/c8Pg/qodn56mzahfr9s
+	 8dq/bndQ3h/k90KVotk6xCb7RTgfqUWviWccasgC68AQ4CMGHCEXovM9K8OygHHpbK
+	 vCN7yh/4D9LwN0Mt3n+h4M89fW2LQ2RNt2dqHVAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Miao Li <limiao@kylinos.cn>,
 	stable <stable@kernel.org>
-Subject: [PATCH 6.6 110/204] usb: quirks: add DELAY_INIT quirk for Silicon Motion Flash Drive
+Subject: [PATCH 6.1 090/167] usb: quirks: add DELAY_INIT quirk for Silicon Motion Flash Drive
 Date: Tue, 29 Apr 2025 18:43:18 +0200
-Message-ID: <20250429161103.939297155@linuxfoundation.org>
+Message-ID: <20250429161055.393201644@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
