@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-138795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE1CAA19C4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA19BAA18EC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 560D0189406B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5014F1BC7431
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28B224E00F;
-	Tue, 29 Apr 2025 18:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03C6243964;
+	Tue, 29 Apr 2025 18:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axRqEtFW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNbVlecS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D8F2AE72;
-	Tue, 29 Apr 2025 18:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9672AE96;
+	Tue, 29 Apr 2025 18:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950374; cv=none; b=JmJtwprqQQWCHwq7XdSTr1E0TTv/0PagLTiYiBguqsF830r79F9RzJQQspMIiJeihRN8GmDKlyv+mZ8NqsWJEv2CrCLW9cyF0w0L1RZ7p5neewclKSxgGiHpSjKN73PYc2KVdR5TFAOv1/c7MiRlTTeQbICP8KBaOTgLGqMVrZo=
+	t=1745949913; cv=none; b=myXKcmsg/sjTh6OlDZ7KpKPpcL0b70guRIOODZ8nLl/XhdcTAHx85eDZ7ni3HBbu8VbEo99L9TA8AutjXuEWOVn4wrgCsuAF5xW7YRBUypS9tuaAchVp0lncPa8kzBETiuOO/FGwqGvbRP9a6TojUe5f9GqlY3dflXM2ZboWrfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950374; c=relaxed/simple;
-	bh=ZDvrs7/Ae8SLkygJpilQ9YmnTxNT9nh7BiPLckycxho=;
+	s=arc-20240116; t=1745949913; c=relaxed/simple;
+	bh=2DHIkQWn1UrB0B0dKBBLz3SDk90XlSYT7EhtjhmZPC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UjZPKBi6Kfkw+DJ/rYmbPMl9HEHoHt+L95TT7Z+hEWzBci+v8wny8B1kY+1WWhaSrmwM7ATLAitqfNMONXvZz5QbRWHT0oO6z/tjPLL06EOiABWKY0USeprPsp7QMpelnRXXBka1r6DfuB1zyRLiw7x8dt3lAqcCXqAOng1FV3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axRqEtFW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0202EC4CEE3;
-	Tue, 29 Apr 2025 18:12:53 +0000 (UTC)
+	 MIME-Version; b=uZWwMW3Dc5GKTeDxdIq4kI9/o1vhMs/MtUgmIE0FvCh1op4GB2Lwxl3VxDGhIB4QI1cD/oFrjoeCXD9oaRmA6okPPQqkCtPaKXtMKbedq579RgKY5LNzRLBqz1WtGHqqxBjShGhNsT6lBdnxm5SMSJTF7jGF0iEKnwAtnfI59Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNbVlecS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8803C4CEE3;
+	Tue, 29 Apr 2025 18:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950374;
-	bh=ZDvrs7/Ae8SLkygJpilQ9YmnTxNT9nh7BiPLckycxho=;
+	s=korg; t=1745949913;
+	bh=2DHIkQWn1UrB0B0dKBBLz3SDk90XlSYT7EhtjhmZPC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=axRqEtFW+5XUJdPYN7XuigWJYyS2R0B7DVkE0acW7vYzJt16MLMdUj1d+yVadjlbJ
-	 igmJtLUwDNiBjqEz6DVbhGDJL3boTL/KYK/okiycg1QSvE+rZC2YAnSWtzFGQ3nhOH
-	 114SJuXcKwb9NlkJ3wRqFHaRzl/mxOoT/NqNvZwE=
+	b=UNbVlecSdoDkUjlZk+5b+dL+dHibLcLfh8UICRB9lGVPSKgxi9Iktq3PM/8l5l8zW
+	 aQiW0kt9zuxl7OpORVT3l4vFSb6u4po1vdBTpvuWJyLKaWo9uesHyS0+FQw2qddyCH
+	 KS6C3Z9vZCCU40P/GLGx4oJ62uEbNvunoWnnbwYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fiona Klute <fiona.klute@gmx.de>,
-	kernel-list@raspberrypi.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 076/204] net: phy: microchip: force IRQ polling mode for lan88xx
-Date: Tue, 29 Apr 2025 18:42:44 +0200
-Message-ID: <20250429161102.533543429@linuxfoundation.org>
+	Luo Gengkun <luogengkun@huaweicloud.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Jiri Olsa <jolsa@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 057/167] perf/x86: Fix non-sampling (counting) events on certain x86 platforms
+Date: Tue, 29 Apr 2025 18:42:45 +0200
+Message-ID: <20250429161054.074222038@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +70,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fiona Klute <fiona.klute@gmx.de>
+From: Luo Gengkun <luogengkun@huaweicloud.com>
 
-commit 30a41ed32d3088cd0d682a13d7f30b23baed7e93 upstream.
+[ Upstream commit 1a97fea9db9e9b9c4839d4232dde9f505ff5b4cc ]
 
-With lan88xx based devices the lan78xx driver can get stuck in an
-interrupt loop while bringing the device up, flooding the kernel log
-with messages like the following:
+Perf doesn't work at perf stat for hardware events on certain x86 platforms:
 
-lan78xx 2-3:1.0 enp1s0u3: kevent 4 may have been dropped
+ $perf stat -- sleep 1
+ Performance counter stats for 'sleep 1':
+             16.44 msec task-clock                       #    0.016 CPUs utilized
+                 2      context-switches                 #  121.691 /sec
+                 0      cpu-migrations                   #    0.000 /sec
+                54      page-faults                      #    3.286 K/sec
+   <not supported>	cycles
+   <not supported>	instructions
+   <not supported>	branches
+   <not supported>	branch-misses
 
-Removing interrupt support from the lan88xx PHY driver forces the
-driver to use polling instead, which avoids the problem.
+The reason is that the check in x86_pmu_hw_config() for sampling events is
+unexpectedly applied to counting events as well.
 
-The issue has been observed with Raspberry Pi devices at least since
-4.14 (see [1], bug report for their downstream kernel), as well as
-with Nvidia devices [2] in 2020, where disabling interrupts was the
-vendor-suggested workaround (together with the claim that phylib
-changes in 4.9 made the interrupt handling in lan78xx incompatible).
+It should only impact x86 platforms with limit_period used for non-PEBS
+events. For Intel platforms, it should only impact some older platforms,
+e.g., HSW, BDW and NHM.
 
-Iperf reports well over 900Mbits/sec per direction with client in
---dualtest mode, so there does not seem to be a significant impact on
-throughput (lan88xx device connected via switch to the peer).
-
-[1] https://github.com/raspberrypi/linux/issues/2447
-[2] https://forums.developer.nvidia.com/t/jetson-xavier-and-lan7800-problem/142134/11
-
-Link: https://lore.kernel.org/0901d90d-3f20-4a10-b680-9c978e04ddda@lunn.ch
-Fixes: 792aec47d59d ("add microchip LAN88xx phy driver")
-Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-Cc: kernel-list@raspberrypi.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250416102413.30654-1-fiona.klute@gmx.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 88ec7eedbbd2 ("perf/x86: Fix low freqency setting issue")
+Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20250423064724.3716211-1-luogengkun@huaweicloud.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/microchip.c |   46 ++------------------------------------------
- 1 file changed, 3 insertions(+), 43 deletions(-)
+ arch/x86/events/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -31,47 +31,6 @@ static int lan88xx_write_page(struct phy
- 	return __phy_write(phydev, LAN88XX_EXT_PAGE_ACCESS, page);
- }
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index fa07447324445..a8732dd9fedb9 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -623,7 +623,7 @@ int x86_pmu_hw_config(struct perf_event *event)
+ 	if (event->attr.type == event->pmu->type)
+ 		event->hw.config |= event->attr.config & X86_RAW_EVENT_MASK;
  
--static int lan88xx_phy_config_intr(struct phy_device *phydev)
--{
--	int rc;
--
--	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
--		/* unmask all source and clear them before enable */
--		rc = phy_write(phydev, LAN88XX_INT_MASK, 0x7FFF);
--		rc = phy_read(phydev, LAN88XX_INT_STS);
--		rc = phy_write(phydev, LAN88XX_INT_MASK,
--			       LAN88XX_INT_MASK_MDINTPIN_EN_ |
--			       LAN88XX_INT_MASK_LINK_CHANGE_);
--	} else {
--		rc = phy_write(phydev, LAN88XX_INT_MASK, 0);
--		if (rc)
--			return rc;
--
--		/* Ack interrupts after they have been disabled */
--		rc = phy_read(phydev, LAN88XX_INT_STS);
--	}
--
--	return rc < 0 ? rc : 0;
--}
--
--static irqreturn_t lan88xx_handle_interrupt(struct phy_device *phydev)
--{
--	int irq_status;
--
--	irq_status = phy_read(phydev, LAN88XX_INT_STS);
--	if (irq_status < 0) {
--		phy_error(phydev);
--		return IRQ_NONE;
--	}
--
--	if (!(irq_status & LAN88XX_INT_STS_LINK_CHANGE_))
--		return IRQ_NONE;
--
--	phy_trigger_machine(phydev);
--
--	return IRQ_HANDLED;
--}
--
- static int lan88xx_suspend(struct phy_device *phydev)
- {
- 	struct lan88xx_priv *priv = phydev->priv;
-@@ -392,8 +351,9 @@ static struct phy_driver microchip_phy_d
- 	.config_aneg	= lan88xx_config_aneg,
- 	.link_change_notify = lan88xx_link_change_notify,
- 
--	.config_intr	= lan88xx_phy_config_intr,
--	.handle_interrupt = lan88xx_handle_interrupt,
-+	/* Interrupt handling is broken, do not define related
-+	 * functions to force polling.
-+	 */
- 
- 	.suspend	= lan88xx_suspend,
- 	.resume		= genphy_resume,
+-	if (!event->attr.freq && x86_pmu.limit_period) {
++	if (is_sampling_event(event) && !event->attr.freq && x86_pmu.limit_period) {
+ 		s64 left = event->attr.sample_period;
+ 		x86_pmu.limit_period(event, &left);
+ 		if (left > event->attr.sample_period)
+-- 
+2.39.5
+
 
 
 
