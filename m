@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-137943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF38AA15CA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D46C9AA1218
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E8CE4C6FF5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0312D98070D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D04B244694;
-	Tue, 29 Apr 2025 17:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E07424113C;
+	Tue, 29 Apr 2025 16:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWC7OqHe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YxucxqPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DD622A4F4;
-	Tue, 29 Apr 2025 17:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC252472B4;
+	Tue, 29 Apr 2025 16:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947606; cv=none; b=JBP2JUGo8bplIUUprBkzwJ7Qz+S93rmx0cBdPZwUTQh+TbucHUZ2JydRkuiww59vEB3tpW+iT/oybrr5EpowhOv4Fbpy744Ny1vYvE/QnyAmBitkC7FR6HezVENi6ndGzrRTLg4cEYH0guBkEc0fEZfA0WXEd5lT0DLDDLu49rg=
+	t=1745945251; cv=none; b=MjnunbhfyWWyTIEthZfpUSOuKg5uhweOTQ33C6ZsC89I8zWTcNgSEbxBrjNDr1tb6MXDVC7nOE90FHcJky50+xRcTSDBN3PfhJIEi/TE7dZKdLLnN8xHlk3YgGmEbqbRnCqea0VdZAHTCHnEPYajpvvJ2aDwQzrFU+BXy/k7UM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947606; c=relaxed/simple;
-	bh=CLnWPPYSUL6dFFQ6sg3sF6AN00NDx5ZcIxnkBnjMHxk=;
+	s=arc-20240116; t=1745945251; c=relaxed/simple;
+	bh=nZgQduGNdt8Xmkde7n1Jq4EG67nf0EAgn+iUCTJw1oY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P2Gl9k79GVbVjqgkGSdSkpLtZXWONCI0Yt5di6+Whmenp1c8e1/bmM1+iY7G0CuvXPz6m5ua1xF84BVyjdbWbeXg2FVxZOFgRx4aVRU6xuHp/2N/WchRY6nxXcTZ7DyZdGeILBGnRQViqkTCFyVFHsAQx7vLcEEKzfpkGOcauDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWC7OqHe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5267AC4CEE3;
-	Tue, 29 Apr 2025 17:26:45 +0000 (UTC)
+	 MIME-Version; b=mqDA/EghophY8nIK+eBL8BcA+eNRW3BLMYBKN/RaeFhLJZVYhWht+OjvWKquI38SVFFzCQlm+nRg0dYycTaIX+0HTYBvrnQVK7juJMNT/lRdG2mRUSoCMNN9IQ3tEKWyJ5M5zULm9YQa+HBEZyq+aUN9QldEMdhC7bHF7k8L1gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YxucxqPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EDA8C4CEE3;
+	Tue, 29 Apr 2025 16:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947605;
-	bh=CLnWPPYSUL6dFFQ6sg3sF6AN00NDx5ZcIxnkBnjMHxk=;
+	s=korg; t=1745945250;
+	bh=nZgQduGNdt8Xmkde7n1Jq4EG67nf0EAgn+iUCTJw1oY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LWC7OqHeW03CV7X6oqz5amJPzzHOtcay6Rtii6iGRm8FoABvy2uCDz6DCLoHolZbv
-	 I9s76JVUaUbmI+opHbCLCbYsgj9ShG1OjxXGsATT9SWeC7T+Iy2DwBaU3aKsAqdn6n
-	 J6y0iJFP82AjPytgibRjFonJoxXcy9IPHyIfjxl0=
+	b=YxucxqPN9EzKjdZCIZE+YtferZr2LovZvRrv2BOTj1eE6wG0bkYdw86wWZMPOgI/+
+	 kaB324/LdZ0ibhAQc1dk9ePKR2OMj5VMD2sl6HxPKD0HmXvxB4FJRy1UTU1SOWo+oL
+	 B3MAZUgQtfDncpN2ytARpgVtuVp6TVEBq+YwOS8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/280] lib/Kconfig.ubsan: Remove default UBSAN from UBSAN_INTEGER_WRAP
+	Douglas Anderson <dianders@chromium.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 5.4 049/179] arm64: cputype: Add MIDR_CORTEX_A76AE
 Date: Tue, 29 Apr 2025 18:39:50 +0200
-Message-ID: <20250429161117.133091457@linuxfoundation.org>
+Message-ID: <20250429161051.385423900@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit cdc2e1d9d929d7f7009b3a5edca52388a2b0891f upstream.
+commit a9b5bd81b294d30a747edd125e9f6aef2def7c79 upstream.
 
-CONFIG_UBSAN_INTEGER_WRAP is 'default UBSAN', which is problematic for a
-couple of reasons.
+>From the TRM, MIDR_CORTEX_A76AE has a partnum of 0xDOE and an
+implementor of 0x41 (ARM). Add the values.
 
-The first is that this sanitizer is under active development on the
-compiler side to come up with a solution that is maintainable on the
-compiler side and usable on the kernel side. As a result of this, there
-are many warnings when the sanitizer is enabled that have no clear path
-to resolution yet but users may see them and report them in the meantime.
-
-The second is that this option was renamed from
-CONFIG_UBSAN_SIGNED_WRAP, meaning that if a configuration has
-CONFIG_UBSAN=y but CONFIG_UBSAN_SIGNED_WRAP=n and it is upgraded via
-olddefconfig (common in non-interactive scenarios such as CI),
-CONFIG_UBSAN_INTEGER_WRAP will be silently enabled again.
-
-Remove 'default UBSAN' from CONFIG_UBSAN_INTEGER_WRAP until it is ready
-for regular usage and testing from a broader community than the folks
-actively working on the feature.
-
-Cc: stable@vger.kernel.org
-Fixes: 557f8c582a9b ("ubsan: Reintroduce signed overflow sanitizer")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20250414-drop-default-ubsan-integer-wrap-v1-1-392522551d6b@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-[nathan: Fix conflict due to lack of rename from ed2b548f1017 in stable]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # dependency of the next fix in the series
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20250107120555.v4.4.I151f3b7ee323bcc3082179b8c60c3cd03308aa94@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/Kconfig.ubsan | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/include/asm/cputype.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/lib/Kconfig.ubsan b/lib/Kconfig.ubsan
-index 1d4aa7a83b3a5..37655f58b8554 100644
---- a/lib/Kconfig.ubsan
-+++ b/lib/Kconfig.ubsan
-@@ -118,7 +118,6 @@ config UBSAN_UNREACHABLE
- 
- config UBSAN_SIGNED_WRAP
- 	bool "Perform checking for signed arithmetic wrap-around"
--	default UBSAN
- 	depends on !COMPILE_TEST
- 	# The no_sanitize attribute was introduced in GCC with version 8.
- 	depends on !CC_IS_GCC || GCC_VERSION >= 80000
--- 
-2.39.5
-
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -73,6 +73,7 @@
+ #define ARM_CPU_PART_CORTEX_A76		0xD0B
+ #define ARM_CPU_PART_NEOVERSE_N1	0xD0C
+ #define ARM_CPU_PART_CORTEX_A77		0xD0D
++#define ARM_CPU_PART_CORTEX_A76AE	0xD0E
+ #define ARM_CPU_PART_NEOVERSE_V1	0xD40
+ #define ARM_CPU_PART_CORTEX_A78		0xD41
+ #define ARM_CPU_PART_CORTEX_X1		0xD44
+@@ -124,6 +125,7 @@
+ #define MIDR_CORTEX_A76	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A76)
+ #define MIDR_NEOVERSE_N1 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N1)
+ #define MIDR_CORTEX_A77	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A77)
++#define MIDR_CORTEX_A76AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A76AE)
+ #define MIDR_NEOVERSE_V1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V1)
+ #define MIDR_CORTEX_A78	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78)
+ #define MIDR_CORTEX_X1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1)
 
 
 
