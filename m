@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-138867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F53AA1A13
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C9CAA1998
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:13:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C5C516728A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 163549A67C3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD6E20C488;
-	Tue, 29 Apr 2025 18:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CBA2459C5;
+	Tue, 29 Apr 2025 18:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X69xrM+T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fe2AwO3x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0C1155A4E;
-	Tue, 29 Apr 2025 18:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D311A5BBB;
+	Tue, 29 Apr 2025 18:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950603; cv=none; b=GTIfMQrSagMGzG7U0YqH3IMyc+Ko+gQgEZTuEdXADEGHFhs9JXYpRWEI4Bn/B/8rkgKLt+e24OpixOdDXh8ZF9ls1seuQCx5tqCH7vm55G5tICAKsjmq6WmuCLQAVi9IUgT0q/5DRXyeY9ha974/I/erFM/PYrpZ+P2fB513DxU=
+	t=1745950102; cv=none; b=TG/HJao4vJjfpPPwWgubGgIR59qkV6RFnHFJCURKs3lAkH9jKyfWdKObHolm/05fmfbl1ukpuxibL0w0AsPkJ4Fnafz7xcrF00S2Xmyt1RSVPW9vYVRAngMUQXCHsgxsiXqACLQ62XYGPjx8JnjOPrftxDuOTJaaWwPj9x2rvAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950603; c=relaxed/simple;
-	bh=mhCxIKxSGn8nAAfahxPLo7uc7rnEYEVEkIKF36WimMQ=;
+	s=arc-20240116; t=1745950102; c=relaxed/simple;
+	bh=kGr4vMUtTCiZYoLCGzjbcrQoOVyp2VaQj24HufiliQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q8MKIYjT/WLkwIuloopuHQgd1ilLIOXYh13c31/Q7AyXI6ean2IjEvAqNihbbxR7/7CmBe8TG5EyoltGpE9v4oyCHjkpkBlLoeA/RNGDNWSXw52LXfvuPKT2jEma75D6WNOagL/if9GscR0uku+3QPzI4m94EfsZ3oVxb35vVas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X69xrM+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A46C4CEE3;
-	Tue, 29 Apr 2025 18:16:42 +0000 (UTC)
+	 MIME-Version; b=pZaS+50rMNVUl+SJH8o/3qHFSEx3kP3R3Keju2BoxkLJWg8s+tjW+gTC9d4Y2ou2IdFb/56eaZNQb0TdiKZsyXpYoAXjuShaX1kV5UBb4m19lSpubs+y1BmPb2f6nYSa2WqxVcPdFbumEglCeVIkCOAjWIasvG1CnX+hk4V4iow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fe2AwO3x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980ABC4CEE3;
+	Tue, 29 Apr 2025 18:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950603;
-	bh=mhCxIKxSGn8nAAfahxPLo7uc7rnEYEVEkIKF36WimMQ=;
+	s=korg; t=1745950102;
+	bh=kGr4vMUtTCiZYoLCGzjbcrQoOVyp2VaQj24HufiliQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X69xrM+TFKCr5TH/ljv7YLOBprbjiq1bthcPJSYHcO0z1++vi3r6PozqObZl6eP5C
-	 c7+ytaP6vnhC0RlgRZzk8q6WMqi9Y4y5HXuVtI+s1Oxbh43H1ivvUNP3CnjV+rDW73
-	 Xw+SKhgTKyzat5YcMGxzEdE8W6KntT/20FxYgRUg=
+	b=Fe2AwO3xaJo/ImwerXdTOruCJIEgF+yzGC5ANwpGQdLHenajYDbsIt1gY8EqGgys4
+	 Fyi3JAldwFV364Gm1e96ewFuG6DpU1Cn3wCyo8MXs49wrRAdEae1Loyze7/OhlXs5Q
+	 H1dMG4hsZrLaKRbGKJTFBdsc4UULyBSOs6CY2y20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jon Mason <jdmason@kudzu.us>,
+	Jan Beulich <jbeulich@suse.com>,
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 147/204] ntb: reduce stack usage in idt_scan_mws
+Subject: [PATCH 6.1 127/167] xen: Change xen-acpi-processor dom0 dependency
 Date: Tue, 29 Apr 2025 18:43:55 +0200
-Message-ID: <20250429161105.437877000@linuxfoundation.org>
+Message-ID: <20250429161056.879861187@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-[ Upstream commit aff12700b8dd7422bfe2277696e192af4df9de8f ]
+[ Upstream commit 0f2946bb172632e122d4033e0b03f85230a29510 ]
 
-idt_scan_mws() puts a large fixed-size array on the stack and copies
-it into a smaller dynamically allocated array at the end. On 32-bit
-targets, the fixed size can easily exceed the warning limit for
-possible stack overflow:
+xen-acpi-processor functions under a PVH dom0 with only a
+xen_initial_domain() runtime check.  Change the Kconfig dependency from
+PV dom0 to generic dom0 to reflect that.
 
-drivers/ntb/hw/idt/ntb_hw_idt.c:1041:27: error: stack frame size (1032) exceeds limit (1024) in 'idt_scan_mws' [-Werror,-Wframe-larger-than]
-
-Change it to instead just always use dynamic allocation for the
-array from the start. It's too big for the stack, but not actually
-all that much for a permanent allocation.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/all/202205111109.PiKTruEj-lkp@intel.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Suggested-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Tested-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250331172913.51240-1-jason.andryuk@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/hw/idt/ntb_hw_idt.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ drivers/xen/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
-index 48823b53ede3e..22aaa60d2d384 100644
---- a/drivers/ntb/hw/idt/ntb_hw_idt.c
-+++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
-@@ -1041,7 +1041,7 @@ static inline char *idt_get_mw_name(enum idt_mw_type mw_type)
- static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
- 				       unsigned char *mw_cnt)
- {
--	struct idt_mw_cfg mws[IDT_MAX_NR_MWS], *ret_mws;
-+	struct idt_mw_cfg *mws;
- 	const struct idt_ntb_bar *bars;
- 	enum idt_mw_type mw_type;
- 	unsigned char widx, bidx, en_cnt;
-@@ -1049,6 +1049,11 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
- 	int aprt_size;
- 	u32 data;
+diff --git a/drivers/xen/Kconfig b/drivers/xen/Kconfig
+index d5d7c402b6511..ab135c3e43410 100644
+--- a/drivers/xen/Kconfig
++++ b/drivers/xen/Kconfig
+@@ -271,7 +271,7 @@ config XEN_PRIVCMD
  
-+	mws = devm_kcalloc(&ndev->ntb.pdev->dev, IDT_MAX_NR_MWS,
-+			   sizeof(*mws), GFP_KERNEL);
-+	if (!mws)
-+		return ERR_PTR(-ENOMEM);
-+
- 	/* Retrieve the array of the BARs registers */
- 	bars = portdata_tbl[port].bars;
- 
-@@ -1103,16 +1108,7 @@ static struct idt_mw_cfg *idt_scan_mws(struct idt_ntb_dev *ndev, int port,
- 		}
- 	}
- 
--	/* Allocate memory for memory window descriptors */
--	ret_mws = devm_kcalloc(&ndev->ntb.pdev->dev, *mw_cnt, sizeof(*ret_mws),
--			       GFP_KERNEL);
--	if (!ret_mws)
--		return ERR_PTR(-ENOMEM);
--
--	/* Copy the info of detected memory windows */
--	memcpy(ret_mws, mws, (*mw_cnt)*sizeof(*ret_mws));
--
--	return ret_mws;
-+	return mws;
- }
- 
- /*
+ config XEN_ACPI_PROCESSOR
+ 	tristate "Xen ACPI processor"
+-	depends on XEN && XEN_PV_DOM0 && X86 && ACPI_PROCESSOR && CPU_FREQ
++	depends on XEN && XEN_DOM0 && X86 && ACPI_PROCESSOR && CPU_FREQ
+ 	default m
+ 	help
+ 	  This ACPI processor uploads Power Management information to the Xen
 -- 
 2.39.5
 
