@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-137905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53753AA154E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F291EAA145B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37AE07A65FE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C19A4A3374
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A3A24A07B;
-	Tue, 29 Apr 2025 17:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A62827453;
+	Tue, 29 Apr 2025 17:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/0BYFid"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhtNmeWk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E605421ADC7;
-	Tue, 29 Apr 2025 17:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CF7244686;
+	Tue, 29 Apr 2025 17:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947490; cv=none; b=bujnugN8hW4E9sJM+Ol+98dbm1Dxkzm/MRpzu1o6YfxCxLT4VV88tsOmiRq2E0mAlk5hK9BzNyrUd3rrYkz7Q47HeqyGdXfyl3JUmN+HyGuhpbzXJO2T9vdWkYLErcKn6zt9Gel2QtoScLBfF0kxCrzCUUsalOfkFzfxOkDWT9E=
+	t=1745946787; cv=none; b=OzMobTu6Z3PkCAEhFmZlZE5kgyBzaMFiW9ysyI1FAIwP+bipYuuZXV2kYmtVlEg4LUl0QC/7+gTeAx2fW8CApDJQU2NL6HeXw0D1Uarj3fWTZOrwJTUR5wLRgSB+kyRVlingD3IsyvSrg1eMK3XwFyJLi47MaPv2WyAiYYq4Vnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947490; c=relaxed/simple;
-	bh=HtRwpXNqlunRhjadqqP3TZ5D7TGu6Bu0WqMMzeyD7Qg=;
+	s=arc-20240116; t=1745946787; c=relaxed/simple;
+	bh=RztB95tFo77dIC4eNVzTOD66rnVGWHptJ6w0GQsXrwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FHstxElDhwsc3k0q+3EbEvMoG4g41dQRK8Bryqwe5+uhQsaNHqnVQMHrsIUBeJGRZI8TQXX13HNwSquBOEDL3xxwKBf4RUMsGS0R1bCp/8uPiOzaXxQBzVL2+cSxFyBL94IsZJ4hjg8ppQXTBNEkuajkcGNlIqRr1Vls5HaRZDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/0BYFid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B05C4CEE3;
-	Tue, 29 Apr 2025 17:24:49 +0000 (UTC)
+	 MIME-Version; b=rWjOgGpMvUw3/MLqMeqNApRAv8eIThGbioG4Zt9qMMkS+OKNsvvlxPAAqlXV6dGZhZxq9C4vTP5sV23302Q7HzYywhv0TU9DI5nX8yGiR3FVe8q/tShORjy3MRgpvWuR0HRHxDo2C82e4bGmSmBF1yLnJgmBKzGpgfmG1ainBFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhtNmeWk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D16CC4CEE3;
+	Tue, 29 Apr 2025 17:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947489;
-	bh=HtRwpXNqlunRhjadqqP3TZ5D7TGu6Bu0WqMMzeyD7Qg=;
+	s=korg; t=1745946787;
+	bh=RztB95tFo77dIC4eNVzTOD66rnVGWHptJ6w0GQsXrwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/0BYFidcKPtI4aTUwp9BPoRF+An4fOncPK5bU2Pns/3LTFM2TjQ7ovIQaIT6PRe5
-	 lfjbAVdW2DfRcc3cxk3l+ITqBVpjXqJoqMl4dW/RolrFvu7dV8F83a9/bGhc68WU3O
-	 oPSzsnLj3AgN/LpSI4orElsEb64V5JCbIcNuxzF0=
+	b=mhtNmeWkUlMfaTjBtASt8tU9MG7bVE/qzhabB9uDmipGS4e0LbLpcgQRL2teuAraK
+	 nILxdx7+FFZtVcjfxSUoSIw7S/IUDSkikwYT1yrMjKmqV6GmPfeLCathzG4lUpl3oY
+	 OzTQ/XSDGdBsrw6piL4fyRXRST5WaZnhz8+yqdeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Libo Chen <libo.chen@oracle.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	David Yat Sin <David.YatSin@amd.com>,
+	Jay Cornwall <jay.cornwall@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 003/280] tracing: Verify event formats that have "%*p.."
+Subject: [PATCH 5.10 040/286] drm/amdkfd: clamp queue size to minimum
 Date: Tue, 29 Apr 2025 18:39:04 +0200
-Message-ID: <20250429161115.153929613@linuxfoundation.org>
+Message-ID: <20250429161109.512321429@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: David Yat Sin <David.YatSin@amd.com>
 
-[ Upstream commit ea8d7647f9ddf1f81e2027ed305299797299aa03 ]
+[ Upstream commit e90711946b53590371ecce32e8fcc381a99d6333 ]
 
-The trace event verifier checks the formats of trace events to make sure
-that they do not point at memory that is not in the trace event itself or
-in data that will never be freed. If an event references data that was
-allocated when the event triggered and that same data is freed before the
-event is read, then the kernel can crash by reading freed memory.
+If queue size is less than minimum, clamp it to minimum to prevent
+underflow when writing queue mqd.
 
-The verifier runs at boot up (or module load) and scans the print formats
-of the events and checks their arguments to make sure that dereferenced
-pointers are safe. If the format uses "%*p.." the verifier will ignore it,
-and that could be dangerous. Cover this case as well.
-
-Also add to the sample code a use case of "%*pbl".
-
-Link: https://lore.kernel.org/all/bcba4d76-2c3f-4d11-baf0-02905db953dd@oracle.com/
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
-Link: https://lore.kernel.org/20250327195311.2d89ec66@gandalf.local.home
-Reported-by: Libo Chen <libo.chen@oracle.com>
-Reviewed-by: Libo Chen <libo.chen@oracle.com>
-Tested-by: Libo Chen <libo.chen@oracle.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: David Yat Sin <David.YatSin@amd.com>
+Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c                | 7 +++++++
- samples/trace_events/trace-events-sample.h | 8 ++++++--
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 10 ++++++++++
+ include/uapi/linux/kfd_ioctl.h           |  2 ++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 11dea25ef880a..15fb255733fb6 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -470,6 +470,7 @@ static void test_event_printk(struct trace_event_call *call)
- 			case '%':
- 				continue;
- 			case 'p':
-+ do_pointer:
- 				/* Find dereferencing fields */
- 				switch (fmt[i + 1]) {
- 				case 'B': case 'R': case 'r':
-@@ -498,6 +499,12 @@ static void test_event_printk(struct trace_event_call *call)
- 						continue;
- 					if (fmt[i + j] == '*') {
- 						star = true;
-+						/* Handle %*pbl case */
-+						if (!j && fmt[i + 1] == 'p') {
-+							arg++;
-+							i++;
-+							goto do_pointer;
-+						}
- 						continue;
- 					}
- 					if ((fmt[i + j] == 's')) {
-diff --git a/samples/trace_events/trace-events-sample.h b/samples/trace_events/trace-events-sample.h
-index 999f78d380aee..1a05fc1533531 100644
---- a/samples/trace_events/trace-events-sample.h
-+++ b/samples/trace_events/trace-events-sample.h
-@@ -319,7 +319,8 @@ TRACE_EVENT(foo_bar,
- 		__assign_cpumask(cpum, cpumask_bits(mask));
- 	),
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index 9a444b17530a4..869c8786df5c9 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -190,6 +190,11 @@ static int set_queue_properties_from_user(struct queue_properties *q_properties,
+ 		return -EINVAL;
+ 	}
  
--	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s", __entry->foo, __entry->bar,
-+	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s [%d] %*pbl",
-+		  __entry->foo, __entry->bar,
++	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
++		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
++		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
++	}
++
+ 	if (!access_ok((const void __user *) args->read_pointer_address,
+ 			sizeof(uint32_t))) {
+ 		pr_err("Can't access read pointer\n");
+@@ -394,6 +399,11 @@ static int kfd_ioctl_update_queue(struct file *filp, struct kfd_process *p,
+ 		return -EINVAL;
+ 	}
  
- /*
-  * Notice here the use of some helper functions. This includes:
-@@ -370,7 +371,10 @@ TRACE_EVENT(foo_bar,
++	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
++		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
++		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
++	}
++
+ 	properties.queue_address = args->ring_base_address;
+ 	properties.queue_size = args->ring_size;
+ 	properties.queue_percent = args->queue_percentage;
+diff --git a/include/uapi/linux/kfd_ioctl.h b/include/uapi/linux/kfd_ioctl.h
+index 695b606da4b15..94af84e845549 100644
+--- a/include/uapi/linux/kfd_ioctl.h
++++ b/include/uapi/linux/kfd_ioctl.h
+@@ -47,6 +47,8 @@ struct kfd_ioctl_get_version_args {
+ #define KFD_MAX_QUEUE_PERCENTAGE	100
+ #define KFD_MAX_QUEUE_PRIORITY		15
  
- 		  __get_str(str), __get_str(lstr),
- 		  __get_bitmask(cpus), __get_cpumask(cpum),
--		  __get_str(vstr))
-+		  __get_str(vstr),
-+		  __get_dynamic_array_len(cpus),
-+		  __get_dynamic_array_len(cpus),
-+		  __get_dynamic_array(cpus))
- );
- 
- /*
++#define KFD_MIN_QUEUE_RING_SIZE		1024
++
+ struct kfd_ioctl_create_queue_args {
+ 	__u64 ring_base_address;	/* to KFD */
+ 	__u64 write_pointer_address;	/* from KFD */
 -- 
 2.39.5
 
