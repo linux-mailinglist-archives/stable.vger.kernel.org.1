@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-138115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D1CFAA1665
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC7AAA15AB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C21C97AF9AB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:35:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AA0598446D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698582517AB;
-	Tue, 29 Apr 2025 17:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50127253B71;
+	Tue, 29 Apr 2025 17:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQkhBQic"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tTu2Egr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AAF24E000;
-	Tue, 29 Apr 2025 17:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E05D25334C;
+	Tue, 29 Apr 2025 17:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948203; cv=none; b=HZoN3UZPLPcCLM7iyYYXJGhu6U43+vczesy6kLWpWIH4RSSmtXuLKiIQjLMLf8IrYgNmTRHiVjeeSFRi8SQy/gwDm/YJ29zhccBIKALDsXxXY2NTMZApUioHNltn6KwluU3aVa6Os/m5hm1I7oyQhKhIZeyas9LH8oSEbprjZyg=
+	t=1745947366; cv=none; b=ibImrTUTfggFbOBk/hD6FQJf9t+QFG2glXUICVHna5eLDJnpek6J9RNnMS8HPEodLNPrKKkW9ZE2aJjDMvXQ/I/Mnu+pH5EfacjuFR8+g10Fxxy/pRkQyaqYK8e6tbiQcgGQhR/PSjutHSvAjbzBOsbCBu5xoQ7N3RMQXWo/Srw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948203; c=relaxed/simple;
-	bh=c+Kh6WfT5bdn/SiYK4hxOWLEqdRaY2Odw94/hV7xJzo=;
+	s=arc-20240116; t=1745947366; c=relaxed/simple;
+	bh=ccbyw7ebxQwd0Obuz3Urs6eUF85m8kEZEs+vAGf4Xug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r0oee+sBvhGdEYUKNMpKkArYmY8UZORgjuMvAFc/pNf7TABgi30krTbKI3MeseMhQ7o+xJ00D3bsO3IaR0gYRETJ8Fhpr7yNF7Kye2eQhjx2ZT/5yoJ3QAhIDRb76+D5h2yNNwyVpdtRixLJkccOwAgawaava+iMCx70nPMEpuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQkhBQic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD73BC4CEE3;
-	Tue, 29 Apr 2025 17:36:42 +0000 (UTC)
+	 MIME-Version; b=GJVL5J5KQM11QGE9OP3DgP1dpokRGflh+zRG0Abys6YsDAOIeB+IBGl8STkbHKjkRYuNyQNEXpp9E6FBTYxTst08ERmbGxC1pt9XWJJsfYDNC3EKLlfPQmbyVskNw+jo2ADl0flxj+QTP/NTw/rF4IQs5ut+NdsT7TAbUAqGqgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tTu2Egr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B08C4CEE3;
+	Tue, 29 Apr 2025 17:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948203;
-	bh=c+Kh6WfT5bdn/SiYK4hxOWLEqdRaY2Odw94/hV7xJzo=;
+	s=korg; t=1745947365;
+	bh=ccbyw7ebxQwd0Obuz3Urs6eUF85m8kEZEs+vAGf4Xug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FQkhBQicY+Z/mqqWFmr48Rx2AdtsXK+VIh1qqTSgV8Xbb32EHEI9tiIHj+PttTvW5
-	 5GJSMvHKEM4szYWeEcqbxdaqzbcdyvXwgTlIkdCeHnC3ZjkIjp3VMNhZIJa9MDzba+
-	 OFBr0Fia9A3hkVPYgznx1tOAt1CN4Xlo8+c8rNJI=
+	b=1tTu2EgrwVJOLmodOr+RUkJRBNZQaUVmAa9ts+y2rXZzNDc1EqZ1SR00G/H56eQNy
+	 vjg/PVnQWlGDJ+8r/tfQLO9aCl0YN5wSAGx8rUBzW+Xf77wP2TRnWxmpEOV9VeUk5q
+	 8xJmG5sdibvH0qeVf1moUYirGX1hUSKep2NCCPAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Amit Shah <amit.shah@amd.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	David Woodhouse <dwmw2@infradead.org>,
+	kernel test robot <lkp@intel.com>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 219/280] x86/bugs: Dont fill RSB on VMEXIT with eIBRS+retpoline
+Subject: [PATCH 5.10 256/286] parisc: PDT: Fix missing prototype warning
 Date: Tue, 29 Apr 2025 18:42:40 +0200
-Message-ID: <20250429161124.083079893@linuxfoundation.org>
+Message-ID: <20250429161118.449840419@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,66 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit 18bae0dfec15b24ec14ca17dc18603372f5f254f ]
+[ Upstream commit b899981750dcb958ceffa4462d903963ee494aa2 ]
 
-eIBRS protects against guest->host RSB underflow/poisoning attacks.
-Adding retpoline to the mix doesn't change that.  Retpoline has a
-balanced CALL/RET anyway.
+As reported by the kernel test robot, the following error occurs:
 
-So the current full RSB filling on VMEXIT with eIBRS+retpoline is
-overkill.  Disable it or do the VMEXIT_LITE mitigation if needed.
+arch/parisc/kernel/pdt.c:65:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
+      65 | void arch_report_meminfo(struct seq_file *m)
+         |      ^~~~~~~~~~~~~~~~~~~
 
-Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Reviewed-by: Amit Shah <amit.shah@amd.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
-Link: https://lore.kernel.org/r/84a1226e5c9e2698eae1b5ade861f1b8bf3677dc.1744148254.git.jpoimboe@kernel.org
+arch_report_meminfo() is declared in include/linux/proc_fs.h and only
+defined when CONFIG_PROC_FS is enabled. Wrap its definition in #ifdef
+CONFIG_PROC_FS to fix the -Wmissing-prototypes warning.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502082315.IPaHaTyM-lkp@intel.com/
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/parisc/kernel/pdt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 5fba44a4f988c..589e34c0b70b5 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1604,20 +1604,20 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
- 	case SPECTRE_V2_NONE:
- 		return;
+diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
+index fcc761b0e11b9..d20e8283c5b8a 100644
+--- a/arch/parisc/kernel/pdt.c
++++ b/arch/parisc/kernel/pdt.c
+@@ -62,6 +62,7 @@ static unsigned long pdt_entry[MAX_PDT_ENTRIES] __page_aligned_bss;
+ #define PDT_ADDR_PERM_ERR	(pdt_type != PDT_PDC ? 2UL : 0UL)
+ #define PDT_ADDR_SINGLE_ERR	1UL
  
--	case SPECTRE_V2_EIBRS_LFENCE:
- 	case SPECTRE_V2_EIBRS:
-+	case SPECTRE_V2_EIBRS_LFENCE:
-+	case SPECTRE_V2_EIBRS_RETPOLINE:
- 		if (boot_cpu_has_bug(X86_BUG_EIBRS_PBRSB)) {
--			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 			pr_info("Spectre v2 / PBRSB-eIBRS: Retire a single CALL on VMEXIT\n");
-+			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 		}
- 		return;
++#ifdef CONFIG_PROC_FS
+ /* report PDT entries via /proc/meminfo */
+ void arch_report_meminfo(struct seq_file *m)
+ {
+@@ -73,6 +74,7 @@ void arch_report_meminfo(struct seq_file *m)
+ 	seq_printf(m, "PDT_cur_entries: %7lu\n",
+ 			pdt_status.pdt_entries);
+ }
++#endif
  
--	case SPECTRE_V2_EIBRS_RETPOLINE:
- 	case SPECTRE_V2_RETPOLINE:
- 	case SPECTRE_V2_LFENCE:
- 	case SPECTRE_V2_IBRS:
--		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
- 		pr_info("Spectre v2 / SpectreRSB : Filling RSB on VMEXIT\n");
-+		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
- 		return;
- 	}
- 
+ static int get_info_pat_new(void)
+ {
 -- 
 2.39.5
 
