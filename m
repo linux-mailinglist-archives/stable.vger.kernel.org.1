@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89059AA12A1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD25AA183A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B92EC4628CD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA8DC3A7ADE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E872459EE;
-	Tue, 29 Apr 2025 16:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA40D248883;
+	Tue, 29 Apr 2025 17:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eT6AMcBx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQQenlq/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E47215060;
-	Tue, 29 Apr 2025 16:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D36243364;
+	Tue, 29 Apr 2025 17:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945636; cv=none; b=jgb/GcH1H8UYl0TgS8opCNP5pvVYp58prXFITogWG3iYkvBnKpc+bmXuANln7UfUjusRsBUgLVcBsDDRtpjcbbJ2j2OVn19bjQCJCtzqNnSSIjoHxBFq0B66in/j3uJszuUkKGmDvUswFTuwokrkD90xnTJBp1chtYXAMjKhxjg=
+	t=1745949198; cv=none; b=qw4CI9gMl1jAeTcizlIAtxScQy1ofmRLZKXOlNfzFjj6vgNGMvVk1UdzLIjhTsoJZFxNlf+tJGn0aQh0ZN/RmCO8vBM02+FKIpwtykOKwTvtfJQC7S84UtPb5BBlYPs6kSjm6upaUxD3XIy9LaYpueCVVySdndZgx5p7uy/Di2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945636; c=relaxed/simple;
-	bh=72iSI5YbYeJxWTYj1vjoHeb0sdGvLppmXT/U2v+Iy1I=;
+	s=arc-20240116; t=1745949198; c=relaxed/simple;
+	bh=i5qPQKLjPNTVqtjRSbXGfxmfjNFA/qkH99rcHpPNj5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SOisGN90hfD3hzEmbDu8nuutE+KrMprOgo2kuBxxCc089iOCP2mWivUrfxkU1aYife6m10ebllXBTLWg3kzdV7aSysyImwNtYJmUPeNrI3MYWK2GbnXNSk3DNPWyD740P3XzvYogRHwHOM53P1SAZqklHiPU6M8pFAo5rdC8Vwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eT6AMcBx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522E7C4CEE3;
-	Tue, 29 Apr 2025 16:53:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BvKnZg87y1bJl19DPFHpRi5szMibmyMzKmehHjBhZun3SANPn4MJ+Rumcv3Wao1jDB1OU60yClVy74JHiPCTlGRwXcr8Ar0wwrmuDjlF8N4taQ1GPzeVPdH56nKXLQPVyR0ZFIP6rWc8bfy3rFDI4rQiErcTUOZ+jUGmwHlQA4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQQenlq/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB746C4CEE3;
+	Tue, 29 Apr 2025 17:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945635;
-	bh=72iSI5YbYeJxWTYj1vjoHeb0sdGvLppmXT/U2v+Iy1I=;
+	s=korg; t=1745949198;
+	bh=i5qPQKLjPNTVqtjRSbXGfxmfjNFA/qkH99rcHpPNj5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eT6AMcBxmRTVqK+8ISwh1QYDM74uEIMbKzGiHbOZOIz618C9+H+z8Wtjko8F0r11u
-	 SjN7u3akeXodAo1w24e2vy/MXmxsAGJwR18ePmA4LAePfbupxnE1cicHmTcyq4EdHQ
-	 BMxryVg0s1gMmzKl3tD6WJ4LL4mANm1CTz3vqDUo=
+	b=AQQenlq/mDfLXE6YXVqNuUiXcIJ/0Yl72k89+x/H5MOq4vQsiQuPRy+oAAyih5WvJ
+	 /9KzYm07a38HC0dq81bjDUZNJREz45ncVmR3e2ZSFc7eu9GzUtmFxteuRPa3KaPhJv
+	 3XwH3EYbl+1v7C9CIqkqUOL/q9ZMXomP2qS2Zoug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.4 178/179] crypto: atmel-sha204a - Set hwrng quality to lowest possible
+	WangYuli <wangyuli@uniontech.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.15 242/373] MIPS: cevt-ds1287: Add missing ds1287.h include
 Date: Tue, 29 Apr 2025 18:41:59 +0200
-Message-ID: <20250429161056.595296761@linuxfoundation.org>
+Message-ID: <20250429161133.086343209@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 8006aff15516a170640239c5a8e6696c0ba18d8e upstream.
+commit f3be225f338a578851a7b607a409f476354a8deb upstream.
 
-According to the review by Bill Cox [1], the Atmel SHA204A random number
-generator produces random numbers with very low entropy.
+Address the issue of cevt-ds1287.c not including the ds1287.h header
+file.
 
-Set the lowest possible entropy for this chip just to be safe.
+Fix follow errors with gcc-14 when -Werror:
 
-[1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
+arch/mips/kernel/cevt-ds1287.c:15:5: error: no previous prototype for ‘ds1287_timer_state’ [-Werror=missing-prototypes]
+   15 | int ds1287_timer_state(void)
+      |     ^~~~~~~~~~~~~~~~~~
+arch/mips/kernel/cevt-ds1287.c:20:5: error: no previous prototype for ‘ds1287_set_base_clock’ [-Werror=missing-prototypes]
+   20 | int ds1287_set_base_clock(unsigned int hz)
+      |     ^~~~~~~~~~~~~~~~~~~~~
+arch/mips/kernel/cevt-ds1287.c:103:12: error: no previous prototype for ‘ds1287_clockevent_init’ [-Werror=missing-prototypes]
+  103 | int __init ds1287_clockevent_init(int irq)
+      |            ^~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make[7]: *** [scripts/Makefile.build:207: arch/mips/kernel/cevt-ds1287.o] Error 1
+make[7]: *** Waiting for unfinished jobs....
+make[6]: *** [scripts/Makefile.build:465: arch/mips/kernel] Error 2
+make[6]: *** Waiting for unfinished jobs....
 
-Fixes: da001fb651b00e1d ("crypto: atmel-i2c - add support for SHA204A random number generator")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Marek Behún <kabel@kernel.org>
 ---
- drivers/crypto/atmel-sha204a.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/mips/kernel/cevt-ds1287.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/crypto/atmel-sha204a.c
-+++ b/drivers/crypto/atmel-sha204a.c
-@@ -107,7 +107,12 @@ static int atmel_sha204a_probe(struct i2
+--- a/arch/mips/kernel/cevt-ds1287.c
++++ b/arch/mips/kernel/cevt-ds1287.c
+@@ -10,6 +10,7 @@
+ #include <linux/mc146818rtc.h>
+ #include <linux/irq.h>
  
- 	i2c_priv->hwrng.name = dev_name(&client->dev);
- 	i2c_priv->hwrng.read = atmel_sha204a_rng_read;
--	i2c_priv->hwrng.quality = 1024;
-+
-+	/*
-+	 * According to review by Bill Cox [1], this HWRNG has very low entropy.
-+	 * [1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
-+	 */
-+	i2c_priv->hwrng.quality = 1;
++#include <asm/ds1287.h>
+ #include <asm/time.h>
  
- 	ret = devm_hwrng_register(&client->dev, &i2c_priv->hwrng);
- 	if (ret)
+ int ds1287_timer_state(void)
 
 
 
