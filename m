@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-137922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E0AAA15EA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3DB1AA1379
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E48033BF784
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:25:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 700CB9838B0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219102522B4;
-	Tue, 29 Apr 2025 17:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6EE241664;
+	Tue, 29 Apr 2025 17:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9bFfrRp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPtlUj46"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B092459EA;
-	Tue, 29 Apr 2025 17:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1BC7E110;
+	Tue, 29 Apr 2025 17:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947542; cv=none; b=QRl2pM5C8MoEpnLD0r0ZvrAAecearLSqvSCXVpuZU1tqbRd3Pn7rwRPpPBPzrzH+DA4tAsmo9bDS7WQfWRcAhAhe/zpOWm3FjiE/TKrm2uLNiTdRQAavMFgrzPRRCGpUWfXpE0/DYWTzl8CyJUe/ln4c0Xa2kvnp7h/n2Cda0rQ=
+	t=1745946032; cv=none; b=OVA9Sg8CqHo3LTIvb6Qp1MeDTmgYpfl6S99G1C8/+X+R9fmw6cjBQiJvc4asGjz74UyA9R5l5nw0sqCbaa30dl6bpyqG7+A1eZ4wxisVIRDdqDzLqlvwlZVL2w46Iy95NhVYfNusr5y9usIYSTRgrz1Iqs5IBw3eOhxhQe3UCpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947542; c=relaxed/simple;
-	bh=kVrQQdiBSzP8sfIXPbTq4Z5mfvBkWzO5h3skU70nGDY=;
+	s=arc-20240116; t=1745946032; c=relaxed/simple;
+	bh=jelVxnANYkxCEDv6vkz2J1Xvrz2/NRFCorCwoLAiFxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThiSHjCFJQKj27QT79NVd4cAnZUbs2A41REp4tSVRChBWKJtzJ1FnfvcRZM4FMTSgue0jKPUwRsXmh0Hd1b3vlDx8suR0qzU77YAEDT3C6v/gB8eSk7AoODevN6c8u2DZSSmKgjxBPp6y+XKPma28HaRvojsK7UOsDKxZhAmsxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9bFfrRp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A51C4CEE3;
-	Tue, 29 Apr 2025 17:25:42 +0000 (UTC)
+	 MIME-Version; b=WVJJuBNVeVcgonZOCba00TlLvxzFZPEnoo4mr20I5w1G3oTPKBKBkADvxthJvgSMzwE6DlRxa/pHzgY7oy8P6XOyb0tRK99qOEd/cVFpFnuGNJcKMiPzKmC3MIvvVuwaXW7uycITuDxEE3L7fWWu2E8EnN+xOtb/219seYXZatI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPtlUj46; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1836C4CEE3;
+	Tue, 29 Apr 2025 17:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947542;
-	bh=kVrQQdiBSzP8sfIXPbTq4Z5mfvBkWzO5h3skU70nGDY=;
+	s=korg; t=1745946032;
+	bh=jelVxnANYkxCEDv6vkz2J1Xvrz2/NRFCorCwoLAiFxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r9bFfrRp7Qao8STsmbYqaX1ujMqguIzzDX0aaf5JHyhDUwuF6LiC/jhUXJUx28pye
-	 oB3fxowntu22qAKr13t2nLPfwihnXaUpnmAC3LM4ZSfShGZ7F6vftpHJs97dIzW32N
-	 09w8vxX85StWbMeK2YBtRotRWYRPlfHUndrvkxM0=
+	b=HPtlUj46GLysOSp3x09Ai+m7SyZyXmP5e40WzEMc+OlHxbOFeg3xa23jv8n4wryCj
+	 ekuLfi54dynNy1B+9TlNeKsB2sKW2roAgrmoZyhTFyb6/742bkC4Gb+VBx2XnAqIbh
+	 +Mcy7WokMYX7sjMhxQ7nnCVSRh8aKKrZPaSMyiDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 027/280] scsi: ufs: qcom: fix dev reference leaked through of_qcom_ice_get
-Date: Tue, 29 Apr 2025 18:39:28 +0200
-Message-ID: <20250429161116.214803911@linuxfoundation.org>
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.14 132/311] LoongArch: KVM: Fully clear some CSRs when VM reboot
+Date: Tue, 29 Apr 2025 18:39:29 +0200
+Message-ID: <20250429161126.449263519@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,47 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit ded40f32b55f7f2f4ed9627dd3c37a1fe89ed8c6 ]
+commit 9ea86232a5520d9d21832d06031ea80f055a6ff8 upstream.
 
-The driver leaks the device reference taken with
-of_find_device_by_node(). Fix the leak by using devm_of_qcom_ice_get().
+Some registers such as LOONGARCH_CSR_ESTAT and LOONGARCH_CSR_GINTC are
+partly cleared with function _kvm_setcsr(). This comes from the hardware
+specification, some bits are read only in VM mode, and however they can
+be written in host mode. So they are partly cleared in VM mode, and can
+be fully cleared in host mode.
 
-Fixes: 56541c7c4468 ("scsi: ufs: ufs-qcom: Switch to the new ICE API")
+These read only bits show pending interrupt or exception status. When VM
+reset, the read-only bits should be cleared, otherwise vCPU will receive
+unknown interrupts in boot stage.
+
+Here registers LOONGARCH_CSR_ESTAT/LOONGARCH_CSR_GINTC are fully cleared
+in ioctl KVM_REG_LOONGARCH_VCPU_RESET vCPU reset path.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Acked-by: Martin K. Petersen <martin.petersen@oracle.com> # SCSI
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250117-qcom-ice-fix-dev-leak-v2-3-1ffa5b6884cb@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-qcom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/kvm/vcpu.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index e12c5f9f79563..4557b1bcd6356 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -118,7 +118,7 @@ static int ufs_qcom_ice_init(struct ufs_qcom_host *host)
- 	struct device *dev = hba->dev;
- 	struct qcom_ice *ice;
- 
--	ice = of_qcom_ice_get(dev);
-+	ice = devm_of_qcom_ice_get(dev);
- 	if (ice == ERR_PTR(-EOPNOTSUPP)) {
- 		dev_warn(dev, "Disabling inline encryption support\n");
- 		ice = NULL;
--- 
-2.39.5
-
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -874,6 +874,13 @@ static int kvm_set_one_reg(struct kvm_vc
+ 			vcpu->arch.st.guest_addr = 0;
+ 			memset(&vcpu->arch.irq_pending, 0, sizeof(vcpu->arch.irq_pending));
+ 			memset(&vcpu->arch.irq_clear, 0, sizeof(vcpu->arch.irq_clear));
++
++			/*
++			 * When vCPU reset, clear the ESTAT and GINTC registers
++			 * Other CSR registers are cleared with function _kvm_setcsr().
++			 */
++			kvm_write_sw_gcsr(vcpu->arch.csr, LOONGARCH_CSR_GINTC, 0);
++			kvm_write_sw_gcsr(vcpu->arch.csr, LOONGARCH_CSR_ESTAT, 0);
+ 			break;
+ 		default:
+ 			ret = -EINVAL;
 
 
 
