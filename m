@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67280AA17D8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42DDBAA14F0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E2161894AF7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:52:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 856011A81D9D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01902512E0;
-	Tue, 29 Apr 2025 17:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF06524A07D;
+	Tue, 29 Apr 2025 17:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTlr29p2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/Lq8mH7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BEB2512D8;
-	Tue, 29 Apr 2025 17:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7915423F405;
+	Tue, 29 Apr 2025 17:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949110; cv=none; b=Qjuu9uZ0fDINIIUR27zR0TAPfTCEVP4MpUS+DMikbNbjVdLMv2WyMM018FPk9lWe2Zt91nTSJTtV1/68bVKS8i4qiFqZi/0f4lQTQiANioN7Uy4V144zUEVIrk/xGGGA75dqTJb/2bkdSaPEoknH3FDY7ASl0O+TobLGECZJiMQ=
+	t=1745947069; cv=none; b=Y7ZWajoZpRvQ6rgsPaVJnyy0Vj7Wp+JRvM+dd0JRIE03197Hzjk3WzeqmhBS79t0MS9RLdkpo7pcUu2L7ZLwHUB1rrHlvFhXLQ731AoJKo+ZYAoCJPL/63ErVaNmcENQ5nTv3okHfkjGGUfudR8CzD2RNhuUJVbYAcdK90lSn6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949110; c=relaxed/simple;
-	bh=CM36itYhfP8gD8s+ocgnpdAnTDaoCtOQ80JVthZy2iY=;
+	s=arc-20240116; t=1745947069; c=relaxed/simple;
+	bh=Ff5PT+ugf7LmND2L9rMLq2ocdZ7EWfIApHwUr+WEB7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lx9S3kUTwzNYytpyBHXuN7n4NwALOvmRw2GcfUUjqEerJt6jlLl7nVAOFMarG1dMd2OlXkxh7T5kye3xdHjxyWRjGofueGldPVZ+TTqd4LfF5oDRUrTYtmRnC0r4abN+fGTtsnP7koMkNMTXQoMNtMNRvcvPYiOhi6XuiCd6OCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTlr29p2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CDEC4CEE3;
-	Tue, 29 Apr 2025 17:51:49 +0000 (UTC)
+	 MIME-Version; b=iMDX7c6Ihr1/dWzkZffKzJ1DhOh+H4FkIUj2sTRHx7nRNj0DcthmKJ8MRokc8wyqI9blvSexZmhbFZDcrFVn/Hfyxbpw5V6RLuT1AypxJb5da7sd3AfC90e0fN+k9lEfGIa31phY2gLcEy+pIGHPP6uGUSn/cdeEYvBM7uurN2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/Lq8mH7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA1AC4CEE3;
+	Tue, 29 Apr 2025 17:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949110;
-	bh=CM36itYhfP8gD8s+ocgnpdAnTDaoCtOQ80JVthZy2iY=;
+	s=korg; t=1745947069;
+	bh=Ff5PT+ugf7LmND2L9rMLq2ocdZ7EWfIApHwUr+WEB7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tTlr29p2Nw8CzhGFnYK2FjO1gzK3oGrwVQ2UE/RhLBEJMtx5jrDpRfF52llKGWfV+
-	 3H3feUGbHZsT17MAwDaxzYTAMZf5XHYocfPbtLMAdqHw3miTytqqpdvWjI8F2w/mKi
-	 YzZQvCkitTUtjqwZer5jvWKseI1Sw3hwCPCTwDCI=
+	b=w/Lq8mH7oeb12Ys4SnnuHccFasZTrFSCogRnt5RJrJQ6er5DiJXq7/cIUvQlq25UD
+	 /UwWPenbg7niduuCnTW7JCMGieFObFG2vbe5blh5znIVnxcn2VhjT496xlvSeeP8+c
+	 SXDPKtRghnBHSsDnJhZhUMUo3T0YeuGt/YAANM/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,  linux-kernel@vger.kernel.org, stable@vger.kernel.org,  Mark Brown" <broonie@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 187/373] KVM: arm64: Always start with clearing SVE flag on load
+	WangYuli <wangyuli@uniontech.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 5.10 160/286] nvmet-fc: Remove unused functions
 Date: Tue, 29 Apr 2025 18:41:04 +0200
-Message-ID: <20250429161130.854881234@linuxfoundation.org>
+Message-ID: <20250429161114.467508132@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit d52d165d67c5aa26c8c89909003c94a66492d23d ]
+commit 1b304c006b0fb4f0517a8c4ba8c46e88f48a069c upstream.
 
-On each vcpu load, we set the KVM_ARM64_HOST_SVE_ENABLED
-flag if SVE is enabled for EL0 on the host. This is used to restore
-the correct state on vpcu put.
+The functions nvmet_fc_iodnum() and nvmet_fc_fodnum() are currently
+unutilized.
 
-However, it appears that nothing ever clears this flag. Once
-set, it will stick until the vcpu is destroyed, which has the
-potential to spuriously enable SVE for userspace.
+Following commit c53432030d86 ("nvme-fabrics: Add target support for FC
+transport"), which introduced these two functions, they have not been
+used at all in practice.
 
-We probably never saw the issue because no VMM uses SVE, but
-that's still pretty bad. Unconditionally clearing the flag
-on vcpu load addresses the issue.
+Remove them to resolve the compiler warnings.
 
-Fixes: 8383741ab2e7 ("KVM: arm64: Get rid of host SVE tracking/saving")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20220528113829.1043361-2-maz@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix follow errors with clang-19 when W=1e:
+  drivers/nvme/target/fc.c:177:1: error: unused function 'nvmet_fc_iodnum' [-Werror,-Wunused-function]
+    177 | nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
+        | ^~~~~~~~~~~~~~~
+  drivers/nvme/target/fc.c:183:1: error: unused function 'nvmet_fc_fodnum' [-Werror,-Wunused-function]
+    183 | nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
+        | ^~~~~~~~~~~~~~~
+  2 errors generated.
+  make[8]: *** [scripts/Makefile.build:207: drivers/nvme/target/fc.o] Error 1
+  make[7]: *** [scripts/Makefile.build:465: drivers/nvme/target] Error 2
+  make[6]: *** [scripts/Makefile.build:465: drivers/nvme] Error 2
+  make[6]: *** Waiting for unfinished jobs....
+
+Fixes: c53432030d86 ("nvme-fabrics: Add target support for FC transport")
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/fpsimd.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/target/fc.c |   14 --------------
+ 1 file changed, 14 deletions(-)
 
---- a/arch/arm64/kvm/fpsimd.c
-+++ b/arch/arm64/kvm/fpsimd.c
-@@ -75,6 +75,7 @@ void kvm_arch_vcpu_load_fp(struct kvm_vc
- 	vcpu->arch.flags &= ~KVM_ARM64_FP_ENABLED;
- 	vcpu->arch.flags |= KVM_ARM64_FP_HOST;
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -169,20 +169,6 @@ struct nvmet_fc_tgt_assoc {
+ 	struct work_struct		del_work;
+ };
  
-+	vcpu->arch.flags &= ~KVM_ARM64_HOST_SVE_ENABLED;
- 	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
- 		vcpu->arch.flags |= KVM_ARM64_HOST_SVE_ENABLED;
- }
+-
+-static inline int
+-nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
+-{
+-	return (iodptr - iodptr->tgtport->iod);
+-}
+-
+-static inline int
+-nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
+-{
+-	return (fodptr - fodptr->queue->fod);
+-}
+-
+-
+ /*
+  * Association and Connection IDs:
+  *
 
 
 
