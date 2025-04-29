@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-138580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D12AA18AA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA80AA164F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA8DC4A0781
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:01:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAC967AE6D9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7123421ABC6;
-	Tue, 29 Apr 2025 18:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FA92522B6;
+	Tue, 29 Apr 2025 17:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvBzCbe8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qD0eWFIo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFDC22AE68;
-	Tue, 29 Apr 2025 18:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF35725332F;
+	Tue, 29 Apr 2025 17:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949700; cv=none; b=kkn6/EfWaBf8aK7hVI8xAjBBPCQiwDPfggZHKfGfO9CjIUNq8STn+pkr+1Nq44tVqtcssTHqEJccbHD0p061iZ2hJkM/rlY332//tXYphBM9FUzuiy45TxScurKcZjD7ib0WGdz8GNMMieicMUB4XXxjoRazWaKWkZMOQ/H16RQ=
+	t=1745948150; cv=none; b=KxzH3b3EsEW3hUDoun6kMrTMg9oOlEz3yZ1TwS5gvXxnG1sw1MawSObnn3oSonLa3KvMeWqgUha5zRmTklhbxTbXrS62zViGSjo8hF09PjpuEOfleSmKPADcEwQvru3Hr1gp9fs/Q2BFr79FBYnW67Lgkjo0pFD6Gl0TXwov7GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949700; c=relaxed/simple;
-	bh=xpMnXY1bk8qV4rqLUBB9Hp/cDvtMFbnzHM9mOcCCI8Q=;
+	s=arc-20240116; t=1745948150; c=relaxed/simple;
+	bh=3lwPLco8gHH872bJ6p/M7+tYIL0YNswN3E2guOzCyPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHJggNmcaQsGmVNEGHLWWCjPTXZ+jDST5AyVXMacWAVu+WsGOaauHxxJYXv4ObvDd4Gqy8P6rdZPE0po1LJfNhKFV88QtPpaa7I3GcAj9QjygZcRuNTacnvW/U0fCutq1ufIwM419pyCvlCIzygFbA//wWUOBtQ8UFz+Ufy2oEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvBzCbe8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCDDC4CEE3;
-	Tue, 29 Apr 2025 18:01:39 +0000 (UTC)
+	 MIME-Version; b=j8FuMCOkIlGxrAnCGw6/TzLJMyHiXAIW7YDhCW484TIEEVDB8+M5FHzefYBkkqj0oh8HN9rGWuVkvfaX9HYlV2PaK42Z84qz9ae0+BMXxUTYokoyrXzMJrzOETbyKglmuB7qv64LfkUof0Qec7PxKy/08uUCi0rk8jWftLlv2IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qD0eWFIo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6240AC4CEE3;
+	Tue, 29 Apr 2025 17:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949700;
-	bh=xpMnXY1bk8qV4rqLUBB9Hp/cDvtMFbnzHM9mOcCCI8Q=;
+	s=korg; t=1745948150;
+	bh=3lwPLco8gHH872bJ6p/M7+tYIL0YNswN3E2guOzCyPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fvBzCbe8IQmZyW5pofp9hyI++yDMCBtpSzYcZvwZV2L0gnmJ1TCJQ4p1LR10HqD6o
-	 0WhIn25DkUa14/pintWsuVpJqVrutAuktnh5FBGSwSaxklopR08LtWkZdH0mu73V5Y
-	 G2zae0Su/b8X3FIsh4bFIr78W5hx2wjz/b9Fc++M=
+	b=qD0eWFIo524UChH4pJMZWr4jIuf4iZOpqJwcTATUFqY6rmyFuxzWxIrnuySlN653K
+	 NB/25m1mVofvMdXMLXtbg4Ib7yoZpAj1rsXsBOZIOksCPZGOyAN21CciLNQcM/+kTs
+	 T0pDWSP6rLUtthK9hYG66D2GL+LWZLqoKqLEEhtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Avadhut Naik <avadhut.naik@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ferry Toth <fntoth@gmail.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/167] tracing: Add __print_dynamic_array() helper
+Subject: [PATCH 6.12 173/280] usb: dwc3: gadget: Refactor loop to avoid NULL endpoints
 Date: Tue, 29 Apr 2025 18:41:54 +0200
-Message-ID: <20250429161052.006719140@linuxfoundation.org>
+Message-ID: <20250429161122.191133795@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit e52750fb1458ae9ea5860a08ed7a149185bc5b97 ]
+[ Upstream commit eafba0205426091354f050381c32ad1567c35844 ]
 
-When printing a dynamic array in a trace event, the method is rather ugly.
-It has the format of:
+Prepare the gadget driver to handle the reserved endpoints that will be
+not allocated at the initialisation time.
 
-  __print_array(__get_dynamic_array(array),
-            __get_dynmaic_array_len(array) / el_size, el_size)
+While at it, add a warning where the NULL endpoint should never happen.
 
-Since dynamic arrays are known to the tracing infrastructure, create a
-helper macro that does the above for you.
-
-  __print_dynamic_array(array, el_size)
-
-Which would expand to the same output.
-
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Link: https://lore.kernel.org/r/20241022194158.110073-3-avadhut.naik@amd.com
-Stable-dep-of: ea8d7647f9dd ("tracing: Verify event formats that have "%*p.."")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Ferry Toth <fntoth@gmail.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250212193116.2487289-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/stages/stage3_trace_output.h | 8 ++++++++
- include/trace/stages/stage7_class_define.h | 1 +
- samples/trace_events/trace-events-sample.h | 7 ++++++-
- 3 files changed, 15 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/gadget.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/include/trace/stages/stage3_trace_output.h b/include/trace/stages/stage3_trace_output.h
-index 66374df61ed30..816c2da7a46ff 100644
---- a/include/trace/stages/stage3_trace_output.h
-+++ b/include/trace/stages/stage3_trace_output.h
-@@ -119,6 +119,14 @@
- 		trace_print_array_seq(p, array, count, el_size);	\
- 	})
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 12446495af87c..e72bac650981d 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -548,6 +548,7 @@ static int dwc3_gadget_set_xfer_resource(struct dwc3_ep *dep)
+ int dwc3_gadget_start_config(struct dwc3 *dwc, unsigned int resource_index)
+ {
+ 	struct dwc3_gadget_ep_cmd_params params;
++	struct dwc3_ep		*dep;
+ 	u32			cmd;
+ 	int			i;
+ 	int			ret;
+@@ -564,8 +565,13 @@ int dwc3_gadget_start_config(struct dwc3 *dwc, unsigned int resource_index)
+ 		return ret;
  
-+#undef __print_dynamic_array
-+#define __print_dynamic_array(array, el_size)				\
-+	({								\
-+		__print_array(__get_dynamic_array(array),		\
-+			      __get_dynamic_array_len(array) / (el_size), \
-+			      (el_size));				\
-+	})
+ 	/* Reset resource allocation flags */
+-	for (i = resource_index; i < dwc->num_eps && dwc->eps[i]; i++)
+-		dwc->eps[i]->flags &= ~DWC3_EP_RESOURCE_ALLOCATED;
++	for (i = resource_index; i < dwc->num_eps; i++) {
++		dep = dwc->eps[i];
++		if (!dep)
++			continue;
 +
- #undef __print_hex_dump
- #define __print_hex_dump(prefix_str, prefix_type,			\
- 			 rowsize, groupsize, buf, len, ascii)		\
-diff --git a/include/trace/stages/stage7_class_define.h b/include/trace/stages/stage7_class_define.h
-index 8795429f388b0..5e3e43adb73e6 100644
---- a/include/trace/stages/stage7_class_define.h
-+++ b/include/trace/stages/stage7_class_define.h
-@@ -22,6 +22,7 @@
- #undef __get_rel_cpumask
- #undef __get_rel_sockaddr
- #undef __print_array
-+#undef __print_dynamic_array
- #undef __print_hex_dump
++		dep->flags &= ~DWC3_EP_RESOURCE_ALLOCATED;
++	}
  
- /*
-diff --git a/samples/trace_events/trace-events-sample.h b/samples/trace_events/trace-events-sample.h
-index 04541dfbd44cc..24ec968d481fb 100644
---- a/samples/trace_events/trace-events-sample.h
-+++ b/samples/trace_events/trace-events-sample.h
-@@ -317,7 +317,7 @@ TRACE_EVENT(foo_bar,
- 		__assign_cpumask(cpum, cpumask_bits(mask));
- 	),
+ 	return 0;
+ }
+@@ -752,9 +758,11 @@ void dwc3_gadget_clear_tx_fifos(struct dwc3 *dwc)
  
--	TP_printk("foo %s %d %s %s %s %s %s (%s) (%s) %s", __entry->foo, __entry->bar,
-+	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s", __entry->foo, __entry->bar,
+ 	dwc->last_fifo_depth = fifo_depth;
+ 	/* Clear existing TXFIFO for all IN eps except ep0 */
+-	for (num = 3; num < min_t(int, dwc->num_eps, DWC3_ENDPOINTS_NUM);
+-	     num += 2) {
++	for (num = 3; num < min_t(int, dwc->num_eps, DWC3_ENDPOINTS_NUM); num += 2) {
+ 		dep = dwc->eps[num];
++		if (!dep)
++			continue;
++
+ 		/* Don't change TXFRAMNUM on usb31 version */
+ 		size = DWC3_IP_IS(DWC3) ? 0 :
+ 			dwc3_readl(dwc->regs, DWC3_GTXFIFOSIZ(num >> 1)) &
+@@ -3670,6 +3678,8 @@ static bool dwc3_gadget_endpoint_trbs_complete(struct dwc3_ep *dep,
  
- /*
-  * Notice here the use of some helper functions. This includes:
-@@ -361,6 +361,11 @@ TRACE_EVENT(foo_bar,
- 		  __print_array(__get_dynamic_array(list),
- 				__get_dynamic_array_len(list) / sizeof(int),
- 				sizeof(int)),
-+
-+/*     A shortcut is to use __print_dynamic_array for dynamic arrays */
-+
-+		  __print_dynamic_array(list, sizeof(int)),
-+
- 		  __get_str(str), __get_str(lstr),
- 		  __get_bitmask(cpus), __get_cpumask(cpum),
- 		  __get_str(vstr))
+ 		for (i = 0; i < DWC3_ENDPOINTS_NUM; i++) {
+ 			dep = dwc->eps[i];
++			if (!dep)
++				continue;
+ 
+ 			if (!(dep->flags & DWC3_EP_ENABLED))
+ 				continue;
+@@ -3858,6 +3868,10 @@ static void dwc3_endpoint_interrupt(struct dwc3 *dwc,
+ 	u8			epnum = event->endpoint_number;
+ 
+ 	dep = dwc->eps[epnum];
++	if (!dep) {
++		dev_warn(dwc->dev, "spurious event, endpoint %u is not allocated\n", epnum);
++		return;
++	}
+ 
+ 	if (!(dep->flags & DWC3_EP_ENABLED)) {
+ 		if ((epnum > 1) && !(dep->flags & DWC3_EP_TRANSFER_STARTED))
 -- 
 2.39.5
 
