@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F5CAA1878
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 785B0AA156B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:27:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D17F9A7842
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D00691A8586A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABB625394B;
-	Tue, 29 Apr 2025 17:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984E02517B6;
+	Tue, 29 Apr 2025 17:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aip2WVr4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVzNZZ/J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D0A25335F;
-	Tue, 29 Apr 2025 17:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54943245007;
+	Tue, 29 Apr 2025 17:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949299; cv=none; b=bX6pAfSqj/yzMThk7c0jjpqAOKJ6xvNwDF0Y1Zp/pomaYHduHxoe3nu7KrXqPsJmDEbys3qb3kFSbVBwykbCT62+3/oHHa/7pJ+lGV4NFSs1AaU16mpHGLY5dj63C9OIq613nz2eJSfxFfE0QCJr3NCdWekNFDuVfeOqUouG4bA=
+	t=1745947335; cv=none; b=o3lwBnY78Iiz9C0kXJcW3Pq8ADeeZ2nz5gtJwzn2CXiI91HQc5kfxYkUS5bRW4eiLMbXTAuP6ew85EsOLemYtFiWqu3pM66nPCcG2NjYP5iumTQMKDTpnYm5NOb4TNdMPRYDaHHoT7ZdVY+ICqPI0mdNa6YLvL5YYlIlFqZCkXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949299; c=relaxed/simple;
-	bh=pndw5YK8vUz8lZBaDk8yPehDnsru6FSR5v+5PPXpDGU=;
+	s=arc-20240116; t=1745947335; c=relaxed/simple;
+	bh=PyhcafT2aeN8peGpOob+ooSIsnWn46ZcjLD3M/Z0N64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EM96lQmCiA056QjU9j5YnAnN1qvZ5gbeZWekkCt9NIa1NWrPu9jgSJ7Xli/ueFEBZi1Pj3rrHcoz6diHa1bMV2U6brGrYbsc8T2MzqRqOdbkx4QjVrBLionGcyuilUEUleCVWl+XRL2/EZOHiT48JMsh1C+pElfKJ/KJzQOzAec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aip2WVr4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F5F3C4CEE3;
-	Tue, 29 Apr 2025 17:54:58 +0000 (UTC)
+	 MIME-Version; b=cltxh1qmEgbLkrQmNjGHQuglDibba110Cw+VgH4E5dFRf76Ofq8P/eWg7pwhZjjTItpMoGR2J4+8zeV4dU5tVXdkjE3ZRwvuZXGmaLP7/7jqhb6RV/Cbf7kZ6ty2m6xJ6PAq6bggTkO7vbmSibm8AvZh5ID6ygkrBngCmGNQBFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVzNZZ/J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1969C4CEE3;
+	Tue, 29 Apr 2025 17:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949298;
-	bh=pndw5YK8vUz8lZBaDk8yPehDnsru6FSR5v+5PPXpDGU=;
+	s=korg; t=1745947335;
+	bh=PyhcafT2aeN8peGpOob+ooSIsnWn46ZcjLD3M/Z0N64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aip2WVr4QIzohfHrMjnCUfBqe5918oZpjWkqb3I6qNmqqJw32roxutD4HY6e7Dpmu
-	 xHLIwEQd4BiVU2xy0o20K9Htjjo8P1szdlQPtUHW/ot8uY2nGYkljCQUzNqGrp8C+n
-	 +2hWdUgY7IhJtY2xuVCp98O6/K6nO8lAKRXg8S4g=
+	b=MVzNZZ/J86BUTk5B4UupE6iUYSwdz8Vg2ZPcUzMKDO+6E0hHvIiFkskSOZ0FYBAji
+	 1EWPkUAdeawhNUMFUavU4VCMO79EEBMMKC4ynMZoarNmXvD5V2fS9BK6rvEVNnLLnt
+	 kcuomSnn4A2ciUEADJ0VVzRLzsgyYNdhIUerdIvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guixin Liu <kanie@linux.alibaba.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 274/373] gpio: tegra186: fix resource handling in ACPI probe path
+	stable <stable@kernel.org>,
+	Ralph Siemsen <ralph.siemsen@linaro.org>,
+	Peter Chen <peter.chen@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 5.10 247/286] usb: cdns3: Fix deadlock when using NCM gadget
 Date: Tue, 29 Apr 2025 18:42:31 +0200
-Message-ID: <20250429161134.398802221@linuxfoundation.org>
+Message-ID: <20250429161118.089752730@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guixin Liu <kanie@linux.alibaba.com>
+From: Ralph Siemsen <ralph.siemsen@linaro.org>
 
-[ Upstream commit 8323f3a69de6f6e96bf22f32dd8e2920766050c2 ]
+commit a1059896f2bfdcebcdc7153c3be2307ea319501f upstream.
 
-When the Tegra186 GPIO controller is probed through ACPI matching,
-the driver emits two error messages during probing:
-  "tegra186-gpio NVDA0508:00: invalid resource (null)"
-  "tegra186-gpio NVDA0508:00: invalid resource (null)"
+The cdns3 driver has the same NCM deadlock as fixed in cdnsp by commit
+58f2fcb3a845 ("usb: cdnsp: Fix deadlock issue during using NCM gadget").
 
-Fix this by getting resource first and then do the ioremap.
+Under PREEMPT_RT the deadlock can be readily triggered by heavy network
+traffic, for example using "iperf --bidir" over NCM ethernet link.
 
-Fixes: 2606e7c9f5fc ("gpio: tegra186: Add ACPI support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250327032349.78809-1-kanie@linux.alibaba.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The deadlock occurs because the threaded interrupt handler gets
+preempted by a softirq, but both are protected by the same spinlock.
+Prevent deadlock by disabling softirq during threaded irq handler.
+
+Cc: stable <stable@kernel.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Ralph Siemsen <ralph.siemsen@linaro.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20250318-rfs-cdns3-deadlock-v2-1-bfd9cfcee732@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-tegra186.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ drivers/usb/cdns3/gadget.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpio/gpio-tegra186.c b/drivers/gpio/gpio-tegra186.c
-index 52e08bc2f0530..da310b20fad00 100644
---- a/drivers/gpio/gpio-tegra186.c
-+++ b/drivers/gpio/gpio-tegra186.c
-@@ -630,6 +630,7 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
- 	struct gpio_irq_chip *irq;
- 	struct tegra_gpio *gpio;
- 	struct device_node *np;
-+	struct resource *res;
- 	char **names;
- 	int err;
+--- a/drivers/usb/cdns3/gadget.c
++++ b/drivers/usb/cdns3/gadget.c
+@@ -1961,6 +1961,7 @@ static irqreturn_t cdns3_device_thread_i
+ 	unsigned int bit;
+ 	unsigned long reg;
  
-@@ -649,19 +650,19 @@ static int tegra186_gpio_probe(struct platform_device *pdev)
- 	gpio->num_banks++;
++	local_bh_disable();
+ 	spin_lock_irqsave(&priv_dev->lock, flags);
  
- 	/* get register apertures */
--	gpio->secure = devm_platform_ioremap_resource_byname(pdev, "security");
--	if (IS_ERR(gpio->secure)) {
--		gpio->secure = devm_platform_ioremap_resource(pdev, 0);
--		if (IS_ERR(gpio->secure))
--			return PTR_ERR(gpio->secure);
--	}
--
--	gpio->base = devm_platform_ioremap_resource_byname(pdev, "gpio");
--	if (IS_ERR(gpio->base)) {
--		gpio->base = devm_platform_ioremap_resource(pdev, 1);
--		if (IS_ERR(gpio->base))
--			return PTR_ERR(gpio->base);
--	}
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "security");
-+	if (!res)
-+		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	gpio->secure = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(gpio->secure))
-+		return PTR_ERR(gpio->secure);
-+
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "gpio");
-+	if (!res)
-+		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-+	gpio->base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(gpio->base))
-+		return PTR_ERR(gpio->base);
+ 	reg = readl(&priv_dev->regs->usb_ists);
+@@ -2002,6 +2003,7 @@ static irqreturn_t cdns3_device_thread_i
+ irqend:
+ 	writel(~0, &priv_dev->regs->ep_ien);
+ 	spin_unlock_irqrestore(&priv_dev->lock, flags);
++	local_bh_enable();
  
- 	err = platform_irq_count(pdev);
- 	if (err < 0)
--- 
-2.39.5
-
+ 	return ret;
+ }
 
 
 
