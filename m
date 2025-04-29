@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4FDAA15D6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD1C5AA120B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6529188DCE9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E9611B60950
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DCE121ABDB;
-	Tue, 29 Apr 2025 17:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEAFD2512F3;
+	Tue, 29 Apr 2025 16:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BctC1lKE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nY9q3120"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592AD38FB0;
-	Tue, 29 Apr 2025 17:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0942512E2;
+	Tue, 29 Apr 2025 16:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947678; cv=none; b=dNA2IhjhwDVaF3CmhG0pOs5OQsx+73xIOn2WOpKXfODf2Kp5Uhs4/SoVOAEt3Gz7qGmo906iIBY31KejBwDVfKafEMNPDs6+FVmQ76YPn/AOtjank3ZRczlmPFupTkGKqH+IzQxllhVz1Fck6lfiR7q4SWZI6yjB08DJdjmk16g=
+	t=1745945231; cv=none; b=es2IU1AAoxAu0YdA47FHRKS2f6x5KaFam0rXuiTerNJwGHrwSsoUwwCSpUJn0sZH4JEd5mUoSEqcNqqTmtcWLLUEQx61fqUyXZ9OaMbydibbnWKD1M8d1w3wHp6UJFyPifHhps6yTFTBekq0d+HTaN82qCsS0TNaXNwCgQyv0a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947678; c=relaxed/simple;
-	bh=abKK81F+pHpjyDr9XSVLyX1jnGVNqG7W8xaAvcwOt6k=;
+	s=arc-20240116; t=1745945231; c=relaxed/simple;
+	bh=jKGaYZsumomCmFFxNwRCsDQjXW5jZVextj8eOaERIlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sIxNLh1O/ocBYTA8vxvtYxDVTxnH7Vx0v9VHmiUihlIhU52ssL5JURbR9kZGx/AkmERd9ji0VaD2HOlqdt/p6dNmnlY22A/xLsUjHAPw6A8iS5EmItLrcVpFQOWlWjxYNIxBvm9fu+jLRI54ooaTxZG/fmjUm5TS5Dvfl0ptbAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BctC1lKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE505C4CEE9;
-	Tue, 29 Apr 2025 17:27:57 +0000 (UTC)
+	 MIME-Version; b=mlOT0I5AQ53V3ompN0vBAppEhHtYKG4J1HFVu0yBnVtVYzyHF8wBHOEVRFL7OefaPRK48ILNeEQy/Ytl9q9kg2zya9VZ/G9inb/vjSRb3wSDFUPaqv1uvB9kYLRXyY6UM4EV/ee9vEOA1yi5xXWeT0/M9w3aJPMzjlwnzJv5AV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nY9q3120; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED036C4CEED;
+	Tue, 29 Apr 2025 16:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947678;
-	bh=abKK81F+pHpjyDr9XSVLyX1jnGVNqG7W8xaAvcwOt6k=;
+	s=korg; t=1745945229;
+	bh=jKGaYZsumomCmFFxNwRCsDQjXW5jZVextj8eOaERIlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BctC1lKEZbKMw8/2kcSacI2Vn8q6qYZ7/iwrvvhAT+JDQm+uHU2mhKDJHoLHN5Uxi
-	 7avHNbSBX7AKfmvUd/Zi2i1cltpI7op8dwdfDwTaYH+mic1ouhVifqsoid/WEXpNJd
-	 mKBeGmn8tfx9W0VyaIq5SkBwDzL8thEZ02+OVeNo=
+	b=nY9q3120l0KdmdK/9i2sH+q/kEwMDLy/sHXYkjBzr3tqibs6v0WAC6SuWT7kJxWxT
+	 bnZ9svLFsoZSadFHDztJHTghwwEihNjMQWpimDvB9jagOEejdn/0zJolIzCyFkNoq3
+	 hW53KkZ5cenYBqKnwYng/e6foJOGU1wUnX0G6kG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jann Horn <jannh@google.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/280] scsi: ufs: exynos: Move UFS shareability value to drvdata
+Subject: [PATCH 5.4 043/179] ext4: dont treat fhandle lookup of ea_inode as FS corruption
 Date: Tue, 29 Apr 2025 18:39:44 +0200
-Message-ID: <20250429161116.883530379@linuxfoundation.org>
+Message-ID: <20250429161051.149457293@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 68f5ef7eebf0f41df4d38ea55a54c2462af1e3d6 ]
+[ Upstream commit 642335f3ea2b3fd6dba03e57e01fa9587843a497 ]
 
-gs101 I/O coherency shareability bits differ from exynosauto SoC. To
-support both SoCs move this info the SoC drvdata.
+A file handle that userspace provides to open_by_handle_at() can
+legitimately contain an outdated inode number that has since been reused
+for another purpose - that's why the file handle also contains a generation
+number.
 
-Currently both the value and mask are the same for both gs101 and
-exynosauto, thus we use the same value.
+But if the inode number has been reused for an ea_inode, check_igot_inode()
+will notice, __ext4_iget() will go through ext4_error_inode(), and if the
+inode was newly created, it will also be marked as bad by iget_failed().
+This all happens before the point where the inode generation is checked.
 
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-2-96722cc2ba1b@linaro.org
-Fixes: d11e0a318df8 ("scsi: ufs: exynos: Add support for Tensor gs101 SoC")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+ext4_error_inode() is supposed to only be used on filesystem corruption; it
+should not be used when userspace just got unlucky with a stale file
+handle. So when this happens, let __ext4_iget() just return an error.
+
+Fixes: b3e6bcb94590 ("ext4: add EA_INODE checking to ext4_iget()")
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20241129-ext4-ignore-ea-fhandle-v1-1-e532c0d1cee0@google.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-exynos.c | 20 ++++++++++++++------
- drivers/ufs/host/ufs-exynos.h |  2 ++
- 2 files changed, 16 insertions(+), 6 deletions(-)
+ fs/ext4/inode.c | 68 ++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 48 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index 149c8127cf556..453f1dee103c8 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -86,11 +86,16 @@
- 				 UIC_TRANSPORT_NO_CONNECTION_RX |\
- 				 UIC_TRANSPORT_BAD_TC)
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 0289a9e36d355..8f020c719b18d 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4893,22 +4893,43 @@ static inline u64 ext4_inode_peek_iversion(const struct inode *inode)
+ 		return inode_peek_iversion(inode);
+ }
  
--/* FSYS UFS Shareability */
--#define UFS_WR_SHARABLE		BIT(2)
--#define UFS_RD_SHARABLE		BIT(1)
--#define UFS_SHARABLE		(UFS_WR_SHARABLE | UFS_RD_SHARABLE)
--#define UFS_SHAREABILITY_OFFSET	0x710
-+/* UFS Shareability */
-+#define UFS_EXYNOSAUTO_WR_SHARABLE	BIT(2)
-+#define UFS_EXYNOSAUTO_RD_SHARABLE	BIT(1)
-+#define UFS_EXYNOSAUTO_SHARABLE		(UFS_EXYNOSAUTO_WR_SHARABLE | \
-+					 UFS_EXYNOSAUTO_RD_SHARABLE)
-+#define UFS_GS101_WR_SHARABLE		BIT(1)
-+#define UFS_GS101_RD_SHARABLE		BIT(0)
-+#define UFS_GS101_SHARABLE		(UFS_GS101_WR_SHARABLE | \
-+					 UFS_GS101_RD_SHARABLE)
-+#define UFS_SHAREABILITY_OFFSET		0x710
- 
- /* Multi-host registers */
- #define MHCTRL			0xC4
-@@ -206,7 +211,7 @@ static int exynos_ufs_shareability(struct exynos_ufs *ufs)
- 	if (ufs->sysreg) {
- 		return regmap_update_bits(ufs->sysreg,
- 					  ufs->shareability_reg_offset,
--					  UFS_SHARABLE, UFS_SHARABLE);
-+					  ufs->iocc_mask, ufs->iocc_mask);
+-static const char *check_igot_inode(struct inode *inode, ext4_iget_flags flags)
+-
++static int check_igot_inode(struct inode *inode, ext4_iget_flags flags,
++			    const char *function, unsigned int line)
+ {
++	const char *err_str;
++
+ 	if (flags & EXT4_IGET_EA_INODE) {
+-		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
+-			return "missing EA_INODE flag";
++		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
++			err_str = "missing EA_INODE flag";
++			goto error;
++		}
+ 		if (ext4_test_inode_state(inode, EXT4_STATE_XATTR) ||
+-		    EXT4_I(inode)->i_file_acl)
+-			return "ea_inode with extended attributes";
++		    EXT4_I(inode)->i_file_acl) {
++			err_str = "ea_inode with extended attributes";
++			goto error;
++		}
+ 	} else {
+-		if ((EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
+-			return "unexpected EA_INODE flag";
++		if ((EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
++			/*
++			 * open_by_handle_at() could provide an old inode number
++			 * that has since been reused for an ea_inode; this does
++			 * not indicate filesystem corruption
++			 */
++			if (flags & EXT4_IGET_HANDLE)
++				return -ESTALE;
++			err_str = "unexpected EA_INODE flag";
++			goto error;
++		}
++	}
++	if (is_bad_inode(inode) && !(flags & EXT4_IGET_BAD)) {
++		err_str = "unexpected bad inode w/o EXT4_IGET_BAD";
++		goto error;
  	}
+-	if (is_bad_inode(inode) && !(flags & EXT4_IGET_BAD))
+-		return "unexpected bad inode w/o EXT4_IGET_BAD";
+-	return NULL;
++	return 0;
++
++error:
++	ext4_error_inode(inode, function, line, 0, err_str);
++	return -EFSCORRUPTED;
+ }
  
- 	attr->tx_dif_p_nsec = 3200000;
-@@ -1148,6 +1153,7 @@ static int exynos_ufs_parse_dt(struct device *dev, struct exynos_ufs *ufs)
+ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+@@ -4919,7 +4940,6 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+ 	struct ext4_inode *raw_inode;
+ 	struct ext4_inode_info *ei;
+ 	struct inode *inode;
+-	const char *err_str;
+ 	journal_t *journal = EXT4_SB(sb)->s_journal;
+ 	long ret;
+ 	loff_t size;
+@@ -4944,10 +4964,10 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+ 	if (!inode)
+ 		return ERR_PTR(-ENOMEM);
+ 	if (!(inode->i_state & I_NEW)) {
+-		if ((err_str = check_igot_inode(inode, flags)) != NULL) {
+-			ext4_error_inode(inode, function, line, 0, err_str);
++		ret = check_igot_inode(inode, flags, function, line);
++		if (ret) {
+ 			iput(inode);
+-			return ERR_PTR(-EFSCORRUPTED);
++			return ERR_PTR(ret);
  		}
+ 		return inode;
  	}
+@@ -5218,13 +5238,21 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+ 		ret = -EFSCORRUPTED;
+ 		goto bad_inode;
+ 	}
+-	if ((err_str = check_igot_inode(inode, flags)) != NULL) {
+-		ext4_error_inode(inode, function, line, 0, err_str);
+-		ret = -EFSCORRUPTED;
+-		goto bad_inode;
++	ret = check_igot_inode(inode, flags, function, line);
++	/*
++	 * -ESTALE here means there is nothing inherently wrong with the inode,
++	 * it's just not an inode we can return for an fhandle lookup.
++	 */
++	if (ret == -ESTALE) {
++		brelse(iloc.bh);
++		unlock_new_inode(inode);
++		iput(inode);
++		return ERR_PTR(-ESTALE);
+ 	}
+-
++	if (ret)
++		goto bad_inode;
+ 	brelse(iloc.bh);
++
+ 	unlock_new_inode(inode);
+ 	return inode;
  
-+	ufs->iocc_mask = ufs->drv_data->iocc_mask;
- 	ufs->pclk_avail_min = PCLK_AVAIL_MIN;
- 	ufs->pclk_avail_max = PCLK_AVAIL_MAX;
- 
-@@ -2021,6 +2027,7 @@ static const struct exynos_ufs_drv_data exynosauto_ufs_drvs = {
- 	.opts			= EXYNOS_UFS_OPT_BROKEN_AUTO_CLK_CTRL |
- 				  EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR |
- 				  EXYNOS_UFS_OPT_BROKEN_RX_SEL_IDX,
-+	.iocc_mask		= UFS_EXYNOSAUTO_SHARABLE,
- 	.drv_init		= exynosauto_ufs_drv_init,
- 	.post_hce_enable	= exynosauto_ufs_post_hce_enable,
- 	.pre_link		= exynosauto_ufs_pre_link,
-@@ -2143,6 +2150,7 @@ static const struct exynos_ufs_drv_data gs101_ufs_drvs = {
- 				  EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR |
- 				  EXYNOS_UFS_OPT_UFSPR_SECURE |
- 				  EXYNOS_UFS_OPT_TIMER_TICK_SELECT,
-+	.iocc_mask		= UFS_GS101_SHARABLE,
- 	.drv_init		= gs101_ufs_drv_init,
- 	.pre_link		= gs101_ufs_pre_link,
- 	.post_link		= gs101_ufs_post_link,
-diff --git a/drivers/ufs/host/ufs-exynos.h b/drivers/ufs/host/ufs-exynos.h
-index 9670dc138d1e4..ad49d9cdd5c12 100644
---- a/drivers/ufs/host/ufs-exynos.h
-+++ b/drivers/ufs/host/ufs-exynos.h
-@@ -181,6 +181,7 @@ struct exynos_ufs_drv_data {
- 	struct exynos_ufs_uic_attr *uic_attr;
- 	unsigned int quirks;
- 	unsigned int opts;
-+	u32 iocc_mask;
- 	/* SoC's specific operations */
- 	int (*drv_init)(struct exynos_ufs *ufs);
- 	int (*pre_link)(struct exynos_ufs *ufs);
-@@ -231,6 +232,7 @@ struct exynos_ufs {
- 	const struct exynos_ufs_drv_data *drv_data;
- 	struct regmap *sysreg;
- 	u32 shareability_reg_offset;
-+	u32 iocc_mask;
- 
- 	u32 opts;
- #define EXYNOS_UFS_OPT_HAS_APB_CLK_CTRL		BIT(0)
 -- 
 2.39.5
 
