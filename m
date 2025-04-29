@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53D83AA175F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C3EAA1344
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 846A91896867
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FEEC4A28D4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382EB24C083;
-	Tue, 29 Apr 2025 17:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06C724887D;
+	Tue, 29 Apr 2025 17:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJP3nKOj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="raKYPL60"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E934B221DA7;
-	Tue, 29 Apr 2025 17:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF38F7E110;
+	Tue, 29 Apr 2025 17:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948802; cv=none; b=r8eFNNlBKK0eSfPUBiSaIa2lcNkQb5ixCNZf9AxFVzVU20s7QFa07mr0U+2NRj7JGq/94beawLtGCTCMvNS1yBFX6HI78CAEXMQFItbk9JeeBU3KZS6ssSeFesMnvDd2L+cbd0Ds04CJ/8eEce+6Lwrod1WPUim5kf8EtG8m4Hg=
+	t=1745946030; cv=none; b=lQqpFvYPv6f9eYmyWFKIYRGlf/GXu4vTL/EtLZuzLRXxdyOGoF1IblWMRdB3G8nJnRMcgLY7ZpHP0tUY8Q9pIhbZCyshDFLg1sHBPmkmVkkrdh8Noly0wSaNWExi+kODYSoZf+5YT/KP2WQeyCHEclal/h+UtlTFBjgu0KPi/8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948802; c=relaxed/simple;
-	bh=AgC5GTJseNshcFaWeYgHMm4sRLmdG8gPXuQitfYw9Xc=;
+	s=arc-20240116; t=1745946030; c=relaxed/simple;
+	bh=YMcI3uh8Hko4qzcyqgKdiDHqrsR22X5X0c4QozvM7qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AACgeKzJLInFXdBcbp5XNASnea5WWkmios/lLH1Gzyg5f6fIJ+D3sSMGQ8NhXe9rHo+ojjZyig914hJMp/ou4sOVARe6YxB64QMSeDqghWuwZ9b6w3zyyzS3hZiWO9OYZA4Hs6ym01eg/rVffVRErwDqjGizzSlXyMd61H0yf5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJP3nKOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB3FC4CEE3;
-	Tue, 29 Apr 2025 17:46:41 +0000 (UTC)
+	 MIME-Version; b=mLdqtW1vdmfgM9KmJBJrKtP+1gaFX1TyO8vAXC1yfZGMoVEbhx+cNGDwgJlysSF4mM9cNqKeSWgTnMl7dFjMrUBJ3w8iE4WQKnPca3bvo5Sejh3c/1SrAS1g6GWYJzxbVYTIgKVo3ALMAtmVbeLlvf4wCZ+e4OvAA5AW1BwONnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=raKYPL60; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9449C4CEEA;
+	Tue, 29 Apr 2025 17:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948801;
-	bh=AgC5GTJseNshcFaWeYgHMm4sRLmdG8gPXuQitfYw9Xc=;
+	s=korg; t=1745946029;
+	bh=YMcI3uh8Hko4qzcyqgKdiDHqrsR22X5X0c4QozvM7qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJP3nKOjH5UxeVr54357SMxh1ZH8aEM2e25iiBukmiTu2PQ0prWzPgj+tRPJKo+MS
-	 xvECETrg8b1I69cYP+YgCSqIPrW+AnecTwf5RQQ9+XCsPw54cCp3FduG40KYIm/TY6
-	 MPWfefoGlWzV0lr86w2atI1e1/DoqLkLiuP1f2a8=
+	b=raKYPL60qrlvT11/upHdFz/uVex5JlsDaYTlGflpBEqy/qDxxndLGcvhwLTMlg6GJ
+	 bI4926RFs19qiSai0Ghl9otGmYs3q6X0t8IyycqQx9zFTpEF95EWHBPBh4y5YC7HIL
+	 4m9cIpyzN1U+94544OsGe3Og8MmMRht4jQmRIKdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Chenyuan Yang <chenyuan0y@gmail.com>
-Subject: [PATCH 5.15 091/373] mfd: ene-kb3930: Fix a potential NULL pointer dereference
+	Yuli Wang <wangyuli@uniontech.com>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Yulong Han <wheatfox17@icloud.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.14 131/311] LoongArch: KVM: Fix multiple typos of KVM code
 Date: Tue, 29 Apr 2025 18:39:28 +0200
-Message-ID: <20250429161126.903404330@linuxfoundation.org>
+Message-ID: <20250429161126.408529487@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Yulong Han <wheatfox17@icloud.com>
 
-commit 4cdf1d2a816a93fa02f7b6b5492dc7f55af2a199 upstream.
+commit 8b2d01fec800081dd68271c01e4d239ef4d7115e upstream.
 
-The off_gpios could be NULL. Add missing check in the kb3930_probe().
-This is similar to the issue fixed in commit b1ba8bcb2d1f
-("backlight: hx8357: Fix potential NULL pointer dereference").
-
-This was detected by our static analysis tool.
+Fix multiple typos inside arch/loongarch/kvm.
 
 Cc: stable@vger.kernel.org
-Fixes: ede6b2d1dfc0 ("mfd: ene-kb3930: Add driver for ENE KB3930 Embedded Controller")
-Suggested-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250224233736.1919739-1-chenyuan0y@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Yuli Wang <wangyuli@uniontech.com>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Yulong Han <wheatfox17@icloud.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/ene-kb3930.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/kvm/intc/ipi.c |    4 ++--
+ arch/loongarch/kvm/main.c     |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/mfd/ene-kb3930.c
-+++ b/drivers/mfd/ene-kb3930.c
-@@ -162,7 +162,7 @@ static int kb3930_probe(struct i2c_clien
- 			devm_gpiod_get_array_optional(dev, "off", GPIOD_IN);
- 		if (IS_ERR(ddata->off_gpios))
- 			return PTR_ERR(ddata->off_gpios);
--		if (ddata->off_gpios->ndescs < 2) {
-+		if (ddata->off_gpios && ddata->off_gpios->ndescs < 2) {
- 			dev_err(dev, "invalid off-gpios property\n");
- 			return -EINVAL;
+--- a/arch/loongarch/kvm/intc/ipi.c
++++ b/arch/loongarch/kvm/intc/ipi.c
+@@ -111,7 +111,7 @@ static int send_ipi_data(struct kvm_vcpu
+ 		ret = kvm_io_bus_read(vcpu, KVM_IOCSR_BUS, addr, sizeof(val), &val);
+ 		srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 		if (unlikely(ret)) {
+-			kvm_err("%s: : read date from addr %llx failed\n", __func__, addr);
++			kvm_err("%s: : read data from addr %llx failed\n", __func__, addr);
+ 			return ret;
  		}
+ 		/* Construct the mask by scanning the bit 27-30 */
+@@ -127,7 +127,7 @@ static int send_ipi_data(struct kvm_vcpu
+ 	ret = kvm_io_bus_write(vcpu, KVM_IOCSR_BUS, addr, sizeof(val), &val);
+ 	srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 	if (unlikely(ret))
+-		kvm_err("%s: : write date to addr %llx failed\n", __func__, addr);
++		kvm_err("%s: : write data to addr %llx failed\n", __func__, addr);
+ 
+ 	return ret;
+ }
+--- a/arch/loongarch/kvm/main.c
++++ b/arch/loongarch/kvm/main.c
+@@ -296,10 +296,10 @@ int kvm_arch_enable_virtualization_cpu(v
+ 	/*
+ 	 * Enable virtualization features granting guest direct control of
+ 	 * certain features:
+-	 * GCI=2:       Trap on init or unimplement cache instruction.
++	 * GCI=2:       Trap on init or unimplemented cache instruction.
+ 	 * TORU=0:      Trap on Root Unimplement.
+ 	 * CACTRL=1:    Root control cache.
+-	 * TOP=0:       Trap on Previlege.
++	 * TOP=0:       Trap on Privilege.
+ 	 * TOE=0:       Trap on Exception.
+ 	 * TIT=0:       Trap on Timer.
+ 	 */
 
 
 
