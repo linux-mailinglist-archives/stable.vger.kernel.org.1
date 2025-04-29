@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA2FAA1512
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30AC0AA1228
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EB8B986075
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AAC44A71EA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69772528F1;
-	Tue, 29 Apr 2025 17:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6321F243364;
+	Tue, 29 Apr 2025 16:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnjjyLyq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFFomEsh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A2324397A;
-	Tue, 29 Apr 2025 17:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F146215060;
+	Tue, 29 Apr 2025 16:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947030; cv=none; b=Pz5YqHM2q0DSathO8sSGZn8sVJ/hZXapdHHxfxg/wyBeuQUTVgn+56eOo354+wx7PD0sKLij89zeCogVr7/MBT9e32OUeRp8m76h2/0fiiZOuqCrbJhtOwlN5NrxscsQwA5EEeT3pDZ3TVbmT8ZdiFrhp21eIT38OkUO+OgB0UA=
+	t=1745945384; cv=none; b=IxUpGfy4ksGp7znu5j295A7ISnCqfmUSgviw35wkqV/1c6psGU/+2mCHaSU6WX9r47/ea2QFjEOkLsX8NZDmZm1xsCpUy66N6RpN+G2NY1s5DrocvJ6p/C0P11CW1Poc6AAeqttSLS5Yv+1jJj/rZZkIFkcwAoomjteH8RhEWcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947030; c=relaxed/simple;
-	bh=LkDIjzRdRYIrNfyVT4rrhhLQ0hN+EWkuosVYkTFM4o0=;
+	s=arc-20240116; t=1745945384; c=relaxed/simple;
+	bh=kSFBW/O1q9p8ooGvUb1D8cz9AIqU7nPaimmUBEUItA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDhYZI76+Y4OeulgynDDxyDxVPVBm2fTlMMJKUPi5znjNk/5kv+TCYTH+YSGGWCIWieqPEUcVCZgbOI0PVbNIXE8ugbn1AlETXfazjD/eYa0ejeKSiI3rDEo0WITw+I0YBsYda7SmtZ2lIw4r7t0YwqldbenQSc5xw7kavx2px4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnjjyLyq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F66C4CEE3;
-	Tue, 29 Apr 2025 17:17:09 +0000 (UTC)
+	 MIME-Version; b=GGCC6pIYf7/XfJMxriXmovmWLioeuMOHAGv8ynRoKB/HAsWTqScwKhEmT8IU0Q2pufGHnRY6hT/PolK6LJR/t9OTPRDwfm4VWFcYf0gcCNDuMAtF3tnXpdT+eQ1Hm0pgFOYf6QokL3Uz76Li4gURmfIp8sCa+AD7eU7qheSpBTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFFomEsh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67BFC4CEE3;
+	Tue, 29 Apr 2025 16:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947030;
-	bh=LkDIjzRdRYIrNfyVT4rrhhLQ0hN+EWkuosVYkTFM4o0=;
+	s=korg; t=1745945384;
+	bh=kSFBW/O1q9p8ooGvUb1D8cz9AIqU7nPaimmUBEUItA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HnjjyLyqJOHMVrQyG8cqcwSe/qynISSpJusU3i0mOxkrot2OtoMZK+kYajl12gKtx
-	 WbGXCZg0YRikh1FlWTbsGekYyhNej4XdVpQ+P0rNnQGX/Qnz5W7D/Dymq0xYIIq/e0
-	 pl3PPIW9DnH0HTaWjy1cmBg2Rc61L1TOw9P6LHOc=
+	b=UFFomEsh76NbsQgLN10OtiIYMf5DhAdm35Jqk/jVEv9lbJ45US6T7MHd7ilcpM+7L
+	 R+w2PUxYr/Qe6ob4P5vp29G3OOoQaLuDNik81C1KhbrNUJpwIv0998gPHo4OxTYblP
+	 WWtv+QTdlrzkpmqLf1UHT5R/Kt/TTmgv1YpctFK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Dmitry V. Levin" <ldv@strace.io>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 5.10 131/286] riscv: Avoid fortify warning in syscall_get_arguments()
+	Jan Kara <jack@suse.cz>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 094/179] writeback: fix false warning in inode_to_wb()
 Date: Tue, 29 Apr 2025 18:40:35 +0200
-Message-ID: <20250429161113.258368991@linuxfoundation.org>
+Message-ID: <20250429161053.201318164@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit adf53771a3123df99ca26e38818760fbcf5c05d0 upstream.
+commit 9e888998ea4d22257b07ce911576509486fa0667 upstream.
 
-When building with CONFIG_FORTIFY_SOURCE=y and W=1, there is a warning
-because of the memcpy() in syscall_get_arguments():
+inode_to_wb() is used also for filesystems that don't support cgroup
+writeback.  For these filesystems inode->i_wb is stable during the
+lifetime of the inode (it points to bdi->wb) and there's no need to hold
+locks protecting the inode->i_wb dereference.  Improve the warning in
+inode_to_wb() to not trigger for these filesystems.
 
-  In file included from include/linux/string.h:392,
-                   from include/linux/bitmap.h:13,
-                   from include/linux/cpumask.h:12,
-                   from arch/riscv/include/asm/processor.h:55,
-                   from include/linux/sched.h:13,
-                   from kernel/ptrace.c:13:
-  In function 'fortify_memcpy_chk',
-      inlined from 'syscall_get_arguments.isra' at arch/riscv/include/asm/syscall.h:66:2:
-  include/linux/fortify-string.h:580:25: error: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
-    580 |                         __read_overflow2_field(q_size_field, size);
-        |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: all warnings being treated as errors
-
-The fortified memcpy() routine enforces that the source is not overread
-and the destination is not overwritten if the size of either field and
-the size of the copy are known at compile time. The memcpy() in
-syscall_get_arguments() intentionally overreads from a1 to a5 in
-'struct pt_regs' but this is bigger than the size of a1.
-
-Normally, this could be solved by wrapping a1 through a5 with
-struct_group() but there was already a struct_group() applied to these
-members in commit bba547810c66 ("riscv: tracing: Fix
-__write_overflow_field in ftrace_partial_regs()").
-
-Just avoid memcpy() altogether and write the copying of args from regs
-manually, which clears up the warning at the expense of three extra
-lines of code.
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Dmitry V. Levin <ldv@strace.io>
-Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250409-riscv-avoid-fortify-warning-syscall_get_arguments-v1-1-7853436d4755@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
+Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/syscall.h |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ include/linux/backing-dev.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/riscv/include/asm/syscall.h
-+++ b/arch/riscv/include/asm/syscall.h
-@@ -60,8 +60,11 @@ static inline void syscall_get_arguments
- 					 unsigned long *args)
+--- a/include/linux/backing-dev.h
++++ b/include/linux/backing-dev.h
+@@ -344,6 +344,7 @@ static inline struct bdi_writeback *inod
  {
- 	args[0] = regs->orig_a0;
--	args++;
--	memcpy(args, &regs->a1, 5 * sizeof(args[0]));
-+	args[1] = regs->a1;
-+	args[2] = regs->a2;
-+	args[3] = regs->a3;
-+	args[4] = regs->a4;
-+	args[5] = regs->a5;
- }
- 
- static inline void syscall_set_arguments(struct task_struct *task,
+ #ifdef CONFIG_LOCKDEP
+ 	WARN_ON_ONCE(debug_locks &&
++		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
+ 		     (!lockdep_is_held(&inode->i_lock) &&
+ 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
+ 		      !lockdep_is_held(&inode->i_wb->list_lock)));
 
 
 
