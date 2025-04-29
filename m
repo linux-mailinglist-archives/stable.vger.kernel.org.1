@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77ADFAA1706
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 965A6AA1414
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A84D61A84EB4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9734E4A1F91
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B8521ABC1;
-	Tue, 29 Apr 2025 17:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2054213E67;
+	Tue, 29 Apr 2025 17:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlkMJhj4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKUV1wH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048BE227E95;
-	Tue, 29 Apr 2025 17:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EE61DF73C;
+	Tue, 29 Apr 2025 17:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948536; cv=none; b=JlAMFl6HOjs9EDXwS5ZKb5drWqYvKgjuBR5E4kGfZ2zYh2pf/B4iFgRJM+XdYnaKlA+C/Bz+gsyFdo3khLZM2dTGq4iTjqAEykJlSyVl7Q0YO0xmaJAsvH6tWQrkeCMtUUoIYHsVKAT7zDk/IrSgFAyQ8QpA95OAUQCDxCetwgQ=
+	t=1745946607; cv=none; b=FPGQ1dZAU1qi62LkttMSvUQKH1uaPmv43J7biOrhjJ5TxZMB/rg7fukwXYqaWtctjmOQsf6PjbuCFm/IGoruG6q95PyewPKvbgr8cj9b2WdEmsCSWZawWiCeOWDj4aVp1WYQF98K/0cx57To9f9VhqiplEEc6TSxSSKGcnQJs9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948536; c=relaxed/simple;
-	bh=mHndRvTxxhBDc9WL2JB9/YwkelhfMYqwqRYLDV/ert0=;
+	s=arc-20240116; t=1745946607; c=relaxed/simple;
+	bh=XhhZPtw5xIDdjCD4t6PgS7QF0+pv3+XxAclFBmDkUv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DUGC3zUw5PqqjKxt/gpG8nJ7Ntsj6xhrydbY3Tm34fA55727xQlnxIrOkX+InDOFHsAmdap+fct9wqSMh+UzNQTP+TvrPZEL0DQme5z07vEw5cPuGgrc8GUs4Zxuj7+Idkfmp/ftw5/WQ7QODH/kgGeZ2tT3ukb1AW3oYU+Dizk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlkMJhj4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785DBC4CEE3;
-	Tue, 29 Apr 2025 17:42:15 +0000 (UTC)
+	 MIME-Version; b=Hfbk9l/UZ0l5IUm3yeOoapPCVkktxR3e0F5QtGA9G+kCrFhJbif3oiPDCGqZNAXTxmNCZ/7GAo0QjHRRvEGlrIrhsmSLHmWdygluoFI9InTzLom3RF7vBVwDLjzOULFW9C4gEDH3oLHI8E4H+6WzbKvSkSMOXeHDb6N959+/x60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKUV1wH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94940C4CEE3;
+	Tue, 29 Apr 2025 17:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948535;
-	bh=mHndRvTxxhBDc9WL2JB9/YwkelhfMYqwqRYLDV/ert0=;
+	s=korg; t=1745946607;
+	bh=XhhZPtw5xIDdjCD4t6PgS7QF0+pv3+XxAclFBmDkUv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jlkMJhj4sZPSjzJsLtzCajcBjoXNYw9j+L+fqDpjYk1bLoVZtaQR76v+Bti8Bwn1U
-	 Ctn+1qq/XBP0FiYUBH3sA+7E5GkyFzobSGJ+WVgERU5TSXAciaPpLy7G0J2srOlkpr
-	 pvMObB6PlC1UxVMNA5aTrH2gT3OcUUYW2NXuqqbM=
+	b=uKUV1wH8Dmb1dnhG2FmRbzawr06UXjqC13BYZFFu7f2tZD1flZ9RlRTO3v+MRZSKO
+	 8atxSIimj9YrslH7jTWyqeoS4jBRKjFhaQd0nvtz8OTcfONrXkX6Wz88cR2SuVT/TE
+	 DTfzuCTCtxa6LidEmVxHSZSVOixMsPpT/s3HaoBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 038/373] Bluetooth: hci_uart: fix race during initialization
+Subject: [PATCH 5.10 011/286] pm: cpupower: bench: Prevent NULL dereference on malloc failure
 Date: Tue, 29 Apr 2025 18:38:35 +0200
-Message-ID: <20250429161124.698935720@linuxfoundation.org>
+Message-ID: <20250429161108.318769156@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit 366ceff495f902182d42b6f41525c2474caf3f9a ]
+[ Upstream commit 208baa3ec9043a664d9acfb8174b332e6b17fb69 ]
 
-'hci_register_dev()' calls power up function, which is executed by
-kworker - 'hci_power_on()'. This function does access to bluetooth chip
-using callbacks from 'hci_ldisc.c', for example 'hci_uart_send_frame()'.
-Now 'hci_uart_send_frame()' checks 'HCI_UART_PROTO_READY' bit set, and
-if not - it fails. Problem is that 'HCI_UART_PROTO_READY' is set after
-'hci_register_dev()', and there is tiny chance that 'hci_power_on()' will
-be executed before setting this bit. In that case HCI init logic fails.
+If malloc returns NULL due to low memory, 'config' pointer can be NULL.
+Add a check to prevent NULL dereference.
 
-Patch moves setting of 'HCI_UART_PROTO_READY' before calling function
-'hci_uart_register_dev()'.
-
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Link: https://lore.kernel.org/r/20250219122715.3892223-1-quic_zhonhan@quicinc.com
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_ldisc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/power/cpupower/bench/parse.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
-index be51528afed9d..fbbd832e4def1 100644
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -706,12 +706,13 @@ static int hci_uart_set_proto(struct hci_uart *hu, int id)
+diff --git a/tools/power/cpupower/bench/parse.c b/tools/power/cpupower/bench/parse.c
+index e63dc11fa3a53..48e25be6e1635 100644
+--- a/tools/power/cpupower/bench/parse.c
++++ b/tools/power/cpupower/bench/parse.c
+@@ -120,6 +120,10 @@ FILE *prepare_output(const char *dirname)
+ struct config *prepare_default_config()
+ {
+ 	struct config *config = malloc(sizeof(struct config));
++	if (!config) {
++		perror("malloc");
++		return NULL;
++	}
  
- 	hu->proto = p;
- 
-+	set_bit(HCI_UART_PROTO_READY, &hu->flags);
-+
- 	err = hci_uart_register_dev(hu);
- 	if (err) {
- 		return err;
- 	}
- 
--	set_bit(HCI_UART_PROTO_READY, &hu->flags);
- 	return 0;
- }
+ 	dprintf("loading defaults\n");
  
 -- 
 2.39.5
