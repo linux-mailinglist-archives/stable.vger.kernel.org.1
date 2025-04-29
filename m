@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-137494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E99AAA13A3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B29CDAA14A2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:18:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8059D1689FA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D37DE16907B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746C224C098;
-	Tue, 29 Apr 2025 17:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09712253F20;
+	Tue, 29 Apr 2025 17:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHTDBmFs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vvNRuZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FDF211A0B;
-	Tue, 29 Apr 2025 17:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA23C253F12;
+	Tue, 29 Apr 2025 17:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946234; cv=none; b=P2KqF1kHhQyy2xhaadst5m/RKBUZVLk8VpxkVHk3wslPU64noO46yRE/71ahjdpA/SwAcJsgyCpxuE29ZhW6DqL0azeL5AvwbgGfuhPY4X/jJS1J6EmZ03wAdXjCq9r1KaqSAePh+aOPX+pjZGi7y4LCIc0j55PNsfADZ1qyDZ8=
+	t=1745946927; cv=none; b=gePvf56mfKzEtFQ8limhEiTt+y4nDNY34qQUrp9D7MppkmvZHKfuSOTAKDjdWXvJQli3h2SUirt/U2+6Uh4d7CLrX9/aVq6Zt8h5mKF6y/47CVHvOLdEp4TjToT/GLOvMH1eLtQUyLTAPLMHGqMJ9d1/wnL4shWObJj5/Rq4gF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946234; c=relaxed/simple;
-	bh=w0uk+a+n7rg0jTa34ARw4EQwEcMGEGmvyRl+fHiLqn0=;
+	s=arc-20240116; t=1745946927; c=relaxed/simple;
+	bh=UfX4OsDOGgMOsl3jiLNVK1D7aMZlq13Vn7I4afRVf6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swFo4vC3RUU1HcCIWAJOQH9MUmgPfC91gN+6lt95DEGlDkMOUWBlM2bFJd89zl3qSbs8CQVqMqg6ASiPGtTCU8Y9G9c/tb1O1AJXdAQSBg3E127cznGaDnPuGe4SasfKTwudcFtn8jFEc6vIvCHrAG8i7cAp8E7FOMpochlbZ8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHTDBmFs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3731C4CEE3;
-	Tue, 29 Apr 2025 17:03:53 +0000 (UTC)
+	 MIME-Version; b=Zzu7zTyHxzz0yMI8sZ8u50cEaPDMCxHB+xhphpC+eNNurujS3lvRDugZunIzhqXCcuNJ+sHqU8ngGIm2GrF17f3sDDl/v8mGvQmFd58b4mXP82jpRt+MpjksW3ee2VT4fiAgs9PMUqynRlCF3QzXPexvluUKIKGdnL80F1SNaKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vvNRuZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E82C4CEE3;
+	Tue, 29 Apr 2025 17:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946234;
-	bh=w0uk+a+n7rg0jTa34ARw4EQwEcMGEGmvyRl+fHiLqn0=;
+	s=korg; t=1745946927;
+	bh=UfX4OsDOGgMOsl3jiLNVK1D7aMZlq13Vn7I4afRVf6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHTDBmFsoigQhwTt3u2XIXLH5fPaS/IBeUVuvzqgIR3tBEb7hZgtrWj33ApIlgPLt
-	 58Kptr2w26ykFg4SxC5l/Nol+VqSEJhkdwhG2cZsejunOjEM1134mn+AYTdH2qU+Rz
-	 4jZAm5Sr8DSJfhZpur9il5owjFb99tB+F+tx6bOo=
+	b=2vvNRuZs5Bfv0Zi/NZm+LVU7ZQ9ah+F/8t7UJ67Lrb3F8U4puuNZRC+0m7f7t/Lu6
+	 1VTG+7QBo6qAfhoun+K4jC0zOhLOsg6zsacSfKZ08TEG1SsU9uGCsux3e0qDQytxAl
+	 ijMa2YeYBAzqwCLb1J/+enNet6PP7KDDR7TKkCb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 182/311] crypto: ccp - Add support for PCI device 0x1134
+Subject: [PATCH 5.10 115/286] net: openvswitch: fix nested key length validation in the set() action
 Date: Tue, 29 Apr 2025 18:40:19 +0200
-Message-ID: <20250429161128.478177956@linuxfoundation.org>
+Message-ID: <20250429161112.588609840@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,38 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit 6cb345939b8cc4be79909875276aa9dc87d16757 ]
+[ Upstream commit 65d91192aa66f05710cfddf6a14b5a25ee554dba ]
 
-PCI device 0x1134 shares same register features as PCI device 0x17E0.
-Hence reuse same data for the new PCI device ID 0x1134.
+It's not safe to access nla_len(ovs_key) if the data is smaller than
+the netlink header.  Check that the attribute is OK first.
 
-Signed-off-by: Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+Reported-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b07a9da40df1576b8048
+Tested-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Reviewed-by: Eelco Chaudron <echaudro@redhat.com>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20250412104052.2073688-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sp-pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/openvswitch/flow_netlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
-index 157f9a9ed6361..2ebc878da1609 100644
---- a/drivers/crypto/ccp/sp-pci.c
-+++ b/drivers/crypto/ccp/sp-pci.c
-@@ -532,6 +532,7 @@ static const struct pci_device_id sp_pci_table[] = {
- 	{ PCI_VDEVICE(AMD, 0x14CA), (kernel_ulong_t)&dev_vdata[5] },
- 	{ PCI_VDEVICE(AMD, 0x15C7), (kernel_ulong_t)&dev_vdata[6] },
- 	{ PCI_VDEVICE(AMD, 0x1649), (kernel_ulong_t)&dev_vdata[6] },
-+	{ PCI_VDEVICE(AMD, 0x1134), (kernel_ulong_t)&dev_vdata[7] },
- 	{ PCI_VDEVICE(AMD, 0x17E0), (kernel_ulong_t)&dev_vdata[7] },
- 	{ PCI_VDEVICE(AMD, 0x156E), (kernel_ulong_t)&dev_vdata[8] },
- 	/* Last entry must be zero */
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index cff18a5bbf386..3f8f43dbf44fc 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -2834,7 +2834,8 @@ static int validate_set(const struct nlattr *a,
+ 	size_t key_len;
+ 
+ 	/* There can be only one key in a action */
+-	if (nla_total_size(nla_len(ovs_key)) != nla_len(a))
++	if (!nla_ok(ovs_key, nla_len(a)) ||
++	    nla_total_size(nla_len(ovs_key)) != nla_len(a))
+ 		return -EINVAL;
+ 
+ 	key_len = nla_len(ovs_key);
 -- 
 2.39.5
 
