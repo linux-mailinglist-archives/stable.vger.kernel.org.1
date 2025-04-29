@@ -1,138 +1,77 @@
-Return-Path: <stable+bounces-137097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6A1AA0DFC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 15:56:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82DAFAA0B5E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 14:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD52B168993
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 13:56:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5241B6254B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 12:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE417211A0B;
-	Tue, 29 Apr 2025 13:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="VcOC+KW2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232BC2C10A2;
+	Tue, 29 Apr 2025 12:18:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp67.ord1d.emailsrvr.com (smtp67.ord1d.emailsrvr.com [184.106.54.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F8686353
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 13:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=184.106.54.67
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6A11EEF9
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 12:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745935009; cv=none; b=TyZ30MwLyrSiHKtbYl5Um6TN1r/PBi+GxKNd1+OvMb94ULtvMAxXbzwI5aWhhul667AKP0rN3eXOGivO/lBsPH8HYcxoOcW+bA//SwhyExq+KATBG/qhDRQehkrB3FdlM/xdlLKbjIQt5RXpsjV9wZaqpNI5v/IlUaiHr/Ivcys=
+	t=1745929114; cv=none; b=C40goi925Dw9+tPescOAu9HWzx5WzpCtohHvqijRpG4+QVrGnbT6j4oTYcFa4gi5jdQii9x9Og+xmiq8soNMXOltUiTLuvo7aw/SsHn5a4qpxYvcMu886UE+xzkxk3uQyF7ZYta8w039V0zd/vfLe0BOWbHYJy2RtGcikl+kxWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745935009; c=relaxed/simple;
-	bh=2BMQsJZw9mH37ibyJ4Pf85dh/qEc0CL1cgJwVgm7na0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mXeDSl6h7u3rgbGgjSsF8PJg+KMZ9WzasGG2BxsK91g3XpBY6WEF0HlevsRtgqZJH883v2vlkL5WMqzs8vweHG0V3tPBVfOYAFO7kbUvET6gmnPifzevFnXYGS5WuMZ3Tkk21HK0NSU1IkWHtKGC5xwhDCOk8406HtjgBE0seDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=VcOC+KW2; arc=none smtp.client-ip=184.106.54.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-	s=20221208-6x11dpa4; t=1745928115;
-	bh=2BMQsJZw9mH37ibyJ4Pf85dh/qEc0CL1cgJwVgm7na0=;
-	h=From:To:Subject:Date:From;
-	b=VcOC+KW2kJyUk7+y4Fmh5iXlgCxm5PcnIyhPSL7coxftiIdnShrTwT/VDOLIm3was
-	 oa98PErDd+0yBlcjFzv2JqZyBoEonyAN10bgGzJUZdKKNYR7sCMn36bInJmrNKU+g2
-	 530Bf0Gthmthf/vM0JnPfzgll0rJqD9x0c/15sxg=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp1.relay.ord1d.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id E28ED4017A;
-	Tue, 29 Apr 2025 08:01:54 -0400 (EDT)
-From: Ian Abbott <abbotti@mev.co.uk>
-To: stable@vger.kernel.org
-Cc: Ian Abbott <abbotti@mev.co.uk>,
-	stable <stable@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 5.15.y] comedi: jr3_pci: Fix synchronous deletion of timer
-Date: Tue, 29 Apr 2025 13:01:42 +0100
-Message-ID: <20250429120142.403147-1-abbotti@mev.co.uk>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <2025042807-vanquish-unbeaten-57ab@gregkh>
-References: <2025042807-vanquish-unbeaten-57ab@gregkh>
+	s=arc-20240116; t=1745929114; c=relaxed/simple;
+	bh=tli6/R+CTgKmXTLrhL6wlb/y/6SPOT5+i0hw9etSIj0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fqqnEzUe3KfQp7SbsLZEJJBOBs6uq47dlKKThAVKDwweWEMIpt/i8QPET2vs9eGnRsfDTHB1B7gKiPf4IaJimPnAo0pZ6HhnHwnRpa9s0nBdRb+GHzWipzOm9V0H55qLZE66y5t7Qf9Pkxp2XdtupxtU2TVSgGNlfHSs2xS7Go0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9C6501515;
+	Tue, 29 Apr 2025 05:18:23 -0700 (PDT)
+Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D8A0B3F66E;
+	Tue, 29 Apr 2025 05:18:27 -0700 (PDT)
+Message-ID: <c50921c6-98bb-4aee-8eba-c254556f2c79@arm.com>
+Date: Tue, 29 Apr 2025 13:18:25 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Classification-ID: c203898c-a852-48e1-8993-4b1a70333ef1-1-1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6] iommu: Handle race with default domain setup
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Charan Teja Kalla <quic_charante@quicinc.com>
+References: <e1e5d56a9821b3428c561cf4b3c5017a9c41b0b5.1739903836.git.robin.murphy@arm.com>
+ <2025042955-pelt-scorebook-dd4d@gregkh>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <2025042955-pelt-scorebook-dd4d@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-commit 44d9b3f584c59a606b521e7274e658d5b866c699 upstream.
+On 29/04/2025 8:35 am, Greg KH wrote:
+> On Fri, Apr 25, 2025 at 03:19:22PM +0100, Robin Murphy wrote:
+>> [ Upstream commit b46064a18810bad3aea089a79993ca5ea7a3d2b2 ]
+> 
+> <snip>
+> 
+> You seem to have forgotten about a backport for 6.12.y as well.  You
+> know we can't take backports that skip stable branches, otherwise users
+> will have regressions when they upgrade.
+> 
+> Please resend this when you also send a 6.12.y backport, and we will be
+> glad to queue both up.
 
-When `jr3_pci_detach()` is called during device removal, it calls
-`timer_delete_sync()` to stop the timer, but the timer expiry function
-always reschedules the timer, so the synchronization is ineffective.
+Hmm, 6.12.y should have had the mainline patch already, I wonder why it 
+didn't get picked? Admittedly I didn't explicitly CC stable, but I'm so 
+used to autosel picking up fixes tags these days... I resent anyway for 
+good measure, given what else I also managed to mess up last time, sorry 
+for any confusion.
 
-Add a member `bool timer_enable` to the device private data to indicate
-whether the timer should be restarted.  Use the main comedi device
-spin-lock for synchronization, as that is already used by the timer
-expiry function.  (The upstream commit called `timer_shutdown_sync()`
-instead of `timer_delete_sync()`, but that is not available.)
-
-Fixes: 07b509e6584a5 ("Staging: comedi: add jr3_pci driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250415123901.13483-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/comedi/drivers/jr3_pci.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/comedi/drivers/jr3_pci.c b/drivers/comedi/drivers/jr3_pci.c
-index f963080dd61f..8ef13f5baf07 100644
---- a/drivers/comedi/drivers/jr3_pci.c
-+++ b/drivers/comedi/drivers/jr3_pci.c
-@@ -88,6 +88,7 @@ struct jr3_pci_poll_delay {
- struct jr3_pci_dev_private {
- 	struct timer_list timer;
- 	struct comedi_device *dev;
-+	bool timer_enable;
- };
- 
- union jr3_pci_single_range {
-@@ -597,10 +598,11 @@ static void jr3_pci_poll_dev(struct timer_list *t)
- 				delay = sub_delay.max;
- 		}
- 	}
-+	if (devpriv->timer_enable) {
-+		devpriv->timer.expires = jiffies + msecs_to_jiffies(delay);
-+		add_timer(&devpriv->timer);
-+	}
- 	spin_unlock_irqrestore(&dev->spinlock, flags);
--
--	devpriv->timer.expires = jiffies + msecs_to_jiffies(delay);
--	add_timer(&devpriv->timer);
- }
- 
- static struct jr3_pci_subdev_private *
-@@ -749,6 +751,7 @@ static int jr3_pci_auto_attach(struct comedi_device *dev,
- 	devpriv->dev = dev;
- 	timer_setup(&devpriv->timer, jr3_pci_poll_dev, 0);
- 	devpriv->timer.expires = jiffies + msecs_to_jiffies(1000);
-+	devpriv->timer_enable = true;
- 	add_timer(&devpriv->timer);
- 
- 	return 0;
-@@ -758,8 +761,12 @@ static void jr3_pci_detach(struct comedi_device *dev)
- {
- 	struct jr3_pci_dev_private *devpriv = dev->private;
- 
--	if (devpriv)
--		del_timer_sync(&devpriv->timer);
-+	if (devpriv) {
-+		spin_lock_bh(&dev->spinlock);
-+		devpriv->timer_enable = false;
-+		spin_unlock_bh(&dev->spinlock);
-+		timer_delete_sync(&devpriv->timer);
-+	}
- 
- 	comedi_pci_detach(dev);
- }
--- 
-2.47.2
-
+Thanks,
+Robin.
 
