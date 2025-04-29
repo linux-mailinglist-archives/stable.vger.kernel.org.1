@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65299AA142F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DA4EAA1677
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:37:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F04D1892D57
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 840C716DBCA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98014248878;
-	Tue, 29 Apr 2025 17:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A107E110;
+	Tue, 29 Apr 2025 17:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdKyu2Dm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1ue6FeC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5687222A81D;
-	Tue, 29 Apr 2025 17:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F9421883E;
+	Tue, 29 Apr 2025 17:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946577; cv=none; b=t72/LJTqmFac2YhdjiLJ+vZHy5r8F0J9RL0sMXXRwWEzaEMjBqVKr0rP+JdQXWbd6A9JlOQ518x/vURtiYkMnZj1URd4m4lHdhFk7kQYJpExun0yoPnpoK1uZg9XKq2bNURMv8dekMRdR60bsdTNPxwKebQeWYSYvBZu4wL2s2E=
+	t=1745948051; cv=none; b=JHC8mnGc7sEkXl5pOcs8MEbuMP8Qz1vBrcScAPmhajJ/+YX9LdWzrnIlaNdhN+hh/u7guigBFAMk96t+Vmj/0qu8j93OD+dnPwEZRr1nFWUayhbCdeOm3SsgaFq++SNgBQvmUZgLfpQmcQKLVVYaErZoCFRDaTM0fKkMCttKu94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946577; c=relaxed/simple;
-	bh=wCWI9xS6ojLpKnM4WLI8t3Qn1yCPZyVIoHZKs2sDXgI=;
+	s=arc-20240116; t=1745948051; c=relaxed/simple;
+	bh=/nNF9/YFjnBfKSjnbSIYQmAhN4y+Amra8B4vSo2myB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scTOsL2PBmdJkBDSFNzGztn0DqXQZfrOH//lJSKwtQkj1HJvpmcUmI1QCwLcYMoIyqxC3DTzASfhwLVch6J9a2DFA1RQtEGJ7XgMARLPoTOGtjsWNEdRykBoYxN0EjRRuJQvpYxRQZ1Of3asS4UQa/Nm3A3j2ebRgBi4eYY8AIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdKyu2Dm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DA1C4CEE3;
-	Tue, 29 Apr 2025 17:09:36 +0000 (UTC)
+	 MIME-Version; b=oe2odlC94r0w0GZLVmj+1UOSjQNrpKwi3dgJghsQJNSeWfKAcgEsnB7u3TSuops9J7MLraRMrNiTdBmAE81OW7feT6yLqS1wV5FG/weseh7UAwjU1sBk4LHb1cibDoq4bEWHvVul4Rat9to6owHTH/zDpC1aiRpJdwoPMe5smLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1ue6FeC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACDEC4CEE3;
+	Tue, 29 Apr 2025 17:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946577;
-	bh=wCWI9xS6ojLpKnM4WLI8t3Qn1yCPZyVIoHZKs2sDXgI=;
+	s=korg; t=1745948051;
+	bh=/nNF9/YFjnBfKSjnbSIYQmAhN4y+Amra8B4vSo2myB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UdKyu2DmmXEwfQU6AT2zrjxUL2evRLRn6nMdwFBDFMgK2YdMVxHYZkdtOL0jpeDCn
-	 yGGIEic1u5Se29RWOqRuZYkuAAm20sUcgUFbehPWjBphPEfTydNResrgBQQtfDwLjY
-	 y+YZ7JD6lgGBTgMpJ+kcaO9RdHArHkO+ncr+uI8k=
+	b=P1ue6FeCK05QXLWgsuTa+ucVuN3Bnq2Z4UdtogZvQAJb2vul30pD90r3+z2f53cYF
+	 04VFEe1Crp9/qw4Q4Abm2a/++cxo1C1zNgFfiGfYIgFcmtm9x9Agp5KSO5Flo/3LMd
+	 btswodbCe41M0mRnTYfd3AXllf4gVLVPC3o4SAlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 283/311] ksmbd: fix WARNING "do not call blocking ops when !TASK_RUNNING"
+Subject: [PATCH 6.12 179/280] i3c: master: svc: Add support for Nuvoton npcm845 i3c
 Date: Tue, 29 Apr 2025 18:42:00 +0200
-Message-ID: <20250429161132.603168989@linuxfoundation.org>
+Message-ID: <20250429161122.433194622@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Stanley Chu <yschu@nuvoton.com>
 
-[ Upstream commit 1df0d4c616138784e033ad337961b6e1a6bcd999 ]
+[ Upstream commit 98d87600a04e42282797631aa6b98dd43999e274 ]
 
-wait_event_timeout() will set the state of the current
-task to TASK_UNINTERRUPTIBLE, before doing the condition check. This
-means that ksmbd_durable_scavenger_alive() will try to acquire the mutex
-while already in a sleeping state. The scheduler warns us by giving
-the following warning:
+Nuvoton npcm845 SoC uses an older IP version, which has specific
+hardware issues that need to be addressed with a different compatible
+string.
 
-do not call blocking ops when !TASK_RUNNING; state=2 set at
- [<0000000061515a6f>] prepare_to_wait_event+0x9f/0x6c0
-WARNING: CPU: 2 PID: 4147 at kernel/sched/core.c:10099 __might_sleep+0x12f/0x160
+Add driver data for different compatible strings to define platform
+specific quirks.
+Add compatible string for npcm845 to define its own driver data.
 
-mutex lock is not needed in ksmbd_durable_scavenger_alive().
-
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250306075429.2265183-3-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs_cache.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index 8d1f30dcba7e8..1f8fa3468173a 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -713,12 +713,8 @@ static bool tree_conn_fd_check(struct ksmbd_tree_connect *tcon,
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 42102baabcdda..7911814ad82ac 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -158,6 +158,10 @@ struct svc_i3c_regs_save {
+ 	u32 mdynaddr;
+ };
  
- static bool ksmbd_durable_scavenger_alive(void)
- {
--	mutex_lock(&durable_scavenger_lock);
--	if (!durable_scavenger_running) {
--		mutex_unlock(&durable_scavenger_lock);
-+	if (!durable_scavenger_running)
- 		return false;
--	}
--	mutex_unlock(&durable_scavenger_lock);
++struct svc_i3c_drvdata {
++	u32 quirks;
++};
++
+ /**
+  * struct svc_i3c_master - Silvaco I3C Master structure
+  * @base: I3C master controller
+@@ -183,6 +187,7 @@ struct svc_i3c_regs_save {
+  * @ibi.tbq_slot: To be queued IBI slot
+  * @ibi.lock: IBI lock
+  * @lock: Transfer lock, protect between IBI work thread and callbacks from master
++ * @drvdata: Driver data
+  * @enabled_events: Bit masks for enable events (IBI, HotJoin).
+  * @mctrl_config: Configuration value in SVC_I3C_MCTRL for setting speed back.
+  */
+@@ -214,6 +219,7 @@ struct svc_i3c_master {
+ 		spinlock_t lock;
+ 	} ibi;
+ 	struct mutex lock;
++	const struct svc_i3c_drvdata *drvdata;
+ 	u32 enabled_events;
+ 	u32 mctrl_config;
+ };
+@@ -1768,6 +1774,10 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
+ 	if (!master)
+ 		return -ENOMEM;
  
- 	if (kthread_should_stop())
- 		return false;
-@@ -799,9 +795,7 @@ static int ksmbd_durable_scavenger(void *dummy)
- 			break;
- 	}
++	master->drvdata = of_device_get_match_data(dev);
++	if (!master->drvdata)
++		return -EINVAL;
++
+ 	master->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(master->regs))
+ 		return PTR_ERR(master->regs);
+@@ -1909,8 +1919,13 @@ static const struct dev_pm_ops svc_i3c_pm_ops = {
+ 			   svc_i3c_runtime_resume, NULL)
+ };
  
--	mutex_lock(&durable_scavenger_lock);
- 	durable_scavenger_running = false;
--	mutex_unlock(&durable_scavenger_lock);
- 
- 	module_put(THIS_MODULE);
- 
++static const struct svc_i3c_drvdata npcm845_drvdata = {};
++
++static const struct svc_i3c_drvdata svc_default_drvdata = {};
++
+ static const struct of_device_id svc_i3c_master_of_match_tbl[] = {
+-	{ .compatible = "silvaco,i3c-master-v1"},
++	{ .compatible = "nuvoton,npcm845-i3c", .data = &npcm845_drvdata },
++	{ .compatible = "silvaco,i3c-master-v1", .data = &svc_default_drvdata },
+ 	{ /* sentinel */ },
+ };
+ MODULE_DEVICE_TABLE(of, svc_i3c_master_of_match_tbl);
 -- 
 2.39.5
 
