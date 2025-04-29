@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CC4AA1492
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5947AA172B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:44:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62DF898310A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:11:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45BA0168F35
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684871DF73C;
-	Tue, 29 Apr 2025 17:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C22422A81D;
+	Tue, 29 Apr 2025 17:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h91gDzEP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0e92NXn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247182472B0;
-	Tue, 29 Apr 2025 17:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF205227E95;
+	Tue, 29 Apr 2025 17:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946707; cv=none; b=j9lTYw7/s+efJRzHTXjPk3U7slSCKZodPsYIVzFMAJa0P6FAd2xjNtNqsId+l/bfMwdHvrvCP19CyKu17M8lncC6xlTdGwdDLKDGdJFRLHSMVYSM8Y3aCYb09mjU8fYIkeRJTt9Z0KYcyAUS3K+wopCNgY1xk8oBRCYPr6muZ3M=
+	t=1745948644; cv=none; b=SBNQJD0JLNGNNsCCMBeC6sFlcTnHr/DBWzoz5JxoQ/SehIquSomxG5IU6RcynLHO+t9xunErptIMpi64gVVL/UleWsG4mQYPDVConKPcd26Kh7iWOLqnMmOWOjE1ZCWdA2GWbAz6ODr45fI/MN9leIYKt36quHxg8qnvuH0Y5rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946707; c=relaxed/simple;
-	bh=nLkDthn5TOxyDdpRo5pqEYpx533z6eUQv/iTfavCvJA=;
+	s=arc-20240116; t=1745948644; c=relaxed/simple;
+	bh=Ped+tdmXvscKXuIikgEnX8q8f9/mWrCT5kas6ljiP7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmc51y2rDcOF832GFmQnQQLi6EToaEY7qMpi2MzkxKjON4l8lH4MtLOWzhqnIaTU0meWcsHxPiHvmOdXaYY69bUKLIsxvkFidP2Qfp5vEhtSuRVPtmmTvZgAJBLA0n10qQYOSv6KsexsTWiQthNFXbcpT3a32VB/fjIRiWvQW4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h91gDzEP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377E2C4CEE3;
-	Tue, 29 Apr 2025 17:11:46 +0000 (UTC)
+	 MIME-Version; b=AxztTjnw3AJ6DaNOz5WYMo4yscfoZ80Fx+9rdrWU8s4bvkROtFIbwxXMVuhLWZneN92INXc0L/NwuJNBuuGfnWssB33EJdndxXRTTiRI+OCIYPvVgU+XAXqIibWSLimJAQZSUa7+qwHv+xTtO7R+HtqGCfFEDUfJZuQPpLVWXeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0e92NXn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14934C4CEE9;
+	Tue, 29 Apr 2025 17:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946706;
-	bh=nLkDthn5TOxyDdpRo5pqEYpx533z6eUQv/iTfavCvJA=;
+	s=korg; t=1745948643;
+	bh=Ped+tdmXvscKXuIikgEnX8q8f9/mWrCT5kas6ljiP7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h91gDzEPapueXIpJaNbm+my8Tl6NeYbNjd/WIKK4L+apqNODL6fVJ4pop6OUFAXiD
-	 G6fMmEKiIbPM7wbJkAEc3LHXneMwlDx//7vNuYSEZEDYwZEME94bKU7cfZpVDmIQY+
-	 F25xbEU+MVrbGCoCI+QgAWui8cZxioviQ++ylB0E=
+	b=C0e92NXn6NiUpSXg1TK2sRFghZGbzww9nln6ObwsVPE+hW6V85i15sG6ZF3y+cXSy
+	 qvLAp8qHGObWg7pIDicsmxHaxmweNNGVuNOFVQjR80wPH2RPC7rT54DOlEyi/IG2p9
+	 F2o2mO1297lc/O8DRCSQcBx92YJQ+PB7BlYzs8xI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leonid Arapov <arapovl839@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 043/286] fbdev: omapfb: Add plane value check
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 070/373] media: streamzap: prevent processing IR data on URB failure
 Date: Tue, 29 Apr 2025 18:39:07 +0200
-Message-ID: <20250429161109.632380708@linuxfoundation.org>
+Message-ID: <20250429161126.025261780@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leonid Arapov <arapovl839@gmail.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 3e411827f31db7f938a30a3c7a7599839401ec30 ]
+commit 549f6d348167fb2f7800ed7c8d4bce9630c74498 upstream.
 
-Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_WB
-of the enum parameter plane.
+If streamzap_callback() receives an urb with any non-critical error
+status, i.e. any error code other than -ECONNRESET, -ENOENT or -ESHUTDOWN,
+it will try to process IR data, ignoring a possible transfer failure.
 
-The value of this parameter is initialized in dss_init_overlays and in the
-current state of the code it cannot take this value so it's not a real
-problem.
+Make streamzap_callback() process IR data only when urb->status is 0.
+Move processing logic to a separate function to make code cleaner and
+more similar to the URB completion handlers in other RC drivers.
 
-For the purposes of defensive coding it wouldn't be superfluous to check
-the parameter value, because some functions down the call stack process
-this value correctly and some not.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-For example, in dispc_ovl_setup_global_alpha it may lead to buffer
-overflow.
-
-Add check for this value.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE static
-analysis tool.
-
-Signed-off-by: Leonid Arapov <arapovl839@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 19770693c354 ("V4L/DVB: staging/lirc: add lirc_streamzap driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/rc/streamzap.c |   68 ++++++++++++++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-index b2d6e6df21615..d852bef1d507f 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-@@ -2751,9 +2751,13 @@ int dispc_ovl_setup(enum omap_plane plane, const struct omap_overlay_info *oi,
- 		bool mem_to_mem)
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -179,39 +179,10 @@ static void sz_push_half_space(struct st
+ 	sz_push_full_space(sz, value & SZ_SPACE_MASK);
+ }
+ 
+-/*
+- * streamzap_callback - usb IRQ handler callback
+- *
+- * This procedure is invoked on reception of data from
+- * the usb remote.
+- */
+-static void streamzap_callback(struct urb *urb)
++static void sz_process_ir_data(struct streamzap_ir *sz, int len)
  {
- 	int r;
--	enum omap_overlay_caps caps = dss_feat_get_overlay_caps(plane);
-+	enum omap_overlay_caps caps;
- 	enum omap_channel channel;
+-	struct streamzap_ir *sz;
+ 	unsigned int i;
+-	int len;
+-
+-	if (!urb)
+-		return;
+-
+-	sz = urb->context;
+-	len = urb->actual_length;
+-
+-	switch (urb->status) {
+-	case -ECONNRESET:
+-	case -ENOENT:
+-	case -ESHUTDOWN:
+-		/*
+-		 * this urb is terminated, clean up.
+-		 * sz might already be invalid at this point
+-		 */
+-		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
+-		return;
+-	default:
+-		break;
+-	}
  
-+	if (plane == OMAP_DSS_WB)
-+		return -EINVAL;
+-	dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
+ 	for (i = 0; i < len; i++) {
+ 		dev_dbg(sz->dev, "sz->buf_in[%d]: %x\n",
+ 			i, (unsigned char)sz->buf_in[i]);
+@@ -264,6 +235,43 @@ static void streamzap_callback(struct ur
+ 	}
+ 
+ 	ir_raw_event_handle(sz->rdev);
++}
 +
-+	caps = dss_feat_get_overlay_caps(plane);
- 	channel = dispc_ovl_get_channel_out(plane);
++/*
++ * streamzap_callback - usb IRQ handler callback
++ *
++ * This procedure is invoked on reception of data from
++ * the usb remote.
++ */
++static void streamzap_callback(struct urb *urb)
++{
++	struct streamzap_ir *sz;
++	int len;
++
++	if (!urb)
++		return;
++
++	sz = urb->context;
++	len = urb->actual_length;
++
++	switch (urb->status) {
++	case 0:
++		dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
++		sz_process_ir_data(sz, len);
++		break;
++	case -ECONNRESET:
++	case -ENOENT:
++	case -ESHUTDOWN:
++		/*
++		 * this urb is terminated, clean up.
++		 * sz might already be invalid at this point
++		 */
++		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
++		return;
++	default:
++		break;
++	}
++
+ 	usb_submit_urb(urb, GFP_ATOMIC);
+ }
  
- 	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
--- 
-2.39.5
-
 
 
 
