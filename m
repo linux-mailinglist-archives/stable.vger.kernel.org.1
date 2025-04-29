@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-138556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55185AA189D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FBAAA187C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF3534E0769
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B2281665A1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8104124E00F;
-	Tue, 29 Apr 2025 18:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A307242D73;
+	Tue, 29 Apr 2025 17:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMgLu+dd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nU9NNgaV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD023FFD;
-	Tue, 29 Apr 2025 18:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF992AE96;
+	Tue, 29 Apr 2025 17:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949626; cv=none; b=vDCBRUkC7cGTXhofOtQfBEy0FYMFZE9doowYQYQ9rLrCrO9byPheHReX1Y08bLwHUTLdayhA0Tfi4XtC+acCCx/MzPp3oo0Hl1WxgiyZaSneJrqXqGLpgGEdTQ7JBFECkYgMs+aaw36bJaqEppUF7HhfC/z6PpCmU5U79BoUBKI=
+	t=1745949544; cv=none; b=UXzD2T1Ji9IvCWcFDxxWCrJ2uH6JF+BABMPKDnT6PDqmzUp2rf6byZWTwYMFBORhaQzZMyrmpHToQgwC23QzwkDdpJCfR8OsHbFwTsRC+z+hPNe8rWdAnotk686bw4d3/Om4b92BeBC19Rl3UPpg4ruMWZOaMa3D/7xRrjqcyUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949626; c=relaxed/simple;
-	bh=eq5Y/3PqH3b1+YQKn8oMmSaMgFsa0ruvAZXFM1JMjjo=;
+	s=arc-20240116; t=1745949544; c=relaxed/simple;
+	bh=6wHuK2xMAiSNUu+WSfuCu25SVDQzxJRpjjb9Ywn0QpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s+vjsp2DJRFZ5LfIU31eOI5E2+tjy2/MuItA8Yy5SyCut38HMJa6NzOuZWgXwRkgYAj80mmRPn8EL5PLVMWeRFpc/L+Hc273EufK8gDq8EyImrJ1z/SsOpD8216pdhv/Eny2mSSp2Gk/HASKyu3+gv0yz+jA1hhkkD8PwN8mVZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMgLu+dd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABE0C4CEE3;
-	Tue, 29 Apr 2025 18:00:25 +0000 (UTC)
+	 MIME-Version; b=P14nj/o9bVCWZYiQNkqzt60xT9f5g778veQLHtStvqumoG2VlmQiwMhddCcYc0cI8KYq8Q/dK3nZ7ItHPy0WuRw9hywLXE1ypotF7BfajeT1I0mZ7Q599cgP850MdUIVu45IAdZVvm/w74lml2S8OUdD89kDS/nRoPm/DqZ8j4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nU9NNgaV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E6DC4CEE3;
+	Tue, 29 Apr 2025 17:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949626;
-	bh=eq5Y/3PqH3b1+YQKn8oMmSaMgFsa0ruvAZXFM1JMjjo=;
+	s=korg; t=1745949544;
+	bh=6wHuK2xMAiSNUu+WSfuCu25SVDQzxJRpjjb9Ywn0QpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xMgLu+dd7q6GABeFuzSbsTzGcppdQY2PmsFFfe2P1X9w1okojKPTPqgUzDx1yY+Xk
-	 9GM9dK6qTKj5VrXcKZzRhGy5bX4Dr+d1dwyXdfT4h8FXtp3hh3QaQ3hYkd++uWcbiA
-	 XKpLHrNpwcW9MD/ayUITf0l0jaTZGjfB1pi0FQag=
+	b=nU9NNgaVea54/tJvDewUIbA5EzaSV6mTtC+yZ020a0FKeOfx/NpSevbUdbAU53gZO
+	 oQ6VuJpPO5Xcb8KJYxMKwDOsfaVLKko8+MPpWMUSUKSfOTtin7Hnsll2G5DP4H5zp4
+	 HqEGqYsTHAUjhOMUHbQhTLcuWZRLHReFqlfX1etQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Amit Shah <amit.shah@amd.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	David Woodhouse <dwmw2@infradead.org>,
+	Daniel Wagner <wagi@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 350/373] x86/bugs: Dont fill RSB on VMEXIT with eIBRS+retpoline
-Date: Tue, 29 Apr 2025 18:43:47 +0200
-Message-ID: <20250429161137.527565581@linuxfoundation.org>
+Subject: [PATCH 5.15 353/373] nvmet-fc: put ref when assoc->del_work is already scheduled
+Date: Tue, 29 Apr 2025 18:43:50 +0200
+Message-ID: <20250429161137.653323923@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
 References: <20250429161123.119104857@linuxfoundation.org>
@@ -73,62 +67,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 18bae0dfec15b24ec14ca17dc18603372f5f254f ]
+[ Upstream commit 70289ae5cac4d3a39575405aaf63330486cea030 ]
 
-eIBRS protects against guest->host RSB underflow/poisoning attacks.
-Adding retpoline to the mix doesn't change that.  Retpoline has a
-balanced CALL/RET anyway.
+Do not leak the tgtport reference when the work is already scheduled.
 
-So the current full RSB filling on VMEXIT with eIBRS+retpoline is
-overkill.  Disable it or do the VMEXIT_LITE mitigation if needed.
-
-Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Reviewed-by: Amit Shah <amit.shah@amd.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
-Link: https://lore.kernel.org/r/84a1226e5c9e2698eae1b5ade861f1b8bf3677dc.1744148254.git.jpoimboe@kernel.org
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/nvme/target/fc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index dfc02fb32375c..018ef230f02ce 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1579,20 +1579,20 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
- 	case SPECTRE_V2_NONE:
- 		return;
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index 9f6d91e79aac5..812d085d49c99 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -1091,7 +1091,8 @@ static void
+ nvmet_fc_schedule_delete_assoc(struct nvmet_fc_tgt_assoc *assoc)
+ {
+ 	nvmet_fc_tgtport_get(assoc->tgtport);
+-	queue_work(nvmet_wq, &assoc->del_work);
++	if (!queue_work(nvmet_wq, &assoc->del_work))
++		nvmet_fc_tgtport_put(assoc->tgtport);
+ }
  
--	case SPECTRE_V2_EIBRS_LFENCE:
- 	case SPECTRE_V2_EIBRS:
-+	case SPECTRE_V2_EIBRS_LFENCE:
-+	case SPECTRE_V2_EIBRS_RETPOLINE:
- 		if (boot_cpu_has_bug(X86_BUG_EIBRS_PBRSB)) {
--			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 			pr_info("Spectre v2 / PBRSB-eIBRS: Retire a single CALL on VMEXIT\n");
-+			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 		}
- 		return;
- 
--	case SPECTRE_V2_EIBRS_RETPOLINE:
- 	case SPECTRE_V2_RETPOLINE:
- 	case SPECTRE_V2_LFENCE:
- 	case SPECTRE_V2_IBRS:
--		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
- 		pr_info("Spectre v2 / SpectreRSB : Filling RSB on VMEXIT\n");
-+		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
- 		return;
- 	}
- 
+ static struct nvmet_fc_tgt_assoc *
 -- 
 2.39.5
 
