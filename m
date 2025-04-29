@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC211AA14C0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:20:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 698B9AA1363
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B10F81888035
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B7EE7B033C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D6D250C15;
-	Tue, 29 Apr 2025 17:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8436F1DF73C;
+	Tue, 29 Apr 2025 17:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qsvh4wMG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFtAdYBR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228D02512DD;
-	Tue, 29 Apr 2025 17:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4062782C60;
+	Tue, 29 Apr 2025 17:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946948; cv=none; b=k8jyrJV/9LOhAzYa7reqCQtPr6xhKMQeBkFyzTWL9LckJmStCqbsUwgGCaDxo3WtxnL6nDRQdClQ6DbwUR9LW/0u4JA1ijRCqa52T2moSn9NEc8IFT865mNJ5dA7YG0nXNJlhLal24S/UaccitLYvLIaStOMWF6WxkxbvOZKUpE=
+	t=1745946292; cv=none; b=D0dldVOuyh/9fDoa+RH1pfeFegmqbMEyBdnyWV8/pZKIH+umRXAnb93aQpXyBVwind79Dn3ba7eiCBQr/4ayg3NbYzpSFfjow2H0kqMZhftwdL9++5Pa8K8+XCTq2RqjB+5axpNhpeu1hXgityQIU0l/cqJjmU3reHGfHbo3w0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946948; c=relaxed/simple;
-	bh=T4xewdkv7K4U32NalGeV3DYpL0AmvdgZmz1MHrktlAE=;
+	s=arc-20240116; t=1745946292; c=relaxed/simple;
+	bh=49IfSOYqYvpLJE64F17FwhURUwRmuVrSv3l0mfssrnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uRMkoqozqVOUHbTpaG6qo2uSdI+ap8aHyzWVwYgMYVT0AIEBErXaHB3urmKb4Ri3O0VBFfNkU0FP8At1KsmHPP9ePck/KcRcMfSLbqi2F6J1H6f8bu6jWh2G6uQlFOOJFEEps0XBCcVlppGo1hX95qshUIFFA4uHDe8ZKohTKQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qsvh4wMG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0021C4CEE3;
-	Tue, 29 Apr 2025 17:15:47 +0000 (UTC)
+	 MIME-Version; b=LvYFLsb56lD7BbZ+7bbBb9j1wSshduX8kkAhmk4Y7a8QIFLNxMpsASS7ZNjfWHeu4kdEFur23ZpkPYV9HBzazF2IF5LRWjcqVSoYVv/jFxDagsdMjMcYsFSYeUT3nvwIClfIC4T4epvyNcfHtXM5+DsyvbykP6NNNBFXMjGZpyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFtAdYBR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFACC4CEE3;
+	Tue, 29 Apr 2025 17:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946948;
-	bh=T4xewdkv7K4U32NalGeV3DYpL0AmvdgZmz1MHrktlAE=;
+	s=korg; t=1745946292;
+	bh=49IfSOYqYvpLJE64F17FwhURUwRmuVrSv3l0mfssrnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qsvh4wMGablSwFG/hsUwRDb5Ieet/jY3vKGu3tKWnGAmoW2nudlNDhmLpw9Yx7v3c
-	 c4Kina/RkYNP86ti/Bj5Y1RKmveDCfv2+BfCrcPWdwz7w8iICTX9QY5G1SF5JJ6XR2
-	 f0mqClQLE4BPq+g/R60z4a3OuNdV/qsayN1+yRys=
+	b=UFtAdYBRhhYuF9fI1qCf0bwTsJyyxYxiRxYteChVzz9l4hOO26ZmqVgmFkJ6232cR
+	 dSMFxjwzvo0eGoFmonAsQqT04ovYV3OwC/JyMCvI0uEFfML3CVTe+HAHAPLw5Hjjl7
+	 RT4yC/rp/n/bFtCF3ngH6AdTIK1MJhMS5Wn9JEiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 121/286] writeback: fix false warning in inode_to_wb()
+	kernel test robot <lkp@intel.com>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 188/311] parisc: PDT: Fix missing prototype warning
 Date: Tue, 29 Apr 2025 18:40:25 +0200
-Message-ID: <20250429161112.833971754@linuxfoundation.org>
+Message-ID: <20250429161128.716168060@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-commit 9e888998ea4d22257b07ce911576509486fa0667 upstream.
+[ Upstream commit b899981750dcb958ceffa4462d903963ee494aa2 ]
 
-inode_to_wb() is used also for filesystems that don't support cgroup
-writeback.  For these filesystems inode->i_wb is stable during the
-lifetime of the inode (it points to bdi->wb) and there's no need to hold
-locks protecting the inode->i_wb dereference.  Improve the warning in
-inode_to_wb() to not trigger for these filesystems.
+As reported by the kernel test robot, the following error occurs:
 
-Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
-Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+arch/parisc/kernel/pdt.c:65:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
+      65 | void arch_report_meminfo(struct seq_file *m)
+         |      ^~~~~~~~~~~~~~~~~~~
+
+arch_report_meminfo() is declared in include/linux/proc_fs.h and only
+defined when CONFIG_PROC_FS is enabled. Wrap its definition in #ifdef
+CONFIG_PROC_FS to fix the -Wmissing-prototypes warning.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502082315.IPaHaTyM-lkp@intel.com/
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/backing-dev.h |    1 +
- 1 file changed, 1 insertion(+)
+ arch/parisc/kernel/pdt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -281,6 +281,7 @@ static inline struct bdi_writeback *inod
+diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
+index 0f9b3b5914cf6..b70b67adb855f 100644
+--- a/arch/parisc/kernel/pdt.c
++++ b/arch/parisc/kernel/pdt.c
+@@ -63,6 +63,7 @@ static unsigned long pdt_entry[MAX_PDT_ENTRIES] __page_aligned_bss;
+ #define PDT_ADDR_PERM_ERR	(pdt_type != PDT_PDC ? 2UL : 0UL)
+ #define PDT_ADDR_SINGLE_ERR	1UL
+ 
++#ifdef CONFIG_PROC_FS
+ /* report PDT entries via /proc/meminfo */
+ void arch_report_meminfo(struct seq_file *m)
  {
- #ifdef CONFIG_LOCKDEP
- 	WARN_ON_ONCE(debug_locks &&
-+		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
- 		     (!lockdep_is_held(&inode->i_lock) &&
- 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
- 		      !lockdep_is_held(&inode->i_wb->list_lock)));
+@@ -74,6 +75,7 @@ void arch_report_meminfo(struct seq_file *m)
+ 	seq_printf(m, "PDT_cur_entries: %7lu\n",
+ 			pdt_status.pdt_entries);
+ }
++#endif
+ 
+ static int get_info_pat_new(void)
+ {
+-- 
+2.39.5
+
 
 
 
