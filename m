@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-137392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9A1AA1345
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F23AA1488
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EC68981712
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 001CB1890544
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1746424466C;
-	Tue, 29 Apr 2025 16:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F9724A055;
+	Tue, 29 Apr 2025 17:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQbRmw1j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVPi3cUf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91A524113C;
-	Tue, 29 Apr 2025 16:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AD6213E67;
+	Tue, 29 Apr 2025 17:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945930; cv=none; b=QXYo39UpGrF70CAxOnGlvoHsBXEpw1Ag+EZKd8cdjJ5AtMx84w8NWg7zJUR1uBOoybpwGRwr7ixjyJb1+aCmCfoefOWjJNFwBKH2x3KA6xJ3x0TiVbeme2oJFrrGzKS+opgW11PjoZXdrx68tyqVYvVKG815o9AApXlaBeWNdys=
+	t=1745946790; cv=none; b=n4en3Nbn2mwrh13AX1p5uSNOyAo017h27K2HMmXd6wjuiY3ExqQHd9r8wQd7MUCVbv5W9dbnKOt4t5md+1ivR6/F/wRFgbn360BFAgDR6C+pcXsPw/2VnCJgtIpXPrFTyDWI6U/459zaa++I9rqDU2rGOjUsscj8E9UZnsDSoUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945930; c=relaxed/simple;
-	bh=HhpsSZ96xsXWKXGfVN5t+004QE2KNRi5n8KxK0eeha8=;
+	s=arc-20240116; t=1745946790; c=relaxed/simple;
+	bh=pleTXwg1DcIFyn2LRd+MfbOW5eTjpPtb5b2DPrk4T98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/cvwYr69GP3zEZLW66E+UWuzGNP+zuTjBqVNBViAsys5n7Rj22YSG/xtN4w/KMHoM9LEp3e3LvWAVA2dfk8kowO4qJyiH/AIq5F7RzP/TU/R14fTSUE6tJP4uvtom6O+9xY6oIaW47ktNO3htvinu3a5Y/qbPW6qjQQllsFAdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQbRmw1j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA24C4CEE9;
-	Tue, 29 Apr 2025 16:58:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LpCk6YuRQVAWHaHnAofFAa4Jipm8/Qv8hxIKFKhbS3dcOldQS9q77CPMUe/T2KvnjNxy8R1wGW+U3Ko/Wqss9Vc+AzZNfbUXCHD2NdBL4V9JHjzdyp8qo7IpJEalAmYKuMnryC2am0fxUFjg4fFSM2O+SoFWVd2ADKRHP3XFGmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVPi3cUf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8F0C4CEE3;
+	Tue, 29 Apr 2025 17:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945930;
-	bh=HhpsSZ96xsXWKXGfVN5t+004QE2KNRi5n8KxK0eeha8=;
+	s=korg; t=1745946789;
+	bh=pleTXwg1DcIFyn2LRd+MfbOW5eTjpPtb5b2DPrk4T98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GQbRmw1j83Ly4glvRP0ClU0GLOKNg3HJVdV4rwV/D6aSMMcIi83gvHNBdMW2Dxzo1
-	 qmgLyhXIybxUGtKp2Hk/NJQuy2SnppgSS0ZGPMCqcVbakX8C2WC6PW9JD8jdd8QgZF
-	 fog7Svnh8QRanwhOiILZrTTQ733QuE1/HR52p21M=
+	b=jVPi3cUfxedHP8YeSwPKjFj5OqSwpADvd/akO+nbwYafQyJf0ISvqlIvTNZBji1n0
+	 BEWRewKK0Vt4oApAXhuXtohewolUde2e6P5ClvUCKgU5TCLiHW1Z/sk30rZZLDR971
+	 yGiaRw5TyNaR4Ah9BypuS5vriOPJD49c4Ohf0czk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Jiri Olsa <jolsa@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 098/311] perf/x86: Fix non-sampling (counting) events on certain x86 platforms
+Subject: [PATCH 5.10 031/286] scsi: st: Fix array overflow in st_setup()
 Date: Tue, 29 Apr 2025 18:38:55 +0200
-Message-ID: <20250429161125.055247325@linuxfoundation.org>
+Message-ID: <20250429161109.137769154@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,66 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 1a97fea9db9e9b9c4839d4232dde9f505ff5b4cc ]
+[ Upstream commit a018d1cf990d0c339fe0e29b762ea5dc10567d67 ]
 
-Perf doesn't work at perf stat for hardware events on certain x86 platforms:
+Change the array size to follow parms size instead of a fixed value.
 
- $perf stat -- sleep 1
- Performance counter stats for 'sleep 1':
-             16.44 msec task-clock                       #    0.016 CPUs utilized
-                 2      context-switches                 #  121.691 /sec
-                 0      cpu-migrations                   #    0.000 /sec
-                54      page-faults                      #    3.286 K/sec
-   <not supported>	cycles
-   <not supported>	instructions
-   <not supported>	branches
-   <not supported>	branch-misses
-
-The reason is that the check in x86_pmu_hw_config() for sampling events is
-unexpectedly applied to counting events as well.
-
-It should only impact x86 platforms with limit_period used for non-PEBS
-events. For Intel platforms, it should only impact some older platforms,
-e.g., HSW, BDW and NHM.
-
-Fixes: 88ec7eedbbd2 ("perf/x86: Fix low freqency setting issue")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Link: https://lore.kernel.org/r/20250423064724.3716211-1-luogengkun@huaweicloud.com
+Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Closes: https://lore.kernel.org/linux-scsi/CALGdzuoubbra4xKOJcsyThdk5Y1BrAmZs==wbqjbkAgmKS39Aw@mail.gmail.com/
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250311112516.5548-2-Kai.Makisara@kolumbus.fi
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/core.c | 2 +-
+ drivers/scsi/st.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 3a27c50080f4f..ce8d4fdf54fbb 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -628,7 +628,7 @@ int x86_pmu_hw_config(struct perf_event *event)
- 	if (event->attr.type == event->pmu->type)
- 		event->hw.config |= x86_pmu_get_event_config(event);
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 3b819c6b15a56..465fe83b49e98 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -4144,7 +4144,7 @@ static void validate_options(void)
+  */
+ static int __init st_setup(char *str)
+ {
+-	int i, len, ints[5];
++	int i, len, ints[ARRAY_SIZE(parms) + 1];
+ 	char *stp;
  
--	if (!event->attr.freq && x86_pmu.limit_period) {
-+	if (is_sampling_event(event) && !event->attr.freq && x86_pmu.limit_period) {
- 		s64 left = event->attr.sample_period;
- 		x86_pmu.limit_period(event, &left);
- 		if (left > event->attr.sample_period)
+ 	stp = get_options(str, ARRAY_SIZE(ints), ints);
 -- 
 2.39.5
 
