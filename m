@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC82AA1A60
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:21:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2E7AA1954
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E8A59C1B26
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0EFB4A355F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D6F253B5F;
-	Tue, 29 Apr 2025 18:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD94A248866;
+	Tue, 29 Apr 2025 18:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJB/obPn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Gc5in8+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2C8240611;
-	Tue, 29 Apr 2025 18:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9968320C488;
+	Tue, 29 Apr 2025 18:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950612; cv=none; b=LHaKeyAUSErBUPIJr9TPRouvbBjbEP9J1xyZ2F5onMAsebrkfSwvBpgRm1jj/p40RFZSjTkPugLzID2SfZrbyskTNKBNxGAP2VvYdObVJI9B7u8kqAqnZWOFdXGgY/nDieqMgx5bGZ/NAL6Qte/jTa97fBQY+Kj3t/Hu5W4vBg0=
+	t=1745950111; cv=none; b=Vk3wRo7GtQPOr8wPkdBWM9MdTsSAIphWvpbxP1YJbM+ae5RkAKKujbLNUx8e80joYPRvI5Dbyp51/PgaPRrCCor0Ycq7AQ3VjiaznKJAPu2T03mAsTa7qHVIj8rBYyFq3Xq/ZogNzdCJbaveGUicRxnxB1yHIjCUh8dsjlZgfrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950612; c=relaxed/simple;
-	bh=EB4H8ZFqtrGGXM18LBxZLDYaP4eDz0Y8yIlXK0hbs8U=;
+	s=arc-20240116; t=1745950111; c=relaxed/simple;
+	bh=Q9yQ91nL2BHYGSEZskYqtb2MoU9oRKbhO/7GdEeUQrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Te2zNP30Pnyjr6sBpy3g+OeZPSA4xxCWzDKv0Il8hSOBnJeXbD7NWoeFpUJVruyfzuYzxxyZoXeRhpXIN811SRKdSGXWcP/2zA6drgf9ZNwQtjyf2dmdhup3iyQwhKuPQRS443SxYRu96FKycDCsGm7wFK336lOs6MrbwoYEpGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJB/obPn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A553BC4CEE3;
-	Tue, 29 Apr 2025 18:16:51 +0000 (UTC)
+	 MIME-Version; b=DZ2JP0HylOWslhdOwLx64eKh53W/YV27FE+n0oErUi3aiQ6qrl4xajd6jTdzd4zKI6H18G7YLBMrYLnIJmZGhf6r82WssykSmHAAtBnjanyjj/2KBEoaRmdqa0p0SjWrvLFefQFyTCYfXdjcLRy26ZMdQ2GvBqVzWYcPLaG5msA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Gc5in8+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D12C4CEE3;
+	Tue, 29 Apr 2025 18:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950612;
-	bh=EB4H8ZFqtrGGXM18LBxZLDYaP4eDz0Y8yIlXK0hbs8U=;
+	s=korg; t=1745950111;
+	bh=Q9yQ91nL2BHYGSEZskYqtb2MoU9oRKbhO/7GdEeUQrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cJB/obPn8qMyTzOw6BRk5GpevDNKaWfvJCrOd1eKu2+pkcJWrfPQ6QVSGEWwcLoSu
-	 n+ybNE+DF0LE3GgzZQM1SsfrWI8ueXLAQaLWVE8gcHZAGAqi31yx2VgphqLhLml+a7
-	 yAPq6bLje5AQQuQ+s1RqlpsQLcgAikPGLFx7+EWU=
+	b=0Gc5in8+i1Ogll9gfYa2ejQA3FAzN9hMw0EAtu7HOE2ySeD8cGaR/TWAau/xAy8Mb
+	 1AKfqxT9MgChtxLR/f7t2qKu8hO62ikEly+whnHZoJfvCKOSw6Ippm6AVdvTFIXTkI
+	 J3Y7wOkQL1m5Lc1zW57YE+/4Vmd2NlO4GI0OPxS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Stockmann <lukas.stockmann@siemens.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jean-Marc Eurin <jmeurin@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 150/204] rtc: pcf85063: do a SW reset if POR failed
+Subject: [PATCH 6.1 130/167] ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls
 Date: Tue, 29 Apr 2025 18:43:58 +0200
-Message-ID: <20250429161105.558978872@linuxfoundation.org>
+Message-ID: <20250429161056.997449193@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Stockmann <lukas.stockmann@siemens.com>
+From: Jean-Marc Eurin <jmeurin@google.com>
 
-[ Upstream commit 2b7cbd98495f6ee4cd6422fe77828a19e9edf87f ]
+[ Upstream commit 7ab4f0e37a0f4207e742a8de69be03984db6ebf0 ]
 
-Power-on Reset has a documented issue in PCF85063, refer to its datasheet,
-section "Software reset":
+The end of table checks should be done with the structure size,
+but 2 of the 3 similar calls use the pointer size.
 
-"There is a low probability that some devices will have corruption of the
-registers after the automatic power-on reset if the device is powered up
-with a residual VDD level. It is required that the VDD starts at zero volts
-at power up or upon power cycling to ensure that there is no corruption of
-the registers. If this is not possible, a reset must be initiated after
-power-up (i.e. when power is stable) with the software reset command"
-
-Trigger SW reset if there is an indication that POR has failed.
-
-Link: https://www.nxp.com/docs/en/data-sheet/PCF85063A.pdf
-Signed-off-by: Lukas Stockmann <lukas.stockmann@siemens.com>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://lore.kernel.org/r/20250120093451.30778-1-alexander.sverdlin@siemens.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Jean-Marc Eurin <jmeurin@google.com>
+Link: https://patch.msgid.link/20250402001542.2600671-1-jmeurin@google.com
+[ rjw: Subject edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf85063.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/acpi/pptt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/rtc/rtc-pcf85063.c b/drivers/rtc/rtc-pcf85063.c
-index 905986c616559..73848f764559b 100644
---- a/drivers/rtc/rtc-pcf85063.c
-+++ b/drivers/rtc/rtc-pcf85063.c
-@@ -35,6 +35,7 @@
- #define PCF85063_REG_CTRL1_CAP_SEL	BIT(0)
- #define PCF85063_REG_CTRL1_STOP		BIT(5)
- #define PCF85063_REG_CTRL1_EXT_TEST	BIT(7)
-+#define PCF85063_REG_CTRL1_SWR		0x58
+diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+index ced3eb15bd8b7..79a83d8236cb3 100644
+--- a/drivers/acpi/pptt.c
++++ b/drivers/acpi/pptt.c
+@@ -217,7 +217,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
+ 	node_entry = ACPI_PTR_DIFF(node, table_hdr);
+ 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+ 			     sizeof(struct acpi_table_pptt));
+-	proc_sz = sizeof(struct acpi_pptt_processor *);
++	proc_sz = sizeof(struct acpi_pptt_processor);
  
- #define PCF85063_REG_CTRL2		0x01
- #define PCF85063_CTRL2_AF		BIT(6)
-@@ -589,7 +590,7 @@ static int pcf85063_probe(struct i2c_client *client)
+ 	while ((unsigned long)entry + proc_sz < table_end) {
+ 		cpu_node = (struct acpi_pptt_processor *)entry;
+@@ -258,7 +258,7 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
+ 	table_end = (unsigned long)table_hdr + table_hdr->length;
+ 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+ 			     sizeof(struct acpi_table_pptt));
+-	proc_sz = sizeof(struct acpi_pptt_processor *);
++	proc_sz = sizeof(struct acpi_pptt_processor);
  
- 	i2c_set_clientdata(client, pcf85063);
- 
--	err = regmap_read(pcf85063->regmap, PCF85063_REG_CTRL1, &tmp);
-+	err = regmap_read(pcf85063->regmap, PCF85063_REG_SC, &tmp);
- 	if (err) {
- 		dev_err(&client->dev, "RTC chip is not present\n");
- 		return err;
-@@ -599,6 +600,22 @@ static int pcf85063_probe(struct i2c_client *client)
- 	if (IS_ERR(pcf85063->rtc))
- 		return PTR_ERR(pcf85063->rtc);
- 
-+	/*
-+	 * If a Power loss is detected, SW reset the device.
-+	 * From PCF85063A datasheet:
-+	 * There is a low probability that some devices will have corruption
-+	 * of the registers after the automatic power-on reset...
-+	 */
-+	if (tmp & PCF85063_REG_SC_OS) {
-+		dev_warn(&client->dev,
-+			 "POR issue detected, sending a SW reset\n");
-+		err = regmap_write(pcf85063->regmap, PCF85063_REG_CTRL1,
-+				   PCF85063_REG_CTRL1_SWR);
-+		if (err < 0)
-+			dev_warn(&client->dev,
-+				 "SW reset failed, trying to continue\n");
-+	}
-+
- 	err = pcf85063_load_capacitance(pcf85063, client->dev.of_node,
- 					config->force_cap_7000 ? 7000 : 0);
- 	if (err < 0)
+ 	/* find the processor structure associated with this cpuid */
+ 	while ((unsigned long)entry + proc_sz < table_end) {
 -- 
 2.39.5
 
