@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-137338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CEABAA12FF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:01:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78817AA174D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D10813B9BCB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:57:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C979F9A075D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1780253349;
-	Tue, 29 Apr 2025 16:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBB0251780;
+	Tue, 29 Apr 2025 17:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbqMLo/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tz96q/OZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1E3250BF2;
-	Tue, 29 Apr 2025 16:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BF5227E95;
+	Tue, 29 Apr 2025 17:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945770; cv=none; b=bPaVopP645r48ciCxr+ZOLK3sgEz4JI0Vv9ZoCoCQHhv1uquphz4h5HfCyGhygh6QovOaLUzYiBVVGRafPUuUO6PuJntfVwFwSwc4lUQ2QjZWxeaGt09iXvIT/N4/mCPS3nRuXLEvnaIo6ACpYtjFCKwjJI2XEEnDbYDe8pvFgw=
+	t=1745948486; cv=none; b=Gg+SqNRmytm87Ws3nMgTRpb7/ormhtLWQdX/DJCWkE/ysyMz45IMLgYdQc98LtY9rfEARXXLzVh6ikesTYOQwzr2D+01mqeEBKJiHLxR4JD9el2QhX+SSJT3wvDeT7tqutkSmFYkQhN59qjbDI1vw5jD3+Y1PRDUceCUYEFBFME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945770; c=relaxed/simple;
-	bh=8rXFOwAJ/EVxO9QHztEonMmn8Uq+fZzvKi4dUE5LAEY=;
+	s=arc-20240116; t=1745948486; c=relaxed/simple;
+	bh=y6USMp+zTp+5cytCdLu0NNiMHXhkJY+i96hu7AZFpT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smnrGBc49Np8QHDqYHvI8YSgdmSLcsfbmWXpxX7u3LfUdBME2iZCNvWrOH64SSAEsPOESe0S2EKLwi5WVbT2q3S57HPGqqKcHHaptTXSDrGLDeu0vfgdUDcdP5k42cMcUpL4IWbKoldbjYxBVTzdFnabxhDYU36vEU9gUoIfB/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbqMLo/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17ED5C4CEE3;
-	Tue, 29 Apr 2025 16:56:09 +0000 (UTC)
+	 MIME-Version; b=n0b70VSTJSMHo6IqewwCLco6sktj8vFV+YEAOmon6HWysAmxOFIak7rFb4YJ5cW9Q0xQi36cmqR9iGfslcPwCBQ97SN4LaLvFSImp34QSlqE26MUGnl/7HmmBC4wtxNzhoNx+Crg9/vFd8y0pz6eKSRAXj7D4/oFr+QP7h4Qoq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tz96q/OZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79C1C4CEE3;
+	Tue, 29 Apr 2025 17:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945770;
-	bh=8rXFOwAJ/EVxO9QHztEonMmn8Uq+fZzvKi4dUE5LAEY=;
+	s=korg; t=1745948486;
+	bh=y6USMp+zTp+5cytCdLu0NNiMHXhkJY+i96hu7AZFpT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rbqMLo/MpIETgxYA7dxE/Xg4jYKzmv4Gjy+Mn+aFnPw9LSh2ONObae9tZcxjAz04Y
-	 Uj57IIm6tp3YqwagnfCOiS+No/xd8UVs3a5qH0igunnTrAFEkQBVbLgLrzNRAP/SOG
-	 tOmtXCbvAOoV8hVlUUDv0CK7zBJ35YTV65sqJ4AY=
+	b=tz96q/OZPEciLs9CSd27t/Lsk053yAd5r05b7xggbG3w5vrlIuLTeNqPnnRnAcqvu
+	 J12qiEWsQr8AVz5lOp8/xO+CDzSTTWEIXRkfful8UUqHRFelworI7SBuw8N+QCWeQ7
+	 Y6Dbd/mclJ95N0YUEcmLCOcj8bnb0LdRm9BSTG2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 043/311] cpufreq: fix compile-test defaults
+Subject: [PATCH 5.15 003/373] codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()
 Date: Tue, 29 Apr 2025 18:38:00 +0200
-Message-ID: <20250429161122.788940231@linuxfoundation.org>
+Message-ID: <20250429161123.269149769@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit a374f28700abd20e8a7d026f89aa26f759445918 ]
+[ Upstream commit 342debc12183b51773b3345ba267e9263bdfaaef ]
 
-Commit 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
-enabled compile testing of most Arm CPUFreq drivers but left the
-existing default values unchanged so that many drivers are enabled by
-default whenever COMPILE_TEST is selected.
+After making all ->qlen_notify() callbacks idempotent, now it is safe to
+remove the check of qlen!=0 from both fq_codel_dequeue() and
+codel_qdisc_dequeue().
 
-This specifically results in the S3C64XX CPUFreq driver being enabled
-and initialised during boot of non-S3C64XX platforms with the following
-error logged:
-
-	cpufreq: Unable to obtain ARMCLK: -2
-
-Commit d4f610a9bafd ("cpufreq: Do not enable by default during compile
-testing") recently fixed most of the default values, but two entries
-were missed and two could use a more specific default condition.
-
-Fix the default values for drivers that can be compile tested and that
-should be enabled by default when not compile testing.
-
-Fixes: 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
-Cc: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
+Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211636.166257-1-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/Kconfig.arm | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/sched/sch_codel.c    | 5 +----
+ net/sched/sch_fq_codel.c | 6 ++----
+ 2 files changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/cpufreq/Kconfig.arm b/drivers/cpufreq/Kconfig.arm
-index d4d625ded285f..0d46402e30942 100644
---- a/drivers/cpufreq/Kconfig.arm
-+++ b/drivers/cpufreq/Kconfig.arm
-@@ -76,7 +76,7 @@ config ARM_VEXPRESS_SPC_CPUFREQ
- config ARM_BRCMSTB_AVS_CPUFREQ
- 	tristate "Broadcom STB AVS CPUfreq driver"
- 	depends on (ARCH_BRCMSTB && !ARM_SCMI_CPUFREQ) || COMPILE_TEST
--	default ARCH_BRCMSTB
-+	default y if ARCH_BRCMSTB && !ARM_SCMI_CPUFREQ
- 	help
- 	  Some Broadcom STB SoCs use a co-processor running proprietary firmware
- 	  ("AVS") to handle voltage and frequency scaling. This driver provides
-@@ -88,7 +88,7 @@ config ARM_HIGHBANK_CPUFREQ
- 	tristate "Calxeda Highbank-based"
- 	depends on ARCH_HIGHBANK || COMPILE_TEST
- 	depends on CPUFREQ_DT && REGULATOR && PL320_MBOX
--	default m
-+	default m if ARCH_HIGHBANK
- 	help
- 	  This adds the CPUFreq driver for Calxeda Highbank SoC
- 	  based boards.
-@@ -133,7 +133,7 @@ config ARM_MEDIATEK_CPUFREQ
- config ARM_MEDIATEK_CPUFREQ_HW
- 	tristate "MediaTek CPUFreq HW driver"
- 	depends on ARCH_MEDIATEK || COMPILE_TEST
--	default m
-+	default m if ARCH_MEDIATEK
- 	help
- 	  Support for the CPUFreq HW driver.
- 	  Some MediaTek chipsets have a HW engine to offload the steps
-@@ -256,7 +256,7 @@ config ARM_TEGRA194_CPUFREQ
- 	tristate "Tegra194 CPUFreq support"
- 	depends on ARCH_TEGRA_194_SOC || ARCH_TEGRA_234_SOC || (64BIT && COMPILE_TEST)
- 	depends on TEGRA_BPMP
--	default ARCH_TEGRA
-+	default ARCH_TEGRA_194_SOC || ARCH_TEGRA_234_SOC
- 	help
- 	  This adds CPU frequency driver support for Tegra194 SOCs.
+diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
+index 30169b3adbbb0..d9eff03deada4 100644
+--- a/net/sched/sch_codel.c
++++ b/net/sched/sch_codel.c
+@@ -95,10 +95,7 @@ static struct sk_buff *codel_qdisc_dequeue(struct Qdisc *sch)
+ 			    &q->stats, qdisc_pkt_len, codel_get_enqueue_time,
+ 			    drop_func, dequeue_func);
  
+-	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
+-	 * or HTB crashes. Defer it for next round.
+-	 */
+-	if (q->stats.drop_count && sch->q.qlen) {
++	if (q->stats.drop_count) {
+ 		qdisc_tree_reduce_backlog(sch, q->stats.drop_count, q->stats.drop_len);
+ 		q->stats.drop_count = 0;
+ 		q->stats.drop_len = 0;
+diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+index efda894bbb78b..9a3df6884c5cd 100644
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -314,10 +314,8 @@ static struct sk_buff *fq_codel_dequeue(struct Qdisc *sch)
+ 	}
+ 	qdisc_bstats_update(sch, skb);
+ 	flow->deficit -= qdisc_pkt_len(skb);
+-	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
+-	 * or HTB crashes. Defer it for next round.
+-	 */
+-	if (q->cstats.drop_count && sch->q.qlen) {
++
++	if (q->cstats.drop_count) {
+ 		qdisc_tree_reduce_backlog(sch, q->cstats.drop_count,
+ 					  q->cstats.drop_len);
+ 		q->cstats.drop_count = 0;
 -- 
 2.39.5
 
