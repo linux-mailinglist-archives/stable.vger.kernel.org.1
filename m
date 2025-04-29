@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F283EAA1393
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0972AAA1216
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 587824C3B09
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABF7198025F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE852246326;
-	Tue, 29 Apr 2025 17:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2028425178C;
+	Tue, 29 Apr 2025 16:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpHmLA+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhzGVdhz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA9982C60;
-	Tue, 29 Apr 2025 17:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B7527453;
+	Tue, 29 Apr 2025 16:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946197; cv=none; b=XU5FgcA6f36EfeN3xOo9Ha0JNJYVBgXQwe6CHWqVIG2Bn1sjiPqBGDKNx45bGg1ki8ngP8cu3WwpgWhVulCxRMoyIIPDhfPi6YsCNWc0tVfx9HcBmO90fI1CrbHkJYJtj6jCKDf0HmLQZMuqouS5JYm2pZ2+Ak2zIDhrE0O9rzU=
+	t=1745945232; cv=none; b=pFO2TDPJgZsgxb437i+rOj4crBNe0Kyhlbb9m6gX+EhPFJzSQmLYCw+DaOBDPPvM2ycJlInVYpUa+HQcr0jUGos9UhuuBwZ0XHQK8kfjpMe6qUf+aYcFcd1NTnwNJZPFFMKp2eVR9jmE0RuIs4pkY4P4ast/yy6vGUuwY0FzVFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946197; c=relaxed/simple;
-	bh=8y/4lpliBb+H+IM4tmEPJmbdBgwjkgbKBsbs+q9hHKo=;
+	s=arc-20240116; t=1745945232; c=relaxed/simple;
+	bh=2rRHr3pMqFAziMk2PxoF8JhGLGm90YbfcxPPd8Kud0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CktBosl6LeIhRFfO9C4tZnKSlxSBX9sFFqzWGoYsEmxMqt3yxdGl516tqK7zJFp2Vr0vJSObJ4lda+02g2Rq/kS8IVRwZzhgCnO3X6ZkkAMCMtxc9T2HIsDFFABBJ1hapGWZ8YW89gyYYEs9vjQvOANlQxo2Mjj86KBB+W1zWw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpHmLA+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE6EC4CEE3;
-	Tue, 29 Apr 2025 17:03:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QVa+b0rYX/aqXwkR9bhcllE0IOhc2hBYY0tU0UZo1gudRo5hJlqBPFXOwfo2gbsOcClCWVxb6P6m0e/5yv3CJzBs5bMxUbQVjK4DMt9G1lcgWzZibIQ9BUsEvUIah19i2A4zC2Sa3LDMCu4z2yMkUxfM2vt9F04C5p8kdOHUEo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhzGVdhz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374A4C4CEE3;
+	Tue, 29 Apr 2025 16:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946197;
-	bh=8y/4lpliBb+H+IM4tmEPJmbdBgwjkgbKBsbs+q9hHKo=;
+	s=korg; t=1745945232;
+	bh=2rRHr3pMqFAziMk2PxoF8JhGLGm90YbfcxPPd8Kud0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpHmLA+c4bQxjF22K8JvGzKWJywXsKkbZiR5fpg+XMYlnExmZtfLQ3s8IX/N1LCJU
-	 jR4l7tdqm0DIRp//hs7jrQzOdAvniHV9MFllt/xv5i5lYtdU3POUp/1JpdF17iLQpD
-	 wS4EOLLudvTT4bpNgLMc3Ny6F8sn1MAumF9ZSqoQ=
+	b=YhzGVdhztW5QK3UZfKVX0mIUIYDY9n5u9Jj4w9pUUepAHAGFCOpzpnOabXlzWJNAJ
+	 CWrScyGZyBEUKZWKQ2ky/ZgS/wi0VUVPHS8cZBHWImkJ/pQPDWe98dMCKb4lbH2U0d
+	 qkbAv5BH5/8fmXycMQoXNLYivsHe5rekXhx4UgrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	stable <stable@kernel.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Hou Wenlong <houwenlong.hwl@antgroup.com>
-Subject: [PATCH 6.14 148/311] char: misc: register chrdev region with all possible minors
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.4 044/179] media: i2c: adv748x: Fix test pattern selection mask
 Date: Tue, 29 Apr 2025 18:39:45 +0200
-Message-ID: <20250429161127.095723205@linuxfoundation.org>
+Message-ID: <20250429161051.187281385@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-commit c876be906ce7e518d9ef9926478669c151999e69 upstream.
+commit 9e38acacb9d809b97a0bdc5c76e725355a47158a upstream.
 
-register_chrdev will only register the first 256 minors of a major chrdev.
-That means that dynamically allocated misc devices with minor above 255
-will fail to open with -ENXIO.
+The mask to select the test-pattern in register ADV748X_SDP_FRP is
+incorrect, it's the lower 3 bits which controls the pattern. The
+GENMASK() macro is used incorrectly and the generated mask is 0x0e
+instead of 0x07.
 
-This was found by kernel test robot when testing a different change that
-makes all dynamically allocated minors be above 255. This has, however,
-been separately tested by creating 256 serio_raw devices with the help of
-userio driver.
+The result is that not all test patterns are selectable, and that in
+some cases the wrong test pattern is activated. Fix this by correcting
+the GENMASK().
 
-Ever since allowing misc devices with minors above 128, this has been
-possible.
-
-Fix it by registering all minor numbers from 0 to MINORMASK + 1 for
-MISC_MAJOR.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Cc: stable <stable@kernel.org>
-Closes: https://lore.kernel.org/oe-lkp/202503171507.6c8093d0-lkp@intel.com
-Fixes: ab760791c0cf ("char: misc: Increase the maximum number of dynamic misc devices to 1048448")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Tested-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
-Link: https://lore.kernel.org/r/20250317-misc-chrdev-v1-1-6cd05da11aef@igalia.com
+Fixes: 3e89586a64df ("media: i2c: adv748x: add adv748x driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[hverkuil: fixed tiny typo in commit log: my -> by]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/misc.c |    2 +-
+ drivers/media/i2c/adv748x/adv748x.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/misc.c
-+++ b/drivers/char/misc.c
-@@ -315,7 +315,7 @@ static int __init misc_init(void)
- 		goto fail_remove;
+--- a/drivers/media/i2c/adv748x/adv748x.h
++++ b/drivers/media/i2c/adv748x/adv748x.h
+@@ -321,7 +321,7 @@ struct adv748x_state {
  
- 	err = -EIO;
--	if (register_chrdev(MISC_MAJOR, "misc", &misc_fops))
-+	if (__register_chrdev(MISC_MAJOR, 0, MINORMASK + 1, "misc", &misc_fops))
- 		goto fail_printk;
- 	return 0;
+ /* Free run pattern select */
+ #define ADV748X_SDP_FRP			0x14
+-#define ADV748X_SDP_FRP_MASK		GENMASK(3, 1)
++#define ADV748X_SDP_FRP_MASK		GENMASK(2, 0)
  
+ /* Saturation */
+ #define ADV748X_SDP_SD_SAT_U		0xe3	/* user_map_rw_reg_e3 */
 
 
 
