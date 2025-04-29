@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-138656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82F7CAA1969
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:11:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC7A5AA19F3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:17:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91B8E3AC396
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACF731C0154E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE31248866;
-	Tue, 29 Apr 2025 18:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B32253321;
+	Tue, 29 Apr 2025 18:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxrX7SKF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+cKzse4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3E121ABC6;
-	Tue, 29 Apr 2025 18:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206792517A6;
+	Tue, 29 Apr 2025 18:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949938; cv=none; b=eIEcp+nWuxHgIkkpUDgBAKbvO1/zsR0f3PxNryYOMO21eiOSf7NwcB70sd0YHUpwqnMUdcdHBazZeb5E16Okgi/xaoMdYMrjIqaqNWGohpAuTeKAIqyUeMW6QQKkgrhe85ASo2MdVH8s+RnHTTisNSCYvTqO8T0ELtPNVsxt6XM=
+	t=1745950542; cv=none; b=Vb1t3bAX5B7g/SBAfhBASeHRbhtZuVC+AG2so2IQBd9ENyUdVsYPZJx+KNIoA+0RAvozOGOG2UrBXTcfNeNpjRVCER6wYnMqZs1T4Pe65xDVwJ4wGJVSvk7HO8WXNnlTwJ3nzl7zAeBZYWSTUCfxEk16HQb8yPp7/k6zcCgHjTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949938; c=relaxed/simple;
-	bh=O+bA6K/fspM+49XFcBCTVDjw+uKjNfhpw5320+5NNQI=;
+	s=arc-20240116; t=1745950542; c=relaxed/simple;
+	bh=J6+bQxQ9oNIKufbypeAyJ2KOX4f/lBI5xyfRZS8AwPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPC0ViQSjvIXpEsOdwrH3oM9MgxxY838f2WwRUbIkdL9+DuExRauQo00MWV4uIyGGDAuXM/al3WB5GBbtVoC+C2Zuo9XGGoGj/r0TsdoAhITEZ9icfL3ALC1HxQwpNSu5AQzQP5MrrGCTznwleIAxu5b9TRG5vtMkfubfyZ59x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxrX7SKF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F284C4CEE3;
-	Tue, 29 Apr 2025 18:05:37 +0000 (UTC)
+	 MIME-Version; b=AUarzGtVOdQjXgpi15QtZHsBX3gAX5sJJNB/xnT3vh0IC/Qe4FBKwvpt4EnmNC9qbS+zBUfafTTqWYKmp+cN67UuwEahQ082yw5YT9+Lag3BR/yd9FK8GgR44jJNXL2DJrRsEKxkAAzVAScEqFp6TPUzIABjd2V/2JrPCSk0oUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+cKzse4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFF0C4CEEA;
+	Tue, 29 Apr 2025 18:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949938;
-	bh=O+bA6K/fspM+49XFcBCTVDjw+uKjNfhpw5320+5NNQI=;
+	s=korg; t=1745950542;
+	bh=J6+bQxQ9oNIKufbypeAyJ2KOX4f/lBI5xyfRZS8AwPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HxrX7SKFmBpBTUf0lqerHnxijLWtyPPtOEhCJI6MudmKQGfbWffh0FvwdiPkveBkW
-	 8qQgcdlapon3Ub7gc5cfDpQwS7jMYZXWVAwro0p4S0Te2o2gicXNzqgUQ2O3hN3JFu
-	 ma+UENLH/zKTXYxBGlPtHXVnF6mJIi/xA4+1BqCI=
+	b=z+cKzse4j3jVxsWCQ6JTNlYnkpL53RsWXgKOHZKT8KpUXku6mgQ3kAy8zk8zH1InZ
+	 HRcAXrJkOYxAzNCKCLBfULMQygSRYGdSmpS3nuA9dxjHRi4qI7g55xC/kWcGT/lDiH
+	 0Cx8kdoaY2QFGAcgJsixOPDo2dWhpK9dAjVwUotA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@mailbox.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sewon Nam <swnam0729@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 105/167] usb: host: max3421-hcd: Add missing spi_device_id table
-Date: Tue, 29 Apr 2025 18:43:33 +0200
-Message-ID: <20250429161055.995553059@linuxfoundation.org>
+Subject: [PATCH 6.6 126/204] bpf: bpftool: Setting error code in do_loader()
+Date: Tue, 29 Apr 2025 18:43:34 +0200
+Message-ID: <20250429161104.586472204@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@mailbox.org>
+From: Sewon Nam <swnam0729@gmail.com>
 
-[ Upstream commit 41d5e3806cf589f658f92c75195095df0b66f66a ]
+[ Upstream commit 02a4694107b4c830d4bd6d194e98b3ac0bc86f29 ]
 
-"maxim,max3421" DT compatible is missing its SPI device ID entry, not
-allowing module autoloading and leading to the following message:
- "SPI driver max3421-hcd has no spi_device_id for maxim,max3421"
+We are missing setting error code in do_loader() when
+bpf_object__open_file() fails. This means the command's exit status code
+will be successful, even though the operation failed. So make sure to
+return the correct error code. To maintain consistency with other
+locations where bpf_object__open_file() is called, return -1.
 
-Fix this by adding the spi_device_id table.
+  [0] Closes: https://github.com/libbpf/bpftool/issues/156
 
-Signed-off-by: Alexander Stein <alexander.stein@mailbox.org>
-Link: https://lore.kernel.org/r/20250128195114.56321-1-alexander.stein@mailbox.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Sewon Nam <swnam0729@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Tested-by: Quentin Monnet <qmo@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/d3b5b4b4-19bb-4619-b4dd-86c958c4a367@stanley.mountain/t/#u
+Link: https://lore.kernel.org/bpf/20250311031238.14865-1-swnam0729@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/max3421-hcd.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/bpf/bpftool/prog.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
-index ab12d76b01fbe..8aaafba058aa9 100644
---- a/drivers/usb/host/max3421-hcd.c
-+++ b/drivers/usb/host/max3421-hcd.c
-@@ -1955,6 +1955,12 @@ max3421_remove(struct spi_device *spi)
- 	usb_put_hcd(hcd);
- }
+diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
+index 90ae2ea61324c..174e076e56af2 100644
+--- a/tools/bpf/bpftool/prog.c
++++ b/tools/bpf/bpftool/prog.c
+@@ -1924,6 +1924,7 @@ static int do_loader(int argc, char **argv)
  
-+static const struct spi_device_id max3421_spi_ids[] = {
-+	{ "max3421" },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(spi, max3421_spi_ids);
-+
- static const struct of_device_id max3421_of_match_table[] = {
- 	{ .compatible = "maxim,max3421", },
- 	{},
-@@ -1964,6 +1970,7 @@ MODULE_DEVICE_TABLE(of, max3421_of_match_table);
- static struct spi_driver max3421_driver = {
- 	.probe		= max3421_probe,
- 	.remove		= max3421_remove,
-+	.id_table	= max3421_spi_ids,
- 	.driver		= {
- 		.name	= "max3421-hcd",
- 		.of_match_table = of_match_ptr(max3421_of_match_table),
+ 	obj = bpf_object__open_file(file, &open_opts);
+ 	if (!obj) {
++		err = -1;
+ 		p_err("failed to open object file");
+ 		goto err_close_obj;
+ 	}
 -- 
 2.39.5
 
