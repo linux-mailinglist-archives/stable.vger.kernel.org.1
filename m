@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-138321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882D0AA1779
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 803F2AA15F1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78F291B640DA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84FDC4E0104
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B85AC148;
-	Tue, 29 Apr 2025 17:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB95524EF6B;
+	Tue, 29 Apr 2025 17:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4CGc0XM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iz8T6v+h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34A8243964;
-	Tue, 29 Apr 2025 17:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAC4221570;
+	Tue, 29 Apr 2025 17:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948868; cv=none; b=CphvvoJE1GgLkyxCdVm0KJbFkQFSqytYEtosGKPLPxU268E0rRrp8rNK7axUKzO7DwJBdIEN4mSVrmONiqhUOdwbIMT/AKFDI2L9ho/zj7TfDf+jvOXnmQh5b+CwYDV2UE5OnRw3nbH2ILzgyh+v97HNyKhi9YBTN2BSXMxPCek=
+	t=1745947698; cv=none; b=ZUHARa+Yh7COvBHAhEvQCYhdsejQecjWz3OkJ3MKegWTnW2ZtD9ETC9J/HByEMR6K2UArJn8G80vCf6AXnilCFvuI86Hj9QjEMo/qRmHtD1PtQijPtbt3qWwjxlCtTNoWi9FS1ciQ/KiVppqvvmU4OSmUp9tejff7hHjyGbwwYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948868; c=relaxed/simple;
-	bh=/C5Vl3ZiYoDntQuSnMvoYCuTKrbTujkHUod7MXHHFJw=;
+	s=arc-20240116; t=1745947698; c=relaxed/simple;
+	bh=YRkGmFgkXMes52SRfrUKzpqIf11+m2MYttRKO5R1P4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gMn+6r88JYw7aXqNFLOuGVIgFsbnQCdOzAPdhzb9U0V73PheHOqMXhgSBTzANfvRVdFigvFQ0kQYwcIxWZkd7AlQnIpu94POeK87B0vj2wlva6xlE826HN/Pb1tt+XXyDVJjvAWWY+qlqAt54BjLJ8WjEHyt3o80uROKMbgRngY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4CGc0XM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FE1C4CEE3;
-	Tue, 29 Apr 2025 17:47:46 +0000 (UTC)
+	 MIME-Version; b=OP+UISMhKLYwrblJc47cYF+Vd0undkca1A7slaDGvc5xz9n5SdOlY4cCdLx1mDES8ng/7JSpsv+lqWzCuUHwaWf1qu4Lm8IEoHDM4N9jhu21M/aaGKMOuHG9O9jFXRsQLd5yqbBx+CrrvK7sTxT/KGbatON4MPb7xmBccdgk6sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iz8T6v+h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D044C4CEE9;
+	Tue, 29 Apr 2025 17:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948867;
-	bh=/C5Vl3ZiYoDntQuSnMvoYCuTKrbTujkHUod7MXHHFJw=;
+	s=korg; t=1745947698;
+	bh=YRkGmFgkXMes52SRfrUKzpqIf11+m2MYttRKO5R1P4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D4CGc0XMVmOqyIVFThr4/QgMZ5E9OtK6FEsvDS9ATpPfq7EbDdAGcqt14dvTISBqQ
-	 fJC1rpqeSwudTATDgl+XAj2Fm7p7hJZpC8FS2fZh7wBePTDIu1f+/QU8uORd6JbXsK
-	 HTVXXcE+ikGNzV7+cNgXmUKkZrqbQ/5S3ABYxe20=
+	b=iz8T6v+hpONIbQYMZB2F1HkHZuJIb+gmpMu9Zogc1SllhZoBm3hzwJwNEs5/7jbct
+	 B8KgjPtCLEjghwTWO/F/IKUv49rQb90/I9VFFlprfNRZFLB4xPcShSi2cPG3WuUIPv
+	 kzme7q+c1DCr3rLZnpLw8805DK0JANx9X90VvIGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher S M Hall <christopher.s.hall@intel.com>,
-	Corinna Vinschen <vinschen@redhat.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Simon Horman <horms@kernel.org>,
+	Shannon Nelson <shannon.nelson@amd.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 143/373] igc: cleanup PTP module if probe fails
+Subject: [PATCH 6.12 079/280] pds_core: handle unsupported PDS_CORE_CMD_FW_CONTROL result
 Date: Tue, 29 Apr 2025 18:40:20 +0200
-Message-ID: <20250429161129.050362540@linuxfoundation.org>
+Message-ID: <20250429161118.348632236@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,41 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher S M Hall <christopher.s.hall@intel.com>
+From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit 1f025759ba394dd53e434d2668cb0597886d9b69 ]
+[ Upstream commit 2567daad69cd1107fc0ec29b1615f110d7cf7385 ]
 
-Make sure that the PTP module is cleaned up if the igc_probe() fails by
-calling igc_ptp_stop() on exit.
+If the FW doesn't support the PDS_CORE_CMD_FW_CONTROL command
+the driver might at the least print garbage and at the worst
+crash when the user runs the "devlink dev info" devlink command.
 
-Fixes: d89f88419f99 ("igc: Add skeletal frame for Intel(R) 2.5G Ethernet Controller support")
-Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
-Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+This happens because the stack variable fw_list is not 0
+initialized which results in fw_list.num_fw_slots being a
+garbage value from the stack.  Then the driver tries to access
+fw_list.fw_names[i] with i >= ARRAY_SIZE and runs off the end
+of the array.
+
+Fix this by initializing the fw_list and by not failing
+completely if the devcmd fails because other useful information
+is printed via devlink dev info even if the devcmd fails.
+
+Fixes: 45d76f492938 ("pds_core: set up device and adminq")
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250421174606.3892-3-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/amd/pds_core/devlink.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 27c24bfc2dbeb..4186e5732f972 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6722,6 +6722,7 @@ static int igc_probe(struct pci_dev *pdev,
+diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
+index 44971e71991ff..ca23cde385e67 100644
+--- a/drivers/net/ethernet/amd/pds_core/devlink.c
++++ b/drivers/net/ethernet/amd/pds_core/devlink.c
+@@ -102,7 +102,7 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
+ 		.fw_control.opcode = PDS_CORE_CMD_FW_CONTROL,
+ 		.fw_control.oper = PDS_CORE_FW_GET_LIST,
+ 	};
+-	struct pds_core_fw_list_info fw_list;
++	struct pds_core_fw_list_info fw_list = {};
+ 	struct pdsc *pdsc = devlink_priv(dl);
+ 	union pds_core_dev_comp comp;
+ 	char buf[32];
+@@ -115,8 +115,6 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
+ 	if (!err)
+ 		memcpy_fromio(&fw_list, pdsc->cmd_regs->data, sizeof(fw_list));
+ 	mutex_unlock(&pdsc->devcmd_lock);
+-	if (err && err != -EIO)
+-		return err;
  
- err_register:
- 	igc_release_hw_control(adapter);
-+	igc_ptp_stop(adapter);
- err_eeprom:
- 	if (!igc_check_reset_block(hw))
- 		igc_reset_phy(hw);
+ 	listlen = min(fw_list.num_fw_slots, ARRAY_SIZE(fw_list.fw_names));
+ 	for (i = 0; i < listlen; i++) {
 -- 
 2.39.5
 
