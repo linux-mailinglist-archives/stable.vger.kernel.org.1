@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6606AAA18F3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B311CAA1A3B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDF451BC7624
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9840188F269
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37860243964;
-	Tue, 29 Apr 2025 18:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2C4240611;
+	Tue, 29 Apr 2025 18:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFCfEkbU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dL5j4xC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66672AE96;
-	Tue, 29 Apr 2025 18:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B03B20C488;
+	Tue, 29 Apr 2025 18:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949945; cv=none; b=nibsHz21K2jQJ+/ZeObOZms4ijG2wSsdQVyTqshQNm986zbavyekINbWNXaexeIXT5oMDvXVxQq723L4Nu852pW2dI6w6QI/0C4FPxllwI2PAcWIGLJai+vKYZp7cVRe+t1xzDeQnFjOXa5HkUjba1Z+LdqGBGLzS/mKGqNMqQQ=
+	t=1745950663; cv=none; b=OdXrIutZkyfzeuyuE/OOpyZ1hpYXgJ4SgkQ2vOudERUkDFdMWMwz6F3Xd4Zb/e7ElQhaSlTeKV7Zr1WjVMz8GF5leuyOQWU4U3OEag+/1dD7XDUfab4XMcZhGi5CVQBPJvNwZXQGLwxWrl3Hbs/dH8TaIAXHXMTc9tyyMFatBSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949945; c=relaxed/simple;
-	bh=Tp5tCO7p+KURk0LiNljPM/9p4v9MO4Wwy5o2fUEb4U8=;
+	s=arc-20240116; t=1745950663; c=relaxed/simple;
+	bh=rGMdd8G4od1LZMjca9T0e9gTFk573njSeFyW4PrBd+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bAx6Q5Mq3k2dsh1zxIzaTaBf5CRbNPDBZFeVZzzd4vGfWx7xypnOh4+qPll3UwqLkHCS6inyN+cSvxbeW0OnKkcD/wqP/yacYRwqTD/sf6LYNxSOQ1/H2MRZyK3E6PNF7UOUQyrVe7M9Q4HLfGQLXu+u36mjyKgGaKuxqNAT9u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFCfEkbU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E04C4CEE3;
-	Tue, 29 Apr 2025 18:05:44 +0000 (UTC)
+	 MIME-Version; b=tZGFvM8pyAYZ84oSni3WJx9VH8LKp0PHw1I5yJcPhDb/5yEWoFF8MXsT1YeUkXAgIaqgrcmRJqvW00bK/w8JOTlnErzyqjo3XYV09Y5Ltz/80DGQwudfMpJdwPcJ7CTSvw5O1DyzOLApU9jeVH3ubqqhWDEHhTKigi4bTQEmPpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dL5j4xC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF445C4CEE3;
+	Tue, 29 Apr 2025 18:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949944;
-	bh=Tp5tCO7p+KURk0LiNljPM/9p4v9MO4Wwy5o2fUEb4U8=;
+	s=korg; t=1745950663;
+	bh=rGMdd8G4od1LZMjca9T0e9gTFk573njSeFyW4PrBd+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vFCfEkbUXa5AJbIe4UsqmJHX9lCc0vGu4HiAMTcQP88wjn8l4VpoYfUseZN4dAP2F
-	 JsgAEJg971aUJlFUcARkO2oLGbQ+okCnsSK0n3mcfWFR6i9bm6fsNb8r6Zz/LKkTyF
-	 9ztEHEu/x/0WKYZaGLNa6Qlz/Vu2aXzYICocOEQ8=
+	b=dL5j4xC77+l1z2P61EAB93Re637eIdyjIr3hOkvo0dlrdbzX/OlPwWUUEVVlcvoel
+	 0kNkP+/Y2jv5nYFDSVvXGaSuMFJKvQt6eGye1y0hyecT/4SjE7osVa0/BHk32jalBY
+	 pk85+sqlm+YFQvjvCWkA50vNsTq6HqTic9jA8mj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ferry Toth <fntoth@gmail.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/167] usb: dwc3: gadget: Refactor loop to avoid NULL endpoints
+Subject: [PATCH 6.6 127/204] bpf: Only fails the busy counter check in bpf_cgrp_storage_get if it creates storage
 Date: Tue, 29 Apr 2025 18:43:35 +0200
-Message-ID: <20250429161056.072195685@linuxfoundation.org>
+Message-ID: <20250429161104.627891272@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit eafba0205426091354f050381c32ad1567c35844 ]
+[ Upstream commit f4edc66e48a694b3e6d164cc71f059de542dfaec ]
 
-Prepare the gadget driver to handle the reserved endpoints that will be
-not allocated at the initialisation time.
+The current cgrp storage has a percpu counter, bpf_cgrp_storage_busy,
+to detect potential deadlock at a spin_lock that the local storage
+acquires during new storage creation.
 
-While at it, add a warning where the NULL endpoint should never happen.
+There are false positives. It turns out to be too noisy in
+production. For example, a bpf prog may be doing a
+bpf_cgrp_storage_get on map_a. An IRQ comes in and triggers
+another bpf_cgrp_storage_get on a different map_b. It will then
+trigger the false positive deadlock check in the percpu counter.
+On top of that, both are doing lookup only and no need to create
+new storage, so practically it does not need to acquire
+the spin_lock.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: Ferry Toth <fntoth@gmail.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250212193116.2487289-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The bpf_task_storage_get already has a strategy to minimize this
+false positive by only failing if the bpf_task_storage_get needs
+to create a new storage and the percpu counter is busy. Creating
+a new storage is the only time it must acquire the spin_lock.
+
+This patch borrows the same idea. Unlike task storage that
+has a separate variant for tracing (_recur) and non-tracing, this
+patch stays with one bpf_cgrp_storage_get helper to keep it simple
+for now in light of the upcoming res_spin_lock.
+
+The variable could potentially use a better name noTbusy instead
+of nobusy. This patch follows the same naming in
+bpf_task_storage_get for now.
+
+I have tested it by temporarily adding noinline to
+the cgroup_storage_lookup(), traced it by fentry, and the fentry
+program succeeded in calling bpf_cgrp_storage_get().
+
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20250318182759.3676094-1-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ kernel/bpf/bpf_cgrp_storage.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 75f24febaee4b..3360a59c3d331 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -555,6 +555,7 @@ static int dwc3_gadget_set_xfer_resource(struct dwc3_ep *dep)
- int dwc3_gadget_start_config(struct dwc3 *dwc, unsigned int resource_index)
+diff --git a/kernel/bpf/bpf_cgrp_storage.c b/kernel/bpf/bpf_cgrp_storage.c
+index ee1c7b77096e7..fbbf3b6b9f835 100644
+--- a/kernel/bpf/bpf_cgrp_storage.c
++++ b/kernel/bpf/bpf_cgrp_storage.c
+@@ -162,6 +162,7 @@ BPF_CALL_5(bpf_cgrp_storage_get, struct bpf_map *, map, struct cgroup *, cgroup,
+ 	   void *, value, u64, flags, gfp_t, gfp_flags)
  {
- 	struct dwc3_gadget_ep_cmd_params params;
-+	struct dwc3_ep		*dep;
- 	u32			cmd;
- 	int			i;
- 	int			ret;
-@@ -571,8 +572,13 @@ int dwc3_gadget_start_config(struct dwc3 *dwc, unsigned int resource_index)
- 		return ret;
+ 	struct bpf_local_storage_data *sdata;
++	bool nobusy;
  
- 	/* Reset resource allocation flags */
--	for (i = resource_index; i < dwc->num_eps && dwc->eps[i]; i++)
--		dwc->eps[i]->flags &= ~DWC3_EP_RESOURCE_ALLOCATED;
-+	for (i = resource_index; i < dwc->num_eps; i++) {
-+		dep = dwc->eps[i];
-+		if (!dep)
-+			continue;
-+
-+		dep->flags &= ~DWC3_EP_RESOURCE_ALLOCATED;
-+	}
+ 	WARN_ON_ONCE(!bpf_rcu_lock_held());
+ 	if (flags & ~(BPF_LOCAL_STORAGE_GET_F_CREATE))
+@@ -170,21 +171,21 @@ BPF_CALL_5(bpf_cgrp_storage_get, struct bpf_map *, map, struct cgroup *, cgroup,
+ 	if (!cgroup)
+ 		return (unsigned long)NULL;
  
- 	return 0;
+-	if (!bpf_cgrp_storage_trylock())
+-		return (unsigned long)NULL;
++	nobusy = bpf_cgrp_storage_trylock();
+ 
+-	sdata = cgroup_storage_lookup(cgroup, map, true);
++	sdata = cgroup_storage_lookup(cgroup, map, nobusy);
+ 	if (sdata)
+ 		goto unlock;
+ 
+ 	/* only allocate new storage, when the cgroup is refcounted */
+ 	if (!percpu_ref_is_dying(&cgroup->self.refcnt) &&
+-	    (flags & BPF_LOCAL_STORAGE_GET_F_CREATE))
++	    (flags & BPF_LOCAL_STORAGE_GET_F_CREATE) && nobusy)
+ 		sdata = bpf_local_storage_update(cgroup, (struct bpf_local_storage_map *)map,
+ 						 value, BPF_NOEXIST, gfp_flags);
+ 
+ unlock:
+-	bpf_cgrp_storage_unlock();
++	if (nobusy)
++		bpf_cgrp_storage_unlock();
+ 	return IS_ERR_OR_NULL(sdata) ? (unsigned long)NULL : (unsigned long)sdata->data;
  }
-@@ -721,9 +727,11 @@ void dwc3_gadget_clear_tx_fifos(struct dwc3 *dwc)
  
- 	dwc->last_fifo_depth = fifo_depth;
- 	/* Clear existing TXFIFO for all IN eps except ep0 */
--	for (num = 3; num < min_t(int, dwc->num_eps, DWC3_ENDPOINTS_NUM);
--	     num += 2) {
-+	for (num = 3; num < min_t(int, dwc->num_eps, DWC3_ENDPOINTS_NUM); num += 2) {
- 		dep = dwc->eps[num];
-+		if (!dep)
-+			continue;
-+
- 		/* Don't change TXFRAMNUM on usb31 version */
- 		size = DWC3_IP_IS(DWC3) ? 0 :
- 			dwc3_readl(dwc->regs, DWC3_GTXFIFOSIZ(num >> 1)) &
-@@ -3525,6 +3533,8 @@ static bool dwc3_gadget_endpoint_trbs_complete(struct dwc3_ep *dep,
- 
- 		for (i = 0; i < DWC3_ENDPOINTS_NUM; i++) {
- 			dep = dwc->eps[i];
-+			if (!dep)
-+				continue;
- 
- 			if (!(dep->flags & DWC3_EP_ENABLED))
- 				continue;
-@@ -3713,6 +3723,10 @@ static void dwc3_endpoint_interrupt(struct dwc3 *dwc,
- 	u8			epnum = event->endpoint_number;
- 
- 	dep = dwc->eps[epnum];
-+	if (!dep) {
-+		dev_warn(dwc->dev, "spurious event, endpoint %u is not allocated\n", epnum);
-+		return;
-+	}
- 
- 	if (!(dep->flags & DWC3_EP_ENABLED)) {
- 		if ((epnum > 1) && !(dep->flags & DWC3_EP_TRANSFER_STARTED))
 -- 
 2.39.5
 
