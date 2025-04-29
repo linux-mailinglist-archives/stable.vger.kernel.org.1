@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-137214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB070AA1253
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A02AA178C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CFEE5A0BAA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A19D1BC4DC0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F276243364;
-	Tue, 29 Apr 2025 16:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612C524DFF3;
+	Tue, 29 Apr 2025 17:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uopDN5Zj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udZ8P191"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6D3215060;
-	Tue, 29 Apr 2025 16:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1965121ABC1;
+	Tue, 29 Apr 2025 17:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945403; cv=none; b=Nsl5gYqYqDAIjwG4GB7LUIEJYMDrmUHgqWkDj58LMrl0Pttujaq9Mt+YSikm5T/4SnWGBqTGdh/FlnpKbtKjdDX2nJE1RB1TA4lbY5McSMTuJSBTNRlNsQJV1oorxc8tZdGXpbj6F0uentF/DQpG4gqSNHg194/mhj76JzjcSCc=
+	t=1745948922; cv=none; b=NSz2RfsUPpDxK7W+RA0ZGNUnuFT4StKMyHxBSN7cFGujjyRNQ9bCUaHRY6S2Bwqheg2pty99LY0LmxFL2Wn9zVmvHyfzoQfPOllq9HWKVSWXhHx5C1lwOG1RtRIzFuUfsGoIWokI46NtG4jZ35QCCxFxLgmMzcIo9GyIWnk72Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945403; c=relaxed/simple;
-	bh=sj2ks5V0GgpmI+IsdE1gTYj7M7nzbC51JXV3LnN7xLo=;
+	s=arc-20240116; t=1745948922; c=relaxed/simple;
+	bh=NkhNXFt9kXJjlcCzLVL7POCRWr21LkE0+O5C/TNqm6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5KqcHh8T97Uc8VKyGzUDBJNbfqHYtWBK5HwDlI6fQR17ZE4s87PvGmUlP5qg+oIQ+ZKa4/89qY5tGjEdWN5yJMv+HbOvKn0bmfsxM48333K7nB5DsZHJAoK3ycbpy20CVnm4fh6Pl9DXcCiOyWqNE4spwsmz7SJbw9IhqnX+zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uopDN5Zj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B147AC4CEE3;
-	Tue, 29 Apr 2025 16:50:02 +0000 (UTC)
+	 MIME-Version; b=ha36B7a4A5yLx7VL2IZdV6Vy8E1jwdabiESFhG9I2MRbrTgW1LZNNQKdbJwO7yfmWIAxz8Um7XiV2BnYzT/HsLBVFosfZz5ApBz6vNk+8aaq1exAS+l5EsNYUTE/JkCDt5Y5wiebuYGg+5J1/xIuOnq67JnHdG9XbhuHYSkO1Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udZ8P191; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429E6C4CEE3;
+	Tue, 29 Apr 2025 17:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945403;
-	bh=sj2ks5V0GgpmI+IsdE1gTYj7M7nzbC51JXV3LnN7xLo=;
+	s=korg; t=1745948921;
+	bh=NkhNXFt9kXJjlcCzLVL7POCRWr21LkE0+O5C/TNqm6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uopDN5ZjqiWbDlah6E2V1c0DP+rfX0Y8cCh/CbuTerR8K5pmierDiJZ9wSXQXXcYo
-	 oga6qPFWiK/rZ/6IQhlQpyvBkuTRguYohCMZ440eUTQcx/np8qinQ6W5MWAZumCIde
-	 pdQ8i5vwFoUshlI7y01kV5qM714wVYvNYdPt5JPc=
+	b=udZ8P191stZmDWoqIWEHg3bpKWGm8LRaweaOH3wwyKJua3TT4SRSRPRr96b7zJ1e2
+	 LZWZqrZvT3upTaVSlkqEWDZYqOUUR41jOVcF+dSG6vNRJ4EfqDNMI6Wa1qXbBHtMih
+	 BGBz5DLwjHMRpymc0Klj9Oe/FPRs+YsL400xSkgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
 	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.4 101/179] i2c: cros-ec-tunnel: defer probe if parent EC is not present
+Subject: [PATCH 5.15 165/373] i2c: cros-ec-tunnel: defer probe if parent EC is not present
 Date: Tue, 29 Apr 2025 18:40:42 +0200
-Message-ID: <20250429161053.486415338@linuxfoundation.org>
+Message-ID: <20250429161129.955657672@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
