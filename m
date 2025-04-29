@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-138068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D184AA166E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A8CAA17C9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A54A016AFC5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 709514C5B56
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C102512D8;
-	Tue, 29 Apr 2025 17:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314E124BD02;
+	Tue, 29 Apr 2025 17:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgiRL2h8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opazBSvC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E8D82C60;
-	Tue, 29 Apr 2025 17:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23FF2472B9;
+	Tue, 29 Apr 2025 17:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948030; cv=none; b=SYm73lFp9ckScTno6vykIzkL7a4c++FniGcVxrOrrMJNkShroKqFZOxs437g+gaLLd9skMX4Mmti/r62G1fcdHdRPgsI8glz+j7F9F71CqBQmacU0yWP+CSTKXZSpgTTUtzTZATz79u48rpFbxS6Rt5AlCZ1RB/cOSwJOKT29Go=
+	t=1745949074; cv=none; b=SCxUcZ67JiO2J1D7lYQcD0k6BpnzhgzQNCjV1+WEt7j25eY8obcB/4J8Sxn/SewBOlm0o6pjz5h0U+txzzdfHKaeKILOah176UnUV2K/e14IJNx8ZF37qLW+JAAwcJ4nhRjejr0aKl04mHkuL3Tue5kj6i/zEqv1Npsy7bdbn/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948030; c=relaxed/simple;
-	bh=xPPkVY26L4JB/ZD6GXIWjW38X95jTHscsOQZzDDVc/U=;
+	s=arc-20240116; t=1745949074; c=relaxed/simple;
+	bh=/gMo7YWm+7G4QqVktOch7ytkdK7VIpLhpqRSlTG+F3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5RG4k+537uJ8ySE5MxzBgpxb63JXsv45a7IMSF5wiLA8xb1x7tB+7uFB/f9JxRJWSwICmv3fbzlHut+jUXTgmyni010oY4/ZQwznTL6A2E3iii1QloDKKg7rG6+vqS8PS91i5Ih3M0Ucdkhw+oiLwr025l2TpIjSSv2h2jfHcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgiRL2h8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4ED9C4CEE3;
-	Tue, 29 Apr 2025 17:33:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Iegw86tJVG3w3ZnPtEWEnCxPHNOv08bdMTX8K6NoLtrWglo31zcaMhDcE8FyP1byboRnsEQtUNH5GYj0pRy4RctaBgtoxW8EzCs15fOvfw14HNrPE6fA2pgpTRoPoXSi2Dbb/Us8Td8sC/6L3xG1fh+9NSSdqpzkuoeGBIx04fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opazBSvC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63804C4CEE3;
+	Tue, 29 Apr 2025 17:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948029;
-	bh=xPPkVY26L4JB/ZD6GXIWjW38X95jTHscsOQZzDDVc/U=;
+	s=korg; t=1745949073;
+	bh=/gMo7YWm+7G4QqVktOch7ytkdK7VIpLhpqRSlTG+F3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RgiRL2h8/+llBMOXSzWhQQTKbBHTKwKPs0lzyO1LsQO441p0wpVQScaTX85QkzmtU
-	 GQLWDBbJu1uwSHiOifADygIjhawBJXb/Ey1Btf1NsqZJOX9mp9uFRYoO7xqUnbGD3U
-	 ThGD5NpNkFl312NaNekdbf/cUgasd7mV3v+LZbmo=
+	b=opazBSvCZjM2iCzJcAsp5UzGS3CgZiZApZ2UsawZSKzU9Ug+BUpdiMxaYneks6gUh
+	 3IfYHjxthaa6J1/S0lm8n/mA+d5lqg2bNqxxF249ObBW9RxyovXEGjxb1wophOZ23n
+	 ZOuhTkXfXJSUfDqXFjqGy7QsoyIhqN7Xjv/zft9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Mingcong Bai <baimingcong@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 142/280] USB: OHCI: Add quirk for LS7A OHCI controller (rev 0x02)
+	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 5.15 206/373] phonet/pep: fix racy skb_queue_empty() use
 Date: Tue, 29 Apr 2025 18:41:23 +0200
-Message-ID: <20250429161120.937381937@linuxfoundation.org>
+Message-ID: <20250429161131.638270468@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Rémi Denis-Courmont <courmisch@gmail.com>
 
-commit bcb60d438547355b8f9ad48645909139b64d3482 upstream.
+[ Upstream commit 7d2a894d7f487dcb894df023e9d3014cf5b93fe5 ]
 
-The OHCI controller (rev 0x02) under LS7A PCI host has a hardware flaw.
-MMIO register with offset 0x60/0x64 is treated as legacy PS2-compatible
-keyboard/mouse interface, which confuse the OHCI controller. Since OHCI
-only use a 4KB BAR resource indeed, the LS7A OHCI controller's 32KB BAR
-is wrapped around (the second 4KB BAR space is the same as the first 4KB
-internally). So we can add an 4KB offset (0x1000) to the OHCI registers
-(from the PCI BAR resource) as a quirk.
+The receive queues are protected by their respective spin-lock, not
+the socket lock. This could lead to skb_peek() unexpectedly
+returning NULL or a pointer to an already dequeued socket buffer.
 
-Cc: stable <stable@kernel.org>
-Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Tested-by: Mingcong Bai <baimingcong@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://lore.kernel.org/r/20250328040059.3672979-1-chenhuacai@loongson.cn
+Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
+Signed-off-by: Rémi Denis-Courmont <courmisch@gmail.com>
+Link: https://lore.kernel.org/r/20240218081214.4806-2-remi@remlab.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Harshit: backport to 5.15.y, clean cherrypick from 6.1.y commit]
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/ohci-pci.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ net/phonet/pep.c |   41 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 32 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/host/ohci-pci.c
-+++ b/drivers/usb/host/ohci-pci.c
-@@ -165,6 +165,25 @@ static int ohci_quirk_amd700(struct usb_
+--- a/net/phonet/pep.c
++++ b/net/phonet/pep.c
+@@ -916,6 +916,37 @@ static int pep_sock_enable(struct sock *
  	return 0;
  }
  
-+static int ohci_quirk_loongson(struct usb_hcd *hcd)
++static unsigned int pep_first_packet_length(struct sock *sk)
 +{
-+	struct pci_dev *pdev = to_pci_dev(hcd->self.controller);
++	struct pep_sock *pn = pep_sk(sk);
++	struct sk_buff_head *q;
++	struct sk_buff *skb;
++	unsigned int len = 0;
++	bool found = false;
 +
-+	/*
-+	 * Loongson's LS7A OHCI controller (rev 0x02) has a
-+	 * flaw. MMIO register with offset 0x60/64 is treated
-+	 * as legacy PS2-compatible keyboard/mouse interface.
-+	 * Since OHCI only use 4KB BAR resource, LS7A OHCI's
-+	 * 32KB BAR is wrapped around (the 2nd 4KB BAR space
-+	 * is the same as the 1st 4KB internally). So add 4KB
-+	 * offset (0x1000) to the OHCI registers as a quirk.
-+	 */
-+	if (pdev->revision == 0x2)
-+		hcd->regs += SZ_4K;	/* SZ_4K = 0x1000 */
++	if (sock_flag(sk, SOCK_URGINLINE)) {
++		q = &pn->ctrlreq_queue;
++		spin_lock_bh(&q->lock);
++		skb = skb_peek(q);
++		if (skb) {
++			len = skb->len;
++			found = true;
++		}
++		spin_unlock_bh(&q->lock);
++	}
 +
-+	return 0;
++	if (likely(!found)) {
++		q = &sk->sk_receive_queue;
++		spin_lock_bh(&q->lock);
++		skb = skb_peek(q);
++		if (skb)
++			len = skb->len;
++		spin_unlock_bh(&q->lock);
++	}
++
++	return len;
 +}
 +
- static int ohci_quirk_qemu(struct usb_hcd *hcd)
+ static int pep_ioctl(struct sock *sk, int cmd, unsigned long arg)
  {
- 	struct ohci_hcd *ohci = hcd_to_ohci(hcd);
-@@ -225,6 +244,10 @@ static const struct pci_device_id ohci_p
- 		.driver_data = (unsigned long)ohci_quirk_amd700,
- 	},
- 	{
-+		PCI_DEVICE(PCI_VENDOR_ID_LOONGSON, 0x7a24),
-+		.driver_data = (unsigned long)ohci_quirk_loongson,
-+	},
-+	{
- 		.vendor		= PCI_VENDOR_ID_APPLE,
- 		.device		= 0x003f,
- 		.subvendor	= PCI_SUBVENDOR_ID_REDHAT_QUMRANET,
+ 	struct pep_sock *pn = pep_sk(sk);
+@@ -929,15 +960,7 @@ static int pep_ioctl(struct sock *sk, in
+ 			break;
+ 		}
+ 
+-		lock_sock(sk);
+-		if (sock_flag(sk, SOCK_URGINLINE) &&
+-		    !skb_queue_empty(&pn->ctrlreq_queue))
+-			answ = skb_peek(&pn->ctrlreq_queue)->len;
+-		else if (!skb_queue_empty(&sk->sk_receive_queue))
+-			answ = skb_peek(&sk->sk_receive_queue)->len;
+-		else
+-			answ = 0;
+-		release_sock(sk);
++		answ = pep_first_packet_length(sk);
+ 		ret = put_user(answ, (int __user *)arg);
+ 		break;
+ 
 
 
 
