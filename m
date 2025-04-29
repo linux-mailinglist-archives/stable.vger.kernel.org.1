@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-138383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F11D1AA1814
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9771AA1532
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:24:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22ED59A77A7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C219866FE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498EE2528ED;
-	Tue, 29 Apr 2025 17:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656C924E01D;
+	Tue, 29 Apr 2025 17:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZOUgZBA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q46+uDhG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D9B239072;
-	Tue, 29 Apr 2025 17:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2278F24397A;
+	Tue, 29 Apr 2025 17:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949071; cv=none; b=Zdt92SNK1hv25sJvfKEsA9kNtwS6XccWoAt5gtRCudUbgeItKtPsf1YPJgUPZGihmiG3C0Tgi7yB7G05e6mDrjePe0vki6bcvxRTDYiEH77kl2eYUY3dXleVusjMvB1e/COmID7qUnf/r/pp0Js8kmttRjrTXh3B5H/C+7danKs=
+	t=1745947118; cv=none; b=Y3VYQOUEMum4mR6KtaVZza7c6ET6IRigNVMnUo7Mi9mkPbyuefgWUqauMkZoWgqj89Xz8ZEGJwT8D4cPlSFnI+njLCgWg/MsvS3I+/V4D6M22xbtUqdLmaGCoZC4V4+Az0+tEv/ONKjolX63pNjfMSN6R4ro9mGDgrDi3M/Slz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949071; c=relaxed/simple;
-	bh=PNqyWHymR0wOZ0k/qOzZbhgusK+lKCykqF9ltot5UlU=;
+	s=arc-20240116; t=1745947118; c=relaxed/simple;
+	bh=+9npQ6Lale+KaMfptes2W9SeNiFt4UM6x+brR74/1PQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cl/1U1abCtrd8KrWlNYSMc2VxHyZGFFAVapeKoofyyWEmmzfDXZliDhzdw6rMkGDS9ZOxm86fe4GDo45KFPmZJWI3MIeRByDFtmjPHzP+BtLXGsPif7Jmf83MVJKALUJIXRNXP2DbdRzQVfvYSRW0JjtG6RNG/UkpzWCReOpIX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZOUgZBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7125DC4CEE3;
-	Tue, 29 Apr 2025 17:51:10 +0000 (UTC)
+	 MIME-Version; b=FFAqDLhRSKGG058/5tQiY4sxLTkdVFWyUHwc2vmL+BRkccWY4MsukxkUR/hwAe9oZvBuacHE6iQX5cq0x5KGU3SZvMOaUDc3lwDzOUdrG87FRmS+9GufXvlW+pW5ubHg7sKGDCg9ps8SPnzYheQkndvWJ231tkrVHwUO3rbFVMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q46+uDhG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FD0C4CEE3;
+	Tue, 29 Apr 2025 17:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949070;
-	bh=PNqyWHymR0wOZ0k/qOzZbhgusK+lKCykqF9ltot5UlU=;
+	s=korg; t=1745947118;
+	bh=+9npQ6Lale+KaMfptes2W9SeNiFt4UM6x+brR74/1PQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZZOUgZBAC4AguIt1yBZGzjfRm6uIkwhdRtdqHMM2MUKamgkRnfuQf9bGhnkOOmPQ0
-	 Rhzh6jU7Xu/8zJXW3NM8vX0g+x/u4vjgK55PLtSUIKLMoCbTL9phE6bYe/Bk8BNEK8
-	 GhUumxPQsTU1DgJs1O9VQTtIA+2na3VhRTlGL2Bw=
+	b=q46+uDhGdAEo4CzotKU7I47EANZJAObziheEDERxf7LJ/wCBTki5R3oxwQPzvcSFH
+	 0qM5oCM6dQoNzRNvRII5KfbVHA/VTIB8Tg4a17QohKpA1uh/GA9daUvrT4igP3jA3W
+	 TtLq0+LPb7JTFmGMfsiqS+wdo7ay60IeNCJiJPYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.15 205/373] filemap: Fix bounds checking in filemap_read()
+	Guixin Liu <kanie@linux.alibaba.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.10 178/286] scsi: ufs: bsg: Set bsg_queue to NULL after removal
 Date: Tue, 29 Apr 2025 18:41:22 +0200
-Message-ID: <20250429161131.597706216@linuxfoundation.org>
+Message-ID: <20250429161115.227151652@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Guixin Liu <kanie@linux.alibaba.com>
 
-[ Upstream commit ace149e0830c380ddfce7e466fe860ca502fe4ee ]
+commit 1e95c798d8a7f70965f0f88d4657b682ff0ec75f upstream.
 
-If the caller supplies an iocb->ki_pos value that is close to the
-filesystem upper limit, and an iterator with a count that causes us to
-overflow that limit, then filemap_read() enters an infinite loop.
+Currently, this does not cause any issues, but I believe it is necessary to
+set bsg_queue to NULL after removing it to prevent potential use-after-free
+(UAF) access.
 
-This behaviour was discovered when testing xfstests generic/525 with the
-"localio" optimisation for loopback NFS mounts.
-
-Reported-by: Mike Snitzer <snitzer@kernel.org>
-Fixes: c2a9737f45e2 ("vfs,mm: fix a dead loop in truncate_inode_pages_range()")
-Tested-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-(cherry picked from commit ace149e0830c380ddfce7e466fe860ca502fe4ee)
-[Harshit: Minor conflict resolved due to missing commit: 25d6a23e8d28
-("filemap: Convert filemap_get_read_batch() to use a folio_batch") in
-5.15.y]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20241218014214.64533-3-kanie@linux.alibaba.com
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/filemap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/ufs/ufs_bsg.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -2617,7 +2617,7 @@ ssize_t filemap_read(struct kiocb *iocb,
- 	if (unlikely(!iov_iter_count(iter)))
- 		return 0;
+--- a/drivers/scsi/ufs/ufs_bsg.c
++++ b/drivers/scsi/ufs/ufs_bsg.c
+@@ -175,6 +175,7 @@ void ufs_bsg_remove(struct ufs_hba *hba)
+ 		return;
  
--	iov_iter_truncate(iter, inode->i_sb->s_maxbytes);
-+	iov_iter_truncate(iter, inode->i_sb->s_maxbytes - iocb->ki_pos);
- 	pagevec_init(&pvec);
+ 	bsg_remove_queue(hba->bsg_queue);
++	hba->bsg_queue = NULL;
  
- 	do {
+ 	device_del(bsg_dev);
+ 	put_device(bsg_dev);
 
 
 
