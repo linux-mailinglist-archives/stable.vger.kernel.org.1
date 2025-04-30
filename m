@@ -1,58 +1,140 @@
-Return-Path: <stable+bounces-139136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8687AA4A47
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 13:39:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97900AA4A5F
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 13:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EE3D9C1040
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 11:38:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5527C4C2429
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 11:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0662D248F53;
-	Wed, 30 Apr 2025 11:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9418E259C8A;
+	Wed, 30 Apr 2025 11:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=pm.me header.i=@pm.me header.b="gmNk0Q7Z"
+	dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b="RTB3JeXJ";
+	dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b="RTB3JeXJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+Received: from gmmr-4.centrum.cz (gmmr-4.centrum.cz [46.255.227.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E82D20E323;
-	Wed, 30 Apr 2025 11:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BA22505BE;
+	Wed, 30 Apr 2025 11:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.227.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746013138; cv=none; b=cLh8S1NBhionbKAk7ZzEURv4MNtPWa4fnBItdXBeuOLin+kMsq+NP6cPdDL7p0gx5aw8G6vWikqakT4d41jd8JqhuhehAlOvQTmlVp1xr+pa6kbO+/PyYlp5ikyriApXxew2H2tn+NRboIjOU7lG6Vhz68y26gShJemf90D9Qgo=
+	t=1746014061; cv=none; b=E9pQket/MASXbtLb6M5kouKvG+S8W5HtHQfGywIE597EGQ295hkgaXsXWXcqVoRAnHMHhZskPC6qfVfYALJyJf1BmlbBMyeI5GGOsnutEYwAMe100vrexqPPSbzt9ybCcALBUKNDq9kqgcLTpY4kTHWLEoP7EX12OGY8SNqXPCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746013138; c=relaxed/simple;
-	bh=9AnckJCG6gd1plf0Q0XYwEs3W0fyuV9EhX+8WgPI8dY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r92SOV1DQnc4qa+2oBvKih63H1P336AoIXMN+hmd0ORykvo22bEyGPa5vmvku+YkM1cxy+WSpWD0VV1ifl58KsJIkfEz2+kKjCg8kwTS/x1KbHK+BPpH7up9Vx4uNR6ZwZBHvoC1kybTSVRhjWrW+XF67oK7KvYGpWp9azMCqXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=gmNk0Q7Z; arc=none smtp.client-ip=51.77.79.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1746013120; x=1746272320;
-	bh=0EFiUKiTKgq2MElHwvfQI4NNLvqB0a2OzXcjGOEO/JI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=gmNk0Q7Z4Lxs8myur9amEAaLwgd9ZASNPABKiyNQQtR12y8ovsNrLHbYxVZNgVpS4
-	 Jo48d5IhlI1Ga3xjRAc7gWe33ZmQzcLY5f5xTDpdn/g0oIeEm3yxHbgcMrtv0bl+hU
-	 YJuD2LTjjtaXoUejq/Hw49BR2qEAKye2f3xlA7VroJi/eI4sfF+bqy9f0iA8TVaDNb
-	 pZkQA0KRhKyDs7WJrt6QFvBUcmh1rGT7SDrf6gXdM9lVkCtmmPWjkLU/nymdEyhOW5
-	 UUvYudnL4WtCcZKgAS8XntCAKW0Xpt/McLtMlZzgg1JFeIYLsRksdYM0vjxyKUjTmI
-	 gtFqwuh56Ru/A==
-Date: Wed, 30 Apr 2025 11:38:33 +0000
-To: Mingyen Hsieh <Mingyen.Hsieh@mediatek.com>
-From: fossben@pm.me
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>, Allan Wang <Allan.Wang@mediatek.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: Re: [REGRESSION][BISECTED][STABLE] MT7925: mDNS and IPv6 broken in kernel 6.14.3 and above
-Message-ID: <Rc4t9joagJOAMRwFdiBdsR7ohouSCoRfWEle0muAuVQPREi2e33ZAua7v2-KYJ918HB3BXifBKZ9tn0DZ16wih1ASQgRjH95uqlnBSA-hnM=@pm.me>
-In-Reply-To: <f73dec60b60dd7bb3be40c1feefbe223c7afe19b.camel@mediatek.com>
-References: <EmWnO5b-acRH1TXbGnkx41eJw654vmCR-8_xMBaPMwexCnfkvKCdlU5u19CGbaapJ3KRu-l3B-tSUhf8CCQwL0odjo6Cd5YG5lvNeB-vfdg=@pm.me> <f73dec60b60dd7bb3be40c1feefbe223c7afe19b.camel@mediatek.com>
-Feedback-ID: 134317997:user:proton
-X-Pm-Message-ID: 2e01ae79f045946943168e8916213d6d7fbf7a62
+	s=arc-20240116; t=1746014061; c=relaxed/simple;
+	bh=+VarrTygfhbwK4js+lP3jOaPp2vAB8U3GzifIiBuJ1Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DhCRAKYqQOOYizqqdhtjzPxteo+oUHzUl1qoGa+JWbqLuHite90S4mLqvwaBmlaLKDngbU7oOjGBJx1yS1h3oC6vI/KB3ovc1R49RvoHKV7On1fCvO+WvyuKrKgmkbVSTbY+RUmT7BdVyH+kL8gLf//k80F2tlO2eGL+1xm6ZSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz; spf=pass smtp.mailfrom=atlas.cz; dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b=RTB3JeXJ; dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b=RTB3JeXJ; arc=none smtp.client-ip=46.255.227.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atlas.cz
+Received: from gmmr-1.centrum.cz (envoy-stl.cent [10.32.56.18])
+	by gmmr-4.centrum.cz (Postfix) with ESMTP id 799A070359;
+	Wed, 30 Apr 2025 13:52:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=atlas.cz; s=mail;
+	t=1746013929; bh=gRxAtLm/QO9fsYQPEJOWqw8SabNqdhfSGQ+yE3cIFwE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RTB3JeXJA546P08RVVGQI0ARlHDGeoa1e/aQfRytY5xZ7Qhw1I3FTXp31PmlwLXn1
+	 DaDZysat3X4oJZ9DPKcacajfwznyyndLnJcDwk77p/h7xlRxuB2Hd3lT4Mtu2OU+P2
+	 pa+UzKyJXmeZ5vShPMXd4+TvzY2ZI0tlXTS0QGug=
+Received: from gmmr-1.centrum.cz (localhost [127.0.0.1])
+	by gmmr-1.centrum.cz (Postfix) with ESMTP id 75FA8389;
+	Wed, 30 Apr 2025 13:52:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=atlas.cz; s=mail;
+	t=1746013929; bh=gRxAtLm/QO9fsYQPEJOWqw8SabNqdhfSGQ+yE3cIFwE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RTB3JeXJA546P08RVVGQI0ARlHDGeoa1e/aQfRytY5xZ7Qhw1I3FTXp31PmlwLXn1
+	 DaDZysat3X4oJZ9DPKcacajfwznyyndLnJcDwk77p/h7xlRxuB2Hd3lT4Mtu2OU+P2
+	 pa+UzKyJXmeZ5vShPMXd4+TvzY2ZI0tlXTS0QGug=
+Received: from antispam23.centrum.cz (antispam23.cent [10.30.208.23])
+	by gmmr-1.centrum.cz (Postfix) with ESMTP id 742931B4;
+	Wed, 30 Apr 2025 13:52:09 +0200 (CEST)
+X-CSE-ConnectionGUID: il8GC3snTl+fq4UfCzNHZw==
+X-CSE-MsgGUID: mUzgsuM3Rwutlk1vHl3xAQ==
+X-ThreatScanner-Verdict: Negative
+X-IPAS-Result: =?us-ascii?q?A2EPAACjDRJo/0vj/y5aGwEBAQEBAQEBBQEBARIBAQEDA?=
+ =?us-ascii?q?wEBAUAJgTcFAQEBCwGDQIFkhFWRcQOKJIgFi2uBfg8BAQEBAQEBAQEJPQcEA?=
+ =?us-ascii?q?QEDBDiESAKLNSc1CA4BAgQBAQEBAwIDAQEBAQEBAQEBDQEBBgEBAQEBAQYGA?=
+ =?us-ascii?q?QKBHYU1Rg2CYgGBJIEmAQEBAQEBAQEBAQEBHQINfQEBAQECASMECwFGBQsLD?=
+ =?us-ascii?q?QsCAiYCAlYGE4MCAYIvAQMOIxSxM3p/DSYaAmXccAJJBVVjgSQGgRsuAYhPA?=
+ =?us-ascii?q?YVshHdCgg2EBzg+gkoXBBiFIYJpBIItgRaFeZgnUnscA1ksAVUTFwsHBYEmQ?=
+ =?us-ascii?q?wOBDyNLBS4dghGFIYIRgVwDAyIBgxN0HIRphFAtT4MvggJoRCNAAwttPTcUG?=
+ =?us-ascii?q?waWfINkBgFyHBwQFwllEy3FD4JDgxyBCYROh0uVSjOXcAOSZC6HZZBrG41rm?=
+ =?us-ascii?q?y+BUBkBghMzIjCDIlIZl0O1eXYCAQEBNwIHAQoBAQMJgjuNfIFLAQE?=
+IronPort-PHdr: A9a23:PAfZtRKPXN13wwpQUdmcuCdgWUAX0o4c3iYr45Yqw4hDbr6kt8y7e
+ hCEv7M11BSTA9uFsrptsKn/jePJYSQ4+5GPsXQPItRndiQuroE7uTJlK+O+TXPBEfjxciYhF
+ 95DXlI2t1uyMExSBdqsLwaK+i764jEdAAjwOhRoLerpBIHSk9631+ev8JHPfglEnjWwbL1sI
+ BmssQndqsYajZVjJ6swyxbFv2ZDdvhLy29vOV+ckBHw69uq8pV+6SpQofUh98BBUaX+Yas1S
+ KFTASolPW4o+sDlrAHPQwSX6HQTS2kbjBVGDRXd4B71Qpn+vC36tvFg2CaBJs35Uao0WTW54
+ Kh1ThLjlToKOCQ48GHTjcxwkb5brRe8rBFx34LYfIeYP+dlc6jDYd0VW3ZOXsdJVyxAHIy8a
+ ZcPD/EcNupctoXxukcCoQe7CQSqGejhyCJHhmXu0KM00+ovDx/L0hEjEdIAv3vbsMj6OqgQX
+ u2u0KnFzi/OY+9K1Tvh6oXFdA0qr/GWXbJ3dMrc0VMhGB3ZjlWKtIfqMCma1uITtmiY8uFtU
+ vigi3Qkqw5rpzig3N0sh5LTiYIJzlDL7z55zJwpKty5UUN2Z8OvH5RMuS+ALYR2Xt8iTH9yu
+ CY80rAItpG1cicJxZg5xBPSa/iKfoyG7x79VOufITN1iXJqdr6imxu/8kmtxOPzW8S13ltHo
+ TZInsTQu30P1BHe6taKR/1g9Umv3jaP0hrc6uBCIU0slqrUNYQhwrgumZoXq0jDGTX2mErwg
+ aSLdUsk4vCl5uvmb7n8uJORN495hhvgPqgwmMGzG+Y1PwgWU2SF5Oix2qfv8VPnTLlWlPE6j
+ KbUvIzAKckfp6O0BRJe3Jw55BalFTim1cwVnXwALF1YZh2Kl5PpO1TSIPDgCve/nkisnC9rx
+ //YOr3hBY3ALnfGkLv4ZrZ97lJcyBIuwdxC/Z5bFq8OIPTvWk/rqdzYCwU1PBC1wur/CdV90
+ J0RWX6XD6KWMa7eq0GE6+IvLuWWeoMZpjTwJ+In6vPulXM5nEUSfait3ZsZcnC4GfFmLl2Db
+ nr2gdcOC2IKsRAkTOHxklKCTTpTaGypX64m+j46CZqqDZ3fSYC1nLyBwCC7E4VMZmFGEF+MF
+ 23kd5+DW/gXdi2SONNhkicfWLe7UY8h0AuiuxP9y7piNubU4DEXtYr/1Nhp4O3ejRUy9T1yD
+ 8SA3GCBVmR0nmYTSj81wqBwu1ByylSZ3ah/mfxYGsRf5+lVXQciKZ7c0+t6BsjoVQLCZteJT
+ U2rQtGnATE3U9IwzMYCY0h6G9W/iBDMwjClA6MUl7yMApw46KXc32L+J8pl0XbJyLEhj0U6Q
+ stILWCpm7Rw9xbSB4HUiEiZjbilerkc3CHX6GeP13aBvEZdUAJoS6XKQWgfZlfKrdT+/k7CS
+ 76uCbI6MgpO0MKCKbVFasfvjVpYQPfuI8reY22vlGeqHxqIxa2DbJDse2oD2CXREk8Ekxoc/
+ XqeLwgxGj+ho37CDDxpDV/veF/s/vNlp3O/UEA51B+Kb0J/2Lqv4BIVhuKTS+kV3r0avCcts
+ TJ0HEyy397ODdqPvBJufL9AbtMl/FdHyWXZuhR8M5C4Mq9ihV8ecwFvsk322Bt4BJtOn9Q2o
+ X0sn0JOLve02U1Ae3u43JT8N7vdMGD08Fj7Z6fI2132ytua+q4Trv8/rgOwkhuuEx8a/ml9m
+ +dc1difrsHDFgkbVJvrek8r8xFh4brINHpur7jI3GFhZPHn+gTJ3MgkUa58kk7IQg==
+IronPort-Data: A9a23:gjtfcaKT2NBYMJ/5FE+R5ZQlxSXFcZb7ZxGr2PjKsXjdYENSgjVSn
+ 2sWXDjQPP6OMWL8Ldp+Pd6/9EgOvJ7QztRmQAEd+CA2RRqmiyZk6fd1jKvUF3nPRiEWZBs/t
+ 63yUvGZcYZpCCaa/krwWlTYhSEU/bmSQbbhA/LzNCl0RAt1IA8skhsLd9QR2+aEuvDnRVrQ0
+ T/Oi5eHYgL9h2Usajt8B5+r8XuDgtyj5Vv0gXRhPZinjHeG/1EJAZQWI72GLneQauF8Au6gS
+ u/f+6qy92Xf8g1FIovNfmHTLyXm6paLVeS/oiI+t5qK23CulQRuukoPD8fwXG8M49m/t4sol
+ IgS78zYpTABZcUgkMxFO/VR/roX0aduoNcrKlDn2SCfItGvn9IBDJyCAWlvVbD09NqbDklP8
+ aw3A2sWaCyHxOyvnI+1YftKpvY8eZyD0IM34hmMzBnWCLM9RIzbGvyM7tJewC0tg4ZFD54yZ
+ eJFN3w1MUmGOUcQfAhKYH49tL7Aan3XeidboVecv4I+/2za10p6wtABNfKOI4PUG58MxRnwS
+ mTu+lnrDQoHEYel1ieZ9nH1mM/LxjPSYddHfFG/3rsw6LGJ/UQJGRQQE0G8q/SjllWWUshab
+ UcT/0IGqak06VzuS9zVXAOxq33CuQQTM/JZEPU/wAWMzLfEpgieG24IRyJAb9pgs9U5LRQm3
+ 0GIk/vzCDBvuaHTQnWYnp+QrDWvKW0WIHUEaCssUwQI+Z/grZs1gxaJScxseIauktT/HTzY3
+ T+Htm49iq8VgMpN0L+0lW0rmBrw+N6TE1NzvF+IGD34hu9kWLOYi0WTwQCzxZ59wEyxFzFtY
+ FBsdxCi0d0z
+IronPort-HdrOrdr: A9a23:eseF66pEhV0SX4Op1/4xgPoaV5o8eYIsimQD101hICG9JPb4qy
+ nOpoV/6faQsl0ssR4b6LK90cW7MBDhHOdOjrX5ZI3PYOCEghrNEGg41+XfKlTbckWVygc378
+ ddmsZFZeHNMQ==
+X-Talos-CUID: 9a23:yP35kGHoX+7JHuW3qmJm8B47MZs+dEHZj3nJf3K2InRPaI+KHAo=
+X-Talos-MUID: 9a23:Vx35fQk8nW2Arj87fYWRdnpnCdVn+LmLU3oSjIkCuJCaFSgrKx6k2WE=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.15,251,1739833200"; 
+   d="scan'208";a="317662137"
+Received: from unknown (HELO gm-smtp11.centrum.cz) ([46.255.227.75])
+  by antispam23.centrum.cz with ESMTP; 30 Apr 2025 13:52:09 +0200
+Received: from arkam (ip-213-220-240-96.bb.vodafone.cz [213.220.240.96])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gm-smtp11.centrum.cz (Postfix) with ESMTPSA id E0407100AE10D;
+	Wed, 30 Apr 2025 13:52:08 +0200 (CEST)
+Date: Wed, 30 Apr 2025 13:52:06 +0200
+From: Petr =?utf-8?B?VmFuxJtr?= <arkamar@atlas.cz>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+	Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm: Fix folio_pte_batch() overcount with zero PTEs
+Message-ID: <202543011526-aBIO5nq6Olsmq2E--arkamar@atlas.cz>
+References: <20250429142237.22138-1-arkamar@atlas.cz>
+ <20250429142237.22138-2-arkamar@atlas.cz>
+ <d53fd549-887f-4220-b0d1-ebc336eecb9f@redhat.com>
+ <2025429144547-aBDmGzJBQc9RMBj--arkamar@atlas.cz>
+ <ef317615-3e26-4641-8141-4d3913ced47f@redhat.com>
+ <b6613b71-3eb9-4348-9031-c1dd172b9814@redhat.com>
+ <2025429183321-aBEbcQQY3WX6dsNI-arkamar@atlas.cz>
+ <1df577bb-eaba-4e34-9050-309ee1c7dc57@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,128 +142,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1df577bb-eaba-4e34-9050-309ee1c7dc57@redhat.com>
 
-Hi Yen,
+On Tue, Apr 29, 2025 at 08:56:03PM +0200, David Hildenbrand wrote:
+> On 29.04.25 20:33, Petr Vaněk wrote:
+> > On Tue, Apr 29, 2025 at 05:45:53PM +0200, David Hildenbrand wrote:
+> >> On 29.04.25 16:52, David Hildenbrand wrote:
+> >>> On 29.04.25 16:45, Petr Vaněk wrote:
+> >>>> On Tue, Apr 29, 2025 at 04:29:30PM +0200, David Hildenbrand wrote:
+> >>>>> On 29.04.25 16:22, Petr Vaněk wrote:
+> >>>>>> folio_pte_batch() could overcount the number of contiguous PTEs when
+> >>>>>> pte_advance_pfn() returns a zero-valued PTE and the following PTE in
+> >>>>>> memory also happens to be zero. The loop doesn't break in such a case
+> >>>>>> because pte_same() returns true, and the batch size is advanced by one
+> >>>>>> more than it should be.
+> >>>>>>
+> >>>>>> To fix this, bail out early if a non-present PTE is encountered,
+> >>>>>> preventing the invalid comparison.
+> >>>>>>
+> >>>>>> This issue started to appear after commit 10ebac4f95e7 ("mm/memory:
+> >>>>>> optimize unmap/zap with PTE-mapped THP") and was discovered via git
+> >>>>>> bisect.
+> >>>>>>
+> >>>>>> Fixes: 10ebac4f95e7 ("mm/memory: optimize unmap/zap with PTE-mapped THP")
+> >>>>>> Cc: stable@vger.kernel.org
+> >>>>>> Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
+> >>>>>> ---
+> >>>>>>      mm/internal.h | 2 ++
+> >>>>>>      1 file changed, 2 insertions(+)
+> >>>>>>
+> >>>>>> diff --git a/mm/internal.h b/mm/internal.h
+> >>>>>> index e9695baa5922..c181fe2bac9d 100644
+> >>>>>> --- a/mm/internal.h
+> >>>>>> +++ b/mm/internal.h
+> >>>>>> @@ -279,6 +279,8 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
+> >>>>>>      			dirty = !!pte_dirty(pte);
+> >>>>>>      		pte = __pte_batch_clear_ignored(pte, flags);
+> >>>>>>      
+> >>>>>> +		if (!pte_present(pte))
+> >>>>>> +			break;
+> >>>>>>      		if (!pte_same(pte, expected_pte))
+> >>>>>>      			break;
+> >>>>>
+> >>>>> How could pte_same() suddenly match on a present and non-present PTE.
+> >>>>
+> >>>> In the problematic case pte.pte == 0 and expected_pte.pte == 0 as well.
+> >>>> pte_same() returns a.pte == b.pte -> 0 == 0. Both are non-present PTEs.
+> >>>
+> >>> Observe that folio_pte_batch() was called *with a present pte*.
+> >>>
+> >>> do_zap_pte_range()
+> >>> 	if (pte_present(ptent))
+> >>> 		zap_present_ptes()
+> >>> 			folio_pte_batch()
+> >>>
+> >>> How can we end up with an expected_pte that is !present, if it is based
+> >>> on the provided pte that *is present* and we only used pte_advance_pfn()
+> >>> to advance the pfn?
+> >>
+> >> I've been staring at the code for too long and don't see the issue.
+> >>
+> >> We even have
+> >>
+> >> VM_WARN_ON_FOLIO(!pte_present(pte), folio);
+> >>
+> >> So the initial pteval we got is present.
+> >>
+> >> I don't see how
+> >>
+> >> 	nr = pte_batch_hint(start_ptep, pte);
+> >> 	expected_pte = __pte_batch_clear_ignored(pte_advance_pfn(pte, nr), flags);
+> >>
+> >> would suddenly result in !pte_present(expected_pte).
+> > 
+> > The issue is not happening in __pte_batch_clear_ignored but later in
+> > following line:
+> > 
+> >    expected_pte = pte_advance_pfn(expected_pte, nr);
+> > 
+> > The issue seems to be in __pte function which converts PTE value to
+> > pte_t in pte_advance_pfn, because warnings disappears when I change the
+> > line to
+> > 
+> >    expected_pte = (pte_t){ .pte = pte_val(expected_pte) + (nr << PFN_PTE_SHIFT) };
+> > 
+> > The kernel probably uses __pte function from
+> > arch/x86/include/asm/paravirt.h because it is configured with
+> > CONFIG_PARAVIRT=y:
+> > 
+> >    static inline pte_t __pte(pteval_t val)
+> >    {
+> >    	return (pte_t) { PVOP_ALT_CALLEE1(pteval_t, mmu.make_pte, val,
+> >    					  "mov %%rdi, %%rax", ALT_NOT_XEN) };
+> >    }
+> > 
+> > I guess it might cause this weird magic, but I need more time to
+> > understand what it does :)
 
-Here are the reproduction steps.
+I understand it slightly more. __pte() uses xen_make_pte(), which calls
+pte_pfn_to_mfn(), however, mfn for this pfn contains INVALID_P2M_ENTRY
+value, therefore the pte_pfn_to_mfn() returns 0, see [1].
 
-I have two Arch Linux machines:
-    (A) one PC (hostname: arch-desktop) connected to the network via MT7925=
- wifi
-    (B) one NAS box (hostname: arch-nas) connected to the network via Intel=
- I225-V ethernet
+I guess that the mfn was invalidated by xen-balloon driver?
 
-Both machines are running 6.14.4 and have Avahi + nss-mdns enabled accordin=
-g to the Arch Wiki: https://wiki.archlinux.org/title/Avahi#Hostname_resolut=
-ion
+[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/x86/xen/mmu_pv.c?h=v6.15-rc4#n408
 
-Both machines also have systemd-resolved configured in stub resolver mode b=
-ut with MulticastDNS=3Dno to avoid conflicting with Avahi. Bug is reproduci=
-ble without systemd-resolved as well, but I am listing it here for complete=
-ness.
+> What XEN does with basic primitives that convert between pteval and 
+> pte_t is beyond horrible.
+> 
+> How come set_ptes() that uses pte_next_pfn()->pte_advance_pfn() does not 
+> run into this?
 
-Steps:
-1. On arch-desktop, attempt to `ping arch-nas.local`.
-2. Ping will fail to go through with message: `ping: arch-nas.local: Name o=
-r service not known`
-3. Downgrade arch-desktop to 6.14.2 or below.
-4. `ping arch-nas.local` again.
-5. Ping should go through on IPv6 or IPv4. My network has IPv6 enabled so i=
-t usually uses an IPv6 local address.
+I don't know, but I guess it is somehow related to pfn->mfn translation.
 
-For the issue where the MT7925 wifi is unable to grab an IPv6 address, I be=
-lieve it occurs when there's no active DHCP lease. Usually happens in the m=
-orning when I turn on my PC. If I downgrade to 6.14.2, it will immediately =
-grab a lease. Switching back to 6.14.4 retains that address for a while unt=
-il I encounter it again next morning.
+> Is it only a problem if we exceed a certain pfn?
 
-Thanks for looking into this!
-Ben
+No, it is a problem if the corresponding mft to given pfn is invalid.
 
-On Wednesday, April 30th, 2025 at 1:48 AM, Mingyen Hsieh <Mingyen.Hsieh@med=
-iatek.com> wrote:
+I am not sure if my original patch is a good fix. Maybe it would be
+better to have some sort of native_pte_advance_pfn() which will use
+native_make_pte() rather than __pte(). Or do you think the issue is in
+Xen part?
 
-> On Wed, 2025-04-30 at 01:14 +0000, fossben@pm.me wrote:
-> >=20
-> > External email : Please do not click links or open attachments until
-> > you have verified the sender or the content.
-> >=20
-> >=20
-> > Hello all,
-> >=20
-> > After upgrading to 6.14.3 on my PC with a MT7925 chip, I noticed that
-> > I could no longer ping *.local addresses provided by Avahi. In
-> > addition, I also noticed that I was not able to get a DHCP IPv6
-> > address from my router, no matter how many times I rebooted the
-> > router or reconnected with NetworkManager.
-> >=20
-> > Reverting to 6.14.2 fixes both mDNS and IPv6 addresses immediately.
-> > Going back to 6.14.3 immediately breaks mDNS again, but the IPv6
-> > address will stay there for a while before disappearing later,
-> > possibly because the DHCP lease expired? I am not sure exactly when
-> > it stops working.
-> >=20
-> > I've done a kernel bisect between 6.14.2 and 6.14.3 and found the
-> > offending commit that causes mDNS to fail:
-> >=20
-> > commit 80007d3f92fd018d0a052a706400e976b36e3c87
-> > Author: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> > Date:=C2=A0=C2=A0 Tue Mar 4 16:08:50 2025 -0800
-> >=20
-> > =C2=A0=C2=A0=C2=A0 wifi: mt76: mt7925: integrate *mlo_sta_cmd and *sta_=
-cmd
-> >=20
-> > =C2=A0=C2=A0=C2=A0 commit cb1353ef34735ec1e5d9efa1fe966f05ff1dc1e1 upst=
-ream.
-> >=20
-> > =C2=A0=C2=A0=C2=A0 Integrate *mlo_sta_cmd and *sta_cmd for the MLO firm=
-ware.
-> >=20
-> > =C2=A0=C2=A0=C2=A0 Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling M=
-LO when the
-> > firmware supports it")
-> >=20
-> > =C2=A0drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 59 ++++--------=
----
-> > --------------------------------------------
-> > =C2=A01 file changed, 4 insertions(+), 55 deletions(-)
-> >=20
-> > I do not know if this same commit is also causing the IPv6 issues as
-> > testing that requires quite a bit of time to reproduce. What I do
-> > know with certainty as of this moment is that it definitely breaks in
-> > kernel 6.14.3.
-> >=20
-> > I've attached my hardware info as well as dmesg logs from the last
-> > working kernel from the bisect and 6.14.4 which exhibits the issue.
-> > Please let me know if there's any other info you need.
-> >=20
-> > Thanks!
-> > Benjamin Xiao
->=20
-> Hi,
->=20
-> Thanks for reporting this issue, we will aim into this.
->=20
-> Can you provide me with your testing steps?
->=20
-> Best Regards,
-> Yen.
->=20
-> ************* MEDIATEK Confidentiality Notice
->  ********************
-> The information contained in this e-mail message (including any
-> attachments) may be confidential, proprietary, privileged, or otherwise
-> exempt from disclosure under applicable laws. It is intended to be
-> conveyed only to the designated recipient(s). Any use, dissemination,
-> distribution, printing, retaining or copying of this e-mail (including it=
-s
-> attachments) by unintended recipient(s) is strictly prohibited and may
-> be unlawful. If you are not an intended recipient of this e-mail, or beli=
-eve
->=20
-> that you have received this e-mail in error, please notify the sender
-> immediately (by replying to this e-mail), delete any and all copies of
-> this e-mail (including any attachments) from your system, and do not
-> disclose the content of this e-mail to any other person. Thank you!
+Cheers,
+Petr
 
