@@ -1,195 +1,130 @@
-Return-Path: <stable+bounces-139186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4124BAA4FDA
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 17:13:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC772AA4E93
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 16:29:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABBF81892B20
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 15:11:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF57117C536
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 14:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2B61B4145;
-	Wed, 30 Apr 2025 15:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C2425E440;
+	Wed, 30 Apr 2025 14:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="unknown key version" (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="TGsndb6G";
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="Yca5VDCB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gFbCy0Ah"
 X-Original-To: stable@vger.kernel.org
-Received: from e2i340.smtp2go.com (e2i340.smtp2go.com [103.2.141.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425B2189BAC
-	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 15:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.141.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA961EB5B;
+	Wed, 30 Apr 2025 14:29:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746025726; cv=none; b=Hjtis0NoTAvRxguZhiZ67u+jsVgkhtzfAmaHx7BdGVKpZIire36gf8S2f4FGEs+zf5PhYhbJFcQJLU0V17clvCfYVC5fOu6ls1ocv2MTGVhzJSqJNvjguY6aD6inoVY6UhOT8L8JmtTRqUlPzLBocIKdAgtwEOSLWJZj2kgJTGI=
+	t=1746023362; cv=none; b=feCOMQHLuVisv099bJIaIDyPoksfqTomHrcauy0alwdAnKB+aCyv9MpX7la55Nrj6a12dQj0mSzLHXEmc7r/Wuv2FET9KLyOC6bCXIrcImOaCreVdPlwpsLGXYxC/wxhLpLtDyNFILvS6bP7m5YKfzMCVdtt4rzHUg20F6uNpSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746025726; c=relaxed/simple;
-	bh=kZ7ImT5zfbzlRBanFhM9ITuwN/m7Xo8NR2YPEAruOTo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MlNqHZsNT9GS5rLXnyeH7PnXH/a2lQkcXsbLMNgfa7BIItX3DQnOyAin6uczdzryyupkxhCXNJ9gXSNYNI08G7Yjhuqe3l2bRgVje01T2jDJqh98k0ZOGEh+c1WoI/UdZrOjInuyyBYVJHoQKAOp1iaS8/MZU6eLS9NtfpXi4w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=fail (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=TGsndb6G reason="unknown key version"; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=Yca5VDCB; arc=none smtp.client-ip=103.2.141.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=smtpservice.net; s=maxzs0.a1-4.dyn; x=1746026622; h=Feedback-ID:
-	X-Smtpcorp-Track:Message-ID:Subject:To:From:Date:Reply-To:Sender:
-	List-Unsubscribe:List-Unsubscribe-Post;
-	bh=Kgav3+rFuWlgAfp8zAMTZtwJ3iGx3mOTRhPWv27IYqs=; b=TGsndb6GCcXiIU5J5OCf4wwYAm
-	aQSFexndFhFidnTqUbln22jEoBBXDCie1QLABhqpkEHMBAp6VB64EbuyxPLpPJVGIF2uo4/xpJfur
-	wwsVUVZhFFZWWHvug2Z9AnvfBP7aVuJPjQmWHgFAXgxkykPsIzfawd2pGJU5aLIRJZmeiZi9jZQbG
-	jXTUFlyg22oHS6xNx/HC5JXuLVzCyJaiz+o5Mxjf5ALawguvwAT5v96txL0hrAnrbopiRh3ElK0D7
-	FtAvEz6b0wCe0B5OT2VFrwnzS2k5cQ2rnfmC3ZTWRfbAIEnvkuu7jxfH7Zt1EPDqtDAdJ01VJaUaC
-	//FnI1WA==;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1746025722; h=from : subject
- : to : message-id : date;
- bh=Kgav3+rFuWlgAfp8zAMTZtwJ3iGx3mOTRhPWv27IYqs=;
- b=Yca5VDCBFRHqCyMaIZW/K3wjGyxtYF1ZgTiE0Cp7M4pdEeJYlwhbzm7u0AnY70T0WVUTy
- 2Aq0Eg9jO+n5gkOFNiYLLtyOkgiy2KYQacyLe/Ez++19VBdcELJYlQ9bdUKylYyqyC8CtrZ
- 5DGp6hgXvZJxoBH226nRA33pi2uIVxmwT5r9664IQo/KeNgb0JHbrudusZ7dqHHnXwsfxNc
- 9OtZ06ocln1WXA04EovV/QgwT2KzFsZIllacwbD50js7ZcSanu1nWWMsX8clASQXdjbj2Os
- sfMLZFCzsemt2C53jRpG0CFaRt7cMaVN5KpuuaA4wqefDIImAGuYjgaq500Q==
-Received: from [10.176.58.103] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.94.2-S2G) (envelope-from <repk@triplefau.lt>)
- id 1uA3FT-TRjz74-Js; Wed, 30 Apr 2025 08:56:59 +0000
-Received: from [10.12.239.196] (helo=localhost) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.97.1-S2G) (envelope-from <repk@triplefau.lt>)
- id 1uA3FT-4o5NDgrkUe2-ptNp; Wed, 30 Apr 2025 08:56:59 +0000
-Date: Wed, 30 Apr 2025 10:49:43 +0200
-From: Remi Pommarel <repk@triplefau.lt>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- Johannes Berg <johannes.berg@intel.com>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 128/373] wifi: mac80211: Update skbs control block
- key in ieee80211_tx_dequeue()
-Message-ID: <aBHkJ0v5UnXPlRWl@pilgrim>
-References: <20250429161123.119104857@linuxfoundation.org>
- <20250429161128.436695769@linuxfoundation.org>
+	s=arc-20240116; t=1746023362; c=relaxed/simple;
+	bh=9rrCfGTMptRk9siYkQ49YPhvfisXdGfLi815HqSA/RQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O1abOn7GuqEdwNHPhK319+ERNb/tVmacFaCt8OV/mNJl8YAo/vcJ5WOzw8iPaEERMo/lAg3CyPzZ3aDYRknRFmPUWj/hQ4pcHae5GSqFibfVs7MRc/DFZMP13FuR5r2jkQGrwcJAvWaq+qKR4WKPBGMHo0bvyvAWOUg1kX2yDc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gFbCy0Ah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AB4C4CEEB;
+	Wed, 30 Apr 2025 14:29:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746023362;
+	bh=9rrCfGTMptRk9siYkQ49YPhvfisXdGfLi815HqSA/RQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gFbCy0AhX8eMpmq3FUVriVHhmbs9EhTyKq6i12kx/22Jmr2FIkROzz0MSy0WjEbK4
+	 bU7St/1k4Rmjkv63qpP1+cNEgU61uDw/qVglUY6XUQqXwcD6HKVB7yq41hKJ8XX1uI
+	 rMZj+pMnAJmaLhy+cI6acC8mGvZLF2wufqRakU/JWmuVvJJtUGG1JL5839yTlupQyG
+	 APmQi+lVO0RjDQvFJxCIifbf3f6ayWUWDhr9Ivq84MT/spRhFOdWVJFsUMvEAP6Ido
+	 bQM/dF7YUFk4i8PYZwSHbFsvN3Hm5GLHDwcI6zagcdqSIEtJ/QLBl7BNRXrXxxJAmN
+	 GTq2ZoVCP3tqw==
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-601b6146b9cso3753047eaf.0;
+        Wed, 30 Apr 2025 07:29:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVQIgSmW1EaPkkc1E4lSCn1nJjvhpRCXbJ9wMLzNxm3xRw/lsbYyqMKG73zGTmyliiqtaRfYN13UM0=@vger.kernel.org, AJvYcCW3JSIPwynmQNUdfvSF9mj4U42NywoI73TMlqFY2w/LD7IWeqMxVFeeuQhGJf36WtCf4FJ8LLFj@vger.kernel.org, AJvYcCXO075KfW2Z7AdG1V9gjHKIER/sAs/6UOtQvUQei6s2IoP9dZTM3UpbXV4l4PcIy4Yi7AwVjchrrT0vr28=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzszT7nZQKyxYBunMo54Ky/3/1K66rCFveSt4qDxYjk2R8WSrgE
+	rgTREit5KJkUHXmbCll5QgChAgBmaWg+Gs/Iv9D+U/F+CGd8qZBUASAaHm6mW0PsD1VE804chu3
+	QKEQIdEWfhoW6xrWaI+CS6uqUGYg=
+X-Google-Smtp-Source: AGHT+IFcK34daQQEIl15Gs+jdXSIyzj30C1WfRyydPj9+NAUHh863VhppsqwGdR8X2E8N2tW4xZc38fecZy3txcqwyI=
+X-Received: by 2002:a05:6870:331f:b0:2c2:5ac3:4344 with SMTP id
+ 586e51a60fabf-2da6cd48526mr1489206fac.15.1746023360851; Wed, 30 Apr 2025
+ 07:29:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250429161128.436695769@linuxfoundation.org>
-X-Smtpcorp-Track: -bQ6RZUaoqUP.29O9BeXA_Jyq.vjxDQwFaHDT
-Feedback-ID: 510616m:510616apGKSTK:510616susjtUlcmQ
-X-Report-Abuse: Please forward a copy of this message, including all headers,
- to <abuse-report@smtp2go.com>
+References: <20250429210711.255185-1-srinivas.pandruvada@linux.intel.com>
+In-Reply-To: <20250429210711.255185-1-srinivas.pandruvada@linux.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 30 Apr 2025 16:29:09 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0h99RFF26qAnJf07LS0t-6ATm9c2zrQVzdi96x3FAPXQg@mail.gmail.com>
+X-Gm-Features: ATxdqUF2YVbfjJN7SOr83t0V7L7vVsb1iRwnZLblfVRA5_mIXmRLp29LfMewLaE
+Message-ID: <CAJZ5v0h99RFF26qAnJf07LS0t-6ATm9c2zrQVzdi96x3FAPXQg@mail.gmail.com>
+Subject: Re: [PATCH] cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode
+To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: rafael@kernel.org, viresh.kumar@linaro.org, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
-
-On Tue, Apr 29, 2025 at 06:40:05PM +0200, Greg Kroah-Hartman wrote:
-> 5.15-stable review patch.  If anyone has any objections, please let me know.
-
-This patch should not be included in any stable version.
-
--- 
-Remi
-
-> 
-> ------------------
-> 
-> From: Remi Pommarel <repk@triplefau.lt>
-> 
-> [ Upstream commit a104042e2bf6528199adb6ca901efe7b60c2c27f ]
-> 
-> The ieee80211 skb control block key (set when skb was queued) could have
-> been removed before ieee80211_tx_dequeue() call. ieee80211_tx_dequeue()
-> already called ieee80211_tx_h_select_key() to get the current key, but
-> the latter do not update the key in skb control block in case it is
-> NULL. Because some drivers actually use this key in their TX callbacks
-> (e.g. ath1{1,2}k_mac_op_tx()) this could lead to the use after free
-> below:
-> 
->   BUG: KASAN: slab-use-after-free in ath11k_mac_op_tx+0x590/0x61c
->   Read of size 4 at addr ffffff803083c248 by task kworker/u16:4/1440
-> 
->   CPU: 3 UID: 0 PID: 1440 Comm: kworker/u16:4 Not tainted 6.13.0-ge128f627f404 #2
->   Hardware name: HW (DT)
->   Workqueue: bat_events batadv_send_outstanding_bcast_packet
->   Call trace:
->    show_stack+0x14/0x1c (C)
->    dump_stack_lvl+0x58/0x74
->    print_report+0x164/0x4c0
->    kasan_report+0xac/0xe8
->    __asan_report_load4_noabort+0x1c/0x24
->    ath11k_mac_op_tx+0x590/0x61c
->    ieee80211_handle_wake_tx_queue+0x12c/0x1c8
->    ieee80211_queue_skb+0xdcc/0x1b4c
->    ieee80211_tx+0x1ec/0x2bc
->    ieee80211_xmit+0x224/0x324
->    __ieee80211_subif_start_xmit+0x85c/0xcf8
->    ieee80211_subif_start_xmit+0xc0/0xec4
->    dev_hard_start_xmit+0xf4/0x28c
->    __dev_queue_xmit+0x6ac/0x318c
->    batadv_send_skb_packet+0x38c/0x4b0
->    batadv_send_outstanding_bcast_packet+0x110/0x328
->    process_one_work+0x578/0xc10
->    worker_thread+0x4bc/0xc7c
->    kthread+0x2f8/0x380
->    ret_from_fork+0x10/0x20
-> 
->   Allocated by task 1906:
->    kasan_save_stack+0x28/0x4c
->    kasan_save_track+0x1c/0x40
->    kasan_save_alloc_info+0x3c/0x4c
->    __kasan_kmalloc+0xac/0xb0
->    __kmalloc_noprof+0x1b4/0x380
->    ieee80211_key_alloc+0x3c/0xb64
->    ieee80211_add_key+0x1b4/0x71c
->    nl80211_new_key+0x2b4/0x5d8
->    genl_family_rcv_msg_doit+0x198/0x240
->   <...>
-> 
->   Freed by task 1494:
->    kasan_save_stack+0x28/0x4c
->    kasan_save_track+0x1c/0x40
->    kasan_save_free_info+0x48/0x94
->    __kasan_slab_free+0x48/0x60
->    kfree+0xc8/0x31c
->    kfree_sensitive+0x70/0x80
->    ieee80211_key_free_common+0x10c/0x174
->    ieee80211_free_keys+0x188/0x46c
->    ieee80211_stop_mesh+0x70/0x2cc
->    ieee80211_leave_mesh+0x1c/0x60
->    cfg80211_leave_mesh+0xe0/0x280
->    cfg80211_leave+0x1e0/0x244
->   <...>
-> 
-> Reset SKB control block key before calling ieee80211_tx_h_select_key()
-> to avoid that.
-> 
-> Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
-> Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-> Link: https://patch.msgid.link/06aa507b853ca385ceded81c18b0a6dd0f081bc8.1742833382.git.repk@triplefau.lt
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Tue, Apr 29, 2025 at 11:07=E2=80=AFPM Srinivas Pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
+>
+> When turbo mode is unavailable on a Skylake-X system, executing the
+> command:
+> "echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo"
+> results in an unchecked MSR access error: WRMSR to 0x199
+> (attempted to write 0x0000000100001300).
+>
+> This issue was reproduced on an OEM (Original Equipment Manufacturer)
+> system and is not a common problem across all Skylake-X systems.
+>
+> This error occurs because the MSR 0x199 Turbo Engage Bit (bit 32) is set
+> when turbo mode is disabled. The issue arises when intel_pstate fails to
+> detect that turbo mode is disabled. Here intel_pstate relies on
+> MSR_IA32_MISC_ENABLE bit 38 to determine the status of turbo mode.
+> However, on this system, bit 38 is not set even when turbo mode is
+> disabled.
+>
+> According to the Intel Software Developer's Manual (SDM), the BIOS sets
+> this bit during platform initialization to enable or disable
+> opportunistic processor performance operations. Logically, this bit
+> should be set in such cases. However, the SDM also specifies that "OS and
+> applications must use CPUID leaf 06H to detect processors with
+> opportunistic processor performance operations enabled."
+>
+> Therefore, in addition to checking MSR_IA32_MISC_ENABLE bit 38, verify
+> that CPUID.06H:EAX[1] is 0 to accurately determine if turbo mode is
+> disabled.
+>
+> Fixes: 4521e1a0ce17 ("cpufreq: intel_pstate: Reflect current no_turbo sta=
+te correctly")
+> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> Cc: stable@vger.kernel.org
 > ---
->  net/mac80211/tx.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-> index c4e6fbe4343ee..0a658e747798b 100644
-> --- a/net/mac80211/tx.c
-> +++ b/net/mac80211/tx.c
-> @@ -3704,6 +3704,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
->  	 * The key can be removed while the packet was queued, so need to call
->  	 * this here to get the current key.
->  	 */
-> +	info->control.hw_key = NULL;
->  	r = ieee80211_tx_h_select_key(&tx);
->  	if (r != TX_CONTINUE) {
->  		ieee80211_free_txskb(&local->hw, skb);
-> -- 
-> 2.39.5
-> 
-> 
-> 
+>  drivers/cpufreq/intel_pstate.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstat=
+e.c
+> index f41ed0b9e610..ba9bf06f1c77 100644
+> --- a/drivers/cpufreq/intel_pstate.c
+> +++ b/drivers/cpufreq/intel_pstate.c
+> @@ -598,6 +598,9 @@ static bool turbo_is_disabled(void)
+>  {
+>         u64 misc_en;
+>
+> +       if (!cpu_feature_enabled(X86_FEATURE_IDA))
+> +               return true;
+> +
+>         rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
+>
+>         return !!(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
+> --
+
+Applied as a fix for 6.15-rc, thanks!
 
