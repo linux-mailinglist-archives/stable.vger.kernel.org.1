@@ -1,87 +1,88 @@
-Return-Path: <stable+bounces-139115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFAFAAA451C
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 10:20:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D1CAA451D
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 10:20:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51A5916EABA
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 08:20:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2449917C5C4
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 08:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1194721420B;
-	Wed, 30 Apr 2025 08:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040471E9B03;
+	Wed, 30 Apr 2025 08:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ekaP/JeQ"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="YF/tFCNF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
+Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9F97FBA2
-	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 08:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D231E20E33D
+	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 08:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746001237; cv=none; b=sqkn+QcWWyEUmeDtQ0x0JkYq9xWhiWmc/7h+BvzjpIB4XMajD2hiB+KTTr2AddsjAUDtgS6aPnf9h/Sc3Cxni2aRZloIf5ndXS5UFg3SPoOFA3tg+KwqCBK1JtRwMvmtZyPzMuLR6dRFb1LTGf+N+pR1ovuVdH6d3wCCUvgbhYk=
+	t=1746001240; cv=none; b=kBoBJ8jZz+vJne8TBEXl+0qB3bbD2mcQpg3cJdAOms5ulELbmz7/Nz/5w4wgRVrbh5zCcBfmBTrQGUygZj4ns2qBi6nZWsb5Q1cHqIOsna5sYutuQJxkAgABJGdNTZoS/GYj1ekU8ZY33M6qrMLZrUD8/xoJgJEE9CBWU77EJoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746001237; c=relaxed/simple;
-	bh=zkfib7IMKdNhqCi7NkHXjhd0kSC3EP1RENQA5npVnNs=;
+	s=arc-20240116; t=1746001240; c=relaxed/simple;
+	bh=h3WWGha8yofJfFoMKVnvFLFStdR3xt8iMS2H4UXRwiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBtGByHDJYSf7DoivPveudE38y+uErcTOhlNGXeqK9Xr4W9kim2VbEnjRVArZUkdYHsJ0RKhcRSjnJNrG7RBv9JEmRN5gQXE1kfd5QCdXRSOp4Dh8ROV+xbpR9B8I7YVilyenS8SszpN0ws0fMyegKd5s7VpQuuTm5yndq7yp3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ekaP/JeQ; arc=none smtp.client-ip=209.85.128.66
+	 MIME-Version; b=J344b6wX2kKixJYMEuVyuCQ/fMLj5StftwsoRafvOYwZWkOt8UpetKSpSlPq+wda8VgtBImUn2ealHK9LhorN77wxp88JVKvDLgqsk1j2zL2aP0pANg1Y5voa9RuQiHpuUsmQ5/MK6NLoMfNKncSVSgV1ZpUEzqtyeGhi9zqUeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=YF/tFCNF; arc=none smtp.client-ip=209.85.221.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-441ab63a415so23612445e9.3
-        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 01:20:35 -0700 (PDT)
+Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-39c0dfad22aso5394077f8f.2
+        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 01:20:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1746001234; x=1746606034; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1746001237; x=1746606037; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WW1G9WuNDA4Va+7AXElVcnoHPSxx+ur0q1ileeKokbc=;
-        b=ekaP/JeQwxCXpFDSTbMDqkfRlrys8nFD6mO2tXLX5Vi0tbMjEorHXfqDxMToAI+uqc
-         vde4UypZdqzY6bY+eZlSklmKtdjFQkNxUaCZzO4HDK6GcwV8uIQyj4l/7Lofo83HMqHA
-         Hl/VveBcBF7Asc/gkvKuQjQPprQ2qk3/GjbnW4ifpYUtAJrNdC70qVrikjKr/fm5zUYW
-         sxtVd5RIDNn0kALLfCD6Kt8VNuthzwkynpkTJhO1Nub7apFQFtXu0uGbgvUhAEGvCPS3
-         4KrntXPmrBnnGjqcOzzolgFrFCHfpPSgBLNJ9MLuhlGCcExkRxf9a7V+u4AfW4n/myjd
-         ahmw==
+        bh=FibNTRybCaFE3D5/INo5R5t1cEgvthdkJBvNc2Cnzn4=;
+        b=YF/tFCNFvO7nZW3EpQu9SZhaRD+PyfYu9/AIvdp/BTcP5HA+JoDUqbOh42XkT96TZ8
+         vux4fvalvQo22TfRtdCzQUx+TBZum7yCCanH+tlqCs/7t7D27B/614GndGHsw2vekZxk
+         Ik48tbskdqbZPc/BOTKUo4mprIlqAFwg2pK3rJCF3YinyG13Gpv0irbP8OliOBmGVQIn
+         l3uksW+VsdQpSjqZMUnxekiYg0hDRXhKF+G1k3qapO5wMZR2zKuJMOl40cUblc+fIP6J
+         +IHeVOzU+reatdLmC0lPstlNpmRadQ+rKhMXhgjIaHqpumQLg6/DU/LGI9ermKaK0URJ
+         EuAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746001234; x=1746606034;
+        d=1e100.net; s=20230601; t=1746001237; x=1746606037;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WW1G9WuNDA4Va+7AXElVcnoHPSxx+ur0q1ileeKokbc=;
-        b=nJ5DErl9kQ3o/Nj/mCpHWAF05Y/7N9Mp7PvOXuAt8GomlzFxGupphUes0BupEiUPMi
-         yb7+T7ccUyfHoRRCK6V0ccU9dpw9NMzm0bqZSp7autKOvGcCB52BTjmTqZnwOYQV+eiX
-         l9rh/4Nq3gKvOiq9SalnNETT15lSwtQYtRm9jv34YNRDYiP0Vu2tf3rD5fCTfajaqq8y
-         kfo4RvysNoPlWct4p/OTG1FiOUNcHcbi6shodrIK4ehvtCE+5sw8iZ66GdsIRwHOGwNZ
-         E4rea31wTlR4mfic2QEg58j5Fz15FGUPnk9TaFppngetnaZ/DMKknWqGYxPufWJ1coX9
-         10hA==
-X-Gm-Message-State: AOJu0YzZRqC2lMdIJrEL8vUiF3WeFVB2smZ5vNk5AoVQ5fIvw0vKTrW4
-	/IBZr+xtf91A2k+4F5tpIwfxP55LrzipdJAfkas+KAoxr6UQs6xjBh65uaUx56UJSFlECWfuNtl
-	za+q2Zg==
-X-Gm-Gg: ASbGncsJkxknKS1U7rAI9pno1H0arqqvpXYRM2S5xP5iWbxDtYnbtdXK6WCf8qAWGYz
-	bDgTGk+3VRgqV1SmbfBizoebkj/ow+xx86d/yC7x5OfEVbeBRLdAC3p9rtPGna7q4DK/ffhpcc0
-	9sdhaaU56v1FhHXAQ1xumy+kpOp8CB7DYuZ+Lb5J1itm0588yB2LgUOIp/7nNankc5/6oGan+MV
-	HnR36AkMPdlfWJ2aQclLJGHOrib2dcCzvX2vlzzKYXavqqjiONOcL4hqUJsweT8YvbY4tVPKbj6
-	Tik6KF8vKV7HwHWWHRAamqF2SB7icGYiw7libCLPjzGMPJ4pg8WJtw==
-X-Google-Smtp-Source: AGHT+IGkMoLU3oohgCvT8i9jQoSzpxsmeRJofUmyrW6EkvBP9uUEGO5vMzBp33p6FwvfX7WDxsfvhg==
-X-Received: by 2002:a5d:64a5:0:b0:3a0:8331:3380 with SMTP id ffacd0b85a97d-3a08f7525a8mr1932263f8f.8.1746001234124;
-        Wed, 30 Apr 2025 01:20:34 -0700 (PDT)
+        bh=FibNTRybCaFE3D5/INo5R5t1cEgvthdkJBvNc2Cnzn4=;
+        b=a2xIpQywKMsRF24tTpbAV8EKeFqp060Rm05B8cVd0iiKMcRAGA1/aqsecdyMN740CC
+         XeqcwPctnm7X4CG1jlFCoEMFa3rLHaaabXjR0BOvH7X8md+FaxaNEBNvd756C1mUboCx
+         ivbWyP+NehYCvromOQcZOyszBUOxcUmY3MogfIe6eky5DkiZbZowE7lttitSGXtaigP+
+         isUHSga0V/zBrzZAkXkq0N3uK3U5GI8u4bkjKddk6A/p1uEuTHm26gTZmV+XEyYpbWv2
+         yxynm/SNsK71O9nfeg+7+K+t8+vGeaihkFryVOrVhxgm9I0zUxdWrlw0M4qFE4WzDWMS
+         p8lQ==
+X-Gm-Message-State: AOJu0YxCCToe2AJGV39ShsaGDttQLSPbyxNsi13tfOx/Bscx2hZG2ns0
+	O4dmltP61z0s35HkwVRK8/Uv08AbTC6sdVvK1gLqyA65wsTSpwvm/c8LUGCjlmyaoILmx5IpFLg
+	r+mZbFQ==
+X-Gm-Gg: ASbGncuBiHtxg/JeNNX03tr2ZBBLDxOSLnyDGKaVmMhvsqSxh5GnXKVeGbH/KIWCJei
+	TilkNSChNALviXesStWNptLItt7TZOmCF5bgPcC4o/+ILLN/baKRtQQ+RLX1I/+YNdMUqh+6iZq
+	qMo15576MAuZ/itUs6vpVE7jc83tRxFLu5iP5UdyjlVOhSIPi/RqZFtdPyzOMgc6YT1YZ5/yIVi
+	mnWES0XuyglG3YgE1gy8H9xicMmDZBqtbUimq5ssk110wAXS6H90A4519OnUSY1uJpBUH2q/G3q
+	oOuQIuFEUXWvOLduWoJGWovfIZGRfXAysyjMjJoo37U=
+X-Google-Smtp-Source: AGHT+IFxCwmddAKKJP6vQiifgSz/AR6B08uavdfP824ozEIhQpiBTtfxXj473EpS4DSFlv2RLz17+w==
+X-Received: by 2002:a05:6000:188f:b0:391:4873:7940 with SMTP id ffacd0b85a97d-3a08f7d4578mr1751351f8f.54.1746001236914;
+        Wed, 30 Apr 2025 01:20:36 -0700 (PDT)
 Received: from localhost ([2401:e180:8d24:65b3:be00:91e5:d591:161f])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22dd9530465sm54401195ad.10.2025.04.30.01.20.33
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-740398fa3e4sm1086008b3a.19.2025.04.30.01.20.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Apr 2025 01:20:33 -0700 (PDT)
+        Wed, 30 Apr 2025 01:20:36 -0700 (PDT)
 From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 To: stable@vger.kernel.org
 Cc: Alexei Starovoitov <ast@kernel.org>,
 	Eduard Zingerman <eddyz87@gmail.com>,
 	Nick Zavaritsky <mejedi@gmail.com>,
 	Dan Carpenter <dan.carpenter@linaro.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH stable 6.6 08/10] selftests/bpf: validate that tail call invalidates packet pointers
-Date: Wed, 30 Apr 2025 16:19:50 +0800
-Message-ID: <20250430081955.49927-9-shung-hsi.yu@suse.com>
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH stable 6.6 09/10] bpf: fix null dereference when computing changes_pkt_data of prog w/o subprogs
+Date: Wed, 30 Apr 2025 16:19:51 +0800
+Message-ID: <20250430081955.49927-10-shung-hsi.yu@suse.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250430081955.49927-1-shung-hsi.yu@suse.com>
 References: <20250430081955.49927-1-shung-hsi.yu@suse.com>
@@ -95,63 +96,70 @@ Content-Transfer-Encoding: 8bit
 
 From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit d9706b56e13b7916461ca6b4b731e169ed44ed09 upstream.
+commit ac6542ad92759cda383ad62b4e4cbfc28136abc1 upstream.
 
-Add a test case with a tail call done from a global sub-program. Such
-tails calls should be considered as invalidating packet pointers.
+bpf_prog_aux->func field might be NULL if program does not have
+subprograms except for main sub-program. The fixed commit does
+bpf_prog_aux->func access unconditionally, which might lead to null
+pointer dereference.
 
+The bug could be triggered by replacing the following BPF program:
+
+    SEC("tc")
+    int main_changes(struct __sk_buff *sk)
+    {
+        bpf_skb_pull_data(sk, 0);
+        return 0;
+    }
+
+With the following BPF program:
+
+    SEC("freplace")
+    long changes_pkt_data(struct __sk_buff *sk)
+    {
+        return bpf_skb_pull_data(sk, 0);
+    }
+
+bpf_prog_aux instance itself represents the main sub-program,
+use this property to fix the bug.
+
+Fixes: 81f6d0530ba0 ("bpf: check changes_pkt_data property for extension programs")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202412111822.qGw6tOyB-lkp@intel.com/
 Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20241210041100.1898468-9-eddyz87@gmail.com
+Link: https://lore.kernel.org/r/20241212070711.427443-1-eddyz87@gmail.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 ---
- .../selftests/bpf/progs/verifier_sock.c       | 28 +++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ kernel/bpf/verifier.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/verifier_sock.c b/tools/testing/selftests/bpf/progs/verifier_sock.c
-index e85f0f1deac7..3c8f6646e33d 100644
---- a/tools/testing/selftests/bpf/progs/verifier_sock.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_sock.c
-@@ -50,6 +50,13 @@ struct {
- 	__uint(map_flags, BPF_F_NO_PREALLOC);
- } sk_storage_map SEC(".maps");
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index d9cf75b765f0..bf8696b96491 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -19908,6 +19908,7 @@ int bpf_check_attach_target(struct bpf_verifier_log *log,
+ 	}
+ 	if (tgt_prog) {
+ 		struct bpf_prog_aux *aux = tgt_prog->aux;
++		bool tgt_changes_pkt_data;
  
-+struct {
-+	__uint(type, BPF_MAP_TYPE_PROG_ARRAY);
-+	__uint(max_entries, 1);
-+	__uint(key_size, sizeof(__u32));
-+	__uint(value_size, sizeof(__u32));
-+} jmp_table SEC(".maps");
-+
- SEC("cgroup/skb")
- __description("skb->sk: no NULL check")
- __failure __msg("invalid mem access 'sock_common_or_null'")
-@@ -1005,4 +1012,25 @@ int invalidate_pkt_pointers_from_global_func(struct __sk_buff *sk)
- 	return TCX_PASS;
- }
- 
-+__noinline
-+int tail_call(struct __sk_buff *sk)
-+{
-+	bpf_tail_call_static(sk, &jmp_table, 0);
-+	return 0;
-+}
-+
-+/* Tail calls invalidate packet pointers. */
-+SEC("tc")
-+__failure __msg("invalid mem access")
-+int invalidate_pkt_pointers_by_tail_call(struct __sk_buff *sk)
-+{
-+	int *p = (void *)(long)sk->data;
-+
-+	if ((void *)(p + 1) > (void *)(long)sk->data_end)
-+		return TCX_DROP;
-+	tail_call(sk);
-+	*p = 42; /* this is unsafe */
-+	return TCX_PASS;
-+}
-+
- char _license[] SEC("license") = "GPL";
+ 		if (bpf_prog_is_dev_bound(prog->aux) &&
+ 		    !bpf_prog_dev_bound_match(prog, tgt_prog)) {
+@@ -19936,8 +19937,10 @@ int bpf_check_attach_target(struct bpf_verifier_log *log,
+ 					"Extension programs should be JITed\n");
+ 				return -EINVAL;
+ 			}
+-			if (prog->aux->changes_pkt_data &&
+-			    !aux->func[subprog]->aux->changes_pkt_data) {
++			tgt_changes_pkt_data = aux->func
++					       ? aux->func[subprog]->aux->changes_pkt_data
++					       : aux->changes_pkt_data;
++			if (prog->aux->changes_pkt_data && !tgt_changes_pkt_data) {
+ 				bpf_log(log,
+ 					"Extension program changes packet data, while original does not\n");
+ 				return -EINVAL;
 -- 
 2.49.0
 
