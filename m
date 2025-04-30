@@ -1,90 +1,88 @@
-Return-Path: <stable+bounces-139238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6161AAA5762
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 23:32:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A34BAA5764
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 23:32:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF54E5041CF
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 21:31:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D7A9504416
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 21:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590932D26AA;
-	Wed, 30 Apr 2025 21:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862FF2D1109;
+	Wed, 30 Apr 2025 21:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KsVO0YY4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DDJoAhCh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1E72D1103
-	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 21:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4222D26A7
+	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 21:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746048445; cv=none; b=eL/8CDMWgQFaJITLYVDxqxozRXPW7Adb5O3DAvwJ0V6rOpDiLB0CP1WrEK303VOHdTgGCvBGBHL3q5ocxZz1vB7M9hAB99vt5I3MXDYIZw+nA25gRykb5r10obZac4eD1WpYvk88TXGDzcITLJOZxTIUf3PvO+NchRZ3BCcoGEs=
+	t=1746048446; cv=none; b=hHsxUDhOaSL+AkIn5w53PFw6DpXBYooAjJEf8MyXSBDBvbF3fTc1+5i4WYt0CGM7Eg0Pc9nH+dYh9No/f9w04oPZbyAaejpBUCfLFCbOlr/eoqK622s3UFUkvzqyb2ChPZOwbNl17H2mInnHwbcaWmHO6kHqouMCDMf45/kGP/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746048445; c=relaxed/simple;
-	bh=mFfqnfBoU9i2SAImQOfzBlfMi4AgqolkuBHVunIhmcs=;
+	s=arc-20240116; t=1746048446; c=relaxed/simple;
+	bh=ywnp6v/QKKlpjYkeOkxbbj69YChktHWJPsGCm3H3QzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GRJadWQFzWlu2wPJhdW8alWfMpy9/n+MvbXBM42Fl6zrY4c0svWlhq6dGEUaqy94kVJWQbbC9CCdVd2kdXldLTOHwJVONDmcTllRc2tZS//t5lIfJKwHe6SZdaDJJnqI6PSisDIC9+wXNf0tQ0OEoa8n73YVHf1YrTI2w+y9PkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KsVO0YY4; arc=none smtp.client-ip=209.85.210.181
+	 MIME-Version; b=VzPlNiXD1j7spzcsOuATRI0w+R3mO+aF3oXztgzZA4H/I5wS59xX2LpFr8hkBUbbfshD7ladTX5wZa2pDEpgjABRNwSup497nIom7klk6h5t/BS7FzDXbuUmBxmt4O1u1Tf1O7lC9wX/pilKCwxljTvA8WiauFRSCPInlpMA5i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DDJoAhCh; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-73972a54919so406645b3a.3
-        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 14:27:23 -0700 (PDT)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-73972a54919so406659b3a.3
+        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 14:27:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746048443; x=1746653243; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1746048444; x=1746653244; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qY5Ny9zljbiw0TGeRQM8b1V+5hj317rsoDRSbnUEaGM=;
-        b=KsVO0YY4QF22OCwL69plG3XBEowSZVignPliU1pTjeubDQ/3pAXcMRDFkmnPCiD5pC
-         k0V8JwTARxuwGi5IG/+sB9HX8BMtgnDPtxf0vy4tsdZikQ7MdyoFSY4GHyquDjVpV0/2
-         gxS6IbDkj5u1OiVWcjfG+ugTbsVgdN6x3pZpN99Lv7eMJz8WajcLcT9y5TEFX6ld8hPe
-         Koczwhi5BhejvZPVYFxN0ii8/wyxluS81yRMFLPrRUMZod07O1ZLMtLNKcHRsxf07Ew/
-         FQL3qKqAsITtPpP5mBCANNGAc7njAWEmUb3zkLA4XVLgyjQr/ATasW/zTDkX41MCqcSe
-         p6pQ==
+        bh=WiyC9482bTLyYnk57W4mxw/mXSzETg9dArjeYlSzuzE=;
+        b=DDJoAhChD5TCHgLcyfjLbioAEKdJP8BhPzIPJj+rXWPvmH3ISShb7sg11EE6dB8d+z
+         0FGYpgh3o1fFLYMsv6CULaorwS89LbhUDbMjxJMPLkNMbRowxPh/0Z5O+ih62w0BM/1S
+         16OEseKhPXlzn1F5eRXbjJo1tpjlGDWMT+E5yEDZU70GwiVsvtRXuXD+lkddKyLdJu8x
+         az1J999BvWxNaxswHuhzCD8Ugy5/0UZPEblKBORRN7i7BTxqiYfQmKYP+nZsI9pRt2OM
+         bYDKzJNrp23VlrmKoF/AqxNoRGhtM6bKkXnG4aF9wi0bkou2v6Xwnr+9SkBtGj8b4Zq/
+         XsQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746048443; x=1746653243;
+        d=1e100.net; s=20230601; t=1746048444; x=1746653244;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qY5Ny9zljbiw0TGeRQM8b1V+5hj317rsoDRSbnUEaGM=;
-        b=XYZQZ7t3lUgvKeOlUr9jyi4UiuLf1rUUMhPDnXQYvAu+PU+Azy7L/qJd0SZQ04wMV9
-         QaxvvvE0Odb4JV5rqHIAbDfWWONnE3VKl9o0s+gZpChLYflKBRnOLhMEqZ+vWV4kgjqj
-         QUdeKuN/iOjhXc7Zn6FH2N4Ry8sGyetvlS+Hm3ZgbIVFEzN0HZGL6474dhGRsyVk9K0I
-         hGgwOIBU0+C8nyh+7YI+p4YxeiwTGLwWQAYDXAcUWRg90di+i1hOhLnKCWeKTeZhSfpR
-         lyNd47QA+D0rSSnYMIrfV45xPNcxWwte/qeDIu1yt3nKpWz7I3Qmqboq0TaDmURETetq
-         vmyQ==
-X-Gm-Message-State: AOJu0YzE+Y3nZseP5Pc1WHv+nkzSI0HyRvTLfu+aFlF68YxXe5BqLBOD
-	85nXV2qwAsplDZV7attdBvykz74Z1VVBu68M483rvo9ona29eS+u6Ij93Lph
-X-Gm-Gg: ASbGnctbcTP3pz+P5cRLOZuxg51T/+6vzBtE4g3YUZ8NnJfFCaxRhmAQi6fhu5j2fyi
-	kvc6VJ66SqmwhDpXaVN9pcaywnhvs8l797iXGRAyxp6i32TaO+EXgmXYBieE/gQKOOheQmBBXYl
-	WFx8aUkH8OE5Q1JSsrVf1VUPm+XaK9egxWGAaH0E664+9TsAut9ec2CqEAepyWRXcqenBLrvzhZ
-	hTAwdz7qGkTJPIQpBqfNnrOiwt6ZGvpUqXYMj/RKGmhdrLdlEIW2h4cBzJVPHqNnQpbfJvOw++s
-	7xLXWy60SDy1aVGy+NqC15LD4g+oNpNlO/PLSJuXSMRO/cMbWt2osZEZN1EeysANgoDP
-X-Google-Smtp-Source: AGHT+IGh8kjjds3ZhV+4Dw1jkBLrccxO0wIy9xmfIsh5fLYQQjphFELM9MBXVzvLxOWPvTbPBEI3Fw==
-X-Received: by 2002:a05:6a21:9006:b0:1f5:7862:7f3a with SMTP id adf61e73a8af0-20bd6a42cadmr59404637.14.1746048442735;
-        Wed, 30 Apr 2025 14:27:22 -0700 (PDT)
+        bh=WiyC9482bTLyYnk57W4mxw/mXSzETg9dArjeYlSzuzE=;
+        b=vvqtQPjvER5Ym0IvksD1jQ/zsSXwchmdurln3fMypsffQrTcYszR9e0GI+LaklU3nH
+         Xm2xM7nRddCR1VM7/gp+mPEk3mHORCHYEq+AEDwOKVdPo18I7yft5L1cxYWqAw2/PV9K
+         C7PlVicGr6Z7eGwoMlubucuOAXr/vFN7+U8MG2fYD16W7S1Xwde0cDWSqSj7TCsdJgvF
+         vYoow7gyMm5ST0wlC2nWgaiRjuVWQuD7VqIm19T8hqQ8NT30jKh2RB1R67hTLRLNmvzk
+         AMOKDRt4TVROIrqOY5J0jO2MVvyjH/kRh7O4Qkoic1FRa36KDkYGnuMbP/Ic5ZoHSeSe
+         LKfw==
+X-Gm-Message-State: AOJu0YzcMTIEC1H7EjT6ZrfVQhgSMwKxZUYJsI8UmIGh+/9tnJfScSUs
+	HkJ6AxJR5vayHE+c5QIw21RcJxQ6X2qNciwWS3ogXV+3lZtHYLmP1C4nnNIV
+X-Gm-Gg: ASbGncvJEr+d/emf8gjJ768u5o70eigtjx9VGE/ibeU9O3KPP6/SR+SGr250CUnkNGA
+	x5VDhgLQPUZS1RCmBDWyXcM3fCKDwonfPNJDHRHjwA3cgvLDtFzUMeqypjlRvb+agu6hCZfJnbJ
+	xVQ47ANW+dxCN6EfgXX2bfKwfX+wIYMfcubLUzGXTF7KMEqP7LlxiaZNsetmY607l/DG4p7oLuO
+	UZqh29yW31MlN9MQrNmLPUAROhuskFmF+YzMSV2H1ydKFhhIrGF24jvt1BaT6zzn4ppLb8RUOQJ
+	Wc3vbPN5d0h3nT8fCdXiDs6oxG+rMvjRowS0u7dqh5LMqBWqcT74vmVQn12wwyuZIpT0
+X-Google-Smtp-Source: AGHT+IFN2VTrHpbP3E2J92WuL0eWZgyEqMcmFhEAbxlWdFUBj0fYyznVXQs4PrtKACN4CD765n0z1g==
+X-Received: by 2002:a05:6a20:9c92:b0:206:ad2b:aa9a with SMTP id adf61e73a8af0-20bd86450d3mr42547637.36.1746048443751;
+        Wed, 30 Apr 2025 14:27:23 -0700 (PDT)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:c94d:a5fe:c768:2a7f])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74039a62e23sm2240586b3a.147.2025.04.30.14.27.21
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74039a62e23sm2240586b3a.147.2025.04.30.14.27.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Apr 2025 14:27:22 -0700 (PDT)
+        Wed, 30 Apr 2025 14:27:23 -0700 (PDT)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
 	chandan.babu@oracle.com,
 	catherine.hoang@oracle.com,
 	djwong@kernel.org,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Dave Chinner <david@fromorbit.com>,
 	Christoph Hellwig <hch@lst.de>,
 	Chandan Babu R <chandanbabu@kernel.org>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 11/16] xfs: convert delayed extents to unwritten when zeroing post eof blocks
-Date: Wed, 30 Apr 2025 14:26:58 -0700
-Message-ID: <20250430212704.2905795-12-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 12/16] xfs: allow symlinks with short remote targets
+Date: Wed, 30 Apr 2025 14:26:59 -0700
+Message-ID: <20250430212704.2905795-13-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.49.0.906.g1f30a19c02-goog
 In-Reply-To: <20250430212704.2905795-1-leah.rumancik@gmail.com>
 References: <20250430212704.2905795-1-leah.rumancik@gmail.com>
@@ -96,112 +94,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 5ce5674187c345dc31534d2024c09ad8ef29b7ba ]
+[ Upstream commit 38de567906d95c397d87f292b892686b7ec6fbc3 ]
 
-Current clone operation could be non-atomic if the destination of a file
-is beyond EOF, user could get a file with corrupted (zeroed) data on
-crash.
+An internal user complained about log recovery failing on a symlink
+("Bad dinode after recovery") with the following (excerpted) format:
 
-The problem is about preallocations. If you write some data into a file:
+core.magic = 0x494e
+core.mode = 0120777
+core.version = 3
+core.format = 2 (extents)
+core.nlinkv2 = 1
+core.nextents = 1
+core.size = 297
+core.nblocks = 1
+core.naextents = 0
+core.forkoff = 0
+core.aformat = 2 (extents)
+u3.bmx[0] = [startoff,startblock,blockcount,extentflag]
+0:[0,12,1,0]
 
-	[A...B)
+This is a symbolic link with a 297-byte target stored in a disk block,
+which is to say this is a symlink with a remote target.  The forkoff is
+0, which is to say that there's 512 - 176 == 336 bytes in the inode core
+to store the data fork.
 
-and XFS decides to preallocate some post-eof blocks, then it can create
-a delayed allocation reservation:
+Eventually, testing of generic/388 failed with the same inode corruption
+message during inode recovery.  In writing a debugging patch to call
+xfs_dinode_verify on dirty inode log items when we're committing
+transactions, I observed that xfs/298 can reproduce the problem quite
+quickly.
 
-	[A.........D)
+xfs/298 creates a symbolic link, adds some extended attributes, then
+deletes them all.  The test failure occurs when the final removexattr
+also deletes the attr fork because that does not convert the remote
+symlink back into a shortform symlink.  That is how we trip this test.
+The only reason why xfs/298 only triggers with the debug patch added is
+that it deletes the symlink, so the final iflush shows the inode as
+free.
 
-The writeback path tries to convert delayed extents to real ones by
-allocating blocks. If there aren't enough contiguous free space, we can
-end up with two extents, the first real and the second still delalloc:
+I wrote a quick fstest to emulate the behavior of xfs/298, except that
+it leaves the symlinks on the filesystem after inducing the "corrupt"
+state.  Kernels going back at least as far as 4.18 have written out
+symlink inodes in this manner and prior to 1eb70f54c445f they did not
+object to reading them back in.
 
-	[A....C)[C.D)
+Because we've been writing out inodes this way for quite some time, the
+only way to fix this is to relax the check for symbolic links.
+Directories don't have this problem because di_size is bumped to
+blocksize during the sf->data conversion.
 
-After that, both the in-memory and the on-disk file sizes are still B.
-If we clone into the range [E...F) from another file:
-
-	[A....C)[C.D)      [E...F)
-
-then xfs_reflink_zero_posteof() calls iomap_zero_range() to zero out the
-range [B, E) beyond EOF and flush it. Since [C, D) is still a delalloc
-extent, its pagecache will be zeroed and both the in-memory and on-disk
-size will be updated to D after flushing but before cloning. This is
-wrong, because the user can see the size change and read the zeroes
-while the clone operation is ongoing.
-
-We need to keep the in-memory and on-disk size before the clone
-operation starts, so instead of writing zeroes through the page cache
-for delayed ranges beyond EOF, we convert these ranges to unwritten and
-invalidate any cached data over that range beyond EOF.
-
-Suggested-by: Dave Chinner <david@fromorbit.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Fixes: 1eb70f54c445f ("xfs: validate inode fork size against fork format")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/xfs/xfs_iomap.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ fs/xfs/libxfs/xfs_inode_buf.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/fs/xfs/xfs_iomap.c b/fs/xfs/xfs_iomap.c
-index f6ca27a42498..fab191a09442 100644
---- a/fs/xfs/xfs_iomap.c
-+++ b/fs/xfs/xfs_iomap.c
-@@ -994,10 +994,28 @@ xfs_buffered_write_iomap_begin(
- 	if ((flags & IOMAP_ZERO) && imap.br_startoff > offset_fsb) {
- 		xfs_hole_to_iomap(ip, iomap, offset_fsb, imap.br_startoff);
- 		goto out_unlock;
+diff --git a/fs/xfs/libxfs/xfs_inode_buf.c b/fs/xfs/libxfs/xfs_inode_buf.c
+index 601b05ca5fc2..127c9a698d9f 100644
+--- a/fs/xfs/libxfs/xfs_inode_buf.c
++++ b/fs/xfs/libxfs/xfs_inode_buf.c
+@@ -363,21 +363,41 @@ xfs_dinode_verify_fork(
+ 	di_nextents = xfs_dfork_nextents(dip, whichfork);
+ 
+ 	/*
+ 	 * For fork types that can contain local data, check that the fork
+ 	 * format matches the size of local data contained within the fork.
+-	 *
+-	 * For all types, check that when the size says the should be in extent
+-	 * or btree format, the inode isn't claiming it is in local format.
+ 	 */
+ 	if (whichfork == XFS_DATA_FORK) {
+-		if (S_ISDIR(mode) || S_ISLNK(mode)) {
++		/*
++		 * A directory small enough to fit in the inode must be stored
++		 * in local format.  The directory sf <-> extents conversion
++		 * code updates the directory size accordingly.
++		 */
++		if (S_ISDIR(mode)) {
++			if (be64_to_cpu(dip->di_size) <= fork_size &&
++			    fork_format != XFS_DINODE_FMT_LOCAL)
++				return __this_address;
++		}
++
++		/*
++		 * A symlink with a target small enough to fit in the inode can
++		 * be stored in extents format if xattrs were added (thus
++		 * converting the data fork from shortform to remote format)
++		 * and then removed.
++		 */
++		if (S_ISLNK(mode)) {
+ 			if (be64_to_cpu(dip->di_size) <= fork_size &&
++			    fork_format != XFS_DINODE_FMT_EXTENTS &&
+ 			    fork_format != XFS_DINODE_FMT_LOCAL)
+ 				return __this_address;
+ 		}
+ 
++		/*
++		 * For all types, check that when the size says the fork should
++		 * be in extent or btree format, the inode isn't claiming to be
++		 * in local format.
++		 */
+ 		if (be64_to_cpu(dip->di_size) > fork_size &&
+ 		    fork_format == XFS_DINODE_FMT_LOCAL)
+ 			return __this_address;
  	}
  
-+	/*
-+	 * For zeroing, trim a delalloc extent that extends beyond the EOF
-+	 * block.  If it starts beyond the EOF block, convert it to an
-+	 * unwritten extent.
-+	 */
-+	if ((flags & IOMAP_ZERO) && imap.br_startoff <= offset_fsb &&
-+	    isnullstartblock(imap.br_startblock)) {
-+		xfs_fileoff_t eof_fsb = XFS_B_TO_FSB(mp, XFS_ISIZE(ip));
-+
-+		if (offset_fsb >= eof_fsb)
-+			goto convert_delay;
-+		if (end_fsb > eof_fsb) {
-+			end_fsb = eof_fsb;
-+			xfs_trim_extent(&imap, offset_fsb,
-+					end_fsb - offset_fsb);
-+		}
-+	}
-+
- 	/*
- 	 * Search the COW fork extent list even if we did not find a data fork
- 	 * extent.  This serves two purposes: first this implements the
- 	 * speculative preallocation using cowextsize, so that we also unshare
- 	 * block adjacent to shared blocks instead of just the shared blocks
-@@ -1136,10 +1154,21 @@ xfs_buffered_write_iomap_begin(
- found_imap:
- 	seq = xfs_iomap_inode_sequence(ip, 0);
- 	xfs_iunlock(ip, lockmode);
- 	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, 0, seq);
- 
-+convert_delay:
-+	xfs_iunlock(ip, lockmode);
-+	truncate_pagecache(inode, offset);
-+	error = xfs_bmapi_convert_delalloc(ip, XFS_DATA_FORK, offset,
-+					   iomap, NULL);
-+	if (error)
-+		return error;
-+
-+	trace_xfs_iomap_alloc(ip, offset, count, XFS_DATA_FORK, &imap);
-+	return 0;
-+
- found_cow:
- 	seq = xfs_iomap_inode_sequence(ip, 0);
- 	if (imap.br_startoff <= offset_fsb) {
- 		error = xfs_bmbt_to_iomap(ip, srcmap, &imap, flags, 0, seq);
- 		if (error)
 -- 
 2.49.0.906.g1f30a19c02-goog
 
