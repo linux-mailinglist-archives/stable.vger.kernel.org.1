@@ -1,152 +1,454 @@
-Return-Path: <stable+bounces-139130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8E9AA48FD
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 12:45:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90325AA48EB
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 12:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B968D1882762
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 10:41:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 108EF17CAFB
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 10:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3388325B1E6;
-	Wed, 30 Apr 2025 10:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B407B25D1FC;
+	Wed, 30 Apr 2025 10:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MjGZlgax"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WYUJSuQi"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8615825B1DD;
-	Wed, 30 Apr 2025 10:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E82225B68F
+	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 10:39:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746009568; cv=none; b=rBTnbU424g4+5bD7CzDF5C6XQuM+iGsyKsx8lrb3paesk04xverPHU5SK7y4YolXsVE5x2vGcJox7KAf8NX/dGS9skjR6vJ0ZmyewiC+/OZNlohIb/tK/q65p60AapmP5tu9OiMaw2+t6dfOVMg+r3wXEDwdGboCE85yNQjZw1I=
+	t=1746009575; cv=none; b=VPpfYUa1QWKl2HxQ5U/jST6O6Tq0d3cykfZ4gxsRwlrDOmZlyMSCK82Rq8/w2TDkNHXH0Wi6t9fx6klaJER0FNWBIv965fWnlNKmxn8lryt5MsjZm+NWxTqUj/8YfEaeEgHn8R8Be95eicGMzRSyC1wwHLiNodx5jvyrJRwmous=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746009568; c=relaxed/simple;
-	bh=PGb+U+eJQ/RIrJF6T002OHVTNHflptYtN/UR7z43UHE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=uagXKjE8L3RyMVtMRUZyb6xBj/cikvXznQRQjx5pfHCl/l+41eSbD9F1tZvB9QUbc1+bYWb6zgcA2HMFqPJ0SfxuUtv0QD4rC/wF72ow0kgHGfTzFf74gfrXBzLGvz39iy349r+A13AqzFHlUdLPcM725nZuM7LTbOBwNP2Koms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MjGZlgax; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53U9QARc031269;
-	Wed, 30 Apr 2025 10:39:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	WxL1phANRBIGWXGo36/SH8PY/I9BmOo93tRM0Moo3Ow=; b=MjGZlgax5kesRzjt
-	Sk9WUOyjaLNxPmIIMDfS/n17ow929rF226j4d/rgvdxBojItLfe3GUa0m2CJVZwW
-	jVnocYpXxFh/a8tprWRL5ArzO62UOHuL+SyXI0LOoXgYKZFIf50u+WnlTOWFNc6g
-	F3IPWBx5Kq2i/HnvQ8z9cq5Wp53JEtGgzlX2hrMGzXqFVFmdVkMhJo0ANkWvMrTY
-	KdAkxYPLjL1IH/BvN85AayyUYSsR4hCZqA6PUXmwlaUBvbHh0Sq676xiQEt8eWZg
-	lsDHIk1b8hy624KTPydusTIBcejxtFJdMiVU8tlS4RkI8knYDw45fz8oXd+8sGUr
-	aeFf4w==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46b6u7st09-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Apr 2025 10:39:23 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53UAdLD0009811
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Apr 2025 10:39:21 GMT
-Received: from hu-skakitap-hyd.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 30 Apr 2025 03:39:16 -0700
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Date: Wed, 30 Apr 2025 16:08:55 +0530
-Subject: [PATCH v2 1/4] dt-bindings: clock: qcom: Add missing bindings on
- gcc-sc8180x
+	s=arc-20240116; t=1746009575; c=relaxed/simple;
+	bh=d4RLgrZhyX8/Pg01VVv6h4TRP9Jm0WhqcAfzUScAuus=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bYnbfJ52EJhnsEB12ZndIWB7kbtRNUv0kvrnsvB9OVWoJ1zYfHtP6yv4kN5dMdP23+09Lftoc2Uy3XXzHzO4lu26W7E7izGbH/A+A6gnSDI57ihT3YbGS8ORcnXO6LhWLnhDeurqrR76elIynJ4D5NOsjLR7AVxhydmVsJ9CgG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WYUJSuQi; arc=none smtp.client-ip=209.85.221.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5259331b31eso2735767e0c.0
+        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 03:39:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1746009571; x=1746614371; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ylwsJDrt4vv0hbcQwuLON7i6O6OaEoOImrGaJinpJGA=;
+        b=WYUJSuQiHnLWQFEYYBzqqz86iErDXvdI3apuelCg6jve83A0yametRUdLhmSHehiQn
+         Yh63xjU6qVvvGvlm+AbQBEvUmwccu9X6y6rEXHuyStGVErRL0TqYpd8hDLrtiAT8FBlx
+         US3achPj3jJcmcFAb49P1wHB9P5T0VndXXrPlKa8kgSpNLM3yUamrmwNHmtpdd2xjTOw
+         /LsIshelkLwlAMpFHXxck9GIvJISBUKWNriBrHQNxlYLpG3WrJAbIDMEwHPPezHUO9sk
+         7wM8CDPaj6cisAmsN0G3hSOj8a+Fr+OVHNbijwmsA1f/Q2JWpw+tratfAUVMBVJYWMvs
+         FAtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746009571; x=1746614371;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ylwsJDrt4vv0hbcQwuLON7i6O6OaEoOImrGaJinpJGA=;
+        b=jKm4eB4zO23KySN3+4pMRlEJjrYORXpP0un5T43360kgvrFuRs3UGlsMZGVFgt6T1f
+         KWyDpRZ/gHkXIo0yujvJViai/TNRAMfjKOBriwWoKnMZDEuGsveOsIzrzUTJ3fZ4HC8d
+         tkXosIy+iO9cyUCRlWaUhxJNhJb0w3N8AyGwjgsnYNbqeRRxirmbfjM26K1klKk0rPwV
+         sJrmTZ4RKV9WbTYO6ySUSi5JWUW+yKYnUB8+4/n8oSV+UHcmg8yfOUOwQay6GGreFTfA
+         1ooNaF+0ogazQsl4bfox21l8TxiBW8s7LhA7iw9jGG8Eb5eFatRqOjZJEwEncMUEEGK+
+         o3uQ==
+X-Gm-Message-State: AOJu0YynW1DP9kubJKRHr50nwsrf/VBauAkas32bJF26ed9MyX5W+1cY
+	aHAiWUuDUrVRdlvHW1I1a4Edng6IwaZ/2pFbffwB2u5/N2npMh2DGN6x8M0gpq5vByNRSrxlIK5
+	F9Q8zyaLdeLtIag+0YDnCg29s/XFyqsy25HQe8Q==
+X-Gm-Gg: ASbGnctNepIrtvioWTIuy/2TqR6yysBN+EaEpQ2H9UmWTOV6GsZWusLMyahjhOYOzvl
+	lOsN3oCionq2SdzVQeYE3dj9ZHCHbe0qr03WiamLasoHovuBsA99wPmYJPu8RF4b8MQOXQ+EGYP
+	cQTin0PeS9kbq+Ue7CwlfreW0AESHxm6n/pN+17LRkeBIHPTqsKvxI1pKCKVuPDWdq
+X-Google-Smtp-Source: AGHT+IEGrbJc8JxtRP89FE4xXSHbjaEwuC2CG8y2YBkTpepRUy6crz/1pfGUdfcI0IOB0Gksvo22zIGEP03RI2L25Ng=
+X-Received: by 2002:a05:6122:25d8:b0:52a:d0f3:1ec1 with SMTP id
+ 71dfb90a1353d-52ad0f31f5fmr358417e0c.0.1746009570825; Wed, 30 Apr 2025
+ 03:39:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20250430-sc8180x-camcc-support-v2-1-6bbb514f467c@quicinc.com>
-References: <20250430-sc8180x-camcc-support-v2-0-6bbb514f467c@quicinc.com>
-In-Reply-To: <20250430-sc8180x-camcc-support-v2-0-6bbb514f467c@quicinc.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette
-	<mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-CC: Ajit Pandey <quic_ajipan@quicinc.com>,
-        Imran Shaik
-	<quic_imrashai@quicinc.com>,
-        Taniya Das <quic_tdas@quicinc.com>,
-        "Jagadeesh
- Kona" <quic_jkona@quicinc.com>,
-        <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Satya Priya Kakitapalli
-	<quic_skakitap@quicinc.com>,
-        <stable@vger.kernel.org>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=Ldc86ifi c=1 sm=1 tr=0 ts=6811fddb cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=lUUcdF5SPxt6UHNlAwwA:9
- a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: fGPP-X7OW5Dth1Gv9nFepqs3epDYqCs9
-X-Proofpoint-ORIG-GUID: fGPP-X7OW5Dth1Gv9nFepqs3epDYqCs9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDMwMDA3NSBTYWx0ZWRfX1HV9R7THWtf+ 08kWkvgtuDg08qwf0vtP6S7q2VaTVT1m31/Jdr2QXLs6eJ0rFujCv9TrTqT93TStcFUppAOfrLX HeLsWdtMxv37SMu4lZj6fItnQE2Qqqye0x/b4X7JSW2maJKo9phE5dYSKYzmCZg5IHBwWVGhTD+
- mOX/2eMtdVyMlX801P7KEERD+4EByXONHx+TC0oIOWKLWFugxNEAXFiN8tdMf+7qrv/7TTSZUbJ BX9neRxSE8yf36VuIXh+BKVA4/CRBoqeOUSXRdGrclbEXowscMO9/AIxvnzKqBTgijJQKxntjhw hVtmeFChxjDo0b4UlLHcaZsb7eef7XpYVeC+zhmODB747Y583DbC2JBqE1UgrAAKKT4crfTpuBX
- YNGyTXwqZz51uqpAG02sbJMjPzV1XoguplsPo0otWsTdPnzS+HG3zpSJ4oc/j/xHAzw15nZR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-30_03,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 phishscore=0 impostorscore=0 clxscore=1015 spamscore=0
- bulkscore=0 mlxlogscore=772 malwarescore=0 mlxscore=0 suspectscore=0
- adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504300075
+References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 30 Apr 2025 16:09:18 +0530
+X-Gm-Features: ATxdqUGXDo7pBa4eq0bS5qcWzmVSW-p2cU-XdgUlse38VYng22TRg-n231NAwjI
+Message-ID: <CA+G9fYuNjKcxFKS_MKPRuga32XbndkLGcY-PVuoSwzv6VWbY=w@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/167] 6.1.136-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, clang-built-linux <llvm@lists.linux.dev>, 
+	Nathan Chancellor <nathan@kernel.org>, Anders Roxell <anders.roxell@linaro.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>, linux-s390@vger.kernel.org, 
+	linux-mips@vger.kernel.org, io-uring@vger.kernel.org, 
+	virtualization@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Add all the missing clock bindings for gcc-sc8180x.
+On Tue, 29 Apr 2025 at 23:31, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.136 release.
+> There are 167 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 01 May 2025 16:10:15 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.136-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Fixes: 0fadcdfdcf57 ("dt-bindings: clock: Add SC8180x GCC binding")
-Cc: stable@vger.kernel.org
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
----
- include/dt-bindings/clock/qcom,gcc-sc8180x.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+There are three build regressions and two build warnings.
 
-diff --git a/include/dt-bindings/clock/qcom,gcc-sc8180x.h b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
-index e364006aa6eab8c1c9f8029a67087d09a73cee51..bff83d8edb5e4abaef496a75387abafb152b1480 100644
---- a/include/dt-bindings/clock/qcom,gcc-sc8180x.h
-+++ b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
-@@ -249,6 +249,18 @@
- #define GCC_UFS_MEM_CLKREF_EN					239
- #define GCC_UFS_CARD_CLKREF_EN					240
- #define GPLL9							241
-+#define GCC_CAMERA_AHB_CLK					242
-+#define GCC_CAMERA_XO_CLK					243
-+#define GCC_CPUSS_DVM_BUS_CLK					244
-+#define GCC_CPUSS_GNOC_CLK					245
-+#define GCC_DISP_AHB_CLK					246
-+#define GCC_DISP_XO_CLK						247
-+#define GCC_GPU_CFG_AHB_CLK					248
-+#define GCC_GPU_IREF_CLK					249
-+#define GCC_NPU_CFG_AHB_CLK					250
-+#define GCC_VIDEO_AHB_CLK					251
-+#define GCC_VIDEO_XO_CLK					252
-+#define GCC_AGGRE_UFS_CARD_2_AXI_CLK				253
- 
- #define GCC_EMAC_BCR						0
- #define GCC_GPU_BCR						1
+1)
+Regressions on x86_64 with defconfig builds with clang-nightly toolchain
+on the stable-rc 6.1.136-rc1.
 
--- 
-2.25.1
+* x86_64, build
+  - clang-nightly-lkftconfig
+  - clang-nightly-x86_64_defconfig
 
+Regression Analysis:
+ - New regression? Yes
+ - Reproducibility? Yes
+
+Build regression: x86_64 clang-nightly net ip.h error default
+initialization of an object of type 'typeof (rt->dst.expires)'
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build error x86_64
+include/net/ip.h:462:14: error: default initialization of an object of
+type 'typeof (rt->dst.expires)' (aka 'const unsigned long') leaves the
+object uninitialized and is incompatible with C++
+[-Werror,-Wdefault-const-init-unsafe]
+  462 |                 if (mtu && time_before(jiffies, rt->dst.expires))
+      |                            ^
+
+## Build x86_64
+* Build log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.134-461-g961a5173f29d/testrun/28268204/suite/build/test/clang-nightly-x86_64_defconfig/log
+* Build history:
+https://qa-reports.linaro.org/lkft/linux-stale-rc-linux-6.1.y/build/v6.1.134-461-g961a5173f29d/testrun/28268204/suite/build/test/clang-nightly-x86_64_defconfig/history/
+* Build details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.134-461-g961a5173f29d/testrun/28268204/suite/build/test/clang-nightly-x86_64_defconfig/details/
+* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2wPjfmTxuT4qMCUSSj4ZwJQJrqY/
+* Kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2wPjfmTxuT4qMCUSSj4ZwJQJrqY/config
+* Toolchain: Debian clang version 21.0.0
+(++20250428112741+e086d7b1464a-1~exp1~20250428112923.1416)
+
+2)
+Regressions on s390 with defconfig builds with gcc-13, gcc-8 and
+clang-20 and clang-nightly toolchains on the stable-rc 6.1.136-rc1.
+
+* s390, build
+  - clang-20-defconfig
+  - clang-nightly-defconfig
+  - gcc-13-allmodconfig
+  - gcc-13-defconfig
+  - gcc-8-defconfig-fe40093d
+
+Regression Analysis:
+ - New regression? Yes
+ - Reproducibility? Yes
+
+Build regression: s390 pci_report.c fatal error linux sprintf.h No
+such file or directory
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build error S390
+arch/s390/pci/pci_report.c:14:10: fatal error: linux/sprintf.h: No
+such file or directory
+   14 | #include <linux/sprintf.h>
+      |          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+arch/s390/pci/pci_fixup.c: In function 'zpci_ism_bar_no_mmap':
+arch/s390/pci/pci_fixup.c:19:13: error: 'struct pci_dev' has no member
+named 'non_mappable_bars'
+   19 |         pdev->non_mappable_bars = 1;
+      |             ^~
+drivers/s390/virtio/virtio_ccw.c:88:9: error: unknown type name 'dma64_t'
+   88 |         dma64_t queue;
+      |         ^~~~~~~
+drivers/s390/virtio/virtio_ccw.c:95:9: error: unknown type name 'dma64_t'
+   95 |         dma64_t desc;
+      |         ^~~~~~~
+drivers/s390/virtio/virtio_ccw.c:99:9: error: unknown type name 'dma64_t'
+   99 |         dma64_t avail;
+      |         ^~~~~~~
+drivers/s390/virtio/virtio_ccw.c:100:9: error: unknown type name 'dma64_t'
+  100 |         dma64_t used;
+      |         ^~~~~~~
+drivers/s390/virtio/virtio_ccw.c:109:9: error: unknown type name 'dma64_t'
+  109 |         dma64_t summary_indicator;
+      |         ^~~~~~~
+drivers/s390/virtio/virtio_ccw.c:110:9: error: unknown type name 'dma64_t'
+  110 |         dma64_t indicator;
+      |         ^~~~~~~
+drivers/s390/virtio/virtio_ccw.c: In function 'virtio_ccw_drop_indicator':
+drivers/s390/virtio/virtio_ccw.c:370:25: error: implicit declaration
+of function 'virt_to_dma64'; did you mean 'virt_to_page'?
+[-Werror=implicit-function-declaration]
+  370 |                         virt_to_dma64(get_summary_indicator(airq_info));
+      |                         ^~~~~~~~~~~~~
+      |                         virt_to_page
+drivers/s390/virtio/virtio_ccw.c:374:28: error: implicit declaration
+of function 'virt_to_dma32'; did you mean 'virt_to_page'?
+[-Werror=implicit-function-declaration]
+  374 |                 ccw->cda = virt_to_dma32(thinint_area);
+      |                            ^~~~~~~~~~~~~
+      |                            virt_to_page
+drivers/s390/virtio/virtio_ccw.c: In function 'virtio_ccw_setup_vq':
+drivers/s390/virtio/virtio_ccw.c:552:45: error: implicit declaration
+of function 'u64_to_dma64' [-Werror=implicit-function-declaration]
+  552 |                 info->info_block->l.queue = u64_to_dma64(queue);
+      |                                             ^~~~~~~~~~~~
+drivers/s390/virtio/virtio_ccw.c: In function 'virtio_ccw_find_vqs':
+drivers/s390/virtio/virtio_ccw.c:654:9: error: unknown type name 'dma64_t'
+  654 |         dma64_t *indicatorp = NULL;
+      |         ^~~~~~~
+cc1: some warnings being treated as errors
+
+## Build s390
+* Build log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.134-461-g961a5173f29d/testrun/28268210/suite/build/test/gcc-13-defconfig/log
+* Build history:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.134-461-g961a5173f29d/testrun/28268210/suite/build/test/gcc-13-defconfig/history/
+* Build details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.134-461-g961a5173f29d/testrun/28268210/suite/build/test/gcc-13-defconfig/details/
+* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2wPjfcqRiiDhTc38knEJ0xbygtF/
+* Kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2wPjfcqRiiDhTc38knEJ0xbygtF/config
+* Toolchain: Debian clang version 21.0.0
+(++20250428112741+e086d7b1464a-1~exp1~20250428112923.1416)
+
+3)
+Regressions on mips with defconfig builds with clang-nightly
+toolchains on the stable-rc 6.1.136-rc1.
+
+* mips, build
+  - clang-nightly-allnoconfig
+  - clang-nightly-defconfig
+  - clang-nightly-tinyconfig
+
+Regression Analysis:
+ - New regression? Yes
+ - Reproducibility? Yes
+
+Build regression: mips kernel branch.c error default initialization of
+an object of type union
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build error mips
+arch/mips/kernel/branch.c:35:6: error: default initialization of an
+object of type 'union (unnamed union at
+arch/mips/kernel/branch.c:35:6)' with const member leaves the object
+uninitialized and is incompatible with C++
+[-Werror,-Wdefault-const-init-unsafe]
+   35 |         if (__get_user(inst, (u16 __user *) msk_isa16_mode(epc))) {
+      |             ^
+
+
+## Build mips
+* Build log:  https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.134-461-g961a5173f29d/testrun/28266863/suite/build/test/clang-nightly-tinyconfig/log
+* Build history:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.134-461-g961a5173f29d/testrun/28266863/suite/build/test/clang-nightly-tinyconfig/history/
+* Build details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.134-461-g961a5173f29d/testrun/28266863/suite/build/test/clang-nightly-tinyconfig/details/
+* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2wPjfMHLLGL9OjZrjKvW9u8uy4b/
+* Kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2wPjfMHLLGL9OjZrjKvW9u8uy4b/config
+
+
+## Build warnings
+
+a)
+Build warnings on x86_64 builds.
+io_uring/timeout.c:410:31: warning: default initialization of an
+object of type 'typeof ((sqe->addr2))' (aka 'const unsigned long
+long') leaves the object uninitialized and is incompatible with C++
+[-Wdefault-const-init-unsafe]
+  410 |                 if (get_timespec64(&tr->ts,
+u64_to_user_ptr(sqe->addr2)))
+      |                                             ^
+
+Links:
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2wPjeiV7BNYgKZ2oXuK3BNEYYBa/
+
+b)
+Build warnings on arm with clang-nightly with tinyconfig.
+
+clang: warning: argument unused during compilation: '-march=armv7-m'
+[-Wunused-command-line-argument]
+kernel/params.c:367:22: warning: default initialization of an object
+of type 'struct kernel_param' with const member leaves the object
+uninitialized and is incompatible with C++
+[-Wdefault-const-init-unsafe]
+  367 |         struct kernel_param dummy;
+      |                             ^
+include/linux/moduleparam.h:73:12: note: member 'perm' declared 'const' here
+   73 |         const u16 perm;
+      |                   ^
+kernel/params.c:423:22: warning: default initialization of an object
+of type 'struct kernel_param' with const member leaves the object
+uninitialized and is incompatible with C++
+[-Wdefault-const-init-unsafe]
+  423 |         struct kernel_param kp;
+      |                             ^
+include/linux/moduleparam.h:73:12: note: member 'perm' declared 'const' here
+   73 |         const u16 perm;
+      |                   ^
+2 warnings generated.
+
+Links:
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2wPjeaX1oyIaa7F0nsdW1BymEGQ/
+
+## Build
+* kernel: 6.1.136-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+* git commit: 961a5173f29d2aa1f2c87ff9612b029c46086972
+* git describe: v6.1.134-461-g961a5173f29d
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.134-461-g961a5173f29d
+
+## Test Regressions (compared to v6.1.134-292-gb8b5da130779)
+* i386, build
+  - clang-nightly-defconfig
+  - clang-nightly-lkftconfig
+
+* mips, build
+  - clang-nightly-allnoconfig
+  - clang-nightly-defconfig
+  - clang-nightly-tinyconfig
+
+* s390, build
+  - clang-20-defconfig
+  - clang-nightly-defconfig
+  - gcc-13-allmodconfig
+  - gcc-13-defconfig
+  - gcc-8-defconfig-fe40093d
+
+* x86_64, build
+  - clang-nightly-lkftconfig
+  - clang-nightly-x86_64_defconfig
+
+## Metric Regressions (compared to v6.1.134-292-gb8b5da130779)
+
+## Test Fixes (compared to v6.1.134-292-gb8b5da130779)
+
+## Metric Fixes (compared to v6.1.134-292-gb8b5da130779)
+
+## Test result summary
+total: 96862, pass: 76665, fail: 4435, skip: 15439, xfail: 323
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 135 total, 135 passed, 0 failed
+* arm64: 43 total, 43 passed, 0 failed
+* i386: 27 total, 20 passed, 7 failed
+* mips: 26 total, 22 passed, 4 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 32 total, 31 passed, 1 failed
+* riscv: 11 total, 9 passed, 2 failed
+* s390: 14 total, 8 passed, 6 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 7 total, 7 passed, 0 failed
+* x86_64: 35 total, 32 passed, 3 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
