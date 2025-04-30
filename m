@@ -1,76 +1,76 @@
-Return-Path: <stable+bounces-139241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A37D6AA5765
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 23:32:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8D7AA5756
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 23:32:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5D84504858
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 21:31:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD3301C00053
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 21:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D262D269A;
-	Wed, 30 Apr 2025 21:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5102D26AC;
+	Wed, 30 Apr 2025 21:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZOwrVT/y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="azCrCj4a"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2D02D110A
-	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 21:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E501C2D26A8
+	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 21:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746048448; cv=none; b=fXeq6sPKhhQFeEnmpjt621soDIG8+TpWjFGkX6gK8Lu3dir+sNNdtQctoR+H6Sk3ycKwDssrvKancGNdgKMRe7UV9WLge/DDF9m10Mr9MptIUkEhsd64w4qWAk1EYJO1pgmQ0qRNqy6gtbSE0LyqeGIpMHf5cDlKZAjrfxAkXWY=
+	t=1746048449; cv=none; b=AN5ZkToFwDw8rMc9wtA81MGg9iwNMST3KNOMiRwCsEUdJ/YekOwygyC/cPj55/FmFBZ1vy0mL74dEnPrxaU6+x9jKeVVMZuXtZOaZVdVuPMWNp8YFZXz8IricknJ6l+WziONswxt9J1kh3WuzGXYU96LK0a4YEdIt0dV7+WI/9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746048448; c=relaxed/simple;
-	bh=vjYRyg4aMFCXTWJe7tba++dQVx7KTufXr8gbgwaI7Tw=;
+	s=arc-20240116; t=1746048449; c=relaxed/simple;
+	bh=I+4+9+D422yjMjIvVDl9gmDM/KotGX9XL1lBphgXMJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/G3oyrUPsVEdIN4sFa+MZ7Nvrjm+grPkDY5YE0C/ooguTLm3INUVnp8hdLW19ABUwn/RN4DnvtW7mR9lq/1PqMI07TEf9hiXbszD4vyEffaz/9ymkYaJLRVMLFBygX/yiOzohwWJSBrWKY9DNGehk4thtJ/arD2s6qw5XTF/Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZOwrVT/y; arc=none smtp.client-ip=209.85.210.180
+	 MIME-Version; b=LmSJxwkxCVxiDIW0OGCvIJSrjNHe40z1+HjK0WFYbx/xDISQouoPa9ZfO07hLFoIZAOuc9LB18qOooMuVbXouhgD4c6OzhMixf6F/4Nsw7U+IevPYzpa3uDuMRbH9BQ44h5HKXjfpRdaPlA5DQfQ1Cb3CEzjVZrYj4KxKKTzYXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=azCrCj4a; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-736c062b1f5so472649b3a.0
-        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 14:27:26 -0700 (PDT)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7399a2dc13fso537126b3a.2
+        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 14:27:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746048446; x=1746653246; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1746048447; x=1746653247; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vrO2wtCqcWxS1DHJvoG7hXESNHyGSu2HBALasRbxkoY=;
-        b=ZOwrVT/yvJ49Batx62J691Kj7O0wuanVrKdajjO46viTrpw95er9CZE00qtdbx+Ukj
-         09e1yODmDzyniinUkdPxBtRbKSy8VXImVS80R6hpwlgQAD1vMPLqxY1viJQ9JXDB/rsm
-         mJEQnqJERfk1FiRGL2Hm8l1rJYEpsyq45cHwZRaY8MCioSGI5iGyi5XWpR35rCERlwOV
-         XvKWAVGhgf2jOsLcMJQ8z8AAoylDPolO0coq1XUO1CL8Yvn7CLbkJHBVeeZgnNB7ytnS
-         BLlrrWuvuTBppp28/nYA2iFtOeOCes0DAt27Q+0twzVWLWgPuNd4gaWMzvQSP/wJT4Ha
-         FD0Q==
+        bh=H9Ulw4ZHzhE+MtCh/TShIXp4puYjxJjlrwSuV9HZ3j0=;
+        b=azCrCj4a5W+XF94iGeKrefO9ODzwWp92JHI3adcUcb5hzb7Ao626Qluo20SiVFTifR
+         Gp4Q0XduE7MXQz4TjYcAIzFyheFbWy/1oPtWhAbqU4acx+3FQGUnNo0JO2MzxS7jmIed
+         JsXcWHKfDwT50YqEimWUtsfryl0sE9KjyvAQ8dmUVgic2ndtVeavHDp9hoZ3UgXwqAOv
+         f4SrN3ABfOU/te96V9kjRYzooi/y8HZ5J5AbyRlX4/JUq9Wq2LmObZpCURtdSbmmeZY3
+         mlOsiN+D4Rwfk4LDlMJjovBC3TVNLhMHWSyA6arK1nVkdJ63u47Nc28FHgpCeKa1Of04
+         sLVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746048446; x=1746653246;
+        d=1e100.net; s=20230601; t=1746048447; x=1746653247;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vrO2wtCqcWxS1DHJvoG7hXESNHyGSu2HBALasRbxkoY=;
-        b=q+g5prgTEqh2LFCTgOxCDUM45xn54HOAo3r0H23PeXuZq7JZRtI0c3efvINUrM6/2T
-         2+C1vb4YMvTV8xn7yi1wvbi4o6ys0TsCYrbmvEtuLrm7WVQmatOBj2LN/YcjXV5++yBE
-         /jQxiWKuAYm1daAJNP99o8PnbrxIMST7SBJxeS+LRyqUHnorooZWFjbasrKSgHYFIET4
-         pDJLFTQz558ggwyQmgceYCJkyZjwRHUraXI9qccNQXuaFizGZdPDLQ090Z7AahmMEUZI
-         bYBYIf1Z3RB4ktsXodfbuAiXYjwlzHvH52MxOYuus6TJzWkjhb1sQLWX5O3Ppfatt0lY
-         OgIg==
-X-Gm-Message-State: AOJu0Yxi8IdRoEQMkSTK0eVVDs2uRB32kTX3EJlFy5rfkiPkGEQPalhQ
-	9M3G46ax9mk5AHx2gp0S4Lw0Yozi6UNnrV6fSBxJeCp4k+6n8hSHK0u5hgT1
-X-Gm-Gg: ASbGncuzF0RdkdkpC3TyhItC+tas6ojXHygW1Ki2qL1KF+ohRDZOdXFCNlUtCS75wBj
-	yP4z/Y8Ys2GdPiDQm3MUH1Vhw6w9Z968rhjDmgSUwKkgl80rQ3zEFZP+6/iBcnlyjO453BoUEuF
-	C0e+Sh4n1lJNkmfqboFoZH5Nkc/ChSm7lKF4punuxVE23pfjb1kQmIapP8CalB/qx5AgoY42h/d
-	2HWPa+IbV9BgIfrrGqJDb16U3CxXlvK0QUpgcN0jTDJh/uZ8keP87K3YuByRQnL+W0rZgY7k275
-	CWsC/U26KE1fxzXSZp0ucJlr4OILlWr08TDF+/VuQSy9XgVDhEt66Waf6Q8SooLUelLd
-X-Google-Smtp-Source: AGHT+IHAcmAAUzZQMzogz70VVC1fptpbxtocOXT1EXnHgLloXkeJE2SCeIxdhj9SR+1CTJleDAtE+w==
-X-Received: by 2002:a05:6a00:3a10:b0:736:69aa:112c with SMTP id d2e1a72fcca58-740491d1385mr42964b3a.9.1746048445848;
-        Wed, 30 Apr 2025 14:27:25 -0700 (PDT)
+        bh=H9Ulw4ZHzhE+MtCh/TShIXp4puYjxJjlrwSuV9HZ3j0=;
+        b=htB9juavshze6b2fKRsYKWRY3R2cIYFD3fZeyQBgdWNz+dSp5Z1oqrnbNQwDAG2iuI
+         uUZ1RiJZknLVl0B1Z7vNvd67YZG0kGt3nebSCorvGEP2MZWd6sHE17aPh8RxPeh+mwUQ
+         EZLnVLaMYlrRjUjo/ErYOQG8hxC5MKlR4qQsnTkVcsxfyEYQepH9AM1tx4U8PSF9EneO
+         UkWyI2bPeMswf2re+MRudaICZEG8dmFm8NsvK2Fcg2lHpoeKa8u2Lb35UQvBw+2UqH1U
+         GnUSmuSs9mptZ/aNJQFFlSZfxLCSi0rEqyQJCmUPxkZgab5OabtxZJEFO5Tz++jFdlTl
+         En4w==
+X-Gm-Message-State: AOJu0YyMlbpiC9lf69yI/utH/le8sqzHLnLflbZG3cYhD7dNzUcj2EYF
+	+sVlv//S44vMPKZUjOhr306aeeWZBkUGv+bAqp0dGpXxQgMZjssPHh+CPWLQ
+X-Gm-Gg: ASbGncsMapq3ZmQPcdc5wK6lxFoU2wauRk1+roNElT3eUSpj0JcjTNXbrcFUCcx3QjM
+	ECb+q9A7Gx2295MT78X4beyrEYoO9AZ2xa/BEHL6iPxfQ7NdUU5MmFiN2KIKGNq60afzU5SRSzk
+	NOZ9yOhln1LdoTmorfB9BdYfq3NubrqYc4bPCQwXuqyrOC5N2hxYdfeAMuopwRLn9sXgZIGmnSu
+	qZ7gDGv5AnLmHRyBl9KppU6or0EYK/CvuMBMY3iifOYHTco/BBdsYfniQ7an9EvgT2csI81Pocu
+	GSC7UI1UyxvmAFmQSa0jsg8gLFVWR8XzHnHMsQ9KKTu0xFDAy/rshwtqVeoIz04xpCuV
+X-Google-Smtp-Source: AGHT+IGZA9iqNhcwvaqpb5pVvt/1UPlSy5Xa0wexi7bgvD63lUraCk8L62Tn9MNweOwFC6oTpLk96g==
+X-Received: by 2002:a05:6a20:d04d:b0:201:85f4:ad21 with SMTP id adf61e73a8af0-20aa43808f9mr7190427637.31.1746048447008;
+        Wed, 30 Apr 2025 14:27:27 -0700 (PDT)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:c94d:a5fe:c768:2a7f])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74039a62e23sm2240586b3a.147.2025.04.30.14.27.24
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74039a62e23sm2240586b3a.147.2025.04.30.14.27.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Apr 2025 14:27:25 -0700 (PDT)
+        Wed, 30 Apr 2025 14:27:26 -0700 (PDT)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
@@ -80,9 +80,9 @@ Cc: xfs-stable@lists.linux.dev,
 	Christoph Hellwig <hch@lst.de>,
 	Chandan Babu R <chandanbabu@kernel.org>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 14/16] xfs: fix freeing speculative preallocations for preallocated files
-Date: Wed, 30 Apr 2025 14:27:01 -0700
-Message-ID: <20250430212704.2905795-15-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 15/16] xfs: allow unlinked symlinks and dirs with zero size
+Date: Wed, 30 Apr 2025 14:27:02 -0700
+Message-ID: <20250430212704.2905795-16-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.49.0.906.g1f30a19c02-goog
 In-Reply-To: <20250430212704.2905795-1-leah.rumancik@gmail.com>
 References: <20250430212704.2905795-1-leah.rumancik@gmail.com>
@@ -94,209 +94,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Christoph Hellwig <hch@lst.de>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 610b29161b0aa9feb59b78dc867553274f17fb01 ]
+[ Upstream commit 1ec9307fc066dd8a140d5430f8a7576aa9d78cd3 ]
 
-xfs_can_free_eofblocks returns false for files that have persistent
-preallocations unless the force flag is passed and there are delayed
-blocks.  This means it won't free delalloc reservations for files
-with persistent preallocations unless the force flag is set, and it
-will also free the persistent preallocations if the force flag is
-set and the file happens to have delayed allocations.
+For a very very long time, inode inactivation has set the inode size to
+zero before unmapping the extents associated with the data fork.
+Unfortunately, commit 3c6f46eacd876 changed the inode verifier to
+prohibit zero-length symlinks and directories.  If an inode happens to
+get logged in this state and the system crashes before freeing the
+inode, log recovery will also fail on the broken inode.
 
-Both of these are bad, so do away with the force flag and always free
-only post-EOF delayed allocations for files with the XFS_DIFLAG_PREALLOC
-or APPEND flags set.
+Therefore, allow zero-size symlinks and directories as long as the link
+count is zero; nobody will be able to open these files by handle so
+there isn't any risk of data exposure.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Fixes: 3c6f46eacd876 ("xfs: sanity check directory inode di_size")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/xfs/xfs_bmap_util.c | 30 ++++++++++++++++++++++--------
- fs/xfs/xfs_bmap_util.h |  2 +-
- fs/xfs/xfs_icache.c    |  2 +-
- fs/xfs/xfs_inode.c     | 14 ++++----------
- 4 files changed, 28 insertions(+), 20 deletions(-)
+ fs/xfs/libxfs/xfs_inode_buf.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/fs/xfs/xfs_bmap_util.c b/fs/xfs/xfs_bmap_util.c
-index 399451aab26a..62b92e92a685 100644
---- a/fs/xfs/xfs_bmap_util.c
-+++ b/fs/xfs/xfs_bmap_util.c
-@@ -634,17 +634,15 @@ xfs_bmap_punch_delalloc_range(
- 	return error;
- }
- 
- /*
-  * Test whether it is appropriate to check an inode for and free post EOF
-- * blocks. The 'force' parameter determines whether we should also consider
-- * regular files that are marked preallocated or append-only.
-+ * blocks.
-  */
- bool
- xfs_can_free_eofblocks(
--	struct xfs_inode	*ip,
--	bool			force)
-+	struct xfs_inode	*ip)
- {
- 	struct xfs_bmbt_irec	imap;
- 	struct xfs_mount	*mp = ip->i_mount;
- 	xfs_fileoff_t		end_fsb;
- 	xfs_fileoff_t		last_fsb;
-@@ -674,15 +672,15 @@ xfs_can_free_eofblocks(
- 	/* If we haven't read in the extent list, then don't do it now. */
- 	if (xfs_need_iread_extents(&ip->i_df))
- 		return false;
- 
- 	/*
--	 * Do not free real preallocated or append-only files unless the file
--	 * has delalloc blocks and we are forced to remove them.
-+	 * Only free real extents for inodes with persistent preallocations or
-+	 * the append-only flag.
+diff --git a/fs/xfs/libxfs/xfs_inode_buf.c b/fs/xfs/libxfs/xfs_inode_buf.c
+index 127c9a698d9f..3c611c8ac158 100644
+--- a/fs/xfs/libxfs/xfs_inode_buf.c
++++ b/fs/xfs/libxfs/xfs_inode_buf.c
+@@ -368,14 +368,17 @@ xfs_dinode_verify_fork(
  	 */
- 	if (ip->i_diflags & (XFS_DIFLAG_PREALLOC | XFS_DIFLAG_APPEND))
--		if (!force || ip->i_delayed_blks == 0)
-+		if (ip->i_delayed_blks == 0)
- 			return false;
- 
- 	/*
- 	 * Do not try to free post-EOF blocks if EOF is beyond the end of the
- 	 * range supported by the page cache, because the truncation will loop
-@@ -732,10 +730,26 @@ xfs_free_eofblocks(
- 		return error;
- 
- 	/* Wait on dio to ensure i_size has settled. */
- 	inode_dio_wait(VFS_I(ip));
- 
-+	/*
-+	 * For preallocated files only free delayed allocations.
-+	 *
-+	 * Note that this means we also leave speculative preallocations in
-+	 * place for preallocated files.
-+	 */
-+	if (ip->i_diflags & (XFS_DIFLAG_PREALLOC | XFS_DIFLAG_APPEND)) {
-+		if (ip->i_delayed_blks) {
-+			xfs_bmap_punch_delalloc_range(ip,
-+				round_up(XFS_ISIZE(ip), mp->m_sb.sb_blocksize),
-+				LLONG_MAX);
-+		}
-+		xfs_inode_clear_eofblocks_tag(ip);
-+		return 0;
-+	}
-+
- 	error = xfs_trans_alloc(mp, &M_RES(mp)->tr_itruncate, 0, 0, 0, &tp);
- 	if (error) {
- 		ASSERT(xfs_is_shutdown(mp));
- 		return error;
- 	}
-@@ -1046,11 +1060,11 @@ xfs_prepare_shift(
- 
- 	/*
- 	 * Trim eofblocks to avoid shifting uninitialized post-eof preallocation
- 	 * into the accessible region of the file.
- 	 */
--	if (xfs_can_free_eofblocks(ip, true)) {
-+	if (xfs_can_free_eofblocks(ip)) {
- 		error = xfs_free_eofblocks(ip);
- 		if (error)
- 			return error;
- 	}
- 
-diff --git a/fs/xfs/xfs_bmap_util.h b/fs/xfs/xfs_bmap_util.h
-index 6888078f5c31..1383019ccdb7 100644
---- a/fs/xfs/xfs_bmap_util.h
-+++ b/fs/xfs/xfs_bmap_util.h
-@@ -61,11 +61,11 @@ int	xfs_collapse_file_space(struct xfs_inode *, xfs_off_t offset,
- 				xfs_off_t len);
- int	xfs_insert_file_space(struct xfs_inode *, xfs_off_t offset,
- 				xfs_off_t len);
- 
- /* EOF block manipulation functions */
--bool	xfs_can_free_eofblocks(struct xfs_inode *ip, bool force);
-+bool	xfs_can_free_eofblocks(struct xfs_inode *ip);
- int	xfs_free_eofblocks(struct xfs_inode *ip);
- 
- int	xfs_swap_extents(struct xfs_inode *ip, struct xfs_inode *tip,
- 			 struct xfs_swapext *sx);
- 
-diff --git a/fs/xfs/xfs_icache.c b/fs/xfs/xfs_icache.c
-index 6df826fc787c..586d26c05160 100644
---- a/fs/xfs/xfs_icache.c
-+++ b/fs/xfs/xfs_icache.c
-@@ -1184,11 +1184,11 @@ xfs_inode_free_eofblocks(
- 			return -EAGAIN;
- 		return 0;
- 	}
- 	*lockflags |= XFS_IOLOCK_EXCL;
- 
--	if (xfs_can_free_eofblocks(ip, false))
-+	if (xfs_can_free_eofblocks(ip))
- 		return xfs_free_eofblocks(ip);
- 
- 	/* inode could be preallocated or append-only */
- 	trace_xfs_inode_free_eofblocks_invalid(ip);
- 	xfs_inode_clear_eofblocks_tag(ip);
-diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
-index 26961b0dae03..b26d26d29273 100644
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -1457,11 +1457,11 @@ xfs_release(
- 	 * dropped, so we'll never leak blocks permanently.
- 	 */
- 	if (!xfs_ilock_nowait(ip, XFS_IOLOCK_EXCL))
- 		return 0;
- 
--	if (xfs_can_free_eofblocks(ip, false)) {
-+	if (xfs_can_free_eofblocks(ip)) {
+ 	if (whichfork == XFS_DATA_FORK) {
  		/*
- 		 * Check if the inode is being opened, written and closed
- 		 * frequently and we have delayed allocation blocks outstanding
- 		 * (e.g. streaming writes from the NFS server), truncating the
- 		 * blocks past EOF will cause fragmentation to occur.
-@@ -1673,19 +1673,17 @@ xfs_inode_needs_inactive(
- 	if (VFS_I(ip)->i_nlink == 0)
- 		return true;
- 
- 	/*
- 	 * This file isn't being freed, so check if there are post-eof blocks
--	 * to free.  @force is true because we are evicting an inode from the
--	 * cache.  Post-eof blocks must be freed, lest we end up with broken
--	 * free space accounting.
-+	 * to free.
- 	 *
- 	 * Note: don't bother with iolock here since lockdep complains about
- 	 * acquiring it in reclaim context. We have the only reference to the
- 	 * inode at this point anyways.
- 	 */
--	return xfs_can_free_eofblocks(ip, true);
-+	return xfs_can_free_eofblocks(ip);
- }
- 
- /*
-  * xfs_inactive
-  *
-@@ -1732,19 +1730,15 @@ xfs_inactive(
- 			goto out;
- 	}
- 
- 	if (VFS_I(ip)->i_nlink != 0) {
- 		/*
--		 * force is true because we are evicting an inode from the
--		 * cache. Post-eof blocks must be freed, lest we end up with
--		 * broken free space accounting.
--		 *
- 		 * Note: don't bother with iolock here since lockdep complains
- 		 * about acquiring it in reclaim context. We have the only
- 		 * reference to the inode at this point anyways.
+ 		 * A directory small enough to fit in the inode must be stored
+ 		 * in local format.  The directory sf <-> extents conversion
+-		 * code updates the directory size accordingly.
++		 * code updates the directory size accordingly.  Directories
++		 * being truncated have zero size and are not subject to this
++		 * check.
  		 */
--		if (xfs_can_free_eofblocks(ip, true))
-+		if (xfs_can_free_eofblocks(ip))
- 			error = xfs_free_eofblocks(ip);
+ 		if (S_ISDIR(mode)) {
+-			if (be64_to_cpu(dip->di_size) <= fork_size &&
++			if (dip->di_size &&
++			    be64_to_cpu(dip->di_size) <= fork_size &&
+ 			    fork_format != XFS_DINODE_FMT_LOCAL)
+ 				return __this_address;
+ 		}
  
- 		goto out;
- 	}
+ 		/*
+@@ -509,13 +512,23 @@ xfs_dinode_verify(
+ 
+ 	mode = be16_to_cpu(dip->di_mode);
+ 	if (mode && xfs_mode_to_ftype(mode) == XFS_DIR3_FT_UNKNOWN)
+ 		return __this_address;
+ 
+-	/* No zero-length symlinks/dirs. */
+-	if ((S_ISLNK(mode) || S_ISDIR(mode)) && di_size == 0)
+-		return __this_address;
++	/*
++	 * No zero-length symlinks/dirs unless they're unlinked and hence being
++	 * inactivated.
++	 */
++	if ((S_ISLNK(mode) || S_ISDIR(mode)) && di_size == 0) {
++		if (dip->di_version > 1) {
++			if (dip->di_nlink)
++				return __this_address;
++		} else {
++			if (dip->di_onlink)
++				return __this_address;
++		}
++	}
+ 
+ 	fa = xfs_dinode_verify_nrext64(mp, dip);
+ 	if (fa)
+ 		return fa;
  
 -- 
 2.49.0.906.g1f30a19c02-goog
