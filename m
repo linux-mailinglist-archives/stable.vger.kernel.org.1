@@ -1,85 +1,92 @@
-Return-Path: <stable+bounces-139227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 168FEAA5759
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 23:32:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0C3AA575C
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 23:32:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EDF09A11E6
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 21:30:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28F734C2621
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 21:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30DCF2D028C;
-	Wed, 30 Apr 2025 21:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E772D0AD2;
+	Wed, 30 Apr 2025 21:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xb42baxz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WIEqBY/k"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE272C10B8
-	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 21:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F24A2D0AC9
+	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 21:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746048433; cv=none; b=mbZjXm+AhhJ9fKEaiZFi0CnmHsDAlEYUD/ZHohkpy8szo3cdBXRsz8NkByBiKAJ/17QpoakSe+7JRZGULLX2jybX7XVwGvy9kiaddErR/KlsMtDzW+dtjbUZJQd7KrN6xp1hXFW5eZ6M1pauQC8/ie5GGm0botw2ifcLe4pnIHg=
+	t=1746048434; cv=none; b=kU0alpCxCl1sQU1IDsi/SPzs6wKmfj+pqr2nVWKY8QAFFIvCqcYBm+V4tbnbBksCkqsMYLmTxPHSQD/dQXN4R404sgEYO95hp3b60FP8HCbTnb49IhkBZT9EfIHICBcCyJiHWre3BvqYMg4uL9uqIYAJHGHrLEwuZNJYFK+Whlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746048433; c=relaxed/simple;
-	bh=2VmxR8DUk4bg3leBrmAV8n+g/b89RP52nhbhS3PsfwY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LNiHKHh2MHekFzhS/LwYLzjIMWUMpaEc2i6mIWfy9xAJFhmiCHDGNGSDrrxQvtawSrVeqjeeShkiJT12igu7ctiVG0HZL5ySGFa274tDqXgjeH1vE13tz6Hekqstjy+pXMoYBOc+heInGGpT8B6b6pzW+noW139S3G2GB3BdRDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xb42baxz; arc=none smtp.client-ip=209.85.210.171
+	s=arc-20240116; t=1746048434; c=relaxed/simple;
+	bh=qlyj66biuu609NN5V8cIBYCPHQ8xfLpTd1Nbe5RoeTM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AE86Kdy+OCBefqe8UL7J4bpOxNHLooE9qVXn2so48f7iaI0y0rEDZ/uwrjubOJWE1ckhrGxIdgL0vn0voPLfWVyXRyDzlTF1tVId8YgqqVBOOBGXzDAnYA9Jc65+EGSEyOSJJrorMOdRr8fJHFQ+4G7wfSi7c/zplO8Qq1tL1Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WIEqBY/k; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7376e311086so556926b3a.3
-        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 14:27:11 -0700 (PDT)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-73712952e1cso413468b3a.1
+        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 14:27:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746048430; x=1746653230; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jIOI8XJKO+wrAR2bc03MegjZ/Yan8y7FrHM3XesABs0=;
-        b=Xb42baxz/021Ryj3DFTmdbXHJtv0I75Qdb7bkwKUSbtIAFswp+TPbQYV5d2BKW/MMH
-         jQRcXwd483cMvLWsu7jYpcxsD0ZqFDuD9Tnng2qtWVfeK3I7eR8g76BtQmGxpXcTjBLU
-         r/IUKgZRu4hSgohP3QI1X2QTqbwLgzbfivmQ7jegmFAvIHT4OqCh5/Bv3VAfPw9jKY2C
-         JKZIKxui/XULSCZdcRs4jzhE3eLWT9qfL6HVzwj2dqagAP5TV5glne3Z7z9PpehhONeG
-         /d6qDicPGCLHYLTVCd1n3PQW2KXSkziVSU464iiLEvdVk4/cumzS9UccKE1vAjuKILZm
-         /xug==
+        d=gmail.com; s=20230601; t=1746048432; x=1746653232; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9TpMbGDhnJny2vSTVu6X+28OhpUT+ZAD4t+kyJpWZzg=;
+        b=WIEqBY/kf38LXCfdEZZuqrcEecmM2vPNlkFnBiaGCFZ7/a8G8EyQT/UW5/jdWt/5gT
+         CyeRn2nw4YEYwdrWNRs79BtCD3We7omF6TTi6A8dj7uHMj+IYk96o141LenOQptuD+yC
+         uanckjRm3NiOBlykLKV++HGiyUnjSU7CR+fMP9LzgaQlB4eostaKOIi1VW6iDPSpBBwq
+         xwwuH5GJUtZxoIOOkscx8I0e7dWxDMZB8aYNHULwW7ssLPCyZ45Fj5ymNG23M+NslzB1
+         mgRlf47ZWh9dcne2jWvrDcVvD0B+le/3nG8CtpkO8IlGm+Hu238+snEC1X+dzWZgiNfB
+         iG7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746048430; x=1746653230;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jIOI8XJKO+wrAR2bc03MegjZ/Yan8y7FrHM3XesABs0=;
-        b=kZjnKFI95i5bZORB9O6rIg6UT4zWqMrttI6duY7Rh78ah8P+c/8Phd6YBURtjyouKh
-         FOKDd80AfAKtIFK/NkFubyusnKkWXeVQ4B/2z4tZMdMrxshhZs7V8ZgLbL82RWCt/BYa
-         HeTdmaTN8olRjMMfAZLr1VIkjABzH55OG0JpLek7cwivNObdVkUvfxvqhOtIjbtAFgdz
-         4LQzkfWccTgcXWOUKzbwd540pA6TNxV2Mulg6NcH2UAWS9OzTmz98tW1cExqepS3fYWg
-         0USgvFK0V2Q+uM8Wn9bljwTDT23wZ9xZKHWlM+vmXpRPewTxLJgHJwlILXRG7kbQXYDG
-         tObw==
-X-Gm-Message-State: AOJu0Ywu5RrXPLRIF6G78rKBaMqZma2CneUfI/FRJ+DsMZCnzSK5HPz1
-	GMRVCFG0OIZ7ZwxbfAccpfnF5mvVLfzhEtCSRovKQrkUb6ACEwKMEXp0vQ==
-X-Gm-Gg: ASbGncthgBrlFmtGe100syu4WPSIZSc+hXpJjxx0FhUiEF6YI946NThUf/7YRBd4h72
-	g0PAfQESCpjCNoVCEMzU1y/bnXgWjZpGST2Oii1iPTP6Pt7PYVftP58T3XvlhlSRFpuohvVTziA
-	gf+eUNWAcyklXhPT3mZLmSCm1ZwTFJIjp/oJ2Wxp4LiizYkDX+uUCPmWiXupgU8JI5pol0Qb1ed
-	pC2aFARx7bBv3Ue+6Pq2LtiahaOmvfMojW+SCnK1kZMzLXPz/vMH8ICmDWKGRbwYPrr95/JBNoT
-	K/bFr62clOfJDvUIIHISIGY6NGTHu7qqI3tBSjCYvwbr24ULSgFlB2OzjFoBQGhV7gFo
-X-Google-Smtp-Source: AGHT+IH1VwEirK4jGRF4mUw/Jkvtlrpq1n6aSr/D5YGPViVCC96OaN4GJPKvlSkwf3T55scvY9ndBg==
-X-Received: by 2002:a05:6a00:3915:b0:736:3768:6d74 with SMTP id d2e1a72fcca58-740491c9454mr66782b3a.7.1746048430545;
-        Wed, 30 Apr 2025 14:27:10 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746048432; x=1746653232;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9TpMbGDhnJny2vSTVu6X+28OhpUT+ZAD4t+kyJpWZzg=;
+        b=KwxfjeBf1Y5gbed8MFY6ByxEqp5damCII9c4UItZgc/iDaMLcna0QxtpSdM1sqlrDf
+         CLK3252CF2mMi10u4uurjTpp9PnhlEdZ7Tp/B6WvXMQf4KsT/1nDbrEUTE42FhKxjKoU
+         FhwNN5u7EcdYyZT+YqZLYmyuYGk/NqEGDW0dmJtPufc0wIDYaFn/GeSOFX5MUfJwcPSu
+         kwU/Z0Ql3xpsRWwVqEdZ+c3ptb9HaiUiwyHgWXv32tbcv99kN3DPZtpLvzPr/l4M9EJ3
+         wTM5w6owTD9uj+75UO4fbjkPl5tMdRVVQr9KE0SmL2daEfVnedyF6L6ZTKWitEGINr3h
+         489g==
+X-Gm-Message-State: AOJu0YyFisHDg3KLpFWs74AY3Mm8QdNtVU5Tgp1bmeArAj2FQF+zvGGE
+	g79ZJ0nOV6Qw9UgLqeN/1d3Z9zRqBCZq/3YsS0ftsuczqJb5TFrfBQA9zjSS
+X-Gm-Gg: ASbGncslc5BeJTpIEY2xwrIF7zWAUl6f6jlzaZsxfjUbUeMg5ohHM2PH5vKzPNeD4sq
+	hVL/wgcLuQlwi2txO7n0sFgFTRxNfBE6fnE9cNs9KquMPEkQBQEroos+jKlBaP3DYwH5BQMGk1P
+	JnqsfzVkvt0J9Y8Cd4P9nCLdFCRG+Azp3NDJ4+nsAsKTMOjKgEFXcwXSO/YTu+mY4BX4nUYeL3z
+	HdXk4Y8qYj8arCY9f33W/Nuu4wNMuBq5m/YQ4n8/1W6xOqSyVfKUbw38kyJZU7nlawl4eO4j39V
+	50HNbyzKdUvMmAhT4cXADCHNZl59VFmfvu695DxeUWLN8EWt7jWUCEv+eNXlxN4vayvB
+X-Google-Smtp-Source: AGHT+IHzgU02ZSlvbVkQ3D5FFrMgBpQUxk62cCoMgmw4oLgj6ykoz6L9O3x9CTRZjNhbfg/HuhW0kA==
+X-Received: by 2002:a05:6a00:2d21:b0:736:491b:536d with SMTP id d2e1a72fcca58-7404792a877mr752793b3a.20.1746048431601;
+        Wed, 30 Apr 2025 14:27:11 -0700 (PDT)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:c94d:a5fe:c768:2a7f])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74039a62e23sm2240586b3a.147.2025.04.30.14.27.09
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74039a62e23sm2240586b3a.147.2025.04.30.14.27.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Apr 2025 14:27:10 -0700 (PDT)
+        Wed, 30 Apr 2025 14:27:11 -0700 (PDT)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
 	chandan.babu@oracle.com,
 	catherine.hoang@oracle.com,
 	djwong@kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	=?UTF-8?q?=E5=88=98=E9=80=9A?= <lyutoon@gmail.com>,
+	Chandan Babu R <chandanbabu@kernel.org>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 00/16] xfs backports for 6.1.y from 6.10
-Date: Wed, 30 Apr 2025 14:26:47 -0700
-Message-ID: <20250430212704.2905795-1-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 01/16] xfs: fix error returns from xfs_bmapi_write
+Date: Wed, 30 Apr 2025 14:26:48 -0700
+Message-ID: <20250430212704.2905795-2-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.49.0.906.g1f30a19c02-goog
+In-Reply-To: <20250430212704.2905795-1-leah.rumancik@gmail.com>
+References: <20250430212704.2905795-1-leah.rumancik@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,114 +96,410 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hello again,
+From: Christoph Hellwig <hch@lst.de>
 
-This is the 6.1.y backports set from 6.10 which corresponds to the 6.6.y
-backports set from here:
+[ Upstream commit 6773da870ab89123d1b513da63ed59e32a29cb77 ]
 
-https://lore.kernel.org/all/20241002174108.64615-1-catherine.hoang@oracle.com/
+xfs_bmapi_write can return 0 without actually returning a mapping in
+mval in two different cases:
 
+ 1) when there is absolutely no space available to do an allocation
+ 2) when converting delalloc space, and the allocation is so small
+    that it only covers parts of the delalloc extent before the
+    range requested by the caller
 
-The following patches were included:
+Callers at best can handle one of these cases, but in many cases can't
+cope with either one.  Switch xfs_bmapi_write to always return a
+mapping or return an error code instead.  For case 1) above ENOSPC is
+the obvious choice which is very much what the callers expect anyway.
+For case 2) there is no really good error code, so pick a funky one
+from the SysV streams portfolio.
 
-f43bd357fde0 xfs: fix error returns from xfs_bmapi_write
-4bcef72d96b5 xfs: fix xfs_bmap_add_extent_delay_real for partial conversions
-c299188b443a xfs: remove a racy if_bytes check in xfs_reflink_end_cow_extent
-c13c21f77824 xfs: require XFS_SB_FEAT_INCOMPAT_LOG_XATTRS for attr log intent item recovey
-0934046e3392 xfs: check opcode and iovec count match in xlog_recover_attri_commit_pass2
-9716cdcc2f9e xfs: validate recovered name buffers when recovering xattr items
-20adb1e2f069 xfs: revert commit 44af6c7e59b12
-f24ba2183148 xfs: match lock mode in xfs_buffered_write_iomap_begin()
-0f726c17dfd8 xfs: make the seq argument to xfs_bmapi_convert_delalloc() optional
-36081fd0ee37 xfs: make xfs_bmapi_convert_delalloc() to allocate the target offset
-4c99f3026cf2 xfs: convert delayed extents to unwritten when zeroing post eof blocks
-0aca73915dc1 xfs: allow symlinks with short remote targets
-0e52b98bf041 xfs: make sure sb_fdblocks is non-negative
-2bc2d49c36c2 xfs: fix freeing speculative preallocations for preallocated files
-3eeac3311683 xfs: allow unlinked symlinks and dirs with zero size
-9a0ab4fc28ed xfs: restrict when we try to align cow fork delalloc to cowextsz hints
+This fixes the reproducer here:
 
+    https://lore.kernel.org/linux-xfs/CAEJPjCvT3Uag-pMTYuigEjWZHn1sGMZ0GCjVVCv29tNHK76Cgg@mail.gmail.com0/
 
-The following patches were omitted:
+which uses reserved blocks to create file systems that are gravely
+out of space and thus cause at least xfs_file_alloc_space to hang
+and trigger the lack of ENOSPC handling in xfs_dquot_disk_alloc.
 
-cad051826d83 xfs: fix missing check for invalid attr flags
-  scrub
-db460c26f0b0 xfs: check shortform attr entry flags specifically
-  scrub
-5689d2345a01 xfs: enforce one namespace per attribute
-  doesn't cherry pick cleanly, it is some refactoring and isn't a
-  dependency for other patches, lets skip it for now
-7c03b124353a xfs: use dontcache for grabbing inodes during scrub
-  scrub
-740a427e8f45 xfs: fix unlink vs cluster buffer instantiation race
-  already in 6.1.y
+Note that this patch does not actually make any caller but
+xfs_alloc_file_space deal intelligently with case 2) above.
 
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reported-by: 刘通 <lyutoon@gmail.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+---
+ fs/xfs/libxfs/xfs_attr_remote.c |  1 -
+ fs/xfs/libxfs/xfs_bmap.c        | 46 ++++++++++++++++++++++++++-------
+ fs/xfs/libxfs/xfs_da_btree.c    | 20 ++++----------
+ fs/xfs/xfs_bmap_util.c          | 31 +++++++++++-----------
+ fs/xfs/xfs_dquot.c              |  1 -
+ fs/xfs/xfs_iomap.c              |  8 ------
+ fs/xfs/xfs_reflink.c            | 14 ----------
+ fs/xfs/xfs_rtalloc.c            |  2 --
+ 8 files changed, 57 insertions(+), 66 deletions(-)
 
-No fixes were found on mainline for any of the patches being ported.
-
-The auto group was run 1x on each of these configs:
-
-xfs/4k
-xfs/1k
-xfs/logdev
-xfs/realtime
-xfs/quota
-xfs/v4
-xfs/dax
-xfs/adv
-xfs/dirblock_8k
-
-and no regressions were seen. This set has already been ack'd on the
-xfs-stable list.
-
-Let me know if you see any issues. Thanks,
-Leah
-
-
-Christoph Hellwig (4):
-  xfs: fix error returns from xfs_bmapi_write
-  xfs: fix xfs_bmap_add_extent_delay_real for partial conversions
-  xfs: remove a racy if_bytes check in xfs_reflink_end_cow_extent
-  xfs: fix freeing speculative preallocations for preallocated files
-
-Darrick J. Wong (7):
-  xfs: require XFS_SB_FEAT_INCOMPAT_LOG_XATTRS for attr log intent item
-    recovery
-  xfs: check opcode and iovec count match in
-    xlog_recover_attri_commit_pass2
-  xfs: validate recovered name buffers when recovering xattr items
-  xfs: revert commit 44af6c7e59b12
-  xfs: allow symlinks with short remote targets
-  xfs: allow unlinked symlinks and dirs with zero size
-  xfs: restrict when we try to align cow fork delalloc to cowextsz hints
-
-Wengang Wang (1):
-  xfs: make sure sb_fdblocks is non-negative
-
-Zhang Yi (4):
-  xfs: match lock mode in xfs_buffered_write_iomap_begin()
-  xfs: make the seq argument to xfs_bmapi_convert_delalloc() optional
-  xfs: make xfs_bmapi_convert_delalloc() to allocate the target offset
-  xfs: convert delayed extents to unwritten when zeroing post eof blocks
-
- fs/xfs/libxfs/xfs_attr_remote.c |   1 -
- fs/xfs/libxfs/xfs_bmap.c        | 130 ++++++++++++++++++++++++++------
- fs/xfs/libxfs/xfs_da_btree.c    |  20 ++---
- fs/xfs/libxfs/xfs_inode_buf.c   |  47 ++++++++++--
- fs/xfs/libxfs/xfs_sb.c          |   7 +-
- fs/xfs/scrub/attr.c             |   5 ++
- fs/xfs/xfs_aops.c               |  54 ++++---------
- fs/xfs/xfs_attr_item.c          |  88 ++++++++++++++++++---
- fs/xfs/xfs_bmap_util.c          |  61 +++++++++------
- fs/xfs/xfs_bmap_util.h          |   2 +-
- fs/xfs/xfs_dquot.c              |   1 -
- fs/xfs/xfs_icache.c             |   2 +-
- fs/xfs/xfs_inode.c              |  14 +---
- fs/xfs/xfs_iomap.c              |  81 +++++++++++---------
- fs/xfs/xfs_reflink.c            |  20 -----
- fs/xfs/xfs_rtalloc.c            |   2 -
- 16 files changed, 342 insertions(+), 193 deletions(-)
-
+diff --git a/fs/xfs/libxfs/xfs_attr_remote.c b/fs/xfs/libxfs/xfs_attr_remote.c
+index d440393b40eb..54de405cbab5 100644
+--- a/fs/xfs/libxfs/xfs_attr_remote.c
++++ b/fs/xfs/libxfs/xfs_attr_remote.c
+@@ -617,11 +617,10 @@ xfs_attr_rmtval_set_blk(
+ 			attr->xattri_blkcnt, XFS_BMAPI_ATTRFORK, args->total,
+ 			map, &nmap);
+ 	if (error)
+ 		return error;
+ 
+-	ASSERT(nmap == 1);
+ 	ASSERT((map->br_startblock != DELAYSTARTBLOCK) &&
+ 	       (map->br_startblock != HOLESTARTBLOCK));
+ 
+ 	/* roll attribute extent map forwards */
+ 	attr->xattri_lblkno += map->br_blockcount;
+diff --git a/fs/xfs/libxfs/xfs_bmap.c b/fs/xfs/libxfs/xfs_bmap.c
+index 2a3b78032cb0..0235c1dd3d7e 100644
+--- a/fs/xfs/libxfs/xfs_bmap.c
++++ b/fs/xfs/libxfs/xfs_bmap.c
+@@ -4111,12 +4111,14 @@ xfs_bmapi_allocate(
+ 		else
+ 			error = xfs_bmap_btalloc(bma);
+ 	} else {
+ 		error = xfs_bmap_alloc_userdata(bma);
+ 	}
+-	if (error || bma->blkno == NULLFSBLOCK)
++	if (error)
+ 		return error;
++	if (bma->blkno == NULLFSBLOCK)
++		return -ENOSPC;
+ 
+ 	if (bma->flags & XFS_BMAPI_ZERO) {
+ 		error = xfs_zero_extent(bma->ip, bma->blkno, bma->length);
+ 		if (error)
+ 			return error;
+@@ -4292,10 +4294,19 @@ xfs_bmapi_finish(
+ /*
+  * Map file blocks to filesystem blocks, and allocate blocks or convert the
+  * extent state if necessary.  Details behaviour is controlled by the flags
+  * parameter.  Only allocates blocks from a single allocation group, to avoid
+  * locking problems.
++ *
++ * Returns 0 on success and places the extent mappings in mval.  nmaps is used
++ * as an input/output parameter where the caller specifies the maximum number
++ * of mappings that may be returned and xfs_bmapi_write passes back the number
++ * of mappings (including existing mappings) it found.
++ *
++ * Returns a negative error code on failure, including -ENOSPC when it could not
++ * allocate any blocks and -ENOSR when it did allocate blocks to convert a
++ * delalloc range, but those blocks were before the passed in range.
+  */
+ int
+ xfs_bmapi_write(
+ 	struct xfs_trans	*tp,		/* transaction pointer */
+ 	struct xfs_inode	*ip,		/* incore inode */
+@@ -4419,14 +4430,20 @@ xfs_bmapi_write(
+ 				bma.length = len;
+ 
+ 			ASSERT(len > 0);
+ 			ASSERT(bma.length > 0);
+ 			error = xfs_bmapi_allocate(&bma);
+-			if (error)
++			if (error) {
++				/*
++				 * If we already allocated space in a previous
++				 * iteration return what we go so far when
++				 * running out of space.
++				 */
++				if (error == -ENOSPC && bma.nallocs)
++					break;
+ 				goto error0;
+-			if (bma.blkno == NULLFSBLOCK)
+-				break;
++			}
+ 
+ 			/*
+ 			 * If this is a CoW allocation, record the data in
+ 			 * the refcount btree for orphan recovery.
+ 			 */
+@@ -4460,22 +4477,36 @@ xfs_bmapi_write(
+ 		/* Else go on to the next record. */
+ 		bma.prev = bma.got;
+ 		if (!xfs_iext_next_extent(ifp, &bma.icur, &bma.got))
+ 			eof = true;
+ 	}
+-	*nmap = n;
+ 
+ 	error = xfs_bmap_btree_to_extents(tp, ip, bma.cur, &bma.logflags,
+ 			whichfork);
+ 	if (error)
+ 		goto error0;
+ 
+ 	ASSERT(ifp->if_format != XFS_DINODE_FMT_BTREE ||
+ 	       ifp->if_nextents > XFS_IFORK_MAXEXT(ip, whichfork));
+ 	xfs_bmapi_finish(&bma, whichfork, 0);
+ 	xfs_bmap_validate_ret(orig_bno, orig_len, orig_flags, orig_mval,
+-		orig_nmap, *nmap);
++		orig_nmap, n);
++
++	/*
++	 * When converting delayed allocations, xfs_bmapi_allocate ignores
++	 * the passed in bno and always converts from the start of the found
++	 * delalloc extent.
++	 *
++	 * To avoid a successful return with *nmap set to 0, return the magic
++	 * -ENOSR error code for this particular case so that the caller can
++	 * handle it.
++	 */
++	if (!n) {
++		ASSERT(bma.nallocs >= *nmap);
++		return -ENOSR;
++	}
++	*nmap = n;
+ 	return 0;
+ error0:
+ 	xfs_bmapi_finish(&bma, whichfork, error);
+ 	return error;
+ }
+@@ -4578,13 +4609,10 @@ xfs_bmapi_convert_delalloc(
+ 
+ 	error = xfs_bmapi_allocate(&bma);
+ 	if (error)
+ 		goto out_finish;
+ 
+-	error = -ENOSPC;
+-	if (WARN_ON_ONCE(bma.blkno == NULLFSBLOCK))
+-		goto out_finish;
+ 	error = -EFSCORRUPTED;
+ 	if (WARN_ON_ONCE(!xfs_valid_startblock(ip, bma.got.br_startblock)))
+ 		goto out_finish;
+ 
+ 	XFS_STATS_ADD(mp, xs_xstrat_bytes, XFS_FSB_TO_B(mp, bma.length));
+diff --git a/fs/xfs/libxfs/xfs_da_btree.c b/fs/xfs/libxfs/xfs_da_btree.c
+index 282c7cf032f4..12e3cca804b7 100644
+--- a/fs/xfs/libxfs/xfs_da_btree.c
++++ b/fs/xfs/libxfs/xfs_da_btree.c
+@@ -2156,61 +2156,51 @@ xfs_da_grow_inode_int(
+ {
+ 	struct xfs_trans	*tp = args->trans;
+ 	struct xfs_inode	*dp = args->dp;
+ 	int			w = args->whichfork;
+ 	xfs_rfsblock_t		nblks = dp->i_nblocks;
+-	struct xfs_bmbt_irec	map, *mapp;
+-	int			nmap, error, got, i, mapi;
++	struct xfs_bmbt_irec	map, *mapp = &map;
++	int			nmap, error, got, i, mapi = 1;
+ 
+ 	/*
+ 	 * Find a spot in the file space to put the new block.
+ 	 */
+ 	error = xfs_bmap_first_unused(tp, dp, count, bno, w);
+ 	if (error)
+ 		return error;
+ 
+ 	/*
+ 	 * Try mapping it in one filesystem block.
+ 	 */
+ 	nmap = 1;
+ 	error = xfs_bmapi_write(tp, dp, *bno, count,
+ 			xfs_bmapi_aflag(w)|XFS_BMAPI_METADATA|XFS_BMAPI_CONTIG,
+ 			args->total, &map, &nmap);
+-	if (error)
+-		return error;
+-
+-	ASSERT(nmap <= 1);
+-	if (nmap == 1) {
+-		mapp = &map;
+-		mapi = 1;
+-	} else if (nmap == 0 && count > 1) {
++	if (error == -ENOSPC && count > 1) {
+ 		xfs_fileoff_t		b;
+ 		int			c;
+ 
+ 		/*
+ 		 * If we didn't get it and the block might work if fragmented,
+ 		 * try without the CONTIG flag.  Loop until we get it all.
+ 		 */
+ 		mapp = kmem_alloc(sizeof(*mapp) * count, 0);
+ 		for (b = *bno, mapi = 0; b < *bno + count; ) {
+ 			c = (int)(*bno + count - b);
+ 			nmap = min(XFS_BMAP_MAX_NMAP, c);
+ 			error = xfs_bmapi_write(tp, dp, b, c,
+ 					xfs_bmapi_aflag(w)|XFS_BMAPI_METADATA,
+ 					args->total, &mapp[mapi], &nmap);
+ 			if (error)
+ 				goto out_free_map;
+-			if (nmap < 1)
+-				break;
+ 			mapi += nmap;
+ 			b = mapp[mapi - 1].br_startoff +
+ 			    mapp[mapi - 1].br_blockcount;
+ 		}
+-	} else {
+-		mapi = 0;
+-		mapp = NULL;
+ 	}
++	if (error)
++		goto out_free_map;
+ 
+ 	/*
+ 	 * Count the blocks we got, make sure it matches the total.
+ 	 */
+ 	for (i = 0, got = 0; i < mapi; i++)
+diff --git a/fs/xfs/xfs_bmap_util.c b/fs/xfs/xfs_bmap_util.c
+index 468bb61a5e46..399451aab26a 100644
+--- a/fs/xfs/xfs_bmap_util.c
++++ b/fs/xfs/xfs_bmap_util.c
+@@ -866,37 +866,36 @@ xfs_alloc_file_space(
+ 			error = xfs_iext_count_upgrade(tp, ip,
+ 					XFS_IEXT_ADD_NOSPLIT_CNT);
+ 		if (error)
+ 			goto error;
+ 
+-		error = xfs_bmapi_write(tp, ip, startoffset_fsb,
+-				allocatesize_fsb, XFS_BMAPI_PREALLOC, 0, imapp,
+-				&nimaps);
+-		if (error)
+-			goto error;
+-
+-		ip->i_diflags |= XFS_DIFLAG_PREALLOC;
+-		xfs_trans_log_inode(tp, ip, XFS_ILOG_CORE);
+-
+-		error = xfs_trans_commit(tp);
+-		xfs_iunlock(ip, XFS_ILOCK_EXCL);
+-		if (error)
+-			break;
+-
+ 		/*
+ 		 * If the allocator cannot find a single free extent large
+ 		 * enough to cover the start block of the requested range,
+-		 * xfs_bmapi_write will return 0 but leave *nimaps set to 0.
++		 * xfs_bmapi_write will return -ENOSR.
+ 		 *
+ 		 * In that case we simply need to keep looping with the same
+ 		 * startoffset_fsb so that one of the following allocations
+ 		 * will eventually reach the requested range.
+ 		 */
+-		if (nimaps) {
++		error = xfs_bmapi_write(tp, ip, startoffset_fsb,
++				allocatesize_fsb, XFS_BMAPI_PREALLOC, 0, imapp,
++				&nimaps);
++		if (error) {
++			if (error != -ENOSR)
++				goto error;
++			error = 0;
++		} else {
+ 			startoffset_fsb += imapp->br_blockcount;
+ 			allocatesize_fsb -= imapp->br_blockcount;
+ 		}
++
++		ip->i_diflags |= XFS_DIFLAG_PREALLOC;
++		xfs_trans_log_inode(tp, ip, XFS_ILOG_CORE);
++
++		error = xfs_trans_commit(tp);
++		xfs_iunlock(ip, XFS_ILOCK_EXCL);
+ 	}
+ 
+ 	return error;
+ 
+ error:
+diff --git a/fs/xfs/xfs_dquot.c b/fs/xfs/xfs_dquot.c
+index a8b2f3b278ea..6186b69be50a 100644
+--- a/fs/xfs/xfs_dquot.c
++++ b/fs/xfs/xfs_dquot.c
+@@ -331,11 +331,10 @@ xfs_dquot_disk_alloc(
+ 			&nmaps);
+ 	if (error)
+ 		goto err_cancel;
+ 
+ 	ASSERT(map.br_blockcount == XFS_DQUOT_CLUSTER_SIZE_FSB);
+-	ASSERT(nmaps == 1);
+ 	ASSERT((map.br_startblock != DELAYSTARTBLOCK) &&
+ 	       (map.br_startblock != HOLESTARTBLOCK));
+ 
+ 	/*
+ 	 * Keep track of the blkno to save a lookup later
+diff --git a/fs/xfs/xfs_iomap.c b/fs/xfs/xfs_iomap.c
+index ab5512c0bcf7..60d9638cec6d 100644
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -307,18 +307,10 @@ xfs_iomap_write_direct(
+ 	 */
+ 	error = xfs_trans_commit(tp);
+ 	if (error)
+ 		goto out_unlock;
+ 
+-	/*
+-	 * Copy any maps to caller's array and return any error.
+-	 */
+-	if (nimaps == 0) {
+-		error = -ENOSPC;
+-		goto out_unlock;
+-	}
+-
+ 	if (unlikely(!xfs_valid_startblock(ip, imap->br_startblock)))
+ 		error = xfs_alert_fsblock_zero(ip, imap);
+ 
+ out_unlock:
+ 	*seq = xfs_iomap_inode_sequence(ip, 0);
+diff --git a/fs/xfs/xfs_reflink.c b/fs/xfs/xfs_reflink.c
+index 1bac6a8af970..0405226fb74c 100644
+--- a/fs/xfs/xfs_reflink.c
++++ b/fs/xfs/xfs_reflink.c
+@@ -429,17 +429,10 @@ xfs_reflink_fill_cow_hole(
+ 	xfs_inode_set_cowblocks_tag(ip);
+ 	error = xfs_trans_commit(tp);
+ 	if (error)
+ 		return error;
+ 
+-	/*
+-	 * Allocation succeeded but the requested range was not even partially
+-	 * satisfied?  Bail out!
+-	 */
+-	if (nimaps == 0)
+-		return -ENOSPC;
+-
+ convert:
+ 	return xfs_reflink_convert_unwritten(ip, imap, cmap, convert_now);
+ 
+ out_trans_cancel:
+ 	xfs_trans_cancel(tp);
+@@ -498,17 +491,10 @@ xfs_reflink_fill_delalloc(
+ 
+ 		xfs_inode_set_cowblocks_tag(ip);
+ 		error = xfs_trans_commit(tp);
+ 		if (error)
+ 			return error;
+-
+-		/*
+-		 * Allocation succeeded but the requested range was not even
+-		 * partially satisfied?  Bail out!
+-		 */
+-		if (nimaps == 0)
+-			return -ENOSPC;
+ 	} while (cmap->br_startoff + cmap->br_blockcount <= imap->br_startoff);
+ 
+ 	return xfs_reflink_convert_unwritten(ip, imap, cmap, convert_now);
+ 
+ out_trans_cancel:
+diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
+index 7c5134899634..5cf1e91f4c20 100644
+--- a/fs/xfs/xfs_rtalloc.c
++++ b/fs/xfs/xfs_rtalloc.c
+@@ -838,12 +838,10 @@ xfs_growfs_rt_alloc(
+ 		 * Allocate blocks to the bitmap file.
+ 		 */
+ 		nmap = 1;
+ 		error = xfs_bmapi_write(tp, ip, oblocks, nblocks - oblocks,
+ 					XFS_BMAPI_METADATA, 0, &map, &nmap);
+-		if (!error && nmap < 1)
+-			error = -ENOSPC;
+ 		if (error)
+ 			goto out_trans_cancel;
+ 		/*
+ 		 * Free any blocks freed up in the transaction, then commit.
+ 		 */
 -- 
 2.49.0.906.g1f30a19c02-goog
 
