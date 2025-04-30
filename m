@@ -1,122 +1,99 @@
-Return-Path: <stable+bounces-139119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6161AA4571
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 10:31:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8D6AA4585
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 10:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3918E3A7B41
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 08:30:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76855189F1AF
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 08:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D57B21B9C2;
-	Wed, 30 Apr 2025 08:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0A71DF277;
+	Wed, 30 Apr 2025 08:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b="OiO2CgW8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZAQfo9h9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A84217734
-	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 08:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5227C20E6F3
+	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 08:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746001730; cv=none; b=nYl49l/9a73Xd2K7FUT+f3H1ZKl/68xjK9u6R1Mg3DuC1M/3wuYTAs7aQca46tiGv/m8hrOGq8wgx7nG9dBgIvy2FUCMXooTMSd7CvkxU8ZTEC3sRR0K0WQ5qBHrqp9QmO5TXuqsfGpuhzxD+Wu9uN52yhIWvJ0t+RLM2SFaz80=
+	t=1746002023; cv=none; b=T7Ca73Ri9FKWtmPLDHhKVUmHHAwUsr19UKpQzeGRz+5A+vtlYsMznascU9/pdhBZ/khs8plUIpbgKkef62rZTtYtPg1IiUyPOVydAK13t5qaMqy51tSPECBGjgI+GaBcdG01NcoZl9SG/cK7wBlG3PieEtAZWKR6A77+ABP386Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746001730; c=relaxed/simple;
-	bh=pH0oqBFzXr7dxaa6fyvrd+LLrjaVdoyq6r4ZmuQseF0=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=AaRkEsA4zwHoSkgk4zss0WnzYfBq1k4lbezGwMxPCcoIWBfZjBU38CPRGRjDN6uVrgQhFVBcCTp9XSzTZxu6cnipPECZRnWVo+AqFWPXxU61D+Kf/l+mEZRNzMbaYTkAGzezViQjxmfD7iZ8SnGJhXFGDxu1Qmn1Ro0UIBFi+zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu; spf=pass smtp.mailfrom=uci.edu; dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b=OiO2CgW8; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-3106217268dso65748471fa.1
-        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 01:28:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=uci.edu; s=google; t=1746001726; x=1746606526; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6lPqXLo5Wb4FjmQISWv1/W8649m7XVXX1Bcf7rCMT1I=;
-        b=OiO2CgW8iu5CCKeSmS3PlKZ+n3xjB4FpmGZ/szRw0QJi8A+YcL0FYUJrTLEgosdX4F
-         d2jIHVcqMDFx8tXKCMTNLxGOgHXxJzDe1Lu5A+HD3aOZY2YteujoRH75Q6yRlSADpr7D
-         FVLvx40vp6KiwdNYybuP9Ljyfgcf+knyPL9/g0CFVT89u3k15c5uis1NnJR4mUXlSJko
-         zeE595klz/aoX3G/7dxfmk/okb1P8e+2elx9oIXR/mq9UO4aBbBncJUmdhGS9w45ZlXo
-         EuU2szghJEATSCEJv63JZTzcijBR1Lt3hkO0CBfuP4aaNjdxIZd+FPqtMVe6/dGanA2S
-         2EWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746001726; x=1746606526;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6lPqXLo5Wb4FjmQISWv1/W8649m7XVXX1Bcf7rCMT1I=;
-        b=YQWKjnOvhuERZVFH5q91ONuRubxDfWV+UBN8KTOWIOMXiX9Wg2PkRUfZ3Mp6ZqHVX3
-         +N3Mw96f2NXrOlsx4h0tt5L5Fo61vxJLEreUK1/yndB55cOi4qCz3s37aR+TjLhKKC5X
-         i5+LJOXcsAq8iuu3l5dZe1rVKQq7zUza0kx+TxaM/qiGqZ6f1k62XrVvZJ7iq0wyEhh5
-         37b3ZZ4Za2AdBxy/SjfyE2L9UJHFxQ2zmEt8SwUPbOe57P5LEWJk8q0skw7XkOlnWDdK
-         4PdjV1RyXWktTwNwiWDUBDjF/SefJoQO6eoD4nGa2iLLBM6DR5Svgr/FW83t39kF8Jba
-         /PkA==
-X-Forwarded-Encrypted: i=1; AJvYcCXzT7ujMxuMvgaQmO7buymxtxIPiDoNhv4fhOQhibvkgNYvnIyvTJorbo42FNJPsSNZ6dyLJXM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkiZ+GR7vyYubAU5AtVAmI/3ljydvLNMgw7Zd5KxqBG3+brmGn
-	jzWeJzlN3oQuph0obalsuwo6Dx9708gGvL13eYFrPz9YJASzpX7c9n+KMQRh9ir0tKe4VI8aj+i
-	xeYW/8iQP+YfpZLRMhsXUD/bV4iVWIgGqz5lr1A==
-X-Gm-Gg: ASbGnctaDNN0+8kcp6+CibALE0lH1l18AJvlOL/xWYovJlPGjfd+znntR4vcZteTdRX
-	/p+tqT9Oe1kSpeYvuM/U8ee4OSA2IoTb2DB21JJI2e/P/n+0/vRStzwgSEOZF8mMFS/BtbRyd2t
-	KkRGwTSNhyOJCQQkT8txPIbwLYUAyOGFd2cO1Y
-X-Google-Smtp-Source: AGHT+IHm9LGcwO5UfIgmOPoA/NZWU0YUuagpPN/FMkVDaPR9suXAlBToMbxCmPA+26NwR16zuoPZt7Fpu/vyInDHLes=
-X-Received: by 2002:a05:651c:1542:b0:30b:ee78:79d2 with SMTP id
- 38308e7fff4ca-31e6bb7963amr7026571fa.36.1746001726243; Wed, 30 Apr 2025
- 01:28:46 -0700 (PDT)
+	s=arc-20240116; t=1746002023; c=relaxed/simple;
+	bh=q/+LbTSQVvyaeB39OvKh0Z7Kl8kt7PrkIv1p18GWNcw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Cm4PYT4zHC/Bq+d6Uk+brnIRX3G1xgt/yLOcmg041d4qmQSn97kNF6HFqlRYCygprzdoHC67nKJ5m51sbbk3iyVYdbkISKUrq1QJFoCAZxpayhRSK3sx2neSVnmgZx65mZ9obHxlB1XREMIbntTMCNwxpRcK//EMi+5AfUuSqhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZAQfo9h9; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746002022; x=1777538022;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=q/+LbTSQVvyaeB39OvKh0Z7Kl8kt7PrkIv1p18GWNcw=;
+  b=ZAQfo9h9lLBq0LCx24ytklnNK035M30D1XQWLugkUpaijRwe+bou5wB0
+   3Xl3Ygqea7vdDTlgNrgnz3Pms0RMfbjHvS0t2947Ecos0STxC2mxR7mgA
+   /0VfI6Dx5ui+esXygKDpaXEmEd9XSGE1g4YFT48ank+L7YbFUpM7e87Xf
+   JXFuIji9H2YQmlRVf8WJq+M+sM5llMYbuwun/ZvrwVB6N1CaDk+lnr2CA
+   OJ2S7UQ+2kH6HIxzF5U0oGJ/lWVZK9U0cdA2KRgkMkDnGzhzs8xIz1bEx
+   /wsHEflzJV3M6Zcxp3MWqAWzJhieZXNZJaxXwv7GwVVibJQXDl50RiI+f
+   w==;
+X-CSE-ConnectionGUID: 99zO7b2MTu6sNvY9Xa2N9Q==
+X-CSE-MsgGUID: Z+PPztxYQpeOpFeQR/+gtg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="47533838"
+X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; 
+   d="scan'208";a="47533838"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 01:33:41 -0700
+X-CSE-ConnectionGUID: GnwQGHcEQZObHbtoB7M8SA==
+X-CSE-MsgGUID: jPt/TgquT02V7Sfv6js0fg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; 
+   d="scan'208";a="165000784"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 30 Apr 2025 01:33:39 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uA2sr-0003Iz-1Y;
+	Wed, 30 Apr 2025 08:33:37 +0000
+Date: Wed, 30 Apr 2025 16:32:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ezra Khuzadi <ekhuzadi@uci.edu>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: sound/pci/hda: add quirk for HP Spectre x360 15-eb0xxx
+Message-ID: <aBHgOsqA4qfe7LbN@c757f733ca9e>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Ezra Khuzadi <ekhuzadi@uci.edu>
-Date: Wed, 30 Apr 2025 01:28:35 -0700
-X-Gm-Features: ATxdqUHlLjGvyjp1aDqcwzw1xdWYY187ti4MPUlvYdIVpJ5MANTZwWt-gw4LJKI
-Message-ID: <CAPXr0uxh0c_2b2-zJF=N8T6DfccfyvOQRX0X0VO24dS7YsxzzQ@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPXr0uxh0c_2b2-zJF=N8T6DfccfyvOQRX0X0VO24dS7YsxzzQ@mail.gmail.com>
+
+Hi,
+
+Thanks for your patch.
+
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
 Subject: sound/pci/hda: add quirk for HP Spectre x360 15-eb0xxx
-To: linux-kernel@vger.kernel.org
-Cc: alsa-devel@lists.sourceforge.net, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Link: https://lore.kernel.org/stable/CAPXr0uxh0c_2b2-zJF%3DN8T6DfccfyvOQRX0X0VO24dS7YsxzzQ%40mail.gmail.com
 
-sound/pci/hda: add quirk for HP Spectre x360 15-eb0xxx
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
-Add subsystem ID 0x86e5 for HP Spectre x360 15-eb0xxx so that
-ALC285_FIXUP_HP_SPECTRE_X360_EB1 (GPIO amp-enable, mic-mute LED and
-pinconfigs) is applied.
 
-Tested on HP Spectre x360 15-eb0043dx (Vendor 0x10ec0285, Subsys 0x103c86e5)
-with legacy HDA driver and hda-verb toggles:
 
-  $ cat /proc/asound/card0/codec#0 \
-      | sed -n -e '1,5p;/Vendor Id:/p;/Subsystem Id:/p'
-  Codec: Realtek ALC285
-  Vendor Id: 0x10ec0285
-  Subsystem Id: 0x103c86e5
-
-  $ dmesg | grep -i realtek
-  [    5.828728] snd_hda_codec_realtek ehdaudio0D0: ALC285: picked fixup
-        for PCI SSID 103c:86e5
-
-Signed-off-by: Ezra Khuzadi <ekhuzadi@uci.edu>
-
----
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 877137cb09ac..82ad105e7fa9 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10563,6 +10563,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
-   SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
-+  SND_PCI_QUIRK(0x103c, 0x86e5, "HP Spectre x360 15-eb0xxx",
-ALC285_FIXUP_HP_SPECTRE_X360_EB1),
-   SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx",
-ALC285_FIXUP_HP_SPECTRE_X360_EB1),
-   SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx",
-ALC285_FIXUP_HP_SPECTRE_X360_EB1),
-   SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx",
-ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
 
