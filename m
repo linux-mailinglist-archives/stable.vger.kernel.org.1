@@ -1,164 +1,150 @@
-Return-Path: <stable+bounces-139121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4321AA45CC
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 10:45:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FB3CAA467A
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 11:10:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B731C1BA6BDB
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 08:44:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FB671BC048E
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 09:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977F621ABC5;
-	Wed, 30 Apr 2025 08:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CA821D3F8;
+	Wed, 30 Apr 2025 09:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b="g6I84YrY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N4kYwgVh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955D821ABC6
-	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 08:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B5A21C161
+	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 09:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746002604; cv=none; b=PDtdwgsOds+NhkbS5a60TsyaZ9q5DPnO3D4FnTTdL4/+dqDThVo0y+fFvkWa3YEOYnlrucyL9ty1AVygvkmFiyJmVQxI/n+J1Cr8KULXAyqsAWekB2C+Pt1h4O2IMMwKpsZ9BzcydZBOGwAwas64/sox3m4chsjbD9UQVkPhuY8=
+	t=1746004216; cv=none; b=R0YLoAFwJpHf0trRKog85Oz9Rwy0XmcG+fr/vjlFVMNepUyACLzLDjR+sG6Fhw/eEOH5FnsASaJ98n0wat/HTAjnZfF9CmCMmaZOeYFJt8icAdWhqfhTBdKXmot8MgByygm/vcc+a9CRkpS1naiQletJ4E+ckmEafhU1+TOBY6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746002604; c=relaxed/simple;
-	bh=KNpuHzwTaaTYpf7LfrnyBa2FI4gDtfLAyiquhlf2Pro=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fa9HD9j3ujEcfGROmraKFqKYugWsOv7N0NLjUV+E+/D3PSml23od/WII/9On0HZhgOn2pTaTTDqZzA7RXnxfLdWz7qf534BqR/Bnjlhul82yDOi0BS4ShJq8+7hJAq0nrYLudAAGZikplnEBsTBcPFtUh2YeU372lsQlNJ5n1xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu; spf=pass smtp.mailfrom=uci.edu; dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b=g6I84YrY; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-30bf3f3539dso7465211fa.1
-        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 01:43:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=uci.edu; s=google; t=1746002600; x=1746607400; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z1qs81RVT7WGaI5EEDOkNWrLzSI42G5tmDul/p84+M0=;
-        b=g6I84YrYc7F+yVADnY0iWBBQVEW70YSfRMYfb7DWa6B2Jg7pk5VzMDXMkxIJ7GYu+e
-         mIOklJtUn1KhrqAp/2YrCVH1PKjNUH1vP2ZdKyb5SA+jfUYjFcbgJ6bj5D/zs1fiKu0w
-         FQs1GLDeF+2zmBSDcAFi/knWqj5Wey4HB3iiSXY/agVgUezvklwnMjy6qbJt/lOO+Mz+
-         QiA1kPP1Rf4hrUBxsV2Qr0yUi+BNNWlFZAg+yjMhlSxzk1d5OvyIg2P0WH6kCBfNMfmI
-         DAqftad8D7xv3Lb+cCKSa+m1MCjltlzRkVzieJYBkbymu3XsgE4Z79vlDSB0y3Ers0jU
-         EgAw==
+	s=arc-20240116; t=1746004216; c=relaxed/simple;
+	bh=igMUEO2jdAMJa66FnKgZHk74FDW367SkId7b0Aj61PU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jTlhRoCieIavTINQIuF7myk8w3axuFqZFReTU4gxHDzBmegqtur5ripVY1xzjSlohkBRc8oRncMaS4KKQprEJhE89mE11p8hy8U7hZat06vCJ/I/o0V26Z4PTKy3iVoeMhZCRdgyWdUuD5zEl7uhC2BhwSkas7vV9m2lfg1fayE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N4kYwgVh; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746004213;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RBM8h9GXkd4oRheqBQptKlBrFr1ALhS3777dATJTzNQ=;
+	b=N4kYwgVh1m05hL0ewz737lPHK6imuCEIm49pHySaVIeQXcoG6Frf6JT7ZSmGvX8qIuKLfk
+	k6DmFKUPQt+dbBvi4pQ1RWnE6AfiaLWPnbyZOeSy1L/nGIqnJQAzGsTH9ApjKp1JAcLqEV
+	AbwL16RpBIaxjVnQ24NIlCCargOxa18=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-690-3FdKXS-WPiOtLQkda9Xrnw-1; Wed, 30 Apr 2025 05:10:11 -0400
+X-MC-Unique: 3FdKXS-WPiOtLQkda9Xrnw-1
+X-Mimecast-MFC-AGG-ID: 3FdKXS-WPiOtLQkda9Xrnw_1746004210
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-ac710ace217so503526466b.1
+        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 02:10:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746002600; x=1746607400;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z1qs81RVT7WGaI5EEDOkNWrLzSI42G5tmDul/p84+M0=;
-        b=q85A7alzMPlRb/NAuwZ+2BhMXQGmpxlF79LGol/jDRpw85CfRGPFy7qC8qGQCWj4Wm
-         sGQwbG4sse2FfEMVO23N1KYLVFUaB6PNt1UmXVi50vwqSxqGM81SsiTLTIa8xqqK9vh/
-         SP+sFDrCbqnxi86JeE+Shghg1q+W+IYtHKwJo0mLa1DX82JhG9wMTtCdWrhAWtN3vZFo
-         rvIB0a08Rlc+cjMeeEdSnAPFLgkTp1Hn0yj9+Uqf1CoxIeI65shwYNwH3ZuB4yN6PywM
-         /NNXHLs6lJApUGZWxSQJgShTiH7l737DgwKEFKB47+XCaZtxyD4yW1bWGC9jITI7iCIW
-         5J4Q==
-X-Gm-Message-State: AOJu0Ywx6xm3to9wGI2MvNlAnBKLz5gf7ySfcEChqvg7MryYgbSW+H37
-	zfajRSPW3mBpQw/V/7g+BDBAZya6benqBYjzhqGy3cSGPdJVZoEYH7Sa9qqDnXClPakPK04CXsw
-	y3hdLCXKCU/MFR051mx7uDuaXzRVovnsv9cBLzQ==
-X-Gm-Gg: ASbGnctms4zwE5JlRFh7PeKgDs8DORD37L9u5r9frZ126mvIKh/bMlukcUvsvlaEU6i
-	4HqZlR4Sb3FJIRZSFnmYZg3lxXrIbNU0QXNV6XqMda6dRRfhY7XLxU8t62S5ROsednzCcnJGErN
-	eZQzS8wgJbzY5Gm9IaxZdSsmlpWtoeh0OBYOZ2WJMA1/Lzrmo=
-X-Google-Smtp-Source: AGHT+IEj2xNmii2aVrB0HPnZcj1cS2DilF+s1D1CmUyT4TXXlXak86RbcnaZ+lF+p2b/bE6q5sm0vkwf9XHDx/ezzxg=
-X-Received: by 2002:a2e:a808:0:b0:30b:a100:7fec with SMTP id
- 38308e7fff4ca-31e7d4d6977mr5091471fa.12.1746002599538; Wed, 30 Apr 2025
- 01:43:19 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746004209; x=1746609009;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RBM8h9GXkd4oRheqBQptKlBrFr1ALhS3777dATJTzNQ=;
+        b=Jp5jlgqb6+q+0Bg3c1jk4C4iVwgA5Kcbp7Y8Tz+kunMtHz0KPPXjQdmUdVvp8eVcwJ
+         woDyM32fhdt+c240n4PZmHYiL1T27oJxSNPGh1RveT2fCol1CSU4/qleG1l2XCvjohg1
+         9IUXoh+wq3SbfvzYT20XCFyZGltjAIhlG+KTBgyt5QZV3qsLd9jzVTnAOupdm3kuaHCH
+         p+lJ/zysJEz2fUFH8pImE9VXfhF1OVNQWBW746esXN7K4UwxVxVmmRBK+Ixh1ofITvr7
+         ov/iJupr6i7NkFMId4d6FTcC8x934z4Mx51fgXw97oulRKVPl7mXsSRVaWSQX1R+xyl6
+         D2OA==
+X-Forwarded-Encrypted: i=1; AJvYcCU5WNJHFRWBCSxxsOEePV24mjMZl4yZHlslztgN6CdNDuaM83chSDtn753dV4bhMINM9KMD0K4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyyrVpotQ0URE9HWvccH2siBFTR5miqbe5UQRpT4UsqrHhb4Rm
+	YxTUrjQZYym0tWEC0F8tdfiUNRl1UUcte06xTiFQPxCxYoDA1KfRI/xxfw6+OI42zTT7iOpegnH
+	2cPCgjF+fVLTXWzIApPU7zkOdBDHDjoGFQZVZBsdUv4eamdwVb4xPfA==
+X-Gm-Gg: ASbGncttNKaLQW5jCLc9xAkuMjzxUuB72b0/SsE3oOW+liX3dgbCL/wBTj/WDbfN67G
+	+j3R9TH2U4nkrIpm7QHMI+UF6scX6D46UpLm4sutrG5qPCOiwg6D5EQD79T1jdHbcKapOPD/Ugd
+	NzI+2poJgrtrBfnlI7cZedd9uyFUrh/QNT9cmw4eGgARaQo047XFdmv/p/GnxiSAIx5MC2Lxmzs
+	cij6OmH8bHn8AwtB0U12yZbKkB3BIwy6c6gmar7lGDwMfhn0g5AUR52o7hv8rwQdJ8nwnyHWSO/
+	BlGel74Z0icSvyJ35Q==
+X-Received: by 2002:a17:907:7b82:b0:aca:aeb4:9bd6 with SMTP id a640c23a62f3a-acedc574a4cmr220066466b.10.1746004209570;
+        Wed, 30 Apr 2025 02:10:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHBMPamEhDPbDLqOXiGcIZesC1dmK+7e+0MqQ1tv9XUC/crH+ZQmawf9DLNdOJwg2QfTaPusw==
+X-Received: by 2002:a17:907:7b82:b0:aca:aeb4:9bd6 with SMTP id a640c23a62f3a-acedc574a4cmr220063766b.10.1746004208996;
+        Wed, 30 Apr 2025 02:10:08 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.220.254])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acebe7a4ee8sm313299266b.74.2025.04.30.02.10.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Apr 2025 02:10:08 -0700 (PDT)
+Date: Wed, 30 Apr 2025 11:10:01 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	"Michael S . Tsirkin" <mst@redhat.com>, jasowang@redhat.com, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.6 13/21] vhost_task: fix vhost_task_create()
+ documentation
+Message-ID: <n2c3bjkh4jbzm2psd4wfrxzf5wdzv2qihcnds5apfgfyrojhyd@l6p47teppn62>
+References: <20250429235233.537828-1-sashal@kernel.org>
+ <20250429235233.537828-13-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPXr0uxh0c_2b2-zJF=N8T6DfccfyvOQRX0X0VO24dS7YsxzzQ@mail.gmail.com>
- <aBHgOsqA4qfe7LbN@c757f733ca9e>
-In-Reply-To: <aBHgOsqA4qfe7LbN@c757f733ca9e>
-From: Ezra Khuzadi <ekhuzadi@uci.edu>
-Date: Wed, 30 Apr 2025 01:43:08 -0700
-X-Gm-Features: ATxdqUFr52ls8iRfGl3SJa_g3FJ8AF-6Py3XE-3yWU18Haruwxmc1FYYj3yD3U4
-Message-ID: <CAPXr0uxJg0kMu_N7Gxb14kVdhkFGXO_KbK5RxfAcY9dEA8vrEA@mail.gmail.com>
-Subject: Re: sound/pci/hda: add quirk for HP Spectre x360 15-eb0xxx
-To: kernel test robot <lkp@intel.com>, sound-dev@vger.kernel.org
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev, 
-	alsa-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250429235233.537828-13-sashal@kernel.org>
 
-sound/pci/hda/patch_realtek.c: add quirk for HP Spectre x360 15-eb0xxx
+On Tue, Apr 29, 2025 at 07:52:25PM -0400, Sasha Levin wrote:
+>From: Stefano Garzarella <sgarzare@redhat.com>
+>
+>[ Upstream commit fec0abf52609c20279243699d08b660c142ce0aa ]
+>
+>Commit cb380909ae3b ("vhost: return task creation error instead of NULL")
+>changed the return value of vhost_task_create(), but did not update the
+>documentation.
+>
+>Reflect the change in the documentation: on an error, vhost_task_create()
+>returns an ERR_PTR() and no longer NULL.
+>
+>Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>Message-Id: <20250327124435.142831-1-sgarzare@redhat.com>
+>Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+>Signed-off-by: Sasha Levin <sashal@kernel.org>
+>---
+> kernel/vhost_task.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Add subsystem ID 0x86e5 for HP Spectre x360 15-eb0xxx so that
-ALC285_FIXUP_HP_SPECTRE_X360_EB1 (GPIO amp-enable, mic-mute LED and
-pinconfigs) is applied.
+It looks like 6.6 doesn't contain commit cb380909ae3b ("vhost: return 
+task creation error instead of NULL") so I think we should not backport 
+this.
 
-Tested on HP Spectre x360 15-eb0043dx (Vendor 0x10ec0285, Subsys 0x103c86e5=
-)
-with legacy HDA driver and hda-verb toggles:
+BTW, this is just a fix for a comment, so not a big issue if we backport 
+or not.
 
-  $ cat /proc/asound/card0/codec#0 \
-      | sed -n -e '1,5p;/Vendor Id:/p;/Subsystem Id:/p'
-  Codec: Realtek ALC285
-  Vendor Id: 0x10ec0285
-  Subsystem Id: 0x103c86e5
+Thanks,
+Stefano
 
-  $ dmesg | grep -i realtek
-  [    5.828728] snd_hda_codec_realtek ehdaudio0D0: ALC285: picked fixup
-        for PCI SSID 103c:86e5
+>
+>diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
+>index 8800f5acc0071..0e4455742190c 100644
+>--- a/kernel/vhost_task.c
+>+++ b/kernel/vhost_task.c
+>@@ -111,7 +111,7 @@ EXPORT_SYMBOL_GPL(vhost_task_stop);
+>  * @arg: data to be passed to fn and handled_kill
+>  * @name: the thread's name
+>  *
+>- * This returns a specialized task for use by the vhost layer or NULL on
+>+ * This returns a specialized task for use by the vhost layer or ERR_PTR() on
+>  * failure. The returned task is inactive, and the caller must fire it up
+>  * through vhost_task_start().
+>  */
+>-- 
+>2.39.5
+>
 
-Signed-off-by: Ezra Khuzadi <ekhuzadi@uci.edu>
-Cc: stable@vger.kernel.org
-
----
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 877137cb09ac..82ad105e7fa9 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10563,6 +10563,7 @@ static const struct hda_quirk alc269_fixup_tbl[] =
-=3D {
-   SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPI=
-O),
-+  SND_PCI_QUIRK(0x103c, 0x86e5, "HP Spectre x360 15-eb0xxx",
-ALC285_FIXUP_HP_SPECTRE_X360_EB1),
-   SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx",
-ALC285_FIXUP_HP_SPECTRE_X360_EB1),
-   SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx",
-ALC285_FIXUP_HP_SPECTRE_X360_EB1),
-   SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx",
-ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
-
-On Wed, Apr 30, 2025 at 1:33=E2=80=AFAM kernel test robot <lkp@intel.com> w=
-rote:
->
-> Hi,
->
-> Thanks for your patch.
->
-> FYI: kernel test robot notices the stable kernel rule is not satisfied.
->
-> The check is based on https://urldefense.com/v3/__https://www.kernel.org/=
-doc/html/latest/process/stable-kernel-rules.html*option-1__;Iw!!CzAuKJ42Guq=
-uVTTmVmPViYEvSg!PiCmDJsbkP48HY6ady0rbC21rGusuY-IjJ61JqQnp99GdHsbc5uEQDwV-Q9=
-TeKK7R4THFV7fXQ$
->
-> Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to ha=
-ve the patch automatically included in the stable tree.
-> Subject: sound/pci/hda: add quirk for HP Spectre x360 15-eb0xxx
-> Link: https://urldefense.com/v3/__https://lore.kernel.org/stable/CAPXr0ux=
-h0c_2b2-zJF*3DN8T6DfccfyvOQRX0X0VO24dS7YsxzzQ*40mail.gmail.com__;JSU!!CzAuK=
-J42GuquVTTmVmPViYEvSg!PiCmDJsbkP48HY6ady0rbC21rGusuY-IjJ61JqQnp99GdHsbc5uEQ=
-DwV-Q9TeKK7R4SyRLIbeQ$
->
-> --
-> 0-DAY CI Kernel Test Service
-> https://urldefense.com/v3/__https://github.com/intel/lkp-tests/wiki__;!!C=
-zAuKJ42GuquVTTmVmPViYEvSg!PiCmDJsbkP48HY6ady0rbC21rGusuY-IjJ61JqQnp99GdHsbc=
-5uEQDwV-Q9TeKK7R4QdTQyPmg$
->
->
->
 
