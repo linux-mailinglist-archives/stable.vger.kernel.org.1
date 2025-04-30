@@ -1,160 +1,317 @@
-Return-Path: <stable+bounces-139098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E36AA436F
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 08:54:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7C9AA43D1
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 09:23:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 761EB16A6FC
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 06:54:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C557A1BC2B58
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 07:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BBA413FEE;
-	Wed, 30 Apr 2025 06:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52961F5833;
+	Wed, 30 Apr 2025 07:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="OoAyxH7/"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mQeQOqvm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C9B40BF5
-	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 06:54:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C88B1F03FB;
+	Wed, 30 Apr 2025 07:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745996079; cv=none; b=nXVdO4kKd0c95M5jQ+U4L8XEEwPbZRCIE6PJpDOIp+h0Obt04JRbMTVJtxEbXHnNjutfNX67oQ7ljpcty1w0UMiHkB/e40YXKhctGtsJeVc28WpRwW+BtBkE3tEWkhHE8X7/0jrZOMSO1tjqdz9F1yYNa4eX+jd8E2gMtcTVUHs=
+	t=1745997748; cv=none; b=IIEPohCSPwK1S7nTFzFnuW4PD7EKWlQy5dsKLet1wlrhW6QpOaJbEaPZ/CHFwmzUHmmZdMkdAbyk86X0o7/VBvXXe2f6n21b1j0tCD8d5oNYWQOcHhIRLty2+eeczAHSk8y/GEwjY+iTvTkt7dM5sCyzS28wOUHHVx83Qf/t9Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745996079; c=relaxed/simple;
-	bh=bqp7jpwn3EqlQt7Hg5N9JaJDJWf+o57RoxeQ3hNESqA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qBpeUX7fk1V/Er7MxqqssrXG4vSPlDvPAhl38j1+jBO3BIqsy7LcyekB2RO0Br5mN61Hom+XJtANyoqykx1M7d5CwnZ+CPjX4NqhW6GtDG+WKK5VKRTggto+G3SC++id6FgnIcrUwfO27z1Lyso3VS5nwlV/KnOHN5aBA33uJ2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=OoAyxH7/; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5f3f04b5dbcso11014047a12.1
-        for <stable@vger.kernel.org>; Tue, 29 Apr 2025 23:54:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745996075; x=1746600875; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fE+2AKL9tQoV7VjNqMUMkalVxmAieNXXm1j2vCBLH8o=;
-        b=OoAyxH7/DNQnjcVztA7Eb0RzqM7NPVS+66d/SSdn6Qfjju6P+rBH+/3nq+u3gbPt35
-         ZMCXj21Rq0p7M528wDz6IcDxGTqoTfKGVCKIbJA2L+FD4zJKccL2MWSElphWAr0lE7XJ
-         ZOyUEqcylFuu93bGbBw8WcRliwTwXcj+0p0qhc8rE1zpGfd7qHeqzTfNU0SlloPJVga8
-         TKbN2y1gad4Ph+7Q+NuFsXlBxLPa/+FqgpauqYORDVvNLgr/ENzrkotz8yRo3rR3GKBP
-         oQTweznsBHlE2glGz01nOP1NXKPsV6976XyXq9ehEyayqFfmkxr1l+Q4bjaqhzc71lEh
-         Gr6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745996075; x=1746600875;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fE+2AKL9tQoV7VjNqMUMkalVxmAieNXXm1j2vCBLH8o=;
-        b=Ugs5AJJaOCxKFn8ZsknoXj4e/ol2f4cponi1wTINE4J7fJXxelW5IAgFOhZ6maZA0X
-         z6tSAR7g9Xwt0cu59ZobI3ddV512CXQ6XzDYwR4ynNa5PHT6nPEiCy4f1nA54VZ/yPUT
-         z2YKiY0qQ/1rTUE48o9tX/3u+DFzUFMhME27j3chmp8BbPOHBi3vJDbcAT5GR1KAuAHn
-         Qz+1ySGca1ewL66TMR41q6a9AryOA/geLuWcIqjRBIDAQAjbucZNYAvI9sEZXOnpXFJj
-         R3XgG38WzP7n5H1RFhYXU8U6rGBulj5lXyeR+bzBm1ltnSo2667OGnZP9ejsJVt1Ei36
-         tYwg==
-X-Gm-Message-State: AOJu0YzUfDcKYWb5aTIgHVmqxcdTBk5SYAGxNch2XIF7DfA5iUlisYbT
-	XQAQ1FV5K8HDBTKEoeRLWzGf+FgQuYiocigq6E4VPme/rKpq8NfZAE7M4TR3Bf8=
-X-Gm-Gg: ASbGnctU7GNrZJfsnKuqtBH9j2bRWMmhfn2oYIFwadNvYE43izXHW8CGn/k+gKRiSOh
-	3im4jzDosvUVgS/WcE3PueMfItWhliglZ80HpyLqOi9f+nx3XfK7jJ2bWvUW1NLZrix3vZ+LSuk
-	7onhbMdKQMe03+NrQQ2YKOXO+M9k2FhlEV9QgG1yxMsZE13jirTW3yQnTRqszyKsl0VYaomD5RL
-	CUxMV1pDtn532Qcuhy8Jkh54bCVAGIImJkdUaTCCVNafb0efNzi5Ia1kin9mFjeB2GKUada87t5
-	1hqFQkrIQsPPF1CP/EHjbVEJrw5diJJ8MkRA3gVkaGQBsw==
-X-Google-Smtp-Source: AGHT+IFuATXiv271EdWmYw3hf0HHyn6r6/sAcb9NULJjNpiWFngbtTkbATJSDqdNp41ZVNC+ryt9yg==
-X-Received: by 2002:a17:906:a403:b0:ace:dd20:2c25 with SMTP id a640c23a62f3a-acedd202dc4mr144344866b.51.1745996074539;
-        Tue, 29 Apr 2025 23:54:34 -0700 (PDT)
-Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-acec57bece2sm245833666b.10.2025.04.29.23.54.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Apr 2025 23:54:33 -0700 (PDT)
-Date: Wed, 30 Apr 2025 08:54:30 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Mark Brown <broonie@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 020/204] ASoC: qcom: lpass: Make
- asoc_qcom_lpass_cpu_platform_remove() return void
-Message-ID: <npexot3y75j2lyvv2w33k6clvla24hpxls32giyyzh7swoyngs@p2qwspziwcwt>
-References: <20250429161059.396852607@linuxfoundation.org>
- <20250429161100.253501778@linuxfoundation.org>
+	s=arc-20240116; t=1745997748; c=relaxed/simple;
+	bh=ED5M+XMr6sd1ffXjvdC3S9QDusOPxQT1RfvD+UzN0oQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=TXqcmmuF31d/tViE/ZYxiKVXi6SaHX+fw4X9/I5mIYdbWim8G3GNQzb7s1Hw+imi7RmWI1ronvUwwdboIV40r7hLyx79H0CE3poMPfVWDMgCKIxyMc7+pzjZVVxu3jB1O5tSG+41YlE2LJlamrul8flPIKzz0IUIjDeKLOCulJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mQeQOqvm; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53TLaVQ3012269;
+	Wed, 30 Apr 2025 07:22:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	cmHbdxz2WTDbW7aj8JbortVTW8La21RceHQfeYKZQZI=; b=mQeQOqvmezMI7H46
+	hODWxKF/GTjlwE+sIf0R1AGKGCndCzLAIe8qRv7cHM2g7WZzdAfy2q/DM5KsnIk2
+	4ekulLiXOL52XpviNIoD8NuRLtEd7/MumEDoyPzYk0DcKQeLQHM1xX6PdrBqbhvA
+	LE29hKGATnIdQGl6k1q/Z9VwjCgoO6UWIkIiBghwX1lMpD69yZzG2pELhiq0PjkP
+	TKV9RvmZWGhVH6IBtWbEGS97onvUhcEod0fJeRqyIs6TapJfkYjGxslQOKpbkE4u
+	KB1CI/oVqbayjIDX9ZXsMjyn7WinaJrOefcK7bf87kdcTKc1yIYzIZrXcQrzAaeC
+	SZbLtA==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46b6u3s6bw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Apr 2025 07:22:19 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53U7MIil000538
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Apr 2025 07:22:18 GMT
+Received: from [10.50.41.127] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 30 Apr
+ 2025 00:22:09 -0700
+Message-ID: <50f12fea-fbc9-8880-5e34-3d3a49d9ca65@quicinc.com>
+Date: Wed, 30 Apr 2025 12:52:03 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kw7fdhv2zjl6wosn"
-Content-Disposition: inline
-In-Reply-To: <20250429161100.253501778@linuxfoundation.org>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2 01/23] media: iris: Skip destroying internal buffer if
+ not dequeued
+Content-Language: en-US
+To: Dikshita Agarwal <quic_dikshita@quicinc.com>,
+        Nicolas Dufresne
+	<nicolas.dufresne@collabora.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Stefan Schmidt
+	<stefan.schmidt@linaro.org>,
+        Hans Verkuil <hverkuil@xs4all.nl>,
+        "Bjorn
+ Andersson" <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        "Rob Herring" <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        "Conor Dooley" <conor+dt@kernel.org>
+CC: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Dmitry Baryshkov
+	<dmitry.baryshkov@oss.qualcomm.com>,
+        Neil Armstrong
+	<neil.armstrong@linaro.org>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20250428-qcom-iris-hevc-vp9-v2-0-3a6013ecb8a5@quicinc.com>
+ <20250428-qcom-iris-hevc-vp9-v2-1-3a6013ecb8a5@quicinc.com>
+ <dc9b20aecc8740896b2b3e7352b8e0d73d43fed2.camel@collabora.com>
+ <32379a29-ab58-95b3-77f9-d1ada61e5359@quicinc.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
+In-Reply-To: <32379a29-ab58-95b3-77f9-d1ada61e5359@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=Bv6dwZX5 c=1 sm=1 tr=0 ts=6811cfab cx=c_pps a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=5XAp0Sb-NG9feswOWF0A:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: oCPAJPRVQu2ogoIyRBQ57nCYQG8G_XyV
+X-Proofpoint-ORIG-GUID: oCPAJPRVQu2ogoIyRBQ57nCYQG8G_XyV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDMwMDA1MCBTYWx0ZWRfX04guIh6fDqeV dzeTuUbYm2X0O1hCVbXdxTQemnE+sJCYneLW+FsrI3Rv2rtId/SX6tyQSI7WDfUkpryQrEg39ML pr34A7uRlJJELjicGiyg/QWBPaFzHrJO+sRH0EDc7v5u9BDiNkBkAFyFrF2Cz83KsMIFx5Zoe/T
+ 9NB05cxqow2Abm7lH0+VdkUjiNP0FXsjVFMZ644nQXd+km0fuIw8Zg0GoKlL3IZnZrInCTIXiSy 6+h0qTjqHIo6gdWLgF9U57bt554tPXnuIpaJzUbVQ1f60vfx1kULXwsaLfTE8n0e11H8HqUWwub 9RDIkBksSdaWCW1RE4hzqxHOoTzpSvoEWZrdqEOGVQTBcTuKT/xXHdfxJphIkQMVMnTTK0+RyID
+ 7LUc3RByEV4YwI2q6DxdFPU5/BZ9Ghz3Le16PtmYwCoJ2qxSDvUF4k7ZR3OKNvqlt5Euo/tx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-04-30_02,2025-04-24_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
+ mlxlogscore=999 phishscore=0 adultscore=0 spamscore=0 lowpriorityscore=0
+ impostorscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
+ bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504300050
 
 
---kw7fdhv2zjl6wosn
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 6.6 020/204] ASoC: qcom: lpass: Make
- asoc_qcom_lpass_cpu_platform_remove() return void
-MIME-Version: 1.0
 
-Hello,
+On 4/30/2025 11:08 AM, Dikshita Agarwal wrote:
+> 
+> 
+> On 4/29/2025 6:17 PM, Nicolas Dufresne wrote:
+>> Not mine to review, but wanted to highlight some best practices,
+>>
+>> comment below...
+>>
+>> Le lundi 28 avril 2025 à 14:58 +0530, Dikshita Agarwal a écrit :
+>>> Firmware might hold the DPB buffers for reference in case of sequence
+>>> change, so skip destroying buffers for which QUEUED flag is not removed.
+>>> Also, make sure that all buffers are released during streamoff.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: 73702f45db81 ("media: iris: allocate, initialize and queue internal buffers")
+>>> Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+>>> ---
+>>>  drivers/media/platform/qcom/iris/iris_buffer.c | 37 +++++++++++++++++++++++++-
+>>>  drivers/media/platform/qcom/iris/iris_buffer.h |  3 ++-
+>>>  drivers/media/platform/qcom/iris/iris_vdec.c   |  4 +--
+>>>  drivers/media/platform/qcom/iris/iris_vidc.c   |  6 +++--
+>>>  4 files changed, 44 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/drivers/media/platform/qcom/iris/iris_buffer.c b/drivers/media/platform/qcom/iris/iris_buffer.c
+>>> index e5c5a564fcb8..606d76b10be2 100644
+>>> --- a/drivers/media/platform/qcom/iris/iris_buffer.c
+>>> +++ b/drivers/media/platform/qcom/iris/iris_buffer.c
+>>> @@ -376,7 +376,7 @@ int iris_destroy_internal_buffer(struct iris_inst *inst, struct iris_buffer *buf
+>>>  	return 0;
+>>>  }
+>>>  
+>>> -int iris_destroy_internal_buffers(struct iris_inst *inst, u32 plane)
+>>> +int iris_destroy_internal_buffers(struct iris_inst *inst, u32 plane, bool force)
+>>
+>> Its always tempting to just glue a boolean at the end of a parameter
+>> list. But this has huge downside in code readability, see below...
+>>
+>>>  {
+>>>  	const struct iris_platform_data *platform_data = inst->core->iris_platform_data;
+>>>  	struct iris_buffer *buf, *next;
+>>> @@ -396,6 +396,14 @@ int iris_destroy_internal_buffers(struct iris_inst *inst, u32 plane)
+>>>  	for (i = 0; i < len; i++) {
+>>>  		buffers = &inst->buffers[internal_buf_type[i]];
+>>>  		list_for_each_entry_safe(buf, next, &buffers->list, list) {
+>>> +			/*
+>>> +			 * during stream on, skip destroying internal(DPB) buffer
+>>> +			 * if firmware did not return it.
+>>> +			 * during close, destroy all buffers irrespectively.
+>>> +			 */
+>>> +			if (!force && buf->attr & BUF_ATTR_QUEUED)
+>>> +				continue;
+>>> +
+>>>  			ret = iris_destroy_internal_buffer(inst, buf);
+>>>  			if (ret)
+>>>  				return ret;
+>>> @@ -446,6 +454,33 @@ static int iris_release_input_internal_buffers(struct iris_inst *inst)
+>>>  	return 0;
+>>>  }
+>>>  
+>>> +void iris_get_num_queued_internal_buffers(struct iris_inst *inst, u32 plane)
+>>> +{
+>>> +	const struct iris_platform_data *platform_data = inst->core->iris_platform_data;
+>>> +	struct iris_buffer *buf, *next;
+>>> +	struct iris_buffers *buffers;
+>>> +	const u32 *internal_buf_type;
+>>> +	u32 internal_buffer_count, i;
+>>> +	u32 count = 0;
+>>> +
+>>> +	if (V4L2_TYPE_IS_OUTPUT(plane)) {
+>>> +		internal_buf_type = platform_data->dec_ip_int_buf_tbl;
+>>> +		internal_buffer_count = platform_data->dec_ip_int_buf_tbl_size;
+>>> +	} else {
+>>> +		internal_buf_type = platform_data->dec_op_int_buf_tbl;
+>>> +		internal_buffer_count = platform_data->dec_op_int_buf_tbl_size;
+>>> +	}
+>>> +
+>>> +	for (i = 0; i < internal_buffer_count; i++) {
+>>> +		buffers = &inst->buffers[internal_buf_type[i]];
+>>> +		list_for_each_entry_safe(buf, next, &buffers->list, list)
+>>> +			count++;
+>>> +		if (count)
+>>> +			dev_err(inst->core->dev, "%d buffer of type %d not released",
+>>> +				count, internal_buf_type[i]);
+>>> +	}
+>>> +}
+>>> +
+>>>  int iris_alloc_and_queue_persist_bufs(struct iris_inst *inst)
+>>>  {
+>>>  	struct iris_buffers *buffers = &inst->buffers[BUF_PERSIST];
+>>> diff --git a/drivers/media/platform/qcom/iris/iris_buffer.h b/drivers/media/platform/qcom/iris/iris_buffer.h
+>>> index c36b6347b077..03a32b91cf21 100644
+>>> --- a/drivers/media/platform/qcom/iris/iris_buffer.h
+>>> +++ b/drivers/media/platform/qcom/iris/iris_buffer.h
+>>> @@ -106,7 +106,8 @@ void iris_get_internal_buffers(struct iris_inst *inst, u32 plane);
+>>>  int iris_create_internal_buffers(struct iris_inst *inst, u32 plane);
+>>>  int iris_queue_internal_buffers(struct iris_inst *inst, u32 plane);
+>>>  int iris_destroy_internal_buffer(struct iris_inst *inst, struct iris_buffer *buffer);
+>>> -int iris_destroy_internal_buffers(struct iris_inst *inst, u32 plane);
+>>> +int iris_destroy_internal_buffers(struct iris_inst *inst, u32 plane, bool force);
+>>> +void iris_get_num_queued_internal_buffers(struct iris_inst *inst, u32 plane);
+>>>  int iris_alloc_and_queue_persist_bufs(struct iris_inst *inst);
+>>>  int iris_alloc_and_queue_input_int_bufs(struct iris_inst *inst);
+>>>  int iris_queue_buffer(struct iris_inst *inst, struct iris_buffer *buf);
+>>> diff --git a/drivers/media/platform/qcom/iris/iris_vdec.c b/drivers/media/platform/qcom/iris/iris_vdec.c
+>>> index 4143acedfc57..2c1a7162d2da 100644
+>>> --- a/drivers/media/platform/qcom/iris/iris_vdec.c
+>>> +++ b/drivers/media/platform/qcom/iris/iris_vdec.c
+>>> @@ -408,7 +408,7 @@ int iris_vdec_streamon_input(struct iris_inst *inst)
+>>>  
+>>>  	iris_get_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
+>>>  
+>>> -	ret = iris_destroy_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
+>>> +	ret = iris_destroy_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, false);
+>>>  	if (ret)
+>>>  		return ret;
+>>>  
+>>> @@ -496,7 +496,7 @@ int iris_vdec_streamon_output(struct iris_inst *inst)
+>>>  
+>>>  	iris_get_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
+>>>  
+>>> -	ret = iris_destroy_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
+>>> +	ret = iris_destroy_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, false);
+>>
+>> If I was reviewing some changes (or even debugging) this specific C
+>> file, I would not be able to understanding what this "false" means. I
+>> would have to spend extra time, opening the declaration, going back and
+>> forth, and breaking the flow.
+>>
+>> An alternative approach is to keep the boolean parameter in a static
+>> function (c local), and then add two function wrappers that have
+>> explicit names.
+>>
+> Sure, I can implement the alternative approach, if recommended.
+> 
+> If I understand correctly, you are suggesting to have one static helper and
+> two wrappers around this. like:
+> 
+> static int iris_destroy_internal_buffers(struct iris_inst *inst, u32 plane,
+> bool force)
+> {
+> 	...
+> 	list_for_each_entry_safe(buf, next, &buffers->list, list) {
+>        		if (!force && buf->attr & BUF_ATTR_QUEUED)
+> 			continue;
+> 		...
+> 	}
+> 	...
+> }
+> 
+> //called during stream on
+> int iris_destroy_dequeued_internal_buffers(struct iris_inst *inst, u32 plane)
+Name this iris_force_destroy...That way, it is easy for caller to understand
+without the need to interpret the boolean.
 
-On Tue, Apr 29, 2025 at 06:41:48PM +0200, Greg Kroah-Hartman wrote:
-> 6.6-stable review patch.  If anyone has any objections, please let me kno=
-w.
->=20
-> ------------------
->=20
-> From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
-> [ Upstream commit d0cc676c426d1958989fac2a0d45179fb9992f0a ]
->=20
-> The .remove() callback for a platform driver returns an int which makes
-> many driver authors wrongly assume it's possible to do error handling by
-> returning an error code.  However the value returned is (mostly) ignored
-> and this typically results in resource leaks. To improve here there is a
-> quest to make the remove callback return void. In the first step of this
-> quest all drivers are converted to .remove_new() which already returns
-> void.
->=20
-> asoc_qcom_lpass_cpu_platform_remove() returned zero unconditionally.
-> Make it return void instead and convert all users to struct
-> platform_device::remove_new().
->=20
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> Link: https://lore.kernel.org/r/20231013221945.1489203-15-u.kleine-koenig=
-@pengutronix.de
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Stable-dep-of: a93dad6f4e6a ("ASoC: q6apm-dai: make use of q6apm_get_hw_p=
-ointer")
-
-I didn't try to actually apply the patches without this, but I guess the
-upside of this commit is only to prevent a trivial merge conflict in
-sound/soc/qcom/lpass.h.
-
-Not sure this is justification enough to backport this patch to stable.
-(Totally fine if you think it is, just sharing my thoughts.)
-
-Best regards
-Uwe
-
---kw7fdhv2zjl6wosn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmgRySQACgkQj4D7WH0S
-/k7LGwf6A317hago4KeiT0nTg4vmoKu5jfSr5YRv4TjS+bG+krudBhh8wGc0Bu4s
-u4iDONTH1whtlN+Cl1+2YED8g69DdO0Yg04WwPJ+ArhYm9qKKAqKaOhyQDYGlZNH
-BueuC1oxVgkLsDKzaD+L7nr7ERrxkkwz9AO1rRBwRnZlSgPq0GO/39LIvnnA7kK+
-Y+tagJJMFJEGRhx99ehH6YDxJJBnDVIZO2ZezCX3vnoI5d4Fxd/L5WRIJUeJHtgN
-XBZ4fccuEJFJR9S4UKUdMgp524bTno697UO9d9KEVOyn0380/tgUsZtWx2ZnYSlY
-GMsWRVavBVeVBzp2i8xDAg0HrcU2PA==
-=hS1B
------END PGP SIGNATURE-----
-
---kw7fdhv2zjl6wosn--
+Regards,
+Vikash
+> {
+> 	return iris_destroy_internal_buffers(inst, plane, false)
+> }
+> 
+> //called during close
+> int iris_destroy_all_internal_buffers(struct iris_inst *inst, u32 plane)
+> {
+> 	return iris_destroy_internal_buffers(inst, plane, true)
+> }
+> 
+> Thanks,
+> Dikshita
+>> regards,
+>> Nicolas
+>>
+>>>  	if (ret)
+>>>  		return ret;
+>>>  
+>>> diff --git a/drivers/media/platform/qcom/iris/iris_vidc.c b/drivers/media/platform/qcom/iris/iris_vidc.c
+>>> index ca0f4e310f77..56531a7f0dfe 100644
+>>> --- a/drivers/media/platform/qcom/iris/iris_vidc.c
+>>> +++ b/drivers/media/platform/qcom/iris/iris_vidc.c
+>>> @@ -233,8 +233,10 @@ int iris_close(struct file *filp)
+>>>  	iris_session_close(inst);
+>>>  	iris_inst_change_state(inst, IRIS_INST_DEINIT);
+>>>  	iris_v4l2_fh_deinit(inst);
+>>> -	iris_destroy_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
+>>> -	iris_destroy_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
+>>> +	iris_destroy_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE, true);
+>>> +	iris_destroy_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE, true);
+>>> +	iris_get_num_queued_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
+>>> +	iris_get_num_queued_internal_buffers(inst, V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE);
+>>>  	iris_remove_session(inst);
+>>>  	mutex_unlock(&inst->lock);
+>>>  	mutex_destroy(&inst->ctx_q_lock);
+>>
 
