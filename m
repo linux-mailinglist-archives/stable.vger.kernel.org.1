@@ -1,120 +1,150 @@
-Return-Path: <stable+bounces-139106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E83AA44F1
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 10:13:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9EAAA4513
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 10:20:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4F964A6784
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 08:13:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C54DC7B1262
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 08:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98D1205AD7;
-	Wed, 30 Apr 2025 08:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2DC20E33D;
+	Wed, 30 Apr 2025 08:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=starlabs-sg.20230601.gappssmtp.com header.i=@starlabs-sg.20230601.gappssmtp.com header.b="G4uMPdQw"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="EhJ8JusI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A065E213E94
-	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 08:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F216C7FBA2
+	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 08:20:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746000774; cv=none; b=liqSwPxLClDurBF+f1yy2mLu3KunQXGl8/NGuv8vsWtj9aqivlLq+UFTMNeAmXdI2dpnZjBJodjagy6J6tZ52Xub98l5AzVsBBS02ubDU8B2NvNObVQRLKbR1/5aUxZqJo0OA9aOxzXv/T1A42UCALYdk0F1OI16YTz++Y4CBls=
+	t=1746001205; cv=none; b=buT6xRCApz1aU8br4mQbkvT5Ww0VRnJWfHzXPOfc77jCEmFslQf++2v101144kHOSC5VgantwI8CBJkpUxfKdOgrYiix7UP6W/wKje4D+oJQx/xuK0Wq/tFPnC3qXLCs8FSCDWcLcI+gKzYxjKIM+fliKkvbzCGqSypQ8aW+jwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746000774; c=relaxed/simple;
-	bh=PVtnVO7GXratpyuATMxm8/jjsqq5vOvJJL/vhUNPcBI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jChtvYuDtyAo8KYlj7sWApXN5Rep6t9jPIeK+f1hOiMSvWPd9OtPNDIEb6G432VeIJVViC85SSrrxA1mTJRXFsJ9BxN2WYhVQ8JK40MB+iHOsq9YAMqOpzbxb24/3JnOW9Ov98uQ1TdgfYH0HjtcYKgQ2wZUWjjojx//eCCTd7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starlabs.sg; spf=pass smtp.mailfrom=starlabs.sg; dkim=pass (2048-bit key) header.d=starlabs-sg.20230601.gappssmtp.com header.i=@starlabs-sg.20230601.gappssmtp.com header.b=G4uMPdQw; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starlabs.sg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starlabs.sg
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-acb5ec407b1so1122693366b.1
-        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 01:12:52 -0700 (PDT)
+	s=arc-20240116; t=1746001205; c=relaxed/simple;
+	bh=x5cex8OEhKjynPCXybXhspUm000CJy50QYYqrkodzfQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JMrO+OTCIUN2Iec4tDn1RuExkJAWFAulIiEBlDdwYgQtg1ajIxrluoLdsK5brHR+0LpWK3pUWg7FzBwLZ36d500MMyBQ5ZXrhpjt59OCh0bwBs7/Y8WGDoXEIGNRW6KdiIeixc8yXMv9I2QzTxiIouk25+Ge4wz6or3C5lEc2Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=EhJ8JusI; arc=none smtp.client-ip=209.85.218.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-abec8b750ebso1132558266b.0
+        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 01:20:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=starlabs-sg.20230601.gappssmtp.com; s=20230601; t=1746000771; x=1746605571; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=PVtnVO7GXratpyuATMxm8/jjsqq5vOvJJL/vhUNPcBI=;
-        b=G4uMPdQwBHvvdF8GKzd+DMmbEQER+KC02EnYEPQC4hgTPflIDHUMasJb7ZDzh64W/f
-         DMCzSG4sieOHLsuo0grfmHtZ4z/WeMaZNKg5mkUUUaSaXXN2//msyKqlvjIICqACXacQ
-         U85zTwgeo53E8NOPat5UyCmHB+JO97ilVJUy+LT9PkxCRYMPLp6zSdklkf9+y/Q4VUc9
-         ygUuuvu0EdtZpYflMdxr7VpVqHCEmvuuX91poxtmG83dje0mjF5SiMUsZhlTAxbd/2rx
-         sDimsVS9T0yw8PlZPkl8c8L0HDsc6bo3PSyzs5r8Ji7AAjwSOEgarL2y2pmiMR59J3gV
-         mv6A==
+        d=suse.com; s=google; t=1746001200; x=1746606000; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7HVgxhxknoibgANF/QIRf+Z1vpPV1k+p5YFrJ6jcJK4=;
+        b=EhJ8JusIu6/t05x2WYouRj7GT381LzF9eoPiMwgGIuUbhn1RtYYPPfGqI2D2B+zidY
+         r0wmpJGwBBi/amYSOGmsTa0e7SJNL7pJMUp5LrfKnkGR9JMeC/FAx8BhM/bcLWYo/ksW
+         AeVvXDD7QyxciTsviXKm5iLgu1jtAL4izrADZiU9mvdZmGs5X6s/fk5o+YAF16gvQc4G
+         5mjobCNeA1uex9UzL1PxrddubtCCh58kK4+ShtYDlJj8iiQGdzz5/TYgXZnhDCUc7EuA
+         TvLZV/dfZVmX8jBAS7A36YGK8AywUwWysfmM2TPsJdHczW3g76DA94ZZfuTW6HnuiO83
+         09PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746000771; x=1746605571;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1746001200; x=1746606000;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PVtnVO7GXratpyuATMxm8/jjsqq5vOvJJL/vhUNPcBI=;
-        b=BmpvzgCI3pj+Ksui9gZc1fnsI2cf/Ijl6kPJvMOGL3lp952O2TVSVfqTUqOYDsAZhD
-         Ds9kbGQb/HeCu4+XryKrF3CzkliDtUM/pf8yQl+C8t1cZ2Jp74iW9fg/6gXGmAgoM4EN
-         zOuniWggLODJPyDd4/P/uy2D/yuPZFBThkjhNitSfMuYNj8SXt1VqLbTjnxsycGzFENP
-         jvCN0b/7zOaHk0Q0YTCi6gTeXfb3Tm7M4Gf39QiMiJP1JEkFV74yr4Z88Fr18ubpy05W
-         l3CeRQb8RgRlj7nQlucJwjK9LoFkftLXI2QrRDARYmA9ET3+s7sTzN84oWuvDbLdvq/F
-         2YAw==
-X-Gm-Message-State: AOJu0YxPS0t7SjXj1Tzhu6b6qB3rkF5z8x224MEQOi0zZlNqrQm3pGxU
-	BWLS+AyV6iZN/RGt/RUnZvAYKCsDJ4D4ZK3f0Y+abQlZQot9j4BxixFdwvGu0ySeR2XceP/N1uV
-	37AG1kA2uh9o0ZgRhI9LDxy2OW5G60ux+N0M38w==
-X-Gm-Gg: ASbGncvDWrY596ASH3KuhcPP1Mtt99nD8aQFTTrsn4DOItp3a9eUHC9xLumXTUPF7wP
-	iw8PdT57RjLL63SbfNMt50RIrwyKE7a2EKx+qQRYCn9dTUGS5IVpZps8FWe2uArpEm/yK2CXDqN
-	Fd8tx9arizzZmp0cVUVhVEJBd9TuSsp5JrVVk=
-X-Google-Smtp-Source: AGHT+IFNWjxWL7Dh5ql/e4L69Pv2wTSo/Ar8t+DCb6Y3X8ZxuWGrWjZMPBC9p7z9Uy0oMjX3PneNQaawvUn1sMJ6Z/w=
-X-Received: by 2002:a17:907:7fa5:b0:ac7:7e3e:6d3c with SMTP id
- a640c23a62f3a-acee2605d08mr158531066b.55.1746000770815; Wed, 30 Apr 2025
- 01:12:50 -0700 (PDT)
+        bh=7HVgxhxknoibgANF/QIRf+Z1vpPV1k+p5YFrJ6jcJK4=;
+        b=HHeMCLcVgOlbcyuzVfo1lmFkDQhvVCW0o82SZqObryKt9uKFteA3IZvresZl5o5eo1
+         wTzyMcFpxz2xujqiiouauYy+eMofMsAzoikFiLhYW1PgFRgjOZXXtwW364Ppxa8LDpZc
+         keRaDZ2oHPo9P1IrAKlW1yAYrmlnDzeZ27JeKY32IcRiHdfDMd+2gNNA0a82I8AhtIKi
+         lmlcvBUFR4g2rvhm8LcqzGNfvYfPDzQW2gpOmt9n7mDUmwWkX67R8+EAW7Sidmgf80Ip
+         YnBd4EMTPjH8aJd5m78c7ns5biNkAn3NBqn2hYKahunUU12NOzeQqudxynLBeZ9THYbW
+         JcXw==
+X-Gm-Message-State: AOJu0Yx01TzY2yg+kPRn+YpAdV970Qt+G/t30BZNviItmthT/sF2Ecis
+	aNKh+zfIbTDlt6VjzLRO1DFJQzX5JoGmvG6h8vs21q2HdZgQ6gu7iHC+K8SQo7Obwl5RVbBH0P8
+	eaBr0OQ==
+X-Gm-Gg: ASbGncvW0ldvRpUfLzTgaQH5cvtcWiLsRm2XeMrNQqShzXHVhyf8IQXec7aUxFYPfBl
+	8wYtB6Mhw94HwQ0q7Tmy1bI6/SuwQQpxNHgDg9906IZOwreFq8bMARtnyVmfBu4UxqCXNmRkUpD
+	WAAmpzHOFc/U7D1e3qKNblalmLV/8LCVGVruBedwzz6F5ZKZOROvVR2jThNiCksoJoNP21BcNbd
+	bWK0rwZOP8LcIoLqpUeBKZaBStTCussgKG+lN7/7HeavpdwE5cDoFHuyH+axAtw/GzMjDFyTOlC
+	8AMjEilQjZE0r/Odh4kG/RdlubuvI5JmL9G5nofW8Uw=
+X-Google-Smtp-Source: AGHT+IGtNZT5EOiWsVa2kp6pCXjHjf35FIPpaYrmKVB0OONNV9X72PXvE3BsrSmtTJwx86eHJzToyQ==
+X-Received: by 2002:a17:907:7b9f:b0:ace:3732:8a86 with SMTP id a640c23a62f3a-acedc6f0955mr234238066b.41.1746001200617;
+        Wed, 30 Apr 2025 01:20:00 -0700 (PDT)
+Received: from localhost ([2401:e180:8d24:65b3:be00:91e5:d591:161f])
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-b15fadea8d8sm10193730a12.64.2025.04.30.01.19.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Apr 2025 01:20:00 -0700 (PDT)
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: stable@vger.kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Nick Zavaritsky <mejedi@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH stable 6.6 00/10] bpf: track changes_pkt_data property for global functions
+Date: Wed, 30 Apr 2025 16:19:42 +0800
+Message-ID: <20250430081955.49927-1-shung-hsi.yu@suse.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250429161123.119104857@linuxfoundation.org> <20250429161123.269149769@linuxfoundation.org>
-In-Reply-To: <20250429161123.269149769@linuxfoundation.org>
-From: "Tai, Gerrard" <gerrard.tai@starlabs.sg>
-Date: Wed, 30 Apr 2025 16:12:39 +0800
-X-Gm-Features: ATxdqUFjPnSe0IzqLH6r7t0V1qG1afdCoVRaQ9M8lCRx5zfrVreULKjiixuLTMw
-Message-ID: <CAHcdcOnHVSAF9DOjGqSWrZYiS-5LyXHimdVou6zf-6zZyvZhPg@mail.gmail.com>
-Subject: Re: [PATCH 5.15 003/373] codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Cong Wang <xiyou.wangcong@gmail.com>, Simon Horman <horms@kernel.org>, 
-	Jamal Hadi Salim <jhs@mojatatu.com>, Paolo Abeni <pabeni@redhat.com>, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Fix the bypassing of invalid packet pointer check in 6.6 by backporting
+the entire "bpf: track changes_pkt_data property for global functions"
+series[1], along with the follow up, "bpf: fix NPE when computing
+changes_pkt_data of program w/o subprograms" series[2]; both from
+Eduard.
 
-I have a question regarding the patchset this patch belongs to.
+I had ran the BPF selftests after backporting, confirmed that newly
+added BPF selftests passes, and that no new failure observed in BPF
+selftests (dummy_st_ops, ns_current_pid_tgid, test_bpf_ma, and
+test_bpffs are failing even without this patchset applied). See [3] for
+the full log.
 
-I saw the recent netdev thread
-https://lore.kernel.org/stable/6fa68b02-cf82-aeca-56e6-e3b8565b22f4@applied-asynchrony.com/
-and noticed that for the patchset
-https://lore.kernel.org/all/174410343500.1831514.15019771038334698036.git-patchwork-notify@kernel.org/
-only patch 06/11 "codel: remove sch->q.qlen check before
-qdisc_tree_reduce_backlog()" was pulled into 6.6, 6.1, 6.12, 6.13, 6.14
-stable. This was to fix a UAF vulnerability.
+  #50/1    changes_pkt_data_freplace/changes_pkt_data_with_changes_pkt_data:OK
+  #50/2    changes_pkt_data_freplace/changes_pkt_data_with_does_not_change_pkt_data:OK
+  #50/3    changes_pkt_data_freplace/does_not_change_pkt_data_with_changes_pkt_data:OK
+  #50/4    changes_pkt_data_freplace/does_not_change_pkt_data_with_does_not_change_pkt_data:OK
+  #50/5    changes_pkt_data_freplace/main_changes_with_changes_pkt_data:OK
+  #50/6    changes_pkt_data_freplace/main_changes_with_does_not_change_pkt_data:OK
+  #50/7    changes_pkt_data_freplace/main_does_not_change_with_changes_pkt_data:OK
+  #50/8    changes_pkt_data_freplace/main_does_not_change_with_does_not_change_pkt_data:OK
+  #395/57  verifier_sock/invalidate_pkt_pointers_from_global_func:OK
+  #395/58  verifier_sock/invalidate_pkt_pointers_by_tail_call:OK
 
-In this case for the 5.15 release (and 5.10 and 5.4), the rest of the set
-is once again excluded. I'm not familiar with the process of pulling kernel
-patches so I may be missing something - is excluding the rest of the
-patchset intentional?
+1: https://lore.kernel.org/all/20241210041100.1898468-1-eddyz87@gmail.com/
+2: https://lore.kernel.org/all/20241212070711.427443-1-eddyz87@gmail.com/
+3: https://github.com/shunghsiyu/libbpf/actions/runs/14747347842/job/41397104180
 
-From my understanding, this patch depends on the previous patches to work.
-Without patches 01-05 which make various classful qdiscs' qlen_notify()
-idempotent, if an fq_codel's dequeue() routine empties the fq_codel qdisc,
-it will be doubly deactivated - first in the parent qlen_notify and then
-again in the parent dequeue. For instance, in the case of parent drr,
-the double deactivation will either cause a fault on an invalid address,
-or trigger a splat if list checks are compiled into the kernel. This is
-also why the original unpatched code included the qlen check in the first
-place.
+Eduard Zingerman (10):
+  bpf: add find_containing_subprog() utility function
+  bpf: refactor bpf_helper_changes_pkt_data to use helper number
+  bpf: track changes_pkt_data property for global functions
+  selftests/bpf: test for changing packet data from global functions
+  bpf: check changes_pkt_data property for extension programs
+  selftests/bpf: freplace tests for tracking of changes_packet_data
+  bpf: consider that tail calls invalidate packet pointers
+  selftests/bpf: validate that tail call invalidates packet pointers
+  bpf: fix null dereference when computing changes_pkt_data of prog w/o
+    subprogs
+  selftests/bpf: extend changes_pkt_data with cases w/o subprograms
 
-I think that the rest of the patchset should be pulled as well, for all
-releases.
+ include/linux/bpf.h                           |   1 +
+ include/linux/bpf_verifier.h                  |   1 +
+ include/linux/filter.h                        |   2 +-
+ kernel/bpf/core.c                             |   2 +-
+ kernel/bpf/verifier.c                         |  81 +++++++++++--
+ net/core/filter.c                             |  63 +++++------
+ .../bpf/prog_tests/changes_pkt_data.c         | 107 ++++++++++++++++++
+ .../selftests/bpf/progs/changes_pkt_data.c    |  39 +++++++
+ .../bpf/progs/changes_pkt_data_freplace.c     |  18 +++
+ .../selftests/bpf/progs/verifier_sock.c       |  56 +++++++++
+ 10 files changed, 324 insertions(+), 46 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/changes_pkt_data.c
+ create mode 100644 tools/testing/selftests/bpf/progs/changes_pkt_data.c
+ create mode 100644 tools/testing/selftests/bpf/progs/changes_pkt_data_freplace.c
 
-Cheers,
-Gerrard
+-- 
+2.49.0
+
 
