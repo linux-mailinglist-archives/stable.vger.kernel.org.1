@@ -1,338 +1,237 @@
-Return-Path: <stable+bounces-139204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5007FAA5112
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 18:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ECF3AA518D
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 18:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBA901C036A4
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 16:01:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D84871C05071
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 16:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9310225E444;
-	Wed, 30 Apr 2025 16:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052CD25E45A;
+	Wed, 30 Apr 2025 16:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b="V0619FPV"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="AeBSmARL";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="P3eHMMYU"
 X-Original-To: stable@vger.kernel.org
-Received: from gmmr-2.centrum.cz (gmmr-2.centrum.cz [46.255.227.203])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C3825C711;
-	Wed, 30 Apr 2025 16:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.227.203
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746028867; cv=none; b=K/Y+aCkVIIC3GR4fsh+qm9Z03VasHh3/VsdjgkHu3x7SVV3mGeKs7lrYNKtatjhzIPBABVYbq6TfXW7MX+vPSua/qJtUD1/599I9XQ9rcBvwPbHiXL+K9zes6AnUhG1A/4MkQlKkYlorLShE2saZ6LonEVWEseMBQZ/DUxSulVw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746028867; c=relaxed/simple;
-	bh=nfXeek0lWmIcCt+6/OROdfThZajfS2E8OoaJYuMBoQQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=poMcvImCufVzXsVdE1M8ZOBjb/GVse2AizsRA412mfHoyEMjFYobH1Yb2X3yUQhy+q0hMgHJ1Bh6puCL29qPV391TpoQw1U1BexAVBjX+0tngjpyKFe6LqdcMGmJagDhqa7JruG0DwUYU/zKJSCqYo5aLWUDC68+etsGlmEKe8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz; spf=pass smtp.mailfrom=atlas.cz; dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b=V0619FPV; arc=none smtp.client-ip=46.255.227.203
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atlas.cz
-Received: from gmmr-2.centrum.cz (localhost [127.0.0.1])
-	by gmmr-2.centrum.cz (Postfix) with ESMTP id 1B6F12104EF6;
-	Wed, 30 Apr 2025 18:00:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=atlas.cz; s=mail;
-	t=1746028852; bh=IEGz03l40qR25MIU7Cu5Wz9iz11CujXu8KMLfgmvnWw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V0619FPV4NZQM775dUT+9bOMQL2mg+4AZRAxyiZMED8HlXi5qVo1Ulva1Dv9r5H/T
-	 4NNDnj9R7r2/TeMuVt/+yTwnpIe7BANxaKulUsTutXJzvFUZ96rDOpJ8LI/mL24VlQ
-	 p3shnZEPLTJs9jTt6CPt3rT04JhI+4rnAHXsIwQU=
-Received: from antispam30.centrum.cz (antispam30.cent [10.30.208.30])
-	by gmmr-2.centrum.cz (Postfix) with ESMTP id 05491203FF6F;
-	Wed, 30 Apr 2025 18:00:51 +0200 (CEST)
-X-CSE-ConnectionGUID: SthcfhkjSvaf7QqPnN3/bQ==
-X-CSE-MsgGUID: wvxHGg76S865EOXCF4RrJg==
-X-ThreatScanner-Verdict: Negative
-X-IPAS-Result: =?us-ascii?q?A2EPAABnSBJo/03h/y5aGwEBAQEBAQEBBQEBARIBAQEDA?=
- =?us-ascii?q?wEBAUAJgTcFAQEBCwGDQIFkhFWRcQOBE4kRiAWLaxSBag8BAQEBAQEBAQEJP?=
- =?us-ascii?q?QcEAQEDBDiESAKLNic1CA4BAgQBAQEBAwIDAQEBAQEBAQEBDQEBBgEBAQEBA?=
- =?us-ascii?q?QYGAQKBHYU1Rg2CYgGBJIEmAQEBAQEBAQEBAQEBHQINfQEBAQEDIwQLAUYQC?=
- =?us-ascii?q?w0EAwECAQICJgICTggGCgmDAgGCLwEDMRSyD3p/MxoCZdxwAkkFVWOBJAaBG?=
- =?us-ascii?q?y4BiE8BhWyEd0KCDYEVgnI4PoJKFwQYgS2DdIJpBIItgRaFeY0VixNSexwDW?=
- =?us-ascii?q?SwBVRMXCwcFgSZDA4EPI0sFLh2CEYUhghGBXAMDIgGDE3QchGmEUC1Pgy+CA?=
- =?us-ascii?q?mhEJUADC209NxQbBpZ8g2QGAT01HBwQFwllEy3FD4JDgxyBCYROh0uVSjOXc?=
- =?us-ascii?q?AOSZC6HZZBrG41rmy+BUBkCghIzIjCDIlIZl0O2PXYCAQEBNwIHAQoBAQMJg?=
- =?us-ascii?q?juOCYFLAQE?=
-IronPort-PHdr: A9a23:rJKYXBOoipIV0EqgL9Yl6nZFCxdPi9zP1u491JMrhvp0f7i5+Ny6Z
- QqDvq8r1AeCB9uEsqsMotGVmp6jcFRI2YyGvnEGfc4EfD4+ouJSsioeReWoMgnFFsPsdDEwB
- 89YVVVorDmROElRH9viNRWJ+iXhpTEdFQ/iOgVrO+/7BpDdj9it1+C15pbffxhEiCCybL58M
- hm6txndutUZjYd8K6s8yAbFrmZVcOlK2G1kIk6ekBn76sqs5pBo7j5eu+gm985OUKX6e7o3Q
- LlFBzk4MG47+dPmuwDbQQWA/nUTXXwanwRHDQbY9B31UYv/vSX8tupmxSmVJtb2QqwuWTSj9
- KhkVhnlgzoaOjEj8WHXjstwjL9HoB+kuhdyzZLYbJ2TOfFjZa7WY88USnRdUcZQTyxBA52zb
- 40TD+oaIO1Uq5Dxq0YSoReiAAWhAv7kxD1ViX/sxaA03eQvHx/Y0QI9HNwOvnvbo8noO6kdU
- ++417XIwDbZYv9KxTvx9IrFfxY8qv+MR7Jwds/RxFE1GQzbklWQs5HuMDyP2eQLrW2b7PdrW
- OW1hG49qAF+uD2vyd02ioTSnI0V1lTE+j9iwIovOdK5SVd2bNi5G5Rfqy+ULZF5Qt8+Q252o
- iY6zKULt5G0ciYFy5kr2R3SZvyDfoWM7B/vSuacLzd8iX9ld7yzmgq//Euhx+PyWcS50VhHo
- yVZn9XRqn0A1R/e58iZR/Z740yv1zGP1wXJ5eFFJ0A5janbJIA7wr42iJUTtV7PHijsmEX5i
- qKda0Yq+vCw5unoY7jqvIGQOo90hw3kLKgihMyyDf46PwUMR2SX5/mw2bP58UHnXrlGkuc6n
- rfWvZzGP8gWoq+0DglI2Yg58Rm/FS2p0NEAkHkCK1JKZQyIgpDyO1HLPPD4FfC/g0mwkDtzx
- /DJILnhApLVI3jMlbftZK1960tAyAor0NxT+4hYBa0fL/L1Rk/xrsHYDhojPwOowufrENR91
- oUAVmKTGqKUP6LfvUWW6u8vI+SAfpEZtCj9JvQ/5fPjj2c1mVoHcqmo2ZsXZmq4HvNjI0iBe
- 3XsmNQBHn0PvgUkVuznk0eNUSJXZ3moRKIw/C00CYO+AYfZWo+tmKCB3Du8HpBOfGBHCkqDE
- XHye4WeXPcDczydItV9kjwfTrWuUZUh1RS0uADmzLpnK/LY+jcEupL7yNh1++rTmAk29Tx1C
- cSdzm6MQ3hxnmMNXDI2375/rlZhxVeAy6R4hOZYFdNL6/NTTgg6LYLcz/B9C93qQA3Bfc+JS
- FO9T9WiADExSM8xwtAXb0ZzHNWikxbD0DewDL8JlryLA5o0/rjb33jrKMZx02zG27U5j1k6X
- stPMnWribNl+AjNBo7Gjl6Ul7y0eqsB3C7C7nuDwXCSs0FfVQ58Sb/FUmwHZkvKsdT54VvPT
- 7uvCbQhLwtAxteOKqhUZd3zi1VJWvPjNc/AY2K+hWiwHwyExrCSY4rwfWUSwiHdBFIDkwAJ8
- naKLRI+CTu5o2LCEDxuEkriY1jw8eZks3y7SlE7whqUb01uybW14AQZhf+CRPMJ2LILpiMhp
- y9zHFan0NLaE9yAqBF5c6VGfdw9+EtH1X7etwFlP5GsN71thl0fcwRyp07gzxp5BYten8Y2s
- H4kylk6FaXN/Fpfdj/Q/ZH0NrDRIHP7+hznP6LfxFDS+Myb9qcG9LIzrFC17y+zEU93y3h7y
- ZFr2n0/5d2eBRARWJf4SG4+6xxzvPfRcH9utMvvyXRwPPzs4Xf50NUzCb5gk074F+o=
-IronPort-Data: A9a23:HplN+qy9xmw/xx8Bknh6t+cBxyrEfRIJ4+MujC+fZmUNrF6WrkUHz
- 2oaXT2DPfzYMGP8Kt0ibo2//UlX6sTUytJnQAJu+FhgHilAwSbn6XV1DatS0we6dJCroJdPt
- p1GAjX4BJlpCCKa/1H1b+WJQUBUjcmgXqD7BPPPJhd/TAplTDZJoR94kobVuKYx6TSCK13L4
- I6aT/H3Ygf/hmYoaTpMsMpvlTs21BjMkGJF1rABTa8T1LPuvyF9JI4SI6i3M0z5TuF8dsamR
- /zOxa2O5WjQ+REgELuNyt4XpWVXKlJ6FVHmZkt+A8BOsDAbzsAB+vpT2M4nVKtio27hc+ZZk
- 4wR6MPqGW/FCYWX8AgVe0Ew/yiTpsSq8pefSZS0mZT7I0Er7xIAahihZa07FdRwxwp5PY1B3
- ccEKDsDbhOBvPy/zu2CU9FqoJ9kJvC+aevzulk4pd3YJfkjBIvGX72TvZlT0TEsnN1LW/3MD
- yYbQWYxKk6dPlsVYApRV81WcOSA3xETdxVRslGcoKMty2HPyAVqlrP/WDbQUofTFZQNxBrA/
- woq+UzmHAE6G9PAlwHVrC+Bod/ks3/BQqAdQejQGvlCxQf7KnYoIAcHXF39u/6zh1SiQPpWM
- UlS8S0rxYA29Uq2Xpz4WjW7vnePvVgbQdU4O+Q58ASlzqvS/hbcCG8ZSDJIdN0hsokxXzNC/
- lOAgdLlLSZivL2cVTSW8bL8hTezPzUFaGwPfykJSSMb7NT55oI+lBTCSpBkCqHdpsbpEDv0z
- hiUoyUkwbYel8gG0+O851+vvt63jsSXCFRou0ONBD/jsVwRiJOZWrFEIGPztZ5oRLt1hHHY5
- CRsdxS2hAzWMaywqQ==
-IronPort-HdrOrdr: A9a23:qya/u6ho/2mPZ2+pF5USmSFPd3BQXtcji2hC6mlwRA09TyVXra
- +TddAgpHrJYVEqKRUdcLG7Scu9qBznn6KdjbN9AV7mZniAhILKFvAA0WKB+Vzd8kTFn4Y36U
- 4jSchD4bbLY2SS4/yX3DWF
-X-Talos-CUID: 9a23:w5rlKW23SGtOccTI1B7BIrxfIdwleXPdz3XrPUa2Vl9wcLuzEhiawfYx
-X-Talos-MUID: =?us-ascii?q?9a23=3AWLhh+w356nnCNypM6CNb6DL3wjUj/Lq+KG8Czss?=
- =?us-ascii?q?965fZGAtAEBnBti6VTdpy?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.15,252,1739833200"; 
-   d="scan'208";a="318902401"
-Received: from unknown (HELO gm-smtp10.centrum.cz) ([46.255.225.77])
-  by antispam30.centrum.cz with ESMTP; 30 Apr 2025 18:00:39 +0200
-Received: from arkam (ip-213-220-240-96.bb.vodafone.cz [213.220.240.96])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gm-smtp10.centrum.cz (Postfix) with ESMTPSA id 47AF48091193;
-	Wed, 30 Apr 2025 18:00:39 +0200 (CEST)
-Date: Wed, 30 Apr 2025 18:00:37 +0200
-From: Petr =?utf-8?B?VmFuxJtr?= <arkamar@atlas.cz>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm: Fix folio_pte_batch() overcount with zero PTEs
-Message-ID: <202543016037-aBJJJdupFVd_6FTX-arkamar@atlas.cz>
-References: <20250429142237.22138-1-arkamar@atlas.cz>
- <20250429142237.22138-2-arkamar@atlas.cz>
- <d53fd549-887f-4220-b0d1-ebc336eecb9f@redhat.com>
- <2025429144547-aBDmGzJBQc9RMBj--arkamar@atlas.cz>
- <ef317615-3e26-4641-8141-4d3913ced47f@redhat.com>
- <b6613b71-3eb9-4348-9031-c1dd172b9814@redhat.com>
- <2025429183321-aBEbcQQY3WX6dsNI-arkamar@atlas.cz>
- <1df577bb-eaba-4e34-9050-309ee1c7dc57@redhat.com>
- <202543011526-aBIO5nq6Olsmq2E--arkamar@atlas.cz>
- <9c412f4f-3bdf-43c0-a3cd-7ce52233f4e5@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0812DC769;
+	Wed, 30 Apr 2025 16:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746030239; cv=fail; b=CJpFCjOu8wUDyWDNIYJOtdX371K5JqwTTrPN08EN41hkUKHfLxSJsSC36KgF3muAXZotKNw7bo9Qxcb9MIM6TFNn1fqfQn5qqvdZolIn6ER4PfzRYG8oFuUt8RqGPU4UzUNYGSQXlCz0Kt0oF9TTpNxLyd3tQYqtcVndUvXWklA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746030239; c=relaxed/simple;
+	bh=ab+9E3BTUlxgisNkLT2KxUiMOOtYkLs0p/3v1IBtyBQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=t3kujS2Qb2c3lQRO3vXpZiJiIAhr6NCsdzzNvKvOm/9DAN4aCwsFkHJXZs8TAyezbwEcM7RTQnpsOvs8q/+4NNRJKZIBzJBCLGu+QXtO24V4A4Z/abM9FSaJpdq4hTDCCoGEakvZEMrkrTStb/bueqBRBiIinh3Lp8h4rETlRC0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=AeBSmARL; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=P3eHMMYU; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53UFMwgZ017727;
+	Wed, 30 Apr 2025 16:23:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=2Ur0kWLjV6IEUYeIGqVKSlMbbDeoBTGIPH5G+utVUDs=; b=
+	AeBSmARLBA0/i1K1/HdshqRXwAIOrQz/C4Q3bwLvTiGxTx3VR3X3NiwZWaBONXYz
+	YCHSTroRtCehazPttil40P+hncSha4doIST1rPPgMkdJoA2Tz80KbvL7VMrvBO6V
+	DZiy/fia1FQuVXfEJeXEXHIEjBRPynyVJLbbWDE+jAmp4ytWllRZMKWMC5G8KhKg
+	jBwmvcrU8odcVs0De9Q0XSBq/wsZ0FuJo/PvgtIxmoNbqDBmv291S69tzjnfkQ1o
+	T37DXPUzINgA9bsyjZafdV4mbKVzZYVPt4ZiQXfPIDt4Z9PmU+6ZjGHE9ps1hlmP
+	qzLFcTLDoQLU/1H1j3a9qw==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6ushkn9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 30 Apr 2025 16:23:23 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53UFdlFK033376;
+	Wed, 30 Apr 2025 16:23:22 GMT
+Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02lp2049.outbound.protection.outlook.com [104.47.56.49])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 468nxbhqet-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 30 Apr 2025 16:23:22 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Yi9eYPxP+hBy2AIuycM4B5B3BBQUg487DXx0T0kORJ6m9a5hCbmFPJtY/3O+AyCM6A1ko8wSfTygrH59ciVJxSgNLrPjflFWPSq3QzBmxQLR2H1qgy9cZgOLlKQI0+0RNKgOiia47WVIYaYRpTxwwAFkp3tUqztM+JLBEvugU4GElFz3smZYjAmc11t5F/Dm+l2ULbcW3ZBU0/w3hrAgMpE5nJhcxqa2xWJCt/hPPmDc9OAnU2ZwqWM4bI+4oRDwynmXOlHNJFcPUvg4CWzrbKgIOvs67HqLdCMPOW4dS7s+uVYbIwHHuB2S7x/PAVUheZCXMJlhEsMz8e+rgxtqLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2Ur0kWLjV6IEUYeIGqVKSlMbbDeoBTGIPH5G+utVUDs=;
+ b=FU8hmf19Vb/qnS+Ni3vUiWNTToPtHEOHwpkqZm6XYPpUl7dsOY0Whx47JJnXk13F1uXjQ+bm2vlnVJohna3bXGFq9fGa5FGe9Hk9/MPTJDkmCdhJ3zyrHdpjAM9cctscNbJR4+kBb5jIfCf6S1iWQR2E3l04tdw/PY95/IgyuHR+7S8qp5z4n276z3AZv4SMsPTqzamWihxXiJDwhst+14nhY8ifDXQ23FaZqUDdTgYHF2zc6xeP7D5beGKcTPkE3h3Vnly+y939y1ec9PlVDO7PJKHkzc3CrCpbdKIox/PI8Wl+p1Zm2x8BPQYj6pIxS40kjDbyhDPdi2sduPQ6VQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2Ur0kWLjV6IEUYeIGqVKSlMbbDeoBTGIPH5G+utVUDs=;
+ b=P3eHMMYUekaeswieJ1V8kINlLnXEfIRSj4W/NfFn8JFDOvBXAYW6glO2PqEtxVMwTCiRamvAFhSuO91BiKMk+v1b92oI9DLKk2eXYBlpJ723J0UyN5BRd8LNr4tMpD8evqsY+4fOWSDXT/C0UPsEOkOTfiPlrZyLAvbQIuKmsDo=
+Received: from DM4PR10MB6886.namprd10.prod.outlook.com (2603:10b6:8:102::10)
+ by SJ0PR10MB5615.namprd10.prod.outlook.com (2603:10b6:a03:3d8::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.34; Wed, 30 Apr
+ 2025 16:23:19 +0000
+Received: from DM4PR10MB6886.namprd10.prod.outlook.com
+ ([fe80::bdcc:98f5:ebd5:cd38]) by DM4PR10MB6886.namprd10.prod.outlook.com
+ ([fe80::bdcc:98f5:ebd5:cd38%7]) with mapi id 15.20.8699.012; Wed, 30 Apr 2025
+ 16:23:19 +0000
+Message-ID: <b8c4d960-cc66-437b-81fd-aeaafc64a38d@oracle.com>
+Date: Wed, 30 Apr 2025 21:53:10 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/280] 6.12.26-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com,
+        broonie@kernel.org
+References: <20250429161115.008747050@linuxfoundation.org>
+Content-Language: en-US
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI1PR02CA0027.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::18) To DM4PR10MB6886.namprd10.prod.outlook.com
+ (2603:10b6:8:102::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9c412f4f-3bdf-43c0-a3cd-7ce52233f4e5@redhat.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB6886:EE_|SJ0PR10MB5615:EE_
+X-MS-Office365-Filtering-Correlation-Id: ab7ad013-e338-47cb-20c1-08dd8803518e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZGxOdVd0ZjBORmFxeHdYZGRPQzRKdVB5ejJMYXNIaysvTm44aWkraktmanBW?=
+ =?utf-8?B?QUM1ajUrOHpiWlRzcnA5dkEwUkxUMTZQaTA2OS83QlBYV1Q4NDhHWUp1WjBr?=
+ =?utf-8?B?QTIvQjhYcUQwUHg3SGltZWo4RWg0VkxlODF0ZndEWWVLM1l2WllrSnpRUmQr?=
+ =?utf-8?B?YitXVDFSYlZ6eVdEUWRXM3ltR2U4YzRsdDV3SjZCbndTTzNlMWowODZQdmdL?=
+ =?utf-8?B?cUxZQkE3VDJ5cStrdFJwQU5iN2c1MlkzWlJudGUycVowLzhCRjBuS0Fzaitm?=
+ =?utf-8?B?QXFlSWN2S2ZEeFZvMEc5Z3FnK2UrRVNVUFMxdHFSb1B1RFdnU1FLa1hpQ3dN?=
+ =?utf-8?B?U3NTVHdPaStPN0cyblFxVk9MVC8va3JQYU9YajRGNHE1YzRJMms5OWpKaWNC?=
+ =?utf-8?B?R1ZuazRxTGMrK2liaVRZS2tuUm9YVUd5TjlLVnYrbE5NYXBzWWF2bWQ5VEZG?=
+ =?utf-8?B?cTExR1dBVlZvcUlsdHNvMXFXMGF4ZnJBRnFLN1BGM0Y5ZnFYQmRjb2R4dS8z?=
+ =?utf-8?B?Yjl0eFMxTExGSktMSmFCSDdWNDdEUWcvc2JHZ3B1SDB3UFl4WlVGaUEwbjVS?=
+ =?utf-8?B?eThQNXY4U2lObTNxYm1hbzFvT0V2THAzWjkxdk1EMDRHT1J4T0NyYU9rTkti?=
+ =?utf-8?B?aDk1RjhUT0VlOU9qdDF4bmRVVVJYdWJFOHBHU3Q4clArVFI4Q0ZiT216bWRG?=
+ =?utf-8?B?amhIUEJCVzd4eGNPTWNMdnRtYXZNejNDVi9pTUxUVmROMmw1MFZYZ0lNa0pV?=
+ =?utf-8?B?Y2tOaGw3cHV4WDFwbSt5a08zeExDM2wvNFZjQXZCMlVLdy9yVmR1NVZERlBV?=
+ =?utf-8?B?UDJDZlRPZjZOOTdkT0dUR1ZvcW5tSlR2ODdLc3doaDBpdkF4TzJPUzN0ajFr?=
+ =?utf-8?B?L1lPL2lCa2g5a3pvaVhrand1SWswdzUxb0Znazc3b2ZXY21oc1lHMDdQejZI?=
+ =?utf-8?B?c1BRT0pQQVJBSnYvSTlqdlhManBmTk40bDFBZ0RxbkRpK3F0Z3VMYk5vM3R6?=
+ =?utf-8?B?a25yQWNvVkUrTUNLMksvbUdKNHhycXlzeUxleVJIU0hxdXQremgyaCtiZVR2?=
+ =?utf-8?B?VmVQbHZ0dUFVSG5HbWlyVHpDWk5abEN0RVdyc2dLQzhFMnhUeVh3M2tubGds?=
+ =?utf-8?B?RnRIVzlLWk95YXF4MTFSZGNsK3pjZHpwcFE4Z0NHTWJiMExaWDVGWWtZZnBj?=
+ =?utf-8?B?bldxZjlHRk91UDAvcFBpOUtnV2grckJvY1d1RDJKaEdsYmtWYXN6TlpZUHc2?=
+ =?utf-8?B?ZkladGp1YTFxcFUyVTZBY2ZuZU9Ndk43QUN1UUlRKy9BZnJmQ29iMW5tQXpl?=
+ =?utf-8?B?aWZ0dWVOSjV6ODl6aDFQcUdQZmFRVUk3NllFa00zM2pSWGFMbGRnVUN3cGZv?=
+ =?utf-8?B?WVZFYjVoNVEwWFgwN0RHYVBKejlKUXZDNXBVZ2VtODlxRktoTDJ1aitESmx4?=
+ =?utf-8?B?eHB4a05sSlZhbWZMQU9IdVpFWEgycGdsQ2tDUWcvWUpIYURXdUd4ZVJrT2VN?=
+ =?utf-8?B?dVhvRUc2SXc2cWQyampWVy9ha1FpaG9ibHdiNUJuNitHcWRmL1JuNk83Qmdt?=
+ =?utf-8?B?eFpoUEdxdHhEdXppV3c3clRKcDlFTXd0dXJCOG9XM2RsRFJ0YURyWWJ1OUt4?=
+ =?utf-8?B?VFhQRTFVNzNIUUdiYzVnT0o4QmJ6eDZwWS9EVnJFU1gxNjBvWVdTcExzVWlI?=
+ =?utf-8?B?a3gyYk9wUmZVdjVoYVRUYnEyNG5ISlBkM2l3UnRDSFBJcE1GbytmM09SOURr?=
+ =?utf-8?B?Ukh0Qk41T09sNG41SU5zNU42cTlVd2F2Qzh1R0V5SHRzTzJWMGdIVHZGckw1?=
+ =?utf-8?B?Q1I1TVhvSTJTcmJMdnUyRkd3ZHIra3NYZzRwcUlHeEdwYlJsVGZDYjY0TUZs?=
+ =?utf-8?B?NS94YXlZdHZhUEt4cmdFd1dFZm11c3lKTlc0UVRjVHpPdVJHa1NtOVdzVnp5?=
+ =?utf-8?Q?GCXVg7gfDwU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB6886.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WExzWnJUTnFTM2JoSFRvUlA5VVFOYXFpZk1xcHJMcE1BQVhRTkFWbDNqQlA4?=
+ =?utf-8?B?dlp2RnNULzlzckxMVnVNZ1lZMXNHcytiMHN2REpsbWZlVWhBR3VBZmsyR2NV?=
+ =?utf-8?B?YzVOcmZLUmxVT1BKbzJBNWlpRTdHOUNTZTUzd29TUTh0ZmRxSzFINmpWdVJO?=
+ =?utf-8?B?ZHBQekRLcjN5czNHdDdSMklPVG0wOExhYXdteURhTGJPRzhNN0l1NnJIdEls?=
+ =?utf-8?B?TFM1NDhUQ1ZNd0xmbzQ2NDZ3MCtGVUJOUGp6NHI4OGVJTCtFU3FjZ2FFbUFX?=
+ =?utf-8?B?Y3EvMWtnWUpvRE92c0pKRHVNOWVSbHpLSS9PUDNzcjRValJ5YmtkSVZEOHF6?=
+ =?utf-8?B?dW9tbWRRQ2llVUs4Yk5RMkdaeGtISzFVNjJHaXJzQk1PczZ6MkZVcDdsYnF3?=
+ =?utf-8?B?dGY2eDhHajJ4UW0yZ25ZaTNHWkJtMUYvRC9Nc1pPajY2aXFJTTFabjJjeUJ1?=
+ =?utf-8?B?NTJFeWg1ZWxTaFNZc2hKdzQyT3FxbDV5ZXpMMlI2VTcvVlVKa0FvejNrNWU0?=
+ =?utf-8?B?SEhmNFN4YlJ0TmM0azUwYm00WnlyRXViZlJ4NDNnUHFJVXA3Z1JoblRldnZE?=
+ =?utf-8?B?djluMHB0UHR3cWNrUnBESjFWWGE0YTYvTWRCNlFVMkozOFIybml1R3ZvSjVE?=
+ =?utf-8?B?RnNNbFMyZzlQREoybXQxSllPSlhxRlY1QnZvT01PV0dhU29ieGhlM0FsdnpK?=
+ =?utf-8?B?aGYveGRzRzFLcWF1eGJmQTVMMTREQUlXenpnTjFkQmtEeEFFdlNXZlYxL0E0?=
+ =?utf-8?B?eHBDL0EzMWQ3akFpMk5CUjREdFdtcGNBZEdYQTRtUThXaGJhb3pCcndzNE05?=
+ =?utf-8?B?KzQ2OEU4d01KajdWK2tuWDRZZzI4SWFnN1JkR1Y4UUhkckRWTkk4dURHYitk?=
+ =?utf-8?B?OUZwN3RNVVJORXBPS1ZLYmxxeGFhQUk2QVM4RXJjRGY0dzBDc2NuME9GVUdi?=
+ =?utf-8?B?aVVsd2NJN01QZUUxOEs4czVJNWo1NjBGbGR5cHphMHQyTXB2Yk81N0NjNUN0?=
+ =?utf-8?B?NmJCLytpK0hnRWh6RVByOHZUOE92cHNsWEZaaitVQ3Blc1kydVFsakRkN1pt?=
+ =?utf-8?B?QW84TEtkRWZWT0hUQlM5NkF3cndFMTJtOUkrMlI1dE13VzhsU3FLUG1zMHMv?=
+ =?utf-8?B?QmpXWlUzNlVtdUc0bHBQY0UyWklUWDBzWmVrMFZZS250T0YzdDNVaGVydGxv?=
+ =?utf-8?B?T3RpbTBsUkQ2RHlQbXF2YnRVQmFZZ3UwZFM3ZjRJMWxMcGRqNjExV0JzYzl5?=
+ =?utf-8?B?S0JRQWt5OVd4NDI3QmFXNEhrTUlyck5OK0ZOQVNMTWRSK09NckVKaFg3RWgy?=
+ =?utf-8?B?OUg3Z2o1THFrdTNPSnlRZDFsSzFFVkwzRFRYMWxEdnovTkJGSy9XR1d4N3dn?=
+ =?utf-8?B?TG1BSS9CV2hVY0ExcHVPMk1OVm92OGRZcS9qck1WVUZSYmV1bnJ4RENrQVNY?=
+ =?utf-8?B?NjNIcFhJdnEwV2pQdkhMQzdCYUVjclFWWFlld3ZLYytNRkdCd0dNaGx5WXJj?=
+ =?utf-8?B?Y25UU01IbzhFNXE5RDFTU21YMSsycFFjZ1R6RjdaVnhudzJzVWtNNERRaDl0?=
+ =?utf-8?B?dVNXc1ZybnFxWmt2VldRSVBnZVAva2ZUTzNRa09YTHVlay9hbmhsekFTRk1z?=
+ =?utf-8?B?OHc2TU9qV1NmRVRmS0dUWkQ4UkpFUEZJR29sekswaE40aUN4dUVLaE5sV1Zk?=
+ =?utf-8?B?aXNsb3NHbWhRSGkvS1Nrd1BybHFHUGtpL2w2c1FUeEVraHB2SUdQUE16ZUQ1?=
+ =?utf-8?B?aEdiKzVsdytSUjBvVHRaTGxHSll4RXgzS3BqQXlFenFaaS9XN2hoMGNxZFdv?=
+ =?utf-8?B?VVg0eXp2d1hTWitDUUg3VHlSL0cxSkhmZENtUVJpeHBtR2ZNYkJxdE1zNzYz?=
+ =?utf-8?B?SjBVVzhkc0FucUVVVG02N3QyNncyeUhvbGpSelMyTHFIQ1NJOHJUYlhPaG5y?=
+ =?utf-8?B?RDJSUFlrZjJ0bHJhbHNCQnVid1c1dU1aUVljcUVOcmRSNlYvS3BjcmJZb0Q0?=
+ =?utf-8?B?TGtiOUdrQkkxZFlCM3ptaUhVWVo2c2tCSGZXbWRURDFXaC96b2NWZ2hzVFd1?=
+ =?utf-8?B?NENySVRSaXY4YmtFTmFZN2p2NWwvRmJIRlJTQnRVWmJVSnlLUzdYa0txcmZG?=
+ =?utf-8?B?WUlDVjcyeW90bHZWcnQ2VWdkelZsaS9oOExHMTVJbHBMOFdKSHlqZ1QvdlI2?=
+ =?utf-8?Q?fS824q/8TnsF+Ty2XdnSdSg=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	D3NGiqJirwnZm831On0BxnhyQXtdOpFj90iMERuZ3w6N+14wR/2LU3kBmUA0zkv6UD1bhXWOjwDa+LTh3XqtthZxAlVpzq8AGIwipcISGNrgE0K5lcPa7MpvmI1k4UQbrVuPYKtKtNAL068Nyfe9UMR8g8IvfA+edDBOnGHtjLS8nJ1F3R5LSqUKJFWz48R/WZ5IPvCbwQTEiL/E0XHUpPyS0fr5KOuZSJl0Pl884wSm5oyO9p25MU5OXsYbRc+uD/FTKclBMaKqeEyL3jP5bqXykR/2XCOyEjNCgs8CkG9NbKCcWH99+zYW+GYoXBetoaGDhyfPrxunDJfqPXfzgoU3gMohP132ny5frvQOZv19+G4V1YJM2+YMJ0OLhfKRYIrmIuJUp1sZce3WFlIKsRssaePI/SvzE4kbWgyrG+GgpeSRv3BD4GDYFl8Y4WSrDJlh+QqmUwJeaU7yiMknCvu03RzPwchoMYsn2W9aCirZ/dTQ2ur0PqcTI/4zKzAoyd5nPis7P3wBQmxO0RFQJudGKO+dFog8XRNhx9Lc1uGKmwkcT0Bnvk6G7IDWcM82AGM/wsBMS8WzGzyOovwCgsv8uVGjcj0Z8yH0ggnDeKg=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ab7ad013-e338-47cb-20c1-08dd8803518e
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB6886.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 16:23:19.4623
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5Ys5Q16hVGvgTfDUdnEKDLWdK0Kj2UUSaSC79UoGOz07oywaVuGgCTTfQECn4botQic3Rfa+pH6+O6BpZjavN/uc4DpZ/o5J9dOe/4IYaM1z5l+PH6LwycpPa/ebQbue
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5615
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-04-30_04,2025-04-24_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
+ malwarescore=0 mlxscore=0 bulkscore=0 phishscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2504070000 definitions=main-2504300117
+X-Proofpoint-ORIG-GUID: XoNW3fUl9_N37mitOldqYUGlC7F-V73b
+X-Proofpoint-GUID: XoNW3fUl9_N37mitOldqYUGlC7F-V73b
+X-Authority-Analysis: v=2.4 cv=Hd0UTjE8 c=1 sm=1 tr=0 ts=68124e7b cx=c_pps a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10
+ a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=X_drXzbwcQU-ujxrCA4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDMwMDExNyBTYWx0ZWRfX5bczE2IksVeq 92jzhTz3jUue98xY0L5bIgDKndcrxf7t9Ln15KzdAycM4cGy/3Ub50DZfC6tiRbqg8xCvS8mmsN APJHoQvhqosWzKE06XOHEbxqizIWEkmb9V4vCjdjshkUP7n2IOjuRPp2SckMb2Z//0rSCbmL1L/
+ VenalJQ1Mo1isR/LYtckt15wGedglwWOdOI7/d5ZDnJBNOZPi5U+x5EcIjj05r3HUdhZmv7KMfC SiLm8iK5nglgM3X9jPl/SA3S0ZrqPyAm+UnXHLQJZLU02RTKv5LmDY19TGKNrtfCFHJH85vcyL4 ORVDwHonK78zIZff8clpNSk4wVVLlXbw8hE4yb4Elr5PdSxZfn65BAcT/t+Qhy8wtH25tX2N/9o
+ aluZqX/acNuZGV87XqE0HJnMlJL9RMPl6AkTvWGvRQdzIN0DxDoXR1j4cD7HjcYN8lpc1XsP
 
-On Wed, Apr 30, 2025 at 04:37:21PM +0200, David Hildenbrand wrote:
-> On 30.04.25 13:52, Petr Vaněk wrote:
-> > On Tue, Apr 29, 2025 at 08:56:03PM +0200, David Hildenbrand wrote:
-> >> On 29.04.25 20:33, Petr Vaněk wrote:
-> >>> On Tue, Apr 29, 2025 at 05:45:53PM +0200, David Hildenbrand wrote:
-> >>>> On 29.04.25 16:52, David Hildenbrand wrote:
-> >>>>> On 29.04.25 16:45, Petr Vaněk wrote:
-> >>>>>> On Tue, Apr 29, 2025 at 04:29:30PM +0200, David Hildenbrand wrote:
-> >>>>>>> On 29.04.25 16:22, Petr Vaněk wrote:
-> >>>>>>>> folio_pte_batch() could overcount the number of contiguous PTEs when
-> >>>>>>>> pte_advance_pfn() returns a zero-valued PTE and the following PTE in
-> >>>>>>>> memory also happens to be zero. The loop doesn't break in such a case
-> >>>>>>>> because pte_same() returns true, and the batch size is advanced by one
-> >>>>>>>> more than it should be.
-> >>>>>>>>
-> >>>>>>>> To fix this, bail out early if a non-present PTE is encountered,
-> >>>>>>>> preventing the invalid comparison.
-> >>>>>>>>
-> >>>>>>>> This issue started to appear after commit 10ebac4f95e7 ("mm/memory:
-> >>>>>>>> optimize unmap/zap with PTE-mapped THP") and was discovered via git
-> >>>>>>>> bisect.
-> >>>>>>>>
-> >>>>>>>> Fixes: 10ebac4f95e7 ("mm/memory: optimize unmap/zap with PTE-mapped THP")
-> >>>>>>>> Cc: stable@vger.kernel.org
-> >>>>>>>> Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
-> >>>>>>>> ---
-> >>>>>>>>       mm/internal.h | 2 ++
-> >>>>>>>>       1 file changed, 2 insertions(+)
-> >>>>>>>>
-> >>>>>>>> diff --git a/mm/internal.h b/mm/internal.h
-> >>>>>>>> index e9695baa5922..c181fe2bac9d 100644
-> >>>>>>>> --- a/mm/internal.h
-> >>>>>>>> +++ b/mm/internal.h
-> >>>>>>>> @@ -279,6 +279,8 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
-> >>>>>>>>       			dirty = !!pte_dirty(pte);
-> >>>>>>>>       		pte = __pte_batch_clear_ignored(pte, flags);
-> >>>>>>>>       
-> >>>>>>>> +		if (!pte_present(pte))
-> >>>>>>>> +			break;
-> >>>>>>>>       		if (!pte_same(pte, expected_pte))
-> >>>>>>>>       			break;
-> >>>>>>>
-> >>>>>>> How could pte_same() suddenly match on a present and non-present PTE.
-> >>>>>>
-> >>>>>> In the problematic case pte.pte == 0 and expected_pte.pte == 0 as well.
-> >>>>>> pte_same() returns a.pte == b.pte -> 0 == 0. Both are non-present PTEs.
-> >>>>>
-> >>>>> Observe that folio_pte_batch() was called *with a present pte*.
-> >>>>>
-> >>>>> do_zap_pte_range()
-> >>>>> 	if (pte_present(ptent))
-> >>>>> 		zap_present_ptes()
-> >>>>> 			folio_pte_batch()
-> >>>>>
-> >>>>> How can we end up with an expected_pte that is !present, if it is based
-> >>>>> on the provided pte that *is present* and we only used pte_advance_pfn()
-> >>>>> to advance the pfn?
-> >>>>
-> >>>> I've been staring at the code for too long and don't see the issue.
-> >>>>
-> >>>> We even have
-> >>>>
-> >>>> VM_WARN_ON_FOLIO(!pte_present(pte), folio);
-> >>>>
-> >>>> So the initial pteval we got is present.
-> >>>>
-> >>>> I don't see how
-> >>>>
-> >>>> 	nr = pte_batch_hint(start_ptep, pte);
-> >>>> 	expected_pte = __pte_batch_clear_ignored(pte_advance_pfn(pte, nr), flags);
-> >>>>
-> >>>> would suddenly result in !pte_present(expected_pte).
-> >>>
-> >>> The issue is not happening in __pte_batch_clear_ignored but later in
-> >>> following line:
-> >>>
-> >>>     expected_pte = pte_advance_pfn(expected_pte, nr);
-> >>>
-> >>> The issue seems to be in __pte function which converts PTE value to
-> >>> pte_t in pte_advance_pfn, because warnings disappears when I change the
-> >>> line to
-> >>>
-> >>>     expected_pte = (pte_t){ .pte = pte_val(expected_pte) + (nr << PFN_PTE_SHIFT) };
-> >>>
-> >>> The kernel probably uses __pte function from
-> >>> arch/x86/include/asm/paravirt.h because it is configured with
-> >>> CONFIG_PARAVIRT=y:
-> >>>
-> >>>     static inline pte_t __pte(pteval_t val)
-> >>>     {
-> >>>     	return (pte_t) { PVOP_ALT_CALLEE1(pteval_t, mmu.make_pte, val,
-> >>>     					  "mov %%rdi, %%rax", ALT_NOT_XEN) };
-> >>>     }
-> >>>
-> >>> I guess it might cause this weird magic, but I need more time to
-> >>> understand what it does :)
-> > 
-> > I understand it slightly more. __pte() uses xen_make_pte(), which calls
-> > pte_pfn_to_mfn(), however, mfn for this pfn contains INVALID_P2M_ENTRY
-> > value, therefore the pte_pfn_to_mfn() returns 0, see [1].
-> > 
-> > I guess that the mfn was invalidated by xen-balloon driver?
-> > 
-> > [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/x86/xen/mmu_pv.c?h=v6.15-rc4#n408
-> > 
-> >> What XEN does with basic primitives that convert between pteval and
-> >> pte_t is beyond horrible.
-> >>
-> >> How come set_ptes() that uses pte_next_pfn()->pte_advance_pfn() does not
-> >> run into this?
-> > 
-> > I don't know, but I guess it is somehow related to pfn->mfn translation.
-> > 
-> >> Is it only a problem if we exceed a certain pfn?
-> > 
-> > No, it is a problem if the corresponding mft to given pfn is invalid.
-> > 
-> > I am not sure if my original patch is a good fix.
+Hi Greg,
+
+On 29/04/25 22:09, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.26 release.
+> There are 280 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> No :)
-> 
-> Maybe it would be
-> > better to have some sort of native_pte_advance_pfn() which will use
-> > native_make_pte() rather than __pte(). Or do you think the issue is in
-> > Xen part?
-> 
-> I think what's happening is that -- under XEN only -- we might get garbage when
-> calling pte_advance_pfn() and the next PFN would no longer fall into the folio. And
-> the current code cannot deal with that XEN garbage.
-> 
-> But still not 100% sure.
-> 
-> The following is completely untested, could you give that a try?
+> Responses should be made by Thu, 01 May 2025 16:10:15 +0000.
+> Anything received after that time might be too late.
 
-Yes, it solves the issue for me.
+No problems seen on x86_64 and aarch64 with our testing.
 
-However, maybe it would be better to solve it with the following patch.
-The pte_pfn_to_mfn() actually returns the same value for non-present
-PTEs. I suggest to return original PTE if the mfn is INVALID_P2M_ENTRY,
-rather than empty non-present PTE, but the _PAGE_PRESENT bit will be set
-to zero. Thus, we will not loose information about original pfn but it
-will be clear that the page is not present.
+Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-From e84781f9ec4fb7275d5e7629cf7e222466caf759 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>
-Date: Wed, 30 Apr 2025 17:08:41 +0200
-Subject: [PATCH] x86/mm: Reset pte _PAGE_PRESENT bit for invalid mft
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
----
- arch/x86/xen/mmu_pv.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index 38971c6dcd4b..92a6a9af0c65 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -392,28 +392,25 @@ static pteval_t pte_mfn_to_pfn(pteval_t val)
- static pteval_t pte_pfn_to_mfn(pteval_t val)
- {
- 	if (val & _PAGE_PRESENT) {
- 		unsigned long pfn = (val & PTE_PFN_MASK) >> PAGE_SHIFT;
- 		pteval_t flags = val & PTE_FLAGS_MASK;
- 		unsigned long mfn;
- 
- 		mfn = __pfn_to_mfn(pfn);
- 
- 		/*
--		 * If there's no mfn for the pfn, then just create an
--		 * empty non-present pte.  Unfortunately this loses
--		 * information about the original pfn, so
--		 * pte_mfn_to_pfn is asymmetric.
-+		 * If there's no mfn for the pfn, then just reset present pte bit.
- 		 */
- 		if (unlikely(mfn == INVALID_P2M_ENTRY)) {
--			mfn = 0;
--			flags = 0;
-+			mfn = pfn;
-+			flags &= ~_PAGE_PRESENT;
- 		} else
- 			mfn &= ~(FOREIGN_FRAME_BIT | IDENTITY_FRAME_BIT);
- 		val = ((pteval_t)mfn << PAGE_SHIFT) | flags;
- 	}
- 
- 	return val;
- }
- 
- __visible pteval_t xen_pte_val(pte_t pte)
- {
--- 
-2.48.1
-
+Thanks,
+Harshit
 
