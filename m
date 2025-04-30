@@ -1,479 +1,498 @@
-Return-Path: <stable+bounces-139123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688E6AA469F
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 11:14:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01FB7AA46EC
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 11:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEE7A4E2327
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 09:14:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1794D9855A6
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 09:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D302222AB;
-	Wed, 30 Apr 2025 09:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77ABE21CA1E;
+	Wed, 30 Apr 2025 09:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VtrotqZx"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="okEkWw8e"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2063.outbound.protection.outlook.com [40.107.237.63])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2048.outbound.protection.outlook.com [40.107.100.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659032222DE;
-	Wed, 30 Apr 2025 09:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4190F221F27;
+	Wed, 30 Apr 2025 09:21:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746004397; cv=fail; b=UpcicR1w+tm5TvI5VogGEivuBTmm53XxbhFYkCm1EwC4hyGXF1AKwHUl7yyYI26/Kx32rdIlngXYrMcxEX7OQ85XI48Xi6DUSFdE8iMMfD53RsG+jL/paW6xVEqHxVG71zQiJmFdqLcnwhDtYMGM3EB72jnQ1vSiv7ijCvel5R8=
+	t=1746004901; cv=fail; b=nCGj+rz7AciopvCoucWKjKBr2Q6nplHtSE6hMHhLgnqCX8l/CQokQOzdQpbWphQtjzyJO3Pf10qGWTlS7Ohrsk7kio+jgmbvvt2YKnHiQS0ibbsX4DsdyBirhca0r59DRokwB1AmaNOEw8Z8xnKDTnclSSvLVw8P1G2D6FvLHtA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746004397; c=relaxed/simple;
-	bh=OmvDgsNtUV3yWzcXlPfpBBv0bS4q9+orv4WRnFJ4cy4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=LlEIf4lOUv1lKlkrL0Q91QDHXUbbhZKNi+viU8nzoqD9C1o3yAO9O3D6py/efjZ1A31QqnqGdrxBWMm0DjTiTPFA7BluXj9mcfOdi2yTMmJUP1/1L98HGH6ZfAGKScXUJ/eyYzMvxijdOY3wUWtXDxtKn1mM3HrZoS/4tuaa8vA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VtrotqZx; arc=fail smtp.client-ip=40.107.237.63
+	s=arc-20240116; t=1746004901; c=relaxed/simple;
+	bh=AFN9PoPOopX7t5JizsHHEN3GFrClvGCrliOLeehnhzQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=egjOjwOzmVKrylXF2e7EXDJ1pFO6P6m4oTrvfRg8O+VcLfw3/3mr36TbRaHBH9uBfZ8ly6uY9SAkwCZTAcIDhAn2TKxboGg7QFCGxqA8cTZ8amBY5iUAJClWUKjc4iHP/9OmSlJlfgLUV7eDp1Bp3bhXxgbziZthaENqLkvBuKg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=okEkWw8e; arc=fail smtp.client-ip=40.107.100.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KsgDEVLaD5YbeUuU9XqiEpxYEl0r+HK/eipqfuTmpRBBrRDFIMqA6DNzS7Fu6p3NIgSn+GmDd7xsz2Rp9rUifpfaXNCujG5IuPg27enxwASIdWv2vyCSNxEnDfKGNgMI+yI+FKNUIlXeILzpfSBpzxDE/wqGvia4uwrd6e8zpVvN4U0ZXfSfEKL3fZ5PVASgqKFZS4QN/+v3YRMpoE7bwYL/g72IBsNdzDiFoAt36ezaREeA6poKec110fjkYiVt9nHmzBJFpj4E2MVPxXeaxP5k4mACUmdhQxxFcqa3uXwPgSzsMlWZfhnWYXbKOlx30/LEmSZRWhrqgvvxX+GWrQ==
+ b=IgQJKs1S1h01q0fMdC7lSnm8TEbomJIHYT18k5QnX0/IMYDKjIWOlaYUy8KuKyAHvMYnIk2luGzkU3N58riYHXHk7RFRLJg7Xx19nr4AvZU3cxIhDvisRBqIdq3lT5R4QuzvYrZELOhjRUPU5HmYgNAnSHVRs6e8Mr3l+M6d0sOnsG1d2sQB3AiR+wZ3TPn80cesOlCeMRbpgSbejukf/7B+r4lKwq2qPHjb5QKa2q4VzZdcTooXGFNvQ0qx15mjkQoAg5lJ/JgmWE6eLHZsH/QfsxVkB4F2l4BQv9P7nq2cMbWt+5USugrT8i8I8FG4B5Ssrm3SwtFbBTu72Jp4dQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q+3R0AS6aEcD4p4txMhpl01/HgzGBPgIsEljoCH11SI=;
- b=gkeIvi9Ui1HRU7biJIQxBcABpT+5AvuYtKHEmYRqIww09uHm2z7XeG3CQhpS+pPps18uEwwApKh+Z7qVMnxil++tIxyUhJGT+2rfxeZ70uVBs2QdTxcI+yD7XErlKtH94kFScwkxGzl4Njqgyb7jOmTEnxYfCbjlFPKb7JXH/liNMU9NLCW3RhMEF9qYvB/1IpICe/m0vpeYoEqbe+6kidnMOM1MXYoKwofqpP3MyVUJrCQ43PJ90bllWHM4Y8d6A6WaaBQvGv5qcl/02ogdaw6ssv/dqwuP3aTnm1UhjOuwdRH57UGX7+5/n44EjkSuih/uuzTySUmA1V8yNqEmvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=ateme.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
+ bh=kCMkMVnQuNspJ3mIBdgoKNyjifFVods7xrapzIHTeQA=;
+ b=O3HBUK0ac3tCsZnOfKxBsJ8DHKt73kaLnOaxYzvTB/9i/eLETKRawDvbBqnpgme3tX5COTH+ZlhpAxwycxGGnadrM8hqhybhPoDPLgNSUXlHbKoRNbjIw5ZdbQTgdZ1L5P1T0KNMudJYPNRJP+aaNK3onpA6tkLpJSz584KysK8tE7Qevh26ddtClbm8XOQuMet5Bn6obFtSrPwoMMeY4KNdCgpg7Ie6bC6YmpHQJocbKjU4OEyKi3BiAy/44selKp1ygHYDJ+aKB3LMFWeB5InPlgY3C401PnN97roAYEU3O3ware02G5dlSMPACrHxf3UnU+DoRfwI/nM0fVA0Pw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q+3R0AS6aEcD4p4txMhpl01/HgzGBPgIsEljoCH11SI=;
- b=VtrotqZxhDKDff8hZirLRsJVHsD4DL7OE3UULyqFExBcHOVJJ7WyEGwxbr0dp7E39liDxIiORNzeGB0sxVDHogwcPSBI7aeVf8evrwFIwDxYQax6b8i7Uu1aYCo4YceRi14putp8sHLmiZIOw1u+Hx4ACOS8u/RVlvBLsbOhUQM=
-Received: from BY1P220CA0023.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:5c3::11)
- by DS7PR12MB6333.namprd12.prod.outlook.com (2603:10b6:8:96::15) with
+ bh=kCMkMVnQuNspJ3mIBdgoKNyjifFVods7xrapzIHTeQA=;
+ b=okEkWw8ews/aQE2/ifYcrAEgqH2BNU3eUMZmOzOP6MQBfJn8xptyn/RsVfpM6+WY6bL2v2Rgr/8DqwdBT+Azm3xjqKDCUdr8HvBMT9jvx7qsPddJ2nTTS6TXFghlK5eNo33+dQcf1dAT3vdeKc/BVu6gE1Q7+e4i2/A3FKZrcvY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from IA1PR12MB8189.namprd12.prod.outlook.com (2603:10b6:208:3f0::13)
+ by DS5PPFEC0C6BDA1.namprd12.prod.outlook.com (2603:10b6:f:fc00::668) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.31; Wed, 30 Apr
- 2025 09:13:08 +0000
-Received: from SJ1PEPF0000231C.namprd03.prod.outlook.com
- (2603:10b6:a03:5c3:cafe::f0) by BY1P220CA0023.outlook.office365.com
- (2603:10b6:a03:5c3::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.41 via Frontend Transport; Wed,
- 30 Apr 2025 09:13:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ1PEPF0000231C.mail.protection.outlook.com (10.167.242.233) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8699.20 via Frontend Transport; Wed, 30 Apr 2025 09:13:08 +0000
-Received: from [10.85.37.104] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 30 Apr
- 2025 04:13:03 -0500
-Message-ID: <3daac950-3656-4ec4-bbee-7a3bbad6d631@amd.com>
-Date: Wed, 30 Apr 2025 14:43:00 +0530
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.29; Wed, 30 Apr
+ 2025 09:21:32 +0000
+Received: from IA1PR12MB8189.namprd12.prod.outlook.com
+ ([fe80::193b:bbfd:9894:dc48]) by IA1PR12MB8189.namprd12.prod.outlook.com
+ ([fe80::193b:bbfd:9894:dc48%5]) with mapi id 15.20.8699.019; Wed, 30 Apr 2025
+ 09:21:31 +0000
+Message-ID: <a7856b43-a198-477b-9a3b-d32b1730b76c@amd.com>
+Date: Wed, 30 Apr 2025 11:21:25 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] x86/sev: Do not touch VMSA pages during kdump of SNP
+ guest memory
+To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de,
+ mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org, bp@alien8.de,
+ thomas.lendacky@amd.com, hpa@zytor.com
+Cc: kees@kernel.org, michael.roth@amd.com, nikunj@amd.com, seanjc@google.com,
+ ardb@kernel.org, gustavoars@kernel.org, sgarzare@redhat.com,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org, kexec@lists.infradead.org,
+ linux-coco@lists.linux.dev
+References: <20250428214151.155464-1-Ashish.Kalra@amd.com>
+Content-Language: en-US
+From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
+In-Reply-To: <20250428214151.155464-1-Ashish.Kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0184.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ca::19) To IA1PR12MB8189.namprd12.prod.outlook.com
+ (2603:10b6:208:3f0::13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: IPC drop down on AMD epyc 7702P
-To: Jean-Baptiste Roquefere <jb.roquefere@ateme.com>, Peter Zijlstra
-	<peterz@infradead.org>, "mingo@kernel.org" <mingo@kernel.org>, Juri Lelli
-	<juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC: Borislav Petkov <bp@alien8.de>, Dietmar Eggemann
-	<dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben Segall
-	<bsegall@google.com>, Mel Gorman <mgorman@suse.de>, "Gautham R. Shenoy"
-	<gautham.shenoy@amd.com>, Swapnil Sapkal <swapnil.sapkal@amd.com>, "Valentin
- Schneider" <vschneid@redhat.com>, <linux-kernel@vger.kernel.org>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <AA29CA6A-EC92-4B45-85F5-A9DE760F0A92@ateme.com>
- <4c0f13ab-c9cd-42c4-84bd-244365b450e2@amd.com>
- <996ca8cb-3ac8-4f1b-93f1-415f43922d7a@ateme.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <996ca8cb-3ac8-4f1b-93f1-415f43922d7a@ateme.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF0000231C:EE_|DS7PR12MB6333:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3b4f5435-dda3-496e-f97d-08dd87c73915
+X-MS-TrafficTypeDiagnostic: IA1PR12MB8189:EE_|DS5PPFEC0C6BDA1:EE_
+X-MS-Office365-Filtering-Correlation-Id: f7bbd32c-9eee-4b92-949a-08dd87c864dc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026|7416014|13003099007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NTJMc2YwNGJGL3ZWbFNIUGdNNEc5d1EyTzYwTzdybHJNbnNkNGRxK3VSNEVj?=
- =?utf-8?B?NDNRSVh2WlN4VFpyODdnbEFTVXRscGZOSjNCRDhSZDRQUWluaFE4L3BCUUlM?=
- =?utf-8?B?V1RqUXdQMGV3bmExTEZsLzRKU3NxY2MrS240Sjg0Mm1kQUsvdkhNdTQvVElO?=
- =?utf-8?B?azhFSTRGMTFEWGEwMFJGWkFZb3d5NC9ITUhMd1VqdVUwdTJrRDY4cXdPelRs?=
- =?utf-8?B?eldhN045ZEhHM2N4V3c1M1lYT1hhazFFcERZNXF6aC9LK1VrZVJQendTVEh0?=
- =?utf-8?B?eUt2TExMbzN6bDdMRWRyR3h4NWFyVWlBTFBGZGxlMlhHZFZLUlI4eFlrV1JP?=
- =?utf-8?B?TVdGdlFCZHdTZTc2dnBWSzZTTDE3SVc4OG80SUtHK1N1cFNobFBJTTZpdFNP?=
- =?utf-8?B?dTJTZTVLaC9oMFRGdzRVZSswUTZSRjNTamhkVTJtZUc5OGUrdFNsOWJra2tM?=
- =?utf-8?B?TnNoZjlEYUhIbDBvV2xyTWZSaFp0azJJTm9oY1FYN3liMllldmJQZzhyam5r?=
- =?utf-8?B?eFRXazRSa0xZYVpsbk9MU09jM1ZseERhKzFTWmVCN0lIbFpOWkF0VE1ETGRL?=
- =?utf-8?B?cUM5c3AyeU5rMVNaYThta29kLzlvUTkvOEQ0cXVnOHZQa0RERmJaMmJUc20v?=
- =?utf-8?B?K2xMODRLbWxaNEdrU09pYnVhT0g5bDBsQUZQVkNHZlBSQjdtUlVDcStmL08v?=
- =?utf-8?B?NmpSeGZVaExzdDQvYWM1TlJhUTBEOCtnYWVxK2lOdktrNU9lNzRiVHEvVSsz?=
- =?utf-8?B?cStNMTlPd1A5OTFRZDRqZVloVGd1S3U5bGxGR29KRUIvdXZDQVpZdTJyQ21B?=
- =?utf-8?B?SFpJWEpUaHI5TWRyZjZEODduQUtpMFQrU3JIbURnZkg1SVFVNHdOWFZXTXlq?=
- =?utf-8?B?NGZLRk9nVFJ0bWhMR3RrRjRnM2YwNHQ2TUMrWmNYclpUZnNidS94S0RIRXZO?=
- =?utf-8?B?T2p6VmZwNE5UWEd5RS9seTdxK1N4aFluWlBOK0QyNnEvdlpXb2FMdjFsSzlk?=
- =?utf-8?B?M2t2dXhGT1U1YjM2N2RlTis2Rm42Ty9OR2lQaG9YbkV5cnpSSzdJaXdPd0pP?=
- =?utf-8?B?d3BvYkdXdm1wdkxSSktQMW8wa3hJaWRIUDRHVTh3YytBRDU2a25oNVp0N0Jn?=
- =?utf-8?B?a2ZUV2ROMkdmZ1VwelRyUVdnWFBycENCTnJGcmRyRTRoTkorYy94TXUwSFpH?=
- =?utf-8?B?eTZXOXRSU0RxT0NYM0kvUUcxd1p1ZiszVGVSN2FzQVIrd2lnQ2tPWTF1UC9F?=
- =?utf-8?B?MGRMNUNsaEYyWGhJVkJUS2JIUllCTEZ5dFJ2M1lOSk1HZ0d3ZmVOQjhuVXAx?=
- =?utf-8?B?WlM0bmRHZnRLVXZPdFZ5RWpCTFN0eGM2VGl4b1JwZm9SbzljcmVXRXk5a0J6?=
- =?utf-8?B?aGc1d0VKcjFNWW1YT2VvazNwY09lWllaOFBWeHdnZjRiaUN1WDhkbVYzZVB3?=
- =?utf-8?B?aWF1UU5jOSs3Vng4bGM5amxrcG5oY3ozdDVNcEtvRTJEckV3OGpyVzJsdkVV?=
- =?utf-8?B?UjFzZU8ybmUwYjM5cHN2TDRWMFlWb2pvQ1UwRndLTC9GUkpXbDJBSDN3Yloy?=
- =?utf-8?B?Q3VXZWJpNXNtbGNZWmFTa0k4TXgyTjNQV0twOEk1TnBxdjZWRTdxa1NFWTlC?=
- =?utf-8?B?Vy9tOVcwdkxaUWpLQlBDaXNuUXAvQWcwOFVLU3VjcnhCU1I3NWtYbEpnZS80?=
- =?utf-8?B?WExLR2p4L3ZPbTA4T0ZKZmRjMXZvaE9yTlhDTmtZOEk1YnpTdmExQVNQaHJL?=
- =?utf-8?B?ZWpFcDFkMTJuUEc2TzRRckRxK25NeEd6b091dW84bFMwMGU0N3Y2aUFOcjRD?=
- =?utf-8?B?ZkJkZ2NUYlJ1WHExZmk0SUkvcXE1M3IrU3Z1bGNxSmh1emphZExRVGtFR0R0?=
- =?utf-8?B?UytsbzNLRHdFd245Z3lKdjAyakYxSy9tOUUrN001Y1dKb2ZXRk94WU41Tkk5?=
- =?utf-8?B?MFBDSCs4Yms0NVF4SEdadksrOGRySXFiQitHRkw2YUY1a1VVNUVheTRkVjMw?=
- =?utf-8?B?L0p3dlJvaVQxc0hHK3NRem04a1JlNTIrTUlYREFGWXJYbEJBcjhyQXFpWUJz?=
- =?utf-8?B?LzlMNDN3aEVsU2cyZW5xSUZzZG9INy8xdlpaUT09?=
+	=?utf-8?B?dDdpZUFLQ29YbGJ6THZOaTNWRkxodnB1MlIwb3RjNzlseVA2OUdDVEhxWlJF?=
+ =?utf-8?B?dFh6VFFJUkVuaTd0M0ZVK0FTUHRaUE94OUZoczZEb0pyaTVLOWFvS2FpSlEw?=
+ =?utf-8?B?S2M2ZzlySmxPTFBac0lyc0VTbkMxY0RML1krSzVld0tOUDFPWmxsUWZRZHhZ?=
+ =?utf-8?B?R2szZUpyQkRkc08wajhSS01EcXk1TThnRU9UNlF1cWQ3RTRYcFZ2Qk1sbFU3?=
+ =?utf-8?B?ZDVVTTJXRGNXWWpXNWI1UkdNYkVFTzhyWDVjL3F4eElWcDA1QU5Jd3Nqa3k2?=
+ =?utf-8?B?Q1B3UmJ2MHJPb204M2syU0kyZGhIUXR1Q1F5aFpjNzNGQlhOWm9rM3dud25P?=
+ =?utf-8?B?SDFWZUhjMm9qVEdyY1pyZnNJd2h0YlhjdTl4RFNZcytSeFBDbGF1NHQza2h6?=
+ =?utf-8?B?MDJaT3VkV215TzdzSWRxRmg5WWoxM3g5Q3hxd2tESVBwbDRrWUpCRDFqV2Ev?=
+ =?utf-8?B?LzFRVVZVTnYvSVgyeWhrSVJwOTVsNDlNWng3S2VHQWZKdGF4ZlpEMmRQcVQr?=
+ =?utf-8?B?QmNoM0FmRVFXd3JzWGRoVWdlZ2ovck91UkRCU3loaDFOSndveWRRcHRzZ0xL?=
+ =?utf-8?B?OFNDOHlNWTE3OFFHSk5KM2pId0loeEJOL21FZkJ3WWlBbWlQVDcrU1VTN1BU?=
+ =?utf-8?B?a2ZkMmcvUEVyQU1DVU5xSVEwb1FLMzMzYS9BMzBrNUpTaEV3eS9lVnV4eSta?=
+ =?utf-8?B?ZXZVamlRTFlTWUR3VFR1TmxUaGdRWHZoL00wbGphL2pBSC9HQVN5MGpXWE9a?=
+ =?utf-8?B?dk45WHRseU5wQ29YMGpMd2FRRzkvclBZVXZydEVYYXE0WHlIdG83RkFmWWV6?=
+ =?utf-8?B?dElrSEFZZVAwcXFTZ3VVMDJsaHBEcnJUamN2MXVmZ3l3dE53SGJpQkJld2ZC?=
+ =?utf-8?B?Y0dlY25EVnVpL1dSN01DQnBwUS9WY05HbFNZa01YdlJNemxTQS9UcTJGclZ0?=
+ =?utf-8?B?bUtxN2RuQnJyM0lGb2hlR0svbURhcFBtTXBRaDdTcDZzdmhUcUJZL1FlSzk2?=
+ =?utf-8?B?bnZ3Q01vcEh5U3hyenFtUnhzZ2o1VmNPdGVqT21kYWcrd2hMbTBuK1ZPRmFl?=
+ =?utf-8?B?cXA0TnhxbkZMeHppeFh3aEpKaVhKc0dLZnVUZUZiY21KeXkwQXZDZlVHbTRE?=
+ =?utf-8?B?aW5XUWpxOVUzNW01bG1JeGlxdW91aE90VDZiYUlscUp0V2xqWkN2UVpYUkhO?=
+ =?utf-8?B?dzM0bkU0WEdBdmxKL2RpcTRFVDgyRjBoMTlvK3lIT1U3MlNMbzZJc0ZqN0Ex?=
+ =?utf-8?B?eTd1WTZpOU1ldnBVSjExd1JwMmFJSmhaRnhXSlNhdFFUOHJiaklHYmJoRFZj?=
+ =?utf-8?B?UFBQbFBvSllrcjB5ZHJiSU96WmdNYlkrREFvZUoyQkFuaWZ1VklaZHBsdVJs?=
+ =?utf-8?B?YTN5TVRldW5vNE1LOWszaVJJMDZNYmZ2VXVDRHU4aGZ3M0VCelNRMWJJSC9v?=
+ =?utf-8?B?VEdSTkxGMGlCRWRzYWlaWHFFd2lzKyt6b2ZMcVNBVmc3Wnh2VWkrcDd5aENa?=
+ =?utf-8?B?WHM4b3NFLzFZdmg1WXVXRWg0bnV4RXpuZTZINkFMc1RWc3RqU1BPTER6VGxG?=
+ =?utf-8?B?clNEYVA1UExXS3F1US9VVTRPazNTNFFkM1hwZHFWbFJQRTRiQzFWSXRKcGMv?=
+ =?utf-8?B?VnVERmZJL3dnOHplamp1YU9ZcnQ4U0p0MXBHQVB2TERIbndSVC9XbzhUMHNt?=
+ =?utf-8?B?WEFyVFMzajRXeGFuOFB5Wnlub1FGL24wVUxQd0plMzF3ZzZmNS8xL0dua2ty?=
+ =?utf-8?B?VkJ1d2crdFVOcllxY20zZVo1VHVLYTZteXFuN2l0RWllN0NibkFkSU9Mc3FG?=
+ =?utf-8?B?TnRUYTdxS2NyRXMrc2QrTGx6N0VwM3JmR3VCOEpDUmZnS1FyY1lNN3FpTHlU?=
+ =?utf-8?B?Ukp1SmY4SldHZ1JLOUhBajltcHpSNFFaM3RTcWNMQ0x2TVk3NkdtV1Y0eWRq?=
+ =?utf-8?Q?mF/ieuMjQjE=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026)(7416014)(13003099007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB8189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?anJyU1FOc3BkNVZPeUMxTDFmR1Ura3ZpOHV1QU1rMGoxQ2RPOWpqZmo2cFVC?=
+ =?utf-8?B?ZTQ5OUd5WW01dnZEcHZzMkc0aHBuY1IxWUVWU0hZVTQ4cGJ4MXhHSnIrdkF4?=
+ =?utf-8?B?RmlnRmNaRnA0Z0ZZbkpFOWdscmxMSUFWTDA2KzUvSlJybEFGTzN0NUhIdTZv?=
+ =?utf-8?B?NUJFeEtaa05zRjRLSTFyTjVWTVZFZS8zeXdpTVpISHNCcnVGN1kyK0g2bHJp?=
+ =?utf-8?B?L3hXL21nM2FyOUlBYlVLelc5Vkt0RUorM2phbytxTTIrY3l4SERtazc5bXZR?=
+ =?utf-8?B?b0d3SUNPZ0N2b084WkE1bXRySEM5ekRTT0NSVlgwQTRMd2ZZM1dHbEkwNGJp?=
+ =?utf-8?B?OHhFY2RHNHp5SFBoS3NiS2l0NFQyN1p4K1dvdWRVR1YzdzZwbUYvWVU1czFC?=
+ =?utf-8?B?TzZiSGNGWVh0SzZ6eldpSDFTZGQ4TEczbUtZUnVsc2VoVStpbGFIMWdocUFO?=
+ =?utf-8?B?NWdtL3h0VHpiTGFCU0dpMEFacUV5VFEzRFB1bytJQ1EyVEdLaUhRMTkrU0NQ?=
+ =?utf-8?B?SVBBamZSN2V0c1o3SXcyWFJPSnF5aytpWHlrZVIyRnRmaDIvVEtJRkQ5WU1q?=
+ =?utf-8?B?Q21BSXBWZ25FM1BWRERVVER3dTlkMVl4Ni8vRnQ3eTdseW9CMFdZMHhkcVdt?=
+ =?utf-8?B?NnliMi9NV2Q0MHZ6aDg2UFB4aGY2WGZKMmRjUkxOSmU1dWs5MzB3S05MK1FM?=
+ =?utf-8?B?bzRzcE43ZnBLd0VBQ2g3U3RwaGpVcjRhd1Q4OTBSWGxsNUR1b0IvUU9RQkZW?=
+ =?utf-8?B?dnBLZGZJVmpoQnNNVE5wLzRWMDJtZWk3T1NJeUtjdTNmY1F2YzVYc0Jpdnhh?=
+ =?utf-8?B?Nzc0M2tUQTdSbUNjTjdFSnRQWWptOUs4T0JGWVY0YXQwMUpuTTQzU0hYcEJa?=
+ =?utf-8?B?djd0OEE4YXBpM1FKQjUrU2pNcmtMV3BQdWk1U1NaUjN6ckRvVWRJQ2pRK1ZK?=
+ =?utf-8?B?OUZ0ZjdYcDNhaWdpVkhHaElPUjRXejVERnp6OUUvN2xDQ3VxbW5uYnhrTkJj?=
+ =?utf-8?B?RkhuNy9YQTBqVDBjbHpha25kNUYwSDN2TktEcTlleHJsTzAwTmk2VXpIS24v?=
+ =?utf-8?B?L2VlYXJkRXVkVFpacDFEeUtzcWxwU0lvUUlva0Rsbm95NFFBYjl0a0duNEYx?=
+ =?utf-8?B?WVdkd29wSXNyYlh3aml0cUJzMFZac0FDRDJIcUdheW9SRk40OTlXbEYwZFdu?=
+ =?utf-8?B?QWNTSUV3dWJPVmY3b3pJQ2s5dlNIRVduYW9OTWRZZ3c3TVA5M0VqTWFTbVBk?=
+ =?utf-8?B?a0t4UWl2K0RYdmt6L0cvUXJ1dUlpM0JMbmNadkExT0dLZ0Z4dGJ3aUN1YkFq?=
+ =?utf-8?B?aEhJc2VSNkxvZ2lENmFETXBEMmhRTlpkR0FXMDBiVllOVHluZGZ4RGhZSDA4?=
+ =?utf-8?B?bUZ5ckRrU2hZQk5XQ3ArRjNHYjEwTkxBNS9PdTB5T0pES25DazNZcjJkNjFC?=
+ =?utf-8?B?T1F6RUtycWVYTTErYnFMR09PSjA4YjJCZ05BVmQ3NjJpbXNyZERsc0dsSjFN?=
+ =?utf-8?B?YmNGUXpJRnFiSVE5K1p6cTBXS1VzaHFmVEpERzZoa2hrM0xva1dMdVEyb1hD?=
+ =?utf-8?B?dmE3U0tiMEtWS2o2MUhxUm5Td1J4UDFKZ05MZE9lVkthNXhCUVI4MlQwZVlt?=
+ =?utf-8?B?dlZsZHNVdzdDcTlPcnJPaHVWY3IrNTNBZ2tmbFlZOElTRnBoKytRb2pGc2Yv?=
+ =?utf-8?B?akl5bDh0Ly9iUDNoZUI3dzQzZndsM3VFWSsrV21ZQ0JxT21lMU9Od05XbTg4?=
+ =?utf-8?B?dUhTTDA3bXlKWGdvMG9JazlidDN4M3paSlFHSHZWd3BqWk4vVWFRZjJJTEdw?=
+ =?utf-8?B?cVlSL1cxUGo1OGFWVkZqQytreTQ3TW5xSzBMMGN3QWJhRkl0cE9zVnVYZmNT?=
+ =?utf-8?B?dm0wQ2gvaWhoSE9CQ1V2L1BFZVNtVGorRTBlRHB4aWVieTBhb2dWNC9ZbjU4?=
+ =?utf-8?B?ajB4UHRHN05nb1pobE9BZERuQk85ck5WS3VXV1dTaWhkSkV3SFU4MU1qMWMy?=
+ =?utf-8?B?UnB3eSszaWdHd2dmbkRGcjR6dEJTcG5jNG9JeU1kYXJlT3VZTHZsMndEdEhT?=
+ =?utf-8?B?OUQwcU1UQ2l1WmVGbFBJV25BUW5pVFJDazdGN3padndvMEZPL3JHbTU1dUcw?=
+ =?utf-8?Q?URAa3W1FyhePIS5voB79WBHqO?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 09:13:08.1045
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7bbd32c-9eee-4b92-949a-08dd87c864dc
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 09:21:31.4327
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b4f5435-dda3-496e-f97d-08dd87c73915
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF0000231C.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6333
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VV2yjzelBDaVAXHR15q2qD2ZcEBo7TjZ8GTO9wSwbyEqTkIrS+aqIRBstyZYV8A0qVzrLCNArpXlA/JnwY4GmA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFEC0C6BDA1
 
-(+ more scheduler folks)
 
-tl;dr
-
-JB has a workload that hates aggressive migration on the 2nd Generation
-EPYC platform that has a small LLC domain (4C/8T) and very noticeable
-C2C latency.
-
-Based on JB's observation so far, reverting commit 16b0a7a1a0af
-("sched/fair: Ensure tasks spreading in LLC during LB") and commit
-c5b0a7eefc70 ("sched/fair: Remove sysctl_sched_migration_cost
-condition") helps the workload. Both those commits allow aggressive
-migrations for work conservation except it also increased cache
-misses which slows the workload quite a bit.
-
-"relax_domain_level" helps but cannot be set at runtime and I couldn't
-think of any stable / debug interfaces that JB hasn't tried out
-already that can help this workload.
-
-There is a patch towards the end to set "relax_domain_level" at
-runtime but given cpusets got away with this when transitioning to
-cgroup-v2, I don't know what the sentiments are around its usage.
-Any input / feedback is greatly appreciated.
-
-On 4/28/2025 1:13 PM, Jean-Baptiste Roquefere wrote:
-> Hello Prateek,
+> When kdump is running makedumpfile to generate vmcore and dumping SNP
+> guest memory it touches the VMSA page of the vCPU executing kdump which
+> then results in unrecoverable #NPF/RMP faults as the VMSA page is
+> marked busy/in-use when the vCPU is running and subsequently causes
+> guest softlockup/hang.
 > 
-> thank's for your reponse.
+> Additionally other APs may be halted in guest mode and their VMSA pages
+> are marked busy and touching these VMSA pages during guest memory dump
+> will also cause #NPF.
 > 
+> Issue AP_DESTROY GHCB calls on other APs to ensure they are kicked out
+> of guest mode and then clear the VMSA bit on their VMSA pages.
 > 
->> Looking at the commit logs, it looks like these commits do solve other
->> problems around load balancing and might not be trivial to revert
->> without evaluating the damages.
+> If the vCPU running kdump is an AP, mark it's VMSA page as offline to
+> ensure that makedumpfile excludes that page while dumping guest memory.
 > 
-> it's definitely not a productizable workaround !
+> Cc: stable@vger.kernel.org
+> Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+
+> ---
+>   arch/x86/coco/sev/core.c | 241 +++++++++++++++++++++++++--------------
+>   1 file changed, 155 insertions(+), 86 deletions(-)
 > 
->> The processor you are running on, the AME EPYC 7702P based on the Zen2
->> architecture contains 4 cores / 8 threads per CCX (LLC domain) which is
->> perhaps why reducing the thread count to below this limit is helping
->> your workload.
->>
->> What we suspect is that when running the workload, the threads that
->> regularly sleep trigger a newidle balancing which causes them to move
->> to another CCX leading to higher number of L3 misses.
->>
->> To confirm this, would it be possible to run the workload with the
->> not-yet-upstream perf sched stats [1] tool and share the result from
->> perf sched stats diff for the data from v6.12.17 and v6.12.17 + patch
->> to rule out any other second order effect.
->>
->> [1]
->> https://lore.kernel.org/all/20250311120230.61774-1-swapnil.sapkal@amd.com/
-> 
-> I had to patch tools/perf/util/session.c : static int
-> open_file_read(struct perf_data *data) due to "failed to open perf.data:
-> File exists" (looked more like a compiler issue than a tool/perf issue)
-> 
-> $ ./perf sched stats diff perf.data.6.12.17 perf.data.6.12.17patched >
-> perf.diff (see perf.diff attached)
-
-Thank you for all the information Jean. I'll highlight the interesting
-bits (at least the bits that stood out to me)
-
-(left is mainline, right is mainline with the two commits mentioned by
-  JB reverted)
-
-total runtime by tasks on this processor (in jiffies)            : 123927676874,108531911002  |   -12.42% |
-total waittime by tasks on this processor (in jiffies)           :  34729211241, 27076295778  |   -22.04% |  (    28.02%,     24.95% )
-total timeslices run on this cpu                                 :       501606,      489799  |    -2.35% |
-
-Since "total runtime" is lower on the right, it means that the CPUs
-were not as well utilized with the commits reverted however the
-reduction in the "total waittime" suggests things are running faster
-and on overage there are 0.28 waiting tasks on mainline compared to
-0.24 with the commits reverted.
-
----------------------------------------- <Category newidle - SMT> ----------------------------------------
-load_balance() count on cpu newly idle                           :      331664,      31153  |   -90.61% |  $        0.15,        1.55 $
-load_balance() failed to find busier group on cpu newly idle     :      300234,      28470  |   -90.52% |  $        0.16,        1.70 $
-*load_balance() success count on cpu newly idle                  :       28386,       1544  |   -94.56% |
-*avg task pulled per successful lb attempt (cpu newly idle)      :        1.00,       1.01  |     0.46% |
----------------------------------------- <Category newidle - MC > ----------------------------------------
-load_balance() count on cpu newly idle                           :      258017,      29345  |   -88.63% |  $        0.19,        1.65 $
-load_balance() failed to find busier group on cpu newly idle     :      131096,      16081  |   -87.73% |  $        0.37,        3.01 $
-*load_balance() success count on cpu newly idle                  :       23286,       2181  |   -90.63% |
-*avg task pulled per successful lb attempt (cpu newly idle)      :        1.03,       1.01  |    -1.23% |
----------------------------------------- <Category newidle - PKG> ----------------------------------------
-load_balance() count on cpu newly idle                           :      124013,      27086  |   -78.16% |  $        0.39,        1.78 $
-load_balance() failed to find busier group on cpu newly idle     :       11812,       3063  |   -74.07% |  $        4.09,       15.78 $
-*load_balance() success count on cpu newly idle                  :       13892,       4739  |   -65.89% |
-*avg task pulled per successful lb attempt (cpu newly idle)      :        1.07,       1.10  |     3.32% |
-----------------------------------------------------------------------------------------------------------
-
-Most migrations are from newidle balancing which seems to move task
-across cores ( > 50% of time) and the LLC too (~8% of the times).
-
-> 
->> Assuming you control these deployments, would it possible to run
->> the workload on a kernel running with "relax_domain_level=2" kernel
->> cmdline that restricts newidle balance to only within the CCX. As a
->> side effect, it also limits  task wakeups to the same LLC domain but
->> I would still like to know if this makes a difference to the
->> workload you are running.
-> On vanilla 6.12.17 it gives the IPC we expected:
-
-Thank you JB for trying out this experiment. I'm not very sure what
-the views are on "relax_domain_level" and I'm hoping the other
-scheduler folks will chime in here - Is it a debug knob? Can it
-be used in production?
-
-I know it had additional uses with cpuset in cgroup-v1 but was not
-adopted in v2 - are there any nasty historic reasons for this?
-
-> 
-> +--------------------+--------------------------+-----------------------+
-> |                    | relax_domain_level unset | relax_domain_level=2  |
-> +--------------------+--------------------------+-----------------------+
-> | Threads            |  210                     | 210                  |
-> | Utilization (%)    |  65,86                   | 52,01                |
-> | CPU effective freq |  1 622,93                |  1 294,12             |
-> | IPC                |  1,14                    | 1,42                 |
-> | L2 access (pti)    |  34,36                   | 38,18                |
-> | L2 miss   (pti)    |  7,34                    | 7,78                 |
-> | L3 miss   (abs)    |  39 711 971 741          |  33 929 609 924       |
-> | Mem (GB/s)         |  70,68                   | 49,10                |
-> | Context switches   |  109 281 524             |  107 896 729          |
-> +--------------------+--------------------------+-----------------------+
-> 
-> Kind regards,
-> 
-> JB
-
-JB asked if there is any way to toggle "relax_domain_level" at runtime
-on mainline and I couldn't find any easy way other than using cpusets
-with cgroup-v1 which is probably harder to deploy at scale than the
-pinning strategy that JB mentioned originally.
-
-I currently cannot think of any stable interface that exists currently
-to allow sticky behavior and mitigate aggressive migration for work
-conservation - JB did try almost everything available that he
-summarized in his original report.
-
-Could something like below be a stop-gap band-aid to remedy such the
-case of workloads that don't mind temporary imbalance in favor of
-cache hotness?
-
----
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-Subject: [RFC PATCH] sched/debug: Allow overriding "relax_domain_level" at runtime
-
-Jean-Baptiste noted that Ateme's workload experiences poor IPC on a 2nd
-Generation EPYC system and narrowed down the major culprits to commit
-16b0a7a1a0af ("sched/fair: Ensure tasks spreading in LLC during LB") and
-commit c5b0a7eefc70 ("sched/fair: Remove sysctl_sched_migration_cost
-condition") both of which enable more aggressive migrations in favor of
-work conservation.
-
-The larger C2C latency on the platform coupled with a smaller L3 size of
-4C/8T makes downside of aggressive balance very prominent. Looking at
-the perf sched stats report from JB [1], when the two commits are
-reverted, despite the "total runtime" seeing a dip of 11% showing a
-better load distribution on mainline, the "total waittime" dips by 22%
-showing despite the imbalance, the workload runs faster and this
-improvement can be co-related to the higher IPC and the reduced L3
-misses in data shared by JB. Most of the migration during load
-balancing can be attributed to newidle balance.
-
-JB confirmed that using "relax_domain_level=2" in kernel cmdline helps
-this particular workload by restricting the scope of wakeups and
-migrations during newidle balancing however "relax_domain_level" works
-on topology levels before degeneration and setting the level before
-inspecting the topology might not be trivial at boot time.
-
-Furthermore, a runtime knob that can help quickly narrow down any changes
-in workload behavior to aggressive migrations during load balancing can
-be helpful during debugs.
-
-Introduce "relax_domain_level" in sched debugfs and allow overriding the
-knob at runtime.
-
-   # cat /sys/kernel/debug/sched/relax_domain_level
-   -1
-
-   # echo Y > /sys/kernel/debug/sched/verbose
-   # cat /sys/kernel/debug/sched/domains/cpu0/domain*/flags
-   SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SHARE_CPUCAPACITY SD_SHARE_LLC SD_PREFER_SIBLING
-   SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SHARE_LLC SD_PREFER_SIBLING
-   SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_PREFER_SIBLING
-   SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SERIALIZE SD_OVERLAP SD_NUMA
-
-To restrict newidle balance to only within the LLC, "relax_domain_level"
-can be set to level 3 (SMT, CLUSTER, *MC* , PKG, NUMA)
-
-   # echo 3 > /sys/kernel/debug/sched/relax_domain_level
-   # cat /sys/kernel/debug/sched/domains/cpu0/domain*/flags
-   SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SHARE_CPUCAPACITY SD_SHARE_LLC SD_PREFER_SIBLING
-   SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SHARE_LLC SD_PREFER_SIBLING
-   SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_PREFER_SIBLING
-   SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SERIALIZE SD_OVERLAP SD_NUMA
-
-"relax_domain_level" forgives short term imbalances. Longer term
-imbalances will be eventually caught by the periodic load balancer and
-the system will reach a state of balance, only slightly later.
-
-Link: https://lore.kernel.org/all/996ca8cb-3ac8-4f1b-93f1-415f43922d7a@ateme.com/ [1]
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
----
-  include/linux/sched/topology.h |  6 ++--
-  kernel/sched/debug.c           | 52 ++++++++++++++++++++++++++++++++++
-  kernel/sched/topology.c        |  2 +-
-  3 files changed, 57 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index 198bb5cc1774..5f59bdc1d5b1 100644
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -65,8 +65,10 @@ struct sched_domain_attr {
-  	int relax_domain_level;
-  };
-  
--#define SD_ATTR_INIT	(struct sched_domain_attr) {	\
--	.relax_domain_level = -1,			\
-+extern int default_relax_domain_level;
-+
-+#define SD_ATTR_INIT	(struct sched_domain_attr) {		\
-+	.relax_domain_level = default_relax_domain_level,	\
-  }
-  
-  extern int sched_domain_level_max;
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 557246880a7e..cc6944b35535 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -214,6 +214,57 @@ static const struct file_operations sched_scaling_fops = {
-  	.release	= single_release,
-  };
-  
-+DEFINE_MUTEX(relax_domain_mutex);
-+
-+static ssize_t sched_relax_domain_write(struct file *filp,
-+					const char __user *ubuf,
-+					size_t cnt, loff_t *ppos)
-+{
-+	int relax_domain_level;
-+	char buf[16];
-+
-+	if (cnt > 15)
-+		cnt = 15;
-+
-+	if (copy_from_user(&buf, ubuf, cnt))
-+		return -EFAULT;
-+	buf[cnt] = '\0';
-+
-+	if (kstrtoint(buf, 10, &relax_domain_level))
-+		return -EINVAL;
-+
-+	if (relax_domain_level < -1 || relax_domain_level > sched_domain_level_max + 1)
-+		return -EINVAL;
-+
-+	guard(mutex)(&relax_domain_mutex);
-+
-+	if (relax_domain_level != default_relax_domain_level) {
-+		default_relax_domain_level = relax_domain_level;
-+		rebuild_sched_domains();
-+	}
-+
-+	*ppos += cnt;
-+	return cnt;
-+}
-+static int sched_relax_domain_show(struct seq_file *m, void *v)
-+{
-+	seq_printf(m, "%d\n", default_relax_domain_level);
-+	return 0;
-+}
-+
-+static int sched_relax_domain_open(struct inode *inode, struct file *filp)
-+{
-+	return single_open(filp, sched_relax_domain_show, NULL);
-+}
-+
-+static const struct file_operations sched_relax_domain_fops = {
-+	.open		= sched_relax_domain_open,
-+	.write		= sched_relax_domain_write,
-+	.read		= seq_read,
-+	.llseek		= seq_lseek,
-+	.release	= single_release,
-+};
-+
-  #endif /* SMP */
-  
-  #ifdef CONFIG_PREEMPT_DYNAMIC
-@@ -516,6 +567,7 @@ static __init int sched_init_debug(void)
-  	debugfs_create_file("tunable_scaling", 0644, debugfs_sched, NULL, &sched_scaling_fops);
-  	debugfs_create_u32("migration_cost_ns", 0644, debugfs_sched, &sysctl_sched_migration_cost);
-  	debugfs_create_u32("nr_migrate", 0644, debugfs_sched, &sysctl_sched_nr_migrate);
-+	debugfs_create_file("relax_domain_level", 0644, debugfs_sched, NULL, &sched_relax_domain_fops);
-  
-  	sched_domains_mutex_lock();
-  	update_sched_domain_debugfs();
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index a2a38e1b6f18..eb5c8a9cd904 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1513,7 +1513,7 @@ static void asym_cpu_capacity_scan(void)
-   * Non-inlined to reduce accumulated stack pressure in build_sched_domains()
-   */
-  
--static int default_relax_domain_level = -1;
-+int default_relax_domain_level = -1;
-  int sched_domain_level_max;
-  
-  static int __init setup_relax_domain_level(char *str)
--- 
-
-Thanks and Regards,
-Prateek
+> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+> index dcfaa698d6cf..f4eb5b645239 100644
+> --- a/arch/x86/coco/sev/core.c
+> +++ b/arch/x86/coco/sev/core.c
+> @@ -877,6 +877,99 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+>   	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
+>   }
+>   
+> +static int vmgexit_ap_control(u64 event, struct sev_es_save_area *vmsa, u32 apic_id)
+> +{
+> +	struct ghcb_state state;
+> +	unsigned long flags;
+> +	struct ghcb *ghcb;
+> +	int ret = 0;
+> +
+> +	local_irq_save(flags);
+> +
+> +	ghcb = __sev_get_ghcb(&state);
+> +
+> +	vc_ghcb_invalidate(ghcb);
+> +	if (event == SVM_VMGEXIT_AP_CREATE)
+> +		ghcb_set_rax(ghcb, vmsa->sev_features);
+> +	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
+> +	ghcb_set_sw_exit_info_1(ghcb,
+> +				((u64)apic_id << 32)	|
+> +				((u64)snp_vmpl << 16)	|
+> +				event);
+> +	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
+> +
+> +	sev_es_wr_ghcb_msr(__pa(ghcb));
+> +	VMGEXIT();
+> +
+> +	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
+> +	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
+> +		pr_err("SNP AP %s error\n", (event == SVM_VMGEXIT_AP_CREATE ? "CREATE" : "DESTROY"));
+> +		ret = -EINVAL;
+> +	}
+> +
+> +	__sev_put_ghcb(&state);
+> +
+> +	local_irq_restore(flags);
+> +
+> +	return ret;
+> +}
+> +
+> +static int snp_set_vmsa(void *va, void *caa, int apic_id, bool make_vmsa)
+> +{
+> +	int ret;
+> +
+> +	if (snp_vmpl) {
+> +		struct svsm_call call = {};
+> +		unsigned long flags;
+> +
+> +		local_irq_save(flags);
+> +
+> +		call.caa = this_cpu_read(svsm_caa);
+> +		call.rcx = __pa(va);
+> +
+> +		if (make_vmsa) {
+> +			/* Protocol 0, Call ID 2 */
+> +			call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
+> +			call.rdx = __pa(caa);
+> +			call.r8  = apic_id;
+> +		} else {
+> +			/* Protocol 0, Call ID 3 */
+> +			call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
+> +		}
+> +
+> +		ret = svsm_perform_call_protocol(&call);
+> +
+> +		local_irq_restore(flags);
+> +	} else {
+> +		/*
+> +		 * If the kernel runs at VMPL0, it can change the VMSA
+> +		 * bit for a page using the RMPADJUST instruction.
+> +		 * However, for the instruction to succeed it must
+> +		 * target the permissions of a lesser privileged (higher
+> +		 * numbered) VMPL level, so use VMPL1.
+> +		 */
+> +		u64 attrs = 1;
+> +
+> +		if (make_vmsa)
+> +			attrs |= RMPADJUST_VMSA_PAGE_BIT;
+> +
+> +		ret = rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
+> +{
+> +	int err;
+> +
+> +	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
+> +	if (err)
+> +		pr_err("clear VMSA page failed (%u), leaking page\n", err);
+> +	else
+> +		free_page((unsigned long)vmsa);
+> +}
+> +
+>   static void set_pte_enc(pte_t *kpte, int level, void *va)
+>   {
+>   	struct pte_enc_desc d = {
+> @@ -973,6 +1066,65 @@ void snp_kexec_begin(void)
+>   		pr_warn("Failed to stop shared<->private conversions\n");
+>   }
+>   
+> +/*
+> + * Shutdown all APs except the one handling kexec/kdump and clearing
+> + * the VMSA tag on AP's VMSA pages as they are not being used as
+> + * VMSA page anymore.
+> + */
+> +static void shutdown_all_aps(void)
+> +{
+> +	struct sev_es_save_area *vmsa;
+> +	int apic_id, this_cpu, cpu;
+> +
+> +	this_cpu = get_cpu();
+> +
+> +	/*
+> +	 * APs are already in HLT loop when enc_kexec_finish() callback
+> +	 * is invoked.
+> +	 */
+> +	for_each_present_cpu(cpu) {
+> +		vmsa = per_cpu(sev_vmsa, cpu);
+> +
+> +		/*
+> +		 * BSP does not have guest allocated VMSA and there is no need
+> +		 * to clear the VMSA tag for this page.
+> +		 */
+> +		if (!vmsa)
+> +			continue;
+> +
+> +		/*
+> +		 * Cannot clear the VMSA tag for the currently running vCPU.
+> +		 */
+> +		if (this_cpu == cpu) {
+> +			unsigned long pa;
+> +			struct page *p;
+> +
+> +			pa = __pa(vmsa);
+> +			/*
+> +			 * Mark the VMSA page of the running vCPU as offline
+> +			 * so that is excluded and not touched by makedumpfile
+> +			 * while generating vmcore during kdump.
+> +			 */
+> +			p = pfn_to_online_page(pa >> PAGE_SHIFT);
+> +			if (p)
+> +				__SetPageOffline(p);
+> +			continue;
+> +		}
+> +
+> +		apic_id = cpuid_to_apicid[cpu];
+> +
+> +		/*
+> +		 * Issue AP destroy to ensure AP gets kicked out of guest mode
+> +		 * to allow using RMPADJUST to remove the VMSA tag on it's
+> +		 * VMSA page.
+> +		 */
+> +		vmgexit_ap_control(SVM_VMGEXIT_AP_DESTROY, vmsa, apic_id);
+> +		snp_cleanup_vmsa(vmsa, apic_id);
+> +	}
+> +
+> +	put_cpu();
+> +}
+> +
+>   void snp_kexec_finish(void)
+>   {
+>   	struct sev_es_runtime_data *data;
+> @@ -987,6 +1139,8 @@ void snp_kexec_finish(void)
+>   	if (!IS_ENABLED(CONFIG_KEXEC_CORE))
+>   		return;
+>   
+> +	shutdown_all_aps();
+> +
+>   	unshare_all_memory();
+>   
+>   	/*
+> @@ -1008,51 +1162,6 @@ void snp_kexec_finish(void)
+>   	}
+>   }
+>   
+> -static int snp_set_vmsa(void *va, void *caa, int apic_id, bool make_vmsa)
+> -{
+> -	int ret;
+> -
+> -	if (snp_vmpl) {
+> -		struct svsm_call call = {};
+> -		unsigned long flags;
+> -
+> -		local_irq_save(flags);
+> -
+> -		call.caa = this_cpu_read(svsm_caa);
+> -		call.rcx = __pa(va);
+> -
+> -		if (make_vmsa) {
+> -			/* Protocol 0, Call ID 2 */
+> -			call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
+> -			call.rdx = __pa(caa);
+> -			call.r8  = apic_id;
+> -		} else {
+> -			/* Protocol 0, Call ID 3 */
+> -			call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
+> -		}
+> -
+> -		ret = svsm_perform_call_protocol(&call);
+> -
+> -		local_irq_restore(flags);
+> -	} else {
+> -		/*
+> -		 * If the kernel runs at VMPL0, it can change the VMSA
+> -		 * bit for a page using the RMPADJUST instruction.
+> -		 * However, for the instruction to succeed it must
+> -		 * target the permissions of a lesser privileged (higher
+> -		 * numbered) VMPL level, so use VMPL1.
+> -		 */
+> -		u64 attrs = 1;
+> -
+> -		if (make_vmsa)
+> -			attrs |= RMPADJUST_VMSA_PAGE_BIT;
+> -
+> -		ret = rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
+> -	}
+> -
+> -	return ret;
+> -}
+> -
+>   #define __ATTR_BASE		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK)
+>   #define INIT_CS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_READ_MASK | SVM_SELECTOR_CODE_MASK)
+>   #define INIT_DS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_WRITE_MASK)
+> @@ -1084,24 +1193,10 @@ static void *snp_alloc_vmsa_page(int cpu)
+>   	return page_address(p + 1);
+>   }
+>   
+> -static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
+> -{
+> -	int err;
+> -
+> -	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
+> -	if (err)
+> -		pr_err("clear VMSA page failed (%u), leaking page\n", err);
+> -	else
+> -		free_page((unsigned long)vmsa);
+> -}
+> -
+>   static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
+>   {
+>   	struct sev_es_save_area *cur_vmsa, *vmsa;
+> -	struct ghcb_state state;
+>   	struct svsm_ca *caa;
+> -	unsigned long flags;
+> -	struct ghcb *ghcb;
+>   	u8 sipi_vector;
+>   	int cpu, ret;
+>   	u64 cr4;
+> @@ -1215,33 +1310,7 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
+>   	}
+>   
+>   	/* Issue VMGEXIT AP Creation NAE event */
+> -	local_irq_save(flags);
+> -
+> -	ghcb = __sev_get_ghcb(&state);
+> -
+> -	vc_ghcb_invalidate(ghcb);
+> -	ghcb_set_rax(ghcb, vmsa->sev_features);
+> -	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
+> -	ghcb_set_sw_exit_info_1(ghcb,
+> -				((u64)apic_id << 32)	|
+> -				((u64)snp_vmpl << 16)	|
+> -				SVM_VMGEXIT_AP_CREATE);
+> -	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
+> -
+> -	sev_es_wr_ghcb_msr(__pa(ghcb));
+> -	VMGEXIT();
+> -
+> -	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
+> -	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
+> -		pr_err("SNP AP Creation error\n");
+> -		ret = -EINVAL;
+> -	}
+> -
+> -	__sev_put_ghcb(&state);
+> -
+> -	local_irq_restore(flags);
+> -
+> -	/* Perform cleanup if there was an error */
+> +	ret = vmgexit_ap_control(SVM_VMGEXIT_AP_CREATE, vmsa, apic_id);
+>   	if (ret) {
+>   		snp_cleanup_vmsa(vmsa, apic_id);
+>   		vmsa = NULL;
 
 
