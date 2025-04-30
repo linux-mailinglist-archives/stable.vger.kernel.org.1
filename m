@@ -1,171 +1,481 @@
-Return-Path: <stable+bounces-139171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A104BAA4D58
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 15:21:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A01EBAA4D71
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 15:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A30884C44D6
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 13:21:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69F7D7B54C2
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 13:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81C4248F69;
-	Wed, 30 Apr 2025 13:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77CF25B1CB;
+	Wed, 30 Apr 2025 13:26:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ezL+lvCO"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACFC25C6EB;
-	Wed, 30 Apr 2025 13:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3E525A2B8;
+	Wed, 30 Apr 2025 13:26:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746019275; cv=none; b=gmgMu0o/BqOF+NaD2EVXBYp5mzW9yYYpIAXCTz6Pai4bs3SpN1ALtq4tFbPW3W13Pjft3rzdB6P6zRYNkh26/0QPr49wNuZTd8FqijFCIvIFK9wH3f5933dT/GBqf6qra1284YTx55f/shAiQJ02MNbSj5rUKtzlrogEqsaBUTQ=
+	t=1746019588; cv=none; b=hPIsVGGajmJyp0vQxjD3q5fodQETIXOMqnL6d1UXNXtSgqY+DYqVbxBMVZusx9a5wC3QzMIgLg5jI7APGtmNflzy9aovPj/g2nsUpdjFHtJ3f8hmkm24zru+ZOJZAHn1d5CXJ8gCGU6F8E1xsd5AbM2pJebCLgl7CiquwzAblUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746019275; c=relaxed/simple;
-	bh=Q4Vqg7zHV38KqXTLLAnzysMnm1orUAGP8J8yeW2trTo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HfGE8rZtfojKXFtflQnKNJWPIJL5JcCaX9BT2KdQrgB2mIfgouvyzXYodpJXPEJ+mZVm+oXAjkUSuXk+qt892nA3cgLWrVq/DfM0HUQJrrks8sw/kgCcsWpOdDbYyLGsmD8a9yoVJ1CTldLJwoNHWpEmDiYwtmhTqmVfPXpTGgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3BE3F106F;
-	Wed, 30 Apr 2025 06:21:05 -0700 (PDT)
-Received: from [10.57.84.121] (unknown [10.57.84.121])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 124183F5A1;
-	Wed, 30 Apr 2025 06:21:10 -0700 (PDT)
-Message-ID: <c8855e0a-8b91-490a-8d9a-5992f8fcc300@arm.com>
-Date: Wed, 30 Apr 2025 14:21:09 +0100
+	s=arc-20240116; t=1746019588; c=relaxed/simple;
+	bh=wWgEBRErrnF6xxMaN2mz18JXSs/HfhwtuWHUT5D2paw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Eg4wPcUmFcwbs8mcBEyKgH8BZQgswT1ZP+bphuSlz6JQ7wWmHYRemd3g1O197ZUs4sBDMpYlloKU2P2MsVN3j1O4d5/DStH/ofqV/03kuHJSUloQdEIdUI7AD2fqJkJajRjVPOjWs2dATymFXL87nTcvFMGkvxAFv2AggePVcDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ezL+lvCO; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5499614d3d2so7835703e87.3;
+        Wed, 30 Apr 2025 06:26:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746019584; x=1746624384; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zbYcmxjx46rp9IY7QIROXHl5nuz3mSe+PSNFYXDKTlk=;
+        b=ezL+lvCOlM+RAou/9tWHv1byQVj+7Z3dDTnvaFEZFj5m8Gi5GcmGSCmWXIeVrtU/F1
+         I/Koa4Wheb/F74p+b0KkQsP5lfG+cq6cUH2h7Vr2LhjsbX3RpNn6K07ffhEbJKTTaAl5
+         ZJ+BWPD2ECglSYr4HRwiKrziEU+2UXtt/jvvzqL9Pxaq+qh6XNiDmAsIsz5KLZg15ufY
+         SiZxutxRF6cwqCM+Td0tiSH3Xr+GtQ9nZ5O9Ty0jeg5NRqREGVVqgTegtlEs/CJeSWoc
+         OIjTwYmPQT79rjZ8nGZfwGLJC//8tsisSuM56usFk4Y+0O4tIt5rd5gSjghEPgDtDqJt
+         s0ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746019584; x=1746624384;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zbYcmxjx46rp9IY7QIROXHl5nuz3mSe+PSNFYXDKTlk=;
+        b=a3yLuJo2ipmpH+XWVyvd4UHdtodkVrPT9XEvjCQiStIO29aP36d8CxCzaVsaM9rRGq
+         6VzQuQMA2G8wSivrdooDSjQgVgtUI+M6C8cFq9CJQp0ldne6DDdNB5h9z5nh8okXxc+P
+         QctocGYLGc1ZT36B9veflpy8oaXOLIjns31xWzH+QD2Fuiebj0kIB3/HV1LAeV6gdfu8
+         91VtY5p7C5fAENry1e7k2DyUN7+1N9b2geqQtKBhMAbW1j9Yb+pASS6qXzQi04VMVl1w
+         8thXDxUtgvqS8Fa2yw+OZYK2LNIr2o2hE9FfF5DcnrM9LPDQc5HdvOJXJMnux8i4blbt
+         T/ZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9FkAh5jdbpLvDMTgd8FcITkmNNDaKSyo+2QfNLOjOtn4GAlcJUFuiTJnsYza816TWqMfAltGx@vger.kernel.org, AJvYcCVMBe+UVwUMIz05jz0T9a2N3GwOEjILFuksDdRnvI97JRQCXiV7fB14rUno3wW+DA+Pf5TcYs5Ua8g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGWaR6A0DUh1GdA1uMg+LuIClx2NNYiTQXpmpZjDjq3f2mUGJR
+	8C/uU7AbI67Yq7LKxneWWQNTYjH27Xs7zGprjQUrjRqqeOLE+EVcIHcIkRTG3hkJF50zPAMZf2y
+	jitAKdquL661cScWXuXXGB7BmyM5U9rFA
+X-Gm-Gg: ASbGncsi+xMmbnYaBnbyJwgn1spsA5Q887wFS7sAhT79FzHpQEh4QQceMcPdcCBM2tC
+	BlzHyDUwFWUXMd5s0xTBTCxAJ+oZuCWftA8GOTV51QZVVispagyvr6tyZat/OxfXACq7JySlhLm
+	rfbioopInQ15UETds2Qqe90g4GDN6hxgOJuqp7v0G/5ONfaOGQDf26/w==
+X-Google-Smtp-Source: AGHT+IHHF20FeumrcSTf70Yp2ajOokrCJ96ZyQmrLYRWknLcIg0QrvQ5JXXxGuHeSP5uHcsgsxmlT/VTTHC75iwep5I=
+X-Received: by 2002:a05:6512:e93:b0:545:c7d:1796 with SMTP id
+ 2adb3069b0e04-54ea33aea24mr1100537e87.43.1746019583594; Wed, 30 Apr 2025
+ 06:26:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm: Fix folio_pte_batch() overcount with zero PTEs
-Content-Language: en-GB
-To: =?UTF-8?Q?Petr_Van=C4=9Bk?= <arkamar@atlas.cz>
-Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- stable@vger.kernel.org
-References: <20250429142237.22138-1-arkamar@atlas.cz>
- <20250429142237.22138-2-arkamar@atlas.cz>
- <d53fd549-887f-4220-b0d1-ebc336eecb9f@redhat.com>
- <e9617001-da1d-4c4f-99f4-0e51d51d385e@arm.com>
- <bb24f0d3-cbbf-4323-a9e6-09a627c8559b@redhat.com>
- <cac9bf3c-5af1-41be-86a5-bf76384b5e3b@arm.com>
- <20254301348-aBIfyEmRyUx3zBBL-arkamar@atlas.cz>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20254301348-aBIfyEmRyUx3zBBL-arkamar@atlas.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250429150213.2953747-1-festevam@gmail.com> <20250429183301.326eaacf@jic23-huawei>
+ <CAOMZO5DBpF+iO4NY4-tn3ar+Ld+c=SA6W-UKN0haWmAK=4g-+g@mail.gmail.com>
+ <CAOMZO5B0nxVEW1Q-a05j8f+=waAYijvBq573Ha8DNbOgF0287w@mail.gmail.com> <20250430141112.00004bb8@huawei.com>
+In-Reply-To: <20250430141112.00004bb8@huawei.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Wed, 30 Apr 2025 10:26:12 -0300
+X-Gm-Features: ATxdqUG649tIcgrq97Ik7etoNuY0EXY5HH1m2lsT9h4svB05dZhAvtF9NaSpKlc
+Message-ID: <CAOMZO5CYuv94N_8ZepH04y8ez1CAmOJOq4eim=dLGmMFoStQ3g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio: Fix scan mask subset check logic
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, mazziesaccount@gmail.com, linux-iio@vger.kernel.org, 
+	Fabio Estevam <festevam@denx.de>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 30/04/2025 14:04, Petr Vaněk wrote:
-> On Tue, Apr 29, 2025 at 04:02:10PM +0100, Ryan Roberts wrote:
->> On 29/04/2025 15:46, David Hildenbrand wrote:
->>> On 29.04.25 16:41, Ryan Roberts wrote:
->>>> On 29/04/2025 15:29, David Hildenbrand wrote:
->>>>> On 29.04.25 16:22, Petr Vaněk wrote:
->>>>>> folio_pte_batch() could overcount the number of contiguous PTEs when
->>>>>> pte_advance_pfn() returns a zero-valued PTE and the following PTE in
->>>>>> memory also happens to be zero. The loop doesn't break in such a case
->>>>>> because pte_same() returns true, and the batch size is advanced by one
->>>>>> more than it should be.
->>>>>>
->>>>>> To fix this, bail out early if a non-present PTE is encountered,
->>>>>> preventing the invalid comparison.
->>>>>>
->>>>>> This issue started to appear after commit 10ebac4f95e7 ("mm/memory:
->>>>>> optimize unmap/zap with PTE-mapped THP") and was discovered via git
->>>>>> bisect.
->>>>>>
->>>>>> Fixes: 10ebac4f95e7 ("mm/memory: optimize unmap/zap with PTE-mapped THP")
->>>>>> Cc: stable@vger.kernel.org
->>>>>> Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
->>>>>> ---
->>>>>>    mm/internal.h | 2 ++
->>>>>>    1 file changed, 2 insertions(+)
->>>>>>
->>>>>> diff --git a/mm/internal.h b/mm/internal.h
->>>>>> index e9695baa5922..c181fe2bac9d 100644
->>>>>> --- a/mm/internal.h
->>>>>> +++ b/mm/internal.h
->>>>>> @@ -279,6 +279,8 @@ static inline int folio_pte_batch(struct folio *folio,
->>>>>> unsigned long addr,
->>>>>>                dirty = !!pte_dirty(pte);
->>>>>>            pte = __pte_batch_clear_ignored(pte, flags);
->>>>>>    +        if (!pte_present(pte))
->>>>>> +            break;
->>>>>>            if (!pte_same(pte, expected_pte))
->>>>>>                break;
->>>>>
->>>>> How could pte_same() suddenly match on a present and non-present PTE.
->>>>>
->>>>> Something with XEN is really problematic here.
->>>>>
->>>>
->>>> We are inside a lazy MMU region (arch_enter_lazy_mmu_mode()) at this point,
->>>> which I believe XEN uses. If a PTE was written then read back while in lazy mode
->>>> you could get a stale value.
->>>>
->>>> See
->>>> https://lore.kernel.org/all/912c7a32-b39c-494f-a29c-4865cd92aeba@agordeev.local/
->>>> for an example bug.
->>>
->>> So if we cannot trust ptep_get() output, then, ... how could we trust anything
->>> here and ever possibly batch?
->>
->> The point is that for a write followed by a read to the same PTE, the read may
->> not return what was written. It could return the value of the PTE at the point
->> of entry into the lazy mmu mode.
->>
->> I guess one quick way to test is to hack out lazy mmu support. Something like
->> this? (totally untested):
-> 
-> I (blindly) applied the suggested change but I am still seeing the same
-> issue.
+On Wed, Apr 30, 2025 at 10:11=E2=80=AFAM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
 
-Thanks for trying; it was just something that came to mind as a possibility
-knowing it was XEN and inside lazy mmu region. I think your other discussion has
-concluded that the x86 implementation of pte_advance_pfn() is not correct when
-XEN is in use? (I was just scanning, perhaps I came to wrong conclusion)..
+> As below. Should be mask1[0] as we've already indexed the array with
+> the above calculation.
 
-Thanks,
-Ryan
+Thanks for catching that bug.
 
-> 
-> Petr
-> 
->> ----8<----
->> diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
->> index c4c23190925c..1f0a1a713072 100644
->> --- a/arch/x86/include/asm/paravirt.h
->> +++ b/arch/x86/include/asm/paravirt.h
->> @@ -541,22 +541,6 @@ static inline void arch_end_context_switch(struct
->> task_struct *next)
->>         PVOP_VCALL1(cpu.end_context_switch, next);
->>  }
->>
->> -#define  __HAVE_ARCH_ENTER_LAZY_MMU_MODE
->> -static inline void arch_enter_lazy_mmu_mode(void)
->> -{
->> -       PVOP_VCALL0(mmu.lazy_mode.enter);
->> -}
->> -
->> -static inline void arch_leave_lazy_mmu_mode(void)
->> -{
->> -       PVOP_VCALL0(mmu.lazy_mode.leave);
->> -}
->> -
->> -static inline void arch_flush_lazy_mmu_mode(void)
->> -{
->> -       PVOP_VCALL0(mmu.lazy_mode.flush);
->> -}
->> -
->>  static inline void __set_fixmap(unsigned /* enum fixed_addresses */ idx,
->>                                 phys_addr_t phys, pgprot_t flags)
->>  {
->> ----8<----
->>
+Now I get:
 
+[    1.556734] iio-core: ******** masklength is 9
+[    1.559663] iio-core: ******** longs_per_mask is 1
+[    1.564119] iio-core: ******** mask1[0] is 0x1
+[    1.573367] iio-core: ******** mask2[0] is 0x2
+[    1.577822] iio-core: ******** mask2[0] is 0x4
+[    1.582279] iio-core: ******** mask2[0] is 0x8
+[    1.586738] iio-core: ******** mask2[0] is 0x3
+[    1.591198] iio-core: ******** mask2[0] is 0x7
+[    1.595654] iio-core: ******** mask2[0] is 0xf
+[    1.600110] iio-core: ******** mask2[0] is 0xc
+[    1.604560] iio-core: ******** mask2[0] is 0x1000
+[    1.609278] max1363 1-0064: available_scan_mask 8 subset of 0. Never use=
+d
+[    1.616084] iio-core: ******** mask2[0] is 0x2000
+[    1.620799] max1363 1-0064: available_scan_mask 9 subset of 0. Never use=
+d
+[    1.627602] iio-core: ******** mask2[0] is 0x40000
+[    1.632408] max1363 1-0064: available_scan_mask 10 subset of 0. Never us=
+ed
+[    1.639303] iio-core: ******** mask2[0] is 0x80000
+[    1.644105] max1363 1-0064: available_scan_mask 11 subset of 0. Never us=
+ed
+[    1.650995] iio-core: ******** mask2[0] is 0x3000
+[    1.655713] max1363 1-0064: available_scan_mask 12 subset of 0. Never us=
+ed
+[    1.662606] iio-core: ******** mask2[0] is 0xc0000
+[    1.667412] max1363 1-0064: available_scan_mask 13 subset of 0. Never us=
+ed
+[    1.674309] iio-core: ******** mask1[1] is 0x2
+[    1.678761] iio-core: ******** mask2[1] is 0x4
+[    1.683212] iio-core: ******** mask2[1] is 0x8
+[    1.687666] iio-core: ******** mask2[1] is 0x3
+[    1.692118] iio-core: ******** mask2[1] is 0x7
+[    1.696576] iio-core: ******** mask2[1] is 0xf
+[    1.701029] iio-core: ******** mask2[1] is 0xc
+[    1.705483] iio-core: ******** mask2[1] is 0x1000
+[    1.710199] max1363 1-0064: available_scan_mask 8 subset of 1. Never use=
+d
+[    1.716996] iio-core: ******** mask2[1] is 0x2000
+[    1.721711] max1363 1-0064: available_scan_mask 9 subset of 1. Never use=
+d
+[    1.728510] iio-core: ******** mask2[1] is 0x40000
+[    1.733317] max1363 1-0064: available_scan_mask 10 subset of 1. Never us=
+ed
+[    1.740212] iio-core: ******** mask2[1] is 0x80000
+[    1.745013] max1363 1-0064: available_scan_mask 11 subset of 1. Never us=
+ed
+[    1.751899] iio-core: ******** mask2[1] is 0x3000
+[    1.756612] max1363 1-0064: available_scan_mask 12 subset of 1. Never us=
+ed
+[    1.763503] iio-core: ******** mask2[1] is 0xc0000
+[    1.768306] max1363 1-0064: available_scan_mask 13 subset of 1. Never us=
+ed
+[    1.775193] iio-core: ******** mask1[2] is 0x4
+[    1.779650] iio-core: ******** mask2[2] is 0x8
+[    1.784117] iio-core: ******** mask2[2] is 0x3
+[    1.788570] iio-core: ******** mask2[2] is 0x7
+[    1.793023] iio-core: ******** mask2[2] is 0xf
+[    1.797476] iio-core: ******** mask2[2] is 0xc
+[    1.801934] iio-core: ******** mask2[2] is 0x1000
+[    1.806650] max1363 1-0064: available_scan_mask 8 subset of 2. Never use=
+d
+[    1.813447] iio-core: ******** mask2[2] is 0x2000
+[    1.818162] max1363 1-0064: available_scan_mask 9 subset of 2. Never use=
+d
+[    1.824961] iio-core: ******** mask2[2] is 0x40000
+[    1.829764] max1363 1-0064: available_scan_mask 10 subset of 2. Never us=
+ed
+[    1.836649] iio-core: ******** mask2[2] is 0x80000
+[    1.841450] max1363 1-0064: available_scan_mask 11 subset of 2. Never us=
+ed
+[    1.848336] iio-core: ******** mask2[2] is 0x3000
+[    1.853049] max1363 1-0064: available_scan_mask 12 subset of 2. Never us=
+ed
+[    1.859934] iio-core: ******** mask2[2] is 0xc0000
+[    1.864740] max1363 1-0064: available_scan_mask 13 subset of 2. Never us=
+ed
+[    1.871626] iio-core: ******** mask1[3] is 0x8
+[    1.876079] iio-core: ******** mask2[3] is 0x3
+[    1.880533] iio-core: ******** mask2[3] is 0x7
+[    1.884985] iio-core: ******** mask2[3] is 0xf
+[    1.889439] iio-core: ******** mask2[3] is 0xc
+[    1.893891] iio-core: ******** mask2[3] is 0x1000
+[    1.898605] max1363 1-0064: available_scan_mask 8 subset of 3. Never use=
+d
+[    1.905403] iio-core: ******** mask2[3] is 0x2000
+[    1.910122] max1363 1-0064: available_scan_mask 9 subset of 3. Never use=
+d
+[    1.916921] iio-core: ******** mask2[3] is 0x40000
+[    1.921724] max1363 1-0064: available_scan_mask 10 subset of 3. Never us=
+ed
+[    1.928610] iio-core: ******** mask2[3] is 0x80000
+[    1.933413] max1363 1-0064: available_scan_mask 11 subset of 3. Never us=
+ed
+[    1.940297] iio-core: ******** mask2[3] is 0x3000
+[    1.945012] max1363 1-0064: available_scan_mask 12 subset of 3. Never us=
+ed
+[    1.951897] iio-core: ******** mask2[3] is 0xc0000
+[    1.956698] max1363 1-0064: available_scan_mask 13 subset of 3. Never us=
+ed
+[    1.963584] iio-core: ******** mask1[4] is 0x3
+[    1.968037] iio-core: ******** mask2[4] is 0x7
+[    1.972489] iio-core: ******** mask2[4] is 0xf
+[    1.976942] iio-core: ******** mask2[4] is 0xc
+[    1.981394] iio-core: ******** mask2[4] is 0x1000
+[    1.986113] max1363 1-0064: available_scan_mask 8 subset of 4. Never use=
+d
+[    1.992915] iio-core: ******** mask2[4] is 0x2000
+[    1.997626] max1363 1-0064: available_scan_mask 9 subset of 4. Never use=
+d
+[    2.004429] iio-core: ******** mask2[4] is 0x40000
+[    2.009230] max1363 1-0064: available_scan_mask 10 subset of 4. Never us=
+ed
+[    2.016120] iio-core: ******** mask2[4] is 0x80000
+[    2.020922] max1363 1-0064: available_scan_mask 11 subset of 4. Never us=
+ed
+[    2.027807] iio-core: ******** mask2[4] is 0x3000
+[    2.032522] max1363 1-0064: available_scan_mask 12 subset of 4. Never us=
+ed
+[    2.039408] iio-core: ******** mask2[4] is 0xc0000
+[    2.044210] max1363 1-0064: available_scan_mask 13 subset of 4. Never us=
+ed
+[    2.051095] iio-core: ******** mask1[5] is 0x7
+[    2.055548] iio-core: ******** mask2[5] is 0xf
+[    2.060000] iio-core: ******** mask2[5] is 0xc
+[    2.064453] iio-core: ******** mask2[5] is 0x1000
+[    2.069167] max1363 1-0064: available_scan_mask 8 subset of 5. Never use=
+d
+[    2.075966] iio-core: ******** mask2[5] is 0x2000
+[    2.080680] max1363 1-0064: available_scan_mask 9 subset of 5. Never use=
+d
+[    2.087478] iio-core: ******** mask2[5] is 0x40000
+[    2.092280] max1363 1-0064: available_scan_mask 10 subset of 5. Never us=
+ed
+[    2.099166] iio-core: ******** mask2[5] is 0x80000
+[    2.103967] max1363 1-0064: available_scan_mask 11 subset of 5. Never us=
+ed
+[    2.110858] iio-core: ******** mask2[5] is 0x3000
+[    2.115573] max1363 1-0064: available_scan_mask 12 subset of 5. Never us=
+ed
+[    2.122463] iio-core: ******** mask2[5] is 0xc0000
+[    2.127265] max1363 1-0064: available_scan_mask 13 subset of 5. Never us=
+ed
+[    2.134150] iio-core: ******** mask1[6] is 0xf
+[    2.138602] iio-core: ******** mask2[6] is 0xc
+[    2.143056] max1363 1-0064: available_scan_mask 7 subset of 6. Never use=
+d
+[    2.149862] iio-core: ******** mask2[6] is 0x1000
+[    2.154578] max1363 1-0064: available_scan_mask 8 subset of 6. Never use=
+d
+[    2.161374] iio-core: ******** mask2[6] is 0x2000
+[    2.166089] max1363 1-0064: available_scan_mask 9 subset of 6. Never use=
+d
+[    2.172886] iio-core: ******** mask2[6] is 0x40000
+[    2.177687] max1363 1-0064: available_scan_mask 10 subset of 6. Never us=
+ed
+[    2.184573] iio-core: ******** mask2[6] is 0x80000
+[    2.189372] max1363 1-0064: available_scan_mask 11 subset of 6. Never us=
+ed
+[    2.196257] iio-core: ******** mask2[6] is 0x3000
+[    2.200973] max1363 1-0064: available_scan_mask 12 subset of 6. Never us=
+ed
+[    2.207858] iio-core: ******** mask2[6] is 0xc0000
+[    2.212659] max1363 1-0064: available_scan_mask 13 subset of 6. Never us=
+ed
+[    2.219544] iio-core: ******** mask1[7] is 0xc
+[    2.223996] iio-core: ******** mask2[7] is 0x1000
+[    2.228715] max1363 1-0064: available_scan_mask 8 subset of 7. Never use=
+d
+[    2.235518] iio-core: ******** mask2[7] is 0x2000
+[    2.240234] max1363 1-0064: available_scan_mask 9 subset of 7. Never use=
+d
+[    2.247030] iio-core: ******** mask2[7] is 0x40000
+[    2.251832] max1363 1-0064: available_scan_mask 10 subset of 7. Never us=
+ed
+[    2.258717] iio-core: ******** mask2[7] is 0x80000
+[    2.263518] max1363 1-0064: available_scan_mask 11 subset of 7. Never us=
+ed
+[    2.270403] iio-core: ******** mask2[7] is 0x3000
+[    2.275117] max1363 1-0064: available_scan_mask 12 subset of 7. Never us=
+ed
+[    2.282002] iio-core: ******** mask2[7] is 0xc0000
+[    2.286803] max1363 1-0064: available_scan_mask 13 subset of 7. Never us=
+ed
+[    2.293688] iio-core: ******** mask1[8] is 0x1000
+[    2.298401] iio-core: ******** mask2[8] is 0x2000
+[    2.303116] max1363 1-0064: available_scan_mask 9 subset of 8. Never use=
+d
+[    2.309914] iio-core: ******** mask2[8] is 0x40000
+[    2.314715] max1363 1-0064: available_scan_mask 10 subset of 8. Never us=
+ed
+[    2.321600] iio-core: ******** mask2[8] is 0x80000
+[    2.326401] max1363 1-0064: available_scan_mask 11 subset of 8. Never us=
+ed
+[    2.333289] iio-core: ******** mask2[8] is 0x3000
+[    2.338004] max1363 1-0064: available_scan_mask 12 subset of 8. Never us=
+ed
+[    2.344889] iio-core: ******** mask2[8] is 0xc0000
+[    2.349691] max1363 1-0064: available_scan_mask 13 subset of 8. Never us=
+ed
+[    2.356577] iio-core: ******** mask1[9] is 0x2000
+[    2.361294] iio-core: ******** mask2[9] is 0x40000
+[    2.366094] max1363 1-0064: available_scan_mask 10 subset of 9. Never us=
+ed
+[    2.372977] iio-core: ******** mask2[9] is 0x80000
+[    2.377778] max1363 1-0064: available_scan_mask 11 subset of 9. Never us=
+ed
+[    2.384663] iio-core: ******** mask2[9] is 0x3000
+[    2.389377] max1363 1-0064: available_scan_mask 12 subset of 9. Never us=
+ed
+[    2.396262] iio-core: ******** mask2[9] is 0xc0000
+[    2.401063] max1363 1-0064: available_scan_mask 13 subset of 9. Never us=
+ed
+[    2.407948] iio-core: ******** mask1[10] is 0x40000
+[    2.412835] iio-core: ******** mask2[10] is 0x80000
+[    2.417723] max1363 1-0064: available_scan_mask 11 subset of 10. Never u=
+sed
+[    2.424696] iio-core: ******** mask2[10] is 0x3000
+[    2.429497] max1363 1-0064: available_scan_mask 12 subset of 10. Never u=
+sed
+[    2.436471] iio-core: ******** mask2[10] is 0xc0000
+[    2.441359] max1363 1-0064: available_scan_mask 13 subset of 10. Never u=
+sed
+[    2.448331] iio-core: ******** mask1[11] is 0x80000
+[    2.453218] iio-core: ******** mask2[11] is 0x3000
+[    2.458020] max1363 1-0064: available_scan_mask 12 subset of 11. Never u=
+sed
+[    2.464991] iio-core: ******** mask2[11] is 0xc0000
+[    2.469879] max1363 1-0064: available_scan_mask 13 subset of 11. Never u=
+sed
+[    2.476860] iio-core: ******** mask1[12] is 0x3000
+[    2.481659] iio-core: ******** mask2[12] is 0xc0000
+[    2.486551] max1363 1-0064: available_scan_mask 13 subset of 12. Never u=
+sed
+
+Who sets masklength =3D 9? Is this correct?
+
+If I use BITS_PER_LONG instead of masklength inside bitmap_subset():
+
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1947,16 +1947,22 @@ static void
+iio_sanity_check_avail_scan_masks(struct iio_dev *indio_dev)
+         * available masks in the order of preference (presumably the least
+         * costy to access masks first).
+         */
++       pr_err("******** masklength is %d", masklength);
++       pr_err("******** longs_per_mask is %d", longs_per_mask);
++
++
+        for (i =3D 0; i < num_masks - 1; i++) {
+                const unsigned long *mask1;
+                int j;
+
+                mask1 =3D av_masks + i * longs_per_mask;
++               pr_err("******** mask1[%d] is 0x%lx\n", i, mask1[0]);
+                for (j =3D i + 1; j < num_masks; j++) {
+                        const unsigned long *mask2;
+
+                        mask2 =3D av_masks + j * longs_per_mask;
+-                       if (bitmap_subset(mask2, mask1, masklength))
++                       pr_err("******** mask2[%d] is 0x%lx\n", i, mask2[0]=
+);
++                       if (bitmap_subset(mask2, mask1, BITS_PER_LONG))
+                                dev_warn(indio_dev->dev.parent,
+                                         "available_scan_mask %d
+subset of %d. Never used\n",
+                                         j, i);
+
+Then the correct subset information is printed:
+
+[    1.560392] iio-core: ******** masklength is 9
+[    1.560406] iio-core: ******** longs_per_mask is 1
+[    1.564890] iio-core: ******** mask1[0] is 0x1
+[    1.574185] iio-core: ******** mask2[0] is 0x2
+[    1.578644] iio-core: ******** mask2[0] is 0x4
+[    1.583108] iio-core: ******** mask2[0] is 0x8
+[    1.587564] iio-core: ******** mask2[0] is 0x3
+[    1.592024] iio-core: ******** mask2[0] is 0x7
+[    1.596486] iio-core: ******** mask2[0] is 0xf
+[    1.600948] iio-core: ******** mask2[0] is 0xc
+[    1.605407] iio-core: ******** mask2[0] is 0x1000
+[    1.610130] iio-core: ******** mask2[0] is 0x2000
+[    1.614856] iio-core: ******** mask2[0] is 0x40000
+[    1.619670] iio-core: ******** mask2[0] is 0x80000
+[    1.624475] iio-core: ******** mask2[0] is 0x3000
+[    1.629199] iio-core: ******** mask2[0] is 0xc0000
+[    1.634017] iio-core: ******** mask1[1] is 0x2
+[    1.638475] iio-core: ******** mask2[1] is 0x4
+[    1.642941] iio-core: ******** mask2[1] is 0x8
+[    1.647401] iio-core: ******** mask2[1] is 0x3
+[    1.651865] iio-core: ******** mask2[1] is 0x7
+[    1.656321] iio-core: ******** mask2[1] is 0xf
+[    1.660786] iio-core: ******** mask2[1] is 0xc
+[    1.665245] iio-core: ******** mask2[1] is 0x1000
+[    1.669968] iio-core: ******** mask2[1] is 0x2000
+[    1.674691] iio-core: ******** mask2[1] is 0x40000
+[    1.679505] iio-core: ******** mask2[1] is 0x80000
+[    1.684345] iio-core: ******** mask2[1] is 0x3000
+[    1.689069] iio-core: ******** mask2[1] is 0xc0000
+[    1.693872] iio-core: ******** mask1[2] is 0x4
+[    1.698331] iio-core: ******** mask2[2] is 0x8
+[    1.702788] iio-core: ******** mask2[2] is 0x3
+[    1.707246] iio-core: ******** mask2[2] is 0x7
+[    1.711702] iio-core: ******** mask2[2] is 0xf
+[    1.716156] iio-core: ******** mask2[2] is 0xc
+[    1.720614] iio-core: ******** mask2[2] is 0x1000
+[    1.725333] iio-core: ******** mask2[2] is 0x2000
+[    1.730046] iio-core: ******** mask2[2] is 0x40000
+[    1.734850] iio-core: ******** mask2[2] is 0x80000
+[    1.739665] iio-core: ******** mask2[2] is 0x3000
+[    1.744385] iio-core: ******** mask2[2] is 0xc0000
+[    1.749192] iio-core: ******** mask1[3] is 0x8
+[    1.753654] iio-core: ******** mask2[3] is 0x3
+[    1.758112] iio-core: ******** mask2[3] is 0x7
+[    1.762570] iio-core: ******** mask2[3] is 0xf
+[    1.767027] iio-core: ******** mask2[3] is 0xc
+[    1.771484] iio-core: ******** mask2[3] is 0x1000
+[    1.776203] iio-core: ******** mask2[3] is 0x2000
+[    1.780921] iio-core: ******** mask2[3] is 0x40000
+[    1.785727] iio-core: ******** mask2[3] is 0x80000
+[    1.790531] iio-core: ******** mask2[3] is 0x3000
+[    1.795253] iio-core: ******** mask2[3] is 0xc0000
+[    1.800059] iio-core: ******** mask1[4] is 0x3
+[    1.804515] iio-core: ******** mask2[4] is 0x7
+[    1.808970] iio-core: ******** mask2[4] is 0xf
+[    1.813427] iio-core: ******** mask2[4] is 0xc
+[    1.817891] iio-core: ******** mask2[4] is 0x1000
+[    1.822608] iio-core: ******** mask2[4] is 0x2000
+[    1.827336] iio-core: ******** mask2[4] is 0x40000
+[    1.832164] iio-core: ******** mask2[4] is 0x80000
+[    1.836970] iio-core: ******** mask2[4] is 0x3000
+[    1.841690] iio-core: ******** mask2[4] is 0xc0000
+[    1.846495] iio-core: ******** mask1[5] is 0x7
+[    1.850953] iio-core: ******** mask2[5] is 0xf
+[    1.855409] iio-core: ******** mask2[5] is 0xc
+[    1.859867] iio-core: ******** mask2[5] is 0x1000
+[    1.864590] iio-core: ******** mask2[5] is 0x2000
+[    1.869310] iio-core: ******** mask2[5] is 0x40000
+[    1.874116] iio-core: ******** mask2[5] is 0x80000
+[    1.878918] iio-core: ******** mask2[5] is 0x3000
+[    1.883636] iio-core: ******** mask2[5] is 0xc0000
+[    1.888442] iio-core: ******** mask1[6] is 0xf
+[    1.892900] iio-core: ******** mask2[6] is 0xc
+[    1.897364] max1363 1-0064: available_scan_mask 7 subset of 6. Never use=
+d
+[    1.904169] iio-core: ******** mask2[6] is 0x1000
+[    1.908887] iio-core: ******** mask2[6] is 0x2000
+[    1.913603] iio-core: ******** mask2[6] is 0x40000
+[    1.918409] iio-core: ******** mask2[6] is 0x80000
+[    1.923212] iio-core: ******** mask2[6] is 0x3000
+[    1.927930] iio-core: ******** mask2[6] is 0xc0000
+[    1.932733] iio-core: ******** mask1[7] is 0xc
+[    1.937190] iio-core: ******** mask2[7] is 0x1000
+[    1.941902] iio-core: ******** mask2[7] is 0x2000
+[    1.941907] iio-core: ******** mask2[7] is 0x40000
+[    1.941911] iio-core: ******** mask2[7] is 0x80000
+[    1.941917] iio-core: ******** mask2[7] is 0x3000
+[    1.965640] iio-core: ******** mask2[7] is 0xc0000
+[    1.970447] iio-core: ******** mask1[8] is 0x1000
+[    1.975163] iio-core: ******** mask2[8] is 0x2000
+[    1.979881] iio-core: ******** mask2[8] is 0x40000
+[    1.984683] iio-core: ******** mask2[8] is 0x80000
+[    1.989491] iio-core: ******** mask2[8] is 0x3000
+[    1.994209] iio-core: ******** mask2[8] is 0xc0000
+[    1.999010] iio-core: ******** mask1[9] is 0x2000
+[    2.003732] iio-core: ******** mask2[9] is 0x40000
+[    2.008533] iio-core: ******** mask2[9] is 0x80000
+[    2.013339] iio-core: ******** mask2[9] is 0x3000
+[    2.018065] iio-core: ******** mask2[9] is 0xc0000
+[    2.022866] iio-core: ******** mask1[10] is 0x40000
+[    2.027760] iio-core: ******** mask2[10] is 0x80000
+[    2.032647] iio-core: ******** mask2[10] is 0x3000
+[    2.037453] iio-core: ******** mask2[10] is 0xc0000
+[    2.042346] iio-core: ******** mask1[11] is 0x80000
+[    2.047234] iio-core: ******** mask2[11] is 0x3000
+[    2.052041] iio-core: ******** mask2[11] is 0xc0000
+[    2.056928] iio-core: ******** mask1[12] is 0x3000
+[    2.061736] iio-core: ******** mask2[12] is 0xc0000
 
