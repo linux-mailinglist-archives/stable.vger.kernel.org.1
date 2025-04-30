@@ -1,210 +1,122 @@
-Return-Path: <stable+bounces-139118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8482EAA4569
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 10:30:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6161AA4571
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 10:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7C711C03E72
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 08:29:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3918E3A7B41
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 08:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5540218AB9;
-	Wed, 30 Apr 2025 08:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D57B21B9C2;
+	Wed, 30 Apr 2025 08:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="VIjl0B80";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="34ylF4mT";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="r0KLLECP";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="0xeY6gNN"
+	dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b="OiO2CgW8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285AA218599
-	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 08:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A84217734
+	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 08:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746001676; cv=none; b=NlD1MNm5MkXqLoE68bquDizVCqVtacYyw+SPJAN8lE3yun/V5Mq/rL8DWuJX5T16ehnciVX2pBe/TjNqMYuckvnggy3MomCT+oxgqVh0V24VOUaOYMWZCIICpXICWNRwvlx+RbcwEE3/te9JJPcm2ng0DPAJJS1dpfrtUiPhy9o=
+	t=1746001730; cv=none; b=nYl49l/9a73Xd2K7FUT+f3H1ZKl/68xjK9u6R1Mg3DuC1M/3wuYTAs7aQca46tiGv/m8hrOGq8wgx7nG9dBgIvy2FUCMXooTMSd7CvkxU8ZTEC3sRR0K0WQ5qBHrqp9QmO5TXuqsfGpuhzxD+Wu9uN52yhIWvJ0t+RLM2SFaz80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746001676; c=relaxed/simple;
-	bh=KP0WbRYyXweFla+W9yKoUm82l153JkxLlFZrvyQgDFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q8KFLPICqit3Oxv30F8UoOKLxynbOpK6UXgrQjR+5UcfWI3oUDSsHJ1Ss+XxazQbrSAYn7Hv5BMwQ2aShSnvCph6J2wG3/DuGkMQ7z31dUWJ3oS75NyeByyc2pg7+VhAJhrvUZms+7UdeBCF97D2RCbOt3gMv1djLLwazgnXc0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=VIjl0B80; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=34ylF4mT; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=r0KLLECP; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=0xeY6gNN; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 53CF51F7BF;
-	Wed, 30 Apr 2025 08:27:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1746001667; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L+g1TDP6rhx8pD3i0tB2oZWqxFYE0CqTNE2BvNf7Ycw=;
-	b=VIjl0B80Uh3OUx3+Pshx9kY6dUdBWDIAmXxE40ltIMkkAw6HJy5NF8n2wR/Vw/N6U//Mz/
-	q43tMlVKwvxlPjDZIZ36pWNmVElVfkBF4fjZjXjb+R/BwO3W7x7vCttQLcGPSfe9+U5wkc
-	VwECC9C1r4ivjILpHWOsw+9pE8Eo2RM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1746001667;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L+g1TDP6rhx8pD3i0tB2oZWqxFYE0CqTNE2BvNf7Ycw=;
-	b=34ylF4mTZj3STtfYtJGb1S3C6Ei9P7OlRGBTUYXWqsGldxCwQKSpPz7iANglSxXlRrs4UZ
-	c6LQlp1HcrReJHAA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r0KLLECP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0xeY6gNN
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1746001666; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L+g1TDP6rhx8pD3i0tB2oZWqxFYE0CqTNE2BvNf7Ycw=;
-	b=r0KLLECPsP8+xL6H7OibzAZq/4xdyKExIWg8qM+i0x7PUIvIfnbE2dV7hSQSAO3cIBumqi
-	iHq36qGokctFQcDoZgBGcdJsLcvBgorABMY+VR57Zx07RQ/nE28cZng+QrN6ez4u6DgzTN
-	vxn1r/IhXvabSNT2XWH1rCieh1qKkJg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1746001666;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L+g1TDP6rhx8pD3i0tB2oZWqxFYE0CqTNE2BvNf7Ycw=;
-	b=0xeY6gNNADEAcP/1u5v0rxgig/6h7Zy3mSE8sNHy7Dg42tJTDMR6SpT4vFQFK1wPPVq3nS
-	3P54IpBgpCUANGCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 47A4D139E7;
-	Wed, 30 Apr 2025 08:27:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4yVvEQLfEWgaEAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 30 Apr 2025 08:27:46 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 05DDEA0AF0; Wed, 30 Apr 2025 10:27:45 +0200 (CEST)
-Date: Wed, 30 Apr 2025 10:27:45 +0200
-From: Jan Kara <jack@suse.cz>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, Joe Damato <jdamato@fastly.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] fs/eventpoll: fix endless busy loop after timeout has
- expired
-Message-ID: <diilyq37i35qlll7hu3si6dqrjntiif5gzajazkgtqvfsi4kgg@yr3v562urmjp>
-References: <20250429185827.3564438-1-max.kellermann@ionos.com>
+	s=arc-20240116; t=1746001730; c=relaxed/simple;
+	bh=pH0oqBFzXr7dxaa6fyvrd+LLrjaVdoyq6r4ZmuQseF0=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=AaRkEsA4zwHoSkgk4zss0WnzYfBq1k4lbezGwMxPCcoIWBfZjBU38CPRGRjDN6uVrgQhFVBcCTp9XSzTZxu6cnipPECZRnWVo+AqFWPXxU61D+Kf/l+mEZRNzMbaYTkAGzezViQjxmfD7iZ8SnGJhXFGDxu1Qmn1Ro0UIBFi+zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu; spf=pass smtp.mailfrom=uci.edu; dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b=OiO2CgW8; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-3106217268dso65748471fa.1
+        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 01:28:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=uci.edu; s=google; t=1746001726; x=1746606526; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6lPqXLo5Wb4FjmQISWv1/W8649m7XVXX1Bcf7rCMT1I=;
+        b=OiO2CgW8iu5CCKeSmS3PlKZ+n3xjB4FpmGZ/szRw0QJi8A+YcL0FYUJrTLEgosdX4F
+         d2jIHVcqMDFx8tXKCMTNLxGOgHXxJzDe1Lu5A+HD3aOZY2YteujoRH75Q6yRlSADpr7D
+         FVLvx40vp6KiwdNYybuP9Ljyfgcf+knyPL9/g0CFVT89u3k15c5uis1NnJR4mUXlSJko
+         zeE595klz/aoX3G/7dxfmk/okb1P8e+2elx9oIXR/mq9UO4aBbBncJUmdhGS9w45ZlXo
+         EuU2szghJEATSCEJv63JZTzcijBR1Lt3hkO0CBfuP4aaNjdxIZd+FPqtMVe6/dGanA2S
+         2EWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746001726; x=1746606526;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6lPqXLo5Wb4FjmQISWv1/W8649m7XVXX1Bcf7rCMT1I=;
+        b=YQWKjnOvhuERZVFH5q91ONuRubxDfWV+UBN8KTOWIOMXiX9Wg2PkRUfZ3Mp6ZqHVX3
+         +N3Mw96f2NXrOlsx4h0tt5L5Fo61vxJLEreUK1/yndB55cOi4qCz3s37aR+TjLhKKC5X
+         i5+LJOXcsAq8iuu3l5dZe1rVKQq7zUza0kx+TxaM/qiGqZ6f1k62XrVvZJ7iq0wyEhh5
+         37b3ZZ4Za2AdBxy/SjfyE2L9UJHFxQ2zmEt8SwUPbOe57P5LEWJk8q0skw7XkOlnWDdK
+         4PdjV1RyXWktTwNwiWDUBDjF/SefJoQO6eoD4nGa2iLLBM6DR5Svgr/FW83t39kF8Jba
+         /PkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXzT7ujMxuMvgaQmO7buymxtxIPiDoNhv4fhOQhibvkgNYvnIyvTJorbo42FNJPsSNZ6dyLJXM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkiZ+GR7vyYubAU5AtVAmI/3ljydvLNMgw7Zd5KxqBG3+brmGn
+	jzWeJzlN3oQuph0obalsuwo6Dx9708gGvL13eYFrPz9YJASzpX7c9n+KMQRh9ir0tKe4VI8aj+i
+	xeYW/8iQP+YfpZLRMhsXUD/bV4iVWIgGqz5lr1A==
+X-Gm-Gg: ASbGnctaDNN0+8kcp6+CibALE0lH1l18AJvlOL/xWYovJlPGjfd+znntR4vcZteTdRX
+	/p+tqT9Oe1kSpeYvuM/U8ee4OSA2IoTb2DB21JJI2e/P/n+0/vRStzwgSEOZF8mMFS/BtbRyd2t
+	KkRGwTSNhyOJCQQkT8txPIbwLYUAyOGFd2cO1Y
+X-Google-Smtp-Source: AGHT+IHm9LGcwO5UfIgmOPoA/NZWU0YUuagpPN/FMkVDaPR9suXAlBToMbxCmPA+26NwR16zuoPZt7Fpu/vyInDHLes=
+X-Received: by 2002:a05:651c:1542:b0:30b:ee78:79d2 with SMTP id
+ 38308e7fff4ca-31e6bb7963amr7026571fa.36.1746001726243; Wed, 30 Apr 2025
+ 01:28:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250429185827.3564438-1-max.kellermann@ionos.com>
-X-Rspamd-Queue-Id: 53CF51F7BF
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_COUNT_THREE(0.00)[3];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:dkim,suse.cz:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.01
-X-Spam-Flag: NO
+From: Ezra Khuzadi <ekhuzadi@uci.edu>
+Date: Wed, 30 Apr 2025 01:28:35 -0700
+X-Gm-Features: ATxdqUHlLjGvyjp1aDqcwzw1xdWYY187ti4MPUlvYdIVpJ5MANTZwWt-gw4LJKI
+Message-ID: <CAPXr0uxh0c_2b2-zJF=N8T6DfccfyvOQRX0X0VO24dS7YsxzzQ@mail.gmail.com>
+Subject: sound/pci/hda: add quirk for HP Spectre x360 15-eb0xxx
+To: linux-kernel@vger.kernel.org
+Cc: alsa-devel@lists.sourceforge.net, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue 29-04-25 20:58:27, Max Kellermann wrote:
-> After commit 0a65bc27bd64 ("eventpoll: Set epoll timeout if it's in
-> the future"), the following program would immediately enter a busy
-> loop in the kernel:
-> 
-> ```
-> int main() {
->   int e = epoll_create1(0);
->   struct epoll_event event = {.events = EPOLLIN};
->   epoll_ctl(e, EPOLL_CTL_ADD, 0, &event);
->   const struct timespec timeout = {.tv_nsec = 1};
->   epoll_pwait2(e, &event, 1, &timeout, 0);
-> }
-> ```
-> 
-> This happens because the given (non-zero) timeout of 1 nanosecond
-> usually expires before ep_poll() is entered and then
-> ep_schedule_timeout() returns false, but `timed_out` is never set
-> because the code line that sets it is skipped.  This quickly turns
-> into a soft lockup, RCU stalls and deadlocks, inflicting severe
-> headaches to the whole system.
-> 
-> When the timeout has expired, we don't need to schedule a hrtimer, but
-> we should set the `timed_out` variable.  Therefore, I suggest moving
-> the ep_schedule_timeout() check into the `timed_out` expression
-> instead of skipping it.
-> 
-> Fixes: 0a65bc27bd64 ("eventpoll: Set epoll timeout if it's in the future")
-> Cc: Joe Damato <jdamato@fastly.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+sound/pci/hda: add quirk for HP Spectre x360 15-eb0xxx
 
-I agree this makes the logic somewhat more obvious than Joe's fix so feel
-free to add:
+Add subsystem ID 0x86e5 for HP Spectre x360 15-eb0xxx so that
+ALC285_FIXUP_HP_SPECTRE_X360_EB1 (GPIO amp-enable, mic-mute LED and
+pinconfigs) is applied.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Tested on HP Spectre x360 15-eb0043dx (Vendor 0x10ec0285, Subsys 0x103c86e5)
+with legacy HDA driver and hda-verb toggles:
 
-Thanks!
+  $ cat /proc/asound/card0/codec#0 \
+      | sed -n -e '1,5p;/Vendor Id:/p;/Subsystem Id:/p'
+  Codec: Realtek ALC285
+  Vendor Id: 0x10ec0285
+  Subsystem Id: 0x103c86e5
 
-								Honza
+  $ dmesg | grep -i realtek
+  [    5.828728] snd_hda_codec_realtek ehdaudio0D0: ALC285: picked fixup
+        for PCI SSID 103c:86e5
 
-> ---
->  fs/eventpoll.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-> index 4bc264b854c4..d4dbffdedd08 100644
-> --- a/fs/eventpoll.c
-> +++ b/fs/eventpoll.c
-> @@ -2111,9 +2111,10 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
->  
->  		write_unlock_irq(&ep->lock);
->  
-> -		if (!eavail && ep_schedule_timeout(to))
-> -			timed_out = !schedule_hrtimeout_range(to, slack,
-> -							      HRTIMER_MODE_ABS);
-> +		if (!eavail)
-> +			timed_out = !ep_schedule_timeout(to) ||
-> +				!schedule_hrtimeout_range(to, slack,
-> +							  HRTIMER_MODE_ABS);
->  		__set_current_state(TASK_RUNNING);
->  
->  		/*
-> -- 
-> 2.47.2
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Signed-off-by: Ezra Khuzadi <ekhuzadi@uci.edu>
+
+---
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 877137cb09ac..82ad105e7fa9 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10563,6 +10563,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+   SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
++  SND_PCI_QUIRK(0x103c, 0x86e5, "HP Spectre x360 15-eb0xxx",
+ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+   SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx",
+ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+   SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx",
+ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+   SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx",
+ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
 
