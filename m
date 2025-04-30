@@ -1,121 +1,232 @@
-Return-Path: <stable+bounces-139190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75134AA5091
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 17:41:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCA9AA50C9
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 17:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EF811B63920
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 15:41:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D05C7179E72
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 15:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783262609C5;
-	Wed, 30 Apr 2025 15:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D022DC760;
+	Wed, 30 Apr 2025 15:50:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VIQdTAVB"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2548E13632B;
-	Wed, 30 Apr 2025 15:41:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B0B25DAF0
+	for <stable@vger.kernel.org>; Wed, 30 Apr 2025 15:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746027693; cv=none; b=CkGbR0ujBlobE/9dIoqKGQcjoQT20KvJWSq2dCURhT5q4y6lhIK6NO/D8aXM7qVul0OhAOQmpQmAOPHVMT2Coj/bLyg/hgF8z4lIEWZGOdpUPt8r0fp9TX1C8TyVI2Js8rNpyGbZ+krqGxio9ZYCpOWYV0Z0eBxlk2Z6TjAjy64=
+	t=1746028258; cv=none; b=maE7/++JKzDA4qprpPZyRJlF7RJYd6MhXYNZ43n8BSf95s3S92uxs594jqCZ1AZSHutPFO8TpfGyrVJAx6fxZndpWewsPr9ROtjqqaOGEH0n0auTqFR2UPF7v6Y1U0NYkoyVQUxA0DShDMYeLhcQpM8azgwtjz65v+WCZJ7jKiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746027693; c=relaxed/simple;
-	bh=kdy+6lyDup6NN9r8Zyqs6ADoNhHFNmabeAeGewjscmk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jP68QAsNOB/ZL6CIuqFhcjm4Dy7ZIzdsUgu0gAwx70HOGg5+l8Wn+F8NVNgqkHQxoe8zbBRD9zj48HYvPu0kJzOwH+bqcCIouUZzdzwwwGnCDu1s/sD2pQZ3p8oRFtyLXZ/hRo7iECXMFQYDiNoBsB/P+zy/DCOWoCftHmxSnBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2DEF61063;
-	Wed, 30 Apr 2025 08:41:23 -0700 (PDT)
-Received: from [10.57.47.173] (unknown [10.57.47.173])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1F5783F5A1;
-	Wed, 30 Apr 2025 08:41:27 -0700 (PDT)
-Message-ID: <55d0c2a9-54a3-4063-9f57-624e7eef4720@arm.com>
-Date: Wed, 30 Apr 2025 16:41:27 +0100
+	s=arc-20240116; t=1746028258; c=relaxed/simple;
+	bh=1mCRoSl/WXj9EpqFdvrhBKzBNrOH0XyKXi5WpfLxlMY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mm6OgzIi2a1/squ+VF12gbd/iferWC1/JqZehtFDBMcSlzFWOrE9u2HtVCf25LcOxM18f3IiwV1eFtuB/mn6AO8fXikdzLaRR7yIG9VDi3hufkxheN4T92nk2kTya41nc6wVc0GfGMbDzfXfhECs02rUzQxwpbYMoQTt86VRwwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VIQdTAVB; arc=none smtp.client-ip=209.85.217.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-4ce8aa3113aso787187137.3
+        for <stable@vger.kernel.org>; Wed, 30 Apr 2025 08:50:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1746028256; x=1746633056; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uJAx/WqHCy0T5aZ2CQVyjJWgqdYiF6JZTKOjqwwgqJM=;
+        b=VIQdTAVBtDVI7YIZD3cKaQhlGq0Js46Ssbf+QBafTsrXlJTy4017gCuFPrky/NHyi9
+         5Fx1H/KgJLAvuzqj5x9W3cUWg5u1wFbKXLROg8tWk0kBfhLPBWVxuEYrbccG6qI7x/jN
+         iPulFNnRKGB9h3ys/OxhfG9McnW/1fyc3AoRhCS8w5Bg3Q7yF/O76Ji00mbpQQERPgqz
+         wF1LepOvQAMhtdIf+3f798BcjVQLnu1coI93eBocj1z+xpJwRUcpptNQxEhejTPBYOxt
+         OBfJTzciF+YhYLwrRH56NI16t6/g9RSGGtCubSQNvGpmxaqaUQC2BGGO+qqCUtg7/C7L
+         HXxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746028256; x=1746633056;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uJAx/WqHCy0T5aZ2CQVyjJWgqdYiF6JZTKOjqwwgqJM=;
+        b=jLSRlweVLC0lHiHUeip+gJ6Dee3KqMwdeWqKcc5+XTwAMtnevOtjqW2V6GryQf9tB0
+         mtx8ArvswMJDxZeoLpmtvjCEXaXoGj1EfsanYAa+UUcG+BL2a2ogCMALJADILqND6na0
+         3RDpIeV2y11Kyut+AZkz8W37IWvvnm7Cp6P4dOpa+hWODgfSb0L8WdHgWLJEJ57YwXYZ
+         98FlGqTCAuwrUjs+Hq18dlgnonuLomRmXscDmMsHclQYwTuuKUgh+UgF0Dr6FyyoES5O
+         EurPp/sqUPP9yyvi2OBqlacDtrMP8/xFdGy+w64IEW1TgqaO6kon3G1L3n2wkVRkN1XV
+         sfcw==
+X-Gm-Message-State: AOJu0YyOlOCh/aV6ryDpAOHFQA+b4o5vLi34saoAr2pc+SKDLx8/5lhf
+	uqQwbWXI9vOaBzyxDit9f+sX0bQxy/JquuK+uJgZYvlZQT3AGKl+g9u1qvGCCVJBCumkk+QlJ0/
+	w3UKWblgaMrn2o4fHjBVP9UKq9W2/MRkAUEJRoA==
+X-Gm-Gg: ASbGncuy4eudx6lvoH7jZG1Mbys+63OgpmRNv0AD3QvxeVYHPrg9qQBjngxq11DdtKU
+	3HPKiHK4AmERDVrlBfHSzn+59O3vVQJVegf7SdDDIbPLnXPnwjg5F0nXj9zHPbVCW5svM4vTpky
+	MGKVmYNQMA92iUIEPdDOhYW2FCPYSEM5sXxJ7xmIo9rqAvKkokDCLO+S4=
+X-Google-Smtp-Source: AGHT+IGGsdPw3RT8avgBXabu5//S4MiovS5cVHy8pMESNsoOOlpTQkhJUXpjjxf/3yA7TyQdDfUlJPcOKqFKVhOhzFg=
+X-Received: by 2002:a05:6102:2ac7:b0:4c1:71b6:6c with SMTP id
+ ada2fe7eead31-4dad359944emr3077320137.7.1746028255694; Wed, 30 Apr 2025
+ 08:50:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] Restrict devmem for confidential VMs
-Content-Language: en-GB
-To: Dan Williams <dan.j.williams@intel.com>,
- Dave Hansen <dave.hansen@intel.com>, dave.hansen@linux.intel.com
-Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>,
- Vishal Annapurve <vannapurve@google.com>, Kees Cook <kees@kernel.org>,
- stable@vger.kernel.org, x86@kernel.org,
- Nikolay Borisov <nik.borisov@suse.com>, Naveen N Rao <naveen@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, mpe@ellerman.id.au
-References: <174491711228.1395340.3647010925173796093.stgit@dwillia2-xfh.jf.intel.com>
- <63bb3383-de43-4638-b229-28c33c1582be@intel.com>
- <681005cdd3631_1d522948e@dwillia2-xfh.jf.intel.com.notmuch>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <681005cdd3631_1d522948e@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 30 Apr 2025 21:20:44 +0530
+X-Gm-Features: ATxdqUFMXca-djiqqc25Inw-41HaeAOh1iaxf6BhFyDDx8VbrmE3g622gxZ0Igc
+Message-ID: <CA+G9fYtGFVgM+RFNZnOWyvkCq3iZvOj4Npo6Pxnt=5f=EHhgvw@mail.gmail.com>
+Subject: Re: [PATCH 5.10 000/286] 5.10.237-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Dan
+On Tue, 29 Apr 2025 at 22:41, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.10.237 release.
+> There are 286 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 01 May 2025 16:10:15 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.10.237-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-On 28/04/2025 23:48, Dan Williams wrote:
-> Dave Hansen wrote:
->> On 4/17/25 12:11, Dan Williams wrote:
->>>   arch/x86/Kconfig          |    4 ++++
->>>   arch/x86/mm/pat/memtype.c |   31 ++++---------------------------
->>>   drivers/char/mem.c        |   27 +++++++++------------------
->>>   include/linux/io.h        |   21 +++++++++++++++++++++
->>>   4 files changed, 38 insertions(+), 45 deletions(-)
->>
->> This looks like a good idea on multiple levels. We can take it through
->> tip, but one things that makes me nervous is that neither of the "CHAR
->> and MISC DRIVERS" supporters are even on cc.
->>
->>> Arnd Bergmann <arnd@arndb.de> (supporter:CHAR and MISC DRIVERS)
->>> Greg Kroah-Hartman <gregkh@linuxfoundation.org> (supporter:CHAR and MISC DRIVERS)
-> 
-> Good catch, just note that until this latest iteration the proposal was
-> entirely contained to x86 specific support functions like devmem_is_allowed().
-> So yes, an oversight as this moved to a more general devmem mechanism.
-> 
->> I guess arm and powerpc have cc_platform_has() so it's not _completely_
->> x86 only, either. Acks from those folks would also be appreciated since
->> it's going to affect them most immediately.
-> 
-> I have added Suzuki and Michael for their awareness, but I would not say
-> acks are needed at this point since to date CC_ATTR_GUEST_MEM_ENCRYPT is
-> strictly an x86-ism.
-> 
-> For example, the PowerPC implementation of cc_platform_has() has not been
-> touched since Tom added it.
-> 
-> Suzuki, Michael, at a minimum the question this patch poses to ARM64 and
-> PowerPC is whether they are going to allow CONFIG_STRICT_DEVMEM=n, or otherwise
-> understand that CONFIG_STRICT_DEVMEM=y == LOCKDOWN with
-> CC_ATTR_GUEST_MEM_ENCRYPT.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-For CCA we don't really enforce STRICT_DEVMEM. But we do expect people
-to use it for safety reasons, but is not mandatory.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Does that help ?
+## Build
+* kernel: 5.10.237-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: ce0fd5a9f1a4e7c9d2c59cffe033ca7d1d7e1688
+* git describe: v5.10.236-287-gce0fd5a9f1a4
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10=
+.236-287-gce0fd5a9f1a4
 
-Suzuki
+## Test Regressions (compared to v5.10.235-229-g5b68aafded4a)
 
+## Metric Regressions (compared to v5.10.235-229-g5b68aafded4a)
 
+## Test Fixes (compared to v5.10.235-229-g5b68aafded4a)
 
-> 
->> Also, just to confirm, patch 2 can go to stable@ without _any_
->> dependency on patch 1, right?
-> 
-> Correct. I will make them independent / unordered patches on the repost.
-> 
-> Next posting to fix the "select" instead of "depends on" dependency
-> management, h/t Naveen, and clarify the "'crash' vs 'SEPT violation'"
-> description.
+## Metric Fixes (compared to v5.10.235-229-g5b68aafded4a)
 
+## Test result summary
+total: 45273, pass: 32910, fail: 3086, skip: 9042, xfail: 235
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 102 total, 102 passed, 0 failed
+* arm64: 30 total, 30 passed, 0 failed
+* i386: 22 total, 22 passed, 0 failed
+* mips: 22 total, 22 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 21 total, 21 passed, 0 failed
+* riscv: 9 total, 9 passed, 0 failed
+* s390: 9 total, 9 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 26 total, 26 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
