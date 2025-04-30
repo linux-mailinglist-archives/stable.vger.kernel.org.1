@@ -1,95 +1,98 @@
-Return-Path: <stable+bounces-139247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D418AA57D8
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 00:06:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44225AA581A
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 00:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BBE33B511F
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 22:05:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BF421C03C06
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 22:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4819122425E;
-	Wed, 30 Apr 2025 22:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AB5226173;
+	Wed, 30 Apr 2025 22:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxonhyperv.com header.i=@linuxonhyperv.com header.b="iImSj47e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GjDEHKZ9"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FCD221729;
-	Wed, 30 Apr 2025 22:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E91E1BF37;
+	Wed, 30 Apr 2025 22:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746050764; cv=none; b=RkNYwKwbFsVg2zEfS+eQ3L61EPJ4FxKe02lgnfFCZOkcqqUvlpzuJznn3FpFyAyAYOJEKNjvIM2dxIBgR2Th2VoIz+QA1+ymQr2k1CuawwduRlJnDqDpjXZ9eLopjZkxw7uuPaNG+quQxmkJwTlG9EjX7NozeMDZj3nfX0YkRX0=
+	t=1746053222; cv=none; b=jyfSAG0CNsbgH39jsTJ77KAfnUmjIN+4NLUFXXQnLNoqC7OcDrWtK42PWNe3d1tPtlt/OnV3lo69IdL67ctLtc7VqiomKgabsG5s5VyvJBMzYIPFg5xubCUG4sGBC3QhVlDuOfq7LV21q9nsbfapuqF6dmcocYgTou9Qf0TH1gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746050764; c=relaxed/simple;
-	bh=5fuitnncfD5tDUPddDF+UDVEs5aeUDwBqWLUYZxf27Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=I5QqKK5H1dBAj3wAUhdQJLw3d7yu/4wB980ENk1GyjBvlEddWRNYSs7b0BEYWqVGfGbAbNIo06/N4VqyxZiv5cXe5Wr+SeD3weOL3Sgfqarf4tKAoATB6j1rFTFzd8QbB9QCxfFXAtbVEOs5BfdFgj+DRNN8/oTfdvb25E6tTKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxonhyperv.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linuxonhyperv.com header.i=@linuxonhyperv.com header.b=iImSj47e; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxonhyperv.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id 86A98204E7FE; Wed, 30 Apr 2025 15:06:02 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 86A98204E7FE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxonhyperv.com;
-	s=default; t=1746050762;
-	bh=cEirtZm/SmFjzm0Vy14RfmaUhYtp12qkUzkZo1lRLGU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iImSj47e07xsBznoeQZejw+4P9PkzBztTIYHqH5HzOisxe8kF32Im5Zu5RPLNfmAe
-	 N3xgl/l7sXhWbrUKmJxwd4csshn+X7AMecSc+A8liwJXMf2Ye83MdsnEUwPFfU529I
-	 7fJr1M+maMSvsMIPJx9QQdclIWboWJXu0CHDwZkk=
-From: longli@linuxonhyperv.com
-To: "K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Long Li <longli@microsoft.com>,
-	stable@vger.kernel.org
-Subject: [Patch v2 3/4] uio_hv_generic: Adjust ring size according to system page alignment
-Date: Wed, 30 Apr 2025 15:05:57 -0700
-Message-Id: <1746050758-6829-4-git-send-email-longli@linuxonhyperv.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1746050758-6829-1-git-send-email-longli@linuxonhyperv.com>
-References: <1746050758-6829-1-git-send-email-longli@linuxonhyperv.com>
+	s=arc-20240116; t=1746053222; c=relaxed/simple;
+	bh=CwfkAUiuzZvlN957gh6ypnyichX9ie86L7EkHdO2kVs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YsGdwvW57C8sf49qRnH7/IJwBT8Ns6paqy//x3oowshanVuGYTa4Ksbs+fmD9tlx/TK+Ds/lb3pmYc9qE1tPbGoUZOkZ+/PtFa5E7JhZBKgsa54vSntcGqIo2knvOxjBQOehVGXDem/DTEbExwLaoKHEb1ASytTShOD6mzmwJgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GjDEHKZ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFAFC4CEEC;
+	Wed, 30 Apr 2025 22:47:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746053222;
+	bh=CwfkAUiuzZvlN957gh6ypnyichX9ie86L7EkHdO2kVs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GjDEHKZ9dE+oao5m0LEtahDThT1r8o2Ll7Z9JsX+ffthyJEl96d663YXIUqALNoNw
+	 CmDyBhY0Rg7TpVfr+5/WoJuSxdvqk7z7365eulb7CayP5duK6dhhCU30zNQPv9apWJ
+	 y6GP4NJG/u9J58Q3fyDCXS94jNwTPikApb0O/4fApMIlAz7or/7ptuIb7AHqkNi4dP
+	 2wIjJSR6IUH85G/O3a1vc2jm1RLP5Mb382MiBTfs/FrUIhmrs7e6JPRhkTnRdaXByl
+	 14/HOTw+ui6mA2uENaJFpva/4BlwutkhraD5xTsaj9Y36H4HuK8sbsZ3B229FzRKf5
+	 Is54JiyfkiqJQ==
+Date: Thu, 1 May 2025 07:46:58 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.14 000/311] 6.14.5-rc1 review
+Message-ID: <aBKoYu0bBSW1Me0G@finisterre.sirena.org.uk>
+References: <20250429161121.011111832@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="MuThMWEnSRQ9pTtx"
+Content-Disposition: inline
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+X-Cookie: Well begun is half done.
 
-From: Long Li <longli@microsoft.com>
 
-Following the ring header, the ring data should align to system page
-boundary. Adjust the size if necessary.
+--MuThMWEnSRQ9pTtx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Cc: stable@vger.kernel.org
-Fixes: 95096f2fbd10 ("uio-hv-generic: new userspace i/o driver for VMBus")
-Signed-off-by: Long Li <longli@microsoft.com>
----
- drivers/uio/uio_hv_generic.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+On Tue, Apr 29, 2025 at 06:37:17PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.14.5 release.
+> There are 311 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
-index 08385b04c4ab..dfc5f0e1a254 100644
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -256,6 +256,12 @@ hv_uio_probe(struct hv_device *dev,
- 	if (!ring_size)
- 		ring_size = SZ_2M;
- 
-+	/*
-+	 * Adjust ring size if necessary to have the ring data region page
-+	 * aligned
-+	 */
-+	ring_size = VMBUS_RING_SIZE(ring_size);
-+
- 	pdata = devm_kzalloc(&dev->device, sizeof(*pdata), GFP_KERNEL);
- 	if (!pdata)
- 		return -ENOMEM;
--- 
-2.34.1
+Tested-by: Mark Brown <broonie@kernel.org>
 
+--MuThMWEnSRQ9pTtx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmgSqF8ACgkQJNaLcl1U
+h9DLZgf+PJ37oHPLUlMfHJ/vpvN8iDiKjynOg6/UHzyDYseKHsW4W3PIfAEG9eTg
+WXxvnxb2Gb/8WWvyNFdgqmVQcSkuBVHWtrVejt8vd/CO+RZzbjeqnjkLowTlIOku
+aL07ULXlR0ji1rbhPhJ+j+UHVV92jse7OMNWk06lBfCcQFMyAYXeY4FhZI+a88sU
+28B23vcAlawMFTVR+dwhTN0U3ZWdZbVLrfqwhs6WyGlbVeTr7gy+cF+gmbNc262R
+VE+2irp2t+RUNKTpLemwKYR2hRGdRYKY9XR144MKsBuJ5bPmC2Bw3x1jTQDbxUeK
+elb0HYF9Z2GLIOenTqMSJ4gJCHtPOg==
+=uiKV
+-----END PGP SIGNATURE-----
+
+--MuThMWEnSRQ9pTtx--
 
