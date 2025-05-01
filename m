@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-139363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF292AA637C
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 21:09:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE11FAA637B
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 21:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DAB57A8501
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 19:08:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B12BF1BA7234
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 19:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E15224AE8;
-	Thu,  1 May 2025 19:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2913C224AE1;
+	Thu,  1 May 2025 19:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQXcZXPz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uo64JNte"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F5A215191
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 19:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD269215191
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 19:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746126569; cv=none; b=kw5YYB12OTdYSh4/XufIUBpm4TbbveOVspHfhRWq2yFSXgLY09OzNVUQPR+1lsZuVcwTWrJNOaBVk5VhWdWAohVaK7usqZ35e4jeBcttKn4yGxN83dnBXvToIV82HZVDcBazTJ+sA/2s90GlCFliQAm8JUHS2gkSvXjd5s0WERg=
+	t=1746126573; cv=none; b=PVJi+xhvw/znuKXH4s/vVxtzyjH9cT4j6axRyEOPUfo4R5tCj1lJMkGSCQw33s2tXPX5s4a/GHSbS1fY1//s9XeT51GwWX5U0F7pmS5fRKc4Tw4GQ/eDzDozcB82G3CZJlObycQFvV23gECzE53k3sjxX8R3i1WSGcF4zi204CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746126569; c=relaxed/simple;
-	bh=Ymw7/J5VZdnlW0O3I0KoVBcFxJ0Av/H13RPuot4wNhA=;
+	s=arc-20240116; t=1746126573; c=relaxed/simple;
+	bh=iTahMr5zkQOW2qCM4b+tnGfaB2uhM69cFspQFDLpDCA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ExP80dZjAIzoO4AJ/loeB7hGOY1Dr/PJNlwGkhcI52ezkKWWyVPfSIWWoi/MBWlhNnbTjq6FZiASGdD9Clw0NjDeVM1j5hX8lq0tfdWUhWGW+VaismQtnkDX4A9BRhGympINxL0TcUdYruW3MMJP6fZBmzioB236IWa4W7Weyms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQXcZXPz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DE8C4CEE3;
-	Thu,  1 May 2025 19:09:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qlejOIYbaGl1IVALtn65MVERDQfGCD2KAsN5SS671DYAN5yRKFWJ+qnd5i149yQ6eNLVQ17tmlIj2C6/5WME6BV3j/0RLklLQ9C3I2yznHOUshVWS7/qraoomVm5h2QmBwBZs8TJQvDCyMJSNkVVVg2HwNI32mxeWSQyP3UqgT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uo64JNte; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0719C4CEE3;
+	Thu,  1 May 2025 19:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746126568;
-	bh=Ymw7/J5VZdnlW0O3I0KoVBcFxJ0Av/H13RPuot4wNhA=;
+	s=k20201202; t=1746126573;
+	bh=iTahMr5zkQOW2qCM4b+tnGfaB2uhM69cFspQFDLpDCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQXcZXPzYywz1anEd5xk6c4LqOoB5TtyTVibsj8GbrLHr2Eigq8F1OrovkdqjF+Eo
-	 AIbfCUNGEvb+qyvit3p+RRsf26Wltm9UxlyRaOBzvXy2akO3f2pvUBbs+T60+wYaFK
-	 zTQXrS7MEliu5w6LVZObDRvtvy4AZxitmyvmpOgKy3ZVpAR/M3K6k7jZz17G67rP/9
-	 du0D8dJ3pUSw107HUzEJwCHK0Ad05QQT0PwwdVBNxYZtAGOPgnHgsCbPFNKmhPb3ad
-	 xigwbFsiCNimqornw97AQo1H8UyPU7M6byxDg7wja6Qk/QEn6783j2++/1phqe+YQw
-	 EncvxSvRFfiNA==
+	b=Uo64JNteogRFI4lq+NpDjZouw0KBiwd4OmwyEk9CylWp4YsY4rULN4NKYenOBb4zW
+	 NTSycp8EfwkwIM0iqcJzsq2DyWTAM1OGv3XjQeSypxgv+Z9PbcQqOL944cLsjmv1ID
+	 hdSZGTjPi9ZIRSd8hgWi/8IoY/2LtGIWN6a3Gdv4y9IrKx8SB6Vyf61nf7Xx+ghyFW
+	 WatrSVKBiioBQPU7+bGAS6bEa6fTora1V/jqDj7E3s8295/SQsPJLZk62VzMX1kJNU
+	 mhvUPQvKdLlX/bgh1Hd5tUuqyAs8mlPZ7bQvPy4lEOV8aqqDHnAefD4FnoUy+ABKTk
+	 qH31PO126IXPg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+Cc: Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 6.6 01/10] bpf: add find_containing_subprog() utility function
-Date: Thu,  1 May 2025 15:09:25 -0400
-Message-Id: <20250501083958-b636338006a7ad86@stable.kernel.org>
+Subject: Re: [PATCH 6.1 05/16] xfs: check opcode and iovec count match in xlog_recover_attri_commit_pass2
+Date: Thu,  1 May 2025 15:09:29 -0400
+Message-Id: <20250501123725-3f7730266aefb5be@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250430081955.49927-2-shung-hsi.yu@suse.com>
+In-Reply-To:  <20250430212704.2905795-6-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,35 +67,36 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 27e88bc4df1d80888fe1aaca786a7cc6e69587e2
+The upstream commit SHA1 provided is correct: ad206ae50eca62836c5460ab5bbf2a6c59a268e7
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Shung-Hsi Yu<shung-hsi.yu@suse.com>
-Commit author: Eduard Zingerman<eddyz87@gmail.com>
+Backport author: Leah Rumancik<leah.rumancik@gmail.com>
+Commit author: Darrick J. Wong<djwong@kernel.org>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
-6.12.y | Present (different SHA1: d30b9c5950e0)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 0934046e3392)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  27e88bc4df1d8 ! 1:  a412775f370f7 bpf: add find_containing_subprog() utility function
+1:  ad206ae50eca6 ! 1:  6bab668a662e3 xfs: check opcode and iovec count match in xlog_recover_attri_commit_pass2
     @@ Metadata
       ## Commit message ##
-         bpf: add find_containing_subprog() utility function
+         xfs: check opcode and iovec count match in xlog_recover_attri_commit_pass2
      
-    +    commit 27e88bc4df1d80888fe1aaca786a7cc6e69587e2 upstream.
+    +    [ Upstream commit ad206ae50eca62836c5460ab5bbf2a6c59a268e7 ]
     +
-         Add a utility function, looking for a subprogram containing a given
-         instruction index, rewrite find_subprog() to use this function.
+         Check that the number of recovered log iovecs is what is expected for
+         the xattri opcode is expecting.
      
-         Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-         Link: https://lore.kernel.org/r/20241210041100.1898468-2-eddyz87@gmail.com
-         Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-    +    Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+         Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+         Reviewed-by: Christoph Hellwig <hch@lst.de>
+    +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+    +    Acked-by: "Darrick J. Wong" <djwong@kernel.org>
      
-      ## kernel/bpf/verifier.c ##
-     @@ kernel/bpf/verifier.c: static int cmp_subprogs(const void *a, const void *b)
+      ## fs/xfs/xfs_attr_item.c ##
+     @@ fs/xfs/xfs_attr_item.c: xlog_recover_attri_commit_pass2(
 ---
 
 Results of testing on various branches:
