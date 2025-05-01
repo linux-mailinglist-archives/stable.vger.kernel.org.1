@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-139343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E3CAA631C
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 20:50:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E44E0AA631D
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 20:50:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A4521BC3895
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 18:51:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6CD41BC3071
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 18:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B099D2153FB;
-	Thu,  1 May 2025 18:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548611EDA2B;
+	Thu,  1 May 2025 18:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U/faZiYB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TAaA0acz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6001C1F22
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 18:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C511C1F22
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 18:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746125449; cv=none; b=sOQgEDk9A/WwXa108PajxFizWwRMAfsG1UaRmRvBAAm05jmDayfH8sbkheGusA5HD4O6tDcJ6bXX4ELxz6ThM/4RmSvD207lmEJfcX8Cp2NcEel68eNIMlkZzz2mhFVX3h8UEQF5gyTqkGgJllf+wkVgnayhJxCUzXgcbhOSOb8=
+	t=1746125453; cv=none; b=fcJ2fOWfOca/pyoy++qS/iqZKgwLi1c0etlvUPRqarjLUs+WUzLKjaAsNrO21ZPIoKBRtmruoU5PHJLZe5EQEQBBwsUADJlQhCqOpxiWHkg9ZEfTipusib93mub3FS83bawD0wTjafzcLALlx0YQg+cYMWsjtwXDKwBeAnCzAPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746125449; c=relaxed/simple;
-	bh=jJkzSeHW5Us6yTYCx7prZ++jcwPFAH7f2w3efuH0w9Q=;
+	s=arc-20240116; t=1746125453; c=relaxed/simple;
+	bh=eT93La1TZ3RSttng92Gt7G/VM23x19yvZo9h9yOQRQg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q5zJiH9Yy0SvGvMOtQgC3WdPugb26Zz+HEdBYBjIiAJei5VoyfAXzouQ6+BmdkBniHe/PFqF8fa79ov018jCPLMyWAsHIQIOQ1XJOtGGQu/e8v3a6UM4DAJF+sPHFJBrNk49ra6ZCLrJasMvVpYM3hqAHEjJrfGfnsp2altIziI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U/faZiYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9782C4CEE3;
-	Thu,  1 May 2025 18:50:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n1cpFhzk0xK4WMwaxLGogPg0zcUTwQd30A+xoGRaR1jjQsE741XI5NFoVmYBTpmqzs/+xbJ4hzrr6FOIeQ0lMt20xbGnnELtPwg/IRNQABDQmMzyHlsreo/xZcur/JcmiZw6/r0Skb1O8888JidsWaS6J2byuddPWPkK/Dvd2RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TAaA0acz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67AC5C4CEE3;
+	Thu,  1 May 2025 18:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746125449;
-	bh=jJkzSeHW5Us6yTYCx7prZ++jcwPFAH7f2w3efuH0w9Q=;
+	s=k20201202; t=1746125452;
+	bh=eT93La1TZ3RSttng92Gt7G/VM23x19yvZo9h9yOQRQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U/faZiYBfJNh5/WQ8YJJTeIq6L965/xFmW7cXLoyWxbZvYfoqDWKM8h/BggenUovW
-	 qEGPFrhkzhiX7UDFos01DHVL/+U1SsMqa5CEttOS6xqSLWWCUAv0YrvlX2rzAhxqH8
-	 D5Q4J8Rzwh/fX1Lp3iL4bu1dFgTOAbpinKRxtKy2tXcumfBEE6+neAOGs+xCea5VT7
-	 98dCf/B5CTm8ppgU575fdh2jkImHh29+2hQwn0msNXcYTDhIYD5V9s+5uotlQNS7xM
-	 tkXKUScxXpBPa8Zb1nvqQa5pAtdsVGULNVCMt/JHldFS8aagyuP/dcjQqudBztIZye
-	 MltbIYAAMULWQ==
+	b=TAaA0aczLuvb8oyCQvwTb9zlnzQ86kdZYSt5puqIT7eLJzKAtOL+h3G14BiwjzOHz
+	 oM98LJPH/MyL3dAKpqxQHufJg2lHMVgbEET0Br56z7YobOD5kd/FrEW598uiiYCTZT
+	 2J4tV/OkHvROqxbLIpThXrD+5eJBaTfFdkxvQNVG48xlXAurBvWfZFXL9nRdER3k6w
+	 dLRzId0gj2YGtu+lYXoDSn/KwvWkW9kvek89+gkjJqB5P1TiEbgjn88U1UHSvHwFI0
+	 cndj+61WUYCR6e7MakezaB3SeS7JUVKyPYoV2Kl4SvizeHyYazy2u4X/1RmY+773UR
+	 46tcuRMAJsQew==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+Cc: Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 3/3] accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW
-Date: Thu,  1 May 2025 14:50:45 -0400
-Message-Id: <20250501082936-e734b2a44cc50c49@stable.kernel.org>
+Subject: Re: [PATCH 6.1 13/16] xfs: make sure sb_fdblocks is non-negative
+Date: Thu,  1 May 2025 14:50:49 -0400
+Message-Id: <20250501130919-15c9ae15571a8247@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250430123653.3748811-4-jacek.lawrynowicz@linux.intel.com>
+In-Reply-To:  <20250430212704.2905795-14-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,55 +67,43 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: dad945c27a42dfadddff1049cf5ae417209a8996
+The upstream commit SHA1 provided is correct: 58f880711f2ba53fd5e959875aff5b3bf6d5c32e
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Jacek Lawrynowicz<jacek.lawrynowicz@linux.intel.com>
-Commit author: Karol Wachowski<karol.wachowski@intel.com>
+Backport author: Leah Rumancik<leah.rumancik@gmail.com>
+Commit author: Wengang Wang<wen.gang.wang@oracle.com>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 0e52b98bf041)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  dad945c27a42d ! 1:  2c62f69a5a389 accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW
+1:  58f880711f2ba ! 1:  621457ef92ee7 xfs: make sure sb_fdblocks is non-negative
     @@ Metadata
       ## Commit message ##
-         accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW
+         xfs: make sure sb_fdblocks is non-negative
      
-    +    commit dad945c27a42dfadddff1049cf5ae417209a8996 upstream.
+    +    [ Upstream commit 58f880711f2ba53fd5e959875aff5b3bf6d5c32e ]
     +
-         Mark as invalid context of a job that returned HW context violation
-         error and queue work that aborts jobs from faulty context.
-         Add engine reset to the context abort thread handler to not only abort
-         currently executing jobs but also to ensure NPU invalid state recovery.
+         A user with a completely full filesystem experienced an unexpected
+         shutdown when the filesystem tried to write the superblock during
+         runtime.
+    @@ Commit message
+         Signed-off-by: Wengang Wang <wen.gang.wang@oracle.com>
+         Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+    +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+    +    Acked-by: "Darrick J. Wong" <djwong@kernel.org>
      
-    +    Cc: <stable@vger.kernel.org> # v6.14
-         Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
-         Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-         Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-    @@ drivers/accel/ivpu/ivpu_job.c: static int ivpu_job_signal_and_destroy(struct ivp
-      	job = ivpu_job_remove_from_submitted_jobs(vdev, job_id);
-      	if (!job)
-      		return -ENOENT;
-    -@@ drivers/accel/ivpu/ivpu_job.c: void ivpu_context_abort_work_fn(struct work_struct *work)
-    - 	unsigned long ctx_id;
-    +@@ drivers/accel/ivpu/ivpu_job.c: void ivpu_context_abort_thread_handler(struct work_struct *work)
-    + 	struct ivpu_job *job;
-      	unsigned long id;
-      
-     +	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
-    @@ drivers/accel/ivpu/ivpu_job.c: void ivpu_context_abort_work_fn(struct work_struc
-      	mutex_lock(&vdev->context_list_lock);
-      	xa_for_each(&vdev->context_xa, ctx_id, file_priv) {
-      		if (!file_priv->has_mmu_faults || file_priv->aborted)
-    -@@ drivers/accel/ivpu/ivpu_job.c: void ivpu_context_abort_work_fn(struct work_struct *work)
-    +@@ drivers/accel/ivpu/ivpu_job.c: void ivpu_context_abort_thread_handler(struct work_struct *work)
-      
-      	if (vdev->fw->sched_mode != VPU_SCHEDULING_MODE_HW)
-      		return;
+      ## fs/xfs/libxfs/xfs_sb.c ##
+     @@ fs/xfs/libxfs/xfs_sb.c: xfs_log_sb(
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
