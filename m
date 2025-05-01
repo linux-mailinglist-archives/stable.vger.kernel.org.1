@@ -1,181 +1,126 @@
-Return-Path: <stable+bounces-139287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD330AA5B9B
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 09:52:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4714FAA5BA1
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 09:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC5F89A0486
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 07:51:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEE4B1BC5184
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 07:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915B0278146;
-	Thu,  1 May 2025 07:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDF6270EA6;
+	Thu,  1 May 2025 07:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUTmkSKD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPAPcku4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F36277814
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 07:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DAC1D89E3;
+	Thu,  1 May 2025 07:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746085896; cv=none; b=croUeUUF/zjfuZDGdkWM5iCv4wch49zNsY3MJQn9apcGQdeiPKNVN3uWhIVA964GlV9JK6bdXFirxR241PcxxuIjaX4DNKahV/VUrAZdTms/Zwto+Zn7pkv0Y08SYE3XDfQ/mMii0nQhQZhCMyFOkjKcDrzoJI8MC4dOXNY16A0=
+	t=1746085938; cv=none; b=NgSrYotWZDwQkADSmY0LRiLpWdO0D9mwtAz6tau+wlP8Qy5LBtmCKh5GCeBu2EaJJhNV+2qhJdUxzFS7mr71O1kq83lvD5RYdmcKesPSWpIxwXRlL7YUJhKchzisZXsowFWrgzyPkYMNrJ4riePQwUD0LtSPNoqAmyxJesjco0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746085896; c=relaxed/simple;
-	bh=mlrnJoxmZEVZ08a2TOjNcbtVh9rzOtKPyT0d6LNENWY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jOQ04DykCbTrM5khNMnIqbBq1+o3f9xoQFyPMHyuYtV1UTtC++lKhnSwTbPhHKGvRA0YgQ/f7WCQiQ3iBAuexyPIVTavMv/qmIqdaYm2hNNnGyOxkHI7t8lcGoQbl6FS9tzHdnWaODxI8ac6pQ/rGZzoYJTAi10erac8K/iIlzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUTmkSKD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A75C4CEE3;
-	Thu,  1 May 2025 07:51:35 +0000 (UTC)
+	s=arc-20240116; t=1746085938; c=relaxed/simple;
+	bh=izlfaK1RNQxEYzP8Zd0NG4A9sGlEsEUuEPRhVTxZof4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jLqUtlYXTdWgpNOfWyTzVWVltyRxTwqi7jUoDyukAB8jpdY3Eb87Zj1aMxOZOKmiT7GqmhKTyp/1oyB+TMUa9uhoTieSSvwueilO3nUB0jWnjOSVFfSkvtOSb2zv3GShTPizIsWqOAT5Zil3XgbV6UK88IdClrc2gskAVNNHoaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPAPcku4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81035C4CEE3;
+	Thu,  1 May 2025 07:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746085896;
-	bh=mlrnJoxmZEVZ08a2TOjNcbtVh9rzOtKPyT0d6LNENWY=;
-	h=Subject:To:Cc:From:Date:From;
-	b=tUTmkSKDUpnCmCZ9m4wP1/i19FilyY2QxEMpR4nIOYJEFJXWGnugvo1vAi7R2gxWK
-	 9hzV2xpAuUqkSAROftT655MCT3wOEmX97RNO+IyJhZu4I7lbk/XoCkJT+nWerDshoE
-	 tYYGU3+O/Xyj5K3WwsVW0EYN50zWYXcKD0TFVoPo=
-Subject: FAILED: patch "[PATCH] net: phy: microchip: force IRQ polling mode for lan88xx" failed to apply to 6.1-stable tree
-To: fiona.klute@gmx.de,andrew@lunn.ch,pabeni@redhat.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 01 May 2025 09:51:33 +0200
-Message-ID: <2025050133-volatile-kite-71c2@gregkh>
+	s=korg; t=1746085938;
+	bh=izlfaK1RNQxEYzP8Zd0NG4A9sGlEsEUuEPRhVTxZof4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XPAPcku4K99G3AWbOuL5gAw5Og8AZPeXtYEz1rZTNolwRbHFA8uNiE1WG8U3BNwuB
+	 SM7rRHY/For/nWBNfaIiZlA+qWxQp3B7qUrKmxCxdZw2FYaVq7KnHW+4cztD1WaDec
+	 osskfBBXmvaYYuxiJalPNCs1shvwvnm39mw0KG7s=
+Date: Thu, 1 May 2025 09:52:15 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.1 000/167] 6.1.136-rc1 review
+Message-ID: <2025050157-various-octane-094c@gregkh>
+References: <20250429161051.743239894@linuxfoundation.org>
+ <aBKrKvYpCKWcoOGI@finisterre.sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aBKrKvYpCKWcoOGI@finisterre.sirena.org.uk>
 
+On Thu, May 01, 2025 at 07:58:50AM +0900, Mark Brown wrote:
+> On Tue, Apr 29, 2025 at 06:41:48PM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.136 release.
+> > There are 167 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> 
+> This breaks NFS boot on the Raspberry Pi 3+, the same issue appears in
+> 5.15.  We don't appear to get any incoming traffic:
+> 
+>   Begin: Waiting up to 180 secs for any network device to become available ... done.
+>   IP-Config: enxb827eb57f534 hardware address b8:27:eb:57:f5:34 mt[   16.127316] lan78xx 1-1.1.1:1.0 enxb827eb57f534: Link is Down
+>   u 1500 DHCP
+>   [   16.840932] brcmfmac: brcmf_sdio_htclk: HT Avail timeout (1000000): clkctl 0x50
+>   IP-Config: no response after 2 secs - giving up
+>   IP-Config: enxb827eb57f534 hardware address b8:27:eb:57:f5:34 mtu 1500 DHCP
+> 
+> There was a similar issue in mainline last release, I can't remember the
+> exact fix though.
+> 
+> A bisect identifies "net: phy: microchip: force IRQ polling mode for
+> lan88xx" as the problematic commit.
+> 
+> # bad: [c77e7bf5aa741c165e37394b3adb82bcb3cd9918] Linux 5.15.181-rc1
+> # good: [f7347f4005727f3155551c0550f4deb9c40b56c2] Linux 5.15.180
+> git bisect start 'c77e7bf5aa741c165e37394b3adb82bcb3cd9918' 'f7347f4005727f3155551c0550f4deb9c40b56c2'
+> # test job: [c77e7bf5aa741c165e37394b3adb82bcb3cd9918] https://lava.sirena.org.uk/scheduler/job/1340356
+> # bad: [c77e7bf5aa741c165e37394b3adb82bcb3cd9918] Linux 5.15.181-rc1
+> git bisect bad c77e7bf5aa741c165e37394b3adb82bcb3cd9918
+> # test job: [9599afaa6d1a303c39918a477f76fe8cc9534115] https://lava.sirena.org.uk/scheduler/job/1340569
+> # good: [9599afaa6d1a303c39918a477f76fe8cc9534115] KVM: arm64: Always start with clearing SVE flag on load
+> git bisect good 9599afaa6d1a303c39918a477f76fe8cc9534115
+> # test job: [714307f60a32bfc44a0767e9b0fc66a841d2b8f6] https://lava.sirena.org.uk/scheduler/job/1340691
+> # good: [714307f60a32bfc44a0767e9b0fc66a841d2b8f6] kmsan: disable strscpy() optimization under KMSAN
+> git bisect good 714307f60a32bfc44a0767e9b0fc66a841d2b8f6
+> # test job: [db8fb490436bd100da815da4e775b51b01e42df2] https://lava.sirena.org.uk/scheduler/job/1341008
+> # bad: [db8fb490436bd100da815da4e775b51b01e42df2] s390/sclp: Add check for get_zeroed_page()
+> git bisect bad db8fb490436bd100da815da4e775b51b01e42df2
+> # test job: [4757e8122001124752d7854bec726a61c60ae36a] https://lava.sirena.org.uk/scheduler/job/1341258
+> # bad: [4757e8122001124752d7854bec726a61c60ae36a] USB: storage: quirk for ADATA Portable HDD CH94
+> git bisect bad 4757e8122001124752d7854bec726a61c60ae36a
+> # test job: [1f079f1c5fcf13295fc1b583268cc53c80492cfb] https://lava.sirena.org.uk/scheduler/job/1341360
+> # good: [1f079f1c5fcf13295fc1b583268cc53c80492cfb] tipc: fix NULL pointer dereference in tipc_mon_reinit_self()
+> git bisect good 1f079f1c5fcf13295fc1b583268cc53c80492cfb
+> # test job: [cee5176a98accc550585680213f71d1d307a2e9a] https://lava.sirena.org.uk/scheduler/job/1341449
+> # good: [cee5176a98accc550585680213f71d1d307a2e9a] virtio_console: fix missing byte order handling for cols and rows
+> git bisect good cee5176a98accc550585680213f71d1d307a2e9a
+> # test job: [5e9fff164f2e60ade9282ee30ad3293eb6312f0e] https://lava.sirena.org.uk/scheduler/job/1341692
+> # bad: [5e9fff164f2e60ade9282ee30ad3293eb6312f0e] drm/amd/display: Fix gpu reset in multidisplay config
+> git bisect bad 5e9fff164f2e60ade9282ee30ad3293eb6312f0e
+> # test job: [ecc30d7f041daf7de7d0d554ebeeaec1a0870e53] https://lava.sirena.org.uk/scheduler/job/1341795
+> # bad: [ecc30d7f041daf7de7d0d554ebeeaec1a0870e53] net: phy: microchip: force IRQ polling mode for lan88xx
+> git bisect bad ecc30d7f041daf7de7d0d554ebeeaec1a0870e53
+> # test job: [40dc7515d0b13057d576610a8dd23ccb42d4259f] https://lava.sirena.org.uk/scheduler/job/1341924
+> # good: [40dc7515d0b13057d576610a8dd23ccb42d4259f] net: selftests: initialize TCP header and skb payload with zero
+> git bisect good 40dc7515d0b13057d576610a8dd23ccb42d4259f
+> # first bad commit: [ecc30d7f041daf7de7d0d554ebeeaec1a0870e53] net: phy: microchip: force IRQ polling mode for lan88xx
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 30a41ed32d3088cd0d682a13d7f30b23baed7e93
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050133-volatile-kite-71c2@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
+Thanks for the bisection, I'll go drop this from 5.15.y and 6.1.y now.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 30a41ed32d3088cd0d682a13d7f30b23baed7e93 Mon Sep 17 00:00:00 2001
-From: Fiona Klute <fiona.klute@gmx.de>
-Date: Wed, 16 Apr 2025 12:24:13 +0200
-Subject: [PATCH] net: phy: microchip: force IRQ polling mode for lan88xx
-
-With lan88xx based devices the lan78xx driver can get stuck in an
-interrupt loop while bringing the device up, flooding the kernel log
-with messages like the following:
-
-lan78xx 2-3:1.0 enp1s0u3: kevent 4 may have been dropped
-
-Removing interrupt support from the lan88xx PHY driver forces the
-driver to use polling instead, which avoids the problem.
-
-The issue has been observed with Raspberry Pi devices at least since
-4.14 (see [1], bug report for their downstream kernel), as well as
-with Nvidia devices [2] in 2020, where disabling interrupts was the
-vendor-suggested workaround (together with the claim that phylib
-changes in 4.9 made the interrupt handling in lan78xx incompatible).
-
-Iperf reports well over 900Mbits/sec per direction with client in
---dualtest mode, so there does not seem to be a significant impact on
-throughput (lan88xx device connected via switch to the peer).
-
-[1] https://github.com/raspberrypi/linux/issues/2447
-[2] https://forums.developer.nvidia.com/t/jetson-xavier-and-lan7800-problem/142134/11
-
-Link: https://lore.kernel.org/0901d90d-3f20-4a10-b680-9c978e04ddda@lunn.ch
-Fixes: 792aec47d59d ("add microchip LAN88xx phy driver")
-Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-Cc: kernel-list@raspberrypi.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250416102413.30654-1-fiona.klute@gmx.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-
-diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
-index 0e17cc458efd..93de88c1c8fd 100644
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -37,47 +37,6 @@ static int lan88xx_write_page(struct phy_device *phydev, int page)
- 	return __phy_write(phydev, LAN88XX_EXT_PAGE_ACCESS, page);
- }
- 
--static int lan88xx_phy_config_intr(struct phy_device *phydev)
--{
--	int rc;
--
--	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
--		/* unmask all source and clear them before enable */
--		rc = phy_write(phydev, LAN88XX_INT_MASK, 0x7FFF);
--		rc = phy_read(phydev, LAN88XX_INT_STS);
--		rc = phy_write(phydev, LAN88XX_INT_MASK,
--			       LAN88XX_INT_MASK_MDINTPIN_EN_ |
--			       LAN88XX_INT_MASK_LINK_CHANGE_);
--	} else {
--		rc = phy_write(phydev, LAN88XX_INT_MASK, 0);
--		if (rc)
--			return rc;
--
--		/* Ack interrupts after they have been disabled */
--		rc = phy_read(phydev, LAN88XX_INT_STS);
--	}
--
--	return rc < 0 ? rc : 0;
--}
--
--static irqreturn_t lan88xx_handle_interrupt(struct phy_device *phydev)
--{
--	int irq_status;
--
--	irq_status = phy_read(phydev, LAN88XX_INT_STS);
--	if (irq_status < 0) {
--		phy_error(phydev);
--		return IRQ_NONE;
--	}
--
--	if (!(irq_status & LAN88XX_INT_STS_LINK_CHANGE_))
--		return IRQ_NONE;
--
--	phy_trigger_machine(phydev);
--
--	return IRQ_HANDLED;
--}
--
- static int lan88xx_suspend(struct phy_device *phydev)
- {
- 	struct lan88xx_priv *priv = phydev->priv;
-@@ -528,8 +487,9 @@ static struct phy_driver microchip_phy_driver[] = {
- 	.config_aneg	= lan88xx_config_aneg,
- 	.link_change_notify = lan88xx_link_change_notify,
- 
--	.config_intr	= lan88xx_phy_config_intr,
--	.handle_interrupt = lan88xx_handle_interrupt,
-+	/* Interrupt handling is broken, do not define related
-+	 * functions to force polling.
-+	 */
- 
- 	.suspend	= lan88xx_suspend,
- 	.resume		= genphy_resume,
-
 
