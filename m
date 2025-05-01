@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-139342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082A8AA631B
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 20:50:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E3CAA631C
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 20:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6F0C9A69CF
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 18:50:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A4521BC3895
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 18:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3351EDA2B;
-	Thu,  1 May 2025 18:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B099D2153FB;
+	Thu,  1 May 2025 18:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHkygMSb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U/faZiYB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6671C1F22
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 18:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6001C1F22
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 18:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746125446; cv=none; b=BrCovgAq2gs5cjyu4htDUcaa8C7+Q15Tx4/HVldIfrIOJHMg6MZ9zP71Xyw3QsJ6PU+LAtaot1Cg+Kn4sf4ZajtzcPeKUvo0MIJC6tlCZBcv8fKmFb7J2TNcy6DzSUqOpEHQ5B2YKnrQAaddKnKc9FQJl5GfG9iYJt6MSGa9BSY=
+	t=1746125449; cv=none; b=sOQgEDk9A/WwXa108PajxFizWwRMAfsG1UaRmRvBAAm05jmDayfH8sbkheGusA5HD4O6tDcJ6bXX4ELxz6ThM/4RmSvD207lmEJfcX8Cp2NcEel68eNIMlkZzz2mhFVX3h8UEQF5gyTqkGgJllf+wkVgnayhJxCUzXgcbhOSOb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746125446; c=relaxed/simple;
-	bh=uvePt0uFGHVLoGf6WYLqCsp01yu+o9DqXCscSBXgWWQ=;
+	s=arc-20240116; t=1746125449; c=relaxed/simple;
+	bh=jJkzSeHW5Us6yTYCx7prZ++jcwPFAH7f2w3efuH0w9Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GSpIm/qHBWXjMU0K7s4d17qzlovHkjEOTUSVdc6j3lbeL8bXWrQLGBgXl3hs3nMYKUJgiRI8DxGMh7qlcAwt1JPXHwO/jFbugmtswGy9y/kU9C1oEehnqKTwa9ydAn889aKXQCDY4ZCOrJJNIDuH3X1wdsE4B0norWkHAKkXGzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHkygMSb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE847C4CEE3;
-	Thu,  1 May 2025 18:50:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q5zJiH9Yy0SvGvMOtQgC3WdPugb26Zz+HEdBYBjIiAJei5VoyfAXzouQ6+BmdkBniHe/PFqF8fa79ov018jCPLMyWAsHIQIOQ1XJOtGGQu/e8v3a6UM4DAJF+sPHFJBrNk49ra6ZCLrJasMvVpYM3hqAHEjJrfGfnsp2altIziI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U/faZiYB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9782C4CEE3;
+	Thu,  1 May 2025 18:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746125445;
-	bh=uvePt0uFGHVLoGf6WYLqCsp01yu+o9DqXCscSBXgWWQ=;
+	s=k20201202; t=1746125449;
+	bh=jJkzSeHW5Us6yTYCx7prZ++jcwPFAH7f2w3efuH0w9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHkygMSbjzYd12Ojrh9gO3Gvw/GbsjbB8iw9mWw29TLHt3nXOJuhMMcZDpwSs9FuD
-	 +I2twC5XrvRGBSEJJpVeNpNxe4wPN1KtTeSHdVYuTm8X1uAAPBNx09FldNh3Y07vR/
-	 FIor5aABeNzh9Ldy+2olBsYQ6REWunfEBO/GyhqdSXprrggQX6XcpwgUUuMzSiB3an
-	 15402o4iHWw8Yv9zUtrHKm3n17nFxdgWI3FSbe9xFeJtwUr0ZxbIKbWVMP6CzIHcHd
-	 gZTXxh1FQujBYPEQo4ncVaA7FsQpTWAzzfRGAEBBvANG8CxfZ1HcSvlJDC1yjpHyT8
-	 czSPInvlnFIzw==
+	b=U/faZiYBfJNh5/WQ8YJJTeIq6L965/xFmW7cXLoyWxbZvYfoqDWKM8h/BggenUovW
+	 qEGPFrhkzhiX7UDFos01DHVL/+U1SsMqa5CEttOS6xqSLWWCUAv0YrvlX2rzAhxqH8
+	 D5Q4J8Rzwh/fX1Lp3iL4bu1dFgTOAbpinKRxtKy2tXcumfBEE6+neAOGs+xCea5VT7
+	 98dCf/B5CTm8ppgU575fdh2jkImHh29+2hQwn0msNXcYTDhIYD5V9s+5uotlQNS7xM
+	 tkXKUScxXpBPa8Zb1nvqQa5pAtdsVGULNVCMt/JHldFS8aagyuP/dcjQqudBztIZye
+	 MltbIYAAMULWQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6/7] accel/ivpu: Fix locking order in ivpu_job_submit
-Date: Thu,  1 May 2025 14:50:40 -0400
-Message-Id: <20250501115927-1f5655c461306399@stable.kernel.org>
+Subject: Re: [PATCH 3/3] accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW
+Date: Thu,  1 May 2025 14:50:45 -0400
+Message-Id: <20250501082936-e734b2a44cc50c49@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250430124819.3761263-7-jacek.lawrynowicz@linux.intel.com>
+In-Reply-To:  <20250430123653.3748811-4-jacek.lawrynowicz@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,7 +67,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: ab680dc6c78aa035e944ecc8c48a1caab9f39924
+The upstream commit SHA1 provided is correct: dad945c27a42dfadddff1049cf5ae417209a8996
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Jacek Lawrynowicz<jacek.lawrynowicz@linux.intel.com>
@@ -75,8 +75,42 @@ Commit author: Karol Wachowski<karol.wachowski@intel.com>
 
 Note: The patch differs from the upstream commit:
 ---
-1:  ab680dc6c78aa < -:  ------------- accel/ivpu: Fix locking order in ivpu_job_submit
--:  ------------- > 1:  ea061bad207e1 Linux 6.14.4
+1:  dad945c27a42d ! 1:  2c62f69a5a389 accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW
+    @@ Metadata
+      ## Commit message ##
+         accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW
+     
+    +    commit dad945c27a42dfadddff1049cf5ae417209a8996 upstream.
+    +
+         Mark as invalid context of a job that returned HW context violation
+         error and queue work that aborts jobs from faulty context.
+         Add engine reset to the context abort thread handler to not only abort
+         currently executing jobs but also to ensure NPU invalid state recovery.
+     
+    +    Cc: <stable@vger.kernel.org> # v6.14
+         Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
+         Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+         Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+    @@ drivers/accel/ivpu/ivpu_job.c: static int ivpu_job_signal_and_destroy(struct ivp
+      	job = ivpu_job_remove_from_submitted_jobs(vdev, job_id);
+      	if (!job)
+      		return -ENOENT;
+    -@@ drivers/accel/ivpu/ivpu_job.c: void ivpu_context_abort_work_fn(struct work_struct *work)
+    - 	unsigned long ctx_id;
+    +@@ drivers/accel/ivpu/ivpu_job.c: void ivpu_context_abort_thread_handler(struct work_struct *work)
+    + 	struct ivpu_job *job;
+      	unsigned long id;
+      
+     +	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
+    @@ drivers/accel/ivpu/ivpu_job.c: void ivpu_context_abort_work_fn(struct work_struc
+      	mutex_lock(&vdev->context_list_lock);
+      	xa_for_each(&vdev->context_xa, ctx_id, file_priv) {
+      		if (!file_priv->has_mmu_faults || file_priv->aborted)
+    -@@ drivers/accel/ivpu/ivpu_job.c: void ivpu_context_abort_work_fn(struct work_struct *work)
+    +@@ drivers/accel/ivpu/ivpu_job.c: void ivpu_context_abort_thread_handler(struct work_struct *work)
+      
+      	if (vdev->fw->sched_mode != VPU_SCHEDULING_MODE_HW)
+      		return;
 ---
 
 Results of testing on various branches:
