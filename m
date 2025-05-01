@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-139368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC13AA6382
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 21:10:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F32AA6383
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 21:10:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49DA19C1FA7
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 19:09:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD2039C162B
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 19:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7051215191;
-	Thu,  1 May 2025 19:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371A0224B15;
+	Thu,  1 May 2025 19:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BpKyVcHE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iua30g2I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78504226863
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 19:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB298224AEF
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 19:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746126592; cv=none; b=S5V/u0kaXe7e5oGjNeDfOS9rY7Dn8xA56OenRxsCSwiyI98DtopDFtZ4VLCqBAyyEWJ7F2r2NbciwWvr0uc3kEpJGGmpTnGriG2UdNaLgq4OIKvvyXyLsqRbRplpOrUB9AAF/v9FWqLvOXtCbcepHwVHN4NDGHzkyUzPDg4pIiE=
+	t=1746126597; cv=none; b=P8PM3p0qn3ovkgohO76yX6ThZudp4y8xdgHOheknknznnc/9stRteNeI1Kt34uAF1QpOKoybTDY14laMzfjNjaqSORe6BEek75fyI3tEr386vSqt/icjk2uGo38EnT9zxH272WV0NObQP+gSJpebeEn0C42gVL9iRlinPhTrYQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746126592; c=relaxed/simple;
-	bh=HngWd5Z6Ty+9O7auauFcMFt1aiGP/O7kn9dhJj9w6qU=;
+	s=arc-20240116; t=1746126597; c=relaxed/simple;
+	bh=E7ALtBzcOygvoB5JJr3CnYIbhWrgLwzEA46QGhHokFg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WClDWqwPN6ErmJajfVJ2eBZp8Lm5wXcRWCqDdrBpInxdp3zx4Ry2FLP/eWnFYk0GNFpxdzMzyMdC1VP7i+WED/kbQnOQn8mZac86m/Sv70x7w9YhRwyStOAMl2VfBC5JlMC9d4cbjVysxh6qim4H0x461vNQRhwhd1Jk8p1YlU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BpKyVcHE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDE5C4CEE9;
-	Thu,  1 May 2025 19:09:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WDKknacd9kqM+Tidzx0bCrtjURNdSXYca+80KfNpr0eycUdlnf95FKII+36SU2fcw+siIcik5o/3w+mpSp9qedriLqdKE/38tcpvophiXnKIWluAqaf3zgAz/jZcA4BTEheRqRAeH9iX++h1rP0cIVdLiAKzX3k3lpV9Ej4jArs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iua30g2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005F7C4CEED;
+	Thu,  1 May 2025 19:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746126591;
-	bh=HngWd5Z6Ty+9O7auauFcMFt1aiGP/O7kn9dhJj9w6qU=;
+	s=k20201202; t=1746126596;
+	bh=E7ALtBzcOygvoB5JJr3CnYIbhWrgLwzEA46QGhHokFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BpKyVcHEZk1E18M4mAnFvvCHfpOUFQxkEOzfb4VAetgDRU61cmkxH+kKEJwcxCgYd
-	 0bWaKQDv+9thV1DEpnBen23ceMTbZtJu+rteAkndsXjXcP0e9XxPx8Jf7gdib1Z2RT
-	 rP1yFd0V+qZ0BKaOYbomF1sqgsSLGGHPQVTUqy0qj4hADVEAkU5V+e2en5puV1ILfw
-	 ZeNistuH7OkabKj7KHV61mXHx8+tSzD/xLHzQo9qgYMWrOQQ58ClZvxMVIKBwrKM7Y
-	 YLh55vPJVMwE2HOVx/9JxtAKM6KoaRJaZ2nVzkPfSpDG3mUVzvPehk2frRgmvIPylf
-	 E6VvMmkXFPkaQ==
+	b=iua30g2Ia/4VFafZDtL2TjWPyCB4N+Hlzpa24XdY5wz+qhQHpNthG5S9GIomzgH6H
+	 EdhcNfsk1e9j6dPBFaKle/lwT9+awtz0gUVMqxhAjAN6MlHPpaq4xYjzMA0MTW9H8Q
+	 U77WYvWwPKaTbubqDR3z7YB8mSMZmvW6FOV88QtlnjhzRZLodNs3SQbxyQ/TRgx8C2
+	 2HomAR68ZYD8WGQ9AJYPMEsk0mXt3z7m3RdenETQEuSuqikj+XFHm6HRlK2rpEx1PQ
+	 pMsA+4oNTegbudElSPcVquR9imcXScem9QTkNJorHm/fMxtdCoP4POCL4HxaY0WdsN
+	 IYWAWzix2gtfA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Carlos Llamas <cmllamas@google.com>,
+Cc: Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12.y] binder: fix offset calculation in debug log
-Date: Thu,  1 May 2025 15:09:47 -0400
-Message-Id: <20250501071012-0c992678f5478372@stable.kernel.org>
+Subject: Re: [PATCH 6.1 02/16] xfs: fix xfs_bmap_add_extent_delay_real for partial conversions
+Date: Thu,  1 May 2025 15:09:52 -0400
+Message-Id: <20250501122544-91d3200aad8a5b10@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250429225158.3920681-1-cmllamas@google.com>
+In-Reply-To:  <20250430212704.2905795-3-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,47 +67,65 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 170d1a3738908eef6a0dbf378ea77fb4ae8e294d
+The upstream commit SHA1 provided is correct: d69bee6a35d3c5e4873b9e164dd1a9711351a97c
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Leah Rumancik<leah.rumancik@gmail.com>
+Commit author: Christoph Hellwig<hch@lst.de>
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: c8f9ccac8a5b)
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 4bcef72d96b5)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  170d1a3738908 ! 1:  1eec0d8c91a39 binder: fix offset calculation in debug log
+1:  d69bee6a35d3c ! 1:  2cb51f69d0955 xfs: fix xfs_bmap_add_extent_delay_real for partial conversions
     @@ Metadata
       ## Commit message ##
-         binder: fix offset calculation in debug log
+         xfs: fix xfs_bmap_add_extent_delay_real for partial conversions
      
-    +    commit 170d1a3738908eef6a0dbf378ea77fb4ae8e294d upstream.
+    +    [ Upstream commit d69bee6a35d3c5e4873b9e164dd1a9711351a97c ]
     +
-         The vma start address should be substracted from the buffer's user data
-         address and not the other way around.
-     
+         xfs_bmap_add_extent_delay_real takes parts or all of a delalloc extent
+         and converts them to a real extent.  It is written to deal with any
+         potential overlap of the to be converted range with the delalloc extent,
     @@ Commit message
-         Reviewed-by: Tiffany Y. Yang <ynaffit@google.com>
-         Link: https://lore.kernel.org/r/20250325184902.587138-1-cmllamas@google.com
-         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    +    [cmllamas: fix conflicts due to alloc->buffer renaming]
-    +    Signed-off-by: Carlos Llamas <cmllamas@google.com>
+         Signed-off-by: Christoph Hellwig <hch@lst.de>
+         Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+    +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+    +    Acked-by: "Darrick J. Wong" <djwong@kernel.org>
      
-      ## drivers/android/binder.c ##
-     @@ drivers/android/binder.c: static void print_binder_transaction_ilocked(struct seq_file *m,
-      		seq_printf(m, " node %d", buffer->target_node->debug_id);
-      	seq_printf(m, " size %zd:%zd offset %lx\n",
-      		   buffer->data_size, buffer->offsets_size,
-    --		   proc->alloc.vm_start - buffer->user_data);
-    -+		   buffer->user_data - proc->alloc.vm_start);
-    +-		   proc->alloc.buffer - buffer->user_data);
-    ++		   buffer->user_data - proc->alloc.buffer);
-      }
+      ## fs/xfs/libxfs/xfs_bmap.c ##
+     @@ fs/xfs/libxfs/xfs_bmap.c: xfs_bmap_add_extent_delay_real(
+    @@ fs/xfs/libxfs/xfs_bmap.c: xfs_bmap_add_extent_delay_real(
+      	}
       
-      static void print_binder_work_ilocked(struct seq_file *m,
+      	/* adjust for changes in reserved delayed indirect blocks */
+    --	if (da_new < da_old) {
+    -+	if (da_new < da_old)
+    - 		xfs_add_fdblocks(mp, da_old - da_new);
+    --	} else if (da_new > da_old) {
+    --		ASSERT(state == 0);
+    --		error = xfs_dec_fdblocks(mp, da_new - da_old, false);
+    +-	if (da_new != da_old) {
+    +-		ASSERT(state == 0 || da_new < da_old);
+    ++	if (da_new != da_old)
+    + 		error = xfs_mod_fdblocks(mp, (int64_t)(da_old - da_new),
+    +-				false);
+     -	}
+    -+	else if (da_new > da_old)
+    -+		error = xfs_dec_fdblocks(mp, da_new - da_old, true);
+    ++				true);
+      
+      	xfs_bmap_check_leaf_extents(bma->cur, bma->ip, whichfork);
+      done:
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
