@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-139367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C189AA637F
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 21:09:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC13AA6382
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 21:10:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 176047A8EDA
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 19:08:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49DA19C1FA7
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 19:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46768224AE1;
-	Thu,  1 May 2025 19:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7051215191;
+	Thu,  1 May 2025 19:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ombn5Gh8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BpKyVcHE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0872B215191
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 19:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78504226863
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 19:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746126588; cv=none; b=bsLA6IZ1WHkg0elvPtqrpRWUTxcpbkVsfk9+V6MAVHWqleVyF5mxjn6vwzZzA1zLVqgFLQ2//Lf+DV8ZxVTJFQfdTCloEpV15eXFwxY74XU8UdYDUP8+R4H0rl64d/mu9UsLpvXWLVYgIb0+ldUiYn6fBy5/+ksAZ9zmBs09bLs=
+	t=1746126592; cv=none; b=S5V/u0kaXe7e5oGjNeDfOS9rY7Dn8xA56OenRxsCSwiyI98DtopDFtZ4VLCqBAyyEWJ7F2r2NbciwWvr0uc3kEpJGGmpTnGriG2UdNaLgq4OIKvvyXyLsqRbRplpOrUB9AAF/v9FWqLvOXtCbcepHwVHN4NDGHzkyUzPDg4pIiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746126588; c=relaxed/simple;
-	bh=HrAJMiZJCnnRmQloA2HqCg7gkW441WdUngKNVdeRb28=;
+	s=arc-20240116; t=1746126592; c=relaxed/simple;
+	bh=HngWd5Z6Ty+9O7auauFcMFt1aiGP/O7kn9dhJj9w6qU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=baP5WpSTGZBdC4G2/ihZBLK4HDEExrU/paFnWW+HQT+p1ofyKp/PLk91scBwoKCwKgMuoC1lMlCHS5+iy3NSy17jH16BrU++vpTdemOIF0O6LfV+PkZ56BCw5Q+L4QVkYy2zz/XCOJfXFBB6Y8ezFSUVMp7zkJ7ASI4uIWXo0TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ombn5Gh8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756ADC4CEE3;
-	Thu,  1 May 2025 19:09:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WClDWqwPN6ErmJajfVJ2eBZp8Lm5wXcRWCqDdrBpInxdp3zx4Ry2FLP/eWnFYk0GNFpxdzMzyMdC1VP7i+WED/kbQnOQn8mZac86m/Sv70x7w9YhRwyStOAMl2VfBC5JlMC9d4cbjVysxh6qim4H0x461vNQRhwhd1Jk8p1YlU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BpKyVcHE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDE5C4CEE9;
+	Thu,  1 May 2025 19:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746126587;
-	bh=HrAJMiZJCnnRmQloA2HqCg7gkW441WdUngKNVdeRb28=;
+	s=k20201202; t=1746126591;
+	bh=HngWd5Z6Ty+9O7auauFcMFt1aiGP/O7kn9dhJj9w6qU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ombn5Gh89ofHTHwlQ0CGscfhGVawtvMzDrj+iHV0tf1CD49JWpvUbEYLLj3+jM8vm
-	 PR4dfYWV7EoKln45imC/tK2pzrrlxcFKlSeeX5ARnYKtyM7GgVQ+qYXAT3WvxHSgJn
-	 lwIqdHzx0zOz0G9VUwe3Jd/sPCJKmom7LVhV9O/VOSG7ZHxTKjtInbggked71Dygj/
-	 HVOWv0EtFResYe/3OXEeghqe5P4WvfW9gN/Y95sKqaeafOZ04CxPxlzppMXnVdSlWc
-	 NacF1bwMWJ9l5et7Mc6Ax17yZx+2XwvBy5EO/NqtmtGBXeqgZRWEDAmxteBTvXPtYY
-	 WoXauH+lt1bAA==
+	b=BpKyVcHEZk1E18M4mAnFvvCHfpOUFQxkEOzfb4VAetgDRU61cmkxH+kKEJwcxCgYd
+	 0bWaKQDv+9thV1DEpnBen23ceMTbZtJu+rteAkndsXjXcP0e9XxPx8Jf7gdib1Z2RT
+	 rP1yFd0V+qZ0BKaOYbomF1sqgsSLGGHPQVTUqy0qj4hADVEAkU5V+e2en5puV1ILfw
+	 ZeNistuH7OkabKj7KHV61mXHx8+tSzD/xLHzQo9qgYMWrOQQ58ClZvxMVIKBwrKM7Y
+	 YLh55vPJVMwE2HOVx/9JxtAKM6KoaRJaZ2nVzkPfSpDG3mUVzvPehk2frRgmvIPylf
+	 E6VvMmkXFPkaQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Leah Rumancik <leah.rumancik@gmail.com>,
+Cc: Carlos Llamas <cmllamas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 15/16] xfs: allow unlinked symlinks and dirs with zero size
-Date: Thu,  1 May 2025 15:09:42 -0400
-Message-Id: <20250501131726-984abae8fff3134a@stable.kernel.org>
+Subject: Re: [PATCH 6.12.y] binder: fix offset calculation in debug log
+Date: Thu,  1 May 2025 15:09:47 -0400
+Message-Id: <20250501071012-0c992678f5478372@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250430212704.2905795-16-leah.rumancik@gmail.com>
+In-Reply-To:  <20250429225158.3920681-1-cmllamas@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,43 +67,47 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 1ec9307fc066dd8a140d5430f8a7576aa9d78cd3
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Leah Rumancik<leah.rumancik@gmail.com>
-Commit author: Darrick J. Wong<djwong@kernel.org>
+The upstream commit SHA1 provided is correct: 170d1a3738908eef6a0dbf378ea77fb4ae8e294d
 
 Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 3eeac3311683)
+6.14.y | Present (different SHA1: c8f9ccac8a5b)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  1ec9307fc066d ! 1:  2121dc3036b86 xfs: allow unlinked symlinks and dirs with zero size
+1:  170d1a3738908 ! 1:  1eec0d8c91a39 binder: fix offset calculation in debug log
     @@ Metadata
       ## Commit message ##
-         xfs: allow unlinked symlinks and dirs with zero size
+         binder: fix offset calculation in debug log
      
-    +    [ Upstream commit 1ec9307fc066dd8a140d5430f8a7576aa9d78cd3 ]
+    +    commit 170d1a3738908eef6a0dbf378ea77fb4ae8e294d upstream.
     +
-         For a very very long time, inode inactivation has set the inode size to
-         zero before unmapping the extents associated with the data fork.
-         Unfortunately, commit 3c6f46eacd876 changed the inode verifier to
-    @@ Commit message
-         Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-         Reviewed-by: Christoph Hellwig <hch@lst.de>
-         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-    +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-    +    Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+         The vma start address should be substracted from the buffer's user data
+         address and not the other way around.
      
-      ## fs/xfs/libxfs/xfs_inode_buf.c ##
-     @@ fs/xfs/libxfs/xfs_inode_buf.c: xfs_dinode_verify_fork(
+    @@ Commit message
+         Reviewed-by: Tiffany Y. Yang <ynaffit@google.com>
+         Link: https://lore.kernel.org/r/20250325184902.587138-1-cmllamas@google.com
+         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    +    [cmllamas: fix conflicts due to alloc->buffer renaming]
+    +    Signed-off-by: Carlos Llamas <cmllamas@google.com>
+     
+      ## drivers/android/binder.c ##
+     @@ drivers/android/binder.c: static void print_binder_transaction_ilocked(struct seq_file *m,
+      		seq_printf(m, " node %d", buffer->target_node->debug_id);
+      	seq_printf(m, " size %zd:%zd offset %lx\n",
+      		   buffer->data_size, buffer->offsets_size,
+    --		   proc->alloc.vm_start - buffer->user_data);
+    -+		   buffer->user_data - proc->alloc.vm_start);
+    +-		   proc->alloc.buffer - buffer->user_data);
+    ++		   buffer->user_data - proc->alloc.buffer);
+      }
+      
+      static void print_binder_work_ilocked(struct seq_file *m,
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
