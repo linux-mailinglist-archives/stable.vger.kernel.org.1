@@ -1,154 +1,137 @@
-Return-Path: <stable+bounces-139402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FE42AA648C
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 22:03:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E43BEAA648F
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 22:06:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B24491BA3C21
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 20:03:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 965291BA5F0A
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 20:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3B3246777;
-	Thu,  1 May 2025 20:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDAE24679F;
+	Thu,  1 May 2025 20:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="tKXENaT4";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="poc9MR9N"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gV6ttq7p"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B9F22FAC3
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 20:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B9420C476
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 20:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746129807; cv=none; b=umGdwieyp/D57WSv2iRlwVQtX7Ix3pOrbrDDIor2GjOW0Y+8Nojhhom24pyrd9VaJX1yVMj+4YdChkR4FElL58S7QmOk2LonPhxJuJBW2ldSTVcpjFHFbnf1/d2G9VllIV5M2m8Pj+lBEtC/WcWFQalYdzEQiW64uhxcAWpWsLQ=
+	t=1746130011; cv=none; b=Z5L6YRQN7yqTzoNfHE8KgccYXR8xLp+407LYUxtkHVB8CKpElZbEvGKUBeUm0zyjzHu4FTX6+6IQuriukpz8KDWjheC5W7SWViqzHjg+Pm4Qz0moCkjGLRKgT2DAEwgf9ECCGKfLrCRn48vAGVaehOiOsnblPVGvHsv+7pZqCJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746129807; c=relaxed/simple;
-	bh=a4fF2rnq9c73XIGU80bI/SGsIe2nZ6yVNaTWRL7DRIw=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=ph1yUrTDUinDR0+72Yk9JYxVgIiXlQFBlKaIPiaKYtUUl9h5DQQptCbSjWXr24t7WTJyQusTNJSy4JMHKYy5fQoUj6qy+NbY4UZ+Oasa6slYFf+EskaxVlNUd0F+WsY5plYc1OyypoP23YIFJRLxy6vlHfDmVGUenp2mtdlmnt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=tKXENaT4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=poc9MR9N; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 236EB254015C;
-	Thu,  1 May 2025 16:03:24 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-05.internal (MEProxy); Thu, 01 May 2025 16:03:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1746129803;
-	 x=1746216203; bh=PJvrlBuargBsoDMpUJKUg9batdHN+WAF+1+xtO2/hU0=; b=
-	tKXENaT401VHxdYYQOqF0t22cKLRfoDiNQfYL5GakB7mBlLvI40SBunwikm0qNoQ
-	QKjKejNDKNyG7QVEY7o9yFzZ1KCjinnWjc3whNDoK+ZMSS+b5DSsLCSEEDLcHj8r
-	ehWCPoeeFvTFGlyOXk5xY/CmcBqET4R3eMNrxfTjOOQifci1OC/kR+VJwPwf+TSf
-	cfoTES4vmAEiVxaAkJb8LH0JhJqE+f9ZHCR5wrbjHxD/cNqOgQnGFYN/9q87gMkr
-	neWnDwo77lhLTwCCZPbh0L+ZuhriPzUMaKIfcPgGMKl3TZCGtMylsYZjPg3PPEZE
-	iTFzBYk+N3K5aLUsc1QY5g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1746129803; x=
-	1746216203; bh=PJvrlBuargBsoDMpUJKUg9batdHN+WAF+1+xtO2/hU0=; b=p
-	oc9MR9N0iYtULCwKHkBot6DmaVOFsjSazI8u3ObOwLaYp15kNXU5ZzQj1RMsrrcd
-	yBKx+AaamNszAiidTDlHH64/FlrRlSOD6ndATmMaZr/zduGaJpv5Zv8KiBKXD7es
-	p0L5GDSnWf6hX9gpMs57TilyOsxY4sWdm+eCwH8ME0vjYJRgoh2nHVXpvlvGWU1h
-	+Z45TIBhF587j8nf3Pr9v8mk/oniq2u0ogq+OaRpZUk3pqcMkLofxDY8EjgOFURB
-	5UjdQWIElwJhF+dhgg+9Zm9x4lNLohPLAunOIExTJHos0nzfhIizv4pGl+iTraav
-	8n0VGN823KiufWQtyfOFg==
-X-ME-Sender: <xms:itMTaIZrt-cWGtjcmamuNZDZyC8JnKP69J_Br_B4PWfqtXBvpsmz1g>
-    <xme:itMTaDZIMQ-Io00uFYWR5eZdUE-s4Tb5T5WzjFSeokBvTfMSmqqgEBDq-RhT6ZR-l
-    2wp7dNN1XQdICLfCuU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvjedtgeelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhepkeelvedvkeegkedutdelueeileettdetledu
-    ffdvgeekveeljeeiuefffeejfeelnecuffhomhgrihhnpeguvggsihgrnhdrnhgvthenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnuges
-    rghrnhgusgdruggvpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpd
-    hrtghpthhtohepshhuiihukhhirdhpohhulhhoshgvsegrrhhmrdgtohhmpdhrtghpthht
-    ohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghupdhrtghpthhtohepvhgrnhhnrghpuh
-    hrvhgvsehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghnrdhjrdifihhllhhirghm
-    shesihhnthgvlhdrtghomhdprhgtphhtthhopehkvggvsheskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohepmhhinhhgoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgrvhgv
-    vghnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:itMTaC-bBBwoWx1WA9dHoX5W9Ei_6SpXs5vcfK0GDe9iBa_3vD_-Fw>
-    <xmx:itMTaCq5mSdQUKDWYf3WOaUU2XJxD7Mkbk2DJBjYo7VxWueHDwccow>
-    <xmx:itMTaDpXy1OyQEjM0J7n_261gd-zei52C-Gh7XgBidJXldRpL9BmTA>
-    <xmx:itMTaATcUJTTocZVZmRf7opTcs_qOLdVdUXjiorMKOTvrtt25Yv4Yg>
-    <xmx:i9MTaFt1D0zcnMSghoeW5unIp2JEbra_KQudHMVPZcG3WOBv4Ac0khyg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 54B7E2220073; Thu,  1 May 2025 16:03:22 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1746130011; c=relaxed/simple;
+	bh=MyFAjmUyL/uuE3g/ynwaFPaTixj2tzi/RZV1fRlvyNE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mnBsdesVRPLi4t3YqufVpzlPSQ2vwEU88hd9L3qsp64SCZNgl8qvuEADZjd9ebd1vQGaQV+3iKSGsjTPVu3qopwjv4XILXUFA+YXDYv2zv4zdoed0UGTJfkU5ab4WiHSNhaK3fv8Snoj5llh117Vm2PKVzDEQjTdNDu5DYAJmHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gV6ttq7p; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e5deb6482cso4393995a12.1
+        for <stable@vger.kernel.org>; Thu, 01 May 2025 13:06:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746130007; x=1746734807; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MyFAjmUyL/uuE3g/ynwaFPaTixj2tzi/RZV1fRlvyNE=;
+        b=gV6ttq7pB/gb2XSiOwxntrOJ/rMfbcuNQ9LlyF5Z7olj1ZtYeHFj89jNObgFQwe6pR
+         y0ASH+lKXIpcl/Yf70UXrBIxucKneXVysVttt+5wLhut6s243hTou02GICC1aiUnNgHo
+         LtZ7L9mFQMGTNjja9lIb5DR1qHcAyfTXKS241/u6N7dO3kZxIzJtHJuxrio+nv0NXfdU
+         xttkkPKfIUeswOn3E6iSnyNwy4YH/+4SkHT+wOVTzoHRZmCsQG0rige/srZw5qhWjW42
+         DJw3WBror1mJ+Oj976CA3T2dludMxDsf3m1NrDE51PlxfnZa0G1+OGOt60aTwK/EqUMq
+         GOPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746130007; x=1746734807;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MyFAjmUyL/uuE3g/ynwaFPaTixj2tzi/RZV1fRlvyNE=;
+        b=Wl0Mv8ELGZdzbrDdElHehcrMdDyyr06djR5smw3DUJk0hteQZn9cOZKjGmX6e2W/vf
+         lSgeoB3uunumMya+XkcKgQnUtcoY9+JRdEIzHzt0Rxiz+0adAF88vxdrDi/jTGcNxhSq
+         orl9AWVDX9qR6eCE16MPQqJL0iVYE2WREmkEupVNjIPC6yeoOvicTL1I30cBUFCM5dia
+         HgvbkITUe++8EJJ04T/8HHxxWIyDmQASV32IhqSkO3QeoCAcDQZL1jqjNxRlalt4ZnD/
+         +gjErjhC48cEc0//+I1uOUTFODaAsn8+S3AMWt69qAg+sK68lEJBF3oQWoy8XG/Jdig8
+         hVrQ==
+X-Gm-Message-State: AOJu0Yzuoxq1cCbVyYXwCYstlI5QNx1pd03m8NLuvPDZBdkcubL/PXaF
+	5Il+oy211UhEzYeG08pxBeWl8hsEfp+a4ayOT+ffI1h1QuR88AcMXjjfdqbTGaoUDQIr6/ix49T
+	2xLXNZqSR2gNp6IFAxSu+i7rFoFotUq1FDLTH
+X-Gm-Gg: ASbGncv7H/kKS56ogUvzoAkCEXF7oLAADyBc3QyPoTKoh10F8GR8bujk2SS2YGaVujo
+	Ylj65hvTt3CY+gRIL3yTqp7qFhHd+QTgROjN3JmqDNXFwM52qmzbIxKHegNI4wij4IV24LgOiTs
+	vS/kcb6ygMqPWpH7+1O/xuDlyjgPmyR+2BxLtfuOcA8Mvzpj7Gxs5T
+X-Google-Smtp-Source: AGHT+IFZl8ApBrszv3Jk5Wfcqr3bXvkGdtpK0ZXNg4EYnAVYX7oTgxLCpVZ7vK6MIuFqIRUj5X7EW9U+rA2a+083fn8=
+X-Received: by 2002:a17:907:7e9c:b0:ac6:b80b:2331 with SMTP id
+ a640c23a62f3a-ad17ad41fa5mr46085566b.4.1746130006619; Thu, 01 May 2025
+ 13:06:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: T3ad4a30312e33025
-Date: Thu, 01 May 2025 22:01:02 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Dan Williams" <dan.j.williams@intel.com>,
- "Dave Hansen" <dave.hansen@linux.intel.com>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Ingo Molnar" <mingo@kernel.org>, "Kees Cook" <kees@kernel.org>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>, "Naveen N Rao" <naveen@kernel.org>,
- "Nikolay Borisov" <nik.borisov@suse.com>, stable@vger.kernel.org,
- "Suzuki K Poulose" <suzuki.poulose@arm.com>,
- "Vishal Annapurve" <vannapurve@google.com>, x86@kernel.org,
- linux-coco@lists.linux.dev
-Message-Id: <5f80ae16-8d41-4a68-b978-c1bb60fce3f1@app.fastmail.com>
-In-Reply-To: <b48aac71-5148-4be2-b95f-ec60e4f490bd@app.fastmail.com>
-References: <20250430024622.1134277-1-dan.j.williams@intel.com>
- <20250430024622.1134277-3-dan.j.williams@intel.com>
- <0bdb1876-0cb3-4632-910b-2dc191902e3e@app.fastmail.com>
- <6812c6cda0575_1d6a294d7@dwillia2-xfh.jf.intel.com.notmuch>
- <b48aac71-5148-4be2-b95f-ec60e4f490bd@app.fastmail.com>
-Subject: Re: [PATCH v5] x86/devmem: Drop /dev/mem access for confidential guests
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <CAAH4kHb8OUZKh6Dbkt4BEN6w927NjKrj60CSjjg_ayqq0nDdhA@mail.gmail.com>
+ <2025050151-recharger-cavity-b628@gregkh>
+In-Reply-To: <2025050151-recharger-cavity-b628@gregkh>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Thu, 1 May 2025 13:06:34 -0700
+X-Gm-Features: ATxdqUGJ7cWH29HiiSByBjD4_jZfIBP0VFvZOOPmSAaOfVPwkEx6OHh5X3t4u6A
+Message-ID: <CAAH4kHY7sccAgtoouC4wFEbp4beKJ-pMD2SxW_jVrVpg5FexVw@mail.gmail.com>
+Subject: Re: Please backport 980a573621ea to 6.12, 6.14
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, 
+	Stefano Garzarella <sgarzare@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 1, 2025, at 10:12, Arnd Bergmann wrote:
-> On Thu, May 1, 2025, at 02:56, Dan Williams wrote:
->> Arnd Bergmann wrote:
->>> On Wed, Apr 30, 2025, at 04:46, Dan Williams wrote:
+On Thu, May 1, 2025 at 11:04=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
 >
-> The other bit of the puzzle is that memremap() on x86 silently
-> falls back to ioremap() for non-RAM pages. This was originally
-> added in 2008 commit e045fb2a988a ("x86: PAT avoid aliasing in
-> /dev/mem read/write"). I'm not sure what happened exactly, but
-> I suspect that the low 1MB was already mapped at the time
-> through a cached mapping, while the PCI MMIO hole was perhaps
-> not mapped. On x86-32, the 32-bit PCI BAR area should not
-> be included here (since it's above high_memory), but the 16MB
-> hold may be.
+> On Thu, May 01, 2025 at 09:48:59AM -0700, Dionna Amalie Glaze wrote:
+> > 980a573621ea ("tpm: Make chip->{status,cancel,req_canceled} opt")
+> >
+> > This is a dependent commit for the series of patches to add the AMD
+> > SEV-SNP SVSM vTPM device driver. Kernel 6.11 added SVSM support, but
+> > not support for the critical component for boot integrity that follows
+> > the SEV-SNP threat model. That series
+> > https://lore.kernel.org/all/20250410135118.133240-1-sgarzare@redhat.com=
+/
+> > is applied at tip but is not yet in the mainline.
+>
+> How does this fix a bug in these stable branches now?
 
-Following up myself after thinking about it some more:
-if we remove both the <1MB special case and the memremap()
-hack on x86-64 but leave both for x86-32, that would
-also avoid the cases that break CC guests, right and
-make x86-64 behave exactly like the other architectures,
-right?
+I find that the inability to use the main purpose of SVSM support for
+trusted boot integrity is a security bug according to the SEV-SNP
+threat model.
+This is a dependency already in mainline for the support patches
+mentioned below. If you prefer to submit them all together, then
+ignore this.
 
-If there is software that still relies on those hacks, it's
-probably very old, and more likely to be on 32-bit systems.
-There are many references to /dev/mem in Debian codesearch [1],
-but it's usually related to pre-PCIe graphics (svgalib, XFree86,
-uvesafb/v86), or it's memory-only accesses that rely on
-!CONFIG_STRICT_DEVMEM to read kernel structures.
+>
+> > I have confirmed that this patch applies cleanly. Stefano's patch
+> > series needs a minor tweak to the first patch due to the changed
+> > surrounding function declarations in arch/x86/include/asm/sev.h
+> > https://github.com/deeglaze/amdese-linux/commits/vtpm612/
+> > I've independently tested the patches.
+>
+> Have you read the stable kernel rules text?
+>
 
-     Arnd
+Yes, though admittedly I'm looking for a generous read. I haven't yet
+proposed those patches for stable because I'm waiting for them to make
+their way through tip to get to the mainline.
 
-[1] https://codesearch.debian.net/search?q=%2Fdev%2Fmem&literal=1&perpkg=1
+> totally confused,
+>
+
+Not my intent. This is my first time proposing a change to stable, so
+apologies if I got it wrong.
+
+> greg k-h
+
+--=20
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
 
