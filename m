@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-139321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CA4AA60E6
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 17:49:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94428AA60E8
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 17:49:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DD599A30AD
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 15:49:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AA271BA50ED
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 15:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F83201262;
-	Thu,  1 May 2025 15:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEF1202C49;
+	Thu,  1 May 2025 15:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7p2AET0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWUqOo9/"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7932D1BF37
-	for <Stable@vger.kernel.org>; Thu,  1 May 2025 15:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEE0202976
+	for <Stable@vger.kernel.org>; Thu,  1 May 2025 15:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746114554; cv=none; b=awN+F3zdVtwchsLOsjQ7StjRz0ZX+GFmEJFZRsmfeE0//gRW3d24sMt30DIlJN6SEv0unA/AVMletpIXztssq+OGywwqnSWbFFGuEijil+A1ohlvR6P4FJJ1/bvL7DVhJIbfbG9jyP/3NPeGZmr6S7wKaSqI37y5OjMIfdjz58A=
+	t=1746114579; cv=none; b=a9f642QDyW4luqH7pX9gO80zc9f4crDBqgEnrtXKA4Jy3TGTcv+KaaN+HB0Tnf+27/R5T+83xL/l9efzS5QBO0MgWgJS093CPBYOllJSPcvr355gyRNCH89Hq88GcjNj1v3zlOsYj+ZsGonl3iTKS2cEi5+8UVoprEB+HRX2cFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746114554; c=relaxed/simple;
-	bh=8fIVFSQfbo1mE83h/RUbi8PnyTIgMsS5kaWfFyabFrw=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=bj3fH63gYlGJ1NVXJguo7flkocCKcSyaPRE7ePB5NVG2Y4xvjcgvzojp/0I7GVinCXljgZbmMucGYMQofprb0tSksvSc6ksw8t6NaJDn5K9qIOoqeh7ipvNmSI99POjmu49abGX5TK5O82i0nN5HaReSLdiBN+CxH9H99OH9D5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7p2AET0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB58C4CEE3;
-	Thu,  1 May 2025 15:49:13 +0000 (UTC)
+	s=arc-20240116; t=1746114579; c=relaxed/simple;
+	bh=yMH76nRybYKW8R3KYSXnyDiuvyr3CSJLyXtCch8iDFs=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=eghTCnvm3ePEf82CQ6RXd21bvanj6nzTUjWMPEGOgkp0vHS4Qg8FH1QftvEnieWa0Xr4LabMyreaDlleit0AS2UXkO4yexI2RBh3EiaMZSV2Qi8ohpdSVrDze3Wg4ZwqXwx4XAD2YkN45ZrH1dGBEHFBCvqGEjNMn59jv/aJQ/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWUqOo9/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBE4C4CEE9;
+	Thu,  1 May 2025 15:49:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746114553;
-	bh=8fIVFSQfbo1mE83h/RUbi8PnyTIgMsS5kaWfFyabFrw=;
+	s=korg; t=1746114579;
+	bh=yMH76nRybYKW8R3KYSXnyDiuvyr3CSJLyXtCch8iDFs=;
 	h=Subject:To:From:Date:From;
-	b=b7p2AET0iLr0exTgipB4RlHggPqZn4nPWq93R6BhGBt+dBIbEYxkznJb/t0H941o/
-	 +McWBbGIjGtF92M/a+HXrsSNQDbN3cQDgNv5+UtwieL7YBqiZXeIpsqaVQQpq7Ae2H
-	 OL/J81ddKhlsiT5q42ByM3sdlpgoHl/89WyRb56s=
-Subject: patch "iio: adc: ad7606: check for NULL before calling sw_mode_config()" added to char-misc-linus
-To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,nuno.sa@analog.com
+	b=TWUqOo9/96Rll2vL1528d0m97lc2fjOaoOVuJqKh3Ub4uvuzhY0VvOwU5fl6TIjG7
+	 YFoBQmNfOLOOepERZSsVQy7+RngTPDcV7/y/QUsahPFJ+BJU23btFUhdf5jCeatb1q
+	 7bIvlmZd7KvFxAKJ2wjH5paOXQsmskVWcPwnmTQc=
+Subject: patch "iio: imu: inv_mpu6050: align buffer for timestamp" added to char-misc-linus
+To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 01 May 2025 17:48:55 +0200
-Message-ID: <2025050155-edge-reverence-32c4@gregkh>
+Date: Thu, 01 May 2025 17:48:58 +0200
+Message-ID: <2025050158-pretender-refract-946b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: ad7606: check for NULL before calling sw_mode_config()
+    iio: imu: inv_mpu6050: align buffer for timestamp
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,57 +69,36 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 5257d80e22bf27009d6742e4c174f42cfe54e425 Mon Sep 17 00:00:00 2001
+From 1d2d8524eaffc4d9a116213520d2c650e07c9cc6 Mon Sep 17 00:00:00 2001
 From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 18 Mar 2025 17:52:09 -0500
-Subject: iio: adc: ad7606: check for NULL before calling sw_mode_config()
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Thu, 17 Apr 2025 11:52:39 -0500
+Subject: iio: imu: inv_mpu6050: align buffer for timestamp
 
-Check that the sw_mode_config function pointer is not NULL before
-calling it. Not all buses define this callback, which resulted in a NULL
-pointer dereference.
+Align the buffer used with iio_push_to_buffers_with_timestamp() to
+ensure the s64 timestamp is aligned to 8 bytes.
 
-Fixes: e571c1902116 ("iio: adc: ad7606: move scale_setup as function pointer on chip-info")
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Fixes: 0829edc43e0a ("iio: imu: inv_mpu6050: read the full fifo when processing data")
 Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250318-iio-adc-ad7606-improvements-v2-1-4b605427774c@baylibre.com
+Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-7-eafac1e22318@baylibre.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad7606.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 1a314fddd7eb..703556eb7257 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -1236,9 +1236,11 @@ static int ad7616_sw_mode_setup(struct iio_dev *indio_dev)
- 	st->write_scale = ad7616_write_scale_sw;
- 	st->write_os = &ad7616_write_os_sw;
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+index 3d3b27f28c9d..273196e647a2 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+@@ -50,7 +50,7 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 	u16 fifo_count;
+ 	u32 fifo_period;
+ 	s64 timestamp;
+-	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE];
++	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE] __aligned(8);
+ 	size_t i, nb;
  
--	ret = st->bops->sw_mode_config(indio_dev);
--	if (ret)
--		return ret;
-+	if (st->bops->sw_mode_config) {
-+		ret = st->bops->sw_mode_config(indio_dev);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	/* Activate Burst mode and SEQEN MODE */
- 	return ad7606_write_mask(st, AD7616_CONFIGURATION_REGISTER,
-@@ -1268,6 +1270,9 @@ static int ad7606b_sw_mode_setup(struct iio_dev *indio_dev)
- 	st->write_scale = ad7606_write_scale_sw;
- 	st->write_os = &ad7606_write_os_sw;
- 
-+	if (!st->bops->sw_mode_config)
-+		return 0;
-+
- 	return st->bops->sw_mode_config(indio_dev);
- }
- 
+ 	mutex_lock(&st->lock);
 -- 
 2.49.0
 
