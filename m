@@ -1,110 +1,104 @@
-Return-Path: <stable+bounces-139272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F351AA5A41
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 06:22:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8781EAA5B23
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 08:41:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BA847AE02B
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 04:20:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 349A61B67D74
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 06:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601A222541F;
-	Thu,  1 May 2025 04:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48982609F5;
+	Thu,  1 May 2025 06:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kdKEY60V"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="yJmhkE5i"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A36D1E5718;
-	Thu,  1 May 2025 04:21:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201B1230BF2
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 06:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746073317; cv=none; b=Xa5TA6ZoGNwcVEYiOn+KjPUj+sJIu0kOnFE3zh0nqPKJQHQFqM89tKp3cZxtMwcps5W97jZ4+4ujTJS/GeGF+PQpRCoP1/6KVy6NIbF6wGZiDli2eMPZ9eZVE+nNdNRFLZczFVWb3WkRCUE19POnx7QWZKyNS+NltzndHuMy0TU=
+	t=1746081712; cv=none; b=VdKdVWh2bj2EZB3WI83LfzlvrZP4/8DtYuFV5Z1lMXMHTaivWQo+ZJn9wWowNUQsDRFN/iOc0KKw1lcLqvGVkmXbq5tfWh6+ZPsbkjSZ34dUYyl80003b7cHRak0thkiafRKjZmn6EFUpkWt6T37uLFuyrDDmKYnth6BN3wsihE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746073317; c=relaxed/simple;
-	bh=aqeI3rlQCdQaQe8pGSUPe1rCmviIqCU+MOwdAWaw+ig=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nxDKPKYjarOjgQ9s3LdjodYJaTiMYJjjgyPkUOLuLioD7DkLA72gIB/PbR3Qm47H2HLmzJ5AXjCtReiIab+DS1GSAEnSLfBmK2Y1pHinXZQaDvC41ogCv5AbhOE+PXY55GFCJEspw4lak/BkFSKKg5i/sIoHzooT9x9MChbNYUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kdKEY60V; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746073315; x=1777609315;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=aqeI3rlQCdQaQe8pGSUPe1rCmviIqCU+MOwdAWaw+ig=;
-  b=kdKEY60VcAT4t6dkdml58SWs2G/aPmohEok5iZYk6k4aHmyaZuiZaNuU
-   atCG9xGAoxrCK19PCkvFr94GlKA8/kZN9ACxzjmbNzQMnCvBBwH64FKgD
-   KA59fdbAId53WChwPA3cwHPld4TbwkhQ87BvqgOqE2EIkaDjoaE2eYZtH
-   pEBIqgvOIKm/w6nlEPbc6rv/qabFQXtXMDbdwS+CC+jlAHnyYHFB6t1n3
-   GdWnE6VjcVgE824Bn8F814zWZMSxJTYcVP/jxNsy5oSDZ60HXOTY8tFnX
-   r6n40tAAvsgwzRHo3XN5sXcAGFpoabayL3Uw8sDRpA3nfafUpP69k2WMd
-   w==;
-X-CSE-ConnectionGUID: aYAczGTJSlKdYEHufsWhiQ==
-X-CSE-MsgGUID: 7wFebmKXQnKYX+4p8TBFvQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="47889026"
-X-IronPort-AV: E=Sophos;i="6.15,253,1739865600"; 
-   d="scan'208";a="47889026"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 21:21:52 -0700
-X-CSE-ConnectionGUID: +5qhL7bkR4W24F9yok7XtQ==
-X-CSE-MsgGUID: vB84Ls+sR9q10h+TuvjOlA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,253,1739865600"; 
-   d="scan'208";a="134240048"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 21:21:48 -0700
-Message-ID: <e232d563-a4db-4c33-8c3e-f47436dfceb8@linux.intel.com>
-Date: Thu, 1 May 2025 12:17:34 +0800
+	s=arc-20240116; t=1746081712; c=relaxed/simple;
+	bh=jM9w79wmEUC0Argfg1gJ+a2Xx9biaUe4re6MAwjlxRg=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=q77bLZ+ybktIJgLSlNcJODfT4+xcSG5Xvb3pY1iVh+IxSnQ9887EJxU2e/RgExDtZJSiE6rQH8sMiaDE9lrEG4Mxs233Msfu6jA+dFaf9YoIzTx8rd2L+D3+0/I133i4zdnFaMsLpfanTo9UKGKppguwyDaHjb5P/DCk1Y60vFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=yJmhkE5i; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+Message-ID: <e7198e45-f7bf-4864-aed7-dd4ecfd13112@manjaro.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1746081278;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZCT7tD7JysOnOZaZVBSIq9G80THqPNPqPd8FLWlNTik=;
+	b=yJmhkE5iiS+Z0CFRk93dlb/k1Uyp+UnWyoT42abtfT2uz5xvpIv8yenZug7Ge0IWn9Ttua
+	G8x6fEoNcVixDd7n869C7EDcLhJ3t7RnDDtSkR+onFo7YiCx64BZQAOA6zQ27/5X9ZJRUt
+	IIHYC3egCdqjfzO4/NPtY5HSTCsLlhqr10r8ddUin9V+rGVgF1cfSnCv7GGkCkriBHKJI3
+	rasOsN8LICmuvBHi6Lh/SBub5syhG2gIzoCQtRvLvwkqgkqiifmgJp92pA/+YUXzdbml80
+	PrKm/152cE8k6LISzs9Y7jUPVArg2DU3WGmN2pZ4+0o33f3uSRUo5zz1aGyWpA==
+Date: Thu, 1 May 2025 08:34:36 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 rc] iommu: Skip PASID validation for devices without
- PASID capability
-To: Tushar Dave <tdave@nvidia.com>, joro@8bytes.org, will@kernel.org,
- robin.murphy@arm.com, kevin.tian@intel.com, jgg@nvidia.com,
- yi.l.liu@intel.com, iommu@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: linux-pci@vger.kernel.org, stable@vger.kernel.org
-References: <20250430025426.976139-1-tdave@nvidia.com>
 Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20250430025426.976139-1-tdave@nvidia.com>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
+Subject: Older kernels like 6.6 and lower may not compile with GCC15 due to
+ -std=gnu23
+Organization: Manjaro Community
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=philm@manjaro.org smtp.mailfrom=philm@manjaro.org
 
-On 4/30/25 10:54, Tushar Dave wrote:
-> Generally PASID support requires ACS settings that usually create
-> single device groups, but there are some niche cases where we can get
-> multi-device groups and still have working PASID support. The primary
-> issue is that PCI switches are not required to treat PASID tagged TLPs
-> specially so appropriate ACS settings are required to route all TLPs to
-> the host bridge if PASID is going to work properly.
-> 
-> pci_enable_pasid() does check that each device that will use PASID has
-> the proper ACS settings to achieve this routing.
-> 
-> However, no-PASID devices can be combined with PASID capable devices
-> within the same topology using non-uniform ACS settings. In this case
-> the no-PASID devices may not have strict route to host ACS flags and
-> end up being grouped with the PASID devices.
-> 
-> This configuration fails to allow use of the PASID within the iommu
-> core code which wrongly checks if the no-PASID device supports PASID.
-> 
-> Fix this by ignoring no-PASID devices during the PASID validation. They
-> will never issue a PASID TLP anyhow so they can be ignored.
-> 
-> Fixes: c404f55c26fc ("iommu: Validate the PASID in iommu_attach_device_pasid()")
-> Cc:stable@vger.kernel.org
-> Signed-off-by: Tushar Dave<tdave@nvidia.com>
+Hi all,
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+GCC 15 changed the default C standard dialect from gnu17 to gnu23,
+which should not have impacted the kernel because it explicitly requests
+the gnu11 standard in the main Makefile. However I see these errors in 
+older kernels series and some realtime kernels:
+
+5.4, 5.10, 5.15, 6.1, 6.1-rt, 6.6, 6.13-rt
+
+2025-04-30T19:26:10.5226566Z                  from 
+arch/x86/realmode/rm/wakemain.c:2:
+2025-04-30T19:26:10.5228293Z ./include/linux/stddef.h:11:9: error: 
+cannot use keyword ‘false’ as enumeration constant
+2025-04-30T19:26:10.5229525Z    11 |         false   = 0,
+2025-04-30T19:26:10.5230691Z       |         ^~~~~
+2025-04-30T19:26:10.5232337Z ./include/linux/stddef.h:11:9: note: 
+‘false’ is a keyword with ‘-std=c23’ onwards
+2025-04-30T19:26:10.5234141Z ./include/linux/types.h:30:33: error: 
+‘bool’ cannot be defined via ‘typedef’
+2025-04-30T19:26:10.5235478Z    30 | typedef _Bool                   bool;
+2025-04-30T19:26:10.5236557Z       |                                 ^~~~
+2025-04-30T19:26:10.5238016Z ./include/linux/types.h:30:33: note: ‘bool’ 
+is a keyword with ‘-std=c23’ onwards
+2025-04-30T19:26:10.5239544Z ./include/linux/types.h:30:1: warning: 
+useless type name in empty declaration
+2025-04-30T19:26:10.5241119Z    30 | typedef _Bool                   bool;
+2025-04-30T19:26:10.5242189Z       | ^~~~~~~
+2025-04-30T19:26:10.5351835Z make[4]: *** [scripts/Makefile.build:250: 
+arch/x86/realmode/rm/wakemain.o] Error 1
+2025-04-30T19:26:10.5362380Z make[3]: *** 
+[arch/x86/realmode/Makefile:22: arch/x86/realmode/rm/realmode.bin] Error 2
+
+I found this with mips: 
+https://lkml.iu.edu/hypermail/linux/kernel/2503.2/09285.html
+
+Do we miss some patch not backported?
+
+-- 
+Best, Philip
+
 
