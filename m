@@ -1,175 +1,154 @@
-Return-Path: <stable+bounces-139401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE698AA63D5
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 21:17:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE42AA648C
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 22:03:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B6EE3A46FD
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 19:17:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B24491BA3C21
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 20:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA02D222566;
-	Thu,  1 May 2025 19:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3B3246777;
+	Thu,  1 May 2025 20:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Pp1B3pbA"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="tKXENaT4";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="poc9MR9N"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDDD233706;
-	Thu,  1 May 2025 19:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B9F22FAC3
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 20:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746126910; cv=none; b=flKylR5JhrOZVzZTFx+cVNmyN026bnX7s/U5UvBexiR2nVLLmyKOjOUQH8Uvj/a2/g7cisJ7jHUT1RUG+SRWZZ90HwdWxt8qke9c7jgPD7dCSwUct6WdJAHIyDNk0A/Iw4QiaBISQDSjY1govOf0LO7EN3iMo3/fzOcrMJo5YdU=
+	t=1746129807; cv=none; b=umGdwieyp/D57WSv2iRlwVQtX7Ix3pOrbrDDIor2GjOW0Y+8Nojhhom24pyrd9VaJX1yVMj+4YdChkR4FElL58S7QmOk2LonPhxJuJBW2ldSTVcpjFHFbnf1/d2G9VllIV5M2m8Pj+lBEtC/WcWFQalYdzEQiW64uhxcAWpWsLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746126910; c=relaxed/simple;
-	bh=IsoArjNAMr9vGOrVuWwxTWCJLLltxwrsx/iVARSRLx0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=X2QswOrBCQgChoxbP/a9x71ZiHKR+iRWDwZjuar1WCgU1a+LHFG3vr2QBebEWXixZEQvzKY+Ol0CY2BSKhyLxAHpxvPX13fEHDTH2ClDSSAosdOI1XuQ4XVi6yOAPQCuFMIcifFyVHFZz7aVTBYv9sV+nSX+QNBk/m/m0o6njFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Pp1B3pbA; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541D25mU013882;
-	Thu, 1 May 2025 19:15:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	O8/wG7gYEgEsImGrujMio15b+qP+0x1WTiiBqMFP4c4=; b=Pp1B3pbAjm3d5k62
-	WZGF45sw6TgieAqk+2z8C7Kv0G8bTSokV0sxQ6i+CM8V0HhZYHpkUFKOQZASP7xI
-	H73/pZ/Th6K62JNSmqnDT/AeOdFGu9MlwNKKvqVUDY9Y9KCmyqsuCOsqU2966Nu7
-	rjiwmZ66BgDf/RSykSfo/KaURAs0coLBIrJ0m/D78I49e9rtWuBPN9eMIKhNSjl0
-	jPKQrGWamiCtaoOre0zN3/fqyBH3QhW6hxdqNQ1EuaXhlD9jjTBxzX/ZMsYZFe8x
-	Bn3DiBF74EhR782AyowZdtrrNtbTWjKXyfrsf05CpmtVkgIxss/sagCR3gVAphNG
-	3aMdhw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46b6u1x8kd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 01 May 2025 19:15:04 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 541JF3GS003954
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 1 May 2025 19:15:03 GMT
-Received: from hu-dikshita-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 1 May 2025 12:14:57 -0700
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Date: Fri, 2 May 2025 00:43:41 +0530
-Subject: [PATCH v3 11/23] media: iris: Fix buffer preparation failure
- during resolution change
+	s=arc-20240116; t=1746129807; c=relaxed/simple;
+	bh=a4fF2rnq9c73XIGU80bI/SGsIe2nZ6yVNaTWRL7DRIw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=ph1yUrTDUinDR0+72Yk9JYxVgIiXlQFBlKaIPiaKYtUUl9h5DQQptCbSjWXr24t7WTJyQusTNJSy4JMHKYy5fQoUj6qy+NbY4UZ+Oasa6slYFf+EskaxVlNUd0F+WsY5plYc1OyypoP23YIFJRLxy6vlHfDmVGUenp2mtdlmnt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=tKXENaT4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=poc9MR9N; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 236EB254015C;
+	Thu,  1 May 2025 16:03:24 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-05.internal (MEProxy); Thu, 01 May 2025 16:03:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1746129803;
+	 x=1746216203; bh=PJvrlBuargBsoDMpUJKUg9batdHN+WAF+1+xtO2/hU0=; b=
+	tKXENaT401VHxdYYQOqF0t22cKLRfoDiNQfYL5GakB7mBlLvI40SBunwikm0qNoQ
+	QKjKejNDKNyG7QVEY7o9yFzZ1KCjinnWjc3whNDoK+ZMSS+b5DSsLCSEEDLcHj8r
+	ehWCPoeeFvTFGlyOXk5xY/CmcBqET4R3eMNrxfTjOOQifci1OC/kR+VJwPwf+TSf
+	cfoTES4vmAEiVxaAkJb8LH0JhJqE+f9ZHCR5wrbjHxD/cNqOgQnGFYN/9q87gMkr
+	neWnDwo77lhLTwCCZPbh0L+ZuhriPzUMaKIfcPgGMKl3TZCGtMylsYZjPg3PPEZE
+	iTFzBYk+N3K5aLUsc1QY5g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1746129803; x=
+	1746216203; bh=PJvrlBuargBsoDMpUJKUg9batdHN+WAF+1+xtO2/hU0=; b=p
+	oc9MR9N0iYtULCwKHkBot6DmaVOFsjSazI8u3ObOwLaYp15kNXU5ZzQj1RMsrrcd
+	yBKx+AaamNszAiidTDlHH64/FlrRlSOD6ndATmMaZr/zduGaJpv5Zv8KiBKXD7es
+	p0L5GDSnWf6hX9gpMs57TilyOsxY4sWdm+eCwH8ME0vjYJRgoh2nHVXpvlvGWU1h
+	+Z45TIBhF587j8nf3Pr9v8mk/oniq2u0ogq+OaRpZUk3pqcMkLofxDY8EjgOFURB
+	5UjdQWIElwJhF+dhgg+9Zm9x4lNLohPLAunOIExTJHos0nzfhIizv4pGl+iTraav
+	8n0VGN823KiufWQtyfOFg==
+X-ME-Sender: <xms:itMTaIZrt-cWGtjcmamuNZDZyC8JnKP69J_Br_B4PWfqtXBvpsmz1g>
+    <xme:itMTaDZIMQ-Io00uFYWR5eZdUE-s4Tb5T5WzjFSeokBvTfMSmqqgEBDq-RhT6ZR-l
+    2wp7dNN1XQdICLfCuU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvjedtgeelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
+    gsrdguvgeqnecuggftrfgrthhtvghrnhepkeelvedvkeegkedutdelueeileettdetledu
+    ffdvgeekveeljeeiuefffeejfeelnecuffhomhgrihhnpeguvggsihgrnhdrnhgvthenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnuges
+    rghrnhgusgdruggvpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpd
+    hrtghpthhtohepshhuiihukhhirdhpohhulhhoshgvsegrrhhmrdgtohhmpdhrtghpthht
+    ohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghupdhrtghpthhtohepvhgrnhhnrghpuh
+    hrvhgvsehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghnrdhjrdifihhllhhirghm
+    shesihhnthgvlhdrtghomhdprhgtphhtthhopehkvggvsheskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepmhhinhhgoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgrvhgv
+    vghnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:itMTaC-bBBwoWx1WA9dHoX5W9Ei_6SpXs5vcfK0GDe9iBa_3vD_-Fw>
+    <xmx:itMTaCq5mSdQUKDWYf3WOaUU2XJxD7Mkbk2DJBjYo7VxWueHDwccow>
+    <xmx:itMTaDpXy1OyQEjM0J7n_261gd-zei52C-Gh7XgBidJXldRpL9BmTA>
+    <xmx:itMTaATcUJTTocZVZmRf7opTcs_qOLdVdUXjiorMKOTvrtt25Yv4Yg>
+    <xmx:i9MTaFt1D0zcnMSghoeW5unIp2JEbra_KQudHMVPZcG3WOBv4Ac0khyg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 54B7E2220073; Thu,  1 May 2025 16:03:22 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+X-ThreadId: T3ad4a30312e33025
+Date: Thu, 01 May 2025 22:01:02 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Dan Williams" <dan.j.williams@intel.com>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Ingo Molnar" <mingo@kernel.org>, "Kees Cook" <kees@kernel.org>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>, "Naveen N Rao" <naveen@kernel.org>,
+ "Nikolay Borisov" <nik.borisov@suse.com>, stable@vger.kernel.org,
+ "Suzuki K Poulose" <suzuki.poulose@arm.com>,
+ "Vishal Annapurve" <vannapurve@google.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev
+Message-Id: <5f80ae16-8d41-4a68-b978-c1bb60fce3f1@app.fastmail.com>
+In-Reply-To: <b48aac71-5148-4be2-b95f-ec60e4f490bd@app.fastmail.com>
+References: <20250430024622.1134277-1-dan.j.williams@intel.com>
+ <20250430024622.1134277-3-dan.j.williams@intel.com>
+ <0bdb1876-0cb3-4632-910b-2dc191902e3e@app.fastmail.com>
+ <6812c6cda0575_1d6a294d7@dwillia2-xfh.jf.intel.com.notmuch>
+ <b48aac71-5148-4be2-b95f-ec60e4f490bd@app.fastmail.com>
+Subject: Re: [PATCH v5] x86/devmem: Drop /dev/mem access for confidential guests
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Message-ID: <20250502-qcom-iris-hevc-vp9-v3-11-552158a10a7d@quicinc.com>
-References: <20250502-qcom-iris-hevc-vp9-v3-0-552158a10a7d@quicinc.com>
-In-Reply-To: <20250502-qcom-iris-hevc-vp9-v3-0-552158a10a7d@quicinc.com>
-To: Vikash Garodia <quic_vgarodia@quicinc.com>,
-        Abhinav Kumar
-	<quic_abhinavk@quicinc.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Stefan Schmidt <stefan.schmidt@linaro.org>,
-        Hans Verkuil
-	<hverkuil@xs4all.nl>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio
-	<konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-CC: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Dmitry Baryshkov
-	<dmitry.baryshkov@oss.qualcomm.com>,
-        Neil Armstrong
-	<neil.armstrong@linaro.org>,
-        Nicolas Dufresne
-	<nicolas.dufresne@collabora.com>,
-        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Dikshita Agarwal <quic_dikshita@quicinc.com>,
-        <20250417-topic-sm8x50-iris-v10-v7-0-f020cb1d0e98@linaro.org>,
-        <20250424-qcs8300_iris-v5-0-f118f505c300@quicinc.com>,
-        <stable@vger.kernel.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1746126827; l=1817;
- i=quic_dikshita@quicinc.com; s=20240917; h=from:subject:message-id;
- bh=IsoArjNAMr9vGOrVuWwxTWCJLLltxwrsx/iVARSRLx0=;
- b=N5XoPD8RGs5Lyql8mOawrLYBLzRfBCnVxx6rDYii6t2RiY9ecO10/VbnTL12i+xWD9Xjhku/N
- KrYwUulq2/JCUE61R4AWo5aSOWURalwCvlNCiLPAuLlIFAsO1JZVOH3
-X-Developer-Key: i=quic_dikshita@quicinc.com; a=ed25519;
- pk=EEvKY6Ar1OI5SWf44FJ1Ebo1KuQEVbbf5UNPO+UHVhM=
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=G5AcE8k5 c=1 sm=1 tr=0 ts=6813c838 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=cZZdrgoR5-lzdedOY2QA:9
- a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAxMDE0NSBTYWx0ZWRfXyIk18lscQ8tm ja/ffd+SJSMM1uuQP5V+hoeTjPXCg+40C/696UTbpO57ojCPWjCOiNQ/Co2k9KiuvS9tDrPJpMq Eln4iyKTdrf3ofdu4KSZ8Kc3mjHuEb01WA/lCI7p7T6m1h+wspTaPdRBOpgj0lEI+5PjXqOb//s
- 787DTLst3cqsZ/yYKabuewweD2RHm7wFjpihrLIQL6mpYJdfY8wDIT1hPmFZmjWrzKV7ICgdkUo s8e0leGT6wwiBgkrkXHfwVxirqNXO4fDJC8DE1eVU1NOmz2uzHOEIVXP2PDsyM550DEZs1DWH69 8bx4KMlLb7iNqY95nsM+391J8iPI64Sjvmsq2bFVWQZGzrMKV/Pg6tN+oUKa+A9aV0AK6+Ov0FJ
- exzgou4AxdgOjfYLYFMJ0t3+Z+seLVVVWAeyeolDOdaRD/HgINDVZjL4qi/qCyaek9unkpSF
-X-Proofpoint-GUID: AmiEU1Gldct9E7_7Zs2B74ArI4zrtT_8
-X-Proofpoint-ORIG-GUID: AmiEU1Gldct9E7_7Zs2B74ArI4zrtT_8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-01_06,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 impostorscore=0 phishscore=0 mlxlogscore=999
- lowpriorityscore=0 adultscore=0 mlxscore=0 malwarescore=0 suspectscore=0
- clxscore=1015 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505010145
 
-When the resolution changes, the driver internally updates the width and
-height, but the client continue to queue buffers with the older
-resolution until the last flag is received. This results in a mismatch
-when the buffers are prepared, causing failure due to outdated size.
+On Thu, May 1, 2025, at 10:12, Arnd Bergmann wrote:
+> On Thu, May 1, 2025, at 02:56, Dan Williams wrote:
+>> Arnd Bergmann wrote:
+>>> On Wed, Apr 30, 2025, at 04:46, Dan Williams wrote:
+>
+> The other bit of the puzzle is that memremap() on x86 silently
+> falls back to ioremap() for non-RAM pages. This was originally
+> added in 2008 commit e045fb2a988a ("x86: PAT avoid aliasing in
+> /dev/mem read/write"). I'm not sure what happened exactly, but
+> I suspect that the low 1MB was already mapped at the time
+> through a cached mapping, while the PCI MMIO hole was perhaps
+> not mapped. On x86-32, the 32-bit PCI BAR area should not
+> be included here (since it's above high_memory), but the 16MB
+> hold may be.
 
-Introduce a check to prevent size validation during buffer preparation
-if a resolution reconfiguration is in progress, to handle this.
+Following up myself after thinking about it some more:
+if we remove both the <1MB special case and the memremap()
+hack on x86-64 but leave both for x86-32, that would
+also avoid the cases that break CC guests, right and
+make x86-64 behave exactly like the other architectures,
+right?
 
-Cc: stable@vger.kernel.org
-Fixes: 17f2a485ca67 ("media: iris: implement vb2 ops for buf_queue and firmware response")
-Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
----
- drivers/media/platform/qcom/iris/iris_vb2.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+If there is software that still relies on those hacks, it's
+probably very old, and more likely to be on 32-bit systems.
+There are many references to /dev/mem in Debian codesearch [1],
+but it's usually related to pre-PCIe graphics (svgalib, XFree86,
+uvesafb/v86), or it's memory-only accesses that rely on
+!CONFIG_STRICT_DEVMEM to read kernel structures.
 
-diff --git a/drivers/media/platform/qcom/iris/iris_vb2.c b/drivers/media/platform/qcom/iris/iris_vb2.c
-index cdf11feb590b..b3bde10eb6d2 100644
---- a/drivers/media/platform/qcom/iris/iris_vb2.c
-+++ b/drivers/media/platform/qcom/iris/iris_vb2.c
-@@ -259,13 +259,14 @@ int iris_vb2_buf_prepare(struct vb2_buffer *vb)
- 			return -EINVAL;
- 	}
- 
--	if (vb->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE &&
--	    vb2_plane_size(vb, 0) < iris_get_buffer_size(inst, BUF_OUTPUT))
--		return -EINVAL;
--	if (vb->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE &&
--	    vb2_plane_size(vb, 0) < iris_get_buffer_size(inst, BUF_INPUT))
--		return -EINVAL;
--
-+	if (!(inst->sub_state & IRIS_INST_SUB_DRC)) {
-+		if (vb->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE &&
-+		    vb2_plane_size(vb, 0) < iris_get_buffer_size(inst, BUF_OUTPUT))
-+			return -EINVAL;
-+		if (vb->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE &&
-+		    vb2_plane_size(vb, 0) < iris_get_buffer_size(inst, BUF_INPUT))
-+			return -EINVAL;
-+	}
- 	return 0;
- }
- 
+     Arnd
 
--- 
-2.34.1
-
+[1] https://codesearch.debian.net/search?q=%2Fdev%2Fmem&literal=1&perpkg=1
 
