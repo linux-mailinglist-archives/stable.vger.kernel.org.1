@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-139281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A72AA5B86
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 09:46:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3265EAA5B88
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 09:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FB473B0EB7
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 07:46:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96FDC4C1F34
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 07:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EEB20D505;
-	Thu,  1 May 2025 07:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6301826F463;
+	Thu,  1 May 2025 07:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oy7LkTke"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnZGiZBk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1DB18641
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 07:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F33C18641;
+	Thu,  1 May 2025 07:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746085593; cv=none; b=Viq3YIZ2J9L9lS7yK8tV7NFaSj/yWF3ZDDxSJjNL7iTlg/t5DIbF3kOIKkcvt278ZXoZ3G/QOh9umMpQc/wq5hT4ncfE+3kBzLD+sJufkrBjO8Vdzabn4Oafz/BFO8qWg/PumwxzK4lmKSOhSH3S1aBcPr4+xcBomqhlV5PqtQw=
+	t=1746085634; cv=none; b=QbNnd5gRtq4+ox0xPg8HqiwhzFtiyXhKxC7JIBuuAZ2kVQNteFQMZQxiMsUgEcl29suVXESdFofMrH2CdwCLo18AS6R0u97ciFehmPNutu7lVFortDr2tjI7hL5f5Yh/j0LeXRortz/r6g3mfYWLkumKoAn7qtYAuScu26lZvnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746085593; c=relaxed/simple;
-	bh=blrvMJ6wl7y3ZsGlaD/RuaZyXaClihwvj6PlWaJhMMg=;
+	s=arc-20240116; t=1746085634; c=relaxed/simple;
+	bh=hitKx2a5ObtCV4XmG4ol8lDMxn1QvFqjp2dKbjjtppg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qtwoA551u9XTHgRmpztCNdXjid6S31Js1Y2lKnQo/p39We47x46hEGCA6nlGQ+a5uBqSVCjRN13u2KKt1buGSExs/0m12rgOebF/PYaV8YMIgsem5FoXb1TFh2myV6D+jMIXShNwRNrzd1MwmEDOU5Ol8br7Kt88COqyncyLaVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oy7LkTke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BDFC4CEE3;
-	Thu,  1 May 2025 07:46:32 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=idffWDC6YClXEOMvmrJm6QiAYa/QprCJVt5Yve0ihawaxtMBSpJgbPhCFHjNsPqrxzYFRwZnhZ7ITwZYFD6+hAFEydH/gE+5htIedx4zA5xxpRRKGasre0DhxGYwDxGcr6I1OQA+ie1na1RHHGS9IUYD1H7rYvaNe3TvutiA4yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnZGiZBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7068BC4CEE3;
+	Thu,  1 May 2025 07:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746085593;
-	bh=blrvMJ6wl7y3ZsGlaD/RuaZyXaClihwvj6PlWaJhMMg=;
+	s=korg; t=1746085633;
+	bh=hitKx2a5ObtCV4XmG4ol8lDMxn1QvFqjp2dKbjjtppg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oy7LkTke9cTe8N0FWodeSLe6g2M8I/HuwQFrZaYz6ry2rmlArWXoKScjN4bnChJis
-	 SkfJMyewckA455e7sKy4ge3RkmZoDK/KiixteN/q9bnk9pWhl7veboTgXBG2Y0scPR
-	 0Uh6e3QRlv8HkOod65gyTBB6fib3Nx7qF7NKCpyA=
-Date: Thu, 1 May 2025 09:46:30 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: stable@vger.kernel.org, Charan Teja Kalla <quic_charante@quicinc.com>
-Subject: Re: [PATCH v3 6.6] iommu: Handle race with default domain setup
-Message-ID: <2025050141-coagulant-flail-8060@gregkh>
-References: <f0cac3a642f34d0d239f8d7870e33881fc7081d6.1745923148.git.robin.murphy@arm.com>
- <2025042954-factual-vengeful-6614@gregkh>
- <8b202837-b759-4d66-8e1a-a15ac22049cc@arm.com>
- <2025042921-banish-detached-4d91@gregkh>
+	b=XnZGiZBk/IjWG/IUgmT9hwNCLOEkey/cTUpssrMRdTcWRIPGj0Nvb0phUcL949zfP
+	 4jSE8Nr5w3kmVtSp0ZDqYycAKGcutm+3jxxmKaAFKn3q30sHpeyWtI/FBxXlq5V0kK
+	 EFoS0oW6ADT+V7QifNHLnIVNbVNBSMTSEeWzzwPk=
+Date: Thu, 1 May 2025 09:47:10 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jon Hunter <jonathanh@nvidia.com>
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 6.6 000/204] 6.6.89-rc1 review
+Message-ID: <2025050132-errand-serotonin-db14@gregkh>
+References: <20250429161059.396852607@linuxfoundation.org>
+ <f84163ad-2e1f-42ca-8546-7e077e13f4bb@drhqmail203.nvidia.com>
+ <1903a129-6e06-47d9-862b-ab23f72a9fea@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,75 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025042921-banish-detached-4d91@gregkh>
+In-Reply-To: <1903a129-6e06-47d9-862b-ab23f72a9fea@nvidia.com>
 
-On Tue, Apr 29, 2025 at 04:22:27PM +0200, Greg KH wrote:
-> On Tue, Apr 29, 2025 at 02:07:19PM +0100, Robin Murphy wrote:
-> > On 29/04/2025 2:00 pm, Greg KH wrote:
-> > > On Tue, Apr 29, 2025 at 11:47:40AM +0100, Robin Murphy wrote:
-> > > > [ Upstream commit b46064a18810bad3aea089a79993ca5ea7a3d2b2 ]
-> > > > 
-> > > > It turns out that deferred default domain creation leaves a subtle
-> > > > race window during iommu_device_register() wherein a client driver may
-> > > > asynchronously probe in parallel and get as far as performing DMA API
-> > > > operations with dma-direct, only to be switched to iommu-dma underfoot
-> > > > once the default domain attachment finally happens, with obviously
-> > > > disastrous consequences. Even the wonky of_iommu_configure() path is at
-> > > > risk, since iommu_fwspec_init() will no longer defer client probe as the
-> > > > instance ops are (necessarily) already registered, and the "replay"
-> > > > iommu_probe_device() call can see dev->iommu_group already set and so
-> > > > think there's nothing to do either.
-> > > > 
-> > > > Fortunately we already have the right tool in the right place in the
-> > > > form of iommu_device_use_default_domain(), which just needs to ensure
-> > > > that said default domain is actually ready to *be* used. Deferring the
-> > > > client probe shouldn't have too much impact, given that this only
-> > > > happens while the IOMMU driver is probing, and thus due to kick the
-> > > > deferred probe list again once it finishes.
-> > > > 
-> > > > [ Backport: The above is true for mainline, but here we still have
-> > > > arch_setup_dma_ops() to worry about, which is not replayed if the
-> > > > default domain happens to be allocated *between* that call and
-> > > > subsequently reaching iommu_device_use_default_domain(), so we need an
-> > > > additional earlier check to cover that case. Also we're now back before
-> > > > the nominal commit 98ac73f99bc4 so we need to tweak the logic to depend
-> > > > on IOMMU_DMA as well, to avoid falsely deferring on architectures not
-> > > > using default domains. This then serves us back as far as f188056352bc,
-> > > > where this specific form of the problem first arises. ]
-> > > > 
-> > > > Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
-> > > > Fixes: 98ac73f99bc4 ("iommu: Require a default_domain for all iommu drivers")
-> > > > Fixes: f188056352bc ("iommu: Avoid locking/unlocking for iommu_probe_device()")
-> > > > Link: https://lore.kernel.org/r/e88b94c9b575034a2c98a48b3d383654cbda7902.1740753261.git.robin.murphy@arm.com
-> > > > Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> > > > ---
-> > > > 
-> > > > Resending as a new version with a new Message-Id so as not to confuse
-> > > > the tools... 6.12.y should simply have a straight cherry-pick of the
-> > > > mainline commit - 98ac73f99bc4 was in 6.7 so I'm not sure why autosel
-> > > > hasn't picked that already?
-> > > 
-> > > autosel is "maybe we get it", NEVER rely on it for an actual backport to
-> > > happen.
-> > > 
-> > > If you want this in 6.12.y, and it applies cleanly, just ask!  But I
-> > > can't take this 6.6.y patch before that happens for obvious reasons.
-> > 
-> > Understood; I shall try harder to remember to include explicit stable tags
-> > in future.
-> > 
-> > Could you please pick b46064a18810 for 6.12? I checked and there are indeed
-> > no conflicts :)
+On Thu, May 01, 2025 at 08:27:12AM +0100, Jon Hunter wrote:
+> Hi Greg,
 > 
-> Great, all now queued up.
+> On 30/04/2025 16:04, Jon Hunter wrote:
+> > On Tue, 29 Apr 2025 18:41:28 +0200, Greg Kroah-Hartman wrote:
+> > > This is the start of the stable review cycle for the 6.6.89 release.
+> > > There are 204 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > > 
+> > > Responses should be made by Thu, 01 May 2025 16:10:15 +0000.
+> > > Anything received after that time might be too late.
+> > > 
+> > > The whole patch series can be found in one patch at:
+> > > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.89-rc1.gz
+> > > or in the git tree and branch at:
+> > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> > > and the diffstat can be found below.
+> > > 
+> > > thanks,
+> > > 
+> > > greg k-h
+> > 
+> > Failures detected for Tegra ...
+> > 
+> > Test results for stable-v6.6:
+> >      10 builds:	10 pass, 0 fail
+> >      28 boots:	28 pass, 0 fail
+> >      116 tests:	104 pass, 12 fail
+> > 
+> > Linux version:	6.6.89-rc1-gcbfb000abca1
+> > Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+> >                  tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
+> >                  tegra194-p3509-0000+p3668-0000, tegra20-ventana,
+> >                  tegra210-p2371-2180, tegra210-p3450-0000,
+> >                  tegra30-cardhu-a04
+> > 
+> > Test failures:	tegra186-p2771-0000: cpu-hotplug
+> >                  tegra186-p2771-0000: pm-system-suspend.sh
+> >                  tegra194-p2972-0000: boot.py
+> >                  tegra194-p2972-0000: pm-system-suspend.sh
+> >                  tegra210-p2371-2180: cpu-hotplug
+> >                  tegra210-p2371-2180: devices
+> >                  tegra210-p3450-0000: cpu-hotplug
+> >                  tegra210-p3450-0000: devices
+> > 
+> 
+> For linux-6.6.y I needed to revert both of the following changes to fix the
+> above failures ...
+> 
+> # first bad commit: [d908866131a314dbbdd34a205d2514f92e42bb80] memcg: drain
+> obj stock on cpu hotplug teardown
+> 
+> # first bad commit: [4cfe77123fd1f76f7b1950c0abc6f131b90ae8bb] iommu: Handle
+> race with default domain setup
 
-And now there's reports it is causing problems in the 6.6-stable queue:
-	https://lore.kernel.org/r/1903a129-6e06-47d9-862b-ab23f72a9fea@nvidia.com
-so I'm going to drop it from the 6.6.y tree now, sorry.
-
-Can you work with Jon to to get this figured out?
-
-thanks,
+Thanks, I'm going to drop both of these now.
 
 greg k-h
 
