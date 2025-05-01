@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-139366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0BDAA637E
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 21:09:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C189AA637F
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 21:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4C581BA73A5
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 19:09:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 176047A8EDA
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 19:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CDF224AEF;
-	Thu,  1 May 2025 19:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46768224AE1;
+	Thu,  1 May 2025 19:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B1Z19Swh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ombn5Gh8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8AD215191
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 19:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0872B215191
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 19:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746126583; cv=none; b=mGqPIYBnbuCycTmJXI3DzRISZuM6ERspyccrdjbJW5nyGqDJgarfxVSTNR6yF7vDQZzjfUCeOqmTTvYWXovLJ41/EhfeAEGcV91S63E9E2+7PZf8D7dNQwc0hweUapGeFT2tqJSDTi55to/nWU09C/5AYGvM9Rcov0DHzpDpx48=
+	t=1746126588; cv=none; b=bsLA6IZ1WHkg0elvPtqrpRWUTxcpbkVsfk9+V6MAVHWqleVyF5mxjn6vwzZzA1zLVqgFLQ2//Lf+DV8ZxVTJFQfdTCloEpV15eXFwxY74XU8UdYDUP8+R4H0rl64d/mu9UsLpvXWLVYgIb0+ldUiYn6fBy5/+ksAZ9zmBs09bLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746126583; c=relaxed/simple;
-	bh=G+sc3/Kb4iz5TvhJtOhOg2Yq0b31oH3vba3QVbasH84=;
+	s=arc-20240116; t=1746126588; c=relaxed/simple;
+	bh=HrAJMiZJCnnRmQloA2HqCg7gkW441WdUngKNVdeRb28=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NBLIvAjak7lijd+EFnfujGjDFvzHG8w3AOQpW3/xHbyCmDJpntnnJrX69M1UIZqcpAfJJdqBcSlYQBTjIBjQhGYsi6XuGaGTuvy121uV6zQftHUhQaDRx4JCB5qFLBUsQMyo9oc7LFOXqQLK/mXWqYS+uSZz9e9yjdQCFbLmTAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B1Z19Swh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D69C4CEE3;
-	Thu,  1 May 2025 19:09:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=baP5WpSTGZBdC4G2/ihZBLK4HDEExrU/paFnWW+HQT+p1ofyKp/PLk91scBwoKCwKgMuoC1lMlCHS5+iy3NSy17jH16BrU++vpTdemOIF0O6LfV+PkZ56BCw5Q+L4QVkYy2zz/XCOJfXFBB6Y8ezFSUVMp7zkJ7ASI4uIWXo0TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ombn5Gh8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756ADC4CEE3;
+	Thu,  1 May 2025 19:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746126582;
-	bh=G+sc3/Kb4iz5TvhJtOhOg2Yq0b31oH3vba3QVbasH84=;
+	s=k20201202; t=1746126587;
+	bh=HrAJMiZJCnnRmQloA2HqCg7gkW441WdUngKNVdeRb28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B1Z19SwhKlkMx9ZOtBTFCAmfGS4TrTuLBL8mJ0a9adfVeOeclwUzhXj00OKhzUIyN
-	 SRgbATcUeHbOwHbnagVcdfh+SVmXq75bl5IVGib/WuVsNDrj/cMs/S00luweKacgxx
-	 OONUQk0ghFIzdMf06ZtUve1qOn8tCRHXb+GftxKngq4HS4unsn9DPKWGQIiSpmp5oG
-	 jdqmkjrug7sGFBEHa8CFUQ80KyN3plOI5ZOA8YbqpSaPkQ1Y/gSTYWP483il0k2qK9
-	 WK941towICgyygEbwEaDHZ1UDM61UEAV4oQCXnyOLm2oc+FmGCUcF6f7hy2z4mgCws
-	 ZTyEFq3AjneEA==
+	b=ombn5Gh89ofHTHwlQ0CGscfhGVawtvMzDrj+iHV0tf1CD49JWpvUbEYLLj3+jM8vm
+	 PR4dfYWV7EoKln45imC/tK2pzrrlxcFKlSeeX5ARnYKtyM7GgVQ+qYXAT3WvxHSgJn
+	 lwIqdHzx0zOz0G9VUwe3Jd/sPCJKmom7LVhV9O/VOSG7ZHxTKjtInbggked71Dygj/
+	 HVOWv0EtFResYe/3OXEeghqe5P4WvfW9gN/Y95sKqaeafOZ04CxPxlzppMXnVdSlWc
+	 NacF1bwMWJ9l5et7Mc6Ax17yZx+2XwvBy5EO/NqtmtGBXeqgZRWEDAmxteBTvXPtYY
+	 WoXauH+lt1bAA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+Cc: Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 2/7] accel/ivpu: Use xa_alloc_cyclic() instead of custom function
-Date: Thu,  1 May 2025 15:09:38 -0400
-Message-Id: <20250501114716-051bc5f6ed9b0d83@stable.kernel.org>
+Subject: Re: [PATCH 6.1 15/16] xfs: allow unlinked symlinks and dirs with zero size
+Date: Thu,  1 May 2025 15:09:42 -0400
+Message-Id: <20250501131726-984abae8fff3134a@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250430124819.3761263-3-jacek.lawrynowicz@linux.intel.com>
+In-Reply-To:  <20250430212704.2905795-16-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,21 +67,43 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: ae7af7d8dc2a13a427aa90d003fe4fb2c168342a
+The upstream commit SHA1 provided is correct: 1ec9307fc066dd8a140d5430f8a7576aa9d78cd3
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Jacek Lawrynowicz<jacek.lawrynowicz@linux.intel.com>
-Commit author: Karol Wachowski<karol.wachowski@intel.com>
+Backport author: Leah Rumancik<leah.rumancik@gmail.com>
+Commit author: Darrick J. Wong<djwong@kernel.org>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 3eeac3311683)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  ae7af7d8dc2a1 < -:  ------------- accel/ivpu: Use xa_alloc_cyclic() instead of custom function
--:  ------------- > 1:  ea061bad207e1 Linux 6.14.4
+1:  1ec9307fc066d ! 1:  2121dc3036b86 xfs: allow unlinked symlinks and dirs with zero size
+    @@ Metadata
+      ## Commit message ##
+         xfs: allow unlinked symlinks and dirs with zero size
+     
+    +    [ Upstream commit 1ec9307fc066dd8a140d5430f8a7576aa9d78cd3 ]
+    +
+         For a very very long time, inode inactivation has set the inode size to
+         zero before unmapping the extents associated with the data fork.
+         Unfortunately, commit 3c6f46eacd876 changed the inode verifier to
+    @@ Commit message
+         Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+         Reviewed-by: Christoph Hellwig <hch@lst.de>
+         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+    +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+    +    Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+     
+      ## fs/xfs/libxfs/xfs_inode_buf.c ##
+     @@ fs/xfs/libxfs/xfs_inode_buf.c: xfs_dinode_verify_fork(
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
