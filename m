@@ -1,145 +1,138 @@
-Return-Path: <stable+bounces-139307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0759AA5DBB
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 13:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E474AAA5DF9
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 13:46:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E3C91742D2
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 11:24:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 576D84A2E03
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 11:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14A9222570;
-	Thu,  1 May 2025 11:24:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="TVMZGo0I"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC17F2222A7;
+	Thu,  1 May 2025 11:46:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AC8221FA9;
-	Thu,  1 May 2025 11:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.13
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1405B1EEA27
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 11:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746098652; cv=none; b=KzoGDrnSo4/EQo90gxXjQDkHt5u9LwoLeG3jKMlhnQTz3129mr9ilCvQKDa7TaGN6uXfLTccS418f/GkbpigiyWwo47esi3CCXq/DXBqF9fH4yr6FCI6ffpecAZTuhn/vvXI5YJ0p1BDFLHH4OQ9zUvb7AGXi8qc4CWvmdME6VQ=
+	t=1746100008; cv=none; b=ti4t2Nd939dC3wHLcKTDGfWgQIzMkzQUCpyFDn7cQq3U+iG6KdZe+tnUojeCD6cWxnbCJzbz98Uh9zu8TduitGP7GHcEJvNrczGCwoohpb2xk2+64x3cqi3yyWQHJjLxYayLjYzyIL0XfUZyt8pq4i4LeA4VJHymeWBgrq9jOF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746098652; c=relaxed/simple;
-	bh=J7kijETQ2asEm+lK4uKe63fSwqBXyFmQ3v5eEz8FXwo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hMT/GgRWwjvgJeFQPGdc0rnrwz47WdixEMLR+EwPQCl4oYWkjWaimrqfdR2rSxMPIxl/SRnR4dpacYOIWepRcsNoepNrrn1M/OSYVNb7BOi4LutCFKoF0JvpMy2XiB1UhAH8lAqEd+woo62d3YCcEv6VEYuNMmzzRparUH3s3qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=TVMZGo0I; arc=none smtp.client-ip=212.227.17.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1746098641; x=1746703441; i=christian@heusel.eu;
-	bh=hAjMdzaURmZllwIbYvh5tG3QTpVTx7txDeFWtmQfcZc=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=TVMZGo0IuHR0vp+52X6w4HXwmVM16H5arLpEXBJW1378E8MuxHfGhrKs/tTbiP8b
-	 F+u71cdmy/v6S2o22tQT/B1ZhH1fX9lD7+28LmYymYC+oZpTjW9b+X3GlY5gbiePn
-	 hO+4T7zKXeyUGQgr7csU8RmNalUA7ssSMUUadcO1mR4zEzlb87yqzEx2OZWe40d7r
-	 ydtTYFM+PU+U5MPUrplR84VoG2zbAmPMamP4fKZjHVy7VWcZf9UX36PVqH69s/Ube
-	 I6vi36H/MWJtq2nTnz0ya7w4wY+JoYiN4XB8cYGWBJiKn9XLE2f9JXvFB20DJ+tA4
-	 RAGdgh2qoERioeQgmA==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([94.31.75.247]) by mrelayeu.kundenserver.de
- (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1Ml6du-1uvvAC1kzs-00qZ9e; Thu, 01 May 2025 13:09:12 +0200
-Date: Thu, 1 May 2025 13:09:10 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.14 000/311] 6.14.5-rc1 review
-Message-ID: <04f1b7d6-affb-46bf-bb94-020f013e431e@heusel.eu>
-References: <20250429161121.011111832@linuxfoundation.org>
+	s=arc-20240116; t=1746100008; c=relaxed/simple;
+	bh=XgaHnSszwlJoBbb4mPwCFgbTeSHx2L+x3DGNJEzIEaY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nGGlj+Vv8vdWmjVcpMPshA+YT6OU4i9jRrJ9NumFCJfO2BZjc/OXTwJa6PBWxRxY/b5zsJTHeTX/l8uVnuS9xK5yHdq42OnvC6MbL4LgXSD/tunuRKT8VIVJryHp1Lo5pw0GbDfYcINM7OITumDjTD+Md6hPOx9mXi8fb5YMfAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 90496106F;
+	Thu,  1 May 2025 04:46:37 -0700 (PDT)
+Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9AF7C3F5A1;
+	Thu,  1 May 2025 04:46:44 -0700 (PDT)
+From: Robin Murphy <robin.murphy@arm.com>
+To: stable@vger.kernel.org
+Cc: jonathanh@nvidia.com,
+	Charan Teja Kalla <quic_charante@quicinc.com>
+Subject: [PATCH v4 6.6] iommu: Handle race with default domain setup
+Date: Thu,  1 May 2025 12:46:35 +0100
+Message-Id: <b3b2c1147716121ff4e51f20aa99fc41e545b33c.1746098935.git.robin.murphy@arm.com>
+X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="jxvcqh6kinmdq26q"
-Content-Disposition: inline
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-X-Provags-ID: V03:K1:l0dFvFXonn9aZ0DS7ojFGSZhcRkTDiLEEVC608hIClhlzOcRBO5
- n14VgP2kq1f3qLBf8ZZbljUWOxbpFKWa8JLcl8+eKwOdHmUEiNFBK5s6r5EynRuibgCmQ+/
- 7bjuGoMPCPScy35Uk0QhyRjHI/9VXwuEn8lCHeZ4ARgTXGdAgNnRCTzRWD8VhhwQKoUO3hD
- Ci0bv5O9ImP0RII4a1jTg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:m+YhlqJMfDE=;m/ee0N/uHLyGg3BpWBvL3vMdeSt
- xe/CGgjPvccWFaQhlu8AYWYLo7Tv5HkCK8euSCHjD2hAysq/s6WFwjM3sjQGrB2lUiuSm+scf
- 8S0SkipfIEnvHADo+2iDni7zNeq+nlxrY2dGWObFiQ228jZNRMC1lHtbYJUTiEBTa/y+6u9rz
- uz8nYlAurS3eKFHRCG3E0KjOys/PwGcfjGsHD7QY9XAPjbEPJbpokCfHjjUAR7qcNIM6dTGMG
- iLPtyMFwHYxU/zwvjLGihUiTx/85M+K+kEu0BL1v+r+z/rHmoVEvyK413FPyA3nS02braDXF/
- +77FhxzgGmMFDE9aFoA15JuvNa3sdwNsQJoKil1OhG79ztw26BNi2GSVb+81Ti4RPY/sZsz6t
- xfg1LIop/UH6PPU8fzr0o+QBNPqIA+6+dMcYXbGkZuHwJB/01X6Oo1D/pRZH3sMugUKQXdJQS
- S2fBD+1cVhzfeOSdkFmaF5PnW3Q0Xj/oK+rNjDUtFihLPly1OgoByag9r4IZLt4oO+pbdSMef
- +F/geDlC1MKUOOM/4mA3zwrCPDw89226AHclNQUvtEx7/wWW5vA59EJjhAMqmRKhn1yEuzzAD
- Ius/rMs2g5H77KdNvjLag0PaaUx5f5wn8x7drr+yKAz/ilhqmrUDwXYRUHp1T3x0DPuv9Pzjx
- YCjNj0Es8h3GSdCfWP02NfRWNTGeA1pMynxGrovWQO7QXxuF/iuMO7hm/M1oRtDnQRiEfN7QS
- IiKrxFIGSaNQ4pgxblLQRCgXvww3FtAZrf7Jk/Ley74MrZ2Aowdnr4BbJcUU9rd5q34ygHxgS
- 45V+9Elr0Woz2Rjvn3ZtSV0vo9ntKSPsTE5pm3Hrq3TEfTVzTe5Gi9PxdZVR0tzIju6Z7q2wk
- 0vEa5mRz9WLSeb4hKHZ9mlY5Q3Si0mrDAvT+T6s64zPRd/p2fjXMiZqhuhLU96qXBKbwmdENP
- rN4MpUAi5sWhho1fQBdMqHa9wQUn2NYEqnc2pbqw4+sN38OF1SrdN2BWy5dCPovYJXx+An2tD
- uLol3IP23XAIzAHX96mccEVsyz33FIFjV8wqzfFMddsld8X/5PxLS5jhPBTXsX3f2KgetOXNa
- BOYnLUWEeIVVpafbYDWz9ceBMonKJNuxyW1z74+xlfOIn8rnQjDpmO2zn9DL4cM0+HRIO2M5W
- of5Qybxujddib1l9Nz4FkWDT2JDLcfQkNTulBiS2T52+5utVcwguEiF83w79Y+fHNKitUoeJ3
- 8FpqA2omzIip+kg1XuS1sTw/9YGi2mufVCvRdQskAX9yCJgGt3y61h5HZ6FniAPFvnQLiovvp
- rDlgULS/HwZ4PjfHLk0uslTUorxBOXSmCuk6Yn2HSnvsPqPpJDJd9JAPKm6/PFPB3ByR12dP3
- qIjCLQ5SpBHk710aS5xiiiMMnzUb0tzhM3GdkUcU7SGIi0jU4zE5EFzZFtpDgWBHLYUaFNxxC
- v+WS6DbrxXnIU1/sUxBK2edyloao=
+Content-Transfer-Encoding: 8bit
+
+[ Upstream commit b46064a18810bad3aea089a79993ca5ea7a3d2b2 ]
+
+It turns out that deferred default domain creation leaves a subtle
+race window during iommu_device_register() wherein a client driver may
+asynchronously probe in parallel and get as far as performing DMA API
+operations with dma-direct, only to be switched to iommu-dma underfoot
+once the default domain attachment finally happens, with obviously
+disastrous consequences. Even the wonky of_iommu_configure() path is at
+risk, since iommu_fwspec_init() will no longer defer client probe as the
+instance ops are (necessarily) already registered, and the "replay"
+iommu_probe_device() call can see dev->iommu_group already set and so
+think there's nothing to do either.
+
+Fortunately we already have the right tool in the right place in the
+form of iommu_device_use_default_domain(), which just needs to ensure
+that said default domain is actually ready to *be* used. Deferring the
+client probe shouldn't have too much impact, given that this only
+happens while the IOMMU driver is probing, and thus due to kick the
+deferred probe list again once it finishes.
+
+[ Backport: The above is true for mainline, but here we still have
+arch_setup_dma_ops() to worry about, which is not replayed if the
+default domain happens to be allocated *between* that call and
+subsequently reaching iommu_device_use_default_domain(), so we need an
+additional earlier check to cover that case. Also we're now back before
+the nominal commit 98ac73f99bc4 so we need to tweak the logic to depend
+on IOMMU_DMA as well, to avoid falsely deferring on architectures not
+using default domains (but also tegra-smmu, which we can identify via
+set_platform_dma). This then serves us back as far as f188056352bc,
+where this specific form of the problem first arises. ]
+
+Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Fixes: 98ac73f99bc4 ("iommu: Require a default_domain for all iommu drivers")
+Fixes: f188056352bc ("iommu: Avoid locking/unlocking for iommu_probe_device()")
+Link: https://lore.kernel.org/r/e88b94c9b575034a2c98a48b3d383654cbda7902.1740753261.git.robin.murphy@arm.com
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+---
+
+OK, c8cc2655cc6c might cherry-pick, but I really should have tried
+building it first... -EMORECOFFEE
+
+Trying again, I think this should work for Tegra without being
+disruptive to anything else.
 
 
---jxvcqh6kinmdq26q
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 6.14 000/311] 6.14.5-rc1 review
-MIME-Version: 1.0
+ drivers/iommu/iommu.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-On 25/04/29 06:37PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.14.5 release.
-> There are 311 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
-> Responses should be made by Thu, 01 May 2025 16:10:15 +0000.
-> Anything received after that time might be too late.
->=20
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 3f1029c0825e..f2b3a4e2e54f 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -566,6 +566,18 @@ int iommu_probe_device(struct device *dev)
+ 	mutex_lock(&iommu_probe_device_lock);
+ 	ret = __iommu_probe_device(dev, NULL);
+ 	mutex_unlock(&iommu_probe_device_lock);
++
++	/*
++	 * The dma_configure replay paths need bus_iommu_probe() to
++	 * finish before they can call arch_setup_dma_ops()
++	 */
++	if (IS_ENABLED(CONFIG_IOMMU_DMA) && !ret && dev->iommu_group) {
++		mutex_lock(&dev->iommu_group->mutex);
++		if (!dev->iommu_group->default_domain &&
++		    !dev_iommu_ops(dev)->set_platform_dma_ops)
++			ret = -EPROBE_DEFER;
++		mutex_unlock(&dev->iommu_group->mutex);
++	}
+ 	if (ret)
+ 		return ret;
+ 
+@@ -3149,6 +3161,12 @@ int iommu_device_use_default_domain(struct device *dev)
+ 		return 0;
+ 
+ 	mutex_lock(&group->mutex);
++	/* We may race against bus_iommu_probe() finalising groups here */
++	if (IS_ENABLED(CONFIG_IOMMU_DMA) && !group->default_domain &&
++	    !dev_iommu_ops(dev)->set_platform_dma_ops) {
++		ret = -EPROBE_DEFER;
++		goto unlock_out;
++	}
+ 	if (group->owner_cnt) {
+ 		if (group->owner || !iommu_is_default_domain(group) ||
+ 		    !xa_empty(&group->pasid_array)) {
+-- 
+2.39.2.101.g768bb238c484.dirty
 
-Tested-by: Christian Heusel <christian@heusel.eu>
-
-Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU and on the
-Steam Deck (LCD variant) aswell as a Framework Desktop.
-
---jxvcqh6kinmdq26q
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmgTVlYACgkQwEfU8yi1
-JYVMXxAA48Su0UkecFjj05X9O4K57WK4IjMqZFb24rPCaXwdG+51KfEKIl+TZalh
-FiQk4sWL5LgF08f6pEoAMBRG4B7X0J81IUi5Ik86O5UvrrC1wN80/qn8/QTn0BS2
-uD4VdPckhA8CZjo/I0VP5ZFK/tdKGJUeXGXvYB0GPO+B6IWqietuH0hfpGVbIPZr
-aINLSX6AMb2vrrwA4/33QCt/dRcMy/46Egjr35js8v/dG3hROVsY31ufa51+BeBw
-oFedreV0E9Qt7hXsgmOrchgaCvYM7UahTi6R+EITdjnSdb2nXUJLrBkBc2MTo66u
-1R3u+eQIIRFLoJLbL/GO0ZUvfQ9BWwLMypTblJEK+w4efgAfki4hiQmDq/AldSyn
-QIXDN12l9uAG9eYRiVwGiWTAoxNJCtOUsYQhzrKla9aNVuMin1WPklBMLE0Ac7mX
-9ytcjQld5WsBMVbC5DjXhqlEwfNdK1xY/TltieTfWghnRGVrp15a7vy3AVRBlOvx
-ztqDvRHkxiimgd1ZUv8kKMc6NbOYaukUzMPniISibSIs/fq5NZFFRDgjmQU+QALj
-hSKMi6TplDqPoTGlI8SjC7+m4JqQU5uhRJeCW9ytnzLXjwP4ZaMX/bywFqOxF6Wi
-WGJ+XR9w7gbXu2jZ0cQm5urU/ql637oKNYEAFnEKdWHKNMj5Svg=
-=Heyc
------END PGP SIGNATURE-----
-
---jxvcqh6kinmdq26q--
 
