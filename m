@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-139328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688DDAA60EF
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 17:50:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B9CAA60EE
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 17:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2864F9A3494
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 15:49:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B6C5464084
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 15:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA52A20B7F3;
-	Thu,  1 May 2025 15:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7015B1BF37;
+	Thu,  1 May 2025 15:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="METNBgXk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUkNM0ZF"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796F12045AD
-	for <Stable@vger.kernel.org>; Thu,  1 May 2025 15:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3140C2045AD
+	for <Stable@vger.kernel.org>; Thu,  1 May 2025 15:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746114614; cv=none; b=kvYfKONJ+9ff8v48db9aE7q0RZgEjqEyuDfXRzpFxiGd3RLsAl5MaFeBTnqw98txGl9pgZ2TAYzI5Vfv/HvJIGZuLpelYOROBGk+ukvYHGedDNeQOl7ay09aU2uqI42Nk165zqZaSsXh9nDOeX8CA9qaUZoFx67ZUnfrrAhRaSU=
+	t=1746114611; cv=none; b=RnkO/UHi9GCI5eu19DVxff50KGFOnnmyJ/RZYoadMSP36JLUtTZOBt8um7JX1oeUR3XKOxBpYK84/x+TSvF13uRzJMXvTCYhonRILIBfzRB4dNWs1NdOAzQdjVJZON9GeNEzd88ZBMs7x35bdUYFm6dc6zqMTZBlUB5/ZQh2Tdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746114614; c=relaxed/simple;
-	bh=7wDj81pboo01C80mpjW4dtpPvUMTnmpl1FfThJ0M7fA=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=APCBblw2TeldJ222AHEE4jT1BSqcZTUixTLmCs409dwo6/yq7qi4UH257q65tfgW/87wk1521ftzKdKXmFj7ktKcKqVkV8snYMLQLzVfu38EtJIjy89ne4G3NlWpw8o9fs/JwR73/hO/hfkHCK2RhTbFPHtANJdsnMXEWAtnxgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=METNBgXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AF5C4CEEE;
-	Thu,  1 May 2025 15:50:13 +0000 (UTC)
+	s=arc-20240116; t=1746114611; c=relaxed/simple;
+	bh=Y8ABU3Q1SrL9dj/yVHyPPlQrghcdMrBk3sm3JYWwPGM=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=b2oz3KB4IiLAzlM0nVkPBb7+IhJamACjZv7V69MQ2ndnts1Xl++5MnYGUSWEZs4a6HlT0/X871za4+ZbCKqj0GlIzHooobKs3iPcb0vQAoWVMGmV7YEMRDXw6xAhLGkboKKqfIkdkc0ziV4q1V+Kw7GXX+JDpoRLy29UVtdhT3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUkNM0ZF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92195C4CEED;
+	Thu,  1 May 2025 15:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746114614;
-	bh=7wDj81pboo01C80mpjW4dtpPvUMTnmpl1FfThJ0M7fA=;
+	s=korg; t=1746114611;
+	bh=Y8ABU3Q1SrL9dj/yVHyPPlQrghcdMrBk3sm3JYWwPGM=;
 	h=Subject:To:From:Date:From;
-	b=METNBgXkaDkVfM2UMM0zKmuHXTjG4UCMabQFg54iFa8vIHlfhLmqvx0IS9N8D/7qD
-	 cuVh3aF+lLu6l9R6qEg/yNRMVBVXhwm9eemvU2M/5RC5ECHjsiPzjLL4haiIXhg5HT
-	 DT2PrkYoXnJfUfnyFFEF0RKF7Tj4/UmqHp0OqMC0=
-Subject: patch "iio: pressure: mprls0025pa: use aligned_s64 for timestamp" added to char-misc-linus
+	b=WUkNM0ZFabjKAPgzVJ30/XAFbV9YJPTlCBRFBlkJb1rOXB85HM8xwpAwE7OcNS0j+
+	 gNznm2W5qpEu1FcsMC0yqiCgbWoXuPL+xmUt1etcRNhWMjQu01Vgrb1MmpUpZ++WLS
+	 R9MUVo41W/py9Vyty1TB+I9s/8y8y1mpLxeR8AI8=
+Subject: patch "iio: imu: adis16550: align buffers for timestamp" added to char-misc-linus
 To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
 Date: Thu, 01 May 2025 17:49:02 +0200
-Message-ID: <2025050102-makeover-denial-f027@gregkh>
+Message-ID: <2025050102-embezzle-primal-43ed@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: pressure: mprls0025pa: use aligned_s64 for timestamp
+    iio: imu: adis16550: align buffers for timestamp
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,68 +69,36 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From ffcd19e9f4cca0c8f9e23e88f968711acefbb37b Mon Sep 17 00:00:00 2001
+From e4570f4bb231f01e32d44fd38841665f340d6914 Mon Sep 17 00:00:00 2001
 From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 18 Apr 2025 11:17:14 -0500
-Subject: iio: pressure: mprls0025pa: use aligned_s64 for timestamp
+Date: Fri, 18 Apr 2025 11:17:13 -0500
+Subject: iio: imu: adis16550: align buffers for timestamp
 
-Follow the pattern of other drivers and use aligned_s64 for the
-timestamp. This will ensure the struct itself it also 8-byte aligned.
+Align the buffers used with iio_push_to_buffers_with_timestamp() to
+ensure the s64 timestamp is aligned to 8 bytes.
 
-While touching this, convert struct mpr_chan to an anonymous struct
-to consolidate the code a bit to make it easier for future readers.
-
-Fixes: 713337d9143e ("iio: pressure: Honeywell mprls0025pa pressure sensor")
+Fixes: bac4368fab62 ("iio: imu: adis16550: add adis16550 support")
 Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250418-iio-more-timestamp-alignment-v2-2-d6a5d2b1c9fe@baylibre.com
+Link: https://patch.msgid.link/20250418-iio-more-timestamp-alignment-v2-1-d6a5d2b1c9fe@baylibre.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/pressure/mprls0025pa.h | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/iio/imu/adis16550.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/pressure/mprls0025pa.h b/drivers/iio/pressure/mprls0025pa.h
-index 9d5c30afa9d6..d62a018eaff3 100644
---- a/drivers/iio/pressure/mprls0025pa.h
-+++ b/drivers/iio/pressure/mprls0025pa.h
-@@ -34,16 +34,6 @@ struct iio_dev;
- struct mpr_data;
- struct mpr_ops;
- 
--/**
-- * struct mpr_chan
-- * @pres: pressure value
-- * @ts: timestamp
-- */
--struct mpr_chan {
--	s32 pres;
--	s64 ts;
--};
--
- enum mpr_func_id {
- 	MPR_FUNCTION_A,
- 	MPR_FUNCTION_B,
-@@ -69,6 +59,8 @@ enum mpr_func_id {
-  *       reading in a loop until data is ready
-  * @completion: handshake from irq to read
-  * @chan: channel values for buffered mode
-+ * @chan.pres: pressure value
-+ * @chan.ts: timestamp
-  * @buffer: raw conversion data
-  */
- struct mpr_data {
-@@ -87,7 +79,10 @@ struct mpr_data {
- 	struct gpio_desc	*gpiod_reset;
- 	int			irq;
- 	struct completion	completion;
--	struct mpr_chan		chan;
-+	struct {
-+		s32 pres;
-+		aligned_s64 ts;
-+	} chan;
- 	u8	    buffer[MPR_MEASUREMENT_RD_SIZE] __aligned(IIO_DMA_MINALIGN);
- };
- 
+diff --git a/drivers/iio/imu/adis16550.c b/drivers/iio/imu/adis16550.c
+index b14ea8937c7f..28f0dbd0226c 100644
+--- a/drivers/iio/imu/adis16550.c
++++ b/drivers/iio/imu/adis16550.c
+@@ -836,7 +836,7 @@ static irqreturn_t adis16550_trigger_handler(int irq, void *p)
+ 	u16 dummy;
+ 	bool valid;
+ 	struct iio_poll_func *pf = p;
+-	__be32 data[ADIS16550_MAX_SCAN_DATA];
++	__be32 data[ADIS16550_MAX_SCAN_DATA] __aligned(8);
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct adis16550 *st = iio_priv(indio_dev);
+ 	struct adis *adis = iio_device_get_drvdata(indio_dev);
 -- 
 2.49.0
 
