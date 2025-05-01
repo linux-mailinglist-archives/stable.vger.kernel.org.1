@@ -1,335 +1,278 @@
-Return-Path: <stable+bounces-139266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257D1AA5934
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 02:57:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C686BAA597D
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 03:55:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E053A985670
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 00:56:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54A821C02E5E
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 01:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B321E5B8B;
-	Thu,  1 May 2025 00:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E693D22D7BF;
+	Thu,  1 May 2025 01:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PLCiecbD"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="tkLMO2SD"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazolkn19012013.outbound.protection.outlook.com [52.103.14.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098A233C9
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 00:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF811F541E;
+	Thu,  1 May 2025 01:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.14.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746061028; cv=fail; b=gzuSHrIx9Zan4y8dBGXeRJBsU0tBKdULxBCsERQI11R8IcCQ3cEPK1O4k73Em1zIesaxoTJcO+g59VY0UsiANBcqV4lVk5qnU/I3rnwVwP2BvnJS4zzp8UEYSxHPQYdJLE3gOEaAG994wdm+SprchmZ3nnUtInmcIPFMMXF+7tA=
+	t=1746064545; cv=fail; b=WccCQCdgASNbjNKvWqyI7MIKOHkVQccOBhN7MNnFG73T697vRIOSMNhGhddmLF9caXmZYraJ1NNP+iX6emsv9R0B3LXSd7wCeqLP1kfgeBRR1+CvMiqDpbWGk32VPHXTYG7Y99qLkWXGJT523HY+r+xWPy+yBi1+JUVuCOwj3wQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746061028; c=relaxed/simple;
-	bh=3ZRN3Mi1CbRq99q7NiS7zEqJIlDxxVBXnJtF1gh/wuA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gBJ/DuFNzQ24m7dUUDu0pPYrbFjaZfmhfHnth6eMyKCuWJtb4Uo17YDx52eEgDhoiPL7CC+NunuevyzPtvmUmVTquxNv9jRa10/2ZuoModE3Ad3VJ9L0W/baSS5DKbGrPhpnsQ+QYwCmFb1jh8NyEtQzvnZKgSs4V1rHyQWCyj8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PLCiecbD; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746061026; x=1777597026;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=3ZRN3Mi1CbRq99q7NiS7zEqJIlDxxVBXnJtF1gh/wuA=;
-  b=PLCiecbDrOyO9ET+vJlaAhnw6TcUJRcYOILaEVQpVACaLsyXxcoHYKiY
-   SOzHW07XJb22cjeOSp+zHXcVuMEvyRqD/hAmeQ8VZYJmHepOrBIQxf5B1
-   Rt7lQyIS9C0VtuX5tXlQUEn4NCTEAEBRi4bGYcVhTkpZB8iUY9ni/4D+w
-   oracSxdoPpBjZmgmOssI2zjxCivRvVfYTl6SvQcy0IDtDvRg/A9jFqq3O
-   GAN7YNbQFPEDqF5nQzQ+mEw25zybWWZ5Ao1d7uB9iR4UppsWsb4WED6UD
-   ACsHq1SR9bkoT3cl6tJ/x9Fc4QsF8a1DRVu760saKh40QtBNY48bOd1Cq
-   w==;
-X-CSE-ConnectionGUID: 5lRM2gvSRP+fwl3J4xPtEA==
-X-CSE-MsgGUID: TzuWEPpXQpSjc05nMMpC6g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="65156389"
-X-IronPort-AV: E=Sophos;i="6.15,253,1739865600"; 
-   d="scan'208";a="65156389"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 17:57:00 -0700
-X-CSE-ConnectionGUID: zlbmcxeZT16K11R3gZdqqw==
-X-CSE-MsgGUID: HSGVEdmcSa68S23AQWT4LA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,253,1739865600"; 
-   d="scan'208";a="139256868"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 17:56:59 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Wed, 30 Apr 2025 17:56:58 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Wed, 30 Apr 2025 17:56:58 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.170)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 30 Apr 2025 17:56:58 -0700
+	s=arc-20240116; t=1746064545; c=relaxed/simple;
+	bh=3m8y+9fBQMxX8F3vwQdSoe1TKdCb0Ih/Bp2RbI7IIZo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZZ5/nBQBLbRV73T4Cl9DSj3XREy9CvgNBvWYJuXYThlXG7zWNirm4XSGzn8hrPxSE8c8JOtwgG+dhfld1ptuRCr3rraad+QAF7NxTseGvjKwxL1fq+f3vhDLDOTurXBNbKgnPoqS/8etvGv4GG8y9Q1fZ082FuCyBdZ5U109vmY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=tkLMO2SD; arc=fail smtp.client-ip=52.103.14.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DhmCT5gYoeCGZnND0mqgW9ypk5BHT4JLVJ1KVlEPidiD7nS0CANAB0cPgZb5Sd60PzvUNT4vjQBxLxJQAL8VBX8R9sTOrd+3f3KyhfsLCoUTUn2/Dsfla1GAfBVaAnwVbDPNy0T2sXxHPPbc7AtmpJ5oY4daQH4MTX8lNxY5pzK2bu2L+wAPVHIu3nHCm7q7KF4SHNJxl4HTxLfB9zsfaB3qn1jOQ1qC27vaW/0Q9hFVWRZ4aej6nJGL8LtVP5cS2nA2CjV9Y6somd+um1hqNJ9osBxy6pO2bej9PELs6J84nSHowKGqh21fQQucWaq83VM8aHWFzBjYNKxBb3Go0g==
+ b=T3B/97HSpcD4sRuUjvBbMTIPAa0+slexsKkQnJLcF4KhEvYBKVnZ/jgqErnrkpPb+acOSe3NIjIpbXb7myZsj/4sK1aNIIlKY4V2eDmf/JQjO+RP1qtvONq69bz9xazL1pkOA8mJInkEtjqtI96NIvVaQ3iVzDuRo7MxZBXEF751U+JYLUHnG80feyoATK3GsHcY8//S6LYIj6EXIao4AM3C5xNBd8rwtDZN9eGiIz2uqJ/66oPwsFe0ge3srbTl0FgzoGWwOciG5wj/MoJAXvB5oqh6DQ+TOh5PK2JSrkX5Dac/y1rPoiU1f/ebN58gtS0zSj8L23pWWr+MGCU0Qg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3ePZcjQA/reubU0ppmaxzqAnSJ7aCYbJO+TXpAfO92Q=;
- b=BfgKGeSX39tlwVbtproIl3ukLkm2LDN01MuBsTwM3VALywCl4E4zeSHvQAVVyalLLMrjPJMxW4M90f7Q2js/wNDS7xHQrM436qIpDacCAejCB/ucwwOVg8NzmO8OGpnbNcrXmsASU4/UV/aG8mfqUXoozJSWfSs9WlSmfuygxLJ5MP94zN4PkJYSW6wmwX8K52aAJk/yAofUW4M6ACOb5PC6jGvqa79oKLk/joHChFOB8Rd+iRbmcxgl+l02akn/k0r9JbBiJf2yA4eEcEWLelvK/+7ctxdwl/IwNgdAn+mfLn6tsTqY7Ib2tGBvdTnJ81UfScZquPWnIZcGZz7Tzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by CY5PR11MB6392.namprd11.prod.outlook.com (2603:10b6:930:37::15) with
+ bh=GO3N1OTZNdQ8EXdIHWj/NMglt5MVRQM8QoZuJoTBelY=;
+ b=yC5qP51CjkhAQK0pfuD69ba7prOwQvDgleLUfBbk0Hn+cVPZkh6qj8X+cSdYiW00lRU+eBYlAleS7zNmgGC22rRNbEL/PahU6fvL06Wwa8uKLyMskoonwS45XzrSYDT+CzrYtfjy0gJNHIItgqeFaf8LnU6nSnZIef2ROOSqrbwEUQup/PW6Z5lwNAN8y8C7IzrTRpM0w8GfXablUJqcsB/F7NkvrWE34JPdF3kJagjUQBEPQetIfH/H3z+koN6OxWnfCNKAZAw3+DQroUQ7+KjNuVPLJwdTkCtkOdtoLAOkChnYybAfDT3Cm2Dvysaw2CZ1s0C6Wd55IG1E7+bvzg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GO3N1OTZNdQ8EXdIHWj/NMglt5MVRQM8QoZuJoTBelY=;
+ b=tkLMO2SDrNmlQUvv28zi6feHZB7dYIK14w0es0yU8lM5F1n3pZek44TlDA/3KyecNNM1bdIqwToqXXpobtashHC+uOALvSV5M6CqJZFha9vzwP+i0o3AZNME8Z1hxrGTs2C0ejJnj0/gVv0PlRM6FeheXqGKz3AAsNDARJl1g/DbrRAUnyjMBrjt8aSYCdhTihghUszkitDPREjK9TdBbsq0ONc9VJAaU66sbU4dyZpqrKjLNUEgAQzLOzEe84aHtGVDuQzOvRtkI3c3/hkWGNuaRZdadhwN4pzxyWECVwR1YNtHWOnVVlM4DY9bRDUHE2laO94YQEAuzJFUWoeqmw==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by CY8PR02MB9568.namprd02.prod.outlook.com (2603:10b6:930:78::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.20; Thu, 1 May
- 2025 00:56:50 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8699.012; Thu, 1 May 2025
- 00:56:49 +0000
-Date: Wed, 30 Apr 2025 17:56:45 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Arnd Bergmann <arnd@arndb.de>, Dan Williams <dan.j.williams@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Ingo Molnar
-	<mingo@kernel.org>, Kees Cook <kees@kernel.org>, "Kirill A. Shutemov"
-	<kirill.shutemov@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>,
-	Naveen N Rao <naveen@kernel.org>, Nikolay Borisov <nik.borisov@suse.com>,
-	<stable@vger.kernel.org>, Suzuki K Poulose <suzuki.poulose@arm.com>, "Vishal
- Annapurve" <vannapurve@google.com>, <x86@kernel.org>,
-	<linux-coco@lists.linux.dev>
-Subject: Re: [PATCH v5] x86/devmem: Drop /dev/mem access for confidential
- guests
-Message-ID: <6812c6cda0575_1d6a294d7@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20250430024622.1134277-1-dan.j.williams@intel.com>
- <20250430024622.1134277-3-dan.j.williams@intel.com>
- <0bdb1876-0cb3-4632-910b-2dc191902e3e@app.fastmail.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.15; Thu, 1 May
+ 2025 01:55:39 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df%3]) with mapi id 15.20.8699.008; Thu, 1 May 2025
+ 01:55:39 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: "longli@linuxonhyperv.com" <longli@linuxonhyperv.com>, "K. Y. Srinivasan"
+	<kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
+	<wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+CC: Long Li <longli@microsoft.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [Patch v2 1/4] Drivers: hv: Allocate interrupt and monitor pages
+ aligned to system page boundary
+Thread-Topic: [Patch v2 1/4] Drivers: hv: Allocate interrupt and monitor pages
+ aligned to system page boundary
+Thread-Index: AQHbuhxVeYAuaxq8CUewO1KLhPQkmbO9AAeg
+Date: Thu, 1 May 2025 01:55:39 +0000
+Message-ID:
+ <SN6PR02MB41574E031668E0F27AABB978D4822@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <1746050758-6829-1-git-send-email-longli@linuxonhyperv.com>
+ <1746050758-6829-2-git-send-email-longli@linuxonhyperv.com>
+In-Reply-To: <1746050758-6829-2-git-send-email-longli@linuxonhyperv.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|CY8PR02MB9568:EE_
+x-ms-office365-filtering-correlation-id: d8a8d426-b535-4e61-a910-08dd885345ff
+x-ms-exchange-slblob-mailprops:
+ dx7TrgQSB6dEoOZOj4tPAZubvlSTC8VXCrl2lhZ+IonwJlRy0oyBl0+C7Ga/APLV/LCj0Ey2QXW0BfEUtvH5Kk1DZw3G+pBC/Tk2YltWHyzVxCDc4vf35GapdC3/Z1zrvn6xUK3qObv2Mxfu2VCwKlW0Xb3GIVg3JRqnH4zwQ8qCnkJIe1l5Nhghc+Z74898lBU9kZDJnX3quFyy1F0thYwyh5dDRwvThkIr8T75WuWKcwa1p0XSDTf6ZQRrgAlqBJV9kRTM0PdvNVar+WovDl143H6dJnxAwvCpp8ULj3Uuo6dqcBQIjUrtLoMTaaqZIpSEE+LmBvxcWyu2w29eHIYmQqzgyMFSnCmOm1rPtYYuSkniuYr0ODJ4u8srm9ugQUNvgQI8mwxHXlPK/EaRMVz7ECUdU3pZc5M1rx2RoxaJpywy299xRng3cwmFaJev8BrFPG4dopoaPjaVUpD43Fwc3AxiwAlTYn6Mz3eRs5iMfGuG8Ge8tPU7MjGRn1cxH22tVj8ZKxnPYX45D/9CYwTPfLkgKZaEQlX3ebhGKRd6b+547riW8/PkGcL41cFEIbxaMZwoJsPJFZbZgrGj1jWBSfD/EZxVLjPZ2Pz+DrldQJwOeivU/OQwZnf/17mLwblbtKECRdIKulY9vH30lxe2ZcMGJgyY2Rdn12K53mJXVjEiKKEqzu/PE5PmF+znjqIolL05bmj8VkQxVuS7pXYcwBuwGGdd8jLPqP3iUkLRKSNorSHzY3N+oU7PtM7Sve5ss9DFSZE=
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|461199028|19110799003|15080799006|8060799006|8062599003|41001999003|12091999003|440099028|3412199025|102099032;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?rMyW4VEqM985q9vmh+t9w2hxiGNPnqypA+IeyBOjxw3yvyfzFv8KnA0HkmiC?=
+ =?us-ascii?Q?cK8TjZjfZzzulK96ZwqA15hd1ItHXGlK31UdFMx+OExVnvuI1kbDdu1kTOyP?=
+ =?us-ascii?Q?2MKIntIfuU4gWqBNWPYEZLGR+eVxdOPRMKLCTCCgsoekmcj0KC7VrV36UdCN?=
+ =?us-ascii?Q?o33WdCworcvAUfOkk/KIfeeUfQudcZo/V6APYwswD5V5e4h4ZfcJgzY//4uW?=
+ =?us-ascii?Q?Tt8v4GNYDHbZsYTp6tMc/T78CBfZ70itAoh2FQ5qUEwpB7XQNTZJgCtJM7S8?=
+ =?us-ascii?Q?3nWRnm8USNRw3fqsHNA3dnnxTFMJk0LknuNm8FuGAgq1bLhArNEIxoCpwoIP?=
+ =?us-ascii?Q?lE7mFzreINHS45dVqbmje1ZvJ+1VAh6gytsT+D7WviKPt4j2l0SduKrRxPV0?=
+ =?us-ascii?Q?odPWxia77NxZ+MybGexXcdTpkUHc8h3QVcEL3i7EpH2KPdr2vNYL6AQaOSPn?=
+ =?us-ascii?Q?0AIK9XI0fqHjXyjVaycjSQczX4qqM9uNWH8JtDWdsK+3Nb/j8LisWCJd7fZi?=
+ =?us-ascii?Q?r78GYpMrR8yHVRBzqr2B/CXdiuq2KgLQzqigYjqxx8giJBsA/KTNS9vcjhKt?=
+ =?us-ascii?Q?wJbEMnBqSYnbZj+vGpX8HFM3MWe4L4M47CRY3vQd6skXh1iWA1rY0JYdgz/a?=
+ =?us-ascii?Q?naqx4/cNyCpNVYP7e8rBFcsBk3XZgFLPqnRxJlBb3f4sY0A0Ncbfh+8FBhlp?=
+ =?us-ascii?Q?KNH4DmsV/mi6i+Z7KrgmZLZQIQd3AJKWi4YMVpmWw0QeZKzVPxnqEFyJX6Ym?=
+ =?us-ascii?Q?A6rwoTMXE7S5kTicNyG7Y5PM3CZrBRYvZf4c+LLWgFgWRB2AfQtlIwo5v2wx?=
+ =?us-ascii?Q?lvhugQhNqpx/+0vGAP2xy1TGqmuqEQGreDuFI1XbgN3mh8JFwXsvv22PeuSH?=
+ =?us-ascii?Q?u63EWxdOYfcMLLkqI7dHPpUrXEPoXp14lQLrWwQyAGLRXw361ylZWhSFWdMW?=
+ =?us-ascii?Q?ZO2/buKlrgLK/2HrCB8+ZotsjCQ4YhEgL5RFeNXVoPDUY9HGTk1/MwJhhG2k?=
+ =?us-ascii?Q?GHs0SVWKRoxUQ0bkG6wftzyPi1AapyauTNc0Yb63xInMtiW34t4biAPJUVDZ?=
+ =?us-ascii?Q?2jgRhJrLLTHwPZWzTxXOLfbVEPj1HPJrksI0mitLnWgA0RFbDTleJrJGG62R?=
+ =?us-ascii?Q?gMS/XVdBmjeHUwh1M3ElXXaIWj9RJxf6gg=3D=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?RgIXze+4hkwD9re+iH/lx/Hl1cOBW93CgCIdJB8IUTQgrUWNbNupFuCV6qvg?=
+ =?us-ascii?Q?3Mzl5lcwHNfJo3T8Fj0E9CpE+tQCsHQMrIdcik7eGBa40+aw0dbtfsVT+4MG?=
+ =?us-ascii?Q?p1bgm8dQEpBGq9bYl0ElN4LvCKES6IE3RwivX7fGoFo9Z1+sqKvkbhOgcD/C?=
+ =?us-ascii?Q?CpHFLF8sqpU3IoXbEIdKzlQmrQcVC9bTtoxjQ1tGht9xYzEnle7SLXD+V96j?=
+ =?us-ascii?Q?MLlw4NbFOkj3e1cOKP/0BGTrEiQA+yCz9ZiprMO2X230XrNfdkpj0TIIwqPA?=
+ =?us-ascii?Q?yCUYOoot5QcKW8bm0FONjvW/W4vUezsW1llNHX3PFj5gqNwh/gjVEEHHyZr5?=
+ =?us-ascii?Q?MtvUmivZvPsQJPanDAzrnB1dOuuci+hvhWurbtqVZeKDGaj/z7sM9BRRqXQV?=
+ =?us-ascii?Q?W7SGvwyfcb5FI4RadDjIVTYWTxBMICgKfGQJqcNTtJSjgrCdqxi9X4KrJJGV?=
+ =?us-ascii?Q?X1CcHXW5OtCwa7I3xEYnnN0zd/slwaKhRhpwQOzVNV6En792ar9h2UwLy6sX?=
+ =?us-ascii?Q?I7+RydeHIkbcQX3V+Q7OJhZZefetQ4/Ye7UJ6mw/PEdZjtyU+aX9jtYzxFPu?=
+ =?us-ascii?Q?ADNVk722D8ycI8xR5pdfzctONlePgQ5d0PfIdZkkA+GoXqa+WBo7UHkpj7VR?=
+ =?us-ascii?Q?tcbKPx9XPvzh310wRrYwh3fd9D7NRliGqPW+MBmS2vCRTyULjlgoAxaaGNXt?=
+ =?us-ascii?Q?/j263SPtUxTSe8zTpdthya27Voevz0e5XIePYy8rbxcbX4a5GE9DO8jnCe+6?=
+ =?us-ascii?Q?BRpixXX0vJOvXSqP6sx1v1Ulbry9lW0uK7GCHPfWSofYvmP9g5vA48FAPnGE?=
+ =?us-ascii?Q?tT2uxnX+6bVA0nWXwLoJou8En/x9tMX7jKpRZH6J3WuP9HjkibTUC/0DSSdW?=
+ =?us-ascii?Q?q142K5T+0Q8kGMrz0rHsdVjHWnK9gB/i27tL9WS1TjF35xEScd6bXiag9Vzz?=
+ =?us-ascii?Q?ccVzcua1Locv46g/uRsMUBp3RwiF6jPdNX0wmC2Qz3a8NHHjSad6BBILVH5g?=
+ =?us-ascii?Q?4QEXQWBBNQcO6h/KDftrLsGtEOSNwahneOeDK/G3nxiMsc9tNRMpChf2bKiH?=
+ =?us-ascii?Q?GE8jne5eJr29vLsHconne1bNnR4s0heshzqQOXubG3NBwCatm3KikYQW1mGL?=
+ =?us-ascii?Q?GPDtVoLmKdEI3kxfBSZPob+P/4bu9l0aemIpLrm61nepLFVy5K2+okEVGhdD?=
+ =?us-ascii?Q?HgjwSfKUNDY8bgaif2MRCUvnIr7AMX+BxljySOF5KssrmuhGZzYl4c2zeP0?=
+ =?us-ascii?Q?=3D?=
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <0bdb1876-0cb3-4632-910b-2dc191902e3e@app.fastmail.com>
-X-ClientProxiedBy: MW4PR03CA0023.namprd03.prod.outlook.com
- (2603:10b6:303:8f::28) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|CY5PR11MB6392:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0f5d5300-7b08-49bb-1b92-08dd884b0e02
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?WC2o7GujWSIY04KaH1p+7SmgWvHqNAJWpWJLEWVB6FLnP5H2L9SWuRRYBEWq?=
- =?us-ascii?Q?q7KIq5Qt6RYH3UlwO61+Tl8q8Dquto4YztsW478T4FcenG6ir1R6VBiO8ztT?=
- =?us-ascii?Q?/Keel3lUEXeu0U/EIKNN7dUp8Upj2HdSZCMXCsSxG8vhW34Qkq2goYJScVwj?=
- =?us-ascii?Q?sE0/4vB914ESSiorINgj9WUMpeSrTAkKy56WUsTsVbpp/+k6WwWUjPB9lutG?=
- =?us-ascii?Q?aer7DHMoDVIzOOiRr4p/xwP/iR47IYnH9AieVQExpi96spIEDgIpGtwFa5q+?=
- =?us-ascii?Q?6VTkfVzd7q3nCT7EPb3h6PITrpUQUiA1uOCOU/Pz0BhZT+7zlSO3hY6cW2Qb?=
- =?us-ascii?Q?4J2viFSPtJL48jowf+RaFoHvmFJPmlfH4bToeW7/kpmHwYVj3sqXnkGc/ugM?=
- =?us-ascii?Q?4XtDqtR3Pd0aaeP6YrZqQbzf5A5fCeeN4+keTYotaK7QxEz11nlcepie2oV1?=
- =?us-ascii?Q?Cil6xk/2UYNZHW/Py4b8NWZ/TgG2noQH27dn/q/09vIdfp9emlsDDrOKJUFs?=
- =?us-ascii?Q?ffuoB6DDcAUpck064AGJhryR/54/7IOfCntDXHbaITOmm4NowM+SOUDDg/4P?=
- =?us-ascii?Q?bKw0YT92bMyquq4JNgs7+PunkYA3PnjTn2hLQTLEMIUSCG5EVjHIoCE8G6qe?=
- =?us-ascii?Q?hWOPdB8NHlVPNv62l9f0x13N+jah1qJmlD7waw2vGbU0lTdjLL9SPxltcEal?=
- =?us-ascii?Q?PkJ73Nd2awnCvrDcJUG8Ar8hHxB9SIBW8JMXMRH6H3ghaIsyENUY1LqWLKrA?=
- =?us-ascii?Q?2w6I8BtxiSl3noTkPPlXxMDcAG4aHdjOQ0/iKvtecCPGuAg5CHDm3RnGNEjy?=
- =?us-ascii?Q?ZIl27alzyAds7NP3X6g1+L0ceJXQsFKdwLOKHD8djK/FeIAv1cJn4/6RuCo/?=
- =?us-ascii?Q?oToC2DbAlOqnfC7gzpVb/biL+uPmgpK55HB690M6xrP362P9sSfj8bT2SQJ5?=
- =?us-ascii?Q?Y2zEgMYbrgzEB+7gPpTkJUwuQbm4gS9vmfqHK5QVBcFJmzZfE9xU/Kp4PHj4?=
- =?us-ascii?Q?rSjXH9ZxK1njHHW5Or3/66iYBSBAFnb520dQw/pxupMs/DzJunDN9LCYqLVY?=
- =?us-ascii?Q?RjtJaEBEPbH7acb5AIzj09b6IkgFDwIJk4422zsO4klXky7u6hxE3idVXdUG?=
- =?us-ascii?Q?XYSJZiFzRQCq2thRHzIkCnIM6jpV/XgCoJq3rWaQFezO3Xqa2T8aOESWVvKT?=
- =?us-ascii?Q?qiMNby51pInSakaBRzOdmTEEi6GVktIvrFix9nNksreq5PIe06V9pmuiarnQ?=
- =?us-ascii?Q?ixSgCmR1m2+1GJsYoelGz9Aku5vuvRn/U+smNGovC8SSBnv4L4w4woMrLpwQ?=
- =?us-ascii?Q?FmkY/qTAzSml2OFTtlMkZxbPMuN/Z97nVCj2YjnoeU8t80xJ+XRoXmStyuGg?=
- =?us-ascii?Q?jrAtOf8A4LQmwjZoq1zJPUFy8L1NmCmTqUDqFoUJEwhrGZDhW8tP/IYosMH9?=
- =?us-ascii?Q?4mFJc2bj0I4=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?KoBwRcCU4U/mPb1a9V+0fegGkGuZbCXDNK8MYXh0exA4BPKsX5aDlJpNR7uo?=
- =?us-ascii?Q?k/ko72QQav7HiqCjtluRLT202eNL2JuzqdRWsrdFYNLPXbyhkZcFPVCp8doP?=
- =?us-ascii?Q?lAdD68mb653H/Nv4A7nUzHKHq90UEaNuc+eBheLbKAmwskNC6OQk7ORBt5RK?=
- =?us-ascii?Q?6Zyd6vfiXqheIQIdwiEHwFPHVhCp/iOnDNQfvatrHheyCN6KnhkM5yMm6R7P?=
- =?us-ascii?Q?gWeq+SQ8CtUXv5VTg5FEMt2CAlnIpT36ZvpXfnVJmO0/SxRRTvpNNdWcPcD5?=
- =?us-ascii?Q?7vWvqbE5AVzbgiSpC8pcDrZ7xcO20ebjpz/F/C8+MJE/87nnDbqEApfPp+C7?=
- =?us-ascii?Q?tcuvzOAPwK9awgVnnJqpfPQABQ3ED7rHqeJFEYJTdmx23a02Zvio3nmx1Oho?=
- =?us-ascii?Q?iWi+sOIL1kgESe4S3hpovgIsbx+1A+BF4X7rNQW8Z3sOVNcPKEh5rSkOgfzL?=
- =?us-ascii?Q?OYbPVAUszmbNj3FmMNN3BByJmqj78LfhJNYJGVvAuJFnDGwj+M7HyJGtfE+O?=
- =?us-ascii?Q?Af46PaNmMrMUgMXI0f7qVTHgUrM62B4B4m/A3c5dxQlnMq9T2El0zTw0Vhnk?=
- =?us-ascii?Q?fPJazpTyLVNEvVjhh4PiuHFcOTKAC/3kn3Zp6bqBk6R22NlmpWSgiQokqcl2?=
- =?us-ascii?Q?24XFtKEBGfidRnH2xJ5Rn57DQUSuv4OrBvDVn82H8z0xyohkEHIV1NW7buLi?=
- =?us-ascii?Q?ACqB0+rhHivACxSvTQENX68RrRfcmjshXqg8MBmQZWcPzaB3w6mQmixkgzpK?=
- =?us-ascii?Q?j2VlrTISV/B1X4s5mKxYbTLntJhbuzg1Wc4LZXM13qa0O9mmdNOUMn5Sg9ZP?=
- =?us-ascii?Q?+sCT4vZvuJmFvrOctEI7aG15ah9SQPf/yq+8Ef93jpWsQlDV0P4nCs69ZfQg?=
- =?us-ascii?Q?A0amedyh3WyPbJl9H/NQtu3Saz0mpo6jcrz9AWjc+qAS86J+7NEZSrqQPjeo?=
- =?us-ascii?Q?yeTknShNa4JEE5KjRU4aOCHglXkeom+3gcOdwHiZauCaXkjy34gUcFFQmhLb?=
- =?us-ascii?Q?YhMRufBg05OJJqrdBBBjPGZz1aR7+/E2qwI3OHiqhaWN2iMEsigt67g09qMB?=
- =?us-ascii?Q?YjrUnDlLmwQQQuoP6bkzchv0jcEDwNCH0OwcJPGeZFZ+mwGLVU97cvNHQ8F4?=
- =?us-ascii?Q?KAWLH6pmZOqJpRU8l2jp3kKbG7gCc4m52+kBjmkNZ/0/QgOjF7sqZqXTlyXD?=
- =?us-ascii?Q?U/28uqJGZ01ou6cDQ9LIYN0BlAWNrBcN1Ck9D5nd5iJIGYI33zx4MDmR760M?=
- =?us-ascii?Q?OZyf2YhitUKZajjFp736wBgD76Pe9BN0GLCulDvGiUzYcTcMyf6xv20OZi8t?=
- =?us-ascii?Q?WXZU559Q4G39NN1yZgdbNLzsBrcLs0Di9fhRqAVC06FAKuvbVorZVp4eOcf2?=
- =?us-ascii?Q?bKG+L9aR6s45521Z93oYTuEpHmsGdev6CD51Dq5CcJKVWsrNSO5Tz1hliHpq?=
- =?us-ascii?Q?BfNNbZe7b5Jo/JjnN0HAm9RCbCm8fH5GgvTisybR1z4BbPaxKw/49jkpKc53?=
- =?us-ascii?Q?vBEHW954vHpKow1aGwfNIqcxDw+MX0UTvSCaosfxHgY3wmIy/nDcIwv++bOK?=
- =?us-ascii?Q?cjp4X2jN7oY+ENszkOTiOQAyQwPiRr0VPqQa/VhzdbqSrCjmOtZhYE2WCHuc?=
- =?us-ascii?Q?cw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f5d5300-7b08-49bb-1b92-08dd884b0e02
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-OriginatorOrg: outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2025 00:56:49.8181
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8a8d426-b535-4e61-a910-08dd885345ff
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 May 2025 01:55:39.4424
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iKYZmjFzTTL8WX+5gWML71JJsYstqnKGsZyWMKFzHndjX5+UrOH0QOcz5IAdojpfQZEMhwT7/X82h2LgjsfjtiurYIHs9PQipzcjGkb/b1U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6392
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR02MB9568
 
-Arnd Bergmann wrote:
-> On Wed, Apr 30, 2025, at 04:46, Dan Williams wrote:
-> > While there is an existing mitigation to simulate and redirect access to
-> > the BIOS data area with STRICT_DEVMEM=y, it is insufficient.
-> > Specifically, STRICT_DEVMEM=y traps read(2) access to the BIOS data
-> > area, and returns a zeroed buffer.  However, it turns out the kernel
-> > fails to enforce the same via mmap(2), and a direct mapping is
-> > established. This is a hole, and unfortunately userspace has learned to
-> > exploit it [2].
-> 
-> As far as I can tell, this was a deliberate design choice in
-> commit a4866aa81251 ("mm: Tighten x86 /dev/mem with zeroing reads"),
-> which did not try to forbid it completely but mainly avoids triggering
-> the hardened usercopy check.
+From: longli@linuxonhyperv.com <longli@linuxonhyperv.com> Sent: Wednesday, =
+April 30, 2025 3:06 PM
+>=20
+> There are use cases that interrupt and monitor pages are mapped to
+> user-mode through UIO, they need to be system page aligned. Some Hyper-V
 
-I would say not a "design choice", but rather a known leftover hole that
-nobody has had the initiative to close since 2022.
+s/UIO, they/UIO, so they/
 
-https://lore.kernel.org/all/202204071526.37364B5E3@keescook/
+> allocation APIs introduced earlier broke those requirements.
+>=20
+> Fix those APIs by always allocating Hyper-V page at system page boundarie=
+s.
 
-> > The simplest option for now is arrange for /dev/mem to always behave as
-> > if lockdown is enabled for confidential guests. Require confidential
-> > guest userspace to jettison legacy dependencies on /dev/mem similar to
-> > how other legacy mechanisms are jettisoned for confidential operation.
-> > Recall that modern methods for BIOS data access are available like
-> > /sys/firmware/dmi/tables.
-> 
-> Restricting /dev/mem further is a good idea, but it would be nice
-> if that could be done without adding yet another special case.
-> 
-> An even more radical approach would be to just disallow CONFIG_DEVMEM
-> for any configuration that includes ARCH_HAS_CC_PLATFORM, but that
-> may go a little too far.
+This patch modifies hv_alloc_hyperv_page() and friends. Then Patch 4 of the
+series deletes them, including the modifications. It would be less code mot=
+ion
+to do the first part of Patch 4 (i.e., the use of __get_free_page directly =
+in
+connection.c) here in Patch 1, and leave hv_alloc_hyperv_page() and friends
+unmodified. Continue to make the change to hv_kmsg_dump_register() here
+in Patch 1 as well.
 
-Right, for example the policy could go as far as to always require
-generic LOCKDOWN_KERNEL for confidential guests, but a distro likely
-wants to be able to build confidential guests and bare metal host
-kernels from the same kernel config. At a minimum it seems difficult to
-get away from a runtime "is_confidential_guest()" check.
+Then have Patch 2 simply delete hv_alloc_hyperv_page() and friends
+because they are no longer used. The modifications to hv_alloc_hyperv_page(=
+)
+and friends would not be needed.
 
-The other observation is that generic LOCKDOWN_KERNEL is about
-protecting against root being able to compromise platform integrity
-where confidential computing is full trust within the TEE, including
-root to run amok, and no trust outside that.
+Patch 3 and 4 would be the additional changes in uio_hv_generic.c.
 
-> The existing rules that I can see are:
-> 
-> - readl/write is only allowed on actual (lowmem) RAM, not
->   on MMIO registers, enforced by valid_phys_addr_range()
-> - with STRICT_DEVMEM, read/write is disallowed on both
->   RAM and MMIO
-> - an an exception, x86 additionally allows read/write on the
->   low 1MB MMIO region and 32-bit PCI MMIO BAR space, with
->   a custom xlate_dev_mem_ptr() that calls either memremap()
->   or ioremap() on the physical address.
-> - as another exception from that, the low 1MB on x86 behaves
->   like /dev/zero for memory pages when STRICT_DEVMEM
->   is set, and ignores conflicting drivers for MMIO registers
-> - The PowerPC sys_rtas syscall has another exception in
->   order to ignore the STRICT_DEVMEM and write to a portion
->   of kernel memory to talk to firmware
-> - on the mmap() side, x86 has another special to allow
->   mapping RAM in the first 1MB despite STRICT_DEVMEM
-> 
-> How about changing x86 to work more like the others and
-> removing the special cases for the first 1MB and for the
-> 32-bit PCI BAR space? If Xorg, and dmidecode are able to
-> do this differently, maybe the hacks can just go away, or
-> be guarded by a Kconfig option that is mutually exclusive
-> with ARCH_HAS_CC_PLATFORM?
+Michael
 
-I see the 1MB MMIO special-case in x86::devmem_is_allowed(), but where
-is the 32-bit PCI BAR space workaround? Just to make sure I am not
-missing a detail here.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: ca48739e59df ("Drivers: hv: vmbus: Move Hyper-V page allocator to =
+arch neutral code")
+> Signed-off-by: Long Li <longli@microsoft.com>
+> ---
+>  drivers/hv/hv_common.c | 35 ++++++++++-------------------------
+>  1 file changed, 10 insertions(+), 25 deletions(-)
+>=20
+> diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+> index a7d7494feaca..297ccd7d4997 100644
+> --- a/drivers/hv/hv_common.c
+> +++ b/drivers/hv/hv_common.c
+> @@ -106,41 +106,26 @@ void __init hv_common_free(void)
+>  }
+>=20
+>  /*
+> - * Functions for allocating and freeing memory with size and
+> - * alignment HV_HYP_PAGE_SIZE. These functions are needed because
+> - * the guest page size may not be the same as the Hyper-V page
+> - * size. We depend upon kmalloc() aligning power-of-two size
+> - * allocations to the allocation size boundary, so that the
+> - * allocated memory appears to Hyper-V as a page of the size
+> - * it expects.
+> + * A Hyper-V page can be used by UIO for mapping to user-space, it shoul=
+d
+> + * always be allocated on system page boundaries.
+>   */
+> -
+>  void *hv_alloc_hyperv_page(void)
+>  {
+> -	BUILD_BUG_ON(PAGE_SIZE <  HV_HYP_PAGE_SIZE);
+> -
+> -	if (PAGE_SIZE =3D=3D HV_HYP_PAGE_SIZE)
+> -		return (void *)__get_free_page(GFP_KERNEL);
+> -	else
+> -		return kmalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
+> +	BUILD_BUG_ON(PAGE_SIZE < HV_HYP_PAGE_SIZE);
+> +	return (void *)__get_free_page(GFP_KERNEL);
+>  }
+>  EXPORT_SYMBOL_GPL(hv_alloc_hyperv_page);
+>=20
+>  void *hv_alloc_hyperv_zeroed_page(void)
+>  {
+> -	if (PAGE_SIZE =3D=3D HV_HYP_PAGE_SIZE)
+> -		return (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
+> -	else
+> -		return kzalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
+> +	BUILD_BUG_ON(PAGE_SIZE < HV_HYP_PAGE_SIZE);
+> +	return (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
+>  }
+>  EXPORT_SYMBOL_GPL(hv_alloc_hyperv_zeroed_page);
+>=20
+>  void hv_free_hyperv_page(void *addr)
+>  {
+> -	if (PAGE_SIZE =3D=3D HV_HYP_PAGE_SIZE)
+> -		free_page((unsigned long)addr);
+> -	else
+> -		kfree(addr);
+> +	free_page((unsigned long)addr);
+>  }
+>  EXPORT_SYMBOL_GPL(hv_free_hyperv_page);
+>=20
+> @@ -272,7 +257,7 @@ static void hv_kmsg_dump_unregister(void)
+>  	atomic_notifier_chain_unregister(&panic_notifier_list,
+>  					 &hyperv_panic_report_block);
+>=20
+> -	hv_free_hyperv_page(hv_panic_page);
+> +	kfree(hv_panic_page);
+>  	hv_panic_page =3D NULL;
+>  }
+>=20
+> @@ -280,7 +265,7 @@ static void hv_kmsg_dump_register(void)
+>  {
+>  	int ret;
+>=20
+> -	hv_panic_page =3D hv_alloc_hyperv_zeroed_page();
+> +	hv_panic_page =3D kzalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
+>  	if (!hv_panic_page) {
+>  		pr_err("Hyper-V: panic message page memory allocation failed\n");
+>  		return;
+> @@ -289,7 +274,7 @@ static void hv_kmsg_dump_register(void)
+>  	ret =3D kmsg_dump_register(&hv_kmsg_dumper);
+>  	if (ret) {
+>  		pr_err("Hyper-V: kmsg dump register error 0x%x\n", ret);
+> -		hv_free_hyperv_page(hv_panic_page);
+> +		kfree(hv_panic_page);
+>  		hv_panic_page =3D NULL;
+>  	}
+>  }
+> --
+> 2.34.1
+>=20
 
-Note, this devmem exclusion effort previously went through a phase of
-always returning "0" (no access) from x86::devmem_is_allowed() [1]. The
-rationale for hacking the special case into open_port() was to maintain
-ABI consistency with LOCKDOWN_KERNEL. Right now x86 userspace expects
-either LOCKDOWN_KERNEL semantics, or read(2) returns zero and mmap(2) is
-unrestricted. If devmem_is_allowed() always says "no" then userspace is
-introduced to a new failure mode.
-
-I am open to rip the band-aid off and see what happens, but Robustness
-Principle suggested mimicking semantics that LOCKDOWN_KERNEL has already
-socialized.
-
-[1]: http://lore.kernel.org/67f8a1a15cc29_7205294d7@dwillia2-xfh.jf.intel.com.notmuch
-
-> > @@ -595,6 +596,15 @@ static int open_port(struct inode *inode, struct 
-> > file *filp)
-> >  	if (rc)
-> >  		return rc;
-> > 
-> > +	/*
-> > +	 * Enforce encrypted mapping consistency and avoid unaccepted
-> > +	 * memory conflicts, "lockdown" /dev/mem for confidential
-> > +	 * guests.
-> > +	 */
-> > +	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
-> > +	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-> > +		return -EPERM;
-> > +
-> 
-> The description only talks about /dev/mem, but it looks like this
-> blocks /dev/port as well. Blocking /dev/port may also be a good
-> idea, but I don't see why that would be conditional on
-> CC_ATTR_GUEST_MEM_ENCRYPT.
-
-That is more a side effect of wanting to mimic the
-security_locked_down(LOCKDOWN_DEV_MEM) behavior. That hook implies all
-of /dev/{mem,kmem,port} follow the same policy.
-
-> When CONFIG_DEVMEM=y and CONFIG_STRICT_DEVMEM=n, doesn't this still
-> have the same problem for CC guests?
-
-It does, but that's the point. The CC guests that need the exclusion
-have "select STRICT_DEVMEM", and *maybe* some CC guest arch could
-tolerate raw devmem access.
-
-However, that is unlikely. The observations here and from Greg point to
-security_locked_down() should be providing the answer here. Which
-completes the full circle back towards Nikolay's original proposal of
-allowing lockdown policy to handle a bitmap of options [2].
-
-Nikolay, part of me is glad to have done the full exploration of the
-problem space here. I learned something. At the same time it is humbling
-to realize I could have saved everyone's time just supporting your
-effort. Please pick up your lockdown bitmap proposal and consider this
-thread a long-winded Reviewed-by.
-
-[2]: http://lore.kernel.org/20250321102422.640271-1-nik.borisov@suse.com
-
-BTW, you can avoid the IO_STRICT_DEVMEM complexity by including
-LOCKDOWN_PCI_ACCESS in the list of LOCKDOWN bits that CC guests always
-enable. If someone wants to enable confidential userspace PCI drivers
-they can do the work to switch from LOCKDOWN_PCI_ACCESS to
-IO_STRICT_DEVMEM.
 
