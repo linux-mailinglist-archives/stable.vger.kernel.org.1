@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-139369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F32AA6383
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 21:10:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D22AA6385
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 21:10:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD2039C162B
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 19:09:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DD0F1BA849A
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 19:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371A0224B15;
-	Thu,  1 May 2025 19:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332232253EC;
+	Thu,  1 May 2025 19:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iua30g2I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QO/P/9N0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB298224AEF
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 19:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E695D2248A0
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 19:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746126597; cv=none; b=P8PM3p0qn3ovkgohO76yX6ThZudp4y8xdgHOheknknznnc/9stRteNeI1Kt34uAF1QpOKoybTDY14laMzfjNjaqSORe6BEek75fyI3tEr386vSqt/icjk2uGo38EnT9zxH272WV0NObQP+gSJpebeEn0C42gVL9iRlinPhTrYQI=
+	t=1746126602; cv=none; b=CHc7hd+iJgrjy8Pea7goRmTb2w5gFKjwY4ukE8wstNnhlkxHA1BYWWk6ot8ZkgfC/b2ZKcEFL/OZqHZhf7oByKynR5mEXXAVgu5Aewqef5IOQ3168G1c0OiQmW3UJwNpKv2M0MHdq+F2R1UqRdGjxq0hZ/kKRiyHyl1bmCvXuRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746126597; c=relaxed/simple;
-	bh=E7ALtBzcOygvoB5JJr3CnYIbhWrgLwzEA46QGhHokFg=;
+	s=arc-20240116; t=1746126602; c=relaxed/simple;
+	bh=y8MX2ccI461J1L0wen7sCr6W4aTK7c5X9tjtlEl0Bgk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WDKknacd9kqM+Tidzx0bCrtjURNdSXYca+80KfNpr0eycUdlnf95FKII+36SU2fcw+siIcik5o/3w+mpSp9qedriLqdKE/38tcpvophiXnKIWluAqaf3zgAz/jZcA4BTEheRqRAeH9iX++h1rP0cIVdLiAKzX3k3lpV9Ej4jArs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iua30g2I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005F7C4CEED;
-	Thu,  1 May 2025 19:09:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IKiuLREl4XmdmHVARihsSbRAgRlrTTOUutnQiYFIdO/jtayI1tCD/SEehylTu7vpvgySO2Vwr3YrmtB+z6V/27EHlcIV+2tbkX/yDpCTrVHanmhVUHSiFgEFb6VXvKhwnshcDSkbLjDazP/fvXH0FtmscX01UCa0B4U/ekKqm1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QO/P/9N0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D62C4CEE9;
+	Thu,  1 May 2025 19:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746126596;
-	bh=E7ALtBzcOygvoB5JJr3CnYIbhWrgLwzEA46QGhHokFg=;
+	s=k20201202; t=1746126601;
+	bh=y8MX2ccI461J1L0wen7sCr6W4aTK7c5X9tjtlEl0Bgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iua30g2Ia/4VFafZDtL2TjWPyCB4N+Hlzpa24XdY5wz+qhQHpNthG5S9GIomzgH6H
-	 EdhcNfsk1e9j6dPBFaKle/lwT9+awtz0gUVMqxhAjAN6MlHPpaq4xYjzMA0MTW9H8Q
-	 U77WYvWwPKaTbubqDR3z7YB8mSMZmvW6FOV88QtlnjhzRZLodNs3SQbxyQ/TRgx8C2
-	 2HomAR68ZYD8WGQ9AJYPMEsk0mXt3z7m3RdenETQEuSuqikj+XFHm6HRlK2rpEx1PQ
-	 pMsA+4oNTegbudElSPcVquR9imcXScem9QTkNJorHm/fMxtdCoP4POCL4HxaY0WdsN
-	 IYWAWzix2gtfA==
+	b=QO/P/9N0vcVh/cTQKXbD70G258CPjJaXlLAvdNRfnv7+knKpiQUAxQ3WnmSH1cmL3
+	 FHbBQPBcYER4lENLEe0LA2ylsFRNx67O4Ni7ojJqXUJh5G2pnVVKxVxIDSnKQkkkhA
+	 r/aOggEFvk36skT5c1QoBL8eJOOhEjjZLzZVcc7m+pBVnfYC7Rm9x8AlAC+VOIxTzG
+	 bpvhyayPE/O3mPYHv8nEvStFYJUOjnRvf0aq1crPVQiG144jn28kdyuA+TCdd6+n5L
+	 aNPUI/QcT1frZxgShUTduZ6VQy3wxsTp6csvpDx4HTBTTJw4l42ZCBka1G1hSkXNNk
+	 yaSnCVumsYxOg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 02/16] xfs: fix xfs_bmap_add_extent_delay_real for partial conversions
-Date: Thu,  1 May 2025 15:09:52 -0400
-Message-Id: <20250501122544-91d3200aad8a5b10@stable.kernel.org>
+Subject: Re: [PATCH 6.1 12/16] xfs: allow symlinks with short remote targets
+Date: Thu,  1 May 2025 15:09:56 -0400
+Message-Id: <20250501130518-f483590f7d251da9@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250430212704.2905795-3-leah.rumancik@gmail.com>
+In-Reply-To:  <20250430212704.2905795-13-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,60 +67,38 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: d69bee6a35d3c5e4873b9e164dd1a9711351a97c
+The upstream commit SHA1 provided is correct: 38de567906d95c397d87f292b892686b7ec6fbc3
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Leah Rumancik<leah.rumancik@gmail.com>
-Commit author: Christoph Hellwig<hch@lst.de>
+Commit author: Darrick J. Wong<djwong@kernel.org>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 4bcef72d96b5)
+6.6.y | Present (different SHA1: 0aca73915dc1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  d69bee6a35d3c ! 1:  2cb51f69d0955 xfs: fix xfs_bmap_add_extent_delay_real for partial conversions
+1:  38de567906d95 ! 1:  a037bc2828645 xfs: allow symlinks with short remote targets
     @@ Metadata
       ## Commit message ##
-         xfs: fix xfs_bmap_add_extent_delay_real for partial conversions
+         xfs: allow symlinks with short remote targets
      
-    +    [ Upstream commit d69bee6a35d3c5e4873b9e164dd1a9711351a97c ]
+    +    [ Upstream commit 38de567906d95c397d87f292b892686b7ec6fbc3 ]
     +
-         xfs_bmap_add_extent_delay_real takes parts or all of a delalloc extent
-         and converts them to a real extent.  It is written to deal with any
-         potential overlap of the to be converted range with the delalloc extent,
+         An internal user complained about log recovery failing on a symlink
+         ("Bad dinode after recovery") with the following (excerpted) format:
+     
     @@ Commit message
-         Signed-off-by: Christoph Hellwig <hch@lst.de>
-         Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+         Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+         Reviewed-by: Christoph Hellwig <hch@lst.de>
          Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
     +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
     +    Acked-by: "Darrick J. Wong" <djwong@kernel.org>
      
-      ## fs/xfs/libxfs/xfs_bmap.c ##
-     @@ fs/xfs/libxfs/xfs_bmap.c: xfs_bmap_add_extent_delay_real(
-    @@ fs/xfs/libxfs/xfs_bmap.c: xfs_bmap_add_extent_delay_real(
-      	}
-      
-      	/* adjust for changes in reserved delayed indirect blocks */
-    --	if (da_new < da_old) {
-    -+	if (da_new < da_old)
-    - 		xfs_add_fdblocks(mp, da_old - da_new);
-    --	} else if (da_new > da_old) {
-    --		ASSERT(state == 0);
-    --		error = xfs_dec_fdblocks(mp, da_new - da_old, false);
-    +-	if (da_new != da_old) {
-    +-		ASSERT(state == 0 || da_new < da_old);
-    ++	if (da_new != da_old)
-    + 		error = xfs_mod_fdblocks(mp, (int64_t)(da_old - da_new),
-    +-				false);
-     -	}
-    -+	else if (da_new > da_old)
-    -+		error = xfs_dec_fdblocks(mp, da_new - da_old, true);
-    ++				true);
-      
-      	xfs_bmap_check_leaf_extents(bma->cur, bma->ip, whichfork);
-      done:
+      ## fs/xfs/libxfs/xfs_inode_buf.c ##
+     @@ fs/xfs/libxfs/xfs_inode_buf.c: xfs_dinode_verify_fork(
 ---
 
 Results of testing on various branches:
