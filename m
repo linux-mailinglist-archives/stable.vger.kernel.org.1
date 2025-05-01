@@ -1,126 +1,132 @@
-Return-Path: <stable+bounces-139289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4714FAA5BA1
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 09:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 935E6AA5BA4
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 09:54:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEE4B1BC5184
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 07:52:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E9501BC5146
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 07:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDF6270EA6;
-	Thu,  1 May 2025 07:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EAF822A4E0;
+	Thu,  1 May 2025 07:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPAPcku4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qeEAQRxE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DAC1D89E3;
-	Thu,  1 May 2025 07:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C6242A9D
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 07:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746085938; cv=none; b=NgSrYotWZDwQkADSmY0LRiLpWdO0D9mwtAz6tau+wlP8Qy5LBtmCKh5GCeBu2EaJJhNV+2qhJdUxzFS7mr71O1kq83lvD5RYdmcKesPSWpIxwXRlL7YUJhKchzisZXsowFWrgzyPkYMNrJ4riePQwUD0LtSPNoqAmyxJesjco0o=
+	t=1746086069; cv=none; b=Aixs7k6DOFxbvd92HwBblRM70FolopyKI20Qi2GrBjRtW5JgxYuUPd+v/CeI0OIyshPzOfsoty8xlcqlMHLuQiFmwOPY9fbQenF3v2exK72kiKa3XnvK2G3t0Lu4vZJvpEx/26eLxt1qSEnOY57EQknux+KEpSjfxuzW1nFU7LE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746085938; c=relaxed/simple;
-	bh=izlfaK1RNQxEYzP8Zd0NG4A9sGlEsEUuEPRhVTxZof4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jLqUtlYXTdWgpNOfWyTzVWVltyRxTwqi7jUoDyukAB8jpdY3Eb87Zj1aMxOZOKmiT7GqmhKTyp/1oyB+TMUa9uhoTieSSvwueilO3nUB0jWnjOSVFfSkvtOSb2zv3GShTPizIsWqOAT5Zil3XgbV6UK88IdClrc2gskAVNNHoaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPAPcku4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81035C4CEE3;
-	Thu,  1 May 2025 07:52:17 +0000 (UTC)
+	s=arc-20240116; t=1746086069; c=relaxed/simple;
+	bh=fSEhE5YsQjXRyGSieq3grK2CkkO36GlQ/IFVgT/sqV0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=INeRb6i0u5U3JsDlglFQ/R9YD2mvSUBUM+W90Ug0bRcQbZRBMf3Cc6tEQn6yLYgzWAd6XLZU+PJviCFv1FHM8N3y8k5hP/7dW7gIoowHMvJuY5f1BQeKqSCyQKLlkuhBF1WVEQ+moJf41vuy+KvJpJrhqrfEHlJ4lVixZhB1lz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qeEAQRxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4392EC4CEE3;
+	Thu,  1 May 2025 07:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746085938;
-	bh=izlfaK1RNQxEYzP8Zd0NG4A9sGlEsEUuEPRhVTxZof4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XPAPcku4K99G3AWbOuL5gAw5Og8AZPeXtYEz1rZTNolwRbHFA8uNiE1WG8U3BNwuB
-	 SM7rRHY/For/nWBNfaIiZlA+qWxQp3B7qUrKmxCxdZw2FYaVq7KnHW+4cztD1WaDec
-	 osskfBBXmvaYYuxiJalPNCs1shvwvnm39mw0KG7s=
-Date: Thu, 1 May 2025 09:52:15 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 6.1 000/167] 6.1.136-rc1 review
-Message-ID: <2025050157-various-octane-094c@gregkh>
-References: <20250429161051.743239894@linuxfoundation.org>
- <aBKrKvYpCKWcoOGI@finisterre.sirena.org.uk>
+	s=korg; t=1746086069;
+	bh=fSEhE5YsQjXRyGSieq3grK2CkkO36GlQ/IFVgT/sqV0=;
+	h=Subject:To:Cc:From:Date:From;
+	b=qeEAQRxEz2szPBksKesiIanDABj5tzcDQXAfEy5uJU8Ts5QsEGO2xV3jLyMesxHus
+	 8nnBgghrMxaQVNdtv9musCAOZuVJXFc1SYlaNan19qRccPkH+WGNmrXd+76f2xYjD9
+	 pfizy92BOQY6c7alOxrmd0YzrGBQURyUZZ7H+ZvQ=
+Subject: FAILED: patch "[PATCH] riscv: uprobes: Add missing fence.i after building the XOL" failed to apply to 5.15-stable tree
+To: bjorn@rivosinc.com,guoren@kernel.org,palmer@rivosinc.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 01 May 2025 09:54:26 +0200
+Message-ID: <2025050126-joyride-preorder-06e9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBKrKvYpCKWcoOGI@finisterre.sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 01, 2025 at 07:58:50AM +0900, Mark Brown wrote:
-> On Tue, Apr 29, 2025 at 06:41:48PM +0200, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.1.136 release.
-> > There are 167 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> 
-> This breaks NFS boot on the Raspberry Pi 3+, the same issue appears in
-> 5.15.  We don't appear to get any incoming traffic:
-> 
->   Begin: Waiting up to 180 secs for any network device to become available ... done.
->   IP-Config: enxb827eb57f534 hardware address b8:27:eb:57:f5:34 mt[   16.127316] lan78xx 1-1.1.1:1.0 enxb827eb57f534: Link is Down
->   u 1500 DHCP
->   [   16.840932] brcmfmac: brcmf_sdio_htclk: HT Avail timeout (1000000): clkctl 0x50
->   IP-Config: no response after 2 secs - giving up
->   IP-Config: enxb827eb57f534 hardware address b8:27:eb:57:f5:34 mtu 1500 DHCP
-> 
-> There was a similar issue in mainline last release, I can't remember the
-> exact fix though.
-> 
-> A bisect identifies "net: phy: microchip: force IRQ polling mode for
-> lan88xx" as the problematic commit.
-> 
-> # bad: [c77e7bf5aa741c165e37394b3adb82bcb3cd9918] Linux 5.15.181-rc1
-> # good: [f7347f4005727f3155551c0550f4deb9c40b56c2] Linux 5.15.180
-> git bisect start 'c77e7bf5aa741c165e37394b3adb82bcb3cd9918' 'f7347f4005727f3155551c0550f4deb9c40b56c2'
-> # test job: [c77e7bf5aa741c165e37394b3adb82bcb3cd9918] https://lava.sirena.org.uk/scheduler/job/1340356
-> # bad: [c77e7bf5aa741c165e37394b3adb82bcb3cd9918] Linux 5.15.181-rc1
-> git bisect bad c77e7bf5aa741c165e37394b3adb82bcb3cd9918
-> # test job: [9599afaa6d1a303c39918a477f76fe8cc9534115] https://lava.sirena.org.uk/scheduler/job/1340569
-> # good: [9599afaa6d1a303c39918a477f76fe8cc9534115] KVM: arm64: Always start with clearing SVE flag on load
-> git bisect good 9599afaa6d1a303c39918a477f76fe8cc9534115
-> # test job: [714307f60a32bfc44a0767e9b0fc66a841d2b8f6] https://lava.sirena.org.uk/scheduler/job/1340691
-> # good: [714307f60a32bfc44a0767e9b0fc66a841d2b8f6] kmsan: disable strscpy() optimization under KMSAN
-> git bisect good 714307f60a32bfc44a0767e9b0fc66a841d2b8f6
-> # test job: [db8fb490436bd100da815da4e775b51b01e42df2] https://lava.sirena.org.uk/scheduler/job/1341008
-> # bad: [db8fb490436bd100da815da4e775b51b01e42df2] s390/sclp: Add check for get_zeroed_page()
-> git bisect bad db8fb490436bd100da815da4e775b51b01e42df2
-> # test job: [4757e8122001124752d7854bec726a61c60ae36a] https://lava.sirena.org.uk/scheduler/job/1341258
-> # bad: [4757e8122001124752d7854bec726a61c60ae36a] USB: storage: quirk for ADATA Portable HDD CH94
-> git bisect bad 4757e8122001124752d7854bec726a61c60ae36a
-> # test job: [1f079f1c5fcf13295fc1b583268cc53c80492cfb] https://lava.sirena.org.uk/scheduler/job/1341360
-> # good: [1f079f1c5fcf13295fc1b583268cc53c80492cfb] tipc: fix NULL pointer dereference in tipc_mon_reinit_self()
-> git bisect good 1f079f1c5fcf13295fc1b583268cc53c80492cfb
-> # test job: [cee5176a98accc550585680213f71d1d307a2e9a] https://lava.sirena.org.uk/scheduler/job/1341449
-> # good: [cee5176a98accc550585680213f71d1d307a2e9a] virtio_console: fix missing byte order handling for cols and rows
-> git bisect good cee5176a98accc550585680213f71d1d307a2e9a
-> # test job: [5e9fff164f2e60ade9282ee30ad3293eb6312f0e] https://lava.sirena.org.uk/scheduler/job/1341692
-> # bad: [5e9fff164f2e60ade9282ee30ad3293eb6312f0e] drm/amd/display: Fix gpu reset in multidisplay config
-> git bisect bad 5e9fff164f2e60ade9282ee30ad3293eb6312f0e
-> # test job: [ecc30d7f041daf7de7d0d554ebeeaec1a0870e53] https://lava.sirena.org.uk/scheduler/job/1341795
-> # bad: [ecc30d7f041daf7de7d0d554ebeeaec1a0870e53] net: phy: microchip: force IRQ polling mode for lan88xx
-> git bisect bad ecc30d7f041daf7de7d0d554ebeeaec1a0870e53
-> # test job: [40dc7515d0b13057d576610a8dd23ccb42d4259f] https://lava.sirena.org.uk/scheduler/job/1341924
-> # good: [40dc7515d0b13057d576610a8dd23ccb42d4259f] net: selftests: initialize TCP header and skb payload with zero
-> git bisect good 40dc7515d0b13057d576610a8dd23ccb42d4259f
-> # first bad commit: [ecc30d7f041daf7de7d0d554ebeeaec1a0870e53] net: phy: microchip: force IRQ polling mode for lan88xx
 
-Thanks for the bisection, I'll go drop this from 5.15.y and 6.1.y now.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 7d1d19a11cfbfd8bae1d89cc010b2cc397cd0c48
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050126-joyride-preorder-06e9@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 7d1d19a11cfbfd8bae1d89cc010b2cc397cd0c48 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>
+Date: Sat, 19 Apr 2025 13:14:00 +0200
+Subject: [PATCH] riscv: uprobes: Add missing fence.i after building the XOL
+ buffer
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The XOL (execute out-of-line) buffer is used to single-step the
+replaced instruction(s) for uprobes. The RISC-V port was missing a
+proper fence.i (i$ flushing) after constructing the XOL buffer, which
+can result in incorrect execution of stale/broken instructions.
+
+This was found running the BPF selftests "test_progs:
+uprobe_autoattach, attach_probe" on the Spacemit K1/X60, where the
+uprobes tests randomly blew up.
+
+Reviewed-by: Guo Ren <guoren@kernel.org>
+Fixes: 74784081aac8 ("riscv: Add uprobes supported")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20250419111402.1660267-2-bjorn@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+
+diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
+index 4b3dc8beaf77..cc15f7ca6cc1 100644
+--- a/arch/riscv/kernel/probes/uprobes.c
++++ b/arch/riscv/kernel/probes/uprobes.c
+@@ -167,6 +167,7 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 	/* Initialize the slot */
+ 	void *kaddr = kmap_atomic(page);
+ 	void *dst = kaddr + (vaddr & ~PAGE_MASK);
++	unsigned long start = (unsigned long)dst;
+ 
+ 	memcpy(dst, src, len);
+ 
+@@ -176,13 +177,6 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 		*(uprobe_opcode_t *)dst = __BUG_INSN_32;
+ 	}
+ 
++	flush_icache_range(start, start + len);
+ 	kunmap_atomic(kaddr);
+-
+-	/*
+-	 * We probably need flush_icache_user_page() but it needs vma.
+-	 * This should work on most of architectures by default. If
+-	 * architecture needs to do something different it can define
+-	 * its own version of the function.
+-	 */
+-	flush_dcache_page(page);
+ }
+
 
