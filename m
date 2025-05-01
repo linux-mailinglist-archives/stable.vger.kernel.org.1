@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-139319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76433AA60E4
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 17:49:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4CA4AA60E6
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 17:49:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 368261BA4F4E
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 15:49:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DD599A30AD
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 15:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB913201262;
-	Thu,  1 May 2025 15:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F83201262;
+	Thu,  1 May 2025 15:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MgWd06+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7p2AET0"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BADF1BF37
-	for <Stable@vger.kernel.org>; Thu,  1 May 2025 15:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7932D1BF37
+	for <Stable@vger.kernel.org>; Thu,  1 May 2025 15:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746114545; cv=none; b=ujlEbEo2ZAekTVmwhjTz/NjjJRTXAtAopd76xnfMyM4uQucmzFyFSGCF8iqIoHD2mwTItpTwcFrK4/8tEZM7wX6jTT0hfUdJ0HsMSvho+ZLmFEiCvNeadSL+vCTy4K8hM2mZNJhNwNlGsIOLpKiED87SX1PHt7qRFvAhl3m3el4=
+	t=1746114554; cv=none; b=awN+F3zdVtwchsLOsjQ7StjRz0ZX+GFmEJFZRsmfeE0//gRW3d24sMt30DIlJN6SEv0unA/AVMletpIXztssq+OGywwqnSWbFFGuEijil+A1ohlvR6P4FJJ1/bvL7DVhJIbfbG9jyP/3NPeGZmr6S7wKaSqI37y5OjMIfdjz58A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746114545; c=relaxed/simple;
-	bh=/sIdDAcXjKFAYTMaBkCjTJ80gvjgmIl9/N/bFAUG0Ts=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=Y+dqhg4EqTb/YsuZZ+IlOU6LpImSDG6uXz41vokJpiZToG/9iinZJodYQkYfsJHRI+otQDZ+p+jiJNPr/POCJsgNHdEeviQR/7ikMDobXTSfdmNJrxZGgWTJ9MU2CLbzQC2UjxuVqTP4+m5wX7bRL1lO770dxfmS6fdWjoDTG9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MgWd06+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A48C4CEE3;
-	Thu,  1 May 2025 15:49:04 +0000 (UTC)
+	s=arc-20240116; t=1746114554; c=relaxed/simple;
+	bh=8fIVFSQfbo1mE83h/RUbi8PnyTIgMsS5kaWfFyabFrw=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=bj3fH63gYlGJ1NVXJguo7flkocCKcSyaPRE7ePB5NVG2Y4xvjcgvzojp/0I7GVinCXljgZbmMucGYMQofprb0tSksvSc6ksw8t6NaJDn5K9qIOoqeh7ipvNmSI99POjmu49abGX5TK5O82i0nN5HaReSLdiBN+CxH9H99OH9D5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7p2AET0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB58C4CEE3;
+	Thu,  1 May 2025 15:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746114545;
-	bh=/sIdDAcXjKFAYTMaBkCjTJ80gvjgmIl9/N/bFAUG0Ts=;
+	s=korg; t=1746114553;
+	bh=8fIVFSQfbo1mE83h/RUbi8PnyTIgMsS5kaWfFyabFrw=;
 	h=Subject:To:From:Date:From;
-	b=0MgWd06+SZLcns6rCcKdGvHHCM+FPPoKb0+0xha7drxdA9fswdWeHeyMyf9Fq1o73
-	 kVZrwI43qHj9zeEHS+pir5dpd/8/bYicUcmQVPUxkqhvpyGEr94HN0DoVfRmhjN2xc
-	 h25QSIR5HcsbCFI35J+ZRpiGid3+n1Pte8hahvWs=
-Subject: patch "iio: adc: rockchip: Fix clock initialization sequence" added to char-misc-linus
-To: xxm@rock-chips.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,heiko@sntech.de
+	b=b7p2AET0iLr0exTgipB4RlHggPqZn4nPWq93R6BhGBt+dBIbEYxkznJb/t0H941o/
+	 +McWBbGIjGtF92M/a+HXrsSNQDbN3cQDgNv5+UtwieL7YBqiZXeIpsqaVQQpq7Ae2H
+	 OL/J81ddKhlsiT5q42ByM3sdlpgoHl/89WyRb56s=
+Subject: patch "iio: adc: ad7606: check for NULL before calling sw_mode_config()" added to char-misc-linus
+To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,nuno.sa@analog.com
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 01 May 2025 17:48:54 +0200
-Message-ID: <2025050154-atlantic-truth-0ac3@gregkh>
+Date: Thu, 01 May 2025 17:48:55 +0200
+Message-ID: <2025050155-edge-reverence-32c4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: rockchip: Fix clock initialization sequence
+    iio: adc: ad7606: check for NULL before calling sw_mode_config()
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,57 +69,56 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 839f81de397019f55161c5982d670ac19d836173 Mon Sep 17 00:00:00 2001
-From: Simon Xue <xxm@rock-chips.com>
-Date: Wed, 12 Mar 2025 14:20:16 +0800
-Subject: iio: adc: rockchip: Fix clock initialization sequence
+From 5257d80e22bf27009d6742e4c174f42cfe54e425 Mon Sep 17 00:00:00 2001
+From: David Lechner <dlechner@baylibre.com>
+Date: Tue, 18 Mar 2025 17:52:09 -0500
+Subject: iio: adc: ad7606: check for NULL before calling sw_mode_config()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-clock_set_rate should be executed after devm_clk_get_enabled.
+Check that the sw_mode_config function pointer is not NULL before
+calling it. Not all buses define this callback, which resulted in a NULL
+pointer dereference.
 
-Fixes: 97ad10bb2901 ("iio: adc: rockchip_saradc: Make use of devm_clk_get_enabled")
-Signed-off-by: Simon Xue <xxm@rock-chips.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patch.msgid.link/20250312062016.137821-1-xxm@rock-chips.com
+Fixes: e571c1902116 ("iio: adc: ad7606: move scale_setup as function pointer on chip-info")
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250318-iio-adc-ad7606-improvements-v2-1-4b605427774c@baylibre.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/rockchip_saradc.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ drivers/iio/adc/ad7606.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-index 9a099df79518..5e28bd28b81a 100644
---- a/drivers/iio/adc/rockchip_saradc.c
-+++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -520,15 +520,6 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
- 	if (info->reset)
- 		rockchip_saradc_reset_controller(info->reset);
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index 1a314fddd7eb..703556eb7257 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -1236,9 +1236,11 @@ static int ad7616_sw_mode_setup(struct iio_dev *indio_dev)
+ 	st->write_scale = ad7616_write_scale_sw;
+ 	st->write_os = &ad7616_write_os_sw;
  
--	/*
--	 * Use a default value for the converter clock.
--	 * This may become user-configurable in the future.
--	 */
--	ret = clk_set_rate(info->clk, info->data->clk_rate);
--	if (ret < 0)
--		return dev_err_probe(&pdev->dev, ret,
--				     "failed to set adc clk rate\n");
--
- 	ret = regulator_enable(info->vref);
- 	if (ret < 0)
- 		return dev_err_probe(&pdev->dev, ret,
-@@ -555,6 +546,14 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
- 	if (IS_ERR(info->clk))
- 		return dev_err_probe(&pdev->dev, PTR_ERR(info->clk),
- 				     "failed to get adc clock\n");
-+	/*
-+	 * Use a default value for the converter clock.
-+	 * This may become user-configurable in the future.
-+	 */
-+	ret = clk_set_rate(info->clk, info->data->clk_rate);
-+	if (ret < 0)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "failed to set adc clk rate\n");
+-	ret = st->bops->sw_mode_config(indio_dev);
+-	if (ret)
+-		return ret;
++	if (st->bops->sw_mode_config) {
++		ret = st->bops->sw_mode_config(indio_dev);
++		if (ret)
++			return ret;
++	}
  
- 	platform_set_drvdata(pdev, indio_dev);
+ 	/* Activate Burst mode and SEQEN MODE */
+ 	return ad7606_write_mask(st, AD7616_CONFIGURATION_REGISTER,
+@@ -1268,6 +1270,9 @@ static int ad7606b_sw_mode_setup(struct iio_dev *indio_dev)
+ 	st->write_scale = ad7606_write_scale_sw;
+ 	st->write_os = &ad7606_write_os_sw;
+ 
++	if (!st->bops->sw_mode_config)
++		return 0;
++
+ 	return st->bops->sw_mode_config(indio_dev);
+ }
  
 -- 
 2.49.0
