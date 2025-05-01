@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-139316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783A2AA60CF
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 17:37:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD61AA60D9
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 17:41:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 387883BA995
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 15:36:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CB594C4495
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 15:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB4A1F4C90;
-	Thu,  1 May 2025 15:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7F1204C00;
+	Thu,  1 May 2025 15:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cb75BCo/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puT/iB0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C8518C011;
-	Thu,  1 May 2025 15:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9A733C9;
+	Thu,  1 May 2025 15:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746113824; cv=none; b=f5S1bAOr5zo4xDLZRhGqrY0iO1fzVIC53TtCElzSLrcueO3fGuF4YGtOratyxYfgikf4xEOFN4fx4fEVetwYG8h8UCOMAHYCUv0Vj2YtA55AP6e+r2bLzwNlkbIWK8af6E+VMxh0qF756KmZlWsOUMKtca9U56vp9emXiM+94fw=
+	t=1746114094; cv=none; b=XvWWKZhA67OKOOjZ8mgv2SCnfotzb3+uLYEH22RkLR6ARRtzsINxgYViqdKcwDClmihFCaip3b8n1U1c8UQ3BYyBLV358QDgH/pvYDozxatQvhes602dsCJS972eQTaChwYYa0JqoTBjx3DKGQdG0qjgvWfb/Qmd0qRNKSAw8vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746113824; c=relaxed/simple;
-	bh=cmR2HZvWWbjN4vgXaQS/6TxoTDS4aFO2IW+vqZLr+ZQ=;
+	s=arc-20240116; t=1746114094; c=relaxed/simple;
+	bh=wCcIZ2HaYnn6wpdRf+mldkvw+Bpb6dXIPcM7KQdQj2g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l5nn9N988zaLMwA6YPdzY5l0iOvqkXepWg47/3/68voFKvqSReHyr6hCpmPcrKwHobem2pVbkaKe3S/MiwOXaSlI/LuMFLikfKi/gnz8Ju9llwh+o5j0t9GYZ6jIiSfi3MZiIagijhxBCPOsaUyF/z2erFCs7DDdutch9x53l3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cb75BCo/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DDDC4CEED;
-	Thu,  1 May 2025 15:37:03 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=di+JLubsco3SxjVmspga4ujL523BA6irwwtUdN0K6sq1dSc76jboUjnyKoNW6YE7NrRcZQoeE7FxeMpF5laNwXIDbzF50AGEqAPaeu02kkv8B+OBIIRS91I8Ct1rXt0MzQitozudFRlDw9pi+6A5vYS/GyMlkxHS2+1BOtV6gjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puT/iB0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA081C4CEED;
+	Thu,  1 May 2025 15:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746113824;
-	bh=cmR2HZvWWbjN4vgXaQS/6TxoTDS4aFO2IW+vqZLr+ZQ=;
+	s=korg; t=1746114094;
+	bh=wCcIZ2HaYnn6wpdRf+mldkvw+Bpb6dXIPcM7KQdQj2g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Cb75BCo/UkfXkPrrygBxb3F+wIHkObt/ILrhJXUh6hqaYLEELC4sw/rQmo3FmlsTE
-	 qpYnGvnrhu1+OYkh25NajRiQCUzmcsoKZykMefplUyv3QK13SVXHnpyFEFUxgcXT2a
-	 Ug6GtpBV6ZY4E0EVWLOKm9th85w66UP9PlMtvODE=
-Date: Thu, 1 May 2025 17:36:56 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
-Cc: "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	John Youn <John.Youn@synopsys.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] usb: dwc2: gadget: Fix enter to hibernation for UTMI+
- PHY
-Message-ID: <2025050138-attempt-skewer-726d@gregkh>
-References: <8bacf7428d29d7fc2e5a94e5931f12d7df60c732.1745312619.git.Minas.Harutyunyan@synopsys.com>
+	b=puT/iB0TXxZlw1Mqx0/IwwBNAGdK8Z9h7ZR90Zp68nLI06qe65AoqtooC4+C+XTFO
+	 VqG/DwHqdjG50SiMZsQA4z9zvwF4uIaRquPU+d9KtsKaFBGjSXu4NlWlYMbPfKkU0D
+	 x9c1dV/Qu2B8MFk5L5n4qhPfQkJED7oFeGFIL0sw=
+Date: Thu, 1 May 2025 17:41:31 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: RD Babiera <rdbabiera@google.com>
+Cc: heikki.krogerus@linux.intel.com, badhri@google.com,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1] usb: typec: tcpm: apply vbus before data bringup in
+ tcpm_src_attach
+Message-ID: <2025050116-hardy-twins-913e@gregkh>
+References: <20250429234743.3749129-2-rdbabiera@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,27 +56,32 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8bacf7428d29d7fc2e5a94e5931f12d7df60c732.1745312619.git.Minas.Harutyunyan@synopsys.com>
+In-Reply-To: <20250429234743.3749129-2-rdbabiera@google.com>
 
-On Tue, Apr 22, 2025 at 09:16:52AM +0000, Minas Harutyunyan wrote:
-> For UTMI+ PHY, according to programming guide, first should be set
-> PMUACTV bit then STOPPCLK bit. Otherwise, when the device issues
-> Remote Wakeup, then host notices disconnect instead.
-> For ULPI PHY, above mentioned bits must be set in reversed order:
-> STOPPCLK then PMUACTV.
+On Tue, Apr 29, 2025 at 11:47:42PM +0000, RD Babiera wrote:
+> This patch fixes Type-C compliance test TD 4.7.6 - Try.SNK DRP Connect
+> SNKAS.
 > 
-> Fixes: 4483ef3c1685 ("usb: dwc2: Add hibernation updates for ULPI PHY")
+> tVbusON has a limit of 275ms when entering SRC_ATTACHED. Compliance
+> testers can interpret the TryWait.Src to Attached.Src transition after
+> Try.Snk as being in Attached.Src the entire time, so ~170ms is lost
+> to the debounce timer.
+> 
+> Setting the data role can be a costly operation in host mode, and when
+> completed after 100ms can cause Type-C compliance test check TD 4.7.5.V.4
+> to fail.
+> 
+> Turn VBUS on before tcpm_set_roles to meet timing requirement.
+> 
+> Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
 > Cc: stable@vger.kernel.org
-> Reported-by: Tomasz Mon <tomasz.mon@nordicsemi.no>
-> Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+> Signed-off-by: RD Babiera <rdbabiera@google.com>
+> Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
 > ---
-> Changes in v2:
->  - Added Cc: stable@vger.kernel.org
-> ---
->  drivers/usb/dwc2/gadget.c | 37 +++++++++++++++++++++++++------------
->  1 file changed, 25 insertions(+), 12 deletions(-)
+>  drivers/usb/typec/tcpm/tcpm.c | 34 +++++++++++++++++-----------------
+>  1 file changed, 17 insertions(+), 17 deletions(-)
 
-Does not apply to 6.15-rc4 at all, can you rebase and resubmit this?
+Does not apply to my tree, can you rebase against usb-next and resend?
 
 thanks,
 
