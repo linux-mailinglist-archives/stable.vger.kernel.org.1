@@ -1,124 +1,87 @@
-Return-Path: <stable+bounces-139341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 051B5AA62C3
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 20:28:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 082A8AA631B
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 20:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53D8B4C0232
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 18:28:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6F0C9A69CF
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 18:50:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6FC221F29;
-	Thu,  1 May 2025 18:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3351EDA2B;
+	Thu,  1 May 2025 18:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="SomsQhRW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHkygMSb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C9A44C7C;
-	Thu,  1 May 2025 18:28:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6671C1F22
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 18:50:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746124084; cv=none; b=gdIKwj0EiD0+ervycmpqcYrTGPR+CzZYr7k2rFen/6W797ZHvxPTua+O6jUgxI52ee72mBQOzxeZXUNbsTPOXcnsi0frnEiPB4Os77D4i0VxMmN2fdA1+rchr5itM9Dl4vPJMwao4UADQEJfPUqQwLn1nXOJ96IsCKt9kdToR2k=
+	t=1746125446; cv=none; b=BrCovgAq2gs5cjyu4htDUcaa8C7+Q15Tx4/HVldIfrIOJHMg6MZ9zP71Xyw3QsJ6PU+LAtaot1Cg+Kn4sf4ZajtzcPeKUvo0MIJC6tlCZBcv8fKmFb7J2TNcy6DzSUqOpEHQ5B2YKnrQAaddKnKc9FQJl5GfG9iYJt6MSGa9BSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746124084; c=relaxed/simple;
-	bh=OvPMEuQ46il3TskZUAK4+nulnbCgpZ4Cd2OcQ/G8dps=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H6zJ1QB7HV1mok5BGErweYn7yTjQOHLZPwkBjClwmomzi0wsPnX9ZZ424UjUvFZNMudnb7iwvt0egXMGvATA8IxF3Z9JFJrc5a6VA/VDWGBKmvOgHBm2OLYV8F5IAW5/EPpuixQ2WL3x/0yx95mbQ3PXMIPosJC442RLm4Tu5w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=SomsQhRW; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43ed8d32a95so10173855e9.3;
-        Thu, 01 May 2025 11:28:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1746124081; x=1746728881; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ziO8mDy17x0ZX+4RdFsifgUHBBZZisRMepgvXhKJJxg=;
-        b=SomsQhRWcgXMa06GtEB3VBPF35ciky+D5Q++GYr4lQWlB2UAy782E+ZyFbleM4YQ5m
-         bChP1+/YLgmX+VTEXFmv1eBsV+d633Xom+kP5Kj8Fj4pXm6FCJSlcqa5X8n1v8g9xHr5
-         bneJcekSYgoeZrJxYcia4K7qo2oJKZf5joRDLVn/YEoB5IhZLnOuVBmyl41JuE4ULIuW
-         EHzZmAX0+dn4trBzLKqMnDLH6YLm7iwQpccTwmXN8HY1YKtgMNwuX1QbELc8Jc7NN1oM
-         75biBkjtRb7ix22g7u1J+M//nYzTGxpk/rgbIUNUUvXBoBZihh5TEr+4DLuVozWZqQ6l
-         Ef0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746124081; x=1746728881;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ziO8mDy17x0ZX+4RdFsifgUHBBZZisRMepgvXhKJJxg=;
-        b=CE7Wt/uAXBZo5FM7CVf0/KU4gqHoaDXNtclipiK5nRnqde6TAxEGRPuEVtnyEbOeZ3
-         thU8pwEhHKVGq2I4r0ENK/Y+WB72cb3+MfdG88Xa7C/vNEY91+Ch7tPkYR/R2p66/PLt
-         VcobZpkGDWfctRdECm1c35NUHGqjqM5i9TPR7FPQCr/O8PKZEbvcltehYtzzmaDBI/a8
-         z8H/3sUhGKCLbITcVCME2+3qtPy3lu+ico2yOLpUJ3KtKXPJ5fBJiq9LfJdGZlc8ynTS
-         3OgWEvCfAWTAE5Yb0EJTJg0gRUjaSnI/3jBopopHl/PH+dLuwCkhXLwgJfVn94/e4Be1
-         QtRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUf4NH/DfKSTzJSsqxrMJDMHXG7jBn2xRrauGqYUinUS8W8Bhct60e2D8eUVtZ88nYEkRtTuzdU@vger.kernel.org, AJvYcCW81p5wlr0O5lPmeJuGoMACWeEpfo94VEYFlCn30jFZP+1T7I7maSsRQ8Kj1vcbm903f7uEzPQ1knkiPn0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT89NtIppfqqaQBjbeZM70scGHl/znbJ56DwvX5fY13VGJeWCD
-	Zcm13oZLzLBD+ZlgzMu19Sgl0iSYG0Pij73yueAC62wPiR6n1D0=
-X-Gm-Gg: ASbGncufGbXzoseTAQVAh/rnGdKVR+bptgI21u8Zj8vAKV91UIYthtmLyXTMDLUew0m
-	/H28lh5BCSj1MsR98F6IXilxC5INmu5PWSJGNuoIru/TuKk4q7GxKMCulaIuVL+hnxpFC+T/MNu
-	Aq2/wpGbwSAc77KK5H6NTrf4faBn+6dDSbuknTj0zu44odH3CoruVAqz3IHHWHcjCTG/W6DdhsD
-	gGlqW6IHgHisIUPSeQZ8eIvChnapun0n7FFhIwy8v2S/01WKoK6llVh+douR1zIPdAz9qGG//yj
-	l9Mu/7kYW5a1vEPIMmIAXce2FGz4ip4nCR0uhqhNxsfgHGGa3D+WWthjtpLrgeS8NKgz7S3XIt+
-	VPfDie5i+TuqXS82Mdw==
-X-Google-Smtp-Source: AGHT+IE0vFV95HheCkKVFzX8joqpHJeWx/EZFT2IHqGfh47jshQk7bRn/7pHku68lkBSbrioTy7maA==
-X-Received: by 2002:a05:600c:c89:b0:43c:f81d:34 with SMTP id 5b1f17b1804b1-441b7017eddmr29576555e9.9.1746124081319;
-        Thu, 01 May 2025 11:28:01 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b4589.dip0.t-ipconnect.de. [91.43.69.137])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a095a468e3sm1475143f8f.36.2025.05.01.11.27.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 May 2025 11:28:00 -0700 (PDT)
-Message-ID: <704e57d4-ba2e-4afa-9351-cc5496f7030c@googlemail.com>
-Date: Thu, 1 May 2025 20:27:58 +0200
+	s=arc-20240116; t=1746125446; c=relaxed/simple;
+	bh=uvePt0uFGHVLoGf6WYLqCsp01yu+o9DqXCscSBXgWWQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GSpIm/qHBWXjMU0K7s4d17qzlovHkjEOTUSVdc6j3lbeL8bXWrQLGBgXl3hs3nMYKUJgiRI8DxGMh7qlcAwt1JPXHwO/jFbugmtswGy9y/kU9C1oEehnqKTwa9ydAn889aKXQCDY4ZCOrJJNIDuH3X1wdsE4B0norWkHAKkXGzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHkygMSb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE847C4CEE3;
+	Thu,  1 May 2025 18:50:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746125445;
+	bh=uvePt0uFGHVLoGf6WYLqCsp01yu+o9DqXCscSBXgWWQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aHkygMSbjzYd12Ojrh9gO3Gvw/GbsjbB8iw9mWw29TLHt3nXOJuhMMcZDpwSs9FuD
+	 +I2twC5XrvRGBSEJJpVeNpNxe4wPN1KtTeSHdVYuTm8X1uAAPBNx09FldNh3Y07vR/
+	 FIor5aABeNzh9Ldy+2olBsYQ6REWunfEBO/GyhqdSXprrggQX6XcpwgUUuMzSiB3an
+	 15402o4iHWw8Yv9zUtrHKm3n17nFxdgWI3FSbe9xFeJtwUr0ZxbIKbWVMP6CzIHcHd
+	 gZTXxh1FQujBYPEQo4ncVaA7FsQpTWAzzfRGAEBBvANG8CxfZ1HcSvlJDC1yjpHyT8
+	 czSPInvlnFIzw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6/7] accel/ivpu: Fix locking order in ivpu_job_submit
+Date: Thu,  1 May 2025 14:50:40 -0400
+Message-Id: <20250501115927-1f5655c461306399@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250430124819.3761263-7-jacek.lawrynowicz@linux.intel.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.6 000/196] 6.6.89-rc2 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250501081437.703410892@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250501081437.703410892@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Am 01.05.2025 um 10:18 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.6.89 release.
-> There are 196 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+[ Sasha's backport helper bot ]
 
-Just like rc1, rc2 builds, boots and works fine on my 2-socket Ivy Bridge Xeon E5-2697 v2 
-server. No dmesg oddities or regressions found.
+Hi,
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
+The upstream commit SHA1 provided is correct: ab680dc6c78aa035e944ecc8c48a1caab9f39924
 
-Beste Grüße,
-Peter Schneider
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Jacek Lawrynowicz<jacek.lawrynowicz@linux.intel.com>
+Commit author: Karol Wachowski<karol.wachowski@intel.com>
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+Note: The patch differs from the upstream commit:
+---
+1:  ab680dc6c78aa < -:  ------------- accel/ivpu: Fix locking order in ivpu_job_submit
+-:  ------------- > 1:  ea061bad207e1 Linux 6.14.4
+---
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.4.y        |  Success    |  Success   |
 
