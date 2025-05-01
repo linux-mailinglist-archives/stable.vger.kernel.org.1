@@ -1,138 +1,102 @@
-Return-Path: <stable+bounces-139308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E474AAA5DF9
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 13:46:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E41AA5E1B
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 14:08:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 576D84A2E03
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 11:46:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 068871BA4D51
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 12:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC17F2222A7;
-	Thu,  1 May 2025 11:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36982236FA;
+	Thu,  1 May 2025 12:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="in9IcdMp"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1405B1EEA27
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 11:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BC422172C;
+	Thu,  1 May 2025 12:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746100008; cv=none; b=ti4t2Nd939dC3wHLcKTDGfWgQIzMkzQUCpyFDn7cQq3U+iG6KdZe+tnUojeCD6cWxnbCJzbz98Uh9zu8TduitGP7GHcEJvNrczGCwoohpb2xk2+64x3cqi3yyWQHJjLxYayLjYzyIL0XfUZyt8pq4i4LeA4VJHymeWBgrq9jOF4=
+	t=1746101321; cv=none; b=psmgUwBlxLToDe+MF2Vh+wf5GaK/yycblWgXUqyIHhnPfLZqdS6Xr2O+Yzljvji667MxfnGUbkeEVz+ObBavOnngbwm1Mb7Vxylaitkm+cm1agCPuwgKSpfhHR3e4j4eYsBTknmkAk673uTrMLzTY99pWkDwTv1JjK3SiX+Tk60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746100008; c=relaxed/simple;
-	bh=XgaHnSszwlJoBbb4mPwCFgbTeSHx2L+x3DGNJEzIEaY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nGGlj+Vv8vdWmjVcpMPshA+YT6OU4i9jRrJ9NumFCJfO2BZjc/OXTwJa6PBWxRxY/b5zsJTHeTX/l8uVnuS9xK5yHdq42OnvC6MbL4LgXSD/tunuRKT8VIVJryHp1Lo5pw0GbDfYcINM7OITumDjTD+Md6hPOx9mXi8fb5YMfAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 90496106F;
-	Thu,  1 May 2025 04:46:37 -0700 (PDT)
-Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9AF7C3F5A1;
-	Thu,  1 May 2025 04:46:44 -0700 (PDT)
-From: Robin Murphy <robin.murphy@arm.com>
-To: stable@vger.kernel.org
-Cc: jonathanh@nvidia.com,
-	Charan Teja Kalla <quic_charante@quicinc.com>
-Subject: [PATCH v4 6.6] iommu: Handle race with default domain setup
-Date: Thu,  1 May 2025 12:46:35 +0100
-Message-Id: <b3b2c1147716121ff4e51f20aa99fc41e545b33c.1746098935.git.robin.murphy@arm.com>
-X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
+	s=arc-20240116; t=1746101321; c=relaxed/simple;
+	bh=u2MmEqJy/SJZoUoRB2qEBCQqBQSZGn/luJwgJregaE4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NDXelrE4YdAPN9sBRdFJyto2YuZD9w1N5Q5hXoEZpVly9F90rsKoo+uQKlbkfDpu+g+cRFCPOpFUWIDfRELrk+kzzT94BN3E16xlcaDBoEaPyPzwxY9PvIpLsqIevKssKIzZxHKHEtbB9gB7UY5zqi79bwWAyfvtUskgBHdzUFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=in9IcdMp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE69CC4CEE3;
+	Thu,  1 May 2025 12:08:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746101320;
+	bh=u2MmEqJy/SJZoUoRB2qEBCQqBQSZGn/luJwgJregaE4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=in9IcdMpfhe1hDjD9Zf4yYrA/+389dvoDD6ReE7b/+uVxibs3RHTKfw5S3zRYS7X2
+	 d+aC2epahwAN5Z0dF2CVZOb1EBY0bRiyKG3tV400CONg0UHAnda0oSaKx/cxjOK+qi
+	 iZa21cIBUHzSfMQJOoZm/sKPeKGBnn2frIkUCM7M=
+Date: Thu, 1 May 2025 14:08:37 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jon Hunter <jonathanh@nvidia.com>
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 5.15 000/368] 5.15.181-rc2 review
+Message-ID: <2025050129-pantyhose-stereo-569f@gregkh>
+References: <20250501081459.064070563@linuxfoundation.org>
+ <76ee0569-5d39-4bb4-a3c2-f222ca17c0f7@rnnvmail203.nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <76ee0569-5d39-4bb4-a3c2-f222ca17c0f7@rnnvmail203.nvidia.com>
 
-[ Upstream commit b46064a18810bad3aea089a79993ca5ea7a3d2b2 ]
+On Thu, May 01, 2025 at 04:07:27AM -0700, Jon Hunter wrote:
+> On Thu, 01 May 2025 10:18:10 +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.15.181 release.
+> > There are 368 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Sat, 03 May 2025 08:13:53 +0000.
+> > Anything received after that time might be too late.
+> > 
+> > The whole patch series can be found in one patch at:
+> > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.181-rc2.gz
+> > or in the git tree and branch at:
+> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> > and the diffstat can be found below.
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> All tests passing for Tegra ...
+> 
+> Test results for stable-v5.15:
+>     10 builds:	10 pass, 0 fail
+>     28 boots:	28 pass, 0 fail
+>     101 tests:	101 pass, 0 fail
+> 
+> Linux version:	5.15.181-rc2-g85e697938eb0
+> Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+>                 tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
+>                 tegra194-p3509-0000+p3668-0000, tegra20-ventana,
+>                 tegra210-p2371-2180, tegra210-p3450-0000,
+>                 tegra30-cardhu-a04
+> 
+> Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-It turns out that deferred default domain creation leaves a subtle
-race window during iommu_device_register() wherein a client driver may
-asynchronously probe in parallel and get as far as performing DMA API
-operations with dma-direct, only to be switched to iommu-dma underfoot
-once the default domain attachment finally happens, with obviously
-disastrous consequences. Even the wonky of_iommu_configure() path is at
-risk, since iommu_fwspec_init() will no longer defer client probe as the
-instance ops are (necessarily) already registered, and the "replay"
-iommu_probe_device() call can see dev->iommu_group already set and so
-think there's nothing to do either.
-
-Fortunately we already have the right tool in the right place in the
-form of iommu_device_use_default_domain(), which just needs to ensure
-that said default domain is actually ready to *be* used. Deferring the
-client probe shouldn't have too much impact, given that this only
-happens while the IOMMU driver is probing, and thus due to kick the
-deferred probe list again once it finishes.
-
-[ Backport: The above is true for mainline, but here we still have
-arch_setup_dma_ops() to worry about, which is not replayed if the
-default domain happens to be allocated *between* that call and
-subsequently reaching iommu_device_use_default_domain(), so we need an
-additional earlier check to cover that case. Also we're now back before
-the nominal commit 98ac73f99bc4 so we need to tweak the logic to depend
-on IOMMU_DMA as well, to avoid falsely deferring on architectures not
-using default domains (but also tegra-smmu, which we can identify via
-set_platform_dma). This then serves us back as far as f188056352bc,
-where this specific form of the problem first arises. ]
-
-Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Fixes: 98ac73f99bc4 ("iommu: Require a default_domain for all iommu drivers")
-Fixes: f188056352bc ("iommu: Avoid locking/unlocking for iommu_probe_device()")
-Link: https://lore.kernel.org/r/e88b94c9b575034a2c98a48b3d383654cbda7902.1740753261.git.robin.murphy@arm.com
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
----
-
-OK, c8cc2655cc6c might cherry-pick, but I really should have tried
-building it first... -EMORECOFFEE
-
-Trying again, I think this should work for Tegra without being
-disruptive to anything else.
-
-
- drivers/iommu/iommu.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 3f1029c0825e..f2b3a4e2e54f 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -566,6 +566,18 @@ int iommu_probe_device(struct device *dev)
- 	mutex_lock(&iommu_probe_device_lock);
- 	ret = __iommu_probe_device(dev, NULL);
- 	mutex_unlock(&iommu_probe_device_lock);
-+
-+	/*
-+	 * The dma_configure replay paths need bus_iommu_probe() to
-+	 * finish before they can call arch_setup_dma_ops()
-+	 */
-+	if (IS_ENABLED(CONFIG_IOMMU_DMA) && !ret && dev->iommu_group) {
-+		mutex_lock(&dev->iommu_group->mutex);
-+		if (!dev->iommu_group->default_domain &&
-+		    !dev_iommu_ops(dev)->set_platform_dma_ops)
-+			ret = -EPROBE_DEFER;
-+		mutex_unlock(&dev->iommu_group->mutex);
-+	}
- 	if (ret)
- 		return ret;
- 
-@@ -3149,6 +3161,12 @@ int iommu_device_use_default_domain(struct device *dev)
- 		return 0;
- 
- 	mutex_lock(&group->mutex);
-+	/* We may race against bus_iommu_probe() finalising groups here */
-+	if (IS_ENABLED(CONFIG_IOMMU_DMA) && !group->default_domain &&
-+	    !dev_iommu_ops(dev)->set_platform_dma_ops) {
-+		ret = -EPROBE_DEFER;
-+		goto unlock_out;
-+	}
- 	if (group->owner_cnt) {
- 		if (group->owner || !iommu_is_default_domain(group) ||
- 		    !xa_empty(&group->pasid_array)) {
--- 
-2.39.2.101.g768bb238c484.dirty
-
+Great, thanks for the quick turn-around!
 
