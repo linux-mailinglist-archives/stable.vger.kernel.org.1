@@ -1,165 +1,161 @@
-Return-Path: <stable+bounces-139264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F09AAA5903
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 02:27:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3E4AA592C
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 02:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D326C987CC8
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 00:27:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32E4317C6D9
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 00:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2348C282F0;
-	Thu,  1 May 2025 00:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2A51E5716;
+	Thu,  1 May 2025 00:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="m4kBEpvj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NWOzK+4+"
 X-Original-To: stable@vger.kernel.org
-Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C7E2DC771
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 00:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF85DDA9;
+	Thu,  1 May 2025 00:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746059261; cv=none; b=Hiqj5D1w/9sUQpzbBrVxoKqbdFRUj9ct7aPPoLHf9KZePiHk7hcjjIr8es76ZJGyqoVyt65UDU4woC7bdI+5dclb5WPQ56yb8are8x7EDKtbSwDmbYrYZl+sA0KwOTK5Sr2N1hzpidpx3JbWoO/SFF3QhySYVWBOzD7H6TEM9ew=
+	t=1746060765; cv=none; b=VLarwB9w/vj3Pb1B9NoJlAQYfK4Q8wiDDH3ZZs1mgjj92bBtMcn5oIslREU6B5C3ae3Kk0wB27KyTF93hKzad5EM4sES4TLgMIA/19dGN+w7uKVFTIwmY9QOYbxfj/GGLyTw+XEZ+1WxxJ8BAFLPNpdkjwdrymuj3Mb2yKKVFKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746059261; c=relaxed/simple;
-	bh=3qCoJ178Z7gk/rbv63q/1lEWRjc1f6t1/wwee5fYFCo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dapVS6J8VTTUf+RgIg9Gl4sQQh7BlV2HMkCboK46MdboQOMj9pyltA65b94/CmIIUqOQsVjxJiIPrgGMj+Xqh6zO0Y/BfZKUtpLIzDSoFNdIxvxTeG60PsXJ/sRLAth3HarPie9XGNW5zye3uMj97RZZIlqarnAhHLHPy6m+B0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=m4kBEpvj; arc=none smtp.client-ip=44.202.169.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6002a.ext.cloudfilter.net ([10.0.30.222])
-	by cmsmtp with ESMTPS
-	id AC6qusteQXshwAHm6uINRc; Thu, 01 May 2025 00:27:38 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id AHm5usMXo1vNyAHm5uJytj; Thu, 01 May 2025 00:27:37 +0000
-X-Authority-Analysis: v=2.4 cv=VMQWnMPX c=1 sm=1 tr=0 ts=6812bff9
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=ag1SF4gXAAAA:8 a=KKAkSRfTAAAA:8 a=li4jrcibAAyYMYvLDh0A:9 a=QEXdDO2ut3YA:10
- a=Yupwre4RP9_Eg_Bd0iYG:22 a=cvBusfyB2V15izCimMoJ:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=LyCE1iqQqEWnubMvC1RAKL8kOYVncbxcyXyBW0mRCXU=; b=m4kBEpvjhqmQrWKdN5rcmXkHFN
-	W55vB8A4E2Dyiv0Kdt5qHRKEqy7u0K/tnF6T7xlRQhVKrHzouviw/rCqR6pIYv7Re8kRfeXGS5Dgs
-	HZa5IqGIwwvXCCqgFuYB7qQCxVfu3AfAMq0i/bA/KpCxfAkhDPRjHbpRibdd4c4cPhZJvMmB/3Wk6
-	EylOuLUYZZm1jWg7EIwNr3Pl43cUuH5sBVbLg49r4HZpv+eO2yThK/Xew9QTaDGTaYAg316UXV+CG
-	2ZgP2cHloPa/u52PcojDyyTvRdiZnxz3TxuvrsAWeg7Yr4LPMH1KcnwU7DfLAp5WEgayVVpsrgP2w
-	26R/uFbw==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:59318 helo=[10.0.1.116])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.1)
-	(envelope-from <re@w6rz.net>)
-	id 1uAHm3-00000001t8j-1jM0;
-	Wed, 30 Apr 2025 18:27:35 -0600
-Message-ID: <44f876a3-7229-4320-8715-e49a122aa2ea@w6rz.net>
-Date: Wed, 30 Apr 2025 17:27:31 -0700
+	s=arc-20240116; t=1746060765; c=relaxed/simple;
+	bh=LDZGBQNcsIA064rbXGgXPhU7sqWZ/3CVEUVEmDe0AWY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QuAz5k+o1/vNgNYwYhfWfxQXWgxWKlGXI8YaLtbq8JxSp3blSHfND0rHLj+5EkgWjnosHMiaXMWGHNSEKhCMmNGwZhElliEdzxHQlv/PWJPaIknJs747/y8GO+Di3OJuQN6x2wGLABbQ3cxu6wVQ1k6JkGxU1sCC9Q2OXLA7jig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NWOzK+4+; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746060763; x=1777596763;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LDZGBQNcsIA064rbXGgXPhU7sqWZ/3CVEUVEmDe0AWY=;
+  b=NWOzK+4+0EV0TywmcqeK54rO4ZABA54AGBnQZiFiE5BxSywUkrczciYh
+   K/J06zm0ei6oBFaKWny4J5Jd3nUTEKhKzq4kbWsZyeXVUhgUgNciU+D+L
+   ouIgPym9uXsbk0MtBb35tOFJm/kmYDtW0Rnl6167CvmyYHWGCXB4VI80R
+   3WNm4kGZAAweN0tm4x4P4atygPG7QG7fctQQHlg8t7haEjnwKpJKKhCV9
+   ZDt0wfQzr5NxFpTj1m7jKQN85MYWtjyaGS6n7VbPZ3QpPpg9CjZwQyokG
+   ygrqDvJYN4FqYL94Od6uQ4odoiunRO+fOA04eRpQxm6STscb41XDoxhAL
+   g==;
+X-CSE-ConnectionGUID: cvQlpOefRO2a492bEr3MCg==
+X-CSE-MsgGUID: kRC+hE4oSw6yttcYWHxltg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11419"; a="59102541"
+X-IronPort-AV: E=Sophos;i="6.15,253,1739865600"; 
+   d="scan'208";a="59102541"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 17:52:42 -0700
+X-CSE-ConnectionGUID: CZ7wJ0HsTry5iIOxqydNWQ==
+X-CSE-MsgGUID: FivrNy4gQVOiBEzlJsy6KQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,253,1739865600"; 
+   d="scan'208";a="165336468"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 30 Apr 2025 17:52:39 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uAIAH-0003s5-0L;
+	Thu, 01 May 2025 00:52:37 +0000
+Date: Thu, 1 May 2025 08:51:46 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Daniel Axtens <dja@axtens.net>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	linux-s390@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] kasan: Avoid sleepable page allocation from
+ atomic context
+Message-ID: <202505010807.0tj4Krnz-lkp@intel.com>
+References: <573a823565734e1eac3aa128fb9d3506ec918a72.1745940843.git.agordeev@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/204] 6.6.89-rc1 review
-To: Naresh Kamboju <naresh.kamboju@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org
-References: <20250429161059.396852607@linuxfoundation.org>
- <CA+G9fYs2AK7jGyJ-kR884-CJA3RRLLWD8r1L5fKLYn68TSQ1ow@mail.gmail.com>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <CA+G9fYs2AK7jGyJ-kR884-CJA3RRLLWD8r1L5fKLYn68TSQ1ow@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1uAHm3-00000001t8j-1jM0
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:59318
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 18
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfLlaqgHW/QE7L/4lQDEa0zSHNbY3+z2lNMiWWklsgtvtc4DBAf5hSx7ZVBO2OGu3G0XEne17cwkAhacK7tuveawWyJm2UJU275CkhL/0wzIYlKc79i7H
- K3Qk5PQk91GPz2ZV4yATD1jHz+isVaVw9PvFiJn9anUKIUGG52NFUzJ2Q/kkOGGRZC8UWPK1eM1UKQ==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <573a823565734e1eac3aa128fb9d3506ec918a72.1745940843.git.agordeev@linux.ibm.com>
 
-On 4/30/25 10:59, Naresh Kamboju wrote:
-> On Tue, 29 Apr 2025 at 23:41, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
->> This is the start of the stable review cycle for the 6.6.89 release.
->> There are 204 patches in this series, all will be posted as a response
->> to this one.  If anyone has any issues with these being applied, please
->> let me know.
->>
->> Responses should be made by Thu, 01 May 2025 16:10:15 +0000.
->> Anything received after that time might be too late.
->>
->> The whole patch series can be found in one patch at:
->>          https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.89-rc1.gz
->> or in the git tree and branch at:
->>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
->> and the diffstat can be found below.
->>
->> thanks,
->>
->> greg k-h
->
-> Following two build regressions found one on riscv and s390.
->
-> 1)
-> Regressions on riscv build with allyesconfig and allmodconfig with toolchains
-> gcc-13 and clang-20 failed on stable-rc 6.6.89-rc1.
->
-> * riscv, build
->    - clang-20-allmodconfig
->    - gcc-13-allmodconfig
->    - gcc-13-allyesconfig
->
-> Regression Analysis:
->   - New regression? Yes
->   - Reproducibility? Yes
->
-> Build regression: riscv uprobes.c error unused variable 'start'
->
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
->
-> ## Build error riscv
-> arch/riscv/kernel/probes/uprobes.c: In function 'arch_uprobe_copy_ixol':
-> arch/riscv/kernel/probes/uprobes.c:170:23: error: unused variable
-> 'start' [-Werror=unused-variable]
->    170 |         unsigned long start = (unsigned long)dst;
->        |                       ^~~~~
-> cc1: all warnings being treated as errors
+Hi Alexander,
 
-This warning is caused by not having the fixup patch "riscv: Replace 
-function-like macro by static inline function" upstream commit 
-121f34341d396b666d8a90b24768b40e08ca0d61 in 6.6.89-rc1, 6.1.136-rc1 and 
-5.15.181-rc1. Looks like it didn't apply cleanly to those versions.
+kernel test robot noticed the following build errors:
 
-The fixup patch was included in 6.14.5-rc1 and 6.12.26-rc1.
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on linus/master v6.15-rc4 next-20250430]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Gordeev/kasan-Avoid-sleepable-page-allocation-from-atomic-context/20250430-001020
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/573a823565734e1eac3aa128fb9d3506ec918a72.1745940843.git.agordeev%40linux.ibm.com
+patch subject: [PATCH v3 1/1] kasan: Avoid sleepable page allocation from atomic context
+config: x86_64-buildonly-randconfig-001-20250501 (https://download.01.org/0day-ci/archive/20250501/202505010807.0tj4Krnz-lkp@intel.com/config)
+compiler: clang version 20.1.2 (https://github.com/llvm/llvm-project 58df0ef89dd64126512e4ee27b4ac3fd8ddf6247)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250501/202505010807.0tj4Krnz-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505010807.0tj4Krnz-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> mm/kasan/shadow.c:313:11: error: call to undeclared function 'pfn_to_virt'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     313 |         __memset(pfn_to_virt(pfn), KASAN_VMALLOC_INVALID, PAGE_SIZE);
+         |                  ^
+   mm/kasan/shadow.c:313:11: note: did you mean 'fix_to_virt'?
+   include/asm-generic/fixmap.h:30:38: note: 'fix_to_virt' declared here
+      30 | static __always_inline unsigned long fix_to_virt(const unsigned int idx)
+         |                                      ^
+>> mm/kasan/shadow.c:313:11: error: incompatible integer to pointer conversion passing 'int' to parameter of type 'void *' [-Wint-conversion]
+     313 |         __memset(pfn_to_virt(pfn), KASAN_VMALLOC_INVALID, PAGE_SIZE);
+         |                  ^~~~~~~~~~~~~~~~
+   arch/x86/include/asm/string_64.h:23:22: note: passing argument to parameter 's' here
+      23 | void *__memset(void *s, int c, size_t n);
+         |                      ^
+   2 errors generated.
+
+
+vim +/pfn_to_virt +313 mm/kasan/shadow.c
+
+   299	
+   300	static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
+   301					      void *_data)
+   302	{
+   303		struct vmalloc_populate_data *data = _data;
+   304		struct page *page;
+   305		unsigned long pfn;
+   306		pte_t pte;
+   307	
+   308		if (likely(!pte_none(ptep_get(ptep))))
+   309			return 0;
+   310	
+   311		page = data->pages[PFN_DOWN(addr - data->start)];
+   312		pfn = page_to_pfn(page);
+ > 313		__memset(pfn_to_virt(pfn), KASAN_VMALLOC_INVALID, PAGE_SIZE);
+   314		pte = pfn_pte(pfn, PAGE_KERNEL);
+   315	
+   316		spin_lock(&init_mm.page_table_lock);
+   317		if (likely(pte_none(ptep_get(ptep))))
+   318			set_pte_at(&init_mm, addr, ptep, pte);
+   319		spin_unlock(&init_mm.page_table_lock);
+   320	
+   321		return 0;
+   322	}
+   323	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
