@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-139348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72167AA6320
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 20:51:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9C8AA6324
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 20:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 299F91BC3ED3
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 18:51:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EC377AEED4
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 18:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED7320C009;
-	Thu,  1 May 2025 18:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880582248A0;
+	Thu,  1 May 2025 18:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZoK2pH1p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fbNG832s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4641C1F22
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 18:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F8D1C1F22
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 18:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746125472; cv=none; b=eg5VmbUcmTUfi8l+aEL2unnPCZk3qKqIp3/m9YQMDf5SHUhhvtJTx36xQ1cHDH5ZrWhpcxqIoQEogyIA3F7u4tZ0lbjSL8sr3UCz9oToHsxW6vLZX6R5eLQ0ZwicmNOoahbsKo0D0Lpnj9c4nU1T4RgiN8bofBZYdXQlQw0WOBk=
+	t=1746125477; cv=none; b=du36CU3CjXDlEP/BP9JS8U8U3VgJi/apn3i/d96i3bIHVd1wfD4Sa0O/9ErZCedv5E9vEXzvtgGeefM415iv3Fb1E9FMeV7YyiJIBOsk5Vb/jDNJAfiJB4h54JholKxrKZDvKgzY5aU1hBmcSd7T6N1OemvHI5j+TGt/rbise3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746125472; c=relaxed/simple;
-	bh=qmAabqkZK3nUlzcJ4CJJb2th1OrRy+yc8EYx/gpLOyY=;
+	s=arc-20240116; t=1746125477; c=relaxed/simple;
+	bh=qIVtdTroHRxDNqF3QYo6fRpuhYJmRZqnPmGVE0XWNWk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HpndY4qAtMuvCVZLhGBZ6/0pbiYVfAqejLbXmA9CqVQ1wRI+3KlRd+X6nDgbL7GmcUl5xCN6MqCcnFM5nQqiEm/ovWtKiwOTxh2msMACSblardm7cGxUE32k1JKfjf6H6ktbd93SjBp74Pn6mu5B9/sh+itPspWLWdaHvm0q+e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZoK2pH1p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE238C4CEE9;
-	Thu,  1 May 2025 18:51:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SyIogGAkyW7ow+BLliV5N99aKYD6hf7CB7p0xbwo7F2NERHTACwkMimPRvLmKyE3hom5KhLsCp4dog5RkVisOLMatKgb8sOeXuh+04MG7oZfK55t3ukwPg9Hm0o6IBFadjbS3VC8wZU8y8Dj/f3RkCxtBg8McHJN7UQbXTa9pW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fbNG832s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A725DC4CEE3;
+	Thu,  1 May 2025 18:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746125472;
-	bh=qmAabqkZK3nUlzcJ4CJJb2th1OrRy+yc8EYx/gpLOyY=;
+	s=k20201202; t=1746125477;
+	bh=qIVtdTroHRxDNqF3QYo6fRpuhYJmRZqnPmGVE0XWNWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZoK2pH1ppzZvq39IIi22kZAHzjzc69uCk1dfcTZqpSpHfKrOUQLDBlZaSQaHGFnze
-	 BG6/fSwYQGo2sXW2ww1eNmq6kd1W8W/RaEf/Xsgo8a1kLq639Yh0qNli0jfobPeKsb
-	 bmODBeanmZXo96unPPoXK2QWanMq7VOW+qDF/TAZnizXA9BCXFbBhTB7/b0yhtZNEr
-	 BZSTtDkq0XHRqWsRpDPwCYTVKFdxi8hwfFbyB7YOSJgPGcZfOdgLmeab5pTfMdCKaS
-	 vGZUwxdojQajmL2M8DX4YCqYnhPlqWPkTDRFYZpJhOKBtCcEuPF/zTYHThZZXr0B0Q
-	 YdgJ4AfwyEF/A==
+	b=fbNG832sOYzmhMYTEJlhgbh75PDQZuHwKWlgLpoSCA3IH6i7la7b6OpHUhVwp9rJH
+	 yx0bkbO0yxdxsMERREDpj6UfMbYQ7ZjuKpAZhXYh+j3MFy5cf8GeQWXv7sFxJD6rW7
+	 Sayhk08qs/XHOsYIpHE4QB5GYzga2eIXNV9wME8R4PfwI4XLervvLHDITaKat+TEg0
+	 XsLMADCehocnweg42HsdnuzK4qhs8KaFUQ7DPkyDfTfH0+GoiCTnf/9XtKw7QbDwf5
+	 /XImqt9fUS8Q16IosItuCrNaEEcv0WA+eD2OIS9kwcRw9+FJodxwtIKK7g49RDI55l
+	 NBrl8sxWjP+2Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+Cc: Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 6.6 03/10] bpf: track changes_pkt_data property for global functions
-Date: Thu,  1 May 2025 14:51:08 -0400
-Message-Id: <20250501085016-64eccfcb476717fa@stable.kernel.org>
+Subject: Re: [PATCH 6.1 06/16] xfs: validate recovered name buffers when recovering xattr items
+Date: Thu,  1 May 2025 14:51:12 -0400
+Message-Id: <20250501124119-c582d11eff874e4b@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250430081955.49927-4-shung-hsi.yu@suse.com>
+In-Reply-To:  <20250430212704.2905795-7-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,78 +67,42 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 51081a3f25c742da5a659d7fc6fd77ebfdd555be
+The upstream commit SHA1 provided is correct: 1c7f09d210aba2f2bb206e2e8c97c9f11a3fd880
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Shung-Hsi Yu<shung-hsi.yu@suse.com>
-Commit author: Eduard Zingerman<eddyz87@gmail.com>
+Backport author: Leah Rumancik<leah.rumancik@gmail.com>
+Commit author: Darrick J. Wong<djwong@kernel.org>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
-6.12.y | Present (different SHA1: 1d572c60488b)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 9716cdcc2f9e)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  51081a3f25c74 ! 1:  5e482602aa8a7 bpf: track changes_pkt_data property for global functions
+1:  1c7f09d210aba ! 1:  2ed17884c4e4f xfs: validate recovered name buffers when recovering xattr items
     @@ Metadata
       ## Commit message ##
-         bpf: track changes_pkt_data property for global functions
+         xfs: validate recovered name buffers when recovering xattr items
      
-    +    commit 51081a3f25c742da5a659d7fc6fd77ebfdd555be upstream.
+    +    [ Upstream commit 1c7f09d210aba2f2bb206e2e8c97c9f11a3fd880 ]
     +
-         When processing calls to certain helpers, verifier invalidates all
-         packet pointers in a current state. For example, consider the
-         following program:
-    @@ Commit message
-         Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-         Link: https://lore.kernel.org/r/20241210041100.1898468-4-eddyz87@gmail.com
-         Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-    +    [shung-hsi.yu: do not use bitfield in "struct bpf_subprog_info" because commit
-    +    406a6fa44bfb ("bpf: use bitfields for simple per-subprog bool flags") is not
-    +    present and minor context difference in check_func_call() because commit
-    +    491dd8edecbc ("bpf: Emit global subprog name in verifier logs") is not present. ]
-    +    Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+         Strengthen the xattri log item recovery code by checking that we
+         actually have the required name and newname buffers for whatever
+         operation we're replaying.
      
-      ## include/linux/bpf_verifier.h ##
-     @@ include/linux/bpf_verifier.h: struct bpf_subprog_info {
-    - 	bool args_cached: 1;
-    - 	/* true if bpf_fastcall stack region is used by functions that can't be inlined */
-    - 	bool keep_fastcall_stack: 1;
-    -+	bool changes_pkt_data: 1;
-    + 	bool tail_call_reachable;
-    + 	bool has_ld_abs;
-    + 	bool is_async_cb;
-    ++	bool changes_pkt_data;
-    + };
-      
-    - 	enum priv_stack_mode priv_stack_mode;
-    - 	u8 arg_cnt;
-    + struct bpf_verifier_env;
+         Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+         Reviewed-by: Christoph Hellwig <hch@lst.de>
+    +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+    +    Acked-by: "Darrick J. Wong" <djwong@kernel.org>
      
-      ## kernel/bpf/verifier.c ##
-     @@ kernel/bpf/verifier.c: static int check_func_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
-      
-    - 		verbose(env, "Func#%d ('%s') is global and assumed valid.\n",
-    - 			subprog, sub_name);
-    + 		if (env->log.level & BPF_LOG_LEVEL)
-    + 			verbose(env, "Func#%d is global and valid. Skipping.\n", subprog);
-     +		if (env->subprog_info[subprog].changes_pkt_data)
-     +			clear_all_pkt_pointers(env);
-    - 		/* mark global subprog for verifying after main prog */
-    - 		subprog_aux(env, subprog)->called = true;
-      		clear_caller_saved_regs(env, caller->regs);
-    -@@ kernel/bpf/verifier.c: static int check_return_code(struct bpf_verifier_env *env, int regno, const char
-    + 
-    + 		/* All global functions return a 64-bit SCALAR_VALUE */
-    +@@ kernel/bpf/verifier.c: static int check_return_code(struct bpf_verifier_env *env)
-      	return 0;
-      }
-      
+      ## fs/xfs/xfs_attr_item.c ##
+     @@ fs/xfs/xfs_attr_item.c: xlog_recover_attri_commit_pass2(
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
