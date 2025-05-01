@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-139370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D22AA6385
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 21:10:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59776AA6386
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 21:10:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DD0F1BA849A
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 19:10:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A90094684BA
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 19:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332232253EC;
-	Thu,  1 May 2025 19:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A1F2253EB;
+	Thu,  1 May 2025 19:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QO/P/9N0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lc4wtfyS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E695D2248A0
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 19:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2902248A0
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 19:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746126602; cv=none; b=CHc7hd+iJgrjy8Pea7goRmTb2w5gFKjwY4ukE8wstNnhlkxHA1BYWWk6ot8ZkgfC/b2ZKcEFL/OZqHZhf7oByKynR5mEXXAVgu5Aewqef5IOQ3168G1c0OiQmW3UJwNpKv2M0MHdq+F2R1UqRdGjxq0hZ/kKRiyHyl1bmCvXuRw=
+	t=1746126606; cv=none; b=uoI8Lar3E54P+axEhrFU38kBlnD2IuFKFysaSdaxw+u4E+vz/oPPcRgSACAOt7YSihH7yI43+xGdSXVSvmSSDc7Ygm2IEBKeRIoR99nbT6uiXOerKRCSO2iXNB9oplaT67gV2jqIHGm62VUF3i1ySo8UGuKcFuQfwrINWIxtW80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746126602; c=relaxed/simple;
-	bh=y8MX2ccI461J1L0wen7sCr6W4aTK7c5X9tjtlEl0Bgk=;
+	s=arc-20240116; t=1746126606; c=relaxed/simple;
+	bh=8LqFThVsrim4GMYYlgck9bLCD+RLUw8En/Oe+q2Yl7U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IKiuLREl4XmdmHVARihsSbRAgRlrTTOUutnQiYFIdO/jtayI1tCD/SEehylTu7vpvgySO2Vwr3YrmtB+z6V/27EHlcIV+2tbkX/yDpCTrVHanmhVUHSiFgEFb6VXvKhwnshcDSkbLjDazP/fvXH0FtmscX01UCa0B4U/ekKqm1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QO/P/9N0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D62C4CEE9;
-	Thu,  1 May 2025 19:10:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t+85l+yWZyu+0PEX5E+LZhPF78MWx2O2kR84VVzv8ZJI0roq4Ojak3KGHP7qonV5cs+avVsOYkjMiIMzyUyuN/CNZXG56u6VbJg6YYnikI6uIHJ0l+SM1P16+SjdDY5r7gVEiKCPV7YYxKIUjtpyv4EEnEfMtj7FWx/Dl4jV/Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lc4wtfyS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B49AC4CEE3;
+	Thu,  1 May 2025 19:10:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746126601;
-	bh=y8MX2ccI461J1L0wen7sCr6W4aTK7c5X9tjtlEl0Bgk=;
+	s=k20201202; t=1746126605;
+	bh=8LqFThVsrim4GMYYlgck9bLCD+RLUw8En/Oe+q2Yl7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QO/P/9N0vcVh/cTQKXbD70G258CPjJaXlLAvdNRfnv7+knKpiQUAxQ3WnmSH1cmL3
-	 FHbBQPBcYER4lENLEe0LA2ylsFRNx67O4Ni7ojJqXUJh5G2pnVVKxVxIDSnKQkkkhA
-	 r/aOggEFvk36skT5c1QoBL8eJOOhEjjZLzZVcc7m+pBVnfYC7Rm9x8AlAC+VOIxTzG
-	 bpvhyayPE/O3mPYHv8nEvStFYJUOjnRvf0aq1crPVQiG144jn28kdyuA+TCdd6+n5L
-	 aNPUI/QcT1frZxgShUTduZ6VQy3wxsTp6csvpDx4HTBTTJw4l42ZCBka1G1hSkXNNk
-	 yaSnCVumsYxOg==
+	b=lc4wtfySRrkjBjGZLAS3nQ72f754si8/3x/71Ag6uLpsl+2FBJH5Wpm9kcYQZCmTx
+	 dYfPl/r+lnizVuzF2Ifaro8zD6nMbunI9arW3gMcSf3BDrKoXUk10ACjLzmXUjRKH4
+	 aGPkTtKlgpTPmbBBC3RJkYsTkfSlUdHIJlyMRIgvyCATz+cHaoNm4R4vPBU23hjf8S
+	 A69e81ZKKUsUVhD64zOWkbjeIVbxEr5ErxFNi76vO2sOHgFg2W1hn4lDjstRHkohtR
+	 hlnbsCFrNIGNaT/fmVK01eaMmd/2DgHy1GTNnov3Gp1Kkq3SKL9GdX4DHIK+5x0aIT
+	 vlWrPCdZoMUoQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Leah Rumancik <leah.rumancik@gmail.com>,
+Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 12/16] xfs: allow symlinks with short remote targets
-Date: Thu,  1 May 2025 15:09:56 -0400
-Message-Id: <20250501130518-f483590f7d251da9@stable.kernel.org>
+Subject: Re: [PATCH 3/7] accel/ivpu: Fix a typo
+Date: Thu,  1 May 2025 15:10:01 -0400
+Message-Id: <20250501115019-bf67398d4c775f71@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250430212704.2905795-13-leah.rumancik@gmail.com>
+In-Reply-To:  <20250430124819.3761263-4-jacek.lawrynowicz@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,43 +67,21 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 38de567906d95c397d87f292b892686b7ec6fbc3
+The upstream commit SHA1 provided is correct: 284a8908f5ec25355a831e3e2d87975d748e98dc
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Leah Rumancik<leah.rumancik@gmail.com>
-Commit author: Darrick J. Wong<djwong@kernel.org>
-
-Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 0aca73915dc1)
+Backport author: Jacek Lawrynowicz<jacek.lawrynowicz@linux.intel.com>
+Commit author: Andrew Kreimer<algonell@gmail.com>
 
 Note: The patch differs from the upstream commit:
 ---
-1:  38de567906d95 ! 1:  a037bc2828645 xfs: allow symlinks with short remote targets
-    @@ Metadata
-      ## Commit message ##
-         xfs: allow symlinks with short remote targets
-     
-    +    [ Upstream commit 38de567906d95c397d87f292b892686b7ec6fbc3 ]
-    +
-         An internal user complained about log recovery failing on a symlink
-         ("Bad dinode after recovery") with the following (excerpted) format:
-     
-    @@ Commit message
-         Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-         Reviewed-by: Christoph Hellwig <hch@lst.de>
-         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-    +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-    +    Acked-by: "Darrick J. Wong" <djwong@kernel.org>
-     
-      ## fs/xfs/libxfs/xfs_inode_buf.c ##
-     @@ fs/xfs/libxfs/xfs_inode_buf.c: xfs_dinode_verify_fork(
+1:  284a8908f5ec2 < -:  ------------- accel/ivpu: Fix a typo
+-:  ------------- > 1:  ea061bad207e1 Linux 6.14.4
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
