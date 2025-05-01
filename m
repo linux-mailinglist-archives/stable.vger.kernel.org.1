@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-139347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA25AA6323
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 20:51:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72167AA6320
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 20:51:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8644E3AAEE0
-	for <lists+stable@lfdr.de>; Thu,  1 May 2025 18:50:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 299F91BC3ED3
+	for <lists+stable@lfdr.de>; Thu,  1 May 2025 18:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D851EDA2B;
-	Thu,  1 May 2025 18:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED7320C009;
+	Thu,  1 May 2025 18:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pvi7TQ/M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZoK2pH1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66221C1F22
-	for <stable@vger.kernel.org>; Thu,  1 May 2025 18:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4641C1F22
+	for <stable@vger.kernel.org>; Thu,  1 May 2025 18:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746125467; cv=none; b=SoG8MfIv9gwXKYfTqi4CGxdY2L4YZC5ZA4iqOrAAORP5kUjp0XMK5lNXcakNgBhBcAKX3PRKoWp62nIiWqjOVqXBiawR72JsJsSqn9OhWy1kNAptRjGMMAfD0EVIPgESXfzMk9D6Zc+rbUtqw0hlQxLBo4yCEvxCeVxbI5hr5Pk=
+	t=1746125472; cv=none; b=eg5VmbUcmTUfi8l+aEL2unnPCZk3qKqIp3/m9YQMDf5SHUhhvtJTx36xQ1cHDH5ZrWhpcxqIoQEogyIA3F7u4tZ0lbjSL8sr3UCz9oToHsxW6vLZX6R5eLQ0ZwicmNOoahbsKo0D0Lpnj9c4nU1T4RgiN8bofBZYdXQlQw0WOBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746125467; c=relaxed/simple;
-	bh=/q8Cl1WhlSuasvSCPfEBVZ8V9M38yS7+SepOXolvhTA=;
+	s=arc-20240116; t=1746125472; c=relaxed/simple;
+	bh=qmAabqkZK3nUlzcJ4CJJb2th1OrRy+yc8EYx/gpLOyY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=svH1xYx2U8AlbygWo6fVp031K1WyBpVyLNx0Q5Z/nsmgkAibroAlgXVNwm3IlJ20yyImMMEhnIEK/9gQZI2C237wGQlWCC0Ty0gX22iAPuFVopLRkeffPMXE/QlSPAL0pGWS1uqgG1sTIlldaM2kHUbd6zGTLDeespWxMDSOqR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pvi7TQ/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440AFC4CEE3;
-	Thu,  1 May 2025 18:51:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HpndY4qAtMuvCVZLhGBZ6/0pbiYVfAqejLbXmA9CqVQ1wRI+3KlRd+X6nDgbL7GmcUl5xCN6MqCcnFM5nQqiEm/ovWtKiwOTxh2msMACSblardm7cGxUE32k1JKfjf6H6ktbd93SjBp74Pn6mu5B9/sh+itPspWLWdaHvm0q+e0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZoK2pH1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE238C4CEE9;
+	Thu,  1 May 2025 18:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746125467;
-	bh=/q8Cl1WhlSuasvSCPfEBVZ8V9M38yS7+SepOXolvhTA=;
+	s=k20201202; t=1746125472;
+	bh=qmAabqkZK3nUlzcJ4CJJb2th1OrRy+yc8EYx/gpLOyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pvi7TQ/MUYR0qLX1o1W/Uj4O8Wo9ix0v0/l58Ndl7SojvpZRvOwM0CnwY8sz0nRls
-	 V16NBpI+X18QM/VkPs9ENbccW4ZKK7UCCdawTf3Yg0IUjYFQZKanimAUw5c+VANsIC
-	 TpyC/DWH9eqAq5QP3P06tCQgVYIgp17lnxxkGG7UqFFlUkHiF7FgnYVltz5xHi3g9Q
-	 w6TlbbElLlBsOdxLjsa+l3PcYyLcYTaB9+PCngVilEbc4cUos09ZsVGMZ47tKVEEno
-	 I4dFbjUMsHs2hGTOvazH8t89NQWj8OcbWGtpn88K6n1YMFwpC6WJpAW0zbchEx9t3s
-	 pguFp62C/+WGA==
+	b=ZoK2pH1ppzZvq39IIi22kZAHzjzc69uCk1dfcTZqpSpHfKrOUQLDBlZaSQaHGFnze
+	 BG6/fSwYQGo2sXW2ww1eNmq6kd1W8W/RaEf/Xsgo8a1kLq639Yh0qNli0jfobPeKsb
+	 bmODBeanmZXo96unPPoXK2QWanMq7VOW+qDF/TAZnizXA9BCXFbBhTB7/b0yhtZNEr
+	 BZSTtDkq0XHRqWsRpDPwCYTVKFdxi8hwfFbyB7YOSJgPGcZfOdgLmeab5pTfMdCKaS
+	 vGZUwxdojQajmL2M8DX4YCqYnhPlqWPkTDRFYZpJhOKBtCcEuPF/zTYHThZZXr0B0Q
+	 YdgJ4AfwyEF/A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Leah Rumancik <leah.rumancik@gmail.com>,
+Cc: Shung-Hsi Yu <shung-hsi.yu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 10/16] xfs: make xfs_bmapi_convert_delalloc() to allocate the target offset
-Date: Thu,  1 May 2025 14:51:02 -0400
-Message-Id: <20250501125715-18b05e02dc6bedb5@stable.kernel.org>
+Subject: Re: [PATCH stable 6.6 03/10] bpf: track changes_pkt_data property for global functions
+Date: Thu,  1 May 2025 14:51:08 -0400
+Message-Id: <20250501085016-64eccfcb476717fa@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250430212704.2905795-11-leah.rumancik@gmail.com>
+In-Reply-To:  <20250430081955.49927-4-shung-hsi.yu@suse.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,43 +67,78 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 2e08371a83f1c06fd85eea8cd37c87a224cc4cc4
+The upstream commit SHA1 provided is correct: 51081a3f25c742da5a659d7fc6fd77ebfdd555be
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Leah Rumancik<leah.rumancik@gmail.com>
-Commit author: Zhang Yi<yi.zhang@huawei.com>
+Backport author: Shung-Hsi Yu<shung-hsi.yu@suse.com>
+Commit author: Eduard Zingerman<eddyz87@gmail.com>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 36081fd0ee37)
+6.12.y | Present (different SHA1: 1d572c60488b)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  2e08371a83f1c ! 1:  1ba14c6680bca xfs: make xfs_bmapi_convert_delalloc() to allocate the target offset
+1:  51081a3f25c74 ! 1:  5e482602aa8a7 bpf: track changes_pkt_data property for global functions
     @@ Metadata
       ## Commit message ##
-         xfs: make xfs_bmapi_convert_delalloc() to allocate the target offset
+         bpf: track changes_pkt_data property for global functions
      
-    +    [ Upstream commit 2e08371a83f1c06fd85eea8cd37c87a224cc4cc4 ]
+    +    commit 51081a3f25c742da5a659d7fc6fd77ebfdd555be upstream.
     +
-         Since xfs_bmapi_convert_delalloc() only attempts to allocate the entire
-         delalloc extent and require multiple invocations to allocate the target
-         offset. So xfs_convert_blocks() add a loop to do this job and we call it
+         When processing calls to certain helpers, verifier invalidates all
+         packet pointers in a current state. For example, consider the
+         following program:
     @@ Commit message
-         Reviewed-by: Christoph Hellwig <hch@lst.de>
-         Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-    +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-    +    Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+         Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+         Link: https://lore.kernel.org/r/20241210041100.1898468-4-eddyz87@gmail.com
+         Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+    +    [shung-hsi.yu: do not use bitfield in "struct bpf_subprog_info" because commit
+    +    406a6fa44bfb ("bpf: use bitfields for simple per-subprog bool flags") is not
+    +    present and minor context difference in check_func_call() because commit
+    +    491dd8edecbc ("bpf: Emit global subprog name in verifier logs") is not present. ]
+    +    Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
      
-      ## fs/xfs/libxfs/xfs_bmap.c ##
-     @@ fs/xfs/libxfs/xfs_bmap.c: xfs_bmapi_write(
+      ## include/linux/bpf_verifier.h ##
+     @@ include/linux/bpf_verifier.h: struct bpf_subprog_info {
+    - 	bool args_cached: 1;
+    - 	/* true if bpf_fastcall stack region is used by functions that can't be inlined */
+    - 	bool keep_fastcall_stack: 1;
+    -+	bool changes_pkt_data: 1;
+    + 	bool tail_call_reachable;
+    + 	bool has_ld_abs;
+    + 	bool is_async_cb;
+    ++	bool changes_pkt_data;
+    + };
+      
+    - 	enum priv_stack_mode priv_stack_mode;
+    - 	u8 arg_cnt;
+    + struct bpf_verifier_env;
+     
+      ## kernel/bpf/verifier.c ##
+     @@ kernel/bpf/verifier.c: static int check_func_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
+      
+    - 		verbose(env, "Func#%d ('%s') is global and assumed valid.\n",
+    - 			subprog, sub_name);
+    + 		if (env->log.level & BPF_LOG_LEVEL)
+    + 			verbose(env, "Func#%d is global and valid. Skipping.\n", subprog);
+     +		if (env->subprog_info[subprog].changes_pkt_data)
+     +			clear_all_pkt_pointers(env);
+    - 		/* mark global subprog for verifying after main prog */
+    - 		subprog_aux(env, subprog)->called = true;
+      		clear_caller_saved_regs(env, caller->regs);
+    -@@ kernel/bpf/verifier.c: static int check_return_code(struct bpf_verifier_env *env, int regno, const char
+    + 
+    + 		/* All global functions return a 64-bit SCALAR_VALUE */
+    +@@ kernel/bpf/verifier.c: static int check_return_code(struct bpf_verifier_env *env)
+      	return 0;
+      }
+      
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
