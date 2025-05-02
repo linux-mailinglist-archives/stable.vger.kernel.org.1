@@ -1,153 +1,432 @@
-Return-Path: <stable+bounces-139484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5BA2AA7406
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 15:42:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FD9AA740B
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 15:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE95B3AA98D
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 13:41:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 802887BBA40
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 13:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A333255F2E;
-	Fri,  2 May 2025 13:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC66255E55;
+	Fri,  2 May 2025 13:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GNItcvbf"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="EDZFm9cR"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F742550AE;
-	Fri,  2 May 2025 13:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F3625522D;
+	Fri,  2 May 2025 13:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746193326; cv=none; b=c9X75XXeRw52mEaJiZSpLyEECME8JSpMVg6LeajiNjj3BWHzWdZ+a0bCQ5kTC3YGilEWuF0RCSSR4/vrt7yyK3EGOFYr2tGZVxI8G7gjT6d91tfW0M96Q8JEhtT2cIj+lgcBKT2IWRNvKMW1MsSj+wVeRxAL5DNruLsa9J51ngk=
+	t=1746193368; cv=none; b=LrTBS1C1RZD6BomRhOBGINUryJsSXyC5JcXAlyoL7eHedPpLjkWf1C9nUEWM2fSuYHpI+YTOgtGD2Vtg58e8XeAutG5jT9Yq2B+wEgavms5GiMp9Js+AgJ590ONrHdfDIidclmFHE2NuBYmIgnFyDa1SYq535dtQnDRSGd0S6Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746193326; c=relaxed/simple;
-	bh=LBQpFwnogayjHCjmBx/rgvhkKi2m1CY1DawfUDKgsEQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=NajO63QrhmLiT+XK21XpQgthBMT2ag/CFOwOC9soBswK/XjnFZaF709TRQ6cwZoAoYfGAI5w9syV1HuJEUJiOKh9q13W519CupUnw0ryYowkb4XOKCzLsIy2KmkicHr7seZfvsv21s+d/8heD/OGdpsAQgj1d74u7Eu0PbCvWCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GNItcvbf; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5421N555017442;
-	Fri, 2 May 2025 13:41:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	zx94rD5edA0KgsGVOpE54/wmGF57FL5v+Fex8bgxLSU=; b=GNItcvbfVLQ1pf+G
-	EA1xUO+iPdEa8hW4wzrL9+JyI4FIrV28ss9kaVKOWwdLatDs1zvW5/BbgymiQUOD
-	5t7FWJg/f8WDcfaroc2RwFGKYRuV4Rx6C98ApnIlUULuQr+HtLriJFGnsMqedY2T
-	tv0pbZ4HgnZPBlFWcSt9yBXrE8lmLgHKrAve0nmR5aZFBxWK714yPWQXoHxqslvx
-	RMAvonGh1Q82vuFL6HSrgm99UPBlXYblzpxvWBxH/uEym8TzSjdRFGO2yDKK6VvV
-	hrEZL3c2XlhbHaLE4a+bh0FS+fJhE5FdeGjeogeqoojvLU0M97LAtXm9nvegv7ru
-	sDzyfQ==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46b6u78fja-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 May 2025 13:41:44 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 542Dfh1q020746
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 2 May 2025 13:41:43 GMT
-Received: from [10.50.25.148] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 2 May 2025
- 06:41:37 -0700
-Message-ID: <56c87a9a-0f7e-7d1a-af27-d70d46b50b41@quicinc.com>
-Date: Fri, 2 May 2025 19:11:33 +0530
+	s=arc-20240116; t=1746193368; c=relaxed/simple;
+	bh=IY0rlxjmEHi/ciqk8neIWDYUSW1yDZpT8KyLguF3h5g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hkE+V5tijBWyUURlvjD3QpyK66xBavu8sAKV8SQvxme+/kfVAxaLMgakCLA43mUPLJJShwwLp5Ssx06dgjOM9QvO/Jo+AxSJ12GE9rBWmtl6r3jcHXvgykLV3KAUKTXzk1GRC3UzB6eugwyk63TbotSOnZrKMUblxaWo2Vh+q/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=EDZFm9cR; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0527640E0206;
+	Fri,  2 May 2025 13:42:43 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id WzojnnI9NbdX; Fri,  2 May 2025 13:42:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1746193358; bh=3QSMU3KlWQVbxBP3Lk2kvk2uhPllvL0/5lmXwW4VnTI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EDZFm9cR668TeU9Ptf2SNcTAWEp3rtT1cZmI77WC6jtdgj9i2zmL42LIfAdwKiFgZ
+	 8iy8ppWvEewbVyOAs1Y21gT8oPuK0UzIL+pX4ZTrubob05nuLvdfCUV90pZBd9Oh9S
+	 hF+tsSYrqHmd9vPwd4WjWBxGrXQP1iKQodFUXJQv04CMzr6Dxylk9UbLbaZs7+1pAO
+	 Omn9+OyWFpLvR9Ud7nh3uOtdCmUgkY+xUyEtjegC0EhBtkT0O5XJTf9H8xxft7wl0l
+	 se9L//9FP2LBW3vsA2L38o0xYfDq1W1e19CC6yYTc9Wo9oHSQ+k+/c/U8/rw7o7Zyf
+	 r2vTCzoEaI5RsyxB1f7Neq7EoqfOzWOB/HKNvw9DC+hvaRfkg8tdT6tSoTARB7OLQ7
+	 WeiGZ6mIXgWDZUoPhdHRehzERbaXLjMvTxLEVi8YqMqo9Tr6Z2HmQ+po/6GQODspSw
+	 yOSuUs6OlE10TJsA1CjBVGCX4FL9mflf6AY7aeHAYPTaCZl2K+ksTcf2+Yi8nwQq4v
+	 I6ya5FMePn2hloqSX5P9tmLWbAV4ZCbsVQ+3YVhz5LfywB9ULcLODa0G8F6XtxE5Si
+	 nXQKFQY0wa8R3Jn1Jcm3ZxR2YKDj6Unve51j46SyGBUNKLWGVTuHz4Ve+teTkky0fa
+	 iHntu04tdlxmv+xDHqjxlfAU=
+Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3943A40E01CF;
+	Fri,  2 May 2025 13:42:19 +0000 (UTC)
+Date: Fri, 2 May 2025 15:42:12 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de,
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, kees@kernel.org, michael.roth@amd.com,
+	nikunj@amd.com, seanjc@google.com, ardb@kernel.org,
+	gustavoars@kernel.org, sgarzare@redhat.com, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v4] x86/sev: Don't touch VMSA pages during kdump of SNP
+ guest memory
+Message-ID: <20250502134212.GBaBTLtDu8D5Xl6Jqy@fat_crate.local>
+References: <20250430215730.369777-1-Ashish.Kalra@amd.com>
+ <e7a0cc72-388a-7fa4-601f-371aea369204@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 10/23] media: iris: Track flush responses to prevent
- premature completion
-Content-Language: en-US
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Vikash Garodia
-	<quic_vgarodia@quicinc.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
-        Stefan Schmidt
-	<stefan.schmidt@linaro.org>,
-        Hans Verkuil <hverkuil@xs4all.nl>,
-        "Bjorn
- Andersson" <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        "Rob Herring" <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        "Conor Dooley" <conor+dt@kernel.org>
-CC: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Neil Armstrong
-	<neil.armstrong@linaro.org>,
-        Nicolas Dufresne
-	<nicolas.dufresne@collabora.com>,
-        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <20250417-topic-sm8x50-iris-v10-v7-0-f020cb1d0e98@linaro.org>,
-        <20250424-qcs8300_iris-v5-0-f118f505c300@quicinc.com>,
-        <stable@vger.kernel.org>
-References: <20250502-qcom-iris-hevc-vp9-v3-0-552158a10a7d@quicinc.com>
- <20250502-qcom-iris-hevc-vp9-v3-10-552158a10a7d@quicinc.com>
- <bc9ba136-bd99-4c6c-be97-8915464cfb11@linaro.org>
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
-In-Reply-To: <bc9ba136-bd99-4c6c-be97-8915464cfb11@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDEwOSBTYWx0ZWRfX7LGy4KbL3C3a dQHmDLd2y0xi8E/1jYnNSyNLtJcy1Os2R9F2mJSm81DseEuIk9WWapCUEND8/DP5a1O5JtO5GGH bpKUGUfqUnkEGXet7aJ1r58HNA0O7sw7mFLbpudBiJGSp9xEbS5324/0f42L7AEDSiz4C8eWr2U
- D95UB1NfomPmN5fXBuvvp4JTpe6N7Ni6VV+/bLHODwoml8UF8ECjg0mPPB1xmfVNSpgcMsojGzx LyHIvbfXIQkV7rReBo1jRO1ktYxzXqQTamhGncnUuTEnsrh28L3HJBrjvJHse+dQx4wBSmcfvqQ +JaC8Ss6wDolLGQzzIijkK2lpB5lV3dtZQNB2TDESHVsdpwTWNyjkDhab1YAyZI9JXIiviWTRCB
- txZE+T83jvA9mSOybvH3pOFIafmyU15cnbE8eljkoLa8ZD8uVKEiJvbqbbDarWgc9V0w8pQ8
-X-Proofpoint-GUID: aSl2b9MQ70lgc7RM7h6WGulCPKdLOxKh
-X-Proofpoint-ORIG-GUID: aSl2b9MQ70lgc7RM7h6WGulCPKdLOxKh
-X-Authority-Analysis: v=2.4 cv=b6Wy4sGx c=1 sm=1 tr=0 ts=6814cb98 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=kYgUE9KTLWQu3_OCR8gA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-02_01,2025-04-30_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=999 impostorscore=0 bulkscore=0 phishscore=0 spamscore=0
- priorityscore=1501 clxscore=1015 adultscore=0 suspectscore=0 mlxscore=0
- malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505020109
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <e7a0cc72-388a-7fa4-601f-371aea369204@amd.com>
 
-
-
-On 5/2/2025 6:10 PM, Bryan O'Donoghue wrote:
-> On 01/05/2025 20:13, Dikshita Agarwal wrote:
->> Currently, two types of flush commands are queued to the firmware,
->> the first flush queued as part of sequence change, does not wait for a
->> response, while the second flush queued as part of stop, expects a
->> completion response before proceeding further.
->>
->> Due to timing issue, the flush response corresponding to the first
->> command could arrive after the second flush is issued. This casuses the
->> driver to incorrectly assume that the second flush has completed,
->> leading to the premature signaling of flush_completion.
->>
->> To address this, introduce a counter to track the number of pending
->> flush responses and signal flush completion only when all expected
->> responses are received.
+On Thu, May 01, 2025 at 08:29:59AM -0500, Tom Lendacky wrote:
+> Just occurred to me that, while we don't use it, there is another create
+> event, SVM_VMGEXIT_AP_CREATE_ON_INIT. So maybe change this to
 > 
-> Is there no other way to correlate command/response than a counter on the
-> APSS side ?
-> 
-> Usually command/response protocols have some kind of identifier field or
-> sequence number embedded in the protocol headers.
-> 
-There is no such identifier field for flush command and response at the moment.
+>   bool create = event != SVM_VMGEXIT_AP_DESTROY;
 
-Thanks,
-Dikshita
-> ---
-> bod
+Thx, I have this applied now:
+
+---
+From: Ashish Kalra <ashish.kalra@amd.com>
+Date: Mon, 28 Apr 2025 21:41:51 +0000
+Subject: [PATCH] x86/sev: Do not touch VMSA pages during SNP guest memory kdump
+
+When kdump is running makedumpfile to generate vmcore and dump SNP guest
+memory it touches the VMSA page of the vCPU executing kdump.
+
+It then results in unrecoverable #NPF/RMP faults as the VMSA page is
+marked busy/in-use when the vCPU is running and subsequently a causes
+guest softlockup/hang.
+
+Additionally, other APs may be halted in guest mode and their VMSA pages
+are marked busy and touching these VMSA pages during guest memory dump
+will also cause #NPF.
+
+Issue AP_DESTROY GHCB calls on other APs to ensure they are kicked out
+of guest mode and then clear the VMSA bit on their VMSA pages.
+
+If the vCPU running kdump is an AP, mark it's VMSA page as offline to
+ensure that makedumpfile excludes that page while dumping guest memory.
+
+Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250428214151.155464-1-Ashish.Kalra@amd.com
+---
+ arch/x86/coco/sev/core.c | 244 +++++++++++++++++++++++++--------------
+ 1 file changed, 158 insertions(+), 86 deletions(-)
+
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index 2c19396f8186..144e0f8ac042 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -959,6 +959,102 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+ 	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
+ }
+ 
++static int vmgexit_ap_control(u64 event, struct sev_es_save_area *vmsa, u32 apic_id)
++{
++	bool create = event != SVM_VMGEXIT_AP_DESTROY;
++	struct ghcb_state state;
++	unsigned long flags;
++	struct ghcb *ghcb;
++	int ret = 0;
++
++	local_irq_save(flags);
++
++	ghcb = __sev_get_ghcb(&state);
++
++	vc_ghcb_invalidate(ghcb);
++
++	if (create)
++		ghcb_set_rax(ghcb, vmsa->sev_features);
++
++	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
++	ghcb_set_sw_exit_info_1(ghcb,
++				((u64)apic_id << 32)	|
++				((u64)snp_vmpl << 16)	|
++				event);
++	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
++
++	sev_es_wr_ghcb_msr(__pa(ghcb));
++	VMGEXIT();
++
++	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
++	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
++		pr_err("SNP AP %s error\n", (create ? "CREATE" : "DESTROY"));
++		ret = -EINVAL;
++	}
++
++	__sev_put_ghcb(&state);
++
++	local_irq_restore(flags);
++
++	return ret;
++}
++
++static int snp_set_vmsa(void *va, void *caa, int apic_id, bool make_vmsa)
++{
++	int ret;
++
++	if (snp_vmpl) {
++		struct svsm_call call = {};
++		unsigned long flags;
++
++		local_irq_save(flags);
++
++		call.caa = this_cpu_read(svsm_caa);
++		call.rcx = __pa(va);
++
++		if (make_vmsa) {
++			/* Protocol 0, Call ID 2 */
++			call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
++			call.rdx = __pa(caa);
++			call.r8  = apic_id;
++		} else {
++			/* Protocol 0, Call ID 3 */
++			call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
++		}
++
++		ret = svsm_perform_call_protocol(&call);
++
++		local_irq_restore(flags);
++	} else {
++		/*
++		 * If the kernel runs at VMPL0, it can change the VMSA
++		 * bit for a page using the RMPADJUST instruction.
++		 * However, for the instruction to succeed it must
++		 * target the permissions of a lesser privileged (higher
++		 * numbered) VMPL level, so use VMPL1.
++		 */
++		u64 attrs = 1;
++
++		if (make_vmsa)
++			attrs |= RMPADJUST_VMSA_PAGE_BIT;
++
++		ret = rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
++	}
++
++	return ret;
++}
++
++static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
++{
++	int err;
++
++	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
++	if (err)
++		pr_err("clear VMSA page failed (%u), leaking page\n", err);
++	else
++		free_page((unsigned long)vmsa);
++}
++
+ static void set_pte_enc(pte_t *kpte, int level, void *va)
+ {
+ 	struct pte_enc_desc d = {
+@@ -1061,6 +1157,65 @@ void snp_kexec_begin(void)
+ 		pr_warn("Failed to stop shared<->private conversions\n");
+ }
+ 
++/*
++ * Shutdown all APs except the one handling kexec/kdump and clearing
++ * the VMSA tag on AP's VMSA pages as they are not being used as
++ * VMSA page anymore.
++ */
++static void shutdown_all_aps(void)
++{
++	struct sev_es_save_area *vmsa;
++	int apic_id, this_cpu, cpu;
++
++	this_cpu = get_cpu();
++
++	/*
++	 * APs are already in HLT loop when enc_kexec_finish() callback
++	 * is invoked.
++	 */
++	for_each_present_cpu(cpu) {
++		vmsa = per_cpu(sev_vmsa, cpu);
++
++		/*
++		 * The BSP or offlined APs do not have guest allocated VMSA
++		 * and there is no need  to clear the VMSA tag for this page.
++		 */
++		if (!vmsa)
++			continue;
++
++		/*
++		 * Cannot clear the VMSA tag for the currently running vCPU.
++		 */
++		if (this_cpu == cpu) {
++			unsigned long pa;
++			struct page *p;
++
++			pa = __pa(vmsa);
++			/*
++			 * Mark the VMSA page of the running vCPU as offline
++			 * so that is excluded and not touched by makedumpfile
++			 * while generating vmcore during kdump.
++			 */
++			p = pfn_to_online_page(pa >> PAGE_SHIFT);
++			if (p)
++				__SetPageOffline(p);
++			continue;
++		}
++
++		apic_id = cpuid_to_apicid[cpu];
++
++		/*
++		 * Issue AP destroy to ensure AP gets kicked out of guest mode
++		 * to allow using RMPADJUST to remove the VMSA tag on it's
++		 * VMSA page.
++		 */
++		vmgexit_ap_control(SVM_VMGEXIT_AP_DESTROY, vmsa, apic_id);
++		snp_cleanup_vmsa(vmsa, apic_id);
++	}
++
++	put_cpu();
++}
++
+ void snp_kexec_finish(void)
+ {
+ 	struct sev_es_runtime_data *data;
+@@ -1075,6 +1230,8 @@ void snp_kexec_finish(void)
+ 	if (!IS_ENABLED(CONFIG_KEXEC_CORE))
+ 		return;
+ 
++	shutdown_all_aps();
++
+ 	unshare_all_memory();
+ 
+ 	/*
+@@ -1100,51 +1257,6 @@ void snp_kexec_finish(void)
+ 	}
+ }
+ 
+-static int snp_set_vmsa(void *va, void *caa, int apic_id, bool make_vmsa)
+-{
+-	int ret;
+-
+-	if (snp_vmpl) {
+-		struct svsm_call call = {};
+-		unsigned long flags;
+-
+-		local_irq_save(flags);
+-
+-		call.caa = this_cpu_read(svsm_caa);
+-		call.rcx = __pa(va);
+-
+-		if (make_vmsa) {
+-			/* Protocol 0, Call ID 2 */
+-			call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
+-			call.rdx = __pa(caa);
+-			call.r8  = apic_id;
+-		} else {
+-			/* Protocol 0, Call ID 3 */
+-			call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
+-		}
+-
+-		ret = svsm_perform_call_protocol(&call);
+-
+-		local_irq_restore(flags);
+-	} else {
+-		/*
+-		 * If the kernel runs at VMPL0, it can change the VMSA
+-		 * bit for a page using the RMPADJUST instruction.
+-		 * However, for the instruction to succeed it must
+-		 * target the permissions of a lesser privileged (higher
+-		 * numbered) VMPL level, so use VMPL1.
+-		 */
+-		u64 attrs = 1;
+-
+-		if (make_vmsa)
+-			attrs |= RMPADJUST_VMSA_PAGE_BIT;
+-
+-		ret = rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
+-	}
+-
+-	return ret;
+-}
+-
+ #define __ATTR_BASE		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK)
+ #define INIT_CS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_READ_MASK | SVM_SELECTOR_CODE_MASK)
+ #define INIT_DS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_WRITE_MASK)
+@@ -1176,24 +1288,10 @@ static void *snp_alloc_vmsa_page(int cpu)
+ 	return page_address(p + 1);
+ }
+ 
+-static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
+-{
+-	int err;
+-
+-	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
+-	if (err)
+-		pr_err("clear VMSA page failed (%u), leaking page\n", err);
+-	else
+-		free_page((unsigned long)vmsa);
+-}
+-
+ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
+ {
+ 	struct sev_es_save_area *cur_vmsa, *vmsa;
+-	struct ghcb_state state;
+ 	struct svsm_ca *caa;
+-	unsigned long flags;
+-	struct ghcb *ghcb;
+ 	u8 sipi_vector;
+ 	int cpu, ret;
+ 	u64 cr4;
+@@ -1307,33 +1405,7 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
+ 	}
+ 
+ 	/* Issue VMGEXIT AP Creation NAE event */
+-	local_irq_save(flags);
+-
+-	ghcb = __sev_get_ghcb(&state);
+-
+-	vc_ghcb_invalidate(ghcb);
+-	ghcb_set_rax(ghcb, vmsa->sev_features);
+-	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
+-	ghcb_set_sw_exit_info_1(ghcb,
+-				((u64)apic_id << 32)	|
+-				((u64)snp_vmpl << 16)	|
+-				SVM_VMGEXIT_AP_CREATE);
+-	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
+-
+-	sev_es_wr_ghcb_msr(__pa(ghcb));
+-	VMGEXIT();
+-
+-	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
+-	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
+-		pr_err("SNP AP Creation error\n");
+-		ret = -EINVAL;
+-	}
+-
+-	__sev_put_ghcb(&state);
+-
+-	local_irq_restore(flags);
+-
+-	/* Perform cleanup if there was an error */
++	ret = vmgexit_ap_control(SVM_VMGEXIT_AP_CREATE, vmsa, apic_id);
+ 	if (ret) {
+ 		snp_cleanup_vmsa(vmsa, apic_id);
+ 		vmsa = NULL;
+-- 
+2.43.0
+
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
