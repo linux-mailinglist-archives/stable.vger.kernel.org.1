@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-139473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10895AA71CC
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 14:29:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56225AA71F6
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 14:34:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F97B4A63F1
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 12:29:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 449704C557C
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 12:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148E62522A5;
-	Fri,  2 May 2025 12:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4827C242D65;
+	Fri,  2 May 2025 12:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dm6V/Oiv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eey53Ler"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8C2210185
-	for <stable@vger.kernel.org>; Fri,  2 May 2025 12:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AA7246794;
+	Fri,  2 May 2025 12:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746188959; cv=none; b=Qzmn5hos5Ny0OLYXHy/c8kyVm7I5VllgNI2MG46+EpAA6DP0bxOqPYQ864AjCXvXsnKADOcBQXUxOw/mqN3YMkmxWeo4Xch9Py3ElfevxYmhdVwEeXiPiUjyHJbgaGahdqx0wXBTZXQE1uXREQRKSMFNwB/LOp1QHXdgjsFDbYk=
+	t=1746189210; cv=none; b=ZysRObp5f0s1FNmVhpFpVIsCHVfixcjFMKa2NaOfCwsuAiIgg6loZ5jgmNsQKGTm6YVJEXKKJ1OcWcIy8ZWqETXoMyE11Xar8UVh4Tx0bvB5UUaiIQT3JuomPZRm5+PKS06ApGBfCoLdwTms7Yko2+/X3+7GkV0bCuOf1taPerg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746188959; c=relaxed/simple;
-	bh=zvHa4X0rrQTDwYzkbYkZYw+dLVBDwFqqMgeUnHdOFUs=;
+	s=arc-20240116; t=1746189210; c=relaxed/simple;
+	bh=z6z8DOFK9JCqv0xb1jgf68DObLMsaturhjSGbJ1U/rk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e8Qdf4Nt2aVV681LMOt5D788COJBwSkiFRUf/nKws54GHyuzU98lz2nDVk+vq53tFdt/9sWHAJAo1fCAPjIDhB91YUCpkslRFc3d6GfzT8mKvVL11QDkBfzByT/yWpOsi9xsPXg8d42WhRDvOt/tfUFNB99y5aaPumjwE8qti5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dm6V/Oiv; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cf58eea0fso7816405e9.0
-        for <stable@vger.kernel.org>; Fri, 02 May 2025 05:29:17 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=kpA/nkLwkPtcxSoNIL2w7IcMVxB/BTfDTIoazdH3BS3qHqzs06IRmv2E3m7C7tLi9yOn/8iu7W62WgHRvNvD/IXSq4RDOIy1qAlGUOrHSIq+ISdjL/FfwVq37LARmH1uCQ9KWtTfyPYMa++LHQ13YRKKhiTYw3suliVXEwbEH0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eey53Ler; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-30332dfc820so2403483a91.2;
+        Fri, 02 May 2025 05:33:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746188956; x=1746793756; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fPXhl5ABY9Cpe5wfSbh97dWtdpEKAOmViXZEiA/5wSY=;
-        b=dm6V/OivuHe2fp0JRkEb9KUx8oEhQSYiDYQvawtgWI7c8JaKpi2eq82uR6SRS6Hdhe
-         yJMhyNogRRIAMKo+w3cC1XC33lJjYE8c5FA7ntLQ4OWGfvBWfyDm/ZaWePl2oE5uDtbC
-         rO78zoGActrCZqWhCAUxxH7DXxDeQY7y2+L/s+9KqXdsR6o5BXWGAuojQFvRC1GABtGn
-         mECO5WqMsgvIqbTS7IGQsu8ayY3k1hHS98KRUkW0VigALT4sd/CpRUHjbQBL08oBOiA3
-         BKglN8afU86p0DHG4Ex4VIpTOn07i0tSzxySynjyGcrzdWL/v93nVujGoKs7zC24ACri
-         K0ww==
+        d=gmail.com; s=20230601; t=1746189208; x=1746794008; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=8LFbdO81pjLbU3iMuNN+ugtfZ7paGqSVKOTIGx3Lamw=;
+        b=Eey53LerByZlVWMrZqdf7cDNnOnaNxUXWyS1npovmo6K5d5hwrszCeD5k6uOIGbt4N
+         p3yfQUu96sPZ88SpI7mRRVppGe84elX75Ujnt3v+shJ5KDyLdCECfRYLE+y+aru4P75q
+         NsX1q639oNF5pouayzj4ejaGsRw16WD1fDgHGKppJxEG667hKWZWFr3QlVv2CYqgEyvG
+         l1c6b31ujG2A3Lr6d0J8T+fHJZ6izhMhHivtTBfDx9I8Z9sTJAO5KB53NMs6FtTruICA
+         zLXPs1dJsEMoexNJJSxBRM6WjEplpQ3UD4BEPdxYSZM6yA8VM2fzYVLiXbh47WM0HpzG
+         WyQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746188956; x=1746793756;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fPXhl5ABY9Cpe5wfSbh97dWtdpEKAOmViXZEiA/5wSY=;
-        b=WC1gI0/SOox/CFoba9zjra0HvQvWRDvr6/XYGKhZ87K0E7bU2veBTLCmkQDJqgZKkw
-         +/DAfW8Jz88tLqxkehEAywgTk1gnVkhOfTgBYLVcyUTdd7RXM3aVE5M83gfv3OCaGT6W
-         6yz8zqv9BiVrkgmk8XJTfUBGWXVuIPaSSItBekdxqkodOKGNFo6SzIbU7AvWLTi861j5
-         LsbV8aCmdpbq7tDUAIivE+5x5RGBQvxqYwyAq7pm/beVImsfxXIy/+klQk8OYWlqcgOJ
-         Odt8BhPmAiwDwqYeIR2NHHBPqvBceoaI3Xy3RrMdMd6BeGfWg1NpgqjQfa8bosCiwVyf
-         YCiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUhPd8kq4NudhMYzKez/54p6D7VTyeoJejkJtN+HDAunk8XATv2kn9ERlj7oko1GFOT1GE9oYA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOsJ26+N9GN18v1EhF+ySCLMdDrcqbsJWHzBuX03Y7psOL8/HE
-	cpSNk5EkIt6rMo70c2Lj3t8YDTyNZo2EXNDs8h7CyFl885IGZOMkAFMxWrFDAx0=
-X-Gm-Gg: ASbGncvrD2hcCaHwWXBqopkTOjEv3AZnEXI7zI9nT4NiZPeLSDetlH/lA837XOZjHez
-	yUCxSx84OHWIQQleAvIAUB/hLqmTvT67qxFCaSGOS3ixRzU/G35n09iVz4TrZ3FNbNJGYc7NQen
-	NU3Mv7qTppCFsTAVtVCGy/vkH4R1OiKvYdHCEXyCnpoF6wlk3L54Fr22CO0tk+fMMsrTLHLkaLB
-	RDL+2V7PhIsy9cWRHSanKzBbJ5jVeK8tCfKQptUSRsT7ymEQzThW7xtzHGy3/F2NCmYbtfIF56K
-	LZJGalUl0ZFuQ3l/psYymNuVpB2wW4cn7vTkjXARAHKSfL84rvLY9ovX0DtdmobP1gOscNEkE+0
-	DFORc9w==
-X-Google-Smtp-Source: AGHT+IEJQc8ArVKhReP08d9VcgU4GcvNbex+0BCVyeNSxBvarnE07Zhzs5sQR2N9SWFhkCNJNsJqEg==
-X-Received: by 2002:a05:600c:5022:b0:43c:e6d1:efe7 with SMTP id 5b1f17b1804b1-441bbf34052mr18854655e9.26.1746188956401;
-        Fri, 02 May 2025 05:29:16 -0700 (PDT)
-Received: from [192.168.0.35] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099b0ffcasm2030879f8f.74.2025.05.02.05.29.15
+        d=1e100.net; s=20230601; t=1746189208; x=1746794008;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8LFbdO81pjLbU3iMuNN+ugtfZ7paGqSVKOTIGx3Lamw=;
+        b=C8P1FuFTvwQXjGpdW/qsftv2ca19c+ehOFtgj7y2JlefQ4GmZFWLW9WN+Jro1zkTjp
+         jGW6hAaXtENLP8VFucNngbgbbr9OH+Mu2F1W3PwqEHFLT1CT2ehqo78LDg79x2z0C/rd
+         Kb8/e1kSmztERYjjIrw39AsIxSdJGrR1rsrp74Mxf/jnHzDql1lZb0LSUwZBLm1D53T5
+         5CszWYjviG/BmtxwyAeMZso3XHuDeLQYjkLmH2NyuqbzH5NF7u3PC4tpWs2E8mUILLN3
+         6w+tWji/Ij6tNFOBYsGLMvoxyEVUOosYnyQl9Jr5ozv4jqt7dm6CP9fkYSUK6+oHs4KB
+         h3HQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVRmNX/4yd7aCk/BpkaOBbkRbSTynoxe61fNT6fJXKKL/jktSjXxhMNJYITNWkYtqrhObrxKlfUnI8YNN4=@vger.kernel.org, AJvYcCXsfaYMfP0kcvhXZrKrqs0Gtd7hLgyxXWAw753XO4JXmKW5TUcqjQunLNclLZ5H7TYEKgzStkE4@vger.kernel.org
+X-Gm-Message-State: AOJu0YxR+RVVtxyf8XXiOSyXfLz5x/BMwQ28j4iybupIUBuoG81yzAJg
+	LgS2SdNa9DrzFE10KU5klzuJFzWA6pXpZY74TmzA70TZ8FO0tcKW
+X-Gm-Gg: ASbGnctsGmUHFMV8kMGCzXEO4onFOeLzrZ8hPsRsnQKLC5Z4u+/ARajsADZNdlwKwic
+	F/XBhSuAOehnd1vTFqdGeNWrU0txJAdaIGy13S9010wVeWbPEL2XITd/ikkwayVsdN5mRGchjag
+	1fBn0AFUTQtt3ScfXc0UzTG59gciy2kDH+VAVidz/vh4oGR0tS1vuT1CmioljNTu4gSKJkrrMAk
+	J5s0+VcRfgCVpbvHpH5LR0Ydi/M6nMB71WGciZU0G5zG8urCeJBVxYGIxFCGPiUsOCtIV9YUCLb
+	/doEdh3Q8JyBzJPb2KmHvsJUFIIdiMqa36+rYfHm5R2R+YNYAOgir+MnBETJvGEhA/Q=
+X-Google-Smtp-Source: AGHT+IES1oMpEpa2nbuC/A86IqMpoOcTS4u6tbnudaz9Gj5lBssrqoVHSSuYEIPZqrNZJrdwxL2KZg==
+X-Received: by 2002:a17:90b:37c8:b0:309:be48:a77c with SMTP id 98e67ed59e1d1-30a4e5c6388mr5128351a91.18.1746189207654;
+        Fri, 02 May 2025 05:33:27 -0700 (PDT)
+Received: from [192.168.0.24] (home.mimichou.net. [82.67.5.108])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e151ea71csm5934345ad.101.2025.05.02.05.33.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 May 2025 05:29:15 -0700 (PDT)
-Message-ID: <b255fec0-216d-42c8-b7ba-cb0cde51e73c@linaro.org>
-Date: Fri, 2 May 2025 13:29:14 +0100
+        Fri, 02 May 2025 05:33:27 -0700 (PDT)
+Message-ID: <8b15a1ca-fbda-4bc0-b6af-e543ee03f7f9@gmail.com>
+Date: Fri, 2 May 2025 14:33:17 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,63 +82,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/23] media: iris: Fix typo in depth variable
-To: Dikshita Agarwal <quic_dikshita@quicinc.com>,
- Vikash Garodia <quic_vgarodia@quicinc.com>,
- Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Stefan Schmidt <stefan.schmidt@linaro.org>, Hans Verkuil
- <hverkuil@xs4all.nl>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Nicolas Dufresne <nicolas.dufresne@collabora.com>,
- linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- 20250417-topic-sm8x50-iris-v10-v7-0-f020cb1d0e98@linaro.org,
- 20250424-qcs8300_iris-v5-0-f118f505c300@quicinc.com, stable@vger.kernel.org
-References: <20250502-qcom-iris-hevc-vp9-v3-0-552158a10a7d@quicinc.com>
- <20250502-qcom-iris-hevc-vp9-v3-9-552158a10a7d@quicinc.com>
+Subject: Re: [PATCH 5.15 000/368] 5.15.181-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250501081459.064070563@linuxfoundation.org>
 Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20250502-qcom-iris-hevc-vp9-v3-9-552158a10a7d@quicinc.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250501081459.064070563@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 01/05/2025 20:13, Dikshita Agarwal wrote:
-> Correct a typo from "dpeth" to "depth".
+
+
+On 5/1/2025 10:18 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.181 release.
+> There are 368 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 3a19d7b9e08b ("media: iris: implement set properties to firmware during streamon")
-> Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-> Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-> ---
->   drivers/media/platform/qcom/iris/iris_hfi_gen2_command.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+> Responses should be made by Sat, 03 May 2025 08:13:53 +0000.
+> Anything received after that time might be too late.
 > 
-> diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen2_command.c b/drivers/media/platform/qcom/iris/iris_hfi_gen2_command.c
-> index a908b41e2868..802fa62c26eb 100644
-> --- a/drivers/media/platform/qcom/iris/iris_hfi_gen2_command.c
-> +++ b/drivers/media/platform/qcom/iris/iris_hfi_gen2_command.c
-> @@ -178,7 +178,7 @@ static int iris_hfi_gen2_set_crop_offsets(struct iris_inst *inst)
->   						  sizeof(u64));
->   }
->   
-> -static int iris_hfi_gen2_set_bit_dpeth(struct iris_inst *inst)
-> +static int iris_hfi_gen2_set_bit_depth(struct iris_inst *inst)
->   {
->   	struct iris_inst_hfi_gen2 *inst_hfi_gen2 = to_iris_inst_hfi_gen2(inst);
->   	u32 port = iris_hfi_gen2_get_port(V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
-> @@ -378,7 +378,7 @@ static int iris_hfi_gen2_session_set_config_params(struct iris_inst *inst, u32 p
->   		{HFI_PROP_BITSTREAM_RESOLUTION,       iris_hfi_gen2_set_bitstream_resolution   },
->   		{HFI_PROP_CROP_OFFSETS,               iris_hfi_gen2_set_crop_offsets           },
->   		{HFI_PROP_CODED_FRAMES,               iris_hfi_gen2_set_coded_frames           },
-> -		{HFI_PROP_LUMA_CHROMA_BIT_DEPTH,      iris_hfi_gen2_set_bit_dpeth              },
-> +		{HFI_PROP_LUMA_CHROMA_BIT_DEPTH,      iris_hfi_gen2_set_bit_depth              },
->   		{HFI_PROP_BUFFER_FW_MIN_OUTPUT_COUNT, iris_hfi_gen2_set_min_output_count       },
->   		{HFI_PROP_PIC_ORDER_CNT_TYPE,         iris_hfi_gen2_set_picture_order_count    },
->   		{HFI_PROP_SIGNAL_COLOR_INFO,          iris_hfi_gen2_set_colorspace             },
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.181-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 > 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> thanks,
+> 
+> greg k-h
+
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
+
 
