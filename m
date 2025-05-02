@@ -1,138 +1,114 @@
-Return-Path: <stable+bounces-139497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0D3AA74AD
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 16:15:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 549F9AA74CA
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 16:20:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 651129E5706
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 14:14:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA5874A7768
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 14:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C4B2571AE;
-	Fri,  2 May 2025 14:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69D1255F45;
+	Fri,  2 May 2025 14:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MeUdteli"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CE22571AB
-	for <stable@vger.kernel.org>; Fri,  2 May 2025 14:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B45143748;
+	Fri,  2 May 2025 14:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746195246; cv=none; b=nfF1bpBK2/NssUzjbQKbG9MW0ZSquANyVBIynn/L7GDLds5KKtxOwQy6S4L9V2iWjoiv9rR/IGfUG4FGKW0ITCJGFFTe4V2jJeLU+IkQSABwAUL9SU2Me+58Fj54qG5N4Hrl25Kh52IaezLZwAfebUfW14UCpfC+TzPXiCvd5js=
+	t=1746195623; cv=none; b=tuMfF6Vm/z7dNW3IlugVwWUHfFMOV/tR4y2hnbMvqe75CZJgMNyNZoMQgSjcUSI7/cN4zbioLogqylmm38DAOOyk2eyHya5hnVLsDheBzfe2xBLhsPyJLRdEuGwao7v8iLPV9FsJNs8qs9qWv9U7hSq6U37/c/13QhSWstjJccQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746195246; c=relaxed/simple;
-	bh=Q5aUEap/j8onzIWPM9KgOWl8xHnHPU8XimRr1awIUwI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aEbNTcfYo1rw74Bu4bgQdKfWTf+3tXOLe3Zi1U6MwLk4r7+/aPLEagfZgllgL+Df3Sy8KBSjdJz5lV8qtHR3WkQWZIch/OPo+sHLE7cKMekTsAi/909wkySaHLXo6cH8VBrz6nzoLpReExiTCzlpuo1smjtxuYuuSQgG0qoHGbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uAr9N-0000wg-4I
-	for stable@vger.kernel.org; Fri, 02 May 2025 16:14:01 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uAr9M-000lRL-1D
-	for stable@vger.kernel.org;
-	Fri, 02 May 2025 16:14:00 +0200
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 11F1F4065D2
-	for <stable@vger.kernel.org>; Fri, 02 May 2025 14:14:00 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id E74FA4065A0;
-	Fri, 02 May 2025 14:13:56 +0000 (UTC)
-Received: from hardanger.blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id de45ef16;
-	Fri, 2 May 2025 14:13:56 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Fri, 02 May 2025 16:13:46 +0200
-Subject: [PATCH 3/3] can: mcan: m_can_class_unregister: fix order of
- unregistration calls
+	s=arc-20240116; t=1746195623; c=relaxed/simple;
+	bh=NLTkeMhO6WgrzXKTKcZReYDEkgITIo428vgJUhW3H3w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pRXGa0NIUknU9hrLgjOX1hXjfcghPhEbKWRybIRHnI8nAKxfRo+W13Oo2wd3VrJ4kQnV15FCtphnfoSun1s7JzMxb3eouRo2mH5nCyd6DXH8bTAoQ1+Z84B6BwDqOBoViKBqKbfXBfeNSSGfjIn+75GX6uEP3jCgHusqw4coYjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MeUdteli; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5f624291db6so3170526a12.3;
+        Fri, 02 May 2025 07:20:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746195620; x=1746800420; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wBznP7Tph1aOC1yEisDZHDyhhKPx2aYD7F3IZneam84=;
+        b=MeUdtelihIiW7jK6VQ3BdakNLhj6sU8tel9sLWhpI3857EnmYJpn4dXydND5xlLeRa
+         +kP4NiiZkg3Rz16Vz421DR+Q0zc/FdAO90KYTy0iWpV09wE8w5AfpfZacmD7/hCk42Tk
+         p3PAtbJkckGunbJUNjKIBcVyo8WlkwNsP9H6LP/09YrKOAPE0H9VXlU4inqROm55MkJK
+         oOARoVQ/PzDvIKy399JiHNyCQ++CALEjoa7kAs6Iks1gQ4rs70gNk47zVxqyA2ae/N84
+         ZTEr6dQS5srIBNmUOkC7s6/HZ/vWwXvezEhJ/Dj7zVghi6Ao9Ct7KM/WcX7hgmgBakh1
+         xU7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746195620; x=1746800420;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wBznP7Tph1aOC1yEisDZHDyhhKPx2aYD7F3IZneam84=;
+        b=TmPlP3qFqDIjFM+GuM/exCPnXopIhVFWSZexvfcCgpPW4FW7nL21e5nIqMhT6x2iso
+         Q12Hxg3gttQPvapdZv2OA0eduRQr0inmgx0UVt0iRj9Fha/R/9hm09x8QYbOvwfSDR1f
+         RwUB3n+RdWnAhr5XfWf1LjeJY9olsByxix+FGJqWQu2c0XXb4Z7+A3uCVCnDG8wBOOzS
+         ZyQlMWrgkdadhhfAPY1j9fbQeQLunfZnq3/mJlbHWSBjVRJuvWTLviuzKQVEhzRJ1RG2
+         87xr4NRO1f0t71RZUsO20ioPglJTlGo4TJQlIXBw07WdVhwcKIppC/1yxYiUK+PWa3Q5
+         ts+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVzQoTuIWtgqjnAwLcIMC0iWAHwufPOvreWU7gjRGpFT+UaW7IeM1DL+xdof+eYIuljKXt9iXpy@vger.kernel.org, AJvYcCWqcKa60nIkPURyWRjbcFeoBRA4uVYFN8pQKAZNU1qZOVxF2Ex5SzLkx4dv41vKJMYcxPpW+HLUtTx0o3Fr@vger.kernel.org, AJvYcCXEURAoypEwIueIUZtd7SKXzbm3mE1F6yybOBWoobSSadQBXRSkL/5MUaH7VUlxvvXM4kGj0bE+ILs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyki6MklKWS7sGKpxHdHsTHg3/yHGCoyWH2Es/ipQKDVHLHVZ6P
+	16veIO3BSm+unfMc2QKWAdJa1XyIgfUGQ8BzX4GVEiWeLnYJDSjNMAClPEmXMb0J6CbGno9OorC
+	tEqlvPx7Jdv+nXzHzxo34dGvhGAk=
+X-Gm-Gg: ASbGncuH1p5s2avuxpNgWMAU3Hj1dHyFcmnzg7W3PhFTKkgajeJOAJ1UxObNoIo55aR
+	kVxvlhXpuc2PIfT377p/JtGQNXLisFG2lo8eS8uQEE7ni4aIuGJkiMDGv1/u5IVa1uFm2lTUqqg
+	65sXD261dntznkNamA9LnbN6XILe1SiFWonOI=
+X-Google-Smtp-Source: AGHT+IEAkf/ycDiCWbKsOewklCTFld17bWKR1rodMGQzWYFUzODaDjr9UBc8HhNg5y6jON0Cog/ToOy92KeDQSJOsis=
+X-Received: by 2002:a17:907:9904:b0:ac6:f6e2:7703 with SMTP id
+ a640c23a62f3a-ad17ad3aac1mr225617766b.8.1746195619944; Fri, 02 May 2025
+ 07:20:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250502-can-rx-offload-del-v1-3-59a9b131589d@pengutronix.de>
-References: <20250502-can-rx-offload-del-v1-0-59a9b131589d@pengutronix.de>
-In-Reply-To: <20250502-can-rx-offload-del-v1-0-59a9b131589d@pengutronix.de>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Thomas Kopp <thomas.kopp@microchip.com>, 
- Vincent Mailhol <mailhol.vincent@wanadoo.fr>, kernel@pengutronix.de, 
- Heiko Stuebner <heiko@sntech.de>, 
- Chandrasekar Ramakrishnan <rcsekar@samsung.com>, 
- Markus Schneider-Pargmann <msp@baylibre.com>
-Cc: linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
- Marc Kleine-Budde <mkl@pengutronix.de>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-048ad
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1395; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=Q5aUEap/j8onzIWPM9KgOWl8xHnHPU8XimRr1awIUwI=;
- b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBoFNMh3UbqdYlr7CYNpBI0bFUBQXmQiPOeOyZrU
- g8+euFtBeaJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaBTTIQAKCRAMdGXf+ZCR
- nPHaB/97GcHyND3HHSgiFPYIWFmO62VdzZbPx/n1WNPQt1+uqtw6LMICf3+QNpl8SOJVJJFj2SV
- TRg60q5Yo8pEZWbfVp6/Buppex7/67VKXM7BBTd9Q2Htu6g0O8WNBLXU9yPeIn74/rju2WhuVvz
- jJXwsVpuSCH98sk2UdAZVlyamEy2Gn3nwAbWZSmk8ansBmAlO4YCnWIqzraIuB1ChMseY/LsNyl
- 6GauScLC3qQGpZV+OgcI11FsiBak3FQcC/2pjGqQLtWZ0gityXXQiOSbvJg40uCNnwN6N0kAnO7
- pk4Oo43gTPDZyYIDfIGtkX3asiE4A5y8xEQvHwsrEYwmJOBW
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+References: <20250502-fxls-v2-0-e1af65f1aa6c@geanix.com> <20250502-fxls-v2-1-e1af65f1aa6c@geanix.com>
+In-Reply-To: <20250502-fxls-v2-1-e1af65f1aa6c@geanix.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 2 May 2025 17:19:44 +0300
+X-Gm-Features: ATxdqUHWzMktixRFQSi9ASxdn1M54DmhZJXbmbJ7aBh3SxAWt_Cjs_uWdkbYa6E
+Message-ID: <CAHp75VehpQdxFDXE8L0TeaOxHBTHNorOZ95rL48kQAiViAJ_zg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: accel: fxls8962af: Fix temperature calculation
+To: Sean Nyekjaer <sean@geanix.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Marcelo Schmitt <marcelo.schmitt1@gmail.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-If a driver is removed, the driver framework invokes the driver's
-remove callback. A CAN driver's remove function calls
-unregister_candev(), which calls net_device_ops::ndo_stop further down
-in the call stack for interfaces which are in the "up" state.
+On Fri, May 2, 2025 at 9:15=E2=80=AFAM Sean Nyekjaer <sean@geanix.com> wrot=
+e:
+>
+> According to spec temperature should be returned in milli degrees Celsius=
+.
+> Add in_temp_scale to calculate from Celsius to milli Celsius.
 
-The removal of the module causes the a warning, as
-can_rx_offload_del() deletes the NAPI, while it is still active,
-because the interface is still up.
+...
 
-To fix the warning, first unregister the network interface, which
-calls net_device_ops::ndo_stop, which disables the NAPI, and then call
-can_rx_offload_del().
+> +/* Raw temp channel scale */
+> +#define FXLS8962AF_TEMP_SCALE                  1000
 
-Fixes: 1be37d3b0414 ("can: m_can: fix periph RX path: use rx-offload to ensure skbs are sent from softirq context")
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/m_can/m_can.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Wouldn't constants from units.h be helpful here?
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index 884a6352c42b..7c430eaff5dd 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -2462,9 +2462,9 @@ EXPORT_SYMBOL_GPL(m_can_class_register);
- 
- void m_can_class_unregister(struct m_can_classdev *cdev)
- {
-+	unregister_candev(cdev->net);
- 	if (cdev->is_peripheral)
- 		can_rx_offload_del(&cdev->offload);
--	unregister_candev(cdev->net);
- }
- EXPORT_SYMBOL_GPL(m_can_class_unregister);
- 
+>  #define FXLS8962AF_AUTO_SUSPEND_DELAY_MS       2000
 
--- 
-2.47.2
+(2 * MSEC_PER_SEC)
 
+This gives immediately that we want 2 seconds of delay.
 
+--=20
+With Best Regards,
+Andy Shevchenko
 
