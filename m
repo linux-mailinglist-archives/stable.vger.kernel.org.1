@@ -1,277 +1,394 @@
-Return-Path: <stable+bounces-139461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF60AA6E15
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 11:26:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C74AA6E57
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 11:42:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B88F3BB718
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 09:26:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE8521B62C1A
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 09:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB3022D7AD;
-	Fri,  2 May 2025 09:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26F721FF56;
+	Fri,  2 May 2025 09:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rTbwbgs+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BtV5FZVm"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2057.outbound.protection.outlook.com [40.107.94.57])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF7F22CBD9;
-	Fri,  2 May 2025 09:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746177988; cv=fail; b=igySdzPfSvcA433Irihz0oy6l9PNqRiRnOir/FyuUKlALXYxT4gnRAkiZh4IxsUalfqSo27Jg0Wjq+5j5itmNUHBwcKsRcVI2cXDKiJ4Q5A/CfXGw7p4g2zmeUtTNOldiSDsj/VLk6FzxvDknC9v7xh/oM3LO0aLgZRVlqPKDU0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746177988; c=relaxed/simple;
-	bh=IH+gJ2tVFjh7Ar0d9w/vrOtOWBwFCgGGkBugXMqkiyI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UBD24pG6BelPvpWHgeAi9dQ0cbfGPoFD4nf+urUu4iT3x2655ki4AQk7kGQnkbay2sjvdqaqfm7luh7kwyED0xLwq0BNhny8jOqiCpjBzA762+CYUpo2JmF6BhZmwjeKBAjR1D8nHdR/9MYD4Pcn5GCw3aA7PJJOqaKZn9ivNjg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rTbwbgs+; arc=fail smtp.client-ip=40.107.94.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MrdY7jUAOwuF3uU/FiASi7Bes+sCINSy3aQjngplKPz/kG7l7Dmtq1upQxqC4GQLngyuuPPX6pllqy3qePJMpnfS0IyMZKnz7iwhDVXGP8htqeC4F6+MqPsVYreJVZf5csrdNVevHKutqXd6pEw3lWFCMN1iuHKtqVpdHfGIpJ8PFklDaR9zbFDesCCZrfOKoXibMILjn8Sjp0p3hiCFQJGk6vRV+S0mNU65pKDh7d9Q7eQU9CG0EWrRQ1EmDYL5COrNZz9jpnbk+b626FCbressBwj6CZ7CQJDOy44vTeXKONVxTvPlUO9NHJJpQRrrhFUO7hub/zEdFwKkBiekpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ShFh+PcuR1SZ+qHDgcXzgLNMEO6Rpfg01tqiEyGP8sY=;
- b=NSDZZ09hqrM/dwhXSkfJotrFw4C6BhPps2AhApauJFfVVXSk68s+nPqAJxBIBNkWzDQyjZ/SGJoR9j6sS99VbsAfx3ztASvl3zC8Slv9mKV4PWsvmvXs6CrDnT3xE8az+KeacOJKKHgwYIbiKouKP/g7AtPbdAL+vPN2wA8dJS/ocGYrf++57HuVZrGuLlU8VQU9tm+6ztHwR9CVORxYY0GMwdmGXTfIEAHuwwTMHv2xia9z7L+Y48btHHH1/iq9ocLtMTHqMQeLblNFyEWyqQNSMKtJ1Kugyc+bmX0u6mGiq8lStm7Vfyp7hD7VCvcf2zQDp4dlGeoScAFMyAmm/Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ShFh+PcuR1SZ+qHDgcXzgLNMEO6Rpfg01tqiEyGP8sY=;
- b=rTbwbgs+JnPUL7sOJzTlOVY1bJsqB0yR96fPwtGnlQKU7wbthHcaKg7MUXzqhjFEW5oTo6y+lkQE5zZxetI9E6Vqk7nC7ba1MhFrJGu8tQmUrRNOJpZn1NR/2H0FCCLic8dA4NWhYr0BQPr9F1Ql6/ItBuyOVNwb9KHJ8r52aPPwTAqLtmcSkjj3lyiiE00epiRLPV+b9MHmhQHM7+xeofgWrDuw+mWo77hU5MMfwZvead3NTW1g39qIJdvdLtOmfCvW0Z/Yc7/JxHY4UaswwF4fwbCQ1QndVcTsqB6ZYaE7Mp/Uw0gMufExSR8eXPC3F7leB0FVFbLTXc8+FP+2tQ==
-Received: from PH7P220CA0176.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:33b::29)
- by SJ5PPF0C60B25BF.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::98a) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.33; Fri, 2 May
- 2025 09:26:23 +0000
-Received: from MWH0EPF000A6734.namprd04.prod.outlook.com
- (2603:10b6:510:33b:cafe::35) by PH7P220CA0176.outlook.office365.com
- (2603:10b6:510:33b::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.42 via Frontend Transport; Fri,
- 2 May 2025 09:26:23 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- MWH0EPF000A6734.mail.protection.outlook.com (10.167.249.26) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8699.20 via Frontend Transport; Fri, 2 May 2025 09:26:22 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 2 May 2025
- 02:26:14 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Fri, 2 May 2025 02:26:13 -0700
-Received: from waynec-Precision-5760.nvidia.com (10.127.8.13) by
- mail.nvidia.com (10.126.190.180) with Microsoft SMTP Server id 15.2.1544.14
- via Frontend Transport; Fri, 2 May 2025 02:26:12 -0700
-From: Wayne Chang <waynec@nvidia.com>
-To: <waynec@nvidia.com>, <jckuo@nvidia.com>, <vkoul@kernel.org>,
-	<kishon@kernel.org>, <thierry.reding@gmail.com>, <jonathanh@nvidia.com>
-CC: <linux-phy@lists.infradead.org>, <linux-tegra@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH 1/1] phy: tegra: xusb: Fix unbalanced regulator disable in UTMI PHY mode
-Date: Fri, 2 May 2025 17:26:06 +0800
-Message-ID: <20250502092606.2275682-1-waynec@nvidia.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A3319E82A
+	for <stable@vger.kernel.org>; Fri,  2 May 2025 09:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746178948; cv=none; b=lzM3e+rXIkbB7cnmfuzrnyT0VY1dtUyHNfIdpY79u6qFtgp5KcchM7crYQENLAfJ7T3c+MRZgsQC+Tin6smwR1Xmww01rC7If2sfoV/TzaVPnPjo3f0pPkMHAO5Vag3hy0ZY+5E0B3qQi8AjJijpOUH0dGsNqFGbHXCyh4u4Uf8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746178948; c=relaxed/simple;
+	bh=1XFPRM5Am7t3ns0WFWl9l1pKCVZXWCkOlbPnqbj2ITk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=nAsHIRhiykYcuqnVk/teoOkxpu8SQC49Wk4fgls3TsOPI9nqofRf7QFqr//T3MMirrvoZIwpvOjFqJuLAiksyj9UPCRCLg9io1eWEOTNrRs5Gol9Df0sFoIRhrrbWlpI+Mb9zXkZcrbadq9U2tYBxFUUrEIHiIXqtkFWgp5hm0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BtV5FZVm; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746178945;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=miNJgwsqELXveVAn/lTZelbfXx6FusXbd6KjeEVrBDU=;
+	b=BtV5FZVmmklh5x6zuDQ8VbXceE6dogJix3luYmDqHVXbrCKr4bxOlp8QqjvOsMIuP2YY/n
+	bfwiQXBKGviclSaycAeGG5Z5zZ0nwY3bDoOn50zqdMTpo/XQ9dLMs1Fi+ksgmDMGBJtl6d
+	OCAhe8ens+5E4WMLeRNnSTdt67AsTW8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-597-bj7k20e5Mv6UR6wCWg1SPQ-1; Fri, 02 May 2025 05:42:23 -0400
+X-MC-Unique: bj7k20e5Mv6UR6wCWg1SPQ-1
+X-Mimecast-MFC-AGG-ID: bj7k20e5Mv6UR6wCWg1SPQ_1746178943
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-39126c3469fso479272f8f.3
+        for <stable@vger.kernel.org>; Fri, 02 May 2025 02:42:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746178942; x=1746783742;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:from:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=miNJgwsqELXveVAn/lTZelbfXx6FusXbd6KjeEVrBDU=;
+        b=b/lFUsxxvew7wloOQoO0NjxfagBJYTqHNlgJqOZEEyk/Pfzbr8l0B20YAcYzDktYa0
+         um7XtI8HCynbyfuuhs2A5GOianjhhn+yOVWfA4LrZfhtfPR4Vhy1RJi5nEt2CZaCQnVb
+         DPRmCTKM5IsOSND5AiA83bPGWWk5JfAFKKRORcmKMVet4wvy8u97onPptUKOqav1558d
+         cdJoWj59GlPe0y6RoQ1S7ES4YzzGQpR7WA+LblwVRDj5fBGjQSNpibPPLZnVJH7OcZYU
+         BL0+oAZWILn2gxy0eKrqK+WSaW9oWfUUaje7319iLCYOofcxk1W8pItVP+xvJvb5C6BS
+         Q65Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVzDJ5OixWozdxSRp5y4EhLH6wlhqNEVy+d36Xc0DelY5y7T46TxvNL/6K0L6kwczptkskTPcM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfffhuGYEyc8sPsEdQhX8Tp4GxPjbiLhXqBAuDHraswIpejlkV
+	iJW7SS9iwVoIN/vcTnQ0a0LIHygDZB8ed3q45aT5qGMkGLfieh/gmce3JvZ7zWv7SiQHqPw9bMw
+	UTECcexSdPlWfKFxDCdXn/UQv8v0mQB+Kx+kBKHmfffwQLvRCLPd7OA==
+X-Gm-Gg: ASbGnctKnRf0kcOQa2WcAEvAmawbPCxbuHiFuLm8YWo6JpM1K8hQLgTKnaKWmD7EKKg
+	V97z/GVjDXUZD1ZtE8ikaS5TGLJ3lmlvguX4fn1lmtoEQODHraAr5JL6rZBj9SHPlL6VNZeZ+3c
+	uIqZc3RZ7xkC8lc7AmtV2y3GqrxSZbSUlOnXbxJwMLIhSBe0YAo5/Eq4x08shr2HX3u7wsPPUfr
+	tfnP32DmhJnDiJuhcgFXcG1EdYF4uuhVhW9M0gzCGF5v5YTQDDyOcmqS3DDkb2x5JVKAokegmHb
+	L3NIz7UhpIQjJyYmejWX4ofABBv4ZFWR4+WiDmbXs9d2DoS0jHDSJIDCQSpp7ppxT/VCQjvvw5g
+	/1aA0LtHGf9rvB2NHjVAWrkHRImXsLAjdAxIuaVY=
+X-Received: by 2002:a05:6000:1843:b0:3a0:8c3d:d7ed with SMTP id ffacd0b85a97d-3a099adcf68mr1373594f8f.30.1746178942619;
+        Fri, 02 May 2025 02:42:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGqI4s9svPYgaPtQzJzmo7HGast8DY8uxTkT2z8vO9wXKoJLd2K9V5WFPktwNwa5jTxVbpjaQ==
+X-Received: by 2002:a05:6000:1843:b0:3a0:8c3d:d7ed with SMTP id ffacd0b85a97d-3a099adcf68mr1373569f8f.30.1746178942173;
+        Fri, 02 May 2025 02:42:22 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c713:d600:afc5:4312:176f:3fb0? (p200300cbc713d600afc54312176f3fb0.dip0.t-ipconnect.de. [2003:cb:c713:d600:afc5:4312:176f:3fb0])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099ae0ca4sm1671063f8f.14.2025.05.02.02.42.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 May 2025 02:42:21 -0700 (PDT)
+Message-ID: <a7fa3993-ef83-4bf1-875d-939d7f23fcb2@redhat.com>
+Date: Fri, 2 May 2025 11:42:20 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-NVConfidentiality: public
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] mm: Fix folio_pte_batch() overcount with zero PTEs
+From: David Hildenbrand <david@redhat.com>
+To: =?UTF-8?Q?Petr_Van=C4=9Bk?= <arkamar@atlas.cz>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org,
+ stable@vger.kernel.org
+References: <d53fd549-887f-4220-b0d1-ebc336eecb9f@redhat.com>
+ <2025429144547-aBDmGzJBQc9RMBj--arkamar@atlas.cz>
+ <ef317615-3e26-4641-8141-4d3913ced47f@redhat.com>
+ <b6613b71-3eb9-4348-9031-c1dd172b9814@redhat.com>
+ <2025429183321-aBEbcQQY3WX6dsNI-arkamar@atlas.cz>
+ <1df577bb-eaba-4e34-9050-309ee1c7dc57@redhat.com>
+ <202543011526-aBIO5nq6Olsmq2E--arkamar@atlas.cz>
+ <9c412f4f-3bdf-43c0-a3cd-7ce52233f4e5@redhat.com>
+ <202543016037-aBJJJdupFVd_6FTX-arkamar@atlas.cz>
+ <91c4e7e6-e4c2-4ff0-8b13-7b3ff138e98e@redhat.com>
+ <20255174537-aBMmobhpYTFtoONI-arkamar@atlas.cz>
+ <0e029877-4ca9-40f0-933f-6d0779c95d72@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <0e029877-4ca9-40f0-933f-6d0779c95d72@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A6734:EE_|SJ5PPF0C60B25BF:EE_
-X-MS-Office365-Filtering-Correlation-Id: b886f8f7-1660-41a5-c53c-08dd895b679d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VvwUB1mfMVcaQquMFM587qdL4NQa3oMZi/8SG3EAgcdCCqiJHLxsdPoBLmmF?=
- =?us-ascii?Q?zz0L98Z3ITYFotbJZPUvcoOJp7h+YhwP5Uzt3HXUIDo2cLBDQL7LogacB0i9?=
- =?us-ascii?Q?L3dbaiESJQgUq4JzDhd0btUndL+8lut4VGdTKyBm+q//apvqGzsRYT7KvuKL?=
- =?us-ascii?Q?HNaLxXwkXcBfWk/qfq+ooqeI+R0TaGvzVQa5oqolWId7buEDUE4c28Td7O6q?=
- =?us-ascii?Q?SMVJ4Oof9gcXCeJpSPljHV/n/cMdCvU5mEx30X4oRmP6nkxpTJAxzj70aG0h?=
- =?us-ascii?Q?8451+0yGKn7WghXcxYiOXCXJcc/33yFaXMcS44/KDxcDLyI2svLwRv5K+skF?=
- =?us-ascii?Q?O/oVVDIWoViZYJ3pxQ8KA0oZzN/drujDNY7uXy2ZbbfgDXw49n6phhVf3Ldw?=
- =?us-ascii?Q?8nn4eUdL6Ps+pP7SrZJCtIEI99O5Gr5HBx6zufKMSfnHHZi/L5vjiTb+SHAl?=
- =?us-ascii?Q?5oLu1IVjN3rZbuFCDCO2nbX/6k65zGwCnOfAubbro3zvxsdBP0eD49U7cfMd?=
- =?us-ascii?Q?8vMkIUt4YInta+yZuK8HLj3MqMmI/1/OmLqoVrXYbfXlk43UK6vv00Hr8GG3?=
- =?us-ascii?Q?94cpiXkq1qrpcRLz6Hb4XgysxqdrUhyRqGtswOB5AsJCO/X/eQs4hgm0yXKZ?=
- =?us-ascii?Q?Jw9DvTj+oRJOd6XSbV6lvhen25Es1vb3POGHfY75r0jcB85VvKNJmQq6WUiN?=
- =?us-ascii?Q?6btkUc70xaVjg+/TCzK8sh2wzm0m1/veDQKQkrnlXpxmvrs1Af7cXLHv+Zib?=
- =?us-ascii?Q?2lTXGAAfbWjRavT+4Oied1tD6fFSvBQbI+5pIsUThTtkVlKYPsk3dq9CuoHP?=
- =?us-ascii?Q?wYrj1PomyDlKb5SErgZKzGtAB9oj+aE2iCzrOMQO24kjsWsKaA7Cgtl8CSem?=
- =?us-ascii?Q?oTXXBwVgM14tDEeJcHAv1XeRA8H/KvE4WMJyFinOeYTyvxNTrMN5zeQSUixp?=
- =?us-ascii?Q?ncR5TQ56B+FbhTyOE+vM978jvwdWw/tF7w0Ki/st70Je4S/bFa3dVIUUmpJE?=
- =?us-ascii?Q?SfK4ORCKbJumTy3QQw/uCIRvTQlko6iVEP84ahkD21YGirYk+nkXbJU6AO1d?=
- =?us-ascii?Q?GR7jWUuQmhs1CztKo0Ui8fFOeMuU6sUZheGjk2d6PuqeoJAnz8R2UDUSrLno?=
- =?us-ascii?Q?zmwdVscwIJ9J57d1kFnv38kD0rKJbBuIdD7yJfxRqpmSwdvGCVG6RYGBCujy?=
- =?us-ascii?Q?zSvUKf6v9/9m7iG888w6AWi7C4XDWuvvwqR24XozBP745Evjbx+8S4ABQHiP?=
- =?us-ascii?Q?MDTZqr7m9sznAnOdUTxmFzqk4yqesWD1UTLre4bC+ZpOpUKbfrvd9vzcKr+/?=
- =?us-ascii?Q?eWTHoyBx+UuTJQmBrWiNuOrSRsYZt4yUStPohtDiJgwSEeACJK7FHDFKkqeo?=
- =?us-ascii?Q?XXcVO5MEW3jiSEKNAS0nyn5rBl4B2hnky/9ulcMjiWvsJIuSAiClBK8lTA+7?=
- =?us-ascii?Q?Bm7rZA6tRxF9RwL9ozgnTtOZ70YwWteblLurpelj50uC5cdGAnEHo+o4GRE2?=
- =?us-ascii?Q?YDukGqGsGl32kJBVgxINiqpToHpb6xjxJiEM?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2025 09:26:22.8935
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b886f8f7-1660-41a5-c53c-08dd895b679d
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000A6734.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF0C60B25BF
 
-When transitioning from USB_ROLE_DEVICE to USB_ROLE_NONE, the code
-assumed that the regulator should be disabled. However, if the regulator
-is marked as always-on, regulator_is_enabled() continues to return true,
-leading to an incorrect attempt to disable a regulator which is not
-enabled.
+On 02.05.25 09:37, David Hildenbrand wrote:
+> On 01.05.25 09:45, Petr Vaněk wrote:
+>> On Wed, Apr 30, 2025 at 11:25:56PM +0200, David Hildenbrand wrote:
+>>> On 30.04.25 18:00, Petr Vaněk wrote:
+>>>> On Wed, Apr 30, 2025 at 04:37:21PM +0200, David Hildenbrand wrote:
+>>>>> On 30.04.25 13:52, Petr Vaněk wrote:
+>>>>>> On Tue, Apr 29, 2025 at 08:56:03PM +0200, David Hildenbrand wrote:
+>>>>>>> On 29.04.25 20:33, Petr Vaněk wrote:
+>>>>>>>> On Tue, Apr 29, 2025 at 05:45:53PM +0200, David Hildenbrand wrote:
+>>>>>>>>> On 29.04.25 16:52, David Hildenbrand wrote:
+>>>>>>>>>> On 29.04.25 16:45, Petr Vaněk wrote:
+>>>>>>>>>>> On Tue, Apr 29, 2025 at 04:29:30PM +0200, David Hildenbrand wrote:
+>>>>>>>>>>>> On 29.04.25 16:22, Petr Vaněk wrote:
+>>>>>>>>>>>>> folio_pte_batch() could overcount the number of contiguous PTEs when
+>>>>>>>>>>>>> pte_advance_pfn() returns a zero-valued PTE and the following PTE in
+>>>>>>>>>>>>> memory also happens to be zero. The loop doesn't break in such a case
+>>>>>>>>>>>>> because pte_same() returns true, and the batch size is advanced by one
+>>>>>>>>>>>>> more than it should be.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> To fix this, bail out early if a non-present PTE is encountered,
+>>>>>>>>>>>>> preventing the invalid comparison.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> This issue started to appear after commit 10ebac4f95e7 ("mm/memory:
+>>>>>>>>>>>>> optimize unmap/zap with PTE-mapped THP") and was discovered via git
+>>>>>>>>>>>>> bisect.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Fixes: 10ebac4f95e7 ("mm/memory: optimize unmap/zap with PTE-mapped THP")
+>>>>>>>>>>>>> Cc: stable@vger.kernel.org
+>>>>>>>>>>>>> Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
+>>>>>>>>>>>>> ---
+>>>>>>>>>>>>>          mm/internal.h | 2 ++
+>>>>>>>>>>>>>          1 file changed, 2 insertions(+)
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> diff --git a/mm/internal.h b/mm/internal.h
+>>>>>>>>>>>>> index e9695baa5922..c181fe2bac9d 100644
+>>>>>>>>>>>>> --- a/mm/internal.h
+>>>>>>>>>>>>> +++ b/mm/internal.h
+>>>>>>>>>>>>> @@ -279,6 +279,8 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
+>>>>>>>>>>>>>          			dirty = !!pte_dirty(pte);
+>>>>>>>>>>>>>          		pte = __pte_batch_clear_ignored(pte, flags);
+>>>>>>>>>>>>>          
+>>>>>>>>>>>>> +		if (!pte_present(pte))
+>>>>>>>>>>>>> +			break;
+>>>>>>>>>>>>>          		if (!pte_same(pte, expected_pte))
+>>>>>>>>>>>>>          			break;
+>>>>>>>>>>>>
+>>>>>>>>>>>> How could pte_same() suddenly match on a present and non-present PTE.
+>>>>>>>>>>>
+>>>>>>>>>>> In the problematic case pte.pte == 0 and expected_pte.pte == 0 as well.
+>>>>>>>>>>> pte_same() returns a.pte == b.pte -> 0 == 0. Both are non-present PTEs.
+>>>>>>>>>>
+>>>>>>>>>> Observe that folio_pte_batch() was called *with a present pte*.
+>>>>>>>>>>
+>>>>>>>>>> do_zap_pte_range()
+>>>>>>>>>> 	if (pte_present(ptent))
+>>>>>>>>>> 		zap_present_ptes()
+>>>>>>>>>> 			folio_pte_batch()
+>>>>>>>>>>
+>>>>>>>>>> How can we end up with an expected_pte that is !present, if it is based
+>>>>>>>>>> on the provided pte that *is present* and we only used pte_advance_pfn()
+>>>>>>>>>> to advance the pfn?
+>>>>>>>>>
+>>>>>>>>> I've been staring at the code for too long and don't see the issue.
+>>>>>>>>>
+>>>>>>>>> We even have
+>>>>>>>>>
+>>>>>>>>> VM_WARN_ON_FOLIO(!pte_present(pte), folio);
+>>>>>>>>>
+>>>>>>>>> So the initial pteval we got is present.
+>>>>>>>>>
+>>>>>>>>> I don't see how
+>>>>>>>>>
+>>>>>>>>> 	nr = pte_batch_hint(start_ptep, pte);
+>>>>>>>>> 	expected_pte = __pte_batch_clear_ignored(pte_advance_pfn(pte, nr), flags);
+>>>>>>>>>
+>>>>>>>>> would suddenly result in !pte_present(expected_pte).
+>>>>>>>>
+>>>>>>>> The issue is not happening in __pte_batch_clear_ignored but later in
+>>>>>>>> following line:
+>>>>>>>>
+>>>>>>>>        expected_pte = pte_advance_pfn(expected_pte, nr);
+>>>>>>>>
+>>>>>>>> The issue seems to be in __pte function which converts PTE value to
+>>>>>>>> pte_t in pte_advance_pfn, because warnings disappears when I change the
+>>>>>>>> line to
+>>>>>>>>
+>>>>>>>>        expected_pte = (pte_t){ .pte = pte_val(expected_pte) + (nr << PFN_PTE_SHIFT) };
+>>>>>>>>
+>>>>>>>> The kernel probably uses __pte function from
+>>>>>>>> arch/x86/include/asm/paravirt.h because it is configured with
+>>>>>>>> CONFIG_PARAVIRT=y:
+>>>>>>>>
+>>>>>>>>        static inline pte_t __pte(pteval_t val)
+>>>>>>>>        {
+>>>>>>>>        	return (pte_t) { PVOP_ALT_CALLEE1(pteval_t, mmu.make_pte, val,
+>>>>>>>>        					  "mov %%rdi, %%rax", ALT_NOT_XEN) };
+>>>>>>>>        }
+>>>>>>>>
+>>>>>>>> I guess it might cause this weird magic, but I need more time to
+>>>>>>>> understand what it does :)
+>>>>>>
+>>>>>> I understand it slightly more. __pte() uses xen_make_pte(), which calls
+>>>>>> pte_pfn_to_mfn(), however, mfn for this pfn contains INVALID_P2M_ENTRY
+>>>>>> value, therefore the pte_pfn_to_mfn() returns 0, see [1].
+>>>>>>
+>>>>>> I guess that the mfn was invalidated by xen-balloon driver?
+>>>>>>
+>>>>>> [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/x86/xen/mmu_pv.c?h=v6.15-rc4#n408
+>>>>>>
+>>>>>>> What XEN does with basic primitives that convert between pteval and
+>>>>>>> pte_t is beyond horrible.
+>>>>>>>
+>>>>>>> How come set_ptes() that uses pte_next_pfn()->pte_advance_pfn() does not
+>>>>>>> run into this?
+>>>>>>
+>>>>>> I don't know, but I guess it is somehow related to pfn->mfn translation.
+>>>>>>
+>>>>>>> Is it only a problem if we exceed a certain pfn?
+>>>>>>
+>>>>>> No, it is a problem if the corresponding mft to given pfn is invalid.
+>>>>>>
+>>>>>> I am not sure if my original patch is a good fix.
+>>>>>
+>>>>> No :)
+>>>>>
+>>>>> Maybe it would be
+>>>>>> better to have some sort of native_pte_advance_pfn() which will use
+>>>>>> native_make_pte() rather than __pte(). Or do you think the issue is in
+>>>>>> Xen part?
+>>>>>
+>>>>> I think what's happening is that -- under XEN only -- we might get garbage when
+>>>>> calling pte_advance_pfn() and the next PFN would no longer fall into the folio. And
+>>>>> the current code cannot deal with that XEN garbage.
+>>>>>
+>>>>> But still not 100% sure.
+>>>>>
+>>>>> The following is completely untested, could you give that a try?
+>>>>
+>>>> Yes, it solves the issue for me.
+>>>
+>>> Cool!
+>>>
+>>>>
+>>>> However, maybe it would be better to solve it with the following patch.
+>>>> The pte_pfn_to_mfn() actually returns the same value for non-present
+>>>> PTEs. I suggest to return original PTE if the mfn is INVALID_P2M_ENTRY,
+>>>> rather than empty non-present PTE, but the _PAGE_PRESENT bit will be set
+>>>> to zero. Thus, we will not loose information about original pfn but it
+>>>> will be clear that the page is not present.
+>>>>
+>>>>    From e84781f9ec4fb7275d5e7629cf7e222466caf759 Mon Sep 17 00:00:00 2001
+>>>> From: =?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>
+>>>> Date: Wed, 30 Apr 2025 17:08:41 +0200
+>>>> Subject: [PATCH] x86/mm: Reset pte _PAGE_PRESENT bit for invalid mft
+>>>> MIME-Version: 1.0
+>>>> Content-Type: text/plain; charset=UTF-8
+>>>> Content-Transfer-Encoding: 8bit
+>>>>
+>>>> Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
+>>>> ---
+>>>>     arch/x86/xen/mmu_pv.c | 9 +++------
+>>>>     1 file changed, 3 insertions(+), 6 deletions(-)
+>>>>
+>>>> diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
+>>>> index 38971c6dcd4b..92a6a9af0c65 100644
+>>>> --- a/arch/x86/xen/mmu_pv.c
+>>>> +++ b/arch/x86/xen/mmu_pv.c
+>>>> @@ -392,28 +392,25 @@ static pteval_t pte_mfn_to_pfn(pteval_t val)
+>>>>     static pteval_t pte_pfn_to_mfn(pteval_t val)
+>>>>     {
+>>>>     	if (val & _PAGE_PRESENT) {
+>>>>     		unsigned long pfn = (val & PTE_PFN_MASK) >> PAGE_SHIFT;
+>>>>     		pteval_t flags = val & PTE_FLAGS_MASK;
+>>>>     		unsigned long mfn;
+>>>>     
+>>>>     		mfn = __pfn_to_mfn(pfn);
+>>>>     
+>>>>     		/*
+>>>> -		 * If there's no mfn for the pfn, then just create an
+>>>> -		 * empty non-present pte.  Unfortunately this loses
+>>>> -		 * information about the original pfn, so
+>>>> -		 * pte_mfn_to_pfn is asymmetric.
+>>>> +		 * If there's no mfn for the pfn, then just reset present pte bit.
+>>>>     		 */
+>>>>     		if (unlikely(mfn == INVALID_P2M_ENTRY)) {
+>>>> -			mfn = 0;
+>>>> -			flags = 0;
+>>>> +			mfn = pfn;
+>>>> +			flags &= ~_PAGE_PRESENT;
+>>>>     		} else
+>>>>     			mfn &= ~(FOREIGN_FRAME_BIT | IDENTITY_FRAME_BIT);
+>>>>     		val = ((pteval_t)mfn << PAGE_SHIFT) | flags;
+>>>>     	}
+>>>>     
+>>>>     	return val;
+>>>>     }
+>>>>     
+>>>>     __visible pteval_t xen_pte_val(pte_t pte)
+>>>>     {
+>>>
+>>> That might do as well.
+>>>
+>>>
+>>> I assume the following would also work? (removing the early ==1 check)
+>>
+>> Yes, it also works in my case and the removal makes sense to me.
+>>
+>>> It has the general benefit of removing the pte_pfn() call from the
+>>> loop body, which is why I like that fix. (almost looks like a cleanup)
+>>
+>> Indeed, it looks like a cleanup to me as well :)
+> 
+> Okay, let me polish the patch up and send it out later.
 
-This can result in warnings such as:
+Actually, can you polish it up and send it out? I think we need a better 
+description on how exactly that problems happens, in particular 
+involving pte_none(). So stuff from the cover letter should probably be 
+living in here.
 
-[  250.155624] WARNING: CPU: 1 PID: 7326 at drivers/regulator/core.c:3004
-_regulator_disable+0xe4/0x1a0
-[  250.155652] unbalanced disables for VIN_SYS_5V0
+Feel free to add my
 
-To fix this, we move the regulator control logic into
-tegra186_xusb_padctl_id_override() function since it's directly related
-to the ID override state. The regulator is now only disabled when the role
-transitions from USB_ROLE_HOST to USB_ROLE_NONE, by checking the VBUS_ID
-register. This ensures that regulator enable/disable operations are
-properly balanced and only occur when actually transitioning to/from host
-mode.
+Co-developed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Fixes: 49d46e3c7e59 ("phy: tegra: xusb: Add set_mode support for UTMI phy on Tegra186")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
----
- drivers/phy/tegra/xusb-tegra186.c | 59 +++++++++++++++++++------------
- 1 file changed, 37 insertions(+), 22 deletions(-)
+and stay first author.
 
-diff --git a/drivers/phy/tegra/xusb-tegra186.c b/drivers/phy/tegra/xusb-tegra186.c
-index fae6242aa730..1b35d50821f7 100644
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -774,13 +774,15 @@ static int tegra186_xusb_padctl_vbus_override(struct tegra_xusb_padctl *padctl,
- }
- 
- static int tegra186_xusb_padctl_id_override(struct tegra_xusb_padctl *padctl,
--					    bool status)
-+					    struct tegra_xusb_usb2_port *port, bool status)
- {
--	u32 value;
-+	u32 value, id_override;
-+	int err = 0;
- 
- 	dev_dbg(padctl->dev, "%s id override\n", status ? "set" : "clear");
- 
- 	value = padctl_readl(padctl, USB2_VBUS_ID);
-+	id_override = value & ID_OVERRIDE(~0);
- 
- 	if (status) {
- 		if (value & VBUS_OVERRIDE) {
-@@ -791,15 +793,35 @@ static int tegra186_xusb_padctl_id_override(struct tegra_xusb_padctl *padctl,
- 			value = padctl_readl(padctl, USB2_VBUS_ID);
- 		}
- 
--		value &= ~ID_OVERRIDE(~0);
--		value |= ID_OVERRIDE_GROUNDED;
-+		if (id_override != ID_OVERRIDE_GROUNDED) {
-+			value &= ~ID_OVERRIDE(~0);
-+			value |= ID_OVERRIDE_GROUNDED;
-+			padctl_writel(padctl, value, USB2_VBUS_ID);
-+
-+			err = regulator_enable(port->supply);
-+			if (err) {
-+				dev_err(padctl->dev, "Failed to enable regulator: %d\n", err);
-+				return err;
-+			}
-+		}
- 	} else {
--		value &= ~ID_OVERRIDE(~0);
--		value |= ID_OVERRIDE_FLOATING;
-+		if (id_override == ID_OVERRIDE_GROUNDED) {
-+			/*
-+			 * The regulator is disabled only when the role transitions
-+			 * from USB_ROLE_HOST to USB_ROLE_NONE.
-+			 */
-+			err = regulator_disable(port->supply);
-+			if (err) {
-+				dev_err(padctl->dev, "Failed to disable regulator: %d\n", err);
-+				return err;
-+			}
-+
-+			value &= ~ID_OVERRIDE(~0);
-+			value |= ID_OVERRIDE_FLOATING;
-+			padctl_writel(padctl, value, USB2_VBUS_ID);
-+		}
- 	}
- 
--	padctl_writel(padctl, value, USB2_VBUS_ID);
--
- 	return 0;
- }
- 
-@@ -818,27 +840,20 @@ static int tegra186_utmi_phy_set_mode(struct phy *phy, enum phy_mode mode,
- 
- 	if (mode == PHY_MODE_USB_OTG) {
- 		if (submode == USB_ROLE_HOST) {
--			tegra186_xusb_padctl_id_override(padctl, true);
--
--			err = regulator_enable(port->supply);
-+			err = tegra186_xusb_padctl_id_override(padctl, port, true);
-+			if (err)
-+				goto out;
- 		} else if (submode == USB_ROLE_DEVICE) {
- 			tegra186_xusb_padctl_vbus_override(padctl, true);
- 		} else if (submode == USB_ROLE_NONE) {
--			/*
--			 * When port is peripheral only or role transitions to
--			 * USB_ROLE_NONE from USB_ROLE_DEVICE, regulator is not
--			 * enabled.
--			 */
--			if (regulator_is_enabled(port->supply))
--				regulator_disable(port->supply);
--
--			tegra186_xusb_padctl_id_override(padctl, false);
-+			err = tegra186_xusb_padctl_id_override(padctl, port, false);
-+			if (err)
-+				goto out;
- 			tegra186_xusb_padctl_vbus_override(padctl, false);
- 		}
- 	}
--
-+out:
- 	mutex_unlock(&padctl->lock);
--
- 	return err;
- }
- 
+Thanks!
+
 -- 
-2.25.1
+Cheers,
+
+David / dhildenb
 
 
