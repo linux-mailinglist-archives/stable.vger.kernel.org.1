@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-139431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC5DAA69EE
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 06:54:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F3DAA6A37
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 07:34:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F7641BC2773
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 04:54:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3603C3B33DA
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 05:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096071A4F3C;
-	Fri,  2 May 2025 04:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7861E1B041E;
+	Fri,  2 May 2025 05:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzHF4wfW"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="qDrtAhNs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3191A239D
-	for <stable@vger.kernel.org>; Fri,  2 May 2025 04:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E242F2F
+	for <stable@vger.kernel.org>; Fri,  2 May 2025 05:34:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746161674; cv=none; b=s2MmLJsY3bngQ8j3JxGLJpwWDOZOKlr57Oxtz4tY+m2vGf0+n2CLCOpeunwNPqWmxe6ZKP8+eaQ89razJL89JSYV9/v0pbd/89ImycZyPJ6CfOJ5sru6VHlK1oXZfi47SfA2yOVNWRgBJzEGH4tcKouMPec0kXCLPEh6UzdtIiI=
+	t=1746164079; cv=none; b=q0fsuKy5B9HB26pRuzAvit6rAqiVBXE8RSQ6mnWRjMPv7bWfFLtsDtHZFH+tg4R9b3uYpZWndt99c5nS110sO8mQrryqhwVMpCQGdQw+rGWp06SQdnwGzzCXEV3v/kupQMAvodw3/XldUgpYalj03GbrhMw5M9vdoNTgFZ1n5nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746161674; c=relaxed/simple;
-	bh=U8MCDGLeLIWXPklvwj16NOg6iZMVTcu6zSXsprGLL4w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=khGJRwK3xxY2kZPTQ28Pc6iDiDCEvzjnzWsL/X8uOsDbMGyYZma3ShzVNQrOrdyJpSsRBJsLAQ64wS4uFNtV+G+l/kFjQlw/RqfJPbqJDwPxEed8BuHKaikO7HlX0hA926Zcr/ljea4RbrTNKyCUpQP6gZTc9tXWhd9mZeNQXLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzHF4wfW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CBEC4CEE4;
-	Fri,  2 May 2025 04:54:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746161673;
-	bh=U8MCDGLeLIWXPklvwj16NOg6iZMVTcu6zSXsprGLL4w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nzHF4wfWCe8P51N8diVvhxnaw1KFtvgVZHoF7CUFNYq1FJjesxbkvJbStrgEtL/ly
-	 k4itbFGSnMQKG/jEucfNiQWyZljqBFSwlC5xkIcgqX23F4M7glOmaFgE0sZ/2w0w8C
-	 obp6Xlbi36J7AWJhwfTY5JJ+qgwhRJs/4vKaq8Yw=
-Date: Fri, 2 May 2025 06:54:30 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: stable@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>,
-	Stefano Garzarella <sgarzare@redhat.com>
-Subject: Re: Please backport 980a573621ea to 6.12, 6.14
-Message-ID: <2025050202-diving-palatable-b44c@gregkh>
-References: <CAAH4kHb8OUZKh6Dbkt4BEN6w927NjKrj60CSjjg_ayqq0nDdhA@mail.gmail.com>
- <2025050151-recharger-cavity-b628@gregkh>
- <CAAH4kHY7sccAgtoouC4wFEbp4beKJ-pMD2SxW_jVrVpg5FexVw@mail.gmail.com>
+	s=arc-20240116; t=1746164079; c=relaxed/simple;
+	bh=QsTRzg9J/cNlzWCksgM2zZySuLFsON2cAv39/UOg6Wg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nS/GJ5mxpejOgc98AuTx2f/85dK46K5nFIg94EPJ1xAOCTU+Dr5CbbI4qYIN0fMK3aOYoyctUIh2C75Io/CBdWclE0dDo3DjBpdmkkhVoNmK+X8962cVPepb5DHEIxUNOkCvCFwUEcymUHkfDjJkXpuTxKydmWsPlccCBbwx+Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=qDrtAhNs; arc=none smtp.client-ip=188.165.51.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
+	s=protonmail; t=1746164066; x=1746423266;
+	bh=F2EV4NpgMO3XEIjtI6UIlbXoZzYff7V8oDByN+S8dsM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=qDrtAhNskV6vKhFAwyz/ka7zra7vrr+HwN7+y9imUl0XJmliQfdgl4t0QtoM/WL9E
+	 giGeXkM7PolJUGu1aMqfj7/f+fjWY+giHSgsEjI/APcLha7KEhzhGGSQmQ9mvyGP5w
+	 j+q4vn0GlnkQIqXHptB3OMiGtxOhEKNtKawS4UQ1paETj9k2CLHyIv5bJHrJ7XSG9b
+	 E/inc0OKBaHuRiwjIKJNv2CWyuOGYEK8V84E8xEgabVBkEaODPFh3cu3ay3/GTeTl/
+	 GB9Tp/CqJGU94K4jG5G+o+uXBzHITE+XZIBvqrvvaydggwS8yhSOS6P0bHdi9hOjjA
+	 YqL248HysLHqg==
+Date: Fri, 02 May 2025 05:34:23 +0000
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+From: Sean Nyekjaer <sean@geanix.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Andy Shevchenko <andy.shevchenko@gmail.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: fxls8962af: Fix temperature calculation
+Message-ID: <4i3cracjtbjc5qjfa27d6mytoy27hiaduaftwmpr3zuyipc6jq@mwou3lp6pmue>
+In-Reply-To: <aBPH2dHgwI_4lHvj@debian-BULLSEYE-live-builder-AMD64>
+References: <20250501-fxls-v1-1-f54061a07099@geanix.com> <aBPH2dHgwI_4lHvj@debian-BULLSEYE-live-builder-AMD64>
+Feedback-ID: 134068486:user:proton
+X-Pm-Message-ID: b5e8b5afb38de9c9db92554951abebc548b63add
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,31 +60,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAH4kHY7sccAgtoouC4wFEbp4beKJ-pMD2SxW_jVrVpg5FexVw@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 01, 2025 at 01:06:34PM -0700, Dionna Amalie Glaze wrote:
-> On Thu, May 1, 2025 at 11:04 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+Hi Marcelo,
+
+On Thu, May 01, 2025 at 04:13:29PM +0100, Marcelo Schmitt wrote:
+> Hello Sean,
+>=20
+> Overall, this looks good to me.
+> Only thing I think need to (not) change is the offset (see comment below)=
+.
+>=20
+> Regards,
+> Marcelo
+>=20
+> On 05/01, Sean Nyekjaer wrote:
+> > According to spec temperature should be returned in milli degrees Celsi=
+us.
+> > Add in_temp_scale to calculate from Celsius to milli Celsius.
 > >
-> > On Thu, May 01, 2025 at 09:48:59AM -0700, Dionna Amalie Glaze wrote:
-> > > 980a573621ea ("tpm: Make chip->{status,cancel,req_canceled} opt")
-> > >
-> > > This is a dependent commit for the series of patches to add the AMD
-> > > SEV-SNP SVSM vTPM device driver. Kernel 6.11 added SVSM support, but
-> > > not support for the critical component for boot integrity that follows
-> > > the SEV-SNP threat model. That series
-> > > https://lore.kernel.org/all/20250410135118.133240-1-sgarzare@redhat.com/
-> > > is applied at tip but is not yet in the mainline.
+> > Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF=
+ accelerometers")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> > ---
+> >  drivers/iio/accel/fxls8962af-core.c | 17 ++++++++++++++---
+> ...
 > >
-> > How does this fix a bug in these stable branches now?
-> 
-> I find that the inability to use the main purpose of SVSM support for
-> trusted boot integrity is a security bug according to the SEV-SNP
-> threat model.
+> >  /* Raw temp channel offset */
+> > -#define FXLS8962AF_TEMP_CENTER_VAL=09=0925
+> > +#define FXLS8962AF_TEMP_CENTER_VAL=09=0925000
+> I think the offset was correct the way it was before.
+> For example, if the sensor at 37=C2=B0C, the output code will be 0b000011=
+00, 12 (decimal).
+> Then (_raw + _offset) * _scale =3D (12 + 25) * 1000 =3D 37000 milli =
+=C2=B0C
 
-That is a new feature, sorry.  Just use new kernel versions if you wish
-to have this.
+Yes you are right. Just checked the documentation.
+"If known for a device, offset to be added to <type>[Y]_raw prior to
+scaling by <type>[Y]_scale"
 
-greg k-h
+>=20
+> > +/* Raw temp channel scale */
+> > +#define FXLS8962AF_TEMP_SCALE=09=09=091000
+> >
+> ...
+> > @@ -736,6 +746,7 @@ static const struct iio_event_spec fxls8962af_event=
+[] =3D {
+> >  =09.type =3D IIO_TEMP, \
+> >  =09.address =3D FXLS8962AF_TEMP_OUT, \
+> >  =09.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) | \
+> > +=09=09=09      BIT(IIO_CHAN_INFO_SCALE) | \
+> >  =09=09=09      BIT(IIO_CHAN_INFO_OFFSET),\
+> >  =09.scan_index =3D -1, \
+> >  =09.scan_type =3D { \
+> Datasheet page 39 says 'the TEMP_OUT register contains the 8-bit, 2's com=
+plement
+> temperature value.'
+> So I think we can make the temperature scan element signed.
+> =09=09.sign =3D 's',=09\
+>=20
+> Though, I guess that would be a thing for a separate patch.
+
+Good catch will do some testing :)
+
+Thanks
+/Sean
+
 
