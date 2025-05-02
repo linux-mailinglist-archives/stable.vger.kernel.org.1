@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-139474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56225AA71F6
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 14:34:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31AD4AA7243
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 14:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 449704C557C
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 12:33:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03DD31BC26A9
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 12:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4827C242D65;
-	Fri,  2 May 2025 12:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37221253B7B;
+	Fri,  2 May 2025 12:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eey53Ler"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kCAX5DcH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AA7246794;
-	Fri,  2 May 2025 12:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442A9246794
+	for <stable@vger.kernel.org>; Fri,  2 May 2025 12:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746189210; cv=none; b=ZysRObp5f0s1FNmVhpFpVIsCHVfixcjFMKa2NaOfCwsuAiIgg6loZ5jgmNsQKGTm6YVJEXKKJ1OcWcIy8ZWqETXoMyE11Xar8UVh4Tx0bvB5UUaiIQT3JuomPZRm5+PKS06ApGBfCoLdwTms7Yko2+/X3+7GkV0bCuOf1taPerg=
+	t=1746189620; cv=none; b=DXR2jdork0PvfdZoSHzKEzP+CCP1dMArXz0euOEUVSHVbsOr3pzIA58obKfQGxAZuGw4SppkQNSLFPQLceYrJjN5vbZj1GcJ9iV/opP/hKGTId7OFgJC/XL9GrhsmYGwEFMzJ7PYOKZ+UNxu8WNgZJRH78h/86AKAKX9L/5stIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746189210; c=relaxed/simple;
-	bh=z6z8DOFK9JCqv0xb1jgf68DObLMsaturhjSGbJ1U/rk=;
+	s=arc-20240116; t=1746189620; c=relaxed/simple;
+	bh=kXHh4bekX0rbt5Td7HC5fwo2DH3JDp731V0c2xbEl1A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kpA/nkLwkPtcxSoNIL2w7IcMVxB/BTfDTIoazdH3BS3qHqzs06IRmv2E3m7C7tLi9yOn/8iu7W62WgHRvNvD/IXSq4RDOIy1qAlGUOrHSIq+ISdjL/FfwVq37LARmH1uCQ9KWtTfyPYMa++LHQ13YRKKhiTYw3suliVXEwbEH0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eey53Ler; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-30332dfc820so2403483a91.2;
-        Fri, 02 May 2025 05:33:28 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=p0yrJAklRxmbLM7ZMu31C3t+zJLTDO83uXkavJLy5L3WnAqACQsDpPK4ZSQxbN/rnDXEmwtyS20Dw1TBJ2039pOEw01ycTp7UmZR/Vk2GpOlQsv+D+Ax7PiJ/5jXyqgUIrx+IpXqjPqhfXwIV5unL5yckXrEJP0w3f0n7Uw+45M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kCAX5DcH; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-39ee623fe64so1912778f8f.1
+        for <stable@vger.kernel.org>; Fri, 02 May 2025 05:40:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746189208; x=1746794008; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=8LFbdO81pjLbU3iMuNN+ugtfZ7paGqSVKOTIGx3Lamw=;
-        b=Eey53LerByZlVWMrZqdf7cDNnOnaNxUXWyS1npovmo6K5d5hwrszCeD5k6uOIGbt4N
-         p3yfQUu96sPZ88SpI7mRRVppGe84elX75Ujnt3v+shJ5KDyLdCECfRYLE+y+aru4P75q
-         NsX1q639oNF5pouayzj4ejaGsRw16WD1fDgHGKppJxEG667hKWZWFr3QlVv2CYqgEyvG
-         l1c6b31ujG2A3Lr6d0J8T+fHJZ6izhMhHivtTBfDx9I8Z9sTJAO5KB53NMs6FtTruICA
-         zLXPs1dJsEMoexNJJSxBRM6WjEplpQ3UD4BEPdxYSZM6yA8VM2fzYVLiXbh47WM0HpzG
-         WyQg==
+        d=linaro.org; s=google; t=1746189615; x=1746794415; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hO4jrfvcXwDOgHznp3vJRhe4wcy5ANNCwq/KWVr/OIk=;
+        b=kCAX5DcH8ZLfwkB7SEtsP3nRJOWEfcU6DzqLGmsKGTjRwHx+ez97kSmPfnCtG96A5x
+         HnVzISr+thTYQnMpIj0EFPl/qu3u+SryIrlh7TnwKZ4DGeYu9gi/t4WJ4AXj2eJCBcrG
+         W2MXeOGFqRF1iWripW8pAezAbQ86PVQH+PBFCE013Sfd8q8IVy5dXXGzimw5RX6knWrS
+         jTZ2dPqLS//ppa1NKZDZXKvKWCy8hOT+hvMd30QbqN6+/pqhYcRiknYTBJH5JTfEfdd0
+         C1xVYgqw+yr3E/JuUZj3JpUVXE8FaW/DhoauZQLXQEVUWzb/3YSGMmwdKN9wIUfoEnnt
+         oKAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746189208; x=1746794008;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8LFbdO81pjLbU3iMuNN+ugtfZ7paGqSVKOTIGx3Lamw=;
-        b=C8P1FuFTvwQXjGpdW/qsftv2ca19c+ehOFtgj7y2JlefQ4GmZFWLW9WN+Jro1zkTjp
-         jGW6hAaXtENLP8VFucNngbgbbr9OH+Mu2F1W3PwqEHFLT1CT2ehqo78LDg79x2z0C/rd
-         Kb8/e1kSmztERYjjIrw39AsIxSdJGrR1rsrp74Mxf/jnHzDql1lZb0LSUwZBLm1D53T5
-         5CszWYjviG/BmtxwyAeMZso3XHuDeLQYjkLmH2NyuqbzH5NF7u3PC4tpWs2E8mUILLN3
-         6w+tWji/Ij6tNFOBYsGLMvoxyEVUOosYnyQl9Jr5ozv4jqt7dm6CP9fkYSUK6+oHs4KB
-         h3HQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVRmNX/4yd7aCk/BpkaOBbkRbSTynoxe61fNT6fJXKKL/jktSjXxhMNJYITNWkYtqrhObrxKlfUnI8YNN4=@vger.kernel.org, AJvYcCXsfaYMfP0kcvhXZrKrqs0Gtd7hLgyxXWAw753XO4JXmKW5TUcqjQunLNclLZ5H7TYEKgzStkE4@vger.kernel.org
-X-Gm-Message-State: AOJu0YxR+RVVtxyf8XXiOSyXfLz5x/BMwQ28j4iybupIUBuoG81yzAJg
-	LgS2SdNa9DrzFE10KU5klzuJFzWA6pXpZY74TmzA70TZ8FO0tcKW
-X-Gm-Gg: ASbGnctsGmUHFMV8kMGCzXEO4onFOeLzrZ8hPsRsnQKLC5Z4u+/ARajsADZNdlwKwic
-	F/XBhSuAOehnd1vTFqdGeNWrU0txJAdaIGy13S9010wVeWbPEL2XITd/ikkwayVsdN5mRGchjag
-	1fBn0AFUTQtt3ScfXc0UzTG59gciy2kDH+VAVidz/vh4oGR0tS1vuT1CmioljNTu4gSKJkrrMAk
-	J5s0+VcRfgCVpbvHpH5LR0Ydi/M6nMB71WGciZU0G5zG8urCeJBVxYGIxFCGPiUsOCtIV9YUCLb
-	/doEdh3Q8JyBzJPb2KmHvsJUFIIdiMqa36+rYfHm5R2R+YNYAOgir+MnBETJvGEhA/Q=
-X-Google-Smtp-Source: AGHT+IES1oMpEpa2nbuC/A86IqMpoOcTS4u6tbnudaz9Gj5lBssrqoVHSSuYEIPZqrNZJrdwxL2KZg==
-X-Received: by 2002:a17:90b:37c8:b0:309:be48:a77c with SMTP id 98e67ed59e1d1-30a4e5c6388mr5128351a91.18.1746189207654;
-        Fri, 02 May 2025 05:33:27 -0700 (PDT)
-Received: from [192.168.0.24] (home.mimichou.net. [82.67.5.108])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e151ea71csm5934345ad.101.2025.05.02.05.33.19
+        d=1e100.net; s=20230601; t=1746189615; x=1746794415;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hO4jrfvcXwDOgHznp3vJRhe4wcy5ANNCwq/KWVr/OIk=;
+        b=tp6eVwhqy2z45fCYHPyJ8Gwa1Isl9bJHQVdbCdyiYVV8NW49Hp24HQvko6hZ+Ey4x1
+         txyS6zLt413FBYv5Z7S8gy0Sb5Y7KaZSQUp7FISKZd+4vXNxukFpdZptZOtXsKUii4yb
+         RjWafQdpJH+Ac76GqIWAx5NpcmXeX8X0Ms29RPzTIX3ijO7ixvFFFvBbzanddsbjiUFo
+         aBRAL8LzF260kLpJETkmu6BBWlIgS9RwsVlOpTJM0QwGwTma01qQfdrL/dEgdrnmWOt8
+         KuS3oRyYvElMOE5QbFgLttpOzzbKSJNn8LS88Sz05y0VxAIa2RROVBWapJ8Vwq3jKFRa
+         d1nw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFO7Ts4xuKQlt6O3aVLqN2jqmXxiP5iJe+halw9Tq9b3SqARG3j2GtmiJaVv7RM/Wkb4Tjedk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDK/eV6AKcwOQIE90FDM63Mw0u0WfDYi33f/8Isu3eIImQJWEj
+	2YMoUGvG2/Rtjh+k537GAa8zXv3H/DKzkl6ciPAvAWfP1fyO9oRp2H+hStbLZLU=
+X-Gm-Gg: ASbGncsJK3SS9HeY5GPM5vnxgi/iXAAJXlkFMDzXTbwuD7N/N7IHj+6xKr8sB1AbUsW
+	pvQLABBk1vysizPk4jr8JEElDZH1tk5qX++V4W/bajXKKZe7h6/ZQ0iikE8pMDbRnQtGY7bEHrb
+	AHDnoBdkBw0CgRXUaKelicSPb0BS7QVGSK0K36fP6dpViK1P7regdqHpCnSofGZWxD7wkeYaafL
+	rnnL5QNiS8QlVryzrSVcZh3dhLTNxbMi29OQjqKbn7iYrkSQKQXQ1J2nBPM9uUemUicomzyiWg2
+	SLlEz2md1ETtLxeGw5GHnqUeN/8/fuLDiB2U+shJ8UyI43OhLDDzrHTB0Q12srS9mIOJQx2jncb
+	cmIWEpZtzGKBjSrdO
+X-Google-Smtp-Source: AGHT+IEOS82TsR2KY66VItn5wS/PhdQ5Z/iPWuns9/rZodNO7i5a6/Ht1tcfU7koaHBozYfd9ylhJQ==
+X-Received: by 2002:a05:6000:1a88:b0:3a0:7fc3:b1dc with SMTP id ffacd0b85a97d-3a099add333mr1924412f8f.32.1746189615520;
+        Fri, 02 May 2025 05:40:15 -0700 (PDT)
+Received: from [192.168.0.35] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099b107c4sm2043868f8f.76.2025.05.02.05.40.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 May 2025 05:33:27 -0700 (PDT)
-Message-ID: <8b15a1ca-fbda-4bc0-b6af-e543ee03f7f9@gmail.com>
-Date: Fri, 2 May 2025 14:33:17 +0200
+        Fri, 02 May 2025 05:40:15 -0700 (PDT)
+Message-ID: <bc9ba136-bd99-4c6c-be97-8915464cfb11@linaro.org>
+Date: Fri, 2 May 2025 13:40:13 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,80 +82,52 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/368] 5.15.181-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250501081459.064070563@linuxfoundation.org>
+Subject: Re: [PATCH v3 10/23] media: iris: Track flush responses to prevent
+ premature completion
+To: Dikshita Agarwal <quic_dikshita@quicinc.com>,
+ Vikash Garodia <quic_vgarodia@quicinc.com>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Stefan Schmidt <stefan.schmidt@linaro.org>, Hans Verkuil
+ <hverkuil@xs4all.nl>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+ linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ 20250417-topic-sm8x50-iris-v10-v7-0-f020cb1d0e98@linaro.org,
+ 20250424-qcs8300_iris-v5-0-f118f505c300@quicinc.com, stable@vger.kernel.org
+References: <20250502-qcom-iris-hevc-vp9-v3-0-552158a10a7d@quicinc.com>
+ <20250502-qcom-iris-hevc-vp9-v3-10-552158a10a7d@quicinc.com>
 Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <20250501081459.064070563@linuxfoundation.org>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <20250502-qcom-iris-hevc-vp9-v3-10-552158a10a7d@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
-
-On 5/1/2025 10:18 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.181 release.
-> There are 368 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 01/05/2025 20:13, Dikshita Agarwal wrote:
+> Currently, two types of flush commands are queued to the firmware,
+> the first flush queued as part of sequence change, does not wait for a
+> response, while the second flush queued as part of stop, expects a
+> completion response before proceeding further.
 > 
-> Responses should be made by Sat, 03 May 2025 08:13:53 +0000.
-> Anything received after that time might be too late.
+> Due to timing issue, the flush response corresponding to the first
+> command could arrive after the second flush is issued. This casuses the
+> driver to incorrectly assume that the second flush has completed,
+> leading to the premature signaling of flush_completion.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.181-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> To address this, introduce a counter to track the number of pending
+> flush responses and signal flush completion only when all expected
+> responses are received.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Is there no other way to correlate command/response than a counter on 
+the APSS side ?
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+Usually command/response protocols have some kind of identifier field or 
+sequence number embedded in the protocol headers.
 
+---
+bod
 
