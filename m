@@ -1,114 +1,107 @@
-Return-Path: <stable+bounces-139498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549F9AA74CA
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 16:20:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8940AAA7544
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 16:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA5874A7768
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 14:20:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92D0F1C03033
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 14:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69D1255F45;
-	Fri,  2 May 2025 14:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MeUdteli"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C7B256C99;
+	Fri,  2 May 2025 14:46:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B45143748;
-	Fri,  2 May 2025 14:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88359255F5A;
+	Fri,  2 May 2025 14:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746195623; cv=none; b=tuMfF6Vm/z7dNW3IlugVwWUHfFMOV/tR4y2hnbMvqe75CZJgMNyNZoMQgSjcUSI7/cN4zbioLogqylmm38DAOOyk2eyHya5hnVLsDheBzfe2xBLhsPyJLRdEuGwao7v8iLPV9FsJNs8qs9qWv9U7hSq6U37/c/13QhSWstjJccQ=
+	t=1746197203; cv=none; b=nsA1G0It+rH8ZB1Q6coTId3L1OYz9tgzVdpFqL+hHboMgC3iMB4gwbg7y8AnhoIoMBMW/KCCggUppesJlFtV0htDH0An1dWUxfAj6rOV6enQHQQOfss/jObQODXbVNN1tuRySv7ksls3yB+paDGgISwmT3hcNlnf0BCLN8kNGmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746195623; c=relaxed/simple;
-	bh=NLTkeMhO6WgrzXKTKcZReYDEkgITIo428vgJUhW3H3w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pRXGa0NIUknU9hrLgjOX1hXjfcghPhEbKWRybIRHnI8nAKxfRo+W13Oo2wd3VrJ4kQnV15FCtphnfoSun1s7JzMxb3eouRo2mH5nCyd6DXH8bTAoQ1+Z84B6BwDqOBoViKBqKbfXBfeNSSGfjIn+75GX6uEP3jCgHusqw4coYjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MeUdteli; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5f624291db6so3170526a12.3;
-        Fri, 02 May 2025 07:20:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746195620; x=1746800420; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wBznP7Tph1aOC1yEisDZHDyhhKPx2aYD7F3IZneam84=;
-        b=MeUdtelihIiW7jK6VQ3BdakNLhj6sU8tel9sLWhpI3857EnmYJpn4dXydND5xlLeRa
-         +kP4NiiZkg3Rz16Vz421DR+Q0zc/FdAO90KYTy0iWpV09wE8w5AfpfZacmD7/hCk42Tk
-         p3PAtbJkckGunbJUNjKIBcVyo8WlkwNsP9H6LP/09YrKOAPE0H9VXlU4inqROm55MkJK
-         oOARoVQ/PzDvIKy399JiHNyCQ++CALEjoa7kAs6Iks1gQ4rs70gNk47zVxqyA2ae/N84
-         ZTEr6dQS5srIBNmUOkC7s6/HZ/vWwXvezEhJ/Dj7zVghi6Ao9Ct7KM/WcX7hgmgBakh1
-         xU7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746195620; x=1746800420;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wBznP7Tph1aOC1yEisDZHDyhhKPx2aYD7F3IZneam84=;
-        b=TmPlP3qFqDIjFM+GuM/exCPnXopIhVFWSZexvfcCgpPW4FW7nL21e5nIqMhT6x2iso
-         Q12Hxg3gttQPvapdZv2OA0eduRQr0inmgx0UVt0iRj9Fha/R/9hm09x8QYbOvwfSDR1f
-         RwUB3n+RdWnAhr5XfWf1LjeJY9olsByxix+FGJqWQu2c0XXb4Z7+A3uCVCnDG8wBOOzS
-         ZyQlMWrgkdadhhfAPY1j9fbQeQLunfZnq3/mJlbHWSBjVRJuvWTLviuzKQVEhzRJ1RG2
-         87xr4NRO1f0t71RZUsO20ioPglJTlGo4TJQlIXBw07WdVhwcKIppC/1yxYiUK+PWa3Q5
-         ts+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVzQoTuIWtgqjnAwLcIMC0iWAHwufPOvreWU7gjRGpFT+UaW7IeM1DL+xdof+eYIuljKXt9iXpy@vger.kernel.org, AJvYcCWqcKa60nIkPURyWRjbcFeoBRA4uVYFN8pQKAZNU1qZOVxF2Ex5SzLkx4dv41vKJMYcxPpW+HLUtTx0o3Fr@vger.kernel.org, AJvYcCXEURAoypEwIueIUZtd7SKXzbm3mE1F6yybOBWoobSSadQBXRSkL/5MUaH7VUlxvvXM4kGj0bE+ILs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyki6MklKWS7sGKpxHdHsTHg3/yHGCoyWH2Es/ipQKDVHLHVZ6P
-	16veIO3BSm+unfMc2QKWAdJa1XyIgfUGQ8BzX4GVEiWeLnYJDSjNMAClPEmXMb0J6CbGno9OorC
-	tEqlvPx7Jdv+nXzHzxo34dGvhGAk=
-X-Gm-Gg: ASbGncuH1p5s2avuxpNgWMAU3Hj1dHyFcmnzg7W3PhFTKkgajeJOAJ1UxObNoIo55aR
-	kVxvlhXpuc2PIfT377p/JtGQNXLisFG2lo8eS8uQEE7ni4aIuGJkiMDGv1/u5IVa1uFm2lTUqqg
-	65sXD261dntznkNamA9LnbN6XILe1SiFWonOI=
-X-Google-Smtp-Source: AGHT+IEAkf/ycDiCWbKsOewklCTFld17bWKR1rodMGQzWYFUzODaDjr9UBc8HhNg5y6jON0Cog/ToOy92KeDQSJOsis=
-X-Received: by 2002:a17:907:9904:b0:ac6:f6e2:7703 with SMTP id
- a640c23a62f3a-ad17ad3aac1mr225617766b.8.1746195619944; Fri, 02 May 2025
- 07:20:19 -0700 (PDT)
+	s=arc-20240116; t=1746197203; c=relaxed/simple;
+	bh=UuuKgeE+zprAuA6fZuA79Fi7jQ7fBKhV8Bq5rjoWyvw=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=HdudS1jWJeBge0LkIADTbvhj6NjXjLxMbKwAnsOl/yusUFMbmebQWy3TTI5zseZkMYIBBmVOY01PVc92qQ+aZO5FJx6fgk/023rQs48zmkQvAu4EJmpx7xgp3aqIPpehy9rs081VT+Ju8t8qguL4rEEmvUaOifHNuCPNthIPfk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332CEC4CEF5;
+	Fri,  2 May 2025 14:46:43 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.98.2)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1uArf9-000000032vy-3Hmf;
+	Fri, 02 May 2025 10:46:51 -0400
+Message-ID: <20250502144651.638397805@goodmis.org>
+User-Agent: quilt/0.68
+Date: Fri, 02 May 2025 10:46:11 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ syzbot+441582c1592938fccf09@syzkaller.appspotmail.com
+Subject: [for-linus][PATCH 4/4] tracing: Do not take trace_event_sem in print_event_fields()
+References: <20250502144607.785079223@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250502-fxls-v2-0-e1af65f1aa6c@geanix.com> <20250502-fxls-v2-1-e1af65f1aa6c@geanix.com>
-In-Reply-To: <20250502-fxls-v2-1-e1af65f1aa6c@geanix.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 2 May 2025 17:19:44 +0300
-X-Gm-Features: ATxdqUHWzMktixRFQSi9ASxdn1M54DmhZJXbmbJ7aBh3SxAWt_Cjs_uWdkbYa6E
-Message-ID: <CAHp75VehpQdxFDXE8L0TeaOxHBTHNorOZ95rL48kQAiViAJ_zg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: accel: fxls8962af: Fix temperature calculation
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Marcelo Schmitt <marcelo.schmitt1@gmail.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-On Fri, May 2, 2025 at 9:15=E2=80=AFAM Sean Nyekjaer <sean@geanix.com> wrot=
-e:
->
-> According to spec temperature should be returned in milli degrees Celsius=
-.
-> Add in_temp_scale to calculate from Celsius to milli Celsius.
+From: Steven Rostedt <rostedt@goodmis.org>
 
-...
+On some paths in print_event_fields() it takes the trace_event_sem for
+read, even though it should always be held when the function is called.
 
-> +/* Raw temp channel scale */
-> +#define FXLS8962AF_TEMP_SCALE                  1000
+Remove the taking of that mutex and add a lockdep_assert_held_read() to
+make sure the trace_event_sem is held when print_event_fields() is called.
 
-Wouldn't constants from units.h be helpful here?
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20250501224128.0b1f0571@batman.local.home
+Fixes: 80a76994b2d88 ("tracing: Add "fields" option to show raw trace event fields")
+Reported-by: syzbot+441582c1592938fccf09@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6813ff5e.050a0220.14dd7d.001b.GAE@google.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/trace_output.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->  #define FXLS8962AF_AUTO_SUSPEND_DELAY_MS       2000
+diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
+index fee40ffbd490..b9ab06c99543 100644
+--- a/kernel/trace/trace_output.c
++++ b/kernel/trace/trace_output.c
+@@ -1042,11 +1042,12 @@ enum print_line_t print_event_fields(struct trace_iterator *iter,
+ 	struct trace_event_call *call;
+ 	struct list_head *head;
+ 
++	lockdep_assert_held_read(&trace_event_sem);
++
+ 	/* ftrace defined events have separate call structures */
+ 	if (event->type <= __TRACE_LAST_TYPE) {
+ 		bool found = false;
+ 
+-		down_read(&trace_event_sem);
+ 		list_for_each_entry(call, &ftrace_events, list) {
+ 			if (call->event.type == event->type) {
+ 				found = true;
+@@ -1056,7 +1057,6 @@ enum print_line_t print_event_fields(struct trace_iterator *iter,
+ 			if (call->event.type > __TRACE_LAST_TYPE)
+ 				break;
+ 		}
+-		up_read(&trace_event_sem);
+ 		if (!found) {
+ 			trace_seq_printf(&iter->seq, "UNKNOWN TYPE %d\n", event->type);
+ 			goto out;
+-- 
+2.47.2
 
-(2 * MSEC_PER_SEC)
 
-This gives immediately that we want 2 seconds of delay.
-
---=20
-With Best Regards,
-Andy Shevchenko
 
