@@ -1,127 +1,161 @@
-Return-Path: <stable+bounces-139478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6047DAA730D
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 15:14:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C871AA7363
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 15:23:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55B11986345
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 13:12:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B56AF169547
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 13:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B304B255F26;
-	Fri,  2 May 2025 13:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CDFDDAB;
+	Fri,  2 May 2025 13:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jUhxmlE7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ThqIa25W"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6848225524D;
-	Fri,  2 May 2025 13:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D43254AEE;
+	Fri,  2 May 2025 13:21:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746191496; cv=none; b=mCSxum4vTksIGJh7RNYpnhDS4Fm/lVOk6MrUCpceU8QBDEDWj2wgiN0TAuXeQCylP24l79D4EQ5hmyLFe0rPPeWjjLCIPdCS02tyJShZ9PdkDqZAjJ+tnH5rQsFn22Rru5cm+HI3kurpxnJpKInGxTukTizFPtmTRP67IyaMFgw=
+	t=1746192120; cv=none; b=ap9HdLmS26P5koFmoxnQK8XQIaZVtQxSKIZGCGK2EiI7TOB+hqMWATMgkkLYd+v3GxyErBcSW7Ep7mo0bb+JrQHy5egvYlhX4IP3QhsZueweE/iAwJT1RN3hBNxKPBrA8Q66Huhac7+moL6vZMrNDBe+E0xy28WxhRg4z648lv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746191496; c=relaxed/simple;
-	bh=LK0m5S09uQwymDotmRqGkjff/YzKrTkEZb8rKc78Zl0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FX0drIoeAlJ/saEVfADgl3gCu+DaZKz0CTvmBNshT+BwOPQ4EJuGevaVrNo6Sl2h/xyh8lBn++e4aGtC5LEv5Ari1BwYAgoysTbEFQsLrEj5kAzhynsgUqIBR7ZE3q1zzeaHlNXAaWmm9hObUc/iRh88wpIcNJUj32eA9haIIg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jUhxmlE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D669BC4CEF8;
-	Fri,  2 May 2025 13:11:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746191494;
-	bh=LK0m5S09uQwymDotmRqGkjff/YzKrTkEZb8rKc78Zl0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=jUhxmlE7p5g3OiQZe9EksPASqITZJGH4jIbjwfsKL9nuFRn2kL2uAM9NCURs8a1f/
-	 SUNH5GaSmXAzuK4iXDuB+JRgRoNGCkCokwb+rMAwhC8cEkKTKITnYZVKSDztDB5J2p
-	 7DqXFBb5lscZWAyV1PW46TNQ5BCEL4U1HzWfwWzxBtXBcCPrPfwcjMFldnXX7oAcJO
-	 /bd/7qZdVmbPPsPvutLDGuADRnSBGEbhOzuXcJ0ZXPfUlwbrgZr3wMiO2jO59ozzvC
-	 IlhoQOSFZyG4gYVPfYdNP+hjx5CpDYZaCL8mKUeS6L5WqICjfwnw0o4AIR1tK6GHmB
-	 /it+jwvCSmvpw==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-54d65cb6e8aso2712265e87.1;
-        Fri, 02 May 2025 06:11:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUYP0X9Sm6nKf3nfoD3R34UD2er/PNLFuxPoQRqWkNbEakw5Fpa21FO1nDl/ejBq92PJeHHXup0qyU=@vger.kernel.org, AJvYcCWo45LK4oO4adK0kD8wIUN9Fyvu1QzeVNJbyLaJqtZzWKX/J8NZnDx4ylUFaMB85tWqGOFxhsg+xxW2UbZ4@vger.kernel.org, AJvYcCXtZUDSS669j8BU/kjtpmkX01mtHvBKbMSY6QLUXvQ7KnzWh2ojMWy2WnU8W872vGG0TmgxENAQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUR1LZl1DEbyjf5dE33iCgd+q2V55hEAlMxeaCRxGxvWSARYqY
-	ALzRreW9MrpXW7F/dnsIgYLXMV6y7cLgyTSrvOZQLEL4gLDyc9YsA0g/v/Slj+LhiuEQaeVhuXM
-	g5NmG1vaErewQ/29FVHNMWQKPZec=
-X-Google-Smtp-Source: AGHT+IEdEEn4W75TgYFwhDu2BtCWaI+eVQnfNjJ68WUtHAcceaTNv5VfX2OxYTlSQ9shxVvG495+ttDBaOpQ0AnuP1A=
-X-Received: by 2002:a05:6512:234f:b0:549:66d8:a1f3 with SMTP id
- 2adb3069b0e04-54eac2332camr731440e87.40.1746191493168; Fri, 02 May 2025
- 06:11:33 -0700 (PDT)
+	s=arc-20240116; t=1746192120; c=relaxed/simple;
+	bh=wnUujzmKG4Pa/20bmQrN2uMRlZovHcJk4wNC5IxAQDI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Asfikfg+S5NNH8MHi2yR7+j+u00iN50ofzKuNBnHPbAbEgj01FXynZEaLqDpf84K/PnbRbk2fKlN9selRnu4PkoRd4r7kkOrTi38k9dlg93EROaUyFycUs3JQa134BZg8M8eQz788QsL1gL7f2ZDc7NW/K+KdxtEnYCdi4TUYRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ThqIa25W; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-22c3407a87aso30022825ad.3;
+        Fri, 02 May 2025 06:21:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746192119; x=1746796919; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=KlOs+JdgczwnqRqh26B7JXmHNWrTs0TwsZfXRpF6SjE=;
+        b=ThqIa25WZ2O9spN+scYzfdgAdu2khswhDhBOBfuJBRbuEGEgsmskZdliy7ZNr/WAyF
+         /NVeK1ogN9XjEbg1UVL08b4VU/s4OrrtQVqFNvtz5kf/o8218NeRgXkVcC91iLP4I/VV
+         VLZOh1oNT/O66k0slcki4xerbU01SqF4XedqwexXRDyHLjhV6haxER5qMeX+3vA2yUEX
+         9PtVlG1gJmv6cinsr4mZtkfgpYw+H1eskD2gqRwVdLpKk0L0ZcwNfwdZS0Tb6hoxwqjI
+         oySToQnbYK6cFjcPK1t5lCofllUbqlLQgK19XJwCYmVDmoxfL7g/esQoq1MB253namXC
+         eCCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746192119; x=1746796919;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KlOs+JdgczwnqRqh26B7JXmHNWrTs0TwsZfXRpF6SjE=;
+        b=p8Zy7dwFKPT8Vrl4Sj9QR6j5AM+JrqAgwpBqV6W7zMMvxjC1HeGbXzqqU1zgX2yXOE
+         m3/X1nwl+Z6URBCf0pG24asICaYbJE3mR2BXQoB8oqlWCmL4bCugHJFqSwrNK3P4euf7
+         ZsyC4hXigUl3YxMd2OoLt7r1egxKyzbsAe5vA1F/+AXyfgpd/4byaucBCBwYnrw1P3sk
+         wHPUBYgVhsCUNcxQY+2UVzWBbaFQuSkH7tgkSgiEiEa5eSeCeUyodDpOUTNbJs9ty4Ve
+         B/ageMDpeGf+Bm2uMY1VNMvFEMbOaKQVOa9Pfmc2UerT4BQCdHrTKb508ri0BfnSTeU0
+         dMlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVapwScYTgN3i+fdfIIPcXNSINE4n05mlA37rDRtutcdkXiGRorAskXhrIqv4wSv6vGdg4sF5jK@vger.kernel.org, AJvYcCXiDh+HWAnUU7EFG7j9SyhhoUTsgj5VIX6GOn+rvWaZpAFNEpuR1v6nBZekP8lfnfdLRdVeKJ0yn9LS5pw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyJqP9d4k7PguuTEZkMnYIb+ONwzE91NEhIR7rKn+AtJqu5Di2
+	AyCzhPHZOuIoq4lGrsjIlrxVubvjPsrBrk54IklZljkJfyyzUQxt
+X-Gm-Gg: ASbGncsOVLek6zPdm4KZ+5clq0Xm3yUij4pY+tWnTdI0+i60WGzEcy1Gl+LQAqL3mz4
+	JsBv6LJMkgXiGUfYtWZTNDDMtg5UXlacg6CsDlihpoMsyQ7k5Zt1vUvbZWEqAouxwx3ok7G4VfR
+	EDfeK+Rs02Mpyn/5aAO/U2tUzgX9otGW03xbd2RoFXlitjShTKbEJKOaZg0E6aVS/lJQ+sNt3uL
+	a531EGzc/KDsBCTOJYdrK1/Z03nx6WpothVc92F/FDsSTBW7IQjLlu0DbBZN4FGg0EVjTqj8hK2
+	ARmnYt6/37URts9e65uzHhj5YG8zRG35B0n4CLYLWbcHXtgl/5IJumXYHHs/SLqlaR0=
+X-Google-Smtp-Source: AGHT+IFQaU2Ld4AF+aXA4jhHHsJli7dq7Rb/NWePPLliWMF5FtCiT7mNLPcemvCWWe2r8PJl12T90Q==
+X-Received: by 2002:a17:902:f551:b0:223:6254:b4ba with SMTP id d9443c01a7336-22e102cd0femr41105765ad.13.1746192118660;
+        Fri, 02 May 2025 06:21:58 -0700 (PDT)
+Received: from [192.168.0.24] (home.mimichou.net. [82.67.5.108])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e152320c5sm6455825ad.245.2025.05.02.06.21.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 May 2025 06:21:58 -0700 (PDT)
+Message-ID: <c1de7468-9225-4cdd-a281-a95bcbd365c8@gmail.com>
+Date: Fri, 2 May 2025 15:21:53 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250428174322.2780170-2-ardb+git@google.com> <0ad5e887-e0f3-6c75-4049-fd728267d9c0@amd.com>
-In-Reply-To: <0ad5e887-e0f3-6c75-4049-fd728267d9c0@amd.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 2 May 2025 15:11:21 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXE7=u9xNcUHiyFVPbOpwPvntFjdLfTzD0LeD_7it2MEQg@mail.gmail.com>
-X-Gm-Features: ATxdqUHCnZY8z4Ary2AT3uxsxUGdTmlnVzUmAj4WTaZo_j0E0mElkzIG8dLedpk
-Message-ID: <CAMj1kXE7=u9xNcUHiyFVPbOpwPvntFjdLfTzD0LeD_7it2MEQg@mail.gmail.com>
-Subject: Re: [PATCH] x86/boot/sev: Support memory acceptance in the EFI stub
- under SVSM
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, Borislav Petkov <bp@alien8.de>, 
-	Ingo Molnar <mingo@kernel.org>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
-	Kevin Loughlin <kevinloughlin@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/280] 6.12.26-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250429161115.008747050@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, 1 May 2025 at 20:05, Tom Lendacky <thomas.lendacky@amd.com> wrote:
->
-> On 4/28/25 12:43, Ard Biesheuvel wrote:
-> > From: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > Commit
-> >
-> >   d54d610243a4 ("x86/boot/sev: Avoid shared GHCB page for early memory acceptance")
-> >
-> > provided a fix for SEV-SNP memory acceptance from the EFI stub when
-> > running at VMPL #0. However, that fix was insufficient for SVSM SEV-SNP
-> > guests running at VMPL >0, as those rely on a SVSM calling area, which
-> > is a shared buffer whose address is programmed into a SEV-SNP MSR, and
-> > the SEV init code that sets up this calling area executes much later
-> > during the boot.
-> >
-> > Given that booting via the EFI stub at VMPL >0 implies that the firmware
-> > has configured this calling area already, reuse it for performing memory
-> > acceptance in the EFI stub.
->
-> This looks to be working for SNP guest boot and kexec. SNP guest boot with
-> an SVSM is also working, but kexec isn't. But the kexec failure of an SVSM
-> SNP guest is unrelated to this patch, I'll send a fix for that separately.
->
-
-Thanks for confirming.
-
-Ingo, Boris, can we get this queued as a fix, please, and merge it
-back into x86/boot as was done before?
 
 
-> Thanks,
-> Tom
->
-> >
-> > Cc: Borislav Petkov <bp@alien8.de>
-> > Cc: Ingo Molnar <mingo@kernel.org>
-> > Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
-> > Cc: Kevin Loughlin <kevinloughlin@google.com>
-> > Cc: <stable@vger.kernel.org>
-> > Fixes: fcd042e86422 ("x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0")
-> > Co-developed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> > Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> > Tom,
-> >
-> > Please confirm that this works as you intended.
-> >
-> > Thanks,
-> >
+On 4/29/2025 6:39 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.26 release.
+> There are 280 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 01 May 2025 16:10:15 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.26-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
+
 
