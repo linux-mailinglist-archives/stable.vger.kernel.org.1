@@ -1,377 +1,140 @@
-Return-Path: <stable+bounces-139493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A57CAA7465
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 16:04:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E52AA74A6
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 16:14:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0514A1C01BCA
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 14:04:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AAC69E591E
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 14:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62BE257432;
-	Fri,  2 May 2025 14:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KhmTD0+3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB682571D8;
+	Fri,  2 May 2025 14:14:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BDB257427;
-	Fri,  2 May 2025 14:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F102571CD
+	for <stable@vger.kernel.org>; Fri,  2 May 2025 14:14:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746194600; cv=none; b=jS1xOEQf0D48x965SzuCnbu4uRMmR1utrveKlbkJvzScGWKwFYAzNRXRUgQuek8pjnggTOwkRzuPuZ9/GGQNb1ZcF4ySZYu8yOLP++wtCtFj7Bb/Ph21Evk+TKCxBdOrs0MT0vTEE5aRR1IlM+huAOOHepaB7JK/Rrtc3YLJtTQ=
+	t=1746195245; cv=none; b=KTt1azLf35M1igAhVtEy0YMIRtt8Kn11nD66ENhYjC+TG+8zWQWtBe3JmaxZIifCvk4N70CwIxC8EpZxQkMrjNE4ZrcvX2sgSmNCTziO/C/cglcMoZgadXtBSO9sgMQdJS2VKcn9LEJM+mCp5Og6hVl7Kjr7WTCaVICFU/j0vLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746194600; c=relaxed/simple;
-	bh=5hjxujVq9UNEKFrCpRJWHAmcCo5XnfoXNdbzgUPep2I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGCqqbfzpt9K5aUFbWri7o9nIbWSv5foQIvmyUoE7lTe7qpM08D2hnikroFoEunWEO1ljrMsZ+6MCd5BytICZO2YBCfzNoSkUvWlVwdQIYJwFx4VMpu9dKOqOl050MdoAkhcp5XEI5zQypfjZGvRxhbOu5EGlWwzDIMbKzdf21I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KhmTD0+3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FAEC4CEE4;
-	Fri,  2 May 2025 14:03:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746194600;
-	bh=5hjxujVq9UNEKFrCpRJWHAmcCo5XnfoXNdbzgUPep2I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KhmTD0+3p83k5lNd4vW8hDNYkrRd4BRw1MxgihTtFzyY3ubnGf2J3Jdmogppkx3qn
-	 Z29LHUwlRRR1Er6x8oocBDW20TcQE0fbYKnPfDVXnefw1vS5ncBxkbFcJreyfKwEtj
-	 IzI9orUg/KTKAZ6s7Hx9QcisDJ2hd/irnq97yzU+SKPZpsJ2a6Q8IPluwweOI/7ymn
-	 WsDAsqa3/OBdfgQMZx3+SvTXIYCiYPVhzacEWd3aNEPxxLFBkCSi7bjRIKVwFJhrRH
-	 Kt8YfJZ1EREKj8GXe+TYwD6oQdaVCg1soItmNm8cG2QWhQjkvsuC5RlwgdUh0P6ItN
-	 l1Gtc/P7E29Eg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH 5/5] rust: clean Rust 1.88.0's `clippy::uninlined_format_args` lint
-Date: Fri,  2 May 2025 16:02:37 +0200
-Message-ID: <20250502140237.1659624-6-ojeda@kernel.org>
-In-Reply-To: <20250502140237.1659624-1-ojeda@kernel.org>
-References: <20250502140237.1659624-1-ojeda@kernel.org>
+	s=arc-20240116; t=1746195245; c=relaxed/simple;
+	bh=wKNEquMMqRCDDxXwq44IRpJvSwnrG9pSA9GxTv2slhE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=W6K2NtbMF5MrmLsUu425LbfD84EZTRbp93CWFEyW3zX6kqLLCm0K6LJ0eOhMhFgjqyMWekRkUlKx2ikzyuTbStO1IHtZ/rfi/en4RkYvmxtqfunsVR1FY4Gi1DDVsOcbaKtYrUOWEdz8zNAUqNyhSL5nWsZPUj6+7tl66b1IENA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uAr9M-0000ve-HA
+	for stable@vger.kernel.org; Fri, 02 May 2025 16:14:00 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uAr9L-000lQs-3A
+	for stable@vger.kernel.org;
+	Fri, 02 May 2025 16:14:00 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id A55AE4065CC
+	for <stable@vger.kernel.org>; Fri, 02 May 2025 14:13:59 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 8CF8340659C;
+	Fri, 02 May 2025 14:13:56 +0000 (UTC)
+Received: from hardanger.blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 1e9aea9b;
+	Fri, 2 May 2025 14:13:56 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 0/3] can: rx-offload: fix order of unregistration calls
+Date: Fri, 02 May 2025 16:13:43 +0200
+Message-Id: <20250502-can-rx-offload-del-v1-0-59a9b131589d@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABfTFGgC/x3MQQqAIBBA0avErBswJaSuEi2sGWtANBQiCO+et
+ HyL/18onIULzN0LmW8pkmLD0Hewny4ejELNoJUe1ag07i5ifjB5H5IjJA7Im52MnawxRNDCK7O
+ X558ua60fshOVEmQAAAA=
+X-Change-ID: 20250502-can-rx-offload-del-eb79379733dd
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Thomas Kopp <thomas.kopp@microchip.com>, 
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>, kernel@pengutronix.de, 
+ Heiko Stuebner <heiko@sntech.de>, 
+ Chandrasekar Ramakrishnan <rcsekar@samsung.com>, 
+ Markus Schneider-Pargmann <msp@baylibre.com>
+Cc: linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+ Marc Kleine-Budde <mkl@pengutronix.de>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-048ad
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1661; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=wKNEquMMqRCDDxXwq44IRpJvSwnrG9pSA9GxTv2slhE=;
+ b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBoFNMZ+DcELaBl0lz4gVEsR+oe731Z3vOvy7b2m
+ b2FTbj9YuWJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaBTTGQAKCRAMdGXf+ZCR
+ nMwvB/9BEUC1dtYbDGi5TQBbvaBKY6YrVwI3NEpZhtUZWIIHSiOte6QcTtsFg97q+xbvSge7DqT
+ vE/jLpU74PHl1GpDIrvyuzUO2XEAywLHiPPudUsTmWYNuJtYvo3lvHzkbI/ejsCmUM/ZEjB2RpG
+ i62671TdSBAp57MN4J2M2H5POJlTqd2uLAfdVliGnOX6O+VSBax0gdtA7QqB+PtL8Bk2coH+b8u
+ hyx6ilTkOcCBa0p0GCY5Q/HkibJq8kStPIUnIDgj800Tb3BrmTNG3jDu/LZVBXzsmoqzqAmz62t
+ GzmcfQ1ZGb7WR4PwhLiDmUDBG/pAQHSyVcwqpEBnpkzFFvj3
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Starting with Rust 1.88.0 (expected 2025-06-26) [1], `rustc` may move
-back the `uninlined_format_args` to `style` from `pedantic` (it was
-there waiting for rust-analyzer suppotr), and thus we will start to see
-lints like:
+If a driver is removed, the driver framework invokes the driver's
+remove callback. A CAN driver's remove function calls
+unregister_candev(), which calls net_device_ops::ndo_stop further down
+in the call stack for interfaces which are in the "up" state.
 
-    warning: variables can be used directly in the `format!` string
-       --> rust/macros/kunit.rs:105:37
-        |
-    105 |         let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{}", test);
-        |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args
-    help: change this to
-        |
-    105 -         let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{}", test);
-    105 +         let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{test}");
+With the mcp251xfd driver the removal of the module causes the
+following warning:
 
-There is even a case that is a pure removal:
+| WARNING: CPU: 0 PID: 352 at net/core/dev.c:7342 __netif_napi_del_locked+0xc8/0xd8
 
-    warning: variables can be used directly in the `format!` string
-      --> rust/macros/module.rs:51:13
-       |
-    51 |             format!("{field}={content}\0", field = field, content = content)
-       |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-       |
-       = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args
-    help: change this to
-       |
-    51 -             format!("{field}={content}\0", field = field, content = content)
-    51 +             format!("{field}={content}\0")
+as can_rx_offload_del() deletes the NAPI, while it is still active,
+because the interface is still up.
 
-The lints all seem like nice cleanups, thus just apply them.
+To fix the warning, first unregister the network interface, which
+calls net_device_ops::ndo_stop, which disables the NAPI, and then call
+can_rx_offload_del().
 
-We may want to disable `allow-mixed-uninlined-format-args` in the future.
+All other driver using the rx-offload helper have been checked and the
+same issue has been found in the rockchip and m_can driver. These have
+been fixed, but only compile time tested. On the mcp251xfd the fix was
+tested on hardware.
 
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Cc: Benno Lossin <benno.lossin@proton.me>
-Link: https://github.com/rust-lang/rust-clippy/pull/14160 [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/gpu/nova-core/gpu.rs              |  2 +-
- rust/kernel/str.rs                        | 46 +++++++++++------------
- rust/macros/kunit.rs                      | 13 ++-----
- rust/macros/module.rs                     | 19 +++-------
- rust/macros/paste.rs                      |  2 +-
- rust/pin-init/internal/src/pinned_drop.rs |  3 +-
- 6 files changed, 35 insertions(+), 50 deletions(-)
+Marc Kleine-Budde (3):
+      can: mcp251xfd: mcp251xfd_remove(): fix order of unregistration calls
+      can: rockchip_canfd: m_can_class_unregister: fix order of unregistration calls
+      can: mcan: m_can_class_unregister: fix order of unregistration calls
 
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index 17c9660da450..ab0e5a72a059 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -93,7 +93,7 @@ pub(crate) fn arch(&self) -> Architecture {
- // For now, redirect to fmt::Debug for convenience.
- impl fmt::Display for Chipset {
-     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
--        write!(f, "{:?}", self)
-+        write!(f, "{self:?}")
-     }
- }
+ drivers/net/can/m_can/m_can.c                  | 2 +-
+ drivers/net/can/rockchip/rockchip_canfd-core.c | 2 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+---
+base-commit: ebd297a2affadb6f6f4d2e5d975c1eda18ac762d
+change-id: 20250502-can-rx-offload-del-eb79379733dd
 
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 878111cb77bc..fb61ce81ea28 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -73,7 +73,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                 b'\r' => f.write_str("\\r")?,
-                 // Printable characters.
-                 0x20..=0x7e => f.write_char(b as char)?,
--                _ => write!(f, "\\x{:02x}", b)?,
-+                _ => write!(f, "\\x{b:02x}")?,
-             }
-         }
-         Ok(())
-@@ -109,7 +109,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                 b'\\' => f.write_str("\\\\")?,
-                 // Printable characters.
-                 0x20..=0x7e => f.write_char(b as char)?,
--                _ => write!(f, "\\x{:02x}", b)?,
-+                _ => write!(f, "\\x{b:02x}")?,
-             }
-         }
-         f.write_char('"')
-@@ -447,7 +447,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                 // Printable character.
-                 f.write_char(c as char)?;
-             } else {
--                write!(f, "\\x{:02x}", c)?;
-+                write!(f, "\\x{c:02x}")?;
-             }
-         }
-         Ok(())
-@@ -479,7 +479,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                 // Printable characters.
-                 b'\"' => f.write_str("\\\"")?,
-                 0x20..=0x7e => f.write_char(c as char)?,
--                _ => write!(f, "\\x{:02x}", c)?,
-+                _ => write!(f, "\\x{c:02x}")?,
-             }
-         }
-         f.write_str("\"")
-@@ -641,13 +641,13 @@ fn test_cstr_as_str_unchecked() {
-     #[test]
-     fn test_cstr_display() {
-         let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0").unwrap();
--        assert_eq!(format!("{}", hello_world), "hello, world!");
-+        assert_eq!(format!("{hello_world}"), "hello, world!");
-         let non_printables = CStr::from_bytes_with_nul(b"\x01\x09\x0a\0").unwrap();
--        assert_eq!(format!("{}", non_printables), "\\x01\\x09\\x0a");
-+        assert_eq!(format!("{non_printables}"), "\\x01\\x09\\x0a");
-         let non_ascii = CStr::from_bytes_with_nul(b"d\xe9j\xe0 vu\0").unwrap();
--        assert_eq!(format!("{}", non_ascii), "d\\xe9j\\xe0 vu");
-+        assert_eq!(format!("{non_ascii}"), "d\\xe9j\\xe0 vu");
-         let good_bytes = CStr::from_bytes_with_nul(b"\xf0\x9f\xa6\x80\0").unwrap();
--        assert_eq!(format!("{}", good_bytes), "\\xf0\\x9f\\xa6\\x80");
-+        assert_eq!(format!("{good_bytes}"), "\\xf0\\x9f\\xa6\\x80");
-     }
+Best regards,
+-- 
+Marc Kleine-Budde <mkl@pengutronix.de>
 
-     #[test]
-@@ -658,47 +658,47 @@ fn test_cstr_display_all_bytes() {
-             bytes[i as usize] = i.wrapping_add(1);
-         }
-         let cstr = CStr::from_bytes_with_nul(&bytes).unwrap();
--        assert_eq!(format!("{}", cstr), ALL_ASCII_CHARS);
-+        assert_eq!(format!("{cstr}"), ALL_ASCII_CHARS);
-     }
 
-     #[test]
-     fn test_cstr_debug() {
-         let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0").unwrap();
--        assert_eq!(format!("{:?}", hello_world), "\"hello, world!\"");
-+        assert_eq!(format!("{hello_world:?}"), "\"hello, world!\"");
-         let non_printables = CStr::from_bytes_with_nul(b"\x01\x09\x0a\0").unwrap();
--        assert_eq!(format!("{:?}", non_printables), "\"\\x01\\x09\\x0a\"");
-+        assert_eq!(format!("{non_printables:?}"), "\"\\x01\\x09\\x0a\"");
-         let non_ascii = CStr::from_bytes_with_nul(b"d\xe9j\xe0 vu\0").unwrap();
--        assert_eq!(format!("{:?}", non_ascii), "\"d\\xe9j\\xe0 vu\"");
-+        assert_eq!(format!("{non_ascii:?}"), "\"d\\xe9j\\xe0 vu\"");
-         let good_bytes = CStr::from_bytes_with_nul(b"\xf0\x9f\xa6\x80\0").unwrap();
--        assert_eq!(format!("{:?}", good_bytes), "\"\\xf0\\x9f\\xa6\\x80\"");
-+        assert_eq!(format!("{good_bytes:?}"), "\"\\xf0\\x9f\\xa6\\x80\"");
-     }
-
-     #[test]
-     fn test_bstr_display() {
-         let hello_world = BStr::from_bytes(b"hello, world!");
--        assert_eq!(format!("{}", hello_world), "hello, world!");
-+        assert_eq!(format!("{hello_world}"), "hello, world!");
-         let escapes = BStr::from_bytes(b"_\t_\n_\r_\\_\'_\"_");
--        assert_eq!(format!("{}", escapes), "_\\t_\\n_\\r_\\_'_\"_");
-+        assert_eq!(format!("{escapes}"), "_\\t_\\n_\\r_\\_'_\"_");
-         let others = BStr::from_bytes(b"\x01");
--        assert_eq!(format!("{}", others), "\\x01");
-+        assert_eq!(format!("{others}"), "\\x01");
-         let non_ascii = BStr::from_bytes(b"d\xe9j\xe0 vu");
--        assert_eq!(format!("{}", non_ascii), "d\\xe9j\\xe0 vu");
-+        assert_eq!(format!("{non_ascii}"), "d\\xe9j\\xe0 vu");
-         let good_bytes = BStr::from_bytes(b"\xf0\x9f\xa6\x80");
--        assert_eq!(format!("{}", good_bytes), "\\xf0\\x9f\\xa6\\x80");
-+        assert_eq!(format!("{good_bytes}"), "\\xf0\\x9f\\xa6\\x80");
-     }
-
-     #[test]
-     fn test_bstr_debug() {
-         let hello_world = BStr::from_bytes(b"hello, world!");
--        assert_eq!(format!("{:?}", hello_world), "\"hello, world!\"");
-+        assert_eq!(format!("{hello_world:?}"), "\"hello, world!\"");
-         let escapes = BStr::from_bytes(b"_\t_\n_\r_\\_\'_\"_");
--        assert_eq!(format!("{:?}", escapes), "\"_\\t_\\n_\\r_\\\\_'_\\\"_\"");
-+        assert_eq!(format!("{escapes:?}"), "\"_\\t_\\n_\\r_\\\\_'_\\\"_\"");
-         let others = BStr::from_bytes(b"\x01");
--        assert_eq!(format!("{:?}", others), "\"\\x01\"");
-+        assert_eq!(format!("{others:?}"), "\"\\x01\"");
-         let non_ascii = BStr::from_bytes(b"d\xe9j\xe0 vu");
--        assert_eq!(format!("{:?}", non_ascii), "\"d\\xe9j\\xe0 vu\"");
-+        assert_eq!(format!("{non_ascii:?}"), "\"d\\xe9j\\xe0 vu\"");
-         let good_bytes = BStr::from_bytes(b"\xf0\x9f\xa6\x80");
--        assert_eq!(format!("{:?}", good_bytes), "\"\\xf0\\x9f\\xa6\\x80\"");
-+        assert_eq!(format!("{good_bytes:?}"), "\"\\xf0\\x9f\\xa6\\x80\"");
-     }
- }
-
-diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
-index 4f553ecf40c0..99ccac82edde 100644
---- a/rust/macros/kunit.rs
-+++ b/rust/macros/kunit.rs
-@@ -15,10 +15,7 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-     }
-
-     if attr.len() > 255 {
--        panic!(
--            "The test suite name `{}` exceeds the maximum length of 255 bytes",
--            attr
--        )
-+        panic!("The test suite name `{attr}` exceeds the maximum length of 255 bytes")
-     }
-
-     let mut tokens: Vec<_> = ts.into_iter().collect();
-@@ -102,16 +99,14 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-     let mut kunit_macros = "".to_owned();
-     let mut test_cases = "".to_owned();
-     for test in &tests {
--        let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{}", test);
-+        let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{test}");
-         let kunit_wrapper = format!(
--            "unsafe extern \"C\" fn {}(_test: *mut kernel::bindings::kunit) {{ {}(); }}",
--            kunit_wrapper_fn_name, test
-+            "unsafe extern \"C\" fn {kunit_wrapper_fn_name}(_test: *mut kernel::bindings::kunit) {{ {test}(); }}"
-         );
-         writeln!(kunit_macros, "{kunit_wrapper}").unwrap();
-         writeln!(
-             test_cases,
--            "    kernel::kunit::kunit_case(kernel::c_str!(\"{}\"), {}),",
--            test, kunit_wrapper_fn_name
-+            "    kernel::kunit::kunit_case(kernel::c_str!(\"{test}\"), {kunit_wrapper_fn_name}),"
-         )
-         .unwrap();
-     }
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index a9418fbc9b44..2f66107847f7 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -48,7 +48,7 @@ fn emit_base(&mut self, field: &str, content: &str, builtin: bool) {
-             )
-         } else {
-             // Loadable modules' modinfo strings go as-is.
--            format!("{field}={content}\0", field = field, content = content)
-+            format!("{field}={content}\0")
-         };
-
-         write!(
-@@ -126,10 +126,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-             };
-
-             if seen_keys.contains(&key) {
--                panic!(
--                    "Duplicated key \"{}\". Keys can only be specified once.",
--                    key
--                );
-+                panic!("Duplicated key \"{key}\". Keys can only be specified once.");
-             }
-
-             assert_eq!(expect_punct(it), ':');
-@@ -143,10 +140,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-                 "license" => info.license = expect_string_ascii(it),
-                 "alias" => info.alias = Some(expect_string_array(it)),
-                 "firmware" => info.firmware = Some(expect_string_array(it)),
--                _ => panic!(
--                    "Unknown key \"{}\". Valid keys are: {:?}.",
--                    key, EXPECTED_KEYS
--                ),
-+                _ => panic!("Unknown key \"{key}\". Valid keys are: {EXPECTED_KEYS:?}."),
-             }
-
-             assert_eq!(expect_punct(it), ',');
-@@ -158,7 +152,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-
-         for key in REQUIRED_KEYS {
-             if !seen_keys.iter().any(|e| e == key) {
--                panic!("Missing required key \"{}\".", key);
-+                panic!("Missing required key \"{key}\".");
-             }
-         }
-
-@@ -170,10 +164,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-         }
-
-         if seen_keys != ordered_keys {
--            panic!(
--                "Keys are not ordered as expected. Order them like: {:?}.",
--                ordered_keys
--            );
-+            panic!("Keys are not ordered as expected. Order them like: {ordered_keys:?}.");
-         }
-
-         info
-diff --git a/rust/macros/paste.rs b/rust/macros/paste.rs
-index 6529a387673f..cce712d19855 100644
---- a/rust/macros/paste.rs
-+++ b/rust/macros/paste.rs
-@@ -50,7 +50,7 @@ fn concat_helper(tokens: &[TokenTree]) -> Vec<(String, Span)> {
-                 let tokens = group.stream().into_iter().collect::<Vec<TokenTree>>();
-                 segments.append(&mut concat_helper(tokens.as_slice()));
-             }
--            token => panic!("unexpected token in paste segments: {:?}", token),
-+            token => panic!("unexpected token in paste segments: {token:?}"),
-         };
-     }
-
-diff --git a/rust/pin-init/internal/src/pinned_drop.rs b/rust/pin-init/internal/src/pinned_drop.rs
-index c824dd8b436d..c4ca7a70b726 100644
---- a/rust/pin-init/internal/src/pinned_drop.rs
-+++ b/rust/pin-init/internal/src/pinned_drop.rs
-@@ -28,8 +28,7 @@ pub(crate) fn pinned_drop(_args: TokenStream, input: TokenStream) -> TokenStream
-             // Found the end of the generics, this should be `PinnedDrop`.
-             assert!(
-                 matches!(tt, TokenTree::Ident(i) if i.to_string() == "PinnedDrop"),
--                "expected 'PinnedDrop', found: '{:?}'",
--                tt
-+                "expected 'PinnedDrop', found: '{tt:?}'"
-             );
-             pinned_drop_idx = Some(i);
-             break;
---
-2.49.0
 
