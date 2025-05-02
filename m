@@ -1,161 +1,127 @@
-Return-Path: <stable+bounces-139477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39CA3AA72DF
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 15:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6047DAA730D
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 15:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE0755A7C74
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 13:08:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55B11986345
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 13:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F1625485B;
-	Fri,  2 May 2025 13:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B304B255F26;
+	Fri,  2 May 2025 13:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eARGPDa0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jUhxmlE7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2A524676A;
-	Fri,  2 May 2025 13:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6848225524D;
+	Fri,  2 May 2025 13:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746191312; cv=none; b=PUltlcQ/hVzETjDPZDXJFdvlN3DRpWF5qhqlnOQEo5MUEn/Cwvuh0j+uHmKatt4jYTr/7jbwCVmUz2URk55R7qrBXq0fNfhpW8b5Sl8PN3PlO1qu0ZkKzidbneq/Vwqzw3ofDd6bvFkSBDlmy70XIzzK+zDjuv5eaasQ8/1XPfA=
+	t=1746191496; cv=none; b=mCSxum4vTksIGJh7RNYpnhDS4Fm/lVOk6MrUCpceU8QBDEDWj2wgiN0TAuXeQCylP24l79D4EQ5hmyLFe0rPPeWjjLCIPdCS02tyJShZ9PdkDqZAjJ+tnH5rQsFn22Rru5cm+HI3kurpxnJpKInGxTukTizFPtmTRP67IyaMFgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746191312; c=relaxed/simple;
-	bh=gYlKfftzKx3fPajqS1jxu5gnHo9KLvzRgbD3+rtsld4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CgjcJx7Pc+gIVUKWM0nL7qcLQ7oNgawSUHczg1w+uA/5Ok0t8cgz5OJOjG/FsEV8GSgU1DDI1ISSDVBQ06kWnTPjcqU069QbP0TQqeO4xjayCAe7ElyaUNDpAxBe/RK/B7H4NgQMdtwnP3sWFlDO6zNnv/4PPT65VphsLa9Sg3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eARGPDa0; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-73c17c770a7so2940180b3a.2;
-        Fri, 02 May 2025 06:08:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746191310; x=1746796110; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=HR0asHqF+5I07tJl5Az2gVmDHz5HwoFsUn4X8UeI9wg=;
-        b=eARGPDa0nrA+sdq3u8PK97wIEPlJb2Mp6m6RUI1NQkP4ratu9pXrHoiT0dsXCg4Qo9
-         GMbhrNNVRr2zqT1aZL+s58JU4ddwaiPsxACoh1vhAVKIXz8h70RpVTNpY/J6GQt/EYAA
-         QahZ3qw6t06o3J+H+x5bvw6R7lpNK2iCLfZ+HE9LTEH/z/GXATJ1IvHcQrpHqzTHow3x
-         bwBpk1Z7AC/Kg6VgqqhDhnQbzIZ7Y27Rqa2qtPz1DR9M+K22jGWVg4/v9z2iuCfZA/ff
-         iM606cqRpMREVIkWP4CQQEDopY4MVoBaySwpPYOCiJexQaHgjV7t1oonFtYZ2oSyFG/Q
-         48+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746191310; x=1746796110;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HR0asHqF+5I07tJl5Az2gVmDHz5HwoFsUn4X8UeI9wg=;
-        b=BYEBKcSoJsSQL2/28gE9hqSZoBnGkikYJcWc9JDdtgqOApYpYt8opxoyeDeGxpTDDO
-         z6KlfH3MCL8k35mAXfkiBX0rRy9Ecq2O9j4mSi2mY6b0DU6qiml4t+pgYxVAh4uUSCfY
-         dnOa1gDBqnymxjgeOYBzP36EbL40BTsiVZSc+ryKr/l0txcGSDKI4JNUPMKltzEM28AS
-         71xh6cPcdZ/0ze5YpJrQJzz2jlbSaTR+U5ZZsNCFzErNpWXfYLSQdDEVosYWhFXg4BFr
-         qJjniCvqKt1CfN8Nc35vIAiFFXLHoJ7AbnUi5GmyuW9T4ZND2PpgNaHEBr6bdGSQCae7
-         ZErA==
-X-Forwarded-Encrypted: i=1; AJvYcCVFB45ja0ejt1NGqMxXmpohFT//LCloDKoQW0C1X7GKC0N0EmzSoUV4PGKThGDmE3do2m4z2bxU@vger.kernel.org, AJvYcCXQs3QRLGq/VpDa8rQKNjv9suzjILGg/MQlZEpSa2CgtwvHnUVCI5O5h07Gk0cWHHWJTwHjLqAxenl0Dbo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzx/fGxw0tfM77uO06MnrJEd2FmAopZnelzab4MwSLOYHYQFCvo
-	Ul2yYvUqHrT6j+VKVaKMO1qGp5lg9HAMHkPAXZK8cXDqGPA6cDSVoFuCt3VC
-X-Gm-Gg: ASbGncui373vC3U8j6AKBLNnWeo3nI9TZiRQsBODTLci7ZH3vTUuj6yR8X402tmHt9o
-	sJy7Tf7eGP0vvb88B53V2pxHZtlEDb0Q/kikw3IlnZw/lqx7WWU54qnUaA6xOANSpz7Z+Gi0XQL
-	VIJH5EZQnkMsbTmfyk70cqq378JFjIio3GJrs50ICk8vXT+REuP2iUNWg0Dp9qmmqsgJRikEwEz
-	WfOhzBQozqBUgRVQ26Wh6KVqBtJrlr8vIXkaCBGRFoMztlvooudowJrb+NiEElDCFqeucV0a751
-	CswOg7kutLaCczbWlw99D07bgyMuY80unJFIlyXCEppjZy62et/0aGkRaOu3DVexaQc=
-X-Google-Smtp-Source: AGHT+IF4JbJcm2+b0Vy3noTfxGPh/HAHVTgkl3QSB4qkhDr6UhtmUkVEVo5wc2frC6udj+7MhpK3pA==
-X-Received: by 2002:a05:6a20:c78e:b0:1f5:8153:9407 with SMTP id adf61e73a8af0-20cdee3ae30mr4327520637.20.1746191310018;
-        Fri, 02 May 2025 06:08:30 -0700 (PDT)
-Received: from [192.168.0.24] (home.mimichou.net. [82.67.5.108])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7405b36effbsm1272666b3a.50.2025.05.02.06.08.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 May 2025 06:08:29 -0700 (PDT)
-Message-ID: <37d34f34-fa84-4899-8755-58b6c1eedfd8@gmail.com>
-Date: Fri, 2 May 2025 15:08:24 +0200
+	s=arc-20240116; t=1746191496; c=relaxed/simple;
+	bh=LK0m5S09uQwymDotmRqGkjff/YzKrTkEZb8rKc78Zl0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FX0drIoeAlJ/saEVfADgl3gCu+DaZKz0CTvmBNshT+BwOPQ4EJuGevaVrNo6Sl2h/xyh8lBn++e4aGtC5LEv5Ari1BwYAgoysTbEFQsLrEj5kAzhynsgUqIBR7ZE3q1zzeaHlNXAaWmm9hObUc/iRh88wpIcNJUj32eA9haIIg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jUhxmlE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D669BC4CEF8;
+	Fri,  2 May 2025 13:11:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746191494;
+	bh=LK0m5S09uQwymDotmRqGkjff/YzKrTkEZb8rKc78Zl0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=jUhxmlE7p5g3OiQZe9EksPASqITZJGH4jIbjwfsKL9nuFRn2kL2uAM9NCURs8a1f/
+	 SUNH5GaSmXAzuK4iXDuB+JRgRoNGCkCokwb+rMAwhC8cEkKTKITnYZVKSDztDB5J2p
+	 7DqXFBb5lscZWAyV1PW46TNQ5BCEL4U1HzWfwWzxBtXBcCPrPfwcjMFldnXX7oAcJO
+	 /bd/7qZdVmbPPsPvutLDGuADRnSBGEbhOzuXcJ0ZXPfUlwbrgZr3wMiO2jO59ozzvC
+	 IlhoQOSFZyG4gYVPfYdNP+hjx5CpDYZaCL8mKUeS6L5WqICjfwnw0o4AIR1tK6GHmB
+	 /it+jwvCSmvpw==
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-54d65cb6e8aso2712265e87.1;
+        Fri, 02 May 2025 06:11:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUYP0X9Sm6nKf3nfoD3R34UD2er/PNLFuxPoQRqWkNbEakw5Fpa21FO1nDl/ejBq92PJeHHXup0qyU=@vger.kernel.org, AJvYcCWo45LK4oO4adK0kD8wIUN9Fyvu1QzeVNJbyLaJqtZzWKX/J8NZnDx4ylUFaMB85tWqGOFxhsg+xxW2UbZ4@vger.kernel.org, AJvYcCXtZUDSS669j8BU/kjtpmkX01mtHvBKbMSY6QLUXvQ7KnzWh2ojMWy2WnU8W872vGG0TmgxENAQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUR1LZl1DEbyjf5dE33iCgd+q2V55hEAlMxeaCRxGxvWSARYqY
+	ALzRreW9MrpXW7F/dnsIgYLXMV6y7cLgyTSrvOZQLEL4gLDyc9YsA0g/v/Slj+LhiuEQaeVhuXM
+	g5NmG1vaErewQ/29FVHNMWQKPZec=
+X-Google-Smtp-Source: AGHT+IEdEEn4W75TgYFwhDu2BtCWaI+eVQnfNjJ68WUtHAcceaTNv5VfX2OxYTlSQ9shxVvG495+ttDBaOpQ0AnuP1A=
+X-Received: by 2002:a05:6512:234f:b0:549:66d8:a1f3 with SMTP id
+ 2adb3069b0e04-54eac2332camr731440e87.40.1746191493168; Fri, 02 May 2025
+ 06:11:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/196] 6.6.89-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250501081437.703410892@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
- xGlkaOSDuu09rxuW+69Y2f1TzjFuGpBk4ysWOR85O2Nx8AJ6fYGCoeTbovrNlGT1M9obSFGQ
- X3IzRnWoqlfudjTO5TKoqkbOgpYqIo5n1QbEjCCwCwCg3DOH/4ug2AUUlcIT9/l3pGvoRJ0E
- AICDzi3l7pmC5IWn2n1mvP5247urtHFs/uusE827DDj3K8Upn2vYiOFMBhGsxAk6YKV6IP0d
- ZdWX6fqkJJlu9cSDvWtO1hXeHIfQIE/xcqvlRH783KrihLcsmnBqOiS6rJDO2x1eAgC8meAX
- SAgsrBhcgGl2Rl5gh/jkeA5ykwbxA/9u1eEuL70Qzt5APJmqVXR+kWvrqdBVPoUNy/tQ8mYc
- nzJJ63ng3tHhnwHXZOu8hL4nqwlYHRa9eeglXYhBqja4ZvIvCEqSmEukfivk+DlIgVoOAJbh
- qIWgvr3SIEuR6ayY3f5j0f2ejUMYlYYnKdiHXFlF9uXm1ELrb0YX4GMHz80nRmxvcmlhbiBG
- YWluZWxsaSA8Zi5mYWluZWxsaUBnbWFpbC5jb20+wmYEExECACYCGyMGCwkIBwMCBBUCCAME
- FgIDAQIeAQIXgAUCZ7gLLgUJMbXO7gAKCRBhV5kVtWN2DlsbAJ9zUK0VNvlLPOclJV3YM5HQ
- LkaemACgkF/tnkq2cL6CVpOk3NexhMLw2xzOw00ESM+4EhAQAL/o09boR9D3Vk1Tt7+gpYr3
- WQ6hgYVON905q2ndEoA2J0dQxJNRw3snabHDDzQBAcqOvdi7YidfBVdKi0wxHhSuRBfuOppu
- pdXkb7zxuPQuSveCLqqZWRQ+Cc2QgF7SBqgznbe6Ngout5qXY5Dcagk9LqFNGhJQzUGHAsIs
- hap1f0B1PoUyUNeEInV98D8Xd/edM3mhO9nRpUXRK9Bvt4iEZUXGuVtZLT52nK6Wv2EZ1TiT
- OiqZlf1P+vxYLBx9eKmabPdm3yjalhY8yr1S1vL0gSA/C6W1o/TowdieF1rWN/MYHlkpyj9c
- Rpc281gAO0AP3V1G00YzBEdYyi0gaJbCEQnq8Vz1vDXFxHzyhgGz7umBsVKmYwZgA8DrrB0M
- oaP35wuGR3RJcaG30AnJpEDkBYHznI2apxdcuTPOHZyEilIRrBGzDwGtAhldzlBoBwE3Z3MY
- 31TOpACu1ZpNOMysZ6xiE35pWkwc0KYm4hJA5GFfmWSN6DniimW3pmdDIiw4Ifcx8b3mFrRO
- BbDIW13E51j9RjbO/nAaK9ndZ5LRO1B/8Fwat7bLzmsCiEXOJY7NNpIEpkoNoEUfCcZwmLrU
- +eOTPzaF6drw6ayewEi5yzPg3TAT6FV3oBsNg3xlwU0gPK3v6gYPX5w9+ovPZ1/qqNfOrbsE
- FRuiSVsZQ5s3AAMFD/9XjlnnVDh9GX/r/6hjmr4U9tEsM+VQXaVXqZuHKaSmojOLUCP/YVQo
- 7IiYaNssCS4FCPe4yrL4FJJfJAsbeyDykMN7wAnBcOkbZ9BPJPNCbqU6dowLOiy8AuTYQ48m
- vIyQ4Ijnb6GTrtxIUDQeOBNuQC/gyyx3nbL/lVlHbxr4tb6YkhkO6shjXhQh7nQb33FjGO4P
- WU11Nr9i/qoV8QCo12MQEo244RRA6VMud06y/E449rWZFSTwGqb0FS0seTcYNvxt8PB2izX+
- HZA8SL54j479ubxhfuoTu5nXdtFYFj5Lj5x34LKPx7MpgAmj0H7SDhpFWF2FzcC1bjiW9mjW
- HaKaX23Awt97AqQZXegbfkJwX2Y53ufq8Np3e1542lh3/mpiGSilCsaTahEGrHK+lIusl6mz
- Joil+u3k01ofvJMK0ZdzGUZ/aPMZ16LofjFA+MNxWrZFrkYmiGdv+LG45zSlZyIvzSiG2lKy
- kuVag+IijCIom78P9jRtB1q1Q5lwZp2TLAJlz92DmFwBg1hyFzwDADjZ2nrDxKUiybXIgZp9
- aU2d++ptEGCVJOfEW4qpWCCLPbOT7XBr+g/4H3qWbs3j/cDDq7LuVYIe+wchy/iXEJaQVeTC
- y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJn
- uAtCBQkxtc7uAAoJEGFXmRW1Y3YOJHUAoLuIJDcJtl7ZksBQa+n2T7T5zXoZAJ9EnFa2JZh7
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <20250501081437.703410892@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250428174322.2780170-2-ardb+git@google.com> <0ad5e887-e0f3-6c75-4049-fd728267d9c0@amd.com>
+In-Reply-To: <0ad5e887-e0f3-6c75-4049-fd728267d9c0@amd.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 2 May 2025 15:11:21 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE7=u9xNcUHiyFVPbOpwPvntFjdLfTzD0LeD_7it2MEQg@mail.gmail.com>
+X-Gm-Features: ATxdqUHCnZY8z4Ary2AT3uxsxUGdTmlnVzUmAj4WTaZo_j0E0mElkzIG8dLedpk
+Message-ID: <CAMj1kXE7=u9xNcUHiyFVPbOpwPvntFjdLfTzD0LeD_7it2MEQg@mail.gmail.com>
+Subject: Re: [PATCH] x86/boot/sev: Support memory acceptance in the EFI stub
+ under SVSM
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, Borislav Petkov <bp@alien8.de>, 
+	Ingo Molnar <mingo@kernel.org>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Kevin Loughlin <kevinloughlin@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+
+On Thu, 1 May 2025 at 20:05, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>
+> On 4/28/25 12:43, Ard Biesheuvel wrote:
+> > From: Ard Biesheuvel <ardb@kernel.org>
+> >
+> > Commit
+> >
+> >   d54d610243a4 ("x86/boot/sev: Avoid shared GHCB page for early memory acceptance")
+> >
+> > provided a fix for SEV-SNP memory acceptance from the EFI stub when
+> > running at VMPL #0. However, that fix was insufficient for SVSM SEV-SNP
+> > guests running at VMPL >0, as those rely on a SVSM calling area, which
+> > is a shared buffer whose address is programmed into a SEV-SNP MSR, and
+> > the SEV init code that sets up this calling area executes much later
+> > during the boot.
+> >
+> > Given that booting via the EFI stub at VMPL >0 implies that the firmware
+> > has configured this calling area already, reuse it for performing memory
+> > acceptance in the EFI stub.
+>
+> This looks to be working for SNP guest boot and kexec. SNP guest boot with
+> an SVSM is also working, but kexec isn't. But the kexec failure of an SVSM
+> SNP guest is unrelated to this patch, I'll send a fix for that separately.
+>
+
+Thanks for confirming.
+
+Ingo, Boris, can we get this queued as a fix, please, and merge it
+back into x86/boot as was done before?
 
 
-
-On 5/1/2025 10:18 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.89 release.
-> There are 196 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 03 May 2025 08:13:56 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.89-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
-
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
-
+> Thanks,
+> Tom
+>
+> >
+> > Cc: Borislav Petkov <bp@alien8.de>
+> > Cc: Ingo Molnar <mingo@kernel.org>
+> > Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
+> > Cc: Kevin Loughlin <kevinloughlin@google.com>
+> > Cc: <stable@vger.kernel.org>
+> > Fixes: fcd042e86422 ("x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0")
+> > Co-developed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> > Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> > Tom,
+> >
+> > Please confirm that this works as you intended.
+> >
+> > Thanks,
+> >
 
