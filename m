@@ -1,129 +1,100 @@
-Return-Path: <stable+bounces-139524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2FB1AA7D90
-	for <lists+stable@lfdr.de>; Sat,  3 May 2025 01:57:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCB0AA7D92
+	for <lists+stable@lfdr.de>; Sat,  3 May 2025 01:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24FE77B796F
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 23:56:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A51AA1BA694B
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 23:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7026527056A;
-	Fri,  2 May 2025 23:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0C0270565;
+	Fri,  2 May 2025 23:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lHt8jwHY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NmkFkQp9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245631EEA4E;
-	Fri,  2 May 2025 23:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3425622D7BD
+	for <stable@vger.kernel.org>; Fri,  2 May 2025 23:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746230237; cv=none; b=Et8JxY1YLpVn9uPj/3HSoFLTLp6fIdx2cSQXuwzhYjbYcQhrhNvh5YG7LYQkdxekzKyQBMmAVeCHnBEs75gmnbMu5BN3LruiE8DsyD6h1HuKXEVQegFwizz0tovRF39zS0n8Gu7sRQxtUa4qwU7wK/oGaW34n58omJLOWuGEnTM=
+	t=1746230321; cv=none; b=QZGPRipp/Xvz+uu6Rur2FwNH1tKhJRI8ocunFrIbjmH+zFhOe+d9GdyRq6oC7FpeWfzzaf4aovhS3V4XCekpmWgpez6th86UhmI/gbDHOYjyfCLy7c1xDseRDf30RXbmBN1CE7XGnSsaL05FGgUyWYIWPbYb9wuAS0agoAVQAoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746230237; c=relaxed/simple;
-	bh=PVEABnovuqU+G2Rx4Yj6v3Jpl6rgBdbKjzl1gkywClk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Dq6ewBx1Ed/aBslPoVrcO6UBsUXlEyhjIVmVYeM+S4tdvVp3Nj+WO+4/syB1SLoy4Uv7tGyPGoa5YUAH1qGGW/c9Tni4+vZuqprpmbUsoFiG+RJmkEm2/e/WbaRCluwWqX1rgyhqr2oLeTAV9LiUVUKQOWnZwBbTn3aU5NwvfLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lHt8jwHY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 92B75C4CEE4;
-	Fri,  2 May 2025 23:57:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746230235;
-	bh=PVEABnovuqU+G2Rx4Yj6v3Jpl6rgBdbKjzl1gkywClk=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=lHt8jwHY8o1RDFknGkE6SWn5K01bv0JvSow/6z4SJ4fQugGopK1pNXv45Z8KUFXwP
-	 wNPh+81L2+MZFm/AwoPk9IJP4huQEMMRP5s4D7TdJoQm37j7FCiHSPUOXvIEgiJnP0
-	 eGbu9j/pMvO1jhfU5+Rf238N4q4jUx9m9+oIKWN9GDEQiURwfKYS/a1IwHfQMzddE8
-	 O3o5UBinEAD566oa2dqnSeM/q6hwuxnwRcFLXwljlwvEDnRAl7IVUQP1NkmgApB3rK
-	 4v3p5UrZ5QSYDgkYwR4EeEB/VgYSkWMxmPpariOevZv8uyp2HpF8SGaJc1cSkXopJ1
-	 Yj/A485RKUq/A==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FA2FC3ABAC;
-	Fri,  2 May 2025 23:57:15 +0000 (UTC)
-From: Amit Sunil Dhamne via B4 Relay <devnull+amitsd.google.com@kernel.org>
-Date: Fri, 02 May 2025 16:57:03 -0700
-Subject: [PATCH] usb: typec: tcpm/tcpci_maxim: Fix bounds check in
+	s=arc-20240116; t=1746230321; c=relaxed/simple;
+	bh=4b0yRqo0rAxHy0l8qp/09UIiMn63xiGV7yOhM0W+d1w=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=HTIgbcWdPtBkYQQ+n4NyCWATBpLecxfvzOaYSOpPpaseaYd5567nh2ScwK4vCUAK13v//BUSzrzRMZlcoMIru6i+CK1DFPfk5oYyUnP1zPdjtrd4HU/TTTwdpEHt8gAFf9B2YICu6SixywNtVHWfS5mTZfqpzEst/4fJNeZM3ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NmkFkQp9; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746230321; x=1777766321;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=4b0yRqo0rAxHy0l8qp/09UIiMn63xiGV7yOhM0W+d1w=;
+  b=NmkFkQp90BXiDdnZA6qi5nxPeDRqtksPGOLO8B4r6MVEiatR8QEkfABC
+   y4FaLa9QgRSIpuc1T7fik45oTWSEGMaKqyZl6xO2kxoswEHkOzXUoCKaE
+   ijQlmU0lXWxp+kX9ij8P4/wavMBD/A7FHl6Fi8st+xw3EZMdfY35pohG1
+   w90dtYjDfXs/0N/zjCed58E5zUgOC2jywFraUAtNpMYO5pvgDc1No7FS0
+   Y29HraNSA6sxLyneFGDf4Nmkjsq3ScqPHzjhzsYEEbr7Q8jU7jJijqPiB
+   /xp11+J/6f0yi72VqiMADAGyo/jxXhAkcsUg5RlQW9ur1UcDEbxM3NVy/
+   Q==;
+X-CSE-ConnectionGUID: aXas21V1QQG8Srth4MuTPg==
+X-CSE-MsgGUID: T8u6XnNCRNyYke+g/1/fbQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="51735282"
+X-IronPort-AV: E=Sophos;i="6.15,257,1739865600"; 
+   d="scan'208";a="51735282"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 16:58:40 -0700
+X-CSE-ConnectionGUID: veRvFMVKTIaFkxw2pvuf/Q==
+X-CSE-MsgGUID: BxHNF8kuSQ+hn9L3/B6fMA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,257,1739865600"; 
+   d="scan'208";a="139914655"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 02 May 2025 16:58:39 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uB0H6-00055h-1Z;
+	Fri, 02 May 2025 23:58:36 +0000
+Date: Sat, 3 May 2025 07:58:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Amit Sunil Dhamne via B4 Relay <devnull+amitsd.google.com@kernel.org>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] usb: typec: tcpm/tcpci_maxim: Fix bounds check in
  process_rx()
+Message-ID: <aBVcHOF7oTPvk0XZ@92092d2942b5>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com>
-X-B4-Tracking: v=1; b=H4sIAM5bFWgC/x2MywqAIBAAfyX23EJKJfYr0SFrq71YrD0E6d+Tj
- gMzkyCQMAXoigRCNwfefQZVFjBto18Jec4MutJNVWuFrkZPDy4c8ZhRIk775U80VlvjxlZZZyD
- Hh1BW/nE/vO8H7HJeNWgAAAA=
-X-Change-ID: 20250421-b4-new-fix-pd-rx-count-79297ba619b7
-To: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Badhri Jagan Sridharan <badhri@google.com>
-Cc: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
- Peter Griffin <peter.griffin@linaro.org>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, RD Babiera <rdbabiera@google.com>, 
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Amit Sunil Dhamne <amitsd@google.com>, 
- Kyle Tso <kyletso@google.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1746230235; l=1638;
- i=amitsd@google.com; s=20241031; h=from:subject:message-id;
- bh=vGHl5bogQ6MXAcBZGSBqyO6WniDKbsq9TxUanfyP/D0=;
- b=MQhqKGSoGaDHNV4VW4oJMLEmFrNWzWKJNYBUplKvCqCSZqAVLDl/+35LL0ic7i9TG1NFK70jL
- E5RET5hCJp+BAT2Miq/9XIT16NDxYi/ks97Ovyj79IDKQYKRsAm9XrE
-X-Developer-Key: i=amitsd@google.com; a=ed25519;
- pk=wD+XZSST4dmnNZf62/lqJpLm7fiyT8iv462zmQ3H6bI=
-X-Endpoint-Received: by B4 Relay for amitsd@google.com/20241031 with
- auth_id=262
-X-Original-From: Amit Sunil Dhamne <amitsd@google.com>
-Reply-To: amitsd@google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com>
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+Hi,
 
-Register read of TCPC_RX_BYTE_CNT returns the total size consisting of:
+Thanks for your patch.
 
-  PD message (pending read) size + 1 Byte for Frame Type (SOP*)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-This is validated against the max PD message (`struct pd_message`) size
-without accounting for the extra byte for the frame type. Note that the
-struct pd_message does not contain a field for the frame_type. This
-results in false negatives when the "PD message (pending read)" is equal
-to the max PD message size.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Fixes: 6f413b559f86 ("usb: typec: tcpci_maxim: Chip level TCPC driver")
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Kyle Tso <kyletso@google.com>
----
- drivers/usb/typec/tcpm/tcpci_maxim_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] usb: typec: tcpm/tcpci_maxim: Fix bounds check in process_rx()
+Link: https://lore.kernel.org/stable/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d%40google.com
 
-diff --git a/drivers/usb/typec/tcpm/tcpci_maxim_core.c b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-index fd1b80593367641a6f997da2fb97a2b7238f6982..648311f5e3cf135f23b5cc0668001d2f177b9edd 100644
---- a/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-+++ b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-@@ -166,7 +166,8 @@ static void process_rx(struct max_tcpci_chip *chip, u16 status)
- 		return;
- 	}
- 
--	if (count > sizeof(struct pd_message) || count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
-+	if (count > sizeof(struct pd_message) + 1 ||
-+	    count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
- 		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d\n", count);
- 		return;
- 	}
-
----
-base-commit: ebd297a2affadb6f6f4d2e5d975c1eda18ac762d
-change-id: 20250421-b4-new-fix-pd-rx-count-79297ba619b7
-
-Best regards,
 -- 
-Amit Sunil Dhamne <amitsd@google.com>
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
 
 
