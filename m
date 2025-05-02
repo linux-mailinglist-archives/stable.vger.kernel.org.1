@@ -1,214 +1,162 @@
-Return-Path: <stable+bounces-139518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81980AA7B53
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 23:22:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7009CAA7B84
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 23:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 389E41C00380
-	for <lists+stable@lfdr.de>; Fri,  2 May 2025 21:22:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C260E4A8051
+	for <lists+stable@lfdr.de>; Fri,  2 May 2025 21:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B66720127A;
-	Fri,  2 May 2025 21:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E491F2B8E;
+	Fri,  2 May 2025 21:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="qEhbWpvP"
+	dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b="mTIZrZnT"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2045.outbound.protection.outlook.com [40.107.244.45])
+Received: from gmmr-3.centrum.cz (gmmr-3.centrum.cz [46.255.225.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A311376;
-	Fri,  2 May 2025 21:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746220918; cv=fail; b=fwqtdtH7ImlJOLetbyxUa1/kuQsAI6wZqAfzMoWJEsd8giToQHtT11GfMMSQZLunlCsiIJCHHRpX1dfSreHoowFG74XwxPwVKIIUbc+QaWeOiGwPJnIP7CdianCXwgeu1LGTZwKNNQemOgn2WxHskFyYH0F9jUqNtUqJrQYDOcc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746220918; c=relaxed/simple;
-	bh=vt+aSB+Qbqu0Jo6PjkJst8uAWiFZ9ONl6HyC6OYJ9wY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fOmYdtvqrCq0Zpm8kQz8D8xI8L4O3Zc8HPzZSVYxV08e7EEYcdpEzdl1cbA87IHyq6uTcKi/lRul/MKuYKi8/cqCvlRAZV70TmXjrge4GKCON2ay5U1BvY5r6Zwj7TLUFrGsL0Ym68TmMBdfrYwLSjg9/bVvYz3vzeqTi2RxAjQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=qEhbWpvP; arc=fail smtp.client-ip=40.107.244.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tiGTz9El8qF8Ol9d1Ss5KWakjrXyzaEg3kvACLcVIxgrF6BTdOkpGKZ57lCZ1QQYQ8h+ornKFrb6JvRZ4FU2hDurdzXQZ22FotkTR+29C4ohff0HCOXK39I2KcdBgnVG7N+gv/eRPreuielQpp+rkY8k5MyMPypFIJSc0XxDYpYLnU/U03kh5NM3AXeetzSRYh9FVvfzCZC/mfMBx0CgT8OczZ0e1Guo/FiMgx/OH73kmLoR8Jx7AXtA/xrdiaLJJxBsXFNRtawpUH3mkW2FZe8SAC5ThvGSVyzk6Jw4IGKiPbvmhlo/K3GN9bHeFZo2eDaCJ2VNKO1AQiJUiGaIww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ImTkuPZW2UYXRTQqSgpv28YsSGuOW75mJWfxZgBsLvA=;
- b=eL+Qc/WU97/yF1HNpyJe4sgOUjGxDjAbMQuhN/3H77Msh6xmrhLobYVmtlY1vexsAIj/eLq/2DB62ihfWmytFXmo7nlrzAPpto9VqKlvUAj9GMCzRWI8rpsapyonBhGJDtJWJJblNzxJtFoELNzOG/PQgZPUOKm8xyMoIeBFHD2RKqCAjNgAnLO5hglNgMgi0CE1o7hnyIiDsnWV3WqLPa8LMcu9tI7DqDITqyOFRvmBbrB+0i06o5RwyZS2/NZntThydoxWuF0DxkUxPEBosmOqStKmh3VNKtZSDWJDlNuOuDrIzB3Q4fZJ59rHH5GHZnhX0dY3swkIbqREm2E9CQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linutronix.de smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ImTkuPZW2UYXRTQqSgpv28YsSGuOW75mJWfxZgBsLvA=;
- b=qEhbWpvPvLFQ8p+3VZyC69DEZ1Xa8sVAkY3dlFeChvfAOa2wtWlrGa8b4tXOTwYiHR1Lqr5z+Og5oMy5nVP1PRbr4E2PdYL8zrZhXN6o6e+NAq60TY0BuYWaerS4NO3o1C/Q1VETj/GuMxDnSI+2V6Bi1qEx+ES9e5NAIm78UkU=
-Received: from LV3P220CA0001.NAMP220.PROD.OUTLOOK.COM (2603:10b6:408:234::33)
- by SA1PR12MB8858.namprd12.prod.outlook.com (2603:10b6:806:385::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.21; Fri, 2 May
- 2025 21:21:54 +0000
-Received: from MN1PEPF0000ECD8.namprd02.prod.outlook.com
- (2603:10b6:408:234:cafe::bf) by LV3P220CA0001.outlook.office365.com
- (2603:10b6:408:234::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.24 via Frontend Transport; Fri,
- 2 May 2025 21:21:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MN1PEPF0000ECD8.mail.protection.outlook.com (10.167.242.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8699.20 via Frontend Transport; Fri, 2 May 2025 21:21:53 +0000
-Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 2 May
- 2025 16:21:53 -0500
-From: Ashish Kalra <Ashish.Kalra@amd.com>
-To: <tglx@linutronix.de>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <bp@alien8.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>
-CC: <michael.roth@amd.com>, <nikunj@amd.com>, <seanjc@google.com>,
-	<ardb@kernel.org>, <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<kexec@lists.infradead.org>, <linux-coco@lists.linux.dev>
-Subject: [PATCH v4] x86/sev: Fix making shared pages private during kdump
-Date: Fri, 2 May 2025 21:21:43 +0000
-Message-ID: <20250502212143.578866-1-Ashish.Kalra@amd.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCD81E5B62;
+	Fri,  2 May 2025 21:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.225.205
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746222645; cv=none; b=NFJy5UuOBII4IO+ICn9KnUst2KIruLO++814dziDd0M6RhYMq7Kj70RHPHg1m/JPBwNUKfV4b93Rt4m5WzwFXLm4FZ79lwNB+4Wfc7GlnFDixAN30Lx693vasnwoW+80E8vyCIUrOxBbpjq2VxPZ6hltMwk30/zMH6XJ3S+hLAw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746222645; c=relaxed/simple;
+	bh=spFxqAg8V0e+nLyhUtOHYr+re8J5rfHHZ7tEXoN0alA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r15WQuhWe+ZVCrotISm3nI3tjUxeRg/O+9pvt2O5lRumWiaZKM3PU5Qm5MVBt5do5MdWCZr1wkuNiV1aojx5nVdVS9MerSimLWUWvDwVoPhTVf48j+FUNIu4qzUponATNXGhFlnQQbZAH7DAYyHUS5BfQW+1jEvAzj8nF6/2yXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz; spf=pass smtp.mailfrom=atlas.cz; dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b=mTIZrZnT; arc=none smtp.client-ip=46.255.225.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atlas.cz
+Received: from gmmr-3.centrum.cz (localhost [127.0.0.1])
+	by gmmr-3.centrum.cz (Postfix) with ESMTP id 6AFBF201348F;
+	Fri,  2 May 2025 23:50:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=atlas.cz; s=mail;
+	t=1746222631; bh=YX4Z2wu6WHT3TtCNBsRPyrED6BoxUocx7yjmUHbO4Lc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mTIZrZnTyoC2e4DzNJx5iPmanoexOD0yIeM2wpdxurZGamNtSFNiVAUE3yPZMoNiJ
+	 MJJY94pudIam/c1fmgOb8X9ie+iWx60k2hzZrCHjN/GVr+Qi2+0Dx0hieG7iYfFWsy
+	 sn/lRExmy8cgEtVYwxHlOnygk1/9Zaxcj0nuJkjw=
+Received: from antispam37.centrum.cz (antispam37.cent [10.30.208.37])
+	by gmmr-3.centrum.cz (Postfix) with ESMTP id 69E63201BFD5;
+	Fri,  2 May 2025 23:50:31 +0200 (CEST)
+X-CSE-ConnectionGUID: m3Nda2qKRzKp4czMMOyS5A==
+X-CSE-MsgGUID: AeKj+rjyTSmA+YeG1zR4ZQ==
+X-ThreatScanner-Verdict: Negative
+X-IPAS-Result: =?us-ascii?q?A2H5AAB0PRVo/0vj/y5aGgEBAQEBAQEBAQEDAQEBARIBA?=
+ =?us-ascii?q?QEBAgIBAQEBQAmBSoM0DYFlCYRMpB2BIIxJDwEBAQEBAQEBAQk9FAQBAQMEN?=
+ =?us-ascii?q?wEGhDgKizsnOBMBAgQBAQEBAwIDAQEBAQEBAQEBDQEBBgEBAQEBAQYGAQKBH?=
+ =?us-ascii?q?YU1Rg2CYgGBJIEmAQEBAQEBAQEBAQEBHQINgScPAUYoDQImAl8SgwIBgi8BN?=
+ =?us-ascii?q?BQGsw+BMhoCZdxwAoEjZIEjBoEbLgGITwGEfHAbhR6CDYQOb4EFAYFEgkaDD?=
+ =?us-ascii?q?oJpBIItRD4UkwiLI0iBBRwDWSwBVRMNCgsHBYFpAyoLDAsSHBVuMx2CD4Ufg?=
+ =?us-ascii?q?g+CBIkOhE0tT4UxgSpHQAMLGA1IESw3FBsGPQFuB5VSg2yBDiyBBROUULMvh?=
+ =?us-ascii?q?CWETodLlTIaHhWXUx4DkmWZACKLa4F5lkaEaYF+gX8zIjCDIhIBPxmOR4h8u?=
+ =?us-ascii?q?iZ2AgE5AgcBCgEBAwmCO44CgUsBAQ?=
+IronPort-PHdr: A9a23:SOfZfhbvAG9kXqFy8mYEnET/LTEt1oqcDmcuAnoPtbtCf+yZ8oj4O
+ wSHvLMx1wWPBd2Qsa0f1rSempujcFJDyK7JiGoFfp1IWk1NouQttCtkLei7TGbWF7rUVRE8B
+ 9lIT1R//nu2YgB/Ecf6YEDO8DXptWZBUhrwOhBoKevrB4Xck9q41/yo+53Ufg5EmCexbal9I
+ Ri4swndrNUajZdtJqovyBbErHtFduVLzm50OFyfmArx6ci38JN/6Spbpugv99RHUaX0fqQ4S
+ aJXATE7OG0r58PlqAfOQxKX6nUTSmsZnQNEDhbK4h/nRpv+vTf0ueR72CmBIM35Vqs0Vii47
+ 6dqUxDnliEKPCMk/W7Ni8xwiKVboA+9pxF63oXZbp2ZOOZ4c6jAZt4RW3ZPUdhNWCxAGoO8b
+ pUAD+wdPeZDsoLxo0ICoQaiCQWwAe/izCJDiH3r0q0gy+kvER/I0RI9EdwAs3raq9r6O7sdX
+ +2u0KnFzi/OY+9M1Dvh6oXFdA0qr/GWXbJ3dMrc0VMhGB3ZjlWKtIfqMCma1uITtmiY8uFtU
+ vigi3Qkqw5rpzig3N0sh5LTiYIJzlDL7z55zJwpKty5UUN2Z8OvH5RMuS+ALYR2Xt8iTH9yu
+ CY80rAKp561ciYFxpg62xLSdv+KfpWG7B/gSOqfITV1iWxhdby/mhu8/ketx+7/W8SozVpHq
+ jZIn8XCu3wR2BLe98mKR/1g9Umv3jaP0hrc6uBCIU0slqrUNYQhwrgumZoXq0jDGTX2mErwg
+ aSLdUsk4vCl5uvmb7n8uJORN495hhvgPqgwmMGzG+Y1PwgWU2SF5Oix2qfv8VPnTLlWlPE6j
+ KbUvIzAKckfp6O0BRJe3Jw55BalFTim1cwVnXwALF1YZh2Kl5PpO1TSIPDgCve/nkisnC9rx
+ //YOr3hBY3ALnfGkLv4ZrZ97lJcyBIuwdxC/Z5bFq8OIPTvWk/rqdzYCwU1PBC1wur/CdV90
+ J0RWX6XD6KWMa7eq0GE6+IvLuWWeoMZpjTwJ+In6vPulXM5nEUSfait3ZsZcnC4GfFmLl2Db
+ nr2gdcOC2IKsRAkTOHxklKCTTpTaGypX64m+j46CZqqDZ3fSYC1nLyBwCC7E4VMZmFGEF+MF
+ 23kd5+DW/gXdi2SONNhkicfWLe7UY8h0AuiuxP9y7piNubU4DEXtYr/1Nhp4O3ejQs99SZ3D
+ 8uH1mGCVXt0k3gSSD8q2KBwu1d9xk2f3ql5m/BYD8Bc5+tVUgcmMp7R1+N7BtPzVw/afdeGV
+ kymQtO4DjE1VN4xxMUOY0llF9W4kh/DxzaqA6MSl7GTAJw086Tc32X+JspkznbG0bIsj1o4Q
+ sRVKWKmhbRz9w/JB47Gi0mZjbqldbwA3C7R82eO1XCBvEJAUA51SqjFWXEfZk3LrdX2/0/CQ
+ biuCakhMgRc08GCNqpKatrvjVlcQ/fjItveb3qrm2isHRaI2q+MbI3ydmQSwirdDlEInB0N8
+ naYKwc+Ajyso2bfDDx1CVLveFng8OZgp3O9Vk801QaKb09/2LWp5h4Zn/ucS+kc3r4coicut
+ y10HEqh39LRE9ePuhBufLtdYdwg+1pHz3zWuBF9PpO6M6BunEIRcwNyv0/2zRV4Fp1AkdQ2r
+ HMt1AdyLaOY0FVcdzKXxJzwOaPYKnP0/B+xb67bwU/e0NmI9acV8vg4qEvsvBuvFkU893Vry
+ d5V02GT5saCMA1HVZP3T1Zy8h1SpK/TaSp74JnbkTVoMK+ponrB1sgvCe8N1BmtZZFcPbmCG
+ Qu0FNcVVOa0L+l/o1W1dFo6Nebx9+ZgNtmlfv6PwoaiIOJph3StnzIUs8hGzkuQ+n8kGabz1
+ JEfzqTdh1PfPwo=
+IronPort-Data: A9a23:ZRNwXq70WSJdbAup7e76YgxRtM7GchMFZxGqfqrLsTDasY5as4F+v
+ jQdWT2OPPnYYWShedp3YIu38khX7ZbTm4IyHgJlrS5kZn8b8sCt6fZ1j6vT04F+CuWZESqLO
+ u1HMoGowPgcFyKa+1H0dOC88BGQ7InQLpLkEunIJyttcgFtTSYlmHpLlvUw6mJSqYHR7zil5
+ 5Wr/qUzBHf/g2Qpaj9MsfrZwP9SlK2aVA0w7wFWic9j4we2e0k9VPo3Oay3Jn3kdYhYdsbSb
+ /rD1ryw4lTC9B4rDN6/+p6jGqHdauO60aCm0xK6aoD66vRwjnVaPpUTaJLwXXxqZwChxLid/
+ v0W7MDtFl15VkH7sL91vxFwS0mSNEDdkVPNCSDXXce7lyUqf5ZwqhnH4Y5f0YAwo45K7W9yG
+ fMwLWsrYhnZnsGM0pGjFuJ+o+EEPfK2FdZK0p1g5Wmx4fcOTpWGWKDW/YYBmjw9gNxUAPOYb
+ NhxhThHMEqGOUASfA1NV9RhwY9EhVGmG9FcgFuPpqMy6nL7xRB12aOrO8i9ltmiHJ0Oxx3F/
+ T2fl4j/KjgXF97c0ziUzkmpr6z+kAyiSrhOJoTto5aGh3XWnAT/EiY+T0qyp7+jjUSzQc5EA
+ 0UO/2wlqq1a3EWxTdD4VgeQqWKAtwVaUMg4O/1qtimOx7DS7gLfAXILJhZFado7pIozQBQpy
+ FaCnJXuHzMHmLSWUXe18raSsCP3Ny8IK2MLeS4DS00C+daLiJE+iFfDQ8huFIaxj8bpAnfgz
+ jaSti88ir4Py8kR2M2T8VnZgj6EvJXFTgcpoA7QWwqN6gJ/eZ7gZIGy71XfxehPIZzfTVSbu
+ nUA3c+E44gmFo2EniiAaPsCEavv5PufNjDYx1l1EPEcGy+FpyDlJ90NpmskewE2b67oZAPUX
+ aMagisJjLc7AZdgRfUfj16ZYyjy8ZXdKA==
+IronPort-HdrOrdr: A9a23:juBlLKMTlAGubcBcTtCjsMiBIKoaSvp037Dk7SxMoHtuA6mlfq
+ GV7ZYmPHDP5gr5NEtLpTniAtjifZq/z/9ICOAqVN/IYOCMggSVxe9ZgLcKuweBJxHD
+X-Talos-CUID: 9a23:D+Iz1mOs8xwLWe5DXXJB+EdOA+MfYF7FkHzCBmqfGF00YejA
+X-Talos-MUID: =?us-ascii?q?9a23=3ArFljWw25Exhfum1n9yc06o7XrzUjyqmNCgMXk4Q?=
+ =?us-ascii?q?6gMytdh19FG6PtmiFe9py?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.15,257,1739833200"; 
+   d="scan'208";a="103135371"
+Received: from unknown (HELO gm-smtp11.centrum.cz) ([46.255.227.75])
+  by antispam37.centrum.cz with ESMTP; 02 May 2025 23:50:30 +0200
+Received: from localhost.localdomain (ip-213-220-240-96.bb.vodafone.cz [213.220.240.96])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gm-smtp11.centrum.cz (Postfix) with ESMTPSA id A6B10100AE2B1;
+	Fri,  2 May 2025 23:50:30 +0200 (CEST)
+From: =?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	xen-devel@lists.xenproject.org,
+	x86@kernel.org,
+	stable@vger.kernel.org,
+	=?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>
+Subject: [PATCH v2 0/1] mm: Xen PV regression after THP PTE optimization
+Date: Fri,  2 May 2025 23:50:18 +0200
+Message-ID: <20250502215019.822-1-arkamar@atlas.cz>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD8:EE_|SA1PR12MB8858:EE_
-X-MS-Office365-Filtering-Correlation-Id: 324e22e8-33cd-43ff-52a5-08dd89bf5c7b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?560fQl8DQEErdxEVsdbHUO3OW8644n87k3OdbPoxNYHE9Hu3lcOwWYOaUx3q?=
- =?us-ascii?Q?s55QAJqK7Zvz3HUQNMekBwU4vUnta0NiHjjUdXi4EL6fMhm8UTo4pc0K3ON8?=
- =?us-ascii?Q?sw+qnHv7U2k0nKvMqlsZDOe2AiT5rGYw2RRAIgQgPSHC1K29xv1wgUVsCgWm?=
- =?us-ascii?Q?+qLJr4j8Zp+HXeGrWpGcSZeiwnvEuo+ul+QcKak76mWL0RfG+C+AmRb+n/Y0?=
- =?us-ascii?Q?iTOZCR8+qfVlENrfMSSNQP2Efbg+ymOD78uAI4iwgeUD3au1ott+4xk1c8/9?=
- =?us-ascii?Q?NuBDGHXxrhOZmKeiDvULftNR98w9NTDX59MJ0E4hbJNCH40kTKft5u861Ui6?=
- =?us-ascii?Q?jmdbwnex6jzVzdSOT7jKeklvBeuXQFeRDddXr2TSn1kBXWHand9obCgWdVJe?=
- =?us-ascii?Q?Z95NtDnhLmLY3kl5e3xpgUajEaWkKis0oifeifzr0tlUZonWqR+JWOsOIwAm?=
- =?us-ascii?Q?0Gw/kThEjxHzrp6cnqlc4TRSyMYR5Dtp8ce/umHb4s/eqlpNTddI4IfjzIOF?=
- =?us-ascii?Q?EV3P3vB+e9TLfyHFHkCEQeIDkocZESPk/TTZFmx3TKQmSeUW5EOX0ugFrs3d?=
- =?us-ascii?Q?ry4aO9Xew+L6ctwEoveWc/uTZ5oxkwGLUBBpBOjgBtOu3aeSiNNQl3WPqY6O?=
- =?us-ascii?Q?xB5h53PcF8GDnxKGxdPaB6O9/aLtmBxemcng+Ymx1ExFAjIia+x4K+r7iu7e?=
- =?us-ascii?Q?2/IHV8mw5LRPqqqaDmwqKoKJk8Bl0QIcHDlxLP/ZILa2cwtWMdDKsYvneXPU?=
- =?us-ascii?Q?YTXrAg8+hPD2LmG6GFlbFFf7KpkI9iuUFAOOo3Zg3X8u8Crx428v77tiTs2z?=
- =?us-ascii?Q?NCIj0sGxaD4hFMfOVxNrFuWiuxcPW0RsBPYGyN3ekxv/6UJP8cpa+94QZKfq?=
- =?us-ascii?Q?FbuU95rgkiMyRVGobPZI1cHXqqNoWUUAVJfZwNXtriBKqOASimaXJsN7f4XD?=
- =?us-ascii?Q?eHOU3/uNt9CD+d9ijEz6ngOmQOrELnrOhUqkfsKvGXmB16mrvlnYpD2ZTeko?=
- =?us-ascii?Q?rbgVTojy0KQLKjdStbnU2eW7lkBwJAqKmGdzwiWtq3uqfWzcsfT7kptNfFkL?=
- =?us-ascii?Q?UT2b4MBxl8tiuOufJMl25RPqpTZyOLGTzB3DoDOoxPdTKfoYbT/zCgz2Zt0W?=
- =?us-ascii?Q?oxecCWzn4wf4fN9VPqPPhqSe2cKYht4Xh2GdAfQ05fgPzefmJPsSdpklNv5u?=
- =?us-ascii?Q?0nhlpgz4nc+79WNqly3GB/OisZiyiVq4SPA4nleGJC2az9E0r4x2KnhgykBI?=
- =?us-ascii?Q?p3bqDfoF8Tu2nSeEnXUZwFvmdZskzem4z+fD8Rwlu9ZmEaDVc2iYJYWIh016?=
- =?us-ascii?Q?gcpbJvCTmISN5+QLnxdS/QB31lijlVwLaCoWF+NxVIV1M8/QfWrtZkednHUn?=
- =?us-ascii?Q?uUlLJzyog3hOhznrJDYdpPamUNfFfkzBOC6oONRUXx2EaAofPe7An07ugD07?=
- =?us-ascii?Q?X6cp19iPElvk0JJMePrYkRKfJh0i8oBg8aixDqk4HSTTfZ2KjSSRJZW3KcpW?=
- =?us-ascii?Q?MR9eSqphudSXo65npTZbJEccnErgoVqIrSjU?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(7416014)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2025 21:21:53.9365
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 324e22e8-33cd-43ff-52a5-08dd89bf5c7b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000ECD8.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8858
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+Hi all,
 
-When the shared pages are being made private during kdump preparation
-there are additional checks to handle shared GHCB pages.
+I recently discovered an mm regression introduced in kernel version 6.9
+that affects systems running as a Xen PV domain [1]. Original fix
+proposal wasn't ideal, but it sparked a discussion which helped us
+fully understand the root cause.
 
-These additional checks include handling the case of GHCB page being
-contained within a huge page.
+The new v2 patch contains changes based on David Hildenbrand's proposal
+to cap max_nr to the number of PFNs that actually remain in the folio
+and to clean up the loop.
 
-The check for handling the case of GHCB contained within a huge
-page incorrectly skips a page just below the GHCB page from being
-transitioned back to private during kdump preparation.
+Thanks,
+Petr
 
-This skipped page causes a 0x404 #VC exception when it is accessed
-later while dumping guest memory during vmcore generation via kdump.
+[1] https://lore.kernel.org/lkml/20250429142237.22138-1-arkamar@atlas.cz
 
-Correct the range to be checked for GHCB contained in a huge page.
-Also ensure that the skipped huge page containing the GHCB page is
-transitioned back to private by applying the correct address mask
-later when changing GHCBs to private at end of kdump preparation.
+Petr Vaněk (1):
+  mm: fix folio_pte_batch() on XEN PV
 
-Cc: stable@vger.kernel.org
-Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
----
- arch/x86/coco/sev/core.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ mm/internal.h | 27 +++++++++++----------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index d35fec7b164a..97e5d475b9f5 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -1019,7 +1019,8 @@ static void unshare_all_memory(void)
- 			data = per_cpu(runtime_data, cpu);
- 			ghcb = (unsigned long)&data->ghcb_page;
- 
--			if (addr <= ghcb && ghcb <= addr + size) {
-+			/* Handle the case of a huge page containing the GHCB page */
-+			if (addr <= ghcb && ghcb < addr + size) {
- 				skipped_addr = true;
- 				break;
- 			}
-@@ -1131,9 +1132,8 @@ static void shutdown_all_aps(void)
- void snp_kexec_finish(void)
- {
- 	struct sev_es_runtime_data *data;
-+	unsigned long size, mask, ghcb;
- 	unsigned int level, cpu;
--	unsigned long size;
--	struct ghcb *ghcb;
- 	pte_t *pte;
- 
- 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
-@@ -1157,11 +1157,14 @@ void snp_kexec_finish(void)
- 
- 	for_each_possible_cpu(cpu) {
- 		data = per_cpu(runtime_data, cpu);
--		ghcb = &data->ghcb_page;
--		pte = lookup_address((unsigned long)ghcb, &level);
-+		ghcb = (unsigned long)&data->ghcb_page;
-+		pte = lookup_address(ghcb, &level);
- 		size = page_level_size(level);
-+		mask = page_level_mask(level);
-+		/* Handle the case of a huge page containing the GHCB page */
-+		ghcb &= mask;
- 		set_pte_enc(pte, level, (void *)ghcb);
--		snp_set_memory_private((unsigned long)ghcb, (size / PAGE_SIZE));
-+		snp_set_memory_private(ghcb, (size / PAGE_SIZE));
- 	}
- }
- 
 -- 
-2.34.1
+2.48.1
 
 
