@@ -1,127 +1,116 @@
-Return-Path: <stable+bounces-139559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CF1AA856A
-	for <lists+stable@lfdr.de>; Sun,  4 May 2025 11:21:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0322AA85E0
+	for <lists+stable@lfdr.de>; Sun,  4 May 2025 12:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BF713AC03D
-	for <lists+stable@lfdr.de>; Sun,  4 May 2025 09:21:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1F0F18980F2
+	for <lists+stable@lfdr.de>; Sun,  4 May 2025 10:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9379C199931;
-	Sun,  4 May 2025 09:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901B819E98A;
+	Sun,  4 May 2025 10:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i+QS6DPY"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="G0mu5Qtn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WDUKrNAp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D018479;
-	Sun,  4 May 2025 09:21:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61863597E;
+	Sun,  4 May 2025 10:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746350484; cv=none; b=oWpodp4rKlifkNv+mf/BvNJ91HG309LZb1gRO6jjTxO6dZq+EzdGRbzCdHhZRBQfGMx9g+84H47qWBVfuDL+7ccBcCIdkUshBB4B22JeQ5C3mBdLrPNTIiCSkUEKeIErAU1HjgsBNG0zygFpcc62HJn0KsOlFnP61Yh1Cc3Fx+8=
+	t=1746353974; cv=none; b=t7x01Ms8YI0CGhB4qB3Nl4lg1sib4GVk7S5TU/xFdHvOm3TgqSWon6qM0+aQ5cAJ47DcUj83ys6ULIVaOIT00hbaYoMUQa64ZVh0O96Z5op2M8sJX6ErXSuSfCg1lma5uur5adJy+qM1AnT8gS6foKyu6wVfQEEBai/Upb3duws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746350484; c=relaxed/simple;
-	bh=ax8+aRdxPyEaO+MlNJoulX1KawP6Rs1aBWyJrGcNdL0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jkgjQV6JvCrKiJ8zA/F7SLtiHWKbzFtm41Ds/ktmv9G0J7YyQjxMtrBIKQ3vuWqMcoX5oV28/WcZ4w/XixBY7GPR0CTgXDvPuEEtJ3o9vbLf3xrCxUtQMBrsbVDJI6i0AreG33paj0yxYCh9aVWNSBzVpV+LIY+DZBRn0oBESNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i+QS6DPY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B48C4CEE7;
-	Sun,  4 May 2025 09:21:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746350483;
-	bh=ax8+aRdxPyEaO+MlNJoulX1KawP6Rs1aBWyJrGcNdL0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i+QS6DPY9q4fhLxirBHWrjszL2aPuk5iebh+Hj9bxIeszCWrtxnwRvbcrGsmvznX3
-	 4kkFRyl+tREe3pUrNNsQmCU3zaTOwzw2wfKgHXe5b2pXlUTqHPSUsqAl7cPU3WGMxT
-	 Qn9mKC4U4+q0YnPLAbth71mQdTCAu2kGlUwqxcE5OaWjUaiC0hih1QmzeQLNl5PpUe
-	 bQhXPfrpFaPOTJEoPfRul+hdI/eT4ooYFWB4BpdngZeVM/6eZxTAsz4WkvBO3EXMlv
-	 vqoKoUT0E/qdxT7d66pSTZpqPKCWoz+WXH59pV1ZKnbAPykVhjx9JYlutXWmk4HgVm
-	 1pI9LATlp6LHw==
-Date: Sun, 4 May 2025 11:21:18 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, bp@alien8.de, thomas.lendacky@amd.com,
-	hpa@zytor.com, michael.roth@amd.com, nikunj@amd.com,
-	seanjc@google.com, ardb@kernel.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v4] x86/sev: Fix making shared pages private during kdump
-Message-ID: <aBcxjsdC4tsIgIf2@gmail.com>
-References: <20250502212143.578866-1-Ashish.Kalra@amd.com>
+	s=arc-20240116; t=1746353974; c=relaxed/simple;
+	bh=/zphhyt/wytwwQ3L2MfF1xGmJccBco5+XhvPcJrJ6Bw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D2ZAVWy4eRbZoYUZHMD6XhYW5mXID/Ze9o88Zo9qnc8xursqEgctdAM6tGLQ1KLkEigFHQNzD9KrgNXWbaj3zHy1Ix+S/X3+AZCe8bCD4mrPVRgMdkPtkZ++Fz9KNoFGAJV9zYwh7toyfSRGtlIgNwNl77x8NPrgxz92stKAnHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=G0mu5Qtn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WDUKrNAp; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1746353970;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jfl7SNXUW9QYMi5IdJsuAK6+WDbLVdSs2AEZKeOH8eo=;
+	b=G0mu5QtnRB2C2Jr/mXDF6LW+tpTJ5RyHja/nqS6uGtlSLT43QUkBsbkYd7TcQN+G9wFLgr
+	WIK/tu6GTUDjMPizI5qndS8zUro5Mr6xSNpUWlIubE+Dj3Fp0RmulFvuiHkQZsDKsVMLEK
+	l+DX19+gay6Fb9NmQfJwG7GhkRM1U0oDdgF966qgc0tQDJFJHulsSISYmbv+fYlacai0tP
+	LfYnO5BY/8K3DAxdJDgoSsHrpyJ7DySuCFD6Qz7JyoUdGkpPxKElVCJjXWDwiwoiqUqwGZ
+	3yLheynP3GDV+PQsoHMOA7ja2ndz34GJB0nOSZd76QgTIx0zAsnfA6urcHhluw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1746353970;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jfl7SNXUW9QYMi5IdJsuAK6+WDbLVdSs2AEZKeOH8eo=;
+	b=WDUKrNApCeBn1j43PZF1WmP+DXkiGtG31xxSQxqtGVor3nXAXAjSjqxTmtewjBjrjS/WC2
+	g+xugQG1ONBsOBDQ==
+To: Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Nam Cao <namcao@linutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH] riscv: Fix kernel crash due to PR_SET_TAGGED_ADDR_CTRL
+Date: Sun,  4 May 2025 12:19:20 +0200
+Message-Id: <20250504101920.3393053-1-namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250502212143.578866-1-Ashish.Kalra@amd.com>
+Content-Transfer-Encoding: quoted-printable
 
+When userspace does PR_SET_TAGGED_ADDR_CTRL, but Supm extension is not
+available, the kernel crashes:
 
-* Ashish Kalra <Ashish.Kalra@amd.com> wrote:
+Oops - illegal instruction [#1]
+    [snip]
+epc : set_tagged_addr_ctrl+0x112/0x15a
+ ra : set_tagged_addr_ctrl+0x74/0x15a
+epc : ffffffff80011ace ra : ffffffff80011a30 sp : ffffffc60039be10
+    [snip]
+status: 0000000200000120 badaddr: 0000000010a79073 cause: 0000000000000002
+    set_tagged_addr_ctrl+0x112/0x15a
+    __riscv_sys_prctl+0x352/0x73c
+    do_trap_ecall_u+0x17c/0x20c
+    andle_exception+0x150/0x15c
 
->  
-> -			if (addr <= ghcb && ghcb <= addr + size) {
-> +			/* Handle the case of a huge page containing the GHCB page */
-> +			if (addr <= ghcb && ghcb < addr + size) {
->  				skipped_addr = true;
->  				break;
->  			}
-> @@ -1131,9 +1132,8 @@ static void shutdown_all_aps(void)
->  void snp_kexec_finish(void)
->  {
->  	struct sev_es_runtime_data *data;
-> +	unsigned long size, mask, ghcb;
->  	unsigned int level, cpu;
-> -	unsigned long size;
-> -	struct ghcb *ghcb;
+Fix it by checking if Supm is available.
 
-So this patch just morphs the type of 'ghcb' from a typed pointer to 
-unsigned long, while most 'ghcb' uses in coco/ are typed pointers?
+Fixes: 09d6775f503b ("riscv: Add support for userspace pointer masking")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org
+---
+ arch/riscv/kernel/process.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-That's just sloppy and fragile. Please just keep 'ghcb' a typed 
-pointer, and introduce *another* variable for the virtual address to 
-the hugepage.
+diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+index 7c244de77180..3db2c0c07acd 100644
+--- a/arch/riscv/kernel/process.c
++++ b/arch/riscv/kernel/process.c
+@@ -275,6 +275,9 @@ long set_tagged_addr_ctrl(struct task_struct *task, uns=
+igned long arg)
+ 	unsigned long pmm;
+ 	u8 pmlen;
+=20
++	if (!riscv_has_extension_unlikely(RISCV_ISA_EXT_SUPM))
++		return -EINVAL;
++
+ 	if (is_compat_thread(ti))
+ 		return -EINVAL;
+=20
+--=20
+2.39.5
 
->  	pte_t *pte;
->  
->  	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
-> @@ -1157,11 +1157,14 @@ void snp_kexec_finish(void)
->  
->  	for_each_possible_cpu(cpu) {
->  		data = per_cpu(runtime_data, cpu);
-> -		ghcb = &data->ghcb_page;
-> -		pte = lookup_address((unsigned long)ghcb, &level);
-> +		ghcb = (unsigned long)&data->ghcb_page;
-
-If 'ghcb' has the proper type then this ugly forced type-cast goes 
-away.
-
-> +		pte = lookup_address(ghcb, &level);
->  		size = page_level_size(level);
-> +		mask = page_level_mask(level);
-> +		/* Handle the case of a huge page containing the GHCB page */
-> +		ghcb &= mask;
-
-This too calls for using a separate variable for this, because after 
-this masking 'ghcb' is very much *not* the location of a GHCB page 
-anymore...
-
->  		set_pte_enc(pte, level, (void *)ghcb);
-> -		snp_set_memory_private((unsigned long)ghcb, (size / PAGE_SIZE));
-> +		snp_set_memory_private(ghcb, (size / PAGE_SIZE));
-
-Do we know whether this is safe? Could the huge page around the GHCB 
-page contain anything else? What is the structure of this memory area, 
-is it all dedicated to the GHCB, or could it contain random other data?
-
-Thanks,
-
-	Ingo
 
