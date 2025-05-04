@@ -1,213 +1,268 @@
-Return-Path: <stable+bounces-139549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F7E4AA844E
-	for <lists+stable@lfdr.de>; Sun,  4 May 2025 08:27:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69CAAA8461
+	for <lists+stable@lfdr.de>; Sun,  4 May 2025 08:47:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 364017AA33F
-	for <lists+stable@lfdr.de>; Sun,  4 May 2025 06:25:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 973D81899FBC
+	for <lists+stable@lfdr.de>; Sun,  4 May 2025 06:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8897C136351;
-	Sun,  4 May 2025 06:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492BE1805B;
+	Sun,  4 May 2025 06:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="qACkAEXu"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KIxDnhmU"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2086.outbound.protection.outlook.com [40.107.93.86])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4CE33E7;
-	Sun,  4 May 2025 06:27:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746340024; cv=fail; b=hpnCaz+kCNAjXNnEB07me074rWuS2ZZcpeZpUhqa0nBJ2CAeK/TRUFO9xsiQraijg/JGL8Y0xv5JiqI6VoKGVHxCpqgZcnYcgktr0cln7stF3ekc1Sze7egCfePkW3nlRmm1Y2z5SseHEQeQZodVkj9hlDtztqE9yFKM/fnL6PQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746340024; c=relaxed/simple;
-	bh=tZ3Jv3r7EUn3UhhcI+cyAUaepQ+GyVFCUnIGl47cnRE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Vqs04pbCa+raiYi6hPerEag8bgzhxJ5F3F/GYcXQW/rqSM9UBINwLaGa8rL1pozHtpbImbkGT6g+OTcKy34kTMiXOAt1kfUw9EIz50Hud3AM/d/GZRdid1O1I+jIMuGCKjPJdVhgTQQz0DQHMcISLCyY8myUrRojGJfyO/sLV34=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=qACkAEXu; arc=fail smtp.client-ip=40.107.93.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aUR6VbYqj2GYE9QgIGwkKsr06xCNbn7EV0ZMbKyU+ILR7DpbhBXolWG/ISULs7YEEOsNtZLutNdMyLyj7ntOARYNtHhY9W/7djtt5tAX9l8EPMjpFGVbn+sdcxsa7voU0/H1T7e+PzFYzVkUJr04X6s/zUPf9tzvJX+dFsEnCxNk91mEikJ6mvGc+MYzXbRnxHs+LEA8kDwuMbts9uBR8EIl8kF24mC+ZyA/maEFZvppSM79ZdqvNhrs6zgTA9bydOai7ATTod+/AK35VJrgRxPWAf7xbeNuFSV+EhLAAzH8P9mK3TFIO66q+K/Ffh5LJx0+skBtz3f9hPMzFmvrYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9PaK9p23ZIX0olOGsqmh/jb6gviW7Bf2RqPqBNX6Ago=;
- b=MXL2EHaGIPZTGbbEBhL1B5D7MnC+P2sBNnivS2k+zWzDI0rdsmB2i0SgEgIO+RPkQq7bTYNhP3BynysJ4iPF3djRs1VaDp93eAOwPQoHFaR0KCHLEUdz9jfHHnnE4ue59lpPq6SBETBoccvdt2R2I/VvA3jqxFLpm3wPB7tNpFwmPdrqhnnyINChQ1/P0UahdQg9xU3du4gtRGeCtgz+PYOp6lhOVDiSujyYhe5hYM0SMi9RZViMh8KPFmxDMU26Pw4onQqcHRt1tbqvxIAIyXW87lSf2qGazYipB0MOXbjXKwGjbRXvVS8BbQ8PJ9JuwxXC4/p6O6imZMIIK2pkZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linutronix.de smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9PaK9p23ZIX0olOGsqmh/jb6gviW7Bf2RqPqBNX6Ago=;
- b=qACkAEXu+DC6w4WfjQXAPPdvRB+RgWDYvaiE/TsW9kwL3/1O1LU7pCCq5OxKAKaX3I/8zuDqd6+zVp9ltvuGJ3VXoSWtvSf8dR5n4XH5rd56F0+4yId4C+K/Iz5P7LE3GzdEP4a1qSL38s7cctyZK+ElVQKZRv6pOB+i/4JeYIE=
-Received: from BY3PR05CA0037.namprd05.prod.outlook.com (2603:10b6:a03:39b::12)
- by SA0PR12MB4384.namprd12.prod.outlook.com (2603:10b6:806:9f::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Sun, 4 May
- 2025 06:26:58 +0000
-Received: from CO1PEPF000044F4.namprd05.prod.outlook.com
- (2603:10b6:a03:39b:cafe::e8) by BY3PR05CA0037.outlook.office365.com
- (2603:10b6:a03:39b::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.16 via Frontend Transport; Sun,
- 4 May 2025 06:26:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000044F4.mail.protection.outlook.com (10.167.241.74) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8699.20 via Frontend Transport; Sun, 4 May 2025 06:26:57 +0000
-Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 4 May
- 2025 01:26:56 -0500
-From: Ashish Kalra <Ashish.Kalra@amd.com>
-To: <tglx@linutronix.de>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <bp@alien8.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>
-CC: <michael.roth@amd.com>, <nikunj@amd.com>, <seanjc@google.com>,
-	<ardb@kernel.org>, <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<kexec@lists.infradead.org>, <linux-coco@lists.linux.dev>
-Subject: [PATCH v4.1] x86/sev: Fix making shared pages private during kdump
-Date: Sun, 4 May 2025 06:26:42 +0000
-Message-ID: <20250504062642.144584-1-Ashish.Kalra@amd.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2708228F4
+	for <stable@vger.kernel.org>; Sun,  4 May 2025 06:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746341273; cv=none; b=bVfRrxoxe+rNqFtRoDJVTEO9iJzEFCxCqKtpGF0DrUp/YpMRG3P3+Qz44IXAaXGsChzpGp4/BFPDhV0xsDZBDX93gdCI05RKbIGuexLJXA6SLJ++/Eaz3rnhi4q4GxXI8xgXEZM9aE2H7MzdWOydXXYwsUraDeq82IV0gcSIc3A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746341273; c=relaxed/simple;
+	bh=NBEDOUE4AU+xXaqBrIn8CLcvl5OR/IKmphbzpPdz5+0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J8e2QxOjZu8nBuX0I8/Q+FjBk25VfEMTBoYvA0ASWlvT1PR3DBQuRUBqyL7u65GtrHQVEintfBJaFIHfnLA8T3kox0ao7Wd1jNhbWTZSV0Z+jAf7HpyhOTFFar+IdZh/LqV0aG2z+z3s56hzSohBP7YoZsuPeHtzYuwb8vhJsuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KIxDnhmU; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746341270;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=VciL2Vnq4XFO2l1GLh+8tGcQoZiSbi51G5aHAKQPPMU=;
+	b=KIxDnhmUGJcDkB5LqvJ77cKUbArdysuAdogLAvAnCzgvuYGjWPjg6uQ0/1PY/wI927auLT
+	xsbm0bjq3GS5CVFJEwrSPObbDhWuf12DaeXymDhyXhrfMoqQIHrnILlwDyyO0n1UqEc5kj
+	HcpnKlKX/qESBtAzGknhPF3KSDUTPj8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-683-E7RGbhuuPoCQYDSIf66GxQ-1; Sun, 04 May 2025 02:47:48 -0400
+X-MC-Unique: E7RGbhuuPoCQYDSIf66GxQ-1
+X-Mimecast-MFC-AGG-ID: E7RGbhuuPoCQYDSIf66GxQ_1746341268
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43f251dc364so18744115e9.2
+        for <stable@vger.kernel.org>; Sat, 03 May 2025 23:47:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746341268; x=1746946068;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VciL2Vnq4XFO2l1GLh+8tGcQoZiSbi51G5aHAKQPPMU=;
+        b=jq6z/Ah2gqdG8ia+mozVXM73joNy832t18ffdSrc4eYuI9/S/u7uEIVZNKsaHddz1x
+         mtQZ/vDkZoBa6bGHu/1vIV2YSLcOS0S8oCtJbl71J47Tv2hmCzbeXm3xbjjoXWhaMoTG
+         HzL7auTBpCjCvKeSoj9z382eC7JQ2NhiewBO5CDjUmocAygG3AwOyGKQcx8LDAR4SdKR
+         YnHL28WKKTc7haZ7pqyP95Nrj6A2wuEKvXOlRmWjcJtO73McNmXjwYaYJN/+hIu+6ikT
+         6ZPkmOBwm2lDJ9sAm4cEsOolqsCpZWMGkHmizzzqQ/girUSOSVRlAy+NY2fCGTCSzTlU
+         gcCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVkDMqptjo2hqkULL8a7nAmO0g4VlC6XZ/1WUvBWYpu5cAJb+YurmPpRzIRPnry4/0zDakzlxs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhJGXOILvgBX/dASfbU8LHQuWIkxrDn5nNHOzn9SpR41/auclj
+	kUuepijyLdNBlUKa50JWVnF87VeIjkyyCuWyFJX98jz4Nm+k5MsqF8ttWoosgUwGwTi4c4mu8Ks
+	KiTiZ8xAsgbrtY4VKFrpkwXs6VPGlrNkMvp5h9QO2OPf2pK/qnqmyjQ==
+X-Gm-Gg: ASbGncsNt28a51djLMhEWedipuwON69g8SbYdRXGcG4GoSUzB5nQDKWMT3k7EF+4Vvd
+	KpoR6WP5iF7zTkR3YDq/pwtd2sYKBoJDRTQv9QeIfYJDQ2NoJ0teLbq6rcQQEKHDb4WKeOCshJ4
+	Xho114WjEaTXWDAJ9wKyqOeGyBYnXp1ohyodxkyF4IaLQ2pIGHrhh9h3UoqIHcBAOX0NxLinJhp
+	qgG4UPRcRnM/phVroppOClG/HlHfIY171gZJhFuWhInK2VfsX4uymS2Nm7m219b+9ZdcVxhQrn7
+	OCv2khOoc/3tjsTxtt49bV74ac0H/RO5ViETre/K/LQ4hovElMg9JV4Ck6Ry7q4LziD0YAvG1J5
+	kdS1sI2Q4GT3vAMPRjoda1wfaCWMFrPGxN4etpBE=
+X-Received: by 2002:a05:600c:5290:b0:43d:fa59:bcee with SMTP id 5b1f17b1804b1-441c49340e5mr20735045e9.33.1746341267771;
+        Sat, 03 May 2025 23:47:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFXFB3FR+eN6PCitQ4q59SAduxE/fk7xHIzBkM+MEWxbylSCKCwT4qO0+BHzou0JizYj1Y0jw==
+X-Received: by 2002:a05:600c:5290:b0:43d:fa59:bcee with SMTP id 5b1f17b1804b1-441c49340e5mr20734905e9.33.1746341267422;
+        Sat, 03 May 2025 23:47:47 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c732:7200:c4da:f12e:1fa8:eaef? (p200300cbc7327200c4daf12e1fa8eaef.dip0.t-ipconnect.de. [2003:cb:c732:7200:c4da:f12e:1fa8:eaef])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b2b20a65sm138626545e9.32.2025.05.03.23.47.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 03 May 2025 23:47:46 -0700 (PDT)
+Message-ID: <9e3fb101-9a5d-43bb-924a-0df3c38333f8@redhat.com>
+Date: Sun, 4 May 2025 08:47:45 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] mm: fix folio_pte_batch() on XEN PV
+To: Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Petr_Van=C4=9Bk?=
+ <arkamar@atlas.cz>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Ryan Roberts <ryan.roberts@arm.com>, xen-devel@lists.xenproject.org,
+ x86@kernel.org, stable@vger.kernel.org
+References: <20250502215019.822-1-arkamar@atlas.cz>
+ <20250502215019.822-2-arkamar@atlas.cz>
+ <20250503182858.5a02729fcffd6d4723afcfc2@linux-foundation.org>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250503182858.5a02729fcffd6d4723afcfc2@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044F4:EE_|SA0PR12MB4384:EE_
-X-MS-Office365-Filtering-Correlation-Id: 24dff9e7-8522-4dc8-b260-08dd8ad4abbf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?tjAG7OVZDL6UD9WDvaOouyPjhBTz+pRbIb5N8AFLCLrr3uPVHkeKoC4uQEUy?=
- =?us-ascii?Q?b/Bcnc64d8nZq1Vaf5MwDJqdUwsgqzk/NvRqAUcl1/uqWoW42Zyn0rIESjpk?=
- =?us-ascii?Q?2o14JeX03xeWHwMqrWQafH3OR8UDwavcNzg9plByFVkZT+5TP/vJPkV6n9Gd?=
- =?us-ascii?Q?1VM778ItQF6O784S9YyiyXVYnhaESNn8UfUrONmZLB8s/sj4LURllJgQ9qqZ?=
- =?us-ascii?Q?3q46iWP38KZhHiOHyJwuQLh7XYkf/JEYjzleV98LseqbjeF4mIOoj+uA140G?=
- =?us-ascii?Q?sFl8R3AhcrGt/6dDlEzpLKvnjjHn7vKhBkl+e7ueaHB5JdfR7Xs+V/IqQ4ID?=
- =?us-ascii?Q?30OcKvLvmwAC8YQ637sIKX6v6hiZdmuCFd4L+lJ/97ItkqV5/LkXt/pOBKPU?=
- =?us-ascii?Q?4R7dWukIN4BOAI0nlo5cZ+ABzKb2WVQtFWA29+xVGrTP+kvqBLSHPpwL57cJ?=
- =?us-ascii?Q?MtAmN60ZVgkeM5ipnYBt4k8+qIGLPB+ra7+xg8mfBqg4nusUhe6zkz9Z01HF?=
- =?us-ascii?Q?1GFFGZq5UjKdPZl7zRV+CyF+CVjgR1Shl1BCLYakv2YMrxSKJcLoNG4E2qSV?=
- =?us-ascii?Q?HGF/UbcxvxGLOtKUksuZ5SLnKTd3wXmPKtXdMkdAe2VsecwSMGK2d9rjr3yF?=
- =?us-ascii?Q?zp+XiOI5/XGRIMeJKdh9M2OsaW9meXS23O1Q2ktNsk248OMQYb8w6u+6zXh1?=
- =?us-ascii?Q?STiU+Vpx0baq4UafvQNSjmFMIoiGjSl5ltpRZIK0NnSXmSARDpXjlLNYpw01?=
- =?us-ascii?Q?CrjX8sjqZSewONgNOtDFLJVdgO7zyyIUe5SoQPnWnDXPL4Ta+sVfQTZQSeVG?=
- =?us-ascii?Q?D/00E9nCi/IFjB9m/Ntu2CmQ0DIAVmcWTczKxbMiFvqAr05WIPf1UYd2L4Xd?=
- =?us-ascii?Q?Ud2ZgFnnzLE+jrNcmscUnBqJvYuzpVSLGmy0l4Hz20xfEcydrL55Kz8eB6S7?=
- =?us-ascii?Q?PpgpomgwakR/h7r2Cp/Km3RganT+j3sPG/VABb2svnt6RNjOqMLS6nC6B7f6?=
- =?us-ascii?Q?6Csu+5JFlhrhNMrGiRIweraflTAQcDAm2b+lI9oiwZq7/7VsM4wzvqaO3vRs?=
- =?us-ascii?Q?w6hvrJRytx1lmG0hS/qTsJjIQE/rEE0GPfcGJ3rlkyceGmZARzCQ+01L2yam?=
- =?us-ascii?Q?/4buVGdnC8jWs+mctzjzENxHI+BeSUCTM9hXFpHHAz4xpem+0eA+i7FX36W/?=
- =?us-ascii?Q?LBjH6yxUgWOKX4O2UvADveDytjy1qbo4Y691KLVoGvVbEDUaB0EGIrhXQOlB?=
- =?us-ascii?Q?Z6SQOVhZiNzOCPI2WYNxocIB3Tah1a48k67eFMuXD/T/zDtWDkmETBt+4LaW?=
- =?us-ascii?Q?gTKG2J1gdxBzy2bZWfLSTKHq2VALMFko38a6K0raHklw3hZ6auhIDadw55Y/?=
- =?us-ascii?Q?xf4hHDggQ+14Dx7v8IDHWBZJum6uQdaE4mhgf35voBKCsWvDXUeq5EGdOTEs?=
- =?us-ascii?Q?gVYS/dFj9O73m/b9FinVFPkcv7yIIOEAxrLN/8xyR9u28tuyA7aKEsFdoCkv?=
- =?us-ascii?Q?/7jH/q+Vfp/vWGsuuOmbpEpGEwQeu8hue+hq?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2025 06:26:57.4186
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 24dff9e7-8522-4dc8-b260-08dd8ad4abbf
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000044F4.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4384
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+On 04.05.25 03:28, Andrew Morton wrote:
+> On Fri,  2 May 2025 23:50:19 +0200 Petr Vaněk <arkamar@atlas.cz> wrote:
+> 
+>> On XEN PV, folio_pte_batch() can incorrectly batch beyond the end of a
+>> folio due to a corner case in pte_advance_pfn(). Specifically, when the
+>> PFN following the folio maps to an invalidated MFN,
+>>
+>> 	expected_pte = pte_advance_pfn(expected_pte, nr);
+>>
+>> produces a pte_none(). If the actual next PTE in memory is also
+>> pte_none(), the pte_same() succeeds,
+>>
+>> 	if (!pte_same(pte, expected_pte))
+>> 		break;
+>>
+>> the loop is not broken, and batching continues into unrelated memory.
+>>
+>> ...
+> 
+> Looks OK for now I guess but it looks like we should pay some attention
+> to what types we're using.
+> >> --- a/mm/internal.h
+>> +++ b/mm/internal.h
+>> @@ -248,11 +248,9 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
+>>   		pte_t *start_ptep, pte_t pte, int max_nr, fpb_t flags,
+>>   		bool *any_writable, bool *any_young, bool *any_dirty)
+>>   {
+>> -	unsigned long folio_end_pfn = folio_pfn(folio) + folio_nr_pages(folio);
+>> -	const pte_t *end_ptep = start_ptep + max_nr;
+>>   	pte_t expected_pte, *ptep;
+>>   	bool writable, young, dirty;
+>> -	int nr;
+>> +	int nr, cur_nr;
+>>   
+>>   	if (any_writable)
+>>   		*any_writable = false;
+>> @@ -265,11 +263,15 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
+>>   	VM_WARN_ON_FOLIO(!folio_test_large(folio) || max_nr < 1, folio);
+>>   	VM_WARN_ON_FOLIO(page_folio(pfn_to_page(pte_pfn(pte))) != folio, folio);
+>>   
+>> +	/* Limit max_nr to the actual remaining PFNs in the folio we could batch. */
+>> +	max_nr = min_t(unsigned long, max_nr,
+>> +		       folio_pfn(folio) + folio_nr_pages(folio) - pte_pfn(pte));
+>> +
+> 
+> Methinks max_nr really wants to be unsigned long. 
 
-When the shared pages are being made private during kdump preparation
-there are additional checks to handle shared GHCB pages.
+We only batch within a single PTE table, so an integer was sufficient.
 
-These additional checks include handling the case of GHCB page being
-contained within a huge page.
+The unsigned value is the result of a discussion with Ryan regarding similar/related
+(rmap) functions:
 
-The check for handling the case of GHCB contained within a huge
-page incorrectly skips a page just below the GHCB page from being
-transitioned back to private during kdump preparation.
+"
+Personally I'd go with signed int (since
+that's what all the counters in struct folio that we are manipulating are,
+underneath the atomic_t) then check that nr_pages > 0 in
+__folio_rmap_sanity_checks().
+"
 
-This skipped page causes a 0x404 #VC exception when it is accessed
-later while dumping guest memory during vmcore generation via kdump.
+https://lore.kernel.org/linux-mm/20231204142146.91437-14-david@redhat.com/T/#ma0bfff0102f0f2391dfa94aa22a8b7219b92c957
 
-Correct the range to be checked for GHCB contained in a huge page.
-Also ensure that the skipped huge page containing the GHCB page is
-transitioned back to private by applying the correct address mask
-later when changing GHCBs to private at end of kdump preparation.
+As soon as we let "max_nr" be an "unsigned long", also the return value
+should be an "unsigned long", and everybody calling that function.
 
-Cc: stable@vger.kernel.org
-Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
----
- arch/x86/coco/sev/core.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+In this case here, we should likely just use whatever type "max_nr" is.
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index d35fec7b164a..e39db6714f09 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -1019,7 +1019,8 @@ static void unshare_all_memory(void)
- 			data = per_cpu(runtime_data, cpu);
- 			ghcb = (unsigned long)&data->ghcb_page;
- 
--			if (addr <= ghcb && ghcb <= addr + size) {
-+			/* Handle the case of a huge page containing the GHCB page */
-+			if (addr <= ghcb && ghcb < addr + size) {
- 				skipped_addr = true;
- 				break;
- 			}
-@@ -1131,9 +1132,8 @@ static void shutdown_all_aps(void)
- void snp_kexec_finish(void)
- {
- 	struct sev_es_runtime_data *data;
-+	unsigned long size, ghcb;
- 	unsigned int level, cpu;
--	unsigned long size;
--	struct ghcb *ghcb;
- 	pte_t *pte;
- 
- 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
-@@ -1157,11 +1157,13 @@ void snp_kexec_finish(void)
- 
- 	for_each_possible_cpu(cpu) {
- 		data = per_cpu(runtime_data, cpu);
--		ghcb = &data->ghcb_page;
--		pte = lookup_address((unsigned long)ghcb, &level);
-+		ghcb = (unsigned long)&data->ghcb_page;
-+		pte = lookup_address(ghcb, &level);
- 		size = page_level_size(level);
-+		/* Handle the case of a huge page containing the GHCB page */
-+		ghcb &= page_level_mask(level);
- 		set_pte_enc(pte, level, (void *)ghcb);
--		snp_set_memory_private((unsigned long)ghcb, (size / PAGE_SIZE));
-+		snp_set_memory_private(ghcb, (size / PAGE_SIZE));
- 	}
- }
- 
+Not sure myself if we should change that here to unsigned long or long. Some
+callers also operate with the negative values IIRC (e.g., adjust the RSS by doing -= nr).
+
+> That will permit the
+> cleanup of quite a bit of truncation, extension, signedness conversion
+> and general type chaos in folio_pte_batch()'s various callers.
+> > And...
+> 
+> Why does folio_nr_pages() return a signed quantity?  It's a count.
+
+A partial answer is in 1ea5212aed068 ("mm: factor out large folio handling
+from folio_nr_pages() into folio_large_nr_pages()"), where I stumbled over the
+reason for a signed value myself and at least made the other
+functions be consistent with folio_nr_pages():
+
+"
+     While at it, let's consistently return a "long" value from all these
+     similar functions.  Note that we cannot use "unsigned int" (even though
+     _folio_nr_pages is of that type), because it would break some callers that
+     do stuff like "-folio_nr_pages()".  Both "int" or "unsigned long" would
+     work as well.
+
+"
+
+Note that folio_nr_pages() returned a "long" since the very beginning. Probably using
+a signed value for consistency because also mapcounts / refcounts are all signed.
+
+
+> 
+> And why the heck is folio_pte_batch() inlined?  It's larger then my
+> first hard disk and it has five callsites!
+
+:)
+
+In case of fork/zap we really want it inlined because
+
+(1) We want to optimize out all of the unnecessary checks we added for other users
+
+(2) Zap/fork code is very sensitive to function call overhead
+
+Probably, as that function sees more widespread use, we might want a
+non-inlined variant that can be used in places where performance doesn't
+matter all that much (although I am not sure there will be that many).
+
 -- 
-2.34.1
+Cheers,
+
+David / dhildenb
 
 
