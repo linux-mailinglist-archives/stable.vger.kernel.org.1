@@ -1,108 +1,174 @@
-Return-Path: <stable+bounces-139565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2056AA8761
-	for <lists+stable@lfdr.de>; Sun,  4 May 2025 17:47:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A09DBAA8765
+	for <lists+stable@lfdr.de>; Sun,  4 May 2025 17:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DE8E7A3E9A
-	for <lists+stable@lfdr.de>; Sun,  4 May 2025 15:45:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5C5C7A4121
+	for <lists+stable@lfdr.de>; Sun,  4 May 2025 15:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428281D63CF;
-	Sun,  4 May 2025 15:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407F78F6E;
+	Sun,  4 May 2025 15:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gFbsmnFX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fuqPCzj+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5551FAA;
-	Sun,  4 May 2025 15:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764611FAA;
+	Sun,  4 May 2025 15:47:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746373621; cv=none; b=rH2yY0fhI/LG1C9HfuVQgQQ21LxJEQSmvucc1u5TTizus1GP7igAogatZKO/vJyxxmApYn6M7mvbJEhhcXZO669Tjo1NXDBXjB+7dIWVBTA98YQlPh525Y/d7IDBNLt+O0RQR9Z/HTqgVNa382/Lo9zjWUf2s6AbSUNsn7OS4bA=
+	t=1746373634; cv=none; b=h2SdTLw9N0Z6Qgj/uGQzBR7Ey7gw1UfKO1SZg1+xB2O9vRaMtUbKZCRgvlpklawkkTMNv8jTx8Volq7DL9/Q0GAqJ+76P6ilHdTMDYlUYP14pbK9mn9uSZIRaT0Lu7hfXH/swhrGG6PcIXU0i5XgVamwBUyYVCkm1gIqZQOTwPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746373621; c=relaxed/simple;
-	bh=eg438LQYInqo9y9/Eti33rySAFBXRXmJbYUQgtWCs0Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jgR/wd+caqG2QE/cfJtngg4sPK4UlF3ld8oYfJU++JNOEJC03xZQy6dEE60WoI5BHxGuwf12wJGv1MhZWXL0iREOl3YQmFxYPCb64F/qCf0IJbNtIUDcLmpSavbv/H8vE233ZeLXIqSCmNgPVDa+95xHJ5d11EMmanlLMTw1Hgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gFbsmnFX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5908C4CEE7;
-	Sun,  4 May 2025 15:46:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746373620;
-	bh=eg438LQYInqo9y9/Eti33rySAFBXRXmJbYUQgtWCs0Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gFbsmnFXqB/zNRPAC4/USD3No37/d31n3jIhyUrZl1uaZL4rPhRiMhau+tkJ0ryx9
-	 5PJKG3UvnIjUZ7Zq3HgjU/QPaUwrjfPOHp23zcqKso6amW2OkkAKqhL6vAqfGqO4Z6
-	 qxLMgkUdg/nW/U46nUuC7IIWpSu32lf8t3KnGXjNtCGjmsvWlUD5nHwnMfX8dRbUPx
-	 gQf15QdnlsPQbD/elmUgyvoESRY6tcWYPXjNHVp2EqQQnmb+E0cReCgfnr5RRIDMQ2
-	 yiHTm9ns3fg+kGyClV6O0GjHmkD0+1ZiusGmg2FzgjOXwIRluHA7+xQZPgPPRL4nHY
-	 H1J69SuM773jQ==
-Date: Sun, 4 May 2025 16:46:54 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Sean Nyekjaer <sean@geanix.com>, Marcelo Schmitt
- <marcelo.schmitt1@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] iio: accel: fxls8962af: Fix temperature
- calculation
-Message-ID: <20250504164654.1ecf7215@jic23-huawei>
-In-Reply-To: <CAHp75VehpQdxFDXE8L0TeaOxHBTHNorOZ95rL48kQAiViAJ_zg@mail.gmail.com>
-References: <20250502-fxls-v2-0-e1af65f1aa6c@geanix.com>
-	<20250502-fxls-v2-1-e1af65f1aa6c@geanix.com>
-	<CAHp75VehpQdxFDXE8L0TeaOxHBTHNorOZ95rL48kQAiViAJ_zg@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1746373634; c=relaxed/simple;
+	bh=IQ3rkY0ClJBZ1s4b7NYJjJJo6icnC/Xa7LT8OWSym/8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qXCfAU9euFI+qg0TYDcovoqbV69FsFv//qM2H8nLUCE6yiiw0zHJGqvQoJ+bl3BZ7uNCNODC4dcHU+wL5LXuRrJxV18HWuzfsl0+2yv5S+s9zh7Vag/jjBpd1KiJCWfaTKaLtGrznrwjomqsBt32zuxQoX2LpFFlI3ThcnKIi2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fuqPCzj+; arc=none smtp.client-ip=209.85.166.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-85e46f5c50fso370039039f.3;
+        Sun, 04 May 2025 08:47:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746373631; x=1746978431; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KCB11Y01+XCfvS4lsOkPaiVFvB4yeAtymGdAMyAi5Zc=;
+        b=fuqPCzj+ueX6qHUI95W5tfRLCX8BIZjPO90Z/qrwqK0uFwt9ClhBcQGo1wSgkcmuLX
+         hLkxBHVdvYiTyXJV10+5sJXFNTPLm8DEbdX7oZdeQAQl8cnRKz1sTNMuogHwjDxd3QpW
+         d+GsdDytAYWKBHVz1kp7zFEvh14c/rRRgTiuAv+TWzsgHZ2nTIBmqTc5OSPpBYhnf6Pk
+         T0XMtaZD8E1MMIFTCdj2Nd0TnmG+yy92i7bXIsL5bJXf600fW2yQ9wDKiPJjnH0o9u4K
+         o6HKxG9EQags+bu3u1p1qTV1/JpUEpwlvCJMtNxe8PZlQF78/t9vGcByVXed0kpvY8oI
+         +CVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746373631; x=1746978431;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KCB11Y01+XCfvS4lsOkPaiVFvB4yeAtymGdAMyAi5Zc=;
+        b=vr7XFZzY0Kljt/4Ynm8eIpCm752RknOGke9rmc+ui6f+bhlwtbn/Tf5ifhN+awFWCj
+         xQFavyKY0yWzOhUjkfiRpkP0tmV8Xi9WXVE0I9YMSh6A1jh/e/5+nt8B9N9OWm38dymA
+         npsjxqnt9haC3F8LwPVTS9QYn4ogwRh31BPJderQDNXFViGHlpcDrs6zm8rocd5R+skm
+         671WWfRslQWp3MqQdK55Bd5lLGHGiOEDeACnT3uz1cC+WMgPClUNe5IZ4prH1pLNaqFb
+         BB9X9K4oJAMDrKJKxV35sTfb8d2XuGE7IrBgL9KTWQF5zpkdEzTKywevYOOuHIRZz8OM
+         DfNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU1QGXbutp6HL9w1ooZzR932ntYqdxVpUGALGlu6ZfEZP/LmrV3ZwBYklWROT70lT/JsCKbJsoQZFVjpFVi@vger.kernel.org, AJvYcCUUzaRmVTJ14WCMs4YR9LmpyUl0y+8Pe6LNOdGmlPlK/aFPEb0irKpdRP+dXyu8ZH0fKgNNtXvT8wbUR4k=@vger.kernel.org, AJvYcCWacZg+hqbd+6sbBTI3R/kyD5dIDbf8+LKB80wS+ccMKrRS4jmxLLT5w7I0BqcltcUJR7mvb2i086sIufPx@vger.kernel.org, AJvYcCWvBgNqtKz1UicPH4vqj5bMXN3e/gGxlatPj/cM94fC9xWodgeYrvHh+vSb1gnRKAfi74/1OZGa@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqdnNS0S5hLFOAG9qwKN4yAW+4QWWplwWplIoXliz1OQz2o+qy
+	aRr87bP5IBAqKCuvwDdUPyLAWE6fbuJHX+9W9/efVcxlRZcKcitR42Cb8Q+Zl2Q1z5RRNDxqpax
+	b16KDoFdULfVYyGrcZj3anjAQQ8I3/g==
+X-Gm-Gg: ASbGncsNjP8BXR+WgvpYgajAg4yr4GL+M9nWv9+7dX8dejH9lg3lQj3fLwK6CxksEZi
+	XkU7/QUoGKFjkv7eNrST2mepfOthU2KIZVLWxRgu8pPqJymngNoFS5xfVtGZZcW7B0jFSbsi2vC
+	vPA9FJaUYgKmsO6ny+82EvoQ==
+X-Google-Smtp-Source: AGHT+IF/JevtdssqiOoRgkiDW7LjLg2KSxw2gMBFdDf7RqHjZEb8cdLxhaA4CtAfXBLkKoc+S9iAwAL7qHV7dCcoc84=
+X-Received: by 2002:a05:6e02:1889:b0:3d4:6ff4:2608 with SMTP id
+ e9e14a558f8ab-3da5b2a3507mr46309295ab.12.1746373631447; Sun, 04 May 2025
+ 08:47:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20250424032751.3511768-1-haoxiang_li2024@163.com>
+In-Reply-To: <20250424032751.3511768-1-haoxiang_li2024@163.com>
+From: Rob Clark <robdclark@gmail.com>
+Date: Sun, 4 May 2025 08:46:59 -0700
+X-Gm-Features: ATxdqUHXwmSDwj980iTtQyggMLmzSvs4wue8EqnhIc3dPv_RZ4ci2s_gz9Q7m7A
+Message-ID: <CAF6AEGssqH9yEV=gXjmsmLx_haAemjT9jHT1k6ZyXOHskRnucg@mail.gmail.com>
+Subject: Re: [PATCH RESEND] drm/msm: fix a potential memory leak issue in submit_create()
+To: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: quic_abhinavk@quicinc.com, lumag@kernel.org, sean@poorly.run, 
+	marijn.suijten@somainline.org, airlied@gmail.com, simona@ffwll.ch, 
+	sumit.semwal@linaro.org, christian.koenig@amd.com, 
+	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2 May 2025 17:19:44 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Wed, Apr 23, 2025 at 8:28=E2=80=AFPM Haoxiang Li <haoxiang_li2024@163.co=
+m> wrote:
+>
+> The memory allocated by msm_fence_alloc() actually is the
+> container of msm_fence_alloc()'s return value. Thus, just
+> free its return value is not enough.
+> Add a helper 'msm_fence_free()' in msm_fence.h/msm_fence.c
+> to do the complete job.
+>
+> Fixes: f94e6a51e17c ("drm/msm: Pre-allocate hw_fence")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> ---
+>  drivers/gpu/drm/msm/msm_fence.c      | 7 +++++++
+>  drivers/gpu/drm/msm/msm_fence.h      | 1 +
+>  drivers/gpu/drm/msm/msm_gem_submit.c | 2 +-
+>  3 files changed, 9 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/msm/msm_fence.c b/drivers/gpu/drm/msm/msm_fe=
+nce.c
+> index d41e5a6bbee0..72641e6a627d 100644
+> --- a/drivers/gpu/drm/msm/msm_fence.c
+> +++ b/drivers/gpu/drm/msm/msm_fence.c
+> @@ -183,6 +183,13 @@ msm_fence_alloc(void)
+>         return &f->base;
+>  }
+>
+> +void msm_fence_free(struct dma_fence *fence)
+> +{
+> +       struct msm_fence *f =3D to_msm_fence(fence);
+> +
+> +       kfree(f);
+> +}
+> +
+>  void
+>  msm_fence_init(struct dma_fence *fence, struct msm_fence_context *fctx)
+>  {
+> diff --git a/drivers/gpu/drm/msm/msm_fence.h b/drivers/gpu/drm/msm/msm_fe=
+nce.h
+> index 148196375a0b..635c68629070 100644
+> --- a/drivers/gpu/drm/msm/msm_fence.h
+> +++ b/drivers/gpu/drm/msm/msm_fence.h
+> @@ -82,6 +82,7 @@ bool msm_fence_completed(struct msm_fence_context *fctx=
+, uint32_t fence);
+>  void msm_update_fence(struct msm_fence_context *fctx, uint32_t fence);
+>
+>  struct dma_fence * msm_fence_alloc(void);
+> +void msm_fence_free(struct dma_fence *fence);
+>  void msm_fence_init(struct dma_fence *fence, struct msm_fence_context *f=
+ctx);
+>
+>  static inline bool
+> diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/m=
+sm_gem_submit.c
+> index 3e9aa2cc38ef..213baa5bca5e 100644
+> --- a/drivers/gpu/drm/msm/msm_gem_submit.c
+> +++ b/drivers/gpu/drm/msm/msm_gem_submit.c
+> @@ -56,7 +56,7 @@ static struct msm_gem_submit *submit_create(struct drm_=
+device *dev,
+>
+>         ret =3D drm_sched_job_init(&submit->base, queue->entity, 1, queue=
+);
+>         if (ret) {
+> -               kfree(submit->hw_fence);
+> +               msm_fence_free(submit->hw_fence);
 
-> On Fri, May 2, 2025 at 9:15=E2=80=AFAM Sean Nyekjaer <sean@geanix.com> wr=
-ote:
-> >
-> > According to spec temperature should be returned in milli degrees Celsi=
-us.
-> > Add in_temp_scale to calculate from Celsius to milli Celsius. =20
->=20
-> ...
->=20
-> > +/* Raw temp channel scale */
-> > +#define FXLS8962AF_TEMP_SCALE                  1000 =20
->=20
-> Wouldn't constants from units.h be helpful here?
+`struct dma_fence base` is the first field in `struct msm_fence`, so
+to_msm_fence() is just a pointer cast.  Ie. it is fine to pass it to
+kfree() as-is
 
-Whilst you are just continuing local style, I'm not sure
-these defines really bring much at all given the TEMP_SCALE
-one for instance is only used in one place which is
-explicitly getting the temperature scale.  It's not a magic
-number that needs a define. It's a number that means it's own
-value :)
+BR,
+-R
 
-Using MILLI there would be a nice bit of self documentation
-though.
->=20
-> >  #define FXLS8962AF_AUTO_SUSPEND_DELAY_MS       2000 =20
->=20
-> (2 * MSEC_PER_SEC)
->=20
-> This gives immediately that we want 2 seconds of delay.
->=20
-True but not part of this patch so that would be a nice
-little follow up.  Possibly dropping this define in favour
-of using that inline.
-
-Jonathan
-
-
+>                 kfree(submit);
+>                 return ERR_PTR(ret);
+>         }
+> --
+> 2.25.1
+>
 
