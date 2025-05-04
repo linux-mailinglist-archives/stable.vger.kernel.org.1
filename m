@@ -1,138 +1,213 @@
-Return-Path: <stable+bounces-139548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE379AA83C3
-	for <lists+stable@lfdr.de>; Sun,  4 May 2025 05:22:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7E4AA844E
+	for <lists+stable@lfdr.de>; Sun,  4 May 2025 08:27:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C484B188DE01
-	for <lists+stable@lfdr.de>; Sun,  4 May 2025 03:22:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 364017AA33F
+	for <lists+stable@lfdr.de>; Sun,  4 May 2025 06:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3203C149C41;
-	Sun,  4 May 2025 03:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8897C136351;
+	Sun,  4 May 2025 06:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="T66E2a2Z"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="qACkAEXu"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2086.outbound.protection.outlook.com [40.107.93.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E36130A7D;
-	Sun,  4 May 2025 03:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746328945; cv=none; b=cwkGWkc2ElypYIUS+nqZ41dRBTC9k1uuPOT3Q5FEMUb/zkxvmQBWUeevuGaTv2Jcz3oYkrQDgotYg0aVbkEFexnGuO7iJDkx6Wiob7HYmvkrUmBUJ1UGmww4ezgGi53qCaGzRNO3CeF4N2QXeYRsl4rk1Rc7IbSdyy/3THCyoFQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746328945; c=relaxed/simple;
-	bh=hRFdIlUjEGNjXPEe0+7jmQRt4tHtVJL7Evrzv+hP6F8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aCGgnWbhiCy5jS88+lIVBcEz3T2cidWMaNzGlj93jExgs7PfqAPG1pyudUt0oTM3ZjOwITbMsXV+ZyWnjXke3Eg6aEqKwX5Q7af94E5weVlA7N5Lik+57W+DUZIALxBOGYdlKLcwCHh/kcHGTtacFZmn/ZfEDu3L/hkIX1DQNmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=T66E2a2Z; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5442hdB4002998;
-	Sun, 4 May 2025 03:22:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=22mBn0
-	N6rBJv9Kt3/UD3q1JXkhXpZ/MI+ykrV2o8QJU=; b=T66E2a2ZWlD+rcc69AXVFx
-	6mgbeCJgOLZllPZ/YjYtd136F40V1hNVVig6pq0CVtuzJUpiCbWt5C8VV/iROg2k
-	nsqOz94ZRVWrvy7XUlOHSkqNAf8DXzzFX/IvgBuhT9EOjibEUofA2STCzpQK9jP4
-	DSPN+LcRehd9nQV7KKatNciuuVufFO9Xg/3ZsJMjf/Gtn1OJX1BQkghaQJu1xdxk
-	uUWKEMRzcN4wPIP0mhb6micIc+JXaahSh8xeogcnO9plI/LgCZu4ayFDtktHSJsW
-	mE+FZQdA1OgWUb3B4hZwyzxuTkitvqOskUVNajdP9GylauxqhdeTN1MpO+4ahxQg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46dtqk0r9e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 04 May 2025 03:22:00 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5443K3RT004379;
-	Sun, 4 May 2025 03:22:00 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46dtqk0r99-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 04 May 2025 03:21:59 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5443FOc7013816;
-	Sun, 4 May 2025 03:21:59 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 46e06200hp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 04 May 2025 03:21:58 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5443Ltgf21430770
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 4 May 2025 03:21:55 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 58C3320043;
-	Sun,  4 May 2025 03:21:55 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 612FE20040;
-	Sun,  4 May 2025 03:21:47 +0000 (GMT)
-Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.99.78])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun,  4 May 2025 03:21:46 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org,
-        Hari Bathini <hbathini@linux.ibm.com>
-Cc: "Naveen N. Rao" <naveen@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v3] powerpc/bpf: fix JIT code size calculation of bpf trampoline
-Date: Sun,  4 May 2025 08:51:44 +0530
-Message-ID: <174632869187.233894.15123233166233915904.b4-ty@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250422082609.949301-1-hbathini@linux.ibm.com>
-References: <20250422082609.949301-1-hbathini@linux.ibm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4CE33E7;
+	Sun,  4 May 2025 06:27:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746340024; cv=fail; b=hpnCaz+kCNAjXNnEB07me074rWuS2ZZcpeZpUhqa0nBJ2CAeK/TRUFO9xsiQraijg/JGL8Y0xv5JiqI6VoKGVHxCpqgZcnYcgktr0cln7stF3ekc1Sze7egCfePkW3nlRmm1Y2z5SseHEQeQZodVkj9hlDtztqE9yFKM/fnL6PQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746340024; c=relaxed/simple;
+	bh=tZ3Jv3r7EUn3UhhcI+cyAUaepQ+GyVFCUnIGl47cnRE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Vqs04pbCa+raiYi6hPerEag8bgzhxJ5F3F/GYcXQW/rqSM9UBINwLaGa8rL1pozHtpbImbkGT6g+OTcKy34kTMiXOAt1kfUw9EIz50Hud3AM/d/GZRdid1O1I+jIMuGCKjPJdVhgTQQz0DQHMcISLCyY8myUrRojGJfyO/sLV34=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=qACkAEXu; arc=fail smtp.client-ip=40.107.93.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aUR6VbYqj2GYE9QgIGwkKsr06xCNbn7EV0ZMbKyU+ILR7DpbhBXolWG/ISULs7YEEOsNtZLutNdMyLyj7ntOARYNtHhY9W/7djtt5tAX9l8EPMjpFGVbn+sdcxsa7voU0/H1T7e+PzFYzVkUJr04X6s/zUPf9tzvJX+dFsEnCxNk91mEikJ6mvGc+MYzXbRnxHs+LEA8kDwuMbts9uBR8EIl8kF24mC+ZyA/maEFZvppSM79ZdqvNhrs6zgTA9bydOai7ATTod+/AK35VJrgRxPWAf7xbeNuFSV+EhLAAzH8P9mK3TFIO66q+K/Ffh5LJx0+skBtz3f9hPMzFmvrYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9PaK9p23ZIX0olOGsqmh/jb6gviW7Bf2RqPqBNX6Ago=;
+ b=MXL2EHaGIPZTGbbEBhL1B5D7MnC+P2sBNnivS2k+zWzDI0rdsmB2i0SgEgIO+RPkQq7bTYNhP3BynysJ4iPF3djRs1VaDp93eAOwPQoHFaR0KCHLEUdz9jfHHnnE4ue59lpPq6SBETBoccvdt2R2I/VvA3jqxFLpm3wPB7tNpFwmPdrqhnnyINChQ1/P0UahdQg9xU3du4gtRGeCtgz+PYOp6lhOVDiSujyYhe5hYM0SMi9RZViMh8KPFmxDMU26Pw4onQqcHRt1tbqvxIAIyXW87lSf2qGazYipB0MOXbjXKwGjbRXvVS8BbQ8PJ9JuwxXC4/p6O6imZMIIK2pkZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linutronix.de smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9PaK9p23ZIX0olOGsqmh/jb6gviW7Bf2RqPqBNX6Ago=;
+ b=qACkAEXu+DC6w4WfjQXAPPdvRB+RgWDYvaiE/TsW9kwL3/1O1LU7pCCq5OxKAKaX3I/8zuDqd6+zVp9ltvuGJ3VXoSWtvSf8dR5n4XH5rd56F0+4yId4C+K/Iz5P7LE3GzdEP4a1qSL38s7cctyZK+ElVQKZRv6pOB+i/4JeYIE=
+Received: from BY3PR05CA0037.namprd05.prod.outlook.com (2603:10b6:a03:39b::12)
+ by SA0PR12MB4384.namprd12.prod.outlook.com (2603:10b6:806:9f::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Sun, 4 May
+ 2025 06:26:58 +0000
+Received: from CO1PEPF000044F4.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b:cafe::e8) by BY3PR05CA0037.outlook.office365.com
+ (2603:10b6:a03:39b::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.16 via Frontend Transport; Sun,
+ 4 May 2025 06:26:57 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000044F4.mail.protection.outlook.com (10.167.241.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8699.20 via Frontend Transport; Sun, 4 May 2025 06:26:57 +0000
+Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 4 May
+ 2025 01:26:56 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@linutronix.de>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, <bp@alien8.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>
+CC: <michael.roth@amd.com>, <nikunj@amd.com>, <seanjc@google.com>,
+	<ardb@kernel.org>, <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<kexec@lists.infradead.org>, <linux-coco@lists.linux.dev>
+Subject: [PATCH v4.1] x86/sev: Fix making shared pages private during kdump
+Date: Sun, 4 May 2025 06:26:42 +0000
+Message-ID: <20250504062642.144584-1-Ashish.Kalra@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA0MDAyNyBTYWx0ZWRfX6DyEKWU6QnYo 7greZNW8+yitmYLrtirthyZIHy+J/v/fyGCEVtGPaap2hYhJypSsH+8Z0joHOKf4XAMDMEGP6xp zJWCO4UyJuCjdiQSMqQAK9aDVg5lF4KIqaLfZXYYcHEokKdgvjXYGUUcR4ivtd+BX27VFaQVO2j
- s7todX2lRV6gmX//LTRrQeuTrLuE5f4r2x6h21Zy6p1DnRzNhWT6qwb7r4+G6x0sBAM6a6tkx3d fPtI8sZLlHmpWwS66jHYq7CkFWeuMYTek5bKl5o2YQxAX5xrJFhTGMqKOccLCAU6KLGBl7dlZ4S oD51yiulgbqF5e1RDOrUnCANHFn95IN3dnKnwE/hDVhjOXqFw4ecs7uaOFyBIdt4xaOxcFScj0N
- J/n7bnoAPSRe5A6U7xXYaJSdluRkjrrxVux5bY0j+4zDDzNDpbtlbpJx/BPG8lb7BUkfITKh
-X-Authority-Analysis: v=2.4 cv=FaY3xI+6 c=1 sm=1 tr=0 ts=6816dd58 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=wIAToBHDtcCUFXZOyw8A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: x6L6hjTrPTYSDUjvsLx63oLgbUoeAn3v
-X-Proofpoint-ORIG-GUID: uLhNmylByxGXvY0cDMqdsxSzNLPfZwOw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-04_01,2025-04-30_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
- impostorscore=0 malwarescore=0 spamscore=0 suspectscore=0 mlxlogscore=406
- priorityscore=1501 phishscore=0 adultscore=0 clxscore=1011
- lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505040027
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F4:EE_|SA0PR12MB4384:EE_
+X-MS-Office365-Filtering-Correlation-Id: 24dff9e7-8522-4dc8-b260-08dd8ad4abbf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|82310400026|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?tjAG7OVZDL6UD9WDvaOouyPjhBTz+pRbIb5N8AFLCLrr3uPVHkeKoC4uQEUy?=
+ =?us-ascii?Q?b/Bcnc64d8nZq1Vaf5MwDJqdUwsgqzk/NvRqAUcl1/uqWoW42Zyn0rIESjpk?=
+ =?us-ascii?Q?2o14JeX03xeWHwMqrWQafH3OR8UDwavcNzg9plByFVkZT+5TP/vJPkV6n9Gd?=
+ =?us-ascii?Q?1VM778ItQF6O784S9YyiyXVYnhaESNn8UfUrONmZLB8s/sj4LURllJgQ9qqZ?=
+ =?us-ascii?Q?3q46iWP38KZhHiOHyJwuQLh7XYkf/JEYjzleV98LseqbjeF4mIOoj+uA140G?=
+ =?us-ascii?Q?sFl8R3AhcrGt/6dDlEzpLKvnjjHn7vKhBkl+e7ueaHB5JdfR7Xs+V/IqQ4ID?=
+ =?us-ascii?Q?30OcKvLvmwAC8YQ637sIKX6v6hiZdmuCFd4L+lJ/97ItkqV5/LkXt/pOBKPU?=
+ =?us-ascii?Q?4R7dWukIN4BOAI0nlo5cZ+ABzKb2WVQtFWA29+xVGrTP+kvqBLSHPpwL57cJ?=
+ =?us-ascii?Q?MtAmN60ZVgkeM5ipnYBt4k8+qIGLPB+ra7+xg8mfBqg4nusUhe6zkz9Z01HF?=
+ =?us-ascii?Q?1GFFGZq5UjKdPZl7zRV+CyF+CVjgR1Shl1BCLYakv2YMrxSKJcLoNG4E2qSV?=
+ =?us-ascii?Q?HGF/UbcxvxGLOtKUksuZ5SLnKTd3wXmPKtXdMkdAe2VsecwSMGK2d9rjr3yF?=
+ =?us-ascii?Q?zp+XiOI5/XGRIMeJKdh9M2OsaW9meXS23O1Q2ktNsk248OMQYb8w6u+6zXh1?=
+ =?us-ascii?Q?STiU+Vpx0baq4UafvQNSjmFMIoiGjSl5ltpRZIK0NnSXmSARDpXjlLNYpw01?=
+ =?us-ascii?Q?CrjX8sjqZSewONgNOtDFLJVdgO7zyyIUe5SoQPnWnDXPL4Ta+sVfQTZQSeVG?=
+ =?us-ascii?Q?D/00E9nCi/IFjB9m/Ntu2CmQ0DIAVmcWTczKxbMiFvqAr05WIPf1UYd2L4Xd?=
+ =?us-ascii?Q?Ud2ZgFnnzLE+jrNcmscUnBqJvYuzpVSLGmy0l4Hz20xfEcydrL55Kz8eB6S7?=
+ =?us-ascii?Q?PpgpomgwakR/h7r2Cp/Km3RganT+j3sPG/VABb2svnt6RNjOqMLS6nC6B7f6?=
+ =?us-ascii?Q?6Csu+5JFlhrhNMrGiRIweraflTAQcDAm2b+lI9oiwZq7/7VsM4wzvqaO3vRs?=
+ =?us-ascii?Q?w6hvrJRytx1lmG0hS/qTsJjIQE/rEE0GPfcGJ3rlkyceGmZARzCQ+01L2yam?=
+ =?us-ascii?Q?/4buVGdnC8jWs+mctzjzENxHI+BeSUCTM9hXFpHHAz4xpem+0eA+i7FX36W/?=
+ =?us-ascii?Q?LBjH6yxUgWOKX4O2UvADveDytjy1qbo4Y691KLVoGvVbEDUaB0EGIrhXQOlB?=
+ =?us-ascii?Q?Z6SQOVhZiNzOCPI2WYNxocIB3Tah1a48k67eFMuXD/T/zDtWDkmETBt+4LaW?=
+ =?us-ascii?Q?gTKG2J1gdxBzy2bZWfLSTKHq2VALMFko38a6K0raHklw3hZ6auhIDadw55Y/?=
+ =?us-ascii?Q?xf4hHDggQ+14Dx7v8IDHWBZJum6uQdaE4mhgf35voBKCsWvDXUeq5EGdOTEs?=
+ =?us-ascii?Q?gVYS/dFj9O73m/b9FinVFPkcv7yIIOEAxrLN/8xyR9u28tuyA7aKEsFdoCkv?=
+ =?us-ascii?Q?/7jH/q+Vfp/vWGsuuOmbpEpGEwQeu8hue+hq?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2025 06:26:57.4186
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24dff9e7-8522-4dc8-b260-08dd8ad4abbf
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000044F4.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4384
 
-On Tue, 22 Apr 2025 13:56:09 +0530, Hari Bathini wrote:
-> arch_bpf_trampoline_size() provides JIT size of the BPF trampoline
-> before the buffer for JIT'ing it is allocated. The total number of
-> instructions emitted for BPF trampoline JIT code depends on where
-> the final image is located. So, the size arrived at with the dummy
-> pass in arch_bpf_trampoline_size() can vary from the actual size
-> needed in  arch_prepare_bpf_trampoline().  When the instructions
-> accounted in  arch_bpf_trampoline_size() is less than the number of
-> instructions emitted during the actual JIT compile of the trampoline,
-> the below warning is produced:
-> 
-> [...]
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-Applied to powerpc/next.
+When the shared pages are being made private during kdump preparation
+there are additional checks to handle shared GHCB pages.
 
-[1/1] powerpc/bpf: fix JIT code size calculation of bpf trampoline
-      https://git.kernel.org/powerpc/c/59ba025948be2a92e8bc9ae1cbdaf197660bd508
+These additional checks include handling the case of GHCB page being
+contained within a huge page.
 
-Thanks
+The check for handling the case of GHCB contained within a huge
+page incorrectly skips a page just below the GHCB page from being
+transitioned back to private during kdump preparation.
+
+This skipped page causes a 0x404 #VC exception when it is accessed
+later while dumping guest memory during vmcore generation via kdump.
+
+Correct the range to be checked for GHCB contained in a huge page.
+Also ensure that the skipped huge page containing the GHCB page is
+transitioned back to private by applying the correct address mask
+later when changing GHCBs to private at end of kdump preparation.
+
+Cc: stable@vger.kernel.org
+Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+---
+ arch/x86/coco/sev/core.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index d35fec7b164a..e39db6714f09 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -1019,7 +1019,8 @@ static void unshare_all_memory(void)
+ 			data = per_cpu(runtime_data, cpu);
+ 			ghcb = (unsigned long)&data->ghcb_page;
+ 
+-			if (addr <= ghcb && ghcb <= addr + size) {
++			/* Handle the case of a huge page containing the GHCB page */
++			if (addr <= ghcb && ghcb < addr + size) {
+ 				skipped_addr = true;
+ 				break;
+ 			}
+@@ -1131,9 +1132,8 @@ static void shutdown_all_aps(void)
+ void snp_kexec_finish(void)
+ {
+ 	struct sev_es_runtime_data *data;
++	unsigned long size, ghcb;
+ 	unsigned int level, cpu;
+-	unsigned long size;
+-	struct ghcb *ghcb;
+ 	pte_t *pte;
+ 
+ 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+@@ -1157,11 +1157,13 @@ void snp_kexec_finish(void)
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		data = per_cpu(runtime_data, cpu);
+-		ghcb = &data->ghcb_page;
+-		pte = lookup_address((unsigned long)ghcb, &level);
++		ghcb = (unsigned long)&data->ghcb_page;
++		pte = lookup_address(ghcb, &level);
+ 		size = page_level_size(level);
++		/* Handle the case of a huge page containing the GHCB page */
++		ghcb &= page_level_mask(level);
+ 		set_pte_enc(pte, level, (void *)ghcb);
+-		snp_set_memory_private((unsigned long)ghcb, (size / PAGE_SIZE));
++		snp_set_memory_private(ghcb, (size / PAGE_SIZE));
+ 	}
+ }
+ 
+-- 
+2.34.1
+
 
