@@ -1,216 +1,177 @@
-Return-Path: <stable+bounces-139551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5A5AA8469
-	for <lists+stable@lfdr.de>; Sun,  4 May 2025 08:58:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2E9AAA847E
+	for <lists+stable@lfdr.de>; Sun,  4 May 2025 09:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B91E189B407
-	for <lists+stable@lfdr.de>; Sun,  4 May 2025 06:58:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DBAE3BC5D8
+	for <lists+stable@lfdr.de>; Sun,  4 May 2025 07:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B1E185B73;
-	Sun,  4 May 2025 06:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1E6183CC3;
+	Sun,  4 May 2025 07:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pLSq9mD2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zK3u6gBv"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2uXzKB5t"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB14130A7D;
-	Sun,  4 May 2025 06:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B539633E4;
+	Sun,  4 May 2025 07:15:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746341883; cv=none; b=AVGZVVQzQvP4gk7x/gmg+7lH07qPqcVcVDonO+M1S3ajoVRQOTse9U7YjzEmVevIanT4AL6lPe788viMlDfGtVflXMnmugWpC288gp9DQ5HSkIO8eww93TV/fsQk0nkbIB21s7dS850jukoLN/2HMX2b1/eunVUp2+R4Si3JfN0=
+	t=1746342949; cv=none; b=lfkG78n46SDqdINq2NHhULBhlctwcV37w1VbiJZ82f/r5WF1ls5qx912ZO+zY4hhM6zun20yUGpYNjGUhPyYvWmSPm79awfS/jIeLvo6BHDQlb8fNFf5rbOrWQBMXi/mhU2i//SMxu/C/0Sr2uRQMrqDjfXwhkVCTLye0AmiFm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746341883; c=relaxed/simple;
-	bh=hnu4Nc3S6VKLMCxUIJhllk0RF2PfPOO1fXOC6zmH3wo=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=IJCoHO5pmSGWHNgw7IbF68GksPbpJLPfxnH8svlAZWi5RDXAUM/NfGppezhQ6TQ6AXt1Nhxfb3Mz22q+nyxHg36osPbOC1qqycaEwLXasZqEfgnqyb+2UgX2o3wWXPODYgl+epUKiULngiuc72e63dPK/Ls2p+V6/rLxG6xY0/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pLSq9mD2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zK3u6gBv; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 04 May 2025 06:57:47 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746341873;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qV9q6fKEQc/wdLQCvNRakX9Kvw3ZigCKFVWwmbfRUJ0=;
-	b=pLSq9mD21uX4/ihTsuYpYcvYioHfO9JYedSbdFiIQ17DFNsaZezZQGqvNvke+DPV7+Sy8t
-	c9I1EH4d3xft8jhMhzzt8+ztrFJIguzLzy/xtjD/lwMkkgbtHhzvf+IHwVSHVvNrWwoEgb
-	eFyLBmTWT5uGupr98ntMNcNGxXERsNsu0kKh77UwTSmigmSEhm9BrWrGfEtKVH9BPh6IH5
-	1jybwRUHuWA3K1w8i/2jnz5vB+bQaVIEWXo4iuKHczh4qf4gZ526P4hkaw9kFEa0tyjhOS
-	h5W+Q76YK8YlDg1eQaJ2ESWssWWEA0Ci1V0HLKOLyPgHSYn4REEJy4NgUwaeOA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746341873;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qV9q6fKEQc/wdLQCvNRakX9Kvw3ZigCKFVWwmbfRUJ0=;
-	b=zK3u6gBv6c6L/7fdkBW+tUtVEnM729ecCJELCe8HcoDZGuQgIgdN54ZgW1eCdZ8Hpk+Tgc
-	IS2FQ4beX6x06xDw==
-From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/boot/sev: Support memory acceptance in the EFI
- stub under SVSM
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, Ard Biesheuvel <ardb@kernel.org>,
- Ingo Molnar <mingo@kernel.org>,  <stable@vger.kernel.org>,
- Dionna Amalie Glaze <dionnaglaze@google.com>,
- Kevin Loughlin <kevinloughlin@google.com>, linux-efi@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250428174322.2780170-2-ardb+git@google.com>
-References: <20250428174322.2780170-2-ardb+git@google.com>
+	s=arc-20240116; t=1746342949; c=relaxed/simple;
+	bh=VFl4En76y+OpLSujTCsVixWtJLfVBo8Fs18pWu67NIM=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=b/VaSgUtart1zN0vBybrzXinlWwsi0NcUBzmeb+n+9HCK81IJ2rXBu64yxrJsWxF50RqHFCHsG45lvJjqMUWY/cB9D1mFAC11tOguhlpLKuhIJUF2UYcPn2EkvTf2eyU0Q+q5s5rVVXYixOS1WabQSbnc3V0XBlZUAsAWmOhZq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2uXzKB5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4ACC4CEE7;
+	Sun,  4 May 2025 07:15:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1746342948;
+	bh=VFl4En76y+OpLSujTCsVixWtJLfVBo8Fs18pWu67NIM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=2uXzKB5tvtLWjn/EIY9A1H8ngwh4gxek1y6s8EfSOlGHERXtBEhbis3cIKTA95NjD
+	 yjN42znkaYuXQtcC5AV7PmRQ432nN/JjnMJEbs5NSR1otBH6CPfHyYBriZnESpnGbC
+	 /m0ml7+nmhQfFTbiTpnqkt55ZUJbHolqqTwmGm24=
+Date: Sun, 4 May 2025 00:15:47 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Petr =?UTF-8?Q?Van=C4=9Bk?= <arkamar@atlas.cz>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ryan Roberts <ryan.roberts@arm.com>,
+ xen-devel@lists.xenproject.org, x86@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] mm: fix folio_pte_batch() on XEN PV
+Message-Id: <20250504001547.177b2aba8c2ffbfe63e0552e@linux-foundation.org>
+In-Reply-To: <9e3fb101-9a5d-43bb-924a-0df3c38333f8@redhat.com>
+References: <20250502215019.822-1-arkamar@atlas.cz>
+	<20250502215019.822-2-arkamar@atlas.cz>
+	<20250503182858.5a02729fcffd6d4723afcfc2@linux-foundation.org>
+	<9e3fb101-9a5d-43bb-924a-0df3c38333f8@redhat.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <174634186772.22196.3588344121951287997.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Sun, 4 May 2025 08:47:45 +0200 David Hildenbrand <david@redhat.com> wrote:
 
-Commit-ID:     8ed12ab1319b2d8e4a529504777aacacf71371e4
-Gitweb:        https://git.kernel.org/tip/8ed12ab1319b2d8e4a529504777aacacf71371e4
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Mon, 28 Apr 2025 19:43:22 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 04 May 2025 08:20:27 +02:00
+> > 
+> > Methinks max_nr really wants to be unsigned long. 
+> 
+> We only batch within a single PTE table, so an integer was sufficient.
+> 
+> The unsigned value is the result of a discussion with Ryan regarding similar/related
+> (rmap) functions:
+> 
+> "
+> Personally I'd go with signed int (since
+> that's what all the counters in struct folio that we are manipulating are,
+> underneath the atomic_t) then check that nr_pages > 0 in
+> __folio_rmap_sanity_checks().
+> "
+> 
+> https://lore.kernel.org/linux-mm/20231204142146.91437-14-david@redhat.com/T/#ma0bfff0102f0f2391dfa94aa22a8b7219b92c957
+> 
+> As soon as we let "max_nr" be an "unsigned long", also the return value
+> should be an "unsigned long", and everybody calling that function.
+> 
+> In this case here, we should likely just use whatever type "max_nr" is.
+> 
+> Not sure myself if we should change that here to unsigned long or long. Some
+> callers also operate with the negative values IIRC (e.g., adjust the RSS by doing -= nr).
 
-x86/boot/sev: Support memory acceptance in the EFI stub under SVSM
+"rss -= nr" doesn't require, expect or anticipate that `nr' can be negative!
 
-Commit:
+> 
+> > That will permit the
+> > cleanup of quite a bit of truncation, extension, signedness conversion
+> > and general type chaos in folio_pte_batch()'s various callers.
+> > > And...
+> > 
+> > Why does folio_nr_pages() return a signed quantity?  It's a count.
+> 
+> A partial answer is in 1ea5212aed068 ("mm: factor out large folio handling
+> from folio_nr_pages() into folio_large_nr_pages()"), where I stumbled over the
+> reason for a signed value myself and at least made the other
+> functions be consistent with folio_nr_pages():
+> 
+> "
+>      While at it, let's consistently return a "long" value from all these
+>      similar functions.  Note that we cannot use "unsigned int" (even though
+>      _folio_nr_pages is of that type), because it would break some callers that
+>      do stuff like "-folio_nr_pages()".  Both "int" or "unsigned long" would
+>      work as well.
+> 
+> "
+> 
+> Note that folio_nr_pages() returned a "long" since the very beginning. Probably using
+> a signed value for consistency because also mapcounts / refcounts are all signed.
 
-  d54d610243a4 ("x86/boot/sev: Avoid shared GHCB page for early memory acceptance")
+Geeze.
 
-provided a fix for SEV-SNP memory acceptance from the EFI stub when
-running at VMPL #0. However, that fix was insufficient for SVSM SEV-SNP
-guests running at VMPL >0, as those rely on a SVSM calling area, which
-is a shared buffer whose address is programmed into a SEV-SNP MSR, and
-the SEV init code that sets up this calling area executes much later
-during the boot.
+Can we step back and look at what we're doing?  Anything which counts
+something (eg, has "nr" in the identifier) cannot be negative.
 
-Given that booting via the EFI stub at VMPL >0 implies that the firmware
-has configured this calling area already, reuse it for performing memory
-acceptance in the EFI stub.
+It's that damn "int" thing.  I think it was always a mistake that the C
+language's go-to type is a signed one.  It's a system programming
+language and system software rarely deals with negative scalars. 
+Signed scalars are the rare case.
 
-Fixes: fcd042e86422 ("x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0")
-Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Co-developed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: Kevin Loughlin <kevinloughlin@google.com>
-Cc: linux-efi@vger.kernel.org
-Link: https://lore.kernel.org/r/20250428174322.2780170-2-ardb+git@google.com
----
- arch/x86/boot/compressed/mem.c |  5 +----
- arch/x86/boot/compressed/sev.c | 40 +++++++++++++++++++++++++++++++++-
- arch/x86/boot/compressed/sev.h |  2 ++-
- 3 files changed, 43 insertions(+), 4 deletions(-)
+I do expect that the code in and around here would be cleaner and more
+reliable if we were to do a careful expunging of inappropriately signed
+variables.
 
-diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-index f676156..0e9f84a 100644
---- a/arch/x86/boot/compressed/mem.c
-+++ b/arch/x86/boot/compressed/mem.c
-@@ -34,14 +34,11 @@ static bool early_is_tdx_guest(void)
- 
- void arch_accept_memory(phys_addr_t start, phys_addr_t end)
- {
--	static bool sevsnp;
--
- 	/* Platform-specific memory-acceptance call goes here */
- 	if (early_is_tdx_guest()) {
- 		if (!tdx_accept_memory(start, end))
- 			panic("TDX: Failed to accept memory\n");
--	} else if (sevsnp || (sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED)) {
--		sevsnp = true;
-+	} else if (early_is_sevsnp_guest()) {
- 		snp_accept_memory(start, end);
- 	} else {
- 		error("Cannot accept memory: unknown platform\n");
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 89ba168..0003e44 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -645,3 +645,43 @@ void sev_prep_identity_maps(unsigned long top_level_pgt)
- 
- 	sev_verify_cbit(top_level_pgt);
- }
-+
-+bool early_is_sevsnp_guest(void)
-+{
-+	static bool sevsnp;
-+
-+	if (sevsnp)
-+		return true;
-+
-+	if (!(sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED))
-+		return false;
-+
-+	sevsnp = true;
-+
-+	if (!snp_vmpl) {
-+		unsigned int eax, ebx, ecx, edx;
-+
-+		/*
-+		 * CPUID Fn8000_001F_EAX[28] - SVSM support
-+		 */
-+		eax = 0x8000001f;
-+		ecx = 0;
-+		native_cpuid(&eax, &ebx, &ecx, &edx);
-+		if (eax & BIT(28)) {
-+			struct msr m;
-+
-+			/* Obtain the address of the calling area to use */
-+			boot_rdmsr(MSR_SVSM_CAA, &m);
-+			boot_svsm_caa = (void *)m.q;
-+			boot_svsm_caa_pa = m.q;
-+
-+			/*
-+			 * The real VMPL level cannot be discovered, but the
-+			 * memory acceptance routines make no use of that so
-+			 * any non-zero value suffices here.
-+			 */
-+			snp_vmpl = U8_MAX;
-+		}
-+	}
-+	return true;
-+}
-diff --git a/arch/x86/boot/compressed/sev.h b/arch/x86/boot/compressed/sev.h
-index 4e463f3..d390038 100644
---- a/arch/x86/boot/compressed/sev.h
-+++ b/arch/x86/boot/compressed/sev.h
-@@ -13,12 +13,14 @@
- bool sev_snp_enabled(void);
- void snp_accept_memory(phys_addr_t start, phys_addr_t end);
- u64 sev_get_status(void);
-+bool early_is_sevsnp_guest(void);
- 
- #else
- 
- static inline bool sev_snp_enabled(void) { return false; }
- static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
- static inline u64 sev_get_status(void) { return 0; }
-+static inline bool early_is_sevsnp_guest(void) { return false; }
- 
- #endif
- 
+> 
+> > 
+> > And why the heck is folio_pte_batch() inlined?  It's larger then my
+> > first hard disk and it has five callsites!
+> 
+> :)
+> 
+> In case of fork/zap we really want it inlined because
+> 
+> (1) We want to optimize out all of the unnecessary checks we added for other users
+> 
+> (2) Zap/fork code is very sensitive to function call overhead
+> 
+> Probably, as that function sees more widespread use, we might want a
+> non-inlined variant that can be used in places where performance doesn't
+> matter all that much (although I am not sure there will be that many).
+
+a quick test.
+
+before:
+   text	   data	    bss	    dec	    hex	filename
+  12380	    470	      0	  12850	   3232	mm/madvise.o
+  52975	   2689	     24	  55688	   d988	mm/memory.o
+  25305	   1448	   2096	  28849	   70b1	mm/mempolicy.o
+   8573	    924	      4	   9501	   251d	mm/mlock.o
+  20950	   5864	     16	  26830	   68ce	mm/rmap.o
+
+ (120183)
+
+after:
+
+   text	   data	    bss	    dec	    hex	filename
+  11916	    470	      0	  12386	   3062	mm/madvise.o
+  52990	   2697	     24	  55711	   d99f	mm/memory.o
+  25161	   1448	   2096	  28705	   7021	mm/mempolicy.o
+   8381	    924	      4	   9309	   245d	mm/mlock.o
+  20806	   5864	     16	  26686	   683e	mm/rmap.o
+
+ (119254)
+
+so uninlining saves a kilobyte of text - less than I expected but
+almost 1%.
+
+Quite a lot of the inlines in internal.h could do with having a
+critical eye upon them.
 
