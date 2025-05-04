@@ -1,170 +1,118 @@
-Return-Path: <stable+bounces-139543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A91AA8342
-	for <lists+stable@lfdr.de>; Sun,  4 May 2025 00:40:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2324AA837B
+	for <lists+stable@lfdr.de>; Sun,  4 May 2025 03:29:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3B96189E59D
-	for <lists+stable@lfdr.de>; Sat,  3 May 2025 22:40:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6531B3BEC6C
+	for <lists+stable@lfdr.de>; Sun,  4 May 2025 01:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF05F1DF98B;
-	Sat,  3 May 2025 22:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2614F25776;
+	Sun,  4 May 2025 01:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DvcK7mTk"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ewOq8mW8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD3315350B;
-	Sat,  3 May 2025 22:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F00EEC0;
+	Sun,  4 May 2025 01:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746311997; cv=none; b=qOQ84snHOOQgf7u+eu/y8cxFoUxhPqroLxoFdekG4KWRAXIK4MsMlXkMgkNHLERhfulHzE564AYDp/M0g3Z5dYhi02gcMAg2eP46p1qa4rgHFmNP6Zt5noMr4be5mY2KBcb+xp9pZ8f0ONX5Y5EHnMm059pyJiZma6MNnhBAoYY=
+	t=1746322139; cv=none; b=d9Re2CIhriwQhpTjwx3FcY/PnctsO8YwtQ5m3e+xXskK30j5dUVO4dFB57VMxy5bH+ikBGzPRDnLVi1MXJyx8nqFACtra2LZ978BYLu3ENzJQt7VT0vt+HK16WJ5uWHBGI98r7Q/nAdrFaTRSpiZe1oZDrpznhrrMWaaNnATh20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746311997; c=relaxed/simple;
-	bh=q/xAnCXUh7gKnEZY83rtkQmLm5+SBilPqhFLOnA9tCc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MoeCyG2zUnyMC3v0NhgCi9dVHUtN9IqfceYa0kCouHE/bvGwg9WLi0W1ikTLxhkdWzd7wL/b5MuFKPCczL9LZ8kJFJxFyQ7pVFjeHRal/5FgxzPBwkpSI8DRjFMBJmjFWwV3UAS5X2GYZNz7JfsadLAnyTPLySjxPGPQJOsUu0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DvcK7mTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D60FC4CEE3;
-	Sat,  3 May 2025 22:39:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746311997;
-	bh=q/xAnCXUh7gKnEZY83rtkQmLm5+SBilPqhFLOnA9tCc=;
-	h=Subject:From:Reply-To:To:Cc:Date:In-Reply-To:References:From;
-	b=DvcK7mTkvKmWGxzoRf9hCH1JhrQTgb2jv2whuFoqqKpflpZKLD3Ngz3jHjnDWZxj4
-	 O9qfOFXAFPN9FlJsNhATlg2xM690ZevuWT1K0H2EzAJHKHs0OnGgoeOQuHZrj7iQXF
-	 QSGPvxaV9mEzP9/pyKH+faQUrxgw5N2cpJn4QePSKkYuAotHLiSBmC6tUpx1KJyygi
-	 8ZHfeaWwT/8M0enFKllfh8NwDlbvQJTCZH280co1jzKPuVp7wY1nScU8IqxfdejtdF
-	 0j9QsWR5IjUg6pNDr0KTdwffoqDYSph/HC3ZCRckMbd1vkePbUuOXc8mS9PxmKjIjr
-	 5OFIr4EC54VvQ==
-Message-ID: <5ae1ef34c9844d6d0f5fb167dd596a4c43321367.camel@kernel.org>
-Subject: Re: [REGRESSION][BISECTED][STABLE] MT7925: mDNS and IPv6 broken in
- kernel 6.14.3 and above
-From: Niklas Schnelle <niks@kernel.org>
-Reply-To: niks@kernel.org
-To: Mingyen Hsieh =?UTF-8?Q?=28=E8=AC=9D=E6=98=8E=E8=AB=BA=29?=	
- <Mingyen.Hsieh@mediatek.com>, "stable@vger.kernel.org"
- <stable@vger.kernel.org>,  "fossben@pm.me"	 <fossben@pm.me>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
- "linux-mediatek@lists.infradead.org"
-	 <linux-mediatek@lists.infradead.org>, Allan Wang
- =?UTF-8?Q?=28=E7=8E=8B=E5=AE=B6=E5=81=89=29?=
-	 <Allan.Wang@mediatek.com>, "linux-kernel@vger.kernel.org"
-	 <linux-kernel@vger.kernel.org>, "regressions@lists.linux.dev"
-	 <regressions@lists.linux.dev>
-Date: Sun, 04 May 2025 00:39:52 +0200
-In-Reply-To: <f73dec60b60dd7bb3be40c1feefbe223c7afe19b.camel@mediatek.com>
-References: 
-	<EmWnO5b-acRH1TXbGnkx41eJw654vmCR-8_xMBaPMwexCnfkvKCdlU5u19CGbaapJ3KRu-l3B-tSUhf8CCQwL0odjo6Cd5YG5lvNeB-vfdg=@pm.me>
-	 <f73dec60b60dd7bb3be40c1feefbe223c7afe19b.camel@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 
+	s=arc-20240116; t=1746322139; c=relaxed/simple;
+	bh=7n/RkZelCee7HZb0JLnBTglCg0DQoVwRlQDp8IWWaHQ=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=FKiohRN4DMXtaYcDJv2VDCcu43gWwOF9crLXbCvbLb1qn7fPxOx7uuId+Dsfz8iZReoqTXc3dS0/dWq9caxh63rqET/mjKXfizGslKRaN02T1xDOMZyBLJ7uf74i8TCaHzauEbjO/MNVQ4gPMI7a7jaoim3FT9Q/WS6C9ZHwDqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ewOq8mW8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA00C4CEE3;
+	Sun,  4 May 2025 01:28:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1746322139;
+	bh=7n/RkZelCee7HZb0JLnBTglCg0DQoVwRlQDp8IWWaHQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ewOq8mW8UDxL9+9ECv8Qfuakg+agxPoz8hWNSJQFDuvfrugw0npvbJUQxMy9Ahtg+
+	 JM0F3+pCCGGpUGYUttE8oLGguaoQalZDqWc1OPU4/Xo3x4IPlVww/z628p+JTtuzL0
+	 tuggwHoPh9Wt9A8kV+dO1nYp+gzyXcg1Mw2jHHRc=
+Date: Sat, 3 May 2025 18:28:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Petr =?UTF-8?B?VmFuxJtr?= <arkamar@atlas.cz>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, David Hildenbrand
+ <david@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ xen-devel@lists.xenproject.org, x86@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] mm: fix folio_pte_batch() on XEN PV
+Message-Id: <20250503182858.5a02729fcffd6d4723afcfc2@linux-foundation.org>
+In-Reply-To: <20250502215019.822-2-arkamar@atlas.cz>
+References: <20250502215019.822-1-arkamar@atlas.cz>
+	<20250502215019.822-2-arkamar@atlas.cz>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2025-04-30 at 06:47 +0000, Mingyen Hsieh (=E8=AC=9D=E6=98=8E=E8=AB=
-=BA) wrote:
-> On Wed, 2025-04-30 at 01:14 +0000, fossben@pm.me wrote:
-> >=20
-> > External email : Please do not click links or open attachments until
-> > you have verified the sender or the content.
-> >=20
-> >=20
-> > Hello all,
-> >=20
-> > After upgrading to 6.14.3 on my PC with a MT7925 chip, I noticed that
-> > I could no longer ping *.local addresses provided by Avahi. In
-> > addition, I also noticed that I was not able to get a DHCP IPv6
-> > address from my router, no matter how many times I rebooted the
-> > router or reconnected with NetworkManager.
-> >=20
-> > Reverting to 6.14.2 fixes both mDNS and IPv6 addresses immediately.
-> > Going back to 6.14.3 immediately breaks mDNS again, but the IPv6
-> > address will stay there for a while before disappearing later,
-> > possibly because the DHCP lease expired? I am not sure exactly when
-> > it stops working.
-> >=20
-> > I've done a kernel bisect between 6.14.2 and 6.14.3 and found the
-> > offending commit that causes mDNS to fail:
-> >=20
-> > commit 80007d3f92fd018d0a052a706400e976b36e3c87
-> > Author: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> > Date:=C2=A0=C2=A0 Tue Mar 4 16:08:50 2025 -0800
-> >=20
-> > =C2=A0=C2=A0=C2=A0 wifi: mt76: mt7925: integrate *mlo_sta_cmd and *sta_=
-cmd
-> >=20
-> > =C2=A0=C2=A0=C2=A0 commit cb1353ef34735ec1e5d9efa1fe966f05ff1dc1e1 upst=
-ream.
-> >=20
-> > =C2=A0=C2=A0=C2=A0 Integrate *mlo_sta_cmd and *sta_cmd for the MLO firm=
-ware.
-> >=20
-> > =C2=A0=C2=A0=C2=A0 Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling M=
-LO when the
-> > firmware supports it")
-> >=20
-> > =C2=A0drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 59 ++++--------=
----
-> > --------------------------------------------
-> > =C2=A01 file changed, 4 insertions(+), 55 deletions(-)
-> >=20
-> > I do not know if this same commit is also causing the IPv6 issues as
-> > testing that requires quite a bit of time to reproduce. What I do
-> > know with certainty as of this moment is that it definitely breaks in
-> > kernel 6.14.3.
-> >=20
-> > I've attached my hardware info as well as dmesg logs from the last
-> > working kernel from the bisect and 6.14.4 which exhibits the issue.
-> > Please let me know if there's any other info you need.
-> >=20
-> > Thanks!
-> > Benjamin Xiao
->=20
-> Hi,
->=20
-> Thanks for reporting this issue, we will aim into this.
->=20
-> Can you provide me with your testing steps?
->=20
-> Best Regards,
-> Yen.
->=20
+On Fri,  2 May 2025 23:50:19 +0200 Petr Vaněk <arkamar@atlas.cz> wrote:
 
-Hi Yan,
+> On XEN PV, folio_pte_batch() can incorrectly batch beyond the end of a
+> folio due to a corner case in pte_advance_pfn(). Specifically, when the
+> PFN following the folio maps to an invalidated MFN,
+> 
+> 	expected_pte = pte_advance_pfn(expected_pte, nr);
+> 
+> produces a pte_none(). If the actual next PTE in memory is also
+> pte_none(), the pte_same() succeeds,
+> 
+> 	if (!pte_same(pte, expected_pte))
+> 		break;
+> 
+> the loop is not broken, and batching continues into unrelated memory.
+> 
+> ...
 
-I see the same IPv6 issue on my Framework 13 (Ryzen 5 AI 340) with an
-mt7925e WiFI module.=C2=A0My setup is just a home router with native IPv6
-both for my uplink and in the LAN. The problems with IPv6 can already
-be seen just in the LAN for example by checking which IP was used for
-SSH, in my setup it should always be IPv6 but falls back to IPv4 in the
-broken state.
+Looks OK for now I guess but it looks like we should pay some attention
+to what types we're using.
 
-As another data point, I tried reverting cb1353ef3473 ("wifi: mt76:
-mt7925: integrate *mlo_sta_cmd and *sta_cmd") on top of 6.15.-rc4. This
-fully restores IPv6 for me. Also note I'm running this with the mt7925
-firmware version 20250425073330 from linux-firmware's master branch as
-I had some dropped connections with earlier firmware.
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -248,11 +248,9 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
+>  		pte_t *start_ptep, pte_t pte, int max_nr, fpb_t flags,
+>  		bool *any_writable, bool *any_young, bool *any_dirty)
+>  {
+> -	unsigned long folio_end_pfn = folio_pfn(folio) + folio_nr_pages(folio);
+> -	const pte_t *end_ptep = start_ptep + max_nr;
+>  	pte_t expected_pte, *ptep;
+>  	bool writable, young, dirty;
+> -	int nr;
+> +	int nr, cur_nr;
+>  
+>  	if (any_writable)
+>  		*any_writable = false;
+> @@ -265,11 +263,15 @@ static inline int folio_pte_batch(struct folio *folio, unsigned long addr,
+>  	VM_WARN_ON_FOLIO(!folio_test_large(folio) || max_nr < 1, folio);
+>  	VM_WARN_ON_FOLIO(page_folio(pfn_to_page(pte_pfn(pte))) != folio, folio);
+>  
+> +	/* Limit max_nr to the actual remaining PFNs in the folio we could batch. */
+> +	max_nr = min_t(unsigned long, max_nr,
+> +		       folio_pfn(folio) + folio_nr_pages(folio) - pte_pfn(pte));
+> +
 
-So it definitely looks like that commit also broke IPv6 and not just
-mDNS. Note that if if I use DHCPv6 instead of router advertisements, on
-the latest firmware, but without the revert, I get a global IPv6
-address added to the interface but then native IPv6 addresses are still
-uncreachable. With the offending patch reverted my SSH session to an
-IPv6 only host works fine and is stable. Also I'd be willing to test a
-proper fix as I rely on IPv6 heavily due to having to use CGNAT for
-IPv4 but not for IPv6.
+Methinks max_nr really wants to be unsigned long.  That will permit the
+cleanup of quite a bit of truncation, extension, signedness conversion
+and general type chaos in folio_pte_batch()'s various callers.
 
+And...
 
-Thanks,
-Niklas
+Why does folio_nr_pages() return a signed quantity?  It's a count.
+
+And why the heck is folio_pte_batch() inlined?  It's larger then my
+first hard disk and it has five callsites!
+
 
