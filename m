@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-140287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45C0AAA743
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:29:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4517CAAA719
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:25:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D02ED987FA1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:23:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0A97188DB80
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1530627F188;
-	Mon,  5 May 2025 22:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FE8332EBB;
+	Mon,  5 May 2025 22:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GCfOnNIy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YqOKIoA4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C0C27F180;
-	Mon,  5 May 2025 22:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D63A27F19C;
+	Mon,  5 May 2025 22:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484563; cv=none; b=T8XIb2SUnOuFP1eTH91bwjOBdaMiOQsKDEon3zfTjGDWyfU98NWRx6dDtp50nIjbGLFkvXJit2VDwVFsxH1EgPFunazYnwYmoQWYcZm+K+GSjgN5JpBqx4kn/4cp8mZxtU4s2/vUxXkaL7iktiY9IiijRRw73m1z00ix0v6vxK8=
+	t=1746484565; cv=none; b=fUy4gRhM6rhw8STq6tuNEANmmMaZ/93SeZ+T8bb3frSKlq69ikPIHDR102u41IFp9sON+IddshpRXwj1vPPD7M9GbM1mYXbEa9Zs1A4ocN0nJ3xgT3mL3LaIjHEJQ6Wy2XOPJBdWAMLAws13fnRdml+8ZgGBh/ZduNgosjI7wwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484563; c=relaxed/simple;
-	bh=jHCS0+sXGbHTrVHQFAZYbKT6iqPXzBL4D1iEcMpYs2w=;
+	s=arc-20240116; t=1746484565; c=relaxed/simple;
+	bh=hOVXQ8hrVPIa6fSbCTeDHxx+YNdQgAt3z5l5k0HhAAE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D4EeKM3fY6HIV4NEJ4MUp3slqBHnMfPVZ4x+XS9MvcnMcO9k/ZRjBdZItWbo2pqvE6qaI9mKaRNRswYbRneX/xELddp1/13xD8tJEimX0oRaSd18jLMbP0FKxpIpjLnFwTyiiW9RmupmibZAY40QtNmjOQujsPiPilpYR0+tIv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GCfOnNIy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AACC4CEEE;
-	Mon,  5 May 2025 22:36:02 +0000 (UTC)
+	 MIME-Version; b=HcvEFIG694r6P1VAtl6cowNxVVFtn9xKXlqWC9T9fwUFc9wwH4O1B+ZHlJse73/ZKrdcaMjL9M4jAnxD3wUrHziJ1bwhv5/snoFntzO7bqrfV9WL0N2c3B3Ow1TEFXylK2yIc1i6sfBbD3UIwGY8fdGGOtaaphky6xVU6ts++kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YqOKIoA4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B493EC4CEED;
+	Mon,  5 May 2025 22:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484563;
-	bh=jHCS0+sXGbHTrVHQFAZYbKT6iqPXzBL4D1iEcMpYs2w=;
+	s=k20201202; t=1746484564;
+	bh=hOVXQ8hrVPIa6fSbCTeDHxx+YNdQgAt3z5l5k0HhAAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GCfOnNIyT7fJpJYlz12Fut4hVY5xXY+wz7ccor5w3ZSUtHecJR1oEdnbV+ITtsAXy
-	 04YQSuwxuRU9RnSGu1PYUdDzxwjrXc98OKBcDiHY1spxHx3yM7Ajs/iZB9Kx7T6yLk
-	 eyIqw4QrQEv9eAe1tw6eJ2A5+5fMicdCCjFiBUiQE1iUPhlvcq/xNdipkQN3M7QQ19
-	 It7O8eEBA2R+TUOsR8jhB/txdEkokrci2IYsioojn34BjlwHqxJzftJzMC7aqyfJxb
-	 i0gtmzLtp6q58umxPOwn5/W8oGEqltrwWvNCQIM07F9AjJmaQqBcdf97rgM8belBKW
-	 metpzQzfSElWA==
+	b=YqOKIoA4pcs/+8KK1zuUjs/mtdJqKaZ4B244/QVD8+/z4g1GRQ3gkdWhwV7NdLTJU
+	 83IvYOF36bfbyv9/tjGaz18rcRwz0N4APLjSzioq/9tRrDDbsaAC9zVSFdd9DSXyeE
+	 G7zyG+Z0ObjUtFKGIWEK34bWeV/x3HrO1m2lyPQz7krLIiJtIP4Xg7urWGoSE0mFTE
+	 li89gbyl0+IZoFahRYLB4oEBzZmCdhUpkdCEf0GQAvyqVhmP0DFtJurJNKr+Xk5LlY
+	 2FHnuwmpW4DNPcF/3ioAV+IkJ1eGgATqHGC15kNfpwhy6/Io5OwUGK+BpUTypJAsHB
+	 NOp9ECic/sK2A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>,
+Cc: Depeng Shao <quic_depengs@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.14 539/642] f2fs: introduce f2fs_base_attr for global sysfs entries
-Date: Mon,  5 May 2025 18:12:35 -0400
-Message-Id: <20250505221419.2672473-539-sashal@kernel.org>
+	rfoss@kernel.org,
+	todor.too@gmail.com,
+	bryan.odonoghue@linaro.org,
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 540/642] media: qcom: camss: csid: Only add TPG v4l2 ctrl if TPG hardware is available
+Date: Mon,  5 May 2025 18:12:36 -0400
+Message-Id: <20250505221419.2672473-540-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -65,153 +70,138 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Depeng Shao <quic_depengs@quicinc.com>
 
-[ Upstream commit 21925ede449e038ed6f9efdfe0e79f15bddc34bc ]
+[ Upstream commit 2f1361f862a68063f37362f1beb400e78e289581 ]
 
-In /sys/fs/f2fs/features, there's no f2fs_sb_info, so let's avoid to get
-the pointer.
+There is no CSID TPG on some SoCs, so the v4l2 ctrl in CSID driver
+shouldn't be registered. Checking the supported TPG modes to indicate
+if the TPG hardware exists or not and only registering v4l2 ctrl for
+CSID only when the TPG hardware is present.
 
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Depeng Shao <quic_depengs@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/sysfs.c | 74 ++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 52 insertions(+), 22 deletions(-)
+ .../media/platform/qcom/camss/camss-csid.c    | 60 +++++++++++--------
+ 1 file changed, 35 insertions(+), 25 deletions(-)
 
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index d15c68b28952b..b419555e1ea7f 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -61,6 +61,12 @@ struct f2fs_attr {
- 	int id;
- };
+diff --git a/drivers/media/platform/qcom/camss/camss-csid.c b/drivers/media/platform/qcom/camss/camss-csid.c
+index 858db5d4ca75c..e51f2ed3f0315 100644
+--- a/drivers/media/platform/qcom/camss/camss-csid.c
++++ b/drivers/media/platform/qcom/camss/camss-csid.c
+@@ -683,11 +683,13 @@ static int csid_set_stream(struct v4l2_subdev *sd, int enable)
+ 	int ret;
  
-+struct f2fs_base_attr {
-+	struct attribute attr;
-+	ssize_t (*show)(struct f2fs_base_attr *a, char *buf);
-+	ssize_t (*store)(struct f2fs_base_attr *a, const char *buf, size_t len);
-+};
-+
- static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
- 			     struct f2fs_sb_info *sbi, char *buf);
+ 	if (enable) {
+-		ret = v4l2_ctrl_handler_setup(&csid->ctrls);
+-		if (ret < 0) {
+-			dev_err(csid->camss->dev,
+-				"could not sync v4l2 controls: %d\n", ret);
+-			return ret;
++		if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED) {
++			ret = v4l2_ctrl_handler_setup(&csid->ctrls);
++			if (ret < 0) {
++				dev_err(csid->camss->dev,
++					"could not sync v4l2 controls: %d\n", ret);
++				return ret;
++			}
+ 		}
  
-@@ -862,6 +868,25 @@ static void f2fs_sb_release(struct kobject *kobj)
- 	complete(&sbi->s_kobj_unregister);
+ 		if (!csid->testgen.enabled &&
+@@ -761,7 +763,8 @@ static void csid_try_format(struct csid_device *csid,
+ 		break;
+ 
+ 	case MSM_CSID_PAD_SRC:
+-		if (csid->testgen_mode->cur.val == 0) {
++		if (csid->testgen.nmodes == CSID_PAYLOAD_MODE_DISABLED ||
++		    csid->testgen_mode->cur.val == 0) {
+ 			/* Test generator is disabled, */
+ 			/* keep pad formats in sync */
+ 			u32 code = fmt->code;
+@@ -811,7 +814,8 @@ static int csid_enum_mbus_code(struct v4l2_subdev *sd,
+ 
+ 		code->code = csid->res->formats->formats[code->index].code;
+ 	} else {
+-		if (csid->testgen_mode->cur.val == 0) {
++		if (csid->testgen.nmodes == CSID_PAYLOAD_MODE_DISABLED ||
++		    csid->testgen_mode->cur.val == 0) {
+ 			struct v4l2_mbus_framefmt *sink_fmt;
+ 
+ 			sink_fmt = __csid_get_format(csid, sd_state,
+@@ -1190,7 +1194,8 @@ static int csid_link_setup(struct media_entity *entity,
+ 
+ 		/* If test generator is enabled */
+ 		/* do not allow a link from CSIPHY to CSID */
+-		if (csid->testgen_mode->cur.val != 0)
++		if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED &&
++		    csid->testgen_mode->cur.val != 0)
+ 			return -EBUSY;
+ 
+ 		sd = media_entity_to_v4l2_subdev(remote->entity);
+@@ -1283,24 +1288,27 @@ int msm_csid_register_entity(struct csid_device *csid,
+ 		 MSM_CSID_NAME, csid->id);
+ 	v4l2_set_subdevdata(sd, csid);
+ 
+-	ret = v4l2_ctrl_handler_init(&csid->ctrls, 1);
+-	if (ret < 0) {
+-		dev_err(dev, "Failed to init ctrl handler: %d\n", ret);
+-		return ret;
+-	}
++	if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED) {
++		ret = v4l2_ctrl_handler_init(&csid->ctrls, 1);
++		if (ret < 0) {
++			dev_err(dev, "Failed to init ctrl handler: %d\n", ret);
++			return ret;
++		}
+ 
+-	csid->testgen_mode = v4l2_ctrl_new_std_menu_items(&csid->ctrls,
+-				&csid_ctrl_ops, V4L2_CID_TEST_PATTERN,
+-				csid->testgen.nmodes, 0, 0,
+-				csid->testgen.modes);
++		csid->testgen_mode =
++			v4l2_ctrl_new_std_menu_items(&csid->ctrls,
++						     &csid_ctrl_ops, V4L2_CID_TEST_PATTERN,
++						     csid->testgen.nmodes, 0, 0,
++						     csid->testgen.modes);
+ 
+-	if (csid->ctrls.error) {
+-		dev_err(dev, "Failed to init ctrl: %d\n", csid->ctrls.error);
+-		ret = csid->ctrls.error;
+-		goto free_ctrl;
+-	}
++		if (csid->ctrls.error) {
++			dev_err(dev, "Failed to init ctrl: %d\n", csid->ctrls.error);
++			ret = csid->ctrls.error;
++			goto free_ctrl;
++		}
+ 
+-	csid->subdev.ctrl_handler = &csid->ctrls;
++		csid->subdev.ctrl_handler = &csid->ctrls;
++	}
+ 
+ 	ret = csid_init_formats(sd, NULL);
+ 	if (ret < 0) {
+@@ -1331,7 +1339,8 @@ int msm_csid_register_entity(struct csid_device *csid,
+ media_cleanup:
+ 	media_entity_cleanup(&sd->entity);
+ free_ctrl:
+-	v4l2_ctrl_handler_free(&csid->ctrls);
++	if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED)
++		v4l2_ctrl_handler_free(&csid->ctrls);
+ 
+ 	return ret;
  }
- 
-+static ssize_t f2fs_base_attr_show(struct kobject *kobj,
-+				struct attribute *attr, char *buf)
-+{
-+	struct f2fs_base_attr *a = container_of(attr,
-+				struct f2fs_base_attr, attr);
-+
-+	return a->show ? a->show(a, buf) : 0;
-+}
-+
-+static ssize_t f2fs_base_attr_store(struct kobject *kobj,
-+				struct attribute *attr,
-+				const char *buf, size_t len)
-+{
-+	struct f2fs_base_attr *a = container_of(attr,
-+				struct f2fs_base_attr, attr);
-+
-+	return a->store ? a->store(a, buf, len) : 0;
-+}
-+
- /*
-  * Note that there are three feature list entries:
-  * 1) /sys/fs/f2fs/features
-@@ -880,14 +905,13 @@ static void f2fs_sb_release(struct kobject *kobj)
-  *     please add new on-disk feature in this list only.
-  *     - ref. F2FS_SB_FEATURE_RO_ATTR()
-  */
--static ssize_t f2fs_feature_show(struct f2fs_attr *a,
--		struct f2fs_sb_info *sbi, char *buf)
-+static ssize_t f2fs_feature_show(struct f2fs_base_attr *a, char *buf)
+@@ -1344,7 +1353,8 @@ void msm_csid_unregister_entity(struct csid_device *csid)
  {
- 	return sysfs_emit(buf, "supported\n");
+ 	v4l2_device_unregister_subdev(&csid->subdev);
+ 	media_entity_cleanup(&csid->subdev.entity);
+-	v4l2_ctrl_handler_free(&csid->ctrls);
++	if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED)
++		v4l2_ctrl_handler_free(&csid->ctrls);
  }
  
- #define F2FS_FEATURE_RO_ATTR(_name)				\
--static struct f2fs_attr f2fs_attr_##_name = {			\
-+static struct f2fs_base_attr f2fs_base_attr_##_name = {		\
- 	.attr = {.name = __stringify(_name), .mode = 0444 },	\
- 	.show	= f2fs_feature_show,				\
- }
-@@ -1256,37 +1280,38 @@ static struct attribute *f2fs_attrs[] = {
- };
- ATTRIBUTE_GROUPS(f2fs);
- 
-+#define BASE_ATTR_LIST(name) (&f2fs_base_attr_##name.attr)
- static struct attribute *f2fs_feat_attrs[] = {
- #ifdef CONFIG_FS_ENCRYPTION
--	ATTR_LIST(encryption),
--	ATTR_LIST(test_dummy_encryption_v2),
-+	BASE_ATTR_LIST(encryption),
-+	BASE_ATTR_LIST(test_dummy_encryption_v2),
- #if IS_ENABLED(CONFIG_UNICODE)
--	ATTR_LIST(encrypted_casefold),
-+	BASE_ATTR_LIST(encrypted_casefold),
- #endif
- #endif /* CONFIG_FS_ENCRYPTION */
- #ifdef CONFIG_BLK_DEV_ZONED
--	ATTR_LIST(block_zoned),
-+	BASE_ATTR_LIST(block_zoned),
- #endif
--	ATTR_LIST(atomic_write),
--	ATTR_LIST(extra_attr),
--	ATTR_LIST(project_quota),
--	ATTR_LIST(inode_checksum),
--	ATTR_LIST(flexible_inline_xattr),
--	ATTR_LIST(quota_ino),
--	ATTR_LIST(inode_crtime),
--	ATTR_LIST(lost_found),
-+	BASE_ATTR_LIST(atomic_write),
-+	BASE_ATTR_LIST(extra_attr),
-+	BASE_ATTR_LIST(project_quota),
-+	BASE_ATTR_LIST(inode_checksum),
-+	BASE_ATTR_LIST(flexible_inline_xattr),
-+	BASE_ATTR_LIST(quota_ino),
-+	BASE_ATTR_LIST(inode_crtime),
-+	BASE_ATTR_LIST(lost_found),
- #ifdef CONFIG_FS_VERITY
--	ATTR_LIST(verity),
-+	BASE_ATTR_LIST(verity),
- #endif
--	ATTR_LIST(sb_checksum),
-+	BASE_ATTR_LIST(sb_checksum),
- #if IS_ENABLED(CONFIG_UNICODE)
--	ATTR_LIST(casefold),
-+	BASE_ATTR_LIST(casefold),
- #endif
--	ATTR_LIST(readonly),
-+	BASE_ATTR_LIST(readonly),
- #ifdef CONFIG_F2FS_FS_COMPRESSION
--	ATTR_LIST(compression),
-+	BASE_ATTR_LIST(compression),
- #endif
--	ATTR_LIST(pin_file),
-+	BASE_ATTR_LIST(pin_file),
- 	NULL,
- };
- ATTRIBUTE_GROUPS(f2fs_feat);
-@@ -1362,9 +1387,14 @@ static struct kset f2fs_kset = {
- 	.kobj	= {.ktype = &f2fs_ktype},
- };
- 
-+static const struct sysfs_ops f2fs_feat_attr_ops = {
-+	.show	= f2fs_base_attr_show,
-+	.store	= f2fs_base_attr_store,
-+};
-+
- static const struct kobj_type f2fs_feat_ktype = {
- 	.default_groups = f2fs_feat_groups,
--	.sysfs_ops	= &f2fs_attr_ops,
-+	.sysfs_ops	= &f2fs_feat_attr_ops,
- };
- 
- static struct kobject f2fs_feat = {
+ inline bool csid_is_lite(struct csid_device *csid)
 -- 
 2.39.5
 
