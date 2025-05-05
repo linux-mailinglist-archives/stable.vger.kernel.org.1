@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-141154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D36A6AAB63E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:45:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A8EAAB630
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:44:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CBB44A212E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:41:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A392A1BC1669
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F1932CDEF;
-	Tue,  6 May 2025 00:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF122BF99E;
+	Tue,  6 May 2025 00:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jlL/514e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lR+KUTHn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F349376423;
-	Mon,  5 May 2025 22:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39BC376449;
+	Mon,  5 May 2025 22:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485323; cv=none; b=FzHkMHdi1uTYIignvSG4X3+LyFBJ/Xl2qqNawkCTE528I3urDZw4Uea3sZSUVyTIp9pTZtSIQ+qSlUsZZ6PPUOpqkK0jmiIjBbJmNqZqbtbbQzjofj7H51ygEUvOzNGdnqiNYipZu3tc0evEbRy6nMFvrbPKoFW8QOA6qpqs6M4=
+	t=1746485333; cv=none; b=ZKiOzf0acziBxiiZKQmvmdIl0sMJZm+AGDqVr22F0VhcyBjJVZuTjUHtPvdveZvSWTpZvP28ecx0L1j38Ptvv3pcZu0bjtD6oc6UPlkjrZhzVzNcCdW1KsH/g22CROQxzU3jXf8UsR+7EikbZ837XJzdKwxKZRuRyWTA/YTkQ/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485323; c=relaxed/simple;
-	bh=yWFjMX1ZqvLqly+P9GlnkqG3a4TI4FX3wlkXs3YyfEQ=;
+	s=arc-20240116; t=1746485333; c=relaxed/simple;
+	bh=c1/2qQCsV/F3YVMiDB6OB5XkR6nW22zqR29RCrTEh2U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Yheks+VZyp5zrAH730EzBJScfZzWJVoACVGZoNkCAEJrjqZq/WacH60IVCIDuAtlaxEGcl7NDh1EC0dJMGyQT/0m5WOnRVFFgIms+pB32XKsy1x7evwhQjeIQcI1bK37C2epRQBDxXIc7F56FWk2MzFSXIqs+seu7D4gMCSNVgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jlL/514e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1F1C4CEEE;
-	Mon,  5 May 2025 22:48:41 +0000 (UTC)
+	 MIME-Version; b=hYIqO6VrVNeqkmvwASO0Sp0kFv/t2CYa2QJI9qqTV9wbJJEHdbwk7mkLgU+6rtriOgdXTTu6rTXgaaLuKHW0hscYIlMjF0iZR2EAZkCKHfI/lhgOEz5c6B9G7KQEEFResndSK+YPed8QDj9ixdFuk9hxjfzfWLnBV/MZx9Wr63U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lR+KUTHn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58A2C4CEEF;
+	Mon,  5 May 2025 22:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485323;
-	bh=yWFjMX1ZqvLqly+P9GlnkqG3a4TI4FX3wlkXs3YyfEQ=;
+	s=k20201202; t=1746485332;
+	bh=c1/2qQCsV/F3YVMiDB6OB5XkR6nW22zqR29RCrTEh2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jlL/514eN6/t4Vg8hkrl9JMiLuD7zrGJ3I6i/1cfZ5/bGf2GVH49n0XHW/k6cW42D
-	 IgcyIwW+FC3nbSo3SuffbFR4pZjb8N5piKV8FXH5LWJvUf6gNxeYBv0iLnFzB+prAt
-	 l2wy7rxoz3Y+wMV7opAEDu/BSEohLd9o4zv8ILF6fLgLy4gR5sut6641cZyKIGJ1Iz
-	 zmKgNSgcYg1sg4/vZllHu3bw5kGl3aBVZrcldRFL/mdc57iJfyjLi9WvoS3P5Ru9NV
-	 r6pWZSEQTpkQCRs75TyH5wf46PeKlUFpKOjarK+zgpUeZkFZDGZefiCWpN90B0LwRO
-	 3INcIiXTXJOdg==
+	b=lR+KUTHnJ4hhv/1VgOxZWWUnGHvofNKokHSx6edSQAbzBAVFwy/NdfjKIe5uezOvU
+	 PdOFdj50Ocs2yxa87LhMzv2jygdE4k7tQiASb9wL9a3FuwmKCaZBck5yzVs8yLHdvg
+	 BzQUo354UDGOapdbmZNdt5IO4otlaB93VXq4xqBOqveTI/QCky4Df4GiesCJgakBw4
+	 +7qJrE5a+qIIJHtSt/o3FD6me1F4J0yA9S/fbCHSDNN7hq0ZWKnAz+lLBrtxmshh3d
+	 mlsLd9ygIJH/r9ODS2pPPM53mfRjguAp5739k4eG6mxgA+WrEfx7dOs1XcjxlAbiZR
+	 MHXNLlt9wZkEg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jinliang Zheng <alexjlzheng@gmail.com>,
-	Jinliang Zheng <alexjlzheng@tencent.com>,
-	Tianxiang Peng <txpeng@tencent.com>,
-	Hao Peng <flyingpeng@tencent.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+Cc: Balbir Singh <balbirs@nvidia.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andy Lutomirski <luto@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	agk@redhat.com,
-	snitzer@kernel.org,
-	dm-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 267/486] dm: fix unconditional IO throttle caused by REQ_PREFLUSH
-Date: Mon,  5 May 2025 18:35:43 -0400
-Message-Id: <20250505223922.2682012-267-sashal@kernel.org>
+	dave.hansen@linux.intel.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 271/486] x86/kaslr: Reduce KASLR entropy on most x86 systems
+Date: Mon,  5 May 2025 18:35:47 -0400
+Message-Id: <20250505223922.2682012-271-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -70,80 +75,86 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Jinliang Zheng <alexjlzheng@gmail.com>
+From: Balbir Singh <balbirs@nvidia.com>
 
-[ Upstream commit 88f7f56d16f568f19e1a695af34a7f4a6ce537a6 ]
+[ Upstream commit 7ffb791423c7c518269a9aad35039ef824a40adb ]
 
-When a bio with REQ_PREFLUSH is submitted to dm, __send_empty_flush()
-generates a flush_bio with REQ_OP_WRITE | REQ_PREFLUSH | REQ_SYNC,
-which causes the flush_bio to be throttled by wbt_wait().
+When CONFIG_PCI_P2PDMA=y (which is basically enabled on all
+large x86 distros), it maps the PFN's via a ZONE_DEVICE
+mapping using devm_memremap_pages(). The mapped virtual
+address range corresponds to the pci_resource_start()
+of the BAR address and size corresponding to the BAR length.
 
-An example from v5.4, similar problem also exists in upstream:
+When KASLR is enabled, the direct map range of the kernel is
+reduced to the size of physical memory plus additional padding.
+If the BAR address is beyond this limit, PCI peer to peer DMA
+mappings fail.
 
-    crash> bt 2091206
-    PID: 2091206  TASK: ffff2050df92a300  CPU: 109  COMMAND: "kworker/u260:0"
-     #0 [ffff800084a2f7f0] __switch_to at ffff80004008aeb8
-     #1 [ffff800084a2f820] __schedule at ffff800040bfa0c4
-     #2 [ffff800084a2f880] schedule at ffff800040bfa4b4
-     #3 [ffff800084a2f8a0] io_schedule at ffff800040bfa9c4
-     #4 [ffff800084a2f8c0] rq_qos_wait at ffff8000405925bc
-     #5 [ffff800084a2f940] wbt_wait at ffff8000405bb3a0
-     #6 [ffff800084a2f9a0] __rq_qos_throttle at ffff800040592254
-     #7 [ffff800084a2f9c0] blk_mq_make_request at ffff80004057cf38
-     #8 [ffff800084a2fa60] generic_make_request at ffff800040570138
-     #9 [ffff800084a2fae0] submit_bio at ffff8000405703b4
-    #10 [ffff800084a2fb50] xlog_write_iclog at ffff800001280834 [xfs]
-    #11 [ffff800084a2fbb0] xlog_sync at ffff800001280c3c [xfs]
-    #12 [ffff800084a2fbf0] xlog_state_release_iclog at ffff800001280df4 [xfs]
-    #13 [ffff800084a2fc10] xlog_write at ffff80000128203c [xfs]
-    #14 [ffff800084a2fcd0] xlog_cil_push at ffff8000012846dc [xfs]
-    #15 [ffff800084a2fda0] xlog_cil_push_work at ffff800001284a2c [xfs]
-    #16 [ffff800084a2fdb0] process_one_work at ffff800040111d08
-    #17 [ffff800084a2fe00] worker_thread at ffff8000401121cc
-    #18 [ffff800084a2fe70] kthread at ffff800040118de4
+Fix this by not shrinking the size of the direct map when
+CONFIG_PCI_P2PDMA=y.
 
-After commit 2def2845cc33 ("xfs: don't allow log IO to be throttled"),
-the metadata submitted by xlog_write_iclog() should not be throttled.
-But due to the existence of the dm layer, throttling flush_bio indirectly
-causes the metadata bio to be throttled.
+This reduces the total available entropy, but it's better than
+the current work around of having to disable KASLR completely.
 
-Fix this by conditionally adding REQ_IDLE to flush_bio.bi_opf, which makes
-wbt_should_throttle() return false to avoid wbt_wait().
+[ mingo: Clarified the changelog to point out the broad impact ... ]
 
-Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-Reviewed-by: Tianxiang Peng <txpeng@tencent.com>
-Reviewed-by: Hao Peng <flyingpeng@tencent.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com> # drivers/pci/Kconfig
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/lkml/20250206023201.1481957-1-balbirs@nvidia.com/
+Link: https://lore.kernel.org/r/20250206234234.1912585-1-balbirs@nvidia.com
+--
+ arch/x86/mm/kaslr.c | 10 ++++++++--
+ drivers/pci/Kconfig |  6 ++++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/mm/kaslr.c | 10 ++++++++--
+ drivers/pci/Kconfig |  6 ++++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index 19230404d8c2b..d29125ee9e72a 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -1541,14 +1541,18 @@ static void __send_empty_flush(struct clone_info *ci)
- {
- 	struct dm_table *t = ci->map;
- 	struct bio flush_bio;
-+	blk_opf_t opf = REQ_OP_WRITE | REQ_PREFLUSH | REQ_SYNC;
-+
-+	if ((ci->io->orig_bio->bi_opf & (REQ_IDLE | REQ_SYNC)) ==
-+	    (REQ_IDLE | REQ_SYNC))
-+		opf |= REQ_IDLE;
+diff --git a/arch/x86/mm/kaslr.c b/arch/x86/mm/kaslr.c
+index 230f1dee4f095..e0b0ec0f82457 100644
+--- a/arch/x86/mm/kaslr.c
++++ b/arch/x86/mm/kaslr.c
+@@ -109,8 +109,14 @@ void __init kernel_randomize_memory(void)
+ 	memory_tb = DIV_ROUND_UP(max_pfn << PAGE_SHIFT, 1UL << TB_SHIFT) +
+ 		CONFIG_RANDOMIZE_MEMORY_PHYSICAL_PADDING;
+ 
+-	/* Adapt physical memory region size based on available memory */
+-	if (memory_tb < kaslr_regions[0].size_tb)
++	/*
++	 * Adapt physical memory region size based on available memory,
++	 * except when CONFIG_PCI_P2PDMA is enabled. P2PDMA exposes the
++	 * device BAR space assuming the direct map space is large enough
++	 * for creating a ZONE_DEVICE mapping in the direct map corresponding
++	 * to the physical BAR address.
++	 */
++	if (!IS_ENABLED(CONFIG_PCI_P2PDMA) && (memory_tb < kaslr_regions[0].size_tb))
+ 		kaslr_regions[0].size_tb = memory_tb;
  
  	/*
- 	 * Use an on-stack bio for this, it's safe since we don't
- 	 * need to reference it after submit. It's just used as
- 	 * the basis for the clone(s).
- 	 */
--	bio_init(&flush_bio, ci->io->md->disk->part0, NULL, 0,
--		 REQ_OP_WRITE | REQ_PREFLUSH | REQ_SYNC);
-+	bio_init(&flush_bio, ci->io->md->disk->part0, NULL, 0, opf);
+diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+index 0d94e4a967d81..7cef00d9d7ab6 100644
+--- a/drivers/pci/Kconfig
++++ b/drivers/pci/Kconfig
+@@ -194,6 +194,12 @@ config PCI_P2PDMA
+ 	  P2P DMA transactions must be between devices behind the same root
+ 	  port.
  
- 	ci->bio = &flush_bio;
- 	ci->sector_count = 0;
++	  Enabling this option will reduce the entropy of x86 KASLR memory
++	  regions. For example - on a 46 bit system, the entropy goes down
++	  from 16 bits to 15 bits. The actual reduction in entropy depends
++	  on the physical address bits, on processor features, kernel config
++	  (5 level page table) and physical memory present on the system.
++
+ 	  If unsure, say N.
+ 
+ config PCI_LABEL
 -- 
 2.39.5
 
