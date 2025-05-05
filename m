@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-141012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACAAEAAAD4D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:32:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784A0AAB051
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06A591A8665F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:29:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DF5B7B4D68
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579823E9844;
-	Mon,  5 May 2025 23:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295BF3066E8;
+	Mon,  5 May 2025 23:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rg6v+y6M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJ0QV3Ek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890E63B17C3;
-	Mon,  5 May 2025 23:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0911E2F8BCF;
+	Mon,  5 May 2025 23:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487239; cv=none; b=hgLOiI4IxZrx8IXcOaItAkRDJ6LGGdgwq1BA2WniTof4Y7JHE8OeF/pebxa8mD4CeiKYyhreDV+/iI4lcnzQ9Ij2t7MMGrSb7wgiyoU/SLv058NRSKXq1cJAxSuMomS+7+BoZTSD9jawRpbDe6x6kM/qmRRnUM2zsAtbAw8I/jg=
+	t=1746487244; cv=none; b=C2IgkZOpqQL35Bpi6K4ZXicSo4cRyFmjQeCUEYnWBruMZ4Pp2TKA8mep9t3ZkJ5n0FsmbPQF8O/MBrIUWbsOokqoLk0/btQehxEXYghDCaFGbFAS8hBGYN+oABHJaSrPmcnGCLYlTe4SRiabkCzBWF8f4Xu4+hG/hbDwp/VnIJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487239; c=relaxed/simple;
-	bh=Rm9BFWyFQeDzYlC8j/EQLFYZtUgcUG9L5wnOfDwPJn4=;
+	s=arc-20240116; t=1746487244; c=relaxed/simple;
+	bh=Nx8scXla9ValBM11uvtLamrG6d7WCnagX7kaHOl45iM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jI/Br2Dyd+Qqblz4ZoaRrzjMdp0p7JDKGWhEdgFGdEiiuEBBycgSZUkCulOgZXIUbLIXjhbDEDklYb5gYLJWeEuEkuWWTkho3mohbq3X35a6SPYu/uwGjbLwEZBheqMW9+oi4CWk2bA9WYc8yYztswrNab57P0NVH8xme+/0hjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rg6v+y6M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF52C4CEEF;
-	Mon,  5 May 2025 23:20:38 +0000 (UTC)
+	 MIME-Version; b=TIPG83OP5aaUQioi5obpJ1hbgdLMgV/tsq5H/CSGCnpDlc2JaYsk9SlLLVXhCiHplYjFDgY6IveYUtkWGsinVvIhJ7AFm71qiALJOH1410SLv47CDAhQctBbDPu7dxR2YU3ULYTX/x+MyuUeF7WkeYkfllX8nv9KLRlUCBQw5uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJ0QV3Ek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1BECC4CEF6;
+	Mon,  5 May 2025 23:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487239;
-	bh=Rm9BFWyFQeDzYlC8j/EQLFYZtUgcUG9L5wnOfDwPJn4=;
+	s=k20201202; t=1746487242;
+	bh=Nx8scXla9ValBM11uvtLamrG6d7WCnagX7kaHOl45iM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rg6v+y6M6hsGtjTZywkDef9K1sU34dnXXaBwm6M3I6ecyaQWd3O0jAD1iqiWwi/3J
-	 NW4d/e6CvZ/EIA5/n+SYYUZwSABV6TfuHQIX7EUOAvNPFVCAIeN7z+MNdRuxoeoLat
-	 lnzK+LweMveGAx09FfnYiJGO8sgG3rfj/+dYs8cmIoMJRHzdXC2u2yIOhEdqazOLb7
-	 GXmqxwnEaE8AspgNHExkSIJ8l+Ego5F7Vzoqfncx0a9fdYC7Y8by12DXi2Ef2pqxw6
-	 EAUjuobfe6q7kq0sGF5uKVlmq6yGzwbeAgYlVYzh8hiAU3mQ7sLHp/cmD2wa7JdprL
-	 /xZ6Q7rhw3VpQ==
+	b=sJ0QV3EkIUKigL1DI2sikKYVhFF++Wi4Vf97bQB/HSHJXT0goXEehS1O747hynze2
+	 /a4cRo8nsCWOFO1Nxs7b/vQlPVJ9fHWQjRFpyMwkUGSSik+lVTjYtlj1IaObIV+WZR
+	 Lma2LYec9IZctgLyJzNCeoa4siix1LG/3KyYEmb2Kd47ttOeev1lql3G/L2jAI/Zio
+	 7WOMIZ45r2y+3gl+2d4c+5w7OR5vZwWSoWVNOTOHRv58gkDk/NSC8xIFuVYTB+IDKs
+	 vx6ySEJ6BNCRQNjWJ0XDsnYypZW6S4ZqxcpXl0xZllfYsJEvUfhFnlTd/ObZ09KdbG
+	 rGvys39lZvHuQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Jason Baron <jbaron@akamai.com>,
+	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 074/114] wifi: rtw88: Fix rtw_desc_to_mcsrate() to handle MCS16-31
-Date: Mon,  5 May 2025 19:17:37 -0400
-Message-Id: <20250505231817.2697367-74-sashal@kernel.org>
+	bp@alien8.de,
+	linux-edac@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 076/114] EDAC/ie31200: work around false positive build warning
+Date: Mon,  5 May 2025 19:17:39 -0400
+Message-Id: <20250505231817.2697367-76-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -65,40 +67,103 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 86d04f8f991a0509e318fe886d5a1cf795736c7d ]
+[ Upstream commit c29dfd661fe2f8d1b48c7f00590929c04b25bf40 ]
 
-This function translates the rate number reported by the hardware into
-something mac80211 can understand. It was ignoring the 3SS and 4SS HT
-rates. Translate them too.
+gcc-14 produces a bogus warning in some configurations:
 
-Also set *nss to 0 for the HT rates, just to make sure it's
-initialised.
+drivers/edac/ie31200_edac.c: In function 'ie31200_probe1.isra':
+drivers/edac/ie31200_edac.c:412:26: error: 'dimm_info' is used uninitialized [-Werror=uninitialized]
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
+drivers/edac/ie31200_edac.c:412:26: note: 'dimm_info' declared here
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/d0a5a86b-4869-47f6-a5a7-01c0f987cc7f@gmail.com
+I don't see any way the unintialized access could really happen here,
+but I can see why the compiler gets confused by the two loops.
+
+Instead, rework the two nested loops to only read the addr_decode
+registers and then keep only one instance of the dimm info structure.
+
+[Tony: Qiuxu pointed out that the "populate DIMM info" comment was left
+behind in the refactor and suggested moving it. I deleted the comment
+as unnecessry in front os a call to populate_dimm_info(). That seems
+pretty self-describing.]
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Jason Baron <jbaron@akamai.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/all/20250122065031.1321015-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/util.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/edac/ie31200_edac.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/util.c b/drivers/net/wireless/realtek/rtw88/util.c
-index 2c515af214e76..bfd017d53fef8 100644
---- a/drivers/net/wireless/realtek/rtw88/util.c
-+++ b/drivers/net/wireless/realtek/rtw88/util.c
-@@ -101,7 +101,8 @@ void rtw_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss)
- 		*nss = 4;
- 		*mcs = rate - DESC_RATEVHT4SS_MCS0;
- 	} else if (rate >= DESC_RATEMCS0 &&
--		   rate <= DESC_RATEMCS15) {
-+		   rate <= DESC_RATEMCS31) {
-+		*nss = 0;
- 		*mcs = rate - DESC_RATEMCS0;
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index cad20e87783b5..79a6612bd01e4 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -398,10 +398,9 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	int i, j, ret;
+ 	struct mem_ctl_info *mci = NULL;
+ 	struct edac_mc_layer layers[2];
+-	struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+ 	void __iomem *window;
+ 	struct ie31200_priv *priv;
+-	u32 addr_decode, mad_offset;
++	u32 addr_decode[IE31200_CHANNELS], mad_offset;
+ 
+ 	/*
+ 	 * Kaby Lake, Coffee Lake seem to work like Skylake. Please re-visit
+@@ -459,19 +458,10 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 		mad_offset = IE31200_MAD_DIMM_0_OFFSET;
  	}
- }
+ 
+-	/* populate DIMM info */
+ 	for (i = 0; i < IE31200_CHANNELS; i++) {
+-		addr_decode = readl(window + mad_offset +
++		addr_decode[i] = readl(window + mad_offset +
+ 					(i * 4));
+-		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode);
+-		for (j = 0; j < IE31200_DIMMS_PER_CHANNEL; j++) {
+-			populate_dimm_info(&dimm_info[i][j], addr_decode, j,
+-					   skl);
+-			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
+-				 dimm_info[i][j].size,
+-				 dimm_info[i][j].dual_rank,
+-				 dimm_info[i][j].x16_width);
+-		}
++		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode[i]);
+ 	}
+ 
+ 	/*
+@@ -482,14 +472,22 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	 */
+ 	for (i = 0; i < IE31200_DIMMS_PER_CHANNEL; i++) {
+ 		for (j = 0; j < IE31200_CHANNELS; j++) {
++			struct dimm_data dimm_info;
+ 			struct dimm_info *dimm;
+ 			unsigned long nr_pages;
+ 
+-			nr_pages = IE31200_PAGES(dimm_info[j][i].size, skl);
++			populate_dimm_info(&dimm_info, addr_decode[j], i,
++					   skl);
++			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
++				 dimm_info.size,
++				 dimm_info.dual_rank,
++				 dimm_info.x16_width);
++
++			nr_pages = IE31200_PAGES(dimm_info.size, skl);
+ 			if (nr_pages == 0)
+ 				continue;
+ 
+-			if (dimm_info[j][i].dual_rank) {
++			if (dimm_info.dual_rank) {
+ 				nr_pages = nr_pages / 2;
+ 				dimm = edac_get_dimm(mci, (i * 2) + 1, j, 0);
+ 				dimm->nr_pages = nr_pages;
 -- 
 2.39.5
 
