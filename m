@@ -1,164 +1,247 @@
-Return-Path: <stable+bounces-139613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19270AA8D81
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 09:54:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB800AA8D93
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 09:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14EE51893C1C
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 07:54:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 833FA189574F
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 07:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897F11DED49;
-	Mon,  5 May 2025 07:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA201DEFEC;
+	Mon,  5 May 2025 07:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbbDuDPi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yg4K8k8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343411D5CD1;
-	Mon,  5 May 2025 07:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F28E1DC98B
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 07:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746431652; cv=none; b=WfMdhvUzUzUMRFiRrubNPS4YB05oG5hBJ8Rny8sHc54sTOwqGnS4fDF8oxhPUEUYdw97tOuP/gLQir5ZSpzsbKR5hmBDBD2UrPHLjdQFUl8CQNTV1DIC8WnNUqnoxI+v5tAf0hl9Dy6TNbRa1lbOb8EEXt7MdTBby3MiscT9Cj0=
+	t=1746431688; cv=none; b=r9kAKEDge0blpvSClxW7fx4w3CEnflumEgqC7ex5su1x606RMpBst/iMH8dbkkEZroRLataKEckjrrk0PV4BojdGbMlEXA1Ky+YumTkQxT64My+22kN7OrcfD5CRrUloIlGuTWyeG3ifQKF1GN7/p/CnYgGMeUYwJRbwN3WRBYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746431652; c=relaxed/simple;
-	bh=NCF+uIgi02R3qHnuPawdoFmoqZ/yt942FoVFPnxHS+s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KPbfaovXk/VpEfpv5w/S6FsJ7JebBM3LxfAJSpZbbq+FGKI8Qj/1bjO5O5OTcgfUECRJBynebg1pm+IIUxHuP3z0Fmj5pv8ThPNjl1PNjiiK9EDVjA1EBje46YCblMjlVaOctmsV52+yBl1d7tms5nAVlVVIvbI91UTpBqt9pFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbbDuDPi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979EFC4CEE4;
-	Mon,  5 May 2025 07:54:11 +0000 (UTC)
+	s=arc-20240116; t=1746431688; c=relaxed/simple;
+	bh=i/7dNkObYXtP3zNjPMT8qhImvAQm7izZBnFlGP6pVi0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PaRCpaNzWloEuFYs5r6qE/CvRNgkN+ylZrU8Lx0Fc4SU+8gd7KfM4WNIpd/3Xzp6yeSJdAKH41NdafBTjJ20sh7JGz4qJmCwb3GaFWDk5X1RSBg9JI3rJig3D1Nf+Z+bwHapxJmnOU9V/fuo1mbRunRIlL7U6Hziw7DWZgq7Wzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yg4K8k8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EFFC4CEE4;
+	Mon,  5 May 2025 07:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746431651;
-	bh=NCF+uIgi02R3qHnuPawdoFmoqZ/yt942FoVFPnxHS+s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rbbDuDPitEZgYgeXAKpMY3VfKgtNIpp0MV/iLq8FlpPbQwLZ9rikqXGUdxynFQeUw
-	 2Jj4DLI48+6l8lZP5txTZZEZg8uDHN88iWWkq6SplxIBIjUGdPjwpR5oaTmeg+8cUQ
-	 iU1Iwy4ibi/5LR02olttMzmgTimZYd51Bhkpo1bA=
-Date: Mon, 5 May 2025 09:54:09 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jared Holzman <jholzman@nvidia.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.14 092/311] ublk: call ublk_dispatch_req() for handling
- UBLK_U_IO_NEED_GET_DATA
-Message-ID: <2025050537-flaring-wolverine-c3fd@gregkh>
-References: <20250429161121.011111832@linuxfoundation.org>
- <20250429161124.815951989@linuxfoundation.org>
- <830759ad-243a-4fd5-9fa1-a106e6e6bb0d@nvidia.com>
- <2025050455-reconvene-denial-e291@gregkh>
- <744b4d9b-24f3-487c-805f-5aa02eaa093b@nvidia.com>
- <2025050509-impending-uranium-ccba@gregkh>
- <c5022682-52e7-4340-995c-7d3d84bb77aa@nvidia.com>
+	s=korg; t=1746431688;
+	bh=i/7dNkObYXtP3zNjPMT8qhImvAQm7izZBnFlGP6pVi0=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Yg4K8k8u9vQNJMDknkWMtgsPebxzp9QnMa21opu2Tf3nMUK1do2a6DRG22xTgZuwi
+	 +jvYiUdXBf4g4FccY9Lp6IvoSwo4CY12GDFKMAGMuY7VXbWzX2X8EfpcBkoQhzBCpC
+	 JO/wfbqVwMAxYJTFVmfFB8i0f9awrbIGRmXtcisQ=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix slab-use-after-free in hdcp" failed to apply to 6.14-stable tree
+To: chris.bainbridge@gmail.com,alex.hung@amd.com,alexander.deucher@amd.com,mario.limonciello@amd.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 05 May 2025 09:54:45 +0200
+Message-ID: <2025050545-monsoon-attractor-6e31@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c5022682-52e7-4340-995c-7d3d84bb77aa@nvidia.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 05, 2025 at 10:47:03AM +0300, Jared Holzman wrote:
-> On 05/05/2025 8:51, Greg Kroah-Hartman wrote:
-> > On Sun, May 04, 2025 at 04:47:20PM +0300, Jared Holzman wrote:
-> >> On 04/05/2025 15:39, Greg Kroah-Hartman wrote:
-> >>> On Sun, May 04, 2025 at 02:55:00PM +0300, Jared Holzman wrote:
-> >>>> On 29/04/2025 19:38, Greg Kroah-Hartman wrote:
-> >>>>> 6.14-stable review patch.  If anyone has any objections, please let me know.
-> >>>>>
-> >>>>> ------------------
-> >>>>>
-> >>>>> From: Ming Lei <ming.lei@redhat.com>
-> >>>>>
-> >>>>> [ Upstream commit d6aa0c178bf81f30ae4a780b2bca653daa2eb633 ]
-> >>>>>
-> >>>>> We call io_uring_cmd_complete_in_task() to schedule task_work for handling
-> >>>>> UBLK_U_IO_NEED_GET_DATA.
-> >>>>>
-> >>>>> This way is really not necessary because the current context is exactly
-> >>>>> the ublk queue context, so call ublk_dispatch_req() directly for handling
-> >>>>> UBLK_U_IO_NEED_GET_DATA.
-> >>>>>
-> >>>>> Fixes: 216c8f5ef0f2 ("ublk: replace monitor with cancelable uring_cmd")
-> >>>>> Tested-by: Jared Holzman <jholzman@nvidia.com>
-> >>>>> Signed-off-by: Ming Lei <ming.lei@redhat.com>
-> >>>>> Link: https://lore.kernel.org/r/20250425013742.1079549-2-ming.lei@redhat.com
-> >>>>> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> >>>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> >>>>> ---
-> >>>>>  drivers/block/ublk_drv.c | 14 +++-----------
-> >>>>>  1 file changed, 3 insertions(+), 11 deletions(-)
-> >>>>>
-> >>>>> diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-> >>>>> index 437297022dcfa..c7761a5cfeec0 100644
-> >>>>> --- a/drivers/block/ublk_drv.c
-> >>>>> +++ b/drivers/block/ublk_drv.c
-> >>>>> @@ -1812,15 +1812,6 @@ static void ublk_mark_io_ready(struct ublk_device *ub, struct ublk_queue *ubq)
-> >>>>>  	mutex_unlock(&ub->mutex);
-> >>>>>  }
-> >>>>>  
-> >>>>> -static void ublk_handle_need_get_data(struct ublk_device *ub, int q_id,
-> >>>>> -		int tag)
-> >>>>> -{
-> >>>>> -	struct ublk_queue *ubq = ublk_get_queue(ub, q_id);
-> >>>>> -	struct request *req = blk_mq_tag_to_rq(ub->tag_set.tags[q_id], tag);
-> >>>>> -
-> >>>>> -	ublk_queue_cmd(ubq, req);
-> >>>>> -}
-> >>>>> -
-> >>>>>  static inline int ublk_check_cmd_op(u32 cmd_op)
-> >>>>>  {
-> >>>>>  	u32 ioc_type = _IOC_TYPE(cmd_op);
-> >>>>> @@ -1967,8 +1958,9 @@ static int __ublk_ch_uring_cmd(struct io_uring_cmd *cmd,
-> >>>>>  		if (!(io->flags & UBLK_IO_FLAG_OWNED_BY_SRV))
-> >>>>>  			goto out;
-> >>>>>  		ublk_fill_io_cmd(io, cmd, ub_cmd->addr);
-> >>>>> -		ublk_handle_need_get_data(ub, ub_cmd->q_id, ub_cmd->tag);
-> >>>>> -		break;
-> >>>>> +		req = blk_mq_tag_to_rq(ub->tag_set.tags[ub_cmd->q_id], tag);
-> >>>>> +		ublk_dispatch_req(ubq, req, issue_flags);
-> >>>>> +		return -EIOCBQUEUED;
-> >>>>>  	default:
-> >>>>>  		goto out;
-> >>>>>  	}
-> >>>>
-> >>>> Hi Greg,
-> >>>>
-> >>>> Will you also be backporting "ublk: fix race between io_uring_cmd_complete_in_task and ublk_cancel_cmd" to 6.14-stable?
-> >>>
-> >>> What is the git commit id you are referring to?  And was it asked to be
-> >>> included in a stable release?
-> >>>
-> >>> thanks,
-> >>>
-> >>> greg k-h
-> >>
-> >> Hi Greg,
-> >>
-> >> The commit is: f40139fde527
-> >>
-> >> It is Part 2 of the same patch series.
-> > 
-> > It does not apply to the stable tree at all, so no, we will not be
-> > adding it unless someone provides a working version of it.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> Hi Greg,
-> 
-> Happy to provide a version that will apply. I just need to know where to get your working branch to base it on.
 
-The latest stable release tree.
+The patch below does not apply to the 6.14-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
+git checkout FETCH_HEAD
+git cherry-pick -x be593d9d91c5a3a363d456b9aceb71029aeb3f1d
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050545-monsoon-attractor-6e31@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
+
+Possible dependencies:
+
+
 
 thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From be593d9d91c5a3a363d456b9aceb71029aeb3f1d Mon Sep 17 00:00:00 2001
+From: Chris Bainbridge <chris.bainbridge@gmail.com>
+Date: Thu, 17 Apr 2025 16:50:05 -0500
+Subject: [PATCH] drm/amd/display: Fix slab-use-after-free in hdcp
+
+The HDCP code in amdgpu_dm_hdcp.c copies pointers to amdgpu_dm_connector
+objects without incrementing the kref reference counts. When using a
+USB-C dock, and the dock is unplugged, the corresponding
+amdgpu_dm_connector objects are freed, creating dangling pointers in the
+HDCP code. When the dock is plugged back, the dangling pointers are
+dereferenced, resulting in a slab-use-after-free:
+
+[   66.775837] BUG: KASAN: slab-use-after-free in event_property_validate+0x42f/0x6c0 [amdgpu]
+[   66.776171] Read of size 4 at addr ffff888127804120 by task kworker/0:1/10
+
+[   66.776179] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.14.0-rc7-00180-g54505f727a38-dirty #233
+[   66.776183] Hardware name: HP HP Pavilion Aero Laptop 13-be0xxx/8916, BIOS F.17 12/18/2024
+[   66.776186] Workqueue: events event_property_validate [amdgpu]
+[   66.776494] Call Trace:
+[   66.776496]  <TASK>
+[   66.776497]  dump_stack_lvl+0x70/0xa0
+[   66.776504]  print_report+0x175/0x555
+[   66.776507]  ? __virt_addr_valid+0x243/0x450
+[   66.776510]  ? kasan_complete_mode_report_info+0x66/0x1c0
+[   66.776515]  kasan_report+0xeb/0x1c0
+[   66.776518]  ? event_property_validate+0x42f/0x6c0 [amdgpu]
+[   66.776819]  ? event_property_validate+0x42f/0x6c0 [amdgpu]
+[   66.777121]  __asan_report_load4_noabort+0x14/0x20
+[   66.777124]  event_property_validate+0x42f/0x6c0 [amdgpu]
+[   66.777342]  ? __lock_acquire+0x6b40/0x6b40
+[   66.777347]  ? enable_assr+0x250/0x250 [amdgpu]
+[   66.777571]  process_one_work+0x86b/0x1510
+[   66.777575]  ? pwq_dec_nr_in_flight+0xcf0/0xcf0
+[   66.777578]  ? assign_work+0x16b/0x280
+[   66.777580]  ? lock_is_held_type+0xa3/0x130
+[   66.777583]  worker_thread+0x5c0/0xfa0
+[   66.777587]  ? process_one_work+0x1510/0x1510
+[   66.777588]  kthread+0x3a2/0x840
+[   66.777591]  ? kthread_is_per_cpu+0xd0/0xd0
+[   66.777594]  ? trace_hardirqs_on+0x4f/0x60
+[   66.777597]  ? _raw_spin_unlock_irq+0x27/0x60
+[   66.777599]  ? calculate_sigpending+0x77/0xa0
+[   66.777602]  ? kthread_is_per_cpu+0xd0/0xd0
+[   66.777605]  ret_from_fork+0x40/0x90
+[   66.777607]  ? kthread_is_per_cpu+0xd0/0xd0
+[   66.777609]  ret_from_fork_asm+0x11/0x20
+[   66.777614]  </TASK>
+
+[   66.777643] Allocated by task 10:
+[   66.777646]  kasan_save_stack+0x39/0x60
+[   66.777649]  kasan_save_track+0x14/0x40
+[   66.777652]  kasan_save_alloc_info+0x37/0x50
+[   66.777655]  __kasan_kmalloc+0xbb/0xc0
+[   66.777658]  __kmalloc_cache_noprof+0x1c8/0x4b0
+[   66.777661]  dm_dp_add_mst_connector+0xdd/0x5c0 [amdgpu]
+[   66.777880]  drm_dp_mst_port_add_connector+0x47e/0x770 [drm_display_helper]
+[   66.777892]  drm_dp_send_link_address+0x1554/0x2bf0 [drm_display_helper]
+[   66.777901]  drm_dp_check_and_send_link_address+0x187/0x1f0 [drm_display_helper]
+[   66.777909]  drm_dp_mst_link_probe_work+0x2b8/0x410 [drm_display_helper]
+[   66.777917]  process_one_work+0x86b/0x1510
+[   66.777919]  worker_thread+0x5c0/0xfa0
+[   66.777922]  kthread+0x3a2/0x840
+[   66.777925]  ret_from_fork+0x40/0x90
+[   66.777927]  ret_from_fork_asm+0x11/0x20
+
+[   66.777932] Freed by task 1713:
+[   66.777935]  kasan_save_stack+0x39/0x60
+[   66.777938]  kasan_save_track+0x14/0x40
+[   66.777940]  kasan_save_free_info+0x3b/0x60
+[   66.777944]  __kasan_slab_free+0x52/0x70
+[   66.777946]  kfree+0x13f/0x4b0
+[   66.777949]  dm_dp_mst_connector_destroy+0xfa/0x150 [amdgpu]
+[   66.778179]  drm_connector_free+0x7d/0xb0
+[   66.778184]  drm_mode_object_put.part.0+0xee/0x160
+[   66.778188]  drm_mode_object_put+0x37/0x50
+[   66.778191]  drm_atomic_state_default_clear+0x220/0xd60
+[   66.778194]  __drm_atomic_state_free+0x16e/0x2a0
+[   66.778197]  drm_mode_atomic_ioctl+0x15ed/0x2ba0
+[   66.778200]  drm_ioctl_kernel+0x17a/0x310
+[   66.778203]  drm_ioctl+0x584/0xd10
+[   66.778206]  amdgpu_drm_ioctl+0xd2/0x1c0 [amdgpu]
+[   66.778375]  __x64_sys_ioctl+0x139/0x1a0
+[   66.778378]  x64_sys_call+0xee7/0xfb0
+[   66.778381]  do_syscall_64+0x87/0x140
+[   66.778385]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fix this by properly incrementing and decrementing the reference counts
+when making and deleting copies of the amdgpu_dm_connector pointers.
+
+(Mario: rebase on current code and update fixes tag)
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4006
+Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Fixes: da3fd7ac0bcf3 ("drm/amd/display: Update CP property based on HW query")
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Link: https://lore.kernel.org/r/20250417215005.37964-1-mario.limonciello@amd.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d4673f3c3b3dcb74e36e53cdfc880baa7a87b330)
+Cc: stable@vger.kernel.org
+
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
+index 5198a079b463..8f22ad966543 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
+@@ -173,6 +173,9 @@ void hdcp_update_display(struct hdcp_workqueue *hdcp_work,
+ 	unsigned int conn_index = aconnector->base.index;
+ 
+ 	guard(mutex)(&hdcp_w->mutex);
++	drm_connector_get(&aconnector->base);
++	if (hdcp_w->aconnector[conn_index])
++		drm_connector_put(&hdcp_w->aconnector[conn_index]->base);
+ 	hdcp_w->aconnector[conn_index] = aconnector;
+ 
+ 	memset(&link_adjust, 0, sizeof(link_adjust));
+@@ -220,7 +223,6 @@ static void hdcp_remove_display(struct hdcp_workqueue *hdcp_work,
+ 	unsigned int conn_index = aconnector->base.index;
+ 
+ 	guard(mutex)(&hdcp_w->mutex);
+-	hdcp_w->aconnector[conn_index] = aconnector;
+ 
+ 	/* the removal of display will invoke auth reset -> hdcp destroy and
+ 	 * we'd expect the Content Protection (CP) property changed back to
+@@ -236,7 +238,10 @@ static void hdcp_remove_display(struct hdcp_workqueue *hdcp_work,
+ 	}
+ 
+ 	mod_hdcp_remove_display(&hdcp_w->hdcp, aconnector->base.index, &hdcp_w->output);
+-
++	if (hdcp_w->aconnector[conn_index]) {
++		drm_connector_put(&hdcp_w->aconnector[conn_index]->base);
++		hdcp_w->aconnector[conn_index] = NULL;
++	}
+ 	process_output(hdcp_w);
+ }
+ 
+@@ -254,6 +259,10 @@ void hdcp_reset_display(struct hdcp_workqueue *hdcp_work, unsigned int link_inde
+ 	for (conn_index = 0; conn_index < AMDGPU_DM_MAX_DISPLAY_INDEX; conn_index++) {
+ 		hdcp_w->encryption_status[conn_index] =
+ 			MOD_HDCP_ENCRYPTION_STATUS_HDCP_OFF;
++		if (hdcp_w->aconnector[conn_index]) {
++			drm_connector_put(&hdcp_w->aconnector[conn_index]->base);
++			hdcp_w->aconnector[conn_index] = NULL;
++		}
+ 	}
+ 
+ 	process_output(hdcp_w);
+@@ -488,6 +497,7 @@ static void update_config(void *handle, struct cp_psp_stream_config *config)
+ 	struct hdcp_workqueue *hdcp_work = handle;
+ 	struct amdgpu_dm_connector *aconnector = config->dm_stream_ctx;
+ 	int link_index = aconnector->dc_link->link_index;
++	unsigned int conn_index = aconnector->base.index;
+ 	struct mod_hdcp_display *display = &hdcp_work[link_index].display;
+ 	struct mod_hdcp_link *link = &hdcp_work[link_index].link;
+ 	struct hdcp_workqueue *hdcp_w = &hdcp_work[link_index];
+@@ -544,7 +554,10 @@ static void update_config(void *handle, struct cp_psp_stream_config *config)
+ 	guard(mutex)(&hdcp_w->mutex);
+ 
+ 	mod_hdcp_add_display(&hdcp_w->hdcp, link, display, &hdcp_w->output);
+-
++	drm_connector_get(&aconnector->base);
++	if (hdcp_w->aconnector[conn_index])
++		drm_connector_put(&hdcp_w->aconnector[conn_index]->base);
++	hdcp_w->aconnector[conn_index] = aconnector;
+ 	process_output(hdcp_w);
+ }
+ 
+
 
