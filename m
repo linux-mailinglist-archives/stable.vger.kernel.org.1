@@ -1,140 +1,179 @@
-Return-Path: <stable+bounces-141098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70F4AAB0AB
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:44:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A16AAB0C4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26193A38E4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:40:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C7D27B46EF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6BD4075A1;
-	Mon,  5 May 2025 23:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1906D3146B7;
+	Mon,  5 May 2025 23:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KIpQ2lXV"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UMmmnJb6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CA53C1984;
-	Mon,  5 May 2025 23:24:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C220E2FDEF1
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 23:26:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487445; cv=none; b=tFbjH2My9y61Tbv3h0bPuq7f5xNP3LCh8oyTul6ma1El6U6lwRtZmFyZJUBoNk07l2/+CsxM1zM+AIOSH37i6IwuxDLQ3OdTz0ylD+e3ALf3p7UAPRNYHopPLm05gSjeIXBjebSIs2+lhKebKeyEJNsrhma2MxSIwOVpwzXWB64=
+	t=1746487570; cv=none; b=n6yxIY3WgI6BazBQC8AOCaTmkdFoeKGXHiz5Pq/EqaseL4aXsWlSd3L7jwSd6hKsQuXhB3MddFyP+svew53Arzr3QUkw/KIQLEzfKEqj7I+dXOH0mlyGL0aFcaDXNaBxlrs2uySy9urJ4oVq1QRL0y7EGcsKXogLwZFHZO0AVkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487445; c=relaxed/simple;
-	bh=utHLxvmx94jmXlBLf4SgV8vVmK4AJ5PPVUKB67LD8Cs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UqLGzrK2qSI7LDfag2AglFge5SY5tgRsao1gdrvXyUkfrM4a3KkMY1Q+vQjX8JXnk2elaFOVC699Ehe/8U8IgJHMkzrVBcnka6fnHW0r41avDoLQ1C/aWoW2QJg//xi42qUq/IeEykJtnja7hSQ9i/5p94MPdB7EH4Jo4RfZVys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KIpQ2lXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5CC6C4CEED;
-	Mon,  5 May 2025 23:24:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487444;
-	bh=utHLxvmx94jmXlBLf4SgV8vVmK4AJ5PPVUKB67LD8Cs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KIpQ2lXVmKvMEL8rG7BceUqzbd7qpnhGnfNJjIfOL7qAe+7TVPuPgDTPRnrNlP/cV
-	 nAGv+c5goUhtfAjyQa8QWMEUnY/Ee9FEcFZfUPltyTcQa1cPyoShBV3EFW8aCSSwp9
-	 VV83CNXPvHeaop3YUukzO/cvx5LL/1xlPPiORPB2akvU9J0sEj3nOl4amqCFRip7RA
-	 QmjJicei9WnFa7RgaM1P4z0Z5S0TrOnXk7R9KxRKKXcpsG83rwsrBbtW4ZiTiBdh8Q
-	 he5oAj+cI4ia5WJG4EB7AsTuoBdVhZoly2mJNSw25jOqNByLdPUI/8BIezy+ENJdkf
-	 M8yf9CPBgxLVw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 76/79] wifi: rtw88: Don't use static local variable in rtw8822b_set_tx_power_index_by_rate
-Date: Mon,  5 May 2025 19:21:48 -0400
-Message-Id: <20250505232151.2698893-76-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
-References: <20250505232151.2698893-1-sashal@kernel.org>
+	s=arc-20240116; t=1746487570; c=relaxed/simple;
+	bh=F0WEmGwiQi9jA7VIMNQBwpez05DZB5Axh3NxJ9nzth4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jNuBuqW7XMtYWaUkiBO7PFmkVwXryzwUKiJDhFaDJULNaDBHBPtVRlNXS+oVb0EYxwQwyvmV/zgdylx7NTI/fdT/BV18Y2mwKWFFkW8PcyriL8wemOWI4BppKffM9bBYiQp+CyAseJ+ftAXUYn52D6iF1liWszt7lVDku6Sp0bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UMmmnJb6; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-22de54b0b97so42110345ad.2
+        for <stable@vger.kernel.org>; Mon, 05 May 2025 16:26:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746487567; x=1747092367; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rgQJcy7xureeTRIeWfNVkzRO5AGoHawvodbUo90ljGw=;
+        b=UMmmnJb6xkQSFXiBwpLB0q5AZgV9zDToebISik1NC03lTRWm3ti/5M+J8rfSKrKf63
+         vkfNz0bdCVpRoIp936gQGCME5YZbBw9MCyWoE0zEbpHQ7uyfgR9+mpQ3Y83Itj3z//Ss
+         prbhR94Up8NVRoeE8lO21r1XIIb7uxi6LBp/Ee4iMcrTynezMqQfHwokLhzCdUW38PNr
+         +eoy4uybAD4Pkjfpqsbqk0zDX2PyqN4sYxsT0tzvRCapRpPoMrn5qoouaoG9MfoER1p6
+         07i/CWNai1ErSyXEu7QxukIFpbBaBYzP+gzY6bZ1tU4LtQbVZY/qUr26+IgK754BYZWn
+         nJOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746487567; x=1747092367;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rgQJcy7xureeTRIeWfNVkzRO5AGoHawvodbUo90ljGw=;
+        b=hnlrGsx1AMgyC/hkg/4pCpXtU6ww16xgirjitvIEw02QspGVNAYbXA55HRZnlndKPM
+         ADDRT1DpayWNNpZMS7QIyVljSfG8lqRcyfNZ+ppBn3ZvY3vLrsOCjDVtEfcVxz6MNFAm
+         AkdTRz57HamoxcXMzSA+pdWFLHqsbIWNqbzJ+wb07mSVe9R5cFBnV1Z0DR7QJBJuLAv9
+         IKU2Asmwoudq+H9TS4TBkuOoHwADXcyG9LTvtUyi1gXmaV7yMLnGe5MGs3tnBQ0ODSYW
+         wL3wcDarYXCZzKzV0dQtWWKJDJneD3rpb6dN+lnwUZnUZ/Dmvyaupz2nW8TejQVb0ii/
+         rB3A==
+X-Gm-Message-State: AOJu0Yyda61mqExy3NUhKohPzO582Sy5Vdz6mYYH4kPdj4uAnHSwrLya
+	S+DdvsycyIdJof299CHkd7Mk2y/kYzgWkw5q8AZjMoUN10gH8/Kz7mBFzkwaG2r+MHVK1uU9wIX
+	3swZ6EEVjEMvEkxbSuPteWK/Ad/mnF1w29wlktAWfWH7TG93egcRZCCfQaaJBbFW75Qzf/VfDQS
+	T5hK6JdyZSDGLdyxtv+AJHkKXo2saMO0GR
+X-Google-Smtp-Source: AGHT+IFLJP7VPTFDIPT3F1+7DtuzLdIOZ1hlHROldjPDTx6M1hsUWWJMxk168+nHcF3eJ2BsZScUGVHyOWY=
+X-Received: from plrt7.prod.google.com ([2002:a17:902:b207:b0:223:fab5:e761])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:fa4:b0:21c:fb6:7c3c
+ with SMTP id d9443c01a7336-22e32a5e471mr16283475ad.17.1746487566784; Mon, 05
+ May 2025 16:26:06 -0700 (PDT)
+Date: Mon,  5 May 2025 16:26:01 -0700
+In-Reply-To: <2025050521-crispy-study-e836@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.293
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <2025050521-crispy-study-e836@gregkh>
+X-Mailer: git-send-email 2.49.0.967.g6a0df3ecc3-goog
+Message-ID: <20250505232601.3160940-1-surenb@google.com>
+Subject: [PATCH 6.12.y] mm, slab: clean up slab->obj_exts always
+From: Suren Baghdasaryan <surenb@google.com>
+To: stable@vger.kernel.org
+Cc: Zhenhua Huang <quic_zhenhuah@quicinc.com>, David Rientjes <rientjes@google.com>, 
+	Harry Yoo <harry.yoo@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@suse.cz>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
 
-[ Upstream commit 00451eb3bec763f708e7e58326468c1e575e5a66 ]
+When memory allocation profiling is disabled at runtime or due to an
+error, shutdown_mem_profiling() is called: slab->obj_exts which
+previously allocated remains.
+It won't be cleared by unaccount_slab() because of
+mem_alloc_profiling_enabled() not true. It's incorrect, slab->obj_exts
+should always be cleaned up in unaccount_slab() to avoid following error:
 
-Some users want to plug two identical USB devices at the same time.
-This static variable could theoretically cause them to use incorrect
-TX power values.
+[...]BUG: Bad page state in process...
+..
+[...]page dumped because: page still charged to cgroup
 
-Move the variable to the caller and pass a pointer to it to
-rtw8822b_set_tx_power_index_by_rate().
-
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/8a60f581-0ab5-4d98-a97d-dd83b605008f@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[andriy.shevchenko@linux.intel.com: fold need_slab_obj_ext() into its only user]
+Fixes: 21c690a349ba ("mm: introduce slabobj_ext to support slab object extensions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Acked-by: David Rientjes <rientjes@google.com>
+Acked-by: Harry Yoo <harry.yoo@oracle.com>
+Tested-by: Harry Yoo <harry.yoo@oracle.com>
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Link: https://patch.msgid.link/20250421075232.2165527-1-quic_zhenhuah@quicinc.com
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+(cherry picked from commit be8250786ca94952a19ce87f98ad9906448bc9ef)
+[surenb: fixed trivial merge conflict in alloc_tagging_slab_alloc_hook(),
+skipped inlining free_slab_obj_exts() as it's already inline in 6.12]
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8822b.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ mm/slub.c | 27 +++++++--------------------
+ 1 file changed, 7 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-index 63abda3b0ebfc..004a85448ce99 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-@@ -864,11 +864,11 @@ static void rtw8822b_query_rx_desc(struct rtw_dev *rtwdev, u8 *rx_desc,
+diff --git a/mm/slub.c b/mm/slub.c
+index c26d9cd107cc..66f86e532818 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2035,18 +2035,6 @@ static inline void free_slab_obj_exts(struct slab *slab)
+ 	slab->obj_exts = 0;
  }
  
- static void
--rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
-+rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path,
-+				    u8 rs, u32 *phy_pwr_idx)
+-static inline bool need_slab_obj_ext(void)
+-{
+-	if (mem_alloc_profiling_enabled())
+-		return true;
+-
+-	/*
+-	 * CONFIG_MEMCG creates vector of obj_cgroup objects conditionally
+-	 * inside memcg_slab_post_alloc_hook. No other users for now.
+-	 */
+-	return false;
+-}
+-
+ #else /* CONFIG_SLAB_OBJ_EXT */
+ 
+ static inline void init_slab_obj_exts(struct slab *slab)
+@@ -2063,11 +2051,6 @@ static inline void free_slab_obj_exts(struct slab *slab)
  {
- 	struct rtw_hal *hal = &rtwdev->hal;
- 	static const u32 offset_txagc[2] = {0x1d00, 0x1d80};
--	static u32 phy_pwr_idx;
- 	u8 rate, rate_idx, pwr_index, shift;
- 	int j;
- 
-@@ -876,12 +876,12 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
- 		rate = rtw_rate_section[rs][j];
- 		pwr_index = hal->tx_pwr_tbl[path][rate];
- 		shift = rate & 0x3;
--		phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
-+		*phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
- 		if (shift == 0x3) {
- 			rate_idx = rate & 0xfc;
- 			rtw_write32(rtwdev, offset_txagc[path] + rate_idx,
--				    phy_pwr_idx);
--			phy_pwr_idx = 0;
-+				    *phy_pwr_idx);
-+			*phy_pwr_idx = 0;
- 		}
- 	}
  }
-@@ -889,11 +889,13 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
- static void rtw8822b_set_tx_power_index(struct rtw_dev *rtwdev)
+ 
+-static inline bool need_slab_obj_ext(void)
+-{
+-	return false;
+-}
+-
+ #endif /* CONFIG_SLAB_OBJ_EXT */
+ 
+ #ifdef CONFIG_MEM_ALLOC_PROFILING
+@@ -2099,7 +2082,7 @@ prepare_slab_obj_exts_hook(struct kmem_cache *s, gfp_t flags, void *p)
+ static inline void
+ alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
  {
- 	struct rtw_hal *hal = &rtwdev->hal;
-+	u32 phy_pwr_idx = 0;
- 	int rs, path;
+-	if (need_slab_obj_ext()) {
++	if (mem_alloc_profiling_enabled()) {
+ 		struct slabobj_ext *obj_exts;
  
- 	for (path = 0; path < hal->rf_path_num; path++) {
- 		for (rs = 0; rs < RTW_RATE_SECTION_MAX; rs++)
--			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs);
-+			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs,
-+							    &phy_pwr_idx);
- 	}
- }
+ 		obj_exts = prepare_slab_obj_exts_hook(s, flags, object);
+@@ -2577,8 +2560,12 @@ static __always_inline void account_slab(struct slab *slab, int order,
+ static __always_inline void unaccount_slab(struct slab *slab, int order,
+ 					   struct kmem_cache *s)
+ {
+-	if (memcg_kmem_online() || need_slab_obj_ext())
+-		free_slab_obj_exts(slab);
++	/*
++	 * The slab object extensions should now be freed regardless of
++	 * whether mem_alloc_profiling_enabled() or not because profiling
++	 * might have been disabled after slab->obj_exts got allocated.
++	 */
++	free_slab_obj_exts(slab);
  
+ 	mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),
+ 			    -(PAGE_SIZE << order));
 -- 
-2.39.5
+2.49.0.967.g6a0df3ecc3-goog
 
 
