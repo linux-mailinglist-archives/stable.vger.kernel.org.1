@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-141321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB81AAB2AB
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:25:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E01CAAB696
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 671E13B5177
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:19:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BBAA1C2125B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83C342954B;
-	Tue,  6 May 2025 00:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579AF428D1D;
+	Tue,  6 May 2025 00:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OAs1wMe1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c1WbDt5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA83E278756;
-	Mon,  5 May 2025 22:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BC5278758;
+	Mon,  5 May 2025 22:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485749; cv=none; b=fHAMB2m2l5H/ssSdDZ+FRbGXfQo+V6EuR0MuJyvWiQePR/6mNQhLlJ9i7B1IUCT6ApVqB2zM87VJBBeewBns4jgQaeBnOn4zqPWMHUIbzUuECcZCO0bZqXK3KOGWvES9MCw4zrVQu6AKb9GQErM1hA54TlSm4cgQsC1a4FbqioA=
+	t=1746485750; cv=none; b=TDgkymKySVcyhFIgD/KXUWenbQoN6d4GaWIV9NRFX1V3ATcWcPOYkJxKZKJdlUj6hW1Ws+QgleflhJ0H9rBC417S3mbxtCp1QHwWqzbaIBLr6xmx6lxtmfgnSIeoHxOBkL3NuWIfXnKRJeRJqMt5vxh92Pgr5cWmkYAvmGszcVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485749; c=relaxed/simple;
-	bh=0BuTBr0C59E9qlzxwKYDLEEcHNLFQ4OLcJ9A0iAYOI0=;
+	s=arc-20240116; t=1746485750; c=relaxed/simple;
+	bh=oICzpjc+PidZ180DElfETsb3v6xdVVeNPNtBIvsbBgg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gXrdzWmuz6OgHXiRULBAS1eSRXZBhezvWek4vtRVS3cxeIL89pQCrnpxGkUEVE+s5eKojSBZX6Epz3oOtgfk5Ae4TBIRWZgtwgnixcU86HH/8dIOya9GEaXrmMzaTbspSPFq7Z+Lz9glX/r1E8Z+Svh/hSSWWYAH1hlRluMICNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OAs1wMe1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BB9C4CEE4;
-	Mon,  5 May 2025 22:55:48 +0000 (UTC)
+	 MIME-Version; b=NzztMhfylBt/g/UGGJ53hIcIVnbs2SngfU4ZbpfKUbszrzAxF0PH3GOJ/RE+0tcnpVVbzIEIM2z8Ri8ViTCAGDpAx6ZNHbH5OkdUyHXSgY2FkWKX2eZWMpZkN72ADefphlquAk6YSptwdiOOTCgRQDXaH2EuuGyY/OC41mq8oLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c1WbDt5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C21C4CEF3;
+	Mon,  5 May 2025 22:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485749;
-	bh=0BuTBr0C59E9qlzxwKYDLEEcHNLFQ4OLcJ9A0iAYOI0=;
+	s=k20201202; t=1746485750;
+	bh=oICzpjc+PidZ180DElfETsb3v6xdVVeNPNtBIvsbBgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAs1wMe1RBSwoSX1Lj6ue1TLg0ipnuFd1V/XAgJNF0MHWj01hxcwRapnW9+xDNh+v
-	 9paFKNu0GWERa1bTMC0YAncxGiMJPPRa4uBAKyuvux3Z9NhmspjktpO18FZEY06PGS
-	 RTNYRosQD82C/f6TXmwrbEku1RHrHoB9Zv9+3WcSVCNWT/A43u9nMkB84mhVhQCsvw
-	 Ky+tdqQ2qG3ani/tYOWjOe10Iy8QFUnDWeOKEUtvEEUp+/4qp6z+Vfvm0ad7GggSiP
-	 WybpI6C2lLl9FMP8wEwAirHmTaSaJfqGVC4O/kRTQvfFOfqb8TnOVGpHhmTkRRVdaX
-	 r+tCoXatg8dpw==
+	b=c1WbDt5V+u3psTUzj1NJuCAURkHQf2ban4xiRvGzUmxUGqRX/VeHnf2Q+NY9FqoPF
+	 5lc0YbM5iasDBFSB79Fl/tiFZvMCyA0rMIrEiJutw2tMTvB2Z7Zf5+uSGre1Btf2EP
+	 7hUmcEU8xLav/cqgEid7zgvqpEkuwAxGpnknqv+xAWdJD9C+HlBGcuxPMFoEH1GJt8
+	 BFMiXXUdNt1ZJYIs4KITiFNAUH0N96OD/nVXI5RAaikW7Ty6eNkiXY3ZzxgmbJJxbL
+	 0+QF5ax8elOzC5Vh3MXDciDXtqcp+wZuheH2/bydify2Fm+sYs13pF+vOKJPWTP9gG
+	 jG456t1gMwb5Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+Cc: Soeren Moch <smoch@web.de>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 461/486] clk: renesas: rzg2l-cpg: Refactor Runtime PM clock validation
-Date: Mon,  5 May 2025 18:38:57 -0400
-Message-Id: <20250505223922.2682012-461-sashal@kernel.org>
+	Jes.Sorensen@gmail.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 462/486] wifi: rtl8xxxu: retry firmware download on error
+Date: Mon,  5 May 2025 18:38:58 -0400
+Message-Id: <20250505223922.2682012-462-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,163 +66,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Soeren Moch <smoch@web.de>
 
-[ Upstream commit f6f73b891bf6beff069fcacc7b4a796e1009bf26 ]
+[ Upstream commit 3d3e28feca7ac8c6cf2a390dbbe1f97e3feb7f36 ]
 
-Refactor rzg2l_cpg_attach_dev to delegate clock validation for Runtime PM
-to the updated rzg2l_cpg_is_pm_clk function. Ensure validation of clocks
-associated with the power domain while excluding external and core clocks.
-Prevent incorrect Runtime PM management for clocks outside the domain's
-scope.
+Occasionally there is an EPROTO error during firmware download.
+This error is converted to EAGAIN in the download function.
+But nobody tries again and so device probe fails.
 
-Update rzg2l_cpg_is_pm_clk to operate on a per-power-domain basis. Verify
-clkspec.np against the domain's device node, check argument validity, and
-validate clock type (CPG_MOD). Use the no_pm_mod_clks array to exclude
-specific clocks from PM management.
+Implement download retry to fix this.
 
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20241216210201.239855-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+This error was observed (and fix tested) on a tbs2910 board [1]
+with an embedded RTL8188EU (0bda:8179) device behind a USB hub.
+
+[1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
+
+Signed-off-by: Soeren Moch <smoch@web.de>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250127194828.599379-1-smoch@web.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzg2l-cpg.c | 102 +++++++++++++++++---------------
- 1 file changed, 54 insertions(+), 48 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/core.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index 229f4540b219e..97d42328fa81a 100644
---- a/drivers/clk/renesas/rzg2l-cpg.c
-+++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -1549,28 +1549,6 @@ static int rzg2l_cpg_reset_controller_register(struct rzg2l_cpg_priv *priv)
- 	return devm_reset_controller_register(priv->dev, &priv->rcdev);
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+index 4ce0c05c51291..569856ca677f6 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -860,9 +860,10 @@ rtl8xxxu_writeN(struct rtl8xxxu_priv *priv, u16 addr, u8 *buf, u16 len)
+ 	return len;
+ 
+ write_error:
+-	dev_info(&udev->dev,
+-		 "%s: Failed to write block at addr: %04x size: %04x\n",
+-		 __func__, addr, blocksize);
++	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_REG_WRITE)
++		dev_info(&udev->dev,
++			 "%s: Failed to write block at addr: %04x size: %04x\n",
++			 __func__, addr, blocksize);
+ 	return -EAGAIN;
  }
  
--static bool rzg2l_cpg_is_pm_clk(struct rzg2l_cpg_priv *priv,
--				const struct of_phandle_args *clkspec)
--{
--	const struct rzg2l_cpg_info *info = priv->info;
--	unsigned int id;
--	unsigned int i;
--
--	if (clkspec->args_count != 2)
--		return false;
--
--	if (clkspec->args[0] != CPG_MOD)
--		return false;
--
--	id = clkspec->args[1] + info->num_total_core_clks;
--	for (i = 0; i < info->num_no_pm_mod_clks; i++) {
--		if (info->no_pm_mod_clks[i] == id)
--			return false;
--	}
--
--	return true;
--}
--
- /**
-  * struct rzg2l_cpg_pm_domains - RZ/G2L PM domains data structure
-  * @onecell_data: cell data
-@@ -1595,45 +1573,73 @@ struct rzg2l_cpg_pd {
- 	u16 id;
- };
+@@ -4064,8 +4065,14 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+ 	 */
+ 	rtl8xxxu_write16(priv, REG_TRXFF_BNDY + 2, fops->trxff_boundary);
  
-+static bool rzg2l_cpg_is_pm_clk(struct rzg2l_cpg_pd *pd,
-+				const struct of_phandle_args *clkspec)
-+{
-+	if (clkspec->np != pd->genpd.dev.of_node || clkspec->args_count != 2)
-+		return false;
-+
-+	switch (clkspec->args[0]) {
-+	case CPG_MOD: {
-+		struct rzg2l_cpg_priv *priv = pd->priv;
-+		const struct rzg2l_cpg_info *info = priv->info;
-+		unsigned int id = clkspec->args[1];
-+
-+		if (id >= priv->num_mod_clks)
-+			return false;
-+
-+		id += info->num_total_core_clks;
-+
-+		for (unsigned int i = 0; i < info->num_no_pm_mod_clks; i++) {
-+			if (info->no_pm_mod_clks[i] == id)
-+				return false;
-+		}
-+
-+		return true;
+-	ret = rtl8xxxu_download_firmware(priv);
+-	dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
++	for (int retry = 5; retry >= 0 ; retry--) {
++		ret = rtl8xxxu_download_firmware(priv);
++		dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
++		if (ret != -EAGAIN)
++			break;
++		if (retry)
++			dev_dbg(dev, "%s: retry firmware download\n", __func__);
 +	}
-+
-+	case CPG_CORE:
-+	default:
-+		return false;
-+	}
-+}
-+
- static int rzg2l_cpg_attach_dev(struct generic_pm_domain *domain, struct device *dev)
- {
- 	struct rzg2l_cpg_pd *pd = container_of(domain, struct rzg2l_cpg_pd, genpd);
--	struct rzg2l_cpg_priv *priv = pd->priv;
- 	struct device_node *np = dev->of_node;
- 	struct of_phandle_args clkspec;
- 	bool once = true;
- 	struct clk *clk;
-+	unsigned int i;
- 	int error;
--	int i = 0;
--
--	while (!of_parse_phandle_with_args(np, "clocks", "#clock-cells", i,
--					   &clkspec)) {
--		if (rzg2l_cpg_is_pm_clk(priv, &clkspec)) {
--			if (once) {
--				once = false;
--				error = pm_clk_create(dev);
--				if (error) {
--					of_node_put(clkspec.np);
--					goto err;
--				}
--			}
--			clk = of_clk_get_from_provider(&clkspec);
-+
-+	for (i = 0; !of_parse_phandle_with_args(np, "clocks", "#clock-cells", i, &clkspec); i++) {
-+		if (!rzg2l_cpg_is_pm_clk(pd, &clkspec)) {
- 			of_node_put(clkspec.np);
--			if (IS_ERR(clk)) {
--				error = PTR_ERR(clk);
--				goto fail_destroy;
--			}
-+			continue;
-+		}
- 
--			error = pm_clk_add_clk(dev, clk);
-+		if (once) {
-+			once = false;
-+			error = pm_clk_create(dev);
- 			if (error) {
--				dev_err(dev, "pm_clk_add_clk failed %d\n",
--					error);
--				goto fail_put;
-+				of_node_put(clkspec.np);
-+				goto err;
- 			}
--		} else {
--			of_node_put(clkspec.np);
- 		}
--		i++;
-+		clk = of_clk_get_from_provider(&clkspec);
-+		of_node_put(clkspec.np);
-+		if (IS_ERR(clk)) {
-+			error = PTR_ERR(clk);
-+			goto fail_destroy;
-+		}
-+
-+		error = pm_clk_add_clk(dev, clk);
-+		if (error) {
-+			dev_err(dev, "pm_clk_add_clk failed %d\n", error);
-+			goto fail_put;
-+		}
- 	}
- 
- 	return 0;
+ 	if (ret)
+ 		goto exit;
+ 	ret = rtl8xxxu_start_firmware(priv);
 -- 
 2.39.5
 
