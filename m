@@ -1,65 +1,66 @@
-Return-Path: <stable+bounces-139861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA22EAAA112
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C28C6AAA118
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ED46461B0E
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:43:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1CD8461CCC
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACFC29A3C0;
-	Mon,  5 May 2025 22:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED12A29A3DB;
+	Mon,  5 May 2025 22:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQJRpNF6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JstQqrvw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2375E299ABA;
-	Mon,  5 May 2025 22:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C5C270ED2;
+	Mon,  5 May 2025 22:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483558; cv=none; b=Pq3/Y3K/1jR2aIF933zrE0lzR2xM0jbQ0bkFk4mKtKb/KfkynhUX0dvaXKPEab4K57UoubWPP/FUaUSPCJDiMB82mq16UBHxVQKAMs0G6Vp+lqv8o59rLjnt0WQJiraWsFUnmE8/cTp0oCOHXy9v+QmYVs7LPS/IeBOsm0+urCw=
+	t=1746483562; cv=none; b=CCMJygdX41X2R+tLxd8Of3r5tO8SYc7CMZjlI6+zVpv9VrvY3OnFAotY4WWlJxNOmIlYQVEydX/oi+TPNn0+1TQUJiM4qBKhr9ZbFx0M8S7hQpSMYBH+Qq54RSLnwvRkb81SncwmMsHX7EfnHQHqVSNNB6kjGxcSIp86ltqclMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483558; c=relaxed/simple;
-	bh=3UEqT/+fIc974jJeUM8R4SRv1mtRRd3KVFibWheaoyU=;
+	s=arc-20240116; t=1746483562; c=relaxed/simple;
+	bh=gJOWUeD1S/7jV0r5kWY4nHy8F7NqqrZHwZ4AE47cmc4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ABoOsHEpQiuRFKfd3OQrMKEuKngQwYpI9A+rGmNKhEbX7nMr1nnJhDmWt4Q8bvRTKWKSYRqtmb6M86IEKGvMmcH/AUJlTjwm3LDsPKX6MaUtmKov53ZDI5HCKEvfTpWwlSkK++ZILy61VL5pedA2mOEOcCpqMIY1qSFpanMjLyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQJRpNF6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A510C4CEE4;
-	Mon,  5 May 2025 22:19:16 +0000 (UTC)
+	 MIME-Version; b=Yt2h66MiNyAjH8LaYSAsyPcjSOXoZlDh1PrcQF9KKTujNJ50ZXb/MMQv6UiQMvhY6ElYumgkguAHHW6ruUk3qsCGnexMlMfchyWY7P5qzW52mcC2CiSyWdiue7J7WEkuZhlY9Ci8lJz7JVreOBo2X+G3wbAWUa3BHZTA58O0qB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JstQqrvw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF76C4CEED;
+	Mon,  5 May 2025 22:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483558;
-	bh=3UEqT/+fIc974jJeUM8R4SRv1mtRRd3KVFibWheaoyU=;
+	s=k20201202; t=1746483561;
+	bh=gJOWUeD1S/7jV0r5kWY4nHy8F7NqqrZHwZ4AE47cmc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQJRpNF6WSpMW3rVVPyZqLvNyKywQGN7LCch4fkRynSLNJLXG7+xMLV8KmqwuWO3D
-	 NzFQtBId34avcgFZgxuDzQBPxWbE0w7DmAQ/XmYKoYw05golDLpkUqI0PWm/2EBKK9
-	 rM8vNLqmytY2DURjmvSRq3huw8CZMrfoKhD7bHOfulM4RZn1kFVGRvo7TKhXE8CZvm
-	 +3Z28Jv328vO79764t9YpsNrYfqR/jBMTownyVGR20hFtu3cOpH5hq0J52CHkuncqA
-	 yg4zv8VikOmHHXEquM5vB7SUGfswl6Qo+H+BLyMBGBwelSyY5vpujFokjVo2bmKJ5D
-	 +3eDNptPqKtWg==
+	b=JstQqrvw44sh9hYCVA2glV+oU4HqMrLxsoXiFuyyfLB8fnrWRbW+0u2mtyvhexcOW
+	 SvAfPhy8ezMFrRMR3KYj/W++RdtXn+qOEgALvXzFlebOJAhMnHix4HX4a3z53dEeQn
+	 3wg7YdZZe/rF7lVmegMuR8pwB8dsOy1in+jALg5R3jR5u5eFwOK5BlatmCDl7rJ58+
+	 mj/k1U/Fu4UwS9uyJuVnyWFEkqkZ1lagFtQjhmdMGD3Hk0buQjGrKbCrrkfiWc/EUE
+	 Tfdfdqfg6a+7kppEyvEfD45hepQV2Vi5KspCm3WhanXsKwpQVppSB84NSS1RxfzEDE
+	 0gJbOvSUF9MvQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Carolina Jubran <cjubran@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	richard@nod.at,
-	anton.ivanov@cambridgegreys.com,
-	johannes@sipsolutions.net,
-	dave.hansen@linux.intel.com,
-	rppt@kernel.org,
-	akpm@linux-foundation.org,
-	richard.weiyang@gmail.com,
-	kevin.brodsky@arm.com,
-	benjamin.berg@intel.com,
-	linux-um@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 114/642] um: Update min_low_pfn to match changes in uml_reserved
-Date: Mon,  5 May 2025 18:05:30 -0400
-Message-Id: <20250505221419.2672473-114-sashal@kernel.org>
+	saeedm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	cratiu@nvidia.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 115/642] net/mlx5: Preserve rate settings when creating a rate node
+Date: Mon,  5 May 2025 18:05:31 -0400
+Message-Id: <20250505221419.2672473-115-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -74,34 +75,73 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit e82cf3051e6193f61e03898f8dba035199064d36 ]
+[ Upstream commit f88c349c75e3784a3f5463f5b403ff28dd823782 ]
 
-When uml_reserved is updated, min_low_pfn must also be updated
-accordingly. Otherwise, min_low_pfn will not accurately reflect
-the lowest available PFN.
+Modify `esw_qos_create_node_sched_elem()` to receive max_rate and
+bw_share values while maintaining the previous configuration.
 
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20250221041855.1156109-1-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This change is essential for the upcoming patch that will modify rate
+nodes and requires the existing settings to be preserved unless
+explicitly changed.
+
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1741642016-44918-4-git-send-email-tariqt@nvidia.com
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/mem.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
-index befed230aac28..91b7710c0a5f4 100644
---- a/arch/um/kernel/mem.c
-+++ b/arch/um/kernel/mem.c
-@@ -66,6 +66,7 @@ void __init mem_init(void)
- 	map_memory(brk_end, __pa(brk_end), uml_reserved - brk_end, 1, 1, 0);
- 	memblock_free((void *)brk_end, uml_reserved - brk_end);
- 	uml_reserved = brk_end;
-+	min_low_pfn = PFN_UP(__pa(uml_reserved));
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+index 823c1ba456cd1..803bacf2a95e6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+@@ -305,8 +305,9 @@ static int esw_qos_set_node_min_rate(struct mlx5_esw_sched_node *node,
+ 	return 0;
+ }
  
- 	/* this will put all low memory onto the freelists */
- 	memblock_free_all();
+-static int esw_qos_create_node_sched_elem(struct mlx5_core_dev *dev, u32 parent_element_id,
+-					  u32 *tsar_ix)
++static int
++esw_qos_create_node_sched_elem(struct mlx5_core_dev *dev, u32 parent_element_id,
++			       u32 max_rate, u32 bw_share, u32 *tsar_ix)
+ {
+ 	u32 tsar_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {};
+ 	void *attr;
+@@ -323,6 +324,8 @@ static int esw_qos_create_node_sched_elem(struct mlx5_core_dev *dev, u32 parent_
+ 		 SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR);
+ 	MLX5_SET(scheduling_context, tsar_ctx, parent_element_id,
+ 		 parent_element_id);
++	MLX5_SET(scheduling_context, tsar_ctx, max_average_bw, max_rate);
++	MLX5_SET(scheduling_context, tsar_ctx, bw_share, bw_share);
+ 	attr = MLX5_ADDR_OF(scheduling_context, tsar_ctx, element_attributes);
+ 	MLX5_SET(tsar_element, attr, tsar_type, TSAR_ELEMENT_TSAR_TYPE_DWRR);
+ 
+@@ -396,7 +399,8 @@ __esw_qos_create_vports_sched_node(struct mlx5_eswitch *esw, struct mlx5_esw_sch
+ 	u32 tsar_ix;
+ 	int err;
+ 
+-	err = esw_qos_create_node_sched_elem(esw->dev, esw->qos.root_tsar_ix, &tsar_ix);
++	err = esw_qos_create_node_sched_elem(esw->dev, esw->qos.root_tsar_ix, 0,
++					     0, &tsar_ix);
+ 	if (err) {
+ 		NL_SET_ERR_MSG_MOD(extack, "E-Switch create TSAR for node failed");
+ 		return ERR_PTR(err);
+@@ -463,7 +467,8 @@ static int esw_qos_create(struct mlx5_eswitch *esw, struct netlink_ext_ack *exta
+ 	if (!MLX5_CAP_GEN(dev, qos) || !MLX5_CAP_QOS(dev, esw_scheduling))
+ 		return -EOPNOTSUPP;
+ 
+-	err = esw_qos_create_node_sched_elem(esw->dev, 0, &esw->qos.root_tsar_ix);
++	err = esw_qos_create_node_sched_elem(esw->dev, 0, 0, 0,
++					     &esw->qos.root_tsar_ix);
+ 	if (err) {
+ 		esw_warn(dev, "E-Switch create root TSAR failed (%d)\n", err);
+ 		return err;
 -- 
 2.39.5
 
