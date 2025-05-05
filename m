@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-140839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C4FAAAC07
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:07:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898FDAAABFA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5F18985408
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:01:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D7B51B66B78
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E90228B7CC;
-	Mon,  5 May 2025 23:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE38A3BA867;
+	Mon,  5 May 2025 23:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oaUpI+aS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XRBITqjf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5508F2EDB36;
-	Mon,  5 May 2025 23:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CE32EE440;
+	Mon,  5 May 2025 23:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486554; cv=none; b=FgQdjxZRYZPxfVtOr+d/yJYqAPb11rT+2QqmjPSqZYYhUEsTEG9D9Z2Qg8YR6yKNjv+2a2KSWVpxyyE6ZD9gGKPwANL6hm6+wZRQ1srB7EOw8dO4ppGH9ZtSknnJXRyaEyxQyRp7xK0d+ep2bG6lPLenqKcuZNYK0j9x7Ilhg/A=
+	t=1746486559; cv=none; b=dKG+mG2Xu6iBDbZnsBrNqne+5X/fM8zUHRuYcIENStgkaz7dtfCYBW1b+D8NRCbgx27H2fegd7CQQP9/3OgIsQ++0dFql93zI7WPlykIiDBMkaXxj8oXUrvAMQCJXUrOTUvm1m97O3t54HY7VnpPD6KcFOf0MiJCTAOw3bstscg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486554; c=relaxed/simple;
-	bh=jsoHvHLDzA/XTT30/MF/phkHAm8+PsqfqsZss3bnfOo=;
+	s=arc-20240116; t=1746486559; c=relaxed/simple;
+	bh=vkDdRU4n+OAc9RKppHhVM/OwDNSbhzXZhLSzwQCs6Cs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pqLN7LdqXOK9eUrVpJBYWxEDDw+oUJn/2BjqfjvONoEHI6Gf7Joz7XlZ98fJiyjAdUOJAshQXtS3qVZKrT3uPTLBuifkNLNp9BJfZmPhCZaYOoNMn4Xsm2mb7nhY74PAZEXY4JV4WmSnbIECt6oXiuoYM9bzAVIke1xkdYHjDMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oaUpI+aS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A421C4CEEE;
-	Mon,  5 May 2025 23:09:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A0nH6NXlrqZgQKFn9cE+mX1xbBUMvPFsZuMGFQ3eJxYK78rKRnFM6NOavkSIf87GCvejPJYaK1kkIDpCk90SgbVMnDCCDYmnXqhuyFJW2Cfiqb4ldu0ePqItsPXtYu7ErShxpI657d8VsZ5nIt1KWVpM9K5QOpgt/2nA7yyRB50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XRBITqjf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5750C4CEE4;
+	Mon,  5 May 2025 23:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486553;
-	bh=jsoHvHLDzA/XTT30/MF/phkHAm8+PsqfqsZss3bnfOo=;
+	s=k20201202; t=1746486559;
+	bh=vkDdRU4n+OAc9RKppHhVM/OwDNSbhzXZhLSzwQCs6Cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oaUpI+aS0ZlRP1r+uvpPVTeNEDKcfYvvVD91kqCn+pRDGLDQJP6jgIcYwnFzjlFTV
-	 4c6VP4sriPhuZDVOpbxFVyVLkWOzvwnEfvZ6mSCmSb4uOfnzSZqQ8eDuw4g4/tUwKK
-	 gQiSS5xYr+YcZ2x9kr9heYEfwWv5EZm58Yuz4OQFZ46QIEa4VMc51IfZ7TJJwrYicc
-	 M7EW/2Izc76qR5+8HWhJQRqBB2ebOXWUWaHjKLdnXGAw5yDnhgG9JfV7ydY4D1cJWp
-	 P/BRDOWDO+JOuj2fbVW09c9Gqqh6oC4CuFfd+z51StMkHgJq+HGVxmEVTAdbd8NMeG
-	 VdWy2pBREhi8A==
+	b=XRBITqjf3KzlrE3EFGNxirEIkwfc2lwC4J7fkOxWi9RjI1xJHSdcHmzKmvmOfwHWp
+	 7lHXkF0SHm+nPdYOGNBUxvR8w1c0DnZqzXex937oPB14puJMb513fNf6Bz0ISYsvvm
+	 KcRW/Q056DhdrpWEobbsyhqgbQu7U6Jq/8BYdYVb7P1Dr1li/o/UPzb3g0P6Qy1bbv
+	 8pUx6O3FEs4L6RMcL3387R7x7Wiabl7fhAuIZuABEwllqGenWQVmThJ2uYUBkSM/YL
+	 AYIl3vbnLSMRtGptKBXKe3IWBHirev5LKXyOq2zl755h0tchTVKjGj1krFOYxVHtpm
+	 UZnWt4i4TW5Zg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Markus Elfring <elfring@users.sourceforge.net>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+	Luca Weiss <luca@lucaweiss.eu>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	patrice.chotard@foss.st.com,
-	mchehab@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 087/212] media: c8sectpfe: Call of_node_put(i2c_bus) only once in c8sectpfe_probe()
-Date: Mon,  5 May 2025 19:04:19 -0400
-Message-Id: <20250505230624.2692522-87-sashal@kernel.org>
+	mathieu.poirier@linaro.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 091/212] remoteproc: qcom_wcnss: Handle platforms with only single power domain
+Date: Mon,  5 May 2025 19:04:23 -0400
+Message-Id: <20250505230624.2692522-91-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -63,47 +63,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 
-[ Upstream commit b773530a34df0687020520015057075f8b7b4ac4 ]
+[ Upstream commit 65991ea8a6d1e68effdc01d95ebe39f1653f7b71 ]
 
-An of_node_put(i2c_bus) call was immediately used after a pointer check
-for an of_find_i2c_adapter_by_node() call in this function implementation.
-Thus call such a function only once instead directly before the check.
+Both MSM8974 and MSM8226 have only CX as power domain with MX & PX being
+handled as regulators. Handle this case by reodering pd_names to have CX
+first, and handling that the driver core will already attach a single
+power domain internally.
 
-This issue was transformed by using the Coccinelle software.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+[luca: minor changes]
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+Link: https://lore.kernel.org/r/20250206-wcnss-singlepd-v2-2-9a53ee953dee@lucaweiss.eu
+[bjorn: Added missing braces to else after multi-statement if]
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/remoteproc/qcom_wcnss.c | 33 ++++++++++++++++++++++++++-------
+ 1 file changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c b/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
-index 1dbb89f0ddb8c..b2a977f1ec18a 100644
---- a/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
-+++ b/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
-@@ -802,13 +802,12 @@ static int c8sectpfe_probe(struct platform_device *pdev)
- 		}
- 		tsin->i2c_adapter =
- 			of_find_i2c_adapter_by_node(i2c_bus);
-+		of_node_put(i2c_bus);
- 		if (!tsin->i2c_adapter) {
- 			dev_err(&pdev->dev, "No i2c adapter found\n");
--			of_node_put(i2c_bus);
- 			ret = -ENODEV;
- 			goto err_node_put;
- 		}
--		of_node_put(i2c_bus);
+diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
+index 68f37296b1516..ce61e0e7cbeb8 100644
+--- a/drivers/remoteproc/qcom_wcnss.c
++++ b/drivers/remoteproc/qcom_wcnss.c
+@@ -117,10 +117,10 @@ static const struct wcnss_data pronto_v1_data = {
+ 	.pmu_offset = 0x1004,
+ 	.spare_offset = 0x1088,
  
- 		tsin->rst_gpio = of_get_named_gpio(child, "reset-gpios", 0);
+-	.pd_names = { "mx", "cx" },
++	.pd_names = { "cx", "mx" },
+ 	.vregs = (struct wcnss_vreg_info[]) {
+-		{ "vddmx", 950000, 1150000, 0 },
+ 		{ "vddcx", .super_turbo = true},
++		{ "vddmx", 950000, 1150000, 0 },
+ 		{ "vddpx", 1800000, 1800000, 0 },
+ 	},
+ 	.num_pd_vregs = 2,
+@@ -131,10 +131,10 @@ static const struct wcnss_data pronto_v2_data = {
+ 	.pmu_offset = 0x1004,
+ 	.spare_offset = 0x1088,
  
+-	.pd_names = { "mx", "cx" },
++	.pd_names = { "cx", "mx" },
+ 	.vregs = (struct wcnss_vreg_info[]) {
+-		{ "vddmx", 1287500, 1287500, 0 },
+ 		{ "vddcx", .super_turbo = true },
++		{ "vddmx", 1287500, 1287500, 0 },
+ 		{ "vddpx", 1800000, 1800000, 0 },
+ 	},
+ 	.num_pd_vregs = 2,
+@@ -386,8 +386,17 @@ static irqreturn_t wcnss_stop_ack_interrupt(int irq, void *dev)
+ static int wcnss_init_pds(struct qcom_wcnss *wcnss,
+ 			  const char * const pd_names[WCNSS_MAX_PDS])
+ {
++	struct device *dev = wcnss->dev;
+ 	int i, ret;
+ 
++	/* Handle single power domain */
++	if (dev->pm_domain) {
++		wcnss->pds[0] = dev;
++		wcnss->num_pds = 1;
++		pm_runtime_enable(dev);
++		return 0;
++	}
++
+ 	for (i = 0; i < WCNSS_MAX_PDS; i++) {
+ 		if (!pd_names[i])
+ 			break;
+@@ -407,8 +416,15 @@ static int wcnss_init_pds(struct qcom_wcnss *wcnss,
+ 
+ static void wcnss_release_pds(struct qcom_wcnss *wcnss)
+ {
++	struct device *dev = wcnss->dev;
+ 	int i;
+ 
++	/* Handle single power domain */
++	if (wcnss->num_pds == 1 && dev->pm_domain) {
++		pm_runtime_disable(dev);
++		return;
++	}
++
+ 	for (i = 0; i < wcnss->num_pds; i++)
+ 		dev_pm_domain_detach(wcnss->pds[i], false);
+ }
+@@ -426,10 +442,13 @@ static int wcnss_init_regulators(struct qcom_wcnss *wcnss,
+ 	 * the regulators for the power domains. For old device trees we need to
+ 	 * reserve extra space to manage them through the regulator interface.
+ 	 */
+-	if (wcnss->num_pds)
+-		info += num_pd_vregs;
+-	else
++	if (wcnss->num_pds) {
++		info += wcnss->num_pds;
++		/* Handle single power domain case */
++		num_vregs += num_pd_vregs - wcnss->num_pds;
++	} else {
+ 		num_vregs += num_pd_vregs;
++	}
+ 
+ 	bulk = devm_kcalloc(wcnss->dev,
+ 			    num_vregs, sizeof(struct regulator_bulk_data),
 -- 
 2.39.5
 
