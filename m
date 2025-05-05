@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-141349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A202FAAB2C2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:28:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38582AAB2B7
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E6821889F18
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:27:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C3977ABCE9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9CF36BA30;
-	Tue,  6 May 2025 00:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BA6293455;
+	Tue,  6 May 2025 00:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TWJEJhs/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oKJ+LPaV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CC536E0AD;
-	Mon,  5 May 2025 22:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3913A2BD90E;
+	Mon,  5 May 2025 22:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485851; cv=none; b=IC406cj2yBD1zwl33J/WJKEnsiT9VZg85gi/0Z3qmb8iUpwCZt+IejWNqb+InW0RqOmjbuShEliiWBy9sAcpIU025LPYfkFOf7FuojhUrzA/dFPZsUDLHKMyzWewYSXvz2BYmuaA1nk51NeqtNS3GlJvJkwwZ7dRZ8Ev3Wz8RGM=
+	t=1746485854; cv=none; b=a0YsVKZkEALzWaqQ5JQLKrSiiDirydkGZ5tjK9+ebBpMlKiCCswB8cCaZqnb4w/fhUCqR+rj9+v7BaxtkrLNKrB8DWYUVCV3Y68EY983zBakeAStYB5hY7Uqz3wqqKzhcyMp4QGpAluQ2N6ii0ZClunRybe0OZap4+lulfB+Fgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485851; c=relaxed/simple;
-	bh=c/ZRcjt/5odMSgBwPe3ZiTpzNSyYGXxRkVdPpWZtesY=;
+	s=arc-20240116; t=1746485854; c=relaxed/simple;
+	bh=2FQDgPCajLxKbD65RjjBamLGkOjnxgGPH+1vSbcdkLU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K8F73OwJWhXeEF2pMoLrHKobfQLgbq78el1jK+APLZW/3d4BTtMkqe54phZ4hz4QtMtGL8GPf+lXwtqOU4qviN7oocLZgqmvwFu6aWGN7k874gm5ZXQWAbmJLPYQ6EbJEo34f5a8SSUcvQIo6Sjsy6nzqDyERbQutIcY2IQURBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TWJEJhs/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271F7C4CEEF;
-	Mon,  5 May 2025 22:57:29 +0000 (UTC)
+	 MIME-Version; b=LxNUwP5GKlOTuXC0WgCpfzXRgyj3xz67Khac8u3mS0Z71ETL+x5ofd41jZCzVD8BByrnPfdjdHG51+jMnYw6stoKm38l2LUeFpfClED7LaDHiCdt6VagDQqTOEKoo7mZAVNuB7MEZoWwIDDBnqmxTf1yghjw/nMJFzQ8AJ2dxgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oKJ+LPaV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69F0C4CEED;
+	Mon,  5 May 2025 22:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485849;
-	bh=c/ZRcjt/5odMSgBwPe3ZiTpzNSyYGXxRkVdPpWZtesY=;
+	s=k20201202; t=1746485853;
+	bh=2FQDgPCajLxKbD65RjjBamLGkOjnxgGPH+1vSbcdkLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TWJEJhs/VPU5mnSIYe9AkX44I0dNNKoywHt1wENiRiUndQAT1EeGqWaayzIlbnmPl
-	 JPH6VKJ70SZCsocxb7IhJIfb9e1YrfnXOdcU7xb8oK61AorkLd0SPn5fkgolo3ysQ+
-	 5c20rEkhM5r5l1C7pnxBKTKwHAiRnXsRSnPoDQtv2Sy4voIm1/5fNr1Tz4azquG6/M
-	 RPqrIfl28oZtzQ11wH5Np84EcR0jFRymnnuF6PALRBySqhbiAqhO9EauGJ2k8HZdsc
-	 iKKs3xh5L1aG4EoUfNCxx8U9xxus2ii+LsAO4mDxRYJr75ANni+iZ43t2dec0HPtlV
-	 SLQgf4leim4/g==
+	b=oKJ+LPaVsRoHlUh/NKD0EYQTohJo64/JPFZZzV1XRTzg3PhPSKP4TMIKsm7YIrJvu
+	 HI/wcrzyJbBffz93JfUPbzTIfYW/eioC/hR2gmFzL2vnaorcKi/sxoMQkTbDowmGPx
+	 228J/oItHuJ5M8LDwe8/zI4JX+SVm+LNXNenJ8hLuDRk14Q24F6suHWUEwHaR4R88F
+	 lGqzLHtpJpRdki8MGkkrBniVehGfuOzp9n2JzOI8hRyIS8jd3ycuGJC9Y8nHBH586a
+	 0zCI8m/vW3F7RVXeo97wwA0OthaO9bAHfoI22N9T4gqVNB8s+MuatUx6SwtSm+1BC5
+	 x5B9Hac99MqmA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jing Su <jingsusu@didiglobal.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.6 028/294] dql: Fix dql->limit value when reset.
-Date: Mon,  5 May 2025 18:52:08 -0400
-Message-Id: <20250505225634.2688578-28-sashal@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	peterz@infradead.org
+Subject: [PATCH AUTOSEL 6.6 030/294] objtool: Properly disable uaccess validation
+Date: Mon,  5 May 2025 18:52:10 -0400
+Message-Id: <20250505225634.2688578-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -64,44 +66,66 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Jing Su <jingsusu@didiglobal.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 3a17f23f7c36bac3a3584aaf97d3e3e0b2790396 ]
+[ Upstream commit e1a9dda74dbffbc3fa2069ff418a1876dc99fb14 ]
 
-Executing dql_reset after setting a non-zero value for limit_min can
-lead to an unreasonable situation where dql->limit is less than
-dql->limit_min.
+If opts.uaccess isn't set, the uaccess validation is disabled, but only
+partially: it doesn't read the uaccess_safe_builtin list but still tries
+to do the validation.  Disable it completely to prevent false warnings.
 
-For instance, after setting
-/sys/class/net/eth*/queues/tx-0/byte_queue_limits/limit_min,
-an ifconfig down/up operation might cause the ethernet driver to call
-netdev_tx_reset_queue, which in turn invokes dql_reset.
-
-In this case, dql->limit is reset to 0 while dql->limit_min remains
-non-zero value, which is unexpected. The limit should always be
-greater than or equal to limit_min.
-
-Signed-off-by: Jing Su <jingsusu@didiglobal.com>
-Link: https://patch.msgid.link/Z9qHD1s/NEuQBdgH@pilot-ThinkCentre-M930t-N000
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/0e95581c1d2107fb5f59418edf2b26bba38b0cbb.1742852846.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/dynamic_queue_limits.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/objtool/check.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/lib/dynamic_queue_limits.c b/lib/dynamic_queue_limits.c
-index fde0aa2441480..a75a9ca46b594 100644
---- a/lib/dynamic_queue_limits.c
-+++ b/lib/dynamic_queue_limits.c
-@@ -116,7 +116,7 @@ EXPORT_SYMBOL(dql_completed);
- void dql_reset(struct dql *dql)
- {
- 	/* Reset all dynamic values */
--	dql->limit = 0;
-+	dql->limit = dql->min_limit;
- 	dql->num_queued = 0;
- 	dql->num_completed = 0;
- 	dql->last_obj_cnt = 0;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index a1b14378bab04..f5af48502c9c8 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -3287,7 +3287,7 @@ static int handle_insn_ops(struct instruction *insn,
+ 		if (update_cfi_state(insn, next_insn, &state->cfi, op))
+ 			return 1;
+ 
+-		if (!insn->alt_group)
++		if (!opts.uaccess || !insn->alt_group)
+ 			continue;
+ 
+ 		if (op->dest.type == OP_DEST_PUSHF) {
+@@ -3754,6 +3754,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 			return 0;
+ 
+ 		case INSN_STAC:
++			if (!opts.uaccess)
++				break;
++
+ 			if (state.uaccess) {
+ 				WARN_INSN(insn, "recursive UACCESS enable");
+ 				return 1;
+@@ -3763,6 +3766,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 			break;
+ 
+ 		case INSN_CLAC:
++			if (!opts.uaccess)
++				break;
++
+ 			if (!state.uaccess && func) {
+ 				WARN_INSN(insn, "redundant UACCESS disable");
+ 				return 1;
+@@ -4238,7 +4244,8 @@ static int validate_symbol(struct objtool_file *file, struct section *sec,
+ 	if (!insn || insn->ignore || insn->visited)
+ 		return 0;
+ 
+-	state->uaccess = sym->uaccess_safe;
++	if (opts.uaccess)
++		state->uaccess = sym->uaccess_safe;
+ 
+ 	ret = validate_branch(file, insn_func(insn), insn, *state);
+ 	if (ret)
 -- 
 2.39.5
 
