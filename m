@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-139980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758D6AAA356
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:12:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CFF9AAA344
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:12:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 954C63AAE79
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:11:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5A59463DA8
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A045127934A;
-	Mon,  5 May 2025 22:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB4E2F1540;
+	Mon,  5 May 2025 22:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qHX8xMlX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BwgDwiFY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565842F0BB5;
-	Mon,  5 May 2025 22:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51F12F1535;
+	Mon,  5 May 2025 22:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483819; cv=none; b=t/6eejXR1bC7CQRlGcUwW0CJHyFGobOY8zu+YdYGlSnLINjSX/0Vmpwx18jzNaFXLL8OEIbWRhxqeBzNAwmBOlv1sjBYT+mLFTaZuMlaYwCrNf7M7CfB57z5YTiVaT77uiJRhncSvq0jCR1Jsmv56XFPkme3oEOZWcYV7DjDcig=
+	t=1746483822; cv=none; b=Yx39xrUgqz6OxbrV/TUXXb3ch5yfyvv0diDija6t0xLUfvP39VjVFUreR3p19cV2a8YxRNShq776LODGe24aIADNUfqY2ju4Y0tn6xOQfHR8SF1Fil1GwOTZUlWy3mb8V4ZIEKElGmuSj2EWYJeZb+Qn7hKVX0wNJbPOJRm9+RU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483819; c=relaxed/simple;
-	bh=PFmrl+mIJ8+7TyIIyqvSWh7WdwcJauVosWlhP18xpy8=;
+	s=arc-20240116; t=1746483822; c=relaxed/simple;
+	bh=o2nRDv428v4MvnR0vHSeeoTJRiIo3h6mJurHS12K5IQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RVrFPsicvpOi6jwzXmNjoAJAF6yNl05BR9V+OVcMsNYcUEGYIzPSNZpxBQGDvI45+NrwrbsE0ges+U+koiz73EjV2iBRbZ8kmq5PPIUWtun25TWAJbhmUoNAoLOaCuVWiq/j9JBap1by2PcKmsda65lK805bQnbrQ6wh/TUd0dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qHX8xMlX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A643C4CEE4;
-	Mon,  5 May 2025 22:23:38 +0000 (UTC)
+	 MIME-Version; b=POxUH7MlF60A4DssHLBzMgqJgaa074lna6I+q69xVnOWnI5ij3+Polnspy4jksjJOXoKa/ghiX2k/eMvCfr4tkEFP2KofF24ADEC13OYnF8UbIa64+uCPGzrlSjDcU/5b8WWlZBR1mo7MUdrZseRD4TaHkChtBeJN3KTQgWKsOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BwgDwiFY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299E7C4CEE4;
+	Mon,  5 May 2025 22:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483819;
-	bh=PFmrl+mIJ8+7TyIIyqvSWh7WdwcJauVosWlhP18xpy8=;
+	s=k20201202; t=1746483821;
+	bh=o2nRDv428v4MvnR0vHSeeoTJRiIo3h6mJurHS12K5IQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qHX8xMlX0sT7mFA+2odRnVnJVdCSdwKSWirhuCZzIxLwCU3a9IbLMSDMLCZLCM+A5
-	 bgJOee0rykHf7lUQxH9BzSphhI6TwBdVDuRvbAIOzahBGrzag6eF1b4pJ8BFRC4HFI
-	 RYwbyuyjBTUxmzRW2pCPns5Tu75n7bDJTImwP7dl4MqcZvkDctdx2CBob50SDSqU7f
-	 2N0BOpOkDYAj9dxAEpjYfCzo/6F6UMhIkiR0vx5nh83nh/rpamEP9WYshWAzqvVM5d
-	 7g/nNYkbUZMmHnWXHDOy4A+sNd06mgJhcAelQFb2uK2P/pQWT7rZzqiA0Lobg49mKH
-	 tvC/Q64Ou0kRg==
+	b=BwgDwiFYhVzPpKEIrq/Abp7OOaGY1TGW0FAuPw0dLG8DZCguDTlSeGn3FZWfaEO5K
+	 IPLAGYQ5IdrFCIPfUvP1oIqJb6Qg8gpzsKoEyB/V33foGRUq0XE36AF/d/c6Y0Qihr
+	 9S/+RXqfFmDBz15VaacW5UYXhFNx6mPgeN4DooMyxkpAlcpJ7mZvwnL7tmLGR7KJ9E
+	 aQ5qera25xMipbslLVYp/A5REw2uIV6wHh4TVJbTe1Aghacl33e087b29/PgbGF3EK
+	 Q6Bf7YrBK840r2dX4ziwE/s9t/cQtzXocqgc6HFyoqy3fpLvK2WAZ7637v1AOcBPzs
+	 otCaGEVJBbVnA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+Cc: Svyatoslav Ryhel <clamor95@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>,
-	krzk@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 233/642] soc: samsung: include linux/array_size.h where needed
-Date: Mon,  5 May 2025 18:07:29 -0400
-Message-Id: <20250505221419.2672473-233-sashal@kernel.org>
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com,
+	devicetree@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 234/642] ARM: tegra: Switch DSI-B clock parent to PLLD on Tegra114
+Date: Mon,  5 May 2025 18:07:30 -0400
+Message-Id: <20250505221419.2672473-234-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -67,117 +71,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
 
-[ Upstream commit 4c57930f68d90e0d52c396d058cfa9ed8447a6c4 ]
+[ Upstream commit 2b3db788f2f614b875b257cdb079adadedc060f3 ]
 
-This does not necessarily get included through asm/io.h:
+PLLD is usually used as parent clock for internal video devices, like
+DSI for example, while PLLD2 is used as parent for HDMI.
 
-drivers/soc/samsung/exynos3250-pmu.c:120:18: error: use of undeclared identifier 'ARRAY_SIZE'
-  120 |         for (i = 0; i < ARRAY_SIZE(exynos3250_list_feed); i++) {
-      |                         ^
-drivers/soc/samsung/exynos5250-pmu.c:162:18: error: use of undeclared identifier 'ARRAY_SIZE'
-  162 |         for (i = 0; i < ARRAY_SIZE(exynos5_list_both_cnt_feed); i++) {
-      |                         ^
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20250305211446.43772-1-arnd@kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+Link: https://lore.kernel.org/r/20250226105615.61087-3-clamor95@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/samsung/exynos-asv.c     | 1 +
- drivers/soc/samsung/exynos-chipid.c  | 1 +
- drivers/soc/samsung/exynos-pmu.c     | 1 +
- drivers/soc/samsung/exynos-usi.c     | 1 +
- drivers/soc/samsung/exynos3250-pmu.c | 1 +
- drivers/soc/samsung/exynos5250-pmu.c | 1 +
- drivers/soc/samsung/exynos5420-pmu.c | 1 +
- 7 files changed, 7 insertions(+)
+ arch/arm/boot/dts/nvidia/tegra114.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/samsung/exynos-asv.c b/drivers/soc/samsung/exynos-asv.c
-index 97006cc3b9461..8e681f5195264 100644
---- a/drivers/soc/samsung/exynos-asv.c
-+++ b/drivers/soc/samsung/exynos-asv.c
-@@ -9,6 +9,7 @@
-  * Samsung Exynos SoC Adaptive Supply Voltage support
-  */
- 
-+#include <linux/array_size.h>
- #include <linux/cpu.h>
- #include <linux/device.h>
- #include <linux/energy_model.h>
-diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
-index 95294462ff211..99c5f9c80101b 100644
---- a/drivers/soc/samsung/exynos-chipid.c
-+++ b/drivers/soc/samsung/exynos-chipid.c
-@@ -12,6 +12,7 @@
-  * Samsung Exynos SoC Adaptive Supply Voltage and Chip ID support
-  */
- 
-+#include <linux/array_size.h>
- #include <linux/device.h>
- #include <linux/errno.h>
- #include <linux/mfd/syscon.h>
-diff --git a/drivers/soc/samsung/exynos-pmu.c b/drivers/soc/samsung/exynos-pmu.c
-index dd5256e5aae1a..c40313886a012 100644
---- a/drivers/soc/samsung/exynos-pmu.c
-+++ b/drivers/soc/samsung/exynos-pmu.c
-@@ -5,6 +5,7 @@
- //
- // Exynos - CPU PMU(Power Management Unit) support
- 
-+#include <linux/array_size.h>
- #include <linux/arm-smccc.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
-diff --git a/drivers/soc/samsung/exynos-usi.c b/drivers/soc/samsung/exynos-usi.c
-index 114352695ac2b..5a93a68dba87f 100644
---- a/drivers/soc/samsung/exynos-usi.c
-+++ b/drivers/soc/samsung/exynos-usi.c
-@@ -6,6 +6,7 @@
-  * Samsung Exynos USI driver (Universal Serial Interface).
-  */
- 
-+#include <linux/array_size.h>
- #include <linux/clk.h>
- #include <linux/mfd/syscon.h>
- #include <linux/module.h>
-diff --git a/drivers/soc/samsung/exynos3250-pmu.c b/drivers/soc/samsung/exynos3250-pmu.c
-index 30f230ed1769c..4bad12a995422 100644
---- a/drivers/soc/samsung/exynos3250-pmu.c
-+++ b/drivers/soc/samsung/exynos3250-pmu.c
-@@ -5,6 +5,7 @@
- //
- // Exynos3250 - CPU PMU (Power Management Unit) support
- 
-+#include <linux/array_size.h>
- #include <linux/soc/samsung/exynos-regs-pmu.h>
- #include <linux/soc/samsung/exynos-pmu.h>
- 
-diff --git a/drivers/soc/samsung/exynos5250-pmu.c b/drivers/soc/samsung/exynos5250-pmu.c
-index 7a2d50be6b4ac..2ae5c3e1b07a3 100644
---- a/drivers/soc/samsung/exynos5250-pmu.c
-+++ b/drivers/soc/samsung/exynos5250-pmu.c
-@@ -5,6 +5,7 @@
- //
- // Exynos5250 - CPU PMU (Power Management Unit) support
- 
-+#include <linux/array_size.h>
- #include <linux/soc/samsung/exynos-regs-pmu.h>
- #include <linux/soc/samsung/exynos-pmu.h>
- 
-diff --git a/drivers/soc/samsung/exynos5420-pmu.c b/drivers/soc/samsung/exynos5420-pmu.c
-index 6fedcd78cb451..58a2209795f78 100644
---- a/drivers/soc/samsung/exynos5420-pmu.c
-+++ b/drivers/soc/samsung/exynos5420-pmu.c
-@@ -5,6 +5,7 @@
- //
- // Exynos5420 - CPU PMU (Power Management Unit) support
- 
-+#include <linux/array_size.h>
- #include <linux/pm.h>
- #include <linux/soc/samsung/exynos-regs-pmu.h>
- #include <linux/soc/samsung/exynos-pmu.h>
+diff --git a/arch/arm/boot/dts/nvidia/tegra114.dtsi b/arch/arm/boot/dts/nvidia/tegra114.dtsi
+index 86f14e2fd29f3..6c057b5069514 100644
+--- a/arch/arm/boot/dts/nvidia/tegra114.dtsi
++++ b/arch/arm/boot/dts/nvidia/tegra114.dtsi
+@@ -139,7 +139,7 @@ dsib: dsi@54400000 {
+ 			reg = <0x54400000 0x00040000>;
+ 			clocks = <&tegra_car TEGRA114_CLK_DSIB>,
+ 				 <&tegra_car TEGRA114_CLK_DSIBLP>,
+-				 <&tegra_car TEGRA114_CLK_PLL_D2_OUT0>;
++				 <&tegra_car TEGRA114_CLK_PLL_D_OUT0>;
+ 			clock-names = "dsi", "lp", "parent";
+ 			resets = <&tegra_car 82>;
+ 			reset-names = "dsi";
 -- 
 2.39.5
 
