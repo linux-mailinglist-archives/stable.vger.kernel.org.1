@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-139903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A42AAA202
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:53:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63810AAA20F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F09A1882D97
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:53:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4086A3A4FB5
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E332D3F89;
-	Mon,  5 May 2025 22:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753652D3FAB;
+	Mon,  5 May 2025 22:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EsXCqT2P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RoAAFJVa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B60E27FD54;
-	Mon,  5 May 2025 22:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8FA1C1F05;
+	Mon,  5 May 2025 22:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483643; cv=none; b=X92Uj1Q9EQVFAeUFL7gD3XU73ddRsfbVRHtEmQ4PiYetGy9kV1UXUcxRHy7rHx642wdUa0i3QqWqy6IHWs2St5b4t/nyZHYp+Pu7kYEYZT1P2pbbEbMl72s/lEJziCCkrHm5hHaNiKfv3QLenNbjnXgRz+h0BT0wY4FZJvRcPew=
+	t=1746483645; cv=none; b=tFq/j2799VkNAI3EimEnkJvnA0pw8hOxXn6wFzsxw7IQXZmIgrZ+oyhvpXmaMm+HsuDfgkz8vmKf31wd8aBKTqRbF/FloDstDIYqlTnCM7Hc9G/o2kxR6uaseG2IAP2W45gsOo/0Akzkmnpw/nyZF4RemnHA9tFweXEHwKefuz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483643; c=relaxed/simple;
-	bh=NRSQ/yrP1aoPk+wgBoKMeHyK9ZjvBs7hqvi2I5KYFRE=;
+	s=arc-20240116; t=1746483645; c=relaxed/simple;
+	bh=fVvvLKogYm++tZvMxX2B3Xw5iybaZOLuQ6ee6V4DCSc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qebjWXBwX9iZLZng4q+bmE3K9ESj2Em9FHrhuJuzqWHbEqLxmUCzeOYFoAHJi0r0c4CtCr8165WLH7+7z/dFXKcvyYtxPFaiSzt1mfZCQZRmWxxGYc6djQEdFNgl125qHBvhCmLmP6I2L4qBT+G785+ZjYN3ND928YKrXBJRG/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EsXCqT2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD384C4CEED;
-	Mon,  5 May 2025 22:20:42 +0000 (UTC)
+	 MIME-Version; b=HMBoGwBYyDautOqpOmoHad5QElz0+FHKOShlCdU7Jui1hu/+nOCmXChNY+RYTAjTfLfzogERsfCyOPgLh7FT5Euk75Fu16VfxZW2xc1wNqJgA37QT+SYJZSoeSRh/QDYJ3QO/Z3U7pr8MCLSmz4v5ncql/Hk7kMdGdr6drPOMXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RoAAFJVa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA02C4CEE4;
+	Mon,  5 May 2025 22:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483643;
-	bh=NRSQ/yrP1aoPk+wgBoKMeHyK9ZjvBs7hqvi2I5KYFRE=;
+	s=k20201202; t=1746483644;
+	bh=fVvvLKogYm++tZvMxX2B3Xw5iybaZOLuQ6ee6V4DCSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EsXCqT2PA7StRDKMGYBHIpqwACXr3iYlcBKvWJ48kA1WP0ZUbNfkkngsko69lqigS
-	 Yyw0ghgPncukC/yriHZ3rnzZ7zKYUi0rE9+ciX7QxOv3X5F7kv+Yivp12Up6MRRT6i
-	 JSiErQ30CpNJgxpu/HrKdFfMZBvhep87m24wVTNUCqe6xIVBnKSN3QDAbjwo6/JkFy
-	 6pQ3Q3ESMwBPzd8+mMn7lTJ+ZqAiLRMA/o/B3/L6EYjq3Zfoov6KJBdi6ELZprS9kx
-	 sgyd9uvJlbkDcdkg/6CYhgWoUIeUV3aAncUrRhl03iDBOOuwFj3/xZcXetvtc0P2zL
-	 Qzd81OT2IuTdg==
+	b=RoAAFJVaV0oqJe2fzdVeB4FESuFJQQEr1hdrdHqOlLq9U3qRjmenthHsxQsn5Nl84
+	 qbprbFQnwgXw7s1t/6pQWvga5ogzwN77RfOSLJcMEkIsFj2gKQdLrX+RtcSzAGUOjG
+	 Pwztko3qPYEhHLjmqpXA8kMB72PTSYslnl56uh64BpvleT6yHvpd3eQe66tUMw7tPI
+	 vd7A0GIJeSSmnp8Tqf8O1vTwu9FuLPfh9P5Aiwzm5W2OPhIKFoLrY0oIM1uySvrQrU
+	 Hf2spY37oUvpB/gbAWI7HUfhWpTpzbNPy4CLM3LsuOCopI45MafhsE2j3qE3JXLE+3
+	 kumby/Ms7W3Pg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Eric Sandeen <sandeen@redhat.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+Cc: Manuel Fombuena <fombuena@outlook.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.14 156/642] f2fs: defer readonly check vs norecovery
-Date: Mon,  5 May 2025 18:06:12 -0400
-Message-Id: <20250505221419.2672473-156-sashal@kernel.org>
+	pavel@kernel.org,
+	linux-leds@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 157/642] leds: Kconfig: leds-st1202: Add select for required LEDS_TRIGGER_PATTERN
+Date: Mon,  5 May 2025 18:06:13 -0400
+Message-Id: <20250505221419.2672473-157-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -66,54 +66,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Manuel Fombuena <fombuena@outlook.com>
 
-[ Upstream commit 9cca49875997a1a7e92800a828a62bacb0f577b9 ]
+[ Upstream commit be2f92844d0f8cb059cb6958c6d9582d381ca68e ]
 
-Defer the readonly-vs-norecovery check until after option parsing is done
-so that option parsing does not require an active superblock for the test.
-Add a helpful message, while we're at it.
+leds-st1202 requires the LED Pattern Trigger (LEDS_TRIGGER_PATTERN), which
+is not selected when LED Trigger support is (LEDS_TRIGGERS).
 
-(I think could be moved back into parsing after we switch to the new mount
-API if desired, as the fs context will have RO state available.)
+To reproduce this:
 
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+- make menuconfig KCONFIG_CONFIG=
+- select LEDS_ST1202 dependencies OF, I2C and LEDS_CLASS.
+- select LEDS_ST1202
+- LEDS_TRIGGERS is selected but LEDS_TRIGGER_PATTERN isn't.
+
+The absence of LEDS_TRIGGER_PATTERN explicitly required can lead to builds
+in which LEDS_ST1202 is selected while LEDS_TRIGGER_PATTERN isn't. The direct
+result of that would be that /sys/class/leds/<led>/hw_pattern wouldn't be
+available and there would be no way of interacting with the driver and
+hardware from user space.
+
+Add select LEDS_TRIGGER_PATTERN to Kconfig to meet the requirement and
+indirectly document it as well.
+
+Signed-off-by: Manuel Fombuena <fombuena@outlook.com>
+Link: https://lore.kernel.org/r/CWLP123MB5473F4DF3A668F7DD057A280C5C22@CWLP123MB5473.GBRP123.PROD.OUTLOOK.COM
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/leds/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index b8a0e925a4011..d3b04a589b525 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -728,10 +728,8 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
- 			set_opt(sbi, DISABLE_ROLL_FORWARD);
- 			break;
- 		case Opt_norecovery:
--			/* this option mounts f2fs with ro */
-+			/* requires ro mount, checked in f2fs_default_check */
- 			set_opt(sbi, NORECOVERY);
--			if (!f2fs_readonly(sb))
--				return -EINVAL;
- 			break;
- 		case Opt_discard:
- 			if (!f2fs_hw_support_discard(sbi)) {
-@@ -1418,6 +1416,12 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
- 		f2fs_err(sbi, "Allow to mount readonly mode only");
- 		return -EROFS;
- 	}
-+
-+	if (test_opt(sbi, NORECOVERY) && !f2fs_readonly(sbi->sb)) {
-+		f2fs_err(sbi, "norecovery requires readonly mount");
-+		return -EINVAL;
-+	}
-+
- 	return 0;
- }
- 
+diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
+index 2b27d043921ce..8859e8fe292a9 100644
+--- a/drivers/leds/Kconfig
++++ b/drivers/leds/Kconfig
+@@ -971,6 +971,7 @@ config LEDS_ST1202
+ 	depends on I2C
+ 	depends on OF
+ 	select LEDS_TRIGGERS
++	select LEDS_TRIGGER_PATTERN
+ 	help
+ 	  Say Y to enable support for LEDs connected to LED1202
+ 	  LED driver chips accessed via the I2C bus.
 -- 
 2.39.5
 
