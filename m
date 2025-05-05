@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-141731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F397AAB60B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:41:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9024AAB620
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BF833A50F1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:35:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF39A3B13AE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98EFB34DC73;
-	Tue,  6 May 2025 00:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7960734E1AD;
+	Tue,  6 May 2025 00:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mRsN12oX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tPlyNmLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F612FB430;
-	Mon,  5 May 2025 23:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7E43BE0AC;
+	Mon,  5 May 2025 23:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487401; cv=none; b=YdOJySLbYOkK5aQtGzb5PvvVOt0Pr/902/KOZ87dJT5SwulnJcri7eiy9/k32gnmSjnYyDQ3p+7LfiSC6VuHVSBiEVcq3IoLs/4FWOlZaSfB1gJIt/QexupA6Y5RFXjoe1dpn28z7T5yz9CUsn96jt2MLrwgmU4rmwgsjD6Y9SE=
+	t=1746487408; cv=none; b=lg9poEjZc1Kkx6E5AkGzLNX9IGTSJqCYXLj+Y2LiPd/fMXfQEH3Wy+Qpmg7ftO/lioECJPtiaYZvJ0fT433dnxUp95xh1MAlKMPLFweKTvZB9L62fcmmyP/EsHzEL7lOfM+LbztL7fQPHl3vM79KpoYY1wheJcf0GORYS4iV1mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487401; c=relaxed/simple;
-	bh=YnRuFNnH71DQFlt0Y+D8K7NQLO+z+SSmhGGnZkG1FhY=;
+	s=arc-20240116; t=1746487408; c=relaxed/simple;
+	bh=hKUiINuiaux0kf5AuOdaEyHIw81+k5EKGTxhvDeCSao=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j9lRDjekvE8D3O6KkS9ZaK2TvsyuQ4cDfR1LxEDJN7PT6nqFSCkd/Ylh9WbZOhxsEvWe3zIFRLJtVVtd1LOuj83cKfEpz/mPAV9pGNrASJgcuQm44P6ehdwAlHBoQAdKexfGPb1IwS8M5uJBbQRrqVz/qa9TS5BlUMFE/VTBWK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mRsN12oX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FF2C4CEF1;
-	Mon,  5 May 2025 23:23:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZuGo6pJj/I4rovu/IP5i9/hclvlurUsn/5xe4GTSEJAWw4Pad16bfMxQdiIcJhILkXqVwONSwdlVdax/2qcfjPsR83a6ilWCc19ekAj5e63XF7R8YbVCRNwJTV8I/+0G4VNY5j+J1aQvtX6/WMuCQUuEk61ddIVfOFfC9Ova5w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tPlyNmLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D711C4CEE4;
+	Mon,  5 May 2025 23:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487401;
-	bh=YnRuFNnH71DQFlt0Y+D8K7NQLO+z+SSmhGGnZkG1FhY=;
+	s=k20201202; t=1746487407;
+	bh=hKUiINuiaux0kf5AuOdaEyHIw81+k5EKGTxhvDeCSao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mRsN12oXr0VA9i/YzXdi1aTM9yB/x8rnwxJqXI8M1euMHChs85g9eE90Qm5IBU7wD
-	 ky0XCtq/pAy1qB5r+MU1ekXgkOQtNCje+xJH87qxXLumagz5CS13sF0z22NcxDh7XZ
-	 TLdNbYV/poUUeGOfJbaekrfvYf8/P1UU7PqJX8fwMSVaFfmY2HLqnVgzIZZoKK3Qom
-	 ZTo5Cae/SuBmwYEzm2f4/rMuX53WRg28+J8qVqD9/ir0xF3dzzhGy2w43BEVCpbYpH
-	 9/c6vilU/YFrAwoq4htefdiVS0uqRoYg84x+IKGj3LtlMTLB43vKbjMaRKe7+T0gMq
-	 wO8FodrOQQu6Q==
+	b=tPlyNmLXGvyv5KKrf4+WJ24i6HcaZUL6X9Wgl4kH6ih4hrm8QZOKYDIk3CcRDXty3
+	 182YB57tNuIphdXgd8G6QZP3Z0VHkfcxKI7zCdrv8amH4tI59YGVEVXbnpOaCcSRDd
+	 tWi31kkEICBg3HwtFHLgrIJKZlvHjloq46VP0k3M/yioS48ga5cLRxWbcOA6mKlvo0
+	 5eA73aLoA/ufCr/qX21aWwvvm4qUQpIomgnE6OqhI7boaec8l8vfxSYq9Aa3069qkA
+	 CXP1N3lg4GctAO6Ya8ptwWvHYf8X3MZNuIV+vdLhm1J9UctZwsQFADZKKKbQCVD8nj
+	 9bQW6IIV1HnCA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Xiaochun Lee <lixc17@lenovo.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sathya.prakash@broadcom.com,
-	sreekanth.reddy@broadcom.com,
-	suganath-prabu.subramani@broadcom.com,
-	James.Bottomley@HansenPartnership.com,
-	MPT-FusionLinux.pdl@broadcom.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 49/79] scsi: mpt3sas: Send a diag reset if target reset fails
-Date: Mon,  5 May 2025 19:21:21 -0400
-Message-Id: <20250505232151.2698893-49-sashal@kernel.org>
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 53/79] PCI: Fix old_size lower bound in calculate_iosize() too
+Date: Mon,  5 May 2025 19:21:25 -0400
+Message-Id: <20250505232151.2698893-53-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -65,65 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 5612d6d51ed2634a033c95de2edec7449409cbb9 ]
+[ Upstream commit ff61f380de5652e723168341480cc7adf1dd6213 ]
 
-When an IOCTL times out and driver issues a target reset, if firmware
-fails the task management elevate the recovery by issuing a diag reset to
-controller.
+Commit 903534fa7d30 ("PCI: Fix resource double counting on remove &
+rescan") fixed double counting of mem resources because of old_size being
+applied too early.
 
-Signed-off-by: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>
-Link: https://lore.kernel.org/r/1739410016-27503-5-git-send-email-shivasharan.srikanteshwara@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fix a similar counting bug on the io resource side.
+
+Link: https://lore.kernel.org/r/20241216175632.4175-6-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Xiaochun Lee <lixc17@lenovo.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_ctl.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/pci/setup-bus.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_ctl.c b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-index 1c5c172315de4..377e941d93e38 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-@@ -662,6 +662,7 @@ _ctl_do_mpt_command(struct MPT3SAS_ADAPTER *ioc, struct mpt3_ioctl_command karg,
- 	size_t data_in_sz = 0;
- 	long ret;
- 	u16 device_handle = MPT3SAS_INVALID_DEVICE_HANDLE;
-+	int tm_ret;
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index 32e34ade736c3..1793e1084aeb3 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -800,11 +800,9 @@ static resource_size_t calculate_iosize(resource_size_t size,
+ 	size = (size & 0xff) + ((size & ~0xffUL) << 2);
+ #endif
+ 	size = size + size1;
+-	if (size < old_size)
+-		size = old_size;
  
- 	issue_reset = 0;
+-	size = ALIGN(max(size, add_size) + children_add_size, align);
+-	return size;
++	size = max(size, add_size) + children_add_size;
++	return ALIGN(max(size, old_size), align);
+ }
  
-@@ -1094,16 +1095,23 @@ _ctl_do_mpt_command(struct MPT3SAS_ADAPTER *ioc, struct mpt3_ioctl_command karg,
- 			if (pcie_device && (!ioc->tm_custom_handling) &&
- 			    (!(mpt3sas_scsih_is_pcie_scsi_device(
- 			    pcie_device->device_info))))
--				mpt3sas_scsih_issue_locked_tm(ioc,
-+				tm_ret = mpt3sas_scsih_issue_locked_tm(ioc,
- 				  le16_to_cpu(mpi_request->FunctionDependent1),
- 				  0, MPI2_SCSITASKMGMT_TASKTYPE_TARGET_RESET, 0,
- 				  0, pcie_device->reset_timeout,
- 			MPI26_SCSITASKMGMT_MSGFLAGS_PROTOCOL_LVL_RST_PCIE);
- 			else
--				mpt3sas_scsih_issue_locked_tm(ioc,
-+				tm_ret = mpt3sas_scsih_issue_locked_tm(ioc,
- 				  le16_to_cpu(mpi_request->FunctionDependent1),
- 				  0, MPI2_SCSITASKMGMT_TASKTYPE_TARGET_RESET, 0,
- 				  0, 30, MPI2_SCSITASKMGMT_MSGFLAGS_LINK_RESET);
-+
-+			if (tm_ret != SUCCESS) {
-+				ioc_info(ioc,
-+					 "target reset failed, issue hard reset: handle (0x%04x)\n",
-+					 le16_to_cpu(mpi_request->FunctionDependent1));
-+				mpt3sas_base_hard_reset_handler(ioc, FORCE_BIG_HAMMER);
-+			}
- 		} else
- 			mpt3sas_base_hard_reset_handler(ioc, FORCE_BIG_HAMMER);
- 	}
+ static resource_size_t calculate_memsize(resource_size_t size,
 -- 
 2.39.5
 
