@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-140744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA255AAAEEC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:07:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F89AAAEF2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:08:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15735170020
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:05:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 555D6169B96
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B70F2F4197;
-	Mon,  5 May 2025 23:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855532F4793;
+	Mon,  5 May 2025 23:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eu+gRK7J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h0Y4C8l4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA9038F181;
-	Mon,  5 May 2025 23:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4662DEB97;
+	Mon,  5 May 2025 23:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486126; cv=none; b=urF/ts9pH+mKyRI0KgBtF6q9NIsr7M4VALrxxJMmBsfRTg55PpvGvQsvwmhlTdOjqlLlr/xMaAHTLSkCMFLVOOjwxE71Udb8EbEWN3uyannYB+MeM6We4RartQrHPBrR+qCTlObQZcGLYnUNDS3rZ6jgWZfZPFa45tNuFqUnOK4=
+	t=1746486137; cv=none; b=QIq7zsDzsEl3tMUJUbg0suzme13ZHA24IHw0H4iJtdnB7W3vFA5B35/33K14PQqrab3avPAa9v9R+zBnen9CjoCkKzGi7qNj5ctN6XTpFS2rMvmcZ80lX6ZlpgGeb5aUf4Wf8Xgzj3pWZ+26Zsl+gdK/XlWx2dEKjJdWDkg5yxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486126; c=relaxed/simple;
-	bh=2esapROkTMnruviUBIinUj5RrrZr0Z2HKA8ukgHv/V4=;
+	s=arc-20240116; t=1746486137; c=relaxed/simple;
+	bh=1POYf0LwGw6uahw9yIbWbRozUWFElzKFLk8W9wbKX/0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QYWY795UoWF0TZ5j83Q7BvWtqX7VfPUzugFFnRErWrpaYxzZjG6GmZzlo2xnE5A35xtjgs0k5VZHL+RVvEWK/hCXUXN39L7FZJvXqII51QmgHZgc+9yzpyn8R9WUOO8+Mt3GStRPkaMU4xSzLgo2ilU5x3uKWbaVVC4+8bz6tic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eu+gRK7J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A59DC4CEED;
-	Mon,  5 May 2025 23:02:03 +0000 (UTC)
+	 MIME-Version; b=QclX0ZTs36htxyW9BDQrc+l+PdQTHmgDP9XHrq8C7afQjaXzo6yW7cP5OHaHLESFVWNXytEUPJnF5Vp2ngYJN26KkTeHFjVPPEk1kWot8SYCeUxv9IPAIpwaeSB5m9LXnvIn4fQmQDqQhMSA7EMoZomOfn3JyJwzofxk2oYygPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h0Y4C8l4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29BFC4CEED;
+	Mon,  5 May 2025 23:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486124;
-	bh=2esapROkTMnruviUBIinUj5RrrZr0Z2HKA8ukgHv/V4=;
+	s=k20201202; t=1746486136;
+	bh=1POYf0LwGw6uahw9yIbWbRozUWFElzKFLk8W9wbKX/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eu+gRK7J6Cw/CsQyyv4SGyRZYBAZYM8W7Qeyod9HQ57lU3gzFnRaTRCFeVMsBVErv
-	 iRoZpwYB8rgtYJzbnH99KDOaMmVKIA8kt6WrsmycO9ihiW+M0VmxJTa9EAlwiToyLL
-	 eGw6vB7bj20zi13Bh+XocfxWdaVumCD57/yUP08gsiuxiISoZQUdTQamGD1Dr7QSSv
-	 9XdmI0vQUKXPu8EtmvGr0Rn1vDmyeibl4JSKeawCYuoWel8toWambSj/Otzm7YFxw4
-	 1tgi/0BDNq1L7adVtBaxGtBctmoRA5Zr4mbdf9RV2ZlwPEH+/rvKYJUTq8pfwutLNH
-	 nxHivdkoadGfQ==
+	b=h0Y4C8l4cNVl9SA0/iDB7fwC/nw11kiEdpioaUagTkt3mkYE5oynCWTBTK/968CWL
+	 73vPYFjrX4orNhVUMbUQDMON9q+lSVLqpn/P2zzkGSM2U9LrBxxCTeH+kjrw6Dlnu7
+	 lUzBOZVxygu3gojhBiLhj7lNwLkRMVHkG8yMMEg/mA481lJfToJuHlD6KJolVqXQuR
+	 sx0bleNGj+DLTKBYhb6iK4vjWhEX86OuNPVdbFwVPgbAWlBtT+SiKYBYmHQX4eMNHe
+	 299D33xAFp3TmXKTCRNPL4yPIBlLrWikg/X0N3dwwhj3TOibbhNeHEwyrCXmvinADJ
+	 /ry2xudBXApcA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Matthias Fend <matthias.fend@emfend.at>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>,
-	mchehab@kernel.org,
-	sakari.ailus@linux.intel.com,
-	tomi.valkeinen@ideasonboard.com,
-	ribalda@chromium.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 164/294] media: tc358746: improve calculation of the D-PHY timing registers
-Date: Mon,  5 May 2025 18:54:24 -0400
-Message-Id: <20250505225634.2688578-164-sashal@kernel.org>
+	davem@davemloft.net,
+	linux-crypto@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 170/294] crypto: ahash - Set default reqsize from ahash_alg
+Date: Mon,  5 May 2025 18:54:30 -0400
+Message-Id: <20250505225634.2688578-170-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -70,78 +65,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Matthias Fend <matthias.fend@emfend.at>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 78d7265e2e1ce349e7f3c6a085f2b66d7b73f4ca ]
+[ Upstream commit 9e01aaa1033d6e40f8d7cf4f20931a61ce9e3f04 ]
 
-When calculating D-PHY registers, using data rates that are not multiples
-of 16 can lead to precision loss in division operations. This can result in
-register values that produce timing violations against the MIPI standard.
+Add a reqsize field to struct ahash_alg and use it to set the
+default reqsize so that algorithms with a static reqsize are
+not forced to create an init_tfm function.
 
-An example:
-cfg->hs_clk_rate = 294MHz
-hf_clk = 18
-
-If the desired value in cfg->init is 100us, which is the minimum allowed
-value, then the LINEINITCNT register is calculated as 1799. But since the
-actual clock is 18.375MHz instead of 18MHz, this setting results in a time
-that is shorter than 100us and thus violates the standard. The correct
-value for LINEINITCNT would be 1837.
-
-Improve the precision of calculations by using Hz instead of MHz as unit.
-
-Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/tc358746.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ crypto/ahash.c        | 4 ++++
+ include/crypto/hash.h | 3 +++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/media/i2c/tc358746.c b/drivers/media/i2c/tc358746.c
-index 566f5eaddd572..b12a6bd42102e 100644
---- a/drivers/media/i2c/tc358746.c
-+++ b/drivers/media/i2c/tc358746.c
-@@ -460,24 +460,20 @@ static int tc358746_apply_misc_config(struct tc358746 *tc358746)
- 	return err;
- }
+diff --git a/crypto/ahash.c b/crypto/ahash.c
+index 709ef09407991..6168f3532f552 100644
+--- a/crypto/ahash.c
++++ b/crypto/ahash.c
+@@ -427,6 +427,7 @@ static int crypto_ahash_init_tfm(struct crypto_tfm *tfm)
+ 	hash->setkey = ahash_nosetkey;
  
--/* Use MHz as base so the div needs no u64 */
--static u32 tc358746_cfg_to_cnt(unsigned int cfg_val,
--			       unsigned int clk_mhz,
--			       unsigned int time_base)
-+static u32 tc358746_cfg_to_cnt(unsigned long cfg_val, unsigned long clk_hz,
-+			       unsigned long long time_base)
- {
--	return DIV_ROUND_UP(cfg_val * clk_mhz, time_base);
-+	return div64_u64((u64)cfg_val * clk_hz + time_base - 1, time_base);
- }
+ 	crypto_ahash_set_statesize(hash, alg->halg.statesize);
++	crypto_ahash_set_reqsize(hash, alg->reqsize);
  
--static u32 tc358746_ps_to_cnt(unsigned int cfg_val,
--			      unsigned int clk_mhz)
-+static u32 tc358746_ps_to_cnt(unsigned long cfg_val, unsigned long clk_hz)
- {
--	return tc358746_cfg_to_cnt(cfg_val, clk_mhz, USEC_PER_SEC);
-+	return tc358746_cfg_to_cnt(cfg_val, clk_hz, PSEC_PER_SEC);
- }
+ 	if (tfm->__crt_alg->cra_type != &crypto_ahash_type)
+ 		return crypto_init_shash_ops_async(tfm);
+@@ -599,6 +600,9 @@ static int ahash_prepare_alg(struct ahash_alg *alg)
+ 	if (alg->halg.statesize == 0)
+ 		return -EINVAL;
  
--static u32 tc358746_us_to_cnt(unsigned int cfg_val,
--			      unsigned int clk_mhz)
-+static u32 tc358746_us_to_cnt(unsigned long cfg_val, unsigned long clk_hz)
- {
--	return tc358746_cfg_to_cnt(cfg_val, clk_mhz, 1);
-+	return tc358746_cfg_to_cnt(cfg_val, clk_hz, USEC_PER_SEC);
- }
++	if (alg->reqsize && alg->reqsize < alg->halg.statesize)
++		return -EINVAL;
++
+ 	err = hash_prepare_alg(&alg->halg);
+ 	if (err)
+ 		return err;
+diff --git a/include/crypto/hash.h b/include/crypto/hash.h
+index f7c2a22cd776d..c0d472fdc82e6 100644
+--- a/include/crypto/hash.h
++++ b/include/crypto/hash.h
+@@ -153,6 +153,7 @@ struct ahash_request {
+  *	      This is a counterpart to @init_tfm, used to remove
+  *	      various changes set in @init_tfm.
+  * @clone_tfm: Copy transform into new object, may allocate memory.
++ * @reqsize: Size of the request context.
+  * @halg: see struct hash_alg_common
+  */
+ struct ahash_alg {
+@@ -169,6 +170,8 @@ struct ahash_alg {
+ 	void (*exit_tfm)(struct crypto_ahash *tfm);
+ 	int (*clone_tfm)(struct crypto_ahash *dst, struct crypto_ahash *src);
  
- static int tc358746_apply_dphy_config(struct tc358746 *tc358746)
-@@ -492,7 +488,6 @@ static int tc358746_apply_dphy_config(struct tc358746 *tc358746)
++	unsigned int reqsize;
++
+ 	struct hash_alg_common halg;
+ };
  
- 	/* The hs_byte_clk is also called SYSCLK in the excel sheet */
- 	hs_byte_clk = cfg->hs_clk_rate / 8;
--	hs_byte_clk /= HZ_PER_MHZ;
- 	hf_clk = hs_byte_clk / 2;
- 
- 	val = tc358746_us_to_cnt(cfg->init, hf_clk) - 1;
 -- 
 2.39.5
 
