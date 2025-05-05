@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-141486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9514CAAB6EC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:00:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C97A3AAB3A0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:49:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 292BE7A8D9B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:59:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F338C7A994F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27B82820BF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275EC381EA4;
 	Tue,  6 May 2025 00:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmiX3xEb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P5jnoY+6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37A62820B6;
-	Mon,  5 May 2025 23:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60A12820B9;
+	Mon,  5 May 2025 23:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486440; cv=none; b=shEqZ82KFUsMPWwsGzc39mVJ3/K1aMPiP9LAQ7zpHh9tFTW73kynsz4IwHMWHPmPWspcyGoeSQFlEf+izXFZ1jed+LzHrRMSDHG7GRNO5CuvvtP2E8h7DKTirwzh4tibDTUplciwLE8VWDtr36kyjkUIcBbF043pSD/D7bDq16Y=
+	t=1746486444; cv=none; b=tuKxSlKDEtuxR49P48L700Q5c6mOjqzB3w4qJQ+4L3Y04WYwdC4xZhCA3aTQ8SbeTdVLM+UNYLxYRCoXJiKcGvkjQYGa8KTNzRHHS2+j5cOqRn+DRhcN+DiERUmc6EBnBkgY5sfA4ETkepmyfbge5NFPAXrbq4+Sq7L9xkOYjRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486440; c=relaxed/simple;
-	bh=KaqquR1b8CryzCbEEB78i5OSjwg3YazSDLhrsKVJAh8=;
+	s=arc-20240116; t=1746486444; c=relaxed/simple;
+	bh=Kv5EsO+4YkFNwXXL8BuUkKTNw09Hsbyxwyz1iv/3W/M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DtuDI215ESWbbnHaM2UNT2KqoLtwBL6JZhk3i3gDQ/9W5yq4jnfp/e5rgXToFxgK92Ht7t2BwFzUDt7grhr0Bm6JwFhCR53v/HgfWWYYI1bn2XKERnHmwKJqdLsvq8gx7RGHw+NWUrflBEJCEeS3Et0JbeynUAtTl41a71hYGYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmiX3xEb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3C6C4CEEF;
-	Mon,  5 May 2025 23:07:18 +0000 (UTC)
+	 MIME-Version; b=G7IVPn/kuOKeUUT8KRx1MKH35T6F87Vqq13rzUBvUGglY3iP+aO8jdYqDpc6PZEMicF0vqN2Yvtq0R5VyuIBGKtCot4cGnXahSydT8cZKk3K51faYhR2+B+JzGLsxO8gXajAGPfIjSO+LACcPIlMuMyevL4xUjEIiIVzjxgEDB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5jnoY+6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAC9C4CEED;
+	Mon,  5 May 2025 23:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486439;
-	bh=KaqquR1b8CryzCbEEB78i5OSjwg3YazSDLhrsKVJAh8=;
+	s=k20201202; t=1746486442;
+	bh=Kv5EsO+4YkFNwXXL8BuUkKTNw09Hsbyxwyz1iv/3W/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmiX3xEb4npLRSoGnrZz+whrEheVF0uwlDpSr61c6HJJCp+rCqWJuvMjLMuqzJ/ef
-	 /muq6gSVXiKjyonE4QetVTTmeIt5lcOThomJ83GLJ4d7aJIGX4eG34u54fumbauC2z
-	 eIQjiYGiY1ri5FWzas8qwml3BSTxEflsJXe18mohDcquJ5Sy5m41EFkxIwKq2/JhvZ
-	 IXf+QNXfEr6mkw6j/IVFULDKvQVjdieNqJVjKuoARSVm88V6/drirjBy2JrwLwX/hy
-	 p0SGrEpLVuQ7/by8p/GskWiMJwmBuHYu0Jc3ALUc2qaPUZD0eAD4tL+GMOzav6+88J
-	 yFgyHgjcLG/Ww==
+	b=P5jnoY+6SkkfMyTMCUNWv8CHB+MZnqWfxS1Z2BokT8Rk3qocKO9Rr/iTHXyhrfr4Q
+	 sARaa9Q/TP67GXbtqCnY9pMJn602GnRksxvyUvgul3BjpS8YTfdSyPPtlNJCEH+qZc
+	 sX0wCf+FoHaJavj+BA2JtGKsPegwmmD0dGN5ACV4ufjsKRb4IyTfZ5r57kaqBBLRQt
+	 kEX6oj2Mbt+fymTe5RvGbK6TgGcyFwMfu4wxz0KJXlromqys5ZXAxxZF6fdtUPBGIQ
+	 B65eP03aKZeFBBnhdjwzCGzcY1mUGPhDW2ddrUoJgTy78LvMkJBaAxVbhEQAsPmxWl
+	 bssaA98wBf38A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Roger Pau Monne <roger.pau@citrix.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Juergen Gross <jgross@suse.com>,
+Cc: Erick Shepherd <erick.shepherd@ni.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	nirmal.patel@linux.intel.com,
-	lpieralisi@kernel.org,
-	kw@linux.com,
-	manivannan.sadhasivam@linaro.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 028/212] PCI: vmd: Disable MSI remapping bypass under Xen
-Date: Mon,  5 May 2025 19:03:20 -0400
-Message-Id: <20250505230624.2692522-28-sashal@kernel.org>
+	linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 030/212] mmc: host: Wait for Vdd to settle on card power off
+Date: Mon,  5 May 2025 19:03:22 -0400
+Message-Id: <20250505230624.2692522-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -65,79 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Roger Pau Monne <roger.pau@citrix.com>
+From: Erick Shepherd <erick.shepherd@ni.com>
 
-[ Upstream commit 6c4d5aadf5df31ea0ac025980670eee9beaf466b ]
+[ Upstream commit 31e75ed964582257f59156ce6a42860e1ae4cc39 ]
 
-MSI remapping bypass (directly configuring MSI entries for devices on the
-VMD bus) won't work under Xen, as Xen is not aware of devices in such bus,
-and hence cannot configure the entries using the pIRQ interface in the PV
-case, and in the PVH case traps won't be setup for MSI entries for such
-devices.
+The SD spec version 6.0 section 6.4.1.5 requires that Vdd must be
+lowered to less than 0.5V for a minimum of 1 ms when powering off a
+card. Increase wait to 15 ms so that voltage has time to drain down
+to 0.5V and cards can power off correctly. Issues with voltage drain
+time were only observed on Apollo Lake and Bay Trail host controllers
+so this fix is limited to those devices.
 
-Until Xen is aware of devices in the VMD bus prevent the
-VMD_FEAT_CAN_BYPASS_MSI_REMAP capability from being used when running as
-any kind of Xen guest.
-
-The MSI remapping bypass is an optional feature of VMD bridges, and hence
-when running under Xen it will be masked and devices will be forced to
-redirect its interrupts from the VMD bridge.  That mode of operation must
-always be supported by VMD bridges and works when Xen is not aware of
-devices behind the VMD bridge.
-
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Message-ID: <20250219092059.90850-3-roger.pau@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Erick Shepherd <erick.shepherd@ni.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250314195021.1588090-1-erick.shepherd@ni.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/vmd.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/mmc/host/sdhci-pci-core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
-index 09995b6e73bcc..771ff0f6971f9 100644
---- a/drivers/pci/controller/vmd.c
-+++ b/drivers/pci/controller/vmd.c
-@@ -17,6 +17,8 @@
- #include <linux/rculist.h>
- #include <linux/rcupdate.h>
+diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
+index 5a5cc40d4bc37..c71d9956b398d 100644
+--- a/drivers/mmc/host/sdhci-pci-core.c
++++ b/drivers/mmc/host/sdhci-pci-core.c
+@@ -613,8 +613,12 @@ static void sdhci_intel_set_power(struct sdhci_host *host, unsigned char mode,
  
-+#include <xen/xen.h>
-+
- #include <asm/irqdomain.h>
+ 	sdhci_set_power(host, mode, vdd);
  
- #define VMD_CFGBAR	0
-@@ -919,6 +921,24 @@ static int vmd_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	struct vmd_dev *vmd;
- 	int err;
- 
-+	if (xen_domain()) {
-+		/*
-+		 * Xen doesn't have knowledge about devices in the VMD bus
-+		 * because the config space of devices behind the VMD bridge is
-+		 * not known to Xen, and hence Xen cannot discover or configure
-+		 * them in any way.
-+		 *
-+		 * Bypass of MSI remapping won't work in that case as direct
-+		 * write by Linux to the MSI entries won't result in functional
-+		 * interrupts, as Xen is the entity that manages the host
-+		 * interrupt controller and must configure interrupts.  However
-+		 * multiplexing of interrupts by the VMD bridge will work under
-+		 * Xen, so force the usage of that mode which must always be
-+		 * supported by VMD bridges.
-+		 */
-+		features &= ~VMD_FEAT_CAN_BYPASS_MSI_REMAP;
+-	if (mode == MMC_POWER_OFF)
++	if (mode == MMC_POWER_OFF) {
++		if (slot->chip->pdev->device == PCI_DEVICE_ID_INTEL_APL_SD ||
++		    slot->chip->pdev->device == PCI_DEVICE_ID_INTEL_BYT_SD)
++			usleep_range(15000, 17500);
+ 		return;
 +	}
-+
- 	if (resource_size(&dev->resource[VMD_CFGBAR]) < (1 << 20))
- 		return -ENOMEM;
  
+ 	/*
+ 	 * Bus power might not enable after D3 -> D0 transition due to the
 -- 
 2.39.5
 
