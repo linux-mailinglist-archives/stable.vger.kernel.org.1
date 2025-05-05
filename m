@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-140156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 992B8AAA5AF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:55:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05706AAA5C6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:57:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B8D618845C4
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:53:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 930F73B5781
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95703290DAA;
-	Mon,  5 May 2025 22:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6542E290DBA;
+	Mon,  5 May 2025 22:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="STL6I8Wb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRTDC86w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5122E290DA0;
-	Mon,  5 May 2025 22:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F70290DB4;
+	Mon,  5 May 2025 22:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484247; cv=none; b=Tq8+9pb7wZTUU36MbvOmVSqQ73r5vqlhP6V+POTXY6J/2JnekZ2bVKqypmED4r07bVTbXpXeDUr6ihODxtaZuRE6EvzRIpDFJHmtQPpt3h6IkYkFkYZlkKngSwGLhiHhIdY3Odtjf81RLmmC4lkuoGrnbZe3jKJ14W27+4KEf5E=
+	t=1746484248; cv=none; b=N8UB8DtxYjbLe3GQwaOGJ2/6fyyBPolhD03z3tKdx9bs3Nka5GtoC6/3RzK23Amy+l4QzC3JPeo6WWkvdQ5DtGI192LYYdOY2p8kSU1T2x0wc2Zs+CRQMo7QOGHlT8SwXugIu5kP2pS3rgLMsVUC1sa7az25xnEFt+7nq+itGYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484247; c=relaxed/simple;
-	bh=NrinHYX4PH31v6qA5R1I34ocHc3zepB7/N6RwLwUcb8=;
+	s=arc-20240116; t=1746484248; c=relaxed/simple;
+	bh=7hdEuE2KD3dDhGOix5o8Un11LfpTnYgXsJqdKHqbTm0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bJyMh8ooPzxTX00UThB0q9ktd/zqU65S3hKQalSRaUX/4el2YJJlI82KfTo3LqXMScWotXeLyWQG2RyFyBz1R56Tej4I7uwVewIkqMJRIqREQJhxnZoZsJmCsAFiUwMb+F/06aJpOBxLIQpdLsbO8QZMiJvvZYlp573y7AbADSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=STL6I8Wb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6C7C4CEED;
-	Mon,  5 May 2025 22:30:46 +0000 (UTC)
+	 MIME-Version; b=I6ZSqtB6kIK+Dbk7cEhsk2pavvlc9dHfaK+EhM6TivEkkvoL3N13jNOnfbL7EUA9z9LpR4FVXqNwJPNh8gDyLEAv3rVpah8SNW02eZHQoHJwhu9eHREQyCRG+LDC85T4FJqkgeD2JQT2oFCCPnkIxRPTTOzkNdTk2faYbPWGqTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRTDC86w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309E5C4CEEE;
+	Mon,  5 May 2025 22:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484246;
-	bh=NrinHYX4PH31v6qA5R1I34ocHc3zepB7/N6RwLwUcb8=;
+	s=k20201202; t=1746484247;
+	bh=7hdEuE2KD3dDhGOix5o8Un11LfpTnYgXsJqdKHqbTm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STL6I8WbMrdHtpDKVZ6rl8ZWuJGf8XlGv3wbgOZ+kvb+pZF8qiBl2mJniJcZxnsIU
-	 T+57ru3A/1lJJuMJzrhw+ubjofPdAIiDn9GKHuYyT58wprhndJnYGi9cU/3vxZXfAZ
-	 hQmlw+TPaoyu8MiAAe7/dGlnU94P3scoRcXxpZJnrYl6m0eeVo2MltyYKStfxONHBd
-	 vae+NFhINlimdlGQTkJa2114Zp9ZHR2VjJREBmK4Hh+Z0ySX+Yuf64QOzuTSMkBWmL
-	 xLJpjeIHDtC3VQQATjJKBBbHrzefeZyi6WRXSU/oP1PaOnxRRMcQ3MIq6C8++acuhx
-	 VzFN7ByzOv0Rg==
+	b=YRTDC86wwmhVPBPUnvOqnC8V4+jUxD1WFnH6mCKFHGQ+b09jaACy7iDuCa6VqrYwg
+	 NK0R2MJdsCJB0bgdXZMlDDMljifPBzXys/euV6xv/wUSYJPgEGE49+adu5iHFfR/z1
+	 7u9ejod6cxqKQBAnV9C5EnNdKu9yFdesD3HmMQ4CdQ0gybizzPZYfrBzK1gQsuFQvr
+	 9ZeBYh3IzCg700deS8Uw1V/hlAtIyP2rN4g78qoJe2CRncDTPLEFpQy5sG3Wq/wF5X
+	 K0MUccp/KAIa9DDcUSjuPL1PaVmk+/cds4wokJ7x4IiLa2gUDCx7f2kxqrP5Wp5wNZ
+	 GuwhXaKYWH0hA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -48,9 +48,9 @@ Cc: Sudeep Holla <sudeep.holla@arm.com>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 409/642] firmware: arm_ffa: Reject higher major version as incompatible
-Date: Mon,  5 May 2025 18:10:25 -0400
-Message-Id: <20250505221419.2672473-409-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 410/642] firmware: arm_ffa: Handle the presence of host partition in the partition info
+Date: Mon,  5 May 2025 18:10:26 -0400
+Message-Id: <20250505221419.2672473-410-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -67,46 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit efff6a7f16b34fd902f342b58bd8bafc2d6f2fd1 ]
+[ Upstream commit 2f622a8b0722d332a2a149794a3add47bc9bdcf3 ]
 
-When the firmware compatibility was handled previously in the commit
-8e3f9da608f1 ("firmware: arm_ffa: Handle compatibility with different firmware versions"),
-we only addressed firmware versions that have higher minor versions
-compared to the driver version which is should be considered compatible
-unless the firmware returns NOT_SUPPORTED.
+Currently it is assumed that the firmware doesn't present the host
+partition in the list of partitions presented as part of the response
+to PARTITION_INFO_GET from the firmware. However, there are few
+platforms that prefer to present the same in the list of partitions.
+It is not manadatory but not restricted as well.
 
-However, if the firmware reports higher major version than the driver
-supported, we need to reject it. If the firmware can work in a compatible
-mode with the driver requested version, it must return the same major
-version as requested.
+So handle the same by making sure to check the presence of the host
+VM ID in the XArray partition information maintained/managed in the
+driver before attempting to add it.
 
 Tested-by: Viresh Kumar <viresh.kumar@linaro.org>
-Message-Id: <20250217-ffa_updates-v3-12-bd1d9de615e7@arm.com>
+Message-Id: <20250217-ffa_updates-v3-7-bd1d9de615e7@arm.com>
 Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/firmware/arm_ffa/driver.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 655672a880959..f14aedde365bd 100644
+index f14aedde365bd..640d214f9594d 100644
 --- a/drivers/firmware/arm_ffa/driver.c
 +++ b/drivers/firmware/arm_ffa/driver.c
-@@ -150,6 +150,14 @@ static int ffa_version_check(u32 *version)
- 		return -EOPNOTSUPP;
- 	}
+@@ -1457,6 +1457,10 @@ static int ffa_setup_partitions(void)
  
-+	if (FFA_MAJOR_VERSION(ver.a0) > FFA_MAJOR_VERSION(FFA_DRIVER_VERSION)) {
-+		pr_err("Incompatible v%d.%d! Latest supported v%d.%d\n",
-+		       FFA_MAJOR_VERSION(ver.a0), FFA_MINOR_VERSION(ver.a0),
-+		       FFA_MAJOR_VERSION(FFA_DRIVER_VERSION),
-+		       FFA_MINOR_VERSION(FFA_DRIVER_VERSION));
-+		return -EINVAL;
-+	}
+ 	kfree(pbuf);
+ 
++	/* Check if the host is already added as part of partition info */
++	if (xa_load(&drv_info->partition_info, drv_info->vm_id))
++		return 0;
 +
- 	if (ver.a0 < FFA_MIN_VERSION) {
- 		pr_err("Incompatible v%d.%d! Earliest supported v%d.%d\n",
- 		       FFA_MAJOR_VERSION(ver.a0), FFA_MINOR_VERSION(ver.a0),
+ 	/* Allocate for the host */
+ 	ret = ffa_xa_add_partition_info(drv_info->vm_id);
+ 	if (ret)
 -- 
 2.39.5
 
