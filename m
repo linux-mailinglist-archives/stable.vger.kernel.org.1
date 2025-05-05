@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-139774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9317CAA9F39
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:21:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5EAAA9F59
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:22:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 074F2460349
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:21:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EDBD7AD7EA
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EAF4280326;
-	Mon,  5 May 2025 22:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19093280CD3;
+	Mon,  5 May 2025 22:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ol6n/NhG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K/emPI4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0432C280320;
-	Mon,  5 May 2025 22:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB05D280CCD;
+	Mon,  5 May 2025 22:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483315; cv=none; b=W5Qj3R4nvFfcaM1eHg5ZwILOuE8D/yubiligydIyg4yihW6BpsWvGXv++puRDGrP2Dan2IwE2iONNE6qwP0rLOfLyNyybfO0gOZSSKhhW+g56uWT87i/V5O24ZT+qUBWYwTW6BKz2L2VoVOtzB7pgKmUnfK5PHl7F3Y+mEnhP1M=
+	t=1746483318; cv=none; b=G9QfNUAp45FXpYtItD4HBsI8/odEeS8cQO6UR+znWkN0NnadrAVGhI1waTosLF2BNmewvmadABkNYu7lRgOfznkYreaEYr9XdqKZ794ubwux0QkH8jDuJFyjiV+Lim2xiTWrQjS/By5WKSNqp91upHMm4eIEa8AAIyBeCdIAV7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483315; c=relaxed/simple;
-	bh=SMCyw3lBghrm55WqPRwfUNdcNs0jGG4njBch5xen+mc=;
+	s=arc-20240116; t=1746483318; c=relaxed/simple;
+	bh=ZS8EgfsbfHjVhDfmasW+ql8bQYFdF4SSZ3iTCN+6ZVo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FjpjDAj7lYQQNr35NUL0wf26laSy2CNxnwqQRIy32SOz91R9NA+0voksKhd/8WVkEMKY2olEFJmV/VfsDSRejuxCWtAyltWSPD327Qv160WmzWKOElsELZaUyfV+cYOJk4GQfec5XxDVOZQmHbEISs+MCSJGksYrhys3yikZQ5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ol6n/NhG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2ED1C4CEEF;
-	Mon,  5 May 2025 22:15:13 +0000 (UTC)
+	 MIME-Version; b=I9Ta2KEtAnYQ5PybOCN1fL0prPeJGYepLYkJOpOGgcjBj2+jZ9nMAFCRgG1tF0ipyp1bGSGfUXxpCo/EIB6XWlp3GCI03nnm83DO6Rtq7r0V6t/3Yu+v45pNKb10ILutfh1k724JLfSRWTntepRtxJ9V20vx4BJIdYaAPshvRB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K/emPI4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5C9C4CEED;
+	Mon,  5 May 2025 22:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483314;
-	bh=SMCyw3lBghrm55WqPRwfUNdcNs0jGG4njBch5xen+mc=;
+	s=k20201202; t=1746483316;
+	bh=ZS8EgfsbfHjVhDfmasW+ql8bQYFdF4SSZ3iTCN+6ZVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ol6n/NhGQtK8vh/z/vTeFKscQjcP5oahPtqM3ti5fRG7WBqoUNhFBXms7pYLzfmgd
-	 gxWVCHEfbpnV9XQxKvW0SRH5iLCPK2JZ1aoYd9UooPlM53P2lzWI0tje1cd/GiiC02
-	 eNSTYbSdaH2W7ydU+MojQ/HXIr56xFrHw91cPkopU5GgJrCvDaoo2Qq5tEYgJWEVOb
-	 J8EGjeM1YRfBDn1F1lliIBhwOL0Q1HsgLNSeU8qdISvpL9bapr0eoL61Pt7Kpz1BM+
-	 JfXJJS5ttpNOYrZwQ+b5wcZzNkvsgGi/KLLAdeocb/ef4AuQHKtDXcV35U+TCP/Xke
-	 ueeZEeTryVhLw==
+	b=K/emPI4QcFhrLgdIuY+ufRJ4++ALBqUp1Zu9GXYfjg04MyG5aDx/hDbWFVS1u/yGm
+	 kOfy0HgKpSWhbkSA2s7UVcof657P485ZiJx1Xhbikxze5mw+U/agaAE8gclREfsieR
+	 WP5xOD7q6X92JQKrhOZVSauK/02SlldTE70tSJjENHLJ84KLYEO7bB1tbi1FsCRLs3
+	 vtC3yX4E8dXk3ADykmMhTcc7Gnj4SsFEoyvbOQmVySsRm750fI76vQMYmqHtPMrhvR
+	 QZ+OyUj7BWY+I1J0DXNFiVGgZNTPj/MhqaNxcdM35CwkIsCMZEgvxTLj6UuyiAotg+
+	 Fk++5pNPswKJA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>,
 	sfrench@samba.org,
 	linux-cifs@vger.kernel.org,
 	samba-technical@lists.samba.org
-Subject: [PATCH AUTOSEL 6.14 027/642] cifs: Set default Netbios RFC1001 server name to hostname in UNC
-Date: Mon,  5 May 2025 18:04:03 -0400
-Message-Id: <20250505221419.2672473-27-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 028/642] cifs: add validation check for the fields in smb_aces
+Date: Mon,  5 May 2025 18:04:04 -0400
+Message-Id: <20250505221419.2672473-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -62,60 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Pali Rohár <pali@kernel.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit be786e509c1af9b2dcf25c3d601f05c8c251f482 ]
+[ Upstream commit eeb827f2922eb07ffbf7d53569cc95b38272646f ]
 
-Windows SMB servers (including SMB2+) which are working over RFC1001
-require that Netbios server name specified in RFC1001 Session Request
-packet is same as the UNC host name. Netbios server name can be already
-specified manually via -o servern= option.
+cifs.ko is missing validation check when accessing smb_aces.
+This patch add validation check for the fields in smb_aces.
 
-With this change the RFC1001 server name is set automatically by extracting
-the hostname from the mount source.
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/smb/client/cifsacl.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index 00af8dd5aa689..b877def5a3664 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1118,6 +1118,7 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 	int i, opt;
- 	bool is_smb3 = !strcmp(fc->fs_type->name, "smb3");
- 	bool skip_parsing = false;
-+	char *hostname;
+diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
+index 64bd68f750f84..f9d577f2d59bb 100644
+--- a/fs/smb/client/cifsacl.c
++++ b/fs/smb/client/cifsacl.c
+@@ -811,7 +811,23 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
+ 			return;
  
- 	cifs_dbg(FYI, "CIFS: parsing cifs mount option '%s'\n", param->key);
+ 		for (i = 0; i < num_aces; ++i) {
++			if (end_of_acl - acl_base < acl_size)
++				break;
++
+ 			ppace[i] = (struct smb_ace *) (acl_base + acl_size);
++			acl_base = (char *)ppace[i];
++			acl_size = offsetof(struct smb_ace, sid) +
++				offsetof(struct smb_sid, sub_auth);
++
++			if (end_of_acl - acl_base < acl_size ||
++			    ppace[i]->sid.num_subauth == 0 ||
++			    ppace[i]->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
++			    (end_of_acl - acl_base <
++			     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth) ||
++			    (le16_to_cpu(ppace[i]->size) <
++			     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth))
++				break;
++
+ #ifdef CONFIG_CIFS_DEBUG2
+ 			dump_ace(ppace[i], end_of_acl);
+ #endif
+@@ -855,7 +871,6 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
+ 				(void *)ppace[i],
+ 				sizeof(struct smb_ace)); */
  
-@@ -1450,6 +1451,16 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 			cifs_errorf(fc, "OOM when copying UNC string\n");
- 			goto cifs_parse_mount_err;
+-			acl_base = (char *)ppace[i];
+ 			acl_size = le16_to_cpu(ppace[i]->size);
  		}
-+		hostname = extract_hostname(ctx->UNC);
-+		if (IS_ERR(hostname)) {
-+			cifs_errorf(fc, "Cannot extract hostname from UNC string\n");
-+			goto cifs_parse_mount_err;
-+		}
-+		/* last byte, type, is 0x20 for servr type */
-+		memset(ctx->target_rfc1001_name, 0x20, RFC1001_NAME_LEN_WITH_NULL);
-+		for (i = 0; i < RFC1001_NAME_LEN && hostname[i] != 0; i++)
-+			ctx->target_rfc1001_name[i] = toupper(hostname[i]);
-+		kfree(hostname);
- 		break;
- 	case Opt_user:
- 		kfree(ctx->username);
+ 
 -- 
 2.39.5
 
