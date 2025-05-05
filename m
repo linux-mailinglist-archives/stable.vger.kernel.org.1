@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-141104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925D1AAB0B2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C58B9AAB0B3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:44:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB2193AE2D0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:40:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 501B03AC910
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D14A319A73;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8D0319A7E;
 	Tue,  6 May 2025 00:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sDY+OE3D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h68Y1rEc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10A23579F1;
-	Mon,  5 May 2025 22:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD6A298CC7;
+	Mon,  5 May 2025 22:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485074; cv=none; b=rj2JSH3UOJuh7T19UF3A/WfYeq5vQw3FSTgEKlX/XneOon/hclzTBrjzBmZ3YpUOGpL/vT+uHoDEL5imYKrz2OQ2i5CXplOXtHvf47hmToehRRDiAmYU8zdyj4x2JUbZuhOOHzjfwwKC1SHL/axUpCurUPnesnGfGoWDi/JBE0w=
+	t=1746485075; cv=none; b=MFXVbQOquZF2tVlomjjlMnn3TwIRxusGHKnac4C8L5E/rKM04ao+uhDSf2NT8pzYSIRXhN09UQp8oxtVKOBTEWIAEPGRMqlNFToFL1XPMo9wK97xezsLXFkDp05A//YtXU/hA+ra0OeOt3j+4VQt94W8Yd3p2R0UeNnrdoMNG0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485074; c=relaxed/simple;
-	bh=5UYltFtK9fHPV7+8c5lZv+Yq4pxdhEUuN2aJzPU8pnA=;
+	s=arc-20240116; t=1746485075; c=relaxed/simple;
+	bh=uuYJmiuVaYZWxBlp40dGfyJgqpHBTHOU2pQdrpbsmy4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jjesD4nmAGeg/LCEFmv2vl7fVRByGTPxQfEwPsp/c6ARy/hqVltiFwUWxr8ZA2LnDZrZEqpJyPmPreh4yjISqt3vCSUzPu0CWjPis4pWtoMMedjvFrggSbK92w7p1mUNvl5KyTzgKFWwd2Lh1Cg8GHPr7s8epGY629idMbuudZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sDY+OE3D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44971C4CEFC;
-	Mon,  5 May 2025 22:44:31 +0000 (UTC)
+	 MIME-Version; b=h1CuKIjiZPHtjsnRKJgxlUufB/vXeEn9Y32zMBzaQpbSmY6XPnrwhIA48qO4S50ET4ZBQFFJloOM9kb9VI9GRYtJu+U/AphYND6O0vbGAGn6tOOQG8qI5XHUw1oczZvtYJROkvylCacfSTL1ik2EOX3jl2CvRjyVsDiDpRqaGh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h68Y1rEc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95086C4CEEE;
+	Mon,  5 May 2025 22:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485073;
-	bh=5UYltFtK9fHPV7+8c5lZv+Yq4pxdhEUuN2aJzPU8pnA=;
+	s=k20201202; t=1746485074;
+	bh=uuYJmiuVaYZWxBlp40dGfyJgqpHBTHOU2pQdrpbsmy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDY+OE3DotyCPCpJ+Valb0HjaPk+66UjNbg2xCTUAUeWR9JP92x3ENJtnzX2m4bfb
-	 +x+dwxTjIxLQX6befE7Xvaaj/78ehIJYIPlJ32GHh3NmHCDZjzqJRqKfEd0C5EXsxC
-	 FNvoKdc8lIfA2Sl0kKI/jrM2uweMkrUGxTEWLD2W8ZnXrd7zX4/hBLbNU5oEq27ljb
-	 ESz6vUWATJOeBnxDeWnjm3HmsGTVnrlaqQSPzq88Hx1xF57NbXX2k1+60NVNSMLUrr
-	 plrU3Gwwc9vr6iWVpgEo3B1aCAqVEFpUeQ5Sb71MnQn7t2Shg8olnuR9n1rO7/Irqo
-	 1BA3aBDaZtqpQ==
+	b=h68Y1rEcb1sqcl59VaD3Z/b0o+R57A7QnGuam7N9f57gUpIExX8UBQJrFCsK5WMWU
+	 waorB78YxT9AYZp64d4sVdF1JUoF0dWDLNEtisBaoPiuUek13lFkXvUcSh1qkKDBfj
+	 5JGKnv62D7hALvyarZSDhGB5jSRuZlSTFHimsBLve6zZnxVTL7nqL2ZOXeaswAUWxF
+	 2/8JUd24dpFn5YRw+oN08tbyTyUnHdVz10cxqwwhpObQ3swV8N5ACDT4ojzPpsdAfS
+	 WngQRMy3x0htQB6nflCLOYNBiI6rvXNW+kCdsJr5Dt6dO7fYsutJmxHsqXhH8OxVtp
+	 3Cq4GpxqwG35Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
+Cc: Ilan Peer <ilan.peer@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 152/486] wifi: mac80211: fix warning on disconnect during failed ML reconf
-Date: Mon,  5 May 2025 18:33:48 -0400
-Message-Id: <20250505223922.2682012-152-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 153/486] wifi: mac80211_hwsim: Fix MLD address translation
+Date: Mon,  5 May 2025 18:33:49 -0400
+Message-Id: <20250505223922.2682012-153-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -67,37 +67,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 0e104aa3676d020f6c442cd7fbaeb72adaaab6fc ]
+[ Upstream commit 65bff0be9b154621b617fc2e4bd89f1e18e97cdb ]
 
-If multi-link reconfiguration fails, we can disconnect with a local link
-already allocated but the BSS entry not assigned yet, which leads to a
-warning in cfg80211. Add a check to avoid the warning.
+Do address translations only between shared links. It is
+possible that while an non-AP MLD station and an AP MLD
+station have shared links, the frame is intended to be sent
+on a link which is not shared (for example when sending a
+probe response).
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250308225541.699bd9cbabe5.I599d5ff69092a65e916e2acd25137ae9df8debe8@changeid
+Link: https://patch.msgid.link/20250308225541.1aa461270bb6.Ic21592e1b1634653f02b80628cb2152f6e9de367@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index ad0d040569dcd..f000026ab714a 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4033,7 +4033,7 @@ static void __ieee80211_disconnect(struct ieee80211_sub_if_data *sdata)
- 			struct ieee80211_link_data *link;
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 3f424f14de4ec..4a2b7c9921bc6 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -4,7 +4,7 @@
+  * Copyright (c) 2008, Jouni Malinen <j@w1.fi>
+  * Copyright (c) 2011, Javier Lopez <jlopex@gmail.com>
+  * Copyright (c) 2016 - 2017 Intel Deutschland GmbH
+- * Copyright (C) 2018 - 2024 Intel Corporation
++ * Copyright (C) 2018 - 2025 Intel Corporation
+  */
  
- 			link = sdata_dereference(sdata->link[link_id], sdata);
--			if (!link)
-+			if (!link || !link->conf->bss)
- 				continue;
- 			cfg80211_unlink_bss(local->hw.wiphy, link->conf->bss);
- 			link->conf->bss = NULL;
+ /*
+@@ -1983,11 +1983,13 @@ static void mac80211_hwsim_tx(struct ieee80211_hw *hw,
+ 			return;
+ 		}
+ 
+-		if (sta && sta->mlo) {
+-			if (WARN_ON(!link_sta)) {
+-				ieee80211_free_txskb(hw, skb);
+-				return;
+-			}
++		/* Do address translations only between shared links. It is
++		 * possible that while an non-AP MLD station and an AP MLD
++		 * station have shared links, the frame is intended to be sent
++		 * on a link which is not shared (for example when sending a
++		 * probe response).
++		 */
++		if (sta && sta->mlo && link_sta) {
+ 			/* address translation to link addresses on TX */
+ 			ether_addr_copy(hdr->addr1, link_sta->addr);
+ 			ether_addr_copy(hdr->addr2, bss_conf->addr);
 -- 
 2.39.5
 
