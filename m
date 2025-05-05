@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-140444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E4FAAA8C2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:01:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B30DAAA8CA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F6DA168FF4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:00:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4907D1B626FB
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F61353EFD;
-	Mon,  5 May 2025 22:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F69354644;
+	Mon,  5 May 2025 22:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oBHIN++N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d4OwzBgj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7A6353EF3;
-	Mon,  5 May 2025 22:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AE22777E3;
+	Mon,  5 May 2025 22:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484862; cv=none; b=ioRQ/K3zpta1twYlMcB0FTWsOBigLtsLY3QsCum4FSqOt152xb5wlgsENyJU025weNiXznlIDAKOTGj9fkg6yKJo6jOwH4f5GbGq29qZwyNI34PQv8FuIgNp8O+aZvWJusna3vEy6CXkahFppl7L2wgUzyNhqxR+2KRzWKV9Ilo=
+	t=1746484864; cv=none; b=JCujk+YJ1TnpVuHSxhNGEEay13d8xLH2laPXrGDcBZ0q+xs+v32vCHblXyG1KSPLQIobXh12dvFbEHbMaPiF8JbMr02H8CtHStzxfh63l7Q8H43TUMjk6Frr6idks3BPMsBdTFXlKXvsNTlgr9gl7vKJfkSdmo3ET5W+AK70ILY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484862; c=relaxed/simple;
-	bh=aeeRXgWCasVVyC48wq3JvzqBE/tzCK00JI53QCn9HrM=;
+	s=arc-20240116; t=1746484864; c=relaxed/simple;
+	bh=rRPQrr8rQ2U57aU/QceYFLpT/KG7abauUVPWd1WRWmc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DGSbgzlfqxL+1kux3StRERwhZ8t46SAd288n2OZuJX9i5Cyrb9li2xIz8tDoIl0EeGLeg255qH1W5j/NFt8G2gFPzoaDxr//vtMQC9XY7/tuvNRzYIMTtDXkCk22xDeI0iSlFHD7/oPz+rb+8+LOyXOvY7mxY7HVi461qgE0uaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oBHIN++N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60553C4CEE4;
-	Mon,  5 May 2025 22:41:01 +0000 (UTC)
+	 MIME-Version; b=iRHgoVcOD8HCbeClIF9cpMDNMyEHKk5dZjsmg/x/PqOM0akFsMWD1klVO9cC+HFg3H5pQ/iBzPgyng0rajz864D/5BoVVTlVnGRR80y8C2SH6AJDh7ZrjixraHkEqFz6Z0fEnZnHT73SOeOQn6ywyQjKmcHPf02HGDQ9f2P8it4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d4OwzBgj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C55AC4CEEE;
+	Mon,  5 May 2025 22:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484862;
-	bh=aeeRXgWCasVVyC48wq3JvzqBE/tzCK00JI53QCn9HrM=;
+	s=k20201202; t=1746484863;
+	bh=rRPQrr8rQ2U57aU/QceYFLpT/KG7abauUVPWd1WRWmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBHIN++NUfPu66917h5qjEboB8LiRI8IeufJrKI+sJh9iMZ09F2lEzXDfFU5fGeyq
-	 RINZ4EYLqDbvpcCGhEFYZq/Zz4+ol5H7QTU5LM3UOxBaCGYGD5J/Ww+E2GwGS6nV92
-	 hPniu1twd8Iz1omKDgVLiz2qRIsu/CcLNn50hdCXhb87TeAc9lllhIzH9I24M5szNg
-	 vQzuoE68TIUBeQYtt7RUU7ZZCW4ohJig7ITpmfwmkJuJ2MB23W+2h8SBKxQWWePOyQ
-	 7rqkOgzdMrhBmdxRjynwKXaD3vTFprFwPplUK5N4p+2x7hj03dghY0gGI3JrhFCcPw
-	 b6Id2KUG4tBSg==
+	b=d4OwzBgjJVLD7d4Rw4yaVDN1w5um9U8fKpunl/y1g4vcI1uOAvg0v3/zUEC+9Dcoz
+	 OVuqqm67vg5Fu++PnGT28uAZMRp81I3Uj8RoKo2rdpZlsSUnYX871myrorY7uwDU9W
+	 U4absj31b35Pw4VI5dMu6PJaBk7qZIovwP9Z1BwxnZIbzWMwffabY5Z8icfyDmi2sr
+	 qAcXsgv05wL++HZctMO1cgNuVdCG68gDv03sWeQ1xuD7OwtKjUtcKYf2kD6DEWW5Tc
+	 3oSOe8mxn+okeeM87x3ITG2uFXgtBKkHxsfmqXRNc1V/q/1WhECbQqUhmnC1v8FD/o
+	 sa5yEUsJwE/uw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nicolas Bretz <bretznic@gmail.com>,
-	Theodore Ts'o <tytso@mit.edu>,
+Cc: Robert Richter <rrichter@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 053/486] ext4: on a remount, only log the ro or r/w state when it has changed
-Date: Mon,  5 May 2025 18:32:09 -0400
-Message-Id: <20250505223922.2682012-53-sashal@kernel.org>
+	dan.j.williams@intel.com,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	nvdimm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.12 054/486] libnvdimm/labels: Fix divide error in nd_label_data_init()
+Date: Mon,  5 May 2025 18:32:10 -0400
+Message-Id: <20250505223922.2682012-54-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -66,54 +69,62 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Nicolas Bretz <bretznic@gmail.com>
+From: Robert Richter <rrichter@amd.com>
 
-[ Upstream commit d7b0befd09320e3356a75cb96541c030515e7f5f ]
+[ Upstream commit ef1d3455bbc1922f94a91ed58d3d7db440652959 ]
 
-A user complained that a message such as:
+If a faulty CXL memory device returns a broken zero LSA size in its
+memory device information (Identify Memory Device (Opcode 4000h), CXL
+spec. 3.1, 8.2.9.9.1.1), a divide error occurs in the libnvdimm
+driver:
 
-EXT4-fs (nvme0n1p3): re-mounted UUID ro. Quota mode: none.
+ Oops: divide error: 0000 [#1] PREEMPT SMP NOPTI
+ RIP: 0010:nd_label_data_init+0x10e/0x800 [libnvdimm]
 
-implied that the file system was previously mounted read/write and was
-now remounted read-only, when it could have been some other mount
-state that had changed by the "mount -o remount" operation.  Fix this
-by only logging "ro"or "r/w" when it has changed.
+Code and flow:
 
-https://bugzilla.kernel.org/show_bug.cgi?id=219132
+1) CXL Command 4000h returns LSA size = 0
+2) config_size is assigned to zero LSA size (CXL pmem driver):
 
-Signed-off-by: Nicolas Bretz <bretznic@gmail.com>
-Link: https://patch.msgid.link/20250319171011.8372-1-bretznic@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+drivers/cxl/pmem.c:             .config_size = mds->lsa_size,
+
+3) max_xfer is set to zero (nvdimm driver):
+
+drivers/nvdimm/label.c: max_xfer = min_t(size_t, ndd->nsarea.max_xfer, config_size);
+
+4) A subsequent DIV_ROUND_UP() causes a division by zero:
+
+drivers/nvdimm/label.c: /* Make our initial read size a multiple of max_xfer size */
+drivers/nvdimm/label.c: read_size = min(DIV_ROUND_UP(read_size, max_xfer) * max_xfer,
+drivers/nvdimm/label.c-                 config_size);
+
+Fix this by checking the config size parameter by extending an
+existing check.
+
+Signed-off-by: Robert Richter <rrichter@amd.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/20250320112223.608320-1-rrichter@amd.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/nvdimm/label.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 4291ab3c20be6..473909c4a3784 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -6744,6 +6744,7 @@ static int ext4_reconfigure(struct fs_context *fc)
- {
- 	struct super_block *sb = fc->root->d_sb;
- 	int ret;
-+	bool old_ro = sb_rdonly(sb);
+diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
+index 082253a3a9560..04f4a049599a1 100644
+--- a/drivers/nvdimm/label.c
++++ b/drivers/nvdimm/label.c
+@@ -442,7 +442,8 @@ int nd_label_data_init(struct nvdimm_drvdata *ndd)
+ 	if (ndd->data)
+ 		return 0;
  
- 	fc->s_fs_info = EXT4_SB(sb);
- 
-@@ -6755,9 +6756,9 @@ static int ext4_reconfigure(struct fs_context *fc)
- 	if (ret < 0)
- 		return ret;
- 
--	ext4_msg(sb, KERN_INFO, "re-mounted %pU %s. Quota mode: %s.",
--		 &sb->s_uuid, sb_rdonly(sb) ? "ro" : "r/w",
--		 ext4_quota_mode(sb));
-+	ext4_msg(sb, KERN_INFO, "re-mounted %pU%s.",
-+		 &sb->s_uuid,
-+		 (old_ro != sb_rdonly(sb)) ? (sb_rdonly(sb) ? " ro" : " r/w") : "");
- 
- 	return 0;
- }
+-	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0) {
++	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0 ||
++	    ndd->nsarea.config_size == 0) {
+ 		dev_dbg(ndd->dev, "failed to init config data area: (%u:%u)\n",
+ 			ndd->nsarea.max_xfer, ndd->nsarea.config_size);
+ 		return -ENXIO;
 -- 
 2.39.5
 
