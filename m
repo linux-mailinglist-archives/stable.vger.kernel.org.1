@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-139994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B84AAA3B9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:19:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E01B1AAA38E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:16:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FC667A2944
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:14:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09DA23B0FA1
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979FE2F4021;
-	Mon,  5 May 2025 22:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350462F403C;
+	Mon,  5 May 2025 22:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nL3xPGlA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bZhEVazT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D372F4016;
-	Mon,  5 May 2025 22:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F7A2F4034;
+	Mon,  5 May 2025 22:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483847; cv=none; b=FIbMAPxSdL7ZHKgva/+rs3qdVWqc8liVc3Yp3IZZrEjJF05WTu4oHMtwNqS1fV8DYp5uAIOicMXeMZfA/uPdazcv/8+yIcah0srPaVpV3pxSGFqRbHacFIOEBvm8w362kLyBr2rrdDrwfi80Gdn17yDf313HE7Iql7MW7O///5k=
+	t=1746483850; cv=none; b=ujpprMmd5ypw9+HGCqZIHkT/CfMQbvhjpNRDJs/SdSRU8bZh8DiHzO75KKqW0TH7YP88MsH9zwA147jKJGMumaHicGoA4b3mP/LoHicRRSV3aZS8GmX3GxWJMUPbmxjkKVF2Bf7zmvr6kY8gNRjWSM6HH8Xe+IFzrrelO2l2VI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483847; c=relaxed/simple;
-	bh=x11mW6LLxkPY69nFvys0J8U5iF/dViBEqwt9cs3nL7I=;
+	s=arc-20240116; t=1746483850; c=relaxed/simple;
+	bh=Ld3pKOgFN8CKZPNvrJcEJx12Xz3TyuwsxI61Z8Vrn7A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rDaRp9+H7ytKPnUDMuNUJw9BaAzfgIYtI2cd0NsoL8jHnJpXGBmR9v/D5kZq19w4Nul7rXhQaAaOsdBD7Atao38BPhNeXD906gRAnGtxrfYI6vfjBgBTI3d/kYvBIftHbmEsBYgXatECjBuVF+WraAvgSt0GCZsk5yMSwTiAjUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nL3xPGlA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2EDC4CEEE;
-	Mon,  5 May 2025 22:24:05 +0000 (UTC)
+	 MIME-Version; b=CeSU+K932rtNI4SSkQpYVI7OLapJZcAfkLnw1QG8ciOwXPsoP+Ag9+xZ1udR1yyqjJvwoHGHwNYvitKbZUIGz/6nE22KVfXOoN69N9tAP0wQdVY/jv+mv6hWAAKPIrpgEaUIM3VBBse7A8gAWxkXf1E/lgbK7jeSOLhOItZ2va0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bZhEVazT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D33C4CEE4;
+	Mon,  5 May 2025 22:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483846;
-	bh=x11mW6LLxkPY69nFvys0J8U5iF/dViBEqwt9cs3nL7I=;
+	s=k20201202; t=1746483849;
+	bh=Ld3pKOgFN8CKZPNvrJcEJx12Xz3TyuwsxI61Z8Vrn7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nL3xPGlA5LxZl3S/Y4CG/ayLwiXrW4DUjMOsw5jPK9SjvhL2/y7Qawx6d/qAEjy7w
-	 Q7xtqhnTOQAlFf04PrRN/naaJ+esjMei9/QzReLKLaRRjATQGm9cMcQIRccZSsz1dE
-	 waps7m/ua2QFboyEgp0A+TyPT4gV2jhwoYSSObbMkZ5V4hcCSqOuSSmBTUn595wCxa
-	 nhl9TCHIKy2xPu48/dPMTRR51RdoUTX0bj2bY0FpeIubr8SGvR6V9VQMIdu0G5w+Nt
-	 mcxKffrND2QWLazmM8nxlo5CX6gBY+cn8yVTd4HT64/V6WG4gS9uNeW5klNf1QBMw3
-	 m7/VTaT0V/0LQ==
+	b=bZhEVazT+/r0+6nSU2G9fbU+Y9TZPyR4nWrjBNia328LuXEXjW2teoikwYY3ZoJqo
+	 qsLznRMoiohFOPd6/qxSmISs9goWvs6t0Lhlcl3PQdwuJsPpuLu2SMResFyMO1TnDb
+	 pBTI9kqrRfH/iy276ySZf+b92Ci70MfjlBTxv0V9kxMeFuCTLlpiaJQZdqNsAp4tM3
+	 TcvqZzMvSRgh53b/tdWL/aVZ0i5E0CpBblVQCsIDGfxCuwnFHL1hs2sTYeZtxCY/tc
+	 cd++q9qpGQjw4uM6FI8NSOEBHag7/52dQqJM2CNQwBFUJUVRFECcOMefzNQFWvJFYf
+	 PDVm1tlsPhGow==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
+Cc: Alexandre Demers <alexandre.f.demers@gmail.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
 	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	Boyuan.Zhang@amd.com,
-	sonny.jiang@amd.com,
+	sunil.khatri@amd.com,
+	boyuan.zhang@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 247/642] drm/amdgpu: Reinit FW shared flags on VCN v5.0.1
-Date: Mon,  5 May 2025 18:07:43 -0400
-Message-Id: <20250505221419.2672473-247-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 248/642] drm/amdgpu: add dce_v6_0_soft_reset() to DCE6
+Date: Mon,  5 May 2025 18:07:44 -0400
+Message-Id: <20250505221419.2672473-248-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -72,82 +71,97 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Alexandre Demers <alexandre.f.demers@gmail.com>
 
-[ Upstream commit 6ef5ccaad76d907d4257f20de992f89c0f7a7f8e ]
+[ Upstream commit ab23db6d08efdda5d13d01a66c593d0e57f8917f ]
 
-After a full device reset, shared memory region will clear out and it's
-not possible to reliably save the region in case of RAS errors.
-Reinitialize the flags if required.
+DCE6 was missing soft reset, but it was easily identifiable under radeon.
+This should be it, pretty much as it is done under DCE8 and DCE10.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alexandre Demers <alexandre.f.demers@gmail.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c | 28 ++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/dce_v6_0.c | 53 ++++++++++++++++++++++++++-
+ 1 file changed, 51 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-index 8b0b3739a5377..cdbc10d7c9fb7 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-@@ -65,6 +65,22 @@ static int vcn_v5_0_1_early_init(struct amdgpu_ip_block *ip_block)
- 	return amdgpu_vcn_early_init(adev);
+diff --git a/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c b/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
+index 915804a6a1d7d..ed5e06b677df1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
+@@ -370,13 +370,41 @@ static u32 dce_v6_0_hpd_get_gpio_reg(struct amdgpu_device *adev)
+ 	return mmDC_GPIO_HPD_A;
  }
  
-+static void vcn_v5_0_1_fw_shared_init(struct amdgpu_device *adev, int inst_idx)
++static bool dce_v6_0_is_display_hung(struct amdgpu_device *adev)
 +{
-+	struct amdgpu_vcn5_fw_shared *fw_shared;
++	u32 crtc_hung = 0;
++	u32 crtc_status[6];
++	u32 i, j, tmp;
 +
-+	fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
++	for (i = 0; i < adev->mode_info.num_crtc; i++) {
++		if (RREG32(mmCRTC_CONTROL + crtc_offsets[i]) & CRTC_CONTROL__CRTC_MASTER_EN_MASK) {
++			crtc_status[i] = RREG32(mmCRTC_STATUS_HV_COUNT + crtc_offsets[i]);
++			crtc_hung |= (1 << i);
++		}
++	}
 +
-+	if (fw_shared->sq.is_enabled)
-+		return;
-+	fw_shared->present_flag_0 =
-+		cpu_to_le32(AMDGPU_FW_SHARED_FLAG_0_UNIFIED_QUEUE);
-+	fw_shared->sq.is_enabled = 1;
++	for (j = 0; j < 10; j++) {
++		for (i = 0; i < adev->mode_info.num_crtc; i++) {
++			if (crtc_hung & (1 << i)) {
++				tmp = RREG32(mmCRTC_STATUS_HV_COUNT + crtc_offsets[i]);
++				if (tmp != crtc_status[i])
++					crtc_hung &= ~(1 << i);
++			}
++		}
++		if (crtc_hung == 0)
++			return false;
++		udelay(100);
++	}
 +
-+	if (amdgpu_vcnfw_log)
-+		amdgpu_vcn_fwlog_init(&adev->vcn.inst[inst_idx]);
++	return true;
 +}
 +
- /**
-  * vcn_v5_0_1_sw_init - sw init for VCN block
-  *
-@@ -95,8 +111,6 @@ static int vcn_v5_0_1_sw_init(struct amdgpu_ip_block *ip_block)
- 		return r;
- 
- 	for (i = 0; i < adev->vcn.num_vcn_inst; i++) {
--		volatile struct amdgpu_vcn5_fw_shared *fw_shared;
+ static void dce_v6_0_set_vga_render_state(struct amdgpu_device *adev,
+ 					  bool render)
+ {
+ 	if (!render)
+ 		WREG32(mmVGA_RENDER_CONTROL,
+ 			RREG32(mmVGA_RENDER_CONTROL) & VGA_VSTATUS_CNTL);
 -
- 		vcn_inst = GET_INST(VCN, i);
+ }
  
- 		ring = &adev->vcn.inst[i].ring_enc[0];
-@@ -111,12 +125,7 @@ static int vcn_v5_0_1_sw_init(struct amdgpu_ip_block *ip_block)
- 		if (r)
- 			return r;
+ static int dce_v6_0_get_num_crtc(struct amdgpu_device *adev)
+@@ -2872,7 +2900,28 @@ static bool dce_v6_0_is_idle(void *handle)
  
--		fw_shared = adev->vcn.inst[i].fw_shared.cpu_addr;
--		fw_shared->present_flag_0 = cpu_to_le32(AMDGPU_FW_SHARED_FLAG_0_UNIFIED_QUEUE);
--		fw_shared->sq.is_enabled = true;
--
--		if (amdgpu_vcnfw_log)
--			amdgpu_vcn_fwlog_init(&adev->vcn.inst[i]);
-+		vcn_v5_0_1_fw_shared_init(adev, i);
- 	}
- 
- 	/* TODO: Add queue reset mask when FW fully supports it */
-@@ -188,6 +197,9 @@ static int vcn_v5_0_1_hw_init(struct amdgpu_ip_block *ip_block)
- 				 9 * vcn_inst),
- 				adev->vcn.inst[i].aid_id);
- 
-+		/* Re-init fw_shared, if required */
-+		vcn_v5_0_1_fw_shared_init(adev, i);
+ static int dce_v6_0_soft_reset(struct amdgpu_ip_block *ip_block)
+ {
+-	DRM_INFO("xxxx: dce_v6_0_soft_reset --- no impl!!\n");
++	u32 srbm_soft_reset = 0, tmp;
++	struct amdgpu_device *adev = ip_block->adev;
 +
- 		r = amdgpu_ring_test_helper(ring);
- 		if (r)
- 			return r;
++	if (dce_v6_0_is_display_hung(adev))
++		srbm_soft_reset |= SRBM_SOFT_RESET__SOFT_RESET_DC_MASK;
++
++	if (srbm_soft_reset) {
++		tmp = RREG32(mmSRBM_SOFT_RESET);
++		tmp |= srbm_soft_reset;
++		dev_info(adev->dev, "SRBM_SOFT_RESET=0x%08X\n", tmp);
++		WREG32(mmSRBM_SOFT_RESET, tmp);
++		tmp = RREG32(mmSRBM_SOFT_RESET);
++
++		udelay(50);
++
++		tmp &= ~srbm_soft_reset;
++		WREG32(mmSRBM_SOFT_RESET, tmp);
++		tmp = RREG32(mmSRBM_SOFT_RESET);
++
++		/* Wait a little for things to settle down */
++		udelay(50);
++	}
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
