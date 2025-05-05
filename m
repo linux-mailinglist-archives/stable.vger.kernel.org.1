@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-140551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF07AAAE05
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:48:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FD2CAAAE22
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:50:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAE2D16AA4B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:46:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75AB11A83749
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835152BE7D6;
-	Mon,  5 May 2025 22:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58D02BF3EC;
+	Mon,  5 May 2025 22:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQIa9X2i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NeR/nZqB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BFA35EB97;
-	Mon,  5 May 2025 22:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874BC35A57D;
+	Mon,  5 May 2025 22:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485131; cv=none; b=V2cqb5mfrsRQAZU5rh8lmDl172DNQCpLPRsKbDa4U2w014JzSf+h1KYV8TRTsLlMtgcsHwaBE1FLUIHMyY0kzMNN9VxkJ6/uwEL6RwF8sc1kU1FvvknjOpkXZummdOmDuqVRE6EbTrdz73MM/779ZNgEhsyEfRTylMDQeDaoxQ0=
+	t=1746485135; cv=none; b=N73I0437UXLwxeCCcyvXoYbq6PLZckCoxuri3goT+Rw6AOs7/PDcF65XYKFDIezbsW5q8ijaFdYyW+pcmkJbDEyXjFyKDFlV3mvUpTP240ULmqO4rmwnNuTq75Ch/kYu+J2mqC5adaI+AoL75Cn7FVGsiSUy2YPEcHKlha5bCNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485131; c=relaxed/simple;
-	bh=lc72sPJbWErzoLgpkVfiGzYcvLU0to7rF3tdX552Lls=;
+	s=arc-20240116; t=1746485135; c=relaxed/simple;
+	bh=pmor54l4XCngCgD85lLEsbS8WfQxEScnVxwUdAVvBSc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WHO1OGCV3jM64h/BrUd6k6ShPu4EDpNZCtF61hLsqV5M1njsdzjT4nPbBDvVG3D8yhROJlorYi+1GrsG99rgs2EikMEElUnXruEKIV34JrX5FeM2twrr2/eOvNbRi4UMku24FXLJylzHkl/Zckovm4syFIlDRa8UhYaTm2OZZ58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQIa9X2i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48148C4CEF2;
-	Mon,  5 May 2025 22:45:28 +0000 (UTC)
+	 MIME-Version; b=i2Upa9gIl8RKzrQ9MfMIq/gEMRzBwcI9fRLgt970TEEbFQ2DcFKsTV9SCSZIwyfHs34ZrOg0iEJOLy9a9h1BJeo236W6UA/xYkjD6vWMe2bxWZqrTb/IQ6K+p6B+hcrrsNpxqMCBZdSwwzn/sRlSsWEptE0s+zHWdzTwhuCirUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NeR/nZqB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08DD0C4CEED;
+	Mon,  5 May 2025 22:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485129;
-	bh=lc72sPJbWErzoLgpkVfiGzYcvLU0to7rF3tdX552Lls=;
+	s=k20201202; t=1746485134;
+	bh=pmor54l4XCngCgD85lLEsbS8WfQxEScnVxwUdAVvBSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VQIa9X2iZm8bws++5SJp7c7NCVCUdSsljobwEgNmO0Au7+OlIHQx4MbMl4zkpxoid
-	 K9Jyc1EK24QvBL5yEa9ZgslArnKO8sx7dmgMOxZWbMTG+2RP9TNXBtZUDjEeIQmeSM
-	 PyyKyJId09gLbe2OBFsIGhz45AF5OYKLTm+EZcHhnAP8RXfOZA5snBLVVjQZoig/5A
-	 jKr1053kzxhTmVpnfNn1lbzcLu6k8lfLcDCS3HVkH+4hnvO8UKqt4uvpxxyW8LSgC6
-	 0vr9kPpq8zivWXzpEzuUPdRZkAjMhsylBv6nLICmjIPcEpxeO7E5v76kkTUNAB8zev
-	 SiFjUXQVDg3Cg==
+	b=NeR/nZqBOLEqID0tzY6WaLFhHKsO2HQyX6o/vWraDmah+gv7Np26Q7cWp/c6PYw08
+	 MQp2/nxEZIfRir5DeEL/Y9LTb+nzuB/XroyhCO6JLQiUivYLGe4/skh9T/4dOA6mB4
+	 i8Cta697jfAAl3GTcZtpW+ABbB+5XC1pIZcd6XvUCQ8My11rC3tA5YuDMDmPXLKFAX
+	 EFUBE2hZCdlzAjh7OyqA2jEiYgn1HAx0TBpV27JwnnqF0EyYDS8JYP1X6sBUP5E1I/
+	 iqjmejtcBFwwgju25HXsHIGV7Px4Jo9GMDf2SCtx45zyX/L33o7fsjOr7cBQV9WS+7
+	 OQzCfdB3LN6SA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Emily Deng <Emily.Deng@amd.com>,
-	Xiaogang Chen <xiaogang.chen@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	Felix.Kuehling@amd.com,
-	Philip.Yang@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 175/486] drm/amdgpu: Fix missing drain retry fault the last entry
-Date: Mon,  5 May 2025 18:34:11 -0400
-Message-Id: <20250505223922.2682012-175-sashal@kernel.org>
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	thierry.reding@gmail.com,
+	dstotland@nvidia.com,
+	bgriffis@nvidia.com,
+	devicetree@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 177/486] arm64: tegra: Resize aperture for the IGX PCIe C5 slot
+Date: Mon,  5 May 2025 18:34:13 -0400
+Message-Id: <20250505223922.2682012-177-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -72,53 +72,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Emily Deng <Emily.Deng@amd.com>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit fe2fa3be3d59ba67d6de54a0064441ec233cb50c ]
+[ Upstream commit 6d4bfe6d86af1ef52bdb4592c9afb2037f24f2c4 ]
 
-While the entry get in svm_range_unmap_from_cpu is the last entry, and
-the entry is page fault, it also need to be dropped. So for equal case,
-it also need to be dropped.
+Some discrete graphics cards such as the NVIDIA RTX A6000 support
+resizable BARs. When connecting an A6000 card to the NVIDIA IGX Orin
+platform, resizing the BAR1 aperture to 8GB fails because the current
+device-tree configuration for the PCIe C5 slot cannot support this.
+Fix this by updating the device-tree 'reg' and 'ranges' properties for
+the PCIe C5 slot to support this.
 
-v2:
-Only modify the svm_range_restore_pages.
-
-Signed-off-by: Emily Deng <Emily.Deng@amd.com>
-Reviewed-by: Xiaogang Chen<xiaogang.chen@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20250116151903.476047-1-jonathanh@nvidia.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h | 3 +++
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c   | 2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ .../boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
-index 508f02eb0cf8f..7de10208e8dde 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
-@@ -78,6 +78,9 @@ struct amdgpu_ih_ring {
- #define amdgpu_ih_ts_after(t1, t2) \
- 		(((int64_t)((t2) << 16) - (int64_t)((t1) << 16)) > 0LL)
+diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts b/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts
+index 36e8880537460..9ce55b4d2de89 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts
++++ b/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002+p3701-0008.dts
+@@ -302,6 +302,16 @@ pcie@14160000 {
+ 		};
  
-+#define amdgpu_ih_ts_after_or_equal(t1, t2) \
-+		(((int64_t)((t2) << 16) - (int64_t)((t1) << 16)) >= 0LL)
+ 		pcie@141a0000 {
++			reg = <0x00 0x141a0000 0x0 0x00020000   /* appl registers (128K)      */
++			       0x00 0x3a000000 0x0 0x00040000   /* configuration space (256K) */
++			       0x00 0x3a040000 0x0 0x00040000   /* iATU_DMA reg space (256K)  */
++			       0x00 0x3a080000 0x0 0x00040000   /* DBI reg space (256K)       */
++			       0x2e 0x20000000 0x0 0x10000000>; /* ECAM (256MB)               */
 +
- /* provided by the ih block */
- struct amdgpu_ih_funcs {
- 	/* ring read/write ptr handling, called from interrupt context */
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index b50283864dcd2..f00d41be7fca2 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -3014,7 +3014,7 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
- 
- 	/* check if this page fault time stamp is before svms->checkpoint_ts */
- 	if (svms->checkpoint_ts[gpuidx] != 0) {
--		if (amdgpu_ih_ts_after(ts,  svms->checkpoint_ts[gpuidx])) {
-+		if (amdgpu_ih_ts_after_or_equal(ts,  svms->checkpoint_ts[gpuidx])) {
- 			pr_debug("draining retry fault, drop fault 0x%llx\n", addr);
- 			r = -EAGAIN;
- 			goto out_unlock_svms;
++			ranges = <0x81000000 0x00 0x3a100000 0x00 0x3a100000 0x0 0x00100000      /* downstream I/O (1MB) */
++				  0x82000000 0x00 0x40000000 0x2e 0x30000000 0x0 0x08000000      /* non-prefetchable memory (128MB) */
++				  0xc3000000 0x28 0x00000000 0x28 0x00000000 0x6 0x20000000>;    /* prefetchable memory (25088MB) */
++
+ 			status = "okay";
+ 			vddio-pex-ctl-supply = <&vdd_1v8_ls>;
+ 			phys = <&p2u_nvhs_0>, <&p2u_nvhs_1>, <&p2u_nvhs_2>,
 -- 
 2.39.5
 
