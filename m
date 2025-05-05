@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-140318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C99CAAA798
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:37:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1775AAA774
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B0CE3AF1B4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:31:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BECA3188BE56
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7864433974B;
-	Mon,  5 May 2025 22:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA7D29824F;
+	Mon,  5 May 2025 22:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N9JjW+bJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFKpTaLG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A65233973F;
-	Mon,  5 May 2025 22:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BD8298246;
+	Mon,  5 May 2025 22:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484627; cv=none; b=NVVOAj5dfQVrUx4ZUW0ziJqqLbfiY3XQ93TY8NIKUeRUqgSLoGSJofnOFajCswWagAsYW0SBWwTYIoz1ocAcffDdEkFDXxoWtt2vQDnA594/srM1UZ5XYmHxu747/M+6rhyo7vQl4iZsekolv7N++NbWMp7d2yQXlltzZwto02M=
+	t=1746484629; cv=none; b=e1CWKzzfmgHQHOfS7UBUVfj25AaGgIT/4ai0DgVkWUwGIxYO7kghw8IAk1DLPLvhCU/U827QrFrAPbgzjA7rrFUloHcLcMuC5Ot3M8RG//z0CgGM3guqexI4C1dspUkA6RFesb/fQu/CuSXOfSsl//69IyeV7s/us20XrOa3b2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484627; c=relaxed/simple;
-	bh=REwDMsG0gYftbnPiYH3na179/GzS77pzCJ82Mrmea/o=;
+	s=arc-20240116; t=1746484629; c=relaxed/simple;
+	bh=KCH91/zsYJ4aTUBVAhrrGbgMbywzpLFiEgK6TFB6SxE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WuqXSPBCgEszuefkh/dlB26u+sezaogoxjIR/cVd0SlcOaCOIMsQkvLs8D8N8JFG/WFHIDDYeXsz2T88ZhiEat7XqMcAsmZgisQdSH+1IV52B0JgptshaMhj94xJg6blaQ8MOHnE+WP8Or7bn2W6uoVx5olqgDFjqlU/uuwTz3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N9JjW+bJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBB7C4CEEF;
-	Mon,  5 May 2025 22:37:05 +0000 (UTC)
+	 MIME-Version; b=IKscyWomVANOk/IsVzE9aMY4DMqoo6hP3RSaAkDwbt4Jp4hyVORMZjQ3JFpXwzUi9bfkHEMdUyHZ60ypoODTu+kxCp3vVZFTzorroCr9ZAdkgIXtUXmk8l54/q6IpUOL/8zzdViSSUV3q1Hrh1jbCANLxM82cXDp8VGjSNqNtf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFKpTaLG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC450C4CEE4;
+	Mon,  5 May 2025 22:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484627;
-	bh=REwDMsG0gYftbnPiYH3na179/GzS77pzCJ82Mrmea/o=;
+	s=k20201202; t=1746484629;
+	bh=KCH91/zsYJ4aTUBVAhrrGbgMbywzpLFiEgK6TFB6SxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9JjW+bJKuOlEHxBDUqTO/jRBb+LSiv0gFnfkVaahUE+Dxn9VjgNSuzlxjJ73I55C
-	 Ht8WfHULb4Ofk6WlgW9v4ZIBRYEoabiX/wwo2lE5AI5iXNK7BnXwFjR4JJH//YTLOx
-	 Pq7b+Xg8SxuhosV4fmEcipioSBD/XY7EtDx6UJIF5ku2n2jYSNnUK4Lw4LGkwiKP9c
-	 XBWfSzptB/r/0q4FKPbsJ5bqHED2ueRe7Any9sXDWhy3C2InXw+vvdGuika5ukv6HB
-	 +9INQGz8ebXmvi85ReSViJOMSI8zxMYrr91rWBMjFbvtphV7BqifaMkdDVcb0ZYKwe
-	 ckAS6s80NeBdw==
+	b=OFKpTaLGTEPQuV0QvBLr4QPYosS1SRMoKYHoitm6f2cf5g4C42JWGZa7EzkjuUAOx
+	 PRmN9gU9PpxTuj4t9JnFrv+xwWTkKzXxkLTzYYLLbbBmrxrDuEhxbRmoNYMFsBRa33
+	 I389BwoQ8clbVVm95FLO7rzJhfaFqiOO0TuaeqP5wrD1NE0HGtN9hvv584/Gv0NEha
+	 OFYcVIHYeOOjGZgNvwGznPEIwOgJA+uAOsh8bhBioi/xX8gV45OXSKDnAzK/FGYOU/
+	 ZWBFIG5ZX8pOVT6h8HpK+TMaTfVjqBgbdNHPhY+ilx6P/9EQxDRZo9ZR7BKIe6CO5+
+	 Msz9NpoRlKxZg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: junan <junan76@163.com>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Naman Trivedi <naman.trivedimanojbhai@amd.com>,
+	Senthil Nathan Thangaraj <senthilnathan.thangaraj@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 570/642] HID: usbkbd: Fix the bit shift number for LED_KANA
-Date: Mon,  5 May 2025 18:13:06 -0400
-Message-Id: <20250505221419.2672473-570-sashal@kernel.org>
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	sean.anderson@linux.dev,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 571/642] arm64: zynqmp: add clock-output-names property in clock nodes
+Date: Mon,  5 May 2025 18:13:07 -0400
+Message-Id: <20250505221419.2672473-571-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,31 +71,77 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: junan <junan76@163.com>
+From: Naman Trivedi <naman.trivedimanojbhai@amd.com>
 
-[ Upstream commit d73a4bfa2881a6859b384b75a414c33d4898b055 ]
+[ Upstream commit 385a59e7f7fb3438466a0712cc14672c708bbd57 ]
 
-Since "LED_KANA" was defined as "0x04", the shift number should be "4".
+Add clock-output-names property to clock nodes, so that the resulting
+clock name do not change when clock node name is changed.
+Also, replace underscores with hyphens in the clock node names as per
+dt-schema rule.
 
-Signed-off-by: junan <junan76@163.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Naman Trivedi <naman.trivedimanojbhai@amd.com>
+Acked-by: Senthil Nathan Thangaraj <senthilnathan.thangaraj@amd.com>
+Link: https://lore.kernel.org/r/20241122095712.1166883-1-naman.trivedimanojbhai@amd.com
+Signed-off-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/usbhid/usbkbd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hid/usbhid/usbkbd.c b/drivers/hid/usbhid/usbkbd.c
-index c439ed2f16dbc..af6bc76dbf649 100644
---- a/drivers/hid/usbhid/usbkbd.c
-+++ b/drivers/hid/usbhid/usbkbd.c
-@@ -160,7 +160,7 @@ static int usb_kbd_event(struct input_dev *dev, unsigned int type,
- 		return -1;
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
+index 60d1b1acf9a03..385fed8a852af 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
++++ b/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
+@@ -10,39 +10,44 @@
  
- 	spin_lock_irqsave(&kbd->leds_lock, flags);
--	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 3) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
-+	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 4) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
- 		       (!!test_bit(LED_SCROLLL, dev->led) << 2) | (!!test_bit(LED_CAPSL,   dev->led) << 1) |
- 		       (!!test_bit(LED_NUML,    dev->led));
+ #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
+ / {
+-	pss_ref_clk: pss_ref_clk {
++	pss_ref_clk: pss-ref-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <33333333>;
++		clock-output-names = "pss_ref_clk";
+ 	};
+ 
+-	video_clk: video_clk {
++	video_clk: video-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <27000000>;
++		clock-output-names = "video_clk";
+ 	};
+ 
+-	pss_alt_ref_clk: pss_alt_ref_clk {
++	pss_alt_ref_clk: pss-alt-ref-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <0>;
++		clock-output-names = "pss_alt_ref_clk";
+ 	};
+ 
+-	gt_crx_ref_clk: gt_crx_ref_clk {
++	gt_crx_ref_clk: gt-crx-ref-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <108000000>;
++		clock-output-names = "gt_crx_ref_clk";
+ 	};
+ 
+-	aux_ref_clk: aux_ref_clk {
++	aux_ref_clk: aux-ref-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <27000000>;
++		clock-output-names = "aux_ref_clk";
+ 	};
+ };
  
 -- 
 2.39.5
