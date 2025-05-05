@@ -1,71 +1,72 @@
-Return-Path: <stable+bounces-141234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9E9AAAB19D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:04:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C3A4AAB1AE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:05:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B3FC7B7480
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:02:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD6DA177D27
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554202D26B2;
-	Tue,  6 May 2025 00:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C3F335EEE;
+	Tue,  6 May 2025 00:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EVlHzqOF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pZXTNbge"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1162DA545;
-	Mon,  5 May 2025 22:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9D92DA553;
+	Mon,  5 May 2025 22:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485573; cv=none; b=ph037MFun5XUpor9t+PFMLNYuRjlzTrmfAowpQgH2vx181Me+uMeZdONCirWJy28LYqVwxJ7q4CPRoGy8LSzVz/orozvWmZM5mNN9JNrHda2Ajccx9Q7gxLIsk3NBIKne+v8FkZebs6nLvHVdyUBMl4yc/ypv2Ced1J6JeehqPw=
+	t=1746485578; cv=none; b=mj5wHIqh04kQAFmSZeYeGA5lPgsSeZtJ0lJjM4AAg4AqcOR/EkTdf2/9Qs7/WqedxVdyvaVWBdfAmiwTvqOufkZZzEED6uDfzKXKyZhQNzWpVBuGaPoRrFHiAk443zlN+3eMKanTkvq3pij/yfC3yugROMI0Du/iCR9JsasEeKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485573; c=relaxed/simple;
-	bh=DG2CcR+hXoZUDxJmebsLWyCXU0Rqe4Z3prDsSICLdvc=;
+	s=arc-20240116; t=1746485578; c=relaxed/simple;
+	bh=6mPqgwLb2mCdS10e+lsKQ7uH3WuGjQ8Eakwk9ne+RJY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ixMmG5W4A5kxZrAwOTPzvODBHaWJQ9g3OJcNRB1SMtXxi5dlYTLqXxiFtzNwfVc6Rmx4MSOxYrHmV7EAaLsoxNtz5HgTemSxPTN/fwU3u5zOAb7MD6YuJ5lKFGObRVFBZUty1oDLNeAlEet1NKnpzdtPT9jnFbiuF4CBJWVPxmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EVlHzqOF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5919EC4CEED;
-	Mon,  5 May 2025 22:52:51 +0000 (UTC)
+	 MIME-Version; b=JBEg6DQffRlyyUzBol35d2BUs6X6sJrG/On1GmkbA5teI06uWkylZsw1YgSVSFt6YnWJ++yWB6BZiZd7zaY9NFG3pxfGvOCpkLhBDM1/Vw1EyIh2YDm6f3+DqQI7E+LNpObW0+ZWmvVjOt/r6epvjLaA60+ytlylZlJJ5Ju6cW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pZXTNbge; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933B7C4CEED;
+	Mon,  5 May 2025 22:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485573;
-	bh=DG2CcR+hXoZUDxJmebsLWyCXU0Rqe4Z3prDsSICLdvc=;
+	s=k20201202; t=1746485577;
+	bh=6mPqgwLb2mCdS10e+lsKQ7uH3WuGjQ8Eakwk9ne+RJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EVlHzqOFamLTtmzEYgHKXcGPmFbida3leCLuX8pqnA/uYh2Rx0VZeP5sxWlZeF8uI
-	 0K5ip+BCcudC0BxX3DzD3thgh3Mz05jpZQp3ZuJ2TAkxMzzqbxnBho6QAX7YDX1mwd
-	 m7Ztkyq74YWmbl/Yrj50F66n27Mx16S28BoUkLWmBZqnJMo1uvvgab3E8qyy/UnhAa
-	 J7nNxWBiD0LUFhXU6RNqPpTmZ9J8pm5ywENhKsPajJ6xURq5zHeyljNxgyzX60uLJX
-	 5gcT/SQ3Jz7DUZ/hvfbrYaD8/FAa0q3J1qVEtsiHBS0bag6cwwiffYQVneOyiT7nAm
-	 kRwXLl3KHAOyw==
+	b=pZXTNbge5dROjBL9zI91uMJfUxp5SkqTtFJQzC4iiub5ORMYIH+u/NbLvu2OrSefv
+	 tXfJ3UHl3Tj0P8gRnVgS7TwHlrzPMSwGkNpnD7Hlk6bEWeWCvXpRa1NNsLn0ZjBPHa
+	 6PMTHTOWWqA76RWwwWdNtxGqjWYBDEdP06QAxDY1xOX6R0pq+DemSZTuYmYs9qx/s6
+	 impMmglv2H3Sflbe98R0HN3RDYopOBhNzMMCOYEaNVGUAhrEC440R84cFffKKWWtgB
+	 aC6vhZmOQe7AP5zALPyXL/pgQ80MiepTbZJ3bm2f0cxHufohSfSZlelJ5R9pc2OELY
+	 GpLi0T546kJ+Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Austin Zheng <Austin.Zheng@amd.com>,
-	Dillon Varone <dillon.varone@amd.com>,
+Cc: Dillon Varone <dillon.varone@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
 	Wayne Lin <wayne.lin@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	austin.zheng@amd.com,
-	jun.lei@amd.com,
 	harry.wentland@amd.com,
 	sunpeng.li@amd.com,
 	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	siqueira@igalia.com,
+	Alvin.Lee2@amd.com,
 	alex.hung@amd.com,
-	colin.i.king@gmail.com,
-	aurabindo.pillai@amd.com,
+	zaeem.mohamed@amd.com,
+	chris.park@amd.com,
+	ryanseto@amd.com,
+	martin.leung@amd.com,
+	Charlene.Liu@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 372/486] drm/amd/display: Use Nominal vBlank If Provided Instead Of Capping It
-Date: Mon,  5 May 2025 18:37:28 -0400
-Message-Id: <20250505223922.2682012-372-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 373/486] drm/amd/display: Populate register address for dentist for dcn401
+Date: Mon,  5 May 2025 18:37:29 -0400
+Message-Id: <20250505223922.2682012-373-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -80,49 +81,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Austin Zheng <Austin.Zheng@amd.com>
+From: Dillon Varone <dillon.varone@amd.com>
 
-[ Upstream commit 41df56b1fc24cc36fffb10e437385b3a49fbb5e2 ]
+[ Upstream commit 5f0d1ef6f16e150ee46cc00b8d233d9d271fe39e ]
 
-[Why/How]
-vBlank used to determine the max vStartup is based on the smallest between
-the vblank provided by the timing and vblank in ip_caps.
-Extra vblank time is not considered if the vblank provided by the timing ends
-up being higher than what's defined by the ip_caps
+[WHY&HOW]
+Address was not previously populated which can result in incorrect
+clock frequencies being read on boot.
 
-Use 1 less than the vblank size in case the timing is interlaced
-so vstartup will always be less than vblank_nom.
-
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Austin Zheng <Austin.Zheng@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Dillon Varone <dillon.varone@amd.com>
 Signed-off-by: Wayne Lin <wayne.lin@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c       | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c | 2 ++
+ drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h       | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-index e2a3764d9d181..0090b7bc232bf 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-@@ -3630,13 +3630,12 @@ static unsigned int CalculateMaxVStartup(
- 	double line_time_us = (double)timing->h_total / ((double)timing->pixel_clock_khz / 1000);
- 	unsigned int vblank_actual = timing->v_total - timing->v_active;
- 	unsigned int vblank_nom_default_in_line = (unsigned int)math_floor2((double)vblank_nom_default_us / line_time_us, 1.0);
--	unsigned int vblank_nom_input = (unsigned int)math_min2(timing->vblank_nom, vblank_nom_default_in_line);
--	unsigned int vblank_avail = (vblank_nom_input == 0) ? vblank_nom_default_in_line : vblank_nom_input;
-+	unsigned int vblank_avail = (timing->vblank_nom == 0) ? vblank_nom_default_in_line : (unsigned int)timing->vblank_nom;
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c
+index 8cfc5f4359374..313e52997596a 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn401/dcn401_clk_mgr.c
+@@ -24,6 +24,8 @@
  
- 	vblank_size = (unsigned int)math_min2(vblank_actual, vblank_avail);
+ #include "dml/dcn401/dcn401_fpu.h"
  
- 	if (timing->interlaced && !ptoi_supported)
--		max_vstartup_lines = (unsigned int)(math_floor2(vblank_size / 2.0, 1.0));
-+		max_vstartup_lines = (unsigned int)(math_floor2((vblank_size - 1) / 2.0, 1.0));
- 	else
- 		max_vstartup_lines = vblank_size - (unsigned int)math_max2(1.0, math_ceil2(write_back_delay_us / line_time_us, 1.0));
- #ifdef __DML_VBA_DEBUG__
++#define DCN_BASE__INST0_SEG1                       0x000000C0
++
+ #define mmCLK01_CLK0_CLK_PLL_REQ                        0x16E37
+ #define mmCLK01_CLK0_CLK0_DFS_CNTL                      0x16E69
+ #define mmCLK01_CLK0_CLK1_DFS_CNTL                      0x16E6C
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h b/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
+index 7a1ca1e98059b..221645c023b50 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
+@@ -221,6 +221,7 @@ enum dentist_divider_range {
+ 	CLK_SF(CLK0_CLK_PLL_REQ, FbMult_frac, mask_sh)
+ 
+ #define CLK_REG_LIST_DCN401()	  \
++	SR(DENTIST_DISPCLK_CNTL), \
+ 	CLK_SR_DCN401(CLK0_CLK_PLL_REQ,   CLK01, 0), \
+ 	CLK_SR_DCN401(CLK0_CLK0_DFS_CNTL, CLK01, 0), \
+ 	CLK_SR_DCN401(CLK0_CLK1_DFS_CNTL,  CLK01, 0), \
 -- 
 2.39.5
 
