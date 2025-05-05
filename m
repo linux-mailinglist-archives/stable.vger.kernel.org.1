@@ -1,66 +1,72 @@
-Return-Path: <stable+bounces-141522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776CAAAB445
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9393AAB446
 	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:03:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A956F3A6893
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:57:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 425323A57E4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4711138253B;
-	Tue,  6 May 2025 00:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DFE3412FF;
+	Tue,  6 May 2025 00:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IYcNVUUM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UBzBKdzz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30217381E1A;
-	Mon,  5 May 2025 23:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E41A2EE4BD;
+	Mon,  5 May 2025 23:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486583; cv=none; b=GHvXMuHHmYrW1D/mTc4zud9iudMAzwXgHlTPRMB8u0Hn4I+XzteNMFlzQPZTNfQeS81F2f1GJn5rmend1R2JkLo6r9mK8ffuVcryX9d64FEk7vjQQS6gYSTM3ADp1VPJagWZw877s59geV/l6iUUoU4DafpkFTm5S1ud6r+OzGo=
+	t=1746486588; cv=none; b=OTZLd7a6QIrITt3hS06uxJh8lqsB0T+DjzPTgWh1mVL8NsLqlPYxgAA/rM4Q8uVrHTKd/eB1Q6Q9+CxHCth9n6+f8mq/Mc5HKbb+Ui81Nlv4esGcBxTuG3K4Imt/+/wSAOt+zQTEVpjPy4TWQjMot31Ag6Cwet6WTqw3xWaDnhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486583; c=relaxed/simple;
-	bh=5vqwOQMoxkHQre/5nMOtaa2tCID368xye4ecQUKhAzE=;
+	s=arc-20240116; t=1746486588; c=relaxed/simple;
+	bh=qvVDqL6gViQbICr1+H/0oJTe5Yh03t6sd5cbeBkIVU4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CioVwph0BRt3B2vWRVk32TKxDl4qJhAdJ+NYqBeSf6L/neyBej9+B3f6STbFMcwTSEB4eAm76regud0faEJiElbIuNaXqyMyKD3AboibnzGBWHpr6wUFK5INUrb6pCvhf3qjuZC58CN7SRpZ+7XuyZq+ZMXO9aGWNROq0H88zZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IYcNVUUM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF809C4CEE4;
-	Mon,  5 May 2025 23:09:38 +0000 (UTC)
+	 MIME-Version; b=QC7yZFQ4dz34aDm8UgXPqoLaGqOPpT8nuacqlCTie7jblW/5A+z/aiKRd5PjcwjXiYxTFwtw9nw/TE2xVzIrPhZB3EkF8LKw7VyJcpDOHT0O1xYFKQm9eMkWIVP51qZTyH5QqkJObljzEzqacJJUSkK9WGCwkkqGyEwa6ja9Arg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UBzBKdzz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A25C4CEE4;
+	Mon,  5 May 2025 23:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486580;
-	bh=5vqwOQMoxkHQre/5nMOtaa2tCID368xye4ecQUKhAzE=;
+	s=k20201202; t=1746486587;
+	bh=qvVDqL6gViQbICr1+H/0oJTe5Yh03t6sd5cbeBkIVU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IYcNVUUMDNmC+qB5lZuYkL8KUJaoHgXTwSWHwCrNjkrM9XLuKeCZJY9+7U/KmxUC6
-	 3dWuobqrKLl/yXlTxnU0wgVqcIFrsDfU9lyynHE6axP4CAeN/fuyY/pSR+cGKTl8tf
-	 Lpmn3qwmcWFrGD29Lukb3LAwN11xF81eSmr29p/zwscGspBEwbYG5B/vOnawrvmiUf
-	 q659jHimfwwiUIOtbTTsaUmUJIlvCZMxU4dE007O6uJESu9OWzl7fmkvjZ2EE9B+Eh
-	 VFSiDrX0yL6EIsX3WP+c0xNeVZ1kurw6q37dvYrclBCFs7I8SKeUl8fEh/TjDPbs5v
-	 hOWFgjxjNFhmg==
+	b=UBzBKdzzLP2YXeHLz3J6JG7X0yRTNpf26vNxpgWjPVilijh+pMzsgrYHY5D3Stxbv
+	 WM0QyriTGUIM5599Mal/auo/dJY+lFRQDvkJBK37fUwq7/03jGZHhm+vAbeasaYL2s
+	 iqlbCSTgHIZEEatWQFh1YZqbgEETIzY8NZBahEteW3mbA3GQZln0LVS+3YOSkcpats
+	 OFCor7OZ2Li7sOpQ2oJRDoV5evVoz+k6q+yO7Dv0Jo19p6KX7km8Ernx2cvtMnYWr7
+	 Gkd5YLZMd6TOAyr1dcg0TLOeIno3NhBhtxLJ5bYjngt2lImpaNc8Ctg6DmR80ktpRZ
+	 5oAoaxUx+A6JA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Yan <andy.yan@rock-chips.com>,
-	Michael Riesch <michael.riesch@wolfvision.net>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+Cc: Breno Leitao <leitao@debian.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	David Kaplan <David.Kaplan@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	hjc@rock-chips.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 100/212] drm/rockchip: vop2: Add uv swap for cluster window
-Date: Mon,  5 May 2025 19:04:32 -0400
-Message-Id: <20250505230624.2692522-100-sashal@kernel.org>
+	corbet@lwn.net,
+	tglx@linutronix.de,
+	bp@alien8.de,
+	mingo@redhat.com,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	akpm@linux-foundation.org,
+	paulmck@kernel.org,
+	rostedt@goodmis.org,
+	thuth@redhat.com,
+	ardb@kernel.org,
+	gregkh@linuxfoundation.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 103/212] x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2
+Date: Mon,  5 May 2025 19:04:35 -0400
+Message-Id: <20250505230624.2692522-103-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -75,44 +81,94 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit e7aae9f6d762139f8d2b86db03793ae0ab3dd802 ]
+[ Upstream commit 98fdaeb296f51ef08e727a7cc72e5b5c864c4f4d ]
 
-The Cluster windows of upcoming VOP on rk3576 also support
-linear YUV support, we need to set uv swap bit for it.
+Change the default value of spectre v2 in user mode to respect the
+CONFIG_MITIGATION_SPECTRE_V2 config option.
 
-As the VOP2_WIN_UV_SWA register defined on rk3568/rk3588 is
-0xffffffff, so this register will not be touched on these
-two platforms.
+Currently, user mode spectre v2 is set to auto
+(SPECTRE_V2_USER_CMD_AUTO) by default, even if
+CONFIG_MITIGATION_SPECTRE_V2 is disabled.
 
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Tested-by: Michael Riesch <michael.riesch@wolfvision.net> # on RK3568
-Tested-by: Detlev Casanova <detlev.casanova@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250303034436.192400-4-andyshrk@163.com
+Set the spectre_v2 value to auto (SPECTRE_V2_USER_CMD_AUTO) if the
+Spectre v2 config (CONFIG_MITIGATION_SPECTRE_V2) is enabled, otherwise
+set the value to none (SPECTRE_V2_USER_CMD_NONE).
+
+Important to say the command line argument "spectre_v2_user" overwrites
+the default value in both cases.
+
+When CONFIG_MITIGATION_SPECTRE_V2 is not set, users have the flexibility
+to opt-in for specific mitigations independently. In this scenario,
+setting spectre_v2= will not enable spectre_v2_user=, and command line
+options spectre_v2_user and spectre_v2 are independent when
+CONFIG_MITIGATION_SPECTRE_V2=n.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: David Kaplan <David.Kaplan@amd.com>
+Link: https://lore.kernel.org/r/20241031-x86_bugs_last_v2-v2-2-b7ff1dab840e@debian.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |  2 ++
+ arch/x86/kernel/cpu/bugs.c                      | 10 +++++++---
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 955ef2caac89f..6efa0a51b7d65 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -1289,10 +1289,8 @@ static void vop2_plane_atomic_update(struct drm_plane *plane,
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 18c8fc60db934..216f642495055 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5765,6 +5765,8 @@
  
- 	rb_swap = vop2_win_rb_swap(fb->format->format);
- 	vop2_win_write(win, VOP2_WIN_RB_SWAP, rb_swap);
--	if (!vop2_cluster_window(win)) {
--		uv_swap = vop2_win_uv_swap(fb->format->format);
--		vop2_win_write(win, VOP2_WIN_UV_SWAP, uv_swap);
--	}
-+	uv_swap = vop2_win_uv_swap(fb->format->format);
-+	vop2_win_write(win, VOP2_WIN_UV_SWAP, uv_swap);
+ 			Selecting 'on' will also enable the mitigation
+ 			against user space to user space task attacks.
++			Selecting specific mitigation does not force enable
++			user mitigations.
  
- 	if (fb->format->is_yuv) {
- 		vop2_win_write(win, VOP2_WIN_UV_VIR, DIV_ROUND_UP(fb->pitches[1], 4));
+ 			Selecting 'off' will disable both the kernel and
+ 			the user space protections.
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 0be0edb07a2a9..52105605e3eda 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1262,9 +1262,13 @@ static __ro_after_init enum spectre_v2_mitigation_cmd spectre_v2_cmd;
+ static enum spectre_v2_user_cmd __init
+ spectre_v2_parse_user_cmdline(void)
+ {
++	enum spectre_v2_user_cmd mode;
+ 	char arg[20];
+ 	int ret, i;
+ 
++	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
++		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
++
+ 	switch (spectre_v2_cmd) {
+ 	case SPECTRE_V2_CMD_NONE:
+ 		return SPECTRE_V2_USER_CMD_NONE;
+@@ -1277,7 +1281,7 @@ spectre_v2_parse_user_cmdline(void)
+ 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
+ 				  arg, sizeof(arg));
+ 	if (ret < 0)
+-		return SPECTRE_V2_USER_CMD_AUTO;
++		return mode;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
+ 		if (match_option(arg, ret, v2_user_options[i].option)) {
+@@ -1287,8 +1291,8 @@ spectre_v2_parse_user_cmdline(void)
+ 		}
+ 	}
+ 
+-	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
+-	return SPECTRE_V2_USER_CMD_AUTO;
++	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
++	return mode;
+ }
+ 
+ static inline bool spectre_v2_in_eibrs_mode(enum spectre_v2_mitigation mode)
 -- 
 2.39.5
 
