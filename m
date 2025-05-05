@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-141468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6936AAAB3C1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A90AAB3C9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:53:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64AAF18823E6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:47:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AEA5189DD2D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3949933C55C;
-	Tue,  6 May 2025 00:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F182733CC81;
+	Tue,  6 May 2025 00:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OsC4/Z02"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tdV7JHiI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C9D396ECE;
-	Mon,  5 May 2025 23:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8559C288C11;
+	Mon,  5 May 2025 23:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486394; cv=none; b=fG0HGq7eJeB4pNdggCf/aYlZnldPYDdWJQyOQyAoqyXpC7UA6FJU752hCrwBQrIGqf55NgRuPfxJGhU4zGObaR2kIUfJmnCYMjURrD3xiKPSu+Kntje6ZI1Y3Q4TfQvYxswU83/kTdqwneNW+mup7jln9jkWHRaF8KlfxLFwnDU=
+	t=1746486399; cv=none; b=QPT8yV4Vk9Bgv76lDBH7sM9Nz0NSWQZJsJ2p/cj+Pa17SXwYFqkAHlbjV+KexBhr3nLpGKUe0DGKUHvro0ZNmSfKy2cLSmwJSUXB1bPskFJwr+dc9eI4bV1Vtn85GysSxI0opGx58dXkBDeI0OrK4SJwcsIqKm5ZHMm0AuPQdwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486394; c=relaxed/simple;
-	bh=quuASae4hE1C53gRPtbWy3TjwALa9FhSqMYG6241Z5I=;
+	s=arc-20240116; t=1746486399; c=relaxed/simple;
+	bh=SavV+VmMD1SjWmoWMM4EyJ+IPgOkTYI57dkpii0g+7Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P2gyb6prB4mV/R1i8lMEuZM8CEZKHQtN6Y572IPvhnlPvslF4d59ItATmTCDmiiV4328dhByB6cwvvYuJmYfGowabrIsVVxq4w7QzGoYd5wAtr03K2DlhNxjod0rV1cUMBcEdPd8AeMxGgGD0LVJDXABZ/OJa19fGpHmfl9fxng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OsC4/Z02; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4405C4CEEE;
-	Mon,  5 May 2025 23:06:33 +0000 (UTC)
+	 MIME-Version; b=qJkEFMPdvmqQ+6oyTiQfURwfzAUtCd94oLwHOCZwC0r41kwi4e7zYOc7xWcd0IoqYLUBhGf8KJ+w0phuQwgoxcArj7xcwpjmkHJW2kRCqQM44TffOUIsRLaIg7Ti47g46aQeqXgUkuSjYb7hSXSwYqFAdIQTePtC5GdbrMlERmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tdV7JHiI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784C3C4CEE4;
+	Mon,  5 May 2025 23:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486394;
-	bh=quuASae4hE1C53gRPtbWy3TjwALa9FhSqMYG6241Z5I=;
+	s=k20201202; t=1746486398;
+	bh=SavV+VmMD1SjWmoWMM4EyJ+IPgOkTYI57dkpii0g+7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OsC4/Z02OU6Wj2TFg0lcj9MyJz1CVWsMaT7/8znHvumF3AGvvYGnnKsvBkZD6d6M0
-	 z95xxxSiFqZ3+uTig/rzfuXSqDdt+5allC1jjsa73xVfKUanHiMj2XNu4KoBHfVkht
-	 +/bU9inc6FhcOpdSRZnCfhT5Ueh0VjSZ9Pn6hD+UR0pK1drUCzRi3ckEuA5hAnA/g1
-	 VUYRfURFCtL0gGSpcsMb8cGEK2xBNPbH6i4jHZgTJuMJuHBzCLlXzftAnpgBJGskQO
-	 +kImAzBjSi1A2a+Nr3UPeCynWSsmKanj6eS4cwOlk2h35JaIpE7gL2CioBvPrQmGEg
-	 MClA1O+EQgEew==
+	b=tdV7JHiI7gJxP/LHlm0BxAUXanHQbBLx+qVK6ZCg4UVFwITooJAkfpsnWsVUnQWPn
+	 8KoB/LzS06b9Z3LHDmeQEsCdJqricgXroXx7CVIlPycP/zIW0BwnpH5V+z+IZcT89W
+	 lNkrKKdjRAmCPPJ29aoWA52staGaeB4ZWmBMj9ZFGbsJlyCqYo8ZIBhrqfX2ZwvmZM
+	 /z/zBMlUp+O15VTyrB5Izm+Blafj6KJxVmNXOjQDxZbkEDYQpFsNgKpHkM3MLIAc3X
+	 JMFi5BPCFNG5rR+RYKJTHgqlenbJNnBdSbKDpcuy9mcYVYehjfSRxA/aE/gy+SZ+qT
+	 4Wd4WVEtRVJDQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: [PATCH AUTOSEL 6.1 005/212] cifs: Fix negotiate retry functionality
-Date: Mon,  5 May 2025 19:02:57 -0400
-Message-Id: <20250505230624.2692522-5-sashal@kernel.org>
+	trondmy@kernel.org,
+	anna@kernel.org,
+	linux-nfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 008/212] NFS: Don't allow waiting for exiting tasks
+Date: Mon,  5 May 2025 19:03:00 -0400
+Message-Id: <20250505230624.2692522-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -62,108 +62,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Pali Rohár <pali@kernel.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit e94e882a6d69525c07589222cf3a6ff57ad12b5b ]
+[ Upstream commit 8d3ca331026a7f9700d3747eed59a67b8f828cdc ]
 
-SMB negotiate retry functionality in cifs_negotiate() is currently broken
-and does not work when doing socket reconnect. Caller of this function,
-which is cifs_negotiate_protocol() requires that tcpStatus after successful
-execution of negotiate callback stay in CifsInNegotiate. But if the
-CIFSSMBNegotiate() called from cifs_negotiate() fails due to connection
-issues then tcpStatus is changed as so repeated CIFSSMBNegotiate() call
-does not help.
+Once a task calls exit_signals() it can no longer be signalled. So do
+not allow it to do killable waits.
 
-Fix this problem by moving retrying code from negotiate callback (which is
-either cifs_negotiate() or smb2_negotiate()) to cifs_negotiate_protocol()
-which is caller of those callbacks. This allows to properly handle and
-implement correct transistions between tcpStatus states as function
-cifs_negotiate_protocol() already handles it.
-
-With this change, cifs_negotiate_protocol() now handles also -EAGAIN error
-set by the RFC1002_NEGATIVE_SESSION_RESPONSE processing after reconnecting
-with NetBIOS session.
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c | 10 ++++++++++
- fs/smb/client/smb1ops.c |  7 -------
- fs/smb/client/smb2ops.c |  3 ---
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ fs/nfs/inode.c    | 2 ++
+ fs/nfs/internal.h | 5 +++++
+ fs/nfs/nfs3proc.c | 2 +-
+ fs/nfs/nfs4proc.c | 9 +++++++--
+ 4 files changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index 6aeb25006db82..0baa64c48c3d1 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -4178,11 +4178,13 @@ int
- cifs_negotiate_protocol(const unsigned int xid, struct cifs_ses *ses,
- 			struct TCP_Server_Info *server)
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 964df0725f4c2..f2e66b946f4b4 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -74,6 +74,8 @@ nfs_fattr_to_ino_t(struct nfs_fattr *fattr)
+ 
+ int nfs_wait_bit_killable(struct wait_bit_key *key, int mode)
  {
-+	bool in_retry = false;
- 	int rc = 0;
- 
- 	if (!server->ops->need_neg || !server->ops->negotiate)
- 		return -ENOSYS;
- 
-+retry:
- 	/* only send once per connect */
- 	spin_lock(&server->srv_lock);
- 	if (server->tcpStatus != CifsGood &&
-@@ -4202,6 +4204,14 @@ cifs_negotiate_protocol(const unsigned int xid, struct cifs_ses *ses,
- 	spin_unlock(&server->srv_lock);
- 
- 	rc = server->ops->negotiate(xid, ses, server);
-+	if (rc == -EAGAIN) {
-+		/* Allow one retry attempt */
-+		if (!in_retry) {
-+			in_retry = true;
-+			goto retry;
-+		}
-+		rc = -EHOSTDOWN;
-+	}
- 	if (rc == 0) {
- 		spin_lock(&server->srv_lock);
- 		if (server->tcpStatus == CifsInNegotiate)
-diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
-index 225cc7e0304c2..1489b9d21b609 100644
---- a/fs/smb/client/smb1ops.c
-+++ b/fs/smb/client/smb1ops.c
-@@ -426,13 +426,6 @@ cifs_negotiate(const unsigned int xid,
- {
- 	int rc;
- 	rc = CIFSSMBNegotiate(xid, ses, server);
--	if (rc == -EAGAIN) {
--		/* retry only once on 1st time connection */
--		set_credits(server, 1);
--		rc = CIFSSMBNegotiate(xid, ses, server);
--		if (rc == -EAGAIN)
--			rc = -EHOSTDOWN;
--	}
- 	return rc;
++	if (unlikely(nfs_current_task_exiting()))
++		return -EINTR;
+ 	schedule();
+ 	if (signal_pending_state(mode, current))
+ 		return -ERESTARTSYS;
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index ece517ebcca0b..84361674bffc7 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -832,6 +832,11 @@ static inline u32 nfs_stateid_hash(const nfs4_stateid *stateid)
+ 				NFS4_STATEID_OTHER_SIZE);
  }
  
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index a62f3e5a7689c..c9b9892b510ea 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -422,9 +422,6 @@ smb2_negotiate(const unsigned int xid,
- 	server->CurrentMid = 0;
- 	spin_unlock(&server->mid_lock);
- 	rc = SMB2_negotiate(xid, ses, server);
--	/* BB we probably don't need to retry with modern servers */
--	if (rc == -EAGAIN)
--		rc = -EHOSTDOWN;
- 	return rc;
++static inline bool nfs_current_task_exiting(void)
++{
++	return (current->flags & PF_EXITING) != 0;
++}
++
+ static inline bool nfs_error_is_fatal(int err)
+ {
+ 	switch (err) {
+diff --git a/fs/nfs/nfs3proc.c b/fs/nfs/nfs3proc.c
+index 2e7579626cf01..f036d30f7515c 100644
+--- a/fs/nfs/nfs3proc.c
++++ b/fs/nfs/nfs3proc.c
+@@ -39,7 +39,7 @@ nfs3_rpc_wrapper(struct rpc_clnt *clnt, struct rpc_message *msg, int flags)
+ 		__set_current_state(TASK_KILLABLE|TASK_FREEZABLE_UNSAFE);
+ 		schedule_timeout(NFS_JUKEBOX_RETRY_TIME);
+ 		res = -ERESTARTSYS;
+-	} while (!fatal_signal_pending(current));
++	} while (!fatal_signal_pending(current) && !nfs_current_task_exiting());
+ 	return res;
  }
  
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 5b06b8d4e0147..57c19a7d9c3e1 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -422,6 +422,8 @@ static int nfs4_delay_killable(long *timeout)
+ {
+ 	might_sleep();
+ 
++	if (unlikely(nfs_current_task_exiting()))
++		return -EINTR;
+ 	__set_current_state(TASK_KILLABLE|TASK_FREEZABLE_UNSAFE);
+ 	schedule_timeout(nfs4_update_delay(timeout));
+ 	if (!__fatal_signal_pending(current))
+@@ -433,6 +435,8 @@ static int nfs4_delay_interruptible(long *timeout)
+ {
+ 	might_sleep();
+ 
++	if (unlikely(nfs_current_task_exiting()))
++		return -EINTR;
+ 	__set_current_state(TASK_INTERRUPTIBLE|TASK_FREEZABLE_UNSAFE);
+ 	schedule_timeout(nfs4_update_delay(timeout));
+ 	if (!signal_pending(current))
+@@ -1712,7 +1716,8 @@ static void nfs_set_open_stateid_locked(struct nfs4_state *state,
+ 		rcu_read_unlock();
+ 		trace_nfs4_open_stateid_update_wait(state->inode, stateid, 0);
+ 
+-		if (!fatal_signal_pending(current)) {
++		if (!fatal_signal_pending(current) &&
++		    !nfs_current_task_exiting()) {
+ 			if (schedule_timeout(5*HZ) == 0)
+ 				status = -EAGAIN;
+ 			else
+@@ -3500,7 +3505,7 @@ static bool nfs4_refresh_open_old_stateid(nfs4_stateid *dst,
+ 		write_sequnlock(&state->seqlock);
+ 		trace_nfs4_close_stateid_update_wait(state->inode, dst, 0);
+ 
+-		if (fatal_signal_pending(current))
++		if (fatal_signal_pending(current) || nfs_current_task_exiting())
+ 			status = -EINTR;
+ 		else
+ 			if (schedule_timeout(5*HZ) != 0)
 -- 
 2.39.5
 
