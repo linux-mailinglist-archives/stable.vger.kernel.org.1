@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-139977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A467AAA33A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:11:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF27AAA383
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FE601A85531
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:11:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AA587AF952
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F4F2EFBAF;
-	Mon,  5 May 2025 22:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408462ECE55;
+	Mon,  5 May 2025 22:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ybm0p4xd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FoWlYfvv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B772EFBA4;
-	Mon,  5 May 2025 22:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB16283C8C;
+	Mon,  5 May 2025 22:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483814; cv=none; b=QuqirnJT7qK8eSL/XjAKt4LTLCSTyXtzMSfFoY6lNOiOcRXFH5pvVNamkEJKuIcjXCq09KirJrQEn7PgfOa97bkfJ3p2cLJcq0V9AqItcdKa4kAWVxW8PROHAZ13g8mEPeeY9bV0HwRxHPcLaUKhL6hNhk4Dvna5sBztbIE2g3k=
+	t=1746483816; cv=none; b=EjsqHDkF5auB8C6UZ14Cji6QiLB+wt87O9m1UesanjNMkM86HAyoqobCvTyndE/q9kMO6uFDnaebFwj1K++KyLTTB9g19kxOCCQ94c+KgwTuxhvonsM8H2hkySwd5yAc7RDEEEWEnp4n1LnLxQB/cBtkJ3ni08oq/UWf4AmkcKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483814; c=relaxed/simple;
-	bh=SgLEUyTjEn/ONPzkIoL52jJRgKC8KFCGTZ1fMwifZu0=;
+	s=arc-20240116; t=1746483816; c=relaxed/simple;
+	bh=S+pmjWouOLmqbG2p3mkmELBSeuXJ1zsMykhif3J38RM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CP5EQzhQ8Eb6IiuEU9NMey0IPN1jnEU4ZRK28pY0iImq0OZRIgE9g/A1r1fTzRarGBIvSqCY+zwGYc/lhLM9VY/XF6yc4GkEQ+3As+yacHiMf0tDnAQY5AP+5Jqb0H8tQkzndzzUg+46WRzjI0Oe96SOEqEIW3VfwnUxpfpUXHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ybm0p4xd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732DDC4CEE4;
-	Mon,  5 May 2025 22:23:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YHKIitXmzXVST1UoT0dJi0t8bAUPFd61OJmicdjrQjaVPyzNP5Ms9PHX1Tip/NkLJ0HSdhDacPmKinJCNP/zto6VXPiI5hbiAFSw/VuMIDF+Fjmrf3kYLJfqf5wS65Dg46yUk/fwZZigbD496FZWRjox5ovBDfr8374eqd8QEvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FoWlYfvv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC76C4CEED;
+	Mon,  5 May 2025 22:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483814;
-	bh=SgLEUyTjEn/ONPzkIoL52jJRgKC8KFCGTZ1fMwifZu0=;
+	s=k20201202; t=1746483815;
+	bh=S+pmjWouOLmqbG2p3mkmELBSeuXJ1zsMykhif3J38RM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ybm0p4xde5hBf9+Ds9FLkigG/fbPmxC1MC1l+ihGaZdpj6ws/FX+PhVal1rPPWX1s
-	 L2x2BkIKEOdB/Kouv9bSu4IY/D4Cd86sJh/oV1bI9OzZhKRXLP5ywTdCNsMb1o5VyM
-	 rWosxE65gpMIfzcPZJ5Vc4s805BIlFAEOJ6Rx5xAmVuDgWlPe8yy9fGZvNfZDoZ3vE
-	 SlgBLg1enZ8cv4c4i5eBoRTAG9qDzJ626aiKkaTKx+uhM/axDs1V+TCFY6lp6mBvOm
-	 MubDv/6FDmWJQGTfsScpSMxFZAJ1Y0el1aPLuoWru+xrC8ZeY3D8HkwuQVfbjHCg+7
-	 kTAEs2cFCjYzA==
+	b=FoWlYfvvzCpNLi988domSTIeoGXoEBoQAUBnGq5j9qqNFDChUxZ3HQwvEp14c3qKP
+	 bGcuppxvVsJAbo+sU2nNSKwisLoAqwcN6h6dsl1T0BY7+DJXWCa0/qN5HEkvfMV+YD
+	 v/nG5zEg7oLfHlLccRCpe6P+oClM9h6sPw54rzGXO8cdZ56ZD+Y/1iUteBS8sVdLJU
+	 lrXYihqELTteCR6Agyi5F44xOhE+3u9YAV8YE0YQAU5NWIA9HK+dAC2sDWwAR++PSu
+	 loo8ghj0HaSrEdkSaZKUf6wqeh1cX3Fp/P8X3v+gUdiAO71sxuZe4vYpkfxQkw1v+S
+	 14LsmXTbUsIiA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	alex.aring@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 230/642] ieee802154: ca8210: Use proper setters and getters for bitwise types
-Date: Mon,  5 May 2025 18:07:26 -0400
-Message-Id: <20250505221419.2672473-230-sashal@kernel.org>
+	lucas.demarchi@intel.com,
+	rodrigo.vivi@intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 231/642] drm/xe: Nuke VM's mapping upon close
+Date: Mon,  5 May 2025 18:07:27 -0400
+Message-Id: <20250505221419.2672473-231-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -69,80 +65,196 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 169b2262205836a5d1213ff44dca2962276bece1 ]
+[ Upstream commit 074e40d9c2a84939fe28d7121d3469db50f34a3d ]
 
-Sparse complains that the driver doesn't respect the bitwise types:
+Clear root PT entry and invalidate entire VM's address space when
+closing the VM. Will prevent the GPU from accessing any of the VM's
+memory after closing.
 
-drivers/net/ieee802154/ca8210.c:1796:27: warning: incorrect type in assignment (different base types)
-drivers/net/ieee802154/ca8210.c:1796:27:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
-drivers/net/ieee802154/ca8210.c:1796:27:    got unsigned short [usertype]
-drivers/net/ieee802154/ca8210.c:1801:25: warning: incorrect type in assignment (different base types)
-drivers/net/ieee802154/ca8210.c:1801:25:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
-drivers/net/ieee802154/ca8210.c:1801:25:    got unsigned short [usertype]
-drivers/net/ieee802154/ca8210.c:1928:28: warning: incorrect type in argument 3 (different base types)
-drivers/net/ieee802154/ca8210.c:1928:28:    expected unsigned short [usertype] dst_pan_id
-drivers/net/ieee802154/ca8210.c:1928:28:    got restricted __le16 [addressable] [usertype] pan_id
+v2:
+ - s/vma/vm in kernel doc (CI)
+ - Don't nuke migration VM as this occur at driver unload (CI)
+v3:
+ - Rebase and pull into SVM series (Thomas)
+ - Wait for pending binds (Thomas)
+v5:
+ - Remove xe_gt_tlb_invalidation_fence_fini in error case (Matt Auld)
+ - Drop local migration bool (Thomas)
+v7:
+ - Add drm_dev_enter/exit protecting invalidation (CI, Matt Auld)
 
-Use proper setters and getters for bitwise types.
-
-Note, in accordance with [1] the protocol is little endian.
-
-Link: https://www.cascoda.com/wp-content/uploads/2018/11/CA-8210_datasheet_0418.pdf [1]
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/20250305105656.2133487-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250306012657.3505757-12-matthew.brost@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ieee802154/ca8210.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c | 22 ++++++++++++++
+ drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h |  2 ++
+ drivers/gpu/drm/xe/xe_pt.c                  | 14 +++++++++
+ drivers/gpu/drm/xe/xe_pt.h                  |  3 ++
+ drivers/gpu/drm/xe/xe_vm.c                  | 32 +++++++++++++++++++++
+ 5 files changed, 73 insertions(+)
 
-diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-index 753215ebc67c7..a036910f60828 100644
---- a/drivers/net/ieee802154/ca8210.c
-+++ b/drivers/net/ieee802154/ca8210.c
-@@ -1446,8 +1446,7 @@ static u8 mcps_data_request(
- 	command.pdata.data_req.src_addr_mode = src_addr_mode;
- 	command.pdata.data_req.dst.mode = dst_address_mode;
- 	if (dst_address_mode != MAC_MODE_NO_ADDR) {
--		command.pdata.data_req.dst.pan_id[0] = LS_BYTE(dst_pan_id);
--		command.pdata.data_req.dst.pan_id[1] = MS_BYTE(dst_pan_id);
-+		put_unaligned_le16(dst_pan_id, command.pdata.data_req.dst.pan_id);
- 		if (dst_address_mode == MAC_MODE_SHORT_ADDR) {
- 			command.pdata.data_req.dst.address[0] = LS_BYTE(
- 				dst_addr->short_address
-@@ -1795,12 +1794,12 @@ static int ca8210_skb_rx(
- 	}
- 	hdr.source.mode = data_ind[0];
- 	dev_dbg(&priv->spi->dev, "srcAddrMode: %#03x\n", hdr.source.mode);
--	hdr.source.pan_id = *(u16 *)&data_ind[1];
-+	hdr.source.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[1]));
- 	dev_dbg(&priv->spi->dev, "srcPanId: %#06x\n", hdr.source.pan_id);
- 	memcpy(&hdr.source.extended_addr, &data_ind[3], 8);
- 	hdr.dest.mode = data_ind[11];
- 	dev_dbg(&priv->spi->dev, "dstAddrMode: %#03x\n", hdr.dest.mode);
--	hdr.dest.pan_id = *(u16 *)&data_ind[12];
-+	hdr.dest.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[12]));
- 	dev_dbg(&priv->spi->dev, "dstPanId: %#06x\n", hdr.dest.pan_id);
- 	memcpy(&hdr.dest.extended_addr, &data_ind[14], 8);
+diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+index 9405d83d4db2a..084cbdeba8eaa 100644
+--- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
++++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.c
+@@ -418,6 +418,28 @@ int xe_gt_tlb_invalidation_range(struct xe_gt *gt,
+ 	return send_tlb_invalidation(&gt->uc.guc, fence, action, len);
+ }
  
-@@ -1927,7 +1926,7 @@ static int ca8210_skb_tx(
- 	status =  mcps_data_request(
- 		header.source.mode,
- 		header.dest.mode,
--		header.dest.pan_id,
-+		le16_to_cpu(header.dest.pan_id),
- 		(union macaddr *)&header.dest.extended_addr,
- 		skb->len - mac_len,
- 		&skb->data[mac_len],
++/**
++ * xe_gt_tlb_invalidation_vm - Issue a TLB invalidation on this GT for a VM
++ * @gt: graphics tile
++ * @vm: VM to invalidate
++ *
++ * Invalidate entire VM's address space
++ */
++void xe_gt_tlb_invalidation_vm(struct xe_gt *gt, struct xe_vm *vm)
++{
++	struct xe_gt_tlb_invalidation_fence fence;
++	u64 range = 1ull << vm->xe->info.va_bits;
++	int ret;
++
++	xe_gt_tlb_invalidation_fence_init(gt, &fence, true);
++
++	ret = xe_gt_tlb_invalidation_range(gt, &fence, 0, range, vm->usm.asid);
++	if (ret < 0)
++		return;
++
++	xe_gt_tlb_invalidation_fence_wait(&fence);
++}
++
+ /**
+  * xe_gt_tlb_invalidation_vma - Issue a TLB invalidation on this GT for a VMA
+  * @gt: GT structure
+diff --git a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
+index 672acfcdf0d70..abe9b03d543e6 100644
+--- a/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
++++ b/drivers/gpu/drm/xe/xe_gt_tlb_invalidation.h
+@@ -12,6 +12,7 @@
+ 
+ struct xe_gt;
+ struct xe_guc;
++struct xe_vm;
+ struct xe_vma;
+ 
+ int xe_gt_tlb_invalidation_init_early(struct xe_gt *gt);
+@@ -21,6 +22,7 @@ int xe_gt_tlb_invalidation_ggtt(struct xe_gt *gt);
+ int xe_gt_tlb_invalidation_vma(struct xe_gt *gt,
+ 			       struct xe_gt_tlb_invalidation_fence *fence,
+ 			       struct xe_vma *vma);
++void xe_gt_tlb_invalidation_vm(struct xe_gt *gt, struct xe_vm *vm);
+ int xe_gt_tlb_invalidation_range(struct xe_gt *gt,
+ 				 struct xe_gt_tlb_invalidation_fence *fence,
+ 				 u64 start, u64 end, u32 asid);
+diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
+index dc24baa840924..148d90611eebf 100644
+--- a/drivers/gpu/drm/xe/xe_pt.c
++++ b/drivers/gpu/drm/xe/xe_pt.c
+@@ -218,6 +218,20 @@ void xe_pt_destroy(struct xe_pt *pt, u32 flags, struct llist_head *deferred)
+ 	xe_pt_free(pt);
+ }
+ 
++/**
++ * xe_pt_clear() - Clear a page-table.
++ * @xe: xe device.
++ * @pt: The page-table.
++ *
++ * Clears page-table by setting to zero.
++ */
++void xe_pt_clear(struct xe_device *xe, struct xe_pt *pt)
++{
++	struct iosys_map *map = &pt->bo->vmap;
++
++	xe_map_memset(xe, map, 0, 0, SZ_4K);
++}
++
+ /**
+  * DOC: Pagetable building
+  *
+diff --git a/drivers/gpu/drm/xe/xe_pt.h b/drivers/gpu/drm/xe/xe_pt.h
+index 9ab386431cadd..8e43912ae8e94 100644
+--- a/drivers/gpu/drm/xe/xe_pt.h
++++ b/drivers/gpu/drm/xe/xe_pt.h
+@@ -13,6 +13,7 @@ struct dma_fence;
+ struct xe_bo;
+ struct xe_device;
+ struct xe_exec_queue;
++struct xe_svm_range;
+ struct xe_sync_entry;
+ struct xe_tile;
+ struct xe_vm;
+@@ -35,6 +36,8 @@ void xe_pt_populate_empty(struct xe_tile *tile, struct xe_vm *vm,
+ 
+ void xe_pt_destroy(struct xe_pt *pt, u32 flags, struct llist_head *deferred);
+ 
++void xe_pt_clear(struct xe_device *xe, struct xe_pt *pt);
++
+ int xe_pt_update_ops_prepare(struct xe_tile *tile, struct xe_vma_ops *vops);
+ struct dma_fence *xe_pt_update_ops_run(struct xe_tile *tile,
+ 				       struct xe_vma_ops *vops);
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 5956631c0d40a..785b8960050bd 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -8,6 +8,7 @@
+ #include <linux/dma-fence-array.h>
+ #include <linux/nospec.h>
+ 
++#include <drm/drm_drv.h>
+ #include <drm/drm_exec.h>
+ #include <drm/drm_print.h>
+ #include <drm/ttm/ttm_tt.h>
+@@ -1582,9 +1583,40 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
+ 
+ static void xe_vm_close(struct xe_vm *vm)
+ {
++	struct xe_device *xe = vm->xe;
++	bool bound;
++	int idx;
++
++	bound = drm_dev_enter(&xe->drm, &idx);
++
+ 	down_write(&vm->lock);
++
+ 	vm->size = 0;
++
++	if (!((vm->flags & XE_VM_FLAG_MIGRATION))) {
++		struct xe_tile *tile;
++		struct xe_gt *gt;
++		u8 id;
++
++		/* Wait for pending binds */
++		dma_resv_wait_timeout(xe_vm_resv(vm),
++				      DMA_RESV_USAGE_BOOKKEEP,
++				      false, MAX_SCHEDULE_TIMEOUT);
++
++		if (bound) {
++			for_each_tile(tile, xe, id)
++				if (vm->pt_root[id])
++					xe_pt_clear(xe, vm->pt_root[id]);
++
++			for_each_gt(gt, xe, id)
++				xe_gt_tlb_invalidation_vm(gt, vm);
++		}
++	}
++
+ 	up_write(&vm->lock);
++
++	if (bound)
++		drm_dev_exit(idx);
+ }
+ 
+ void xe_vm_close_and_put(struct xe_vm *vm)
 -- 
 2.39.5
 
