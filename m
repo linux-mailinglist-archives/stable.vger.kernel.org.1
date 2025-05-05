@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-140905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1152CAAAC7A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:17:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 993A0AAAC6E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:16:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C88841BA7168
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:13:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27E5D980266
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7CE3C6F03;
-	Mon,  5 May 2025 23:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5F72FCA8D;
+	Mon,  5 May 2025 23:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XYNnwyhD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k9D1m50H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B9A2F274C;
-	Mon,  5 May 2025 23:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3403C2F276F;
+	Mon,  5 May 2025 23:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486794; cv=none; b=tiIebfW6mJsDIqbqBnqVth9L3Tp1UKE/B8LIpdtxvlq+0VxWebvkd7pMoywSKf8ydmtYsX0wgTPMeO4h9GIM58Cv9QTPiG5NJ+athX0XupjQ7hu5nJWdl5jWhXq+c/AaJKC2D3JcLBjd9e/ZdNH8W3mH1uwequ0hpxSIZHGvdLI=
+	t=1746486800; cv=none; b=Q2ewx/RNjDwC5YhcfP36ZwGV3HpyQtBWBmYNxzxEmhD4cucRBeRELdQ++scith45BrSSeevohWebT+1cyLWOFnu6peGusZyc6DdO/qg33QgMuCXmiPQJ6LBd0PHWc42LSkH/tK1Qx9k6NubwTrSg8mUGEXNIaYOylR8eUowvHMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486794; c=relaxed/simple;
-	bh=8f+4JA5Io5v6P7QfORZw/DEeSg70+UT4TeDj9RGyMLY=;
+	s=arc-20240116; t=1746486800; c=relaxed/simple;
+	bh=u9Mug2znfOy+hPjuDjL/NsaalwlYnYjXYy97QUmJS/I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u1TY0IwduOssFG9rpTEvLaZ5gOjzdLp58XQdeaOD4551lGTcHdc/PUWNy8v92JsL8wBBHEduxRaK9+sZrHPgM/09ZWwyqs8s9Ezgl4TEyVjAkIa8u2m/fo2mXeT4ppxKT4AFULh14hytlaQT/ll4A+D7av5EhV3Yt8Ruta3Ok+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XYNnwyhD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC897C4CEF2;
-	Mon,  5 May 2025 23:13:12 +0000 (UTC)
+	 MIME-Version; b=Z4fmZMVbbPSgpJ6PC9WGHHDui33Q6ky/+Y+HAgAJdL6ARC+3DQwE2+y6tD/AxcDl+xusQER8FSAg+Wi/BjxHfRKfU+Nvnl6Q6T1bkPWxJwH2290SGE5cF1JiazjXKd3qk+8GV2yzSyYkI5b6iEIEXgNwzQ0Z8pEbg2ffNfz4FZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k9D1m50H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4485C4CEEE;
+	Mon,  5 May 2025 23:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486793;
-	bh=8f+4JA5Io5v6P7QfORZw/DEeSg70+UT4TeDj9RGyMLY=;
+	s=k20201202; t=1746486799;
+	bh=u9Mug2znfOy+hPjuDjL/NsaalwlYnYjXYy97QUmJS/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XYNnwyhDCY30hqvkTkqpt399/1H7x+/xVDqf6dc089zvNHPzRPOlSf7ilqvj48tjp
-	 lPU6uHfW9MvcfwlpTyDHUugd76YjPyykYwqbt+ZkphkPynopllhRco83uFs13iD783
-	 usVHBH9oLHlfgb/isl1A9cQdr2DulprX3VuwfUZOgXNSD0qyhGqEYi0KCfF2Fjij/f
-	 d97ZlnVKZ05z22VCYBZR/J+02rP+/mrttf49VboOP4iXpG1bW1Ji5/FWbwVuBvJTWZ
-	 32ThPv/XjbwAtjZnC6DbCsC8Bo0NTPVq/UG0WZMZJ8lQQp6nike82wqPwQw6oOsKwh
-	 ADUjwhINV4v1A==
+	b=k9D1m50HkV55e1MlD4Kdfd5ATVq8EGzCUsSBB9L3AduWrOdw23WVCuqsBEpjR4qS9
+	 nnzX9y0MmI6uudm8SKk9SPRxbrzXe02QX3eYW1p6kn0NPGHeA2GXHm9t+ZFuDqYjnB
+	 pdofW4KRry8/EKZw5iY7dEWUifEiNTiezMBN6AS/kkinaHZv9+utK4AgUwKEI0uH1n
+	 h5FDCtDuSHUgI1q8FQrkumYcjK5FJYv8BAEFKOomnRdtZG7NpWUdbCpl+GOFakI7ss
+	 dEBQB+qEiV4CkiTRmaHPifefIWO9XqoQ1l91GvpcwE3HgPfBhMVQHE4003QC9IrrkG
+	 ufAlWn91aw/6Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rosen Penev <rosenp@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 209/212] wifi: ath9k: return by of_get_mac_address
-Date: Mon,  5 May 2025 19:06:21 -0400
-Message-Id: <20250505230624.2692522-209-sashal@kernel.org>
+	maarten.lankhorst@linux.intel.com,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.1 212/212] drm: Add valid clones check
+Date: Mon,  5 May 2025 19:06:24 -0400
+Message-Id: <20250505230624.2692522-212-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -61,47 +65,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
 
-[ Upstream commit dfffb317519f88534bb82797f055f0a2fd867e7b ]
+[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
 
-When using nvmem, ath9k could potentially be loaded before nvmem, which
-loads after mtd. This is an issue if DT contains an nvmem mac address.
+Check that all encoders attached to a given CRTC are valid
+possible_clones of each other.
 
-If nvmem is not ready in time for ath9k, -EPROBE_DEFER is returned. Pass
-it to _probe so that ath9k can properly grab a potentially present MAC
-address.
-
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Link: https://patch.msgid.link/20241105222326.194417-1-rosenp@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/init.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
-index 4f00400c7ffb8..58386906598a7 100644
---- a/drivers/net/wireless/ath/ath9k/init.c
-+++ b/drivers/net/wireless/ath/ath9k/init.c
-@@ -691,7 +691,9 @@ static int ath9k_of_init(struct ath_softc *sc)
- 		ah->ah_flags |= AH_NO_EEP_SWAP;
- 	}
- 
--	of_get_mac_address(np, common->macaddr);
-+	ret = of_get_mac_address(np, common->macaddr);
-+	if (ret == -EPROBE_DEFER)
-+		return ret;
- 
+diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
+index 66d223c2d9ab9..e737e45a3a702 100644
+--- a/drivers/gpu/drm/drm_atomic_helper.c
++++ b/drivers/gpu/drm/drm_atomic_helper.c
+@@ -573,6 +573,30 @@ mode_valid(struct drm_atomic_state *state)
  	return 0;
  }
+ 
++static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
++					 struct drm_crtc *crtc)
++{
++	struct drm_encoder *drm_enc;
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
++
++	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
++		if (!drm_enc->possible_clones) {
++			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
++			continue;
++		}
++
++		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
++		    crtc_state->encoder_mask) {
++			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
++				  crtc->base.id, crtc_state->encoder_mask);
++			return -EINVAL;
++		}
++	}
++
++	return 0;
++}
++
+ /**
+  * drm_atomic_helper_check_modeset - validate state object for modeset changes
+  * @dev: DRM device
+@@ -744,6 +768,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
+ 		ret = drm_atomic_add_affected_planes(state, crtc);
+ 		if (ret != 0)
+ 			return ret;
++
++		ret = drm_atomic_check_valid_clones(state, crtc);
++		if (ret != 0)
++			return ret;
+ 	}
+ 
+ 	/*
 -- 
 2.39.5
 
