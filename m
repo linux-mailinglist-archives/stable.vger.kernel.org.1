@@ -1,133 +1,175 @@
-Return-Path: <stable+bounces-140049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6BBAABA58
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 09:17:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA7F2AAB727
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 463E91B61F6E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:12:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EE503AC9AF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EBE2FED12;
-	Mon,  5 May 2025 22:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEBC2459DD;
+	Tue,  6 May 2025 00:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/jwOrwe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SHVWeks/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB672FED08;
-	Mon,  5 May 2025 22:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABC5281523;
+	Mon,  5 May 2025 23:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483977; cv=none; b=c5sNS44+VT2GE2vA6lhxqGYt+qE0IuVCdpEV4DsV1PcUWDk4FElC5g1tLDNDZwHMTeOs5lLLrBNyYcUVrX2GOUPj8bdS780uFFXWes+ddX60nndQBpTVRjxEYx0pA9PPngayTD6ZCgMsA8zHVhBGRfIp+fgaaXDSbD76CG3hpQI=
+	t=1746486343; cv=none; b=WIt3KzNVmjA0B7wBzk7Vt1TyxKayai1jX2jy7eY+OOhp7Mx30g77Enyp5YwM/gZ34B/TEQs6rrSGLW3fm6VJRPvVO5Q9QGTlRblrhJIFCsR9BUXyCeXXDFiw88I4w9T7g7Teyr/ey2FO527S4Yop2mkZKtgTBVPPu0vmjww+arI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483977; c=relaxed/simple;
-	bh=xCQaZ4SHn2zLQvENl3Y5QUq2AcwL2iuTO4zWEtQmWt4=;
+	s=arc-20240116; t=1746486343; c=relaxed/simple;
+	bh=m53NWpNTgrVvuqTW32z5xmAx4wc3YWSlCFVRpzcCDSk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k9dSAkTM7F32e4c4sZhRdvB5Pe2ek44yOfVOqGIHRaQ4AwmKKYK8/beIMiwflhwta+uND/QfDHvMITGe5D6r/GnAuktRZv2lIh3rkS41PPk8GQl2mNuh/WEU+GulFI2Kt0J4uci6kRuIz93UBJw5BYZfRpSNEtRJtoLSMrxJzLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/jwOrwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B15C4CEEE;
-	Mon,  5 May 2025 22:26:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OZrM+0u2vkSz8yqNH06LJBlqBMYngRuSCdaRFD9oCYhy/HBDhzIbSMYK4HnU7LKnDPy9fUYeOj/zoEzIznggLbdvvfCFHwduMSHCB5Z5i7LX+PnlbFXrSKOe4PGMz4ZK09DI7Zo9QgyZJYal88T4uoLcnPok61SQ67t324tYm4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SHVWeks/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA448C4CEEE;
+	Mon,  5 May 2025 23:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483977;
-	bh=xCQaZ4SHn2zLQvENl3Y5QUq2AcwL2iuTO4zWEtQmWt4=;
+	s=k20201202; t=1746486343;
+	bh=m53NWpNTgrVvuqTW32z5xmAx4wc3YWSlCFVRpzcCDSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R/jwOrwe5tBi0Jw4QmDBWxJ4fNdKiFUj1tMGg9Z5rPaOHCsQC3geBAlPRwV5nB8lg
-	 K/pf46rfpS2hP/V/Hd0yWvgQBwACzIaiFd/PwN4IxM+vB4LFs1kFC8FCt4w2iu8h2x
-	 8R2cUAU0Vst2b81WrL5GWJ7bGeXbgb4U+Ea4G7Ul+h5sGAR94EH/isBFtbNojMZzAn
-	 zdBTtZHH3+SbxgV1ayoWy+lffWA+0X7RcZ+Qoz4yjFKgpikyNhqV/y1TxY1s/wgI2I
-	 cqfelezHE2ORvIw+Dqj9KiSMdjbVPVzir34okv+hG09nWdTV0yTq8Qj5VBWbVeeQeQ
-	 miFTUm7aIvSog==
+	b=SHVWeks/9WNh11tHxbtLl4EISbberY8GqQFlsrpl6bWS0Ovt6lroQk5F+icofU5j6
+	 ErDeMv4cJG7ZJKEmuDccEiP+/204YWNCqPEeJre9CGz3qDcnlNy6TsFGbJhsXk6WOl
+	 RjClufgBb4IQBMsSUl6t05UJkF80XmzjQbWMCqCN5gpZDT3tGYW8Xj9uu4TCcSPcBw
+	 vKeQmgwmSEeOezZ3/s9SbG1mepMvyVkBeWRKHv7Y1Kw9r1hyG/EymUqTbi59eqJDO1
+	 lqYhwMJyrY/cttcBdEZvOiUkoAagELl7wqkWBOJr63/BnpQudCAPKdbF9QkVllgPi6
+	 4ctUGqWFrYw5w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lyude Paul <lyude@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	dakr@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 302/642] rust/faux: Add missing parent argument to Registration::new()
-Date: Mon,  5 May 2025 18:08:38 -0400
-Message-Id: <20250505221419.2672473-302-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 270/294] scsi: st: Restore some drive settings after reset
+Date: Mon,  5 May 2025 18:56:10 -0400
+Message-Id: <20250505225634.2688578-270-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
-References: <20250505221419.2672473-1-sashal@kernel.org>
+In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
+References: <20250505225634.2688578-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.5
+X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Lyude Paul <lyude@redhat.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 95cb0cb546c2892b7a31ff2fce6573f201a214b8 ]
+[ Upstream commit 7081dc75df79696d8322d01821c28e53416c932c ]
 
-A little late in the review of the faux device interface, we added the
-ability to specify a parent device when creating new faux devices - but
-this never got ported over to the rust bindings. So, let's add the missing
-argument now so we don't have to convert other users later down the line.
+Some of the allowed operations put the tape into a known position to
+continue operation assuming only the tape position has changed.  But reset
+sets partition, density and block size to drive default values. These
+should be restored to the values before reset.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250227193522.198344-1-lyude@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Normally the current block size and density are stored by the drive.  If
+the settings have been changed, the changed values have to be saved by the
+driver across reset.
+
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250120194925.44432-2-Kai.Makisara@kolumbus.fi
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Tested-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/faux.rs              | 13 +++++++++++--
- samples/rust/rust_driver_faux.rs |  2 +-
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/scsi/st.c | 24 +++++++++++++++++++++---
+ drivers/scsi/st.h |  2 ++
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
-index 5acc0c02d451f..68f53edf05d70 100644
---- a/rust/kernel/faux.rs
-+++ b/rust/kernel/faux.rs
-@@ -24,11 +24,20 @@
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index fb193caa4a3fa..f9ab45c4bb40d 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -953,7 +953,6 @@ static void reset_state(struct scsi_tape *STp)
+ 		STp->partition = find_partition(STp);
+ 		if (STp->partition < 0)
+ 			STp->partition = 0;
+-		STp->new_partition = STp->partition;
+ 	}
+ }
+ 
+@@ -2927,14 +2926,17 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 		if (cmd_in == MTSETDENSITY) {
+ 			(STp->buffer)->b_data[4] = arg;
+ 			STp->density_changed = 1;	/* At least we tried ;-) */
++			STp->changed_density = arg;
+ 		} else if (cmd_in == SET_DENS_AND_BLK)
+ 			(STp->buffer)->b_data[4] = arg >> 24;
+ 		else
+ 			(STp->buffer)->b_data[4] = STp->density;
+ 		if (cmd_in == MTSETBLK || cmd_in == SET_DENS_AND_BLK) {
+ 			ltmp = arg & MT_ST_BLKSIZE_MASK;
+-			if (cmd_in == MTSETBLK)
++			if (cmd_in == MTSETBLK) {
+ 				STp->blksize_changed = 1; /* At least we tried ;-) */
++				STp->changed_blksize = arg;
++			}
+ 		} else
+ 			ltmp = STp->block_size;
+ 		(STp->buffer)->b_data[9] = (ltmp >> 16);
+@@ -3635,9 +3637,25 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
+ 				retval = (-EIO);
+ 				goto out;
+ 			}
+-			reset_state(STp);
++			reset_state(STp); /* Clears pos_unknown */
+ 			/* remove this when the midlevel properly clears was_reset */
+ 			STp->device->was_reset = 0;
++
++			/* Fix the device settings after reset, ignore errors */
++			if (mtc.mt_op == MTREW || mtc.mt_op == MTSEEK ||
++				mtc.mt_op == MTEOM) {
++				if (STp->can_partitions) {
++					/* STp->new_partition contains the
++					 *  latest partition set
++					 */
++					STp->partition = 0;
++					switch_partition(STp);
++				}
++				if (STp->density_changed)
++					st_int_ioctl(STp, MTSETDENSITY, STp->changed_density);
++				if (STp->blksize_changed)
++					st_int_ioctl(STp, MTSETBLK, STp->changed_blksize);
++			}
+ 		}
  
- impl Registration {
-     /// Create and register a new faux device with the given name.
--    pub fn new(name: &CStr) -> Result<Self> {
-+    pub fn new(name: &CStr, parent: Option<&device::Device>) -> Result<Self> {
-         // SAFETY:
-         // - `name` is copied by this function into its own storage
-         // - `faux_ops` is safe to leave NULL according to the C API
--        let dev = unsafe { bindings::faux_device_create(name.as_char_ptr(), null_mut(), null()) };
-+        // - `parent` can be either NULL or a pointer to a `struct device`, and `faux_device_create`
-+        //   will take a reference to `parent` using `device_add` - ensuring that it remains valid
-+        //   for the lifetime of the faux device.
-+        let dev = unsafe {
-+            bindings::faux_device_create(
-+                name.as_char_ptr(),
-+                parent.map_or(null_mut(), |p| p.as_raw()),
-+                null(),
-+            )
-+        };
- 
-         // The above function will return either a valid device, or NULL on failure
-         // INVARIANT: The device will remain registered until faux_device_destroy() is called, which
-diff --git a/samples/rust/rust_driver_faux.rs b/samples/rust/rust_driver_faux.rs
-index 048c6cb98b29a..58a3a94121bff 100644
---- a/samples/rust/rust_driver_faux.rs
-+++ b/samples/rust/rust_driver_faux.rs
-@@ -20,7 +20,7 @@ impl Module for SampleModule {
-     fn init(_module: &'static ThisModule) -> Result<Self> {
-         pr_info!("Initialising Rust Faux Device Sample\n");
- 
--        let reg = faux::Registration::new(c_str!("rust-faux-sample-device"))?;
-+        let reg = faux::Registration::new(c_str!("rust-faux-sample-device"), None)?;
- 
-         dev_info!(reg.as_ref(), "Hello from faux device!\n");
- 
+ 		if (mtc.mt_op != MTNOP && mtc.mt_op != MTSETBLK &&
+diff --git a/drivers/scsi/st.h b/drivers/scsi/st.h
+index 1aaaf5369a40f..6d31b894ee84c 100644
+--- a/drivers/scsi/st.h
++++ b/drivers/scsi/st.h
+@@ -165,6 +165,7 @@ struct scsi_tape {
+ 	unsigned char compression_changed;
+ 	unsigned char drv_buffer;
+ 	unsigned char density;
++	unsigned char changed_density;
+ 	unsigned char door_locked;
+ 	unsigned char autorew_dev;   /* auto-rewind device */
+ 	unsigned char rew_at_close;  /* rewind necessary at close */
+@@ -172,6 +173,7 @@ struct scsi_tape {
+ 	unsigned char cleaning_req;  /* cleaning requested? */
+ 	unsigned char first_tur;     /* first TEST UNIT READY */
+ 	int block_size;
++	int changed_blksize;
+ 	int min_block;
+ 	int max_block;
+ 	int recover_count;     /* From tape opening */
 -- 
 2.39.5
 
