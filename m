@@ -1,67 +1,62 @@
-Return-Path: <stable+bounces-140608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD48AAAE57
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:55:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 360C2AAAE3A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B81A16ABD9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:52:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA7527B3D55
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C633754DA;
-	Mon,  5 May 2025 22:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BEA2BFC63;
+	Mon,  5 May 2025 22:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kt9YJGjl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cv6slrQ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBC037533B;
-	Mon,  5 May 2025 22:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4BE27F4C9;
+	Mon,  5 May 2025 22:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485270; cv=none; b=XSjIUWfujiUcbXpRaSyUl2QUB2QitYEWxRa/+eg7cg5OVSSAyf2M3IFcvWAnJJDLL7SpvVIcw7j6Q348h3GaEiiN62oBbNzxf/63MOVYOpILXawOqBvAx6GvOW4Tt2zduNcxsBM/ytLoCaABhdvhxQa3xbwIG+Q1sIIEI9AHg9w=
+	t=1746485272; cv=none; b=Vv7JigB5GsPMeqm705mbLKaTMa6R3Rznjaa1x4I5h9pt3csdOdSjZDoMzBODJzAh64Ysii3RUtAIU9LYgwYHk5ySGCFugPhqDp7kMjDh+lqeuHaUf955LPII3DEAx3zow9Mlfqnnd4kU72fEi4zAQEdIkBVU/9HlstZ7b/4Uj2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485270; c=relaxed/simple;
-	bh=DXfYW3r1DBrCeuxs2FZqkes4nI1/Zin0FtfeaKoIqGE=;
+	s=arc-20240116; t=1746485272; c=relaxed/simple;
+	bh=/SHsAolBGXlNCIBtpLLAkQTtEBGdSSCB4TNjucA5LtI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZUAhS4saS6Hna8jo8jVpX+cy1xH3mexnZRCZMlObx5pEkNMpdvMyjX0XyXWytjBpP6GHc8b4MwMQ4elp3knr8uoOnEGZA96I+HtgyOkaXGrVW+enTycT2NQ/X4NvtNw7HF3KfYaUw2BzI0HVhElLVg60Bhq3uPmhpyxZ3MYUOOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kt9YJGjl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78AECC4CEE4;
-	Mon,  5 May 2025 22:47:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LthaRu5ZEElFKvKjqvWQO12srOQd5phRX/FwcKLeq49G1MS3MmZcUDLRe3vwNAeNMGCR2+GKhWSSN9zjwJbRPfbbB2wOXARSYPQ6Ovq3xoZdd7T77UzoPTHgza3PBdK/MqjvPfabXBEoKqiOnnFKXvJOvFubHboQ9ECgy2QC+Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cv6slrQ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D114C19423;
+	Mon,  5 May 2025 22:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485269;
-	bh=DXfYW3r1DBrCeuxs2FZqkes4nI1/Zin0FtfeaKoIqGE=;
+	s=k20201202; t=1746485272;
+	bh=/SHsAolBGXlNCIBtpLLAkQTtEBGdSSCB4TNjucA5LtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kt9YJGjl7/FR0/UaKcqgnufS4IbuWvNQkoCeJL3xFQRDpJFNNRxdSxI2XaGV08+JZ
-	 ukWV921Cpm6UmGByfKLnPAtDfD4nniZdpYdbUbaTav8JxfCVzDhKQNjfpWFxyVJaQb
-	 veQCTfmvjdik9mbBJqKgvhPWQp9ygkr9B303HiKSx4TWBAMv1N6wmeSRPTlIGl2WHr
-	 iVppdDc5DFVatxviV/fYhuE1kZFyhfqiPaxtW2zz+HZ4nRYwNySIrEXXe8AeuGNXMZ
-	 I2diDsggPvZqxZ6lbZ+3luXX2JsMSb7sGZpLuhLmZVYFIUcxbArRtOkCejjPyu28O6
-	 o9FRwnWhf5gHA==
+	b=cv6slrQ31+e0FE06qHUCG/FgxHzUDzcCAV8tPvtQCelkqenByLVu2BMn0U0zBSnbh
+	 zGDWJZ+Fjjv0PxM6a0tYEzGdUPVvyOopwMrZOr8bMUTMx+0UILy20EmbeFHm3C8n69
+	 tnPEFXZ3b18he1whtpO2jZ1ubl1gE2oc6yKhP+jPFhdPvUohxQTocA/VoFoYu/ZxQz
+	 8po2zWXo1i4zgxj7PNRpaZEwkesb8TlcQ7ekLeh4mV78e7knnj28lv5on8afebzY1z
+	 ylgUusNniBr3vFl1YTXn3k+qx5yJ4P2eXXo9cq/u+usrC4Tw03qKH7ZZguZ1EIZVjj
+	 ui+JgvBhsAVNg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Eric Woudstra <ericwouds@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	nbd@nbd.name,
-	sean.wang@mediatek.com,
-	lorenzo@kernel.org,
+	jv@jvosburgh.net,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 244/486] net: ethernet: mtk_ppe_offload: Allow QinQ, double ETH_P_8021Q only
-Date: Mon,  5 May 2025 18:35:20 -0400
-Message-Id: <20250505223922.2682012-244-sashal@kernel.org>
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 246/486] bonding: report duplicate MAC address in all situations
+Date: Mon,  5 May 2025 18:35:22 -0400
+Message-Id: <20250505223922.2682012-246-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -71,91 +66,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Eric Woudstra <ericwouds@gmail.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 7fe0353606d77a32c4c7f2814833dd1c043ebdd2 ]
+[ Upstream commit 28d68d396a1cd21591e8c6d74afbde33a7ea107e ]
 
-mtk_foe_entry_set_vlan() in mtk_ppe.c already supports double vlan
-tagging, but mtk_flow_offload_replace() in mtk_ppe_offload.c only allows
-for 1 vlan tag, optionally in combination with pppoe and dsa tags.
+Normally, a bond uses the MAC address of the first added slave as the bond’s
+MAC address. And the bond will set active slave’s MAC address to bond’s
+address if fail_over_mac is set to none (0) or follow (2).
 
-However, mtk_foe_entry_set_vlan() only allows for setting the vlan id.
-The protocol cannot be set, it is always ETH_P_8021Q, for inner and outer
-tag. This patch adds QinQ support to mtk_flow_offload_replace(), only in
-the case that both inner and outer tags are ETH_P_8021Q.
+When the first slave is removed, the bond will still use the removed slave’s
+MAC address, which can lead to a duplicate MAC address and potentially cause
+issues with the switch. To avoid confusion, let's warn the user in all
+situations, including when fail_over_mac is set to 2 or not in active-backup
+mode.
 
-Only PPPoE-in-Q (as before) and Q-in-Q are allowed. A combination
-of PPPoE and Q-in-Q is not allowed.
-
-Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
-Link: https://patch.msgid.link/20250225201509.20843-1-ericwouds@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250225033914.18617-1-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mediatek/mtk_ppe_offload.c   | 22 +++++++++----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/net/bonding/bond_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-index f20bb390df3ad..c855fb799ce14 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe_offload.c
-@@ -34,8 +34,10 @@ struct mtk_flow_data {
- 	u16 vlan_in;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 4d73abae503d1..4d2e30f4ee250 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2542,7 +2542,7 @@ static int __bond_release_one(struct net_device *bond_dev,
  
- 	struct {
--		u16 id;
--		__be16 proto;
-+		struct {
-+			u16 id;
-+			__be16 proto;
-+		} vlans[2];
- 		u8 num;
- 	} vlan;
- 	struct {
-@@ -349,18 +351,19 @@ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
- 		case FLOW_ACTION_CSUM:
- 			break;
- 		case FLOW_ACTION_VLAN_PUSH:
--			if (data.vlan.num == 1 ||
-+			if (data.vlan.num + data.pppoe.num == 2 ||
- 			    act->vlan.proto != htons(ETH_P_8021Q))
- 				return -EOPNOTSUPP;
+ 	RCU_INIT_POINTER(bond->current_arp_slave, NULL);
  
--			data.vlan.id = act->vlan.vid;
--			data.vlan.proto = act->vlan.proto;
-+			data.vlan.vlans[data.vlan.num].id = act->vlan.vid;
-+			data.vlan.vlans[data.vlan.num].proto = act->vlan.proto;
- 			data.vlan.num++;
- 			break;
- 		case FLOW_ACTION_VLAN_POP:
- 			break;
- 		case FLOW_ACTION_PPPOE_PUSH:
--			if (data.pppoe.num == 1)
-+			if (data.pppoe.num == 1 ||
-+			    data.vlan.num == 2)
- 				return -EOPNOTSUPP;
- 
- 			data.pppoe.sid = act->pppoe.sid;
-@@ -450,12 +453,9 @@ mtk_flow_offload_replace(struct mtk_eth *eth, struct flow_cls_offload *f,
- 	if (offload_type == MTK_PPE_PKT_TYPE_BRIDGE)
- 		foe.bridge.vlan = data.vlan_in;
- 
--	if (data.vlan.num == 1) {
--		if (data.vlan.proto != htons(ETH_P_8021Q))
--			return -EOPNOTSUPP;
-+	for (i = 0; i < data.vlan.num; i++)
-+		mtk_foe_entry_set_vlan(eth, &foe, data.vlan.vlans[i].id);
- 
--		mtk_foe_entry_set_vlan(eth, &foe, data.vlan.id);
--	}
- 	if (data.pppoe.num == 1)
- 		mtk_foe_entry_set_pppoe(eth, &foe, data.pppoe.sid);
- 
+-	if (!all && (!bond->params.fail_over_mac ||
++	if (!all && (bond->params.fail_over_mac != BOND_FOM_ACTIVE ||
+ 		     BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)) {
+ 		if (ether_addr_equal_64bits(bond_dev->dev_addr, slave->perm_hwaddr) &&
+ 		    bond_has_slaves(bond))
 -- 
 2.39.5
 
