@@ -1,67 +1,70 @@
-Return-Path: <stable+bounces-140007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8B5AAA3F5
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:22:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF6BAAA3AC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:18:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0E567B4880
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:16:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFE04188FAB8
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A577B2F664E;
-	Mon,  5 May 2025 22:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EE3284B5C;
+	Mon,  5 May 2025 22:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UngfIZz5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pq/IE7Np"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC602F6648;
-	Mon,  5 May 2025 22:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A27C2F6648;
+	Mon,  5 May 2025 22:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483898; cv=none; b=W+BAU8kY4uSSDfqisbhI21gk+5tSi7eFKYv1tk7D8d5fkqDReLjTDBq91va/kcbEIB4nsJXFYjHkYqlUBjLD+lG7oj5hHr6eF/J06R4meUzYtNuWeVuky+lGEU0FgHGMs6H0z+g0QqgAcGXf4cIORmJM4FLesn7xDz0RjQ69nyk=
+	t=1746483902; cv=none; b=GwJjsyc2D6GzSr1FkcWGlBbGeN2QwCNl8frY+Ld39zKJVefJVdGnrobXV9JMb/AMlIu675RvDWeGQ7/ikluUBFe/rBKjATdm//x+Y9XVjtOWJSIGrvKXZrVhMyDJWR3CS/w609FLOxk+/A2TO/kGQ0UO/FjHGN44X/bKPviKb48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483898; c=relaxed/simple;
-	bh=EpvfOA+AkGS6tM3bdG+sQj3qVbOD4uG5pj05WyaXprA=;
+	s=arc-20240116; t=1746483902; c=relaxed/simple;
+	bh=hPGDMPxI4Jtk67vaUVuzunpBf/jA19y2TKrx0ghs468=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LV79c8PCxNwZNnjwJj8bU2Fej/jC7kZCjcpzgKs0c5UpZArY9dBww1cOsFvIil/95DwiItWWpGfwmjc096EDNVby35Rc0DusZNI3zYF1Hrb6VwcK8gLcYoWlljLJaIrnBggwfbH8K8XhLuy7GOxnjlcmwYwUFXVkmYctw+YcN9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UngfIZz5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD06C4CEE4;
-	Mon,  5 May 2025 22:24:56 +0000 (UTC)
+	 MIME-Version; b=gQyaGwmOkQ0AjAt/u0SDAzw4tvRsfWxS9I12vvJGB3Th5XIvnGVRZe4cimziQxFKFQ3Zx5B+KgRs8VRS60ZSACPK4o7dpKZ97qQZ0OhhMfpnCBCaL12ifUAvmuo5/Z0h+Puw6OjhBCW7BrDyn0X+Q9VzyY40PeHZZelyMBpy7GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pq/IE7Np; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3E8C4CEE4;
+	Mon,  5 May 2025 22:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483898;
-	bh=EpvfOA+AkGS6tM3bdG+sQj3qVbOD4uG5pj05WyaXprA=;
+	s=k20201202; t=1746483901;
+	bh=hPGDMPxI4Jtk67vaUVuzunpBf/jA19y2TKrx0ghs468=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UngfIZz5i/I52/s44Isv15oGUPGcpGYm0IKztv1HIJ7QR3N3SdTelfzcStJYfX9LX
-	 PTNXLSidr7grahFOZusnQwONuWhZ6sNHTPTzIJ6ufRMbEXK0UPM7qw6+Kplr39wR2k
-	 rRjLCc1AE+S+Da5tV8VwhO77QI9Nr87gdiXRybAQD1o87Jq8RQxQANlVVZM0jfPYxW
-	 h8u6dYYkt1fabZ9mvi000XbX6vlAk/al6WKUAomdkE99A3kWatPGUnTPWnny+3i1Py
-	 FL+zp5rVKabEfaAlewdQDuAJp7ROFkJQaFDWsKeGQY+VsKdvxRLj/Oroqs/4rzDdR1
-	 UgPMHfNn6fmRw==
+	b=Pq/IE7Np334Ee6zTRsZKi5jjXy6S5Qgl0BWuZ1hzQ48vL8KIlixDH4KrJfMK8GZJc
+	 ByCCUtjU24vcs6H7+ZmR9083bxV2JnZDkIQMlTSz7eTbiz+tbbsUiS4cCK8/6XKz6J
+	 3b4SoaXGKj9G6gD/YVVIzodTLUGHfxX6aFa5TVK0lr+t0e6yi6WzhykmcsR3nk9HtN
+	 8Yu7b2F4ovqXwM6DVJGf3QJTAgXf5mdcHfvObw1PLeR0DxecxH6gbCBFCrsGPNnVim
+	 NYjqqm/YvtKUM33uddjcUj8sMA5Z07fKyjvF1WzuT5rfNW7nelnnSCWiDxteAW8Zyv
+	 g77zKObhQ/1kg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	robdclark@gmail.com,
-	lumag@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	marijn.suijten@somainline.org,
-	trabarni@gmail.com,
-	konradybcio@kernel.org,
-	arnd@arndb.de,
-	linux-arm-msm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 260/642] drm/msm/dpu: Set possible clones for all encoders
-Date: Mon,  5 May 2025 18:07:56 -0400
-Message-Id: <20250505221419.2672473-260-sashal@kernel.org>
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	alexander.sverdlin@gmail.com,
+	michal.kubiak@intel.com,
+	nicolas.dichtel@6wind.com,
+	lorenzo@kernel.org,
+	u.kleine-koenig@baylibre.com,
+	aleksander.lobakin@intel.com,
+	hkallweit1@gmail.com,
+	linux-omap@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 261/642] net: ethernet: ti: cpsw_new: populate netdev of_node
+Date: Mon,  5 May 2025 18:07:57 -0400
+Message-Id: <20250505221419.2672473-261-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -76,108 +79,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit e8cd8224a30798b65e05b26de284e1702b22ba5e ]
+[ Upstream commit 7ff1c88fc89688c27f773ba956f65f0c11367269 ]
 
-Set writeback encoders as possible clones for DSI encoders and vice
-versa.
+So that of_find_net_device_by_node() can find CPSW ports and other DSA
+switches can be stacked downstream. Tested in conjunction with KSZ8873.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/637498/
-Link: https://lore.kernel.org/r/20250214-concurrent-wb-v6-14-a44c293cf422@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/20250303074703.1758297-1-alexander.sverdlin@siemens.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 32 +++++++++++++++++++++
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.h |  2 ++
- drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c     |  7 +++--
- 3 files changed, 39 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ti/cpsw_new.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 7b56da24711e4..eca9c7d4ec6f5 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -2539,6 +2539,38 @@ static int dpu_encoder_virt_add_phys_encs(
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index cec0a90659d94..66713bc931741 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -1418,6 +1418,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
+ 		ndev->netdev_ops = &cpsw_netdev_ops;
+ 		ndev->ethtool_ops = &cpsw_ethtool_ops;
+ 		SET_NETDEV_DEV(ndev, dev);
++		ndev->dev.of_node = slave_data->slave_node;
  
-+/**
-+ * dpu_encoder_get_clones - Calculate the possible_clones for DPU encoder
-+ * @drm_enc:        DRM encoder pointer
-+ * Returns:         possible_clones mask
-+ */
-+uint32_t dpu_encoder_get_clones(struct drm_encoder *drm_enc)
-+{
-+	struct drm_encoder *curr;
-+	int type = drm_enc->encoder_type;
-+	uint32_t clone_mask = drm_encoder_mask(drm_enc);
-+
-+	/*
-+	 * Set writeback as possible clones of real-time DSI encoders and vice
-+	 * versa
-+	 *
-+	 * Writeback encoders can't be clones of each other and DSI
-+	 * encoders can't be clones of each other.
-+	 *
-+	 * TODO: Add DP encoders as valid possible clones for writeback encoders
-+	 * (and vice versa) once concurrent writeback has been validated for DP
-+	 */
-+	drm_for_each_encoder(curr, drm_enc->dev) {
-+		if ((type == DRM_MODE_ENCODER_VIRTUAL &&
-+		    curr->encoder_type == DRM_MODE_ENCODER_DSI) ||
-+		    (type == DRM_MODE_ENCODER_DSI &&
-+		    curr->encoder_type == DRM_MODE_ENCODER_VIRTUAL))
-+			clone_mask |= drm_encoder_mask(curr);
-+	}
-+
-+	return clone_mask;
-+}
-+
- static int dpu_encoder_setup_display(struct dpu_encoder_virt *dpu_enc,
- 				 struct dpu_kms *dpu_kms,
- 				 struct msm_display_info *disp_info)
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.h
-index da133ee4701a3..751be231ee7b1 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.h
-@@ -60,6 +60,8 @@ enum dpu_intf_mode dpu_encoder_get_intf_mode(struct drm_encoder *encoder);
- 
- void dpu_encoder_virt_runtime_resume(struct drm_encoder *encoder);
- 
-+uint32_t dpu_encoder_get_clones(struct drm_encoder *drm_enc);
-+
- struct drm_encoder *dpu_encoder_init(struct drm_device *dev,
- 		int drm_enc_mode,
- 		struct msm_display_info *disp_info);
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
-index 8741dc6fc8ddc..b8f4ebba8ac28 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
-@@ -2,7 +2,7 @@
- /*
-  * Copyright (C) 2013 Red Hat
-  * Copyright (c) 2014-2018, The Linux Foundation. All rights reserved.
-- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  *
-  * Author: Rob Clark <robdclark@gmail.com>
-  */
-@@ -834,8 +834,11 @@ static int _dpu_kms_drm_obj_init(struct dpu_kms *dpu_kms)
- 		return ret;
- 
- 	num_encoders = 0;
--	drm_for_each_encoder(encoder, dev)
-+	drm_for_each_encoder(encoder, dev) {
- 		num_encoders++;
-+		if (catalog->cwb_count > 0)
-+			encoder->possible_clones = dpu_encoder_get_clones(encoder);
-+	}
- 
- 	max_crtc_count = min(catalog->mixer_count, num_encoders);
- 
+ 		if (!napi_ndev) {
+ 			/* CPSW Host port CPDMA interface is shared between
 -- 
 2.39.5
 
