@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-140594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9AEAAA9EA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E705BAAA9FC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:26:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53DD87B3364
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:23:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF1057ABDAF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DD82DA10C;
-	Mon,  5 May 2025 22:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3DE3745A8;
+	Mon,  5 May 2025 22:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nc5oHZjr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9g/t7JB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52FA2BE10A;
-	Mon,  5 May 2025 22:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF5435F7CC;
+	Mon,  5 May 2025 22:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485243; cv=none; b=TwbdCju+HfZq+jlM2U+qb72tdsajtP/QJhn/K94ZByFRmn9qs7dsgPdPdE+48VbRki0zbJHDr6Mu0BqZL8syJd6GK+UeacG9OaLP2nGrT7dxw1Jay1lP0CyeowgtNGOy2XNgmS/8pbV9U5hIKQvDs6TtmOeB8kJYzg6CndDwHeo=
+	t=1746485246; cv=none; b=uLH9qetLzLKlVHzMCrW035xTUDT04fXERb20VelrxcLxHIaw1ab+uw2jPsvrAaIJ9EcZ9iueRnVLb7IHt5TicRaHABT+f27VZva8tApeO+afoBdPnKY/SvKJhWg6rgjee9Io98jYGpt753cKWhKbzxdSwc2cZyD/14uJFWe5oXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485243; c=relaxed/simple;
-	bh=ob0vvT2R1TZYXplndaOjW3twfOQy1RYATc7niEKvVFY=;
+	s=arc-20240116; t=1746485246; c=relaxed/simple;
+	bh=enAfUT/STELazeBDnsbKZdAHSgGQsc35imKgdRurVlg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=V3MBXSQKpnUg57acYuI0PXWZ67eBKYj2Zxi4RAjyLPQjjn9s17EQhXii1ucuCvSttcMLFfHiGCXcYn8PtmHDc17v6WkJIJcaHcBj4yklp4itUNH4YYheKQQHGTU984AXQm0nSnX+o63ZlUSQfjmC4uKJl0aZngmYuhbf+fpoKFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nc5oHZjr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BE6C4CEEE;
-	Mon,  5 May 2025 22:47:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WNreq1CGktQpR4fwCA29vCyZpUIaMZGtOBg88Qpol0r1T9iOA4NrOdpOjeKhzxgo0MWobQUrIUSBB6pmFrwwpAPndbUPIorwPEyN5y0t/Vh+R/qV/Yh/FlcBsUQEZwAVDT5VRNnZ8UOK3RSzSGSS99JL0WRycHuiQ4OKfUL/3Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9g/t7JB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2274CC4CEEF;
+	Mon,  5 May 2025 22:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485242;
-	bh=ob0vvT2R1TZYXplndaOjW3twfOQy1RYATc7niEKvVFY=;
+	s=k20201202; t=1746485244;
+	bh=enAfUT/STELazeBDnsbKZdAHSgGQsc35imKgdRurVlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nc5oHZjr6V5lg/J9TipRDP8ftjZNB17madeqkKEh4wi4sBg2mqyXjuhb94Ro/Nnwi
-	 gsQwiBxm4xGzwtI8Ns2cPiW2LwogGaJ6m/nBsggtG/MKGWtXwAsfsFwJ78D5Zhree8
-	 0MvA1Fyn9MIRGP7pdH7oMCZtMaSin6vdDElOSm3uiYYWy/qWmDqGDmacx1++COLz+z
-	 u2+3032UJMGqh00FNkvyxR8lzkmnbXfpOkKLSTSU07zdFFlFYukemSOkDmsMizX836
-	 z8Gj4FbgBj9c70C1MAIhlB8apfKCyDEgzWjtRDp3dkRGj6Brh6GopKnUC/CG8r2WZk
-	 yvzE3vO+0gp5Q==
+	b=K9g/t7JBXv7foVm48xbOE1Jf76s4sjqXZXfWlk0+ZrtMTP1GSgZ7+qn/XpqD1NfZk
+	 LJ71MC69jjLGqHqrt7w9D0tjyNFrTGVe+AjPwFXKt7kE+xNIjQY6grFTOfQC8+llxl
+	 2xeMqyT42yQ7oHP0hx2WCRM5tqw1jwXv6q4wQBu1RpcR49eA/iBHKJCeG1KbZIFG1i
+	 ZkIpRh+U3wSygkIjZsB+c0/1wsEqey8GLvGuECkvOLnw8DV42r3pRMrS8Dt1kC4i5g
+	 FUW4dlh9IjKAMZd+dIEawfYySlh/hlcrlvJPwwuePhZ2LvNeNQ2ykn+UM5yiYsZQ7h
+	 6t2aNyTyCbkAg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vinith Kumar R <quic_vinithku@quicinc.com>,
-	Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Stanimir Varbanov <svarbanov@suse.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	"Ivan T . Ivanov" <iivanov@suse.de>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 231/486] wifi: ath12k: Report proper tx completion status to mac80211
-Date: Mon,  5 May 2025 18:35:07 -0400
-Message-Id: <20250505223922.2682012-231-sashal@kernel.org>
+	jim2101024@gmail.com,
+	nsaenz@kernel.org,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	manivannan.sadhasivam@linaro.org,
+	bhelgaas@google.com,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 232/486] PCI: brcmstb: Expand inbound window size up to 64GB
+Date: Mon,  5 May 2025 18:35:08 -0400
+Message-Id: <20250505223922.2682012-232-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -64,59 +71,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Vinith Kumar R <quic_vinithku@quicinc.com>
+From: Stanimir Varbanov <svarbanov@suse.de>
 
-[ Upstream commit d2d9c9b8de725e1006d3aa3d18678a732f5d3584 ]
+[ Upstream commit 25a98c727015638baffcfa236e3f37b70cedcf87 ]
 
-Currently Tx completion for few exception packets are received from
-firmware and the tx status updated to mac80211. The tx status values of
-HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP and HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL
-are considered as tx failure and reported as tx failure to mac80211.
-But these failure status is due to internal firmware tx drop and these
-packets were not tried to transmit in the air.
-In case of mesh this invalid tx status report might trigger mpath broken
-issue due to increase in mpath fail average.
-So do not report these tx status as tx failure instead free the skb
-by calling ieee80211_free_txskb(), and that will be accounted as dropped
-frame.
+The BCM2712 memory map can support up to 64GB of system memory, thus
+expand the inbound window size in calculation helper function.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+The change is safe for the currently supported SoCs that have smaller
+inbound window sizes.
 
-Signed-off-by: Vinith Kumar R <quic_vinithku@quicinc.com>
-Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Link: https://patch.msgid.link/20241122173432.2064858-1-quic_tamizhr@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Jim Quinlan <james.quinlan@broadcom.com>
+Tested-by: Ivan T. Ivanov <iivanov@suse.de>
+Link: https://lore.kernel.org/r/20250224083559.47645-7-svarbanov@suse.de
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_tx.c | 4 ++--
+ drivers/pci/controller/pcie-brcmstb.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index 44406e0b4a342..ad21fbfbcbe22 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -557,13 +557,13 @@ ath12k_dp_tx_process_htt_tx_complete(struct ath12k_base *ab,
- 
- 	switch (wbm_status) {
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_OK:
--	case HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP:
--	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
- 		ts.acked = (wbm_status == HAL_WBM_REL_HTT_TX_COMP_STATUS_OK);
- 		ts.ack_rssi = le32_get_bits(status_desc->info2,
- 					    HTT_TX_WBM_COMP_INFO2_ACK_RSSI);
- 		ath12k_dp_tx_htt_tx_complete_buf(ab, msdu, tx_ring, &ts);
- 		break;
-+	case HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP:
-+	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_REINJ:
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_INSPECT:
- 		ath12k_dp_tx_free_txbuf(ab, msdu, mac_id, tx_ring);
+diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
+index 792d24cea5747..32ffb0c14c3ca 100644
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -309,8 +309,8 @@ static int brcm_pcie_encode_ibar_size(u64 size)
+ 	if (log2_in >= 12 && log2_in <= 15)
+ 		/* Covers 4KB to 32KB (inclusive) */
+ 		return (log2_in - 12) + 0x1c;
+-	else if (log2_in >= 16 && log2_in <= 35)
+-		/* Covers 64KB to 32GB, (inclusive) */
++	else if (log2_in >= 16 && log2_in <= 36)
++		/* Covers 64KB to 64GB, (inclusive) */
+ 		return log2_in - 15;
+ 	/* Something is awry so disable */
+ 	return 0;
 -- 
 2.39.5
 
