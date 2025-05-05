@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-139775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F537AA9F3E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:21:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9510AA9F44
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71F6B1A82127
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:21:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BA693BBC61
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1378B280A52;
-	Mon,  5 May 2025 22:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272DB28134A;
+	Mon,  5 May 2025 22:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pyIS9dX0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VluthK+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8450278E77;
-	Mon,  5 May 2025 22:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D81280CF6;
+	Mon,  5 May 2025 22:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483317; cv=none; b=sJUlh5xWNQVEbVvy/XxzWcww6pt3tgkOPrY+yvc5WcW+zfLowu4TCaTSI5CY3dcy99IDguZAoGVJxIPKvLd+rqBGwVSyGqQOjBboC1BMWR3HSJtQ2K45qNDD3em5TmgCDTzs1CpeLuPIZ0IgvFYWY97gmDaU62Uotnop0iOGY34=
+	t=1746483319; cv=none; b=PJHXGLLwfFt3gWMlKe4pHG9R75tMYTEV4BaCZq7bvaE+X3NJ0tcMHlc+M9RT2wXfocvfYCk2LgkCeWTgXdFOm0qnwyc7BzKYFNQFnn3RR2vW3pLy/tgKW2/if5tblq/I5YBik089PRNXj7+po5ig0yZQeGarZBpgUiO9rk7okHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483317; c=relaxed/simple;
-	bh=zxr0J4xp4Dcqt7uOJXpi3aRweK/Q+xJ6vt2zaX8YPlA=;
+	s=arc-20240116; t=1746483319; c=relaxed/simple;
+	bh=ORxGjFZHTBdKZjdWk+4Ls/NkXY4ai1J1HNwWoQyQhmo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bp0FJgAZ+eVBcIArSQEaT2JFuu08Q2QZACZ8HeG7zVp2qW0ZOechKf1sBMNet9qJ9zktwYKUvo0j74oBdWV7zsz1p1LPmj3JZGlZnsCLHlSRDi1esiLhjJL0ammW7EUvczFxPi5trBlTnFv+TTt9OTTGFbDaYvXl1M/qe5zmtiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pyIS9dX0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4791C4CEEE;
-	Mon,  5 May 2025 22:15:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mhr8IxXJMw6tIj/Qy08vtUc0snN2JEHTsNN8L9ZkzoziOo5Yzbj3QxOI87GQPhmWwjJk6VszWznTxmgpLyBhS//wTQAhTkW8SFq6T7nN0bG32hXs1Jv0Ptt236TcjngmGHjES4AxbhPJLVBZ3QYW4PKGd2DJfJvXFowBNvf+VIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VluthK+x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28683C4CEEE;
+	Mon,  5 May 2025 22:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483317;
-	bh=zxr0J4xp4Dcqt7uOJXpi3aRweK/Q+xJ6vt2zaX8YPlA=;
+	s=k20201202; t=1746483319;
+	bh=ORxGjFZHTBdKZjdWk+4Ls/NkXY4ai1J1HNwWoQyQhmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pyIS9dX066JaUDqDPQ1Lo9V20iUiFk9gzAAG5xbvwQB6WJjGQFAbuSnnTob1lkW8G
-	 xGbJMsKc3okLaf7WoITfHhzp9cDRgo+tsQc//HLWh00soHS3gmtqVEnez7olqnYtxh
-	 pmPRQiNEJKTfv4YOqfI7rkyFAV8iYnqR2uRw6BtRbLJ+BcYr5Uz9GO0LuXq3ujqNV4
-	 1wmuQC/7AJtAXciqvYgFkJSZ+W+5aPGLyxxrCuFMG82TZWHqgW0bXnDUENy57QrnNi
-	 i7F2lcMsHqcz2gHfM7+sgwN3Y455s/DM/IArjzvVo9kzKxWMm2M9RKNUiOFsKmI/pV
-	 wD5Q5Ke8sdKSQ==
+	b=VluthK+xPqu39sOimL4Rbs8ymhuDaoO1xlFD2T0HnSMrQgNeNSUQUbGPxglV3SCIQ
+	 IRRhKvCBXLryQ2C8RhP7sdxJoGo0z4khrQSyCIBXoKDaLFo0owMUXfzVeLCXA1rXs/
+	 AsPAlnUn3xpl3Yfnu9P/oorKu69nc+4JJP+kCx5vY1mqz19Ye6G4P+9ImzYlnwrC6e
+	 VEfzrpHwKDXdj0f5hcy2Gc8TefLJWD6IOXuGZwpKx6UAa3eWgl7fD6Hptq0XV2UVZr
+	 bUJXoTnlaRA7CTRoY647XRaa+LKM4xS8pF0LWgoNjNNt64ZqI4ucURjGGKt6xc1xC/
+	 g62xPr7Kn167Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -50,9 +50,9 @@ Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
 	sfrench@samba.org,
 	linux-cifs@vger.kernel.org,
 	samba-technical@lists.samba.org
-Subject: [PATCH AUTOSEL 6.14 029/642] cifs: Fix establishing NetBIOS session for SMB2+ connection
-Date: Mon,  5 May 2025 18:04:05 -0400
-Message-Id: <20250505221419.2672473-29-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 030/642] cifs: Fix getting DACL-only xattr system.cifs_acl and system.smb3_acl
+Date: Mon,  5 May 2025 18:04:06 -0400
+Message-Id: <20250505221419.2672473-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -70,113 +70,109 @@ Content-Transfer-Encoding: 8bit
 
 From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 781802aa5a5950f99899f13ff9d760f5db81d36d ]
+[ Upstream commit ad9364a6835c45c52f47587ffbe0577bb7cd4c5b ]
 
-Function ip_rfc1001_connect() which establish NetBIOS session for SMB
-connections, currently uses smb_send() function for sending NetBIOS Session
-Request packet. This function expects that the passed buffer is SMB packet
-and for SMB2+ connections it mangles packet header, which breaks prepared
-NetBIOS Session Request packet. Result is that this function send garbage
-packet for SMB2+ connection, which SMB2+ server cannot parse. That function
-is not mangling packets for SMB1 connections, so it somehow works for SMB1.
+Currently ->get_acl() callback always create request for OWNER, GROUP and
+DACL, even when only DACLs was requested by user. Change API callback to
+request only information for which the caller asked. Therefore when only
+DACLs requested, then SMB client will prepare and send DACL-only request.
 
-Fix this problem and instead of smb_send(), use smb_send_kvec() function
-which does not mangle prepared packet, this function send them as is. Just
-API of this function takes struct msghdr (kvec) instead of packet buffer.
+This change fixes retrieving of "system.cifs_acl" and "system.smb3_acl"
+xattrs to contain only DACL structure as documented.
 
-[MS-SMB2] specification allows SMB2 protocol to use NetBIOS as a transport
-protocol. NetBIOS can be used over TCP via port 139. So this is a valid
-configuration, just not so common. And even recent Windows versions (e.g.
-Windows Server 2022) still supports this configuration: SMB over TCP port
-139, including for modern SMB2 and SMB3 dialects.
-
-This change fixes SMB2 and SMB3 connections over TCP port 139 which
-requires establishing of NetBIOS session. Tested that this change fixes
-establishing of SMB2 and SMB3 connections with Windows Server 2022.
+Note that setting/changing of "system.cifs_acl" and "system.smb3_acl"
+xattrs already takes only DACL structure and ignores all other fields.
 
 Signed-off-by: Pali Rohár <pali@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsproto.h |  3 +++
- fs/smb/client/connect.c   | 20 +++++++++++++++-----
- fs/smb/client/transport.c |  2 +-
- 3 files changed, 19 insertions(+), 6 deletions(-)
+ fs/smb/client/cifsacl.c |  4 ++--
+ fs/smb/client/cifssmb.c |  3 +--
+ fs/smb/client/smb2pdu.c |  4 +---
+ fs/smb/client/xattr.c   | 15 +++++++++++----
+ 4 files changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index 278092a15f890..1609ca825d825 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -31,6 +31,9 @@ extern void cifs_small_buf_release(void *);
- extern void free_rsp_buf(int, void *);
- extern int smb_send(struct TCP_Server_Info *, struct smb_hdr *,
- 			unsigned int /* length */);
-+extern int smb_send_kvec(struct TCP_Server_Info *server,
-+			 struct msghdr *msg,
-+			 size_t *sent);
- extern unsigned int _get_xid(void);
- extern void _free_xid(unsigned int);
- #define get_xid()							\
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index 92685fc675b59..22f29d2725928 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -3028,8 +3028,10 @@ ip_rfc1001_connect(struct TCP_Server_Info *server)
- 	 * sessinit is sent but no second negprot
- 	 */
- 	struct rfc1002_session_packet req = {};
--	struct smb_hdr *smb_buf = (struct smb_hdr *)&req;
-+	struct msghdr msg = {};
-+	struct kvec iov = {};
- 	unsigned int len;
-+	size_t sent;
+diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
+index f9d577f2d59bb..63b3b1290bed2 100644
+--- a/fs/smb/client/cifsacl.c
++++ b/fs/smb/client/cifsacl.c
+@@ -1565,7 +1565,7 @@ cifs_acl_to_fattr(struct cifs_sb_info *cifs_sb, struct cifs_fattr *fattr,
+ 	int rc = 0;
+ 	struct tcon_link *tlink = cifs_sb_tlink(cifs_sb);
+ 	struct smb_version_operations *ops;
+-	const u32 info = 0;
++	const u32 info = OWNER_SECINFO | GROUP_SECINFO | DACL_SECINFO;
  
- 	req.trailer.session_req.called_len = sizeof(req.trailer.session_req.called_name);
+ 	cifs_dbg(NOISY, "converting ACL to mode for %s\n", path);
  
-@@ -3058,10 +3060,18 @@ ip_rfc1001_connect(struct TCP_Server_Info *server)
- 	 * As per rfc1002, @len must be the number of bytes that follows the
- 	 * length field of a rfc1002 session request payload.
- 	 */
--	len = sizeof(req) - offsetof(struct rfc1002_session_packet, trailer.session_req);
-+	len = sizeof(req.trailer.session_req);
-+	req.type = RFC1002_SESSION_REQUEST;
-+	req.flags = 0;
-+	req.length = cpu_to_be16(len);
-+	len += offsetof(typeof(req), trailer.session_req);
-+	iov.iov_base = &req;
-+	iov.iov_len = len;
-+	iov_iter_kvec(&msg.msg_iter, ITER_SOURCE, &iov, 1, len);
-+	rc = smb_send_kvec(server, &msg, &sent);
-+	if (rc < 0 || len != sent)
-+		return (rc == -EINTR || rc == -EAGAIN) ? rc : -ECONNABORTED;
+@@ -1619,7 +1619,7 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
+ 	struct tcon_link *tlink;
+ 	struct smb_version_operations *ops;
+ 	bool mode_from_sid, id_from_sid;
+-	const u32 info = 0;
++	const u32 info = OWNER_SECINFO | GROUP_SECINFO | DACL_SECINFO;
+ 	bool posix;
  
--	smb_buf->smb_buf_length = cpu_to_be32((RFC1002_SESSION_REQUEST << 24) | len);
--	rc = smb_send(server, smb_buf, len);
- 	/*
- 	 * RFC1001 layer in at least one server requires very short break before
- 	 * negprot presumably because not expecting negprot to follow so fast.
-@@ -3070,7 +3080,7 @@ ip_rfc1001_connect(struct TCP_Server_Info *server)
- 	 */
- 	usleep_range(1000, 2000);
+ 	tlink = cifs_sb_tlink(cifs_sb);
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index c2abe79f0dd3b..e90811f321944 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -3416,8 +3416,7 @@ CIFSSMBGetCIFSACL(const unsigned int xid, struct cifs_tcon *tcon, __u16 fid,
+ 	/* BB TEST with big acls that might need to be e.g. larger than 16K */
+ 	pSMB->MaxSetupCount = 0;
+ 	pSMB->Fid = fid; /* file handle always le */
+-	pSMB->AclFlags = cpu_to_le32(CIFS_ACL_OWNER | CIFS_ACL_GROUP |
+-				     CIFS_ACL_DACL | info);
++	pSMB->AclFlags = cpu_to_le32(info);
+ 	pSMB->ByteCount = cpu_to_le16(11); /* 3 bytes pad + 8 bytes parm */
+ 	inc_rfc1001_len(pSMB, 11);
+ 	iov[0].iov_base = (char *)pSMB;
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 163b8fea47e8a..044ace0bcde74 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -3909,12 +3909,10 @@ SMB2_query_acl(const unsigned int xid, struct cifs_tcon *tcon,
+ 	       u64 persistent_fid, u64 volatile_fid,
+ 	       void **data, u32 *plen, u32 extra_info)
+ {
+-	__u32 additional_info = OWNER_SECINFO | GROUP_SECINFO | DACL_SECINFO |
+-				extra_info;
+ 	*plen = 0;
  
--	return rc;
-+	return 0;
+ 	return query_info(xid, tcon, persistent_fid, volatile_fid,
+-			  0, SMB2_O_INFO_SECURITY, additional_info,
++			  0, SMB2_O_INFO_SECURITY, extra_info,
+ 			  SMB2_MAX_BUFFER_SIZE, MIN_SEC_DESC_LEN, data, plen);
  }
  
- static int
-diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
-index 0dc80959ce488..03434dbe9374c 100644
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -179,7 +179,7 @@ delete_mid(struct mid_q_entry *mid)
-  * Our basic "send data to server" function. Should be called with srv_mutex
-  * held. The caller is responsible for handling the results.
-  */
--static int
-+int
- smb_send_kvec(struct TCP_Server_Info *server, struct msghdr *smb_msg,
- 	      size_t *sent)
- {
+diff --git a/fs/smb/client/xattr.c b/fs/smb/client/xattr.c
+index 58a584f0b27e9..7d49f38f01f3e 100644
+--- a/fs/smb/client/xattr.c
++++ b/fs/smb/client/xattr.c
+@@ -320,10 +320,17 @@ static int cifs_xattr_get(const struct xattr_handler *handler,
+ 		if (pTcon->ses->server->ops->get_acl == NULL)
+ 			goto out; /* rc already EOPNOTSUPP */
+ 
+-		if (handler->flags == XATTR_CIFS_NTSD_FULL) {
+-			extra_info = SACL_SECINFO;
+-		} else {
+-			extra_info = 0;
++		switch (handler->flags) {
++		case XATTR_CIFS_NTSD_FULL:
++			extra_info = OWNER_SECINFO | GROUP_SECINFO | DACL_SECINFO | SACL_SECINFO;
++			break;
++		case XATTR_CIFS_NTSD:
++			extra_info = OWNER_SECINFO | GROUP_SECINFO | DACL_SECINFO;
++			break;
++		case XATTR_CIFS_ACL:
++		default:
++			extra_info = DACL_SECINFO;
++			break;
+ 		}
+ 		pacl = pTcon->ses->server->ops->get_acl(cifs_sb,
+ 				inode, full_path, &acllen, extra_info);
 -- 
 2.39.5
 
