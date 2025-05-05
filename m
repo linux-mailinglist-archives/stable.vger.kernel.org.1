@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-140658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8F28AAAE6D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:56:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317B6AAAE9E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:00:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E9E17AF2C6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:55:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9233B189C5DC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A263438E944;
-	Mon,  5 May 2025 23:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D241A37A89E;
+	Mon,  5 May 2025 23:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qYb8pVg8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mMepZpEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D810136E0A3;
-	Mon,  5 May 2025 22:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B6B36EF35;
+	Mon,  5 May 2025 22:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485848; cv=none; b=IUF48MREHRCErAk6JByY0WBJVu8XPAZR88mkm1IlKr1GWPchTmriFZ4b5Cd6xzYDEZGBQDf6/kXpbWomBsToML8f+KyvKMyNgG+VejWoPG9FRyXd4KWCgi/ZrG6r4O/RSKqkwPLLjPI3TEIW1OY0Cu+pdZ51XMFbHe9xGIRiQxA=
+	t=1746485864; cv=none; b=Hky+ImWLXqVQpYoXC6OW73yZgAxelq/O0wD36WlmBy8iAw4u3z9vfTCjehwUrzq7vQBI6Y8fnfU1pwG7QF+PjfguILqBDV2evxYaG9bpUK29Y/d/y690Ns6FHKoi4ZF28rAr+EsWvqlWg7ai9UdC+hKSb+7AQah29z3P82PFgJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485848; c=relaxed/simple;
-	bh=BC5wgkzZrLUQpv9RRq6O9txRZ/0tSk0XyV13p3GKeGs=;
+	s=arc-20240116; t=1746485864; c=relaxed/simple;
+	bh=rRPQrr8rQ2U57aU/QceYFLpT/KG7abauUVPWd1WRWmc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AMjstFBbV/B4sRYNKNe8nCRvicVtBRWQYyIXXwJy1ko46RpHxQx97TtUkbHXVgJpR+YX4nZZKv62SICMh9815eR4AN0+tFzdhU4xJ6Aj38bJ+ieBlSQT5mATEZtsDturrBmSiZi4WiBUYHnbIJEZAeC8voHZu4t8KIlhVuMLrs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qYb8pVg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB09C4CEE4;
-	Mon,  5 May 2025 22:57:27 +0000 (UTC)
+	 MIME-Version; b=AgoZ2jQNDWym9FGV4kd4ajdtpCXVHbOS4TL2ICfbDpWVbt8gsXDGZu1FMu+ccnKbo/3Rxt/hVJ2XzOX2lD5EhlzdmXmWPNa9NIP5A+FrkpLEDiWC8aJ/i4dJMBXmqi7EQHACf9viJtTk6xCH+RyY5DBXuXGD2ysSmZdipKLZqRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mMepZpEQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5F7C4CEE4;
+	Mon,  5 May 2025 22:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485848;
-	bh=BC5wgkzZrLUQpv9RRq6O9txRZ/0tSk0XyV13p3GKeGs=;
+	s=k20201202; t=1746485863;
+	bh=rRPQrr8rQ2U57aU/QceYFLpT/KG7abauUVPWd1WRWmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qYb8pVg8/qsjxfK1lTkLmpMDw8hGcZsE3K+4rqHyXOsxG234C8sPBj7Ui2bPZH3KO
-	 wrAO2dOb4W38YS4t8wylzYNPAJV7yEpSf5Y0N2LxO1/xdjFWUXJqqAEh3ZR8GkQm9O
-	 fdyDvAZKY8uVNBNUAuFVCqYXXkd/go+DQSn4Q9Pa0GaOzscQU+FIL35/kuThfv29xp
-	 vtdEplV00Ez24Yf0e+BSlbPrLku47eVqe+ksOIJPCvhZzK//RsPf7c4NnZPzIdu3lK
-	 eUjLTw924Xmlyv51qQBkLgylaulJPQ1SD1Vl5ABNt+Gc99yad+BOCGPhwgwSTwLnvX
-	 YqxBD6bZyFrFw==
+	b=mMepZpEQVXXHb5ROzxLJbgP0xcq6KcodXDzqk6b41IUTPdD3YrikQvGVWcpzkcPW0
+	 kVkPlUcAbwxJ7uGAHF+AFHd8qIGZ/gJgyaGxctAUhJXNDXTYMaWsnaMAGVM/kW0TGj
+	 AuuPTNtQAGkHsqtEiJdL1qcBKlWjwybfQq+QPMxyrO18cqh5rAQRWeQOfLJx0TkNML
+	 ZipYCfIFTvWHf8QYs8TZLI3unKcLY+udIRywKjkzGTSKmSnoBn/cVNhdMX0JT/Mnju
+	 Uxrjs+MKsqnsYMO9Icb1vxzTUnNxAw02oKmMrUh9cJr39mIw6uXXRRgtrEq4jn330o
+	 MLLZw6baLB2DA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Robert Richter <rrichter@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	akpm@linux-foundation.org,
-	mhocko@suse.com,
-	Liam.Howlett@Oracle.com,
-	mjguzik@gmail.com,
-	pasha.tatashin@soleen.com,
-	alexjlzheng@tencent.com
-Subject: [PATCH AUTOSEL 6.6 027/294] exit: fix the usage of delay_group_leader->exit_code in do_notify_parent() and pidfs_exit()
-Date: Mon,  5 May 2025 18:52:07 -0400
-Message-Id: <20250505225634.2688578-27-sashal@kernel.org>
+	dan.j.williams@intel.com,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	nvdimm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.6 036/294] libnvdimm/labels: Fix divide error in nd_label_data_init()
+Date: Mon,  5 May 2025 18:52:16 -0400
+Message-Id: <20250505225634.2688578-36-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -70,49 +69,62 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Robert Richter <rrichter@amd.com>
 
-[ Upstream commit 9133607de37a4887c6f89ed937176a0a0c1ebb17 ]
+[ Upstream commit ef1d3455bbc1922f94a91ed58d3d7db440652959 ]
 
-Consider a process with a group leader L and a sub-thread T.
-L does sys_exit(1), then T does sys_exit_group(2).
+If a faulty CXL memory device returns a broken zero LSA size in its
+memory device information (Identify Memory Device (Opcode 4000h), CXL
+spec. 3.1, 8.2.9.9.1.1), a divide error occurs in the libnvdimm
+driver:
 
-In this case wait_task_zombie(L) will notice SIGNAL_GROUP_EXIT and use
-L->signal->group_exit_code, this is correct.
+ Oops: divide error: 0000 [#1] PREEMPT SMP NOPTI
+ RIP: 0010:nd_label_data_init+0x10e/0x800 [libnvdimm]
 
-But, before that, do_notify_parent(L) called by release_task(T) will use
-L->exit_code != L->signal->group_exit_code, and this is not consistent.
-We don't really care, I think that nobody relies on the info which comes
-with SIGCHLD, if nothing else SIGCHLD < SIGRTMIN can be queued only once.
+Code and flow:
 
-But pidfs_exit() is more problematic, I think pidfs_exit_info->exit_code
-should report ->group_exit_code in this case, just like wait_task_zombie().
+1) CXL Command 4000h returns LSA size = 0
+2) config_size is assigned to zero LSA size (CXL pmem driver):
 
-TODO: with this change we can hopefully cleanup (or may be even kill) the
-similar SIGNAL_GROUP_EXIT checks, at least in wait_task_zombie().
+drivers/cxl/pmem.c:             .config_size = mds->lsa_size,
 
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250324171941.GA13114@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+3) max_xfer is set to zero (nvdimm driver):
+
+drivers/nvdimm/label.c: max_xfer = min_t(size_t, ndd->nsarea.max_xfer, config_size);
+
+4) A subsequent DIV_ROUND_UP() causes a division by zero:
+
+drivers/nvdimm/label.c: /* Make our initial read size a multiple of max_xfer size */
+drivers/nvdimm/label.c: read_size = min(DIV_ROUND_UP(read_size, max_xfer) * max_xfer,
+drivers/nvdimm/label.c-                 config_size);
+
+Fix this by checking the config size parameter by extending an
+existing check.
+
+Signed-off-by: Robert Richter <rrichter@amd.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/20250320112223.608320-1-rrichter@amd.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/exit.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvdimm/label.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 3540b2c9b1b6a..1b7257c12cb10 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -264,6 +264,9 @@ void release_task(struct task_struct *p)
- 	leader = p->group_leader;
- 	if (leader != p && thread_group_empty(leader)
- 			&& leader->exit_state == EXIT_ZOMBIE) {
-+		/* for pidfs_exit() and do_notify_parent() */
-+		if (leader->signal->flags & SIGNAL_GROUP_EXIT)
-+			leader->exit_code = leader->signal->group_exit_code;
- 		/*
- 		 * If we were the last child thread and the leader has
- 		 * exited already, and the leader's parent ignores SIGCHLD,
+diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
+index 082253a3a9560..04f4a049599a1 100644
+--- a/drivers/nvdimm/label.c
++++ b/drivers/nvdimm/label.c
+@@ -442,7 +442,8 @@ int nd_label_data_init(struct nvdimm_drvdata *ndd)
+ 	if (ndd->data)
+ 		return 0;
+ 
+-	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0) {
++	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0 ||
++	    ndd->nsarea.config_size == 0) {
+ 		dev_dbg(ndd->dev, "failed to init config data area: (%u:%u)\n",
+ 			ndd->nsarea.max_xfer, ndd->nsarea.config_size);
+ 		return -ENXIO;
 -- 
 2.39.5
 
