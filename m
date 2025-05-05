@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-140374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A3CAAA7EE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:44:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEDCDAAA82D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:49:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24C347AE8AD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:43:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46B0B9A0D89
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592F634567B;
-	Mon,  5 May 2025 22:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7144D34569B;
+	Mon,  5 May 2025 22:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRN59nBj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dHB2aBZP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFA9345670;
-	Mon,  5 May 2025 22:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2D7345694;
+	Mon,  5 May 2025 22:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484718; cv=none; b=Y/555RnPIv1SuncF6TiDGFrC9kR17hw30fmVWyD9AZ/vFkTWkXGHUBaXsDF4FFHkqzI5ANw3AHqTYbdYC9fkF/2RP+ZCaZtuUHQyrZkrsHTjdv4uTwq5vInL5gOhI3pbLJOU39f1floeZGrzvMip8w4I6AyINcRXx1afXImMhEk=
+	t=1746484720; cv=none; b=t6oKFw0JfGbmzdt3ANLnHSL6HBafCMyzmaKUtMJvRoS4HMrWK8ua9DJlMwcakg5vgyWHw84KJvYM1gfY624LKvNfLYCu9k+sGygxW6Z5HK/TKHjPlGOlEo6KvvBwKLVWHu9o0CDu5Qq4RJ3R2jpyXx+5QM24TjLDQgkUemsOAj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484718; c=relaxed/simple;
-	bh=1YTU3ESkwdVv6RB5nNltndQ7yTD5PJSLow+2vvkOpvw=;
+	s=arc-20240116; t=1746484720; c=relaxed/simple;
+	bh=s61Je2PkceIhRzOL/l54+OairdWxRxRQmN5FWDJG8AY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pUJnUdlAYdJie2QVJgx8CXfI3/bszD4SaL4Js4rrK32CeIGaE7cFOw6DvtmHi4EU6RsFdfzbUinOkfMmB4sdFVWrEcdhLE79ezFc8c+4N+hodioeRmjWww1MuUGY+PkxGAyte+YLTf5/jFmM2nL79ytB+edEcZmsMgeckz0dQ6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRN59nBj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB86C4CEE4;
-	Mon,  5 May 2025 22:38:36 +0000 (UTC)
+	 MIME-Version; b=Xp42ORYHssK9A08VUBT9IrgxjuClnme+DDasb5wBbW509mwTSNk0+VKJFuFcvnwVAw7z0OsRyCKaATvqJPpKAnMKTedlbTeN6yji04w08v94LBYu0I3lDQjiOjUVV/YV0p/PTqFXFBFho+JNbjQZrrf1P3s9ncHU0T8NKrVwcMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dHB2aBZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE4CC4CEE4;
+	Mon,  5 May 2025 22:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484717;
-	bh=1YTU3ESkwdVv6RB5nNltndQ7yTD5PJSLow+2vvkOpvw=;
+	s=k20201202; t=1746484719;
+	bh=s61Je2PkceIhRzOL/l54+OairdWxRxRQmN5FWDJG8AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bRN59nBjlmXmr48hq8ZHw2i3Qp0sClywaTQe83HIPhw2o2PDi++8plGPRfK5x8vRU
-	 mDwEva1XMKRofsEomRejajl1JQeEYTXf2lKDgPnPUoN/AmYPHaMpcGkAPCs9qIyQ7X
-	 mfKT/oA+QgBp7cJIBtcJV1WDHZpqNYP2U1gi2y2C0AOl9qvIVyOAck7z71iWrsvYMd
-	 blDI5bMambQbIXg/X8xqC/k+I4KRk0wpdXSgbeEBSPX320do3Cpu+J8bbChK3JrgW4
-	 B+KldZxNDbmFYIE5Tr3jh8kFUTxce9buYPqg6BssM2kViCSR3oGEJTsAmG4oGB4CS0
-	 /U3YwPqDIQjeg==
+	b=dHB2aBZPeYHN7WNgQXX/g0IOKS9l/2k4+aXwSWjvWjTxgVNsm2Q0OQYm7XLVHCAmL
+	 tMB6T0ttVwH1ZB51vFb7Y5eqK5rPPCzJrszvn7J31QLMr6ZjQGC5NkZ+LvSX/mv9IR
+	 tkNHIatjVns908YquXKvClXK53GXsItrQIqCXdUdb/EMkbkEFuNJ50pCKIoagChMHn
+	 ckVzn7JKYX/PBx+MXQlbpUxWk85qHjzeKUxt6Anq63zNcuCVtT2cccjh0dv20rngub
+	 2ZikM7xDAhWFMwCbc1Yvu0FTqdLWhla0MmQXpJuD7r1z7Fi0/hycsEfItna0yZenY/
+	 S1qJot7r0lIKQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>,
-	thierry.reding@gmail.com,
-	jonathanh@nvidia.com,
-	pshete@nvidia.com,
-	peng.fan@nxp.com,
-	linux-gpio@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 625/642] pinctrl: tegra: Fix off by one in tegra_pinctrl_get_group()
-Date: Mon,  5 May 2025 18:14:01 -0400
-Message-Id: <20250505221419.2672473-625-sashal@kernel.org>
+	joel@jms.id.au,
+	andrew@codeconstruct.com.au,
+	chin-ting_kuo@aspeedtech.com,
+	linux-watchdog@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-aspeed@lists.ozlabs.org
+Subject: [PATCH AUTOSEL 6.14 626/642] watchdog: aspeed: fix 64-bit division
+Date: Mon,  5 May 2025 18:14:02 -0400
+Message-Id: <20250505221419.2672473-626-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -71,37 +71,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5a062c3c3b82004766bc3ece82b594d337076152 ]
+[ Upstream commit 48a136639ec233614a61653e19f559977d5da2b5 ]
 
-This should be >= pmx->soc->ngroups instead of > to avoid an out of
-bounds access.  The pmx->soc->groups[] array is allocated in
-tegra_pinctrl_probe().
+On 32-bit architectures, the new calculation causes a build failure:
 
-Fixes: c12bfa0fee65 ("pinctrl-tegra: Restore SFSEL bit when freeing pins")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Kunwu Chan <kunwu.chan@linux.dev>
-Link: https://lore.kernel.org/82b40d9d-b437-42a9-9eb3-2328aa6877ac@stanley.mountain
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+ld.lld-21: error: undefined symbol: __aeabi_uldivmod
+
+Since neither value is ever larger than a register, cast both
+sides into a uintptr_t.
+
+Fixes: 5c03f9f4d362 ("watchdog: aspeed: Update bootstatus handling")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250314160248.502324-1-arnd@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/tegra/pinctrl-tegra.c | 2 +-
+ drivers/watchdog/aspeed_wdt.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/tegra/pinctrl-tegra.c b/drivers/pinctrl/tegra/pinctrl-tegra.c
-index 27823e4207347..edcc78ebce456 100644
---- a/drivers/pinctrl/tegra/pinctrl-tegra.c
-+++ b/drivers/pinctrl/tegra/pinctrl-tegra.c
-@@ -305,7 +305,7 @@ static const struct tegra_pingroup *tegra_pinctrl_get_group(struct pinctrl_dev *
- {
- 	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
+diff --git a/drivers/watchdog/aspeed_wdt.c b/drivers/watchdog/aspeed_wdt.c
+index 369635b38ca0e..837e15701c0e2 100644
+--- a/drivers/watchdog/aspeed_wdt.c
++++ b/drivers/watchdog/aspeed_wdt.c
+@@ -254,7 +254,7 @@ static void aspeed_wdt_update_bootstatus(struct platform_device *pdev,
  
--	if (group_index < 0 || group_index > pmx->soc->ngroups)
-+	if (group_index < 0 || group_index >= pmx->soc->ngroups)
- 		return NULL;
+ 	if (!of_device_is_compatible(pdev->dev.of_node, "aspeed,ast2400-wdt")) {
+ 		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-		idx = ((intptr_t)wdt->base & 0x00000fff) / resource_size(res);
++		idx = ((intptr_t)wdt->base & 0x00000fff) / (uintptr_t)resource_size(res);
+ 	}
  
- 	return &pmx->soc->groups[group_index];
+ 	scu_base = syscon_regmap_lookup_by_compatible(scu.compatible);
 -- 
 2.39.5
 
