@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-140716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC14CAAAEDA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:05:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8999EAAAED9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:05:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08FF41A83F11
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:02:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30E421BA7D66
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A983839D1;
-	Mon,  5 May 2025 23:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30705283697;
+	Mon,  5 May 2025 23:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CiMsyCC0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DDp6phfc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33D138752D;
-	Mon,  5 May 2025 23:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AB52D269E;
+	Mon,  5 May 2025 23:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486047; cv=none; b=b9jldAopzlesqAsOdJzWwjyE5zMQP0POXlwxVnQRfFfdV8Uku1FMPrca8XXaXS5+SLjlupD/YIV5/QvRLZ4PnzkfX25/p1u7KorBZGuuVV3GyQ42gmLMynG08QSGCkSS8IX1OpcPMsEtD9sto9nHqpEsVAu63gh27hxYq7NyDa4=
+	t=1746486049; cv=none; b=sSNCd5qT1e3dqmi7nLWzDfqG3PrSSWLJiz6I+KnjM7lu/vU5zx+qKOe10hUWnLUx6sOD0AFZ0edd8/89Ew9/gDhIS0m4JWiHq151+KgDQWGzZ/QbAdtSDmE1G6pXrlZmZoKxYgTIUcCLv3I8RA+QE/nCiwhj3eCo1A0Ff6F4xs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486047; c=relaxed/simple;
-	bh=w0vBx3e2xWbegNY3+pocMmKhIGFKLZS6rIfZtZxg0Dk=;
+	s=arc-20240116; t=1746486049; c=relaxed/simple;
+	bh=aiC4SBjgelIG567vwbV5hUes4Lo+EROcUkIHcu2EjXc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=No80lUG33yYHSi0FMeTYB+oMeru5gi7Xvivbaqde52TUjoTsSbuQ0nyGkdV6t4QsUM3G3Q6mfdyJ+qMaxGSbFpUFS25wpGbXc6wDl3soiyLhbjU+UXy30olhbSGN448LnGC9gdSwmoO0uZtdgAtDbi6B6a3+qEE3e6KprWnGCIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CiMsyCC0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C7BC4CEE4;
-	Mon,  5 May 2025 23:00:45 +0000 (UTC)
+	 MIME-Version; b=D+r/zsIYDqHMtyMh2VHOb3fMP3PvOGGQefoRcvKLue8MJJhLd2TQi1GjrLJP3zjBQYb2njZCA7r3Gc00YXGvmr05/P4HoqaEblVZdZNKm0Or/mghP/NbZntUhX167b6WYgm4mjt9pq+kgSlaA3bVRNmyDtY8o/dACjdYzZCTVdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DDp6phfc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B1E3C4CEEE;
+	Mon,  5 May 2025 23:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486046;
-	bh=w0vBx3e2xWbegNY3+pocMmKhIGFKLZS6rIfZtZxg0Dk=;
+	s=k20201202; t=1746486048;
+	bh=aiC4SBjgelIG567vwbV5hUes4Lo+EROcUkIHcu2EjXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CiMsyCC0pQ3wfDIot27oduDYk4giwpCLIWEcvSHIZOniJvm2eRFKlYMIYsDgKzzFd
-	 zuAvIpQcT6Bp/7XQ8/vwl9iaD8V2j+p/wlemY9Si8dd+zboTGuA513uCu3MWj3vjMi
-	 qNRg+WRfDvKkpUgpN+wcBIWNZE9JbTOb0jPIvjHAs9+MGK1HnyDMJvT3YDiw1b1dgr
-	 u3miC+VFbAI3Fw4bpv1IHHhi60PbKyiDIawEa65GDS1bIHj4XMDuIYJsU4ghJyudDf
-	 3X12Uu8+fRmhNse9/tQHXa/Pw58G6GpFO3YB8gXoA3iShquMCMhbAxELZ6cdFpZ5WM
-	 rn4zEjJwVFg1A==
+	b=DDp6phfcXfRUzfGtzgZC/YvrP3c3lucfHrRsTn3BxVdxsA/Cr1ot7fhOx6pjE6Eqx
+	 4YaK7/76wCRzesPQHPewYYoUqCBPN6GubwR/19xLX2IGuCgaKIhhV3r2xluSJ28Dea
+	 r0taqPY6Jfeh+ORsJffwnaYKY8s54PC/gF0eBPraI30PO17Yf+xFvuePr7Ulp9xcch
+	 oszE8T+JdRrK7xIxJ4zuXcoRFD6KAMfAr11Ydv9W04116CQyaGs2cr1vh7C8RmiA50
+	 3n+L/IFTGL83PmjahMhXEG6BmXjb5Kg79iS083M7zc7JN7FYs8/N9vpRKsYRBvetcj
+	 Vbqe96vrzVRlQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
-	kailang@realtek.com,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	sbinding@opensource.cirrus.com,
-	simont@opensource.cirrus.com,
-	josh@joshuagrisham.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 125/294] ALSA: hda/realtek: Enable PC beep passthrough for HP EliteBook 855 G7
-Date: Mon,  5 May 2025 18:53:45 -0400
-Message-Id: <20250505225634.2688578-125-sashal@kernel.org>
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 126/294] ipv4: fib: Move fib_valid_key_len() to rtm_to_fib_config().
+Date: Mon,  5 May 2025 18:53:46 -0400
+Message-Id: <20250505225634.2688578-126-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -71,175 +69,126 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit aa85822c611aef7cd4dc17d27121d43e21bb82f0 ]
+[ Upstream commit 254ba7e6032d3fc738050d500b0c1d8197af90ca ]
 
-PC speaker works well on this platform in BIOS and in Linux until sound
-card drivers are loaded. Then it stops working.
+fib_valid_key_len() is called in the beginning of fib_table_insert()
+or fib_table_delete() to check if the prefix length is valid.
 
-There seems to be a beep generator node at 0x1a in this CODEC
-(ALC269_TYPE_ALC215) but it seems to be only connected to capture mixers
-at nodes 0x22 and 0x23.
-If I unmute the mixer input for 0x1a at node 0x23 and start recording
-from its "ALC285 Analog" capture device I can clearly hear beeps in that
-recording.
+fib_table_insert() and fib_table_delete() are called from 3 paths
 
-So the beep generator is indeed working properly, however I wasn't able to
-figure out any way to connect it to speakers.
+  - ip_rt_ioctl()
+  - inet_rtm_newroute() / inet_rtm_delroute()
+  - fib_magic()
 
-However, the bits in the "Passthrough Control" register (0x36) seems to
-work at least partially: by zeroing "B" and "h" and setting "S" I can at
-least make the PIT PC speaker output appear either in this laptop speakers
-or headphones (depending on whether they are connected or not).
+In the first ioctl() path, rtentry_to_fib_config() checks the prefix
+length with bad_mask().  Also, fib_magic() always passes the correct
+prefix: 32 or ifa->ifa_prefixlen, which is already validated.
 
-There are some caveats, however:
-* If the CODEC gets runtime-suspended the beeps stop so it needs HDA beep
-device for keeping it awake during beeping.
+Let's move fib_valid_key_len() to the rtnetlink path, rtm_to_fib_config().
 
-* If the beep generator node is generating any beep the PC beep passthrough
-seems to be temporarily inhibited, so the HDA beep device has to be
-prevented from using the actual beep generator node - but the beep device
-is still necessary due to the previous point.
+While at it, 2 direct returns in rtm_to_fib_config() are changed to
+goto to match other places in the same function
 
-* In contrast with other platforms here beep amplification has to be
-disabled otherwise the beeps output are WAY louder than they were on pure
-BIOS setup.
-
-Unless someone (from Realtek probably) knows how to make the beep generator
-node output appear in speakers / headphones using PC beep passthrough seems
-to be the only way to make PC speaker beeping actually work on this
-platform.
-
-Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
-Acked-by: kailang@realtek.com
-Link: https://patch.msgid.link/7461f695b4daed80f2fc4b1463ead47f04f9ad05.1739741254.git.mail@maciej.szmigiero.name
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250228042328.96624-12-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/hda_codec.h     |  1 +
- sound/pci/hda/hda_beep.c      | 15 +++++++++------
- sound/pci/hda/patch_realtek.c | 34 +++++++++++++++++++++++++++++++++-
- 3 files changed, 43 insertions(+), 7 deletions(-)
+ net/ipv4/fib_frontend.c | 18 ++++++++++++++++--
+ net/ipv4/fib_trie.c     | 22 ----------------------
+ 2 files changed, 16 insertions(+), 24 deletions(-)
 
-diff --git a/include/sound/hda_codec.h b/include/sound/hda_codec.h
-index 5497dc9c396a5..b58dc869cf77e 100644
---- a/include/sound/hda_codec.h
-+++ b/include/sound/hda_codec.h
-@@ -196,6 +196,7 @@ struct hda_codec {
- 	/* beep device */
- 	struct hda_beep *beep;
- 	unsigned int beep_mode;
-+	bool beep_just_power_on;
- 
- 	/* widget capabilities cache */
- 	u32 *wcaps;
-diff --git a/sound/pci/hda/hda_beep.c b/sound/pci/hda/hda_beep.c
-index e63621bcb2142..1a684e47d4d18 100644
---- a/sound/pci/hda/hda_beep.c
-+++ b/sound/pci/hda/hda_beep.c
-@@ -31,8 +31,9 @@ static void generate_tone(struct hda_beep *beep, int tone)
- 			beep->power_hook(beep, true);
- 		beep->playing = 1;
+diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
+index 90ce87ffed461..7993ff46de23c 100644
+--- a/net/ipv4/fib_frontend.c
++++ b/net/ipv4/fib_frontend.c
+@@ -829,19 +829,33 @@ static int rtm_to_fib_config(struct net *net, struct sk_buff *skb,
+ 		}
  	}
--	snd_hda_codec_write(codec, beep->nid, 0,
--			    AC_VERB_SET_BEEP_CONTROL, tone);
-+	if (!codec->beep_just_power_on)
-+		snd_hda_codec_write(codec, beep->nid, 0,
-+				    AC_VERB_SET_BEEP_CONTROL, tone);
- 	if (!tone && beep->playing) {
- 		beep->playing = 0;
- 		if (beep->power_hook)
-@@ -212,10 +213,12 @@ int snd_hda_attach_beep_device(struct hda_codec *codec, int nid)
- 	struct hda_beep *beep;
- 	int err;
  
--	if (!snd_hda_get_bool_hint(codec, "beep"))
--		return 0; /* disabled explicitly by hints */
--	if (codec->beep_mode == HDA_BEEP_MODE_OFF)
--		return 0; /* disabled by module option */
-+	if (!codec->beep_just_power_on) {
-+		if (!snd_hda_get_bool_hint(codec, "beep"))
-+			return 0; /* disabled explicitly by hints */
-+		if (codec->beep_mode == HDA_BEEP_MODE_OFF)
-+			return 0; /* disabled by module option */
++	if (cfg->fc_dst_len > 32) {
++		NL_SET_ERR_MSG(extack, "Invalid prefix length");
++		err = -EINVAL;
++		goto errout;
 +	}
- 
- 	beep = kzalloc(sizeof(*beep), GFP_KERNEL);
- 	if (beep == NULL)
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 2f3f295f2b0cb..a13795e405a4d 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -24,6 +24,7 @@
- #include <sound/hda_codec.h>
- #include "hda_local.h"
- #include "hda_auto_parser.h"
-+#include "hda_beep.h"
- #include "hda_jack.h"
- #include "hda_generic.h"
- #include "hda_component.h"
-@@ -6861,6 +6862,30 @@ static void alc285_fixup_hp_envy_x360(struct hda_codec *codec,
++
++	if (cfg->fc_dst_len < 32 && (ntohl(cfg->fc_dst) << cfg->fc_dst_len)) {
++		NL_SET_ERR_MSG(extack, "Invalid prefix for given prefix length");
++		err = -EINVAL;
++		goto errout;
++	}
++
+ 	if (cfg->fc_nh_id) {
+ 		if (cfg->fc_oif || cfg->fc_gw_family ||
+ 		    cfg->fc_encap || cfg->fc_mp) {
+ 			NL_SET_ERR_MSG(extack,
+ 				       "Nexthop specification and nexthop id are mutually exclusive");
+-			return -EINVAL;
++			err = -EINVAL;
++			goto errout;
+ 		}
  	}
+ 
+ 	if (has_gw && has_via) {
+ 		NL_SET_ERR_MSG(extack,
+ 			       "Nexthop configuration can not contain both GATEWAY and VIA");
+-		return -EINVAL;
++		err = -EINVAL;
++		goto errout;
+ 	}
+ 
+ 	if (!cfg->fc_table)
+diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
+index 77b97c48da5ea..fa54b36b241ac 100644
+--- a/net/ipv4/fib_trie.c
++++ b/net/ipv4/fib_trie.c
+@@ -1192,22 +1192,6 @@ static int fib_insert_alias(struct trie *t, struct key_vector *tp,
+ 	return 0;
  }
  
-+static void alc285_fixup_hp_beep(struct hda_codec *codec,
-+				 const struct hda_fixup *fix, int action)
-+{
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
-+		codec->beep_just_power_on = true;
-+	} else  if (action == HDA_FIXUP_ACT_INIT) {
-+#ifdef CONFIG_SND_HDA_INPUT_BEEP
-+		/*
-+		 * Just enable loopback to internal speaker and headphone jack.
-+		 * Disable amplification to get about the same beep volume as
-+		 * was on pure BIOS setup before loading the driver.
-+		 */
-+		alc_update_coef_idx(codec, 0x36, 0x7070, BIT(13));
-+
-+		snd_hda_enable_beep_device(codec, 1);
-+
-+#if !IS_ENABLED(CONFIG_INPUT_PCSPKR)
-+		dev_warn_once(hda_codec_dev(codec),
-+			      "enable CONFIG_INPUT_PCSPKR to get PC beeps\n");
-+#endif
-+#endif
-+	}
-+}
-+
- /* for hda_fixup_thinkpad_acpi() */
- #include "thinkpad_helper.c"
+-static bool fib_valid_key_len(u32 key, u8 plen, struct netlink_ext_ack *extack)
+-{
+-	if (plen > KEYLENGTH) {
+-		NL_SET_ERR_MSG(extack, "Invalid prefix length");
+-		return false;
+-	}
+-
+-	if ((plen < KEYLENGTH) && (key << plen)) {
+-		NL_SET_ERR_MSG(extack,
+-			       "Invalid prefix for given prefix length");
+-		return false;
+-	}
+-
+-	return true;
+-}
+-
+ static void fib_remove_alias(struct trie *t, struct key_vector *tp,
+ 			     struct key_vector *l, struct fib_alias *old);
  
-@@ -7477,6 +7502,7 @@ enum {
- 	ALC285_FIXUP_HP_GPIO_LED,
- 	ALC285_FIXUP_HP_MUTE_LED,
- 	ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED,
-+	ALC285_FIXUP_HP_BEEP_MICMUTE_LED,
- 	ALC236_FIXUP_HP_MUTE_LED_COEFBIT2,
- 	ALC236_FIXUP_HP_GPIO_LED,
- 	ALC236_FIXUP_HP_MUTE_LED,
-@@ -9064,6 +9090,12 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc285_fixup_hp_spectre_x360_mute_led,
- 	},
-+	[ALC285_FIXUP_HP_BEEP_MICMUTE_LED] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc285_fixup_hp_beep,
-+		.chained = true,
-+		.chain_id = ALC285_FIXUP_HP_MUTE_LED,
-+	},
- 	[ALC236_FIXUP_HP_MUTE_LED_COEFBIT2] = {
- 	    .type = HDA_FIXUP_FUNC,
- 	    .v.func = alc236_fixup_hp_mute_led_coefbit2,
-@@ -10016,7 +10048,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8730, "HP ProBook 445 G7", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8735, "HP ProBook 435 G7", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8736, "HP", ALC285_FIXUP_HP_GPIO_AMP_INIT),
--	SND_PCI_QUIRK(0x103c, 0x8760, "HP", ALC285_FIXUP_HP_MUTE_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8760, "HP EliteBook 8{4,5}5 G7", ALC285_FIXUP_HP_BEEP_MICMUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x876e, "HP ENVY x360 Convertible 13-ay0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
- 	SND_PCI_QUIRK(0x103c, 0x877a, "HP", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x877d, "HP", ALC236_FIXUP_HP_MUTE_LED),
+@@ -1228,9 +1212,6 @@ int fib_table_insert(struct net *net, struct fib_table *tb,
+ 
+ 	key = ntohl(cfg->fc_dst);
+ 
+-	if (!fib_valid_key_len(key, plen, extack))
+-		return -EINVAL;
+-
+ 	pr_debug("Insert table=%u %08x/%d\n", tb->tb_id, key, plen);
+ 
+ 	fi = fib_create_info(cfg, extack);
+@@ -1723,9 +1704,6 @@ int fib_table_delete(struct net *net, struct fib_table *tb,
+ 
+ 	key = ntohl(cfg->fc_dst);
+ 
+-	if (!fib_valid_key_len(key, plen, extack))
+-		return -EINVAL;
+-
+ 	l = fib_find_node(t, &tp, key);
+ 	if (!l)
+ 		return -ESRCH;
 -- 
 2.39.5
 
