@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-140838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B093AAABCA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:02:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B8FAAABD3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:03:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2DF2176FCE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:02:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3F724612FE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB513B8A1E;
-	Mon,  5 May 2025 23:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B7E3B9719;
+	Mon,  5 May 2025 23:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mtDTlTBd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ta87RQ48"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA33F35C855;
-	Mon,  5 May 2025 23:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528E037F0A6;
+	Mon,  5 May 2025 23:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486528; cv=none; b=TtGr6zcVnGwmTxrGKC8GaCEvLxgXmdEy75IQxuPxDvncNbg463icCmJ6ZSVpC3plBY2VOytn/f1ICjrz11NDo+ooqaQlhv25xbxJpuQzPR74nhZge20Fhjscssz1jtv3MESpz8mc/w1uHTvf/BqwIXrpgD3NWa6ZPacNzTbd6/E=
+	t=1746486539; cv=none; b=ea62hGDlLD+wcxbzF7T0wtv88hQIwNh7635OrQ5F3XR03brRHUQ4OwF/JaydJlOdOtOqktEnfLKOiv6ZZGRoA2b/D36U61fKwjf8So754Aab3TyGese3cBVCdaMuuMHe8uU+U0WvrOrJ6NvfrlrU4FE5NzI777syh5EaIki12x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486528; c=relaxed/simple;
-	bh=vSWbGAqI4w92+HM0w5Wqo1yYxBMYrkK2WlYy5EEdDL4=;
+	s=arc-20240116; t=1746486539; c=relaxed/simple;
+	bh=KmeHPBQSaXkGmRVxa0Lv0B9c6Htwly5qyqjzEYZvUBI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=X2o3pRByfjv4TkVLJYc4a7dOyXeei+T8IL/LuPTCuGIgbBjOo6hKx7InlN8rQi+TmIKXHHY9sp3YfgY8L8z4Yb/nTFa6HfmPRUy8Wu/+MPbNb0lfhNRPEOruDtxiNDdw6IVF8yWLeKTtHdUn5dwWA2QZj/F+W7oWPNAiq9nFgGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mtDTlTBd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AF6C4CEED;
-	Mon,  5 May 2025 23:08:45 +0000 (UTC)
+	 MIME-Version; b=bIjPPBQ98obJa5QoUWez31XKzmXYKHJaTXS8gm/sKDsj7LZqpHwij2Z2pA5vlEbn4YEqi3qqdTDfzRNRhqHfC1OHPQZnEB41RKWH3SWiCV4ahe9J7kAfkZD6Kkg/xagspfL9hN7r3FsU0ZRz26VR4v/KzxKuJGxPjL4yW8ZtXRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ta87RQ48; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50590C4CEE4;
+	Mon,  5 May 2025 23:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486527;
-	bh=vSWbGAqI4w92+HM0w5Wqo1yYxBMYrkK2WlYy5EEdDL4=;
+	s=k20201202; t=1746486538;
+	bh=KmeHPBQSaXkGmRVxa0Lv0B9c6Htwly5qyqjzEYZvUBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtDTlTBdJwZFWgG1Ld1Tbxvy5UZAEfIXmX14SgA8wwJRFv7qJMoUCW80D3yrI5G0Y
-	 y9O+0m/yS9I2i0gI4T1KnAoYQjK7nkieGs3+7JiDylRV38tZltottDFNRQfNRceTGi
-	 kRA6erxCxH4JDpoKPAPUY0/Ci8gYeu72pT/zx1DNkh7oWLgEcbW5xgg7z3INKtm+qz
-	 h92IUXiZ3/1R0GBzCzSez/Jam9Zvsg62jI3V+1KWXYbtOcNzSywuKmHwPXdzCyFJFA
-	 Vy5nZxxliQNYWmdSiBT5DclYHajdm1EvyX7pSjX7zY5EPeWouI39Uf6mvO422g9h1A
-	 6XSdDCRB0wS8w==
+	b=Ta87RQ48Bd+egBbUW78LJYTlaXKkrcF5SlVW0CUsMbFwQNj3nIY0dDQwuNQv6eon0
+	 iMF8/VH6BusxlVByNNvX6opZCAEIyDruqjZaMivfKcoHYbRnPM6AESqkj67CZCA/Yl
+	 041KuXVKVmJiN3e7Szmr62mzdh9pSSSPQj4ylb+gHlulgHQNvh3iBgOnYdhfsEx9+C
+	 ypNk4RzciBhO/DhMH8dQIyJP82IolS8JU+0ATOeGUFVCiaq9uwTqaWS1z3qhhkoiSS
+	 okhJSIiPWrerwZ43I5FCAwvPSHzVkOlyemzEYCbWwcH4mzfQLvpgmBnNwQjIcCgOtL
+	 5ahAFY2FvaqIg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	andy@kernel.org,
-	willy@haproxy.com,
-	ksenija.stanojevic@gmail.com,
+	davem@davemloft.net,
 	viro@zeniv.linux.org.uk,
-	erick.archer@outlook.com,
-	haoxiang_li2024@163.com,
-	u.kleine-koenig@baylibre.com,
-	gregkh@linuxfoundation.org,
-	sudipm.mukherjee@gmail.com,
-	mingo@kernel.org,
-	linux@treblig.org,
-	tglx@linutronix.de
-Subject: [PATCH AUTOSEL 6.1 075/212] auxdisplay: charlcd: Partially revert "Move hwidth and bwidth to struct hd44780_common"
-Date: Mon,  5 May 2025 19:04:07 -0400
-Message-Id: <20250505230624.2692522-75-sashal@kernel.org>
+	linux-crypto@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 079/212] crypto: lzo - Fix compression buffer overrun
+Date: Mon,  5 May 2025 19:04:11 -0400
+Message-Id: <20250505230624.2692522-79-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -76,114 +67,372 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 09965a142078080fe7807bab0f6f1890cb5987a4 ]
+[ Upstream commit cc47f07234f72cbd8e2c973cdbf2a6730660a463 ]
 
-Commit 2545c1c948a6 ("auxdisplay: Move hwidth and bwidth to struct
-hd44780_common") makes charlcd_alloc() argument-less effectively dropping
-the single allocation for the struct charlcd_priv object along with
-the driver specific one. Restore that behaviour here.
+Unlike the decompression code, the compression code in LZO never
+checked for output overruns.  It instead assumes that the caller
+always provides enough buffer space, disregarding the buffer length
+provided by the caller.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Add a safe compression interface that checks for the end of buffer
+before each write.  Use the safe interface in crypto/lzo.
+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/auxdisplay/charlcd.c | 5 +++--
- drivers/auxdisplay/charlcd.h | 5 +++--
- drivers/auxdisplay/hd44780.c | 2 +-
- drivers/auxdisplay/lcd2s.c   | 2 +-
- drivers/auxdisplay/panel.c   | 2 +-
- 5 files changed, 9 insertions(+), 7 deletions(-)
+ crypto/lzo-rle.c              |   2 +-
+ crypto/lzo.c                  |   2 +-
+ include/linux/lzo.h           |   8 +++
+ lib/lzo/Makefile              |   2 +-
+ lib/lzo/lzo1x_compress.c      | 102 +++++++++++++++++++++++++---------
+ lib/lzo/lzo1x_compress_safe.c |  18 ++++++
+ 6 files changed, 106 insertions(+), 28 deletions(-)
+ create mode 100644 lib/lzo/lzo1x_compress_safe.c
 
-diff --git a/drivers/auxdisplay/charlcd.c b/drivers/auxdisplay/charlcd.c
-index 6d309e4971b61..e243291a7e77c 100644
---- a/drivers/auxdisplay/charlcd.c
-+++ b/drivers/auxdisplay/charlcd.c
-@@ -594,18 +594,19 @@ static int charlcd_init(struct charlcd *lcd)
- 	return 0;
- }
+diff --git a/crypto/lzo-rle.c b/crypto/lzo-rle.c
+index 0631d975bfac1..0abc2d87f0420 100644
+--- a/crypto/lzo-rle.c
++++ b/crypto/lzo-rle.c
+@@ -55,7 +55,7 @@ static int __lzorle_compress(const u8 *src, unsigned int slen,
+ 	size_t tmp_len = *dlen; /* size_t(ulong) <-> uint on 64 bit */
+ 	int err;
  
--struct charlcd *charlcd_alloc(void)
-+struct charlcd *charlcd_alloc(unsigned int drvdata_size)
- {
- 	struct charlcd_priv *priv;
- 	struct charlcd *lcd;
+-	err = lzorle1x_1_compress(src, slen, dst, &tmp_len, ctx);
++	err = lzorle1x_1_compress_safe(src, slen, dst, &tmp_len, ctx);
  
--	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
-+	priv = kzalloc(sizeof(*priv) + drvdata_size, GFP_KERNEL);
- 	if (!priv)
- 		return NULL;
+ 	if (err != LZO_E_OK)
+ 		return -EINVAL;
+diff --git a/crypto/lzo.c b/crypto/lzo.c
+index ebda132dd22bf..8338851c7406a 100644
+--- a/crypto/lzo.c
++++ b/crypto/lzo.c
+@@ -55,7 +55,7 @@ static int __lzo_compress(const u8 *src, unsigned int slen,
+ 	size_t tmp_len = *dlen; /* size_t(ulong) <-> uint on 64 bit */
+ 	int err;
  
- 	priv->esc_seq.len = -1;
+-	err = lzo1x_1_compress(src, slen, dst, &tmp_len, ctx);
++	err = lzo1x_1_compress_safe(src, slen, dst, &tmp_len, ctx);
  
- 	lcd = &priv->lcd;
-+	lcd->drvdata = priv->drvdata;
+ 	if (err != LZO_E_OK)
+ 		return -EINVAL;
+diff --git a/include/linux/lzo.h b/include/linux/lzo.h
+index e95c7d1092b28..4d30e3624acd2 100644
+--- a/include/linux/lzo.h
++++ b/include/linux/lzo.h
+@@ -24,10 +24,18 @@
+ int lzo1x_1_compress(const unsigned char *src, size_t src_len,
+ 		     unsigned char *dst, size_t *dst_len, void *wrkmem);
  
- 	return lcd;
- }
-diff --git a/drivers/auxdisplay/charlcd.h b/drivers/auxdisplay/charlcd.h
-index eed80063a6d20..4bbf106b2dd8a 100644
---- a/drivers/auxdisplay/charlcd.h
-+++ b/drivers/auxdisplay/charlcd.h
-@@ -49,7 +49,7 @@ struct charlcd {
- 		unsigned long y;
- 	} addr;
- 
--	void *drvdata;
-+	void *drvdata;			/* Set by charlcd_alloc() */
- };
- 
- /**
-@@ -93,7 +93,8 @@ struct charlcd_ops {
- };
- 
- void charlcd_backlight(struct charlcd *lcd, enum charlcd_onoff on);
--struct charlcd *charlcd_alloc(void);
++/* Same as above but does not write more than dst_len to dst. */
++int lzo1x_1_compress_safe(const unsigned char *src, size_t src_len,
++			  unsigned char *dst, size_t *dst_len, void *wrkmem);
 +
-+struct charlcd *charlcd_alloc(unsigned int drvdata_size);
- void charlcd_free(struct charlcd *lcd);
+ /* This requires 'wrkmem' of size LZO1X_1_MEM_COMPRESS */
+ int lzorle1x_1_compress(const unsigned char *src, size_t src_len,
+ 		     unsigned char *dst, size_t *dst_len, void *wrkmem);
  
- int charlcd_register(struct charlcd *lcd);
-diff --git a/drivers/auxdisplay/hd44780.c b/drivers/auxdisplay/hd44780.c
-index 8b690f59df27d..ebaf0ff518f4c 100644
---- a/drivers/auxdisplay/hd44780.c
-+++ b/drivers/auxdisplay/hd44780.c
-@@ -226,7 +226,7 @@ static int hd44780_probe(struct platform_device *pdev)
- 	if (!hdc)
- 		return -ENOMEM;
++/* Same as above but does not write more than dst_len to dst. */
++int lzorle1x_1_compress_safe(const unsigned char *src, size_t src_len,
++			     unsigned char *dst, size_t *dst_len, void *wrkmem);
++
+ /* safe decompression with overrun testing */
+ int lzo1x_decompress_safe(const unsigned char *src, size_t src_len,
+ 			  unsigned char *dst, size_t *dst_len);
+diff --git a/lib/lzo/Makefile b/lib/lzo/Makefile
+index 2f58fafbbdddc..fc7b2b7ef4b20 100644
+--- a/lib/lzo/Makefile
++++ b/lib/lzo/Makefile
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-lzo_compress-objs := lzo1x_compress.o
++lzo_compress-objs := lzo1x_compress.o lzo1x_compress_safe.o
+ lzo_decompress-objs := lzo1x_decompress_safe.o
  
--	lcd = charlcd_alloc();
-+	lcd = charlcd_alloc(0);
- 	if (!lcd)
- 		goto fail1;
+ obj-$(CONFIG_LZO_COMPRESS) += lzo_compress.o
+diff --git a/lib/lzo/lzo1x_compress.c b/lib/lzo/lzo1x_compress.c
+index 9d31e7126606a..f00dff9b9d4e1 100644
+--- a/lib/lzo/lzo1x_compress.c
++++ b/lib/lzo/lzo1x_compress.c
+@@ -18,11 +18,22 @@
+ #include <linux/lzo.h>
+ #include "lzodefs.h"
  
-diff --git a/drivers/auxdisplay/lcd2s.c b/drivers/auxdisplay/lcd2s.c
-index 135831a165149..2b597f226c0c0 100644
---- a/drivers/auxdisplay/lcd2s.c
-+++ b/drivers/auxdisplay/lcd2s.c
-@@ -307,7 +307,7 @@ static int lcd2s_i2c_probe(struct i2c_client *i2c)
- 	if (err < 0)
- 		return err;
+-static noinline size_t
+-lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
+-		    unsigned char *out, size_t *out_len,
+-		    size_t ti, void *wrkmem, signed char *state_offset,
+-		    const unsigned char bitstream_version)
++#undef LZO_UNSAFE
++
++#ifndef LZO_SAFE
++#define LZO_UNSAFE 1
++#define LZO_SAFE(name) name
++#define HAVE_OP(x) 1
++#endif
++
++#define NEED_OP(x) if (!HAVE_OP(x)) goto output_overrun
++
++static noinline int
++LZO_SAFE(lzo1x_1_do_compress)(const unsigned char *in, size_t in_len,
++			      unsigned char **out, unsigned char *op_end,
++			      size_t *tp, void *wrkmem,
++			      signed char *state_offset,
++			      const unsigned char bitstream_version)
+ {
+ 	const unsigned char *ip;
+ 	unsigned char *op;
+@@ -30,8 +41,9 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
+ 	const unsigned char * const ip_end = in + in_len - 20;
+ 	const unsigned char *ii;
+ 	lzo_dict_t * const dict = (lzo_dict_t *) wrkmem;
++	size_t ti = *tp;
  
--	lcd = charlcd_alloc();
-+	lcd = charlcd_alloc(0);
- 	if (!lcd)
- 		return -ENOMEM;
+-	op = out;
++	op = *out;
+ 	ip = in;
+ 	ii = ip;
+ 	ip += ti < 4 ? 4 - ti : 0;
+@@ -116,25 +128,32 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
+ 		if (t != 0) {
+ 			if (t <= 3) {
+ 				op[*state_offset] |= t;
++				NEED_OP(4);
+ 				COPY4(op, ii);
+ 				op += t;
+ 			} else if (t <= 16) {
++				NEED_OP(17);
+ 				*op++ = (t - 3);
+ 				COPY8(op, ii);
+ 				COPY8(op + 8, ii + 8);
+ 				op += t;
+ 			} else {
+ 				if (t <= 18) {
++					NEED_OP(1);
+ 					*op++ = (t - 3);
+ 				} else {
+ 					size_t tt = t - 18;
++					NEED_OP(1);
+ 					*op++ = 0;
+ 					while (unlikely(tt > 255)) {
+ 						tt -= 255;
++						NEED_OP(1);
+ 						*op++ = 0;
+ 					}
++					NEED_OP(1);
+ 					*op++ = tt;
+ 				}
++				NEED_OP(t);
+ 				do {
+ 					COPY8(op, ii);
+ 					COPY8(op + 8, ii + 8);
+@@ -151,6 +170,7 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
+ 		if (unlikely(run_length)) {
+ 			ip += run_length;
+ 			run_length -= MIN_ZERO_RUN_LENGTH;
++			NEED_OP(4);
+ 			put_unaligned_le32((run_length << 21) | 0xfffc18
+ 					   | (run_length & 0x7), op);
+ 			op += 4;
+@@ -243,10 +263,12 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
+ 		ip += m_len;
+ 		if (m_len <= M2_MAX_LEN && m_off <= M2_MAX_OFFSET) {
+ 			m_off -= 1;
++			NEED_OP(2);
+ 			*op++ = (((m_len - 1) << 5) | ((m_off & 7) << 2));
+ 			*op++ = (m_off >> 3);
+ 		} else if (m_off <= M3_MAX_OFFSET) {
+ 			m_off -= 1;
++			NEED_OP(1);
+ 			if (m_len <= M3_MAX_LEN)
+ 				*op++ = (M3_MARKER | (m_len - 2));
+ 			else {
+@@ -254,14 +276,18 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
+ 				*op++ = M3_MARKER | 0;
+ 				while (unlikely(m_len > 255)) {
+ 					m_len -= 255;
++					NEED_OP(1);
+ 					*op++ = 0;
+ 				}
++				NEED_OP(1);
+ 				*op++ = (m_len);
+ 			}
++			NEED_OP(2);
+ 			*op++ = (m_off << 2);
+ 			*op++ = (m_off >> 6);
+ 		} else {
+ 			m_off -= 0x4000;
++			NEED_OP(1);
+ 			if (m_len <= M4_MAX_LEN)
+ 				*op++ = (M4_MARKER | ((m_off >> 11) & 8)
+ 						| (m_len - 2));
+@@ -282,11 +308,14 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
+ 				m_len -= M4_MAX_LEN;
+ 				*op++ = (M4_MARKER | ((m_off >> 11) & 8));
+ 				while (unlikely(m_len > 255)) {
++					NEED_OP(1);
+ 					m_len -= 255;
+ 					*op++ = 0;
+ 				}
++				NEED_OP(1);
+ 				*op++ = (m_len);
+ 			}
++			NEED_OP(2);
+ 			*op++ = (m_off << 2);
+ 			*op++ = (m_off >> 6);
+ 		}
+@@ -295,14 +324,20 @@ lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
+ 		ii = ip;
+ 		goto next;
+ 	}
+-	*out_len = op - out;
+-	return in_end - (ii - ti);
++	*out = op;
++	*tp = in_end - (ii - ti);
++	return LZO_E_OK;
++
++output_overrun:
++	return LZO_E_OUTPUT_OVERRUN;
+ }
  
-diff --git a/drivers/auxdisplay/panel.c b/drivers/auxdisplay/panel.c
-index eba04c0de7eb3..0f3999b665e70 100644
---- a/drivers/auxdisplay/panel.c
-+++ b/drivers/auxdisplay/panel.c
-@@ -835,7 +835,7 @@ static void lcd_init(void)
- 	if (!hdc)
- 		return;
+-static int lzogeneric1x_1_compress(const unsigned char *in, size_t in_len,
+-		     unsigned char *out, size_t *out_len,
+-		     void *wrkmem, const unsigned char bitstream_version)
++static int LZO_SAFE(lzogeneric1x_1_compress)(
++	const unsigned char *in, size_t in_len,
++	unsigned char *out, size_t *out_len,
++	void *wrkmem, const unsigned char bitstream_version)
+ {
++	unsigned char * const op_end = out + *out_len;
+ 	const unsigned char *ip = in;
+ 	unsigned char *op = out;
+ 	unsigned char *data_start;
+@@ -326,14 +361,18 @@ static int lzogeneric1x_1_compress(const unsigned char *in, size_t in_len,
+ 	while (l > 20) {
+ 		size_t ll = min_t(size_t, l, m4_max_offset + 1);
+ 		uintptr_t ll_end = (uintptr_t) ip + ll;
++		int err;
++
+ 		if ((ll_end + ((t + ll) >> 5)) <= ll_end)
+ 			break;
+ 		BUILD_BUG_ON(D_SIZE * sizeof(lzo_dict_t) > LZO1X_1_MEM_COMPRESS);
+ 		memset(wrkmem, 0, D_SIZE * sizeof(lzo_dict_t));
+-		t = lzo1x_1_do_compress(ip, ll, op, out_len, t, wrkmem,
+-					&state_offset, bitstream_version);
++		err = LZO_SAFE(lzo1x_1_do_compress)(
++			ip, ll, &op, op_end, &t, wrkmem,
++			&state_offset, bitstream_version);
++		if (err != LZO_E_OK)
++			return err;
+ 		ip += ll;
+-		op += *out_len;
+ 		l  -= ll;
+ 	}
+ 	t += l;
+@@ -342,20 +381,26 @@ static int lzogeneric1x_1_compress(const unsigned char *in, size_t in_len,
+ 		const unsigned char *ii = in + in_len - t;
  
--	charlcd = charlcd_alloc();
-+	charlcd = charlcd_alloc(0);
- 	if (!charlcd) {
- 		kfree(hdc);
- 		return;
+ 		if (op == data_start && t <= 238) {
++			NEED_OP(1);
+ 			*op++ = (17 + t);
+ 		} else if (t <= 3) {
+ 			op[state_offset] |= t;
+ 		} else if (t <= 18) {
++			NEED_OP(1);
+ 			*op++ = (t - 3);
+ 		} else {
+ 			size_t tt = t - 18;
++			NEED_OP(1);
+ 			*op++ = 0;
+ 			while (tt > 255) {
+ 				tt -= 255;
++				NEED_OP(1);
+ 				*op++ = 0;
+ 			}
++			NEED_OP(1);
+ 			*op++ = tt;
+ 		}
++		NEED_OP(t);
+ 		if (t >= 16) do {
+ 			COPY8(op, ii);
+ 			COPY8(op + 8, ii + 8);
+@@ -368,31 +413,38 @@ static int lzogeneric1x_1_compress(const unsigned char *in, size_t in_len,
+ 		} while (--t > 0);
+ 	}
+ 
++	NEED_OP(3);
+ 	*op++ = M4_MARKER | 1;
+ 	*op++ = 0;
+ 	*op++ = 0;
+ 
+ 	*out_len = op - out;
+ 	return LZO_E_OK;
++
++output_overrun:
++	return LZO_E_OUTPUT_OVERRUN;
+ }
+ 
+-int lzo1x_1_compress(const unsigned char *in, size_t in_len,
+-		     unsigned char *out, size_t *out_len,
+-		     void *wrkmem)
++int LZO_SAFE(lzo1x_1_compress)(const unsigned char *in, size_t in_len,
++			       unsigned char *out, size_t *out_len,
++			       void *wrkmem)
+ {
+-	return lzogeneric1x_1_compress(in, in_len, out, out_len, wrkmem, 0);
++	return LZO_SAFE(lzogeneric1x_1_compress)(
++		in, in_len, out, out_len, wrkmem, 0);
+ }
+ 
+-int lzorle1x_1_compress(const unsigned char *in, size_t in_len,
+-		     unsigned char *out, size_t *out_len,
+-		     void *wrkmem)
++int LZO_SAFE(lzorle1x_1_compress)(const unsigned char *in, size_t in_len,
++				  unsigned char *out, size_t *out_len,
++				  void *wrkmem)
+ {
+-	return lzogeneric1x_1_compress(in, in_len, out, out_len,
+-				       wrkmem, LZO_VERSION);
++	return LZO_SAFE(lzogeneric1x_1_compress)(
++		in, in_len, out, out_len, wrkmem, LZO_VERSION);
+ }
+ 
+-EXPORT_SYMBOL_GPL(lzo1x_1_compress);
+-EXPORT_SYMBOL_GPL(lzorle1x_1_compress);
++EXPORT_SYMBOL_GPL(LZO_SAFE(lzo1x_1_compress));
++EXPORT_SYMBOL_GPL(LZO_SAFE(lzorle1x_1_compress));
+ 
++#ifndef LZO_UNSAFE
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("LZO1X-1 Compressor");
++#endif
+diff --git a/lib/lzo/lzo1x_compress_safe.c b/lib/lzo/lzo1x_compress_safe.c
+new file mode 100644
+index 0000000000000..371c9f8494928
+--- /dev/null
++++ b/lib/lzo/lzo1x_compress_safe.c
+@@ -0,0 +1,18 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ *  LZO1X Compressor from LZO
++ *
++ *  Copyright (C) 1996-2012 Markus F.X.J. Oberhumer <markus@oberhumer.com>
++ *
++ *  The full LZO package can be found at:
++ *  http://www.oberhumer.com/opensource/lzo/
++ *
++ *  Changed for Linux kernel use by:
++ *  Nitin Gupta <nitingupta910@gmail.com>
++ *  Richard Purdie <rpurdie@openedhand.com>
++ */
++
++#define LZO_SAFE(name) name##_safe
++#define HAVE_OP(x) ((size_t)(op_end - op) >= (size_t)(x))
++
++#include "lzo1x_compress.c"
 -- 
 2.39.5
 
