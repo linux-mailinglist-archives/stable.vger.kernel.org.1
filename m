@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-140309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07915AAA75F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:32:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D01AAA77C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FFA016B3CF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:30:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B9D2988243
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033883380A7;
-	Mon,  5 May 2025 22:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AA23380DB;
+	Mon,  5 May 2025 22:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fGcQl+g8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UkEU9teS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1250293455;
-	Mon,  5 May 2025 22:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67B03380D4;
+	Mon,  5 May 2025 22:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484611; cv=none; b=QBRepbvbeAUtPHnfFNzwMmwJbdTQRtVZSvI2uVqfYesztS+cwbBXOX8ZSGcptvkEzOx9jis0v5WwVL0jakWJfPCOTIWuASy3BZbASc4przRHHKdi3Ux2udxeolCZlheqyQWEPAyhNaBg2Q4yYvQ8Pp8YvmUzaYOputQuGOL2cwA=
+	t=1746484613; cv=none; b=l7bYqN+TBd3rod2iOpnKuDV/GLeulU40fkTsdLgyJF6jeEsB22uUvzKySCbI5bMOHWKiz9bm5M0y0mFNyeyeZncuKMZEINnaS2LZnD+7GfwpGjzvEw6Q+Ckq2o3MBhGyRybBJvFV/hezVj23MDoR5Imn9+zRqcwlLdh8cyjszyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484611; c=relaxed/simple;
-	bh=DZcrPpJm0WGlKa/b3sE1W3dZ54GcaR0gvKshv7RVs7o=;
+	s=arc-20240116; t=1746484613; c=relaxed/simple;
+	bh=5gAlm/aMRs/kQvtu4edHnWgZ6FVR2gwuKKGPTPrg1Tc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gNzJQWPzgX9tBVD0y79yX9YAzxjKNJm/vBO6/QdOau1o9wD5znl0q5T+1Kfo9JV4I4Gytgms2A1nqO9MR59v6cNXuVn0FpDDQqQqywTK4W/Sctwq6FwYxZDElxKu7pBuKfg9ANBs477kZIZE4A055pYvzyXuXSDNbf0c58Y2uaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fGcQl+g8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C672C4CEF1;
-	Mon,  5 May 2025 22:36:49 +0000 (UTC)
+	 MIME-Version; b=FB7ZTyDf+PhH5F09m8Ho2ET6jDDTbm+wx7TVG8js8I+/c7JtOcHCvk6vcVMsMSpZ9Uac3Qx8Yo/rUlKcNQs4Ezpq9P6vFo48iXLICXnVB0/6xZqDaxQHSDZR8X5ZuWtRxa6dNHMtwzyy+DUa1gLPuW45eT9wK1+oYiDLKQ1bERM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UkEU9teS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2274C4CEEE;
+	Mon,  5 May 2025 22:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484611;
-	bh=DZcrPpJm0WGlKa/b3sE1W3dZ54GcaR0gvKshv7RVs7o=;
+	s=k20201202; t=1746484613;
+	bh=5gAlm/aMRs/kQvtu4edHnWgZ6FVR2gwuKKGPTPrg1Tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fGcQl+g8gMs5NqsIj8LHqag+t18Nm5y5J/fyi7I4dvYkdfus/BP+TMk9pqn77ajd+
-	 3FtQ4U77p4q1TavMxmaV5TM1FwcdCv3vLLj7LrTu9WRAIdblUVgKSDYmBPCPtzj1H6
-	 RH7z/U09SY21TDBtJvhouZ/l/EarxYCalOxdhrnLKyS2ZZdOyGhZdmUWy2L3Em6EGp
-	 HW6i/O1axXQbMljmLnLpbW8j4bp5aJY+ZCuEhJalVPZU5jUaYM4vnuMMVlxqNXIf7c
-	 RTqU8aw/CeaTSo+a68ei2QhEShNDJ9rwPOmEoY3wZW4mPdd4Muvsf+n0d9oA3BXhPW
-	 Gorx4/Ak2bUmw==
+	b=UkEU9teSW2GGkIaEW8ukLl70gUS7uw5G/x+CjWZTE3BWL2wjjGU+p8UipvswrOKPF
+	 8u09vYLDXbxGxoB+geiGlme+giMzQiTr0gaXLixlmQdMcr7q0CuZpeNIyvDNV3pB4Q
+	 i6kXaKEU2U4eVl8dtIZTDNUflKy0/83RWKHJDTV+mVVF0fuUV9KNbdHfdsSkTe3CAs
+	 uFnwqQHi75dRrADgS595kW7fBOdhNX3r3vmdYee2ztwjDNUG/ogvkne+2wNaGR7yUN
+	 4v6lv4lahi63wXZut9GOiZZOomTqcgEwGzvjUjchxKH+AFaCrqJS2lxWFxfHSwQT0G
+	 ysrQ7asqtkX8w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 561/642] ice: count combined queues using Rx/Tx count
-Date: Mon,  5 May 2025 18:12:57 -0400
-Message-Id: <20250505221419.2672473-561-sashal@kernel.org>
+	lucas.demarchi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 562/642] drm/xe/relay: Don't use GFP_KERNEL for new transactions
+Date: Mon,  5 May 2025 18:12:58 -0400
+Message-Id: <20250505221419.2672473-562-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -74,38 +71,60 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit c3a392bdd31adc474f1009ee85c13fdd01fe800d ]
+[ Upstream commit 78d5d1e20d1de9422f013338a0f2311448588ba7 ]
 
-Previous implementation assumes that there is 1:1 matching between
-vectors and queues. It isn't always true.
+VFs use a relay transaction during the resume/reset flow and use
+of the GFP_KERNEL flag may conflict with the reclaim:
 
-Get minimum value from Rx/Tx queues to determine combined queues number.
+     -> #0 (fs_reclaim){+.+.}-{0:0}:
+ [ ]        __lock_acquire+0x1874/0x2bc0
+ [ ]        lock_acquire+0xd2/0x310
+ [ ]        fs_reclaim_acquire+0xc5/0x100
+ [ ]        mempool_alloc_noprof+0x5c/0x1b0
+ [ ]        __relay_get_transaction+0xdc/0xa10 [xe]
+ [ ]        relay_send_to+0x251/0xe50 [xe]
+ [ ]        xe_guc_relay_send_to_pf+0x79/0x3a0 [xe]
+ [ ]        xe_gt_sriov_vf_connect+0x90/0x4d0 [xe]
+ [ ]        xe_uc_init_hw+0x157/0x3b0 [xe]
+ [ ]        do_gt_restart+0x1ae/0x650 [xe]
+ [ ]        xe_gt_resume+0xb6/0x120 [xe]
+ [ ]        xe_pm_runtime_resume+0x15b/0x370 [xe]
+ [ ]        xe_pci_runtime_resume+0x73/0x90 [xe]
+ [ ]        pci_pm_runtime_resume+0xa0/0x100
+ [ ]        __rpm_callback+0x4d/0x170
+ [ ]        rpm_callback+0x64/0x70
+ [ ]        rpm_resume+0x594/0x790
+ [ ]        __pm_runtime_resume+0x4e/0x90
+ [ ]        xe_pm_runtime_get_ioctl+0x9c/0x160 [xe]
 
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Since we have a preallocated pool of relay transactions, which
+should cover all our normal relay use cases, we may use the
+GFP_NOWAIT flag when allocating new outgoing transactions.
+
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Tested-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250131153713.808-1-michal.wajdeczko@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_relay.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index f241493a6ac88..6bbb304ad9ab7 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3817,8 +3817,7 @@ static u32 ice_get_combined_cnt(struct ice_vsi *vsi)
- 	ice_for_each_q_vector(vsi, q_idx) {
- 		struct ice_q_vector *q_vector = vsi->q_vectors[q_idx];
+diff --git a/drivers/gpu/drm/xe/xe_guc_relay.c b/drivers/gpu/drm/xe/xe_guc_relay.c
+index 8f62de026724c..e5dc94f3e6181 100644
+--- a/drivers/gpu/drm/xe/xe_guc_relay.c
++++ b/drivers/gpu/drm/xe/xe_guc_relay.c
+@@ -225,7 +225,7 @@ __relay_get_transaction(struct xe_guc_relay *relay, bool incoming, u32 remote, u
+ 	 * with CTB lock held which is marked as used in the reclaim path.
+ 	 * Btw, that's one of the reason why we use mempool here!
+ 	 */
+-	txn = mempool_alloc(&relay->pool, incoming ? GFP_ATOMIC : GFP_KERNEL);
++	txn = mempool_alloc(&relay->pool, incoming ? GFP_ATOMIC : GFP_NOWAIT);
+ 	if (!txn)
+ 		return ERR_PTR(-ENOMEM);
  
--		if (q_vector->rx.rx_ring && q_vector->tx.tx_ring)
--			combined++;
-+		combined += min(q_vector->num_ring_tx, q_vector->num_ring_rx);
- 	}
- 
- 	return combined;
 -- 
 2.39.5
 
