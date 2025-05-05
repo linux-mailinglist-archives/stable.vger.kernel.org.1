@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-140257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4710AAA6F5
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:23:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 213B7AAA6B6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B60E9985369
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:16:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B5BF1886BBE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C8C32BF5C;
-	Mon,  5 May 2025 22:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC00232CDE8;
+	Mon,  5 May 2025 22:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oE2rMf9M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bfzm3loD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC2E32BF57;
-	Mon,  5 May 2025 22:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6571532CDE4;
+	Mon,  5 May 2025 22:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484512; cv=none; b=kbKiEisJ+n+7JZJVRTigLGNSeZsyI2hD4NEqKuZvWoAjEC+p82P814vB45o0bHHxFFOWfGh3H0oQ1vHy429JeUCb2cjhHl4jbM0bMVYVGO89Wf8V+d6Ia5OijM1a8x0fLsvzJ9XmMWLfnrt+TqNvgA5c4dXv/LubPWpzrBhU8lA=
+	t=1746484515; cv=none; b=ezzbOiH3zF38sZcgtgvCsAVxqHZA5My226ie+kqHz8RJYBMEN7NjHgDbZCX5LruI6r04Ex097s8W55HYoNFNyzHxl72N70PwahQfXX9bsmVeS9rG8kCOB5RWf6LJcMf8kbt2Bwu8EzhGeSwbHM45Mn+janzKln5Ku1N9mBLEaOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484512; c=relaxed/simple;
-	bh=rvINE1xczsfYHzY4skdGfLUM0secf1TOZYDxrR9/9gc=;
+	s=arc-20240116; t=1746484515; c=relaxed/simple;
+	bh=n3dAbb0uPOKIS9M5rg1c/2xkmggawtRQP0614SlYMS0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ScPophK63jL9jrFDr7XpuxNkwNoFHXMYIVRYvlHIuflFFspMkfk/Ze3WbHgCdz8HiQ+Rh+qV0uTL7M1fM01qduydmqfoGfx6YgKx8Zw3IT4g6VMZMQFH095Ba8ppNRBTPg+Xx0jSZHglupoVwF9gQJuryrYNCxc94SCZxp+9uEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oE2rMf9M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1669BC4CEED;
-	Mon,  5 May 2025 22:35:10 +0000 (UTC)
+	 MIME-Version; b=fKfP9kmQ0wBq3TtBAcvnqzpk4nlsiRFcqoF+S6iDY5bK8FXMTRoqDDK+7FhDNUb2RXtnWz3GsVa1XDAxbuW8099JlR0DkgcpsnjNqbJqZpMI7EVlNa5BZ4TWqaHM57xZPA/Rpz0MkPDs199Yp6vfCojD0vXXsFFbE3olK+ddDQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bfzm3loD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFB6C4CEE4;
+	Mon,  5 May 2025 22:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484512;
-	bh=rvINE1xczsfYHzY4skdGfLUM0secf1TOZYDxrR9/9gc=;
+	s=k20201202; t=1746484515;
+	bh=n3dAbb0uPOKIS9M5rg1c/2xkmggawtRQP0614SlYMS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oE2rMf9M1+wgGPXacFzfOLri9w2hr2KTgLch6w3yVm6rQy3UECtJUZuqnXUwinpNL
-	 b3xYQEgBkHDvgCl1mZ7SRyv0nCK/dADVdqxdRNa9ZPS6aMRfrabEJbyF6/SZEkmaOI
-	 ULmHPnqPXkpOChOc0y01q4yaZwuc41ulUCAOG08ObXxXiz8+tfBBfWEGRTs2Bm515P
-	 aqY4aARKqIxLU/Fs3DdFTISNAZkVQ3AQ2Mjz4tsEJVbSXQ1u9J5PkIYJH2TuDfqwrO
-	 S+H9Eyq43fk18qctjV99WN7djtr2UM5rTFKF2UDWoSMC7wSaJUNMbRoVRPXYc6vmAk
-	 uLBU6iTnhD0Gg==
+	b=bfzm3loD19FUgl6UK1e5O3PyzbrcVNGHm1WSO3nPFVdeLctb5IbmrLWeVE2OPmGe0
+	 Lb0nL3XBWxFDw+4ma0iZsoNY2tNxznXlOYta3iLp+i2UHBS77SMk5Gktr/FUNbhqdA
+	 QXOczBmKpO6M/Qyj6Qw/gPw0ZQ33tzfFqzbBQhlTTYdyy+YDM0V4SWn7YiGhrD8XbY
+	 ke6TFC10udZK6uRUVE/WvX+nPGjT0mFonr+MHdnJ42i8BsbZfOL58ipewoZ/txstpA
+	 vo/LNODVHEHvgl04/kszWBCkC+4FgDD7dmQAYhWW4eO2HW3WRuDXoE4OUfDb3H+KKH
+	 IxDLMwPN0hnIQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gaurav Batra <gbatra@linux.ibm.com>,
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Disha Goel <disgoel@linux.vnet.ibm.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
 	mpe@ellerman.id.au,
-	sbhat@linux.ibm.com,
-	donettom@linux.ibm.com,
+	kan.liang@linux.intel.com,
+	oliver.upton@linux.dev,
+	mingo@kernel.org,
+	mark.rutland@arm.com,
+	anjalik@linux.ibm.com,
+	coltonlewis@google.com,
+	rppt@kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.14 509/642] powerpc/pseries/iommu: create DDW for devices with DMA mask less than 64-bits
-Date: Mon,  5 May 2025 18:12:05 -0400
-Message-Id: <20250505221419.2672473-509-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 510/642] arch/powerpc/perf: Check the instruction type before creating sample with perf_mem_data_src
+Date: Mon,  5 May 2025 18:12:06 -0400
+Message-Id: <20250505221419.2672473-510-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,251 +74,134 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Gaurav Batra <gbatra@linux.ibm.com>
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-[ Upstream commit 67dfc11982f7e3c37f0977e74671da2391b29181 ]
+[ Upstream commit 2ffb26afa64261139e608bf087a0c1fe24d76d4d ]
 
-Starting with PAPR level 2.13, platform supports placing PHB in limited
-address mode. Devices that support DMA masks less that 64-bit but greater
-than 32-bits are placed in limited address mode. In this mode, the
-starting DMA address returned by the DDW is 4GB.
+perf mem report aborts as below sometimes (during some corner
+case) in powerpc:
 
-When the device driver calls dma_supported, with mask less then 64-bit, the
-PowerPC IOMMU driver places PHB in the Limited Addressing Mode before
-creating DDW.
+   # ./perf mem report 1>out
+   *** stack smashing detected ***: terminated
+   Aborted (core dumped)
 
-Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+The backtrace is as below:
+   __pthread_kill_implementation ()
+   raise ()
+   abort ()
+   __libc_message
+   __fortify_fail
+   __stack_chk_fail
+   hist_entry.lvl_snprintf
+   __sort__hpp_entry
+   __hist_entry__snprintf
+   hists.fprintf
+   cmd_report
+   cmd_mem
+
+Snippet of code which triggers the issue
+from tools/perf/util/sort.c
+
+   static int hist_entry__lvl_snprintf(struct hist_entry *he, char *bf,
+                                    size_t size, unsigned int width)
+   {
+        char out[64];
+
+        perf_mem__lvl_scnprintf(out, sizeof(out), he->mem_info);
+        return repsep_snprintf(bf, size, "%-*s", width, out);
+   }
+
+The value of "out" is filled from perf_mem_data_src value.
+Debugging this further showed that for some corner cases, the
+value of "data_src" was pointing to wrong value. This resulted
+in bigger size of string and causing stack check fail.
+
+The perf mem data source values are captured in the sample via
+isa207_get_mem_data_src function. The initial check is to fetch
+the type of sampled instruction. If the type of instruction is
+not valid (not a load/store instruction), the function returns.
+
+Since 'commit e16fd7f2cb1a ("perf: Use sample_flags for data_src")',
+data_src field is not initialized by the perf_sample_data_init()
+function. If the PMU driver doesn't set the data_src value to zero if
+type is not valid, this will result in uninitailised value for data_src.
+The uninitailised value of data_src resulted in stack check fail
+followed by abort for "perf mem report".
+
+When requesting for data source information in the sample, the
+instruction type is expected to be load or store instruction.
+In ISA v3.0, due to hardware limitation, there are corner cases
+where the instruction type other than load or store is observed.
+In ISA v3.0 and before values "0" and "7" are considered reserved.
+In ISA v3.1, value "7" has been used to indicate "larx/stcx".
+Drop the sample if instruction type has reserved values for this
+field with a ISA version check. Initialize data_src to zero in
+isa207_get_mem_data_src if the instruction type is not load/store.
+
+Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250108164814.73250-1-gbatra@linux.ibm.com
+Link: https://patch.msgid.link/20250121131621.39054-1-atrajeev@linux.vnet.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/iommu.c | 110 +++++++++++++++++++++----
- 1 file changed, 94 insertions(+), 16 deletions(-)
+ arch/powerpc/perf/core-book3s.c   | 20 ++++++++++++++++++++
+ arch/powerpc/perf/isa207-common.c |  4 +++-
+ 2 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 8f32340960e21..d6ebc19fb99c5 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -52,7 +52,8 @@ enum {
- enum {
- 	DDW_EXT_SIZE = 0,
- 	DDW_EXT_RESET_DMA_WIN = 1,
--	DDW_EXT_QUERY_OUT_SIZE = 2
-+	DDW_EXT_QUERY_OUT_SIZE = 2,
-+	DDW_EXT_LIMITED_ADDR_MODE = 3
- };
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index f4e03aaabb4c3..b906d28f74fd4 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2226,6 +2226,10 @@ static struct pmu power_pmu = {
+ #define PERF_SAMPLE_ADDR_TYPE  (PERF_SAMPLE_ADDR |		\
+ 				PERF_SAMPLE_PHYS_ADDR |		\
+ 				PERF_SAMPLE_DATA_PAGE_SIZE)
++
++#define SIER_TYPE_SHIFT	15
++#define SIER_TYPE_MASK	(0x7ull << SIER_TYPE_SHIFT)
++
+ /*
+  * A counter has overflowed; update its count and record
+  * things if requested.  Note that interrupts are hard-disabled
+@@ -2294,6 +2298,22 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 	    is_kernel_addr(mfspr(SPRN_SIAR)))
+ 		record = 0;
  
- static struct iommu_table *iommu_pseries_alloc_table(int node)
-@@ -1327,6 +1328,54 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
- 			 ret);
- }
- 
-+/*
-+ * Platforms support placing PHB in limited address mode starting with LoPAR
-+ * level 2.13 implement. In this mode, the DMA address returned by DDW is over
-+ * 4GB but, less than 64-bits. This benefits IO adapters that don't support
-+ * 64-bits for DMA addresses.
-+ */
-+static int limited_dma_window(struct pci_dev *dev, struct device_node *par_dn)
-+{
-+	int ret;
-+	u32 cfg_addr, reset_dma_win, las_supported;
-+	u64 buid;
-+	struct device_node *dn;
-+	struct pci_dn *pdn;
-+
-+	ret = ddw_read_ext(par_dn, DDW_EXT_RESET_DMA_WIN, &reset_dma_win);
-+	if (ret)
-+		goto out;
-+
-+	ret = ddw_read_ext(par_dn, DDW_EXT_LIMITED_ADDR_MODE, &las_supported);
-+
-+	/* Limited Address Space extension available on the platform but DDW in
-+	 * limited addressing mode not supported
++	/*
++	 * SIER[46-48] presents instruction type of the sampled instruction.
++	 * In ISA v3.0 and before values "0" and "7" are considered reserved.
++	 * In ISA v3.1, value "7" has been used to indicate "larx/stcx".
++	 * Drop the sample if "type" has reserved values for this field with a
++	 * ISA version check.
 +	 */
-+	if (!ret && !las_supported)
-+		ret = -EPROTO;
-+
-+	if (ret) {
-+		dev_info(&dev->dev, "Limited Address Space for DDW not Supported, err: %d", ret);
-+		goto out;
-+	}
-+
-+	dn = pci_device_to_OF_node(dev);
-+	pdn = PCI_DN(dn);
-+	buid = pdn->phb->buid;
-+	cfg_addr = (pdn->busno << 16) | (pdn->devfn << 8);
-+
-+	ret = rtas_call(reset_dma_win, 4, 1, NULL, cfg_addr, BUID_HI(buid),
-+			BUID_LO(buid), 1);
-+	if (ret)
-+		dev_info(&dev->dev,
-+			 "ibm,reset-pe-dma-windows(%x) for Limited Addr Support: %x %x %x returned %d ",
-+			 reset_dma_win, cfg_addr, BUID_HI(buid), BUID_LO(buid),
-+			 ret);
-+
-+out:
-+	return ret;
-+}
-+
- /* Return largest page shift based on "IO Page Sizes" output of ibm,query-pe-dma-window. */
- static int iommu_get_page_shift(u32 query_page_size)
- {
-@@ -1394,7 +1443,7 @@ static struct property *ddw_property_create(const char *propname, u32 liobn, u64
-  *
-  * returns true if can map all pages (direct mapping), false otherwise..
-  */
--static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
-+static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn, u64 dma_mask)
- {
- 	int len = 0, ret;
- 	int max_ram_len = order_base_2(ddw_memory_hotplug_max());
-@@ -1413,6 +1462,9 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	bool pmem_present;
- 	struct pci_dn *pci = PCI_DN(pdn);
- 	struct property *default_win = NULL;
-+	bool limited_addr_req = false, limited_addr_enabled = false;
-+	int dev_max_ddw;
-+	int ddw_sz;
- 
- 	dn = of_find_node_by_type(NULL, "ibm,pmemory");
- 	pmem_present = dn != NULL;
-@@ -1439,7 +1491,6 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	 * the ibm,ddw-applicable property holds the tokens for:
- 	 * ibm,query-pe-dma-window
- 	 * ibm,create-pe-dma-window
--	 * ibm,remove-pe-dma-window
- 	 * for the given node in that order.
- 	 * the property is actually in the parent, not the PE
- 	 */
-@@ -1459,6 +1510,20 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	if (ret != 0)
- 		goto out_failed;
- 
-+	/* DMA Limited Addressing required? This is when the driver has
-+	 * requested to create DDW but supports mask which is less than 64-bits
-+	 */
-+	limited_addr_req = (dma_mask != DMA_BIT_MASK(64));
-+
-+	/* place the PHB in Limited Addressing mode */
-+	if (limited_addr_req) {
-+		if (limited_dma_window(dev, pdn))
-+			goto out_failed;
-+
-+		/* PHB is in Limited address mode */
-+		limited_addr_enabled = true;
++	if (event->attr.sample_type & PERF_SAMPLE_DATA_SRC &&
++			ppmu->get_mem_data_src) {
++		val = (regs->dar & SIER_TYPE_MASK) >> SIER_TYPE_SHIFT;
++		if (val == 0 || (val == 7 && !cpu_has_feature(CPU_FTR_ARCH_31))) {
++			record = 0;
++			atomic64_inc(&event->lost_samples);
++		}
 +	}
 +
  	/*
- 	 * If there is no window available, remove the default DMA window,
- 	 * if it's present. This will make all the resources available to the
-@@ -1505,6 +1570,15 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 		goto out_failed;
- 	}
- 
-+	/* Maximum DMA window size that the device can address (in log2) */
-+	dev_max_ddw = fls64(dma_mask);
-+
-+	/* If the device DMA mask is less than 64-bits, make sure the DMA window
-+	 * size is not bigger than what the device can access
-+	 */
-+	ddw_sz = min(order_base_2(query.largest_available_block << page_shift),
-+			dev_max_ddw);
-+
- 	/*
- 	 * The "ibm,pmemory" can appear anywhere in the address space.
- 	 * Assuming it is still backed by page structs, try MAX_PHYSMEM_BITS
-@@ -1513,23 +1587,21 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	 * Finally record data if requested.
  	 */
- 	len = max_ram_len;
- 	if (pmem_present) {
--		if (query.largest_available_block >=
--		    (1ULL << (MAX_PHYSMEM_BITS - page_shift)))
-+		if (ddw_sz >= MAX_PHYSMEM_BITS)
- 			len = MAX_PHYSMEM_BITS;
- 		else
- 			dev_info(&dev->dev, "Skipping ibm,pmemory");
- 	}
+diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
+index 56301b2bc8ae8..031a2b63c171d 100644
+--- a/arch/powerpc/perf/isa207-common.c
++++ b/arch/powerpc/perf/isa207-common.c
+@@ -321,8 +321,10 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
  
- 	/* check if the available block * number of ptes will map everything */
--	if (query.largest_available_block < (1ULL << (len - page_shift))) {
-+	if (ddw_sz < len) {
- 		dev_dbg(&dev->dev,
- 			"can't map partition max 0x%llx with %llu %llu-sized pages\n",
- 			1ULL << len,
- 			query.largest_available_block,
- 			1ULL << page_shift);
+ 	sier = mfspr(SPRN_SIER);
+ 	val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
+-	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31)))
++	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31))) {
++		dsrc->val = 0;
+ 		return;
++	}
  
--		len = order_base_2(query.largest_available_block << page_shift);
--
-+		len = ddw_sz;
- 		dynamic_mapping = true;
- 	} else {
- 		direct_mapping = !default_win_removed ||
-@@ -1543,8 +1615,9 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 		 */
- 		if (default_win_removed && pmem_present && !direct_mapping) {
- 			/* DDW is big enough to be split */
--			if ((query.largest_available_block << page_shift) >=
--			     MIN_DDW_VPMEM_DMA_WINDOW + (1ULL << max_ram_len)) {
-+			if ((1ULL << ddw_sz) >=
-+			    MIN_DDW_VPMEM_DMA_WINDOW + (1ULL << max_ram_len)) {
-+
- 				direct_mapping = true;
- 
- 				/* offset of the Dynamic part of DDW */
-@@ -1555,8 +1628,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 			dynamic_mapping = true;
- 
- 			/* create max size DDW possible */
--			len = order_base_2(query.largest_available_block
--							<< page_shift);
-+			len = ddw_sz;
- 		}
- 	}
- 
-@@ -1685,7 +1757,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	__remove_dma_window(pdn, ddw_avail, create.liobn);
- 
- out_failed:
--	if (default_win_removed)
-+	if (default_win_removed || limited_addr_enabled)
- 		reset_dma_window(dev, pdn);
- 
- 	fpdn = kzalloc(sizeof(*fpdn), GFP_KERNEL);
-@@ -1704,6 +1776,9 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 		dev->dev.bus_dma_limit = dev->dev.archdata.dma_offset +
- 						(1ULL << max_ram_len);
- 
-+	dev_info(&dev->dev, "lsa_required: %x, lsa_enabled: %x, direct mapping: %x\n",
-+			limited_addr_req, limited_addr_enabled, direct_mapping);
-+
- 	return direct_mapping;
- }
- 
-@@ -1829,8 +1904,11 @@ static bool iommu_bypass_supported_pSeriesLP(struct pci_dev *pdev, u64 dma_mask)
- {
- 	struct device_node *dn = pci_device_to_OF_node(pdev), *pdn;
- 
--	/* only attempt to use a new window if 64-bit DMA is requested */
--	if (dma_mask < DMA_BIT_MASK(64))
-+	/* For DDW, DMA mask should be more than 32-bits. For mask more then
-+	 * 32-bits but less then 64-bits, DMA addressing is supported in
-+	 * Limited Addressing mode.
-+	 */
-+	if (dma_mask <= DMA_BIT_MASK(32))
- 		return false;
- 
- 	dev_dbg(&pdev->dev, "node is %pOF\n", dn);
-@@ -1843,7 +1921,7 @@ static bool iommu_bypass_supported_pSeriesLP(struct pci_dev *pdev, u64 dma_mask)
- 	 */
- 	pdn = pci_dma_find(dn, NULL);
- 	if (pdn && PCI_DN(pdn))
--		return enable_ddw(pdev, pdn);
-+		return enable_ddw(pdev, pdn, dma_mask);
- 
- 	return false;
- }
+ 	idx = (sier & ISA207_SIER_LDST_MASK) >> ISA207_SIER_LDST_SHIFT;
+ 	sub_idx = (sier & ISA207_SIER_DATA_SRC_MASK) >> ISA207_SIER_DATA_SRC_SHIFT;
 -- 
 2.39.5
 
