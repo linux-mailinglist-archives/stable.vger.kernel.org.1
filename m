@@ -1,62 +1,69 @@
-Return-Path: <stable+bounces-140580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB8FFAAAE58
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:55:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B0C7AAAE23
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:50:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 305383A3A83
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:50:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FCBF7B2A7B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA652D86B8;
-	Mon,  5 May 2025 22:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693312D7AF1;
+	Mon,  5 May 2025 22:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j6kLc9UB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OQzONJye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991C536BFE6;
-	Mon,  5 May 2025 22:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8F536DD30;
+	Mon,  5 May 2025 22:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485195; cv=none; b=dgI6DhO4pPJ/DzZE8767XA+S8CAKkXQoo4YzpSg9w6DTa7HequYC1gSuE/1b/BVtWErsGdzj48GkblJeazrC2gfzbwK5Wz6mheNyQWoaQd7IKdfr9JPlD4zsz7FXm1xGjnSYIlik0NPKmt3uT68SDURMywajcRHv0JY7INlIWmw=
+	t=1746485200; cv=none; b=IdspDht9zgFQ8o2c7pFDqeKoVNIndHxoQQW2djezCWGl9VfyKH521ASmkBwEiLGNM1zSKzSwwQRGBE98NFUuC+YDbQNNKRLkUQsRN2oAzVTomP5EeLWxaWz54fUtcd0LWoSJFiFD2P+wlMJLsalrsls4w9TMIn4rh0CUJ+bTW4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485195; c=relaxed/simple;
-	bh=dax5wqEKuM333ZcfbQ21Tr60WY5WK+s4KXT4IfgTIks=;
+	s=arc-20240116; t=1746485200; c=relaxed/simple;
+	bh=kiINvKw8UeJPMKrVPPDdggBN7qCqrAgYNgQSm+tWCUc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=s7AJgXPhjMh7mq9ho7RpBx5xGthF4mFPLl8aohrI3EA8mBla16D+jw2VuYn94Mv3/9Xuhtr0myxcOp/UD1jkFTWSnLGww4ujPMRZh5WI6cwy+319zpSa1Yb3AGJXs3Nd5WnDZlCMz8VmsKab8QQpZn9TDYRWwnP84SFa1SBB08M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j6kLc9UB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB2BC4CEE4;
-	Mon,  5 May 2025 22:46:33 +0000 (UTC)
+	 MIME-Version; b=LBZCQX2UTvwjHGB8o6mIFki1OsX5wno0EOYRMj11XrwSm5XrJUU3FpD8h8BqQ/+dtWI4PDniTLpE9yw7nw1duGilvyp5LVvmPehgRoWlVPCSo9ukOE38gBSDL8j/bFxKqt8sosVf/dvwaiFeeak117wv7G5W9PSpIpUycXJJJYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OQzONJye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757A6C4CEE4;
+	Mon,  5 May 2025 22:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485194;
-	bh=dax5wqEKuM333ZcfbQ21Tr60WY5WK+s4KXT4IfgTIks=;
+	s=k20201202; t=1746485199;
+	bh=kiINvKw8UeJPMKrVPPDdggBN7qCqrAgYNgQSm+tWCUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6kLc9UB6Rw+HTpKzJxzs5GULAbvEaeI6X4oJLQmFuvHuBWWvr9LuQjpJ9KrV3aXY
-	 fg+O4GiXnVCpL/1T7kM4fFM4thnI7vGCwwv6b4HGnJ16R+uvHAkgElXm6/o6vsO1It
-	 aXo8DeTfQ3lUvMbY9au7/QsfMvSv5wwAjjltoCH5VXDwZ4qfFBTJ+eFx4osu9tEB+K
-	 DSugQPkTJRjpX6iQqosqoj1qm8Y7Z4CNeMTGNouwWBIp7JFRC6zfkMwy1uTFOjgGsC
-	 ugiVnx4GFLkr3P8CqE6gcTBTgAOK3Zl0FQdVycKDTGoRORxbWyyuszmXL0wd8CWN/q
-	 ZEdbZZQPctoUA==
+	b=OQzONJyeDjey+4QTT7bKZeoAfEqUv9Z2v6E3x9k2Yb90MiCtn8R7VoATGs0RynkjQ
+	 bg/F31D3EWHVNitXIxrwfE89C2cmnMBiyEjeODa87iWNP/hPhMtZ+DTfinNF3gfLk0
+	 bK8UWT5LZWCPEQKiNkZX3JSRobSodpqd4b5xa6mBd8j34zeVZoRXmFVYD/LkeHgyKE
+	 k+SoBTB4SghLkUnbtUY9ZRzVkasI/Wch2lYcW4QL+669AArdLf3TwXNAhQVnCTYEOU
+	 6yEMj1Xnb+JDuD/8XY73vxY3x+yXVKgoi3lG0goB1wfWWlcMzxyYSrrFLtAzV97n00
+	 PMqtrlDdL7mvg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Artur Weber <aweber.kernel@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	florian.fainelli@broadcom.com,
-	rjui@broadcom.com,
-	sbranden@broadcom.com,
-	dan.carpenter@linaro.org,
-	linux-gpio@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 204/486] pinctrl: bcm281xx: Use "unsigned int" instead of bare "unsigned"
-Date: Mon,  5 May 2025 18:34:40 -0400
-Message-Id: <20250505223922.2682012-204-sashal@kernel.org>
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	alexander.sverdlin@gmail.com,
+	hkallweit1@gmail.com,
+	u.kleine-koenig@baylibre.com,
+	lorenzo@kernel.org,
+	aleksander.lobakin@intel.com,
+	nicolas.dichtel@6wind.com,
+	linux-omap@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 206/486] net: ethernet: ti: cpsw_new: populate netdev of_node
+Date: Mon,  5 May 2025 18:34:42 -0400
+Message-Id: <20250505223922.2682012-206-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -71,175 +78,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 07b5a2a13f4704c5eae3be7277ec54ffdba45f72 ]
+[ Upstream commit 7ff1c88fc89688c27f773ba956f65f0c11367269 ]
 
-Replace uses of bare "unsigned" with "unsigned int" to fix checkpatch
-warnings. No functional change.
+So that of_find_net_device_by_node() can find CPSW ports and other DSA
+switches can be stacked downstream. Tested in conjunction with KSZ8873.
 
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Link: https://lore.kernel.org/20250303-bcm21664-pinctrl-v3-2-5f8b80e4ab51@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/20250303074703.1758297-1-alexander.sverdlin@siemens.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/bcm/pinctrl-bcm281xx.c | 44 +++++++++++++-------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ drivers/net/ethernet/ti/cpsw_new.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-index cf6efa9c0364a..a039b490cdb8e 100644
---- a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-+++ b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-@@ -72,7 +72,7 @@ static enum bcm281xx_pin_type hdmi_pin = BCM281XX_PIN_TYPE_HDMI;
- struct bcm281xx_pin_function {
- 	const char *name;
- 	const char * const *groups;
--	const unsigned ngroups;
-+	const unsigned int ngroups;
- };
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index 557cc71b9dd22..0eee1a0527b5c 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -1417,6 +1417,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
+ 		ndev->netdev_ops = &cpsw_netdev_ops;
+ 		ndev->ethtool_ops = &cpsw_ethtool_ops;
+ 		SET_NETDEV_DEV(ndev, dev);
++		ndev->dev.of_node = slave_data->slave_node;
  
- /*
-@@ -84,10 +84,10 @@ struct bcm281xx_pinctrl_data {
- 
- 	/* List of all pins */
- 	const struct pinctrl_pin_desc *pins;
--	const unsigned npins;
-+	const unsigned int npins;
- 
- 	const struct bcm281xx_pin_function *functions;
--	const unsigned nfunctions;
-+	const unsigned int nfunctions;
- 
- 	struct regmap *regmap;
- };
-@@ -941,7 +941,7 @@ static struct bcm281xx_pinctrl_data bcm281xx_pinctrl = {
- };
- 
- static inline enum bcm281xx_pin_type pin_type_get(struct pinctrl_dev *pctldev,
--						  unsigned pin)
-+						  unsigned int pin)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -985,7 +985,7 @@ static int bcm281xx_pinctrl_get_groups_count(struct pinctrl_dev *pctldev)
- }
- 
- static const char *bcm281xx_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
--						   unsigned group)
-+						   unsigned int group)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -993,9 +993,9 @@ static const char *bcm281xx_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
- }
- 
- static int bcm281xx_pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
--					   unsigned group,
-+					   unsigned int group,
- 					   const unsigned **pins,
--					   unsigned *num_pins)
-+					   unsigned int *num_pins)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -1007,7 +1007,7 @@ static int bcm281xx_pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
- 
- static void bcm281xx_pinctrl_pin_dbg_show(struct pinctrl_dev *pctldev,
- 					  struct seq_file *s,
--					  unsigned offset)
-+					  unsigned int offset)
- {
- 	seq_printf(s, " %s", dev_name(pctldev->dev));
- }
-@@ -1029,7 +1029,7 @@ static int bcm281xx_pinctrl_get_fcns_count(struct pinctrl_dev *pctldev)
- }
- 
- static const char *bcm281xx_pinctrl_get_fcn_name(struct pinctrl_dev *pctldev,
--						 unsigned function)
-+						 unsigned int function)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -1037,9 +1037,9 @@ static const char *bcm281xx_pinctrl_get_fcn_name(struct pinctrl_dev *pctldev,
- }
- 
- static int bcm281xx_pinctrl_get_fcn_groups(struct pinctrl_dev *pctldev,
--					   unsigned function,
-+					   unsigned int function,
- 					   const char * const **groups,
--					   unsigned * const num_groups)
-+					   unsigned int * const num_groups)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -1050,8 +1050,8 @@ static int bcm281xx_pinctrl_get_fcn_groups(struct pinctrl_dev *pctldev,
- }
- 
- static int bcm281xx_pinmux_set(struct pinctrl_dev *pctldev,
--			       unsigned function,
--			       unsigned group)
-+			       unsigned int function,
-+			       unsigned int group)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 	const struct bcm281xx_pin_function *f = &pdata->functions[function];
-@@ -1082,7 +1082,7 @@ static const struct pinmux_ops bcm281xx_pinctrl_pinmux_ops = {
- };
- 
- static int bcm281xx_pinctrl_pin_config_get(struct pinctrl_dev *pctldev,
--					   unsigned pin,
-+					   unsigned int pin,
- 					   unsigned long *config)
- {
- 	return -ENOTSUPP;
-@@ -1091,9 +1091,9 @@ static int bcm281xx_pinctrl_pin_config_get(struct pinctrl_dev *pctldev,
- 
- /* Goes through the configs and update register val/mask */
- static int bcm281xx_std_pin_update(struct pinctrl_dev *pctldev,
--				   unsigned pin,
-+				   unsigned int pin,
- 				   unsigned long *configs,
--				   unsigned num_configs,
-+				   unsigned int num_configs,
- 				   u32 *val,
- 				   u32 *mask)
- {
-@@ -1207,9 +1207,9 @@ static const u16 bcm281xx_pullup_map[] = {
- 
- /* Goes through the configs and update register val/mask */
- static int bcm281xx_i2c_pin_update(struct pinctrl_dev *pctldev,
--				   unsigned pin,
-+				   unsigned int pin,
- 				   unsigned long *configs,
--				   unsigned num_configs,
-+				   unsigned int num_configs,
- 				   u32 *val,
- 				   u32 *mask)
- {
-@@ -1277,9 +1277,9 @@ static int bcm281xx_i2c_pin_update(struct pinctrl_dev *pctldev,
- 
- /* Goes through the configs and update register val/mask */
- static int bcm281xx_hdmi_pin_update(struct pinctrl_dev *pctldev,
--				    unsigned pin,
-+				    unsigned int pin,
- 				    unsigned long *configs,
--				    unsigned num_configs,
-+				    unsigned int num_configs,
- 				    u32 *val,
- 				    u32 *mask)
- {
-@@ -1321,9 +1321,9 @@ static int bcm281xx_hdmi_pin_update(struct pinctrl_dev *pctldev,
- }
- 
- static int bcm281xx_pinctrl_pin_config_set(struct pinctrl_dev *pctldev,
--					   unsigned pin,
-+					   unsigned int pin,
- 					   unsigned long *configs,
--					   unsigned num_configs)
-+					   unsigned int num_configs)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 	enum bcm281xx_pin_type pin_type;
+ 		if (!napi_ndev) {
+ 			/* CPSW Host port CPDMA interface is shared between
 -- 
 2.39.5
 
