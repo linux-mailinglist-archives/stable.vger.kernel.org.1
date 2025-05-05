@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-141622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E1CAAB4F9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:20:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A99C6AAB502
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1E46502453
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:16:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50DAA50274E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023B2487BAB;
-	Tue,  6 May 2025 00:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5A639E054;
+	Tue,  6 May 2025 00:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E3qlpiZo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lo3jDAXd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F97283FE7;
-	Mon,  5 May 2025 23:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363C22F4192;
+	Mon,  5 May 2025 23:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486904; cv=none; b=sML55oWPjBfZNoWTftCxFfpSFOqaPe0x9ELd7fv7wUHnUDg4K6X18vIcbhxaajZBsrVgsFliRTf32f8lDF7Si3Lg23OZsFKmSkLcSmMVH58Xx3FJVMJJRc1D1pCH6PCWeruVQFSPVeG0pi+OkW6OXNTsODr7tSOMAmEdaF5uiio=
+	t=1746486921; cv=none; b=e2DVjDYNTqYm3mMi4peFIxMWfS/pMediIcWtZ+qbjvFkyAtdGUZFBYIuFEwOpoi4Rv0BJBXYaXz8/STyLEJZPTeimmcfH/IWkgr2tQ/zciK4NE6998qQlbU8C6ptTX7OIZamglq+0A56p4QChV/pEmIGVnaY3N0PB1a08bcsnH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486904; c=relaxed/simple;
-	bh=3pn0POrxtmqjwWqo4wAYL5F4MHG8KY2M5HwwboODC/E=;
+	s=arc-20240116; t=1746486921; c=relaxed/simple;
+	bh=RRUgPX0O/LV1tO5163H3IsNpYfSObehSHHW0CGMWlWk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TmaQqnA3LET6JpcRHR+QlOKdZ05hMli3LRu0LVAtEKR37cHtfsC0wCqapp8IwGmfUCRJtaCuTkfqxe+/kcAbw3ysEDEQkXuafxk8CwbeDWFurpxb6GXrqLF71vSVNDBC+naz3JMs5F/HT4NfgTc/nJladghl/CYswmCN/VZjn3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E3qlpiZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58C3C4CEE4;
-	Mon,  5 May 2025 23:15:02 +0000 (UTC)
+	 MIME-Version; b=l+3WPiWjPxJgsr7zNznPi73w/16MKL3sKOiLtm6fMd5oWf5vJ4WNNx8XV6TbZp+9SYm+9bnwX92AQSJk18NBJfQVo6iToU1DpswKYQLfe7paJT8po+8JAy3s3cPPsToAUeJfWY0gO8GwBaP2YTVJy6zOZ8NGqPU9rBfHqCKeGlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lo3jDAXd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7968EC4CEE4;
+	Mon,  5 May 2025 23:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486904;
-	bh=3pn0POrxtmqjwWqo4wAYL5F4MHG8KY2M5HwwboODC/E=;
+	s=k20201202; t=1746486920;
+	bh=RRUgPX0O/LV1tO5163H3IsNpYfSObehSHHW0CGMWlWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3qlpiZojxYXPLar4zmUxlRJMghzoEN8Joqq9cEpd1x01rVbbGbdcrBnw+uWvv6Ye
-	 5pG6yMOIzP0VcFQrPuM7pB3QGYYeINbtEafFaHS4e6ukJqVXvBGAyaDSNsnSaT/nd3
-	 NIdsGrnBFD3Q+fUZryJmU9cdLkQMfM6ZyHt7m+kLoGcN4gdOXim988AgoUCEmV+rsy
-	 O9G1p+yKqaJs0dOx+txQTWzkgS0ZvOpjWgn6lQElmHXysK53Vw57JWEqNbc3WHlyPp
-	 PEzokKU2vUAdnqw4t7anhJBpTbNZq77oz1+wWt++QEzwxO7diJFnYy/X6g60hvniQY
-	 JkQYQ55NHbKTw==
+	b=Lo3jDAXdAbE4xtGdyqBAv8EzuXFhMbrDNR9GQvFQQSonFYyp1SR6FZICzBysmDVlD
+	 HkClxVs3xw3bn/mxAfUIl9lv7x/Rp9HOYtzVp74sgy2pwSu4UxntPLyKaxbaBdD6NK
+	 rF01fxExfLxwiF22tvKP4hthhLVGp/5yha6SUmsuoLg/5N6rDpv3AZERTo5QhZIqMm
+	 40m4PJ/Lpk+50qdEz8Hr0uNv1VOIl1oz+QonbboARlm1yQNL+08ddriU9xHaSrLgfa
+	 MrVij4+oV3gdYyTL8QNOoLpWh5RtAf5VMtcZb4HiDWotlMzZvkzlnz5WNEx0giU9PT
+	 9QcbedySzBhpA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>,
-	andy@kernel.org,
-	willy@haproxy.com,
-	ksenija.stanojevic@gmail.com,
-	viro@zeniv.linux.org.uk,
-	erick.archer@outlook.com,
-	haoxiang_li2024@163.com,
-	u.kleine-koenig@baylibre.com,
-	mingo@kernel.org,
-	tglx@linutronix.de,
-	gregkh@linuxfoundation.org,
-	linux@treblig.org
-Subject: [PATCH AUTOSEL 5.15 052/153] auxdisplay: charlcd: Partially revert "Move hwidth and bwidth to struct hd44780_common"
-Date: Mon,  5 May 2025 19:11:39 -0400
-Message-Id: <20250505231320.2695319-52-sashal@kernel.org>
+	linux-rtc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 059/153] rtc: ds1307: stop disabling alarms on probe
+Date: Mon,  5 May 2025 19:11:46 -0400
+Message-Id: <20250505231320.2695319-59-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -75,114 +64,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-[ Upstream commit 09965a142078080fe7807bab0f6f1890cb5987a4 ]
+[ Upstream commit dcec12617ee61beed928e889607bf37e145bf86b ]
 
-Commit 2545c1c948a6 ("auxdisplay: Move hwidth and bwidth to struct
-hd44780_common") makes charlcd_alloc() argument-less effectively dropping
-the single allocation for the struct charlcd_priv object along with
-the driver specific one. Restore that behaviour here.
+It is a bad practice to disable alarms on probe or remove as this will
+prevent alarms across reboots.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/20250303223744.1135672-1-alexandre.belloni@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/auxdisplay/charlcd.c | 5 +++--
- drivers/auxdisplay/charlcd.h | 5 +++--
- drivers/auxdisplay/hd44780.c | 2 +-
- drivers/auxdisplay/lcd2s.c   | 2 +-
- drivers/auxdisplay/panel.c   | 2 +-
- 5 files changed, 9 insertions(+), 7 deletions(-)
+ drivers/rtc/rtc-ds1307.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/auxdisplay/charlcd.c b/drivers/auxdisplay/charlcd.c
-index 6c010d4efa4ae..313bb7ebc2cfa 100644
---- a/drivers/auxdisplay/charlcd.c
-+++ b/drivers/auxdisplay/charlcd.c
-@@ -594,18 +594,19 @@ static int charlcd_init(struct charlcd *lcd)
- 	return 0;
- }
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index 336cb9aa5e336..d5a7a377e4a61 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -1802,10 +1802,8 @@ static int ds1307_probe(struct i2c_client *client,
+ 		 * For some variants, be sure alarms can trigger when we're
+ 		 * running on Vbackup (BBSQI/BBSQW)
+ 		 */
+-		if (want_irq || ds1307_can_wakeup_device) {
++		if (want_irq || ds1307_can_wakeup_device)
+ 			regs[0] |= DS1337_BIT_INTCN | chip->bbsqi_bit;
+-			regs[0] &= ~(DS1337_BIT_A2IE | DS1337_BIT_A1IE);
+-		}
  
--struct charlcd *charlcd_alloc(void)
-+struct charlcd *charlcd_alloc(unsigned int drvdata_size)
- {
- 	struct charlcd_priv *priv;
- 	struct charlcd *lcd;
- 
--	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
-+	priv = kzalloc(sizeof(*priv) + drvdata_size, GFP_KERNEL);
- 	if (!priv)
- 		return NULL;
- 
- 	priv->esc_seq.len = -1;
- 
- 	lcd = &priv->lcd;
-+	lcd->drvdata = priv->drvdata;
- 
- 	return lcd;
- }
-diff --git a/drivers/auxdisplay/charlcd.h b/drivers/auxdisplay/charlcd.h
-index eed80063a6d20..4bbf106b2dd8a 100644
---- a/drivers/auxdisplay/charlcd.h
-+++ b/drivers/auxdisplay/charlcd.h
-@@ -49,7 +49,7 @@ struct charlcd {
- 		unsigned long y;
- 	} addr;
- 
--	void *drvdata;
-+	void *drvdata;			/* Set by charlcd_alloc() */
- };
- 
- /**
-@@ -93,7 +93,8 @@ struct charlcd_ops {
- };
- 
- void charlcd_backlight(struct charlcd *lcd, enum charlcd_onoff on);
--struct charlcd *charlcd_alloc(void);
-+
-+struct charlcd *charlcd_alloc(unsigned int drvdata_size);
- void charlcd_free(struct charlcd *lcd);
- 
- int charlcd_register(struct charlcd *lcd);
-diff --git a/drivers/auxdisplay/hd44780.c b/drivers/auxdisplay/hd44780.c
-index 8b690f59df27d..ebaf0ff518f4c 100644
---- a/drivers/auxdisplay/hd44780.c
-+++ b/drivers/auxdisplay/hd44780.c
-@@ -226,7 +226,7 @@ static int hd44780_probe(struct platform_device *pdev)
- 	if (!hdc)
- 		return -ENOMEM;
- 
--	lcd = charlcd_alloc();
-+	lcd = charlcd_alloc(0);
- 	if (!lcd)
- 		goto fail1;
- 
-diff --git a/drivers/auxdisplay/lcd2s.c b/drivers/auxdisplay/lcd2s.c
-index 2578b2d454397..2ee6875044a9c 100644
---- a/drivers/auxdisplay/lcd2s.c
-+++ b/drivers/auxdisplay/lcd2s.c
-@@ -307,7 +307,7 @@ static int lcd2s_i2c_probe(struct i2c_client *i2c,
- 	if (err < 0)
- 		return err;
- 
--	lcd = charlcd_alloc();
-+	lcd = charlcd_alloc(0);
- 	if (!lcd)
- 		return -ENOMEM;
- 
-diff --git a/drivers/auxdisplay/panel.c b/drivers/auxdisplay/panel.c
-index eba04c0de7eb3..0f3999b665e70 100644
---- a/drivers/auxdisplay/panel.c
-+++ b/drivers/auxdisplay/panel.c
-@@ -835,7 +835,7 @@ static void lcd_init(void)
- 	if (!hdc)
- 		return;
- 
--	charlcd = charlcd_alloc();
-+	charlcd = charlcd_alloc(0);
- 	if (!charlcd) {
- 		kfree(hdc);
- 		return;
+ 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
+ 			     regs[0]);
 -- 
 2.39.5
 
