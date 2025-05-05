@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-140050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29A6AAA45B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:28:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C702CAAA475
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:29:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31728163378
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:27:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B78361882F7E
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1BB2FF290;
-	Mon,  5 May 2025 22:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC4D2FF2AB;
+	Mon,  5 May 2025 22:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="grVYawDu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FOYExHC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103AB2FF281;
-	Mon,  5 May 2025 22:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DE42FF2A5;
+	Mon,  5 May 2025 22:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483982; cv=none; b=h4p0mdXk/BKFa2yo+JAnY4pTRW9eGovJTc8n5PUsiWPamPJejGehLmgcMQfLclfwhKMh38RKpHZ++Y72rm+jt1njmjKxs8JJcjuRCHmBF5EqyESIOKEvNbjaGoPYpYHMda8wIcgwdOjSRrZonDd6yTYlrtcqz+P/lInwN70wz4E=
+	t=1746483984; cv=none; b=EkHsPkTOeFPhizpDKBAP48E3AEv4OAIu5ahn7O62OLlPRV1kqAMFgc1CiRNK8Cg42bJ6E/klwg3Kaj2drZQuF5gZuOlRVwmm5Ud2yTsTOdT9tNa4B7/ia85kULCEk+hlUFX7RvYN5jt9b3jmTvID1Q+gmlS0wpN8mm3EgjPmHQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483982; c=relaxed/simple;
-	bh=1j4dgteCUSZ7Abj/VzXKM8PzCdf0Yf0zwcztFml+q24=;
+	s=arc-20240116; t=1746483984; c=relaxed/simple;
+	bh=Dk8StzUec+MbyD2uE5mGEHh1S7+RVKjI5W7HqedHPTM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PCGUA3mcqznfGvEvPR8uetCNzpLm00PS8ICLBoUuJ47H8wqPyUYW8wvcPcdwigteMIwM5qgRXeeiMIUmtNHZ2aggZ2Mqd4sv+sD25+eia07wJHPB8AQtKvdFBZSkrzAkqrPuysuCit6e8h3fy1S48/RYxNbzfaURXoqHRu4EdzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=grVYawDu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9AD3C4CEE4;
-	Mon,  5 May 2025 22:26:20 +0000 (UTC)
+	 MIME-Version; b=VVaaez55BLnQr9KZ/e4EblcgwALMimRBgZWt/lK0p/ua1zZHffc8q+4loHA6XJdIJ2EYK0neOnRRfTUXUaUZSYdFt9xRKKTlEea1hoVktpTewxrVCgJYxolQn/4VeMVOYTbGFQI9pHpOu4qEIjkDe1bMwhBLjgenz7IZMir/sb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FOYExHC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533FEC4CEEE;
+	Mon,  5 May 2025 22:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483981;
-	bh=1j4dgteCUSZ7Abj/VzXKM8PzCdf0Yf0zwcztFml+q24=;
+	s=k20201202; t=1746483983;
+	bh=Dk8StzUec+MbyD2uE5mGEHh1S7+RVKjI5W7HqedHPTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=grVYawDuBYHu5x1u91ICC6o2t8Qm7w1fcwg68QkuhI1BGIipSJUsWJZd0PnzYBlIb
-	 xo+5KIADrErRsSO6VlrKnh6DEooS2gEaeain604kSQHNjI0LdePcirDnr/FeyoYvSa
-	 ylg5L90N/cCJYFP/vUlNIoqfSOfnIMDfAxxWpszNYDuPHODIbzkYOIfc8Dbvc8nCyV
-	 8wCZaeh8VVCD/+UuEcjZN18LWGFpPG40hP/ku7NkO+NSA3q86UIWoE5hYeoPkw7OkP
-	 TUxg6KSeCyWj+PoYUH/Ri5WmtKqIrDA9Fh+5ZEsXJyAIo/3KH1eQVLU+J73Gxx9fhK
-	 AHXIucN+s9WbA==
+	b=FOYExHC7buwDFyXfOotpRHXm5rzuAq/mvqVGdEDSoV3oHW4loE/7RgyoXFuG6EIel
+	 wR/e/VTqL7trzK1AJekfE6quamdvKsebAOBz5+riOJHvMtmTDWqHHQS6Zo4Xvxx+HY
+	 92XLV45nk7xWDGG4UzHKishArYrRE2LLQhf+JXsMd5EHxL4MaHPBcyPQXc61VM/6u5
+	 6VFk3mJIQqts46b/lTM6E0p0tsEs84qOvVy/JKyiwhRCwrSLKs8xIiIl8AUq5AW0e8
+	 rVPva0c6qDxwIB1TdqcqKj74Q37IQXjYX5JA0dP05ShDenX1HqoYW75EKreM/bWoaX
+	 KEzlz9bY75d5Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Inochi Amaoto <inochiama@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	unicorn_wang@outlook.com,
-	harshit.m.mogalapalli@oracle.com,
-	linux-gpio@vger.kernel.org,
-	sophgo@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 303/642] pinctrl: sophgo: avoid to modify untouched bit when setting cv1800 pinconf
-Date: Mon,  5 May 2025 18:08:39 -0400
-Message-Id: <20250505221419.2672473-303-sashal@kernel.org>
+	Felix.Kuehling@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 304/642] drm/amdkfd: KFD release_work possible circular locking
+Date: Mon,  5 May 2025 18:08:40 -0400
+Message-Id: <20250505221419.2672473-304-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,159 +71,78 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit ef1a5121ae3da02372fcb66d9632ed3d47ad5637 ]
+[ Upstream commit 1b9366c601039d60546794c63fbb83ce8e53b978 ]
 
-When setting pinconf configuration for cv1800 SoC, the driver just writes
-the value. It may zero some bits of the pinconf register and cause some
-unexpected error. Add a mask to avoid this.
+If waiting for gpu reset done in KFD release_work, thers is WARNING:
+possible circular locking dependency detected
 
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Link: https://lore.kernel.org/20250211051801.470800-2-inochiama@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+  #2  kfd_create_process
+        kfd_process_mutex
+          flush kfd release work
+
+  #1  kfd release work
+        wait for amdgpu reset work
+
+  #0  amdgpu_device_gpu_reset
+        kgd2kfd_pre_reset
+          kfd_process_mutex
+
+  Possible unsafe locking scenario:
+
+        CPU0                    CPU1
+        ----                    ----
+   lock((work_completion)(&p->release_work));
+                  lock((wq_completion)kfd_process_wq);
+                  lock((work_completion)(&p->release_work));
+   lock((wq_completion)amdgpu-reset-dev);
+
+To fix this, KFD create process move flush release work outside
+kfd_process_mutex.
+
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/sophgo/pinctrl-cv18xx.c | 33 +++++++++++++++++--------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/pinctrl/sophgo/pinctrl-cv18xx.c b/drivers/pinctrl/sophgo/pinctrl-cv18xx.c
-index 57f2674e75d68..84b4850771ce2 100644
---- a/drivers/pinctrl/sophgo/pinctrl-cv18xx.c
-+++ b/drivers/pinctrl/sophgo/pinctrl-cv18xx.c
-@@ -574,10 +574,10 @@ static int cv1800_pinconf_compute_config(struct cv1800_pinctrl *pctrl,
- 					 struct cv1800_pin *pin,
- 					 unsigned long *configs,
- 					 unsigned int num_configs,
--					 u32 *value)
-+					 u32 *value, u32 *mask)
- {
- 	int i;
--	u32 v = 0;
-+	u32 v = 0, m = 0;
- 	enum cv1800_pin_io_type type;
- 	int ret;
- 
-@@ -596,10 +596,12 @@ static int cv1800_pinconf_compute_config(struct cv1800_pinctrl *pctrl,
- 		case PIN_CONFIG_BIAS_PULL_DOWN:
- 			v &= ~PIN_IO_PULLDOWN;
- 			v |= FIELD_PREP(PIN_IO_PULLDOWN, arg);
-+			m |= PIN_IO_PULLDOWN;
- 			break;
- 		case PIN_CONFIG_BIAS_PULL_UP:
- 			v &= ~PIN_IO_PULLUP;
- 			v |= FIELD_PREP(PIN_IO_PULLUP, arg);
-+			m |= PIN_IO_PULLUP;
- 			break;
- 		case PIN_CONFIG_DRIVE_STRENGTH_UA:
- 			ret = cv1800_pinctrl_oc2reg(pctrl, pin, arg);
-@@ -607,6 +609,7 @@ static int cv1800_pinconf_compute_config(struct cv1800_pinctrl *pctrl,
- 				return ret;
- 			v &= ~PIN_IO_DRIVE;
- 			v |= FIELD_PREP(PIN_IO_DRIVE, ret);
-+			m |= PIN_IO_DRIVE;
- 			break;
- 		case PIN_CONFIG_INPUT_SCHMITT_UV:
- 			ret = cv1800_pinctrl_schmitt2reg(pctrl, pin, arg);
-@@ -614,6 +617,7 @@ static int cv1800_pinconf_compute_config(struct cv1800_pinctrl *pctrl,
- 				return ret;
- 			v &= ~PIN_IO_SCHMITT;
- 			v |= FIELD_PREP(PIN_IO_SCHMITT, ret);
-+			m |= PIN_IO_SCHMITT;
- 			break;
- 		case PIN_CONFIG_POWER_SOURCE:
- 			/* Ignore power source as it is always fixed */
-@@ -621,10 +625,12 @@ static int cv1800_pinconf_compute_config(struct cv1800_pinctrl *pctrl,
- 		case PIN_CONFIG_SLEW_RATE:
- 			v &= ~PIN_IO_OUT_FAST_SLEW;
- 			v |= FIELD_PREP(PIN_IO_OUT_FAST_SLEW, arg);
-+			m |= PIN_IO_OUT_FAST_SLEW;
- 			break;
- 		case PIN_CONFIG_BIAS_BUS_HOLD:
- 			v &= ~PIN_IO_BUS_HOLD;
- 			v |= FIELD_PREP(PIN_IO_BUS_HOLD, arg);
-+			m |= PIN_IO_BUS_HOLD;
- 			break;
- 		default:
- 			return -ENOTSUPP;
-@@ -632,17 +638,19 @@ static int cv1800_pinconf_compute_config(struct cv1800_pinctrl *pctrl,
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index c3f2c0428e013..c9cbc0ecd9cb2 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -842,6 +842,14 @@ struct kfd_process *kfd_create_process(struct task_struct *thread)
+ 		return ERR_PTR(-EINVAL);
  	}
  
- 	*value = v;
-+	*mask = m;
- 
- 	return 0;
- }
- 
- static int cv1800_pin_set_config(struct cv1800_pinctrl *pctrl,
- 				 unsigned int pin_id,
--				 u32 value)
-+				 u32 value, u32 mask)
- {
- 	struct cv1800_pin *pin = cv1800_get_pin(pctrl, pin_id);
- 	unsigned long flags;
- 	void __iomem *addr;
-+	u32 reg;
- 
- 	if (!pin)
- 		return -EINVAL;
-@@ -650,7 +658,10 @@ static int cv1800_pin_set_config(struct cv1800_pinctrl *pctrl,
- 	addr = cv1800_pinctrl_get_component_addr(pctrl, &pin->conf);
- 
- 	raw_spin_lock_irqsave(&pctrl->lock, flags);
--	writel(value, addr);
-+	reg = readl(addr);
-+	reg &= ~mask;
-+	reg |= value;
-+	writel(reg, addr);
- 	raw_spin_unlock_irqrestore(&pctrl->lock, flags);
- 
- 	return 0;
-@@ -662,16 +673,17 @@ static int cv1800_pconf_set(struct pinctrl_dev *pctldev,
- {
- 	struct cv1800_pinctrl *pctrl = pinctrl_dev_get_drvdata(pctldev);
- 	struct cv1800_pin *pin = cv1800_get_pin(pctrl, pin_id);
--	u32 value;
-+	u32 value, mask;
- 
- 	if (!pin)
- 		return -ENODEV;
- 
- 	if (cv1800_pinconf_compute_config(pctrl, pin,
--					  configs, num_configs, &value))
-+					  configs, num_configs,
-+					  &value, &mask))
- 		return -ENOTSUPP;
- 
--	return cv1800_pin_set_config(pctrl, pin_id, value);
-+	return cv1800_pin_set_config(pctrl, pin_id, value, mask);
- }
- 
- static int cv1800_pconf_group_set(struct pinctrl_dev *pctldev,
-@@ -682,7 +694,7 @@ static int cv1800_pconf_group_set(struct pinctrl_dev *pctldev,
- 	struct cv1800_pinctrl *pctrl = pinctrl_dev_get_drvdata(pctldev);
- 	const struct group_desc *group;
- 	const struct cv1800_pin_mux_config *pinmuxs;
--	u32 value;
-+	u32 value, mask;
- 	int i;
- 
- 	group = pinctrl_generic_get_group(pctldev, gsel);
-@@ -692,11 +704,12 @@ static int cv1800_pconf_group_set(struct pinctrl_dev *pctldev,
- 	pinmuxs = group->data;
- 
- 	if (cv1800_pinconf_compute_config(pctrl, pinmuxs[0].pin,
--					  configs, num_configs, &value))
-+					  configs, num_configs,
-+					  &value, &mask))
- 		return -ENOTSUPP;
- 
- 	for (i = 0; i < group->grp.npins; i++)
--		cv1800_pin_set_config(pctrl, group->grp.pins[i], value);
-+		cv1800_pin_set_config(pctrl, group->grp.pins[i], value, mask);
- 
- 	return 0;
- }
++	/* If the process just called exec(3), it is possible that the
++	 * cleanup of the kfd_process (following the release of the mm
++	 * of the old process image) is still in the cleanup work queue.
++	 * Make sure to drain any job before trying to recreate any
++	 * resource for this process.
++	 */
++	flush_workqueue(kfd_process_wq);
++
+ 	/*
+ 	 * take kfd processes mutex before starting of process creation
+ 	 * so there won't be a case where two threads of the same process
+@@ -862,14 +870,6 @@ struct kfd_process *kfd_create_process(struct task_struct *thread)
+ 	if (process) {
+ 		pr_debug("Process already found\n");
+ 	} else {
+-		/* If the process just called exec(3), it is possible that the
+-		 * cleanup of the kfd_process (following the release of the mm
+-		 * of the old process image) is still in the cleanup work queue.
+-		 * Make sure to drain any job before trying to recreate any
+-		 * resource for this process.
+-		 */
+-		flush_workqueue(kfd_process_wq);
+-
+ 		process = create_process(thread);
+ 		if (IS_ERR(process))
+ 			goto out;
 -- 
 2.39.5
 
