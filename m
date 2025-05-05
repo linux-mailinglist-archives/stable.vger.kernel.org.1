@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-141641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91ABBAAB783
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:13:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54385AAB7C3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:18:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0D5D4C7E2D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:10:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAF8E3A5486
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694713A7852;
-	Tue,  6 May 2025 00:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D4C491F9F;
+	Tue,  6 May 2025 00:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LPYtBnrb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MRPA+suT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52263A6FB3;
-	Mon,  5 May 2025 23:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F5928A716;
+	Mon,  5 May 2025 23:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487011; cv=none; b=N3m1cMWxGYFZyMCsUeipUbOn5jYw846mJ4T6KUL7N5XPH+tqagpuTdSCwUXLGJdBrzF1I0voqmXhiThzH9bgEf0AT3Z9Y5vb4HQsM3m4hGx/xNXAKu93LKV/ADYdjqR7UajT7WyuIT7NTvXFQfqsVIiPHD4syU6RJgYt7oXrkP0=
+	t=1746487022; cv=none; b=lY6b/y2JKny9THUg4mSuD7AJMpuCLA2EOyiCxSF9ro4bmslSMDiX1vkT4f2IQJWXMm8guFuZ3909XpgMKD8lvpk7gLaRyMmObvXdSPz1HKiBTx+C1Y++ha84iblFjMaZ6L2BV9XvzqnTDyU3X5u5caD+LqdbNPDCxDNI2a2OIiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487011; c=relaxed/simple;
-	bh=RB1GCYxJZRBjdfu7LkDBzuFWTa4iGUxDh2yLcwZrvbw=;
+	s=arc-20240116; t=1746487022; c=relaxed/simple;
+	bh=ECRz2VfaKuPxDhpmY33wQ+nrPN5Czu4r27KgfaOuRzc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fCLUWKtoYYYXgxGO5ik906dWziPUxm5yFX5LtAxGYrVz6+mU0d3jt/PkTMxfZDtG0J7/ZM4QRXUQ4YSrw8jTkky6fBedkGJWNR9ydKsSUmE+4AYtIh8mn+CajdmMbuv0qVFCvfBCZyI/cz0i1w+e4DYf9Jc+KroaMdFY85Pmf18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPYtBnrb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87886C4CEE4;
-	Mon,  5 May 2025 23:16:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aD40o+47mVk8ufq5IzU8TBNYts+3r8Ef7gL4WJfmCGuCprD/Q5mgQPTXgFOSE+pZSyAUgH54M0wF9AD0S8Ud1u1M2ZrCQCTh1FDfpOjemJD2bAfljbVgF7HPInHDlPNKoJkklT70uaauA2W225TNbbIz0/Z/XrmdtTu4wtWWFx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MRPA+suT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9583C4CEEE;
+	Mon,  5 May 2025 23:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487011;
-	bh=RB1GCYxJZRBjdfu7LkDBzuFWTa4iGUxDh2yLcwZrvbw=;
+	s=k20201202; t=1746487021;
+	bh=ECRz2VfaKuPxDhpmY33wQ+nrPN5Czu4r27KgfaOuRzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPYtBnrbXqxZUGdBY8hOmiK6TjP3lkwcGQIn147+3f+MMRf/OwcH548PTeqrrZMo6
-	 yx2y3Je9OYV8sJ/BnLgR8QZ8prf+knOiVn67uDUeWbokxvlpzaXYbaouPRln2nAIwO
-	 eQvV54yNR1zG9j1i/cw1bdW72pgFpwdhMYSWWyiRPjxVnJtpU8t7FxmL90BKHd0DMJ
-	 ks7gV735VvGMjp1vL4o9jXb78rQqjW4KuW3lGD/52dva8KhJ75sbuJIRLV9lY11hNm
-	 PWpTJtn4ieZfxyDn/rHCYZUnEps52a1uuKsQczdxJAJS8w57zol23CR7WpQ84vHLpE
-	 K0sunltuMgQEQ==
+	b=MRPA+suTXyfQeua7E+yakJS74A+BHgRIaFr8uUdhHXj/X/uuFbxZ0kC5q4wDGo9aA
+	 B25yXRO2N8YPeD62hhowsG/TsVpw+t/kEW2XacCoW6bfLElTbXvUdF3bTMXINpc2u+
+	 7Mvg2hp8HNwCxeEA4G9tNfzwgH57jTWO5y4tDs4EvVYmtLcHbhHDXfij0pT6uk7uTE
+	 CJcFB8rcAcQCCXug4DwUtSVoiR4iPnci3cWX4hMFuRds448buAFIEyhtZ9MreVL36P
+	 W1aFomSjRHCeA/W+mJG9jdfAb/wuFGJoxuYYr8vVf9VurQpFcBlLOiTGoyklI7BZnw
+	 JzetI6W7XYdyw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+Cc: =?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	u.kleine-koenig@baylibre.com,
-	linux-can@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 106/153] can: c_can: Use of_property_present() to test existence of DT property
-Date: Mon,  5 May 2025 19:12:33 -0400
-Message-Id: <20250505231320.2695319-106-sashal@kernel.org>
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 112/153] ASoC: ops: Enforce platform maximum on initial value
+Date: Mon,  5 May 2025 19:12:39 -0400
+Message-Id: <20250505231320.2695319-112-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -63,40 +63,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Martin Povišer <povik+lin@cutebit.org>
 
-[ Upstream commit ab1bc2290fd8311d49b87c29f1eb123fcb581bee ]
+[ Upstream commit 783db6851c1821d8b983ffb12b99c279ff64f2ee ]
 
-of_property_read_bool() should be used only on boolean properties.
+Lower the volume if it is violating the platform maximum at its initial
+value (i.e. at the time of the 'snd_soc_limit_volume' call).
 
-Cc: Rob Herring <robh@kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250212-syscon-phandle-args-can-v2-3-ac9a1253396b@linaro.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
+[Cherry picked from the Asahi kernel with fixups -- broonie]
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-volume-limit-v1-1-b98fcf4cdbad@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/c_can/c_can_platform.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/soc-ops.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/c_can/c_can_platform.c b/drivers/net/can/c_can/c_can_platform.c
-index c5d7093d54133..c29862b3bb1f3 100644
---- a/drivers/net/can/c_can/c_can_platform.c
-+++ b/drivers/net/can/c_can/c_can_platform.c
-@@ -334,7 +334,7 @@ static int c_can_plat_probe(struct platform_device *pdev)
- 		/* Check if we need custom RAMINIT via syscon. Mostly for TI
- 		 * platforms. Only supported with DT boot.
- 		 */
--		if (np && of_property_read_bool(np, "syscon-raminit")) {
-+		if (np && of_property_present(np, "syscon-raminit")) {
- 			u32 id;
- 			struct c_can_raminit *raminit = &priv->raminit_sys;
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index d8d0a26a554de..9eb4181c6697f 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -621,6 +621,33 @@ int snd_soc_get_volsw_range(struct snd_kcontrol *kcontrol,
+ }
+ EXPORT_SYMBOL_GPL(snd_soc_get_volsw_range);
  
++static int snd_soc_clip_to_platform_max(struct snd_kcontrol *kctl)
++{
++	struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
++	struct snd_ctl_elem_value uctl;
++	int ret;
++
++	if (!mc->platform_max)
++		return 0;
++
++	ret = kctl->get(kctl, &uctl);
++	if (ret < 0)
++		return ret;
++
++	if (uctl.value.integer.value[0] > mc->platform_max)
++		uctl.value.integer.value[0] = mc->platform_max;
++
++	if (snd_soc_volsw_is_stereo(mc) &&
++	    uctl.value.integer.value[1] > mc->platform_max)
++		uctl.value.integer.value[1] = mc->platform_max;
++
++	ret = kctl->put(kctl, &uctl);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
+ /**
+  * snd_soc_limit_volume - Set new limit to an existing volume control.
+  *
+@@ -645,7 +672,7 @@ int snd_soc_limit_volume(struct snd_soc_card *card,
+ 		struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
+ 		if (max <= mc->max - mc->min) {
+ 			mc->platform_max = max;
+-			ret = 0;
++			ret = snd_soc_clip_to_platform_max(kctl);
+ 		}
+ 	}
+ 	return ret;
 -- 
 2.39.5
 
