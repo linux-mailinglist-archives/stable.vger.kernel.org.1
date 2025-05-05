@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-140872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9C8AAAF9D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:20:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC219AAAC2F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:11:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB2AA3A967F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:15:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5650A18871BE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CD52EFB82;
-	Mon,  5 May 2025 23:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDCC386675;
+	Mon,  5 May 2025 23:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMzYvmj4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rrcH+kyv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02D538666D;
-	Mon,  5 May 2025 23:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C18438667B;
+	Mon,  5 May 2025 23:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486711; cv=none; b=iOfsggeKwkcjztg67P0lXO1bhx0DWuXe9RqUyqiYnC8nsfHkuimyarRUNsKXmxn8kSlDiN/+IBbYILZLsrVMX+SI4wW205qRvMmHJJ1wpHy5E7vMenPnqmB57n6vdZwueiIVNbT1D+lHiQl3BxkXpj6tfVnJlx0exB9px39do5E=
+	t=1746486713; cv=none; b=b3SiaUcXrS2hSTgIwnfGhr9P2XVd65Agttf0B9a3Nn/RRBMXD7mRQqsRXoYRMwjhgpbL3K8oievUZFqZpc0hoSzOsDEjKLLPFNOHPXS1WXDpIdY8+rEOs7I2zLt5JysYfOdsM4Hxr471NHqdZ9LPojlPMi8AFas2phZbPAO/SZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486711; c=relaxed/simple;
-	bh=4wfJOZhBEhP2f/egkoNxpv8K2LBegtw1HcJEoXxGblw=;
+	s=arc-20240116; t=1746486713; c=relaxed/simple;
+	bh=ek3p938YEEfG0xHaogv4rsAZ9Vcjc4XHbdI/nkrMkHk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EFLHb9bRNTv4cDsTNGvzBs6pk48p8RHTf0gQyPGU+UW4h+qviZISOW0cMCyplC5gTklaT/9eIZ+dtvx/dlF+l+t/OsPlsioFX5kIl0PNNjzgodH1XmO4NwyaefDOSZjRfwNK8mj/JnuAeNwLOiz8ilZ/Hhd8KW8/GPaq1cjhrBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QMzYvmj4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D5EC4CEF1;
-	Mon,  5 May 2025 23:11:49 +0000 (UTC)
+	 MIME-Version; b=YGFhna1k4QgHTX5Y/pglv36NqV+PpCE5aDxkcWKFDD8ThiHEcxvATori9uSqSsUyv2EVRvrpnn+9Nls+t7FwylEuDat81IbllfNmE/KhVtBz33z/nwu4iAf+2Hjvc31UpNZEJ1MEaK7imsZAb5/cGUAIT9mXnvhC8pxDjN3wP94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rrcH+kyv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BF0C4CEE4;
+	Mon,  5 May 2025 23:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486710;
-	bh=4wfJOZhBEhP2f/egkoNxpv8K2LBegtw1HcJEoXxGblw=;
+	s=k20201202; t=1746486712;
+	bh=ek3p938YEEfG0xHaogv4rsAZ9Vcjc4XHbdI/nkrMkHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QMzYvmj4GtVxntf65o+zL0lBa5fbygIQJSUBIOJ6D+O/wgm6/UYbcE6HKYC0d9AqH
-	 KSo7jArHfYdQFlEfEqCX8znQxpv4l+I0qoxtIN1VM8H8rIFz7GqJfUD3EueQb73P2b
-	 PNuBODccAJ+1m16VMJ7jycT/47paKnt61c/I9tE4+UMDL/n91vmpTtG31xJJpwEeAo
-	 DqO0+jQMWA2We2ceUx7MYPq/Ppm6zsKX7LIGVrepX4w4eVNitBs/vQP65ARGuJYeLQ
-	 C7/deEr9M85ITanSGe6WlxO4blOI01NhlvqjURYv8ztAjX7MUMGufhnYLiTHHx9kHr
-	 shInfuVBjoEdQ==
+	b=rrcH+kyvZTp2kVwVdx84TiL4Vld9Gjp2hRAT+mIIn0F3MkparkJ0EP1xy6JVftfqN
+	 obEasWCVyDoGcE3TtWnxN74DUgWDcXinaMcE8mLl9eNqz3d7NbNNWyRNs/DcYEedNP
+	 6ZzEsdHX1TPFPdL0YK3//DNXfMCYRoS0gKCEzAZuu9SpdibBKXAjhc/bKI+RMk9QQJ
+	 /jMNyc2r+o+SLRd92hEEZZmOcwFGkudL7SS/TKB5oUy1HPswwZfSVy551J4uz0dHI3
+	 Eoo+bBKNwhrgJwypyH0E15FNqT5GHFEhhSTmoqnUEbnGwT/anG48oVOpftIkHD4FNu
+	 xqm3YPGpxYxVQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	tariqt@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	yishaih@nvidia.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 166/212] net/mlx4_core: Avoid impossible mlx4_db_alloc() order value
-Date: Mon,  5 May 2025 19:05:38 -0400
-Message-Id: <20250505230624.2692522-166-sashal@kernel.org>
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 167/212] clk: qcom: clk-alpha-pll: Do not use random stack value for recalc rate
+Date: Mon,  5 May 2025 19:05:39 -0400
+Message-Id: <20250505230624.2692522-167-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -72,76 +68,140 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Kees Cook <kees@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 4a6f18f28627e121bd1f74b5fcc9f945d6dbeb1e ]
+[ Upstream commit 7a243e1b814a02ab40793026ef64223155d86395 ]
 
-GCC can see that the value range for "order" is capped, but this leads
-it to consider that it might be negative, leading to a false positive
-warning (with GCC 15 with -Warray-bounds -fdiagnostics-details):
+If regmap_read() fails, random stack value was used in calculating new
+frequency in recalc_rate() callbacks.  Such failure is really not
+expected as these are all MMIO reads, however code should be here
+correct and bail out.  This also avoids possible warning on
+uninitialized value.
 
-../drivers/net/ethernet/mellanox/mlx4/alloc.c:691:47: error: array subscript -1 is below array bounds of 'long unsigned int *[2]' [-Werror=array-bounds=]
-  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);
-      |                                    ~~~~~~~~~~~^~~
-  'mlx4_alloc_db_from_pgdir': events 1-2
-  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);                        |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                     |                         |                                                   |                     |                         (2) out of array bounds here
-      |                     (1) when the condition is evaluated to true                             In file included from ../drivers/net/ethernet/mellanox/mlx4/mlx4.h:53,
-                 from ../drivers/net/ethernet/mellanox/mlx4/alloc.c:42:
-../include/linux/mlx4/device.h:664:33: note: while referencing 'bits'
-  664 |         unsigned long          *bits[2];
-      |                                 ^~~~
-
-Switch the argument to unsigned int, which removes the compiler needing
-to consider negative values.
-
-Signed-off-by: Kees Cook <kees@kernel.org>
-Link: https://patch.msgid.link/20250210174504.work.075-kees@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250212-b4-clk-qcom-clean-v3-1-499f37444f5d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/alloc.c | 6 +++---
- include/linux/mlx4/device.h                | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c | 52 ++++++++++++++++++++++----------
+ 1 file changed, 36 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/alloc.c b/drivers/net/ethernet/mellanox/mlx4/alloc.c
-index b330020dc0d67..f2bded847e61d 100644
---- a/drivers/net/ethernet/mellanox/mlx4/alloc.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/alloc.c
-@@ -682,9 +682,9 @@ static struct mlx4_db_pgdir *mlx4_alloc_db_pgdir(struct device *dma_device)
+diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
+index e63a90db1505a..c591fa1ad802d 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -561,14 +561,19 @@ clk_alpha_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 alpha_width = pll_alpha_width(pll);
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
++		return 0;
+ 
+-	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
+ 	if (ctl & PLL_ALPHA_EN) {
+-		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low);
++		if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low))
++			return 0;
+ 		if (alpha_width > 32) {
+-			regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
+-				    &high);
++			if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
++					&high))
++				return 0;
+ 			a = (u64)high << 32 | low;
+ 		} else {
+ 			a = low & GENMASK(alpha_width - 1, 0);
+@@ -760,8 +765,11 @@ alpha_pll_huayra_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l, alpha = 0, ctl, alpha_m, alpha_n;
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
+-	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
++		return 0;
+ 
+ 	if (ctl & PLL_ALPHA_EN) {
+ 		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &alpha);
+@@ -955,8 +963,11 @@ clk_trion_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l, frac, alpha_width = pll_alpha_width(pll);
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
+-	regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac))
++		return 0;
+ 
+ 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
  }
+@@ -1014,7 +1025,8 @@ clk_alpha_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll_postdiv *pll = to_clk_alpha_pll_postdiv(hw);
+ 	u32 ctl;
  
- static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
--				    struct mlx4_db *db, int order)
-+				    struct mlx4_db *db, unsigned int order)
- {
--	int o;
-+	unsigned int o;
- 	int i;
+-	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
++	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
++		return 0;
  
- 	for (o = order; o <= 1; ++o) {
-@@ -712,7 +712,7 @@ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
- 	return 0;
+ 	ctl >>= PLL_POST_DIV_SHIFT;
+ 	ctl &= PLL_POST_DIV_MASK(pll);
+@@ -1230,8 +1242,11 @@ static unsigned long alpha_pll_fabia_recalc_rate(struct clk_hw *hw,
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l, frac, alpha_width = pll_alpha_width(pll);
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
+-	regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac))
++		return 0;
+ 
+ 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
  }
+@@ -1381,7 +1396,8 @@ clk_trion_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct regmap *regmap = pll->clkr.regmap;
+ 	u32 i, div = 1, val;
  
--int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order)
-+int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order)
- {
- 	struct mlx4_priv *priv = mlx4_priv(dev);
- 	struct mlx4_db_pgdir *pgdir;
-diff --git a/include/linux/mlx4/device.h b/include/linux/mlx4/device.h
-index 6646634a0b9d4..0cb296f0f8d1d 100644
---- a/include/linux/mlx4/device.h
-+++ b/include/linux/mlx4/device.h
-@@ -1115,7 +1115,7 @@ int mlx4_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
- int mlx4_buf_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
- 		       struct mlx4_buf *buf);
+-	regmap_read(regmap, PLL_USER_CTL(pll), &val);
++	if (regmap_read(regmap, PLL_USER_CTL(pll), &val))
++		return 0;
  
--int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order);
-+int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order);
- void mlx4_db_free(struct mlx4_dev *dev, struct mlx4_db *db);
+ 	val >>= pll->post_div_shift;
+ 	val &= PLL_POST_DIV_MASK(pll);
+@@ -2254,9 +2270,12 @@ static unsigned long alpha_pll_lucid_evo_recalc_rate(struct clk_hw *hw,
+ 	struct regmap *regmap = pll->clkr.regmap;
+ 	u32 l, frac;
  
- int mlx4_alloc_hwq_res(struct mlx4_dev *dev, struct mlx4_hwq_resources *wqres,
+-	regmap_read(regmap, PLL_L_VAL(pll), &l);
++	if (regmap_read(regmap, PLL_L_VAL(pll), &l))
++		return 0;
+ 	l &= LUCID_EVO_PLL_L_VAL_MASK;
+-	regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac);
++
++	if (regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac))
++		return 0;
+ 
+ 	return alpha_pll_calc_rate(parent_rate, l, frac, pll_alpha_width(pll));
+ }
+@@ -2331,7 +2350,8 @@ static unsigned long clk_rivian_evo_pll_recalc_rate(struct clk_hw *hw,
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l;
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
+ 
+ 	return parent_rate * l;
+ }
 -- 
 2.39.5
 
