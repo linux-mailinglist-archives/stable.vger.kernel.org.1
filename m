@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-141073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B17AAB067
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:37:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 834EEAAADD5
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B22A4189CD67
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:37:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 500DE3B8B9B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E743F9FE1;
-	Mon,  5 May 2025 23:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70CD83FBF99;
+	Mon,  5 May 2025 23:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tvthHW/A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LQ4RKxOZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6133E3BE0C2;
-	Mon,  5 May 2025 23:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6C63BE7A6;
+	Mon,  5 May 2025 23:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487409; cv=none; b=R3aNlQCrlKB5B95kdtlWIMkfvK5RJElADjJWwYOiiU63DWQLF5q2Ftnr0m3PrzWn7ZZX6aX07CScPmh8NV1AkVXXlH7r4kNwe5njIZFJxqqu2DwHePiFVdmVq0LrnJCF8FeYv9AFn+3ZtJaNWryTV7/XP5Phgi48EUPyHltbQEA=
+	t=1746487413; cv=none; b=dqevjk7GkvbhjK3r2VhVJdkf8qb6auznKPR322qe9wKV8PuqFXVpZFcqn0m7ir+/vC5saH+oXxs6Cyr01pIulL9cJ8+pcxgKROcbJAAxBqRtcREfZrOaSLW8TscQ85BwNofMmvtJduJqhn1lvBGwV6A+ctavpOiBn2r8bucSyQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487409; c=relaxed/simple;
-	bh=m3gj8PSzjfXPwRUTE5aW1/XgqUd/bkAgDJtD7cLr5FU=;
+	s=arc-20240116; t=1746487413; c=relaxed/simple;
+	bh=i3x/K4kilTFOffX74faqUg69tWw7y/FP7qCjJgWEeps=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uaSIJDRdGUtCPnTJJcGG0Fcq2MUM4wSUbg+0u+aTTWxjt+DqM3wtaMPpAM4TNU6XDOSSg58m6mLkTS0Peyl14mf4lqonyy0Nn9BdM7WqBs764vEV2XZQjbELWtm8nMVWk6x/6b7Wvl0ZWYh16I9Ecxk43rFtytEd3yEFHUYuPdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tvthHW/A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786C0C4CEEE;
-	Mon,  5 May 2025 23:23:27 +0000 (UTC)
+	 MIME-Version; b=t+5ced4LuBbNK9cgy4kevNsCts1Qz4a/4pd6paGDxf0WpP6McBHM8nDoMAy4+FUa/a2gFjKeX1N9ogOixIM2+vQ2VYtTTT5H8WgC9jVv7FbSwf+3Pv1r2hmPO7wBkwvK9E9bANf9EN6V/DNuFvQQSpbbYEDyt5owtMnKLnzC0rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LQ4RKxOZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1C5C4CEF1;
+	Mon,  5 May 2025 23:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487408;
-	bh=m3gj8PSzjfXPwRUTE5aW1/XgqUd/bkAgDJtD7cLr5FU=;
+	s=k20201202; t=1746487412;
+	bh=i3x/K4kilTFOffX74faqUg69tWw7y/FP7qCjJgWEeps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tvthHW/ABfM7tUqf2GtoECcfbI/Cgp0siVuZKF0dt8GjpJuypHlLU1zxgSBrPmkDQ
-	 IYt2LXIe20xAk3v5/yvWZ58VPMxi8Gm6ANTZt0P+dNGAmvs0OGVVNBQasHC9A08Dh0
-	 lx795oiCOKV1wvRtyiB/6Zj3Sv3EI3Ii4WXVFPtKfouAYi9qKZR/rOAVt4k41An1uR
-	 fSZ8uKp2pje02zo0PhiN7PIMux5EWUlOTnPuM8hTHIh7dpZuCOSnjjRBLTWzdy2WnU
-	 HtnEihvJ2ysdtNOAIoov9fzPunAaK8yVcRcxqpHf7GH/hSuoFTBXF5W6D8R3H4Wvi2
-	 mwbjLMC64nGsg==
+	b=LQ4RKxOZ1YGznRCs7Fn+gngDpz6iIHnUM/uBD5FaF7K19bJLEWrGMCAASEW/kgA8P
+	 u9vc7r2ubQjqhYD3FCO/oL9HiLT6t3i7i1vP7+SkJsFvBzDdGXTERuHgQqINHPqKZr
+	 b4nNBgNLLH986tNIsLDx/XZ2wOT/XXNZKH1Mv9qCYUQVqxfyfTo8DLYvD4qRbgeoX7
+	 +WG1L4GOIgp87OxFfb+HJkx/39gc5beeXzyFWkrdqqy1fcexmNrHwu1aPPyPrg/WyF
+	 gO6/W51dQ8iySNIdYDi+Gjq0D8FuUx+++kDTKa6P+BZgWsiUMQJ3hvtoZgdZloqB9s
+	 Psb+QS7Vly+nQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Xiaofei Tan <tanxiaofei@huawei.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 54/79] ACPI: HED: Always initialize before evged
-Date: Mon,  5 May 2025 19:21:26 -0400
-Message-Id: <20250505232151.2698893-54-sashal@kernel.org>
+	saeedm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 56/79] net/mlx5: Apply rate-limiting to high temperature warning
+Date: Mon,  5 May 2025 19:21:28 -0400
+Message-Id: <20250505232151.2698893-56-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -66,65 +73,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Xiaofei Tan <tanxiaofei@huawei.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit cccf6ee090c8c133072d5d5b52ae25f3bc907a16 ]
+[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
 
-When the HED driver is built-in, it initializes after evged because they
-both are at the same initcall level, so the initialization ordering
-depends on the Makefile order.  However, this prevents RAS records
-coming in between the evged driver initialization and the HED driver
-initialization from being handled.
+Wrap the high temperature warning in a temperature event with
+a call to net_ratelimit() to prevent flooding the kernel log
+with repeated warning messages when temperature exceeds the
+threshold multiple times within a short duration.
 
-If the number of such RAS records is above the APEI HEST error source
-number, the HEST resources may be exhausted, and that may affect
-subsequent RAS error reporting.
-
-To fix this issue, change the initcall level of HED to subsys_initcall
-and prevent the driver from being built as a module by changing ACPI_HED
-in Kconfig from "tristate" to "bool".
-
-Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
-Link: https://patch.msgid.link/20250212063408.927666-1-tanxiaofei@huawei.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/Kconfig | 2 +-
- drivers/acpi/hed.c   | 7 ++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index ebe1e9e5fd81c..3902fe64c484d 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -431,7 +431,7 @@ config ACPI_SBS
- 	  the modules will be called sbs and sbshc.
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+index 9d7b0a4cc48a9..5e8db7a6185a4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+@@ -162,9 +162,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
+ 	value_lsb &= 0x1;
+ 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
  
- config ACPI_HED
--	tristate "Hardware Error Device"
-+	bool "Hardware Error Device"
- 	help
- 	  This driver supports the Hardware Error Device (PNP0C33),
- 	  which is used to report some hardware errors notified via
-diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
-index cf148287e2baf..75166839c99e0 100644
---- a/drivers/acpi/hed.c
-+++ b/drivers/acpi/hed.c
-@@ -72,7 +72,12 @@ static struct acpi_driver acpi_hed_driver = {
- 		.notify = acpi_hed_notify,
- 	},
- };
--module_acpi_driver(acpi_hed_driver);
-+
-+static int __init acpi_hed_driver_init(void)
-+{
-+	return acpi_bus_register_driver(&acpi_hed_driver);
-+}
-+subsys_initcall(acpi_hed_driver_init);
+-	mlx5_core_warn(events->dev,
+-		       "High temperature on sensors with bit set %llx %llx",
+-		       value_msb, value_lsb);
++	if (net_ratelimit())
++		mlx5_core_warn(events->dev,
++			       "High temperature on sensors with bit set %llx %llx",
++			       value_msb, value_lsb);
  
- ACPI_MODULE_NAME("hed");
- MODULE_AUTHOR("Huang Ying");
+ 	return NOTIFY_OK;
+ }
 -- 
 2.39.5
 
