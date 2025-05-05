@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-141363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6DA5AAB2D9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F170AAB2DE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C19FF1889958
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:30:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D8271C022EA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901B2338BF5;
-	Tue,  6 May 2025 00:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8504A44440D;
+	Tue,  6 May 2025 00:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utuSmrgE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fJCugMx8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832E5372647;
-	Mon,  5 May 2025 22:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558132DA837;
+	Mon,  5 May 2025 22:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485914; cv=none; b=mpu61DSnrj0xSxAWh3kcwgmeySxw9ns/YdDY3UcMrv3AlwD2zZns55/VqY0Qn6A/xcu9RTyv5vvqtSiVPaF9rue3cYIH6o6uSW/b7+cWQtqI3BFTnnIzlPSNfsuH64bYMceDdWCCNVfSPEg2E06kFOwCga4znvbEPhaJ/Tu1uZo=
+	t=1746485919; cv=none; b=tonOdzye/UhctRgQ7qke4opRJV9qz67rzHeUwgZckQDjCtC4Be0DDm1kIr8OH9HcjgAbTv4qmIVNokhRULKz7eJc9fGP1JPIun7cZZl8fdeP5Rxzi6Xpba7T1gtj5sZxZPRdjNKsjZMCjgdVZfaPOtkPN8l6eNjrWO3fmphmNxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485914; c=relaxed/simple;
-	bh=jVus77ild6b4J4G5wf7sXwMh9YWpwZopK72uFIBIWYE=;
+	s=arc-20240116; t=1746485919; c=relaxed/simple;
+	bh=hOu6RDv2bofvpbBquQTaswVOnl7AAW2levu10RPPsGI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=d05o1V0+ne02mbpkm5z6bM/tiZaQdJ/FnoHB10n07IdlGWA0YXvP0cqWJwUAuh1drKi2Cfp1LfA534DdM0cdOimSDowDxhWuqGmREC4arGQcun6q6e/xvDjNE0TdobKH16qTXxhrY26F8pgbTW75wi+YEhrufIYyxkZ6YOae1JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utuSmrgE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E88C4CEEE;
-	Mon,  5 May 2025 22:58:33 +0000 (UTC)
+	 MIME-Version; b=NtzINr0tXV2zlioS3MYK1CO5NTacrf2wcSR1qyJHhJ+2pPa3/mpmP4XBWoA4Uwn2Yu+5eWWWkZg+qOAJdeGnshtkZenJzWVnZs5DpW98cRnh1aY/EdOkVgR95MJDS31KxOpDCSXoAwBdFnESgQhkE+Z8zgoOTXx46G5mOmali6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fJCugMx8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B0AC4CEEE;
+	Mon,  5 May 2025 22:58:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485914;
-	bh=jVus77ild6b4J4G5wf7sXwMh9YWpwZopK72uFIBIWYE=;
+	s=k20201202; t=1746485918;
+	bh=hOu6RDv2bofvpbBquQTaswVOnl7AAW2levu10RPPsGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=utuSmrgE7WAz66R3hwC2Kl0vog9B4iDDWRG9AqVkMTvMrG87zTJUZk5F0AGkKGxGt
-	 XQ+IN1ZVTgNhUUJmMYc0A4kY1yPed3QlSaKLodtMtyTV1nDfkcLlHg5SKAG5uKwD0w
-	 odgr6RaP3VB1trxKBzXPddCADOC/FvleQfz15uFshd7M8MQBaCYVRMipjYrJfy0td8
-	 E8EVuqEiUaaNiHOqJN1//IPGm0RzLx87gyYXAH9Tv0N95oKTLKA88fbHST4gpcLM1I
-	 7bu/gqSdgShdgwLV5OW+dX7v1mu4KEDakbYAcWTdGycwIRm6B1zwZE4HjP6NJfe5by
-	 KZ4BobcY8H+Jw==
+	b=fJCugMx8IJfpT+j8BNkUnTpk4fF7rvMYU8MetX6rJj7Me+oeSnGlLYVvU8AQexlm/
+	 wn9JtkPpR/0NwT83bSPcPchIE1GyZEXzcVBXgRiobYZKPYbXfYmpO50oWi6/afpldu
+	 hfLPAAzS6WqpHIwP3Ca7MrfQxvOBJR+w/CxZ1PHijl3ztGac+NB1I6BG7g+wpZPso/
+	 qcx9tJAQEsJVhIsukP0xy5hroQKp/c7zxLXEnttgseQTxLZU1edWP9HzIGTLNojVT7
+	 iSk2/1VGRtGEv/ATf4UyUO3b9nN57EQXppm+9B7Y34Y3+jgBwfydeJMyTiQGlKwCzw
+	 9HGuqDD/AofAw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>,
-	jack@suse.com,
-	linux-ext4@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 062/294] jbd2: do not try to recover wiped journal
-Date: Mon,  5 May 2025 18:52:42 -0400
-Message-Id: <20250505225634.2688578-62-sashal@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 065/294] objtool: Fix error handling inconsistencies in check()
+Date: Mon,  5 May 2025 18:52:45 -0400
+Message-Id: <20250505225634.2688578-65-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -67,58 +65,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Jan Kara <jack@suse.cz>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit a662f3c03b754e1f97a2781fa242e95bdb139798 ]
+[ Upstream commit b745962cb97569aad026806bb0740663cf813147 ]
 
-If a journal is wiped, we will set journal->j_tail to 0. However if
-'write' argument is not set (as it happens for read-only device or for
-ocfs2), the on-disk superblock is not updated accordingly and thus
-jbd2_journal_recover() cat try to recover the wiped journal. Fix the
-check in jbd2_journal_recover() to use journal->j_tail for checking
-empty journal instead.
+Make sure all fatal errors are funneled through the 'out' label with a
+negative ret.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250206094657.20865-4-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Brendan Jackman <jackmanb@google.com>
+Link: https://lore.kernel.org/r/0f49d6a27a080b4012e84e6df1e23097f44cc082.1741975349.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/recovery.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ tools/objtool/check.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/fs/jbd2/recovery.c b/fs/jbd2/recovery.c
-index 421c0d360836e..19ec325374833 100644
---- a/fs/jbd2/recovery.c
-+++ b/fs/jbd2/recovery.c
-@@ -286,21 +286,22 @@ static int fc_do_one_pass(journal_t *journal,
- int jbd2_journal_recover(journal_t *journal)
- {
- 	int			err, err2;
--	journal_superblock_t *	sb;
--
- 	struct recovery_info	info;
- 	errseq_t		wb_err;
- 	struct address_space	*mapping;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index f5af48502c9c8..f8e676a6e6f8e 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -4692,8 +4692,10 @@ int check(struct objtool_file *file)
+ 	init_cfi_state(&force_undefined_cfi);
+ 	force_undefined_cfi.force_undefined = true;
  
- 	memset(&info, 0, sizeof(info));
--	sb = journal->j_superblock;
+-	if (!cfi_hash_alloc(1UL << (file->elf->symbol_bits - 3)))
++	if (!cfi_hash_alloc(1UL << (file->elf->symbol_bits - 3))) {
++		ret = -1;
+ 		goto out;
++	}
  
- 	/*
- 	 * The journal superblock's s_start field (the current log head)
- 	 * is always zero if, and only if, the journal was cleanly
--	 * unmounted.
-+	 * unmounted. We use its in-memory version j_tail here because
-+	 * jbd2_journal_wipe() could have updated it without updating journal
-+	 * superblock.
- 	 */
--	if (!sb->s_start) {
-+	if (!journal->j_tail) {
-+		journal_superblock_t *sb = journal->j_superblock;
-+
- 		jbd2_debug(1, "No recovery required, last transaction %d, head block %u\n",
- 			  be32_to_cpu(sb->s_sequence), be32_to_cpu(sb->s_head));
- 		journal->j_transaction_sequence = be32_to_cpu(sb->s_sequence) + 1;
+ 	cfi_hash_add(&init_cfi);
+ 	cfi_hash_add(&func_cfi);
+@@ -4710,7 +4712,7 @@ int check(struct objtool_file *file)
+ 	if (opts.retpoline) {
+ 		ret = validate_retpoline(file);
+ 		if (ret < 0)
+-			return ret;
++			goto out;
+ 		warnings += ret;
+ 	}
+ 
+@@ -4746,7 +4748,7 @@ int check(struct objtool_file *file)
+ 		 */
+ 		ret = validate_unrets(file);
+ 		if (ret < 0)
+-			return ret;
++			goto out;
+ 		warnings += ret;
+ 	}
+ 
+@@ -4809,7 +4811,7 @@ int check(struct objtool_file *file)
+ 	if (opts.prefix) {
+ 		ret = add_prefix_symbols(file);
+ 		if (ret < 0)
+-			return ret;
++			goto out;
+ 		warnings += ret;
+ 	}
+ 
 -- 
 2.39.5
 
