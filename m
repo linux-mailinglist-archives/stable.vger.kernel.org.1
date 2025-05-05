@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-140449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DFDBAAA8D0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:02:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42EA7AAA8D8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:02:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 492404A0A3C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:01:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4ADF1887223
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499AE27CCFB;
-	Mon,  5 May 2025 22:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DD8355664;
+	Mon,  5 May 2025 22:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ndEGs2fw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TQoF7fj1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F51354E3D;
-	Mon,  5 May 2025 22:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798D135466C;
+	Mon,  5 May 2025 22:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484874; cv=none; b=MqaEiQIQCN+3I6iqR4xKhSuC6f35ByMAOrLMgJ/VZAMgm1czk9Mzn5ndF7kHHUSSdgFzCPX4C7D/kYYV/sN0dkicmbGLE7hFZmx+KuHZPeg85EppzPoEfUm9/pZB2y0iJGTkkReehwD9sc4WLA+ygINnsKqOu3cm8Z5zK3jZJYQ=
+	t=1746484875; cv=none; b=F1oBoa7bzBle4OO9eZ1hp+JxeWXD7RMcNa6aSAKDLXC8qX+uWAhCK9VgP2v9GtRve+P/O8jTtXiAekPjttnWxtNeEabh1G2vvFGQ9A/psIIaFjU+8jfsCKcL5uahyunJfdyN83PyBqbV9JYz/4X9Rev7IXRS4h8wPrESuu/HjEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484874; c=relaxed/simple;
-	bh=/IlDwJ49jagFVw6FqWpWHEd67mcvNnNJnn2BQHnVmuE=;
+	s=arc-20240116; t=1746484875; c=relaxed/simple;
+	bh=Pf0UDKi0u/W85Vxs0pnhVYiOyMeMAr4YGS6GScDUHRM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mAdvEFNjflAi0pPQ02BQE6vm8ZNJH2hdWhoz6epHym94gy0Q2VehMIBztYrS1IC6ZdpZtdtHiJ0tX3e4FeTirlf/LFxYcsfgTHiLVsZvRbDV+VlO+botN4QwIn88JKpiHkkkDR7F+Wd3GaTeZFF/H/o8qG8N2RJyUxw9jGihR3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ndEGs2fw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3E0C4CEE4;
-	Mon,  5 May 2025 22:41:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uuRaI6NIU0Y2NNYcIsQjapFUyvrICTt0cVkEn9Mk/fgVbdHSsnGzdGKSbvg4WrzaRM9XrG+eDUZ8ezILQbEsc0SXnc0vznFZp7GwHqDMbQwrbPSYMUOLaKhimj7I8UeFzOoRBfBZtMUHOktdOjqPhj/XZ43xo2rws6S3QOEpNYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TQoF7fj1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443FDC4CEED;
+	Mon,  5 May 2025 22:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484873;
-	bh=/IlDwJ49jagFVw6FqWpWHEd67mcvNnNJnn2BQHnVmuE=;
+	s=k20201202; t=1746484875;
+	bh=Pf0UDKi0u/W85Vxs0pnhVYiOyMeMAr4YGS6GScDUHRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ndEGs2fweMkX9UCjiKPXNOJtf/1546J/I5CDIwEt+hzmo9BxxReXb2eEcUTIg3CPx
-	 b8MJHltM1PYf0cLmL5uztxcGaP2E86pte03YvFz/HDoxDjkDzUSbpbUFCKvnhW2FeJ
-	 eA/nZfIDtXQia0LYTmo98raU/rqkWxc+VaqeObp8cvYhzVIuFsaUK0uxcxtZ4ZtC0y
-	 QjpfsteL91nZML1Ko+3aVuuA3x0Yms2BQhO2jnuJGek10tKCchGt7R2ckklte0Jdi/
-	 tLZtVcHWRbgXbmeccmo3nVWJ82Ct5QqM4QQrOUlBm864wQ11LAqZMr8YkZZNZIj4Jc
-	 1QcQyxoQs3sQA==
+	b=TQoF7fj19o+p1ZPPUB61PHYq5374bVr7WbVgd3luCPh7yCbvTREBWSba2GT/KqTrO
+	 L2bMQ68jQrXBGAq8kKhNyeJFXJ65jYGwOB3ew5q+VFfXdqvesRJ4jtRVX6YqLTJYQL
+	 7q24/hA/k3BN2ln5gP5kCPUZLNjN+AzCchzNZ5aZYcACdciTq1NIwdtOZ+c4Vocilr
+	 RqagZL1P5HeDIhsv6XN9CqMVrNP8RjpUrYdzbiZyZwFj6RmQtY2MRlJyeZOaMZw1lM
+	 osa0sVUy80zRm9aJVx6R/FoHacgtv+gGXUyVP4xY3lv6R1GbDddx5GMa16/59xST1f
+	 H3lOzqDLf2CBg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Victor Skvortsov <victor.skvortsov@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Eric Dumazet <edumazet@google.com>,
+	Greg Thelen <gthelen@google.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	sunil.khatri@amd.com,
-	Hawking.Zhang@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 058/486] drm/amdgpu: Skip pcie_replay_count sysfs creation for VF
-Date: Mon,  5 May 2025 18:32:14 -0400
-Message-Id: <20250505223922.2682012-58-sashal@kernel.org>
+	hannes@cmpxchg.org,
+	cgroups@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 059/486] cgroup/rstat: avoid disabling irqs for O(num_cpu)
+Date: Mon,  5 May 2025 18:32:15 -0400
+Message-Id: <20250505223922.2682012-59-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -67,85 +64,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Victor Skvortsov <victor.skvortsov@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 9c05636ca72a2dbf41bf0900380f438a0de47319 ]
+[ Upstream commit 0efc297a3c4974dbd609ee36fc6345720b6ca735 ]
 
-VFs cannot read the NAK_COUNTER register. This information is only
-available through PMFW metrics.
+cgroup_rstat_flush_locked() grabs the irq safe cgroup_rstat_lock while
+iterating all possible cpus. It only drops the lock if there is
+scheduler or spin lock contention. If neither, then interrupts can be
+disabled for a long time. On large machines this can disable interrupts
+for a long enough time to drop network packets. On 400+ CPU machines
+I've seen interrupt disabled for over 40 msec.
 
-Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Prevent rstat from disabling interrupts while processing all possible
+cpus. Instead drop and reacquire cgroup_rstat_lock for each cpu. This
+approach was previously discussed in
+https://lore.kernel.org/lkml/ZBz%2FV5a7%2F6PZeM7S@slm.duckdns.org/,
+though this was in the context of an non-irq rstat spin lock.
+
+Benchmark this change with:
+1) a single stat_reader process with 400 threads, each reading a test
+   memcg's memory.stat repeatedly for 10 seconds.
+2) 400 memory hog processes running in the test memcg and repeatedly
+   charging memory until oom killed. Then they repeat charging and oom
+   killing.
+
+v6.14-rc6 with CONFIG_IRQSOFF_TRACER with stat_reader and hogs, finds
+interrupts are disabled by rstat for 45341 usec:
+  #  => started at: _raw_spin_lock_irq
+  #  => ended at:   cgroup_rstat_flush
+  #
+  #
+  #                    _------=> CPU#
+  #                   / _-----=> irqs-off/BH-disabled
+  #                  | / _----=> need-resched
+  #                  || / _---=> hardirq/softirq
+  #                  ||| / _--=> preempt-depth
+  #                  |||| / _-=> migrate-disable
+  #                  ||||| /     delay
+  #  cmd     pid     |||||| time  |   caller
+  #     \   /        ||||||  \    |    /
+  stat_rea-96532    52d....    0us*: _raw_spin_lock_irq
+  stat_rea-96532    52d.... 45342us : cgroup_rstat_flush
+  stat_rea-96532    52d.... 45342us : tracer_hardirqs_on <-cgroup_rstat_flush
+  stat_rea-96532    52d.... 45343us : <stack trace>
+   => memcg1_stat_format
+   => memory_stat_format
+   => memory_stat_show
+   => seq_read_iter
+   => vfs_read
+   => ksys_read
+   => do_syscall_64
+   => entry_SYSCALL_64_after_hwframe
+
+With this patch the CONFIG_IRQSOFF_TRACER doesn't find rstat to be the
+longest holder. The longest irqs-off holder has irqs disabled for
+4142 usec, a huge reduction from previous 45341 usec rstat finding.
+
+Running stat_reader memory.stat reader for 10 seconds:
+- without memory hogs: 9.84M accesses => 12.7M accesses
+-    with memory hogs: 9.46M accesses => 11.1M accesses
+The throughput of memory.stat access improves.
+
+The mode of memory.stat access latency after grouping by of 2 buckets:
+- without memory hogs: 64 usec => 16 usec
+-    with memory hogs: 64 usec =>  8 usec
+The memory.stat latency improves.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Greg Thelen <gthelen@google.com>
+Tested-by: Greg Thelen <gthelen@google.com>
+Acked-by: Michal Koutný <mkoutny@suse.com>
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 27 ++++++++++++++++------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ kernel/cgroup/rstat.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 24d007715a14a..ef0aa2dd33aa8 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -168,6 +168,24 @@ static ssize_t amdgpu_device_get_pcie_replay_count(struct device *dev,
- static DEVICE_ATTR(pcie_replay_count, 0444,
- 		amdgpu_device_get_pcie_replay_count, NULL);
+diff --git a/kernel/cgroup/rstat.c b/kernel/cgroup/rstat.c
+index 3e01781aeb7bd..c4ce2f5a9745f 100644
+--- a/kernel/cgroup/rstat.c
++++ b/kernel/cgroup/rstat.c
+@@ -323,13 +323,11 @@ static void cgroup_rstat_flush_locked(struct cgroup *cgrp)
+ 			rcu_read_unlock();
+ 		}
  
-+static int amdgpu_device_attr_sysfs_init(struct amdgpu_device *adev)
-+{
-+	int ret = 0;
-+
-+	if (!amdgpu_sriov_vf(adev))
-+		ret = sysfs_create_file(&adev->dev->kobj,
-+					&dev_attr_pcie_replay_count.attr);
-+
-+	return ret;
-+}
-+
-+static void amdgpu_device_attr_sysfs_fini(struct amdgpu_device *adev)
-+{
-+	if (!amdgpu_sriov_vf(adev))
-+		sysfs_remove_file(&adev->dev->kobj,
-+				  &dev_attr_pcie_replay_count.attr);
-+}
-+
- static ssize_t amdgpu_sysfs_reg_state_get(struct file *f, struct kobject *kobj,
- 					  struct bin_attribute *attr, char *buf,
- 					  loff_t ppos, size_t count)
-@@ -4028,11 +4046,6 @@ static bool amdgpu_device_check_iommu_remap(struct amdgpu_device *adev)
+-		/* play nice and yield if necessary */
+-		if (need_resched() || spin_needbreak(&cgroup_rstat_lock)) {
+-			__cgroup_rstat_unlock(cgrp, cpu);
+-			if (!cond_resched())
+-				cpu_relax();
+-			__cgroup_rstat_lock(cgrp, cpu);
+-		}
++		/* play nice and avoid disabling interrupts for a long time */
++		__cgroup_rstat_unlock(cgrp, cpu);
++		if (!cond_resched())
++			cpu_relax();
++		__cgroup_rstat_lock(cgrp, cpu);
+ 	}
  }
- #endif
  
--static const struct attribute *amdgpu_dev_attributes[] = {
--	&dev_attr_pcie_replay_count.attr,
--	NULL
--};
--
- static void amdgpu_device_set_mcbp(struct amdgpu_device *adev)
- {
- 	if (amdgpu_mcbp == 1)
-@@ -4475,7 +4488,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- 	} else
- 		adev->ucode_sysfs_en = true;
- 
--	r = sysfs_create_files(&adev->dev->kobj, amdgpu_dev_attributes);
-+	r = amdgpu_device_attr_sysfs_init(adev);
- 	if (r)
- 		dev_err(adev->dev, "Could not create amdgpu device attr\n");
- 
-@@ -4605,7 +4618,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
- 		amdgpu_pm_sysfs_fini(adev);
- 	if (adev->ucode_sysfs_en)
- 		amdgpu_ucode_sysfs_fini(adev);
--	sysfs_remove_files(&adev->dev->kobj, amdgpu_dev_attributes);
-+	amdgpu_device_attr_sysfs_fini(adev);
- 	amdgpu_fru_sysfs_fini(adev);
- 
- 	amdgpu_reg_state_sysfs_fini(adev);
 -- 
 2.39.5
 
