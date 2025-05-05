@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-140681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE50FAAAAC8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:44:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF055AAAA98
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:41:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6C0E985788
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:39:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DF9718874DC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334E5287514;
-	Mon,  5 May 2025 23:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BB2281355;
+	Mon,  5 May 2025 23:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VuVcm/+c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lXLfIguv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C608D35D7BB;
-	Mon,  5 May 2025 22:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9CA372650;
+	Mon,  5 May 2025 22:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485906; cv=none; b=b1D/lNXqBW+LmuwLC4fdKI10G0iZ1/FnDg5NLisSX7xtmteBWSeyxzB9MZV+8XiQiUJkvKot6h37ZQsLd3am9Kgz48uR+9KjMb/1y6NvNRITnfN87qSBvuu3UVrRDI/Cez5nVywkxPkrg9QLb0/j9hw5zemY9L88wRcT95KSkOA=
+	t=1746485912; cv=none; b=Ru5PTFszurPaESDDwNU3JLYF70Nb2DNn8mtpU/ZQ5lxP/kAeVAZ58hkOZ/IE9Xo+c4+IqiAuV32LsTiJbLiwnTnMkgBrjZ1FUioKT/g9aVzcdTD+xBQi/vZ0HlZ0wtu8czjqg5fR0wHdaTHXJXDnSJ0BQ4ng/jz0LMVov4Qc2Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485906; c=relaxed/simple;
-	bh=ptyUP18uHVTbecN1W1P7sS32RvPDU/5QXcxuPG2yEpE=;
+	s=arc-20240116; t=1746485912; c=relaxed/simple;
+	bh=FVGpzuCNU8lsWl3ZvVKvbpTSb4GfqDllSSTYSn60rsE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eKR4AKH3OLb4iytZhNrbqrnC0MMB3CrkEh2ZrFS7BZXXaNMuml3Qa5L3pFdPUvzpECw8xLu4XzR+u6y1RheKJWOBME39hAz99tl+08bNa3jFXib+5YxprpRK43/I49wMxnDZLqPoGTXvzRjTQUv3GwTHXGjYY0vQ7bOcrmGKUYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VuVcm/+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4242C4CEF1;
-	Mon,  5 May 2025 22:58:24 +0000 (UTC)
+	 MIME-Version; b=m+EF34Ke22ER65xBWF9KL+MUF38w5Yrdkx3fTQLG3jH/3doabxswP3tIevsc0OORmG4C4Uz30FT1HVky7M5dR4UAFGGgiGerncVDNz9ezU0lIqZKeAW1Zbhj7xJoGmtvaNZyJtjAV+rQ3Ti/635AjTG99nhATZEhHVVVTRqZSf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lXLfIguv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B61C4CEE4;
+	Mon,  5 May 2025 22:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485905;
-	bh=ptyUP18uHVTbecN1W1P7sS32RvPDU/5QXcxuPG2yEpE=;
+	s=k20201202; t=1746485911;
+	bh=FVGpzuCNU8lsWl3ZvVKvbpTSb4GfqDllSSTYSn60rsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VuVcm/+cmZxQE54NNQGFdMBSxJTS77XGydUJ660M8Zn9r8zhSROjF3ZIK5BXe8ZhB
-	 8Xvax6S0Rrn/hXmNfj+x7+8MklaDkjpiHauQBx62PsChGKBo88nQpfF+UWwwYbFR3q
-	 F6AvGrUl1B1+qMMf23QsErQVQh+9xS7toc/BZRJlsnSX2FTuyuq0kDOOmvQCBkxf0d
-	 yNRuzwRY/jmFzPOXEQ5TyHlvhXv2WmWEbVZIfpqVFmZhh4j3YKAUKbj5oNLdTxzVY/
-	 5Sq0Z8+QlZWarCx9pOm7OBafHaZNs1q9pENxGerzrdZ5ZmjjKewontTh1RR8UhKOgt
-	 ymM/di8b4C79Q==
+	b=lXLfIguvHdiLmRs18I3MlZDCptF0LndghHt85Z1s6kOTHKwtNlBOJfDwpU9hLjEyL
+	 P25HXI3GRXlAqYlwweazj8kcuXlwwx0AIPxVt/xmR11p0/eWXqB6I8CbEewfm4SlUs
+	 AMXY3qZdK/4ByiISaSq2zGFozHvoBYQlkB1Kf14rCe1OIzo7Xg09DYN26onuPPJWwB
+	 DvK6k6SJXgfsPpCtBfbag+iz3E40X0HFmXWPjDDfIZ/Whc2InqVPLDy/iYR50tFPcB
+	 v1yNPpJxee/BQuysQafQ/RB8YsFcIuf9P66aY1hYVzdV9YWQIC2RIdxInzxjxSa6fl
+	 tT54GCLbnuHEw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	Kevin Tian <kevin.tian@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 058/294] scsi: st: Tighten the page format heuristics with MODE SELECT
-Date: Mon,  5 May 2025 18:52:38 -0400
-Message-Id: <20250505225634.2688578-58-sashal@kernel.org>
+	Yunxiang.Li@amd.com,
+	avihaih@nvidia.com,
+	zhangdongdong@eswincomputing.com,
+	bhelgaas@google.com,
+	jgg@ziepe.ca,
+	yi.l.liu@intel.com,
+	pstanner@redhat.com,
+	linux@treblig.org,
+	pabeni@redhat.com,
+	kvm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 060/294] vfio/pci: Handle INTx IRQ_NOTCONNECTED
+Date: Mon,  5 May 2025 18:52:40 -0400
+Message-Id: <20250505225634.2688578-60-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -61,48 +69,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 8db816c6f176321e42254badd5c1a8df8bfcfdb4 ]
+[ Upstream commit 860be250fc32de9cb24154bf21b4e36f40925707 ]
 
-In the days when SCSI-2 was emerging, some drives did claim SCSI-2 but did
-not correctly implement it. The st driver first tries MODE SELECT with the
-page format bit set to set the block descriptor.  If not successful, the
-non-page format is tried.
+Some systems report INTx as not routed by setting pdev->irq to
+IRQ_NOTCONNECTED, resulting in a -ENOTCONN error when trying to
+setup eventfd signaling.  Include this in the set of conditions
+for which the PIN register is virtualized to zero.
 
-The test only tests the sense code and this triggers also from illegal
-parameter in the parameter list. The test is limited to "old" devices and
-made more strict to remove false alarms.
+Additionally consolidate vfio_pci_get_irq_count() to use this
+virtualized value in reporting INTx support via ioctl and sanity
+checking ioctl paths since pdev->irq is re-used when the device
+is in MSI mode.
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250311112516.5548-4-Kai.Makisara@kolumbus.fi
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The combination of these results in both the config space of the
+device and the ioctl interface behaving as if the device does not
+support INTx.
+
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20250311230623.1264283-1-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/vfio/pci/vfio_pci_config.c |  3 ++-
+ drivers/vfio/pci/vfio_pci_core.c   | 10 +---------
+ drivers/vfio/pci/vfio_pci_intrs.c  |  2 +-
+ 3 files changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 900322bad4f3b..293074f30906f 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -3082,7 +3082,9 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
- 			   cmd_in == MTSETDRVBUFFER ||
- 			   cmd_in == SET_DENS_AND_BLK) {
- 			if (cmdstatp->sense_hdr.sense_key == ILLEGAL_REQUEST &&
--			    !(STp->use_pf & PF_TESTED)) {
-+				cmdstatp->sense_hdr.asc == 0x24 &&
-+				(STp->device)->scsi_level <= SCSI_2 &&
-+				!(STp->use_pf & PF_TESTED)) {
- 				/* Try the other possible state of Page Format if not
- 				   already tried */
- 				STp->use_pf = (STp->use_pf ^ USE_PF) | PF_TESTED;
+diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
+index a2ad4f7c716bf..d9eb8733a324b 100644
+--- a/drivers/vfio/pci/vfio_pci_config.c
++++ b/drivers/vfio/pci/vfio_pci_config.c
+@@ -1813,7 +1813,8 @@ int vfio_config_init(struct vfio_pci_core_device *vdev)
+ 					cpu_to_le16(PCI_COMMAND_MEMORY);
+ 	}
+ 
+-	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx)
++	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx ||
++	    vdev->pdev->irq == IRQ_NOTCONNECTED)
+ 		vconfig[PCI_INTERRUPT_PIN] = 0;
+ 
+ 	ret = vfio_cap_init(vdev);
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index a8f259bc2f4d0..fa168b4342395 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -731,15 +731,7 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_finish_enable);
+ static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_type)
+ {
+ 	if (irq_type == VFIO_PCI_INTX_IRQ_INDEX) {
+-		u8 pin;
+-
+-		if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) ||
+-		    vdev->nointx || vdev->pdev->is_virtfn)
+-			return 0;
+-
+-		pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
+-
+-		return pin ? 1 : 0;
++		return vdev->vconfig[PCI_INTERRUPT_PIN] ? 1 : 0;
+ 	} else if (irq_type == VFIO_PCI_MSI_IRQ_INDEX) {
+ 		u8 pos;
+ 		u16 flags;
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index 620134041b488..c4322faca2bd5 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -269,7 +269,7 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
+ 	if (!is_irq_none(vdev))
+ 		return -EINVAL;
+ 
+-	if (!pdev->irq)
++	if (!pdev->irq || pdev->irq == IRQ_NOTCONNECTED)
+ 		return -ENODEV;
+ 
+ 	name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)", pci_name(pdev));
 -- 
 2.39.5
 
