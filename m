@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-141594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA53AAB490
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:09:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B112AAB4B4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:13:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F4DB7B4CD2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:08:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C04E4A6C16
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C4634450F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9052C4825E5;
 	Tue,  6 May 2025 00:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DFoWVUga"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E+V0lyBk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632C52F2C4B;
-	Mon,  5 May 2025 23:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3E72F2C6E;
+	Mon,  5 May 2025 23:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486828; cv=none; b=OF8BqMIDToxjUq2Xvsx8qYGzidVz77rqxxmDoUwsOdIq7mnRz69fwlg03DBXys2whb2tHfh3v3uTr4haqOnH70EdPD+yHNN58BemGzHKLDqSl7fwvghEAXIg+RUgTWG+rs4sjNGRAXVP+ZzNGdp2ZKYZmgPArnjSsuh3xXVGe6I=
+	t=1746486829; cv=none; b=gXsGAe5NT1VgGtk2siwJHzISpbyLFMxEqT1QCnQ1NQj76QXRAfXmJMrCEH6q2f/QpAPHtEOTUbD2UOWGWTrHY4vwtuq8sI134S+UUdyiip3J6r/JZ6nd3CaEZnFmQzt5ce/I+d4uTTy+0c0kbe898BWGITOIhPYp7JwGylJXYGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486828; c=relaxed/simple;
-	bh=Qp0IIlHYIciNX7Eip4u3/xx/27fVip6CeUOfHnBhWHI=;
+	s=arc-20240116; t=1746486829; c=relaxed/simple;
+	bh=wyshX/auvUOZ03jOCYc11Ffh1tm2QvlTLfd6fDYLhkA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JoGcoKbsziAsnE4FkUJl1p/jXXYnUVOlkxJFKsA40fBWWTHQjh4ljsO4diGncpSUgYRYzbeLNqUR1f6qmxa2pzQuFV3K9Uu14A5NHyxiMAn5gpI4ALFjUtaI+Jq09Cjt6pQyFO6e9FcRV8hhYzIy+cO7q9RDpHwp2EGRhf+9o3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DFoWVUga; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62524C4CEED;
-	Mon,  5 May 2025 23:13:46 +0000 (UTC)
+	 MIME-Version; b=lKbu/bF2yv3d4PgCqslCE+dFKxP0qI7u0LRZL4N1Me2j/VPwAjpqAX7PYSZR8gJEBrU6f2jtuQhBxtkMCFm1uo0XY7Smn+4W7VkfC8TUh+Vvc+9V38SUoshOU7Yn+qxJYKPd1P/JRQL8Jj2PLMTNpEvfyAq04Ui0QJgNbB5g8Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E+V0lyBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488D5C4CEE4;
+	Mon,  5 May 2025 23:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486827;
-	bh=Qp0IIlHYIciNX7Eip4u3/xx/27fVip6CeUOfHnBhWHI=;
+	s=k20201202; t=1746486829;
+	bh=wyshX/auvUOZ03jOCYc11Ffh1tm2QvlTLfd6fDYLhkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFoWVUgagd3J1decoEdLXA741GO/Jlt4pp67O1tkJqGJ8vyGNfP7FwI07WCi/9hZE
-	 rKj9qHBCHThFFOutprWpr+kEIjFWzTNLg+TxH8vDFnyEDmWWUMWsa7/rCukcreXX1Y
-	 XeQSsugw9H94fjsY3EQYASdXr4EfAFtEI2y1DrzBDXOzbX/M9Ao7CjOZS3O/fnNwJ+
-	 vCwJYo06b3rf/44aek+DHbkk8lFAZCj8byQF69AlG5Jd+tEqY0d+m5+JTdIBfjV2uK
-	 g1+udmx+W4/2djTJijY7DQqUnzrxieGV9m/Y0iaSBYLGc6SWFGc8V6vqh9SfYVIvh6
-	 DLdE/WeI8pltw==
+	b=E+V0lyBkM0vnhVKU9MtpFTJzXP2lf5nxrChz6P3F/oZbbka62zRSwlF66N4tMg9ne
+	 R1tV8K4cBmBRzQ92iSkjNF/mubbSyGA4swtQ0A7rjn+y0TIlGY6lmvyFnS4pQZCwcs
+	 zXoP2amYGhYWUNPbqOtlPrszA6WcFa36fP24Qb1J0It9W6guFAe8hbQORHGaP+N0CS
+	 VeHtJIl/zMe3k/ddi5q5xrW9ef6TsogjnPYtNks1p+S3AqUf9jaZq4ASOdjsJ6RZUx
+	 iDGXIkQtVIEfi7XrcjSFmFa4TW/LdmKOJj3jn1gobGNcY45LUxW7nTL3RpiJtqD87T
+	 /46FO2d0AjkRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alice Guo <alice.guo@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+Cc: Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 011/153] thermal/drivers/qoriq: Power down TMU on system suspend
-Date: Mon,  5 May 2025 19:10:58 -0400
-Message-Id: <20250505231320.2695319-11-sashal@kernel.org>
+	akpm@linux-foundation.org,
+	mhocko@suse.com,
+	mjguzik@gmail.com,
+	alexjlzheng@tencent.com,
+	pasha.tatashin@soleen.com
+Subject: [PATCH AUTOSEL 5.15 012/153] exit: fix the usage of delay_group_leader->exit_code in do_notify_parent() and pidfs_exit()
+Date: Mon,  5 May 2025 19:10:59 -0400
+Message-Id: <20250505231320.2695319-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -67,61 +69,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Alice Guo <alice.guo@nxp.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 229f3feb4b0442835b27d519679168bea2de96c2 ]
+[ Upstream commit 9133607de37a4887c6f89ed937176a0a0c1ebb17 ]
 
-Enable power-down of TMU (Thermal Management Unit) for TMU version 2 during
-system suspend to save power. Save approximately 4.3mW on VDD_ANA_1P8 on
-i.MX93 platforms.
+Consider a process with a group leader L and a sub-thread T.
+L does sys_exit(1), then T does sys_exit_group(2).
 
-Signed-off-by: Alice Guo <alice.guo@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241209164859.3758906-2-Frank.Li@nxp.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+In this case wait_task_zombie(L) will notice SIGNAL_GROUP_EXIT and use
+L->signal->group_exit_code, this is correct.
+
+But, before that, do_notify_parent(L) called by release_task(T) will use
+L->exit_code != L->signal->group_exit_code, and this is not consistent.
+We don't really care, I think that nobody relies on the info which comes
+with SIGCHLD, if nothing else SIGCHLD < SIGRTMIN can be queued only once.
+
+But pidfs_exit() is more problematic, I think pidfs_exit_info->exit_code
+should report ->group_exit_code in this case, just like wait_task_zombie().
+
+TODO: with this change we can hopefully cleanup (or may be even kill) the
+similar SIGNAL_GROUP_EXIT checks, at least in wait_task_zombie().
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250324171941.GA13114@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qoriq_thermal.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ kernel/exit.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/thermal/qoriq_thermal.c b/drivers/thermal/qoriq_thermal.c
-index 73049f9bea252..34a5fbcc3d200 100644
---- a/drivers/thermal/qoriq_thermal.c
-+++ b/drivers/thermal/qoriq_thermal.c
-@@ -19,6 +19,7 @@
- #define SITES_MAX		16
- #define TMR_DISABLE		0x0
- #define TMR_ME			0x80000000
-+#define TMR_CMD			BIT(29)
- #define TMR_ALPF		0x0c000000
- #define TMR_ALPF_V2		0x03000000
- #define TMTMIR_DEFAULT	0x0000000f
-@@ -345,6 +346,12 @@ static int __maybe_unused qoriq_tmu_suspend(struct device *dev)
- 	if (ret)
- 		return ret;
- 
-+	if (data->ver > TMU_VER1) {
-+		ret = regmap_set_bits(data->regmap, REGS_TMR, TMR_CMD);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	clk_disable_unprepare(data->clk);
- 
- 	return 0;
-@@ -359,6 +366,12 @@ static int __maybe_unused qoriq_tmu_resume(struct device *dev)
- 	if (ret)
- 		return ret;
- 
-+	if (data->ver > TMU_VER1) {
-+		ret = regmap_clear_bits(data->regmap, REGS_TMR, TMR_CMD);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	/* Enable monitoring */
- 	return regmap_update_bits(data->regmap, REGS_TMR, TMR_ME, TMR_ME);
- }
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 890e5cb6799b0..04fc65f2b690d 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -254,6 +254,9 @@ void release_task(struct task_struct *p)
+ 	leader = p->group_leader;
+ 	if (leader != p && thread_group_empty(leader)
+ 			&& leader->exit_state == EXIT_ZOMBIE) {
++		/* for pidfs_exit() and do_notify_parent() */
++		if (leader->signal->flags & SIGNAL_GROUP_EXIT)
++			leader->exit_code = leader->signal->group_exit_code;
+ 		/*
+ 		 * If we were the last child thread and the leader has
+ 		 * exited already, and the leader's parent ignores SIGCHLD,
 -- 
 2.39.5
 
