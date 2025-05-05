@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-139948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F794AAA2B8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:04:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C85C9AAA2C0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:04:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A51961714E3
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:04:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD13F17BCE6
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C742E62BB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFC12E62D3;
 	Mon,  5 May 2025 22:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZIyPXEOi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jmt80Am2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA3F2E62B0;
-	Mon,  5 May 2025 22:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEF52E62CC;
+	Mon,  5 May 2025 22:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483756; cv=none; b=qEZ+U+ixSsAPU8Iv/yW4GarQW1BhzPZsZS1trxsytwFl6nLZm3FgPm2Zt+5srfU3UGTSs76NLSc4gr6BFim+KEHMHEhtv6ElPDQxaAYhuoAXOBy14Dx9GRAcRvK0W36lGSbjLdx+DZ265CqUwN+SynbnIJomKk8uceMDjDkHeAw=
+	t=1746483757; cv=none; b=sCO2/W6WfvjFtHFHuxv8anXNQK6C34idySxbB+UBJ2B60ZSZHN/j1P+p2Bo/VJGMUceO/oCWTpfwZiYyaAbs2lKzrrsxaEB2qpuHG5QqNxD8EEVv+nGJGlNFo2cnWwEBbSluVkJfKcvjOnihJO27gBjpEWeCl1SIj78Pp13+ZMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483756; c=relaxed/simple;
-	bh=OL6KSBqDQC6bdyHVg2GZ43UeOGMOEmczhtUq575JHOw=;
+	s=arc-20240116; t=1746483757; c=relaxed/simple;
+	bh=JUqtbR/yscXAD1scuNnJkYoMVnOPkshvLf3LIPKm+Po=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XufJEE6QTjKMSFu8likOg+YzUkiKeD68HnHBjJJPIH3g1DpENMb+8O6xGOoJfxVL0egkPDOaL7CvmOhHPaavY15vAEVshwJ0HpMSSZF8mtXq90lpipKitdH+FkFwa54TZw4x2OybdGyxIUcIPkJ7/BosqCM3gNrWNFFchJnbczM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZIyPXEOi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD658C4CEEE;
-	Mon,  5 May 2025 22:22:34 +0000 (UTC)
+	 MIME-Version; b=Tt5u8SQ8eVb9//20+iuycmV+8sM9btfjYyAZTGHPk6mkR49Mf2iVHBmD3GQ2lF1TBS7ItNJ3GtfAP0pAq7Qc00FjxAxgrnJM9pXeOh5fBW1GQuOWza15v9ppvav4PPLrTxWs8vO0zguibnSik+NSBYn+UAuUuGOjyC02QHlakyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jmt80Am2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94637C4CEE4;
+	Mon,  5 May 2025 22:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483756;
-	bh=OL6KSBqDQC6bdyHVg2GZ43UeOGMOEmczhtUq575JHOw=;
+	s=k20201202; t=1746483757;
+	bh=JUqtbR/yscXAD1scuNnJkYoMVnOPkshvLf3LIPKm+Po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZIyPXEOi9oZ9mjYDv9C7LCxM+/p8kz/awK8yJpkXFAUOiZYmYVZ/JpYadJlRsWgIi
-	 vdjrvJqmRQPEWdqKFARAQpfZRU97eN1k4NvSbM2HJ8yQEHoIeke1oSXW8qCfld7GNl
-	 c70j6q9fn/gKGUFEx1jt5o0Q/MYXYjAuyAbRNKQqH9KyUbSvYWbwyHSmJtdqdjZTGW
-	 clAGUO2RbhSowfIUhC4rQja5kTjI1MIVUorb6W9dzAJeU9f+B4FmEHP7kwm4MWyeod
-	 oTLWwtDmTJ/iFW8pFSt583KWnJTDzOZHBMHtzkS9nCyhF6GNS3v838V2/NVA6j1+oE
-	 /bnDBDExlfLmA==
+	b=Jmt80Am2pmc0JyYibMtDvkM05GZB3R7fMdOaJ44w0Cf4jZ1WnzUwC01//VMroz0O4
+	 pv6mGbEvqS5kYwaKbhLpHIBGYwlXGVFe85gZ/i1wyMJUsNvR5OD5xEjoS6IndGWj4k
+	 Z+6H0PcafzUAlygSYBVEJwzeZ2ypVf4PswXES0rlWPZezx5DwNskjO8Pglp/AAZGab
+	 yBQXnomcy99p6VjpoEPVWFCpeKnU9Z1l5s9AAEx3N8ze2Pq3ZzQNVT5gbGk6GNR4gu
+	 z1Ok37Hd3qv5oW0YQsTStCb5s8Yd2hR57Ox4KTI8oJImupcYoE5Tft2kT4PZnlcWqL
+	 x+EmfN6k5QoQA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexey Klimov <alexey.klimov@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Coly Li <colyli@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	srini@kernel.org,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 201/642] ASoC: qcom: sm8250: explicitly set format in sm8250_be_hw_params_fixup()
-Date: Mon,  5 May 2025 18:06:57 -0400
-Message-Id: <20250505221419.2672473-201-sashal@kernel.org>
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 202/642] badblocks: Fix a nonsense WARN_ON() which checks whether a u64 variable < 0
+Date: Mon,  5 May 2025 18:06:58 -0400
+Message-Id: <20250505221419.2672473-202-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -71,46 +67,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Coly Li <colyli@kernel.org>
 
-[ Upstream commit 89be3c15a58b2ccf31e969223c8ac93ca8932d81 ]
+[ Upstream commit 7e76336e14de9a2b67af96012ddd46c5676cf340 ]
 
-Setting format to s16le is required for compressed playback on compatible
-soundcards.
+In _badblocks_check(), there are lines of code like this,
+1246         sectors -= len;
+[snipped]
+1251         WARN_ON(sectors < 0);
 
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://patch.msgid.link/20250228161430.373961-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The WARN_ON() at line 1257 doesn't make sense because sectors is
+unsigned long long type and never to be <0.
+
+Fix it by checking directly checking whether sectors is less than len.
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Coly Li <colyli@kernel.org>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20250309160556.42854-1-colyli@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/sm8250.c | 3 +++
- 1 file changed, 3 insertions(+)
+ block/badblocks.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
-index 45e0c33fc3f37..9039107972e2b 100644
---- a/sound/soc/qcom/sm8250.c
-+++ b/sound/soc/qcom/sm8250.c
-@@ -7,6 +7,7 @@
- #include <sound/soc.h>
- #include <sound/soc-dapm.h>
- #include <sound/pcm.h>
-+#include <sound/pcm_params.h>
- #include <linux/soundwire/sdw.h>
- #include <sound/jack.h>
- #include <linux/input-event-codes.h>
-@@ -39,9 +40,11 @@ static int sm8250_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
- 					SNDRV_PCM_HW_PARAM_RATE);
- 	struct snd_interval *channels = hw_param_interval(params,
- 					SNDRV_PCM_HW_PARAM_CHANNELS);
-+	struct snd_mask *fmt = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
+diff --git a/block/badblocks.c b/block/badblocks.c
+index dc147c0179612..23acdf7c6f363 100644
+--- a/block/badblocks.c
++++ b/block/badblocks.c
+@@ -1246,14 +1246,15 @@ static int _badblocks_check(struct badblocks *bb, sector_t s, sector_t sectors,
+ 	len = sectors;
  
- 	rate->min = rate->max = 48000;
- 	channels->min = channels->max = 2;
-+	snd_mask_set_format(fmt, SNDRV_PCM_FORMAT_S16_LE);
+ update_sectors:
++	/* This situation should never happen */
++	WARN_ON(sectors < len);
++
+ 	s += len;
+ 	sectors -= len;
  
- 	return 0;
- }
+ 	if (sectors > 0)
+ 		goto re_check;
+ 
+-	WARN_ON(sectors < 0);
+-
+ 	if (unacked_badblocks > 0)
+ 		rv = -1;
+ 	else if (acked_badblocks > 0)
 -- 
 2.39.5
 
