@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-139818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D00AAA03A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:32:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BFB4AAA025
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 663CB1A82F87
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:32:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC4FD173FE1
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318AA28EA62;
-	Mon,  5 May 2025 22:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3617F27B4F6;
+	Mon,  5 May 2025 22:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AWobm5Or"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g3xKHW86"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E058D28EA52;
-	Mon,  5 May 2025 22:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55CA28F502;
+	Mon,  5 May 2025 22:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483410; cv=none; b=MoVy+8+JKqPxWuHF34fE3C8AeU3N2OIVtLQ1afzLtAms2RntIjSU5uDkPBxLMZQUj+cjuDVBPRNSeEnEAKRa6k599EQI4Xy2uneacY2C3aoTIGa/kje/95Qh0/qaSCFtB85od9TiZHlwl8NcpTLObNK3hPpj5AuthxPal6eMMDE=
+	t=1746483412; cv=none; b=gKwvZVvbQI99Y9a0rfaTyqXSkBZveL1ACfr9Xv2Rfm3+V4CuptwzC0WtnwG+AUIvMnMytfMB4wFbJuGrgtYEo5+4yblezBlQlHzeyMTOnQVRocHDlMEjP17GPmeezQXC/HyJd3s9lZ/0wl5Fn5GxkaeDiDy53Qud+qSxlcyYZoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483410; c=relaxed/simple;
-	bh=Pf0UDKi0u/W85Vxs0pnhVYiOyMeMAr4YGS6GScDUHRM=;
+	s=arc-20240116; t=1746483412; c=relaxed/simple;
+	bh=immGtHOQNAjbPw7pNkpPl9yR0ILfPCW0XuJiUmFodqk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gRZuenUM5ilBAMeRWz+GwTPRid+MEuVNVfIT7mNGm0A5INOzXbjjridqgobjS6Xlwmh5TeybkppZK5KE7BIWDPpjhQdyodGMceqefjrpWq1KQf41vPqwvHenYP7EEsbQLP3F/focehfGUteyae4pHCSs/b4QXwvlQCD3XeyHd2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AWobm5Or; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55397C4CEED;
-	Mon,  5 May 2025 22:16:48 +0000 (UTC)
+	 MIME-Version; b=gq3WR8RzY2sfHsG3ncZL0rw/y/lXJQszpRf9b1JQALWHkhGAI5EarkGqncx2uCfeoTKiXTNqb2S83QxVdoWG/RgraelLy2+17zPuDLVM5TXzP2z9hqQievcPf+ZR87EhQkaYaY1Ldk55J1U9flKD0BxTt+LoGL+IZEjfn/ye898=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g3xKHW86; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FF7C4CEEF;
+	Mon,  5 May 2025 22:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483409;
-	bh=Pf0UDKi0u/W85Vxs0pnhVYiOyMeMAr4YGS6GScDUHRM=;
+	s=k20201202; t=1746483411;
+	bh=immGtHOQNAjbPw7pNkpPl9yR0ILfPCW0XuJiUmFodqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AWobm5OrdMndW4R4LzPCXeueasPU5uDx/cEB34enGeHjIdayC3eryle1Lmn9Qwtnh
-	 VhIZhEMjFDiOgqs+wGzy/P9degG3V2jp/xiEvwij2kek370VkjvGGuqLsgnXUkldiX
-	 skm6nb5yRMMzpdSNjHuy6WoAMyx/UMYXavgIde0D5El0+bXPdunHbRIdrIyH/ogDBG
-	 ujZLQmh3hrxibqZsT7JE2sVkDRObor/E2TqRpf+HaaJ9qOedwKdMdmeREwVb9ypOZG
-	 R7QkRGNulaoePjD+DrLb5ZiBGkTjA2aGrKWi93Qtj5WBeCZ2i6TLx2RT5WgqQFYtwh
-	 TvpwdiNzGxrpQ==
+	b=g3xKHW86fKdCJcarEJf8NkWmuldJEcWx277LGx2iE6v0tXJPjndNzCB4nUmN81dJQ
+	 BRHH80X+HldsSN2Z1AF6Cffxj3cr08ZmN2VligF3BxIirL+G/UITvwqXg1ikx5cGnl
+	 ua9D+KeUHevH2Mgv2Kf+jUbxgBk8kkiO6Qe4liMZNRsIu6kX+0kFbGgkf7x3/BCIPS
+	 BeZfoaDVyBvKYa/HXAD0KvBF4SnhYyVXsQULcuVI9AL8xmIeBxhU/Eh2vE3mNdBQfd
+	 2/caui0LOsB1iJIcfg3/BLtFr3FHPyYv2Jr2Uc+VeWEw3PkWYkXqAsMRqMmVcU/ju0
+	 J2Xwur5gGAn9g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Greg Thelen <gthelen@google.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Tejun Heo <tj@kernel.org>,
+Cc: Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>,
-	hannes@cmpxchg.org,
-	cgroups@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 071/642] cgroup/rstat: avoid disabling irqs for O(num_cpu)
-Date: Mon,  5 May 2025 18:04:47 -0400
-Message-Id: <20250505221419.2672473-71-sashal@kernel.org>
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-wireless@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 072/642] wifi: mt76: Check link_conf pointer in mt76_connac_mcu_sta_basic_tlv()
+Date: Mon,  5 May 2025 18:04:48 -0400
+Message-Id: <20250505221419.2672473-72-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -64,112 +66,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-[ Upstream commit 0efc297a3c4974dbd609ee36fc6345720b6ca735 ]
+[ Upstream commit 9890624c1b3948c1c7f1d0e19ef0bb7680b8c80d ]
 
-cgroup_rstat_flush_locked() grabs the irq safe cgroup_rstat_lock while
-iterating all possible cpus. It only drops the lock if there is
-scheduler or spin lock contention. If neither, then interrupts can be
-disabled for a long time. On large machines this can disable interrupts
-for a long enough time to drop network packets. On 400+ CPU machines
-I've seen interrupt disabled for over 40 msec.
+This is a preliminary patch to introduce MLO support for MT7996 driver.
 
-Prevent rstat from disabling interrupts while processing all possible
-cpus. Instead drop and reacquire cgroup_rstat_lock for each cpu. This
-approach was previously discussed in
-https://lore.kernel.org/lkml/ZBz%2FV5a7%2F6PZeM7S@slm.duckdns.org/,
-though this was in the context of an non-irq rstat spin lock.
-
-Benchmark this change with:
-1) a single stat_reader process with 400 threads, each reading a test
-   memcg's memory.stat repeatedly for 10 seconds.
-2) 400 memory hog processes running in the test memcg and repeatedly
-   charging memory until oom killed. Then they repeat charging and oom
-   killing.
-
-v6.14-rc6 with CONFIG_IRQSOFF_TRACER with stat_reader and hogs, finds
-interrupts are disabled by rstat for 45341 usec:
-  #  => started at: _raw_spin_lock_irq
-  #  => ended at:   cgroup_rstat_flush
-  #
-  #
-  #                    _------=> CPU#
-  #                   / _-----=> irqs-off/BH-disabled
-  #                  | / _----=> need-resched
-  #                  || / _---=> hardirq/softirq
-  #                  ||| / _--=> preempt-depth
-  #                  |||| / _-=> migrate-disable
-  #                  ||||| /     delay
-  #  cmd     pid     |||||| time  |   caller
-  #     \   /        ||||||  \    |    /
-  stat_rea-96532    52d....    0us*: _raw_spin_lock_irq
-  stat_rea-96532    52d.... 45342us : cgroup_rstat_flush
-  stat_rea-96532    52d.... 45342us : tracer_hardirqs_on <-cgroup_rstat_flush
-  stat_rea-96532    52d.... 45343us : <stack trace>
-   => memcg1_stat_format
-   => memory_stat_format
-   => memory_stat_show
-   => seq_read_iter
-   => vfs_read
-   => ksys_read
-   => do_syscall_64
-   => entry_SYSCALL_64_after_hwframe
-
-With this patch the CONFIG_IRQSOFF_TRACER doesn't find rstat to be the
-longest holder. The longest irqs-off holder has irqs disabled for
-4142 usec, a huge reduction from previous 45341 usec rstat finding.
-
-Running stat_reader memory.stat reader for 10 seconds:
-- without memory hogs: 9.84M accesses => 12.7M accesses
--    with memory hogs: 9.46M accesses => 11.1M accesses
-The throughput of memory.stat access improves.
-
-The mode of memory.stat access latency after grouping by of 2 buckets:
-- without memory hogs: 64 usec => 16 usec
--    with memory hogs: 64 usec =>  8 usec
-The memory.stat latency improves.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Greg Thelen <gthelen@google.com>
-Tested-by: Greg Thelen <gthelen@google.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20250311-mt7996-mlo-v2-10-31df6972519b@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/rstat.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/rstat.c b/kernel/cgroup/rstat.c
-index 3e01781aeb7bd..c4ce2f5a9745f 100644
---- a/kernel/cgroup/rstat.c
-+++ b/kernel/cgroup/rstat.c
-@@ -323,13 +323,11 @@ static void cgroup_rstat_flush_locked(struct cgroup *cgrp)
- 			rcu_read_unlock();
- 		}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index d0e49d68c5dbf..bafcf5a279e23 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -391,7 +391,7 @@ void mt76_connac_mcu_sta_basic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
+ 		basic->conn_type = cpu_to_le32(CONNECTION_INFRA_BC);
  
--		/* play nice and yield if necessary */
--		if (need_resched() || spin_needbreak(&cgroup_rstat_lock)) {
--			__cgroup_rstat_unlock(cgrp, cpu);
--			if (!cond_resched())
--				cpu_relax();
--			__cgroup_rstat_lock(cgrp, cpu);
--		}
-+		/* play nice and avoid disabling interrupts for a long time */
-+		__cgroup_rstat_unlock(cgrp, cpu);
-+		if (!cond_resched())
-+			cpu_relax();
-+		__cgroup_rstat_lock(cgrp, cpu);
- 	}
- }
- 
+ 		if (vif->type == NL80211_IFTYPE_STATION &&
+-		    !is_zero_ether_addr(link_conf->bssid)) {
++		    link_conf && !is_zero_ether_addr(link_conf->bssid)) {
+ 			memcpy(basic->peer_addr, link_conf->bssid, ETH_ALEN);
+ 			basic->aid = cpu_to_le16(vif->cfg.aid);
+ 		} else {
 -- 
 2.39.5
 
