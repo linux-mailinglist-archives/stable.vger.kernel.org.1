@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-140616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C12AAAE64
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAE3AAB10B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:52:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DA1C461EAF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:53:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CD294A1AC5
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60893768A1;
-	Mon,  5 May 2025 22:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BC7330547;
+	Tue,  6 May 2025 00:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZY90ImYk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ff3tTUdI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC23F2D60F9;
-	Mon,  5 May 2025 22:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5B32D6107;
+	Mon,  5 May 2025 22:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485354; cv=none; b=LHoUsNQI6QF7B/XFu7JOhHF0xMY06NQbWgcBZ/xkXheagdLFAXcVQuVDNFzV+guS+NzQBlZGG7t1UDFzBIN9RiMD7huJbFhCxxPXtJtuAPcWby359bH4kYc7VRbzMLuSrNciSfyTTUgHQo58m1EWRm7OFYWq8+KSu2JkP/L5d7w=
+	t=1746485356; cv=none; b=U7x4sJoiyFUTKyWXx/AbJ4zjX5IUt53GS54qACOZbTm2I160Z+SR7Z9M6BDgeC5uZMXxXGJoTlzHiE0gzerJ5NePbIXmO1IDBDuvTjuJyHW6FFfF/0rx6LGY5jCpeL/q6KuBHRtx8c4q8vJUf0zS8vWmWL2c++ognbjnE6x4Vek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485354; c=relaxed/simple;
-	bh=LJNC1WGx3PsFqhoiIj4US5ok4Nl0wwbQHNr9rljz7+s=;
+	s=arc-20240116; t=1746485356; c=relaxed/simple;
+	bh=r9j4Hs7QN9+19h8hFBBa0TdRFkZZuj2yxEs/npKCWeI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=goSNcYCuSHLwLg8Jad4hCAyH0UGh46JH8utR4Q6iZiPB7KR909WfMEKpNpGujjR9QDAULrsgtEZH8lr4OtD/zT+UvTa0kFdFduDWcHT7zoqKJ88rFQ33Tr/qSBLrBNh31yeuY0rw2TH9ECChWbT2SJy4OpWyv6j+lgH8Fc13gBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZY90ImYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822D9C4CEEE;
-	Mon,  5 May 2025 22:49:12 +0000 (UTC)
+	 MIME-Version; b=FplAJJIIF1LkQztvxYPAOmFhWHit7NCHnbWjFY4hpR1lqkkM7RBxU/w1/vfmwj6VEOpHsz9H63m9uVhY/ktIdYOCeOteQlBxd/l6mD0AVeUjGQ+YI5xumn9wOJ+P2pWgt2CuO0guH6Mzy/ajG/cR2kyNz11Fmcbdjt1iGABBcyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ff3tTUdI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CABAC4CEEF;
+	Mon,  5 May 2025 22:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485353;
-	bh=LJNC1WGx3PsFqhoiIj4US5ok4Nl0wwbQHNr9rljz7+s=;
+	s=k20201202; t=1746485355;
+	bh=r9j4Hs7QN9+19h8hFBBa0TdRFkZZuj2yxEs/npKCWeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZY90ImYk6nTsMSNl3osw9xWnuWTuprcNBCIcAeriYif2UkV+KJDx2FrB7Z40NHqXO
-	 qtDcZlJCpItuzNQ9Vpf+69NREjwlPZN2pyR8x0kW5i7YcKjyz8A/vNw+3zfr2/kONt
-	 +zwY7QBfsIFOlVW2G6607UxxeaehUt5zrH4Dj1r4n1FeBa+6C87Axsm6yUivYWbJF2
-	 qOUOoKO7yL2zfp6mLuqf2cOWl3/ndvMxHnYEiRv7qz81v82F3P9ZxFrf99YKJX3cpa
-	 8QqZePWUOt4j4tlhjKdNh9u2TVNavwP+tqMZpmjh7+gO40f5jLpLdR0x4W078quAcp
-	 nyJqm4Rlc2v+g==
+	b=Ff3tTUdI63DWBijS7erdJgJJJLJr5WRJX0GH32RARHBsXBqEAkAPmzh7H/e7jH6w8
+	 hPDAL4uspa7cwEEn1oGP+NPj/Enehwbg7yjm3/kAQbmCIoYxV9IfKV+FTs0m+NG5SG
+	 aVHbS3jmj48vzRJq08PUMEy1paWWfWc1qDu5nqHGoqdwGIjXgDywgqmMw1BLCRraaV
+	 zmilDfwOjgGHzySIki/OXHfCe9mxGBt20U5wegRVChoLgZ1vbJonwNe+/g8yPCZBRt
+	 OMy5SFACvz8jo+a0lNnzlov9GluWehvjiEiuxY1/UPF1dRfvBND+FPvxie5/NMNjSN
+	 5h+uWGYgfSYWA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mrinmay Sarkar <quic_msarkar@quicinc.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+Cc: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	manivannan.sadhasivam@linaro.org,
-	kw@linux.com,
-	bhelgaas@google.com,
-	mhi@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 282/486] PCI: epf-mhi: Update device ID for SA8775P
-Date: Mon,  5 May 2025 18:35:58 -0400
-Message-Id: <20250505223922.2682012-282-sashal@kernel.org>
+	sathya.prakash@broadcom.com,
+	sreekanth.reddy@broadcom.com,
+	suganath-prabu.subramani@broadcom.com,
+	James.Bottomley@HansenPartnership.com,
+	MPT-FusionLinux.pdl@broadcom.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 283/486] scsi: mpt3sas: Send a diag reset if target reset fails
+Date: Mon,  5 May 2025 18:35:59 -0400
+Message-Id: <20250505223922.2682012-283-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -65,40 +65,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Mrinmay Sarkar <quic_msarkar@quicinc.com>
+From: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>
 
-[ Upstream commit 4f13dd9e2b1d2b317bb36704f8a7bd1d3017f7a2 ]
+[ Upstream commit 5612d6d51ed2634a033c95de2edec7449409cbb9 ]
 
-Update device ID for the Qcom SA8775P SoC.
+When an IOCTL times out and driver issues a target reset, if firmware
+fails the task management elevate the recovery by issuing a diag reset to
+controller.
 
-Signed-off-by: Mrinmay Sarkar <quic_msarkar@quicinc.com>
-Link: https://lore.kernel.org/r/20241205065422.2515086-3-quic_msarkar@quicinc.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>
+Link: https://lore.kernel.org/r/1739410016-27503-5-git-send-email-shivasharan.srikanteshwara@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-mhi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/mpt3sas/mpt3sas_ctl.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-mhi.c b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-index 54286a40bdfbf..6643a88c7a0ce 100644
---- a/drivers/pci/endpoint/functions/pci-epf-mhi.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-@@ -125,7 +125,7 @@ static const struct pci_epf_mhi_ep_info sm8450_info = {
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_ctl.c b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
+index 87784c96249a7..47faa27bc3559 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
+@@ -679,6 +679,7 @@ _ctl_do_mpt_command(struct MPT3SAS_ADAPTER *ioc, struct mpt3_ioctl_command karg,
+ 	size_t data_in_sz = 0;
+ 	long ret;
+ 	u16 device_handle = MPT3SAS_INVALID_DEVICE_HANDLE;
++	int tm_ret;
  
- static struct pci_epf_header sa8775p_header = {
- 	.vendorid = PCI_VENDOR_ID_QCOM,
--	.deviceid = 0x0306,               /* FIXME: Update deviceid for sa8775p EP */
-+	.deviceid = 0x0116,
- 	.baseclass_code = PCI_CLASS_OTHERS,
- 	.interrupt_pin = PCI_INTERRUPT_INTA,
- };
+ 	issue_reset = 0;
+ 
+@@ -1120,18 +1121,25 @@ _ctl_do_mpt_command(struct MPT3SAS_ADAPTER *ioc, struct mpt3_ioctl_command karg,
+ 			if (pcie_device && (!ioc->tm_custom_handling) &&
+ 			    (!(mpt3sas_scsih_is_pcie_scsi_device(
+ 			    pcie_device->device_info))))
+-				mpt3sas_scsih_issue_locked_tm(ioc,
++				tm_ret = mpt3sas_scsih_issue_locked_tm(ioc,
+ 				  le16_to_cpu(mpi_request->FunctionDependent1),
+ 				  0, 0, 0,
+ 				  MPI2_SCSITASKMGMT_TASKTYPE_TARGET_RESET, 0,
+ 				  0, pcie_device->reset_timeout,
+ 			MPI26_SCSITASKMGMT_MSGFLAGS_PROTOCOL_LVL_RST_PCIE);
+ 			else
+-				mpt3sas_scsih_issue_locked_tm(ioc,
++				tm_ret = mpt3sas_scsih_issue_locked_tm(ioc,
+ 				  le16_to_cpu(mpi_request->FunctionDependent1),
+ 				  0, 0, 0,
+ 				  MPI2_SCSITASKMGMT_TASKTYPE_TARGET_RESET, 0,
+ 				  0, 30, MPI2_SCSITASKMGMT_MSGFLAGS_LINK_RESET);
++
++			if (tm_ret != SUCCESS) {
++				ioc_info(ioc,
++					 "target reset failed, issue hard reset: handle (0x%04x)\n",
++					 le16_to_cpu(mpi_request->FunctionDependent1));
++				mpt3sas_base_hard_reset_handler(ioc, FORCE_BIG_HAMMER);
++			}
+ 		} else
+ 			mpt3sas_base_hard_reset_handler(ioc, FORCE_BIG_HAMMER);
+ 	}
 -- 
 2.39.5
 
