@@ -1,64 +1,65 @@
-Return-Path: <stable+bounces-141360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF68AAB2DF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:32:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6C0AAB6D2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBC5D16C43B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:30:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61A763A6575
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870CC440928;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08991293457;
 	Tue,  6 May 2025 00:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ckvpb0mO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2rvLQQz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5651280A37;
-	Mon,  5 May 2025 22:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF1C3703D6;
+	Mon,  5 May 2025 22:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485898; cv=none; b=lYOfNu8v03P/L1jQZvLATCAi8DEGIacaMA1tEEHTf+dcaMkkb4DK6aE8z585M9kq3s/MSZH2aoyERIx0XfOsrTmOWYFc5M+EyMUvcNfuyVZQqcz5m3oKUleeGL8M5xLxyto/gngySPIolSH8W5GGjm5wZk4RmAJzn+G7EwpPtr4=
+	t=1746485901; cv=none; b=lhpbyCw3EAUZ6C3ZlOtRqTl6pwnfy/RSVicPKiKffixQPJdy6Cqleo/DYOIhuCRNERLFOrrNX0yVKtWjLxs62cBydEpke0uFsVKZ+E3KhsONo2jXG+9PfcPOzg4SIkFntt09gH6+5LEXkM6GcL7VrdDPeVr5ntlRXwdg1VlOaoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485898; c=relaxed/simple;
-	bh=o6vPQm8ORAMEIjP7fhptjMtwSNq9nMRVlWGY99NWjZw=;
+	s=arc-20240116; t=1746485901; c=relaxed/simple;
+	bh=rK8UgpSEnGG6WpUj0pfBe+FyfH9qHFqoFjKvOIgzK70=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bYomrnqa33OLYKJjNqiUlfdlgbIeb1lMfqMzJnS/DYBbDb8E1v/2bqrxMFfrv6k99Xzbx1Zzu6Kwpnw0HGF6834Bc2pFHUesgxUS1rnJtseggxeQD9mWhnOv16rhG0y6IIhDDeQUla+sF+qauaRZumtl5/yaHYNUyytlWCmFnn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ckvpb0mO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82F2C4CEEE;
-	Mon,  5 May 2025 22:58:16 +0000 (UTC)
+	 MIME-Version; b=gg4E6/qefx+SK/wOy2BBm4XmYXnns0wKfNG8oq8eaYvIEWsnB+jnKV94xfkKWxcMW5eaizH1a/VGJzO1pz45ATdVdqEytVpo7UhvMetmIuBGja2v6xbxNEf4mQTYVdrcygq+4H8Th6Kli8Jq/j3DRRG+btH44Rj6bzsfM1auaGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2rvLQQz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA8BC4CEE4;
+	Mon,  5 May 2025 22:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485898;
-	bh=o6vPQm8ORAMEIjP7fhptjMtwSNq9nMRVlWGY99NWjZw=;
+	s=k20201202; t=1746485901;
+	bh=rK8UgpSEnGG6WpUj0pfBe+FyfH9qHFqoFjKvOIgzK70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ckvpb0mO+BiWldk1mU6CORIigqhCbO4QLRDdfHhgHbhBdy4GbDq6mM9BGY/X4ZzGT
-	 iWp/GvYQNAC/76w6heje6A/b6+ugENNvSkrpKH1vaGGj1BOKOAVuHgjd8AeLjAAijQ
-	 4NDwMAjvIsKp2jlJHuqZIIPDfZ7ohXMKKfp/d/yF3oB2SNU3gMh9wS49NWMyby8dbn
-	 fxcZ5Q7g9w9YlMvpaIE3OpvcU1Ch1AWnLFqZOMPRqpn8V3gST8IkoI+09/RUn2MoN0
-	 JLf2rdJaFJTDdsiXESLwOzhzlCG+se+s09ZmUVi7EyLM4Tm/w3KYFqW7UQhcfvpcRS
-	 XzUwrFUjwKJJA==
+	b=B2rvLQQzRDJ3JsLrKEzd/ot0nZ2Gf34/MzzJ6uWzRWjD+ncZ1w6ZkC/dUwKlb/kfC
+	 oyEycdzXDsm8XfTKGTPM+Cf0cSjWGFT1hT8eq5Mr6meSUjmOWpO5MR/iHsqCGkKfpO
+	 SoGnRvCYjJRVZ5GB6n+WiryMbQVzyVa4aWWd5dXueTj18Ruq3UTZPHI+UGzG9H9jDZ
+	 wFDMSPxCKjakJTuTCHN0Htes/Hg6eormlulUbV7MtMZ6rnCsp2IyHuyreAnbuTM9s9
+	 T+S3mjgOL2uGdfLMbcddSk+iETMpKKKH98aq46xwrTib9Ko5dlS81Cy5ELY6yo1zB7
+	 xppwSbHuPiSYw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Berg <benjamin@sipsolutions.net>,
+Cc: Tiwei Bie <tiwei.btw@antgroup.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	richard@nod.at,
 	anton.ivanov@cambridgegreys.com,
 	johannes@sipsolutions.net,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
+	rppt@kernel.org,
 	dave.hansen@linux.intel.com,
-	x86@kernel.org,
+	akpm@linux-foundation.org,
+	richard.weiyang@gmail.com,
+	kevin.brodsky@arm.com,
+	benjamin.berg@intel.com,
 	linux-um@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 054/294] um: Store full CSGSFS and SS register from mcontext
-Date: Mon,  5 May 2025 18:52:34 -0400
-Message-Id: <20250505225634.2688578-54-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 055/294] um: Update min_low_pfn to match changes in uml_reserved
+Date: Mon,  5 May 2025 18:52:35 -0400
+Message-Id: <20250505225634.2688578-55-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -73,38 +74,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit cef721e0d53d2b64f2ba177c63a0dfdd7c0daf17 ]
+[ Upstream commit e82cf3051e6193f61e03898f8dba035199064d36 ]
 
-Doing this allows using registers as retrieved from an mcontext to be
-pushed to a process using PTRACE_SETREGS.
+When uml_reserved is updated, min_low_pfn must also be updated
+accordingly. Otherwise, min_low_pfn will not accurately reflect
+the lowest available PFN.
 
-It is not entirely clear to me why CSGSFS was masked. Doing so creates
-issues when using the mcontext as process state in seccomp and simply
-copying the register appears to work perfectly fine for ptrace.
-
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Link: https://patch.msgid.link/20250224181827.647129-2-benjamin@sipsolutions.net
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250221041855.1156109-1-tiwei.btw@antgroup.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/um/os-Linux/mcontext.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/um/kernel/mem.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/um/os-Linux/mcontext.c b/arch/x86/um/os-Linux/mcontext.c
-index 49c3744cac371..81b9d1f9f4e68 100644
---- a/arch/x86/um/os-Linux/mcontext.c
-+++ b/arch/x86/um/os-Linux/mcontext.c
-@@ -26,7 +26,6 @@ void get_regs_from_mc(struct uml_pt_regs *regs, mcontext_t *mc)
- 	COPY(RIP);
- 	COPY2(EFLAGS, EFL);
- 	COPY2(CS, CSGSFS);
--	regs->gp[CS / sizeof(unsigned long)] &= 0xffff;
--	regs->gp[CS / sizeof(unsigned long)] |= 3;
-+	regs->gp[SS / sizeof(unsigned long)] = mc->gregs[REG_CSGSFS] >> 48;
- #endif
- }
+diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
+index 38d5a71a579bc..f6c766b2bdf5e 100644
+--- a/arch/um/kernel/mem.c
++++ b/arch/um/kernel/mem.c
+@@ -68,6 +68,7 @@ void __init mem_init(void)
+ 	map_memory(brk_end, __pa(brk_end), uml_reserved - brk_end, 1, 1, 0);
+ 	memblock_free((void *)brk_end, uml_reserved - brk_end);
+ 	uml_reserved = brk_end;
++	min_low_pfn = PFN_UP(__pa(uml_reserved));
+ 
+ 	/* this will put all low memory onto the freelists */
+ 	memblock_free_all();
 -- 
 2.39.5
 
