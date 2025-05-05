@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-140533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 495C4AAA9A2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:18:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A60BFAAA9B9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:20:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDBFE4A2271
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:17:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E5B61888277
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1C036AD0D;
-	Mon,  5 May 2025 22:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B8E36AD23;
+	Mon,  5 May 2025 22:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Crmbaj0w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TD2gon2a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285AD298CDF;
-	Mon,  5 May 2025 22:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59290299523;
+	Mon,  5 May 2025 22:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484959; cv=none; b=dI8l4ylQ/wlxZRoyVlH/szsbwNlYU7c3vv48vkDhhEggzKoDVVDoUTfmq0WdmliVA4R+JHAW180hqQJHJHYWZHGQEVLsk/2/jiLgMdBaHU7KbAuG5wHOJh+S5/ILeEEHW6j/slzMSskOV6N6GcfZa664ut/3QVjEZXiCeiyA03g=
+	t=1746484960; cv=none; b=KUZCMHQEzaMz5hOJrsdPoZfH+BArkNYx5/cEpxYuKm0t5q7k4exYZ8S1kHQdJ2hpkPOvEGJy4JVg9RKt8u27TPFZYNV/LwUK01h1QsJhAbfGUTQ1dOQn5hZFE0b99xkMtelygq26QQ1BlWbr9DW8TL+b2UgNZJIHKj9NkDB3p8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484959; c=relaxed/simple;
-	bh=vYBIDgjPuAT1pjrXhbJXLQ/c65u0Xv16gt1tFOp2Wa8=;
+	s=arc-20240116; t=1746484960; c=relaxed/simple;
+	bh=xZGMbGj6sBc3Sj/fGa8SASsuV+kyncDt16qSx4L3uFw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uDK1zLjHf+m2UiBnunCp+Wxn+woygvRFVIh7CNXBYXFW30SBu3W/jHri/5NYLwnQHyKWn7hqUeif8Y12rVuc9HFdunj6TZTmeYZE5QrDVgXTmdnwH5cbN9qIV92ZTw+oVlw50UoUgJ2oyhsYXVCfqzUFNi9xVDdrdN7+EQG8qQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Crmbaj0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3006C4CEE4;
-	Mon,  5 May 2025 22:42:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ntwBcftv86Sf1j1WQBrT6pydes5A+5Dzgx0IORCwNm3whR2bMc8oBj31+PTA6vhPJnLXqXPWAVdSYjZJqY1cCIG4F7pLSpQ/Mpp131ZmtuWqDNSF92Mc9iX0WeSdYN0XNpS/6RWTMvjOYd2+Zw3tbrSr+Ye8FLfEk3FWYt5TZXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TD2gon2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C699C4CEED;
+	Mon,  5 May 2025 22:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484958;
-	bh=vYBIDgjPuAT1pjrXhbJXLQ/c65u0Xv16gt1tFOp2Wa8=;
+	s=k20201202; t=1746484959;
+	bh=xZGMbGj6sBc3Sj/fGa8SASsuV+kyncDt16qSx4L3uFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Crmbaj0wYzyyOvfux//FhZlQABkO10fPXhDYuBVCWWMabPLkuddZiFq3V6jK6ky/7
-	 klm0Qea27W3MWogfZ1aUvK1U6t7sa/oqXFPBx1lepL/H+Xf4MczDZMthneokwTvU41
-	 o+LWS/HmF+Fc8kyKceI8Qldrgsu31FU7QRjFaTQpnVNOxn3jv/9h0m/kCoE/f2UoZg
-	 9lD6mxH7wRPtTXUALHlQqXeUd2YLIYtyddxXlYuDXx51WekmeTKUZ0yjZY9kqL3Kan
-	 WqsWm/DRFrlpQvAFe31ao8kXdsSTE6H+h5T7L7D0oAFWDjcrS2SrD+YpkGUkQ3r0Fk
-	 k8RiRdRIPvIug==
+	b=TD2gon2aOBLy7I/n0urqB9x5WYns+YENc7NPly3LiMdwLB2UhBzq9J+CbCPi0a/Xz
+	 Wt0HhAvlRK4KbDjmw/NWjJzyRYAOU/i2PNpicHSWULhL3gasbRfuo9RE7PeFLY36HN
+	 x71kJ8EGq5aIF5PmLXDzCCQF7MbNC/PdgK4eulO/lm1d4cpeV8kXjFo0ZM/fmGQ07Z
+	 4z3ShE13KRN+iALfXkLjTDiEc08d0xG1ihGo3T9MR+GVEq4jYiEFob+e7QqlDu5CZc
+	 LuoyzH3XLAOH+mBmgROWfgU4aCvY7ISniNvMzPIpj3tgJnz1JFl3txh4I1D6MiHSTB
+	 LooJoIczjoBCw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
+Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	hca@linux.ibm.com,
-	gor@linux.ibm.com,
-	agordeev@linux.ibm.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 095/486] hypfs_create_cpu_files(): add missing check for hypfs_mkdir() failure
-Date: Mon,  5 May 2025 18:32:51 -0400
-Message-Id: <20250505223922.2682012-95-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 096/486] scsi: st: Tighten the page format heuristics with MODE SELECT
+Date: Mon,  5 May 2025 18:32:52 -0400
+Message-Id: <20250505223922.2682012-96-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -62,34 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 00cdfdcfa0806202aea56b02cedbf87ef1e75df8 ]
+[ Upstream commit 8db816c6f176321e42254badd5c1a8df8bfcfdb4 ]
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+In the days when SCSI-2 was emerging, some drives did claim SCSI-2 but did
+not correctly implement it. The st driver first tries MODE SELECT with the
+page format bit set to set the block descriptor.  If not successful, the
+non-page format is tried.
+
+The test only tests the sense code and this triggers also from illegal
+parameter in the parameter list. The test is limited to "old" devices and
+made more strict to remove false alarms.
+
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250311112516.5548-4-Kai.Makisara@kolumbus.fi
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/hypfs/hypfs_diag_fs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/st.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/hypfs/hypfs_diag_fs.c b/arch/s390/hypfs/hypfs_diag_fs.c
-index 00a6d370a2803..280266a74f378 100644
---- a/arch/s390/hypfs/hypfs_diag_fs.c
-+++ b/arch/s390/hypfs/hypfs_diag_fs.c
-@@ -208,6 +208,8 @@ static int hypfs_create_cpu_files(struct dentry *cpus_dir, void *cpu_info)
- 	snprintf(buffer, TMP_SIZE, "%d", cpu_info__cpu_addr(diag204_get_info_type(),
- 							    cpu_info));
- 	cpu_dir = hypfs_mkdir(cpus_dir, buffer);
-+	if (IS_ERR(cpu_dir))
-+		return PTR_ERR(cpu_dir);
- 	rc = hypfs_create_u64(cpu_dir, "mgmtime",
- 			      cpu_info__acc_time(diag204_get_info_type(), cpu_info) -
- 			      cpu_info__lp_time(diag204_get_info_type(), cpu_info));
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index a17441635ff3a..1c0951168f646 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -3081,7 +3081,9 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 			   cmd_in == MTSETDRVBUFFER ||
+ 			   cmd_in == SET_DENS_AND_BLK) {
+ 			if (cmdstatp->sense_hdr.sense_key == ILLEGAL_REQUEST &&
+-			    !(STp->use_pf & PF_TESTED)) {
++				cmdstatp->sense_hdr.asc == 0x24 &&
++				(STp->device)->scsi_level <= SCSI_2 &&
++				!(STp->use_pf & PF_TESTED)) {
+ 				/* Try the other possible state of Page Format if not
+ 				   already tried */
+ 				STp->use_pf = (STp->use_pf ^ USE_PF) | PF_TESTED;
 -- 
 2.39.5
 
