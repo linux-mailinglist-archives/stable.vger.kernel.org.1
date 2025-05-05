@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-141419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45351AAB6D1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:57:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BA8AAB709
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:03:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 092127A2323
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:56:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F2EF3AA8DF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB76D22C35D;
-	Tue,  6 May 2025 00:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A79F22D7BC;
+	Tue,  6 May 2025 00:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q8KBFdqA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zhq3/I/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A6735D7AF;
-	Mon,  5 May 2025 23:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDF7287519;
+	Mon,  5 May 2025 23:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486223; cv=none; b=Wbw2LfRgpGYFTBuc0LZ6+um4WS+YmiDp15Ek+fPsoxeglCcZMjtDnVEzakmeCmQ8wybj2wENEOlVOqCk3UYXVA6Slalh+Fhqd5O9XN1dj5svYXVRlfJTursGq0GSlq8xiWyrQ+VkxdUY1ThQ/nDdi6N/CuFQxPWClJvClS8UUGE=
+	t=1746486229; cv=none; b=piPKCN4Vc8fNx2c3Nuwjm4NccneV2xcH6Ebu8XyY6EibIXS4Vcdkk6JFCvo9YI8WDyCJRTmKIZd/uTkY2JeLu8wwyPR7529yottBn8ZpAhqLu6boKCecoNJz6IoiChVm9LQc8FwqPrinjaDFR+rylzUJsPSCUN2U5BW7ZdpQsF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486223; c=relaxed/simple;
-	bh=6F4NyuTwU+aeLO8gfK01++hQ8YtLGDavtq4s0fM7NUE=;
+	s=arc-20240116; t=1746486229; c=relaxed/simple;
+	bh=nUhJPQAzAYCk+aYvLGOs2YSzYmxWM9N3qBgyHew88IU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IFlVlKd8J4zDYdx3ChuxKoVaCOOuODYaWSc6KDw/GmfabGUBVkRkkCc6fQH+atPIYCWtNFve5ne46ttTno70hJk2pyTjCCtcfVfNKbtrRF5mLp0qWsHhCheh7vkar0x5zTkXBK7/Big3petLoFk3vXq062V5K5AA9uhs5HmHcxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q8KBFdqA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C76C4CEED;
-	Mon,  5 May 2025 23:03:42 +0000 (UTC)
+	 MIME-Version; b=YrrmEywHXdKiMryo1ExNfFv31XmBiL0IVvVWF1PSpwrXrSzEt/XraYGJI4YvtoPIegTyT5k99FJHrojPBPgifjCCz3Ry1nJGFXPKCQa5Fwg3ZKwwRBh5o4mX7WIXrRFAwTxmxY/+c/FTnR1VNcOVfTFlmYK2UzZKCJutTwub9as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zhq3/I/r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB730C4CEEF;
+	Mon,  5 May 2025 23:03:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486223;
-	bh=6F4NyuTwU+aeLO8gfK01++hQ8YtLGDavtq4s0fM7NUE=;
+	s=k20201202; t=1746486228;
+	bh=nUhJPQAzAYCk+aYvLGOs2YSzYmxWM9N3qBgyHew88IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q8KBFdqA5bdRRc034F4ec6FMI/SDn+iN+I55BjqzRh9adQgoS435ZF8mX1AlkIzdx
-	 F9+vQw9j28QZ1Tn6MbohRnViIoDETah7R11Ut1TsEUveXSPRrRPl/Zfcs+iv7ZMx+t
-	 IG+Mr/UaAAmFFZPGvMZ9lFltdDCbOxk/uAyQM+viIZWH3WvAbbjxZ4NVf3J7Ksb8Ig
-	 KJzouuuC9LGtbdmXVfImHRiA2Wc6EflopDZ51TBytEJYAOZQLEGiEuP41IRt8P5PCR
-	 MzhpXPLQxbJspWHRxVrRn6vgyJkJdRmBx8sSzBLdxLzJK2GIbVvXn9AUclL4anhDnO
-	 9j9bafBewESfw==
+	b=Zhq3/I/re8iL5bpdC5NXwDtrGln0zdAg6XAdFsbBho+bHoN8UzDHYLs4j6tRJaKFT
+	 hzFA7+h9qdeHReIEvc1wUwIUKXy1Y968dGou89cfUOhmjjr6UVH9w3bbBSvXmNP4n7
+	 /27qMzNk42OuIo5bnmzKF5O5vnKX88Fpwc4kVdYDX8SG6S1SEkFpZraJsLVqGMRFzV
+	 Y0HchsU4S+ZuAlCOVBZRYbsskMjWUXMGOLZqTGkOHpmYhViyVASJ9/UChOoXUSxtK8
+	 GrB+zEXs8hUv6VFRUtMNitkK9fKFgzdpx0DyphXLxFDsLRbgAPp2YYgqHxIA1OM1TD
+	 pzdjXegCfV5kw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+Cc: zihan zhou <15645113830zzh@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 216/294] clk: qcom: clk-alpha-pll: Do not use random stack value for recalc rate
-Date: Mon,  5 May 2025 18:55:16 -0400
-Message-Id: <20250505225634.2688578-216-sashal@kernel.org>
+	mingo@redhat.com,
+	juri.lelli@redhat.com
+Subject: [PATCH AUTOSEL 6.6 218/294] sched: Reduce the default slice to avoid tasks getting an extra tick
+Date: Mon,  5 May 2025 18:55:18 -0400
+Message-Id: <20250505225634.2688578-218-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -68,140 +67,78 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: zihan zhou <15645113830zzh@gmail.com>
 
-[ Upstream commit 7a243e1b814a02ab40793026ef64223155d86395 ]
+[ Upstream commit 2ae891b826958b60919ea21c727f77bcd6ffcc2c ]
 
-If regmap_read() fails, random stack value was used in calculating new
-frequency in recalc_rate() callbacks.  Such failure is really not
-expected as these are all MMIO reads, however code should be here
-correct and bail out.  This also avoids possible warning on
-uninitialized value.
+The old default value for slice is 0.75 msec * (1 + ilog(ncpus)) which
+means that we have a default slice of:
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250212-b4-clk-qcom-clean-v3-1-499f37444f5d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  0.75 for 1 cpu
+  1.50 up to 3 cpus
+  2.25 up to 7 cpus
+  3.00 for 8 cpus and above.
+
+For HZ=250 and HZ=100, because of the tick accuracy, the runtime of
+tasks is far higher than their slice.
+
+For HZ=1000 with 8 cpus or more, the accuracy of tick is already
+satisfactory, but there is still an issue that tasks will get an extra
+tick because the tick often arrives a little faster than expected. In
+this case, the task can only wait until the next tick to consider that it
+has reached its deadline, and will run 1ms longer.
+
+vruntime + sysctl_sched_base_slice =     deadline
+        |-----------|-----------|-----------|-----------|
+             1ms          1ms         1ms         1ms
+                   ^           ^           ^           ^
+                 tick1       tick2       tick3       tick4(nearly 4ms)
+
+There are two reasons for tick error: clockevent precision and the
+CONFIG_IRQ_TIME_ACCOUNTING/CONFIG_PARAVIRT_TIME_ACCOUNTING. with
+CONFIG_IRQ_TIME_ACCOUNTING every tick will be less than 1ms, but even
+without it, because of clockevent precision, tick still often less than
+1ms.
+
+In order to make scheduling more precise, we changed 0.75 to 0.70,
+Using 0.70 instead of 0.75 should not change much for other configs
+and would fix this issue:
+
+  0.70 for 1 cpu
+  1.40 up to 3 cpus
+  2.10 up to 7 cpus
+  2.8 for 8 cpus and above.
+
+This does not guarantee that tasks can run the slice time accurately
+every time, but occasionally running an extra tick has little impact.
+
+Signed-off-by: zihan zhou <15645113830zzh@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20250208075322.13139-1-15645113830zzh@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c | 52 ++++++++++++++++++++++----------
- 1 file changed, 36 insertions(+), 16 deletions(-)
+ kernel/sched/fair.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
-index 80aadafffacdb..732ca46703ba3 100644
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -645,14 +645,19 @@ clk_alpha_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 alpha_width = pll_alpha_width(pll);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 268e2a49b964e..6ce3028e6e852 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -73,10 +73,10 @@ unsigned int sysctl_sched_tunable_scaling = SCHED_TUNABLESCALING_LOG;
+ /*
+  * Minimal preemption granularity for CPU-bound tasks:
+  *
+- * (default: 0.75 msec * (1 + ilog(ncpus)), units: nanoseconds)
++ * (default: 0.70 msec * (1 + ilog(ncpus)), units: nanoseconds)
+  */
+-unsigned int sysctl_sched_base_slice			= 750000ULL;
+-static unsigned int normalized_sysctl_sched_base_slice	= 750000ULL;
++unsigned int sysctl_sched_base_slice			= 700000ULL;
++static unsigned int normalized_sysctl_sched_base_slice	= 700000ULL;
  
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
-+
-+	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
-+		return 0;
- 
--	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
- 	if (ctl & PLL_ALPHA_EN) {
--		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low);
-+		if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low))
-+			return 0;
- 		if (alpha_width > 32) {
--			regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
--				    &high);
-+			if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
-+					&high))
-+				return 0;
- 			a = (u64)high << 32 | low;
- 		} else {
- 			a = low & GENMASK(alpha_width - 1, 0);
-@@ -844,8 +849,11 @@ alpha_pll_huayra_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 l, alpha = 0, ctl, alpha_m, alpha_n;
- 
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
--	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
-+
-+	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
-+		return 0;
- 
- 	if (ctl & PLL_ALPHA_EN) {
- 		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &alpha);
-@@ -1039,8 +1047,11 @@ clk_trion_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 l, frac, alpha_width = pll_alpha_width(pll);
- 
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
--	regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
-+
-+	if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac))
-+		return 0;
- 
- 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
- }
-@@ -1098,7 +1109,8 @@ clk_alpha_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct clk_alpha_pll_postdiv *pll = to_clk_alpha_pll_postdiv(hw);
- 	u32 ctl;
- 
--	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
-+	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
-+		return 0;
- 
- 	ctl >>= PLL_POST_DIV_SHIFT;
- 	ctl &= PLL_POST_DIV_MASK(pll);
-@@ -1314,8 +1326,11 @@ static unsigned long alpha_pll_fabia_recalc_rate(struct clk_hw *hw,
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 l, frac, alpha_width = pll_alpha_width(pll);
- 
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
--	regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
-+
-+	if (regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac))
-+		return 0;
- 
- 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
- }
-@@ -1465,7 +1480,8 @@ clk_trion_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct regmap *regmap = pll->clkr.regmap;
- 	u32 i, div = 1, val;
- 
--	regmap_read(regmap, PLL_USER_CTL(pll), &val);
-+	if (regmap_read(regmap, PLL_USER_CTL(pll), &val))
-+		return 0;
- 
- 	val >>= pll->post_div_shift;
- 	val &= PLL_POST_DIV_MASK(pll);
-@@ -2339,9 +2355,12 @@ static unsigned long alpha_pll_lucid_evo_recalc_rate(struct clk_hw *hw,
- 	struct regmap *regmap = pll->clkr.regmap;
- 	u32 l, frac;
- 
--	regmap_read(regmap, PLL_L_VAL(pll), &l);
-+	if (regmap_read(regmap, PLL_L_VAL(pll), &l))
-+		return 0;
- 	l &= LUCID_EVO_PLL_L_VAL_MASK;
--	regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac);
-+
-+	if (regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac))
-+		return 0;
- 
- 	return alpha_pll_calc_rate(parent_rate, l, frac, pll_alpha_width(pll));
- }
-@@ -2416,7 +2435,8 @@ static unsigned long clk_rivian_evo_pll_recalc_rate(struct clk_hw *hw,
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 l;
- 
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
- 
- 	return parent_rate * l;
- }
+ /*
+  * After fork, child runs first. If set to 0 (default) then
 -- 
 2.39.5
 
