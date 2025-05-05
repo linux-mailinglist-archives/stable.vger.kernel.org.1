@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-139582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C0F2AA8C09
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 08:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 019D6AA8C0A
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 08:06:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 612CB3B483F
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 06:05:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AF353A7082
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 06:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46941CD1F;
-	Mon,  5 May 2025 06:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4A714A4F9;
+	Mon,  5 May 2025 06:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7/P9q6e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRuT/bqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3090EEBA
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 06:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B926EEBA
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 06:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746425123; cv=none; b=WXaBsEzkglu3InwkNZtYp2xYwjqtK/BJiJLd1gyKmpTg0F5D/tGPxfFYtzrUNHiM3bMadDXNwDcrCCnLVJdKOx+HCVHnQUR90xs8dkmg620B72ZrCivmhHluspNVSvoedmK8wHBUuuG/H+xTqOLTawiS6E82rrvPTygdVFQsIa4=
+	t=1746425177; cv=none; b=nm4HEScp9XwXRfSqC3E6nmcSGBoU+qvuQkGHbUxjAwJiDLGqkgIRZNxBY9fT/kpI3Lhu8nnrMgQ837++pCvaLM1TnHudH8lJnuMkiPTFFnUog5lLorY/VgMUB7BXltL7B6STpSOUqeC3kSuS3eHdNQ3LxsCfk2OgnPB6Oc8qLec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746425123; c=relaxed/simple;
-	bh=C3XbZRfSXZEXHfLRU9CUk15/m+Zp92OtJedwQNWaQVs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pXg/uCI57Ck1LRoCnGKzR/4FSd+JFwzcwRTTSeLuzSCXb6urNh0CZZgjDlpcNzXrtTZThuOnogWFJo2ps8NP7CU3BYpB9JLllqROWOfh07AaM91gpFNJx4HV18wOrANEcTgEsNF/Dv19LgIo3RrxFjYIb1JRKnYpGVHbxlnST0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7/P9q6e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10768C4CEE4;
-	Mon,  5 May 2025 06:05:22 +0000 (UTC)
+	s=arc-20240116; t=1746425177; c=relaxed/simple;
+	bh=rUiaMl085SCC/eS/din2U95xy+B9M3D3SntuozQrt+o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GiaK0RUKQDH9KI185uxqBCo6jGQrIQP2amgxHPJT/q1txvq9sZeW8I3ciI1pZ0A/JeyUQCxFDtit7RBkKZqGwgrj7GuzlY1HEuUkhQc75uqwblL2S74NXf0vOMWgRBKIdF5w47mSWf+KX6gS9RclicO57YEqaQgUeL1Ty1oe7ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRuT/bqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3D9C4CEE4;
+	Mon,  5 May 2025 06:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746425123;
-	bh=C3XbZRfSXZEXHfLRU9CUk15/m+Zp92OtJedwQNWaQVs=;
+	s=korg; t=1746425176;
+	bh=rUiaMl085SCC/eS/din2U95xy+B9M3D3SntuozQrt+o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=r7/P9q6egMQ+AWi0KVIEKp9208+412ABgp8hb1hya086eh34ko+LFA7NTo27yCzVJ
-	 bbpIa3g6Pa5Qno3LeDUbJ+6i1uWuKeHRgAGGCLQZsAlb5GumA/+ua1oNBe4hX4RkGu
-	 b7kftLhmjH0Je3RJvV9gcGmf2k3/lCS55I5Wp8S8=
-Subject: FAILED: patch "[PATCH] btrfs: adjust subpage bit start based on sectorsize" failed to apply to 5.15-stable tree
-To: josef@toxicpanda.com,boris@bur.io,dsterba@suse.com,wqu@suse.com
+	b=mRuT/bqpbyEIiAyYh7F+hq9qu/ylsRGQGXVQA/QDo/8hmqZKf/QlfrGU6yJdryo0L
+	 AjHfBWsxPjE1rGptpZOIfX3sdVZGdc2vuGWvl/PUk1LoG7k0j+b5ttQ3URtv8ALQLE
+	 CiHm/klj8eBFhdEZlmEKpYS0Y5GlMHR/ioREU9Tw=
+Subject: FAILED: patch "[PATCH] cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode" failed to apply to 6.6-stable tree
+To: srinivas.pandruvada@linux.intel.com,rafael.j.wysocki@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 May 2025 08:05:20 +0200
-Message-ID: <2025050520-specimen-smell-8a92@gregkh>
+Date: Mon, 05 May 2025 08:06:13 +0200
+Message-ID: <2025050513-urchin-estranged-d31c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x e08e49d986f82c30f42ad0ed43ebbede1e1e3739
+git cherry-pick -x ac4e04d9e378f5aa826c2406ad7871ae1b6a6fb9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050520-specimen-smell-8a92@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050513-urchin-estranged-d31c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,87 +77,59 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e08e49d986f82c30f42ad0ed43ebbede1e1e3739 Mon Sep 17 00:00:00 2001
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Mon, 14 Apr 2025 14:51:58 -0400
-Subject: [PATCH] btrfs: adjust subpage bit start based on sectorsize
+From ac4e04d9e378f5aa826c2406ad7871ae1b6a6fb9 Mon Sep 17 00:00:00 2001
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Date: Tue, 29 Apr 2025 14:07:11 -0700
+Subject: [PATCH] cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode
 
-When running machines with 64k page size and a 16k nodesize we started
-seeing tree log corruption in production.  This turned out to be because
-we were not writing out dirty blocks sometimes, so this in fact affects
-all metadata writes.
+When turbo mode is unavailable on a Skylake-X system, executing the
+command:
 
-When writing out a subpage EB we scan the subpage bitmap for a dirty
-range.  If the range isn't dirty we do
+ # echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
 
-	bit_start++;
+results in an unchecked MSR access error:
 
-to move onto the next bit.  The problem is the bitmap is based on the
-number of sectors that an EB has.  So in this case, we have a 64k
-pagesize, 16k nodesize, but a 4k sectorsize.  This means our bitmap is 4
-bits for every node.  With a 64k page size we end up with 4 nodes per
-page.
+ WRMSR to 0x199 (attempted to write 0x0000000100001300).
 
-To make this easier this is how everything looks
+This issue was reproduced on an OEM (Original Equipment Manufacturer)
+system and is not a common problem across all Skylake-X systems.
 
-[0         16k       32k       48k     ] logical address
-[0         4         8         12      ] radix tree offset
-[               64k page               ] folio
-[ 16k eb ][ 16k eb ][ 16k eb ][ 16k eb ] extent buffers
-[ | | | |  | | | |   | | | |   | | | | ] bitmap
+This error occurs because the MSR 0x199 Turbo Engage Bit (bit 32) is set
+when turbo mode is disabled. The issue arises when intel_pstate fails to
+detect that turbo mode is disabled. Here intel_pstate relies on
+MSR_IA32_MISC_ENABLE bit 38 to determine the status of turbo mode.
+However, on this system, bit 38 is not set even when turbo mode is
+disabled.
 
-Now we use all of our addressing based on fs_info->sectorsize_bits, so
-as you can see the above our 16k eb->start turns into radix entry 4.
+According to the Intel Software Developer's Manual (SDM), the BIOS sets
+this bit during platform initialization to enable or disable
+opportunistic processor performance operations. Logically, this bit
+should be set in such cases. However, the SDM also specifies that "OS
+and applications must use CPUID leaf 06H to detect processors with
+opportunistic processor performance operations enabled."
 
-When we find a dirty range for our eb, we correctly do bit_start +=
-sectors_per_node, because if we start at bit 0, the next bit for the
-next eb is 4, to correspond to eb->start 16k.
+Therefore, in addition to checking MSR_IA32_MISC_ENABLE bit 38, verify
+that CPUID.06H:EAX[1] is 0 to accurately determine if turbo mode is
+disabled.
 
-However if our range is clean, we will do bit_start++, which will now
-put us offset from our radix tree entries.
+Fixes: 4521e1a0ce17 ("cpufreq: intel_pstate: Reflect current no_turbo state correctly")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-In our case, assume that the first time we check the bitmap the block is
-not dirty, we increment bit_start so now it == 1, and then we loop
-around and check again.  This time it is dirty, and we go to find that
-start using the following equation
-
-	start = folio_start + bit_start * fs_info->sectorsize;
-
-so in the case above, eb->start 0 is now dirty, and we calculate start
-as
-
-	0 + 1 * fs_info->sectorsize = 4096
-	4096 >> 12 = 1
-
-Now we're looking up the radix tree for 1, and we won't find an eb.
-What's worse is now we're using bit_start == 1, so we do bit_start +=
-sectors_per_node, which is now 5.  If that eb is dirty we will run into
-the same thing, we will look at an offset that is not populated in the
-radix tree, and now we're skipping the writeout of dirty extent buffers.
-
-The best fix for this is to not use sectorsize_bits to address nodes,
-but that's a larger change.  Since this is a fs corruption problem fix
-it simply by always using sectors_per_node to increment the start bit.
-
-Fixes: c4aec299fa8f ("btrfs: introduce submit_eb_subpage() to submit a subpage metadata page")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 197f5e51c474..8515c31f563b 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -2047,7 +2047,7 @@ static int submit_eb_subpage(struct folio *folio, struct writeback_control *wbc)
- 			      subpage->bitmaps)) {
- 			spin_unlock_irqrestore(&subpage->lock, flags);
- 			spin_unlock(&folio->mapping->i_private_lock);
--			bit_start++;
-+			bit_start += sectors_per_node;
- 			continue;
- 		}
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index f41ed0b9e610..ba9bf06f1c77 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -598,6 +598,9 @@ static bool turbo_is_disabled(void)
+ {
+ 	u64 misc_en;
  
++	if (!cpu_feature_enabled(X86_FEATURE_IDA))
++		return true;
++
+ 	rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
+ 
+ 	return !!(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
 
 
