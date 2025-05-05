@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-140811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A93AAAF6D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:16:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA00AAAF42
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:13:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B7213BED57
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:10:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD67D166F5E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2F33B2887;
-	Mon,  5 May 2025 23:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D04E23B5B55;
+	Mon,  5 May 2025 23:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XuI8mBMC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uq0I/Hbr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075FA288C3E;
-	Mon,  5 May 2025 23:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6773984CA;
+	Mon,  5 May 2025 23:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486427; cv=none; b=mf+1/RXc4ndeLjD2VjG9DKn1FNCnN6MfYDJQQY24nY5YNIrafpGTQd+Or0/ZuQQCW5JU/o7IBtBGVRz9mVyrUARBW2BPtN9Faka4yILG3pmlsuXytKejeV3kbPaBTHz39CWpG8E+33LNwCFvmRLVY/6/lb/7FKpWitNxlTPE1vE=
+	t=1746486453; cv=none; b=otYisd+WrvGV/lG3foNx1+WiT8/Kj/nPIaSHkh0NScK7UJjh8SzF8DcwUTbPmM5lGhEMrgwic5DPPl5AFKnt39KWdXFqAD3zE/g5Bjsx9SwbarcNY9U+UDGEyxAz5CMNljheCsCax2thN6pisXPTUeVEiOpCCf2g181PWE8v2Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486427; c=relaxed/simple;
-	bh=wPqWs/MU+mZlGVCIaXuOK7C3hbYOvFqKgchztPWGctg=;
+	s=arc-20240116; t=1746486453; c=relaxed/simple;
+	bh=Cz0GeDrNzh5/LCJk1US0hg0ANTiCkKwOxVTF0992x+s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OnyV6bSvJz5a5jW0kuv0dbrRVZlSQtwcSQ9UyDEetpGrj99RPBjCdfHDDQuNGcEMVxMzmnJfn3r6nDTAhiGK/rUa7tXDx553dKGdORy+9Et8dD94Q/dE3vV5cLikdo2g7iq40r9sEoZKbQgsxS8s8J+2Re4pHHVZ8HnzZBCRj14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XuI8mBMC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0184C4CEEF;
-	Mon,  5 May 2025 23:07:04 +0000 (UTC)
+	 MIME-Version; b=eA3Qxz4GqmVaRQ/A6xebD5/jmlBUseNME8qizVi5owxc5D/o3rol3idZsup+KVXtO/bw8U7Z3fvAj66Oa0eMwuSQpkJ6l5xEjJi6q27LOLBQgazMZ0KHnPTxUdx3PdCH42YeI7em1LRJW3kB86W9E76V0WdZI8AGSQAghq169sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uq0I/Hbr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3074FC4CEE4;
+	Mon,  5 May 2025 23:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486425;
-	bh=wPqWs/MU+mZlGVCIaXuOK7C3hbYOvFqKgchztPWGctg=;
+	s=k20201202; t=1746486452;
+	bh=Cz0GeDrNzh5/LCJk1US0hg0ANTiCkKwOxVTF0992x+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XuI8mBMCgveBLPhT22AV9w/MRnjNcn8UCeq58PvgsOsM+SXRooIuFef6pjUiobTmE
-	 ULelpmkWno4Ow3FhVUaPShdLPyMb26mcKIDsmXqX2JXTE6mOKNEjzXXBv3tcC0nkTa
-	 cP/47GR8MzSVg/Nzd4bwK3uaFNMa5AlImNbiT3DflpackfRKjuWaHd4EF79x6/UDds
-	 mHgkwHPNvzkDrhxfKgk9xaV4+yLEETFWNPEsiBI4ffqko1Q4anwCy8rzbvj7H+hoWr
-	 +2VPDWG6bYmzQYKzWYt3uOToVjGc4J7VUyvxzEa3bNtSedkROeTjiSDnYVO7YceWyh
-	 IoyLRzrAotkNQ==
+	b=Uq0I/HbrT41kzxg/mQYvn01ApEYytdIkZF8CXV1XyHR3q4XZ6iRdS092ydi+D83RK
+	 E94KenuI6RVbqo8/Fmr0XKkIviND0gDI7yFfzb5J24GRSg7BPyQlEwXWdLXZ8BNqvW
+	 XRpcv54wMxjXUmcKJYOWJLP52fjtVMfluwMMt86MdYuI1qEOQZNecz2zpFy54t/9gZ
+	 VncntkZOGXe942lIEYRHZq8Pwj8Sb1ZlO6Jf0OsY3rHvE/4aQ0Q8mEcxQYKQ1fE/Zw
+	 OJoLDw2zhnlhSo6HE7ecEgjOHcqRKqHbjukm+rMERGy1juEa5x51PKXM/fVc0B6tV/
+	 MneElcZobuHqA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alice Guo <alice.guo@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+Cc: Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 020/212] thermal/drivers/qoriq: Power down TMU on system suspend
-Date: Mon,  5 May 2025 19:03:12 -0400
-Message-Id: <20250505230624.2692522-20-sashal@kernel.org>
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 037/212] btrfs: fix non-empty delayed iputs list on unmount due to async workers
+Date: Mon,  5 May 2025 19:03:29 -0400
+Message-Id: <20250505230624.2692522-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -67,61 +68,82 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Alice Guo <alice.guo@nxp.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 229f3feb4b0442835b27d519679168bea2de96c2 ]
+[ Upstream commit cda76788f8b0f7de3171100e3164ec1ce702292e ]
 
-Enable power-down of TMU (Thermal Management Unit) for TMU version 2 during
-system suspend to save power. Save approximately 4.3mW on VDD_ANA_1P8 on
-i.MX93 platforms.
+At close_ctree() after we have ran delayed iputs either explicitly through
+calling btrfs_run_delayed_iputs() or later during the call to
+btrfs_commit_super() or btrfs_error_commit_super(), we assert that the
+delayed iputs list is empty.
 
-Signed-off-by: Alice Guo <alice.guo@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241209164859.3758906-2-Frank.Li@nxp.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+We have (another) race where this assertion might fail because we have
+queued an async write into the fs_info->workers workqueue. Here's how it
+happens:
+
+1) We are submitting a data bio for an inode that is not the data
+   relocation inode, so we call btrfs_wq_submit_bio();
+
+2) btrfs_wq_submit_bio() submits a work for the fs_info->workers queue
+   that will run run_one_async_done();
+
+3) We enter close_ctree(), flush several work queues except
+   fs_info->workers, explicitly run delayed iputs with a call to
+   btrfs_run_delayed_iputs() and then again shortly after by calling
+   btrfs_commit_super() or btrfs_error_commit_super(), which also run
+   delayed iputs;
+
+4) run_one_async_done() is executed in the work queue, and because there
+   was an IO error (bio->bi_status is not 0) it calls btrfs_bio_end_io(),
+   which drops the final reference on the associated ordered extent by
+   calling btrfs_put_ordered_extent() - and that adds a delayed iput for
+   the inode;
+
+5) At close_ctree() we find that after stopping the cleaner and
+   transaction kthreads the delayed iputs list is not empty, failing the
+   following assertion:
+
+      ASSERT(list_empty(&fs_info->delayed_iputs));
+
+Fix this by flushing the fs_info->workers workqueue before running delayed
+iputs at close_ctree().
+
+David reported this when running generic/648, which exercises IO error
+paths by using the DM error table.
+
+Reported-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qoriq_thermal.c | 13 +++++++++++++
+ fs/btrfs/disk-io.c | 13 +++++++++++++
  1 file changed, 13 insertions(+)
 
-diff --git a/drivers/thermal/qoriq_thermal.c b/drivers/thermal/qoriq_thermal.c
-index d111e218f362e..b33cb1d880b74 100644
---- a/drivers/thermal/qoriq_thermal.c
-+++ b/drivers/thermal/qoriq_thermal.c
-@@ -19,6 +19,7 @@
- #define SITES_MAX		16
- #define TMR_DISABLE		0x0
- #define TMR_ME			0x80000000
-+#define TMR_CMD			BIT(29)
- #define TMR_ALPF		0x0c000000
- #define TMR_ALPF_V2		0x03000000
- #define TMTMIR_DEFAULT	0x0000000f
-@@ -345,6 +346,12 @@ static int __maybe_unused qoriq_tmu_suspend(struct device *dev)
- 	if (ret)
- 		return ret;
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 6670188b9eb6b..8c0da0025bc71 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4669,6 +4669,19 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
+ 	 */
+ 	btrfs_flush_workqueue(fs_info->delalloc_workers);
  
-+	if (data->ver > TMU_VER1) {
-+		ret = regmap_set_bits(data->regmap, REGS_TMR, TMR_CMD);
-+		if (ret)
-+			return ret;
-+	}
++	/*
++	 * We can have ordered extents getting their last reference dropped from
++	 * the fs_info->workers queue because for async writes for data bios we
++	 * queue a work for that queue, at btrfs_wq_submit_bio(), that runs
++	 * run_one_async_done() which calls btrfs_bio_end_io() in case the bio
++	 * has an error, and that later function can do the final
++	 * btrfs_put_ordered_extent() on the ordered extent attached to the bio,
++	 * which adds a delayed iput for the inode. So we must flush the queue
++	 * so that we don't have delayed iputs after committing the current
++	 * transaction below and stopping the cleaner and transaction kthreads.
++	 */
++	btrfs_flush_workqueue(fs_info->workers);
 +
- 	clk_disable_unprepare(data->clk);
- 
- 	return 0;
-@@ -359,6 +366,12 @@ static int __maybe_unused qoriq_tmu_resume(struct device *dev)
- 	if (ret)
- 		return ret;
- 
-+	if (data->ver > TMU_VER1) {
-+		ret = regmap_clear_bits(data->regmap, REGS_TMR, TMR_CMD);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	/* Enable monitoring */
- 	return regmap_update_bits(data->regmap, REGS_TMR, TMR_ME, TMR_ME);
- }
+ 	/*
+ 	 * When finishing a compressed write bio we schedule a work queue item
+ 	 * to finish an ordered extent - btrfs_finish_compressed_write_work()
 -- 
 2.39.5
 
