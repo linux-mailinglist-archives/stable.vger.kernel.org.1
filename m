@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-140628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6300AAAA4F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:34:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06724AAAA54
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B30E3A4891
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:29:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCCB73A3ABE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA43385371;
-	Mon,  5 May 2025 23:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495E035AEBD;
+	Mon,  5 May 2025 23:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D3W+S9KB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sHKWvRw9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA1D28314A;
-	Mon,  5 May 2025 22:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF2A283151;
+	Mon,  5 May 2025 22:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485441; cv=none; b=HRP8SROMBZqIxP/zKFOVyYNfuEF+zKVKB7cKl0TXQdzgI/edT0WZvYFCURQyaJJRspi8bwDZXJm4iNnVR9uxGN2dmaeAjHRH64XAcBQeaFdKUVFm166PsL96bU44daaLY1ns5vy+a253IVwJmRaQeN05+UblhCCHYgtR6pm4MuE=
+	t=1746485443; cv=none; b=GxTKFj13mIOMgwYCHU/dk/EeeQWQBX5mQw6pjPZF9H206j6ECsZPXm7pufnTTDp6/zSij64JZeqdOBFLPbUkbl33sZWjfQAQMcWqcXwfXqZ9keRFPD0+Kk9uo0nnNKMwkg/HrXcN//XE3vga1HUksoLeELu6qIFdUzPmmX9XCxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485441; c=relaxed/simple;
-	bh=MdrJnSTl2GoD+ObNrqreZP6yMBRewaoB71vuYFeA3Rw=;
+	s=arc-20240116; t=1746485443; c=relaxed/simple;
+	bh=aJNIKnlLpyEAIbrOLzQzOOGP8QDshHeybDdkCTHJi30=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Aa8sbpkLEdY7LDgOUSjFgebN4zFus8u9z6uAYX2a/bG5pv7+28Ih29D+Ly0R4jtxZt1xyMO9R+RkyXmpLVP6WtXwCCGocGcvbwB1U8xGx/gFU0b8ZHns/Sc15aLjb9fnkglHnlefxlNmcklzniFJUmqlPzJDNrtLu2ZDkBO7QS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D3W+S9KB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56BCC4CEF3;
-	Mon,  5 May 2025 22:50:37 +0000 (UTC)
+	 MIME-Version; b=F53zHSN75EUQJbK8eFgFL/6WUKOuIvx08nxuU9M2Bu6jpvfLmMDhmHgkLnLFU2SQ6t9wj8gpyqMFQW/nqHbXou4NhqHj98tiSenzdplAPSo+Qr9+JFjQ/BDJ0Nt1Gk7mVibuLZoOR5/kLt+VZuLqyz7kxLHk9RE1NpyUl9HE9no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sHKWvRw9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B54EC4CEED;
+	Mon,  5 May 2025 22:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485439;
-	bh=MdrJnSTl2GoD+ObNrqreZP6yMBRewaoB71vuYFeA3Rw=;
+	s=k20201202; t=1746485442;
+	bh=aJNIKnlLpyEAIbrOLzQzOOGP8QDshHeybDdkCTHJi30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D3W+S9KBYkK78Rb82uONFQbDCDbLKLLf0VUxUnHlL5QmELFFeDpBI6X7qAxSiQnF4
-	 CCdsDeCULGQRsihsgraAmDWYwHnaPmbh9v9gY5+xFX6BZsYif5f8gsyjh1VtvkwLwC
-	 gbfHiiBe6bmDYLdWp/3hKVHHZw88sBoASJYYgAxXQQ2jCTYD3au0eLCEVlg4KDyBaL
-	 7sk4tze8qT/79DiRZtSRl1huz0qw1+4e8o3XT1aA92dTqVij/75kKeVVlRzKyKPPUy
-	 mYlSxGmlWv0NnoBEwztnoB5Xctq+h9nuKhvqlF93A/u5bWKHmeRdjDhlC3dQRSc32h
-	 zKEsYcZAmX6rQ==
+	b=sHKWvRw9Rdm7oYaS+RNnkzrLYCOMrR9xzgdCFdJyM7h9m5VCgFefHfyZtUfHD60BO
+	 sU+40XP/xDEPVRoT8bNtoVvtHz5Ml1djK6PRl7GXs4U2o70hH42/DpH2wRmVGtv50z
+	 AZv5xioH9a7ZOsyX76NlKX7XvcV91bDmyPoPGT64RgHDLiJ8z8Q56WZHISlrB8oL46
+	 X4UHmyGD+FCHmQmMB8WuP/xG3g7dNR0VrlhqSLszW6U0ifcNl+UzkIfYoG4sToiNXw
+	 X99IB/W/+Uh4CEDOIP8XxhmcZVbUx0NcXvOjhtkEYFdll/7C/Io523D4u6QOqguwub
+	 HEzb1XOIas6Cg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
+Cc: Xiaofei Tan <tanxiaofei@huawei.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 312/486] eth: mlx4: don't try to complete XDP frames in netpoll
-Date: Mon,  5 May 2025 18:36:28 -0400
-Message-Id: <20250505223922.2682012-312-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 314/486] ACPI: HED: Always initialize before evged
+Date: Mon,  5 May 2025 18:36:30 -0400
+Message-Id: <20250505223922.2682012-314-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -75,37 +66,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Xiaofei Tan <tanxiaofei@huawei.com>
 
-[ Upstream commit 8fdeafd66edaf420ea0063a1f13442fe3470fe70 ]
+[ Upstream commit cccf6ee090c8c133072d5d5b52ae25f3bc907a16 ]
 
-mlx4 doesn't support ndo_xdp_xmit / XDP_REDIRECT and wasn't
-using page pool until now, so it could run XDP completions
-in netpoll (NAPI budget == 0) just fine. Page pool has calling
-context requirements, make sure we don't try to call it from
-what is potentially HW IRQ context.
+When the HED driver is built-in, it initializes after evged because they
+both are at the same initcall level, so the initialization ordering
+depends on the Makefile order.  However, this prevents RAS records
+coming in between the evged driver initialization and the HED driver
+initialization from being handled.
 
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250213010635.1354034-3-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+If the number of such RAS records is above the APEI HEST error source
+number, the HEST resources may be exhausted, and that may affect
+subsequent RAS error reporting.
+
+To fix this issue, change the initcall level of HED to subsys_initcall
+and prevent the driver from being built as a module by changing ACPI_HED
+in Kconfig from "tristate" to "bool".
+
+Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+Link: https://patch.msgid.link/20250212063408.927666-1-tanxiaofei@huawei.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/en_tx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/Kconfig | 2 +-
+ drivers/acpi/hed.c   | 7 ++++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_tx.c b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-index 1ddb11cb25f91..6e077d202827a 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-@@ -450,6 +450,8 @@ int mlx4_en_process_tx_cq(struct net_device *dev,
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index d67f63d93b2ab..89fa569d63702 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -443,7 +443,7 @@ config ACPI_SBS
+ 	  the modules will be called sbs and sbshc.
  
- 	if (unlikely(!priv->port_up))
- 		return 0;
-+	if (unlikely(!napi_budget) && cq->type == TX_XDP)
-+		return 0;
+ config ACPI_HED
+-	tristate "Hardware Error Device"
++	bool "Hardware Error Device"
+ 	help
+ 	  This driver supports the Hardware Error Device (PNP0C33),
+ 	  which is used to report some hardware errors notified via
+diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
+index 7652515a6be1e..3499f86c411e3 100644
+--- a/drivers/acpi/hed.c
++++ b/drivers/acpi/hed.c
+@@ -80,7 +80,12 @@ static struct acpi_driver acpi_hed_driver = {
+ 		.remove = acpi_hed_remove,
+ 	},
+ };
+-module_acpi_driver(acpi_hed_driver);
++
++static int __init acpi_hed_driver_init(void)
++{
++	return acpi_bus_register_driver(&acpi_hed_driver);
++}
++subsys_initcall(acpi_hed_driver_init);
  
- 	netdev_txq_bql_complete_prefetchw(ring->tx_queue);
- 
+ MODULE_AUTHOR("Huang Ying");
+ MODULE_DESCRIPTION("ACPI Hardware Error Device Driver");
 -- 
 2.39.5
 
