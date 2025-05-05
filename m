@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-141711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBCE2AAB598
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:32:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5067FAAB5D2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 148D17B310E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:30:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 362CC5039CC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC73D34C976;
-	Tue,  6 May 2025 00:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2241D34C99B;
+	Tue,  6 May 2025 00:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D8T4pYfT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/qIrMJc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E7A28B7EB;
-	Mon,  5 May 2025 23:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D533B96F7;
+	Mon,  5 May 2025 23:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487322; cv=none; b=UGD8cBL5JO+XVdXl64/KUOBC2BBNQQruckPCkUTmtgwRFPiIuDHcxWAyPTo0xo5uGUAQF554Q4P5gb823ZjKXBRm5V49RBCEakUmI5IJjrJ7AEN9DYjAZjAroeW/gxhb3j9X4/uTeG9Rgpge3JJJlyiDnmXe8EbDA8DiIQRvbAo=
+	t=1746487325; cv=none; b=TaaAd7CerSYgHUX1aLXDcidp0xO4oLv7SRqdMcUKpqj6c6FXvqW4rh/d0EdNtbhyJdEINJRM46xW95sTiB9H5gyKVbffvBOzfYMvjZ1CL+VnOK17rYLuuYS47tC9S4D33TsHXmtD8+6dqe0YE5LCA4yelwf6JtbLRqoypHNg/Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487322; c=relaxed/simple;
-	bh=T7EMemMyTU2IT4FDrEcyhH1Vkm79OdN/MGy0fEqQJRw=;
+	s=arc-20240116; t=1746487325; c=relaxed/simple;
+	bh=r2MZUQHt6DwOgzB2vWJnhnSAR1QWjHGXqGvtKXBEtog=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=scBBIRv2UyIRTWceZKXht2p+6yUWKDMg5hZ4AmzBCdZnZ8V4bHt3vbRH7Xtr7o5rWyIRHwkdIfegIb69EqOFMTiTJ5+VdBIYzVanRZLEEKMY1yDZwhdHkAX7iVzpnrBS3A4dCiqUuacujaZyebtCgTXt5ljKwgWaV9LkadQKujE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D8T4pYfT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB351C4CEED;
-	Mon,  5 May 2025 23:21:59 +0000 (UTC)
+	 MIME-Version; b=NAUkZe+upwL1bZkU4xHVjt/6ZAsS10NZbdMCCeFlIQ0eVMem0EEK5G7u61u1JngY9BJCpohv6CuCGeJf8qikRGUCr3AMYPpVxFd1L2lIMn+Ej1DV+7u3wAHk2+HBesSVDFivIzjhhtBuwpdXGBDXhkvis4oOrlEaIgKTwGo8y+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/qIrMJc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89055C4CEEF;
+	Mon,  5 May 2025 23:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487320;
-	bh=T7EMemMyTU2IT4FDrEcyhH1Vkm79OdN/MGy0fEqQJRw=;
+	s=k20201202; t=1746487324;
+	bh=r2MZUQHt6DwOgzB2vWJnhnSAR1QWjHGXqGvtKXBEtog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8T4pYfTe7x/axMCcRxFSFL5QitGI/VwpGO8qtP6G44ksBVduG67gayF2yQkWQrvx
-	 AyawY9sOL0wQl8yShEabakqGQjBss/DAff4yK/N7LzdeX1Kx1RJ1fUODHYnV4+nN/J
-	 EVGNDi1Or5XUFCxsoUwYMGusSkHmZByHxMV8ZA+KMNScLYTdGPZQxaiHrT2karx5HN
-	 +P6/XF6bgERpTxpw0H1iDPixk0ZR8WSNON69VsSPlwEqmtdNFNRsqsICKd0xB6nt0g
-	 R1HerTdkQLeduEInM7Omh8/3OQXwvSvHoPzPfS8SRVgIwKUnr3iAATUnzjCH9esm8R
-	 4xyrlBFvAiBkg==
+	b=Q/qIrMJcVh0pUQ7yQm4G3j/TKIlCRDYXUdiEaTZa3J2FquicV8JrDh+WrfsVHH5AZ
+	 EyDwlRDyaZfDHwYwNEZFWgL7EDR8YbiZTuyU98CeB+cOrOKQm2/4cdKX8cJtZJkYyJ
+	 ZABkXHCkMNzn+BdMgqQV7ecmDg8npCZnGLyZjSYs/cKlrtUCUYReXo8O7RCvH+V756
+	 7G1Ngvru+euMivhsRQMPg0rX1+FzRCfkHmoWw8d+1k1rSSV3dqqPEqK+klKDtMALKH
+	 wLWx9HJbAUf5dPlp9g/N110FDNd/lbx7W23Is8K0JbH4hfUjIHL84Z8n6Q3Nxenprp
+	 2bNZkOJwhiXZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zsolt Kajtar <soci@c64.rulez.org>,
-	Helge Deller <deller@gmx.de>,
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	simona@ffwll.ch,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.4 04/79] fbdev: core: tileblit: Implement missing margin clearing for tileblit
-Date: Mon,  5 May 2025 19:20:36 -0400
-Message-Id: <20250505232151.2698893-4-sashal@kernel.org>
+	trondmy@kernel.org,
+	anna@kernel.org,
+	chuck.lever@oracle.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 06/79] SUNRPC: rpc_clnt_set_transport() must not change the autobind setting
+Date: Mon,  5 May 2025 19:20:38 -0400
+Message-Id: <20250505232151.2698893-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -67,93 +74,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Zsolt Kajtar <soci@c64.rulez.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 76d3ca89981354e1f85a3e0ad9ac4217d351cc72 ]
+[ Upstream commit bf9be373b830a3e48117da5d89bb6145a575f880 ]
 
-I was wondering why there's garbage at the bottom of the screen when
-tile blitting is used with an odd mode like 1080, 600 or 200. Sure there's
-only space for half a tile but the same area is clean when the buffer
-is bitmap.
+The autobind setting was supposed to be determined in rpc_create(),
+since commit c2866763b402 ("SUNRPC: use sockaddr + size when creating
+remote transport endpoints").
 
-Then later I found that it's supposed to be cleaned but that's not
-implemented. So I took what's in bitblit and adapted it for tileblit.
-
-This implementation was tested for both the horizontal and vertical case,
-and now does the same as what's done for bitmap buffers.
-
-If anyone is interested to reproduce the problem then I could bet that'd
-be on a S3 or Ark. Just set up a mode with an odd line count and make
-sure that the virtual size covers the complete tile at the bottom. E.g.
-for 600 lines that's 608 virtual lines for a 16 tall tile. Then the
-bottom area should be cleaned.
-
-For the right side it's more difficult as there the drivers won't let an
-odd size happen, unless the code is modified. But once it reports back a
-few pixel columns short then fbcon won't use the last column. With the
-patch that column is now clean.
-
-Btw. the virtual size should be rounded up by the driver for both axes
-(not only the horizontal) so that it's dividable by the tile size.
-That's a driver bug but correcting it is not in scope for this patch.
-
-Implement missing margin clearing for tileblit
-
-Signed-off-by: Zsolt Kajtar <soci@c64.rulez.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/tileblit.c | 37 ++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ net/sunrpc/clnt.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/tileblit.c b/drivers/video/fbdev/core/tileblit.c
-index adff8d6ffe6f9..64c60fcb92d75 100644
---- a/drivers/video/fbdev/core/tileblit.c
-+++ b/drivers/video/fbdev/core/tileblit.c
-@@ -77,7 +77,42 @@ static void tile_putcs(struct vc_data *vc, struct fb_info *info,
- static void tile_clear_margins(struct vc_data *vc, struct fb_info *info,
- 			       int color, int bottom_only)
- {
--	return;
-+	unsigned int cw = vc->vc_font.width;
-+	unsigned int ch = vc->vc_font.height;
-+	unsigned int rw = info->var.xres - (vc->vc_cols*cw);
-+	unsigned int bh = info->var.yres - (vc->vc_rows*ch);
-+	unsigned int rs = info->var.xres - rw;
-+	unsigned int bs = info->var.yres - bh;
-+	unsigned int vwt = info->var.xres_virtual / cw;
-+	unsigned int vht = info->var.yres_virtual / ch;
-+	struct fb_tilerect rect;
-+
-+	rect.index = vc->vc_video_erase_char &
-+		((vc->vc_hi_font_mask) ? 0x1ff : 0xff);
-+	rect.fg = color;
-+	rect.bg = color;
-+
-+	if ((int) rw > 0 && !bottom_only) {
-+		rect.sx = (info->var.xoffset + rs + cw - 1) / cw;
-+		rect.sy = 0;
-+		rect.width = (rw + cw - 1) / cw;
-+		rect.height = vht;
-+		if (rect.width + rect.sx > vwt)
-+			rect.width = vwt - rect.sx;
-+		if (rect.sx < vwt)
-+			info->tileops->fb_tilefill(info, &rect);
-+	}
-+
-+	if ((int) bh > 0) {
-+		rect.sx = info->var.xoffset / cw;
-+		rect.sy = (info->var.yoffset + bs) / ch;
-+		rect.width = rs / cw;
-+		rect.height = (bh + ch - 1) / ch;
-+		if (rect.height + rect.sy > vht)
-+			rect.height = vht - rect.sy;
-+		if (rect.sy < vht)
-+			info->tileops->fb_tilefill(info, &rect);
-+	}
- }
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index f689c7b0c304d..d67cb10a11db6 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -277,9 +277,6 @@ static struct rpc_xprt *rpc_clnt_set_transport(struct rpc_clnt *clnt,
+ 	old = rcu_dereference_protected(clnt->cl_xprt,
+ 			lockdep_is_held(&clnt->cl_lock));
  
- static void tile_cursor(struct vc_data *vc, struct fb_info *info, int mode,
+-	if (!xprt_bound(xprt))
+-		clnt->cl_autobind = 1;
+-
+ 	clnt->cl_timeout = timeout;
+ 	rcu_assign_pointer(clnt->cl_xprt, xprt);
+ 	spin_unlock(&clnt->cl_lock);
 -- 
 2.39.5
 
