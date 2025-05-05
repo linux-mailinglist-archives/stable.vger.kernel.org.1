@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-140999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CB4AAAFE1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:26:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD45EAAB014
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:31:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1626A4A59A4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:26:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90D033B5BBF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6E330398E;
-	Mon,  5 May 2025 23:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B1E303D18;
+	Mon,  5 May 2025 23:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaKgyIT0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ltlZyuFa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3353AEC4E;
-	Mon,  5 May 2025 23:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC6939529B;
+	Mon,  5 May 2025 23:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487206; cv=none; b=ZjmpPMtQqpjZe+UWOt2Dsgr3sdcGlAXAbtCFEDaml6fd/ZRDvTsPzi2t7flUB1jMpHbnXzrxHt2ZMYLOXKbRJuXLmWVYZ4x1GFUWRMBUhW3/Lg3+tb/cwjnEbyzN2JPLBKM9sNUXAU6dLUiEopXBgm0plb+FyfG0kAUlaEV3/mU=
+	t=1746487208; cv=none; b=Yd7flgUCGJ8SoaJLXbzDASLANvR3ZAUVbVsEYEZMmbMCQWOzV0k4eit2iZH5sJ9UGTqnNXy/xXA1dAEZLL8r3QS68cEN/NLqKPQXfDbR5lh0f/Rac67OXE9itDZzB1gA95uvVIgOlxrjXfC80gUCo4Qs2yjWV1LjKgdJwZLjCWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487206; c=relaxed/simple;
-	bh=MNGlNLSARosDWL9/qPbCvoRohfJjlFuxy37g7ldF6l0=;
+	s=arc-20240116; t=1746487208; c=relaxed/simple;
+	bh=1NJuURk20N19YanJ3ys0grsx/9HvfDf3mkE0IAqV9jQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RVUzRhKDd4MMXoaorU7+f/fnOgiKxQaaT1U+hKTC4tHa0B5YuwDBZYafyknHLhfl3o9wrXGspWs+ENsYQ6FI7Wrw0vWoVrt+NQAPxnJ6K0Nvo9j0WjYYkqMjXnPND0LysymV+arozVD+hzWfvsskpxqWYLlaqxYUZmGI0QVIzG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaKgyIT0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E526FC4CEEE;
-	Mon,  5 May 2025 23:20:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qOr1RPOBML5nJpJ0dF0riSEtC4dWTuZy5+tJIZ9bMOpY2nYYFUMkzj4kpEx1zOjcjaq4d4ryCVyspeMt89qX9Z7ooprA8kXYpykTyY2SGLnwSWJ/oFIyipY3QxxhfOV0JO4WwhI1xfotzoXHFA/zMfivvZHgRXCb3Pzcma12HTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ltlZyuFa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F273C4CEE4;
+	Mon,  5 May 2025 23:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487205;
-	bh=MNGlNLSARosDWL9/qPbCvoRohfJjlFuxy37g7ldF6l0=;
+	s=k20201202; t=1746487207;
+	bh=1NJuURk20N19YanJ3ys0grsx/9HvfDf3mkE0IAqV9jQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CaKgyIT0JQ3BYtBoBqtJCPVclwQzkS+MCQYQ/P6xt0h4vAVe5cMuh3fONISINAYRo
-	 bncPNKdQsPkip4iwrNPuVyLo6bT/kaj8yCKXVLI9xHPBXdR9eXwo7sJ/YyH/wDNe87
-	 Zju3wuNXrxJT5J3ZM+hFyFpRd1l11glxEo87HhVPDXbYCAVMjmuvkur+3Z3zd6BJSS
-	 mrHsS20X8HlAvwDrfGzDq0mQfWNEldxGEryRKy2v3s1b83LES49GmFnVCWtcAZrsdk
-	 1YHinpTqd98DpZmC8pQSavl8ieCVtt6YcHCkbCnJO50Dj4N5h2Lh+mt/uZVcoOumPM
-	 +/+NKcF6a96Zw==
+	b=ltlZyuFac6FVMIp9jCRfXQJfyn11G7iTdjJYKrJq5CcZwZtJX/3nn+S/pMBO5qp9C
+	 eQHyRlpkQBlZk6/UPbLm3mSV5abDJpKF0zy5giUrVJhCqR5bqmAcWviEYiJEjJSODv
+	 Fl4UybRR8gZzhQNfczT4ZWbv4GSggl5S9uY3IicV6FaSDWIHNZYzR7/XRc1uYcKXh7
+	 2BT/NwcyouOIfwVnM2rQMteVhaE8/LzNMZwo0sJ0Yl4I+OINkbI/BZqMLGvPhhEMAq
+	 E5wQ0ELh64vBOLx9F2AXuC/nBFeciYzXCiwIajuvcX5URdRJmGyZQiN4fWs2YL1p0c
+	 fRD24snkYSfgA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>,
-	Ang Tien Sung <tien.sung.ang@intel.com>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
+Cc: Stanimir Varbanov <svarbanov@suse.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	"Ivan T . Ivanov" <iivanov@suse.de>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mdf@kernel.org,
-	hao.wu@intel.com,
-	linux-fpga@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 056/114] fpga: altera-cvp: Increase credit timeout
-Date: Mon,  5 May 2025 19:17:19 -0400
-Message-Id: <20250505231817.2697367-56-sashal@kernel.org>
+	jim2101024@gmail.com,
+	nsaenz@kernel.org,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	manivannan.sadhasivam@linaro.org,
+	bhelgaas@google.com,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 057/114] PCI: brcmstb: Expand inbound window size up to 64GB
+Date: Mon,  5 May 2025 19:17:20 -0400
+Message-Id: <20250505231817.2697367-57-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -64,46 +71,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>
+From: Stanimir Varbanov <svarbanov@suse.de>
 
-[ Upstream commit 0f05886a40fdc55016ba4d9ae0a9c41f8312f15b ]
+[ Upstream commit 25a98c727015638baffcfa236e3f37b70cedcf87 ]
 
-Increase the timeout for SDM (Secure device manager) data credits from
-20ms to 40ms. Internal stress tests running at 500 loops failed with the
-current timeout of 20ms. At the start of a FPGA configuration, the CVP
-host driver reads the transmit credits from SDM. It then sends bitstream
-FPGA data to SDM based on the total credits. Each credit allows the
-CVP host driver to send 4kBytes of data. There are situations whereby,
-the SDM did not respond in time during testing.
+The BCM2712 memory map can support up to 64GB of system memory, thus
+expand the inbound window size in calculation helper function.
 
-Signed-off-by: Ang Tien Sung <tien.sung.ang@intel.com>
-Signed-off-by: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>
-Acked-by: Xu Yilun <yilun.xu@intel.com>
-Link: https://lore.kernel.org/r/20250212221249.2715929-1-tien.sung.ang@intel.com
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+The change is safe for the currently supported SoCs that have smaller
+inbound window sizes.
+
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Jim Quinlan <james.quinlan@broadcom.com>
+Tested-by: Ivan T. Ivanov <iivanov@suse.de>
+Link: https://lore.kernel.org/r/20250224083559.47645-7-svarbanov@suse.de
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fpga/altera-cvp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/pcie-brcmstb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/fpga/altera-cvp.c b/drivers/fpga/altera-cvp.c
-index 4e0edb60bfba6..d107ad73a188c 100644
---- a/drivers/fpga/altera-cvp.c
-+++ b/drivers/fpga/altera-cvp.c
-@@ -52,7 +52,7 @@
- /* V2 Defines */
- #define VSE_CVP_TX_CREDITS		0x49	/* 8bit */
- 
--#define V2_CREDIT_TIMEOUT_US		20000
-+#define V2_CREDIT_TIMEOUT_US		40000
- #define V2_CHECK_CREDIT_US		10
- #define V2_POLL_TIMEOUT_US		1000000
- #define V2_USER_TIMEOUT_US		500000
+diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
+index bbc9786bc36cf..2fc4fe23e6bbf 100644
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -300,8 +300,8 @@ static int brcm_pcie_encode_ibar_size(u64 size)
+ 	if (log2_in >= 12 && log2_in <= 15)
+ 		/* Covers 4KB to 32KB (inclusive) */
+ 		return (log2_in - 12) + 0x1c;
+-	else if (log2_in >= 16 && log2_in <= 35)
+-		/* Covers 64KB to 32GB, (inclusive) */
++	else if (log2_in >= 16 && log2_in <= 36)
++		/* Covers 64KB to 64GB, (inclusive) */
+ 		return log2_in - 15;
+ 	/* Something is awry so disable */
+ 	return 0;
 -- 
 2.39.5
 
