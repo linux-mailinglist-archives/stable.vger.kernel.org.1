@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-140969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD57AAACC7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:23:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6917CAAACCA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:23:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFE4D7B068A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:21:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E57C7B06F2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49246300A3E;
-	Mon,  5 May 2025 23:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC274300A53;
+	Mon,  5 May 2025 23:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lqsbwX3v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uvdyx/lY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8073E3A91C9;
-	Mon,  5 May 2025 23:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CACE3A91D5;
+	Mon,  5 May 2025 23:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487085; cv=none; b=Ed/8svLKr+zfadcJwLcc1EBX9dZmQNSO4O7vZAUzsY8bbd7tZHiO3mCObo+mXLSlMHfVXUxvvoSjN5FKx2iJlpvzZgzMCVjeaxW3SbJy0sb6gTndrFzs3HnbA/wMQCc5PKN4xvtyF+v4tM4K/iHn0dp5vGlOr8zmEBWGG7944p0=
+	t=1746487086; cv=none; b=Ewuh9hglnBtDCkr9Y1Y95CV7EgcaATPgWLPTsQOhuMdoTuVmcBemWia9XASCCyAZQq87wElOlytmWbydoFsLx/yB6f6kKQTHdDauds2iOAXq9Bmyz0FTnDRNlQDTBRMP3JKRE173Q4E5t6ktJTsERnRg4VfzRNth4X+Am/qiA4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487085; c=relaxed/simple;
-	bh=1I66JbMX6nDYWgfYGgnFzTLkrThJ5jQUiYg3m4BQzk8=;
+	s=arc-20240116; t=1746487086; c=relaxed/simple;
+	bh=sCRF0bOX0We3UPuKxBWiR1cOc+j4HkGJU7wJ+k2QiZU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hw3GCTax3M9ZzGGrx8VPBmeaF5DKp4h1atDslptqS1D8su5v5ZclHHiyrN2QfYZjHH3jXsC4CZJhgjE1PyNcKkYzJFzhs4TiDjhcvCtoILW18kV+ZyATP0IBB4qh758QXkC59dSPG4wwfgkSHpLAG++O4XF9zvy3/qPGVLOgzZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lqsbwX3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB7DC4CEEE;
-	Mon,  5 May 2025 23:18:02 +0000 (UTC)
+	 MIME-Version; b=g8BUZ35bYwbSlO+GIak2Wjgvmb7yDa2nYJ6tWYf8dSQGtffrOSZuLLa0WguAv7gCGe8G9VF9p1t2OmCLuYLhrdWqp6JVPYzy4Ucr0qV6KaBkcEtrLrRmaixcJLPJwMUft4lfomRhLICP7Q+y+JK+IhEncEELWr7UuogTfglCjNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uvdyx/lY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54627C4CEEF;
+	Mon,  5 May 2025 23:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487083;
-	bh=1I66JbMX6nDYWgfYGgnFzTLkrThJ5jQUiYg3m4BQzk8=;
+	s=k20201202; t=1746487085;
+	bh=sCRF0bOX0We3UPuKxBWiR1cOc+j4HkGJU7wJ+k2QiZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqsbwX3v41pNZYp0bMBomey4ebxxVwJSV3HiuFttmzATdhjWlhv3smWK847aSDgR0
-	 8ggn7mwlTuB+mLjCrgja5H6r9yLdzv8YwyzrDRveNQlFjEnPFPtJmxnrn51LhG0Uo6
-	 ChPE+WODZqlun10s2b/LR3gz45XoDRmMUwv06wReDfykUTyTZBuItUzB/8LPyGf/uL
-	 NoOqoU5Xp5VUjDMCV60wz8YmJsDYJr7NPzTAQzFdzFV6RhTNSz9lRWQojQ47oJr+lF
-	 tvtaGN+6IT8TA0IcGfbErDmCjq4ai0WqccLwT7JjlmoZK7g/N0c/VbBYPnwtkCjEI6
-	 gNn9/vdxFePqQ==
+	b=uvdyx/lYR2+554zg6e9D3o4UkPGPRVZQjcZj81o4Aoda1Hrhh/F0eaHSw9En1dv/r
+	 IbqPiwGYb4Q+LkmBiCYdex0DW2O3mRV/i0L+afuk1ZNj5cwQVJAKDfJH5yJBKUom3y
+	 CEH6p/ByrlAum5PhvZcG+AbthtwaR8xyIVtV+w/BJWdbIT3aVYLgtx/7HeHS3Dgrog
+	 5U3S7+NFskXsOCAO65z4q1CpYlEPxi6hAa0PBl1jwb4lw0Gssdw/gL4otZGM65hNgV
+	 ZmsmTplp3Y/lu+deJPybF5n6cENA+eM7+QbVmaKOfw6TzLs0ke9ZU/+xFaC6a6R41s
+	 fDgJUFQXTs6PA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
+Cc: Viktor Malik <vmalik@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	airlied@redhat.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 145/153] drm/ast: Find VBIOS mode from regular display size
-Date: Mon,  5 May 2025 19:13:12 -0400
-Message-Id: <20250505231320.2695319-145-sashal@kernel.org>
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 146/153] bpftool: Fix readlink usage in get_fd_type
+Date: Mon,  5 May 2025 19:13:13 -0400
+Message-Id: <20250505231320.2695319-146-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -70,87 +68,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Viktor Malik <vmalik@redhat.com>
 
-[ Upstream commit c81202906b5cd56db403e95db3d29c9dfc8c74c1 ]
+[ Upstream commit 0053f7d39d491b6138d7c526876d13885cbb65f1 ]
 
-The ast driver looks up supplied display modes from an internal list of
-display modes supported by the VBIOS.
+The `readlink(path, buf, sizeof(buf))` call reads at most sizeof(buf)
+bytes and *does not* append null-terminator to buf. With respect to
+that, fix two pieces in get_fd_type:
 
-Do not use the crtc_-prefixed display values from struct drm_display_mode
-for looking up the VBIOS mode. The fields contain raw values that the
-driver programs to hardware. They are affected by display settings like
-double-scan or interlace.
+1. Change the truncation check to contain sizeof(buf) rather than
+   sizeof(path).
+2. Append null-terminator to buf.
 
-Instead use the regular vdisplay and hdisplay fields for lookup. As the
-programmed values can now differ from the values used for lookup, set
-struct drm_display_mode.crtc_vdisplay and .crtc_hdisplay from the VBIOS
-mode.
+Reported by Coverity.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250131092257.115596-9-tzimmermann@suse.de
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20250129071857.75182-1-vmalik@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ast/ast_mode.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ tools/bpf/bpftool/common.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
-index 08ed0d08d03b8..87d31d3b0e357 100644
---- a/drivers/gpu/drm/ast/ast_mode.c
-+++ b/drivers/gpu/drm/ast/ast_mode.c
-@@ -105,7 +105,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 		return false;
+diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
+index e4c65d34fe74f..2b4773e00ab68 100644
+--- a/tools/bpf/bpftool/common.c
++++ b/tools/bpf/bpftool/common.c
+@@ -318,10 +318,11 @@ int get_fd_type(int fd)
+ 		p_err("can't read link type: %s", strerror(errno));
+ 		return -1;
  	}
+-	if (n == sizeof(path)) {
++	if (n == sizeof(buf)) {
+ 		p_err("can't read link type: path too long!");
+ 		return -1;
+ 	}
++	buf[n] = '\0';
  
--	switch (mode->crtc_hdisplay) {
-+	switch (mode->hdisplay) {
- 	case 640:
- 		vbios_mode->enh_table = &res_640x480[refresh_rate_index];
- 		break;
-@@ -116,7 +116,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 		vbios_mode->enh_table = &res_1024x768[refresh_rate_index];
- 		break;
- 	case 1280:
--		if (mode->crtc_vdisplay == 800)
-+		if (mode->vdisplay == 800)
- 			vbios_mode->enh_table = &res_1280x800[refresh_rate_index];
- 		else
- 			vbios_mode->enh_table = &res_1280x1024[refresh_rate_index];
-@@ -128,7 +128,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 		vbios_mode->enh_table = &res_1440x900[refresh_rate_index];
- 		break;
- 	case 1600:
--		if (mode->crtc_vdisplay == 900)
-+		if (mode->vdisplay == 900)
- 			vbios_mode->enh_table = &res_1600x900[refresh_rate_index];
- 		else
- 			vbios_mode->enh_table = &res_1600x1200[refresh_rate_index];
-@@ -137,7 +137,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 		vbios_mode->enh_table = &res_1680x1050[refresh_rate_index];
- 		break;
- 	case 1920:
--		if (mode->crtc_vdisplay == 1080)
-+		if (mode->vdisplay == 1080)
- 			vbios_mode->enh_table = &res_1920x1080[refresh_rate_index];
- 		else
- 			vbios_mode->enh_table = &res_1920x1200[refresh_rate_index];
-@@ -181,6 +181,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 	hborder = (vbios_mode->enh_table->flags & HBorder) ? 8 : 0;
- 	vborder = (vbios_mode->enh_table->flags & VBorder) ? 8 : 0;
- 
-+	adjusted_mode->crtc_hdisplay = vbios_mode->enh_table->hde;
- 	adjusted_mode->crtc_htotal = vbios_mode->enh_table->ht;
- 	adjusted_mode->crtc_hblank_start = vbios_mode->enh_table->hde + hborder;
- 	adjusted_mode->crtc_hblank_end = vbios_mode->enh_table->ht - hborder;
-@@ -190,6 +191,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 					 vbios_mode->enh_table->hfp +
- 					 vbios_mode->enh_table->hsync);
- 
-+	adjusted_mode->crtc_vdisplay = vbios_mode->enh_table->vde;
- 	adjusted_mode->crtc_vtotal = vbios_mode->enh_table->vt;
- 	adjusted_mode->crtc_vblank_start = vbios_mode->enh_table->vde + vborder;
- 	adjusted_mode->crtc_vblank_end = vbios_mode->enh_table->vt - vborder;
+ 	if (strstr(buf, "bpf-map"))
+ 		return BPF_OBJ_MAP;
 -- 
 2.39.5
 
