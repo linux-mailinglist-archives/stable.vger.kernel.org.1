@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-140687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 298A3AAAEA1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:00:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AF2EAAAEB1
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:02:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30C0B462DF7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:58:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 271CB1A8626A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A262A37AAB1;
-	Mon,  5 May 2025 23:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1CE220F50;
+	Mon,  5 May 2025 23:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SJuOXt/m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRitPlOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C2837B344;
-	Mon,  5 May 2025 22:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B162BD929;
+	Mon,  5 May 2025 22:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485950; cv=none; b=Waqowx+luevhjcghX/BO9bjfZUVaVtYuMsXTusc6Jrnf8rH1d+CWCCcBpyGq02kV6mBtioWxq2K4VOBpgxMneCKmf9wbXa+38ZhDud/1RV//zH0us2NLduf/TBmhjJZ6O4BwCSTb7aSCeGl+2dF3RlhyjcDgnDysYUiCNNt8cMw=
+	t=1746485955; cv=none; b=cTvYWSB78T7yGIFv47zum9JHrerWnIL3A2ddOtGGy4QyYdQIZYzHxSWWvSnUqJt2zV8zb0lWgKsJzuADhIIGJjp84YaHS+mRUPOwoX7ADrn7srEhH9newGiipCcCyE+o31wy0jRpPQScE5+ITOyT1P5jJ965dmR74AWxQBdrviI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485950; c=relaxed/simple;
-	bh=lODut3LNkB3/xWPUiXkilDiXF3fdbLQXrrE9PSmH8Rs=;
+	s=arc-20240116; t=1746485955; c=relaxed/simple;
+	bh=VN5EtMg9ZrHmsH7A10pX7oRSpKuBk9x0NuB/eM47aWc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hUHQdoC7W8cb0O2AicXZt9W8Vrtww1eO/kyJfUM0UzHW66WRDbKY00RRRrzKHYFHm0ayA63+PaGJGLwnFRZRpuHNoOgKNFbd+M9rfFcZ5g5/HIK7CmuJVKWR3R6jLJlr2M1s7ymQfOvUrKSvzz9AzhbQNu9Q5v+Ws5oxyPqP8dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SJuOXt/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B20C4CEEE;
-	Mon,  5 May 2025 22:59:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q31NhgLVsug5PUxxqmRqMeQlzBuJs8ct/BRvjfwHZBIzg95MSJnBJAjAyGCgItrtZ02t74rqNYFC5pzBPy7qICZ7KujvwouILXNwvjtYAp0lXDoybiGySGEoYfAkl0lM8qU6UOCIz9QZgLLxRylJw/no430ZJFh281emqYN90gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRitPlOW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04CB7C4CEED;
+	Mon,  5 May 2025 22:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485948;
-	bh=lODut3LNkB3/xWPUiXkilDiXF3fdbLQXrrE9PSmH8Rs=;
+	s=k20201202; t=1746485953;
+	bh=VN5EtMg9ZrHmsH7A10pX7oRSpKuBk9x0NuB/eM47aWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJuOXt/m2hTNuIL/qkzeN2G/qlXTcf6C5hP9YJAtQrUI/ARWq9EmkbmFqt6rPyVy4
-	 KNdWhE9qGzIg5+FTPT9Z96Ft5Nq9XEZcw8OY/DsouUmIkPZpk/6AsCCFsFHitqjyve
-	 oSjqylHiF+xecEvuLL4+IbDNhPeFGLjba0z6FL0qasooBsF8TkljNQ5DkytkKf1qlC
-	 nUydChLUYXCZ0bLkzT+8Odrrs5fSFpPWNdjvh0f43Zt6aTHSWWd9tbXNVrHZiAlmYc
-	 3fBlBi7K/X8JBHc21eBO3qvom3yGjtVT8eSkRiTc6HgeIJRssRYMjpIWGlC6vszvHw
-	 jxIcKRSsavjxQ==
+	b=bRitPlOWzXaiAxr47T8VQEVhzhzZiCKIihQ2VsaY1PZuAjGzP4U0WzD/RX8SQeybW
+	 yY5PGjkOSN+eFtLpwBZhcQJOlMh++ywPxZz/ScxFiUqozivJNG08P2F87FpTn4kjfs
+	 EovNVnSE6Le1Z7V5WU6kakgWIFoLhad4nA4J0DmUttKEBBqGmBgUNm8nCjW35q7zCZ
+	 5Dz9fULwiZrye3kGDvThQEirDSdfZDV17P3/1K4o9BzVml3AxplxwHp+KYII5tov36
+	 gugxnSD2qmTTYYZ1Eo4C2AOQMeCwhwzg2zjdvaRR7KPIC5cHUJ58QDkBPL7W1Bpeiw
+	 wwg2O7J/jlACg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Ts'o <tytso@mit.edu>,
+Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 080/294] ext4: do not convert the unwritten extents if data writeback fails
-Date: Mon,  5 May 2025 18:53:00 -0400
-Message-Id: <20250505225634.2688578-80-sashal@kernel.org>
+	anna-maria@linutronix.de,
+	frederic@kernel.org
+Subject: [PATCH AUTOSEL 6.6 083/294] timer_list: Don't use %pK through printk()
+Date: Mon,  5 May 2025 18:53:03 -0400
+Message-Id: <20250505225634.2688578-83-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -63,93 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit e856f93e0fb249955f7d5efb18fe20500a9ccc6d ]
+[ Upstream commit a52067c24ccf6ee4c85acffa0f155e9714f9adce ]
 
-When dioread_nolock is turned on (the default), it will convert unwritten
-extents to written at ext4_end_io_end(), even if the data writeback fails.
+This reverts commit f590308536db ("timer debug: Hide kernel addresses via
+%pK in /proc/timer_list")
 
-It leads to the possibility that stale data may be exposed when the
-physical block corresponding to the file data is read-only (i.e., writes
-return -EIO, but reads are normal).
+The timer list helper SEQ_printf() uses either the real seq_printf() for
+procfs output or vprintk() to print to the kernel log, when invoked from
+SysRq-q. It uses %pK for printing pointers.
 
-Therefore a new ext4_io_end->flags EXT4_IO_END_FAILED is added, which
-indicates that some bio write-back failed in the current ext4_io_end.
-When this flag is set, the unwritten to written conversion is no longer
-performed. Users can read the data normally until the caches are dropped,
-after that, the failed extents can only be read to all 0.
+In the past %pK was prefered over %p as it would not leak raw pointer
+values into the kernel log. Since commit ad67b74d2469 ("printk: hash
+addresses printed with %p") the regular %p has been improved to avoid this
+issue.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250122110533.4116662-3-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Furthermore, restricted pointers ("%pK") were never meant to be used
+through printk(). They can still unintentionally leak raw pointers or
+acquire sleeping looks in atomic contexts.
+
+Switch to the regular pointer formatting which is safer, easier to reason
+about and sufficient here.
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
+Link: https://lore.kernel.org/all/20250311-restricted-pointers-timer-v1-1-6626b91e54ab@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ext4.h    |  3 ++-
- fs/ext4/page-io.c | 16 ++++++++++++++--
- 2 files changed, 16 insertions(+), 3 deletions(-)
+ kernel/time/timer_list.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index 60455c84a9374..bf62c3dab4fa2 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -273,7 +273,8 @@ struct ext4_system_blocks {
- /*
-  * Flags for ext4_io_end->flags
-  */
--#define	EXT4_IO_END_UNWRITTEN	0x0001
-+#define EXT4_IO_END_UNWRITTEN	0x0001
-+#define EXT4_IO_END_FAILED	0x0002
+diff --git a/kernel/time/timer_list.c b/kernel/time/timer_list.c
+index ed7d6ad694fba..20a5e6962b696 100644
+--- a/kernel/time/timer_list.c
++++ b/kernel/time/timer_list.c
+@@ -46,7 +46,7 @@ static void
+ print_timer(struct seq_file *m, struct hrtimer *taddr, struct hrtimer *timer,
+ 	    int idx, u64 now)
+ {
+-	SEQ_printf(m, " #%d: <%pK>, %ps", idx, taddr, timer->function);
++	SEQ_printf(m, " #%d: <%p>, %ps", idx, taddr, timer->function);
+ 	SEQ_printf(m, ", S:%02x", timer->state);
+ 	SEQ_printf(m, "\n");
+ 	SEQ_printf(m, " # expires at %Lu-%Lu nsecs [in %Ld to %Ld nsecs]\n",
+@@ -98,7 +98,7 @@ print_active_timers(struct seq_file *m, struct hrtimer_clock_base *base,
+ static void
+ print_base(struct seq_file *m, struct hrtimer_clock_base *base, u64 now)
+ {
+-	SEQ_printf(m, "  .base:       %pK\n", base);
++	SEQ_printf(m, "  .base:       %p\n", base);
+ 	SEQ_printf(m, "  .index:      %d\n", base->index);
  
- struct ext4_io_end_vec {
- 	struct list_head list;		/* list of io_end_vec */
-diff --git a/fs/ext4/page-io.c b/fs/ext4/page-io.c
-index 7ab4f5a9bf5b8..7287dbfe13f12 100644
---- a/fs/ext4/page-io.c
-+++ b/fs/ext4/page-io.c
-@@ -181,14 +181,25 @@ static int ext4_end_io_end(ext4_io_end_t *io_end)
- 		   "list->prev 0x%p\n",
- 		   io_end, inode->i_ino, io_end->list.next, io_end->list.prev);
- 
--	io_end->handle = NULL;	/* Following call will use up the handle */
--	ret = ext4_convert_unwritten_io_end_vec(handle, io_end);
-+	/*
-+	 * Do not convert the unwritten extents if data writeback fails,
-+	 * or stale data may be exposed.
-+	 */
-+	io_end->handle = NULL;  /* Following call will use up the handle */
-+	if (unlikely(io_end->flag & EXT4_IO_END_FAILED)) {
-+		ret = -EIO;
-+		if (handle)
-+			jbd2_journal_free_reserved(handle);
-+	} else {
-+		ret = ext4_convert_unwritten_io_end_vec(handle, io_end);
-+	}
- 	if (ret < 0 && !ext4_forced_shutdown(inode->i_sb)) {
- 		ext4_msg(inode->i_sb, KERN_EMERG,
- 			 "failed to convert unwritten extents to written "
- 			 "extents -- potential data loss!  "
- 			 "(inode %lu, error %d)", inode->i_ino, ret);
- 	}
-+
- 	ext4_clear_io_unwritten_flag(io_end);
- 	ext4_release_io_end(io_end);
- 	return ret;
-@@ -344,6 +355,7 @@ static void ext4_end_bio(struct bio *bio)
- 			     bio->bi_status, inode->i_ino,
- 			     (unsigned long long)
- 			     bi_sector >> (inode->i_blkbits - 9));
-+		io_end->flag |= EXT4_IO_END_FAILED;
- 		mapping_set_error(inode->i_mapping,
- 				blk_status_to_errno(bio->bi_status));
- 	}
+ 	SEQ_printf(m, "  .resolution: %u nsecs\n", hrtimer_resolution);
 -- 
 2.39.5
 
