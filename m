@@ -1,72 +1,60 @@
-Return-Path: <stable+bounces-140722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 595E5AAAED0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:05:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55ADBAAAEE7
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:07:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5313E172D4C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:02:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5ECA1BA3E01
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562F93792CA;
-	Mon,  5 May 2025 23:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26352F10C3;
+	Mon,  5 May 2025 23:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+RzV6Vy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YD0hGEZm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D9D3792B4;
-	Mon,  5 May 2025 23:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DD738AC68;
+	Mon,  5 May 2025 23:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486060; cv=none; b=fWMzePRT2NYDhLxhBVj9CmiJQMzEivZdLPxeqS6nkKCYu+HcdgR7WMz1F5dBec91SGPQmx6MWGxbk+zvCATZbnozhXRl/ZEq5PSYOaeAgsedOovuMPnynXKuKfFCT1TabHZEYdG+15SB/aUhBIuSlqSqbUgIPjWmWVJUmD8fORY=
+	t=1746486067; cv=none; b=KdJ3/wuiwhhTpdHxRf70N0Ct+WmmPpDmeW4hY3alyD9ndu4PCP4ofS9LOK1TsAOkcEi8m7POmy2uBevycpAnBrKHIn87M4poX21T4LE9s1EROW6c77szw2mXWp6ztkB2MPa6WLCpZ5WNW80q64Jawco/6CNqq6nnlzyTeNnMSrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486060; c=relaxed/simple;
-	bh=BLHcE08rHIsKAZb0PIIR3MMag85ICV+AGfZz6R+LiXU=;
+	s=arc-20240116; t=1746486067; c=relaxed/simple;
+	bh=8NVCDiz8iITfIRqltj6+2O2/8Z/wjMt5J+O98JIyMaA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UonqKQDM5KhaffYmqsnsz/cDHLthBGaQM9dIPcORx78kZWZW6LuZ2dXff36I3q92FBsBWkabIod3lPmOtF2Lt0nJNkrapoQBmO9mTkxZvWn5ywZ96YuL8JD/2o1WPvGm8nwrR3S8P0dwAhOrQaR9p7fp/lN4VjwzLgOLoowpLYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+RzV6Vy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458E7C4CEE4;
-	Mon,  5 May 2025 23:00:56 +0000 (UTC)
+	 MIME-Version; b=roz/ZGyO0gb3gKH7hHHvN9YSIXttu23IntZWedCBIZzSOBskFk7n0ptqdhYaroYgKsns0jj/p9hQiXkp5v+qLoJ0F11L3XROMylNPVMLOnUaJLy/VElar53Sp9auDL1h9lcY99L5atR0AdbdhH7KywwwdSqyh+ZvHu3fKLHcXCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YD0hGEZm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FB0C4CEEF;
+	Mon,  5 May 2025 23:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486058;
-	bh=BLHcE08rHIsKAZb0PIIR3MMag85ICV+AGfZz6R+LiXU=;
+	s=k20201202; t=1746486064;
+	bh=8NVCDiz8iITfIRqltj6+2O2/8Z/wjMt5J+O98JIyMaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+RzV6Vy1NuVN792RZj+lWpmAPm2esI8kPsXkXfS47/Eo4eGHacot2iKdxxWsITMK
-	 x5aP0kZ1dT8yWmLWCtgcVBm1xak/O1WwvVjdjq3MMydWFSBfz+scveqyb83MsHbVpY
-	 zmvqn70OdndULIQzOiaiWYUtodwZTOKBoIxKgzyImLHDp0H+JAme5EjeyR1ouJC1m6
-	 mfY6Ct3ckunbP/1JHnyOxBbzsXnQgQrmczPBlDiUUdMt51ysSBfA3to1Lp+vzp4wpv
-	 tne0MNU4/xm0LCE/3l8IhdRFEQHoglRiEgbspNR0IXInLhJU26Yjx3EsjUyrhNXH82
-	 y+ngM1pWNtiyg==
+	b=YD0hGEZmkaLSHuDdUq6WxMnhqXD8zmb6g8Yr9ZGSJxKsSUri6iogYbRx2mu6wyUyA
+	 Ed8a7a1PxSOWe7NjLdQGNZLiWjzMbj/x7YVZSZKCmUyHLASM1AO3tHLLBFsp2OPgoa
+	 1ugUoPVw05JBIHmH2GEZLbICiu3TGhpcYlLE5U3hD5xwliiDHNqWUbZbLq8WJOPMaK
+	 /uD94OLAWgMimZ36SyDOKGDJINqc8YPYNyXFVwhBzjbO2R7FOEIh6LPd/D1kN+nqZX
+	 47V8o1lFAb+1nhsPRn6Wg4YkOdpnGJGg6L2a9rnjmvS0tlquvEoqcQFqtUIT6RiMqk
+	 kjZgm4CkJaKmA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	David Kaplan <David.Kaplan@amd.com>,
+Cc: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>,
+	Ang Tien Sung <tien.sung.ang@intel.com>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	corbet@lwn.net,
-	tglx@linutronix.de,
-	bp@alien8.de,
-	mingo@redhat.com,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	akpm@linux-foundation.org,
-	paulmck@kernel.org,
-	rostedt@goodmis.org,
-	thuth@redhat.com,
-	ardb@kernel.org,
-	gregkh@linuxfoundation.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 131/294] x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2
-Date: Mon,  5 May 2025 18:53:51 -0400
-Message-Id: <20250505225634.2688578-131-sashal@kernel.org>
+	mdf@kernel.org,
+	hao.wu@intel.com,
+	linux-fpga@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 135/294] fpga: altera-cvp: Increase credit timeout
+Date: Mon,  5 May 2025 18:53:55 -0400
+Message-Id: <20250505225634.2688578-135-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -81,94 +69,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>
 
-[ Upstream commit 98fdaeb296f51ef08e727a7cc72e5b5c864c4f4d ]
+[ Upstream commit 0f05886a40fdc55016ba4d9ae0a9c41f8312f15b ]
 
-Change the default value of spectre v2 in user mode to respect the
-CONFIG_MITIGATION_SPECTRE_V2 config option.
+Increase the timeout for SDM (Secure device manager) data credits from
+20ms to 40ms. Internal stress tests running at 500 loops failed with the
+current timeout of 20ms. At the start of a FPGA configuration, the CVP
+host driver reads the transmit credits from SDM. It then sends bitstream
+FPGA data to SDM based on the total credits. Each credit allows the
+CVP host driver to send 4kBytes of data. There are situations whereby,
+the SDM did not respond in time during testing.
 
-Currently, user mode spectre v2 is set to auto
-(SPECTRE_V2_USER_CMD_AUTO) by default, even if
-CONFIG_MITIGATION_SPECTRE_V2 is disabled.
-
-Set the spectre_v2 value to auto (SPECTRE_V2_USER_CMD_AUTO) if the
-Spectre v2 config (CONFIG_MITIGATION_SPECTRE_V2) is enabled, otherwise
-set the value to none (SPECTRE_V2_USER_CMD_NONE).
-
-Important to say the command line argument "spectre_v2_user" overwrites
-the default value in both cases.
-
-When CONFIG_MITIGATION_SPECTRE_V2 is not set, users have the flexibility
-to opt-in for specific mitigations independently. In this scenario,
-setting spectre_v2= will not enable spectre_v2_user=, and command line
-options spectre_v2_user and spectre_v2 are independent when
-CONFIG_MITIGATION_SPECTRE_V2=n.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: David Kaplan <David.Kaplan@amd.com>
-Link: https://lore.kernel.org/r/20241031-x86_bugs_last_v2-v2-2-b7ff1dab840e@debian.org
+Signed-off-by: Ang Tien Sung <tien.sung.ang@intel.com>
+Signed-off-by: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>
+Acked-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20250212221249.2715929-1-tien.sung.ang@intel.com
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  2 ++
- arch/x86/kernel/cpu/bugs.c                      | 10 +++++++---
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/fpga/altera-cvp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 184f2f96f6a54..005455d32f8da 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5960,6 +5960,8 @@
+diff --git a/drivers/fpga/altera-cvp.c b/drivers/fpga/altera-cvp.c
+index 4ffb9da537d82..5295ff90482bc 100644
+--- a/drivers/fpga/altera-cvp.c
++++ b/drivers/fpga/altera-cvp.c
+@@ -52,7 +52,7 @@
+ /* V2 Defines */
+ #define VSE_CVP_TX_CREDITS		0x49	/* 8bit */
  
- 			Selecting 'on' will also enable the mitigation
- 			against user space to user space task attacks.
-+			Selecting specific mitigation does not force enable
-+			user mitigations.
- 
- 			Selecting 'off' will disable both the kernel and
- 			the user space protections.
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 78545f7e9cc6c..b14c86610b639 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1290,9 +1290,13 @@ static __ro_after_init enum spectre_v2_mitigation_cmd spectre_v2_cmd;
- static enum spectre_v2_user_cmd __init
- spectre_v2_parse_user_cmdline(void)
- {
-+	enum spectre_v2_user_cmd mode;
- 	char arg[20];
- 	int ret, i;
- 
-+	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
-+		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
-+
- 	switch (spectre_v2_cmd) {
- 	case SPECTRE_V2_CMD_NONE:
- 		return SPECTRE_V2_USER_CMD_NONE;
-@@ -1305,7 +1309,7 @@ spectre_v2_parse_user_cmdline(void)
- 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
- 				  arg, sizeof(arg));
- 	if (ret < 0)
--		return SPECTRE_V2_USER_CMD_AUTO;
-+		return mode;
- 
- 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
- 		if (match_option(arg, ret, v2_user_options[i].option)) {
-@@ -1315,8 +1319,8 @@ spectre_v2_parse_user_cmdline(void)
- 		}
- 	}
- 
--	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
--	return SPECTRE_V2_USER_CMD_AUTO;
-+	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
-+	return mode;
- }
- 
- static inline bool spectre_v2_in_ibrs_mode(enum spectre_v2_mitigation mode)
+-#define V2_CREDIT_TIMEOUT_US		20000
++#define V2_CREDIT_TIMEOUT_US		40000
+ #define V2_CHECK_CREDIT_US		10
+ #define V2_POLL_TIMEOUT_US		1000000
+ #define V2_USER_TIMEOUT_US		500000
 -- 
 2.39.5
 
