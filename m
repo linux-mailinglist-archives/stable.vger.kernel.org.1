@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-140869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9A7AAABFB
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:06:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9C8AAAF9D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:20:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 561047AB0CE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:05:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB2AA3A967F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9285F3BEECC;
-	Mon,  5 May 2025 23:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CD52EFB82;
+	Mon,  5 May 2025 23:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FCDoGC7+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMzYvmj4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E6537941A;
-	Mon,  5 May 2025 23:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02D538666D;
+	Mon,  5 May 2025 23:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486710; cv=none; b=EmDUWgJgb5o58SWAh1GWWolFzAgyOOJ5eZOsf+zyePJk6/7o7dgOE9CbdOP3D6TrLNm/PDKZZY8sTzRWlzEbuYndoSf9kzaaSHkOQvjqwK0mSc2h5WL6DeXYHA5xQGoDLpHjjMSCPPI5ZEdFs+Xfyl6pXGrSdelM4x1NfwUrCeo=
+	t=1746486711; cv=none; b=iOfsggeKwkcjztg67P0lXO1bhx0DWuXe9RqUyqiYnC8nsfHkuimyarRUNsKXmxn8kSlDiN/+IBbYILZLsrVMX+SI4wW205qRvMmHJJ1wpHy5E7vMenPnqmB57n6vdZwueiIVNbT1D+lHiQl3BxkXpj6tfVnJlx0exB9px39do5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486710; c=relaxed/simple;
-	bh=C43Pz/hDzcDNEKIbrxLCPDxsolFRO71goEUky3/G04A=;
+	s=arc-20240116; t=1746486711; c=relaxed/simple;
+	bh=4wfJOZhBEhP2f/egkoNxpv8K2LBegtw1HcJEoXxGblw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UyleawBRtfG9JbiOGoGHzahGO7fWz1PGEaq+hH4GJCu6UHOuS28W83vFkzWVdbmvG11N/po/7IgSo98EPUyyC4RU7pESBiytcrNQEpwj/7MgnGzikwW6RSfFJQxVRKxcKkFJM/xibFTM13d0S92WzEPXZaa4kCCETqrroe5vdyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FCDoGC7+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EBEC4CEE4;
-	Mon,  5 May 2025 23:11:47 +0000 (UTC)
+	 MIME-Version; b=EFLHb9bRNTv4cDsTNGvzBs6pk48p8RHTf0gQyPGU+UW4h+qviZISOW0cMCyplC5gTklaT/9eIZ+dtvx/dlF+l+t/OsPlsioFX5kIl0PNNjzgodH1XmO4NwyaefDOSZjRfwNK8mj/JnuAeNwLOiz8ilZ/Hhd8KW8/GPaq1cjhrBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QMzYvmj4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D5EC4CEF1;
+	Mon,  5 May 2025 23:11:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486708;
-	bh=C43Pz/hDzcDNEKIbrxLCPDxsolFRO71goEUky3/G04A=;
+	s=k20201202; t=1746486710;
+	bh=4wfJOZhBEhP2f/egkoNxpv8K2LBegtw1HcJEoXxGblw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FCDoGC7+HF2d1yZdJiFd+nu0c6d99soE0h6awJSET1IdWdqegQNKbQwIk47Oup/pB
-	 cSOyHy+Rab+W5+XK3lvu6MxerPCPGz/vD/WwjLqOguaquT8j543qHttz695psX+ssu
-	 X5BzQ5vcEUYc7YL910Kq6UbLvRDZQvAH8GHdw0Ej3QYhoX5ZJw7m57sx43/bnlQoWb
-	 88DR9O+3ZsSV6DWKkgnGh08b4dlDvf5TNIJF4vZ8GrusdCSU8s1HXTgQcPp9PNPm8V
-	 eEXjNJBUkBVKDTnbo/8j/Mjq3qF7H15U7TQDLVtTTZoJCryyOrVqVCqW2ItkM12g3j
-	 gjMpcVs1NFv+A==
+	b=QMzYvmj4GtVxntf65o+zL0lBa5fbygIQJSUBIOJ6D+O/wgm6/UYbcE6HKYC0d9AqH
+	 KSo7jArHfYdQFlEfEqCX8znQxpv4l+I0qoxtIN1VM8H8rIFz7GqJfUD3EueQb73P2b
+	 PNuBODccAJ+1m16VMJ7jycT/47paKnt61c/I9tE4+UMDL/n91vmpTtG31xJJpwEeAo
+	 DqO0+jQMWA2We2ceUx7MYPq/Ppm6zsKX7LIGVrepX4w4eVNitBs/vQP65ARGuJYeLQ
+	 C7/deEr9M85ITanSGe6WlxO4blOI01NhlvqjURYv8ztAjX7MUMGufhnYLiTHHx9kHr
+	 shInfuVBjoEdQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrii Nakryiko <andrii@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Kees Cook <kees@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 165/212] libbpf: fix LDX/STX/ST CO-RE relocation size adjustment logic
-Date: Mon,  5 May 2025 19:05:37 -0400
-Message-Id: <20250505230624.2692522-165-sashal@kernel.org>
+	tariqt@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	yishaih@nvidia.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 166/212] net/mlx4_core: Avoid impossible mlx4_db_alloc() order value
+Date: Mon,  5 May 2025 19:05:38 -0400
+Message-Id: <20250505230624.2692522-166-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -68,90 +72,76 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 06096d19ee3897a7e70922580159607fe315da7a ]
+[ Upstream commit 4a6f18f28627e121bd1f74b5fcc9f945d6dbeb1e ]
 
-Libbpf has a somewhat obscure feature of automatically adjusting the
-"size" of LDX/STX/ST instruction (memory store and load instructions),
-based on originally recorded access size (u8, u16, u32, or u64) and the
-actual size of the field on target kernel. This is meant to facilitate
-using BPF CO-RE on 32-bit architectures (pointers are always 64-bit in
-BPF, but host kernel's BTF will have it as 32-bit type), as well as
-generally supporting safe type changes (unsigned integer type changes
-can be transparently "relocated").
+GCC can see that the value range for "order" is capped, but this leads
+it to consider that it might be negative, leading to a false positive
+warning (with GCC 15 with -Warray-bounds -fdiagnostics-details):
 
-One issue that surfaced only now, 5 years after this logic was
-implemented, is how this all works when dealing with fields that are
-arrays. This isn't all that easy and straightforward to hit (see
-selftests that reproduce this condition), but one of sched_ext BPF
-programs did hit it with innocent looking loop.
+../drivers/net/ethernet/mellanox/mlx4/alloc.c:691:47: error: array subscript -1 is below array bounds of 'long unsigned int *[2]' [-Werror=array-bounds=]
+  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);
+      |                                    ~~~~~~~~~~~^~~
+  'mlx4_alloc_db_from_pgdir': events 1-2
+  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);                        |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                     |                         |                                                   |                     |                         (2) out of array bounds here
+      |                     (1) when the condition is evaluated to true                             In file included from ../drivers/net/ethernet/mellanox/mlx4/mlx4.h:53,
+                 from ../drivers/net/ethernet/mellanox/mlx4/alloc.c:42:
+../include/linux/mlx4/device.h:664:33: note: while referencing 'bits'
+  664 |         unsigned long          *bits[2];
+      |                                 ^~~~
 
-Long story short, libbpf used to calculate entire array size, instead of
-making sure to only calculate array's element size. But it's the element
-that is loaded by LDX/STX/ST instructions (1, 2, 4, or 8 bytes), so
-that's what libbpf should check. This patch adjusts the logic for
-arrays and fixed the issue.
+Switch the argument to unsigned int, which removes the compiler needing
+to consider negative values.
 
-Reported-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20250207014809.1573841-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://patch.msgid.link/20250210174504.work.075-kees@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/relo_core.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/alloc.c | 6 +++---
+ include/linux/mlx4/device.h                | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/lib/bpf/relo_core.c b/tools/lib/bpf/relo_core.c
-index c4b0e81ae2931..84f26b36f664c 100644
---- a/tools/lib/bpf/relo_core.c
-+++ b/tools/lib/bpf/relo_core.c
-@@ -683,7 +683,7 @@ static int bpf_core_calc_field_relo(const char *prog_name,
+diff --git a/drivers/net/ethernet/mellanox/mlx4/alloc.c b/drivers/net/ethernet/mellanox/mlx4/alloc.c
+index b330020dc0d67..f2bded847e61d 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/alloc.c
++++ b/drivers/net/ethernet/mellanox/mlx4/alloc.c
+@@ -682,9 +682,9 @@ static struct mlx4_db_pgdir *mlx4_alloc_db_pgdir(struct device *dma_device)
+ }
+ 
+ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
+-				    struct mlx4_db *db, int order)
++				    struct mlx4_db *db, unsigned int order)
  {
- 	const struct bpf_core_accessor *acc;
- 	const struct btf_type *t;
--	__u32 byte_off, byte_sz, bit_off, bit_sz, field_type_id;
-+	__u32 byte_off, byte_sz, bit_off, bit_sz, field_type_id, elem_id;
- 	const struct btf_member *m;
- 	const struct btf_type *mt;
- 	bool bitfield;
-@@ -706,8 +706,14 @@ static int bpf_core_calc_field_relo(const char *prog_name,
- 	if (!acc->name) {
- 		if (relo->kind == BPF_CORE_FIELD_BYTE_OFFSET) {
- 			*val = spec->bit_offset / 8;
--			/* remember field size for load/store mem size */
--			sz = btf__resolve_size(spec->btf, acc->type_id);
-+			/* remember field size for load/store mem size;
-+			 * note, for arrays we care about individual element
-+			 * sizes, not the overall array size
-+			 */
-+			t = skip_mods_and_typedefs(spec->btf, acc->type_id, &elem_id);
-+			while (btf_is_array(t))
-+				t = skip_mods_and_typedefs(spec->btf, btf_array(t)->type, &elem_id);
-+			sz = btf__resolve_size(spec->btf, elem_id);
- 			if (sz < 0)
- 				return -EINVAL;
- 			*field_sz = sz;
-@@ -767,7 +773,17 @@ static int bpf_core_calc_field_relo(const char *prog_name,
- 	case BPF_CORE_FIELD_BYTE_OFFSET:
- 		*val = byte_off;
- 		if (!bitfield) {
--			*field_sz = byte_sz;
-+			/* remember field size for load/store mem size;
-+			 * note, for arrays we care about individual element
-+			 * sizes, not the overall array size
-+			 */
-+			t = skip_mods_and_typedefs(spec->btf, field_type_id, &elem_id);
-+			while (btf_is_array(t))
-+				t = skip_mods_and_typedefs(spec->btf, btf_array(t)->type, &elem_id);
-+			sz = btf__resolve_size(spec->btf, elem_id);
-+			if (sz < 0)
-+				return -EINVAL;
-+			*field_sz = sz;
- 			*type_id = field_type_id;
- 		}
- 		break;
+-	int o;
++	unsigned int o;
+ 	int i;
+ 
+ 	for (o = order; o <= 1; ++o) {
+@@ -712,7 +712,7 @@ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
+ 	return 0;
+ }
+ 
+-int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order)
++int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order)
+ {
+ 	struct mlx4_priv *priv = mlx4_priv(dev);
+ 	struct mlx4_db_pgdir *pgdir;
+diff --git a/include/linux/mlx4/device.h b/include/linux/mlx4/device.h
+index 6646634a0b9d4..0cb296f0f8d1d 100644
+--- a/include/linux/mlx4/device.h
++++ b/include/linux/mlx4/device.h
+@@ -1115,7 +1115,7 @@ int mlx4_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
+ int mlx4_buf_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
+ 		       struct mlx4_buf *buf);
+ 
+-int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order);
++int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order);
+ void mlx4_db_free(struct mlx4_dev *dev, struct mlx4_db *db);
+ 
+ int mlx4_alloc_hwq_res(struct mlx4_dev *dev, struct mlx4_hwq_resources *wqres,
 -- 
 2.39.5
 
