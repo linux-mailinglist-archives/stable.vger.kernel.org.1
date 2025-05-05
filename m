@@ -1,89 +1,58 @@
-Return-Path: <stable+bounces-141181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0983DAAB14D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:57:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E80B6AAB164
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:59:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F31F7AF6C8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:54:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AB7B3A5867
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4951F376443;
-	Tue,  6 May 2025 00:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A041838E959;
+	Tue,  6 May 2025 00:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IryBRScn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uGr1cWmU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5302D026D;
-	Mon,  5 May 2025 22:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0D1283132;
+	Mon,  5 May 2025 22:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485427; cv=none; b=JzY2vWHcE3eIrWQIKhXSNK4g7jlazUP+blT/20mJifLn9GnsNQqARUG5LgovBEZxzqiXki41aljv8l0QPV57LQnJLniEEXXSn/VnWd8M9QX6STQeZv7KI+QCDgZUgKx/If92nqVIGjnOMK8BF3QhnV4KqN/yK4HxHBOobqjZI30=
+	t=1746485439; cv=none; b=Lm0+12cB79RRt1j2vKuuSFG1Ix7AK15vsJXDN8CbKg+Sif1RKbVfunThdt9Rlyte67cB2PN3KP5qlwsz7brdrZf6cTEOGlvQS7z0rJbLNxVYDpjlLrmfKqWQyx2rVQcOH6zJXtKSLxjx5nav/Wghar1sW+n1szulWowH6rGmW+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485427; c=relaxed/simple;
-	bh=NpDBFexPX1tuTzC6iZI8/MRik7F8bcHGbQyKLCQ0Zzk=;
+	s=arc-20240116; t=1746485439; c=relaxed/simple;
+	bh=n6wPzmqq6yDqTR9Qn6nCeDPf6OrUYiloNguv2B5DJPY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nQrfiFZAaoyQtwA8imPI78GSfeZjOgEzsldrRgjFMNh1moiTII3KK6G5pexYTMsSXvgUd6XrG5VaGibuwrT1wmKRpMtNtzaqdeuONjKtnfotm3YXllsT98WSBJHljnrnhCA2umAT6N6aQxWy9EzfyNrMvvggOeDFlGyP4CBw7Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IryBRScn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0792C4CEE4;
-	Mon,  5 May 2025 22:50:22 +0000 (UTC)
+	 MIME-Version; b=ZNEhpy8CXIbpbtjd7G3Nh/GJcxsJf2kdt4Njl2pPrgLGvMIKzoGDwsbzTG6jPKu5Mk+DCavDlndKRtLW2BipDho++GGP89yJxMUJjqD/xaip8QMWg/7OOkOYOg1WoeazKp0q4J8Ue0h1nyE7DHwkIu61tU+fkCW63gVWdDWU8gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uGr1cWmU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4497C4CEEE;
+	Mon,  5 May 2025 22:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485426;
-	bh=NpDBFexPX1tuTzC6iZI8/MRik7F8bcHGbQyKLCQ0Zzk=;
+	s=k20201202; t=1746485437;
+	bh=n6wPzmqq6yDqTR9Qn6nCeDPf6OrUYiloNguv2B5DJPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IryBRScnpqDktttqKChG+jkMr4MbAqBv31Msaet991/wgJhmS8T0wcWvdVVnxIZh1
-	 WltvSEdvdItfOxMk+kU9EIhq6rQ0XoqpeA09oy2VQjlFIypbq1UsugK8x+EVxXi1aT
-	 eKJq/QjJEjQUtqzyr6PIhPiMQuJlbfH2PlhrlxxWUPGG+zwahdGFIih+Mged+KcEtY
-	 /kdtKHusUQICZC7yjf8tQuKkePN2G/0KRauOqWNfGktmpT+BfO1BvCVhDi7reDruHO
-	 4t2JybCfUMLIo7onUsbyRgI4UvMuqHXobb5zT3rglivP5eWJ/JeDQu8Ikd1kx8XS11
-	 KMtypc4Y21k6g==
+	b=uGr1cWmUFZpYYiXsKzgMw0NL/w6MxUbtLEUf3GLmx7Ab+378FByeg9epFMvsaBMpk
+	 UI0QZzTXKdf1JFpQrQBMX+HIdDtHKhxwVYyovZvQbtojmD/xDBCCS2Fnx8Cn1DGfs0
+	 SXWBxKDknFjqf0uXsfH0iBNwiOAKY7UAHgkd2uoDXkwhaQoufHZHM5piMqm8j5Nt08
+	 QbVtwJ9gR0ymHtDCKX19eXVQXYVRnvo/VSwhl3Xelrb46Q8PFn+Q1QAFHQV2APuOKX
+	 tSKtgunqT/sjeGcvHbxUj92EeyO3wB6zSlIoP7YehxluHJdg47iKYgtrvCtP1s1F6N
+	 z63uCG17Vm/rw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	corbet@lwn.net,
-	nicolas.ferre@microchip.com,
-	alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev,
-	shawnguo@kernel.org,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	john.ogness@linutronix.de,
-	pmladek@suse.com,
-	arnd@arndb.de,
-	andriy.shevchenko@linux.intel.com,
-	namcao@linutronix.de,
-	benjamin.larsson@genexis.eu,
-	schnelle@linux.ibm.com,
-	esben@geanix.com,
-	stefan.eichenberger@toradex.com,
-	tglx@linutronix.de,
-	linux@rasmusvillemoes.dk,
-	marex@denx.de,
-	jeff.johnson@oss.qualcomm.com,
-	linux@treblig.org,
-	geert+renesas@glider.be,
-	wsa+renesas@sang-engineering.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	cheick.traore@foss.st.com,
-	ben.wolsieffer@hefring.com,
-	u.kleine-koenig@baylibre.com,
-	linux-serial@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH AUTOSEL 6.12 306/486] serial: mctrl_gpio: split disable_ms into sync and no_sync APIs
-Date: Mon,  5 May 2025 18:36:22 -0400
-Message-Id: <20250505223922.2682012-306-sashal@kernel.org>
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 311/486] bpf: copy_verifier_state() should copy 'loop_entry' field
+Date: Mon,  5 May 2025 18:36:27 -0400
+Message-Id: <20250505223922.2682012-311-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -93,248 +62,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Alexis Lothoré <alexis.lothore@bootlin.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 1bd2aad57da95f7f2d2bb52f7ad15c0f4993a685 ]
+[ Upstream commit bbbc02b7445ebfda13e4847f4f1413c6480a85a9 ]
 
-The following splat has been observed on a SAMA5D27 platform using
-atmel_serial:
+The bpf_verifier_state.loop_entry state should be copied by
+copy_verifier_state(). Otherwise, .loop_entry values from unrelated
+states would poison env->cur_state.
 
-BUG: sleeping function called from invalid context at kernel/irq/manage.c:738
-in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 27, name: kworker/u5:0
-preempt_count: 1, expected: 0
-INFO: lockdep is turned off.
-irq event stamp: 0
-hardirqs last  enabled at (0): [<00000000>] 0x0
-hardirqs last disabled at (0): [<c01588f0>] copy_process+0x1c4c/0x7bec
-softirqs last  enabled at (0): [<c0158944>] copy_process+0x1ca0/0x7bec
-softirqs last disabled at (0): [<00000000>] 0x0
-CPU: 0 UID: 0 PID: 27 Comm: kworker/u5:0 Not tainted 6.13.0-rc7+ #74
-Hardware name: Atmel SAMA5
-Workqueue: hci0 hci_power_on [bluetooth]
-Call trace:
-  unwind_backtrace from show_stack+0x18/0x1c
-  show_stack from dump_stack_lvl+0x44/0x70
-  dump_stack_lvl from __might_resched+0x38c/0x598
-  __might_resched from disable_irq+0x1c/0x48
-  disable_irq from mctrl_gpio_disable_ms+0x74/0xc0
-  mctrl_gpio_disable_ms from atmel_disable_ms.part.0+0x80/0x1f4
-  atmel_disable_ms.part.0 from atmel_set_termios+0x764/0x11e8
-  atmel_set_termios from uart_change_line_settings+0x15c/0x994
-  uart_change_line_settings from uart_set_termios+0x2b0/0x668
-  uart_set_termios from tty_set_termios+0x600/0x8ec
-  tty_set_termios from ttyport_set_flow_control+0x188/0x1e0
-  ttyport_set_flow_control from wilc_setup+0xd0/0x524 [hci_wilc]
-  wilc_setup [hci_wilc] from hci_dev_open_sync+0x330/0x203c [bluetooth]
-  hci_dev_open_sync [bluetooth] from hci_dev_do_open+0x40/0xb0 [bluetooth]
-  hci_dev_do_open [bluetooth] from hci_power_on+0x12c/0x664 [bluetooth]
-  hci_power_on [bluetooth] from process_one_work+0x998/0x1a38
-  process_one_work from worker_thread+0x6e0/0xfb4
-  worker_thread from kthread+0x3d4/0x484
-  kthread from ret_from_fork+0x14/0x28
+Additionally, env->stack should not contain any states with
+.loop_entry != NULL. The states in env->stack are yet to be verified,
+while .loop_entry is set for states that reached an equivalent state.
+This means that env->cur_state->loop_entry should always be NULL after
+pop_stack().
 
-This warning is emitted when trying to toggle, at the highest level,
-some flow control (with serdev_device_set_flow_control) in a device
-driver. At the lowest level, the atmel_serial driver is using
-serial_mctrl_gpio lib to enable/disable the corresponding IRQs
-accordingly.  The warning emitted by CONFIG_DEBUG_ATOMIC_SLEEP is due to
-disable_irq (called in mctrl_gpio_disable_ms) being possibly called in
-some atomic context (some tty drivers perform modem lines configuration
-in regions protected by port lock).
+See the selftest in the next commit for an example of the program that
+is not safe yet is accepted by verifier w/o this fix.
 
-Split mctrl_gpio_disable_ms into two differents APIs, a non-blocking one
-and a blocking one. Replace mctrl_gpio_disable_ms calls with the
-relevant version depending on whether the call is protected by some port
-lock.
+This change has some verification performance impact for selftests:
 
-Suggested-by: Jiri Slaby <jirislaby@kernel.org>
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Acked-by: Richard Genoud <richard.genoud@bootlin.com>
-Link: https://lore.kernel.org/r/20250217-atomic_sleep_mctrl_serial_gpio-v3-1-59324b313eef@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+File                                Program                       Insns (A)  Insns (B)  Insns   (DIFF)  States (A)  States (B)  States (DIFF)
+----------------------------------  ----------------------------  ---------  ---------  --------------  ----------  ----------  -------------
+arena_htab.bpf.o                    arena_htab_llvm                     717        426  -291 (-40.59%)          57          37  -20 (-35.09%)
+arena_htab_asm.bpf.o                arena_htab_asm                      597        445  -152 (-25.46%)          47          37  -10 (-21.28%)
+arena_list.bpf.o                    arena_list_del                      309        279    -30 (-9.71%)          23          14   -9 (-39.13%)
+iters.bpf.o                         iter_subprog_check_stacksafe        155        141    -14 (-9.03%)          15          14    -1 (-6.67%)
+iters.bpf.o                         iter_subprog_iters                 1094       1003    -91 (-8.32%)          88          83    -5 (-5.68%)
+iters.bpf.o                         loop_state_deps2                    479        725  +246 (+51.36%)          46          63  +17 (+36.96%)
+kmem_cache_iter.bpf.o               open_coded_iter                      63         59     -4 (-6.35%)           7           6   -1 (-14.29%)
+verifier_bits_iter.bpf.o            max_words                            92         84     -8 (-8.70%)           8           7   -1 (-12.50%)
+verifier_iterating_callbacks.bpf.o  cond_break2                         113        107     -6 (-5.31%)          12          12    +0 (+0.00%)
+
+And significant negative impact for sched_ext:
+
+File               Program                 Insns (A)  Insns (B)  Insns         (DIFF)  States (A)  States (B)  States      (DIFF)
+-----------------  ----------------------  ---------  ---------  --------------------  ----------  ----------  ------------------
+bpf.bpf.o          lavd_init                    7039      14723      +7684 (+109.16%)         490        1139     +649 (+132.45%)
+bpf.bpf.o          layered_dispatch            11485      10548         -937 (-8.16%)         848         762       -86 (-10.14%)
+bpf.bpf.o          layered_dump                 7422    1000001  +992579 (+13373.47%)         681       31178  +30497 (+4478.27%)
+bpf.bpf.o          layered_enqueue             16854      71127     +54273 (+322.02%)        1611        6450    +4839 (+300.37%)
+bpf.bpf.o          p2dq_dispatch                 665        791        +126 (+18.95%)          68          78       +10 (+14.71%)
+bpf.bpf.o          p2dq_init                    2343       2980        +637 (+27.19%)         201         237       +36 (+17.91%)
+bpf.bpf.o          refresh_layer_cpumasks      16487     674760   +658273 (+3992.68%)        1770       65370  +63600 (+3593.22%)
+bpf.bpf.o          rusty_select_cpu             1937      40872    +38935 (+2010.07%)         177        3210   +3033 (+1713.56%)
+scx_central.bpf.o  central_dispatch              636       2687      +2051 (+322.48%)          63         227     +164 (+260.32%)
+scx_nest.bpf.o     nest_init                     636        815        +179 (+28.14%)          60          73       +13 (+21.67%)
+scx_qmap.bpf.o     qmap_dispatch                2393       3580       +1187 (+49.60%)         196         253       +57 (+29.08%)
+scx_qmap.bpf.o     qmap_dump                     233        318         +85 (+36.48%)          22          30        +8 (+36.36%)
+scx_qmap.bpf.o     qmap_init                   16367      17436        +1069 (+6.53%)         603         669       +66 (+10.95%)
+
+Note 'layered_dump' program, which now hits 1M instructions limit.
+This impact would be mitigated in the next patch.
+
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20250215110411.3236773-2-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/driver-api/serial/driver.rst |  2 +-
- drivers/tty/serial/8250/8250_port.c        |  2 +-
- drivers/tty/serial/atmel_serial.c          |  2 +-
- drivers/tty/serial/imx.c                   |  2 +-
- drivers/tty/serial/serial_mctrl_gpio.c     | 34 +++++++++++++++++-----
- drivers/tty/serial/serial_mctrl_gpio.h     | 17 +++++++++--
- drivers/tty/serial/sh-sci.c                |  2 +-
- drivers/tty/serial/stm32-usart.c           |  2 +-
- 8 files changed, 47 insertions(+), 16 deletions(-)
+ kernel/bpf/verifier.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/driver-api/serial/driver.rst b/Documentation/driver-api/serial/driver.rst
-index 84b43061c11be..60434f2b02863 100644
---- a/Documentation/driver-api/serial/driver.rst
-+++ b/Documentation/driver-api/serial/driver.rst
-@@ -103,4 +103,4 @@ Some helpers are provided in order to set/get modem control lines via GPIO.
- .. kernel-doc:: drivers/tty/serial/serial_mctrl_gpio.c
-    :identifiers: mctrl_gpio_init mctrl_gpio_free mctrl_gpio_to_gpiod
-            mctrl_gpio_set mctrl_gpio_get mctrl_gpio_enable_ms
--           mctrl_gpio_disable_ms
-+           mctrl_gpio_disable_ms_sync mctrl_gpio_disable_ms_no_sync
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index c1376727642a7..0519679929652 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -1657,7 +1657,7 @@ static void serial8250_disable_ms(struct uart_port *port)
- 	if (up->bugs & UART_BUG_NOMSR)
- 		return;
- 
--	mctrl_gpio_disable_ms(up->gpios);
-+	mctrl_gpio_disable_ms_no_sync(up->gpios);
- 
- 	up->ier &= ~UART_IER_MSI;
- 	serial_port_out(port, UART_IER, up->ier);
-diff --git a/drivers/tty/serial/atmel_serial.c b/drivers/tty/serial/atmel_serial.c
-index 09b246c9e389e..8bd39586a49f7 100644
---- a/drivers/tty/serial/atmel_serial.c
-+++ b/drivers/tty/serial/atmel_serial.c
-@@ -700,7 +700,7 @@ static void atmel_disable_ms(struct uart_port *port)
- 
- 	atmel_port->ms_irq_enabled = false;
- 
--	mctrl_gpio_disable_ms(atmel_port->gpios);
-+	mctrl_gpio_disable_ms_no_sync(atmel_port->gpios);
- 
- 	if (!mctrl_gpio_to_gpiod(atmel_port->gpios, UART_GPIO_CTS))
- 		idr |= ATMEL_US_CTSIC;
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 90974d338f3c0..8e3b15534bc72 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -1596,7 +1596,7 @@ static void imx_uart_shutdown(struct uart_port *port)
- 		imx_uart_dma_exit(sport);
- 	}
- 
--	mctrl_gpio_disable_ms(sport->gpios);
-+	mctrl_gpio_disable_ms_sync(sport->gpios);
- 
- 	uart_port_lock_irqsave(&sport->port, &flags);
- 	ucr2 = imx_uart_readl(sport, UCR2);
-diff --git a/drivers/tty/serial/serial_mctrl_gpio.c b/drivers/tty/serial/serial_mctrl_gpio.c
-index 8855688a5b6c0..ca55bcc0b6111 100644
---- a/drivers/tty/serial/serial_mctrl_gpio.c
-+++ b/drivers/tty/serial/serial_mctrl_gpio.c
-@@ -322,11 +322,7 @@ void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios)
- }
- EXPORT_SYMBOL_GPL(mctrl_gpio_enable_ms);
- 
--/**
-- * mctrl_gpio_disable_ms - disable irqs and handling of changes to the ms lines
-- * @gpios: gpios to disable
-- */
--void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
-+static void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios, bool sync)
- {
- 	enum mctrl_gpio_idx i;
- 
-@@ -342,10 +338,34 @@ void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
- 		if (!gpios->irq[i])
- 			continue;
- 
--		disable_irq(gpios->irq[i]);
-+		if (sync)
-+			disable_irq(gpios->irq[i]);
-+		else
-+			disable_irq_nosync(gpios->irq[i]);
- 	}
- }
--EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms);
-+
-+/**
-+ * mctrl_gpio_disable_ms_sync - disable irqs and handling of changes to the ms
-+ * lines, and wait for any pending IRQ to be processed
-+ * @gpios: gpios to disable
-+ */
-+void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios)
-+{
-+	mctrl_gpio_disable_ms(gpios, true);
-+}
-+EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms_sync);
-+
-+/**
-+ * mctrl_gpio_disable_ms_no_sync - disable irqs and handling of changes to the
-+ * ms lines, and return immediately
-+ * @gpios: gpios to disable
-+ */
-+void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios)
-+{
-+	mctrl_gpio_disable_ms(gpios, false);
-+}
-+EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms_no_sync);
- 
- void mctrl_gpio_enable_irq_wake(struct mctrl_gpios *gpios)
- {
-diff --git a/drivers/tty/serial/serial_mctrl_gpio.h b/drivers/tty/serial/serial_mctrl_gpio.h
-index fc76910fb105a..79e97838ebe56 100644
---- a/drivers/tty/serial/serial_mctrl_gpio.h
-+++ b/drivers/tty/serial/serial_mctrl_gpio.h
-@@ -87,9 +87,16 @@ void mctrl_gpio_free(struct device *dev, struct mctrl_gpios *gpios);
- void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios);
- 
- /*
-- * Disable gpio interrupts to report status line changes.
-+ * Disable gpio interrupts to report status line changes, and block until
-+ * any corresponding IRQ is processed
-  */
--void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios);
-+void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios);
-+
-+/*
-+ * Disable gpio interrupts to report status line changes, and return
-+ * immediately
-+ */
-+void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios);
- 
- /*
-  * Enable gpio wakeup interrupts to enable wake up source.
-@@ -148,7 +155,11 @@ static inline void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios)
- {
- }
- 
--static inline void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
-+static inline void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios)
-+{
-+}
-+
-+static inline void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios)
- {
- }
- 
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index f43059e1b5c28..80efe3b0ed0c3 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -2297,7 +2297,7 @@ static void sci_shutdown(struct uart_port *port)
- 	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
- 
- 	s->autorts = false;
--	mctrl_gpio_disable_ms(to_sci_port(port)->gpios);
-+	mctrl_gpio_disable_ms_sync(to_sci_port(port)->gpios);
- 
- 	uart_port_lock_irqsave(port, &flags);
- 	sci_stop_rx(port);
-diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
-index 9b9981352b1e1..e685cace5c854 100644
---- a/drivers/tty/serial/stm32-usart.c
-+++ b/drivers/tty/serial/stm32-usart.c
-@@ -944,7 +944,7 @@ static void stm32_usart_enable_ms(struct uart_port *port)
- 
- static void stm32_usart_disable_ms(struct uart_port *port)
- {
--	mctrl_gpio_disable_ms(to_stm32_port(port)->gpios);
-+	mctrl_gpio_disable_ms_sync(to_stm32_port(port)->gpios);
- }
- 
- /* Transmit stop */
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 592ee3b47635b..1437108f9d7af 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -1447,6 +1447,7 @@ static int copy_verifier_state(struct bpf_verifier_state *dst_state,
+ 	dst_state->callback_unroll_depth = src->callback_unroll_depth;
+ 	dst_state->used_as_loop_entry = src->used_as_loop_entry;
+ 	dst_state->may_goto_depth = src->may_goto_depth;
++	dst_state->loop_entry = src->loop_entry;
+ 	for (i = 0; i <= src->curframe; i++) {
+ 		dst = dst_state->frame[i];
+ 		if (!dst) {
+@@ -18720,6 +18721,8 @@ static int do_check(struct bpf_verifier_env *env)
+ 						return err;
+ 					break;
+ 				} else {
++					if (WARN_ON_ONCE(env->cur_state->loop_entry))
++						env->cur_state->loop_entry = NULL;
+ 					do_print_state = true;
+ 					continue;
+ 				}
 -- 
 2.39.5
 
