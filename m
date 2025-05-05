@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-141542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A27AAB762
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:10:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1852AAB74E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:09:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F6303A0378
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:03:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C08861C21DC8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359492836AB;
-	Tue,  6 May 2025 00:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8D04779AE;
+	Tue,  6 May 2025 00:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ObaD34Je"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="in3GBxvC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC272ECE34;
-	Mon,  5 May 2025 23:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59CF2EFB8A;
+	Mon,  5 May 2025 23:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486648; cv=none; b=g9WSFEnG+qwDNMyupVbpqof23VztHTHq/hQx4sc03cDLvBo4NlIsnixNiGrwmRFaod9DBJPJF1yJSo1LVrYv9lUU37xl0FHD3WkXeoTO5OAa0JqKeRG+B9AlvD1NPkrCDlWUy6pRTpBwjTL0tUvklYqOsDR3Iwq8AiDkzlapRYU=
+	t=1746486658; cv=none; b=nSIutblhQD5ClW+RtEElqSzxbui2DOhqbds4ff1lMwUoX4AcLUjBfeZFFbCzhvpabEexZpQpNd0+D3dpTi39cLqQ9GbAVs7DbmXiFhCl37Mqn3QKsduGuI7XmAnW7zE4IlWmtB80TbsZcpImmlr9LCf0ud+h9NkKdjfGtCRGk4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486648; c=relaxed/simple;
-	bh=6R+CjWoSWNOkptTCEyM4s/GgpltNIGtG68+ZjbM+P8k=;
+	s=arc-20240116; t=1746486658; c=relaxed/simple;
+	bh=dhyDtTy5Z6RWp/Mjf/6pkAtEPg5sjXajgUbTlAbaBXk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YLLnBB1GdrTWoFRvsshT8EVULfPRE3Ia2xFNU2jB8tnNJxlXHuCDTBTqdC9XCCUb00ETpTugiSGNyFEHD3EKMsA8u8ZWAOufbp/swn4ZPcQpiP+P9UhWK+yvyngYTi9A4iPq7Ep7lXhi0BLsuYT9AJWmAd5N8DNo6IyrPmkP3lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ObaD34Je; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B84C4CEEF;
-	Mon,  5 May 2025 23:10:46 +0000 (UTC)
+	 MIME-Version; b=Tp7ibErm/vDSB52o8Bthw1jZmhf2pLcoC4Mmhi3Vmdy7f7lqPR/5XWAIQx9fF6V/rddltiZLGsKCBQ/fBmpJTR8goZRRNcmXw4nUl3VP1IvSLkPRIE3mVgPr4IrPK7pXJNOJJCIp+m7CvCFzN99JH4S/QDbxnz6y1KEk/WdC70M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=in3GBxvC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0BCDC4CEEE;
+	Mon,  5 May 2025 23:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486648;
-	bh=6R+CjWoSWNOkptTCEyM4s/GgpltNIGtG68+ZjbM+P8k=;
+	s=k20201202; t=1746486657;
+	bh=dhyDtTy5Z6RWp/Mjf/6pkAtEPg5sjXajgUbTlAbaBXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ObaD34Jegc1z61HZ4xAVLF7nnpJlO4Zy8CF5cnc9ZvV/ObMXTf9hNyxt37Zyvqoi8
-	 khfSJ8Q8OCXUvuu0sEx26s0zrqA4gqqMSnD2t1xcGsTQB7EcuuoVIKl+Tq211EPwtz
-	 Z3llzr+O9jd9Ke5JUw37DvbgVHoVNQ3EplsooE/GazkVv6wqqLEspXQtLK28AIahPc
-	 47LbkE18MpoouMEtce9cmpT3ZawTgJjZsc2RJHLF6wxuqO8WF/Sd9TiIHidCKZW2Jp
-	 Q58XlZh5b9ifz6uHBr+2hDFCRYqLZDKMl2MWbXlI8akLVJ78W3/IFtjQJdeBZxJU43
-	 3EBlQOKWApXhw==
+	b=in3GBxvCSc4SOHi91Dy636hxzpCvEbpPLMM8BsZBTG9HtyUfQlZEgW6Drt48sD3UI
+	 I6P0mwqwChELAinjqiL+CMRORuqr5aBBJuvob/vhS9bWeBOHUKFL5LvM60W8YgH4TX
+	 4rBMSlOvyf6AN7Up9m5Aziy6F7sgI0tjFLz3CxTn3hBQrg2hP/a+CJSYEuR3KadGjQ
+	 M/SWFInRz/Yd6e898sCxit2w4J3B770R040ZF+oAJTBjYHmdrugeXwY49wi7Y7t8ao
+	 R3DLxmKLtgKhXK6ai7+zqQOuDxfIReXfIRMWgH7x22pq/rvqq/05qeFkfWBRohbCV6
+	 Nrd9P7XHoAsfQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Paul Burton <paulburton@kernel.org>,
-	Chao-ying Fu <cfu@wavecomp.com>,
-	Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>,
-	Aleksandar Rikalo <arikalo@gmail.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Jason Baron <jbaron@akamai.com>,
+	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 134/212] clocksource: mips-gic-timer: Enable counter when CPUs start
-Date: Mon,  5 May 2025 19:05:06 -0400
-Message-Id: <20250505230624.2692522-134-sashal@kernel.org>
+	bp@alien8.de,
+	linux-edac@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 141/212] EDAC/ie31200: work around false positive build warning
+Date: Mon,  5 May 2025 19:05:13 -0400
+Message-Id: <20250505230624.2692522-141-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -68,69 +62,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Paul Burton <paulburton@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 3128b0a2e0cf6e07aa78e5f8cf7dd9cd59dc8174 ]
+[ Upstream commit c29dfd661fe2f8d1b48c7f00590929c04b25bf40 ]
 
-In multi-cluster MIPS I6500 systems there is a GIC in each cluster,
-each with its own counter. When a cluster powers up the counter will
-be stopped, with the COUNTSTOP bit set in the GIC_CONFIG register.
+gcc-14 produces a bogus warning in some configurations:
 
-In single cluster systems, it has been fine to clear COUNTSTOP once
-in gic_clocksource_of_init() to start the counter. In multi-cluster
-systems, this will only have started the counter in the boot cluster,
-and any CPUs in other clusters will find their counter stopped which
-will break the GIC clock_event_device.
+drivers/edac/ie31200_edac.c: In function 'ie31200_probe1.isra':
+drivers/edac/ie31200_edac.c:412:26: error: 'dimm_info' is used uninitialized [-Werror=uninitialized]
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
+drivers/edac/ie31200_edac.c:412:26: note: 'dimm_info' declared here
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
 
-Resolve this by having CPUs clear the COUNTSTOP bit when they come
-online, using the existing gic_starting_cpu() CPU hotplug callback. This
-will allow CPUs in secondary clusters to ensure that the cluster's GIC
-counter is running as expected.
+I don't see any way the unintialized access could really happen here,
+but I can see why the compiler gets confused by the two loops.
 
-Signed-off-by: Paul Burton <paulburton@kernel.org>
-Signed-off-by: Chao-ying Fu <cfu@wavecomp.com>
-Signed-off-by: Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>
-Signed-off-by: Aleksandar Rikalo <arikalo@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Instead, rework the two nested loops to only read the addr_decode
+registers and then keep only one instance of the dimm info structure.
+
+[Tony: Qiuxu pointed out that the "populate DIMM info" comment was left
+behind in the refactor and suggested moving it. I deleted the comment
+as unnecessry in front os a call to populate_dimm_info(). That seems
+pretty self-describing.]
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Jason Baron <jbaron@akamai.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/all/20250122065031.1321015-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/mips-gic-timer.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/edac/ie31200_edac.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
-index b3ae38f367205..39c70b5ac44c9 100644
---- a/drivers/clocksource/mips-gic-timer.c
-+++ b/drivers/clocksource/mips-gic-timer.c
-@@ -114,6 +114,9 @@ static void gic_update_frequency(void *data)
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index 56be8ef40f376..e3635fba63b49 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -405,10 +405,9 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	int i, j, ret;
+ 	struct mem_ctl_info *mci = NULL;
+ 	struct edac_mc_layer layers[2];
+-	struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+ 	void __iomem *window;
+ 	struct ie31200_priv *priv;
+-	u32 addr_decode, mad_offset;
++	u32 addr_decode[IE31200_CHANNELS], mad_offset;
  
- static int gic_starting_cpu(unsigned int cpu)
- {
-+	/* Ensure the GIC counter is running */
-+	clear_gic_config(GIC_CONFIG_COUNTSTOP);
-+
- 	gic_clockevent_cpu_init(cpu, this_cpu_ptr(&gic_clockevent_device));
- 	return 0;
- }
-@@ -248,9 +251,6 @@ static int __init gic_clocksource_of_init(struct device_node *node)
- 			pr_warn("Unable to register clock notifier\n");
+ 	/*
+ 	 * Kaby Lake, Coffee Lake seem to work like Skylake. Please re-visit
+@@ -466,19 +465,10 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 		mad_offset = IE31200_MAD_DIMM_0_OFFSET;
  	}
  
--	/* And finally start the counter */
--	clear_gic_config(GIC_CONFIG_COUNTSTOP);
--
+-	/* populate DIMM info */
+ 	for (i = 0; i < IE31200_CHANNELS; i++) {
+-		addr_decode = readl(window + mad_offset +
++		addr_decode[i] = readl(window + mad_offset +
+ 					(i * 4));
+-		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode);
+-		for (j = 0; j < IE31200_DIMMS_PER_CHANNEL; j++) {
+-			populate_dimm_info(&dimm_info[i][j], addr_decode, j,
+-					   skl);
+-			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
+-				 dimm_info[i][j].size,
+-				 dimm_info[i][j].dual_rank,
+-				 dimm_info[i][j].x16_width);
+-		}
++		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode[i]);
+ 	}
+ 
  	/*
- 	 * It's safe to use the MIPS GIC timer as a sched clock source only if
- 	 * its ticks are stable, which is true on either the platforms with
+@@ -489,14 +479,22 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	 */
+ 	for (i = 0; i < IE31200_DIMMS_PER_CHANNEL; i++) {
+ 		for (j = 0; j < IE31200_CHANNELS; j++) {
++			struct dimm_data dimm_info;
+ 			struct dimm_info *dimm;
+ 			unsigned long nr_pages;
+ 
+-			nr_pages = IE31200_PAGES(dimm_info[j][i].size, skl);
++			populate_dimm_info(&dimm_info, addr_decode[j], i,
++					   skl);
++			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
++				 dimm_info.size,
++				 dimm_info.dual_rank,
++				 dimm_info.x16_width);
++
++			nr_pages = IE31200_PAGES(dimm_info.size, skl);
+ 			if (nr_pages == 0)
+ 				continue;
+ 
+-			if (dimm_info[j][i].dual_rank) {
++			if (dimm_info.dual_rank) {
+ 				nr_pages = nr_pages / 2;
+ 				dimm = edac_get_dimm(mci, (i * 2) + 1, j, 0);
+ 				dimm->nr_pages = nr_pages;
 -- 
 2.39.5
 
