@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-140494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36505AAADE2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:45:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD02AAADE5
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:45:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 352F6164FAE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:42:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E324165AB3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377F629CB3B;
-	Mon,  5 May 2025 22:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD07B7F9;
+	Mon,  5 May 2025 22:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tagauJDc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kt2mXu3S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A3A359DF9;
-	Mon,  5 May 2025 22:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E467F299AA2;
+	Mon,  5 May 2025 22:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484977; cv=none; b=O/rB0lDxU31slPtIsXZuqOH9vZ2zVQ/9b1bqB9BN0coo4Ef+Y0YvFdfIYbH673q9kRzr7d/Lw9VLGj9gNvw/q+Wqn9F/AjWu8XXoRZ2pBI8qTL1IkCv2+5CHdDQ7vF3CvOMG9n/H7LGjF/npAW9ZxxKgvD8mUdKJoM6U3SfExQc=
+	t=1746485002; cv=none; b=io80+uEjATtuJAP5o1Q+wqovHjL/W1wVQAxz+dVnOLbxniNAM0F9PLeQbGNiWN0wsKYVLHhx09qMaVxAiADDjax8JX/yRpy7I+2Ke/DKqN9p8AXda4F6UDV4Ku1By2Sj4x1uh4MW07R9d+qw2Uq6TwzazWMgbmFDVVW/3oJ4ZzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484977; c=relaxed/simple;
-	bh=YQ75bINvl/uiYyqnZhLyfguZ9F0UaUz2ZRP/bkRD+kU=;
+	s=arc-20240116; t=1746485002; c=relaxed/simple;
+	bh=ay8e5jZYitraKytTGlIPwdEHkmewyYwRjos8ZAFOtVY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=r5h9y55JJYN6vRhyJbVsrRnIkYsvPYU61TyyuozhfbwanJ7raShILG2d0/uPKr5FiwtNy4S2tt/9p2Q3d0lvXDBx23eqnB5wCxceRSuodoQ8WYI7ZD+fYFb+i2fKi4eewPMJC+x46IpbFxJH76AkkPCeM4psIiH5sBfQBtSt94U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tagauJDc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5636FC4CEE4;
-	Mon,  5 May 2025 22:42:55 +0000 (UTC)
+	 MIME-Version; b=sk+Y87ceib/iXvw5P8IgCv5zaY2IvEmrB9dldzJGZLhRvUzDSYL+yxwHqY+rc6dg8VKchhHf1Cuatf8akikUcSqqeYD0BqvQ6P0orTZZni2HyFuDSKaWJrPaCdm4m6hlHNexCLFtQcnWTOkjITYet5sYAMiLMfjX4SZCD5TL+uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kt2mXu3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1EBFC4CEEE;
+	Mon,  5 May 2025 22:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484976;
-	bh=YQ75bINvl/uiYyqnZhLyfguZ9F0UaUz2ZRP/bkRD+kU=;
+	s=k20201202; t=1746485001;
+	bh=ay8e5jZYitraKytTGlIPwdEHkmewyYwRjos8ZAFOtVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tagauJDcT/9+ybLUVOchFKqbADIq6YI6zha5Mevau/atT2qhB49Ty9OsKwWF1HffS
-	 BUCpbUkVofuzhh1wnM+j7/ZGrbkO4G3HS6chssYgo787Sv9AEGwzmT72anoYe+X6Xx
-	 I6xrDgNgeoBmJx/GebWjyisowG5KmgAAnyC4ObJO77lrA+DeM5+aH1r2ovDScUPNUg
-	 fFy4WO6CNrskUvw0OVe/rC2KAFigmr/sKkttKLsNkuG7ThHFQtJJ4M66yVaN0MWWH1
-	 LWOo/bxq490RKzR26IYnaL9eEBCUmE+4yO8LxfUo0diNh3MeTCURp5OBc7n6pB+MuB
-	 j95fJXqWHppYw==
+	b=Kt2mXu3SGuuElopaDqMPbV+0cBpNxtO29TwuHrN40wLNnyey/pP9gcr426UmCzPke
+	 Y2HyvhjrUehd9L8QuMz5cyWKizTYJo7K0gHVwgm6dP9Ird50jYTmQQTQJCUO2wOCrH
+	 ioO/yHESd1W7eUWaauoi7BPDHtL8YuG1NOfDYhFrtXkNyQiPFtWr7J/4b40zsM5XLC
+	 c8qstO4JwClHkYP22u72jgCMUEf2jxZNjTpsZjbA0grTQ+BPASfWVpxJSYbur2czju
+	 kD+5oRUg6y/Ir4Q9HKolVDYJxqUksjWQ+7xLtsiFhHZjYUw4QJpx47/6SGFU7m52Zi
+	 yKICZdL4lnBEg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+Cc: Shree Ramamoorthy <s-ramamoorthy@ti.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	andreas.noever@gmail.com,
-	michael.jamet@intel.com,
-	westeri@kernel.org,
-	YehezkelShB@gmail.com,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 106/486] thunderbolt: Do not add non-active NVM if NVM upgrade is disabled for retimer
-Date: Mon,  5 May 2025 18:33:02 -0400
-Message-Id: <20250505223922.2682012-106-sashal@kernel.org>
+	aaro.koskinen@iki.fi,
+	andreas@kemnade.info,
+	khilman@baylibre.com,
+	rogerq@kernel.org,
+	tony@atomide.com,
+	linux-omap@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 119/486] mfd: tps65219: Remove TPS65219_REG_TI_DEV_ID check
+Date: Mon,  5 May 2025 18:33:15 -0400
+Message-Id: <20250505223922.2682012-119-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,39 +70,56 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Shree Ramamoorthy <s-ramamoorthy@ti.com>
 
-[ Upstream commit ad79c278e478ca8c1a3bf8e7a0afba8f862a48a1 ]
+[ Upstream commit 76b58d5111fdcffce615beb71520bc7a6f1742c9 ]
 
-This is only used to write a new NVM in order to upgrade the retimer
-firmware. It does not make sense to expose it if upgrade is disabled.
-This also makes it consistent with the router NVM upgrade.
+The chipid macro/variable and regmap_read function call is not needed
+because the TPS65219_REG_TI_DEV_ID register value is not a consistent value
+across TPS65219 PMIC config versions. Reading from the DEV_ID register
+without a consistent value to compare it to isn't useful. There isn't a
+way to verify the match data ID is the same ID read from the DEV_ID device
+register. 0xF0 isn't a DEV_ID value consistent across TPS65219 NVM
+configurations.
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+For TPS65215, there is a consistent value in bits 5-0 of the DEV_ID
+register. However, there are other error checks in place within probe()
+that apply to both PMICs rather than keeping this isolated check for one
+PMIC.
+
+Signed-off-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+Link: https://lore.kernel.org/r/20250206173725.386720-4-s-ramamoorthy@ti.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/retimer.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/mfd/tps65219.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/thunderbolt/retimer.c b/drivers/thunderbolt/retimer.c
-index eeb64433ebbca..3488be7620674 100644
---- a/drivers/thunderbolt/retimer.c
-+++ b/drivers/thunderbolt/retimer.c
-@@ -93,9 +93,11 @@ static int tb_retimer_nvm_add(struct tb_retimer *rt)
+diff --git a/drivers/mfd/tps65219.c b/drivers/mfd/tps65219.c
+index 57ff5cb294a66..d3b77abec786e 100644
+--- a/drivers/mfd/tps65219.c
++++ b/drivers/mfd/tps65219.c
+@@ -228,7 +228,6 @@ static const struct regmap_irq_chip tps65219_irq_chip = {
+ static int tps65219_probe(struct i2c_client *client)
+ {
+ 	struct tps65219 *tps;
+-	unsigned int chipid;
+ 	bool pwr_button;
+ 	int ret;
+ 
+@@ -253,12 +252,6 @@ static int tps65219_probe(struct i2c_client *client)
  	if (ret)
- 		goto err_nvm;
+ 		return ret;
  
--	ret = tb_nvm_add_non_active(nvm, nvm_write);
--	if (ret)
--		goto err_nvm;
-+	if (!rt->no_nvm_upgrade) {
-+		ret = tb_nvm_add_non_active(nvm, nvm_write);
-+		if (ret)
-+			goto err_nvm;
-+	}
- 
- 	rt->nvm = nvm;
- 	dev_dbg(&rt->dev, "NVM version %x.%x\n", nvm->major, nvm->minor);
+-	ret = regmap_read(tps->regmap, TPS65219_REG_TI_DEV_ID, &chipid);
+-	if (ret) {
+-		dev_err(tps->dev, "Failed to read device ID: %d\n", ret);
+-		return ret;
+-	}
+-
+ 	ret = devm_mfd_add_devices(tps->dev, PLATFORM_DEVID_AUTO,
+ 				   tps65219_cells, ARRAY_SIZE(tps65219_cells),
+ 				   NULL, 0, regmap_irq_get_domain(tps->irq_data));
 -- 
 2.39.5
 
