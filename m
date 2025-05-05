@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-140804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCCA7AAABA1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9789AAABA4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18BC91890381
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:56:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCFD31887D2A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD9E3B11FC;
-	Mon,  5 May 2025 23:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FF428B413;
+	Mon,  5 May 2025 23:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jbsv0nd6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fGQJAx8m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4452E62B0;
-	Mon,  5 May 2025 23:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30904239E98;
+	Mon,  5 May 2025 23:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486361; cv=none; b=Ea6WsxGKRh8/rFSHoP9CwVKOKCMC+99BtmpRvtSyyXzPJtmOqagTu7bcXEaOAVHT4MZom/nLKOMhCTZfCiRJ4jmJPLu9kfWOamgM8hPbrjIspxBxwnt42bSOwhJKT3Qs1hXb0IUkqjZC+R2+4CdSIOBNWKK9I9b9TuRWpRqPByw=
+	t=1746486365; cv=none; b=OWIU+kpg+FgF4+Ca99csgsTp8Tt3eXmn4XsmYr8JNbrtC3xtzPS5bU7h9bbul63xlazlkG6eFWw47aop5zO7itKVsNAyS2q2oFk35AI9V6PVQdkb+czZJwJVQDoTXtpHduyHIxIre4aRFm/7SdmvdBg+qmTPTJmfb1Ggb3aoO1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486361; c=relaxed/simple;
-	bh=/9BGlDgL7w9Q+zIZrKDXUM0AN8AxUkl6CWSvTa3RhDs=;
+	s=arc-20240116; t=1746486365; c=relaxed/simple;
+	bh=y/59NUCT+emsbMk77W79CZDerhVRoMowu5usETn5qbM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UiV3UQoFACIsmwefR1m+BN20r15ZNT7+omySFxzY9yuFWY0/bmYNuufRnDFEtXknD20JcSm3hPqG8jOkMDontSaAOuCCJyrTGgNedplGpzguwhNcyeCk7shg2B8o6BE7iOYxxHywKUJ0ZYjj0Z+vAkx1LHH/vgC8x48l37VvCso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jbsv0nd6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A57D3C4CEED;
-	Mon,  5 May 2025 23:06:00 +0000 (UTC)
+	 MIME-Version; b=SWJcNVD5nUBxgcEtgtqhajYQAVVT36JHi7TOwsSiII5N3ZdaMKqrRpxO0qpbSVXMZYaDgxnfhdX/IZ9SIdDVraen1cARO/maz49kdUn/y6c88fgZa2moeXnimPIRm8NcQBhFD79wpT722p1c+evYfCUGJ97F6exCaS/68XStIjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fGQJAx8m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF5CC4CEEE;
+	Mon,  5 May 2025 23:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486361;
-	bh=/9BGlDgL7w9Q+zIZrKDXUM0AN8AxUkl6CWSvTa3RhDs=;
+	s=k20201202; t=1746486365;
+	bh=y/59NUCT+emsbMk77W79CZDerhVRoMowu5usETn5qbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jbsv0nd6VnAtk/r6RJ1APjmGYxGGY/u9GcHY8LjXm9eWdiRUHSo/nNo2KLRt8zOTp
-	 XhHkws6zwVkIs218owj1DHKjyN7J1CJSgsn9/llC2+PHAL6dVwZu2FywnapW3o6mI1
-	 cNf0RiZ7+jbmJU3GurMdEVZjj2Y1bboq7UB6WEnDEV2/uF620XlTAXDcN4RE0z7/ET
-	 +C+Cy95beiwX/J0Nz7HOZXSzwLpTwvKM76cWVsM6VNueeLntHR3XDTJAF93sMJdBR8
-	 W9QyBFWiQ6C7JZ8YwSoisPeGthT68Fq4XyD2NpttWCExXlr+F5pwJtkXl3SCLR/zZ/
-	 +Z2ERovry9KOQ==
+	b=fGQJAx8m6coigvNBBgslF8/B8BFm6JEa9bz6M4NyxrAXVfa0+bbCdRhdg3Y/rapHk
+	 g1XjbqH8ZYeYkcVQ286TsvphYfKZw+f49H8RjbCohh6uJSnEUprzbP8UIjQ5mfVpSi
+	 JcYus8G1WIacYEUFNDujx3YrWEM6Cl6iW61S48Oc189OIe/sO7qCvjLrNHX1noupQ5
+	 KhLynoez8y64dV8hRXx8CkwWFFP/VNO3v5bUvBufwrIJBHCKN04MOcuZx58bKPF6na
+	 YHLc1maVGrYbSNE1Snq2DUrJOSdfXj+G76VJ+S6IYIhZUZQFkUdXuYLoaZ3t1qdhnG
+	 FpHDZQQ1XqYTA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Soeren Moch <smoch@web.de>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Sean Anderson <sean.anderson@linux.dev>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	Jes.Sorensen@gmail.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 281/294] wifi: rtl8xxxu: retry firmware download on error
-Date: Mon,  5 May 2025 18:56:21 -0400
-Message-Id: <20250505225634.2688578-281-sashal@kernel.org>
+	michal.simek@amd.com,
+	linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 284/294] spi: zynqmp-gqspi: Always acknowledge interrupts
+Date: Mon,  5 May 2025 18:56:24 -0400
+Message-Id: <20250505225634.2688578-284-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -66,65 +67,70 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Soeren Moch <smoch@web.de>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 3d3e28feca7ac8c6cf2a390dbbe1f97e3feb7f36 ]
+[ Upstream commit 89785306453ce6d949e783f6936821a0b7649ee2 ]
 
-Occasionally there is an EPROTO error during firmware download.
-This error is converted to EAGAIN in the download function.
-But nobody tries again and so device probe fails.
+RXEMPTY can cause an IRQ, even though we may not do anything about it
+(such as if we are waiting for more received data). We must still handle
+these IRQs because we can tell they were caused by the device.
 
-Implement download retry to fix this.
-
-This error was observed (and fix tested) on a tbs2910 board [1]
-with an embedded RTL8188EU (0bda:8179) device behind a USB hub.
-
-[1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
-
-Signed-off-by: Soeren Moch <smoch@web.de>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250127194828.599379-1-smoch@web.de
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://patch.msgid.link/20250116224130.2684544-6-sean.anderson@linux.dev
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c   | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/spi/spi-zynqmp-gqspi.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 6e47dde938909..05e77d2bda373 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -900,9 +900,10 @@ rtl8xxxu_writeN(struct rtl8xxxu_priv *priv, u16 addr, u8 *buf, u16 len)
- 	return len;
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index 3503e6c0a5c98..b5deb4fe3b832 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -799,7 +799,6 @@ static void zynqmp_process_dma_irq(struct zynqmp_qspi *xqspi)
+ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
+ {
+ 	struct zynqmp_qspi *xqspi = (struct zynqmp_qspi *)dev_id;
+-	irqreturn_t ret = IRQ_NONE;
+ 	u32 status, mask, dma_status = 0;
  
- write_error:
--	dev_info(&udev->dev,
--		 "%s: Failed to write block at addr: %04x size: %04x\n",
--		 __func__, addr, blocksize);
-+	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_REG_WRITE)
-+		dev_info(&udev->dev,
-+			 "%s: Failed to write block at addr: %04x size: %04x\n",
-+			 __func__, addr, blocksize);
- 	return -EAGAIN;
+ 	status = zynqmp_gqspi_read(xqspi, GQSPI_ISR_OFST);
+@@ -814,27 +813,24 @@ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
+ 				   dma_status);
+ 	}
+ 
+-	if (mask & GQSPI_ISR_TXNOT_FULL_MASK) {
++	if (!mask && !dma_status)
++		return IRQ_NONE;
++
++	if (mask & GQSPI_ISR_TXNOT_FULL_MASK)
+ 		zynqmp_qspi_filltxfifo(xqspi, GQSPI_TX_FIFO_FILL);
+-		ret = IRQ_HANDLED;
+-	}
+ 
+-	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK) {
++	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK)
+ 		zynqmp_process_dma_irq(xqspi);
+-		ret = IRQ_HANDLED;
+-	} else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
+-			(mask & GQSPI_IER_GENFIFOEMPTY_MASK)) {
++	else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
++			(mask & GQSPI_IER_GENFIFOEMPTY_MASK))
+ 		zynqmp_qspi_readrxfifo(xqspi, GQSPI_RX_FIFO_FILL);
+-		ret = IRQ_HANDLED;
+-	}
+ 
+ 	if (xqspi->bytes_to_receive == 0 && xqspi->bytes_to_transfer == 0 &&
+ 	    ((status & GQSPI_IRQ_MASK) == GQSPI_IRQ_MASK)) {
+ 		zynqmp_gqspi_write(xqspi, GQSPI_IDR_OFST, GQSPI_ISR_IDR_MASK);
+ 		complete(&xqspi->data_completion);
+-		ret = IRQ_HANDLED;
+ 	}
+-	return ret;
++	return IRQ_HANDLED;
  }
  
-@@ -4073,8 +4074,14 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
- 	 */
- 	rtl8xxxu_write16(priv, REG_TRXFF_BNDY + 2, fops->trxff_boundary);
- 
--	ret = rtl8xxxu_download_firmware(priv);
--	dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
-+	for (int retry = 5; retry >= 0 ; retry--) {
-+		ret = rtl8xxxu_download_firmware(priv);
-+		dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
-+		if (ret != -EAGAIN)
-+			break;
-+		if (retry)
-+			dev_dbg(dev, "%s: retry firmware download\n", __func__);
-+	}
- 	if (ret)
- 		goto exit;
- 	ret = rtl8xxxu_start_firmware(priv);
+ /**
 -- 
 2.39.5
 
