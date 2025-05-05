@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-140859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C28AAABF0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:06:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F32AAABED
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:05:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0FE84C37D8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:05:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66F564A78EC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F667383E07;
-	Mon,  5 May 2025 23:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0482FA80C;
+	Mon,  5 May 2025 23:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tEmLlIc8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N35ARArW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F1F2EE4AE;
-	Mon,  5 May 2025 23:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95A32836A2;
+	Mon,  5 May 2025 23:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486583; cv=none; b=oIWiky8NYxsBoS5dOAWxlFp94n1nySL2zo9k5gEoclKlU7Po4LNZuzwyYtUBWB96IWdpmWrdRwm6wLVO+y+Z8kxe+Ag2xKBRl3gVZGpNb3wsJp7pljRzBDG3hH4Xf+oXRW0fY6/MH9c+rdF8dwDFkUbKSNzrk01SJ5bIwSCyKgE=
+	t=1746486599; cv=none; b=RP6gprwnaVKV3zWfW618QoBIrYun9IQy7xq3Hayw6arKP+DvzyxsqLfAdj58m8XxmKk1Tno3KoLZNINainCuLyQTTK2Plm0Zugq1lzF0ui6KpYwBflb+AOtk2Yp1BKXpQxEkMytk5YoLnF2RccK5qzsOPg0U9uq20FLPaT0uzSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486583; c=relaxed/simple;
-	bh=+espPTqWdtGY5fu055kbMiWdUdSJbhnfuL4I/7MRnYI=;
+	s=arc-20240116; t=1746486599; c=relaxed/simple;
+	bh=U/kOHmzvB1lzBJaKYAzAlXmLijrDTnh5CcoN3Fexe8I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BvsBSPBJNlHTkwfsWJa1yT3vlxOI/VBAqFky6I+6zuukRw9KbinjM1FOCzijRc5+Yv5SwPAoUdjJmKUxg8xu6pNa9dCIuSZ7K7fE17mXkYCE/yVgvgveoFe9lbQGKOuDiQVGHp/S7O7ncda2qs9q9paUWEkC0e870PEZdhLUfvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tEmLlIc8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9BFC4CEEE;
-	Mon,  5 May 2025 23:09:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Mpa0/oOLymnpKXOnn3WsCDin0UX3dTLHZ/sExBz5G2MUu1lgoVm2AIHNDu3JvOuqbgnOI+HzIJDqdidjhMzRDzMEpWqFHq3KHHBgGcdR0i8eUtACM6/jyXnAH7wBVKj4DzE1vtjE/GrHwLLQXkuxztw1E0YONZdTQLkZFJZoEoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N35ARArW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8992C4CEEE;
+	Mon,  5 May 2025 23:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486582;
-	bh=+espPTqWdtGY5fu055kbMiWdUdSJbhnfuL4I/7MRnYI=;
+	s=k20201202; t=1746486598;
+	bh=U/kOHmzvB1lzBJaKYAzAlXmLijrDTnh5CcoN3Fexe8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tEmLlIc8RYnX1Uejslz4pwpAtf5ocZrHUa8Y3JmKuZiyfHgAfx4b9fKtp9omrr+oj
-	 MLtc7M8kyAH6U/FCQ5DM/lq5N4iHYdbNqQvLQu9V6kc5JGHnWLwc2C7F31D6vDQb2r
-	 rFHkZaxxCARWaMPYh1rRyXbW+QiWXHvl8SY3+y8gYvxDhufcYOkR7pEDuHeVw8ODqH
-	 tQvkWqpKkQyI/w4dI6C4j+ChxWrztkazHGawfpraLFpQEi72Tg7HY1gV3lCnBHtdMu
-	 nQOpte38fDg0Jbikz7wy1qy8Xn2VdTtf0xA8nWSNbS0eh2t5JwkHjLnd0dUHzFC/Fg
-	 K6C0nkJ5q5Khg==
+	b=N35ARArWXN+yKccfi47qZobfsgQnG35azhNNeeTo9i+Mf7M1CwHrtPZy0xmGohRWG
+	 ZFSlQ/MIPcnwPGTgQ27M8ly5sGZXOg1x0suSKjaFOKbCHkMODGnH4ancxrqXsRyU4S
+	 TAoUW66obO71spbH1SEKUtG84TKeFI1EFD3YOhReD2CscFezxgoPoJk18FBxVAnkFF
+	 2GcvWJIe3vfVY021hED/XglBAn7o2nOhHIOiB9BWuvseuV4ufrjumJkHTnxwDoEZik
+	 nTbbzMowZLzlHiIPTUp9zuoVVO2RTO/SdxuauUdUZ5j7CHvpcNBGMTb4j6oCJnfDNT
+	 WLJb27mEigTSg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ricardo Ribalda <ribalda@chromium.org>,
-	Yunke Cao <yunkec@google.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: Stanimir Varbanov <svarbanov@suse.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	"Ivan T . Ivanov" <iivanov@suse.de>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	laurent.pinchart@ideasonboard.com,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 101/212] media: uvcvideo: Add sanity check to uvc_ioctl_xu_ctrl_map
-Date: Mon,  5 May 2025 19:04:33 -0400
-Message-Id: <20250505230624.2692522-101-sashal@kernel.org>
+	jim2101024@gmail.com,
+	nsaenz@kernel.org,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	manivannan.sadhasivam@linaro.org,
+	bhelgaas@google.com,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 110/212] PCI: brcmstb: Expand inbound window size up to 64GB
+Date: Mon,  5 May 2025 19:04:42 -0400
+Message-Id: <20250505230624.2692522-110-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -64,45 +71,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Stanimir Varbanov <svarbanov@suse.de>
 
-[ Upstream commit 990262fdfce24d6055df9711424343d94d829e6a ]
+[ Upstream commit 25a98c727015638baffcfa236e3f37b70cedcf87 ]
 
-Do not process unknown data types.
+The BCM2712 memory map can support up to 64GB of system memory, thus
+expand the inbound window size in calculation helper function.
 
-Tested-by: Yunke Cao <yunkec@google.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20250203-uvc-roi-v17-15-5900a9fed613@chromium.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+The change is safe for the currently supported SoCs that have smaller
+inbound window sizes.
+
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Jim Quinlan <james.quinlan@broadcom.com>
+Tested-by: Ivan T. Ivanov <iivanov@suse.de>
+Link: https://lore.kernel.org/r/20250224083559.47645-7-svarbanov@suse.de
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_v4l2.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pci/controller/pcie-brcmstb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
-index bd4677a6e653a..0aaa4fce61dae 100644
---- a/drivers/media/usb/uvc/uvc_v4l2.c
-+++ b/drivers/media/usb/uvc/uvc_v4l2.c
-@@ -36,6 +36,12 @@ static int uvc_ioctl_ctrl_map(struct uvc_video_chain *chain,
- 	unsigned int size;
- 	int ret;
- 
-+	if (xmap->data_type > UVC_CTRL_DATA_TYPE_BITMASK) {
-+		uvc_dbg(chain->dev, CONTROL,
-+			"Unsupported UVC data type %u\n", xmap->data_type);
-+		return -EINVAL;
-+	}
-+
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
- 	if (map == NULL)
- 		return -ENOMEM;
+diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
+index 425db793080d4..fe37bd28761a8 100644
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -281,8 +281,8 @@ static int brcm_pcie_encode_ibar_size(u64 size)
+ 	if (log2_in >= 12 && log2_in <= 15)
+ 		/* Covers 4KB to 32KB (inclusive) */
+ 		return (log2_in - 12) + 0x1c;
+-	else if (log2_in >= 16 && log2_in <= 35)
+-		/* Covers 64KB to 32GB, (inclusive) */
++	else if (log2_in >= 16 && log2_in <= 36)
++		/* Covers 64KB to 64GB, (inclusive) */
+ 		return log2_in - 15;
+ 	/* Something is awry so disable */
+ 	return 0;
 -- 
 2.39.5
 
