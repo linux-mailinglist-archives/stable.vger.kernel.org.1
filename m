@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-140957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0FBAAAD12
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:28:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7533AAAACAD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:21:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36DB03A42CB
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:21:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 096167AEFD4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6714C2FFC53;
-	Mon,  5 May 2025 23:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93FC33CDB84;
+	Mon,  5 May 2025 23:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQrZYJEB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ba1jMMUy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B79B3A6F96;
-	Mon,  5 May 2025 23:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F89E3A6F97;
+	Mon,  5 May 2025 23:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487007; cv=none; b=o0qV59iyGxe403jrj7nwvluRVQor1WFgQzCPBdvI57PHHpFp0yNV4hU59MC4wlP6nEYj9axOmuyUsAPRMylp4M6LsIyKWXe1o+hYHw+w82z5H/x17/JnNQd/6f8eQcDZ49PRkqpCDwpyhH/eaGUi4B3hE857pe3vD9ECgfXkJDQ=
+	t=1746487009; cv=none; b=GxHFd6Zu5OeRTsb9bYHXM0BGRdJYHWHxwFl3/b6uygD2YS3K85Zvk1tqeY+gkepLp/iAzvf1i5G1XKQ/22Q/qhaCksvFCisSaiVt2Cw1YJclILcD4oO+SetODVMXNg7iFi/PDbhMHuZNvbLlSr0LudKYIZllUEGm3Ukah38G4pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487007; c=relaxed/simple;
-	bh=qzo60eq99Q4KeFcPO165fQwMvAIqpbtTaxi/l/uJZ7g=;
+	s=arc-20240116; t=1746487009; c=relaxed/simple;
+	bh=P9SF1ybADYKoGQiqDuLrMRKeuvK/iNSd3RpUFcB4AN8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VLWXNqifq8TqoKA7DWa9qqKOa6AD5p20wlZek+uAAptmW8xL9XshleGIhIsfjxTyBrzrYIdleQmveSXBPXiCTv4uis8JjkiF0ZbjzXvfZVMr7pc/1ndK/kqF8dxfe1W5G8E1aN2UeVEOTiCp2RxNzz99DDlpycI7CqadMzgFk3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQrZYJEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E870C4CEED;
-	Mon,  5 May 2025 23:16:44 +0000 (UTC)
+	 MIME-Version; b=ZoU8AfrOGQendYrPBcjh26WooES23jq8UW+tASFyW+BzxwhHl45RZzARUTX54bW3WaP3jVQNI3Osh3fYaxdArMd6cpGrnBAfGrOzD+ZCnscY6Osy+J1YEFntRwwe6lAGgvax3RO7yVkxAr+5FP7jekgvaHKM1Lmf2nT0TO7MQKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ba1jMMUy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9B3C4CEE4;
+	Mon,  5 May 2025 23:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487006;
-	bh=qzo60eq99Q4KeFcPO165fQwMvAIqpbtTaxi/l/uJZ7g=;
+	s=k20201202; t=1746487009;
+	bh=P9SF1ybADYKoGQiqDuLrMRKeuvK/iNSd3RpUFcB4AN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQrZYJEBlFstL68ok+AREMoABLlY2j5s2NmNZJND91UdIsMJ05p6QeewvzEoiiSVy
-	 Zi02+QFnWuoiQiKBiDeQYmMZxhHATQgUbKh1PcaqfnCmj28anIoKUPWoQOfS+xTz6m
-	 CfCeao4pws2tUxoGjQSwDVYZNyY8Q5sXvpP6/+A0gDBKVhicSK7NpoAwU6qOz3w/76
-	 /B2N0Zi1WJio9tbY+poPI34FQwuD8PQBImdAmzvIutqaTgSiVdw9rNJtlnf4ZdDoRc
-	 pDzTGmQTFzkXFHD7a6hXnDUXqBRAQ2jGjVr69uboHrlXLEPzmcRlemZSIQ/DSylPKq
-	 g+WGHNwFoMHGA==
+	b=Ba1jMMUyjUCUrDbZusVhQIcmPhk9RAbJsjdQz5FZaxVMs13pEaQ9veumXdp8D2MB9
+	 72IvWXak6n0J1IJR/cRcaQZXKY+XiF9QV/E89X8ybIRFl+1SrGkEv/bgd+EXaFazFB
+	 +TO963hRvKStuHp1BLlz8AG6De9UT6jy7RA8V6VYX0up+u89vaXNpZqOnJEP/mLt7K
+	 R0/5KVrsoR/wnGMjhe2P3V8niQaAONwdo4VRMM7vUpj6MSi1/WOxjr4vMSpsHw1Nd7
+	 XnZqRDdqv2P1hQfDD7B/jVNnMmq+qNPp54LLFFqBGRN1hUs8FGzC6KQ8Xpyrai4RtQ
+	 FlxDjAc8fvoRg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jason Xing <kerneljasonxing@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+Cc: Michael Margolin <mrgolin@amazon.com>,
+	Firas Jahjah <firasj@amazon.com>,
+	Yonatan Nachum <ynachum@amazon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	edumazet@google.com,
-	ncardwell@google.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	martin.lau@linux.dev,
-	dsahern@kernel.org,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 104/153] bpf: Prevent unsafe access to the sock fields in the BPF timestamping callback
-Date: Mon,  5 May 2025 19:12:31 -0400
-Message-Id: <20250505231320.2695319-104-sashal@kernel.org>
+	mgurtovoy@nvidia.com,
+	phaddad@nvidia.com,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 105/153] RDMA/core: Fix best page size finding when it can cross SG entries
+Date: Mon,  5 May 2025 19:12:32 -0400
+Message-Id: <20250505231320.2695319-105-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -76,147 +69,137 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Jason Xing <kerneljasonxing@gmail.com>
+From: Michael Margolin <mrgolin@amazon.com>
 
-[ Upstream commit fd93eaffb3f977b23bc0a48d4c8616e654fcf133 ]
+[ Upstream commit 486055f5e09df959ad4e3aa4ee75b5c91ddeec2e ]
 
-The subsequent patch will implement BPF TX timestamping. It will
-call the sockops BPF program without holding the sock lock.
+A single scatter-gather entry is limited by a 32 bits "length" field
+that is practically 4GB - PAGE_SIZE. This means that even when the
+memory is physically contiguous, we might need more than one entry to
+represent it. Additionally when using dmabuf, the sg_table might be
+originated outside the subsystem and optimized for other needs.
 
-This breaks the current assumption that all sock ops programs will
-hold the sock lock. The sock's fields of the uapi's bpf_sock_ops
-requires this assumption.
+For instance an SGT of 16GB GPU continuous memory might look like this:
+(a real life example)
 
-To address this, a new "u8 is_locked_tcp_sock;" field is added. This
-patch sets it in the current sock_ops callbacks. The "is_fullsock"
-test is then replaced by the "is_locked_tcp_sock" test during
-sock_ops_convert_ctx_access().
+dma_address 34401400000, length fffff000
+dma_address 345013ff000, length fffff000
+dma_address 346013fe000, length fffff000
+dma_address 347013fd000, length fffff000
+dma_address 348013fc000, length 4000
 
-The new TX timestamping callbacks added in the subsequent patch will
-not have this set. This will prevent unsafe access from the new
-timestamping callbacks.
+Since ib_umem_find_best_pgsz works within SG entries, in the above case
+we will result with the worst possible 4KB page size.
 
-Potentially, we could allow read-only access. However, this would
-require identifying which callback is read-safe-only and also requires
-additional BPF instruction rewrites in the covert_ctx. Since the BPF
-program can always read everything from a socket (e.g., by using
-bpf_core_cast), this patch keeps it simple and disables all read
-and write access to any socket fields through the bpf_sock_ops
-UAPI from the new TX timestamping callback.
+Fix this by taking into consideration only the alignment of addresses of
+real discontinuity points rather than treating SG entries as such, and
+adjust the page iterator to correctly handle cross SG entry pages.
 
-Moreover, note that some of the fields in bpf_sock_ops are specific
-to tcp_sock, and sock_ops currently only supports tcp_sock. In
-the future, UDP timestamping will be added, which will also break
-this assumption. The same idea used in this patch will be reused.
-Considering that the current sock_ops only supports tcp_sock, the
-variable is named is_locked_"tcp"_sock.
+There is currently an assumption that drivers do not ask for pages
+bigger than maximal DMA size supported by their devices.
 
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250220072940.99994-4-kerneljasonxing@gmail.com
+Reviewed-by: Firas Jahjah <firasj@amazon.com>
+Reviewed-by: Yonatan Nachum <ynachum@amazon.com>
+Signed-off-by: Michael Margolin <mrgolin@amazon.com>
+Link: https://patch.msgid.link/20250217141623.12428-1-mrgolin@amazon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h | 1 +
- include/net/tcp.h      | 1 +
- net/core/filter.c      | 8 ++++----
- net/ipv4/tcp_input.c   | 2 ++
- net/ipv4/tcp_output.c  | 2 ++
- 5 files changed, 10 insertions(+), 4 deletions(-)
+ drivers/infiniband/core/umem.c  | 36 ++++++++++++++++++++++++---------
+ drivers/infiniband/core/verbs.c | 11 +++++-----
+ 2 files changed, 32 insertions(+), 15 deletions(-)
 
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index 7d8294d0d7173..e723b930bac14 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -1327,6 +1327,7 @@ struct bpf_sock_ops_kern {
- 	void	*skb_data_end;
- 	u8	op;
- 	u8	is_fullsock;
-+	u8	is_locked_tcp_sock;
- 	u8	remaining_opt_len;
- 	u64	temp;			/* temp and everything after is not
- 					 * initialized to 0 before calling
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index be91d81d66ab3..577e60ec41b8c 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2322,6 +2322,7 @@ static inline int tcp_call_bpf(struct sock *sk, int op, u32 nargs, u32 *args)
- 	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
- 	if (sk_fullsock(sk)) {
- 		sock_ops.is_fullsock = 1;
-+		sock_ops.is_locked_tcp_sock = 1;
- 		sock_owned_by_me(sk);
+diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
+index 8ce569bf7525e..1d154055a335b 100644
+--- a/drivers/infiniband/core/umem.c
++++ b/drivers/infiniband/core/umem.c
+@@ -80,9 +80,12 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
+ 				     unsigned long pgsz_bitmap,
+ 				     unsigned long virt)
+ {
+-	struct scatterlist *sg;
++	unsigned long curr_len = 0;
++	dma_addr_t curr_base = ~0;
+ 	unsigned long va, pgoff;
++	struct scatterlist *sg;
+ 	dma_addr_t mask;
++	dma_addr_t end;
+ 	int i;
+ 
+ 	umem->iova = va = virt;
+@@ -107,17 +110,30 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
+ 	pgoff = umem->address & ~PAGE_MASK;
+ 
+ 	for_each_sgtable_dma_sg(&umem->sgt_append.sgt, sg, i) {
+-		/* Walk SGL and reduce max page size if VA/PA bits differ
+-		 * for any address.
++		/* If the current entry is physically contiguous with the previous
++		 * one, no need to take its start addresses into consideration.
+ 		 */
+-		mask |= (sg_dma_address(sg) + pgoff) ^ va;
++		if (check_add_overflow(curr_base, curr_len, &end) ||
++		    end != sg_dma_address(sg)) {
++
++			curr_base = sg_dma_address(sg);
++			curr_len = 0;
++
++			/* Reduce max page size if VA/PA bits differ */
++			mask |= (curr_base + pgoff) ^ va;
++
++			/* The alignment of any VA matching a discontinuity point
++			* in the physical memory sets the maximum possible page
++			* size as this must be a starting point of a new page that
++			* needs to be aligned.
++			*/
++			if (i != 0)
++				mask |= va;
++		}
++
++		curr_len += sg_dma_len(sg);
+ 		va += sg_dma_len(sg) - pgoff;
+-		/* Except for the last entry, the ending iova alignment sets
+-		 * the maximum possible page size as the low bits of the iova
+-		 * must be zero when starting the next chunk.
+-		 */
+-		if (i != (umem->sgt_append.sgt.nents - 1))
+-			mask |= va;
++
+ 		pgoff = 0;
  	}
  
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 9d358fb865e28..983aca1bf833f 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -9640,10 +9640,10 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
- 		}							      \
- 		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(			      \
- 						struct bpf_sock_ops_kern,     \
--						is_fullsock),		      \
-+						is_locked_tcp_sock),	      \
- 				      fullsock_reg, si->src_reg,	      \
- 				      offsetof(struct bpf_sock_ops_kern,      \
--					       is_fullsock));		      \
-+					       is_locked_tcp_sock));	      \
- 		*insn++ = BPF_JMP_IMM(BPF_JEQ, fullsock_reg, 0, jmp);	      \
- 		if (si->dst_reg == si->src_reg)				      \
- 			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,	      \
-@@ -9728,10 +9728,10 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
- 					       temp));			      \
- 		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(			      \
- 						struct bpf_sock_ops_kern,     \
--						is_fullsock),		      \
-+						is_locked_tcp_sock),	      \
- 				      reg, si->dst_reg,			      \
- 				      offsetof(struct bpf_sock_ops_kern,      \
--					       is_fullsock));		      \
-+					       is_locked_tcp_sock));	      \
- 		*insn++ = BPF_JMP_IMM(BPF_JEQ, reg, 0, 2);		      \
- 		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(			      \
- 						struct bpf_sock_ops_kern, sk),\
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 8859a38b45d5e..0caf1474b9807 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -168,6 +168,7 @@ static void bpf_skops_parse_hdr(struct sock *sk, struct sk_buff *skb)
- 	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
- 	sock_ops.op = BPF_SOCK_OPS_PARSE_HDR_OPT_CB;
- 	sock_ops.is_fullsock = 1;
-+	sock_ops.is_locked_tcp_sock = 1;
- 	sock_ops.sk = sk;
- 	bpf_skops_init_skb(&sock_ops, skb, tcp_hdrlen(skb));
+diff --git a/drivers/infiniband/core/verbs.c b/drivers/infiniband/core/verbs.c
+index cae013130eb1d..bdc9564f0ff82 100644
+--- a/drivers/infiniband/core/verbs.c
++++ b/drivers/infiniband/core/verbs.c
+@@ -2967,22 +2967,23 @@ EXPORT_SYMBOL(__rdma_block_iter_start);
+ bool __rdma_block_iter_next(struct ib_block_iter *biter)
+ {
+ 	unsigned int block_offset;
+-	unsigned int sg_delta;
++	unsigned int delta;
  
-@@ -184,6 +185,7 @@ static void bpf_skops_established(struct sock *sk, int bpf_op,
- 	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
- 	sock_ops.op = bpf_op;
- 	sock_ops.is_fullsock = 1;
-+	sock_ops.is_locked_tcp_sock = 1;
- 	sock_ops.sk = sk;
- 	/* sk with TCP_REPAIR_ON does not have skb in tcp_finish_connect */
- 	if (skb)
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 3a66d0c7d015c..3a819413d3968 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -507,6 +507,7 @@ static void bpf_skops_hdr_opt_len(struct sock *sk, struct sk_buff *skb,
- 		sock_owned_by_me(sk);
+ 	if (!biter->__sg_nents || !biter->__sg)
+ 		return false;
  
- 		sock_ops.is_fullsock = 1;
-+		sock_ops.is_locked_tcp_sock = 1;
- 		sock_ops.sk = sk;
+ 	biter->__dma_addr = sg_dma_address(biter->__sg) + biter->__sg_advance;
+ 	block_offset = biter->__dma_addr & (BIT_ULL(biter->__pg_bit) - 1);
+-	sg_delta = BIT_ULL(biter->__pg_bit) - block_offset;
++	delta = BIT_ULL(biter->__pg_bit) - block_offset;
+ 
+-	if (sg_dma_len(biter->__sg) - biter->__sg_advance > sg_delta) {
+-		biter->__sg_advance += sg_delta;
+-	} else {
++	while (biter->__sg_nents && biter->__sg &&
++	       sg_dma_len(biter->__sg) - biter->__sg_advance <= delta) {
++		delta -= sg_dma_len(biter->__sg) - biter->__sg_advance;
+ 		biter->__sg_advance = 0;
+ 		biter->__sg = sg_next(biter->__sg);
+ 		biter->__sg_nents--;
  	}
++	biter->__sg_advance += delta;
  
-@@ -552,6 +553,7 @@ static void bpf_skops_write_hdr_opt(struct sock *sk, struct sk_buff *skb,
- 		sock_owned_by_me(sk);
- 
- 		sock_ops.is_fullsock = 1;
-+		sock_ops.is_locked_tcp_sock = 1;
- 		sock_ops.sk = sk;
- 	}
- 
+ 	return true;
+ }
 -- 
 2.39.5
 
