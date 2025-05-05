@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-140445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B30DAAA8CA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:01:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B28A7AAA8C9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:01:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4907D1B626FB
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:01:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CADCF175830
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F69354644;
-	Mon,  5 May 2025 22:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836DB354672;
+	Mon,  5 May 2025 22:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d4OwzBgj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ra/T/SwT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AE22777E3;
-	Mon,  5 May 2025 22:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE8C35466C;
+	Mon,  5 May 2025 22:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484864; cv=none; b=JCujk+YJ1TnpVuHSxhNGEEay13d8xLH2laPXrGDcBZ0q+xs+v32vCHblXyG1KSPLQIobXh12dvFbEHbMaPiF8JbMr02H8CtHStzxfh63l7Q8H43TUMjk6Frr6idks3BPMsBdTFXlKXvsNTlgr9gl7vKJfkSdmo3ET5W+AK70ILY=
+	t=1746484867; cv=none; b=Fx6ld0sZC9mDBhrw2eI2zKfmsVwZ1njsxSRSCKaVuG2KuEMCOzfmXHNM4kGEshuvaf91c5tlUwK+u/hbU5AwJJO2XKPWmvtioEqdHmLn4eNJA/KB/DcYZGXC2gn5lkwcQA1kjjJVRXQcpvf1UQemJhSlwU0M4fKf52dtS8xOReo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484864; c=relaxed/simple;
-	bh=rRPQrr8rQ2U57aU/QceYFLpT/KG7abauUVPWd1WRWmc=;
+	s=arc-20240116; t=1746484867; c=relaxed/simple;
+	bh=hWqU9Zk9ppPsU3XFS+mg8sjSt0oekARi5wfi8aIk2M8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iRHgoVcOD8HCbeClIF9cpMDNMyEHKk5dZjsmg/x/PqOM0akFsMWD1klVO9cC+HFg3H5pQ/iBzPgyng0rajz864D/5BoVVTlVnGRR80y8C2SH6AJDh7ZrjixraHkEqFz6Z0fEnZnHT73SOeOQn6ywyQjKmcHPf02HGDQ9f2P8it4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d4OwzBgj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C55AC4CEEE;
-	Mon,  5 May 2025 22:41:02 +0000 (UTC)
+	 MIME-Version; b=KfpEBVMevHKlg6CCwaaP8mv+BZbw5xL/jpaNkri6QvPMZSgYlM5cuwqxABtJ56EJ7z96SnqivPVmJkU/oXK2UGWgfl8/vC8k4JXPiFI7dolK3jn5nm8bpfAUC0327wrTPaWW94Rgl0zNCfcJGIAGL9O7/ToongFOvcrdAAosbtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ra/T/SwT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C32DC4CEE4;
+	Mon,  5 May 2025 22:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484863;
-	bh=rRPQrr8rQ2U57aU/QceYFLpT/KG7abauUVPWd1WRWmc=;
+	s=k20201202; t=1746484867;
+	bh=hWqU9Zk9ppPsU3XFS+mg8sjSt0oekARi5wfi8aIk2M8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d4OwzBgjJVLD7d4Rw4yaVDN1w5um9U8fKpunl/y1g4vcI1uOAvg0v3/zUEC+9Dcoz
-	 OVuqqm67vg5Fu++PnGT28uAZMRp81I3Uj8RoKo2rdpZlsSUnYX871myrorY7uwDU9W
-	 U4absj31b35Pw4VI5dMu6PJaBk7qZIovwP9Z1BwxnZIbzWMwffabY5Z8icfyDmi2sr
-	 qAcXsgv05wL++HZctMO1cgNuVdCG68gDv03sWeQ1xuD7OwtKjUtcKYf2kD6DEWW5Tc
-	 3oSOe8mxn+okeeM87x3ITG2uFXgtBKkHxsfmqXRNc1V/q/1WhECbQqUhmnC1v8FD/o
-	 sa5yEUsJwE/uw==
+	b=Ra/T/SwT4ylc0Ct0u7FxDYLL0PfXzt7zSbDsnM/mZ9iVj0h4NNvc78o/CesCrbfi5
+	 InSenGjXOfXCXsv2gpbOsuxfeNL4b4D6QnxfJVv8XIq4i4+et5fp3N7pHpeq9W7auW
+	 7CrkmRVtRsB5lbHst2fFpM4MA/zSVUzgUSoGklCbOZAidIbgo5gxiI24FCaP1qA5SW
+	 fiT9rECrk570qB+d+M39Wua+IuyqnU4J+kv2aMCf1cddNtr/bgkBIa+hUq52RsjEiM
+	 cGXoSquGlxwoAv8X4XS61RGxbkj1AdYXIj1JiSalI0J1yIff2Q/kOoNMjq2mDzr2No
+	 mrqBeLsyC5VZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Robert Richter <rrichter@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Ira Weiny <ira.weiny@intel.com>,
+Cc: Christian Brauner <brauner@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	dan.j.williams@intel.com,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	nvdimm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 054/486] libnvdimm/labels: Fix divide error in nd_label_data_init()
-Date: Mon,  5 May 2025 18:32:10 -0400
-Message-Id: <20250505223922.2682012-54-sashal@kernel.org>
+	viro@zeniv.linux.org.uk,
+	akpm@linux-foundation.org,
+	mhocko@suse.com,
+	mjguzik@gmail.com,
+	alexjlzheng@tencent.com,
+	pasha.tatashin@soleen.com,
+	tglx@linutronix.de,
+	frederic@kernel.org,
+	peterz@infradead.org,
+	lorenzo.stoakes@oracle.com,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 055/486] pidfs: improve multi-threaded exec and premature thread-group leader exit polling
+Date: Mon,  5 May 2025 18:32:11 -0400
+Message-Id: <20250505223922.2682012-55-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -69,62 +75,126 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Robert Richter <rrichter@amd.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit ef1d3455bbc1922f94a91ed58d3d7db440652959 ]
+[ Upstream commit 0fb482728ba1ee2130eaa461bf551f014447997c ]
 
-If a faulty CXL memory device returns a broken zero LSA size in its
-memory device information (Identify Memory Device (Opcode 4000h), CXL
-spec. 3.1, 8.2.9.9.1.1), a divide error occurs in the libnvdimm
-driver:
+This is another attempt trying to make pidfd polling for multi-threaded
+exec and premature thread-group leader exit consistent.
 
- Oops: divide error: 0000 [#1] PREEMPT SMP NOPTI
- RIP: 0010:nd_label_data_init+0x10e/0x800 [libnvdimm]
+A quick recap of these two cases:
 
-Code and flow:
+(1) During a multi-threaded exec by a subthread, i.e., non-thread-group
+    leader thread, all other threads in the thread-group including the
+    thread-group leader are killed and the struct pid of the
+    thread-group leader will be taken over by the subthread that called
+    exec. IOW, two tasks change their TIDs.
 
-1) CXL Command 4000h returns LSA size = 0
-2) config_size is assigned to zero LSA size (CXL pmem driver):
+(2) A premature thread-group leader exit means that the thread-group
+    leader exited before all of the other subthreads in the thread-group
+    have exited.
 
-drivers/cxl/pmem.c:             .config_size = mds->lsa_size,
+Both cases lead to inconsistencies for pidfd polling with PIDFD_THREAD.
+Any caller that holds a PIDFD_THREAD pidfd to the current thread-group
+leader may or may not see an exit notification on the file descriptor
+depending on when poll is performed. If the poll is performed before the
+exec of the subthread has concluded an exit notification is generated
+for the old thread-group leader. If the poll is performed after the exec
+of the subthread has concluded no exit notification is generated for the
+old thread-group leader.
 
-3) max_xfer is set to zero (nvdimm driver):
+The correct behavior would be to simply not generate an exit
+notification on the struct pid of a subhthread exec because the struct
+pid is taken over by the subthread and thus remains alive.
 
-drivers/nvdimm/label.c: max_xfer = min_t(size_t, ndd->nsarea.max_xfer, config_size);
+But this is difficult to handle because a thread-group may exit
+prematurely as mentioned in (2). In that case an exit notification is
+reliably generated but the subthreads may continue to run for an
+indeterminate amount of time and thus also may exec at some point.
 
-4) A subsequent DIV_ROUND_UP() causes a division by zero:
+So far there was no way to distinguish between (1) and (2) internally.
+This tiny series tries to address this problem by discarding
+PIDFD_THREAD notification on premature thread-group leader exit.
 
-drivers/nvdimm/label.c: /* Make our initial read size a multiple of max_xfer size */
-drivers/nvdimm/label.c: read_size = min(DIV_ROUND_UP(read_size, max_xfer) * max_xfer,
-drivers/nvdimm/label.c-                 config_size);
+If that works correctly then no exit notifications are generated for a
+PIDFD_THREAD pidfd for a thread-group leader until all subthreads have
+been reaped. If a subthread should exec aftewards no exit notification
+will be generated until that task exits or it creates subthreads and
+repeates the cycle.
 
-Fix this by checking the config size parameter by extending an
-existing check.
-
-Signed-off-by: Robert Richter <rrichter@amd.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Link: https://patch.msgid.link/20250320112223.608320-1-rrichter@amd.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Co-Developed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250320-work-pidfs-thread_group-v4-1-da678ce805bf@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/label.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/pidfs.c      | 9 +++++----
+ kernel/exit.c   | 6 +++---
+ kernel/signal.c | 3 +--
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
-index 082253a3a9560..04f4a049599a1 100644
---- a/drivers/nvdimm/label.c
-+++ b/drivers/nvdimm/label.c
-@@ -442,7 +442,8 @@ int nd_label_data_init(struct nvdimm_drvdata *ndd)
- 	if (ndd->data)
- 		return 0;
+diff --git a/fs/pidfs.c b/fs/pidfs.c
+index 80675b6bf8845..52b7e4f767327 100644
+--- a/fs/pidfs.c
++++ b/fs/pidfs.c
+@@ -95,20 +95,21 @@ static void pidfd_show_fdinfo(struct seq_file *m, struct file *f)
+ static __poll_t pidfd_poll(struct file *file, struct poll_table_struct *pts)
+ {
+ 	struct pid *pid = pidfd_pid(file);
+-	bool thread = file->f_flags & PIDFD_THREAD;
+ 	struct task_struct *task;
+ 	__poll_t poll_flags = 0;
  
--	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0) {
-+	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0 ||
-+	    ndd->nsarea.config_size == 0) {
- 		dev_dbg(ndd->dev, "failed to init config data area: (%u:%u)\n",
- 			ndd->nsarea.max_xfer, ndd->nsarea.config_size);
- 		return -ENXIO;
+ 	poll_wait(file, &pid->wait_pidfd, pts);
+ 	/*
+-	 * Depending on PIDFD_THREAD, inform pollers when the thread
+-	 * or the whole thread-group exits.
++	 * Don't wake waiters if the thread-group leader exited
++	 * prematurely. They either get notified when the last subthread
++	 * exits or not at all if one of the remaining subthreads execs
++	 * and assumes the struct pid of the old thread-group leader.
+ 	 */
+ 	guard(rcu)();
+ 	task = pid_task(pid, PIDTYPE_PID);
+ 	if (!task)
+ 		poll_flags = EPOLLIN | EPOLLRDNORM | EPOLLHUP;
+-	else if (task->exit_state && (thread || thread_group_empty(task)))
++	else if (task->exit_state && !delay_group_leader(task))
+ 		poll_flags = EPOLLIN | EPOLLRDNORM;
+ 
+ 	return poll_flags;
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 9d888f26bf784..c94d23ccd1520 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -745,10 +745,10 @@ static void exit_notify(struct task_struct *tsk, int group_dead)
+ 
+ 	tsk->exit_state = EXIT_ZOMBIE;
+ 	/*
+-	 * sub-thread or delay_group_leader(), wake up the
+-	 * PIDFD_THREAD waiters.
++	 * Ignore thread-group leaders that exited before all
++	 * subthreads did.
+ 	 */
+-	if (!thread_group_empty(tsk))
++	if (!delay_group_leader(tsk))
+ 		do_notify_pidfd(tsk);
+ 
+ 	if (unlikely(tsk->ptrace)) {
+diff --git a/kernel/signal.c b/kernel/signal.c
+index 2ae45e6eb6bb8..468b589c39e69 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -2063,8 +2063,7 @@ bool do_notify_parent(struct task_struct *tsk, int sig)
+ 	WARN_ON_ONCE(!tsk->ptrace &&
+ 	       (tsk->group_leader != tsk || !thread_group_empty(tsk)));
+ 	/*
+-	 * tsk is a group leader and has no threads, wake up the
+-	 * non-PIDFD_THREAD waiters.
++	 * Notify for thread-group leaders without subthreads.
+ 	 */
+ 	if (thread_group_empty(tsk))
+ 		do_notify_pidfd(tsk);
 -- 
 2.39.5
 
