@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-141484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D56AAB731
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:06:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D29AAB734
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:07:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2973A3B22DD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:00:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFF9E3A2F93
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD0438B4DA;
-	Tue,  6 May 2025 00:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D9A3988C6;
+	Tue,  6 May 2025 00:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JcLhrLKN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YA1tXWto"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F5E2EC028;
-	Mon,  5 May 2025 23:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8383984B0;
+	Mon,  5 May 2025 23:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486438; cv=none; b=WXF8i/9xbk8gwoSlsz0OCBDCUdSgAEB4uSfu7jPHgH58Uufaf3wbsVBJyv2rYhSERXksAGbz1ucYowrf1s5a6OPRl3BxhguRbrDi3R7Qdfkwcua8fx9dibX4DK2GQlPk+4MJzP7oHtmBCv3kbYc+yU7dZOBEDc8t2Wz/YN7JPh0=
+	t=1746486447; cv=none; b=ISuKhwCHGaZn5R6WOb0jqYq/R20G92VuHX6G/Bxv2F7cnLb+rTOXKq+7JtADabQlgGhEQ9FbCDVgpCgVWZAvEfZsEYBDawXnt2pa/XySoRwRIBrsrgHXQ24wHWt5RWPd96AqLqwrwSfV7JgQNEZM68k9L89rWosRVLQRYvvdwYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486438; c=relaxed/simple;
-	bh=BER7pLxMC+HVOJMzmT6E2tobwzQBzVLGf6Mm2BrfNYs=;
+	s=arc-20240116; t=1746486447; c=relaxed/simple;
+	bh=FSRqsNp9wuYN8pCB7g2cHNhJUzSd2U3NRrvkAc0kugo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LGBTpag3qqvZt3AgVJSAIb1TjM0vaTuQ8ERwMtWjWxbCHD3nwraytQY3OeXeSXzsAPgnj+RQeyzZSwpHRecHiPlIroM/cr+2YTRj1WnwYwi7fWeaiTCIdgzJ2KVeonDBQ9R6SCgD5sd8/7388fvB72Z77LHbwZDh3KoKEc26rTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JcLhrLKN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8979C4CEED;
-	Mon,  5 May 2025 23:07:16 +0000 (UTC)
+	 MIME-Version; b=te9t7Cx+O/giSAVJj5Jsv6oHnKj6DvmxOA4K06HJGZSg6lfO26gGsuHHEqVofVLpa+7Sh5YOHhilnju9j8R704b4FJcNctH6NaIo7lhYa6wRIoGA1Gd03mmuCDzzbaNGon8xJqxMf+5VTndVUSwmtgQdukY/SHz88XsDDPtkfcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YA1tXWto; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7705C4CEF1;
+	Mon,  5 May 2025 23:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486438;
-	bh=BER7pLxMC+HVOJMzmT6E2tobwzQBzVLGf6Mm2BrfNYs=;
+	s=k20201202; t=1746486446;
+	bh=FSRqsNp9wuYN8pCB7g2cHNhJUzSd2U3NRrvkAc0kugo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JcLhrLKNp/jhf13E9O0tJJ/0PTKxjb/Uxq4FQTP6cfJESpsRuXXgiINDjA5YdCnYc
-	 y0i+m7PQTHiSzkBlIpnC3Nyuq02shv636OpSzKCUy4EDtActl+cHMcY/LZ4mxNOXB5
-	 O34LeRKa20rCyYQG8d36ghwrDnEdw0p0oJYh80CX3ZlbJq1FzbolxEg+fUKuszf1xL
-	 9WR99b6NWAX8IvQKJlzoP0KNaGXHSOlYGVXGW+bbgqWRCU2XxZqOHWJD+xOHZo69VU
-	 kH0Z0FOTryAhPiS3KqyY0dGQHAfXRcKtBdzYawOAq5LppAXg4GtNZo3kIOaxUjk1Tr
-	 /AKIIIIlA4oQQ==
+	b=YA1tXWtog5a5qCvz6VI9oexLp8JPdzYfYgoVbbHLm92D4fcaoJtQCLre6xlV3f4ZE
+	 GB1uuD6+JNypXOYk7bVM97L9QbtDW8RPimBtA4GsGRADxwG0IYVxByobYpY3KKeT5U
+	 LalKZxl19bJPrLFclf67pcl2NFkymTxmg9qmvMt5V0NMXvhd6O9IEYLwztrR0P3Psw
+	 Ud5k41TDgbiTycDDFWOaozb0lh/6A/RkM1IOeh9pRCcvT8JcLuXAuMeqTPsYaL0WFz
+	 MPqz9h3uRGcZhiM2joqOQyBDhunrc+uqrtbedNNhKO31HAV8GkuufWoEnaU3iY0Aoo
+	 JTXzJJrxRHjCA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+Cc: Vitalii Mordan <mordan@ispras.ru>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	snitzer@kernel.org,
-	neilb@suse.de,
-	kolga@netapp.com,
-	linux-nfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 027/212] pNFS/flexfiles: Report ENETDOWN as a connection error
-Date: Mon,  5 May 2025 19:03:19 -0400
-Message-Id: <20250505230624.2692522-27-sashal@kernel.org>
+	linux-i2c@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 033/212] i2c: pxa: fix call balance of i2c->clk handling routines
+Date: Mon,  5 May 2025 19:03:25 -0400
+Message-Id: <20250505230624.2692522-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -71,35 +65,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-[ Upstream commit aa42add73ce9b9e3714723d385c254b75814e335 ]
+[ Upstream commit be7113d2e2a6f20cbee99c98d261a1fd6fd7b549 ]
 
-If the client should see an ENETDOWN when trying to connect to the data
-server, it might still be able to talk to the metadata server through
-another NIC. If so, report the error.
+If the clock i2c->clk was not enabled in i2c_pxa_probe(), it should not be
+disabled in any path.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
+Found by Linux Verification Center (linuxtesting.org) with Klever.
+
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250212172803.1422136-1-mordan@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-pxa.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index 8056b05bd8dca..07e5ea64dcd68 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -1255,6 +1255,7 @@ static void ff_layout_io_track_ds_error(struct pnfs_layout_segment *lseg,
- 		case -ECONNRESET:
- 		case -EHOSTDOWN:
- 		case -EHOSTUNREACH:
-+		case -ENETDOWN:
- 		case -ENETUNREACH:
- 		case -EADDRINUSE:
- 		case -ENOBUFS:
+diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
+index ade3f0ea59551..8263e017577de 100644
+--- a/drivers/i2c/busses/i2c-pxa.c
++++ b/drivers/i2c/busses/i2c-pxa.c
+@@ -1508,7 +1508,10 @@ static int i2c_pxa_probe(struct platform_device *dev)
+ 				i2c->adap.name);
+ 	}
+ 
+-	clk_prepare_enable(i2c->clk);
++	ret = clk_prepare_enable(i2c->clk);
++	if (ret)
++		return dev_err_probe(&dev->dev, ret,
++				     "failed to enable clock\n");
+ 
+ 	if (i2c->use_pio) {
+ 		i2c->adap.algo = &i2c_pxa_pio_algorithm;
 -- 
 2.39.5
 
