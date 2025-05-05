@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-141464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D88A3AAB396
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:48:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 329F5AAB71E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:04:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55E0F16CAE3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:46:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D71F21C22213
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6154133A375;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4DB33A368;
 	Tue,  6 May 2025 00:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHXa2kfy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="USPDACyU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC90C239E80;
-	Mon,  5 May 2025 23:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624C13754E0;
+	Mon,  5 May 2025 23:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486371; cv=none; b=O+UmfWCVLVxKbBy6cQXkWMyZ0A/cxe9VmOPS0JNRn/qcdGF2oKG4Oth5q9kHoff6PJVrsj40jAdRfgZNUnbcnpDn6GdOz3Nxfg/gVOx2AT77sfZi5wxfAA+emUVScrkxXncqgfVpfiqZpYtTNz8vOSktZSCW/XHkQq5eIsmToUM=
+	t=1746486374; cv=none; b=RFzwZaMyh8kheIY6GicsoWI4wMw+BgRCQUtoCYu9UpJT8OyzEj/MUuztPv5EyxlFdCrSq0XbgMTImt2OKByh9V4H/zzcE5Tk0niUAHwsasd+5HgHYnzHkobD9GhFsFC5RjAzNc9O7bEOmsGxjpyhNvaNm9yykw2r1psRpJnoVLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486371; c=relaxed/simple;
-	bh=Eu0Vxmjy+j96zmKQbWqFv06fTIOV9pidgP4pHpT+D9Q=;
+	s=arc-20240116; t=1746486374; c=relaxed/simple;
+	bh=jxtLKYnH02viIBpG8ekxsfEbbnFs92hl0gasfFs9L74=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PdSyjzsLM1Lr2KIybnYEhdprTrsB8FaxgyE4NQCs9smA33BLx9O6OA5MteYGigxhWU4ss4UZTzYotfn8Y9BLSviYhTwyO3PdEbUCuI4vbZe/S0TX7eTj3/yVKDXOn7LEcxQWWfVBlLSGai3iYC6I9/nDO8xWn7B7ZD8YhXIdIKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHXa2kfy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7036C4CEEE;
-	Mon,  5 May 2025 23:06:10 +0000 (UTC)
+	 MIME-Version; b=A7YPC+esH4RcXv8Oyyg+ZxV4vjRaTXvkwe8uQbrWsZJfKjiOTLYvGVNXcTywSRzbR8+E94GDt3Z/50DC11Eb5z8PN/cm4+XxPnnX11BzpLMA28dcISxH8nk+qtHke7n6zRrCOe+IcPKH3kM5vcWkN7VY2WNEqZU07IFgAaK4GtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=USPDACyU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E0DC4CEE4;
+	Mon,  5 May 2025 23:06:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486371;
-	bh=Eu0Vxmjy+j96zmKQbWqFv06fTIOV9pidgP4pHpT+D9Q=;
+	s=k20201202; t=1746486374;
+	bh=jxtLKYnH02viIBpG8ekxsfEbbnFs92hl0gasfFs9L74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WHXa2kfyWrlErSsszY91+kJ03HPDAHe3cl+XseLM6he9ulJf0WH4zDgfgMdZ3NJT1
-	 pkj41wH/hyJzDP5j4h37kwmXHweUs9DOdJ/D1cc4PO/zGtOblTikG0l0M9wg+Cv1Y7
-	 jocJhzkD16//o4dVFEDkXXPnKS7LtfONdMArXMHltiK7hz6XTp/Zq3zvvbYqohUZ7X
-	 ntQKURoM3aXmkjFqmsV9CuiqOvMd6/dLnXkQFUaYKVE9Ca0VDpd1EG6FaWXnc1iM1X
-	 AWna2lslumUPgCxpl8+p84o+PLYXIdf8i3faQtp1ZOQEQ1r1xipJ6bIqJsvC1PTWb2
-	 wepUwGrPh7KSA==
+	b=USPDACyUjQscVbZqh8uOwR2bVhJKiF0fzOtg0vQqlPdZwxLifgUAvSxGqvg8xkuoF
+	 YbZ4cUOPqY477yq9hs3f1HKJqpZ6GwrOVS7vNbFdVjPS/DB7qg3WaZzLBZwezU86JY
+	 jENcYBvL8/rwYIYGz1p3J3oyQGLDB7K8iUTJut5SbfwItU/KhIOFgaDKFOlAr7bxUm
+	 HN3GFaqGC48fHmDRFFVYV8m5t4fVVNz0ZAcPBVc5+X6L5iEz7jQ0MWGKQRqdSYWiet
+	 +7IQq4sSBtDGORkm3Vil4JTvd5xNQhDW3EJgrENYi2uOkZCuR6Hp8/6+rAg6IK875K
+	 PFDqOYRp7m1Iw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: P Praneesh <quic_ppranees@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Olivier Moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 289/294] wifi: ath12k: Fix end offset bit definition in monitor ring descriptor
-Date: Mon,  5 May 2025 18:56:29 -0400
-Message-Id: <20250505225634.2688578-289-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	lgirdwood@gmail.com,
+	lumag@kernel.org,
+	christianshewitt@gmail.com,
+	jonas@kwiboo.se,
+	krzysztof.kozlowski@linaro.org,
+	kuninori.morimoto.gx@renesas.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 290/294] ASoC: hdmi-codec: allow to refine formats actually supported
+Date: Mon,  5 May 2025 18:56:30 -0400
+Message-Id: <20250505225634.2688578-290-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -67,40 +74,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Olivier Moysan <olivier.moysan@foss.st.com>
 
-[ Upstream commit 6788a666000d600bd8f2e9f991cad9cc805e7f01 ]
+[ Upstream commit 038f79638e0676359e44c5db458d52994f9b5ac1 ]
 
-End offset for the monitor destination ring descriptor is defined as
-16 bits, while the firmware definition specifies only 12 bits.
-The remaining bits (bit 12 to bit 15) are reserved and may contain
-junk values, leading to invalid information retrieval. Fix this issue
-by updating the correct genmask values.
+Currently the hdmi-codec driver registers all the formats that are
+allowed on the I2S bus. Add i2s_formats field to codec data, to allow
+the hdmi codec client to refine the list of the audio I2S formats
+actually supported.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Link: https://patch.msgid.link/20241223060132.3506372-8-quic_ppranees@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250108170356.413063-3-olivier.moysan@foss.st.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/hal_desc.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/sound/hdmi-codec.h    | 1 +
+ sound/soc/codecs/hdmi-codec.c | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
-index 6c17adc6d60b5..1bb840c2bef57 100644
---- a/drivers/net/wireless/ath/ath12k/hal_desc.h
-+++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
-@@ -2918,7 +2918,7 @@ struct hal_mon_buf_ring {
- 
- #define HAL_MON_DEST_COOKIE_BUF_ID      GENMASK(17, 0)
- 
--#define HAL_MON_DEST_INFO0_END_OFFSET		GENMASK(15, 0)
-+#define HAL_MON_DEST_INFO0_END_OFFSET		GENMASK(11, 0)
- #define HAL_MON_DEST_INFO0_FLUSH_DETECTED	BIT(16)
- #define HAL_MON_DEST_INFO0_END_OF_PPDU		BIT(17)
- #define HAL_MON_DEST_INFO0_INITIATOR		BIT(18)
+diff --git a/include/sound/hdmi-codec.h b/include/sound/hdmi-codec.h
+index 9b162ac1e08e0..498d21dfd8790 100644
+--- a/include/sound/hdmi-codec.h
++++ b/include/sound/hdmi-codec.h
+@@ -123,6 +123,7 @@ struct hdmi_codec_ops {
+ /* HDMI codec initalization data */
+ struct hdmi_codec_pdata {
+ 	const struct hdmi_codec_ops *ops;
++	u64 i2s_formats;
+ 	uint i2s:1;
+ 	uint no_i2s_playback:1;
+ 	uint no_i2s_capture:1;
+diff --git a/sound/soc/codecs/hdmi-codec.c b/sound/soc/codecs/hdmi-codec.c
+index 03290d3ae59cc..915baa7016eab 100644
+--- a/sound/soc/codecs/hdmi-codec.c
++++ b/sound/soc/codecs/hdmi-codec.c
+@@ -1076,6 +1076,10 @@ static int hdmi_codec_probe(struct platform_device *pdev)
+ 	if (hcd->i2s) {
+ 		daidrv[i] = hdmi_i2s_dai;
+ 		daidrv[i].playback.channels_max = hcd->max_i2s_channels;
++		if (hcd->i2s_formats) {
++			daidrv[i].playback.formats = hcd->i2s_formats;
++			daidrv[i].capture.formats = hcd->i2s_formats;
++		}
+ 		if (hcd->no_i2s_playback)
+ 			memset(&daidrv[i].playback, 0,
+ 			       sizeof(daidrv[i].playback));
 -- 
 2.39.5
 
