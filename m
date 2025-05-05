@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-139979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB46DAAA371
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:14:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 758D6AAA356
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:12:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 277D47AF296
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:10:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 954C63AAE79
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DCA2F0BA1;
-	Mon,  5 May 2025 22:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A045127934A;
+	Mon,  5 May 2025 22:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q4o9Y3Ci"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qHX8xMlX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08E12F0B9B;
-	Mon,  5 May 2025 22:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565842F0BB5;
+	Mon,  5 May 2025 22:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483817; cv=none; b=pEeCcfbu7Ld8wFGyxPjHq5tOOeDsnjghTYFeuJK4tnN23sTqchY9rTyDo9zlsZ4cf049vYURNW2SNPVne8St9tnpcPPKZh7IlvxcFscBIsVfqboaryd2bKRIL48LN6HGbILKLyIpkjYDSya5syt0KtVWaTlWkZABPmC2MuLwYw4=
+	t=1746483819; cv=none; b=t/6eejXR1bC7CQRlGcUwW0CJHyFGobOY8zu+YdYGlSnLINjSX/0Vmpwx18jzNaFXLL8OEIbWRhxqeBzNAwmBOlv1sjBYT+mLFTaZuMlaYwCrNf7M7CfB57z5YTiVaT77uiJRhncSvq0jCR1Jsmv56XFPkme3oEOZWcYV7DjDcig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483817; c=relaxed/simple;
-	bh=cYgAGWyxk03GJQKmaNwFChbrqq9o9Ns3i/Fj53+ylZM=;
+	s=arc-20240116; t=1746483819; c=relaxed/simple;
+	bh=PFmrl+mIJ8+7TyIIyqvSWh7WdwcJauVosWlhP18xpy8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VeyjXm04UuXqu/djzKFcoiEz4iKlyZo9C8KxNexjThI1LwcFcw4ptg75m/NgVhQLH5XkJmbE2yoKp2YALV+KntzabsLoZsoLu/PuRV07a9sEGZhSzzfFgOJsWEmzJcOdi/OIXsDsIML5WKSGnT3vZIf39ZugPiqFex72g2+J+Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q4o9Y3Ci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F094C4CEE4;
-	Mon,  5 May 2025 22:23:36 +0000 (UTC)
+	 MIME-Version; b=RVrFPsicvpOi6jwzXmNjoAJAF6yNl05BR9V+OVcMsNYcUEGYIzPSNZpxBQGDvI45+NrwrbsE0ges+U+koiz73EjV2iBRbZ8kmq5PPIUWtun25TWAJbhmUoNAoLOaCuVWiq/j9JBap1by2PcKmsda65lK805bQnbrQ6wh/TUd0dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qHX8xMlX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A643C4CEE4;
+	Mon,  5 May 2025 22:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483817;
-	bh=cYgAGWyxk03GJQKmaNwFChbrqq9o9Ns3i/Fj53+ylZM=;
+	s=k20201202; t=1746483819;
+	bh=PFmrl+mIJ8+7TyIIyqvSWh7WdwcJauVosWlhP18xpy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4o9Y3Ci3CdmaWLKRFmugQs5E0aqx0SBK/tJUn0NtRZPzTCSH04stlpYqOAMKR0iF
-	 jT1wraMAJOBTtXnBesCCq3tb3/Oh4pGRYYOTDmU0o1KlpiH37raMXALsgsZxDthzt7
-	 4Di49mN43Eb2tuRHzox78IGV9/nTCxin06IijR13vKsiZ+ZtaxGdzeRFkpW2zdhRvx
-	 66WhaX8PS4wjTHFgNk1mOQ9UK9s7n5VRQ43qC7Zf5/mgmIUhquzSYBqkZbyofMdbow
-	 tQXbwfIqOKPPE8trsy4klpzPfcQMSrCpDpEkz4K00prL0PWojZBjtsPEMtyUWHcbFS
-	 8va9m0jU6jIKA==
+	b=qHX8xMlX0sT7mFA+2odRnVnJVdCSdwKSWirhuCZzIxLwCU3a9IbLMSDMLCZLCM+A5
+	 bgJOee0rykHf7lUQxH9BzSphhI6TwBdVDuRvbAIOzahBGrzag6eF1b4pJ8BFRC4HFI
+	 RYwbyuyjBTUxmzRW2pCPns5Tu75n7bDJTImwP7dl4MqcZvkDctdx2CBob50SDSqU7f
+	 2N0BOpOkDYAj9dxAEpjYfCzo/6F6UMhIkiR0vx5nh83nh/rpamEP9WYshWAzqvVM5d
+	 7g/nNYkbUZMmHnWXHDOy4A+sNd06mgJhcAelQFb2uK2P/pQWT7rZzqiA0Lobg49mKH
+	 tvC/Q64Ou0kRg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
-	Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lucas.demarchi@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 232/642] drm/xe: Retry BO allocation
-Date: Mon,  5 May 2025 18:07:28 -0400
-Message-Id: <20250505221419.2672473-232-sashal@kernel.org>
+	krzk@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 233/642] soc: samsung: include linux/array_size.h where needed
+Date: Mon,  5 May 2025 18:07:29 -0400
+Message-Id: <20250505221419.2672473-233-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -72,59 +67,117 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 1d724a2f1b2c3f0cba4975784a808482e0631adf ]
+[ Upstream commit 4c57930f68d90e0d52c396d058cfa9ed8447a6c4 ]
 
-TTM doesn't support fair eviction via WW locking, this mitigated in by
-using retry loops in exec and preempt rebind worker. Extend this retry
-loop to BO allocation. Once TTM supports fair eviction this patch can be
-reverted.
+This does not necessarily get included through asm/io.h:
 
-v4:
- - Keep line break (Stuart)
+drivers/soc/samsung/exynos3250-pmu.c:120:18: error: use of undeclared identifier 'ARRAY_SIZE'
+  120 |         for (i = 0; i < ARRAY_SIZE(exynos3250_list_feed); i++) {
+      |                         ^
+drivers/soc/samsung/exynos5250-pmu.c:162:18: error: use of undeclared identifier 'ARRAY_SIZE'
+  162 |         for (i = 0; i < ARRAY_SIZE(exynos5_list_both_cnt_feed); i++) {
+      |                         ^
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250306012657.3505757-2-matthew.brost@intel.com
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20250305211446.43772-1-arnd@kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/soc/samsung/exynos-asv.c     | 1 +
+ drivers/soc/samsung/exynos-chipid.c  | 1 +
+ drivers/soc/samsung/exynos-pmu.c     | 1 +
+ drivers/soc/samsung/exynos-usi.c     | 1 +
+ drivers/soc/samsung/exynos3250-pmu.c | 1 +
+ drivers/soc/samsung/exynos5250-pmu.c | 1 +
+ drivers/soc/samsung/exynos5420-pmu.c | 1 +
+ 7 files changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index 3f5391d416d46..d1eb87cb178bd 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -2142,6 +2142,7 @@ int xe_gem_create_ioctl(struct drm_device *dev, void *data,
- 	struct xe_file *xef = to_xe_file(file);
- 	struct drm_xe_gem_create *args = data;
- 	struct xe_vm *vm = NULL;
-+	ktime_t end = 0;
- 	struct xe_bo *bo;
- 	unsigned int bo_flags;
- 	u32 handle;
-@@ -2214,6 +2215,10 @@ int xe_gem_create_ioctl(struct drm_device *dev, void *data,
- 		vm = xe_vm_lookup(xef, args->vm_id);
- 		if (XE_IOCTL_DBG(xe, !vm))
- 			return -ENOENT;
-+	}
-+
-+retry:
-+	if (vm) {
- 		err = xe_vm_lock(vm, true);
- 		if (err)
- 			goto out_vm;
-@@ -2227,6 +2232,8 @@ int xe_gem_create_ioctl(struct drm_device *dev, void *data,
+diff --git a/drivers/soc/samsung/exynos-asv.c b/drivers/soc/samsung/exynos-asv.c
+index 97006cc3b9461..8e681f5195264 100644
+--- a/drivers/soc/samsung/exynos-asv.c
++++ b/drivers/soc/samsung/exynos-asv.c
+@@ -9,6 +9,7 @@
+  * Samsung Exynos SoC Adaptive Supply Voltage support
+  */
  
- 	if (IS_ERR(bo)) {
- 		err = PTR_ERR(bo);
-+		if (xe_vm_validate_should_retry(NULL, err, &end))
-+			goto retry;
- 		goto out_vm;
- 	}
++#include <linux/array_size.h>
+ #include <linux/cpu.h>
+ #include <linux/device.h>
+ #include <linux/energy_model.h>
+diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
+index 95294462ff211..99c5f9c80101b 100644
+--- a/drivers/soc/samsung/exynos-chipid.c
++++ b/drivers/soc/samsung/exynos-chipid.c
+@@ -12,6 +12,7 @@
+  * Samsung Exynos SoC Adaptive Supply Voltage and Chip ID support
+  */
  
++#include <linux/array_size.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
+ #include <linux/mfd/syscon.h>
+diff --git a/drivers/soc/samsung/exynos-pmu.c b/drivers/soc/samsung/exynos-pmu.c
+index dd5256e5aae1a..c40313886a012 100644
+--- a/drivers/soc/samsung/exynos-pmu.c
++++ b/drivers/soc/samsung/exynos-pmu.c
+@@ -5,6 +5,7 @@
+ //
+ // Exynos - CPU PMU(Power Management Unit) support
+ 
++#include <linux/array_size.h>
+ #include <linux/arm-smccc.h>
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+diff --git a/drivers/soc/samsung/exynos-usi.c b/drivers/soc/samsung/exynos-usi.c
+index 114352695ac2b..5a93a68dba87f 100644
+--- a/drivers/soc/samsung/exynos-usi.c
++++ b/drivers/soc/samsung/exynos-usi.c
+@@ -6,6 +6,7 @@
+  * Samsung Exynos USI driver (Universal Serial Interface).
+  */
+ 
++#include <linux/array_size.h>
+ #include <linux/clk.h>
+ #include <linux/mfd/syscon.h>
+ #include <linux/module.h>
+diff --git a/drivers/soc/samsung/exynos3250-pmu.c b/drivers/soc/samsung/exynos3250-pmu.c
+index 30f230ed1769c..4bad12a995422 100644
+--- a/drivers/soc/samsung/exynos3250-pmu.c
++++ b/drivers/soc/samsung/exynos3250-pmu.c
+@@ -5,6 +5,7 @@
+ //
+ // Exynos3250 - CPU PMU (Power Management Unit) support
+ 
++#include <linux/array_size.h>
+ #include <linux/soc/samsung/exynos-regs-pmu.h>
+ #include <linux/soc/samsung/exynos-pmu.h>
+ 
+diff --git a/drivers/soc/samsung/exynos5250-pmu.c b/drivers/soc/samsung/exynos5250-pmu.c
+index 7a2d50be6b4ac..2ae5c3e1b07a3 100644
+--- a/drivers/soc/samsung/exynos5250-pmu.c
++++ b/drivers/soc/samsung/exynos5250-pmu.c
+@@ -5,6 +5,7 @@
+ //
+ // Exynos5250 - CPU PMU (Power Management Unit) support
+ 
++#include <linux/array_size.h>
+ #include <linux/soc/samsung/exynos-regs-pmu.h>
+ #include <linux/soc/samsung/exynos-pmu.h>
+ 
+diff --git a/drivers/soc/samsung/exynos5420-pmu.c b/drivers/soc/samsung/exynos5420-pmu.c
+index 6fedcd78cb451..58a2209795f78 100644
+--- a/drivers/soc/samsung/exynos5420-pmu.c
++++ b/drivers/soc/samsung/exynos5420-pmu.c
+@@ -5,6 +5,7 @@
+ //
+ // Exynos5420 - CPU PMU (Power Management Unit) support
+ 
++#include <linux/array_size.h>
+ #include <linux/pm.h>
+ #include <linux/soc/samsung/exynos-regs-pmu.h>
+ #include <linux/soc/samsung/exynos-pmu.h>
 -- 
 2.39.5
 
