@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-141631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48486AAB51B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:22:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4AEAAB51F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9577F3A3A45
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:17:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FCC63ACE05
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841DB3A4FBE;
-	Tue,  6 May 2025 00:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE10488CB8;
+	Tue,  6 May 2025 00:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F02yCfX5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VeJvgyXQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674A32F47B4;
-	Mon,  5 May 2025 23:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF90A2F4F53;
+	Mon,  5 May 2025 23:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486956; cv=none; b=Oy92w5R+8T9osSjxYzG/Ilio6WtvZBkyOtIdEXG6vJwQhqIjmAiEKHBI213P0K+mfc9utfV2zu0h4wyVrjHmTk64ZubnxGRR6506lmSFcmbyn5KOYG7cP9nJ7OwVkff61ea9XQDaC55TXbHp6zvIjXfFwk8SmqngmK4Dr1jD3gs=
+	t=1746486962; cv=none; b=KRZ9JZcSHS7hbVZkKBgVjGPFLAR76qhaZ4AyIvZ9y/306FWw466hUNNz2ksI6NbhWc/aRM5f4M+3rrX90XxLygqdNd146ZAtBvYRixMNZMzItD96zvrsmq7onSCY/tUw5hAmQ5zjVbn9y/4g1UTrczV3ynnIW0sIYf5ar3kbfkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486956; c=relaxed/simple;
-	bh=/+aGD+5R3Vy0mhYFWIR+sj/H8L/mSKMlCfXmIIdwlVg=;
+	s=arc-20240116; t=1746486962; c=relaxed/simple;
+	bh=ObOcuQ7uehgIs7wkMXNdM1MgdTP7bxAc1+4SriNNzwo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=czKNB5BSA2CSiwBu+IkkVIV/0/EAO7EnJZFwNbBmD8AZl5BJ0IiaCs9cc8Ju1LuRRcQlE56jQd2vO8XZq3n6Hd6c/J1WY2sXIk+UhwAeB/lmA7Nej0YkvcGeQZVRSfiU6Ww7i3ThFFK972LX39+0QjWVFACprsVLN0/TxUw9KYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F02yCfX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33049C4CEF1;
-	Mon,  5 May 2025 23:15:55 +0000 (UTC)
+	 MIME-Version; b=pCnaEDldlDqnb7bxd+BxeMy8p6N21dvt1skheWQmxItEonVns4LuqRbZ4/2JG6U1nV6rMZjESQGprQzALvRjrhh3Xeo8QOPRRwBZ5VW5NJMCgCn8QekL+9puTvR4IWy+TmVI4aPFNQH8osf8FjuQBZH22YwwxBTijBhCWZ1rbd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VeJvgyXQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DB9C4CEF5;
+	Mon,  5 May 2025 23:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486956;
-	bh=/+aGD+5R3Vy0mhYFWIR+sj/H8L/mSKMlCfXmIIdwlVg=;
+	s=k20201202; t=1746486961;
+	bh=ObOcuQ7uehgIs7wkMXNdM1MgdTP7bxAc1+4SriNNzwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F02yCfX5mtPkwQ1NjNqcJT/Ew3+LdWd5jm3//ZQtPdDP/WaOOX2NFmmTuS9ITlojW
-	 wD8bCXMSP36kjARCJGLRiJqAViTIFdmzBt6IK+y3fPELXtJdzwbolf4QA/gZnRAyFz
-	 iK4iOTqweTVJMSLyys+CS/OIJTXxVYWnLp2nkK/DNy97bM627+NCDa8mgy3BzaWufG
-	 AeUoC+TIqaapd2X/F6LPtbEh3MaNqu758B5Yw0Rii0xk341WirHyWnMdK2kGx2fVbM
-	 rRLmijuXNcH4fCjt2qXkOf5QgfqPKb+brz/h3QlcDGFsGMHKDCwpbALagUYzm6qn0B
-	 g6ZhEyh7/6kiw==
+	b=VeJvgyXQkTiajGMPSbj3AcmnY4iYsgWxfd8kFW+5jzCOZ6p659d+rek9Aszy6bMx4
+	 mdSkWGIQSuigMFYqjVt6S+xbPoWr74Xt4pKccjrwT/hWQMs7uon7W8jD4D6pNTniS0
+	 cx4W6ERbtqcZKT8q2fo6TI4hqLxaJUY4frfdXoOIuNcaWMyZXiYNu3od8jmj8v3zEW
+	 pS/VCKLt/NuT5q4TXfBtVtg79thbsiPE/Mr5Mg4CQUlvMUBAV0rHnIqz3x5QBdXE7a
+	 pxoapd/ehA/cLsyhf3Gd7kV7O6hnijEB90RC38wQHmdlMUqlCSX3Aw5IZSrjpVD3+G
+	 XtVxp7C5JG7MQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>,
-	Ang Tien Sung <tien.sung.ang@intel.com>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mdf@kernel.org,
-	hao.wu@intel.com,
-	linux-fpga@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 078/153] fpga: altera-cvp: Increase credit timeout
-Date: Mon,  5 May 2025 19:12:05 -0400
-Message-Id: <20250505231320.2695319-78-sashal@kernel.org>
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 081/153] firmware: arm_ffa: Set dma_mask for ffa devices
+Date: Mon,  5 May 2025 19:12:08 -0400
+Message-Id: <20250505231320.2695319-81-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -69,41 +65,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit 0f05886a40fdc55016ba4d9ae0a9c41f8312f15b ]
+[ Upstream commit cc0aac7ca17e0ea3ca84b552fc79f3e86fd07f53 ]
 
-Increase the timeout for SDM (Secure device manager) data credits from
-20ms to 40ms. Internal stress tests running at 500 loops failed with the
-current timeout of 20ms. At the start of a FPGA configuration, the CVP
-host driver reads the transmit credits from SDM. It then sends bitstream
-FPGA data to SDM based on the total credits. Each credit allows the
-CVP host driver to send 4kBytes of data. There are situations whereby,
-the SDM did not respond in time during testing.
+Set dma_mask for FFA devices, otherwise DMA allocation using the device pointer
+lead to following warning:
 
-Signed-off-by: Ang Tien Sung <tien.sung.ang@intel.com>
-Signed-off-by: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>
-Acked-by: Xu Yilun <yilun.xu@intel.com>
-Link: https://lore.kernel.org/r/20250212221249.2715929-1-tien.sung.ang@intel.com
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+WARNING: CPU: 1 PID: 1 at kernel/dma/mapping.c:597 dma_alloc_attrs+0xe0/0x124
+
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Message-Id: <e3dd8042ac680bd74b6580c25df855d092079c18.1737107520.git.viresh.kumar@linaro.org>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fpga/altera-cvp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/arm_ffa/bus.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/fpga/altera-cvp.c b/drivers/fpga/altera-cvp.c
-index ccf4546eff297..34254911c01b1 100644
---- a/drivers/fpga/altera-cvp.c
-+++ b/drivers/fpga/altera-cvp.c
-@@ -52,7 +52,7 @@
- /* V2 Defines */
- #define VSE_CVP_TX_CREDITS		0x49	/* 8bit */
+diff --git a/drivers/firmware/arm_ffa/bus.c b/drivers/firmware/arm_ffa/bus.c
+index f79ba6f733ba4..27820a59ce25e 100644
+--- a/drivers/firmware/arm_ffa/bus.c
++++ b/drivers/firmware/arm_ffa/bus.c
+@@ -190,6 +190,7 @@ struct ffa_device *ffa_device_register(const uuid_t *uuid, int vm_id)
+ 	dev = &ffa_dev->dev;
+ 	dev->bus = &ffa_bus_type;
+ 	dev->release = ffa_release_device;
++	dev->dma_mask = &dev->coherent_dma_mask;
+ 	dev_set_name(&ffa_dev->dev, "arm-ffa-%d", id);
  
--#define V2_CREDIT_TIMEOUT_US		20000
-+#define V2_CREDIT_TIMEOUT_US		40000
- #define V2_CHECK_CREDIT_US		10
- #define V2_POLL_TIMEOUT_US		1000000
- #define V2_USER_TIMEOUT_US		500000
+ 	ffa_dev->id = id;
 -- 
 2.39.5
 
