@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-141636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08916AAB521
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9229AAB523
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 735EC1C20109
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:19:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A3B41C201A8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D5F345D57;
-	Tue,  6 May 2025 00:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B011248BA17;
+	Tue,  6 May 2025 00:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kl6/ndAY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CDEyZl5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97FB2F4961;
-	Mon,  5 May 2025 23:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BAC3A5DF5;
+	Mon,  5 May 2025 23:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486973; cv=none; b=YF5jjxhtYEJDEMDjfIXjqt16ecfVwiiLFhKjjRc2VVKKvptL32mAuoKSPlfLuXaJOwovkWlmNLG+2yBdT2GrLsgjH9kmx2JrBSABgCqDa1Qm7oxgMMwAO8Tpq66o9hzvDxJjCC1UcYdGtq7VjW5HpCHnYGxsz8bJDjgHjmrrrG0=
+	t=1746486988; cv=none; b=l2psg9HoxRGO9CdVNkH8hdKuFs0zTSLJXfgs3+VGpQPKx/cFd8lfUPiKzwegodBTG94aLg/P+8r9VOdddaFe006cZLIMRiOMFPnxJUC+zahxow6A9/Eu7f5U/kmhfJIqWTHA9T3q/gz6LXRfrqrc2NKLcrQ9h7HQjyzndnPtrp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486973; c=relaxed/simple;
-	bh=VoYrOWSuePqP7lmw5BS5TP9vhr4zHmMkmvDx4QLVzKI=;
+	s=arc-20240116; t=1746486988; c=relaxed/simple;
+	bh=e6PPiJqHq1kb2CurSc9d+u9z45PoeCFo6VTeddddQ/o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ePHzQ5akINYI3b+vRGZtJS6XUWjr5DjBFklBX+W6oHUNV/f7jJdr52kJ0CNJTdb1y7jA3p4HR3sAHRROJwoS5NQQk8wWl9zLzfLbqUGllHIJZGDjxnbFylqWrV9Tk6gjj71Sl9qUky8RgrY3GOr3jPGJX4EoAM3CaW+bUMorQWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kl6/ndAY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE5BC4CEE4;
-	Mon,  5 May 2025 23:16:12 +0000 (UTC)
+	 MIME-Version; b=knhBeRM0ywJsYd0N29SITR4WtLy/fnrcjoVr5xJrHgnsv1nl1VWU7f2gtIZXOfIT/pDoDgPmjKvABl4TTDtI9nBe6Fsss7Mia5LkdYPLCGDJGt8LdRNB4ohacrfRKmhewEjfEcx2VZE8zJvKN/+joS1J5DCRgRG2HmyAV7K2wT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CDEyZl5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E91C4CEED;
+	Mon,  5 May 2025 23:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486973;
-	bh=VoYrOWSuePqP7lmw5BS5TP9vhr4zHmMkmvDx4QLVzKI=;
+	s=k20201202; t=1746486987;
+	bh=e6PPiJqHq1kb2CurSc9d+u9z45PoeCFo6VTeddddQ/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kl6/ndAYzr0I1XyCrLwJEV/bDmbjFNImAUlyobamUKUqCKlI2X6EXaB6AFCr93Rof
-	 DTHMSkKLiUF0VxI9T7lsVqUkEo5cjAVsoqZHpQzB8CB7Q7ZKD2i1pSmG0L529dj+8z
-	 OLc5ngy5Ue8fKFFHzGWs2N13eGaPz8QjzxyqfCiKcT5m0vG7uCk6YdnM4YMbOOQ3YD
-	 EvTDIqgAjVPVHjCrAflXy+j6vGFrcKa1Jy0lIie8pR5yJDfK2pgyZYtiKn3hioOQxO
-	 bJqJrE2XYLm0Mk/iYOqFBpInbfso/ZxGp0VlEP7XK6d4uoJ34S1HaF0n0hnPSW5QBv
-	 wkhOyEPVBnctA==
+	b=CDEyZl5roPv7lGcoSMqpiGJGDcHvBDgl49InnJLaIKEbr1pro16SWWz0yzdi3aJm7
+	 xQFcXnHsuX7DlS/2LQoeR8kkemAfAR20OAnglsHcVRWlvjZ+tniYMB1Sr4Uy54VyvX
+	 +l3SOqsmeAr+d/HVoG2D8iGZGCpaSS8rNAoLMEyTg9Si36UWFy2q+6f1LCFN427213
+	 CSNKQNgIUZ9tiHPTN2MbxC4FYjTP9bnhs4gh8gL8dEMczEMuuYPM0NvAA/pxwpXZEl
+	 YKt8khgC2bfe8nud0JuRzAoyyKKkTmklNBTUYDpPasHo3XtNpzxqIM57RkT3+f8aWD
+	 pdfAiwC/nUcnw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nir Lichtman <nir@lichtman.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Masahiro Yamada <yamada.masahiro@socionext.com>,
-	Michal Marek <michal.lkml@markovi.net>,
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org
-Subject: [PATCH AUTOSEL 5.15 088/153] x86/build: Fix broken copy command in genimage.sh when making isoimage
-Date: Mon,  5 May 2025 19:12:15 -0400
-Message-Id: <20250505231320.2695319-88-sashal@kernel.org>
+	rafael@kernel.org,
+	daniel.lezcano@linaro.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 092/153] cpuidle: menu: Avoid discarding useful information
+Date: Mon,  5 May 2025 19:12:19 -0400
+Message-Id: <20250505231320.2695319-92-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -73,55 +69,63 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Nir Lichtman <nir@lichtman.org>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit e451630226bd09dc730eedb4e32cab1cc7155ae8 ]
+[ Upstream commit 85975daeaa4d6ec560bfcd354fc9c08ad7f38888 ]
 
-Problem: Currently when running the "make isoimage" command there is an
-error related to wrong parameters passed to the cp command:
+When giving up on making a high-confidence prediction,
+get_typical_interval() always returns UINT_MAX which means that the
+next idle interval prediction will be based entirely on the time till
+the next timer.  However, the information represented by the most
+recent intervals may not be completely useless in those cases.
 
-  "cp: missing destination file operand after 'arch/x86/boot/isoimage/'"
+Namely, the largest recent idle interval is an upper bound on the
+recently observed idle duration, so it is reasonable to assume that
+the next idle duration is unlikely to exceed it.  Moreover, this is
+still true after eliminating the suspected outliers if the sample
+set still under consideration is at least as large as 50% of the
+maximum sample set size.
 
-This is caused because FDINITRDS is an empty array.
+Accordingly, make get_typical_interval() return the current maximum
+recent interval value in that case instead of UINT_MAX.
 
-Solution: Check if FDINITRDS is empty before executing the "cp" command,
-similar to how it is done in the case of hdimage.
-
-Signed-off-by: Nir Lichtman <nir@lichtman.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: Michal Marek <michal.lkml@markovi.net>
-Link: https://lore.kernel.org/r/20250110120500.GA923218@lichtman.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Tested-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Link: https://patch.msgid.link/7770672.EvYhyI6sBW@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/genimage.sh | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/cpuidle/governors/menu.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/genimage.sh b/arch/x86/boot/genimage.sh
-index 0673fdfc1a11a..a8a9b1daffac8 100644
---- a/arch/x86/boot/genimage.sh
-+++ b/arch/x86/boot/genimage.sh
-@@ -22,6 +22,7 @@
- # This script requires:
- #   bash
- #   syslinux
-+#   genisoimage
- #   mtools (for fdimage* and hdimage)
- #   edk2/OVMF (for hdimage)
- #
-@@ -250,7 +251,9 @@ geniso() {
- 	cp "$isolinux" "$ldlinux" "$tmp_dir"
- 	cp "$FBZIMAGE" "$tmp_dir"/linux
- 	echo default linux "$KCMDLINE" > "$tmp_dir"/isolinux.cfg
--	cp "${FDINITRDS[@]}" "$tmp_dir"/
-+	if [ ${#FDINITRDS[@]} -gt 0 ]; then
-+		cp "${FDINITRDS[@]}" "$tmp_dir"/
-+	fi
- 	genisoimage -J -r -appid 'LINUX_BOOT' -input-charset=utf-8 \
- 		    -quiet -o "$FIMAGE" -b isolinux.bin \
- 		    -c boot.cat -no-emul-boot -boot-load-size 4 \
+diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
+index 2e5670446991f..e1e2721beb75b 100644
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -249,8 +249,19 @@ static unsigned int get_typical_interval(struct menu_device *data,
+ 	 * This can deal with workloads that have long pauses interspersed
+ 	 * with sporadic activity with a bunch of short pauses.
+ 	 */
+-	if ((divisor * 4) <= INTERVALS * 3)
++	if (divisor * 4 <= INTERVALS * 3) {
++		/*
++		 * If there are sufficiently many data points still under
++		 * consideration after the outliers have been eliminated,
++		 * returning without a prediction would be a mistake because it
++		 * is likely that the next interval will not exceed the current
++		 * maximum, so return the latter in that case.
++		 */
++		if (divisor >= INTERVALS / 2)
++			return max;
++
+ 		return UINT_MAX;
++	}
+ 
+ 	thresh = max - 1;
+ 	goto again;
 -- 
 2.39.5
 
