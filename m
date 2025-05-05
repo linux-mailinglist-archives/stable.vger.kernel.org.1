@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-140290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2848EAAA71C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:26:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A895FAAA711
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:25:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48F69179FE3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:24:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 888017A998D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB7F29ACD2;
-	Mon,  5 May 2025 22:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E3629ACF8;
+	Mon,  5 May 2025 22:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G85lwjPX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tj+RA3TL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACBD29ACC7;
-	Mon,  5 May 2025 22:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8EC29ACC9;
+	Mon,  5 May 2025 22:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484568; cv=none; b=CONNVDuUOT9DoSE/xwrdW9ziUOfg6Ls/Jn1OcZ9oStTe6ZEEI56wVpMbkKlGudDCynuxv3gb8qZN2fQLC1L+TP/uaN/ZjfJGdqxyvmCV34qKKSAVyjM0vXsNhjaeMr+t2eZmoxmLmY8QiXXctKmDvHFEdRiko6Uy0zFJp6n0cLc=
+	t=1746484573; cv=none; b=Qatacw1OwI8JU/ZGgf9JjAsUpk2h4YO5Idly4VA1SKEKDul3Bwb3voId69roHK8nfjhX/njjkutYWTsLO9mGSRXJZVFHjn9rTlspcItP0wyfDCvd+3K3v+g48fYMEJGVFy8k+7Ltqkw/BSN2cZiNg1Z5PTh+wDOWH8wfEr0jvVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484568; c=relaxed/simple;
-	bh=4WfFbFjcaanBR0u3Vi8013gCJwg8jWqxRkdGc3InMBw=;
+	s=arc-20240116; t=1746484573; c=relaxed/simple;
+	bh=qnlW6kW/MHKL3YI/EjqNJUQP7K40U59GY6a8zZf60PY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PRxHuAhJjpSMjQIlw8rFbl9EpeZ2SrJwotT2M6lBOe0oPhLiBWjdcoMdhbcTPdoaq5Jl8UFDeVnEEtd0W3Wd1XOEnQm8udiouvrK8hklBvvv8YYRPFfd7O9saIqEvfm81pGmk2cqR0EPPZhBuyY08x6fhx4WFRrcmLlvVM8G+gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G85lwjPX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D0FC4CEF2;
-	Mon,  5 May 2025 22:36:06 +0000 (UTC)
+	 MIME-Version; b=CQqCC7UN+1bovQzWhI2STU8RbhXJGCY3gA5DiApx5L0iuInly9yGw7p42lWe/pnPvwHrJ732UZH1s9f70ELgKXBT89e00IDzAduYWKbPVT6MLz+RVwA5IPEHPwB1iIAZrsriRJsD5JYuqEzMFK5Bt5vpcsaHfzTA9E8FTFduD+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tj+RA3TL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C21DC4CEE4;
+	Mon,  5 May 2025 22:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484568;
-	bh=4WfFbFjcaanBR0u3Vi8013gCJwg8jWqxRkdGc3InMBw=;
+	s=k20201202; t=1746484572;
+	bh=qnlW6kW/MHKL3YI/EjqNJUQP7K40U59GY6a8zZf60PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G85lwjPXfVnOpgt3/ioobduSENsASCyGRlYGe1vs615n7fQ8N+mW49i2NksKAImaB
-	 0EIPOA4j2ydGrcYjGsAnShWx2P6yk2AtCBEUnc8HbEKqx9nJi5HUTOYiRZexKMDN7A
-	 MMzQvRPO50px87Fcgc+HVx42lisRRn6W8zVdXVshmhN99862dsJR6JxVgn+unA+vzx
-	 QuhSnC/xQ6Z3H89rcMspTVRqGF1dke+eqKB/i6iY/qDyVtamfBVSIc7vDhvrTUMJOk
-	 Tgkt8HAgcHMQtUAh0QTSpKkreSJPSR4s0WNMs6mAgYzjUCRSVgWEvsbT70+U6QZG+O
-	 L49U/kIrFGflQ==
+	b=tj+RA3TLziGXewaqjyk1fTVhkSVzCp3ZB8OugexVRHHfDhAa4IGMT2bL1K4/VCuFX
+	 J4NcBdw/grh85E3IrAuCFIKUeBIjSzlPJxzxUPGImQEmF7ch5ckFpj5sOTNfljZPvx
+	 WgIBv8Wru3cRiyjpYBFtbcxDArf0eUZVPWJwa8rOzmtbcbObhntF0yviuLyELPy/zp
+	 Kqi2Z1HBIqUdxgGfcP2AY9azQq+4iCSP0qXPA+XOOfoPg6/UjEcHUEZpk+SgZuZ0tz
+	 vqpjxMc1E9mMTFs27Z2ZiRzK7AL+qVlFThlv2wjqcDGxmaKh2IrweN3cQHv+gcFvxB
+	 5VJGmEYT/Jsmg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+Cc: Alexander Duyck <alexanderduyck@meta.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	hjc@rock-chips.com,
-	andy.yan@rock-chips.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 542/642] drm/rockchip: vop2: Improve display modes handling on RK3588 HDMI0
-Date: Mon,  5 May 2025 18:12:38 -0400
-Message-Id: <20250505221419.2672473-542-sashal@kernel.org>
+	alexanderduyck@fb.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	jdamato@fastly.com,
+	mohsin.bashr@gmail.com,
+	vadim.fedorenko@linux.dev,
+	sdf@fomichev.me,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 543/642] eth: fbnic: set IFF_UNICAST_FLT to avoid enabling promiscuous mode when adding unicast addrs
+Date: Mon,  5 May 2025 18:12:39 -0400
+Message-Id: <20250505221419.2672473-543-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -75,110 +75,70 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Alexander Duyck <alexanderduyck@meta.com>
 
-[ Upstream commit 2c1268e7aad0819f38e56134bbc2095fd95fde1b ]
+[ Upstream commit 09717c28b76c30b1dc8c261c855ffb2406abab2e ]
 
-The RK3588 specific implementation is currently quite limited in terms
-of handling the full range of display modes supported by the connected
-screens, e.g. 2560x1440@75Hz, 2048x1152@60Hz, 1024x768@60Hz are just a
-few of them.
+I realized when we were adding unicast addresses we were enabling
+promiscuous mode. I did a bit of digging and realized we had overlooked
+setting the driver private flag to indicate we supported unicast filtering.
 
-Additionally, it doesn't cope well with non-integer refresh rates like
-59.94, 29.97, 23.98, etc.
+Example below shows the table with 00deadbeef01 as the main NIC address,
+and 5 additional addresses in the 00deadbeefX0 format.
 
-Make use of HDMI0 PHY PLL as a more accurate DCLK source to handle
-all display modes up to 4K@60Hz.
+  # cat $dbgfs/mac_addr
+  Idx S TCAM Bitmap       Addr/Mask
+  ----------------------------------
+  00  0 00000000,00000000 000000000000
+                          000000000000
+  01  0 00000000,00000000 000000000000
+                          000000000000
+  02  0 00000000,00000000 000000000000
+                          000000000000
+  ...
+  24  0 00000000,00000000 000000000000
+                          000000000000
+  25  1 00100000,00000000 00deadbeef50
+                          000000000000
+  26  1 00100000,00000000 00deadbeef40
+                          000000000000
+  27  1 00100000,00000000 00deadbeef30
+                          000000000000
+  28  1 00100000,00000000 00deadbeef20
+                          000000000000
+  29  1 00100000,00000000 00deadbeef10
+                          000000000000
+  30  1 00100000,00000000 00deadbeef01
+                          000000000000
+  31  0 00000000,00000000 000000000000
+                          000000000000
 
-Tested-by: FUKAUMI Naoki <naoki@radxa.com>
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250204-vop2-hdmi0-disp-modes-v3-3-d71c6a196e58@collabora.com
+Before rule 31 would be active. With this change it correctly sticks
+to just the unicast filters.
+
+Signed-off-by: Alexander Duyck <alexanderduyck@meta.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250204010038.1404268-2-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 34 ++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ drivers/net/ethernet/meta/fbnic/fbnic_netdev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 64029237358d8..bcbd498823928 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -159,6 +159,7 @@ struct vop2_video_port {
- 	struct drm_crtc crtc;
- 	struct vop2 *vop2;
- 	struct clk *dclk;
-+	struct clk *dclk_src;
- 	unsigned int id;
- 	const struct vop2_video_port_data *data;
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+index 7a96b6ee773f3..1db57c42333ef 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+@@ -628,6 +628,8 @@ struct net_device *fbnic_netdev_alloc(struct fbnic_dev *fbd)
+ 	fbnic_rss_key_fill(fbn->rss_key);
+ 	fbnic_rss_init_en_mask(fbn);
  
-@@ -214,6 +215,7 @@ struct vop2 {
- 	struct clk *hclk;
- 	struct clk *aclk;
- 	struct clk *pclk;
-+	struct clk *pll_hdmiphy0;
- 
- 	/* optional internal rgb encoder */
- 	struct rockchip_rgb *rgb;
-@@ -222,6 +224,8 @@ struct vop2 {
- 	struct vop2_win win[];
- };
- 
-+#define VOP2_MAX_DCLK_RATE		600000000
++	netdev->priv_flags |= IFF_UNICAST_FLT;
 +
- #define vop2_output_if_is_hdmi(x)	((x) == ROCKCHIP_VOP2_EP_HDMI0 || \
- 					 (x) == ROCKCHIP_VOP2_EP_HDMI1)
- 
-@@ -1155,6 +1159,9 @@ static void vop2_crtc_atomic_disable(struct drm_crtc *crtc,
- 
- 	vop2_crtc_disable_irq(vp, VP_INT_DSP_HOLD_VALID);
- 
-+	if (vp->dclk_src)
-+		clk_set_parent(vp->dclk, vp->dclk_src);
-+
- 	clk_disable_unprepare(vp->dclk);
- 
- 	vop2->enable_count--;
-@@ -2257,6 +2264,27 @@ static void vop2_crtc_atomic_enable(struct drm_crtc *crtc,
- 
- 	vop2_vp_write(vp, RK3568_VP_MIPI_CTRL, 0);
- 
-+	/*
-+	 * Switch to HDMI PHY PLL as DCLK source for display modes up
-+	 * to 4K@60Hz, if available, otherwise keep using the system CRU.
-+	 */
-+	if (vop2->pll_hdmiphy0 && clock <= VOP2_MAX_DCLK_RATE) {
-+		drm_for_each_encoder_mask(encoder, crtc->dev, crtc_state->encoder_mask) {
-+			struct rockchip_encoder *rkencoder = to_rockchip_encoder(encoder);
-+
-+			if (rkencoder->crtc_endpoint_id == ROCKCHIP_VOP2_EP_HDMI0) {
-+				if (!vp->dclk_src)
-+					vp->dclk_src = clk_get_parent(vp->dclk);
-+
-+				ret = clk_set_parent(vp->dclk, vop2->pll_hdmiphy0);
-+				if (ret < 0)
-+					drm_warn(vop2->drm,
-+						 "Could not switch to HDMI0 PHY PLL: %d\n", ret);
-+				break;
-+			}
-+		}
-+	}
-+
- 	clk_set_rate(vp->dclk, clock);
- 
- 	vop2_post_config(crtc);
-@@ -3697,6 +3725,12 @@ static int vop2_bind(struct device *dev, struct device *master, void *data)
- 		return PTR_ERR(vop2->pclk);
- 	}
- 
-+	vop2->pll_hdmiphy0 = devm_clk_get_optional(vop2->dev, "pll_hdmiphy0");
-+	if (IS_ERR(vop2->pll_hdmiphy0)) {
-+		drm_err(vop2->drm, "failed to get pll_hdmiphy0\n");
-+		return PTR_ERR(vop2->pll_hdmiphy0);
-+	}
-+
- 	vop2->irq = platform_get_irq(pdev, 0);
- 	if (vop2->irq < 0) {
- 		drm_err(vop2->drm, "cannot find irq for vop2\n");
+ 	netdev->features |=
+ 		NETIF_F_RXHASH |
+ 		NETIF_F_SG |
 -- 
 2.39.5
 
