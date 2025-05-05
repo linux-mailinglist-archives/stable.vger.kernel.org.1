@@ -1,258 +1,231 @@
-Return-Path: <stable+bounces-139725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D91AA9A41
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 19:18:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F1C9AA9A8C
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 19:31:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 540CA189C76D
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 17:18:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 964B73BE1BC
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 17:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739E426A0CA;
-	Mon,  5 May 2025 17:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF251A2C04;
+	Mon,  5 May 2025 17:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bKjhSY1Z"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qwg/Vvpw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248381F6667;
-	Mon,  5 May 2025 17:18:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B6A17C98
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 17:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746465514; cv=none; b=XKpLpwsPsaK/1SLj6PIE5yIpxDqF971lkfVZajysrDpzqh4VNVrfV7R9KgfwXvZ1ybonUb1l6s+pBUDlJp4H6vo/x6Qjq7Pm2TQEcyuJdNKfKWEstm4bCj/ztTeEJWHtvijKkL7Np4Q572qqm5RWIbtwbIpqe4W5kYSKQa5SyKk=
+	t=1746466262; cv=none; b=khZVnalx6IXGMHYsZ6lhL3Z9YHmR/MQel0pgm2R94NlHySVpiZYJcRtdzo8DGMAdo1OSwlVFSfcjmflcg0RV9SowBDJm77s6E2wnvp1Srg0kIBZB24HMPbYFd0l5Bxm5oLgOYlX7EHsQNFU76yWbJFuB77OQON1F7VYttaSHFnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746465514; c=relaxed/simple;
-	bh=zAYILOUuPLzGJcE+H/qrkjNUK62hvMnUtpZ+b93J6PE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MQbw6ug2o9TnNAG6+cHix1ATbOk5jP/r+C/35uRCqaSQtMmTsQVMZrZ3BdMretqo5LfOmFFIEm64lFpU6tbYInG9bFuWa1bVOlPcUEYrx5Ym7x4SOWn87RhY0qfEhdd5GFg8VoKd5kfJZ/qUw8afN5X9MphHGlOLFPh0U7+IJr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bKjhSY1Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E03C4CEEE;
-	Mon,  5 May 2025 17:18:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746465513;
-	bh=zAYILOUuPLzGJcE+H/qrkjNUK62hvMnUtpZ+b93J6PE=;
-	h=Subject:From:Reply-To:To:Cc:Date:In-Reply-To:References:From;
-	b=bKjhSY1ZFAKpkyxZ4vBD4W9x8dCZDJZkQW3reZNSIuF9qTqh99PTq+rQLO5ew/UaW
-	 5JNE8HkQuTds+5Tn+9CvaMY9gymsMbyj3i5/EmvwSZPmxZgPW9DqHrml3NzsMKXtEU
-	 +ps5924p/evGCsh4iPrg72kBsA5O6myVmHYewV8vaiPAIOEDYgmWfGvwOEekHQSCEn
-	 RZZNXRi47qVPxCtEjJvTXcbU70cEnY6BCEBu+M+K/5QNw07fAX9Us3h4IWx4ICWu3O
-	 86NPJFX87m6u/VLensYpuY8u+kZyPikBwfvofCEVJpaZunpT1M+F8unJ9P2KVQ+4jO
-	 6TExxeLdUQpyw==
-Message-ID: <0736898d8d53e6249d5be637c9b7e7c81398218a.camel@kernel.org>
-Subject: Re: [REGRESSION][BISECTED][STABLE] MT7925: mDNS and IPv6 broken in
- kernel 6.14.3 and above
-From: Niklas Schnelle <niks@kernel.org>
-Reply-To: niks@kernel.org
-To: Mingyen Hsieh =?UTF-8?Q?=28=E8=AC=9D=E6=98=8E=E8=AB=BA=29?=	
- <Mingyen.Hsieh@mediatek.com>, "stable@vger.kernel.org"
- <stable@vger.kernel.org>,  "fossben@pm.me"	 <fossben@pm.me>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
- "linux-mediatek@lists.infradead.org"
-	 <linux-mediatek@lists.infradead.org>, Allan Wang
- =?UTF-8?Q?=28=E7=8E=8B=E5=AE=B6=E5=81=89=29?=
-	 <Allan.Wang@mediatek.com>, "linux-kernel@vger.kernel.org"
-	 <linux-kernel@vger.kernel.org>, "regressions@lists.linux.dev"
-	 <regressions@lists.linux.dev>
-Date: Mon, 05 May 2025 19:18:29 +0200
-In-Reply-To: <28ef2cc608d071d1530902d7b5df045555ab5651.camel@mediatek.com>
-References:
-		 	<EmWnO5b-acRH1TXbGnkx41eJw654vmCR-8_xMBaPMwexCnfkvKCdlU5u19CGbaapJ3KRu-l3B-tSUhf8CCQwL0odjo6Cd5YG5lvNeB-vfdg=@pm.me>
-				 <f73dec60b60dd7bb3be40c1feefbe223c7afe19b.camel@mediatek.com>
-				 <5ae1ef34c9844d6d0f5fb167dd596a4c43321367.camel@kernel.org>
-			 <28ef2cc608d071d1530902d7b5df045555ab5651.camel@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 
+	s=arc-20240116; t=1746466262; c=relaxed/simple;
+	bh=icOdvGNpjsDv1bHoWRsl8306sihz3bMzKInirhh17ho=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AfzC53ARM5Sufvu4jgUmcZC8yNqbRe3Hv+bS/WdHStOUnluu2+Wq5FXfyWT8cFjqEwvd7dBITkq06CsQW0pF0xMObnIVnQdodY4+LToQHN5UM4luv+Pq1tslm9ES75BQSbNFQDn12WUljWei+0GFn7hdx0sOoGgESzPauAbjNtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qwg/Vvpw; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-48b7747f881so16981cf.1
+        for <stable@vger.kernel.org>; Mon, 05 May 2025 10:31:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746466260; x=1747071060; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z1ekk/EcVLPMO2RPC07oeBBANq7bPu8o21BFSsP6fvU=;
+        b=Qwg/VvpwUd6GGJMIrBx22Stkk+VZOCUjI10c+0yFnKjDJ+qjZE0nQ9o116ArN796Hh
+         XGI2lFvYv2uFImr0n0NYQd+b+oSJ9IqE3K2L76NnosMTVrCnSRToc4KN+I7+DSyREghR
+         BGLOcoE2POt39GhEmoff7+otGZNHMXsx5sepZ5Lo+X51RIabm8NYnOB8k0iieJMZGWaF
+         mR/JIeymGdChEDN564Tfz6j2/3WUcH/JcwlBmqIfqIaqS0T7SkqBs6KQ4kB4SO6wbVCS
+         pWxGNpTT4LVHxsFvMv8xH2E8cgUHm7iscL0A9S4dlkZ38aDG36KdesK1Ouv0d8XC+Hn8
+         XmrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746466260; x=1747071060;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z1ekk/EcVLPMO2RPC07oeBBANq7bPu8o21BFSsP6fvU=;
+        b=v54MZ47hNo06ACfklX8MyJa+fhf1B+l8XiLFjl2HTYnG7GUh5jv7hNi0LekSl+gOCr
+         wF1L/nxFQbbmOseZXhs4J55Bs5S08WyZAo1jVkZzSA10aqfBsXLtTu4Im4aeWTabVBmI
+         MUQ7T7FmOcE0qfRiEWycZFwWFKZrYH5txNV+8wC0rOWSw6E6gC6mhhluHrxoNCf9gPdj
+         pNRJggin+K5wjHEX3y38LXc4URwQ+DRAOT9/BASPgRIrvywksEFFYnr8NUGYVnpFECif
+         sNdX4biRF6HfxG/8z+VaI4jcY85ZBTV0bi/ceS84itSqx/3YpI9M004a6zniPC8/ZUZF
+         l+vw==
+X-Forwarded-Encrypted: i=1; AJvYcCWIjBzH3qQny8Depf1iEy3W1fcxSgq27bxr/c+twXUMmlJHEZzzjfQmqTugTEY+5K5bbP10FwA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzI6j+ksuhh6CT84KRLmdmgBlxjPrpOFb9d1/WyHbz/EjWwelyz
+	OsInNX62f9dIBkhlsb7C8NRZ0zBx6sILP95pW1hoh9amCmbemUvepCao+/gsxu/cVboCF5CQ3A0
+	oM+Z8635AlwalCO5Kx3qQ8MZ3oDX4rLMy72sl
+X-Gm-Gg: ASbGncvdsQZkejkoDWluCcfK8umsWPU9JyM364+mifB7AF5huL5aVoLEPG9dLy1g1lF
+	XZ7ib1wjOwyMNcZQ3fhGW6NSVzeXrA0AR+gVqfE304Dex3gKWgU7IurO0gShvtYW/2FIXiWVLZ0
+	oNNaPPFPpJR+cUdArpwrsh
+X-Google-Smtp-Source: AGHT+IEzPaJ6ZXtZL7m0R+5pk2aMUIz6WRdh+GAEHht03khM3N942OA+08ItQjKmCs6WsUMRU+K+bv7fM4PwAZUEMM4=
+X-Received: by 2002:ac8:7f94:0:b0:471:eab0:ef21 with SMTP id
+ d75a77b69052e-490cc658b33mr941421cf.13.1746466259277; Mon, 05 May 2025
+ 10:30:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <2025050521-provable-extent-4108@gregkh>
+In-Reply-To: <2025050521-provable-extent-4108@gregkh>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 5 May 2025 10:30:48 -0700
+X-Gm-Features: ATxdqUG4tsOifqex5d44NjBVdd_0CoYYQywD6aQBW_oZKsQMgGiHA5E_F1Bx-0k
+Message-ID: <CAJuCfpE-ZQwm7SxKVT49wgw=2Tko9xCVvCraacbQxp8inTG_RQ@mail.gmail.com>
+Subject: Re: FAILED: patch "[PATCH] mm, slab: clean up slab->obj_exts always"
+ failed to apply to 6.14-stable tree
+To: gregkh@linuxfoundation.org
+Cc: quic_zhenhuah@quicinc.com, harry.yoo@oracle.com, rientjes@google.com, 
+	vbabka@suse.cz, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2025-05-05 at 05:48 +0000, Mingyen Hsieh (=E8=AC=9D=E6=98=8E=E8=AB=
-=BA) wrote:
-> On Sun, 2025-05-04 at 00:39 +0200, Niklas Schnelle wrote:
-> >=20
-> > External email : Please do not click links or open attachments until
-> > you have verified the sender or the content.
-> >=20
-> >=20
-> > On Wed, 2025-04-30 at 06:47 +0000, Mingyen Hsieh (=E8=AC=9D=E6=98=8E=E8=
-=AB=BA) wrote:
-> > > On Wed, 2025-04-30 at 01:14 +0000, fossben@pm.me=C2=A0wrote:
-> > > >=20
-> > > > External email : Please do not click links or open attachments
-> > > > until
-> > > > you have verified the sender or the content.
-> > > >=20
-> > > >=20
-> > > > Hello all,
-> > > >=20
-> > > > After upgrading to 6.14.3 on my PC with a MT7925 chip, I noticed
-> > > > that
-> > > > I could no longer ping *.local addresses provided by Avahi. In
-> > > > addition, I also noticed that I was not able to get a DHCP IPv6
-> > > > address from my router, no matter how many times I rebooted the
-> > > > router or reconnected with NetworkManager.
-> > > >=20
-> > > > Reverting to 6.14.2 fixes both mDNS and IPv6 addresses
-> > > > immediately.
-> > > > Going back to 6.14.3 immediately breaks mDNS again, but the IPv6
-> > > > address will stay there for a while before disappearing later,
-> > > > possibly because the DHCP lease expired? I am not sure exactly
-> > > > when
-> > > > it stops working.
-> > > >=20
-> > > > I've done a kernel bisect between 6.14.2 and 6.14.3 and found the
-> > > > offending commit that causes mDNS to fail:
-> > > >=20
-> > > > commit 80007d3f92fd018d0a052a706400e976b36e3c87
-> > > > Author: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> > > > Date:=C2=A0=C2=A0 Tue Mar 4 16:08:50 2025 -0800
-> > > >=20
-> > > > =C2=A0=C2=A0=C2=A0 wifi: mt76: mt7925: integrate *mlo_sta_cmd and *=
-sta_cmd
-> > > >=20
-> > > > =C2=A0=C2=A0=C2=A0 commit cb1353ef34735ec1e5d9efa1fe966f05ff1dc1e1 =
-upstream.
-> > > >=20
-> > > > =C2=A0=C2=A0=C2=A0 Integrate *mlo_sta_cmd and *sta_cmd for the MLO =
-firmware.
-> > > >=20
-> > > > =C2=A0=C2=A0=C2=A0 Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabli=
-ng MLO when
-> > > > the
-> > > > firmware supports it")
-> > > >=20
-> > > > =C2=A0drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 59 ++++----=
----
-> > > > ----
-> > > > --------------------------------------------
-> > > > =C2=A01 file changed, 4 insertions(+), 55 deletions(-)
-> > > >=20
-> > > > I do not know if this same commit is also causing the IPv6 issues
-> > > > as
-> > > > testing that requires quite a bit of time to reproduce. What I do
-> > > > know with certainty as of this moment is that it definitely
-> > > > breaks in
-> > > > kernel 6.14.3.
-> > > >=20
-> > > > I've attached my hardware info as well as dmesg logs from the
-> > > > last
-> > > > working kernel from the bisect and 6.14.4 which exhibits the
-> > > > issue.
-> > > > Please let me know if there's any other info you need.
-> > > >=20
-> > > > Thanks!
-> > > > Benjamin Xiao
-> > >=20
-> > > Hi,
-> > >=20
-> > > Thanks for reporting this issue, we will aim into this.
-> > >=20
-> > > Can you provide me with your testing steps?
-> > >=20
-> > > Best Regards,
-> > > Yen.
-> > >=20
-> >=20
-> > Hi Yan,
-> >=20
-> > I see the same IPv6 issue on my Framework 13 (Ryzen 5 AI 340) with an
-> > mt7925e WiFI module. My setup is just a home router with native IPv6
-> > both for my uplink and in the LAN. The problems with IPv6 can already
-> > be seen just in the LAN for example by checking which IP was used for
-> > SSH, in my setup it should always be IPv6 but falls back to IPv4 in
-> > the
-> > broken state.
-> >=20
-> > As another data point, I tried reverting cb1353ef3473 ("wifi: mt76:
-> > mt7925: integrate *mlo_sta_cmd and *sta_cmd") on top of 6.15.-rc4.
-> > This
-> > fully restores IPv6 for me. Also note I'm running this with the
-> > mt7925
-> > firmware version 20250425073330 from linux-firmware's master branch
-> > as
-> > I had some dropped connections with earlier firmware.
-> >=20
-> > So it definitely looks like that commit also broke IPv6 and not just
-> > mDNS. Note that if if I use DHCPv6 instead of router advertisements,
-> > on
-> > the latest firmware, but without the revert, I get a global IPv6
-> > address added to the interface but then native IPv6 addresses are
-> > still
-> > uncreachable. With the offending patch reverted my SSH session to an
-> > IPv6 only host works fine and is stable. Also I'd be willing to test
-> > a
-> > proper fix as I rely on IPv6 heavily due to having to use CGNAT for
-> > IPv4 but not for IPv6.
-> >=20
-> >=20
-> > Thanks,
-> > Niklas
->=20
-> Hi Benjamin & Niklas,
->=20
-> Can you help to try this patch? I can get IPv6 address through this
-> patch.
->=20
-> If it can work at your environment as well, i will upstream it and add
-> test tag with you.
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> index a42b584634ab..fd756f0d18f8 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> @@ -2183,14 +2183,14 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
->                         mt7925_mcu_sta_mld_tlv(skb, info->vif, info-
-> > link_sta->sta);
->                         mt7925_mcu_sta_eht_mld_tlv(skb, info->vif,
-> info->link_sta->sta);
->                 }
+On Mon, May 5, 2025 at 12:55=E2=80=AFAM <gregkh@linuxfoundation.org> wrote:
+>
+>
+> The patch below does not apply to the 6.14-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+
+I'll work on the backport. Thanks!
+
+>
+> To reproduce the conflict and resubmit, you may use the following command=
+s:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
+t/ linux-6.14.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x be8250786ca94952a19ce87f98ad9906448bc9ef
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050521-=
+provable-extent-4108@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
+>
+> Possible dependencies:
+>
+>
+>
+> thanks,
+>
+> greg k-h
+>
+> ------------------ original commit in Linus's tree ------------------
+>
+> From be8250786ca94952a19ce87f98ad9906448bc9ef Mon Sep 17 00:00:00 2001
+> From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+> Date: Mon, 21 Apr 2025 15:52:32 +0800
+> Subject: [PATCH] mm, slab: clean up slab->obj_exts always
+>
+> When memory allocation profiling is disabled at runtime or due to an
+> error, shutdown_mem_profiling() is called: slab->obj_exts which
+> previously allocated remains.
+> It won't be cleared by unaccount_slab() because of
+> mem_alloc_profiling_enabled() not true. It's incorrect, slab->obj_exts
+> should always be cleaned up in unaccount_slab() to avoid following error:
+>
+> [...]BUG: Bad page state in process...
+> ..
+> [...]page dumped because: page still charged to cgroup
+>
+> [andriy.shevchenko@linux.intel.com: fold need_slab_obj_ext() into its onl=
+y user]
+> Fixes: 21c690a349ba ("mm: introduce slabobj_ext to support slab object ex=
+tensions")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+> Acked-by: David Rientjes <rientjes@google.com>
+> Acked-by: Harry Yoo <harry.yoo@oracle.com>
+> Tested-by: Harry Yoo <harry.yoo@oracle.com>
+> Acked-by: Suren Baghdasaryan <surenb@google.com>
+> Link: https://patch.msgid.link/20250421075232.2165527-1-quic_zhenhuah@qui=
+cinc.com
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+>
+> diff --git a/mm/slub.c b/mm/slub.c
+> index dc9e729e1d26..be8b09e09d30 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2028,8 +2028,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct k=
+mem_cache *s,
+>         return 0;
+>  }
+>
+> -/* Should be called only if mem_alloc_profiling_enabled() */
+> -static noinline void free_slab_obj_exts(struct slab *slab)
+> +static inline void free_slab_obj_exts(struct slab *slab)
+>  {
+>         struct slabobj_ext *obj_exts;
+>
+> @@ -2049,18 +2048,6 @@ static noinline void free_slab_obj_exts(struct sla=
+b *slab)
+>         slab->obj_exts =3D 0;
+>  }
+>
+> -static inline bool need_slab_obj_ext(void)
+> -{
+> -       if (mem_alloc_profiling_enabled())
+> -               return true;
 > -
-> -               mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info-
-> > link_sta);
->         }
->=20
->         if (!info->enable) {
->                 mt7925_mcu_sta_remove_tlv(skb);
->                 mt76_connac_mcu_add_tlv(skb, STA_REC_MLD_OFF,
->                                         sizeof(struct tlv));
-> +       } else {
-> +               mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info-
-> > link_sta);
->         }
->=20
->         return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
->=20
->=20
-> Thanks~
-> Yen.
->=20
-
-Hi Yen,
-
-As the patch didn't apply, I edited mt7925_mcu_sta_cmd() manually on
-top of v6.15-rc5 according to the diff. With that IPv6 works fine for
-me.
-
-If it were me, I'd probably structure the if different. I'd leave
-the=C2=A0mt7925_mcu_sta_hdr_trans_tlv() where it is but have an inner if
-(info->link_sta) inside just if (!info->enable), then the !info->enable
-case becomes just an else. I'd maybe even put the if (info->link_sta)
-body in its own static function if that makes sense semantically, but I
-don't know enough (anything) about the driver to know. Anyway, that's
-all a matter of taste and actually makes the patch quite a bit larger.
-
-So whichever way you decide on feel free to add:
-
-Tested-by: Niklas Schnelle <niks@kernel.org>
-
-Thanks,
-Niklas
+> -       /*
+> -        * CONFIG_MEMCG creates vector of obj_cgroup objects conditionall=
+y
+> -        * inside memcg_slab_post_alloc_hook. No other users for now.
+> -        */
+> -       return false;
+> -}
+> -
+>  #else /* CONFIG_SLAB_OBJ_EXT */
+>
+>  static inline void init_slab_obj_exts(struct slab *slab)
+> @@ -2077,11 +2064,6 @@ static inline void free_slab_obj_exts(struct slab =
+*slab)
+>  {
+>  }
+>
+> -static inline bool need_slab_obj_ext(void)
+> -{
+> -       return false;
+> -}
+> -
+>  #endif /* CONFIG_SLAB_OBJ_EXT */
+>
+>  #ifdef CONFIG_MEM_ALLOC_PROFILING
+> @@ -2129,7 +2111,7 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *=
+s, void *object, gfp_t flags)
+>  static inline void
+>  alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t =
+flags)
+>  {
+> -       if (need_slab_obj_ext())
+> +       if (mem_alloc_profiling_enabled())
+>                 __alloc_tagging_slab_alloc_hook(s, object, flags);
+>  }
+>
+> @@ -2601,8 +2583,12 @@ static __always_inline void account_slab(struct sl=
+ab *slab, int order,
+>  static __always_inline void unaccount_slab(struct slab *slab, int order,
+>                                            struct kmem_cache *s)
+>  {
+> -       if (memcg_kmem_online() || need_slab_obj_ext())
+> -               free_slab_obj_exts(slab);
+> +       /*
+> +        * The slab object extensions should now be freed regardless of
+> +        * whether mem_alloc_profiling_enabled() or not because profiling
+> +        * might have been disabled after slab->obj_exts got allocated.
+> +        */
+> +       free_slab_obj_exts(slab);
+>
+>         mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),
+>                             -(PAGE_SIZE << order));
+>
 
