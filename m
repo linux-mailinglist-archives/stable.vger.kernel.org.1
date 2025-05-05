@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-141495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3DAAAB3E7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:55:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6CFAAB406
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:58:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A87B1781C6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:52:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43F923A6373
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242ED33FD6F;
-	Tue,  6 May 2025 00:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BEA46D198;
+	Tue,  6 May 2025 00:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KsKsB1pv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YF8iyEOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BA13991BC;
-	Mon,  5 May 2025 23:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60393991DB;
+	Mon,  5 May 2025 23:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486473; cv=none; b=EAaKoQzdE3iKxP0xqbXwetF9sgOXUyVs7ksiyEGWTsj9S0s02WO8O/SpIT8psldi2OIH33vG+8uxqp+8elO9BleVIbuvd39UqJdZt5Zaf01bHmCdePWIWWGklIXiJkpss1y/mIi7nKgcgU2ZedKRmOk3/uuWCiQMO6btChffpt4=
+	t=1746486477; cv=none; b=UoRijZQ5ryh+HJ5sfVz+kpypsLYWu3T7WAY2qzpoB0oLyo/kqPltfF7cIf9VgvVBEIaBMjG5g9rHxHm2VHxHzQpw5JvkvP+3VHaQQ3QKZXutJj3fnSEKwI9IJcaKQw7PYLNLSp2OCXoBISb8E1LvzVu234UNKJUeZdK55sqItvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486473; c=relaxed/simple;
-	bh=qwMJOQ5swyZ+SMObVdycJa5sk+yXTYnxZmLt9zQKnKo=;
+	s=arc-20240116; t=1746486477; c=relaxed/simple;
+	bh=AiT5k0s5mXpAD3zPqGOswp5BQWHKAGYaSBP6/TbyIVE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hKRjAgKO1ZO0uoVj+r8zDQnpDZEkon29A+8/nhm+BLLZI3qjg83ZaRaPnYxMLKnzr8HOaOnJo/tG/l758Ishaf2OQrubSamMBBamdYQA7f/LZDfutxGsdFxsMean3BPls6L1H8SxUUKYlIhPW0ZImbXIanIax4aVfZbHBkkjHlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KsKsB1pv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A49C4CEEF;
-	Mon,  5 May 2025 23:07:51 +0000 (UTC)
+	 MIME-Version; b=tGeH7fPRVajIEuN8UQ73TP/jELfLf6VwNXrHUda/PE6DkLwAvZlnVxdKQk4kWYnLvcSa4Su9hsiVnElTptTKnflobfI8SZvEJlO1bNTMNPjVjSkOrKB8k+iHxwj7YHNJzc3BoQp6BhW09x/blcWHFa7/o61+cqyHG1QRwI89F74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YF8iyEOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27397C4CEE4;
+	Mon,  5 May 2025 23:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486472;
-	bh=qwMJOQ5swyZ+SMObVdycJa5sk+yXTYnxZmLt9zQKnKo=;
+	s=k20201202; t=1746486476;
+	bh=AiT5k0s5mXpAD3zPqGOswp5BQWHKAGYaSBP6/TbyIVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KsKsB1pvKhC0LzeIP5zGFbxbXXxNJ2w6sas6AJVWOxB46yT6A0IGsINUiRKuTLx5n
-	 jUnqorJ/NePjt8z/oDn/Y7BzRCE8c+zRIrwxq8vCktG7lhRWQznNNy4DhT+FvsXerz
-	 HAPArPqUFS7Oylvx9UawKLnRlOb4hlw9Y2/FQr4SdGq1vvFN0zBkfSzifU7N1kaGC4
-	 68u0vZeljWXd83xPeLhnaAMSvbFHQO2jRbOEXj9IS0d3S8Ux+yoUgnCqR7rDz45Kl2
-	 IFqFUMqnXXagrnqfzZpojDGFid3h+oB7HkdeNU1WNnSQ+oPk3Ea6Kvp/T4wqtZBsq8
-	 GOxgHwAwN+TMw==
+	b=YF8iyEOqlhkyWrEwtrpfTdAw3ZRQit84Eg8U0NhBW1InQp8GV7IXZ6gqARihwfj0P
+	 h2xcKlc4CicxkzXB8xiRgms0OnlNM8cEb0R0YaoehjYqpBkGpsPI2q+4btZiEfMrHl
+	 cyNtEuktRbE0nBs+LnTl1SsLGYfUxwZQXp7aOec7+og3KQH+u9FcZcbNSuYSxA3CCH
+	 1w4+wqJSANTDNdngdF7V8vuhkLxB7WNOx9bvu6BMNaiFmCVXz61vM7uqz7hWXnYwQy
+	 vWqz/5CKsAsun0GkxQxT5PuLGHGwjoBXcvGcw1uqcctq6ywnwduEqldfHSvNm+lGDy
+	 JiH6G6qb425RA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	Kevin Tian <kevin.tian@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 048/212] scsi: st: ERASE does not change tape location
-Date: Mon,  5 May 2025 19:03:40 -0400
-Message-Id: <20250505230624.2692522-48-sashal@kernel.org>
+	Yunxiang.Li@amd.com,
+	avihaih@nvidia.com,
+	yi.l.liu@intel.com,
+	zhangdongdong@eswincomputing.com,
+	jgg@ziepe.ca,
+	bhelgaas@google.com,
+	peterx@redhat.com,
+	pstanner@redhat.com,
+	dan.carpenter@linaro.org,
+	pabeni@redhat.com,
+	kvm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 049/212] vfio/pci: Handle INTx IRQ_NOTCONNECTED
+Date: Mon,  5 May 2025 19:03:41 -0400
+Message-Id: <20250505230624.2692522-49-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -61,39 +70,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit ad77cebf97bd42c93ab4e3bffd09f2b905c1959a ]
+[ Upstream commit 860be250fc32de9cb24154bf21b4e36f40925707 ]
 
-The SCSI ERASE command erases from the current position onwards.  Don't
-clear the position variables.
+Some systems report INTx as not routed by setting pdev->irq to
+IRQ_NOTCONNECTED, resulting in a -ENOTCONN error when trying to
+setup eventfd signaling.  Include this in the set of conditions
+for which the PIN register is virtualized to zero.
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250311112516.5548-3-Kai.Makisara@kolumbus.fi
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Additionally consolidate vfio_pci_get_irq_count() to use this
+virtualized value in reporting INTx support via ioctl and sanity
+checking ioctl paths since pdev->irq is re-used when the device
+is in MSI mode.
+
+The combination of these results in both the config space of the
+device and the ioctl interface behaving as if the device does not
+support INTx.
+
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20250311230623.1264283-1-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/vfio/pci/vfio_pci_config.c |  3 ++-
+ drivers/vfio/pci/vfio_pci_core.c   | 10 +---------
+ drivers/vfio/pci/vfio_pci_intrs.c  |  2 +-
+ 3 files changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 284c2cf1ae662..3ff4e6d44db88 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -2887,7 +2887,6 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
- 			timeout = STp->long_timeout * 8;
+diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
+index 7902e1ec0fef2..105243d83b2dc 100644
+--- a/drivers/vfio/pci/vfio_pci_config.c
++++ b/drivers/vfio/pci/vfio_pci_config.c
+@@ -1806,7 +1806,8 @@ int vfio_config_init(struct vfio_pci_core_device *vdev)
+ 					cpu_to_le16(PCI_COMMAND_MEMORY);
+ 	}
  
- 		DEBC_printk(STp, "Erasing tape.\n");
--		fileno = blkno = at_sm = 0;
- 		break;
- 	case MTSETBLK:		/* Set block length */
- 	case MTSETDENSITY:	/* Set tape density */
+-	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx)
++	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx ||
++	    vdev->pdev->irq == IRQ_NOTCONNECTED)
+ 		vconfig[PCI_INTERRUPT_PIN] = 0;
+ 
+ 	ret = vfio_cap_init(vdev);
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index f357fd157e1ed..aa362b434413a 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -719,15 +719,7 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_finish_enable);
+ static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_type)
+ {
+ 	if (irq_type == VFIO_PCI_INTX_IRQ_INDEX) {
+-		u8 pin;
+-
+-		if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) ||
+-		    vdev->nointx || vdev->pdev->is_virtfn)
+-			return 0;
+-
+-		pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
+-
+-		return pin ? 1 : 0;
++		return vdev->vconfig[PCI_INTERRUPT_PIN] ? 1 : 0;
+ 	} else if (irq_type == VFIO_PCI_MSI_IRQ_INDEX) {
+ 		u8 pos;
+ 		u16 flags;
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index 5cbcde32ff79e..64d78944efa53 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -207,7 +207,7 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
+ 	if (!is_irq_none(vdev))
+ 		return -EINVAL;
+ 
+-	if (!pdev->irq)
++	if (!pdev->irq || pdev->irq == IRQ_NOTCONNECTED)
+ 		return -ENODEV;
+ 
+ 	name = kasprintf(GFP_KERNEL_ACCOUNT, "vfio-intx(%s)", pci_name(pdev));
 -- 
 2.39.5
 
