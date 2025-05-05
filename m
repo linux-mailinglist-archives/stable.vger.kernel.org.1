@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-140468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CADDCAAA8FC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:05:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD56AAA90D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:06:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D741F4A23EF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:05:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEA454A3BB0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645D8359041;
-	Mon,  5 May 2025 22:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46315298CA0;
+	Mon,  5 May 2025 22:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KnCs/ZAV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qYz+qpqU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7986827D78A;
-	Mon,  5 May 2025 22:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603A22989B5;
+	Mon,  5 May 2025 22:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484912; cv=none; b=UnjjObl324S/YeIi51A5vRMVPMHKhubxJejk/pihT77uRxky+VC+QPsSB3pwauq3oDpiA5RflZbYd8kx+W84KKkAqcoGonkDUpE0WGwKLBUz6reQDfSChB6MMgIBLI1fp7nQx9LSYpJ385GV9obv3eN47kV28q355+JzCKnTeeA=
+	t=1746484913; cv=none; b=sutCEGjORXZD8dI1XABYQCbBrD/Q/57cHT9ah28yb0kSOfjQqntSeAzwooI6EmLSKaDl08+PRH580nMV9RbcIPCq6rCySXsQ8SXlKOx5DqHD5wK/wqxVSD5nl7JgbBekWUNRjm4M8co5Jud99eHuJpS5UMSdpemop6pfx0Mug5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484912; c=relaxed/simple;
-	bh=qwYCagQop5BpTjSn3yF121cknD/oRVQ9uIR8lwKt7tc=;
+	s=arc-20240116; t=1746484913; c=relaxed/simple;
+	bh=zDEroN2ZyG+zGdZLrHEcWtUXEe3RlIjowoe2bxEc+mE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hanhQhiLzq+mU24JVqxOSECvjZnuBre+sqo6ICamWGDZZkWfaPNGaz0gQvYHimxp8701Rw+WuaYWix0nmbnwxiSZ0x/wwKGLJMOQKfeoS7ovns22/YeUGV07NOKdUe3Hz4QKW1nePnXnTC6SHXeEA8VRXvfVpu8T8XAOWpER0Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KnCs/ZAV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE50C4CEEF;
-	Mon,  5 May 2025 22:41:51 +0000 (UTC)
+	 MIME-Version; b=eLGwdetFdElomxQILV8Ystb7kffpY2ySg3IiYU1bWQIfi3/UmZE5T354EosxREyFIUlwtZBVGRooz0sssnwSTZiPyq5XY2Gtv/sa3jiSfQayaTvjhQ30rE2cpjDdHWWVCvKTSEsyp90lqt9tvSRQzTwFB9ibun/GwNuNUe8q3qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qYz+qpqU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464BBC4CEED;
+	Mon,  5 May 2025 22:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484911;
-	bh=qwYCagQop5BpTjSn3yF121cknD/oRVQ9uIR8lwKt7tc=;
+	s=k20201202; t=1746484913;
+	bh=zDEroN2ZyG+zGdZLrHEcWtUXEe3RlIjowoe2bxEc+mE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KnCs/ZAVLVNtqy0/bbjiUEdxOmSkbsCRyQOgly99EGkbq9glQZiuGEnxfGa4Co5rZ
-	 ca2Md5FCUxmqmgkuHOnsvmmZfRA5es2kECkdtpCRLt9C3zAxgeTuPjDEsGtVLn5ACe
-	 NqaiF+L4QwMCvl2SnwpIOVvDvCqbHpkjfgAXJQ3ypPkpI6cqNe2jGv1ayftreJBasE
-	 4sVkfO+Jt9B2J2x+5+THjYhHb8aWMSUB6hw9eebmOcn1yGXoaOZbaHZ50HXr8YNb+2
-	 kJ8arJSxlwCsuWm2ZizKMQEFq4rYfe5QIKsIh8UJvPrVKyFFjBlVDaO0GXiFVWwsnm
-	 BxCF+CO9oU4sg==
+	b=qYz+qpqUSjBDROjG4FFr98fi+i78mH9IpXtJytdVx7HU21uM+jXRa8cvV0FGLmJte
+	 gilytlaS8lVmN5GkS92NQ7KddnM5fd0lWhNhwQs/oH1C9nsIj9hYcRHhmb7jhJGQ56
+	 5gEEoDwNQGiiQrTxb9VDMmEzlv2kiCNTpcbAmGSFKIblb7MLSvjns7ad20jGprIWW6
+	 ygUg6qAbgzTRPcg/987RE2M4KkFqNtHW3v7L6YcvglsZWCIgkrlyDJb6+DHuRmNKtl
+	 CpcInyFIwNesgetqjur5MpSQ5K18IMrC7Zj3BLCi+cflZp6L85O11CEnEUQp+pSxfn
+	 UBdJY5fRV9Thg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vitalii Mordan <mordan@ispras.ru>,
-	Andi Shyti <andi.shyti@kernel.org>,
+Cc: Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-i2c@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 071/486] i2c: pxa: fix call balance of i2c->clk handling routines
-Date: Mon,  5 May 2025 18:32:27 -0400
-Message-Id: <20250505223922.2682012-71-sashal@kernel.org>
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 072/486] btrfs: make btrfs_discard_workfn() block_group ref explicit
+Date: Mon,  5 May 2025 18:32:28 -0400
+Message-Id: <20250505223922.2682012-72-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -65,39 +68,104 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit be7113d2e2a6f20cbee99c98d261a1fd6fd7b549 ]
+[ Upstream commit 895c6721d310c036dcfebb5ab845822229fa35eb ]
 
-If the clock i2c->clk was not enabled in i2c_pxa_probe(), it should not be
-disabled in any path.
+Currently, the async discard machinery owns a ref to the block_group
+when the block_group is queued on a discard list. However, to handle
+races with discard cancellation and the discard workfn, we have a
+specific logic to detect that the block_group is *currently* running in
+the workfn, to protect the workfn's usage amidst cancellation.
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
+As far as I can tell, this doesn't have any overt bugs (though
+finish_discard_pass() and remove_from_discard_list() racing can have a
+surprising outcome for the caller of remove_from_discard_list() in that
+it is again added at the end).
 
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250212172803.1422136-1-mordan@ispras.ru
+But it is needlessly complicated to rely on locking and the nullity of
+discard_ctl->block_group. Simplify this significantly by just taking a
+refcount while we are in the workfn and unconditionally drop it in both
+the remove and workfn paths, regardless of if they race.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-pxa.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/btrfs/discard.c | 34 ++++++++++++++++------------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
-index 4d76e71cdd4be..afc1a8171f59e 100644
---- a/drivers/i2c/busses/i2c-pxa.c
-+++ b/drivers/i2c/busses/i2c-pxa.c
-@@ -1503,7 +1503,10 @@ static int i2c_pxa_probe(struct platform_device *dev)
- 				i2c->adap.name);
+diff --git a/fs/btrfs/discard.c b/fs/btrfs/discard.c
+index e815d165cccc2..d6eef4bd9e9d4 100644
+--- a/fs/btrfs/discard.c
++++ b/fs/btrfs/discard.c
+@@ -167,13 +167,7 @@ static bool remove_from_discard_list(struct btrfs_discard_ctl *discard_ctl,
+ 	block_group->discard_eligible_time = 0;
+ 	queued = !list_empty(&block_group->discard_list);
+ 	list_del_init(&block_group->discard_list);
+-	/*
+-	 * If the block group is currently running in the discard workfn, we
+-	 * don't want to deref it, since it's still being used by the workfn.
+-	 * The workfn will notice this case and deref the block group when it is
+-	 * finished.
+-	 */
+-	if (queued && !running)
++	if (queued)
+ 		btrfs_put_block_group(block_group);
+ 
+ 	spin_unlock(&discard_ctl->lock);
+@@ -260,9 +254,10 @@ static struct btrfs_block_group *peek_discard_list(
+ 			block_group->discard_cursor = block_group->start;
+ 			block_group->discard_state = BTRFS_DISCARD_EXTENTS;
+ 		}
+-		discard_ctl->block_group = block_group;
  	}
+ 	if (block_group) {
++		btrfs_get_block_group(block_group);
++		discard_ctl->block_group = block_group;
+ 		*discard_state = block_group->discard_state;
+ 		*discard_index = block_group->discard_index;
+ 	}
+@@ -493,9 +488,20 @@ static void btrfs_discard_workfn(struct work_struct *work)
  
--	clk_prepare_enable(i2c->clk);
-+	ret = clk_prepare_enable(i2c->clk);
-+	if (ret)
-+		return dev_err_probe(&dev->dev, ret,
-+				     "failed to enable clock\n");
- 
- 	if (i2c->use_pio) {
- 		i2c->adap.algo = &i2c_pxa_pio_algorithm;
+ 	block_group = peek_discard_list(discard_ctl, &discard_state,
+ 					&discard_index, now);
+-	if (!block_group || !btrfs_run_discard_work(discard_ctl))
++	if (!block_group)
+ 		return;
++	if (!btrfs_run_discard_work(discard_ctl)) {
++		spin_lock(&discard_ctl->lock);
++		btrfs_put_block_group(block_group);
++		discard_ctl->block_group = NULL;
++		spin_unlock(&discard_ctl->lock);
++		return;
++	}
+ 	if (now < block_group->discard_eligible_time) {
++		spin_lock(&discard_ctl->lock);
++		btrfs_put_block_group(block_group);
++		discard_ctl->block_group = NULL;
++		spin_unlock(&discard_ctl->lock);
+ 		btrfs_discard_schedule_work(discard_ctl, false);
+ 		return;
+ 	}
+@@ -547,15 +553,7 @@ static void btrfs_discard_workfn(struct work_struct *work)
+ 	spin_lock(&discard_ctl->lock);
+ 	discard_ctl->prev_discard = trimmed;
+ 	discard_ctl->prev_discard_time = now;
+-	/*
+-	 * If the block group was removed from the discard list while it was
+-	 * running in this workfn, then we didn't deref it, since this function
+-	 * still owned that reference. But we set the discard_ctl->block_group
+-	 * back to NULL, so we can use that condition to know that now we need
+-	 * to deref the block_group.
+-	 */
+-	if (discard_ctl->block_group == NULL)
+-		btrfs_put_block_group(block_group);
++	btrfs_put_block_group(block_group);
+ 	discard_ctl->block_group = NULL;
+ 	__btrfs_discard_schedule_work(discard_ctl, now, false);
+ 	spin_unlock(&discard_ctl->lock);
 -- 
 2.39.5
 
