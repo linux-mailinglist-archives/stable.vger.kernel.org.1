@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-141694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2693CAAB5A6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:33:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C70AAB5A0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:33:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A9EB504FB9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:29:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDED61C21BC3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396C24A2406;
-	Tue,  6 May 2025 00:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9340E4A2423;
+	Tue,  6 May 2025 00:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBVXtjSv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TWSHEYeM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A2E258CD7;
-	Mon,  5 May 2025 23:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4379272E60;
+	Mon,  5 May 2025 23:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487183; cv=none; b=dHPivz1ZCn6vNRzf0f42efLsoDJjEfuTqhuYP/ySIZfIjJT4z4QCL1+RALMTRMyeSa9PbdKa2J/Uf1eYnRo5HF5DAjxkHGNv4X8wxq72iASYWNqE69XYyfbYLfS/5FrZ2xV7ywhuKnnouDomDoIqEB93Q96hXwAS6PR6Yy7tK+E=
+	t=1746487186; cv=none; b=a68imzOdlyGRK589CN0Q95ELX+AdGs6ClTgB/UOJ+Fjis+OWwi18PiOfeRL35eD8iVqzhoRQzzPVuXnKBnSbx+/jkYWHxL+BTuDndmeJUn7S76r/kpmNMPZ6HDZ7fc7oZP0q+bq52asJg1jbeFpj1bsiVPxQ1NxRN8X0d5iFYHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487183; c=relaxed/simple;
-	bh=IAzJGTfTulF1JxeTI5O0x8ljpx/EV1p4ipR4EZ3Kisc=;
+	s=arc-20240116; t=1746487186; c=relaxed/simple;
+	bh=GXQQVWklXWNAEB0XwIb9nq+0BoP+bo7EBFoAE8e69kU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XjaO26yAcQ3v69xv0cwLjX3aKpdU+1oj0ubcRYI+rrtOBgJ8YMuKpNHTNsRBVNhKkMVXhbUNDWJ3/WHiOl3Il8wjnAMSei7eRBbXNTYx26BQ+ypynqz0jG/Azipd7rKFzm5jiLnTbAyYqxsTjAHe8BimNgXrTAQZloJPDLIdLgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBVXtjSv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4289C4CEE4;
-	Mon,  5 May 2025 23:19:41 +0000 (UTC)
+	 MIME-Version; b=BQE8Uc1DJpho8+f6bzWaQP4gykzNb1H1xebgt48/uV3KJHPStcQc4mzvkIwgM9hQZlPpl5crx1uxM47aT01MRZ7AEZFaZOQB7AISM723MzkYifV5J5d0SYYVeTXN3s6HQritqN4qn4Qr7nJEA0z3OejqLwhh8RCpJ6pmcbP9qw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TWSHEYeM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A252C4CEEF;
+	Mon,  5 May 2025 23:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487183;
-	bh=IAzJGTfTulF1JxeTI5O0x8ljpx/EV1p4ipR4EZ3Kisc=;
+	s=k20201202; t=1746487185;
+	bh=GXQQVWklXWNAEB0XwIb9nq+0BoP+bo7EBFoAE8e69kU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CBVXtjSvix4+PfVt+7JadpUVzwKhveV8tq4LGsjggpHud358fxN5PByjz59iaQ07l
-	 7ao9jGC9j9PEmJdojv3vBB7mG7ZZVnaszMSqqw72+w/Bi97SyhKLoBGXwn+EdMedkT
-	 b34eXtnDNW5Z9lnn54ru/OxU+tINE+lggCN9KFrC4WYfCJjW4PNHD5zKQEh77Kp+on
-	 CtRIlTURYTdiBcW5n5zWbrUlvWYqzaLiLBiU91Dyhpoj1ttp8WYsNtEfSJMPNyS8vB
-	 5cUAPMRCFcnLTuYc1M6bij/duGgwR4JkBNZfTtrAWhq+bMQUtHMi5+P4sDrhjX8EJh
-	 AKzTtWZtbzAsQ==
+	b=TWSHEYeMoboShy+JhAkTUT7RS5eU1KZu/WyLZrZVvg8/Rrr5eEADVpaOSNkUvQ5Pb
+	 A2HbUnFBnECXrf5UHAHb6S07y0l60lTfuCljihpNDNBH5Xgl7W00iQ5wWnz21JxZFj
+	 pFA2/PUvTQqPl979U1bcheW+LK5JJM/FwidAicYSC8PQOpRSW6hmob4QFKLsQoUumb
+	 Rv/jXMdE4dTL9/hFcOH9wlCfNAFXox7on5h1+sVqk5Zlw5150S4vxmHvutnSHJjBJM
+	 qnR27k8hmOwKmMSrCJrejKFEQ5DhuqPr3rcvOPFx9Lai8KimLzPtFSx/UhHQJKYOmT
+	 KJ0N9D+UhTEAQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Victor Lu <victorchengchi.lu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Hans Verkuil <hverkuil@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	tao.zhou1@amd.com,
-	Hawking.Zhang@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.10 046/114] drm/amdgpu: Do not program AGP BAR regs under SRIOV in gfxhub_v1_0.c
-Date: Mon,  5 May 2025 19:17:09 -0400
-Message-Id: <20250505231817.2697367-46-sashal@kernel.org>
+	mchehab@kernel.org,
+	christophe.jaillet@wanadoo.fr,
+	ribalda@chromium.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 047/114] media: cx231xx: set device_caps for 417
+Date: Mon,  5 May 2025 19:17:10 -0400
+Message-Id: <20250505231817.2697367-47-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -71,43 +68,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Victor Lu <victorchengchi.lu@amd.com>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-[ Upstream commit 057fef20b8401110a7bc1c2fe9d804a8a0bf0d24 ]
+[ Upstream commit a79efc44b51432490538a55b9753a721f7d3ea42 ]
 
-SRIOV VF does not have write access to AGP BAR regs.
-Skip the writes to avoid a dmesg warning.
+The video_device for the MPEG encoder did not set device_caps.
 
-Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Add this, otherwise the video device can't be registered (you get a
+WARN_ON instead).
+
+Not seen before since currently 417 support is disabled, but I found
+this while experimenting with it.
+
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/media/usb/cx231xx/cx231xx-417.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-index fad887a668866..7949a87b03a84 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-@@ -70,12 +70,12 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
- {
- 	uint64_t value;
- 
--	/* Program the AGP BAR */
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
--
- 	if (!amdgpu_sriov_vf(adev) || adev->asic_type <= CHIP_VEGA10) {
-+		/* Program the AGP BAR */
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
-+
- 		/* Program the system aperture low logical page number. */
- 		WREG32_SOC15_RLC(GC, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
- 			min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
+diff --git a/drivers/media/usb/cx231xx/cx231xx-417.c b/drivers/media/usb/cx231xx/cx231xx-417.c
+index c5e21785fafe2..02343e88cc618 100644
+--- a/drivers/media/usb/cx231xx/cx231xx-417.c
++++ b/drivers/media/usb/cx231xx/cx231xx-417.c
+@@ -1722,6 +1722,8 @@ static void cx231xx_video_dev_init(
+ 	vfd->lock = &dev->lock;
+ 	vfd->release = video_device_release_empty;
+ 	vfd->ctrl_handler = &dev->mpeg_ctrl_handler.hdl;
++	vfd->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
++			   V4L2_CAP_VIDEO_CAPTURE;
+ 	video_set_drvdata(vfd, dev);
+ 	if (dev->tuner_type == TUNER_ABSENT) {
+ 		v4l2_disable_ioctl(vfd, VIDIOC_G_FREQUENCY);
 -- 
 2.39.5
 
