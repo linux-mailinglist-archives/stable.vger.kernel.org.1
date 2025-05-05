@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-141679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B3CBAAB786
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EDE0AAB790
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:13:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 547BA7B639E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:11:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2AD37A67C6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B6629A9CA;
-	Tue,  6 May 2025 00:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27FD349890;
+	Tue,  6 May 2025 00:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MwaMM9ws"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hNwXkr7j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E022F73BC;
-	Mon,  5 May 2025 23:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9310F2F7C3E;
+	Mon,  5 May 2025 23:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487149; cv=none; b=L7L6XJZ/kt4RzIo0U2XX6QkmaMwxLI9omCAwEAwWoeVkLmTUxKwssXZ1nE4XAxd6t484cOm/Lz5+AgRNJlwp3FaJa/3hL1o6h8A4uR06jPRztt//MrxDuRCfnOVP7yLFXggkTsvcGaeB3EGlSYdA+BuxBMpPxRnmAN3UK1IkQb0=
+	t=1746487172; cv=none; b=HDZabMem71YAZPukYAPvoyHwjXGswkgvuGP+m7f+4kTplyy4xDLtjNkY2vvCE0ZTNcGF6uccCC4nUEun3DbBg4xCnh82dSKfcFQJCzSJ7DCPehIWRp+3kChXytPFBsUnHh6vzK6O4KamhlBz7VktoubQTT25atKQnb1Dllx9wgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487149; c=relaxed/simple;
-	bh=VyrK+8Ot+v1oAp9CLHvUx60S7dF3xU2GFcyb3xyqnNc=;
+	s=arc-20240116; t=1746487172; c=relaxed/simple;
+	bh=HvmLGFahVqihGC7medF1+sWUmE6L9s+IAxnR2+uIxZw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RNv+UnQUi8YOQtDr7b/3U5Q+lNEDbVIVTq9Sf8x32J5KE3F0So69izxCJWsHHSL5DR6TjH2/CznUfsew3kMs3q3EQ6o/h40WyTLPVVLWERsuctUI3GB2hoLFSnrrO4RdWxtVIQ0Ew7CXDiCrMIG9ZAx1XT0zVhC7sQ4NXcIgLXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MwaMM9ws; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD52AC4CEEF;
-	Mon,  5 May 2025 23:19:07 +0000 (UTC)
+	 MIME-Version; b=WqUqcSQaz/XR/QabkEBgEFn73oX3vtyfFTSHwBajUVoiLtSUYXIlBrGcDKAE1ZeNfq4kJ1sFLcmBP+khyWIYeMbPMoB1sBeYwuR+M59ngY2nkQ+RbQ76rRgemrnARa07cGF61HjhVzBBPYveYrd2Z4M5D5vuNtiAmdkHpCw+/EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hNwXkr7j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CF8C4CEE4;
+	Mon,  5 May 2025 23:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487148;
-	bh=VyrK+8Ot+v1oAp9CLHvUx60S7dF3xU2GFcyb3xyqnNc=;
+	s=k20201202; t=1746487172;
+	bh=HvmLGFahVqihGC7medF1+sWUmE6L9s+IAxnR2+uIxZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwaMM9ws7j8LMb/mkXj0fbpL+/80L3QEi5gPud+S9YiwsKMRqUlnw8LpcfHBer9j5
-	 KcC1dXyHtYkVpDvKBKmiGrVoRLVqjucqrJTMRnAzW/MyWwhPB4bOS4Dd3nKzjki9bi
-	 C9+b2ga5QH1Ge5XYcJ+UU2R71YLgVVSSTG9zjeJlU1UhxPx85ICZJudi0k/JvpLoaG
-	 usLTq5DD16VU72vEdGlfRp0Q6rJc0Z91NOAfMZWokXE8VZ5k+10oC9jgJD00q34Ypf
-	 uHSdhXOdDNjnvMtcNE7oXTj/1Xu8CWj5wbR1ewgonVdf3RVOA4gHW3Zu/MwyeMf3YF
-	 t2KpxYfOKTgCQ==
+	b=hNwXkr7jW1QYV5OLG25y1C2Vp77cH2fbzDmgD2Vh8n7qjpWnMUnaixokKFLwsKQz9
+	 HrMDtCfm/G5Zuvszu2c+bzSs/+oDacfSPKgS5l8i97TzgQNeknikZJ1IUo82YMfuKi
+	 ZIEPeXpZimIcthHbd1JwCeA5IJoOdBalCJIYf11+SV7ZEOEAA1sJbcU0HHBXsiV+G3
+	 Zv+VtSzRwjNEAL/1uJQ/se0nwvIETCsfo0jtR2AdArS+gdIrIEHsC8soeK/f6E+yGH
+	 YO6tA7kBYfgvqLcH6SMppQrSVZwuqionMLJsof86qNkMiT+HvEFNwLtII4wkXnwX1w
+	 wwGxM/HjKyUCQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 025/114] scsi: st: Tighten the page format heuristics with MODE SELECT
-Date: Mon,  5 May 2025 19:16:48 -0400
-Message-Id: <20250505231817.2697367-25-sashal@kernel.org>
+	linux-rtc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 040/114] rtc: ds1307: stop disabling alarms on probe
+Date: Mon,  5 May 2025 19:17:03 -0400
+Message-Id: <20250505231817.2697367-40-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -61,48 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-[ Upstream commit 8db816c6f176321e42254badd5c1a8df8bfcfdb4 ]
+[ Upstream commit dcec12617ee61beed928e889607bf37e145bf86b ]
 
-In the days when SCSI-2 was emerging, some drives did claim SCSI-2 but did
-not correctly implement it. The st driver first tries MODE SELECT with the
-page format bit set to set the block descriptor.  If not successful, the
-non-page format is tried.
+It is a bad practice to disable alarms on probe or remove as this will
+prevent alarms across reboots.
 
-The test only tests the sense code and this triggers also from illegal
-parameter in the parameter list. The test is limited to "old" devices and
-made more strict to remove false alarms.
-
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250311112516.5548-4-Kai.Makisara@kolumbus.fi
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20250303223744.1135672-1-alexandre.belloni@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/rtc/rtc-ds1307.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 465fe83b49e98..47e59b74c09d2 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -3076,7 +3076,9 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
- 			   cmd_in == MTSETDRVBUFFER ||
- 			   cmd_in == SET_DENS_AND_BLK) {
- 			if (cmdstatp->sense_hdr.sense_key == ILLEGAL_REQUEST &&
--			    !(STp->use_pf & PF_TESTED)) {
-+				cmdstatp->sense_hdr.asc == 0x24 &&
-+				(STp->device)->scsi_level <= SCSI_2 &&
-+				!(STp->use_pf & PF_TESTED)) {
- 				/* Try the other possible state of Page Format if not
- 				   already tried */
- 				STp->use_pf = (STp->use_pf ^ USE_PF) | PF_TESTED;
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index 07a9cc91671b0..3a2401ce2ec9c 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -1864,10 +1864,8 @@ static int ds1307_probe(struct i2c_client *client,
+ 		 * For some variants, be sure alarms can trigger when we're
+ 		 * running on Vbackup (BBSQI/BBSQW)
+ 		 */
+-		if (want_irq || ds1307_can_wakeup_device) {
++		if (want_irq || ds1307_can_wakeup_device)
+ 			regs[0] |= DS1337_BIT_INTCN | chip->bbsqi_bit;
+-			regs[0] &= ~(DS1337_BIT_A2IE | DS1337_BIT_A1IE);
+-		}
+ 
+ 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
+ 			     regs[0]);
 -- 
 2.39.5
 
