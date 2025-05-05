@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-140255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B312AAA6DB
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E920AAA6E0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:21:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 566A7987BE8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:16:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FAF3985275
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A067C32B2BB;
-	Mon,  5 May 2025 22:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E285D32BF44;
+	Mon,  5 May 2025 22:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+3SMWC4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SXzCRcth"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5471B32B2B4;
-	Mon,  5 May 2025 22:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C94932BF40;
+	Mon,  5 May 2025 22:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484506; cv=none; b=VAlZW4PXOCZSNyJe5kIVNdJedoeYTZ0NP0GjmHwWBnXZUcFBK0BtIz/WebRe9IJMgXhoTNNLs4tJWffW5Xt/KQpugK1HfpvlLCUkg6guMEaBzzbIB1bL95amJo1LRiCDD00BaSMukjKzGcd4nJuKvhQGOJSsRLO2jtIOytayz7E=
+	t=1746484510; cv=none; b=Sd/ufmLq7JYZdmPkAV9o7/d5i6ILeFOjVaqG2OeO2kNuX6WwHf+9CTOQ3jCK4fbP2IeJrxy7uSam2bMMR/kvaVEwtMwciyReQuC/Y9WowWXtPej0a36kzikAKmZA5CN8cdtLYGUOm8cZzM665vwfJwHofckqk6npgXZIM60qq9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484506; c=relaxed/simple;
-	bh=yxsnRJRb9xThATtH7UqhtyDa4fYv1SCQYDmsViCzhlg=;
+	s=arc-20240116; t=1746484510; c=relaxed/simple;
+	bh=OShk5Pk7+EWw5WJPlyaLJpSjwrVtxveqeWxZaYaBs5k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S8IEC3b2O+x1ve/oWKlvlU5WLjVnghAXOIeTQltJ4vrxK75Vv1dHn5CFC3Vy7B7/v3pN5ibjwlsXccuzU2qXsgWB7j0dXw2Ew8hSrxBxN0+7KID/8tcvfqO24Tl4SwvQWynOAFVoOLtBhoYLcvl7w5xn0obXWmDmcMdeIICqaG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+3SMWC4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75129C4CEF1;
-	Mon,  5 May 2025 22:35:04 +0000 (UTC)
+	 MIME-Version; b=COkNFzpn1xsbLY+99E/4lBW+4IrG3XA4H2iD/uJ2Ir0U4Pk4nfOmfH28CeWNQwh7hzB1c8+XvJ74wROCEk41xyFvbhS3zS0fHd+UwzOUv6AQm4JgWsaeRJwfSFgkf9NKXCHjQlIk97qt3v9jJAglGMvzE5MF5qPo1QJUnivlIqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SXzCRcth; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716F3C4CEED;
+	Mon,  5 May 2025 22:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484506;
-	bh=yxsnRJRb9xThATtH7UqhtyDa4fYv1SCQYDmsViCzhlg=;
+	s=k20201202; t=1746484510;
+	bh=OShk5Pk7+EWw5WJPlyaLJpSjwrVtxveqeWxZaYaBs5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+3SMWC4t6zNDw9qiCgC9msclclk+BXyhXX0WCuqpCN0JVOZJMUdxl7e2p737Jxlo
-	 t0Jru+ED73moun5qAOPM9GjmOYw3ZcZjslmjqdCLkj/CODhKOprtU4c0mQ8V6mf+Ua
-	 Z3F0VdPLYh6+6bC3J4JMxnHJDhj/l0xa3myBZNUBSydORjsj1TZCxFeGRwlyYVsLn+
-	 3PKI8a/4Q4nAA+o+eGb/n/uWsRGSUzAIYJqJYXkWoWUzoUHzmikXEtRpXEygQMLfOs
-	 f25EIOaXu5EPN5XBECPuek1bxCqK4YLPiTXb2TuESsFAId7egDVnGhnU8IY+QXG7/Y
-	 cVFgP8z7WQNyg==
+	b=SXzCRcth2ib4PdikNnXMTtGxaSHQ0YxpssdS/loHFqUiGFiXh0U3RsFpshfT1+2t1
+	 SiVXgGz6tG+djrTMV6TrO5VGSkuoAZE+wOmZaOCUDUiH6O0g+73YSUBUwNjR++YWZ7
+	 lB+Nb3I/E/Z/Nw+PnYAvFne6hlVXb69oy449vd/Uj4PoRudxEAdp3OlR0zK7YiSue5
+	 j+loke3kJ0Z8XEPFpizwSRC1tPC/Pn7FPCblTH98EnZeXx0HWhWdlHVcq02x9vybSY
+	 tKV/Nel+Z/KHxcpRzjxw4p41za316EI26mkYgBBCt47xobA2FnA0pDWTxnNjqgCHAZ
+	 E23vwStzTQ13Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>, Csókás@web.codeaurora.org,
-	Paolo Abeni <pabeni@redhat.com>, Sasha Levin <sashal@kernel.org>,
-	wei.fang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, imx@lists.linux.dev,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 507/642] net: fec: Refactor MAC reset to function
-Date: Mon,  5 May 2025 18:12:03 -0400
-Message-Id: <20250505221419.2672473-507-sashal@kernel.org>
+Cc: Gaurav Batra <gbatra@linux.ibm.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>,
+	mpe@ellerman.id.au,
+	dan.j.williams@intel.com,
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	Jonathan.Cameron@huawei.com,
+	david@redhat.com,
+	nilay@linux.ibm.com,
+	sbhat@linux.ibm.com,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH AUTOSEL 6.14 508/642] powerpc/pseries/iommu: memory notifier incorrectly adds TCEs for pmemory
+Date: Mon,  5 May 2025 18:12:04 -0400
+Message-Id: <20250505221419.2672473-508-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -64,119 +69,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Gaurav Batra <gbatra@linux.ibm.com>
 
-[ Upstream commit 67800d296191d0a9bde0a7776f99ca1ddfa0fc26 ]
+[ Upstream commit 6aa989ab2bd0d37540c812b4270006ff794662e7 ]
 
-The core is reset both in `fec_restart()` (called on link-up) and
-`fec_stop()` (going to sleep, driver remove etc.). These two functions
-had their separate implementations, which was at first only a register
-write and a `udelay()` (and the accompanying block comment). However,
-since then we got soft-reset (MAC disable) and Wake-on-LAN support, which
-meant that these implementations diverged, often causing bugs.
+iommu_mem_notifier() is invoked when RAM is dynamically added/removed. This
+notifier call is responsible to add/remove TCEs from the Dynamic DMA Window
+(DDW) when TCEs are pre-mapped. TCEs are pre-mapped only for RAM and not
+for persistent memory (pmemory). For DMA buffers in pmemory, TCEs are
+dynamically mapped when the device driver instructs to do so.
 
-For instance, as of now, `fec_stop()` does not check for
-`FEC_QUIRK_NO_HARD_RESET`, meaning the MII/RMII mode is cleared on eg.
-a PM power-down event; and `fec_restart()` missed the refactor renaming
-the "magic" constant `1` to `FEC_ECR_RESET`.
+The issue is 'daxctl' command is capable of adding pmemory as "System RAM"
+after LPAR boot. The command to do so is -
 
-To harmonize current implementations, and eliminate this source of
-potential future bugs, refactor implementation to a common function.
+daxctl reconfigure-device --mode=system-ram dax0.0 --force
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Link: https://patch.msgid.link/20250207121255.161146-2-csokas.bence@prolan.hu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+This will dynamically add pmemory range to LPAR RAM eventually invoking
+iommu_mem_notifier(). The address range of pmemory is way beyond the Max
+RAM that the LPAR can have. Which means, this range is beyond the DDW
+created for the device, at device initialization time.
+
+As a result when TCEs are pre-mapped for the pmemory range, by
+iommu_mem_notifier(), PHYP HCALL returns H_PARAMETER. This failed the
+command, daxctl, to add pmemory as RAM.
+
+The solution is to not pre-map TCEs for pmemory.
+
+Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+Tested-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Donet Tom <donettom@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250130183854.92258-1-gbatra@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 52 +++++++++++------------
- 1 file changed, 25 insertions(+), 27 deletions(-)
+ arch/powerpc/include/asm/mmzone.h      |  1 +
+ arch/powerpc/mm/numa.c                 |  2 +-
+ arch/powerpc/platforms/pseries/iommu.c | 29 ++++++++++++++------------
+ 3 files changed, 18 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index f7c4ce8e9a265..a86cfebedaa8b 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1093,6 +1093,29 @@ static void fec_enet_enable_ring(struct net_device *ndev)
- 	}
+diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
+index d99863cd6cde4..049152f8d597a 100644
+--- a/arch/powerpc/include/asm/mmzone.h
++++ b/arch/powerpc/include/asm/mmzone.h
+@@ -29,6 +29,7 @@ extern cpumask_var_t node_to_cpumask_map[];
+ #ifdef CONFIG_MEMORY_HOTPLUG
+ extern unsigned long max_pfn;
+ u64 memory_hotplug_max(void);
++u64 hot_add_drconf_memory_max(void);
+ #else
+ #define memory_hotplug_max() memblock_end_of_DRAM()
+ #endif
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index 3c1da08304d03..603a0f652ba61 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -1336,7 +1336,7 @@ int hot_add_scn_to_nid(unsigned long scn_addr)
+ 	return nid;
  }
  
-+/* Whack a reset.  We should wait for this.
-+ * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
-+ * instead of reset MAC itself.
-+ */
-+static void fec_ctrl_reset(struct fec_enet_private *fep, bool allow_wol)
-+{
-+	u32 val;
-+
-+	if (!allow_wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
-+		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
-+		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
-+			writel(0, fep->hwp + FEC_ECNTRL);
-+		} else {
-+			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
-+			udelay(10);
-+		}
-+	} else {
-+		val = readl(fep->hwp + FEC_ECNTRL);
-+		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
-+		writel(val, fep->hwp + FEC_ECNTRL);
-+	}
-+}
-+
- /*
-  * This function is called to start or restart the FEC during a link
-  * change, transmit timeout, or to reconfigure the FEC.  The network
-@@ -1109,17 +1132,7 @@ fec_restart(struct net_device *ndev)
- 	if (fep->bufdesc_ex)
- 		fec_ptp_save_state(fep);
+-static u64 hot_add_drconf_memory_max(void)
++u64 hot_add_drconf_memory_max(void)
+ {
+ 	struct device_node *memory = NULL;
+ 	struct device_node *dn = NULL;
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index ae6f7a235d8b2..8f32340960e21 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -1284,17 +1284,13 @@ static LIST_HEAD(failed_ddw_pdn_list);
  
--	/* Whack a reset.  We should wait for this.
--	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
--	 * instead of reset MAC itself.
--	 */
--	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
--	    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
--		writel(0, fep->hwp + FEC_ECNTRL);
--	} else {
--		writel(1, fep->hwp + FEC_ECNTRL);
--		udelay(10);
+ static phys_addr_t ddw_memory_hotplug_max(void)
+ {
+-	resource_size_t max_addr = memory_hotplug_max();
+-	struct device_node *memory;
++	resource_size_t max_addr;
+ 
+-	for_each_node_by_type(memory, "memory") {
+-		struct resource res;
+-
+-		if (of_address_to_resource(memory, 0, &res))
+-			continue;
+-
+-		max_addr = max_t(resource_size_t, max_addr, res.end + 1);
 -	}
-+	fec_ctrl_reset(fep, false);
++#if defined(CONFIG_NUMA) && defined(CONFIG_MEMORY_HOTPLUG)
++	max_addr = hot_add_drconf_memory_max();
++#else
++	max_addr = memblock_end_of_DRAM();
++#endif
  
- 	/*
- 	 * enet-mac reset will reset mac address registers too,
-@@ -1373,22 +1386,7 @@ fec_stop(struct net_device *ndev)
- 	if (fep->bufdesc_ex)
- 		fec_ptp_save_state(fep);
+ 	return max_addr;
+ }
+@@ -1600,7 +1596,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
  
--	/* Whack a reset.  We should wait for this.
--	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
--	 * instead of reset MAC itself.
--	 */
--	if (!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
--		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
--			writel(0, fep->hwp + FEC_ECNTRL);
--		} else {
--			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
--			udelay(10);
--		}
--	} else {
--		val = readl(fep->hwp + FEC_ECNTRL);
--		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
--		writel(val, fep->hwp + FEC_ECNTRL);
--	}
-+	fec_ctrl_reset(fep, true);
- 	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
- 	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
+ 	if (direct_mapping) {
+ 		/* DDW maps the whole partition, so enable direct DMA mapping */
+-		ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
++		ret = walk_system_ram_range(0, ddw_memory_hotplug_max() >> PAGE_SHIFT,
+ 					    win64->value, tce_setrange_multi_pSeriesLP_walk);
+ 		if (ret) {
+ 			dev_info(&dev->dev, "failed to map DMA window for %pOF: %d\n",
+@@ -2349,11 +2345,17 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+ 	struct memory_notify *arg = data;
+ 	int ret = 0;
  
++	/* This notifier can get called when onlining persistent memory as well.
++	 * TCEs are not pre-mapped for persistent memory. Persistent memory will
++	 * always be above ddw_memory_hotplug_max()
++	 */
++
+ 	switch (action) {
+ 	case MEM_GOING_ONLINE:
+ 		spin_lock(&dma_win_list_lock);
+ 		list_for_each_entry(window, &dma_win_list, list) {
+-			if (window->direct) {
++			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
++				ddw_memory_hotplug_max()) {
+ 				ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
+ 						arg->nr_pages, window->prop);
+ 			}
+@@ -2365,7 +2367,8 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+ 	case MEM_OFFLINE:
+ 		spin_lock(&dma_win_list_lock);
+ 		list_for_each_entry(window, &dma_win_list, list) {
+-			if (window->direct) {
++			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
++				ddw_memory_hotplug_max()) {
+ 				ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
+ 						arg->nr_pages, window->prop);
+ 			}
 -- 
 2.39.5
 
