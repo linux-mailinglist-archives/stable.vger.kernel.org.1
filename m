@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-140476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D96ABAAA934
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:10:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E3CAAA96B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:13:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FBAB18904EB
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:08:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54F75981FC4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724F229AAF6;
-	Mon,  5 May 2025 22:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BDE63110DE;
+	Mon,  5 May 2025 22:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u5djDOe2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XAlCFZoK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7D435963E;
-	Mon,  5 May 2025 22:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DAF359644;
+	Mon,  5 May 2025 22:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484951; cv=none; b=uD2s+eBkqeNkPDwEWfp2zF8NI+QbhQpbOgIAi5A4UmUC3v3tAamvJV96URPkkWZw+nkjKvWyEtO06+DSupMucuL/5vn2ca8ooA9Lx7j6XosfjSflPCdrSAetmwo10sf7FZKnL4FcTXfo9zO2b5mZ/QFx0Hq6XUHk96IxY33+ONI=
+	t=1746484952; cv=none; b=l3HDls2+TuElIykp1AZhpuKIK1YDucBt/XKz1ps6pA7nfCcCdkYzOkIP1hXumPt7K3hBqKxGNBZItKHfNTJhIAxDkBQ79sPdRI3XPtiGNmmx2fCQkIActXngq7BnYvgVxUdNpEc24cWIshMwV19/+DS5h1J6zvIa0de61E1sqAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484951; c=relaxed/simple;
-	bh=HM5lWcaDvaU7UgyXxccRJE63+mXAVV9HFc/Qp4TbbIw=;
+	s=arc-20240116; t=1746484952; c=relaxed/simple;
+	bh=fs/jH77eWpvtN/vaewmV7hxsfkW8lvX7xmdN+lFKZ9c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MMGYNm46kYZ47nzyDf6eV1Bt3GaUlYtCs0d6qCEzIgeQQCAVYuv4XZLzwaX7QcoobwX0ESoPWMzCyihqImF9/KmYSY5N270xDuNh3aA62MQoVnGHuwg9Iok3OFC8+B3o+uLwvbsbOhw89lFFCJru0jVGpXZOIVEV2C9FJcCdleA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u5djDOe2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E3EC4CEED;
-	Mon,  5 May 2025 22:42:29 +0000 (UTC)
+	 MIME-Version; b=XYt+hnfukesFk7lyYpLNJ2jnRnyIPftmhNqfIkwGtXyQAiwnbwpbMtyo3aPNLch14vv+sfn+QiDlDO1EjThp5LtjJXay5+ErrhseY8CB1s+rI1J09e1Y5GEMXywmImisPPV5NU6JAWy2pyRdZtgGkepgo3sH0FzyiA6XsrzLVZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XAlCFZoK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B920C4CEEF;
+	Mon,  5 May 2025 22:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484950;
-	bh=HM5lWcaDvaU7UgyXxccRJE63+mXAVV9HFc/Qp4TbbIw=;
+	s=k20201202; t=1746484952;
+	bh=fs/jH77eWpvtN/vaewmV7hxsfkW8lvX7xmdN+lFKZ9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5djDOe2c02vtQ6KcFg8Jlf41RfIyJ7Bi1KysWph37SyvN5zomTiPI/lsF7bAD7FL
-	 5iCGVBNbCDYQp4yN8a0afp9EiW5vVKRIrlTcDmNnGGoqxfShd13Kj4neqILQNYNLBQ
-	 2/8Yw2r+RvOjta6ibaF/wZ7/OmwMocH2WCwNiZZ7BhmKWslwxwLPeoS04FXAVwGkuQ
-	 jtfQ9AlG9ZTsm0d5cR1MpcyL9cAuGO2yDrOtSorbhwNrKLvwvSPJCagA+qP7Jm6nO9
-	 KqmPxCAakNsZIjT6k2dXpEt2rRowTzM0s5VFX4oQ71VOpE8TalIMKblh5XM7r60Y7h
-	 819kBkQeKRFOQ==
+	b=XAlCFZoK+qmMUrbgp0rMu8WD4hFUlWjNDaYP3mbExUKVOKW3S9H5361fqQB0RQE2X
+	 GR1fQW8l8twItiyrVCDzAuSj5XEQOM1gfoxodqgxgDrVdEpE/C6iq/T9FFKi4qGfZA
+	 D35JXWOVmSSE0EG1rhYqOLMkR+nOLP1YvKjmwZDx/JM/nkuK05Az0mEnql6cao9S1K
+	 aUI7a5F0XX0cytoK0JwMWIvBDs5x+gKEdbFsIi6Ijrbqsc81l3osLIFlpKMmwswc2m
+	 eykG9YMZiPi/yQqKO0HzDEBN6IT7SKmPWsVXjzJHz0rH4W6aBAqOF8AYn7RbFG43t1
+	 59CWQzgJvcqRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jeff Chen <jeff.chen_1@nxp.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: shantiprasad shettar <shantiprasad.shettar@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	briannorris@chromium.org,
-	kvalo@kernel.org,
-	s.hauer@pengutronix.de,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 091/486] wifi: mwifiex: Fix HT40 bandwidth issue.
-Date: Mon,  5 May 2025 18:32:47 -0400
-Message-Id: <20250505223922.2682012-91-sashal@kernel.org>
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 092/486] bnxt_en: Query FW parameters when the CAPS_CHANGE bit is set
+Date: Mon,  5 May 2025 18:32:48 -0400
+Message-Id: <20250505223922.2682012-92-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -69,45 +73,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Jeff Chen <jeff.chen_1@nxp.com>
+From: shantiprasad shettar <shantiprasad.shettar@broadcom.com>
 
-[ Upstream commit 4fcfcbe457349267fe048524078e8970807c1a5b ]
+[ Upstream commit a6c81e32aeacbfd530d576fa401edd506ec966ef ]
 
-This patch addresses an issue where, despite the AP supporting 40MHz
-bandwidth, the connection was limited to 20MHz. Without this fix,
-even if the access point supports 40MHz, the bandwidth after
-connection remains at 20MHz. This issue is not a regression.
+Newer FW can set the CAPS_CHANGE flag during ifup if some capabilities
+or configurations have changed.  For example, the CoS queue
+configurations may have changed.  Support this new flag by treating it
+almost like FW reset.  The driver will essentially rediscover all
+features and capabilities, reconfigure all backing store context memory,
+reset everything to default, and reserve all resources.
 
-Signed-off-by: Jeff Chen <jeff.chen_1@nxp.com>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://patch.msgid.link/20250314094238.2097341-1-jeff.chen_1@nxp.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: shantiprasad shettar <shantiprasad.shettar@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250310183129.3154117-5-michael.chan@broadcom.com
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/11n.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/11n.c b/drivers/net/wireless/marvell/mwifiex/11n.c
-index 66f0f5377ac18..738bafc3749b0 100644
---- a/drivers/net/wireless/marvell/mwifiex/11n.c
-+++ b/drivers/net/wireless/marvell/mwifiex/11n.c
-@@ -403,12 +403,14 @@ mwifiex_cmd_append_11n_tlv(struct mwifiex_private *priv,
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 016dcfec8d496..63b674cae892c 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -11776,6 +11776,7 @@ static int bnxt_hwrm_if_change(struct bnxt *bp, bool up)
+ 	struct hwrm_func_drv_if_change_input *req;
+ 	bool fw_reset = !bp->irq_tbl;
+ 	bool resc_reinit = false;
++	bool caps_change = false;
+ 	int rc, retry = 0;
+ 	u32 flags = 0;
  
- 		if (sband->ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40 &&
- 		    bss_desc->bcn_ht_oper->ht_param &
--		    IEEE80211_HT_PARAM_CHAN_WIDTH_ANY)
-+		    IEEE80211_HT_PARAM_CHAN_WIDTH_ANY) {
-+			chan_list->chan_scan_param[0].radio_type |=
-+				CHAN_BW_40MHZ << 2;
- 			SET_SECONDARYCHAN(chan_list->chan_scan_param[0].
- 					  radio_type,
- 					  (bss_desc->bcn_ht_oper->ht_param &
- 					  IEEE80211_HT_PARAM_CHA_SEC_OFFSET));
--
-+		}
- 		*buffer += struct_size(chan_list, chan_scan_param, 1);
- 		ret_len += struct_size(chan_list, chan_scan_param, 1);
+@@ -11831,8 +11832,11 @@ static int bnxt_hwrm_if_change(struct bnxt *bp, bool up)
+ 		set_bit(BNXT_STATE_ABORT_ERR, &bp->state);
+ 		return -ENODEV;
  	}
+-	if (resc_reinit || fw_reset) {
+-		if (fw_reset) {
++	if (flags & FUNC_DRV_IF_CHANGE_RESP_FLAGS_CAPS_CHANGE)
++		caps_change = true;
++
++	if (resc_reinit || fw_reset || caps_change) {
++		if (fw_reset || caps_change) {
+ 			set_bit(BNXT_STATE_FW_RESET_DET, &bp->state);
+ 			if (!test_bit(BNXT_STATE_IN_FW_RESET, &bp->state))
+ 				bnxt_ulp_irq_stop(bp);
 -- 
 2.39.5
 
