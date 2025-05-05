@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-140911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E938CAAAC83
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:17:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E5BAAAC86
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45131188CF03
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:14:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFE271B64A61
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E77B3C7D74;
-	Mon,  5 May 2025 23:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2413C7D90;
+	Mon,  5 May 2025 23:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U4NBE2fd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FObGaSly"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BD82E5DFE;
-	Mon,  5 May 2025 23:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A39E38CEA2;
+	Mon,  5 May 2025 23:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486851; cv=none; b=cNXI4AisUzIX9IvWPksStjh6ICkfcNkAvHj+4/N3EHgFZGPOuEfWMRui3l3JISp83GZHnGkLndtpZeiH0lOP93XVFExRJB/rMDQqWTWk2jQ+J618zit0MnawGr5U0+uCZbW08+/hntKWPkSVwGqaq6Qwef80YcRbESba6fnngF4=
+	t=1746486856; cv=none; b=eqpoYu1WXw3r0iEVReFH6s6HulECtlUhi9TUCv/Bzkbd+3utdAmlhvZPeGw1X2+qUIecbanHbea7iu2bu2frR6Vlg/0ZiF5xRPhyN5cEeYb9kQttDCbifA/0h8qvj/6kep4uTx9fZCjcOmEmS2+U6r5hsY59QtZ7zS8DwIXX57c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486851; c=relaxed/simple;
-	bh=2pjdD08KhMw6FeRr9Qku1Tz+bsPUVl0cVg+Ep97vitY=;
+	s=arc-20240116; t=1746486856; c=relaxed/simple;
+	bh=iDwZBmRUijuu02xhBE00GufwrHvCF4PQRV+QDblSfrU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Q9xOuuyVsb5l8U+qLtRBgOwiJSyaut/MrBpushNOkBml0bVIwucWOq/5mSoJNOen+jrskbl5pWJomMQQ8tIesiTlWNFqdFBiu0Gs8DyEBZy9nAjwRQwwJp4Gy31cWc0ZAJS07iO1VV3S0/I5q2IraXKKQ62q5qqEzL4h6X4kDTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U4NBE2fd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EC0C4CEEE;
-	Mon,  5 May 2025 23:14:09 +0000 (UTC)
+	 MIME-Version; b=CL58ZJIjmL/EoUzWdciNiMj3wkXduN424T9/ctRrlPYK1vi6EZc1U7qFeghFs4kX1Gq2yKOcXKtBLa4UibrU0XBDbszXeDb8J4n16QxnLhjWWcgwHkHCJNmCTKwbqAdaZJ6U/JlkowjHp6hcnQ/2XeuxtdTV1dNGh7UZDqiw3KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FObGaSly; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4F9C4CEEF;
+	Mon,  5 May 2025 23:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486850;
-	bh=2pjdD08KhMw6FeRr9Qku1Tz+bsPUVl0cVg+Ep97vitY=;
+	s=k20201202; t=1746486856;
+	bh=iDwZBmRUijuu02xhBE00GufwrHvCF4PQRV+QDblSfrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U4NBE2fdArxrWYzNJ6h0GYRbSzTFl7wiWfe/foAZZwVXPo+TlwUhtrLlgxdLQZX6V
-	 8z4Knu+A95VvYkDPuBLh34UeaAL9kk4QGjLYu5U5r5eXjTc4GP3wzQBoygBd9hrDs3
-	 5qIZp69WGJNKLjzgdjeLutb5vELl/2+lRkFa+fy8VaZmEwy3F6DfQNgNSqF6bHV+74
-	 Za38XRIq/ZhjdxQs6eX9gQUdryxU80NnNJkknFjhiLmkr3/yC/DYIsaphvZKSgOIh9
-	 1qtvppZScjti78hYk3KyJ/Hd+r2Zz0WW4poj3sFM3ZJn5fKCtc6iHSGvtDBTxrgUK6
-	 yaexMygzSYdbQ==
+	b=FObGaSlyfSwmld9ppuboJIVrE5DRLZ9o495RZIKxXTn9bTmZOlBTYS5w5hVhSrl3m
+	 oulopy/OnwhocPo3boD5kfXI3O+Ht7d1fSzE4WZWHbhTzwY8VpSY8sxIiU3ZM/vk5u
+	 Q97RZhSsSOHMML7uu6peyVV3WIJmHTa1FcY8KTRgC+Z7c0foySW4e4fv+T19NyNGiW
+	 DDROEM4QFKxyc+Aoh/z68AkNGT68utM9ADsQ/LkZ+oHUej9qhp9S/u8YJGpQfWXQQa
+	 +vstnj0ZZxP5p/Ui/C7WtuAZo1O33IOqC4cA7empvFLhbP3vLC7g7XZt09lQvtN8hD
+	 B4pFZpvjhv9hA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vitalii Mordan <mordan@ispras.ru>,
-	Andi Shyti <andi.shyti@kernel.org>,
+Cc: Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-i2c@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 023/153] i2c: pxa: fix call balance of i2c->clk handling routines
-Date: Mon,  5 May 2025 19:11:10 -0400
-Message-Id: <20250505231320.2695319-23-sashal@kernel.org>
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 027/153] btrfs: send: return -ENAMETOOLONG when attempting a path that is too long
+Date: Mon,  5 May 2025 19:11:14 -0400
+Message-Id: <20250505231320.2695319-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -65,39 +67,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit be7113d2e2a6f20cbee99c98d261a1fd6fd7b549 ]
+[ Upstream commit a77749b3e21813566cea050bbb3414ae74562eba ]
 
-If the clock i2c->clk was not enabled in i2c_pxa_probe(), it should not be
-disabled in any path.
+When attempting to build a too long path we are currently returning
+-ENOMEM, which is very odd and misleading. So update fs_path_ensure_buf()
+to return -ENAMETOOLONG instead. Also, while at it, move the WARN_ON()
+into the if statement's expression, as it makes it clear what is being
+tested and also has the effect of adding 'unlikely' to the statement,
+which allows the compiler to generate better code as this condition is
+never expected to happen.
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
-
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250212172803.1422136-1-mordan@ispras.ru
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-pxa.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/btrfs/send.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
-index 35ca2c02c9b9b..7fdc7f213b114 100644
---- a/drivers/i2c/busses/i2c-pxa.c
-+++ b/drivers/i2c/busses/i2c-pxa.c
-@@ -1508,7 +1508,10 @@ static int i2c_pxa_probe(struct platform_device *dev)
- 				i2c->adap.name);
- 	}
+diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
+index 577980b33aeb7..a46076788bd7e 100644
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -400,10 +400,8 @@ static int fs_path_ensure_buf(struct fs_path *p, int len)
+ 	if (p->buf_len >= len)
+ 		return 0;
  
--	clk_prepare_enable(i2c->clk);
-+	ret = clk_prepare_enable(i2c->clk);
-+	if (ret)
-+		return dev_err_probe(&dev->dev, ret,
-+				     "failed to enable clock\n");
+-	if (len > PATH_MAX) {
+-		WARN_ON(1);
+-		return -ENOMEM;
+-	}
++	if (WARN_ON(len > PATH_MAX))
++		return -ENAMETOOLONG;
  
- 	if (i2c->use_pio) {
- 		i2c->adap.algo = &i2c_pxa_pio_algorithm;
+ 	path_len = p->end - p->start;
+ 	old_buf_len = p->buf_len;
 -- 
 2.39.5
 
