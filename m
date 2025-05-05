@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-140179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A08AAA5DD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C3B5AAA5DF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:00:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78B7D188AED6
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:58:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D4B81886458
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B275319A51;
-	Mon,  5 May 2025 22:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6040A31A0C0;
+	Mon,  5 May 2025 22:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bFbLmQiU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JdrjVgXT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B15319A44;
-	Mon,  5 May 2025 22:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13949319A7E;
+	Mon,  5 May 2025 22:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484281; cv=none; b=Jz6HRiBl4OIuD/lUHTcP5X2CA4QV21lJkwPQQTTqe9wyu3+B9+OWk39OwhHULjZ/oska+3k70/6J6FWVAay/FJywS5Y0tnYY7F26B1MFsN0Kok2HYYr19ArBQDMMRRruSYqWh1BHyvis8aFjd3V6wd/4Zz5DIYb4uiNRf2TYSmk=
+	t=1746484283; cv=none; b=butpdBNZ5Vuay2SQLe2iDGKeLHJAtjRqq3qtvteKi08T61iqgTga3eSAls0AREjvFhSwwa5Coz+PHWRYN1rbYghgXQBxyx3UxEHnqbNXVm+KQGYU61EYSGDVTNp+MzMrRXnbvl4L3PIUgT/Bs5WjXI2nT5IYO/3QYPRkZyac9Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484281; c=relaxed/simple;
-	bh=fFQmUpUjhN2J9FyPEPTJ2tW28MtDTr0L9Xb/am9hxaU=;
+	s=arc-20240116; t=1746484283; c=relaxed/simple;
+	bh=G12M4CtKtx7qFHucINM394sfRrI8vnfPPtR1s1+9uxw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sFKz45ajJWTrJpYe8PJoAhbl5OvceMM4aSwYPPoQkfMeiFxM87j0qjycd3NyQhJSLJ6A0WZB0kKvabxNIM3fpQxQoFCp4PWw7n77xNq+xopr7QqFpBkJ7C/fyQyzVddqM7kQXAuPoh5VixDoOzp/oV5vOaL/u93ObyV6OTQUqNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bFbLmQiU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2945BC4CEF1;
-	Mon,  5 May 2025 22:31:20 +0000 (UTC)
+	 MIME-Version; b=tlwNeAioLzEFascJELwCsBXstvxUplX/Qm104FTvmpOvbfl3SaIY0CyrsXD5TArloekD2Wqp8E/FpV0LFrTxSV5jLH1nohLdAbVn/c7mB13Dp44OAmW2NHI9iQf8u2nqiruRTdmrycXlr0QAdFXFq0Su15sl5/HJlZULoSvnfwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JdrjVgXT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87637C4CEEF;
+	Mon,  5 May 2025 22:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484281;
-	bh=fFQmUpUjhN2J9FyPEPTJ2tW28MtDTr0L9Xb/am9hxaU=;
+	s=k20201202; t=1746484282;
+	bh=G12M4CtKtx7qFHucINM394sfRrI8vnfPPtR1s1+9uxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFbLmQiUpbT/fjhGsMO34/bvslPjJxUWEvfg2pZHyBKkE8VMybg0KMEuLzv2rNe3H
-	 vrf5rkMF7bbbyNfG6cxVABawBq36Qam3SXoHQBAs2G24AXr3gceKuSylBHBoBH7w5U
-	 OyEKeevHm3vLuUOovB6nRHKQk8SYnui1g2SIWV4pDmGMi5ouaJ/oVMw81GFCC7/sNb
-	 AyZw1YdRzPEXWF7Fynt5kffCfJjpyGn1hkdLPywA+1RnqmA/nnC6GY3qzLEfQItF0k
-	 sv7uQP/WzDprIipyGlFuTvdbfM9YF7ZCSS8t3WZ3LgsG0yq/+nCFbgNyc4sorVif56
-	 TmrzeInSfWovQ==
+	b=JdrjVgXTC3DCIBOtvGAPgt4XVRp5Yo1MQg2X3p37ilRbREMJQAceORGOAPqmtA4Gb
+	 gu4C15U8PMVspWDwjEMO5Y/PMuj/hI19rowP7+R1755B9eOtBt9nTHTCUQymhu8d3w
+	 dLQZV5k/9u5z6t/BaXNOO9ksRVtAZvrtkZ8MZ/TSdqBg/I4+UMFulItbAi6xf4Xcgk
+	 0Klx9BWePWDKjJ0XaWf1haAfd4PGR1wSBQshyYZql4URve2o+QZrwbaJtizkndX4cS
+	 vWAMs8+ZOemMR/vCkjYoc0ONZssVTCO+q8pyRw3fJgv4fN4f73M5u7ElIQ0kVcSeRB
+	 Iw6mZ+/i0/8kA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: Andrii Nakryiko <andrii@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	tian.shu.qiu@intel.com,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 432/642] media: i2c: ov2740: Free control handler on error path
-Date: Mon,  5 May 2025 18:10:48 -0400
-Message-Id: <20250505221419.2672473-432-sashal@kernel.org>
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 433/642] libbpf: fix LDX/STX/ST CO-RE relocation size adjustment logic
+Date: Mon,  5 May 2025 18:10:49 -0400
+Message-Id: <20250505221419.2672473-433-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,38 +68,90 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 71dfb2c7548994aad6cb0a316c2601e7144d15a5 ]
+[ Upstream commit 06096d19ee3897a7e70922580159607fe315da7a ]
 
-The control handler wasn't freed if v4l2_fwnode_device_parse() failed. Do
-that now.
+Libbpf has a somewhat obscure feature of automatically adjusting the
+"size" of LDX/STX/ST instruction (memory store and load instructions),
+based on originally recorded access size (u8, u16, u32, or u64) and the
+actual size of the field on target kernel. This is meant to facilitate
+using BPF CO-RE on 32-bit architectures (pointers are always 64-bit in
+BPF, but host kernel's BTF will have it as 32-bit type), as well as
+generally supporting safe type changes (unsigned integer type changes
+can be transparently "relocated").
 
-Co-developed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+One issue that surfaced only now, 5 years after this logic was
+implemented, is how this all works when dealing with fields that are
+arrays. This isn't all that easy and straightforward to hit (see
+selftests that reproduce this condition), but one of sched_ext BPF
+programs did hit it with innocent looking loop.
+
+Long story short, libbpf used to calculate entire array size, instead of
+making sure to only calculate array's element size. But it's the element
+that is loaded by LDX/STX/ST instructions (1, 2, 4, or 8 bytes), so
+that's what libbpf should check. This patch adjusts the logic for
+arrays and fixed the issue.
+
+Reported-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20250207014809.1573841-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2740.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/lib/bpf/relo_core.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/i2c/ov2740.c b/drivers/media/i2c/ov2740.c
-index 9a5d118b87b01..04e93618f408a 100644
---- a/drivers/media/i2c/ov2740.c
-+++ b/drivers/media/i2c/ov2740.c
-@@ -828,8 +828,10 @@ static int ov2740_init_controls(struct ov2740 *ov2740)
- 				     0, 0, ov2740_test_pattern_menu);
- 
- 	ret = v4l2_fwnode_device_parse(&client->dev, &props);
--	if (ret)
-+	if (ret) {
-+		v4l2_ctrl_handler_free(ctrl_hdlr);
- 		return ret;
-+	}
- 
- 	v4l2_ctrl_new_fwnode_properties(ctrl_hdlr, &ov2740_ctrl_ops, &props);
- 
+diff --git a/tools/lib/bpf/relo_core.c b/tools/lib/bpf/relo_core.c
+index 7632e9d418271..2b83c98a11372 100644
+--- a/tools/lib/bpf/relo_core.c
++++ b/tools/lib/bpf/relo_core.c
+@@ -683,7 +683,7 @@ static int bpf_core_calc_field_relo(const char *prog_name,
+ {
+ 	const struct bpf_core_accessor *acc;
+ 	const struct btf_type *t;
+-	__u32 byte_off, byte_sz, bit_off, bit_sz, field_type_id;
++	__u32 byte_off, byte_sz, bit_off, bit_sz, field_type_id, elem_id;
+ 	const struct btf_member *m;
+ 	const struct btf_type *mt;
+ 	bool bitfield;
+@@ -706,8 +706,14 @@ static int bpf_core_calc_field_relo(const char *prog_name,
+ 	if (!acc->name) {
+ 		if (relo->kind == BPF_CORE_FIELD_BYTE_OFFSET) {
+ 			*val = spec->bit_offset / 8;
+-			/* remember field size for load/store mem size */
+-			sz = btf__resolve_size(spec->btf, acc->type_id);
++			/* remember field size for load/store mem size;
++			 * note, for arrays we care about individual element
++			 * sizes, not the overall array size
++			 */
++			t = skip_mods_and_typedefs(spec->btf, acc->type_id, &elem_id);
++			while (btf_is_array(t))
++				t = skip_mods_and_typedefs(spec->btf, btf_array(t)->type, &elem_id);
++			sz = btf__resolve_size(spec->btf, elem_id);
+ 			if (sz < 0)
+ 				return -EINVAL;
+ 			*field_sz = sz;
+@@ -767,7 +773,17 @@ static int bpf_core_calc_field_relo(const char *prog_name,
+ 	case BPF_CORE_FIELD_BYTE_OFFSET:
+ 		*val = byte_off;
+ 		if (!bitfield) {
+-			*field_sz = byte_sz;
++			/* remember field size for load/store mem size;
++			 * note, for arrays we care about individual element
++			 * sizes, not the overall array size
++			 */
++			t = skip_mods_and_typedefs(spec->btf, field_type_id, &elem_id);
++			while (btf_is_array(t))
++				t = skip_mods_and_typedefs(spec->btf, btf_array(t)->type, &elem_id);
++			sz = btf__resolve_size(spec->btf, elem_id);
++			if (sz < 0)
++				return -EINVAL;
++			*field_sz = sz;
+ 			*type_id = field_type_id;
+ 		}
+ 		break;
 -- 
 2.39.5
 
