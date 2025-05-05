@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-140169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0887AAA5B1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51AEBAAA5B5
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:56:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A8C717D28E
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:56:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA244461CD5
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A850B28DEE4;
-	Mon,  5 May 2025 22:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37EA3184C1;
+	Mon,  5 May 2025 22:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i52HR5TG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ue1m/YGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645E827A91C;
-	Mon,  5 May 2025 22:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690543184B4;
+	Mon,  5 May 2025 22:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484266; cv=none; b=DJo4OC1+0RG2HiJc/SPZMXwOonyXOZd+1nA5qj49CVoRBgjWuaDMEWEKCSbR0HzBnMkh3f3lyZT2l542r1Q8qF+NwdN7MT6DEWoJNwt4N2JESaIv7YbSjJb56oC4bWYbi5jCF4FqqtS9bcaCywG0E+3yftwkCLd3lWu1Sfor5f4=
+	t=1746484268; cv=none; b=cURzYjlbTQNRIbHpbdbNXJ/CVCCj996I6NPCZhQMzYgB1RROU9hUPEw7jad7ifR1gGLtsEFGNzR9FjoucaXw6zZCVcf+ocXG9TJGh1Eeqgkx+6J+Z2WsR5PSYh+pgeoqYGGCgsfi5Aaged3vdOfzbubU9yVWhtbcGUNxEIsD5cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484266; c=relaxed/simple;
-	bh=y189VpPMbpZ6dF+UEMK+0AsBHh/vfjWRWuqkY/DBNI4=;
+	s=arc-20240116; t=1746484268; c=relaxed/simple;
+	bh=UPa1F9dwsbvJiKHvgySynll1Z9gNX1kqCn63W5cWNTY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Iwd50WXr+rDFD4HOq6LZ/EdgL5of27fhVEuIq9LYXz2UigTWoyNezMC35uKiH0QKDkE1q4JpViXri1XG9kdPl1ennfDH9iDDlwCZ5enKutR5cj4FHkMjIliCKitQFekiMKChrLELzKrAkRvIssgQ7Z0NGbc6q7jacog7hX9GZHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i52HR5TG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E9FC4CEEE;
-	Mon,  5 May 2025 22:31:04 +0000 (UTC)
+	 MIME-Version; b=mzc6IYXbUC7TOucTUQ+RvxRUjbh4yoLtAqHsfrJ5yUPkYlOydjgRZXx0RbVD4ziYK3FMpyM522ncurcrO6FObgh1xxrgeStXEGvFrXhDGYILyLQ4WYy7lwPKz1OVJzOvQzjYOg78rgGVSYviimQ58TRevIBXBkiPKgkEy1V08MU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ue1m/YGn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBFAC4CEE4;
+	Mon,  5 May 2025 22:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484265;
-	bh=y189VpPMbpZ6dF+UEMK+0AsBHh/vfjWRWuqkY/DBNI4=;
+	s=k20201202; t=1746484267;
+	bh=UPa1F9dwsbvJiKHvgySynll1Z9gNX1kqCn63W5cWNTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i52HR5TGUxcKU+SfsXsSlAB8x3/+RkJoJgx34zfg9QLJo4K/g9v5Q6+JcpdV3i4bQ
-	 ILhqnJmG7H2QBxNvOjJTdICPVD/HBKVaHU80rVBjdkFRZ7XZVZIk4+nWDPJxKNMlkP
-	 j2Vjke5DWmp+ucH+wUsxJjVqQ/XkatHLfvwfdDaKhxHXK9sjjsFu1CipWPjc8tm/9d
-	 K3hcVX0B+ADVIRUB9zJrmsKRYOOtoOBNysB+uFHFOO5JBkNFu8FYnzU9gZb79Ver56
-	 Bt5we6ahnUR5C19Fv5TayJ+OpcHAtAd8bYQshYdDaHYCIExWyux4P9srVUBtirGxX2
-	 tuDDB6uWJVEbw==
+	b=Ue1m/YGnHOWumHgQyFAA+zIqyfE916mQxmSvAsU8dOLkep0BB8ySqxpdQUQ6zpQ5i
+	 GI7BoOjXUVPx7BVXbBZM9wMEA3/PbeNV8DRzF2CdPyj+bt5wW/opW2U9sWmFYDgqKf
+	 AjXOtjo5Nag1/fBfspQE3Je2PsU2qBOBJk+Gz4qsh2n5Ql9f9ld6DQXyv2o2/DKb0o
+	 9Mkxu14t/aj0iR6yT5al3T0HoRNWze7hhoWBs9DwJkjk4VeUkvrCUypg8Qa/p512jM
+	 3j3cyCmxo2BhLRpOp7sHTYO8d+Z5SMymgbk0irXNVQWRvWcjObZVpOAOiRIXakNc1J
+	 t6zRnHrZKIV3Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+Cc: Brendan Jackman <jackmanb@google.com>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com,
-	linux-security-module@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 422/642] smack: Revert "smackfs: Added check catlen"
-Date: Mon,  5 May 2025 18:10:38 -0400
-Message-Id: <20250505221419.2672473-422-sashal@kernel.org>
+	brendan.higgins@linux.dev,
+	linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com
+Subject: [PATCH AUTOSEL 6.14 423/642] kunit: tool: Use qboot on QEMU x86_64
+Date: Mon,  5 May 2025 18:10:39 -0400
+Message-Id: <20250505221419.2672473-423-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,62 +68,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Brendan Jackman <jackmanb@google.com>
 
-[ Upstream commit c7fb50cecff9cad19fdac5b37337eae4e42b94c7 ]
+[ Upstream commit 08fafac4c9f289a9d9a22d838921e4b3eb22c664 ]
 
-This reverts commit ccfd889acb06eab10b98deb4b5eef0ec74157ea0
+As noted in [0], SeaBIOS (QEMU default) makes a mess of the terminal,
+qboot does not.
 
-The indicated commit
-* does not describe the problem that change tries to solve
-* has programming issues
-* introduces a bug: forever clears NETLBL_SECATTR_MLS_CAT
-         in (struct smack_known *)skp->smk_netlabel.flags
+It turns out this is actually useful with kunit.py, since the user is
+exposed to this issue if they set --raw_output=all.
 
-Reverting the commit to reapproach original problem
+qboot is also faster than SeaBIOS, but it's is marginal for this
+usecase.
 
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+[0] https://lore.kernel.org/all/CA+i-1C0wYb-gZ8Mwh3WSVpbk-LF-Uo+njVbASJPe1WXDURoV7A@mail.gmail.com/
+
+Both SeaBIOS and qboot are x86-specific.
+
+Link: https://lore.kernel.org/r/20250124-kunit-qboot-v1-1-815e4d4c6f7c@google.com
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smackfs.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ tools/testing/kunit/qemu_configs/x86_64.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-index d8f9922804974..a7886cfc9dc3a 100644
---- a/security/smack/smackfs.c
-+++ b/security/smack/smackfs.c
-@@ -812,7 +812,7 @@ static int smk_open_cipso(struct inode *inode, struct file *file)
- static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
- 				size_t count, loff_t *ppos, int format)
- {
--	struct netlbl_lsm_catmap *old_cat, *new_cat = NULL;
-+	struct netlbl_lsm_catmap *old_cat;
- 	struct smack_known *skp;
- 	struct netlbl_lsm_secattr ncats;
- 	char mapcatset[SMK_CIPSOLEN];
-@@ -899,19 +899,8 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
- 
- 		smack_catset_bit(cat, mapcatset);
- 	}
--	ncats.flags = 0;
--	if (catlen == 0) {
--		ncats.attr.mls.cat = NULL;
--		ncats.attr.mls.lvl = maplevel;
--		new_cat = netlbl_catmap_alloc(GFP_ATOMIC);
--		if (new_cat)
--			new_cat->next = ncats.attr.mls.cat;
--		ncats.attr.mls.cat = new_cat;
--		skp->smk_netlabel.flags &= ~(1U << 3);
--		rc = 0;
--	} else {
--		rc = smk_netlbl_mls(maplevel, mapcatset, &ncats, SMK_CIPSOLEN);
--	}
-+
-+	rc = smk_netlbl_mls(maplevel, mapcatset, &ncats, SMK_CIPSOLEN);
- 	if (rc >= 0) {
- 		old_cat = skp->smk_netlabel.attr.mls.cat;
- 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
+diff --git a/tools/testing/kunit/qemu_configs/x86_64.py b/tools/testing/kunit/qemu_configs/x86_64.py
+index dc79490768630..4a6bf4e048f5b 100644
+--- a/tools/testing/kunit/qemu_configs/x86_64.py
++++ b/tools/testing/kunit/qemu_configs/x86_64.py
+@@ -7,4 +7,6 @@ CONFIG_SERIAL_8250_CONSOLE=y''',
+ 			   qemu_arch='x86_64',
+ 			   kernel_path='arch/x86/boot/bzImage',
+ 			   kernel_command_line='console=ttyS0',
+-			   extra_qemu_params=[])
++			   # qboot is faster than SeaBIOS and doesn't mess up
++			   # the terminal.
++			   extra_qemu_params=['-bios', 'qboot.rom'])
 -- 
 2.39.5
 
