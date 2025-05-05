@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-140120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CDDAAA531
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84869AAA534
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:44:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 035BB16E392
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:44:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 361E017BE1B
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496DC28BA98;
-	Mon,  5 May 2025 22:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3CF130DE1D;
+	Mon,  5 May 2025 22:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W19ZMqdW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vp7IuXDG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD6230D7B9;
-	Mon,  5 May 2025 22:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B36E30DE13;
+	Mon,  5 May 2025 22:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484146; cv=none; b=IM36nfBfDnDcNRt3jJ5t8OSovB1NG7/wpQ/EjZtZp4mxPskP+BcKmgefcutJzGItZbF/+AKwQdYFDMfkPrR03Tkl80HNe8ca+NxYFcGFej3qmNiaV+heMRz5sUTcbIdWs2TKSQ/PULeehthtzVIaoQvudQEg9aFez70c6s4Fyao=
+	t=1746484147; cv=none; b=BYTw9334tzTQJOUXP20eM2uP/0DmFVTz9FWJTIpbIST6nC5L4rtZL8FB5zkFsSybzRnT4C64KI3XGrF5JuF9NRpuKFCQlY7mP1PTYUvGBqqTtckThRoTQf6W7gAvbumTc7e5jKvJXXAiVbfnueNxEHJ3FfOzqraPkykUlIP8lZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484146; c=relaxed/simple;
-	bh=ii8lWzCDYfqW2VGlgqGQlo4e6TjzlUJNmYQBU3nufho=;
+	s=arc-20240116; t=1746484147; c=relaxed/simple;
+	bh=xp7i7yrYfua8EgpoX9n1vKr200NGNNoWozeC3ptxk7o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AcqzhXa08fZGh8TCgKSdzIv2tqxa/QVjSelzB+Mf7drPT/mp3oW20+TSMzRReuixfexqQZYNHoOKOzv5j9H+DVIBz/1rjEZoATQJmm0wu00VwUOFCArV87nfsC/Gaogf4Sg5oe7DGro8KOHzlDR1XKMo2ujTkh1a5aiHDED27dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W19ZMqdW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69843C4CEEF;
-	Mon,  5 May 2025 22:29:04 +0000 (UTC)
+	 MIME-Version; b=Pqvc5gBzaBM9O3vNAde6yWE5yIl2deGtWh1oI2B9Otbgosk4nWMDhSVb20KiyXHTw/wrxVrcSvggP2wKpMBygVdSTzPdbZsEdQwR00tGprwhmaeFL9xze2+ddxt9H4Sdsx6dYB+/OwXaW60Ry/xcxgB/INmmMl7kn/0ltHtCR5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vp7IuXDG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA16C4CEE4;
+	Mon,  5 May 2025 22:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484145;
-	bh=ii8lWzCDYfqW2VGlgqGQlo4e6TjzlUJNmYQBU3nufho=;
+	s=k20201202; t=1746484146;
+	bh=xp7i7yrYfua8EgpoX9n1vKr200NGNNoWozeC3ptxk7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W19ZMqdW2+jn4w5jQ46GTeRDjdMi3y0vWCvyoqsxMTkEHj0Bcy5z49UinLavsvonD
-	 wGbMi/q1YjNUwr63U2EeNTJ11H5POznhazoTZBK7uA4Ce34yj9tUAxF0bMiFC61uiD
-	 ctQRnTJlUfptrVPQ0PdPhml2go6Y6KI5kCNRcKkcMBY8FVENiTzdtLVi4vno04uyQ/
-	 Bj9OVgVh09JYvZicesBYbPcVTyt/b7SANZQ0ckpgHk5ytgbBM8DpwO/WvwJFvK4CJ6
-	 E1f6K8rHkgFFE0U5RkMYZJGgZgaVIDH9zzrebXdyhL8+WKqb3Fn+hm1zamLv6wCDWp
-	 xTZ+FelM6AroA==
+	b=Vp7IuXDGQZW+RFl8siIvYrEjEVe5K4nKVBVIu+0XNgnghJANe7JSJpdSrTBlS5Gio
+	 T7vw+9nbYedvcwSZC1kD/uoFDWZEsYIAWQtNqWonQNu5tEzW687ZwHz/hGZHy5d7Qo
+	 0wTxPaVgY14vJefVQN+xxjLegP9zc9LtYBOAsZ3iFACxXxavET31ddAM+sJwz8amjB
+	 zgtZyravKCEgZeYC8lGNE09aMQuJ/xyWkCvUkhMdxZYLF+AlyTd2ot0LtyP/o60PcB
+	 r2aVJ0DF0H7SwjHYXi2UzEUm4pT0B6c/tYgwQj3LdSutS1HmIpO1iAfKi4PT7WoomC
+	 j6nfEd2OJ6dAA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chris Morgan <macromorgan@hotmail.com>,
-	Philippe Simons <simons.philippe@gmail.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Jason Baron <jbaron@akamai.com>,
+	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sre@kernel.org,
-	wens@csie.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 373/642] power: supply: axp20x_battery: Update temp sensor for AXP717 from device tree
-Date: Mon,  5 May 2025 18:09:49 -0400
-Message-Id: <20250505221419.2672473-373-sashal@kernel.org>
+	bp@alien8.de,
+	linux-edac@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 374/642] EDAC/ie31200: work around false positive build warning
+Date: Mon,  5 May 2025 18:09:50 -0400
+Message-Id: <20250505221419.2672473-374-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,70 +67,103 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Chris Morgan <macromorgan@hotmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit bbcfe510ecd47f2db4c8653c7dfa9dc7a55b1583 ]
+[ Upstream commit c29dfd661fe2f8d1b48c7f00590929c04b25bf40 ]
 
-Allow a boolean property of "x-powers,no-thermistor" to specify devices
-where the ts pin is not connected to anything. This works around an
-issue found with some devices where the efuse is not programmed
-correctly from the factory or when the register gets set erroneously.
+gcc-14 produces a bogus warning in some configurations:
 
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Tested-by: Philippe Simons <simons.philippe@gmail.com>
-Link: https://lore.kernel.org/r/20250204155835.161973-4-macroalpha82@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+drivers/edac/ie31200_edac.c: In function 'ie31200_probe1.isra':
+drivers/edac/ie31200_edac.c:412:26: error: 'dimm_info' is used uninitialized [-Werror=uninitialized]
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
+drivers/edac/ie31200_edac.c:412:26: note: 'dimm_info' declared here
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
+
+I don't see any way the unintialized access could really happen here,
+but I can see why the compiler gets confused by the two loops.
+
+Instead, rework the two nested loops to only read the addr_decode
+registers and then keep only one instance of the dimm info structure.
+
+[Tony: Qiuxu pointed out that the "populate DIMM info" comment was left
+behind in the refactor and suggested moving it. I deleted the comment
+as unnecessry in front os a call to populate_dimm_info(). That seems
+pretty self-describing.]
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Jason Baron <jbaron@akamai.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/all/20250122065031.1321015-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/axp20x_battery.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/edac/ie31200_edac.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
-index 3c3158f31a484..f4cf129a0b683 100644
---- a/drivers/power/supply/axp20x_battery.c
-+++ b/drivers/power/supply/axp20x_battery.c
-@@ -89,6 +89,8 @@
- #define AXP717_BAT_CC_MIN_UA		0
- #define AXP717_BAT_CC_MAX_UA		3008000
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index 9b02a6b43ab58..a8dd55ec52cea 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -408,10 +408,9 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	int i, j, ret;
+ 	struct mem_ctl_info *mci = NULL;
+ 	struct edac_mc_layer layers[2];
+-	struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+ 	void __iomem *window;
+ 	struct ie31200_priv *priv;
+-	u32 addr_decode, mad_offset;
++	u32 addr_decode[IE31200_CHANNELS], mad_offset;
  
-+#define AXP717_TS_PIN_DISABLE		BIT(4)
+ 	/*
+ 	 * Kaby Lake, Coffee Lake seem to work like Skylake. Please re-visit
+@@ -469,19 +468,10 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 		mad_offset = IE31200_MAD_DIMM_0_OFFSET;
+ 	}
+ 
+-	/* populate DIMM info */
+ 	for (i = 0; i < IE31200_CHANNELS; i++) {
+-		addr_decode = readl(window + mad_offset +
++		addr_decode[i] = readl(window + mad_offset +
+ 					(i * 4));
+-		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode);
+-		for (j = 0; j < IE31200_DIMMS_PER_CHANNEL; j++) {
+-			populate_dimm_info(&dimm_info[i][j], addr_decode, j,
+-					   skl);
+-			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
+-				 dimm_info[i][j].size,
+-				 dimm_info[i][j].dual_rank,
+-				 dimm_info[i][j].x16_width);
+-		}
++		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode[i]);
+ 	}
+ 
+ 	/*
+@@ -492,14 +482,22 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	 */
+ 	for (i = 0; i < IE31200_DIMMS_PER_CHANNEL; i++) {
+ 		for (j = 0; j < IE31200_CHANNELS; j++) {
++			struct dimm_data dimm_info;
+ 			struct dimm_info *dimm;
+ 			unsigned long nr_pages;
+ 
+-			nr_pages = IE31200_PAGES(dimm_info[j][i].size, skl);
++			populate_dimm_info(&dimm_info, addr_decode[j], i,
++					   skl);
++			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
++				 dimm_info.size,
++				 dimm_info.dual_rank,
++				 dimm_info.x16_width);
 +
- struct axp20x_batt_ps;
++			nr_pages = IE31200_PAGES(dimm_info.size, skl);
+ 			if (nr_pages == 0)
+ 				continue;
  
- struct axp_data {
-@@ -117,6 +119,7 @@ struct axp20x_batt_ps {
- 	/* Maximum constant charge current */
- 	unsigned int max_ccc;
- 	const struct axp_data	*data;
-+	bool ts_disable;
- };
- 
- static int axp20x_battery_get_max_voltage(struct axp20x_batt_ps *axp20x_batt,
-@@ -984,6 +987,24 @@ static void axp717_set_battery_info(struct platform_device *pdev,
- 	int ccc = info->constant_charge_current_max_ua;
- 	int val;
- 
-+	axp_batt->ts_disable = (device_property_read_bool(axp_batt->dev,
-+							  "x-powers,no-thermistor"));
-+
-+	/*
-+	 * Under rare conditions an incorrectly programmed efuse for
-+	 * the temp sensor on the PMIC may trigger a fault condition.
-+	 * Allow users to hard-code if the ts pin is not used to work
-+	 * around this problem. Note that this requires the battery
-+	 * be correctly defined in the device tree with a monitored
-+	 * battery node.
-+	 */
-+	if (axp_batt->ts_disable) {
-+		regmap_update_bits(axp_batt->regmap,
-+				   AXP717_TS_PIN_CFG,
-+				   AXP717_TS_PIN_DISABLE,
-+				   AXP717_TS_PIN_DISABLE);
-+	}
-+
- 	if (vmin > 0 && axp717_set_voltage_min_design(axp_batt, vmin))
- 		dev_err(&pdev->dev,
- 			"couldn't set voltage_min_design\n");
+-			if (dimm_info[j][i].dual_rank) {
++			if (dimm_info.dual_rank) {
+ 				nr_pages = nr_pages / 2;
+ 				dimm = edac_get_dimm(mci, (i * 2) + 1, j, 0);
+ 				dimm->nr_pages = nr_pages;
 -- 
 2.39.5
 
