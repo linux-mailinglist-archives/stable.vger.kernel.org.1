@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-140550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 652BDAAA9C0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:21:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E555DAAA9D5
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F26857A47F1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:19:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E60D0188A17C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E3D37530A;
-	Mon,  5 May 2025 22:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1907135F7EB;
+	Mon,  5 May 2025 22:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKDfN7fc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kALxn6md"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CC635C86B;
-	Mon,  5 May 2025 22:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2C4298CC2;
+	Mon,  5 May 2025 22:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485128; cv=none; b=MPurHrF/OTCFB9VRJKRcQvVPyAQGDA9dGPmD2r0YG46ibH5v/zN0VGGGyoLfpoN/1rzU9spfM5+dsyxlQnA1OieU6xpqrpcKiS+5Ahhk3G2iJJPVtbMUoIpmdeH99u0KrnZH5yir1svbdw8CDV6FP7BMtgILo5hSrktMjYvi/d0=
+	t=1746485133; cv=none; b=GMO+EhvZFO3FGnc6Ebp5wglyk6Nsm/S6TDKeyk/FkAoLkPpAAjh+CJReC4qm2wEZJLXJFID4nh8UZO15Xlcb1nxL5ZOk2fTHBskyCcK2pfo8vl4QeibseCkELVlhkSUUIj+V1uvma96gv1aNkz0sWRMOAjJ6LDlQ1K90CYEIDwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485128; c=relaxed/simple;
-	bh=3Ho9mSFDJOupb9gCNGP5Pzm0TfHvsCdl6reT/BvM5gc=;
+	s=arc-20240116; t=1746485133; c=relaxed/simple;
+	bh=xcTwYq2bMsivseQDA5CYNGoPJpwC7m1P/ITeFcI4upU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=b8cWMnIWPzQyreOMRN158dI8tsHWOwgxN5Z18uWs+R+42gAEHXcIfpXWQNcPu5QQzaK6t/p5rvM5dvhwBO1lKLblQCvzoXoGf3fyy2sdZSj/trTfRLCbG1bWSylOKxfuTUJ2DZq1cZST2NXCTKtLSIyX/CZe4mzLowrZbGc6ctM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKDfN7fc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB75C4CEED;
-	Mon,  5 May 2025 22:45:25 +0000 (UTC)
+	 MIME-Version; b=GPTxPP8nOpVVQvAcajBJcXC3Fxc1MJP0kFvgZtPn6fHUg00n69qFAsQMhATA1b2ir1vc8xasDSMltI02bSwyrCLlAgZJ7Jc33ZYOmP+kSrUR71Te7kgaMYYCm126ZA/aV/i1PdAmjYvh+dKLTQJQXAy4wbIV7pj9jOSKtgzjDJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kALxn6md; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCDEC4CEE4;
+	Mon,  5 May 2025 22:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485127;
-	bh=3Ho9mSFDJOupb9gCNGP5Pzm0TfHvsCdl6reT/BvM5gc=;
+	s=k20201202; t=1746485132;
+	bh=xcTwYq2bMsivseQDA5CYNGoPJpwC7m1P/ITeFcI4upU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DKDfN7fchj7oAJJAIjo4nnPzuw9y+FVhqJ2WQhj5x6EVMdw87h3bHgCyaiXQSBLfT
-	 Mh6use9mEje1P4zfJeoC/Ew0N/OCKptjtt9dOYi+oa0NatNk30PUXLqth06hXWiW/0
-	 XAJF35uxVo/x3DT8JOsytMICzn9rXujepTslDkzwpB+mVjjjWbKi/B3b0mK1zHtnOE
-	 i+ezwBcp/1LMqdEWfNF6ELHrBhzriGfOMM6H669uL20MqZLbUeNlNAwcnhxz2LrL9j
-	 8Ugv1xO3rpFzfnn/95BqLJZRzn3xKt8zo7YkFw8DdDpg6bTIpifiUKKmTLZN88IV5b
-	 FnOZ49GmFxA0Q==
+	b=kALxn6mdFGJBlgvMAQyB9Y+2tNQ1ssqZy5gvhqHC22hvmTDPlRhVLO6mvzWPX9F7A
+	 sBge1JsRMLbNyUZ6AKePVauGy084UZKZjssSEVNze2xyxq80GOts1ZIUjTW2zJCrzS
+	 D4dZrq03FY3wRqFwSWvuRt65c7ym7yI7qfqp4KBT4h4yFxfvmOOZaVOXne4LodAeVD
+	 f10KGehQ6VgToD86730D3Gna666mYtxnwJNEkUjbT71mjn4JB05xPx2vgo8IKip/1b
+	 OpWg/E9ctGSLcS2KBOxDrXMQKlryN1qKMjtX4nSuzSNWL+0CnlXPx1s0xAqUUzrtnO
+	 ++xm2bIn/wl1g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Amber Lin <Amber.Lin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Felix.Kuehling@amd.com,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 174/486] drm/amdkfd: Set per-process flags only once cik/vi
-Date: Mon,  5 May 2025 18:34:10 -0400
-Message-Id: <20250505223922.2682012-174-sashal@kernel.org>
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com,
+	tmn505@gmail.com,
+	devicetree@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 176/486] arm64: tegra: p2597: Fix gpio for vdd-1v8-dis regulator
+Date: Mon,  5 May 2025 18:34:12 -0400
+Message-Id: <20250505223922.2682012-176-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -71,299 +72,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 
-[ Upstream commit 289e68503a4533b014f8447e2af28ad44c92c221 ]
+[ Upstream commit f34621f31e3be81456c903287f7e4c0609829e29 ]
 
-Set per-process static sh_mem config only once during process
-initialization. Move all static changes from update_qpd() which is
-called each time a queue is created to set_cache_memory_policy() which
-is called once during process initialization.
+According to the board schematics the enable pin of this regulator is
+connected to gpio line #9 of the first instance of the TCA9539
+GPIO expander, so adjust it.
 
-set_cache_memory_policy() is currently defined only for cik and vi
-family. So this commit only focuses on these two. A separate commit will
-address other asics.
-
-Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Reviewed-by: Amber Lin <Amber.Lin@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Link: https://lore.kernel.org/r/20250224-diogo-gpio_exp-v1-1-80fb84ac48c6@tecnico.ulisboa.pt
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/amdkfd/kfd_device_queue_manager.c | 39 +---------
- .../amd/amdkfd/kfd_device_queue_manager_cik.c | 69 ++++++++++++------
- .../amd/amdkfd/kfd_device_queue_manager_vi.c  | 71 ++++++++++++-------
- 3 files changed, 94 insertions(+), 85 deletions(-)
+ arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-index 951b87e7e3f68..6a58dd8d2130c 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-@@ -2453,14 +2453,6 @@ static int destroy_queue_cpsch(struct device_queue_manager *dqm,
- 	return retval;
- }
- 
--/*
-- * Low bits must be 0000/FFFF as required by HW, high bits must be 0 to
-- * stay in user mode.
-- */
--#define APE1_FIXED_BITS_MASK 0xFFFF80000000FFFFULL
--/* APE1 limit is inclusive and 64K aligned. */
--#define APE1_LIMIT_ALIGNMENT 0xFFFF
--
- static bool set_cache_memory_policy(struct device_queue_manager *dqm,
- 				   struct qcm_process_device *qpd,
- 				   enum cache_policy default_policy,
-@@ -2475,34 +2467,6 @@ static bool set_cache_memory_policy(struct device_queue_manager *dqm,
- 
- 	dqm_lock(dqm);
- 
--	if (alternate_aperture_size == 0) {
--		/* base > limit disables APE1 */
--		qpd->sh_mem_ape1_base = 1;
--		qpd->sh_mem_ape1_limit = 0;
--	} else {
--		/*
--		 * In FSA64, APE1_Base[63:0] = { 16{SH_MEM_APE1_BASE[31]},
--		 *			SH_MEM_APE1_BASE[31:0], 0x0000 }
--		 * APE1_Limit[63:0] = { 16{SH_MEM_APE1_LIMIT[31]},
--		 *			SH_MEM_APE1_LIMIT[31:0], 0xFFFF }
--		 * Verify that the base and size parameters can be
--		 * represented in this format and convert them.
--		 * Additionally restrict APE1 to user-mode addresses.
--		 */
--
--		uint64_t base = (uintptr_t)alternate_aperture_base;
--		uint64_t limit = base + alternate_aperture_size - 1;
--
--		if (limit <= base || (base & APE1_FIXED_BITS_MASK) != 0 ||
--		   (limit & APE1_FIXED_BITS_MASK) != APE1_LIMIT_ALIGNMENT) {
--			retval = false;
--			goto out;
--		}
--
--		qpd->sh_mem_ape1_base = base >> 16;
--		qpd->sh_mem_ape1_limit = limit >> 16;
--	}
--
- 	retval = dqm->asic_ops.set_cache_memory_policy(
- 			dqm,
- 			qpd,
-@@ -2511,6 +2475,9 @@ static bool set_cache_memory_policy(struct device_queue_manager *dqm,
- 			alternate_aperture_base,
- 			alternate_aperture_size);
- 
-+	if (retval)
-+		goto out;
-+
- 	if ((dqm->sched_policy == KFD_SCHED_POLICY_NO_HWS) && (qpd->vmid != 0))
- 		program_sh_mem_settings(dqm, qpd);
- 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_cik.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_cik.c
-index d4d95c7f2e5d4..32bedef912b3b 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_cik.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_cik.c
-@@ -27,6 +27,14 @@
- #include "oss/oss_2_4_sh_mask.h"
- #include "gca/gfx_7_2_sh_mask.h"
- 
-+/*
-+ * Low bits must be 0000/FFFF as required by HW, high bits must be 0 to
-+ * stay in user mode.
-+ */
-+#define APE1_FIXED_BITS_MASK 0xFFFF80000000FFFFULL
-+/* APE1 limit is inclusive and 64K aligned. */
-+#define APE1_LIMIT_ALIGNMENT 0xFFFF
-+
- static bool set_cache_memory_policy_cik(struct device_queue_manager *dqm,
- 				   struct qcm_process_device *qpd,
- 				   enum cache_policy default_policy,
-@@ -84,6 +92,36 @@ static bool set_cache_memory_policy_cik(struct device_queue_manager *dqm,
- {
- 	uint32_t default_mtype;
- 	uint32_t ape1_mtype;
-+	unsigned int temp;
-+	bool retval = true;
-+
-+	if (alternate_aperture_size == 0) {
-+		/* base > limit disables APE1 */
-+		qpd->sh_mem_ape1_base = 1;
-+		qpd->sh_mem_ape1_limit = 0;
-+	} else {
-+		/*
-+		 * In FSA64, APE1_Base[63:0] = { 16{SH_MEM_APE1_BASE[31]},
-+		 *			SH_MEM_APE1_BASE[31:0], 0x0000 }
-+		 * APE1_Limit[63:0] = { 16{SH_MEM_APE1_LIMIT[31]},
-+		 *			SH_MEM_APE1_LIMIT[31:0], 0xFFFF }
-+		 * Verify that the base and size parameters can be
-+		 * represented in this format and convert them.
-+		 * Additionally restrict APE1 to user-mode addresses.
-+		 */
-+
-+		uint64_t base = (uintptr_t)alternate_aperture_base;
-+		uint64_t limit = base + alternate_aperture_size - 1;
-+
-+		if (limit <= base || (base & APE1_FIXED_BITS_MASK) != 0 ||
-+		   (limit & APE1_FIXED_BITS_MASK) != APE1_LIMIT_ALIGNMENT) {
-+			retval = false;
-+			goto out;
-+		}
-+
-+		qpd->sh_mem_ape1_base = base >> 16;
-+		qpd->sh_mem_ape1_limit = limit >> 16;
-+	}
- 
- 	default_mtype = (default_policy == cache_policy_coherent) ?
- 			MTYPE_NONCACHED :
-@@ -97,37 +135,22 @@ static bool set_cache_memory_policy_cik(struct device_queue_manager *dqm,
- 			| ALIGNMENT_MODE(SH_MEM_ALIGNMENT_MODE_UNALIGNED)
- 			| DEFAULT_MTYPE(default_mtype)
- 			| APE1_MTYPE(ape1_mtype);
--
--	return true;
--}
--
--static int update_qpd_cik(struct device_queue_manager *dqm,
--			  struct qcm_process_device *qpd)
--{
--	struct kfd_process_device *pdd;
--	unsigned int temp;
--
--	pdd = qpd_to_pdd(qpd);
--
--	/* check if sh_mem_config register already configured */
--	if (qpd->sh_mem_config == 0) {
--		qpd->sh_mem_config =
--			ALIGNMENT_MODE(SH_MEM_ALIGNMENT_MODE_UNALIGNED) |
--			DEFAULT_MTYPE(MTYPE_NONCACHED) |
--			APE1_MTYPE(MTYPE_NONCACHED);
--		qpd->sh_mem_ape1_limit = 0;
--		qpd->sh_mem_ape1_base = 0;
--	}
--
- 	/* On dGPU we're always in GPUVM64 addressing mode with 64-bit
- 	 * aperture addresses.
- 	 */
--	temp = get_sh_mem_bases_nybble_64(pdd);
-+	temp = get_sh_mem_bases_nybble_64(qpd_to_pdd(qpd));
- 	qpd->sh_mem_bases = compute_sh_mem_bases_64bit(temp);
- 
- 	pr_debug("is32bit process: %d sh_mem_bases nybble: 0x%X and register 0x%X\n",
- 		qpd->pqm->process->is_32bit_user_mode, temp, qpd->sh_mem_bases);
- 
-+out:
-+	return retval;
-+}
-+
-+static int update_qpd_cik(struct device_queue_manager *dqm,
-+			  struct qcm_process_device *qpd)
-+{
- 	return 0;
- }
- 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_vi.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_vi.c
-index b291ee0fab943..320518f418903 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_vi.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_vi.c
-@@ -27,6 +27,14 @@
- #include "gca/gfx_8_0_sh_mask.h"
- #include "oss/oss_3_0_sh_mask.h"
- 
-+/*
-+ * Low bits must be 0000/FFFF as required by HW, high bits must be 0 to
-+ * stay in user mode.
-+ */
-+#define APE1_FIXED_BITS_MASK 0xFFFF80000000FFFFULL
-+/* APE1 limit is inclusive and 64K aligned. */
-+#define APE1_LIMIT_ALIGNMENT 0xFFFF
-+
- static bool set_cache_memory_policy_vi(struct device_queue_manager *dqm,
- 				       struct qcm_process_device *qpd,
- 				       enum cache_policy default_policy,
-@@ -85,6 +93,36 @@ static bool set_cache_memory_policy_vi(struct device_queue_manager *dqm,
- {
- 	uint32_t default_mtype;
- 	uint32_t ape1_mtype;
-+	unsigned int temp;
-+	bool retval = true;
-+
-+	if (alternate_aperture_size == 0) {
-+		/* base > limit disables APE1 */
-+		qpd->sh_mem_ape1_base = 1;
-+		qpd->sh_mem_ape1_limit = 0;
-+	} else {
-+		/*
-+		 * In FSA64, APE1_Base[63:0] = { 16{SH_MEM_APE1_BASE[31]},
-+		 *			SH_MEM_APE1_BASE[31:0], 0x0000 }
-+		 * APE1_Limit[63:0] = { 16{SH_MEM_APE1_LIMIT[31]},
-+		 *			SH_MEM_APE1_LIMIT[31:0], 0xFFFF }
-+		 * Verify that the base and size parameters can be
-+		 * represented in this format and convert them.
-+		 * Additionally restrict APE1 to user-mode addresses.
-+		 */
-+
-+		uint64_t base = (uintptr_t)alternate_aperture_base;
-+		uint64_t limit = base + alternate_aperture_size - 1;
-+
-+		if (limit <= base || (base & APE1_FIXED_BITS_MASK) != 0 ||
-+		   (limit & APE1_FIXED_BITS_MASK) != APE1_LIMIT_ALIGNMENT) {
-+			retval = false;
-+			goto out;
-+		}
-+
-+		qpd->sh_mem_ape1_base = base >> 16;
-+		qpd->sh_mem_ape1_limit = limit >> 16;
-+	}
- 
- 	default_mtype = (default_policy == cache_policy_coherent) ?
- 			MTYPE_UC :
-@@ -100,40 +138,21 @@ static bool set_cache_memory_policy_vi(struct device_queue_manager *dqm,
- 			default_mtype << SH_MEM_CONFIG__DEFAULT_MTYPE__SHIFT |
- 			ape1_mtype << SH_MEM_CONFIG__APE1_MTYPE__SHIFT;
- 
--	return true;
--}
--
--static int update_qpd_vi(struct device_queue_manager *dqm,
--			 struct qcm_process_device *qpd)
--{
--	struct kfd_process_device *pdd;
--	unsigned int temp;
--
--	pdd = qpd_to_pdd(qpd);
--
--	/* check if sh_mem_config register already configured */
--	if (qpd->sh_mem_config == 0) {
--		qpd->sh_mem_config =
--				SH_MEM_ALIGNMENT_MODE_UNALIGNED <<
--					SH_MEM_CONFIG__ALIGNMENT_MODE__SHIFT |
--				MTYPE_UC <<
--					SH_MEM_CONFIG__DEFAULT_MTYPE__SHIFT |
--				MTYPE_UC <<
--					SH_MEM_CONFIG__APE1_MTYPE__SHIFT;
--
--		qpd->sh_mem_ape1_limit = 0;
--		qpd->sh_mem_ape1_base = 0;
--	}
--
- 	/* On dGPU we're always in GPUVM64 addressing mode with 64-bit
- 	 * aperture addresses.
- 	 */
--	temp = get_sh_mem_bases_nybble_64(pdd);
-+	temp = get_sh_mem_bases_nybble_64(qpd_to_pdd(qpd));
- 	qpd->sh_mem_bases = compute_sh_mem_bases_64bit(temp);
- 
- 	pr_debug("sh_mem_bases nybble: 0x%X and register 0x%X\n",
- 		temp, qpd->sh_mem_bases);
-+out:
-+	return retval;
-+}
- 
-+static int update_qpd_vi(struct device_queue_manager *dqm,
-+			 struct qcm_process_device *qpd)
-+{
- 	return 0;
- }
- 
+diff --git a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
+index 63b94a04308e8..38d49d612c0c1 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
+@@ -1686,7 +1686,7 @@ vdd_1v8_dis: regulator-vdd-1v8-dis {
+ 		regulator-min-microvolt = <1800000>;
+ 		regulator-max-microvolt = <1800000>;
+ 		regulator-always-on;
+-		gpio = <&exp1 14 GPIO_ACTIVE_HIGH>;
++		gpio = <&exp1 9 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
+ 		vin-supply = <&vdd_1v8>;
+ 	};
 -- 
 2.39.5
 
