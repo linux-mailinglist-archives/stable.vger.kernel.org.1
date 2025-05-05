@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-140521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE594AAA9AD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:19:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 415FBAAA92E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:09:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C8B73AD2D1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:14:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21E7D7A4A75
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386EE35A741;
-	Mon,  5 May 2025 22:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023AF35C862;
+	Mon,  5 May 2025 22:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZDp6su/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J8aZJDJv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5A8359DF4;
-	Mon,  5 May 2025 22:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF3B359DE4;
+	Mon,  5 May 2025 22:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484969; cv=none; b=hM16aItbwxNDcj0LocMUxa0sFI9tEnYoLVgzG/vNm1z4hvA2gEN8QOp163sSukkDtN7v5zo024Hnfkt04BGw6VNsJ/tQ8Jey8pHv0IHF0X3wevwzNj2Ta7IBGQ8bXX7fHS4D8TNIGwhFO606X3+YYwT224GOno1KWrruBmrOyGs=
+	t=1746484970; cv=none; b=p/VDLkXbD9Z1+vJ49Y3K08rEG7/4rjLE2ApBXh+E2WdC6Rc293KCeu8MgphgUVX3Qzoc5bPoZcgGj/O3ky2AIA7iW5osZMCHcU5miRH7I5/6MQE3rAsbJ50OFSbGfLkR8/tUZG6hB3nuWBB88bFTNH1UTYyoMLdX+qGaQ1CrTHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484969; c=relaxed/simple;
-	bh=yVGBpTjBCfvZxXBpqe0Kw6YV/IDInWxub7cJTiGyZsc=;
+	s=arc-20240116; t=1746484970; c=relaxed/simple;
+	bh=WjO+egmhL/vXMYc7GhB8oOhdYaKPrwDEGtWK5+ykUtk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=N6wPmBHXoKrqa4YbvpMUCYuN9Rh7rB3aZg7iiFo6NMhATLsQSU5xIKBcx4C21r8UmSnE+4cDaVxHNpQtRqaj0Jgl7Z0ryq5tRRrOK3DxkW+lHUtU0KmU/HBzt4OxyDhEbZcmOliTXleWnQk44sko0cmcacXV7kIS2zM8Xv3GqZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZDp6su/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54BC1C4CEF1;
-	Mon,  5 May 2025 22:42:47 +0000 (UTC)
+	 MIME-Version; b=NtIiEiTJ5VUHm5k1WiZU/r0j6SXEEV6M2Gbztq39LpANRZ8soN7Hsxra0XQN2quvjDJ0jamSbtemqCMUqAa/LPaQMe0n/LcyuWLj3J+978wYZmi9ft6F9WrEUotHjfLlrPGfgIOsSX+wBlTegG3rz/df3nMddgI1wgzL68A6jxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J8aZJDJv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5FC1C4CEE4;
+	Mon,  5 May 2025 22:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484968;
-	bh=yVGBpTjBCfvZxXBpqe0Kw6YV/IDInWxub7cJTiGyZsc=;
+	s=k20201202; t=1746484969;
+	bh=WjO+egmhL/vXMYc7GhB8oOhdYaKPrwDEGtWK5+ykUtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZDp6su/4ct4WCWsOjkgjeB0vbVGP2oDZrC8E+TQn8rmj/Mggo4nzmgEQ26tJ3Csh
-	 IHdz5x2phMpXvKRBe5cBjrlydor8XpUEFW3nmpT082WRouqfTJvqfXByW2XcC/mx/L
-	 RwX6zGU/A6rKpXAz7S/9h0Al+pDv9vg8mGhilhhfIU6hQjoxg2EWZtCfD6hBwoem4Z
-	 /U891HtTW5IJE+XhdDCd+oYdOHvVC1MVe3953ABQ5pWbQkNvwzsoUKh7dpR4AB28b4
-	 J/5On5OPEgPASAv4kWp/UOqSmfZ5E7s4tS47SGGe1myI+tss2aoMDfqydRHpIk2PPX
-	 6FudB8Isp8gQA==
+	b=J8aZJDJvu2DZQQt0JDgA7zN8kSJLwbkd+dSMcQBsEq3/QVF9lNiPqrzWv3iknBRT7
+	 iAeoeNIZVccs/B3D4h8zE+RKBMFZhXR6v14VmqOSu3Znnbqd5/XvI5rBqQnBa6mV+h
+	 TJL8uvq8ZZ79nmSfHRCorL2UYjloerUJJVpavVytbjTAmQbYhHnjaJqkaWrV5ZP6hB
+	 23uyA+VzPeruznH7Qbbw8K/ZiVznfi5GwSlDajmY8WSMQtw6elF3tIXICJcXPQH/u0
+	 ieAOW4/gjSPMzpthkqzt62lOvxV4DIr0712LMbbtNCbH47aU/hbqNjmuPCxtI4Lk4w
+	 JvT3Rrx+M/O6g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mykyta Yatsenko <yatsenko@meta.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 100/486] bpf: Return prog btf_id without capable check
-Date: Mon,  5 May 2025 18:32:56 -0400
-Message-Id: <20250505223922.2682012-100-sashal@kernel.org>
+	jingoohan1@gmail.com,
+	manivannan.sadhasivam@linaro.org,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 101/486] PCI: dwc: Use resource start as ioremap() input in dw_pcie_pme_turn_off()
+Date: Mon,  5 May 2025 18:32:57 -0400
+Message-Id: <20250505223922.2682012-101-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,45 +69,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Mykyta Yatsenko <yatsenko@meta.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 07651ccda9ff10a8ca427670cdd06ce2c8e4269c ]
+[ Upstream commit 8f4a489b370e6612700aa16b9e4373b2d85d7503 ]
 
-Return prog's btf_id from bpf_prog_get_info_by_fd regardless of capable
-check. This patch enables scenario, when freplace program, running
-from user namespace, requires to query target prog's btf.
+The msg_res region translates writes into PCIe Message TLPs. Previously we
+mapped this region using atu.cpu_addr, the input address programmed into
+the ATU.
 
-Signed-off-by: Mykyta Yatsenko <yatsenko@meta.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/bpf/20250317174039.161275-3-mykyta.yatsenko5@gmail.com
+"cpu_addr" is a misnomer because when a bus fabric translates addresses
+between the CPU and the ATU, the ATU input address is different from the
+CPU address.  A future patch will rename "cpu_addr" and correct the value
+to be the ATU input address instead of the CPU physical address.
+
+Map the msg_res region before writing to it using the msg_res resource
+start, a CPU physical address.
+
+Link: https://lore.kernel.org/r/20250315201548.858189-2-helgaas@kernel.org
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/syscall.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-host.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 977c084577565..fc048d3c0e69f 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -4606,6 +4606,8 @@ static int bpf_prog_get_info_by_fd(struct file *file,
- 	info.recursion_misses = stats.misses;
+diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+index 120e2aca5164a..d428457d9c432 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -902,7 +902,7 @@ static int dw_pcie_pme_turn_off(struct dw_pcie *pci)
+ 	if (ret)
+ 		return ret;
  
- 	info.verified_insns = prog->aux->verified_insns;
-+	if (prog->aux->btf)
-+		info.btf_id = btf_obj_id(prog->aux->btf);
+-	mem = ioremap(atu.cpu_addr, pci->region_align);
++	mem = ioremap(pci->pp.msg_res->start, pci->region_align);
+ 	if (!mem)
+ 		return -ENOMEM;
  
- 	if (!bpf_capable()) {
- 		info.jited_prog_len = 0;
-@@ -4752,8 +4754,6 @@ static int bpf_prog_get_info_by_fd(struct file *file,
- 		}
- 	}
- 
--	if (prog->aux->btf)
--		info.btf_id = btf_obj_id(prog->aux->btf);
- 	info.attach_btf_id = prog->aux->attach_btf_id;
- 	if (attach_btf)
- 		info.attach_btf_obj_id = btf_obj_id(attach_btf);
 -- 
 2.39.5
 
