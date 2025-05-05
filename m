@@ -1,119 +1,139 @@
-Return-Path: <stable+bounces-139733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16490AA9C35
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 21:05:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E37DAA9C4B
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 21:12:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2803C1A808C4
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 19:05:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 977743A3A5E
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 19:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E52264FB1;
-	Mon,  5 May 2025 19:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2595A26E142;
+	Mon,  5 May 2025 19:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="Xu+34Rkh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4317.protonmail.ch (mail-4317.protonmail.ch [185.70.43.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0456525C838;
-	Mon,  5 May 2025 19:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C280B26B95A
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 19:12:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746471938; cv=none; b=oiDibLew+PIIMcZ4trztzHOsY7zU2t6C/Bs16jY5ruzOR4/6pQB+C1+BnjzvgVDqWMKJejddnPunO8rf6mpnmaZyeGCSIuWkzCTgyTjMZA8qRjcBqBKiXvl+dy9wSZ6yQh2vzpqVi0qHltY+fEMQje4oRbunT7dx1yqOIjTyUOs=
+	t=1746472341; cv=none; b=WEX1CTAun6veediOfZFT2b9Xs/+JhiVAr0ii2C9327pMH79rox01FXYfvMPclFuGrHNYXBFds+H1uEn+hdSp9vYAcrkD5OwKytznwVBEtN4BeZPuoSjOPkAifD+erAJrhXvZBGqR+2K63UzS0I2+i4I+appehg0e/ytPEWiJXiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746471938; c=relaxed/simple;
-	bh=zLLFEBlol02oWM0LKpfVuL7nVrFwbxR9+q4EorbEX8g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PwuNzWySuEV5E4NaAVVdO8z3b7mIkPnvgH7bFbkrYSgVRzh/dYNSm7NNbGpHysXc/7y8F3lXDwV6nyTyPiDUNbNYKe/9/MdmmpMtb53V7RBUjKb6W6ZW/sPrY+4rqBfzcR5j58h05zqrEB32Cs4+HnAPwy/+elyyS6gJwO5lebo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C264C4CEE4;
-	Mon,  5 May 2025 19:05:34 +0000 (UTC)
-Date: Mon, 5 May 2025 20:05:31 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: will@kernel.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com,
-	morbo@google.com, justinstitt@google.com, broonie@kernel.org,
-	maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com,
-	shameerali.kolothum.thodi@huawei.com, james.morse@arm.com,
-	hardevsinh.palaniya@siliconsignals.io, ardb@kernel.org,
-	ryan.roberts@arm.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64/cpufeature: annotate arm64_use_ng_mappings with
- ro_after_init to prevent wrong idmap generation
-Message-ID: <aBkL-zUpbg7_gCEp@arm.com>
-References: <20250502180412.3774883-1-yeoreum.yun@arm.com>
- <174626735218.2189871.10298017577558632540.b4-ty@arm.com>
- <aBYkGJmfWDZHBEzp@arm.com>
- <aBZ7P3/dUfSjB0oV@e129823.arm.com>
+	s=arc-20240116; t=1746472341; c=relaxed/simple;
+	bh=/OPNapK5a9EqWjgAwkaREoBGWHHOUEuMwasVwSdqBq0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ofXgVxRpftssGmM3GUeJ8tS93BUJ/lTUp5pQI7RFdUlEmsnQIikvaDYMTd6cmkMkUrCnvdfj+oSIDnv4KfNRrUFPwJKM0obp/PL6LEtbRzz19Pnny+YaAg00CG8AheuTxhdd+Sdi6pZlliuR7iF7jVH6xADC5ry1tBpV6HzY65o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=Xu+34Rkh; arc=none smtp.client-ip=185.70.43.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
+	s=protonmail; t=1746472330; x=1746731530;
+	bh=4yUp66nZbz1hUGe3Po3KsCfVeHTtvoxO0pMNffShCFk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=Xu+34RkhVDBgw8Eo0sGeuOr2sQb3l6N6v3IgPD3z5RnYu27/pAUARqxnvy0e7Mh7w
+	 XB5/YaeYwp/Vxsq/awUrgIou89ID9nXfiPkB5XbAonAiTf6FAaMNIagH4TExNnaGdX
+	 T1gpWRlAsgpf9F16PTpQ6ytxrwG15S6VddW+55v+INyWt7k1gAvMOu69dGqNaf1L9a
+	 aWks3kZYD2GPFgFo/uHlW8Ai+ak+MGV9Y9U/+9A4KcbNAtYbbFJORKtLu+T5wHaWDv
+	 p/f60Yd8t+FwnxB2yjg/mxEIZskCLynqBAMMisqI87y2G95QrOC565EapOWO6fCGSh
+	 6m5HCrGNqBaVA==
+Date: Mon, 05 May 2025 19:12:06 +0000
+To: Jonathan Cameron <jic23@kernel.org>
+From: Sean Nyekjaer <sean@geanix.com>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, Andy Shevchenko <andy.shevchenko@gmail.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] iio: accel: fxls8962af: Fix temperature calculation
+Message-ID: <yvr7n54vmlzvzj3ro2fd5d6r2p6bkyynwmb374wifufixhnkl2@nmhzcge42d7m>
+In-Reply-To: <20250505175120.40076227@jic23-huawei>
+References: <20250505-fxls-v3-0-8c541bf0205c@geanix.com> <20250505-fxls-v3-1-8c541bf0205c@geanix.com> <20250505175120.40076227@jic23-huawei>
+Feedback-ID: 134068486:user:proton
+X-Pm-Message-ID: fee163ae75cc5880a1ca6f196d8c84df46f2b7bb
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBZ7P3/dUfSjB0oV@e129823.arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 03, 2025 at 09:23:27PM +0100, Yeoreum Yun wrote:
-> Hi Catalin,
-> 
-> > On Sat, May 03, 2025 at 11:16:12AM +0100, Catalin Marinas wrote:
-> > > On Fri, 02 May 2025 19:04:12 +0100, Yeoreum Yun wrote:
-> > > > create_init_idmap() could be called before .bss section initialization
-> > > > which is done in early_map_kernel().
-> > > > Therefore, data/test_prot could be set incorrectly by PTE_MAYBE_NG macro.
-> > > >
-> > > > PTE_MAYBE_NG macro set NG bit according to value of "arm64_use_ng_mappings".
-> > > > and this variable places in .bss section.
-> > > >
-> > > > [...]
-> > >
-> > > Applied to arm64 (for-next/fixes), with some slight tweaking of the
-> > > comment, thanks!
-> > >
-> > > [1/1] arm64/cpufeature: annotate arm64_use_ng_mappings with ro_after_init to prevent wrong idmap generation
-> > >       https://git.kernel.org/arm64/c/12657bcd1835
+On Mon, May 05, 2025 at 05:51:20PM +0100, Jonathan Cameron wrote:
+> On Mon, 05 May 2025 08:20:19 +0200
+> Sean Nyekjaer <sean@geanix.com> wrote:
+>=20
+> > According to spec temperature should be returned in milli degrees Celsi=
+us.
+> > Add in_temp_scale to calculate from Celsius to milli Celsius.
 > >
-> > I'm going to drop this for now. The kernel compiled with a clang 19.1.5
-> > version I have around (Debian sid) fails to boot, gets stuck early on:
+> > Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF=
+ accelerometers")
+> > Cc: stable@vger.kernel.org
+> > Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> See below.
+>=20
+> > ---
+> >  drivers/iio/accel/fxls8962af-core.c | 14 ++++++++++++--
+> >  1 file changed, 12 insertions(+), 2 deletions(-)
 > >
-> > $ clang --version
-> > Debian clang version 19.1.5 (1)
-> > Target: aarch64-unknown-linux-gnu
-> > Thread model: posix
-> > InstalledDir: /usr/lib/llvm-19/bin
+> > diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fx=
+ls8962af-core.c
+> > index bf1d3923a181798a1c884ee08b62d86ab5aed26f..27165a14a4802bdecd9a89c=
+38c6cda294088c5c8 100644
+> > --- a/drivers/iio/accel/fxls8962af-core.c
+> > +++ b/drivers/iio/accel/fxls8962af-core.c
+> > @@ -23,6 +23,7 @@
+> >  #include <linux/regulator/consumer.h>
+> >  #include <linux/regmap.h>
+> >  #include <linux/types.h>
+> > +#include <linux/units.h>
 > >
-> > I didn't have time to investigate, disassemble etc. I'll have a look
-> > next week.
-> 
-> Just for your information.
-> When I see the debian package, clang 19.1.5-1 doesn't supply anymore:
->  - https://ftp.debian.org/debian/pool/main/l/llvm-toolchain-19/
-> 
-> and the default version for sid is below:
-> 
-> $ clang-19 --version
-> Debian clang version 19.1.7 (3)
-> Target: aarch64-unknown-linux-gnu
-> Thread model: posix
-> InstalledDir: /usr/lib/llvm-19/bin
-> 
-> When I tested with above version with arm64-linux's for-next/fixes
-> including this patch. it works well.
+> >  #include <linux/iio/buffer.h>
+> >  #include <linux/iio/events.h>
+> > @@ -439,8 +440,16 @@ static int fxls8962af_read_raw(struct iio_dev *ind=
+io_dev,
+> >  =09=09*val =3D FXLS8962AF_TEMP_CENTER_VAL;
+> >  =09=09return IIO_VAL_INT;
+> >  =09case IIO_CHAN_INFO_SCALE:
+> > -=09=09*val =3D 0;
+> > -=09=09return fxls8962af_read_full_scale(data, val2);
+> > +=09=09switch (chan->type) {
+> > +=09=09case IIO_TEMP:
+> > +=09=09=09*val =3D 2 * MSEC_PER_SEC;
+>=20
+> For a temperature?   Andy was referring to that particular units.h
+> define for a the delay that happened to be below the code you were changi=
+ng
+> in v1 not this one!  Here we have MILLIDEGREE_PER_DEGREE defined.
+>=20
 
-It doesn't seem to be toolchain related. It fails with gcc as well from
-Debian stable but you'd need some older CPU (even if emulated, e.g.
-qemu). It fails with Cortex-A72 (guest on Raspberry Pi 4) but not
-Neoverse-N2. Also changing the annotation from __ro_after_init to
-__read_mostly also works.
+Oops, sorry :/ Will do a v4
 
-I haven't debugged it yet but I wonder whether something wants to write
-this variable after it was made read-only (well, I couldn't find any by
-grep'ing the code, so it needs some step-by-step debugging).
+> > +=09=09=09return IIO_VAL_INT;
+> > +=09=09case IIO_ACCEL:
+> > +=09=09=09*val =3D 0;
+> > +=09=09=09return fxls8962af_read_full_scale(data, val2);
+> > +=09=09default:
+> > +=09=09=09return -EINVAL;
+> > +=09=09}
+> >  =09case IIO_CHAN_INFO_SAMP_FREQ:
+> >  =09=09return fxls8962af_read_samp_freq(data, val, val2);
+> >  =09default:
+> > @@ -736,6 +745,7 @@ static const struct iio_event_spec fxls8962af_event=
+[] =3D {
+> >  =09.type =3D IIO_TEMP, \
+> >  =09.address =3D FXLS8962AF_TEMP_OUT, \
+> >  =09.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) | \
+> > +=09=09=09      BIT(IIO_CHAN_INFO_SCALE) | \
+> >  =09=09=09      BIT(IIO_CHAN_INFO_OFFSET),\
+> >  =09.scan_index =3D -1, \
+> >  =09.scan_type =3D { \
+> >
+>=20
 
--- 
-Catalin
 
