@@ -1,69 +1,60 @@
-Return-Path: <stable+bounces-140712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3184FAAAAB9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:43:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD0B6AAAAFF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D9A04C124A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:43:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2E2C3BB519
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56E12EE461;
-	Mon,  5 May 2025 23:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F93E2EE4A8;
+	Mon,  5 May 2025 23:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GkVgLrrM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HvvwB5tv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A1B38537D;
-	Mon,  5 May 2025 23:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD343867C5;
+	Mon,  5 May 2025 23:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486040; cv=none; b=moaso+6fq2+24BYJedHwItmFc9T5WAvkIOhsI8JyZ3b4+E/96/HfnHbKFbpc5Vn+IEwJPoowlYpoDsgk0G1D8KU9E6XqsXELwuzBdd+UmVZLFmJ3Lqcj1eeVF68/KsuDbC4vOoRPef/YH4F73XpAp3OYBfEfWTL7FaPKreB1oNU=
+	t=1746486041; cv=none; b=pSS1n0UcQUZ0ajOkTO4oOmTfKoj8rjP3VPv7++7p44STWItfviPgiunTWR4UQva03xCF5JHaCmdCkfxpAa+9W6Elfk2mjaCWljHPYEljha0ZRhCeM6oHgM2qZqw/hV7+fsEhxCzDm+zy2ARjI59occCuz5JJDD+f9gfMDxTq144=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486040; c=relaxed/simple;
-	bh=01wiidAuzlRto34qRYL0NeZB/wjip2m8n3PeBjRuZ54=;
+	s=arc-20240116; t=1746486041; c=relaxed/simple;
+	bh=WcgOYCt13//Gm6w2smiHXIK2M2CVcg9ou1RV1ABdh/k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Y8oO5WCIBEDEc5Y98zhwjYhvjg2pz3AtrSflNdGB9BUnIMPq/ZtDqZxtVwC5RUgJixScpBYsUuXlfBPYasR3CEQXzhJ53SBGv5bnwFveVkjKAV48Uc7D/OgKLnVnrwPR1OAqgBpXLgS7QsTLDujP1twuPs4szeGGUz9slXaLveA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GkVgLrrM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20751C4CEE4;
-	Mon,  5 May 2025 23:00:37 +0000 (UTC)
+	 MIME-Version; b=p97pH4DhAm2jOz4a7uyLMdOAJX/5cZggya8eYNX0+xF0hLHIaFSIR1xa9/kqCUa3+j/vq2kmaaTjZjc4FTMjj9Akhkef7AS9QbCcqXwByuRYUxOZpMxhthK2ZWZQyHpAKVerI0HtkjrDusEy9wzyRPSZo5PvNqXFElw0sN4vZ/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HvvwB5tv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18DA6C4CEED;
+	Mon,  5 May 2025 23:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486039;
-	bh=01wiidAuzlRto34qRYL0NeZB/wjip2m8n3PeBjRuZ54=;
+	s=k20201202; t=1746486041;
+	bh=WcgOYCt13//Gm6w2smiHXIK2M2CVcg9ou1RV1ABdh/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GkVgLrrMn5s0UVwznnM6ytH/8S3S2FJ6li+RHtC1Y0MTZoqg3kkBwrLOA6PVMTCbE
-	 SJIqrk12BKDt++cuExOzfBgobmif0Lsrb5kLMkWVwRdRGrj0kY4tVgq1pD8JNAtX/U
-	 KWG1SlcYtg4u0CaSlHXpLqaTLLKBGx8y9OrwrSnG27BabryC0srAKqfE7u8CZOwBXj
-	 5KeyjjlAfhHwVuf7cFk5wsIEcLYs6k7O1QStl/AkZBidTVBcJis1voVJ/+M1FDsKIc
-	 gUY+elEmg662bJsIQ+Z6F3Hy8adl5TBtfo7yUMD+VGuTdDWGHnZRnwwLrKTDcKVuxr
-	 NXuePmnwsQHHA==
+	b=HvvwB5tveUgcUu6S+zNYAVlXtlK3WHbK2uqYpmDvEwICEnkU0Ihz7Qg3tl1+SaHoh
+	 9cCj8u1LvF7SM5yuVmNQOZZrI+s8s1uJQVHHmJ9CZSJBFYgOLGRIlsngqmjOkQvSf5
+	 cB72M28SF2EXOgA1/+NXknEZ4MJ3tBSFnZtoq2ZIVB/PLq7nVc5iyCuz5bqQ2W4G+i
+	 ikazhtro9wHaJ3yJYLtr5etCQZN3vx+32Bmvi4sJC2UQq8iHeuj7WF/qFFmqOzCXUA
+	 Old525+mJZT+2JSVALO4EYvzfaJ7rWtVV9EDUqooEt9AYIwBoAIQKW4VUhGxG0rT5Y
+	 rRnJBvIVwcmyA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Peter Seiderer <ps.report@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
-	pabeni@redhat.com,
-	alexander.sverdlin@gmail.com,
-	u.kleine-koenig@baylibre.com,
-	aleksander.lobakin@intel.com,
-	lorenzo@kernel.org,
-	hkallweit1@gmail.com,
-	nicolas.dichtel@6wind.com,
-	linux-omap@vger.kernel.org,
+	kuba@kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 122/294] net: ethernet: ti: cpsw_new: populate netdev of_node
-Date: Mon,  5 May 2025 18:53:42 -0400
-Message-Id: <20250505225634.2688578-122-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 123/294] net: pktgen: fix mpls maximum labels list parsing
+Date: Mon,  5 May 2025 18:53:43 -0400
+Message-Id: <20250505225634.2688578-123-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -78,35 +69,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Peter Seiderer <ps.report@gmx.net>
 
-[ Upstream commit 7ff1c88fc89688c27f773ba956f65f0c11367269 ]
+[ Upstream commit 2b15a0693f70d1e8119743ee89edbfb1271b3ea8 ]
 
-So that of_find_net_device_by_node() can find CPSW ports and other DSA
-switches can be stacked downstream. Tested in conjunction with KSZ8873.
+Fix mpls maximum labels list parsing up to MAX_MPLS_LABELS entries (instead
+of up to MAX_MPLS_LABELS - 1).
 
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://patch.msgid.link/20250303074703.1758297-1-alexander.sverdlin@siemens.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Addresses the following:
+
+	$ echo "mpls 00000f00,00000f01,00000f02,00000f03,00000f04,00000f05,00000f06,00000f07,00000f08,00000f09,00000f0a,00000f0b,00000f0c,00000f0d,00000f0e,00000f0f" > /proc/net/pktgen/lo\@0
+	-bash: echo: write error: Argument list too long
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw_new.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/core/pktgen.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 9061dca97fcbf..1c1d4806c119b 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -1416,6 +1416,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
- 		ndev->netdev_ops = &cpsw_netdev_ops;
- 		ndev->ethtool_ops = &cpsw_ethtool_ops;
- 		SET_NETDEV_DEV(ndev, dev);
-+		ndev->dev.of_node = slave_data->slave_node;
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 359e24c3f22ca..1decd6300f34c 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -897,6 +897,10 @@ static ssize_t get_labels(const char __user *buffer, struct pktgen_dev *pkt_dev)
+ 	pkt_dev->nr_labels = 0;
+ 	do {
+ 		__u32 tmp;
++
++		if (n >= MAX_MPLS_LABELS)
++			return -E2BIG;
++
+ 		len = hex32_arg(&buffer[i], 8, &tmp);
+ 		if (len <= 0)
+ 			return len;
+@@ -908,8 +912,6 @@ static ssize_t get_labels(const char __user *buffer, struct pktgen_dev *pkt_dev)
+ 			return -EFAULT;
+ 		i++;
+ 		n++;
+-		if (n >= MAX_MPLS_LABELS)
+-			return -E2BIG;
+ 	} while (c == ',');
  
- 		if (!napi_ndev) {
- 			/* CPSW Host port CPDMA interface is shared between
+ 	pkt_dev->nr_labels = n;
 -- 
 2.39.5
 
