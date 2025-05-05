@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-140298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC87AAA73D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:28:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D73A0AAA73F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76E8E16EC96
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:27:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1E4E46209E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCF43351F6;
-	Mon,  5 May 2025 22:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D7E27CB0B;
+	Mon,  5 May 2025 22:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DuYj5twa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNwGdJ0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2D53351EC;
-	Mon,  5 May 2025 22:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D031E335213;
+	Mon,  5 May 2025 22:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484588; cv=none; b=PvBQyobmVkX0/y6LlEfHnlvTQONQe8xE79uxQatXYzpkuFOYQ367YBGLqKBpHAkvDPyqxOGr+CNtPycg/KujKaHbLrKapb5TcDrcPUhxnp78sUR6WtkjQaBi82VbX9CRZlkUjMT7AtkpiI6Aq5R6A394qywnmpNPuAWYLATwE0M=
+	t=1746484590; cv=none; b=UGsH7fLHGHhYc/icVhgtepVRV0p4RdkURLI3ZwaCMP1cKQzwQk6AAFOOV4z5akh0uPWIipBILvYS02vkN0hMVKMTMPXyucSOpoFRliZ+/z6yv/pecX0ejH7V7nrFuNVslOvudPID/Cf9M6m6Kz8cDatbinD/ftcEcS3DDN0A4Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484588; c=relaxed/simple;
-	bh=draOwFBFNcaHflDS1pe0L0aBvAHCvnEuSOQlYQwhciM=;
+	s=arc-20240116; t=1746484590; c=relaxed/simple;
+	bh=zmpFkEnZZLrrF49HUhfJohjoZOt4osMV05kEKXJ/pvM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rRXheogDXeCC0LeRs1qeDf/1IjlQcg8nODSHtBLe3czF3EZk1eX1zVcFHyODzXH3+MaTAYNdSG71iiM+r7mhms6u/3TGWZclC+nLAG3FM8D5zhiuSqwI6PIaC1tZa3pAYfrITGhNe9xUhh/HwEn/kt7/cOw62w8os0sv5BWcxkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DuYj5twa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66328C4CEE4;
-	Mon,  5 May 2025 22:36:26 +0000 (UTC)
+	 MIME-Version; b=Pa06KHILGmFFd/3r/uGz7/E/35PQ2x8Jj+p73ROCtjcS7fYVovPyGJVTMs6raW8mSKIkJ8K0/35XiieXsdqoWoj5mYFkEYPb/PJtlZrn2g8tcF6JGnFZ1h1PgtbiBEsLJFUN+wTQBBsdE+KHqKYgLh0Lbnzy+2HeNw+ZmqqZcZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNwGdJ0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E389C4CEE4;
+	Mon,  5 May 2025 22:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484588;
-	bh=draOwFBFNcaHflDS1pe0L0aBvAHCvnEuSOQlYQwhciM=;
+	s=k20201202; t=1746484590;
+	bh=zmpFkEnZZLrrF49HUhfJohjoZOt4osMV05kEKXJ/pvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DuYj5twaY3PlydW/IfIq+JHmScaG86jXKjplAn+q+1QtYKt1GNJEB9Pf3wOHQfccq
-	 eMOKzMf32h9ZGEZP4/BHvkqNnYJ4bNTZUkLlEtPJmlGgdrl53XBjAE9DOcVhFra2zv
-	 2orpserAH4TcZy3ksJ1Z6z7zQIlSYNlaSXb/5P9FyuSy8ZeqiUI//D6ouHFKO/BSRc
-	 z0OkjLC9GzH6TbYMnYx3NfN8eIE+HVBwXBfq4qhGpk+POGOTMtR6funTSIRpgwUC4p
-	 noH1ZvLfB9H0SQgvusaEb1ul7w7zfct6gs7cxaCwS/gW1cEj8xO0ae3DYEUMtc4ihR
-	 Haw7odDn9LHgQ==
+	b=aNwGdJ0KAPoSxinGpxaUhAVq7z75/cNcKQHEDRwzKgQ7TzDRso5TUnWg6ue0X4lP/
+	 72oWsxFfli6cAQdceFw5zLcDTNtyI2ISWSgJiLD7ypUeMV2pTj6bxFO3PrxLLbdy7I
+	 UkEVjhbVy5Ninf4+KCy+WwQ//P870u2BmOfyDVhgniuOSFar2coslNCPdkJXSAQxnj
+	 eH/icCrOGIpG0oP1AM9vlG+G5WBiYSEnmK3qkPibtY9y4zhSBzUbpT0i1cIEkZO3bG
+	 Ql8QRlx73Xw5VYXNTdXeao0gtfqHG4KHzN+OYLDGwNlCd9c8ZE3B2BPTtbwEPxGBCo
+	 0hDsY2vECYwkw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
+Cc: Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	davem@davemloft.net,
+	edumazet@google.com,
 	pabeni@redhat.com,
-	kuniyu@amazon.com,
-	sdf@fomichev.me,
-	ahmed.zaki@intel.com,
-	aleksander.lobakin@intel.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 550/642] net: flush_backlog() small changes
-Date: Mon,  5 May 2025 18:12:46 -0400
-Message-Id: <20250505221419.2672473-550-sashal@kernel.org>
+	shuah@kernel.org,
+	bridge@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 551/642] bridge: mdb: Allow replace of a host-joined group
+Date: Mon,  5 May 2025 18:12:47 -0400
+Message-Id: <20250505221419.2672473-551-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -72,73 +73,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit cbe08724c18078564abefbf6591078a7c98e5e0f ]
+[ Upstream commit d9e9f6d7b7d0c520bb87f19d2cbc57aeeb2091d5 ]
 
-Add READ_ONCE() around reads of skb->dev->reg_state, because
-this field can be changed from other threads/cpus.
+Attempts to replace an MDB group membership of the host itself are
+currently bounced:
 
-Instead of calling dev_kfree_skb_irq() and kfree_skb()
-while interrupts are masked and locks held,
-use a temporary list and use __skb_queue_purge_reason()
+ # ip link add name br up type bridge vlan_filtering 1
+ # bridge mdb replace dev br port br grp 239.0.0.1 vid 2
+ # bridge mdb replace dev br port br grp 239.0.0.1 vid 2
+ Error: bridge: Group is already joined by host.
 
-Use SKB_DROP_REASON_DEV_READY drop reason to better
-describe why these skbs are dropped.
+A similar operation done on a member port would succeed. Ignore the check
+for replacement of host group memberships as well.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Link: https://patch.msgid.link/20250204144825.316785-1-edumazet@google.com
+The bit of code that this enables is br_multicast_host_join(), which, for
+already-joined groups only refreshes the MC group expiration timer, which
+is desirable; and a userspace notification, also desirable.
+
+Change a selftest that exercises this code path from expecting a rejection
+to expecting a pass. The rest of MDB selftests pass without modification.
+
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/e5c5188b9787ae806609e7ca3aa2a0a501b9b5c4.1738685648.git.petrm@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/bridge/br_mdb.c                                  | 2 +-
+ tools/testing/selftests/net/forwarding/bridge_mdb.sh | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 2f7f5fd9ffec7..77306b522966c 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -6187,16 +6187,18 @@ EXPORT_SYMBOL(netif_receive_skb_list);
- static void flush_backlog(struct work_struct *work)
- {
- 	struct sk_buff *skb, *tmp;
-+	struct sk_buff_head list;
- 	struct softnet_data *sd;
+diff --git a/net/bridge/br_mdb.c b/net/bridge/br_mdb.c
+index 1a52a0bca086d..7e1ad229e1330 100644
+--- a/net/bridge/br_mdb.c
++++ b/net/bridge/br_mdb.c
+@@ -1040,7 +1040,7 @@ static int br_mdb_add_group(const struct br_mdb_config *cfg,
  
-+	__skb_queue_head_init(&list);
- 	local_bh_disable();
- 	sd = this_cpu_ptr(&softnet_data);
- 
- 	backlog_lock_irq_disable(sd);
- 	skb_queue_walk_safe(&sd->input_pkt_queue, skb, tmp) {
--		if (skb->dev->reg_state == NETREG_UNREGISTERING) {
-+		if (READ_ONCE(skb->dev->reg_state) == NETREG_UNREGISTERING) {
- 			__skb_unlink(skb, &sd->input_pkt_queue);
--			dev_kfree_skb_irq(skb);
-+			__skb_queue_tail(&list, skb);
- 			rps_input_queue_head_incr(sd);
+ 	/* host join */
+ 	if (!port) {
+-		if (mp->host_joined) {
++		if (mp->host_joined && !(cfg->nlflags & NLM_F_REPLACE)) {
+ 			NL_SET_ERR_MSG_MOD(extack, "Group is already joined by host");
+ 			return -EEXIST;
  		}
- 	}
-@@ -6204,14 +6206,16 @@ static void flush_backlog(struct work_struct *work)
+diff --git a/tools/testing/selftests/net/forwarding/bridge_mdb.sh b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
+index d9d587454d207..8c1597ebc2d38 100755
+--- a/tools/testing/selftests/net/forwarding/bridge_mdb.sh
++++ b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
+@@ -149,7 +149,7 @@ cfg_test_host_common()
+ 	check_err $? "Failed to add $name host entry"
  
- 	local_lock_nested_bh(&softnet_data.process_queue_bh_lock);
- 	skb_queue_walk_safe(&sd->process_queue, skb, tmp) {
--		if (skb->dev->reg_state == NETREG_UNREGISTERING) {
-+		if (READ_ONCE(skb->dev->reg_state) == NETREG_UNREGISTERING) {
- 			__skb_unlink(skb, &sd->process_queue);
--			kfree_skb(skb);
-+			__skb_queue_tail(&list, skb);
- 			rps_input_queue_head_incr(sd);
- 		}
- 	}
- 	local_unlock_nested_bh(&softnet_data.process_queue_bh_lock);
- 	local_bh_enable();
-+
-+	__skb_queue_purge_reason(&list, SKB_DROP_REASON_DEV_READY);
- }
+ 	bridge mdb replace dev br0 port br0 grp $grp $state vid 10 &> /dev/null
+-	check_fail $? "Managed to replace $name host entry"
++	check_err $? "Failed to replace $name host entry"
  
- static bool flush_required(int cpu)
+ 	bridge mdb del dev br0 port br0 grp $grp $state vid 10
+ 	bridge mdb get dev br0 grp $grp vid 10 &> /dev/null
 -- 
 2.39.5
 
