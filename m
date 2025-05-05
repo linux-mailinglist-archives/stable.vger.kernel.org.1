@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-141332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09940AAB6B3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:55:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28AD2AAB2A0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:25:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53D1B3A84AA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:50:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B107B1882CA3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A242436AAC7;
-	Tue,  6 May 2025 00:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C9237A28C;
+	Tue,  6 May 2025 00:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZgCBqDHj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rthgZiFp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C0C36BA42;
-	Mon,  5 May 2025 22:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DAF36BA45;
+	Mon,  5 May 2025 22:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485808; cv=none; b=QR128k8fBVFJ/Sw/eQijuA6Y5oJ+UMGm26oLPz/Wh8QXbl4b174xjnKWFJOaSSxnib0S4wNKMSFQ9K64kXUlc9IJZsppiW0XsxqB9/dRV6N93CrGaJtcj9/n/6Q2dle3ganwLn6WwoheS23UvZZ+m9JByVoiX9wEEEOQzd1Rn5k=
+	t=1746485808; cv=none; b=rS0+pxereMUe2AJ2xt0cjyxlwqxEmc8qk2jcFLhT2kpiC4y0sSwMjZ7wTc0pFRAHPNk9Fcf7Ez8lS9pPbzcyU5rL8/tuGdlqMjzWP0R8VE1AUspf60aRL3bz82z0n8D6FxhJHWCXSPS0WXqSZo9SVgS8UJcLTi513020+2AIixg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746485808; c=relaxed/simple;
-	bh=cKABOECVkQZc8B23Pyy6A+NwiYAjHonbFPjZlREQaPM=;
+	bh=jKbrhfN3cVBO9ZegR39O6gjyz0Xw+Su7GEF9S9yudCk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=efT8i+p+ImwqbKk6dc/hcxAWOyY4CnYpIqrOsQ9/NtLzZbdAcArnjWCeJLnKDEi88sndgbGiPOsnJqeStkRwjGeSB2XiHPyT00ch4w8UD0r9ug8+wL3sUdLp6EPkyasRIpIpxmOW8ciz9QBSUIHbGJrSzjpN07BEg/yux2/FzTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZgCBqDHj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B24C4CEED;
-	Mon,  5 May 2025 22:56:45 +0000 (UTC)
+	 MIME-Version; b=Up5HYOJ8wlg9+r2ZtTzxUJl//JTpXuSCsYQeiApgavAj5pUPuKNvdGzwXiYF2Fficg0Kl4aZvFrEys+ehzX0sypFV4PJnTFl5sNN1klZYBLT0FDB4Uh4kWaubkkdPSTQ1wDWcxe5iA50qsWRwVbZ9tk6McxAm90DOIcCNJccBHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rthgZiFp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED196C4CEF1;
+	Mon,  5 May 2025 22:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485806;
-	bh=cKABOECVkQZc8B23Pyy6A+NwiYAjHonbFPjZlREQaPM=;
+	s=k20201202; t=1746485807;
+	bh=jKbrhfN3cVBO9ZegR39O6gjyz0Xw+Su7GEF9S9yudCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZgCBqDHjRSiZUdxrigGVqoA19dWr3fZ0IDbYZ++g4gz9dO5g8Lf4hjkNHK2OXJ5Ni
-	 +Uy7tyzU3u6Haxqd8fOudIY0yu2or9N48bnhCnY9ZuWWvMCqFvf4poO+60qNRgvr9z
-	 JZvHKwNsFPhXJ4jFQGzOwvk0zFSYWZe3vTr/kkp021ykDtElEtE7zIovqCZwBv9ieO
-	 XDjjDS6/LvcsHBN4F8OrRKHAJCMddO/GSO0R/pHf90Y+guCER3AXxEaI7++Xs3MQAe
-	 34dUOYPs1gZYfqsLjeaIwVutxNm8caYSpGL4NnyTnEqzG//HqtCMCnMVzyYX/NehqH
-	 Re+QuUVfO8AzA==
+	b=rthgZiFp90DKL/MTErtGP7+TX8Owh+ASvJOcuoCGi2ZTs9DlMCOTL+BAMEA1gsNPt
+	 /Pj89LUqBuVPWZLu0lEtaWeDln72siAtlYWkKsB8GP2Lo2IlCOZT11QixxahDMDwH+
+	 TRq7erOTZpvpEF+qYiZ2vHrVMN3T/V3aqAyDSGqWRBhdyl16LXtk/fYNouAxlEMLeP
+	 e/RD1uM+syMvI1wniec1GpQT1/Js3O2/SqKi+fOVi2ls7pKaSQVOKt+2X8EE6Yki8y
+	 3C0n7tf9hWZRoC5U6JaWOTnBDoGH9XU5IhA5qZa/cAK4mzSvrNaunojymsW+u0tTns
+	 j7mIiUMBDZoZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Wang Zhaolong <wangzhaolong1@huawei.com>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Matt Johnston <matt@codeconstruct.com.au>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linkinjeon@kernel.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: [PATCH AUTOSEL 6.6 006/294] smb: client: Store original IO parameters and prevent zero IO sizes
-Date: Mon,  5 May 2025 18:51:46 -0400
-Message-Id: <20250505225634.2688578-6-sashal@kernel.org>
+	miklos@szeredi.hu,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 007/294] fuse: Return EPERM rather than ENOSYS from link()
+Date: Mon,  5 May 2025 18:51:47 -0400
+Message-Id: <20250505225634.2688578-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -68,209 +66,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Wang Zhaolong <wangzhaolong1@huawei.com>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit 287906b20035a04a234d1a3c64f760a5678387be ]
+[ Upstream commit 8344213571b2ac8caf013cfd3b37bc3467c3a893 ]
 
-During mount option processing and negotiation with the server, the
-original user-specified rsize/wsize values were being modified directly.
-This makes it impossible to recover these values after a connection
-reset, leading to potential degraded performance after reconnection.
+link() is documented to return EPERM when a filesystem doesn't support
+the operation, return that instead.
 
-The other problem is that When negotiating read and write sizes, there are
-cases where the negotiated values might calculate to zero, especially
-during reconnection when server->max_read or server->max_write might be
-reset. In general, these values come from the negotiation response.
-According to MS-SMB2 specification, these values should be at least 65536
-bytes.
-
-This patch improves IO parameter handling:
-
-1. Adds vol_rsize and vol_wsize fields to store the original user-specified
-   values separately from the negotiated values
-2. Uses got_rsize/got_wsize flags to determine if values were
-   user-specified rather than checking for non-zero values, which is more
-   reliable
-3. Adds a prevent_zero_iosize() helper function to ensure IO sizes are
-   never negotiated down to zero, which could happen in edge cases like
-   when server->max_read/write is zero
-
-The changes make the CIFS client more resilient to unusual server
-responses and reconnection scenarios, preventing potential failures
-when IO sizes are calculated to be zero.
-
-Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://github.com/libfuse/libfuse/issues/925
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c |  2 ++
- fs/smb/client/fs_context.h |  3 +++
- fs/smb/client/smb1ops.c    |  6 +++---
- fs/smb/client/smb2ops.c    | 27 +++++++++++++++++++--------
- fs/smb/common/smb2pdu.h    |  3 +++
- 5 files changed, 30 insertions(+), 11 deletions(-)
+ fs/fuse/dir.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index d2e291ef104ec..137d03781d526 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1249,6 +1249,7 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 	case Opt_rsize:
- 		ctx->rsize = result.uint_32;
- 		ctx->got_rsize = true;
-+		ctx->vol_rsize = ctx->rsize;
- 		break;
- 	case Opt_wsize:
- 		ctx->wsize = result.uint_32;
-@@ -1264,6 +1265,7 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 					 ctx->wsize, PAGE_SIZE);
- 			}
- 		}
-+		ctx->vol_wsize = ctx->wsize;
- 		break;
- 	case Opt_acregmax:
- 		if (result.uint_32 > CIFS_MAX_ACTIMEO / HZ) {
-diff --git a/fs/smb/client/fs_context.h b/fs/smb/client/fs_context.h
-index bbd2063ab838d..d0a2043ea4468 100644
---- a/fs/smb/client/fs_context.h
-+++ b/fs/smb/client/fs_context.h
-@@ -253,6 +253,9 @@ struct smb3_fs_context {
- 	bool use_client_guid:1;
- 	/* reuse existing guid for multichannel */
- 	u8 client_guid[SMB2_CLIENT_GUID_SIZE];
-+	/* User-specified original r/wsize value */
-+	unsigned int vol_rsize;
-+	unsigned int vol_wsize;
- 	unsigned int bsize;
- 	unsigned int rasize;
- 	unsigned int rsize;
-diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
-index 280885dd6bf08..0ba0f680205c1 100644
---- a/fs/smb/client/smb1ops.c
-+++ b/fs/smb/client/smb1ops.c
-@@ -437,8 +437,8 @@ cifs_negotiate_wsize(struct cifs_tcon *tcon, struct smb3_fs_context *ctx)
- 	unsigned int wsize;
+diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+index e4d6cc0d2332a..82951a535d2d4 100644
+--- a/fs/fuse/dir.c
++++ b/fs/fuse/dir.c
+@@ -1121,6 +1121,8 @@ static int fuse_link(struct dentry *entry, struct inode *newdir,
+ 	else if (err == -EINTR)
+ 		fuse_invalidate_attr(inode);
  
- 	/* start with specified wsize, or default */
--	if (ctx->wsize)
--		wsize = ctx->wsize;
-+	if (ctx->got_wsize)
-+		wsize = ctx->vol_wsize;
- 	else if (tcon->unix_ext && (unix_cap & CIFS_UNIX_LARGE_WRITE_CAP))
- 		wsize = CIFS_DEFAULT_IOSIZE;
- 	else
-@@ -490,7 +490,7 @@ cifs_negotiate_rsize(struct cifs_tcon *tcon, struct smb3_fs_context *ctx)
- 	else
- 		defsize = server->maxBuf - sizeof(READ_RSP);
- 
--	rsize = ctx->rsize ? ctx->rsize : defsize;
-+	rsize = ctx->got_rsize ? ctx->vol_rsize : defsize;
- 
- 	/*
- 	 * no CAP_LARGE_READ_X? Then MS-CIFS states that we must limit this to
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index cead96454bb3d..4e3eacbec96d1 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -431,6 +431,17 @@ smb2_negotiate(const unsigned int xid,
- 	return rc;
++	if (err == -ENOSYS)
++		err = -EPERM;
+ 	return err;
  }
  
-+static inline unsigned int
-+prevent_zero_iosize(unsigned int size, const char *type)
-+{
-+	if (size == 0) {
-+		cifs_dbg(VFS, "SMB: Zero %ssize calculated, using minimum value %u\n",
-+			 type, CIFS_MIN_DEFAULT_IOSIZE);
-+		return CIFS_MIN_DEFAULT_IOSIZE;
-+	}
-+	return size;
-+}
-+
- static unsigned int
- smb2_negotiate_wsize(struct cifs_tcon *tcon, struct smb3_fs_context *ctx)
- {
-@@ -438,12 +449,12 @@ smb2_negotiate_wsize(struct cifs_tcon *tcon, struct smb3_fs_context *ctx)
- 	unsigned int wsize;
- 
- 	/* start with specified wsize, or default */
--	wsize = ctx->wsize ? ctx->wsize : CIFS_DEFAULT_IOSIZE;
-+	wsize = ctx->got_wsize ? ctx->vol_wsize : CIFS_DEFAULT_IOSIZE;
- 	wsize = min_t(unsigned int, wsize, server->max_write);
- 	if (!(server->capabilities & SMB2_GLOBAL_CAP_LARGE_MTU))
- 		wsize = min_t(unsigned int, wsize, SMB2_MAX_BUFFER_SIZE);
- 
--	return wsize;
-+	return prevent_zero_iosize(wsize, "w");
- }
- 
- static unsigned int
-@@ -453,7 +464,7 @@ smb3_negotiate_wsize(struct cifs_tcon *tcon, struct smb3_fs_context *ctx)
- 	unsigned int wsize;
- 
- 	/* start with specified wsize, or default */
--	wsize = ctx->wsize ? ctx->wsize : SMB3_DEFAULT_IOSIZE;
-+	wsize = ctx->got_wsize ? ctx->vol_wsize : SMB3_DEFAULT_IOSIZE;
- 	wsize = min_t(unsigned int, wsize, server->max_write);
- #ifdef CONFIG_CIFS_SMB_DIRECT
- 	if (server->rdma) {
-@@ -475,7 +486,7 @@ smb3_negotiate_wsize(struct cifs_tcon *tcon, struct smb3_fs_context *ctx)
- 	if (!(server->capabilities & SMB2_GLOBAL_CAP_LARGE_MTU))
- 		wsize = min_t(unsigned int, wsize, SMB2_MAX_BUFFER_SIZE);
- 
--	return wsize;
-+	return prevent_zero_iosize(wsize, "w");
- }
- 
- static unsigned int
-@@ -485,13 +496,13 @@ smb2_negotiate_rsize(struct cifs_tcon *tcon, struct smb3_fs_context *ctx)
- 	unsigned int rsize;
- 
- 	/* start with specified rsize, or default */
--	rsize = ctx->rsize ? ctx->rsize : CIFS_DEFAULT_IOSIZE;
-+	rsize = ctx->got_rsize ? ctx->vol_rsize : CIFS_DEFAULT_IOSIZE;
- 	rsize = min_t(unsigned int, rsize, server->max_read);
- 
- 	if (!(server->capabilities & SMB2_GLOBAL_CAP_LARGE_MTU))
- 		rsize = min_t(unsigned int, rsize, SMB2_MAX_BUFFER_SIZE);
- 
--	return rsize;
-+	return prevent_zero_iosize(rsize, "r");
- }
- 
- static unsigned int
-@@ -501,7 +512,7 @@ smb3_negotiate_rsize(struct cifs_tcon *tcon, struct smb3_fs_context *ctx)
- 	unsigned int rsize;
- 
- 	/* start with specified rsize, or default */
--	rsize = ctx->rsize ? ctx->rsize : SMB3_DEFAULT_IOSIZE;
-+	rsize = ctx->got_rsize ? ctx->vol_rsize : SMB3_DEFAULT_IOSIZE;
- 	rsize = min_t(unsigned int, rsize, server->max_read);
- #ifdef CONFIG_CIFS_SMB_DIRECT
- 	if (server->rdma) {
-@@ -524,7 +535,7 @@ smb3_negotiate_rsize(struct cifs_tcon *tcon, struct smb3_fs_context *ctx)
- 	if (!(server->capabilities & SMB2_GLOBAL_CAP_LARGE_MTU))
- 		rsize = min_t(unsigned int, rsize, SMB2_MAX_BUFFER_SIZE);
- 
--	return rsize;
-+	return prevent_zero_iosize(rsize, "r");
- }
- 
- /*
-diff --git a/fs/smb/common/smb2pdu.h b/fs/smb/common/smb2pdu.h
-index c3ee42188d252..1af827ae757e0 100644
---- a/fs/smb/common/smb2pdu.h
-+++ b/fs/smb/common/smb2pdu.h
-@@ -95,6 +95,9 @@
-  */
- #define SMB3_DEFAULT_IOSIZE (4 * 1024 * 1024)
- 
-+/* According to MS-SMB2 specification The minimum recommended value is 65536.*/
-+#define CIFS_MIN_DEFAULT_IOSIZE (65536)
-+
- /*
-  * SMB2 Header Definition
-  *
 -- 
 2.39.5
 
