@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-140491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14771AAA94F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:12:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215ABAAA951
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:12:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A3E818869DA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:10:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84BD318910DE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87E435EB8A;
-	Mon,  5 May 2025 22:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B54635EB9D;
+	Mon,  5 May 2025 22:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5HHMrOB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kj9B0dyj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01457359DF2;
-	Mon,  5 May 2025 22:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1860B359DFA;
+	Mon,  5 May 2025 22:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484974; cv=none; b=FZPspryuThpRQvwqjP4RqNxWCbBkh7AhqC+JpzEa3WzQe+2jQxciIeNQhYwNXDNN73mdeQYZThVGRLgj4E4/w5lXv+cBFnjgJE9bs4sfHJEKr5DtxylV8ZAwkORA0JsvSjqWKch7igwpeyvLFe2x3BqhTeTDH64bVJafJDnxDBQ=
+	t=1746484975; cv=none; b=pZVRgjj1dKk2O1RLgUnZ+47jbVI1wMPcYXFdSXa5KGljH3+PZ/0KhTC43V7zG+y0jgOzmbw1J9/c83bquvNxFnKWGVI9P6F+rwCEHw+aFPcXfI03hmFvH912HCJivKIhz+KzSZp+QZDpB7fnG8fs7qZAcDmZreN82zKFZ/zVDDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484974; c=relaxed/simple;
-	bh=+lQY26jWCWM43qhyyyBfmt9srxMrAHoP688AWa3PYjA=;
+	s=arc-20240116; t=1746484975; c=relaxed/simple;
+	bh=nXFaesna7g7CfcsSIMm/jlr/29aNgCxe7xIdn/aj5Bg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WX2oFYdbeLyDCzHBugxOBzfDmGLfdmQi5QbqdenZdMURUKzA90XN1Wa+F6x79v461akJ3RljEZgQi7PDGgvXDbZmgp5X0K5kCdPeKyXFyy5td+i2nQ81SzMDLeQTpOdSxXkUK8VDQ/7tU9p4d+naRAplCykkPrJimFaFodHrspI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5HHMrOB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34609C4CEEF;
-	Mon,  5 May 2025 22:42:53 +0000 (UTC)
+	 MIME-Version; b=kuJHmZmFmvg49HFBXKOuy0gAk/29H4tPjdDBDreDdc27FSdEfSZ5o9mb3iTTYeyWTiAFZc8smkdrtKzOcgoIdjgHb/ZfWlnfK3ZE8cGIWVpO2xQT6yvZ/xnbG4ErN9Y/F/kfydpVgZg0XCdQJQsnPdY+nph0+RY9OvNYm7jWHqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kj9B0dyj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CAACC4CEEE;
+	Mon,  5 May 2025 22:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484973;
-	bh=+lQY26jWCWM43qhyyyBfmt9srxMrAHoP688AWa3PYjA=;
+	s=k20201202; t=1746484975;
+	bh=nXFaesna7g7CfcsSIMm/jlr/29aNgCxe7xIdn/aj5Bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h5HHMrOBG5muytqkjIvGQWTcPmmfxKr9iZFgG93WM/J9moEMpPEcINefKQMny8jMc
-	 +pJ4oHFPiS7lc1wBXdFCbW7HkBb5/u+LpuCHaUO9HVNGVErmuvlIhW0v8o/QaL9eIk
-	 vPF/yvdPOvipM5zuvleSxVele48B+KXZRA2flxqY6vMpCKbbBbT1NAa37F7y9B4hfF
-	 yZFT//cwkmpQtSJtahfv4pwfyh0kz8WNRSxs2dgAjEeG3n/PL2f0fQRbA65m/+Teer
-	 siV5V2odqii7vNN+YGv+Iwt1TqyHxzz989jUrD7PrkOvc8BpY1RVJbqA5OTrNiJCYz
-	 SG5pk9/g9RSbQ==
+	b=kj9B0dyjNUDg+frnXmEZDzydOOXGq3K2Z4d1jEwq+qdE7AK0gZ9rh7+0X+FtCEDKs
+	 cez1O82wiRS6kBAX5fosYJoM0BXEUuOX/YVPY70v+TnYSkSaKP/+TjB5Uq9C86FVWb
+	 hHtG6z2umzNhgyY/s8VdUwMZCZUDxd3246R1KozNSJheMVHQj6yN3Y9lXQTsz3J8/k
+	 LF4FB4CVlmSc+HDEgqOvW1ziE9uZXFP2lx5MwiOB5l0ZBEEB9Lvz0SB8b8ZF6VlPRB
+	 2fOj1tp8RKVI/mX6V+bu5dxUOhKW0V+DsLUQzmue26SDtA16rPc8qKPuLxaJmyj2aq
+	 rAgoT8OAYvxYA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-rtc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 104/486] rtc: rv3032: fix EERD location
-Date: Mon,  5 May 2025 18:33:00 -0400
-Message-Id: <20250505223922.2682012-104-sashal@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 105/486] objtool: Fix error handling inconsistencies in check()
+Date: Mon,  5 May 2025 18:33:01 -0400
+Message-Id: <20250505223922.2682012-105-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -64,32 +65,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit b0f9cb4a0706b0356e84d67e48500b77b343debe ]
+[ Upstream commit b745962cb97569aad026806bb0740663cf813147 ]
 
-EERD is bit 2 in CTRL1
+Make sure all fatal errors are funneled through the 'out' label with a
+negative ret.
 
-Link: https://lore.kernel.org/r/20250306214243.1167692-1-alexandre.belloni@bootlin.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Brendan Jackman <jackmanb@google.com>
+Link: https://lore.kernel.org/r/0f49d6a27a080b4012e84e6df1e23097f44cc082.1741975349.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-rv3032.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/objtool/check.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/rtc/rtc-rv3032.c b/drivers/rtc/rtc-rv3032.c
-index 35b2e36b426a0..cb01038a2e27f 100644
---- a/drivers/rtc/rtc-rv3032.c
-+++ b/drivers/rtc/rtc-rv3032.c
-@@ -69,7 +69,7 @@
- #define RV3032_CLKOUT2_FD_MSK		GENMASK(6, 5)
- #define RV3032_CLKOUT2_OS		BIT(7)
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 175f8adb1b76d..ad4ecc8b3479c 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -4757,8 +4757,10 @@ int check(struct objtool_file *file)
+ 	init_cfi_state(&force_undefined_cfi);
+ 	force_undefined_cfi.force_undefined = true;
  
--#define RV3032_CTRL1_EERD		BIT(3)
-+#define RV3032_CTRL1_EERD		BIT(2)
- #define RV3032_CTRL1_WADA		BIT(5)
+-	if (!cfi_hash_alloc(1UL << (file->elf->symbol_bits - 3)))
++	if (!cfi_hash_alloc(1UL << (file->elf->symbol_bits - 3))) {
++		ret = -1;
+ 		goto out;
++	}
  
- #define RV3032_CTRL2_STOP		BIT(0)
+ 	cfi_hash_add(&init_cfi);
+ 	cfi_hash_add(&func_cfi);
+@@ -4775,7 +4777,7 @@ int check(struct objtool_file *file)
+ 	if (opts.retpoline) {
+ 		ret = validate_retpoline(file);
+ 		if (ret < 0)
+-			return ret;
++			goto out;
+ 		warnings += ret;
+ 	}
+ 
+@@ -4811,7 +4813,7 @@ int check(struct objtool_file *file)
+ 		 */
+ 		ret = validate_unrets(file);
+ 		if (ret < 0)
+-			return ret;
++			goto out;
+ 		warnings += ret;
+ 	}
+ 
+@@ -4874,7 +4876,7 @@ int check(struct objtool_file *file)
+ 	if (opts.prefix) {
+ 		ret = add_prefix_symbols(file);
+ 		if (ret < 0)
+-			return ret;
++			goto out;
+ 		warnings += ret;
+ 	}
+ 
 -- 
 2.39.5
 
