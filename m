@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-141676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E8CAAB582
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:31:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D236AAB56D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:29:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 957251C21434
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:26:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6C5C7B2A0C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE1849F054;
-	Tue,  6 May 2025 00:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D8B49F072;
+	Tue,  6 May 2025 00:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i8MWo3gH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VKDb4bVN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F303ABCFD;
-	Mon,  5 May 2025 23:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1B53AC584;
+	Mon,  5 May 2025 23:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487136; cv=none; b=I3Pqe8NkOZ6RgG1hNSzrAvhaEUquFqA64XO0Yh78ppjuC5jfMPGu4WRIXJhtIix1kyjV5ltoBjYPEIQsSYrjIcNn38ueDebUlNy2atHMFqqId1cdsliHk4NknPY9xUiPVQfbo7z24cT6EpMWPCYoHxPGrSi+0rORyMHd0VRpxIg=
+	t=1746487141; cv=none; b=symlnPCR/zZc8/w7bFS0IU3LkUaNg7KvrU0yrxzfWhJSSmfsrOi22H2zwg0medIBoXNIVmi/6S6ojtDQBUKO9a0HA/lXkseWOSvWRpqcIKl00wHF8QhYcSQtNM7IG/5qVd9C4sbubPOIkHhHnQyJCwK5a8Nd0YqntpF8TlA3DQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487136; c=relaxed/simple;
-	bh=2pjdD08KhMw6FeRr9Qku1Tz+bsPUVl0cVg+Ep97vitY=;
+	s=arc-20240116; t=1746487141; c=relaxed/simple;
+	bh=B4/AFmH4EzCm+/gzXspUOA/ZQOae4G4h8zpgvZNFaUI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iejWh3j6cUASAHwdumWQz9er79KE8OscQDIcjcL1S1CQaQy4yoYVbIQ0jEUrELxYyqfLdTpWtL8ZCu9UJu447RCcu6D4iyUt8Sz9icOwsvIKwwDsIy0VTPn3gzcM7nUEtwrLaM0Lx3kcaJzlzWCBllp29AiAKL1k/bEncNdzPJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i8MWo3gH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF5BC4CEED;
-	Mon,  5 May 2025 23:18:55 +0000 (UTC)
+	 MIME-Version; b=KuuK9QKShiQlJZyPgzEnE9xI7ufRcagRHON5xIbA8JhWoS5J0R2+wLLk51r4Wh5FeBQeWTn1L/hZl+8hfMmjPzDVE/QA5ZPd+dmlL63FsHDCHJs55Dusu+QPn1f1DSvwT4CGdPG7VLfQiW/ps8NXZP1chPLQ/FvFig9xkpZ6sYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VKDb4bVN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F8FC4CEE4;
+	Mon,  5 May 2025 23:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487136;
-	bh=2pjdD08KhMw6FeRr9Qku1Tz+bsPUVl0cVg+Ep97vitY=;
+	s=k20201202; t=1746487140;
+	bh=B4/AFmH4EzCm+/gzXspUOA/ZQOae4G4h8zpgvZNFaUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i8MWo3gHGCzq+SaZQztvyEIeLk8RWPYGZpGpnTe8SD6lp/qVs24QzWF57LZhBnVf3
-	 nx7q2AjFdvfUP+C+7kfNkxXFhkTAcUTcI/15QRGtXHyDVXlTmPiWDNsfgxolMCteL5
-	 pjavyjGL0Qs+Tj0isUq+TJrfS1I3eh0hX5lKkZWckgt2es3h4AEQGA7WLsTcRy8W+Y
-	 U+gF/FmynT+zSjlzJdOBvVhPZ8CXbyRcLual4FtHZwvnpM6l2wUewH8INnrqENRjZx
-	 9gliYpYXR2/1as0kwuz3h1Q2CqZk2OtOlC5VxgNfb2VuDkBi/OoTv0oYQZ9AqM57Db
-	 GGZEmQDpcXr0w==
+	b=VKDb4bVNN79c0miYr+Zo1oQkCjTrVqi7m17qNVzpm0HuYrYtb9RRc8vnB3bet7r6E
+	 IO3g8l2nOqXdSU7fnD7Eu9AcdBGcA6KAkKVt1z4ZvaZjFciwmsfwlxhtAEtFQTWHpC
+	 iT2MDvJ/zV8lIIwJEtLc87LZw3CdoyOnr/HV1ch45O1r8KaCtTewMcNW98+V8oIlNt
+	 hr+bzUV6bxhAyHnFhf+IcI5TU60NPnvUftUZxy30OgYkw1jllXBViMy9YO2RIV+EuS
+	 cQNBeMugC/ZjcU6FDidiRG3xTHkHYLF8FPFnqQqePcU0FbJzQ3kMv3ja4NihWCyVxQ
+	 sd7dWhdD5dRiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vitalii Mordan <mordan@ispras.ru>,
-	Andi Shyti <andi.shyti@kernel.org>,
+Cc: Nick Hu <nick.hu@sifive.com>,
+	Anup Patel <anup@brainfault.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-i2c@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 018/114] i2c: pxa: fix call balance of i2c->clk handling routines
-Date: Mon,  5 May 2025 19:16:41 -0400
-Message-Id: <20250505231817.2697367-18-sashal@kernel.org>
+	tglx@linutronix.de,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.10 021/114] clocksource/drivers/timer-riscv: Stop stimecmp when cpu hotplug
+Date: Mon,  5 May 2025 19:16:44 -0400
+Message-Id: <20250505231817.2697367-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -65,39 +71,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Nick Hu <nick.hu@sifive.com>
 
-[ Upstream commit be7113d2e2a6f20cbee99c98d261a1fd6fd7b549 ]
+[ Upstream commit 70c93b026ed07078e933583591aa9ca6701cd9da ]
 
-If the clock i2c->clk was not enabled in i2c_pxa_probe(), it should not be
-disabled in any path.
+Stop the timer when the cpu is going to be offline otherwise the
+timer interrupt may be pending while performing power-down.
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
-
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250212172803.1422136-1-mordan@ispras.ru
+Suggested-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/lkml/20240829033904.477200-3-nick.hu@sifive.com/T/#u
+Signed-off-by: Nick Hu <nick.hu@sifive.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20250219114135.27764-3-nick.hu@sifive.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-pxa.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-riscv.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
-index 35ca2c02c9b9b..7fdc7f213b114 100644
---- a/drivers/i2c/busses/i2c-pxa.c
-+++ b/drivers/i2c/busses/i2c-pxa.c
-@@ -1508,7 +1508,10 @@ static int i2c_pxa_probe(struct platform_device *dev)
- 				i2c->adap.name);
- 	}
+diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
+index c51c5ed15aa75..427c92dd048c4 100644
+--- a/drivers/clocksource/timer-riscv.c
++++ b/drivers/clocksource/timer-riscv.c
+@@ -75,7 +75,13 @@ static int riscv_timer_starting_cpu(unsigned int cpu)
  
--	clk_prepare_enable(i2c->clk);
-+	ret = clk_prepare_enable(i2c->clk);
-+	if (ret)
-+		return dev_err_probe(&dev->dev, ret,
-+				     "failed to enable clock\n");
+ static int riscv_timer_dying_cpu(unsigned int cpu)
+ {
++	/*
++	 * Stop the timer when the cpu is going to be offline otherwise
++	 * the timer interrupt may be pending while performing power-down.
++	 */
++	riscv_clock_event_stop();
+ 	disable_percpu_irq(riscv_clock_event_irq);
++
+ 	return 0;
+ }
  
- 	if (i2c->use_pio) {
- 		i2c->adap.algo = &i2c_pxa_pio_algorithm;
 -- 
 2.39.5
 
