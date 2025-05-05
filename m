@@ -1,68 +1,58 @@
-Return-Path: <stable+bounces-140794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B78AAAB8A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:57:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4DB2AAAB9B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF4D3188DA26
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:54:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33A015A097D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4C73AF3F5;
-	Mon,  5 May 2025 23:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1F23AF403;
+	Mon,  5 May 2025 23:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MhqoXajX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qxcQJDkB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54BD220F2F;
-	Mon,  5 May 2025 23:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553F7220F3E;
+	Mon,  5 May 2025 23:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486279; cv=none; b=El060thhoNCd8UgT6CM8z9J1UrjpXS1ZW3UFS+1Qt9KZkC0XraqXCoWYWA6qHfmmwYX6Iv7EQs3hocf9miL1b70CRL6DETL+rMWugkV7JaBPG9J6OJ7K0Keo0ln2E+xuRLLmpgdjlRC+5yyaZVh42rFudDtdLcPRmZ+BlKOx+o0=
+	t=1746486282; cv=none; b=YTdfsHuDWGAW4qVOdUksSCSHzMuTaeKbeaUiD5juAXE6Lq1XT/CXkywVnxCLXZHv3TLB0SyBTP3bQZrKxx6rfJAu2E1PBDVpuJQAkk8BkXvXvJIFW6QkmVS1kRzNdvGNlH60WTWKTWBwHC5TUSEaRtBkAM/APun/XmXt/3E0iK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486279; c=relaxed/simple;
-	bh=+bflkCaRV6hCYkujcfKwjSzQLMTf+YrvxtQ0H0gwMEI=;
+	s=arc-20240116; t=1746486282; c=relaxed/simple;
+	bh=dUhZDr7JpjGKYrdAPTRe8rGmpcgXB1dXpGUNDT0HF8M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pvI0j7Vi8RcIB2WJvW6GTdWN6FqivIlvxgPVQQvi5YwVB0Xp05bQhJH+DY7G8yKIZtKhKKQeX9qtWxmzOp5fuxCDKHqJgDZHyXYlKmKq4LeDVcrnBF1/MqGR+fAbeYZId4Pm1Fp1oCMopnp1hxUqtWaH9wkCgMnYexBfEoyZYpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MhqoXajX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9B9C4CEE4;
-	Mon,  5 May 2025 23:04:35 +0000 (UTC)
+	 MIME-Version; b=JeMBgJwkiIe2hwIGuorVg6GgDkGAJRM0uvURG6bG6vkmx4jm34mzNEZjzh03W3f/TT96GVoDOa8oYz9r8dX2AGjGMlXKN0kxkMp+eef3cO8PDrVrqN0zHmzOlYGEzqYM05lmEhqPKHwFX5wGxGYnvzgp5DcqN+r2D8rFgwvUQ1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qxcQJDkB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6C0C4CEEE;
+	Mon,  5 May 2025 23:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486277;
-	bh=+bflkCaRV6hCYkujcfKwjSzQLMTf+YrvxtQ0H0gwMEI=;
+	s=k20201202; t=1746486280;
+	bh=dUhZDr7JpjGKYrdAPTRe8rGmpcgXB1dXpGUNDT0HF8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MhqoXajXQcJgMne/5bT0o8CM8IhK2JcDbaApbsFlKpL+qz7rkOYx6lG0cyBHXm80o
-	 GSmJMt59cf56cxr7LEQCQle+/IqqLqfQ3aPdVwyutNHxsgV6G+Ad/kOuIJ1sm5xyB2
-	 867980QEGXPBcldgy6b/YaTvRh0oJMN6Co2nNbXFJnjFElTysyGsT5JkNwi01b10gi
-	 xGcB0Nt/A7M++8ue4pQ2nlHU1s9mHKCx/d7OUvoG/InBWS6aVCoMXeOjk4vDxMk123
-	 kedypSvlAUPFWGIkE3vOhkHFDlDlCrcUSBYkZAWGZvnYaZZRDQ0wrrGycIeHEXUpyA
-	 RnLbEOjh/dHIg==
+	b=qxcQJDkBwOYGrOu4sM5RfV19UBA3nMwsj5t40S9zklEHKXSFUKVjB8LvJik+YAIYT
+	 AlB5tK+D5VuYSiQ6YjMOlsFtEnyPb+opHlKW2N5mLVlFDbxlhH75HZBhmTiPqXEe14
+	 nWiTkjDbLL8Ssc1FcHgPt/6P643o5gehYxPiYDDCElg9HXDAj7abjOr9n2YWyNgeqh
+	 9vJFqogQthHPfVYoiPibqqYYFlWRR0ECNHddsBvi6ZLf+gAlQaorEiFuW4ArTwki27
+	 dzmdH/WGM0OnP6FNsKJwfoF0ojTsvoDmB1iqlLZ3OyCg2DcwpIYhrmdTH5jo1e4i+t
+	 rM44IihCZM4XQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: William Tu <witu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	dtatulea@nvidia.com,
-	alazar@nvidia.com,
-	lkayal@nvidia.com,
-	yorayz@nvidia.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 235/294] net/mlx5e: reduce the max log mpwrq sz for ECPF and reps
-Date: Mon,  5 May 2025 18:55:35 -0400
-Message-Id: <20250505225634.2688578-235-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 237/294] wifi: mac80211: don't unconditionally call drv_mgd_complete_tx()
+Date: Mon,  5 May 2025 18:55:37 -0400
+Message-Id: <20250505225634.2688578-237-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -77,90 +67,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: William Tu <witu@nvidia.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit e1d68ea58c7e9ebacd9ad7a99b25a3578fa62182 ]
+[ Upstream commit 1798271b3604b902d45033ec569f2bf77e94ecc2 ]
 
-For the ECPF and representors, reduce the max MPWRQ size from 256KB (18)
-to 128KB (17). This prepares the later patch for saving representor
-memory.
+We might not have called drv_mgd_prepare_tx(), so only call
+drv_mgd_complete_tx() under the same conditions.
 
-With Striding RQ, there is a minimum of 4 MPWQEs. So with 128KB of max
-MPWRQ size, the minimal memory is 4 * 128KB = 512KB. When creating page
-pool, consider 1500 mtu, the minimal page pool size will be 512KB/4KB =
-128 pages = 256 rx ring entries (2 entries per page).
-
-Before this patch, setting RX ringsize (ethtool -G rx) to 256 causes
-driver to allocate page pool size more than it needs due to max MPWRQ
-is 256KB (18). Ex: 4 * 256KB = 1MB, 1MB/4KB = 256 pages, but actually
-128 pages is good enough. Reducing the max MPWRQ to 128KB fixes the
-limitation.
-
-Signed-off-by: William Tu <witu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250209101716.112774-7-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250205110958.e091fc39a351.Ie6a3cdca070612a0aa4b3c6914ab9ed602d1f456@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en.h      |  2 --
- .../net/ethernet/mellanox/mlx5/core/en/params.c   | 15 +++++++++++----
- 2 files changed, 11 insertions(+), 6 deletions(-)
+ net/mac80211/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-index 20a6bc1a234f4..9cf33ae48c216 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-@@ -93,8 +93,6 @@ struct page_pool;
- #define MLX5_MPWRQ_DEF_LOG_STRIDE_SZ(mdev) \
- 	MLX5_MPWRQ_LOG_STRIDE_SZ(mdev, order_base_2(MLX5E_RX_MAX_HEAD))
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 42e2c84ed2484..37163d84104fa 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2959,7 +2959,8 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	if (tx)
+ 		ieee80211_flush_queues(local, sdata, false);
  
--#define MLX5_MPWRQ_MAX_LOG_WQE_SZ 18
--
- /* Keep in sync with mlx5e_mpwrq_log_wqe_sz.
-  * These are theoretical maximums, which can be further restricted by
-  * capabilities. These values are used for static resource allocations and
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-index 775010e94cb7c..dcd5db907f102 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-@@ -9,6 +9,9 @@
- #include <net/page_pool/types.h>
- #include <net/xdp_sock_drv.h>
+-	drv_mgd_complete_tx(sdata->local, sdata, &info);
++	if (tx || frame_buf)
++		drv_mgd_complete_tx(sdata->local, sdata, &info);
  
-+#define MLX5_MPWRQ_MAX_LOG_WQE_SZ 18
-+#define MLX5_REP_MPWRQ_MAX_LOG_WQE_SZ 17
-+
- static u8 mlx5e_mpwrq_min_page_shift(struct mlx5_core_dev *mdev)
- {
- 	u8 min_page_shift = MLX5_CAP_GEN_2(mdev, log_min_mkey_entity_size);
-@@ -102,18 +105,22 @@ u8 mlx5e_mpwrq_log_wqe_sz(struct mlx5_core_dev *mdev, u8 page_shift,
- 			  enum mlx5e_mpwrq_umr_mode umr_mode)
- {
- 	u8 umr_entry_size = mlx5e_mpwrq_umr_entry_size(umr_mode);
--	u8 max_pages_per_wqe, max_log_mpwqe_size;
-+	u8 max_pages_per_wqe, max_log_wqe_size_calc;
-+	u8 max_log_wqe_size_cap;
- 	u16 max_wqe_size;
- 
- 	/* Keep in sync with MLX5_MPWRQ_MAX_PAGES_PER_WQE. */
- 	max_wqe_size = mlx5e_get_max_sq_aligned_wqebbs(mdev) * MLX5_SEND_WQE_BB;
- 	max_pages_per_wqe = ALIGN_DOWN(max_wqe_size - sizeof(struct mlx5e_umr_wqe),
- 				       MLX5_UMR_FLEX_ALIGNMENT) / umr_entry_size;
--	max_log_mpwqe_size = ilog2(max_pages_per_wqe) + page_shift;
-+	max_log_wqe_size_calc = ilog2(max_pages_per_wqe) + page_shift;
-+
-+	WARN_ON_ONCE(max_log_wqe_size_calc < MLX5E_ORDER2_MAX_PACKET_MTU);
- 
--	WARN_ON_ONCE(max_log_mpwqe_size < MLX5E_ORDER2_MAX_PACKET_MTU);
-+	max_log_wqe_size_cap = mlx5_core_is_ecpf(mdev) ?
-+			   MLX5_REP_MPWRQ_MAX_LOG_WQE_SZ : MLX5_MPWRQ_MAX_LOG_WQE_SZ;
- 
--	return min_t(u8, max_log_mpwqe_size, MLX5_MPWRQ_MAX_LOG_WQE_SZ);
-+	return min_t(u8, max_log_wqe_size_calc, max_log_wqe_size_cap);
- }
- 
- u8 mlx5e_mpwrq_pages_per_wqe(struct mlx5_core_dev *mdev, u8 page_shift,
+ 	/* clear AP addr only after building the needed mgmt frames */
+ 	eth_zero_addr(sdata->deflink.u.mgd.bssid);
 -- 
 2.39.5
 
