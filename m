@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-140128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E1FAAA567
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DD8AAA56D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:50:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 094803A3A8C
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:45:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD2823A37F5
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42EE928F00E;
-	Mon,  5 May 2025 22:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF9030E696;
+	Mon,  5 May 2025 22:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G4DVXrb8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bq5Ouzo3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F013328F00A;
-	Mon,  5 May 2025 22:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F1127A129;
+	Mon,  5 May 2025 22:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484159; cv=none; b=mONNm9MhU/VQCB73q952R1WvYVroCIxaxkuZDL3A6BelvytwqLMYVtXyDVXPcFGurF+JcGrzLk0gDnhnhLNegubbUjTgAoUlH8IKACEqNdHb9HGfPZSnj5sTbUsJ3u1ovU05OSQLkUdQZ5PgRrdrSBF4WRUkI7wwSYt1M6zYiCk=
+	t=1746484160; cv=none; b=CmDTY5FEuYneDQ/NIGTQ/D1YF63GlxVPoG8vVLjptd6qqqoixC37viJLSkurMuewfbZ2bhVvLIH09z5HrvZ+W8kJhbwzrirDTadGAzzsTctlaNUibi0hLTnVIhdHWwifeMqt91FdZS2DxnVD25ZPYwwbIYru7qK1VtOBdNNxzvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484159; c=relaxed/simple;
-	bh=0rY6USwdH/BbMFJeP4DFM3Cbs9aUeKCtF98Za21TGq8=;
+	s=arc-20240116; t=1746484160; c=relaxed/simple;
+	bh=Z9HB7iTaGh8+A2xdZVVazaRVXRFenN7A9Qx9x6F2uho=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lb0FQBzBoOr5nYcMPgqCwUPB4ZAF5S7oaNgUegi7feDpASWXwlowi/WWBEEdvRR6GlqiqtW9CLuFC3BTRDM2Co2/G/jhS8dGeg0gyFrJ6P90N5AO/KInsi9rFm6rJii7tqYqrJK0XXHfPMCW81NmZLq7cteqcW4RhzDRCNxiX3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G4DVXrb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA31C4CEEE;
-	Mon,  5 May 2025 22:29:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i+iYbvWKpLeCmMJM/qMmHfrr67DdKGomEllL2dsycRT1A5Fq0spNXsINxUF2Nc2bVYNkNnGlOlySU5Hu7gReQvgj1hN/DEXtqCcS28RWALf+xv9lF+UfjiN80eqRgtpV8PpGifN2bPJoDbEHonwf6BNIWIoLJvO9Kw7eZozEB/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bq5Ouzo3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FDCEC4CEE4;
+	Mon,  5 May 2025 22:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484158;
-	bh=0rY6USwdH/BbMFJeP4DFM3Cbs9aUeKCtF98Za21TGq8=;
+	s=k20201202; t=1746484160;
+	bh=Z9HB7iTaGh8+A2xdZVVazaRVXRFenN7A9Qx9x6F2uho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G4DVXrb8fMMegn6uH7SzHtL4s6Qnmcr34TTV2YwOnUWsSmR4RhW8dcM1d6JkBYXm7
-	 nTgpas9KwBMPbduU/57VjjO/1eQvExgAw0Xx0pzLxTM+CqJW7MXKRV5kEwMjampcqD
-	 KgcMFJVqyV7rqAovmUC8Tx5+D3MgpOvYhsxS3h3LxXFfUWw3Hdmx+siq+sWkjDay6F
-	 +gaenyNTTGjQBqR2evYwNAOYpVOntJ8v9j8jWgzeksFIoxv1rdfGiH0uSCWMfMdMFr
-	 N9gy6d63xjIvBAiBp6JJr+PZSR5mPya/BTykZR+fSVdlPHn8TNfi7h9ZvM1tXq3zp3
-	 kA9EotkVpwznA==
+	b=bq5Ouzo3j4CfWduVMLxq12pADMVm+eB/w50qD5+3hCHCr0HsLEzwORgtB1nQiLcgR
+	 2ooi4fw33XnXgzxtXgTYs9jYC9DhsOq9e2KsHgHqMBYWemRfGnPzk9XZUs9OhiqTNY
+	 73cWLGxHnep4CbJCsZFH7dZQRYroXW3BgWjoKInPvvMbdEvtQz9gUF5jTCn8d0ibCv
+	 VE21zteQKe3SyklCtaHCqPnA7r65CW707ZxT/QwRbFERcgTaU4CkYOdOExotxzvL+N
+	 bXnIN4mKjXgwJw99z270ost/6eMqWCgH3z9AbXk6ieIA5iNstPQF7JFsnqPD/qrZnF
+	 aR5wzxyIbMAEA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 381/642] drm/xe/client: Skip show_run_ticks if unable to read timestamp
-Date: Mon,  5 May 2025 18:09:57 -0400
-Message-Id: <20250505221419.2672473-381-sashal@kernel.org>
+	bhelgaas@google.com,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 382/642] PCI/pwrctrl: Move pci_pwrctrl_unregister() to pci_destroy_dev()
+Date: Mon,  5 May 2025 18:09:58 -0400
+Message-Id: <20250505221419.2672473-382-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -75,46 +69,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 94030a1d3283251778411cf74553607a65260f78 ]
+[ Upstream commit 2d923930f2e3fe1ecf060169f57980da819a191f ]
 
-RING_TIMESTAMP registers are inaccessible in VF mode.
-Without drm-total-cycles-*, other keys provide little value.
-Skip all optional "run_ticks" keys in this case.
+The PCI core will try to access the devices even after pci_stop_dev()
+for things like Data Object Exchange (DOE), ASPM, etc.
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Michał Winiarski <michal.winiarski@intel.com>
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250205191644.2550879-3-marcin.bernatowicz@linux.intel.com
+So, move pci_pwrctrl_unregister() to the near end of pci_destroy_dev()
+to make sure that the devices are powered down only after the PCI core
+is done with them.
+
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Tested-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20250116-pci-pwrctrl-slot-v3-2-827473c8fbf4@linaro.org
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_drm_client.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pci/remove.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_drm_client.c b/drivers/gpu/drm/xe/xe_drm_client.c
-index 2d4874d2b9225..31f688e953d7b 100644
---- a/drivers/gpu/drm/xe/xe_drm_client.c
-+++ b/drivers/gpu/drm/xe/xe_drm_client.c
-@@ -324,6 +324,14 @@ static void show_run_ticks(struct drm_printer *p, struct drm_file *file)
- 	u64 gpu_timestamp;
- 	unsigned int fw_ref;
+diff --git a/drivers/pci/remove.c b/drivers/pci/remove.c
+index efc37fcb73e24..58859f9d92f73 100644
+--- a/drivers/pci/remove.c
++++ b/drivers/pci/remove.c
+@@ -41,7 +41,6 @@ static void pci_stop_dev(struct pci_dev *dev)
+ 	if (!pci_dev_test_and_clear_added(dev))
+ 		return;
  
-+	/*
-+	 * RING_TIMESTAMP registers are inaccessible in VF mode.
-+	 * Without drm-total-cycles-*, other keys provide little value.
-+	 * Show all or none of the optional "run_ticks" keys in this case.
-+	 */
-+	if (IS_SRIOV_VF(xe))
-+		return;
-+
- 	/*
- 	 * Wait for any exec queue going away: their cycles will get updated on
- 	 * context switch out, so wait for that to happen
+-	pci_pwrctrl_unregister(&dev->dev);
+ 	device_release_driver(&dev->dev);
+ 	pci_proc_detach_device(dev);
+ 	pci_remove_sysfs_dev_files(dev);
+@@ -64,6 +63,7 @@ static void pci_destroy_dev(struct pci_dev *dev)
+ 	pci_doe_destroy(dev);
+ 	pcie_aspm_exit_link_state(dev);
+ 	pci_bridge_d3_update(dev);
++	pci_pwrctrl_unregister(&dev->dev);
+ 	pci_free_resources(dev);
+ 	put_device(&dev->dev);
+ }
 -- 
 2.39.5
 
