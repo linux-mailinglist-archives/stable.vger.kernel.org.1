@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-141437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8FCCAAB35F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:44:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F4069AAB70E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:03:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2507C17CB62
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:41:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C144E1BC5575
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D16A23C8A4;
-	Tue,  6 May 2025 00:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B1323E229;
+	Tue,  6 May 2025 00:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X4ZwZUA5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nl5716WV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797FC22D9F6;
-	Mon,  5 May 2025 23:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964DF22D9F8;
+	Mon,  5 May 2025 23:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486320; cv=none; b=aoMc6IzOCVVRs6kW2KJt+PQEJ5wtwcojJE5gaqERI8so2nZUVWzysEsnda4f4F3LfF/EwqkTQEy/xw3aJkgGl+UKFXaskPuMVK14X73l8A8z4EtoBCrcxnnfWEd+wv/mIJC5erxeiPEEeadHcAqdK/H6LUbPK09hZJaFNAORKI4=
+	t=1746486323; cv=none; b=FE8D9v97vb5pgX/wWnXWgNB/+gvk89uw7pl2FX6Q3SCCFR6pHtjTlHlM8uSSFmgWiu8vwNC12SJ5BfTCQ6ZOSYcqT+b7uDOpxErWvSCE7r41CsK4JnCBRzJ7zWt9jqxeeL6r7zX8WfcrWdg0cok0pVqoDHKAGS7Knj2V/SYq4w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486320; c=relaxed/simple;
-	bh=PNW4NJRyX1DA1CvPLs9JmMFNEY3teA+yGpOr5xxteFg=;
+	s=arc-20240116; t=1746486323; c=relaxed/simple;
+	bh=pLsPsfht90VZB3Si4meBRTHexekqw5MmVmkOeEYazCY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pn9OIh3NKxFj0kZOZWeXvU5UBILviby15a+zktePK7+1Llvg7QuoOxoeadUgbj/hG9TETOSvp0NKeEa9WXalJdP0gEYkhRlL/sCmoB27aF9qp2EqQXsfWe6M9giI+OUjDM48I4mzKJTzIO6XiuobHFbH2IFk4DnPdKmiIuSkjd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X4ZwZUA5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC54C4CEEF;
-	Mon,  5 May 2025 23:05:17 +0000 (UTC)
+	 MIME-Version; b=pqfvbY+BtOeGDzC9vQ0O5cKodbqLyZgsBIV4nET7Y7wOm6udrRl7hdN5I4IuFWIZOfXRU9OqCqzmAsAABeh5r+VSByMumL8KHZt5EEtZJj4M7/DlhLla9KGdwSCI7raMHhK0VKscOh3TxfeDGi6a+o4i01SSDXws1HCkdGMd7yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nl5716WV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5F9C4CEE4;
+	Mon,  5 May 2025 23:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486318;
-	bh=PNW4NJRyX1DA1CvPLs9JmMFNEY3teA+yGpOr5xxteFg=;
+	s=k20201202; t=1746486323;
+	bh=pLsPsfht90VZB3Si4meBRTHexekqw5MmVmkOeEYazCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4ZwZUA5JQIgYWhEx1uTmITaUHWWBukJo+Umu5C4ycpVPSPayNvZnnSsgSMSHK27R
-	 yEYsOrQLpB1rrLP8iwtfV4nDP4xkkdBAogfoMW4t/dVQOGEzZky8FEo75P3l0DcGXT
-	 YHwXAF+NMOe7H29fqJIv/rsU2u7rcZRkaSZOiymsiV1buWqnLAxljyfX5lSH+AM4+9
-	 rUn2qW2c4jVNB0NNkRvtfBXAAMafk+mQ2Lpuat/hdxuFi+FGg6NiPABw2VmR73zySL
-	 jLyb2DwIaQQYjVFpz8qZPj6i/aFzDH6HQ9YOsSjfPHPifPgF7OdkkoKxYK9RU82x17
-	 t2kDTQUdrAjPg==
+	b=Nl5716WVmlerxyhtXG650G49LsZ9eny6NcMHTKOBUfIXDLYiWCGtz8FlWv9xagmjx
+	 wLsNXVK2W+YKfMBku28tUPsvWxdl0VyalZWpjFtsnPHBgE3FerfL6j3GrDZLQXvyUb
+	 pfWcvixxr0VqlL+LPdRUSW1mxjks6CyWWehzc5iPSaKIaBlvdDZAejvK7VTAKftp1z
+	 Xhxt1TGpUpwQLjP9P0tdChc+fbvp6kdOUHs95IMotpR+oZQPtUJakuK3NHEZF8IGaZ
+	 vqkCjErL0ATd7+ND/8fRhp92K0lbnKOUzibUJTvBs4dCDdu6WZWhon5SGZ27eynWw4
+	 C3g/W25oLZGQw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	kernel test robot <lkp@intel.com>,
-	Simon Horman <horms@kernel.org>,
+Cc: Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	davem@davemloft.net,
-	dsahern@kernel.org,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 257/294] ipv4: ip_gre: Fix set but not used warning in ipgre_err() if IPv4-only
-Date: Mon,  5 May 2025 18:55:57 -0400
-Message-Id: <20250505225634.2688578-257-sashal@kernel.org>
+	shuah@kernel.org,
+	bridge@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 259/294] bridge: mdb: Allow replace of a host-joined group
+Date: Mon,  5 May 2025 18:55:59 -0400
+Message-Id: <20250505225634.2688578-259-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -66,78 +68,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 50f37fc2a39c4a8cc4813629b4cf239b71c6097d ]
+[ Upstream commit d9e9f6d7b7d0c520bb87f19d2cbc57aeeb2091d5 ]
 
-if CONFIG_NET_IPGRE is enabled, but CONFIG_IPV6 is disabled:
+Attempts to replace an MDB group membership of the host itself are
+currently bounced:
 
-    net/ipv4/ip_gre.c: In function ‘ipgre_err’:
-    net/ipv4/ip_gre.c:144:22: error: variable ‘data_len’ set but not used [-Werror=unused-but-set-variable]
-      144 |         unsigned int data_len = 0;
-	  |                      ^~~~~~~~
+ # ip link add name br up type bridge vlan_filtering 1
+ # bridge mdb replace dev br port br grp 239.0.0.1 vid 2
+ # bridge mdb replace dev br port br grp 239.0.0.1 vid 2
+ Error: bridge: Group is already joined by host.
 
-Fix this by moving all data_len processing inside the IPV6-only section
-that uses its result.
+A similar operation done on a member port would succeed. Ignore the check
+for replacement of host group memberships as well.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501121007.2GofXmh5-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/d09113cfe2bfaca02f3dddf832fb5f48dd20958b.1738704881.git.geert@linux-m68k.org
+The bit of code that this enables is br_multicast_host_join(), which, for
+already-joined groups only refreshes the MC group expiration timer, which
+is desirable; and a userspace notification, also desirable.
+
+Change a selftest that exercises this code path from expecting a rejection
+to expecting a pass. The rest of MDB selftests pass without modification.
+
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/e5c5188b9787ae806609e7ca3aa2a0a501b9b5c4.1738685648.git.petrm@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_gre.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ net/bridge/br_mdb.c                                  | 2 +-
+ tools/testing/selftests/net/forwarding/bridge_mdb.sh | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 890c15510b421..f261e29adc7c2 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -140,7 +140,6 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
- 	const struct iphdr *iph;
- 	const int type = icmp_hdr(skb)->type;
- 	const int code = icmp_hdr(skb)->code;
--	unsigned int data_len = 0;
- 	struct ip_tunnel *t;
+diff --git a/net/bridge/br_mdb.c b/net/bridge/br_mdb.c
+index 7305f5f8215ca..96bea0c8408fe 100644
+--- a/net/bridge/br_mdb.c
++++ b/net/bridge/br_mdb.c
+@@ -1030,7 +1030,7 @@ static int br_mdb_add_group(const struct br_mdb_config *cfg,
  
- 	if (tpi->proto == htons(ETH_P_TEB))
-@@ -181,7 +180,6 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
- 	case ICMP_TIME_EXCEEDED:
- 		if (code != ICMP_EXC_TTL)
- 			return 0;
--		data_len = icmp_hdr(skb)->un.reserved[1] * 4; /* RFC 4884 4.1 */
- 		break;
+ 	/* host join */
+ 	if (!port) {
+-		if (mp->host_joined) {
++		if (mp->host_joined && !(cfg->nlflags & NLM_F_REPLACE)) {
+ 			NL_SET_ERR_MSG_MOD(extack, "Group is already joined by host");
+ 			return -EEXIST;
+ 		}
+diff --git a/tools/testing/selftests/net/forwarding/bridge_mdb.sh b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
+index a3678dfe5848a..c151374ddf040 100755
+--- a/tools/testing/selftests/net/forwarding/bridge_mdb.sh
++++ b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
+@@ -149,7 +149,7 @@ cfg_test_host_common()
+ 	check_err $? "Failed to add $name host entry"
  
- 	case ICMP_REDIRECT:
-@@ -189,10 +187,16 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
- 	}
+ 	bridge mdb replace dev br0 port br0 grp $grp $state vid 10 &> /dev/null
+-	check_fail $? "Managed to replace $name host entry"
++	check_err $? "Failed to replace $name host entry"
  
- #if IS_ENABLED(CONFIG_IPV6)
--	if (tpi->proto == htons(ETH_P_IPV6) &&
--	    !ip6_err_gen_icmpv6_unreach(skb, iph->ihl * 4 + tpi->hdr_len,
--					type, data_len))
--		return 0;
-+	if (tpi->proto == htons(ETH_P_IPV6)) {
-+		unsigned int data_len = 0;
-+
-+		if (type == ICMP_TIME_EXCEEDED)
-+			data_len = icmp_hdr(skb)->un.reserved[1] * 4; /* RFC 4884 4.1 */
-+
-+		if (!ip6_err_gen_icmpv6_unreach(skb, iph->ihl * 4 + tpi->hdr_len,
-+						type, data_len))
-+			return 0;
-+	}
- #endif
- 
- 	if (t->parms.iph.daddr == 0 ||
+ 	bridge mdb del dev br0 port br0 grp $grp $state vid 10
+ 	bridge mdb get dev br0 grp $grp vid 10 &> /dev/null
 -- 
 2.39.5
 
