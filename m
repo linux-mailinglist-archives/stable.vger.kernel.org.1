@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-140258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213B7AAA6B6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:18:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3ADAAAA6E9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B5BF1886BBE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:17:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA892986E52
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC00232CDE8;
-	Mon,  5 May 2025 22:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D55232CE06;
+	Mon,  5 May 2025 22:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bfzm3loD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMtx5hOJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6571532CDE4;
-	Mon,  5 May 2025 22:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEAE32CDE2;
+	Mon,  5 May 2025 22:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484515; cv=none; b=ezzbOiH3zF38sZcgtgvCsAVxqHZA5My226ie+kqHz8RJYBMEN7NjHgDbZCX5LruI6r04Ex097s8W55HYoNFNyzHxl72N70PwahQfXX9bsmVeS9rG8kCOB5RWf6LJcMf8kbt2Bwu8EzhGeSwbHM45Mn+janzKln5Ku1N9mBLEaOQ=
+	t=1746484517; cv=none; b=STNMR40WOzvJCVdQCt5rR49iGTL1oJ+/LECOjguJwofwIsjlIb467SWo6Gj0xRDrMYTBIcRTSqTWoo/b3XIeABBdxR9u4la0SYRvEmIj22tTkeuvCk2ov0auAJiiagUHeUvOayZZt/aJDXAQHovQEQkmdpdRjqA84oq4WrdmBzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484515; c=relaxed/simple;
-	bh=n3dAbb0uPOKIS9M5rg1c/2xkmggawtRQP0614SlYMS0=;
+	s=arc-20240116; t=1746484517; c=relaxed/simple;
+	bh=L5YOtzjSm03MRIwOgrZ5oKFMZJgVlQwI2CSRrmNYGX0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fKfP9kmQ0wBq3TtBAcvnqzpk4nlsiRFcqoF+S6iDY5bK8FXMTRoqDDK+7FhDNUb2RXtnWz3GsVa1XDAxbuW8099JlR0DkgcpsnjNqbJqZpMI7EVlNa5BZ4TWqaHM57xZPA/Rpz0MkPDs199Yp6vfCojD0vXXsFFbE3olK+ddDQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bfzm3loD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFB6C4CEE4;
-	Mon,  5 May 2025 22:35:13 +0000 (UTC)
+	 MIME-Version; b=MyzVLHWWVlA/7OMbuBEZtbYTHMnLq24zPTbd3O0vdNRxpYxEAZjgDBktHH9VCm1UBfPbxjeeLxMlrsbArMga48HFYmB6Np9UTNW53d5jj5nBf7+YAz+MFhx9gmSqIM5nxEWF5KgVTnzsjJ47gZ3ZljRm40OKWTy1AeZUda9S+ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMtx5hOJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B192DC4CEF1;
+	Mon,  5 May 2025 22:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484515;
-	bh=n3dAbb0uPOKIS9M5rg1c/2xkmggawtRQP0614SlYMS0=;
+	s=k20201202; t=1746484516;
+	bh=L5YOtzjSm03MRIwOgrZ5oKFMZJgVlQwI2CSRrmNYGX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bfzm3loD19FUgl6UK1e5O3PyzbrcVNGHm1WSO3nPFVdeLctb5IbmrLWeVE2OPmGe0
-	 Lb0nL3XBWxFDw+4ma0iZsoNY2tNxznXlOYta3iLp+i2UHBS77SMk5Gktr/FUNbhqdA
-	 QXOczBmKpO6M/Qyj6Qw/gPw0ZQ33tzfFqzbBQhlTTYdyy+YDM0V4SWn7YiGhrD8XbY
-	 ke6TFC10udZK6uRUVE/WvX+nPGjT0mFonr+MHdnJ42i8BsbZfOL58ipewoZ/txstpA
-	 vo/LNODVHEHvgl04/kszWBCkC+4FgDD7dmQAYhWW4eO2HW3WRuDXoE4OUfDb3H+KKH
-	 IxDLMwPN0hnIQ==
+	b=JMtx5hOJemHe4IC3cyqnrUkBzgTbCCbCbJpQredF4GSaWh7gyNPpiqfhdZero3VmU
+	 nU2H7SGaNWcPilaREqbGt8xkBbqchvD9TKJ1mV5vpFCCxhxwvGa9ozr9PSIxNXTsr8
+	 EOE7I5LUt3YVIp2v5CjYl8o1LmzGDU6lML2t4hLmOqHgZlr0iw8DbGgHBQI8XXOavW
+	 L/7XB42xLl/kLBGlVi661dERbqStB0DISYQBCahbZVdfw4DdlrkfDhlz92E3iHME6f
+	 cwn4lC9AmApHlNsIeKB9fw2ctv5sY5Ev0Njqkx0mjc+cDiKO68m00dtqsHJjeGKva8
+	 EvFif89JC0onw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Disha Goel <disgoel@linux.vnet.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mpe@ellerman.id.au,
-	kan.liang@linux.intel.com,
-	oliver.upton@linux.dev,
-	mingo@kernel.org,
-	mark.rutland@arm.com,
-	anjalik@linux.ibm.com,
-	coltonlewis@google.com,
-	rppt@kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.14 510/642] arch/powerpc/perf: Check the instruction type before creating sample with perf_mem_data_src
-Date: Mon,  5 May 2025 18:12:06 -0400
-Message-Id: <20250505221419.2672473-510-sashal@kernel.org>
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 511/642] ip: fib_rules: Fetch net from fib_rule in fib[46]_rule_configure().
+Date: Mon,  5 May 2025 18:12:07 -0400
+Message-Id: <20250505221419.2672473-511-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -74,134 +70,59 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 2ffb26afa64261139e608bf087a0c1fe24d76d4d ]
+[ Upstream commit 5a1ccffd30a08f5a2428cd5fbb3ab03e8eb6c66d ]
 
-perf mem report aborts as below sometimes (during some corner
-case) in powerpc:
+The following patch will not set skb->sk from VRF path.
 
-   # ./perf mem report 1>out
-   *** stack smashing detected ***: terminated
-   Aborted (core dumped)
+Let's fetch net from fib_rule->fr_net instead of sock_net(skb->sk)
+in fib[46]_rule_configure().
 
-The backtrace is as below:
-   __pthread_kill_implementation ()
-   raise ()
-   abort ()
-   __libc_message
-   __fortify_fail
-   __stack_chk_fail
-   hist_entry.lvl_snprintf
-   __sort__hpp_entry
-   __hist_entry__snprintf
-   hists.fprintf
-   cmd_report
-   cmd_mem
-
-Snippet of code which triggers the issue
-from tools/perf/util/sort.c
-
-   static int hist_entry__lvl_snprintf(struct hist_entry *he, char *bf,
-                                    size_t size, unsigned int width)
-   {
-        char out[64];
-
-        perf_mem__lvl_scnprintf(out, sizeof(out), he->mem_info);
-        return repsep_snprintf(bf, size, "%-*s", width, out);
-   }
-
-The value of "out" is filled from perf_mem_data_src value.
-Debugging this further showed that for some corner cases, the
-value of "data_src" was pointing to wrong value. This resulted
-in bigger size of string and causing stack check fail.
-
-The perf mem data source values are captured in the sample via
-isa207_get_mem_data_src function. The initial check is to fetch
-the type of sampled instruction. If the type of instruction is
-not valid (not a load/store instruction), the function returns.
-
-Since 'commit e16fd7f2cb1a ("perf: Use sample_flags for data_src")',
-data_src field is not initialized by the perf_sample_data_init()
-function. If the PMU driver doesn't set the data_src value to zero if
-type is not valid, this will result in uninitailised value for data_src.
-The uninitailised value of data_src resulted in stack check fail
-followed by abort for "perf mem report".
-
-When requesting for data source information in the sample, the
-instruction type is expected to be load or store instruction.
-In ISA v3.0, due to hardware limitation, there are corner cases
-where the instruction type other than load or store is observed.
-In ISA v3.0 and before values "0" and "7" are considered reserved.
-In ISA v3.1, value "7" has been used to indicate "larx/stcx".
-Drop the sample if instruction type has reserved values for this
-field with a ISA version check. Initialize data_src to zero in
-isa207_get_mem_data_src if the instruction type is not load/store.
-
-Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250121131621.39054-1-atrajeev@linux.vnet.ibm.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250207072502.87775-5-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/core-book3s.c   | 20 ++++++++++++++++++++
- arch/powerpc/perf/isa207-common.c |  4 +++-
- 2 files changed, 23 insertions(+), 1 deletion(-)
+ net/ipv4/fib_rules.c  | 4 ++--
+ net/ipv6/fib6_rules.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index f4e03aaabb4c3..b906d28f74fd4 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -2226,6 +2226,10 @@ static struct pmu power_pmu = {
- #define PERF_SAMPLE_ADDR_TYPE  (PERF_SAMPLE_ADDR |		\
- 				PERF_SAMPLE_PHYS_ADDR |		\
- 				PERF_SAMPLE_DATA_PAGE_SIZE)
-+
-+#define SIER_TYPE_SHIFT	15
-+#define SIER_TYPE_MASK	(0x7ull << SIER_TYPE_SHIFT)
-+
- /*
-  * A counter has overflowed; update its count and record
-  * things if requested.  Note that interrupts are hard-disabled
-@@ -2294,6 +2298,22 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
- 	    is_kernel_addr(mfspr(SPRN_SIAR)))
- 		record = 0;
+diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
+index 9517b8667e000..041c46787d941 100644
+--- a/net/ipv4/fib_rules.c
++++ b/net/ipv4/fib_rules.c
+@@ -245,9 +245,9 @@ static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
+ 			       struct nlattr **tb,
+ 			       struct netlink_ext_ack *extack)
+ {
+-	struct net *net = sock_net(skb->sk);
++	struct fib4_rule *rule4 = (struct fib4_rule *)rule;
++	struct net *net = rule->fr_net;
+ 	int err = -EINVAL;
+-	struct fib4_rule *rule4 = (struct fib4_rule *) rule;
  
-+	/*
-+	 * SIER[46-48] presents instruction type of the sampled instruction.
-+	 * In ISA v3.0 and before values "0" and "7" are considered reserved.
-+	 * In ISA v3.1, value "7" has been used to indicate "larx/stcx".
-+	 * Drop the sample if "type" has reserved values for this field with a
-+	 * ISA version check.
-+	 */
-+	if (event->attr.sample_type & PERF_SAMPLE_DATA_SRC &&
-+			ppmu->get_mem_data_src) {
-+		val = (regs->dar & SIER_TYPE_MASK) >> SIER_TYPE_SHIFT;
-+		if (val == 0 || (val == 7 && !cpu_has_feature(CPU_FTR_ARCH_31))) {
-+			record = 0;
-+			atomic64_inc(&event->lost_samples);
-+		}
-+	}
-+
- 	/*
- 	 * Finally record data if requested.
- 	 */
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index 56301b2bc8ae8..031a2b63c171d 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -321,8 +321,10 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
+ 	if (tb[FRA_FLOWLABEL] || tb[FRA_FLOWLABEL_MASK]) {
+ 		NL_SET_ERR_MSG(extack,
+diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
+index 67d39114d9a63..40af8fd6efa70 100644
+--- a/net/ipv6/fib6_rules.c
++++ b/net/ipv6/fib6_rules.c
+@@ -399,9 +399,9 @@ static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
+ 			       struct nlattr **tb,
+ 			       struct netlink_ext_ack *extack)
+ {
++	struct fib6_rule *rule6 = (struct fib6_rule *)rule;
++	struct net *net = rule->fr_net;
+ 	int err = -EINVAL;
+-	struct net *net = sock_net(skb->sk);
+-	struct fib6_rule *rule6 = (struct fib6_rule *) rule;
  
- 	sier = mfspr(SPRN_SIER);
- 	val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
--	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31)))
-+	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31))) {
-+		dsrc->val = 0;
- 		return;
-+	}
- 
- 	idx = (sier & ISA207_SIER_LDST_MASK) >> ISA207_SIER_LDST_SHIFT;
- 	sub_idx = (sier & ISA207_SIER_DATA_SRC_MASK) >> ISA207_SIER_DATA_SRC_SHIFT;
+ 	if (!inet_validate_dscp(frh->tos)) {
+ 		NL_SET_ERR_MSG(extack,
 -- 
 2.39.5
 
