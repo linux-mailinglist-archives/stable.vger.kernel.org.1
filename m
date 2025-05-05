@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-141610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20ECFAAB765
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:10:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 963F7AAB767
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:11:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F2A64629BE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:07:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FDFA46363B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BD93561A5;
-	Tue,  6 May 2025 00:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B78D485881;
+	Tue,  6 May 2025 00:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EN5Nd2Mt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H4gFzp8l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9344A28983B;
-	Mon,  5 May 2025 23:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB53D279351;
+	Mon,  5 May 2025 23:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486867; cv=none; b=YvPUutW6kZAQcb81fotsSPVVw7NfPWYDzdY2gjJDjOCxCVJiZonqThJX23C1gX1vs6MlDG8BzfafPbqOiMP577EDQmrMi6FVLUd2uxq0LsCWc9Y7krOkUXCc2u543ab097Z09lv3jRBiWNSfr5nIr2zhh2Mt0X6pYESpDfzHuj0=
+	t=1746486869; cv=none; b=LLuQZPQXLpPJW7Fg5ZaXdjyydrVDRJnWlm8ASZFlrFYtQCMy2Y21B1nPhwrME6qoFsPfOqMGQxGmULsPkzDfMTrzWwHqJYOqTPEM3+qU72Hb28w8ZlRQ0NyFsjaaD01qS/8Ax8zIMwDLDqmz0WSzQxuSwFIBT7ohi1XStzzuKZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486867; c=relaxed/simple;
-	bh=BFGZvz3m0NrOmtEShPyDLDmAHNH1RMEpCvqr26JPKEM=;
+	s=arc-20240116; t=1746486869; c=relaxed/simple;
+	bh=of3eMqWEE8eKPf9UPMc/az9Vx/5h145Vm8Apj9Wf/fw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LugkWSnM9qgNt7TMiNIWPUfeiU72aGc3zjxC68jTuPsVyEaALb5rJiN/zns/0z7ceftogyeNXATAveX2OBcCy935mI1zloWoCUS1cSxbmoPLkmBkKV34PhmF/KsZHqbv170XMX5iE8A61SZ7weKoGiaTUOpV9QArhN3JFJu6jws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EN5Nd2Mt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC30C4CEEF;
-	Mon,  5 May 2025 23:14:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H/5UEV4b3PiSRiMUjpW4NPK6ghi+JTEooxKKC/M0pDyREam+D8UyM7vdzCrTW2AlodBjjk3qZ3OzabwMNWqzgos4iwwo5hJ11Pu2X6luYry9OshE+1WqrAW5xeJoacPNL0a9YRLciQ1FG8GFOiCdypCEv5MUWyJVPqbqzzDLqcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H4gFzp8l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D99DC4CEED;
+	Mon,  5 May 2025 23:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486866;
-	bh=BFGZvz3m0NrOmtEShPyDLDmAHNH1RMEpCvqr26JPKEM=;
+	s=k20201202; t=1746486868;
+	bh=of3eMqWEE8eKPf9UPMc/az9Vx/5h145Vm8Apj9Wf/fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EN5Nd2MtAeJkuJwauvQbnLn/xGSpef9t22WqLmj6aAHTGXtVwzcB/dDYAdpm4WceY
-	 NVfdSvrgK4+j9/AV0B6+6ByTFYJPVBFQ37xtsE//fh5fYwswF0JDaFfCKtYJiqX1s/
-	 E00uaG6L8295mv289KjsnxGdsYvJBDwe1/ggxJy0Sg46qWmswTjYEw69nPrn89H+iM
-	 bWoRuys8MP3FyAOG9vyycvdXWf7oZ1kcV2D2RY48kEeIOoFOnRKqdSZlijj3ZqtyU0
-	 vHWItSzSPgqfEL2DdhgZrKRAqh6EodzezmnRSovNereVd4fm18f91HJQ946A6It6ba
-	 svyPd8NqzG1EA==
+	b=H4gFzp8lMm9/rAuiaZtC6pw23OHFIxzoDQvV3fAiKBL7jFfnNGqfUs+tuEZIP9ZC0
+	 Sx7Sf/KS2bn2c2qR6eRBcs3pAsyR2N8N/wqJL8sXXjqtVeDjRMzdEfkW1SHOvN60Fm
+	 o4kWhbzssRqpuOx7aKvp7Qj7vwZVvQB6ow+E7CXkjs6FRS+KeYfB8c/1PkVeSawA5U
+	 4QossshNB8cKqHrC6C15daU52qOIP7DxzegtVSxYaHknmLhojQOQKiKig+zhK6hGGA
+	 epHeDHjVw4LDa5RJgre5zuUaWtg7Frpn+obNHE6sb46ZCr7dsXfgmW6OZtIUxqXT62
+	 I+RAi2112J/hw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-	Serge Hallyn <serge@hallyn.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Ts'o <tytso@mit.edu>,
+Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 033/153] ext4: reorder capability check last
-Date: Mon,  5 May 2025 19:11:20 -0400
-Message-Id: <20250505231320.2695319-33-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 035/153] scsi: st: ERASE does not change tape location
+Date: Mon,  5 May 2025 19:11:22 -0400
+Message-Id: <20250505231320.2695319-35-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -69,50 +67,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Christian Göttsche <cgzones@googlemail.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 1b419c889c0767a5b66d0a6c566cae491f1cb0f7 ]
+[ Upstream commit ad77cebf97bd42c93ab4e3bffd09f2b905c1959a ]
 
-capable() calls refer to enabled LSMs whether to permit or deny the
-request.  This is relevant in connection with SELinux, where a
-capability check results in a policy decision and by default a denial
-message on insufficient permission is issued.
-It can lead to three undesired cases:
-  1. A denial message is generated, even in case the operation was an
-     unprivileged one and thus the syscall succeeded, creating noise.
-  2. To avoid the noise from 1. the policy writer adds a rule to ignore
-     those denial messages, hiding future syscalls, where the task
-     performs an actual privileged operation, leading to hidden limited
-     functionality of that task.
-  3. To avoid the noise from 1. the policy writer adds a rule to permit
-     the task the requested capability, while it does not need it,
-     violating the principle of least privilege.
+The SCSI ERASE command erases from the current position onwards.  Don't
+clear the position variables.
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-Reviewed-by: Serge Hallyn <serge@hallyn.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250302160657.127253-2-cgoettsche@seltendoof.de
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250311112516.5548-3-Kai.Makisara@kolumbus.fi
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/balloc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/st.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
-index c23ac149601e5..d6872b71657b6 100644
---- a/fs/ext4/balloc.c
-+++ b/fs/ext4/balloc.c
-@@ -637,8 +637,8 @@ static int ext4_has_free_clusters(struct ext4_sb_info *sbi,
- 	/* Hm, nope.  Are (enough) root reserved clusters available? */
- 	if (uid_eq(sbi->s_resuid, current_fsuid()) ||
- 	    (!gid_eq(sbi->s_resgid, GLOBAL_ROOT_GID) && in_group_p(sbi->s_resgid)) ||
--	    capable(CAP_SYS_RESOURCE) ||
--	    (flags & EXT4_MB_USE_ROOT_BLOCKS)) {
-+	    (flags & EXT4_MB_USE_ROOT_BLOCKS) ||
-+	    capable(CAP_SYS_RESOURCE)) {
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index a58cb2171f958..26827e94d5e38 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -2884,7 +2884,6 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 			timeout = STp->long_timeout * 8;
  
- 		if (free_clusters >= (nclusters + dirty_clusters +
- 				      resv_clusters))
+ 		DEBC_printk(STp, "Erasing tape.\n");
+-		fileno = blkno = at_sm = 0;
+ 		break;
+ 	case MTSETBLK:		/* Set block length */
+ 	case MTSETDENSITY:	/* Set tape density */
 -- 
 2.39.5
 
