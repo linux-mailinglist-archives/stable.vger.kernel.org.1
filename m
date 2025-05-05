@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-141537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F726AAB44B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:03:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54354AAB424
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:00:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B83491B62D6A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:00:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B133E7B27B8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A8B342229;
-	Tue,  6 May 2025 00:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E944766C3;
+	Tue,  6 May 2025 00:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K64F21+g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lnlrGXw7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BD32EC2A8;
-	Mon,  5 May 2025 23:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C88279340;
+	Mon,  5 May 2025 23:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486634; cv=none; b=tvHncJVzEgHp+rufRFASw6PZrZolQEILUFEONSdYTDbJ7+oLL2uJz2n8MC/RwLS6n5JSvhgD7Tx69KcGPvL8iqjct7vZv1e1QBnGIYxr8P0pqj5NjytLoMUWNrkQYpMk8XLFyE/AfxZUM2AWCuExE6HAKAT75VhlAmEPbJTiM4E=
+	t=1746486635; cv=none; b=IrmZnwX6x6/bAZ3r4G0uiRP8b5sbmQ9Nj18KKhIGclSpy5yvDfWq1C+4qPvTfwSJYhTwAb+IeWuGsWA8KJ46UeCZSscUz6zHloEfKin1ZYNlUQLH5OU0auWHWS92lvByyn0l8p5yTtleGOPM+fY72R48R6mThUCAbXcwF+uNZdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486634; c=relaxed/simple;
-	bh=84ob2P0SJpV/KFUDPucA4Ms5s6RGmV+qyDCLnlPHY1s=;
+	s=arc-20240116; t=1746486635; c=relaxed/simple;
+	bh=iiDhzHdQ/QqScp0AKppkDMN90q3HYcqsMN4wZ5m8cv4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=elx6BpIxzWg9gLETbnly5T+nIgktGLbY7JfjjWUUkDsMU7LC/Dmeot1fV6GQLTWNz/bANmJZep1+m0vLlpR8sadMsYES2R9mRz+mvlCo9WHo1xBQDyWrBxCHMLPkuUCWghCiR6l7pyS95PS6mDtjrwDnu7kCCRS0asgFlUYX03k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K64F21+g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42909C4CEE4;
-	Mon,  5 May 2025 23:10:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XWMiJGQdvWwuHSRWrYBfYu+c/j3XrsmidY98seu+OKgi1mXDmbrnWISFBzFem9Fj4VdDVp8YDwcWK87KDfNFJlujP34dL+TOwpZhrVU+Zk8mkqxqODHKW9O6mP+hNMgHz9zjZFBm3MFW927tkLHN5+zV4B0kLT0Cke7V3Tiu8H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lnlrGXw7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBDF2C4CEEF;
+	Mon,  5 May 2025 23:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486633;
-	bh=84ob2P0SJpV/KFUDPucA4Ms5s6RGmV+qyDCLnlPHY1s=;
+	s=k20201202; t=1746486634;
+	bh=iiDhzHdQ/QqScp0AKppkDMN90q3HYcqsMN4wZ5m8cv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K64F21+g9EH4JW5T4mngj/bON68qDVegDai5G5JH1deU+1RThN2KGu0ukWywZqlpu
-	 uaTST8ugN3ZO7DExjz1Gmede9xkPwSbXYKn5PLu7eLnejaILonN1cf29NuJuB/3LdZ
-	 VsMwCrNLWjY/Iy32HzGkDMNmiubtBVIDBYbEpiVAj9vWIcomAiYMQYdwv59XWkAvZr
-	 HMBSB1TMaPPd0/Xb/Y2MH9DedDAxJqCivyJ5d22VZY8l/i4VKsSkxOZh3ZFBg1ZKGg
-	 FX95wA8dyYsU8qLeIVbJkjCrLxXk2EMPenx0K03n2UgbnYG9kWpXkozFaUz/A8soxZ
-	 GGYjWySlH6vJg==
+	b=lnlrGXw7IHw8lORrnXGW5YU01MgwYPERpgJ1jaZG1TMvQSHH149PGy+McnSbLqlMv
+	 MBSZc3+vyaAvFDS3sbeABl1WN26kDrsdnfR33cltFo/175OczDFjkW9SdmlKULifwW
+	 ez7iHgpd+uGSrzRHRV0tYvBAl8ABjJlBEpGgsoYFZPzHj9Kr1MbKP/9HZ2dy3K5bb/
+	 57glHjFM0QCPyA/jtFYmmataLrOMm5Hm8EGI+gO0nZfFMcZGR1J4CqmKu5nUnq23Bo
+	 jeCvSKTjWwhXTFYn8soXFFHb9pErC6MKyDjaU5xrYkvko0XQBcMcYPFnWclME02zNa
+	 EeUSMTOpMYVtw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	daniel.lezcano@linaro.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 126/212] cpuidle: menu: Avoid discarding useful information
-Date: Mon,  5 May 2025 19:04:58 -0400
-Message-Id: <20250505230624.2692522-126-sashal@kernel.org>
+	lars@metafoo.de,
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 127/212] media: adv7180: Disable test-pattern control on adv7180
+Date: Mon,  5 May 2025 19:04:59 -0400
+Message-Id: <20250505230624.2692522-127-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -64,68 +62,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 85975daeaa4d6ec560bfcd354fc9c08ad7f38888 ]
+[ Upstream commit a980bc5f56b0292336e408f657f79e574e8067c0 ]
 
-When giving up on making a high-confidence prediction,
-get_typical_interval() always returns UINT_MAX which means that the
-next idle interval prediction will be based entirely on the time till
-the next timer.  However, the information represented by the most
-recent intervals may not be completely useless in those cases.
+The register that enables selecting a test-pattern to be outputted in
+free-run mode (FREE_RUN_PAT_SEL[2:0]) is only available on adv7280 based
+devices, not the adv7180 based ones.
 
-Namely, the largest recent idle interval is an upper bound on the
-recently observed idle duration, so it is reasonable to assume that
-the next idle duration is unlikely to exceed it.  Moreover, this is
-still true after eliminating the suspected outliers if the sample
-set still under consideration is at least as large as 50% of the
-maximum sample set size.
+Add a flag to mark devices that are capable of generating test-patterns,
+and those that are not. And only register the control on supported
+devices.
 
-Accordingly, make get_typical_interval() return the current maximum
-recent interval value in that case instead of UINT_MAX.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reported-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Tested-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Tested-by: Christian Loehle <christian.loehle@arm.com>
-Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Link: https://patch.msgid.link/7770672.EvYhyI6sBW@rjwysocki.net
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/governors/menu.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/media/i2c/adv7180.c | 34 ++++++++++++++++++++++------------
+ 1 file changed, 22 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index c4922684f3058..4edac724983a4 100644
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -249,8 +249,19 @@ static unsigned int get_typical_interval(struct menu_device *data,
- 	 * This can deal with workloads that have long pauses interspersed
- 	 * with sporadic activity with a bunch of short pauses.
- 	 */
--	if ((divisor * 4) <= INTERVALS * 3)
-+	if (divisor * 4 <= INTERVALS * 3) {
-+		/*
-+		 * If there are sufficiently many data points still under
-+		 * consideration after the outliers have been eliminated,
-+		 * returning without a prediction would be a mistake because it
-+		 * is likely that the next interval will not exceed the current
-+		 * maximum, so return the latter in that case.
-+		 */
-+		if (divisor >= INTERVALS / 2)
-+			return max;
-+
- 		return UINT_MAX;
+diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
+index 216fe396973f2..46912a7b671a8 100644
+--- a/drivers/media/i2c/adv7180.c
++++ b/drivers/media/i2c/adv7180.c
+@@ -194,6 +194,7 @@ struct adv7180_state;
+ #define ADV7180_FLAG_V2			BIT(1)
+ #define ADV7180_FLAG_MIPI_CSI2		BIT(2)
+ #define ADV7180_FLAG_I2P		BIT(3)
++#define ADV7180_FLAG_TEST_PATTERN	BIT(4)
+ 
+ struct adv7180_chip_info {
+ 	unsigned int flags;
+@@ -673,11 +674,15 @@ static int adv7180_init_controls(struct adv7180_state *state)
+ 			  ADV7180_HUE_MAX, 1, ADV7180_HUE_DEF);
+ 	v4l2_ctrl_new_custom(&state->ctrl_hdl, &adv7180_ctrl_fast_switch, NULL);
+ 
+-	v4l2_ctrl_new_std_menu_items(&state->ctrl_hdl, &adv7180_ctrl_ops,
+-				      V4L2_CID_TEST_PATTERN,
+-				      ARRAY_SIZE(test_pattern_menu) - 1,
+-				      0, ARRAY_SIZE(test_pattern_menu) - 1,
+-				      test_pattern_menu);
++	if (state->chip_info->flags & ADV7180_FLAG_TEST_PATTERN) {
++		v4l2_ctrl_new_std_menu_items(&state->ctrl_hdl,
++					     &adv7180_ctrl_ops,
++					     V4L2_CID_TEST_PATTERN,
++					     ARRAY_SIZE(test_pattern_menu) - 1,
++					     0,
++					     ARRAY_SIZE(test_pattern_menu) - 1,
++					     test_pattern_menu);
 +	}
  
- 	thresh = max - 1;
- 	goto again;
+ 	state->sd.ctrl_handler = &state->ctrl_hdl;
+ 	if (state->ctrl_hdl.error) {
+@@ -1209,7 +1214,7 @@ static const struct adv7180_chip_info adv7182_info = {
+ };
+ 
+ static const struct adv7180_chip_info adv7280_info = {
+-	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_I2P,
++	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_I2P | ADV7180_FLAG_TEST_PATTERN,
+ 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN2) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN3) |
+@@ -1223,7 +1228,8 @@ static const struct adv7180_chip_info adv7280_info = {
+ };
+ 
+ static const struct adv7180_chip_info adv7280_m_info = {
+-	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 | ADV7180_FLAG_I2P,
++	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 | ADV7180_FLAG_I2P |
++		ADV7180_FLAG_TEST_PATTERN,
+ 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN2) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN3) |
+@@ -1244,7 +1250,8 @@ static const struct adv7180_chip_info adv7280_m_info = {
+ };
+ 
+ static const struct adv7180_chip_info adv7281_info = {
+-	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2,
++	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 |
++		ADV7180_FLAG_TEST_PATTERN,
+ 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN2) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN7) |
+@@ -1259,7 +1266,8 @@ static const struct adv7180_chip_info adv7281_info = {
+ };
+ 
+ static const struct adv7180_chip_info adv7281_m_info = {
+-	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2,
++	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 |
++		ADV7180_FLAG_TEST_PATTERN,
+ 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN2) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN3) |
+@@ -1279,7 +1287,8 @@ static const struct adv7180_chip_info adv7281_m_info = {
+ };
+ 
+ static const struct adv7180_chip_info adv7281_ma_info = {
+-	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2,
++	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 |
++		ADV7180_FLAG_TEST_PATTERN,
+ 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN2) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN3) |
+@@ -1304,7 +1313,7 @@ static const struct adv7180_chip_info adv7281_ma_info = {
+ };
+ 
+ static const struct adv7180_chip_info adv7282_info = {
+-	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_I2P,
++	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_I2P | ADV7180_FLAG_TEST_PATTERN,
+ 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN2) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN7) |
+@@ -1319,7 +1328,8 @@ static const struct adv7180_chip_info adv7282_info = {
+ };
+ 
+ static const struct adv7180_chip_info adv7282_m_info = {
+-	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 | ADV7180_FLAG_I2P,
++	.flags = ADV7180_FLAG_V2 | ADV7180_FLAG_MIPI_CSI2 | ADV7180_FLAG_I2P |
++		ADV7180_FLAG_TEST_PATTERN,
+ 	.valid_input_mask = BIT(ADV7182_INPUT_CVBS_AIN1) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN2) |
+ 		BIT(ADV7182_INPUT_CVBS_AIN3) |
 -- 
 2.39.5
 
