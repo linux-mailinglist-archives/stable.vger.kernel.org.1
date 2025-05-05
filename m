@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-140974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC578AAAD56
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:33:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E29AAAD03
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD2633B0FB6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:24:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03D211B67EC6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58D13D14D4;
-	Mon,  5 May 2025 23:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147802F3675;
+	Mon,  5 May 2025 23:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ugBSKILU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eujfoZYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4BF2F70D4;
-	Mon,  5 May 2025 23:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E212F70F3;
+	Mon,  5 May 2025 23:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487091; cv=none; b=av6YyKsmvt6Wz3AzGswEYPFZZLqsqVB41Gpkjz5jym5FvqnkgqeMTooRKUfzkrn60zF44slsOCK/TsFSWLSv3oazhJ7ETaZIjWcBrRa3U8A2CMzP5IBzTTETNXlP+CKmGxZGWgKnMCB9S9gP3BPQl8ZSUNw0CJUXMACB8MZW7Cg=
+	t=1746487093; cv=none; b=FrAPeyu78S+rQkfx4ODgNO3mP5BUWMPlr3Mn9TDdkLRZDUk79TRIuo3GMM/j5GnXjN4HhfHLU5zoWFcQeNy/a7fO/Mv2JpgwOcVHX+1yDHMZZvwRBKCx/oEwmi6oBwW7D7YgHnNvF+SGiS6FbZOLmCUx7fUq6uErm88Bhh93VWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487091; c=relaxed/simple;
-	bh=zERVQQNvuOQinF99ex3FLAIPNtpSUKafbHMHhaIZqb0=;
+	s=arc-20240116; t=1746487093; c=relaxed/simple;
+	bh=6XW+BGhGYA0ZBnIVGxYRGtcl7XkNpFc4+JVYXCPQkew=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nb3CLAr+NEamINajw2r0p8LwbougpfTQUUr1DO1AixRpV7FsyI5GBLJ3sjrX1ovUUOrDuILb2IV072qJiVxgrIhvspBau0YlvD448R0YMCpct2KbE0Yn+NoxjT7qx+XMfRDDOsYphFF/sBWjSR6ieGc6mc8Di9jNGJ1V13S0hhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ugBSKILU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D464DC4CEED;
-	Mon,  5 May 2025 23:18:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dDHluRf8YivoMVJIq193B9ODi7LKFy0jGezmgNcG7//8sWA/A8r/06dn8+fibO+lFjTuzHUoGIFAM1DlqOBjzCvwcs1hW7KdOfj10V6JWwl45nFlCq1AoHLV60TuSBCBSfQU1oMjdyvw1JSLzdUrS3LqaiEG5ELImtH2kHk3GPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eujfoZYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A2EC4CEEE;
+	Mon,  5 May 2025 23:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487090;
-	bh=zERVQQNvuOQinF99ex3FLAIPNtpSUKafbHMHhaIZqb0=;
+	s=k20201202; t=1746487091;
+	bh=6XW+BGhGYA0ZBnIVGxYRGtcl7XkNpFc4+JVYXCPQkew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ugBSKILUJjZPk6np0q85BaKCo9LKD0jJzCQ3jo13yTXoLzedTqUqHThgcaOKkU6u9
-	 d43J332pJ74q6nXqgaLg2IRBe/g8S3wKg3pnLTy38xDBQTx2Izt0oi4puPW6GcUqvj
-	 gKo+N/6h1DX1Vg2pfgJIfuIv02T1n9zhi5cECgWLJXdiTuvEx5RXeu5RRsKQRCRJvl
-	 nDFm8r3jmCsUuUitkx7+TurYpfQYxaPPdQNZ4qJz93bbspJtringu9/T+63UJFiPaq
-	 SM2b0dY49FbHhwrBCLwQrIU6bnGDHjiKnCdhwPF/qhkfgjqla0i1psIsjh0+snpcZr
-	 Szs6jJSquYNjA==
+	b=eujfoZYiW9LyUUp5GaukLdBlYTKAZmxlsv3lvmVG0MootJ9WtYGaUJ0TjWrMcJFrW
+	 qFCtcIDU9k3XVvKfDPAf2O0ZC2Y1mwCwQFp0gU61TZuHU1HfPBxk5naq7/1gL4qlwn
+	 ofPIlrBlAgBkKWBmFV65cRoMkce5WkiQrED4fKwnHsG7ZXa3HQue/JhDzGZFauNVSv
+	 3XkCCn68JJ7XujtUdgzakQnmy+peMASZheQNmXQiH6xILgFxh3JxlGtkFQHOJQWj6D
+	 zDjaB8yOGlGKrLlBVw6RHwN2CHtzcEcDz9P+6ohyntnowYfh5jxG0/S8V0r+xE8I9+
+	 Bt4758ChocLKw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Isaac Scott <isaac.scott@ideasonboard.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Rosen Penev <rosenp@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com
-Subject: [PATCH AUTOSEL 5.15 150/153] regulator: ad5398: Add device tree support
-Date: Mon,  5 May 2025 19:13:17 -0400
-Message-Id: <20250505231320.2695319-150-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 151/153] wifi: ath9k: return by of_get_mac_address
+Date: Mon,  5 May 2025 19:13:18 -0400
+Message-Id: <20250505231320.2695319-151-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -61,66 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Isaac Scott <isaac.scott@ideasonboard.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 5a6a461079decea452fdcae955bccecf92e07e97 ]
+[ Upstream commit dfffb317519f88534bb82797f055f0a2fd867e7b ]
 
-Previously, the ad5398 driver used only platform_data, which is
-deprecated in favour of device tree. This caused the AD5398 to fail to
-probe as it could not load its init_data. If the AD5398 has a device
-tree node, pull the init_data from there using
-of_get_regulator_init_data.
+When using nvmem, ath9k could potentially be loaded before nvmem, which
+loads after mtd. This is an issue if DT contains an nvmem mac address.
 
-Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-Acked-by: Michael Hennerich <michael.hennerich@analog.com>
-Link: https://patch.msgid.link/20250128173143.959600-4-isaac.scott@ideasonboard.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+If nvmem is not ready in time for ath9k, -EPROBE_DEFER is returned. Pass
+it to _probe so that ath9k can properly grab a potentially present MAC
+address.
+
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Link: https://patch.msgid.link/20241105222326.194417-1-rosenp@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/ad5398.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath9k/init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/ad5398.c b/drivers/regulator/ad5398.c
-index 75f432f61e919..f4d6e62bd963e 100644
---- a/drivers/regulator/ad5398.c
-+++ b/drivers/regulator/ad5398.c
-@@ -14,6 +14,7 @@
- #include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
-+#include <linux/regulator/of_regulator.h>
+diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+index e9a36dd7144f1..bbc9d570c4e3d 100644
+--- a/drivers/net/wireless/ath/ath9k/init.c
++++ b/drivers/net/wireless/ath/ath9k/init.c
+@@ -639,7 +639,9 @@ static int ath9k_of_init(struct ath_softc *sc)
+ 		ah->ah_flags |= AH_NO_EEP_SWAP;
+ 	}
  
- #define AD5398_CURRENT_EN_MASK	0x8000
+-	of_get_mac_address(np, common->macaddr);
++	ret = of_get_mac_address(np, common->macaddr);
++	if (ret == -EPROBE_DEFER)
++		return ret;
  
-@@ -221,15 +222,20 @@ static int ad5398_probe(struct i2c_client *client,
- 	const struct ad5398_current_data_format *df =
- 			(struct ad5398_current_data_format *)id->driver_data;
- 
--	if (!init_data)
--		return -EINVAL;
--
- 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
- 	if (!chip)
- 		return -ENOMEM;
- 
- 	config.dev = &client->dev;
-+	if (client->dev.of_node)
-+		init_data = of_get_regulator_init_data(&client->dev,
-+						       client->dev.of_node,
-+						       &ad5398_reg);
-+	if (!init_data)
-+		return -EINVAL;
-+
- 	config.init_data = init_data;
-+	config.of_node = client->dev.of_node;
- 	config.driver_data = chip;
- 
- 	chip->client = client;
+ 	return 0;
+ }
 -- 
 2.39.5
 
