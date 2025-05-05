@@ -1,73 +1,60 @@
-Return-Path: <stable+bounces-140064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C372AAA4A7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:32:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA9DAAA490
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:31:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76D2F1B60612
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:31:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96A147A7214
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687A82798EE;
-	Mon,  5 May 2025 22:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F5E302A44;
+	Mon,  5 May 2025 22:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XpJzzTvh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bb+3iXLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBA430223C;
-	Mon,  5 May 2025 22:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7D7301A6D;
+	Mon,  5 May 2025 22:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484013; cv=none; b=edd9/n1m8Jyng/oZ2t7DszeaohsA6wxDB3P9aA1f43Q2Iq/SexyZaINx1RfNne+/n+b34rG0olsfu494zeHu0SIkwPfzD4B5di65+TVDxZ8EskBBAb+zPdI4i+LxwmUUtGVMshCaG6Wk2Kht4cRoX3YNB8Zaz7gllewOUlyRiy4=
+	t=1746484014; cv=none; b=KZeAJqm3710XKyols08wsDysjb27nWbZDbUJAysJgvlq0baqVFipWy+tOa4SanSjUHK59ycbiaNNqsPAdXd31E+vtNFv8+b2zHtiJUBPdgB34zxUQcHHBOIXxV1fi77a+upy5zQd5zYOTjaLfo9dB/S0KCfach9aeEfL+tNPOa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484013; c=relaxed/simple;
-	bh=uV8i8xX3QK1VfInKsw8e5L4q6lQiJySUKPZUNex7KHQ=;
+	s=arc-20240116; t=1746484014; c=relaxed/simple;
+	bh=Sg740NCinBODe5OAdZjiDdMoUJxeX9MNjbl7CHpBcqI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jNURP/LDfwE2+GxuG20cvyX70zGAMY8WriuXVou/9y4nqUpIwkYoAnFu7+YJ72SDaKx4tFzdd4ebRJe98GiiaO4k0SlAi3O7RYqg58IfRpYM/wyKnQeA/RkaZs/3dPuJvNO5ZpduNBJtMuTrIU0lj8Gep4Ac4Iw9K/OdukbFtDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XpJzzTvh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE67C4CEE4;
-	Mon,  5 May 2025 22:26:50 +0000 (UTC)
+	 MIME-Version; b=Iw6imlyc0/EoIP76w96SmBbcweQyjHuYJr0xLRlVHusMq1vkEZv3YgTTEHy9HfbgSrgAponEuIcfRDDXQPSXVtB4WY19AX5UwvAMUkwf3IOYNtIaYr5/1pvVd1uh4145yiTcAHhjEpZGmlOjnK5JwUNQfeTVRDOkrlixiEY9MMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bb+3iXLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60FC3C4CEEF;
+	Mon,  5 May 2025 22:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484013;
-	bh=uV8i8xX3QK1VfInKsw8e5L4q6lQiJySUKPZUNex7KHQ=;
+	s=k20201202; t=1746484014;
+	bh=Sg740NCinBODe5OAdZjiDdMoUJxeX9MNjbl7CHpBcqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XpJzzTvhhoOhgPQNSPxkPFUqULlK/figwUt4RAy4MMZKvn4X3Q6OECRKeYqY4+c6a
-	 lGcS76L2Z3+h7Vg0bRMx0S6sINFzzQiebeoqNi+XZtN6cgoCdpgHpLQAuKXyjJLytI
-	 k5Qz5ztw7C+G8BbJSNfSgy0QB6FJV9VguJEq+G7Igdf2BKtFPWM7pAhikEkMWvkCQQ
-	 Vi410MKNilyhcSsWPZ/AbrFQR2qyGTED1sv9YFnVLdTTfk3Y0WldLMBWEvr7/WeCvx
-	 7Qw0b15T7dgr+c1w+citmrECek9i4+cTr6YcAldCVZ3ViCT/S22KbsmyCHQKAiLUrD
-	 i1YWlbx4xir2g==
+	b=bb+3iXLZnfjGfue9oExBZuMHuZzwrmgRNST8h0eVDaCL4wrODLMDRWjUjr60+iuGV
+	 HVtNL+nsBsSGzu4EwYm6G1C5L4agXPJkfl8a4IcxyUSljbcbKeKZgHOGFgqVscuHFR
+	 Y7wr11Vew5w4GwlSldq687cga6+1XiTve+MKin8dxRiigdJGnRxjEK3xMGD/Xy/TQh
+	 yZCoUtn4D3KsHXRzl9kAhTxqCFMpgEseoamD1mYsHIb7EpBuf0FTzOf32QCxE22V5y
+	 AZetWpz8Q6KabLbh5ta57oyySV+tyb3B1H8DDi4K4YdaILmD+psJzwYdYWqrc2ijd/
+	 0ghbnQTwYGlog==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Borislav Petkov <bp@alien8.de>,
-	Sean Christopherson <seanjc@google.com>,
+Cc: Amery Hung <amery.hung@bytedance.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	peterz@infradead.org,
-	jpoimboe@kernel.org,
-	corbet@lwn.net,
-	mingo@redhat.com,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	pbonzini@redhat.com,
-	thomas.lendacky@amd.com,
-	mario.limonciello@amd.com,
-	perry.yuan@amd.com,
-	kai.huang@intel.com,
-	xiaoyao.li@intel.com,
-	tony.luck@intel.com,
-	xin3.li@intel.com,
-	kan.liang@linux.intel.com,
-	linux-doc@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 317/642] x86/bugs: KVM: Add support for SRSO_MSR_FIX
-Date: Mon,  5 May 2025 18:08:53 -0400
-Message-Id: <20250505221419.2672473-317-sashal@kernel.org>
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 318/642] bpf: Search and add kfuncs in struct_ops prologue and epilogue
+Date: Mon,  5 May 2025 18:08:54 -0400
+Message-Id: <20250505221419.2672473-318-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -82,206 +69,84 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Borislav Petkov <bp@alien8.de>
+From: Amery Hung <amery.hung@bytedance.com>
 
-[ Upstream commit 8442df2b49ed9bcd67833ad4f091d15ac91efd00 ]
+[ Upstream commit d519594ee2445d7cd1ad51f4db4cee58f8213400 ]
 
-Add support for
+Currently, add_kfunc_call() is only invoked once before the main
+verification loop. Therefore, the verifier could not find the
+bpf_kfunc_btf_tab of a new kfunc call which is not seen in user defined
+struct_ops operators but introduced in gen_prologue or gen_epilogue
+during do_misc_fixup(). Fix this by searching kfuncs in the patching
+instruction buffer and add them to prog->aux->kfunc_tab.
 
-  CPUID Fn8000_0021_EAX[31] (SRSO_MSR_FIX). If this bit is 1, it
-  indicates that software may use MSR BP_CFG[BpSpecReduce] to mitigate
-  SRSO.
-
-Enable BpSpecReduce to mitigate SRSO across guest/host boundaries.
-
-Switch back to enabling the bit when virtualization is enabled and to
-clear the bit when virtualization is disabled because using a MSR slot
-would clear the bit when the guest is exited and any training the guest
-has done, would potentially influence the host kernel when execution
-enters the kernel and hasn't VMRUN the guest yet.
-
-More detail on the public thread in Link below.
-
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20241202120416.6054-1-bp@kernel.org
+Signed-off-by: Amery Hung <amery.hung@bytedance.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20250225233545.285481-1-ameryhung@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/hw-vuln/srso.rst | 13 ++++++++++++
- arch/x86/include/asm/cpufeatures.h         |  4 ++++
- arch/x86/include/asm/msr-index.h           |  1 +
- arch/x86/kernel/cpu/bugs.c                 | 24 ++++++++++++++++++----
- arch/x86/kvm/svm/svm.c                     |  6 ++++++
- arch/x86/lib/msr.c                         |  2 ++
- 6 files changed, 46 insertions(+), 4 deletions(-)
+ kernel/bpf/verifier.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/hw-vuln/srso.rst b/Documentation/admin-guide/hw-vuln/srso.rst
-index 2ad1c05b8c883..66af95251a3d1 100644
---- a/Documentation/admin-guide/hw-vuln/srso.rst
-+++ b/Documentation/admin-guide/hw-vuln/srso.rst
-@@ -104,7 +104,20 @@ The possible values in this file are:
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index db95b76f5c139..e2801472c0ae4 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -3206,6 +3206,21 @@ bpf_jit_find_kfunc_model(const struct bpf_prog *prog,
+ 	return res ? &res->func_model : NULL;
+ }
  
-    (spec_rstack_overflow=ibpb-vmexit)
- 
-+ * 'Mitigation: Reduced Speculation':
- 
-+   This mitigation gets automatically enabled when the above one "IBPB on
-+   VMEXIT" has been selected and the CPU supports the BpSpecReduce bit.
++static int add_kfunc_in_insns(struct bpf_verifier_env *env,
++			      struct bpf_insn *insn, int cnt)
++{
++	int i, ret;
 +
-+   It gets automatically enabled on machines which have the
-+   SRSO_USER_KERNEL_NO=1 CPUID bit. In that case, the code logic is to switch
-+   to the above =ibpb-vmexit mitigation because the user/kernel boundary is
-+   not affected anymore and thus "safe RET" is not needed.
-+
-+   After enabling the IBPB on VMEXIT mitigation option, the BpSpecReduce bit
-+   is detected (functionality present on all such machines) and that
-+   practically overrides IBPB on VMEXIT as it has a lot less performance
-+   impact and takes care of the guest->host attack vector too.
- 
- In order to exploit vulnerability, an attacker needs to:
- 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 508c0dad116bc..43653f2704c93 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -468,6 +468,10 @@
- #define X86_FEATURE_IBPB_BRTYPE		(20*32+28) /* MSR_PRED_CMD[IBPB] flushes all branch type predictions */
- #define X86_FEATURE_SRSO_NO		(20*32+29) /* CPU is not affected by SRSO */
- #define X86_FEATURE_SRSO_USER_KERNEL_NO	(20*32+30) /* CPU is not affected by SRSO across user/kernel boundaries */
-+#define X86_FEATURE_SRSO_BP_SPEC_REDUCE	(20*32+31) /*
-+						    * BP_CFG[BpSpecReduce] can be used to mitigate SRSO for VMs.
-+						    * (SRSO_MSR_FIX in the official doc).
-+						    */
- 
- /*
-  * Extended auxiliary flags: Linux defined - for features scattered in various
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 72765b2fe0d87..d35519b337ba2 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -721,6 +721,7 @@
- 
- /* Zen4 */
- #define MSR_ZEN4_BP_CFG                 0xc001102e
-+#define MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT 4
- #define MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT 5
- 
- /* Fam 19h MSRs */
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 4f9898836da13..fee115316dd3e 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2526,6 +2526,7 @@ enum srso_mitigation {
- 	SRSO_MITIGATION_SAFE_RET,
- 	SRSO_MITIGATION_IBPB,
- 	SRSO_MITIGATION_IBPB_ON_VMEXIT,
-+	SRSO_MITIGATION_BP_SPEC_REDUCE,
- };
- 
- enum srso_mitigation_cmd {
-@@ -2543,7 +2544,8 @@ static const char * const srso_strings[] = {
- 	[SRSO_MITIGATION_MICROCODE]		= "Vulnerable: Microcode, no safe RET",
- 	[SRSO_MITIGATION_SAFE_RET]		= "Mitigation: Safe RET",
- 	[SRSO_MITIGATION_IBPB]			= "Mitigation: IBPB",
--	[SRSO_MITIGATION_IBPB_ON_VMEXIT]	= "Mitigation: IBPB on VMEXIT only"
-+	[SRSO_MITIGATION_IBPB_ON_VMEXIT]	= "Mitigation: IBPB on VMEXIT only",
-+	[SRSO_MITIGATION_BP_SPEC_REDUCE]	= "Mitigation: Reduced Speculation"
- };
- 
- static enum srso_mitigation srso_mitigation __ro_after_init = SRSO_MITIGATION_NONE;
-@@ -2582,7 +2584,7 @@ static void __init srso_select_mitigation(void)
- 	    srso_cmd == SRSO_CMD_OFF) {
- 		if (boot_cpu_has(X86_FEATURE_SBPB))
- 			x86_pred_cmd = PRED_CMD_SBPB;
--		return;
-+		goto out;
- 	}
- 
- 	if (has_microcode) {
-@@ -2594,7 +2596,7 @@ static void __init srso_select_mitigation(void)
- 		 */
- 		if (boot_cpu_data.x86 < 0x19 && !cpu_smt_possible()) {
- 			setup_force_cpu_cap(X86_FEATURE_SRSO_NO);
--			return;
-+			goto out;
- 		}
- 
- 		if (retbleed_mitigation == RETBLEED_MITIGATION_IBPB) {
-@@ -2674,6 +2676,12 @@ static void __init srso_select_mitigation(void)
- 
- ibpb_on_vmexit:
- 	case SRSO_CMD_IBPB_ON_VMEXIT:
-+		if (boot_cpu_has(X86_FEATURE_SRSO_BP_SPEC_REDUCE)) {
-+			pr_notice("Reducing speculation to address VM/HV SRSO attack vector.\n");
-+			srso_mitigation = SRSO_MITIGATION_BP_SPEC_REDUCE;
-+			break;
++	for (i = 0; i < cnt; i++, insn++) {
++		if (bpf_pseudo_kfunc_call(insn)) {
++			ret = add_kfunc_call(env, insn->imm, insn->off);
++			if (ret < 0)
++				return ret;
 +		}
++	}
++	return 0;
++}
 +
- 		if (IS_ENABLED(CONFIG_MITIGATION_IBPB_ENTRY)) {
- 			if (has_microcode) {
- 				setup_force_cpu_cap(X86_FEATURE_IBPB_ON_VMEXIT);
-@@ -2695,7 +2703,15 @@ static void __init srso_select_mitigation(void)
+ static int add_subprog_and_kfunc(struct bpf_verifier_env *env)
+ {
+ 	struct bpf_subprog_info *subprog = env->subprog_info;
+@@ -20334,7 +20349,7 @@ static int convert_ctx_accesses(struct bpf_verifier_env *env)
+ {
+ 	struct bpf_subprog_info *subprogs = env->subprog_info;
+ 	const struct bpf_verifier_ops *ops = env->ops;
+-	int i, cnt, size, ctx_field_size, delta = 0, epilogue_cnt = 0;
++	int i, cnt, size, ctx_field_size, ret, delta = 0, epilogue_cnt = 0;
+ 	const int insn_cnt = env->prog->len;
+ 	struct bpf_insn *epilogue_buf = env->epilogue_buf;
+ 	struct bpf_insn *insn_buf = env->insn_buf;
+@@ -20363,6 +20378,10 @@ static int convert_ctx_accesses(struct bpf_verifier_env *env)
+ 				return -ENOMEM;
+ 			env->prog = new_prog;
+ 			delta += cnt - 1;
++
++			ret = add_kfunc_in_insns(env, epilogue_buf, epilogue_cnt - 1);
++			if (ret < 0)
++				return ret;
+ 		}
  	}
  
- out:
--	pr_info("%s\n", srso_strings[srso_mitigation]);
-+	/*
-+	 * Clear the feature flag if this mitigation is not selected as that
-+	 * feature flag controls the BpSpecReduce MSR bit toggling in KVM.
-+	 */
-+	if (srso_mitigation != SRSO_MITIGATION_BP_SPEC_REDUCE)
-+		setup_clear_cpu_cap(X86_FEATURE_SRSO_BP_SPEC_REDUCE);
+@@ -20383,6 +20402,10 @@ static int convert_ctx_accesses(struct bpf_verifier_env *env)
+ 
+ 			env->prog = new_prog;
+ 			delta += cnt - 1;
 +
-+	if (srso_mitigation != SRSO_MITIGATION_NONE)
-+		pr_info("%s\n", srso_strings[srso_mitigation]);
- }
- 
- #undef pr_fmt
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index e67de787fc714..0660b85883de4 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -607,6 +607,9 @@ static void svm_disable_virtualization_cpu(void)
- 	kvm_cpu_svm_disable();
- 
- 	amd_pmu_disable_virt();
-+
-+	if (cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
-+		msr_clear_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
- }
- 
- static int svm_enable_virtualization_cpu(void)
-@@ -684,6 +687,9 @@ static int svm_enable_virtualization_cpu(void)
- 		rdmsr(MSR_TSC_AUX, sev_es_host_save_area(sd)->tsc_aux, msr_hi);
++			ret = add_kfunc_in_insns(env, insn_buf, cnt - 1);
++			if (ret < 0)
++				return ret;
+ 		}
  	}
  
-+	if (cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
-+		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
-+
- 	return 0;
- }
- 
-diff --git a/arch/x86/lib/msr.c b/arch/x86/lib/msr.c
-index 4bf4fad5b148e..5a18ecc04a6c3 100644
---- a/arch/x86/lib/msr.c
-+++ b/arch/x86/lib/msr.c
-@@ -103,6 +103,7 @@ int msr_set_bit(u32 msr, u8 bit)
- {
- 	return __flip_bit(msr, bit, true);
- }
-+EXPORT_SYMBOL_GPL(msr_set_bit);
- 
- /**
-  * msr_clear_bit - Clear @bit in a MSR @msr.
-@@ -118,6 +119,7 @@ int msr_clear_bit(u32 msr, u8 bit)
- {
- 	return __flip_bit(msr, bit, false);
- }
-+EXPORT_SYMBOL_GPL(msr_clear_bit);
- 
- #ifdef CONFIG_TRACEPOINTS
- void do_trace_write_msr(unsigned int msr, u64 val, int failed)
 -- 
 2.39.5
 
