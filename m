@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-141710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A38AAB5C8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:36:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBCE2AAB598
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:32:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36B381BC0506
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:32:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 148D17B310E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F4C29B8CB;
-	Tue,  6 May 2025 00:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC73D34C976;
+	Tue,  6 May 2025 00:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hvAPqnuF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D8T4pYfT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE02F37EA72;
-	Mon,  5 May 2025 23:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E7A28B7EB;
+	Mon,  5 May 2025 23:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487317; cv=none; b=JmV+q33VyJJaMxjGPJBYgKZLFAwPmDykjOt5Vk3pELBqNQNl4g6hzcnwV2c/p5616bGen0rAge20viWMXfsh/rxjA/vzY7s8+JHi9fJxrbbGpqDy0eBdViwkcx15QG7eZXz9njOamTkQB1xW2Rurr60h6Tv0RseZttn4OMgT7kQ=
+	t=1746487322; cv=none; b=UGD8cBL5JO+XVdXl64/KUOBC2BBNQQruckPCkUTmtgwRFPiIuDHcxWAyPTo0xo5uGUAQF554Q4P5gb823ZjKXBRm5V49RBCEakUmI5IJjrJ7AEN9DYjAZjAroeW/gxhb3j9X4/uTeG9Rgpge3JJJlyiDnmXe8EbDA8DiIQRvbAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487317; c=relaxed/simple;
-	bh=D7yTrFE188wv1sO2UwjIZZtfQPAmYQjWziJlrOLJbv8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q2NgCI6kJOArkEqwuyGZ9BzGt8e7vKmQAPBz/EpFgXonZEwNQBxKkvoCfHmVUOOUlArOUrkTwcT1FlAPefyNZXCizS/jphWJU5iL0GroAgkYn76YvBPWSHHVEd4//fmBrMMhst2u5d8kLguNqE+47Y+bTKZnYbvRosTBwNcKLjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hvAPqnuF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE31C4CEE4;
-	Mon,  5 May 2025 23:21:55 +0000 (UTC)
+	s=arc-20240116; t=1746487322; c=relaxed/simple;
+	bh=T7EMemMyTU2IT4FDrEcyhH1Vkm79OdN/MGy0fEqQJRw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=scBBIRv2UyIRTWceZKXht2p+6yUWKDMg5hZ4AmzBCdZnZ8V4bHt3vbRH7Xtr7o5rWyIRHwkdIfegIb69EqOFMTiTJ5+VdBIYzVanRZLEEKMY1yDZwhdHkAX7iVzpnrBS3A4dCiqUuacujaZyebtCgTXt5ljKwgWaV9LkadQKujE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D8T4pYfT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB351C4CEED;
+	Mon,  5 May 2025 23:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487316;
-	bh=D7yTrFE188wv1sO2UwjIZZtfQPAmYQjWziJlrOLJbv8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=hvAPqnuFE2IaBSPX0HQH1FbKNmuDPHas5hitzGTv2jpFYTwkppVnA5oakg7/yLIIj
-	 vUqGoXTtkRZrwMxU0edC8VuyIuDkg0eftsOLE8MdaKFP9i8D5Hegu2fgYztflrADKF
-	 dkFbCR3IRhgSBpOWWNcCczPJehqIeWPCef9w+jc8D22bdrqJpx9Xr6g3dc6jDCLjXh
-	 Q5/JgJ0lvyXzjJJCevv2s/Nt2Ir1msiHo5LjDMv+Aq/sf+o0iqC3QSmL1Def/GhWoP
-	 dFNBMEbOrZvqXxGljfeNm8NK4T3neALNeAESY1dYYuTjREVSSPn1E0yT/uX6eVVPCw
-	 3GqXfkJ4t3ZUQ==
+	s=k20201202; t=1746487320;
+	bh=T7EMemMyTU2IT4FDrEcyhH1Vkm79OdN/MGy0fEqQJRw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=D8T4pYfTe7x/axMCcRxFSFL5QitGI/VwpGO8qtP6G44ksBVduG67gayF2yQkWQrvx
+	 AyawY9sOL0wQl8yShEabakqGQjBss/DAff4yK/N7LzdeX1Kx1RJ1fUODHYnV4+nN/J
+	 EVGNDi1Or5XUFCxsoUwYMGusSkHmZByHxMV8ZA+KMNScLYTdGPZQxaiHrT2karx5HN
+	 +P6/XF6bgERpTxpw0H1iDPixk0ZR8WSNON69VsSPlwEqmtdNFNRsqsICKd0xB6nt0g
+	 R1HerTdkQLeduEInM7Omh8/3OQXwvSvHoPzPfS8SRVgIwKUnr3iAATUnzjCH9esm8R
+	 4xyrlBFvAiBkg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+Cc: Zsolt Kajtar <soci@c64.rulez.org>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 01/79] kconfig: merge_config: use an empty file as initfile
-Date: Mon,  5 May 2025 19:20:33 -0400
-Message-Id: <20250505232151.2698893-1-sashal@kernel.org>
+	simona@ffwll.ch,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.4 04/79] fbdev: core: tileblit: Implement missing margin clearing for tileblit
+Date: Mon,  5 May 2025 19:20:36 -0400
+Message-Id: <20250505232151.2698893-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
+References: <20250505232151.2698893-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,46 +67,93 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Gomez <da.gomez@samsung.com>
+From: Zsolt Kajtar <soci@c64.rulez.org>
 
-[ Upstream commit a26fe287eed112b4e21e854f173c8918a6a8596d ]
+[ Upstream commit 76d3ca89981354e1f85a3e0ad9ac4217d351cc72 ]
 
-The scripts/kconfig/merge_config.sh script requires an existing
-$INITFILE (or the $1 argument) as a base file for merging Kconfig
-fragments. However, an empty $INITFILE can serve as an initial starting
-point, later referenced by the KCONFIG_ALLCONFIG Makefile variable
-if -m is not used. This variable can point to any configuration file
-containing preset config symbols (the merged output) as stated in
-Documentation/kbuild/kconfig.rst. When -m is used $INITFILE will
-contain just the merge output requiring the user to run make (i.e.
-KCONFIG_ALLCONFIG=<$INITFILE> make <allnoconfig/alldefconfig> or make
-olddefconfig).
+I was wondering why there's garbage at the bottom of the screen when
+tile blitting is used with an odd mode like 1080, 600 or 200. Sure there's
+only space for half a tile but the same area is clean when the buffer
+is bitmap.
 
-Instead of failing when `$INITFILE` is missing, create an empty file and
-use it as the starting point for merges.
+Then later I found that it's supposed to be cleaned but that's not
+implemented. So I took what's in bitblit and adapted it for tileblit.
 
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+This implementation was tested for both the horizontal and vertical case,
+and now does the same as what's done for bitmap buffers.
+
+If anyone is interested to reproduce the problem then I could bet that'd
+be on a S3 or Ark. Just set up a mode with an odd line count and make
+sure that the virtual size covers the complete tile at the bottom. E.g.
+for 600 lines that's 608 virtual lines for a 16 tall tile. Then the
+bottom area should be cleaned.
+
+For the right side it's more difficult as there the drivers won't let an
+odd size happen, unless the code is modified. But once it reports back a
+few pixel columns short then fbcon won't use the last column. With the
+patch that column is now clean.
+
+Btw. the virtual size should be rounded up by the driver for both axes
+(not only the horizontal) so that it's dividable by the tile size.
+That's a driver bug but correcting it is not in scope for this patch.
+
+Implement missing margin clearing for tileblit
+
+Signed-off-by: Zsolt Kajtar <soci@c64.rulez.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/merge_config.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/core/tileblit.c | 37 ++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/kconfig/merge_config.sh b/scripts/kconfig/merge_config.sh
-index d7d5c58b8b6aa..557f37f481fdf 100755
---- a/scripts/kconfig/merge_config.sh
-+++ b/scripts/kconfig/merge_config.sh
-@@ -98,8 +98,8 @@ INITFILE=$1
- shift;
+diff --git a/drivers/video/fbdev/core/tileblit.c b/drivers/video/fbdev/core/tileblit.c
+index adff8d6ffe6f9..64c60fcb92d75 100644
+--- a/drivers/video/fbdev/core/tileblit.c
++++ b/drivers/video/fbdev/core/tileblit.c
+@@ -77,7 +77,42 @@ static void tile_putcs(struct vc_data *vc, struct fb_info *info,
+ static void tile_clear_margins(struct vc_data *vc, struct fb_info *info,
+ 			       int color, int bottom_only)
+ {
+-	return;
++	unsigned int cw = vc->vc_font.width;
++	unsigned int ch = vc->vc_font.height;
++	unsigned int rw = info->var.xres - (vc->vc_cols*cw);
++	unsigned int bh = info->var.yres - (vc->vc_rows*ch);
++	unsigned int rs = info->var.xres - rw;
++	unsigned int bs = info->var.yres - bh;
++	unsigned int vwt = info->var.xres_virtual / cw;
++	unsigned int vht = info->var.yres_virtual / ch;
++	struct fb_tilerect rect;
++
++	rect.index = vc->vc_video_erase_char &
++		((vc->vc_hi_font_mask) ? 0x1ff : 0xff);
++	rect.fg = color;
++	rect.bg = color;
++
++	if ((int) rw > 0 && !bottom_only) {
++		rect.sx = (info->var.xoffset + rs + cw - 1) / cw;
++		rect.sy = 0;
++		rect.width = (rw + cw - 1) / cw;
++		rect.height = vht;
++		if (rect.width + rect.sx > vwt)
++			rect.width = vwt - rect.sx;
++		if (rect.sx < vwt)
++			info->tileops->fb_tilefill(info, &rect);
++	}
++
++	if ((int) bh > 0) {
++		rect.sx = info->var.xoffset / cw;
++		rect.sy = (info->var.yoffset + bs) / ch;
++		rect.width = rs / cw;
++		rect.height = (bh + ch - 1) / ch;
++		if (rect.height + rect.sy > vht)
++			rect.height = vht - rect.sy;
++		if (rect.sy < vht)
++			info->tileops->fb_tilefill(info, &rect);
++	}
+ }
  
- if [ ! -r "$INITFILE" ]; then
--	echo "The base file '$INITFILE' does not exist.  Exit." >&2
--	exit 1
-+	echo "The base file '$INITFILE' does not exist. Creating one..." >&2
-+	touch "$INITFILE"
- fi
- 
- MERGE_LIST=$*
+ static void tile_cursor(struct vc_data *vc, struct fb_info *info, int mode,
 -- 
 2.39.5
 
