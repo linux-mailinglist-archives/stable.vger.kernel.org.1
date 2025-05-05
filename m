@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-140734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 338B8AAAB03
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:49:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D135CAAAAE8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:47:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 458BF189F8E1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:46:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29A004A1F2A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14B938AF58;
-	Mon,  5 May 2025 23:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72402F378D;
+	Mon,  5 May 2025 23:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OadaC4z7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i0OCeDgK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA9D38C427;
-	Mon,  5 May 2025 23:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE18F38E925;
+	Mon,  5 May 2025 23:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486093; cv=none; b=U3cmiCwTQwx9ouaXWAL7rgqetOy+QQ4wRipsg6RFezGUu/1Iwbvl+KhiVpUrxreecgV7w0vplHpejJMqzXE1sG2TO/F8ExSsvw5HKKJB1jLooFJuq/ztLeWCSZSG9MPIJZpZ27RPJVXDlbHLyxb0TUoLC1bS2JofClW4YzQMQXQ=
+	t=1746486121; cv=none; b=rP3JZmXm68PCxgBr3k3jF9zIzL8tx+j1a62uxK4GLIGKab82TsmP7+uZJ4Cik4fmLVEqECx6/OybgQyopVq8g92KykrrMU943I+zWiip3WDksUw/1IjKvbUQKvdeNNnLwKq3lfy+3ZKGc4Wz5izE5vzvRzpF07+YYwAf8IQUUqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486093; c=relaxed/simple;
-	bh=qWI4Veu+G4Y/XLuv+c8eCI1sefPk1C68m2Dnv+2qFFs=;
+	s=arc-20240116; t=1746486121; c=relaxed/simple;
+	bh=aQmcffE2frTwO79SM9iuPM4Uqr261KMlbJWEEZMnXok=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qzz6yeYEWRP3AwyRVfvCrtfUbsY/d7vxEag6P9J4GO9Xf9UCSwc9QBPd/S+Ximv8j1YGSdxULvl2hOtkAY2036zc99wX+cB8wQNGFCP+1bjm5fiCks2Mm2qIO+SEo4IhEORpKrHIFIwESZHBgSW1itaVlzjJLeum0ZWG7i1j5VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OadaC4z7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1805C4CEE4;
-	Mon,  5 May 2025 23:01:30 +0000 (UTC)
+	 MIME-Version; b=B1gxqvxG/WMx7vfpxDAzHYC5haC8PPBep7Fao4hFpr0d1PltcjpfU/cBEYcP6oR64v02wUVX2Ji5yZIEUcNDN3q3yPIlWIcbltPooSGjdqABTIyxWx1mBUY1ubD8NJPsijME8EZbSGtZj6bbhgCyZukANBvdm458HYgnkbCQ3wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i0OCeDgK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A70AC4CEEF;
+	Mon,  5 May 2025 23:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486092;
-	bh=qWI4Veu+G4Y/XLuv+c8eCI1sefPk1C68m2Dnv+2qFFs=;
+	s=k20201202; t=1746486120;
+	bh=aQmcffE2frTwO79SM9iuPM4Uqr261KMlbJWEEZMnXok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OadaC4z7llMYP2/bNPVqJDH0faSTrmnX04gb0YjN/Pmb7zZXAFEFPVfSSyl5ouCiG
-	 oI7IfwraQxrlvZ3eix5Gqh5mxzuaznD4FUd8A3AF7/Cy+fflz/wJc3a6PFWKzMubAD
-	 GOVcmvUMqNbYYTgcl9wHvhMmg4ZkiRQVnub+4+PdZCxOSM8BmZ9KEOve6DRI3aBH8O
-	 hcQ1rBcw/NZX32YrKyo3adlllpOefHNdTswzg2q5xE/K9oS+2LNK7mEpjYjFY3KOS/
-	 F6OOvC6Fcls+D0qAP2BXPsQ/TEiRqT2tXGy4Jie/l1iNDvbn62LWZ0+yG/ZC2Q0YQs
-	 L2EFktrRze9wg==
+	b=i0OCeDgKHxZrqDME8+ZlyBND5rbTpFjXBpx21Lzd7635jJoCa3uygAqGrNrJgFp7Q
+	 lUs/7aS0ZbMsI5aJ/eNlzk0zXpzBQjhPBDNrXGYueMW8LNELA4MALPUQkxADrl9jZR
+	 64YKL9sZHcboCigMXrPM63Oq98NFvdow4OsF2/6laU+5OaZj/yObyJZDUx0XrhdMBa
+	 G3t8e5ZX3kD91/Vk6mTB26W1SJc3qOojcfPDU0UaDJ6Di7Q6JRff9VSejhkRl/AF0B
+	 lTXtozL2WYnuvSUbi3sLAHQU8kKZKundvfQEUytN2uzbzk2+tszBiFtlFzeZgDfCx+
+	 FqAdhGF6ChlkQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>,
-	Roopni Devanathan <quic_rdevanat@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 151/294] wifi: ath12k: Improve BSS discovery with hidden SSID in 6 GHz band
-Date: Mon,  5 May 2025 18:54:11 -0400
-Message-Id: <20250505225634.2688578-151-sashal@kernel.org>
+	rafael@kernel.org,
+	daniel.lezcano@linaro.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 162/294] cpuidle: menu: Avoid discarding useful information
+Date: Mon,  5 May 2025 18:54:22 -0400
+Message-Id: <20250505225634.2688578-162-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -69,57 +69,63 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 27d38bdfd416f4db70e09c3bef3b030c86fd235a ]
+[ Upstream commit 85975daeaa4d6ec560bfcd354fc9c08ad7f38888 ]
 
-Currently, sometimes, the station is unable to identify the configured
-AP SSID in its scan results when the AP is not broadcasting its name
-publicly and has a hidden SSID.
+When giving up on making a high-confidence prediction,
+get_typical_interval() always returns UINT_MAX which means that the
+next idle interval prediction will be based entirely on the time till
+the next timer.  However, the information represented by the most
+recent intervals may not be completely useless in those cases.
 
-Currently, channel dwell time for an ath12k station is 30 ms. Sometimes,
-station can send broadcast probe request to AP close to the end of dwell
-time. In some of these cases, before AP sends a response to the received
-probe request, the dwell time on the station side would come to an end.
-So, the station will move to scan next channel and will not be able to
-acknowledge the unicast probe response.
+Namely, the largest recent idle interval is an upper bound on the
+recently observed idle duration, so it is reasonable to assume that
+the next idle duration is unlikely to exceed it.  Moreover, this is
+still true after eliminating the suspected outliers if the sample
+set still under consideration is at least as large as 50% of the
+maximum sample set size.
 
-Resolve this issue by increasing station's channel dwell time to 70 ms,
-so that the it remains on the same channel for a longer period. This
-would increase the station's chance of receiving probe response from the
-AP. The station will then send a response acknowledgment back to the AP,
-thus leading to successful scan and BSS discovery.
+Accordingly, make get_typical_interval() return the current maximum
+recent interval value in that case instead of UINT_MAX.
 
-With an increased dwell time, scan would take longer than it takes now.
-But, this fix is an improvement for hidden SSID scan issue.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
-Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250207060005.153835-1-quic_rdevanat@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Tested-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Link: https://patch.msgid.link/7770672.EvYhyI6sBW@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/cpuidle/governors/menu.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index c977dfbae0a46..d87d5980325e8 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -2115,8 +2115,8 @@ void ath12k_wmi_start_scan_init(struct ath12k *ar,
- 	arg->dwell_time_active = 50;
- 	arg->dwell_time_active_2g = 0;
- 	arg->dwell_time_passive = 150;
--	arg->dwell_time_active_6g = 40;
--	arg->dwell_time_passive_6g = 30;
-+	arg->dwell_time_active_6g = 70;
-+	arg->dwell_time_passive_6g = 70;
- 	arg->min_rest_time = 50;
- 	arg->max_rest_time = 500;
- 	arg->repeat_probe_time = 0;
+diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
+index b96e3da0fedd0..edd9a8fb9878d 100644
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -246,8 +246,19 @@ static unsigned int get_typical_interval(struct menu_device *data)
+ 	 * This can deal with workloads that have long pauses interspersed
+ 	 * with sporadic activity with a bunch of short pauses.
+ 	 */
+-	if ((divisor * 4) <= INTERVALS * 3)
++	if (divisor * 4 <= INTERVALS * 3) {
++		/*
++		 * If there are sufficiently many data points still under
++		 * consideration after the outliers have been eliminated,
++		 * returning without a prediction would be a mistake because it
++		 * is likely that the next interval will not exceed the current
++		 * maximum, so return the latter in that case.
++		 */
++		if (divisor >= INTERVALS / 2)
++			return max;
++
+ 		return UINT_MAX;
++	}
+ 
+ 	thresh = max - 1;
+ 	goto again;
 -- 
 2.39.5
 
