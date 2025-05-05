@@ -1,140 +1,96 @@
-Return-Path: <stable+bounces-139693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92DB8AA94CD
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 15:48:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC6AAA94E4
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 15:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A2191774AD
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 13:48:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A833C189B8A5
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 13:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C331FECAF;
-	Mon,  5 May 2025 13:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E504258CE8;
+	Mon,  5 May 2025 13:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OgNe30Tv";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="H4SnsANl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIrzXPAe"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2DA2AEF1;
-	Mon,  5 May 2025 13:48:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D159258CF6
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 13:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746452917; cv=none; b=eRLZfNXQDUXqgjvFGhVkjn1IpRUluDrwo0dzbTdWJMVz1iWP5kz9cA46S0WN/NSwW/3rM8SSvhh2AWu6p1TSUCXGZzU1f5JNCR3T4Eyd43Hp0gf0WA3aUz3JLslkY2/UM9CKRSIfNmWLl9w+rKmngZCNAAMcKju0lgIIL7nuJ64=
+	t=1746453162; cv=none; b=gOhHZj+xrMqLE17jO5O8h/Pmmq7B8YE8q6cU1vEDjfhwVsqBjrZCknjYs8qPzJc5Q6TUpIJbHvj+XrRlFewi4Bkz9F9eljLCGzi1RIlxrvvjTH7aFYc7OKF0kf5hSDjuL7Q6K5443fymm98wp1/bDrWrEXpspMB4y9lLxYS6BWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746452917; c=relaxed/simple;
-	bh=kNxsm5kxKjKJ9Ddk5RSp90844Cv+Lkb3peI9w0obdUQ=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=iGxNqqUZE+ZToIRIOMCJXcGmVZpkIURnKvvY8uH3nwVF3OoUVPEz+Z2FV9BJ7ckacR3kLBE/GD5Ro4FDMBKQDisnG/p/saSLSq6LLWoDlXR9e3p+zs/Ryk9L3yxwE7r7BNW898SPqpnCjoT+gddyYEGAm/VSr1RWqokQsOsjiaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OgNe30Tv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=H4SnsANl; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 05 May 2025 13:48:26 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746452912;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/7r/k+FmgnP/B7Qgh5RSGjtaH4XPPradoydaxmMo7gM=;
-	b=OgNe30TvroPhOcP46pDmnumF6kb+mkXa4wC5771b4nJu68BdadGg6WMLQN4iPKF9qUzQ3A
-	C8Ra4cUFELrhHvKZ/PCy4aVFZfPRKuz7henyhl00V91eMoJiEBe+3lJhbdFb/iS5GoFqmg
-	xtQYIMZLZAooYhcvmZlVSv54ILoyCzyUkxFUDHw3yl0tnX5GYDFfdrNkRjmtjezdcUbQvG
-	M+pPt+4sskQt+Qs2xDnDY9fTkp4mC1jvl4lWocDLuo+LlcIayOoH08tc5mm04zorMRMQQ8
-	RpHeh6Kavw4mVgPKLN0CY0EgO6YVqsP/nHG0nz9sJAydlHVDiaf3zuJV7qGqpg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746452912;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/7r/k+FmgnP/B7Qgh5RSGjtaH4XPPradoydaxmMo7gM=;
-	b=H4SnsANlbNiq7xTCkB35KzEwuCzccDLrzPRuRg/kGRFUJ3tlYKZwakcngHcayh+WtC2AlF
-	/XfuaenvDp35wGDg==
-From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] clocksource/i8253: Use raw_spinlock_irqsave() in
- clockevent_i8253_disable()
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250404133116.p-XRWJXf@linutronix.de>
-References: <20250404133116.p-XRWJXf@linutronix.de>
+	s=arc-20240116; t=1746453162; c=relaxed/simple;
+	bh=+XnJru/fgLTrWSfB+5GusDvzW4aIQsemEbLWCDHXTyk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kpxzVFdCicnSKZdORTJ9fUGCzENvYtotzGdb9XykXdCbvPNg3UefPDsKFmOYDQeFWTHymJ/7aqXrjsp5jgzVW87E6R7PkqHCqUVSk0+psyfLGp9UifWrQqoP3o9/Cg0dnoUijV+dAOwo7k2bfrVlXeCbaZkHpIlhNxRA0gFD0nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIrzXPAe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDCBC4CEE4;
+	Mon,  5 May 2025 13:52:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746453161;
+	bh=+XnJru/fgLTrWSfB+5GusDvzW4aIQsemEbLWCDHXTyk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DIrzXPAe/LOuQvatxhCWawq1e0a6xUXLZtrsVfyUdwauaLeJi8nqvtDRk6NOPNa9P
+	 vLSvhxz4pU0IQlid2lYgrLLfnNdd/YEPQNTigl+603j4asvR+vWLi+vdi7zFVhHSbu
+	 vRWYfNg4RofxVlAhTSsjpuxzp6Gxf5aLAPoiv8sU=
+Date: Mon, 5 May 2025 15:52:38 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Daniel Wagner <dwagner@suse.de>
+Cc: Jack Wang <jinpu.wang@ionos.com>, Wang Yugui <wangyugui@e16-tech.com>,
+	stable@vger.kernel.org, wagi@kernel.org
+Subject: Re: [6.12.y] WARNING: CPU: 0 PID: 681 at block/blk-mq-cpumap.c:90
+ blk_mq_map_hw_queues+0xcf/0xe0
+Message-ID: <2025050555-overhung-jiffy-6b63@gregkh>
+References: <2025050500-unchain-tricking-a90e@gregkh>
+ <6818a2d5.170a0220.c6e7d.da1c@mx.google.com>
+ <2025050554-reply-surging-929d@gregkh>
+ <6f78e096-cb32-4056-a65a-50c27825d0e1@flourine.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174645290649.22196.8650508722101472492.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6f78e096-cb32-4056-a65a-50c27825d0e1@flourine.local>
 
-The following commit has been merged into the timers/urgent branch of tip:
+On Mon, May 05, 2025 at 03:40:51PM +0200, Daniel Wagner wrote:
+> On Mon, May 05, 2025 at 03:28:22PM +0200, Greg KH wrote:
+> > On Mon, May 05, 2025 at 01:36:52PM +0200, Jack Wang wrote:
+> > > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > 
+> > > In linux-6.12.y, commit 5e8438fd7f11 ("scsi: replace blk_mq_pci_map_queues with blk_mq_map_hw_queues")
+> > > was pulled in as depandency, the fix a9ae6fe1c319 ("blk-mq: create correct map for fallback case")
+> > > should have just used 1452e9b470c9 ("blk-mq: introduce blk_mq_map_hw_queues")
+> > > as Fixes, not the other conversion IMO.
+> > 
+> > What "other conversion"?  Sorry, I do not understand, did we take a
+> > patch we shouldn't have, or did we miss a patch we should have applied?
+> 
+> If I understand the situation correctly, the problem is that v6.14.25
+> ships commit 5e8438fd7f11 ("scsi: replace blk_mq_pci_map_queues with
+> blk_mq_map_hw_queues") which introduced a regression for certain virtio
+> configurations. The fixup patch is:
+> 
+> a9ae6fe1c319 ("blk-mq: create correct map for fallback case")
+> 
 
-Commit-ID:     94cff94634e506a4a44684bee1875d2dbf782722
-Gitweb:        https://git.kernel.org/tip/94cff94634e506a4a44684bee1875d2dbf782722
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Fri, 04 Apr 2025 15:31:16 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 05 May 2025 15:34:49 +02:00
+But commit a9ae6fe1c319 ("blk-mq: create correct map for fallback case")
+says it fixes commit a5665c3d150c ("virtio: blk/scsi: replace
+blk_mq_virtio_map_queues with blk_mq_map_hw_queues"), which is ONLY in
+the 6.14 tree.
 
-clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
+Which is why we didn't pull it into the stable tree here.  Is that
+commit just not marked properly?  Will it cause problems if it is
+backported?
 
-On x86 during boot, clockevent_i8253_disable() can be invoked via
-x86_late_time_init -> hpet_time_init() -> pit_timer_init() which happens
-with enabled interrupts.
+thanks,
 
-If some of the old i8253 hardware is actually used then lockdep will notice
-that i8253_lock is used in hard interrupt context. This causes lockdep to
-complain because it observed the lock being acquired with interrupts
-enabled and in hard interrupt context.
-
-Make clockevent_i8253_disable() acquire the lock with
-raw_spinlock_irqsave() to cure this.
-
-[ tglx: Massage change log and use guard() ]
-
-Fixes: c8c4076723dac ("x86/timer: Skip PIT initialization on modern chipsets")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250404133116.p-XRWJXf@linutronix.de
----
- drivers/clocksource/i8253.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/clocksource/i8253.c b/drivers/clocksource/i8253.c
-index 39f7c2d..b603c25 100644
---- a/drivers/clocksource/i8253.c
-+++ b/drivers/clocksource/i8253.c
-@@ -103,7 +103,7 @@ int __init clocksource_i8253_init(void)
- #ifdef CONFIG_CLKEVT_I8253
- void clockevent_i8253_disable(void)
- {
--	raw_spin_lock(&i8253_lock);
-+	guard(raw_spinlock_irqsave)(&i8253_lock);
- 
- 	/*
- 	 * Writing the MODE register should stop the counter, according to
-@@ -132,8 +132,6 @@ void clockevent_i8253_disable(void)
- 	outb_p(0, PIT_CH0);
- 
- 	outb_p(0x30, PIT_MODE);
--
--	raw_spin_unlock(&i8253_lock);
- }
- 
- static int pit_shutdown(struct clock_event_device *evt)
+greg k-h
 
