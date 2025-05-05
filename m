@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-140605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8060DAAA9FE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:26:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6460FAAAA04
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:27:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EA4517BC9C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:26:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21ACD7A2B43
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA3327F722;
-	Mon,  5 May 2025 22:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AFD3754EC;
+	Mon,  5 May 2025 22:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LUoshxnS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pM58Rv2G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0AA2BE7B1;
-	Mon,  5 May 2025 22:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FF8375334;
+	Mon,  5 May 2025 22:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485254; cv=none; b=XGXv5U+oL89irVmn7G2eodCFMBlAq6Z9FIYycgdTIGGSOB7GSudYKmwRGGWfOZeqsd0gp3qM68PTFr9Wm9CfCNMKFQUym8PI8cdYC+i8ruu+lF/CFfCBMftNDnHs0czvDwAfGAI6GiAPbwmcaj+oEp7+jWvm2Q8lLLKnCr5NMAo=
+	t=1746485268; cv=none; b=Kcjj0s+GZmDhOF89dcqQ2evANi2LcujURt8ijDbzRhLG1lij291zjctUhyhtignwAwcfxBUnLvUUUV9bYekN4q7WxZUkmVjKk3/1U9erPD8il3uCl2oSQxSMXgmSoAY5ekC3AIXSh/ond/1orI1AAkgSuevF7U2mpMtOMsWP/Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485254; c=relaxed/simple;
-	bh=jIhSum4+a6VmsFbYcJTxe1fbt8iNZlAUy3+yev6QYro=;
+	s=arc-20240116; t=1746485268; c=relaxed/simple;
+	bh=jY2bLFrM4OmbAvQoCMBjY6y3zOJ5tAN7yOeLduNkcfk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g0fomfqZIOxLK9bhNV2xKXNlDpZyQPlRWKqkVlG0OHczA4dQRUH1dNCkJOlbNZx84ROpAWzSsJ8zaUpAaDFbHYT2pRje+9XVypn7pNDzGKJ+r8Y4j/6r99aDt/j/hWUGTcDUv8DlkashJsRw0C41L3UP/eso+iaFBfXJ+EDy0pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LUoshxnS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DF6C4CEED;
-	Mon,  5 May 2025 22:47:31 +0000 (UTC)
+	 MIME-Version; b=dUyc+gEN5C8Gw/oe1fUVilNMNWOIL+go2Wpi7OzTPv7JLWq1G4VjWvMpWNAiyO/iNQP96qRYgrFNVs0/o5H+KcGcZ+r/4aEaBEInd30SZratPoHNtDZE4L/wHsEMS8qIBl8xhQ23IY5qzW7BdXYHgZbLapo4FGkFst0Y9vceS7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pM58Rv2G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A374C4CEEF;
+	Mon,  5 May 2025 22:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485253;
-	bh=jIhSum4+a6VmsFbYcJTxe1fbt8iNZlAUy3+yev6QYro=;
+	s=k20201202; t=1746485267;
+	bh=jY2bLFrM4OmbAvQoCMBjY6y3zOJ5tAN7yOeLduNkcfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LUoshxnSBbJYYxVqXyQ9UjsHUb8OavG5ae3ju2kLhBGpSYpRQIgnOv3RA74PQti9E
-	 f+xC+skDrjbmocqSFzUuchzpSXwDiZbtxaN6kLE/YKxjnBfijlWCFKLEqpSEKX1PDI
-	 CBo/AMdbOqnvaVbhLQ9Bmi2HlJq31jh16eJWAxYiv3GSx/s68QpCcs56NFhoUonqeQ
-	 JCtfDnTUrPwqP57hKxYN5YD8vhwC5gyJucrHiVWuiR4DET1PZyWKEjZ2NlhxD+Rm8S
-	 pEukfK+aWP9YMbSTXgJ6Tiiy7bUEoVRj+/8u0HUrZ3saXgOOVgLtvxcZisahsFrt+u
-	 ihOomzAVmvPlw==
+	b=pM58Rv2Ghm95XC7FRQ13z0rIn2QQ6fqF6M5C/6XwXSiUMbhdCIs3IXxbzeVfuLMl2
+	 12gX4E/rFjxdkdfUK1REl7kcACmWOpsf9qyq2tg2S9UnAzj5NY3mf4xlOBQddb3KR1
+	 L8aY/SfSAthlxx1dpJjjOj94Mu389L9spsZJ548ac5kV9A8IcNaYkV3hKRfBzXLw6g
+	 y08Umt/B0Hotic6iq/W0MmqbThcjT19RtIHdiwaa3ALGM2KtdaEjyhLupZY+tqIiWl
+	 iDLNMWGoD2cwbVnt3G+1P0dlLFw2R8zNud/CnRSzZDqixdMWzi2uVmiJtob4dqk30P
+	 MKgzRt3V/BXlQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
-	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+Cc: Yuanjun Gong <ruc_gongyuanjun@163.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lucas.demarchi@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 237/486] drm/xe/pf: Create a link between PF and VF devices
-Date: Mon,  5 May 2025 18:35:13 -0400
-Message-Id: <20250505223922.2682012-237-sashal@kernel.org>
+	pavel@kernel.org,
+	jakob+lkml@paranoidlabs.org,
+	u.kleine-koenig@baylibre.com,
+	linux-leds@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 243/486] leds: pwm-multicolor: Add check for fwnode_property_read_u32
+Date: Mon,  5 May 2025 18:35:19 -0400
+Message-Id: <20250505223922.2682012-243-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,121 +63,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit 8c0aff7d92e2be25717669eb65a81a89740a24f2 ]
+[ Upstream commit 6d91124e7edc109f114b1afe6d00d85d0d0ac174 ]
 
-When both PF and VF devices are enabled on the host, they
-resume simultaneously during system resume.
+Add a check to the return value of fwnode_property_read_u32()
+in case it fails.
 
-However, the PF must finish provisioning the VF before any
-VFs can successfully resume.
-
-Establish a parent-child device link between the PF and VF
-devices to ensure the correct order of resumption.
-
-V4 -> V5:
-- Added missing break in the error condition.
-V3 -> V4:
-- Made xe_pci_pf_get_vf_dev() as a static function and updated
-  input parameter types.
-- Updated xe_sriov_warn() to xe_sriov_abort() when VF device
-  cannot be found.
-V2 -> V3:
-- Added function documentation for xe_pci_pf_get_vf_dev().
-- Added assertion if not called from PF.
-V1 -> V2:
-- Added a helper function to get VF pci_dev.
-- Updated xe_sriov_notice() to xe_sriov_warn() if vf pci_dev
-  is not found.
-
-Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Michał Winiarski <michal.winiarski@intel.com>
-Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
-Reviewed-by: Piotr Piorkowski <piotr.piorkowski@intel.com>
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250224102807.11065-2-satyanarayana.k.v.p@intel.com
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Link: https://lore.kernel.org/r/20250223121459.2889484-1-ruc_gongyuanjun@163.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pci_sriov.c | 51 +++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ drivers/leds/rgb/leds-pwm-multicolor.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pci_sriov.c b/drivers/gpu/drm/xe/xe_pci_sriov.c
-index aaceee748287e..09ee8a06fe2ed 100644
---- a/drivers/gpu/drm/xe/xe_pci_sriov.c
-+++ b/drivers/gpu/drm/xe/xe_pci_sriov.c
-@@ -62,6 +62,55 @@ static void pf_reset_vfs(struct xe_device *xe, unsigned int num_vfs)
- 			xe_gt_sriov_pf_control_trigger_flr(gt, n);
- }
+diff --git a/drivers/leds/rgb/leds-pwm-multicolor.c b/drivers/leds/rgb/leds-pwm-multicolor.c
+index e1a81e0109e8a..c0aa34b1d0e2d 100644
+--- a/drivers/leds/rgb/leds-pwm-multicolor.c
++++ b/drivers/leds/rgb/leds-pwm-multicolor.c
+@@ -135,8 +135,11 @@ static int led_pwm_mc_probe(struct platform_device *pdev)
  
-+static struct pci_dev *xe_pci_pf_get_vf_dev(struct xe_device *xe, unsigned int vf_id)
-+{
-+	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
+ 	/* init the multicolor's LED class device */
+ 	cdev = &priv->mc_cdev.led_cdev;
+-	fwnode_property_read_u32(mcnode, "max-brightness",
++	ret = fwnode_property_read_u32(mcnode, "max-brightness",
+ 				 &cdev->max_brightness);
++	if (ret)
++		goto release_mcnode;
 +
-+	xe_assert(xe, IS_SRIOV_PF(xe));
-+
-+	/* caller must use pci_dev_put() */
-+	return pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
-+			pdev->bus->number,
-+			pci_iov_virtfn_devfn(pdev, vf_id));
-+}
-+
-+static void pf_link_vfs(struct xe_device *xe, int num_vfs)
-+{
-+	struct pci_dev *pdev_pf = to_pci_dev(xe->drm.dev);
-+	struct device_link *link;
-+	struct pci_dev *pdev_vf;
-+	unsigned int n;
-+
-+	/*
-+	 * When both PF and VF devices are enabled on the host, during system
-+	 * resume they are resuming in parallel.
-+	 *
-+	 * But PF has to complete the provision of VF first to allow any VFs to
-+	 * successfully resume.
-+	 *
-+	 * Create a parent-child device link between PF and VF devices that will
-+	 * enforce correct resume order.
-+	 */
-+	for (n = 1; n <= num_vfs; n++) {
-+		pdev_vf = xe_pci_pf_get_vf_dev(xe, n - 1);
-+
-+		/* unlikely, something weird is happening, abort */
-+		if (!pdev_vf) {
-+			xe_sriov_err(xe, "Cannot find VF%u device, aborting link%s creation!\n",
-+				     n, str_plural(num_vfs));
-+			break;
-+		}
-+
-+		link = device_link_add(&pdev_vf->dev, &pdev_pf->dev,
-+				       DL_FLAG_AUTOREMOVE_CONSUMER);
-+		/* unlikely and harmless, continue with other VFs */
-+		if (!link)
-+			xe_sriov_notice(xe, "Failed linking VF%u\n", n);
-+
-+		pci_dev_put(pdev_vf);
-+	}
-+}
-+
- static int pf_enable_vfs(struct xe_device *xe, int num_vfs)
- {
- 	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
-@@ -92,6 +141,8 @@ static int pf_enable_vfs(struct xe_device *xe, int num_vfs)
- 	if (err < 0)
- 		goto failed;
+ 	cdev->flags = LED_CORE_SUSPENDRESUME;
+ 	cdev->brightness_set_blocking = led_pwm_mc_set;
  
-+	pf_link_vfs(xe, num_vfs);
-+
- 	xe_sriov_info(xe, "Enabled %u of %u VF%s\n",
- 		      num_vfs, total_vfs, str_plural(total_vfs));
- 	return num_vfs;
 -- 
 2.39.5
 
