@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-140032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60613AAA425
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:24:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D1FAAA41F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C073B18892CE
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:23:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B50F67A4EAD
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578B52FBAA3;
-	Mon,  5 May 2025 22:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58B32FBAC0;
+	Mon,  5 May 2025 22:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qV05W9VH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MhtKieVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115E52857FF;
-	Mon,  5 May 2025 22:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6222D2FBAB8;
+	Mon,  5 May 2025 22:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483950; cv=none; b=T+DEmX07FxvBVhqcZL20rRIqF+Fo0cZAoZT0wEAiQztxvcqnGR9tO1iZiu6RLN3oMj5VvaMSmAR8M6FRR8U49gCThQGyv+warMdv8rk9iG33/qOn0C5d2hd1EhrzIEsJOOSRqczegVs6ZXqlexNF2gcxsqC3Y/jVAtHtC3KK7z8=
+	t=1746483951; cv=none; b=mLlOKhthHQWEu4rZUfLb7oMDdAU3Qd1ilzXjbMyZnNGVPpnHCe3BN+5oRCjY1HOttJCQo3iB0NywfJs7wbiGkk3Heb6ahMzPvRjBds6OvUdA9m1JAfPqzqaCvVuIayw/Yd08PCuUbdp7cwFDx5eUOhhrQ4tQHrI+MSek0Bkio5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483950; c=relaxed/simple;
-	bh=QB5BDmNQRFBOKORRB1IUyzjlT4+1l2j7PdDoCOiaFtk=;
+	s=arc-20240116; t=1746483951; c=relaxed/simple;
+	bh=hcwdfhhGaHajzSEOCx6SVqIs1/onTusH1hNuhmcLL/8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Za64WMVS9L4dniVZ6sYItmV3GgHZASfqWdlpVkkAfQlNVHj34ccl0RSqz3/b839qAGvQZNiJl8uAzM8uCYf4hBPzpvHK2J7zODl95zord4z6TGTJzM/Qeg9Bi1k8zsRb0WnonJpVoOTAelaZio93w6PpBrTNA+7f7OAtpLe0wh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qV05W9VH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD214C4CEEE;
-	Mon,  5 May 2025 22:25:48 +0000 (UTC)
+	 MIME-Version; b=gLhNvVzoVRJ60SsI/Q3h1c5r9thd3xmh4mReJZQNPColR3H8XKufUFOLl5/PylaVqhgkzUCCUbIkcT+yJc+Jvq1tw7W9GHRmdjkBnDaWxssN8ixEpf/nonNZMMeiaK5MaNdBKOQ1f8PFH447JnxQnf5Pe6aJavOyOZzRkONeH1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MhtKieVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F311EC4CEED;
+	Mon,  5 May 2025 22:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483949;
-	bh=QB5BDmNQRFBOKORRB1IUyzjlT4+1l2j7PdDoCOiaFtk=;
+	s=k20201202; t=1746483951;
+	bh=hcwdfhhGaHajzSEOCx6SVqIs1/onTusH1hNuhmcLL/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qV05W9VHoskYMZHm/Cmbi5JUejbcZ4eRls4ldG7+Womh2/XACUGNOHzZJpXQlgXTw
-	 +I48/w2SdyugDyFHOs237esjS9XB7oes5LOGUzuoxRBAfQl+AIuBR8Iqvw8WNW48Fx
-	 yAtBsQNQS5zxZytKHQdl0B6hWqLBeBsWzJu2SIKTfApcgcqC07isddG8XcK+p5lq2D
-	 teeKuMWXogQA6i7J/37/SLQSyICrD9g34tbSl0KaebHsc00AhksKvTim7Fy/S/EYhf
-	 6tQztz1VVikBB1KKR3Wc3KUdKigYo0ifpbn7QWtBmWCBAFwOPtFvQ55b+5O7NrYIrX
-	 NuDOooxF/ay4g==
+	b=MhtKieVYM6HVaVWeVklfntalNoWO64H2nl+Ke7a+ZBgWOCpTyMD526Xr8E5UsjHNz
+	 apAlGSQ+EzsRoiCznsrn9KS72Nv66gkK2ULgjEk6kGZbOERMzsVjB8LLLFFdZRDvvV
+	 3B6jSogcnbBYEzcYG+yYBUJMa8BrHLhve1fzuD4C6dPFczmHVrWGD8OJ+2PKpPwlTW
+	 HlF4mgw1SqSDUwBYlKhpJbes5lOQkNAccgfdteQLEofXrj3hecfCHhKshDAFLkml8t
+	 E0hwM6z+aSbpiqu5VnAC/x85P9c0imW3KHUoHlFITzBRK/zfmLrThdHa8LSZWDK8tG
+	 +zAOiyV/ycMZg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+Cc: Li Bin <bin.li@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Ryan Wanner <Ryan.Wanner@microchip.com>,
+	Durai Manickam KR <durai.manickamkr@microchip.com>,
+	Andrei Simion <andrei.simion@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>,
-	jdelvare@suse.com,
-	linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 285/642] hwmon: (gpio-fan) Add missing mutex locks
-Date: Mon,  5 May 2025 18:08:21 -0400
-Message-Id: <20250505221419.2672473-285-sashal@kernel.org>
+	linux@armlinux.org.uk,
+	alexandre.belloni@bootlin.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 286/642] ARM: at91: pm: fix at91_suspend_finish for ZQ calibration
+Date: Mon,  5 May 2025 18:08:22 -0400
+Message-Id: <20250505221419.2672473-286-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -66,73 +71,88 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Li Bin <bin.li@microchip.com>
 
-[ Upstream commit 9fee7d19bab635f89223cc40dfd2c8797fdc4988 ]
+[ Upstream commit bc4722c3598d0e2c2dbf9609a3d3198993093e2b ]
 
-set_fan_speed() is expected to be called with fan_data->lock being locked.
-Add locking for proper synchronization.
+For sama7g5 and sama7d65 backup mode, we encountered a "ZQ calibrate error"
+during recalibrating the impedance in BootStrap.
+We found that the impedance value saved in at91_suspend_finish() before
+the DDR entered self-refresh mode did not match the resistor values. The
+ZDATA field in the DDR3PHY_ZQ0CR0 register uses a modified gray code to
+select the different impedance setting.
+But these gray code are incorrect, a workaournd from design team fixed the
+bug in the calibration logic. The ZDATA contains four independent impedance
+elements, but the algorithm combined the four elements into one. The elements
+were fixed using properly shifted offsets.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20250210145934.761280-3-alexander.stein@ew.tq-group.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Li Bin <bin.li@microchip.com>
+[nicolas.ferre@microchip.com: fix indentation and combine 2 patches]
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Tested-by: Ryan Wanner <Ryan.Wanner@microchip.com>
+Tested-by: Durai Manickam KR <durai.manickamkr@microchip.com>
+Tested-by: Andrei Simion <andrei.simion@microchip.com>
+Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
+Link: https://lore.kernel.org/r/28b33f9bcd0ca60ceba032969fe054d38f2b9577.1740671156.git.Ryan.Wanner@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/gpio-fan.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ arch/arm/mach-at91/pm.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/hwmon/gpio-fan.c b/drivers/hwmon/gpio-fan.c
-index d92c536be9af7..b779240328d59 100644
---- a/drivers/hwmon/gpio-fan.c
-+++ b/drivers/hwmon/gpio-fan.c
-@@ -393,7 +393,12 @@ static int gpio_fan_set_cur_state(struct thermal_cooling_device *cdev,
- 	if (state >= fan_data->num_speed)
- 		return -EINVAL;
+diff --git a/arch/arm/mach-at91/pm.c b/arch/arm/mach-at91/pm.c
+index 05a1547642b60..6c3e6aa22606f 100644
+--- a/arch/arm/mach-at91/pm.c
++++ b/arch/arm/mach-at91/pm.c
+@@ -545,11 +545,12 @@ extern u32 at91_pm_suspend_in_sram_sz;
  
-+	mutex_lock(&fan_data->lock);
-+
- 	set_fan_speed(fan_data, state);
-+
-+	mutex_unlock(&fan_data->lock);
-+
- 	return 0;
- }
- 
-@@ -489,7 +494,11 @@ MODULE_DEVICE_TABLE(of, of_gpio_fan_match);
- 
- static void gpio_fan_stop(void *data)
+ static int at91_suspend_finish(unsigned long val)
  {
-+	struct gpio_fan_data *fan_data = data;
-+
-+	mutex_lock(&fan_data->lock);
- 	set_fan_speed(data, 0);
-+	mutex_unlock(&fan_data->lock);
- }
+-	unsigned char modified_gray_code[] = {
+-		0x00, 0x01, 0x02, 0x03, 0x06, 0x07, 0x04, 0x05, 0x0c, 0x0d,
+-		0x0e, 0x0f, 0x0a, 0x0b, 0x08, 0x09, 0x18, 0x19, 0x1a, 0x1b,
+-		0x1e, 0x1f, 0x1c, 0x1d, 0x14, 0x15, 0x16, 0x17, 0x12, 0x13,
+-		0x10, 0x11,
++	/* SYNOPSYS workaround to fix a bug in the calibration logic */
++	unsigned char modified_fix_code[] = {
++		0x00, 0x01, 0x01, 0x06, 0x07, 0x0c, 0x06, 0x07, 0x0b, 0x18,
++		0x0a, 0x0b, 0x0c, 0x0d, 0x0d, 0x0a, 0x13, 0x13, 0x12, 0x13,
++		0x14, 0x15, 0x15, 0x12, 0x18, 0x19, 0x19, 0x1e, 0x1f, 0x14,
++		0x1e, 0x1f,
+ 	};
+ 	unsigned int tmp, index;
+ 	int i;
+@@ -560,25 +561,25 @@ static int at91_suspend_finish(unsigned long val)
+ 		 * restore the ZQ0SR0 with the value saved here. But the
+ 		 * calibration is buggy and restoring some values from ZQ0SR0
+ 		 * is forbidden and risky thus we need to provide processed
+-		 * values for these (modified gray code values).
++		 * values for these.
+ 		 */
+ 		tmp = readl(soc_pm.data.ramc_phy + DDR3PHY_ZQ0SR0);
  
- static int gpio_fan_probe(struct platform_device *pdev)
-@@ -562,7 +571,9 @@ static int gpio_fan_suspend(struct device *dev)
+ 		/* Store pull-down output impedance select. */
+ 		index = (tmp >> DDR3PHY_ZQ0SR0_PDO_OFF) & 0x1f;
+-		soc_pm.bu->ddr_phy_calibration[0] = modified_gray_code[index];
++		soc_pm.bu->ddr_phy_calibration[0] = modified_fix_code[index] << DDR3PHY_ZQ0SR0_PDO_OFF;
  
- 	if (fan_data->gpios) {
- 		fan_data->resume_speed = fan_data->speed_index;
-+		mutex_lock(&fan_data->lock);
- 		set_fan_speed(fan_data, 0);
-+		mutex_unlock(&fan_data->lock);
- 	}
+ 		/* Store pull-up output impedance select. */
+ 		index = (tmp >> DDR3PHY_ZQ0SR0_PUO_OFF) & 0x1f;
+-		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
++		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SR0_PUO_OFF;
  
- 	return 0;
-@@ -572,8 +583,11 @@ static int gpio_fan_resume(struct device *dev)
- {
- 	struct gpio_fan_data *fan_data = dev_get_drvdata(dev);
+ 		/* Store pull-down on-die termination impedance select. */
+ 		index = (tmp >> DDR3PHY_ZQ0SR0_PDODT_OFF) & 0x1f;
+-		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
++		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SR0_PDODT_OFF;
  
--	if (fan_data->gpios)
-+	if (fan_data->gpios) {
-+		mutex_lock(&fan_data->lock);
- 		set_fan_speed(fan_data, fan_data->resume_speed);
-+		mutex_unlock(&fan_data->lock);
-+	}
+ 		/* Store pull-up on-die termination impedance select. */
+ 		index = (tmp >> DDR3PHY_ZQ0SRO_PUODT_OFF) & 0x1f;
+-		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
++		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SRO_PUODT_OFF;
  
- 	return 0;
- }
+ 		/*
+ 		 * The 1st 8 words of memory might get corrupted in the process
 -- 
 2.39.5
 
