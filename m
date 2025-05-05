@@ -1,111 +1,123 @@
-Return-Path: <stable+bounces-140632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DA8AAAA36
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:31:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DCAAAA785
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60B197B5D6F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:30:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 542BE163EDA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F5338750A;
-	Mon,  5 May 2025 23:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ABAC33B334;
+	Mon,  5 May 2025 22:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hhTAXk/A"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mSQ1Jmp2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A749E2D269C;
-	Mon,  5 May 2025 22:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8984833AAD1
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 22:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485527; cv=none; b=goUPobQFQjWOWf3KEX/1yb0OcpmWY8b+B0Mvy9i3NzrdiGxuHFERAoecyGzjntKqoblv0UO9re6oSrY1Ex3P5gtPapcV+F7Ly0mf2Fjow96DMpk+zMz+VxiPDj4mg3TXewndwvpdLnv5wrAx5vpr03fEMd8VxLp/+hbw7dAo9ms=
+	t=1746484641; cv=none; b=a+1rozfRo08zMV6SutS4U/J28wPEEczJqE6jn9chYHffx+7lkJMMEIlK0AfHstfvF91bdWnOfCyj0pBAE3UIvhmZhUBSsmAb9tfMfbKNV/eDcRIuv/gya8gCEEuXU5mMtJ7E1VAqbJ1v/MhDAR/mRoOLFclAU/5IXaEg48hlrOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485527; c=relaxed/simple;
-	bh=jYdGDVam+OJmLiRGsR9CWE9SnmZCxqmKRO8I+z9Lg8E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RxZTbaSiBHq+7rFuh3J6A0fZGTONHwxkYdeZKrJ07JNrvrhIEZuuRJTbN8Cd1ffs51NBJUpkeRxwzWW+EvvBsGoU8Nk0TIEMQCuKjdOR7j9u6oVRi1/2phLat2TrV92WHYnu29637Dbh/lIH2vaKDTIxJjzIqHRtnhY5M3/6kbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhTAXk/A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6685BC4CEEE;
-	Mon,  5 May 2025 22:52:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485526;
-	bh=jYdGDVam+OJmLiRGsR9CWE9SnmZCxqmKRO8I+z9Lg8E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hhTAXk/AlZ+u9z+5/BufavFXIb2nK7JkJjHVq/ucQJpAS7HuKkXCL9+JmANU5aXlp
-	 uugNLcSnGO7TTMQkYUeGEIzphjc5fPyi+G8aG6OiqzNck0xcO17uZ0OZZb3HKXMy2g
-	 RIQQcsKTEDT+wyK1oDTTxnffRAMjalgNHSg9KdU5fvZ5ldqu6txuaKQ3ETS4PW5b/d
-	 5cVcbOoAP1GTK/T/jjpugWZzJGTo35SPrZSXjkTKm54xs1J58UzCUf6hC2VFkwGEkS
-	 FgYgJnVRCf5HFXgO+herO72IjOik3ZJm5TFB1RabV7C/FZ50Y438TPFLzV4iujsYrJ
-	 uOGcqw8rxxYcQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	Jack.Xiao@amd.com,
-	sunil.khatri@amd.com,
-	Hawking.Zhang@amd.com,
-	shaoyun.liu@amd.com,
-	Jiadong.Zhu@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 360/486] drm/amdgpu/mes11: fix set_hw_resources_1 calculation
-Date: Mon,  5 May 2025 18:37:16 -0400
-Message-Id: <20250505223922.2682012-360-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
-References: <20250505223922.2682012-1-sashal@kernel.org>
+	s=arc-20240116; t=1746484641; c=relaxed/simple;
+	bh=/qnphOBltVIWlURouKPWX5W5cAXR4gvjzHWr9irA4Ek=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=i7Uh5ruovMPhozvl21j9LYu+HCIlruzsQ0nxN8C1wQ4xyiKKtIW2G7N1RlP8Or32eRr6LTkbhNILj4d+djzT99r+ywQMx5VaOAnIJGOyeFxQOsKWmffj1dWykr0eyG4rBWzqAOnBPyakI6i5tyfkvfjFLHSpgqp3+MRBBmxOorE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mSQ1Jmp2; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-22e327ff362so2985195ad.3
+        for <stable@vger.kernel.org>; Mon, 05 May 2025 15:37:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746484639; x=1747089439; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RFJXsNyYfzZ7+lko8SxLtTDp0cHIk0LkJmukv/W5L18=;
+        b=mSQ1Jmp2rgrE5W2OkOthgNRIML4koPjGLgQd+nowIF6/q6bOiL8EAMT+WtQAC92mdG
+         41Uqk04TV+rqjL3JKZLFQ/Z7fTe7ShX5JUANwHwfhBTXJFr0y/jppy7NXhSMqVTDRMar
+         oDQtMIVu4a3n9JWLSXmv70N8fAz/GuVtzaUkbvTgT6NelRf32KDNtfF30q6qo9NshDmR
+         f/jnZpPWUH9+EPQmz5e1c9vWiDVEM25hrSTTxt1DO8Hec50WuyBX75Y8SCch5VdGd1BN
+         WUV77HBJVYxZc/Dw6x8g0sf/zWvnbHJoBZ0jKbbsEwWbyeJ4Rjs92Jcw29Mm4ukQd9XH
+         FEbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746484639; x=1747089439;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RFJXsNyYfzZ7+lko8SxLtTDp0cHIk0LkJmukv/W5L18=;
+        b=nGRx4MDuRon4g9Ss9SbwKvkaf/V7gpllvikvBYXdP+w5toKfminQVqMZvLL4OU5Waj
+         S7XHlFDCoeNKdXhNzkTRDnqndWKm8tqJbtbS8pl0pGl1NalRmoy22+Xz5ZF64EpMFZ5E
+         +jbi10njSAJZheZ8P39PH7UVDTBdn3ZTiLOqBNh7p+xsZtXjBmOF31py2/qYiD9z/nOr
+         R1k3lml4KTbOQnv8mUv1qLk7hVa0tWPw4s9B+Jev11xACMo59OCG4jvrpUsV5V7gcBY+
+         ZWRhUv9wbFfDPPTRZtJ55MkPmerperaIdneVPZ7HkfVgwzFoZWtydA0JyGJZghfkchgB
+         yYAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVU/h9LCzZQODc/XrtZbQt5a6pSXbmEmaGdaPjtioBvpoZnqYqLT1sEkl54I2G/VIcZJfv2uNs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwS2RnO3bTOn86O/67Yk8QPzLAF+au1Lm5YY5/qxs990rR0XMqN
+	9H713vg2KdyLEb9wBPgInxQsFAU67sqhzlDVxRN6LbAXRsW5+kUCCjYBXmqa8uzdqjDi7gB1+nG
+	TNg==
+X-Google-Smtp-Source: AGHT+IF7FvBz2XtjdY1Gwm2snh7AYTh3FwqQtsFxghocXrvK4VvzfqD2ppJPcFtt7H5IcBLLk5+tAerZoio=
+X-Received: from plrs9.prod.google.com ([2002:a17:902:b189:b0:223:5416:c809])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f543:b0:224:2a6d:55ae
+ with SMTP id d9443c01a7336-22e1eac1872mr163309125ad.48.1746484638786; Mon, 05
+ May 2025 15:37:18 -0700 (PDT)
+Date: Mon, 5 May 2025 15:37:17 -0700
+In-Reply-To: <20250505221419.2672473-317-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.26
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250505221419.2672473-1-sashal@kernel.org> <20250505221419.2672473-317-sashal@kernel.org>
+Message-ID: <aBk9nVsmHObvxU7o@google.com>
+Subject: Re: [PATCH AUTOSEL 6.14 317/642] x86/bugs: KVM: Add support for SRSO_MSR_FIX
+From: Sean Christopherson <seanjc@google.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Borislav Petkov <bp@alien8.de>, tglx@linutronix.de, peterz@infradead.org, 
+	jpoimboe@kernel.org, corbet@lwn.net, mingo@redhat.com, 
+	dave.hansen@linux.intel.com, x86@kernel.org, pbonzini@redhat.com, 
+	thomas.lendacky@amd.com, mario.limonciello@amd.com, perry.yuan@amd.com, 
+	kai.huang@intel.com, xiaoyao.li@intel.com, tony.luck@intel.com, 
+	xin3.li@intel.com, kan.liang@linux.intel.com, linux-doc@vger.kernel.org, 
+	kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-From: Alex Deucher <alexander.deucher@amd.com>
+On Mon, May 05, 2025, Sasha Levin wrote:
+> From: Borislav Petkov <bp@alien8.de>
+> 
+> [ Upstream commit 8442df2b49ed9bcd67833ad4f091d15ac91efd00 ]
+> 
+> Add support for
+> 
+>   CPUID Fn8000_0021_EAX[31] (SRSO_MSR_FIX). If this bit is 1, it
+>   indicates that software may use MSR BP_CFG[BpSpecReduce] to mitigate
+>   SRSO.
+> 
+> Enable BpSpecReduce to mitigate SRSO across guest/host boundaries.
+> 
+> Switch back to enabling the bit when virtualization is enabled and to
+> clear the bit when virtualization is disabled because using a MSR slot
+> would clear the bit when the guest is exited and any training the guest
+> has done, would potentially influence the host kernel when execution
+> enters the kernel and hasn't VMRUN the guest yet.
+> 
+> More detail on the public thread in Link below.
+> 
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Link: https://lore.kernel.org/r/20241202120416.6054-1-bp@kernel.org
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
 
-[ Upstream commit 1350dd3691b5f757a948e5b9895d62c422baeb90 ]
+Can we please hold off on this until the fix lands[1]?  This version introduces
+a very measurable performance regression[2] for non-KVM use cases.
 
-It's GPU page size not CPU page size.  In most cases they
-are the same, but not always.  This can lead to overallocation
-on systems with larger pages.
-
-Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-index 7a773fcd7752c..49113df8baefd 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -690,7 +690,7 @@ static int mes_v11_0_set_hw_resources(struct amdgpu_mes *mes)
- 
- static int mes_v11_0_set_hw_resources_1(struct amdgpu_mes *mes)
- {
--	int size = 128 * PAGE_SIZE;
-+	int size = 128 * AMDGPU_GPU_PAGE_SIZE;
- 	int ret = 0;
- 	struct amdgpu_device *adev = mes->adev;
- 	union MESAPI_SET_HW_RESOURCES_1 mes_set_hw_res_pkt;
--- 
-2.39.5
-
+[1] https://lore.kernel.org/all/20250502223456.887618-1-seanjc@google.com
+[2] https://www.phoronix.com/review/linux-615-amd-regression
 
