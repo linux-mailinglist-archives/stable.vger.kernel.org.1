@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-140938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E6CAAAFAD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:21:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57720AAACD3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:23:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41C1C189C01F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:20:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C02085A28C2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724BD2FEB7F;
-	Mon,  5 May 2025 23:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADBA2FED09;
+	Mon,  5 May 2025 23:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hmBa+QwJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n84f7Cc4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5C63A5DF1;
-	Mon,  5 May 2025 23:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088972F54A0;
+	Mon,  5 May 2025 23:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486985; cv=none; b=eqPAmjKswUzbpK855N23LLYoFQ4KPvaE5QA5TToCvKGQ8dYX4CrFrpRSqlqE9c3Jh7czET3KTE550EIEw8/Ipoy9rEVLLufiCvcC1Nxsy5vIEvqO480Kzx1BGKEhu1vSxhH5ubWNz+qmJcKDChWoJgaJo9MDah9jLYCS0GKEEuE=
+	t=1746486991; cv=none; b=fjMzGPHWmfMRux9xWRMD+cQKZumLDBmNNKaAKRiYqXI7aHOF0RB4m5VZnImn7m7LsnPukw1MXGG5Bgqs0JQtKLTi2Ec6xGpg0WYErEjiXsW12wj/Sg5xcPBclqCWR/wNitgTJYarq7LtTRgG8/hwPsZAz3KrjoljQnihiP+G9CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486985; c=relaxed/simple;
-	bh=sx8LzlRJU3UKgqqJQuKzenOpXMUEDkTFoXmfl1hRvlI=;
+	s=arc-20240116; t=1746486991; c=relaxed/simple;
+	bh=Wro6wrYMBIDyNeevBSnG8YYdFFgxh8of1XITTAZow+4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aHCGXP6+E17b7MIqSKnsYp+6DWPnwyCaoFCBo/36M/STn2IIuKuoJ+es9oUfeCMrE6qyTz7PPWp81nU4v4YjZ/v396oJg5uMQela5Q7DhCw/dibLH98OcYZreHp91012PAz5afl/xeKtpfLjNvUkHJQc5+98XNk8BFaBKDOn3fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hmBa+QwJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB41C4CEE4;
-	Mon,  5 May 2025 23:16:23 +0000 (UTC)
+	 MIME-Version; b=QXVelmv5TQ/EIzUH1COujMjvAV0XvKnlVocm6kT/pHk4HmmNTm9nxFa1dhOgRb5hikOG2o4cesSYdoOx6yfsvp7mSHaQdJjpqYjHT7SBqNOmXhBNoO/Uo8l9lwQZT62ba2T2snGQKxjnfzMkRju0+aqUNnRcbV4zMRFHwLAVTZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n84f7Cc4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D945BC4CEE4;
+	Mon,  5 May 2025 23:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486984;
-	bh=sx8LzlRJU3UKgqqJQuKzenOpXMUEDkTFoXmfl1hRvlI=;
+	s=k20201202; t=1746486990;
+	bh=Wro6wrYMBIDyNeevBSnG8YYdFFgxh8of1XITTAZow+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hmBa+QwJcZhSJHW60cuJcu2JXlHWL4XZqd/yzfgFvNJBzhMF7RbcMzfctGYPNsAvr
-	 OBMxNedXGm5/JVJVPV0Fkpn1nlSd9cn2etA2CixlSVfxA9it43D9bGuXyW9oBwL+ne
-	 SvZlfM+6QNyUhAXnHvzR8uHRWVUaH1ztmCCgiyhu+voL36aFgsPSH/XnV1OskT1IDc
-	 BZA75Lxq/QCBElHTFJA4G8xKZFq6S5Bj2CyjndEYg8ugHOqsS0iq2GFg9FReHj5G4u
-	 kHaUIilyNspqRegvwkiraxIx0jlIwL3dAQ3CDYdrBMIY6y7RiykeCIo5s0qJox+leH
-	 l4XoavsJ2KjmA==
+	b=n84f7Cc4Nl0e62bqST4y+dn9+wDyCLCZiTH8RO9TMx6EP49LKUIf/mptJKp0M5r0J
+	 /VcHJAhofj9kGQI/kuRFwgTdbdo4MT0BVf+NVT9NmOqD4iwK1agTSMC2fhYtAPrlNE
+	 smQtqif+0rwG0oyZRbsfy0IIFlbAXCdz+Jx6KI3Ct7QwvQdARZK97DsKH7cSi1ByvB
+	 KcY/18hazwZvqAu6tJG0LmRfrqFes6hGjUBompW9r4je3C/6mWpKRKvpTzyjMyBhcG
+	 0nvQeKC13AOH6+Z2Coeu3Gl1nB3SPejsCM9KHtVE0vJ4ZHpGmssll/v1RHgOCkklzA
+	 /T7doo85EZrHA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Waiman Long <longman@redhat.com>,
+Cc: Balbir Singh <balbirs@nvidia.com>,
 	Ingo Molnar <mingo@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Kees Cook <kees@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andy Lutomirski <luto@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	dave.hansen@linux.intel.com,
+	tglx@linutronix.de,
 	mingo@redhat.com,
 	bp@alien8.de,
-	dave.hansen@linux.intel.com,
 	x86@kernel.org,
-	kai.huang@intel.com,
-	kirill.shutemov@linux.intel.com,
-	pbonzini@redhat.com,
-	brgerst@gmail.com,
-	peterz@infradead.org
-Subject: [PATCH AUTOSEL 5.15 091/153] x86/nmi: Add an emergency handler in nmi_desc & use it in nmi_shootdown_cpus()
-Date: Mon,  5 May 2025 19:12:18 -0400
-Message-Id: <20250505231320.2695319-91-sashal@kernel.org>
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 094/153] x86/kaslr: Reduce KASLR entropy on most x86 systems
+Date: Mon,  5 May 2025 19:12:21 -0400
+Message-Id: <20250505231320.2695319-94-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -75,170 +75,86 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Waiman Long <longman@redhat.com>
+From: Balbir Singh <balbirs@nvidia.com>
 
-[ Upstream commit fe37c699ae3eed6e02ee55fbf5cb9ceb7fcfd76c ]
+[ Upstream commit 7ffb791423c7c518269a9aad35039ef824a40adb ]
 
-Depending on the type of panics, it was found that the
-__register_nmi_handler() function can be called in NMI context from
-nmi_shootdown_cpus() leading to a lockdep splat:
+When CONFIG_PCI_P2PDMA=y (which is basically enabled on all
+large x86 distros), it maps the PFN's via a ZONE_DEVICE
+mapping using devm_memremap_pages(). The mapped virtual
+address range corresponds to the pci_resource_start()
+of the BAR address and size corresponding to the BAR length.
 
-  WARNING: inconsistent lock state
-  inconsistent {INITIAL USE} -> {IN-NMI} usage.
+When KASLR is enabled, the direct map range of the kernel is
+reduced to the size of physical memory plus additional padding.
+If the BAR address is beyond this limit, PCI peer to peer DMA
+mappings fail.
 
-   lock(&nmi_desc[0].lock);
-   <Interrupt>
-     lock(&nmi_desc[0].lock);
+Fix this by not shrinking the size of the direct map when
+CONFIG_PCI_P2PDMA=y.
 
-  Call Trace:
-    _raw_spin_lock_irqsave
-    __register_nmi_handler
-    nmi_shootdown_cpus
-    kdump_nmi_shootdown_cpus
-    native_machine_crash_shutdown
-    __crash_kexec
+This reduces the total available entropy, but it's better than
+the current work around of having to disable KASLR completely.
 
-In this particular case, the following panic message was printed before:
+[ mingo: Clarified the changelog to point out the broad impact ... ]
 
-  Kernel panic - not syncing: Fatal hardware error!
-
-This message seemed to be given out from __ghes_panic() running in
-NMI context.
-
-The __register_nmi_handler() function which takes the nmi_desc lock
-with irq disabled shouldn't be called from NMI context as this can
-lead to deadlock.
-
-The nmi_shootdown_cpus() function can only be invoked once. After the
-first invocation, all other CPUs should be stuck in the newly added
-crash_nmi_callback() and cannot respond to a second NMI.
-
-Fix it by adding a new emergency NMI handler to the nmi_desc
-structure and provide a new set_emergency_nmi_handler() helper to set
-crash_nmi_callback() in any context. The new emergency handler will
-preempt other handlers in the linked list. That will eliminate the need
-to take any lock and serve the panic in NMI use case.
-
-Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Balbir Singh <balbirs@nvidia.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Rik van Riel <riel@surriel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250206191844.131700-1-longman@redhat.com
+Reviewed-by: Kees Cook <kees@kernel.org>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com> # drivers/pci/Kconfig
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Link: https://lore.kernel.org/lkml/20250206023201.1481957-1-balbirs@nvidia.com/
+Link: https://lore.kernel.org/r/20250206234234.1912585-1-balbirs@nvidia.com
+--
+ arch/x86/mm/kaslr.c | 10 ++++++++--
+ drivers/pci/Kconfig |  6 ++++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/nmi.h |  2 ++
- arch/x86/kernel/nmi.c      | 42 ++++++++++++++++++++++++++++++++++++++
- arch/x86/kernel/reboot.c   | 10 +++------
- 3 files changed, 47 insertions(+), 7 deletions(-)
+ arch/x86/mm/kaslr.c | 10 ++++++++--
+ drivers/pci/Kconfig |  6 ++++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/nmi.h b/arch/x86/include/asm/nmi.h
-index 1cb9c17a4cb4b..affe5522961ae 100644
---- a/arch/x86/include/asm/nmi.h
-+++ b/arch/x86/include/asm/nmi.h
-@@ -58,6 +58,8 @@ int __register_nmi_handler(unsigned int, struct nmiaction *);
+diff --git a/arch/x86/mm/kaslr.c b/arch/x86/mm/kaslr.c
+index 37db264866b64..2ef1951ce1fd6 100644
+--- a/arch/x86/mm/kaslr.c
++++ b/arch/x86/mm/kaslr.c
+@@ -96,8 +96,14 @@ void __init kernel_randomize_memory(void)
+ 	memory_tb = DIV_ROUND_UP(max_pfn << PAGE_SHIFT, 1UL << TB_SHIFT) +
+ 		CONFIG_RANDOMIZE_MEMORY_PHYSICAL_PADDING;
  
- void unregister_nmi_handler(unsigned int, const char *);
- 
-+void set_emergency_nmi_handler(unsigned int type, nmi_handler_t handler);
-+
- void stop_nmi(void);
- void restart_nmi(void);
- void local_touch_nmi(void);
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index b892fe7035db5..a858d8e5d6104 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -38,8 +38,12 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/nmi.h>
- 
-+/*
-+ * An emergency handler can be set in any context including NMI
-+ */
- struct nmi_desc {
- 	raw_spinlock_t lock;
-+	nmi_handler_t emerg_handler;
- 	struct list_head head;
- };
- 
-@@ -121,9 +125,22 @@ static void nmi_check_duration(struct nmiaction *action, u64 duration)
- static int nmi_handle(unsigned int type, struct pt_regs *regs)
- {
- 	struct nmi_desc *desc = nmi_to_desc(type);
-+	nmi_handler_t ehandler;
- 	struct nmiaction *a;
- 	int handled=0;
- 
+-	/* Adapt physical memory region size based on available memory */
+-	if (memory_tb < kaslr_regions[0].size_tb)
 +	/*
-+	 * Call the emergency handler, if set
-+	 *
-+	 * In the case of crash_nmi_callback() emergency handler, it will
-+	 * return in the case of the crashing CPU to enable it to complete
-+	 * other necessary crashing actions ASAP. Other handlers in the
-+	 * linked list won't need to be run.
++	 * Adapt physical memory region size based on available memory,
++	 * except when CONFIG_PCI_P2PDMA is enabled. P2PDMA exposes the
++	 * device BAR space assuming the direct map space is large enough
++	 * for creating a ZONE_DEVICE mapping in the direct map corresponding
++	 * to the physical BAR address.
 +	 */
-+	ehandler = desc->emerg_handler;
-+	if (ehandler)
-+		return ehandler(type, regs);
-+
- 	rcu_read_lock();
++	if (!IS_ENABLED(CONFIG_PCI_P2PDMA) && (memory_tb < kaslr_regions[0].size_tb))
+ 		kaslr_regions[0].size_tb = memory_tb;
  
  	/*
-@@ -209,6 +226,31 @@ void unregister_nmi_handler(unsigned int type, const char *name)
- }
- EXPORT_SYMBOL_GPL(unregister_nmi_handler);
+diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+index 43e615aa12ffa..8ed3bf14f0ce5 100644
+--- a/drivers/pci/Kconfig
++++ b/drivers/pci/Kconfig
+@@ -176,6 +176,12 @@ config PCI_P2PDMA
+ 	  P2P DMA transactions must be between devices behind the same root
+ 	  port.
  
-+/**
-+ * set_emergency_nmi_handler - Set emergency handler
-+ * @type:    NMI type
-+ * @handler: the emergency handler to be stored
-+ *
-+ * Set an emergency NMI handler which, if set, will preempt all the other
-+ * handlers in the linked list. If a NULL handler is passed in, it will clear
-+ * it. It is expected that concurrent calls to this function will not happen
-+ * or the system is screwed beyond repair.
-+ */
-+void set_emergency_nmi_handler(unsigned int type, nmi_handler_t handler)
-+{
-+	struct nmi_desc *desc = nmi_to_desc(type);
++	  Enabling this option will reduce the entropy of x86 KASLR memory
++	  regions. For example - on a 46 bit system, the entropy goes down
++	  from 16 bits to 15 bits. The actual reduction in entropy depends
++	  on the physical address bits, on processor features, kernel config
++	  (5 level page table) and physical memory present on the system.
 +
-+	if (WARN_ON_ONCE(desc->emerg_handler == handler))
-+		return;
-+	desc->emerg_handler = handler;
-+
-+	/*
-+	 * Ensure the emergency handler is visible to other CPUs before
-+	 * function return
-+	 */
-+	smp_wmb();
-+}
-+
- static void
- pci_serr_error(unsigned char reason, struct pt_regs *regs)
- {
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index deedd77c7593f..d8f7f8e43e199 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -874,15 +874,11 @@ void nmi_shootdown_cpus(nmi_shootdown_cb callback)
- 	shootdown_callback = callback;
+ 	  If unsure, say N.
  
- 	atomic_set(&waiting_for_crash_ipi, num_online_cpus() - 1);
--	/* Would it be better to replace the trap vector here? */
--	if (register_nmi_handler(NMI_LOCAL, crash_nmi_callback,
--				 NMI_FLAG_FIRST, "crash"))
--		return;		/* Return what? */
-+
- 	/*
--	 * Ensure the new callback function is set before sending
--	 * out the NMI
-+	 * Set emergency handler to preempt other handlers.
- 	 */
--	wmb();
-+	set_emergency_nmi_handler(NMI_LOCAL, crash_nmi_callback);
- 
- 	apic_send_IPI_allbutself(NMI_VECTOR);
- 
+ config PCI_LABEL
 -- 
 2.39.5
 
