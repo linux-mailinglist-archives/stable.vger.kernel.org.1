@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-139785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEF9EAA9F81
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:24:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FC5AA9F8F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:24:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E55DB3AA045
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:23:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D1CF3AF995
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA96284676;
-	Mon,  5 May 2025 22:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CD8284B21;
+	Mon,  5 May 2025 22:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kr6oRBb4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F0v++0l4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D45B279358;
-	Mon,  5 May 2025 22:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEDD284694;
+	Mon,  5 May 2025 22:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483332; cv=none; b=QP6HpJw8z4PRAxOs/EopfRi9GFeAesDO6K1HBImoTJDZ7K9NAzlOTIXnJSaw10tr/ygjM5fhMPONzF/R/5sxovm/nGe88q76jKUoPQGegpCJx1OUFcFsaGXeuIdeCqoc02OwIKFwlvrdzl/D4AIzk4kjRlBhfywpZuHIVMuGt4U=
+	t=1746483334; cv=none; b=VHgbNzk1MIDPFUHOQISUk/6zyUWslyiy27r3GwKrzOM7IWcBvS2ukjmLVnYKyVHwLkyTT5955CzArRFUCO1clPE+sXor1V0H1pMWXe8Fyr1Ry6r7Vr/YCq5ie1J/IwAVmtfNs2Stqv8RspfxlQUqq/QBAu0ZTDI8KuqCatxIsck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483332; c=relaxed/simple;
-	bh=VyHl2/k893g41M784F8ipECbATSeSfXZgCi/sJEuRbg=;
+	s=arc-20240116; t=1746483334; c=relaxed/simple;
+	bh=/UCsCVFjAKQ5ixedxcZzXmKFJNG1lbkF0KEuXoj11jk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nyCBbgT6y6CFNwTspPXHuLrKbNhG4L8nYR0DF/8bdCOHOnqKjiSxwCYj9+Okm0G8cXTVemEzXz4vDok6XI6uW3E6s6Hs+FtCfWQilokvG8tzLw0lOy+n/7d3sftOgNJaj2Vk/9SDhAFwsIGYhCKq404C3VkqkgygfET+rj+75OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kr6oRBb4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CE3C4CEE4;
-	Mon,  5 May 2025 22:15:30 +0000 (UTC)
+	 MIME-Version; b=ikpbJwTvyCbK4PL2/ZkXdPzzbTxv/XUcYv4f3J9yqvyWjJ9qsgntg2laZq+adQF14ZiJNt0a1C/m1GirUyOjManXpq2FPn+JJuOQzTWfCCsnSk5eLT2gBIwNdfFNwtrIjEnVFDkx/tlarkYRy/yR+v9DmxhOoQ5CywfFlsbH54g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F0v++0l4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B600C4CEEE;
+	Mon,  5 May 2025 22:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483332;
-	bh=VyHl2/k893g41M784F8ipECbATSeSfXZgCi/sJEuRbg=;
+	s=k20201202; t=1746483333;
+	bh=/UCsCVFjAKQ5ixedxcZzXmKFJNG1lbkF0KEuXoj11jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kr6oRBb4fKPC4ukw1D8HH0RfEYYdgGhSCilAcQ9EZdMiVOrbrJDGSGlvPXajxoXqY
-	 6pGIPeAwQ3fdv/Sua90nHz4K2ZYPVqAX9XDET+gqtdWW8VeyRWE+YUUAHLtB8G6lc3
-	 ou9o+3BqjX8nXWQWVU5Y4BkFtVTpVaExy34zuhLc57V0CtqUPDi3vxab1z5AQHgBOX
-	 11r9eRc9Z+hpmz101QEIMX2I5tCBqtan2mJsmRjQBNt+iSoUdtL5SLOxVott9us+JS
-	 skpjZ+YYcmdBoiwUCtSB+wyUwtDo5wOZpM4vY5WnpFu+bm2a6+78lXRbjyWXdjIDXn
-	 gYI+YZkPqq29Q==
+	b=F0v++0l43aDVcGbp1W1qFf/7C84V/vd1MpEqtmVNI/MAn6JxJcDn7MYkYO5ysVulx
+	 k/XGVhDECDiVMqW1gNMFsiSLG/o9dOfmbGpALWHY/gQ/EW7I9njIxfTvW2SZx1yjte
+	 wZAvRBhc2fEuDFjfH8thBfdjiOUeS4bAZaukXNTSNbvIEr5+I8t40FOxDgrd035YVc
+	 UHmvVS0puKf3X+7mlLggzeyoENsCEKQGz4nAiot5Gd/uygWqiKfcTwUSbJxv5u+G2M
+	 GKUmi0F98rmnvQgPPxdvRAICgotyGPdIjHU+w4gBVpEPdkf3aaw9+fqx8Of7PLoH4g
+	 2A/wkz0VyGAVA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Hsu <d486250@gmail.com>,
-	Daniel Hsu <Daniel-Hsu@quantatw.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Hans-Frieder Vogt <hfdevel@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	matt@codeconstruct.com.au,
+	fujita.tomonori@gmail.com,
 	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 038/642] mctp: Fix incorrect tx flow invalidation condition in mctp-i2c
-Date: Mon,  5 May 2025 18:04:14 -0400
-Message-Id: <20250505221419.2672473-38-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 039/642] net: tn40xx: add pci-id of the aqr105-based Tehuti TN4010 cards
+Date: Mon,  5 May 2025 18:04:15 -0400
+Message-Id: <20250505221419.2672473-39-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -72,39 +71,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Hsu <d486250@gmail.com>
+From: Hans-Frieder Vogt <hfdevel@gmx.net>
 
-[ Upstream commit 70facbf978ac90c6da17a3de2a8dd111b06f1bac ]
+[ Upstream commit 53377b5c2952097527b01ce2f1d9a9332f042f70 ]
 
-Previously, the condition for invalidating the tx flow in
-mctp_i2c_invalidate_tx_flow() checked if `rc` was nonzero.
-However, this could incorrectly trigger the invalidation
-even when `rc > 0` was returned as a success status.
+Add the PCI-ID of the AQR105-based Tehuti TN4010 cards to allow loading
+of the tn40xx driver on these cards. Here, I chose the detailed definition
+with the subvendor ID similar to the QT2025 cards with the PCI-ID
+TEHUTI:0x4022, because there is a card with an AQ2104 hiding amongst the
+AQR105 cards, and they all come with the same PCI-ID (TEHUTI:0x4025). But
+the AQ2104 is currently not supported.
 
-This patch updates the condition to explicitly check for `rc < 0`,
-ensuring that only error cases trigger the invalidation.
-
-Signed-off-by: Daniel Hsu <Daniel-Hsu@quantatw.com>
-Reviewed-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Hans-Frieder Vogt <hfdevel@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250322-tn9510-v3a-v7-7-672a9a3d8628@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mctp/mctp-i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/tehuti/tn40.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
-index d74d47dd6e04d..f782d93f826ef 100644
---- a/drivers/net/mctp/mctp-i2c.c
-+++ b/drivers/net/mctp/mctp-i2c.c
-@@ -537,7 +537,7 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
- 		rc = __i2c_transfer(midev->adapter, &msg, 1);
+diff --git a/drivers/net/ethernet/tehuti/tn40.c b/drivers/net/ethernet/tehuti/tn40.c
+index 259bdac24cf21..a6965258441c4 100644
+--- a/drivers/net/ethernet/tehuti/tn40.c
++++ b/drivers/net/ethernet/tehuti/tn40.c
+@@ -1832,6 +1832,10 @@ static const struct pci_device_id tn40_id_table[] = {
+ 			 PCI_VENDOR_ID_ASUSTEK, 0x8709) },
+ 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_TEHUTI, 0x4022,
+ 			 PCI_VENDOR_ID_EDIMAX, 0x8103) },
++	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_TEHUTI, PCI_DEVICE_ID_TEHUTI_TN9510,
++			 PCI_VENDOR_ID_TEHUTI, 0x3015) },
++	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_TEHUTI, PCI_DEVICE_ID_TEHUTI_TN9510,
++			 PCI_VENDOR_ID_EDIMAX, 0x8102) },
+ 	{ }
+ };
  
- 		/* on tx errors, the flow can no longer be considered valid */
--		if (rc)
-+		if (rc < 0)
- 			mctp_i2c_invalidate_tx_flow(midev, skb);
- 
- 		break;
 -- 
 2.39.5
 
