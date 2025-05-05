@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-140752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2821AAAB26
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:53:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021C4AAAAF9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:48:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E11485A59E8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:48:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A48514C11EE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB3D2F497E;
-	Mon,  5 May 2025 23:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A732F494E;
+	Mon,  5 May 2025 23:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GzyJZ62C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NMJhgDgs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D03B2E61F5;
-	Mon,  5 May 2025 23:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5482037A8B6;
+	Mon,  5 May 2025 23:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486145; cv=none; b=sStTtbz+KPhwTbDSPnhszNIvI9k4Mb2mQfkFEbTOeuIf3PtkUm/hUsndOuBhbST+NU3m6BF2KYzruqWJEnErLWDoDiItdTUv+Z2F7PAB8MiNz50rIJrwXklfZkgfT5rmtC9dYkSwyQ6sNU8wIPaMxUOnn2L0za+UOR8UNWcNaPM=
+	t=1746486151; cv=none; b=hmAD5DHR+A6jWhxRb+0smWIHLNl3V4VsQr5wFO9hFtbnomTa7IJBb2EiZpS2olufxRZkAbEFjBVg7BjyVvOKjiMrLCkL5M8JCECwnaVd/NW7rjJrHMukP2tbGciBPGnejsYK1LjzjS7L1Ok+IqZxVEz+DtLJXEDlv40+3xmyIkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486145; c=relaxed/simple;
-	bh=9UGdHSS8asS9PAcd3QKXZyEnq18ZNSJR23cUPFhNCoQ=;
+	s=arc-20240116; t=1746486151; c=relaxed/simple;
+	bh=0jrTjslHxbnVxgsMgzGNHFGh0/mdDFuYfc6oBpVnebA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p/b8j6AsdMyNDTVh0Ien12zTbw+0TdDA+1ZsAce+LyRXW7btBbGUHiNupEpsP0Hm6cNVJqIoJLQT1Z3r9DJnO9KZlSgeE9ZnZBTKFFT68ugjIft84BTCeQn9ERSP7L/eOUzGqdjeMc+vgNQR5PZ51EgfBYSe6uHvH96vu8YnSPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GzyJZ62C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1187CC4CEED;
-	Mon,  5 May 2025 23:02:22 +0000 (UTC)
+	 MIME-Version; b=LgrZ7I0DoBw2ldj0MxRBlDU8jte5aFrvbshoPb7pwyBRI7Pm4oBOW63Sf53UkqTIer9zC2vf1F7NzuQecx9rwAO5z1Q/f+hyO+B6VKwfxBsw1End5b5kxhbuyBpsDQMteW0eFgIE4pUaSPVc6dHcD5QO4mGdRRovgE2y2alhflU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NMJhgDgs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C51C4CEE4;
+	Mon,  5 May 2025 23:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486144;
-	bh=9UGdHSS8asS9PAcd3QKXZyEnq18ZNSJR23cUPFhNCoQ=;
+	s=k20201202; t=1746486149;
+	bh=0jrTjslHxbnVxgsMgzGNHFGh0/mdDFuYfc6oBpVnebA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GzyJZ62CLho8VQkC6pTm1Ljh/Of1ADhyEd4WBOoVm2gZYUqJbi/G73EW8XpHc4Las
-	 M3H8/T78h3j/fH4uEOvNX570uN07xz+Qh8UW6qHLUjZTwI8SU2klH0mBTsb45355Ud
-	 4VkLnDc7zZ6YAHdXyz0uvAqgCPqvmvdSjtfLIr7l+9pR7snJXuXbi2EPWYjSiKaNpz
-	 M8RfBj9FW0ZoyRI1MKAQjkBwNj82yEWmxsmK8TCeCVl3Xrn1F8AMEEp6m2UGylKQsJ
-	 V088WP+z9haAFQ8f2CZ6VBaVUB2PMX3ToY10xkggChcc2zk7h7oDBkSamdqa8tPgSJ
-	 qgorMpNrj4LbA==
+	b=NMJhgDgsKL7EVdsv+3UyCMpwGtOwGHvV1QG+LFf8M+k1pXb/T8M6Ipq+EFXPJ098D
+	 kVIaLWKUov3BribrydILfMYRSDhcRESP56uxjiY7H5qpR0irEjfCmeqvMu6qI/Cpzx
+	 pwYmzkznLXwWdEnbhYJzkUprXhaUizmQ79f/eL4neEu2KbBpdvkTe0Olva/Cm9I5Ud
+	 mrcPaWLPsr2pFA1Hx3RTjTfss8LoQX9zOPuCSczsdTWyGoYWw5LBZ9F8TsAUzycIiD
+	 sDMm5I1K0HoHL20EsCczoL1rknYHe31sMdyTbii4kwrS16VaLEQHujPQSfc2KKwap+
+	 S52X9TC5Z50XQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Paul Burton <paulburton@kernel.org>,
-	Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>,
-	Aleksandar Rikalo <arikalo@gmail.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 174/294] MIPS: pm-cps: Use per-CPU variables as per-CPU, not per-core
-Date: Mon,  5 May 2025 18:54:34 -0400
-Message-Id: <20250505225634.2688578-174-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 178/294] wifi: rtw88: Fix rtw_init_ht_cap() for RTL8814AU
+Date: Mon,  5 May 2025 18:54:38 -0400
+Message-Id: <20250505225634.2688578-178-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -69,126 +65,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Paul Burton <paulburton@kernel.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 00a134fc2bb4a5f8fada58cf7ff4259149691d64 ]
+[ Upstream commit c7eea1ba05ca5b0dbf77a27cf2e1e6e2fb3c0043 ]
 
-The pm-cps code has up until now used per-CPU variables indexed by core,
-rather than CPU number, in order to share data amongst sibling CPUs (ie.
-VPs/threads in a core). This works fine for single cluster systems, but
-with multi-cluster systems a core number is no longer unique in the
-system, leading to sharing between CPUs that are not actually siblings.
+Set the RX mask and the highest RX rate according to the number of
+spatial streams the chip can receive. For RTL8814AU that is 3.
 
-Avoid this issue by using per-CPU variables as they are more generally
-used - ie. access them using CPU numbers rather than core numbers.
-Sharing between siblings is then accomplished by:
- - Assigning the same pointer to entries for each sibling CPU for the
-   nc_asm_enter & ready_count variables, which allow this by virtue of
-   being per-CPU pointers.
-
- - Indexing by the first CPU set in a CPUs cpu_sibling_map in the case
-   of pm_barrier, for which we can't use the previous approach because
-   the per-CPU variable is not a pointer.
-
-Signed-off-by: Paul Burton <paulburton@kernel.org>
-Signed-off-by: Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>
-Signed-off-by: Aleksandar Rikalo <arikalo@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/4e786f50-ed1c-4387-8b28-e6ff00e35e81@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/pm-cps.c | 30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
-index 9bf60d7d44d36..a7bcf2b814c86 100644
---- a/arch/mips/kernel/pm-cps.c
-+++ b/arch/mips/kernel/pm-cps.c
-@@ -56,10 +56,7 @@ static DEFINE_PER_CPU_ALIGNED(u32*, ready_count);
- /* Indicates online CPUs coupled with the current CPU */
- static DEFINE_PER_CPU_ALIGNED(cpumask_t, online_coupled);
- 
--/*
-- * Used to synchronize entry to deep idle states. Actually per-core rather
-- * than per-CPU.
-- */
-+/* Used to synchronize entry to deep idle states */
- static DEFINE_PER_CPU_ALIGNED(atomic_t, pm_barrier);
- 
- /* Saved CPU state across the CPS_PM_POWER_GATED state */
-@@ -118,9 +115,10 @@ int cps_pm_enter_state(enum cps_pm_state state)
- 	cps_nc_entry_fn entry;
- 	struct core_boot_config *core_cfg;
- 	struct vpe_boot_config *vpe_cfg;
-+	atomic_t *barrier;
- 
- 	/* Check that there is an entry function for this state */
--	entry = per_cpu(nc_asm_enter, core)[state];
-+	entry = per_cpu(nc_asm_enter, cpu)[state];
- 	if (!entry)
- 		return -EINVAL;
- 
-@@ -156,7 +154,7 @@ int cps_pm_enter_state(enum cps_pm_state state)
- 	smp_mb__after_atomic();
- 
- 	/* Create a non-coherent mapping of the core ready_count */
--	core_ready_count = per_cpu(ready_count, core);
-+	core_ready_count = per_cpu(ready_count, cpu);
- 	nc_addr = kmap_noncoherent(virt_to_page(core_ready_count),
- 				   (unsigned long)core_ready_count);
- 	nc_addr += ((unsigned long)core_ready_count & ~PAGE_MASK);
-@@ -164,7 +162,8 @@ int cps_pm_enter_state(enum cps_pm_state state)
- 
- 	/* Ensure ready_count is zero-initialised before the assembly runs */
- 	WRITE_ONCE(*nc_core_ready_count, 0);
--	coupled_barrier(&per_cpu(pm_barrier, core), online);
-+	barrier = &per_cpu(pm_barrier, cpumask_first(&cpu_sibling_map[cpu]));
-+	coupled_barrier(barrier, online);
- 
- 	/* Run the generated entry code */
- 	left = entry(online, nc_core_ready_count);
-@@ -635,12 +634,14 @@ static void *cps_gen_entry_code(unsigned cpu, enum cps_pm_state state)
- 
- static int cps_pm_online_cpu(unsigned int cpu)
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 557526e0eb7f3..0d0b5123b5fe2 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1544,6 +1544,7 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
  {
--	enum cps_pm_state state;
--	unsigned core = cpu_core(&cpu_data[cpu]);
-+	unsigned int sibling, core;
- 	void *entry_fn, *core_rc;
-+	enum cps_pm_state state;
+ 	const struct rtw_chip_info *chip = rtwdev->chip;
+ 	struct rtw_efuse *efuse = &rtwdev->efuse;
++	int i;
+ 
+ 	ht_cap->ht_supported = true;
+ 	ht_cap->cap = 0;
+@@ -1563,17 +1564,11 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ 	ht_cap->ampdu_factor = IEEE80211_HT_MAX_AMPDU_64K;
+ 	ht_cap->ampdu_density = chip->ampdu_density;
+ 	ht_cap->mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
+-	if (efuse->hw_cap.nss > 1) {
+-		ht_cap->mcs.rx_mask[0] = 0xFF;
+-		ht_cap->mcs.rx_mask[1] = 0xFF;
+-		ht_cap->mcs.rx_mask[4] = 0x01;
+-		ht_cap->mcs.rx_highest = cpu_to_le16(300);
+-	} else {
+-		ht_cap->mcs.rx_mask[0] = 0xFF;
+-		ht_cap->mcs.rx_mask[1] = 0x00;
+-		ht_cap->mcs.rx_mask[4] = 0x01;
+-		ht_cap->mcs.rx_highest = cpu_to_le16(150);
+-	}
 +
-+	core = cpu_core(&cpu_data[cpu]);
++	for (i = 0; i < efuse->hw_cap.nss; i++)
++		ht_cap->mcs.rx_mask[i] = 0xFF;
++	ht_cap->mcs.rx_mask[4] = 0x01;
++	ht_cap->mcs.rx_highest = cpu_to_le16(150 * efuse->hw_cap.nss);
+ }
  
- 	for (state = CPS_PM_NC_WAIT; state < CPS_PM_STATE_COUNT; state++) {
--		if (per_cpu(nc_asm_enter, core)[state])
-+		if (per_cpu(nc_asm_enter, cpu)[state])
- 			continue;
- 		if (!test_bit(state, state_support))
- 			continue;
-@@ -652,16 +653,19 @@ static int cps_pm_online_cpu(unsigned int cpu)
- 			clear_bit(state, state_support);
- 		}
- 
--		per_cpu(nc_asm_enter, core)[state] = entry_fn;
-+		for_each_cpu(sibling, &cpu_sibling_map[cpu])
-+			per_cpu(nc_asm_enter, sibling)[state] = entry_fn;
- 	}
- 
--	if (!per_cpu(ready_count, core)) {
-+	if (!per_cpu(ready_count, cpu)) {
- 		core_rc = kmalloc(sizeof(u32), GFP_KERNEL);
- 		if (!core_rc) {
- 			pr_err("Failed allocate core %u ready_count\n", core);
- 			return -ENOMEM;
- 		}
--		per_cpu(ready_count, core) = core_rc;
-+
-+		for_each_cpu(sibling, &cpu_sibling_map[cpu])
-+			per_cpu(ready_count, sibling) = core_rc;
- 	}
- 
- 	return 0;
+ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
 -- 
 2.39.5
 
