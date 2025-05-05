@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-140633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C44DAAAE94
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:59:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 632E1AAAE54
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:54:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E748E3A2FEE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:54:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1D917B1DDF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD078388C27;
-	Mon,  5 May 2025 23:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA813899F0;
+	Mon,  5 May 2025 23:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U2filjIY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qelmbq78"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1411D3679AD;
-	Mon,  5 May 2025 22:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208CF2D7AF7;
+	Mon,  5 May 2025 22:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485720; cv=none; b=rJMRev8QP31MmJg/dIUjhQS6QbLNFwCgliZdzuq4fe8t3ZRstP6mBGVDvRGQr18Q6B+6E3+5K7aA9bx6SPnmmEDO3E/bBHEWgMJPANHH4WGxIYvQ+ENEsoiNL+WcF5M2gMRg3utK7oRZ1uCVqa/6kaAla8z5iQSXGThn0nGeAnU=
+	t=1746485762; cv=none; b=fsDBELk9iCXXFYIfbY6moouMC/ZAbrF3Skt8sC+cNOC7LI8P6PXL8/AxEjmVwor1Tc8mAtwG9dc5uDgui1zQCJzSonJErjTCYvpYYRP43UohLMBLQu4n9pYexzADzN7soYebEJoaBwAU0nWr4HHGzlW/p7NczQYQIDUe8pr1oSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485720; c=relaxed/simple;
-	bh=l8Zy72d4X/xvqkb6aby5A1P3K5rRonIL80CZhWrtsPc=;
+	s=arc-20240116; t=1746485762; c=relaxed/simple;
+	bh=SgI4QQB3OheU7ULdDzQTMVDQs2Cqi1Nn/noA8ypWu1o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=V4FVysy+QTNihSlIbUsrLxudSeLGTWxJLxhGJaeisdiOnwiW29cd/YfqIQB22akyzpSWZAVtbNF4xB28Q+0HNwfLiR6vOXyRkkGT3hTiqLP20T/8rY9pHasrwD76zcZ3nGPMAxE/2974txZuGBpByzKsnCn3LfCmiGv8yDVaPKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U2filjIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8779C4CEEE;
-	Mon,  5 May 2025 22:55:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gBYJF4Sk4BIQswNmx+ADFfBdXgRCCI1sqktZgEj0tGroexQsygzYohcV45IlCeR/ulZXQ9fuvijYrtcPdxk+e+t+9nf48GiJrsUmCvCYs3bf5h3A9mMQzfIWl7pHGQmMtG81KCDAglaUd+nyG2je5NsvqF05T0OhnbOGtOHVzp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qelmbq78; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E491C4CEED;
+	Mon,  5 May 2025 22:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485720;
-	bh=l8Zy72d4X/xvqkb6aby5A1P3K5rRonIL80CZhWrtsPc=;
+	s=k20201202; t=1746485761;
+	bh=SgI4QQB3OheU7ULdDzQTMVDQs2Cqi1Nn/noA8ypWu1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2filjIY7nQ6SSK7BxCoqNyYQHLb1dhGeLrQTM4VSB933uSjQKBWvb9+W/92CWwox
-	 04/zkSj6mCErmeR4MK2UzdhkvYZcdJaJKu1gDVIGHsfQy82/p4NCK7UtTWJHzZcSMb
-	 0FDXQF0bOcRLxzkXrW6Sc7KdnkrubE1zZZgUwgl87ocfxL700KlR5OH6UFwGDpEsyX
-	 qk38tkYqxIq49OT4gZraAZqOACducrLvgJAw03JVn0w2ak4sHuPwaIBmna1KgEBqh1
-	 VRYTnVdYxo0IHIbp+ohHCEpNPOhwWFc0CLZGT9wqMbxOqlfDZsTDggk+dOlWRtbJp+
-	 XyI1fgs5QfV5A==
+	b=qelmbq78NdC9twjoi+ohkjclGDJUfcykFT73kIoVusj3UlEhmtMNrqGEjMfkr9rGx
+	 pcYEe6zXUqlKIpqkS3lc3CywrdwdTvr4q7tJh+3A6mowCO8hMX0IYkO7qIZ6nn3vpy
+	 i015g/MHfVVdPvARWlkDAPWhZIG3h1a6+cBLEhntKMLZcn6cDx6R5HqOcrs3l2TWMa
+	 BnrGYUvao+gsIaPgK6BENHBicXGyG9YazpaLsAUz1u+LnM43R0e0YszRCAxSpNk4l0
+	 jav14hVCSlIpAx3dYsHnt6AOfHEEgC2XanGowDZ8BiYbiet200AaZv0kb2mmk2qXK+
+	 zAFZFhxDJBdrg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Justin Tee <justin.tee@broadcom.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Rosen Penev <rosenp@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	james.smart@broadcom.com,
-	dick.kennedy@broadcom.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 442/486] scsi: lpfc: Ignore ndlp rport mismatch in dev_loss_tmo callbk
-Date: Mon,  5 May 2025 18:38:38 -0400
-Message-Id: <20250505223922.2682012-442-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 470/486] wifi: ath9k: return by of_get_mac_address
+Date: Mon,  5 May 2025 18:39:06 -0400
+Message-Id: <20250505223922.2682012-470-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -63,61 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 23ed62897746f49f195d819ce6edeb1db27d1b72 ]
+[ Upstream commit dfffb317519f88534bb82797f055f0a2fd867e7b ]
 
-With repeated port swaps between separate fabrics, there can be multiple
-registrations for fabric well known address 0xfffffe.  This can cause ndlp
-reference confusion due to the usage of a single ndlp ptr that stores the
-rport object in fc_rport struct private storage during transport
-registration.  Subsequent registrations update the ndlp->rport field with
-the newer rport, so when transport layer triggers dev_loss_tmo for the
-earlier registered rport the ndlp->rport private storage is referencing the
-newer rport instead of the older rport in dev_loss_tmo callbk.
+When using nvmem, ath9k could potentially be loaded before nvmem, which
+loads after mtd. This is an issue if DT contains an nvmem mac address.
 
-Because the older ndlp->rport object is already cleaned up elsewhere in
-driver code during the time of fabric swap, check that the rport provided
-in dev_loss_tmo callbk actually matches the rport stored in the LLDD's
-ndlp->rport field.  Otherwise, skip dev_loss_tmo work on a stale rport.
+If nvmem is not ready in time for ath9k, -EPROBE_DEFER is returned. Pass
+it to _probe so that ath9k can properly grab a potentially present MAC
+address.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250131000524.163662-4-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Link: https://patch.msgid.link/20241105222326.194417-1-rosenp@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath9k/init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 31dcabebc9b6d..f2e4237ff3d99 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -227,10 +227,16 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
- 	if (ndlp->nlp_state == NLP_STE_MAPPED_NODE)
- 		return;
+diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+index 7fad7e75af6a3..619bebd389bd2 100644
+--- a/drivers/net/wireless/ath/ath9k/init.c
++++ b/drivers/net/wireless/ath/ath9k/init.c
+@@ -691,7 +691,9 @@ static int ath9k_of_init(struct ath_softc *sc)
+ 		ah->ah_flags |= AH_NO_EEP_SWAP;
+ 	}
  
--	/* check for recovered fabric node */
--	if (ndlp->nlp_state == NLP_STE_UNMAPPED_NODE &&
--	    ndlp->nlp_DID == Fabric_DID)
-+	/* Ignore callback for a mismatched (stale) rport */
-+	if (ndlp->rport != rport) {
-+		lpfc_vlog_msg(vport, KERN_WARNING, LOG_NODE,
-+			      "6788 fc rport mismatch: d_id x%06x ndlp x%px "
-+			      "fc rport x%px node rport x%px state x%x "
-+			      "refcnt %u\n",
-+			      ndlp->nlp_DID, ndlp, rport, ndlp->rport,
-+			      ndlp->nlp_state, kref_read(&ndlp->kref));
- 		return;
-+	}
+-	of_get_mac_address(np, common->macaddr);
++	ret = of_get_mac_address(np, common->macaddr);
++	if (ret == -EPROBE_DEFER)
++		return ret;
  
- 	if (rport->port_name != wwn_to_u64(ndlp->nlp_portname.u.wwn))
- 		lpfc_printf_vlog(vport, KERN_ERR, LOG_TRACE_EVENT,
+ 	return 0;
+ }
 -- 
 2.39.5
 
