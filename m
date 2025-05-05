@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-141714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61968AAB5CA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35859AAB5CB
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:36:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 440301B63407
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:32:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 553211B641A1
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD02929B8E8;
-	Tue,  6 May 2025 00:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1139E296FC0;
+	Tue,  6 May 2025 00:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r5yBPCwf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rBpVxkF/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BAC28B7EC;
-	Mon,  5 May 2025 23:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C40137F947;
+	Mon,  5 May 2025 23:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487328; cv=none; b=ZLDuYlZGrgfYGnXSIVvzo58Wfh2QmO/OZl3YOi6oSctSQ9ATarTquUj8xnJI66srwwAR6hshYpv2DQ4dm9DfX7HlLeC4WD/s+3WM1nFWincZj/HYiCgdc7aAUwkkPZ/2H06CWpCQStMqTMtXXyHBMHxKSIZCiGBvv0KKB3exsQ0=
+	t=1746487333; cv=none; b=sWl9NKPu8k7Lxl12y+ykof2OSAxn14DJzq/k6EckBkscFa6MCUBHlHJ81gHqBsZeu9K7Y4LtfeJITJ5q07rututhAAbhSIMmC1LWBZsQiNJ0aXICb2PywxnPPoLNqFX9i7vOEDdSXi8URkpOF5eIYuSI08JILfM9hzNQQpsC87A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487328; c=relaxed/simple;
-	bh=9J/hAcUA8PxogD6w8rN8nr7ZfzjH2zUPbNoujqwzwHM=;
+	s=arc-20240116; t=1746487333; c=relaxed/simple;
+	bh=sPgo/UldMLcbvt6C1XwY2ohaBmrJBOqaeUI3P5ZcP5U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FI8Tdm8tTIUZQgtE57CEaTy0RWF7MSO3424hgl32lqhXYOuy+njk8Jy1NO3K1poftcDh+ZQjwJB6OwhLaRgkNlc4p2NluHwPSzIHiiB4xMjBcJE3/5hx+I7Dpj7NNk89VyyCdgZ6ih1UDDyMgwHkUR+C8CW5tSF5ejUX4dii4ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r5yBPCwf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C541C4CEEE;
-	Mon,  5 May 2025 23:22:06 +0000 (UTC)
+	 MIME-Version; b=Mi25Hz16pBBqVvZuqoHWL4KGTqmk4pdtyy2REvFIqxhtyEUk2BSH3Q2N/aYrdpRNbqyupMiVFSb2kYS/eTqj5wGZ3seiLnNzUtUQqvU/xt9xThbtTLLC1M1Ub9BUhWnoE3FSachI3xyxqRheMaRhI8MnxCo9rhp1RjGQDnYoUko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rBpVxkF/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9E4C4CEEE;
+	Mon,  5 May 2025 23:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487327;
-	bh=9J/hAcUA8PxogD6w8rN8nr7ZfzjH2zUPbNoujqwzwHM=;
+	s=k20201202; t=1746487331;
+	bh=sPgo/UldMLcbvt6C1XwY2ohaBmrJBOqaeUI3P5ZcP5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5yBPCwf1nLTqdII3kaXTuECClKeb9Lq5TRe2zmVFeZiRzjr4JFgsjHCFC9xeSfg7
-	 7sWPqR4ISpXPxT4E/nQYTVChzIAcHzhQQfrKhk2et+yXBdlDDp3S+A+JVFO72o0cQx
-	 tOWwHK6s45KSW9nMZZ55YVyGOoxomYuazbbSbHx6PwkVokxX5eXmiZPg3bUpnGLJH9
-	 1RfM8vw/oHNIE4YGyT4WoFk4BDcnflOJanyBHlmQ3VzEC05imx2ptFmWegfAi52wOl
-	 DE8+yi+2K+A1jDEjUvEEFHTrJI2gQzldwNZEyvvCpDfKOgvW3QbaW57DJxbdYtAjK0
-	 0K/ANC7RAK3rw==
+	b=rBpVxkF/0/s8NRRyS122AtBhf1UlmPYlRsEvgmL4hw/ZkGb8xtog8thF7GoX9qwD3
+	 O2R9yhZnd+ykUzM2PpV9mNtib/SY5tNNkr5UmgPMravMseqltWKNpi00wWRCAReMle
+	 cWXrc/A1OtJ2+c52S2nQvKkAaq2j+J9+W822l4r/JQxCBFXBMRJxWK2WEKpUCDu+2J
+	 xIw4Bh1KDRp5JhNITnDAhNbphem7/pB40aDSDUr4TSBwtgItYLGESHHpRgrBKRfy7R
+	 rolYVv1tByJSFyYPJtIyiqoovUg39+4l7dPBh1jNOkbzCjoomU7N6WVfwmS2l6kV/M
+	 UMPQiqsfe19Jg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jing Su <jingsusu@didiglobal.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 08/79] dql: Fix dql->limit value when reset.
-Date: Mon,  5 May 2025 19:20:40 -0400
-Message-Id: <20250505232151.2698893-8-sashal@kernel.org>
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	snitzer@kernel.org,
+	neilb@suse.de,
+	kolga@netapp.com,
+	linux-nfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 10/79] pNFS/flexfiles: Report ENETDOWN as a connection error
+Date: Mon,  5 May 2025 19:20:42 -0400
+Message-Id: <20250505232151.2698893-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -64,44 +71,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Jing Su <jingsusu@didiglobal.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 3a17f23f7c36bac3a3584aaf97d3e3e0b2790396 ]
+[ Upstream commit aa42add73ce9b9e3714723d385c254b75814e335 ]
 
-Executing dql_reset after setting a non-zero value for limit_min can
-lead to an unreasonable situation where dql->limit is less than
-dql->limit_min.
+If the client should see an ENETDOWN when trying to connect to the data
+server, it might still be able to talk to the metadata server through
+another NIC. If so, report the error.
 
-For instance, after setting
-/sys/class/net/eth*/queues/tx-0/byte_queue_limits/limit_min,
-an ifconfig down/up operation might cause the ethernet driver to call
-netdev_tx_reset_queue, which in turn invokes dql_reset.
-
-In this case, dql->limit is reset to 0 while dql->limit_min remains
-non-zero value, which is unexpected. The limit should always be
-greater than or equal to limit_min.
-
-Signed-off-by: Jing Su <jingsusu@didiglobal.com>
-Link: https://patch.msgid.link/Z9qHD1s/NEuQBdgH@pilot-ThinkCentre-M930t-N000
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Tested-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/dynamic_queue_limits.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/flexfilelayout/flexfilelayout.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/dynamic_queue_limits.c b/lib/dynamic_queue_limits.c
-index e659a027036ec..f6807062b32a3 100644
---- a/lib/dynamic_queue_limits.c
-+++ b/lib/dynamic_queue_limits.c
-@@ -116,7 +116,7 @@ EXPORT_SYMBOL(dql_completed);
- void dql_reset(struct dql *dql)
- {
- 	/* Reset all dynamic values */
--	dql->limit = 0;
-+	dql->limit = dql->min_limit;
- 	dql->num_queued = 0;
- 	dql->num_completed = 0;
- 	dql->last_obj_cnt = 0;
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index 1b88b78f40bea..3b4f93dcf3239 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -1285,6 +1285,7 @@ static void ff_layout_io_track_ds_error(struct pnfs_layout_segment *lseg,
+ 		case -ECONNRESET:
+ 		case -EHOSTDOWN:
+ 		case -EHOSTUNREACH:
++		case -ENETDOWN:
+ 		case -ENETUNREACH:
+ 		case -EADDRINUSE:
+ 		case -ENOBUFS:
 -- 
 2.39.5
 
