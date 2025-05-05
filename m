@@ -1,72 +1,62 @@
-Return-Path: <stable+bounces-141629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF1CAAB50D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:21:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F55AAB517
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25FF21891FF6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:17:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 612E63A4E74
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966E83A2705;
-	Tue,  6 May 2025 00:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995D23A4FBC;
+	Tue,  6 May 2025 00:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mlHnt2cB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KmPs9LNq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550122F478A;
-	Mon,  5 May 2025 23:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7332F47A6;
+	Mon,  5 May 2025 23:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486951; cv=none; b=iz3eqxYiidhTJ1Ycw5rNC46l7nInUC4rnVFPG3rLi9f3mwv9dpyCpmLhI/SJE9NINSmH71/g68HifuFBXEi9+sMn8R+JzTEijKZ6h+nJ2zdHtU9qd7EVtuVjZz0CbjTkMo1jytvLieKVGIoNZz/CjsYpKkelXPt0q5jGoijxncg=
+	t=1746486953; cv=none; b=HMBbi4BE6DAz/S8LVGoP74DkWQl8Q2RFriGnOQjZh53MUgjENe67tk8LqPI5K1Fv6LtKtSLUVy01eINMU37YNHKEcDhkJc2TxRMTH0lT3LsDVD/4Nqu9+wFfcgcKIvAenU1S837GS9hu18hrh4bN7BPldIlRTCxF5YmsEQQNMwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486951; c=relaxed/simple;
-	bh=pHKueES8/Xf6oiD7xIjwXZCnandN1qb9OpE6s5N8vrA=;
+	s=arc-20240116; t=1746486953; c=relaxed/simple;
+	bh=sIYKXDqwn1Xe51I8SCi8EAvNWHh1diIO9FXTlt40qoo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C8CkLdheLBJRgkdeLMCrNC375/5+i2DKDWybKlRu9ieAmuwR20aCZ0RaAXNLaowP2HAy2LSatVr1NqVn/fQrYo9obcWUE01WB0Ooj+fARD6IYmeK/BQUBigR8TZi2sE/+vFx9yOjRxUxgf/Be9OJNtZqduYjW/PYhGhXymN0iIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mlHnt2cB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CF0C4CEED;
-	Mon,  5 May 2025 23:15:47 +0000 (UTC)
+	 MIME-Version; b=ADIzfZsJA1kAM4Uvbj5tiWbh6++OfTVfHKTDDRrTcs5VXbRpvXJNdMpx3tEA+IxcCKNQa6Hzmo+573vGkHYnGkUcadjJ9RetNjbFDOenaJfDdyjmsZLctvuCiUod7AgK1gqFua+PEeIZlckEVx/YdTSDiRrBXyxbOtAS10goN3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KmPs9LNq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6B6C4CEEF;
+	Mon,  5 May 2025 23:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486950;
-	bh=pHKueES8/Xf6oiD7xIjwXZCnandN1qb9OpE6s5N8vrA=;
+	s=k20201202; t=1746486953;
+	bh=sIYKXDqwn1Xe51I8SCi8EAvNWHh1diIO9FXTlt40qoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlHnt2cBKBrFHYwjqKgwKbXBDKFGRcY0fi9lrDn7mij4ZNwQ/qR0hrh6j4526rAcu
-	 bNtMb6esmZ4R0cdod4bpohqWRy6YA+dWmoSQkck4IAe9jni2XJ3w+3Koa7L2lanXvQ
-	 q/TrnN1nYyxMMq7mVQDXooVz9zBgL1N7QwZHa9PmoK3ZD8Lp1+KTdqx+23X+Zqjws4
-	 CYeZ1moSKX23DyHaVtLXm9nGlcT63CI52mkg2gjyc3m0mcVz45QCS0pydVGzSBjHqY
-	 Elcnvq+jBsrtFi2IIaF80HC4fgHIG1oCxpbptfjDPggzGjJMWA/mke2mHlkCwo3tqw
-	 wgBAVqRPzzuuQ==
+	b=KmPs9LNqhRxcMiC0Vdzm3XfH5LJDpLGKB42yooLdcW3ANl3D3H3AEGrnmjoxV11Kk
+	 M4vz4HXOaN/+fyG+nWhmdEihnLNr8T8//bBy7wj8UtHFIUhi/7Lj4nOGWb4pifPKC5
+	 90SMph+cUQsf8RcsyeMaLuR/IGemHgPAcieV7vVnnDZxm+zflXzMpWpeKKcAbb8ZD8
+	 euyYOOG7RqMTXcUjMXOMROA3Xf3la1nEVx4uwntXbl+ooVFhTvn6vBMmnA6o3B99aD
+	 t4ncTNvenBxi+DHzGQSjvUj3rrtrGR7BQmsLSalBgNxudrwP2JPj0+umKS4qu1q2HD
+	 w3gTgqGMmTiiA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	David Kaplan <David.Kaplan@amd.com>,
+Cc: Li Bin <bin.li@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Ryan Wanner <Ryan.Wanner@microchip.com>,
+	Durai Manickam KR <durai.manickamkr@microchip.com>,
+	Andrei Simion <andrei.simion@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>,
-	corbet@lwn.net,
-	tglx@linutronix.de,
-	bp@alien8.de,
-	mingo@redhat.com,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	akpm@linux-foundation.org,
-	paulmck@kernel.org,
-	rostedt@goodmis.org,
-	thuth@redhat.com,
-	ardb@kernel.org,
-	gregkh@linuxfoundation.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 074/153] x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2
-Date: Mon,  5 May 2025 19:12:01 -0400
-Message-Id: <20250505231320.2695319-74-sashal@kernel.org>
+	linux@armlinux.org.uk,
+	alexandre.belloni@bootlin.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 076/153] ARM: at91: pm: fix at91_suspend_finish for ZQ calibration
+Date: Mon,  5 May 2025 19:12:03 -0400
+Message-Id: <20250505231320.2695319-76-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -81,94 +71,88 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Li Bin <bin.li@microchip.com>
 
-[ Upstream commit 98fdaeb296f51ef08e727a7cc72e5b5c864c4f4d ]
+[ Upstream commit bc4722c3598d0e2c2dbf9609a3d3198993093e2b ]
 
-Change the default value of spectre v2 in user mode to respect the
-CONFIG_MITIGATION_SPECTRE_V2 config option.
+For sama7g5 and sama7d65 backup mode, we encountered a "ZQ calibrate error"
+during recalibrating the impedance in BootStrap.
+We found that the impedance value saved in at91_suspend_finish() before
+the DDR entered self-refresh mode did not match the resistor values. The
+ZDATA field in the DDR3PHY_ZQ0CR0 register uses a modified gray code to
+select the different impedance setting.
+But these gray code are incorrect, a workaournd from design team fixed the
+bug in the calibration logic. The ZDATA contains four independent impedance
+elements, but the algorithm combined the four elements into one. The elements
+were fixed using properly shifted offsets.
 
-Currently, user mode spectre v2 is set to auto
-(SPECTRE_V2_USER_CMD_AUTO) by default, even if
-CONFIG_MITIGATION_SPECTRE_V2 is disabled.
-
-Set the spectre_v2 value to auto (SPECTRE_V2_USER_CMD_AUTO) if the
-Spectre v2 config (CONFIG_MITIGATION_SPECTRE_V2) is enabled, otherwise
-set the value to none (SPECTRE_V2_USER_CMD_NONE).
-
-Important to say the command line argument "spectre_v2_user" overwrites
-the default value in both cases.
-
-When CONFIG_MITIGATION_SPECTRE_V2 is not set, users have the flexibility
-to opt-in for specific mitigations independently. In this scenario,
-setting spectre_v2= will not enable spectre_v2_user=, and command line
-options spectre_v2_user and spectre_v2 are independent when
-CONFIG_MITIGATION_SPECTRE_V2=n.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: David Kaplan <David.Kaplan@amd.com>
-Link: https://lore.kernel.org/r/20241031-x86_bugs_last_v2-v2-2-b7ff1dab840e@debian.org
+Signed-off-by: Li Bin <bin.li@microchip.com>
+[nicolas.ferre@microchip.com: fix indentation and combine 2 patches]
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Tested-by: Ryan Wanner <Ryan.Wanner@microchip.com>
+Tested-by: Durai Manickam KR <durai.manickamkr@microchip.com>
+Tested-by: Andrei Simion <andrei.simion@microchip.com>
+Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
+Link: https://lore.kernel.org/r/28b33f9bcd0ca60ceba032969fe054d38f2b9577.1740671156.git.Ryan.Wanner@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  2 ++
- arch/x86/kernel/cpu/bugs.c                      | 10 +++++++---
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ arch/arm/mach-at91/pm.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index ede522c60ac4f..0bbe79287596d 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5430,6 +5430,8 @@
+diff --git a/arch/arm/mach-at91/pm.c b/arch/arm/mach-at91/pm.c
+index 91efc3d4de61d..777a8834b43e2 100644
+--- a/arch/arm/mach-at91/pm.c
++++ b/arch/arm/mach-at91/pm.c
+@@ -350,11 +350,12 @@ extern u32 at91_pm_suspend_in_sram_sz;
  
- 			Selecting 'on' will also enable the mitigation
- 			against user space to user space task attacks.
-+			Selecting specific mitigation does not force enable
-+			user mitigations.
- 
- 			Selecting 'off' will disable both the kernel and
- 			the user space protections.
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 75cd45f2338dc..f47590a9f6896 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1262,9 +1262,13 @@ static __ro_after_init enum spectre_v2_mitigation_cmd spectre_v2_cmd;
- static enum spectre_v2_user_cmd __init
- spectre_v2_parse_user_cmdline(void)
+ static int at91_suspend_finish(unsigned long val)
  {
-+	enum spectre_v2_user_cmd mode;
- 	char arg[20];
- 	int ret, i;
+-	unsigned char modified_gray_code[] = {
+-		0x00, 0x01, 0x02, 0x03, 0x06, 0x07, 0x04, 0x05, 0x0c, 0x0d,
+-		0x0e, 0x0f, 0x0a, 0x0b, 0x08, 0x09, 0x18, 0x19, 0x1a, 0x1b,
+-		0x1e, 0x1f, 0x1c, 0x1d, 0x14, 0x15, 0x16, 0x17, 0x12, 0x13,
+-		0x10, 0x11,
++	/* SYNOPSYS workaround to fix a bug in the calibration logic */
++	unsigned char modified_fix_code[] = {
++		0x00, 0x01, 0x01, 0x06, 0x07, 0x0c, 0x06, 0x07, 0x0b, 0x18,
++		0x0a, 0x0b, 0x0c, 0x0d, 0x0d, 0x0a, 0x13, 0x13, 0x12, 0x13,
++		0x14, 0x15, 0x15, 0x12, 0x18, 0x19, 0x19, 0x1e, 0x1f, 0x14,
++		0x1e, 0x1f,
+ 	};
+ 	unsigned int tmp, index;
+ 	int i;
+@@ -365,25 +366,25 @@ static int at91_suspend_finish(unsigned long val)
+ 		 * restore the ZQ0SR0 with the value saved here. But the
+ 		 * calibration is buggy and restoring some values from ZQ0SR0
+ 		 * is forbidden and risky thus we need to provide processed
+-		 * values for these (modified gray code values).
++		 * values for these.
+ 		 */
+ 		tmp = readl(soc_pm.data.ramc_phy + DDR3PHY_ZQ0SR0);
  
-+	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
-+		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
-+
- 	switch (spectre_v2_cmd) {
- 	case SPECTRE_V2_CMD_NONE:
- 		return SPECTRE_V2_USER_CMD_NONE;
-@@ -1277,7 +1281,7 @@ spectre_v2_parse_user_cmdline(void)
- 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
- 				  arg, sizeof(arg));
- 	if (ret < 0)
--		return SPECTRE_V2_USER_CMD_AUTO;
-+		return mode;
+ 		/* Store pull-down output impedance select. */
+ 		index = (tmp >> DDR3PHY_ZQ0SR0_PDO_OFF) & 0x1f;
+-		soc_pm.bu->ddr_phy_calibration[0] = modified_gray_code[index];
++		soc_pm.bu->ddr_phy_calibration[0] = modified_fix_code[index] << DDR3PHY_ZQ0SR0_PDO_OFF;
  
- 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
- 		if (match_option(arg, ret, v2_user_options[i].option)) {
-@@ -1287,8 +1291,8 @@ spectre_v2_parse_user_cmdline(void)
- 		}
- 	}
+ 		/* Store pull-up output impedance select. */
+ 		index = (tmp >> DDR3PHY_ZQ0SR0_PUO_OFF) & 0x1f;
+-		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
++		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SR0_PUO_OFF;
  
--	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
--	return SPECTRE_V2_USER_CMD_AUTO;
-+	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
-+	return mode;
- }
+ 		/* Store pull-down on-die termination impedance select. */
+ 		index = (tmp >> DDR3PHY_ZQ0SR0_PDODT_OFF) & 0x1f;
+-		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
++		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SR0_PDODT_OFF;
  
- static inline bool spectre_v2_in_eibrs_mode(enum spectre_v2_mitigation mode)
+ 		/* Store pull-up on-die termination impedance select. */
+ 		index = (tmp >> DDR3PHY_ZQ0SRO_PUODT_OFF) & 0x1f;
+-		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
++		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SRO_PUODT_OFF;
+ 
+ 		/*
+ 		 * The 1st 8 words of memory might get corrupted in the process
 -- 
 2.39.5
 
