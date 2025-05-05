@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-139596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87355AA8D2C
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 09:39:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7483BAA8D2F
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 09:40:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FD947A2AAD
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 07:38:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E250316A57F
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 07:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DE08C0B;
-	Mon,  5 May 2025 07:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229625BAF0;
+	Mon,  5 May 2025 07:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4AtZ5BY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3jRdY54"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507295BAF0
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 07:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A0428EA
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 07:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746430745; cv=none; b=T3bwL7rzQH+sSvqr1Z2MBAZslyjest/Q37nmV/EdOaATh1IrQ6FCgc6+aSyfrJLl4kd/Ta09K2F6DT/lZvnAJ+BV4m82bS8ovHdG+7TwhbjuaZtf54NKoKQSHjtMLcVbEr4pKjpCRMF27RTtzUCZkuxQLykkyb4kVnoSTNXenp4=
+	t=1746430849; cv=none; b=I7uvPAnyTFhW9FgUO5pkA5Xd6zfBz/3Dc7ftUVdB86vvAH6Ts3vmXsUFJVaELyAC2J7XYebkdYxtIM2GF4cS1po40nvfdfABWQCPFuFMVgYkGHcRbv4MmziB00rGT55zp7tLu746QTBsdc96ES4Jb6R1ERu9qvDFp/eOkswKXU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746430745; c=relaxed/simple;
-	bh=jbAN47qjN2WPh3GvXfpobBOBYQ78eJo4HHPGUO47xz4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IgR1PPCty6XQuAqOBab40J9Kd4Xw7TxuZFSYG1HMYBEqNJwdf/NoRqX35AM/w06jN3aYwanq/aB+hAjw08bwC7MJS/1oFdglnifNzQs0TumrPWpaIxFXY6salFDExUowACR1F3kOZL11sht6WN4duHdY/CdZGRvm+W7FFfiT5KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4AtZ5BY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7760BC4CEE4;
-	Mon,  5 May 2025 07:39:04 +0000 (UTC)
+	s=arc-20240116; t=1746430849; c=relaxed/simple;
+	bh=eaLqfVL3uCRKypEVGFQh83Tg/g402UB/Idtt3DOmB/o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JH4CBfs0lpVu98bp3zg1gU7zSUyd7JJzCV3liu3r7bKo7AJJTRlAXU2HVu6+LqDkxKu99SF7hyBRmRjmDTXMDWBW2MzX5RqOmDXe5OwiyYWjOu71YULeO5DF/1hQWs6hdmFf7kb90UT7M+XeAUyB7cxv/aqw+7mxz5zBi5MuYs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3jRdY54; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01AD2C4CEE4;
+	Mon,  5 May 2025 07:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746430744;
-	bh=jbAN47qjN2WPh3GvXfpobBOBYQ78eJo4HHPGUO47xz4=;
+	s=korg; t=1746430849;
+	bh=eaLqfVL3uCRKypEVGFQh83Tg/g402UB/Idtt3DOmB/o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=S4AtZ5BYMidL7JCOFZwuwG6YbsXydYtUKMY8Gr8RrMgY7QXEpW0Rcf9EIYiTyHHGo
-	 crH+c0/ZdQUyAYCGkvbBHz0QlBqmRQgjljgDbq3oF47izjCv8pQCmupysD8CdgcX8C
-	 kphJ5GSyUBTZBxd8zECES8bkSJu/x0CazQnmBJtM=
-Subject: FAILED: patch "[PATCH] dm-bufio: don't schedule in atomic context" failed to apply to 5.4-stable tree
-To: weilongping@oppo.com,mpatocka@redhat.com
+	b=W3jRdY54FV3Cq0DH3/vkuKYIooNdSk3FILVBi1aZfkMCDNiKikmMbz4+5h6kWu4UM
+	 hnvr+LZy7U9WbSIvPolkcqez1fd4fhG4MefuWdH8zhDNdNJSBoz5SIQG7QbtCkE6Au
+	 ZQpUstAM0m4rgchLlZsFH6O5mupXbKVsUXukTuNQ=
+Subject: FAILED: patch "[PATCH] drivers: base: handle module_kobject creation" failed to apply to 6.14-stable tree
+To: shyamsaini@linux.microsoft.com,gregkh@linuxfoundation.org,linux@rasmusvillemoes.dk,petr.pavlu@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 May 2025 09:38:56 +0200
-Message-ID: <2025050556-expose-shuffling-4d2a@gregkh>
+Date: Mon, 05 May 2025 09:40:46 +0200
+Message-ID: <2025050546-oozy-nylon-220d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
 git checkout FETCH_HEAD
-git cherry-pick -x a3d8f0a7f5e8b193db509c7191fefeed3533fc44
+git cherry-pick -x f95bbfe18512c5c018720468959edac056a17196
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050556-expose-shuffling-4d2a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050546-oozy-nylon-220d@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,84 +77,59 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a3d8f0a7f5e8b193db509c7191fefeed3533fc44 Mon Sep 17 00:00:00 2001
-From: LongPing Wei <weilongping@oppo.com>
-Date: Thu, 17 Apr 2025 11:07:38 +0800
-Subject: [PATCH] dm-bufio: don't schedule in atomic context
+From f95bbfe18512c5c018720468959edac056a17196 Mon Sep 17 00:00:00 2001
+From: Shyam Saini <shyamsaini@linux.microsoft.com>
+Date: Thu, 27 Feb 2025 10:49:30 -0800
+Subject: [PATCH] drivers: base: handle module_kobject creation
 
-A BUG was reported as below when CONFIG_DEBUG_ATOMIC_SLEEP and
-try_verify_in_tasklet are enabled.
-[  129.444685][  T934] BUG: sleeping function called from invalid context at drivers/md/dm-bufio.c:2421
-[  129.444723][  T934] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 934, name: kworker/1:4
-[  129.444740][  T934] preempt_count: 201, expected: 0
-[  129.444756][  T934] RCU nest depth: 0, expected: 0
-[  129.444781][  T934] Preemption disabled at:
-[  129.444789][  T934] [<ffffffd816231900>] shrink_work+0x21c/0x248
-[  129.445167][  T934] kernel BUG at kernel/sched/walt/walt_debug.c:16!
-[  129.445183][  T934] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-[  129.445204][  T934] Skip md ftrace buffer dump for: 0x1609e0
-[  129.447348][  T934] CPU: 1 PID: 934 Comm: kworker/1:4 Tainted: G        W  OE      6.6.56-android15-8-o-g6f82312b30b9-debug #1 1400000003000000474e5500b3187743670464e8
-[  129.447362][  T934] Hardware name: Qualcomm Technologies, Inc. Parrot QRD, Alpha-M (DT)
-[  129.447373][  T934] Workqueue: dm_bufio_cache shrink_work
-[  129.447394][  T934] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  129.447406][  T934] pc : android_rvh_schedule_bug+0x0/0x8 [sched_walt_debug]
-[  129.447435][  T934] lr : __traceiter_android_rvh_schedule_bug+0x44/0x6c
-[  129.447451][  T934] sp : ffffffc0843dbc90
-[  129.447459][  T934] x29: ffffffc0843dbc90 x28: ffffffffffffffff x27: 0000000000000c8b
-[  129.447479][  T934] x26: 0000000000000040 x25: ffffff804b3d6260 x24: ffffffd816232b68
-[  129.447497][  T934] x23: ffffff805171c5b4 x22: 0000000000000000 x21: ffffffd816231900
-[  129.447517][  T934] x20: ffffff80306ba898 x19: 0000000000000000 x18: ffffffc084159030
-[  129.447535][  T934] x17: 00000000d2b5dd1f x16: 00000000d2b5dd1f x15: ffffffd816720358
-[  129.447554][  T934] x14: 0000000000000004 x13: ffffff89ef978000 x12: 0000000000000003
-[  129.447572][  T934] x11: ffffffd817a823c4 x10: 0000000000000202 x9 : 7e779c5735de9400
-[  129.447591][  T934] x8 : ffffffd81560d004 x7 : 205b5d3938373434 x6 : ffffffd8167397c8
-[  129.447610][  T934] x5 : 0000000000000000 x4 : 0000000000000001 x3 : ffffffc0843db9e0
-[  129.447629][  T934] x2 : 0000000000002f15 x1 : 0000000000000000 x0 : 0000000000000000
-[  129.447647][  T934] Call trace:
-[  129.447655][  T934]  android_rvh_schedule_bug+0x0/0x8 [sched_walt_debug 1400000003000000474e550080cce8a8a78606b6]
-[  129.447681][  T934]  __might_resched+0x190/0x1a8
-[  129.447694][  T934]  shrink_work+0x180/0x248
-[  129.447706][  T934]  process_one_work+0x260/0x624
-[  129.447718][  T934]  worker_thread+0x28c/0x454
-[  129.447729][  T934]  kthread+0x118/0x158
-[  129.447742][  T934]  ret_from_fork+0x10/0x20
-[  129.447761][  T934] Code: ???????? ???????? ???????? d2b5dd1f (d4210000)
-[  129.447772][  T934] ---[ end trace 0000000000000000 ]---
+module_add_driver() relies on module_kset list for
+/sys/module/<built-in-module>/drivers directory creation.
 
-dm_bufio_lock will call spin_lock_bh when try_verify_in_tasklet
-is enabled, and __scan will be called in atomic context.
+Since,
+commit 96a1a2412acba ("kernel/params.c: defer most of param_sysfs_init() to late_initcall time")
+drivers which are initialized from subsys_initcall() or any other
+higher precedence initcall couldn't find the related kobject entry
+in the module_kset list because module_kset is not fully populated
+by the time module_add_driver() refers it. As a consequence,
+module_add_driver() returns early without calling make_driver_name().
+Therefore, /sys/module/<built-in-module>/drivers is never created.
 
-Fixes: 7cd326747f46 ("dm bufio: remove dm_bufio_cond_resched()")
-Signed-off-by: LongPing Wei <weilongping@oppo.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fix this issue by letting module_add_driver() handle module_kobject
+creation itself.
 
-diff --git a/drivers/md/dm-bufio.c b/drivers/md/dm-bufio.c
-index 9c8ed65cd87e..f0b5a6931161 100644
---- a/drivers/md/dm-bufio.c
-+++ b/drivers/md/dm-bufio.c
-@@ -68,6 +68,8 @@
- #define LIST_DIRTY	1
- #define LIST_SIZE	2
- 
-+#define SCAN_RESCHED_CYCLE	16
-+
- /*--------------------------------------------------------------*/
- 
- /*
-@@ -2424,7 +2426,12 @@ static void __scan(struct dm_bufio_client *c)
- 
- 			atomic_long_dec(&c->need_shrink);
- 			freed++;
--			cond_resched();
-+
-+			if (unlikely(freed % SCAN_RESCHED_CYCLE == 0)) {
-+				dm_bufio_unlock(c);
-+				cond_resched();
-+				dm_bufio_lock(c);
-+			}
+Fixes: 96a1a2412acb ("kernel/params.c: defer most of param_sysfs_init() to late_initcall time")
+Cc: stable@vger.kernel.org # requires all other patches from the series
+Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250227184930.34163-5-shyamsaini@linux.microsoft.com
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+
+diff --git a/drivers/base/module.c b/drivers/base/module.c
+index 5bc71bea883a..218aaa096455 100644
+--- a/drivers/base/module.c
++++ b/drivers/base/module.c
+@@ -42,16 +42,13 @@ int module_add_driver(struct module *mod, const struct device_driver *drv)
+ 	if (mod)
+ 		mk = &mod->mkobj;
+ 	else if (drv->mod_name) {
+-		struct kobject *mkobj;
+-
+-		/* Lookup built-in module entry in /sys/modules */
+-		mkobj = kset_find_obj(module_kset, drv->mod_name);
+-		if (mkobj) {
+-			mk = container_of(mkobj, struct module_kobject, kobj);
++		/* Lookup or create built-in module entry in /sys/modules */
++		mk = lookup_or_create_module_kobject(drv->mod_name);
++		if (mk) {
+ 			/* remember our module structure */
+ 			drv->p->mkobj = mk;
+-			/* kset_find_obj took a reference */
+-			kobject_put(mkobj);
++			/* lookup_or_create_module_kobject took a reference */
++			kobject_put(&mk->kobj);
  		}
  	}
- }
+ 
 
 
