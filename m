@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-141479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 098ECAAB3DA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:54:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 075DEAAB39E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:49:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5681A1BA74C7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:49:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88AFC7A9876
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B1733EF97;
-	Tue,  6 May 2025 00:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B89633F72C;
+	Tue,  6 May 2025 00:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IaAj8c3m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k5MvtnoD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12A52EC001;
-	Mon,  5 May 2025 23:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F972EC016;
+	Mon,  5 May 2025 23:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486428; cv=none; b=HUExbS/yQ6l4wDCXCUXs15ySNJFbx91XN6sAT7uzpnOFkSFO44n4eRrsIlaFknOIRtOGBc1LHE7U2U1QBAvONJFdQONa7iVdFzz/z6BtjRNZy9z/YIEtTyFf22m27dsb2xWAhAX5sn0yiKxOhw4N9Td+p3Pr+amHXs0GvG/pVcY=
+	t=1746486431; cv=none; b=hSIlg+SOA+Lb+1Nl2keH7NGezyp9ZfJ1DrW/N1yn+/jQ8B/9QWhiY9vcw9rZMLypl1fx7J83N8dIEFC7vIYTl/hY0ljSbvjTinLpU2MsX9nnLSCNlEUG2uimPSQSAyZJpwJYkHKDRewd3XufysP1GM6ymaM2CfJMIHbrpynJTSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486428; c=relaxed/simple;
-	bh=H9fBNf2WkO9vQdBrY6Y2YkfbryWz7lwKy+BWtT18YA0=;
+	s=arc-20240116; t=1746486431; c=relaxed/simple;
+	bh=+iCTQXefiv7beKZtI1OTYnA/ZeUG5ws+vcTC6+XJFpo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Zhwl3K5InwCfHvqBy4XKyMnpZX/JpNu7SmWYwyORIOeVBkMnfvwDEP+0q1Yey255n0ItacP+4jFiuEBbD5NR58TuAez87ebdk9LakEy+3GrZwecMVuDIvxZ0fay1DLAFYvaolRMmNU2Ihe10hAsbkjxgrqeCsueHWAxAROhttUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IaAj8c3m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7ABC4CEE4;
-	Mon,  5 May 2025 23:07:06 +0000 (UTC)
+	 MIME-Version; b=XPdDj+Vr4a4sTL65dRk85VLFC0YSQnXQif2Mo+OPD26ECvNpbYBAYrc+FH/cnnl2w5rs60rgJGf7Mgvh38sdPRzWvXQusrbHj6Wi2tu8PiFGdas0SY0MzYFmDXTNH8EVRbqLh6qPKBJYD73J/L8qtUFtwmzupEKwuh8RJozFmwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k5MvtnoD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD81CC4CEE4;
+	Mon,  5 May 2025 23:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486427;
-	bh=H9fBNf2WkO9vQdBrY6Y2YkfbryWz7lwKy+BWtT18YA0=;
+	s=k20201202; t=1746486431;
+	bh=+iCTQXefiv7beKZtI1OTYnA/ZeUG5ws+vcTC6+XJFpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IaAj8c3mIUTNEZ494AZtR6vavd8UDWvZLEOO5aUO9bjogoty/5eRhtOkGofagzawv
-	 zVKGyV9x+uReQ4BYQDdNzNfrgO/4rMIf5p8Hr2TDl+msfnX+I9heOtK8rmfYO52aWA
-	 jOXKOdrSi+2D+qTuTUoZgH3G1rwAK2F6UAEV0YbFYyGxtwJ/S7rEucahfhWwuIYO1T
-	 4QYM4NNB61dA3HNMUCXANIHIFZ83kKPUv2yCKZZjImTaGM3/ibp+b5vfjuDA6ZYcmg
-	 ZnvNZ3HZBnDZh01iIDg5iQNxc6pbEA2jzBS5ZeC4/vwbsO60bxVjW/ZHg6jvtDM306
-	 ZTsq57txmmZQA==
+	b=k5MvtnoDrGzkou72QmwLAbxvzT3SlDlzb0BcYZHbf7WZy9PdTDOOvxkFIA0qx44ut
+	 TQnqsFnlj3pPc5TPjTDW7Y7ObjQ8zYh1tYo7maS75fE91eaii4V/nEueO0/jTYpkHK
+	 RiUU0L249Ixi22VB/MfhCRtJes0gGuSsTdL8vZSvjxondh5lTjLhQ0O0Lk1/XtGpjL
+	 V8M4HVKgzDK1ZlTGQSZVH+8nf6NthLvFJPQv7h3ZGLoH66hfv7Lh9K0968acKi8c2E
+	 9xilqERCvGCn+wrp0+dTqYpMJhbKwfFOeXeyUqsGDza3iiRTpJB4/1zKScEcH2kVdQ
+	 IQQhoqUa8dblA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Ryo Takakura <ryotkkr98@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	akpm@linux-foundation.org,
-	mhocko@suse.com,
-	mjguzik@gmail.com,
-	alexjlzheng@tencent.com,
-	pasha.tatashin@soleen.com
-Subject: [PATCH AUTOSEL 6.1 021/212] exit: fix the usage of delay_group_leader->exit_code in do_notify_parent() and pidfs_exit()
-Date: Mon,  5 May 2025 19:03:13 -0400
-Message-Id: <20250505230624.2692522-21-sashal@kernel.org>
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	peterz@infradead.org,
+	tglx@linutronix.de,
+	frederic@kernel.org,
+	csander@purestorage.com,
+	neilb@suse.de,
+	kprateek.nayak@amd.com,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.1 023/212] lockdep: Fix wait context check on softirq for PREEMPT_RT
+Date: Mon,  5 May 2025 19:03:15 -0400
+Message-Id: <20250505230624.2692522-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -69,49 +75,97 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Ryo Takakura <ryotkkr98@gmail.com>
 
-[ Upstream commit 9133607de37a4887c6f89ed937176a0a0c1ebb17 ]
+[ Upstream commit 61c39d8c83e2077f33e0a2c8980a76a7f323f0ce ]
 
-Consider a process with a group leader L and a sub-thread T.
-L does sys_exit(1), then T does sys_exit_group(2).
+Since:
 
-In this case wait_task_zombie(L) will notice SIGNAL_GROUP_EXIT and use
-L->signal->group_exit_code, this is correct.
+  0c1d7a2c2d32 ("lockdep: Remove softirq accounting on PREEMPT_RT.")
 
-But, before that, do_notify_parent(L) called by release_task(T) will use
-L->exit_code != L->signal->group_exit_code, and this is not consistent.
-We don't really care, I think that nobody relies on the info which comes
-with SIGCHLD, if nothing else SIGCHLD < SIGRTMIN can be queued only once.
+the wait context test for mutex usage within "in softirq context" fails
+as it references @softirq_context:
 
-But pidfs_exit() is more problematic, I think pidfs_exit_info->exit_code
-should report ->group_exit_code in this case, just like wait_task_zombie().
+    | wait context tests |
+    --------------------------------------------------------------------------
+                                   | rcu  | raw  | spin |mutex |
+    --------------------------------------------------------------------------
+                 in hardirq context:  ok  |  ok  |  ok  |  ok  |
+  in hardirq context (not threaded):  ok  |  ok  |  ok  |  ok  |
+                 in softirq context:  ok  |  ok  |  ok  |FAILED|
 
-TODO: with this change we can hopefully cleanup (or may be even kill) the
-similar SIGNAL_GROUP_EXIT checks, at least in wait_task_zombie().
+As a fix, add lockdep map for BH disabled section. This fixes the
+issue by letting us catch cases when local_bh_disable() gets called
+with preemption disabled where local_lock doesn't get acquired.
+In the case of "in softirq context" selftest, local_bh_disable() was
+being called with preemption disable as it's early in the boot.
 
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250324171941.GA13114@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ boqun: Move the lockdep annotations into __local_bh_*() to avoid false
+         positives because of unpaired local_bh_disable() reported by
+	 Borislav Petkov and Peter Zijlstra, and make bh_lock_map
+	 only exist for PREEMPT_RT. ]
+
+[ mingo: Restored authorship and improved the bh_lock_map definition. ]
+
+Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250321143322.79651-1-boqun.feng@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/exit.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/softirq.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 156283b3c1bf6..49e4792405008 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -263,6 +263,9 @@ void release_task(struct task_struct *p)
- 	leader = p->group_leader;
- 	if (leader != p && thread_group_empty(leader)
- 			&& leader->exit_state == EXIT_ZOMBIE) {
-+		/* for pidfs_exit() and do_notify_parent() */
-+		if (leader->signal->flags & SIGNAL_GROUP_EXIT)
-+			leader->exit_code = leader->signal->group_exit_code;
- 		/*
- 		 * If we were the last child thread and the leader has
- 		 * exited already, and the leader's parent ignores SIGCHLD,
+diff --git a/kernel/softirq.c b/kernel/softirq.c
+index 6665f5cd60cb0..9ab5ca399a990 100644
+--- a/kernel/softirq.c
++++ b/kernel/softirq.c
+@@ -140,6 +140,18 @@ static DEFINE_PER_CPU(struct softirq_ctrl, softirq_ctrl) = {
+ 	.lock	= INIT_LOCAL_LOCK(softirq_ctrl.lock),
+ };
+ 
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++static struct lock_class_key bh_lock_key;
++struct lockdep_map bh_lock_map = {
++	.name			= "local_bh",
++	.key			= &bh_lock_key,
++	.wait_type_outer	= LD_WAIT_FREE,
++	.wait_type_inner	= LD_WAIT_CONFIG, /* PREEMPT_RT makes BH preemptible. */
++	.lock_type		= LD_LOCK_PERCPU,
++};
++EXPORT_SYMBOL_GPL(bh_lock_map);
++#endif
++
+ /**
+  * local_bh_blocked() - Check for idle whether BH processing is blocked
+  *
+@@ -162,6 +174,8 @@ void __local_bh_disable_ip(unsigned long ip, unsigned int cnt)
+ 
+ 	WARN_ON_ONCE(in_hardirq());
+ 
++	lock_map_acquire_read(&bh_lock_map);
++
+ 	/* First entry of a task into a BH disabled section? */
+ 	if (!current->softirq_disable_cnt) {
+ 		if (preemptible()) {
+@@ -225,6 +239,8 @@ void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
+ 	WARN_ON_ONCE(in_hardirq());
+ 	lockdep_assert_irqs_enabled();
+ 
++	lock_map_release(&bh_lock_map);
++
+ 	local_irq_save(flags);
+ 	curcnt = __this_cpu_read(softirq_ctrl.cnt);
+ 
+@@ -275,6 +291,8 @@ static inline void ksoftirqd_run_begin(void)
+ /* Counterpart to ksoftirqd_run_begin() */
+ static inline void ksoftirqd_run_end(void)
+ {
++	/* pairs with the lock_map_acquire_read() in ksoftirqd_run_begin() */
++	lock_map_release(&bh_lock_map);
+ 	__local_bh_enable(SOFTIRQ_OFFSET, true);
+ 	WARN_ON_ONCE(in_interrupt());
+ 	local_irq_enable();
 -- 
 2.39.5
 
