@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-141261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43ECFAAB1E4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:09:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F6B8AAB224
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:14:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B86516138F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:08:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 321031892684
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D0627FD5D;
-	Tue,  6 May 2025 00:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD9E4208F1;
+	Tue,  6 May 2025 00:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FTefZgwC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2EfpZD0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26162D4B6B;
-	Mon,  5 May 2025 22:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E9C2D4B6E;
+	Mon,  5 May 2025 22:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485664; cv=none; b=m4oZRtu3l1gB8VBFThHXVdKVLf+GW6Ij9xnsahVsysffaBMJKDH0AzhGOoEIo4QOaXqCwvINEeRgTQBvtIB7auS6sQveNp4Ns++EAQc80NiYhJSsK1nxb1ErwQ5uvxALAr6ecjjVwID2ESGX+KBdVvmsKkEzxy2WA92VdumUWBM=
+	t=1746485666; cv=none; b=TtAUXMX3KJ2U2kHMQih9RA1HPqoqRBT0amNDXlaqYq46hRItkRdOx9mI9dD+50igTdVZd6cVJfot+XJAykCP9i9hwIHmBqtOntgvxDhsYHRT8152cLmWs1zJQaKxkxMfRGyOGDfYK6F9uTHoAZ5rMRRAUnaB2c53PfiCW5KdmUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485664; c=relaxed/simple;
-	bh=1lVLviGO2hGeP0bjhg7Ye0CgtStFo61fKGBpbAB19NY=;
+	s=arc-20240116; t=1746485666; c=relaxed/simple;
+	bh=IyFIML+rboKGpxA24Mrd1ILEPJI5G2tbJCi/JtGhixo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HCrROffW1CnWx1erzUmEBm5wyIdmlFW90rQkHyCvfDnEE/aIMsXl8fwl8U5GJlVrLazoHHJjjHSllLVUKV4uFMSoiXa+q1/5i04NjBWAM+Wu5fZW/T6G01utjVXtTjNJu+VTzqRPoH/5Nd3tcECkwnskxuhUvwiWLr2LQAY8N8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FTefZgwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB22C4CEEE;
-	Mon,  5 May 2025 22:54:22 +0000 (UTC)
+	 MIME-Version; b=OAtYv7ao0+Eex406zoGgv6qykGqrGx3W9nAes4hLBT/abaNELF2sGxvAyRtv/x8IAnA17dusnsbBQjUBc/0cBuPnjXhY8s2x2ir0Kv3uiYj5kTobUgsAuUGuaboEI2eQ1NDzUsQMiwcW2CJLCGXc1E/zdKv8pLPosKxo15/9Yjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2EfpZD0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 364B1C4CEEE;
+	Mon,  5 May 2025 22:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485663;
-	bh=1lVLviGO2hGeP0bjhg7Ye0CgtStFo61fKGBpbAB19NY=;
+	s=k20201202; t=1746485664;
+	bh=IyFIML+rboKGpxA24Mrd1ILEPJI5G2tbJCi/JtGhixo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FTefZgwCNrNywDWhy9uEzS4sNd8p+J35vsjttfZ7y6121o9OE9VgMYsrlbKEsNUeD
-	 Wur8AA0voyHc90215+yZBygGDxYlEMZqzhXN0DWDYrpxsvEGzcq2o0sBPRTnc/E0LW
-	 6A9xSa+LpMc+D3jxwpo8dCzYEf3ni1X3Uhc0rEWvQLxT0tg9FMljMPJYKJqG6drA+R
-	 HyTHIdxAOEq49q+ylYMeEc72TzPMlRB7fmmDlj2NjaUBw0zh3YutQE+nUtQO6YTCqN
-	 WeCGhrffi9LnQiEK35PGrGKjuGXQ6V1bcauFwzq1v3wTdooqg8FrXQHe1MtdUIGLdG
-	 VT36wZkfO4dzw==
+	b=W2EfpZD0h22amkk5TtUzGkME5SNQCkOpN22Wtgc5WlUyPStWch/wWcR0sLrdmI/AE
+	 MpRhhuVsvk8wsJqJWoE0kBBdbZcXBrfxn9sYiub9VqPhQXWJW9HD+kM51QDKcprE0R
+	 l0qG551bOS1Z8ZfB83uPWgUFZesg+NjIt6BFLMNwMh4Gx8OYCl9isCVaHrhjHyDokY
+	 uf4u2ua0vbQ0LHqxgzLdS2ZL2TWOnL4tUASyYhcNSLGGIW3osVCjYKIANb7Ng0kvf4
+	 A56D7UIvTMpbiob16LZ4c4llFTuygdX6wA+6Cg+PZLQIyGwL1r3X4Wv03+myHyRkmt
+	 I8z+okh2DaimQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrey Vatoropin <a.vatoropin@crpt.ru>,
-	Guenter Roeck <linux@roeck-us.net>,
+Cc: Jaegeuk Kim <jaegeuk@kernel.org>,
+	Chao Yu <chao@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jdelvare@suse.com,
-	linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 415/486] hwmon: (xgene-hwmon) use appropriate type for the latency value
-Date: Mon,  5 May 2025 18:38:11 -0400
-Message-Id: <20250505223922.2682012-415-sashal@kernel.org>
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.12 416/486] f2fs: introduce f2fs_base_attr for global sysfs entries
+Date: Mon,  5 May 2025 18:38:12 -0400
+Message-Id: <20250505223922.2682012-416-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -66,43 +65,153 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 8df0f002827e18632dcd986f7546c1abf1953a6f ]
+[ Upstream commit 21925ede449e038ed6f9efdfe0e79f15bddc34bc ]
 
-The expression PCC_NUM_RETRIES * pcc_chan->latency is currently being
-evaluated using 32-bit arithmetic.
+In /sys/fs/f2fs/features, there's no f2fs_sb_info, so let's avoid to get
+the pointer.
 
-Since a value of type 'u64' is used to store the eventual result,
-and this result is later sent to the function usecs_to_jiffies with
-input parameter unsigned int, the current data type is too wide to
-store the value of ctx->usecs_lat.
-
-Change the data type of "usecs_lat" to a more suitable (narrower) type.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Link: https://lore.kernel.org/r/20250204095400.95013-1-a.vatoropin@crpt.ru
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/xgene-hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/sysfs.c | 74 ++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 52 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
-index 92d82faf237fc..4e05077e4256d 100644
---- a/drivers/hwmon/xgene-hwmon.c
-+++ b/drivers/hwmon/xgene-hwmon.c
-@@ -105,7 +105,7 @@ struct xgene_hwmon_dev {
- 
- 	phys_addr_t		comm_base_addr;
- 	void			*pcc_comm_addr;
--	u64			usecs_lat;
-+	unsigned int		usecs_lat;
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index d9a44f03e558b..7df638f901a1f 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -61,6 +61,12 @@ struct f2fs_attr {
+ 	int id;
  };
  
++struct f2fs_base_attr {
++	struct attribute attr;
++	ssize_t (*show)(struct f2fs_base_attr *a, char *buf);
++	ssize_t (*store)(struct f2fs_base_attr *a, const char *buf, size_t len);
++};
++
+ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
+ 			     struct f2fs_sb_info *sbi, char *buf);
+ 
+@@ -864,6 +870,25 @@ static void f2fs_sb_release(struct kobject *kobj)
+ 	complete(&sbi->s_kobj_unregister);
+ }
+ 
++static ssize_t f2fs_base_attr_show(struct kobject *kobj,
++				struct attribute *attr, char *buf)
++{
++	struct f2fs_base_attr *a = container_of(attr,
++				struct f2fs_base_attr, attr);
++
++	return a->show ? a->show(a, buf) : 0;
++}
++
++static ssize_t f2fs_base_attr_store(struct kobject *kobj,
++				struct attribute *attr,
++				const char *buf, size_t len)
++{
++	struct f2fs_base_attr *a = container_of(attr,
++				struct f2fs_base_attr, attr);
++
++	return a->store ? a->store(a, buf, len) : 0;
++}
++
  /*
+  * Note that there are three feature list entries:
+  * 1) /sys/fs/f2fs/features
+@@ -882,14 +907,13 @@ static void f2fs_sb_release(struct kobject *kobj)
+  *     please add new on-disk feature in this list only.
+  *     - ref. F2FS_SB_FEATURE_RO_ATTR()
+  */
+-static ssize_t f2fs_feature_show(struct f2fs_attr *a,
+-		struct f2fs_sb_info *sbi, char *buf)
++static ssize_t f2fs_feature_show(struct f2fs_base_attr *a, char *buf)
+ {
+ 	return sysfs_emit(buf, "supported\n");
+ }
+ 
+ #define F2FS_FEATURE_RO_ATTR(_name)				\
+-static struct f2fs_attr f2fs_attr_##_name = {			\
++static struct f2fs_base_attr f2fs_base_attr_##_name = {		\
+ 	.attr = {.name = __stringify(_name), .mode = 0444 },	\
+ 	.show	= f2fs_feature_show,				\
+ }
+@@ -1258,37 +1282,38 @@ static struct attribute *f2fs_attrs[] = {
+ };
+ ATTRIBUTE_GROUPS(f2fs);
+ 
++#define BASE_ATTR_LIST(name) (&f2fs_base_attr_##name.attr)
+ static struct attribute *f2fs_feat_attrs[] = {
+ #ifdef CONFIG_FS_ENCRYPTION
+-	ATTR_LIST(encryption),
+-	ATTR_LIST(test_dummy_encryption_v2),
++	BASE_ATTR_LIST(encryption),
++	BASE_ATTR_LIST(test_dummy_encryption_v2),
+ #if IS_ENABLED(CONFIG_UNICODE)
+-	ATTR_LIST(encrypted_casefold),
++	BASE_ATTR_LIST(encrypted_casefold),
+ #endif
+ #endif /* CONFIG_FS_ENCRYPTION */
+ #ifdef CONFIG_BLK_DEV_ZONED
+-	ATTR_LIST(block_zoned),
++	BASE_ATTR_LIST(block_zoned),
+ #endif
+-	ATTR_LIST(atomic_write),
+-	ATTR_LIST(extra_attr),
+-	ATTR_LIST(project_quota),
+-	ATTR_LIST(inode_checksum),
+-	ATTR_LIST(flexible_inline_xattr),
+-	ATTR_LIST(quota_ino),
+-	ATTR_LIST(inode_crtime),
+-	ATTR_LIST(lost_found),
++	BASE_ATTR_LIST(atomic_write),
++	BASE_ATTR_LIST(extra_attr),
++	BASE_ATTR_LIST(project_quota),
++	BASE_ATTR_LIST(inode_checksum),
++	BASE_ATTR_LIST(flexible_inline_xattr),
++	BASE_ATTR_LIST(quota_ino),
++	BASE_ATTR_LIST(inode_crtime),
++	BASE_ATTR_LIST(lost_found),
+ #ifdef CONFIG_FS_VERITY
+-	ATTR_LIST(verity),
++	BASE_ATTR_LIST(verity),
+ #endif
+-	ATTR_LIST(sb_checksum),
++	BASE_ATTR_LIST(sb_checksum),
+ #if IS_ENABLED(CONFIG_UNICODE)
+-	ATTR_LIST(casefold),
++	BASE_ATTR_LIST(casefold),
+ #endif
+-	ATTR_LIST(readonly),
++	BASE_ATTR_LIST(readonly),
+ #ifdef CONFIG_F2FS_FS_COMPRESSION
+-	ATTR_LIST(compression),
++	BASE_ATTR_LIST(compression),
+ #endif
+-	ATTR_LIST(pin_file),
++	BASE_ATTR_LIST(pin_file),
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(f2fs_feat);
+@@ -1362,9 +1387,14 @@ static struct kset f2fs_kset = {
+ 	.kobj	= {.ktype = &f2fs_ktype},
+ };
+ 
++static const struct sysfs_ops f2fs_feat_attr_ops = {
++	.show	= f2fs_base_attr_show,
++	.store	= f2fs_base_attr_store,
++};
++
+ static const struct kobj_type f2fs_feat_ktype = {
+ 	.default_groups = f2fs_feat_groups,
+-	.sysfs_ops	= &f2fs_attr_ops,
++	.sysfs_ops	= &f2fs_feat_attr_ops,
+ };
+ 
+ static struct kobject f2fs_feat = {
 -- 
 2.39.5
 
