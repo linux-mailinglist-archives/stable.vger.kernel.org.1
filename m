@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-140099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920D7AAA517
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:41:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53ACCAAA4F6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB7F83A5729
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:38:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 501E97A1C40
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724C23098B2;
-	Mon,  5 May 2025 22:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E673098D5;
+	Mon,  5 May 2025 22:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IR0ngE+g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UdRGGGmf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3243098AA;
-	Mon,  5 May 2025 22:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71543098CE;
+	Mon,  5 May 2025 22:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484104; cv=none; b=NodsQP4oep06Z2ltbR0InHV6jI/G+XZhWX7vtdtQKXtBBIwhqB6hMwSQsHYUCiEpMdQu8kNt/A63jcUioac6WWG4R2DNFAf1g4zYBcW8PfnqeZk/C1+eSNCnQAOUskVLZOgTxUanwpRXRk+yuDUp6mHz3FKP+p6ypAQMN0KSVjg=
+	t=1746484105; cv=none; b=ifiLFBX3+CT6RRbHqCpfbBcNXTYcOo04Mf1E2h5/Zk1kDQa21vEElZsAiHJ9OjFSJhlQ6gJ+hGkvE7whZQGXSdSPI39SeqxiQXpJ0XkHkGfHt7xbBvxRRzqxPTWY6pdwuRqahaIq0mgBmDwpdKGSR1oGo2DZKgPAkcHyvB3lnP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484104; c=relaxed/simple;
-	bh=kq9fHEPx197vzMACozH3NPuOtxrDilFdFT8zwhN40kM=;
+	s=arc-20240116; t=1746484105; c=relaxed/simple;
+	bh=Ll43ZrLxMWFfQomfOHOy+yuEDnhCPlWPzmZhmBroXsk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=i3mG/uOtgIzgunGTVvJJF0JOOY4JjD/ccmhbhMaS5FrQp8ts8bGWX7aG5zEzYxSRCjRcrSV5Hrmo4RkG4LxnC5TMdXtGsuGxpgIynWVV/Z1d3FN2NGNdE7eVxQkJes1hazWxrVRuVVS1bFw923va/4rIja3RIfjPbJwwu9GkwFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IR0ngE+g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7344C4CEE4;
-	Mon,  5 May 2025 22:28:22 +0000 (UTC)
+	 MIME-Version; b=l6Kf2Mzg1Vj1Q7/HhfAKqNRuw0AT2r80ZActgqwuCvvba9M2C2JHT7VNh4aqj7PwyycKcbsR65jNu61b3akq5ZxlMuRag2/TN0+xJ32DRkRINHvMtPwnuxMcP86Mwd1sKdYr5gD3jJP940M5GJ6PmL6RTXYFEOLcfgQVi9DeTIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UdRGGGmf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE67C4CEE4;
+	Mon,  5 May 2025 22:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484104;
-	bh=kq9fHEPx197vzMACozH3NPuOtxrDilFdFT8zwhN40kM=;
+	s=k20201202; t=1746484105;
+	bh=Ll43ZrLxMWFfQomfOHOy+yuEDnhCPlWPzmZhmBroXsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IR0ngE+gPbiD5LX1KLGmyjc00MmIltx4s4JARpAHNfr803fzw+l6OcofAyc5t3ija
-	 Duxo3oL1SuyX6QEuAWT7MJpJGoByAB/+rcQM88YzeMooqe6ScKqnytVlhhrH1YUB6u
-	 TDTM6WNI6coBEigEXGO7bRaMJBzpUO62YpgbSKcl+sBGbdxJ5n8oY8dfnZS6VNHXwY
-	 eRv1kjOlujib34cwOObVeLQRE8GRdY4j/Gas7/Zy2XbibIdiC00L+g1tH89rB2WCS7
-	 2t2rVFrxDDeEn6AyhH6eM6fuVEU13wf8pNVehxghlqet3RqbPu+ZAYKn0+NObkTj98
-	 MXY3t2/0nfOSA==
+	b=UdRGGGmfkwWW90/gxxcOO1LNhJNb+ieDWvxuRfsY/7MAeqKGO8t+sHYQSgHh+onBi
+	 L9DjSNVg/6t3SqE2FLEJeIi87dihni+81IjOEjeNn7FrUaeCy9eEfo+Bq3HrW4Edj4
+	 ob5TqYJvAxwejj4gxmMucf16cMjUEMiTjMzR6kq971V2mhMql9OVpWYQlsdma4BcQ0
+	 TeRIItR9dkQTpVlY46Fgc3hDqXdyJMlPBLnI9Ruxc49UT9tsYDQkdDLk4o+EY8tivv
+	 kOshOSYejiz5XXOCCpFTSgTeNyuKjiz6VOCm03wZpmUKdblGpx6c/6+djU/RDDuETM
+	 0RGIUuXnAJMUg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Xiao Liang <shaw.leon@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	sdf@fomichev.me,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 352/642] rtnetlink: Lookup device in target netns when creating link
-Date: Mon,  5 May 2025 18:09:28 -0400
-Message-Id: <20250505221419.2672473-352-sashal@kernel.org>
+	lucas.demarchi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 353/642] drm/xe/oa: Ensure that polled read returns latest data
+Date: Mon,  5 May 2025 18:09:29 -0400
+Message-Id: <20250505221419.2672473-353-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -70,61 +71,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Xiao Liang <shaw.leon@gmail.com>
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-[ Upstream commit ec061546c6cffbb8929495bba3953f0cc5e177fa ]
+[ Upstream commit 98c9d27ab30aa9c6451d3a34e6e297171f273e51 ]
 
-When creating link, lookup for existing device in target net namespace
-instead of current one.
-For example, two links created by:
+In polled mode, user calls poll() for read data to be available before
+performing a read(). In the duration between these 2 calls, there may be
+new data available in the OA buffer. To ensure user reads all available
+data, check for latest data in the OA buffer in polled read.
 
-  # ip link add dummy1 type dummy
-  # ip link add netns ns1 dummy1 type dummy
-
-should have no conflict since they are in different namespaces.
-
-Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250219125039.18024-2-shaw.leon@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250212010255.1423343-1-umesh.nerlige.ramappa@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_oa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 80e006940f51a..ab7041150f295 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3865,20 +3865,26 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- {
- 	struct nlattr ** const tb = tbs->tb;
- 	struct net *net = sock_net(skb->sk);
-+	struct net *device_net;
- 	struct net_device *dev;
- 	struct ifinfomsg *ifm;
- 	bool link_specified;
- 
-+	/* When creating, lookup for existing device in target net namespace */
-+	device_net = (nlh->nlmsg_flags & NLM_F_CREATE) &&
-+		     (nlh->nlmsg_flags & NLM_F_EXCL) ?
-+		     tgt_net : net;
-+
- 	ifm = nlmsg_data(nlh);
- 	if (ifm->ifi_index > 0) {
- 		link_specified = true;
--		dev = __dev_get_by_index(net, ifm->ifi_index);
-+		dev = __dev_get_by_index(device_net, ifm->ifi_index);
- 	} else if (ifm->ifi_index < 0) {
- 		NL_SET_ERR_MSG(extack, "ifindex can't be negative");
- 		return -EINVAL;
- 	} else if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME]) {
- 		link_specified = true;
--		dev = rtnl_dev_get(net, tb);
-+		dev = rtnl_dev_get(device_net, tb);
+diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
+index eb6cd91e1e226..abf37d9ab2212 100644
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -548,6 +548,7 @@ static ssize_t xe_oa_read(struct file *file, char __user *buf,
+ 			mutex_unlock(&stream->stream_lock);
+ 		} while (!offset && !ret);
  	} else {
- 		link_specified = false;
- 		dev = NULL;
++		xe_oa_buffer_check_unlocked(stream);
+ 		mutex_lock(&stream->stream_lock);
+ 		ret = __xe_oa_read(stream, buf, count, &offset);
+ 		mutex_unlock(&stream->stream_lock);
 -- 
 2.39.5
 
