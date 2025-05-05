@@ -1,151 +1,108 @@
-Return-Path: <stable+bounces-140940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED324AAAC89
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:18:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DFAAAAFE8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0F2F7ACAB4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:17:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C5963B35BC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1973A4364;
-	Mon,  5 May 2025 23:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9187300A22;
+	Mon,  5 May 2025 23:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="DTN+iyjK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d5IEoz/d"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7B42F4F44
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 23:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1146F3AA15B;
+	Mon,  5 May 2025 23:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486962; cv=none; b=gnv0wnBHVEBaA+fu3CFXLdlRJ+0kuarANuiKWnJYPl76uQaeNJexmS6ZeqWwC7IlbS4pHacJCwuZARI9bCZZAbAjm5sPwZMHCzZGpNpaZYWi9b3E7ijDyoSNMNIOox+qH96jZnIS+QZIuHKoDo9/EjHxGZcTTY5SmjMEk257+BQ=
+	t=1746487102; cv=none; b=FRGgflkam7SReT7WWq2HU3IRpGlazMt2vr57gZRarK1SmiplyoMtbcLyP9bgBK2JUlo2w8G+QGMDhUgDxvpQngiX4g38PB9vGFIoNFO4PQRXwdFtw1lAMkSI/5CNIgL7m1Q8/TxwR1k+delm8+eBjkLETC5nKMKJdoL/x83PMDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486962; c=relaxed/simple;
-	bh=krYNUMsEhGAKkDAx01YP/uXWwWJEANf6SSdqIrKdoA0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jWTkQSuFItuQFUkuyj+OCmAaoKY/ciZS74MGsvfMSJIP88Ecbt+b+96Q3lckfGkiKP2ECtoQFu7szm58ZnD2QFEC2ht594qHf9OVXQmbbiKSirjke0TFD084KDLlpMKQP4n4tznOVIXqJmZrp7q+vlJ9gAaoFuBseVOfa9gXQRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=DTN+iyjK; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-30a892f82b3so8263a91.0
-        for <stable@vger.kernel.org>; Mon, 05 May 2025 16:15:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1746486959; x=1747091759; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qBtLiqsQAZNornH5wgD7b3jJYD105S/GiDk49aEDwGg=;
-        b=DTN+iyjKej+zspc8uEMmAzxPt3aoXPTgJKSpIQrsMZ2UfMM+KT/o3I04ETTfGb8jmH
-         p3ATOsVKOs146zsOk6NwY9gdymDV7sDXzPLmwNTJGxJQJXOJRftrvj20ajCr3MCjSda+
-         J049BfrKJtPBgpdwOdO3dQtL9zovX7bKQlsok+tMqf03JKU93AM8e+zNt8ENnKWnHE7l
-         2IR3NRAmZcbbSzC+uiEHuWxDtRNuLGGnLoxB5BWb8AWerThLE7iPTLov4HjLVGFC/EqP
-         e6fMSrKXkLLCR/GK/kEPYpnSuEM68VzqolkofbnFCBA9/IGSN+mjswOAzeWFQbMbVvMC
-         h1BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746486959; x=1747091759;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qBtLiqsQAZNornH5wgD7b3jJYD105S/GiDk49aEDwGg=;
-        b=AE/35ThAhrhMdi5hkU5ykAjfYzhWZ0B72EsrPwe6pOAcixIEH3KS0es+Socs982V0S
-         ooT25kxCfwEqlVmg+encRR7fbluXIAfKUQKjwcTLHHfWrZ87mvyamoCBf/q9EtKxyQK4
-         2M3hbYFKt+cpk+dbHVb18HWzwFm5ll+cKwxqW/gm9XTS4a9sUmD38NdQ63lcTzVS2pUX
-         J1CNp1cnC4u8sx3AFszVwC77YX4nt/GBhqosQeAYbRTyBI1YvXDs/UWUZugFzJ5XGP4W
-         vu1OwT0sLNFI+V9MYTieyqNw07E7xdYhGx1H9WYOz2coUdhB02EOqLnc2u7ACNcNPwbv
-         z4fQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXrrDd9dMMMIDaZTbpiJyGYJoCU6X7vQZkhkhZotD21Q+kZ8SqP1zZu+ccwCSqmVwwkF4Di8R0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmQXhWOwbdxv1/fbo/O/SxIOAiE30C3YMLLgXlb+YzbdxWFwAn
-	e8IPTMAiW8jAHaYzB0BczgsTI/qJy0CrVNTUy4+ggOK+qG+cEcAgW3l6LOnpfATmXWk1+STyJB9
-	MA/rAbOUss+hFfAFshgmnoMcu2GRFHKs3zlsaOg==
-X-Gm-Gg: ASbGncvC4zCGwyFlo0E4Jw9JE7ZClj0428tJebzQaP3gw6M3MDQt/fZO4Ph3f9xbB5x
-	OM5IprLIWlMyiTThQL7aPCYdJrgKFtYpOSigOzANH7QCpHWDuBA/SLt3aN7q5/T1CA3mKYmSmC8
-	xtkLNTEbI9EazLfOU9cC9B
-X-Google-Smtp-Source: AGHT+IGagPTPgVx/zK3NsPeBBD10ssAbHcDl4TLAybNA5eLO8eptE6YlSL4cJMULg3pPnx1zFjy8HZWl4F2Kr8E+HKM=
-X-Received: by 2002:a17:90b:3842:b0:2ff:4be6:c5e2 with SMTP id
- 98e67ed59e1d1-30a4e6aff6bmr7959705a91.7.1746486958763; Mon, 05 May 2025
- 16:15:58 -0700 (PDT)
+	s=arc-20240116; t=1746487102; c=relaxed/simple;
+	bh=D7yTrFE188wv1sO2UwjIZZtfQPAmYQjWziJlrOLJbv8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y6OcoAHX/aq9GU25roqCTtQqJWXvttyJC4IceNXFlRJ9Aold/Av8vfp6tNrA1mDafVIPy2qk5gStferBu93ruh+0YPYb4yO7zZqWdpsDJGHcW9yPwFrCttg4i4u4JtWnq34vXL9FRQk5VWQAIrN8hDP1vOTl/Q8NnPiQPWXbuco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d5IEoz/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD86C4CEE4;
+	Mon,  5 May 2025 23:18:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746487101;
+	bh=D7yTrFE188wv1sO2UwjIZZtfQPAmYQjWziJlrOLJbv8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=d5IEoz/dKUdE6YumbVaQSCpi8ok0eiUJeMczX6EZ3b5k9rDiziozV8ANrLEJGF/5J
+	 v/r/t2O6/AqFcJ+Mt74t6MFyD3PBJOdoM0n726szHeXT45FmCugrKpcFQZmtuG1vlX
+	 nLDrz/N1aeRcHYtU7yqy72l3xzJ96rescpG2UTnVjJD2i48IRI/5ViM3UpvZgjOidF
+	 IRyr17QMx1PGDjYH8IpYnmAfeTGQiTVBaYPpCf0HjKo3UOIOApHrhXmSbfgqiZqhKL
+	 /trSk0SZ+F4ODIe2ADX2JFKM9XrRpJkaW2YUJExczDI4MhVpDjMrxBRg37gNtq/IVc
+	 xSg+Rz+zj0YgQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Daniel Gomez <da.gomez@samsung.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 001/114] kconfig: merge_config: use an empty file as initfile
+Date: Mon,  5 May 2025 19:16:24 -0400
+Message-Id: <20250505231817.2697367-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250505221419.2672473-1-sashal@kernel.org> <20250505221419.2672473-295-sashal@kernel.org>
-In-Reply-To: <20250505221419.2672473-295-sashal@kernel.org>
-From: Caleb Sander Mateos <csander@purestorage.com>
-Date: Mon, 5 May 2025 16:15:47 -0700
-X-Gm-Features: ATxdqUGHxmzJ-iTUgsy67bI6uusSMYHzrvElI7q_8rFZmVYMhnN19Tk8UkIP6Bo
-Message-ID: <CADUfDZqvwhL3Hz7_u+TsO5XrpeWX9dHtbehXUtwbJdyi_GXT_A@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.14 295/642] nvme: map uring_cmd data even if
- address is 0
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Xinyu Zhang <xizhang@purestorage.com>, Jens Axboe <axboe@kernel.dk>, 
-	Ming Lei <ming.lei@redhat.com>, Keith Busch <kbusch@kernel.org>, sagi@grimberg.me, 
-	linux-nvme@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.10.237
+Content-Transfer-Encoding: 8bit
 
-I wouldn't backport this change to any releases. It's a potential
-behavior change if a userspace application was submitting NVMe
-passthru commands with a NULL data pointer but nonzero data length and
-expecting the data buffer to be ignored. And supporting the data field
-set to 0 is only necessary for ublk zero-copy, which is introduced in
-6.15.
+From: Daniel Gomez <da.gomez@samsung.com>
 
-Best,
-Caleb
+[ Upstream commit a26fe287eed112b4e21e854f173c8918a6a8596d ]
 
-On Mon, May 5, 2025 at 3:26=E2=80=AFPM Sasha Levin <sashal@kernel.org> wrot=
-e:
->
-> From: Xinyu Zhang <xizhang@purestorage.com>
->
-> [ Upstream commit 99fde895ff56ac2241e7b7b4566731d72f2fdaa7 ]
->
-> When using kernel registered bvec fixed buffers, the "address" is
-> actually the offset into the bvec rather than userspace address.
-> Therefore it can be 0.
->
-> We can skip checking whether the address is NULL before mapping
-> uring_cmd data. Bad userspace address will be handled properly later when
-> the user buffer is imported.
->
-> With this patch, we will be able to use the kernel registered bvec fixed
-> buffers in io_uring NVMe passthru with ublk zero-copy support.
->
-> Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
-> Reviewed-by: Jens Axboe <axboe@kernel.dk>
-> Reviewed-by: Ming Lei <ming.lei@redhat.com>
-> Signed-off-by: Xinyu Zhang <xizhang@purestorage.com>
-> Signed-off-by: Keith Busch <kbusch@kernel.org>
-> Link: https://lore.kernel.org/r/20250227223916.143006-4-kbusch@meta.com
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/nvme/host/ioctl.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-> index fed6b29098ad3..11509ffd28fb5 100644
-> --- a/drivers/nvme/host/ioctl.c
-> +++ b/drivers/nvme/host/ioctl.c
-> @@ -514,7 +514,7 @@ static int nvme_uring_cmd_io(struct nvme_ctrl *ctrl, =
-struct nvme_ns *ns,
->                 return PTR_ERR(req);
->         req->timeout =3D d.timeout_ms ? msecs_to_jiffies(d.timeout_ms) : =
-0;
->
-> -       if (d.addr && d.data_len) {
-> +       if (d.data_len) {
->                 ret =3D nvme_map_user_request(req, d.addr,
->                         d.data_len, nvme_to_user_ptr(d.metadata),
->                         d.metadata_len, ioucmd, vec);
-> --
-> 2.39.5
->
+The scripts/kconfig/merge_config.sh script requires an existing
+$INITFILE (or the $1 argument) as a base file for merging Kconfig
+fragments. However, an empty $INITFILE can serve as an initial starting
+point, later referenced by the KCONFIG_ALLCONFIG Makefile variable
+if -m is not used. This variable can point to any configuration file
+containing preset config symbols (the merged output) as stated in
+Documentation/kbuild/kconfig.rst. When -m is used $INITFILE will
+contain just the merge output requiring the user to run make (i.e.
+KCONFIG_ALLCONFIG=<$INITFILE> make <allnoconfig/alldefconfig> or make
+olddefconfig).
+
+Instead of failing when `$INITFILE` is missing, create an empty file and
+use it as the starting point for merges.
+
+Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ scripts/kconfig/merge_config.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/kconfig/merge_config.sh b/scripts/kconfig/merge_config.sh
+index d7d5c58b8b6aa..557f37f481fdf 100755
+--- a/scripts/kconfig/merge_config.sh
++++ b/scripts/kconfig/merge_config.sh
+@@ -98,8 +98,8 @@ INITFILE=$1
+ shift;
+ 
+ if [ ! -r "$INITFILE" ]; then
+-	echo "The base file '$INITFILE' does not exist.  Exit." >&2
+-	exit 1
++	echo "The base file '$INITFILE' does not exist. Creating one..." >&2
++	touch "$INITFILE"
+ fi
+ 
+ MERGE_LIST=$*
+-- 
+2.39.5
+
 
