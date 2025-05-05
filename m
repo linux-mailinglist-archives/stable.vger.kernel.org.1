@@ -1,67 +1,65 @@
-Return-Path: <stable+bounces-140103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD464AAA51B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:42:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A366AAAA503
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B15DE1891387
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:40:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C990463298
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E35328B4E2;
-	Mon,  5 May 2025 22:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BE830A7FE;
+	Mon,  5 May 2025 22:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RTLJgtmi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fy7BeEla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA67C28A41E;
-	Mon,  5 May 2025 22:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F069130A7F8;
+	Mon,  5 May 2025 22:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484113; cv=none; b=oNvLR2t36tvyQYb1NvJqye0fe71K3AgIFJpWESFEoi4nkX8xCNkLbwH3j42dGQZWQdA2iNtKVfqzkgxJIfwzCdnVHwVajvP+hMyXQ8uX99pQqMwI9G7pNHJoUtYrQCGaD+D4OPUBnPPwR0NECbwG++dtvHVdn6O6GfHPm61JiPs=
+	t=1746484115; cv=none; b=HlY2TAbhFfpyHOsPIVntksRANzr8KOaeNld/BdF0uQJVdIPX25vmQN66REynyJUuRG6iPex80ogLIqZvYOV0l88ruk1F4+4jIFJ2APqhfwZEBDbE31GPUg+lzpWPIi/0bI4ygn08VYyXud+5/y/4ctO9opCRJh2dEJ52crxUMzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484113; c=relaxed/simple;
-	bh=ApFm9vLJ/UCWGBwkbNk+1UcafOAJvv7wL+n2CHNQN2w=;
+	s=arc-20240116; t=1746484115; c=relaxed/simple;
+	bh=WP35d/4m38nRJ62cheq/fW1IANnFk6qfyJ9WtRpNFHc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sYNUZ2F2BRZ58w/UU4jqyL7CQuEjXP9P0igUjNc9Xg1IBtc+Jg8aM/vfLSnN2XEVysGp57YKaV34WCNW7hGUFwM6s+FNU/MQLVwRZCHoUXIZvnLh8O+yys4BgxlisVGRnyhtPTuh00ThCTb0fZzIiG0XD8SrSPuTIDwf7xfpEto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RTLJgtmi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F09BC4CEED;
-	Mon,  5 May 2025 22:28:30 +0000 (UTC)
+	 MIME-Version; b=tUx8upFJ5qa+blDAGMQFttwk1IdNKUl3FGb52ireizQnlpO9z6lSqabbHbrLR6Ztd5GSxNp20MQpWi+jT3qVDnThaobCUT639B7AQ08FzKqDKMSPS8SbziwOLvMr0cohVgCIHFl49SEYqy+g/AHiF9dyFviQ432NsnoGlw9IOuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fy7BeEla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F70EC4CEED;
+	Mon,  5 May 2025 22:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484112;
-	bh=ApFm9vLJ/UCWGBwkbNk+1UcafOAJvv7wL+n2CHNQN2w=;
+	s=k20201202; t=1746484114;
+	bh=WP35d/4m38nRJ62cheq/fW1IANnFk6qfyJ9WtRpNFHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RTLJgtmimST+gN+SoaKK9lvljXGMaztm07ezAPoeoca39H6vP9oFW8lOeC5WjvNhG
-	 V8HNQTLTJeI/RSBgWFG0DXxUjiIJ4yOWqG1MjL89NkZQoCNXxTaIQYKOM6HyOc564e
-	 bmnjuIwzkVyPL1tAvEFZ4weqCyUsw9GQPSVeJcGS5l7JZjl5VF4Wt4HhjNc9cX1SH+
-	 O1iZeT3IdXw4YgqRuynhuLUguTHr5jHQqQeCWTCvvresjTSMZQUUc2WHZyFAJmZxcG
-	 /khnFRHASctyqKkdJiHyZNHBC9p3d8tzvSXx1vyCTEOjGhQF2bVqhuPCHqACnjnfIR
-	 29MHQe9MitQ4w==
+	b=Fy7BeEla0FyTWKlNCaUmk37N3qJIpnngMi+5fDu+ZBjq4OOkaH4rl5b/t5Q5Ks90L
+	 1HScWQCudSgOwWKZYti/Bok/Hp84A5lWQ+1gQ5meC3HfOqwlU3NejvB2d/yjBPcx1C
+	 5XeBBhxRXpwgHdTk4ASVgfRPzbV9J30bBbF8znnNwDaa72WYvNqnuBq+CdrftC5MNW
+	 feNpYzAky8zV3FMnGZ5zUSGSbkHKsLkniPlufqpgcrcXMJnubZBMJKUASwpq6vV7l/
+	 v1vaQvc9zTwPURFZ5RAh6opXa9sCkGhGSGEsb/56dm1SeFulT9DcLff2d8D7qAewMp
+	 KaHuBZVfG/14w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rik van Riel <riel@surriel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
+Cc: Uros Bizjak <ubizjak@gmail.com>,
 	Ingo Molnar <mingo@kernel.org>,
-	Manali Shukla <Manali.Shukla@amd.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Michael Kelley <mhklinux@outlook.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
+	dennis@kernel.org,
+	tj@kernel.org,
+	cl@linux.com,
 	tglx@linutronix.de,
 	mingo@redhat.com,
 	bp@alien8.de,
 	dave.hansen@linux.intel.com,
 	x86@kernel.org,
-	jgross@suse.com,
-	luto@kernel.org,
-	virtualization@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 356/642] x86/mm: Make MMU_GATHER_RCU_TABLE_FREE unconditional
-Date: Mon,  5 May 2025 18:09:32 -0400
-Message-Id: <20250505221419.2672473-356-sashal@kernel.org>
+	linux-mm@kvack.org
+Subject: [PATCH AUTOSEL 6.14 357/642] x86/locking: Use ALT_OUTPUT_SP() for percpu_{,try_}cmpxchg{64,128}_op()
+Date: Mon,  5 May 2025 18:09:33 -0400
+Message-Id: <20250505221419.2672473-357-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -76,161 +74,90 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Rik van Riel <riel@surriel.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit a37259732a7dc33047fa1e4f9a338088f452e017 ]
+[ Upstream commit 4087e16b033140cf2ce509ec23503bddec818a16 ]
 
-Currently x86 uses CONFIG_MMU_GATHER_TABLE_FREE when using
-paravirt, and not when running on bare metal.
+percpu_{,try_}cmpxchg{64,128}() macros use CALL instruction inside
+asm statement in one of their alternatives. Use ALT_OUTPUT_SP()
+macro to add required dependence on %esp register.
 
-There is no real good reason to do things differently for
-each setup. Make them all the same.
+ALT_OUTPUT_SP() implements the above dependence by adding
+ASM_CALL_CONSTRAINT to its arguments. This constraint should be used
+for any inline asm which has a CALL instruction, otherwise the
+compiler may schedule the asm before the frame pointer gets set up
+by the containing function, causing objtool to print a "call without
+frame pointer save/setup" warning.
 
-Currently get_user_pages_fast synchronizes against page table
-freeing in two different ways:
-
- - on bare metal, by blocking IRQs, which block TLB flush IPIs
- - on paravirt, with MMU_GATHER_RCU_TABLE_FREE
-
-This is done because some paravirt TLB flush implementations
-handle the TLB flush in the hypervisor, and will do the flush
-even when the target CPU has interrupts disabled.
-
-Always handle page table freeing with MMU_GATHER_RCU_TABLE_FREE.
-Using RCU synchronization between page table freeing and get_user_pages_fast()
-allows bare metal to also do TLB flushing while interrupts are disabled.
-
-Various places in the mm do still block IRQs or disable preemption
-as an implicit way to block RCU frees.
-
-That makes it safe to use INVLPGB on AMD CPUs.
-
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Rik van Riel <riel@surriel.com>
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Manali Shukla <Manali.Shukla@amd.com>
-Tested-by: Brendan Jackman <jackmanb@google.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/20250213161423.449435-2-riel@surriel.com
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250214150929.5780-1-ubizjak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig           |  2 +-
- arch/x86/kernel/paravirt.c | 17 +----------------
- arch/x86/mm/pgtable.c      | 27 ++++-----------------------
- 3 files changed, 6 insertions(+), 40 deletions(-)
+ arch/x86/include/asm/percpu.h | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index aeb95b6e55369..088f7555e1ac0 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -277,7 +277,7 @@ config X86
- 	select HAVE_PCI
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
--	select MMU_GATHER_RCU_TABLE_FREE	if PARAVIRT
-+	select MMU_GATHER_RCU_TABLE_FREE
- 	select MMU_GATHER_MERGE_VMAS
- 	select HAVE_POSIX_CPU_TIMERS_TASK_WORK
- 	select HAVE_REGS_AND_STACK_ACCESS_API
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index c5bb980b8a673..6669d251c4f75 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -59,21 +59,6 @@ void __init native_pv_lock_init(void)
- 		static_branch_enable(&virt_spin_lock_key);
- }
- 
--#ifndef CONFIG_PT_RECLAIM
--static void native_tlb_remove_table(struct mmu_gather *tlb, void *table)
--{
--	struct ptdesc *ptdesc = (struct ptdesc *)table;
--
--	pagetable_dtor(ptdesc);
--	tlb_remove_page(tlb, ptdesc_page(ptdesc));
--}
--#else
--static void native_tlb_remove_table(struct mmu_gather *tlb, void *table)
--{
--	tlb_remove_table(tlb, table);
--}
--#endif
--
- struct static_key paravirt_steal_enabled;
- struct static_key paravirt_steal_rq_enabled;
- 
-@@ -197,7 +182,7 @@ struct paravirt_patch_template pv_ops = {
- 	.mmu.flush_tlb_kernel	= native_flush_tlb_global,
- 	.mmu.flush_tlb_one_user	= native_flush_tlb_one_user,
- 	.mmu.flush_tlb_multi	= native_flush_tlb_multi,
--	.mmu.tlb_remove_table	= native_tlb_remove_table,
-+	.mmu.tlb_remove_table	= tlb_remove_table,
- 
- 	.mmu.exit_mmap		= paravirt_nop,
- 	.mmu.notify_page_enc_status_changed	= paravirt_nop,
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index 9b0ee41b545c7..1ddbd799acdf5 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -18,25 +18,6 @@ EXPORT_SYMBOL(physical_mask);
- #define PGTABLE_HIGHMEM 0
- #endif
- 
--#ifndef CONFIG_PARAVIRT
--#ifndef CONFIG_PT_RECLAIM
--static inline
--void paravirt_tlb_remove_table(struct mmu_gather *tlb, void *table)
--{
--	struct ptdesc *ptdesc = (struct ptdesc *)table;
--
--	pagetable_dtor(ptdesc);
--	tlb_remove_page(tlb, ptdesc_page(ptdesc));
--}
--#else
--static inline
--void paravirt_tlb_remove_table(struct mmu_gather *tlb, void *table)
--{
--	tlb_remove_table(tlb, table);
--}
--#endif /* !CONFIG_PT_RECLAIM */
--#endif /* !CONFIG_PARAVIRT */
--
- gfp_t __userpte_alloc_gfp = GFP_PGTABLE_USER | PGTABLE_HIGHMEM;
- 
- pgtable_t pte_alloc_one(struct mm_struct *mm)
-@@ -64,7 +45,7 @@ early_param("userpte", setup_userpte);
- void ___pte_free_tlb(struct mmu_gather *tlb, struct page *pte)
- {
- 	paravirt_release_pte(page_to_pfn(pte));
--	paravirt_tlb_remove_table(tlb, page_ptdesc(pte));
-+	tlb_remove_table(tlb, page_ptdesc(pte));
- }
- 
- #if CONFIG_PGTABLE_LEVELS > 2
-@@ -78,21 +59,21 @@ void ___pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmd)
- #ifdef CONFIG_X86_PAE
- 	tlb->need_flush_all = 1;
- #endif
--	paravirt_tlb_remove_table(tlb, virt_to_ptdesc(pmd));
-+	tlb_remove_table(tlb, virt_to_ptdesc(pmd));
- }
- 
- #if CONFIG_PGTABLE_LEVELS > 3
- void ___pud_free_tlb(struct mmu_gather *tlb, pud_t *pud)
- {
- 	paravirt_release_pud(__pa(pud) >> PAGE_SHIFT);
--	paravirt_tlb_remove_table(tlb, virt_to_ptdesc(pud));
-+	tlb_remove_table(tlb, virt_to_ptdesc(pud));
- }
- 
- #if CONFIG_PGTABLE_LEVELS > 4
- void ___p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4d)
- {
- 	paravirt_release_p4d(__pa(p4d) >> PAGE_SHIFT);
--	paravirt_tlb_remove_table(tlb, virt_to_ptdesc(p4d));
-+	tlb_remove_table(tlb, virt_to_ptdesc(p4d));
- }
- #endif	/* CONFIG_PGTABLE_LEVELS > 4 */
- #endif	/* CONFIG_PGTABLE_LEVELS > 3 */
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index afb9099fba9fc..9c47da5b0a2a2 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -350,9 +350,9 @@ do {									\
+ 									\
+ 	asm qual (ALTERNATIVE("call this_cpu_cmpxchg8b_emu",		\
+ 			      "cmpxchg8b " __percpu_arg([var]), X86_FEATURE_CX8) \
+-		  : [var] "+m" (__my_cpu_var(_var)),			\
+-		    "+a" (old__.low),					\
+-		    "+d" (old__.high)					\
++		  : ALT_OUTPUT_SP([var] "+m" (__my_cpu_var(_var)),	\
++				  "+a" (old__.low),			\
++				  "+d" (old__.high))			\
+ 		  : "b" (new__.low),					\
+ 		    "c" (new__.high),					\
+ 		    "S" (&(_var))					\
+@@ -381,10 +381,10 @@ do {									\
+ 	asm qual (ALTERNATIVE("call this_cpu_cmpxchg8b_emu",		\
+ 			      "cmpxchg8b " __percpu_arg([var]), X86_FEATURE_CX8) \
+ 		  CC_SET(z)						\
+-		  : CC_OUT(z) (success),				\
+-		    [var] "+m" (__my_cpu_var(_var)),			\
+-		    "+a" (old__.low),					\
+-		    "+d" (old__.high)					\
++		  : ALT_OUTPUT_SP(CC_OUT(z) (success),			\
++				  [var] "+m" (__my_cpu_var(_var)),	\
++				  "+a" (old__.low),			\
++				  "+d" (old__.high))			\
+ 		  : "b" (new__.low),					\
+ 		    "c" (new__.high),					\
+ 		    "S" (&(_var))					\
+@@ -421,9 +421,9 @@ do {									\
+ 									\
+ 	asm qual (ALTERNATIVE("call this_cpu_cmpxchg16b_emu",		\
+ 			      "cmpxchg16b " __percpu_arg([var]), X86_FEATURE_CX16) \
+-		  : [var] "+m" (__my_cpu_var(_var)),			\
+-		    "+a" (old__.low),					\
+-		    "+d" (old__.high)					\
++		  : ALT_OUTPUT_SP([var] "+m" (__my_cpu_var(_var)),	\
++				  "+a" (old__.low),			\
++				  "+d" (old__.high))			\
+ 		  : "b" (new__.low),					\
+ 		    "c" (new__.high),					\
+ 		    "S" (&(_var))					\
+@@ -452,10 +452,10 @@ do {									\
+ 	asm qual (ALTERNATIVE("call this_cpu_cmpxchg16b_emu",		\
+ 			      "cmpxchg16b " __percpu_arg([var]), X86_FEATURE_CX16) \
+ 		  CC_SET(z)						\
+-		  : CC_OUT(z) (success),				\
+-		    [var] "+m" (__my_cpu_var(_var)),			\
+-		    "+a" (old__.low),					\
+-		    "+d" (old__.high)					\
++		  : ALT_OUTPUT_SP(CC_OUT(z) (success),			\
++				  [var] "+m" (__my_cpu_var(_var)),	\
++				  "+a" (old__.low),			\
++				  "+d" (old__.high))			\
+ 		  : "b" (new__.low),					\
+ 		    "c" (new__.high),					\
+ 		    "S" (&(_var))					\
 -- 
 2.39.5
 
