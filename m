@@ -1,58 +1,68 @@
-Return-Path: <stable+bounces-141565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869F8AAB480
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:07:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4EBAAB49A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A4BA1C04C3E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:04:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77CD63AD793
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49CA47BBDC;
-	Tue,  6 May 2025 00:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8B1343488;
+	Tue,  6 May 2025 00:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPZk9VNx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hj/9Wlgj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB87E386691;
-	Mon,  5 May 2025 23:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6F12F152F;
+	Mon,  5 May 2025 23:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486716; cv=none; b=ZbqeSSbHFuOOIL9AyWspT5oC2q/x6+NbBPXXBjmtxJ4kbpwj1ZTvo3BX/9R2rRslsAGOGmWtwhfZL64b34frIJJlQniDZ6kcRVCCCdx8tICeBiikc5Nhoatco2Y+BNJSxHESmiz6ZEWI/fAhRTXzZfTkmJ3o+cQfkolGyjdIrpk=
+	t=1746486731; cv=none; b=QNupMP0dqAnMPju0OiLEEnqbeQ1NHiwUyz9sXtAJ+eErO82rF2mX4CsVqGYKTl/tBEI45IYraaBoUzMiR5rd3bsFolK8qxqTn+/cSAle3ucNFMCDJWg+JBD6kSjgmuVl0W/WWp2DvnEnqtAgkT2NL/njQsq13rjD431IhXpH5Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486716; c=relaxed/simple;
-	bh=GfrMrwI1HzyaSwl8t6c37iWXgnxb6KyIge4Y6qbMHOg=;
+	s=arc-20240116; t=1746486731; c=relaxed/simple;
+	bh=vh9+QMtTfFQtALxE6B+h1YKZ4lOs8NdgSXIifjjRR1M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eo/rOYf79XY5KCh3mVohn5+UEHHGL99B1YqhcNxyDGOSBeTyTaikBJ1zd4ZZ0yWI9trkPI4m8Lm7OmdbiW69ReKtJ8blTy2b9nKBBVnr29OX4G/RBLOrHda0bTRb8hqQ0LFe+uQry/MBij2k7PzgtKFxG0BephF0L833mPRdeAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPZk9VNx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37074C4CEEF;
-	Mon,  5 May 2025 23:11:55 +0000 (UTC)
+	 MIME-Version; b=R4RjL4giiXBu7rbWN8yvJ2oTlTSFt7HCDXzZUsmEH+ooKzUWfW6fsvH4rHqt/m6NpmgZ7Gud1prI6sl8zcI21Dqx9+5iDuGUB9lzE4yMU8VCiJmuhX66LF6w7kXqMrRpL3mOMEk1ai/KH/iQfG/ZpK3f5SxheIT+LI0uusNyTVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hj/9Wlgj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA57C4CEE4;
+	Mon,  5 May 2025 23:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486716;
-	bh=GfrMrwI1HzyaSwl8t6c37iWXgnxb6KyIge4Y6qbMHOg=;
+	s=k20201202; t=1746486730;
+	bh=vh9+QMtTfFQtALxE6B+h1YKZ4lOs8NdgSXIifjjRR1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NPZk9VNxaA9kB6ttW+oTa0x4HdiKBIIfQEx8A9Bw8RnqHKDXinHN4Ij/jVTQ58Dm3
-	 p0TWpOxMsGZ9tfp+jJD564t1HvvjVpLJrtPMhI8I9mkc3qVpYYuv23bdqQthIMuoib
-	 Ekus105iJeDNPsjBnyf9Mr9VXYeYyIrJc1virIsB8sJi6Z6y1/GEIy/pm1hdJZPS3D
-	 y6ZjmYyHylvzhqfRBHynRsM2aUDieNhgVnavG8nqjOdwX5JTtmRbze0lI2JgXKNmVA
-	 OxZr3s1AET6C8G1rtwdqsheUcxQKJCwA64ckH/Tmd/vyfuI9lUWOp7cXqJyKlDO8Kc
-	 h2ahssSOr/eHw==
+	b=Hj/9WlgjyTtro4PPwEfP4yrfGBMIk5OCVwvr6Cq9hdb8FJk7IkGLv2V4gJFS0qotm
+	 4zbThTrKQUm12Hwj9CqYOEVqO0TyeaZwv0XP2FerSNUcrU2YPUkJtL6JkgVxblZ+88
+	 a6EoeT3L584EpT6nj1XSw+m3iDM5XAortKXkviRVLWtcQ8hqCYLr31j0WvNfW0UlS1
+	 z+FriybuLLX37AfFUzphL82BlclFLLbcd61LCaAQVa/C7NemyRes8gdBwp31fX3yq+
+	 on7VYWXa4vhZYZ3G6Z2YC4C9m69GSxfEgJeKHZnsW77qfH2c0/GDTvRdv+u6nSXAcp
+	 LYEny9IgKsN0Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Damon Ding <damon.ding@rock-chips.com>,
-	Vinod Koul <vkoul@kernel.org>,
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kishon@kernel.org,
-	linux-phy@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 169/212] phy: core: don't require set_mode() callback for phy_get_mode() to work
-Date: Mon,  5 May 2025 19:05:41 -0400
-Message-Id: <20250505230624.2692522-169-sashal@kernel.org>
+	sunpeng.li@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	mario.limonciello@amd.com,
+	alex.hung@amd.com,
+	chiahsuan.chung@amd.com,
+	sunil.khatri@amd.com,
+	aurabindo.pillai@amd.com,
+	Yilin.Chen@amd.com,
+	mwen@igalia.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.1 173/212] drm/amd/display/dm: drop hw_support check in amdgpu_dm_i2c_xfer()
+Date: Mon,  5 May 2025 19:05:45 -0400
+Message-Id: <20250505230624.2692522-173-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -67,51 +77,32 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit d58c04e305afbaa9dda7969151f06c4efe2c98b0 ]
+[ Upstream commit 33da70bd1e115d7d73f45fb1c09f5ecc448f3f13 ]
 
-As reported by Damon Ding, the phy_get_mode() call doesn't work as
-expected unless the PHY driver has a .set_mode() call. This prompts PHY
-drivers to have empty stubs for .set_mode() for the sake of being able
-to get the mode.
+DC supports SW i2c as well.  Drop the check.
 
-Make .set_mode() callback truly optional and update PHY's mode even if
-it there is none.
-
-Cc: Damon Ding <damon.ding@rock-chips.com>
-Link: https://lore.kernel.org/r/96f8310f-93f1-4bcb-8637-137e1159ff83@rock-chips.com
-Tested-by: Damon Ding <damon.ding@rock-chips.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20250209-phy-fix-set-moe-v2-1-76e248503856@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/phy-core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index 0730fe80dc3c1..069bcf49ee8f7 100644
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -398,13 +398,14 @@ EXPORT_SYMBOL_GPL(phy_power_off);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 7dee02e8ba6fa..4666bbd5483f0 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -7281,7 +7281,7 @@ static int amdgpu_dm_i2c_xfer(struct i2c_adapter *i2c_adap,
+ 	int i;
+ 	int result = -EIO;
  
- int phy_set_mode_ext(struct phy *phy, enum phy_mode mode, int submode)
- {
--	int ret;
-+	int ret = 0;
+-	if (!ddc_service->ddc_pin || !ddc_service->ddc_pin->hw_info.hw_supported)
++	if (!ddc_service->ddc_pin)
+ 		return result;
  
--	if (!phy || !phy->ops->set_mode)
-+	if (!phy)
- 		return 0;
- 
- 	mutex_lock(&phy->mutex);
--	ret = phy->ops->set_mode(phy, mode, submode);
-+	if (phy->ops->set_mode)
-+		ret = phy->ops->set_mode(phy, mode, submode);
- 	if (!ret)
- 		phy->attrs.mode = mode;
- 	mutex_unlock(&phy->mutex);
+ 	cmd.payloads = kcalloc(num, sizeof(struct i2c_payload), GFP_KERNEL);
 -- 
 2.39.5
 
