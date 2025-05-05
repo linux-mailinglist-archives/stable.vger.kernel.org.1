@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-140180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C3B5AAA5DF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:00:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB77AAA5FF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D4B81886458
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:59:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF7933A50DB
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6040A31A0C0;
-	Mon,  5 May 2025 22:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C9331A0E9;
+	Mon,  5 May 2025 22:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JdrjVgXT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3gmHveA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13949319A7E;
-	Mon,  5 May 2025 22:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEDC31A0DE;
+	Mon,  5 May 2025 22:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484283; cv=none; b=butpdBNZ5Vuay2SQLe2iDGKeLHJAtjRqq3qtvteKi08T61iqgTga3eSAls0AREjvFhSwwa5Coz+PHWRYN1rbYghgXQBxyx3UxEHnqbNXVm+KQGYU61EYSGDVTNp+MzMrRXnbvl4L3PIUgT/Bs5WjXI2nT5IYO/3QYPRkZyac9Bc=
+	t=1746484284; cv=none; b=sbNjhMcFyZURfqqn2byMHnPrihjz2Rah7cH30ed8Fu82KJyq+h6eHwFUjAN3IyZzhvdtaVojEaDCKQyByQK6u9xRZIMFHOwur7qei04s7h1iKr4qpLxNbfIiOWUdT+lw6PdnkK05D5Qw0giQAXODJFNTzuyhyqMJ53JL+eionSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484283; c=relaxed/simple;
-	bh=G12M4CtKtx7qFHucINM394sfRrI8vnfPPtR1s1+9uxw=;
+	s=arc-20240116; t=1746484284; c=relaxed/simple;
+	bh=TZpFGMXpH5A7lLcfxRrM8HRa0+BE7zEJu72ns+dJXJQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tlwNeAioLzEFascJELwCsBXstvxUplX/Qm104FTvmpOvbfl3SaIY0CyrsXD5TArloekD2Wqp8E/FpV0LFrTxSV5jLH1nohLdAbVn/c7mB13Dp44OAmW2NHI9iQf8u2nqiruRTdmrycXlr0QAdFXFq0Su15sl5/HJlZULoSvnfwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JdrjVgXT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87637C4CEEF;
-	Mon,  5 May 2025 22:31:21 +0000 (UTC)
+	 MIME-Version; b=GnLNCR/kZncsME7kjV+eQ1hJYilNqlh4yns76iC4vxEjg/jlSpAPs+CP6pvtxBLF9Akb4/pGoTO4R4vPjCM1RSN7WYh3DV9ttxhBVw4xJm376s3SJCGCWLSWfBI1jK38KiTWlp3QSKPjjjJqW/fzdMeuuuCsFLjuGOgQXtJdIQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3gmHveA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB4EC4CEED;
+	Mon,  5 May 2025 22:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484282;
-	bh=G12M4CtKtx7qFHucINM394sfRrI8vnfPPtR1s1+9uxw=;
+	s=k20201202; t=1746484284;
+	bh=TZpFGMXpH5A7lLcfxRrM8HRa0+BE7zEJu72ns+dJXJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JdrjVgXTC3DCIBOtvGAPgt4XVRp5Yo1MQg2X3p37ilRbREMJQAceORGOAPqmtA4Gb
-	 gu4C15U8PMVspWDwjEMO5Y/PMuj/hI19rowP7+R1755B9eOtBt9nTHTCUQymhu8d3w
-	 dLQZV5k/9u5z6t/BaXNOO9ksRVtAZvrtkZ8MZ/TSdqBg/I4+UMFulItbAi6xf4Xcgk
-	 0Klx9BWePWDKjJ0XaWf1haAfd4PGR1wSBQshyYZql4URve2o+QZrwbaJtizkndX4cS
-	 vWAMs8+ZOemMR/vCkjYoc0ONZssVTCO+q8pyRw3fJgv4fN4f73M5u7ElIQ0kVcSeRB
-	 Iw6mZ+/i0/8kA==
+	b=d3gmHveApLOtgQC20jpqUzjOlEe7v5Pngux/1Q/zBZTRk9t4q3Foxu3S+DCnL9Yn8
+	 4O11jw6OX+Gj5JLL6mehOv2rOEXfTl7j5nXHv9udP9wbl4j+DCvhiY4WDK3omvLWyk
+	 KyvO5T0JLlKFBMf+qf3O6OJ0EhYLp8NXh2/r5q1zH48YxUvz+cMZdjhYDs4Wraww2Q
+	 q+aA71Z1uRhHuQkA/ZoUVP+rps3WwAt8kFfhbr8X7IYcZe0SHtnTfueEn1avv91Niy
+	 MiezSmv0ynJopWXMnId1+OjVdOloj4HLqehJr2A+2deGV73dUVuXk/TeIYuxazX4KK
+	 l1JLPVVouhHrQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrii Nakryiko <andrii@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Michael Chan <michael.chan@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 433/642] libbpf: fix LDX/STX/ST CO-RE relocation size adjustment logic
-Date: Mon,  5 May 2025 18:10:49 -0400
-Message-Id: <20250505221419.2672473-433-sashal@kernel.org>
+	pavan.chebbi@broadcom.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 434/642] bnxt_en: Set NPAR 1.2 support when registering with firmware
+Date: Mon,  5 May 2025 18:10:50 -0400
+Message-Id: <20250505221419.2672473-434-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,90 +72,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Michael Chan <michael.chan@broadcom.com>
 
-[ Upstream commit 06096d19ee3897a7e70922580159607fe315da7a ]
+[ Upstream commit ebdf7fe488c512b18add66b6c26e11e4d3830213 ]
 
-Libbpf has a somewhat obscure feature of automatically adjusting the
-"size" of LDX/STX/ST instruction (memory store and load instructions),
-based on originally recorded access size (u8, u16, u32, or u64) and the
-actual size of the field on target kernel. This is meant to facilitate
-using BPF CO-RE on 32-bit architectures (pointers are always 64-bit in
-BPF, but host kernel's BTF will have it as 32-bit type), as well as
-generally supporting safe type changes (unsigned integer type changes
-can be transparently "relocated").
+NPAR (Network interface card partitioning)[1] 1.2 adds a transparent
+VLAN tag for all packets between the NIC and the switch.  Because of
+that, RX VLAN acceleration cannot be supported for any additional
+host configured VLANs.  The driver has to acknowledge that it can
+support no RX VLAN acceleration and set the NPAR 1.2 supported flag
+when registering with the FW.  Otherwise, the FW call will fail and
+the driver will abort on these NPAR 1.2 NICs with this error:
 
-One issue that surfaced only now, 5 years after this logic was
-implemented, is how this all works when dealing with fields that are
-arrays. This isn't all that easy and straightforward to hit (see
-selftests that reproduce this condition), but one of sched_ext BPF
-programs did hit it with innocent looking loop.
+bnxt_en 0000:26:00.0 (unnamed net_device) (uninitialized): hwrm req_type 0x1d seq id 0xb error 0x2
 
-Long story short, libbpf used to calculate entire array size, instead of
-making sure to only calculate array's element size. But it's the element
-that is loaded by LDX/STX/ST instructions (1, 2, 4, or 8 bytes), so
-that's what libbpf should check. This patch adjusts the logic for
-arrays and fixed the issue.
+[1] https://techdocs.broadcom.com/us/en/storage-and-ethernet-connectivity/ethernet-nic-controllers/bcm957xxx/adapters/introduction/features/network-partitioning-npar.html
 
-Reported-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20250207014809.1573841-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250213011240.1640031-2-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/relo_core.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 5 +++++
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/tools/lib/bpf/relo_core.c b/tools/lib/bpf/relo_core.c
-index 7632e9d418271..2b83c98a11372 100644
---- a/tools/lib/bpf/relo_core.c
-+++ b/tools/lib/bpf/relo_core.c
-@@ -683,7 +683,7 @@ static int bpf_core_calc_field_relo(const char *prog_name,
- {
- 	const struct bpf_core_accessor *acc;
- 	const struct btf_type *t;
--	__u32 byte_off, byte_sz, bit_off, bit_sz, field_type_id;
-+	__u32 byte_off, byte_sz, bit_off, bit_sz, field_type_id, elem_id;
- 	const struct btf_member *m;
- 	const struct btf_type *mt;
- 	bool bitfield;
-@@ -706,8 +706,14 @@ static int bpf_core_calc_field_relo(const char *prog_name,
- 	if (!acc->name) {
- 		if (relo->kind == BPF_CORE_FIELD_BYTE_OFFSET) {
- 			*val = spec->bit_offset / 8;
--			/* remember field size for load/store mem size */
--			sz = btf__resolve_size(spec->btf, acc->type_id);
-+			/* remember field size for load/store mem size;
-+			 * note, for arrays we care about individual element
-+			 * sizes, not the overall array size
-+			 */
-+			t = skip_mods_and_typedefs(spec->btf, acc->type_id, &elem_id);
-+			while (btf_is_array(t))
-+				t = skip_mods_and_typedefs(spec->btf, btf_array(t)->type, &elem_id);
-+			sz = btf__resolve_size(spec->btf, elem_id);
- 			if (sz < 0)
- 				return -EINVAL;
- 			*field_sz = sz;
-@@ -767,7 +773,17 @@ static int bpf_core_calc_field_relo(const char *prog_name,
- 	case BPF_CORE_FIELD_BYTE_OFFSET:
- 		*val = byte_off;
- 		if (!bitfield) {
--			*field_sz = byte_sz;
-+			/* remember field size for load/store mem size;
-+			 * note, for arrays we care about individual element
-+			 * sizes, not the overall array size
-+			 */
-+			t = skip_mods_and_typedefs(spec->btf, field_type_id, &elem_id);
-+			while (btf_is_array(t))
-+				t = skip_mods_and_typedefs(spec->btf, btf_array(t)->type, &elem_id);
-+			sz = btf__resolve_size(spec->btf, elem_id);
-+			if (sz < 0)
-+				return -EINVAL;
-+			*field_sz = sz;
- 			*type_id = field_type_id;
- 		}
- 		break;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 40af27c2ba799..719ae44aa7639 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -5585,6 +5585,8 @@ int bnxt_hwrm_func_drv_rgtr(struct bnxt *bp, unsigned long *bmap, int bmap_size,
+ 	if (bp->fw_cap & BNXT_FW_CAP_ERROR_RECOVERY)
+ 		flags |= FUNC_DRV_RGTR_REQ_FLAGS_ERROR_RECOVERY_SUPPORT |
+ 			 FUNC_DRV_RGTR_REQ_FLAGS_MASTER_SUPPORT;
++	if (bp->fw_cap & BNXT_FW_CAP_NPAR_1_2)
++		flags |= FUNC_DRV_RGTR_REQ_FLAGS_NPAR_1_2_SUPPORT;
+ 	req->flags = cpu_to_le32(flags);
+ 	req->ver_maj_8b = DRV_VER_MAJ;
+ 	req->ver_min_8b = DRV_VER_MIN;
+@@ -8385,6 +8387,7 @@ static int bnxt_hwrm_func_qcfg(struct bnxt *bp)
+ 
+ 	switch (resp->port_partition_type) {
+ 	case FUNC_QCFG_RESP_PORT_PARTITION_TYPE_NPAR1_0:
++	case FUNC_QCFG_RESP_PORT_PARTITION_TYPE_NPAR1_2:
+ 	case FUNC_QCFG_RESP_PORT_PARTITION_TYPE_NPAR1_5:
+ 	case FUNC_QCFG_RESP_PORT_PARTITION_TYPE_NPAR2_0:
+ 		bp->port_partition_type = resp->port_partition_type;
+@@ -9549,6 +9552,8 @@ static int __bnxt_hwrm_func_qcaps(struct bnxt *bp)
+ 		bp->fw_cap |= BNXT_FW_CAP_HOT_RESET_IF;
+ 	if (BNXT_PF(bp) && (flags_ext & FUNC_QCAPS_RESP_FLAGS_EXT_FW_LIVEPATCH_SUPPORTED))
+ 		bp->fw_cap |= BNXT_FW_CAP_LIVEPATCH;
++	if (flags_ext & FUNC_QCAPS_RESP_FLAGS_EXT_NPAR_1_2_SUPPORTED)
++		bp->fw_cap |= BNXT_FW_CAP_NPAR_1_2;
+ 	if (BNXT_PF(bp) && (flags_ext & FUNC_QCAPS_RESP_FLAGS_EXT_DFLT_VLAN_TPID_PCP_SUPPORTED))
+ 		bp->fw_cap |= BNXT_FW_CAP_DFLT_VLAN_TPID_PCP;
+ 	if (flags_ext & FUNC_QCAPS_RESP_FLAGS_EXT_BS_V2_SUPPORTED)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index d621fb621f30c..f91d9d8eacb97 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -2498,6 +2498,7 @@ struct bnxt {
+ 	#define BNXT_FW_CAP_CFA_RFS_RING_TBL_IDX_V3	BIT_ULL(39)
+ 	#define BNXT_FW_CAP_VNIC_RE_FLUSH		BIT_ULL(40)
+ 	#define BNXT_FW_CAP_SW_MAX_RESOURCE_LIMITS	BIT_ULL(41)
++	#define BNXT_FW_CAP_NPAR_1_2			BIT_ULL(42)
+ 
+ 	u32			fw_dbg_cap;
+ 
 -- 
 2.39.5
 
