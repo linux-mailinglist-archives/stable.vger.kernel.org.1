@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-140016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F90AAA3D2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:20:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85096AAA3D6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:20:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 308F64653D3
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:20:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCF65464E2F
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01D427979C;
-	Mon,  5 May 2025 22:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BAF428B3FE;
+	Mon,  5 May 2025 22:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FgWyTg0A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hmH3dJWa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660252F81B6;
-	Mon,  5 May 2025 22:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4423128B3F5;
+	Mon,  5 May 2025 22:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483919; cv=none; b=JGkbmk6vcZnGzi+BeNUgtzVrVe+dqQGhfQpEY7soVxNxzZU9WiS/qINd/feTDJa0Gd25Sr/TqQCcD0zXORkSVl1Ez/JHl2pqkH8mDT/rNSdbHmHLhbLvmtQbAoU8p/SOsbv7QHaQWRxwY6gtXRggwjATbAQtbUjPT7g78c0Cz6I=
+	t=1746483921; cv=none; b=jhFe7+9yZPdiHMmCSu4xPCHXnyc+t1S1bQYsRtsPTAiJvDOgWhgA9Kmnm3QnJk+kEvZOSYCuGFcmAP2j47I/wQtmbzpLjcF9r8IHuT1xr3p2FLJ/R7E7IdhiB7wXRcp5TdszFFB4rx4IPvT3s4tDoc9mxi9ticXfGyfXv5wqwG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483919; c=relaxed/simple;
-	bh=UchgOFdXp4awED8dj0TpRoeqXqCGT/KR3+SVYUokIO4=;
+	s=arc-20240116; t=1746483921; c=relaxed/simple;
+	bh=+hymtYd/bNIYeqiKyUuCFDEx1mLoUq9sHor1J9dchoQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TKau4OA9I6DZR7PaLULdrTUuztsyu1iVgrwD2vlyZ072vY5OhVL3tXxf3ft+RoRxS8x1gG654l8Q265BK+1DrM4QLTP/wJ5RTLJ2By3rUdJ9bmCIKbFExh4ZLmQKa1sG4ZrBpq+v2Q4/SBFYlKawPnH7y3x+CKyzuyDyI+lEGjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgWyTg0A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B8A4C4CEE4;
-	Mon,  5 May 2025 22:25:17 +0000 (UTC)
+	 MIME-Version; b=UQJ0E1LoU3bPTVtuJoHzCyRKMuKKjKeUs8J2S4TJSiBqfNYYTWyenfF1VlgRS9x7bo8vg/Y8nFaGxIXmhfb6DClskp8sQ3qDhO6ajaBi8nyY9jRdjGb6O3yiMTk4k2Bs10uBGuY101YYi+ECugwDZQQC456bAhcCQcL/Oa6peIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hmH3dJWa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0885C4CEF2;
+	Mon,  5 May 2025 22:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483919;
-	bh=UchgOFdXp4awED8dj0TpRoeqXqCGT/KR3+SVYUokIO4=;
+	s=k20201202; t=1746483921;
+	bh=+hymtYd/bNIYeqiKyUuCFDEx1mLoUq9sHor1J9dchoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FgWyTg0A/LsYK28W+zA6CMeGnolrX8yIuEUA4Ae9W1mofW91EYusA1xkXzsG36eDL
-	 1vbXoIPd10qkPZDR7iqKiFaKM06qlt1XGLABUn0/betlneO3APKew3frfxpXH35IH6
-	 dmYu+rrJuMPnVilxNhESahioLIkDkl4uHsPDrreDYW4lVUyqzADY+I+xsv3KKq19O2
-	 50Nqge0xvaVCbUZlGS0AJeVBVahNHgBYD4atKuxN6t/027k369zhIssLrS5r9QoovM
-	 IHgw3X4GxtAuAwL4IEFKxJqZMgHFo3J1+s0vM81vOUNC4I7mnk5RalbuAfuvAZELzu
-	 H3aaLrDane3tA==
+	b=hmH3dJWaOgnHz1Tgf6G3pWa2KaiI7oMgLJxgasqjDlaSQMzebHFbwaO8OkqH/CSIa
+	 VZKZOqa+0vfz8Fj3RzYQASrzOCCW3rjNfQzTo+GIzU19PX8NtWI+GkyZ6ILuGezcYB
+	 xZEw1xdDe4rz+pP6CrqDnPQBQ6w2NQ4WHD7Z1ZZKM5VRevLuEHt1zACC2YsecS7aa8
+	 toHT0xutBf0S5MQWH5P8av18qUbuDI5fNf4ID8KzelBi0zq1DCTPAXk2grWQWLD/6m
+	 Jdw19nG/zoCB+P48ZW+7F9+vU6vOFOtk96SfQhWT5V/e6hslA58WOtWfTmnxh4WgL6
+	 8PHIZ6GW5k+Xg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>,
+Cc: Saket Kumar Bhaskar <skb99@linux.ibm.com>,
 	Ingo Molnar <mingo@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Ian Rogers <irogers@google.com>,
+	Frederic Weisbecker <fweisbec@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
+	peterz@infradead.org,
 	mingo@redhat.com,
 	acme@kernel.org,
 	namhyung@kernel.org,
 	linux-perf-users@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 269/642] perf/core: Fix perf_mmap() failure path
-Date: Mon,  5 May 2025 18:08:05 -0400
-Message-Id: <20250505221419.2672473-269-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 270/642] perf/hw_breakpoint: Return EOPNOTSUPP for unsupported breakpoint type
+Date: Mon,  5 May 2025 18:08:06 -0400
+Message-Id: <20250505221419.2672473-270-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -70,35 +73,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
 
-[ Upstream commit 66477c7230eb1f9b90deb8c0f4da2bac2053c329 ]
+[ Upstream commit 061c991697062f3bf87b72ed553d1d33a0e370dd ]
 
-When f_ops->mmap() returns failure, m_ops->close() is *not* called.
+Currently, __reserve_bp_slot() returns -ENOSPC for unsupported
+breakpoint types on the architecture. For example, powerpc
+does not support hardware instruction breakpoints. This causes
+the perf_skip BPF selftest to fail, as neither ENOENT nor
+EOPNOTSUPP is returned by perf_event_open for unsupported
+breakpoint types. As a result, the test that should be skipped
+for this arch is not correctly identified.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+To resolve this, hw_breakpoint_event_init() should exit early by
+checking for unsupported breakpoint types using
+hw_breakpoint_slots_cached() and return the appropriate error
+(-EOPNOTSUPP).
+
+Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Link: https://lore.kernel.org/r/20241104135519.248358497@infradead.org
+Cc: Marco Elver <elver@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Frederic Weisbecker <fweisbec@gmail.com>
+Link: https://lore.kernel.org/r/20250303092451.1862862-1-skb99@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/hw_breakpoint.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index de838d3819ca7..dda1670b3539a 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6834,7 +6834,7 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
- 	if (!ret)
- 		ret = map_range(rb, vma);
+diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
+index bc4a61029b6dc..8ec2cb6889038 100644
+--- a/kernel/events/hw_breakpoint.c
++++ b/kernel/events/hw_breakpoint.c
+@@ -950,9 +950,10 @@ static int hw_breakpoint_event_init(struct perf_event *bp)
+ 		return -ENOENT;
  
--	if (event->pmu->event_mapped)
-+	if (!ret && event->pmu->event_mapped)
- 		event->pmu->event_mapped(event, vma->vm_mm);
+ 	/*
+-	 * no branch sampling for breakpoint events
++	 * Check if breakpoint type is supported before proceeding.
++	 * Also, no branch sampling for breakpoint events.
+ 	 */
+-	if (has_branch_stack(bp))
++	if (!hw_breakpoint_slots_cached(find_slot_idx(bp->attr.bp_type)) || has_branch_stack(bp))
+ 		return -EOPNOTSUPP;
  
- 	return ret;
+ 	err = register_perf_hw_breakpoint(bp);
 -- 
 2.39.5
 
