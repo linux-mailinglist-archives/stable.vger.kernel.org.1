@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-141026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8069AAAB015
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:31:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B09AAB018
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3087D466A26
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:31:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40B8D4A4625
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83D328A3ED;
-	Mon,  5 May 2025 23:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38572F927D;
+	Mon,  5 May 2025 23:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GbJ8AtXl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TwfyOPlv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649EF3982AD;
-	Mon,  5 May 2025 23:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CAC3982BD;
+	Mon,  5 May 2025 23:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487263; cv=none; b=QxnP6IvpwZHHNteVTgYlLFGfGRA5gDLd3f0gC3W7xzIkJyxA+M0jUOzsmxpar4R7Xc38v53IPuYgJ4FydI0FZNoJEar2Of6QCsQk0zyro19PGH9485KLDot2+Bv80p1yWlzG+i6t8rW6uT+kTsIRdXyZudv1kKfuoNff0LghLF8=
+	t=1746487264; cv=none; b=QthfOreH5hbqRRAEpKiLQ8FwgT5Qkv/bDOG+9MA428PLVhNbNmFah6W9C0LwgYGy8J4XOs8mK4YmSFSOzJCsVcakzxMsCY3UrPPbF0CJ4LWmAcmfAVURLa3OhsxV9NaX6fON6RsPgMwIzVzTenlb4a/kkxWVxXNxpzSdu8eV/B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487263; c=relaxed/simple;
-	bh=Lz96IMezMgkbCz8GTPWpiYh8XEo+mx5noJ7sVQUzPiM=;
+	s=arc-20240116; t=1746487264; c=relaxed/simple;
+	bh=uj0KpZHU7zZBolhsv3LfmtH2uwGVxWca9Mqq71j2Waw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=a024KSPMi9FlIeA8AQPDQf7To0/13HTqLDxKFmOU7pwlLG4dFpdIwYPXdt3P8RZqFHm7Ato2VkoapoiCVOtItjAmBuPMp/fb+NNQysR2XaeYRqeZt/tH+ObLi+ySx21t36IoAHG0yq8h/NS2+rOgdCI/QpJ4SANHMBg3aTwqBDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GbJ8AtXl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D64C4CEF1;
-	Mon,  5 May 2025 23:21:01 +0000 (UTC)
+	 MIME-Version; b=iIiJnJUAqxGHPkcPfSl5OT8PfM5P5GVt4LNZBu693/VL74TVJnjkv3l3ciFdY1/B20QdFZRoZLbLSr3sXtqnFFoORuZnbUtH84EwPqYBh99KRC1ERqBjc5L6NcnqfJjgYqDcQ6qCiKYROdK+0ccDlAc3BM1d1N4RmjZtgJanMu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TwfyOPlv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C94C4CEE4;
+	Mon,  5 May 2025 23:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487261;
-	bh=Lz96IMezMgkbCz8GTPWpiYh8XEo+mx5noJ7sVQUzPiM=;
+	s=k20201202; t=1746487263;
+	bh=uj0KpZHU7zZBolhsv3LfmtH2uwGVxWca9Mqq71j2Waw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GbJ8AtXl3bPg2K014rUCxEaCUqoQOH8QYYknd0KUBPScarirfXIyQtlcK3GVtJXxf
-	 bRC9yYf1Gpc8M/LnMRT6H537JsGpEK/jJx/1P8y76/nQbu9FaMHJ617GWw7Jz3c8hk
-	 zNeOkFX96NpRg6gEyvWpCu8LApgXu1y6lZSrisIrP/MjLaiO12H+UHXA5F4v6Mu5sH
-	 eJ07XYQbdq1H0vzXQJE9K+yGn9qoOmkRRjLvNgbLSIYHYlDOgGF0Z7fmxNoCP9+bMk
-	 mze+vKDqW4K1pKKqKQReA3MrF7LW94MKVl3ik9wPl51rv2EsJUD7lVRM3A3BWeILFl
-	 9G3WIwSBEZcMw==
+	b=TwfyOPlv0jWQa99BRsxF+fGj2rCHu9wFPpqQ2VyUi4gU48klLfdmtXB/waPxUb95o
+	 wGg58IM4v4CDywEjcmKt0vwJzKL6+IhOmfUwbmrjU34ifkngK8PRSIYeJFrFIthSn4
+	 /W3T/4Y5N8Ekqf6Z7NvHkndyCkJYhS51KVHreKCw/ywPwAiIDgZq2aOe1cmbW91Mxm
+	 yo58yNXgWxoi/MGigkPCnxwDjw2TO3kXKVADZHGLjVL9y539oG06HjFk9J3s2zGfRF
+	 iF8QPLBqX/pCU5WWptuquPFQK73Up6J3/N00w5+vvg2HR7ZvMkNVb+RYvuHf+DlO1s
+	 ZrmMS+Rp1rusg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Valentin Caron <valentin.caron@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 087/114] pinctrl: devicetree: do not goto err when probing hogs in pinctrl_dt_to_map
-Date: Mon,  5 May 2025 19:17:50 -0400
-Message-Id: <20250505231817.2697367-87-sashal@kernel.org>
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 088/114] smack: recognize ipv4 CIPSO w/o categories
+Date: Mon,  5 May 2025 19:17:51 -0400
+Message-Id: <20250505231817.2697367-88-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -65,107 +68,73 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Valentin Caron <valentin.caron@foss.st.com>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit c98868e816209e568c9d72023ba0bc1e4d96e611 ]
+[ Upstream commit a158a937d864d0034fea14913c1f09c6d5f574b8 ]
 
-Cross case in pinctrl framework make impossible to an hogged pin and
-another, not hogged, used within the same device-tree node. For example
-with this simplified device-tree :
+If SMACK label has CIPSO representation w/o categories, e.g.:
 
-  &pinctrl {
-    pinctrl_pin_1: pinctrl-pin-1 {
-      pins = "dummy-pinctrl-pin";
-    };
-  };
+| # cat /smack/cipso2
+| foo  10
+| @ 250/2
+| ...
 
-  &rtc {
-    pinctrl-names = "default"
-    pinctrl-0 = <&pinctrl_pin_1 &rtc_pin_1>
+then SMACK does not recognize such CIPSO in input ipv4 packets
+and substitues '*' label instead. Audit records may look like
 
-    rtc_pin_1: rtc-pin-1 {
-      pins = "dummy-rtc-pin";
-    };
-  };
+| lsm=SMACK fn=smack_socket_sock_rcv_skb action=denied
+|   subject="*" object="_" requested=w pid=0 comm="swapper/1" ...
 
-"pinctrl_pin_1" configuration is never set. This produces this path in
-the code:
+This happens in two steps:
 
-  really_probe()
-    pinctrl_bind_pins()
-    | devm_pinctrl_get()
-    |   pinctrl_get()
-    |     create_pinctrl()
-    |       pinctrl_dt_to_map()
-    |         // Hog pin create an abort for all pins of the node
-    |         ret = dt_to_map_one_config()
-    |         | /* Do not defer probing of hogs (circular loop) */
-    |         | if (np_pctldev == p->dev->of_node)
-    |         |   return -ENODEV;
-    |         if (ret)
-    |           goto err
-    |
-    call_driver_probe()
-      stm32_rtc_probe()
-        pinctrl_enable()
-          pinctrl_claim_hogs()
-            create_pinctrl()
-              for_each_maps(maps_node, i, map)
-                // Not hog pin is skipped
-                if (pctldev && strcmp(dev_name(pctldev->dev),
-                                      map->ctrl_dev_name))
-                  continue;
+1) security/smack/smackfs.c`smk_set_cipso
+   does not clear NETLBL_SECATTR_MLS_CAT
+   from (struct smack_known *)skp->smk_netlabel.flags
+   on assigning CIPSO w/o categories:
 
-At the first call of create_pinctrl() the hogged pin produces an abort to
-avoid a defer of hogged pins. All other pin configurations are trashed.
+| rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
+| skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
 
-At the second call, create_pinctrl is now called with pctldev parameter to
-get hogs, but in this context only hogs are set. And other pins are
-skipped.
+2) security/smack/smack_lsm.c`smack_from_secattr
+   can not match skp->smk_netlabel with input packet's
+   struct netlbl_lsm_secattr *sap
+   because sap->flags have not NETLBL_SECATTR_MLS_CAT (what is correct)
+   but skp->smk_netlabel.flags have (what is incorrect):
 
-To handle this, do not produce an abort in the first call of
-create_pinctrl(). Classic pin configuration will be set in
-pinctrl_bind_pins() context. And the hogged pin configuration will be set
-in pinctrl_claim_hogs() context.
+| if ((sap->flags & NETLBL_SECATTR_MLS_CAT) == 0) {
+| 	if ((skp->smk_netlabel.flags &
+| 		 NETLBL_SECATTR_MLS_CAT) == 0)
+| 		found = 1;
+| 	break;
+| }
 
-Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
-Link: https://lore.kernel.org/20250116170009.2075544-1-valentin.caron@foss.st.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+This commit sets/clears NETLBL_SECATTR_MLS_CAT in
+skp->smk_netlabel.flags according to the presense of CIPSO categories.
+The update of smk_netlabel is not atomic, so input packets processing
+still may be incorrect during short time while update proceeds.
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/devicetree.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ security/smack/smackfs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
-index 0220228c50404..d9279fc7be832 100644
---- a/drivers/pinctrl/devicetree.c
-+++ b/drivers/pinctrl/devicetree.c
-@@ -143,10 +143,14 @@ static int dt_to_map_one_config(struct pinctrl *p,
- 		pctldev = get_pinctrl_dev_from_of_node(np_pctldev);
- 		if (pctldev)
- 			break;
--		/* Do not defer probing of hogs (circular loop) */
-+		/*
-+		 * Do not defer probing of hogs (circular loop)
-+		 *
-+		 * Return 1 to let the caller catch the case.
-+		 */
- 		if (np_pctldev == p->dev->of_node) {
- 			of_node_put(np_pctldev);
--			return -ENODEV;
-+			return 1;
- 		}
- 	}
- 	of_node_put(np_pctldev);
-@@ -265,6 +269,8 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
- 			ret = dt_to_map_one_config(p, pctldev, statename,
- 						   np_config);
- 			of_node_put(np_config);
-+			if (ret == 1)
-+				continue;
- 			if (ret < 0)
- 				goto err;
- 		}
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index 44f0b5148a5b9..6402626e47c69 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -921,6 +921,10 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
+ 	if (rc >= 0) {
+ 		old_cat = skp->smk_netlabel.attr.mls.cat;
+ 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
++		if (ncats.attr.mls.cat)
++			skp->smk_netlabel.flags |= NETLBL_SECATTR_MLS_CAT;
++		else
++			skp->smk_netlabel.flags &= ~(u32)NETLBL_SECATTR_MLS_CAT;
+ 		skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
+ 		synchronize_rcu();
+ 		netlbl_catmap_free(old_cat);
 -- 
 2.39.5
 
