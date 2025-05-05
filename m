@@ -1,113 +1,124 @@
-Return-Path: <stable+bounces-139740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B963AA9CF4
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2CCFAA9CF9
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 649521A805AA
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 20:04:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A90C31A80AF8
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 20:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1519D1DED52;
-	Mon,  5 May 2025 20:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C9E25D8E3;
+	Mon,  5 May 2025 20:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VDgAXrwp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CzFrx2W1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD92819C546;
-	Mon,  5 May 2025 20:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419F31DED52;
+	Mon,  5 May 2025 20:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746475453; cv=none; b=TtrlJrGauOmN8Smh0M2d9xdQdSUlHuoGNlvR8S7OA5PMgAtd0uKMlmY5P37UE0Y6/K0kGIc5GYt9WKaocj705JLyV+fQvJcaNlztdUhSmKfdLrtT6S6QMonZRjzgWHHa83MXGEvkArCQ8+mbkBOvXDsNQa59a4XsJbjsvUExfAw=
+	t=1746475479; cv=none; b=H+aa4vVIUiXpglumD/3a0zATsu2MdE/7yDbXLUoMxH/undcZi+6UssvvXuYGjGBzpY2F+W/JvrMwwj1Dh5EAliSQvDpvoAbvJGdXYzc1TQ2DhS8uSFNTi/75fISfOKdYsXVt0fz1FzoD9Rb85wWjU/35t2FSfIQ275VQNHjmpEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746475453; c=relaxed/simple;
-	bh=KCO028YU4+zLz2T0WIbkuCDLRwZcftXFm5u2mPzRqBI=;
+	s=arc-20240116; t=1746475479; c=relaxed/simple;
+	bh=o3q/CCax1yynPtK0SNqzAqmcHX11U+7EM6LralLP3Co=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=F3VihPsQCK+y2fPO3UN3tk22S5GeR6MNzEiqOte0l6M720tKh9wMn9xLO7Vsk4MEL5l/pvDKxJakXogX6Q5vugRcbBwGiMNGUzPcnRubNuh4xkiVv7pGJkaD1v8srLMxCcg//nUEfPQMziQV7lS3FTnHQ6i4RilARf2INUgUVQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VDgAXrwp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75A8C4CEE4;
-	Mon,  5 May 2025 20:04:12 +0000 (UTC)
+	 Content-Disposition; b=ZA4DmJ9s8QZ52PmQr5gwnGB1IHejuTDr/Ek5g3PwbC4tyGT+pkF0AvMv265hWkpCrT4NX+PYHlWoHt6PXwEPCU/fTPRcOPnKwDshGzXd9seerOTYhLS8iPL+puA1MMuJz1uNUJLiNVX84RtO5RwI2o6R9SzfRnF6KN621ePpOSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CzFrx2W1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40878C4CEE4;
+	Mon,  5 May 2025 20:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746475453;
-	bh=KCO028YU4+zLz2T0WIbkuCDLRwZcftXFm5u2mPzRqBI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=VDgAXrwppm/5kKLKH6ths4VBgB0+BhO7OZFYdF9nymEuhUAld//y0uSD4qLhbq93O
-	 Ud8eyHz/j4cA/8HcLgUJYpLYPjt+3g8Pm4puuPaEahSzOICwHbdcglHJMnYz2NSr/9
-	 6pSJ+sqn+XPpfqadzZcrJXQeVCDqRksThvaBW56b0OYltELkreLG91bhMaEb1lDOaE
-	 w92vhz/EePRSwXUxZRL5M5d1TRyXmzgTT/sMSnA2GD4bcwOVVlny8SkQWPQu36Gw96
-	 yc1yMim3LuBCXUY1prhiRUdJIGby5KPuJY4Ss4CYtg4kE2Nlh/oDBtIrkMPSwo0BwN
-	 WcHiOv33QY+ug==
-Date: Mon, 5 May 2025 15:04:11 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc: Lukas Wunner <lukas@wunner.de>, Moshe Shemesh <moshe@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Keith Busch <kbusch@kernel.org>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] PCI: Fix lock symmetry in pci_slot_unlock()
-Message-ID: <20250505200411.GA995574@bhelgaas>
+	s=k20201202; t=1746475478;
+	bh=o3q/CCax1yynPtK0SNqzAqmcHX11U+7EM6LralLP3Co=;
+	h=Date:From:To:Cc:Subject:From;
+	b=CzFrx2W1syeVAPXfZryXHyD1SAXFzGoqXZojf5/9cXudjekAYz3qbG91f4EeK6bbe
+	 yvL75hwGs/c629E0lzevZdNyVt3F7OIQzYs+Hf8TjkClwjTZ1TunYki2KPsTw4pKIP
+	 0IaMjl+VB6vZaXPyTBnO3q5f1sK/HUWIm+sGsxur/0xKpuYu73/Qp5h9C8I06wKKDF
+	 NVT8AbPpMC60uvEgHtmY2mjID0RdY3yps6YbmfGySk2Xp9BOBP7wyJ0moXyf9bstv+
+	 6JgqgLhZKHhkYgQ65cXXD+blFJBLNzz3kgbk4DSi+L4WE35eF9TiOeyf1uHI0S/cqa
+	 0voYGb5eqt/cg==
+Date: Mon, 5 May 2025 22:04:34 +0200
+From: Helge Deller <deller@kernel.org>
+To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Pranjal Shrivastava <praan@google.com>, linux-parisc@vger.kernel.org
+Subject: [PATCH] parisc stable patch for kernel v6.13
+Message-ID: <aBkZ0v05A44yjoqc@carbonx1>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250505115412.37628-1-ilpo.jarvinen@linux.intel.com>
 
-On Mon, May 05, 2025 at 02:54:12PM +0300, Ilpo Järvinen wrote:
-> The commit a4e772898f8b ("PCI: Add missing bridge lock to
-> pci_bus_lock()") made the lock function to call depend on
-> dev->subordinate but left pci_slot_unlock() unmodified creating locking
-> asymmetry compared with pci_slot_lock().
-> 
-> Because of the asymmetric lock handling, the same bridge device is
-> unlocked twice. First pci_bus_unlock() unlocks bus->self and then
-> pci_slot_unlock() will unconditionally unlock the same bridge device.
-> 
-> Move pci_dev_unlock() inside an else branch to match the logic in
-> pci_slot_lock().
-> 
-> Fixes: a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> Cc: <stable@vger.kernel.org>
+Hi Greg,
 
-Applied to pci/reset for v6.16, thanks!
+below is a backport for upstream patch 
+fd87b7783802 ("net: Fix the devmem sock opts and msgs for parisc").
 
-> ---
-> 
-> v2:
-> - Improve changelog (Lukas)
-> - Added Cc stable
-> 
->  drivers/pci/pci.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 4d7c9f64ea24..26507aa906d7 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -5542,7 +5542,8 @@ static void pci_slot_unlock(struct pci_slot *slot)
->  			continue;
->  		if (dev->subordinate)
->  			pci_bus_unlock(dev->subordinate);
-> -		pci_dev_unlock(dev);
-> +		else
-> +			pci_dev_unlock(dev);
->  	}
->  }
->  
-> 
-> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-> -- 
-> 2.39.5
-> 
+This upstream patch does not apply cleanly against v6.13, and
+backporting all intermediate changes are too big, so I created this
+trivial standalone patch instead.
+
+Can you please add the patch below to the stable queue for v6.13?
+
+Thanks!
+Helge
+
+---
+
+
+From: Pranjal Shrivastava <praan@google.com>
+Date: Mon, 24 Mar 2025 07:42:27 +0000
+Subject: [PATCH] net: Fix the devmem sock opts and msgs for parisc
+
+The devmem socket options and socket control message definitions
+introduced in the TCP devmem series[1] incorrectly continued the socket
+definitions for arch/parisc.
+
+The UAPI change seems safe as there are currently no drivers that
+declare support for devmem TCP RX via PP_FLAG_ALLOW_UNREADABLE_NETMEM.
+Hence, fixing this UAPI should be safe.
+
+Fix the devmem socket options and socket control message definitions to
+reflect the series followed by arch/parisc.
+
+[1] https://lore.kernel.org/lkml/20240910171458.219195-10-almasrymina@google.com/
+
+Patch modified for kernel 6.13 by Helge Deller.
+
+Fixes: 8f0b3cc9a4c10 ("tcp: RX path for devmem TCP")
+Signed-off-by: Pranjal Shrivastava <praan@google.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+diff --git b/arch/parisc/include/uapi/asm/socket.h a/arch/parisc/include/uapi/asm/socket.h
+index d268d69bfcd2..96831c988606 100644
+--- b/arch/parisc/include/uapi/asm/socket.h
++++ a/arch/parisc/include/uapi/asm/socket.h
+@@ -132,13 +132,15 @@
+ #define SO_PASSPIDFD		0x404A
+ #define SO_PEERPIDFD		0x404B
+ 
+-#define SO_DEVMEM_LINEAR	78
++#define SCM_TS_OPT_ID		0x404C
++
++#define SO_RCVPRIORITY		0x404D
++
++#define SO_DEVMEM_LINEAR	0x404E
+ #define SCM_DEVMEM_LINEAR	SO_DEVMEM_LINEAR
+-#define SO_DEVMEM_DMABUF	79
++#define SO_DEVMEM_DMABUF	0x404F
+ #define SCM_DEVMEM_DMABUF	SO_DEVMEM_DMABUF
+-#define SO_DEVMEM_DONTNEED	80
+-
+-#define SCM_TS_OPT_ID		0x404C
++#define SO_DEVMEM_DONTNEED	0x4050
+ 
+ #if !defined(__KERNEL__)
+ 
 
