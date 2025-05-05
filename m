@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-140874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF69FAAAC11
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:08:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89C2FAAAC2B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:11:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB7B717D609
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:07:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55E2C189A8E4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A2B3C01B0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F153C01C1;
 	Mon,  5 May 2025 23:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iXlP7ia4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JUjQ5/Yr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648192EEBE8;
-	Mon,  5 May 2025 23:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBE8387534;
+	Mon,  5 May 2025 23:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486653; cv=none; b=VpxzCwJDe2hiwbeqZq2n2f9x1pUr1bhd3fzHoQ0VB3frda01wvzcNJpCNBXU/JkZSxDeMPjFOZaC02F1Gfuw7rSRTNJ5UoGAhh/X1w+84ybDT0csN/JcV7F8q+ceUPXvjjSxBBZi7tYQUjrig9lO3vypjo1+mQyVwrNIvG74duo=
+	t=1746486681; cv=none; b=ASVN9SNsjYv0M7+ikCgRBXEzw8EIwpNlSLfh1oz5kWeJj8Haf6ZkqLyVoB2Z5SzNJLMjCESB3nWVasRPm6b7pUKctOyC5sFEQ0q4ldJdABtdQXnmOipikdYhLVSziKLfH1xanu/TJIgkiuy3L0iPJq5TWS+D6mHHnnVzQIvTYTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486653; c=relaxed/simple;
-	bh=ZPvURcwaSiFBMK3SP2mQmJKFa1Fo/lCFtxMb9GxG5XE=;
+	s=arc-20240116; t=1746486681; c=relaxed/simple;
+	bh=RB1GCYxJZRBjdfu7LkDBzuFWTa4iGUxDh2yLcwZrvbw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uoOjaff+pU97Ee3fjoH+9GX4+k2ckJVLaFUK5DmH4p4nL8MAYNhE29Fs/HmUJ0zpr0VrT+Ny1GEfa2XCZx4a7CRFlVFyMureMYvb4iLlK1HWOpbI3gol8Y/F0Ur58WUkzUTbVB0h1R0wTajLvqdyNPooJVg5HpbYb0yDFNqNl1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iXlP7ia4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876EBC4CEE4;
-	Mon,  5 May 2025 23:10:52 +0000 (UTC)
+	 MIME-Version; b=K1EFhGQiyEuRpwbQbd9C8kRLGMOYvRwuCwHpggAux3fdyfuSujxsH1eraSBnGt3GRUnpQ5DCes7DNf6oP/TykEETVoqC0XsjUTStPSRDdVRRqwhGjJBnFD0vhINO20p1VI++ISaSITrdePoQfkostmu3Mibtte3eL04Qz5pbjiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JUjQ5/Yr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7B7C4CEEF;
+	Mon,  5 May 2025 23:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486653;
-	bh=ZPvURcwaSiFBMK3SP2mQmJKFa1Fo/lCFtxMb9GxG5XE=;
+	s=k20201202; t=1746486680;
+	bh=RB1GCYxJZRBjdfu7LkDBzuFWTa4iGUxDh2yLcwZrvbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iXlP7ia4Qbxc3dLwgM7MVdEsFc0Q0LeksJMEdvrhANzUdqQJ+kPcMZwKZzAg9VtLT
-	 5/rntfvWLFkxWsJBHdg6ZIrhyDT7vdXBe+jWi/9dz+hdSrTjusoBTrmMdDLD8fxtT0
-	 XB3r8JWwlYhwsEMNeziRxnRQw8OBRkQBurJOub93FPq3ngEbY2eODNzKckNkhQrukO
-	 tcj5BD5Sbs6eQAXcY5BFgX8uua51RuJblEf7okmC7To7CFER06vL+FEkIOP/NIkyuX
-	 /LebWv7y/CQ2Tvs70R/X5Q36QOInzWiPPuePsEiZTcWgCkPfxftd/dL3m8vuVF+21k
-	 31Uhjz4hBvHqQ==
+	b=JUjQ5/YrfLdLAH4a5yyjfGLPGlE63iQi8y6HDTgsGRO0qzP00So+mohH9AITqDLjL
+	 Qj6bzPrux+qX78Ekf+6H0K9/OhJhteAAdRBewKuhle4M6nXlngjHVHL53K2QqzsuVD
+	 rhAnBVHdsXGisb/2L6t7Q0VTlK+KnY0nNNzq5lrY3Hqtu14Yz7Tp0HuKfZANOGFJuo
+	 GGYXFps/vgUMnwCWEpQrA8SBtXfzHdTFtFpIf6sg/fVsoA6hvk/56fy958M2uIUy0w
+	 SK/6mSDVj+DoaSouNhvC6UQjJ82vo5nB5xaZ4i0dFROpw0ll4GOacD6riJNVQX46CM
+	 JMyWrH0OfItuQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 138/212] wifi: rtw88: Fix rtw_desc_to_mcsrate() to handle MCS16-31
-Date: Mon,  5 May 2025 19:05:10 -0400
-Message-Id: <20250505230624.2692522-138-sashal@kernel.org>
+	u.kleine-koenig@baylibre.com,
+	linux-can@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 147/212] can: c_can: Use of_property_present() to test existence of DT property
+Date: Mon,  5 May 2025 19:05:19 -0400
+Message-Id: <20250505230624.2692522-147-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -65,40 +68,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 86d04f8f991a0509e318fe886d5a1cf795736c7d ]
+[ Upstream commit ab1bc2290fd8311d49b87c29f1eb123fcb581bee ]
 
-This function translates the rate number reported by the hardware into
-something mac80211 can understand. It was ignoring the 3SS and 4SS HT
-rates. Translate them too.
+of_property_read_bool() should be used only on boolean properties.
 
-Also set *nss to 0 for the HT rates, just to make sure it's
-initialised.
-
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/d0a5a86b-4869-47f6-a5a7-01c0f987cc7f@gmail.com
+Cc: Rob Herring <robh@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250212-syscon-phandle-args-can-v2-3-ac9a1253396b@linaro.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/util.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/can/c_can/c_can_platform.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/util.c b/drivers/net/wireless/realtek/rtw88/util.c
-index cdfd66a85075a..43cd06aa39b13 100644
---- a/drivers/net/wireless/realtek/rtw88/util.c
-+++ b/drivers/net/wireless/realtek/rtw88/util.c
-@@ -101,7 +101,8 @@ void rtw_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss)
- 		*nss = 4;
- 		*mcs = rate - DESC_RATEVHT4SS_MCS0;
- 	} else if (rate >= DESC_RATEMCS0 &&
--		   rate <= DESC_RATEMCS15) {
-+		   rate <= DESC_RATEMCS31) {
-+		*nss = 0;
- 		*mcs = rate - DESC_RATEMCS0;
- 	}
- }
+diff --git a/drivers/net/can/c_can/c_can_platform.c b/drivers/net/can/c_can/c_can_platform.c
+index c5d7093d54133..c29862b3bb1f3 100644
+--- a/drivers/net/can/c_can/c_can_platform.c
++++ b/drivers/net/can/c_can/c_can_platform.c
+@@ -334,7 +334,7 @@ static int c_can_plat_probe(struct platform_device *pdev)
+ 		/* Check if we need custom RAMINIT via syscon. Mostly for TI
+ 		 * platforms. Only supported with DT boot.
+ 		 */
+-		if (np && of_property_read_bool(np, "syscon-raminit")) {
++		if (np && of_property_present(np, "syscon-raminit")) {
+ 			u32 id;
+ 			struct c_can_raminit *raminit = &priv->raminit_sys;
+ 
 -- 
 2.39.5
 
