@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-140879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A7BAAAF7A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:17:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E14AAAF72
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:17:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47DA018855AE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:16:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C1484A65F3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E5D2F10CC;
-	Mon,  5 May 2025 23:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB2A3C1961;
+	Mon,  5 May 2025 23:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="azLKdfLk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EmVOZK1S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DCD2F10C7;
-	Mon,  5 May 2025 23:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54DC2F10DB;
+	Mon,  5 May 2025 23:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486706; cv=none; b=rnCrWA/GbdAaq7jP+/JFNsGakIU0ckcV2+mD6Yv92TK9ejYLwZQdnd9WFiEZPD8ZWGgasocG8nryDsLb5U2fCBX7Fxa1bKmv46xZbspLi8cY/DOaxhJ3u5ErCr99htz1eWXpFy0sWgOnXIB7/+77lOWVS2pi5yFgVw5wfUfgAms=
+	t=1746486707; cv=none; b=LwEwFy3jXgA94Hx27B72BKjnai2YwHVrnn50ynEyc9Bzk00XKzj+CBkN+XsokqV2EIXAfF7KpCgIkPt3U6a2GQpf66pMMt0bzqKbEnvBs2yTwwJsChKbaA1HPWiwYq/I+Z2BELrDSlGzFQu4gtdAg9YFLsEEJ0D0xP/o4+QXpoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486706; c=relaxed/simple;
-	bh=UPa1F9dwsbvJiKHvgySynll1Z9gNX1kqCn63W5cWNTY=;
+	s=arc-20240116; t=1746486707; c=relaxed/simple;
+	bh=a6613h/Uw1nhotCwcomUHMU3wWD/6zR8K5kZvjxCPDc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=R5js/EOaqT8qjNW+DoIzJlXHUEoeUPgu2UIdPiZSp6ZT4MguioflwCpojEaG7Sp8OL0hfo9h9RHhWrIbkWXdtYMcF2kwfyissrlN25Ed1hj93QfNVXvrtHuiQfdybg0LvmMLdGbcTc4cRuZD6fmrdQ/sQ83gR8bRDdhKahfZIcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=azLKdfLk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299A1C4CEED;
-	Mon,  5 May 2025 23:11:44 +0000 (UTC)
+	 MIME-Version; b=b1EL5zznp0ZExC96MF+nz2X+Mh7pCYHKOGmwCEQnIpeKJLW71r+aSvE+Lfr9s1gPWykyWZeY5udhHO1EJAuq8AEL1FGQ2FhwF4qRsEOOI8j5gLH4BG8P0QSHQZdldYdKuOboqFVqO709x9jEdJ8MMK6ES3vXVMkpc1s1asRyCew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EmVOZK1S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8872FC4CEEF;
+	Mon,  5 May 2025 23:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486705;
-	bh=UPa1F9dwsbvJiKHvgySynll1Z9gNX1kqCn63W5cWNTY=;
+	s=k20201202; t=1746486706;
+	bh=a6613h/Uw1nhotCwcomUHMU3wWD/6zR8K5kZvjxCPDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azLKdfLk9J7ORLTggBuMDcEU127BMj/y5a0+x1dZJHHWYBCvq3i0BJ/dsAT/bgnaE
-	 SBMwC4wm+WrekgvSxmLqSer4UX4LykAHcxSh/t7nVPyKpSDeYTR5gTxn74V8sFJDKm
-	 /OWhJzozXdOh4ohru2J+fXDc8FeF1kpJ6DVRXQrYeHsOUjBGVZxSSbwmKNjyQtQspC
-	 671DKcoyDvY92s346Xafepl0I3CsZ6eZqcQJ3X6eVP1t+dX0A7A1aDIlIMY2G760CJ
-	 clPwPcXIqclR2Oyt03tCcINQaE3Ubs86WaE+zYUVATo6Jw9abIQLLO6EHQAUaPvw5Z
-	 LTZYyZRO31rZw==
+	b=EmVOZK1Si9oiEhrU1T0jWrAxTQdBEg79QYc2YomdqYkTMR6AFgixFrjYGaPUdZmVm
+	 fO+JlxDqJyG0H3IiGYcYtpAU6zI8cXjYBc7U/KqGzTAu7dzyu/4AugjIbWo72cGMWO
+	 ldyXuqCiNTbcPGwIZgq61+B8JJ4pFI5wwwgg5y40JeqNoqo535fBL95Goh6n3EFIRv
+	 NjCC9+foX5+cxKl73zBTiK3bbisTy3k3i0WcGP7Bj93HPxg/iNKbxXyinW6ktl3OSo
+	 z8M1zKPfsTt1/ad3F13gZMLkFX7wpxnT2defdEkD+WxlFoWz/rgR/HtHbstqqLvKXH
+	 hFUb/M3gUegGA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Brendan Jackman <jackmanb@google.com>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	brendan.higgins@linux.dev,
-	linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com
-Subject: [PATCH AUTOSEL 6.1 162/212] kunit: tool: Use qboot on QEMU x86_64
-Date: Mon,  5 May 2025 19:05:34 -0400
-Message-Id: <20250505230624.2692522-162-sashal@kernel.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Tejun Heo <tj@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 163/212] kernfs: Don't re-lock kernfs_root::kernfs_rwsem in kernfs_fop_readdir().
+Date: Mon,  5 May 2025 19:05:35 -0400
+Message-Id: <20250505230624.2692522-163-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -68,44 +65,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Brendan Jackman <jackmanb@google.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 08fafac4c9f289a9d9a22d838921e4b3eb22c664 ]
+[ Upstream commit 9aab10a0249eab4ec77c6a5e4f66442610c12a09 ]
 
-As noted in [0], SeaBIOS (QEMU default) makes a mess of the terminal,
-qboot does not.
+The readdir operation iterates over all entries and invokes dir_emit()
+for every entry passing kernfs_node::name as argument.
+Since the name argument can change, and become invalid, the
+kernfs_root::kernfs_rwsem lock should not be dropped to prevent renames
+during the operation.
 
-It turns out this is actually useful with kunit.py, since the user is
-exposed to this issue if they set --raw_output=all.
+The lock drop around dir_emit() has been initially introduced in commit
+   1e5289c97bba2 ("sysfs: Cache the last sysfs_dirent to improve readdir scalability v2")
 
-qboot is also faster than SeaBIOS, but it's is marginal for this
-usecase.
+to avoid holding a global lock during a page fault. The lock drop is
+wrong since the support of renames and not a big burden since the lock
+is no longer global.
 
-[0] https://lore.kernel.org/all/CA+i-1C0wYb-gZ8Mwh3WSVpbk-LF-Uo+njVbASJPe1WXDURoV7A@mail.gmail.com/
+Don't re-acquire kernfs_root::kernfs_rwsem while copying the name to the
+userpace buffer.
 
-Both SeaBIOS and qboot are x86-specific.
-
-Link: https://lore.kernel.org/r/20250124-kunit-qboot-v1-1-815e4d4c6f7c@google.com
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20250213145023.2820193-5-bigeasy@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/kunit/qemu_configs/x86_64.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/kernfs/dir.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/kunit/qemu_configs/x86_64.py b/tools/testing/kunit/qemu_configs/x86_64.py
-index dc79490768630..4a6bf4e048f5b 100644
---- a/tools/testing/kunit/qemu_configs/x86_64.py
-+++ b/tools/testing/kunit/qemu_configs/x86_64.py
-@@ -7,4 +7,6 @@ CONFIG_SERIAL_8250_CONSOLE=y''',
- 			   qemu_arch='x86_64',
- 			   kernel_path='arch/x86/boot/bzImage',
- 			   kernel_command_line='console=ttyS0',
--			   extra_qemu_params=[])
-+			   # qboot is faster than SeaBIOS and doesn't mess up
-+			   # the terminal.
-+			   extra_qemu_params=['-bios', 'qboot.rom'])
+diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
+index 2c74b24fc22aa..6ddab75a68dd2 100644
+--- a/fs/kernfs/dir.c
++++ b/fs/kernfs/dir.c
+@@ -1846,10 +1846,10 @@ static int kernfs_fop_readdir(struct file *file, struct dir_context *ctx)
+ 		file->private_data = pos;
+ 		kernfs_get(pos);
+ 
+-		up_read(&root->kernfs_rwsem);
+-		if (!dir_emit(ctx, name, len, ino, type))
++		if (!dir_emit(ctx, name, len, ino, type)) {
++			up_read(&root->kernfs_rwsem);
+ 			return 0;
+-		down_read(&root->kernfs_rwsem);
++		}
+ 	}
+ 	up_read(&root->kernfs_rwsem);
+ 	file->private_data = NULL;
 -- 
 2.39.5
 
