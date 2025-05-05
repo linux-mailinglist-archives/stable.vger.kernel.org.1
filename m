@@ -1,67 +1,67 @@
-Return-Path: <stable+bounces-139805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08225AA9FEE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:29:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42398AA9FEA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:29:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6559F176358
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:29:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71A063B03E9
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB9D28BAAD;
-	Mon,  5 May 2025 22:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1F728C5A7;
+	Mon,  5 May 2025 22:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OT0S7xuF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cIwrei4S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A74D28BA87;
-	Mon,  5 May 2025 22:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1730A28BA87;
+	Mon,  5 May 2025 22:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483371; cv=none; b=aFTtSQIb6V2binggLeDw8bum5h9jNqOZSJhuRFAUV/wGY0lInbumC4OK21dWVf1dQJA/iiyKCGww19YtGCZretdtvWCVgO/4a+a7wu2ozE+VXHl93CSfH858z+WtSUjyz19+3+R+r3C7ar6pIJ9cWDjdG8WikpLjNiOQpQZUxRY=
+	t=1746483375; cv=none; b=FA13bsqw9J01kW4KnsNtt03H+Tj/xghqnlnnUXDLoMDXGoLs2Jag/d1xonIEQQRBOrm/e7JmrMfMERZZtLRJ5qZN1QiyFHGHcnggo/qDkOtbfWTGqv+IxzgeSyK7Yi0rUKlJhoM2zF9/qWG+Htvk8xfqanlwLrWs55dhTHchuyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483371; c=relaxed/simple;
-	bh=o5+vsX92BO+BavWxRTA1ZN0bO51OBzdGdi3JS3VG194=;
+	s=arc-20240116; t=1746483375; c=relaxed/simple;
+	bh=ZEVyxOgkW7odVCol3qzWQcuns9JCN+tQHNj3sRiHBFo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=N6EOT75c91GJndYpR2qNr8FXl47erlQxqR7JQqUXzKcaoii5gVKZuRahvBd/wBpgrum6YyNkkCa6XCu0VjIzuOKcPYM9/1QvglvBZjcJB7s7AC5R8mkJJErM1NrSVX6fEVLNAint7MMdDTjzAGV2SkNpZWZ6wecY+QELl3G2WLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OT0S7xuF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD2BC4CEE4;
-	Mon,  5 May 2025 22:16:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jwhqV6/EMuHZugs/224miKhummJ/hZHM5B5z9mStLZ194eWQ8YXBvo7bVTskK6oGWQa7Cs/5WE7Woe9dtD4AumuVuxI/fH5b/fp0Kcu/GaV/HXwZEFObpKQNOr4Zq4/klhDIbdhSR+Dbs9eXQ9mACmAY/HiBCQoxpfiYBJAuYn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cIwrei4S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8D4C4CEE4;
+	Mon,  5 May 2025 22:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483370;
-	bh=o5+vsX92BO+BavWxRTA1ZN0bO51OBzdGdi3JS3VG194=;
+	s=k20201202; t=1746483373;
+	bh=ZEVyxOgkW7odVCol3qzWQcuns9JCN+tQHNj3sRiHBFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OT0S7xuFYXT3rdd+bNsKyvfNFWh8FOJuy3GzkyNr2fP99gbryeb8WNLhaW7T1dAPF
-	 sRYzMrRfAscJiG3uP7NlIngRY8vES5EtWJCvEFQC2UMYBGZ//wHlSxfzeXWid1ntTd
-	 KWNrbZZyYViSBqWoGdbYjUjrUDtj45NQIWB7IbCcae3eX3FvVDIYuVB9itNMuahlZe
-	 NOkVXSAt17FynVLHq4L9nxwyZGmUlgRosR76KjTXwjBHqlp9yxhUjs2ND1D/mYNTHN
-	 8vC6y53dqghUTUxaGbOQ0m4qaFkui6u4KGbfNSmARmyPTRCAeSPYfy3YlS50aZUzrT
-	 zCC2vGB9pg63w==
+	b=cIwrei4SUWePiZVbR6ta/ZrNf7ElXXAYzVqtK+yOJJUbGdMlnIkEz5sS4Vdlt+aIQ
+	 KYJ8TgOE7Mju6j7EKDvC6Zc0F5YK9oMVLdyt95OE/e9nmIS6XClAs4XnX3GrQfH1Ek
+	 Dt2YARQCVGEFkU6rLdpgx+ADCm34bAKUUhraqoUEVo/6J2xnnlmFOfoyp+WX5c9H1R
+	 mHh+neWsbwZ76gcocFdwlXU8eamzAheWw3v+Pg0JNQ4TXYLUSaR4VmJ2obzMN2MvF9
+	 M94HUA+nL2vDKCVk8fbSurs6IzprTeCBcxAopZ85ci1ket5dpRePio/dK7X7grJIWZ
+	 U6XB4xYmdWSTQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Flora Cui <flora.cui@amd.com>,
+Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	Hawking.Zhang@amd.com,
-	yifan1.zhang@amd.com,
-	tim.huang@amd.com,
-	lijo.lazar@amd.com,
-	le.ma@amd.com,
-	pratap.nirujogi@amd.com,
-	victorchengchi.lu@amd.com,
+	sumit.semwal@linaro.org,
+	tvrtko.ursulin@igalia.com,
+	xiaogang.chen@amd.com,
+	mdaenzer@redhat.com,
+	Yunxiang.Li@amd.com,
 	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 058/642] drm/amdgpu/discovery: check ip_discovery fw file available
-Date: Mon,  5 May 2025 18:04:34 -0400
-Message-Id: <20250505221419.2672473-58-sashal@kernel.org>
+	dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org
+Subject: [PATCH AUTOSEL 6.14 059/642] drm/amdgpu: rework how the cleaner shader is emitted v3
+Date: Mon,  5 May 2025 18:04:35 -0400
+Message-Id: <20250505221419.2672473-59-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -71,95 +71,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Flora Cui <flora.cui@amd.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 017fbb6690c2245b1b4ef39b66c79d2990fe63dd ]
+[ Upstream commit b7fbcd77bb467d09ba14cb4ec3b121dc85bb3100 ]
 
-Signed-off-by: Flora Cui <flora.cui@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Instead of emitting the cleaner shader for every job which has the
+enforce_isolation flag set only emit it for the first submission from
+every client.
+
+v2: add missing NULL check
+v3: fix another NULL pointer deref
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Acked-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 31 ++++++++++---------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 27 ++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-index 949d74eff2946..6a6dc15273dc7 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -113,8 +113,7 @@
- #include "amdgpu_isp.h"
- #endif
- 
--#define FIRMWARE_IP_DISCOVERY "amdgpu/ip_discovery.bin"
--MODULE_FIRMWARE(FIRMWARE_IP_DISCOVERY);
-+MODULE_FIRMWARE("amdgpu/ip_discovery.bin");
- 
- #define mmIP_DISCOVERY_VERSION  0x16A00
- #define mmRCC_CONFIG_MEMSIZE	0xde3
-@@ -297,21 +296,13 @@ static int amdgpu_discovery_read_binary_from_mem(struct amdgpu_device *adev,
- 	return ret;
- }
- 
--static int amdgpu_discovery_read_binary_from_file(struct amdgpu_device *adev, uint8_t *binary)
-+static int amdgpu_discovery_read_binary_from_file(struct amdgpu_device *adev,
-+							uint8_t *binary,
-+							const char *fw_name)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index 22aa4a8f11891..f0d675c0fc69c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -754,6 +754,7 @@ int amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
+ 		    bool need_pipe_sync)
  {
- 	const struct firmware *fw;
--	const char *fw_name;
+ 	struct amdgpu_device *adev = ring->adev;
++	struct amdgpu_isolation *isolation = &adev->isolation[ring->xcp_id];
+ 	unsigned vmhub = ring->vm_hub;
+ 	struct amdgpu_vmid_mgr *id_mgr = &adev->vm_manager.id_mgr[vmhub];
+ 	struct amdgpu_vmid *id = &id_mgr->ids[job->vmid];
+@@ -761,8 +762,9 @@ int amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
+ 	bool gds_switch_needed = ring->funcs->emit_gds_switch &&
+ 		job->gds_switch_needed;
+ 	bool vm_flush_needed = job->vm_needs_flush;
+-	struct dma_fence *fence = NULL;
++	bool cleaner_shader_needed = false;
+ 	bool pasid_mapping_needed = false;
++	struct dma_fence *fence = NULL;
+ 	unsigned int patch;
  	int r;
  
--	switch (amdgpu_discovery) {
--	case 2:
--		fw_name = FIRMWARE_IP_DISCOVERY;
--		break;
--	default:
--		dev_warn(adev->dev, "amdgpu_discovery is not set properly\n");
--		return -EINVAL;
--	}
--
- 	r = request_firmware(&fw, fw_name, adev->dev);
- 	if (r) {
- 		dev_err(adev->dev, "can't load firmware \"%s\"\n",
-@@ -404,10 +395,19 @@ static int amdgpu_discovery_verify_npsinfo(struct amdgpu_device *adev,
- 	return 0;
- }
+@@ -785,8 +787,12 @@ int amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
+ 	pasid_mapping_needed &= adev->gmc.gmc_funcs->emit_pasid_mapping &&
+ 		ring->funcs->emit_wreg;
  
-+static const char *amdgpu_discovery_get_fw_name(struct amdgpu_device *adev)
-+{
-+	if (amdgpu_discovery == 2)
-+		return "amdgpu/ip_discovery.bin";
++	cleaner_shader_needed = adev->gfx.enable_cleaner_shader &&
++		ring->funcs->emit_cleaner_shader && job->base.s_fence &&
++		&job->base.s_fence->scheduled == isolation->spearhead;
 +
-+	return NULL;
-+}
+ 	if (!vm_flush_needed && !gds_switch_needed && !need_pipe_sync &&
+-	    !(job->enforce_isolation && !job->vmid))
++	    !cleaner_shader_needed)
+ 		return 0;
+ 
+ 	amdgpu_ring_ib_begin(ring);
+@@ -797,9 +803,7 @@ int amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
+ 	if (need_pipe_sync)
+ 		amdgpu_ring_emit_pipeline_sync(ring);
+ 
+-	if (adev->gfx.enable_cleaner_shader &&
+-	    ring->funcs->emit_cleaner_shader &&
+-	    job->enforce_isolation)
++	if (cleaner_shader_needed)
+ 		ring->funcs->emit_cleaner_shader(ring);
+ 
+ 	if (vm_flush_needed) {
+@@ -821,7 +825,7 @@ int amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
+ 					    job->oa_size);
+ 	}
+ 
+-	if (vm_flush_needed || pasid_mapping_needed) {
++	if (vm_flush_needed || pasid_mapping_needed || cleaner_shader_needed) {
+ 		r = amdgpu_fence_emit(ring, &fence, NULL, 0);
+ 		if (r)
+ 			return r;
+@@ -843,6 +847,17 @@ int amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
+ 		id->pasid_mapping = dma_fence_get(fence);
+ 		mutex_unlock(&id_mgr->lock);
+ 	}
 +
- static int amdgpu_discovery_init(struct amdgpu_device *adev)
- {
- 	struct table_info *info;
- 	struct binary_header *bhdr;
-+	const char *fw_name;
- 	uint16_t offset;
- 	uint16_t size;
- 	uint16_t checksum;
-@@ -419,9 +419,10 @@ static int amdgpu_discovery_init(struct amdgpu_device *adev)
- 		return -ENOMEM;
++	/*
++	 * Make sure that all other submissions wait for the cleaner shader to
++	 * finish before we push them to the HW.
++	 */
++	if (cleaner_shader_needed) {
++		mutex_lock(&adev->enforce_isolation_mutex);
++		dma_fence_put(isolation->spearhead);
++		isolation->spearhead = dma_fence_get(fence);
++		mutex_unlock(&adev->enforce_isolation_mutex);
++	}
+ 	dma_fence_put(fence);
  
- 	/* Read from file if it is the preferred option */
--	if (amdgpu_discovery == 2) {
-+	fw_name = amdgpu_discovery_get_fw_name(adev);
-+	if (fw_name != NULL) {
- 		dev_info(adev->dev, "use ip discovery information from file");
--		r = amdgpu_discovery_read_binary_from_file(adev, adev->mman.discovery_bin);
-+		r = amdgpu_discovery_read_binary_from_file(adev, adev->mman.discovery_bin, fw_name);
- 
- 		if (r) {
- 			dev_err(adev->dev, "failed to read ip discovery binary from file\n");
+ 	amdgpu_ring_patch_cond_exec(ring, patch);
 -- 
 2.39.5
 
