@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-141452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A13D2AAB399
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:49:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28DA1AAB39A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:49:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B76B73A290E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:42:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B42A1BA6BA7
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6AE24E4C1;
-	Tue,  6 May 2025 00:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E8B2566F2;
+	Tue,  6 May 2025 00:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fW3/o+5j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="akO0J9CB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616A4239E68;
-	Mon,  5 May 2025 23:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C4F239E65;
+	Mon,  5 May 2025 23:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486345; cv=none; b=QsaiEamtvcnZFPexBDLQ4kx+41j+4pH+kbBfqbpKua4ZTA5l+cesQ3SCONTFwAhBujChaLkMgR2PnmbwEsQHGugTx825V4eS7DuxFSKRZahVT1RSHAPVsNhRCKifzrfohXiYcrFCrL25yn06WBld2Ui6XEQoNCU7Nw6lYf5DIS8=
+	t=1746486347; cv=none; b=NDw19Wrmw2LTshQHqogMdOSJ2MpUt7DIDioNl2NtZ1dq0Pp6XXqcJj3+iTdWgLtRT+zpJIIHz9DZGivmOqo3JcOmWl0g1oer8wOuycHH+5yDzQ4u5Amdjd4Xz8Gp4tAJUoLzdOndZwEWhT3xhnXVqmbsIdZmFdgrJNcdL18Nx1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486345; c=relaxed/simple;
-	bh=7x9USL62akud+5BXxXhoSiZ30gmw84+XTMFzR2A8kT0=;
+	s=arc-20240116; t=1746486347; c=relaxed/simple;
+	bh=REwDMsG0gYftbnPiYH3na179/GzS77pzCJ82Mrmea/o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UhHi0i8U47CotcUFgc8i80CvwuGF9o5Blw3BFet5+FIxJrdlJZaZEvpx2rZjOHQwmuGV0O3Y58eq5yww3zbGJiSWQXOVvnZl2MIwwou/pcC9/5vMR1+xxyRGcafRPfiHf7zwlM9atg4RQqU9g9Wz28yLJWLpLTEXsnMj9Sxf7I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fW3/o+5j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2438CC4CEE4;
-	Mon,  5 May 2025 23:05:44 +0000 (UTC)
+	 MIME-Version; b=TQCGFGyX6M0MM/w/1QOv66ct7yx4dtwkOWgYxlcEdrVU2IFc3JqEu4Zay13qT0KVR/roOFSMJjn82O48NPDBDb/z3yz7U9ZqtRktfNxyj1BduEQS78MiP/YHcfa+gb+FnEGDfOgZD4SlcfF5aaHUu0/Lsob0t+2fkhB8BaC6mFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=akO0J9CB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C68C4CEF1;
+	Mon,  5 May 2025 23:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486345;
-	bh=7x9USL62akud+5BXxXhoSiZ30gmw84+XTMFzR2A8kT0=;
+	s=k20201202; t=1746486346;
+	bh=REwDMsG0gYftbnPiYH3na179/GzS77pzCJ82Mrmea/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fW3/o+5jDbN72++MEi70kpcCfnIAt/BG8ty3fc3OFW1L+qrIt9RCK+7m2rfUO874o
-	 r3HVLIe/Vq33l1Nr8sFRtl6+Jx+h2kyQwHdhNuqgVZBYhEqzMNbo9/DVEkOFdkF2xp
-	 PmkzkCb1Fvlu9mDKY0C+4H5OkHi93t4zyTJaqLAr0j6qupdX6bFbBBeF5+lIhZTCre
-	 8KNBEAfPZxYt4y+i+P9vA0bCeKQDlRDoSfBQ9LjnvBPMzIS2NwYxNom5q3yC/LJWce
-	 ZFRA2HgtV1sGBg9x8K9ucWe3bAalZbc2C+yeTRjG2Xi7I9YyQ/9GufhrUfyTlF7QEZ
-	 fSjxPQxRL01PQ==
+	b=akO0J9CBlOTyigepToDwNIHqyrEmPKzAEqXD+W+gA2C5M1i/0z5eB0w0ZuAh/meol
+	 rHh79rjf8xolKvx/4yeIJMpWLXardVob1iHEfALfH5cx3dZmQDDGqL1rH1kJ2zLCp2
+	 lItP7UaPy3zxHxnn3gDrBfyqwv6tGnj7lJ/hfB2bvayY0zMm3gGYSlHMAZgY0KJx+r
+	 sVyhD/pDHTgSKcCE/JR5+uxmeEmxxOQsZMQVYp0RpbTEXk4cmEg7JLgORueeiiSYWV
+	 zsvzeY7tM6tHoSmYULS1nDgEU4nWDaWMPr/o/f8s1tROScTdjJ9yP7pai95kttEBd8
+	 ahWHxSgv9V5eQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Avula Sri Charan <quic_asrichar@quicinc.com>,
-	Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
-	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: junan <junan76@163.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 271/294] wifi: ath12k: Avoid napi_sync() before napi_enable()
-Date: Mon,  5 May 2025 18:56:11 -0400
-Message-Id: <20250505225634.2688578-271-sashal@kernel.org>
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 272/294] HID: usbkbd: Fix the bit shift number for LED_KANA
+Date: Mon,  5 May 2025 18:56:12 -0400
+Message-Id: <20250505225634.2688578-272-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -69,76 +68,32 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Avula Sri Charan <quic_asrichar@quicinc.com>
+From: junan <junan76@163.com>
 
-[ Upstream commit 268c73d470a5790a492a2fc2ded084b909d144f3 ]
+[ Upstream commit d73a4bfa2881a6859b384b75a414c33d4898b055 ]
 
-In case of MHI error a reset work will be queued which will try
-napi_disable() after napi_synchronize().
+Since "LED_KANA" was defined as "0x04", the shift number should be "4".
 
-As the napi will be only enabled after qmi_firmware_ready event,
-trying napi_synchronize() before napi_enable() will result in
-indefinite sleep in case of a firmware crash in QMI init sequence.
-
-To avoid this, introduce napi_enabled flag to check if napi is enabled
-or not before calling napi_synchronize().
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Avula Sri Charan <quic_asrichar@quicinc.com>
-Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-Reviewed-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250124090058.3194299-1-quic_tamizhr@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: junan <junan76@163.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/core.h |  1 +
- drivers/net/wireless/ath/ath12k/pci.c  | 13 ++++++++++---
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ drivers/hid/usbhid/usbkbd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 33f4706af880d..18dfd7aab610c 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -125,6 +125,7 @@ struct ath12k_ext_irq_grp {
- 	u32 num_irq;
- 	u32 grp_id;
- 	u64 timestamp;
-+	bool napi_enabled;
- 	struct napi_struct napi;
- 	struct net_device napi_ndev;
- };
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 041a9602f0e15..5fd80f90ecafe 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -442,8 +442,11 @@ static void __ath12k_pci_ext_irq_disable(struct ath12k_base *ab)
+diff --git a/drivers/hid/usbhid/usbkbd.c b/drivers/hid/usbhid/usbkbd.c
+index c439ed2f16dbc..af6bc76dbf649 100644
+--- a/drivers/hid/usbhid/usbkbd.c
++++ b/drivers/hid/usbhid/usbkbd.c
+@@ -160,7 +160,7 @@ static int usb_kbd_event(struct input_dev *dev, unsigned int type,
+ 		return -1;
  
- 		ath12k_pci_ext_grp_disable(irq_grp);
+ 	spin_lock_irqsave(&kbd->leds_lock, flags);
+-	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 3) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
++	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 4) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
+ 		       (!!test_bit(LED_SCROLLL, dev->led) << 2) | (!!test_bit(LED_CAPSL,   dev->led) << 1) |
+ 		       (!!test_bit(LED_NUML,    dev->led));
  
--		napi_synchronize(&irq_grp->napi);
--		napi_disable(&irq_grp->napi);
-+		if (irq_grp->napi_enabled) {
-+			napi_synchronize(&irq_grp->napi);
-+			napi_disable(&irq_grp->napi);
-+			irq_grp->napi_enabled = false;
-+		}
- 	}
- }
- 
-@@ -976,7 +979,11 @@ void ath12k_pci_ext_irq_enable(struct ath12k_base *ab)
- 	for (i = 0; i < ATH12K_EXT_IRQ_GRP_NUM_MAX; i++) {
- 		struct ath12k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
- 
--		napi_enable(&irq_grp->napi);
-+		if (!irq_grp->napi_enabled) {
-+			napi_enable(&irq_grp->napi);
-+			irq_grp->napi_enabled = true;
-+		}
-+
- 		ath12k_pci_ext_grp_enable(irq_grp);
- 	}
- }
 -- 
 2.39.5
 
