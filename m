@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-140061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F99FAAA49E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B54AAA4A1
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B41851A88257
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:30:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5A7D188C9A1
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02565301A56;
-	Mon,  5 May 2025 22:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A026301A6E;
+	Mon,  5 May 2025 22:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iAqEbBoc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JJmcnq2j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E86301A49;
-	Mon,  5 May 2025 22:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA7E301A70;
+	Mon,  5 May 2025 22:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484005; cv=none; b=HtFrx3L+0LnYKmOAOpQcdeUzaRHIjWLvJRstNjjP9EivJ+cp3/weIgwkSn5JHvjpkf44+nrbXFp2qb9angItJjt5cgwdrX+7wPq/YfaLKhhmZHR91KI12JsfkXmfhAFdx7PvQRlCCx3s7MMbgNhUCIBt0QplvVEdk2zAlly7ZWY=
+	t=1746484007; cv=none; b=sYXkz8tUKQCa2p9kxNiPYXkoQaPPmesaiAkIVB8JmgjYwXe4ZumaWnu9MSSHsFmQTvPkLH/ZZ48YJ+0hF6z6wwvuAtkWp9yG5Pcgs0QdOe1J5FvCSDIDnecKN8M7y+C/yaOfQA42oDUUejOpeKt+UhXqRky4IAp83bV6v8zTLfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484005; c=relaxed/simple;
-	bh=7B9odQZRj2gC76z7NxjH0h9xUUpgvrl593tF6Jxvcd0=;
+	s=arc-20240116; t=1746484007; c=relaxed/simple;
+	bh=gGPQWYqVkprunFn5BHoxeVtKYrutCPfr6FxC6Dkiz8E=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nhUpqNA3Jf7ye072hOvWhDJvpx+WA7XW1t7qgtMXxdCp1RgW2V2fCgYaLCTEpOFm6q7bA3M5omaWCL+sKHdwYgWbH/hTAlHbaGromErGO91P3bCIltJ8FSv1AyJo6kbmitG69JAi7J0ks5+OVn5NnJ3djAJvE1QuZ7KCP5Uefx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iAqEbBoc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81438C4CEE4;
-	Mon,  5 May 2025 22:26:44 +0000 (UTC)
+	 MIME-Version; b=cRO3tTXqmohiTFjuzC4nQMoLPeRBErqi68sfAQ277HnYUq8ErN7Xz27c8FmxLCtugqopL3ecclVhZ+BFNvMywpW3sz0I1fzaMKUjvWSUssXNUW8gVKLGqasv9qMfi1k1kAU3/JhK5JjXkRxmKWamVbHBvAdwXhSq1Vg3kxyQV0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JJmcnq2j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C75C4CEEE;
+	Mon,  5 May 2025 22:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484005;
-	bh=7B9odQZRj2gC76z7NxjH0h9xUUpgvrl593tF6Jxvcd0=;
+	s=k20201202; t=1746484007;
+	bh=gGPQWYqVkprunFn5BHoxeVtKYrutCPfr6FxC6Dkiz8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iAqEbBocZC57c9KDxDww09oZj+5qGuCvW8Lcg/N5Ece8tM6/8hfd0/fWk53dpu8bs
-	 sozNUYfFPGuJ4FqU4Zq4V8/czNC3/zB88FrnWoLXM4bDrcSwLCkn7LVEG6oNgo/6JC
-	 LSi3MXkk4ctd1fxQiDyLy/cduUPO1lo1VKJ7bVPX5k5dtTiKhUojqeDW9/WKf7x/85
-	 QGrJaIJU1wi2xzEELcwvGYUg5jSzkY1KImxg1SHYtAQvejUiQJp+T3jjohgnRAv1VS
-	 A9byi1KjJ7JW6sJ2Ri11xEZW403k6sWoz5MzBkbEHcVYMrBzjAxwxf26rn3gTXfTKr
-	 HHkVoAzlP+Wfg==
+	b=JJmcnq2j3H4c+xyE+RwBhjGLfx/TyfdHSa39a4mDKbLShDaXNkfqGDg0imosW514S
+	 xHNdbwVW+icYzNV24PDsvX72xwxMIOZ7UBA5TDR9+CUXtU4t9irrmkbiKZsTfXFjPt
+	 Uje1uqN+EaRn9nAUGeQUouvTJlAilbrwX0t/HlEO+DBNY1OY6mwq4t6btwzQ4fsi30
+	 2mhk7Bp+O8ncOG23+IYsWTmgikk+akMbayiKboln5glKBXyYHRGq0S17KLzntLGMkg
+	 vPbcpgCQ2fF4v2H8PKQMN/E9MdpJHavKKhx4BsvpKSrD0boGNlXVrcNCEwcP11zSAW
+	 +vz7djZdJa6xg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dang Huynh <danct12@riseup.net>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>,
+	Roopni Devanathan <quic_rdevanat@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	andersson@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 314/642] pinctrl: qcom: msm8917: Add MSM8937 wsa_reset pin
-Date: Mon,  5 May 2025 18:08:50 -0400
-Message-Id: <20250505221419.2672473-314-sashal@kernel.org>
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 315/642] wifi: ath12k: Improve BSS discovery with hidden SSID in 6 GHz band
+Date: Mon,  5 May 2025 18:08:51 -0400
+Message-Id: <20250505221419.2672473-315-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -63,84 +64,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Dang Huynh <danct12@riseup.net>
+From: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
 
-[ Upstream commit 3dd3ab690172b11758e17775cfbf98986ec0cb71 ]
+[ Upstream commit 27d38bdfd416f4db70e09c3bef3b030c86fd235a ]
 
-It looks like both 8917 and 8937 are the same except for one pin
-"wsa_reset".
+Currently, sometimes, the station is unable to identify the configured
+AP SSID in its scan results when the AP is not broadcasting its name
+publicly and has a hidden SSID.
 
-Signed-off-by: Dang Huynh <danct12@riseup.net>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/20250211-msm8937-v1-4-7d27ed67f708@mainlining.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Currently, channel dwell time for an ath12k station is 30 ms. Sometimes,
+station can send broadcast probe request to AP close to the end of dwell
+time. In some of these cases, before AP sends a response to the received
+probe request, the dwell time on the station side would come to an end.
+So, the station will move to scan next channel and will not be able to
+acknowledge the unicast probe response.
+
+Resolve this issue by increasing station's channel dwell time to 70 ms,
+so that the it remains on the same channel for a longer period. This
+would increase the station's chance of receiving probe response from the
+AP. The station will then send a response acknowledgment back to the AP,
+thus leading to successful scan and BSS discovery.
+
+With an increased dwell time, scan would take longer than it takes now.
+But, this fix is an improvement for hidden SSID scan issue.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
+Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250207060005.153835-1-quic_rdevanat@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/Kconfig.msm       | 4 ++--
- drivers/pinctrl/qcom/pinctrl-msm8917.c | 8 +++++++-
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/Kconfig.msm b/drivers/pinctrl/qcom/Kconfig.msm
-index 35f47660a56b1..a0d63a6725393 100644
---- a/drivers/pinctrl/qcom/Kconfig.msm
-+++ b/drivers/pinctrl/qcom/Kconfig.msm
-@@ -138,10 +138,10 @@ config PINCTRL_MSM8916
- 	  Qualcomm TLMM block found on the Qualcomm 8916 platform.
- 
- config PINCTRL_MSM8917
--	tristate "Qualcomm 8917 pin controller driver"
-+	tristate "Qualcomm 8917/8937 pin controller driver"
- 	help
- 	  This is the pinctrl, pinmux, pinconf and gpiolib driver for the
--	  Qualcomm TLMM block found on the Qualcomm MSM8917 platform.
-+	  Qualcomm TLMM block found on the Qualcomm MSM8917, MSM8937 platform.
- 
- config PINCTRL_MSM8953
- 	tristate "Qualcomm 8953 pin controller driver"
-diff --git a/drivers/pinctrl/qcom/pinctrl-msm8917.c b/drivers/pinctrl/qcom/pinctrl-msm8917.c
-index cff137bb3b23f..350636807b07d 100644
---- a/drivers/pinctrl/qcom/pinctrl-msm8917.c
-+++ b/drivers/pinctrl/qcom/pinctrl-msm8917.c
-@@ -539,6 +539,7 @@ enum msm8917_functions {
- 	msm_mux_webcam_standby,
- 	msm_mux_wsa_io,
- 	msm_mux_wsa_irq,
-+	msm_mux_wsa_reset,
- 	msm_mux__,
- };
- 
-@@ -1123,6 +1124,10 @@ static const char * const wsa_io_groups[] = {
- 	"gpio94", "gpio95",
- };
- 
-+static const char * const wsa_reset_groups[] = {
-+	"gpio96",
-+};
-+
- static const char * const blsp_spi8_groups[] = {
- 	"gpio96", "gpio97", "gpio98", "gpio99",
- };
-@@ -1378,6 +1383,7 @@ static const struct pinfunction msm8917_functions[] = {
- 	MSM_PIN_FUNCTION(webcam_standby),
- 	MSM_PIN_FUNCTION(wsa_io),
- 	MSM_PIN_FUNCTION(wsa_irq),
-+	MSM_PIN_FUNCTION(wsa_reset),
- };
- 
- static const struct msm_pingroup msm8917_groups[] = {
-@@ -1616,5 +1622,5 @@ static void __exit msm8917_pinctrl_exit(void)
- }
- module_exit(msm8917_pinctrl_exit);
- 
--MODULE_DESCRIPTION("Qualcomm msm8917 pinctrl driver");
-+MODULE_DESCRIPTION("Qualcomm msm8917/msm8937 pinctrl driver");
- MODULE_LICENSE("GPL");
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 7a87777e0a047..9cd7ceae5a4f8 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -2373,8 +2373,8 @@ void ath12k_wmi_start_scan_init(struct ath12k *ar,
+ 	arg->dwell_time_active = 50;
+ 	arg->dwell_time_active_2g = 0;
+ 	arg->dwell_time_passive = 150;
+-	arg->dwell_time_active_6g = 40;
+-	arg->dwell_time_passive_6g = 30;
++	arg->dwell_time_active_6g = 70;
++	arg->dwell_time_passive_6g = 70;
+ 	arg->min_rest_time = 50;
+ 	arg->max_rest_time = 500;
+ 	arg->repeat_probe_time = 0;
 -- 
 2.39.5
 
