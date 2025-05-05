@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-141517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039AAAAB428
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:01:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B732AAB43E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:02:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDDA1189D1E1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:57:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 144C33B0A37
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A848340AB8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E8F340A9A;
 	Tue,  6 May 2025 00:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NMrHudWy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ryYwcO1V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C372ED085;
-	Mon,  5 May 2025 23:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB4F2EE44A;
+	Mon,  5 May 2025 23:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486557; cv=none; b=cNDlgznWCDJ8v/d/hUZYqrOfHGHfT4ORd+KRWQ0F21g23NxGTTORAWFe6hmot6Ggp7Vs81H5ZLO850U0Q66XIlRgrPCpC3+5UW4wrCenSqYvaUmVnk6lXwmXkjjH5kXzu5JsyDbcKy7yXebJ79L5yABvGovGSKWfXyJvfG1nW78=
+	t=1746486566; cv=none; b=QhzAhQC2g6SZnt+TCnwPS/GQDsusKb8HSjXd4zSZq2+WBSL/0W601JCwkZM4RxYhX/IUpWiHYBRgM/0bQePt1pytwCbgd1p8gw+NCk1YwUq0GfoFfQOqA5hlxtwjmAL1wxhB/hJMPP+rLrs7QJy6jsuF9bvqFrbqyRO895sc2WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486557; c=relaxed/simple;
-	bh=M57+MGIitVlZ7L9cTp3dvP1dnfas3v/3MLvR3vJ6H/c=;
+	s=arc-20240116; t=1746486566; c=relaxed/simple;
+	bh=DDH2PqBQQnnJ63wVyJuyiJGbFJOjmbEg+rtvYc1CpJ8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NEFM3QgMioD2LPrVdhB62LEhga0R5cxl5eBFRck5tSdTVu26NUT6okfDmkEYtg+50cWWFknYdPwwXt7BbigKie9aULKIJf8CiHERfLSYy6NknhWu+g9QMQJKT+8Qvy57HIoCgaEl04hGIqbAsLdK5IBKqPTcWDWt1adxpSEZdiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NMrHudWy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CC2C4CEEF;
-	Mon,  5 May 2025 23:09:16 +0000 (UTC)
+	 MIME-Version; b=pcaeA4HKXLhXtmXWbjjUV1KtZq2lESgBo2vV8VjMHzVdTWLmsSbgmiok0xK4lLLhSiEkrTiRwnXffBtRmfRI1DPJfKPaHpzEznDZXVzOLABYx6lV17HZAaIj8j81RSoqAwA1OgmkE/B/Av+ZDR7s7wb0iQbTrQh9fSzha1hbXgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ryYwcO1V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC7AC4CEF2;
+	Mon,  5 May 2025 23:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486557;
-	bh=M57+MGIitVlZ7L9cTp3dvP1dnfas3v/3MLvR3vJ6H/c=;
+	s=k20201202; t=1746486566;
+	bh=DDH2PqBQQnnJ63wVyJuyiJGbFJOjmbEg+rtvYc1CpJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMrHudWygExBWmv6CFxQA2cR34+ZrxyOt1+m+c4AZ0NYFeOQFe7Hj6IS8RoDI2sR6
-	 TYH+EtQSnjJtn4wV3iC++N3en86r7GzbwZdIjmxYmxK0pMby5OTkr2LqKnbrr+L8Ew
-	 yScyTMJHLYC0CbXiW2d9KAg7mjTl7y5174SCVg9BIDp7j5hYhcJ4D5b8SbQ1UsoybI
-	 jBot2Y6Sth067esdBfpvhOcTnZzwNHwRkZYgHGBa81lpgS/AG+1/PodEa+YeVGSnRt
-	 dWmxxFQK3vQF2dbpE3mkJEV9BEeY23HmcLPJP0VVuAGMazgzQKV2Hcqrmw1z1qz5Eu
-	 yynhJyGvZeFVw==
+	b=ryYwcO1VS85Ug0Jdcy0M4GmNbmw88KogcSJmlrqlkPpipL8ZKAZ16BsJBJNBptFsB
+	 16v49rLQ5OEnydCxHM6FrCdXAn/sAz9q3IFua394xzGZ+Ak+fIWPZPrczx+/qcGwna
+	 6a+IOlrvNYxoceTXmV/ZR4rrc5bO0h7TIPavghNAAJLp/mLqguSYfU/bJnhepg7KLd
+	 xWnlXtws5hGTnbhel/G8+nH9gR5nOo9VyXZyz1fRZ8fRnS5kB1ZmR7k67cLSgUBo2J
+	 pg828pk8MyXgh9ef7syDkl8YefBp7VfORmorQTNf0WC++kqm10hbwn1S5CSZUP7rX6
+	 m7D7qC5p5521A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Choong Yong Liang <yong.liang.choong@linux.intel.com>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Artur Weber <aweber.kernel@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux@armlinux.org.uk,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 090/212] net: phylink: use pl->link_interface in phylink_expects_phy()
-Date: Mon,  5 May 2025 19:04:22 -0400
-Message-Id: <20250505230624.2692522-90-sashal@kernel.org>
+	florian.fainelli@broadcom.com,
+	rjui@broadcom.com,
+	sbranden@broadcom.com,
+	dan.carpenter@linaro.org,
+	linux-gpio@vger.kernel.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 094/212] pinctrl: bcm281xx: Use "unsigned int" instead of bare "unsigned"
+Date: Mon,  5 May 2025 19:04:26 -0400
+Message-Id: <20250505230624.2692522-94-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -72,57 +71,175 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Choong Yong Liang <yong.liang.choong@linux.intel.com>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit b63263555eaafbf9ab1a82f2020bbee872d83759 ]
+[ Upstream commit 07b5a2a13f4704c5eae3be7277ec54ffdba45f72 ]
 
-The phylink_expects_phy() function allows MAC drivers to check if they are
-expecting a PHY to attach. The checking condition in phylink_expects_phy()
-aims to achieve the same result as the checking condition in
-phylink_attach_phy().
+Replace uses of bare "unsigned" with "unsigned int" to fix checkpatch
+warnings. No functional change.
 
-However, the checking condition in phylink_expects_phy() uses
-pl->link_config.interface, while phylink_attach_phy() uses
-pl->link_interface.
-
-Initially, both pl->link_interface and pl->link_config.interface are set
-to SGMII, and pl->cfg_link_an_mode is set to MLO_AN_INBAND.
-
-When the interface switches from SGMII to 2500BASE-X,
-pl->link_config.interface is updated by phylink_major_config().
-At this point, pl->cfg_link_an_mode remains MLO_AN_INBAND, and
-pl->link_config.interface is set to 2500BASE-X.
-Subsequently, when the STMMAC interface is taken down
-administratively and brought back up, it is blocked by
-phylink_expects_phy().
-
-Since phylink_expects_phy() and phylink_attach_phy() aim to achieve the
-same result, phylink_expects_phy() should check pl->link_interface,
-which never changes, instead of pl->link_config.interface, which is
-updated by phylink_major_config().
-
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
-Link: https://patch.msgid.link/20250227121522.1802832-2-yong.liang.choong@linux.intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Link: https://lore.kernel.org/20250303-bcm21664-pinctrl-v3-2-5f8b80e4ab51@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phylink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/bcm/pinctrl-bcm281xx.c | 44 +++++++++++++-------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index fc58e4afb38dd..3069a7df25d3f 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -1566,7 +1566,7 @@ bool phylink_expects_phy(struct phylink *pl)
+diff --git a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
+index bba5496335eeb..c313f01789575 100644
+--- a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
++++ b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
+@@ -69,7 +69,7 @@ static enum bcm281xx_pin_type hdmi_pin = BCM281XX_PIN_TYPE_HDMI;
+ struct bcm281xx_pin_function {
+ 	const char *name;
+ 	const char * const *groups;
+-	const unsigned ngroups;
++	const unsigned int ngroups;
+ };
+ 
+ /*
+@@ -81,10 +81,10 @@ struct bcm281xx_pinctrl_data {
+ 
+ 	/* List of all pins */
+ 	const struct pinctrl_pin_desc *pins;
+-	const unsigned npins;
++	const unsigned int npins;
+ 
+ 	const struct bcm281xx_pin_function *functions;
+-	const unsigned nfunctions;
++	const unsigned int nfunctions;
+ 
+ 	struct regmap *regmap;
+ };
+@@ -938,7 +938,7 @@ static struct bcm281xx_pinctrl_data bcm281xx_pinctrl = {
+ };
+ 
+ static inline enum bcm281xx_pin_type pin_type_get(struct pinctrl_dev *pctldev,
+-						  unsigned pin)
++						  unsigned int pin)
  {
- 	if (pl->cfg_link_an_mode == MLO_AN_FIXED ||
- 	    (pl->cfg_link_an_mode == MLO_AN_INBAND &&
--	     phy_interface_mode_is_8023z(pl->link_config.interface)))
-+	     phy_interface_mode_is_8023z(pl->link_interface)))
- 		return false;
- 	return true;
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 
+@@ -982,7 +982,7 @@ static int bcm281xx_pinctrl_get_groups_count(struct pinctrl_dev *pctldev)
  }
+ 
+ static const char *bcm281xx_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
+-						   unsigned group)
++						   unsigned int group)
+ {
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 
+@@ -990,9 +990,9 @@ static const char *bcm281xx_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
+ }
+ 
+ static int bcm281xx_pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
+-					   unsigned group,
++					   unsigned int group,
+ 					   const unsigned **pins,
+-					   unsigned *num_pins)
++					   unsigned int *num_pins)
+ {
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 
+@@ -1004,7 +1004,7 @@ static int bcm281xx_pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
+ 
+ static void bcm281xx_pinctrl_pin_dbg_show(struct pinctrl_dev *pctldev,
+ 					  struct seq_file *s,
+-					  unsigned offset)
++					  unsigned int offset)
+ {
+ 	seq_printf(s, " %s", dev_name(pctldev->dev));
+ }
+@@ -1026,7 +1026,7 @@ static int bcm281xx_pinctrl_get_fcns_count(struct pinctrl_dev *pctldev)
+ }
+ 
+ static const char *bcm281xx_pinctrl_get_fcn_name(struct pinctrl_dev *pctldev,
+-						 unsigned function)
++						 unsigned int function)
+ {
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 
+@@ -1034,9 +1034,9 @@ static const char *bcm281xx_pinctrl_get_fcn_name(struct pinctrl_dev *pctldev,
+ }
+ 
+ static int bcm281xx_pinctrl_get_fcn_groups(struct pinctrl_dev *pctldev,
+-					   unsigned function,
++					   unsigned int function,
+ 					   const char * const **groups,
+-					   unsigned * const num_groups)
++					   unsigned int * const num_groups)
+ {
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 
+@@ -1047,8 +1047,8 @@ static int bcm281xx_pinctrl_get_fcn_groups(struct pinctrl_dev *pctldev,
+ }
+ 
+ static int bcm281xx_pinmux_set(struct pinctrl_dev *pctldev,
+-			       unsigned function,
+-			       unsigned group)
++			       unsigned int function,
++			       unsigned int group)
+ {
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 	const struct bcm281xx_pin_function *f = &pdata->functions[function];
+@@ -1079,7 +1079,7 @@ static const struct pinmux_ops bcm281xx_pinctrl_pinmux_ops = {
+ };
+ 
+ static int bcm281xx_pinctrl_pin_config_get(struct pinctrl_dev *pctldev,
+-					   unsigned pin,
++					   unsigned int pin,
+ 					   unsigned long *config)
+ {
+ 	return -ENOTSUPP;
+@@ -1088,9 +1088,9 @@ static int bcm281xx_pinctrl_pin_config_get(struct pinctrl_dev *pctldev,
+ 
+ /* Goes through the configs and update register val/mask */
+ static int bcm281xx_std_pin_update(struct pinctrl_dev *pctldev,
+-				   unsigned pin,
++				   unsigned int pin,
+ 				   unsigned long *configs,
+-				   unsigned num_configs,
++				   unsigned int num_configs,
+ 				   u32 *val,
+ 				   u32 *mask)
+ {
+@@ -1204,9 +1204,9 @@ static const u16 bcm281xx_pullup_map[] = {
+ 
+ /* Goes through the configs and update register val/mask */
+ static int bcm281xx_i2c_pin_update(struct pinctrl_dev *pctldev,
+-				   unsigned pin,
++				   unsigned int pin,
+ 				   unsigned long *configs,
+-				   unsigned num_configs,
++				   unsigned int num_configs,
+ 				   u32 *val,
+ 				   u32 *mask)
+ {
+@@ -1274,9 +1274,9 @@ static int bcm281xx_i2c_pin_update(struct pinctrl_dev *pctldev,
+ 
+ /* Goes through the configs and update register val/mask */
+ static int bcm281xx_hdmi_pin_update(struct pinctrl_dev *pctldev,
+-				    unsigned pin,
++				    unsigned int pin,
+ 				    unsigned long *configs,
+-				    unsigned num_configs,
++				    unsigned int num_configs,
+ 				    u32 *val,
+ 				    u32 *mask)
+ {
+@@ -1318,9 +1318,9 @@ static int bcm281xx_hdmi_pin_update(struct pinctrl_dev *pctldev,
+ }
+ 
+ static int bcm281xx_pinctrl_pin_config_set(struct pinctrl_dev *pctldev,
+-					   unsigned pin,
++					   unsigned int pin,
+ 					   unsigned long *configs,
+-					   unsigned num_configs)
++					   unsigned int num_configs)
+ {
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 	enum bcm281xx_pin_type pin_type;
 -- 
 2.39.5
 
