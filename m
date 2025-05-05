@@ -1,63 +1,68 @@
-Return-Path: <stable+bounces-140503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D79AAA964
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:13:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 404BDAAA96E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:14:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71327188B18B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:11:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE706188348E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBEA1360A7D;
-	Mon,  5 May 2025 22:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488D036196D;
+	Mon,  5 May 2025 22:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W/F/8arj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="amC1Mffh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD2B299A9D;
-	Mon,  5 May 2025 22:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330D4299AA7;
+	Mon,  5 May 2025 22:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485001; cv=none; b=Gt6D3/KPgkf4AaLsnKwplybaGGw8dPxv4RLD9zYvZRah2IewSwWnyRSDK/6oVJiCLWSDcGVuDm46aqfeU9pimQrd8hoIgXviT0qHVDFLXtI5jFRw4Tbj5NnP0SjWrdn8CrnZBL9mHdf6zJphNHC1cmD6nHO7hnEIi/fyZk+x12Y=
+	t=1746485005; cv=none; b=WpMGiqCbmewcndeKj5Pm8j4gU6kT6nhPAUY3MRRHNUBGhrxI7Rmu/M+1nmnjBnuXq9OB1UkdfmXKlViJ+Rhc1aPlOnktrjkehyOsvMNuTQ0AXcSBws2ON8q1ZfvReMtZjf3WNQ7KF7R05HN7tR5UwJTs7dEo5gyTDcZfBg9o3P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485001; c=relaxed/simple;
-	bh=/Yj5XCUNxIaUj4BvHUMPl9F1WanooW4vZ4XhupbUOzY=;
+	s=arc-20240116; t=1746485005; c=relaxed/simple;
+	bh=aZ5eX7/VrPez7mJczATpbvDGx0sBLT3Fg67bJ36qy18=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=avegkPpAtdamxgA0pNX0cGZ+xeLK2BONq9huT5Z0ChX21o7vsEk9l9QF9RZp8oIi73a3kMKPRFp899Mcfmoa+wkEo49FpZZd+pbZojbE4bxH4S8mlOw2vHMIc769iOVixnT0oMwPOM8JQrrmVvwxrcXZKotacpgZrdXw7y1y/kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W/F/8arj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBD7C4CEE4;
-	Mon,  5 May 2025 22:43:18 +0000 (UTC)
+	 MIME-Version; b=SM/d2ztgfYp/ntIUcy/rg2EpN4upHnNRbyuN4mtZe9m7T4A2nhkXPQg8sfi2Yxrzf1LYr4UVeUROmjN4QA6ugl6cGH9kx4WQ0kuuUlNnnRkd6i+fOxDH+bGVDMHQgc9uWPNLHuAE3UWRE00rUvvXaX4i94Zd0JelDg7nrRgkUxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=amC1Mffh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3017DC4CEE4;
+	Mon,  5 May 2025 22:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485000;
-	bh=/Yj5XCUNxIaUj4BvHUMPl9F1WanooW4vZ4XhupbUOzY=;
+	s=k20201202; t=1746485005;
+	bh=aZ5eX7/VrPez7mJczATpbvDGx0sBLT3Fg67bJ36qy18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/F/8arjlG34hfOIJ3fikKpX467zUhVWep527NWnYYOiGF9eu/WBDlqXt4jw63vKc
-	 FVKE/Z2M5Wx/SSW8jDABaZ3+uPC+Nh69lhkHv9prbWzpHHgVywo8YVwCoHJZ5EtIzb
-	 7M/IfT8pkMlKdDNSx3YmsnChTBKGp/CvXpiF3Rqt1+PkOTdDvm42PtRpYOYZ66dHZP
-	 wUOoJR+ZGAeWXpQ3FgDN7MNHPF28+ECGVGPCI/EXhTwicWvDKP4AftJjblKERb9vNG
-	 CAjO77/RPrCpMUSxsch1U8FX/tsX/T2ZR1ttmZBp36DjIIDCn1LTw57+krzO0RlF5/
-	 eK5KrEoOSkmQg==
+	b=amC1Mffh19zHf8aYGJUEKf8xlyijbFz99AgEHs72lgtvhp2JxjoJazhxFI8NMdIVj
+	 0SJyeRXODW0g4L/2tET6oUhR2wurmnnhqPnYnv+7DbwfB816BvhM/C76jxYcKramIP
+	 cdR6jbTRi8hOV114SMHtJCixHxFlzkZN1WwirQo2Zq6PCd+yXB8xpmtAEkS/dzjTis
+	 1pBS5ggxJOpdFnfERmNlUp9XhHttS05K4MBKB2f9yHVh/w4EzUaa6rKKSZYOMgSOKo
+	 EgVR5Kbk9i9m7f8Jo2YZKDBohXJnbBj0BV0bF5kL44s+GnjRN/dxxRgXjsMRj6jX1S
+	 9zWueKeKI2lcw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Prathamesh Shete <pshete@nvidia.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+	Mukul Joshi <mukul.joshi@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	thierry.reding@gmail.com,
-	jonathanh@nvidia.com,
-	brgl@bgdev.pl,
-	dan.carpenter@linaro.org,
-	kunwu.chan@linux.dev,
-	peng.fan@nxp.com,
-	linux-gpio@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 118/486] pinctrl-tegra: Restore SFSEL bit when freeing pins
-Date: Mon,  5 May 2025 18:33:14 -0400
-Message-Id: <20250505223922.2682012-118-sashal@kernel.org>
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	sunil.khatri@amd.com,
+	Hawking.Zhang@amd.com,
+	vitaly.prosyak@amd.com,
+	srinivasan.shanmugam@amd.com,
+	jesse.zhang@amd.com,
+	Likun.Gao@amd.com,
+	Jack.Xiao@amd.com,
+	marek.olsak@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.12 120/486] drm/amdgpu/gfx12: don't read registers in mqd init
+Date: Mon,  5 May 2025 18:33:16 -0400
+Message-Id: <20250505223922.2682012-120-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -72,181 +77,172 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Prathamesh Shete <pshete@nvidia.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit c12bfa0fee65940b10ff5187349f76c6f6b1df9c ]
+[ Upstream commit fc3c139cf0432b79fd08e23100a559ee51cd0be4 ]
 
-Each pin can be configured as a Special Function IO (SFIO) or GPIO,
-where the SFIO enables the pin to operate in alternative modes such as
-I2C, SPI, etc.
+Just use the default values.  There's not need to
+get the value from hardware and it could cause problems
+if we do that at runtime and gfxoff is active.
 
-The current implementation sets all the pins back to SFIO mode
-even if they were initially in GPIO mode. This can cause glitches
-on the pins when pinctrl_gpio_free() is called.
-
-Avoid these undesired glitches by storing the pin's SFIO/GPIO
-state on GPIO request and restoring it on GPIO free.
-
-Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
-Link: https://lore.kernel.org/20250305104939.15168-2-pshete@nvidia.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Mukul Joshi <mukul.joshi@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/tegra/pinctrl-tegra.c | 59 +++++++++++++++++++++++----
- drivers/pinctrl/tegra/pinctrl-tegra.h |  6 +++
- 2 files changed, 57 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c | 48 ++++++++++++++++++--------
+ 1 file changed, 33 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/pinctrl/tegra/pinctrl-tegra.c b/drivers/pinctrl/tegra/pinctrl-tegra.c
-index 3b046450bd3ff..27823e4207347 100644
---- a/drivers/pinctrl/tegra/pinctrl-tegra.c
-+++ b/drivers/pinctrl/tegra/pinctrl-tegra.c
-@@ -278,8 +278,8 @@ static int tegra_pinctrl_set_mux(struct pinctrl_dev *pctldev,
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
+index 241619ee10e4b..adcfcf594286f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
+@@ -52,6 +52,24 @@
  
--static const struct tegra_pingroup *tegra_pinctrl_get_group(struct pinctrl_dev *pctldev,
--					unsigned int offset)
-+static int tegra_pinctrl_get_group_index(struct pinctrl_dev *pctldev,
-+					 unsigned int offset)
- {
- 	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
- 	unsigned int group, num_pins, j;
-@@ -292,12 +292,35 @@ static const struct tegra_pingroup *tegra_pinctrl_get_group(struct pinctrl_dev *
- 			continue;
- 		for (j = 0; j < num_pins; j++) {
- 			if (offset == pins[j])
--				return &pmx->soc->groups[group];
-+				return group;
- 		}
- 	}
+ #define RLCG_UCODE_LOADING_START_ADDRESS	0x00002000L
  
--	dev_err(pctldev->dev, "Pingroup not found for pin %u\n", offset);
--	return NULL;
-+	return -EINVAL;
-+}
++#define regCP_GFX_MQD_CONTROL_DEFAULT                                             0x00000100
++#define regCP_GFX_HQD_VMID_DEFAULT                                                0x00000000
++#define regCP_GFX_HQD_QUEUE_PRIORITY_DEFAULT                                      0x00000000
++#define regCP_GFX_HQD_QUANTUM_DEFAULT                                             0x00000a01
++#define regCP_GFX_HQD_CNTL_DEFAULT                                                0x00f00000
++#define regCP_RB_DOORBELL_CONTROL_DEFAULT                                         0x00000000
++#define regCP_GFX_HQD_RPTR_DEFAULT                                                0x00000000
 +
-+static const struct tegra_pingroup *tegra_pinctrl_get_group(struct pinctrl_dev *pctldev,
-+							    unsigned int offset,
-+							    int group_index)
-+{
-+	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
++#define regCP_HQD_EOP_CONTROL_DEFAULT                                             0x00000006
++#define regCP_HQD_PQ_DOORBELL_CONTROL_DEFAULT                                     0x00000000
++#define regCP_MQD_CONTROL_DEFAULT                                                 0x00000100
++#define regCP_HQD_PQ_CONTROL_DEFAULT                                              0x00308509
++#define regCP_HQD_PQ_DOORBELL_CONTROL_DEFAULT                                     0x00000000
++#define regCP_HQD_PQ_RPTR_DEFAULT                                                 0x00000000
++#define regCP_HQD_PERSISTENT_STATE_DEFAULT                                        0x0be05501
++#define regCP_HQD_IB_CONTROL_DEFAULT                                              0x00300000
 +
-+	if (group_index < 0 || group_index > pmx->soc->ngroups)
-+		return NULL;
 +
-+	return &pmx->soc->groups[group_index];
-+}
-+
-+static struct tegra_pingroup_config *tegra_pinctrl_get_group_config(struct pinctrl_dev *pctldev,
-+								    unsigned int offset,
-+								    int group_index)
-+{
-+	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
-+
-+	if (group_index < 0)
-+		return NULL;
-+
-+	return &pmx->pingroup_configs[group_index];
- }
+ MODULE_FIRMWARE("amdgpu/gc_12_0_0_pfp.bin");
+ MODULE_FIRMWARE("amdgpu/gc_12_0_0_me.bin");
+ MODULE_FIRMWARE("amdgpu/gc_12_0_0_mec.bin");
+@@ -2851,25 +2869,25 @@ static int gfx_v12_0_gfx_mqd_init(struct amdgpu_device *adev, void *m,
+ 	mqd->cp_mqd_base_addr_hi = upper_32_bits(prop->mqd_gpu_addr);
  
- static int tegra_pinctrl_gpio_request_enable(struct pinctrl_dev *pctldev,
-@@ -306,12 +329,15 @@ static int tegra_pinctrl_gpio_request_enable(struct pinctrl_dev *pctldev,
- {
- 	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
- 	const struct tegra_pingroup *group;
-+	struct tegra_pingroup_config *config;
-+	int group_index;
- 	u32 value;
+ 	/* set up mqd control */
+-	tmp = RREG32_SOC15(GC, 0, regCP_GFX_MQD_CONTROL);
++	tmp = regCP_GFX_MQD_CONTROL_DEFAULT;
+ 	tmp = REG_SET_FIELD(tmp, CP_GFX_MQD_CONTROL, VMID, 0);
+ 	tmp = REG_SET_FIELD(tmp, CP_GFX_MQD_CONTROL, PRIV_STATE, 1);
+ 	tmp = REG_SET_FIELD(tmp, CP_GFX_MQD_CONTROL, CACHE_POLICY, 0);
+ 	mqd->cp_gfx_mqd_control = tmp;
  
- 	if (!pmx->soc->sfsel_in_mux)
- 		return 0;
+ 	/* set up gfx_hqd_vimd with 0x0 to indicate the ring buffer's vmid */
+-	tmp = RREG32_SOC15(GC, 0, regCP_GFX_HQD_VMID);
++	tmp = regCP_GFX_HQD_VMID_DEFAULT;
+ 	tmp = REG_SET_FIELD(tmp, CP_GFX_HQD_VMID, VMID, 0);
+ 	mqd->cp_gfx_hqd_vmid = 0;
  
--	group = tegra_pinctrl_get_group(pctldev, offset);
-+	group_index = tegra_pinctrl_get_group_index(pctldev, offset);
-+	group = tegra_pinctrl_get_group(pctldev, offset, group_index);
+ 	/* set up default queue priority level
+ 	 * 0x0 = low priority, 0x1 = high priority */
+-	tmp = RREG32_SOC15(GC, 0, regCP_GFX_HQD_QUEUE_PRIORITY);
++	tmp = regCP_GFX_HQD_QUEUE_PRIORITY_DEFAULT;
+ 	tmp = REG_SET_FIELD(tmp, CP_GFX_HQD_QUEUE_PRIORITY, PRIORITY_LEVEL, 0);
+ 	mqd->cp_gfx_hqd_queue_priority = tmp;
  
- 	if (!group)
- 		return -EINVAL;
-@@ -319,7 +345,11 @@ static int tegra_pinctrl_gpio_request_enable(struct pinctrl_dev *pctldev,
- 	if (group->mux_reg < 0 || group->sfsel_bit < 0)
- 		return -EINVAL;
+ 	/* set up time quantum */
+-	tmp = RREG32_SOC15(GC, 0, regCP_GFX_HQD_QUANTUM);
++	tmp = regCP_GFX_HQD_QUANTUM_DEFAULT;
+ 	tmp = REG_SET_FIELD(tmp, CP_GFX_HQD_QUANTUM, QUANTUM_EN, 1);
+ 	mqd->cp_gfx_hqd_quantum = tmp;
  
-+	config = tegra_pinctrl_get_group_config(pctldev, offset, group_index);
-+	if (!config)
-+		return -EINVAL;
- 	value = pmx_readl(pmx, group->mux_bank, group->mux_reg);
-+	config->is_sfsel = (value & BIT(group->sfsel_bit)) != 0;
- 	value &= ~BIT(group->sfsel_bit);
- 	pmx_writel(pmx, value, group->mux_bank, group->mux_reg);
+@@ -2891,7 +2909,7 @@ static int gfx_v12_0_gfx_mqd_init(struct amdgpu_device *adev, void *m,
  
-@@ -332,12 +362,15 @@ static void tegra_pinctrl_gpio_disable_free(struct pinctrl_dev *pctldev,
- {
- 	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
- 	const struct tegra_pingroup *group;
-+	struct tegra_pingroup_config *config;
-+	int group_index;
- 	u32 value;
+ 	/* set up the gfx_hqd_control, similar as CP_RB0_CNTL */
+ 	rb_bufsz = order_base_2(prop->queue_size / 4) - 1;
+-	tmp = RREG32_SOC15(GC, 0, regCP_GFX_HQD_CNTL);
++	tmp = regCP_GFX_HQD_CNTL_DEFAULT;
+ 	tmp = REG_SET_FIELD(tmp, CP_GFX_HQD_CNTL, RB_BUFSZ, rb_bufsz);
+ 	tmp = REG_SET_FIELD(tmp, CP_GFX_HQD_CNTL, RB_BLKSZ, rb_bufsz - 2);
+ #ifdef __BIG_ENDIAN
+@@ -2900,7 +2918,7 @@ static int gfx_v12_0_gfx_mqd_init(struct amdgpu_device *adev, void *m,
+ 	mqd->cp_gfx_hqd_cntl = tmp;
  
- 	if (!pmx->soc->sfsel_in_mux)
- 		return;
+ 	/* set up cp_doorbell_control */
+-	tmp = RREG32_SOC15(GC, 0, regCP_RB_DOORBELL_CONTROL);
++	tmp = regCP_RB_DOORBELL_CONTROL_DEFAULT;
+ 	if (prop->use_doorbell) {
+ 		tmp = REG_SET_FIELD(tmp, CP_RB_DOORBELL_CONTROL,
+ 				    DOORBELL_OFFSET, prop->doorbell_index);
+@@ -2912,7 +2930,7 @@ static int gfx_v12_0_gfx_mqd_init(struct amdgpu_device *adev, void *m,
+ 	mqd->cp_rb_doorbell_control = tmp;
  
--	group = tegra_pinctrl_get_group(pctldev, offset);
-+	group_index = tegra_pinctrl_get_group_index(pctldev, offset);
-+	group = tegra_pinctrl_get_group(pctldev, offset, group_index);
+ 	/* reset read and write pointers, similar to CP_RB0_WPTR/_RPTR */
+-	mqd->cp_gfx_hqd_rptr = RREG32_SOC15(GC, 0, regCP_GFX_HQD_RPTR);
++	mqd->cp_gfx_hqd_rptr = regCP_GFX_HQD_RPTR_DEFAULT;
  
- 	if (!group)
- 		return;
-@@ -345,8 +378,12 @@ static void tegra_pinctrl_gpio_disable_free(struct pinctrl_dev *pctldev,
- 	if (group->mux_reg < 0 || group->sfsel_bit < 0)
- 		return;
+ 	/* active the queue */
+ 	mqd->cp_gfx_hqd_active = 1;
+@@ -3007,14 +3025,14 @@ static int gfx_v12_0_compute_mqd_init(struct amdgpu_device *adev, void *m,
+ 	mqd->cp_hqd_eop_base_addr_hi = upper_32_bits(eop_base_addr);
  
-+	config = tegra_pinctrl_get_group_config(pctldev, offset, group_index);
-+	if (!config)
-+		return;
- 	value = pmx_readl(pmx, group->mux_bank, group->mux_reg);
--	value |= BIT(group->sfsel_bit);
-+	if (config->is_sfsel)
-+		value |= BIT(group->sfsel_bit);
- 	pmx_writel(pmx, value, group->mux_bank, group->mux_reg);
- }
+ 	/* set the EOP size, register value is 2^(EOP_SIZE+1) dwords */
+-	tmp = RREG32_SOC15(GC, 0, regCP_HQD_EOP_CONTROL);
++	tmp = regCP_HQD_EOP_CONTROL_DEFAULT;
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_EOP_CONTROL, EOP_SIZE,
+ 			(order_base_2(GFX12_MEC_HPD_SIZE / 4) - 1));
  
-@@ -791,6 +828,12 @@ int tegra_pinctrl_probe(struct platform_device *pdev,
- 	pmx->dev = &pdev->dev;
- 	pmx->soc = soc_data;
+ 	mqd->cp_hqd_eop_control = tmp;
  
-+	pmx->pingroup_configs = devm_kcalloc(&pdev->dev,
-+					     pmx->soc->ngroups, sizeof(*pmx->pingroup_configs),
-+					     GFP_KERNEL);
-+	if (!pmx->pingroup_configs)
-+		return -ENOMEM;
-+
- 	/*
- 	 * Each mux group will appear in 4 functions' list of groups.
- 	 * This over-allocates slightly, since not all groups are mux groups.
-diff --git a/drivers/pinctrl/tegra/pinctrl-tegra.h b/drivers/pinctrl/tegra/pinctrl-tegra.h
-index b3289bdf727d8..b97136685f7a8 100644
---- a/drivers/pinctrl/tegra/pinctrl-tegra.h
-+++ b/drivers/pinctrl/tegra/pinctrl-tegra.h
-@@ -8,6 +8,10 @@
- #ifndef __PINMUX_TEGRA_H__
- #define __PINMUX_TEGRA_H__
+ 	/* enable doorbell? */
+-	tmp = RREG32_SOC15(GC, 0, regCP_HQD_PQ_DOORBELL_CONTROL);
++	tmp = regCP_HQD_PQ_DOORBELL_CONTROL_DEFAULT;
  
-+struct tegra_pingroup_config {
-+	bool is_sfsel;
-+};
-+
- struct tegra_pmx {
- 	struct device *dev;
- 	struct pinctrl_dev *pctl;
-@@ -21,6 +25,8 @@ struct tegra_pmx {
- 	int nbanks;
- 	void __iomem **regs;
- 	u32 *backup_regs;
-+	/* Array of size soc->ngroups */
-+	struct tegra_pingroup_config *pingroup_configs;
- };
+ 	if (prop->use_doorbell) {
+ 		tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_DOORBELL_CONTROL,
+@@ -3043,7 +3061,7 @@ static int gfx_v12_0_compute_mqd_init(struct amdgpu_device *adev, void *m,
+ 	mqd->cp_mqd_base_addr_hi = upper_32_bits(prop->mqd_gpu_addr);
  
- enum tegra_pinconf_param {
+ 	/* set MQD vmid to 0 */
+-	tmp = RREG32_SOC15(GC, 0, regCP_MQD_CONTROL);
++	tmp = regCP_MQD_CONTROL_DEFAULT;
+ 	tmp = REG_SET_FIELD(tmp, CP_MQD_CONTROL, VMID, 0);
+ 	mqd->cp_mqd_control = tmp;
+ 
+@@ -3053,7 +3071,7 @@ static int gfx_v12_0_compute_mqd_init(struct amdgpu_device *adev, void *m,
+ 	mqd->cp_hqd_pq_base_hi = upper_32_bits(hqd_gpu_addr);
+ 
+ 	/* set up the HQD, this is similar to CP_RB0_CNTL */
+-	tmp = RREG32_SOC15(GC, 0, regCP_HQD_PQ_CONTROL);
++	tmp = regCP_HQD_PQ_CONTROL_DEFAULT;
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, QUEUE_SIZE,
+ 			    (order_base_2(prop->queue_size / 4) - 1));
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, RPTR_BLOCK_SIZE,
+@@ -3078,7 +3096,7 @@ static int gfx_v12_0_compute_mqd_init(struct amdgpu_device *adev, void *m,
+ 	tmp = 0;
+ 	/* enable the doorbell if requested */
+ 	if (prop->use_doorbell) {
+-		tmp = RREG32_SOC15(GC, 0, regCP_HQD_PQ_DOORBELL_CONTROL);
++		tmp = regCP_HQD_PQ_DOORBELL_CONTROL_DEFAULT;
+ 		tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_DOORBELL_CONTROL,
+ 				DOORBELL_OFFSET, prop->doorbell_index);
+ 
+@@ -3093,17 +3111,17 @@ static int gfx_v12_0_compute_mqd_init(struct amdgpu_device *adev, void *m,
+ 	mqd->cp_hqd_pq_doorbell_control = tmp;
+ 
+ 	/* reset read and write pointers, similar to CP_RB0_WPTR/_RPTR */
+-	mqd->cp_hqd_pq_rptr = RREG32_SOC15(GC, 0, regCP_HQD_PQ_RPTR);
++	mqd->cp_hqd_pq_rptr = regCP_HQD_PQ_RPTR_DEFAULT;
+ 
+ 	/* set the vmid for the queue */
+ 	mqd->cp_hqd_vmid = 0;
+ 
+-	tmp = RREG32_SOC15(GC, 0, regCP_HQD_PERSISTENT_STATE);
++	tmp = regCP_HQD_PERSISTENT_STATE_DEFAULT;
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PERSISTENT_STATE, PRELOAD_SIZE, 0x55);
+ 	mqd->cp_hqd_persistent_state = tmp;
+ 
+ 	/* set MIN_IB_AVAIL_SIZE */
+-	tmp = RREG32_SOC15(GC, 0, regCP_HQD_IB_CONTROL);
++	tmp = regCP_HQD_IB_CONTROL_DEFAULT;
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_IB_CONTROL, MIN_IB_AVAIL_SIZE, 3);
+ 	mqd->cp_hqd_ib_control = tmp;
+ 
 -- 
 2.39.5
 
