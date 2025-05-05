@@ -1,72 +1,76 @@
-Return-Path: <stable+bounces-141178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21146AAB127
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:54:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D75AAAB12C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:55:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C6241BC18F7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:54:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FB201BC1838
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5311435964F;
-	Tue,  6 May 2025 00:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C2C36DD2C;
+	Tue,  6 May 2025 00:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pbeXP0Lh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QLPOg6eH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E662C1E35;
-	Mon,  5 May 2025 22:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A261E5B88;
+	Mon,  5 May 2025 22:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485410; cv=none; b=u6MopSUE/78Hv0Y/9xzhn1RZ2YXSFBm5ux9QV7NpR21pSZsKi3kF7aHEqy0zyzOpaMYUmSnJqNLn7wtu6szeRk2QQpdKBAtxDkv9MiLfRbHaZb7N8eJgqBGktN6I+nHUefxpdfZe5S6anNQ9rD+fPUkoah/IjbnTGhGJlme2EbY=
+	t=1746485416; cv=none; b=M27Bb4YlO8xtyr3AGvD1KQ7S3IzqqYM1DWwE2pdH0bo8px7yOAOKPawL1nYhze24MNwUKHL87bJg4hzoRu5007I2c8w9O5a16j+09KYKK3k55b1Wk6W7XSG2NbjuSX77LORxGmuGYynmkAfyWQHPjxU8OoZH20RsEFMT0QbaF4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485410; c=relaxed/simple;
-	bh=LrDTYJPPikt2CZU7xFsXv7FLYT+5gZ9WRCubtv94W7g=;
+	s=arc-20240116; t=1746485416; c=relaxed/simple;
+	bh=pPblrdFH5cJFXuEtOr5WFgjlpUwjCnF66wyfcYsD8hA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RBIythj6f8DEdjWj/L8o/e/GOmDs7E7yv4fCaTpoES6hB06Mo7wAGqf83HvqvEPM2yZlmCDbw/VrGRD8YXMhgfaQNnjmXRoX4Rr/TpVySjSpuTf7ASbn0Cqld07Xy9Q2/cHid96Vzvdj9DusWDOYv1XUOQCAT1qAn+FfUsy4mxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pbeXP0Lh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D6DC4CEE4;
-	Mon,  5 May 2025 22:50:08 +0000 (UTC)
+	 MIME-Version; b=BELOrN9mYlYt+m+jGB8K49J3APJI4eLRveVvMRhgcqbcDqRTDX0bZC3NCegzKWxxnbI0LP4LM0oXW1TtHSQJQgLXKvZV73M0QsMSAskAE1XbVZo+ifzWSa55n0tBuHPjsxYLkk4KrsOsy9+o3KNbtaW/niWDIkfDgbvsx5QyHb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QLPOg6eH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D28C4CEE4;
+	Mon,  5 May 2025 22:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485410;
-	bh=LrDTYJPPikt2CZU7xFsXv7FLYT+5gZ9WRCubtv94W7g=;
+	s=k20201202; t=1746485416;
+	bh=pPblrdFH5cJFXuEtOr5WFgjlpUwjCnF66wyfcYsD8hA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pbeXP0LhqNa/Ths8V33RA7pBXelUCeQt3l89zE9hlmG06IWwdld17W5in1WojB1qe
-	 qV8meR6oLTgcoZxoi2bjyovc3oAcvHrJYQeqjI9h/K0lcWrpcgYBdQJWbaXtHU/Ldf
-	 5+yMSjTdyKs0GFHq8Dwl0BQSalwNf8cfOEH2axOCSvk7BFrgS5jPWPczbPXc/MMbSS
-	 /T0Y9zI4H5z7+Q2WEGDe7CJOeSYIfVYY1yNs23R8N9KFZQcRRRchOty7gCkEykZL4s
-	 dzS8wbsshZeuMHpTUO7OVAtGZ4TkzZzjQl9vnf1pQE/ezEm8aA+9Xd9Uqvpnm1ka+r
-	 h83oR+Wj10R/w==
+	b=QLPOg6eHpGg0gFU9VBU5z7EjqGyTA3U4+Mk6S4mKsXioYiLFKehkFUjDuaLcpA8w3
+	 w97ASPicNd7Box39hWs8xtskrkevWfiqkUgNjtmcT9S/fjligSrf17PBagFPRowqcM
+	 yiBZ5O2TmFp0w+P5UksXIxzWn7OqNH1xrNB/WCy5rZf6Hv7WDMBsdVEnypexap5/yL
+	 HeCtGz8e+j2hK431jhxjw1kQmXvD7bWpVI3TKBb0/iOz81AM4y/451r6JcEVqP4QLB
+	 t8qeek8g17X+738PNBBISbDCXPL7yt1IIjjiiKCtJhY9NTry1jEjL+EwSpVrL7Yiyd
+	 945BOJhrEFSNw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Leo Zeng <Leo.Zeng@amd.com>,
-	Dillon Varone <dillon.varone@amd.com>,
+Cc: Harry Wentland <harry.wentland@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
 	Roman Li <roman.li@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	austin.zheng@amd.com,
-	jun.lei@amd.com,
-	harry.wentland@amd.com,
 	sunpeng.li@amd.com,
 	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	alex.hung@amd.com,
-	Aric.Cyr@amd.com,
-	alvin.lee2@amd.com,
+	mario.limonciello@amd.com,
+	chiahsuan.chung@amd.com,
+	sunil.khatri@amd.com,
+	aurabindo.pillai@amd.com,
+	Yilin.Chen@amd.com,
+	mwen@igalia.com,
+	Wayne.Lin@amd.com,
+	Roman.Li@amd.com,
+	hamzamahfooz@linux.microsoft.com,
+	Jerry.Zuo@amd.com,
 	siqueira@igalia.com,
-	wenjing.liu@amd.com,
+	agustin.gutierrez@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 304/486] Revert "drm/amd/display: Request HW cursor on DCN3.2 with SubVP"
-Date: Mon,  5 May 2025 18:36:20 -0400
-Message-Id: <20250505223922.2682012-304-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 305/486] drm/amd/display: Don't treat wb connector as physical in create_validate_stream_for_sink
+Date: Mon,  5 May 2025 18:36:21 -0400
+Message-Id: <20250505223922.2682012-305-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -81,36 +85,154 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Leo Zeng <Leo.Zeng@amd.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-[ Upstream commit 8ae6dfc0b61b170cf13832d4cfe2a0c744e621a7 ]
+[ Upstream commit cbf4890c6f28fb1ad733e14613fbd33c2004bced ]
 
-This reverts commit 13437c91606c9232c747475e202fe3827cd53264.
+Don't try to operate on a drm_wb_connector as an amdgpu_dm_connector.
+While dereferencing aconnector->base will "work" it's wrong and
+might lead to unknown bad things. Just... don't.
 
-Reason to revert: idle power regression found in testing.
-
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Leo Zeng <Leo.Zeng@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 Signed-off-by: Roman Li <roman.li@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c | 1 -
- 1 file changed, 1 deletion(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 26 ++++++++++++-------
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h |  2 +-
+ .../display/amdgpu_dm/amdgpu_dm_mst_types.c   |  6 ++---
+ 3 files changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-index 56dda686e2992..6f490d8d7038c 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-@@ -626,7 +626,6 @@ static bool dcn32_assign_subvp_pipe(struct dc *dc,
- 		 * - Not TMZ surface
- 		 */
- 		if (pipe->plane_state && !pipe->top_pipe && !pipe->prev_odm_pipe && !dcn32_is_center_timing(pipe) &&
--				!pipe->stream->hw_cursor_req &&
- 				!(pipe->stream->timing.pix_clk_100hz / 10000 > DCN3_2_MAX_SUBVP_PIXEL_RATE_MHZ) &&
- 				(!dcn32_is_psr_capable(pipe) || (context->stream_count == 1 && dc->caps.dmub_caps.subvp_psr)) &&
- 				dc_state_get_pipe_subvp_type(context, pipe) == SUBVP_NONE &&
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 44ea320e4372c..beb57fe13e10b 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -7411,12 +7411,12 @@ static enum dc_status dm_validate_stream_and_context(struct dc *dc,
+ }
+ 
+ struct dc_stream_state *
+-create_validate_stream_for_sink(struct amdgpu_dm_connector *aconnector,
++create_validate_stream_for_sink(struct drm_connector *connector,
+ 				const struct drm_display_mode *drm_mode,
+ 				const struct dm_connector_state *dm_state,
+ 				const struct dc_stream_state *old_stream)
+ {
+-	struct drm_connector *connector = &aconnector->base;
++	struct amdgpu_dm_connector *aconnector = NULL;
+ 	struct amdgpu_device *adev = drm_to_adev(connector->dev);
+ 	struct dc_stream_state *stream;
+ 	const struct drm_connector_state *drm_state = dm_state ? &dm_state->base : NULL;
+@@ -7427,8 +7427,12 @@ create_validate_stream_for_sink(struct amdgpu_dm_connector *aconnector,
+ 	if (!dm_state)
+ 		return NULL;
+ 
+-	if (aconnector->dc_link->connector_signal == SIGNAL_TYPE_HDMI_TYPE_A ||
+-	    aconnector->dc_link->dpcd_caps.dongle_type == DISPLAY_DONGLE_DP_HDMI_CONVERTER)
++	if (connector->connector_type != DRM_MODE_CONNECTOR_WRITEBACK)
++		aconnector = to_amdgpu_dm_connector(connector);
++
++	if (aconnector &&
++	    (aconnector->dc_link->connector_signal == SIGNAL_TYPE_HDMI_TYPE_A ||
++	     aconnector->dc_link->dpcd_caps.dongle_type == DISPLAY_DONGLE_DP_HDMI_CONVERTER))
+ 		bpc_limit = 8;
+ 
+ 	do {
+@@ -7440,10 +7444,11 @@ create_validate_stream_for_sink(struct amdgpu_dm_connector *aconnector,
+ 			break;
+ 		}
+ 
+-		if (aconnector->base.connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
++		dc_result = dc_validate_stream(adev->dm.dc, stream);
++
++		if (!aconnector) /* writeback connector */
+ 			return stream;
+ 
+-		dc_result = dc_validate_stream(adev->dm.dc, stream);
+ 		if (dc_result == DC_OK && stream->signal == SIGNAL_TYPE_DISPLAY_PORT_MST)
+ 			dc_result = dm_dp_mst_is_port_support_mode(aconnector, stream);
+ 
+@@ -7473,7 +7478,7 @@ create_validate_stream_for_sink(struct amdgpu_dm_connector *aconnector,
+ 				     __func__, __LINE__);
+ 
+ 		aconnector->force_yuv420_output = true;
+-		stream = create_validate_stream_for_sink(aconnector, drm_mode,
++		stream = create_validate_stream_for_sink(connector, drm_mode,
+ 						dm_state, old_stream);
+ 		aconnector->force_yuv420_output = false;
+ 	}
+@@ -7488,6 +7493,9 @@ enum drm_mode_status amdgpu_dm_connector_mode_valid(struct drm_connector *connec
+ 	struct dc_sink *dc_sink;
+ 	/* TODO: Unhardcode stream count */
+ 	struct dc_stream_state *stream;
++	/* we always have an amdgpu_dm_connector here since we got
++	 * here via the amdgpu_dm_connector_helper_funcs
++	 */
+ 	struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
+ 
+ 	if ((mode->flags & DRM_MODE_FLAG_INTERLACE) ||
+@@ -7512,7 +7520,7 @@ enum drm_mode_status amdgpu_dm_connector_mode_valid(struct drm_connector *connec
+ 
+ 	drm_mode_set_crtcinfo(mode, 0);
+ 
+-	stream = create_validate_stream_for_sink(aconnector, mode,
++	stream = create_validate_stream_for_sink(connector, mode,
+ 						 to_dm_connector_state(connector->state),
+ 						 NULL);
+ 	if (stream) {
+@@ -10532,7 +10540,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
+ 		if (!drm_atomic_crtc_needs_modeset(new_crtc_state))
+ 			goto skip_modeset;
+ 
+-		new_stream = create_validate_stream_for_sink(aconnector,
++		new_stream = create_validate_stream_for_sink(connector,
+ 							     &new_crtc_state->mode,
+ 							     dm_new_conn_state,
+ 							     dm_old_crtc_state->stream);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index 20ad72d1b0d9b..9603352ee0949 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -987,7 +987,7 @@ int amdgpu_dm_process_dmub_set_config_sync(struct dc_context *ctx, unsigned int
+ 					struct set_config_cmd_payload *payload, enum set_config_status *operation_result);
+ 
+ struct dc_stream_state *
+-	create_validate_stream_for_sink(struct amdgpu_dm_connector *aconnector,
++	create_validate_stream_for_sink(struct drm_connector *connector,
+ 					const struct drm_display_mode *drm_mode,
+ 					const struct dm_connector_state *dm_state,
+ 					const struct dc_stream_state *old_stream);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index 5bdf44c692180..9798d4bcb098f 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1620,7 +1620,6 @@ int pre_validate_dsc(struct drm_atomic_state *state,
+ 
+ 		if (ind >= 0) {
+ 			struct drm_connector *connector;
+-			struct amdgpu_dm_connector *aconnector;
+ 			struct drm_connector_state *drm_new_conn_state;
+ 			struct dm_connector_state *dm_new_conn_state;
+ 			struct dm_crtc_state *dm_old_crtc_state;
+@@ -1628,15 +1627,14 @@ int pre_validate_dsc(struct drm_atomic_state *state,
+ 			connector =
+ 				amdgpu_dm_find_first_crtc_matching_connector(state,
+ 									     state->crtcs[ind].ptr);
+-			aconnector = to_amdgpu_dm_connector(connector);
+ 			drm_new_conn_state =
+ 				drm_atomic_get_new_connector_state(state,
+-								   &aconnector->base);
++								   connector);
+ 			dm_new_conn_state = to_dm_connector_state(drm_new_conn_state);
+ 			dm_old_crtc_state = to_dm_crtc_state(state->crtcs[ind].old_state);
+ 
+ 			local_dc_state->streams[i] =
+-				create_validate_stream_for_sink(aconnector,
++				create_validate_stream_for_sink(connector,
+ 								&state->crtcs[ind].new_state->mode,
+ 								dm_new_conn_state,
+ 								dm_old_crtc_state->stream);
 -- 
 2.39.5
 
