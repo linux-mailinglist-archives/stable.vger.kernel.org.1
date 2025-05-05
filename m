@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-141095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2CCAAB088
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:40:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C31AAADD6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:43:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 654871BA643F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:40:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CE5716B890
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8951928C5BD;
-	Mon,  5 May 2025 23:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294EF406C00;
+	Mon,  5 May 2025 23:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dNz9skYz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3naPKB3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA162F10D0;
-	Mon,  5 May 2025 23:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF8D2FBAC9;
+	Mon,  5 May 2025 23:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487441; cv=none; b=Nen468oqD9asyTPoWcr5JkBLHY06w0PnY5TPIt0OIqs5rjmSDHr7qjzFGZltWrrfR86hgBkSoDuzj7GHfOtsNV5aPknvTxUfnY74n8xPLMn+vcP+RGcpZAPW9oet78NtSZQ5nfqcNMHCMxFTLNLY5YHD9vNOZP6iwMbJLqfyyT4=
+	t=1746487442; cv=none; b=H80zjiDk/VHZiz/nsiJR/PsM3n1R/T1UhlGtU0NScf+f0vPdO/RJoRF16tPNsyJWKpPo3Sn04crSpGUumdLC112rVXDwPSiYXCZHX3mXxNL1MVcP8CJU9K5nZL03pZD6Kb2z+f6oHmMeaVXcXCZU2MGcOHgZjgURUXr+Gj64x0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487441; c=relaxed/simple;
-	bh=vf7Bz/nK4d0dLW/g6ZART3dTvAgwEFNNtx2uHBixhzU=;
+	s=arc-20240116; t=1746487442; c=relaxed/simple;
+	bh=+9wgd69+q8mhtvzBwj+DAjUx/KgGqujnSK1ZuuoQSbA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PVLb4HEgUkC3WqPsCWvkoc46nONG5Wx4MF+tkou0/H2owEHkuKU9pKulfspXXD/Tx5Hvo608ej4mGmzwI7hjJTeeoHO8IRZVlvowiOAeeaGn/pYkFPtL9jDxkOIkzfvc/TVYDg2+WIy5eBmgVu6E9sJ7XY/gDRtiJ59hEUtI7kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dNz9skYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6169C4CEE4;
-	Mon,  5 May 2025 23:23:59 +0000 (UTC)
+	 MIME-Version; b=oXYXyiBCEQzMhwgzOxANRrTs7/0wgS2VFUSIrJa9bW7Cr8z5sPsUcaISCGihP6wzY6Zt+Jnt8LmKcU17R877hfN8S/lodvr0GHfwF7zyV8HMimFG/ySHRiy6rGkLBPrrVbX8UepqAj6e1w1ArJK/fmGurZBqybmvGuHl4s/XUtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3naPKB3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A25C4CEEE;
+	Mon,  5 May 2025 23:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487440;
-	bh=vf7Bz/nK4d0dLW/g6ZART3dTvAgwEFNNtx2uHBixhzU=;
+	s=k20201202; t=1746487442;
+	bh=+9wgd69+q8mhtvzBwj+DAjUx/KgGqujnSK1ZuuoQSbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dNz9skYzYUAJumD7jkotl184r3C33a6ZezJE22rAl7hfXs2dOcuQrp1SZByU4xUQ5
-	 uOm0qFd79o0LhKuhn+9oO5zWfubI3cYxRnlPx/NyOSodMM6q3IjrDwW8Of0IU1O0XH
-	 ZFt+c7jspeXtdhW1PCvw8Kq7TJnnMPm6lyZXhcHdHMUcjZoeXlYZzaNn6V9FuRpXVi
-	 uqkKtuhAKphnuWdQMN6TMtiwhyxE6s6Fw+pSz9XzGTT9/Pa9Khw2n+bbmIKnXjx26+
-	 Fbk8eORVSNhdVsvhG2j5iJCAMoqcmJOsAm/LonWAJfqOxuEt4JFSnBU5uAl0TyREbO
-	 p0746zYBSiK3g==
+	b=d3naPKB3fjNk2UroWbj+Ps7Nrvc3qg9607k9t4QDTOVEEaU9lxB2UIFGLl/VGboXo
+	 B+rC028t9+CX3AJ+SVP1UUKYzBFRQwUsCDO4jSLUANIKL1Tf3PGnw1rUBjL6HB+sxX
+	 9Ju7OfQSFcSLnbfJBeIqglwwsMkljmdMBtTdyr5ZhpiR82U8LSJy/lCFgQQYSyrIlj
+	 looPVowhkPSENDEkQ6+gNmRAQBeun4J6kd/ULtQXniWjNJ4gbCGGdABp+AG7NtHlss
+	 YPVcrm4rvjkuKA1XE26VW9FbUmDdS8F3RlJqCwZi2akNj8FiGHriwqEPDolMpEKb0E
+	 VtGAFVskWXMXA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: junan <junan76@163.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 73/79] scsi: st: Restore some drive settings after reset
-Date: Mon,  5 May 2025 19:21:45 -0400
-Message-Id: <20250505232151.2698893-73-sashal@kernel.org>
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 74/79] HID: usbkbd: Fix the bit shift number for LED_KANA
+Date: Mon,  5 May 2025 19:21:46 -0400
+Message-Id: <20250505232151.2698893-74-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -62,113 +63,37 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: junan <junan76@163.com>
 
-[ Upstream commit 7081dc75df79696d8322d01821c28e53416c932c ]
+[ Upstream commit d73a4bfa2881a6859b384b75a414c33d4898b055 ]
 
-Some of the allowed operations put the tape into a known position to
-continue operation assuming only the tape position has changed.  But reset
-sets partition, density and block size to drive default values. These
-should be restored to the values before reset.
+Since "LED_KANA" was defined as "0x04", the shift number should be "4".
 
-Normally the current block size and density are stored by the drive.  If
-the settings have been changed, the changed values have to be saved by the
-driver across reset.
-
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250120194925.44432-2-Kai.Makisara@kolumbus.fi
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Tested-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: junan <junan76@163.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 24 +++++++++++++++++++++---
- drivers/scsi/st.h |  2 ++
- 2 files changed, 23 insertions(+), 3 deletions(-)
+ drivers/hid/usbhid/usbkbd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 3f798f87e8d98..d4aef346bfee3 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -949,7 +949,6 @@ static void reset_state(struct scsi_tape *STp)
- 		STp->partition = find_partition(STp);
- 		if (STp->partition < 0)
- 			STp->partition = 0;
--		STp->new_partition = STp->partition;
- 	}
- }
- 
-@@ -2921,14 +2920,17 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
- 		if (cmd_in == MTSETDENSITY) {
- 			(STp->buffer)->b_data[4] = arg;
- 			STp->density_changed = 1;	/* At least we tried ;-) */
-+			STp->changed_density = arg;
- 		} else if (cmd_in == SET_DENS_AND_BLK)
- 			(STp->buffer)->b_data[4] = arg >> 24;
- 		else
- 			(STp->buffer)->b_data[4] = STp->density;
- 		if (cmd_in == MTSETBLK || cmd_in == SET_DENS_AND_BLK) {
- 			ltmp = arg & MT_ST_BLKSIZE_MASK;
--			if (cmd_in == MTSETBLK)
-+			if (cmd_in == MTSETBLK) {
- 				STp->blksize_changed = 1; /* At least we tried ;-) */
-+				STp->changed_blksize = arg;
-+			}
- 		} else
- 			ltmp = STp->block_size;
- 		(STp->buffer)->b_data[9] = (ltmp >> 16);
-@@ -3629,9 +3631,25 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
- 				retval = (-EIO);
- 				goto out;
- 			}
--			reset_state(STp);
-+			reset_state(STp); /* Clears pos_unknown */
- 			/* remove this when the midlevel properly clears was_reset */
- 			STp->device->was_reset = 0;
-+
-+			/* Fix the device settings after reset, ignore errors */
-+			if (mtc.mt_op == MTREW || mtc.mt_op == MTSEEK ||
-+				mtc.mt_op == MTEOM) {
-+				if (STp->can_partitions) {
-+					/* STp->new_partition contains the
-+					 *  latest partition set
-+					 */
-+					STp->partition = 0;
-+					switch_partition(STp);
-+				}
-+				if (STp->density_changed)
-+					st_int_ioctl(STp, MTSETDENSITY, STp->changed_density);
-+				if (STp->blksize_changed)
-+					st_int_ioctl(STp, MTSETBLK, STp->changed_blksize);
-+			}
- 		}
+diff --git a/drivers/hid/usbhid/usbkbd.c b/drivers/hid/usbhid/usbkbd.c
+index d5b7a696a68c5..50c5b204bf04c 100644
+--- a/drivers/hid/usbhid/usbkbd.c
++++ b/drivers/hid/usbhid/usbkbd.c
+@@ -160,7 +160,7 @@ static int usb_kbd_event(struct input_dev *dev, unsigned int type,
+ 		return -1;
  
- 		if (mtc.mt_op != MTNOP && mtc.mt_op != MTSETBLK &&
-diff --git a/drivers/scsi/st.h b/drivers/scsi/st.h
-index 95d2e7a7988de..c9947abb0a451 100644
---- a/drivers/scsi/st.h
-+++ b/drivers/scsi/st.h
-@@ -168,12 +168,14 @@ struct scsi_tape {
- 	unsigned char compression_changed;
- 	unsigned char drv_buffer;
- 	unsigned char density;
-+	unsigned char changed_density;
- 	unsigned char door_locked;
- 	unsigned char autorew_dev;   /* auto-rewind device */
- 	unsigned char rew_at_close;  /* rewind necessary at close */
- 	unsigned char inited;
- 	unsigned char cleaning_req;  /* cleaning requested? */
- 	int block_size;
-+	int changed_blksize;
- 	int min_block;
- 	int max_block;
- 	int recover_count;     /* From tape opening */
+ 	spin_lock_irqsave(&kbd->leds_lock, flags);
+-	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 3) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
++	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 4) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
+ 		       (!!test_bit(LED_SCROLLL, dev->led) << 2) | (!!test_bit(LED_CAPSL,   dev->led) << 1) |
+ 		       (!!test_bit(LED_NUML,    dev->led));
+ 
 -- 
 2.39.5
 
