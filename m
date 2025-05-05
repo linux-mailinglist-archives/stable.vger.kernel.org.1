@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-140330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B25ADAAA77A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:34:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4A5AAA799
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 725DF7A9B24
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:33:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCE701734B7
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8DD33C553;
-	Mon,  5 May 2025 22:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118A433C573;
+	Mon,  5 May 2025 22:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eMWTufbb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5D7zbqF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579B733C54A;
-	Mon,  5 May 2025 22:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD54B33C569;
+	Mon,  5 May 2025 22:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484646; cv=none; b=Lltdmx1iXyuq6UCbN0cA+y43Ks/l7ZqfbJ8ZRuxJ+CA3bLJLcLw48qQqXkK3LizcuZGYhzSCieCK7PRYqGN+SmV/iPSIMsODPYXM3SDYLdHaZT5S8v9B3sxOwNBXk04iaCpXKHQMxzpR1pGEQWTj/+ck9lHnKUIn4AmNlHgELdo=
+	t=1746484647; cv=none; b=oscx5ex4uNipclFm/VA7NoUWCRhhiwdjyF4fiLpm7jele45y1Qu/G/5Aajh0t0AqF0RmQu1JdVEvDHV5WMPzkIetalOHUJwT59d2x0pIRzpUrnexwbwMiQdLjZLNVc6NqfQ4nDzKRgOD9oU4iPAd6J6qp+XUHuDkYj8q+QyoHk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484646; c=relaxed/simple;
-	bh=5LJNwUa06R4kZKORvykREbjT3Q5z5hRbd1bSLRbbWwA=;
+	s=arc-20240116; t=1746484647; c=relaxed/simple;
+	bh=2dEEw2rM+lZSIeY6U5v9jEvazwwbe3gR4Dn/pnCQHaE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KoOVAEVLSbgiwEmUzwpnS1L/NEWPyntJXxRh33zE03dAOae812UOxn4JM3/ZCxNVS4dYPlxDUBz0t2Ju9SStjXCtsTG+R2s2KQNMF1xSVnmZmfcbr+W0ABFxToKhq7OVkAnn+X2cAmqMXYeImoazlBna6hLoOjRHSfAhXI8DatQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eMWTufbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B24C4CEE4;
-	Mon,  5 May 2025 22:37:24 +0000 (UTC)
+	 MIME-Version; b=LTjiu/7ALBjH2KwP6xRqrrlje88dIdjy78nsHpF4H/AcgvbZVVV7JhGi2CerTyueMCe83a55slQvfNk1C2RASeHZzrtXYTwAEJiRLokLSHYOS1jImdNh4ljZh0cob2MTAOFaP0g0cow2otUvYhmRvNElFRIxMZJ1dzNUPcJ8118=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5D7zbqF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDF4C4CEEE;
+	Mon,  5 May 2025 22:37:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484646;
-	bh=5LJNwUa06R4kZKORvykREbjT3Q5z5hRbd1bSLRbbWwA=;
+	s=k20201202; t=1746484647;
+	bh=2dEEw2rM+lZSIeY6U5v9jEvazwwbe3gR4Dn/pnCQHaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eMWTufbb3onKsfOYL0jrwI/HpXk79yWMGDXENPYQQe3Ryt9t4OxWo14CxGmgElYLm
-	 gCiQjrZeqzJXTtT/C996NL2oyUVvyJH4JvZyzlQ6A2bQ9QCA6uC0dwCosCg3tRI8Bz
-	 PEgIWfnNxdehMq+5DBcYvDy+vpxoatn2I/nrWduWvK8a9GUtXNax3kRzXO/vn9AGT5
-	 PJOnqLKy4BIMLX3Paz9HFmC/Z3MJMO1x/cUfYuKXef4FZAuSFdsDH025HMjf/+DYno
-	 /mDAYtQddLaAUS2km6datgI2CKEz1DJsUJmabxXLMwGh0/bLoj4DzOYmL0zWiufNDa
-	 xkkm1UzhmLDug==
+	b=S5D7zbqFhRaaPlDvtyZSritjJ0VBiVgVVV/pznIM+KDEKOkA0ObkYwAYLGX9S3DDM
+	 ALh/6usbRvlOe/ICX2RTjtSjSpJBPr8Kn5OgoqUCXzIFsDpQxDQTBwVf5+ssvpfj1g
+	 T+X6i/DkgQTXuZLWsQguPjBXWXJBvq78WH27CtLZGFtEvgbvnC1PO/jKrgRsXjCtk0
+	 qA5Iv1fAoNEQ7a3RZ9+AXuVlQWVMrS0+cRxLQBqkjekSh5ToLCqw4ruSMZinyr1hFO
+	 zOPCxbllIA6ljpnnuh4lPwhDN1vT4K8HvRH/1zzzDo9c2T+HqoGDXzfm0OBlrrGlSY
+	 gkKO7fFoqmPZg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Viktor Malik <vmalik@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Peng Fan <peng.fan@nxp.com>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 581/642] bpftool: Fix readlink usage in get_fd_type
-Date: Mon,  5 May 2025 18:13:17 -0400
-Message-Id: <20250505221419.2672473-581-sashal@kernel.org>
+	arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 582/642] firmware: arm_scmi: Relax duplicate name constraint across protocol ids
+Date: Mon,  5 May 2025 18:13:18 -0400
+Message-Id: <20250505221419.2672473-582-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,47 +67,73 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Viktor Malik <vmalik@redhat.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 0053f7d39d491b6138d7c526876d13885cbb65f1 ]
+[ Upstream commit 21ee965267bcbdd733be0f35344fa0f0226d7861 ]
 
-The `readlink(path, buf, sizeof(buf))` call reads at most sizeof(buf)
-bytes and *does not* append null-terminator to buf. With respect to
-that, fix two pieces in get_fd_type:
+Currently in scmi_protocol_device_request(), no duplicate scmi device
+name is allowed across any protocol. However scmi_dev_match_id() first
+matches the protocol id and then the name. So, there is no strict
+requirement to keep this scmi device name unique across all the protocols.
 
-1. Change the truncation check to contain sizeof(buf) rather than
-   sizeof(path).
-2. Append null-terminator to buf.
+Relax the constraint on the duplicate name across the protocols and
+inhibit only within the same protocol id.
 
-Reported by Coverity.
-
-Signed-off-by: Viktor Malik <vmalik@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20250129071857.75182-1-vmalik@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Message-Id: <20250131141822.514342-1-sudeep.holla@arm.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/firmware/arm_scmi/bus.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
-index b921231d602e4..ecfa790adc13f 100644
---- a/tools/bpf/bpftool/common.c
-+++ b/tools/bpf/bpftool/common.c
-@@ -461,10 +461,11 @@ int get_fd_type(int fd)
- 		p_err("can't read link type: %s", strerror(errno));
- 		return -1;
- 	}
--	if (n == sizeof(path)) {
-+	if (n == sizeof(buf)) {
- 		p_err("can't read link type: path too long!");
- 		return -1;
- 	}
-+	buf[n] = '\0';
+diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
+index a3386bf36de50..8acf33ccfd217 100644
+--- a/drivers/firmware/arm_scmi/bus.c
++++ b/drivers/firmware/arm_scmi/bus.c
+@@ -42,7 +42,7 @@ static atomic_t scmi_syspower_registered = ATOMIC_INIT(0);
+  * This helper let an SCMI driver request specific devices identified by the
+  * @id_table to be created for each active SCMI instance.
+  *
+- * The requested device name MUST NOT be already existent for any protocol;
++ * The requested device name MUST NOT be already existent for this protocol;
+  * at first the freshly requested @id_table is annotated in the IDR table
+  * @scmi_requested_devices and then the requested device is advertised to any
+  * registered party via the @scmi_requested_devices_nh notification chain.
+@@ -52,7 +52,6 @@ static atomic_t scmi_syspower_registered = ATOMIC_INIT(0);
+ static int scmi_protocol_device_request(const struct scmi_device_id *id_table)
+ {
+ 	int ret = 0;
+-	unsigned int id = 0;
+ 	struct list_head *head, *phead = NULL;
+ 	struct scmi_requested_dev *rdev;
  
- 	if (strstr(buf, "bpf-map"))
- 		return BPF_OBJ_MAP;
+@@ -67,19 +66,13 @@ static int scmi_protocol_device_request(const struct scmi_device_id *id_table)
+ 	}
+ 
+ 	/*
+-	 * Search for the matching protocol rdev list and then search
+-	 * of any existent equally named device...fails if any duplicate found.
++	 * Find the matching protocol rdev list and then search of any
++	 * existent equally named device...fails if any duplicate found.
+ 	 */
+ 	mutex_lock(&scmi_requested_devices_mtx);
+-	idr_for_each_entry(&scmi_requested_devices, head, id) {
+-		if (!phead) {
+-			/* A list found registered in the IDR is never empty */
+-			rdev = list_first_entry(head, struct scmi_requested_dev,
+-						node);
+-			if (rdev->id_table->protocol_id ==
+-			    id_table->protocol_id)
+-				phead = head;
+-		}
++	phead = idr_find(&scmi_requested_devices, id_table->protocol_id);
++	if (phead) {
++		head = phead;
+ 		list_for_each_entry(rdev, head, node) {
+ 			if (!strcmp(rdev->id_table->name, id_table->name)) {
+ 				pr_err("Ignoring duplicate request [%d] %s\n",
 -- 
 2.39.5
 
