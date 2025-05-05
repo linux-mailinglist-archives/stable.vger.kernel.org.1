@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-140158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D6CDAAA5B3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:56:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E6C4AAA5B8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:56:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2831018872A1
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:53:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A995188E0A5
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8250E315F98;
-	Mon,  5 May 2025 22:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB68315FB5;
+	Mon,  5 May 2025 22:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="czF5dTQj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="czGF6xSQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED73315F8E;
-	Mon,  5 May 2025 22:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F848315FAB;
+	Mon,  5 May 2025 22:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484250; cv=none; b=BuXs0QCIn7ouSJ2yNrrdXwlzaUVjVh/z9MR4gbfEMs3871S1VO9ryse+QfBczi8wtnW7ZYgrvJzk8coYXL4Fj76U2QwytZFXv3ZXl9gBNnuMyvm3A3AJ3egycs1GHWrqb7nOCssEPwG/YWb6u78nCCV5tIiNse8P4iRfsPU8fw4=
+	t=1746484251; cv=none; b=bToUXq+zftK3N5QhFaGANPlt+2bCKP0/+ivfsjEKrhc5tuvkB67kNPq8VnuodDrRPtbIM1vsFApV2Av4rN4YY0GURR7BMmOvQ7LrJ+/FUI87TaP7hpZrlFgwcVfl3dkdaxpkIuLYwwKmgUcrhzZ9VRck3YOrG5P66rPgeKuVwo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484250; c=relaxed/simple;
-	bh=W1z9LlLC9I5AttB7l1i4Ia/f9RWJJFje1bqZEjRt27w=;
+	s=arc-20240116; t=1746484251; c=relaxed/simple;
+	bh=loTJ5DJF4JJVQC8r51AXErWlY78aV8+JQ6HsvoiNgCY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FvYG1jEC/R8ID6VB4de5m1PaCEGDN3lcQH7Ub2N7kzbOYUTt8+3i7MpxKoVOxOa5bteh3lIWeizfM89H6rjYU/E5W8frnpc/uj0eMVBll++mi/1Vh+uHjXshcmda8g1jfNh59NLSvBRBYhjzJxu7KfeTMvhQyFlwqBWdAYL5Dgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=czF5dTQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB42C4CEE4;
-	Mon,  5 May 2025 22:30:48 +0000 (UTC)
+	 MIME-Version; b=RrZ1WB+quIc0x5Pn8G/UKYuBFxN4Ahl7R0uMbQvW4d/MRmk2E7SqXd/45ROkPlJ7yUri2J6Cd5zN/B45rsOfsfZYutXZkm7FWRM49Wd8l5XE4k0M0I7D9R+Gbk8fEFZwqQdxHchiInI7MPrKpM9+y9Nec7EMNkHxguc6MwpunoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=czGF6xSQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CB2C4CEED;
+	Mon,  5 May 2025 22:30:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484250;
-	bh=W1z9LlLC9I5AttB7l1i4Ia/f9RWJJFje1bqZEjRt27w=;
+	s=k20201202; t=1746484251;
+	bh=loTJ5DJF4JJVQC8r51AXErWlY78aV8+JQ6HsvoiNgCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=czF5dTQjCC6jiNfCX1hjZwuvtqGecoDnCt6uoxyeB3YEEYL/vau7QTq4P3ctQ4zLN
-	 t/6v0VuAkBLJcWpcurSBfj7l7ru1ItfzPAXTZZ6rROUnPWjFoIDWQhJHKGr0TCk/tG
-	 fDLRIcCbZMRbKi7FIz2Q+XVPDY8XhWl13AqYVogrLDnikXARcwM0Pbu13hu4e8CIt0
-	 EcRA3E9djLEM0YZsgN0fo2brlIWytoR/tQMtlaXeV08UIfskjMKZNGpxyDVjK8Wdh/
-	 D6uDN0IEhQTuAYEQDiUG08+BkRsPYSAMLHzI8O2k5DtC0MpqG69mWuQGZqJe2BhWY0
-	 SrMB1WKc9qz8w==
+	b=czGF6xSQ8o6tz3XVy7oOmq9u/MhCsR2cYACqvwbLhpymxl/3gze4+7Pp/0OcIpbJD
+	 9BNOqT4ulJM9epSOR9EK3yRYpdjk5cWX7MmHunqLaWY3vxY4Z/qOwD/XkUpUOv7PHb
+	 5G3ip5pqVBC2/AAZN/my1w097N3ghXfDZMgWFNWexRl0/C1r5Y8q9SmSnYJOUxyFVL
+	 dA454BQN7zUldmklA9mVd6OuXSgmBBOOSTdi2HTRb7o8Bb5Vqy7scUR9mbn/DM4jRU
+	 VJVtFjlv1ltQ+snRy19hRk80++sg+WPBWiAtXuhAERdESsQgMuw9hzd9LGNpYqETYx
+	 Tg+qed7VcwZ4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Siva Durga Prasad Paladugu <siva.durga.prasad.paladugu@amd.com>,
-	Nava kishore Manne <nava.kishore.manne@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
+Cc: Caleb Sander Mateos <csander@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	ronak.jain@amd.com,
-	jay.buddhabhatti@amd.com,
-	u.kleine-koenig@baylibre.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 411/642] firmware: xilinx: Dont send linux address to get fpga config get status
-Date: Mon,  5 May 2025 18:10:27 -0400
-Message-Id: <20250505221419.2672473-411-sashal@kernel.org>
+	asml.silence@gmail.com,
+	io-uring@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 412/642] io_uring: use IO_REQ_LINK_FLAGS more
+Date: Mon,  5 May 2025 18:10:28 -0400
+Message-Id: <20250505221419.2672473-412-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -69,49 +66,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Siva Durga Prasad Paladugu <siva.durga.prasad.paladugu@amd.com>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-[ Upstream commit 5abc174016052caff1bcf4cedb159bd388411e98 ]
+[ Upstream commit 0e8934724f78602635d6e11c97ef48caa693cb65 ]
 
-Fpga get config status just returns status through ret_payload and there
-is no need to allocate local buf and send its address through SMC args.
-Moreover, the address that is being passed till now is linux virtual
-address and is incorrect.
-Corresponding modification has been done in the firmware to avoid using the
-address sent by linux.
+Replace the 2 instances of REQ_F_LINK | REQ_F_HARDLINK with
+the more commonly used IO_REQ_LINK_FLAGS.
 
-Signed-off-by: Siva Durga Prasad Paladugu <siva.durga.prasad.paladugu@amd.com>
-Signed-off-by: Nava kishore Manne <nava.kishore.manne@amd.com>
-Link: https://lore.kernel.org/r/20250207054951.1650534-1-nava.kishore.manne@amd.com
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Link: https://lore.kernel.org/r/20250211202002.3316324-1-csander@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/xilinx/zynqmp.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ io_uring/io_uring.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/xilinx/zynqmp.c b/drivers/firmware/xilinx/zynqmp.c
-index 720fa8b5d8e95..7356e860e65ce 100644
---- a/drivers/firmware/xilinx/zynqmp.c
-+++ b/drivers/firmware/xilinx/zynqmp.c
-@@ -1139,17 +1139,13 @@ EXPORT_SYMBOL_GPL(zynqmp_pm_fpga_get_status);
- int zynqmp_pm_fpga_get_config_status(u32 *value)
- {
- 	u32 ret_payload[PAYLOAD_ARG_CNT];
--	u32 buf, lower_addr, upper_addr;
- 	int ret;
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 24b9e9a5105d4..96c660bf4ef59 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -110,11 +110,13 @@
+ #define SQE_VALID_FLAGS	(SQE_COMMON_FLAGS | IOSQE_BUFFER_SELECT | \
+ 			IOSQE_IO_DRAIN | IOSQE_CQE_SKIP_SUCCESS)
  
- 	if (!value)
- 		return -EINVAL;
++#define IO_REQ_LINK_FLAGS (REQ_F_LINK | REQ_F_HARDLINK)
++
+ #define IO_REQ_CLEAN_FLAGS (REQ_F_BUFFER_SELECTED | REQ_F_NEED_CLEANUP | \
+ 				REQ_F_POLLED | REQ_F_INFLIGHT | REQ_F_CREDS | \
+ 				REQ_F_ASYNC_DATA)
  
--	lower_addr = lower_32_bits((u64)&buf);
--	upper_addr = upper_32_bits((u64)&buf);
--
- 	ret = zynqmp_pm_invoke_fn(PM_FPGA_READ, ret_payload, 4,
--				  XILINX_ZYNQMP_PM_FPGA_CONFIG_STAT_OFFSET, lower_addr, upper_addr,
-+				  XILINX_ZYNQMP_PM_FPGA_CONFIG_STAT_OFFSET, 0, 0,
- 				  XILINX_ZYNQMP_PM_FPGA_READ_CONFIG_REG);
+-#define IO_REQ_CLEAN_SLOW_FLAGS (REQ_F_REFCOUNT | REQ_F_LINK | REQ_F_HARDLINK |\
++#define IO_REQ_CLEAN_SLOW_FLAGS (REQ_F_REFCOUNT | IO_REQ_LINK_FLAGS | \
+ 				 REQ_F_REISSUE | IO_REQ_CLEAN_FLAGS)
  
- 	*value = ret_payload[1];
+ #define IO_TCTX_REFS_CACHE_NR	(1U << 10)
+@@ -131,7 +133,6 @@ struct io_defer_entry {
+ 
+ /* requests with any of those set should undergo io_disarm_next() */
+ #define IO_DISARM_MASK (REQ_F_ARM_LTIMEOUT | REQ_F_LINK_TIMEOUT | REQ_F_FAIL)
+-#define IO_REQ_LINK_FLAGS (REQ_F_LINK | REQ_F_HARDLINK)
+ 
+ /*
+  * No waiters. It's larger than any valid value of the tw counter
+@@ -1158,7 +1159,7 @@ static inline void io_req_local_work_add(struct io_kiocb *req,
+ 	 * We don't know how many reuqests is there in the link and whether
+ 	 * they can even be queued lazily, fall back to non-lazy.
+ 	 */
+-	if (req->flags & (REQ_F_LINK | REQ_F_HARDLINK))
++	if (req->flags & IO_REQ_LINK_FLAGS)
+ 		flags &= ~IOU_F_TWQ_LAZY_WAKE;
+ 
+ 	guard(rcu)();
 -- 
 2.39.5
 
