@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-141054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A27AAB07A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:39:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D4AAAB04D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:35:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C75893AB877
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:34:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 857141B6351D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5596B30C1DB;
-	Mon,  5 May 2025 23:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C2030C1F4;
+	Mon,  5 May 2025 23:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qLehSAdq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zqrypqhn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0552857E0;
-	Mon,  5 May 2025 23:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CC62FA100;
+	Mon,  5 May 2025 23:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487336; cv=none; b=BZtsClj4opKM0owVpdoYlSl9PLFjCdlHpaE+osMgk0ci0Ed0jhBy+SgVRSZ08BXYO2Rr329aN/T1TXdvSqPYGD3HTVWOjG1dYU5ZvLV7ItmzfB3QR1K0aVqSCICafRkXV+5AAFd8ew1KVMoDSVMqrOpb2R+Kkt+fBn2/6XnEqXA=
+	t=1746487338; cv=none; b=k0iMqZVVl17UXgfPac4SQ0aQK5uYje+qdmZETarAEWDLwOp04zj2OE+is6diiSxngqyK42UjzL/dwW7gnhsyqMwzBYLXBXwSve651Qqnd2K0Je/3/BGJUPPJUSGXf/g2MQbEDht1wMbklP+775sEm2uP3hOru4DeSR8OemAknmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487336; c=relaxed/simple;
-	bh=2+joGTOuELpfJHei7VE7uNXX5PJBBzKmn6u5+mhbDzE=;
+	s=arc-20240116; t=1746487338; c=relaxed/simple;
+	bh=iGR/zZ+vHKPqohPSHU9sFA3QVASc8jKfflvcI/g/eUM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uzpy1J+sp18uR1xgvhTiSHPbmjPQ2yYN7ZRS5IUAEO49VizFD/IgAircVskDFK2U9EwrSBUjHHh1Ouv9/K9X7FZp5lBWlD0vAYGuuibrJfcltsfSBtD1S/sprh2ca5LBmCBVCd9iNPnPSmHOSJ3HGKZSyALO8Q5gmLB1gKdDFUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qLehSAdq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B743C4CEEE;
-	Mon,  5 May 2025 23:22:14 +0000 (UTC)
+	 MIME-Version; b=tVwSZlm9e+PNlbMplvNQiR3w20KOEa+qxCLHjwpgNmQzE3Uka0j8YaskHOX5tUcWnNTo3+aDbGqeHKLwPMph0kO+K3LAer2uU8u6Wnj2DIWqH88P8PRYp/hGnz7jWlTJOxe/vSmLO2cZN8RJs01NqEAeuIp8QBSNrOhnrzRZdqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zqrypqhn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2969C4CEE4;
+	Mon,  5 May 2025 23:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487335;
-	bh=2+joGTOuELpfJHei7VE7uNXX5PJBBzKmn6u5+mhbDzE=;
+	s=k20201202; t=1746487336;
+	bh=iGR/zZ+vHKPqohPSHU9sFA3QVASc8jKfflvcI/g/eUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLehSAdqONx6rXh5OlvYEabYus+ehz2DB07a2ftUGHJwhAHZj31KQDkHP2fwsNgkE
-	 +Hcwm9gag3MKe2/XrvlaICntGBKxMNxO0mwbG3zzA5FIzf0weldcUfXvbzkWvzrUcS
-	 mkKyIawDopKPUVatJVec0UM5l/gERwaZYfNtk/Qh23vd3HB8zHZQR5iOyqQlyeksYr
-	 2Ib2ecceUhuN7x0SCqEYmh2ngoyrglkzFL9KO3Kk9y6bjlrgvVa3yQQ66gajjLruNU
-	 XDwucdrWhYkdGoetoPcVkVyFFUVLzBlANPg53+dl52pzQr15NfoZq+vyLnLnuCod7r
-	 8lV7pTgFv7YzQ==
+	b=ZqrypqhndepzTXHAwRysf8JlfeOE38ZVvc4+MhLJy+AdhaZqy6XhhjGigjPpG/GRD
+	 FAPLb56DwRqZM6tSlblLn0Pq2ND1RIAsVhIkI9R8NQ9MsvxawgTl2vu4v/pw1RPKqr
+	 PofUFz7OBD8rFxxIgKdHfYTO6uVd8y+BdzZQNRrzba+W3jmGSL2JyrOyu6b5hES3pb
+	 YPRUTHpoxyMilECoJDVgy3aKRsU8t1LqnSBcndeoRf14LQUL5KpwLN5TR/UMVQVNo6
+	 hf/j+JrXWtJ95HuV871NF1/8lknm0/zYeyALOwJZTwp+TZcM0432HAPBFUpfQV0vdO
+	 Z+VrVSbNYkgNA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vitalii Mordan <mordan@ispras.ru>,
-	Andi Shyti <andi.shyti@kernel.org>,
+Cc: Mark Harmstone <maharmstone@fb.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-i2c@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 13/79] i2c: pxa: fix call balance of i2c->clk handling routines
-Date: Mon,  5 May 2025 19:20:45 -0400
-Message-Id: <20250505232151.2698893-13-sashal@kernel.org>
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 14/79] btrfs: avoid linker error in btrfs_find_create_tree_block()
+Date: Mon,  5 May 2025 19:20:46 -0400
+Message-Id: <20250505232151.2698893-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -65,39 +68,59 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Mark Harmstone <maharmstone@fb.com>
 
-[ Upstream commit be7113d2e2a6f20cbee99c98d261a1fd6fd7b549 ]
+[ Upstream commit 7ef3cbf17d2734ca66c4ed8573be45f4e461e7ee ]
 
-If the clock i2c->clk was not enabled in i2c_pxa_probe(), it should not be
-disabled in any path.
+The inline function btrfs_is_testing() is hardcoded to return 0 if
+CONFIG_BTRFS_FS_RUN_SANITY_TESTS is not set. Currently we're relying on
+the compiler optimizing out the call to alloc_test_extent_buffer() in
+btrfs_find_create_tree_block(), as it's not been defined (it's behind an
+ #ifdef).
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
+Add a stub version of alloc_test_extent_buffer() to avoid linker errors
+on non-standard optimization levels. This problem was seen on GCC 14
+with -O0 and is helps to see symbols that would be otherwise optimized
+out.
 
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250212172803.1422136-1-mordan@ispras.ru
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Mark Harmstone <maharmstone@fb.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-pxa.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/btrfs/extent_io.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
-index d0c557c8d80f5..c5a6e7527baf7 100644
---- a/drivers/i2c/busses/i2c-pxa.c
-+++ b/drivers/i2c/busses/i2c-pxa.c
-@@ -1284,7 +1284,10 @@ static int i2c_pxa_probe(struct platform_device *dev)
- 				i2c->adap.name);
- 	}
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 04788940afafc..64af1c7f95c24 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -5134,10 +5134,10 @@ struct extent_buffer *find_extent_buffer(struct btrfs_fs_info *fs_info,
+ 	return NULL;
+ }
  
--	clk_prepare_enable(i2c->clk);
-+	ret = clk_prepare_enable(i2c->clk);
-+	if (ret)
-+		return dev_err_probe(&dev->dev, ret,
-+				     "failed to enable clock\n");
+-#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
+ struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
+ 					u64 start)
+ {
++#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
+ 	struct extent_buffer *eb, *exists = NULL;
+ 	int ret;
  
- 	if (i2c->use_pio) {
- 		i2c->adap.algo = &i2c_pxa_pio_algorithm;
+@@ -5173,8 +5173,11 @@ struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
+ free_eb:
+ 	btrfs_release_extent_buffer(eb);
+ 	return exists;
+-}
++#else
++	/* Stub to avoid linker error when compiled with optimizations turned off. */
++	return NULL;
+ #endif
++}
+ 
+ struct extent_buffer *alloc_extent_buffer(struct btrfs_fs_info *fs_info,
+ 					  u64 start)
 -- 
 2.39.5
 
