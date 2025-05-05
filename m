@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-140286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC44AAA70A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:24:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A45C0AAA743
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD7D61620A4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:23:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D02ED987FA1
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1F427F16D;
-	Mon,  5 May 2025 22:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1530627F188;
+	Mon,  5 May 2025 22:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IAL5jiSh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GCfOnNIy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A493227F166;
-	Mon,  5 May 2025 22:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C0C27F180;
+	Mon,  5 May 2025 22:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484562; cv=none; b=WolR/yRRT16iDfSwYI6G2An/qTiFAAcTsct7k7S9G1BimyFauMOIJrsI8uUrnx8JyE1YbvB8dgYov4nlH9ysJ/eTj0IwcopwGDUhmw5q3uvEKcU3egI1V/ihfbqLhyEkOmySmeyQqrIXtZyxOzUL7tMW2Ri/Wu0HgPANey5rHfc=
+	t=1746484563; cv=none; b=T8XIb2SUnOuFP1eTH91bwjOBdaMiOQsKDEon3zfTjGDWyfU98NWRx6dDtp50nIjbGLFkvXJit2VDwVFsxH1EgPFunazYnwYmoQWYcZm+K+GSjgN5JpBqx4kn/4cp8mZxtU4s2/vUxXkaL7iktiY9IiijRRw73m1z00ix0v6vxK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484562; c=relaxed/simple;
-	bh=F973BCTRSrl66uFyaTkGbQP5pwTjAHxZzTa3RasnXYU=;
+	s=arc-20240116; t=1746484563; c=relaxed/simple;
+	bh=jHCS0+sXGbHTrVHQFAZYbKT6iqPXzBL4D1iEcMpYs2w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fYXy80CAvZxETfSFI80dqXZb2SvkKLXpQv8U9ldpT/++K4KqI8EPVRLockAM8pE+cZiucPm6d9GncaXUxLRKDh3H34dYScJECy0oQ2kYlGiZI9DhXEbwHNuc/hOoLyVs7Mt+LiFDWWLi56NJ1SB6LuGLPtO7sj+bpZRh9kKbNPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IAL5jiSh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BEA0C4CEEF;
-	Mon,  5 May 2025 22:36:00 +0000 (UTC)
+	 MIME-Version; b=D4EeKM3fY6HIV4NEJ4MUp3slqBHnMfPVZ4x+XS9MvcnMcO9k/ZRjBdZItWbo2pqvE6qaI9mKaRNRswYbRneX/xELddp1/13xD8tJEimX0oRaSd18jLMbP0FKxpIpjLnFwTyiiW9RmupmibZAY40QtNmjOQujsPiPilpYR0+tIv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GCfOnNIy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AACC4CEEE;
+	Mon,  5 May 2025 22:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484562;
-	bh=F973BCTRSrl66uFyaTkGbQP5pwTjAHxZzTa3RasnXYU=;
+	s=k20201202; t=1746484563;
+	bh=jHCS0+sXGbHTrVHQFAZYbKT6iqPXzBL4D1iEcMpYs2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IAL5jiShD1jcoT9NJeWEkRHNGDEhJGshphEFvLPE18TbeZ+RorTjxlKy1alBHDKFq
-	 wUU66NfQCjGdm0FflVZGGiJJekR7NI+szq+SJKBvV7Jk8eSRZGH9OrgRVhchGdTP9z
-	 R0KIU31RD0fVUMCj3OwBdDcEqy+xnd/MsUzfNi1IC5ZP9XIUJ3z4/C/8VY4xImzKLq
-	 AohA9l+StxIqvExexq3mx/FkkYvO5J0XVtTdA3ffw9CKQrZPLbMMIYNfraEntzl9wY
-	 oLO52wmA5y9HEuPNudmFEKseyL7Iankf46TXnHrX5TvtvWPd/jjsor0MJerMtpZQ7Y
-	 ZNYlSU9ZrL9gw==
+	b=GCfOnNIyT7fJpJYlz12Fut4hVY5xXY+wz7ccor5w3ZSUtHecJR1oEdnbV+ITtsAXy
+	 04YQSuwxuRU9RnSGu1PYUdDzxwjrXc98OKBcDiHY1spxHx3yM7Ajs/iZB9Kx7T6yLk
+	 eyIqw4QrQEv9eAe1tw6eJ2A5+5fMicdCCjFiBUiQE1iUPhlvcq/xNdipkQN3M7QQ19
+	 It7O8eEBA2R+TUOsR8jhB/txdEkokrci2IYsioojn34BjlwHqxJzftJzMC7aqyfJxb
+	 i0gtmzLtp6q58umxPOwn5/W8oGEqltrwWvNCQIM07F9AjJmaQqBcdf97rgM8belBKW
+	 metpzQzfSElWA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+Cc: Jaegeuk Kim <jaegeuk@kernel.org>,
+	Chao Yu <chao@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	thomas.hellstrom@linux.intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 538/642] drm/xe: Fix PVC RPe and RPa information
-Date: Mon,  5 May 2025 18:12:34 -0400
-Message-Id: <20250505221419.2672473-538-sashal@kernel.org>
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.14 539/642] f2fs: introduce f2fs_base_attr for global sysfs entries
+Date: Mon,  5 May 2025 18:12:35 -0400
+Message-Id: <20250505221419.2672473-539-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -70,70 +65,153 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 8a734b9359cfa1bdb805f5ca23e20bd99dd18a0a ]
+[ Upstream commit 21925ede449e038ed6f9efdfe0e79f15bddc34bc ]
 
-A simple lazy buggy copy and paste of the PVC comment has brought
-the attention to the incorrect masks of the PVC register for RPa
-and RPe. So, let's fix them all.
+In /sys/fs/f2fs/features, there's no f2fs_sb_info, so let's avoid to get
+the pointer.
 
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Reviewed-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250109195219.658557-1-rodrigo.vivi@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_pc.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ fs/f2fs/sysfs.c | 74 ++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 52 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
-index f382f5d53ca8b..2276d85926fcb 100644
---- a/drivers/gpu/drm/xe/xe_guc_pc.c
-+++ b/drivers/gpu/drm/xe/xe_guc_pc.c
-@@ -371,16 +371,17 @@ static void tgl_update_rpa_value(struct xe_guc_pc *pc)
- 	u32 reg;
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index d15c68b28952b..b419555e1ea7f 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -61,6 +61,12 @@ struct f2fs_attr {
+ 	int id;
+ };
  
- 	/*
--	 * For PVC we still need to use fused RP1 as the approximation for RPe
--	 * For other platforms than PVC we get the resolved RPe directly from
-+	 * For PVC we still need to use fused RP0 as the approximation for RPa
-+	 * For other platforms than PVC we get the resolved RPa directly from
- 	 * PCODE at a different register
- 	 */
--	if (xe->info.platform == XE_PVC)
-+	if (xe->info.platform == XE_PVC) {
- 		reg = xe_mmio_read32(&gt->mmio, PVC_RP_STATE_CAP);
--	else
-+		pc->rpa_freq = REG_FIELD_GET(RP0_MASK, reg) * GT_FREQUENCY_MULTIPLIER;
-+	} else {
- 		reg = xe_mmio_read32(&gt->mmio, FREQ_INFO_REC);
--
--	pc->rpa_freq = REG_FIELD_GET(RPA_MASK, reg) * GT_FREQUENCY_MULTIPLIER;
-+		pc->rpa_freq = REG_FIELD_GET(RPA_MASK, reg) * GT_FREQUENCY_MULTIPLIER;
-+	}
++struct f2fs_base_attr {
++	struct attribute attr;
++	ssize_t (*show)(struct f2fs_base_attr *a, char *buf);
++	ssize_t (*store)(struct f2fs_base_attr *a, const char *buf, size_t len);
++};
++
+ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
+ 			     struct f2fs_sb_info *sbi, char *buf);
+ 
+@@ -862,6 +868,25 @@ static void f2fs_sb_release(struct kobject *kobj)
+ 	complete(&sbi->s_kobj_unregister);
  }
  
- static void tgl_update_rpe_value(struct xe_guc_pc *pc)
-@@ -394,12 +395,13 @@ static void tgl_update_rpe_value(struct xe_guc_pc *pc)
- 	 * For other platforms than PVC we get the resolved RPe directly from
- 	 * PCODE at a different register
- 	 */
--	if (xe->info.platform == XE_PVC)
-+	if (xe->info.platform == XE_PVC) {
- 		reg = xe_mmio_read32(&gt->mmio, PVC_RP_STATE_CAP);
--	else
-+		pc->rpe_freq = REG_FIELD_GET(RP1_MASK, reg) * GT_FREQUENCY_MULTIPLIER;
-+	} else {
- 		reg = xe_mmio_read32(&gt->mmio, FREQ_INFO_REC);
--
--	pc->rpe_freq = REG_FIELD_GET(RPE_MASK, reg) * GT_FREQUENCY_MULTIPLIER;
-+		pc->rpe_freq = REG_FIELD_GET(RPE_MASK, reg) * GT_FREQUENCY_MULTIPLIER;
-+	}
++static ssize_t f2fs_base_attr_show(struct kobject *kobj,
++				struct attribute *attr, char *buf)
++{
++	struct f2fs_base_attr *a = container_of(attr,
++				struct f2fs_base_attr, attr);
++
++	return a->show ? a->show(a, buf) : 0;
++}
++
++static ssize_t f2fs_base_attr_store(struct kobject *kobj,
++				struct attribute *attr,
++				const char *buf, size_t len)
++{
++	struct f2fs_base_attr *a = container_of(attr,
++				struct f2fs_base_attr, attr);
++
++	return a->store ? a->store(a, buf, len) : 0;
++}
++
+ /*
+  * Note that there are three feature list entries:
+  * 1) /sys/fs/f2fs/features
+@@ -880,14 +905,13 @@ static void f2fs_sb_release(struct kobject *kobj)
+  *     please add new on-disk feature in this list only.
+  *     - ref. F2FS_SB_FEATURE_RO_ATTR()
+  */
+-static ssize_t f2fs_feature_show(struct f2fs_attr *a,
+-		struct f2fs_sb_info *sbi, char *buf)
++static ssize_t f2fs_feature_show(struct f2fs_base_attr *a, char *buf)
+ {
+ 	return sysfs_emit(buf, "supported\n");
  }
  
- static void pc_update_rp_values(struct xe_guc_pc *pc)
+ #define F2FS_FEATURE_RO_ATTR(_name)				\
+-static struct f2fs_attr f2fs_attr_##_name = {			\
++static struct f2fs_base_attr f2fs_base_attr_##_name = {		\
+ 	.attr = {.name = __stringify(_name), .mode = 0444 },	\
+ 	.show	= f2fs_feature_show,				\
+ }
+@@ -1256,37 +1280,38 @@ static struct attribute *f2fs_attrs[] = {
+ };
+ ATTRIBUTE_GROUPS(f2fs);
+ 
++#define BASE_ATTR_LIST(name) (&f2fs_base_attr_##name.attr)
+ static struct attribute *f2fs_feat_attrs[] = {
+ #ifdef CONFIG_FS_ENCRYPTION
+-	ATTR_LIST(encryption),
+-	ATTR_LIST(test_dummy_encryption_v2),
++	BASE_ATTR_LIST(encryption),
++	BASE_ATTR_LIST(test_dummy_encryption_v2),
+ #if IS_ENABLED(CONFIG_UNICODE)
+-	ATTR_LIST(encrypted_casefold),
++	BASE_ATTR_LIST(encrypted_casefold),
+ #endif
+ #endif /* CONFIG_FS_ENCRYPTION */
+ #ifdef CONFIG_BLK_DEV_ZONED
+-	ATTR_LIST(block_zoned),
++	BASE_ATTR_LIST(block_zoned),
+ #endif
+-	ATTR_LIST(atomic_write),
+-	ATTR_LIST(extra_attr),
+-	ATTR_LIST(project_quota),
+-	ATTR_LIST(inode_checksum),
+-	ATTR_LIST(flexible_inline_xattr),
+-	ATTR_LIST(quota_ino),
+-	ATTR_LIST(inode_crtime),
+-	ATTR_LIST(lost_found),
++	BASE_ATTR_LIST(atomic_write),
++	BASE_ATTR_LIST(extra_attr),
++	BASE_ATTR_LIST(project_quota),
++	BASE_ATTR_LIST(inode_checksum),
++	BASE_ATTR_LIST(flexible_inline_xattr),
++	BASE_ATTR_LIST(quota_ino),
++	BASE_ATTR_LIST(inode_crtime),
++	BASE_ATTR_LIST(lost_found),
+ #ifdef CONFIG_FS_VERITY
+-	ATTR_LIST(verity),
++	BASE_ATTR_LIST(verity),
+ #endif
+-	ATTR_LIST(sb_checksum),
++	BASE_ATTR_LIST(sb_checksum),
+ #if IS_ENABLED(CONFIG_UNICODE)
+-	ATTR_LIST(casefold),
++	BASE_ATTR_LIST(casefold),
+ #endif
+-	ATTR_LIST(readonly),
++	BASE_ATTR_LIST(readonly),
+ #ifdef CONFIG_F2FS_FS_COMPRESSION
+-	ATTR_LIST(compression),
++	BASE_ATTR_LIST(compression),
+ #endif
+-	ATTR_LIST(pin_file),
++	BASE_ATTR_LIST(pin_file),
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(f2fs_feat);
+@@ -1362,9 +1387,14 @@ static struct kset f2fs_kset = {
+ 	.kobj	= {.ktype = &f2fs_ktype},
+ };
+ 
++static const struct sysfs_ops f2fs_feat_attr_ops = {
++	.show	= f2fs_base_attr_show,
++	.store	= f2fs_base_attr_store,
++};
++
+ static const struct kobj_type f2fs_feat_ktype = {
+ 	.default_groups = f2fs_feat_groups,
+-	.sysfs_ops	= &f2fs_attr_ops,
++	.sysfs_ops	= &f2fs_feat_attr_ops,
+ };
+ 
+ static struct kobject f2fs_feat = {
 -- 
 2.39.5
 
