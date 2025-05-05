@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-140240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1BEAAA675
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:13:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C507AAAA6AC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1A7A1886652
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:12:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 782443AEFA8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00FB13272BB;
-	Mon,  5 May 2025 22:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66971290BD4;
+	Mon,  5 May 2025 22:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lEIy25wv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="niM801Kn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A398D3272AF;
-	Mon,  5 May 2025 22:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205663272D6;
+	Mon,  5 May 2025 22:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484482; cv=none; b=c1+mlZlySe60aM2g4HVr7FpiVx8yieChoYpHNyV7xu+JKgpg8i4983ArieO6uexKd2CROCCB2ADNeZVOyTwJP6BB82e2U7xEZCXbW0MJMGtUk3qXkQ5mIFVscROn7jRRb1g6misYoh+V5xBbUx//BJ295fjQKZwJ+YIThVg0ofs=
+	t=1746484484; cv=none; b=ORbKFTQ1il0GWTzRXSflAQnc5YVhd84IVSmdNjaPyqVlCap6NoKFf5uxwN1YQP4e8uc21P3spcLMgf39N4CW/ZJmCvxctepw/P00Q2T2lgnalrNbjLo/pr1da/lsuPTA6fEtRGo5C4bFpLOj0+aAfsxzKkrEv2NJ3qgL4S08E0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484482; c=relaxed/simple;
-	bh=DYs97fnCcKXqsXxMsXf3adT5nR9m4ohxW0ZVfVou3XI=;
+	s=arc-20240116; t=1746484484; c=relaxed/simple;
+	bh=y4du74TKn+X96QeimtPntdcuAS8xlZ9guu7x0q8AqmA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=h+SXz1jkUzoRD8jaoJwJXxct5fBb0BnBS+qrVW5+41eloF2FYCyJ4Y8AxYbDbWSsiqrpJPkHqfmDAiGqMevZnunvaJLOnA+7z/oxxQOqQ/xHnEFq8iZ6eUdmTXXabOqupUdMIa+0rAgtYSRg8VfN9Q9a9Xo/yOA1CjZRecvJbL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lEIy25wv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B509C4CEF1;
-	Mon,  5 May 2025 22:34:41 +0000 (UTC)
+	 MIME-Version; b=Xptw/cphfUdq2LXI7Lx31jqwoYM4xMMx4lJ7JukZcQxetI4fs5ZMYtJTCgp9gs5Ge5YfEv+///sp8aS3uLX5fIK6FmJcDdPg2rquhWgs0wUzLBAxpdl3HRLNDvIefuY306q7BznRNLr0TqP3iAk/U+YHnEAKT1NUjyukGDIgLgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=niM801Kn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E87F2C4CEF2;
+	Mon,  5 May 2025 22:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484482;
-	bh=DYs97fnCcKXqsXxMsXf3adT5nR9m4ohxW0ZVfVou3XI=;
+	s=k20201202; t=1746484484;
+	bh=y4du74TKn+X96QeimtPntdcuAS8xlZ9guu7x0q8AqmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lEIy25wvn8Qm6lJ6S85Qfa1sj9y+R3YNhbceGymgku944wRODqQgbcBFHBrZ/mV4+
-	 CTw/2HbGxrCGopIOHJfuytNG5R1p6Z3BM91m3ntzFQpacf9qkvSp8au4Xe5CB7KivT
-	 sqBk6n9rqBSGWn75DK0k4g6TycAyMEvj8cKGeoXj8sEfu6ZGys1d2ZV2RQBbVi25cz
-	 8PPfwNDt4mWmfprzYh6ndkTMfn22AkZFBmleQkZRMX+WHaFVpoTRXmdq4DmNgQwea2
-	 c4dXUqHRJojh+DVFHTazHaSgeHySachB16o/aTEgUB6WOT2UG92C7C4zs4dkWILaL7
-	 6NWIxLqRfmIqA==
+	b=niM801Kn28TE2aSEKtRGHxOUObxGnF7iVPRKtzHT+L5zZf+a3JAWqg5DHhTMK/XBF
+	 Vd6ZEb3VGXDspa8dfPf+FqZrcFw/tmi/6bAQSG2xRX+qV6+kWFFPRq5JEbfZ4MTXFH
+	 m6gM2AqY7tjSgXN8Oru2AXzJryDyHyuRvwPnIuHf/Kh0UtLqDrxVQuk7BGba9LUTjF
+	 3VduyqzYw75hNcCJyl39Ov+OBWg7FgZdJb7nK3y+mBvHDp86ESRrdLb+kMOt586OPi
+	 WxzUSuEBJFZb5Q2nWX/Lnsal3mx6gJE+n+0NG7oXebXXM0zZZWMhXcqZzcDnB8lrlU
+	 mIZylBk+xuLbg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Leon Romanovsky <leonro@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+Cc: Angelo Dureghello <adureghello@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 492/642] xfrm: prevent high SEQ input in non-ESN mode
-Date: Mon,  5 May 2025 18:11:48 -0400
-Message-Id: <20250505221419.2672473-492-sashal@kernel.org>
+	lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 493/642] iio: adc: ad7606: protect register access
+Date: Mon,  5 May 2025 18:11:49 -0400
+Message-Id: <20250505221419.2672473-493-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -69,51 +68,51 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-[ Upstream commit e3aa43a50a6455831e3c32dabc7ece38d9cd9d05 ]
+[ Upstream commit 0f65f59e632d942cccffd12c36036c24eb7037eb ]
 
-In non-ESN mode, the SEQ numbers are limited to 32 bits and seq_hi/oseq_hi
-are not used. So make sure that user gets proper error message, in case
-such assignment occurred.
+Protect register (and bus) access from concurrent
+read / write. Needed in the backend operating mode.
 
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Link: https://patch.msgid.link/20250210-wip-bl-ad7606_add_backend_sw_mode-v4-7-160df18b1da7@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_user.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/iio/adc/ad7606.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 82a768500999b..b5266e0848e82 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -178,6 +178,12 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
- 				       "Replay seq and seq_hi should be 0 for output SA");
- 			return -EINVAL;
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index d39354afd5394..2b0725449a6ab 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -852,7 +852,12 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
  		}
-+		if (rs->oseq_hi && !(p->flags & XFRM_STATE_ESN)) {
-+			NL_SET_ERR_MSG(
-+				extack,
-+				"Replay oseq_hi should be 0 in non-ESN mode for output SA");
-+			return -EINVAL;
-+		}
- 		if (rs->bmp_len) {
- 			NL_SET_ERR_MSG(extack, "Replay bmp_len should 0 for output SA");
+ 		val = (val * MICRO) + val2;
+ 		i = find_closest(val, scale_avail_uv, cs->num_scales);
++
++		ret = iio_device_claim_direct_mode(indio_dev);
++		if (ret < 0)
++			return ret;
+ 		ret = st->write_scale(indio_dev, ch, i + cs->reg_offset);
++		iio_device_release_direct_mode(indio_dev);
+ 		if (ret < 0)
+ 			return ret;
+ 		cs->range = i;
+@@ -863,7 +868,12 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
  			return -EINVAL;
-@@ -190,6 +196,12 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
- 				       "Replay oseq and oseq_hi should be 0 for input SA");
- 			return -EINVAL;
- 		}
-+		if (rs->seq_hi && !(p->flags & XFRM_STATE_ESN)) {
-+			NL_SET_ERR_MSG(
-+				extack,
-+				"Replay seq_hi should be 0 in non-ESN mode for input SA");
-+			return -EINVAL;
-+		}
- 	}
- 
- 	return 0;
+ 		i = find_closest(val, st->oversampling_avail,
+ 				 st->num_os_ratios);
++
++		ret = iio_device_claim_direct_mode(indio_dev);
++		if (ret < 0)
++			return ret;
+ 		ret = st->write_os(indio_dev, i);
++		iio_device_release_direct_mode(indio_dev);
+ 		if (ret < 0)
+ 			return ret;
+ 		st->oversampling = st->oversampling_avail[i];
 -- 
 2.39.5
 
