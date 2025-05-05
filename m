@@ -1,135 +1,103 @@
-Return-Path: <stable+bounces-139587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3351AAA8C0E
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 08:06:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC66AA8C30
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 08:20:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 710AE168B6A
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 06:06:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3ADE3B2325
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 06:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164981AA79C;
-	Mon,  5 May 2025 06:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE4F1B87E9;
+	Mon,  5 May 2025 06:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tcqcsD45"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="NkXT6ykL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C930DEEBA
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 06:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E02C1459F7;
+	Mon,  5 May 2025 06:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746425189; cv=none; b=nE3MmrLG8xk0Riw9bncpXLWJ2ddbHo/rTwZPyrsvhvU7O2a0IJwiHaYmzs6pAf6i/hy7YkCJ/uI07ecNDx+P8NCXDbWdXyiAoxryfnhUnnp6D4Hx69puX5/wONGsZDNi4GeNWKwVAuLWU8H65Mqv6xVxgUeBnot8S1NMTqT63xo=
+	t=1746426035; cv=none; b=sTy+OuCmrmedBfZTUoYaWCWKtQ2p1VtuC7NAoR/v8/s8D2z4tE9gGPFBA8Q25FnqwF4rMdIqEFqgOLdF8z1boTthyKrs8xDNxUFbiLtn8cVo72BaDz8MSkaAuXSkvhsdhLv2LJIBneMmlPpjHUxmhU2vlShnwavys6gSVGlss9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746425189; c=relaxed/simple;
-	bh=32TA8e5bPtMwAf49vZpMVNF+y3107NtjCwoixFW/fYs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mlrTOLrf3fjBzHQBw6YOHGHChrUOIQlfxjZHn7UWKDV6pq0uqH8XL9sbbrjSf/ziMVqqNMfzfwa+qvoCnSvDQEbaYYCaODdlEljF+iQmO+0IFhn6bj4nB4o4/fpeHfrf1n7yCuAQxliVqxgG3qTmkqyXNP9iMmhP3/XMt8eDqjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tcqcsD45; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3471CC4CEE4;
-	Mon,  5 May 2025 06:06:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746425189;
-	bh=32TA8e5bPtMwAf49vZpMVNF+y3107NtjCwoixFW/fYs=;
-	h=Subject:To:Cc:From:Date:From;
-	b=tcqcsD459Z/pas+OsYNrlauv/TGdpsKdzEGJ5u3f8O3QBhb0lTTY4Q9jCqerdgBB+
-	 cYcWTX4RaI5oQWU/hKiPHVhzNOX9I/sC38VGNit1nHWhCxWoUAjAbqPwi8Ag+whJeH
-	 JUyxmq9KcemI5IKorZGNkufiqjr06U5/wjQWb1js=
-Subject: FAILED: patch "[PATCH] cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode" failed to apply to 5.4-stable tree
-To: srinivas.pandruvada@linux.intel.com,rafael.j.wysocki@intel.com,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 May 2025 08:06:20 +0200
-Message-ID: <2025050520-deprecate-skinny-0232@gregkh>
+	s=arc-20240116; t=1746426035; c=relaxed/simple;
+	bh=l0nxOgufb31in1ONbVZ8SNBKiilPv70ouEvml3UxvZk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OcFoxgmC7AfAQvTbKRsqWkl1/X3E1DN9/IftbQVkAJML6nezfPLVXaodwiTShtQEl2Jf+PfAT4TFBTABITrmJOWv8c+hP4e5DclZhypIH1frtx0x0w1MLfhyUwlOHBGEupRgtSS/QjAGOTKJjrCn+dGKE0VucpsIPTU1HNetkM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=NkXT6ykL; arc=none smtp.client-ip=79.135.106.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
+	s=protonmail; t=1746426023; x=1746685223;
+	bh=6gC4p2VGpOcPA3d9KZlIOkx8dy/hj4qThwos84ThB/o=;
+	h=From:Subject:Date:Message-Id:To:Cc:From:To:Cc:Date:Subject:
+	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector:List-Unsubscribe:
+	 List-Unsubscribe-Post;
+	b=NkXT6ykLHI0fnd+O26GILIdEVzaoKuZHir3QL1j5/SdRwfWt8aZc5dUixQOi2qcW2
+	 clB175pzmRca+IV15lVBu5mPuSY0tRZKlSbKNKXNTjUdFKL8ZYLvFJzFJ+9cpM1oZl
+	 cxhGsF2uRg2aSjngnD3bguc+By7maAHg432LkmpoFAQhknkGlcnuJnwXrbE6ldtXIK
+	 dXglQdqJ2yxtL/q1sJEko84JnJqnzayoSGTGGse3HDqm+UAbaltstbjFQzHMTFeCDB
+	 j8vXzQLjWB15bMV6swHfcxkLRkc0I/iM9V52RGOJZf2L3+La8h4ahTYUM4GdzLhTKc
+	 4gKd4sxr+fQDA==
+X-Pm-Submission-Id: 4ZrWbm6sJ5zLT
+From: Sean Nyekjaer <sean@geanix.com>
+Subject: [PATCH v3 0/2] iio: accel: fxls8962af: Fix temperature readings
+Date: Mon, 05 May 2025 08:20:18 +0200
+Message-Id: <20250505-fxls-v3-0-8c541bf0205c@geanix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKJYGGgC/12MQQ6CMBBFr0Jmbc202BJccQ/jommnMImCaU2DI
+ dzdQlyou3mT/94CiSJTgnO1QKTMiaexQH2owA127EmwLwwKlUaNUoT5lkSNDYXaG49GQ5k+IgW
+ e98zlWnjg9Jzia69muX3/AlmKcukTGmmxwbbterIjz0c33WErZPVtqY+lBAqSNhgdpLXG/Vjru
+ r4BkohqLs8AAAA=
+X-Change-ID: 20250501-fxls-307ef3d6d065
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Marcelo Schmitt <marcelo.schmitt1@gmail.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Sean Nyekjaer <sean@geanix.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
+Add the correct scale to get temperature in mili degree Celcius.
+Add sign component to temperature scan element.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+---
+Changes in v3:
+- Dropping define infavor of inline scale value
+- Added using constants from units.h
+- Tweaked commit msg to make it more assertive
+- Link to v2: https://lore.kernel.org/r/20250502-fxls-v2-0-e1af65f1aa6c@geanix.com
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Changes in v2:
+- Correct offset is applied before scaling component 
+- Added sign component to temperature scan element
+- Link to v1: https://lore.kernel.org/r/20250501-fxls-v1-1-f54061a07099@geanix.com
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x ac4e04d9e378f5aa826c2406ad7871ae1b6a6fb9
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050520-deprecate-skinny-0232@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+---
+Sean Nyekjaer (2):
+      iio: accel: fxls8962af: Fix temperature calculation
+      iio: accel: fxls8962af: Fix temperature scan element sign
 
-Possible dependencies:
+ drivers/iio/accel/fxls8962af-core.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+---
+base-commit: 609bc31eca06c7408e6860d8b46311ebe45c1fef
+change-id: 20250501-fxls-307ef3d6d065
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From ac4e04d9e378f5aa826c2406ad7871ae1b6a6fb9 Mon Sep 17 00:00:00 2001
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Date: Tue, 29 Apr 2025 14:07:11 -0700
-Subject: [PATCH] cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode
-
-When turbo mode is unavailable on a Skylake-X system, executing the
-command:
-
- # echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
-
-results in an unchecked MSR access error:
-
- WRMSR to 0x199 (attempted to write 0x0000000100001300).
-
-This issue was reproduced on an OEM (Original Equipment Manufacturer)
-system and is not a common problem across all Skylake-X systems.
-
-This error occurs because the MSR 0x199 Turbo Engage Bit (bit 32) is set
-when turbo mode is disabled. The issue arises when intel_pstate fails to
-detect that turbo mode is disabled. Here intel_pstate relies on
-MSR_IA32_MISC_ENABLE bit 38 to determine the status of turbo mode.
-However, on this system, bit 38 is not set even when turbo mode is
-disabled.
-
-According to the Intel Software Developer's Manual (SDM), the BIOS sets
-this bit during platform initialization to enable or disable
-opportunistic processor performance operations. Logically, this bit
-should be set in such cases. However, the SDM also specifies that "OS
-and applications must use CPUID leaf 06H to detect processors with
-opportunistic processor performance operations enabled."
-
-Therefore, in addition to checking MSR_IA32_MISC_ENABLE bit 38, verify
-that CPUID.06H:EAX[1] is 0 to accurately determine if turbo mode is
-disabled.
-
-Fixes: 4521e1a0ce17 ("cpufreq: intel_pstate: Reflect current no_turbo state correctly")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index f41ed0b9e610..ba9bf06f1c77 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -598,6 +598,9 @@ static bool turbo_is_disabled(void)
- {
- 	u64 misc_en;
- 
-+	if (!cpu_feature_enabled(X86_FEATURE_IDA))
-+		return true;
-+
- 	rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
- 
- 	return !!(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
+Best regards,
+-- 
+Sean Nyekjaer <sean@geanix.com>
 
 
