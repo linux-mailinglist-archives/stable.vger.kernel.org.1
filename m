@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-140913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B82AAAC69
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3E86AAAC66
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 900611661FF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:14:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BD8E165C40
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C853C7D93;
-	Mon,  5 May 2025 23:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E673C8753;
+	Mon,  5 May 2025 23:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NYvUpXYu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gGG0ZDTK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F44B2F3781;
-	Mon,  5 May 2025 23:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CFC2F379D;
+	Mon,  5 May 2025 23:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486875; cv=none; b=XpA7cBlDGP7N74f/Br17mPMNkyrJjviZqHrs+f0LXdKtWkDWC19Vn+M9xE0aj2BegIiPqEFZFRvLtbDBShggNVfI4j4MXqR/LuRSZY1bbbLC/QQWoRP2Eya4uFEALitWQ90Sx63YJT9UnLBmumxb0vTXgbPdUpCWSTDNR4S3pyk=
+	t=1746486877; cv=none; b=lomkjSaYw8Hhtg+jOp/hHktEwd+dKSOxVFmIh3YEyAtxpLViJqBag07Rs73Hfx3EyBQoiV+ln3zNZs6or/AAOpF+okpjb/ODeywHL8+Cy1F58ZeBxBlcoxg7xRGlc2bUt6KaKIJSC35V7lvs0TXI1yogavNg/ug7K2RF5XOg+m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486875; c=relaxed/simple;
-	bh=ykJqWTmi2l+7UFccg3wX3A1rlSlzWOulEI6BSMi5yNY=;
+	s=arc-20240116; t=1746486877; c=relaxed/simple;
+	bh=NNkPYG3d16F+ZFizuQsJctllpyeh8AGzTVNFYhCDOFY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AQ9e6Jbmug1B1KxwNY52nhUveYF9tbWOylmginVlufzDFyH1fkoPreIsshscmeEo0qngUL8AFz695F4ibcrsjXJ7Ir8bZgevRoqEYOAEyRx2Bzbc9VsrN10Gybu3L69/zpVGKeLavRQLQq28rQYv4f/Iz2A0NdFl44vlKYY/34Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NYvUpXYu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31D7C4CEE4;
-	Mon,  5 May 2025 23:14:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OYBCc872ZFbBNZb/SDHp78ts/xLdF4li4h2z2GazkKJrxHb35F4j5gNXCeYBTiQo/ALZqIaQLN+V+FNL0vjHeg7XZam0qf96jHuCF9HemtACL4cMa8r3oXmUxC99JXWbP2JYaXI9BcflXZIsQDdwNLiSEo4GaAHotRGDNQaeWdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gGG0ZDTK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F27C4CEED;
+	Mon,  5 May 2025 23:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486874;
-	bh=ykJqWTmi2l+7UFccg3wX3A1rlSlzWOulEI6BSMi5yNY=;
+	s=k20201202; t=1746486875;
+	bh=NNkPYG3d16F+ZFizuQsJctllpyeh8AGzTVNFYhCDOFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NYvUpXYuqMD95X9Ha6/K3il+BD+NIkJNWcti44VMFRkTTS5cOlrqsFpGjDtsvXeA6
-	 QnCN/NJmcXZoeOHHn08wAxXJegor5bUGYs7/+HSb20cstx12OJNn8W8i3VmwnRIpw3
-	 X+83DBRcJXLUl6PyZfY7yNKS80bSUZcnjdnSQn5CrStmU/UOP8KqN/i5VIpqJvabqG
-	 UVxpLKg7Nxv6UTnE9q4wQDU2VEweRqgKO7Nz8gKCcnphfZ5EPpiYdaJw2anU7khUB8
-	 HxSexJ/JBoiZlDKtJjGWfemMUelf8Si08ZgVdS0v5qOVDyzZLO8sFgDMCIQgqU6Xug
-	 yQ7lvn+MN4MDg==
+	b=gGG0ZDTKQ4YUJkm6ji/AISGGk/yJtPnecwuwCNqeGPVv0wos5pFa1r4bYjY35G8kU
+	 aCtuuC9J9cANdB/CgvMUkP6ELeBUnJIlpQ75pR7toO6B+O/aYYhY+bbo0ctokTkfST
+	 l9jPgm68KvFKNms1fBM2AsoCEi94BSVMWLssQhHnDgQKnRwyeCO5dydehasmcih424
+	 x0PMUssGmuGQvWTfEfTkeOxgoEEOx9YyN2eKCLmq6t6dm4pooQ9ZFu6oAHGcFixost
+	 EcXJeTMjF9WtZyEjlvSrqppXmMxnSJ9ZpDD6HLfr/XXX7Zsyd/2EwsFkQh4ybRNgvI
+	 u7g03KBnNUqIA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
-	Kevin Tian <kevin.tian@intel.com>,
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ij@kernel.org>,
+	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	Yunxiang.Li@amd.com,
-	zhangdongdong@eswincomputing.com,
-	bhelgaas@google.com,
-	avihaih@nvidia.com,
-	jgg@ziepe.ca,
-	yi.l.liu@intel.com,
-	pstanner@redhat.com,
-	linux@treblig.org,
+	edumazet@google.com,
+	ncardwell@google.com,
+	dsahern@kernel.org,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	kvm@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 036/153] vfio/pci: Handle INTx IRQ_NOTCONNECTED
-Date: Mon,  5 May 2025 19:11:23 -0400
-Message-Id: <20250505231320.2695319-36-sashal@kernel.org>
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 037/153] tcp: reorganize tcp_in_ack_event() and tcp_count_delivered()
+Date: Mon,  5 May 2025 19:11:24 -0400
+Message-Id: <20250505231320.2695319-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -69,87 +66,156 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Ilpo Järvinen <ij@kernel.org>
 
-[ Upstream commit 860be250fc32de9cb24154bf21b4e36f40925707 ]
+[ Upstream commit 149dfb31615e22271d2525f078c95ea49bc4db24 ]
 
-Some systems report INTx as not routed by setting pdev->irq to
-IRQ_NOTCONNECTED, resulting in a -ENOTCONN error when trying to
-setup eventfd signaling.  Include this in the set of conditions
-for which the PIN register is virtualized to zero.
+- Move tcp_count_delivered() earlier and split tcp_count_delivered_ce()
+  out of it
+- Move tcp_in_ack_event() later
+- While at it, remove the inline from tcp_in_ack_event() and let
+  the compiler to decide
 
-Additionally consolidate vfio_pci_get_irq_count() to use this
-virtualized value in reporting INTx support via ioctl and sanity
-checking ioctl paths since pdev->irq is re-used when the device
-is in MSI mode.
+Accurate ECN's heuristics does not know if there is going
+to be ACE field based CE counter increase or not until after
+rtx queue has been processed. Only then the number of ACKed
+bytes/pkts is available. As CE or not affects presence of
+FLAG_ECE, that information for tcp_in_ack_event is not yet
+available in the old location of the call to tcp_in_ack_event().
 
-The combination of these results in both the config space of the
-device and the ioctl interface behaving as if the device does not
-support INTx.
-
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20250311230623.1264283-1-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Ilpo Järvinen <ij@kernel.org>
+Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_config.c |  3 ++-
- drivers/vfio/pci/vfio_pci_core.c   | 10 +---------
- drivers/vfio/pci/vfio_pci_intrs.c  |  2 +-
- 3 files changed, 4 insertions(+), 11 deletions(-)
+ net/ipv4/tcp_input.c | 56 +++++++++++++++++++++++++-------------------
+ 1 file changed, 32 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
-index 63f6308b0f8c9..fdff3359849c1 100644
---- a/drivers/vfio/pci/vfio_pci_config.c
-+++ b/drivers/vfio/pci/vfio_pci_config.c
-@@ -1756,7 +1756,8 @@ int vfio_config_init(struct vfio_pci_core_device *vdev)
- 					cpu_to_le16(PCI_COMMAND_MEMORY);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 6bd28ac949b42..8859a38b45d5e 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -404,6 +404,20 @@ static bool tcp_ecn_rcv_ecn_echo(const struct tcp_sock *tp, const struct tcphdr
+ 	return false;
+ }
+ 
++static void tcp_count_delivered_ce(struct tcp_sock *tp, u32 ecn_count)
++{
++	tp->delivered_ce += ecn_count;
++}
++
++/* Updates the delivered and delivered_ce counts */
++static void tcp_count_delivered(struct tcp_sock *tp, u32 delivered,
++				bool ece_ack)
++{
++	tp->delivered += delivered;
++	if (ece_ack)
++		tcp_count_delivered_ce(tp, delivered);
++}
++
+ /* Buffer size and advertised window tuning.
+  *
+  * 1. Tuning sk->sk_sndbuf, when connection enters established state.
+@@ -1112,15 +1126,6 @@ void tcp_mark_skb_lost(struct sock *sk, struct sk_buff *skb)
+ 	}
+ }
+ 
+-/* Updates the delivered and delivered_ce counts */
+-static void tcp_count_delivered(struct tcp_sock *tp, u32 delivered,
+-				bool ece_ack)
+-{
+-	tp->delivered += delivered;
+-	if (ece_ack)
+-		tp->delivered_ce += delivered;
+-}
+-
+ /* This procedure tags the retransmission queue when SACKs arrive.
+  *
+  * We have three tag bits: SACKED(S), RETRANS(R) and LOST(L).
+@@ -3776,12 +3781,23 @@ static void tcp_process_tlp_ack(struct sock *sk, u32 ack, int flag)
+ 	}
+ }
+ 
+-static inline void tcp_in_ack_event(struct sock *sk, u32 flags)
++static void tcp_in_ack_event(struct sock *sk, int flag)
+ {
+ 	const struct inet_connection_sock *icsk = inet_csk(sk);
+ 
+-	if (icsk->icsk_ca_ops->in_ack_event)
+-		icsk->icsk_ca_ops->in_ack_event(sk, flags);
++	if (icsk->icsk_ca_ops->in_ack_event) {
++		u32 ack_ev_flags = 0;
++
++		if (flag & FLAG_WIN_UPDATE)
++			ack_ev_flags |= CA_ACK_WIN_UPDATE;
++		if (flag & FLAG_SLOWPATH) {
++			ack_ev_flags |= CA_ACK_SLOWPATH;
++			if (flag & FLAG_ECE)
++				ack_ev_flags |= CA_ACK_ECE;
++		}
++
++		icsk->icsk_ca_ops->in_ack_event(sk, ack_ev_flags);
++	}
+ }
+ 
+ /* Congestion control has updated the cwnd already. So if we're in
+@@ -3898,12 +3914,8 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
+ 		tcp_snd_una_update(tp, ack);
+ 		flag |= FLAG_WIN_UPDATE;
+ 
+-		tcp_in_ack_event(sk, CA_ACK_WIN_UPDATE);
+-
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPHPACKS);
+ 	} else {
+-		u32 ack_ev_flags = CA_ACK_SLOWPATH;
+-
+ 		if (ack_seq != TCP_SKB_CB(skb)->end_seq)
+ 			flag |= FLAG_DATA;
+ 		else
+@@ -3915,19 +3927,12 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
+ 			flag |= tcp_sacktag_write_queue(sk, skb, prior_snd_una,
+ 							&sack_state);
+ 
+-		if (tcp_ecn_rcv_ecn_echo(tp, tcp_hdr(skb))) {
++		if (tcp_ecn_rcv_ecn_echo(tp, tcp_hdr(skb)))
+ 			flag |= FLAG_ECE;
+-			ack_ev_flags |= CA_ACK_ECE;
+-		}
+ 
+ 		if (sack_state.sack_delivered)
+ 			tcp_count_delivered(tp, sack_state.sack_delivered,
+ 					    flag & FLAG_ECE);
+-
+-		if (flag & FLAG_WIN_UPDATE)
+-			ack_ev_flags |= CA_ACK_WIN_UPDATE;
+-
+-		tcp_in_ack_event(sk, ack_ev_flags);
  	}
  
--	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx)
-+	if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) || vdev->nointx ||
-+	    vdev->pdev->irq == IRQ_NOTCONNECTED)
- 		vconfig[PCI_INTERRUPT_PIN] = 0;
+ 	/* This is a deviation from RFC3168 since it states that:
+@@ -3954,6 +3959,8 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
  
- 	ret = vfio_cap_init(vdev);
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index f3916e6b16b9d..ea4e75be1884f 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -481,15 +481,7 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_finish_enable);
- static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_type)
- {
- 	if (irq_type == VFIO_PCI_INTX_IRQ_INDEX) {
--		u8 pin;
--
--		if (!IS_ENABLED(CONFIG_VFIO_PCI_INTX) ||
--		    vdev->nointx || vdev->pdev->is_virtfn)
--			return 0;
--
--		pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
--
--		return pin ? 1 : 0;
-+		return vdev->vconfig[PCI_INTERRUPT_PIN] ? 1 : 0;
- 	} else if (irq_type == VFIO_PCI_MSI_IRQ_INDEX) {
- 		u8 pos;
- 		u16 flags;
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index f20512c413f76..5ade5b81a0ffb 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -173,7 +173,7 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
- 	if (!is_irq_none(vdev))
- 		return -EINVAL;
+ 	tcp_rack_update_reo_wnd(sk, &rs);
  
--	if (!pdev->irq)
-+	if (!pdev->irq || pdev->irq == IRQ_NOTCONNECTED)
- 		return -ENODEV;
++	tcp_in_ack_event(sk, flag);
++
+ 	if (tp->tlp_high_seq)
+ 		tcp_process_tlp_ack(sk, ack, flag);
  
- 	name = kasprintf(GFP_KERNEL, "vfio-intx(%s)", pci_name(pdev));
+@@ -3985,6 +3992,7 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
+ 	return 1;
+ 
+ no_queue:
++	tcp_in_ack_event(sk, flag);
+ 	/* If data was DSACKed, see if we can undo a cwnd reduction. */
+ 	if (flag & FLAG_DSACKING_ACK) {
+ 		tcp_fastretrans_alert(sk, prior_snd_una, num_dupack, &flag,
 -- 
 2.39.5
 
