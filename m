@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-140584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED66AAAE41
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:53:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0839AAAE59
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:55:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53518462CA4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:51:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AC4B1B60C82
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D150B2D997F;
-	Mon,  5 May 2025 22:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06BF36EF42;
+	Mon,  5 May 2025 22:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SVC1focn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bc2NPgeV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E121D37318F;
-	Mon,  5 May 2025 22:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D431B3731BE;
+	Mon,  5 May 2025 22:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485221; cv=none; b=orKfJWiia8fsxcVR5P58vjoA7PLaI6WNfOP4u1E3sG8yW1VyTqIjaaXhZDzrm48wa3QUNXKjHARx0vy+phRKi+rihfOOE0tgV2p77su6vAJqn34PZyj8zcoKzUXeZXynELYe/rExuazrw2QPfApE7O4m86DD55lQ8rmjtDnINyI=
+	t=1746485222; cv=none; b=LlsINTEAPmcjZWh8K9vFQ82ta7oJwAaO25r6Lher3EmCCMczp5DMjNapqqjwzJ4osxFxMelpxsTiZi1OlzL5iH2imITTePysG1qw8HP8RZBobTrJY6ZIh4BAF1L8rZOSGUTEeJjoxnqbXj5LQQAE8DSzCs+/mDYIFRV+JPTEl1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485221; c=relaxed/simple;
-	bh=xUeYcQ19WA4YDx8LAq/eonv8hTGDCBs6kyGHFjgYn2w=;
+	s=arc-20240116; t=1746485222; c=relaxed/simple;
+	bh=bJPC8aEH45sWOWUt08yBygJpgHxGSQ08PVjPaYXWK/4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Cz4enUSMuu0+ExTx+msYZHooADOFlgZBHYWIelu5PH6aEbu8BKCE5Laa2r+MxmHm7kRH3lEa+hvB3ug/S7sUUKsABbZ8o9p2J6mWav6uTgUPgDJ2fxyzQc0vUDvpBSEV6lMo9nrlFrdudAc/bH1uirdKFzWJJPq63pSsB4CdoN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SVC1focn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A59C4CEEF;
-	Mon,  5 May 2025 22:46:58 +0000 (UTC)
+	 MIME-Version; b=QTG4Z912lWyK+/LztciEjfvY3QLqFaAz+T+Md+LYsbAchWcsF2SCq4cMPkDl5sW61VOaEmedgIsUgNjngKzvbL+vX3WoQfK1ljzTsNS6E6onCm5z8TNVsaWh3MHRo//RS69Z4aTS3Pr0n56mVIDLkaLzYbY+G0W1fIxjPQ+5A88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bc2NPgeV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3682EC4CEE4;
+	Mon,  5 May 2025 22:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485219;
-	bh=xUeYcQ19WA4YDx8LAq/eonv8hTGDCBs6kyGHFjgYn2w=;
+	s=k20201202; t=1746485221;
+	bh=bJPC8aEH45sWOWUt08yBygJpgHxGSQ08PVjPaYXWK/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVC1focnSfOqZWvnrLY1O0YZC8D4IY1SU8ksD8H684bbhCRyy5IPBMpeg2C38QAAh
-	 IZLjkYtagQ0ocTV0ALnJCy15ic8tw+BMmN4ScNYrHRmXngoZvCg4vZtQduOxf3+fmK
-	 JAE8cM5/pxAH5HyPs4MP1ChzKOPxL0/utJwucl0OaBzv+XAAx71v9yKqGCCWvmR++l
-	 hH4COtgQDvclWYJBLFSgnQlcwFlZ7Mn1Q4zIQtiLFtoZJgOFDi5F4rr0RL/a+dLOcX
-	 6iRlAOUaQ0nxrVFH939r1iEv0DwRXfbi/vZYDcZ3Ln01RNiNW1Qgd1pfITBCqwB8vr
-	 EiIUF794Belyg==
+	b=Bc2NPgeVDpJd+ScN7PxGmV1bq+bsah+O5W/eFbq2hxEGPPArddLHEbEXufdjAh7Dg
+	 LD5pSppp7pYxNN83fSxdhbpQ96U/y80TuSUDrRvUhPSddTP237P6sc1VmCTlTrNkKA
+	 cQoQSkrLSp8UdX9TUQPAhqy1wgWmztC7hmzjQpPkV1mzTrp0tyDw0HL+v4zlwRVwjy
+	 frt5CV2L/RQDskKv+BC62igkd1oMJuCbHJz33oXhI93N4HztnLJrKoxWEzAuoH6ews
+	 2mkyVHVyCIq2+UjrivxVkD0UaWa1E01xQ80gVRBMPeatV8C3KBnxRcCEUU/sFcMBbf
+	 uHyv6hgMriHzw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Yan <andy.yan@rock-chips.com>,
-	Michael Riesch <michael.riesch@wolfvision.net>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+Cc: Christoph Hellwig <hch@lst.de>,
+	Anuj Gupta <anuj20.g@samsung.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	hjc@rock-chips.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 217/486] drm/rockchip: vop2: Add uv swap for cluster window
-Date: Mon,  5 May 2025 18:34:53 -0400
-Message-Id: <20250505223922.2682012-217-sashal@kernel.org>
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 218/486] block: mark bounce buffering as incompatible with integrity
+Date: Mon,  5 May 2025 18:34:54 -0400
+Message-Id: <20250505223922.2682012-218-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -75,44 +69,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit e7aae9f6d762139f8d2b86db03793ae0ab3dd802 ]
+[ Upstream commit 5fd0268a8806d35dcaf89139bfcda92be51b2b2f ]
 
-The Cluster windows of upcoming VOP on rk3576 also support
-linear YUV support, we need to set uv swap bit for it.
+None of the few drivers still using the legacy block layer bounce
+buffering support integrity metadata.  Explicitly mark the features as
+incompatible and stop creating the slab and mempool for integrity
+buffers for the bounce bio_set.
 
-As the VOP2_WIN_UV_SWA register defined on rk3568/rk3588 is
-0xffffffff, so this register will not be touched on these
-two platforms.
-
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Tested-by: Michael Riesch <michael.riesch@wolfvision.net> # on RK3568
-Tested-by: Detlev Casanova <detlev.casanova@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250303034436.192400-4-andyshrk@163.com
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20250225154449.422989-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ block/blk-settings.c | 5 +++++
+ block/bounce.c       | 2 --
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 5880d87fe6b3a..2aab2a0956788 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -1432,10 +1432,8 @@ static void vop2_plane_atomic_update(struct drm_plane *plane,
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index 1e63e3dd54402..7858c92b44834 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -124,6 +124,11 @@ static int blk_validate_integrity_limits(struct queue_limits *lim)
+ 		return 0;
+ 	}
  
- 	rb_swap = vop2_win_rb_swap(fb->format->format);
- 	vop2_win_write(win, VOP2_WIN_RB_SWAP, rb_swap);
--	if (!vop2_cluster_window(win)) {
--		uv_swap = vop2_win_uv_swap(fb->format->format);
--		vop2_win_write(win, VOP2_WIN_UV_SWAP, uv_swap);
--	}
-+	uv_swap = vop2_win_uv_swap(fb->format->format);
-+	vop2_win_write(win, VOP2_WIN_UV_SWAP, uv_swap);
++	if (lim->features & BLK_FEAT_BOUNCE_HIGH) {
++		pr_warn("no bounce buffer support for integrity metadata\n");
++		return -EINVAL;
++	}
++
+ 	if (!IS_ENABLED(CONFIG_BLK_DEV_INTEGRITY)) {
+ 		pr_warn("integrity support disabled.\n");
+ 		return -EINVAL;
+diff --git a/block/bounce.c b/block/bounce.c
+index 0d898cd5ec497..09a9616cf2094 100644
+--- a/block/bounce.c
++++ b/block/bounce.c
+@@ -41,8 +41,6 @@ static void init_bounce_bioset(void)
  
- 	if (fb->format->is_yuv) {
- 		vop2_win_write(win, VOP2_WIN_UV_VIR, DIV_ROUND_UP(fb->pitches[1], 4));
+ 	ret = bioset_init(&bounce_bio_set, BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
+ 	BUG_ON(ret);
+-	if (bioset_integrity_create(&bounce_bio_set, BIO_POOL_SIZE))
+-		BUG_ON(1);
+ 
+ 	ret = bioset_init(&bounce_bio_split, BIO_POOL_SIZE, 0, 0);
+ 	BUG_ON(ret);
 -- 
 2.39.5
 
