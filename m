@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-140895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6425AAAFB9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:22:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F9FDAAAC70
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:16:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57F973B3A5A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:17:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE1ED189CF12
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F273C4D9A;
-	Mon,  5 May 2025 23:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D087B3C6F2C;
+	Mon,  5 May 2025 23:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="de9LjfhH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IN3q1mlN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9022F155B;
-	Mon,  5 May 2025 23:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FD038C427;
+	Mon,  5 May 2025 23:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486807; cv=none; b=eheYe4r66KIaO0A0mD5kA9ZJNME3OSbNsF4n8TXwi/sz2H/uxahRlaN/lbV9DaeOuzJQ9MxC3OJU9qDsK7q7l/nVgSpLGHpiqq+sfEH8kvBOR3d0O/Ni3XZGcVJwFlwCldNMCsu5T5m1+ZbEhjI1ZJhmfLW+a7c+agt/Hw+Fu5I=
+	t=1746486833; cv=none; b=hHkwnDR7SE8wQyeVNFSQ1/ojyZEk5SaMv+G6Ye+64khgGAAWWZv6r7Ej0TDxCCos3IRlaGAt0f63xQx7SI/KsSPRsIO0EaPoBR0DX11tv6vzUu55xNElVVEYkZO3/8Fiy7Pzcgtk3ajGzxhMTMFrXOYLkVlhQBpkdR0nT/Wye7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486807; c=relaxed/simple;
-	bh=m5D/x+U7KO4cviVfbv6ibJQJZAFAun8YRhdyaraSydk=;
+	s=arc-20240116; t=1746486833; c=relaxed/simple;
+	bh=rZH0oVvmMuJWhuTZhXkZy+7BLI99xIwPwspnd7/8z3Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cHb9c7etXAu9tiwfb4tkzk/zZ1oeC+TFTiIJf1SYRqkgEryks1dgEqCAsD2uC6AWyOi4jLZHSqEwhIbU14T3xo/OjnCmfUe40yhu9JsrY5myHrIeme5wECRPrNN6OgOF/9jIDSF5584XEs0NEaV0sfpr4vO83MjqhoviO/AzwiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=de9LjfhH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56D5C4CEF1;
-	Mon,  5 May 2025 23:13:25 +0000 (UTC)
+	 MIME-Version; b=burg/BlaveTLBj8yE1Hcn2D95xMsMTyM0HkMr08ysMteDO48QVC+qA9gIRK27p+AvQkbBfEpBQKgFMHKn0eINsXhar2xXSlI+/Kc5HiimjkXEAdzBBSra4hdvNLJmwp/IXMebCOxIr9/mm5W6Y8OZlZiZYU/CiZXDrdml0HoU+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IN3q1mlN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F207C4CEE4;
+	Mon,  5 May 2025 23:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486806;
-	bh=m5D/x+U7KO4cviVfbv6ibJQJZAFAun8YRhdyaraSydk=;
+	s=k20201202; t=1746486833;
+	bh=rZH0oVvmMuJWhuTZhXkZy+7BLI99xIwPwspnd7/8z3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=de9LjfhH3eGFjb+DhZ/cBquCnCU4wLLNvOaIsukMKqud0jvjJSF71r4aOb9ExdeIN
-	 EElYfOjgGHo5taaHbWS3QSpulITO+LT5fJZLby1PK5ftBI+tOETjHtZrTSZovxm1jn
-	 I0EiCruZeXiIN8nBycDVlL6pAua5E5rmZjUq0pGh95K1jjWC5qiMEgdhkZcD46ttdR
-	 7k11swKOdC9i7zieMUycYo73owwKpI7P0jppEvnc0dQtKPked5RTxHYWiCUhG3mwY+
-	 0yrsT4bu7n9pTSaEAuK3J+TWdIHdjNvn1tkOsQmWNBrn0sYw/1dZBgEpt7p3koUHe7
-	 ppFUjrfshzEJQ==
+	b=IN3q1mlNfVoBTw5AeA/KN8Mf1Hd+iHsBhbKKv3+o3JDiXQnBm/LufM5H01518KAFf
+	 xC59oLm5XdSqa1U44sMHIrE9x6MMMagJ41kWraUQlICaytH+IpIMFdaRc/v/H4bMq7
+	 1bIgnU8c4dHZvrX7qLJ47YgKO27nRCOllXXB86pfKpG4GbMwAal1RxPEHsAEO4rsAB
+	 gtt0JWJDPLskCHCT8LaSf6pKWMmILyRsx3k2fbv/xsKSWM4m4GqrNS5Jk3GtQoe7FT
+	 K/Uc+5MXoa77NCV75VgoZGla5IZ4ncdLRrcb6tBsNCEVOyyQFYT7W59HBvRlS23VCR
+	 sFk4PW+OMHuqA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
+Cc: Ryo Takakura <ryotkkr98@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	linux-nfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 002/153] NFSv4: Check for delegation validity in nfs_start_delegation_return_locked()
-Date: Mon,  5 May 2025 19:10:49 -0400
-Message-Id: <20250505231320.2695319-2-sashal@kernel.org>
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	tglx@linutronix.de,
+	peterz@infradead.org,
+	neilb@suse.de,
+	csander@purestorage.com,
+	frederic@kernel.org,
+	kprateek.nayak@amd.com,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.15 014/153] lockdep: Fix wait context check on softirq for PREEMPT_RT
+Date: Mon,  5 May 2025 19:11:01 -0400
+Message-Id: <20250505231320.2695319-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -66,33 +75,97 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Ryo Takakura <ryotkkr98@gmail.com>
 
-[ Upstream commit 9e8f324bd44c1fe026b582b75213de4eccfa1163 ]
+[ Upstream commit 61c39d8c83e2077f33e0a2c8980a76a7f323f0ce ]
 
-Check that the delegation is still attached after taking the spin lock
-in nfs_start_delegation_return_locked().
+Since:
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+  0c1d7a2c2d32 ("lockdep: Remove softirq accounting on PREEMPT_RT.")
+
+the wait context test for mutex usage within "in softirq context" fails
+as it references @softirq_context:
+
+    | wait context tests |
+    --------------------------------------------------------------------------
+                                   | rcu  | raw  | spin |mutex |
+    --------------------------------------------------------------------------
+                 in hardirq context:  ok  |  ok  |  ok  |  ok  |
+  in hardirq context (not threaded):  ok  |  ok  |  ok  |  ok  |
+                 in softirq context:  ok  |  ok  |  ok  |FAILED|
+
+As a fix, add lockdep map for BH disabled section. This fixes the
+issue by letting us catch cases when local_bh_disable() gets called
+with preemption disabled where local_lock doesn't get acquired.
+In the case of "in softirq context" selftest, local_bh_disable() was
+being called with preemption disable as it's early in the boot.
+
+[ boqun: Move the lockdep annotations into __local_bh_*() to avoid false
+         positives because of unpaired local_bh_disable() reported by
+	 Borislav Petkov and Peter Zijlstra, and make bh_lock_map
+	 only exist for PREEMPT_RT. ]
+
+[ mingo: Restored authorship and improved the bh_lock_map definition. ]
+
+Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20250321143322.79651-1-boqun.feng@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/softirq.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index 0c14ff09cfbe3..45ef1b6f868bf 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -297,7 +297,8 @@ nfs_start_delegation_return_locked(struct nfs_inode *nfsi)
- 	if (delegation == NULL)
- 		goto out;
- 	spin_lock(&delegation->lock);
--	if (!test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
-+	if (delegation->inode &&
-+	    !test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
- 		clear_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags);
- 		/* Refcount matched in nfs_end_delegation_return() */
- 		ret = nfs_get_delegation(delegation);
+diff --git a/kernel/softirq.c b/kernel/softirq.c
+index dc60f0c66a25f..d63d827da2d6a 100644
+--- a/kernel/softirq.c
++++ b/kernel/softirq.c
+@@ -140,6 +140,18 @@ static DEFINE_PER_CPU(struct softirq_ctrl, softirq_ctrl) = {
+ 	.lock	= INIT_LOCAL_LOCK(softirq_ctrl.lock),
+ };
+ 
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++static struct lock_class_key bh_lock_key;
++struct lockdep_map bh_lock_map = {
++	.name			= "local_bh",
++	.key			= &bh_lock_key,
++	.wait_type_outer	= LD_WAIT_FREE,
++	.wait_type_inner	= LD_WAIT_CONFIG, /* PREEMPT_RT makes BH preemptible. */
++	.lock_type		= LD_LOCK_PERCPU,
++};
++EXPORT_SYMBOL_GPL(bh_lock_map);
++#endif
++
+ /**
+  * local_bh_blocked() - Check for idle whether BH processing is blocked
+  *
+@@ -162,6 +174,8 @@ void __local_bh_disable_ip(unsigned long ip, unsigned int cnt)
+ 
+ 	WARN_ON_ONCE(in_hardirq());
+ 
++	lock_map_acquire_read(&bh_lock_map);
++
+ 	/* First entry of a task into a BH disabled section? */
+ 	if (!current->softirq_disable_cnt) {
+ 		if (preemptible()) {
+@@ -225,6 +239,8 @@ void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
+ 	WARN_ON_ONCE(in_irq());
+ 	lockdep_assert_irqs_enabled();
+ 
++	lock_map_release(&bh_lock_map);
++
+ 	local_irq_save(flags);
+ 	curcnt = __this_cpu_read(softirq_ctrl.cnt);
+ 
+@@ -275,6 +291,8 @@ static inline void ksoftirqd_run_begin(void)
+ /* Counterpart to ksoftirqd_run_begin() */
+ static inline void ksoftirqd_run_end(void)
+ {
++	/* pairs with the lock_map_acquire_read() in ksoftirqd_run_begin() */
++	lock_map_release(&bh_lock_map);
+ 	__local_bh_enable(SOFTIRQ_OFFSET, true);
+ 	WARN_ON_ONCE(in_interrupt());
+ 	local_irq_enable();
 -- 
 2.39.5
 
