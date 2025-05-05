@@ -1,107 +1,102 @@
-Return-Path: <stable+bounces-140648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14671AAAE6A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:55:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A048AAAE3E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:53:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A2AB7B4D90
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:54:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F6381A880FA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E61238CEB7;
-	Mon,  5 May 2025 23:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CAE2D3F8F;
+	Mon,  5 May 2025 22:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j5WUiQf/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s3QBcI6/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7066336AADD;
-	Mon,  5 May 2025 22:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBEA35A765;
+	Mon,  5 May 2025 22:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485778; cv=none; b=Q7QoHkLjT97tkWR5NQgyzLTG1yN+aYKXEZI3Kqio1OZQiWaTskA0YnGmOT8621K78VDxxy3/lqDg7JGu3WBu+DozM1Vcl08RkYlm4XwkEdi/NvboGODzJBaBkEzo/qBMF8zRPvq2rWpsQuyeu3BR3iAHtObCO4mNs3BovkijJWs=
+	t=1746485170; cv=none; b=lml1zYoyr2+MfbEJMer/MEZ6g+7qBj2pHLqt+sm4EkEbsskRWLAgq7pChkh0YFgYYXiTDmGF9XMgiKMzX53OymFe3AOXY0Vfqh8tT/sOvW2rt6HLM+6/85h5N2dAknIM6ESVQzrCyyagN4g4Cq07+LSJZOW7skacrnvV9Sn28CU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485778; c=relaxed/simple;
-	bh=L3J2k0XYHN23Rq/RpMF8JSWvtYRT5nuLPd31jZByzMw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lM6ADhJALAmkUgwNpvmVpAEnknLaukxIUxS7DDKWiPU9DyFXtfIeNhBl2xtU7b64Kw5+fnXbOfki9UbQvS1jCj/T2i5pI3FnIcrNREMV7xBmg06SvY6itrqYX8tpeG1XH4F1HrmgX4MOVV1Fm5ldzXGdTxZhXshEpXX71C0YxsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j5WUiQf/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA99C4CEF2;
-	Mon,  5 May 2025 22:56:14 +0000 (UTC)
+	s=arc-20240116; t=1746485170; c=relaxed/simple;
+	bh=AS2TsFu8Kc7csbiJYii5SkgQrzo5hXNx2c6AtZWQVfg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u1HRuAQHQ3BbWFVu9eZi2ocs8hwsU+EpMTAvk44RdyeEy+FAaWdd4J/ETsPUvAmgrF2LG5c4DebNHm2Ulkm3w9InW49CmPUEucu2s1TVrkPkF6veczZtLJuNc0TJNPKPJp0DYunljWOALfjsDbFBBF90WibyjyN/j3lz4Q19sp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s3QBcI6/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EE4C4CEE4;
+	Mon,  5 May 2025 22:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485776;
-	bh=L3J2k0XYHN23Rq/RpMF8JSWvtYRT5nuLPd31jZByzMw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j5WUiQf/1jk4Bd3uppcrHK7yYpPz27ZtHkP9Fmznbo6D8ZDog4m5oCToT3V3kGs00
-	 YHGfuWyPq3Bpl+m52+rkJVdMy3VEaUVxfkcwUpcV8fx8X90IwyzP2bQjKzKszcDvzJ
-	 4WK6Hx2yBFRv2E2Pq/dCwQzImw16pmFJCCWPKjxmJ0YrtCpNrv+7zgleZeyeBG3YF6
-	 eGNJbtlGHfnvsY1XFyrvbv3OXSANfvX8yUOoIsP0eGJ9h2DwgSSn1RgswLV7mahFp8
-	 3iMPN+mMIX8c/7qFqVqQPvIIeKyl6AOkmoaVxy3uF9c0UYPX0GPJfIOe7A+CP1V4nr
-	 RGhgyX+dyA8AQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Maarten Lankhorst <dev@lankhorst.se>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 478/486] drm/xe: Do not attempt to bootstrap VF in execlists mode
-Date: Mon,  5 May 2025 18:39:14 -0400
-Message-Id: <20250505223922.2682012-478-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
-References: <20250505223922.2682012-1-sashal@kernel.org>
+	s=k20201202; t=1746485169;
+	bh=AS2TsFu8Kc7csbiJYii5SkgQrzo5hXNx2c6AtZWQVfg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s3QBcI6/oA0tA/PINZMYq4M38D3tbRwKAXJDV6Hr+ga8m/gVZZ95oar+vdrAk5Yhd
+	 SGd6VqgCRRpKTqJCkcn5HzEFAfu+R+eGBjc6WSDDlqQ6kg/MBANCXMVscaVBxH4iyF
+	 MCyVB6QIn1ExoO6/X+Ctpw/GnBfzOiewFztOcJl2T2lXkc75NLPHMSW5kSUNMBDglS
+	 0b9Qln+5S9vuIv0nBjPeMFc6zwX3tNo+FCOoCvt5VUz7hh8ljH270qq2IJeI0adTjc
+	 Lc3IO/Hsc0RuHl788v3v3ExF8rxDnbk/O50eDOfYe15liNSmz6xPgITNzLoAtip5kS
+	 URYXhj3D+7o2w==
+Date: Tue, 6 May 2025 07:46:04 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>, lgirdwood@gmail.com,
+	perex@perex.cz, tiwai@suse.com, javier.carrasco.cruz@gmail.com,
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.14 591/642] ASoC: cpcap: Implement
+ .set_bias_level
+Message-ID: <aBk_rHbbzvR_vD64@finisterre.sirena.org.uk>
+References: <20250505221419.2672473-1-sashal@kernel.org>
+ <20250505221419.2672473-591-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.26
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="BmqjSXNMkh0e0Yd9"
+Content-Disposition: inline
+In-Reply-To: <20250505221419.2672473-591-sashal@kernel.org>
+X-Cookie: Well begun is half done.
 
-From: Maarten Lankhorst <dev@lankhorst.se>
 
-[ Upstream commit f3b59457808f61d88178b0afa67cbd017d7ce79e ]
+--BmqjSXNMkh0e0Yd9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It was mentioned in a review that there is a possibility of choosing
-to load the module with VF in execlists mode.
+On Mon, May 05, 2025 at 06:13:27PM -0400, Sasha Levin wrote:
+> From: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+>=20
+> [ Upstream commit 5b4288792ff246cf2bda0c81cebcc02d1f631ca3 ]
+>=20
+> With VAUDIO regulator being always on, we have to put it in low-power mode
+> when codec is not in use to decrease power usage.
+>=20
+> Do so by implementing driver .set_bias_level callback.
 
-Of course this doesn't work, just bomb out as hard as possible.
+This is clearly a performance improvement not a bug fix.
 
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241210083111.230484-12-dev@lankhorst.se
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/xe/xe_gt_sriov_vf.c | 3 +++
- 1 file changed, 3 insertions(+)
+--BmqjSXNMkh0e0Yd9
+Content-Type: application/pgp-signature; name="signature.asc"
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
-index 7ddbfeaf494ac..29badbd829ab6 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
-@@ -235,6 +235,9 @@ int xe_gt_sriov_vf_bootstrap(struct xe_gt *gt)
- {
- 	int err;
- 
-+	if (!xe_device_uc_enabled(gt_to_xe(gt)))
-+		return -ENODEV;
-+
- 	err = vf_reset_guc_state(gt);
- 	if (unlikely(err))
- 		return err;
--- 
-2.39.5
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmgZP6sACgkQJNaLcl1U
+h9AzuQf/TsuJY2vN7IY0edGyLFwWnvp3oaCEwl470g0akuayphANG/PQhswy/1aF
+mNXr7LOguHFmhEVZeH20D7ByqnzGffdB511QUKgJXIX4B6zyhpzn51hqJc8BYTXL
+tcOBAnJfTmjdyHW4WdbEd7zln7BcX2gmDbPs9jYzERHtbqvuTpPeIrXN/qrwlBrd
+z7S88euH09affGKk1ypNJ9+NCbi0vhljp6cOI4BB2AN+UnC8pi3EG4j5rPk9HN4a
+o134B+T8brNoSzEExEj1B8eB2yrxD/aQ70/rwu0XCMfGwuw8bIFF2uNR40JhhUSv
+sW/Qtbq6cvzmIyrlCJmIM73woreV5Q==
+=GcKz
+-----END PGP SIGNATURE-----
+
+--BmqjSXNMkh0e0Yd9--
 
