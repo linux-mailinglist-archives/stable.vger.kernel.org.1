@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-140519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417FBAAA9A4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:18:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEEB3AAA95C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:13:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D1113B7A75
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:13:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE0321887EB1
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3640735AD93;
-	Mon,  5 May 2025 22:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C93929CB26;
+	Mon,  5 May 2025 22:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JviV3VXM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKQTVHT7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A881F29953E;
-	Mon,  5 May 2025 22:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86538299A87;
+	Mon,  5 May 2025 22:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484991; cv=none; b=IjIauinUuq5s/raQ6zzisM6YFcRMIAvz7fU2YNBZokaoKfbtMX3v9ZipUXSVucMw+mkXLrXH244F0UX4XogEvcEqcAyMOapXes66oUP5eFhHWTFrIRtGfj527NtRRjEK+D3QfCXTnLBbNRLdwpg9HWHXpqNOS2VF+lnhVYZ+5qU=
+	t=1746484993; cv=none; b=Bs+Jhdx1SA1M/p28qRX+BllakIh8IQ2RFAodwbct8FxAE/pv/C9fkwOfN5B85JlK1JDQ/4mo8gOQmTRXXof1ewlGLqjhMNDSTmt9EaD+Z27kgsHEy86+vhKJ1QdpTC3YiRIynNyWpNosutA2A/xEGERU/qZwaW4zFuKnEq35jGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484991; c=relaxed/simple;
-	bh=VzfuitWmNtwy2lfYXQP3+eZjHCxR1uGp2yuas6XIq0o=;
+	s=arc-20240116; t=1746484993; c=relaxed/simple;
+	bh=BFmc84IeGC9GR1voaM5+gS5OimBrB7/kQB36gwmZwUE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j5Dj/TjhyhONwb29ahntgdmcJaU9hrksz35cApCBPJzK3T/G++mmbSlocKdYdcwQ8rCzdLdeJssbQrajWuDeaMw6xrK4P2noGcBugksjS48+51+dYrRdvT9sLkNRcWlqc/9JmoAXn1JYNE8F+bXDwHO0xKqzfiCHEH+dCxexUd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JviV3VXM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8877CC4CEEE;
-	Mon,  5 May 2025 22:43:09 +0000 (UTC)
+	 MIME-Version; b=o/KGQRnzs2qeuTivQB7NfARO9PFPMYSvrtJGjpqeO7GhtHuQAZrF0W2NnRcqBmi+XSIuMBinEvBr0i86faJeavDrCKkdazRHKqTSjTTIIlW5gl8m9McCTKJ/0L2vigIehMaCSX0QxG9OYB4MRW38htDf71wSY30D6BrEJdM29+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKQTVHT7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFF2C4CEE4;
+	Mon,  5 May 2025 22:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484990;
-	bh=VzfuitWmNtwy2lfYXQP3+eZjHCxR1uGp2yuas6XIq0o=;
+	s=k20201202; t=1746484992;
+	bh=BFmc84IeGC9GR1voaM5+gS5OimBrB7/kQB36gwmZwUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JviV3VXMP1cMgf+SZt8UvV3JcNUIoxt6tN19V0yzMz1GKQkfVk5q7lbmz3tNerrDZ
-	 xZ6mDYGW0byfizr0HUXKs3fSuFf+ry5GiyctT7E7NWT6NmhU3awC0iSQQHxDZ6I6uo
-	 zSULkNQBsRJ3ok2/RTxBcumM0CWgiXyj5UA7GKu///nbMBVp46hVb50EcnnMUyOtUm
-	 Vh7FwtnLVLPbl0B1uz2KKuXbLLOXOy0T0XwZ7BXi6D5DgjbsXPMce3TsrLD6WR0PXt
-	 5id+Z1QTp2eB4pykuqdpgY3DrZHTxzJKyuovtdws2z/r8K9rv7zG/Mtfu1xStxWMnf
-	 bURFm8vS1S9dQ==
+	b=DKQTVHT7vYWdgro1OP8dzORulSrRWmaD/8DlDOsLWOEl7/PAiqCrKod+Ah0AEwoMF
+	 FHYCeo1kMurkDE5PuI44rQeiagQhKzBDKQsurZhowv/0aReO3RXuisWbUmM2/k0xO9
+	 3SkpQdEKrIi6lANEaRhcQ+AKaxj+vvAhmI7cdynHKrIgFVhHpfeGmAmbbT1m9b1YSv
+	 coCbAXupT8mgDO3vmaCyJZ9DhHLFzrX8lb4xuYD7CzodOLGuSrFwVRwGcYDLpdi+Cn
+	 4ehBBqJvqDKZv08JdyeJfmqe237Je4AxJL41yXr3i3ZkrLzmUfOGo8ghfyc4F2g0WO
+	 vS+GDdpmbG3Fg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
+Cc: Shashank Gupta <shashankg@marvell.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 113/486] kconfig: do not clear SYMBOL_VALID when reading include/config/auto.conf
-Date: Mon,  5 May 2025 18:33:09 -0400
-Message-Id: <20250505223922.2682012-113-sashal@kernel.org>
+	bbrezillon@kernel.org,
+	arno@natisbad.org,
+	schalla@marvell.com,
+	davem@davemloft.net,
+	linux-crypto@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 114/486] crypto: octeontx2 - suppress auth failure screaming due to negative tests
+Date: Mon,  5 May 2025 18:33:10 -0400
+Message-Id: <20250505223922.2682012-114-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -64,87 +69,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Shashank Gupta <shashankg@marvell.com>
 
-[ Upstream commit 226ac19c217f24f0927d0a73cf9ee613971a188d ]
+[ Upstream commit 64b7871522a4cba99d092e1c849d6f9092868aaa ]
 
-When conf_read_simple() is called with S_DEF_AUTO, it is meant to read
-previous symbol values from include/config/auto.conf to determine which
-include/config/* files should be touched.
+This patch addresses an issue where authentication failures were being
+erroneously reported due to negative test failures in the "ccm(aes)"
+selftest.
+pr_debug suppress unnecessary screaming of these tests.
 
-This process should not modify the current symbol status in any way.
-However, conf_touch_deps() currently invalidates all symbol values and
-recalculates them, which is totally unneeded.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Shashank Gupta <shashankg@marvell.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/confdata.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/kconfig/confdata.c b/scripts/kconfig/confdata.c
-index 3b55e7a4131d9..ac95661a1c9dd 100644
---- a/scripts/kconfig/confdata.c
-+++ b/scripts/kconfig/confdata.c
-@@ -385,7 +385,7 @@ int conf_read_simple(const char *name, int def)
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c b/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c
+index 5387c68f3c9df..4262441070372 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c
+@@ -264,9 +264,10 @@ static int cpt_process_ccode(struct otx2_cptlfs_info *lfs,
+ 				break;
+ 			}
  
- 	def_flags = SYMBOL_DEF << def;
- 	for_all_symbols(sym) {
--		sym->flags &= ~(def_flags|SYMBOL_VALID);
-+		sym->flags &= ~def_flags;
- 		switch (sym->type) {
- 		case S_INT:
- 		case S_HEX:
-@@ -398,7 +398,11 @@ int conf_read_simple(const char *name, int def)
+-			dev_err(&pdev->dev,
+-				"Request failed with software error code 0x%x\n",
+-				cpt_status->s.uc_compcode);
++			pr_debug("Request failed with software error code 0x%x: algo = %s driver = %s\n",
++				 cpt_status->s.uc_compcode,
++				 info->req->areq->tfm->__crt_alg->cra_name,
++				 info->req->areq->tfm->__crt_alg->cra_driver_name);
+ 			otx2_cpt_dump_sg_list(pdev, info->req);
+ 			break;
  		}
- 	}
- 
--	expr_invalidate_all();
-+	if (def == S_DEF_USER) {
-+		for_all_symbols(sym)
-+			sym->flags &= ~SYMBOL_VALID;
-+		expr_invalidate_all();
-+	}
- 
- 	while (getline_stripped(&line, &line_asize, in) != -1) {
- 		struct menu *choice;
-@@ -464,6 +468,9 @@ int conf_read_simple(const char *name, int def)
- 		if (conf_set_sym_val(sym, def, def_flags, val))
- 			continue;
- 
-+		if (def != S_DEF_USER)
-+			continue;
-+
- 		/*
- 		 * If this is a choice member, give it the highest priority.
- 		 * If conflicting CONFIG options are given from an input file,
-@@ -967,10 +974,8 @@ static int conf_touch_deps(void)
- 	depfile_path[depfile_prefix_len] = 0;
- 
- 	conf_read_simple(name, S_DEF_AUTO);
--	sym_calc_value(modules_sym);
- 
- 	for_all_symbols(sym) {
--		sym_calc_value(sym);
- 		if (sym_is_choice(sym))
- 			continue;
- 		if (sym->flags & SYMBOL_WRITE) {
-@@ -1084,12 +1089,12 @@ int conf_write_autoconf(int overwrite)
- 	if (ret)
- 		return -1;
- 
--	if (conf_touch_deps())
--		return 1;
--
- 	for_all_symbols(sym)
- 		sym_calc_value(sym);
- 
-+	if (conf_touch_deps())
-+		return 1;
-+
- 	ret = __conf_write_autoconf(conf_get_autoheader_name(),
- 				    print_symbol_for_c,
- 				    &comment_style_c);
 -- 
 2.39.5
 
