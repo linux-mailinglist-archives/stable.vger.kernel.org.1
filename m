@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-140413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31164AAA8A2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:58:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8D0AAA877
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:54:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D0E15A698B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:53:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7673188669F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FB734DC78;
-	Mon,  5 May 2025 22:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD17634309B;
+	Mon,  5 May 2025 22:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LK3j2wEK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HwDxfFfV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB3334DC52;
-	Mon,  5 May 2025 22:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E873343083;
+	Mon,  5 May 2025 22:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484802; cv=none; b=XwoQKypch/1vp+zgUW8JTQnDOeUJUaY11Btt3azL1FvPeY8gMxTXZ12rp0oAeEuYx3aCAYbPdKwsXumIrdCy79CURyvdchx9zY5HgyIrjqcXb5ZiAm39D2MB74+MndN2w+vuCn0tsdBatsgUR9tPO9083MLZ02aIoccL1i3hJDc=
+	t=1746484810; cv=none; b=uE96dLgbpZqtmdK6hdPizuTfXfkhLjdLVrRIHIAeT0dvaB+pFKnihJURkL3F4zeXP7aWyMh+xc3/5Qesz+fw88mEA63I+MgDbF9BFHcw77qZ95Lt9BhwdykRbzNK00ZzAkttI7FHEzp/8RJUmDNOIEtxZ8wtipYwJJgjOTYjgaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484802; c=relaxed/simple;
-	bh=acWgzjY+/uQlJhhVA40iUkpL52+iio36j0GL1qXLhSk=;
+	s=arc-20240116; t=1746484810; c=relaxed/simple;
+	bh=b4dF8AbLwfo223sL9kr1mdKbryTSTbltdYY+n/Wqcqo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Mq5ab12Uzf5PfoED2eMxvLxN/OVEZNpd6qtTIn4evCJvyy6Iw52ysd+WYCnL2cNiP5e3rata/TYt328C87RRiLgIjEj56HvL1Ffom11izVOPsJPeYkC1TwhhUJPT3sHG2kjFaqlQY03RIty1wjrmJPqhu8DLdah49sgEM2E7DDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LK3j2wEK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09721C4CEEE;
-	Mon,  5 May 2025 22:40:00 +0000 (UTC)
+	 MIME-Version; b=nPMtlJBKNxdG3s+ZvD/Dqay4fwT/S6ndBJXnwxuTZC8yS1jczw0cgmkUJqxxV892AEDlZfKiRQ7oRwwi44EDmUoS9/xTpv1SQMPtUd6+BSShSQpvmZiWamx96hQn7gunnc9OhZyPDamMk+leSsHHnTAFeKiyB9kNDO9I6M0SktQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HwDxfFfV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6B9C4CEED;
+	Mon,  5 May 2025 22:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484801;
-	bh=acWgzjY+/uQlJhhVA40iUkpL52+iio36j0GL1qXLhSk=;
+	s=k20201202; t=1746484809;
+	bh=b4dF8AbLwfo223sL9kr1mdKbryTSTbltdYY+n/Wqcqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LK3j2wEKIL/fjEUdq7qxv5S7BgmSC8IsivhdebtwG8FdmXeIERdCQruX6SZZDG6/o
-	 0bctby0C2cIJwEYy4XHb7TS9/HloIY227+WSIP2rroV101HpPUBoas2fBjGsgyOCT0
-	 9bppahwQbtmbneWCsMhzPz+wKGaZvXA3hfELwDVar2c99BTWzilkicPK/DtBOcKVlr
-	 M9tNlhUdGpS3u5kI4WoCrfe1oq/2zMYEhUuQVKZbe9VcwbE0p3LEJ1pMepLhMudTz8
-	 q24A2A/0RfX4YpGOjare+gpJTpZeAB/G9E/egfElQz9FJi/UbZgJKyLZ7E8WdNXI1d
-	 3JuiYPVhFbZug==
+	b=HwDxfFfVIcykx2SjFj6AKUogLCAIVu92/ZfuSdGCpeon1pOMghsFV4uYfgpmL9C0X
+	 Q1yS5WXFbbok1qOKeFI7DCa0uxzlQBElXBo/fBohnkHeJSo32QnY0YuUIj9/ljtLK8
+	 4wpkQYsgfl+YoqGMwTDS8po/stSkzLt1ynrjsbZg7RBbxHgFGZ5ZzaMIDUjv+cQdsx
+	 FYA7GBnc/3UE2Les6H95jKs4GrsK7hB1Vm8mNSnUlZMgl4E+XIA6oRCiBM665ZSnjI
+	 gpckqONeto/B2ZyVeCcGzdOcuL6UYL6xKNKQ1B5Wrzsmn8o7cW5YwmqKvAOk4BV3gi
+	 xUGelAI67tqZg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shixiong Ou <oushixiong@kylinos.cn>,
+Cc: Zsolt Kajtar <soci@c64.rulez.org>,
 	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>,
-	timur@kernel.org,
+	simona@ffwll.ch,
+	qianqiang.liu@163.com,
+	jfalempe@redhat.com,
+	oushixiong@kylinos.cn,
 	linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 022/486] fbdev: fsl-diu-fb: add missing device_remove_file()
-Date: Mon,  5 May 2025 18:31:38 -0400
-Message-Id: <20250505223922.2682012-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 023/486] fbcon: Use correct erase colour for clearing in fbcon
+Date: Mon,  5 May 2025 18:31:39 -0400
+Message-Id: <20250505223922.2682012-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -67,31 +70,240 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Shixiong Ou <oushixiong@kylinos.cn>
+From: Zsolt Kajtar <soci@c64.rulez.org>
 
-[ Upstream commit 86d16cd12efa547ed43d16ba7a782c1251c80ea8 ]
+[ Upstream commit 892c788d73fe4a94337ed092cb998c49fa8ecaf4 ]
 
-Call device_remove_file() when driver remove.
+The erase colour calculation for fbcon clearing should use get_color instead
+of attr_col_ec, like everything else. The latter is similar but is not correct.
+For example it's missing the depth dependent remapping and doesn't care about
+blanking.
 
-Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
+The problem can be reproduced by setting up the background colour to grey
+(vt.color=0x70) and having an fbcon console set to 2bpp (4 shades of gray).
+Now the background attribute should be 1 (dark gray) on the console.
+
+If the screen is scrolled when pressing enter in a shell prompt at the bottom
+line then the new line is cleared using colour 7 instead of 1. That's not
+something fillrect likes (at 2bbp it expect 0-3) so the result is interesting.
+
+This patch switches to get_color with vc_video_erase_char to determine the
+erase colour from attr_col_ec. That makes the latter function redundant as
+no other users were left.
+
+Use correct erase colour for clearing in fbcon
+
+Signed-off-by: Zsolt Kajtar <soci@c64.rulez.org>
 Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/fsl-diu-fb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/core/bitblit.c   |  5 ++--
+ drivers/video/fbdev/core/fbcon.c     | 10 +++++---
+ drivers/video/fbdev/core/fbcon.h     | 38 +---------------------------
+ drivers/video/fbdev/core/fbcon_ccw.c |  5 ++--
+ drivers/video/fbdev/core/fbcon_cw.c  |  5 ++--
+ drivers/video/fbdev/core/fbcon_ud.c  |  5 ++--
+ drivers/video/fbdev/core/tileblit.c  |  8 +++---
+ 7 files changed, 18 insertions(+), 58 deletions(-)
 
-diff --git a/drivers/video/fbdev/fsl-diu-fb.c b/drivers/video/fbdev/fsl-diu-fb.c
-index 5ac8201c35337..b71d15794ce8b 100644
---- a/drivers/video/fbdev/fsl-diu-fb.c
-+++ b/drivers/video/fbdev/fsl-diu-fb.c
-@@ -1827,6 +1827,7 @@ static void fsl_diu_remove(struct platform_device *pdev)
- 	int i;
+diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
+index 3ff1b2a8659e8..f9475c14f7339 100644
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
+@@ -59,12 +59,11 @@ static void bit_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
  
- 	data = dev_get_drvdata(&pdev->dev);
-+	device_remove_file(&pdev->dev, &data->dev_attr);
- 	disable_lcdc(&data->fsl_diu_info[0]);
+ static void bit_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		      int sx, int height, int width)
++		      int sx, int height, int width, int fg, int bg)
+ {
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+ 	struct fb_fillrect region;
  
- 	free_irq(data->irq, data->diu_reg);
+-	region.color = attr_bgcol_ec(bgshift, vc, info);
++	region.color = bg;
+ 	region.dx = sx * vc->vc_font.width;
+ 	region.dy = sy * vc->vc_font.height;
+ 	region.width = width * vc->vc_font.width;
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index e8b4e8c119b5c..07d127110ca4c 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -1258,7 +1258,7 @@ static void __fbcon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
+ {
+ 	struct fb_info *info = fbcon_info_from_console(vc->vc_num);
+ 	struct fbcon_ops *ops = info->fbcon_par;
+-
++	int fg, bg;
+ 	struct fbcon_display *p = &fb_display[vc->vc_num];
+ 	u_int y_break;
+ 
+@@ -1279,16 +1279,18 @@ static void __fbcon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
+ 		fbcon_clear_margins(vc, 0);
+ 	}
+ 
++	fg = get_color(vc, info, vc->vc_video_erase_char, 1);
++	bg = get_color(vc, info, vc->vc_video_erase_char, 0);
+ 	/* Split blits that cross physical y_wrap boundary */
+ 
+ 	y_break = p->vrows - p->yscroll;
+ 	if (sy < y_break && sy + height - 1 >= y_break) {
+ 		u_int b = y_break - sy;
+-		ops->clear(vc, info, real_y(p, sy), sx, b, width);
++		ops->clear(vc, info, real_y(p, sy), sx, b, width, fg, bg);
+ 		ops->clear(vc, info, real_y(p, sy + b), sx, height - b,
+-				 width);
++				 width, fg, bg);
+ 	} else
+-		ops->clear(vc, info, real_y(p, sy), sx, height, width);
++		ops->clear(vc, info, real_y(p, sy), sx, height, width, fg, bg);
+ }
+ 
+ static void fbcon_clear(struct vc_data *vc, unsigned int sy, unsigned int sx,
+diff --git a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
+index df70ea5ec5b37..4d97e6d8a16a2 100644
+--- a/drivers/video/fbdev/core/fbcon.h
++++ b/drivers/video/fbdev/core/fbcon.h
+@@ -55,7 +55,7 @@ struct fbcon_ops {
+ 	void (*bmove)(struct vc_data *vc, struct fb_info *info, int sy,
+ 		      int sx, int dy, int dx, int height, int width);
+ 	void (*clear)(struct vc_data *vc, struct fb_info *info, int sy,
+-		      int sx, int height, int width);
++		      int sx, int height, int width, int fb, int bg);
+ 	void (*putcs)(struct vc_data *vc, struct fb_info *info,
+ 		      const unsigned short *s, int count, int yy, int xx,
+ 		      int fg, int bg);
+@@ -116,42 +116,6 @@ static inline int mono_col(const struct fb_info *info)
+ 	return (~(0xfff << max_len)) & 0xff;
+ }
+ 
+-static inline int attr_col_ec(int shift, struct vc_data *vc,
+-			      struct fb_info *info, int is_fg)
+-{
+-	int is_mono01;
+-	int col;
+-	int fg;
+-	int bg;
+-
+-	if (!vc)
+-		return 0;
+-
+-	if (vc->vc_can_do_color)
+-		return is_fg ? attr_fgcol(shift,vc->vc_video_erase_char)
+-			: attr_bgcol(shift,vc->vc_video_erase_char);
+-
+-	if (!info)
+-		return 0;
+-
+-	col = mono_col(info);
+-	is_mono01 = info->fix.visual == FB_VISUAL_MONO01;
+-
+-	if (attr_reverse(vc->vc_video_erase_char)) {
+-		fg = is_mono01 ? col : 0;
+-		bg = is_mono01 ? 0 : col;
+-	}
+-	else {
+-		fg = is_mono01 ? 0 : col;
+-		bg = is_mono01 ? col : 0;
+-	}
+-
+-	return is_fg ? fg : bg;
+-}
+-
+-#define attr_bgcol_ec(bgshift, vc, info) attr_col_ec(bgshift, vc, info, 0)
+-#define attr_fgcol_ec(fgshift, vc, info) attr_col_ec(fgshift, vc, info, 1)
+-
+     /*
+      *  Scroll Method
+      */
+diff --git a/drivers/video/fbdev/core/fbcon_ccw.c b/drivers/video/fbdev/core/fbcon_ccw.c
+index f9b794ff7d396..89ef4ba7e8672 100644
+--- a/drivers/video/fbdev/core/fbcon_ccw.c
++++ b/drivers/video/fbdev/core/fbcon_ccw.c
+@@ -78,14 +78,13 @@ static void ccw_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
+ 
+ static void ccw_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		     int sx, int height, int width)
++		     int sx, int height, int width, int fg, int bg)
+ {
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	struct fb_fillrect region;
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+ 	u32 vyres = GETVYRES(ops->p, info);
+ 
+-	region.color = attr_bgcol_ec(bgshift,vc,info);
++	region.color = bg;
+ 	region.dx = sy * vc->vc_font.height;
+ 	region.dy = vyres - ((sx + width) * vc->vc_font.width);
+ 	region.height = width * vc->vc_font.width;
+diff --git a/drivers/video/fbdev/core/fbcon_cw.c b/drivers/video/fbdev/core/fbcon_cw.c
+index 903f6fc174e14..b9dac7940fb77 100644
+--- a/drivers/video/fbdev/core/fbcon_cw.c
++++ b/drivers/video/fbdev/core/fbcon_cw.c
+@@ -63,14 +63,13 @@ static void cw_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
+ 
+ static void cw_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		     int sx, int height, int width)
++		     int sx, int height, int width, int fg, int bg)
+ {
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	struct fb_fillrect region;
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+ 	u32 vxres = GETVXRES(ops->p, info);
+ 
+-	region.color = attr_bgcol_ec(bgshift,vc,info);
++	region.color = bg;
+ 	region.dx = vxres - ((sy + height) * vc->vc_font.height);
+ 	region.dy = sx *  vc->vc_font.width;
+ 	region.height = width * vc->vc_font.width;
+diff --git a/drivers/video/fbdev/core/fbcon_ud.c b/drivers/video/fbdev/core/fbcon_ud.c
+index 594331936fd3c..0af7913a2abdc 100644
+--- a/drivers/video/fbdev/core/fbcon_ud.c
++++ b/drivers/video/fbdev/core/fbcon_ud.c
+@@ -64,15 +64,14 @@ static void ud_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
+ 
+ static void ud_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		     int sx, int height, int width)
++		     int sx, int height, int width, int fg, int bg)
+ {
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	struct fb_fillrect region;
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+ 	u32 vyres = GETVYRES(ops->p, info);
+ 	u32 vxres = GETVXRES(ops->p, info);
+ 
+-	region.color = attr_bgcol_ec(bgshift,vc,info);
++	region.color = bg;
+ 	region.dy = vyres - ((sy + height) * vc->vc_font.height);
+ 	region.dx = vxres - ((sx + width) *  vc->vc_font.width);
+ 	region.width = width * vc->vc_font.width;
+diff --git a/drivers/video/fbdev/core/tileblit.c b/drivers/video/fbdev/core/tileblit.c
+index eff7ec4da1671..45b0828fad1cf 100644
+--- a/drivers/video/fbdev/core/tileblit.c
++++ b/drivers/video/fbdev/core/tileblit.c
+@@ -32,16 +32,14 @@ static void tile_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
+ 
+ static void tile_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		       int sx, int height, int width)
++		       int sx, int height, int width, int fg, int bg)
+ {
+ 	struct fb_tilerect rect;
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+-	int fgshift = (vc->vc_hi_font_mask) ? 9 : 8;
+ 
+ 	rect.index = vc->vc_video_erase_char &
+ 		((vc->vc_hi_font_mask) ? 0x1ff : 0xff);
+-	rect.fg = attr_fgcol_ec(fgshift, vc, info);
+-	rect.bg = attr_bgcol_ec(bgshift, vc, info);
++	rect.fg = fg;
++	rect.bg = bg;
+ 	rect.sx = sx;
+ 	rect.sy = sy;
+ 	rect.width = width;
 -- 
 2.39.5
 
