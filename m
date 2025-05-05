@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-141053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E988FAAB049
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:35:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A27AAB07A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:39:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70D247BAA99
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:33:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C75893AB877
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389F1286D67;
-	Mon,  5 May 2025 23:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5596B30C1DB;
+	Mon,  5 May 2025 23:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1A5bhxw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qLehSAdq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363F737F09F;
-	Mon,  5 May 2025 23:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0552857E0;
+	Mon,  5 May 2025 23:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487330; cv=none; b=oh50U8294PgsSsIoXf6w+d2hwQl4zWNpj0ID/prcSAmuZQzBN6XE4iRxkhpaYA11MnrbC5FpXbDkWhzc+xfsuhEtgU7/vWX8JdN4qIkrsQfwy6kG02L5Ur02vgjkvMC+Qvk0kmTYvbPbe45bn8WCzhhOWaXmDATRcIQ/ZIIc4So=
+	t=1746487336; cv=none; b=BZtsClj4opKM0owVpdoYlSl9PLFjCdlHpaE+osMgk0ci0Ed0jhBy+SgVRSZ08BXYO2Rr329aN/T1TXdvSqPYGD3HTVWOjG1dYU5ZvLV7ItmzfB3QR1K0aVqSCICafRkXV+5AAFd8ew1KVMoDSVMqrOpb2R+Kkt+fBn2/6XnEqXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487330; c=relaxed/simple;
-	bh=Nwo0NnYQJbIpCtIyFQqmwhx7MaWot18zPZrNlbb/MmI=;
+	s=arc-20240116; t=1746487336; c=relaxed/simple;
+	bh=2+joGTOuELpfJHei7VE7uNXX5PJBBzKmn6u5+mhbDzE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eiM/BEBKPlb793s6QTxshNgncFtx568FrP17cvrEbEkyKqgJ6W0DC88OZrHye73+vGmQM1Nv3EbviC7w4hfRuTnHWiJkq/Q9afq1KJTXqS46w57V8QN7IgI40F14xw8+nc82GdV9Ke90cH05u9uNRtHH2dfUzpG1QHJo1vCGXqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1A5bhxw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D0DC4CEED;
-	Mon,  5 May 2025 23:22:08 +0000 (UTC)
+	 MIME-Version; b=uzpy1J+sp18uR1xgvhTiSHPbmjPQ2yYN7ZRS5IUAEO49VizFD/IgAircVskDFK2U9EwrSBUjHHh1Ouv9/K9X7FZp5lBWlD0vAYGuuibrJfcltsfSBtD1S/sprh2ca5LBmCBVCd9iNPnPSmHOSJ3HGKZSyALO8Q5gmLB1gKdDFUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qLehSAdq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B743C4CEEE;
+	Mon,  5 May 2025 23:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487329;
-	bh=Nwo0NnYQJbIpCtIyFQqmwhx7MaWot18zPZrNlbb/MmI=;
+	s=k20201202; t=1746487335;
+	bh=2+joGTOuELpfJHei7VE7uNXX5PJBBzKmn6u5+mhbDzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1A5bhxwBlKxedJe4MlpXWUtjC3XBzb6GS8TAYusCOSeAUwZ5Wd7zs9n1fUWQ4R0/
-	 baPs38N6f03PPF3POWwbkW0INMS9mCPc3riuk/3V2A4HHnBUVSolMTCzz08I1N6q4U
-	 vPGVnlbIVCr4rrCZgzOYIVhssZGFpgBYQUm4ClYQdDRobu03oaGts4G+eHeXCb1Kxx
-	 9WMzZxtc1OrzAXlWAllNL22Y2en+Ox9fZzazMdTT7n628UqED5MwMFw3OW0idDzRQx
-	 ybQlFUfm/SIxlnpVZUvozV14YhbG5D33f1/yKbVgqW4lHOp8BCcEWFj5OazUds41th
-	 NMFy5EaMJrFsQ==
+	b=qLehSAdqONx6rXh5OlvYEabYus+ehz2DB07a2ftUGHJwhAHZj31KQDkHP2fwsNgkE
+	 +Hcwm9gag3MKe2/XrvlaICntGBKxMNxO0mwbG3zzA5FIzf0weldcUfXvbzkWvzrUcS
+	 mkKyIawDopKPUVatJVec0UM5l/gERwaZYfNtk/Qh23vd3HB8zHZQR5iOyqQlyeksYr
+	 2Ib2ecceUhuN7x0SCqEYmh2ngoyrglkzFL9KO3Kk9y6bjlrgvVa3yQQ66gajjLruNU
+	 XDwucdrWhYkdGoetoPcVkVyFFUVLzBlANPg53+dl52pzQr15NfoZq+vyLnLnuCod7r
+	 8lV7pTgFv7YzQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+Cc: Vitalii Mordan <mordan@ispras.ru>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	charlie@rivosinc.com
-Subject: [PATCH AUTOSEL 5.4 09/79] tools/build: Don't pass test log files to linker
-Date: Mon,  5 May 2025 19:20:41 -0400
-Message-Id: <20250505232151.2698893-9-sashal@kernel.org>
+	linux-i2c@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 13/79] i2c: pxa: fix call balance of i2c->clk handling routines
+Date: Mon,  5 May 2025 19:20:45 -0400
+Message-Id: <20250505232151.2698893-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -66,46 +65,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Ian Rogers <irogers@google.com>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-[ Upstream commit 935e7cb5bb80106ff4f2fe39640f430134ef8cd8 ]
+[ Upstream commit be7113d2e2a6f20cbee99c98d261a1fd6fd7b549 ]
 
-Separate test log files from object files. Depend on test log output
-but don't pass to the linker.
+If the clock i2c->clk was not enabled in i2c_pxa_probe(), it should not be
+disabled in any path.
 
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250311213628.569562-2-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with Klever.
+
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250212172803.1422136-1-mordan@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/build/Makefile.build | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-pxa.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
-index cd72016c3cfa7..ab0630ae6be85 100644
---- a/tools/build/Makefile.build
-+++ b/tools/build/Makefile.build
-@@ -130,6 +130,10 @@ objprefix    := $(subst ./,,$(OUTPUT)$(dir)/)
- obj-y        := $(addprefix $(objprefix),$(obj-y))
- subdir-obj-y := $(addprefix $(objprefix),$(subdir-obj-y))
+diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
+index d0c557c8d80f5..c5a6e7527baf7 100644
+--- a/drivers/i2c/busses/i2c-pxa.c
++++ b/drivers/i2c/busses/i2c-pxa.c
+@@ -1284,7 +1284,10 @@ static int i2c_pxa_probe(struct platform_device *dev)
+ 				i2c->adap.name);
+ 	}
  
-+# Separate out test log files from real build objects.
-+test-y       := $(filter %_log, $(obj-y))
-+obj-y        := $(filter-out %_log, $(obj-y))
-+
- # Final '$(obj)-in.o' object
- in-target := $(objprefix)$(obj)-in.o
+-	clk_prepare_enable(i2c->clk);
++	ret = clk_prepare_enable(i2c->clk);
++	if (ret)
++		return dev_err_probe(&dev->dev, ret,
++				     "failed to enable clock\n");
  
-@@ -140,7 +144,7 @@ $(subdir-y):
- 
- $(sort $(subdir-obj-y)): $(subdir-y) ;
- 
--$(in-target): $(obj-y) FORCE
-+$(in-target): $(obj-y) $(test-y) FORCE
- 	$(call rule_mkdir)
- 	$(call if_changed,$(host)ld_multi)
- 
+ 	if (i2c->use_pio) {
+ 		i2c->adap.algo = &i2c_pxa_pio_algorithm;
 -- 
 2.39.5
 
