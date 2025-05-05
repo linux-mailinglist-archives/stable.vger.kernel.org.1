@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-141609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F74AAB4DE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:16:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A51AAB4B9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:13:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 508E916E75A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:13:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D72EB7B80F8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC653561B5;
-	Tue,  6 May 2025 00:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99403561DF;
+	Tue,  6 May 2025 00:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c3gjmvPO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fbeYxbrB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCB2283FD5;
-	Mon,  5 May 2025 23:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC82C2DCB5B;
+	Mon,  5 May 2025 23:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486866; cv=none; b=WltmcRISVeNW50u5YNHaxDHmXvoDYi63QlDpJv0LWn2T0pTtUj6o55G7JeQ1U7+7+YHZyc7fCSEEadNvJabmsPekSwFx/0qEip5pdE39tQpHpnr6Gs+C9GLopiQoZl5QaEcqcyyuIUUEVXLxpdZxx7DPtVMWKrQDEqkgDxuQr7E=
+	t=1746486867; cv=none; b=bSvRSmdLhFeOP6rhBKzEQruZjiM0yLtdCV3JkuFi9QMV7FrHN6FDYWYUAedbRNEamZMdG/lYKrlYUGAX/cS8ALrG8RZp0DsZ8ZOb813XJdDpIwPt4V9bgmlgdtJMUFHf+Xt5K03ZnWYpfFJfmohO7Kwl2uWiA69+8vBcycBcd08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486866; c=relaxed/simple;
-	bh=jW2FA8xm5AtnwtzEyIHUOqLCaeKwfjzLkHKUUBQWPc4=;
+	s=arc-20240116; t=1746486867; c=relaxed/simple;
+	bh=PWS+1bFodNmkSAAB6LVMwD6M284xDtT5oJZUiuXRCEY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FmXSxs2iLldNjOfvVfGqbxeJSRh0Wecnm0gdk3DWGWxjfTZ3gDOO0LQ5DO2XEbF6ft8t085+YTmAAEfPeis4L0QPHxXejst2QI9v7Stva8bJGG14gx6aKThXFf7dZNvahdd3uQtjOsjo00KE3m8fPp5FB8gMKWqam93Mvkg258c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c3gjmvPO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5BCC4CEEE;
-	Mon,  5 May 2025 23:14:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mlf36UWQcU3YxhgoytDOim8PpGkT3gTHoIdYptXC4Fx/bkGF8YjjV0Sd7oL0PLHN8+o6RsXXQX4mF7vLzuO+QmnXe+e7uY9G24ZVN3urUcg+zyKXTj0gVK5jXVnyUhMcOVuMlv1iXRVrrB4XdSMnWOhdCasXZm8OOnCa1IGXbJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fbeYxbrB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DC8C4CEEE;
+	Mon,  5 May 2025 23:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486865;
-	bh=jW2FA8xm5AtnwtzEyIHUOqLCaeKwfjzLkHKUUBQWPc4=;
+	s=k20201202; t=1746486867;
+	bh=PWS+1bFodNmkSAAB6LVMwD6M284xDtT5oJZUiuXRCEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c3gjmvPOn+Yp68q+mWQa0hxPvEiaMtzfP2IFNoBynVcmFfA3sBbFB+xsTwoZ+g8Ge
-	 ieqi95AOESX8836K7APzDJIIqtLZGkRJgLBxhug6GlD9AtGp4aHIflOQdaMHxy3zgM
-	 PiHOm/F8lyMsVziRTFTgg5lt3btK7hlXOyj2Q8W2s0QR/zfbeVxO7ZiFI/gHsFyxxI
-	 W9Z2+7Vieu88mtb65YGPXy6U4BY0apHOQ/Xs+beISj3I+JXBwSFEPyW6vy7Lqb+vjw
-	 svqvTXMcjw5891gPY9avt0UmkbCyBYnrI+ioaH3vbJKxb2cJuXzdxRVhJaYltjoSRY
-	 3gdsNhIwEvx5g==
+	b=fbeYxbrBfQ2fFcvYpWUppPeDBY1OK7ceszRLhqo4vbs8g+OhgGEo4U4rtfFGz5IfQ
+	 T+4WzvOmgQI1iDLD6t18WqlPhVq2KpBrrKh851FSSR9MOL+amFN3OHpi7KPohBKQ9m
+	 EM7I89NIZ6c5J62xuGPo2wmDs9aPtb7aNqLoNjTnIIAqgow5tNswg9P3J+ub3qOfjU
+	 HoXEefhE/uMpYtJ/IyjMnTU7KpHkd7iBtPeEi+IUdzcTqu+lTroyH8H4/oOlMAcw64
+	 Az5oq9gKdahXetMm0sVOlfTEnRjyZoWByPaLJf5bWcMfaX39htEVwbqSiBtR0Tm1vr
+	 c/fYSFXsMaeYA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	richard@nod.at,
-	anton.ivanov@cambridgegreys.com,
-	johannes@sipsolutions.net,
-	dave.hansen@linux.intel.com,
-	rppt@kernel.org,
-	akpm@linux-foundation.org,
-	kevin.brodsky@arm.com,
-	benjamin.berg@intel.com,
-	linux-um@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.15 032/153] um: Update min_low_pfn to match changes in uml_reserved
-Date: Mon,  5 May 2025 19:11:19 -0400
-Message-Id: <20250505231320.2695319-32-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 034/153] scsi: st: Tighten the page format heuristics with MODE SELECT
+Date: Mon,  5 May 2025 19:11:21 -0400
+Message-Id: <20250505231320.2695319-34-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -68,39 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit e82cf3051e6193f61e03898f8dba035199064d36 ]
+[ Upstream commit 8db816c6f176321e42254badd5c1a8df8bfcfdb4 ]
 
-When uml_reserved is updated, min_low_pfn must also be updated
-accordingly. Otherwise, min_low_pfn will not accurately reflect
-the lowest available PFN.
+In the days when SCSI-2 was emerging, some drives did claim SCSI-2 but did
+not correctly implement it. The st driver first tries MODE SELECT with the
+page format bit set to set the block descriptor.  If not successful, the
+non-page format is tried.
 
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20250221041855.1156109-1-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The test only tests the sense code and this triggers also from illegal
+parameter in the parameter list. The test is limited to "old" devices and
+made more strict to remove false alarms.
+
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250311112516.5548-4-Kai.Makisara@kolumbus.fi
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/mem.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/st.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
-index 8e636ce029495..50be04f7b40f3 100644
---- a/arch/um/kernel/mem.c
-+++ b/arch/um/kernel/mem.c
-@@ -49,6 +49,7 @@ void __init mem_init(void)
- 	map_memory(brk_end, __pa(brk_end), uml_reserved - brk_end, 1, 1, 0);
- 	memblock_free(__pa(brk_end), uml_reserved - brk_end);
- 	uml_reserved = brk_end;
-+	min_low_pfn = PFN_UP(__pa(uml_reserved));
- 
- 	/* this will put all low memory onto the freelists */
- 	memblock_free_all();
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 956b3b9c5aad5..a58cb2171f958 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -3071,7 +3071,9 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 			   cmd_in == MTSETDRVBUFFER ||
+ 			   cmd_in == SET_DENS_AND_BLK) {
+ 			if (cmdstatp->sense_hdr.sense_key == ILLEGAL_REQUEST &&
+-			    !(STp->use_pf & PF_TESTED)) {
++				cmdstatp->sense_hdr.asc == 0x24 &&
++				(STp->device)->scsi_level <= SCSI_2 &&
++				!(STp->use_pf & PF_TESTED)) {
+ 				/* Try the other possible state of Page Format if not
+ 				   already tried */
+ 				STp->use_pf = (STp->use_pf ^ USE_PF) | PF_TESTED;
 -- 
 2.39.5
 
