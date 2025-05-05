@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-140786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2308AAAF58
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:15:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13094AAAF5E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:15:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A4255A4E8F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:09:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FF223ADB2F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A3BB272E73;
-	Mon,  5 May 2025 23:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D471B3B17C2;
+	Mon,  5 May 2025 23:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LMe6qjPO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hV/Sm3Fi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3C837AACA;
-	Mon,  5 May 2025 23:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B632DB4BA;
+	Mon,  5 May 2025 23:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486294; cv=none; b=XPLBOWcrPfU7n3+I94QEuGcIAqNb3pretxRcY34+ipRwx7BVIQZr4sXUiQ3zdr7IC6nhu4gVzMW85chwIRP6a4ijhC7st/RzSCKDvAssNINqCmpGqQ88PsXuYLWSb1K3FkDgiafbP3RvgTK3iKEjkCij7B9OdKedduysYBMg0J8=
+	t=1746486363; cv=none; b=hbUsxfR7CV++2jkCcSDkXP4UHd9TEaPezDlBZ3/c77t8iw1Ip0Qo3RwXvi74opJbvYMoXOBfGkLO7nr4pTtQCThoT1HY3S4O2UzSpbOtBiE2ixMAXctUbILDdIt1dnQS1vN6j41m0lbXqUmQXpBGcGeLQ4Z6CMkw9uK2kqcpjvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486294; c=relaxed/simple;
-	bh=1iAwpExQ0pLsNJ5i+j+9eFH8gGqdDp6OsXzfHS0ofUc=;
+	s=arc-20240116; t=1746486363; c=relaxed/simple;
+	bh=M9P9gXHPKc8muv0zGwNFp9Iica9ZFNy4A4gX/1oT0nQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kcGY7w1Bd+n0kCLc9J2t73341nAd9ZjCmtdstXJ/pos7HVC5LUswIocyCdH54CdRn6Jf1HQ3qrEyv7TLqUuiT4KmMJDSNpdukhhWV6lmxs6FARtUM6B2xIcckC7nBqCsIem6SYbzPVK6Ns36wdxqfCQZ+2KjoZP22YiwvgIEgTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LMe6qjPO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69E8C4CEEF;
-	Mon,  5 May 2025 23:04:51 +0000 (UTC)
+	 MIME-Version; b=XDNvx/YNnDV4OcB8tjAakUq5cTbFDwbLPeu+lnevQXdc2tinhwUXxWCS9tZ2KLgUBuCKScJZwpQVWTr052vjJk64XgOZfjIyE48j5pnOFfvc5x8VJh5tL2RNBezNw1ry8VhReOpefr/sSkIp10PfvqS6SqFXiY7C4F4AIG1fHJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hV/Sm3Fi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8726C4CEEE;
+	Mon,  5 May 2025 23:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486293;
-	bh=1iAwpExQ0pLsNJ5i+j+9eFH8gGqdDp6OsXzfHS0ofUc=;
+	s=k20201202; t=1746486362;
+	bh=M9P9gXHPKc8muv0zGwNFp9Iica9ZFNy4A4gX/1oT0nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LMe6qjPO4TWvB/rKatS0YLQEDjQPo9VVx53HL6GyjLfMmM6lZbeodt+8g4Y8pv9Zl
-	 HLwys2z6MlUNPAiKHRWHmPNQLVy3WOMKpLtINNWV9dIcZgtgUZS5aq/UypG50BsEcO
-	 i5sZ8s1ZqMGpQzifNJvK1cJ+wPSdlXf0az3OuTUqp0tHIDm/5UUg1/pff4AnKw/zgE
-	 AxwTwKsN30szMBuwmi6JCAKXP8dYTvymiEzfY9qVS1jpz3dl6RoBiSS0JPNLjeTx84
-	 DYV40V2FRDf2MiZEovLiMibkS5M9HA/wToO98nWaysk0fOywr/VR107enNaa5gMZ0Q
-	 EyAhuJa4WmCeA==
+	b=hV/Sm3Fik84HFUH9fqRVj+HEbwJIgeKCcAIDeeSfccPyleduiYqVZFYN4mY5y3F4q
+	 mloiKU90tQS5znlcpYTbRKIuXYYJk+uWlkx275wk44KTDYEWgNTjMlqjsFPziqwxJ/
+	 SNf5MHCPMn+BwJDMZ/AzQrbRAwzNrKA7vWDybOmXMLhYzEnauFrPsEx4LiMpOIuq5E
+	 hcF9ETbyjfDIovItgiHwryaUWKwwRk3goeV8zOeywrVfLfPZsQD1AN/eCEjksGlV/Q
+	 WJbOFuzwDUW3FCBijOKgvR5OEzsCMMqGmgrWBd6soC5fKV0/UaNlzRWzYtisKc3SML
+	 UKSSIj3I0ZpKQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 242/294] ip: fib_rules: Fetch net from fib_rule in fib[46]_rule_configure().
-Date: Mon,  5 May 2025 18:55:42 -0400
-Message-Id: <20250505225634.2688578-242-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 282/294] wifi: rtw88: Don't use static local variable in rtw8822b_set_tx_power_index_by_rate
+Date: Mon,  5 May 2025 18:56:22 -0400
+Message-Id: <20250505225634.2688578-282-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -70,59 +65,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 5a1ccffd30a08f5a2428cd5fbb3ab03e8eb6c66d ]
+[ Upstream commit 00451eb3bec763f708e7e58326468c1e575e5a66 ]
 
-The following patch will not set skb->sk from VRF path.
+Some users want to plug two identical USB devices at the same time.
+This static variable could theoretically cause them to use incorrect
+TX power values.
 
-Let's fetch net from fib_rule->fr_net instead of sock_net(skb->sk)
-in fib[46]_rule_configure().
+Move the variable to the caller and pass a pointer to it to
+rtw8822b_set_tx_power_index_by_rate().
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250207072502.87775-5-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/8a60f581-0ab5-4d98-a97d-dd83b605008f@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_rules.c  | 4 ++--
- net/ipv6/fib6_rules.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
-index 513f475c6a534..298a9944a3d1e 100644
---- a/net/ipv4/fib_rules.c
-+++ b/net/ipv4/fib_rules.c
-@@ -222,9 +222,9 @@ static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
- 			       struct nlattr **tb,
- 			       struct netlink_ext_ack *extack)
- {
--	struct net *net = sock_net(skb->sk);
-+	struct fib4_rule *rule4 = (struct fib4_rule *)rule;
-+	struct net *net = rule->fr_net;
- 	int err = -EINVAL;
--	struct fib4_rule *rule4 = (struct fib4_rule *) rule;
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index 3017a9760da8d..99318a82b43f4 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -975,11 +975,11 @@ static void rtw8822b_query_rx_desc(struct rtw_dev *rtwdev, u8 *rx_desc,
+ }
  
- 	if (!inet_validate_dscp(frh->tos)) {
- 		NL_SET_ERR_MSG(extack,
-diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
-index 6eeab21512ba9..e0f0c5f8cccda 100644
---- a/net/ipv6/fib6_rules.c
-+++ b/net/ipv6/fib6_rules.c
-@@ -350,9 +350,9 @@ static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
- 			       struct nlattr **tb,
- 			       struct netlink_ext_ack *extack)
+ static void
+-rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
++rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path,
++				    u8 rs, u32 *phy_pwr_idx)
  {
-+	struct fib6_rule *rule6 = (struct fib6_rule *)rule;
-+	struct net *net = rule->fr_net;
- 	int err = -EINVAL;
--	struct net *net = sock_net(skb->sk);
--	struct fib6_rule *rule6 = (struct fib6_rule *) rule;
+ 	struct rtw_hal *hal = &rtwdev->hal;
+ 	static const u32 offset_txagc[2] = {0x1d00, 0x1d80};
+-	static u32 phy_pwr_idx;
+ 	u8 rate, rate_idx, pwr_index, shift;
+ 	int j;
  
- 	if (!inet_validate_dscp(frh->tos)) {
- 		NL_SET_ERR_MSG(extack,
+@@ -987,12 +987,12 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
+ 		rate = rtw_rate_section[rs][j];
+ 		pwr_index = hal->tx_pwr_tbl[path][rate];
+ 		shift = rate & 0x3;
+-		phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
++		*phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
+ 		if (shift == 0x3) {
+ 			rate_idx = rate & 0xfc;
+ 			rtw_write32(rtwdev, offset_txagc[path] + rate_idx,
+-				    phy_pwr_idx);
+-			phy_pwr_idx = 0;
++				    *phy_pwr_idx);
++			*phy_pwr_idx = 0;
+ 		}
+ 	}
+ }
+@@ -1000,11 +1000,13 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
+ static void rtw8822b_set_tx_power_index(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_hal *hal = &rtwdev->hal;
++	u32 phy_pwr_idx = 0;
+ 	int rs, path;
+ 
+ 	for (path = 0; path < hal->rf_path_num; path++) {
+ 		for (rs = 0; rs < RTW_RATE_SECTION_MAX; rs++)
+-			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs);
++			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs,
++							    &phy_pwr_idx);
+ 	}
+ }
+ 
 -- 
 2.39.5
 
