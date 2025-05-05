@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-140390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9633CAAA860
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:52:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B19AAA838
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C66299849FA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:47:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2882318856CE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3DB296170;
-	Mon,  5 May 2025 22:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E54349B82;
+	Mon,  5 May 2025 22:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FRw6O7ud"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mftCi3QO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B71729616F;
-	Mon,  5 May 2025 22:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816C7349B77;
+	Mon,  5 May 2025 22:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484756; cv=none; b=tnJC6aRavBRsWK4FEiZIkXPtQQXHJnAGW7iQ0R6SBjCjqj2Jg5vzCPw4+sMg4n/i1i9a50Dh0z41ktbm3GfSDTa1HtVzfSAwMQFv6j//l0qzYUTrAq2ot28gzzDdDg26VgaXJdcFn4ybRy1ekiaGJe9b61IAe2Zf9AagEaLwRp0=
+	t=1746484758; cv=none; b=DhII05acxfYsK0T8jJpQWaxay8CvHnT9Z7H0htLh4ZHsG3asx5DUxc+LQwonse6vX/DL3tQHfM5YGMLVL6zYW30masGU5/cZeiN6xR8C9h6Dmv8qYhlxNXLMcu2mZGeUfklTZVo7TPPiig1iw/zFNFrk14tk0NTaTPP2MomU9Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484756; c=relaxed/simple;
-	bh=myG3xDKndjEbLNO7Alrr8ZDBH5rNgMU5c3BwtYuwtZU=;
+	s=arc-20240116; t=1746484758; c=relaxed/simple;
+	bh=ywexBUzYrqkZI7OIwHPb5OJ1EGlVD5NLhiZhN4R+bxY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=siI5e6jxGSCIhuzuB2JwleXwBserrkNP+GZcbyNWn6AJMzInXjYNbyL8iV6TXaiTGAUWYxY7ReBSgDfYHLfC76W2zlWmOFnkDgoC3PTAEP7Pz1MYz5T832QgITsHVBuelr/81izO1RXvieHAqdErYhda3cErow5IHTYwSCnwBkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FRw6O7ud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46B6C4CEED;
-	Mon,  5 May 2025 22:39:14 +0000 (UTC)
+	 MIME-Version; b=p3iJqH7KtOfogOoKQuozSycoDZv5JEajFiHfkSn+clvfjVf/lcZLM+hgGqKHMBjif3bB3GuezCZC+fjyenUky6mMbOCH2fxLzZOgnW0Fp1/W1n3AoOltMwafC4TH4fvEvzMvAjPrWKDfS9yUeBLbwbiJTURiEtw+Q9nYd1DzaeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mftCi3QO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002B4C4CEE4;
+	Mon,  5 May 2025 22:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484756;
-	bh=myG3xDKndjEbLNO7Alrr8ZDBH5rNgMU5c3BwtYuwtZU=;
+	s=k20201202; t=1746484758;
+	bh=ywexBUzYrqkZI7OIwHPb5OJ1EGlVD5NLhiZhN4R+bxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRw6O7udF3INqUdlaoIyMxZbwuxCmntrT9KnnipewPRJhoZQgptyOPWhFhk/okWpb
-	 8xQ2csOI0fP1+cS4ojCtzMHtRyzaw+kLtnUGvXXK7HPw1hT5kUUdba/8qJURpN/D07
-	 8uWk79KXus7Ac+FuJDN0WDyUdJgIK1EJRUJkF0Pn6denz0tRXwRelFbGSKIephohpm
-	 uwhMS7PcLUJac6ug2AuCj8gm26tp9d65njfdaD/p8X0kqi+wdzzKKP58U0I2CshO0W
-	 6FKOF1Z/1RxdUtxW7+6Qc2CvJ5ezWI61PWxpXYT2AkpTdfEoKqkmqct72M4EpNhtfN
-	 E2n8y3Pl4jJpw==
+	b=mftCi3QO2l70qsLHvUnjvh9WVQ6UNDfAfSvUVFK5cdIjFcajUFJwsyYxaaNjiv6zL
+	 1HFfkfdAxKisPzUNBQhRYXDAkT07fCahEPjEQjZx9ys4G6tOLpi+OOt/yWUKseW2G7
+	 IeqwpKjeNjNNnvovGNVG7jl+hl1uoCY1hLkhdoB/1B6AbeWVO6zTtqPRviWGr4R4pN
+	 xjMP6B2qsnQG6IQQxEnSNgeLcyLJvogaOE6n+T/hcimFYCS+qLlEM7v9TGegMbyMo9
+	 S6hNO5MCQTTCu4aVo9VNrqtd0vJ8vfGIJ1BcT+l/k68r2dq6ZYiJdSvgXFKqOvgmxj
+	 6oSAbOYFBDFZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kate Hsuan <hpa@redhat.com>,
-	kernel test robot <lkp@intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Eric Dumazet <edumazet@google.com>,
+	Marco Leogrande <leogrande@google.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	hdegoede@redhat.com,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 641/642] HID: Kconfig: Add LEDS_CLASS_MULTICOLOR dependency to HID_LOGITECH
-Date: Mon,  5 May 2025 18:14:17 -0400
-Message-Id: <20250505221419.2672473-641-sashal@kernel.org>
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	sdf@fomichev.me,
+	jdamato@fastly.com,
+	aleksander.lobakin@intel.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 642/642] net-sysfs: restore behavior for not running devices
+Date: Mon,  5 May 2025 18:14:18 -0400
+Message-Id: <20250505221419.2672473-642-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -69,45 +72,71 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Kate Hsuan <hpa@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 4465f4fa21e0e54c10896db3ed49dbd5a9aad3fd ]
+[ Upstream commit 75bc3dab4e49b4daccb27ad6ce8ce2fcd253fc1b ]
 
-The test bot found an issue with building hid-lg-g15.
+modprobe dummy dumdummies=1
 
-All errors (new ones prefixed by >>):
+Old behavior :
 
-   powerpc-linux-ld: drivers/hid/hid-lg-g15.o: in function `lg_g510_kbd_led_write':
->> drivers/hid/hid-lg-g15.c:241:(.text+0x768): undefined reference to `led_mc_calc_color_components'
-   powerpc-linux-ld: drivers/hid/hid-lg-g15.o: in function `lg_g15_register_led':
->> drivers/hid/hid-lg-g15.c:686:(.text+0xa9c): undefined reference to `devm_led_classdev_multicolor_register_ext'
+$ cat /sys/class/net/dummy0/carrier
+cat: /sys/class/net/dummy0/carrier: Invalid argument
 
-Since multicolor LED APIs manage the keyboard backlight settings of
-hid-lg-g15, the LEDS_CLASS_MULTICOLOR dependency was added to
-HID_LOGITECH.
+After blamed commit, an empty string is reported.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502110032.VZ0J024X-lkp@intel.com/
-Fixes: a3a064146c50 ("HID: hid-lg-g15: Use standard multicolor LED API")
-Signed-off-by: Kate Hsuan <hpa@redhat.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+$ cat /sys/class/net/dummy0/carrier
+$
+
+In this commit, I restore the old behavior for carrier,
+speed and duplex attributes.
+
+Fixes: 79c61899b5ee ("net-sysfs: remove rtnl_trylock from device attributes")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: Marco Leogrande <leogrande@google.com>
+Reviewed-by: Antoine Tenart <atenart@kernel.org>
+Link: https://patch.msgid.link/20250221051223.576726-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ net/core/net-sysfs.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-index 4cfea399ebab2..76be97c5fc2ff 100644
---- a/drivers/hid/Kconfig
-+++ b/drivers/hid/Kconfig
-@@ -603,6 +603,7 @@ config HID_LOGITECH
- 	tristate "Logitech devices"
- 	depends on USB_HID
- 	depends on LEDS_CLASS
-+	depends on LEDS_CLASS_MULTICOLOR
- 	default !EXPERT
- 	help
- 	Support for Logitech devices that are not fully compliant with HID standard.
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index cedbe7d9ae670..474824e88959f 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -313,12 +313,13 @@ static ssize_t carrier_show(struct device *dev,
+ 			    struct device_attribute *attr, char *buf)
+ {
+ 	struct net_device *netdev = to_net_dev(dev);
+-	int ret = -EINVAL;
++	int ret;
+ 
+ 	ret = sysfs_rtnl_lock(&dev->kobj, &attr->attr, netdev);
+ 	if (ret)
+ 		return ret;
+ 
++	ret = -EINVAL;
+ 	if (netif_running(netdev)) {
+ 		/* Synchronize carrier state with link watch,
+ 		 * see also rtnl_getlink().
+@@ -349,6 +350,7 @@ static ssize_t speed_show(struct device *dev,
+ 	if (ret)
+ 		return ret;
+ 
++	ret = -EINVAL;
+ 	if (netif_running(netdev)) {
+ 		struct ethtool_link_ksettings cmd;
+ 
+@@ -376,6 +378,7 @@ static ssize_t duplex_show(struct device *dev,
+ 	if (ret)
+ 		return ret;
+ 
++	ret = -EINVAL;
+ 	if (netif_running(netdev)) {
+ 		struct ethtool_link_ksettings cmd;
+ 
 -- 
 2.39.5
 
