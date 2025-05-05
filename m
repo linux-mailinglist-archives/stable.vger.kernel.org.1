@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-140827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 560DAAAABB1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:00:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7316DAAABE0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:04:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45726466821
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:00:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E94F1887B29
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1CA3B63CE;
-	Mon,  5 May 2025 23:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18223B7A96;
+	Mon,  5 May 2025 23:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLyo3myL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YJkvB/WF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681E73984DE;
-	Mon,  5 May 2025 23:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C134237DBE5;
+	Mon,  5 May 2025 23:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486456; cv=none; b=D0tJuXd0pG482k9G1bBeRkW/ntUG+04Z+Sfdyp3IFybiMJrvOtwiiktjzhWDDY8i4f5fxxzLg4L5X8DA8AzmSjwhuSIJ6XYH8RDjBhFl+8tMmbU8yo6HewYiSczwoRI5q8IsUFw97IlxQA2nEGwO/0i8d65hNihTdoLaVW+Yhk4=
+	t=1746486465; cv=none; b=Qde++t2KVQmlHbb26q74S7Xeo2e4z6CpbjwPCjf5c2HvDYl1B8E06qI7uyHT/3MqbQTyiO/Uur5tsWXh3Gb+H3+vD+9pKrn3pZ6KTugka63XnUVhkd3+SGWtywALXPrxfX/xl4mcWJHSNkE1f9cxWOz2/XzT+Rwv/WbBhjWyGMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486456; c=relaxed/simple;
-	bh=qnmeNuCJKTcdMgGFnm6k5CzPcF93PA5+z9Xy+/E98ks=;
+	s=arc-20240116; t=1746486465; c=relaxed/simple;
+	bh=o6vPQm8ORAMEIjP7fhptjMtwSNq9nMRVlWGY99NWjZw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XDUcBoa1ilcY8/LvcVCybjP/uF5bHme11rei60v9sXIodVFF14w74kEbIjfq5M5HRYOgLVlvzPrvDt/N/5yWD6hRCH4pbezszNDAHUbmXBTkF9jAHKGD4RoMKSaZySxuCK0rmMKKIjUOzYHjM5uW8Oydwlley9IC+IoGVPFpeDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLyo3myL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476CCC4CEEE;
-	Mon,  5 May 2025 23:07:35 +0000 (UTC)
+	 MIME-Version; b=M4Cil7W7QSo92gwEMnb3NcLuEcjqwPg/JKyfZP5oHZR02qyLz/48kNoX8WQKIGYWIb20FfX/vsc/R+LVGsRSIdPng/6ozzIgVhNaT8EeIMCQrOXibxE1pjxRr2CeGUKrfH0EDTAcL3Uqt6YNGHKcdOXT+nVc9fVDQFJvlGx33us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YJkvB/WF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2723DC4CEE4;
+	Mon,  5 May 2025 23:07:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486456;
-	bh=qnmeNuCJKTcdMgGFnm6k5CzPcF93PA5+z9Xy+/E98ks=;
+	s=k20201202; t=1746486465;
+	bh=o6vPQm8ORAMEIjP7fhptjMtwSNq9nMRVlWGY99NWjZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLyo3myL7nN7TjVJEERHFnKLTqOKl9Np41ztz/jyIaGL0Z7tvWRnEyAIMDL9Z+xaN
-	 3OXG9/iF1QWE50LxeThRqumOmfXOq2aaxYzOaEp6YZx37mB8RrjFuiQw6Lu/kvMVCE
-	 Z/Pht8gvA1enig0PnuiLHezZXm60h0HF4ml79fSV8kXno488p3u2oV7gKNjDMQW0kG
-	 i186+9KjxWAG70U2VfoaW5WHTFj6hrl8p9besed25Ut418UCzOSpVp8E7poMxRpdqv
-	 cWstM+4M3zjOUIuUmwsLODMTohb56N/rf2R4LY3f699gHj9orLo7QWM2mwtUWCk23t
-	 li3xCEYOXjCQQ==
+	b=YJkvB/WFqaQckMsxUmHd6lyoc8jegZliByGrhww8MOaIMKFoFvRHvgyB9fev6elPh
+	 XbBRLTN1rIAPJH0uVUiqqc+nQ5PSsUxWBXToTd0epH1XDlL7W8cOlvzfIULO/wTE6T
+	 qMtLXi6bRpRvwvB6J5qWHQH+n5eGD6yW4ZwXrUWaG88y7KdWFMbsnhZJU1bvEtdxhB
+	 Skjc6a2InmYIw8yApzGEqiX43le/CgD5+BNiX/NRnFvb0coSpF0/ui2pwV6rU7Ffen
+	 b4W9k31chfqFkGCBxaB+MF4Dfvj2HEEbzEk8apb9uAL38/FdBI48zwRN/bZLzMOu20
+	 o6veLcSAMc/4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: Benjamin Berg <benjamin@sipsolutions.net>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	josef@toxicpanda.com,
-	linux-btrfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 040/212] btrfs: zoned: exit btrfs_can_activate_zone if BTRFS_FS_NEED_ZONE_FINISH is set
-Date: Mon,  5 May 2025 19:03:32 -0400
-Message-Id: <20250505230624.2692522-40-sashal@kernel.org>
+	richard@nod.at,
+	anton.ivanov@cambridgegreys.com,
+	johannes@sipsolutions.net,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-um@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 044/212] um: Store full CSGSFS and SS register from mcontext
+Date: Mon,  5 May 2025 19:03:36 -0400
+Message-Id: <20250505230624.2692522-44-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -68,37 +73,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Benjamin Berg <benjamin@sipsolutions.net>
 
-[ Upstream commit 26b38e28162ef4ceb1e0482299820fbbd7dbcd92 ]
+[ Upstream commit cef721e0d53d2b64f2ba177c63a0dfdd7c0daf17 ]
 
-If BTRFS_FS_NEED_ZONE_FINISH is already set for the whole filesystem, exit
-early in btrfs_can_activate_zone(). There's no need to check if
-BTRFS_FS_NEED_ZONE_FINISH needs to be set if it is already set.
+Doing this allows using registers as retrieved from an mcontext to be
+pushed to a process using PTRACE_SETREGS.
 
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+It is not entirely clear to me why CSGSFS was masked. Doing so creates
+issues when using the mcontext as process state in seccomp and simply
+copying the register appears to work perfectly fine for ptrace.
+
+Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
+Link: https://patch.msgid.link/20250224181827.647129-2-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zoned.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/um/os-Linux/mcontext.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index 1dff64e62047e..bfd76a7dcfa02 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2105,6 +2105,9 @@ bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices, u64 flags)
- 	if (!btrfs_is_zoned(fs_info))
- 		return true;
- 
-+	if (test_bit(BTRFS_FS_NEED_ZONE_FINISH, &fs_info->flags))
-+		return false;
-+
- 	/* Check if there is a device with active zones left */
- 	mutex_lock(&fs_info->chunk_mutex);
- 	list_for_each_entry(device, &fs_devices->alloc_list, dev_alloc_list) {
+diff --git a/arch/x86/um/os-Linux/mcontext.c b/arch/x86/um/os-Linux/mcontext.c
+index 49c3744cac371..81b9d1f9f4e68 100644
+--- a/arch/x86/um/os-Linux/mcontext.c
++++ b/arch/x86/um/os-Linux/mcontext.c
+@@ -26,7 +26,6 @@ void get_regs_from_mc(struct uml_pt_regs *regs, mcontext_t *mc)
+ 	COPY(RIP);
+ 	COPY2(EFLAGS, EFL);
+ 	COPY2(CS, CSGSFS);
+-	regs->gp[CS / sizeof(unsigned long)] &= 0xffff;
+-	regs->gp[CS / sizeof(unsigned long)] |= 3;
++	regs->gp[SS / sizeof(unsigned long)] = mc->gregs[REG_CSGSFS] >> 48;
+ #endif
+ }
 -- 
 2.39.5
 
