@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-140201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5F3AAA60C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:03:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 687FDAAA614
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FBA94A034D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:03:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B22F1A84C13
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963B931E171;
-	Mon,  5 May 2025 22:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B66292416;
+	Mon,  5 May 2025 22:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CFuxTD1X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6n16xcy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3C728E5FF;
-	Mon,  5 May 2025 22:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DBA29240F;
+	Mon,  5 May 2025 22:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484324; cv=none; b=NffuaZ221K1svtf0GaYD2LofFNvJgNLnJbh0Z1B0C4kslC9aqNoIABWSob5l8RV2m3818dejNSnwThkNcu56Bv2UHX2rqEErTb2sZfWcNHf09TAA7hJ2ipnomQt2mqi5gATpH3PFc1LaIkNBNHeruVbSsFVUEyNRHsoDrjH4Dw0=
+	t=1746484325; cv=none; b=XjQJdjIph0lnagpBi6wTz3FeIIEUi/Ij2p2pWZQWSiXhSjx+zFEbuqkmu9n8zUFFccjn5zie10ziN6g8ENr4mkv3GV+1f3IQyd2EPWRa8kpeEfCqhTneHIBNOJLDxkZVJfHjVidw9xZEbpUidCmDu87fJMYl/npetZvV9jhjxO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484324; c=relaxed/simple;
-	bh=2DFBAgo7F8rUjSMxHwsHJ8b2g4n9DfX/Oet7h0o5k2o=;
+	s=arc-20240116; t=1746484325; c=relaxed/simple;
+	bh=kr9HLrdre2mnePfmkxTeKNOQosPAwdSnq6v7nhxRkdw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VO3xIvbjEELV1H4TSpkPx66tHQC3oLns8r29nui3iNk9Rr23nma8T5VcnITxNRFd5TAhSA5MockEPPl4UBUJVSiKXD4cJzCCczMrpqNpGIMI/McZ+AcZyS1UJqy6Yi7ug9FCgKQw2NoaYDEGuKEp5pIZHYqArzZddOK3F13OHbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CFuxTD1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39B6C4CEED;
-	Mon,  5 May 2025 22:32:02 +0000 (UTC)
+	 MIME-Version; b=oP1rxUsjfgx3Re6gUbtCBbzaFn5Zez9jlVCJ6I0pkqUMAMOLCyRJ7SKOvbZTjJHkx2QnZnI1QWrW+h0vvUliuxzHBX5NGpDBi3C3Aqgce84VuNTI2lLtjcHeRVIeyPgiC37NcZQHvno3YgPAEUa1nEh7GIl40W7ioZVJKpRe6ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6n16xcy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7DAC4CEEF;
+	Mon,  5 May 2025 22:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484323;
-	bh=2DFBAgo7F8rUjSMxHwsHJ8b2g4n9DfX/Oet7h0o5k2o=;
+	s=k20201202; t=1746484325;
+	bh=kr9HLrdre2mnePfmkxTeKNOQosPAwdSnq6v7nhxRkdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFuxTD1XLzEoi6H/jTnzLMOam0EcwCCxwGhH88DTDl4lOgOUmszAPV/w5S/EoOQOB
-	 QbhRL7LA3QkFAh2oe19tHZhtIZA3JF8GtmtVm/JR2XkX6EPc53sjTjknmJX0C4y2MH
-	 jyMP7z3gJL5dT+YUgC1g/w2t189IDljsK1AMG4UtPkEGpk8jjy5k+YoJZAx2PJRaeT
-	 ZKE+/5LAfrKNtI/+sC/1ruWUjtwxFNzyD5iZX92TT9u9KTCLVY3yXVgaNoFahQ5Az5
-	 jrUJgujAECiVOPcH9fqv/N0etohqEGNwfCJV/A0n3P0vmajuRAN328b0XzJGT+FKeQ
-	 0lD7TgA/oI2XA==
+	b=Q6n16xcyDOklDDTLT9l7FsPcqFhW0W5fzHpaEVr/eHrAKaMXG5m+xeXL9irJaclJd
+	 Qi0sEGGXHyO+BUKVRWGU7w0+iX/yaw75tteOYfvNbnykaAuHsh0MwGzd3mOBsGmpQO
+	 LPUbps4lLcJ+WfJMbmZzzIa2LrA4sR9YU4Kf54EbUgk4uQBO/X3k/1vrVL1AKrB9Rv
+	 XlXke9clRznA7P1Pp8GzHjhbNsaLwFBmkjFJAx9m7TSuYfJDtWXEv7cYFyZ6+JgXMW
+	 icNCcSYLkt6A//yPQFMFH5fXfHPIuzVH3Z92+DEdQW4MsC4n/V6XNazsviZIrUo0d3
+	 skHmqWFUR03RQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Vinod Koul <vkoul@kernel.org>,
+Cc: Jan Kara <jack@suse.cz>,
+	Andreas Dilger <adilger@dilger.ca>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 454/642] soundwire: cadence_master: set frame shape and divider based on actual clk freq
-Date: Mon,  5 May 2025 18:11:10 -0400
-Message-Id: <20250505221419.2672473-454-sashal@kernel.org>
+	jack@suse.com,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 455/642] jbd2: Avoid long replay times due to high number or revoke blocks
+Date: Mon,  5 May 2025 18:11:11 -0400
+Message-Id: <20250505221419.2672473-455-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -63,95 +63,214 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit e738d77f78b3ac085dfb51be414e93464abba7ec ]
+[ Upstream commit a399af4e3b1ab2c5d83292d4487c4d18de551659 ]
 
-Frame shape and curr_dr_freq could be updated by sdw_compute_bus_params().
-Peripherals will set curr_dr_freq as their frequency. Managers
-should do the same. Then update frame shape according to the actual
-bus frequency.
+Some users are reporting journal replay takes a long time when there is
+excessive number of revoke blocks in the journal. Reported times are
+like:
 
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Link: https://lore.kernel.org/r/20250205074232.87537-2-yung-chuan.liao@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+1048576 records - 95 seconds
+2097152 records - 580 seconds
+
+The problem is that hash chains in the revoke table gets excessively
+long in these cases. Fix the problem by sizing the revoke table
+appropriately before the revoke pass.
+
+Thanks to Alexey Zhuravlev <azhuravlev@ddn.com> for benchmarking the
+patch with large numbers of revoke blocks [1].
+
+[1] https://lore.kernel.org/all/20250113183107.7bfef7b6@x390.bzzz77.ru
+
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250121140925.17231-2-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/cadence_master.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ fs/jbd2/recovery.c   | 58 ++++++++++++++++++++++++++++++++++++--------
+ fs/jbd2/revoke.c     |  8 +++---
+ include/linux/jbd2.h |  2 ++
+ 3 files changed, 54 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
-index f367670ea991b..68be8ff3f02b1 100644
---- a/drivers/soundwire/cadence_master.c
-+++ b/drivers/soundwire/cadence_master.c
-@@ -1341,7 +1341,7 @@ static u32 cdns_set_initial_frame_shape(int n_rows, int n_cols)
- 	return val;
- }
+diff --git a/fs/jbd2/recovery.c b/fs/jbd2/recovery.c
+index 23502f1a67c1e..a3c39a71c4ad3 100644
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -39,7 +39,7 @@ struct recovery_info
  
--static void cdns_init_clock_ctrl(struct sdw_cdns *cdns)
-+static int cdns_init_clock_ctrl(struct sdw_cdns *cdns)
+ static int do_one_pass(journal_t *journal,
+ 				struct recovery_info *info, enum passtype pass);
+-static int scan_revoke_records(journal_t *, struct buffer_head *,
++static int scan_revoke_records(journal_t *, enum passtype, struct buffer_head *,
+ 				tid_t, struct recovery_info *);
+ 
+ #ifdef __KERNEL__
+@@ -328,6 +328,12 @@ int jbd2_journal_recover(journal_t *journal)
+ 		  journal->j_transaction_sequence, journal->j_head);
+ 
+ 	jbd2_journal_clear_revoke(journal);
++	/* Free revoke table allocated for replay */
++	if (journal->j_revoke != journal->j_revoke_table[0] &&
++	    journal->j_revoke != journal->j_revoke_table[1]) {
++		jbd2_journal_destroy_revoke_table(journal->j_revoke);
++		journal->j_revoke = journal->j_revoke_table[1];
++	}
+ 	err2 = sync_blockdev(journal->j_fs_dev);
+ 	if (!err)
+ 		err = err2;
+@@ -613,6 +619,31 @@ static int do_one_pass(journal_t *journal,
+ 	first_commit_ID = next_commit_ID;
+ 	if (pass == PASS_SCAN)
+ 		info->start_transaction = first_commit_ID;
++	else if (pass == PASS_REVOKE) {
++		/*
++		 * Would the default revoke table have too long hash chains
++		 * during replay?
++		 */
++		if (info->nr_revokes > JOURNAL_REVOKE_DEFAULT_HASH * 16) {
++			unsigned int hash_size;
++
++			/*
++			 * Aim for average chain length of 8, limit at 1M
++			 * entries to avoid problems with malicious
++			 * filesystems.
++			 */
++			hash_size = min(roundup_pow_of_two(info->nr_revokes / 8),
++					1U << 20);
++			journal->j_revoke =
++				jbd2_journal_init_revoke_table(hash_size);
++			if (!journal->j_revoke) {
++				printk(KERN_ERR
++				       "JBD2: failed to allocate revoke table for replay with %u entries. "
++				       "Journal replay may be slow.\n", hash_size);
++				journal->j_revoke = journal->j_revoke_table[1];
++			}
++		}
++	}
+ 
+ 	jbd2_debug(1, "Starting recovery pass %d\n", pass);
+ 
+@@ -852,6 +883,13 @@ static int do_one_pass(journal_t *journal,
+ 			continue;
+ 
+ 		case JBD2_REVOKE_BLOCK:
++			/*
++			 * If we aren't in the SCAN or REVOKE pass, then we can
++			 * just skip over this block.
++			 */
++			if (pass != PASS_REVOKE && pass != PASS_SCAN)
++				continue;
++
+ 			/*
+ 			 * Check revoke block crc in pass_scan, if csum verify
+ 			 * failed, check commit block time later.
+@@ -864,12 +902,7 @@ static int do_one_pass(journal_t *journal,
+ 				need_check_commit_time = true;
+ 			}
+ 
+-			/* If we aren't in the REVOKE pass, then we can
+-			 * just skip over this block. */
+-			if (pass != PASS_REVOKE)
+-				continue;
+-
+-			err = scan_revoke_records(journal, bh,
++			err = scan_revoke_records(journal, pass, bh,
+ 						  next_commit_ID, info);
+ 			if (err)
+ 				goto failed;
+@@ -923,8 +956,9 @@ static int do_one_pass(journal_t *journal,
+ 
+ /* Scan a revoke record, marking all blocks mentioned as revoked. */
+ 
+-static int scan_revoke_records(journal_t *journal, struct buffer_head *bh,
+-			       tid_t sequence, struct recovery_info *info)
++static int scan_revoke_records(journal_t *journal, enum passtype pass,
++			       struct buffer_head *bh, tid_t sequence,
++			       struct recovery_info *info)
  {
- 	struct sdw_bus *bus = &cdns->bus;
- 	struct sdw_master_prop *prop = &bus->prop;
-@@ -1355,14 +1355,25 @@ static void cdns_init_clock_ctrl(struct sdw_cdns *cdns)
- 		prop->default_row,
- 		prop->default_col);
+ 	jbd2_journal_revoke_header_t *header;
+ 	int offset, max;
+@@ -945,6 +979,11 @@ static int scan_revoke_records(journal_t *journal, struct buffer_head *bh,
+ 	if (jbd2_has_feature_64bit(journal))
+ 		record_len = 8;
  
-+	if (!prop->default_frame_rate || !prop->default_row) {
-+		dev_err(cdns->dev, "Default frame_rate %d or row %d is invalid\n",
-+			prop->default_frame_rate, prop->default_row);
-+		return -EINVAL;
++	if (pass == PASS_SCAN) {
++		info->nr_revokes += (max - offset) / record_len;
++		return 0;
 +	}
 +
- 	/* Set clock divider */
--	divider	= (prop->mclk_freq / prop->max_clk_freq) - 1;
-+	divider	= (prop->mclk_freq * SDW_DOUBLE_RATE_FACTOR /
-+		bus->params.curr_dr_freq) - 1;
- 
- 	cdns_updatel(cdns, CDNS_MCP_CLK_CTRL0,
- 		     CDNS_MCP_CLK_MCLKD_MASK, divider);
- 	cdns_updatel(cdns, CDNS_MCP_CLK_CTRL1,
- 		     CDNS_MCP_CLK_MCLKD_MASK, divider);
- 
-+	/* Set frame shape base on the actual bus frequency. */
-+	prop->default_col = bus->params.curr_dr_freq /
-+			    prop->default_frame_rate / prop->default_row;
-+
- 	/*
- 	 * Frame shape changes after initialization have to be done
- 	 * with the bank switch mechanism
-@@ -1375,6 +1386,8 @@ static void cdns_init_clock_ctrl(struct sdw_cdns *cdns)
- 	ssp_interval = prop->default_frame_rate / SDW_CADENCE_GSYNC_HZ;
- 	cdns_writel(cdns, CDNS_MCP_SSP_CTRL0, ssp_interval);
- 	cdns_writel(cdns, CDNS_MCP_SSP_CTRL1, ssp_interval);
-+
-+	return 0;
+ 	while (offset + record_len <= max) {
+ 		unsigned long long blocknr;
+ 		int err;
+@@ -957,7 +996,6 @@ static int scan_revoke_records(journal_t *journal, struct buffer_head *bh,
+ 		err = jbd2_journal_set_revoke(journal, blocknr, sequence);
+ 		if (err)
+ 			return err;
+-		++info->nr_revokes;
+ 	}
+ 	return 0;
+ }
+diff --git a/fs/jbd2/revoke.c b/fs/jbd2/revoke.c
+index ce63d5fde9c3a..e157e890ff207 100644
+--- a/fs/jbd2/revoke.c
++++ b/fs/jbd2/revoke.c
+@@ -215,7 +215,7 @@ int __init jbd2_journal_init_revoke_table_cache(void)
+ 	return 0;
  }
  
- /**
-@@ -1408,9 +1421,12 @@ EXPORT_SYMBOL(sdw_cdns_soft_reset);
-  */
- int sdw_cdns_init(struct sdw_cdns *cdns)
+-static struct jbd2_revoke_table_s *jbd2_journal_init_revoke_table(int hash_size)
++struct jbd2_revoke_table_s *jbd2_journal_init_revoke_table(int hash_size)
  {
-+	int ret;
- 	u32 val;
+ 	int shift = 0;
+ 	int tmp = hash_size;
+@@ -231,7 +231,7 @@ static struct jbd2_revoke_table_s *jbd2_journal_init_revoke_table(int hash_size)
+ 	table->hash_size = hash_size;
+ 	table->hash_shift = shift;
+ 	table->hash_table =
+-		kmalloc_array(hash_size, sizeof(struct list_head), GFP_KERNEL);
++		kvmalloc_array(hash_size, sizeof(struct list_head), GFP_KERNEL);
+ 	if (!table->hash_table) {
+ 		kmem_cache_free(jbd2_revoke_table_cache, table);
+ 		table = NULL;
+@@ -245,7 +245,7 @@ static struct jbd2_revoke_table_s *jbd2_journal_init_revoke_table(int hash_size)
+ 	return table;
+ }
  
--	cdns_init_clock_ctrl(cdns);
-+	ret = cdns_init_clock_ctrl(cdns);
-+	if (ret)
-+		return ret;
+-static void jbd2_journal_destroy_revoke_table(struct jbd2_revoke_table_s *table)
++void jbd2_journal_destroy_revoke_table(struct jbd2_revoke_table_s *table)
+ {
+ 	int i;
+ 	struct list_head *hash_list;
+@@ -255,7 +255,7 @@ static void jbd2_journal_destroy_revoke_table(struct jbd2_revoke_table_s *table)
+ 		J_ASSERT(list_empty(hash_list));
+ 	}
  
- 	sdw_cdns_check_self_clearing_bits(cdns, __func__, false, 0);
+-	kfree(table->hash_table);
++	kvfree(table->hash_table);
+ 	kmem_cache_free(jbd2_revoke_table_cache, table);
+ }
  
+diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+index 561025b4f3d91..469c4a191ced4 100644
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1627,6 +1627,8 @@ extern void	   jbd2_journal_destroy_revoke_record_cache(void);
+ extern void	   jbd2_journal_destroy_revoke_table_cache(void);
+ extern int __init jbd2_journal_init_revoke_record_cache(void);
+ extern int __init jbd2_journal_init_revoke_table_cache(void);
++struct jbd2_revoke_table_s *jbd2_journal_init_revoke_table(int hash_size);
++void jbd2_journal_destroy_revoke_table(struct jbd2_revoke_table_s *table);
+ 
+ extern void	   jbd2_journal_destroy_revoke(journal_t *);
+ extern int	   jbd2_journal_revoke (handle_t *, unsigned long long, struct buffer_head *);
 -- 
 2.39.5
 
