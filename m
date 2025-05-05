@@ -1,94 +1,191 @@
-Return-Path: <stable+bounces-139703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40328AA959C
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 16:23:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B88AA95A9
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 16:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A0743A7277
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 14:22:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3647189BCCE
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 14:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24F4259C85;
-	Mon,  5 May 2025 14:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A0125B69D;
+	Mon,  5 May 2025 14:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBHvnNG8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="juBUJjbO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDA7846C;
-	Mon,  5 May 2025 14:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0C5846C;
+	Mon,  5 May 2025 14:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746454984; cv=none; b=WZKqBAZWCJGTpwq0Z9LsEvfIa6/3jFA4DV24j38u86cttvwNfA30snSPS+nNwlR4wVy9suPXO6PeryfF/Q1f9TB2kCw3tfvwzhkHJqUwL1rZm2X0eKgUEGN7qCep+AaRPWTgR1zodhQdNDTuqw/a6TjVJyElkBezZvFtPqq8i2U=
+	t=1746455091; cv=none; b=DLczVGnsgG7ZzQKugfz0FoQVtQQ+uSIWL49+6Y4c9n8L5lRN/rqgyk7Eas9JvswfP9/1IbMjgfGA89/nBUSBzoOxBx4x2ciUOP25DO+PdFfPX2nSeSDaTAYAmF34OJ++21zv+DbedNLgCQoTdBg+Tulgvp6qAI80UYrXjEHg6uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746454984; c=relaxed/simple;
-	bh=3dTkU/7lC44YMbIkb0IBuu22iBQwpntrjLelWWH2HaM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a4wNIx0SzYlIpVYM3Xpa8ZP6MIZXUWKp3iJXvn9/w3mi8MewOedycjBJritoVbrTGOR9PPDC9hABiS+L46wsMVbyUfgRtn2gJSbPiFsGfKpwNCuAiKYKnkxDoLmIKOtDXg5D9dKugAfYvEM+kmzl3T+pFHNIHwCJ++wuT3vSHqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBHvnNG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E58C4CEE4;
-	Mon,  5 May 2025 14:23:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746454983;
-	bh=3dTkU/7lC44YMbIkb0IBuu22iBQwpntrjLelWWH2HaM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vBHvnNG8BqPqODc8WHTFGYCabDiU2fvxZkVzZG49Oyv4lDZCnBVLVO2/oGfyP3ic+
-	 YdRIPmZ90ERSTUdYRhvCTKgyeS8V/inJI+PmeBe0/+a0u1bmg2bNq5pZQNOdp4UbXy
-	 84Bmnbop4rqNcGAwJXcdikq/TkacFhu04Y2qsD/4=
-Date: Mon, 5 May 2025 16:23:00 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linux-stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>,
-	"linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: Re: Please apply to v6.14.x commit 6eab70345799 ("ASoC: soc-core:
- Stop using of_property_read_bool() for non-boolean properties")
-Message-ID: <2025050550-clause-macaw-771a@gregkh>
-References: <7fb43b27-8e61-4f87-b28b-8c8c24eb7f75@cs-soprasteria.com>
- <2025050556-blurred-graves-b443@gregkh>
- <8e6c91c0-6780-414e-9cf6-1cc2a058be0b@csgroup.eu>
+	s=arc-20240116; t=1746455091; c=relaxed/simple;
+	bh=GB7ADHbBJlymyluovD3/Y6mm62xeoJLwTowA203SZvM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PaST9FlfvwX6fHt38AF3dbWMBYYdvzyaz3eqsJ0rJF5R0QYy3HrPDCZjnM066VMLT+04Y0eQCFT/adbiwqgFfMuAD+SrIjm9r7cop9qirJ+U2nFY2eO78uaosYv+K8ceZHquHmMa7PH0z0IHgjLuvS6s3JQ/a2A4SdufZmRmi/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=juBUJjbO; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-54d98aa5981so5395081e87.0;
+        Mon, 05 May 2025 07:24:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746455087; x=1747059887; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4WGFSEkeAZiWksKb018fmfpHyOvjpAP1mkHklWaIOjo=;
+        b=juBUJjbOZp/626eUbkj49EopqIHSJANuPxEsGB8HaKKMqbuV0r8mkTDJD609CQjkSv
+         IPrgKL2dc1PkOQUHhqdYvH+Fa+crF5LhJuOjbMMHi0r7GAISnSugW6tQBRmXTR0MKB5F
+         cd7ZpA9qezNfC1Qxh+AX+3D7zA9l9s2nL8dG/AKa2VSBzwU72OklRyO3hW6qAgjGlD2b
+         7tyR97JcHxlaPdf7M5tkq3Id99E+2B/brSS2TQElWh/JYN4WQsuLz++zB6Q78h8Nrh4I
+         asI/QGq58Vi5C55icMLOnKvN8mwd1FxnDvtmwH2+CCO/u6AZSz0qznBjOnI1yHmx7gPd
+         9oCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746455087; x=1747059887;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4WGFSEkeAZiWksKb018fmfpHyOvjpAP1mkHklWaIOjo=;
+        b=iu1ugYAMy0XbSWXh6ny/p8Zkx1l/2hWczpTpMqkEdlI9q6xva0gc96MwA2ywjwHDbE
+         BDEXoV39XkEC9F/jiRPZMvjKQB1tQyQNs0DuG50AdlatGBNMQRT5cdHEGKCioFD4Gz+a
+         99etSxikIba9Ib7jU29IsDL1utrRjwycLbw+yTBdgFEd1LitPmU78tHj9NHoJMLq6Q34
+         6Uf/0FVca2u0vC3j6IX+KYsZzLMmysbllJ420UHX9iXb676dl77Z7t2XqAIxGNRU5txk
+         OLOGk5gXbQ5sjk1D+Wj5u8PO354YH1085+STnC9dMAgzerLKtrRtuGsnQIRqzKipO5O2
+         tnNw==
+X-Forwarded-Encrypted: i=1; AJvYcCUXVpjXkJgfrwQY52oFHLmI8tK5PhZryaUPAOIT0hy67tYgZ0/aLTmc4ce25abx3b9rZKZBSfsl@vger.kernel.org, AJvYcCUsjUfU8zla2KUryRUcKI7b+R+LxyFQjmVFuC1x3IdTv/vSUU62FbczHuS9Ndo9rgRuFUI/xq1dkP0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyD+MEfWRbor+MzbDT/ktwBW50aok243369f9a85cvKBkNZjL3M
+	8u5peuxlptDLaZEQMEIMDz65+UejHdHRSyEBo0WPsCpTeYBDu9WMjxieNSjCKgSuvPPqpWb0bSG
+	aHz6tcD6/I4c0ql6Ou0EcQlECpIM=
+X-Gm-Gg: ASbGnctK+m6j7noP5QXlX9G/6dfs1LInF9RTTIY0nzSYfzyMJaMPPOMIiyG2dEX9lgX
+	VNMTAjWJ2ku+jKUEHNmFoEQuJQC6R8xFt9H/QveX2DzsyUv1VxRWKcORzyz9/19+i6GONQYGGZN
+	DS8XQ8SJQObvO2IT54DPRoIl3SVR3/dmpPSplJ67OpLLZ6Otb+NgDVtdIOYo24NBcl
+X-Google-Smtp-Source: AGHT+IFux6nXhUX/K7s04dLBPKVcwKLs4V3tjuFUHYMRRPkkEvOV8Mlsassg4yc/OxzeBLi4urSl+tSPJ64E+AuCRVU=
+X-Received: by 2002:a19:6a11:0:b0:54e:8194:9a72 with SMTP id
+ 2adb3069b0e04-54f9efd96bbmr1550690e87.28.1746455087333; Mon, 05 May 2025
+ 07:24:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8e6c91c0-6780-414e-9cf6-1cc2a058be0b@csgroup.eu>
+References: <20250429150213.2953747-1-festevam@gmail.com> <20250429183301.326eaacf@jic23-huawei>
+ <CAOMZO5DBpF+iO4NY4-tn3ar+Ld+c=SA6W-UKN0haWmAK=4g-+g@mail.gmail.com>
+ <CAOMZO5B0nxVEW1Q-a05j8f+=waAYijvBq573Ha8DNbOgF0287w@mail.gmail.com>
+ <20250430141112.00004bb8@huawei.com> <CAOMZO5CYuv94N_8ZepH04y8ez1CAmOJOq4eim=dLGmMFoStQ3g@mail.gmail.com>
+ <20250430182537.00007eab@huawei.com> <CAOMZO5BCLWFJ=83r0saT=NxVP0f9G-P-2QosDNGArYAtX6v5Lw@mail.gmail.com>
+ <20250504180420.73b96437@jic23-huawei>
+In-Reply-To: <20250504180420.73b96437@jic23-huawei>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 5 May 2025 11:24:36 -0300
+X-Gm-Features: ATxdqUHAdyZF-dfSxY2aJGVPlzADAxmQQ0f5pvbu7RKFc7H8wpxrQIpF4Fu8qrw
+Message-ID: <CAOMZO5DeMNGqpF4T7tuvBBN=i95uReSTXkj-sNW2jZTUO++5ZA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio: Fix scan mask subset check logic
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, mazziesaccount@gmail.com, 
+	linux-iio@vger.kernel.org, Fabio Estevam <festevam@denx.de>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 05, 2025 at 03:27:18PM +0200, Christophe Leroy wrote:
-> 
-> 
-> Le 05/05/2025 à 15:10, Greg Kroah-Hartman a écrit :
-> > On Mon, May 05, 2025 at 11:48:45AM +0000, LEROY Christophe wrote:
-> > > Hi,
-> > > 
-> > > Could you please apply commit 6eab70345799 ("ASoC: soc-core: Stop using
-> > > of_property_read_bool() for non-boolean properties") to v6.14.x in order
-> > > to silence warnings introduced in v6.14 by commit c141ecc3cecd ("of:
-> > > Warn when of_property_read_bool() is used on non-boolean properties")
-> > 
-> > What about 6.12.y and 6.6.y as well?  It's in the following released
-> > kernels:
-> > 	6.6.84 6.12.20 6.13.8 6.14
-> > 
-> 
-> Ah ! it has been applied to stable versions allthough it doesn't carry a
-> Fixes: tag.
-> 
-> So yes the 'fix' to ASoC should then be applied as well to stable versions
-> to avoid the warning.
-> 
-> Note that it doesn't cherry-pick cleanly to 6.6.84, you'll first need commit
-> 69dd15a8ef0a ("ASoC: Use of_property_read_bool()")
+Hi Jonathan,
 
+On Sun, May 4, 2025 at 2:04=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
+wrote:
 
-Now queued up, thanks!
+> Ah. I was wrong for last two channels above. The scan masks for single ch=
+annel for
+> differential channels also index a bunch we aren't using in this device.
+>
+> > +       MAX1363_CHAN_B(0, 1, d0m1, 12, bits, ev_spec, num_ev_spec),    =
+ \
+> > +       MAX1363_CHAN_B(2, 3, d2m3, 13, bits, ev_spec, num_ev_spec),    =
+ \
+> //gap here as we aren't using 4,5  6,7 8,9, 10,11
+>
+> > +       MAX1363_CHAN_B(1, 0, d1m0, 14, bits, ev_spec, num_ev_spec),    =
+ \
+> Should be 18
+> https://elixir.bootlin.com/linux/v6.14.5/source/drivers/iio/adc/max1363.c=
+#L262
+> > +       MAX1363_CHAN_B(3, 2, d3m2, 15, bits, ev_spec, num_ev_spec),    =
+ \
+> and 19 I believe.
 
-greg k-h
+This works fine for me, thanks:
+
+--- a/drivers/iio/adc/max1363.c
++++ b/drivers/iio/adc/max1363.c
+@@ -504,10 +504,10 @@ static const struct iio_event_spec max1363_events[] =
+=3D {
+        MAX1363_CHAN_U(1, _s1, 1, bits, ev_spec, num_ev_spec),          \
+        MAX1363_CHAN_U(2, _s2, 2, bits, ev_spec, num_ev_spec),          \
+        MAX1363_CHAN_U(3, _s3, 3, bits, ev_spec, num_ev_spec),          \
+-       MAX1363_CHAN_B(0, 1, d0m1, 4, bits, ev_spec, num_ev_spec),      \
+-       MAX1363_CHAN_B(2, 3, d2m3, 5, bits, ev_spec, num_ev_spec),      \
+-       MAX1363_CHAN_B(1, 0, d1m0, 6, bits, ev_spec, num_ev_spec),      \
+-       MAX1363_CHAN_B(3, 2, d3m2, 7, bits, ev_spec, num_ev_spec),      \
++       MAX1363_CHAN_B(0, 1, d0m1, 12, bits, ev_spec, num_ev_spec),     \
++       MAX1363_CHAN_B(2, 3, d2m3, 13, bits, ev_spec, num_ev_spec),     \
++       MAX1363_CHAN_B(1, 0, d1m0, 18, bits, ev_spec, num_ev_spec),     \
++       MAX1363_CHAN_B(3, 2, d3m2, 19, bits, ev_spec, num_ev_spec),     \
+        IIO_CHAN_SOFT_TIMESTAMP(8)                                      \
+        }
+
+> Maybe we can simplify this and make it less error prone. These scan indic=
+es
+> are always the same as the enum max1363_mode entries in the 2nd or 3rd pa=
+rameter.
+> We can just reuse those I think.  Only the single channel ones apply here
+> but those are the first set of entries in that enum.
+>
+> Bonus points for just dropping the parameter and using the existing addr
+> parameter for the macro as si as well.
+>
+> That is:
+> #define MAX1363_CHAN_U(num, addr, bits, ev_spec, num_ev_spec)   \
+>         {                                                               \
+>                 .type =3D IIO_VOLTAGE,                                   =
+ \
+>                 .indexed =3D 1,                                          =
+ \
+>                 .channel =3D num,                                        =
+ \
+>                 .address =3D addr,                                       =
+ \
+>                 .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),          =
+ \
+>                 .info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE),  =
+ \
+>                 .datasheet_name =3D "AIN"#num,                           =
+ \
+>                 .scan_type =3D {                                         =
+ \
+>                         .sign =3D 'u',                                   =
+ \
+>                         .realbits =3D bits,                              =
+ \
+>                         .storagebits =3D (bits > 8) ? 16 : 8,            =
+ \
+>                         .endianness =3D IIO_BE,                          =
+ \
+>                 },                                                      \
+>                 .scan_index =3D (addr),                                  =
+ \
+> The above changed from si to addr
+
+I tried this change on top of the previous one, and it still works.
+
+How do you think we should proceed? Can you please submit formal patches?
+
+You can add:
+
+Reported-by: Fabio Estevam <festevam@denx.de>
+Tested-by: Fabio Estevam <festevam@denx.de>
+
+Thanks
 
