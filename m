@@ -1,56 +1,68 @@
-Return-Path: <stable+bounces-140968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DFAAAAFE8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:28:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5868AAAD0B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:28:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C5963B35BC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:23:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B886A1BA00C2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9187300A22;
-	Mon,  5 May 2025 23:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2CA289348;
+	Mon,  5 May 2025 23:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d5IEoz/d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KHsvez8f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1146F3AA15B;
-	Mon,  5 May 2025 23:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C13D3AAC9B;
+	Mon,  5 May 2025 23:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487102; cv=none; b=FRGgflkam7SReT7WWq2HU3IRpGlazMt2vr57gZRarK1SmiplyoMtbcLyP9bgBK2JUlo2w8G+QGMDhUgDxvpQngiX4g38PB9vGFIoNFO4PQRXwdFtw1lAMkSI/5CNIgL7m1Q8/TxwR1k+delm8+eBjkLETC5nKMKJdoL/x83PMDo=
+	t=1746487121; cv=none; b=sG2uofVXC6yc/xi23nubqrUhMkNyzwkuyTHMYqFL0fjYFyi/K1jg8/OUSmSVOoSYxnNHeE/VR+EDZWRomISwvnxZOJScSatK69SC8T64IKFgSj10u5jJAxUODguCX6YX5B7FXxITT6vh5eMCfdjCN6+3Dcl6tIXoPeN7N7UPcqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487102; c=relaxed/simple;
-	bh=D7yTrFE188wv1sO2UwjIZZtfQPAmYQjWziJlrOLJbv8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y6OcoAHX/aq9GU25roqCTtQqJWXvttyJC4IceNXFlRJ9Aold/Av8vfp6tNrA1mDafVIPy2qk5gStferBu93ruh+0YPYb4yO7zZqWdpsDJGHcW9yPwFrCttg4i4u4JtWnq34vXL9FRQk5VWQAIrN8hDP1vOTl/Q8NnPiQPWXbuco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d5IEoz/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD86C4CEE4;
-	Mon,  5 May 2025 23:18:21 +0000 (UTC)
+	s=arc-20240116; t=1746487121; c=relaxed/simple;
+	bh=Z0ttmRYVVdxOD0UDIR1vXxrkZblPfNce2r7moqOmxgw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=dpfM4Cc1vJBFTlywcrQNJiJMOTFPWXVFovGZ8QUtH79tAI7X6Ul7R29w5ahA388u+nEh7/OllOsGQ1nZugbJuyYL0Rwd+MhoYHQ69cOv5ALJ50BRWEGObq31Bg91LFiLaiZp0bAJU6zWc6haJNXPG02krbJ1yQEAkssuUVgdQAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KHsvez8f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E63DC4CEEE;
+	Mon,  5 May 2025 23:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487101;
-	bh=D7yTrFE188wv1sO2UwjIZZtfQPAmYQjWziJlrOLJbv8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=d5IEoz/dKUdE6YumbVaQSCpi8ok0eiUJeMczX6EZ3b5k9rDiziozV8ANrLEJGF/5J
-	 v/r/t2O6/AqFcJ+Mt74t6MFyD3PBJOdoM0n726szHeXT45FmCugrKpcFQZmtuG1vlX
-	 nLDrz/N1aeRcHYtU7yqy72l3xzJ96rescpG2UTnVjJD2i48IRI/5ViM3UpvZgjOidF
-	 IRyr17QMx1PGDjYH8IpYnmAfeTGQiTVBaYPpCf0HjKo3UOIOApHrhXmSbfgqiZqhKL
-	 /trSk0SZ+F4ODIe2ADX2JFKM9XrRpJkaW2YUJExczDI4MhVpDjMrxBRg37gNtq/IVc
-	 xSg+Rz+zj0YgQ==
+	s=k20201202; t=1746487119;
+	bh=Z0ttmRYVVdxOD0UDIR1vXxrkZblPfNce2r7moqOmxgw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KHsvez8fy9aXjUDjH4N1L3stkUclTwkk4SOux8JsMyJ+jcTANzXxacpGgLP2KNTYi
+	 4WA11sdc4Y7Sl8yaA7xtthbgqYSxopbssUbo+isdh0d9+oyhdokD/lAnvmmSdyb76R
+	 P3N4CUxWYlM6hd/VURPz3sJ7q+UZ66JZMe/R2w4toJ/vpw3m8iF1SjTwTTwsjc21+I
+	 UvVhj0MA9oKhLKn/3QDyQYWVYE5/ClGGinXJ6uUFMAPbtIFfjwiBNskFFuMw9fd+l+
+	 p+Fy9dO6KpIExNyx/vmONxk76JB/m6ltqL70hY6oVp+T/EPkZx+NX0SSNZA3uWa49V
+	 qoHyZYbR+sLsw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 001/114] kconfig: merge_config: use an empty file as initfile
-Date: Mon,  5 May 2025 19:16:24 -0400
-Message-Id: <20250505231817.2697367-1-sashal@kernel.org>
+	chuck.lever@oracle.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 008/114] SUNRPC: rpc_clnt_set_transport() must not change the autobind setting
+Date: Mon,  5 May 2025 19:16:31 -0400
+Message-Id: <20250505231817.2697367-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
+References: <20250505231817.2697367-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,46 +74,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Gomez <da.gomez@samsung.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit a26fe287eed112b4e21e854f173c8918a6a8596d ]
+[ Upstream commit bf9be373b830a3e48117da5d89bb6145a575f880 ]
 
-The scripts/kconfig/merge_config.sh script requires an existing
-$INITFILE (or the $1 argument) as a base file for merging Kconfig
-fragments. However, an empty $INITFILE can serve as an initial starting
-point, later referenced by the KCONFIG_ALLCONFIG Makefile variable
-if -m is not used. This variable can point to any configuration file
-containing preset config symbols (the merged output) as stated in
-Documentation/kbuild/kconfig.rst. When -m is used $INITFILE will
-contain just the merge output requiring the user to run make (i.e.
-KCONFIG_ALLCONFIG=<$INITFILE> make <allnoconfig/alldefconfig> or make
-olddefconfig).
+The autobind setting was supposed to be determined in rpc_create(),
+since commit c2866763b402 ("SUNRPC: use sockaddr + size when creating
+remote transport endpoints").
 
-Instead of failing when `$INITFILE` is missing, create an empty file and
-use it as the starting point for merges.
-
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/merge_config.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sunrpc/clnt.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/scripts/kconfig/merge_config.sh b/scripts/kconfig/merge_config.sh
-index d7d5c58b8b6aa..557f37f481fdf 100755
---- a/scripts/kconfig/merge_config.sh
-+++ b/scripts/kconfig/merge_config.sh
-@@ -98,8 +98,8 @@ INITFILE=$1
- shift;
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 7ec5b0bc48ebf..0a4b4870c4d99 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -273,9 +273,6 @@ static struct rpc_xprt *rpc_clnt_set_transport(struct rpc_clnt *clnt,
+ 	old = rcu_dereference_protected(clnt->cl_xprt,
+ 			lockdep_is_held(&clnt->cl_lock));
  
- if [ ! -r "$INITFILE" ]; then
--	echo "The base file '$INITFILE' does not exist.  Exit." >&2
--	exit 1
-+	echo "The base file '$INITFILE' does not exist. Creating one..." >&2
-+	touch "$INITFILE"
- fi
- 
- MERGE_LIST=$*
+-	if (!xprt_bound(xprt))
+-		clnt->cl_autobind = 1;
+-
+ 	clnt->cl_timeout = timeout;
+ 	rcu_assign_pointer(clnt->cl_xprt, xprt);
+ 	spin_unlock(&clnt->cl_lock);
 -- 
 2.39.5
 
