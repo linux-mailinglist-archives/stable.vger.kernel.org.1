@@ -1,55 +1,65 @@
-Return-Path: <stable+bounces-140555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F7C0AAA9F0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA220AAA9F5
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:25:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8220E5A4F50
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:21:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82C075A38E9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052DF27F4F4;
-	Mon,  5 May 2025 22:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851BC2C1E0B;
+	Mon,  5 May 2025 22:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QiVFqIso"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ThkyvxRU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6176829CB56;
-	Mon,  5 May 2025 22:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509BF360A71;
+	Mon,  5 May 2025 22:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485143; cv=none; b=N9QMhroALzeBan/vpKVM2mve3JZsZeqD+MAEFSgJQjhWRlvI7P+/3dVWZPuIgVJ6rJaM/uW4GThU4AWQ8NKRgIFYYT8h2YfokPLwQtK0lYNbAI+vrlKDHXJhJdGfapYoxcekzRKaVfaVHqKPKWzpdzWmoAYBmH3OkgxG/t2enP8=
+	t=1746485145; cv=none; b=GrvHqvxgjtgzms5CAzOsRgLfRDGsjDGIx7d4k6qiLZSipVdD5/iM4b2HJWvJlXW73PeF9JfTmEeGRmZz4cL/QyaHEE7p8x1d+aJk5k0Fw4AQZ06binNaPzWy0V1gSgZYB4JoWImNL0zlKOddJEGJX2b05HNRJbAGO6q1doMw41s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485143; c=relaxed/simple;
-	bh=Ztz+nIN4jVsm5dk1LbPMMQ3xifHEySLYwovq03zpYkw=;
+	s=arc-20240116; t=1746485145; c=relaxed/simple;
+	bh=SgLEUyTjEn/ONPzkIoL52jJRgKC8KFCGTZ1fMwifZu0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=drlWdQvVgOqLbPjkNFwRZMh5MUYv4z9v1GKVWiTyfwD6heI+YiliLyY6161wUjgoQjYOt6P31BsasX7TU/8srxkJG5FAMtju3cct2Kv5jlsjykEcbZSuU3buO6W4gVvC6X7peXvW93hIh053XzLPLXM1ZmF6tSQnzcwTE1CJtf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QiVFqIso; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361F6C4CEF1;
-	Mon,  5 May 2025 22:45:41 +0000 (UTC)
+	 MIME-Version; b=KBqHqGtMkMMtJg6HtoxrqYeQrJpFR6u54wQXl3rlvJ4cbul8/MRk3a3kfIqgGwxQluVfvb7FtBIuAkv6+oTXUT422Aoihb+w3NWvjxCV5t+xNZfSS8tDja+vpR0ckE1q9XuWt/aFMPcpojniqvE04hSKgXWgkZzFyFDQl7+cK94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ThkyvxRU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E03C4CEEE;
+	Mon,  5 May 2025 22:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485141;
-	bh=Ztz+nIN4jVsm5dk1LbPMMQ3xifHEySLYwovq03zpYkw=;
+	s=k20201202; t=1746485143;
+	bh=SgLEUyTjEn/ONPzkIoL52jJRgKC8KFCGTZ1fMwifZu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QiVFqIso5MyEiVmXaMBqv9nOl4HuXmxrZkQgTdIdPguD85GKch6K0l+beC5Z1C5jj
-	 EX5lgZKz7IwXnJf7hEHD+5/A/XVMz4x+xgFQn3YJ+eb34Qb1PJZ0Bj6+h4bMmu4hku
-	 7bL6ipx0umnzYJhpHzTiS/dr6YX+oyjLIw5s+WJ4VvinzOE82//0RLU6am2dJbNZWx
-	 XqqqdHZGAgsDQQLoNjURq0LM41qtOrkpiF9qKMHgiaeFtluNyvHQpj0fPaDjMJR2N6
-	 gGt5bDeVHSd1yNazJxlLcSgks7KHpPgmApuuNO5UYlmkOv7WJMOp44fP0guHedm15J
-	 T5fCNcl+pN2gQ==
+	b=ThkyvxRUJvjocGoGx/NoEMUoZjKmiuy4HA8+HuwS132IyLeDwEI8mT/ATn8DJTcYc
+	 GNf+d6RLP7o/tflRUeC9uLtpt+/5cAsy1u4G33rCFHXbailTNL+/GkzjX9pbX40Ws+
+	 JM0m1jdupsbjdIN5tWIxCYqZBlunB0kSxzKO4/Cc8iJF6yNZ+VQFfIwtm9+cFOv61t
+	 gB7vNlVZ+Tm+7Ody9OODKYnlZbJp58iiVMHcRsaiosf8Th38sb5wA4Y6JlP+lhXV8/
+	 zyGiNcOL65LW8pgKEskX6sHtfZ+Nc7B97uKVeg/dTlyxLtDPYxeyR3I0zkJgKgnAHB
+	 o8wTCcxlneoVg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-rtc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 181/486] rtc: ds1307: stop disabling alarms on probe
-Date: Mon,  5 May 2025 18:34:17 -0400
-Message-Id: <20250505223922.2682012-181-sashal@kernel.org>
+	alex.aring@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 182/486] ieee802154: ca8210: Use proper setters and getters for bitwise types
+Date: Mon,  5 May 2025 18:34:18 -0400
+Message-Id: <20250505223922.2682012-182-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -64,36 +74,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit dcec12617ee61beed928e889607bf37e145bf86b ]
+[ Upstream commit 169b2262205836a5d1213ff44dca2962276bece1 ]
 
-It is a bad practice to disable alarms on probe or remove as this will
-prevent alarms across reboots.
+Sparse complains that the driver doesn't respect the bitwise types:
 
-Link: https://lore.kernel.org/r/20250303223744.1135672-1-alexandre.belloni@bootlin.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+drivers/net/ieee802154/ca8210.c:1796:27: warning: incorrect type in assignment (different base types)
+drivers/net/ieee802154/ca8210.c:1796:27:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
+drivers/net/ieee802154/ca8210.c:1796:27:    got unsigned short [usertype]
+drivers/net/ieee802154/ca8210.c:1801:25: warning: incorrect type in assignment (different base types)
+drivers/net/ieee802154/ca8210.c:1801:25:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
+drivers/net/ieee802154/ca8210.c:1801:25:    got unsigned short [usertype]
+drivers/net/ieee802154/ca8210.c:1928:28: warning: incorrect type in argument 3 (different base types)
+drivers/net/ieee802154/ca8210.c:1928:28:    expected unsigned short [usertype] dst_pan_id
+drivers/net/ieee802154/ca8210.c:1928:28:    got restricted __le16 [addressable] [usertype] pan_id
+
+Use proper setters and getters for bitwise types.
+
+Note, in accordance with [1] the protocol is little endian.
+
+Link: https://www.cascoda.com/wp-content/uploads/2018/11/CA-8210_datasheet_0418.pdf [1]
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/20250305105656.2133487-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ds1307.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ieee802154/ca8210.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index 872e0b679be48..5efbe69bf5ca8 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -1807,10 +1807,8 @@ static int ds1307_probe(struct i2c_client *client)
- 		 * For some variants, be sure alarms can trigger when we're
- 		 * running on Vbackup (BBSQI/BBSQW)
- 		 */
--		if (want_irq || ds1307_can_wakeup_device) {
-+		if (want_irq || ds1307_can_wakeup_device)
- 			regs[0] |= DS1337_BIT_INTCN | chip->bbsqi_bit;
--			regs[0] &= ~(DS1337_BIT_A2IE | DS1337_BIT_A1IE);
--		}
+diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+index 753215ebc67c7..a036910f60828 100644
+--- a/drivers/net/ieee802154/ca8210.c
++++ b/drivers/net/ieee802154/ca8210.c
+@@ -1446,8 +1446,7 @@ static u8 mcps_data_request(
+ 	command.pdata.data_req.src_addr_mode = src_addr_mode;
+ 	command.pdata.data_req.dst.mode = dst_address_mode;
+ 	if (dst_address_mode != MAC_MODE_NO_ADDR) {
+-		command.pdata.data_req.dst.pan_id[0] = LS_BYTE(dst_pan_id);
+-		command.pdata.data_req.dst.pan_id[1] = MS_BYTE(dst_pan_id);
++		put_unaligned_le16(dst_pan_id, command.pdata.data_req.dst.pan_id);
+ 		if (dst_address_mode == MAC_MODE_SHORT_ADDR) {
+ 			command.pdata.data_req.dst.address[0] = LS_BYTE(
+ 				dst_addr->short_address
+@@ -1795,12 +1794,12 @@ static int ca8210_skb_rx(
+ 	}
+ 	hdr.source.mode = data_ind[0];
+ 	dev_dbg(&priv->spi->dev, "srcAddrMode: %#03x\n", hdr.source.mode);
+-	hdr.source.pan_id = *(u16 *)&data_ind[1];
++	hdr.source.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[1]));
+ 	dev_dbg(&priv->spi->dev, "srcPanId: %#06x\n", hdr.source.pan_id);
+ 	memcpy(&hdr.source.extended_addr, &data_ind[3], 8);
+ 	hdr.dest.mode = data_ind[11];
+ 	dev_dbg(&priv->spi->dev, "dstAddrMode: %#03x\n", hdr.dest.mode);
+-	hdr.dest.pan_id = *(u16 *)&data_ind[12];
++	hdr.dest.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[12]));
+ 	dev_dbg(&priv->spi->dev, "dstPanId: %#06x\n", hdr.dest.pan_id);
+ 	memcpy(&hdr.dest.extended_addr, &data_ind[14], 8);
  
- 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
- 			     regs[0]);
+@@ -1927,7 +1926,7 @@ static int ca8210_skb_tx(
+ 	status =  mcps_data_request(
+ 		header.source.mode,
+ 		header.dest.mode,
+-		header.dest.pan_id,
++		le16_to_cpu(header.dest.pan_id),
+ 		(union macaddr *)&header.dest.extended_addr,
+ 		skb->len - mac_len,
+ 		&skb->data[mac_len],
 -- 
 2.39.5
 
