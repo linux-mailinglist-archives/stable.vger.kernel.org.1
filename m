@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-141079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89968AAB072
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:38:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B17AAB067
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:37:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7F454E236B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:38:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B22A4189CD67
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8B528B51C;
-	Mon,  5 May 2025 23:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E743F9FE1;
+	Mon,  5 May 2025 23:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFc3MNHJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tvthHW/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14352FB2BA;
-	Mon,  5 May 2025 23:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6133E3BE0C2;
+	Mon,  5 May 2025 23:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487407; cv=none; b=ZOv+fciPE4tD7HBiXUTR8qGTNnf3NTr+mYpQ4+nYzTfS2LDRKOq3OjI6rI1jNY72YP88D8vP0wTYHANG2+bohWaW2u/raZQsl7dUQVsseXS1Dyt8nKPC4Ku0ED9Y9XduFJxrWokrNgvNL6a+gNawPd7ngyAgq61uYVHrmxmNYiI=
+	t=1746487409; cv=none; b=R3aNlQCrlKB5B95kdtlWIMkfvK5RJElADjJWwYOiiU63DWQLF5q2Ftnr0m3PrzWn7ZZX6aX07CScPmh8NV1AkVXXlH7r4kNwe5njIZFJxqqu2DwHePiFVdmVq0LrnJCF8FeYv9AFn+3ZtJaNWryTV7/XP5Phgi48EUPyHltbQEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487407; c=relaxed/simple;
-	bh=dyCX6F2jPhi6g0pJYPEwuDqcq3tMWkUoLJk0fI2gYWA=;
+	s=arc-20240116; t=1746487409; c=relaxed/simple;
+	bh=m3gj8PSzjfXPwRUTE5aW1/XgqUd/bkAgDJtD7cLr5FU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PAaG0RD5HdtL/qkNXOJQn7IFw2g2TwqcwYUfD4qDzISSfoOkqPiAg/I1JPWakmHI67SGJX/RQ4LfwF2IKM/HrNcp1WUXnj9tacHlXv0CauwPR37dWxY9px3JGxqFWbCMsCHsW8zzTFZB4WmkUvXPOsFlC5u43fUhfdhHbgMWLWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFc3MNHJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7ADC4CEED;
-	Mon,  5 May 2025 23:23:24 +0000 (UTC)
+	 MIME-Version; b=uaSIJDRdGUtCPnTJJcGG0Fcq2MUM4wSUbg+0u+aTTWxjt+DqM3wtaMPpAM4TNU6XDOSSg58m6mLkTS0Peyl14mf4lqonyy0Nn9BdM7WqBs764vEV2XZQjbELWtm8nMVWk6x/6b7Wvl0ZWYh16I9Ecxk43rFtytEd3yEFHUYuPdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tvthHW/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786C0C4CEEE;
+	Mon,  5 May 2025 23:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487405;
-	bh=dyCX6F2jPhi6g0pJYPEwuDqcq3tMWkUoLJk0fI2gYWA=;
+	s=k20201202; t=1746487408;
+	bh=m3gj8PSzjfXPwRUTE5aW1/XgqUd/bkAgDJtD7cLr5FU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tFc3MNHJf9nEyhtFXlJ9WwI9zJZ3tAavU4JDtZM3pWZBA5Te3MvN95rEVPeI39vwi
-	 OBIAe0guEl0McZA8Ehz2MGkACad078rJXLyszkv00UDT01qclDW4cmOT2LRbVCxr1c
-	 Z2Pkx2EOoKXdFf9OSrhEQEH/mxzpbqDU7BW4yAh708UJoS+mvvdo8sluEIfCQ5B33X
-	 hO0g7DY3xh3rHup33LKP/wXEKKmNF5gDEU2XXZg+ZsJY1nRc2DlGAJ17u8/xzNMolw
-	 ckCSDDzIop95c3Gk+QMtbv3iNw+ty54aqAYvHY8nRtTKRledavjm0M0cLHxv2Ys/8Q
-	 vXrZia38ypmGQ==
+	b=tvthHW/ABfM7tUqf2GtoECcfbI/Cgp0siVuZKF0dt8GjpJuypHlLU1zxgSBrPmkDQ
+	 IYt2LXIe20xAk3v5/yvWZ58VPMxi8Gm6ANTZt0P+dNGAmvs0OGVVNBQasHC9A08Dh0
+	 lx795oiCOKV1wvRtyiB/6Zj3Sv3EI3Ii4WXVFPtKfouAYi9qKZR/rOAVt4k41An1uR
+	 fSZ8uKp2pje02zo0PhiN7PIMux5EWUlOTnPuM8hTHIh7dpZuCOSnjjRBLTWzdy2WnU
+	 HtnEihvJ2ysdtNOAIoov9fzPunAaK8yVcRcxqpHf7GH/hSuoFTBXF5W6D8R3H4Wvi2
+	 mwbjLMC64nGsg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Jason Baron <jbaron@akamai.com>,
-	Tony Luck <tony.luck@intel.com>,
+Cc: Xiaofei Tan <tanxiaofei@huawei.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	bp@alien8.de,
-	linux-edac@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 52/79] EDAC/ie31200: work around false positive build warning
-Date: Mon,  5 May 2025 19:21:24 -0400
-Message-Id: <20250505232151.2698893-52-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 54/79] ACPI: HED: Always initialize before evged
+Date: Mon,  5 May 2025 19:21:26 -0400
+Message-Id: <20250505232151.2698893-54-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -67,103 +66,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Xiaofei Tan <tanxiaofei@huawei.com>
 
-[ Upstream commit c29dfd661fe2f8d1b48c7f00590929c04b25bf40 ]
+[ Upstream commit cccf6ee090c8c133072d5d5b52ae25f3bc907a16 ]
 
-gcc-14 produces a bogus warning in some configurations:
+When the HED driver is built-in, it initializes after evged because they
+both are at the same initcall level, so the initialization ordering
+depends on the Makefile order.  However, this prevents RAS records
+coming in between the evged driver initialization and the HED driver
+initialization from being handled.
 
-drivers/edac/ie31200_edac.c: In function 'ie31200_probe1.isra':
-drivers/edac/ie31200_edac.c:412:26: error: 'dimm_info' is used uninitialized [-Werror=uninitialized]
-  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
-      |                          ^~~~~~~~~
-drivers/edac/ie31200_edac.c:412:26: note: 'dimm_info' declared here
-  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
-      |                          ^~~~~~~~~
+If the number of such RAS records is above the APEI HEST error source
+number, the HEST resources may be exhausted, and that may affect
+subsequent RAS error reporting.
 
-I don't see any way the unintialized access could really happen here,
-but I can see why the compiler gets confused by the two loops.
+To fix this issue, change the initcall level of HED to subsys_initcall
+and prevent the driver from being built as a module by changing ACPI_HED
+in Kconfig from "tristate" to "bool".
 
-Instead, rework the two nested loops to only read the addr_decode
-registers and then keep only one instance of the dimm info structure.
-
-[Tony: Qiuxu pointed out that the "populate DIMM info" comment was left
-behind in the refactor and suggested moving it. I deleted the comment
-as unnecessry in front os a call to populate_dimm_info(). That seems
-pretty self-describing.]
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Jason Baron <jbaron@akamai.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/all/20250122065031.1321015-1-arnd@kernel.org
+Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+Link: https://patch.msgid.link/20250212063408.927666-1-tanxiaofei@huawei.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/ie31200_edac.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ drivers/acpi/Kconfig | 2 +-
+ drivers/acpi/hed.c   | 7 ++++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
-index d3d9916b1ba3f..f865528728d75 100644
---- a/drivers/edac/ie31200_edac.c
-+++ b/drivers/edac/ie31200_edac.c
-@@ -398,10 +398,9 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 	int i, j, ret;
- 	struct mem_ctl_info *mci = NULL;
- 	struct edac_mc_layer layers[2];
--	struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
- 	void __iomem *window;
- 	struct ie31200_priv *priv;
--	u32 addr_decode, mad_offset;
-+	u32 addr_decode[IE31200_CHANNELS], mad_offset;
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index ebe1e9e5fd81c..3902fe64c484d 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -431,7 +431,7 @@ config ACPI_SBS
+ 	  the modules will be called sbs and sbshc.
  
- 	/*
- 	 * Kaby Lake, Coffee Lake seem to work like Skylake. Please re-visit
-@@ -459,19 +458,10 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 		mad_offset = IE31200_MAD_DIMM_0_OFFSET;
- 	}
- 
--	/* populate DIMM info */
- 	for (i = 0; i < IE31200_CHANNELS; i++) {
--		addr_decode = readl(window + mad_offset +
-+		addr_decode[i] = readl(window + mad_offset +
- 					(i * 4));
--		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode);
--		for (j = 0; j < IE31200_DIMMS_PER_CHANNEL; j++) {
--			populate_dimm_info(&dimm_info[i][j], addr_decode, j,
--					   skl);
--			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
--				 dimm_info[i][j].size,
--				 dimm_info[i][j].dual_rank,
--				 dimm_info[i][j].x16_width);
--		}
-+		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode[i]);
- 	}
- 
- 	/*
-@@ -482,14 +472,22 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 	 */
- 	for (i = 0; i < IE31200_DIMMS_PER_CHANNEL; i++) {
- 		for (j = 0; j < IE31200_CHANNELS; j++) {
-+			struct dimm_data dimm_info;
- 			struct dimm_info *dimm;
- 			unsigned long nr_pages;
- 
--			nr_pages = IE31200_PAGES(dimm_info[j][i].size, skl);
-+			populate_dimm_info(&dimm_info, addr_decode[j], i,
-+					   skl);
-+			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
-+				 dimm_info.size,
-+				 dimm_info.dual_rank,
-+				 dimm_info.x16_width);
+ config ACPI_HED
+-	tristate "Hardware Error Device"
++	bool "Hardware Error Device"
+ 	help
+ 	  This driver supports the Hardware Error Device (PNP0C33),
+ 	  which is used to report some hardware errors notified via
+diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
+index cf148287e2baf..75166839c99e0 100644
+--- a/drivers/acpi/hed.c
++++ b/drivers/acpi/hed.c
+@@ -72,7 +72,12 @@ static struct acpi_driver acpi_hed_driver = {
+ 		.notify = acpi_hed_notify,
+ 	},
+ };
+-module_acpi_driver(acpi_hed_driver);
 +
-+			nr_pages = IE31200_PAGES(dimm_info.size, skl);
- 			if (nr_pages == 0)
- 				continue;
++static int __init acpi_hed_driver_init(void)
++{
++	return acpi_bus_register_driver(&acpi_hed_driver);
++}
++subsys_initcall(acpi_hed_driver_init);
  
--			if (dimm_info[j][i].dual_rank) {
-+			if (dimm_info.dual_rank) {
- 				nr_pages = nr_pages / 2;
- 				dimm = EDAC_DIMM_PTR(mci->layers, mci->dimms,
- 						     mci->n_layers, (i * 2) + 1,
+ ACPI_MODULE_NAME("hed");
+ MODULE_AUTHOR("Huang Ying");
 -- 
 2.39.5
 
