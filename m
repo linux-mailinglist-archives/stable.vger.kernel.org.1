@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-140949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4178AAACCC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:23:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DACAAACB6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:22:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EE7A1B60FE1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:20:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF6C8463501
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 690393A7BD6;
-	Mon,  5 May 2025 23:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027A22FF71B;
+	Mon,  5 May 2025 23:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eDOpt8zo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QY1bxjWu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BD828A70F;
-	Mon,  5 May 2025 23:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A5F28A71D;
+	Mon,  5 May 2025 23:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487021; cv=none; b=mFvvj+OThNo3/epUWtcfpPHkDv9reGUh5slOpTJMmHKZ4+y3KIeGo2nY7L8AtKKpiFMHLv7Hd8TIxVeopSOYzQb10rEkNNlj8UxAgbp4F6/Nj4PPxBZBeRcHC2xPnRs/7jp1EP9FPdNGszQsy28YOpi4Fbf1JqT71qbLDf/gQwI=
+	t=1746487023; cv=none; b=mqLeTbyQUpqmPc90+oZcF/jBgSECKyeP7eTyIhAL4EmrwP+m4Ll0En/MQF4PEMUweFb1Q219Cu5M0rBysNpT49Ek3MEHCkjW39P0XW15l3iY6fCRLugui0VJjESPxkMJsdjQAyH0jHEQ7IwGSCguzagjCnQqSSRRytkqKADdSc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487021; c=relaxed/simple;
-	bh=ib1Vrhx+ahc+Vj+0Ro997g+1+fNzOjfu6r3NEqs8MS8=;
+	s=arc-20240116; t=1746487023; c=relaxed/simple;
+	bh=LLQuEcCjyB9jS5CBbndYwbv8jLZmUyx7IeQqD3sRRgo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ozm2NAbmzz51SvCYXxMEj8kZSXGPD7XL7Nv55M+Gtxyd6wVSu80pCtVeyeGYf912kO2JZ2hXXzwmk6WjgiIP0LpmlDdibbOFjUohzkcL7tSA1gI964JZCVaeyIzhRsuAXDUcdXpHu5TD3qeM/THL7+wcDFi6FRERmXL7b+l6mYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eDOpt8zo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2269BC4CEEF;
-	Mon,  5 May 2025 23:16:58 +0000 (UTC)
+	 MIME-Version; b=azgI7XU3CLOWZ1QHOIfvzlW9mvjcqo6WdCevI5lMsemfY0OCCQZAFTJyYSCLD5vQ53zbtmLSEvY6zp/uf83bGQAhFqQcl62+QD7NUdDERxUqMDjYt23lHu9kSh6QkLrRwBtl+LvvbjmWsMQnD3WmmtHvwcxdNm9sJyZ/ZJyk+Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QY1bxjWu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E40EC4CEEF;
+	Mon,  5 May 2025 23:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487019;
-	bh=ib1Vrhx+ahc+Vj+0Ro997g+1+fNzOjfu6r3NEqs8MS8=;
+	s=k20201202; t=1746487022;
+	bh=LLQuEcCjyB9jS5CBbndYwbv8jLZmUyx7IeQqD3sRRgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eDOpt8zoJA7nYIpA1Bu17Pr41oxLD+KDp9X7yVEELPd+h9aiBB/odBHZdjx9tkLPY
-	 fgyXcUGO7wQVptLG4t5WitZE3yqfOy5e/6E8mflM008nuFfEd9FBME2AhTKjPK7Sp1
-	 56Ve0bcyY+WtcIiQuKpKQsU1caL00EwvXNPfk5moeuGis6rSy0DyDvAH4feFixVpL6
-	 LEfDQUnwG4nk7pf0cpteIopcX5q/CXYhNcWwKSomIT44LKpS982CNntX7TrN6JSxhm
-	 /W9Lpv7OeBunuwnlTSRh4bEfct7Incwvu6YkOdTeztiqyyCIOGcn3uS1eR1gVwR2tV
-	 1q8OsmTzFqwgA==
+	b=QY1bxjWuJPQ4Q74fhUN3ufejN0ERXu4VChmhv/A4QK5nRlj5fLcxNMS+VwErhD1AG
+	 9rNyoPkHcdJ97NFjVGNgrE4D9/NeFSK2k5fPP93v4Dilane1JxLjWTS11qdC/fbsdu
+	 emgFASDCXsGO1fRkqYaCsgzsUiIaofzsRe/ejKKg2GRCQShDQKfZxbFHjNmeuN4bvu
+	 KZpwmVoKZh1pkeNyyiHUhBArs0UzIpnoKsR242BYs+Yb149q7uA5TwTV69cg0EpSRX
+	 1nqR1d//JZ546dBpNwGEbJDeoHFnxt65+KwX+NoH+9bR4lcfhKMt8aeUyGPT8KIDOa
+	 hBcg2hHaD/7Gw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Hector Martin <marcan@marcan.st>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 111/153] net/mlx5: Apply rate-limiting to high temperature warning
-Date: Mon,  5 May 2025 19:12:38 -0400
-Message-Id: <20250505231320.2695319-111-sashal@kernel.org>
+	shenghao-ding@ti.com,
+	kevin-lu@ti.com,
+	baojun.xu@ti.com,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 113/153] ASoC: tas2764: Power up/down amp on mute ops
+Date: Mon,  5 May 2025 19:12:40 -0400
+Message-Id: <20250505231320.2695319-113-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -73,43 +71,106 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
+[ Upstream commit 1c3b5f37409682184669457a5bdf761268eafbe5 ]
 
-Wrap the high temperature warning in a temperature event with
-a call to net_ratelimit() to prevent flooding the kernel log
-with repeated warning messages when temperature exceeds the
-threshold multiple times within a short duration.
+The ASoC convention is that clocks are removed after codec mute, and
+power up/down is more about top level power management. For these chips,
+the "mute" state still expects a TDM clock, and yanking the clock in
+this state will trigger clock errors. So, do the full
+shutdown<->mute<->active transition on the mute operation, so the amp is
+in software shutdown by the time the clocks are removed.
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This fixes TDM clock errors when streams are stopped.
+
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-1-dbab892a69b5@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/codecs/tas2764.c | 51 ++++++++++++++++----------------------
+ 1 file changed, 21 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index 080aee3e3f9bb..15d90d68b1ffd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -166,9 +166,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
- 	value_lsb &= 0x1;
- 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index 273bf4027a6e5..559a160e1f4d9 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -130,33 +130,6 @@ static SOC_ENUM_SINGLE_DECL(
+ static const struct snd_kcontrol_new tas2764_asi1_mux =
+ 	SOC_DAPM_ENUM("ASI1 Source", tas2764_ASI1_src_enum);
  
--	mlx5_core_warn(events->dev,
--		       "High temperature on sensors with bit set %llx %llx",
--		       value_msb, value_lsb);
-+	if (net_ratelimit())
-+		mlx5_core_warn(events->dev,
-+			       "High temperature on sensors with bit set %llx %llx",
-+			       value_msb, value_lsb);
+-static int tas2764_dac_event(struct snd_soc_dapm_widget *w,
+-			     struct snd_kcontrol *kcontrol, int event)
+-{
+-	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+-	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
+-	int ret;
+-
+-	switch (event) {
+-	case SND_SOC_DAPM_POST_PMU:
+-		tas2764->dac_powered = true;
+-		ret = tas2764_update_pwr_ctrl(tas2764);
+-		break;
+-	case SND_SOC_DAPM_PRE_PMD:
+-		tas2764->dac_powered = false;
+-		ret = tas2764_update_pwr_ctrl(tas2764);
+-		break;
+-	default:
+-		dev_err(tas2764->dev, "Unsupported event\n");
+-		return -EINVAL;
+-	}
+-
+-	if (ret < 0)
+-		return ret;
+-
+-	return 0;
+-}
+-
+ static const struct snd_kcontrol_new isense_switch =
+ 	SOC_DAPM_SINGLE("Switch", TAS2764_PWR_CTRL, TAS2764_ISENSE_POWER_EN, 1, 1);
+ static const struct snd_kcontrol_new vsense_switch =
+@@ -169,8 +142,7 @@ static const struct snd_soc_dapm_widget tas2764_dapm_widgets[] = {
+ 			    1, &isense_switch),
+ 	SND_SOC_DAPM_SWITCH("VSENSE", TAS2764_PWR_CTRL, TAS2764_VSENSE_POWER_EN,
+ 			    1, &vsense_switch),
+-	SND_SOC_DAPM_DAC_E("DAC", NULL, SND_SOC_NOPM, 0, 0, tas2764_dac_event,
+-			   SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
++	SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
+ 	SND_SOC_DAPM_OUTPUT("OUT"),
+ 	SND_SOC_DAPM_SIGGEN("VMON"),
+ 	SND_SOC_DAPM_SIGGEN("IMON")
+@@ -191,9 +163,28 @@ static int tas2764_mute(struct snd_soc_dai *dai, int mute, int direction)
+ {
+ 	struct tas2764_priv *tas2764 =
+ 			snd_soc_component_get_drvdata(dai->component);
++	int ret;
++
++	if (!mute) {
++		tas2764->dac_powered = true;
++		ret = tas2764_update_pwr_ctrl(tas2764);
++		if (ret)
++			return ret;
++	}
  
- 	return NOTIFY_OK;
+ 	tas2764->unmuted = !mute;
+-	return tas2764_update_pwr_ctrl(tas2764);
++	ret = tas2764_update_pwr_ctrl(tas2764);
++	if (ret)
++		return ret;
++
++	if (mute) {
++		tas2764->dac_powered = false;
++		ret = tas2764_update_pwr_ctrl(tas2764);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
  }
+ 
+ static int tas2764_set_bitwidth(struct tas2764_priv *tas2764, int bitwidth)
 -- 
 2.39.5
 
