@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-140918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A35AAAF9A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:20:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C91AAACB5
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:21:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BFFA1BA1841
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:19:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 514A83A9721
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E48C43C9A60;
-	Mon,  5 May 2025 23:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8D9380948;
+	Mon,  5 May 2025 23:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qQFn+DDO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WV+WtDM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EE92F3665;
-	Mon,  5 May 2025 23:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F5E380967;
+	Mon,  5 May 2025 23:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486896; cv=none; b=iB/T+YwAB0X8c4vly1qJO4zYktwdeZcl7ofxl/H4UvpFx+2fT9RmzisPDXW9O8KyNXGtcxtreJFFYAcj40gWNzqTmCMMte3alvVjNq6WeJTW4SQIu+fxc17AK4D2AQs7+h/O/4cFyfDH9g0ZoL5TSiguOkunw/o78jVeIVt9ThM=
+	t=1746486907; cv=none; b=LXICbEptgbhVsg28iE5LorENe+xuzGEzwdiIgl8H98fmf3jVFCbWYLUeQBdKPSY5S5Stg+WH3yqA8RY2B3soNdX0aB/B0Cq3PHDL226obJ+G4BZW+ruKF/8AVuTryzucSpEdoQ/Wdwta0pv8c9dbboZImFkYWflafMEAA1RWjEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486896; c=relaxed/simple;
-	bh=2XFm1n3rp0v8R1kDBJ2wjznnUIXVrgdlFCkBNUHrBcQ=;
+	s=arc-20240116; t=1746486907; c=relaxed/simple;
+	bh=rvPRKy3rLzjg/YgOXJYy8BWkFpMnDeKRfn99mCLAJWw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Mj7P/BSuezsz3tcU44oSGii9hrGwlRlm8u3HW5v7CmbOsU7xrxj6BeZkK1RiSoqCr6MDLg7FQJ66eKA+C3Nvg595f2KRf6wz1SVMwNzDZs5j6OxR277oR+siJFLI1pVJQwNz6wLc/UaLs7HbAjvbjodhvijXxr6LmhW5TBqccrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qQFn+DDO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C8A8C4CEE4;
-	Mon,  5 May 2025 23:14:54 +0000 (UTC)
+	 MIME-Version; b=UM/l8YSIA9+SDDaNKWXj3TK1e2zH83qHo7QPXYLPVQ6G/bKVbHp/D/SPG8mow51xtAaKrQbIO+BaCLbqyY5QVsAtsxbJaGYvDShqbnA/Stb1bMzFAfTunpbEdKOhYKhbL0v3OdcosBdXGAn9gbwRpCKWFiPNS4kOr1iMG2z3Isc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WV+WtDM9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34A3C4CEE4;
+	Mon,  5 May 2025 23:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486895;
-	bh=2XFm1n3rp0v8R1kDBJ2wjznnUIXVrgdlFCkBNUHrBcQ=;
+	s=k20201202; t=1746486906;
+	bh=rvPRKy3rLzjg/YgOXJYy8BWkFpMnDeKRfn99mCLAJWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qQFn+DDOASPs/4XyCfqkgqUGSpPqqXIfM3CjF2KvnucaKb3V6I97Bo6yaiy4T3awD
-	 tq53l8uKbz+L0Fs7o3pMOTXfUij9D7UHCdhAR3lcIurOpnSPGNw1VITR/1kmF99GpS
-	 GxNiOZyMvTBGrqPVs4ED821EfXCX/I82HCnS1RSg2h1fFiu4yDK7A/ZZ2HcMXUe74x
-	 9T04afWWMxgYJOjLQvOTFQfAgMn+xN6Xvs/xHbjBekcBHnRE08XLsg9aTfGunFDN0R
-	 i3WFXISKJgjUMfRbSJVHYRvbWN3Tl2lxojroEOcnw0Gq1OR8eNUm0wvz9fNdUClCGe
-	 QnTWEcqGblWyQ==
+	b=WV+WtDM9V6nYJh1LjKQGc48UCnvSeLwbrZSbRZO0VHZfAAkph0uYjzkaA5CErmAR7
+	 eCFu6MBDFxpMsRqEy7Buh35pQChEyvOpzTFBpJhLJRJ30SYOKAOqH5NBqyKc4ZPAkF
+	 O4FHfxEUCgDCrA8HiqEuNJPaaSRl0GbCbJ59xSM8WZemOzOge920VHEeoU/Z5tIUSl
+	 l4WWagR0YMT+uxC8kqRZb3a5a3F/NZ1DhiZFJZj/UDmh+qJICD0DzPNrkCywFxDHRu
+	 JRyQnfe+4HDPexKTnnulT7DnXmTehJFo4qnFGkOBap/TGCxNvbQ+xsKk7FO4QzkWr+
+	 2TGtvJOs8pt3g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+Cc: Alexey Klimov <alexey.klimov@linaro.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	peterx@redhat.com,
-	joey.gouly@arm.com,
-	yangyicong@hisilicon.com,
-	ioworker0@gmail.com
-Subject: [PATCH AUTOSEL 5.15 049/153] arm64/mm: Check PUD_TYPE_TABLE in pud_bad()
-Date: Mon,  5 May 2025 19:11:36 -0400
-Message-Id: <20250505231320.2695319-49-sashal@kernel.org>
+	srini@kernel.org,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 053/153] ASoC: qcom: sm8250: explicitly set format in sm8250_be_hw_params_fixup()
+Date: Mon,  5 May 2025 19:11:40 -0400
+Message-Id: <20250505231320.2695319-53-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -73,47 +71,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-[ Upstream commit bfb1d2b9021c21891427acc86eb848ccedeb274e ]
+[ Upstream commit 89be3c15a58b2ccf31e969223c8ac93ca8932d81 ]
 
-pud_bad() is currently defined in terms of pud_table(). Although for some
-configs, pud_table() is hard-coded to true i.e. when using 64K base pages
-or when page table levels are less than 3.
+Setting format to s16le is required for compressed playback on compatible
+soundcards.
 
-pud_bad() is intended to check that the pud is configured correctly. Hence
-let's open-code the same check that the full version of pud_table() uses
-into pud_bad(). Then it always performs the check regardless of the config.
-
-Cc: Will Deacon <will@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250221044227.1145393-7-anshuman.khandual@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Link: https://patch.msgid.link/20250228161430.373961-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/qcom/sm8250.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index b5e969bc074d3..a0bfa9cd76dab 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -623,7 +623,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
- 	pr_err("%s:%d: bad pmd %016llx.\n", __FILE__, __LINE__, pmd_val(e))
+diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
+index a38a741ace379..34a6349754fb0 100644
+--- a/sound/soc/qcom/sm8250.c
++++ b/sound/soc/qcom/sm8250.c
+@@ -7,6 +7,7 @@
+ #include <sound/soc.h>
+ #include <sound/soc-dapm.h>
+ #include <sound/pcm.h>
++#include <sound/pcm_params.h>
+ #include <linux/soundwire/sdw.h>
+ #include "qdsp6/q6afe.h"
+ #include "common.h"
+@@ -27,9 +28,11 @@ static int sm8250_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
+ 					SNDRV_PCM_HW_PARAM_RATE);
+ 	struct snd_interval *channels = hw_param_interval(params,
+ 					SNDRV_PCM_HW_PARAM_CHANNELS);
++	struct snd_mask *fmt = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
  
- #define pud_none(pud)		(!pud_val(pud))
--#define pud_bad(pud)		(!pud_table(pud))
-+#define pud_bad(pud)		((pud_val(pud) & PUD_TYPE_MASK) != \
-+				 PUD_TYPE_TABLE)
- #define pud_present(pud)	pte_present(pud_pte(pud))
- #define pud_leaf(pud)		(pud_present(pud) && !pud_table(pud))
- #define pud_valid(pud)		pte_valid(pud_pte(pud))
+ 	rate->min = rate->max = 48000;
+ 	channels->min = channels->max = 2;
++	snd_mask_set_format(fmt, SNDRV_PCM_FORMAT_S16_LE);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
