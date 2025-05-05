@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-141634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9B6AAB518
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:22:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFBF9AAB525
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:23:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 154C43A49EC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:17:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC31A3A1DE2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76164345D4C;
-	Tue,  6 May 2025 00:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CA0346041;
+	Tue,  6 May 2025 00:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="izIiDLHG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BSVGe7BG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF4E2F4F60;
-	Mon,  5 May 2025 23:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6392E61CD;
+	Mon,  5 May 2025 23:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486966; cv=none; b=UA5nrlkQzx8gssfTzJe7zY5OyuGcS5SHHfAvfqNydYTOFP/SPTQ6z1pXtNuYAX0kMB54ZTH6WAKsWF6L+U2p4C3TbXskOW7MQwwyiNxsi4lecjQAbl1pDxDz8tVJo/JhG0dcPKZGkrbzZ8KiXe5cg8YWBeMq5+z7QunnR7uv+QA=
+	t=1746486970; cv=none; b=DUtD/9Lo42LMmdyraz42yEI56ZWSA94VuX6lWS4IVVGTZB0bF31CHap0T0tywBaloSrab+4J2FdKsXiU0qcnDTi6t19elAbtxJW+e9c8SrWxoICG5C6PMp5g8+lBvkpxau5eoGLh8DybKLmF8MoZus06nVHRevbq761VovpssqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486966; c=relaxed/simple;
-	bh=6nilLHw0VgDiTs0EsmbNUNsBYV4knhCYP34x5LqIndU=;
+	s=arc-20240116; t=1746486970; c=relaxed/simple;
+	bh=lD9jUtI1KHMpBHJeJ+oEJotljTUv3A4dNQi5VxznjOA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=A1Izu8cTaiGHdgQ0aLCcSdfFs2vM9eXlUtD4bpbp/SRA2qMw6mehzo7P3jhviHTmxIMXakAMlLG/K+kbXInmQfNURttwDZKE+iCbKIa2JisnW2mHBzsjVxu+57Rq5bEZygq6UgLK/H7LX/fAARCkm7kzg3eQlG8nF6rW1A/+cxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=izIiDLHG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12741C4CEED;
-	Mon,  5 May 2025 23:16:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MBhyvXgPf6Fhgx0ntxRR4o4IkXLDby8n5fcUJ0WMLRWrZUn+SbJYwv+u+OTVzzzDiEF9PwiSaIO+cODs7Lyo1jLK8uCi8B3LXOpQdWeghHCAo2gJGgX1vOlTrzRBQ/Uv7GYY/wXn98+VSsX6/gUtr4HSpxkiyl8RyvLCTVLfFsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BSVGe7BG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBC0C4CEEF;
+	Mon,  5 May 2025 23:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486965;
-	bh=6nilLHw0VgDiTs0EsmbNUNsBYV4knhCYP34x5LqIndU=;
+	s=k20201202; t=1746486970;
+	bh=lD9jUtI1KHMpBHJeJ+oEJotljTUv3A4dNQi5VxznjOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=izIiDLHGviDlBYRW+Ami/Cd9qglwz1YPjR1p6Y16uftkSSkh/EvgGTO/BwakmXDHl
-	 s+JnxhPJ3F5LS5uRtiXqVXqXASi4+xmmWG8noVp0ikpizJpnkXvGlwDySnjrWSPSWV
-	 FUZcYKfR14RSBLjrtWAzAiXcK0WO8ID3sU4yQ5Ty/Vo5FmE+blzHqxjtvdY+2NmYzm
-	 qrBSRfDh+luhPDesCPNP9p0TqFA29t7fpqwBgceWwACPq5Xdc0wx21QxxY0hrWxbiJ
-	 uGp1ReuoYcC0atrk1x9ZWg1JnsVwA5sljB2Laa7hWLz9uvpKhd05mpy4AdfmUuHscS
-	 lL2Bn+M3XKzHw==
+	b=BSVGe7BGA7gq74CQjVTKMCqiSut5icBdJI6H1bmZytyj2CbpnlHN57OaFOW504zdt
+	 NcuF18xuF/XcTyPB5/tJfCJ0AV8NHzYv77M/AcXYz5raPQfC/oQABFd8pSIQYkVsui
+	 2MTIMX5Tgjp1fs6Gp/QOCvnvMJ8mP17TD4e7zgTvAeKO7Dx5lNNiVt3pjs8T8yF5MC
+	 FMoXKbiQ9oWPzItwxBdzvuAxLsnu58uc3DWU6nnEKjdPfOrmo+OTMbeLPM5RaCL5pC
+	 S3+GQnvtyHhBraQC34cvxg73Jwx4/Pu31faMK60a75E72yncdjbKMW5/YFrqyYLiUn
+	 eH4XHnZaed5vA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kevin Krakauer <krakauer@google.com>,
-	Willem de Bruijn <willemb@google.com>,
+Cc: Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	jv@jvosburgh.net,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	shuah@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 083/153] selftests/net: have `gro.sh -t` return a correct exit code
-Date: Mon,  5 May 2025 19:12:10 -0400
-Message-Id: <20250505231320.2695319-83-sashal@kernel.org>
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 086/153] bonding: report duplicate MAC address in all situations
+Date: Mon,  5 May 2025 19:12:13 -0400
+Message-Id: <20250505231320.2695319-86-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -66,40 +66,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Kevin Krakauer <krakauer@google.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 784e6abd99f24024a8998b5916795f0bec9d2fd9 ]
+[ Upstream commit 28d68d396a1cd21591e8c6d74afbde33a7ea107e ]
 
-Modify gro.sh to return a useful exit code when the -t flag is used. It
-formerly returned 0 no matter what.
+Normally, a bond uses the MAC address of the first added slave as the bond’s
+MAC address. And the bond will set active slave’s MAC address to bond’s
+address if fail_over_mac is set to none (0) or follow (2).
 
-Tested: Ran `gro.sh -t large` and verified that test failures return 1.
-Signed-off-by: Kevin Krakauer <krakauer@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250226192725.621969-2-krakauer@google.com
+When the first slave is removed, the bond will still use the removed slave’s
+MAC address, which can lead to a duplicate MAC address and potentially cause
+issues with the switch. To avoid confusion, let's warn the user in all
+situations, including when fail_over_mac is set to 2 or not in active-backup
+mode.
+
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250225033914.18617-1-liuhangbin@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/gro.sh | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/gro.sh b/tools/testing/selftests/net/gro.sh
-index 342ad27f631b1..e771f5f7faa26 100755
---- a/tools/testing/selftests/net/gro.sh
-+++ b/tools/testing/selftests/net/gro.sh
-@@ -95,5 +95,6 @@ trap cleanup EXIT
- if [[ "${test}" == "all" ]]; then
-   run_all_tests
- else
--  run_test "${proto}" "${test}"
-+  exit_code=$(run_test "${proto}" "${test}")
-+  exit $exit_code
- fi;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 75499e2967e8f..6bdc29d04a580 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2355,7 +2355,7 @@ static int __bond_release_one(struct net_device *bond_dev,
+ 
+ 	RCU_INIT_POINTER(bond->current_arp_slave, NULL);
+ 
+-	if (!all && (!bond->params.fail_over_mac ||
++	if (!all && (bond->params.fail_over_mac != BOND_FOM_ACTIVE ||
+ 		     BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)) {
+ 		if (ether_addr_equal_64bits(bond_dev->dev_addr, slave->perm_hwaddr) &&
+ 		    bond_has_slaves(bond))
 -- 
 2.39.5
 
