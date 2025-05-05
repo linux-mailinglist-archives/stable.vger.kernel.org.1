@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-139604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2481AA8D40
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 09:43:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34DBCAA8D43
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 09:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47C0516BCE2
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 07:43:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D7BD3B4F89
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 07:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F97F1DC993;
-	Mon,  5 May 2025 07:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC14E1DE8B9;
+	Mon,  5 May 2025 07:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mnf31bZe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCQSS6Ow"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C378F1DB365
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 07:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B62719995E
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 07:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746431016; cv=none; b=CVGQsAqb6YHnaJKru/33T8vkW8l4jt7h2ALm6Y/cPOlE/XDxCO1PBADQl7Q9yUialvbmjtmg0GLcdrZdIhCAckUEy7LxjE3ABN9l+y3vbVzUuSuTQF/brFRcKT7Q4IA+cOzw/6kKI64jNlcXTjj0Y/06cpskdWR0Xznz/2LVnqM=
+	t=1746431027; cv=none; b=US5a8I1suipIM2qIrmrk/02EnAztJ/Hg/3asvoWh9dCTuatEkCfxExiwHvdE53LIwVHmkxzujW25qUPHhY0mGvckjg5WvO+AtU9DX2eIrgoDPTY7rqdT2JFepSAlpkguY7AU20cX4gz+THY6UzIAJqID3kcPSfQs/yPU14hozlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746431016; c=relaxed/simple;
-	bh=hwK3ynVmzBj8wBXVgk0Tg+jeTvj9cbIEUQPONK32Na0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=vEfWEiMYcjka5/Xm4M61eSWiq1dbQP5F5DQ8pgjQdECXS/CYY8D43B2UrPLKH5nthS75YsiirYYe+GhPK2688Qq/QjQq166iutg40ZUPs92JtsICkySVYDF5HsoaagtwkDvEF/38xIen7q5D30wZKCyE23bwBKGU3ZK9KXVAs1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mnf31bZe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284A0C4CEE4;
-	Mon,  5 May 2025 07:43:35 +0000 (UTC)
+	s=arc-20240116; t=1746431027; c=relaxed/simple;
+	bh=FpKkJqCHocidkTaRTuWu2jyKyUT+1BQK8Vs6h6R6mew=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Wzeg/ejzOwf6kNibAf7OiTLD9Z7wtPorm5zlMU33TSvv9gTUCONAppK2uBPhVqY0AJ7uNt6JyRpVoSi5b+Wt2Lo4E2bNsXaGX8SBMei6cN5LewUWQtl4+2ivMKT4K0fFEHS97gRt/7RHEzQJLIQuwAv4O/HGJFHO2zhOtmP6+aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCQSS6Ow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD775C4CEE4;
+	Mon,  5 May 2025 07:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746431016;
-	bh=hwK3ynVmzBj8wBXVgk0Tg+jeTvj9cbIEUQPONK32Na0=;
+	s=korg; t=1746431027;
+	bh=FpKkJqCHocidkTaRTuWu2jyKyUT+1BQK8Vs6h6R6mew=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Mnf31bZeYK8/VrDZId/6+8nw1IGKRIQBl0a6YAIwLcc7Rk5fUtwituf1hzWuFLHR2
-	 faJIHbh3uH1j9ZyomN94ghHYIzsiE903w4E7BQfLqc5U+lSo9ZkAy79R1uHh82jJt2
-	 /FxLj9dkze6flp7POiG1l9t4UXYqJmpNR0FBX42w=
-Subject: FAILED: patch "[PATCH] iommu/arm-smmu-v3: Fix iommu_device_probe bug due to" failed to apply to 5.15-stable tree
-To: nicolinc@nvidia.com,jgg@nvidia.com,will@kernel.org
+	b=pCQSS6OwX9Cgu9t0wq7vBjHht0sBcX5mrMZSvd+0ZrCuBceXh6NwPSn8h0/rrdR33
+	 AD/B0cNeaVPaNvjUrFJFKhygmGOag564Az6WwbIBA8hKy10x74+IMuqyake4dRooh7
+	 WF2PCZJHMBObQ/42TYh9kQYC0tzkZ+4LFhxtlY64=
+Subject: FAILED: patch "[PATCH] iommu/arm-smmu-v3: Fix pgsize_bit for sva domains" failed to apply to 6.6-stable tree
+To: balbirs@nvidia.com,jean-philippe@linaro.org,jgg@nvidia.com,jgg@ziepe.ca,joro@8bytes.org,robin.murphy@arm.com,will@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 May 2025 09:43:23 +0200
-Message-ID: <2025050523-phonics-bankable-dd5b@gregkh>
+Date: Mon, 05 May 2025 09:43:39 +0200
+Message-ID: <2025050539-scorpion-gents-a5e3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x b00d24997a11c10d3e420614f0873b83ce358a34
+git cherry-pick -x 12f78021973ae422564b234136c702a305932d73
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050523-phonics-bankable-dd5b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050539-scorpion-gents-a5e3@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,117 +77,53 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b00d24997a11c10d3e420614f0873b83ce358a34 Mon Sep 17 00:00:00 2001
-From: Nicolin Chen <nicolinc@nvidia.com>
-Date: Tue, 15 Apr 2025 11:56:20 -0700
-Subject: [PATCH] iommu/arm-smmu-v3: Fix iommu_device_probe bug due to
- duplicated stream ids
+From 12f78021973ae422564b234136c702a305932d73 Mon Sep 17 00:00:00 2001
+From: Balbir Singh <balbirs@nvidia.com>
+Date: Sat, 12 Apr 2025 10:23:54 +1000
+Subject: [PATCH] iommu/arm-smmu-v3: Fix pgsize_bit for sva domains
 
-ASPEED VGA card has two built-in devices:
- 0008:06:00.0 PCI bridge: ASPEED Technology, Inc. AST1150 PCI-to-PCI Bridge (rev 06)
- 0008:07:00.0 VGA compatible controller: ASPEED Technology, Inc. ASPEED Graphics Family (rev 52)
+UBSan caught a bug with IOMMU SVA domains, where the reported exponent
+value in __arm_smmu_tlb_inv_range() was >= 64.
+__arm_smmu_tlb_inv_range() uses the domain's pgsize_bitmap to compute
+the number of pages to invalidate and the invalidation range. Currently
+arm_smmu_sva_domain_alloc() does not setup the iommu domain's
+pgsize_bitmap. This leads to __ffs() on the value returning 64 and that
+leads to undefined behaviour w.r.t. shift operations
 
-Its toplogy looks like this:
- +-[0008:00]---00.0-[01-09]--+-00.0-[02-09]--+-00.0-[03]----00.0  Sandisk Corp Device 5017
-                             |               +-01.0-[04]--
-                             |               +-02.0-[05]----00.0  NVIDIA Corporation Device
-                             |               +-03.0-[06-07]----00.0-[07]----00.0  ASPEED Technology, Inc. ASPEED Graphics Family
-                             |               +-04.0-[08]----00.0  Renesas Technology Corp. uPD720201 USB 3.0 Host Controller
-                             |               \-05.0-[09]----00.0  Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
-                             \-00.1  PMC-Sierra Inc. Device 4028
+Fix this by initializing the iommu_domain's pgsize_bitmap to PAGE_SIZE.
+Effectively the code needs to use the smallest page size for
+invalidation
 
-The IORT logic populaties two identical IDs into the fwspec->ids array via
-DMA aliasing in iort_pci_iommu_init() called by pci_for_each_dma_alias().
-
-Though the SMMU driver had been able to handle this situation since commit
-563b5cbe334e ("iommu/arm-smmu-v3: Cope with duplicated Stream IDs"), that
-got broken by the later commit cdf315f907d4 ("iommu/arm-smmu-v3: Maintain
-a SID->device structure"), which ended up with allocating separate streams
-with the same stuffing.
-
-On a kernel prior to v6.15-rc1, there has been an overlooked warning:
-  pci 0008:07:00.0: vgaarb: setting as boot VGA device
-  pci 0008:07:00.0: vgaarb: bridge control possible
-  pci 0008:07:00.0: vgaarb: VGA device added: decodes=io+mem,owns=none,locks=none
-  pcieport 0008:06:00.0: Adding to iommu group 14
-  ast 0008:07:00.0: stream 67328 already in tree   <===== WARNING
-  ast 0008:07:00.0: enabling device (0002 -> 0003)
-  ast 0008:07:00.0: Using default configuration
-  ast 0008:07:00.0: AST 2600 detected
-  ast 0008:07:00.0: [drm] Using analog VGA
-  ast 0008:07:00.0: [drm] dram MCLK=396 Mhz type=1 bus_width=16
-  [drm] Initialized ast 0.1.0 for 0008:07:00.0 on minor 0
-  ast 0008:07:00.0: [drm] fb0: astdrmfb frame buffer device
-
-With v6.15-rc, since the commit bcb81ac6ae3c ("iommu: Get DT/ACPI parsing
-into the proper probe path"), the error returned with the warning is moved
-to the SMMU device probe flow:
-  arm_smmu_probe_device+0x15c/0x4c0
-  __iommu_probe_device+0x150/0x4f8
-  probe_iommu_group+0x44/0x80
-  bus_for_each_dev+0x7c/0x100
-  bus_iommu_probe+0x48/0x1a8
-  iommu_device_register+0xb8/0x178
-  arm_smmu_device_probe+0x1350/0x1db0
-which then fails the entire SMMU driver probe:
-  pci 0008:06:00.0: Adding to iommu group 21
-  pci 0008:07:00.0: stream 67328 already in tree
-  arm-smmu-v3 arm-smmu-v3.9.auto: Failed to register iommu
-  arm-smmu-v3 arm-smmu-v3.9.auto: probe with driver arm-smmu-v3 failed with error -22
-
-Since SMMU driver had been already expecting a potential duplicated Stream
-ID in arm_smmu_install_ste_for_dev(), change the arm_smmu_insert_master()
-routine to ignore a duplicated ID from the fwspec->sids array as well.
-
-Note: this has been failing the iommu_device_probe() since 2021, although a
-recent iommu commit in v6.15-rc1 that moves iommu_device_probe() started to
-fail the SMMU driver probe. Since nobody has cared about DMA Alias support,
-leave that as it was but fix the fundamental iommu_device_probe() breakage.
-
-Fixes: cdf315f907d4 ("iommu/arm-smmu-v3: Maintain a SID->device structure")
 Cc: stable@vger.kernel.org
+Fixes: eb6c97647be2 ("iommu/arm-smmu-v3: Avoid constructing invalid range commands")
 Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+
+Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://lore.kernel.org/r/20250415185620.504299-1-nicolinc@nvidia.com
+Link: https://lore.kernel.org/r/20250412002354.3071449-1-balbirs@nvidia.com
 Signed-off-by: Will Deacon <will@kernel.org>
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index 5467f85dd463..0826b6bdf327 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -3388,6 +3388,7 @@ static int arm_smmu_insert_master(struct arm_smmu_device *smmu,
- 	mutex_lock(&smmu->streams_mutex);
- 	for (i = 0; i < fwspec->num_ids; i++) {
- 		struct arm_smmu_stream *new_stream = &master->streams[i];
-+		struct rb_node *existing;
- 		u32 sid = fwspec->ids[i];
- 
- 		new_stream->id = sid;
-@@ -3398,10 +3399,20 @@ static int arm_smmu_insert_master(struct arm_smmu_device *smmu,
- 			break;
- 
- 		/* Insert into SID tree */
--		if (rb_find_add(&new_stream->node, &smmu->streams,
--				arm_smmu_streams_cmp_node)) {
--			dev_warn(master->dev, "stream %u already in tree\n",
--				 sid);
-+		existing = rb_find_add(&new_stream->node, &smmu->streams,
-+				       arm_smmu_streams_cmp_node);
-+		if (existing) {
-+			struct arm_smmu_master *existing_master =
-+				rb_entry(existing, struct arm_smmu_stream, node)
-+					->master;
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
+index 9ba596430e7c..980cc6b33c43 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
+@@ -411,6 +411,12 @@ struct iommu_domain *arm_smmu_sva_domain_alloc(struct device *dev,
+ 		return ERR_CAST(smmu_domain);
+ 	smmu_domain->domain.type = IOMMU_DOMAIN_SVA;
+ 	smmu_domain->domain.ops = &arm_smmu_sva_domain_ops;
 +
-+			/* Bridged PCI devices may end up with duplicated IDs */
-+			if (existing_master == master)
-+				continue;
-+
-+			dev_warn(master->dev,
-+				 "stream %u already in tree from dev %s\n", sid,
-+				 dev_name(existing_master->dev));
- 			ret = -EINVAL;
- 			break;
- 		}
++	/*
++	 * Choose page_size as the leaf page size for invalidation when
++	 * ARM_SMMU_FEAT_RANGE_INV is present
++	 */
++	smmu_domain->domain.pgsize_bitmap = PAGE_SIZE;
+ 	smmu_domain->smmu = smmu;
+ 
+ 	ret = xa_alloc(&arm_smmu_asid_xa, &asid, smmu_domain,
 
 
