@@ -1,72 +1,61 @@
-Return-Path: <stable+bounces-140540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52652AAA9D7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:23:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF83AAA9BA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:20:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22A633B71F7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:18:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A19EC46590A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B60D37319F;
-	Mon,  5 May 2025 22:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1119312839;
+	Mon,  5 May 2025 22:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hw7nsilh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ufwQ5oSl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167F635B936;
-	Mon,  5 May 2025 22:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDA029C324;
+	Mon,  5 May 2025 22:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485088; cv=none; b=WRSiozbpYOHwT0Aoio7+qWnCxwLfu8ThJDYt3xPN1LpdrXPdXSt9ymap8Y+PcQnHQOmK9hQMdu0NNkdqB/xRHvlwnQ0mBWhWmSntO9EHUl0mZz0OXLCWUKNvj5ElU2zRPqyICwNP+p81x5GaJz9v9fXWWWCRn6YFvVO/vXdiWHs=
+	t=1746485109; cv=none; b=HQ5qq8oeq4nnaAs293nEHuaW3KsoJKHsMplufsurmgOhnJ9WCWnAaR1j40Lh/8N5iXg+tCenXjO2juRzDFNjsQBZxnve2o5QT5knyEc7CdgtzAjm2AeNRnWLRaBGIKRlbZCVPaJBtRb99U9zJWeIBuL5Ssn7EnBsgksdfxfPnMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485088; c=relaxed/simple;
-	bh=SiZIssIutDQbFCY8o8RcEQfIALaoj/xPA6klpsRAGBI=;
+	s=arc-20240116; t=1746485109; c=relaxed/simple;
+	bh=cBQTAsnfnToP87TSZImPQRuj5zjPXF1wUmXlEY6L/5g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Hw+RFmutaVbJ71gICVwusVfFTcUKcts6v0eimoK0rX1GdoZHtfnaZHgfeqa6gqFn73QHGxjrIHI6Lvh6r0NomCBk9Empz6eb0oFB6aULguM56UHG4c6SDODeJijqq0Glpg34ToYe6mnY+d8Ca/QQ02DZFw9ia1I2gZabVCKeFHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hw7nsilh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A64C4CEF9;
-	Mon,  5 May 2025 22:44:44 +0000 (UTC)
+	 MIME-Version; b=Dq5fbuZMw1Cni9f1w/6Igc6mo5gkCMlePGgAPbH0gmrI/mZV1QMPDQwQWjK9Y4nK1RvdyAiiQQU0HO35j+xVDQDrpKyY+EbgOb/TczDVm8ol1PAF4Cl/3r5hclfRp6HwSEkdICjR25VHN76eyhVIiZU/9tXLY/uDqnjKBWAQHyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ufwQ5oSl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9492DC4CEED;
+	Mon,  5 May 2025 22:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485086;
-	bh=SiZIssIutDQbFCY8o8RcEQfIALaoj/xPA6klpsRAGBI=;
+	s=k20201202; t=1746485107;
+	bh=cBQTAsnfnToP87TSZImPQRuj5zjPXF1wUmXlEY6L/5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hw7nsilh2Vox3qX9vAlZtN4BdVrp7cYWgQpKVCdTirjvMCkU1tLAadnUhKPhVpZqN
-	 NgibrQ60sX4jii0iP3zSVksWDA5ed62KwOonH7ydtYzzhqPEPddK6clWVc92VGlkuU
-	 igPbm8QnMtSY7yoZBp9fcYIb4N2XOpi8FbfHV34ppjgddQUsByNQ/6pHargw7r93lt
-	 YJxWfkxfcrP5KLoxZDsip0V4le2tW5hgMpGFRkGsCRJEf2DqpsNAiD+x8W4TNA9+Ng
-	 htipYdprcSFtF97Y3z05/RoWhp0ViJrcbJ8UakR5syF3COiGbZmOraqHiiBsLhRxL3
-	 h9DWIQUPv31qw==
+	b=ufwQ5oSlNQOSnhxZBowvH8QU/m+BZKMLjYaCXF5oPyTN8F4oyFX2UtNwf8351mJLv
+	 9G7MOO+xlgpYYr44tp2B2qiEzo/MW/QRJrq+rxiETcdIqi4GaG2eI9JRKnUnsS3zzg
+	 2CXulhPzAN5VAb4yumRO5S47OtyRfO8c1/SojcIWLRDp4D6FWASdQeSbJ5JGAkLMec
+	 cEiNJXJKlbzms1xhetHvf70c2XFzJ+fXDklARatOzAcfj1iC4O6pKzo4bWDrdxyOhj
+	 BIT1f40Jh9QbKxOLcA45Wk+X+Env1q/OjFJDJmOa/JH2KMzgvtSteNuMmARY9woNrG
+	 abBQ4iTY62hWA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zhikai Zhai <zhikai.zhai@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Lu Baolu <baolu.lu@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Zhangfei Gao <zhangfei.gao@linaro.org>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	Austin.Zheng@amd.com,
-	aric.cyr@amd.com,
-	alvin.lee2@amd.com,
-	rodrigo.siqueira@amd.com,
-	alex.hung@amd.com,
-	srinivasan.shanmugam@amd.com,
-	rostrows@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 157/486] drm/amd/display: calculate the remain segments for all pipes
-Date: Mon,  5 May 2025 18:33:53 -0400
-Message-Id: <20250505223922.2682012-157-sashal@kernel.org>
+	dwmw2@infradead.org,
+	joro@8bytes.org,
+	will@kernel.org,
+	iommu@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.12 165/486] iommu/vt-d: Move scalable mode ATS enablement to probe path
+Date: Mon,  5 May 2025 18:34:01 -0400
+Message-Id: <20250505223922.2682012-165-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -81,93 +70,163 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Zhikai Zhai <zhikai.zhai@amd.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit d3069feecdb5542604d29b59acfd1fd213bad95b ]
+[ Upstream commit 5518f239aff1baf772c5748da3add7243c5fb5df ]
 
-[WHY]
-In some cases the remain de-tile buffer segments will be greater
-than zero if we don't add the non-top pipe to calculate, at
-this time the override de-tile buffer size will be valid and used.
-But it makes the de-tile buffer segments used finally for all of pipes
-exceed the maximum.
+Device ATS is currently enabled when a domain is attached to the device
+and disabled when the domain is detached. This creates a limitation:
+when the IOMMU is operating in scalable mode and IOPF is enabled, the
+device's domain cannot be changed.
 
-[HOW]
-Add the non-top pipe to calculate the remain de-tile buffer segments.
-Don't set override size to use the average according to pipe count
-if the value exceed the maximum.
+The previous code enables ATS when a domain is set to a device's RID and
+disables it during RID domain switch. So, if a PASID is set with a
+domain requiring PRI, ATS should remain enabled until the domain is
+removed. During the PASID domain's lifecycle, if the RID's domain
+changes, PRI will be disrupted because it depends on ATS, which is
+disabled when the blocking domain is set for the device's RID.
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Zhikai Zhai <zhikai.zhai@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Remove this limitation by moving ATS enablement to the device probe path.
+
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+Link: https://lore.kernel.org/r/20250228092631.3425464-5-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dc/resource/dcn315/dcn315_resource.c      | 42 +++++++++----------
- 1 file changed, 20 insertions(+), 22 deletions(-)
+ drivers/iommu/intel/iommu.c | 51 ++++++++++++++++++++-----------------
+ 1 file changed, 27 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-index f2ce687c0e03c..9cb72805b8d1a 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-@@ -1699,7 +1699,7 @@ static int dcn315_populate_dml_pipes_from_context(
- 		pipes[pipe_cnt].dout.dsc_input_bpc = 0;
- 		DC_FP_START();
- 		dcn31_zero_pipe_dcc_fraction(pipes, pipe_cnt);
--		if (pixel_rate_crb && !pipe->top_pipe && !pipe->prev_odm_pipe) {
-+		if (pixel_rate_crb) {
- 			int bpp = source_format_to_bpp(pipes[pipe_cnt].pipe.src.source_format);
- 			/* Ceil to crb segment size */
- 			int approx_det_segs_required_for_pstate = dcn_get_approx_det_segs_required_for_pstate(
-@@ -1756,28 +1756,26 @@ static int dcn315_populate_dml_pipes_from_context(
- 				continue;
- 			}
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 038a66388564a..5069a628deea1 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -1284,32 +1284,28 @@ static bool dev_needs_extra_dtlb_flush(struct pci_dev *pdev)
+ 	return true;
+ }
  
--			if (!pipe->top_pipe && !pipe->prev_odm_pipe) {
--				bool split_required = pipe->stream->timing.pix_clk_100hz >= dcn_get_max_non_odm_pix_rate_100hz(&dc->dml.soc)
--						|| (pipe->plane_state && pipe->plane_state->src_rect.width > 5120);
--
--				if (remaining_det_segs > MIN_RESERVED_DET_SEGS && crb_pipes != 0)
--					pipes[pipe_cnt].pipe.src.det_size_override += (remaining_det_segs - MIN_RESERVED_DET_SEGS) / crb_pipes +
--							(crb_idx < (remaining_det_segs - MIN_RESERVED_DET_SEGS) % crb_pipes ? 1 : 0);
--				if (pipes[pipe_cnt].pipe.src.det_size_override > 2 * DCN3_15_MAX_DET_SEGS) {
--					/* Clamp to 2 pipe split max det segments */
--					remaining_det_segs += pipes[pipe_cnt].pipe.src.det_size_override - 2 * (DCN3_15_MAX_DET_SEGS);
--					pipes[pipe_cnt].pipe.src.det_size_override = 2 * DCN3_15_MAX_DET_SEGS;
--				}
--				if (pipes[pipe_cnt].pipe.src.det_size_override > DCN3_15_MAX_DET_SEGS || split_required) {
--					/* If we are splitting we must have an even number of segments */
--					remaining_det_segs += pipes[pipe_cnt].pipe.src.det_size_override % 2;
--					pipes[pipe_cnt].pipe.src.det_size_override -= pipes[pipe_cnt].pipe.src.det_size_override % 2;
--				}
--				/* Convert segments into size for DML use */
--				pipes[pipe_cnt].pipe.src.det_size_override *= DCN3_15_CRB_SEGMENT_SIZE_KB;
--
--				crb_idx++;
-+			bool split_required = pipe->stream->timing.pix_clk_100hz >= dcn_get_max_non_odm_pix_rate_100hz(&dc->dml.soc)
-+					|| (pipe->plane_state && pipe->plane_state->src_rect.width > 5120);
+-static void iommu_enable_pci_caps(struct device_domain_info *info)
++static void iommu_enable_pci_ats(struct device_domain_info *info)
+ {
+ 	struct pci_dev *pdev;
+ 
+-	if (!dev_is_pci(info->dev))
++	if (!info->ats_supported)
+ 		return;
+ 
+ 	pdev = to_pci_dev(info->dev);
+-	if (info->ats_supported && pci_ats_page_aligned(pdev) &&
+-	    !pci_enable_ats(pdev, VTD_PAGE_SHIFT))
++	if (!pci_ats_page_aligned(pdev))
++		return;
 +
-+			if (remaining_det_segs > MIN_RESERVED_DET_SEGS && crb_pipes != 0)
-+				pipes[pipe_cnt].pipe.src.det_size_override += (remaining_det_segs - MIN_RESERVED_DET_SEGS) / crb_pipes +
-+						(crb_idx < (remaining_det_segs - MIN_RESERVED_DET_SEGS) % crb_pipes ? 1 : 0);
-+			if (pipes[pipe_cnt].pipe.src.det_size_override > 2 * DCN3_15_MAX_DET_SEGS) {
-+				/* Clamp to 2 pipe split max det segments */
-+				remaining_det_segs += pipes[pipe_cnt].pipe.src.det_size_override - 2 * (DCN3_15_MAX_DET_SEGS);
-+				pipes[pipe_cnt].pipe.src.det_size_override = 2 * DCN3_15_MAX_DET_SEGS;
-+			}
-+			if (pipes[pipe_cnt].pipe.src.det_size_override > DCN3_15_MAX_DET_SEGS || split_required) {
-+				/* If we are splitting we must have an even number of segments */
-+				remaining_det_segs += pipes[pipe_cnt].pipe.src.det_size_override % 2;
-+				pipes[pipe_cnt].pipe.src.det_size_override -= pipes[pipe_cnt].pipe.src.det_size_override % 2;
- 			}
-+			/* Convert segments into size for DML use */
-+			pipes[pipe_cnt].pipe.src.det_size_override *= DCN3_15_CRB_SEGMENT_SIZE_KB;
++	if (!pci_enable_ats(pdev, VTD_PAGE_SHIFT))
+ 		info->ats_enabled = 1;
+ }
+ 
+-static void iommu_disable_pci_caps(struct device_domain_info *info)
++static void iommu_disable_pci_ats(struct device_domain_info *info)
+ {
+-	struct pci_dev *pdev;
+-
+-	if (!dev_is_pci(info->dev))
++	if (!info->ats_enabled)
+ 		return;
+ 
+-	pdev = to_pci_dev(info->dev);
+-
+-	if (info->ats_enabled) {
+-		pci_disable_ats(pdev);
+-		info->ats_enabled = 0;
+-	}
++	pci_disable_ats(to_pci_dev(info->dev));
++	info->ats_enabled = 0;
+ }
+ 
+ static void intel_flush_iotlb_all(struct iommu_domain *domain)
+@@ -1722,12 +1718,19 @@ domain_context_mapping(struct dmar_domain *domain, struct device *dev)
+ 	struct device_domain_info *info = dev_iommu_priv_get(dev);
+ 	struct intel_iommu *iommu = info->iommu;
+ 	u8 bus = info->bus, devfn = info->devfn;
++	int ret;
+ 
+ 	if (!dev_is_pci(dev))
+ 		return domain_context_mapping_one(domain, iommu, bus, devfn);
+ 
+-	return pci_for_each_dma_alias(to_pci_dev(dev),
+-				      domain_context_mapping_cb, domain);
++	ret = pci_for_each_dma_alias(to_pci_dev(dev),
++				     domain_context_mapping_cb, domain);
++	if (ret)
++		return ret;
 +
-+			crb_idx++;
- 			pipe_cnt++;
- 		}
- 	}
++	iommu_enable_pci_ats(info);
++
++	return 0;
+ }
+ 
+ /* Return largest possible superpage level for a given mapping */
+@@ -1987,8 +1990,6 @@ static int dmar_domain_attach_device(struct dmar_domain *domain,
+ 	if (ret)
+ 		goto out_block_translation;
+ 
+-	iommu_enable_pci_caps(info);
+-
+ 	ret = cache_tag_assign_domain(domain, dev, IOMMU_NO_PASID);
+ 	if (ret)
+ 		goto out_block_translation;
+@@ -3368,6 +3369,7 @@ static void domain_context_clear(struct device_domain_info *info)
+ 
+ 	pci_for_each_dma_alias(to_pci_dev(info->dev),
+ 			       &domain_context_clear_one_cb, info);
++	iommu_disable_pci_ats(info);
+ }
+ 
+ /*
+@@ -3384,7 +3386,6 @@ void device_block_translation(struct device *dev)
+ 	if (info->domain)
+ 		cache_tag_unassign_domain(info->domain, dev, IOMMU_NO_PASID);
+ 
+-	iommu_disable_pci_caps(info);
+ 	if (!dev_is_real_dma_subdevice(dev)) {
+ 		if (sm_supported(iommu))
+ 			intel_pasid_tear_down_entry(iommu, dev,
+@@ -3964,6 +3965,9 @@ static struct iommu_device *intel_iommu_probe_device(struct device *dev)
+ 	    !pci_enable_pasid(pdev, info->pasid_supported & ~1))
+ 		info->pasid_enabled = 1;
+ 
++	if (sm_supported(iommu))
++		iommu_enable_pci_ats(info);
++
+ 	return &iommu->iommu;
+ free_table:
+ 	intel_pasid_free_table(dev);
+@@ -3980,6 +3984,8 @@ static void intel_iommu_release_device(struct device *dev)
+ 	struct device_domain_info *info = dev_iommu_priv_get(dev);
+ 	struct intel_iommu *iommu = info->iommu;
+ 
++	iommu_disable_pci_ats(info);
++
+ 	if (info->pasid_enabled) {
+ 		pci_disable_pasid(to_pci_dev(dev));
+ 		info->pasid_enabled = 0;
+@@ -4581,13 +4587,10 @@ static int identity_domain_attach_dev(struct iommu_domain *domain, struct device
+ 	if (dev_is_real_dma_subdevice(dev))
+ 		return 0;
+ 
+-	if (sm_supported(iommu)) {
++	if (sm_supported(iommu))
+ 		ret = intel_pasid_setup_pass_through(iommu, dev, IOMMU_NO_PASID);
+-		if (!ret)
+-			iommu_enable_pci_caps(info);
+-	} else {
++	else
+ 		ret = device_setup_pass_through(dev);
+-	}
+ 
+ 	return ret;
+ }
 -- 
 2.39.5
 
