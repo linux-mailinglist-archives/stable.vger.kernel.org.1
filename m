@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-140611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309A3AAAA30
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E4EFAAAA3D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:32:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEF5A3BDCF2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:27:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78DC198742A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66A137C732;
-	Mon,  5 May 2025 22:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45553768AD;
+	Mon,  5 May 2025 22:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qiSv/zCH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TMDu5EWT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490C02C0329;
-	Mon,  5 May 2025 22:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911072D610E;
+	Mon,  5 May 2025 22:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485346; cv=none; b=cXXUkIcfQYOS0HxzzHWchBwN0HVoHB22LvfZ8HSfwJ7qlS6y5TZw4O7oO8CtrN36xyVVhFse8Uv0V8q9cjLZL8/vQLvevikVhlSRSdWkOE2REnum4hrFF62XUO9BIzBZBbmU9VtCFAJtj9BxgsVP115dxB+kiy8HFuKaLqCPxuk=
+	t=1746485358; cv=none; b=Dmz+LOdzOg9TV0hLc2sXqwGsE2iPwTkGp2+tKOLNpmp6j35tKT24X7SNGYW4kfuw0DPtKNPvEPzlfg67Y93Acg2+5laRTaWNifTpwP1bSUoP+qcyi4l0l6QeF8T7+OsTvpwoi5uyYEwSKiGPTdbUU7r6KCHXz+4xVNuByyGm51A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485346; c=relaxed/simple;
-	bh=6OcSanAB1MDnq10VVZ/IraBnmb8NqcMQqhsFA04BXu0=;
+	s=arc-20240116; t=1746485358; c=relaxed/simple;
+	bh=+YKHeEpph9JFLV06wHXX7h9Zol/NxFPDjFQQ9eP+mGc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AQnjfv2zbJcw8IPGbE7AAD9oTs3+ji9sQ9UdC0+fzf0e7gurH8K1QFzea6UpQKW70RZP1Tu0PPhcKOhN6A3hjazf/K/jHxDdGoRQX1q3p3aBdhJYl4aDcHtTW3gcasQf7X8yuwHxps1aGtcQlz88VHPxjVlgxbltUhymjdFfCrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qiSv/zCH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6AAC4CEEE;
-	Mon,  5 May 2025 22:49:03 +0000 (UTC)
+	 MIME-Version; b=ZsRu3rOOr5U6/M6wuhVaWaSj76nSBKLqb4UEadUayN6Rpxx2U+FgqCu62klOrRGL4wLzeyY2evj0oIl9CK9skJ9f6Tz1qMLVcxIrgDLSiytSh1DlJSlbs6BHRXH/atYbwzub7Zpym+Zt7WO7rdsvlcXZe9BRGhNUQg1dOkYjyvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TMDu5EWT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB44C4CEF1;
+	Mon,  5 May 2025 22:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485345;
-	bh=6OcSanAB1MDnq10VVZ/IraBnmb8NqcMQqhsFA04BXu0=;
+	s=k20201202; t=1746485357;
+	bh=+YKHeEpph9JFLV06wHXX7h9Zol/NxFPDjFQQ9eP+mGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qiSv/zCHb6zrQCLwe5ShQ5oG0O2UNc5Uob4gKfK3lPULRfwS/9e9ajooAoaEMoQYz
-	 sJLduKdAhvkU+40faw8V1dNvqBYJXDY32MXG3cYmBeg9fAi3wIZp3Bo8dwejY3qp8R
-	 NcYV7erR2Fw3vua1UGWUenv8UwnVVyrs95TlraYrURmBi2dQT4/83ixDisIqgGyFW3
-	 e75oXkUgGKIPvKVbk+zBgE740WhzdAsBCdUESJwpRq5GCIRVr7iTXsOULdgPAR7hO+
-	 E5hFnqy2UfI+1BdS8lpwI28BaiKUNtyL3elhJpK5mQmWM5Ru9R6FDLMR5MyootzEc8
-	 CK5atFrh9CEug==
+	b=TMDu5EWTgY/bHFG12KC44BWzqilikV4JhRxc71GQoVVJTCRvX7+Ci6X0c7X/a5r2F
+	 2JgddeIfdxF8gZAHw7lyEaK7JnsYXLJw9rsBJcZtpleVHFnuLf4fbXsO0nXeKeaQ/k
+	 WF8v+h3xHpyj0JuaCZFpwpv76KgdjYTStx4uDOQ8zg0xymOovrT/yOdS26sdAFrj2+
+	 QN9HRC2BZ0YqGSB5om3NIWj3mX3wH8r87jgjQjZ/p6dZwJKHyRZOaubdV0WK1VrnoB
+	 qCfOrtZ8xLLtnk7bkrSkIBQYBpf2SaEru/dm5zJsb4uG+u7LVZBJZNSjur5vqRP6mV
+	 /gIQspkXznLKQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Uros Bizjak <ubizjak@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	dennis@kernel.org,
-	tj@kernel.org,
-	cl@linux.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH AUTOSEL 6.12 278/486] x86/locking: Use ALT_OUTPUT_SP() for percpu_{,try_}cmpxchg{64,128}_op()
-Date: Mon,  5 May 2025 18:35:54 -0400
-Message-Id: <20250505223922.2682012-278-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 285/486] wifi: rtw88: Fix rtw_init_ht_cap() for RTL8814AU
+Date: Mon,  5 May 2025 18:36:01 -0400
+Message-Id: <20250505223922.2682012-285-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -74,90 +65,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 4087e16b033140cf2ce509ec23503bddec818a16 ]
+[ Upstream commit c7eea1ba05ca5b0dbf77a27cf2e1e6e2fb3c0043 ]
 
-percpu_{,try_}cmpxchg{64,128}() macros use CALL instruction inside
-asm statement in one of their alternatives. Use ALT_OUTPUT_SP()
-macro to add required dependence on %esp register.
+Set the RX mask and the highest RX rate according to the number of
+spatial streams the chip can receive. For RTL8814AU that is 3.
 
-ALT_OUTPUT_SP() implements the above dependence by adding
-ASM_CALL_CONSTRAINT to its arguments. This constraint should be used
-for any inline asm which has a CALL instruction, otherwise the
-compiler may schedule the asm before the frame pointer gets set up
-by the containing function, causing objtool to print a "call without
-frame pointer save/setup" warning.
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250214150929.5780-1-ubizjak@gmail.com
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/4e786f50-ed1c-4387-8b28-e6ff00e35e81@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/percpu.h | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
-index c55a79d5feaeb..2d9c250b3c8d8 100644
---- a/arch/x86/include/asm/percpu.h
-+++ b/arch/x86/include/asm/percpu.h
-@@ -349,9 +349,9 @@ do {									\
- 									\
- 	asm qual (ALTERNATIVE("call this_cpu_cmpxchg8b_emu",		\
- 			      "cmpxchg8b " __percpu_arg([var]), X86_FEATURE_CX8) \
--		  : [var] "+m" (__my_cpu_var(_var)),			\
--		    "+a" (old__.low),					\
--		    "+d" (old__.high)					\
-+		  : ALT_OUTPUT_SP([var] "+m" (__my_cpu_var(_var)),	\
-+				  "+a" (old__.low),			\
-+				  "+d" (old__.high))			\
- 		  : "b" (new__.low),					\
- 		    "c" (new__.high),					\
- 		    "S" (&(_var))					\
-@@ -380,10 +380,10 @@ do {									\
- 	asm qual (ALTERNATIVE("call this_cpu_cmpxchg8b_emu",		\
- 			      "cmpxchg8b " __percpu_arg([var]), X86_FEATURE_CX8) \
- 		  CC_SET(z)						\
--		  : CC_OUT(z) (success),				\
--		    [var] "+m" (__my_cpu_var(_var)),			\
--		    "+a" (old__.low),					\
--		    "+d" (old__.high)					\
-+		  : ALT_OUTPUT_SP(CC_OUT(z) (success),			\
-+				  [var] "+m" (__my_cpu_var(_var)),	\
-+				  "+a" (old__.low),			\
-+				  "+d" (old__.high))			\
- 		  : "b" (new__.low),					\
- 		    "c" (new__.high),					\
- 		    "S" (&(_var))					\
-@@ -420,9 +420,9 @@ do {									\
- 									\
- 	asm qual (ALTERNATIVE("call this_cpu_cmpxchg16b_emu",		\
- 			      "cmpxchg16b " __percpu_arg([var]), X86_FEATURE_CX16) \
--		  : [var] "+m" (__my_cpu_var(_var)),			\
--		    "+a" (old__.low),					\
--		    "+d" (old__.high)					\
-+		  : ALT_OUTPUT_SP([var] "+m" (__my_cpu_var(_var)),	\
-+				  "+a" (old__.low),			\
-+				  "+d" (old__.high))			\
- 		  : "b" (new__.low),					\
- 		    "c" (new__.high),					\
- 		    "S" (&(_var))					\
-@@ -451,10 +451,10 @@ do {									\
- 	asm qual (ALTERNATIVE("call this_cpu_cmpxchg16b_emu",		\
- 			      "cmpxchg16b " __percpu_arg([var]), X86_FEATURE_CX16) \
- 		  CC_SET(z)						\
--		  : CC_OUT(z) (success),				\
--		    [var] "+m" (__my_cpu_var(_var)),			\
--		    "+a" (old__.low),					\
--		    "+d" (old__.high)					\
-+		  : ALT_OUTPUT_SP(CC_OUT(z) (success),			\
-+				  [var] "+m" (__my_cpu_var(_var)),	\
-+				  "+a" (old__.low),			\
-+				  "+d" (old__.high))			\
- 		  : "b" (new__.low),					\
- 		    "c" (new__.high),					\
- 		    "S" (&(_var))					\
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 2c81e4cae039e..a808af2f085ec 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1543,6 +1543,7 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ {
+ 	const struct rtw_chip_info *chip = rtwdev->chip;
+ 	struct rtw_efuse *efuse = &rtwdev->efuse;
++	int i;
+ 
+ 	ht_cap->ht_supported = true;
+ 	ht_cap->cap = 0;
+@@ -1562,17 +1563,11 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ 	ht_cap->ampdu_factor = IEEE80211_HT_MAX_AMPDU_64K;
+ 	ht_cap->ampdu_density = chip->ampdu_density;
+ 	ht_cap->mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
+-	if (efuse->hw_cap.nss > 1) {
+-		ht_cap->mcs.rx_mask[0] = 0xFF;
+-		ht_cap->mcs.rx_mask[1] = 0xFF;
+-		ht_cap->mcs.rx_mask[4] = 0x01;
+-		ht_cap->mcs.rx_highest = cpu_to_le16(300);
+-	} else {
+-		ht_cap->mcs.rx_mask[0] = 0xFF;
+-		ht_cap->mcs.rx_mask[1] = 0x00;
+-		ht_cap->mcs.rx_mask[4] = 0x01;
+-		ht_cap->mcs.rx_highest = cpu_to_le16(150);
+-	}
++
++	for (i = 0; i < efuse->hw_cap.nss; i++)
++		ht_cap->mcs.rx_mask[i] = 0xFF;
++	ht_cap->mcs.rx_mask[4] = 0x01;
++	ht_cap->mcs.rx_highest = cpu_to_le16(150 * efuse->hw_cap.nss);
+ }
+ 
+ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
 -- 
 2.39.5
 
