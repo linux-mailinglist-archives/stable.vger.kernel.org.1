@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-141278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A0BAAB234
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:15:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA97AAB20B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 344853B010D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:10:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A0957B8239
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A0623671C1;
-	Tue,  6 May 2025 00:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0495420193;
+	Tue,  6 May 2025 00:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p0qMflHV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uAylgQ5Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED8A2D4B4B;
-	Mon,  5 May 2025 22:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9D02D4B52;
+	Mon,  5 May 2025 22:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485660; cv=none; b=SQHHCzwxy9rYQ6sB5koAyZ8L9cnFOWiRjsNKRTGi11in5Bo4EuVe/a/YH0VItI9/j4jebzvBtJN4+sA3APCFnNtaK6GFwYE3SFDqAk5wn9TLh/iFGwv51MmqVy47DwSfEK844h1Zg0rl9HIjqF/GS78r55eZuWSQy389COsk12w=
+	t=1746485663; cv=none; b=YdjAo947wTy4vz1thUcPMbbk9idzctnoNXX43uE1tOZJeEb7jZeSAFosBpVuwY4plSoJwpLDctwETS4Nj1K5Xtl+7TGh3ReLlQdChJ8do64y919tPuGOLsIH8JXUrZh28D7oy1vwWSbYJrThBC8cIIKoKS49HXwIC9YP0jmlJvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485660; c=relaxed/simple;
-	bh=jHDzHEFRlHiUhZM1Lgj5HAvwc0oS2yTjB+mbfilmv04=;
+	s=arc-20240116; t=1746485663; c=relaxed/simple;
+	bh=z77jfmyej/yMnuJrkNXx+aARPMalx131fcoxPVu2lzw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b8+pnlh0HgE97Y6LRxf0BsbnidyxMXgdz6rrSevxjWzn4VUR/f/vYYwLZIj4bpluB1ECaUe/5oCle1h5FCOXCNs6L3fxP4lQTw4LhGsiE/PjJCix1x1W2FGrxdXYRiEjFJ3Wsk2B5iVjMZGpVPaaTsMFc6hVHlc04WH0QXhOUM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p0qMflHV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D62AC4CEED;
-	Mon,  5 May 2025 22:54:19 +0000 (UTC)
+	 MIME-Version; b=bw7IVmXRyYleV2l5A/+SN5VmvnE77BGpJVI0T/XoG+WCECiKmepGpnLRAgEDvrxjmtev40VgVkWqfvs3xrlXmD0jNRIl9mUH6Dze+FGhdpgswkrJa/Yf9fmi1a7pQsMA8q5w9Z5FzZVPZdsUlEKAplDi5+uiYAziw/GpF1cnXME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uAylgQ5Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47BC1C4CEE4;
+	Mon,  5 May 2025 22:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485660;
-	bh=jHDzHEFRlHiUhZM1Lgj5HAvwc0oS2yTjB+mbfilmv04=;
+	s=k20201202; t=1746485662;
+	bh=z77jfmyej/yMnuJrkNXx+aARPMalx131fcoxPVu2lzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p0qMflHVmUy5f3v8iX6Zuy40DD9Oz1JLBLrIU7ecRLrf/NI/sgNI2iPflO9f9s/mW
-	 NqVJFAbp7s7vmP1ulEs0GhrO9EYQIuW00HdVyvUtnMSobQmB9Rdenvx9dTtJwQbMC7
-	 FTuEe5pD3h944HHgKfBwin7BAgIG53FS/8ASj3i9NjfJg25hWahcmBKrG97vmjkI9S
-	 0s9b+9V+4kfOHIXedlfGahIR1zIEFe/4S5bDh0utXKNXHOLH3E30YOggOBPy6+Spop
-	 ZpP3ST8SsDdiOc//4YiXJtPQT1JGuCpF4EjabD7joLeBrKRmN5s2+a2MVFzz09btKa
-	 QnPvOM3HXFyew==
+	b=uAylgQ5Ztjw/ozNGzJU8m38h0tOi97s2NbpJ1rZJFLfLLx6tXAvO6hhuNO6bT5csP
+	 dDzOOhkjaun+8tx9vcxBMwFt95w59jf5bPr3fMMPrxH0nru+cwA98oPTNznTFp2TbR
+	 sCUgvM1uDgYnQ02ivRLJEZ8lMx2MB6TNjctHJdq4NBSdD/k0vz6xIIC4rsWjkdYnBI
+	 Ljz0Us2JXUKVJukHmi/FrAI7HOOHsCaLgypN9ZHvJ6NXmcYVMLTMcHa6yANkfg7usv
+	 E+p7+JJsHiYCujLHtR3MsAzJrsXx7TCYALtcyRJku42Cid4DrSUPtWrx/idwK0HFwt
+	 DUi2fzkUGq67g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Len Brown <len.brown@intel.com>,
-	Artem Bityutskiy <artem.bityutskiy@intel.com>,
+Cc: Oleg Nesterov <oleg@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lenb@kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 413/486] tools/power turbostat: Clustered Uncore MHz counters should honor show/hide options
-Date: Mon,  5 May 2025 18:38:09 -0400
-Message-Id: <20250505223922.2682012-413-sashal@kernel.org>
+	akpm@linux-foundation.org,
+	mhocko@suse.com,
+	Liam.Howlett@Oracle.com,
+	mjguzik@gmail.com,
+	alexjlzheng@tencent.com,
+	pasha.tatashin@soleen.com
+Subject: [PATCH AUTOSEL 6.12 414/486] exit: change the release_task() paths to call flush_sigqueue() lockless
+Date: Mon,  5 May 2025 18:38:10 -0400
+Message-Id: <20250505223922.2682012-414-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -61,84 +66,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Len Brown <len.brown@intel.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 1c7c7388e6c31f46b26a884d80b45efbad8237b2 ]
+[ Upstream commit fb3bbcfe344e64a46574a638b051ffd78762c12d ]
 
-The clustered uncore frequency counters, UMHz*.*
-should honor the --show and --hide options.
+A task can block a signal, accumulate up to RLIMIT_SIGPENDING sigqueues,
+and exit. In this case __exit_signal()->flush_sigqueue() called with irqs
+disabled can trigger a hard lockup, see
+https://lore.kernel.org/all/20190322114917.GC28876@redhat.com/
 
-All non-specified counters should be implicityly hidden.
-But when --show was used, UMHz*.* showed up anyway:
+Fortunately, after the recent posixtimer changes sys_timer_delete() paths
+no longer try to clear SIGQUEUE_PREALLOC and/or free tmr->sigq, and after
+the exiting task passes __exit_signal() lock_task_sighand() can't succeed
+and pid_task(tmr->it_pid) will return NULL.
 
-$ sudo turbostat -q -S --show Busy%
-Busy%  UMHz0.0  UMHz1.0  UMHz2.0  UMHz3.0  UMHz4.0
+This means that after __exit_signal(tsk) nobody can play with tsk->pending
+or (if group_dead) with tsk->signal->shared_pending, so release_task() can
+safely call flush_sigqueue() after write_unlock_irq(&tasklist_lock).
 
-Indeed, there was no string that can be used to explicitly
-show or hide clustered uncore counters.
+TODO:
+	- we can probably shift posix_cpu_timers_exit() as well
+	- do_sigaction() can hit the similar problem
 
-Even through they are dynamically probed and added,
-group the clustered UMHz*.* counters with the legacy
-built-in-counter "UncMHz" for show/hide.
-
-turbostat --show Busy%
-	does not show UMHz*.*.
-turbostat --show UncMHz
-	shows either UncMHz or UMHz*.*, if present
-turbostat --hide UncMHz
-	hides either UncMHz or UMHz*.*, if present
-
-Reported-by: Artem Bityutskiy <artem.bityutskiy@intel.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
-Tested-by: Artem Bityutskiy <artem.bityutskiy@intel.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250206152314.GA14620@redhat.com
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.8 |  1 +
- tools/power/x86/turbostat/turbostat.c | 13 ++++++++++++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ kernel/exit.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.8 b/tools/power/x86/turbostat/turbostat.8
-index a3cf1d17163ae..e4b00e13302b3 100644
---- a/tools/power/x86/turbostat/turbostat.8
-+++ b/tools/power/x86/turbostat/turbostat.8
-@@ -199,6 +199,7 @@ The system configuration dump (if --quiet is not used) is followed by statistics
- \fBUncMHz\fP per-package uncore MHz, instantaneous sample.
- .PP
- \fBUMHz1.0\fP per-package uncore MHz for domain=1 and fabric_cluster=0, instantaneous sample.  System summary is the average of all packages.
-+For the "--show" and "--hide" options, use "UncMHz" to operate on all UMHz*.* as a group.
- .SH TOO MUCH INFORMATION EXAMPLE
- By default, turbostat dumps all possible information -- a system configuration header, followed by columns for all counters.
- This is ideal for remote debugging, use the "--out" option to save everything to a text file, and get that file to the expert helping you debug.
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 77ef60980ee58..12424bf08551d 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -6445,7 +6445,18 @@ static void probe_intel_uncore_frequency_cluster(void)
- 		sprintf(path, "%s/current_freq_khz", path_base);
- 		sprintf(name_buf, "UMHz%d.%d", domain_id, cluster_id);
+diff --git a/kernel/exit.c b/kernel/exit.c
+index c94d23ccd1520..2bdd34192a796 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -201,20 +201,13 @@ static void __exit_signal(struct task_struct *tsk)
+ 	__unhash_process(tsk, group_dead);
+ 	write_sequnlock(&sig->stats_lock);
  
--		add_counter(0, path, name_buf, 0, SCOPE_PACKAGE, COUNTER_K2M, FORMAT_AVERAGE, 0, package_id);
-+		/*
-+		 * Once add_couter() is called, that counter is always read
-+		 * and reported -- So it is effectively (enabled & present).
-+		 * Only call add_counter() here if legacy BIC_UNCORE_MHZ (UncMHz)
-+		 * is (enabled).  Since we are in this routine, we
-+		 * know we will not probe and set (present) the legacy counter.
-+		 *
-+		 * This allows "--show/--hide UncMHz" to be effective for
-+		 * the clustered MHz counters, as a group.
-+		 */
-+		if BIC_IS_ENABLED(BIC_UNCORE_MHZ)
-+			add_counter(0, path, name_buf, 0, SCOPE_PACKAGE, COUNTER_K2M, FORMAT_AVERAGE, 0, package_id);
+-	/*
+-	 * Do this under ->siglock, we can race with another thread
+-	 * doing sigqueue_free() if we have SIGQUEUE_PREALLOC signals.
+-	 */
+-	flush_sigqueue(&tsk->pending);
+ 	tsk->sighand = NULL;
+ 	spin_unlock(&sighand->siglock);
  
- 		if (quiet)
- 			continue;
+ 	__cleanup_sighand(sighand);
+ 	clear_tsk_thread_flag(tsk, TIF_SIGPENDING);
+-	if (group_dead) {
+-		flush_sigqueue(&sig->shared_pending);
++	if (group_dead)
+ 		tty_kref_put(tty);
+-	}
+ }
+ 
+ static void delayed_put_task_struct(struct rcu_head *rhp)
+@@ -283,6 +276,16 @@ void release_task(struct task_struct *p)
+ 	proc_flush_pid(thread_pid);
+ 	put_pid(thread_pid);
+ 	release_thread(p);
++	/*
++	 * This task was already removed from the process/thread/pid lists
++	 * and lock_task_sighand(p) can't succeed. Nobody else can touch
++	 * ->pending or, if group dead, signal->shared_pending. We can call
++	 * flush_sigqueue() lockless.
++	 */
++	flush_sigqueue(&p->pending);
++	if (thread_group_leader(p))
++		flush_sigqueue(&p->signal->shared_pending);
++
+ 	put_task_struct_rcu_user(p);
+ 
+ 	p = leader;
 -- 
 2.39.5
 
