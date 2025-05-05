@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-140909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46255AAAF85
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:19:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E938CAAAC83
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85F98165E8D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:18:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45131188CF03
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:14:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFC93C76BB;
-	Mon,  5 May 2025 23:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E77B3C7D74;
+	Mon,  5 May 2025 23:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gSxJKWcj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U4NBE2fd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF12F39B0AB;
-	Mon,  5 May 2025 23:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BD82E5DFE;
+	Mon,  5 May 2025 23:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486843; cv=none; b=jPjmPg3aCEE+BmaHv7d2iCjJxBmZvIYri7QNp8QY9m04DQsPowrpSPLetXP8yq4yzY0HODVnb8LTsVCumYS9INu6ds5dQBhQFNix8aR699Sa8lgqlcACWYdaMzblj8k233XN0vBIuFhRPwOnLvUBmvHXtoIcnnfK28S/XQ8GJ2I=
+	t=1746486851; cv=none; b=cNXI4AisUzIX9IvWPksStjh6ICkfcNkAvHj+4/N3EHgFZGPOuEfWMRui3l3JISp83GZHnGkLndtpZeiH0lOP93XVFExRJB/rMDQqWTWk2jQ+J618zit0MnawGr5U0+uCZbW08+/hntKWPkSVwGqaq6Qwef80YcRbESba6fnngF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486843; c=relaxed/simple;
-	bh=Bb3FVwCJZU1r7vkPPX0Vf8mmsX2k6QL9Zn8OJXMbrK4=;
+	s=arc-20240116; t=1746486851; c=relaxed/simple;
+	bh=2pjdD08KhMw6FeRr9Qku1Tz+bsPUVl0cVg+Ep97vitY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JSava8RMunqEmBfJBBQ4Vu5MmNRI3EV8/hF6DmWPZ21F89U9Bzp+az4RgAKxBxxocYAe91yFUZL6uhwSL+xn1o0rXGvly7DqboNH6o8Yf983bWu0RpXRJQnfH66rNQ91oywxZTC7Vmy5/meJpo1IFuI9xIsNcGpnr41LpdBHQ50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gSxJKWcj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD9CC4CEEF;
-	Mon,  5 May 2025 23:14:01 +0000 (UTC)
+	 MIME-Version; b=Q9xOuuyVsb5l8U+qLtRBgOwiJSyaut/MrBpushNOkBml0bVIwucWOq/5mSoJNOen+jrskbl5pWJomMQQ8tIesiTlWNFqdFBiu0Gs8DyEBZy9nAjwRQwwJp4Gy31cWc0ZAJS07iO1VV3S0/I5q2IraXKKQ62q5qqEzL4h6X4kDTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U4NBE2fd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EC0C4CEEE;
+	Mon,  5 May 2025 23:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486842;
-	bh=Bb3FVwCJZU1r7vkPPX0Vf8mmsX2k6QL9Zn8OJXMbrK4=;
+	s=k20201202; t=1746486850;
+	bh=2pjdD08KhMw6FeRr9Qku1Tz+bsPUVl0cVg+Ep97vitY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gSxJKWcjcpS//cs7LtBB7Qt4s/vlHAugz18TeKLlkAx496iVUy65wBhE3Xo/4y0mB
-	 fQjwd+y0P/J2sJZZjqwnCMgvtQgpoijZf7QrACw4cMb5fWhjSiVUfkMmTv6gOL9Nim
-	 XyFGK8wgmeKKzGK0JOAWiy5uWgAj6jdeyVQ8Purd7yTkRM5sJ2/4utwQsXhOCDC6jK
-	 cFCgIuCAro4+m67izSKKYVzYtor6UVSP328vubQI1MBfTqyVq8usZ841vcuHU83aJC
-	 8kEb7rbynaMmPmbOHh5J29DTXjukCB22+N4fA0sNMltrSe7poCR+EV7IZtoz1fE6XX
-	 FBD1hR3JaXNDw==
+	b=U4NBE2fdArxrWYzNJ6h0GYRbSzTFl7wiWfe/foAZZwVXPo+TlwUhtrLlgxdLQZX6V
+	 8z4Knu+A95VvYkDPuBLh34UeaAL9kk4QGjLYu5U5r5eXjTc4GP3wzQBoygBd9hrDs3
+	 5qIZp69WGJNKLjzgdjeLutb5vELl/2+lRkFa+fy8VaZmEwy3F6DfQNgNSqF6bHV+74
+	 Za38XRIq/ZhjdxQs6eX9gQUdryxU80NnNJkknFjhiLmkr3/yC/DYIsaphvZKSgOIh9
+	 1qtvppZScjti78hYk3KyJ/Hd+r2Zz0WW4poj3sFM3ZJn5fKCtc6iHSGvtDBTxrgUK6
+	 yaexMygzSYdbQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Erick Shepherd <erick.shepherd@ni.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+Cc: Vitalii Mordan <mordan@ispras.ru>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-mmc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 020/153] mmc: host: Wait for Vdd to settle on card power off
-Date: Mon,  5 May 2025 19:11:07 -0400
-Message-Id: <20250505231320.2695319-20-sashal@kernel.org>
+	linux-i2c@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 023/153] i2c: pxa: fix call balance of i2c->clk handling routines
+Date: Mon,  5 May 2025 19:11:10 -0400
+Message-Id: <20250505231320.2695319-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -66,44 +65,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Erick Shepherd <erick.shepherd@ni.com>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-[ Upstream commit 31e75ed964582257f59156ce6a42860e1ae4cc39 ]
+[ Upstream commit be7113d2e2a6f20cbee99c98d261a1fd6fd7b549 ]
 
-The SD spec version 6.0 section 6.4.1.5 requires that Vdd must be
-lowered to less than 0.5V for a minimum of 1 ms when powering off a
-card. Increase wait to 15 ms so that voltage has time to drain down
-to 0.5V and cards can power off correctly. Issues with voltage drain
-time were only observed on Apollo Lake and Bay Trail host controllers
-so this fix is limited to those devices.
+If the clock i2c->clk was not enabled in i2c_pxa_probe(), it should not be
+disabled in any path.
 
-Signed-off-by: Erick Shepherd <erick.shepherd@ni.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250314195021.1588090-1-erick.shepherd@ni.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Found by Linux Verification Center (linuxtesting.org) with Klever.
+
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250212172803.1422136-1-mordan@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-core.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-pxa.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-index bdb82c1265edc..b4226ba1a1b33 100644
---- a/drivers/mmc/host/sdhci-pci-core.c
-+++ b/drivers/mmc/host/sdhci-pci-core.c
-@@ -677,8 +677,12 @@ static void sdhci_intel_set_power(struct sdhci_host *host, unsigned char mode,
+diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
+index 35ca2c02c9b9b..7fdc7f213b114 100644
+--- a/drivers/i2c/busses/i2c-pxa.c
++++ b/drivers/i2c/busses/i2c-pxa.c
+@@ -1508,7 +1508,10 @@ static int i2c_pxa_probe(struct platform_device *dev)
+ 				i2c->adap.name);
+ 	}
  
- 	sdhci_set_power(host, mode, vdd);
+-	clk_prepare_enable(i2c->clk);
++	ret = clk_prepare_enable(i2c->clk);
++	if (ret)
++		return dev_err_probe(&dev->dev, ret,
++				     "failed to enable clock\n");
  
--	if (mode == MMC_POWER_OFF)
-+	if (mode == MMC_POWER_OFF) {
-+		if (slot->chip->pdev->device == PCI_DEVICE_ID_INTEL_APL_SD ||
-+		    slot->chip->pdev->device == PCI_DEVICE_ID_INTEL_BYT_SD)
-+			usleep_range(15000, 17500);
- 		return;
-+	}
- 
- 	/*
- 	 * Bus power might not enable after D3 -> D0 transition due to the
+ 	if (i2c->use_pio) {
+ 		i2c->adap.algo = &i2c_pxa_pio_algorithm;
 -- 
 2.39.5
 
