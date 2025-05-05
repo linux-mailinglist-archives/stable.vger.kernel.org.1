@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-141450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0B2AAB36F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:45:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A34CAAB36A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:45:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B359172AC1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:42:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B4FB4C61EB
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CA72472A0;
-	Tue,  6 May 2025 00:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC5A243387;
+	Tue,  6 May 2025 00:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qlTK/+cL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FTJb18wb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103B4239E60;
-	Mon,  5 May 2025 23:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6897A239E63;
+	Mon,  5 May 2025 23:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486341; cv=none; b=XTXuJUAod0hiG7NATPrz07pI6QRTlN0bb7ho0cRrmvEb+BTLJouX5qj2CaF1wUgIWyUwvbD5Fx7SPWzgjU4nICzx2WmOQpABoqD8NoXEng6dmiXNzdi1zNW+GUDI2jxGjzwiSJfgGzHDxPeJb+ioNwgMhAAyeCZqwkXhI6z3N8c=
+	t=1746486342; cv=none; b=YU0w//mW3nW5gXibJlzw7YiP3lEbMasxwozh7BmDAR3JhWQMXkSaK+TAZ0fBMEmwlC2aecyC5i2ICmiSc3X6uQwQvw+MxP592t8H+KzgCaK+Prm1rQTgpj36vL2Vx8j/wQ64vQK0lNWzaxTRHX1h4Fe0fhPh5AbJ+1pS/AskIIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486341; c=relaxed/simple;
-	bh=cRm/7xqnXlTo9yV/yrrFyHl5kBpcMoc2hVoWCjJaUbE=;
+	s=arc-20240116; t=1746486342; c=relaxed/simple;
+	bh=GlFkKQ9JLcEprQq/Og33CGUcqlPLFdfFiF314qAebzE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fPZb+EKTBD370oi7WdrBI85OVz7i/f1A8j4wsI73/zXhRxN3xIk+mnJ/EQs1lvcDN9YhIWEyhHy86c390O5pyXTCv8EUb5N88Id1eI2flW0XZZyLj/PZiOksZlQIYAjj8NiHjdH4kg+94GoEu4KPULNNIt7MPZyUuWFshL3SN64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qlTK/+cL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D32C4CEEE;
-	Mon,  5 May 2025 23:05:39 +0000 (UTC)
+	 MIME-Version; b=lr2O2UPi+jHJ4jzETtv7McBkpIJV3WuMQJyuSHChBRfZjpq1Zop79XnPIlrEHuT7QwIsRd3OjrEfS4ALMpvrR9uSdN02ObCoj23nTmdW1oA32ezHWp8RI+s6lo5zxq5ppbIVDEkrmaDV3SbuN7ByYldkcQWVWtf0xI7ux/3Bajg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FTJb18wb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F788C4CEED;
+	Mon,  5 May 2025 23:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486340;
-	bh=cRm/7xqnXlTo9yV/yrrFyHl5kBpcMoc2hVoWCjJaUbE=;
+	s=k20201202; t=1746486342;
+	bh=GlFkKQ9JLcEprQq/Og33CGUcqlPLFdfFiF314qAebzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qlTK/+cLDV+mAW/sNLMRFz+/Llzalb1daQ9h2Ro49A+mhKCNe+zAJ8TNPW6JyPibk
-	 59d58OPNJzoWwZ/1bffqjnoKyO9IEFvstWi5+XZ54pjlZt0VR4rzm57I6LzSXMf1kT
-	 zJeAwRaJWDNuacPotZWz2uKp2qjiayEVTdjfDzztEvHfMfJU9pwepoMCUEGOlKkKzp
-	 t6r0a4yoYdaA2nDNBfH1eY8IwtXobK9XSeB48xbXbfunBkUSqK/osRNQg475PV/18l
-	 q1MJKaf3osjw6GybMWWhrcZeWY0ueTvusijq+rq+ZjBPWbQvks3aQX0Pg/UkTY49jC
-	 F0H6g3cPr7qLQ==
+	b=FTJb18wbvSTUYOTBZL0yIj4fcdOMUfme9/J1tWAcV5Yd3SZtgd4xL/TgltFLy2yJG
+	 Oy19SBrb0NDpFgI9R7Qlcl3GU91OJkQdVT2GKa7joh08LEIL64AX42oyYmb/fuH8II
+	 oc94ktoqUNGGq4etFfVnoDGY0kQ+VZkLDLXWr/VWGpKwP8QXCAkez+3wlUSrkqopC0
+	 +3Fj+b5eVl1Fo8gtGz3t4DITMQOilku6ofTKfIiAoeP2HDmvHMmChBPd57Q36A8t8c
+	 1vIKjzlVQSglvB+l3sLSveZXxRlZvMVqp8Kj8PrvIXRS4dmS8L9LDHGqWes50tCgZt
+	 xuZUFNB60Aglg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: Justin Tee <justin.tee@broadcom.com>,
 	dick.kennedy@broadcom.com,
 	James.Bottomley@HansenPartnership.com,
 	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 268/294] scsi: lpfc: Handle duplicate D_IDs in ndlp search-by D_ID routine
-Date: Mon,  5 May 2025 18:56:08 -0400
-Message-Id: <20250505225634.2688578-268-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 269/294] scsi: lpfc: Free phba irq in lpfc_sli4_enable_msi() when pci_irq_vector() fails
+Date: Mon,  5 May 2025 18:56:09 -0400
+Message-Id: <20250505225634.2688578-269-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -70,62 +70,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 56c3d809b7b450379162d0b8a70bbe71ab8db706 ]
+[ Upstream commit f0842902b383982d1f72c490996aa8fc29a7aa0d ]
 
-After a port swap between separate fabrics, there may be multiple nodes in
-the vport's fc_nodes list with the same fabric well known address.
-Duplication is temporary and eventually resolves itself after dev_loss_tmo
-expires, but nameserver queries may still occur before dev_loss_tmo.  This
-possibly results in returning stale fabric ndlp objects.  Fix by adding an
-nlp_state check to ensure the ndlp search routine returns the correct newer
-allocated ndlp fabric object.
+Fix smatch warning regarding missed calls to free_irq().  Free the phba IRQ
+in the failed pci_irq_vector cases.
+
+lpfc_init.c: lpfc_sli4_enable_msi() warn: 'phba->pcidev->irq' from
+             request_irq() not released.
 
 Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250131000524.163662-5-justintee8345@gmail.com
+Link: https://lore.kernel.org/r/20250131000524.163662-3-justintee8345@gmail.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/scsi/lpfc/lpfc_init.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 0ad8a10002ce3..5c9bc8af3c2df 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -5646,6 +5646,7 @@ static struct lpfc_nodelist *
- __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
- {
- 	struct lpfc_nodelist *ndlp;
-+	struct lpfc_nodelist *np = NULL;
- 	uint32_t data1;
- 
- 	list_for_each_entry(ndlp, &vport->fc_nodes, nlp_listp) {
-@@ -5660,14 +5661,20 @@ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
- 					 ndlp, ndlp->nlp_DID,
- 					 ndlp->nlp_flag, data1, ndlp->nlp_rpi,
- 					 ndlp->active_rrqs_xri_bitmap);
--			return ndlp;
-+
-+			/* Check for new or potentially stale node */
-+			if (ndlp->nlp_state != NLP_STE_UNUSED_NODE)
-+				return ndlp;
-+			np = ndlp;
- 		}
- 	}
- 
--	/* FIND node did <did> NOT FOUND */
--	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
--			 "0932 FIND node did x%x NOT FOUND.\n", did);
--	return NULL;
-+	if (!np)
-+		/* FIND node did <did> NOT FOUND */
-+		lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
-+				 "0932 FIND node did x%x NOT FOUND.\n", did);
-+
-+	return np;
- }
- 
- struct lpfc_nodelist *
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index 424b39a8155cb..7c8e0e1d36da9 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -13180,6 +13180,7 @@ lpfc_sli4_enable_msi(struct lpfc_hba *phba)
+ 	eqhdl = lpfc_get_eq_hdl(0);
+ 	rc = pci_irq_vector(phba->pcidev, 0);
+ 	if (rc < 0) {
++		free_irq(phba->pcidev->irq, phba);
+ 		pci_free_irq_vectors(phba->pcidev);
+ 		lpfc_printf_log(phba, KERN_WARNING, LOG_INIT,
+ 				"0496 MSI pci_irq_vec failed (%d)\n", rc);
+@@ -13260,6 +13261,7 @@ lpfc_sli4_enable_intr(struct lpfc_hba *phba, uint32_t cfg_mode)
+ 			eqhdl = lpfc_get_eq_hdl(0);
+ 			retval = pci_irq_vector(phba->pcidev, 0);
+ 			if (retval < 0) {
++				free_irq(phba->pcidev->irq, phba);
+ 				lpfc_printf_log(phba, KERN_WARNING, LOG_INIT,
+ 					"0502 INTR pci_irq_vec failed (%d)\n",
+ 					 retval);
 -- 
 2.39.5
 
