@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-140634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDCD7AAAA31
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:31:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CCB5AAAA48
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:33:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10AC34A2946
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:31:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A9261888393
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0D1388C24;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A4F388C2F;
 	Mon,  5 May 2025 23:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kPbFLHGy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UeiaXbwl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B2C3679D9;
-	Mon,  5 May 2025 22:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731542D7AFB;
+	Mon,  5 May 2025 22:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485719; cv=none; b=e2PQQTEDZkY/yUE8UP3qnNVzIYLOdLQKSFlZbR/ez9ncN0N01czkc0JFxwhqK8YdVltLMo8rGJRv4aT9zXzaNEVONnxClBSUYw/0+gmSyBQOsfgcrUMGFpFoHcqdZoAblIt22XVDrzKknYSisiXtQPaQrp/tQpg/77tS41RZUtQ=
+	t=1746485762; cv=none; b=s8CNNjczsQP5gQnpq/9vDqUgvBLhb+olOCpWlfmYcoMMk1TjeZ8Ll/tGN5bJ9OE+xJf0fjcNGJKIHIBhjEs01J60Wfbe2L1ospoCgj/8he6kl9rnzUHvf+ereany/1J8Z5yF38/+sK9528lD5rUXKgH3K867lvwbwEKP2yv/80k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485719; c=relaxed/simple;
-	bh=dYFiojUUXBACEeNTTadNaDNxVu7HjpYUe1/WEBsn/7E=;
+	s=arc-20240116; t=1746485762; c=relaxed/simple;
+	bh=qH60v/UBuRVGvBvmQR7xuc+vbvwcpz4hRQkRfR3oOfI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aIBUkQ21udKlvLVQ7UVNdkBbTtcA5efYzahcVTfKvEF/+Vo0G4tHiaUYlVJB0dMKfDxBxfZPuJokvjyiZNnwqrR2k5I6YibhRaKL3A/a2p/WVg6da4rCLKDGwrWRC7GMU3LvNr6jsTS6fleAEk/gQLSYyPiw9ke08Q9DywWU32c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kPbFLHGy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9DAC4CEE4;
-	Mon,  5 May 2025 22:55:17 +0000 (UTC)
+	 MIME-Version; b=DIxxg2wX1asrZhifHBk5wLMHVXDg7lgGi/kFav62mmUlFJu1K8CNocWT2cscAzPGlM6pYr8y1sd9mTBfxc/G+8gy+4FOBMNJrRKQdZI/Y2RQtxG3kvHdEOKEbzPB37F6lZmRk5G4x7qQxrUAuCAH3qiHJaVYB9vpUbeo0EdXpYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UeiaXbwl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E73EC4CEEE;
+	Mon,  5 May 2025 22:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485718;
-	bh=dYFiojUUXBACEeNTTadNaDNxVu7HjpYUe1/WEBsn/7E=;
+	s=k20201202; t=1746485762;
+	bh=qH60v/UBuRVGvBvmQR7xuc+vbvwcpz4hRQkRfR3oOfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPbFLHGyrdgyVatp1wx4IxqYZ+bW5FClTFZOYAdYGXr8zooWEf1FZST4yppzr9jp2
-	 2Du2e/rUcyg15lv7fFbgycubRoz2qrz8APRek5vzY4ka7QZNQWWT+GnCqYjdqLndbD
-	 i9Cmhkyq7G8fFviNtLL/IjN6sWbK6se5oFdYI6rShMFVXJJMqi3zLdHTuMHZoTuiVz
-	 V63Oc8UIv7Va4htobyURxh5tYwsQHvD+pZGZVIIoXd6RK4Xpik9KX7WYUGf+MqD/RO
-	 6e8XYmAa1EusQ7saYUObBYpQSqkXV77JLdkFb6/Yzi69+wOJ0JmvHxNKBOqfxe7xH7
-	 N03AmJrEytXCA==
+	b=UeiaXbwlnBTmRADGCWbbpiPKJOiRpioQIh1VNQh06GShrgR8WOM9OWz4jwf1/0+sm
+	 DcZ7tOo/lpjJwWxH1BnZHZo5Q8+khFo4G11zbiaEl1dae3IDxBnaXwL+PYf+tgnoFg
+	 ToEHZvdjDPHlm0e5wmsHkup8dliyaNLA1ABrZivBxFpbAG3010+uINK6QPlR0SKE1S
+	 tFXoBNur+CNTrZcKRHVTp5dXnwSF0wDkYqCTzNiO6Uo9AlcqZJHR0U47hpn9Llti4e
+	 MeniYnp0f/pocjs72XucNxHgP28I7puNONOdU4jlRhunvJEuOvM1bOmcmOENHcIS8T
+	 9SeMPQwseTH+Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Justin Tee <justin.tee@broadcom.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Aaradhana Sahu <quic_aarasahu@quicinc.com>,
+	Aditya Kumar Singh <quic_adisi@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	james.smart@broadcom.com,
-	dick.kennedy@broadcom.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 441/486] scsi: lpfc: Handle duplicate D_IDs in ndlp search-by D_ID routine
-Date: Mon,  5 May 2025 18:38:37 -0400
-Message-Id: <20250505223922.2682012-441-sashal@kernel.org>
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.12 471/486] wifi: ath12k: Fetch regdb.bin file from board-2.bin
+Date: Mon,  5 May 2025 18:39:07 -0400
+Message-Id: <20250505223922.2682012-471-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,64 +68,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
 
-[ Upstream commit 56c3d809b7b450379162d0b8a70bbe71ab8db706 ]
+[ Upstream commit 24f587572acf7509127dbdfcbf1b681ef84eeba0 ]
 
-After a port swap between separate fabrics, there may be multiple nodes in
-the vport's fc_nodes list with the same fabric well known address.
-Duplication is temporary and eventually resolves itself after dev_loss_tmo
-expires, but nameserver queries may still occur before dev_loss_tmo.  This
-possibly results in returning stale fabric ndlp objects.  Fix by adding an
-nlp_state check to ensure the ndlp search routine returns the correct newer
-allocated ndlp fabric object.
+Currently, ath12k_core_fetch_regdb() finds regdb.bin file through
+board id's but in board-2.bin file regdb.bin file is present with
+default board id because of which regdb.bin is not fetched.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250131000524.163662-5-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Add support to fetch regdb.bin file from board-2.bin through
+default board id.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+Reviewed-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Link: https://patch.msgid.link/20250116032835.118397-1-quic_aarasahu@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 6e8d8a96c54fb..31dcabebc9b6d 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -5622,6 +5622,7 @@ static struct lpfc_nodelist *
- __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
- {
- 	struct lpfc_nodelist *ndlp;
-+	struct lpfc_nodelist *np = NULL;
- 	uint32_t data1;
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index 51252e8bc1ae9..8bb8ee98188bf 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -161,7 +161,7 @@ EXPORT_SYMBOL(ath12k_core_resume);
  
- 	list_for_each_entry(ndlp, &vport->fc_nodes, nlp_listp) {
-@@ -5636,14 +5637,20 @@ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
- 					 ndlp, ndlp->nlp_DID,
- 					 ndlp->nlp_flag, data1, ndlp->nlp_rpi,
- 					 ndlp->active_rrqs_xri_bitmap);
--			return ndlp;
-+
-+			/* Check for new or potentially stale node */
-+			if (ndlp->nlp_state != NLP_STE_UNUSED_NODE)
-+				return ndlp;
-+			np = ndlp;
- 		}
+ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
+ 					   size_t name_len, bool with_variant,
+-					   bool bus_type_mode)
++					   bool bus_type_mode, bool with_default)
+ {
+ 	/* strlen(',variant=') + strlen(ab->qmi.target.bdf_ext) */
+ 	char variant[9 + ATH12K_QMI_BDF_EXT_STR_LENGTH] = { 0 };
+@@ -192,7 +192,9 @@ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
+ 			  "bus=%s,qmi-chip-id=%d,qmi-board-id=%d%s",
+ 			  ath12k_bus_str(ab->hif.bus),
+ 			  ab->qmi.target.chip_id,
+-			  ab->qmi.target.board_id, variant);
++			  with_default ?
++			  ATH12K_BOARD_ID_DEFAULT : ab->qmi.target.board_id,
++			  variant);
+ 		break;
  	}
  
--	/* FIND node did <did> NOT FOUND */
--	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
--			 "0932 FIND node did x%x NOT FOUND.\n", did);
--	return NULL;
-+	if (!np)
-+		/* FIND node did <did> NOT FOUND */
-+		lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
-+				 "0932 FIND node did x%x NOT FOUND.\n", did);
-+
-+	return np;
+@@ -204,19 +206,19 @@ static int __ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
+ static int ath12k_core_create_board_name(struct ath12k_base *ab, char *name,
+ 					 size_t name_len)
+ {
+-	return __ath12k_core_create_board_name(ab, name, name_len, true, false);
++	return __ath12k_core_create_board_name(ab, name, name_len, true, false, false);
  }
  
- struct lpfc_nodelist *
+ static int ath12k_core_create_fallback_board_name(struct ath12k_base *ab, char *name,
+ 						  size_t name_len)
+ {
+-	return __ath12k_core_create_board_name(ab, name, name_len, false, false);
++	return __ath12k_core_create_board_name(ab, name, name_len, false, false, true);
+ }
+ 
+ static int ath12k_core_create_bus_type_board_name(struct ath12k_base *ab, char *name,
+ 						  size_t name_len)
+ {
+-	return __ath12k_core_create_board_name(ab, name, name_len, false, true);
++	return __ath12k_core_create_board_name(ab, name, name_len, false, true, true);
+ }
+ 
+ const struct firmware *ath12k_core_firmware_request(struct ath12k_base *ab,
 -- 
 2.39.5
 
