@@ -1,71 +1,62 @@
-Return-Path: <stable+bounces-139749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CA8AA9ECC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E6EAA9ECE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:14:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37FF517BFB5
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:14:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74AA017BF3A
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92E2277013;
-	Mon,  5 May 2025 22:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B145227781B;
+	Mon,  5 May 2025 22:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PCLo2yZs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F4Q1jlTF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F372276042;
-	Mon,  5 May 2025 22:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CCD277804;
+	Mon,  5 May 2025 22:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483266; cv=none; b=UD7lq46UAuZrIx+a/zmHu+FZhPyWkU806rKUk5Vwy2cUrF9ejuMspAqgkyu9GpsVIoFl6rmp4Irstawus9t8R4uZlq8jOf23cPLRZm9PN+jZ1MgHxff3STJRQPviyBxsufaR0bEXwBhRivK31NM6RIa9YLv19dOKd8suNoqM+YE=
+	t=1746483268; cv=none; b=nl+Vznc2+hGfCrX1I5ImRNTxXsyw7UGJrzptWkGPqHDEvZlVowEmqRoOzgR7/P89grARuUnMlNMyJNgpA/NlTQQ+r6AWmgmrcyXTh8MgoUU5bY99nqx5lzw49odyojb1jW7iAS7DpT2kKSVWB7h2RjqJ54NAOT534LQqa4nbwBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483266; c=relaxed/simple;
-	bh=J9LKa0JVlnkzvGDcwNe2mR9Fops5wHLY5lriBOCwhnM=;
+	s=arc-20240116; t=1746483268; c=relaxed/simple;
+	bh=xqNFVYUuaQIc121zVQ7cDDAYJlbMlnGsUsu9xM2oxKQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rIe8mRGdDqANet3sC/mO6QD77iZU/CSYkkVii8Z76VWsec52A6KT1HuBdBvwgVeguxdtuR+I5hlP2wRRcBxy82Pc570sh6vJ5s+TkYFSF3I+ThGGhrCeCQo+NVbby5dC62jACWo4ab0j4Ae55KeU14T842InsqLCAM97rYXw52o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PCLo2yZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A876C4CEE4;
-	Mon,  5 May 2025 22:14:24 +0000 (UTC)
+	 MIME-Version; b=qvG/qWkTJnQshs0uBaA7et1hD7TYq7srU1sdom4eA9RgHfnLU8CBhyWVGAjjsYFPgV8CqXgwIGudraQlM2YM6upnC9LM7A5tH6MyPt9ThEmaZY9zJJYfZbImJpCTei+gs/R3KhhUK2trjCATaXP7C8WKVw7Mq14zB2j7ghe9KVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F4Q1jlTF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCF3C4CEED;
+	Mon,  5 May 2025 22:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483266;
-	bh=J9LKa0JVlnkzvGDcwNe2mR9Fops5wHLY5lriBOCwhnM=;
+	s=k20201202; t=1746483268;
+	bh=xqNFVYUuaQIc121zVQ7cDDAYJlbMlnGsUsu9xM2oxKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCLo2yZsGYJAsp8821Ip+DvyklxUAd/WtOs4iPpqkDzrbibgO5BrJmdSWxd02TUkp
-	 L+Us8VTlvYGC/fr69h36k3/VJsAdVKpfl4F0LNz4ApZDU1E1P70vsLboe9C0M8UC9i
-	 6z8cWtjihR2OehlBEwSdwx657Zpqf4ERABBPav3a7AduEKNFjyoRtbDs+d0KEUrtpM
-	 2qN4FjKYNp+xkqiJoFg4lWhYakaYjlAylLBy260JinatII997yIMLvQTnUAsxQX4na
-	 Ib0PHMGZjoqAv6W9RvRvQiXLA+apv8kxoj5Aq11aKxHF2iWOVwWQmZ4NnCV6bjCz35
-	 zlSb3M4Eqzsjw==
+	b=F4Q1jlTFzMLOK7t3AeR5VrUJXJ1ldmY5KKokMxIrOpnujcbF9UFeEpwXryi2obvbW
+	 VP7D6900tPZx535/W3b6bKpuQhfmbSUygY77C4nMCrXCdaJ3Bmeoo0L1J82BEwJprS
+	 +QT9L94U96geej9k5UWKbhXN4DdxlV/FQQcehUNoBbXyM5XW68FHFlcPcYGQDcW7uV
+	 IY1W4ZEcEHlcdMTc1tujo3iL1rFJd9Iu4LXay6eWbGJ+8/T6c43CG/kcNDrhW0rkwc
+	 OlpzDl3Jhbq3AI2m3iwqcFAH5P1f5XyfoCwjPtlkyjUbqmh9u5zgx20jm2qqvjhbdB
+	 Nho1oIYVbhjRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Xin Li (Intel)" <xin@zytor.com>,
-	Xi Pardee <xi.pardee@intel.com>,
-	Todd Brandt <todd.e.brandt@intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Juergen Gross <jgross@suse.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: Anthony Krowiak <akrowiak@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	pavel@kernel.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 002/642] x86/fred: Fix system hang during S4 resume with FRED enabled
-Date: Mon,  5 May 2025 18:03:38 -0400
-Message-Id: <20250505221419.2672473-2-sashal@kernel.org>
+	pasic@linux.ibm.com,
+	jjherne@linux.ibm.com,
+	freude@linux.ibm.com,
+	dengler@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 003/642] s390/vfio-ap: Fix no AP queue sharing allowed message written to kernel log
+Date: Mon,  5 May 2025 18:03:39 -0400
+Message-Id: <20250505221419.2672473-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -80,74 +71,189 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: "Xin Li (Intel)" <xin@zytor.com>
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-[ Upstream commit e5f1e8af9c9e151ecd665f6d2e36fb25fec3b110 ]
+[ Upstream commit d33d729afcc8ad2148d99f9bc499b33fd0c0d73b ]
 
-Upon a wakeup from S4, the restore kernel starts and initializes the
-FRED MSRs as needed from its perspective.  It then loads a hibernation
-image, including the image kernel, and attempts to load image pages
-directly into their original page frames used before hibernation unless
-those frames are currently in use.  Once all pages are moved to their
-original locations, it jumps to a "trampoline" page in the image kernel.
+An erroneous message is written to the kernel log when either of the
+following actions are taken by a user:
 
-At this point, the image kernel takes control, but the FRED MSRs still
-contain values set by the restore kernel, which may differ from those
-set by the image kernel before hibernation.  Therefore, the image kernel
-must ensure the FRED MSRs have the same values as before hibernation.
-Since these values depend only on the location of the kernel text and
-data, they can be recomputed from scratch.
+1. Assign an adapter or domain to a vfio_ap mediated device via its sysfs
+   assign_adapter or assign_domain attributes that would result in one or
+   more AP queues being assigned that are already assigned to a different
+   mediated device. Sharing of queues between mdevs is not allowed.
 
-Reported-by: Xi Pardee <xi.pardee@intel.com>
-Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-Tested-by: Todd Brandt <todd.e.brandt@intel.com>
-Suggested-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250401075728.3626147-1-xin@zytor.com
+2. Reserve an adapter or domain for the host device driver via the AP bus
+   driver's sysfs apmask or aqmask attribute that would result in providing
+   host access to an AP queue that is in use by a vfio_ap mediated device.
+   Reserving a queue for a host driver that is in use by an mdev is not
+   allowed.
+
+In both cases, the assignment will return an error; however, a message like
+the following is written to the kernel log:
+
+vfio_ap_mdev e1839397-51a0-4e3c-91e0-c3b9c3d3047d: Userspace may not
+re-assign queue 00.0028 already assigned to \
+e1839397-51a0-4e3c-91e0-c3b9c3d3047d
+
+Notice the mdev reporting the error is the same as the mdev identified
+in the message as the one to which the queue is being assigned.
+It is perfectly okay to assign a queue to an mdev to which it is
+already assigned; the assignment is simply ignored by the vfio_ap device
+driver.
+
+This patch logs more descriptive and accurate messages for both 1 and 2
+above to the kernel log:
+
+Example for 1:
+vfio_ap_mdev 0fe903a0-a323-44db-9daf-134c68627d61: Userspace may not assign
+queue 00.0033 to mdev: already assigned to \
+62177883-f1bb-47f0-914d-32a22e3a8804
+
+Example for 2:
+vfio_ap_mdev 62177883-f1bb-47f0-914d-32a22e3a8804: Can not reserve queue
+00.0033 for host driver: in use by mdev
+
+Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250311103304.1539188-1-akrowiak@linux.ibm.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/power/cpu.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/s390/crypto/vfio_ap_ops.c | 72 ++++++++++++++++++++-----------
+ 1 file changed, 46 insertions(+), 26 deletions(-)
 
-diff --git a/arch/x86/power/cpu.c b/arch/x86/power/cpu.c
-index 63230ff8cf4f0..08e76a5ca1553 100644
---- a/arch/x86/power/cpu.c
-+++ b/arch/x86/power/cpu.c
-@@ -27,6 +27,7 @@
- #include <asm/mmu_context.h>
- #include <asm/cpu_device_id.h>
- #include <asm/microcode.h>
-+#include <asm/fred.h>
+diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+index a52c2690933fd..a6a0628979555 100644
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -863,48 +863,66 @@ static void vfio_ap_mdev_remove(struct mdev_device *mdev)
+ 	vfio_put_device(&matrix_mdev->vdev);
+ }
  
- #ifdef CONFIG_X86_32
- __visible unsigned long saved_context_ebx;
-@@ -231,6 +232,19 @@ static void notrace __restore_processor_state(struct saved_context *ctxt)
- 	 */
- #ifdef CONFIG_X86_64
- 	wrmsrl(MSR_GS_BASE, ctxt->kernelmode_gs_base);
+-#define MDEV_SHARING_ERR "Userspace may not re-assign queue %02lx.%04lx " \
+-			 "already assigned to %s"
++#define MDEV_SHARING_ERR "Userspace may not assign queue %02lx.%04lx to mdev: already assigned to %s"
+ 
+-static void vfio_ap_mdev_log_sharing_err(struct ap_matrix_mdev *matrix_mdev,
+-					 unsigned long *apm,
+-					 unsigned long *aqm)
++#define MDEV_IN_USE_ERR "Can not reserve queue %02lx.%04lx for host driver: in use by mdev"
 +
-+	/*
-+	 * Reinitialize FRED to ensure the FRED MSRs contain the same values
-+	 * as before hibernation.
-+	 *
-+	 * Note, the setup of FRED RSPs requires access to percpu data
-+	 * structures.  Therefore, FRED reinitialization can only occur after
-+	 * the percpu access pointer (i.e., MSR_GS_BASE) is restored.
-+	 */
-+	if (ctxt->cr4 & X86_CR4_FRED) {
-+		cpu_init_fred_exceptions();
-+		cpu_init_fred_rsps();
++static void vfio_ap_mdev_log_sharing_err(struct ap_matrix_mdev *assignee,
++					 struct ap_matrix_mdev *assigned_to,
++					 unsigned long *apm, unsigned long *aqm)
+ {
+ 	unsigned long apid, apqi;
+-	const struct device *dev = mdev_dev(matrix_mdev->mdev);
+-	const char *mdev_name = dev_name(dev);
+ 
+-	for_each_set_bit_inv(apid, apm, AP_DEVICES)
++	for_each_set_bit_inv(apid, apm, AP_DEVICES) {
++		for_each_set_bit_inv(apqi, aqm, AP_DOMAINS) {
++			dev_warn(mdev_dev(assignee->mdev), MDEV_SHARING_ERR,
++				 apid, apqi, dev_name(mdev_dev(assigned_to->mdev)));
++		}
 +	}
- #else
- 	loadsegment(fs, __KERNEL_PERCPU);
- #endif
++}
++
++static void vfio_ap_mdev_log_in_use_err(struct ap_matrix_mdev *assignee,
++					unsigned long *apm, unsigned long *aqm)
++{
++	unsigned long apid, apqi;
++
++	for_each_set_bit_inv(apid, apm, AP_DEVICES) {
+ 		for_each_set_bit_inv(apqi, aqm, AP_DOMAINS)
+-			dev_warn(dev, MDEV_SHARING_ERR, apid, apqi, mdev_name);
++			dev_warn(mdev_dev(assignee->mdev), MDEV_IN_USE_ERR, apid, apqi);
++	}
+ }
+ 
+ /**
+  * vfio_ap_mdev_verify_no_sharing - verify APQNs are not shared by matrix mdevs
+  *
++ * @assignee: the matrix mdev to which @mdev_apm and @mdev_aqm are being
++ *	      assigned; or, NULL if this function was called by the AP bus
++ *	      driver in_use callback to verify none of the APQNs being reserved
++ *	      for the host device driver are in use by a vfio_ap mediated device
+  * @mdev_apm: mask indicating the APIDs of the APQNs to be verified
+  * @mdev_aqm: mask indicating the APQIs of the APQNs to be verified
+  *
+- * Verifies that each APQN derived from the Cartesian product of a bitmap of
+- * AP adapter IDs and AP queue indexes is not configured for any matrix
+- * mediated device. AP queue sharing is not allowed.
++ * Verifies that each APQN derived from the Cartesian product of APIDs
++ * represented by the bits set in @mdev_apm and the APQIs of the bits set in
++ * @mdev_aqm is not assigned to a mediated device other than the mdev to which
++ * the APQN is being assigned (@assignee). AP queue sharing is not allowed.
+  *
+  * Return: 0 if the APQNs are not shared; otherwise return -EADDRINUSE.
+  */
+-static int vfio_ap_mdev_verify_no_sharing(unsigned long *mdev_apm,
++static int vfio_ap_mdev_verify_no_sharing(struct ap_matrix_mdev *assignee,
++					  unsigned long *mdev_apm,
+ 					  unsigned long *mdev_aqm)
+ {
+-	struct ap_matrix_mdev *matrix_mdev;
++	struct ap_matrix_mdev *assigned_to;
+ 	DECLARE_BITMAP(apm, AP_DEVICES);
+ 	DECLARE_BITMAP(aqm, AP_DOMAINS);
+ 
+-	list_for_each_entry(matrix_mdev, &matrix_dev->mdev_list, node) {
++	list_for_each_entry(assigned_to, &matrix_dev->mdev_list, node) {
+ 		/*
+-		 * If the input apm and aqm are fields of the matrix_mdev
+-		 * object, then move on to the next matrix_mdev.
++		 * If the mdev to which the mdev_apm and mdev_aqm is being
++		 * assigned is the same as the mdev being verified
+ 		 */
+-		if (mdev_apm == matrix_mdev->matrix.apm &&
+-		    mdev_aqm == matrix_mdev->matrix.aqm)
++		if (assignee == assigned_to)
+ 			continue;
+ 
+ 		memset(apm, 0, sizeof(apm));
+@@ -914,15 +932,16 @@ static int vfio_ap_mdev_verify_no_sharing(unsigned long *mdev_apm,
+ 		 * We work on full longs, as we can only exclude the leftover
+ 		 * bits in non-inverse order. The leftover is all zeros.
+ 		 */
+-		if (!bitmap_and(apm, mdev_apm, matrix_mdev->matrix.apm,
+-				AP_DEVICES))
++		if (!bitmap_and(apm, mdev_apm, assigned_to->matrix.apm,	AP_DEVICES))
+ 			continue;
+ 
+-		if (!bitmap_and(aqm, mdev_aqm, matrix_mdev->matrix.aqm,
+-				AP_DOMAINS))
++		if (!bitmap_and(aqm, mdev_aqm, assigned_to->matrix.aqm,	AP_DOMAINS))
+ 			continue;
+ 
+-		vfio_ap_mdev_log_sharing_err(matrix_mdev, apm, aqm);
++		if (assignee)
++			vfio_ap_mdev_log_sharing_err(assignee, assigned_to, apm, aqm);
++		else
++			vfio_ap_mdev_log_in_use_err(assigned_to, apm, aqm);
+ 
+ 		return -EADDRINUSE;
+ 	}
+@@ -951,7 +970,8 @@ static int vfio_ap_mdev_validate_masks(struct ap_matrix_mdev *matrix_mdev)
+ 					       matrix_mdev->matrix.aqm))
+ 		return -EADDRNOTAVAIL;
+ 
+-	return vfio_ap_mdev_verify_no_sharing(matrix_mdev->matrix.apm,
++	return vfio_ap_mdev_verify_no_sharing(matrix_mdev,
++					      matrix_mdev->matrix.apm,
+ 					      matrix_mdev->matrix.aqm);
+ }
+ 
+@@ -2458,7 +2478,7 @@ int vfio_ap_mdev_resource_in_use(unsigned long *apm, unsigned long *aqm)
+ 
+ 	mutex_lock(&matrix_dev->guests_lock);
+ 	mutex_lock(&matrix_dev->mdevs_lock);
+-	ret = vfio_ap_mdev_verify_no_sharing(apm, aqm);
++	ret = vfio_ap_mdev_verify_no_sharing(NULL, apm, aqm);
+ 	mutex_unlock(&matrix_dev->mdevs_lock);
+ 	mutex_unlock(&matrix_dev->guests_lock);
+ 
 -- 
 2.39.5
 
