@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-141599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CA93AAB78A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:13:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3BAAAB79B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:14:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F36113AC600
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:07:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A28703B542B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999EC483508;
-	Tue,  6 May 2025 00:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 632CF344FFE;
+	Tue,  6 May 2025 00:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sDdQRElh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MS1Pzm65"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB36739B09F;
-	Mon,  5 May 2025 23:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196FF289826;
+	Mon,  5 May 2025 23:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486842; cv=none; b=OU9r+n3nZqG5Q9GSW3yGeL3nuw8gQf3M2HKJNpMLbbAKOK9oJ2F0VBb8WJBDOzFno9TDXxANVuGLM0wtsW1ovxWNhk20jE7CYo0l0lb96jl0ohsWmfJwLNFXICUmD4RZh9NVi2sIo3OYaXa5UDdKQ16SBGPLkTCZ3r+C3VWiOr4=
+	t=1746486853; cv=none; b=smZd+Uo7vSm+Xvh352ifr57Nk/2jIg3Qd1TAK2MjvVSSS9XL0JUlNtJ7A1ifNsOUuhL8NFd34Ro/qFWcx8qbFwrAabq3wd7w0nIL1kPUriGSX7E7qRsX4jIbALYpO7zKCiMy0JpStfgoF5n+82L/hpUbpmEe1ou/GOS2fa9oH0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486842; c=relaxed/simple;
-	bh=NHmzvax4IPbiPdp1bDqYANZe/GMepCja/nvw2NzZI6k=;
+	s=arc-20240116; t=1746486853; c=relaxed/simple;
+	bh=6K1W7Zy3vyBKZTLpth2DPhBesAHtGw1EAG+78Ae1Obo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=leAYkubneIc8n9g+hLua48+ySqfEGgHq5nlBx5sGqlrfioZCxqB6SYQvJhpXCB6sn34orXuzfxTAVHDAB/yycn8kP1zRv0AWe+GpqDnm2wBYU5D7jNhFGl2sbB5Rgu529h3I1MPONI0TJOAnDwIUSKgcLKsCT8cBZlfDd8GzG+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sDdQRElh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DEEFC4CEE4;
-	Mon,  5 May 2025 23:14:00 +0000 (UTC)
+	 MIME-Version; b=mAI9KpqkOeozh3gYNq7jVi/jLUvEUEayhNDn3Jg+t4TQyKnZhUT9k6lzk+/k2eXOhflU0VZm9nLKRwHd7ODwjlYbUuDfIT8ViFTJ+nMF+VM4jL8BYx/Jjv+BSphO6OHthRLZYLHgTvBC5BzfGw0mraCzxm2HVSiYGClPJHTwxXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MS1Pzm65; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A04C4CEE4;
+	Mon,  5 May 2025 23:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486841;
-	bh=NHmzvax4IPbiPdp1bDqYANZe/GMepCja/nvw2NzZI6k=;
+	s=k20201202; t=1746486852;
+	bh=6K1W7Zy3vyBKZTLpth2DPhBesAHtGw1EAG+78Ae1Obo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDdQRElh3HR9Py76I6uncsgfg4GFgYSBvJfQRmXWlVpunrjRJjhNYkYY74EONReB6
-	 +vBfJBEm94wAa0luMFDPHzuJ5HXCGdnSpmXi2ju9THLGnDXj8ttF5vtggH/Njihjxk
-	 lq1Cksvr267sePWQfzdvMeBAkzrqyqKkBFF2Upaq88cAY8TSbtVV2JGD83hmjn6u6G
-	 /GOsFd3MmEZEQBPf+joqwBCz9HO/zsrHsPV5JPlarvILc+dE83M/937ZcbwQGuwdst
-	 Z0Hqje2F8a03JqXYyTVli6MykiCDC7moAVsD0r1xImL4p5Oit3XeDlWNTM/ANBnSRT
-	 kjLsLr0z4oDxw==
+	b=MS1Pzm65pzvEtTS97JrJGAe4XEAwT7go+JxmHA3xNSUeRTalJxRJPGswQQAdR0wfY
+	 6k85Fs4tubxiqa3GYd3F6O14sQym2U2A+kRq/BJecjoVvAOFYMxZMGRhFIlogBvPuY
+	 6UUuzGNhEDh/8F01Hw/L9j53Awuzlgb4LNkXDIJnvvYdZ4dgBlsAnumW96S7VgJsKD
+	 6qH64yVhrPYUQUBdCUFYy4LFEU0NPDXySqA6w1uTpSigJewRK4MjwyqIUkpYYQrB68
+	 DlRFkysypTg6Ozi18ahYQ9AST+nAJsKsQK1Z/fUBQlrlQrj3zPlfDK06guxHQ698ZH
+	 OUetK0WuisIqg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Robert Richter <rrichter@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Ira Weiny <ira.weiny@intel.com>,
+Cc: Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	dan.j.williams@intel.com,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	nvdimm@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.15 019/153] libnvdimm/labels: Fix divide error in nd_label_data_init()
-Date: Mon,  5 May 2025 19:11:06 -0400
-Message-Id: <20250505231320.2695319-19-sashal@kernel.org>
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 024/153] btrfs: make btrfs_discard_workfn() block_group ref explicit
+Date: Mon,  5 May 2025 19:11:11 -0400
+Message-Id: <20250505231320.2695319-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -69,62 +68,104 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Robert Richter <rrichter@amd.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit ef1d3455bbc1922f94a91ed58d3d7db440652959 ]
+[ Upstream commit 895c6721d310c036dcfebb5ab845822229fa35eb ]
 
-If a faulty CXL memory device returns a broken zero LSA size in its
-memory device information (Identify Memory Device (Opcode 4000h), CXL
-spec. 3.1, 8.2.9.9.1.1), a divide error occurs in the libnvdimm
-driver:
+Currently, the async discard machinery owns a ref to the block_group
+when the block_group is queued on a discard list. However, to handle
+races with discard cancellation and the discard workfn, we have a
+specific logic to detect that the block_group is *currently* running in
+the workfn, to protect the workfn's usage amidst cancellation.
 
- Oops: divide error: 0000 [#1] PREEMPT SMP NOPTI
- RIP: 0010:nd_label_data_init+0x10e/0x800 [libnvdimm]
+As far as I can tell, this doesn't have any overt bugs (though
+finish_discard_pass() and remove_from_discard_list() racing can have a
+surprising outcome for the caller of remove_from_discard_list() in that
+it is again added at the end).
 
-Code and flow:
+But it is needlessly complicated to rely on locking and the nullity of
+discard_ctl->block_group. Simplify this significantly by just taking a
+refcount while we are in the workfn and unconditionally drop it in both
+the remove and workfn paths, regardless of if they race.
 
-1) CXL Command 4000h returns LSA size = 0
-2) config_size is assigned to zero LSA size (CXL pmem driver):
-
-drivers/cxl/pmem.c:             .config_size = mds->lsa_size,
-
-3) max_xfer is set to zero (nvdimm driver):
-
-drivers/nvdimm/label.c: max_xfer = min_t(size_t, ndd->nsarea.max_xfer, config_size);
-
-4) A subsequent DIV_ROUND_UP() causes a division by zero:
-
-drivers/nvdimm/label.c: /* Make our initial read size a multiple of max_xfer size */
-drivers/nvdimm/label.c: read_size = min(DIV_ROUND_UP(read_size, max_xfer) * max_xfer,
-drivers/nvdimm/label.c-                 config_size);
-
-Fix this by checking the config size parameter by extending an
-existing check.
-
-Signed-off-by: Robert Richter <rrichter@amd.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Link: https://patch.msgid.link/20250320112223.608320-1-rrichter@amd.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/label.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/discard.c | 34 ++++++++++++++++------------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
-index 7f473f9db300d..e1b511d09295f 100644
---- a/drivers/nvdimm/label.c
-+++ b/drivers/nvdimm/label.c
-@@ -437,7 +437,8 @@ int nd_label_data_init(struct nvdimm_drvdata *ndd)
- 	if (ndd->data)
- 		return 0;
+diff --git a/fs/btrfs/discard.c b/fs/btrfs/discard.c
+index bd9dde374e5d8..3ddd0c24a94ea 100644
+--- a/fs/btrfs/discard.c
++++ b/fs/btrfs/discard.c
+@@ -151,13 +151,7 @@ static bool remove_from_discard_list(struct btrfs_discard_ctl *discard_ctl,
+ 	block_group->discard_eligible_time = 0;
+ 	queued = !list_empty(&block_group->discard_list);
+ 	list_del_init(&block_group->discard_list);
+-	/*
+-	 * If the block group is currently running in the discard workfn, we
+-	 * don't want to deref it, since it's still being used by the workfn.
+-	 * The workfn will notice this case and deref the block group when it is
+-	 * finished.
+-	 */
+-	if (queued && !running)
++	if (queued)
+ 		btrfs_put_block_group(block_group);
  
--	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0) {
-+	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0 ||
-+	    ndd->nsarea.config_size == 0) {
- 		dev_dbg(ndd->dev, "failed to init config data area: (%u:%u)\n",
- 			ndd->nsarea.max_xfer, ndd->nsarea.config_size);
- 		return -ENXIO;
+ 	spin_unlock(&discard_ctl->lock);
+@@ -243,9 +237,10 @@ static struct btrfs_block_group *peek_discard_list(
+ 			block_group->discard_cursor = block_group->start;
+ 			block_group->discard_state = BTRFS_DISCARD_EXTENTS;
+ 		}
+-		discard_ctl->block_group = block_group;
+ 	}
+ 	if (block_group) {
++		btrfs_get_block_group(block_group);
++		discard_ctl->block_group = block_group;
+ 		*discard_state = block_group->discard_state;
+ 		*discard_index = block_group->discard_index;
+ 	}
+@@ -469,9 +464,20 @@ static void btrfs_discard_workfn(struct work_struct *work)
+ 
+ 	block_group = peek_discard_list(discard_ctl, &discard_state,
+ 					&discard_index, now);
+-	if (!block_group || !btrfs_run_discard_work(discard_ctl))
++	if (!block_group)
+ 		return;
++	if (!btrfs_run_discard_work(discard_ctl)) {
++		spin_lock(&discard_ctl->lock);
++		btrfs_put_block_group(block_group);
++		discard_ctl->block_group = NULL;
++		spin_unlock(&discard_ctl->lock);
++		return;
++	}
+ 	if (now < block_group->discard_eligible_time) {
++		spin_lock(&discard_ctl->lock);
++		btrfs_put_block_group(block_group);
++		discard_ctl->block_group = NULL;
++		spin_unlock(&discard_ctl->lock);
+ 		btrfs_discard_schedule_work(discard_ctl, false);
+ 		return;
+ 	}
+@@ -523,15 +529,7 @@ static void btrfs_discard_workfn(struct work_struct *work)
+ 	spin_lock(&discard_ctl->lock);
+ 	discard_ctl->prev_discard = trimmed;
+ 	discard_ctl->prev_discard_time = now;
+-	/*
+-	 * If the block group was removed from the discard list while it was
+-	 * running in this workfn, then we didn't deref it, since this function
+-	 * still owned that reference. But we set the discard_ctl->block_group
+-	 * back to NULL, so we can use that condition to know that now we need
+-	 * to deref the block_group.
+-	 */
+-	if (discard_ctl->block_group == NULL)
+-		btrfs_put_block_group(block_group);
++	btrfs_put_block_group(block_group);
+ 	discard_ctl->block_group = NULL;
+ 	__btrfs_discard_schedule_work(discard_ctl, now, false);
+ 	spin_unlock(&discard_ctl->lock);
 -- 
 2.39.5
 
