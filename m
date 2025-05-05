@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-140020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0923AAA3E0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:21:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F70AAA3E6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:21:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73FB616E2EF
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:21:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A82E61A8625F
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE192F8DEA;
-	Mon,  5 May 2025 22:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832A02F94C5;
+	Mon,  5 May 2025 22:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bm85iy1I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RWu7LQ0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391DC2F8DE0;
-	Mon,  5 May 2025 22:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F772857CC;
+	Mon,  5 May 2025 22:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483928; cv=none; b=iuzA1f3685Qi827+0JO0GcfGszIPTTkgF3rxRXCyYn1u83kz0buzZIz0blKuDezs/7DOhtHuOtC6jRkSn3TkP2GIBAiQ49h+OVuh2zsINP5tkpmbGuVJtocyDqeF83Pf6H/R95+6kIHzaWaUVWBP6YBmsg0w0Iss96O8shPqHK0=
+	t=1746483929; cv=none; b=gpMpXo31T6qkSnYxBpWv3TiQWav9JOE9370uvD/cS+aJ5Z6zlofZhNpIxWc1T+v0OxplRYpp1erq7V9NZZsX3hUItpj/nnZiTgRn7X4+ncny9Rp/fPt178sgSZH4ojVbGC1K88xKjmsN1NsK+rwUfngzPfiBZzpuLLUkES5q7zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483928; c=relaxed/simple;
-	bh=R59kCnJjiCPA0MC84qR3zibb+XfB2hs5mE1ghbwXHkc=;
+	s=arc-20240116; t=1746483929; c=relaxed/simple;
+	bh=vaL5mwua1zaFsHr9MocUj7hGyZB7ywzXaJO0Hoalafk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HHJBaMa1UTf7DXzQ/mnazMpEk+D4HboJwb4z3ursHehALZdeht/oxeSb+bVW/I/yvYani9NplmklTH0SGpmFPYPgUWfEruLlmM2Lsa6x3iF3xz59Bhe5VGiUJpDtQBUMeL4a8H4jdFgflmyLXczsFNCEwPI3aHLwqohSmMQn3IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bm85iy1I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741B5C4CEED;
-	Mon,  5 May 2025 22:25:26 +0000 (UTC)
+	 MIME-Version; b=Ev4baBFh2Tn4Lyqnmq9JazGV62ixTn6gBfELGcnkTXfd6kOAul+0H8FbXjXOitkrWAELevBRNdh9aieUu3UddFoK7PpOU6rsJ2pCm1Va880lpcWqFF9D/lhPKak2hvRFvvzVsKHlXk+YyiBQuy6VLBV2/BJgZQ/vz7s1zV8aOp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RWu7LQ0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0622BC4CEEF;
+	Mon,  5 May 2025 22:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483927;
-	bh=R59kCnJjiCPA0MC84qR3zibb+XfB2hs5mE1ghbwXHkc=;
+	s=k20201202; t=1746483929;
+	bh=vaL5mwua1zaFsHr9MocUj7hGyZB7ywzXaJO0Hoalafk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bm85iy1IKKDBpS9AfmPLKbzFyZYa7ZZ9MWqSzw7HnNbGnXuo69v7dH0AtyR/ZKNAO
-	 SXmI8zO5xnctfsL4P2GCSSB+fjYhXXJu9cmXY5U5fKvAeDs4sUC8P66boxjwBXcCCa
-	 VOnG4hkqGEG3eSfqYAU6Z4RTlkHSRBw3kUxL0wlxIcxO4z20Y/QQuaEN2uu5R8EHOj
-	 0dsAbeberhKuBBiB5XKYcz3Gk0viN2n5keIGS4IlzRbBBKSnEJK7+cNJxzwCUI1NWV
-	 uyZW2ICi824koK5EolKCvwTrdl+IOrlaJ2ViGNqieRZLHWMyRicUVFr390cbE6c1GV
-	 +zcTiMFRXXP+A==
+	b=RWu7LQ0d2qg+8tvoOv9HFcq6+pV1ZdJwq1atd2LuT+NGbloDtCuT/Ic5oOW7pGckt
+	 VBizY+3xyJ91nSH/cXAP1w9tAXFkuc8RJ3q3A9HRMUGfRK2jBPVF0SeGUX6QzYUUco
+	 IvTadXAcMOrRAOCRxyBnvmR92cQ1JePDL47bFND6SBkwE2Av1Md7otMel6kedkuLpz
+	 Tde+87svggO8vIONTNf5jG+CBlZD3CvVUGy32G3nTxiBP4qQIDiUGgNvLs3tkuggMh
+	 AhCMzDkozPUisYPOGVdSGQsh0zK0WlFmyhXEytXokVJwijlfQVzYPZytok8v/7lOtQ
+	 8iEhWTmllaN2g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -52,9 +52,9 @@ Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
 	davem@davemloft.net,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 273/642] ipv4: fib: Move fib_valid_key_len() to rtm_to_fib_config().
-Date: Mon,  5 May 2025 18:08:09 -0400
-Message-Id: <20250505221419.2672473-273-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 274/642] ipv4: fib: Hold rtnl_net_lock() in ip_rt_ioctl().
+Date: Mon,  5 May 2025 18:08:10 -0400
+Message-Id: <20250505221419.2672473-274-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -71,124 +71,69 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 254ba7e6032d3fc738050d500b0c1d8197af90ca ]
+[ Upstream commit c0ebe1cdc2cff0dee092a67f2c50377bb5fcf43d ]
 
-fib_valid_key_len() is called in the beginning of fib_table_insert()
-or fib_table_delete() to check if the prefix length is valid.
+ioctl(SIOCADDRT/SIOCDELRT) calls ip_rt_ioctl() to add/remove a route in
+the netns of the specified socket.
 
-fib_table_insert() and fib_table_delete() are called from 3 paths
+Let's hold rtnl_net_lock() there.
 
-  - ip_rt_ioctl()
-  - inet_rtm_newroute() / inet_rtm_delroute()
-  - fib_magic()
-
-In the first ioctl() path, rtentry_to_fib_config() checks the prefix
-length with bad_mask().  Also, fib_magic() always passes the correct
-prefix: 32 or ifa->ifa_prefixlen, which is already validated.
-
-Let's move fib_valid_key_len() to the rtnetlink path, rtm_to_fib_config().
-
-While at it, 2 direct returns in rtm_to_fib_config() are changed to
-goto to match other places in the same function
+Note that rtentry_to_fib_config() can be called without rtnl_net_lock()
+if we convert rtentry.dev handling to RCU later.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250228042328.96624-12-kuniyu@amazon.com
+Link: https://patch.msgid.link/20250228042328.96624-11-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_frontend.c | 18 ++++++++++++++++--
- net/ipv4/fib_trie.c     | 22 ----------------------
- 2 files changed, 16 insertions(+), 24 deletions(-)
+ net/ipv4/fib_frontend.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
-index 272e42d813230..493c37ce232d3 100644
+index 493c37ce232d3..8470e259d8fd8 100644
 --- a/net/ipv4/fib_frontend.c
 +++ b/net/ipv4/fib_frontend.c
-@@ -837,19 +837,33 @@ static int rtm_to_fib_config(struct net *net, struct sk_buff *skb,
+@@ -553,18 +553,16 @@ static int rtentry_to_fib_config(struct net *net, int cmd, struct rtentry *rt,
+ 			const struct in_ifaddr *ifa;
+ 			struct in_device *in_dev;
+ 
+-			in_dev = __in_dev_get_rtnl(dev);
++			in_dev = __in_dev_get_rtnl_net(dev);
+ 			if (!in_dev)
+ 				return -ENODEV;
+ 
+ 			*colon = ':';
+ 
+-			rcu_read_lock();
+-			in_dev_for_each_ifa_rcu(ifa, in_dev) {
++			in_dev_for_each_ifa_rtnl_net(net, ifa, in_dev) {
+ 				if (strcmp(ifa->ifa_label, devname) == 0)
+ 					break;
+ 			}
+-			rcu_read_unlock();
+ 
+ 			if (!ifa)
+ 				return -ENODEV;
+@@ -635,7 +633,7 @@ int ip_rt_ioctl(struct net *net, unsigned int cmd, struct rtentry *rt)
+ 		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
+ 			return -EPERM;
+ 
+-		rtnl_lock();
++		rtnl_net_lock(net);
+ 		err = rtentry_to_fib_config(net, cmd, rt, &cfg);
+ 		if (err == 0) {
+ 			struct fib_table *tb;
+@@ -659,7 +657,7 @@ int ip_rt_ioctl(struct net *net, unsigned int cmd, struct rtentry *rt)
+ 			/* allocated by rtentry_to_fib_config() */
+ 			kfree(cfg.fc_mx);
  		}
+-		rtnl_unlock();
++		rtnl_net_unlock(net);
+ 		return err;
  	}
- 
-+	if (cfg->fc_dst_len > 32) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
-+	if (cfg->fc_dst_len < 32 && (ntohl(cfg->fc_dst) << cfg->fc_dst_len)) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix for given prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
- 	if (cfg->fc_nh_id) {
- 		if (cfg->fc_oif || cfg->fc_gw_family ||
- 		    cfg->fc_encap || cfg->fc_mp) {
- 			NL_SET_ERR_MSG(extack,
- 				       "Nexthop specification and nexthop id are mutually exclusive");
--			return -EINVAL;
-+			err = -EINVAL;
-+			goto errout;
- 		}
- 	}
- 
- 	if (has_gw && has_via) {
- 		NL_SET_ERR_MSG(extack,
- 			       "Nexthop configuration can not contain both GATEWAY and VIA");
--		return -EINVAL;
-+		err = -EINVAL;
-+		goto errout;
- 	}
- 
- 	if (!cfg->fc_table)
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index d6411ac810961..59a6f0a9638f9 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -1187,22 +1187,6 @@ static int fib_insert_alias(struct trie *t, struct key_vector *tp,
- 	return 0;
- }
- 
--static bool fib_valid_key_len(u32 key, u8 plen, struct netlink_ext_ack *extack)
--{
--	if (plen > KEYLENGTH) {
--		NL_SET_ERR_MSG(extack, "Invalid prefix length");
--		return false;
--	}
--
--	if ((plen < KEYLENGTH) && (key << plen)) {
--		NL_SET_ERR_MSG(extack,
--			       "Invalid prefix for given prefix length");
--		return false;
--	}
--
--	return true;
--}
--
- static void fib_remove_alias(struct trie *t, struct key_vector *tp,
- 			     struct key_vector *l, struct fib_alias *old);
- 
-@@ -1223,9 +1207,6 @@ int fib_table_insert(struct net *net, struct fib_table *tb,
- 
- 	key = ntohl(cfg->fc_dst);
- 
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	pr_debug("Insert table=%u %08x/%d\n", tb->tb_id, key, plen);
- 
- 	fi = fib_create_info(cfg, extack);
-@@ -1717,9 +1698,6 @@ int fib_table_delete(struct net *net, struct fib_table *tb,
- 
- 	key = ntohl(cfg->fc_dst);
- 
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	l = fib_find_node(t, &tp, key);
- 	if (!l)
- 		return -ESRCH;
+ 	return -EINVAL;
 -- 
 2.39.5
 
