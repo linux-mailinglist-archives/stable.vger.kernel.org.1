@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-141546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1852AAB74E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:09:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2352AAB73C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:08:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C08861C21DC8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:04:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6220D17E9CC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8D04779AE;
-	Tue,  6 May 2025 00:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEF7342C37;
+	Tue,  6 May 2025 00:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="in3GBxvC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YuT933/d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59CF2EFB8A;
-	Mon,  5 May 2025 23:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5CE283C86;
+	Mon,  5 May 2025 23:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486658; cv=none; b=nSIutblhQD5ClW+RtEElqSzxbui2DOhqbds4ff1lMwUoX4AcLUjBfeZFFbCzhvpabEexZpQpNd0+D3dpTi39cLqQ9GbAVs7DbmXiFhCl37Mqn3QKsduGuI7XmAnW7zE4IlWmtB80TbsZcpImmlr9LCf0ud+h9NkKdjfGtCRGk4U=
+	t=1746486679; cv=none; b=t/UuJKWT6Gg7bqMUfhLWQln9Z1pwEuFVtlbVk4+rchy9wzvsaG9bVXl2LJKfQyKCw331nTzon3+MBJ2a+ROavytnyPe5Y5prylEQ+4J7NxrHUEO8cVLsxlIeb8QxAiP5NZ4hTDMNrotHX7U/GTEsSZV7spYa2JYZDbzfm/oPcv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486658; c=relaxed/simple;
-	bh=dhyDtTy5Z6RWp/Mjf/6pkAtEPg5sjXajgUbTlAbaBXk=;
+	s=arc-20240116; t=1746486679; c=relaxed/simple;
+	bh=oxeGttg3SoJ505VY3yrwYPkfynDRPeZkZ0HzLDrc7gU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Tp7ibErm/vDSB52o8Bthw1jZmhf2pLcoC4Mmhi3Vmdy7f7lqPR/5XWAIQx9fF6V/rddltiZLGsKCBQ/fBmpJTR8goZRRNcmXw4nUl3VP1IvSLkPRIE3mVgPr4IrPK7pXJNOJJCIp+m7CvCFzN99JH4S/QDbxnz6y1KEk/WdC70M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=in3GBxvC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0BCDC4CEEE;
-	Mon,  5 May 2025 23:10:56 +0000 (UTC)
+	 MIME-Version; b=uVA0uBJdzlOrohKpcT7fD64GWHQEwNkoefF5LRDxpURkAfrc/cSudvWGUlOXeh1HMiMfS+TnUik5l8nNhWp+Ph7glApKf67tUDrmHRm9XS6ESNPc8+SPWVEtTu+xh0CwW6zsEtCmBdQmkAMJLUq8Khdfp4De6OPFK4kPsrnB2t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YuT933/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E059BC4CEE4;
+	Mon,  5 May 2025 23:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486657;
-	bh=dhyDtTy5Z6RWp/Mjf/6pkAtEPg5sjXajgUbTlAbaBXk=;
+	s=k20201202; t=1746486677;
+	bh=oxeGttg3SoJ505VY3yrwYPkfynDRPeZkZ0HzLDrc7gU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=in3GBxvCSc4SOHi91Dy636hxzpCvEbpPLMM8BsZBTG9HtyUfQlZEgW6Drt48sD3UI
-	 I6P0mwqwChELAinjqiL+CMRORuqr5aBBJuvob/vhS9bWeBOHUKFL5LvM60W8YgH4TX
-	 4rBMSlOvyf6AN7Up9m5Aziy6F7sgI0tjFLz3CxTn3hBQrg2hP/a+CJSYEuR3KadGjQ
-	 M/SWFInRz/Yd6e898sCxit2w4J3B770R040ZF+oAJTBjYHmdrugeXwY49wi7Y7t8ao
-	 R3DLxmKLtgKhXK6ai7+zqQOuDxfIReXfIRMWgH7x22pq/rvqq/05qeFkfWBRohbCV6
-	 Nrd9P7XHoAsfQ==
+	b=YuT933/d+uf/GcHdrR1Pwpc5KfGSR3a8hySKOStKrPhiO5BW2ewV3WMAcahXoV8NJ
+	 bWza/D/qKu9VArNoL7vrx67ScJQyFKD9DjcBXw4H+eL/7J8IlwqPfzaKttel7NVJPw
+	 E5z897aIfIiL70Nk+y4H/rhzhXNwwFgF5hyzkTue4EYfJgPr65AHR2M50sxQhrZp7Z
+	 GhHcaWthDOSHaqbTqYD9cETz/5gSs2XlR+WVeDp68r+IohzbJO3iFklC43Ql/6pgKN
+	 t3bGfU5WITnPppR2Ps7GBjuyy3RrNN/Hm7lKJ9A0937ReMp2RY2rUM7SvaAeR5Ql6z
+	 rfZcnp5P1JB4A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Jason Baron <jbaron@akamai.com>,
-	Tony Luck <tony.luck@intel.com>,
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	bp@alien8.de,
-	linux-edac@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 141/212] EDAC/ie31200: work around false positive build warning
-Date: Mon,  5 May 2025 19:05:13 -0400
-Message-Id: <20250505230624.2692522-141-sashal@kernel.org>
+	shawnguo@kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 146/212] pmdomain: imx: gpcv2: use proper helper for property detection
+Date: Mon,  5 May 2025 19:05:18 -0400
+Message-Id: <20250505230624.2692522-146-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -67,103 +67,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-[ Upstream commit c29dfd661fe2f8d1b48c7f00590929c04b25bf40 ]
+[ Upstream commit 6568cb40e73163fa25e2779f7234b169b2e1a32e ]
 
-gcc-14 produces a bogus warning in some configurations:
+Starting with commit c141ecc3cecd7 ("of: Warn when of_property_read_bool()
+is used on non-boolean properties"), probing the gpcv2 device on i.MX8M
+SoCs leads to warnings when LOCKDEP is enabled.
 
-drivers/edac/ie31200_edac.c: In function 'ie31200_probe1.isra':
-drivers/edac/ie31200_edac.c:412:26: error: 'dimm_info' is used uninitialized [-Werror=uninitialized]
-  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
-      |                          ^~~~~~~~~
-drivers/edac/ie31200_edac.c:412:26: note: 'dimm_info' declared here
-  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
-      |                          ^~~~~~~~~
+Fix this by checking property presence with of_property_present as
+intended.
 
-I don't see any way the unintialized access could really happen here,
-but I can see why the compiler gets confused by the two loops.
-
-Instead, rework the two nested loops to only read the addr_decode
-registers and then keep only one instance of the dimm info structure.
-
-[Tony: Qiuxu pointed out that the "populate DIMM info" comment was left
-behind in the refactor and suggested moving it. I deleted the comment
-as unnecessry in front os a call to populate_dimm_info(). That seems
-pretty self-describing.]
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Jason Baron <jbaron@akamai.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/all/20250122065031.1321015-1-arnd@kernel.org
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.kernel.org/r/20250218-gpcv2-of-property-present-v1-1-3bb1a9789654@pengutronix.de
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/ie31200_edac.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ drivers/soc/imx/gpcv2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
-index 56be8ef40f376..e3635fba63b49 100644
---- a/drivers/edac/ie31200_edac.c
-+++ b/drivers/edac/ie31200_edac.c
-@@ -405,10 +405,9 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 	int i, j, ret;
- 	struct mem_ctl_info *mci = NULL;
- 	struct edac_mc_layer layers[2];
--	struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
- 	void __iomem *window;
- 	struct ie31200_priv *priv;
--	u32 addr_decode, mad_offset;
-+	u32 addr_decode[IE31200_CHANNELS], mad_offset;
- 
- 	/*
- 	 * Kaby Lake, Coffee Lake seem to work like Skylake. Please re-visit
-@@ -466,19 +465,10 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 		mad_offset = IE31200_MAD_DIMM_0_OFFSET;
+diff --git a/drivers/soc/imx/gpcv2.c b/drivers/soc/imx/gpcv2.c
+index 88aee59730e39..6d5b6ed36169f 100644
+--- a/drivers/soc/imx/gpcv2.c
++++ b/drivers/soc/imx/gpcv2.c
+@@ -1347,7 +1347,7 @@ static int imx_pgc_domain_probe(struct platform_device *pdev)
  	}
  
--	/* populate DIMM info */
- 	for (i = 0; i < IE31200_CHANNELS; i++) {
--		addr_decode = readl(window + mad_offset +
-+		addr_decode[i] = readl(window + mad_offset +
- 					(i * 4));
--		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode);
--		for (j = 0; j < IE31200_DIMMS_PER_CHANNEL; j++) {
--			populate_dimm_info(&dimm_info[i][j], addr_decode, j,
--					   skl);
--			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
--				 dimm_info[i][j].size,
--				 dimm_info[i][j].dual_rank,
--				 dimm_info[i][j].x16_width);
--		}
-+		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode[i]);
- 	}
+ 	if (IS_ENABLED(CONFIG_LOCKDEP) &&
+-	    of_property_read_bool(domain->dev->of_node, "power-domains"))
++	    of_property_present(domain->dev->of_node, "power-domains"))
+ 		lockdep_set_subclass(&domain->genpd.mlock, 1);
  
- 	/*
-@@ -489,14 +479,22 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 	 */
- 	for (i = 0; i < IE31200_DIMMS_PER_CHANNEL; i++) {
- 		for (j = 0; j < IE31200_CHANNELS; j++) {
-+			struct dimm_data dimm_info;
- 			struct dimm_info *dimm;
- 			unsigned long nr_pages;
- 
--			nr_pages = IE31200_PAGES(dimm_info[j][i].size, skl);
-+			populate_dimm_info(&dimm_info, addr_decode[j], i,
-+					   skl);
-+			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
-+				 dimm_info.size,
-+				 dimm_info.dual_rank,
-+				 dimm_info.x16_width);
-+
-+			nr_pages = IE31200_PAGES(dimm_info.size, skl);
- 			if (nr_pages == 0)
- 				continue;
- 
--			if (dimm_info[j][i].dual_rank) {
-+			if (dimm_info.dual_rank) {
- 				nr_pages = nr_pages / 2;
- 				dimm = edac_get_dimm(mci, (i * 2) + 1, j, 0);
- 				dimm->nr_pages = nr_pages;
+ 	ret = of_genpd_add_provider_simple(domain->dev->of_node,
 -- 
 2.39.5
 
