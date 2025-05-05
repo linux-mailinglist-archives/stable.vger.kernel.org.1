@@ -1,65 +1,87 @@
-Return-Path: <stable+bounces-139670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE827AA9141
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 12:34:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E55A2AA9143
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 12:35:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 632FB167CF8
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 10:34:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF9CF1898893
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 10:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD75B1FBE83;
-	Mon,  5 May 2025 10:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575581FF1D5;
+	Mon,  5 May 2025 10:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U9A6mbA/"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="g3PUSukw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309491CCB40
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 10:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5F818BB8E
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 10:35:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746441289; cv=none; b=NNSsom4HF0Wlmam3NtVC6KIZgfbzhTyziaf+ikSU4hnjOLGCXpOZ2Co56vH9dwQa7ZMe2peCfFC42WQomHyJg47MUaZ9tA4yNUqRW4eUtiKZu5tObkvJSplO97d0uzY0S438qeT2i6ebD/z7gycBnj/cGaAnME52Ger29jMKweM=
+	t=1746441324; cv=none; b=ctEm2mpnA+cUXn1olMUR6QX2ONlhmcfmpSCASqbqVjQqKffjzi05sRWkg9Pn2AdmNinzRIk3Xq+OzktMLYNhpmyIi9QafxabfjBZSxbU7xrxTeTT8Rxav6QMxspMTD3wG4Llh6FRMe57MwVNrWl6EmQoI6aUaNtqSunjfTwnEJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746441289; c=relaxed/simple;
-	bh=v/yNwcX6lhLlBhxnUsYnRhzKU7ef2xEUnKnL76+2OBs=;
+	s=arc-20240116; t=1746441324; c=relaxed/simple;
+	bh=DaC2vDdqmokz9Jt/U40zeutsPirki/qadpEpK5UZga8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tSaXLn6UB1humsQfYs7+iFkHYMvaxzRs6Fa62vIX4Mpc8D+veXAOpuuXQp2QXJ47ehSdeuYkpT7H8PiKZZWFSfaitU3/nttK4XrTcE53GvfGECXDWOLheQBD2yzdj5VF4HnaoMDpFCzcxyDOOo4+qivnqUZOPlkAPRA/XWA4FFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U9A6mbA/; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746441288; x=1777977288;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=v/yNwcX6lhLlBhxnUsYnRhzKU7ef2xEUnKnL76+2OBs=;
-  b=U9A6mbA/5S84HPCBePgL1CmmRdCeJOrg8p9Nvm2mw491wVCS+bIeuORT
-   PnePDzfw968q4DfqqFwYjioZIdkq+qWrZ+gRU5uIX7i59m2SnvchU6TiZ
-   rdRp3knM7BRKFxfsvjaVMnwB+wSN1TDvgKvmoBfYXH5Kh+xBEuMWcrBMf
-   DRroO49zTf6Ew3/zQTvtUGXiceIcHGY198QeLCT1nC3RqSbTzhjixwF8g
-   quJ9hRy52i2RlJOl6PNZDqJHlPbr8A2Oe43d9/PcKUyK9SppZHAF1fyk5
-   ZsiHc21bgqXTAC/ba2VDa+IrvTg1LpJxnCbI7JKZsMJWbWm/ZGvuRPshp
-   Q==;
-X-CSE-ConnectionGUID: AgohNw++SEyN52+sYjzd2A==
-X-CSE-MsgGUID: Fp3HVne8T+ai9wCqPHM2eQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11423"; a="51850247"
-X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; 
-   d="scan'208";a="51850247"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 03:34:47 -0700
-X-CSE-ConnectionGUID: 6OFLfC8dQSenj5BL696m7Q==
-X-CSE-MsgGUID: motTpRMhQr2Q4qAj0U/15w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; 
-   d="scan'208";a="135138968"
-Received: from unknown (HELO [10.245.83.192]) ([10.245.83.192])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 03:34:46 -0700
-Message-ID: <4616a3c3-fb83-4254-9ad6-17f35fc5822f@linux.intel.com>
-Date: Mon, 5 May 2025 12:34:43 +0200
+	 In-Reply-To:Content-Type; b=bMelXqCF2L3pcCVEB2SkC+c286AJQhdnGod+x7meDwusZrfsCENfvUvTXwnIUv5OB3T25KiZRYtjBOCbLyj5h1qpz5ZhYj2wrGI8eukurBVOE4obRF3I4qrdbLLatCMrFfswGZNpwBrzi+gIMZhXdqb//TPoAsYjqaJ06CEQUMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=g3PUSukw; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5453NIEc010458
+	for <stable@vger.kernel.org>; Mon, 5 May 2025 10:35:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	mzndjCg+e2OPuoc9rAF/IaDWFAfTk+vHxfMSSvYANmI=; b=g3PUSukwQcumUQ4W
+	hpzGmBY1y8ZIOFAs1AI7ul4kpiFVp9AusLV6bWWe06IKm0C948aSuV2Gh82W2dV/
+	PyZJOc25/WBfqwSAp0DtZDZV6jm3e/D1pKWFUQKyRediGofam3Vaxzuf0kuJPmnB
+	Lz9y1kEmtzmDhpORXn+HFWtXmrAeFf5KrkKcJV9qYbaVYDCwn5SaDdhxjWdQ1QFq
+	uEJXKnO2b3I/mOFa57Gcv3dNXzo/5NwkpA4VHCmjGf8dyMdJhvsYGA7i0J/RG1x4
+	YXCrkAiYF0aOQdJhNkn+nd34jmD89CrrVwbTdVGvArsBqb1y3B2MSJebe06a0e/5
+	GQV7MQ==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46dce9bq1m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 05 May 2025 10:35:21 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-b115383fcecso2500505a12.1
+        for <stable@vger.kernel.org>; Mon, 05 May 2025 03:35:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746441320; x=1747046120;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mzndjCg+e2OPuoc9rAF/IaDWFAfTk+vHxfMSSvYANmI=;
+        b=NL6strcfl8Qhm5gVbhceQlXI736mZFzupTUN/r0Sci0cdgjSxoTW/9EmbzmfOWbkUd
+         Ix6NBrFR1ZXQ2NcgjfdBTg5zgv3DuK6Ne+ehy8YqC0spRSstSVr6a5DeVUR7VTped30e
+         uMLW3VaJkI5NcdNckGING2jsliGWWtm3h6nLp4qlRiJBOkdKUPyeu/9igfDCRys0M24B
+         3pjGjJD8MHfrNJTR+HX4ad/+8dQRN1Mn8fB3KyLs8tge2oO/X6hrZ0jbpDJdoLxzq1Uy
+         9rvl0Fv6YYiwimKFOUn9qddMGA07YaBEVCysuKVK2C0H4Ec5RZC3hx6feYSGXVwkXOhw
+         1trw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJtDOvZQ0F4G9/zlu0inDacE+90VE6+5JaM2O6XVQ+rOBnh7WZgcErkWZVvUN6SMroBaVDMn8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymfUmnqZudpXDLUmxQiK8XqybbEfPUe+4FNDLuppdQaxNJLz5B
+	7CvXjeZNsNUGBt53JOl0gxkzieqDNfddyIpxz0vFH6fZ4T/UgJ+iRKquqPDvrGP8sDab1IrQiYi
+	Rm7Zp8feuhQQvuLX2TiuZs8zDkpI6BSWciXKlRN7nrJXf9dBe7NLhroq/GQ75Iak=
+X-Gm-Gg: ASbGnctzSZuKywukuhIYunWeod9SRjLjI4l1ZqhcDMa/hDlpD4c0GDmWXZKQ7OlC2di
+	e8FdBqCUcaV6NikfawIJ5E61+uzBXkOLsidoOFSQYQIOm4OFEnYOICXhDkF40acywojIM2ezUeW
+	odBE/Y35x6aP4hnDrGjM3+C32NuSPgkRhMpHlu4/csAtx9cHCeq3iam+3LBtqfLm+bKTeRwhwD8
+	bn/+3M8zbsh92NZYuIGmDdtRsyijsFGnMukP+6Tr+ZEDTXqv/fGMx7i1sLC/kik0OIL5nMS2SqN
+	jjeSCm/4bA4uhI4vrm6dvnnZYyieai1EUdUF9OVi12LJaZhY6loh
+X-Received: by 2002:a05:6a20:7d9b:b0:1f5:6878:1a43 with SMTP id adf61e73a8af0-20cde85d355mr16144498637.14.1746441320567;
+        Mon, 05 May 2025 03:35:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHP03PciZv8s1ToFZ5GwS61QgMF+GczmQXsLG40quiJUaX2iw5O5dKsziticwj7Edr0uWka/A==
+X-Received: by 2002:a05:6a20:7d9b:b0:1f5:6878:1a43 with SMTP id adf61e73a8af0-20cde85d355mr16144478637.14.1746441320214;
+        Mon, 05 May 2025 03:35:20 -0700 (PDT)
+Received: from [10.151.37.217] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74058d7a225sm6379719b3a.23.2025.05.05.03.35.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 May 2025 03:35:19 -0700 (PDT)
+Message-ID: <15f4021a-821b-4a5d-8873-8eb8f59484e2@oss.qualcomm.com>
+Date: Mon, 5 May 2025 16:05:15 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,67 +89,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] accel/ivpu: Abort all jobs after command queue
- unregister
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Karol Wachowski <karol.wachowski@intel.com>
-References: <20250430124819.3761263-1-jacek.lawrynowicz@linux.intel.com>
- <20250430124819.3761263-6-jacek.lawrynowicz@linux.intel.com>
- <2025050504-change-ignore-e99d@gregkh>
+Subject: Re: [PATCH] arm64: dts: qcom: ipq5424: fix MSI base vector interrupt
+ number
 Content-Language: en-US
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <2025050504-change-ignore-e99d@gregkh>
-Content-Type: text/plain; charset=UTF-8
+To: Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Sricharan Ramabadhran <quic_srichara@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Vignesh Viswanathan
+ <quic_viswanat@quicinc.com>,
+        stable@vger.kernel.org
+References: <20250505-msi-vector-v1-1-559b0e224b2d@oss.qualcomm.com>
+From: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
+In-Reply-To: <20250505-msi-vector-v1-1-559b0e224b2d@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA1MDEwMCBTYWx0ZWRfXw64Y/yJMVgzZ
+ jzD0CRgkOAdAadaRvS2MrkJRzrSOE9vwiB7ETpBHUlLXQXpn56qkWON9HHU91nW282T8gvPe2xn
+ yPGRlsXFgQ2xNAiqrMcLR+3cq2jrBoQNVRqxwtYcASv2Raxf2EVREDwRQDF4V3ppDL7yn7EwP9x
+ iPSWbGyiRXKG4W7e/9o04khHWtv2sNZMx+dzYPfiFCCgTM/Qs/XNZQIQ48FcQ8mdcx5M5HpsE0n
+ SQQEo7t/BUS7EODcZ/okb7Lfw0MIBxysb7bk0r2m92qleHCPd36qPq80vvOE0yY5DKKhwAywpAL
+ VbU52y1WZsGbw6L1JnidAprhlNPyuAlkUg7PZppw0s5Xtdl9EmqGGI6BOXFd0edlATg+leb3Vpb
+ 9jqfcZ0Ok1crNc4nXF3iH8U0A8zvTgKYdaCuUANH9fGLDAwDX23AheDGuUGhxpeBcKKCK5BG
+X-Proofpoint-ORIG-GUID: JuJdWrXzjwLRctkt4Iousm0EQYO29B7A
+X-Authority-Analysis: v=2.4 cv=Qope3Uyd c=1 sm=1 tr=0 ts=68189469 cx=c_pps
+ a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=rSoPyq_vb_VxFnRLzkQA:9 a=QEXdDO2ut3YA:10
+ a=_Vgx9l1VpLgwpw_dHYaR:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: JuJdWrXzjwLRctkt4Iousm0EQYO29B7A
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-05_05,2025-04-30_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 priorityscore=1501 mlxscore=0 adultscore=0 clxscore=1015
+ malwarescore=0 bulkscore=0 suspectscore=0 impostorscore=0 phishscore=0
+ mlxlogscore=714 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505050100
 
-Hi,
 
-On 5/5/2025 8:03 AM, Greg KH wrote:
-> On Wed, Apr 30, 2025 at 02:48:17PM +0200, Jacek Lawrynowicz wrote:
->> From: Karol Wachowski <karol.wachowski@intel.com>
->>
->> commit 5bbccadaf33eea2b879d8326ad59ae0663be47d1 upstream.
->>
->> With hardware scheduler it is not expected to receive JOB_DONE
->> notifications from NPU FW for the jobs aborted due to command queue destroy
->> JSM command.
->>
->> Remove jobs submitted to unregistered command queue from submitted_jobs_xa
->> to avoid triggering a TDR in such case.
->>
->> Add explicit submitted_jobs_lock that protects access to list of submitted
->> jobs which is now used to find jobs to abort.
->>
->> Move context abort procedure to separate work queue not to slow down
->> handling of IPCs or DCT requests in case where job abort takes longer,
->> especially when destruction of the last job of a specific context results
->> in context release.
->>
->> Cc: <stable@vger.kernel.org> # v6.12
->> Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
->> Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
->> Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
->> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
->> Link: https://patchwork.freedesktop.org/patch/msgid/20250107173238.381120-4-maciej.falkowski@linux.intel.com
->> ---
->>  drivers/accel/ivpu/ivpu_drv.c   | 32 +++----------
->>  drivers/accel/ivpu/ivpu_drv.h   |  2 +
->>  drivers/accel/ivpu/ivpu_job.c   | 82 +++++++++++++++++++++++++--------
->>  drivers/accel/ivpu/ivpu_job.h   |  1 +
->>  drivers/accel/ivpu/ivpu_mmu.c   |  3 +-
->>  drivers/accel/ivpu/ivpu_sysfs.c |  5 +-
->>  6 files changed, 77 insertions(+), 48 deletions(-)
-> 
-> Again, this is different from the original, so please document it as
-> such.
-> 
-> Please fix up both backported series of patches and resubmit a v2 of
-> them.
+On 5/5/2025 3:29 PM, Kathiravan Thirumoorthy wrote:
+> From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+>
+> As per the hardware design, MSI interrupt starts from 704. Fix the same.
 
-Sure, I've added descriptions of changes to commit messages and resubmitted the patchsets as v2.
 
-Regards
+Please ignore this patch. There has been some confusion.
 
+
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 1a91d2a6021e ("arm64: dts: qcom: add IPQ5424 SoC and rdp466 board support")
+> Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+> Signed-off-by: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
+> ---
+>   arch/arm64/boot/dts/qcom/ipq5424.dtsi | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/boot/dts/qcom/ipq5424.dtsi b/arch/arm64/boot/dts/qcom/ipq5424.dtsi
+> index 5d6ed2172b1bb0a57c593f121f387ec917f42419..7a2e5c89b26ad8010f158be6f052b307e8a32fb5 100644
+> --- a/arch/arm64/boot/dts/qcom/ipq5424.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/ipq5424.dtsi
+> @@ -371,7 +371,7 @@ intc: interrupt-controller@f200000 {
+>   			#redistributor-regions = <1>;
+>   			redistributor-stride = <0x0 0x20000>;
+>   			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
+> -			mbi-ranges = <672 128>;
+> +			mbi-ranges = <704 128>;
+>   			msi-controller;
+>   		};
+>   
+>
+> ---
+> base-commit: 407f60a151df3c44397e5afc0111eb9b026c38d3
+> change-id: 20250505-msi-vector-f0dcd22233d9
+>
+> Best regards,
 
