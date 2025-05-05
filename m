@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-141105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13483AAB0A2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:43:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B94AAAE11
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:49:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 394BE7B1267
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:40:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F28FF5A18C0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D5631A0C6;
-	Tue,  6 May 2025 00:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511B9370B1B;
+	Mon,  5 May 2025 22:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mIRXy51k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gwV3ah0g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3211029AAF5;
-	Mon,  5 May 2025 22:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5A029B22B;
+	Mon,  5 May 2025 22:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485076; cv=none; b=dTDZ7R+tIlZZCKuvoXFkwUp+Enf6l3xi3flOP2mVuoYou7E5iOEewFUuk04XTRTL1k79VCm2uTk+umuthR4P7cwPcKOxOolEVYjzBLMoNyaQA4Q8Qvh6ZEfCw6uDlkEr+JDV7dPyCGPBRM5pMF8gsD3DiN5UMrIrXldMHJCAzV4=
+	t=1746485078; cv=none; b=nLHJ9oFQ4NcvyFOq860xCOA26BCYYAMUdrATBFi4xjpXc0CEvJrdFt+dKVkaDXWpRHHibOrt/JjJP6lXm0Y36rhtOzhqxEIbh6ozZw1h8t4/XnCKikYKdmC5WQLZ8XpgWT68lCCgxPIpHrmcOQ7khjf7yjupdQiWQbUO+UZIg3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485076; c=relaxed/simple;
-	bh=wOu7wKLs1vsRiMPFnLYhaedB4hJlgXEYCm1Jz72cGMc=;
+	s=arc-20240116; t=1746485078; c=relaxed/simple;
+	bh=pG9jfuldlO2800hDmNAh2x2uJRK3w7OEvUGwAG1O76k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L3VyfqHH+pPCP7WNbejuERWG8PfIt3tt5WEfC/BxfNrKC/cd3BCqkrm+yxLG9Exv3k0bxv8/2IzC5UT974Rwm9zUL4HqsQZDp+8FfcxG+Qk38khs07wffbWxsX6Za4DBNLCK0RprGCJIXOY638bav0Wo5ad/C62XWIurh9p6SHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mIRXy51k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18695C4CEED;
-	Mon,  5 May 2025 22:44:35 +0000 (UTC)
+	 MIME-Version; b=pzoq715h5ejH5pwJnvmUab1uGV2yyOH0wCNjsd7CM7QuirBGimFkjC/+GWJNSW0/bboaCPuYwMI0rLqhnwQPSErYdAH8pioTPU+IE3C+Z1G0rDXKllmZ2oLZZLhjvz0OyesMRXaiTBrSK483NgdFmaEQduua5VIgBrvvpqG8yUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gwV3ah0g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99064C4CEED;
+	Mon,  5 May 2025 22:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485076;
-	bh=wOu7wKLs1vsRiMPFnLYhaedB4hJlgXEYCm1Jz72cGMc=;
+	s=k20201202; t=1746485077;
+	bh=pG9jfuldlO2800hDmNAh2x2uJRK3w7OEvUGwAG1O76k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mIRXy51k2FBwLF0M+vHJZ1kJuK18Ui2PsETl+9T6vU/AJd9Ec2t8cUj5IHDb/KGaR
-	 Pco3l/OBztWihzHISkSHBx4e/xwKlUrZBali58gzgTMPZKrQla86jrazD2CxGLKmbR
-	 IClv0Q2/LvNeJ0CG2ZiRL1UVRPCsGlnfXowhy1Xn4mwg/mpFO9goHlxx+R7qKbVOM7
-	 ETKNY1m8T0MJ1F5B+xHlo+2TWEDJIG3QaPupLv6+SzFNSSpn5e0PoJpVc9NRamtAcR
-	 xCPSFqUHMV5Kp8BvBSFzvaZtUni7yrw5kGJe+l4RSBrfOPgh7a6+56f83TddobKXlI
-	 OC1M0sOyABGOw==
+	b=gwV3ah0gm8yL4fRrYi9b8YjZALjLF4ec29m5ehs7ejuVGbJfiwZu/X8TZkcU+hIZs
+	 Rl7/GyZPs8M7kZ1vzUVTEBMijiERoRPVUcO81zwB4xxWPnZGW4iyoUzEkRHbHeUntT
+	 a1T1WEHjoM5t5i1caSqMCfUfvBTELgQOGPLKsYUxjBXDdrLglRqSJNsshwRrU/0yZL
+	 MRNb8SLAeJOQ0PQvCLHoaY5tF8SA0PXL96+xkCl1UKWO/2whLsQwgAwBEfRwZSwz7L
+	 R4vaKarxlzFw7MnmhrYF4STPWkZrR4FmjaLGWiuD7ialfhQk+fxOmdCpafrnFkeC/N
+	 zVKIRjN8CyXDA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 154/486] wifi: cfg80211: allow IR in 20 MHz configurations
-Date: Mon,  5 May 2025 18:33:50 -0400
-Message-Id: <20250505223922.2682012-154-sashal@kernel.org>
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 155/486] ipv6: save dontfrag in cork
+Date: Mon,  5 May 2025 18:33:51 -0400
+Message-Id: <20250505223922.2682012-155-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,197 +69,101 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit cf4bd1608882792d4742e27a819493312904a680 ]
+[ Upstream commit a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a ]
 
-Some regulatory bodies doesn't allow IR (initiate radioation) on a
-specific subband, but allows it for channels with a bandwidth of 20 MHz.
-Add a channel flag that indicates that, and consider it in
-cfg80211_reg_check_beaconing.
+When spanning datagram construction over multiple send calls using
+MSG_MORE, per datagram settings are configured on the first send.
 
-While on it, fix the kernel doc of enum nl80211_reg_rule_flags and
-change it to use BIT().
+That is when ip(6)_setup_cork stores these settings for subsequent use
+in __ip(6)_append_data and others.
 
-Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Co-developed-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
-Signed-off-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250308225541.d3ab352a73ff.I8a8f79e1c9eb74936929463960ee2a324712fe51@changeid
-[fix typo]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The only flag that escaped this was dontfrag. As a result, a datagram
+could be constructed with df=0 on the first sendmsg, but df=1 on a
+next. Which is what cmsg_ip.sh does in an upcoming MSG_MORE test in
+the "diff" scenario.
+
+Changing datagram conditions in the middle of constructing an skb
+makes this already complex code path even more convoluted. It is here
+unintentional. Bring this flag in line with expected sockopt/cmsg
+behavior.
+
+And stop passing ipc6 to __ip6_append_data, to avoid such issues
+in the future. This is already the case for __ip_append_data.
+
+inet6_cork had a 6 byte hole, so the 1B flag has no impact.
+
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250307033620.411611-3-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/cfg80211.h       |  3 +++
- include/uapi/linux/nl80211.h | 52 ++++++++++++++++++++----------------
- net/wireless/chan.c          |  8 +++++-
- net/wireless/nl80211.c       |  4 +++
- net/wireless/reg.c           |  4 ++-
- 5 files changed, 46 insertions(+), 25 deletions(-)
+ include/linux/ipv6.h  | 1 +
+ net/ipv6/ip6_output.c | 9 +++++----
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 941dc62f3027c..8a712ca73f2b0 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -127,6 +127,8 @@ struct wiphy;
-  *	even if it is otherwise disabled.
-  * @IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP: Allow using this channel for AP operation
-  *	with very low power (VLP), even if otherwise set to NO_IR.
-+ * @IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY: Allow activity on a 20 MHz channel,
-+ *	even if otherwise set to NO_IR.
-  */
- enum ieee80211_channel_flags {
- 	IEEE80211_CHAN_DISABLED			= BIT(0),
-@@ -155,6 +157,7 @@ enum ieee80211_channel_flags {
- 	IEEE80211_CHAN_NO_6GHZ_AFC_CLIENT	= BIT(23),
- 	IEEE80211_CHAN_CAN_MONITOR		= BIT(24),
- 	IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP	= BIT(25),
-+	IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY     = BIT(26),
+diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
+index a6e2aadbb91bd..5aeeed22f35bf 100644
+--- a/include/linux/ipv6.h
++++ b/include/linux/ipv6.h
+@@ -207,6 +207,7 @@ struct inet6_cork {
+ 	struct ipv6_txoptions *opt;
+ 	u8 hop_limit;
+ 	u8 tclass;
++	u8 dontfrag:1;
  };
  
- #define IEEE80211_CHAN_NO_HT40 \
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index f97f5adc8d518..c2d7faf8d87fa 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4294,6 +4294,8 @@ enum nl80211_wmm_rule {
-  *	otherwise completely disabled.
-  * @NL80211_FREQUENCY_ATTR_ALLOW_6GHZ_VLP_AP: This channel can be used for a
-  *	very low power (VLP) AP, despite being NO_IR.
-+ * @NL80211_FREQUENCY_ATTR_ALLOW_20MHZ_ACTIVITY: This channel can be active in
-+ *	20 MHz bandwidth, despite being NO_IR.
-  * @NL80211_FREQUENCY_ATTR_MAX: highest frequency attribute number
-  *	currently defined
-  * @__NL80211_FREQUENCY_ATTR_AFTER_LAST: internal use
-@@ -4338,6 +4340,7 @@ enum nl80211_frequency_attr {
- 	NL80211_FREQUENCY_ATTR_NO_6GHZ_AFC_CLIENT,
- 	NL80211_FREQUENCY_ATTR_CAN_MONITOR,
- 	NL80211_FREQUENCY_ATTR_ALLOW_6GHZ_VLP_AP,
-+	NL80211_FREQUENCY_ATTR_ALLOW_20MHZ_ACTIVITY,
- 
- 	/* keep last */
- 	__NL80211_FREQUENCY_ATTR_AFTER_LAST,
-@@ -4549,31 +4552,34 @@ enum nl80211_sched_scan_match_attr {
-  * @NL80211_RRF_NO_6GHZ_AFC_CLIENT: Client connection to AFC AP not allowed
-  * @NL80211_RRF_ALLOW_6GHZ_VLP_AP: Very low power (VLP) AP can be permitted
-  *	despite NO_IR configuration.
-+ * @NL80211_RRF_ALLOW_20MHZ_ACTIVITY: Allow activity in 20 MHz bandwidth,
-+ *	despite NO_IR configuration.
-  */
- enum nl80211_reg_rule_flags {
--	NL80211_RRF_NO_OFDM		= 1<<0,
--	NL80211_RRF_NO_CCK		= 1<<1,
--	NL80211_RRF_NO_INDOOR		= 1<<2,
--	NL80211_RRF_NO_OUTDOOR		= 1<<3,
--	NL80211_RRF_DFS			= 1<<4,
--	NL80211_RRF_PTP_ONLY		= 1<<5,
--	NL80211_RRF_PTMP_ONLY		= 1<<6,
--	NL80211_RRF_NO_IR		= 1<<7,
--	__NL80211_RRF_NO_IBSS		= 1<<8,
--	NL80211_RRF_AUTO_BW		= 1<<11,
--	NL80211_RRF_IR_CONCURRENT	= 1<<12,
--	NL80211_RRF_NO_HT40MINUS	= 1<<13,
--	NL80211_RRF_NO_HT40PLUS		= 1<<14,
--	NL80211_RRF_NO_80MHZ		= 1<<15,
--	NL80211_RRF_NO_160MHZ		= 1<<16,
--	NL80211_RRF_NO_HE		= 1<<17,
--	NL80211_RRF_NO_320MHZ		= 1<<18,
--	NL80211_RRF_NO_EHT		= 1<<19,
--	NL80211_RRF_PSD			= 1<<20,
--	NL80211_RRF_DFS_CONCURRENT	= 1<<21,
--	NL80211_RRF_NO_6GHZ_VLP_CLIENT	= 1<<22,
--	NL80211_RRF_NO_6GHZ_AFC_CLIENT	= 1<<23,
--	NL80211_RRF_ALLOW_6GHZ_VLP_AP	= 1<<24,
-+	NL80211_RRF_NO_OFDM                 = 1 << 0,
-+	NL80211_RRF_NO_CCK                  = 1 << 1,
-+	NL80211_RRF_NO_INDOOR               = 1 << 2,
-+	NL80211_RRF_NO_OUTDOOR              = 1 << 3,
-+	NL80211_RRF_DFS                     = 1 << 4,
-+	NL80211_RRF_PTP_ONLY                = 1 << 5,
-+	NL80211_RRF_PTMP_ONLY               = 1 << 6,
-+	NL80211_RRF_NO_IR                   = 1 << 7,
-+	__NL80211_RRF_NO_IBSS               = 1 << 8,
-+	NL80211_RRF_AUTO_BW                 = 1 << 11,
-+	NL80211_RRF_IR_CONCURRENT           = 1 << 12,
-+	NL80211_RRF_NO_HT40MINUS            = 1 << 13,
-+	NL80211_RRF_NO_HT40PLUS             = 1 << 14,
-+	NL80211_RRF_NO_80MHZ                = 1 << 15,
-+	NL80211_RRF_NO_160MHZ               = 1 << 16,
-+	NL80211_RRF_NO_HE                   = 1 << 17,
-+	NL80211_RRF_NO_320MHZ               = 1 << 18,
-+	NL80211_RRF_NO_EHT                  = 1 << 19,
-+	NL80211_RRF_PSD                     = 1 << 20,
-+	NL80211_RRF_DFS_CONCURRENT          = 1 << 21,
-+	NL80211_RRF_NO_6GHZ_VLP_CLIENT      = 1 << 22,
-+	NL80211_RRF_NO_6GHZ_AFC_CLIENT      = 1 << 23,
-+	NL80211_RRF_ALLOW_6GHZ_VLP_AP       = 1 << 24,
-+	NL80211_RRF_ALLOW_20MHZ_ACTIVITY    = 1 << 25,
- };
- 
- #define NL80211_RRF_PASSIVE_SCAN	NL80211_RRF_NO_IR
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index e579d7e1425fe..c4f3fefeb3544 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -6,7 +6,7 @@
-  *
-  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-- * Copyright 2018-2024	Intel Corporation
-+ * Copyright 2018-2025	Intel Corporation
-  */
- 
- #include <linux/export.h>
-@@ -1621,6 +1621,12 @@ bool cfg80211_reg_check_beaconing(struct wiphy *wiphy,
- 	if (cfg->reg_power == IEEE80211_REG_VLP_AP)
- 		permitting_flags |= IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP;
- 
-+	if ((cfg->iftype == NL80211_IFTYPE_P2P_GO ||
-+	     cfg->iftype == NL80211_IFTYPE_AP) &&
-+	    (chandef->width == NL80211_CHAN_WIDTH_20_NOHT ||
-+	     chandef->width == NL80211_CHAN_WIDTH_20))
-+		permitting_flags |= IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY;
-+
- 	return _cfg80211_reg_can_beacon(wiphy, chandef, cfg->iftype,
- 					check_no_ir ? IEEE80211_CHAN_NO_IR : 0,
- 					permitting_flags);
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index ecfceddce00fc..c778ffa1c8efd 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -1213,6 +1213,10 @@ static int nl80211_msg_put_channel(struct sk_buff *msg, struct wiphy *wiphy,
- 		if ((chan->flags & IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP) &&
- 		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_ALLOW_6GHZ_VLP_AP))
- 			goto nla_put_failure;
-+		if ((chan->flags & IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY) &&
-+		    nla_put_flag(msg,
-+				 NL80211_FREQUENCY_ATTR_ALLOW_20MHZ_ACTIVITY))
-+			goto nla_put_failure;
+ /* struct ipv6_pinfo - ipv6 private area */
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 434ddf263b88a..89a61e040e6a1 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1386,6 +1386,7 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
  	}
+ 	v6_cork->hop_limit = ipc6->hlimit;
+ 	v6_cork->tclass = ipc6->tclass;
++	v6_cork->dontfrag = ipc6->dontfrag;
+ 	if (rt->dst.flags & DST_XFRM_TUNNEL)
+ 		mtu = READ_ONCE(np->pmtudisc) >= IPV6_PMTUDISC_PROBE ?
+ 		      READ_ONCE(rt->dst.dev->mtu) : dst_mtu(&rt->dst);
+@@ -1417,7 +1418,7 @@ static int __ip6_append_data(struct sock *sk,
+ 			     int getfrag(void *from, char *to, int offset,
+ 					 int len, int odd, struct sk_buff *skb),
+ 			     void *from, size_t length, int transhdrlen,
+-			     unsigned int flags, struct ipcm6_cookie *ipc6)
++			     unsigned int flags)
+ {
+ 	struct sk_buff *skb, *skb_prev = NULL;
+ 	struct inet_cork *cork = &cork_full->base;
+@@ -1471,7 +1472,7 @@ static int __ip6_append_data(struct sock *sk,
+ 	if (headersize + transhdrlen > mtu)
+ 		goto emsgsize;
  
- 	if (nla_put_u32(msg, NL80211_FREQUENCY_ATTR_MAX_TX_POWER,
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 2b626078739c5..f6846eb0f4b84 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -5,7 +5,7 @@
-  * Copyright 2008-2011	Luis R. Rodriguez <mcgrof@qca.qualcomm.com>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright      2017  Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2024 Intel Corporation
-+ * Copyright (C) 2018 - 2025 Intel Corporation
-  *
-  * Permission to use, copy, modify, and/or distribute this software for any
-  * purpose with or without fee is hereby granted, provided that the above
-@@ -1603,6 +1603,8 @@ static u32 map_regdom_flags(u32 rd_flags)
- 		channel_flags |= IEEE80211_CHAN_PSD;
- 	if (rd_flags & NL80211_RRF_ALLOW_6GHZ_VLP_AP)
- 		channel_flags |= IEEE80211_CHAN_ALLOW_6GHZ_VLP_AP;
-+	if (rd_flags & NL80211_RRF_ALLOW_20MHZ_ACTIVITY)
-+		channel_flags |= IEEE80211_CHAN_ALLOW_20MHZ_ACTIVITY;
- 	return channel_flags;
+-	if (cork->length + length > mtu - headersize && ipc6->dontfrag &&
++	if (cork->length + length > mtu - headersize && v6_cork->dontfrag &&
+ 	    (sk->sk_protocol == IPPROTO_UDP ||
+ 	     sk->sk_protocol == IPPROTO_ICMPV6 ||
+ 	     sk->sk_protocol == IPPROTO_RAW)) {
+@@ -1843,7 +1844,7 @@ int ip6_append_data(struct sock *sk,
+ 
+ 	return __ip6_append_data(sk, &sk->sk_write_queue, &inet->cork,
+ 				 &np->cork, sk_page_frag(sk), getfrag,
+-				 from, length, transhdrlen, flags, ipc6);
++				 from, length, transhdrlen, flags);
  }
+ EXPORT_SYMBOL_GPL(ip6_append_data);
  
+@@ -2048,7 +2049,7 @@ struct sk_buff *ip6_make_skb(struct sock *sk,
+ 	err = __ip6_append_data(sk, &queue, cork, &v6_cork,
+ 				&current->task_frag, getfrag, from,
+ 				length + exthdrlen, transhdrlen + exthdrlen,
+-				flags, ipc6);
++				flags);
+ 	if (err) {
+ 		__ip6_flush_pending_frames(sk, &queue, cork, &v6_cork);
+ 		return ERR_PTR(err);
 -- 
 2.39.5
 
