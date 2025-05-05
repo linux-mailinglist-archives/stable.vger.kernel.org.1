@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-141729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5871FAAB7BA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:17:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F421AAB82A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAA027B0EBF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:15:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDAC03B0D76
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B013F4AE9F3;
-	Tue,  6 May 2025 00:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BCC4B0017;
+	Tue,  6 May 2025 00:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K8of1/Qn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j55qTF6Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B112857F2;
-	Mon,  5 May 2025 23:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EB63BEEC7;
+	Mon,  5 May 2025 23:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487391; cv=none; b=M87lIkG41kpRDGaB7twZPIO5dt+1ipvfMbZBqbjqklNua6q8G8yWPSWt9scCMuPr/YnPZRRdmGqy/Tlx4IIL/Cr5cZfLE/+FFq6t53VBJEOg91iHpsFvWscWg73YZy4TtrqcxdydG7LD0dXjCEMkWDD+tbweYh+5jrlj5/akfyk=
+	t=1746487418; cv=none; b=GWpknKurrV9RCkFj1jLFS/9oJjCpbYfZHRUMpnpuaLJTfFQ3majxVkIMGMAj85+fqhOUvxIPd1nMo9eyoeCLGLwDgoWBzFigY5RygBETvfpwx6nptYJavZPcZc50O/qjEzXcPxt6zv2pihjDGMC8o6jz8qXxZriOKkJmSjANb1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487391; c=relaxed/simple;
-	bh=ZTd19gbXMM2JQclcAhf5+lMh4BnjWdzATH/0xqyENVQ=;
+	s=arc-20240116; t=1746487418; c=relaxed/simple;
+	bh=ymRGSnOUYCVaT5kFAkKEB47zA5IKBa3/u2yKaN1wEKk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mkUq2/GeEWhf9xwBH+k+TaooGgsRDgTSmhgHT8kZdAOjIaj7DNV2F61qirb2zCFdLto89rK/HArBABRQk4SLcTD7UrZg2mKrDH3NtLVnTSJdhBZ6/+Dq3LuTiqyImVeqSD0kFoxP5pI30vtFmDPIhgWYaC/JDchvo+ij+6CkbJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K8of1/Qn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C4BC4CEED;
-	Mon,  5 May 2025 23:23:08 +0000 (UTC)
+	 MIME-Version; b=JvDLfRVeVSztlKgXm9myeKpg2YdZIUHkOyXYA/eY0L9dHzg8CwomznQU2E1bdFBdm6dGPDVzzhhcVWeOmTbQi4Uy0NmM/VtcVngG5ZXOQ5lI5tgqzf3RUecirFivqxNOF5meJw/PBPTcAR5zv+DLRG/JZkqQLijNBiXkE2W0XQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j55qTF6Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68AE7C4CEEE;
+	Mon,  5 May 2025 23:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487390;
-	bh=ZTd19gbXMM2JQclcAhf5+lMh4BnjWdzATH/0xqyENVQ=;
+	s=k20201202; t=1746487417;
+	bh=ymRGSnOUYCVaT5kFAkKEB47zA5IKBa3/u2yKaN1wEKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K8of1/QnETwh2G6emZTS5Kjumpl9s4leY8+dd48Nkq+nui4hfog3uPsulojWPOEZQ
-	 BFdWHNiBXlq5vKPvd5tKA1lQZNqH4709wljvm9jfvHskjz0biZo7iTCfSOCkb7JuR/
-	 WGeYtiM0LSqMZEwUCwod3PeiEH44BNzyokXFJmxSXFp+R3au0gQsG5miJ4BqfIUOXX
-	 xLVergjah0ZLzBw6/wPjbzKe78jS2YTZTF/u+4wv9xpj5oyizmRE6hn9akvAA30fU8
-	 H000HzGcNjSS/zt28kcibNztlbtEQpKrH4ZwegRpoEN5Fi81VyFSPbe+1t2arT/969
-	 yONhCnaXl2riA==
+	b=j55qTF6Y4HJZBDKg7HR+pjgqorfAl3PHK56g1m/R12JPQnBz9bmpfrGsO6Dhyqe7Z
+	 ApUyDSwf7tE+wXiwi9ujTeMHFSKFYwtOd5rah/QD67XhIc+XRlVMhGTz8sP9wEClvT
+	 DFCt47XSsWykex35BhOPbunJD/eG091Z5ED51yszrLeAH9w9dmbdZm/g52JGEu30YD
+	 aP3ZRfkgBzKLwkfStkfmjm7VGQ+4Pe2FnkKvHMTUKaixnPwixBMJXeNVzCncIQWjkE
+	 OorRuOFruKmn3BK9dHbTa+CVCkoOkLsD0wxni40e8Iz3TV6AhBjvOXO2gGezhV7FsC
+	 vWBXmf+O+FxYQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+Cc: Kees Cook <kees@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jv@jvosburgh.net,
+	tariqt@nvidia.com,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 44/79] bonding: report duplicate MAC address in all situations
-Date: Mon,  5 May 2025 19:21:16 -0400
-Message-Id: <20250505232151.2698893-44-sashal@kernel.org>
+	yishaih@nvidia.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 60/79] net/mlx4_core: Avoid impossible mlx4_db_alloc() order value
+Date: Mon,  5 May 2025 19:21:32 -0400
+Message-Id: <20250505232151.2698893-60-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -66,48 +67,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 28d68d396a1cd21591e8c6d74afbde33a7ea107e ]
+[ Upstream commit 4a6f18f28627e121bd1f74b5fcc9f945d6dbeb1e ]
 
-Normally, a bond uses the MAC address of the first added slave as the bond’s
-MAC address. And the bond will set active slave’s MAC address to bond’s
-address if fail_over_mac is set to none (0) or follow (2).
+GCC can see that the value range for "order" is capped, but this leads
+it to consider that it might be negative, leading to a false positive
+warning (with GCC 15 with -Warray-bounds -fdiagnostics-details):
 
-When the first slave is removed, the bond will still use the removed slave’s
-MAC address, which can lead to a duplicate MAC address and potentially cause
-issues with the switch. To avoid confusion, let's warn the user in all
-situations, including when fail_over_mac is set to 2 or not in active-backup
-mode.
+../drivers/net/ethernet/mellanox/mlx4/alloc.c:691:47: error: array subscript -1 is below array bounds of 'long unsigned int *[2]' [-Werror=array-bounds=]
+  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);
+      |                                    ~~~~~~~~~~~^~~
+  'mlx4_alloc_db_from_pgdir': events 1-2
+  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);                        |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                     |                         |                                                   |                     |                         (2) out of array bounds here
+      |                     (1) when the condition is evaluated to true                             In file included from ../drivers/net/ethernet/mellanox/mlx4/mlx4.h:53,
+                 from ../drivers/net/ethernet/mellanox/mlx4/alloc.c:42:
+../include/linux/mlx4/device.h:664:33: note: while referencing 'bits'
+  664 |         unsigned long          *bits[2];
+      |                                 ^~~~
 
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250225033914.18617-1-liuhangbin@gmail.com
+Switch the argument to unsigned int, which removes the compiler needing
+to consider negative values.
+
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://patch.msgid.link/20250210174504.work.075-kees@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx4/alloc.c | 6 +++---
+ include/linux/mlx4/device.h                | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 89797b2575733..3b235a269c1b8 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1954,7 +1954,7 @@ static int __bond_release_one(struct net_device *bond_dev,
+diff --git a/drivers/net/ethernet/mellanox/mlx4/alloc.c b/drivers/net/ethernet/mellanox/mlx4/alloc.c
+index b330020dc0d67..f2bded847e61d 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/alloc.c
++++ b/drivers/net/ethernet/mellanox/mlx4/alloc.c
+@@ -682,9 +682,9 @@ static struct mlx4_db_pgdir *mlx4_alloc_db_pgdir(struct device *dma_device)
+ }
  
- 	RCU_INIT_POINTER(bond->current_arp_slave, NULL);
+ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
+-				    struct mlx4_db *db, int order)
++				    struct mlx4_db *db, unsigned int order)
+ {
+-	int o;
++	unsigned int o;
+ 	int i;
  
--	if (!all && (!bond->params.fail_over_mac ||
-+	if (!all && (bond->params.fail_over_mac != BOND_FOM_ACTIVE ||
- 		     BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)) {
- 		if (ether_addr_equal_64bits(bond_dev->dev_addr, slave->perm_hwaddr) &&
- 		    bond_has_slaves(bond))
+ 	for (o = order; o <= 1; ++o) {
+@@ -712,7 +712,7 @@ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
+ 	return 0;
+ }
+ 
+-int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order)
++int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order)
+ {
+ 	struct mlx4_priv *priv = mlx4_priv(dev);
+ 	struct mlx4_db_pgdir *pgdir;
+diff --git a/include/linux/mlx4/device.h b/include/linux/mlx4/device.h
+index 35b4e324e17f2..7c399831540d7 100644
+--- a/include/linux/mlx4/device.h
++++ b/include/linux/mlx4/device.h
+@@ -1128,7 +1128,7 @@ int mlx4_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
+ int mlx4_buf_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
+ 		       struct mlx4_buf *buf);
+ 
+-int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order);
++int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order);
+ void mlx4_db_free(struct mlx4_dev *dev, struct mlx4_db *db);
+ 
+ int mlx4_alloc_hwq_res(struct mlx4_dev *dev, struct mlx4_hwq_resources *wqres,
 -- 
 2.39.5
 
