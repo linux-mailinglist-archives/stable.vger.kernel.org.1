@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-141085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E827BAAADD1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:43:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7BF3AAB09F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:42:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3E391881662
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:39:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AE3A3B1C49
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99EB40133F;
-	Mon,  5 May 2025 23:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AEC30FCF3;
+	Mon,  5 May 2025 23:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p4FW6KIF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N7xk4BDT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E07385426;
-	Mon,  5 May 2025 23:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FB03C01BE;
+	Mon,  5 May 2025 23:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487426; cv=none; b=eNfp9vcU5HUrKeMVwkTvL1s65tTQdFA1NtzFtKkINq7mz+H3gE73YAcXcFRiDiH1bZbD90b3knvP1vshnCm87w2xnahymzTAAYLVbUDn/4OkrOU1W9WMRF2eOelNAXRcpCquPdeDN3LbKVsjen1bnY5kfyXhnZtFm3822kmwln4=
+	t=1746487430; cv=none; b=PqnKlOHfHhLkrA6PtPxqUUUI9x0eKzFqZPT7lLRjHOn2icgHCQ5k9wGNmjvr1YAE1p3R0FObpJR04nN8GbFb3XNxqhJYfSL6aZ/u1oTKjpWzTrUCJXVzMsCAtoA5m526HEo32RoUYuMcecZ58uUlRSXkMczBMTZL6jwErORkKVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487426; c=relaxed/simple;
-	bh=j7RuD0oweaGhyvg5Wfr347HLY1yzuaNKvhLk+beBfik=;
+	s=arc-20240116; t=1746487430; c=relaxed/simple;
+	bh=UYGpjOHgcNF79y7W9l1Itqi9E6pd4CUoXHkU2SU5pQ0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t7nh1KTvFCdzT88u4UcVDQWv7+UK/0fwEvuK+XGKtPY4aeYtglLmaS6Zd91e+RGm45NV2rB2kyHvsyXUECdksBb46v5FVs4y6Zy1/OU2S4398djj6pG147EQvhyLmAuK+1XhMMH6J5hl4NkPg81Ufyxte5DlpLkGKrM8NtWGMnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p4FW6KIF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 639FEC4CEEE;
-	Mon,  5 May 2025 23:23:43 +0000 (UTC)
+	 MIME-Version; b=A4NfOeu31WwzRx6jhgQDVanymjsLOw0WPYfP8NtcNDHMfT/e64ExAJhiel1OkESgHc4R7une4xLmybd7O3Q3imHHgbYWKWqkPCQM/FpByrlub2GFiR+YxGXRTP32exc9bdT3ldJpgprInb53I/o4WLI9krhtQtpot5bC818Ye9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N7xk4BDT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B99C4CEED;
+	Mon,  5 May 2025 23:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487425;
-	bh=j7RuD0oweaGhyvg5Wfr347HLY1yzuaNKvhLk+beBfik=;
+	s=k20201202; t=1746487428;
+	bh=UYGpjOHgcNF79y7W9l1Itqi9E6pd4CUoXHkU2SU5pQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p4FW6KIFZtTy8wV6axdMC1U3g9G7U5XJUtGXDEx//yCSNCB61Qhk3ZTSXllQriZzv
-	 TvoybLtQUTQf0UuGxAbbo76ToJpRPQ3CocjGXf9ke/9yEIjWyFUXyPl73lRxrqQgBd
-	 ATZf4a23zH+BfUhocyQNk7cyvvPn16p9M1cuC5kxm71G/Ywu6ME7iR1UmMV+xHGb4R
-	 8b22I+ZRzh43AQ08Ytjo+VwwTlNgyU9HQ7sDCwN2hkTYO7a0zUTuc95oTJQicjb50C
-	 6eDn7dACtI5iwIDasWWzA9Prk0PS0VI2MW0X+TnT7/kbl5XzfW2qgJOaLZfiL7WqTI
-	 sfQ0b/JjtvSRw==
+	b=N7xk4BDTnk5Lk5IIIOeY6bfVn/2JBswxTlgKbKWJuQ611kMbXTAQaA/gApeczhonF
+	 ammakxCg9LZZqBeO/KSAY3SXIvgFYMoqYJvY/AzgNjpjtz+TP0Ti2U/tC4l8xjpJH1
+	 N7sHEuQWmZ+M9uZDDrY3/N94++qpplskF6Nr1XY+ht/7QO54zHi8J3TE2qqkzZYgUX
+	 HRra5chTpVyslSZebSlNexQP/3ii3qmzJ+NL30bTfx4DKs3yXkY05ppj42KcA5d1i6
+	 aTLxK58qyjQ8U/AZd236HovkRkRwbQ/DNSewuQ+Jdm74e2ejWuTff8WcCbYCDAP+BE
+	 /qvcP6czszB4A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: William Tu <witu@nvidia.com>,
-	Bodong Wang <bodong@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Oleg Nesterov <oleg@redhat.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 64/79] net/mlx5e: reduce rep rxq depth to 256 for ECPF
-Date: Mon,  5 May 2025 19:21:36 -0400
-Message-Id: <20250505232151.2698893-64-sashal@kernel.org>
+	akpm@linux-foundation.org,
+	mhocko@suse.com,
+	Liam.Howlett@Oracle.com,
+	mjguzik@gmail.com,
+	pasha.tatashin@soleen.com,
+	alexjlzheng@tencent.com
+Subject: [PATCH AUTOSEL 5.4 66/79] exit: change the release_task() paths to call flush_sigqueue() lockless
+Date: Mon,  5 May 2025 19:21:38 -0400
+Message-Id: <20250505232151.2698893-66-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -74,73 +71,80 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: William Tu <witu@nvidia.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit b9cc8f9d700867aaa77aedddfea85e53d5e5d584 ]
+[ Upstream commit fb3bbcfe344e64a46574a638b051ffd78762c12d ]
 
-By experiments, a single queue representor netdev consumes kernel
-memory around 2.8MB, and 1.8MB out of the 2.8MB is due to page
-pool for the RXQ. Scaling to a thousand representors consumes 2.8GB,
-which becomes a memory pressure issue for embedded devices such as
-BlueField-2 16GB / BlueField-3 32GB memory.
+A task can block a signal, accumulate up to RLIMIT_SIGPENDING sigqueues,
+and exit. In this case __exit_signal()->flush_sigqueue() called with irqs
+disabled can trigger a hard lockup, see
+https://lore.kernel.org/all/20190322114917.GC28876@redhat.com/
 
-Since representor netdevs mostly handles miss traffic, and ideally,
-most of the traffic will be offloaded, reduce the default non-uplink
-rep netdev's RXQ default depth from 1024 to 256 if mdev is ecpf eswitch
-manager. This saves around 1MB of memory per regular RQ,
-(1024 - 256) * 2KB, allocated from page pool.
+Fortunately, after the recent posixtimer changes sys_timer_delete() paths
+no longer try to clear SIGQUEUE_PREALLOC and/or free tmr->sigq, and after
+the exiting task passes __exit_signal() lock_task_sighand() can't succeed
+and pid_task(tmr->it_pid) will return NULL.
 
-With rxq depth of 256, the netlink page pool tool reports
-$./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
-	 --dump page-pool-get
- {'id': 277,
-  'ifindex': 9,
-  'inflight': 128,
-  'inflight-mem': 786432,
-  'napi-id': 775}]
+This means that after __exit_signal(tsk) nobody can play with tsk->pending
+or (if group_dead) with tsk->signal->shared_pending, so release_task() can
+safely call flush_sigqueue() after write_unlock_irq(&tasklist_lock).
 
-This is due to mtu 1500 + headroom consumes half pages, so 256 rxq
-entries consumes around 128 pages (thus create a page pool with
-size 128), shown above at inflight.
+TODO:
+	- we can probably shift posix_cpu_timers_exit() as well
+	- do_sigaction() can hit the similar problem
 
-Note that each netdev has multiple types of RQs, including
-Regular RQ, XSK, PTP, Drop, Trap RQ. Since non-uplink representor
-only supports regular rq, this patch only changes the regular RQ's
-default depth.
-
-Signed-off-by: William Tu <witu@nvidia.com>
-Reviewed-by: Bodong Wang <bodong@nvidia.com>
-Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250209101716.112774-8-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250206152314.GA14620@redhat.com
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/exit.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 26a9d38d1e2a7..479304afdada2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -53,6 +53,7 @@
- #define MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE \
-         max(0x7, MLX5E_PARAMS_MINIMUM_LOG_SQ_SIZE)
- #define MLX5E_REP_PARAMS_DEF_NUM_CHANNELS 1
-+#define MLX5E_REP_PARAMS_DEF_LOG_RQ_SIZE 0x8
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 5015ecdda6d95..69deb2901ec55 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -204,20 +204,13 @@ static void __exit_signal(struct task_struct *tsk)
+ 	__unhash_process(tsk, group_dead);
+ 	write_sequnlock(&sig->stats_lock);
  
- static const char mlx5e_rep_driver_name[] = "mlx5e_rep";
+-	/*
+-	 * Do this under ->siglock, we can race with another thread
+-	 * doing sigqueue_free() if we have SIGQUEUE_PREALLOC signals.
+-	 */
+-	flush_sigqueue(&tsk->pending);
+ 	tsk->sighand = NULL;
+ 	spin_unlock(&sighand->siglock);
  
-@@ -1430,6 +1431,8 @@ static void mlx5e_build_rep_params(struct net_device *netdev)
+ 	__cleanup_sighand(sighand);
+ 	clear_tsk_thread_flag(tsk, TIF_SIGPENDING);
+-	if (group_dead) {
+-		flush_sigqueue(&sig->shared_pending);
++	if (group_dead)
+ 		tty_kref_put(tty);
+-	}
+ }
  
- 	/* RQ */
- 	mlx5e_build_rq_params(mdev, params);
-+	if (!mlx5e_is_uplink_rep(priv) && mlx5_core_is_ecpf(mdev))
-+		params->log_rq_mtu_frames = MLX5E_REP_PARAMS_DEF_LOG_RQ_SIZE;
+ static void delayed_put_task_struct(struct rcu_head *rhp)
+@@ -277,6 +270,16 @@ void release_task(struct task_struct *p)
  
- 	/* CQ moderation params */
- 	params->rx_dim_enabled = MLX5_CAP_GEN(mdev, cq_moderation);
+ 	write_unlock_irq(&tasklist_lock);
+ 	release_thread(p);
++	/*
++	 * This task was already removed from the process/thread/pid lists
++	 * and lock_task_sighand(p) can't succeed. Nobody else can touch
++	 * ->pending or, if group dead, signal->shared_pending. We can call
++	 * flush_sigqueue() lockless.
++	 */
++	flush_sigqueue(&p->pending);
++	if (thread_group_leader(p))
++		flush_sigqueue(&p->signal->shared_pending);
++
+ 	put_task_struct_rcu_user(p);
+ 
+ 	p = leader;
 -- 
 2.39.5
 
