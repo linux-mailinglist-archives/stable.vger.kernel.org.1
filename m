@@ -1,63 +1,67 @@
-Return-Path: <stable+bounces-140376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CF97AAA808
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4544AAAA80B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:46:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 614E31B60482
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:44:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BDB9188C8F3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE3C7299938;
-	Mon,  5 May 2025 22:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DA3345D67;
+	Mon,  5 May 2025 22:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oAsILGlv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TjVWBrcG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736B6295531;
-	Mon,  5 May 2025 22:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE97345D5E;
+	Mon,  5 May 2025 22:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484721; cv=none; b=hZR6chuvDDDV2P3dKH/06skZR/+nVnSvmF1cCgk95VJa9iL6HkVUEaESwy78N71DzNo7YhZKWAuaKsRd93/B7MO9xezG/q5BmY4gasyXi/eoTlx+GKIKOVicZMQqXnWp8z467gre7zW19qOEpiGsV5dowiiA56EGclbL/Z5Q7tE=
+	t=1746484723; cv=none; b=ew+rCDUV/Zxi4VJ4eWs+W+caVuHKFvF2R5bgUs8jEYEpxAkdDZ/NvfKl1a8kbW1KUaRQ0wePnLsxU7/QQaZrisIVG1sSPL3NlJspaPOtk1ZHsXVW8HrveTWZHkNWuCbAiAM83E6lCr5Y4MtOXaC9VNU33Js4Yyc1Hw/SASm3EuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484721; c=relaxed/simple;
-	bh=cEw4GRPiyRF77vhM1EytheB+h9yphkcLAo3dRL84tfQ=;
+	s=arc-20240116; t=1746484723; c=relaxed/simple;
+	bh=UCniFifRyOgWkiIOjJhH5XF41uttbGOwqSC2QXJWxvg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OHz9APqNwmUR1F4arr6LkASef4n4YCwX5QjCEkVcVg9G1dnfnOJk87DCbscqzB2vXrbTga2Py5QEun2g45uyHMCmtKzGq0QtXvDAg0vTtFzUihKLSOz9SgdLKmOC9/9LfJiRPv75hoRvhwygY5gx/uY+wAXzo5XC2DKJrJqdnqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oAsILGlv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4BCC4CEEF;
-	Mon,  5 May 2025 22:38:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O51koJ1bHeoMUWLpn8d9s0ABipPj2DIpmDBpltBG5Dlg3I3/63yPN2OkJfIcsLawwdUlbQKSgLgnUCszA3i0Cih5C5Hh+hOUiqlmVxdSaqZX819kH7A/T8nccbRrPsyiKJDMw078GHGW5M+EIzJrblbZtcssAFd6JEhqDLxXcVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TjVWBrcG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8C3C4CEEE;
+	Mon,  5 May 2025 22:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484721;
-	bh=cEw4GRPiyRF77vhM1EytheB+h9yphkcLAo3dRL84tfQ=;
+	s=k20201202; t=1746484723;
+	bh=UCniFifRyOgWkiIOjJhH5XF41uttbGOwqSC2QXJWxvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oAsILGlvddD7HPbZiae2mzcOPukdjFg2b0pb1NmSPmEt0K0ybD8GTZjffO+FVvhQj
-	 5ctmWAKWCZv5j8ro6brpd/xqheseCTWsD+suKcmvHlvDLUMakZZGxU1bOJpU6YjwkM
-	 nm6OLGgKp1nfGB9/TMfAEmeClF0RAuMrgO5JvEqzYsMJzzGX6iruA5ZBnp0oX66rhy
-	 HbjUijeqFfjhOuUhNf6it201udsqTlfsMY6+d5LHfHxGH3aZ+SEHAiuFFfsXoZLl8h
-	 Q/aTVga+mIaPpySP1rTcq1GJ5gTsV54aP3A/H0LBUs5CdBzK8rYC42w/uMiiWHuohe
-	 +Q0Q8/T/hfpkw==
+	b=TjVWBrcGazZLdJIIdnAORgzYGg7Pa70h3jVsoftIwO2YddFeBC76F3q0Tg0Ofb2Oz
+	 hdBwBIxixQQrgvBK31HPSBW2a200iwlbj7ALbD2tRRVohuG+3tv5TQMpO5dfMTC/hk
+	 iBFLyqrSeI4z2UlRBZ7fgDa3IKvy8jE8TCla6ZsFSpuyZ6/pQcm6ZDmfzZXpspHtn7
+	 M+mDYinDkLllpXUS9ohn9UE2wrfCSHg81E/ljqb5GpqEKZm7CQf60CBuj54bP/tDVD
+	 lWXdP7haBM329A101vd5kiQ/3XyPiOIGsptA8IK2CU7StKURjDmxSbRFV9BBnr8nyV
+	 AabMod9vUxQ1g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Amber Lin <Amber.Lin@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviwanathan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Felix.Kuehling@amd.com,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	Harish.Kasiviswanathan@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 627/642] drm/amdkfd: Correct F8_MODE for gfx950
-Date: Mon,  5 May 2025 18:14:03 -0400
-Message-Id: <20250505221419.2672473-627-sashal@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>,
+	Andy Yan <andyshrk@163.com>,
+	Anusha Srivatsa <asrivats@redhat.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 628/642] drm/gem: Internally test import_attach for imported objects
+Date: Mon,  5 May 2025 18:14:04 -0400
+Message-Id: <20250505221419.2672473-628-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -67,40 +71,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Amber Lin <Amber.Lin@amd.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 0c7e053448945e5a4379dc4396c762d7422b11ca ]
+[ Upstream commit 8260731ccad0451207b45844bb66eb161a209218 ]
 
-Correct F8_MODE setting for gfx950 that was removed
+Test struct drm_gem_object.import_attach to detect imported objects.
 
-Fixes: 61972cd93af7 ("drm/amdkfd: Set per-process flags only once for gfx9/10/11/12")
-Signed-off-by: Amber Lin <Amber.Lin@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviwanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+During object clenanup, the dma_buf field might be NULL. Testing it in
+an object's free callback then incorrectly does a cleanup as for native
+objects. Happens for calls to drm_mode_destroy_dumb_ioctl() that
+clears the dma_buf field in drm_gem_object_exported_dma_buf_free().
+
+v3:
+- only test for import_attach (Boris)
+v2:
+- use import_attach.dmabuf instead of dma_buf (Christian)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: b57aa47d39e9 ("drm/gem: Test for imported GEM buffers with helper")
+Reported-by: Andy Yan <andyshrk@163.com>
+Closes: https://lore.kernel.org/dri-devel/38d09d34.4354.196379aa560.Coremail.andyshrk@163.com/
+Tested-by: Andy Yan <andyshrk@163.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Anusha Srivatsa <asrivats@redhat.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-media@vger.kernel.org
+Cc: linaro-mm-sig@lists.linaro.org
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
+Link: https://lore.kernel.org/r/20250416065820.26076-1-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c | 3 +--
+ include/drm/drm_gem.h | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c
-index 3264509408bc8..d85eadaa1e11b 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager_v9.c
-@@ -69,8 +69,7 @@ static bool set_cache_memory_policy_v9(struct device_queue_manager *dqm,
- 		qpd->sh_mem_config |= 1 << SH_MEM_CONFIG__RETRY_DISABLE__SHIFT;
+diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
+index 2bf893eabb4b2..bcd54020d6ba5 100644
+--- a/include/drm/drm_gem.h
++++ b/include/drm/drm_gem.h
+@@ -585,8 +585,7 @@ static inline bool drm_gem_object_is_shared_for_memory_stats(struct drm_gem_obje
+  */
+ static inline bool drm_gem_is_imported(const struct drm_gem_object *obj)
+ {
+-	/* The dma-buf's priv field points to the original GEM object. */
+-	return obj->dma_buf && (obj->dma_buf->priv != obj);
++	return !!obj->import_attach;
+ }
  
- 	if (KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 4, 3) ||
--		KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 4, 4) ||
--		KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 5, 0))
-+		KFD_GC_VERSION(dqm->dev->kfd) == IP_VERSION(9, 4, 4))
- 		qpd->sh_mem_config |= (1 << SH_MEM_CONFIG__F8_MODE__SHIFT);
- 
- 	qpd->sh_mem_ape1_limit = 0;
+ #ifdef CONFIG_LOCKDEP
 -- 
 2.39.5
 
