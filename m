@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-140091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0EB3AAA4DE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6984AAA4E3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:37:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D35117C5D1
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:37:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BC52460CDD
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D25307928;
-	Mon,  5 May 2025 22:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433E230795D;
+	Mon,  5 May 2025 22:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iFilKvTC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVxc0Y8f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5777307921;
-	Mon,  5 May 2025 22:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E930B307954;
+	Mon,  5 May 2025 22:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484087; cv=none; b=T8fnXqXQafh3U0/Ax/d9cqxwp/b/HiAw8o6c88zfGD4ppBifSYsY/zzEK2HrP+Yf9KSzLr4zubE4S/l9lpC25dvR170cRIQ7Oqa5D6QPeaQZUgzBEFp8pouAGrYGBV47Bm13CmFIn48Ml+/5+zA4mzuVkWhRUl52LK+E57fXW3I=
+	t=1746484090; cv=none; b=EIKkYFmoe2CD0TeVKHmWI+Ulm3HM/HrAgGNSRRSzcGDoFYc4M778LWzu9ZiSkdGFp/V96Ju65zY2aImB9eRON2OXPYBeDEI7lpjWfmv2rnSb0JPpEzAoCivOe6XQfScRBWBW06SWKY4xMoBPkLmV/b8YO+CM3uhdOWNYHZ9WDPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484087; c=relaxed/simple;
-	bh=HTKFkDNZHItVVlSYJkhqon+BWliG4J8yY7iO4F4K7Ug=;
+	s=arc-20240116; t=1746484090; c=relaxed/simple;
+	bh=pa0KwOgvcTdl4NeBIz0JuwFGhxRnO/vyrgpOmB9ZJ5Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MomMUPea+cTPMRFBm9klteu30opKMtuBvDKIlZXqRSOK8ctfQok+F1VLK3KWbbHjqxjDG4k/EFgU2i26IkyC1eOPymI5zLdSJYy1kGWha2wnGbYSll4A7qyPHMSzeo4Ox6Vxtjp3Jsd7qBRkDWtG+Jlc5U7aoLi757j18FKMpIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iFilKvTC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB287C4AF0B;
-	Mon,  5 May 2025 22:28:06 +0000 (UTC)
+	 MIME-Version; b=rD2quTzVXJsTS/l0XqJ/DPPnSfdajrrCW1RMso6dIivmIEem06V53c1e1UAjpvWTM5sPKwBzKJKLbLs4uxweVt8LW3exBvGs3lkntcl9KLEu9AglRkGMPS5r/aYZUtH3uNpjSMboTVg1CoeppPjSd57z2Gni9w0lxqJJOVxiipY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVxc0Y8f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7DFC4CEE4;
+	Mon,  5 May 2025 22:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484087;
-	bh=HTKFkDNZHItVVlSYJkhqon+BWliG4J8yY7iO4F4K7Ug=;
+	s=k20201202; t=1746484089;
+	bh=pa0KwOgvcTdl4NeBIz0JuwFGhxRnO/vyrgpOmB9ZJ5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iFilKvTCQtI7+a1ab+uyRt6P10wyZcdPRAS9RZLvjNBxIeBxvQOcwAO+/ee/GHdu9
-	 YsVoNT66+RD3oztgwN3h8FiPLIZ63OAEpirSY3NsiftNAsSbzYUxq/cs991/tASi4j
-	 b576L1sP965tsZAxiNkHLOPtBxDe8zhXx8Pu+ityk4A3k/jaiQfwEtiY0jkXqghtvA
-	 ynUt/NS3V44MlwA0ThsFaxX9iOXxLv1XWHDg1Qw2R8rG2sdkEUDyAh2cKpwUoUo5p/
-	 a2WFF9/+8q5DazCEcEpMp4pOShw/A3bJWb3f9vJtVIi6QpwyOerqZE5EQtSKPQUCWG
-	 sr/befjXE3QMA==
+	b=YVxc0Y8foZWuHbYD2WQb2kxdUQsUBMk+70CX6YJ4n8ZXiQES+O47apdkqoNsboP45
+	 tT5b7ot0HiDmlKXxUzz+A+qx8zt+W0ePfb6g+2nSx6o2EnttmuOHMMQRwUCOLUBpkd
+	 XRm0n7JB5sXVghplkOLQPRz6Olg6Y9BEh1N97ecBENu84FpLfcb8zBb283wLXMpXEG
+	 qgILhzVGjzr1eIwaN5mk8Y+VLrEJNNlrlJLrzqsCG8NX0jnu9N6B2Hj6MZzUwTNpyj
+	 gkRF6CVBIfJP5cer3tRiBM/ZgRTcPO9n9PpmgQrQCiFkoiQvn+yfsmK0L8uTmFWVp4
+	 RLSi4CKnwZJkA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Song Liu <song@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 344/642] scsi: scsi_debug: First fixes for tapes
-Date: Mon,  5 May 2025 18:09:20 -0400
-Message-Id: <20250505221419.2672473-344-sashal@kernel.org>
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	puranjay@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	bpf@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 345/642] bpf: arm64: Silence "UBSAN: negation-overflow" warning
+Date: Mon,  5 May 2025 18:09:21 -0400
+Message-Id: <20250505221419.2672473-345-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -62,166 +67,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Song Liu <song@kernel.org>
 
-[ Upstream commit f69da85d5d5cc5b7dfb963a6c6c1ac0dd9002341 ]
+[ Upstream commit 239860828f8660e2be487e2fbdae2640cce3fd67 ]
 
-Patch includes the following:
+With UBSAN, test_bpf.ko triggers warnings like:
 
- - Enable MODE SENSE/SELECT without actual page (to read/write only the
-   Block Descriptor)
+UBSAN: negation-overflow in arch/arm64/net/bpf_jit_comp.c:1333:28
+negation of -2147483648 cannot be represented in type 's32' (aka 'int'):
 
- - Store the density code and block size in the Block Descriptor (only
-   short version for tapes)
+Silence these warnings by casting imm to u32 first.
 
- - Fix REWIND not to use the wrong page filling function
-
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250213092636.2510-2-Kai.Makisara@kolumbus.fi
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Tested-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Song Liu <song@kernel.org>
+Tested-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/r/20250218080240.2431257-1-song@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_debug.c | 55 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 49 insertions(+), 6 deletions(-)
+ arch/arm64/net/bpf_jit_comp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/scsi_debug.c b/drivers/scsi/scsi_debug.c
-index 5ceaa4665e5df..4da0c259390b5 100644
---- a/drivers/scsi/scsi_debug.c
-+++ b/drivers/scsi/scsi_debug.c
-@@ -173,6 +173,10 @@ static const char *sdebug_version_date = "20210520";
- #define DEF_ZBC_MAX_OPEN_ZONES	8
- #define DEF_ZBC_NR_CONV_ZONES	1
- 
-+/* Default parameters for tape drives */
-+#define TAPE_DEF_DENSITY  0x0
-+#define TAPE_DEF_BLKSIZE  0
-+
- #define SDEBUG_LUN_0_VAL 0
- 
- /* bit mask values for sdebug_opts */
-@@ -363,6 +367,10 @@ struct sdebug_dev_info {
- 	ktime_t create_ts;	/* time since bootup that this device was created */
- 	struct sdeb_zone_state *zstate;
- 
-+	/* For tapes */
-+	unsigned int tape_blksize;
-+	unsigned int tape_density;
-+
- 	struct dentry *debugfs_entry;
- 	struct spinlock list_lock;
- 	struct list_head inject_err_list;
-@@ -773,7 +781,7 @@ static const struct opcode_info_t opcode_info_arr[SDEB_I_LAST_ELEM_P1 + 1] = {
- /* 20 */
- 	{0, 0x1e, 0, 0, NULL, NULL, /* ALLOW REMOVAL */
- 	    {6,  0, 0, 0, 0x3, 0xc7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} },
--	{0, 0x1, 0, 0, resp_start_stop, NULL, /* REWIND ?? */
-+	{0, 0x1, 0, 0, NULL, NULL, /* REWIND ?? */
- 	    {6,  0x1, 0, 0, 0, 0xc7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} },
- 	{0, 0, 0, F_INV_OP | FF_RESPOND, NULL, NULL, /* ATA_PT */
- 	    {0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} },
-@@ -2742,7 +2750,7 @@ static int resp_mode_sense(struct scsi_cmnd *scp,
- 	unsigned char *ap;
- 	unsigned char *arr __free(kfree);
- 	unsigned char *cmd = scp->cmnd;
--	bool dbd, llbaa, msense_6, is_disk, is_zbc;
-+	bool dbd, llbaa, msense_6, is_disk, is_zbc, is_tape;
- 
- 	arr = kzalloc(SDEBUG_MAX_MSENSE_SZ, GFP_ATOMIC);
- 	if (!arr)
-@@ -2755,7 +2763,8 @@ static int resp_mode_sense(struct scsi_cmnd *scp,
- 	llbaa = msense_6 ? false : !!(cmd[1] & 0x10);
- 	is_disk = (sdebug_ptype == TYPE_DISK);
- 	is_zbc = devip->zoned;
--	if ((is_disk || is_zbc) && !dbd)
-+	is_tape = (sdebug_ptype == TYPE_TAPE);
-+	if ((is_disk || is_zbc || is_tape) && !dbd)
- 		bd_len = llbaa ? 16 : 8;
- 	else
- 		bd_len = 0;
-@@ -2793,15 +2802,25 @@ static int resp_mode_sense(struct scsi_cmnd *scp,
- 			put_unaligned_be32(0xffffffff, ap + 0);
- 		else
- 			put_unaligned_be32(sdebug_capacity, ap + 0);
--		put_unaligned_be16(sdebug_sector_size, ap + 6);
-+		if (is_tape) {
-+			ap[0] = devip->tape_density;
-+			put_unaligned_be16(devip->tape_blksize, ap + 6);
-+		} else
-+			put_unaligned_be16(sdebug_sector_size, ap + 6);
- 		offset += bd_len;
- 		ap = arr + offset;
- 	} else if (16 == bd_len) {
-+		if (is_tape) {
-+			mk_sense_invalid_fld(scp, SDEB_IN_DATA, 1, 4);
-+			return check_condition_result;
-+		}
- 		put_unaligned_be64((u64)sdebug_capacity, ap + 0);
- 		put_unaligned_be32(sdebug_sector_size, ap + 12);
- 		offset += bd_len;
- 		ap = arr + offset;
- 	}
-+	if (cmd[2] == 0)
-+		goto only_bd; /* Only block descriptor requested */
- 
- 	/*
- 	 * N.B. If len>0 before resp_*_pg() call, then form of that call should be:
-@@ -2902,6 +2921,7 @@ static int resp_mode_sense(struct scsi_cmnd *scp,
- 	default:
- 		goto bad_pcode;
- 	}
-+only_bd:
- 	if (msense_6)
- 		arr[0] = offset - 1;
- 	else
-@@ -2945,8 +2965,27 @@ static int resp_mode_select(struct scsi_cmnd *scp,
- 			    __func__, param_len, res);
- 	md_len = mselect6 ? (arr[0] + 1) : (get_unaligned_be16(arr + 0) + 2);
- 	bd_len = mselect6 ? arr[3] : get_unaligned_be16(arr + 6);
--	off = bd_len + (mselect6 ? 4 : 8);
--	if (md_len > 2 || off >= res) {
-+	off = (mselect6 ? 4 : 8);
-+	if (sdebug_ptype == TYPE_TAPE) {
-+		int blksize;
-+
-+		if (bd_len != 8) {
-+			mk_sense_invalid_fld(scp, SDEB_IN_DATA,
-+					mselect6 ? 3 : 6, -1);
-+			return check_condition_result;
-+		}
-+		blksize = get_unaligned_be16(arr + off + 6);
-+		if ((blksize % 4) != 0) {
-+			mk_sense_invalid_fld(scp, SDEB_IN_DATA, off + 6, -1);
-+			return check_condition_result;
-+		}
-+		devip->tape_density = arr[off];
-+		devip->tape_blksize = blksize;
-+	}
-+	off += bd_len;
-+	if (off >= res)
-+		return 0; /* No page written, just descriptors */
-+	if (md_len > 2) {
- 		mk_sense_invalid_fld(scp, SDEB_IN_DATA, 0, -1);
- 		return check_condition_result;
- 	}
-@@ -5835,6 +5874,10 @@ static struct sdebug_dev_info *sdebug_device_create(
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 8446848edddb8..7409c8acbde35 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -272,7 +272,7 @@ static inline void emit_a64_add_i(const bool is64, const int dst, const int src,
+ {
+ 	if (is_addsub_imm(imm)) {
+ 		emit(A64_ADD_I(is64, dst, src, imm), ctx);
+-	} else if (is_addsub_imm(-imm)) {
++	} else if (is_addsub_imm(-(u32)imm)) {
+ 		emit(A64_SUB_I(is64, dst, src, -imm), ctx);
+ 	} else {
+ 		emit_a64_mov_i(is64, tmp, imm, ctx);
+@@ -1159,7 +1159,7 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
+ 	case BPF_ALU64 | BPF_SUB | BPF_K:
+ 		if (is_addsub_imm(imm)) {
+ 			emit(A64_SUB_I(is64, dst, dst, imm), ctx);
+-		} else if (is_addsub_imm(-imm)) {
++		} else if (is_addsub_imm(-(u32)imm)) {
+ 			emit(A64_ADD_I(is64, dst, dst, -imm), ctx);
  		} else {
- 			devip->zoned = false;
- 		}
-+		if (sdebug_ptype == TYPE_TAPE) {
-+			devip->tape_density = TAPE_DEF_DENSITY;
-+			devip->tape_blksize = TAPE_DEF_BLKSIZE;
-+		}
- 		devip->create_ts = ktime_get_boottime();
- 		atomic_set(&devip->stopped, (sdeb_tur_ms_to_ready > 0 ? 2 : 0));
- 		spin_lock_init(&devip->list_lock);
+ 			emit_a64_mov_i(is64, tmp, imm, ctx);
+@@ -1330,7 +1330,7 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
+ 	case BPF_JMP32 | BPF_JSLE | BPF_K:
+ 		if (is_addsub_imm(imm)) {
+ 			emit(A64_CMP_I(is64, dst, imm), ctx);
+-		} else if (is_addsub_imm(-imm)) {
++		} else if (is_addsub_imm(-(u32)imm)) {
+ 			emit(A64_CMN_I(is64, dst, -imm), ctx);
+ 		} else {
+ 			emit_a64_mov_i(is64, tmp, imm, ctx);
 -- 
 2.39.5
 
