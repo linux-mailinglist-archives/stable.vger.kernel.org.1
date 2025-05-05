@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-139695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AC6AAA94E4
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 15:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C58AA94EB
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 15:54:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A833C189B8A5
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 13:53:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57F56189B421
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 13:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E504258CE8;
-	Mon,  5 May 2025 13:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2893D2505AF;
+	Mon,  5 May 2025 13:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIrzXPAe"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TCpzQuvL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D159258CF6
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 13:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B387C1FDD
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 13:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746453162; cv=none; b=gOhHZj+xrMqLE17jO5O8h/Pmmq7B8YE8q6cU1vEDjfhwVsqBjrZCknjYs8qPzJc5Q6TUpIJbHvj+XrRlFewi4Bkz9F9eljLCGzi1RIlxrvvjTH7aFYc7OKF0kf5hSDjuL7Q6K5443fymm98wp1/bDrWrEXpspMB4y9lLxYS6BWo=
+	t=1746453271; cv=none; b=brRq+5z3aFBdGcIOR+S7gYBfqbfyElFYYjaz8pXG8jxewkkF77AScpTJxMvwSm31qhigtigcV8GMfndZ4QRxliyGihWiRkwwcMuks1/YnUpym882vVJRh0zEEetymkpfv4fKOqqYFGEXvXvb8laGnr61rNQkcDc03XotcqIdFtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746453162; c=relaxed/simple;
-	bh=+XnJru/fgLTrWSfB+5GusDvzW4aIQsemEbLWCDHXTyk=;
+	s=arc-20240116; t=1746453271; c=relaxed/simple;
+	bh=R5bWPSq6iChBwej7BA+lUpmdz+4rU2dlhioIRQ/SImA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kpxzVFdCicnSKZdORTJ9fUGCzENvYtotzGdb9XykXdCbvPNg3UefPDsKFmOYDQeFWTHymJ/7aqXrjsp5jgzVW87E6R7PkqHCqUVSk0+psyfLGp9UifWrQqoP3o9/Cg0dnoUijV+dAOwo7k2bfrVlXeCbaZkHpIlhNxRA0gFD0nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIrzXPAe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDCBC4CEE4;
-	Mon,  5 May 2025 13:52:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746453161;
-	bh=+XnJru/fgLTrWSfB+5GusDvzW4aIQsemEbLWCDHXTyk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DIrzXPAe/LOuQvatxhCWawq1e0a6xUXLZtrsVfyUdwauaLeJi8nqvtDRk6NOPNa9P
-	 vLSvhxz4pU0IQlid2lYgrLLfnNdd/YEPQNTigl+603j4asvR+vWLi+vdi7zFVhHSbu
-	 vRWYfNg4RofxVlAhTSsjpuxzp6Gxf5aLAPoiv8sU=
-Date: Mon, 5 May 2025 15:52:38 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Daniel Wagner <dwagner@suse.de>
-Cc: Jack Wang <jinpu.wang@ionos.com>, Wang Yugui <wangyugui@e16-tech.com>,
-	stable@vger.kernel.org, wagi@kernel.org
-Subject: Re: [6.12.y] WARNING: CPU: 0 PID: 681 at block/blk-mq-cpumap.c:90
- blk_mq_map_hw_queues+0xcf/0xe0
-Message-ID: <2025050555-overhung-jiffy-6b63@gregkh>
-References: <2025050500-unchain-tricking-a90e@gregkh>
- <6818a2d5.170a0220.c6e7d.da1c@mx.google.com>
- <2025050554-reply-surging-929d@gregkh>
- <6f78e096-cb32-4056-a65a-50c27825d0e1@flourine.local>
+	 Content-Type:Content-Disposition:In-Reply-To; b=q/FQVMXQuMrbusjXPXrO9zsupv8Tn05HiWRmadqn9loAqlrUWlrK2/zFXpj/UKI+Yj+sFSCDyEVgpUjjaD0PaGwhISBnM1uaXVqb+8cNm9ZhY5TDjmrOOr3G5JlUpT79I1KCKTbMVbkhjKR/XgvQ2/SiMabKYfVJ+N2ngfOaeUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TCpzQuvL; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Mon, 5 May 2025 09:54:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1746453267;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7mOzKSB+hmQwmNxlUWpy7IdyLav7Gggc/fjNSPZIKm0=;
+	b=TCpzQuvLi/0O5TyBL2s3J9YXki01jxUpdhNs9L3XzDtSzScsRNAFcU4Cqzl/mKCESTs9GI
+	CK6R1L6/4JTIUVn+efqb3DbFSIWbIBHLbraq/LuSHMaL/XU13+HTlODMluuGSd6xVUiz75
+	qyW0MAVu7LQ0QQiNTMAzxlw0I9RTszA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-bcachefs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [GIT PULL] bcachefs fixes for 6.14.y
+Message-ID: <gjr5fogy6fuev264diupbdyoyat6pdwa2fklxaf6cvu4mr3vck@6vvfw7awb5qy>
+References: <hbrzmt73aol6f2fmqpsdtcevhb2sme6lz2otdn73vqpsmlstzt@egrywwkbtpfm>
+ <2025050523-oversweet-mooned-3934@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,39 +57,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6f78e096-cb32-4056-a65a-50c27825d0e1@flourine.local>
+In-Reply-To: <2025050523-oversweet-mooned-3934@gregkh>
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, May 05, 2025 at 03:40:51PM +0200, Daniel Wagner wrote:
-> On Mon, May 05, 2025 at 03:28:22PM +0200, Greg KH wrote:
-> > On Mon, May 05, 2025 at 01:36:52PM +0200, Jack Wang wrote:
-> > > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > 
-> > > In linux-6.12.y, commit 5e8438fd7f11 ("scsi: replace blk_mq_pci_map_queues with blk_mq_map_hw_queues")
-> > > was pulled in as depandency, the fix a9ae6fe1c319 ("blk-mq: create correct map for fallback case")
-> > > should have just used 1452e9b470c9 ("blk-mq: introduce blk_mq_map_hw_queues")
-> > > as Fixes, not the other conversion IMO.
+On Mon, May 05, 2025 at 10:32:49AM +0200, Greg Kroah-Hartman wrote:
+> On Fri, May 02, 2025 at 09:12:22PM -0400, Kent Overstreet wrote:
 > > 
-> > What "other conversion"?  Sorry, I do not understand, did we take a
-> > patch we shouldn't have, or did we miss a patch we should have applied?
+> > The following changes since commit 02a22be3c0003af08df510cba3d79d00c6495b74:
+> > 
+> >   bcachefs: bch2_ioctl_subvolume_destroy() fixes (2025-04-03 16:13:53 -0400)
+> > 
+> > are available in the Git repository at:
+> > 
+> >   git://evilpiepirate.org/bcachefs.git tags/bcachefs-for-6.14-2025-05-02
+> > 
+> > for you to fetch changes up to 52b17bca7b20663e5df6dbfc24cc2030259b64b6:
+> > 
+> >   bcachefs: Remove incorrect __counted_by annotation (2025-05-02 21:09:51 -0400)
+> > 
+> > ----------------------------------------------------------------
+> > bcachefs fixes for 6.15
+> > 
+> > remove incorrect counted_by annotation, fixing FORTIFY_SOURCE crashes
+> > that have been hitting arch users
+> > 
+> > ----------------------------------------------------------------
+> > Alan Huang (1):
+> >       bcachefs: Remove incorrect __counted_by annotation
+> > 
+> >  fs/bcachefs/xattr_format.h | 8 +++++++-
+> >  1 file changed, 7 insertions(+), 1 deletion(-)
 > 
-> If I understand the situation correctly, the problem is that v6.14.25
-> ships commit 5e8438fd7f11 ("scsi: replace blk_mq_pci_map_queues with
-> blk_mq_map_hw_queues") which introduced a regression for certain virtio
-> configurations. The fixup patch is:
-> 
-> a9ae6fe1c319 ("blk-mq: create correct map for fallback case")
-> 
+> You list 1 patch here, but if I pull this, I see 2 patches against the
+> latest linux-6.14.y branch.  When rebased, the "additional" one goes
+> away, as you already sent that to us in the past, so I'll just take the
+> one that's left here, but please, make this more obvious what is
+> happening.
 
-But commit a9ae6fe1c319 ("blk-mq: create correct map for fallback case")
-says it fixes commit a5665c3d150c ("virtio: blk/scsi: replace
-blk_mq_virtio_map_queues with blk_mq_map_hw_queues"), which is ONLY in
-the 6.14 tree.
+That's because you're rebasing my patches.
 
-Which is why we didn't pull it into the stable tree here.  Is that
-commit just not marked properly?  Will it cause problems if it is
-backported?
+> Also, I see a lot of syzbot fixes going into bcachefs recently,
+> hopefully those are all for issues that only affected the tree after
+> 6.14 was released.
 
-thanks,
+Until the experimental label comes off I'm only doing critical
+backports - it really doesn't make any sense to do anything else right
+now.
 
-greg k-h
+The syzbot stuff has had zero overlap with user reported bugs, and since
+it's fuzzing the on disk image (and we don't support unprivilidged
+mounts - yet, at least) - they haven't been a security concern. There's
+been one security bug since 6.7, and you have that fix.
 
