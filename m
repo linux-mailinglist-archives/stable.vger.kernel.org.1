@@ -1,175 +1,189 @@
-Return-Path: <stable+bounces-139654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5DBDAA906A
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 11:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E311AA90AF
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 12:15:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84C0B18901C4
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 09:59:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6354C1896E3D
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 10:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E12A1FBC92;
-	Mon,  5 May 2025 09:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FE71F5402;
+	Mon,  5 May 2025 10:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="k+QW7ixq"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="O0ozi0Yy";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="eDLxeXUj";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="O0ozi0Yy";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="eDLxeXUj"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35BC249F9
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 09:59:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A141E5711
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 10:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746439151; cv=none; b=l2+NCsMj7cd0dXfqH8Ktt+u6rm2aeBXBRpklL8vWgNHpFhKwHaQYtU7lty5q5ebaSp5n982OQqcQvZ6qCGstUCb9xNHDXe3G2SJnTXsty2qkMUW/Ty0xS0xtEEkKPQB+k0dhoPBPfd/9IJ16FzLsBIjC9GZJUc2U5iyqJVRCifg=
+	t=1746440143; cv=none; b=LbOHmkv1/KpJyQyxpuKkdxGTIgb7/nLrZG8psdj9Ywfyn61yHlD1gZ6Cf+qykTP2cIzhOvcQ71UVB/wWL9WNqlLuy3NPitNSTbJMswGozDlONGGL0ir6GLhRFKd3MmSnOhdceBS7uA4Apxm1tz7/qzSQfL+5rKOiXNLBByR1Gjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746439151; c=relaxed/simple;
-	bh=EpTgtXBx6RlAgy0dPCnR885Z0kSSu1ufdWaninmCbc4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LW38Ybf9ML3fckxrFzAway9VryWulwPRzM9tQxJX82HUZxQN1xZLbksUhLFlu/EokLO1HEcyfvk+CBdv9ju0kO7EIUaq0TXo9m3VA7Q8Ja1Ljd2WyGKEPAW560ll3gvzF52Tqiu9hllVs46M1IYDYx9v73Ja/Ns+kBnB9cCD/NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=k+QW7ixq; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 544NeNEZ008231
-	for <stable@vger.kernel.org>; Mon, 5 May 2025 09:59:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=eHT7qDsNgvG+6R4akd+due
-	X/xA19TpqgzBOgKaZriFY=; b=k+QW7ixqvshVPaGVJhu4EZTmghmIthvptYdDw5
-	IPMoV/3W3DV5uO7V62QK4QPsEGIAKunbGxdJ9wooFLbwA5gfoP2sRIuiosxlYspF
-	He4PByLEcVyT7dwBc950MJbQXUipivcFJTaw9pf39xDkgcA+1FbWcHhC5wIWSBAs
-	4YjD6NvsM8P8JcFIx50d0ImGg3wFgsE7I3Y4zoGRCdgyCKPwPTjk99SmPMyeO24X
-	iFdw9IBqhjwIiqVsD+w3F7G/RjlWXHuyNKFxswlhuIkLkfjVwXUYaGbahjI5+kyi
-	2SDreu9sdQX32SIlFTMwhji8yg0Zq2U7pQU0QwplrIwWr5FA==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46dbwfkkm5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 05 May 2025 09:59:08 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b1415cba951so2247904a12.2
-        for <stable@vger.kernel.org>; Mon, 05 May 2025 02:59:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746439148; x=1747043948;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eHT7qDsNgvG+6R4akd+dueX/xA19TpqgzBOgKaZriFY=;
-        b=VYPPFqhnwfRzKPcZkLDJ9QQrtd/yxUWuWHI7FNCxnbXIP0pDGltswNfdIgd2Dkbwox
-         9kQfnMrY/p2Kt+HC5MU3vIs5zsmNFq/kz8BrRupANHyZIWxjgYZnjkkz+RKK/hSJq1GD
-         5AylqtHsY8aFq/Uu6uZOjzkNNcU4cLDGwBGs+bZcrYK6MhI87XVwP5NE60rpFhv2rZ22
-         WRc0lM47RvCEcbYYwa2LjCp9Wd8Pyow3O6PFjqbAF0vGc81TBqLwpaqiYBedZD8lCAE5
-         QCnuYJr+Bh9QUUA0l7CDqvptEzXI7na6jkDWUH1s87GRq+cfDqB+gDoODGgQVEhGOIpN
-         icNg==
-X-Forwarded-Encrypted: i=1; AJvYcCXlETdLznmxxH1Wu8YpMKQNGDpSr9W9LuXH9dckTiBZTwI9EbLxhWGc1UVMAvqHdKZ66EcpJyI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjdPnGMEwnkmRhLX0p2/I62BXbv47U+hmst2jI7Y9YVWcx3yAN
-	n8WJ/NeOrEXpTn67Jz9u3kZyrSPBFaiXGqDcn7ssIV6nIsTX+qfdvzH1J6KQZeNk5fG/IjRVSj7
-	XXkV3WXR1LNNe9/hsnbcI2kMeafLosqd7yQS/iY0ywmDjL/Mq2UGYXmc=
-X-Gm-Gg: ASbGncuWqUxYbtygKqIbcvXy4xhBznTTF2cd/Gs5UgwKzvwx5hrKM3kt/MCV0cNMrSW
-	S8bjAxxb7x4LigOVzn1BmI+B7yZCrbcxQ7DT2gi8Xbw3D+H3JgHUeNZXUKPSCE9vLIyCvE2bvvz
-	6aMRSYb7TlP4WGiyidnEiHO8kNv1JwQyvEIHi6kkwdq4mZthx3a0AzwLjV/JeAYZc54dMuE/yW/
-	bSx9LWAU82xNhUac9dZAVM+MfaC/GVqRq22JCtvoD2tpPezraThqdEBd3VnA7AOcejxcIcT7dyj
-	S45b3Ijng9gNRKdYR48xUdpC3K5tbw2fY2ypM8mdS2ca7cLg3CEEPn9t/dY+214mc8aQtjPhbco
-	nFNXKHOFY5xEZEWa0mXDLNXR8ouuUXBhDkI3+oviTMzyT4vc=
-X-Received: by 2002:a17:903:2013:b0:223:fb3a:8647 with SMTP id d9443c01a7336-22e18c390a4mr94964885ad.41.1746439147973;
-        Mon, 05 May 2025 02:59:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkTKHq7ayRsAFVb77jjAyGhEnyopmqWN4059dMKSLYS6kyiwKuLUniLbs+PgPx3MUf41umOg==
-X-Received: by 2002:a17:903:2013:b0:223:fb3a:8647 with SMTP id d9443c01a7336-22e18c390a4mr94964655ad.41.1746439147609;
-        Mon, 05 May 2025 02:59:07 -0700 (PDT)
-Received: from hu-kathirav-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74059064ba3sm6524625b3a.130.2025.05.05.02.59.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 02:59:06 -0700 (PDT)
-From: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
-Date: Mon, 05 May 2025 15:29:02 +0530
-Subject: [PATCH] arm64: dts: qcom: ipq5424: fix MSI base vector interrupt
- number
+	s=arc-20240116; t=1746440143; c=relaxed/simple;
+	bh=snF7aYKt9AG7vZEbsjnjM619XOg20nFrINAofsqZ3EM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i7TbR2X3TSBvHkB7r4q2XnAPFuknayC2t/bC+EepOZXUkRVHz5m0V2OtLhzyUgN+OPDLIyjogVIQBM5RcZCo5AcYrCZIzogBxKH1AA1VUoAM8szxh8LV7u+XUix87lYeNsSx9b/yK29ROe/1gn443nkYhmVWJ5QPxz9ioMGJwvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=O0ozi0Yy; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=eDLxeXUj; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=O0ozi0Yy; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=eDLxeXUj; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0B96F2123E;
+	Mon,  5 May 2025 10:15:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1746440140; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iAbhV4/tIIoCKneizhnsh4v1nbNLXfelEvALszEo3qE=;
+	b=O0ozi0YyzWYSTL0UO+7fxLULKwVHY6hkMpYmnJ9lQXlqajfflFZXVGUrQ72JkscFGb5Oi9
+	5bUt1SS680pAqOfdaH87LsjNaMazqH1mz3RfuzpTIGr0HUhJn9KFt4hNB2cj0ISC5hSMWP
+	jinslxMrb9FGkdemw4eLbvR7m9KKm74=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1746440140;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iAbhV4/tIIoCKneizhnsh4v1nbNLXfelEvALszEo3qE=;
+	b=eDLxeXUjjaD/AUu9uRgIG/wA3Epgy07dGouxPaahhKorPQ09YfpJCRDAgUjk1rsxHQuVxz
+	tQ6g8Pi9dd595dAQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=O0ozi0Yy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=eDLxeXUj
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1746440140; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iAbhV4/tIIoCKneizhnsh4v1nbNLXfelEvALszEo3qE=;
+	b=O0ozi0YyzWYSTL0UO+7fxLULKwVHY6hkMpYmnJ9lQXlqajfflFZXVGUrQ72JkscFGb5Oi9
+	5bUt1SS680pAqOfdaH87LsjNaMazqH1mz3RfuzpTIGr0HUhJn9KFt4hNB2cj0ISC5hSMWP
+	jinslxMrb9FGkdemw4eLbvR7m9KKm74=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1746440140;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iAbhV4/tIIoCKneizhnsh4v1nbNLXfelEvALszEo3qE=;
+	b=eDLxeXUjjaD/AUu9uRgIG/wA3Epgy07dGouxPaahhKorPQ09YfpJCRDAgUjk1rsxHQuVxz
+	tQ6g8Pi9dd595dAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E7A6D13883;
+	Mon,  5 May 2025 10:15:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id cLiDOMuPGGhCegAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 05 May 2025 10:15:39 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id E484EA0670; Mon,  5 May 2025 12:15:38 +0200 (CEST)
+Date: Mon, 5 May 2025 12:15:38 +0200
+From: Jan Kara <jack@suse.cz>
+To: Andrey Kriulin <kitotavrik.s@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>, 
+	Andrey Kriulin <kitotavrik.media@gmail.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Josef Bacik <josef@toxicpanda.com>, NeilBrown <neilb@suse.de>, Jan Kara <jack@suse.cz>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] fs: minix: Fix handling of corrupted directories
+Message-ID: <a6log74bqsrkzlrckh3gbzpi4mxuj45mr7tddtghck76oum4io@pmks35zdahqn>
+References: <20250502164337.62895-1-kitotavrik.media@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250505-msi-vector-v1-1-559b0e224b2d@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAOWLGGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDINTNLc7ULUtNLskv0k0zSElOMTIyMjZOsVQCaigoSk3LrAAbFh1bWws
- ABv/EIFwAAAA=
-X-Change-ID: 20250505-msi-vector-f0dcd22233d9
-To: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Sricharan Ramabadhran <quic_srichara@quicinc.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-        stable@vger.kernel.org,
-        Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1746439143; l=1189;
- i=kathiravan.thirumoorthy@oss.qualcomm.com; s=20230906;
- h=from:subject:message-id; bh=OWgPLrSOsLj7bhXbTza3TATvz2EeFkP8y/S6sglo7cA=;
- b=C4RMvaIVPbc1OR76Rkn4sDLgXVDzfHP/yrG/GHN1eovfjvP+3za3gxZ14R5hJo6Ev96Gqpp2w
- wyL1GwwcMNwByot5mL8wrT9ixrg7nESV3CYlS5fjoXOp1NG+E7HmcJc
-X-Developer-Key: i=kathiravan.thirumoorthy@oss.qualcomm.com; a=ed25519;
- pk=xWsR7pL6ch+vdZ9MoFGEaP61JUaRf0XaZYWztbQsIiM=
-X-Proofpoint-ORIG-GUID: CXgz1P6WzNLsApw0_SFf7NdnHTarVkD-
-X-Proofpoint-GUID: CXgz1P6WzNLsApw0_SFf7NdnHTarVkD-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA1MDA5NCBTYWx0ZWRfX3cMKC4pXJpUC
- eV0jiMQjlI/jPzCHSh46dP0S1AVFtGGShvCbo2xKo68JSGQXRInRH4/mwdyJfMUbaWhjFTQptNm
- 2sD+S12EMXXlIBwi9qOg0n0cCotOlkAA1rJ5umHuAOxR/38MmF5kHkbpCmgNXStf+s5ewcg+X89
- heNEwn1W5POwBin5eDQ5OfHEhKY43Ny/J7uVKnfN1BcQjabeccf7Z6Za/f+Msm6ibt34PooRSVa
- 7FGgDuqchDxVEnMDKgfkEWyVLh48cRIjk8QRoHKh9uVp7A/lRQsQ1SVHfcIqIpvNQaO+QXOBn1c
- 58Y+CgGrSV3v3mbhlzNZbxltEHiE1Odpp7PRiF9HvgND85mthGpsw4ENH3LIR4jL4GJRZo2BY/Y
- VNY6lb46aLVXHF/R8LuHwEmBv7iPqoyW9bYv5pA+L3l2xdTUYVxOEjBKk14hjz/N7gT+Ze8e
-X-Authority-Analysis: v=2.4 cv=AfqxH2XG c=1 sm=1 tr=0 ts=68188bec cx=c_pps
- a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=COk6AnOGAAAA:8 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=wQDUD7ZtUzV8iaVDUq4A:9 a=QEXdDO2ut3YA:10
- a=x9snwWr2DeNwDh03kgHS:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-05_04,2025-04-30_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1011 priorityscore=1501 phishscore=0 impostorscore=0
- mlxscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=613
- spamscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505050094
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250502164337.62895-1-kitotavrik.media@gmail.com>
+X-Rspamd-Queue-Id: 0B96F2123E
+X-Spam-Score: -2.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-2.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	ARC_NA(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,infradead.org,toxicpanda.com,suse.de,suse.cz,vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+On Fri 02-05-25 19:43:36, Andrey Kriulin wrote:
+> If the directory is corrupted and the number of nlinks is less than 2 
+> (valid nlinks have at least 2), then when the directory is deleted, the
+> minix_rmdir will try to reduce the nlinks(unsigned int) to a negative
+> value.
+> 
+> Make nlinks validity check for directory in minix_lookup.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andrey Kriulin <kitotavrik.media@gmail.com>
 
-As per the hardware design, MSI interrupt starts from 704. Fix the same.
+Thanks for the patch. One comment below.
 
-Cc: stable@vger.kernel.org
-Fixes: 1a91d2a6021e ("arm64: dts: qcom: add IPQ5424 SoC and rdp466 board support")
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Signed-off-by: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
----
- arch/arm64/boot/dts/qcom/ipq5424.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> diff --git a/fs/minix/namei.c b/fs/minix/namei.c
+> index 8938536d8..5717a56fa 100644
+> --- a/fs/minix/namei.c
+> +++ b/fs/minix/namei.c
+> @@ -28,8 +28,13 @@ static struct dentry *minix_lookup(struct inode * dir, struct dentry *dentry, un
+>  		return ERR_PTR(-ENAMETOOLONG);
+>  
+>  	ino = minix_inode_by_name(dentry);
+> -	if (ino)
+> +	if (ino) {
+>  		inode = minix_iget(dir->i_sb, ino);
+> +		if (S_ISDIR(inode->i_mode) && inode->i_nlink < 2) {
+> +			iput(inode);
+> +			return ERR_PTR(-EIO);
+> +		}
+> +	}
+>  	return d_splice_alias(inode, dentry);
+>  }
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq5424.dtsi b/arch/arm64/boot/dts/qcom/ipq5424.dtsi
-index 5d6ed2172b1bb0a57c593f121f387ec917f42419..7a2e5c89b26ad8010f158be6f052b307e8a32fb5 100644
---- a/arch/arm64/boot/dts/qcom/ipq5424.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq5424.dtsi
-@@ -371,7 +371,7 @@ intc: interrupt-controller@f200000 {
- 			#redistributor-regions = <1>;
- 			redistributor-stride = <0x0 0x20000>;
- 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
--			mbi-ranges = <672 128>;
-+			mbi-ranges = <704 128>;
- 			msi-controller;
- 		};
- 
+I don't think this is the best place to handle such check. IMO it would be
+more logical to do it in minix_iget() - V[12]_minix_iget() to be more
+precise - to properly catch all the paths where the inode is loaded into
+memory. This way your check will not happen for the root directory inode
+for example.
 
----
-base-commit: 407f60a151df3c44397e5afc0111eb9b026c38d3
-change-id: 20250505-msi-vector-f0dcd22233d9
-
-Best regards,
+								Honza
 -- 
-Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
