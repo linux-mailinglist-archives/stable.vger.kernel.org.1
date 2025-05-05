@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-140014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D523AAA3CF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:20:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EEE2AAA3D8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:21:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C06AC4651C9
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:19:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBE013AA671
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496CF2F73B4;
-	Mon,  5 May 2025 22:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12ADA2F8192;
+	Mon,  5 May 2025 22:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CNhUb4B0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qSM43E5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0346D285405;
-	Mon,  5 May 2025 22:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5172F8185;
+	Mon,  5 May 2025 22:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483917; cv=none; b=NW9vrL7itRRWRzUlHcW4plZJ2Am52COzWF9ZwhYMyaD8klPiIDPsPS/ESIrF3VcEDelLQ1V82TX6c2PciDkNjGUMPdpMz8ktaI4hp6XqxFIAPZ1vvj/wmIa+X3mqB/0jvwug+3DYKAULxyvK0xVz5iUUb1l24raToDVp9EPOngA=
+	t=1746483917; cv=none; b=QuAEwln9mfuscv8FRDsOT1TL3dZ+UhMpIQRbA2UZvYA5R15LmmOrFHv/LlFdLn+SW9BONCCeVMu/HVAy30gnFShVA5U/s7dKLe1d5KIl5RLhm9kzB50YmeMznFDenEhTDR9oKKjKWk9covlPGH9oY0bJgLiZmnhrWsk57eK3piU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746483917; c=relaxed/simple;
-	bh=UqQQ8ENBbU5xPf3Z6v1IrmngkKFljdoHuXmaVJ3pGik=;
+	bh=poFPbZc3H47uDT6PzqoNz3D2Aw3I/1vHo1mIjYsQPlo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RgakiRN0Mwqim3hrgX6kmNskQu+1wCvbVDiYf9tOIdqGvhVtJVRb/+F3NLVYZgiVnYl9y3jXoQEilJq54YfIRWcs8aQf+tUFJqRtD84FHM1G6YfXnsqnvhjrKidp888xNoMSFFUH7w3qjbAdRtXOFhCYHnEJqsFJRONZ71LNYwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CNhUb4B0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743FCC4CEEE;
-	Mon,  5 May 2025 22:25:14 +0000 (UTC)
+	 MIME-Version; b=utvu8s2gr6BYpnte6ESjhUAI8I7vUYH6W5PimocymRD78vT1g+1FV1BqrQG+z6LWu/J7eyBMbEoC1EbVOBFwV+k+s87NB16hEOMeDkRUwZoK3TC3SI4jr9WnoA3O2FscEppeuf+FDaNTeMjqSntA2T/sT63aUaaGBLt+5UGq2Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qSM43E5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF65C4CEE4;
+	Mon,  5 May 2025 22:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483915;
-	bh=UqQQ8ENBbU5xPf3Z6v1IrmngkKFljdoHuXmaVJ3pGik=;
+	s=k20201202; t=1746483917;
+	bh=poFPbZc3H47uDT6PzqoNz3D2Aw3I/1vHo1mIjYsQPlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNhUb4B0CyW2n1KmAFvAlCR+Y0YljOaOsnfEg4WopJWhq3k2GqCEO9EFWH+R1CPQm
-	 dvY+5IgfZX+nPTWgy/fuKi5BnHuEsynr7GG5IY/TtoJbJsFuyMkiNl0zfzBRhB0n5W
-	 2c85qkn5Kt3m0rAt8pMbl28AlvyHAKCsaauiVFwTuh0zIg2yavY3NS87JB4+RcF4Ik
-	 GjYzipgcwFT28/TMPKvF1bEblDdkfImOmzsDPPylp+ekis64kNI0v03Bnqh6lUhmNd
-	 hlVf5m3TrQyUjj2K1iGJrGPagnsfmhKFv+B09wqrx2XZB8ba8Jn8Wq3zyZ2Hts9CK0
-	 jl0Zwi7vFnEPA==
+	b=qSM43E5F4XxC/ZBb/uQ09b5ITsjjeIQCMCUGFdDCoglK3uYDmDnu5xt1TlnWeb8Iw
+	 uZyc/+sBssJWAPRgCXK3n3RSrvx+/pqUzyjMImvMxioq4dEywPjYwTiSHnPHLdEvKA
+	 e7uGOk/GygvJxQdENbG+BVdbw/m91ztoeouOErSYBJDKL7h0a1AoqiFI56OPgsGE3t
+	 IohqEb1kLRQ+2cs8nX0Xe+jbDji3I4zPEDgHPCg9Agdeycidjo4mAbthj4F9DxyDes
+	 0HjMo5ccZs2i03EPxFjMPhJaib2KSEkFwdEUT3u2DPZ9Qqq+jiiS/mnKRZvzFS8T31
+	 fELoxUo35LNrg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Paul Elder <paul.elder@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: Peter Seiderer <ps.report@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 267/642] media: imx335: Set vblank immediately
-Date: Mon,  5 May 2025 18:08:03 -0400
-Message-Id: <20250505221419.2672473-267-sashal@kernel.org>
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 268/642] net: pktgen: fix mpls maximum labels list parsing
+Date: Mon,  5 May 2025 18:08:04 -0400
+Message-Id: <20250505221419.2672473-268-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,64 +69,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Paul Elder <paul.elder@ideasonboard.com>
+From: Peter Seiderer <ps.report@gmx.net>
 
-[ Upstream commit c0aa40f45fef80b4182704d1bc089cbf8ae8bed0 ]
+[ Upstream commit 2b15a0693f70d1e8119743ee89edbfb1271b3ea8 ]
 
-When the vblank v4l2 control is set, it does not get written to the
-hardware unless exposure is also changed. Change the behavior such that
-the vblank is written immediately when the control is set, as setting
-the vblank without changing the exposure is a valid use case (such as
-for changing the frame rate).
+Fix mpls maximum labels list parsing up to MAX_MPLS_LABELS entries (instead
+of up to MAX_MPLS_LABELS - 1).
 
-Signed-off-by: Paul Elder <paul.elder@ideasonboard.com>
-Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Addresses the following:
+
+	$ echo "mpls 00000f00,00000f01,00000f02,00000f03,00000f04,00000f05,00000f06,00000f07,00000f08,00000f09,00000f0a,00000f0b,00000f0c,00000f0d,00000f0e,00000f0f" > /proc/net/pktgen/lo\@0
+	-bash: echo: write error: Argument list too long
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx335.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ net/core/pktgen.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/imx335.c b/drivers/media/i2c/imx335.c
-index fcfd1d851bd4a..0beb80b8c4581 100644
---- a/drivers/media/i2c/imx335.c
-+++ b/drivers/media/i2c/imx335.c
-@@ -559,12 +559,14 @@ static int imx335_set_ctrl(struct v4l2_ctrl *ctrl)
- 			imx335->vblank,
- 			imx335->vblank + imx335->cur_mode->height);
- 
--		return __v4l2_ctrl_modify_range(imx335->exp_ctrl,
--						IMX335_EXPOSURE_MIN,
--						imx335->vblank +
--						imx335->cur_mode->height -
--						IMX335_EXPOSURE_OFFSET,
--						1, IMX335_EXPOSURE_DEFAULT);
-+		ret = __v4l2_ctrl_modify_range(imx335->exp_ctrl,
-+					       IMX335_EXPOSURE_MIN,
-+					       imx335->vblank +
-+					       imx335->cur_mode->height -
-+					       IMX335_EXPOSURE_OFFSET,
-+					       1, IMX335_EXPOSURE_DEFAULT);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	/*
-@@ -575,6 +577,13 @@ static int imx335_set_ctrl(struct v4l2_ctrl *ctrl)
- 		return 0;
- 
- 	switch (ctrl->id) {
-+	case V4L2_CID_VBLANK:
-+		exposure = imx335->exp_ctrl->val;
-+		analog_gain = imx335->again_ctrl->val;
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 82b6a2c3c141f..6ea34c95179f4 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -898,6 +898,10 @@ static ssize_t get_labels(const char __user *buffer, struct pktgen_dev *pkt_dev)
+ 	pkt_dev->nr_labels = 0;
+ 	do {
+ 		__u32 tmp;
 +
-+		ret = imx335_update_exp_gain(imx335, exposure, analog_gain);
++		if (n >= MAX_MPLS_LABELS)
++			return -E2BIG;
 +
-+		break;
- 	case V4L2_CID_EXPOSURE:
- 		exposure = ctrl->val;
- 		analog_gain = imx335->again_ctrl->val;
+ 		len = hex32_arg(&buffer[i], 8, &tmp);
+ 		if (len <= 0)
+ 			return len;
+@@ -909,8 +913,6 @@ static ssize_t get_labels(const char __user *buffer, struct pktgen_dev *pkt_dev)
+ 			return -EFAULT;
+ 		i++;
+ 		n++;
+-		if (n >= MAX_MPLS_LABELS)
+-			return -E2BIG;
+ 	} while (c == ',');
+ 
+ 	pkt_dev->nr_labels = n;
 -- 
 2.39.5
 
