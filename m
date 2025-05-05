@@ -1,61 +1,67 @@
-Return-Path: <stable+bounces-141266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B89AAB1EC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:10:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C42E1AAB233
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:15:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB5CE7BA0FC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:08:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DCF83AE83F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924E441E580;
-	Tue,  6 May 2025 00:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7A23671A9;
+	Tue,  6 May 2025 00:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="askWdw91"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CDRtQETv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F20C2D4B47;
-	Mon,  5 May 2025 22:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2434E2D4B49;
+	Mon,  5 May 2025 22:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485656; cv=none; b=DrGsnspl6ce9/86Ma5RYP1cRnBRhBdiKOeg6hHskFtUI1m5PC2Ras7XH2qBUp0888raqHCBTP3cRMXokuSPqwmVFZ4e+BrKbaFiWun1wrHfDal0kandJ61rdRhq9/vY+xZxO5o8IJz7JpaU9mkpvjCrSOwP0BeIEZYuYiTBpKAw=
+	t=1746485660; cv=none; b=p1AeYbp+bdbzU4Dv/Za+G7zs2AG0nB1/mrQuiEZCOBL7Whi9W64hQcktzLS7/AT1egzs4toPcwL7K9vJVFKOlNusGPCmAdSm2srJvWwtDJznOvq94V56HmbeDhvg7YtQex895I+AbuNbmH+2a/Y/ojXYYs9PALLQcgAJXZYZvv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485656; c=relaxed/simple;
-	bh=r4bPjLhG9mo/teWcD6gGtcIeJW3C/ykeywdfhWCI4QU=;
+	s=arc-20240116; t=1746485660; c=relaxed/simple;
+	bh=bpkrz8KBNf3ONWBnGX36j1LvOm1wwo0jVhbLIIk0ZOo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YRcaCwGMeYTP1U2ytITBvGsFUNxdeo7i7rv7pXaeV5uYQw4RwVddfL1mE/Ou04SpfTPUI+4tcesAUy+fgDfxOUE4jJT4wVjxKSI0VAtB8eMmnscfp7U+K/W9kvQJ4PQll2OYe+Qu3LNFSwy5YMWs8d0Zsod4An2HLBjHDG3iJo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=askWdw91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040BAC4CEEE;
-	Mon,  5 May 2025 22:54:14 +0000 (UTC)
+	 MIME-Version; b=jxbzES4OI6Ui8NX09xfR7vBbS33HKWmroo+CYrWye/Ect4kcgaN43SbAbG+zec69rUcCSekJ0VbhZ4x932W22cLR0NkIbvZ+n2IBu96TOcJ/DgStJdrqTVyVuhy0LyLqCcAs3IlFOlz729lUT5U5yorXabqaH/GqBSEfdVgBq2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CDRtQETv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44702C4CEE4;
+	Mon,  5 May 2025 22:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485656;
-	bh=r4bPjLhG9mo/teWcD6gGtcIeJW3C/ykeywdfhWCI4QU=;
+	s=k20201202; t=1746485659;
+	bh=bpkrz8KBNf3ONWBnGX36j1LvOm1wwo0jVhbLIIk0ZOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=askWdw91kd1cP6AnVmnuGeTk3zDxLn+c3/CWDwq/iac56KTL6K3ide3Ff+gMfFUAD
-	 aVwFAWiTRfuDQfCwu4PZ6sw6lYGwD3vyWFhXUqayvs3QXXD8hUWz76hVR6izDE2K/n
-	 zTg2bhzJhgEBG8dDJvq0/RLxOubKM4U/726MEZFVQHAb1seD/zzl+AxWcA4FyXZRY8
-	 RF9dWPsIn7fKSRk+brQRTBiaGH9bfbNl823SKGN3VV74YVIrWqF5djM+0aL5vGM3Gr
-	 Wq7qbCPl4C2IBkyI9HcZ84pEZsuCJ/k5+776wBVLoP/pMh0/w2dQDbGXgVOhy2gBEE
-	 vmkgjQcQZAw1w==
+	b=CDRtQETvnqghjafQBDajbDdkbVtdJvCMegOb0BqNO8MaOWUPNOd35XCz1pd04nmQ+
+	 6TG0VnW0/X4F2hfHtgSsVfluhdxZDdF0pQGnOaZ2HsK9so3QsrzsXblENhTZZ0QMdE
+	 2rXrVgztQCLuyrRbRf8zMmmU6EGTIdmwcBFUk03KlLio51lemHLo+gFPzU23NHxDEG
+	 2muKeAzhx1SfXmhO5czhQt9JiTXKSwBleS1uHxs4muL+1xybSJuC0x8+Mt5v4eAzHb
+	 z0Un/a0YYR9I/TsoQYOAip7SxY2Y4e2OzIBrlVYSaPVBh/aCr0/lzUv/M0e1c5a+3n
+	 6LkpccVBiW3BA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jordan Crouse <jorcrous@amazon.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 411/486] clk: qcom: camcc-sm8250: Use clk_rcg2_shared_ops for some RCGs
-Date: Mon,  5 May 2025 18:38:07 -0400
-Message-Id: <20250505223922.2682012-411-sashal@kernel.org>
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	hawk@kernel.org,
+	ilias.apalodimas@linaro.org,
+	jdamato@fastly.com,
+	sdf@fomichev.me,
+	kuniyu@amazon.com,
+	kory.maincent@bootlin.com,
+	mkarsten@uwaterloo.ca,
+	bigeasy@linutronix.de,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 412/486] net: page_pool: avoid false positive warning if NAPI was never added
+Date: Mon,  5 May 2025 18:38:08 -0400
+Message-Id: <20250505223922.2682012-412-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -70,283 +76,70 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Jordan Crouse <jorcrous@amazon.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 52b10b591f83dc6d9a1d6c2dc89433470a787ecd ]
+[ Upstream commit c1e00bc4be06cacee6307cedb9b55bbaddb5044d ]
 
-Update some RCGs on the sm8250 camera clock controller to use
-clk_rcg2_shared_ops. The shared_ops ensure the RCGs get parked
-to the XO during clock disable to prevent the clocks from locking up
-when the GDSC is enabled. These mirror similar fixes for other controllers
-such as commit e5c359f70e4b ("clk: qcom: camcc: Update the clock ops for
-the SC7180").
+We expect NAPI to be in disabled state when page pool is torn down.
+But it is also legal if the NAPI is completely uninitialized.
 
-Signed-off-by: Jordan Crouse <jorcrous@amazon.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20250122222612.32351-1-jorcrous@amazon.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250206225638.1387810-4-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/camcc-sm8250.c | 56 ++++++++++++++++-----------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+ net/core/dev.h       | 12 ++++++++++++
+ net/core/page_pool.c |  7 ++-----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/qcom/camcc-sm8250.c b/drivers/clk/qcom/camcc-sm8250.c
-index 34d2f17520dcc..450ddbebd35f2 100644
---- a/drivers/clk/qcom/camcc-sm8250.c
-+++ b/drivers/clk/qcom/camcc-sm8250.c
-@@ -411,7 +411,7 @@ static struct clk_rcg2 cam_cc_bps_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+diff --git a/net/core/dev.h b/net/core/dev.h
+index 2e3bb7669984a..764e0097ccf22 100644
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -148,6 +148,18 @@ void xdp_do_check_flushed(struct napi_struct *napi);
+ static inline void xdp_do_check_flushed(struct napi_struct *napi) { }
+ #endif
  
-@@ -433,7 +433,7 @@ static struct clk_rcg2 cam_cc_camnoc_axi_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
++/* Best effort check that NAPI is not idle (can't be scheduled to run) */
++static inline void napi_assert_will_not_race(const struct napi_struct *napi)
++{
++	/* uninitialized instance, can't race */
++	if (!napi->poll_list.next)
++		return;
++
++	/* SCHED bit is set on disabled instances */
++	WARN_ON(!test_bit(NAPI_STATE_SCHED, &napi->state));
++	WARN_ON(READ_ONCE(napi->list_owner) != -1);
++}
++
+ void kick_defer_list_purge(struct softnet_data *sd, unsigned int cpu);
  
-@@ -454,7 +454,7 @@ static struct clk_rcg2 cam_cc_cci_0_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ #define XMIT_RECURSION_LIMIT	8
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 7b20f6fcb82c0..c8ce069605c42 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -25,6 +25,7 @@
  
-@@ -469,7 +469,7 @@ static struct clk_rcg2 cam_cc_cci_1_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ #include <trace/events/page_pool.h>
  
-@@ -490,7 +490,7 @@ static struct clk_rcg2 cam_cc_cphy_rx_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
++#include "dev.h"
+ #include "mp_dmabuf_devmem.h"
+ #include "netmem_priv.h"
+ #include "page_pool_priv.h"
+@@ -1108,11 +1109,7 @@ void page_pool_disable_direct_recycling(struct page_pool *pool)
+ 	if (!pool->p.napi)
+ 		return;
  
-@@ -511,7 +511,7 @@ static struct clk_rcg2 cam_cc_csi0phytimer_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+-	/* To avoid races with recycling and additional barriers make sure
+-	 * pool and NAPI are unlinked when NAPI is disabled.
+-	 */
+-	WARN_ON(!test_bit(NAPI_STATE_SCHED, &pool->p.napi->state));
+-	WARN_ON(READ_ONCE(pool->p.napi->list_owner) != -1);
++	napi_assert_will_not_race(pool->p.napi);
  
-@@ -526,7 +526,7 @@ static struct clk_rcg2 cam_cc_csi1phytimer_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -556,7 +556,7 @@ static struct clk_rcg2 cam_cc_csi3phytimer_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -571,7 +571,7 @@ static struct clk_rcg2 cam_cc_csi4phytimer_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -586,7 +586,7 @@ static struct clk_rcg2 cam_cc_csi5phytimer_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -611,7 +611,7 @@ static struct clk_rcg2 cam_cc_fast_ahb_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -634,7 +634,7 @@ static struct clk_rcg2 cam_cc_fd_core_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -649,7 +649,7 @@ static struct clk_rcg2 cam_cc_icp_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -673,7 +673,7 @@ static struct clk_rcg2 cam_cc_ife_0_clk_src = {
- 		.parent_data = cam_cc_parent_data_2,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_2),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -710,7 +710,7 @@ static struct clk_rcg2 cam_cc_ife_0_csid_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -734,7 +734,7 @@ static struct clk_rcg2 cam_cc_ife_1_clk_src = {
- 		.parent_data = cam_cc_parent_data_3,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_3),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -749,7 +749,7 @@ static struct clk_rcg2 cam_cc_ife_1_csid_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -771,7 +771,7 @@ static struct clk_rcg2 cam_cc_ife_lite_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -786,7 +786,7 @@ static struct clk_rcg2 cam_cc_ife_lite_csid_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -810,7 +810,7 @@ static struct clk_rcg2 cam_cc_ipe_0_clk_src = {
- 		.parent_data = cam_cc_parent_data_4,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_4),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -825,7 +825,7 @@ static struct clk_rcg2 cam_cc_jpeg_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -847,7 +847,7 @@ static struct clk_rcg2 cam_cc_mclk0_clk_src = {
- 		.parent_data = cam_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -862,7 +862,7 @@ static struct clk_rcg2 cam_cc_mclk1_clk_src = {
- 		.parent_data = cam_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -877,7 +877,7 @@ static struct clk_rcg2 cam_cc_mclk2_clk_src = {
- 		.parent_data = cam_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -892,7 +892,7 @@ static struct clk_rcg2 cam_cc_mclk3_clk_src = {
- 		.parent_data = cam_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -907,7 +907,7 @@ static struct clk_rcg2 cam_cc_mclk4_clk_src = {
- 		.parent_data = cam_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -922,7 +922,7 @@ static struct clk_rcg2 cam_cc_mclk5_clk_src = {
- 		.parent_data = cam_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -993,7 +993,7 @@ static struct clk_rcg2 cam_cc_slow_ahb_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
+ 	WRITE_ONCE(pool->p.napi, NULL);
+ }
 -- 
 2.39.5
 
