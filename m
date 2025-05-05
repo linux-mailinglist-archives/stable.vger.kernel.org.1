@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-141433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2777AAB369
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:44:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C30AAB354
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:43:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E7761C051C7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:40:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84F46170AD6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FEF239591;
-	Tue,  6 May 2025 00:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14DB239085;
+	Tue,  6 May 2025 00:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fq73F4sc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qK2UOzeS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AF8288534;
-	Mon,  5 May 2025 23:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE81288538;
+	Mon,  5 May 2025 23:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486309; cv=none; b=XwoomoaKMmMMv+H+prZev50X0tJoAX3zS1yH991yq1xNuuDyUifRtR/9ILfcDINpaNE8MvDAldijdPCa2FZob47etpcxD0twWEVIiPfIH8wQSCrRZStCIJUNqWrqP23kP2iTAqnFcGIWV3Nmo2lk1jnMTFo0g10lNpxhRN9rwi0=
+	t=1746486310; cv=none; b=Wz4tsjy18E9P5rRdZd+LLplp7KJNONMADr7he3h9PiD35MbOAyRGbirhkj4EDz0A87bg4KyXkG5nnly51ILKC5I89amprQBn06iGAZ6CBmzipbAKKeJxQmIaF86zmI1kstOxmWId4Dvu5kh0qfZu5gWr7oSEg+OZU80xsUHIW04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486309; c=relaxed/simple;
-	bh=6BmnCNBbfLfoySlSwNtn0q29baarrlkHdad1Zgjlyyo=;
+	s=arc-20240116; t=1746486310; c=relaxed/simple;
+	bh=N/+gcBEjiAsAq7oPtWgwzPjGUF4foo1EgUZASPYJbdY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gZcKVMmfJqwimsfJCe3aJqD3qobLcnlnarW4Q1ecruiWcplLZiQxmtqO07ccGdasPxIiawy0qNYy3tS5ZSs4/nQKJmrb2dDXKHU1vPXL64CZsD2UjaoozDtmPZsssVd5oVHVVcptM8mUMhI1W2YFfQ9q9xyMTQdgVrqLQ/kjoi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fq73F4sc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA27C4CEE4;
-	Mon,  5 May 2025 23:05:07 +0000 (UTC)
+	 MIME-Version; b=IeAROSgR0mZ7OMTak6l76subsgZTuczRGUYP4SgdJeBL1Q7GEmW54fcCGh1m0h6VpXzXiy4ATaHWsROtByBsxjaRQON3l+a1Ao1dzFfmOFsMLrnVw/Cd80PKEyC7PNSEPz0QtbJ0vycYRh2lXKl5rIMYulB0w6hsaPARr38/qsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qK2UOzeS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB8DC4CEE4;
+	Mon,  5 May 2025 23:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486308;
-	bh=6BmnCNBbfLfoySlSwNtn0q29baarrlkHdad1Zgjlyyo=;
+	s=k20201202; t=1746486310;
+	bh=N/+gcBEjiAsAq7oPtWgwzPjGUF4foo1EgUZASPYJbdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fq73F4scMLjJceCWTdvqOaDhjvkoWvln7M2rrSXb5mzfawZXqrnZUjd2LVaJcgSfV
-	 SPh6HTMO96mfKqdGI8pP4IIeQqpHIWCmcNU9H0XUsu1AmDJYN4kSkeVtnMJIUVnwll
-	 JW5L/X69lE36joYCJId5KmLGf8fWTJLHD3Uc59et28QCo3qv09LbzhdSzJBI+eYCkj
-	 WNsl+rHwCgbYizTq1wlpEx/Xf71TyMxuLjLmK9MB8QjAH3G1hZRtf9KalKfG5c1cT9
-	 E1UGPhx/e6GVFWNJ0AZVCoiJRwsRxa1uHQc3nZg32m9Fzcvc4rnDNaXUOnZ+2RCHjD
-	 co5KP1QX+9zmQ==
+	b=qK2UOzeSDBAFzTrcvoFv5hRx7SCKhlWLpl4pVOG7bwOyQxuQcfRIB3/wOobCs9xDg
+	 0fwKaY/x8ASLpFM02rNGb8KVwzJPR4czYWe6E3EEaZ7ZU9vwSREgeMRp8iF13khSXg
+	 lyNSD2gQZPvFYAkLJqGC6C9y9YjnqWykJon9DnzOYlPP1DXehrXNSPu4LzIHi+lNHJ
+	 Q/csuA8csdnC0cRAKRzOPbKZQw/E2luTTiU6BJs89YkBHTb8khwvPR8MhPbz+OvlRZ
+	 8fcXn+ze1tcd9e5gkLTPjrg00xji0f/HF8dIu+dbliLhfz6gHopQZOhwjewq3Xa9Rz
+	 cL9OhiBnNVAUg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Oleg Nesterov <oleg@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Jaegeuk Kim <jaegeuk@kernel.org>,
+	Chao Yu <chao@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	akpm@linux-foundation.org,
-	mhocko@suse.com,
-	Liam.Howlett@Oracle.com,
-	mjguzik@gmail.com,
-	alexjlzheng@tencent.com,
-	pasha.tatashin@soleen.com
-Subject: [PATCH AUTOSEL 6.6 251/294] exit: change the release_task() paths to call flush_sigqueue() lockless
-Date: Mon,  5 May 2025 18:55:51 -0400
-Message-Id: <20250505225634.2688578-251-sashal@kernel.org>
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.6 253/294] f2fs: introduce f2fs_base_attr for global sysfs entries
+Date: Mon,  5 May 2025 18:55:53 -0400
+Message-Id: <20250505225634.2688578-253-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -71,80 +65,153 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit fb3bbcfe344e64a46574a638b051ffd78762c12d ]
+[ Upstream commit 21925ede449e038ed6f9efdfe0e79f15bddc34bc ]
 
-A task can block a signal, accumulate up to RLIMIT_SIGPENDING sigqueues,
-and exit. In this case __exit_signal()->flush_sigqueue() called with irqs
-disabled can trigger a hard lockup, see
-https://lore.kernel.org/all/20190322114917.GC28876@redhat.com/
+In /sys/fs/f2fs/features, there's no f2fs_sb_info, so let's avoid to get
+the pointer.
 
-Fortunately, after the recent posixtimer changes sys_timer_delete() paths
-no longer try to clear SIGQUEUE_PREALLOC and/or free tmr->sigq, and after
-the exiting task passes __exit_signal() lock_task_sighand() can't succeed
-and pid_task(tmr->it_pid) will return NULL.
-
-This means that after __exit_signal(tsk) nobody can play with tsk->pending
-or (if group_dead) with tsk->signal->shared_pending, so release_task() can
-safely call flush_sigqueue() after write_unlock_irq(&tasklist_lock).
-
-TODO:
-	- we can probably shift posix_cpu_timers_exit() as well
-	- do_sigaction() can hit the similar problem
-
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250206152314.GA14620@redhat.com
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/exit.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ fs/f2fs/sysfs.c | 74 ++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 52 insertions(+), 22 deletions(-)
 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 1b7257c12cb10..6c75c823de25c 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -199,20 +199,13 @@ static void __exit_signal(struct task_struct *tsk)
- 	__unhash_process(tsk, group_dead);
- 	write_sequnlock(&sig->stats_lock);
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index 180feefc4a9ce..c4b0661888a15 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -61,6 +61,12 @@ struct f2fs_attr {
+ 	int id;
+ };
  
--	/*
--	 * Do this under ->siglock, we can race with another thread
--	 * doing sigqueue_free() if we have SIGQUEUE_PREALLOC signals.
--	 */
--	flush_sigqueue(&tsk->pending);
- 	tsk->sighand = NULL;
- 	spin_unlock(&sighand->siglock);
++struct f2fs_base_attr {
++	struct attribute attr;
++	ssize_t (*show)(struct f2fs_base_attr *a, char *buf);
++	ssize_t (*store)(struct f2fs_base_attr *a, const char *buf, size_t len);
++};
++
+ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
+ 			     struct f2fs_sb_info *sbi, char *buf);
  
- 	__cleanup_sighand(sighand);
- 	clear_tsk_thread_flag(tsk, TIF_SIGPENDING);
--	if (group_dead) {
--		flush_sigqueue(&sig->shared_pending);
-+	if (group_dead)
- 		tty_kref_put(tty);
--	}
+@@ -791,6 +797,25 @@ static void f2fs_sb_release(struct kobject *kobj)
+ 	complete(&sbi->s_kobj_unregister);
  }
  
- static void delayed_put_task_struct(struct rcu_head *rhp)
-@@ -282,6 +275,16 @@ void release_task(struct task_struct *p)
- 	proc_flush_pid(thread_pid);
- 	put_pid(thread_pid);
- 	release_thread(p);
-+	/*
-+	 * This task was already removed from the process/thread/pid lists
-+	 * and lock_task_sighand(p) can't succeed. Nobody else can touch
-+	 * ->pending or, if group dead, signal->shared_pending. We can call
-+	 * flush_sigqueue() lockless.
-+	 */
-+	flush_sigqueue(&p->pending);
-+	if (thread_group_leader(p))
-+		flush_sigqueue(&p->signal->shared_pending);
++static ssize_t f2fs_base_attr_show(struct kobject *kobj,
++				struct attribute *attr, char *buf)
++{
++	struct f2fs_base_attr *a = container_of(attr,
++				struct f2fs_base_attr, attr);
 +
- 	put_task_struct_rcu_user(p);
++	return a->show ? a->show(a, buf) : 0;
++}
++
++static ssize_t f2fs_base_attr_store(struct kobject *kobj,
++				struct attribute *attr,
++				const char *buf, size_t len)
++{
++	struct f2fs_base_attr *a = container_of(attr,
++				struct f2fs_base_attr, attr);
++
++	return a->store ? a->store(a, buf, len) : 0;
++}
++
+ /*
+  * Note that there are three feature list entries:
+  * 1) /sys/fs/f2fs/features
+@@ -809,14 +834,13 @@ static void f2fs_sb_release(struct kobject *kobj)
+  *     please add new on-disk feature in this list only.
+  *     - ref. F2FS_SB_FEATURE_RO_ATTR()
+  */
+-static ssize_t f2fs_feature_show(struct f2fs_attr *a,
+-		struct f2fs_sb_info *sbi, char *buf)
++static ssize_t f2fs_feature_show(struct f2fs_base_attr *a, char *buf)
+ {
+ 	return sysfs_emit(buf, "supported\n");
+ }
  
- 	p = leader;
+ #define F2FS_FEATURE_RO_ATTR(_name)				\
+-static struct f2fs_attr f2fs_attr_##_name = {			\
++static struct f2fs_base_attr f2fs_base_attr_##_name = {		\
+ 	.attr = {.name = __stringify(_name), .mode = 0444 },	\
+ 	.show	= f2fs_feature_show,				\
+ }
+@@ -1166,37 +1190,38 @@ static struct attribute *f2fs_attrs[] = {
+ };
+ ATTRIBUTE_GROUPS(f2fs);
+ 
++#define BASE_ATTR_LIST(name) (&f2fs_base_attr_##name.attr)
+ static struct attribute *f2fs_feat_attrs[] = {
+ #ifdef CONFIG_FS_ENCRYPTION
+-	ATTR_LIST(encryption),
+-	ATTR_LIST(test_dummy_encryption_v2),
++	BASE_ATTR_LIST(encryption),
++	BASE_ATTR_LIST(test_dummy_encryption_v2),
+ #if IS_ENABLED(CONFIG_UNICODE)
+-	ATTR_LIST(encrypted_casefold),
++	BASE_ATTR_LIST(encrypted_casefold),
+ #endif
+ #endif /* CONFIG_FS_ENCRYPTION */
+ #ifdef CONFIG_BLK_DEV_ZONED
+-	ATTR_LIST(block_zoned),
++	BASE_ATTR_LIST(block_zoned),
+ #endif
+-	ATTR_LIST(atomic_write),
+-	ATTR_LIST(extra_attr),
+-	ATTR_LIST(project_quota),
+-	ATTR_LIST(inode_checksum),
+-	ATTR_LIST(flexible_inline_xattr),
+-	ATTR_LIST(quota_ino),
+-	ATTR_LIST(inode_crtime),
+-	ATTR_LIST(lost_found),
++	BASE_ATTR_LIST(atomic_write),
++	BASE_ATTR_LIST(extra_attr),
++	BASE_ATTR_LIST(project_quota),
++	BASE_ATTR_LIST(inode_checksum),
++	BASE_ATTR_LIST(flexible_inline_xattr),
++	BASE_ATTR_LIST(quota_ino),
++	BASE_ATTR_LIST(inode_crtime),
++	BASE_ATTR_LIST(lost_found),
+ #ifdef CONFIG_FS_VERITY
+-	ATTR_LIST(verity),
++	BASE_ATTR_LIST(verity),
+ #endif
+-	ATTR_LIST(sb_checksum),
++	BASE_ATTR_LIST(sb_checksum),
+ #if IS_ENABLED(CONFIG_UNICODE)
+-	ATTR_LIST(casefold),
++	BASE_ATTR_LIST(casefold),
+ #endif
+-	ATTR_LIST(readonly),
++	BASE_ATTR_LIST(readonly),
+ #ifdef CONFIG_F2FS_FS_COMPRESSION
+-	ATTR_LIST(compression),
++	BASE_ATTR_LIST(compression),
+ #endif
+-	ATTR_LIST(pin_file),
++	BASE_ATTR_LIST(pin_file),
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(f2fs_feat);
+@@ -1263,9 +1288,14 @@ static struct kset f2fs_kset = {
+ 	.kobj	= {.ktype = &f2fs_ktype},
+ };
+ 
++static const struct sysfs_ops f2fs_feat_attr_ops = {
++	.show	= f2fs_base_attr_show,
++	.store	= f2fs_base_attr_store,
++};
++
+ static const struct kobj_type f2fs_feat_ktype = {
+ 	.default_groups = f2fs_feat_groups,
+-	.sysfs_ops	= &f2fs_attr_ops,
++	.sysfs_ops	= &f2fs_feat_attr_ops,
+ };
+ 
+ static struct kobject f2fs_feat = {
 -- 
 2.39.5
 
