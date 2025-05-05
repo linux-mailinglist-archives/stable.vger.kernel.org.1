@@ -1,64 +1,65 @@
-Return-Path: <stable+bounces-141127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B8EAAB0D4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA912AAB0CC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:47:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFC4A3A97C9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:43:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE54D3AE60B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C06326066;
-	Tue,  6 May 2025 00:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E78326078;
+	Tue,  6 May 2025 00:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jUTXCooE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E8zzJaAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C39D2BE110;
-	Mon,  5 May 2025 22:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2283B2BE7B3;
+	Mon,  5 May 2025 22:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485252; cv=none; b=nwivD3Yjr1nOtLtFHSRAfEXXdfB5p4YCqqJ9wJB31UcIdcG2Thir7Sy9aHMcUPRaKtApFJyQt/MEDimSXK4vjwDJvZ72QA6LPLtgMEMiiu5gQ0T3upvhNzh//FkOKYxc+uLLbrWaRBSwirhQWyxlZ2ZB+8np+4E+6fsLvq0izTg=
+	t=1746485255; cv=none; b=YtMkanbQUWJwvdTQJ5tJur9G0BBrvoqjHBGAdMyNDdQ/jZIYFSk2CkOn7mjX+acIcgA2ecW8W3SzDdo9R68tXlDjwlmW1dZkGQdquvB2+ZeGaKGNpdZNpdDk07Nr3reVBiSryzs3iBNjduOgsvsIopwWQyQxFz/zLyUyslUOHLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485252; c=relaxed/simple;
-	bh=W46LSlL8PNcCg/BgoRCw2sj0WkVz49Qmr0jlJ6VpNFg=;
+	s=arc-20240116; t=1746485255; c=relaxed/simple;
+	bh=VqUtpLEe/mjyl4FHZoKwz7jUI868mLWleMa5ecX/Mpw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qse4d0rqyKd7xMw8VOuSKoIT3e4/nYE60f3f5j4z6MfOhXT4hwIZCxlqoGjWjca/wM4+FXIaMWhV8D+mHrHROVaB7um/d8r78L6NW65bqp39pqA3MuIJokYFALoO+8e8TOur5qceCqrRvCy6mDB6FqMKsZkwE3jrihKNAjj5vBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jUTXCooE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D92C4CEEF;
-	Mon,  5 May 2025 22:47:29 +0000 (UTC)
+	 MIME-Version; b=iRJC8wBoTGRi8p71//hwrZ6EkFfJ7K7EZPDPDL1iAYBUDCe7eKigDMicm2oqpZEQVehHkSvTKi7ZrXegzcduh25GAn2OmVv1bhO85IRaHBLTOp5FVd9aAI6vVYN50Djf1SCSyN9ALKGdk5047lE9ovQXrcn7ZiSLol+tP9/FiNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E8zzJaAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3BCC4CEEE;
+	Mon,  5 May 2025 22:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485251;
-	bh=W46LSlL8PNcCg/BgoRCw2sj0WkVz49Qmr0jlJ6VpNFg=;
+	s=k20201202; t=1746485255;
+	bh=VqUtpLEe/mjyl4FHZoKwz7jUI868mLWleMa5ecX/Mpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jUTXCooEf3zQTEsG/QY0k3fG3qJu0OQe/hSRJt2h63nkkOKXwJ6+8Y1XyklNNgOoe
-	 lyMq8S+yobVLaXIh7npMfGFy2f+JauNVpVYAPMn0Eme/G4zyRTZpQLdxSa4raKwPha
-	 VYsqmZoowqaw5+jht7AgeNHkXTTNcuS+ejhG9B7dGJTvZBAGN69SulhZ4tRpB5SpjR
-	 Uf3bMxSSOTawXRcuK6AUwBd5nmHwt9SqOg3nSl7IKRjYAVzXUMkku7Tu6lWLECFGxW
-	 /x1eQ9Fx5ou1vFKkvIFt3W59ENgxazsjoii0rB4OU+bxe+RsmUEFPDVi26/jAW3P4/
-	 4ZnG3YVCjeBrQ==
+	b=E8zzJaAqjkeJ13ftFWEWHmkVX8GT5ib6G9bl+kikg8oY6lmNKX0Dg+86anWq9zgI8
+	 cqNi6lysJEOo7h3OdahCh0j4hJV5hSQu5c9ZSBfQDhJ2VtlGo+Ln+PTcEU7TYSeZDW
+	 IyWZA5sS++TVw1fU0pS6H/8YkV8Ra35morVsK/OWM8/i5/ChTgJURK9FcVtpF4stzZ
+	 0/YlYVXdMbQlB3B2t1CUqEmyqWX+5u+Uh6jwdVCBSbtl+ijk0F2ws4R0CcMxX10nKU
+	 XtP6TtCenOD7IF7KxhW4W2M8Y9sPv0ExVvdtyeFtM1Q6rKIia+krIZDvbpF/3xy5Sw
+	 4RPw3I0Icwn9A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
-	=?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+Cc: Moshe Shemesh <moshe@nvidia.com>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	lucas.demarchi@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 236/486] drm/xe/vf: Retry sending MMIO request to GUC on timeout error
-Date: Mon,  5 May 2025 18:35:12 -0400
-Message-Id: <20250505223922.2682012-236-sashal@kernel.org>
+	saeedm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 238/486] net/mlx5: Avoid report two health errors on same syndrome
+Date: Mon,  5 May 2025 18:35:14 -0400
+Message-Id: <20250505223922.2682012-238-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,65 +69,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit ba757a65d2a28d46a8ccf50538f4f05036983f1b ]
+[ Upstream commit b5d7b2f04ebcff740f44ef4d295b3401aeb029f4 ]
 
-Add support to allow retrying the sending of MMIO requests
-from the VF to the GUC in the event of an error. During the
-suspend/resume process, VFs begin resuming only after the PF has
-resumed. Although the PF resumes, the GUC reset and provisioning
-occur later in a separate worker process.
+In case health counter has not increased for few polling intervals, miss
+counter will reach max misses threshold and health report will be
+triggered for FW health reporter. In case syndrome found on same health
+poll another health report will be triggered.
 
-When there are a large number of VFs, some may attempt to resume
-before the PF has completed its provisioning. Therefore, if a
-MMIO request from a VF fails during this period, we will retry
-sending the request up to GUC_RESET_VF_STATE_RETRY_MAX times,
-which is set to a maximum of 10 attempts.
+Avoid two health reports on same syndrome by marking this syndrome as
+already known.
 
-Signed-off-by: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Michał Winiarski <michal.winiarski@intel.com>
-Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
-Reviewed-by: Piotr Piorkowski <piotr.piorkowski@intel.com>
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250224102807.11065-3-satyanarayana.k.v.p@intel.com
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_sriov_vf.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/health.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
-index f982d6f9f218d..7ddbfeaf494ac 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_vf.c
-@@ -46,12 +46,19 @@ static int guc_action_vf_reset(struct xe_guc *guc)
- 	return ret > 0 ? -EPROTO : ret;
- }
- 
-+#define GUC_RESET_VF_STATE_RETRY_MAX	10
- static int vf_reset_guc_state(struct xe_gt *gt)
- {
-+	unsigned int retry = GUC_RESET_VF_STATE_RETRY_MAX;
- 	struct xe_guc *guc = &gt->uc.guc;
- 	int err;
- 
--	err = guc_action_vf_reset(guc);
-+	do {
-+		err = guc_action_vf_reset(guc);
-+		if (!err || err != -ETIMEDOUT)
-+			break;
-+	} while (--retry);
-+
- 	if (unlikely(err))
- 		xe_gt_sriov_err(gt, "Failed to reset GuC state (%pe)\n", ERR_PTR(err));
- 	return err;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+index a6329ca2d9bff..52c8035547be5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+@@ -799,6 +799,7 @@ static void poll_health(struct timer_list *t)
+ 	health->prev = count;
+ 	if (health->miss_counter == MAX_MISSES) {
+ 		mlx5_core_err(dev, "device's health compromised - reached miss count\n");
++		health->synd = ioread8(&h->synd);
+ 		print_health_info(dev);
+ 		queue_work(health->wq, &health->report_work);
+ 	}
 -- 
 2.39.5
 
