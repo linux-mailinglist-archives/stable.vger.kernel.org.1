@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-141307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 026F8AAB28A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:24:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5E3AAB262
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 298713A8D0A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:17:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A844818910C1
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D537E4274F0;
-	Tue,  6 May 2025 00:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9E14274FE;
+	Tue,  6 May 2025 00:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NlTI5LR6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KnCuyN/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6724278745;
-	Mon,  5 May 2025 22:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3987278740;
+	Mon,  5 May 2025 22:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485734; cv=none; b=AqxtZAP8txkzhsHWfj5YUMCg/Z+JJGNuF9F2mhbqeuPUqm5Elp5JugIkdoYq6cstlNcYlc++6JnOxF/FQaqKaDSQO2pMxISO9UcnoOX2dCbTbuJgg/EkH/GGnimTWXpDlT63bNQGip5SN+LLDK8JHcOdhUjyUZdDvjJolyib230=
+	t=1746485735; cv=none; b=u76E+VzbAgOFbmDFr/x3wUcqRxwtuJJyxNNdwZMZl4M5KKu6i85cMs9NJ3aO9jyg9Jq3LO9MAQQsFbVArLh/xowl3hRYIjK4dQgD87tpQQFnZynblCECOPAYHMcYlbK/RY3ZOEIOJUAPQ70aZMV3gZRhr5vAi99youSR7zt1RLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485734; c=relaxed/simple;
-	bh=5Ul5afnxT4Ev7pMFKXsZJc0l/RU9J+GqH7JwLx6dk74=;
+	s=arc-20240116; t=1746485735; c=relaxed/simple;
+	bh=/oHIoZ16RyJO6dHswslK6yOnU3f8OM9d+POZXDoSQZw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VTfnpSgviKR8wN2fztvzTLg4ldPoT5Y3A4rE8k4HdfHD5KWjRcDkd7sf3DN/WLwGM7sMkW4jJqKvdU+X0jJ2YrP+2uYwEiw+QSVQQ+tEgaZm799pLIgph3O3exXyp6oqd2s/yNCXnAsC6SiumfPk0WElXONu3rqDiO/ccTV3ZNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NlTI5LR6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2535DC4CEE4;
-	Mon,  5 May 2025 22:55:33 +0000 (UTC)
+	 MIME-Version; b=kei5yf1tjCOhIANncPTVHjJ2UObqdjJaIqb+P6O3KDL+ZwULsDDIy8HZ9QIEwrU8gFmpo/xj9gjEzupL9v5N4Apy+QaFpVUF2gXss/r0bu2Xz4yZoJUbs5hpeVvWl4r3G3IvO5elL4zGW3vWm0XsNb44EcSRGVwJ5rXysUeK6Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KnCuyN/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6DFC4CEED;
+	Mon,  5 May 2025 22:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485734;
-	bh=5Ul5afnxT4Ev7pMFKXsZJc0l/RU9J+GqH7JwLx6dk74=;
+	s=k20201202; t=1746485735;
+	bh=/oHIoZ16RyJO6dHswslK6yOnU3f8OM9d+POZXDoSQZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NlTI5LR6js7dFUd1BpHxTagrwpqA0FOQnRhcrHodC3qEI/p24tpXoxDxg4IzF1xvn
-	 3WvN5JwfAFX9sVxWHWMFNEhIUqCvOXk6QbIpwn+X6JxNDp3+lzNx03JJnTXzV1QEGP
-	 VIbZlorf3gAhYD91wvn1V0L5Mv2/YGrmI522vP/k10E5UC9UGjr2Fhixa05/0HktD9
-	 3N/UiDXS8wvFhnMY/CuJx+l7tWi2fVKxZYO1sXmsnr3UEcmBvUsQt3UTdo2xDg7e1E
-	 GESMTG8+RJa81RVgcrFrLX58egX8NrdZCi7Bpk7xZWgFO0duAphjKJIpiHMYghpzdX
-	 iMu5xrUbUQhgw==
+	b=KnCuyN/Amb7UjUYF7hnZIB8ZcBiTVq4gMrSpHM1huhpOi7Yz3eMXgGd+XzMu8diYE
+	 BfP7M2q7yFJZ+hILSY3poIdwDa/bHTPRmzOVJ0mztva1exvJ+jDIEuatoXYyxzd7Q3
+	 OYnjGN04BvC0uaUKm/JhgQejqooPWBxqii4UvrBldB9+ndBz3XC5YUWIuypjSSojeb
+	 nuqKBxxeuXpJGLUpBjCcNpOY2fDoryfsjP/YG12EAh1qsfQlCAGzfvuNaNczqnd+Pn
+	 bpC9WnuKjFFPO0YUzmRubPF9S7sojLjJAgJhnL0/VQLXLuM5g7xvkDMTo/J15c/ADg
+	 Xa1fO3NL3Itww==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anup Patel <anup@brainfault.org>,
+Cc: Ken Raeburn <raeburn@redhat.com>,
+	Matthew Sakai <msakai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 451/486] irqchip/riscv-aplic: Add support for hart indexes
-Date: Mon,  5 May 2025 18:38:47 -0400
-Message-Id: <20250505223922.2682012-451-sashal@kernel.org>
+	dm-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.12 452/486] dm vdo vio-pool: allow variable-sized metadata vios
+Date: Mon,  5 May 2025 18:38:48 -0400
+Message-Id: <20250505223922.2682012-452-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -64,98 +61,211 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
+From: Ken Raeburn <raeburn@redhat.com>
 
-[ Upstream commit b93afe8a3ac53ae52296d65acfaa9c5f582a48cc ]
+[ Upstream commit f979da512553a41a657f2c1198277e84d66f8ce3 ]
 
-RISC-V APLIC specification defines "hart index" in:
+With larger-sized metadata vio pools, vdo will sometimes need to
+issue I/O with a smaller size than the allocated size. Since
+vio_reset_bio is where the bvec array and I/O size are initialized,
+this reset interface must now specify what I/O size to use.
 
-  https://github.com/riscv/riscv-aia
-
-Within a given interrupt domain, each of the domain’s harts has a unique
-index number in the range 0 to 2^14 − 1 (= 16,383). The index number a
-domain associates with a hart may or may not have any relationship to the
-unique hart identifier (“hart ID”) that the RISC-V Privileged Architecture
-assigns to the hart. Two different interrupt domains may employ entirely
-different index numbers for the same set of harts.
-
-Further, this document says in "4.5 Memory-mapped control region for an
-interrupt domain":
-
-The array of IDC structures may include some for potential hart index
-numbers that are not actual hart index numbers in the domain. For example,
-the first IDC structure is always for hart index 0, but 0 is not
-necessarily a valid index number for any hart in the domain.
-
-Support arbitrary hart indices specified in an optional APLIC property
-"riscv,hart-indexes" which is specified as an array of u32 elements, one
-per interrupt target. If this property is not specified, fallback to use
-logical hart indices within the domain.
-
-Signed-off-by: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/all/20250129091637.1667279-3-vladimir.kondratiev@mobileye.com
+Signed-off-by: Ken Raeburn <raeburn@redhat.com>
+Signed-off-by: Matthew Sakai <msakai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-riscv-aplic-direct.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ drivers/md/dm-vdo/io-submitter.c |  6 ++++--
+ drivers/md/dm-vdo/io-submitter.h | 18 +++++++++++++---
+ drivers/md/dm-vdo/types.h        |  3 +++
+ drivers/md/dm-vdo/vio.c          | 36 +++++++++++++++++++-------------
+ drivers/md/dm-vdo/vio.h          |  2 ++
+ 5 files changed, 46 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/irqchip/irq-riscv-aplic-direct.c b/drivers/irqchip/irq-riscv-aplic-direct.c
-index 7cd6b646774b9..205ad61d15e49 100644
---- a/drivers/irqchip/irq-riscv-aplic-direct.c
-+++ b/drivers/irqchip/irq-riscv-aplic-direct.c
-@@ -31,7 +31,7 @@ struct aplic_direct {
- };
+diff --git a/drivers/md/dm-vdo/io-submitter.c b/drivers/md/dm-vdo/io-submitter.c
+index ab62abe18827b..a664be89c15d7 100644
+--- a/drivers/md/dm-vdo/io-submitter.c
++++ b/drivers/md/dm-vdo/io-submitter.c
+@@ -327,6 +327,7 @@ void vdo_submit_data_vio(struct data_vio *data_vio)
+  * @error_handler: the handler for submission or I/O errors (may be NULL)
+  * @operation: the type of I/O to perform
+  * @data: the buffer to read or write (may be NULL)
++ * @size: the I/O amount in bytes
+  *
+  * The vio is enqueued on a vdo bio queue so that bio submission (which may block) does not block
+  * other vdo threads.
+@@ -338,7 +339,7 @@ void vdo_submit_data_vio(struct data_vio *data_vio)
+  */
+ void __submit_metadata_vio(struct vio *vio, physical_block_number_t physical,
+ 			   bio_end_io_t callback, vdo_action_fn error_handler,
+-			   blk_opf_t operation, char *data)
++			   blk_opf_t operation, char *data, int size)
+ {
+ 	int result;
+ 	struct vdo_completion *completion = &vio->completion;
+@@ -349,7 +350,8 @@ void __submit_metadata_vio(struct vio *vio, physical_block_number_t physical,
  
- struct aplic_idc {
--	unsigned int		hart_index;
-+	u32			hart_index;
- 	void __iomem		*regs;
- 	struct aplic_direct	*direct;
- };
-@@ -219,6 +219,20 @@ static int aplic_direct_parse_parent_hwirq(struct device *dev, u32 index,
- 	return 0;
- }
+ 	vdo_reset_completion(completion);
+ 	completion->error_handler = error_handler;
+-	result = vio_reset_bio(vio, data, callback, operation | REQ_META, physical);
++	result = vio_reset_bio_with_size(vio, data, size, callback, operation | REQ_META,
++					 physical);
+ 	if (result != VDO_SUCCESS) {
+ 		continue_vio(vio, result);
+ 		return;
+diff --git a/drivers/md/dm-vdo/io-submitter.h b/drivers/md/dm-vdo/io-submitter.h
+index 80748699496f2..3088f11055fdd 100644
+--- a/drivers/md/dm-vdo/io-submitter.h
++++ b/drivers/md/dm-vdo/io-submitter.h
+@@ -8,6 +8,7 @@
  
-+static int aplic_direct_get_hart_index(struct device *dev, u32 logical_index,
-+				       u32 *hart_index)
-+{
-+	const char *prop_hart_index = "riscv,hart-indexes";
-+	struct device_node *np = to_of_node(dev->fwnode);
-+
-+	if (!np || !of_property_present(np, prop_hart_index)) {
-+		*hart_index = logical_index;
-+		return 0;
-+	}
-+
-+	return of_property_read_u32_index(np, prop_hart_index, logical_index, hart_index);
+ #include <linux/bio.h>
+ 
++#include "constants.h"
+ #include "types.h"
+ 
+ struct io_submitter;
+@@ -26,14 +27,25 @@ void vdo_submit_data_vio(struct data_vio *data_vio);
+ 
+ void __submit_metadata_vio(struct vio *vio, physical_block_number_t physical,
+ 			   bio_end_io_t callback, vdo_action_fn error_handler,
+-			   blk_opf_t operation, char *data);
++			   blk_opf_t operation, char *data, int size);
+ 
+ static inline void vdo_submit_metadata_vio(struct vio *vio, physical_block_number_t physical,
+ 					   bio_end_io_t callback, vdo_action_fn error_handler,
+ 					   blk_opf_t operation)
+ {
+ 	__submit_metadata_vio(vio, physical, callback, error_handler,
+-			      operation, vio->data);
++			      operation, vio->data, vio->block_count * VDO_BLOCK_SIZE);
 +}
 +
- int aplic_direct_setup(struct device *dev, void __iomem *regs)
++static inline void vdo_submit_metadata_vio_with_size(struct vio *vio,
++						     physical_block_number_t physical,
++						     bio_end_io_t callback,
++						     vdo_action_fn error_handler,
++						     blk_opf_t operation,
++						     int size)
++{
++	__submit_metadata_vio(vio, physical, callback, error_handler,
++			      operation, vio->data, size);
+ }
+ 
+ static inline void vdo_submit_flush_vio(struct vio *vio, bio_end_io_t callback,
+@@ -41,7 +53,7 @@ static inline void vdo_submit_flush_vio(struct vio *vio, bio_end_io_t callback,
  {
- 	int i, j, rc, cpu, current_cpu, setup_count = 0;
-@@ -265,8 +279,12 @@ int aplic_direct_setup(struct device *dev, void __iomem *regs)
- 		cpumask_set_cpu(cpu, &direct->lmask);
+ 	/* FIXME: Can we just use REQ_OP_FLUSH? */
+ 	__submit_metadata_vio(vio, 0, callback, error_handler,
+-			      REQ_OP_WRITE | REQ_PREFLUSH, NULL);
++			      REQ_OP_WRITE | REQ_PREFLUSH, NULL, 0);
+ }
  
- 		idc = per_cpu_ptr(&aplic_idcs, cpu);
--		idc->hart_index = i;
--		idc->regs = priv->regs + APLIC_IDC_BASE + i * APLIC_IDC_SIZE;
-+		rc = aplic_direct_get_hart_index(dev, i, &idc->hart_index);
-+		if (rc) {
-+			dev_warn(dev, "hart index not found for IDC%d\n", i);
-+			continue;
-+		}
-+		idc->regs = priv->regs + APLIC_IDC_BASE + idc->hart_index * APLIC_IDC_SIZE;
- 		idc->direct = direct;
+ #endif /* VDO_IO_SUBMITTER_H */
+diff --git a/drivers/md/dm-vdo/types.h b/drivers/md/dm-vdo/types.h
+index dbe892b10f265..cdf36e7d77021 100644
+--- a/drivers/md/dm-vdo/types.h
++++ b/drivers/md/dm-vdo/types.h
+@@ -376,6 +376,9 @@ struct vio {
+ 	/* The size of this vio in blocks */
+ 	unsigned int block_count;
  
- 		aplic_idc_set_delivery(idc, true);
++	/* The amount of data to be read or written, in bytes */
++	unsigned int io_size;
++
+ 	/* The data being read or written. */
+ 	char *data;
+ 
+diff --git a/drivers/md/dm-vdo/vio.c b/drivers/md/dm-vdo/vio.c
+index b291578f726f5..7c417c1af4516 100644
+--- a/drivers/md/dm-vdo/vio.c
++++ b/drivers/md/dm-vdo/vio.c
+@@ -188,14 +188,23 @@ void vdo_set_bio_properties(struct bio *bio, struct vio *vio, bio_end_io_t callb
+ 
+ /*
+  * Prepares the bio to perform IO with the specified buffer. May only be used on a VDO-allocated
+- * bio, as it assumes the bio wraps a 4k buffer that is 4k aligned, but there does not have to be a
+- * vio associated with the bio.
++ * bio, as it assumes the bio wraps a 4k-multiple buffer that is 4k aligned, but there does not
++ * have to be a vio associated with the bio.
+  */
+ int vio_reset_bio(struct vio *vio, char *data, bio_end_io_t callback,
+ 		  blk_opf_t bi_opf, physical_block_number_t pbn)
+ {
+-	int bvec_count, offset, len, i;
++	return vio_reset_bio_with_size(vio, data, vio->block_count * VDO_BLOCK_SIZE,
++				       callback, bi_opf, pbn);
++}
++
++int vio_reset_bio_with_size(struct vio *vio, char *data, int size, bio_end_io_t callback,
++			    blk_opf_t bi_opf, physical_block_number_t pbn)
++{
++	int bvec_count, offset, i;
+ 	struct bio *bio = vio->bio;
++	int vio_size = vio->block_count * VDO_BLOCK_SIZE;
++	int remaining;
+ 
+ 	bio_reset(bio, bio->bi_bdev, bi_opf);
+ 	vdo_set_bio_properties(bio, vio, callback, bi_opf, pbn);
+@@ -204,22 +213,21 @@ int vio_reset_bio(struct vio *vio, char *data, bio_end_io_t callback,
+ 
+ 	bio->bi_io_vec = bio->bi_inline_vecs;
+ 	bio->bi_max_vecs = vio->block_count + 1;
+-	len = VDO_BLOCK_SIZE * vio->block_count;
++	if (VDO_ASSERT(size <= vio_size, "specified size %d is not greater than allocated %d",
++		       size, vio_size) != VDO_SUCCESS)
++		size = vio_size;
++	vio->io_size = size;
+ 	offset = offset_in_page(data);
+-	bvec_count = DIV_ROUND_UP(offset + len, PAGE_SIZE);
++	bvec_count = DIV_ROUND_UP(offset + size, PAGE_SIZE);
++	remaining = size;
+ 
+-	/*
+-	 * If we knew that data was always on one page, or contiguous pages, we wouldn't need the
+-	 * loop. But if we're using vmalloc, it's not impossible that the data is in different
+-	 * pages that can't be merged in bio_add_page...
+-	 */
+-	for (i = 0; (i < bvec_count) && (len > 0); i++) {
++	for (i = 0; (i < bvec_count) && (remaining > 0); i++) {
+ 		struct page *page;
+ 		int bytes_added;
+ 		int bytes = PAGE_SIZE - offset;
+ 
+-		if (bytes > len)
+-			bytes = len;
++		if (bytes > remaining)
++			bytes = remaining;
+ 
+ 		page = is_vmalloc_addr(data) ? vmalloc_to_page(data) : virt_to_page(data);
+ 		bytes_added = bio_add_page(bio, page, bytes, offset);
+@@ -231,7 +239,7 @@ int vio_reset_bio(struct vio *vio, char *data, bio_end_io_t callback,
+ 		}
+ 
+ 		data += bytes;
+-		len -= bytes;
++		remaining -= bytes;
+ 		offset = 0;
+ 	}
+ 
+diff --git a/drivers/md/dm-vdo/vio.h b/drivers/md/dm-vdo/vio.h
+index 3490e9f59b04a..74e8fd7c8c029 100644
+--- a/drivers/md/dm-vdo/vio.h
++++ b/drivers/md/dm-vdo/vio.h
+@@ -123,6 +123,8 @@ void vdo_set_bio_properties(struct bio *bio, struct vio *vio, bio_end_io_t callb
+ 
+ int vio_reset_bio(struct vio *vio, char *data, bio_end_io_t callback,
+ 		  blk_opf_t bi_opf, physical_block_number_t pbn);
++int vio_reset_bio_with_size(struct vio *vio, char *data, int size, bio_end_io_t callback,
++			    blk_opf_t bi_opf, physical_block_number_t pbn);
+ 
+ void update_vio_error_stats(struct vio *vio, const char *format, ...)
+ 	__printf(2, 3);
 -- 
 2.39.5
 
