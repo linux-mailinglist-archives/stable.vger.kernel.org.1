@@ -1,77 +1,64 @@
-Return-Path: <stable+bounces-141648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF26AAB545
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:25:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD55AAB531
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D2E3A1922
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:20:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C21E9167B69
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CE03A80F6;
-	Tue,  6 May 2025 00:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC553A8847;
+	Tue,  6 May 2025 00:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R2JPepde"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i9MYIkFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE653A80ED;
-	Mon,  5 May 2025 23:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135752E688B;
+	Mon,  5 May 2025 23:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487041; cv=none; b=VFGOKgkXNRm140cq6KdnUvyGcAVyiJVjjnddyCeYUozpVTESdk4/8NeOhtbQ2FnIIaPVzFvyqydSXh/ktzL8mtxm4+2xfcvP0CudlZSp+Va50vUe6vWuwNNB6HYFhSjuid7mqnbKeuj/Lw0KHo1LICLnBT2Qgnj/rHYUU/bT8gE=
+	t=1746487044; cv=none; b=R0tWpSo1RCZbpWQN8f5voUy0wZSfleSQhSv461OgmBuL6SJO6Bpf2YcVrPpXJFY3yys+N9S6VhuoN7/X1rQY54XUgxC0M7rHUNcxeXZw+0tder/HMFs6xq7cZyDx7a6xkK9NvC7E7hUrcj/z5OyyK+1kdjx26Obk1co0M7MmHR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487041; c=relaxed/simple;
-	bh=WZsnm9PeLQNJxCXIlGSjWAfqs1HLaPoeb3QbXwGqCyw=;
+	s=arc-20240116; t=1746487044; c=relaxed/simple;
+	bh=EDmeW1Odctp79+4oJ8K+oDAGd4UCmE1KWx5Rr2il8sM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dRemV/VB54q6Ji5BuW0LAiLNoGUr0tgzBhgc0LNsRG7Bdc89kSz3+vc2dS9lMlnYmZnfUoSXRnrZLwmMN1CRJNrs+6MZgKYk9mOW72d1iCfyo/9KBNDSuLAUe/kzs96HODor3MNnxRCvy81fyc/zZQEfVnktUMXvDk1C1aN4nWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R2JPepde; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B52EC4CEE4;
-	Mon,  5 May 2025 23:17:18 +0000 (UTC)
+	 MIME-Version; b=Pxl4y9MNApIW39j2gzPYd6CiBXHYXV6oBibKKSuifEBNafrJGtIzuyGukdvoD7TTExhqqVYl6gQQiASirQ+vUMBeLTRQ5b4y9KTVr5Oz/c/uamLLhbtfKXjAl+aSrDrJLAnGtR0TbZdp8OiGIr4HPUHxSUi8/s4TBPotFUB3YXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i9MYIkFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F2EC4CEF1;
+	Mon,  5 May 2025 23:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487041;
-	bh=WZsnm9PeLQNJxCXIlGSjWAfqs1HLaPoeb3QbXwGqCyw=;
+	s=k20201202; t=1746487042;
+	bh=EDmeW1Odctp79+4oJ8K+oDAGd4UCmE1KWx5Rr2il8sM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R2JPepdeS8jQafUJRjb/3/5AwttBVwGleLN0nY70CE78Lglti54EPfGXzP5xIaj47
-	 +/8wUqhxATDKABr6nSvlXvgORi8pX0FwRsDlwbE1aXKJ2q3ZOHkFYUkj7Um5gX/toH
-	 qpjA8q003ANCVRL0w53NB1N/cAnNBB/QKK9oFTAFgfsrnMug22/brwYl2U9JbLHkOa
-	 AVfOyBkJoYC0KEQF87f758HwQp06WDsiRgmnX7OwEegfvXM+/4DbAetulgo3TT/GqH
-	 5OPkxeyjL/Y4HRS2ZTIpbi90Onscl/BYOfXBOPSEE7awbtLY1AHgHGS/YitMHQhsmR
-	 fAUCN1sd4Lr2Q==
+	b=i9MYIkFKPFxiQAOtLyIZsBfwfpS1FOizp6+eBsuxJwBzcDMCbGKXWVkspueNn0SuI
+	 qU8g6qrTHHmE6br0/PcuD09gxABxKvUDmm4+HcYA3vpB8KWDaZUh9rK4HP+2ALOJ+K
+	 +0EfRRx+q3NW67xdiRetr81iS9fZRBNqSnSzrGY6GTO4y/5PEHbNsGvYx1EvMrYc8o
+	 40M5R+gi6T7513lj9t+oo8x2H8rwvVSdTIVTBm5MrCbDXNyyGpJzN2RZV39L0h/Di9
+	 U8YjzgQCvY1l5xPQcqk8hkXnhcKKWqpmBhPn2Ob1lBxKlY0v+CD/CyGowFFfJu9wd7
+	 YXoBBptGRgikw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tom Chung <chiahsuan.chung@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Alexei Lazar <alazar@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	siqueira@igalia.com,
-	alex.hung@amd.com,
-	alvin.lee2@amd.com,
-	aurabindo.pillai@amd.com,
-	Austin.Zheng@amd.com,
-	Ilya.Bakoulin@amd.com,
-	mario.limonciello@amd.com,
-	Wayne.Lin@amd.com,
-	Josip.Pavic@amd.com,
-	dillon.varone@amd.com,
-	wenjing.liu@amd.com,
-	linux@treblig.org,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 122/153] drm/amd/display: Initial psr_version with correct setting
-Date: Mon,  5 May 2025 19:12:49 -0400
-Message-Id: <20250505231320.2695319-122-sashal@kernel.org>
+	saeedm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 123/153] net/mlx5: Extend Ethtool loopback selftest to support non-linear SKB
+Date: Mon,  5 May 2025 19:12:50 -0400
+Message-Id: <20250505231320.2695319-123-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -86,38 +73,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Alexei Lazar <alazar@nvidia.com>
 
-[ Upstream commit d8c782cac5007e68e7484d420168f12d3490def6 ]
+[ Upstream commit 95b9606b15bb3ce1198d28d2393dd0e1f0a5f3e9 ]
 
-[Why & How]
-The initial setting for psr_version is not correct while
-create a virtual link.
+Current loopback test validation ignores non-linear SKB case in
+the SKB access, which can lead to failures in scenarios such as
+when HW GRO is enabled.
+Linearize the SKB so both cases will be handled.
 
-The default psr_version should be DC_PSR_VERSION_UNSUPPORTED.
-
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250209101716.112774-15-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index d3d638252e2b9..e1085c316b78e 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -248,6 +248,7 @@ static bool create_links(
- 		link->link_id.type = OBJECT_TYPE_CONNECTOR;
- 		link->link_id.id = CONNECTOR_ID_VIRTUAL;
- 		link->link_id.enum_id = ENUM_ID_1;
-+		link->psr_settings.psr_version = DC_PSR_VERSION_UNSUPPORTED;
- 		link->link_enc = kzalloc(sizeof(*link->link_enc), GFP_KERNEL);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
+index ce8ab1f018769..c380340b81665 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
+@@ -188,6 +188,9 @@ mlx5e_test_loopback_validate(struct sk_buff *skb,
+ 	struct udphdr *udph;
+ 	struct iphdr *iph;
  
- 		if (!link->link_enc) {
++	if (skb_linearize(skb))
++		goto out;
++
+ 	/* We are only going to peek, no need to clone the SKB */
+ 	if (MLX5E_TEST_PKT_SIZE - ETH_HLEN > skb_headlen(skb))
+ 		goto out;
 -- 
 2.39.5
 
