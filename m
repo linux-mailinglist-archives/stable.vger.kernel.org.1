@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-141635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBF9AAB525
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:23:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08916AAB521
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC31A3A1DE2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:18:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 735EC1C20109
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CA0346041;
-	Tue,  6 May 2025 00:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D5F345D57;
+	Tue,  6 May 2025 00:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BSVGe7BG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kl6/ndAY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6392E61CD;
-	Mon,  5 May 2025 23:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97FB2F4961;
+	Mon,  5 May 2025 23:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486970; cv=none; b=DUtD/9Lo42LMmdyraz42yEI56ZWSA94VuX6lWS4IVVGTZB0bF31CHap0T0tywBaloSrab+4J2FdKsXiU0qcnDTi6t19elAbtxJW+e9c8SrWxoICG5C6PMp5g8+lBvkpxau5eoGLh8DybKLmF8MoZus06nVHRevbq761VovpssqM=
+	t=1746486973; cv=none; b=YF5jjxhtYEJDEMDjfIXjqt16ecfVwiiLFhKjjRc2VVKKvptL32mAuoKSPlfLuXaJOwovkWlmNLG+2yBdT2GrLsgjH9kmx2JrBSABgCqDa1Qm7oxgMMwAO8Tpq66o9hzvDxJjCC1UcYdGtq7VjW5HpCHnYGxsz8bJDjgHjmrrrG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486970; c=relaxed/simple;
-	bh=lD9jUtI1KHMpBHJeJ+oEJotljTUv3A4dNQi5VxznjOA=;
+	s=arc-20240116; t=1746486973; c=relaxed/simple;
+	bh=VoYrOWSuePqP7lmw5BS5TP9vhr4zHmMkmvDx4QLVzKI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MBhyvXgPf6Fhgx0ntxRR4o4IkXLDby8n5fcUJ0WMLRWrZUn+SbJYwv+u+OTVzzzDiEF9PwiSaIO+cODs7Lyo1jLK8uCi8B3LXOpQdWeghHCAo2gJGgX1vOlTrzRBQ/Uv7GYY/wXn98+VSsX6/gUtr4HSpxkiyl8RyvLCTVLfFsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BSVGe7BG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBC0C4CEEF;
-	Mon,  5 May 2025 23:16:08 +0000 (UTC)
+	 MIME-Version; b=ePHzQ5akINYI3b+vRGZtJS6XUWjr5DjBFklBX+W6oHUNV/f7jJdr52kJ0CNJTdb1y7jA3p4HR3sAHRROJwoS5NQQk8wWl9zLzfLbqUGllHIJZGDjxnbFylqWrV9Tk6gjj71Sl9qUky8RgrY3GOr3jPGJX4EoAM3CaW+bUMorQWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kl6/ndAY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE5BC4CEE4;
+	Mon,  5 May 2025 23:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486970;
-	bh=lD9jUtI1KHMpBHJeJ+oEJotljTUv3A4dNQi5VxznjOA=;
+	s=k20201202; t=1746486973;
+	bh=VoYrOWSuePqP7lmw5BS5TP9vhr4zHmMkmvDx4QLVzKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSVGe7BGA7gq74CQjVTKMCqiSut5icBdJI6H1bmZytyj2CbpnlHN57OaFOW504zdt
-	 NcuF18xuF/XcTyPB5/tJfCJ0AV8NHzYv77M/AcXYz5raPQfC/oQABFd8pSIQYkVsui
-	 2MTIMX5Tgjp1fs6Gp/QOCvnvMJ8mP17TD4e7zgTvAeKO7Dx5lNNiVt3pjs8T8yF5MC
-	 FMoXKbiQ9oWPzItwxBdzvuAxLsnu58uc3DWU6nnEKjdPfOrmo+OTMbeLPM5RaCL5pC
-	 S3+GQnvtyHhBraQC34cvxg73Jwx4/Pu31faMK60a75E72yncdjbKMW5/YFrqyYLiUn
-	 eH4XHnZaed5vA==
+	b=Kl6/ndAYzr0I1XyCrLwJEV/bDmbjFNImAUlyobamUKUqCKlI2X6EXaB6AFCr93Rof
+	 DTHMSkKLiUF0VxI9T7lsVqUkEo5cjAVsoqZHpQzB8CB7Q7ZKD2i1pSmG0L529dj+8z
+	 OLc5ngy5Ue8fKFFHzGWs2N13eGaPz8QjzxyqfCiKcT5m0vG7uCk6YdnM4YMbOOQ3YD
+	 EvTDIqgAjVPVHjCrAflXy+j6vGFrcKa1Jy0lIie8pR5yJDfK2pgyZYtiKn3hioOQxO
+	 bJqJrE2XYLm0Mk/iYOqFBpInbfso/ZxGp0VlEP7XK6d4uoJ34S1HaF0n0hnPSW5QBv
+	 wkhOyEPVBnctA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Nir Lichtman <nir@lichtman.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Masahiro Yamada <yamada.masahiro@socionext.com>,
+	Michal Marek <michal.lkml@markovi.net>,
 	Sasha Levin <sashal@kernel.org>,
-	jv@jvosburgh.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 086/153] bonding: report duplicate MAC address in all situations
-Date: Mon,  5 May 2025 19:12:13 -0400
-Message-Id: <20250505231320.2695319-86-sashal@kernel.org>
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org
+Subject: [PATCH AUTOSEL 5.15 088/153] x86/build: Fix broken copy command in genimage.sh when making isoimage
+Date: Mon,  5 May 2025 19:12:15 -0400
+Message-Id: <20250505231320.2695319-88-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -66,48 +68,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Nir Lichtman <nir@lichtman.org>
 
-[ Upstream commit 28d68d396a1cd21591e8c6d74afbde33a7ea107e ]
+[ Upstream commit e451630226bd09dc730eedb4e32cab1cc7155ae8 ]
 
-Normally, a bond uses the MAC address of the first added slave as the bond’s
-MAC address. And the bond will set active slave’s MAC address to bond’s
-address if fail_over_mac is set to none (0) or follow (2).
+Problem: Currently when running the "make isoimage" command there is an
+error related to wrong parameters passed to the cp command:
 
-When the first slave is removed, the bond will still use the removed slave’s
-MAC address, which can lead to a duplicate MAC address and potentially cause
-issues with the switch. To avoid confusion, let's warn the user in all
-situations, including when fail_over_mac is set to 2 or not in active-backup
-mode.
+  "cp: missing destination file operand after 'arch/x86/boot/isoimage/'"
 
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250225033914.18617-1-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This is caused because FDINITRDS is an empty array.
+
+Solution: Check if FDINITRDS is empty before executing the "cp" command,
+similar to how it is done in the case of hdimage.
+
+Signed-off-by: Nir Lichtman <nir@lichtman.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Michal Marek <michal.lkml@markovi.net>
+Link: https://lore.kernel.org/r/20250110120500.GA923218@lichtman.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/boot/genimage.sh | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 75499e2967e8f..6bdc29d04a580 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2355,7 +2355,7 @@ static int __bond_release_one(struct net_device *bond_dev,
- 
- 	RCU_INIT_POINTER(bond->current_arp_slave, NULL);
- 
--	if (!all && (!bond->params.fail_over_mac ||
-+	if (!all && (bond->params.fail_over_mac != BOND_FOM_ACTIVE ||
- 		     BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)) {
- 		if (ether_addr_equal_64bits(bond_dev->dev_addr, slave->perm_hwaddr) &&
- 		    bond_has_slaves(bond))
+diff --git a/arch/x86/boot/genimage.sh b/arch/x86/boot/genimage.sh
+index 0673fdfc1a11a..a8a9b1daffac8 100644
+--- a/arch/x86/boot/genimage.sh
++++ b/arch/x86/boot/genimage.sh
+@@ -22,6 +22,7 @@
+ # This script requires:
+ #   bash
+ #   syslinux
++#   genisoimage
+ #   mtools (for fdimage* and hdimage)
+ #   edk2/OVMF (for hdimage)
+ #
+@@ -250,7 +251,9 @@ geniso() {
+ 	cp "$isolinux" "$ldlinux" "$tmp_dir"
+ 	cp "$FBZIMAGE" "$tmp_dir"/linux
+ 	echo default linux "$KCMDLINE" > "$tmp_dir"/isolinux.cfg
+-	cp "${FDINITRDS[@]}" "$tmp_dir"/
++	if [ ${#FDINITRDS[@]} -gt 0 ]; then
++		cp "${FDINITRDS[@]}" "$tmp_dir"/
++	fi
+ 	genisoimage -J -r -appid 'LINUX_BOOT' -input-charset=utf-8 \
+ 		    -quiet -o "$FIMAGE" -b isolinux.bin \
+ 		    -c boot.cat -no-emul-boot -boot-load-size 4 \
 -- 
 2.39.5
 
