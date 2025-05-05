@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-140697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A56AAAECF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:05:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2B1AAAEC5
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:04:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 447963B7FE7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:59:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AB841A86FF9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633D42EC02E;
-	Mon,  5 May 2025 23:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6329F2ECFEA;
+	Mon,  5 May 2025 23:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JL2Hl65h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VJh8rE+k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE633768AF;
-	Mon,  5 May 2025 22:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41CD377651;
+	Mon,  5 May 2025 23:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485992; cv=none; b=Ff6hiWi8PtbHuUSc8qlbAmkjxcDylD4Ka/v+SgVmmshS1w6hoEe+SHASaObXChTplnaRhoPO1HTFN+HBhIy3TCp1Fk6a4qWBcM8TTF1biDQ65QcRz1mjHUhQYYiN10bGeSpckhwWiJJEJJkWsMz5en2Rih07z4uRuA0zyCsmW34=
+	t=1746486006; cv=none; b=dPepPGFjcuGTXFvRB+mnpEN8nJJ1rjOlrAErFXdc4T9n7f1RWMZZLkHbuwaPBGQT1NCGN9VnkHDFKtwCUkvxLYj+wEp8THS9fFE23kEFBnzJ0B1eyleJTQiAoddMGJpXHPg3gTOtx2mgdk37sECbxavu25IzLv8zAi+xD17FL1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485992; c=relaxed/simple;
-	bh=hJchu9HNBiomGtHufvvQooMabHDIoweG+MLUMc5liNg=;
+	s=arc-20240116; t=1746486006; c=relaxed/simple;
+	bh=ZwZ3YGeWzp0VrR/6gg4OpFWFODZyzKKrozm/7+HYum8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZJLrwA9xXPamh3ph148bAgh2EsLe+NwGga3ur6GOqbO6bzb2xyjrKXwy2TbKqBo95729hkeqEr6o/0RltWK/O7Be5T6BGFrWHp6Lu/h6GsN5/LYkVhjuPXLLO6ONH4am4s8swiM4IPD+QWezQWg83YfBHd8Ih4Kd32uHTjtxJPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JL2Hl65h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DE7C4CEF2;
-	Mon,  5 May 2025 22:59:49 +0000 (UTC)
+	 MIME-Version; b=t4rAHnagmyZhpJY7r35TbQfk2ZwPxN6G4a6VjqCV0Xguz7YlcnQfC/fL8K0lIYL7SN7XCbonqbPUGvEcnxeNEqWGtnSGVvlLwglJie5Lr4BQS0AYHPfxrdaCPPByGmAUHsIQYl+YxkeCQfO3jgI2wkBb08/LJivZKisP+b8udEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VJh8rE+k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72458C4CEE4;
+	Mon,  5 May 2025 23:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485990;
-	bh=hJchu9HNBiomGtHufvvQooMabHDIoweG+MLUMc5liNg=;
+	s=k20201202; t=1746486006;
+	bh=ZwZ3YGeWzp0VrR/6gg4OpFWFODZyzKKrozm/7+HYum8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JL2Hl65h97lf3A79jTq2yh2VRKp/wLwoRHEdcrZivP3bH/Gl7nRTuY9egPdPE2ppg
-	 sX19v6+fjSAbe3VSTXM/6Ij2kfP6agTbc5j2te1nyhmJwxKvwl4e1ideno2j76/SWJ
-	 9oxqJrb4eo/6matWwm8iKxQZIzksnRyU+kuzi4BoFb0o8Yj9oAjU1Stqpc1dhI+RX6
-	 KAnDnJONiEgG2wIdMNB9x8uPoykYoWzqo+rQ4eH8XC5i7OVApaKDmAiWM9ZDb8kLVJ
-	 Yh3QblaHthdZUjiyBKnZpCYJFNqbAq/VD5zDZOh7yUhJFDaMS+VIvF/ySfuzIBMrnI
-	 /E+4DDHUhJ+sg==
+	b=VJh8rE+k0zo4MMu0KnlOmaA/Ix/zrL+vVcAAp6wSWoHckp0EwqiYY7YedGMNCYVpc
+	 gHuSIX9o2sP8YKuJyLLHxEWdwtS5EldZsNCDMlCgTaGuZVtWtwDOqBHJT3QjOPTdyD
+	 W12oSgT/ugyzIl8eZ7oWB0vOpDp8/SLbQz/yWZ/zhy1pUgiZx0E8EnTT1+GIRbsUFu
+	 E5gZ//cYpNflsPMZwjLi8Z+8/aM81OXVeZqeKYWWAKmNyOZMcUbZ2UdsiPwWOeTT1e
+	 QBDLsGnzs3ch+R162tQaFmt5icM87Gal7xpPykc3VfaRBZjG3kRufkjhjBbAMd23QO
+	 hpMwsf/hV595g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Aaron Kling <luceoscutum@gmail.com>,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+Cc: Andreas Schwab <schwab@linux-m68k.org>,
+	Rob Herring <robh@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	thierry.reding@gmail.com,
-	jonathanh@nvidia.com,
-	linux-pm@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 100/294] cpufreq: tegra186: Share policy per cluster
-Date: Mon,  5 May 2025 18:53:20 -0400
-Message-Id: <20250505225634.2688578-100-sashal@kernel.org>
+	mpe@ellerman.id.au,
+	mahesh@linux.ibm.com,
+	sourabhjain@linux.ibm.com,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH AUTOSEL 6.6 106/294] powerpc/prom_init: Fixup missing #size-cells on PowerBook6,7
+Date: Mon,  5 May 2025 18:53:26 -0400
+Message-Id: <20250505225634.2688578-106-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -72,45 +69,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Aaron Kling <luceoscutum@gmail.com>
+From: Andreas Schwab <schwab@linux-m68k.org>
 
-[ Upstream commit be4ae8c19492cd6d5de61ccb34ffb3f5ede5eec8 ]
+[ Upstream commit 7e67ef889c9ab7246547db73d524459f47403a77 ]
 
-This functionally brings tegra186 in line with tegra210 and tegra194,
-sharing a cpufreq policy between all cores in a cluster.
+Similar to the PowerMac3,1, the PowerBook6,7 is missing the #size-cells
+property on the i2s node.
 
-Reviewed-by: Sumit Gupta <sumitg@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Depends-on: commit 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
+Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+[maddy: added "commit" work in depends-on to avoid checkpatch error]
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/875xmizl6a.fsf@igel.home
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/tegra186-cpufreq.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/powerpc/kernel/prom_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
-index 7b8fcfa55038b..4e5b6f9a56d1b 100644
---- a/drivers/cpufreq/tegra186-cpufreq.c
-+++ b/drivers/cpufreq/tegra186-cpufreq.c
-@@ -73,11 +73,18 @@ static int tegra186_cpufreq_init(struct cpufreq_policy *policy)
- {
- 	struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
- 	unsigned int cluster = data->cpus[policy->cpu].bpmp_cluster_id;
-+	u32 cpu;
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index a6090896f7497..ac669e58e2023 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -2974,11 +2974,11 @@ static void __init fixup_device_tree_pmac(void)
+ 	char type[8];
+ 	phandle node;
  
- 	policy->freq_table = data->clusters[cluster].table;
- 	policy->cpuinfo.transition_latency = 300 * 1000;
- 	policy->driver_data = NULL;
+-	// Some pmacs are missing #size-cells on escc nodes
++	// Some pmacs are missing #size-cells on escc or i2s nodes
+ 	for (node = 0; prom_next_node(&node); ) {
+ 		type[0] = '\0';
+ 		prom_getprop(node, "device_type", type, sizeof(type));
+-		if (prom_strcmp(type, "escc"))
++		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
+ 			continue;
  
-+	/* set same policy for all cpus in a cluster */
-+	for (cpu = 0; cpu < ARRAY_SIZE(tegra186_cpus); cpu++) {
-+		if (data->cpus[cpu].bpmp_cluster_id == cluster)
-+			cpumask_set_cpu(cpu, policy->cpus);
-+	}
-+
- 	return 0;
- }
- 
+ 		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
 -- 
 2.39.5
 
