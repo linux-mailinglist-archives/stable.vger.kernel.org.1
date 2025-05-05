@@ -1,72 +1,59 @@
-Return-Path: <stable+bounces-141448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADCEAAB381
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:47:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0B2AAB36F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:45:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51A471888F48
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:42:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B359172AC1
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79F02459CD;
-	Tue,  6 May 2025 00:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CA72472A0;
+	Tue,  6 May 2025 00:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="swhuWzAO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qlTK/+cL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A479322DA19;
-	Mon,  5 May 2025 23:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103B4239E60;
+	Mon,  5 May 2025 23:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486339; cv=none; b=E5YpuCgVm0ObSu+y69McP1d5U5fOQODTZ8N7ViAzdJTUb1BmFX1zoiWYTtDSf6f4gt2tEhFZqQKXInSbbEK2QFImk3pYjGkPwmD1tGlRHN1TBt56jwjuQifIV0CelPS9tGnAqz7hbh/mGQgcA6w66zzL8hI5Kz6L9EnInMnxpWQ=
+	t=1746486341; cv=none; b=XTXuJUAod0hiG7NATPrz07pI6QRTlN0bb7ho0cRrmvEb+BTLJouX5qj2CaF1wUgIWyUwvbD5Fx7SPWzgjU4nICzx2WmOQpABoqD8NoXEng6dmiXNzdi1zNW+GUDI2jxGjzwiSJfgGzHDxPeJb+ioNwgMhAAyeCZqwkXhI6z3N8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486339; c=relaxed/simple;
-	bh=2u6Eh01D/YCrOniXldfPNcHZoJwjvrn7z0cgzVPU55s=;
+	s=arc-20240116; t=1746486341; c=relaxed/simple;
+	bh=cRm/7xqnXlTo9yV/yrrFyHl5kBpcMoc2hVoWCjJaUbE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=P7KQcF0TtSUNr7zak3P9SjX2nWTk4wAn4bbYMf59PES9VkvTP1tbvwcvT1fPx6+M2WPyb/VzBQOmHWW29Gpqk97GbqL5w9GOHR1bd+ERwFBra2jQ9S/11l9so09BykvNowlpMSR+KSXbEkJSHdeJpR3jgN7Oj5IcI3c5PPyKsMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=swhuWzAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475A7C4CEE4;
-	Mon,  5 May 2025 23:05:37 +0000 (UTC)
+	 MIME-Version; b=fPZb+EKTBD370oi7WdrBI85OVz7i/f1A8j4wsI73/zXhRxN3xIk+mnJ/EQs1lvcDN9YhIWEyhHy86c390O5pyXTCv8EUb5N88Id1eI2flW0XZZyLj/PZiOksZlQIYAjj8NiHjdH4kg+94GoEu4KPULNNIt7MPZyUuWFshL3SN64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qlTK/+cL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D32C4CEEE;
+	Mon,  5 May 2025 23:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486339;
-	bh=2u6Eh01D/YCrOniXldfPNcHZoJwjvrn7z0cgzVPU55s=;
+	s=k20201202; t=1746486340;
+	bh=cRm/7xqnXlTo9yV/yrrFyHl5kBpcMoc2hVoWCjJaUbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swhuWzAODz8/zkePAJ0cIGhU85Ogf3zrKzbRL98vI5KMmWyYJOByqFlsOia+GmheT
-	 759VDM2Ys/mct6ej7bw/bTCWlBufl1SGr9Bqum6BCThWjxufnyWCZvFH+Srky42kZK
-	 D5rVN3BnVCLyTRXsHJU6czuTrtSAN7gYogl/oY8PeqLJeXM1WEXoBdEKduRr1Pg1eo
-	 Ki9FzeSzYSoB7K/sAIu/HC/Wno6L6pTQzI2//lR3LNtf/cxTHoMosD5nAP1v319PYn
-	 ux1u1IKLCzqYzMQrrx/oKMtMKqZ2zFh9IitXDrPQU2uCeh/JOXFdy/p8s5h32S7PwF
-	 twYo6dwc3H5Yw==
+	b=qlTK/+cLDV+mAW/sNLMRFz+/Llzalb1daQ9h2Ro49A+mhKCNe+zAJ8TNPW6JyPibk
+	 59d58OPNJzoWwZ/1bffqjnoKyO9IEFvstWi5+XZ54pjlZt0VR4rzm57I6LzSXMf1kT
+	 zJeAwRaJWDNuacPotZWz2uKp2qjiayEVTdjfDzztEvHfMfJU9pwepoMCUEGOlKkKzp
+	 t6r0a4yoYdaA2nDNBfH1eY8IwtXobK9XSeB48xbXbfunBkUSqK/osRNQg475PV/18l
+	 q1MJKaf3osjw6GybMWWhrcZeWY0ueTvusijq+rq+ZjBPWbQvks3aQX0Pg/UkTY49jC
+	 F0H6g3cPr7qLQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Konstantin Taranov <kotaranov@microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
+Cc: Justin Tee <justin.tee@broadcom.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	shradhagupta@linux.microsoft.com,
-	mlevitsk@redhat.com,
-	peterz@infradead.org,
-	ernis@linux.microsoft.com,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 267/294] net/mana: fix warning in the writer of client oob
-Date: Mon,  5 May 2025 18:56:07 -0400
-Message-Id: <20250505225634.2688578-267-sashal@kernel.org>
+	james.smart@broadcom.com,
+	dick.kennedy@broadcom.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 268/294] scsi: lpfc: Handle duplicate D_IDs in ndlp search-by D_ID routine
+Date: Mon,  5 May 2025 18:56:08 -0400
+Message-Id: <20250505225634.2688578-268-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -81,35 +68,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Konstantin Taranov <kotaranov@microsoft.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 5ec7e1c86c441c46a374577bccd9488abea30037 ]
+[ Upstream commit 56c3d809b7b450379162d0b8a70bbe71ab8db706 ]
 
-Do not warn on missing pad_data when oob is in sgl.
+After a port swap between separate fabrics, there may be multiple nodes in
+the vport's fc_nodes list with the same fabric well known address.
+Duplication is temporary and eventually resolves itself after dev_loss_tmo
+expires, but nameserver queries may still occur before dev_loss_tmo.  This
+possibly results in returning stale fabric ndlp objects.  Fix by adding an
+nlp_state check to ensure the ndlp search routine returns the correct newer
+allocated ndlp fabric object.
 
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Link: https://patch.msgid.link/1737394039-28772-9-git-send-email-kotaranov@linux.microsoft.com
-Reviewed-by: Shiraz Saleem <shirazsaleem@microsoft.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250131000524.163662-5-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index ae014e21eb605..9ed965d61e355 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -1036,7 +1036,7 @@ static u32 mana_gd_write_client_oob(const struct gdma_wqe_request *wqe_req,
- 	header->inline_oob_size_div4 = client_oob_size / sizeof(u32);
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index 0ad8a10002ce3..5c9bc8af3c2df 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -5646,6 +5646,7 @@ static struct lpfc_nodelist *
+ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
+ {
+ 	struct lpfc_nodelist *ndlp;
++	struct lpfc_nodelist *np = NULL;
+ 	uint32_t data1;
  
- 	if (oob_in_sgl) {
--		WARN_ON_ONCE(!pad_data || wqe_req->num_sge < 2);
-+		WARN_ON_ONCE(wqe_req->num_sge < 2);
+ 	list_for_each_entry(ndlp, &vport->fc_nodes, nlp_listp) {
+@@ -5660,14 +5661,20 @@ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
+ 					 ndlp, ndlp->nlp_DID,
+ 					 ndlp->nlp_flag, data1, ndlp->nlp_rpi,
+ 					 ndlp->active_rrqs_xri_bitmap);
+-			return ndlp;
++
++			/* Check for new or potentially stale node */
++			if (ndlp->nlp_state != NLP_STE_UNUSED_NODE)
++				return ndlp;
++			np = ndlp;
+ 		}
+ 	}
  
- 		header->client_oob_in_sgl = 1;
+-	/* FIND node did <did> NOT FOUND */
+-	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
+-			 "0932 FIND node did x%x NOT FOUND.\n", did);
+-	return NULL;
++	if (!np)
++		/* FIND node did <did> NOT FOUND */
++		lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
++				 "0932 FIND node did x%x NOT FOUND.\n", did);
++
++	return np;
+ }
  
+ struct lpfc_nodelist *
 -- 
 2.39.5
 
