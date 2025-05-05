@@ -1,69 +1,62 @@
-Return-Path: <stable+bounces-140651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE2BDAAAA64
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:36:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B17C7AAAA69
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3393F188F84E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:33:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 948F81887980
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7597336AAFC;
-	Mon,  5 May 2025 23:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B7837A155;
+	Mon,  5 May 2025 23:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OgYaNuGE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vd5vt1OB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAB12D81B3;
-	Mon,  5 May 2025 22:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F542D86AE;
+	Mon,  5 May 2025 22:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485784; cv=none; b=BZqIJ4v2WNolMGStB1IvHG5pw6AX1bRrotywZsUmthCnBi48iP0svGPiyQW1mEBbJ+KizvzOpQS5G0QQbwH6KjCLmQeNDDx0FdhsAwRVEb49GmDEkLAyIqVruemttQRt/g85ZX5ZsMbNJOyM9VJYtAiyAivh1nqLYqWtTxNMx1s=
+	t=1746485785; cv=none; b=fyZRU//+0whopRB+4cSeivabVg2yVHLP0ynQzDxQvqyful8JXOTVp+47+n0Gkhow3Ae3w9EghcdrIHtGmi49knDgT0LGKDUiKg+Q3sLhwb0D8P5/ETQft8uvzIPzV4vl3cV41/GFNJEINxZiGK9AuSzJz9yHhZlJLSAJW404iKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485784; c=relaxed/simple;
-	bh=736lJHlmV7wwiZPIZbmHltRNq13JFqo+n1yYiOkxlKo=;
+	s=arc-20240116; t=1746485785; c=relaxed/simple;
+	bh=1RiZHA+OCdayigUJ9WuzS0RIlKabyjr9xW6t/jmqZqc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E1A+L0ubHh3vf8/ehpjQ6W6BiOa6CS6omIcjxObE7RoZpY9Iu5LgjYnEIGAAWIDf+fOCL/ZaXZSSRA5PmMX19Fq2zui3ayvkF+X65U3FMc2HwZihbFIzxX9UQXmo1o8xmzX59joCt3EGJ4C3UCV1wbhoaIdW1KwGwbU5rGszg9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OgYaNuGE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31095C4CEF2;
-	Mon,  5 May 2025 22:56:21 +0000 (UTC)
+	 MIME-Version; b=KP9b+4KfATMY7SHCeUOaVN2AUUBc6XgV/I5yE9dcEI4JPGO/v4TnC3L8MRQgPLB0km0VosVCjiuZbdHhKmluhMX/0k8Rcto1QCqetqpVKn5huI24xOVNuhuh8OKnC3jmg7wPSIopJ2t55uRkXwiQl3jpXY/5Jmh9Boora2exH8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vd5vt1OB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED8EC4CEE4;
+	Mon,  5 May 2025 22:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485783;
-	bh=736lJHlmV7wwiZPIZbmHltRNq13JFqo+n1yYiOkxlKo=;
+	s=k20201202; t=1746485784;
+	bh=1RiZHA+OCdayigUJ9WuzS0RIlKabyjr9xW6t/jmqZqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OgYaNuGE4oV8yrsJAyEj+6m5m/Si8Hcm6eEcoJ/vInTQbL3QEZG6PpxyZzJccX4+D
-	 Ud2Ag7kKgh/wNX1reg4EGJcoT5rLE9VglCALvlpF2m32v9xkMTysUu39RSH1BzeQGY
-	 480/FFNPiHqUm0yDdSWzP7vivcgs6AA33UqrL6J35eWAGmwF5FBqLWNeV4kPk9GLTD
-	 RBrNcurVuMSrBoxz/OXpkYW7SDc8qIdLkxqPSe7qWFhuZzGQcF0ZaQzrGKRlNxvLU8
-	 DoJrckVSIq7V7dlEdJf1nMWvxv1vfutCmaWTkO7eVqr1d94bUZM6Ye3U/2G7wPTFd3
-	 OUo3e7mnm3cJg==
+	b=Vd5vt1OBkqGan7pDt1gsorzmtFfiEY7sOHuTCTaDd+nSSRTjVZUXriRMdAb+/cds0
+	 skgQXICEK8X6FAoXQ49tSkSj8vHigAse4jvHjUu+OHwpjWd1cB3r1zsL0KyxR+oEWT
+	 22oM+YoEP7tL6sENjPSbpO49vlo7Hga5F7wJ8H1jMfZjEPhOrEFZkZ5QG9vAQZhD7S
+	 OhUL4uu4Efl4LMMAq+oAh4uBuZ50wN8un5NPMum2ZS2Q+kO4hEb3wFaIM6c8tueO0G
+	 G5YUBVxu43L1ESeXtvrHfbj/c8tR7eB+MpuvgLQv8jAXOzR65BTwMpWuDik6zVC530
+	 M94KX6kqunZ8g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Simona Vetter <simona.vetter@ffwll.ch>,
-	Pekka Paalanen <pekka.paalanen@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Rob Clark <robdclark@gmail.com>,
-	Simon Ser <contact@emersion.fr>,
-	Manasi Navare <navaremanasi@google.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Simona Vetter <simona.vetter@intel.com>,
+Cc: "Lin.Cao" <lincao12@amd.com>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
 	simona@ffwll.ch,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 482/486] drm/atomic: clarify the rules around drm_atomic_state->allow_modeset
-Date: Mon,  5 May 2025 18:39:18 -0400
-Message-Id: <20250505223922.2682012-482-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 483/486] drm/buddy: fix issue that force_merge cannot free all roots
+Date: Mon,  5 May 2025 18:39:19 -0400
+Message-Id: <20250505223922.2682012-483-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -73,91 +66,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Simona Vetter <simona.vetter@ffwll.ch>
+From: "Lin.Cao" <lincao12@amd.com>
 
-[ Upstream commit c5e3306a424b52e38ad2c28c7f3399fcd03e383d ]
+[ Upstream commit 467dce3817bd2b62ccd6fcfd7aae76f242ac907e ]
 
-msm is automagically upgrading normal commits to full modesets, and
-that's a big no-no:
+If buddy manager have more than one roots and each root have sub-block
+need to be free. When drm_buddy_fini called, the first loop of
+force_merge will merge and free all of the sub block of first root,
+which offset is 0x0 and size is biggest(more than have of the mm size).
+In subsequent force_merge rounds, if we use 0 as start and use remaining
+mm size as end, the block of other roots will be skipped in
+__force_merge function. It will cause the other roots can not be freed.
 
-- for one this results in full on->off->on transitions on all these
-  crtc, at least if you're using the usual helpers. Which seems to be
-  the case, and is breaking uapi
+Solution: use roots' offset as the start could fix this issue.
 
-- further even if the ctm change itself would not result in flicker,
-  this can hide modesets for other reasons. Which again breaks the
-  uapi
-
-v2: I forgot the case of adding unrelated crtc state. Add that case
-and link to the existing kerneldoc explainers. This has come up in an
-irc discussion with Manasi and Ville about intel's bigjoiner mode.
-Also cc everyone involved in the msm irc discussion, more people
-joined after I sent out v1.
-
-v3: Wording polish from Pekka and Thomas
-
-Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
-Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
-Cc: Rob Clark <robdclark@gmail.com>
-Cc: Simon Ser <contact@emersion.fr>
-Cc: Manasi Navare <navaremanasi@google.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Simona Vetter <simona.vetter@intel.com>
-Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250108172417.160831-1-simona.vetter@ffwll.ch
+Signed-off-by: Lin.Cao <lincao12@amd.com>
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241226070116.309290-1-Arunpravin.PaneerSelvam@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_atomic.h | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_buddy.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/drm/drm_atomic.h b/include/drm/drm_atomic.h
-index 31ca88deb10d2..1ded9a8d4e84d 100644
---- a/include/drm/drm_atomic.h
-+++ b/include/drm/drm_atomic.h
-@@ -376,8 +376,27 @@ struct drm_atomic_state {
- 	 *
- 	 * Allow full modeset. This is used by the ATOMIC IOCTL handler to
- 	 * implement the DRM_MODE_ATOMIC_ALLOW_MODESET flag. Drivers should
--	 * never consult this flag, instead looking at the output of
--	 * drm_atomic_crtc_needs_modeset().
-+	 * generally not consult this flag, but instead look at the output of
-+	 * drm_atomic_crtc_needs_modeset(). The detailed rules are:
-+	 *
-+	 * - Drivers must not consult @allow_modeset in the atomic commit path.
-+	 *   Use drm_atomic_crtc_needs_modeset() instead.
-+	 *
-+	 * - Drivers must consult @allow_modeset before adding unrelated struct
-+	 *   drm_crtc_state to this commit by calling
-+	 *   drm_atomic_get_crtc_state(). See also the warning in the
-+	 *   documentation for that function.
-+	 *
-+	 * - Drivers must never change this flag, it is under the exclusive
-+	 *   control of userspace.
-+	 *
-+	 * - Drivers may consult @allow_modeset in the atomic check path, if
-+	 *   they have the choice between an optimal hardware configuration
-+	 *   which requires a modeset, and a less optimal configuration which
-+	 *   can be committed without a modeset. An example would be suboptimal
-+	 *   scanout FIFO allocation resulting in increased idle power
-+	 *   consumption. This allows userspace to avoid flickering and delays
-+	 *   for the normal composition loop at reasonable cost.
- 	 */
- 	bool allow_modeset : 1;
- 	/**
+diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
+index 103c185bb1c8a..ca42e6081d27c 100644
+--- a/drivers/gpu/drm/drm_buddy.c
++++ b/drivers/gpu/drm/drm_buddy.c
+@@ -324,7 +324,7 @@ EXPORT_SYMBOL(drm_buddy_init);
+  */
+ void drm_buddy_fini(struct drm_buddy *mm)
+ {
+-	u64 root_size, size;
++	u64 root_size, size, start;
+ 	unsigned int order;
+ 	int i;
+ 
+@@ -332,7 +332,8 @@ void drm_buddy_fini(struct drm_buddy *mm)
+ 
+ 	for (i = 0; i < mm->n_roots; ++i) {
+ 		order = ilog2(size) - ilog2(mm->chunk_size);
+-		__force_merge(mm, 0, size, order);
++		start = drm_buddy_block_offset(mm->roots[i]);
++		__force_merge(mm, start, start + size, order);
+ 
+ 		WARN_ON(!drm_buddy_block_is_free(mm->roots[i]));
+ 		drm_block_free(mm, mm->roots[i]);
 -- 
 2.39.5
 
