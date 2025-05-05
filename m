@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-140532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA8FAAAE0B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:48:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36505AAADE2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:45:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7105B3B1286
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:43:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 352F6164FAE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671CB2BD584;
-	Mon,  5 May 2025 22:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377F629CB3B;
+	Mon,  5 May 2025 22:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="txlV3Jd4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tagauJDc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCC3299512;
-	Mon,  5 May 2025 22:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A3A359DF9;
+	Mon,  5 May 2025 22:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484957; cv=none; b=rtnOmTf4QYAC0vqC4Qt2pZTxWkxdZ9AdECHZvwibdU2ZI9DtSV7yBCJQoxz5V5YfHHuuENbly9iQ43JMdlGp6+OMt9qPZvpWUqjEo0aP2xIWm+CluP+jATPN3gKu+Y2vw2CO9ptptDu8DSf1vA4xFKv9e2CGVKrvd2kN0ynbB4k=
+	t=1746484977; cv=none; b=O/rB0lDxU31slPtIsXZuqOH9vZ2zVQ/9b1bqB9BN0coo4Ef+Y0YvFdfIYbH673q9kRzr7d/Lw9VLGj9gNvw/q+Wqn9F/AjWu8XXoRZ2pBI8qTL1IkCv2+5CHdDQ7vF3CvOMG9n/H7LGjF/npAW9ZxxKgvD8mUdKJoM6U3SfExQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484957; c=relaxed/simple;
-	bh=IFxjyUy9p939cgdSn8JtjShI/xj2DKazY5LneB9PH38=;
+	s=arc-20240116; t=1746484977; c=relaxed/simple;
+	bh=YQ75bINvl/uiYyqnZhLyfguZ9F0UaUz2ZRP/bkRD+kU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GdKiWHeiNXAwL2KHyp48rGKF2Y4eweoSFpk26QrSkfdjZx+IwhjbK7qqXUcGohIS/7YEAavPeTOxsvu8iyB59a25i08BdDLRSEGreHFWBl+lNBqflm1crf3gkHFESIterbmoFm2qDMm8SQCbuN2PwPS3Q92b4YEnVmoC1cxlrB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=txlV3Jd4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE14C4CEF1;
-	Mon,  5 May 2025 22:42:34 +0000 (UTC)
+	 MIME-Version; b=r5h9y55JJYN6vRhyJbVsrRnIkYsvPYU61TyyuozhfbwanJ7raShILG2d0/uPKr5FiwtNy4S2tt/9p2Q3d0lvXDBx23eqnB5wCxceRSuodoQ8WYI7ZD+fYFb+i2fKi4eewPMJC+x46IpbFxJH76AkkPCeM4psIiH5sBfQBtSt94U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tagauJDc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5636FC4CEE4;
+	Mon,  5 May 2025 22:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484955;
-	bh=IFxjyUy9p939cgdSn8JtjShI/xj2DKazY5LneB9PH38=;
+	s=k20201202; t=1746484976;
+	bh=YQ75bINvl/uiYyqnZhLyfguZ9F0UaUz2ZRP/bkRD+kU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=txlV3Jd4iSQqHQrncond5Z6YvFtiBAKjyYalXB1PDBLJbARVFALVUnSYKncqpXjPZ
-	 KfyUpnSpSZkjTKGXUR8ns/XEUBGOH7pNujay4R2yphANFXQ8gLw72Bh/uRQZhdJ8/X
-	 xW/z37V91eiktZ8U3h1Szet1MiiQ6ffGJKLITIKbjCy1qqV1AUzIMLapBTELHSU15Z
-	 1OSt+GfSHw7jF0TpNfql5pBWTQjtUvVcFDPgKU2RT6SEoY8GydRprLX9bn6VdesMKw
-	 eQNnmy+lCXeSbxxJyuiQrcnCKqGPrMQug+k+x42A8pnClOxyh//PWe4hNCR29QMi5L
-	 yzamakSwdPdLw==
+	b=tagauJDcT/9+ybLUVOchFKqbADIq6YI6zha5Mevau/atT2qhB49Ty9OsKwWF1HffS
+	 BUCpbUkVofuzhh1wnM+j7/ZGrbkO4G3HS6chssYgo787Sv9AEGwzmT72anoYe+X6Xx
+	 I6xrDgNgeoBmJx/GebWjyisowG5KmgAAnyC4ObJO77lrA+DeM5+aH1r2ovDScUPNUg
+	 fFy4WO6CNrskUvw0OVe/rC2KAFigmr/sKkttKLsNkuG7ThHFQtJJ4M66yVaN0MWWH1
+	 LWOo/bxq490RKzR26IYnaL9eEBCUmE+4yO8LxfUo0diNh3MeTCURp5OBc7n6pB+MuB
+	 j95fJXqWHppYw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-	Serge Hallyn <serge@hallyn.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Ts'o <tytso@mit.edu>,
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 094/486] ext4: reorder capability check last
-Date: Mon,  5 May 2025 18:32:50 -0400
-Message-Id: <20250505223922.2682012-94-sashal@kernel.org>
+	andreas.noever@gmail.com,
+	michael.jamet@intel.com,
+	westeri@kernel.org,
+	YehezkelShB@gmail.com,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 106/486] thunderbolt: Do not add non-active NVM if NVM upgrade is disabled for retimer
+Date: Mon,  5 May 2025 18:33:02 -0400
+Message-Id: <20250505223922.2682012-106-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -63,56 +63,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Christian Göttsche <cgzones@googlemail.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 1b419c889c0767a5b66d0a6c566cae491f1cb0f7 ]
+[ Upstream commit ad79c278e478ca8c1a3bf8e7a0afba8f862a48a1 ]
 
-capable() calls refer to enabled LSMs whether to permit or deny the
-request.  This is relevant in connection with SELinux, where a
-capability check results in a policy decision and by default a denial
-message on insufficient permission is issued.
-It can lead to three undesired cases:
-  1. A denial message is generated, even in case the operation was an
-     unprivileged one and thus the syscall succeeded, creating noise.
-  2. To avoid the noise from 1. the policy writer adds a rule to ignore
-     those denial messages, hiding future syscalls, where the task
-     performs an actual privileged operation, leading to hidden limited
-     functionality of that task.
-  3. To avoid the noise from 1. the policy writer adds a rule to permit
-     the task the requested capability, while it does not need it,
-     violating the principle of least privilege.
+This is only used to write a new NVM in order to upgrade the retimer
+firmware. It does not make sense to expose it if upgrade is disabled.
+This also makes it consistent with the router NVM upgrade.
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-Reviewed-by: Serge Hallyn <serge@hallyn.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250302160657.127253-2-cgoettsche@seltendoof.de
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/balloc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/thunderbolt/retimer.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
-index 8042ad8738089..c48fd36b2d74c 100644
---- a/fs/ext4/balloc.c
-+++ b/fs/ext4/balloc.c
-@@ -649,8 +649,8 @@ static int ext4_has_free_clusters(struct ext4_sb_info *sbi,
- 	/* Hm, nope.  Are (enough) root reserved clusters available? */
- 	if (uid_eq(sbi->s_resuid, current_fsuid()) ||
- 	    (!gid_eq(sbi->s_resgid, GLOBAL_ROOT_GID) && in_group_p(sbi->s_resgid)) ||
--	    capable(CAP_SYS_RESOURCE) ||
--	    (flags & EXT4_MB_USE_ROOT_BLOCKS)) {
-+	    (flags & EXT4_MB_USE_ROOT_BLOCKS) ||
-+	    capable(CAP_SYS_RESOURCE)) {
+diff --git a/drivers/thunderbolt/retimer.c b/drivers/thunderbolt/retimer.c
+index eeb64433ebbca..3488be7620674 100644
+--- a/drivers/thunderbolt/retimer.c
++++ b/drivers/thunderbolt/retimer.c
+@@ -93,9 +93,11 @@ static int tb_retimer_nvm_add(struct tb_retimer *rt)
+ 	if (ret)
+ 		goto err_nvm;
  
- 		if (free_clusters >= (nclusters + dirty_clusters +
- 				      resv_clusters))
+-	ret = tb_nvm_add_non_active(nvm, nvm_write);
+-	if (ret)
+-		goto err_nvm;
++	if (!rt->no_nvm_upgrade) {
++		ret = tb_nvm_add_non_active(nvm, nvm_write);
++		if (ret)
++			goto err_nvm;
++	}
+ 
+ 	rt->nvm = nvm;
+ 	dev_dbg(&rt->dev, "NVM version %x.%x\n", nvm->major, nvm->minor);
 -- 
 2.39.5
 
