@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-140051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C702CAAA475
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:29:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 204D8AAA483
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:30:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B78361882F7E
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:28:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF3E43ABE37
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC4D2FF2AB;
-	Mon,  5 May 2025 22:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11DAF33062;
+	Mon,  5 May 2025 22:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FOYExHC7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EtBz7ZL8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DE42FF2A5;
-	Mon,  5 May 2025 22:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38B92FF2BB;
+	Mon,  5 May 2025 22:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483984; cv=none; b=EkHsPkTOeFPhizpDKBAP48E3AEv4OAIu5ahn7O62OLlPRV1kqAMFgc1CiRNK8Cg42bJ6E/klwg3Kaj2drZQuF5gZuOlRVwmm5Ud2yTsTOdT9tNa4B7/ia85kULCEk+hlUFX7RvYN5jt9b3jmTvID1Q+gmlS0wpN8mm3EgjPmHQI=
+	t=1746483985; cv=none; b=IWBoTj4Ch25USGIoJzyiJBU0+L6w/1G5bu2y0yUKw9MHFYTp3lxL6SxY03yuQschgA8qGIvp3ej9Olb0Kyzi/XHBUOe259nBK9Kt7/GJNcN/4GwhDPxQq9s7Di7DrPuOP4oBaduXhY+KmDYIwOh3ZJ/748+TF/C61eY9cezD+Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483984; c=relaxed/simple;
-	bh=Dk8StzUec+MbyD2uE5mGEHh1S7+RVKjI5W7HqedHPTM=;
+	s=arc-20240116; t=1746483985; c=relaxed/simple;
+	bh=uoqatsxnaznUHh7zR9Q6eQtHRh1oWtgPBgbDgbm5Xfs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VVaaez55BLnQr9KZ/e4EblcgwALMimRBgZWt/lK0p/ua1zZHffc8q+4loHA6XJdIJ2EYK0neOnRRfTUXUaUZSYdFt9xRKKTlEea1hoVktpTewxrVCgJYxolQn/4VeMVOYTbGFQI9pHpOu4qEIjkDe1bMwhBLjgenz7IZMir/sb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FOYExHC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533FEC4CEEE;
-	Mon,  5 May 2025 22:26:22 +0000 (UTC)
+	 MIME-Version; b=VvUnuQk01acM5ZUnZcz7z+C1Mxl9ZdMSLnctGiQL0zJ+9+COFa236XOg0C/zz6Lc+WiLEmn7eDOU7VZ7V92IhhDjKK0pXSptKrzcIQoVUwxNMS2n4mKQYq3p0u7rjt85/13A+wuVKyQvfx3OydJ1I/mkomECvfC8Mwc3fq1SfAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EtBz7ZL8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 048F4C4CEE4;
+	Mon,  5 May 2025 22:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483983;
-	bh=Dk8StzUec+MbyD2uE5mGEHh1S7+RVKjI5W7HqedHPTM=;
+	s=k20201202; t=1746483985;
+	bh=uoqatsxnaznUHh7zR9Q6eQtHRh1oWtgPBgbDgbm5Xfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FOYExHC7buwDFyXfOotpRHXm5rzuAq/mvqVGdEDSoV3oHW4loE/7RgyoXFuG6EIel
-	 wR/e/VTqL7trzK1AJekfE6quamdvKsebAOBz5+riOJHvMtmTDWqHHQS6Zo4Xvxx+HY
-	 92XLV45nk7xWDGG4UzHKishArYrRE2LLQhf+JXsMd5EHxL4MaHPBcyPQXc61VM/6u5
-	 6VFk3mJIQqts46b/lTM6E0p0tsEs84qOvVy/JKyiwhRCwrSLKs8xIiIl8AUq5AW0e8
-	 rVPva0c6qDxwIB1TdqcqKj74Q37IQXjYX5JA0dP05ShDenX1HqoYW75EKreM/bWoaX
-	 KEzlz9bY75d5Q==
+	b=EtBz7ZL8124glnJayWVbzeGeNTPY71qoUqHQlY9akSOk004bepFaKA/u4jSnqjrZT
+	 3BofRfKJEpGcrU54R5wpDOtXWXt33L8gS8hvwUBc+KLcyHM0NRWi9EyAPgKQVNsMld
+	 ByMr4g1UgghIF77xqve3DYWI6ugnKWKHo2Z9WF71Bi6wQ9DA/MV++qmWaR66aZhfOa
+	 mHImREDDWX6FBHInlKWg7uEVtv+yvO4S6D1PaV3F0qauucHCGUoFUcKqznSpLnMyN4
+	 ktP4mnFZcZ/z1tHKDXc5N3kMaDl02xgfv4QcJpYckFg1cetbEGTfxGNLHCyzCTOFeA
+	 ph3u4cM9/ojKQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Philip Yang <Philip.Yang@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Daniel Gomez <da.gomez@samsung.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Felix.Kuehling@amd.com,
-	christian.koenig@amd.com,
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 304/642] drm/amdkfd: KFD release_work possible circular locking
-Date: Mon,  5 May 2025 18:08:40 -0400
-Message-Id: <20250505221419.2672473-304-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 305/642] drm/xe: xe_gen_wa_oob: replace program_invocation_short_name
+Date: Mon,  5 May 2025 18:08:41 -0400
+Message-Id: <20250505221419.2672473-305-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -71,78 +71,56 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Daniel Gomez <da.gomez@samsung.com>
 
-[ Upstream commit 1b9366c601039d60546794c63fbb83ce8e53b978 ]
+[ Upstream commit 89eb42b5539f6ae6a0cabcb39e5b6fcc83c106a1 ]
 
-If waiting for gpu reset done in KFD release_work, thers is WARNING:
-possible circular locking dependency detected
+program_invocation_short_name may not be available in other systems.
+Instead, replace it with the argv[0] to pass the executable name.
 
-  #2  kfd_create_process
-        kfd_process_mutex
-          flush kfd release work
+Fixes build error when program_invocation_short_name is not available:
 
-  #1  kfd release work
-        wait for amdgpu reset work
+drivers/gpu/drm/xe/xe_gen_wa_oob.c:34:3: error: use of
+undeclared identifier 'program_invocation_short_name'    34 |
+program_invocation_short_name);       |                 ^ 1 error
+generated.
 
-  #0  amdgpu_device_gpu_reset
-        kgd2kfd_pre_reset
-          kfd_process_mutex
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock((work_completion)(&p->release_work));
-                  lock((wq_completion)kfd_process_wq);
-                  lock((work_completion)(&p->release_work));
-   lock((wq_completion)amdgpu-reset-dev);
-
-To fix this, KFD create process move flush release work outside
-kfd_process_mutex.
-
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250224-macos-build-support-xe-v3-1-d2c9ed3a27cc@samsung.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/xe/xe_gen_wa_oob.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index c3f2c0428e013..c9cbc0ecd9cb2 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -842,6 +842,14 @@ struct kfd_process *kfd_create_process(struct task_struct *thread)
- 		return ERR_PTR(-EINVAL);
+diff --git a/drivers/gpu/drm/xe/xe_gen_wa_oob.c b/drivers/gpu/drm/xe/xe_gen_wa_oob.c
+index 904cf47925aa1..ed9183599e31c 100644
+--- a/drivers/gpu/drm/xe/xe_gen_wa_oob.c
++++ b/drivers/gpu/drm/xe/xe_gen_wa_oob.c
+@@ -28,10 +28,10 @@
+ 	"\n" \
+ 	"#endif\n"
+ 
+-static void print_usage(FILE *f)
++static void print_usage(FILE *f, const char *progname)
+ {
+ 	fprintf(f, "usage: %s <input-rule-file> <generated-c-source-file> <generated-c-header-file>\n",
+-		program_invocation_short_name);
++		progname);
+ }
+ 
+ static void print_parse_error(const char *err_msg, const char *line,
+@@ -144,7 +144,7 @@ int main(int argc, const char *argv[])
+ 
+ 	if (argc < 3) {
+ 		fprintf(stderr, "ERROR: wrong arguments\n");
+-		print_usage(stderr);
++		print_usage(stderr, argv[0]);
+ 		return 1;
  	}
  
-+	/* If the process just called exec(3), it is possible that the
-+	 * cleanup of the kfd_process (following the release of the mm
-+	 * of the old process image) is still in the cleanup work queue.
-+	 * Make sure to drain any job before trying to recreate any
-+	 * resource for this process.
-+	 */
-+	flush_workqueue(kfd_process_wq);
-+
- 	/*
- 	 * take kfd processes mutex before starting of process creation
- 	 * so there won't be a case where two threads of the same process
-@@ -862,14 +870,6 @@ struct kfd_process *kfd_create_process(struct task_struct *thread)
- 	if (process) {
- 		pr_debug("Process already found\n");
- 	} else {
--		/* If the process just called exec(3), it is possible that the
--		 * cleanup of the kfd_process (following the release of the mm
--		 * of the old process image) is still in the cleanup work queue.
--		 * Make sure to drain any job before trying to recreate any
--		 * resource for this process.
--		 */
--		flush_workqueue(kfd_process_wq);
--
- 		process = create_process(thread);
- 		if (IS_ERR(process))
- 			goto out;
 -- 
 2.39.5
 
