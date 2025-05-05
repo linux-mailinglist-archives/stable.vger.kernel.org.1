@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-140625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A68AAAA4D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:34:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C34A9AAAA41
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F14F3B4CB0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:29:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ED3A188C298
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75DF381EBE;
-	Mon,  5 May 2025 23:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A262A385373;
+	Mon,  5 May 2025 23:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cPwtUfwv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MVf91LAU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753D62D0AD2;
-	Mon,  5 May 2025 22:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF07B3635D4;
+	Mon,  5 May 2025 22:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485453; cv=none; b=hdyBesMNxlLNEEnlPuApZXZP0a7bwbUHd2GP6TJ2pyY719WYJH/aEFhDsxIdt1ZWDG+l55OtjJyq8yTxmJfvadWI2m/63uicRPX6GuPzVIPe7TDS8PoYKNJkSTbo/k6yBQBs8a6isecOKUpTzTE+jfC4DDwqVLhWz74vrqxfbEs=
+	t=1746485488; cv=none; b=ogEEOifDjCOy4SnNAOQmbx7JPWRRiePlko0SFRrsmf4xXnxndj2FL6g2OKrX3YmPHZJdk/mhJUqwSLt0BPAsOMaNiUFpeg8U7CuyVrZ9az9NTy9EcMVKKJz8mughhaw3YTAP9TjgRMlLY8AC354Tm2EBxo4kTEIUw6BvWnjllE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485453; c=relaxed/simple;
-	bh=af6rOhANjnb0Paoo1pZ8H+1cHjwxV6bm3QUYbbdQ8AU=;
+	s=arc-20240116; t=1746485488; c=relaxed/simple;
+	bh=/poekQtgswXL0n9PrpAg6A9ekTrrgUkF7TlsYeW/k5A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bK40+7N820iLuNmt5FwrlV4C/V7FZ4pksfjDY+mPpm6H9BjtjS/oUTkKpwavOzkKwbx74ZSe9QgTshQsCC30TlqaAOkCiyVNz/0iGmmUUlmk6hFWr6B5QogmyS7O/pff9oGXiTMvmR/L0viBsCkgxPUQbTkAMCBgoP38qMVdkac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cPwtUfwv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC49C4CEEF;
-	Mon,  5 May 2025 22:50:50 +0000 (UTC)
+	 MIME-Version; b=nD4pAK9hSw9VLZZsb7TicJXiEHsEQUH0BwdMmRcgjWugRYPFFJC9HeICfBZxcHw00bvOHs734zdJntpuVKne/mqu8jPncX5D97+IdcNOWYZRxJTisdTvIvvhnewnn2gZP5F/szA8mGw0kzmC33u38Z3V74lyXhCGx8L4fE5o3js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MVf91LAU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA25C4CEEE;
+	Mon,  5 May 2025 22:51:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485451;
-	bh=af6rOhANjnb0Paoo1pZ8H+1cHjwxV6bm3QUYbbdQ8AU=;
+	s=k20201202; t=1746485488;
+	bh=/poekQtgswXL0n9PrpAg6A9ekTrrgUkF7TlsYeW/k5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cPwtUfwv70OyZ8b/Iq4Yx7XEe3mgHt4Q4vqK7TceSOjI+Yv6VfRPRg1yh67/nVmqJ
-	 lYzcBbj2lX0XfeYXgvBid+Z1S34aNURDu089/q5/AHRtdfPv6il+7Cwxx5cCY9Vk2K
-	 Hl89sl0bNBACWsgq3Zkl9xGL47r58ncHIfKLRMPpa7KNCthYNhKogNm6n6RLrXPDQd
-	 Un+b5Lsd+GeReQeUhlQ0VoHitq1x7T2+g55P5bVMwuH5f5vthwjuTIesGMHYqhHtaa
-	 ffL8B4v+oWRmIH/BjyS74LUTcaIOG/TYjFbc9SF2SiEnQ/DA2EGf48sQqBlxtrLZOQ
-	 UiZhjPYc/k1Ug==
+	b=MVf91LAUVzVhi7d23aiIYr90/8tQ8znfC1FMjPZVYdgYatTCURSN7WTT8ctQx1rNy
+	 puTVBIovu1ODYhsrmSK8V2C40Rh79pBNi4GnrD2dmlr/GQRmmxLRwej+i0h+4nPjdu
+	 mTjLie4KMylRvXubtXipsVheN8yfK0mrqcZ2t2cMjzp7B5nWlUYtRbRUiyBkxXuzS6
+	 AmAVE8VNAtD+GtPSJZ0flMZ21VH21tKE9KyyW2fTW7MA/dOTeZpoF5C3FnuyZNrBaZ
+	 jNEOP2R4Ca1BuhXyjzwX7AN6Om8FMZJqm6RdgtAhjTcQonTHWlHFv4iNMZbyJrzTdK
+	 +fsxv7tiJJA+Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+Cc: Kees Cook <kees@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	anna-maria@linutronix.de,
-	frederic@kernel.org,
-	nathan@kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 318/486] hrtimers: Replace hrtimer_clock_to_base_table with switch-case
-Date: Mon,  5 May 2025 18:36:34 -0400
-Message-Id: <20250505223922.2682012-318-sashal@kernel.org>
+	tariqt@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	yishaih@nvidia.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 342/486] net/mlx4_core: Avoid impossible mlx4_db_alloc() order value
+Date: Mon,  5 May 2025 18:36:58 -0400
+Message-Id: <20250505223922.2682012-342-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,85 +72,76 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 4441b976dfeff0d3579e8da3c0283300c618a553 ]
+[ Upstream commit 4a6f18f28627e121bd1f74b5fcc9f945d6dbeb1e ]
 
-Clang and GCC complain about overlapped initialisers in the
-hrtimer_clock_to_base_table definition. With `make W=1` and CONFIG_WERROR=y
-(which is default nowadays) this breaks the build:
+GCC can see that the value range for "order" is capped, but this leads
+it to consider that it might be negative, leading to a false positive
+warning (with GCC 15 with -Warray-bounds -fdiagnostics-details):
 
-  CC      kernel/time/hrtimer.o
-kernel/time/hrtimer.c:124:21: error: initializer overrides prior initialization of this subobject [-Werror,-Winitializer-overrides]
-  124 |         [CLOCK_REALTIME]        = HRTIMER_BASE_REALTIME,
+../drivers/net/ethernet/mellanox/mlx4/alloc.c:691:47: error: array subscript -1 is below array bounds of 'long unsigned int *[2]' [-Werror=array-bounds=]
+  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);
+      |                                    ~~~~~~~~~~~^~~
+  'mlx4_alloc_db_from_pgdir': events 1-2
+  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);                        |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                     |                         |                                                   |                     |                         (2) out of array bounds here
+      |                     (1) when the condition is evaluated to true                             In file included from ../drivers/net/ethernet/mellanox/mlx4/mlx4.h:53,
+                 from ../drivers/net/ethernet/mellanox/mlx4/alloc.c:42:
+../include/linux/mlx4/device.h:664:33: note: while referencing 'bits'
+  664 |         unsigned long          *bits[2];
+      |                                 ^~~~
 
-kernel/time/hrtimer.c:122:27: note: previous initialization is here
-  122 |         [0 ... MAX_CLOCKS - 1]  = HRTIMER_MAX_CLOCK_BASES,
+Switch the argument to unsigned int, which removes the compiler needing
+to consider negative values.
 
-(and similar for CLOCK_MONOTONIC, CLOCK_BOOTTIME, and CLOCK_TAI).
-
-hrtimer_clockid_to_base(), which uses the table, is only used in
-__hrtimer_init(), which is not a hotpath.
-
-Therefore replace the table lookup with a switch case in
-hrtimer_clockid_to_base() to avoid this warning.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250214134424.3367619-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://patch.msgid.link/20250210174504.work.075-kees@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/hrtimer.c | 29 ++++++++++++-----------------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/alloc.c | 6 +++---
+ include/linux/mlx4/device.h                | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index db9c06bb23116..06fbc226341fd 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -117,16 +117,6 @@ DEFINE_PER_CPU(struct hrtimer_cpu_base, hrtimer_bases) =
- 	.csd = CSD_INIT(retrigger_next_event, NULL)
- };
- 
--static const int hrtimer_clock_to_base_table[MAX_CLOCKS] = {
--	/* Make sure we catch unsupported clockids */
--	[0 ... MAX_CLOCKS - 1]	= HRTIMER_MAX_CLOCK_BASES,
--
--	[CLOCK_REALTIME]	= HRTIMER_BASE_REALTIME,
--	[CLOCK_MONOTONIC]	= HRTIMER_BASE_MONOTONIC,
--	[CLOCK_BOOTTIME]	= HRTIMER_BASE_BOOTTIME,
--	[CLOCK_TAI]		= HRTIMER_BASE_TAI,
--};
--
- static inline bool hrtimer_base_is_online(struct hrtimer_cpu_base *base)
- {
- 	if (!IS_ENABLED(CONFIG_HOTPLUG_CPU))
-@@ -1597,14 +1587,19 @@ u64 hrtimer_next_event_without(const struct hrtimer *exclude)
- 
- static inline int hrtimer_clockid_to_base(clockid_t clock_id)
- {
--	if (likely(clock_id < MAX_CLOCKS)) {
--		int base = hrtimer_clock_to_base_table[clock_id];
--
--		if (likely(base != HRTIMER_MAX_CLOCK_BASES))
--			return base;
-+	switch (clock_id) {
-+	case CLOCK_REALTIME:
-+		return HRTIMER_BASE_REALTIME;
-+	case CLOCK_MONOTONIC:
-+		return HRTIMER_BASE_MONOTONIC;
-+	case CLOCK_BOOTTIME:
-+		return HRTIMER_BASE_BOOTTIME;
-+	case CLOCK_TAI:
-+		return HRTIMER_BASE_TAI;
-+	default:
-+		WARN(1, "Invalid clockid %d. Using MONOTONIC\n", clock_id);
-+		return HRTIMER_BASE_MONOTONIC;
- 	}
--	WARN(1, "Invalid clockid %d. Using MONOTONIC\n", clock_id);
--	return HRTIMER_BASE_MONOTONIC;
+diff --git a/drivers/net/ethernet/mellanox/mlx4/alloc.c b/drivers/net/ethernet/mellanox/mlx4/alloc.c
+index b330020dc0d67..f2bded847e61d 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/alloc.c
++++ b/drivers/net/ethernet/mellanox/mlx4/alloc.c
+@@ -682,9 +682,9 @@ static struct mlx4_db_pgdir *mlx4_alloc_db_pgdir(struct device *dma_device)
  }
  
- static void __hrtimer_init(struct hrtimer *timer, clockid_t clock_id,
+ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
+-				    struct mlx4_db *db, int order)
++				    struct mlx4_db *db, unsigned int order)
+ {
+-	int o;
++	unsigned int o;
+ 	int i;
+ 
+ 	for (o = order; o <= 1; ++o) {
+@@ -712,7 +712,7 @@ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
+ 	return 0;
+ }
+ 
+-int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order)
++int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order)
+ {
+ 	struct mlx4_priv *priv = mlx4_priv(dev);
+ 	struct mlx4_db_pgdir *pgdir;
+diff --git a/include/linux/mlx4/device.h b/include/linux/mlx4/device.h
+index 27f42f713c891..86f0f2a25a3d6 100644
+--- a/include/linux/mlx4/device.h
++++ b/include/linux/mlx4/device.h
+@@ -1135,7 +1135,7 @@ int mlx4_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
+ int mlx4_buf_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
+ 		       struct mlx4_buf *buf);
+ 
+-int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order);
++int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order);
+ void mlx4_db_free(struct mlx4_dev *dev, struct mlx4_db *db);
+ 
+ int mlx4_alloc_hwq_res(struct mlx4_dev *dev, struct mlx4_hwq_resources *wqres,
 -- 
 2.39.5
 
