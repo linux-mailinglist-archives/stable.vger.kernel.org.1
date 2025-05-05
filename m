@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-141439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4069AAB70E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:03:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72186AAB360
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:44:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C144E1BC5575
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:59:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF73C16D00F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B1323E229;
-	Tue,  6 May 2025 00:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07C823F41F;
+	Tue,  6 May 2025 00:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nl5716WV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GjFS5akl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964DF22D9F8;
-	Mon,  5 May 2025 23:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E28D22DA0B;
+	Mon,  5 May 2025 23:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486323; cv=none; b=FE8D9v97vb5pgX/wWnXWgNB/+gvk89uw7pl2FX6Q3SCCFR6pHtjTlHlM8uSSFmgWiu8vwNC12SJ5BfTCQ6ZOSYcqT+b7uDOpxErWvSCE7r41CsK4JnCBRzJ7zWt9jqxeeL6r7zX8WfcrWdg0cok0pVqoDHKAGS7Knj2V/SYq4w0=
+	t=1746486326; cv=none; b=JNWZYak7Hql2B96qvcP+w3up6AAWOhjcojIpNHBxzvIRCvsMVy1ESLKGXi1xv2O4p8eGQOo+qk4JzAmB8bKPOkni7FaTtFVviODWzw+JF4pB+Y4zfnfZmK9iwUCxSeqxO8Mp/M5hykZGgG5CvuzUrPylUJSZ0dEdhaa/4EZcl6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486323; c=relaxed/simple;
-	bh=pLsPsfht90VZB3Si4meBRTHexekqw5MmVmkOeEYazCY=;
+	s=arc-20240116; t=1746486326; c=relaxed/simple;
+	bh=FuUTa7qeVl1tru7h7FAYg3CCm3SlmL2bCM5XtGtIPQQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pqfvbY+BtOeGDzC9vQ0O5cKodbqLyZgsBIV4nET7Y7wOm6udrRl7hdN5I4IuFWIZOfXRU9OqCqzmAsAABeh5r+VSByMumL8KHZt5EEtZJj4M7/DlhLla9KGdwSCI7raMHhK0VKscOh3TxfeDGi6a+o4i01SSDXws1HCkdGMd7yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nl5716WV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5F9C4CEE4;
-	Mon,  5 May 2025 23:05:21 +0000 (UTC)
+	 MIME-Version; b=hlRLeS8Al9NJPG2q9JV+MIpNclIRzS++Q453KQ29KS8wFfJW6cGH7QJ6GTyTkXN1LTiYS3Jp2VEcztZ4cHf3n1AGEKK1gPsBERi+e8bzP+yl9frqJsYFp5uDVffdXiHcvDPG7601tSaqlYQiMErF0DlTSvwZE18+Z8ginYc6H2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GjFS5akl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6C1C4CEE4;
+	Mon,  5 May 2025 23:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486323;
-	bh=pLsPsfht90VZB3Si4meBRTHexekqw5MmVmkOeEYazCY=;
+	s=k20201202; t=1746486325;
+	bh=FuUTa7qeVl1tru7h7FAYg3CCm3SlmL2bCM5XtGtIPQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nl5716WVmlerxyhtXG650G49LsZ9eny6NcMHTKOBUfIXDLYiWCGtz8FlWv9xagmjx
-	 wLsNXVK2W+YKfMBku28tUPsvWxdl0VyalZWpjFtsnPHBgE3FerfL6j3GrDZLQXvyUb
-	 pfWcvixxr0VqlL+LPdRUSW1mxjks6CyWWehzc5iPSaKIaBlvdDZAejvK7VTAKftp1z
-	 Xhxt1TGpUpwQLjP9P0tdChc+fbvp6kdOUHs95IMotpR+oZQPtUJakuK3NHEZF8IGaZ
-	 vqkCjErL0ATd7+ND/8fRhp92K0lbnKOUzibUJTvBs4dCDdu6WZWhon5SGZ27eynWw4
-	 C3g/W25oLZGQw==
+	b=GjFS5aklkvsFLhvVln81hkvg++Q8lJNcgHZ/17vcYgimZzNNwDF6hen9mcXdjkoAx
+	 4gP6/d/yYvgwOVVvrTeriAWF+Y13bsUruLR1/eO1AHNWbC9hsHih0Zd+VBQTI8Dr/V
+	 VIxCxXTJeF5mZ1+e7B/cbpwuQQHD3v6KeTcuYTTOrEW0Wh6rCiDkC0mEqrMqkdiTSO
+	 EvVK6Obb/QKQrcpta4mZ76cvkpqbOYjUvc99ys72lRiJetw01wuoND137Wrb0HQoj4
+	 eszMJZ4p+PuXd8jgOY27p4evdDg+lzl10jgUOAEoD1cWWZv6VrbnyLsyfPq2W1zmPM
+	 LhstnfNwvS2lw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+Cc: Antoine Tenart <atenart@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	shuah@kernel.org,
-	bridge@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 259/294] bridge: mdb: Allow replace of a host-joined group
-Date: Mon,  5 May 2025 18:55:59 -0400
-Message-Id: <20250505225634.2688578-259-sashal@kernel.org>
+	sdf@fomichev.me,
+	jdamato@fastly.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 260/294] net-sysfs: prevent uncleared queues from being re-added
+Date: Mon,  5 May 2025 18:56:00 -0400
+Message-Id: <20250505225634.2688578-260-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -73,65 +70,74 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Petr Machata <petrm@nvidia.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit d9e9f6d7b7d0c520bb87f19d2cbc57aeeb2091d5 ]
+[ Upstream commit 7e54f85c60828842be27e0149f3533357225090e ]
 
-Attempts to replace an MDB group membership of the host itself are
-currently bounced:
+With the (upcoming) removal of the rtnl_trylock/restart_syscall logic
+and because of how Tx/Rx queues are implemented (and their
+requirements), it might happen that a queue is re-added before having
+the chance to be cleared. In such rare case, do not complete the queue
+addition operation.
 
- # ip link add name br up type bridge vlan_filtering 1
- # bridge mdb replace dev br port br grp 239.0.0.1 vid 2
- # bridge mdb replace dev br port br grp 239.0.0.1 vid 2
- Error: bridge: Group is already joined by host.
-
-A similar operation done on a member port would succeed. Ignore the check
-for replacement of host group memberships as well.
-
-The bit of code that this enables is br_multicast_host_join(), which, for
-already-joined groups only refreshes the MC group expiration timer, which
-is desirable; and a userspace notification, also desirable.
-
-Change a selftest that exercises this code path from expecting a rejection
-to expecting a pass. The rest of MDB selftests pass without modification.
-
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/e5c5188b9787ae806609e7ca3aa2a0a501b9b5c4.1738685648.git.petrm@nvidia.com
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Link: https://patch.msgid.link/20250204170314.146022-4-atenart@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_mdb.c                                  | 2 +-
- tools/testing/selftests/net/forwarding/bridge_mdb.sh | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/core/net-sysfs.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/net/bridge/br_mdb.c b/net/bridge/br_mdb.c
-index 7305f5f8215ca..96bea0c8408fe 100644
---- a/net/bridge/br_mdb.c
-+++ b/net/bridge/br_mdb.c
-@@ -1030,7 +1030,7 @@ static int br_mdb_add_group(const struct br_mdb_config *cfg,
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index f7404bc679746..d88682ae0e126 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -1077,6 +1077,22 @@ static int rx_queue_add_kobject(struct net_device *dev, int index)
+ 	struct kobject *kobj = &queue->kobj;
+ 	int error = 0;
  
- 	/* host join */
- 	if (!port) {
--		if (mp->host_joined) {
-+		if (mp->host_joined && !(cfg->nlflags & NLM_F_REPLACE)) {
- 			NL_SET_ERR_MSG_MOD(extack, "Group is already joined by host");
- 			return -EEXIST;
- 		}
-diff --git a/tools/testing/selftests/net/forwarding/bridge_mdb.sh b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
-index a3678dfe5848a..c151374ddf040 100755
---- a/tools/testing/selftests/net/forwarding/bridge_mdb.sh
-+++ b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
-@@ -149,7 +149,7 @@ cfg_test_host_common()
- 	check_err $? "Failed to add $name host entry"
++	/* Rx queues are cleared in rx_queue_release to allow later
++	 * re-registration. This is triggered when their kobj refcount is
++	 * dropped.
++	 *
++	 * If a queue is removed while both a read (or write) operation and a
++	 * the re-addition of the same queue are pending (waiting on rntl_lock)
++	 * it might happen that the re-addition will execute before the read,
++	 * making the initial removal to never happen (queue's kobj refcount
++	 * won't drop enough because of the pending read). In such rare case,
++	 * return to allow the removal operation to complete.
++	 */
++	if (unlikely(kobj->state_initialized)) {
++		netdev_warn_once(dev, "Cannot re-add rx queues before their removal completed");
++		return -EAGAIN;
++	}
++
+ 	/* Kobject_put later will trigger rx_queue_release call which
+ 	 * decreases dev refcount: Take that reference here
+ 	 */
+@@ -1684,6 +1700,22 @@ static int netdev_queue_add_kobject(struct net_device *dev, int index)
+ 	struct kobject *kobj = &queue->kobj;
+ 	int error = 0;
  
- 	bridge mdb replace dev br0 port br0 grp $grp $state vid 10 &> /dev/null
--	check_fail $? "Managed to replace $name host entry"
-+	check_err $? "Failed to replace $name host entry"
- 
- 	bridge mdb del dev br0 port br0 grp $grp $state vid 10
- 	bridge mdb get dev br0 grp $grp vid 10 &> /dev/null
++	/* Tx queues are cleared in netdev_queue_release to allow later
++	 * re-registration. This is triggered when their kobj refcount is
++	 * dropped.
++	 *
++	 * If a queue is removed while both a read (or write) operation and a
++	 * the re-addition of the same queue are pending (waiting on rntl_lock)
++	 * it might happen that the re-addition will execute before the read,
++	 * making the initial removal to never happen (queue's kobj refcount
++	 * won't drop enough because of the pending read). In such rare case,
++	 * return to allow the removal operation to complete.
++	 */
++	if (unlikely(kobj->state_initialized)) {
++		netdev_warn_once(dev, "Cannot re-add tx queues before their removal completed");
++		return -EAGAIN;
++	}
++
+ 	/* Kobject_put later will trigger netdev_queue_release call
+ 	 * which decreases dev refcount: Take that reference here
+ 	 */
 -- 
 2.39.5
 
