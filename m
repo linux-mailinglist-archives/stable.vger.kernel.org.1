@@ -1,61 +1,72 @@
-Return-Path: <stable+bounces-140029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0778FAAA409
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:23:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B16AAA41D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:24:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A2D017D9EC
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:23:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F21D1A870B6
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1672FA81C;
-	Mon,  5 May 2025 22:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 974B52FB2C7;
+	Mon,  5 May 2025 22:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQyDDuNx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rDcv/KII"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85DD2FA7EF;
-	Mon,  5 May 2025 22:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5A42FB2C3;
+	Mon,  5 May 2025 22:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483943; cv=none; b=pZTd7ZQT9X/qkYDAREIz+wUp5Ozp+mohad81eBRbOwkPHaBi3ahJd9MiQqD6SAz3C93IgRtfwnhegjJNa2J7m1SbJfhjY0B/w+Kp+IFucjqgarVnx53CVbI/usbHGdYcnyUKCS6MfclfT/rg535lzpgaJJS83jY1tuTaqziDZ64=
+	t=1746483947; cv=none; b=lbsb14XegNhuTwasJu1JF+us27fHBhTDRoMMXAuPNI26GjdJDZeydPKbbzDVfBHryLmGE9yZB24EKjGk0EIFQ+D0cdyyuMUsf7KBx2H2qBSVazqhA0JkL/eT8gTSkife++KOwU+OxpvS8py9USe2WJPwIGNR6zWVSpn9otmuH7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483943; c=relaxed/simple;
-	bh=ZfPM/aHeq4ZfGih9em7jB1Wfp4SBiRBC5F7tjJW9MD0=;
+	s=arc-20240116; t=1746483947; c=relaxed/simple;
+	bh=Q9UBmJZknHMMdDx+vXBGeGQgCtP6AoH8r9TmFpOhp4s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CjlnCi+sfVncDl7PnaP3Ehk2TGfcLxpCc2SmC2qc5aLJS0Aaxj8vRWilQHOoqRYDXX61fGSjIpY3WqnXtce3uwMaHIDJ1Lg14ikqeyHcvcL+89M4QSr0Q38teTMrpheYCzwSirKQzTWvgTltPCbkJjLGMjp64wTAh5mqQcb3FZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQyDDuNx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68726C4CEEF;
-	Mon,  5 May 2025 22:25:42 +0000 (UTC)
+	 MIME-Version; b=naNCdhLejsR7259zT6riI/8fpssV8k+OTYh6VjvAhA4A99Iubsc/QVmXyrt+171ZT1smPDbMhepjdMEsexVGQoh4+WeeNhbU6tUdb/73lTWYabAMM1scZdFGco128O8zWoyKNvDziDA38/H9NxZctKMgvioDzCdiw2ulXphqPE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rDcv/KII; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0EF2C4CEE4;
+	Mon,  5 May 2025 22:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483943;
-	bh=ZfPM/aHeq4ZfGih9em7jB1Wfp4SBiRBC5F7tjJW9MD0=;
+	s=k20201202; t=1746483947;
+	bh=Q9UBmJZknHMMdDx+vXBGeGQgCtP6AoH8r9TmFpOhp4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VQyDDuNxFEGoro1Hv8UM/njllPPkBtKsijj9XQNvADkxM5BF+7Rr8gu0ymxuHW1De
-	 Hvff6hEF5RHBLeCiI7q7RJQrXii5O2xO/z4MDDuJzBkkbanXEc2BP9+GOyD2TqokvA
-	 cz5ag2GjHEbt60ZZEeLS1uuwMCm0NOk4NX+E+iKVQQLCBR1WCLb04w17ngiBMOjGQ9
-	 EKGRjgbI0RVqxvVZZECjlml/sHL0177zDkTe3UjDhjHHMs2WpxP2aL+u4v5QJ1UNWT
-	 NHVHYW81AhbeM55UaIZ7M2eSgPaFgkvZSH7icuvyqgyllP9DkTm7bSYgjMRCJGbHNL
-	 7KOwvAJMUWEFw==
+	b=rDcv/KIIBz4OXyDCv7pu//MSZPBjoTx2jHgcGufDBVmUte/sgT/Q3DvwW08+65pgR
+	 PQJd+SYWkvdt7uQLbEHr870sULr5Eb8q55Eq8CB0clPrvXTUNe1npDgdvIfwfFNuUo
+	 /VH7yd6QqE0YsOA+KK5sEncONV9nfRN91ZZR/mxepf3S8r0nV9MQOFbK60aMDXeceH
+	 iJe1/8hVB/S7hvK1jNmpgcBiC4EOv8ER46HyLP2HTPjUaeoMyzWhZR1kVq85CWZJMv
+	 o0n2EXNor7KD3hMnv0a/2ZtD8tKvTzAVFMsOtDAuof29WLDA9r5gCGDCuFFoY2MW/b
+	 edY0KvHtjJASw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Xu Yang <xu.yang_2@nxp.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Breno Leitao <leitao@debian.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	David Kaplan <David.Kaplan@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	len.brown@intel.com,
-	pavel@kernel.org,
+	corbet@lwn.net,
+	tglx@linutronix.de,
+	bp@alien8.de,
+	mingo@redhat.com,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	akpm@linux-foundation.org,
+	rostedt@goodmis.org,
+	paulmck@kernel.org,
+	thuth@redhat.com,
+	ardb@kernel.org,
 	gregkh@linuxfoundation.org,
-	dakr@kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 282/642] PM: sleep: Suppress sleeping parent warning in special case
-Date: Mon,  5 May 2025 18:08:18 -0400
-Message-Id: <20250505221419.2672473-282-sashal@kernel.org>
+	linux-doc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 283/642] x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2
+Date: Mon,  5 May 2025 18:08:19 -0400
+Message-Id: <20250505221419.2672473-283-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -70,64 +81,94 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit e8195f0630f1c4c2465074fe81b5fda19efd3148 ]
+[ Upstream commit 98fdaeb296f51ef08e727a7cc72e5b5c864c4f4d ]
 
-Currently, if power.no_callbacks is set, device_prepare() will also set
-power.direct_complete for the device.  If power.direct_complete is set
-in device_resume(), the clearing of power.is_prepared will be skipped
-and if new children appear under the device at that point, a warning
-will be printed.
+Change the default value of spectre v2 in user mode to respect the
+CONFIG_MITIGATION_SPECTRE_V2 config option.
 
-After commit (f76b168b6f11 PM: Rename dev_pm_info.in_suspend to
-is_prepared), power.is_prepared is generally cleared in device_resume()
-before invoking the resume callback for the device which allows that
-callback to add new children without triggering the warning, but this
-does not happen for devices with power.direct_complete set.
+Currently, user mode spectre v2 is set to auto
+(SPECTRE_V2_USER_CMD_AUTO) by default, even if
+CONFIG_MITIGATION_SPECTRE_V2 is disabled.
 
-This problem is visible in USB where usb_set_interface() can be called
-before device_complete() clears power.is_prepared for interface devices
-and since ep devices are added then, the warning is printed:
+Set the spectre_v2 value to auto (SPECTRE_V2_USER_CMD_AUTO) if the
+Spectre v2 config (CONFIG_MITIGATION_SPECTRE_V2) is enabled, otherwise
+set the value to none (SPECTRE_V2_USER_CMD_NONE).
 
- usb 1-1: reset high-speed USB device number 3 using ci_hdrc
-  ep_81: PM: parent 1-1:1.1 should not be sleeping
- PM: resume devices took 0.936 seconds
+Important to say the command line argument "spectre_v2_user" overwrites
+the default value in both cases.
 
-Since it is legitimate to add the ep devices at that point, the
-warning above is not particularly useful, so get rid of it by
-clearing power.is_prepared in device_resume() for devices with
-power.direct_complete set if they have no PM callbacks, in which
-case they need not actually resume for the new children to work.
+When CONFIG_MITIGATION_SPECTRE_V2 is not set, users have the flexibility
+to opt-in for specific mitigations independently. In this scenario,
+setting spectre_v2= will not enable spectre_v2_user=, and command line
+options spectre_v2_user and spectre_v2 are independent when
+CONFIG_MITIGATION_SPECTRE_V2=n.
 
-Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://patch.msgid.link/20250224070049.3338646-1-xu.yang_2@nxp.com
-[ rjw: New subject, changelog edits, rephrased new code comment ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: David Kaplan <David.Kaplan@amd.com>
+Link: https://lore.kernel.org/r/20241031-x86_bugs_last_v2-v2-2-b7ff1dab840e@debian.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ Documentation/admin-guide/kernel-parameters.txt |  2 ++
+ arch/x86/kernel/cpu/bugs.c                      | 10 +++++++---
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 23be2d1b04079..37fe251b4c591 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -933,6 +933,13 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
- 		goto Complete;
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 56be1fc99bdd4..fef456a990f45 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6584,6 +6584,8 @@
  
- 	if (dev->power.direct_complete) {
-+		/*
-+		 * Allow new children to be added under the device after this
-+		 * point if it has no PM callbacks.
-+		 */
-+		if (dev->power.no_pm_callbacks)
-+			dev->power.is_prepared = false;
+ 			Selecting 'on' will also enable the mitigation
+ 			against user space to user space task attacks.
++			Selecting specific mitigation does not force enable
++			user mitigations.
+ 
+ 			Selecting 'off' will disable both the kernel and
+ 			the user space protections.
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 9152285aaaf96..4f9898836da13 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1293,9 +1293,13 @@ static __ro_after_init enum spectre_v2_mitigation_cmd spectre_v2_cmd;
+ static enum spectre_v2_user_cmd __init
+ spectre_v2_parse_user_cmdline(void)
+ {
++	enum spectre_v2_user_cmd mode;
+ 	char arg[20];
+ 	int ret, i;
+ 
++	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
++		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
 +
- 		/* Match the pm_runtime_disable() in device_suspend(). */
- 		pm_runtime_enable(dev);
- 		goto Complete;
+ 	switch (spectre_v2_cmd) {
+ 	case SPECTRE_V2_CMD_NONE:
+ 		return SPECTRE_V2_USER_CMD_NONE;
+@@ -1308,7 +1312,7 @@ spectre_v2_parse_user_cmdline(void)
+ 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
+ 				  arg, sizeof(arg));
+ 	if (ret < 0)
+-		return SPECTRE_V2_USER_CMD_AUTO;
++		return mode;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
+ 		if (match_option(arg, ret, v2_user_options[i].option)) {
+@@ -1318,8 +1322,8 @@ spectre_v2_parse_user_cmdline(void)
+ 		}
+ 	}
+ 
+-	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
+-	return SPECTRE_V2_USER_CMD_AUTO;
++	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
++	return mode;
+ }
+ 
+ static inline bool spectre_v2_in_ibrs_mode(enum spectre_v2_mitigation mode)
 -- 
 2.39.5
 
