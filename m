@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-141665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BAD5AAB568
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:28:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B847AAB571
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 768091C0775C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:24:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 349D6503713
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7C249C646;
-	Tue,  6 May 2025 00:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A43347D06;
+	Tue,  6 May 2025 00:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mIQgdC7V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="imgs4Z5+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D872F6B2B;
-	Mon,  5 May 2025 23:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2ADA2F6B5B;
+	Mon,  5 May 2025 23:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487075; cv=none; b=gvV0ngaE0icMsspZ4NDTdU2ysbDG7M2XO6Hbd0YCCNTqzGzzYlh/XUHD1UB3HTWPwngd1WQKXlVeJU0u1kMoSWvyLMdP4soste3v/HVc/oUs/xW4i0/k6eawRQ4cy/CRZsJZcMBXzgU840qOYZjqF9OmQubKkH8FT8mSxQiX7+4=
+	t=1746487079; cv=none; b=WKGpb20vYq1ovRhHVKMDj2/jKDw3JDKNwf9ldU8XrQjfkpnUx/92lOeoDAHemste9PvnRoBAd3zLPmJ0Z126MvyYtqF0MZ6C3s2KKIglaIbmUA59pfgH6xNVX/Pe4q6nJmABNWxyKv30cR25I/cSfW3Ngo2Nu0D+ddu/dImdhAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487075; c=relaxed/simple;
-	bh=/2J5vELcYhIB5u+gaNT3hu3osVWdh/Cs8c/m8gYGHg0=;
+	s=arc-20240116; t=1746487079; c=relaxed/simple;
+	bh=CMDfBiFwcjIQ0GzR+o2KKA+zOU0rN/vwkB/RvxyrxWA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lSy/UFqSnPrPZ8DWI8cMg6lfdWxQH95rS3o1FKlXovuHJPy6uCy80Pmicw6k9Xo0fNFKht5R6CNfRQTkkIZPR3CsQN0vW8UKeQJqqjdowgnp/R7tU9ndv8Q1H0JDXsYKLiQKCrG1gdc2q9HMApcGKRWy+YdLhwXGyxU5KGfEoRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mIQgdC7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857B4C4CEEF;
-	Mon,  5 May 2025 23:17:53 +0000 (UTC)
+	 MIME-Version; b=bp+dp5z8R3lOeAn3gvhlEJb0WgjISplLOe/1wch9uaYC85ICru/a7ZHdxDJaY4xb57k7/RBfbiSu+GLXghd6mfA3/crxsIitKB2duiahXV3Zjy90oUkxQs1m6HnySQOW6PQN8fsJWt7VfQa4+VlKACDrvmUk0dusVqGZFlIYnjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=imgs4Z5+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EE9C4CEF1;
+	Mon,  5 May 2025 23:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487074;
-	bh=/2J5vELcYhIB5u+gaNT3hu3osVWdh/Cs8c/m8gYGHg0=;
+	s=k20201202; t=1746487079;
+	bh=CMDfBiFwcjIQ0GzR+o2KKA+zOU0rN/vwkB/RvxyrxWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mIQgdC7VMBEXLV3+NTb3vxpg+5uQ3khw6HwHTjOvGfRTBcITeNWA30R2OGzepm807
-	 zZ4TrcQr48PVrhqlfNxwA/QXVOuxLAQ9mZwtlRbnMs7/o4Y7bhCmOmqkTngeo6tcyl
-	 CudtxkmbMOzk7gP4LfTIALQsdBBVtdn3SaCV39VfM6P64SpEq6IGGWOsWcs8z1mJau
-	 v8y9B6cFJHzD7unXdKBNOci2ZHao3MbDx/Kx/1wseHyURzHlzSSJrOIJGjZIN2mk2f
-	 GZ8Hane0fxmegSgOBCCrrn/KDtAPrU1o7gs0zrMCjTp+7lrkKLMKeRLT7oT2ZoUuti
-	 uz6L4VbWKbDnA==
+	b=imgs4Z5+5M7KiGE2y4jIRYpHjryLiYWFHVQvDLKBei/ZxlY5wVgIxSYHeYd89qjhT
+	 qRbetTWGUUr0WbWI3ssTC7Ia/om6E13QmkfSMBAr+kfjI5/7890hObMiTvN4DbsRyQ
+	 zoPcBTZMAFIy9E1Se6S15cRh8DcvYbsL8rFqomviTOjAtRZ+1YZ+zNGvEgKN7s7DMz
+	 aINRMKX/46WWEabCjumXecs6BBHl0FSYPjJZAIuCJ4T7O+jaKS14zDMqTnALIipO2M
+	 zoUQ4g4pivCNIHyEX/u+ij9k5xqZbvIYe2Bwd41jwprokmIOjlKI+zaVtQVtjHZL/o
+	 xqL1GgEm5aMtQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ankur Arora <ankur.a.arora@oracle.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Boqun Feng <boqun.feng@gmail.com>,
+Cc: Justin Tee <justin.tee@broadcom.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	neeraj.upadhyay@kernel.org,
-	joel@joelfernandes.org,
-	josh@joshtriplett.org,
-	urezki@gmail.com,
-	rcu@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 140/153] rcu: fix header guard for rcu_all_qs()
-Date: Mon,  5 May 2025 19:13:07 -0400
-Message-Id: <20250505231320.2695319-140-sashal@kernel.org>
+	james.smart@broadcom.com,
+	dick.kennedy@broadcom.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 142/153] scsi: lpfc: Handle duplicate D_IDs in ndlp search-by D_ID routine
+Date: Mon,  5 May 2025 19:13:09 -0400
+Message-Id: <20250505231320.2695319-142-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -72,42 +68,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Ankur Arora <ankur.a.arora@oracle.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit ad6b5b73ff565e88aca7a7d1286788d80c97ba71 ]
+[ Upstream commit 56c3d809b7b450379162d0b8a70bbe71ab8db706 ]
 
-rcu_all_qs() is defined for !CONFIG_PREEMPT_RCU but the declaration
-is conditioned on CONFIG_PREEMPTION.
+After a port swap between separate fabrics, there may be multiple nodes in
+the vport's fc_nodes list with the same fabric well known address.
+Duplication is temporary and eventually resolves itself after dev_loss_tmo
+expires, but nameserver queries may still occur before dev_loss_tmo.  This
+possibly results in returning stale fabric ndlp objects.  Fix by adding an
+nlp_state check to ensure the ndlp search routine returns the correct newer
+allocated ndlp fabric object.
 
-With CONFIG_PREEMPT_LAZY, CONFIG_PREEMPTION=y does not imply
-CONFIG_PREEMPT_RCU=y.
-
-Decouple the two.
-
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250131000524.163662-5-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rcutree.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/rcutree.h b/include/linux/rcutree.h
-index 53209d6694001..3828ff8a2f9c9 100644
---- a/include/linux/rcutree.h
-+++ b/include/linux/rcutree.h
-@@ -66,7 +66,7 @@ extern int rcu_scheduler_active __read_mostly;
- void rcu_end_inkernel_boot(void);
- bool rcu_inkernel_boot_has_ended(void);
- bool rcu_is_watching(void);
--#ifndef CONFIG_PREEMPTION
-+#ifndef CONFIG_PREEMPT_RCU
- void rcu_all_qs(void);
- #endif
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index 54aff304cdcf4..d04669ae878bd 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -5631,6 +5631,7 @@ static struct lpfc_nodelist *
+ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
+ {
+ 	struct lpfc_nodelist *ndlp;
++	struct lpfc_nodelist *np = NULL;
+ 	uint32_t data1;
  
+ 	list_for_each_entry(ndlp, &vport->fc_nodes, nlp_listp) {
+@@ -5645,14 +5646,20 @@ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
+ 					 ndlp, ndlp->nlp_DID,
+ 					 ndlp->nlp_flag, data1, ndlp->nlp_rpi,
+ 					 ndlp->active_rrqs_xri_bitmap);
+-			return ndlp;
++
++			/* Check for new or potentially stale node */
++			if (ndlp->nlp_state != NLP_STE_UNUSED_NODE)
++				return ndlp;
++			np = ndlp;
+ 		}
+ 	}
+ 
+-	/* FIND node did <did> NOT FOUND */
+-	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
+-			 "0932 FIND node did x%x NOT FOUND.\n", did);
+-	return NULL;
++	if (!np)
++		/* FIND node did <did> NOT FOUND */
++		lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
++				 "0932 FIND node did x%x NOT FOUND.\n", did);
++
++	return np;
+ }
+ 
+ struct lpfc_nodelist *
 -- 
 2.39.5
 
