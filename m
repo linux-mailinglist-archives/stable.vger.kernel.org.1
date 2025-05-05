@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-141313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0C6AAB28E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:24:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB70AAB271
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:21:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94F603B26B3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:17:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 700E01B62569
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1218A379D81;
-	Tue,  6 May 2025 00:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DFD42A3E1;
+	Tue,  6 May 2025 00:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BdGFkL2R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tcmUsprR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C67278778;
-	Mon,  5 May 2025 22:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39563278777;
+	Mon,  5 May 2025 22:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485757; cv=none; b=NMi5K5AIW4wgPlljreQkI6pM139qGhm3C7cfYKxmLMkdBoRYrb3wfao2i2kOwFjBkI7uB6+ulNZM60yORdng3uoH3Re6fJVHcXb3zoiFiC2itvkedT+gi/mcvTNKKHvhD+HrqqF6gqpEvUMpCp5L2yUeFxAsMCX6lGu320mS/M4=
+	t=1746485758; cv=none; b=Okf7Y0KAOZ7Oz6d1ivIAvjdJwAH4bskZirzPDs4+7FlscVT2LHRf4mcQ9wzgPpJHLBMdcEhKtc2+Dsk4u7uQ05mxAqQ+/V+y5sFT5Vr1aHPKu1AC/t9S+QYL2In+cXx5OhzPQHe/FKJ5qP8JDy14hQc+k13b2cQeKjnQukBctlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485757; c=relaxed/simple;
-	bh=qnNfg/EOcVr34/PFSz2MpR8GC/v6Xd+rl7Jb6jMV9AI=;
+	s=arc-20240116; t=1746485758; c=relaxed/simple;
+	bh=Di0jDpfzAMe0gROB9QY0u7czD53Zp3a46Nkp6q62GRk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Jwm5nIZjO1ekLHEv7MluaHENHTVHP8Dd7fEfgBgxMdn0GyMoXPnNGn1kk9f7gWntDWnfugcJJNvrpFhNTb7aYsjNZ1S574xt9tqXssgOgNXYOfn9yIxzO7Xf31V6QQaeaqplmLrWY27t7+Ml7fBJ1r90KWYzgjEf7eCB/vjm+DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BdGFkL2R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFE5C4CEEE;
-	Mon,  5 May 2025 22:55:55 +0000 (UTC)
+	 MIME-Version; b=IZ2NIDD3THuVJrNZIbrpumuW9qngu244t5JRoVYJR6zVipzZly6/P27RsfElMXJPShRnmn264ehSkZelInyuiUshBjE26WjebIl+6R7X6JEYgMpBQO/PnlY7CQrax8KW/1S0mqD1RMzY7exBZdtSBbpO9YcK3pl3ZVzR/Cyg8qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tcmUsprR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1109DC4CEED;
+	Mon,  5 May 2025 22:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485756;
-	bh=qnNfg/EOcVr34/PFSz2MpR8GC/v6Xd+rl7Jb6jMV9AI=;
+	s=k20201202; t=1746485758;
+	bh=Di0jDpfzAMe0gROB9QY0u7czD53Zp3a46Nkp6q62GRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BdGFkL2RNl4hLkPacZ7sOUwmjCk8FN4p/WrKuKURjBKq5YbLp0QBzqolxYk5WiEUl
-	 yT20PrKl8IB7woh1yKptY37nbNMT5JG0TXlPmznhgusyW7ELHIg4xobWZduVFCT7nQ
-	 M2TdNLJE5lEm7K4jxhg/6n+hJL+R0SKLnB7S1H4evTeF9hdvcAhwl+WZXQ6EPv3d7S
-	 qYxxzsqA/CIVNOJGfkB+CCooBKk2l8V/9ayDjxWB9Cv76naFNedMc9+fLjq1Y/IEOj
-	 u8nlE2TZ44PiE4YTNqxMDANVSRcBadxk4Xnu6/2SAOXvtwdeOrzsjDkbBT6aTxI2Iz
-	 P1OH7asVNPEbg==
+	b=tcmUsprRlcoOLaZ43guQmpHunPLLRBQTDQKEElMSD5ggeGMCo0wG6NhLeMVorDCH8
+	 pP0u4Wni+nNCLzUS9em5EqJLjEiVQaF/X9uBKcI1/+B4RLbIuUhssLemkNMcKr5ll9
+	 AgY/ZEpK3mIBJc3PbNQ4ATmMzPdPC1bFpVL0LF24MUaNM8FNPdy+CWqeSysXRdbtK8
+	 xBO4ZCv2SP6vuxO+6Br8vq7bdrzHG5AnwDa0VWPV7mrEYk+pXP9VnZOsAZ1RB0bK3O
+	 FEJyfQ46df+ka+MnUUuUzgQ2BxSH30lvyBYax8sS/dv0u6jJ5cePsYQeq5CD48Zqwi
+	 xgGibTQTw+LUA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nicolas Escande <nico.escande@gmail.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Youssef Samir <quic_yabdulra@quicinc.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 467/486] wifi: ath12k: fix ath12k_hal_tx_cmd_ext_desc_setup() info1 override
-Date: Mon,  5 May 2025 18:39:03 -0400
-Message-Id: <20250505223922.2682012-467-sashal@kernel.org>
+	jeff.hugo@oss.qualcomm.com,
+	ogabbay@kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.12 468/486] accel/qaic: Mask out SR-IOV PCI resources
+Date: Mon,  5 May 2025 18:39:04 -0400
+Message-Id: <20250505223922.2682012-468-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,39 +69,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Nicolas Escande <nico.escande@gmail.com>
+From: Youssef Samir <quic_yabdulra@quicinc.com>
 
-[ Upstream commit df11edfba49e5fb69f4c9e7cb76082b89c417f78 ]
+[ Upstream commit 8685520474bfc0fe4be83c3cbfe3fb3e1ca1514a ]
 
-Since inception there is an obvious typo laying around in
-ath12k_hal_tx_cmd_ext_desc_setup(). Instead of initializing + adding
-flags to tcl_ext_cmd->info1, we initialize + override. This will be needed
-in the future to make broadcast frames work with ethernet encapsulation.
+During the initialization of the qaic device, pci_select_bars() is
+used to fetch a bitmask of the BARs exposed by the device. On devices
+that have Virtual Functions capabilities, the bitmask includes SR-IOV
+BARs.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Use a mask to filter out SR-IOV BARs if they exist.
 
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250127071306.1454699-1-nico.escande@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Youssef Samir <quic_yabdulra@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250117170943.2643280-6-quic_jhugo@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_tx.c | 2 +-
+ drivers/accel/qaic/qaic_drv.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index ad21fbfbcbe22..201ffdb8c44ae 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -117,7 +117,7 @@ static void ath12k_hal_tx_cmd_ext_desc_setup(struct ath12k_base *ab,
- 			       le32_encode_bits(ti->data_len,
- 						HAL_TX_MSDU_EXT_INFO1_BUF_LEN);
+diff --git a/drivers/accel/qaic/qaic_drv.c b/drivers/accel/qaic/qaic_drv.c
+index f139c564eadf9..10e711c96a670 100644
+--- a/drivers/accel/qaic/qaic_drv.c
++++ b/drivers/accel/qaic/qaic_drv.c
+@@ -432,7 +432,7 @@ static int init_pci(struct qaic_device *qdev, struct pci_dev *pdev)
+ 	int bars;
+ 	int ret;
  
--	tcl_ext_cmd->info1 = le32_encode_bits(1, HAL_TX_MSDU_EXT_INFO1_EXTN_OVERRIDE) |
-+	tcl_ext_cmd->info1 |= le32_encode_bits(1, HAL_TX_MSDU_EXT_INFO1_EXTN_OVERRIDE) |
- 				le32_encode_bits(ti->encap_type,
- 						 HAL_TX_MSDU_EXT_INFO1_ENCAP_TYPE) |
- 				le32_encode_bits(ti->encrypt_type,
+-	bars = pci_select_bars(pdev, IORESOURCE_MEM);
++	bars = pci_select_bars(pdev, IORESOURCE_MEM) & 0x3f;
+ 
+ 	/* make sure the device has the expected BARs */
+ 	if (bars != (BIT(0) | BIT(2) | BIT(4))) {
 -- 
 2.39.5
 
