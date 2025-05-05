@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-141592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E83B1AAB791
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:13:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA93AAB78A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:13:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D02B23A1770
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:06:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F36113AC600
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D431838DC25;
-	Tue,  6 May 2025 00:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999EC483508;
+	Tue,  6 May 2025 00:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q9Y9U0/C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sDdQRElh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3296B2F2C51;
-	Mon,  5 May 2025 23:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB36739B09F;
+	Mon,  5 May 2025 23:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486825; cv=none; b=B8g6dEZkwX+uruo+KE/83P7xGT3ZDuDPvRsxceqcbuR2jbfSwA2Z6m3OjjovLdXaPt759C6AjVu/0Ko/5xMA87YdlJbBUIUa8Nx97jqq87GnZaXjx3MSdLaMIStyMnsk2ilx+W4cDrTRAXyKblLygmYzA7VB6P9AyTIqxMw9u4E=
+	t=1746486842; cv=none; b=OU9r+n3nZqG5Q9GSW3yGeL3nuw8gQf3M2HKJNpMLbbAKOK9oJ2F0VBb8WJBDOzFno9TDXxANVuGLM0wtsW1ovxWNhk20jE7CYo0l0lb96jl0ohsWmfJwLNFXICUmD4RZh9NVi2sIo3OYaXa5UDdKQ16SBGPLkTCZ3r+C3VWiOr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486825; c=relaxed/simple;
-	bh=IgM49T9ksnvRHRuSeR0og7Jw/nAXyFhvqciGhoiWpq0=;
+	s=arc-20240116; t=1746486842; c=relaxed/simple;
+	bh=NHmzvax4IPbiPdp1bDqYANZe/GMepCja/nvw2NzZI6k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=io1MWKRPlxOOQW02tHi1/G/VHNJQedK6/MHznlJpKlaxd1+ckEl6anstUhoSY2bSQ+yh2RpLq10A0hB0wBgbI5Q5WOKPGYjkBx0Caa/dN9p28ehb44Jv0VWd0hkgBppJRJlc1qQBLLHYN90FK1K2QV0anCSCcpN5b5YyjoBg4TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q9Y9U0/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800C0C4CEE4;
-	Mon,  5 May 2025 23:13:42 +0000 (UTC)
+	 MIME-Version; b=leAYkubneIc8n9g+hLua48+ySqfEGgHq5nlBx5sGqlrfioZCxqB6SYQvJhpXCB6sn34orXuzfxTAVHDAB/yycn8kP1zRv0AWe+GpqDnm2wBYU5D7jNhFGl2sbB5Rgu529h3I1MPONI0TJOAnDwIUSKgcLKsCT8cBZlfDd8GzG+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sDdQRElh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DEEFC4CEE4;
+	Mon,  5 May 2025 23:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486824;
-	bh=IgM49T9ksnvRHRuSeR0og7Jw/nAXyFhvqciGhoiWpq0=;
+	s=k20201202; t=1746486841;
+	bh=NHmzvax4IPbiPdp1bDqYANZe/GMepCja/nvw2NzZI6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q9Y9U0/CSq5T4vxjkYK/oIKDxxkCG/5eCBi7E35qOuBT4H70yzMWkTj/WbZW+a6JR
-	 6N6cjbhXRNAjDKvtEN+VRryjrzvGwjU3BPtpn9yYoCdQPjfLREEnJtR7EXwM55Zusq
-	 shQGusD27xQrqZ684f5EFnjbk/m8t4B0YnklQ5a8NWL99VZl1Gt0fRe4ko+EV9iYLM
-	 w0NObSEwJ+0KzjzxMvNF/hWAItSIBXHzlFysBXfbgJNIUzb4hqhhlBSvfYXzZDi6JW
-	 QuLbcqJgU9s2s+j22bSVFvR7ksUbwqNiIUHRL5biJFdndWX14LZ9x00BQ1dZ1CeByZ
-	 Xy9qAAfP4jBZA==
+	b=sDdQRElh3HR9Py76I6uncsgfg4GFgYSBvJfQRmXWlVpunrjRJjhNYkYY74EONReB6
+	 +vBfJBEm94wAa0luMFDPHzuJ5HXCGdnSpmXi2ju9THLGnDXj8ttF5vtggH/Njihjxk
+	 lq1Cksvr267sePWQfzdvMeBAkzrqyqKkBFF2Upaq88cAY8TSbtVV2JGD83hmjn6u6G
+	 /GOsFd3MmEZEQBPf+joqwBCz9HO/zsrHsPV5JPlarvILc+dE83M/937ZcbwQGuwdst
+	 Z0Hqje2F8a03JqXYyTVli6MykiCDC7moAVsD0r1xImL4p5Oit3XeDlWNTM/ANBnSRT
+	 kjLsLr0z4oDxw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
+Cc: Robert Richter <rrichter@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	chuck.lever@oracle.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 009/153] SUNRPC: rpc_clnt_set_transport() must not change the autobind setting
-Date: Mon,  5 May 2025 19:10:56 -0400
-Message-Id: <20250505231320.2695319-9-sashal@kernel.org>
+	dan.j.williams@intel.com,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	nvdimm@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.15 019/153] libnvdimm/labels: Fix divide error in nd_label_data_init()
+Date: Mon,  5 May 2025 19:11:06 -0400
+Message-Id: <20250505231320.2695319-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -74,36 +69,62 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Robert Richter <rrichter@amd.com>
 
-[ Upstream commit bf9be373b830a3e48117da5d89bb6145a575f880 ]
+[ Upstream commit ef1d3455bbc1922f94a91ed58d3d7db440652959 ]
 
-The autobind setting was supposed to be determined in rpc_create(),
-since commit c2866763b402 ("SUNRPC: use sockaddr + size when creating
-remote transport endpoints").
+If a faulty CXL memory device returns a broken zero LSA size in its
+memory device information (Identify Memory Device (Opcode 4000h), CXL
+spec. 3.1, 8.2.9.9.1.1), a divide error occurs in the libnvdimm
+driver:
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+ Oops: divide error: 0000 [#1] PREEMPT SMP NOPTI
+ RIP: 0010:nd_label_data_init+0x10e/0x800 [libnvdimm]
+
+Code and flow:
+
+1) CXL Command 4000h returns LSA size = 0
+2) config_size is assigned to zero LSA size (CXL pmem driver):
+
+drivers/cxl/pmem.c:             .config_size = mds->lsa_size,
+
+3) max_xfer is set to zero (nvdimm driver):
+
+drivers/nvdimm/label.c: max_xfer = min_t(size_t, ndd->nsarea.max_xfer, config_size);
+
+4) A subsequent DIV_ROUND_UP() causes a division by zero:
+
+drivers/nvdimm/label.c: /* Make our initial read size a multiple of max_xfer size */
+drivers/nvdimm/label.c: read_size = min(DIV_ROUND_UP(read_size, max_xfer) * max_xfer,
+drivers/nvdimm/label.c-                 config_size);
+
+Fix this by checking the config size parameter by extending an
+existing check.
+
+Signed-off-by: Robert Richter <rrichter@amd.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/20250320112223.608320-1-rrichter@amd.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/clnt.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/nvdimm/label.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 5de2fc7af268a..48ffdd4192538 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -275,9 +275,6 @@ static struct rpc_xprt *rpc_clnt_set_transport(struct rpc_clnt *clnt,
- 	old = rcu_dereference_protected(clnt->cl_xprt,
- 			lockdep_is_held(&clnt->cl_lock));
+diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
+index 7f473f9db300d..e1b511d09295f 100644
+--- a/drivers/nvdimm/label.c
++++ b/drivers/nvdimm/label.c
+@@ -437,7 +437,8 @@ int nd_label_data_init(struct nvdimm_drvdata *ndd)
+ 	if (ndd->data)
+ 		return 0;
  
--	if (!xprt_bound(xprt))
--		clnt->cl_autobind = 1;
--
- 	clnt->cl_timeout = timeout;
- 	rcu_assign_pointer(clnt->cl_xprt, xprt);
- 	spin_unlock(&clnt->cl_lock);
+-	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0) {
++	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0 ||
++	    ndd->nsarea.config_size == 0) {
+ 		dev_dbg(ndd->dev, "failed to init config data area: (%u:%u)\n",
+ 			ndd->nsarea.max_xfer, ndd->nsarea.config_size);
+ 		return -ENXIO;
 -- 
 2.39.5
 
