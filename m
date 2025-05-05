@@ -1,64 +1,66 @@
-Return-Path: <stable+bounces-139864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410BAAAA128
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:44:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C577EAAA126
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:44:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12A541887992
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:44:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28A82178509
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8EBE29AB01;
-	Mon,  5 May 2025 22:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D0829B208;
+	Mon,  5 May 2025 22:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l1J+Ddgc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ikoHSIrq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E42529AAF5;
-	Mon,  5 May 2025 22:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3CC29AB1F;
+	Mon,  5 May 2025 22:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483565; cv=none; b=iq3kfi1hBpxnvUXdeJs9V2LU11aPyXpL0CxqoeIpKQtjZd1tFzNVwhmLGc6QL8Iq/9BFyOhxLGHwT3cgkSlQkTUtkZFTd+5PxEcqb20h/VgEQLG1/1Rr8XXqkWqhuPBYkK10i1DskNFVGT2J68FycPKG4WOsFtSRYsNNbwPCja8=
+	t=1746483567; cv=none; b=CCrIi9BkopW+H3PVdKNgqVlnNRNnso7XFthPaVluviWhdi0HmmtIRMcSgnpbcs6b+dHYxpjnpjvFMJc3YSyTk9i7+8BqGOmwR0y6aqIW4UUrt1RZzLPySEx4/8hwvQWRLhA3V7p9ERckDAYwXW2YInkBQYw8YAd3XeTqNzeFm80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483565; c=relaxed/simple;
-	bh=JieVl527fMdsIJEaTCw0mRHB+zDbXyv0tUloB6wBAeM=;
+	s=arc-20240116; t=1746483567; c=relaxed/simple;
+	bh=/92+ydjZ4xWbLMNc2vXLjW/dIk+/V2geXTvO+9uyKt8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pI2P6NfOcircIiGUV3X2x0VIkR4YI97xz+GEOTCgyry8d9yTAIKOCgtKehYKsrjUGqlaoNTE6pKv0VwU7QteLG+y+kBl1pOacXOE090OPRY7fiAymfkbj1k90cU3O/c886lJfG47MYKDHzoIWUG39SOYMRZwWXcTs86llE6lW+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l1J+Ddgc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83D0C4CEE4;
-	Mon,  5 May 2025 22:19:23 +0000 (UTC)
+	 MIME-Version; b=EdDwL5adeNAqVmc+uOuZichkHRq22+Qh9Dl1Rlzinf7jiB7j3nvbEWjIZsVmaTBl3Q6F2ptvuTjLuaSGZ6J6uDZcTQFzzWyNN1/cY/xqi3DeRm6nsFrHvHHEdzWnYSAqQCwT+3ZKCpDD7TdZq5f+WTh3ATsLUj+nF+Oga0ZOABA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikoHSIrq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE985C4CEED;
+	Mon,  5 May 2025 22:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483565;
-	bh=JieVl527fMdsIJEaTCw0mRHB+zDbXyv0tUloB6wBAeM=;
+	s=k20201202; t=1746483567;
+	bh=/92+ydjZ4xWbLMNc2vXLjW/dIk+/V2geXTvO+9uyKt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l1J+DdgckLUyX7/KwIUG6L3VchN21P/Ovzj7vNTWHq1tAP/S6RYjkadgVuq9zg1YR
-	 n9PbdZsLHj+h9tGnh8vdTtwNeMculFJKARoURlDaCnPe5umq8oeY4Ouyf+t5xKmbuN
-	 Og6skHTmwGk6kV9nlOEKXx/C2dY4nNF9wr1jRi2+FdhAKFbdRDTb27BRxmc6Bacobl
-	 qM5wABgvaGQ6de2GXd19nAgFupWjGXt9F4fRhTEhQP563pBEo9KG+t3/HdymB+Fypy
-	 3v1EppmSV+yIg/qS0WQP5G1XEwSZw/7rsjvJAd1K7ahWwaKSm1YrJVRv6OSWbNqzEp
-	 3Xl5jkUNpiGag==
+	b=ikoHSIrqITGuoRADTakHc1blZXpS6Kj+UMI+PP8bhizbyDkwHadB3o19s7+3Etlcr
+	 JL18z5ZzY0Lt1HvGr+IFjPS0QHA/lHCLmxp3qEgsmmJqmW6u78V5wnymDmkmP5y99v
+	 UXN6yZN3y63TtISA7++NXQorR7UR8RZNc0ntRDZ2F54eWKbSwDpam250T72z3tP6+/
+	 dXUc8lhFP7Yrs/rK7N1hmUNPhUFwgx2TSWqu3qRGDzag/fYcvYdGcTcziHCVEe5T2s
+	 hMeb4I8Fc0bFO/r4ByGroCW3WDZJxD2DscWCDy32UgDIyAcstNqPrnR5+xrhRSsmm4
+	 aA21gombeGF9g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: shantiprasad shettar <shantiprasad.shettar@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+Cc: Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jeremiah Lokan <jeremiahx.j.lokan@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
+	intel-wired-lan@lists.osuosl.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 117/642] bnxt_en: Query FW parameters when the CAPS_CHANGE bit is set
-Date: Mon,  5 May 2025 18:05:33 -0400
-Message-Id: <20250505221419.2672473-117-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 118/642] ixgbe: add support for thermal sensor event reception
+Date: Mon,  5 May 2025 18:05:34 -0400
+Message-Id: <20250505221419.2672473-118-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -73,55 +75,67 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: shantiprasad shettar <shantiprasad.shettar@broadcom.com>
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-[ Upstream commit a6c81e32aeacbfd530d576fa401edd506ec966ef ]
+[ Upstream commit affead2d904e8f82c0b89e23b3835242eb8c3e1a ]
 
-Newer FW can set the CAPS_CHANGE flag during ifup if some capabilities
-or configurations have changed.  For example, the CoS queue
-configurations may have changed.  Support this new flag by treating it
-almost like FW reset.  The driver will essentially rediscover all
-features and capabilities, reconfigure all backing store context memory,
-reset everything to default, and reserve all resources.
+E610 NICs unlike the previous devices utilising ixgbe driver
+are notified in the case of overheating by the FW ACI event.
 
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: shantiprasad shettar <shantiprasad.shettar@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250310183129.3154117-5-michael.chan@broadcom.com
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+In event of overheat when threshold is exceeded, FW suspends all
+traffic and sends overtemp event to the driver. Then driver
+logs appropriate message and disables the adapter instance.
+The card remains in that state until the platform is rebooted.
+
+This approach is a solution to the fact current version of the
+E610 FW doesn't support reading thermal sensor data by the
+SW. So give to user at least any info that overtemp event
+has occurred, without interface disappearing from the OS
+without any note.
+
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Tested-by: Jeremiah Lokan <jeremiahx.j.lokan@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20250310174502.3708121-7-anthony.l.nguyen@intel.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c      | 4 ++++
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h | 3 +++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 1b39574e3fa22..40af27c2ba799 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -12097,6 +12097,7 @@ static int bnxt_hwrm_if_change(struct bnxt *bp, bool up)
- 	struct hwrm_func_drv_if_change_input *req;
- 	bool fw_reset = !bp->irq_tbl;
- 	bool resc_reinit = false;
-+	bool caps_change = false;
- 	int rc, retry = 0;
- 	u32 flags = 0;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 467f81239e12f..481f917f7ed28 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -3185,6 +3185,10 @@ static void ixgbe_handle_fw_event(struct ixgbe_adapter *adapter)
+ 		case ixgbe_aci_opc_get_link_status:
+ 			ixgbe_handle_link_status_event(adapter, &event);
+ 			break;
++		case ixgbe_aci_opc_temp_tca_event:
++			e_crit(drv, "%s\n", ixgbe_overheat_msg);
++			ixgbe_down(adapter);
++			break;
+ 		default:
+ 			e_warn(hw, "unknown FW async event captured\n");
+ 			break;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+index 8d06ade3c7cd9..617e07878e4f7 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+@@ -171,6 +171,9 @@ enum ixgbe_aci_opc {
+ 	ixgbe_aci_opc_done_alt_write			= 0x0904,
+ 	ixgbe_aci_opc_clear_port_alt_write		= 0x0906,
  
-@@ -12152,8 +12153,11 @@ static int bnxt_hwrm_if_change(struct bnxt *bp, bool up)
- 		set_bit(BNXT_STATE_ABORT_ERR, &bp->state);
- 		return -ENODEV;
- 	}
--	if (resc_reinit || fw_reset) {
--		if (fw_reset) {
-+	if (flags & FUNC_DRV_IF_CHANGE_RESP_FLAGS_CAPS_CHANGE)
-+		caps_change = true;
++	/* TCA Events */
++	ixgbe_aci_opc_temp_tca_event                    = 0x0C94,
 +
-+	if (resc_reinit || fw_reset || caps_change) {
-+		if (fw_reset || caps_change) {
- 			set_bit(BNXT_STATE_FW_RESET_DET, &bp->state);
- 			if (!test_bit(BNXT_STATE_IN_FW_RESET, &bp->state))
- 				bnxt_ulp_irq_stop(bp);
+ 	/* debug commands */
+ 	ixgbe_aci_opc_debug_dump_internals		= 0xFF08,
+ 
 -- 
 2.39.5
 
