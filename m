@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-140727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02404AAAAD5
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:45:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E69AAAAEA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E941465E36
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:44:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5146188B5D8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75632F15C8;
-	Mon,  5 May 2025 23:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89B72F10A8;
+	Mon,  5 May 2025 23:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="soYu2KYe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XPhY3NYc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C228F2DCB4C;
-	Mon,  5 May 2025 23:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF893379413;
+	Mon,  5 May 2025 23:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486071; cv=none; b=t3L2iEUqyR6yV8QQKNtOf0bAyLnwTBT5+2qFq+r/MoY+ncoJb/xWFVH0f5daL7O/pkql0RRRFIvacuRqY3zKjMxSfkf2S2/wB0Yb/PpZUdsa7GACNmq1m8Qu3jMfJrUvwjiiYNuQN3We0rhXDeUXzv+6+BwNhRJPRBYYa2Plf5g=
+	t=1746486086; cv=none; b=fOfWPu5GmdJJXL/DFr7WKd6CA7xNtuWM895cJvFmHA57cU6byO5hKwz5U9ulgdY3SNaoKbqKFyRMf3HFVUSwT5I8a+9PNZdbdD56R0wJwOdzrByGz9n5IuZsqwRAoyMiwDVxIAV3fv5YPNMmLEHuncFKliMunu7kLvc8jielXyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486071; c=relaxed/simple;
-	bh=CIOyiHhIcQe3oubqf8zVbmf/WHGd27a2psRoGPh9+r4=;
+	s=arc-20240116; t=1746486086; c=relaxed/simple;
+	bh=jY2bLFrM4OmbAvQoCMBjY6y3zOJ5tAN7yOeLduNkcfk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dGxW4U4nI/wY9N/Kr9FtpkGIBCAzT/Oxtavenir5SC/gmG1Z4yFoiiIofzIL0aJGNVMN7mkf7HncFZBlgnyZIcRU0MLOKp12Z6YXz/OgNQs7mTnHEozpR/PI8XvL55t6h4R76InIrJlbNJFvZmzNfSoF0E/WnXbjZKW6UfrGYA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=soYu2KYe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288B7C4CEEF;
-	Mon,  5 May 2025 23:01:09 +0000 (UTC)
+	 MIME-Version; b=Uk0hf7kRdafD4BuTxcZbCAyKBA07fv5JVUlxDQgJP6CJaJKsadSExQtqpaEOLrrLGprsA3uc2lRtZtWY+jEVKvnGikhVMEcQB6opKw2KumJu3JRYCHa8D5dVQIBhf8y6lvdQ5/6YCPdMsEc4nHLZCQ4AHddfU+NdPXAe6Vx0XUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XPhY3NYc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB63C4CEEF;
+	Mon,  5 May 2025 23:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486070;
-	bh=CIOyiHhIcQe3oubqf8zVbmf/WHGd27a2psRoGPh9+r4=;
+	s=k20201202; t=1746486084;
+	bh=jY2bLFrM4OmbAvQoCMBjY6y3zOJ5tAN7yOeLduNkcfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=soYu2KYeWvO8Ydt1WpN+MYlVn0Zzc9ganCObCNo0C0X76xHvWX8S6HxW0hN9aMx8d
-	 wgDlTWsbKrR4k/vdluo+AnFgPl3JJvaJEQFb6MPRlm9RnlbnAuAaHbaLDOw8WIDnJ/
-	 BsL/xJxsKiU8136pFg+4MOlB9gTDZJhES64zvF3QrHbc9V1+6Fsc7HhiwvThcNMFQM
-	 wFf+grX2/ud3C5KWDrGf1tHukssRq+Tb/wCwwJH4G3KhW7TuDIuV8+UHx8oNuG4oEq
-	 WAo0yc3UGAvqOJfDwtxUbOWHNssVyZaekfGE8cNOAfCrsHK2tegjhfFExetkNQub6Y
-	 8fDLWzNmC8h7g==
+	b=XPhY3NYcR8xIsUbBJec5NnmJSCv9bsQ9102qmyB/86lOU/w8l527YFOImpbKbriIM
+	 igp7rznqv+/iXA1Qx2Xjj6RpDwo5kelIJUnMUIwSUz8w9mLqN9L0CUpmaLqhYTN3kn
+	 lCy3fNo0ZTeOYtloeJLBN5CKyIF9S4mMDkTlcAqvoLCEk7OMcSkAI69iygZlmNC+1y
+	 PSoFQL0B7zaWYxiHjY+zkGIloCLlxr0CBgQk6Zdg1JQ4lmEjluXscqpgfqYmSMdJO7
+	 qlrvJyzLXRzNYftAGEMUEgwNzsMeLn+NThz3hkA+3qhVLSB/UkaM3HxDoXy7ExW/hQ
+	 xzM0x38z5XM9Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vinith Kumar R <quic_vinithku@quicinc.com>,
-	Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Yuanjun Gong <ruc_gongyuanjun@163.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 139/294] wifi: ath12k: Report proper tx completion status to mac80211
-Date: Mon,  5 May 2025 18:53:59 -0400
-Message-Id: <20250505225634.2688578-139-sashal@kernel.org>
+	pavel@kernel.org,
+	jakob+lkml@paranoidlabs.org,
+	u.kleine-koenig@baylibre.com,
+	linux-leds@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 147/294] leds: pwm-multicolor: Add check for fwnode_property_read_u32
+Date: Mon,  5 May 2025 18:54:07 -0400
+Message-Id: <20250505225634.2688578-147-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -69,54 +68,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Vinith Kumar R <quic_vinithku@quicinc.com>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit d2d9c9b8de725e1006d3aa3d18678a732f5d3584 ]
+[ Upstream commit 6d91124e7edc109f114b1afe6d00d85d0d0ac174 ]
 
-Currently Tx completion for few exception packets are received from
-firmware and the tx status updated to mac80211. The tx status values of
-HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP and HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL
-are considered as tx failure and reported as tx failure to mac80211.
-But these failure status is due to internal firmware tx drop and these
-packets were not tried to transmit in the air.
-In case of mesh this invalid tx status report might trigger mpath broken
-issue due to increase in mpath fail average.
-So do not report these tx status as tx failure instead free the skb
-by calling ieee80211_free_txskb(), and that will be accounted as dropped
-frame.
+Add a check to the return value of fwnode_property_read_u32()
+in case it fails.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Vinith Kumar R <quic_vinithku@quicinc.com>
-Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Link: https://patch.msgid.link/20241122173432.2064858-1-quic_tamizhr@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Link: https://lore.kernel.org/r/20250223121459.2889484-1-ruc_gongyuanjun@163.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_tx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/leds/rgb/leds-pwm-multicolor.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index e025e4d0e7678..25a9d4c4fae76 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -422,13 +422,13 @@ ath12k_dp_tx_process_htt_tx_complete(struct ath12k_base *ab,
+diff --git a/drivers/leds/rgb/leds-pwm-multicolor.c b/drivers/leds/rgb/leds-pwm-multicolor.c
+index e1a81e0109e8a..c0aa34b1d0e2d 100644
+--- a/drivers/leds/rgb/leds-pwm-multicolor.c
++++ b/drivers/leds/rgb/leds-pwm-multicolor.c
+@@ -135,8 +135,11 @@ static int led_pwm_mc_probe(struct platform_device *pdev)
  
- 	switch (wbm_status) {
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_OK:
--	case HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP:
--	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
- 		ts.acked = (wbm_status == HAL_WBM_REL_HTT_TX_COMP_STATUS_OK);
- 		ts.ack_rssi = le32_get_bits(status_desc->info2,
- 					    HTT_TX_WBM_COMP_INFO2_ACK_RSSI);
- 		ath12k_dp_tx_htt_tx_complete_buf(ab, msdu, tx_ring, &ts);
- 		break;
-+	case HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP:
-+	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_REINJ:
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_INSPECT:
- 		ath12k_dp_tx_free_txbuf(ab, msdu, mac_id, tx_ring);
+ 	/* init the multicolor's LED class device */
+ 	cdev = &priv->mc_cdev.led_cdev;
+-	fwnode_property_read_u32(mcnode, "max-brightness",
++	ret = fwnode_property_read_u32(mcnode, "max-brightness",
+ 				 &cdev->max_brightness);
++	if (ret)
++		goto release_mcnode;
++
+ 	cdev->flags = LED_CORE_SUSPENDRESUME;
+ 	cdev->brightness_set_blocking = led_pwm_mc_set;
+ 
 -- 
 2.39.5
 
