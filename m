@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-141703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1A8AAB5A5
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:33:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD23AAB5D9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 897E67B5057
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:30:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BC9A3B2E5F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976784A6543;
-	Tue,  6 May 2025 00:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A40B4A7401;
+	Tue,  6 May 2025 00:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NGCjwbvu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DvgdihHf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC6E3B11C4;
-	Mon,  5 May 2025 23:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33B12F8BAC;
+	Mon,  5 May 2025 23:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487232; cv=none; b=dmClXX7OcxPP0zNq99+Q9AvfvhCfjuA0wwEmfJEyMWn/DxrUZ4CllUbSRjykUKt93dikLKpF2jFaSVhrqD0ceMDXttfdz6LExjpMmq02VzNK2rLwp+5WqEIzIczdtGUW7dNWlyzGC4wh4hDbWsRH3kzY7UDugzRTPFvnetBum0A=
+	t=1746487242; cv=none; b=q7luJt73eu7uGNhkt2Ju8ESxdnm0syIJjGmwtklF0tk+i7gfBxlhdoffYuW+cMMrJaJ1dOjTQ2iKzo9ZlhCuh5HDxnrqAozVC/2b9424ZAAhxLtlblVdMxvC2EilqsXe+xof7AvZEdWQ2w9IybMvuVZeEfjEoF6XwtN5RUI+5Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487232; c=relaxed/simple;
-	bh=9UGdHSS8asS9PAcd3QKXZyEnq18ZNSJR23cUPFhNCoQ=;
+	s=arc-20240116; t=1746487242; c=relaxed/simple;
+	bh=YL/1WgjLI1B6LoS2/NIYGlwG7WEGAG37g1mVj7vL2kA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=e5mYZqD3CG8XTsn3JdSbzJqeYAZrl+XzvZvPql7soY0QE0P2GphG38S+zqwT6aVWUFYD4cVpTFVBu2dq0Jq0+BncrKaPFm7S/UCJQhbO2mCy9dJa4MPyG7WYO9pI5aY8ajrv0GnBf257ChdXFHzWDeXxksd7Ba+ym3zL6KJ5N+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NGCjwbvu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BE4C4CEE4;
-	Mon,  5 May 2025 23:20:31 +0000 (UTC)
+	 MIME-Version; b=To/CMR6zK0SDNS5wCb3w2hAi+RzzPu9H/ElSh82KR4FVQjs0CPKstmYNlj2kdanaUxlAyYwrYic10zjBqGCf6VflGG7t5I40OO8l0rNBvC7ytPskAdmk4D2boyQG2HNlEWHXAHKtGWPq7FFRsX1yGFPg3hbc29BwnQ/4JMGllWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DvgdihHf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75121C4CEED;
+	Mon,  5 May 2025 23:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487232;
-	bh=9UGdHSS8asS9PAcd3QKXZyEnq18ZNSJR23cUPFhNCoQ=;
+	s=k20201202; t=1746487241;
+	bh=YL/1WgjLI1B6LoS2/NIYGlwG7WEGAG37g1mVj7vL2kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NGCjwbvu/Nmq5v25ocscgqxQH25nGy4fOpAQNupUETJ6uJ5y1D3EYBhgRFXzEyC/+
-	 0rE8LZPBYBUqy+Iz8He3CfWsWwqNbhSgSfI8Ir0JQ2jb1qhBGaRSOMLP5bOzUEvjIZ
-	 fZ4s+f7J9VzMHnhkJanXdSWi90EFkmYor0E5jpCLAyx5ftvnWem9wSUgqmq+yUyJcV
-	 gQtlTQk+Wrs25d4ZEXCSrnMC+jycPyE44j77K6a6zj/BGTbufJfMqQI6sCI1Wo62cs
-	 KZfpt71NTuRphOmC8EDLPytaaYl6AISkEIbCVr5SJ+1bOVWyZ9Vv7JBInqTuiAaLDF
-	 KzftbBuNEqFpg==
+	b=DvgdihHfuI5qUA0ZhbfyiWXXrwcFtQVcgn14rckyWU4wOFEq3zBo7+lWSABK90924
+	 jedGM19JkGl09MewPEE0JMn2a9ziT6f1MiuNI9+hbGkoD/VwSWF183I2q7I0KK2+fj
+	 ZR1vKGJJwsDtvP25JJt9vt8mfIo08X8oP1BxZluHulIZ6mrprSdr6tbqwBvmQKxmrc
+	 5bjNbG1bwIJbRztdLmDPW499SyLEJPQfJV9V+x01xDGoWfvtXBraIcXAmrZVLvBlja
+	 17DJ3wjFNtSXp0EIokoVXwMO4x1zC5BcyZvvEK2hcYQ8QzKvvDRFBRgr9awXeAraM8
+	 KsqatmM4dD6xw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Paul Burton <paulburton@kernel.org>,
-	Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>,
-	Aleksandar Rikalo <arikalo@gmail.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+Cc: Peter Seiderer <ps.report@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-mips@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 069/114] MIPS: pm-cps: Use per-CPU variables as per-CPU, not per-core
-Date: Mon,  5 May 2025 19:17:32 -0400
-Message-Id: <20250505231817.2697367-69-sashal@kernel.org>
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 075/114] net: pktgen: fix access outside of user given buffer in pktgen_thread_write()
+Date: Mon,  5 May 2025 19:17:38 -0400
+Message-Id: <20250505231817.2697367-75-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -69,126 +69,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Paul Burton <paulburton@kernel.org>
+From: Peter Seiderer <ps.report@gmx.net>
 
-[ Upstream commit 00a134fc2bb4a5f8fada58cf7ff4259149691d64 ]
+[ Upstream commit 425e64440ad0a2f03bdaf04be0ae53dededbaa77 ]
 
-The pm-cps code has up until now used per-CPU variables indexed by core,
-rather than CPU number, in order to share data amongst sibling CPUs (ie.
-VPs/threads in a core). This works fine for single cluster systems, but
-with multi-cluster systems a core number is no longer unique in the
-system, leading to sharing between CPUs that are not actually siblings.
+Honour the user given buffer size for the strn_len() calls (otherwise
+strn_len() will access memory outside of the user given buffer).
 
-Avoid this issue by using per-CPU variables as they are more generally
-used - ie. access them using CPU numbers rather than core numbers.
-Sharing between siblings is then accomplished by:
- - Assigning the same pointer to entries for each sibling CPU for the
-   nc_asm_enter & ready_count variables, which allow this by virtue of
-   being per-CPU pointers.
-
- - Indexing by the first CPU set in a CPUs cpu_sibling_map in the case
-   of pm_barrier, for which we can't use the previous approach because
-   the per-CPU variable is not a pointer.
-
-Signed-off-by: Paul Burton <paulburton@kernel.org>
-Signed-off-by: Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>
-Signed-off-by: Aleksandar Rikalo <arikalo@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250219084527.20488-8-ps.report@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/pm-cps.c | 30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ net/core/pktgen.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
-index 9bf60d7d44d36..a7bcf2b814c86 100644
---- a/arch/mips/kernel/pm-cps.c
-+++ b/arch/mips/kernel/pm-cps.c
-@@ -56,10 +56,7 @@ static DEFINE_PER_CPU_ALIGNED(u32*, ready_count);
- /* Indicates online CPUs coupled with the current CPU */
- static DEFINE_PER_CPU_ALIGNED(cpumask_t, online_coupled);
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index c2b3c454eddd9..57502e8628462 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -1770,8 +1770,8 @@ static ssize_t pktgen_thread_write(struct file *file,
+ 	i = len;
  
--/*
-- * Used to synchronize entry to deep idle states. Actually per-core rather
-- * than per-CPU.
-- */
-+/* Used to synchronize entry to deep idle states */
- static DEFINE_PER_CPU_ALIGNED(atomic_t, pm_barrier);
+ 	/* Read variable name */
+-
+-	len = strn_len(&user_buffer[i], sizeof(name) - 1);
++	max = min(sizeof(name) - 1, count - i);
++	len = strn_len(&user_buffer[i], max);
+ 	if (len < 0)
+ 		return len;
  
- /* Saved CPU state across the CPS_PM_POWER_GATED state */
-@@ -118,9 +115,10 @@ int cps_pm_enter_state(enum cps_pm_state state)
- 	cps_nc_entry_fn entry;
- 	struct core_boot_config *core_cfg;
- 	struct vpe_boot_config *vpe_cfg;
-+	atomic_t *barrier;
- 
- 	/* Check that there is an entry function for this state */
--	entry = per_cpu(nc_asm_enter, core)[state];
-+	entry = per_cpu(nc_asm_enter, cpu)[state];
- 	if (!entry)
- 		return -EINVAL;
- 
-@@ -156,7 +154,7 @@ int cps_pm_enter_state(enum cps_pm_state state)
- 	smp_mb__after_atomic();
- 
- 	/* Create a non-coherent mapping of the core ready_count */
--	core_ready_count = per_cpu(ready_count, core);
-+	core_ready_count = per_cpu(ready_count, cpu);
- 	nc_addr = kmap_noncoherent(virt_to_page(core_ready_count),
- 				   (unsigned long)core_ready_count);
- 	nc_addr += ((unsigned long)core_ready_count & ~PAGE_MASK);
-@@ -164,7 +162,8 @@ int cps_pm_enter_state(enum cps_pm_state state)
- 
- 	/* Ensure ready_count is zero-initialised before the assembly runs */
- 	WRITE_ONCE(*nc_core_ready_count, 0);
--	coupled_barrier(&per_cpu(pm_barrier, core), online);
-+	barrier = &per_cpu(pm_barrier, cpumask_first(&cpu_sibling_map[cpu]));
-+	coupled_barrier(barrier, online);
- 
- 	/* Run the generated entry code */
- 	left = entry(online, nc_core_ready_count);
-@@ -635,12 +634,14 @@ static void *cps_gen_entry_code(unsigned cpu, enum cps_pm_state state)
- 
- static int cps_pm_online_cpu(unsigned int cpu)
- {
--	enum cps_pm_state state;
--	unsigned core = cpu_core(&cpu_data[cpu]);
-+	unsigned int sibling, core;
- 	void *entry_fn, *core_rc;
-+	enum cps_pm_state state;
-+
-+	core = cpu_core(&cpu_data[cpu]);
- 
- 	for (state = CPS_PM_NC_WAIT; state < CPS_PM_STATE_COUNT; state++) {
--		if (per_cpu(nc_asm_enter, core)[state])
-+		if (per_cpu(nc_asm_enter, cpu)[state])
- 			continue;
- 		if (!test_bit(state, state_support))
- 			continue;
-@@ -652,16 +653,19 @@ static int cps_pm_online_cpu(unsigned int cpu)
- 			clear_bit(state, state_support);
- 		}
- 
--		per_cpu(nc_asm_enter, core)[state] = entry_fn;
-+		for_each_cpu(sibling, &cpu_sibling_map[cpu])
-+			per_cpu(nc_asm_enter, sibling)[state] = entry_fn;
- 	}
- 
--	if (!per_cpu(ready_count, core)) {
-+	if (!per_cpu(ready_count, cpu)) {
- 		core_rc = kmalloc(sizeof(u32), GFP_KERNEL);
- 		if (!core_rc) {
- 			pr_err("Failed allocate core %u ready_count\n", core);
- 			return -ENOMEM;
- 		}
--		per_cpu(ready_count, core) = core_rc;
-+
-+		for_each_cpu(sibling, &cpu_sibling_map[cpu])
-+			per_cpu(ready_count, sibling) = core_rc;
- 	}
- 
- 	return 0;
+@@ -1801,7 +1801,8 @@ static ssize_t pktgen_thread_write(struct file *file,
+ 	if (!strcmp(name, "add_device")) {
+ 		char f[32];
+ 		memset(f, 0, 32);
+-		len = strn_len(&user_buffer[i], sizeof(f) - 1);
++		max = min(sizeof(f) - 1, count - i);
++		len = strn_len(&user_buffer[i], max);
+ 		if (len < 0) {
+ 			ret = len;
+ 			goto out;
 -- 
 2.39.5
 
