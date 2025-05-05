@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-140522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC86AAA9AF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:19:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 326E7AAA98B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3ABB3A86B7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:14:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0402B466F58
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680992D1647;
-	Mon,  5 May 2025 22:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A129F3679A2;
+	Mon,  5 May 2025 22:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fg4qWe+W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qhUmf0m3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F20929A3E0;
-	Mon,  5 May 2025 22:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB58929A3E7;
+	Mon,  5 May 2025 22:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485035; cv=none; b=mgufAQjhx8Z/bPYsjJiOyUHCRJl6LgcKPZlONacf5nJy98wvLtA0KJc8ZgADsdpDafdX4LMhEqjdR1icODpanWPf4u/KOpQ96cUjIf0YOmLqSKHOLUkGFA+sgZ0tPijpzd6F3keOqgW9GHHrlCs1DHbzaOAfmKaOPwSjkyATAts=
+	t=1746485036; cv=none; b=epUVEOzupa35Vec74wp1N5uNgsbfcRycG4rXR1zjhNr4QoahUwGDWf/2eGpTqQAQQDXNmWtcgLBowvT5tribOGarn2Gb2/yHS29LPStguQXPtA/b+7Y7QF6RhZwsyUSgmOm/NxhDd5vLZIXKV9Qv2P3gTNxAIAXHOHatYRem26M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485035; c=relaxed/simple;
-	bh=jTphWrmv44YP6NtaA/99o5KYTtq/M3BPS0eJY1PDA/U=;
+	s=arc-20240116; t=1746485036; c=relaxed/simple;
+	bh=GsP06vD4FZjWpPqVY18NFfEH22WzUTrRhGkODqRlXqQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m1y4VKvl/cZ3rMbHieyntamvZtkd5g2piW8c/lNPZf8nPRpUQSX7c+YopEq2fCaLr5LTGQfBb27iTQhxojPrR88qiZQ9w38E4vlBQLBpe+vvmI4S4m8MY74yrxk1vXJMX58VimoEQBzwBUo7/ykTOQg337LN4RKDk91rtD1Etbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fg4qWe+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B0BC4CEE4;
-	Mon,  5 May 2025 22:43:54 +0000 (UTC)
+	 MIME-Version; b=VgSb/Mp3P/717aI5j+KQkOvP/+M0DqyQJcQTQ8iXc8kNPHJm14D46SeR34JFqYXkJ5tRWdeXTKfXyIbPu1KNbbHmLhCIEKrZB30X8nNI/eqEJJTAJ3NMekl9vfWOa5XW/KBEX5/Q08MYurTadDN1FkI5RkdodZWD+5yaN42uFPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qhUmf0m3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0453C4CEE4;
+	Mon,  5 May 2025 22:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485035;
-	bh=jTphWrmv44YP6NtaA/99o5KYTtq/M3BPS0eJY1PDA/U=;
+	s=k20201202; t=1746485036;
+	bh=GsP06vD4FZjWpPqVY18NFfEH22WzUTrRhGkODqRlXqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fg4qWe+WVSKRfNDKisKSOvunKp7kYcIcm1vnFmmXGG46C0NUapErCtRiGVH8WA9/0
-	 a03u937XGlGGC2CF0E3UshDYuh/VtJnkk7/9K/ti9V/Qb0YiSqOxNIDMXCUzU7rIAX
-	 D0UBYaqMvIg36BUCZY7vXdskH8vrMSSNNDZrCLTmwlSr/TpZcpqmf+B0GLZk6k9VNR
-	 YlxSdXMAwrTQAJrqUKO54ZQ14vDYyMZ/Zz9VeaHdQ0fUVeKdzOMySn+vNcmuX+VDUX
-	 QHZT9/qO74QIy+6qWBsT6Mpgykpz/jPzfbTWXq1/4CzVKPiD4TVDfeiZoMuTtASzHB
-	 GLreHb2sa1SPg==
+	b=qhUmf0m3XhXxNDx2J4cvZOSIne6URzlpb1TjesM1a7dlnnNZDdFRn02mgiD9+fNSB
+	 XvbItWbOk1Ma6/J+Kc1scpkCn/uses9POCKQo9Ef4IGAR9nSlov+YKbRQ8SGOtQ8yO
+	 etJEOYa4BqdfY6QrHdV/4SvIjZ2+ej/0/X3IBAY33ox9udB1S0OMkk4AcEp/HTpxBr
+	 IWDHsoz8X2jagEMKdED43R7U4RFs7yAv6yaK1DTvApalkmp7rNGLD/9UGW8ph9CecI
+	 50EiYdPSUS9PZNMNoW8n6V1znVGuE0cG6qr5Fu3dZS05wEdXLbYKWxkk8vYYl0MQh3
+	 oO6PwKNLrQscA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
+Cc: Dian-Syuan Yang <dian_syuan0116@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	anna-maria@linutronix.de,
-	frederic@kernel.org
-Subject: [PATCH AUTOSEL 6.12 133/486] timer_list: Don't use %pK through printk()
-Date: Mon,  5 May 2025 18:33:29 -0400
-Message-Id: <20250505223922.2682012-133-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 134/486] wifi: rtw89: set force HE TB mode when connecting to 11ax AP
+Date: Mon,  5 May 2025 18:33:30 -0400
+Message-Id: <20250505223922.2682012-134-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -61,66 +60,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Dian-Syuan Yang <dian_syuan0116@realtek.com>
 
-[ Upstream commit a52067c24ccf6ee4c85acffa0f155e9714f9adce ]
+[ Upstream commit a9b56f219a0fa550f92e65ac58443a7892380e09 ]
 
-This reverts commit f590308536db ("timer debug: Hide kernel addresses via
-%pK in /proc/timer_list")
+Some of 11ax AP set the UL HE-SIG-A2 reserved subfield to all 0s, which
+will cause the 11be chip to recognize trigger frame as EHT. We propose
+a method to bypass the "UL HE-SIG-A2 reserved subfield" and always uses
+HE TB in response to the AP's trigger frame.
 
-The timer list helper SEQ_printf() uses either the real seq_printf() for
-procfs output or vprintk() to print to the kernel log, when invoked from
-SysRq-q. It uses %pK for printing pointers.
-
-In the past %pK was prefered over %p as it would not leak raw pointer
-values into the kernel log. Since commit ad67b74d2469 ("printk: hash
-addresses printed with %p") the regular %p has been improved to avoid this
-issue.
-
-Furthermore, restricted pointers ("%pK") were never meant to be used
-through printk(). They can still unintentionally leak raw pointers or
-acquire sleeping looks in atomic contexts.
-
-Switch to the regular pointer formatting which is safer, easier to reason
-about and sufficient here.
-
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
-Link: https://lore.kernel.org/all/20250311-restricted-pointers-timer-v1-1-6626b91e54ab@linutronix.de
+Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250306021144.12854-6-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/timer_list.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac.c      | 26 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/mac.h      |  2 ++
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  1 +
+ drivers/net/wireless/realtek/rtw89/reg.h      |  4 +++
+ 4 files changed, 33 insertions(+)
 
-diff --git a/kernel/time/timer_list.c b/kernel/time/timer_list.c
-index 1c311c46da507..cfbb46cc4e761 100644
---- a/kernel/time/timer_list.c
-+++ b/kernel/time/timer_list.c
-@@ -46,7 +46,7 @@ static void
- print_timer(struct seq_file *m, struct hrtimer *taddr, struct hrtimer *timer,
- 	    int idx, u64 now)
- {
--	SEQ_printf(m, " #%d: <%pK>, %ps", idx, taddr, timer->function);
-+	SEQ_printf(m, " #%d: <%p>, %ps", idx, taddr, timer->function);
- 	SEQ_printf(m, ", S:%02x", timer->state);
- 	SEQ_printf(m, "\n");
- 	SEQ_printf(m, " # expires at %Lu-%Lu nsecs [in %Ld to %Ld nsecs]\n",
-@@ -98,7 +98,7 @@ print_active_timers(struct seq_file *m, struct hrtimer_clock_base *base,
- static void
- print_base(struct seq_file *m, struct hrtimer_clock_base *base, u64 now)
- {
--	SEQ_printf(m, "  .base:       %pK\n", base);
-+	SEQ_printf(m, "  .base:       %p\n", base);
- 	SEQ_printf(m, "  .index:      %d\n", base->index);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 4574aa62839b0..04e254bd6b17f 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -4745,6 +4745,32 @@ void rtw89_mac_set_he_obss_narrow_bw_ru(struct rtw89_dev *rtwdev,
+ 		rtw89_write32_set(rtwdev, reg, mac->narrow_bw_ru_dis.mask);
+ }
  
- 	SEQ_printf(m, "  .resolution: %u nsecs\n", hrtimer_resolution);
++void rtw89_mac_set_he_tb(struct rtw89_dev *rtwdev,
++			 struct rtw89_vif_link *rtwvif_link)
++{
++	struct ieee80211_bss_conf *bss_conf;
++	bool set;
++	u32 reg;
++
++	if (rtwdev->chip->chip_gen != RTW89_CHIP_BE)
++		return;
++
++	rcu_read_lock();
++
++	bss_conf = rtw89_vif_rcu_dereference_link(rtwvif_link, true);
++	set = bss_conf->he_support && !bss_conf->eht_support;
++
++	rcu_read_unlock();
++
++	reg = rtw89_mac_reg_by_idx(rtwdev, R_BE_CLIENT_OM_CTRL,
++				   rtwvif_link->mac_idx);
++
++	if (set)
++		rtw89_write32_set(rtwdev, reg, B_BE_TRIG_DIS_EHTTB);
++	else
++		rtw89_write32_clr(rtwdev, reg, B_BE_TRIG_DIS_EHTTB);
++}
++
+ void rtw89_mac_stop_ap(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rtwvif_link)
+ {
+ 	rtw89_mac_port_cfg_func_sw(rtwdev, rtwvif_link);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index 0c269961a5731..5ba1133b79d64 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -1160,6 +1160,8 @@ void rtw89_mac_port_cfg_rx_sync(struct rtw89_dev *rtwdev,
+ 				struct rtw89_vif_link *rtwvif_link, bool en);
+ void rtw89_mac_set_he_obss_narrow_bw_ru(struct rtw89_dev *rtwdev,
+ 					struct rtw89_vif_link *rtwvif_link);
++void rtw89_mac_set_he_tb(struct rtw89_dev *rtwdev,
++			 struct rtw89_vif_link *rtwvif_link);
+ void rtw89_mac_stop_ap(struct rtw89_dev *rtwdev, struct rtw89_vif_link *rtwvif_link);
+ void rtw89_mac_enable_beacon_for_ap_vifs(struct rtw89_dev *rtwdev, bool en);
+ int rtw89_mac_remove_vif(struct rtw89_dev *rtwdev, struct rtw89_vif_link *vif);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index 8351a70d325d4..3a1a2b243adf0 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -669,6 +669,7 @@ static void __rtw89_ops_bss_link_assoc(struct rtw89_dev *rtwdev,
+ 	rtw89_chip_cfg_txpwr_ul_tb_offset(rtwdev, rtwvif_link);
+ 	rtw89_mac_port_update(rtwdev, rtwvif_link);
+ 	rtw89_mac_set_he_obss_narrow_bw_ru(rtwdev, rtwvif_link);
++	rtw89_mac_set_he_tb(rtwdev, rtwvif_link);
+ }
+ 
+ static void __rtw89_ops_bss_assoc(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index 69678eab23093..9fbcc7fee290f 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -7093,6 +7093,10 @@
+ #define B_BE_MACLBK_RDY_NUM_MASK GENMASK(7, 3)
+ #define B_BE_MACLBK_EN BIT(0)
+ 
++#define R_BE_CLIENT_OM_CTRL 0x11040
++#define R_BE_CLIENT_OM_CTRL_C1 0x15040
++#define B_BE_TRIG_DIS_EHTTB BIT(24)
++
+ #define R_BE_WMAC_NAV_CTL 0x11080
+ #define R_BE_WMAC_NAV_CTL_C1 0x15080
+ #define B_BE_WMAC_NAV_UPPER_EN BIT(26)
 -- 
 2.39.5
 
