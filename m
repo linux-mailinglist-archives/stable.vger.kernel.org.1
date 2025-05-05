@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-140502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A93AAA960
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:13:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D79AAA964
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:13:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59D8518894DA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:11:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71327188B18B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB5C360A7C;
-	Mon,  5 May 2025 22:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBEA1360A7D;
+	Mon,  5 May 2025 22:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g5PP+AIh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W/F/8arj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA459299A90;
-	Mon,  5 May 2025 22:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD2B299A9D;
+	Mon,  5 May 2025 22:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484996; cv=none; b=jRPuEWAQpTGfBTk88rbGCwRzerbDAkX91a4ETbMRrh7oh7J7moH0n0fv1FhUU+YisMhvdyaWWFp9H9xy45ERbZPKzK2zz9oJTkyyQRscqTBZbiQqR1970KSOK7hSJNvl3BFuHnuC5aBgss0ef5pXo2HsjeA/4b4aa4+8qA64IS0=
+	t=1746485001; cv=none; b=Gt6D3/KPgkf4AaLsnKwplybaGGw8dPxv4RLD9zYvZRah2IewSwWnyRSDK/6oVJiCLWSDcGVuDm46aqfeU9pimQrd8hoIgXviT0qHVDFLXtI5jFRw4Tbj5NnP0SjWrdn8CrnZBL9mHdf6zJphNHC1cmD6nHO7hnEIi/fyZk+x12Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484996; c=relaxed/simple;
-	bh=1rX1VygvKUtt1fWJvrpYXGnj2mNZwGwmHDPfH9Do8c8=;
+	s=arc-20240116; t=1746485001; c=relaxed/simple;
+	bh=/Yj5XCUNxIaUj4BvHUMPl9F1WanooW4vZ4XhupbUOzY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LBumEBbTG+O86hYPARTJsfy5VcHiInhYP2rAMhmw4VAVhOaM3SLg4o/ONJUmZoQtxHC5R+XpxEY5BdtojCQAsf9tbVQ6vquPANxnn8zUb8ZSfM4727/g2KMHBw8OKosxmYViCaa+gq/gBjiPeokSShSutl21XU1V95lgkmUaM2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g5PP+AIh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F3CC4CEF1;
-	Mon,  5 May 2025 22:43:15 +0000 (UTC)
+	 MIME-Version; b=avegkPpAtdamxgA0pNX0cGZ+xeLK2BONq9huT5Z0ChX21o7vsEk9l9QF9RZp8oIi73a3kMKPRFp899Mcfmoa+wkEo49FpZZd+pbZojbE4bxH4S8mlOw2vHMIc769iOVixnT0oMwPOM8JQrrmVvwxrcXZKotacpgZrdXw7y1y/kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W/F/8arj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBD7C4CEE4;
+	Mon,  5 May 2025 22:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484996;
-	bh=1rX1VygvKUtt1fWJvrpYXGnj2mNZwGwmHDPfH9Do8c8=;
+	s=k20201202; t=1746485000;
+	bh=/Yj5XCUNxIaUj4BvHUMPl9F1WanooW4vZ4XhupbUOzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g5PP+AIhnTqpIR8E8rShkE+8WwTq89tcv3i6axFqB5+Kt8VXED7wpdCDhQ9VVcfnL
-	 ejmSrXXsFCgCjypYJlbY/R2QMh9zoAWbG8GGgbNAPUkmrTGssUV4sCaa2aReNrVO9G
-	 7om32qCqsbC2c5xwlLPa9iump10x6qRnKQYdh2AP0TVfeX5ijAx3lAnHqRwnciTlo2
-	 93ZdD9GA6CfuraL8WpFxZ7SzhGyuXt0xnpgGzp+ZfRm85qQCAWGnaNrikO4ZtudhYG
-	 N45G5FKuHENeKGsDs3vtteT8/XLvN5l2I2KdDWsHjboN95HzpCHaI1sD7zPVPBZ5l2
-	 Av1mf3WSQuNOg==
+	b=W/F/8arjlG34hfOIJ3fikKpX467zUhVWep527NWnYYOiGF9eu/WBDlqXt4jw63vKc
+	 FVKE/Z2M5Wx/SSW8jDABaZ3+uPC+Nh69lhkHv9prbWzpHHgVywo8YVwCoHJZ5EtIzb
+	 7M/IfT8pkMlKdDNSx3YmsnChTBKGp/CvXpiF3Rqt1+PkOTdDvm42PtRpYOYZ66dHZP
+	 wUOoJR+ZGAeWXpQ3FgDN7MNHPF28+ECGVGPCI/EXhTwicWvDKP4AftJjblKERb9vNG
+	 CAjO77/RPrCpMUSxsch1U8FX/tsX/T2ZR1ttmZBp36DjIIDCn1LTw57+krzO0RlF5/
+	 eK5KrEoOSkmQg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Frediano Ziglio <frediano.ziglio@cloud.com>,
-	Juergen Gross <jgross@suse.com>,
+Cc: Prathamesh Shete <pshete@nvidia.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sstabellini@kernel.org,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH AUTOSEL 6.12 117/486] xen: Add support for XenServer 6.1 platform device
-Date: Mon,  5 May 2025 18:33:13 -0400
-Message-Id: <20250505223922.2682012-117-sashal@kernel.org>
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com,
+	brgl@bgdev.pl,
+	dan.carpenter@linaro.org,
+	kunwu.chan@linux.dev,
+	peng.fan@nxp.com,
+	linux-gpio@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 118/486] pinctrl-tegra: Restore SFSEL bit when freeing pins
+Date: Mon,  5 May 2025 18:33:14 -0400
+Message-Id: <20250505223922.2682012-118-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -66,63 +72,181 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Frediano Ziglio <frediano.ziglio@cloud.com>
+From: Prathamesh Shete <pshete@nvidia.com>
 
-[ Upstream commit 2356f15caefc0cc63d9cc5122641754f76ef9b25 ]
+[ Upstream commit c12bfa0fee65940b10ff5187349f76c6f6b1df9c ]
 
-On XenServer on Windows machine a platform device with ID 2 instead of
-1 is used.
+Each pin can be configured as a Special Function IO (SFIO) or GPIO,
+where the SFIO enables the pin to operate in alternative modes such as
+I2C, SPI, etc.
 
-This device is mainly identical to device 1 but due to some Windows
-update behaviour it was decided to use a device with a different ID.
+The current implementation sets all the pins back to SFIO mode
+even if they were initially in GPIO mode. This can cause glitches
+on the pins when pinctrl_gpio_free() is called.
 
-This causes compatibility issues with Linux which expects, if Xen
-is detected, to find a Xen platform device (5853:0001) otherwise code
-will crash due to some missing initialization (specifically grant
-tables). Specifically from dmesg
+Avoid these undesired glitches by storing the pin's SFIO/GPIO
+state on GPIO request and restoring it on GPIO free.
 
-    RIP: 0010:gnttab_expand+0x29/0x210
-    Code: 90 0f 1f 44 00 00 55 31 d2 48 89 e5 41 57 41 56 41 55 41 89 fd
-          41 54 53 48 83 ec 10 48 8b 05 7e 9a 49 02 44 8b 35 a7 9a 49 02
-          <8b> 48 04 8d 44 39 ff f7 f1 45 8d 24 06 89 c3 e8 43 fe ff ff
-          44 39
-    RSP: 0000:ffffba34c01fbc88 EFLAGS: 00010086
-    ...
-
-The device 2 is presented by Xapi adding device specification to
-Qemu command line.
-
-Signed-off-by: Frediano Ziglio <frediano.ziglio@cloud.com>
-Acked-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250227145016.25350-1-frediano.ziglio@cloud.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
+Link: https://lore.kernel.org/20250305104939.15168-2-pshete@nvidia.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/platform-pci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pinctrl/tegra/pinctrl-tegra.c | 59 +++++++++++++++++++++++----
+ drivers/pinctrl/tegra/pinctrl-tegra.h |  6 +++
+ 2 files changed, 57 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/xen/platform-pci.c b/drivers/xen/platform-pci.c
-index 544d3f9010b92..1db82da56db62 100644
---- a/drivers/xen/platform-pci.c
-+++ b/drivers/xen/platform-pci.c
-@@ -26,6 +26,8 @@
+diff --git a/drivers/pinctrl/tegra/pinctrl-tegra.c b/drivers/pinctrl/tegra/pinctrl-tegra.c
+index 3b046450bd3ff..27823e4207347 100644
+--- a/drivers/pinctrl/tegra/pinctrl-tegra.c
++++ b/drivers/pinctrl/tegra/pinctrl-tegra.c
+@@ -278,8 +278,8 @@ static int tegra_pinctrl_set_mux(struct pinctrl_dev *pctldev,
+ 	return 0;
+ }
  
- #define DRV_NAME    "xen-platform-pci"
+-static const struct tegra_pingroup *tegra_pinctrl_get_group(struct pinctrl_dev *pctldev,
+-					unsigned int offset)
++static int tegra_pinctrl_get_group_index(struct pinctrl_dev *pctldev,
++					 unsigned int offset)
+ {
+ 	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
+ 	unsigned int group, num_pins, j;
+@@ -292,12 +292,35 @@ static const struct tegra_pingroup *tegra_pinctrl_get_group(struct pinctrl_dev *
+ 			continue;
+ 		for (j = 0; j < num_pins; j++) {
+ 			if (offset == pins[j])
+-				return &pmx->soc->groups[group];
++				return group;
+ 		}
+ 	}
  
-+#define PCI_DEVICE_ID_XEN_PLATFORM_XS61	0x0002
+-	dev_err(pctldev->dev, "Pingroup not found for pin %u\n", offset);
+-	return NULL;
++	return -EINVAL;
++}
 +
- static unsigned long platform_mmio;
- static unsigned long platform_mmio_alloc;
- static unsigned long platform_mmiolen;
-@@ -174,6 +176,8 @@ static int platform_pci_probe(struct pci_dev *pdev,
- static const struct pci_device_id platform_pci_tbl[] = {
- 	{PCI_VENDOR_ID_XEN, PCI_DEVICE_ID_XEN_PLATFORM,
- 		PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0},
-+	{PCI_VENDOR_ID_XEN, PCI_DEVICE_ID_XEN_PLATFORM_XS61,
-+		PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0},
- 	{0,}
++static const struct tegra_pingroup *tegra_pinctrl_get_group(struct pinctrl_dev *pctldev,
++							    unsigned int offset,
++							    int group_index)
++{
++	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
++
++	if (group_index < 0 || group_index > pmx->soc->ngroups)
++		return NULL;
++
++	return &pmx->soc->groups[group_index];
++}
++
++static struct tegra_pingroup_config *tegra_pinctrl_get_group_config(struct pinctrl_dev *pctldev,
++								    unsigned int offset,
++								    int group_index)
++{
++	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
++
++	if (group_index < 0)
++		return NULL;
++
++	return &pmx->pingroup_configs[group_index];
+ }
+ 
+ static int tegra_pinctrl_gpio_request_enable(struct pinctrl_dev *pctldev,
+@@ -306,12 +329,15 @@ static int tegra_pinctrl_gpio_request_enable(struct pinctrl_dev *pctldev,
+ {
+ 	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
+ 	const struct tegra_pingroup *group;
++	struct tegra_pingroup_config *config;
++	int group_index;
+ 	u32 value;
+ 
+ 	if (!pmx->soc->sfsel_in_mux)
+ 		return 0;
+ 
+-	group = tegra_pinctrl_get_group(pctldev, offset);
++	group_index = tegra_pinctrl_get_group_index(pctldev, offset);
++	group = tegra_pinctrl_get_group(pctldev, offset, group_index);
+ 
+ 	if (!group)
+ 		return -EINVAL;
+@@ -319,7 +345,11 @@ static int tegra_pinctrl_gpio_request_enable(struct pinctrl_dev *pctldev,
+ 	if (group->mux_reg < 0 || group->sfsel_bit < 0)
+ 		return -EINVAL;
+ 
++	config = tegra_pinctrl_get_group_config(pctldev, offset, group_index);
++	if (!config)
++		return -EINVAL;
+ 	value = pmx_readl(pmx, group->mux_bank, group->mux_reg);
++	config->is_sfsel = (value & BIT(group->sfsel_bit)) != 0;
+ 	value &= ~BIT(group->sfsel_bit);
+ 	pmx_writel(pmx, value, group->mux_bank, group->mux_reg);
+ 
+@@ -332,12 +362,15 @@ static void tegra_pinctrl_gpio_disable_free(struct pinctrl_dev *pctldev,
+ {
+ 	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
+ 	const struct tegra_pingroup *group;
++	struct tegra_pingroup_config *config;
++	int group_index;
+ 	u32 value;
+ 
+ 	if (!pmx->soc->sfsel_in_mux)
+ 		return;
+ 
+-	group = tegra_pinctrl_get_group(pctldev, offset);
++	group_index = tegra_pinctrl_get_group_index(pctldev, offset);
++	group = tegra_pinctrl_get_group(pctldev, offset, group_index);
+ 
+ 	if (!group)
+ 		return;
+@@ -345,8 +378,12 @@ static void tegra_pinctrl_gpio_disable_free(struct pinctrl_dev *pctldev,
+ 	if (group->mux_reg < 0 || group->sfsel_bit < 0)
+ 		return;
+ 
++	config = tegra_pinctrl_get_group_config(pctldev, offset, group_index);
++	if (!config)
++		return;
+ 	value = pmx_readl(pmx, group->mux_bank, group->mux_reg);
+-	value |= BIT(group->sfsel_bit);
++	if (config->is_sfsel)
++		value |= BIT(group->sfsel_bit);
+ 	pmx_writel(pmx, value, group->mux_bank, group->mux_reg);
+ }
+ 
+@@ -791,6 +828,12 @@ int tegra_pinctrl_probe(struct platform_device *pdev,
+ 	pmx->dev = &pdev->dev;
+ 	pmx->soc = soc_data;
+ 
++	pmx->pingroup_configs = devm_kcalloc(&pdev->dev,
++					     pmx->soc->ngroups, sizeof(*pmx->pingroup_configs),
++					     GFP_KERNEL);
++	if (!pmx->pingroup_configs)
++		return -ENOMEM;
++
+ 	/*
+ 	 * Each mux group will appear in 4 functions' list of groups.
+ 	 * This over-allocates slightly, since not all groups are mux groups.
+diff --git a/drivers/pinctrl/tegra/pinctrl-tegra.h b/drivers/pinctrl/tegra/pinctrl-tegra.h
+index b3289bdf727d8..b97136685f7a8 100644
+--- a/drivers/pinctrl/tegra/pinctrl-tegra.h
++++ b/drivers/pinctrl/tegra/pinctrl-tegra.h
+@@ -8,6 +8,10 @@
+ #ifndef __PINMUX_TEGRA_H__
+ #define __PINMUX_TEGRA_H__
+ 
++struct tegra_pingroup_config {
++	bool is_sfsel;
++};
++
+ struct tegra_pmx {
+ 	struct device *dev;
+ 	struct pinctrl_dev *pctl;
+@@ -21,6 +25,8 @@ struct tegra_pmx {
+ 	int nbanks;
+ 	void __iomem **regs;
+ 	u32 *backup_regs;
++	/* Array of size soc->ngroups */
++	struct tegra_pingroup_config *pingroup_configs;
  };
  
+ enum tegra_pinconf_param {
 -- 
 2.39.5
 
