@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-140409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F89AAA86B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:53:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8E0AAA896
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:57:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B17C6188B5BE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:52:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67E259882F4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBBE34D646;
-	Mon,  5 May 2025 22:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BD434D669;
+	Mon,  5 May 2025 22:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N1KNwV/L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="odjJcCPd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A641C29B8E6;
-	Mon,  5 May 2025 22:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F369534D65F;
+	Mon,  5 May 2025 22:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484794; cv=none; b=DqzFUykugImLyTVv7pyFOUgdvx/RTL0BJhgO/nrkSjE7xKe/j7/ZmxxVGR/Jn5wkmrmm5G0HrENg0OkDIP867gnGJ6k2Lye0DAsITnTKtWE7sBYFJQYTFD282UZ7DtqKQHoVBAcDSCtpBqxe4R2zaeDzvgeVQMhiL81BbfoWPWE=
+	t=1746484796; cv=none; b=lAklKxtfkLFynvBr3LLB1XXqMaXArDopPBhFKbkHwJvqpICLgHuw4NGXkGmkp2sNo+RCx9Yvb3Qxt1jyjjtw63JNAOZDDBboHbwiRnY5nwmYiK4f+SOEm7UW8Y1xrNim20/W0EiMGE8qJ0i36+CDszftP7dk7/6DlWMVINwuU0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484794; c=relaxed/simple;
-	bh=Pzar7iFHGx0C1ukBGapZnxhXD7NXDJvM+1AU/LbBr24=;
+	s=arc-20240116; t=1746484796; c=relaxed/simple;
+	bh=eEUI680ypmPuZ5QWILhPpSBV4+NzpYcdAqCvbVpWpUg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=f3sNtsrhW1Y5TszXfefMc9ikNLQD2EZP3b7SSpzLFRM41jMqpG16aSAlr8vWYpSZnqBmqMTJjpFmazRJGSKBx7zGN4yYDZTH84/BfBw3y9XrfnMxNAogdbrQjLlK6J1IwALpxhviCoRVUY+ISbR7D1BViGwYo+dS1mMqD6zoPEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N1KNwV/L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39AF3C4CEEE;
-	Mon,  5 May 2025 22:39:53 +0000 (UTC)
+	 MIME-Version; b=padfEphMl3HaAEm45yXBiKT1G3k2wKJWZEdhVvjB5677deBR1IBk574khmqDXJIWWDGFRzt9hT+k8MGtZOMO6JRa5qQVspws3W7E8BohABjzx/p+wLFggLVaI06pQpJcVSjsbxR8MilBRHFCT0A+tpRhoyzmh3nhy1NWeL44Clg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=odjJcCPd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885BDC4CEED;
+	Mon,  5 May 2025 22:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484794;
-	bh=Pzar7iFHGx0C1ukBGapZnxhXD7NXDJvM+1AU/LbBr24=;
+	s=k20201202; t=1746484795;
+	bh=eEUI680ypmPuZ5QWILhPpSBV4+NzpYcdAqCvbVpWpUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1KNwV/LGfZbKjTs0ZfHFnSfax3cqLEnhM9PuEWh4xrmBAPsaDsB9RuWwKt3Ydy1h
-	 4Md2HanoW9ibCKVM/wu7LFo7e1zH1gpTLmHQJDSnur212UTYh9NA00G+Z56WLGehK+
-	 I1cM05B+iC+dX/BYmJ4Qek8X2qyKr38HIPxjz+JUJy5IA0HF1LQ5AxVPkQQkwYfsLX
-	 66dcPaIHM1FU9y7JlX4aDeS5PBkFscrY/Bj5YKF345ueAye9Wh5r/XHqAIKXM0hCXC
-	 plkiNPn1voDfkLixjSmSOR5k+jXn4D7pCkJoIOx3KuReFWSPTE4bK+flh1t8Bx7dyQ
-	 iq74XAMYPPOjw==
+	b=odjJcCPdV2qqFeYIqfkQOifHKnm3huwoX7nmMX769j2mKch2phJSCYA/fYlgAnT6g
+	 e+k5kXL3YJAAQyX7TnogSqMiyYqjyew7PHxI3+wuFipDjcBBI8D/rfnfcy/WyqDYF2
+	 OwdD4qAYpP7scX0Cy3VMTbTn2NJnGoa3xI/j19qSBX0UrelwZ2dn5x37RywBuMVB47
+	 +c6tNv7owjVPTI9yuPooHYax+pkKTIYyzrC1StZvkRNysKQV1sWKvklNQEGVtfKhIH
+	 QTMMyEs4fiNlSGPtORdktnuke4CT4tt+H7xFT+G8aan6c2emPvUzCP2ARH3mYpXK8i
+	 Dmd2CWNj31Y6w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jonathan McDowell <noodles@meta.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Huisong Li <lihuisong@huawei.com>,
+	Adam Young <admiyo@os.amperecomputing.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	peterhuewe@gmx.de,
-	linux-integrity@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 018/486] tpm: Convert warn to dbg in tpm2_start_auth_session()
-Date: Mon,  5 May 2025 18:31:34 -0400
-Message-Id: <20250505223922.2682012-18-sashal@kernel.org>
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 019/486] mailbox: pcc: Use acpi_os_ioremap() instead of ioremap()
+Date: Mon,  5 May 2025 18:31:35 -0400
+Message-Id: <20250505223922.2682012-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -66,45 +67,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Jonathan McDowell <noodles@meta.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 6359691b4fbcaf3ed86f53043a1f7c6cc54c09be ]
+[ Upstream commit d181acea5b864e91f38f5771b8961215ce5017ae ]
 
-TPM2 sessions have been flushed lazily since commit df745e25098dc ("tpm:
-Lazily flush the auth session").  If /dev/tpm{rm}0 is not accessed
-in-between two in-kernel calls, it is possible that a TPM2 session is
-re-started before the previous one has been completed.
+The Platform Communication Channel (PCC) mailbox driver currently uses
+ioremap() to map channel shared memory regions. However it is preferred
+to use acpi_os_ioremap(), which is mapping function specific to EFI/ACPI
+defined memory regions. It ensures that the correct memory attributes
+are applied when mapping ACPI-provided regions.
 
-This causes a spurios warning in a legit run-time condition, which is also
-correctly addressed with a fast return path:
+While at it, also add checks for handling any errors with the mapping.
 
-[    2.944047] tpm tpm0: auth session is active
-
-Address the issue by changing dev_warn_once() call to a dev_dbg_once()
-call.
-
-[jarkko: Rewrote the commit message, and instead of dropping converted
- to a debug message.]
-Signed-off-by: Jonathan McDowell <noodles@meta.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Acked-by: Huisong Li <lihuisong@huawei.com>
+Tested-by: Huisong Li <lihuisong@huawei.com>
+Tested-by: Adam Young <admiyo@os.amperecomputing.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm2-sessions.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mailbox/pcc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index b0f13c8ea79c7..7c829de09afb0 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -982,7 +982,7 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
- 	int rc;
- 
- 	if (chip->auth) {
--		dev_warn_once(&chip->dev, "auth session is active\n");
-+		dev_dbg_once(&chip->dev, "auth session is active\n");
- 		return 0;
- 	}
- 
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index f8215a8f656a4..49254d99a8ad6 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -419,8 +419,12 @@ int pcc_mbox_ioremap(struct mbox_chan *chan)
+ 		return -1;
+ 	pchan_info = chan->con_priv;
+ 	pcc_mbox_chan = &pchan_info->chan;
+-	pcc_mbox_chan->shmem = ioremap(pcc_mbox_chan->shmem_base_addr,
+-				       pcc_mbox_chan->shmem_size);
++
++	pcc_mbox_chan->shmem = acpi_os_ioremap(pcc_mbox_chan->shmem_base_addr,
++					       pcc_mbox_chan->shmem_size);
++	if (!pcc_mbox_chan->shmem)
++		return -ENXIO;
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(pcc_mbox_ioremap);
 -- 
 2.39.5
 
