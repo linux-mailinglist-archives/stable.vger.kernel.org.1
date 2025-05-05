@@ -1,56 +1,74 @@
-Return-Path: <stable+bounces-140392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B6FAAA82E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:49:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F99AAA866
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:53:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 443FD17BC5A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:48:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 764CB9877BF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DE1296D09;
-	Mon,  5 May 2025 22:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F2D34A184;
+	Mon,  5 May 2025 22:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IuJT/nec"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ad77RjAI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72472349B77;
-	Mon,  5 May 2025 22:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0227C296D0B;
+	Mon,  5 May 2025 22:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484767; cv=none; b=iAF5uI01XMOF6hALxAXRwe1FfEAI/7m5A/YsEFSTZYuDuhsVXjZRyCzBTn5vJy+A0Xc2RwjC//kjyjC4e6fOosLz1QXwar2BQnwdwWPI/kSbaKhe+tB0As8ZsKKdPTmF8qb5wUdnSClKCAtwRcdVRoP/E/E1bgcGUPWBbL8DJx4=
+	t=1746484770; cv=none; b=i0ZDAooLJXPyWth9guYRZmUmtfvVb8w4io1XM9zP7dkuUT+z1/msDCz7gb4TDyboIA7D9aoNsIO9fkoTnpClNKlRn+L9B/6sLoR1tGpYzayLq9lJP+LJ7wZ6Hx2Fw20UesmAbtNwmqTe4lK4lMELHTkkHhc/oVvSujzOiMOpNDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484767; c=relaxed/simple;
-	bh=JCdTVHeAiF0SMN4hqWeIRsGnSNa8+AKoDVxqQWbHrto=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AMu00qd6DONrOunZU2pqefMropf/vSXnPi7ZI00PER/Yad2ZuLC4Y+v+IIGA1c8KsiZV7s6U8hrsAbI6ViSonmu6SME4zeBw2seA4ETZ9QNaj3fj26zVWy9Z7eDtn+B1jrO5h6n81LsSbx3U3I3sHSab6rKMPKS/EHYNd8fuTxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IuJT/nec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB3BC4CEE4;
-	Mon,  5 May 2025 22:39:26 +0000 (UTC)
+	s=arc-20240116; t=1746484770; c=relaxed/simple;
+	bh=J9LKa0JVlnkzvGDcwNe2mR9Fops5wHLY5lriBOCwhnM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EnKcwuN/rBLeMul4Oebkv4/Jlu3ZbcLrBFMMrRgGf6tOsdGguO1WU/cnE1TVClNl0lrIxel3LWGsPFMR0qxnzjPGNTNx5fMVBqnwXPYgmFw6LMs3C2aAdFaD5YqhjaLe1249AkQv5YAg6u4FHa/p1rUy+rFJ+bnzintOFvANn2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ad77RjAI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53633C4CEEE;
+	Mon,  5 May 2025 22:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484766;
-	bh=JCdTVHeAiF0SMN4hqWeIRsGnSNa8+AKoDVxqQWbHrto=;
-	h=From:To:Cc:Subject:Date:From;
-	b=IuJT/necH5KzaBxc0GwYhsFnRZ/fHKnzhVBa1ZQMB+YXspnmslQzvBIR5v99dUT1o
-	 r3w3aoBh687E/G8Ed30qgk08mHrB08Zdw32eeQDE8yg/mp/QrAqMmB4Bu/G2Jig+TS
-	 2qDDpjMLZdBc3V0jkEWm0dFgdbhco9rdVw9juzpNaW4efTb5pZTGRSJgMzW9XleFkG
-	 9WqcH8YdeSWLRBmuUoQJNn17797BGpTSN593IhiyOYoH3zd0sKKtXjT+a2KiqYfmyl
-	 E9/oHJmc8CHh7R4kYR0q4YDK61a0Sf3jagbzJ+2o6QlfwAT0ulj/MSUn2CHphxeFYt
-	 1CSdpnF7KZWlw==
+	s=k20201202; t=1746484769;
+	bh=J9LKa0JVlnkzvGDcwNe2mR9Fops5wHLY5lriBOCwhnM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ad77RjAIswqB+HB8H7MSPRu5tccI0kxMm+/8Zre6PdI/5n0vtyaYayjq91/tKa7sg
+	 YNkevA1drrgaEyigQW8XHcwTJ0PMXj+y/5iSIN/K0Uzz6QKSOfsDI8tDk5K+4vMfyE
+	 iYrWBjuTmCnQ3/sqBGXPcCOVouDDTgYL2m7b06reniCKm/tYSZH6aC2vKGsUVM0+y9
+	 JS9r9I3gVDnDDAKhjDowM5jBsBh1wSvo2CwF/z0U++aghyOWcqXgz6TS2elr++LFyg
+	 xHDkHTsdg8t7OkiCLtppCRQxu2cShilsYsEzHHOzKFG5ztboh9NmDg5a4Ld66vTmEr
+	 HBDeBmJUfkJPQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+Cc: "Xin Li (Intel)" <xin@zytor.com>,
+	Xi Pardee <xi.pardee@intel.com>,
+	Todd Brandt <todd.e.brandt@intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Juergen Gross <jgross@suse.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 001/486] kconfig: merge_config: use an empty file as initfile
-Date: Mon,  5 May 2025 18:31:17 -0400
-Message-Id: <20250505223922.2682012-1-sashal@kernel.org>
+	rafael@kernel.org,
+	pavel@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 002/486] x86/fred: Fix system hang during S4 resume with FRED enabled
+Date: Mon,  5 May 2025 18:31:18 -0400
+Message-Id: <20250505223922.2682012-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
+References: <20250505223922.2682012-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,46 +80,74 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Gomez <da.gomez@samsung.com>
+From: "Xin Li (Intel)" <xin@zytor.com>
 
-[ Upstream commit a26fe287eed112b4e21e854f173c8918a6a8596d ]
+[ Upstream commit e5f1e8af9c9e151ecd665f6d2e36fb25fec3b110 ]
 
-The scripts/kconfig/merge_config.sh script requires an existing
-$INITFILE (or the $1 argument) as a base file for merging Kconfig
-fragments. However, an empty $INITFILE can serve as an initial starting
-point, later referenced by the KCONFIG_ALLCONFIG Makefile variable
-if -m is not used. This variable can point to any configuration file
-containing preset config symbols (the merged output) as stated in
-Documentation/kbuild/kconfig.rst. When -m is used $INITFILE will
-contain just the merge output requiring the user to run make (i.e.
-KCONFIG_ALLCONFIG=<$INITFILE> make <allnoconfig/alldefconfig> or make
-olddefconfig).
+Upon a wakeup from S4, the restore kernel starts and initializes the
+FRED MSRs as needed from its perspective.  It then loads a hibernation
+image, including the image kernel, and attempts to load image pages
+directly into their original page frames used before hibernation unless
+those frames are currently in use.  Once all pages are moved to their
+original locations, it jumps to a "trampoline" page in the image kernel.
 
-Instead of failing when `$INITFILE` is missing, create an empty file and
-use it as the starting point for merges.
+At this point, the image kernel takes control, but the FRED MSRs still
+contain values set by the restore kernel, which may differ from those
+set by the image kernel before hibernation.  Therefore, the image kernel
+must ensure the FRED MSRs have the same values as before hibernation.
+Since these values depend only on the location of the kernel text and
+data, they can be recomputed from scratch.
 
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reported-by: Xi Pardee <xi.pardee@intel.com>
+Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+Tested-by: Todd Brandt <todd.e.brandt@intel.com>
+Suggested-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250401075728.3626147-1-xin@zytor.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/merge_config.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/power/cpu.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/scripts/kconfig/merge_config.sh b/scripts/kconfig/merge_config.sh
-index 0b7952471c18f..79c09b378be81 100755
---- a/scripts/kconfig/merge_config.sh
-+++ b/scripts/kconfig/merge_config.sh
-@@ -112,8 +112,8 @@ INITFILE=$1
- shift;
+diff --git a/arch/x86/power/cpu.c b/arch/x86/power/cpu.c
+index 63230ff8cf4f0..08e76a5ca1553 100644
+--- a/arch/x86/power/cpu.c
++++ b/arch/x86/power/cpu.c
+@@ -27,6 +27,7 @@
+ #include <asm/mmu_context.h>
+ #include <asm/cpu_device_id.h>
+ #include <asm/microcode.h>
++#include <asm/fred.h>
  
- if [ ! -r "$INITFILE" ]; then
--	echo "The base file '$INITFILE' does not exist.  Exit." >&2
--	exit 1
-+	echo "The base file '$INITFILE' does not exist. Creating one..." >&2
-+	touch "$INITFILE"
- fi
- 
- MERGE_LIST=$*
+ #ifdef CONFIG_X86_32
+ __visible unsigned long saved_context_ebx;
+@@ -231,6 +232,19 @@ static void notrace __restore_processor_state(struct saved_context *ctxt)
+ 	 */
+ #ifdef CONFIG_X86_64
+ 	wrmsrl(MSR_GS_BASE, ctxt->kernelmode_gs_base);
++
++	/*
++	 * Reinitialize FRED to ensure the FRED MSRs contain the same values
++	 * as before hibernation.
++	 *
++	 * Note, the setup of FRED RSPs requires access to percpu data
++	 * structures.  Therefore, FRED reinitialization can only occur after
++	 * the percpu access pointer (i.e., MSR_GS_BASE) is restored.
++	 */
++	if (ctxt->cr4 & X86_CR4_FRED) {
++		cpu_init_fred_exceptions();
++		cpu_init_fred_rsps();
++	}
+ #else
+ 	loadsegment(fs, __KERNEL_PERCPU);
+ #endif
 -- 
 2.39.5
 
