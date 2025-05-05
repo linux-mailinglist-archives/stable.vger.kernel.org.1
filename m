@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-139883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B71AAA193
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:49:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0454AAA19C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:49:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 986B21A850AE
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:48:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 252503BF5E2
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CB02BFC7C;
-	Mon,  5 May 2025 22:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C462C030A;
+	Mon,  5 May 2025 22:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ItPrhyuO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cXuDSdWh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E272BFC75;
-	Mon,  5 May 2025 22:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4346B2BFC72;
+	Mon,  5 May 2025 22:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483598; cv=none; b=TMUYwLYOBD1XfimaMG83L2WHPkxqfnSX8OOFAszDbyw5pZ5DIMBIbb+ZtyLd7fTQ6Gp80Ictgg3YKG/L1hecK0kp2cF8U08w86lm6dXNuaIUrkokxF8u0Nw939LDJCbd3C/vbg11wl1L71EmY1sqnOTsGFpBm5Ry+6SM/y55M6U=
+	t=1746483602; cv=none; b=ppTirX6tu7qUe0W6D7fEUgwRR+Fy1i/iFitP/eBrI2CiHG/NQ/Gwt0WnplqBeRS310g7N1cYsYCYH4jwf7x5fQxWKdk1L9UBh2KEF29hjYPMJ+SheU1q043FnffO8Rx6C8U+qzC5sWb83SHqW9qip6lfazqcnDFCKkogxsFi/ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483598; c=relaxed/simple;
-	bh=yeGRSe4yeYnAkn6QCGTNyWrsb1g3xtn78uJVGtMC8Y4=;
+	s=arc-20240116; t=1746483602; c=relaxed/simple;
+	bh=ND8ed1luOqfEIsbMxce0N4FcAEg4PUo+x3DsLi+mG94=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BudIKS1CcN/18oL+WmcdXwbnlyi1iJfviqo8O8QxNYi1uhHbpd9L0Rt4v5Gct0RY3NINszVDJ0RfbZps9JI5rBdfJsOtjo7O741qrx8v73gp37i78x+gq/I9mgY7JYvOa4X7dPCPibeklTg3nMhpWgyDcPcWLhiX6Bwoh1ggkAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ItPrhyuO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9FDC4CEED;
-	Mon,  5 May 2025 22:19:56 +0000 (UTC)
+	 MIME-Version; b=CumjybNTvmUa9TFe/A2ZoeqfSoNaLj55cKv1w6ahfh4hvPlNjvxhn9sfwzj9ByLJ5+ulwmoZ21nafQLcSdB+mmI4SoAkZTfM/q+ntMF6my7zSo6kKsdy1TpEfEvrI2pcKj/ZyMarWuLsf8X3L70r34iXWRVj5jUgVN4sUGpvaWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cXuDSdWh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12FB3C4CEE4;
+	Mon,  5 May 2025 22:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483597;
-	bh=yeGRSe4yeYnAkn6QCGTNyWrsb1g3xtn78uJVGtMC8Y4=;
+	s=k20201202; t=1746483601;
+	bh=ND8ed1luOqfEIsbMxce0N4FcAEg4PUo+x3DsLi+mG94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ItPrhyuODKzMfcmKZYDtgeTrKHUx71BCBZ6ZH7SooV1H22ptN/xMDQg7TENtvMcut
-	 fkzM4+SA7cI1eFwLswkP+v5rb7y1xUFrMNHsZ/RZSir7u1H16XXyfnjvKjxlTrHrDr
-	 iZnIxst2SDc1hDQJxvXvC57GYJY5b84PG1yoOnXuk3G2L/62WgwV4wE12YoqyrKUoW
-	 NeGdratECwL6DeUYKD+g/4O9vKZKmgvuRzzsmlTkiw4EBm85BP2FPHfkTIi8srqj/0
-	 JXlN9l1JXLuIomS+e8Gey0ESrqDFqDGznFEWzzZ1ss14iGDrs0gXq4DCoZUbWu/3Kv
-	 sRKD0pNtHY27g==
+	b=cXuDSdWh876X/U1DrvQ43537Mp95Vo6iBxf9pwutIknTk9fWqYaw9cpiOlhXgwJ8P
+	 RW9WFb61GwU8ckN2lJ0jw9XFaXCXI4tKKQ1pQLk8t3Zr1DVTeyVRYKEbdPaBHJOrw6
+	 iuVHkFVpyKsEUCZoKZfK5mSbZ5u03S86M+ck2Ln+P8tRFSXWfv2XqD9BAMUvFDP4rK
+	 Pkve1B4wdFzA1muWPM0X0BAMIK4xRXYPG/hAcf3hiTdohEi5DvME7AfxzohP2Kfd4t
+	 x0K9ekWl5v2oCCTFS0Yt+G8kYWcaSdl+6ho79pc5CLorTOfwZCFmF6hWj2v2KqXsg/
+	 //HMKSVR0nyrQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chenyuan Yang <chenyuan0y@gmail.com>,
+Cc: Linus Walleij <linus.walleij@linaro.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kiseok.jo@irondevice.com,
 	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 136/642] ASoC: sma1307: Add NULL check in sma1307_setting_loaded()
-Date: Mon,  5 May 2025 18:05:52 -0400
-Message-Id: <20250505221419.2672473-136-sashal@kernel.org>
+	brgl@bgdev.pl,
+	afd@ti.com,
+	gehao@kylinos.cn,
+	shenghao-ding@ti.com,
+	viro@zeniv.linux.org.uk,
+	robh@kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 137/642] ASoC: pcm6240: Drop bogus code handling IRQ as GPIO
+Date: Mon,  5 May 2025 18:05:53 -0400
+Message-Id: <20250505221419.2672473-137-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -69,83 +75,129 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 0ec6bd16705fe21d6429d6b8f7981eae2142bba8 ]
+[ Upstream commit 17fdf318f5fbe5c27353ae917c0c5a2899d9c259 ]
 
-All varibale allocated by kzalloc and devm_kzalloc could be NULL.
-Multiple pointer checks and their cleanup are added.
+The current code for the IRQ in pcm6240 makes no sense:
+it looks up an IRQ with of_irq_get(), treat it as a GPIO
+by issuing gpio_request(), gpio_direction_input()
+and gpio_to_irq() on it.
 
-This issue is found by our static analysis tool
+This is just wrong, if the device tree assigns the IRQ
+from a GPIO number this is just incorrect: it is clearly
+stated that GPIO providers and IRQ providers are
+orthogonal.
 
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://patch.msgid.link/20250311015714.1333857-1-chenyuan0y@gmail.com
+It is possible to look up an IRQ to a corresponding GPIO
+line but this is taking an IRQ and pretending it's a
+GPIO, which is just semantically wrong.
+
+Drop the offending code and treat the IRQ that we get
+from the device tree as any other IRQ, see for example
+other codec drivers.
+
+The DT bindings for this codec does not have any in-tree
+DTS files, which may explain why things are weird.
+
+As a bonus, this moves the driver away from the legacy
+<linux/gpio.h> include.
+
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://patch.msgid.link/20250312-pcm-codecs-v1-3-41ffc4f8fc5c@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/sma1307.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ sound/soc/codecs/pcm6240.c | 28 +++++++---------------------
+ sound/soc/codecs/pcm6240.h |  7 +------
+ 2 files changed, 8 insertions(+), 27 deletions(-)
 
-diff --git a/sound/soc/codecs/sma1307.c b/sound/soc/codecs/sma1307.c
-index 480bcea48541e..b9d8136fe3dc1 100644
---- a/sound/soc/codecs/sma1307.c
-+++ b/sound/soc/codecs/sma1307.c
-@@ -1728,6 +1728,11 @@ static void sma1307_setting_loaded(struct sma1307_priv *sma1307, const char *fil
+diff --git a/sound/soc/codecs/pcm6240.c b/sound/soc/codecs/pcm6240.c
+index 4ff39e0b95b27..b2bd2f172ae76 100644
+--- a/sound/soc/codecs/pcm6240.c
++++ b/sound/soc/codecs/pcm6240.c
+@@ -14,7 +14,7 @@
+ 
+ #include <linux/unaligned.h>
+ #include <linux/firmware.h>
+-#include <linux/gpio.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/i2c.h>
+ #include <linux/module.h>
+ #include <linux/of_irq.h>
+@@ -2035,10 +2035,8 @@ static const struct regmap_config pcmdevice_i2c_regmap = {
+ 
+ static void pcmdevice_remove(struct pcmdevice_priv *pcm_dev)
+ {
+-	if (gpio_is_valid(pcm_dev->irq_info.gpio)) {
+-		gpio_free(pcm_dev->irq_info.gpio);
+-		free_irq(pcm_dev->irq_info.nmb, pcm_dev);
+-	}
++	if (pcm_dev->irq)
++		free_irq(pcm_dev->irq, pcm_dev);
+ 	mutex_destroy(&pcm_dev->codec_lock);
+ }
+ 
+@@ -2109,7 +2107,7 @@ static int pcmdevice_i2c_probe(struct i2c_client *i2c)
+ 		ndev = 1;
+ 		dev_addrs[0] = i2c->addr;
  	}
+-	pcm_dev->irq_info.gpio = of_irq_get(np, 0);
++	pcm_dev->irq = of_irq_get(np, 0);
  
- 	data = kzalloc(fw->size, GFP_KERNEL);
-+	if (!data) {
-+		release_firmware(fw);
-+		sma1307->set.status = false;
-+		return;
-+	}
- 	size = fw->size >> 2;
- 	memcpy(data, fw->data, fw->size);
+ 	for (i = 0; i < ndev; i++)
+ 		pcm_dev->addr[i] = dev_addrs[i];
+@@ -2132,22 +2130,10 @@ static int pcmdevice_i2c_probe(struct i2c_client *i2c)
  
-@@ -1741,6 +1746,12 @@ static void sma1307_setting_loaded(struct sma1307_priv *sma1307, const char *fil
- 	sma1307->set.header = devm_kzalloc(sma1307->dev,
- 					   sma1307->set.header_size,
- 					   GFP_KERNEL);
-+	if (!sma1307->set.header) {
-+		kfree(data);
-+		sma1307->set.status = false;
-+		return;
-+	}
-+
- 	memcpy(sma1307->set.header, data,
- 	       sma1307->set.header_size * sizeof(int));
+ 	if (pcm_dev->chip_id == PCM1690)
+ 		goto skip_interrupt;
+-	if (gpio_is_valid(pcm_dev->irq_info.gpio)) {
+-		dev_dbg(pcm_dev->dev, "irq-gpio = %d", pcm_dev->irq_info.gpio);
+-
+-		ret = gpio_request(pcm_dev->irq_info.gpio, "PCMDEV-IRQ");
+-		if (!ret) {
+-			int gpio = pcm_dev->irq_info.gpio;
+-
+-			gpio_direction_input(gpio);
+-			pcm_dev->irq_info.nmb = gpio_to_irq(gpio);
+-
+-		} else
+-			dev_err(pcm_dev->dev, "%s: GPIO %d request error\n",
+-				__func__, pcm_dev->irq_info.gpio);
++	if (pcm_dev->irq) {
++		dev_dbg(pcm_dev->dev, "irq = %d", pcm_dev->irq);
+ 	} else
+-		dev_err(pcm_dev->dev, "Looking up irq-gpio failed %d\n",
+-			pcm_dev->irq_info.gpio);
++		dev_err(pcm_dev->dev, "No irq provided\n");
  
-@@ -1756,6 +1767,13 @@ static void sma1307_setting_loaded(struct sma1307_priv *sma1307, const char *fil
- 	sma1307->set.def
- 	    = devm_kzalloc(sma1307->dev,
- 			   sma1307->set.def_size * sizeof(int), GFP_KERNEL);
-+	if (!sma1307->set.def) {
-+		kfree(data);
-+		kfree(sma1307->set.header);
-+		sma1307->set.status = false;
-+		return;
-+	}
-+
- 	memcpy(sma1307->set.def,
- 	       &data[sma1307->set.header_size],
- 	       sma1307->set.def_size * sizeof(int));
-@@ -1768,6 +1786,16 @@ static void sma1307_setting_loaded(struct sma1307_priv *sma1307, const char *fil
- 		    = devm_kzalloc(sma1307->dev,
- 				   sma1307->set.mode_size * 2 * sizeof(int),
- 				   GFP_KERNEL);
-+		if (!sma1307->set.mode_set[i]) {
-+			kfree(data);
-+			kfree(sma1307->set.header);
-+			kfree(sma1307->set.def);
-+			for (int j = 0; j < i; j++)
-+				kfree(sma1307->set.mode_set[j]);
-+			sma1307->set.status = false;
-+			return;
-+		}
-+
- 		for (int j = 0; j < sma1307->set.mode_size; j++) {
- 			sma1307->set.mode_set[i][2 * j]
- 			    = data[offset + ((num_mode + 1) * j)];
+ skip_interrupt:
+ 	ret = devm_snd_soc_register_component(&i2c->dev,
+diff --git a/sound/soc/codecs/pcm6240.h b/sound/soc/codecs/pcm6240.h
+index 1e125bb972860..2d8f9e798139a 100644
+--- a/sound/soc/codecs/pcm6240.h
++++ b/sound/soc/codecs/pcm6240.h
+@@ -208,11 +208,6 @@ struct pcmdevice_regbin {
+ 	struct pcmdevice_config_info **cfg_info;
+ };
+ 
+-struct pcmdevice_irqinfo {
+-	int gpio;
+-	int nmb;
+-};
+-
+ struct pcmdevice_priv {
+ 	struct snd_soc_component *component;
+ 	struct i2c_client *client;
+@@ -221,7 +216,7 @@ struct pcmdevice_priv {
+ 	struct gpio_desc *hw_rst;
+ 	struct regmap *regmap;
+ 	struct pcmdevice_regbin regbin;
+-	struct pcmdevice_irqinfo irq_info;
++	int irq;
+ 	unsigned int addr[PCMDEVICE_MAX_I2C_DEVICES];
+ 	unsigned int chip_id;
+ 	int cur_conf;
 -- 
 2.39.5
 
