@@ -1,63 +1,70 @@
-Return-Path: <stable+bounces-140093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA155AAA4E7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:37:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EF6FAAA502
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EADA460C7D
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:37:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2594B3AFAE8
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC73308130;
-	Mon,  5 May 2025 22:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F24230815A;
+	Mon,  5 May 2025 22:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M4eHk7It"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W6h9/zux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7773308125;
-	Mon,  5 May 2025 22:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068D230814B;
+	Mon,  5 May 2025 22:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484091; cv=none; b=HdoaiPlcgyCeYMnib4M3pjIcQ+3iH/wPahBiDEj+jMZ4C5i8i4DcWpdy/jYy1sIocy50Ykw2FHg8ZjX0laLCLj2/RiAQffnuA0dhdzqrWYjULHhyUc2OhFyDxeGbWYOCkiZgwtFY5W1S5CVGcF31/KyqFdS8T+us6TmSIZwCQ/8=
+	t=1746484096; cv=none; b=aslNPgLpPL1POx3PilNCZN9fVMPdQwgp2T9rzfQOT9vW39EFYFfuPQaHilCnpSD6UcEGYnGQFnlXDCRMUd1YXIvGMypXDYxk3Q9PKw5uFDwhG+UnkILkUto27PwbWhWdNAM/Hkom9ngWC2URMaaEVi8UBMzv62zf7bfavY1XNwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484091; c=relaxed/simple;
-	bh=spRrkMeD8zKbNalNxXQx8E7VWnNwVyeo4rqtJcNxQws=;
+	s=arc-20240116; t=1746484096; c=relaxed/simple;
+	bh=dhoCfpOHS0OUTZp4TEo2mmOgeJLlhKm5KIG++G/GU4Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eE3KC9Kk41V4w6bAbwLhRaOz/6b53S5hTW55bgOS38lvnVYkKeammMKUgpf1fhWlhGJnYIExlJRqsHa8oiimMrP+oaxZ+NZs09Ys2BZk/iMtLDKjGSkBUyTAtmayIgRbIMvnOOqZXt7cL3GMsI/So5Ti5qNxwFIoB9wwmAYzhi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M4eHk7It; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFEAC4CEEF;
-	Mon,  5 May 2025 22:28:09 +0000 (UTC)
+	 MIME-Version; b=P6WFOWv2q+532GzBlBHwdN4lf29crQYFk2YdXTx30nXksWPUZn04yn+8kynYtiOq4EPdVYJV4xdZlJsL9MD3MNy7gLBOpfQ3EYVUZos4MehP4YV3JxwB5Dbv9nh1mRGSau3/EFIbHqru3CDbDiNiSROgPxVDspoHUpzPiXzFv+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W6h9/zux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76431C4CEE4;
+	Mon,  5 May 2025 22:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484091;
-	bh=spRrkMeD8zKbNalNxXQx8E7VWnNwVyeo4rqtJcNxQws=;
+	s=k20201202; t=1746484095;
+	bh=dhoCfpOHS0OUTZp4TEo2mmOgeJLlhKm5KIG++G/GU4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4eHk7ItwqNo6a6Kde/otUIOe7yqUZ8vM68T5b1/Vl/bOm8cvN/jFVVFV0CyHLQOf
-	 TDYvE4Y28kyoYCzo7LDqfe3upbU945gGZrRLyMkpTO5cU7TsxsJdTK+L+LAeR0eH77
-	 SMrmQ4T5FFW3PsWJbTgOU3WKi0B6MBRivqJZR4UebVhFw209ygKDy4JVhc3fx6w3bf
-	 sRAnNj5HGNp84IZuOE9JrHAK313DqDAIEG4yYtg28HHtT9FkQsWNaDd3IpITeeoW+O
-	 Gcbbps5eOQsu71HUkRpJb9gjjkkSoqNz5c5ABKBtM2d8ffWALUsDlyDnweWfLSd42h
-	 iJNHwT7cb86rQ==
+	b=W6h9/zuxsGoLfHSbc3OLyN4La+FpfqDnsLU47E3SaJ2GARayxfUblgJORG8WOY/a5
+	 5SZM1VleOdDJyxpBFyGv+2HZIhqJ5TpoqNA15Hyu9nhQf2+h4rACCaihmXPfVF0svB
+	 ukj+QI8r5eU1AzhvlmE6neQfRqg86+QdNyY5RYut3OtfWWxPCkk4okk7RBz+j6N4ZN
+	 QSwgnTWvaPrkRTjX7kHuebTeUhFIkiKPYQ0JxC0W3L+XxRUlO8+roZmPZZgfFLcqaI
+	 lRPOj1H9HHwIqCSF7rSnEhwwH5BTOzTovtTjsVgyaNnOI4s2fu9Zff7/jmpC8rqd36
+	 bCpGkMJ356zsw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Philippe Simons <simons.philippe@gmail.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+Cc: Patrisious Haddad <phaddad@nvidia.com>,
+	Maor Gottlieb <maorg@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	samuel@sholland.org,
-	linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 346/642] clk: sunxi-ng: h616: Reparent GPU clock during frequency changes
-Date: Mon,  5 May 2025 18:09:22 -0400
-Message-Id: <20250505221419.2672473-346-sashal@kernel.org>
+	saeedm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	cratiu@nvidia.com,
+	bpoirier@nvidia.com,
+	vulab@iscas.ac.cn,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 347/642] net/mlx5: Change POOL_NEXT_SIZE define value and make it global
+Date: Mon,  5 May 2025 18:09:23 -0400
+Message-Id: <20250505221419.2672473-347-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -72,101 +79,106 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Philippe Simons <simons.philippe@gmail.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit eb963d7948ce6571939c6875424b557b25f16610 ]
+[ Upstream commit 80df31f384b4146a62a01b3d4beb376cc7b9a89e ]
 
-The H616 manual does not state that the GPU PLL supports
-dynamic frequency configuration, so we must take extra care when changing
-the frequency. Currently any attempt to do device DVFS on the GPU lead
-to panfrost various ooops, and GPU hangs.
+Change POOL_NEXT_SIZE define value from 0 to BIT(30), since this define
+is used to request the available maximum sized flow table, and zero doesn't
+make sense for it, whereas some places in the driver use zero explicitly
+expecting the smallest table size possible but instead due to this
+define they end up allocating the biggest table size unawarely.
 
-The manual describes the algorithm for changing the PLL
-frequency, which the CPU PLL notifier code already support, so we reuse
-that to reparent the GPU clock to GPU1 clock during frequency
-changes.
+In addition move the definition to "include/linux/mlx5/fs.h" to expose the
+define to IB driver as well, while appropriately renaming it.
 
-Signed-off-by: Philippe Simons <simons.philippe@gmail.com>
-Reviewed-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20250220113808.1122414-2-simons.philippe@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250219085808.349923-3-tariqt@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun50i-h616.c | 36 +++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c    | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/fs_ft_pool.c    | 6 ++++--
+ drivers/net/ethernet/mellanox/mlx5/core/fs_ft_pool.h    | 2 --
+ drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c | 3 ++-
+ include/linux/mlx5/fs.h                                 | 2 ++
+ 5 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-h616.c b/drivers/clk/sunxi-ng/ccu-sun50i-h616.c
-index 190816c35da9f..6050cbfa922e2 100644
---- a/drivers/clk/sunxi-ng/ccu-sun50i-h616.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun50i-h616.c
-@@ -328,10 +328,16 @@ static SUNXI_CCU_M_WITH_MUX_GATE(gpu0_clk, "gpu0", gpu0_parents, 0x670,
- 				       24, 1,	/* mux */
- 				       BIT(31),	/* gate */
- 				       CLK_SET_RATE_PARENT);
-+
-+/*
-+ * This clk is needed as a temporary fall back during GPU PLL freq changes.
-+ * Set CLK_IS_CRITICAL flag to prevent from being disabled.
-+ */
-+#define SUN50I_H616_GPU_CLK1_REG        0x674
- static SUNXI_CCU_M_WITH_GATE(gpu1_clk, "gpu1", "pll-periph0-2x", 0x674,
- 					0, 2,	/* M */
- 					BIT(31),/* gate */
--					0);
-+					CLK_IS_CRITICAL);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c
+index 45183de424f3d..76382626ad41d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c
+@@ -96,7 +96,7 @@ static int esw_create_legacy_fdb_table(struct mlx5_eswitch *esw)
+ 	if (!flow_group_in)
+ 		return -ENOMEM;
  
- static SUNXI_CCU_GATE(bus_gpu_clk, "bus-gpu", "psi-ahb1-ahb2",
- 		      0x67c, BIT(0), 0);
-@@ -1120,6 +1126,19 @@ static struct ccu_pll_nb sun50i_h616_pll_cpu_nb = {
- 	.lock		= BIT(28),
- };
+-	ft_attr.max_fte = POOL_NEXT_SIZE;
++	ft_attr.max_fte = MLX5_FS_MAX_POOL_SIZE;
+ 	ft_attr.prio = LEGACY_FDB_PRIO;
+ 	fdb = mlx5_create_flow_table(root_ns, &ft_attr);
+ 	if (IS_ERR(fdb)) {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_ft_pool.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_ft_pool.c
+index c14590acc7726..f6abfd00d7e68 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_ft_pool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_ft_pool.c
+@@ -50,10 +50,12 @@ mlx5_ft_pool_get_avail_sz(struct mlx5_core_dev *dev, enum fs_flow_table_type tab
+ 	int i, found_i = -1;
  
-+static struct ccu_mux_nb sun50i_h616_gpu_nb = {
-+	.common		= &gpu0_clk.common,
-+	.cm		= &gpu0_clk.mux,
-+	.delay_us	= 1, /* manual doesn't really say */
-+	.bypass_index	= 1, /* GPU_CLK1@400MHz */
-+};
-+
-+static struct ccu_pll_nb sun50i_h616_pll_gpu_nb = {
-+	.common		= &pll_gpu_clk.common,
-+	.enable		= BIT(29),	/* LOCK_ENABLE */
-+	.lock		= BIT(28),
-+};
-+
- static int sun50i_h616_ccu_probe(struct platform_device *pdev)
- {
- 	void __iomem *reg;
-@@ -1170,6 +1189,14 @@ static int sun50i_h616_ccu_probe(struct platform_device *pdev)
- 	val |= BIT(0);
- 	writel(val, reg + SUN50I_H616_PLL_AUDIO_REG);
+ 	for (i = ARRAY_SIZE(FT_POOLS) - 1; i >= 0; i--) {
+-		if (dev->priv.ft_pool->ft_left[i] && FT_POOLS[i] >= desired_size &&
++		if (dev->priv.ft_pool->ft_left[i] &&
++		    (FT_POOLS[i] >= desired_size ||
++		     desired_size == MLX5_FS_MAX_POOL_SIZE) &&
+ 		    FT_POOLS[i] <= max_ft_size) {
+ 			found_i = i;
+-			if (desired_size != POOL_NEXT_SIZE)
++			if (desired_size != MLX5_FS_MAX_POOL_SIZE)
+ 				break;
+ 		}
+ 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_ft_pool.h b/drivers/net/ethernet/mellanox/mlx5/core/fs_ft_pool.h
+index 25f4274b372b5..173e312db7204 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_ft_pool.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_ft_pool.h
+@@ -7,8 +7,6 @@
+ #include <linux/mlx5/driver.h>
+ #include "fs_core.h"
  
-+	/*
-+	 * Set the input-divider for the gpu1 clock to 3, to reach a safe 400 MHz.
-+	 */
-+	val = readl(reg + SUN50I_H616_GPU_CLK1_REG);
-+	val &= ~GENMASK(1, 0);
-+	val |= 2;
-+	writel(val, reg + SUN50I_H616_GPU_CLK1_REG);
-+
- 	/*
- 	 * First clock parent (osc32K) is unusable for CEC. But since there
- 	 * is no good way to force parent switch (both run with same frequency),
-@@ -1190,6 +1217,13 @@ static int sun50i_h616_ccu_probe(struct platform_device *pdev)
- 	/* Re-lock the CPU PLL after any rate changes */
- 	ccu_pll_notifier_register(&sun50i_h616_pll_cpu_nb);
+-#define POOL_NEXT_SIZE 0
+-
+ int mlx5_ft_pool_init(struct mlx5_core_dev *dev);
+ void mlx5_ft_pool_destroy(struct mlx5_core_dev *dev);
  
-+	/* Reparent GPU during GPU PLL rate changes */
-+	ccu_mux_notifier_register(pll_gpu_clk.common.hw.clk,
-+				  &sun50i_h616_gpu_nb);
-+
-+	/* Re-lock the GPU PLL after any rate changes */
-+	ccu_pll_notifier_register(&sun50i_h616_pll_gpu_nb);
-+
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c
+index 711d14dea2485..d313cb7f0ed88 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_chains.c
+@@ -161,7 +161,8 @@ mlx5_chains_create_table(struct mlx5_fs_chains *chains,
+ 		ft_attr.flags |= (MLX5_FLOW_TABLE_TUNNEL_EN_REFORMAT |
+ 				  MLX5_FLOW_TABLE_TUNNEL_EN_DECAP);
  
+-	sz = (chain == mlx5_chains_get_nf_ft_chain(chains)) ? FT_TBL_SZ : POOL_NEXT_SIZE;
++	sz = (chain == mlx5_chains_get_nf_ft_chain(chains)) ?
++		FT_TBL_SZ : MLX5_FS_MAX_POOL_SIZE;
+ 	ft_attr.max_fte = sz;
+ 
+ 	/* We use chains_default_ft(chains) as the table's next_ft till
+diff --git a/include/linux/mlx5/fs.h b/include/linux/mlx5/fs.h
+index 2a69d9d71276d..01cb72d68c231 100644
+--- a/include/linux/mlx5/fs.h
++++ b/include/linux/mlx5/fs.h
+@@ -40,6 +40,8 @@
+ 
+ #define MLX5_SET_CFG(p, f, v) MLX5_SET(create_flow_group_in, p, f, v)
+ 
++#define MLX5_FS_MAX_POOL_SIZE BIT(30)
++
+ enum mlx5_flow_destination_type {
+ 	MLX5_FLOW_DESTINATION_TYPE_NONE,
+ 	MLX5_FLOW_DESTINATION_TYPE_VPORT,
 -- 
 2.39.5
 
