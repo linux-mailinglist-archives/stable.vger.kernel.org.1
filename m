@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-141072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD18FAAADCB
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:42:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D52AAB05D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:36:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A300C3A010D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:37:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55C044A798C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3017296D13;
-	Mon,  5 May 2025 23:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7923E28ECD1;
+	Mon,  5 May 2025 23:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aWVQeEJk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vJEBddhj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A292FAEA2;
-	Mon,  5 May 2025 23:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860272FAECC;
+	Mon,  5 May 2025 23:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487385; cv=none; b=sJIRbUn0eg2XsDRNdsdD6zttCSeNZGydLrdKwg5fr5Qz2uyJQ17QkIE0gkbf3Jm+EMOAwFB3qk7eK4c3QIoylAwFvnM+9nC4H9GuXHnvCHZjou6N3pKL3u9JjQcjYJzLEo9e+OJW4FXelUcqTEBmCL5B5C5CJnPjaCjyBn/gZN8=
+	t=1746487388; cv=none; b=meWAhdr8IAhZ486BPEtS4hI2GnQSXO3bVy0Nz5UXWaMCSmXBN0p9sj6ztIeNhRATshjQH2z/kk+28DDElMKHs1S8lLdl0D/Ygrkc5+zQRJDhvUcUbaEkDGvt0y+3prrFK9ozuweUYK3TDgDrDCSbW3RxXiy/+inkgmjKCW/rfFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487385; c=relaxed/simple;
-	bh=KTy838vSImfgRkAZls9shdxJHt8SBKKLmKVJeLwAxaE=;
+	s=arc-20240116; t=1746487388; c=relaxed/simple;
+	bh=r1tiKjuKfbd96zLtE+khOfPEPljsl9llIGk5isv3VwU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oHWXHcluQyRicnUBNjeyRdUZiI2wMeBjv9RhSgTTLiNc8aej1jnfq/e1BfhrTdP+0hZ8Np52LEt2Ypw+VtIW7METiQL0bRW1xWBJBfB0x5AmzcxefurCBFRLYFzjaEnq5xQ2KCDLc1KVbfk8RGUrRQMahlsLBlc7FrIaq5aNxUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aWVQeEJk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E50C4CEE4;
-	Mon,  5 May 2025 23:23:03 +0000 (UTC)
+	 MIME-Version; b=K8jzSF7SP9RduV+SL7shaD4mW5OcnNbRHGga7yCeWYdJqS60k90vat3E2HN7mvfSfsCwSdLSI4+rg9MKM5d6WKmfCA43LIBu70sPzs6cvdRz7B71eMZjt+eB5K8t0ssvdiJ0PcjGVtMfkBH4i5RaFWDj3tiAJI5cwd5TIexFaAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vJEBddhj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC276C4CEEE;
+	Mon,  5 May 2025 23:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487384;
-	bh=KTy838vSImfgRkAZls9shdxJHt8SBKKLmKVJeLwAxaE=;
+	s=k20201202; t=1746487388;
+	bh=r1tiKjuKfbd96zLtE+khOfPEPljsl9llIGk5isv3VwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aWVQeEJkFdeK7w7K9NTU9yCCH9wAfpoy+HachPrmlb8F9jk2VWV8my0dAnxnVFFSF
-	 U517jWA4kO8+nP3Gb28cFDfu1oJb4o1iT4GPIZkNXts5wjrlyvQ79zbUXixrlrVbUi
-	 f912ILY+QiK1fItrPdSM0dF5wUjNkd+g36bdvL6JdUPEkbGmID6oY8sbmOT7r8+Wlc
-	 dpUkFAxDRLj5pwqYKC8b2qHgI+y/+MabMMnF+JBNst+r/LWlaAk7ibWjStndwRvA8p
-	 vmxoE6//5cdCiPyPVN6bbi2HMaJAkdeXZ6G41oqxxzo8dcr1ui5/uqagNO0MzF4Psk
-	 3PY0padauGIDw==
+	b=vJEBddhj9LiXDIz3E//MW/xvde+KlG9JD4MpM0pemEKOb+0yWKIEV+JwwdHav6TxH
+	 CLeqR6Y/9LcwGxxhrqkXGfkC0iPHfZr7iRLtJ1f2Q+6Ix6oZYfYrDSeLC/4lry4cn+
+	 g11wOlNRx3NJQtF7+Je5P2MD+eWBfjLDiwswemhNlDXXH9INA8ECEgs9fliTesDeyf
+	 wuR6lZ1RvvOihpFJw9kw8pEH8roSl1yJWAxZQs/V4HjKz5r1EF0ZxOSYIUrkH1Npe3
+	 c5OJ9qn6n/cTo7pBAuXu/CXQx1lq3aaMeF/unIMzIzKYmtbOXiI9N0lMsZzccYWDgd
+	 oeQkGd1FOzMnw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Moshe Shemesh <moshe@nvidia.com>,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
+	iyappan@os.amperecomputing.com,
+	keyur@os.amperecomputing.com,
 	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 41/79] net/mlx5: Avoid report two health errors on same syndrome
-Date: Mon,  5 May 2025 19:21:13 -0400
-Message-Id: <20250505232151.2698893-41-sashal@kernel.org>
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 43/79] net: xgene-v2: remove incorrect ACPI_PTR annotation
+Date: Mon,  5 May 2025 19:21:15 -0400
+Message-Id: <20250505232151.2698893-43-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -74,40 +71,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit b5d7b2f04ebcff740f44ef4d295b3401aeb029f4 ]
+[ Upstream commit 01358e8fe922f716c05d7864ac2213b2440026e7 ]
 
-In case health counter has not increased for few polling intervals, miss
-counter will reach max misses threshold and health report will be
-triggered for FW health reporter. In case syndrome found on same health
-poll another health report will be triggered.
+Building with W=1 shows a warning about xge_acpi_match being unused when
+CONFIG_ACPI is disabled:
 
-Avoid two health reports on same syndrome by marking this syndrome as
-already known.
+drivers/net/ethernet/apm/xgene-v2/main.c:723:36: error: unused variable 'xge_acpi_match' [-Werror,-Wunused-const-variable]
 
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250225163341.4168238-2-arnd@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/health.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/apm/xgene-v2/main.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-index d4ad0e4192bbe..44e3f8cfecacb 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-@@ -736,6 +736,7 @@ static void poll_health(struct timer_list *t)
- 	health->prev = count;
- 	if (health->miss_counter == MAX_MISSES) {
- 		mlx5_core_err(dev, "device's health compromised - reached miss count\n");
-+		health->synd = ioread8(&h->synd);
- 		print_health_info(dev);
- 		queue_work(health->wq, &health->report_work);
- 	}
+diff --git a/drivers/net/ethernet/apm/xgene-v2/main.c b/drivers/net/ethernet/apm/xgene-v2/main.c
+index 848be6bf2fd1f..514a121d96aeb 100644
+--- a/drivers/net/ethernet/apm/xgene-v2/main.c
++++ b/drivers/net/ethernet/apm/xgene-v2/main.c
+@@ -9,8 +9,6 @@
+ 
+ #include "main.h"
+ 
+-static const struct acpi_device_id xge_acpi_match[];
+-
+ static int xge_get_resources(struct xge_pdata *pdata)
+ {
+ 	struct platform_device *pdev;
+@@ -733,7 +731,7 @@ MODULE_DEVICE_TABLE(acpi, xge_acpi_match);
+ static struct platform_driver xge_driver = {
+ 	.driver = {
+ 		   .name = "xgene-enet-v2",
+-		   .acpi_match_table = ACPI_PTR(xge_acpi_match),
++		   .acpi_match_table = xge_acpi_match,
+ 	},
+ 	.probe = xge_probe,
+ 	.remove = xge_remove,
 -- 
 2.39.5
 
