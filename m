@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-141259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71EFAAB1FD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:10:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2FCAAB686
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EBA51BC6544
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:08:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D84F3A9F9D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EAD41C4B8;
-	Tue,  6 May 2025 00:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3834441DA05;
+	Tue,  6 May 2025 00:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bkprhr/v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIyuUDhS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4152D47C0;
-	Mon,  5 May 2025 22:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCD827FD61;
+	Mon,  5 May 2025 22:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485634; cv=none; b=BpW5dAoGgi6oIg4TXv4b3gYfV+ZbaLCHq1dmqmtm85kF6FU3fo6JmsK85vm+Mtu3dPfW/FHwPFrKbmgoBIGC6FlCAofwuzfbAM8sGH4T5yhoJ5gL0Lp0HiGjHBscNuGfbtSDFlcG7whGxle39Rd2fQq7sAd2jzXbi+fItFVQmFw=
+	t=1746485637; cv=none; b=a3vegrlQwhXg0qREf/u1Dx0uesSY5wP7YXD6qHPYy4gEz9IjSzSyHAzt3WWPguEtxmAffyFnsu26Yws1q1Y+VPGtsLgSs8XYUG/f91FabdsC6rCvWVkUrRLKp7HuEBTtLHngIRmUE+qkrsh/HgO908iNwdIQlLDOtyoJXAo0GVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485634; c=relaxed/simple;
-	bh=vpVCrx5nNJhB9WQlEaVF67UnU5UuL0+CmJrcNGgWHYk=;
+	s=arc-20240116; t=1746485637; c=relaxed/simple;
+	bh=efAAsusLpliVA+wnEyoY/khXhi125dU5XM0uCV+wq7k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iW3V6I/DNr27TnGeiqx6FE1XAucyWeiYP2e/IXDxSXW8aafByZE4AuotXRL8whsVDa6VC1QatgnOHvjYM9BU4QrfPDI4HxoMTg8kUyxFNMYXtjTqEhwNDyWUpGsgDFUvo9bcdQeDOZl7j3i0xyqqSIWmFKLZskO+zG2zWCnGWko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bkprhr/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D06FC4CEE4;
-	Mon,  5 May 2025 22:53:53 +0000 (UTC)
+	 MIME-Version; b=lsLkCvrBK5XhQkJG/d6m28bYPiFbZjWp1SbTU6iT58l/oO3cha2DRupu1N6opw1wSYWv2V8AUSc3QVdCgH/MQHUNgLyl76YpIQtT9j+9l3FDt7GVJ/hkefDbZyz8CsrpYhvCNvu+swLmjbiUfKUvKNh7nE1oVnF54YP110p/az0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIyuUDhS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC29C4CEED;
+	Mon,  5 May 2025 22:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485634;
-	bh=vpVCrx5nNJhB9WQlEaVF67UnU5UuL0+CmJrcNGgWHYk=;
+	s=k20201202; t=1746485637;
+	bh=efAAsusLpliVA+wnEyoY/khXhi125dU5XM0uCV+wq7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkprhr/vWrwQVPCkyxLvCWdwiaDGYLDJRKbPgYET9tnp1rLHkOjSjlocW8hLuxRRd
-	 fKmVMER3Ll/94ffLzrl8n0jDekwNkTy3+DxcPRkxUUH9JRfsCZoCIkdDmx/bIQ5Jrf
-	 AXFYQcux4ulgJp1PAzubVdCXlmKLwT/g4XyO0HZD7PLZlqjIQDX1Za7PxXVlSceJhy
-	 nUkpU+kSNhmQ5S2tfYra2R36sIZwHFQRJNNMn0GEM+BmD/bxQJFurPuRuxb6gfNeFK
-	 f9VYaunSj8Vt9pNU0AO/KmC6tYmV+xIo9nJWXxf4TWwU515RkE534TyaG594r28RnJ
-	 SCGevEhTRXgrw==
+	b=oIyuUDhSj3em4n23ZvH7MiYj3rTXPHe6c4X4qpDE+1NLFknN8EvXipl1WQ7x8ZBSn
+	 s+aXLmlj2h/wUJPV/PKrVAWzqJfb3hJVXKadjUkZm+PhMECChZcAWIy1R8jil8LVCV
+	 1/Rlao2H/83aELRWRX/U5Zzc7igbhdeoS3dWq1RqAsZYzosClqn6UmKaP1XDZbkMP1
+	 QzRW7k1Nc/Krwp3ENcR1fqh/cOLBNa4+L6aXZS9A00OOSXVE0bpGBvAoemU0G4QdxW
+	 JOYmFHWy+Xmda9LDl+BLKUXv0oa5hnmliA+wcNzehDsIgIc8Ol9youiF+FR9FIL4zj
+	 Cc4xboespLC3g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
+Cc: Aleksander Jan Bajkowski <olek2@wp.pl>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
-	dsahern@kernel.org,
+	edumazet@google.com,
 	pabeni@redhat.com,
+	gregkh@linuxfoundation.org,
+	hayeswang@realtek.com,
+	horms@kernel.org,
+	dianders@chromium.org,
+	phahn-oss@avm.de,
+	linux-usb@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 397/486] ip: fib_rules: Fetch net from fib_rule in fib[46]_rule_configure().
-Date: Mon,  5 May 2025 18:37:53 -0400
-Message-Id: <20250505223922.2682012-397-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 398/486] r8152: add vendor/device ID pair for Dell Alienware AW1022z
+Date: Mon,  5 May 2025 18:37:54 -0400
+Message-Id: <20250505223922.2682012-398-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -70,59 +75,48 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 5a1ccffd30a08f5a2428cd5fbb3ab03e8eb6c66d ]
+[ Upstream commit 848b09d53d923b4caee5491f57a5c5b22d81febc ]
 
-The following patch will not set skb->sk from VRF path.
+The Dell AW1022z is an RTL8156B based 2.5G Ethernet controller.
 
-Let's fetch net from fib_rule->fr_net instead of sock_net(skb->sk)
-in fib[46]_rule_configure().
+Add the vendor and product ID values to the driver. This makes Ethernet
+work with the adapter.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250207072502.87775-5-kuniyu@amazon.com
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Link: https://patch.msgid.link/20250206224033.980115-1-olek2@wp.pl
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_rules.c  | 4 ++--
- net/ipv6/fib6_rules.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/usb/r8152.c   | 1 +
+ include/linux/usb/r8152.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
-index b07292d50ee76..4563e5303c1a8 100644
---- a/net/ipv4/fib_rules.c
-+++ b/net/ipv4/fib_rules.c
-@@ -245,9 +245,9 @@ static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
- 			       struct nlattr **tb,
- 			       struct netlink_ext_ack *extack)
- {
--	struct net *net = sock_net(skb->sk);
-+	struct fib4_rule *rule4 = (struct fib4_rule *)rule;
-+	struct net *net = rule->fr_net;
- 	int err = -EINVAL;
--	struct fib4_rule *rule4 = (struct fib4_rule *) rule;
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 96fa3857d8e25..2cab046749a92 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -10085,6 +10085,7 @@ static const struct usb_device_id rtl8152_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_NVIDIA,  0x09ff) },
+ 	{ USB_DEVICE(VENDOR_ID_TPLINK,  0x0601) },
+ 	{ USB_DEVICE(VENDOR_ID_DLINK,   0xb301) },
++	{ USB_DEVICE(VENDOR_ID_DELL,    0xb097) },
+ 	{ USB_DEVICE(VENDOR_ID_ASUS,    0x1976) },
+ 	{}
+ };
+diff --git a/include/linux/usb/r8152.h b/include/linux/usb/r8152.h
+index 33a4c146dc19c..2ca60828f28bb 100644
+--- a/include/linux/usb/r8152.h
++++ b/include/linux/usb/r8152.h
+@@ -30,6 +30,7 @@
+ #define VENDOR_ID_NVIDIA		0x0955
+ #define VENDOR_ID_TPLINK		0x2357
+ #define VENDOR_ID_DLINK			0x2001
++#define VENDOR_ID_DELL			0x413c
+ #define VENDOR_ID_ASUS			0x0b05
  
- 	if (!inet_validate_dscp(frh->tos)) {
- 		NL_SET_ERR_MSG(extack,
-diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
-index 04a9ed5e8310f..29185c9ebd020 100644
---- a/net/ipv6/fib6_rules.c
-+++ b/net/ipv6/fib6_rules.c
-@@ -365,9 +365,9 @@ static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
- 			       struct nlattr **tb,
- 			       struct netlink_ext_ack *extack)
- {
-+	struct fib6_rule *rule6 = (struct fib6_rule *)rule;
-+	struct net *net = rule->fr_net;
- 	int err = -EINVAL;
--	struct net *net = sock_net(skb->sk);
--	struct fib6_rule *rule6 = (struct fib6_rule *) rule;
- 
- 	if (!inet_validate_dscp(frh->tos)) {
- 		NL_SET_ERR_MSG(extack,
+ #if IS_REACHABLE(CONFIG_USB_RTL8152)
 -- 
 2.39.5
 
