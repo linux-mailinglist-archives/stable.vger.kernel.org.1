@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-140187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F4AAAA5F0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:01:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F42AAAA5EC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:01:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACF4B188788F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:00:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AF3F4A066F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B4931B9AE;
-	Mon,  5 May 2025 22:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2EB72601;
+	Mon,  5 May 2025 22:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tjVyzdpq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CUo/5T3S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C7231B99F;
-	Mon,  5 May 2025 22:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B757A28E5E5;
+	Mon,  5 May 2025 22:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484294; cv=none; b=UXuSgavrIsCdqVDJT/ZgjQ/cPIicDrcICaRUxLTKj0Dew/YasKGqU/k/tuapY3tcyQt4S4TJrPg7QZ1Zf0dMXgDcdm3mhjQnNGVhS+eqIocqq/mfZanpan5NFeEelSDC/NiEAcWcLweZnbZnRS/yf7J3IYnZHFB6DbgFJzI/DFs=
+	t=1746484295; cv=none; b=Oub82FdiSPmkhzKMBoD6b8uA3tmHqOygzcjZiNl4Xtn6Pi1zxbeSLCPKrJEcVK/9L5rmPe0qvKMhfDJoxz5Wq+H4XiaEAJL8uZFaPFiaAR8tIwrQwDAhh4XSZsU2JY8pM/L3iph3gsBGzcSiPa72FwCR4f6jkorBsA1AUZyxxE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484294; c=relaxed/simple;
-	bh=yOy2mAmy57Pjf7MymOP9ARob9j9TN41ylxlIOtvfa+A=;
+	s=arc-20240116; t=1746484295; c=relaxed/simple;
+	bh=/XviaWuuRCkEJe3Qn1xC+r9oxfkBTCfyMpPOiM9mVG0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uYTsdCs1KjssLfp+GzvPBuYLTcO+ZSd2aeJTo2jvyCrTaJf6CJhq3x3mKYjizZKAuxasw0WEBfFMDh2nERZ+mYVgRVXZm31h8qdrBDuTQ1nstvIEga7HyxKBYRlvj7+z/8yx77pGeBn3r+BzSeevbSYoS6aE+k9h9JPSLkxPZyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tjVyzdpq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6145C4CEE4;
-	Mon,  5 May 2025 22:31:32 +0000 (UTC)
+	 MIME-Version; b=KCvuM5f3c6MR0MgvgE7ab969h4SvmTezebvlVkwyVCRCcPjJq4tQ5AerQj+Z7a4y3yD6ewIBsNlhPvZIWV+X75cLeqtGloECtvnVVfnS1aWpBEXHnWvwfOapqF8xapwWPYJ936eJqJx4RcIiiqBYhvfUn/4QqF7nukRA+d1rdLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CUo/5T3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A23C4CEED;
+	Mon,  5 May 2025 22:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484293;
-	bh=yOy2mAmy57Pjf7MymOP9ARob9j9TN41ylxlIOtvfa+A=;
+	s=k20201202; t=1746484295;
+	bh=/XviaWuuRCkEJe3Qn1xC+r9oxfkBTCfyMpPOiM9mVG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjVyzdpqXsSdZqxsIPheG4KdCapdQdHlZTgV3ReROwnzldkEfCxjU1sWfVHO8BvPb
-	 yFXZlfpihtANCf62vzTNXf9+gVDIN5MeKHzzK2j4cjI+cvFWs/2WrnU0DPMOs3ktqf
-	 GJoZ11npuGtZB/m5oAxeCZBveKNo0PE73hmJs8iqVfhECrj8gfFYySVWV+DX8d4UA/
-	 Fjs2Zm/LaMLQxOK1v4F8Ll5xXKIN0e3y5BfMR7HPizfD5sZsDRoL7VBnoctqm4xbCI
-	 cJ0UyjWYkx7o+19VJdvf7+ZzRpuzKF2098XX7PDfQHfwKmVhGkW2PWKVimgkWhGgjc
-	 HOkbsJizNvvxQ==
+	b=CUo/5T3Sh1msZLSBxNF1R78e11cQcOo4h7q/rhXmEX1znE9Jx7JXsKiGm1FE6d9ZJ
+	 e5qt28M26p0F8XTHliIi34kfHVYMeR7bqz7HwlBByI8/gcSw1kvvjJO1x5VcROw5D8
+	 URvd/+JmKnsGu2ZMdk/Mqhjo+IvWugdKkBez1Z065y6c3Ure4QGchDyEsrmuvngYIE
+	 MG9dMV3y1uG44HkOTFwQ/Aq13lxbg6lDKURWzghV1wS5MNIzjdGHEJ7SdgafsDFGsU
+	 /ie8Bh98dVzrHI41hWU/HMj63GKUo6XtnGLFYehPZtSECCEfH4aR5c2Le1lzPOvbGf
+	 2Q3mnUd7ks4kw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+Cc: Xin Wang <x.wang@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Fei Yang <fei.yang@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 440/642] clk: qcom: clk-alpha-pll: Do not use random stack value for recalc rate
-Date: Mon,  5 May 2025 18:10:56 -0400
-Message-Id: <20250505221419.2672473-440-sashal@kernel.org>
+	lucas.demarchi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 441/642] drm/xe/debugfs: fixed the return value of wedged_mode_set
+Date: Mon,  5 May 2025 18:10:57 -0400
+Message-Id: <20250505221419.2672473-441-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,140 +72,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Xin Wang <x.wang@intel.com>
 
-[ Upstream commit 7a243e1b814a02ab40793026ef64223155d86395 ]
+[ Upstream commit 6884d2051011f4db9e2f0b85709c79a8ced13bd6 ]
 
-If regmap_read() fails, random stack value was used in calculating new
-frequency in recalc_rate() callbacks.  Such failure is really not
-expected as these are all MMIO reads, however code should be here
-correct and bail out.  This also avoids possible warning on
-uninitialized value.
+It is generally expected that the write() function should return a
+positive value indicating the number of bytes written or a negative
+error code if an error occurs. Returning 0 is unusual and can lead
+to unexpected behavior.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250212-b4-clk-qcom-clean-v3-1-499f37444f5d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+When the user program writes the same value to wedged_mode twice in
+a row, a lockup will occur, because the value expected to be
+returned by the write() function inside the program should be equal
+to the actual written value instead of 0.
+
+To reproduce the issue:
+echo 1 > /sys/kernel/debug/dri/0/wedged_mode
+echo 1 > /sys/kernel/debug/dri/0/wedged_mode   <- lockup here
+
+Signed-off-by: Xin Wang <x.wang@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Fei Yang <fei.yang@intel.com>
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213223615.2327367-1-x.wang@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c | 52 ++++++++++++++++++++++----------
- 1 file changed, 36 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/xe/xe_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
-index 9a65d14acf71c..cec0afea8e446 100644
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -709,14 +709,19 @@ clk_alpha_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 alpha_width = pll_alpha_width(pll);
+diff --git a/drivers/gpu/drm/xe/xe_debugfs.c b/drivers/gpu/drm/xe/xe_debugfs.c
+index 492b4877433f1..6bfdd3a9913fd 100644
+--- a/drivers/gpu/drm/xe/xe_debugfs.c
++++ b/drivers/gpu/drm/xe/xe_debugfs.c
+@@ -166,7 +166,7 @@ static ssize_t wedged_mode_set(struct file *f, const char __user *ubuf,
+ 		return -EINVAL;
  
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
-+
-+	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
-+		return 0;
+ 	if (xe->wedged.mode == wedged_mode)
+-		return 0;
++		return size;
  
--	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
- 	if (ctl & PLL_ALPHA_EN) {
--		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low);
-+		if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low))
-+			return 0;
- 		if (alpha_width > 32) {
--			regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
--				    &high);
-+			if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
-+					&high))
-+				return 0;
- 			a = (u64)high << 32 | low;
- 		} else {
- 			a = low & GENMASK(alpha_width - 1, 0);
-@@ -942,8 +947,11 @@ alpha_pll_huayra_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 l, alpha = 0, ctl, alpha_m, alpha_n;
+ 	xe->wedged.mode = wedged_mode;
  
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
--	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
-+
-+	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
-+		return 0;
- 
- 	if (ctl & PLL_ALPHA_EN) {
- 		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &alpha);
-@@ -1137,8 +1145,11 @@ clk_trion_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 l, frac, alpha_width = pll_alpha_width(pll);
- 
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
--	regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
-+
-+	if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac))
-+		return 0;
- 
- 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
- }
-@@ -1196,7 +1207,8 @@ clk_alpha_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct clk_alpha_pll_postdiv *pll = to_clk_alpha_pll_postdiv(hw);
- 	u32 ctl;
- 
--	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
-+	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
-+		return 0;
- 
- 	ctl >>= PLL_POST_DIV_SHIFT;
- 	ctl &= PLL_POST_DIV_MASK(pll);
-@@ -1412,8 +1424,11 @@ static unsigned long alpha_pll_fabia_recalc_rate(struct clk_hw *hw,
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 l, frac, alpha_width = pll_alpha_width(pll);
- 
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
--	regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
-+
-+	if (regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac))
-+		return 0;
- 
- 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
- }
-@@ -1563,7 +1578,8 @@ clk_trion_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	struct regmap *regmap = pll->clkr.regmap;
- 	u32 i, div = 1, val;
- 
--	regmap_read(regmap, PLL_USER_CTL(pll), &val);
-+	if (regmap_read(regmap, PLL_USER_CTL(pll), &val))
-+		return 0;
- 
- 	val >>= pll->post_div_shift;
- 	val &= PLL_POST_DIV_MASK(pll);
-@@ -2484,9 +2500,12 @@ static unsigned long alpha_pll_lucid_evo_recalc_rate(struct clk_hw *hw,
- 	struct regmap *regmap = pll->clkr.regmap;
- 	u32 l, frac;
- 
--	regmap_read(regmap, PLL_L_VAL(pll), &l);
-+	if (regmap_read(regmap, PLL_L_VAL(pll), &l))
-+		return 0;
- 	l &= LUCID_EVO_PLL_L_VAL_MASK;
--	regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac);
-+
-+	if (regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac))
-+		return 0;
- 
- 	return alpha_pll_calc_rate(parent_rate, l, frac, pll_alpha_width(pll));
- }
-@@ -2699,7 +2718,8 @@ static unsigned long clk_rivian_evo_pll_recalc_rate(struct clk_hw *hw,
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
- 	u32 l;
- 
--	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
-+	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
-+		return 0;
- 
- 	return parent_rate * l;
- }
 -- 
 2.39.5
 
