@@ -1,136 +1,130 @@
-Return-Path: <stable+bounces-139706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D06AAA96E2
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 17:05:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49088AA96F6
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 17:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C8DA16580C
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 15:05:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 307661883625
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 15:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B016425C6E8;
-	Mon,  5 May 2025 15:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F123225C834;
+	Mon,  5 May 2025 15:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mDtBKQN4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JOHEVnfE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FBF25A2C6
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 15:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B32D24E4AA;
+	Mon,  5 May 2025 15:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746457504; cv=none; b=eKtpqDEuBh6GFtosOFJ0J+HfOlQgxzPMmaoyYk6IBCS76LRv3+WeFg55gYdW255G/AXngFbnGZc7OG0njJBaiV4ETo0c2gfYJBkAyCP0VMCP/wrxqUCpruDIEBEWHApgsb43whigpiUdo1ZE22Cqu8qIony6qO+8Wl7aMgeGhhA=
+	t=1746457516; cv=none; b=UJeUZfTKwnp3YIhjbtd50piOgAU898gzoFZBWwN5Zt0P4bub/Qbuutb8KOCSnekvhOplGV1luA3oGaxQA507Ef5BLXB7nDy3zFjW0OYm43M5iCavnczYoTuAiacP2StIx9ES2jVkChAd4ABJ5mPWcwF81u5Cqm4blE/k0z4GKig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746457504; c=relaxed/simple;
-	bh=LK37zr9dhJR9vsBD5tV0deO8G6uKTAwciHQYLzVSsEM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=VUsyWnyc4tzyEMCmZjwVAz1YHdFZN4yLdCHGWLXFJRTzcYmrULn6g73+cue8e2cDw1Qt3VJQXmptLk2kEisVv6ywoZo5QaHNivw1pox0ShG/x9ygjSR2cuzCEeF716e6O3bSDIQK9G7z0uLsupga9P3Z8StaD+yJogTDYplVucc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mDtBKQN4; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22e15aea506so36583885ad.1
-        for <stable@vger.kernel.org>; Mon, 05 May 2025 08:05:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746457502; x=1747062302; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=IjGmK1VQDs51C++XwEPJE9hdFrNl1/NFDSHcZQyFi7A=;
-        b=mDtBKQN4wlFv7ZfZe6HQW70QmotTfbUpoV4bRTNlgnXTI0uMlM/oXejGIfQeJ6uXMV
-         OzCzmOQYf9B7rp3PubjksrSS5OQCPmKBPqL2AUHxA+oIWgaw8uoC1yhKdKMAhCQKa832
-         CDedQ+/Szs349G8g8qNTzAyQBR4VzVaCWtHuiQv9CZxwiZdELLLXBD0wKIJYnEWhjNCA
-         8LIdu0IYoccOwJeu4C69weJvV3K9ey7Y77rRuH6mKQs2Zv2XYJM58/wxd0toxjR5bhWk
-         J7JAl2eGV2N6qqt7+BJn5+9St51IJcY+H3axuvpgMd5p+I42HIPr4tqfyNQVgxjKKaIQ
-         NfRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746457502; x=1747062302;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IjGmK1VQDs51C++XwEPJE9hdFrNl1/NFDSHcZQyFi7A=;
-        b=EXjBLa3A8HA3jNTsfSJxiPkKduJEtQ3yy3AQCRlijBz2BPcDTgseX6ZipFqndltj0U
-         zcci50tf6yWZNfNnneBPXLFNIz+J1Pb6OKCC6Z2uYHvKiIIlLThvgmGB+5Kr9PdPq8sA
-         L/926w8fN+wXDTjp66VMKhghO3EOJU3BxI/Cw/4RFHcy9a3G6WPbd7wyYEGlEtfEQDH/
-         ckzGDZkfui+cOqVy6HEu+jz4N2tLFaE78Hg30t0UIbjCoffekMjF6Pn2MUNe/3MYwbo/
-         /4RCF9KWwYzP6eA/xAGDvx5tVucG4EhCrPM2MBOGRMC0eG0rynR6C3htJgRJoYY0JGOC
-         AWTw==
-X-Gm-Message-State: AOJu0YxrC/s9z5B67hTO2WfSyrJhLFgw6QtZpeAgKI4AHMPa3sqTknvH
-	Q5rVUS9OnJp24/1aOpsyx/pAHbpmugI2iZwVMfsHP2mhlQfxksu9AJmCnU+H
-X-Gm-Gg: ASbGncsXN2cbwHosmazsvxZwujhYXPCpa64+KLBlWHaQZWYAbWYslDm59bcKEW7OQE6
-	ypk4Xn5KvdSQ4yn1N1dVcUmcMBJJSRAYBd6+Nz3yG8lXzezzUPQDGkCGqE6IQusrLnKWi/ZnYeB
-	p9PbtcfMeYnl5SQKmPgC6Pu+J740uZNRGIRctlEcvK1ASSNSbLvkhDjqHMx15309M4125PiMC0b
-	DLjBJM/ej71YVr+Sz4EqRRJ14df+Si3nPxSDg0E3gUsd7K3zkHfIaF4htfW6u2iWqCiZCbQYbUw
-	NAxvCweSr3HWtDXZzEUhFC82UUaWV0zho/9j4nnOngX+BTVDQCpfbanAWjD0UA==
-X-Google-Smtp-Source: AGHT+IHwsmCDgr39Y6f6C1AFYxaSrygrWkIhQR6YsCQlEr00vU47/lN3VFjZ8uCjbG6bY40jbCteiA==
-X-Received: by 2002:a17:902:db11:b0:22c:33b2:e430 with SMTP id d9443c01a7336-22e1e8e9e21mr97391175ad.6.1746457502218;
-        Mon, 05 May 2025 08:05:02 -0700 (PDT)
-Received: from ubuntu.localdomain ([39.86.156.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e151e9df5sm55985575ad.82.2025.05.05.08.05.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 08:05:01 -0700 (PDT)
-From: Penglei Jiang <superman.xpt@gmail.com>
-To: stable@vger.kernel.org
-Cc: Penglei Jiang <superman.xpt@gmail.com>
-Subject: [PATCH v2 6.14.y] btrfs: fix the inode leak in btrfs_iget()
-Date: Mon,  5 May 2025 08:03:22 -0700
-Message-Id: <20250505150322.40733-1-superman.xpt@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <2025050558-charger-crumpled-6ca4@gregkh>
-References: <2025050558-charger-crumpled-6ca4@gregkh>
+	s=arc-20240116; t=1746457516; c=relaxed/simple;
+	bh=5r5Ft/C84qteRJtIQxi4mDS5zxg0pnHRDS6lzVg5xpw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QqVJBMgXrKLgw9ptmliLQ2PpcOqQYoNVztFh1WgnaYkfvkQGCG1NKq++Fl0bJami6wU1etV6mM71r+W9Mj9Fl65EX5xFt0a8hxckAWnippksVgXmSkcdDg1SGM/UiJOGjA545iEaXO4U3pWuZyNY5sgeKgn3gwVfaDtj6f12PKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JOHEVnfE; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746457515; x=1777993515;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5r5Ft/C84qteRJtIQxi4mDS5zxg0pnHRDS6lzVg5xpw=;
+  b=JOHEVnfExOEc9yNUcqEOrDm1xn7CvMTk4xmiI0hFdAWkNDjD+t3pwlAh
+   KFZ91OrUCSjA3J/+4RJNBYxD1pKjaYKFXxnQ4+X2KHi0gIwrLovg7YehQ
+   LizU8Yqs/3rhWPXvuwN6osR/n4DuW1Syj4E9W9F2ahYniKLNsUiiiiGPI
+   BGTMnUFGhkHuzTr2jBul/Bs5b6IUL4VUC3LAgAkHYfWqSv1V3IkBsYN/r
+   aYOdfrmZbv3DhvgE9O4JmgVgrRsj0Iy8p+yWAXzwyAjR2CyyKiurQZFvG
+   PsbCngfi60WOykW/VyTLJJvzrG1ktwtboZuW3t0SHA66L50VGLFxVeP9f
+   g==;
+X-CSE-ConnectionGUID: s+n3FSa5QYu3KDHLI3bN5Q==
+X-CSE-MsgGUID: 9CajUO9lRCWo3QukKZD9bg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="47333042"
+X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; 
+   d="scan'208";a="47333042"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 08:05:04 -0700
+X-CSE-ConnectionGUID: 7iQvoTw9QJaUQk0dLNvmzw==
+X-CSE-MsgGUID: Alh6lKy+RyWqXWE7NyIKBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; 
+   d="scan'208";a="135255177"
+Received: from spandruv-mobl4.amr.corp.intel.com (HELO [10.125.111.34]) ([10.125.111.34])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 08:05:03 -0700
+Message-ID: <1f315645-4afd-49f1-b259-bac8911dd67a@intel.com>
+Date: Mon, 5 May 2025 08:05:02 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] PCI: Fix lock symmetry in pci_slot_unlock()
+To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Lukas Wunner <lukas@wunner.de>, Moshe Shemesh <moshe@nvidia.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Dan Williams
+ <dan.j.williams@intel.com>, Keith Busch <kbusch@kernel.org>,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20250505115412.37628-1-ilpo.jarvinen@linux.intel.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20250505115412.37628-1-ilpo.jarvinen@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The commit 48c1d1bb525b1c44b8bdc8e7ec5629cb6c2b9fc4 fails to compile
-in kernel version 6.14.
 
-Version 6.14:
-    struct inode *btrfs_iget(u64 ino, struct btrfs_root *root)
-    {
-            struct inode *inode;
-            ~~~~~~~~~~~~~~
-            ...
-            inode = btrfs_iget_locked(ino, root);
-            ...
-    }
 
-Version 6.15:
-    struct btrfs_inode *btrfs_iget(u64 ino, struct btrfs_root *root)
-    {
-            struct btrfs_inode *inode;
-            ~~~~~~~~~~~~~~~~~~~~
-            ...
-            inode = btrfs_iget_locked(ino, root);
-            ...
-    }
+On 5/5/25 4:54 AM, Ilpo Järvinen wrote:
+> The commit a4e772898f8b ("PCI: Add missing bridge lock to
+> pci_bus_lock()") made the lock function to call depend on
+> dev->subordinate but left pci_slot_unlock() unmodified creating locking
+> asymmetry compared with pci_slot_lock().
+> 
+> Because of the asymmetric lock handling, the same bridge device is
+> unlocked twice. First pci_bus_unlock() unlocks bus->self and then
+> pci_slot_unlock() will unconditionally unlock the same bridge device.
+> 
+> Move pci_dev_unlock() inside an else branch to match the logic in
+> pci_slot_lock().
+> 
+> Fixes: a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
+> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> Cc: <stable@vger.kernel.org>
 
-In kernel version 6.14, the function btrfs_iget_locked() returns a
-struct inode *, so the patch code adjusts to use iget_failed(inode).
-
-Reported-by: Penglei Jiang <superman.xpt@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/20250421102425.44431-1-superman.xpt@gmail.com/
-Fixes: 7c855e16ab72 ("btrfs: remove conditional path allocation in btrfs_read_locked_inode()")
-Signed-off-by: Penglei Jiang <superman.xpt@gmail.com>
----
- fs/btrfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index ad7009d336fa..d2edb2201e3a 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -5660,7 +5660,7 @@ struct inode *btrfs_iget(u64 ino, struct btrfs_root *root)
- 
- 	path = btrfs_alloc_path();
- 	if (!path) {
--		iget_failed(&inode->vfs_inode);
-+		iget_failed(inode);
- 		return ERR_PTR(-ENOMEM);
- 	}
- 
--- 
-2.17.1
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> ---
+> 
+> v2:
+> - Improve changelog (Lukas)
+> - Added Cc stable
+> 
+>  drivers/pci/pci.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 4d7c9f64ea24..26507aa906d7 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -5542,7 +5542,8 @@ static void pci_slot_unlock(struct pci_slot *slot)
+>  			continue;
+>  		if (dev->subordinate)
+>  			pci_bus_unlock(dev->subordinate);
+> -		pci_dev_unlock(dev);
+> +		else
+> +			pci_dev_unlock(dev);
+>  	}
+>  }
+>  
+> 
+> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
 
 
