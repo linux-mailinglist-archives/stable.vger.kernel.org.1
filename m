@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-140890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C263AAAAC2C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:11:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1385AAAC36
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:12:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 269E116C3B1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:09:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27F1F163F13
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:10:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12A62FCA6A;
-	Mon,  5 May 2025 23:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5D33C3993;
+	Mon,  5 May 2025 23:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B0gMgViG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GmalkvYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD39389426;
-	Mon,  5 May 2025 23:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F394B38943A;
+	Mon,  5 May 2025 23:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486756; cv=none; b=k70LYQ/ZHS8G9Z4YVvlKA8gCnr2rXe0pCVlKMrGik6Iwt1tcLD91pjqDJVl8+iZR8IXT4xxj5C4tg4G0K6mPzJJ19cXlXGursKcf6utQK9ktlTQYwaxLtrdm7+JgurUr9VWUz5MwIFPtK+fyVcsg66WoGYTNRbbXqEq26zQkZDY=
+	t=1746486758; cv=none; b=NYm0N6LMPVPao9hUV2Hj0ER6QKUmSszIs7mYkOZg55R1thNRfzUOBWYiEnivejWG+w4RZJv1lmc0S64KLHsmN2fJGh080zwzgSLteH6iRamtWD3zHYtGo10zI+q6MgKquc87JJE/jEoLfuI1TyTIHHMhDMjcpO6gLtdItMJhNf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486756; c=relaxed/simple;
-	bh=fnPv1ivXF5Wy4niLq+LVRNLF7KRwPeRJVCaZmA7WfCw=;
+	s=arc-20240116; t=1746486758; c=relaxed/simple;
+	bh=Lpsb/dOflHCkt6eipB9Vj1VHtPnMKoK6a5Sav2lGK/g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ExsGQP517e28dH7FweN9Z8me07PZOs9Ejr3ZOg2kAFDZinIOEJTMnpF6grrOifIuM4gOHIrDgDb/oFgnSZ1X0LdvPypm4fOcbsIQu8CqYTxbkbgEYrzUAkfxFyr+QEJuRJpJ0+e4T6B7SDmctYmv6eFETRniKTefSJ3GMP7Spvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B0gMgViG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD975C4CEED;
-	Mon,  5 May 2025 23:12:33 +0000 (UTC)
+	 MIME-Version; b=XyLbCArSOftsYt9A5ffwJ9fFTQcVhSmQxWni0OnT8oWMgn2sxdL44RCbFTacZUA3/PPOSulPE8RB8T8t86BwqrC2/5Y6gM3P5vwOBTMt8KdfSMz89K4OpDJfBEk+ZS2lFytoXGnjNBr++ue+GZwzsckITpihDT6/jpCXktXXi5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GmalkvYZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDA3C4CEE4;
+	Mon,  5 May 2025 23:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486755;
-	bh=fnPv1ivXF5Wy4niLq+LVRNLF7KRwPeRJVCaZmA7WfCw=;
+	s=k20201202; t=1746486757;
+	bh=Lpsb/dOflHCkt6eipB9Vj1VHtPnMKoK6a5Sav2lGK/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B0gMgViGOGzM/+mpMZxw/9BeYblgtxI4XwpjjS5rjc54lxWK+F8P94zjfvYdKTAj1
-	 6Ow+vCh961/k8upC6lJvMK6pYVaWZ2asBy8lH8Hh06ayMoBWCKrOBBMYk4CUDPJff2
-	 +kWDyTyjBVJJi9FBQlM5NA+/XzX+1k+8B7siMAm3qVYNKgiwpt8C/gCAtpkj5QRCzc
-	 UrelhwiGF+Gtys3ACitabEG/S546BWAjk3GXfsboBrz80TF0KnLqIO/mFyTjrwJBj5
-	 SglMlSvf+tIkFJjRK5A02GN/BKblfEOgyc64yiqhIcH3S1dhf1zZiuW9N47iWMZafz
-	 CqoNkT8gq0rVQ==
+	b=GmalkvYZU/xuCNnDBMfm4L6TRI7IGdx7L9GXGMLhu2RNk6SciKHW4j6p9X/KpQNmN
+	 LFIEFT8F/H433koXO5s5lSlnWSM2c7xiUdCp3S+cELuzZRiNHY2YSrAZfA2IcH5957
+	 80FWgz9NJPLlIizIFYLMgsu3+rSMtVAytYdAfS1vVNaCPqXEdty7rit41uHvlcXAVv
+	 ywMgrGNnpVZCJwDUZUwrE0aChoghJM6siPXWZKX+RnFSxYu2+QBYOfIgXsLINRKo38
+	 yzCfkxbtXCPH8ANhr1gyjFdri7WlFgxneqrB9TjFAg7OVCRyLOGtp+er0HyPfpS7/9
+	 XFjeznrINiduw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Depeng Shao <quic_depengs@quicinc.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	rfoss@kernel.org,
-	todor.too@gmail.com,
-	bryan.odonoghue@linaro.org,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 186/212] media: qcom: camss: csid: Only add TPG v4l2 ctrl if TPG hardware is available
-Date: Mon,  5 May 2025 19:05:58 -0400
-Message-Id: <20250505230624.2692522-186-sashal@kernel.org>
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	menglong8.dong@gmail.com,
+	gnault@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 187/212] vxlan: Annotate FDB data races
+Date: Mon,  5 May 2025 19:05:59 -0400
+Message-Id: <20250505230624.2692522-187-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -70,136 +73,142 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Depeng Shao <quic_depengs@quicinc.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 2f1361f862a68063f37362f1beb400e78e289581 ]
+[ Upstream commit f6205f8215f12a96518ac9469ff76294ae7bd612 ]
 
-There is no CSID TPG on some SoCs, so the v4l2 ctrl in CSID driver
-shouldn't be registered. Checking the supported TPG modes to indicate
-if the TPG hardware exists or not and only registering v4l2 ctrl for
-CSID only when the TPG hardware is present.
+The 'used' and 'updated' fields in the FDB entry structure can be
+accessed concurrently by multiple threads, leading to reports such as
+[1]. Can be reproduced using [2].
 
-Signed-off-by: Depeng Shao <quic_depengs@quicinc.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Suppress these reports by annotating these accesses using
+READ_ONCE() / WRITE_ONCE().
+
+[1]
+BUG: KCSAN: data-race in vxlan_xmit / vxlan_xmit
+
+write to 0xffff942604d263a8 of 8 bytes by task 286 on cpu 0:
+ vxlan_xmit+0xb29/0x2380
+ dev_hard_start_xmit+0x84/0x2f0
+ __dev_queue_xmit+0x45a/0x1650
+ packet_xmit+0x100/0x150
+ packet_sendmsg+0x2114/0x2ac0
+ __sys_sendto+0x318/0x330
+ __x64_sys_sendto+0x76/0x90
+ x64_sys_call+0x14e8/0x1c00
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff942604d263a8 of 8 bytes by task 287 on cpu 2:
+ vxlan_xmit+0xadf/0x2380
+ dev_hard_start_xmit+0x84/0x2f0
+ __dev_queue_xmit+0x45a/0x1650
+ packet_xmit+0x100/0x150
+ packet_sendmsg+0x2114/0x2ac0
+ __sys_sendto+0x318/0x330
+ __x64_sys_sendto+0x76/0x90
+ x64_sys_call+0x14e8/0x1c00
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0x00000000fffbac6e -> 0x00000000fffbac6f
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 2 UID: 0 PID: 287 Comm: mausezahn Not tainted 6.13.0-rc7-01544-gb4b270f11a02 #5
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
+
+[2]
+ #!/bin/bash
+
+ set +H
+ echo whitelist > /sys/kernel/debug/kcsan
+ echo !vxlan_xmit > /sys/kernel/debug/kcsan
+
+ ip link add name vx0 up type vxlan id 10010 dstport 4789 local 192.0.2.1
+ bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 198.51.100.1
+ taskset -c 0 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
+ taskset -c 2 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250204145549.1216254-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/qcom/camss/camss-csid.c    | 60 +++++++++++--------
- 1 file changed, 35 insertions(+), 25 deletions(-)
+ drivers/net/vxlan/vxlan_core.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-csid.c b/drivers/media/platform/qcom/camss/camss-csid.c
-index 6360314f04a63..b90e2e690f3aa 100644
---- a/drivers/media/platform/qcom/camss/camss-csid.c
-+++ b/drivers/media/platform/qcom/camss/camss-csid.c
-@@ -239,11 +239,13 @@ static int csid_set_stream(struct v4l2_subdev *sd, int enable)
- 	int ret;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 0afd7eb976e6c..ef61eab81707c 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -274,9 +274,9 @@ static int vxlan_fdb_info(struct sk_buff *skb, struct vxlan_dev *vxlan,
+ 			be32_to_cpu(fdb->vni)))
+ 		goto nla_put_failure;
  
- 	if (enable) {
--		ret = v4l2_ctrl_handler_setup(&csid->ctrls);
--		if (ret < 0) {
--			dev_err(csid->camss->dev,
--				"could not sync v4l2 controls: %d\n", ret);
--			return ret;
-+		if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED) {
-+			ret = v4l2_ctrl_handler_setup(&csid->ctrls);
-+			if (ret < 0) {
-+				dev_err(csid->camss->dev,
-+					"could not sync v4l2 controls: %d\n", ret);
-+				return ret;
-+			}
+-	ci.ndm_used	 = jiffies_to_clock_t(now - fdb->used);
++	ci.ndm_used	 = jiffies_to_clock_t(now - READ_ONCE(fdb->used));
+ 	ci.ndm_confirmed = 0;
+-	ci.ndm_updated	 = jiffies_to_clock_t(now - fdb->updated);
++	ci.ndm_updated	 = jiffies_to_clock_t(now - READ_ONCE(fdb->updated));
+ 	ci.ndm_refcnt	 = 0;
+ 
+ 	if (nla_put(skb, NDA_CACHEINFO, sizeof(ci), &ci))
+@@ -482,8 +482,8 @@ static struct vxlan_fdb *vxlan_find_mac(struct vxlan_dev *vxlan,
+ 	struct vxlan_fdb *f;
+ 
+ 	f = __vxlan_find_mac(vxlan, mac, vni);
+-	if (f && f->used != jiffies)
+-		f->used = jiffies;
++	if (f && READ_ONCE(f->used) != jiffies)
++		WRITE_ONCE(f->used, jiffies);
+ 
+ 	return f;
+ }
+@@ -1057,12 +1057,12 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 	    !(f->flags & NTF_VXLAN_ADDED_BY_USER)) {
+ 		if (f->state != state) {
+ 			f->state = state;
+-			f->updated = jiffies;
++			WRITE_ONCE(f->updated, jiffies);
+ 			notify = 1;
  		}
+ 		if (f->flags != fdb_flags) {
+ 			f->flags = fdb_flags;
+-			f->updated = jiffies;
++			WRITE_ONCE(f->updated, jiffies);
+ 			notify = 1;
+ 		}
+ 	}
+@@ -1096,7 +1096,7 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 	}
  
- 		if (!csid->testgen.enabled &&
-@@ -318,7 +320,8 @@ static void csid_try_format(struct csid_device *csid,
- 		break;
+ 	if (ndm_flags & NTF_USE)
+-		f->used = jiffies;
++		WRITE_ONCE(f->used, jiffies);
  
- 	case MSM_CSID_PAD_SRC:
--		if (csid->testgen_mode->cur.val == 0) {
-+		if (csid->testgen.nmodes == CSID_PAYLOAD_MODE_DISABLED ||
-+		    csid->testgen_mode->cur.val == 0) {
- 			/* Test generator is disabled, */
- 			/* keep pad formats in sync */
- 			u32 code = fmt->code;
-@@ -368,7 +371,8 @@ static int csid_enum_mbus_code(struct v4l2_subdev *sd,
+ 	if (notify) {
+ 		if (rd == NULL)
+@@ -1525,7 +1525,7 @@ static bool vxlan_snoop(struct net_device *dev,
+ 				    src_mac, &rdst->remote_ip.sa, &src_ip->sa);
  
- 		code->code = csid->formats[code->index].code;
+ 		rdst->remote_ip = *src_ip;
+-		f->updated = jiffies;
++		WRITE_ONCE(f->updated, jiffies);
+ 		vxlan_fdb_notify(vxlan, f, rdst, RTM_NEWNEIGH, true, NULL);
  	} else {
--		if (csid->testgen_mode->cur.val == 0) {
-+		if (csid->testgen.nmodes == CSID_PAYLOAD_MODE_DISABLED ||
-+		    csid->testgen_mode->cur.val == 0) {
- 			struct v4l2_mbus_framefmt *sink_fmt;
+ 		u32 hash_index = fdb_head_index(vxlan, src_mac, vni);
+@@ -2936,7 +2936,7 @@ static void vxlan_cleanup(struct timer_list *t)
+ 			if (f->flags & NTF_EXT_LEARNED)
+ 				continue;
  
- 			sink_fmt = __csid_get_format(csid, sd_state,
-@@ -750,7 +754,8 @@ static int csid_link_setup(struct media_entity *entity,
- 
- 		/* If test generator is enabled */
- 		/* do not allow a link from CSIPHY to CSID */
--		if (csid->testgen_mode->cur.val != 0)
-+		if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED &&
-+		    csid->testgen_mode->cur.val != 0)
- 			return -EBUSY;
- 
- 		sd = media_entity_to_v4l2_subdev(remote->entity);
-@@ -843,24 +848,27 @@ int msm_csid_register_entity(struct csid_device *csid,
- 		 MSM_CSID_NAME, csid->id);
- 	v4l2_set_subdevdata(sd, csid);
- 
--	ret = v4l2_ctrl_handler_init(&csid->ctrls, 1);
--	if (ret < 0) {
--		dev_err(dev, "Failed to init ctrl handler: %d\n", ret);
--		return ret;
--	}
-+	if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED) {
-+		ret = v4l2_ctrl_handler_init(&csid->ctrls, 1);
-+		if (ret < 0) {
-+			dev_err(dev, "Failed to init ctrl handler: %d\n", ret);
-+			return ret;
-+		}
- 
--	csid->testgen_mode = v4l2_ctrl_new_std_menu_items(&csid->ctrls,
--				&csid_ctrl_ops, V4L2_CID_TEST_PATTERN,
--				csid->testgen.nmodes, 0, 0,
--				csid->testgen.modes);
-+		csid->testgen_mode =
-+			v4l2_ctrl_new_std_menu_items(&csid->ctrls,
-+						     &csid_ctrl_ops, V4L2_CID_TEST_PATTERN,
-+						     csid->testgen.nmodes, 0, 0,
-+						     csid->testgen.modes);
- 
--	if (csid->ctrls.error) {
--		dev_err(dev, "Failed to init ctrl: %d\n", csid->ctrls.error);
--		ret = csid->ctrls.error;
--		goto free_ctrl;
--	}
-+		if (csid->ctrls.error) {
-+			dev_err(dev, "Failed to init ctrl: %d\n", csid->ctrls.error);
-+			ret = csid->ctrls.error;
-+			goto free_ctrl;
-+		}
- 
--	csid->subdev.ctrl_handler = &csid->ctrls;
-+		csid->subdev.ctrl_handler = &csid->ctrls;
-+	}
- 
- 	ret = csid_init_formats(sd, NULL);
- 	if (ret < 0) {
-@@ -891,7 +899,8 @@ int msm_csid_register_entity(struct csid_device *csid,
- media_cleanup:
- 	media_entity_cleanup(&sd->entity);
- free_ctrl:
--	v4l2_ctrl_handler_free(&csid->ctrls);
-+	if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED)
-+		v4l2_ctrl_handler_free(&csid->ctrls);
- 
- 	return ret;
- }
-@@ -904,5 +913,6 @@ void msm_csid_unregister_entity(struct csid_device *csid)
- {
- 	v4l2_device_unregister_subdev(&csid->subdev);
- 	media_entity_cleanup(&csid->subdev.entity);
--	v4l2_ctrl_handler_free(&csid->ctrls);
-+	if (csid->testgen.nmodes != CSID_PAYLOAD_MODE_DISABLED)
-+		v4l2_ctrl_handler_free(&csid->ctrls);
- }
+-			timeout = f->used + vxlan->cfg.age_interval * HZ;
++			timeout = READ_ONCE(f->used) + vxlan->cfg.age_interval * HZ;
+ 			if (time_before_eq(timeout, jiffies)) {
+ 				netdev_dbg(vxlan->dev,
+ 					   "garbage collect %pM\n",
 -- 
 2.39.5
 
