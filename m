@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-140100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53ACCAAA4F6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D587AAA4FA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:39:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 501E97A1C40
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:38:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7107E7A1EFC
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E673098D5;
-	Mon,  5 May 2025 22:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C60B309F05;
+	Mon,  5 May 2025 22:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UdRGGGmf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fjgr6IX/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71543098CE;
-	Mon,  5 May 2025 22:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1EF28A418;
+	Mon,  5 May 2025 22:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484105; cv=none; b=ifiLFBX3+CT6RRbHqCpfbBcNXTYcOo04Mf1E2h5/Zk1kDQa21vEElZsAiHJ9OjFSJhlQ6gJ+hGkvE7whZQGXSdSPI39SeqxiQXpJ0XkHkGfHt7xbBvxRRzqxPTWY6pdwuRqahaIq0mgBmDwpdKGSR1oGo2DZKgPAkcHyvB3lnP8=
+	t=1746484107; cv=none; b=GFH8hqyMF2dGXSpJnQBGgcCzwFjOiC8gCotuA4J+nFf+ApbIPpWd//P5BCVeczwR/U8Qx8G0n4qzyxULeRE/17AHmdEEAIHmJ0MmUGbqzKfjRtNzlF8ripGTB5kJZY1+mVmXUv/wyBV/Bmq/s0hXS+XFAjKsZ8zP2P3IqHUXtWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484105; c=relaxed/simple;
-	bh=Ll43ZrLxMWFfQomfOHOy+yuEDnhCPlWPzmZhmBroXsk=;
+	s=arc-20240116; t=1746484107; c=relaxed/simple;
+	bh=iuQcipCRUKT1j4Ssrp9UrbZXxmmTU2FdSfPr4gHi5Ws=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=l6Kf2Mzg1Vj1Q7/HhfAKqNRuw0AT2r80ZActgqwuCvvba9M2C2JHT7VNh4aqj7PwyycKcbsR65jNu61b3akq5ZxlMuRag2/TN0+xJ32DRkRINHvMtPwnuxMcP86Mwd1sKdYr5gD3jJP940M5GJ6PmL6RTXYFEOLcfgQVi9DeTIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UdRGGGmf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE67C4CEE4;
-	Mon,  5 May 2025 22:28:24 +0000 (UTC)
+	 MIME-Version; b=s2h2mZByasl7h6uWDfaBE2DziORWZ53SM6dZwC+IPccLyuK0ouf8dpkyuA9RaIsBhh26LOBKDhz9J8glLTaDt6FTpBN9emKNDbFim7VE141yh0XCEj6jDgRLGtEbrOosmLOyraZAmeMAWqxl2G2eRI6Ne2zRLvB8RaVcS3Q5Cmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fjgr6IX/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D1FC4CEE4;
+	Mon,  5 May 2025 22:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484105;
-	bh=Ll43ZrLxMWFfQomfOHOy+yuEDnhCPlWPzmZhmBroXsk=;
+	s=k20201202; t=1746484107;
+	bh=iuQcipCRUKT1j4Ssrp9UrbZXxmmTU2FdSfPr4gHi5Ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UdRGGGmfkwWW90/gxxcOO1LNhJNb+ieDWvxuRfsY/7MAeqKGO8t+sHYQSgHh+onBi
-	 L9DjSNVg/6t3SqE2FLEJeIi87dihni+81IjOEjeNn7FrUaeCy9eEfo+Bq3HrW4Edj4
-	 ob5TqYJvAxwejj4gxmMucf16cMjUEMiTjMzR6kq971V2mhMql9OVpWYQlsdma4BcQ0
-	 TeRIItR9dkQTpVlY46Fgc3hDqXdyJMlPBLnI9Ruxc49UT9tsYDQkdDLk4o+EY8tivv
-	 kOshOSYejiz5XXOCCpFTSgTeNyuKjiz6VOCm03wZpmUKdblGpx6c/6+djU/RDDuETM
-	 0RGIUuXnAJMUg==
+	b=Fjgr6IX/vcx0NNoVhV9ck2Su2DpjTMJkIJJOQzl69lWo0/OhqVaBajBSFJFisD4I+
+	 4Y5G8nekSYmGbChOvG4NiHayCKANgzsSUu1jGlBv4FuplMnNwL5HOgaPGNLjgKHaQf
+	 2BZchnMLvbMph8Se3O2jRAXxlsSZk0ha8t05Ki/kN68UzCeG+Hb5i0J01IOmtvX89K
+	 6lbORRjg6wM4lEfa+aujl45+0DCRot70Oaps/16s5g8JyXI/FQYFWvm4tg6xOptVjD
+	 ZpKwss6Q9rCHL2ACvspd/XjAgFum1gmHgn6aD2eW4/kT4hiswjkB7Vn6QgDYiIQ0zN
+	 oPsj23dXV+fpQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+Cc: Bibo Mao <maobibo@loongson.cn>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>,
-	lucas.demarchi@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 353/642] drm/xe/oa: Ensure that polled read returns latest data
-Date: Mon,  5 May 2025 18:09:29 -0400
-Message-Id: <20250505221419.2672473-353-sashal@kernel.org>
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-mips@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 354/642] MIPS: Use arch specific syscall name match function
+Date: Mon,  5 May 2025 18:09:30 -0400
+Message-Id: <20250505221419.2672473-354-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -71,35 +68,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit 98c9d27ab30aa9c6451d3a34e6e297171f273e51 ]
+[ Upstream commit 756276ce78d5624dc814f9d99f7d16c8fd51076e ]
 
-In polled mode, user calls poll() for read data to be available before
-performing a read(). In the duration between these 2 calls, there may be
-new data available in the OA buffer. To ensure user reads all available
-data, check for latest data in the OA buffer in polled read.
+On MIPS system, most of the syscall function name begin with prefix
+sys_. Some syscalls are special such as clone/fork, function name of
+these begin with __sys_. Since scratch registers need be saved in
+stack when these system calls happens.
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250212010255.1423343-1-umesh.nerlige.ramappa@intel.com
+With ftrace system call method, system call functions are declared with
+SYSCALL_DEFINEx, metadata of the system call symbol name begins with
+sys_. Here mips specific function arch_syscall_match_sym_name is used to
+compare function name between sys_call_table[] and metadata of syscall
+symbol.
+
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_oa.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/include/asm/ftrace.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
-index eb6cd91e1e226..abf37d9ab2212 100644
---- a/drivers/gpu/drm/xe/xe_oa.c
-+++ b/drivers/gpu/drm/xe/xe_oa.c
-@@ -548,6 +548,7 @@ static ssize_t xe_oa_read(struct file *file, char __user *buf,
- 			mutex_unlock(&stream->stream_lock);
- 		} while (!offset && !ret);
- 	} else {
-+		xe_oa_buffer_check_unlocked(stream);
- 		mutex_lock(&stream->stream_lock);
- 		ret = __xe_oa_read(stream, buf, count, &offset);
- 		mutex_unlock(&stream->stream_lock);
+diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
+index dc025888f6d28..b41fc10446688 100644
+--- a/arch/mips/include/asm/ftrace.h
++++ b/arch/mips/include/asm/ftrace.h
+@@ -91,4 +91,20 @@ void prepare_ftrace_return(unsigned long *parent_ra_addr, unsigned long self_ra,
+ 
+ #endif /* __ASSEMBLY__ */
+ #endif /* CONFIG_FUNCTION_TRACER */
++
++#ifdef CONFIG_FTRACE_SYSCALLS
++#ifndef __ASSEMBLY__
++/*
++ * Some syscall entry functions on mips start with "__sys_" (fork and clone,
++ * for instance). We should also match the sys_ variant with those.
++ */
++#define ARCH_HAS_SYSCALL_MATCH_SYM_NAME
++static inline bool arch_syscall_match_sym_name(const char *sym,
++					       const char *name)
++{
++	return !strcmp(sym, name) ||
++		(!strncmp(sym, "__sys_", 6) && !strcmp(sym + 6, name + 4));
++}
++#endif /* __ASSEMBLY__ */
++#endif /* CONFIG_FTRACE_SYSCALLS */
+ #endif /* _ASM_MIPS_FTRACE_H */
 -- 
 2.39.5
 
