@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-140089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7706AAAA4F4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:39:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A875AAA4F7
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 349A51886FB9
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:37:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CCC4188D477
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB0F307210;
-	Mon,  5 May 2025 22:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B9930723B;
+	Mon,  5 May 2025 22:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mfg4B70f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vPk8q8Fi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355A2307206;
-	Mon,  5 May 2025 22:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0B3307232;
+	Mon,  5 May 2025 22:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484085; cv=none; b=JbElGbkrE+t0PGSRV4fyCceFSqRzxskyzCbUGJwgMQ74T3LYwnzltWLSlo4UYxHrU2LskK+uafGcpninOtBJNbzXqXIfEZ5OqIRbAVr+ja8C9FGC4/XajH3RaYlwWRTxrrSXr/QJD60/mXyLhf9zMZfNL2eK4HKfL/k9XmBopa8=
+	t=1746484086; cv=none; b=Kk6IPSijFaW4uJ69m6hwEObKjQ+2Fzg3PPGU4JzZNPT1JfAd/9Epp8RXRThG9J4wO9Q+wfpTs5VkHT+4djeEUq20PCCDkrMdqdpyh/sQuGyRbPP5oDySlP/7MvHeOiWFeRj3j9WaeM2N1tu3e4EqZdw3XpgqkXOl6MGLH8+N0I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484085; c=relaxed/simple;
-	bh=LZ+fiuu8BZam2Vg/JHkRs5Bbuh7skjVBcr05ofEBWew=;
+	s=arc-20240116; t=1746484086; c=relaxed/simple;
+	bh=WB2dY6oh6xjhaw0B01zKCSI5qkhaRNJBNP0Lgmr7EbI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pYCnH5r0iFT6t7BHkqqg5MBw7po1nlGdJqPl31QMyhupT9w0TUQOnJQUS7WwjW/m96lMlqY/d8Skxu9zGqenrCmCo5X+gccJu/L+LLDNRkxy2DFpnZmfm5wEea4mvn3KNfyz7WNjguKlbs4ZailTEsWBg058x0b5ZjubTKKvj98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mfg4B70f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A46C4CEE4;
-	Mon,  5 May 2025 22:28:03 +0000 (UTC)
+	 MIME-Version; b=WkBMUkIxToyb0MhXMkDvE9//Ld1jOp/NwKNoOELm2tPgB4icO2698LHFRtsmHp5Ni59KAk00g0mGoMWOHHkkHWTLX5LjbyQMIEt0ZErYeYI0znsTEm+p+wrNrbjaw7VKnZARXWEgXza13+BtAeNedwVaWG7IA1BwjKoyMOVLXq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vPk8q8Fi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80773C4CEED;
+	Mon,  5 May 2025 22:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484085;
-	bh=LZ+fiuu8BZam2Vg/JHkRs5Bbuh7skjVBcr05ofEBWew=;
+	s=k20201202; t=1746484086;
+	bh=WB2dY6oh6xjhaw0B01zKCSI5qkhaRNJBNP0Lgmr7EbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mfg4B70fqyYx01kcOav+I0cXu1a10UuK0dSj2TxhzhJ1tDgZKrZbElOtIUZREf/yJ
-	 yuolueRw/RVixVp8dj52eC91o84C5r7HajMPtPWg3A9S2qEmqm7PW8wnoEbAjRoFZP
-	 fcr4XxJI9E2ymMCa+9QMCjbSwlkb4YbfwstYj060WXN1p61Yq3Do3YBQMxco6AngOk
-	 dbG1AtS7p7EEgbk9jyTkzH+N0N11KxyLa1pCP1KFnGNBCfRZW69NZ/2tu0SW6/5lQL
-	 Aqt+/+aGgBt1se0Qqwbx49p6R3slbhOhZJh3ZmUVaL4c5zEPPKC9wdc44LuHmcm0x3
-	 5vspgCvWvZu4w==
+	b=vPk8q8FiMlfqcXMbMTV00CqqSV+G9vHJJ9j8OBh5lon5DMhtAJl+JaXzTlmvk1Z6F
+	 JsYLMOoMlVz8pZrIFhcmGfz+H5ce4aqMNDp8Ym29464YZeGuM3e9C7IiU0kijyoZbQ
+	 eweTP9rrQgveWcolZtXSSzMsv6F3wSWRJZq+IazfMQT+CB/nba1xT/T6+PKPw0N+CC
+	 oTrwf9IN9ZJdthLQQqAAjQBAE0C3quh5nxz7RvgDsk0X4BlkA0Hu1564CL6hpuLVk6
+	 DUzdhBUsQiZAo6XcWQ7jCS1jBIHmO2YE0Fw2Gp0nc2bsTplbuW+fTJIVXy6Bz9D9Qf
+	 358cOTqTwVw3A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hannes Reinecke <hare@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 342/642] fs/mpage: avoid negative shift for large blocksize
-Date: Mon,  5 May 2025 18:09:18 -0400
-Message-Id: <20250505221419.2672473-342-sashal@kernel.org>
+	brgl@bgdev.pl,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 343/642] gpiolib: sanitize the return value of gpio_chip::set_config()
+Date: Mon,  5 May 2025 18:09:19 -0400
+Message-Id: <20250505221419.2672473-343-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -69,47 +66,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 86c60efd7c0ede43bd677f2eee1d84200528df1e ]
+[ Upstream commit dcf8f3bffa2de2c7f3b5771b63605194ccd2286f ]
 
-For large blocksizes the number of block bits is larger than PAGE_SHIFT,
-so calculate the sector number from the byte offset instead. This is
-required to enable large folios with buffer-heads.
+The return value of the set_config() callback may be propagated to
+user-space. If a bad driver returns a positive number, it may confuse
+user programs. Tighten the API contract and check for positive numbers
+returned by GPIO controllers.
 
-Reviewed-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Link: https://lore.kernel.org/r/20250221223823.1680616-4-mcgrof@kernel.org
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250210-gpio-sanitize-retvals-v1-3-12ea88506cb2@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/mpage.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/gpiolib.c      | 3 +++
+ include/linux/gpio/driver.h | 3 ++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/mpage.c b/fs/mpage.c
-index 82aecf3727437..a3c82206977f6 100644
---- a/fs/mpage.c
-+++ b/fs/mpage.c
-@@ -181,7 +181,7 @@ static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
- 	if (folio_buffers(folio))
- 		goto confused;
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 0c00ed2ab4315..960ca0ad45fc8 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -2577,6 +2577,9 @@ int gpio_do_set_config(struct gpio_desc *desc, unsigned long config)
+ 		return -ENOTSUPP;
  
--	block_in_file = (sector_t)folio->index << (PAGE_SHIFT - blkbits);
-+	block_in_file = folio_pos(folio) >> blkbits;
- 	last_block = block_in_file + args->nr_pages * blocks_per_page;
- 	last_block_in_file = (i_size_read(inode) + blocksize - 1) >> blkbits;
- 	if (last_block > last_block_in_file)
-@@ -527,7 +527,7 @@ static int __mpage_writepage(struct folio *folio, struct writeback_control *wbc,
- 	 * The page has no buffers: map it to disk
- 	 */
- 	BUG_ON(!folio_test_uptodate(folio));
--	block_in_file = (sector_t)folio->index << (PAGE_SHIFT - blkbits);
-+	block_in_file = folio_pos(folio) >> blkbits;
+ 	ret = guard.gc->set_config(guard.gc, gpio_chip_hwgpio(desc), config);
++	if (ret > 0)
++		ret = -EBADE;
++
+ #ifdef CONFIG_GPIO_CDEV
  	/*
- 	 * Whole page beyond EOF? Skip allocating blocks to avoid leaking
- 	 * space.
+ 	 * Special case - if we're setting debounce period, we need to store
+diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
+index 2dd7cb9cc270a..5ce6b2167f808 100644
+--- a/include/linux/gpio/driver.h
++++ b/include/linux/gpio/driver.h
+@@ -347,7 +347,8 @@ struct gpio_irq_chip {
+  * @set: assigns output value for signal "offset"
+  * @set_multiple: assigns output values for multiple signals defined by "mask"
+  * @set_config: optional hook for all kinds of settings. Uses the same
+- *	packed config format as generic pinconf.
++ *	packed config format as generic pinconf. Must return 0 on success and
++ *	a negative error number on failure.
+  * @to_irq: optional hook supporting non-static gpiod_to_irq() mappings;
+  *	implementation may not sleep
+  * @dbg_show: optional routine to show contents in debugfs; default code
 -- 
 2.39.5
 
