@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-141724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0F5AAB7E5
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:22:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15516AAB7E8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:22:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B07381C26513
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:16:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AE541C25173
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158574ACAF3;
-	Tue,  6 May 2025 00:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906F234D648;
+	Tue,  6 May 2025 00:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WPyjhz5L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jxqhYEVH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00303BB69D;
-	Mon,  5 May 2025 23:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27823BBDA3;
+	Mon,  5 May 2025 23:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487357; cv=none; b=SgBXRjlfDW1D1vlfh0SaQ5gD2flDBJ1xxhAyDHkdGu28peeStTsNIK616mOjH5qp1D/Q3SugCdQ5lWZCSc9snf2BtSM6eo4S4qDsAwY5nV7U6lbIn/fW4aaklP4qxtDdRRqyvdIHG3A2kRg1XYLtjJ1jJjo+3jzgzXkVrCSfkEw=
+	t=1746487362; cv=none; b=CUguxMLBd7t7r6phfqU3ae7RW3fgmfDnJ6EWB3O3cXuv0al84ZfikhWM44lkJOoCMuwe1UaOiMlu4tSyB3ZK6rqmJlh6oLfkkcxk3PQ7em16DK4TkA/OwN19SKkzMDqnGHqWwQB9yjDxu3exAL1PN+Hl+7kfbcuTKfujqbHr8eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487357; c=relaxed/simple;
-	bh=AaBh9Dd/5cYObI/jzmDqfnzOcjCINMIsA+x8OSBG37I=;
+	s=arc-20240116; t=1746487362; c=relaxed/simple;
+	bh=ZztsGYn9Zhzs7edFt/EwPOC7cIZjrhxJ3HKzmyw/HUA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QgoQt+Xpreg6UcQT6qMyat7j2iu0rui8jgiaLK9Ndzgr5AWcGSas525mGkbhM+Ec4hrLgxJlBV3+kC7blbB9ThI7dClF+xCtdMf2uyoquZn+6ClNAyn1szCMg3lzS3RoUQ09ZOQzm3kV74WoSPSxN7NIarEz5Y6XDQmzrcYTzCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WPyjhz5L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB43C4CEE4;
-	Mon,  5 May 2025 23:22:36 +0000 (UTC)
+	 MIME-Version; b=NQm9ERN/ngjnvYtFJYG1qy+rGhCJEIGwtRnLSEFz3YVQqcZlZeKp26icyEYPcmHCHCRe1r4GcCnLfhaj7H27Am0Y6KJXf6R7E0oFYs07no/+XXj+7VFghPXJ2h5sPXp24rl/8rrRMlyaibExLeiKJFIY4/kSNVBzNvrYcy0UjaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jxqhYEVH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49487C4CEEE;
+	Mon,  5 May 2025 23:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487357;
-	bh=AaBh9Dd/5cYObI/jzmDqfnzOcjCINMIsA+x8OSBG37I=;
+	s=k20201202; t=1746487362;
+	bh=ZztsGYn9Zhzs7edFt/EwPOC7cIZjrhxJ3HKzmyw/HUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WPyjhz5LdJb2rL7dgo1xxd37bUb3ZBvVd7nR4KWUhZeai4OQ+W/Z/T/+KCZG5KqsS
-	 25gV6GKDmC3j1VmH/ufL3Zo6A6+sQS9oyXiNq0z4bPNc7PKB8Wfu88W/lb+9vhodnx
-	 hSW2HawfbwMPiMDtI122fWUlH67ODSly2BtUdwQoy8Hy4gLLVjXNCh3dHpLW+RLL6P
-	 HlpJOyFw5EVRZgYaXob4TI8BFg1xjduDQFZBuTEfMJLxU+57Fl10NjzFWBlVX7asEQ
-	 9pUe9b+rZuFsGV/JuQRfD66a3PXRDWE7w6x9Nm0V8oBOeDwWnTTBCt6a4L8XDSncy2
-	 hTlmPCJ2qNPFg==
+	b=jxqhYEVHx4JeC0KjvDldGg7pNJhOjaFiLSZWAdSR/gs6DSjRXUrWVHY8srGYi8Wof
+	 VgiVCeDCRFB3dqfxBr92jd8ZPzuIKf81MrA0f55tRPFSbEhPW7O9QHy2ZVXWq95KGZ
+	 9FqNM4FVPccaHR81uheyZLRzummLlmA3dzzGNsT7rYyjzfCTA8lEkebCPv8owmj5Zm
+	 1f02m5NHStPot3aHPIL8vF0Xymo1VDxiLaWpVlJD61XEIvlJjv9YLGzrqN07ONHbWc
+	 X3pvTLJ9y9CI+96SqiZtoC5q7jH1ROlhWeWh1bZjrqTulZzEyObptkIgBukdo1FuU7
+	 DNuaUM9+7BY9g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andreas Schwab <schwab@linux-m68k.org>,
-	Rob Herring <robh@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+Cc: Svyatoslav Ryhel <clamor95@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mpe@ellerman.id.au,
-	sourabhjain@linux.ibm.com,
-	mahesh@linux.ibm.com,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 5.4 27/79] powerpc/prom_init: Fixup missing #size-cells on PowerBook6,7
-Date: Mon,  5 May 2025 19:20:59 -0400
-Message-Id: <20250505232151.2698893-27-sashal@kernel.org>
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com,
+	devicetree@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 30/79] ARM: tegra: Switch DSI-B clock parent to PLLD on Tegra114
+Date: Mon,  5 May 2025 19:21:02 -0400
+Message-Id: <20250505232151.2698893-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -69,42 +71,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Andreas Schwab <schwab@linux-m68k.org>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
 
-[ Upstream commit 7e67ef889c9ab7246547db73d524459f47403a77 ]
+[ Upstream commit 2b3db788f2f614b875b257cdb079adadedc060f3 ]
 
-Similar to the PowerMac3,1, the PowerBook6,7 is missing the #size-cells
-property on the i2s node.
+PLLD is usually used as parent clock for internal video devices, like
+DSI for example, while PLLD2 is used as parent for HDMI.
 
-Depends-on: commit 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
-Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-[maddy: added "commit" work in depends-on to avoid checkpatch error]
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/875xmizl6a.fsf@igel.home
+Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+Link: https://lore.kernel.org/r/20250226105615.61087-3-clamor95@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/prom_init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/tegra114.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index b7ef63614417d..e0abb13b5806a 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -2906,11 +2906,11 @@ static void __init fixup_device_tree_pmac(void)
- 	char type[8];
- 	phandle node;
- 
--	// Some pmacs are missing #size-cells on escc nodes
-+	// Some pmacs are missing #size-cells on escc or i2s nodes
- 	for (node = 0; prom_next_node(&node); ) {
- 		type[0] = '\0';
- 		prom_getprop(node, "device_type", type, sizeof(type));
--		if (prom_strcmp(type, "escc"))
-+		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
- 			continue;
- 
- 		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
+diff --git a/arch/arm/boot/dts/tegra114.dtsi b/arch/arm/boot/dts/tegra114.dtsi
+index 0d7a6327e404a..fe1ebc3c5aa86 100644
+--- a/arch/arm/boot/dts/tegra114.dtsi
++++ b/arch/arm/boot/dts/tegra114.dtsi
+@@ -123,7 +123,7 @@ dsi@54400000 {
+ 			reg = <0x54400000 0x00040000>;
+ 			clocks = <&tegra_car TEGRA114_CLK_DSIB>,
+ 				 <&tegra_car TEGRA114_CLK_DSIBLP>,
+-				 <&tegra_car TEGRA114_CLK_PLL_D2_OUT0>;
++				 <&tegra_car TEGRA114_CLK_PLL_D_OUT0>;
+ 			clock-names = "dsi", "lp", "parent";
+ 			resets = <&tegra_car 82>;
+ 			reset-names = "dsi";
 -- 
 2.39.5
 
