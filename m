@@ -1,62 +1,78 @@
-Return-Path: <stable+bounces-140385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9589CAAA84D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB59AAA850
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A57E9801EF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:46:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C3615A45B4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39D529614B;
-	Mon,  5 May 2025 22:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73EF34880B;
+	Mon,  5 May 2025 22:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MZzST7QA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="foHrwPcv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5971229A32C;
-	Mon,  5 May 2025 22:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BC8348809;
+	Mon,  5 May 2025 22:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484743; cv=none; b=tXvWjI9aHg02rJR0qb5yN+GWVvh/Gzl9Ds0rx3VxjLmjk6T2WN2Lo/0itA/aZd+tl5j2TY3Lk3zI2k6fbaPlQN4/FCOzbCpUIy+VBayq707YFkNnuoxotyreAU7ztKo7Z703mSz1lBZHdiEb5ONaDr7ErGLvFujLZR6+j+OTgaI=
+	t=1746484747; cv=none; b=aYB59ruoQXowXrtVM+nFmwDqay60WfG5bhtsudVrT91hJNgHgraNw4u8w2wSEayRGIdpTl5bSeU4t0JJgJhhd7d29oXuMKFYT7J9qdFwKypbhEjmJR+gp0pvjohPmcelVemUhxGn7mG9S7/wkT3RKUCCsdqtlz4Y7LzmLQ/olD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484743; c=relaxed/simple;
-	bh=3lGIjIMND9OTu5MdA5mIsTVJLkH/I5jKgZBsA8qqLuc=;
+	s=arc-20240116; t=1746484747; c=relaxed/simple;
+	bh=PwWSdU0v4ac350M24sNgCGAuAFFzNWKlDyW/Vpiq864=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sBYTZIXiWJMLlmue1uQNyvhpsmO4qF7c2kcHp1G5MTH0lYcSvhb3dQjokbU31gwGt+pY25rGEZFanSzf1J39jG4SC9p0YRzj2Z3NO2c+w+kdFpTln0hOS9WaECGEp+paJT3/NZIYhuCkaneoJB++Tfs9hz7/cR97S2c+kbiN700=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MZzST7QA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A1CC4CEE4;
-	Mon,  5 May 2025 22:39:01 +0000 (UTC)
+	 MIME-Version; b=VktQgyQgo6eu/gW2MPTc9QghNMT0jLBToT9plrc7AXVSaR2cZZYIF0TeQoinDwlnUSCuxkAGBmccaP19fTA7gN0zIKnO3OPL48/23pFyMPizpWBBbhcsBcjVSMw2DzIrFd4Q/emkcp1O0BgKUIidMn+h0YAdMROht6tccdOuNz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=foHrwPcv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137E2C4CEE4;
+	Mon,  5 May 2025 22:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484742;
-	bh=3lGIjIMND9OTu5MdA5mIsTVJLkH/I5jKgZBsA8qqLuc=;
+	s=k20201202; t=1746484746;
+	bh=PwWSdU0v4ac350M24sNgCGAuAFFzNWKlDyW/Vpiq864=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZzST7QAvt/Frs4+H+n5g+MspdjYIQC+XftvHw7FMr/TlTjeLuP5BwdCGSJxtjQ+X
-	 URsrPyUEG9i0zHBCfAikpQeJGwvoaoTSOBVDYxByRC74xZHGZVkmKkiqfa+kb8IhSO
-	 nP2sdkZi+qXENnpQRqpg97FAoFkmbzOismve9kI13nZIZaiQ8i1tX9Ge6zujRgWaDp
-	 dzbYiDYCeJgi/d6Xwne4gNC9ghlLRbd51Vx8yIjU0pyEZy68gK4k+o4wsUUuRdl+MX
-	 sluZ6jiWvIbVWCWNlBvPQFyxZP3FKrrXx1d2Op/ft9VQNzXKSTA+AslAgJScRgms3m
-	 H+e72pJiPZzVg==
+	b=foHrwPcvuR1z6J1IHfls//0gjk7JsLigB2BXRVTpUD9Jqi/RcAgyAFst5sl66X1J+
+	 bHs6iYjZ+qRBYhlEpKKJDgiu1D8VH2iDbwV9kzYOyMHbqjOPZL5zp1q/aXi8phq5oI
+	 d6IC/+GlYrMrqOtqaQb5nG6mzlfUumJUcgEgNBbtJ3vtAsEfUm1CgWIc131koct7TX
+	 0KQVKaW8vIyQxkmlE+qZD+9UPV3Uuik+CDvaAcNQ7Ojs4FN8kroU72uBvyeP9AMVIN
+	 1Clk+7mLy+aBQS6BHXywSl/Nd6UttcEm1Mo+ZguYCzMVQllSZH/URiFDe/vXjXaeVr
+	 wdl53EF4YAgNg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Ovidiu Bunea <Ovidiu.Bunea@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jirislaby@kernel.org,
-	wsa+renesas@sang-engineering.com,
-	zack.rusin@broadcom.com,
-	namcao@linutronix.de,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	linux-serial@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 636/642] serial: sh-sci: Save and restore more registers
-Date: Mon,  5 May 2025 18:14:12 -0400
-Message-Id: <20250505221419.2672473-636-sashal@kernel.org>
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	Charlene.Liu@amd.com,
+	alvin.lee2@amd.com,
+	chiahsuan.chung@amd.com,
+	jerry.zuo@amd.com,
+	alex.hung@amd.com,
+	Kaitlyn.Tse@amd.com,
+	ryanseto@amd.com,
+	martin.tsai@amd.com,
+	yi-lchen@amd.com,
+	tjakobi@math.uni-bielefeld.de,
+	Sungjoon.Kim@amd.com,
+	michael.strauss@amd.com,
+	Brandon.Syu@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 637/642] drm/amd/display: Exit idle optimizations before accessing PHY
+Date: Mon,  5 May 2025 18:14:13 -0400
+Message-Id: <20250505221419.2672473-637-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -71,110 +87,56 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
 
-[ Upstream commit 81100b9a7b0515132996d62a7a676a77676cb6e3 ]
+[ Upstream commit c488967488d7eff7b9c527d5469c424c15377502 ]
 
-On (H)SCIF with a Baud Rate Generator for External Clock (BRG), there
-are multiple ways to configure the requested serial speed.  If firmware
-uses a different method than Linux, and if any debug info is printed
-after the Bit Rate Register (SCBRR) is restored, but before termios is
-reconfigured (which configures the alternative method), the system may
-lock-up during resume.
+[why & how]
+By default, DCN HW is in idle optimized state which does not allow access
+to PHY registers. If BIOS powers up the DCN, it is fine because they will
+power up everything. Only exit idle optimized state when not taking control
+from VBIOS.
 
-Fix this by saving and restoring the contents of the BRG Frequency
-Division (SCDL) and Clock Select (SCCKS) registers as well.
-
-Also save and restore the HSCIF's Sampling Rate Register (HSSRR), which
-configures the sampling point, and the SCIFA/SCIFB's Serial Port Control
-and Data Registers (SCPCR/SCPDR), which configure the optional control
-flow signals.
-
-After this, all registers that are not saved/restored are either:
-  - read-only,
-  - write-only,
-  - status registers containing flags with clear-after-set semantics,
-  - FIFO Data Count Trigger registers, which do not matter much for
-    the serial console.
-
-Fixes: 22a6984c5b5df8ea ("serial: sh-sci: Update the suspend/resume support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/11c2eab45d48211e75d8b8202cce60400880fe55.1741114989.git.geert+renesas@glider.be
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: be704e5ef4bd ("Revert "drm/amd/display: Exit idle optimizations before attempt to access PHY"")
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Signed-off-by: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index e0ead0147bfe0..0219135caafa4 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -105,10 +105,15 @@ struct plat_sci_reg {
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+index 2f5f3e749a1ab..94ceccfc04982 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -1889,6 +1889,7 @@ void dce110_enable_accelerated_mode(struct dc *dc, struct dc_state *context)
+ 	bool can_apply_edp_fast_boot = false;
+ 	bool can_apply_seamless_boot = false;
+ 	bool keep_edp_vdd_on = false;
++	struct dc_bios *dcb = dc->ctx->dc_bios;
+ 	DC_LOGGER_INIT();
  
- struct sci_suspend_regs {
-+	u16 scdl;
-+	u16 sccks;
- 	u16 scsmr;
- 	u16 scscr;
- 	u16 scfcr;
- 	u16 scsptr;
-+	u16 hssrr;
-+	u16 scpcr;
-+	u16 scpdr;
- 	u8 scbrr;
- 	u8 semr;
- };
-@@ -3564,6 +3569,10 @@ static void sci_console_save(struct sci_port *s)
- 	struct sci_suspend_regs *regs = &s->suspend_regs;
- 	struct uart_port *port = &s->port;
  
-+	if (sci_getreg(port, SCDL)->size)
-+		regs->scdl = sci_serial_in(port, SCDL);
-+	if (sci_getreg(port, SCCKS)->size)
-+		regs->sccks = sci_serial_in(port, SCCKS);
- 	if (sci_getreg(port, SCSMR)->size)
- 		regs->scsmr = sci_serial_in(port, SCSMR);
- 	if (sci_getreg(port, SCSCR)->size)
-@@ -3574,6 +3583,12 @@ static void sci_console_save(struct sci_port *s)
- 		regs->scsptr = sci_serial_in(port, SCSPTR);
- 	if (sci_getreg(port, SCBRR)->size)
- 		regs->scbrr = sci_serial_in(port, SCBRR);
-+	if (sci_getreg(port, HSSRR)->size)
-+		regs->hssrr = sci_serial_in(port, HSSRR);
-+	if (sci_getreg(port, SCPCR)->size)
-+		regs->scpcr = sci_serial_in(port, SCPCR);
-+	if (sci_getreg(port, SCPDR)->size)
-+		regs->scpdr = sci_serial_in(port, SCPDR);
- 	if (sci_getreg(port, SEMR)->size)
- 		regs->semr = sci_serial_in(port, SEMR);
- }
-@@ -3583,6 +3598,10 @@ static void sci_console_restore(struct sci_port *s)
- 	struct sci_suspend_regs *regs = &s->suspend_regs;
- 	struct uart_port *port = &s->port;
+@@ -1965,6 +1966,8 @@ void dce110_enable_accelerated_mode(struct dc *dc, struct dc_state *context)
+ 			hws->funcs.edp_backlight_control(edp_link_with_sink, false);
+ 		}
+ 		/*resume from S3, no vbios posting, no need to power down again*/
++		if (dcb && dcb->funcs && !dcb->funcs->is_accelerated_mode(dcb))
++			clk_mgr_exit_optimized_pwr_state(dc, dc->clk_mgr);
  
-+	if (sci_getreg(port, SCDL)->size)
-+		sci_serial_out(port, SCDL, regs->scdl);
-+	if (sci_getreg(port, SCCKS)->size)
-+		sci_serial_out(port, SCCKS, regs->sccks);
- 	if (sci_getreg(port, SCSMR)->size)
- 		sci_serial_out(port, SCSMR, regs->scsmr);
- 	if (sci_getreg(port, SCSCR)->size)
-@@ -3593,6 +3612,12 @@ static void sci_console_restore(struct sci_port *s)
- 		sci_serial_out(port, SCSPTR, regs->scsptr);
- 	if (sci_getreg(port, SCBRR)->size)
- 		sci_serial_out(port, SCBRR, regs->scbrr);
-+	if (sci_getreg(port, HSSRR)->size)
-+		sci_serial_out(port, HSSRR, regs->hssrr);
-+	if (sci_getreg(port, SCPCR)->size)
-+		sci_serial_out(port, SCPCR, regs->scpcr);
-+	if (sci_getreg(port, SCPDR)->size)
-+		sci_serial_out(port, SCPDR, regs->scpdr);
- 	if (sci_getreg(port, SEMR)->size)
- 		sci_serial_out(port, SEMR, regs->semr);
+ 		power_down_all_hw_blocks(dc);
+ 
+@@ -1977,6 +1980,8 @@ void dce110_enable_accelerated_mode(struct dc *dc, struct dc_state *context)
+ 		disable_vga_and_power_gate_all_controllers(dc);
+ 		if (edp_link_with_sink && !keep_edp_vdd_on)
+ 			dc->hwss.edp_power_control(edp_link_with_sink, false);
++		if (dcb && dcb->funcs && !dcb->funcs->is_accelerated_mode(dcb))
++			clk_mgr_optimize_pwr_state(dc, dc->clk_mgr);
+ 	}
+ 	bios_set_scratch_acc_mode_change(dc->ctx->dc_bios, 1);
  }
 -- 
 2.39.5
