@@ -1,67 +1,63 @@
-Return-Path: <stable+bounces-139814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5B9AAA00F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:31:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97884AAA020
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 447B816BE8E
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:31:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4F54188581A
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAD928DF0C;
-	Mon,  5 May 2025 22:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBC028E5F3;
+	Mon,  5 May 2025 22:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bX07YPAt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qg23aQr4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4782A27A932;
-	Mon,  5 May 2025 22:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6685827A93D;
+	Mon,  5 May 2025 22:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483401; cv=none; b=eFhVH9RfA/uR/ehydrTXjLA3l8r7WrdhKgD7370Fml3WXoshJ0UxRF/fklmAa6GUuadK08dAOJW0PNiz0xe4ie2oBvX69Db8sf7dNma7au+dEd/LDnfRA6jCvm5s6Ndzau5XohXdTEYLHCWBMHZEATlEVqcHG4fQHprt5B1dVtM=
+	t=1746483404; cv=none; b=bW8XgkqwknidkmUGB047bquvW/a0gxv0Q+Me71DgsGEokHbRC3kLwxEGrU+CU2EjdRd1uOZrkux1z17ViiXT0S2RuNjO6etqRFufLdkm9CgrJVHQ/E4p08TM/UFxMQtQzWifjC7Onn9/x3ws7u7b1rtXvQ8olwVx0wzPjiPy7VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483401; c=relaxed/simple;
-	bh=/fRhfQDcAa8JTF6epwyuiyDsSdv8eh6R+2Cbd+/YmjY=;
+	s=arc-20240116; t=1746483404; c=relaxed/simple;
+	bh=7mkq1wehpyT8zEaNclLrNl2PA/Y6QJyMqTDjuO215UE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m6KGnc+pEwtjsXpFkhVfuZOga5XEsDLDzu4iEoOrjd2kQ/cRKFARZWnMRWNRT/LgTJjJHIxJlAPB4EV+I0sBNe5/t7LeYREeAaNcHdLafUHw2mzLRop60OpDIGyMp6zvkPpgEQKtA2BrbTHz1ZScEor2BaqPWwW1VLWUjAoorug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bX07YPAt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6514CC4CEE4;
-	Mon,  5 May 2025 22:16:39 +0000 (UTC)
+	 MIME-Version; b=WawdZ9h/HCKu2VI/sMlSTsGWfZXOndm+qm4UHaC7Y4QwHzckSr8ApmpiZ2KI1vd4aqpEIyOYKvKd5kmLzXPYldKwCKituYd/57+673uVZdIxltiv7L5mm77OWqyBdQ3+NqoNR3FbIiPB6Kjjzn/kDcVkloYS5AxXqJBJRzCEdpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qg23aQr4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74826C4CEEE;
+	Mon,  5 May 2025 22:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483401;
-	bh=/fRhfQDcAa8JTF6epwyuiyDsSdv8eh6R+2Cbd+/YmjY=;
+	s=k20201202; t=1746483403;
+	bh=7mkq1wehpyT8zEaNclLrNl2PA/Y6QJyMqTDjuO215UE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bX07YPAttgcH88uHmxzc+9XkpSJzjkv47BTMo0/oUCSiQxttKAsioQkchXqj8QZ0Y
-	 30SDmd+lLW6fY5L7HXipZGze5nVvycsYjBRQ7Aw+wl07adr6TKRpjPIHIJqjO82d/Y
-	 HCfbyV1LuPGB8yOxaiUfNyzG+ZwanerOv/HPesT3lXRZIqvl19BiS7YJcCizhwnUaY
-	 bB8sWLCBdP5Ur+QfWqz9GDigh8lGc+B35fH1boGXc4SeM3YA2ySZCBO2JawDDSjZQG
-	 jDO8+eOBZkn04FX/mf2Kedgjsbm1oDPspl7MU928HnWrqYTLhCQ2ZYsHTQTLXgCT22
-	 J6PSNz5XkFQkA==
+	b=Qg23aQr4UqlMt9KKxM8zCmAjf2uLJX1A+AapTi0JMlXvL2p8qDRcxdTvsUvBYMkrB
+	 SziLTVCI65kFmsnoTQ4z32DouPAFyNCs2px5m31Rp+UR2q7R0Nthi7JUOd0ApbaqPd
+	 7RxCrAMksLcaTYliXsrRHpbBVEGmvvcwNaYS7s73UlLePvoMpaRpo0v02MU3My1+B6
+	 bR2NZ8rAIHJRFmlJjxbdbQnSH7HS67+SSYQg8y6tMAcStnbSyRRbPalKdlQS+oLABT
+	 YXZEn+6THRRU8Ntpe1Cl5Q4sO6kLSn1uUca+pifS089MOp5oTzPkvY4Frn8ub7g99O
+	 JflrVejDrwgiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Christian Brauner <brauner@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
+Cc: Stefan Wahren <wahrenst@gmx.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	akpm@linux-foundation.org,
-	mhocko@suse.com,
-	Liam.Howlett@Oracle.com,
-	mjguzik@gmail.com,
-	alexjlzheng@tencent.com,
-	pasha.tatashin@soleen.com,
-	tglx@linutronix.de,
-	frederic@kernel.org,
-	peterz@infradead.org,
-	lorenzo.stoakes@oracle.com,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 067/642] pidfs: improve multi-threaded exec and premature thread-group leader exit polling
-Date: Mon,  5 May 2025 18:04:43 -0400
-Message-Id: <20250505221419.2672473-67-sashal@kernel.org>
+	florian.fainelli@broadcom.com,
+	umang.jain@ideasonboard.com,
+	dan.carpenter@linaro.org,
+	laurent.pinchart@ideasonboard.com,
+	javier.carrasco.cruz@gmail.com,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-staging@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.14 068/642] staging: vchiq_arm: Create keep-alive thread during probe
+Date: Mon,  5 May 2025 18:04:44 -0400
+Message-Id: <20250505221419.2672473-68-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -76,126 +72,127 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Christian Brauner <brauner@kernel.org>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 0fb482728ba1ee2130eaa461bf551f014447997c ]
+[ Upstream commit 86bc8821700665ad3962f3ef0d93667f59cf7031 ]
 
-This is another attempt trying to make pidfd polling for multi-threaded
-exec and premature thread-group leader exit consistent.
+Creating the keep-alive thread in vchiq_platform_init_state have
+the following advantages:
+- abort driver probe if kthread_create fails (more consistent behavior)
+- make resource release process easier
 
-A quick recap of these two cases:
+Since vchiq_keepalive_thread_func is defined below
+vchiq_platform_init_state, the latter must be moved.
 
-(1) During a multi-threaded exec by a subthread, i.e., non-thread-group
-    leader thread, all other threads in the thread-group including the
-    thread-group leader are killed and the struct pid of the
-    thread-group leader will be taken over by the subthread that called
-    exec. IOW, two tasks change their TIDs.
-
-(2) A premature thread-group leader exit means that the thread-group
-    leader exited before all of the other subthreads in the thread-group
-    have exited.
-
-Both cases lead to inconsistencies for pidfd polling with PIDFD_THREAD.
-Any caller that holds a PIDFD_THREAD pidfd to the current thread-group
-leader may or may not see an exit notification on the file descriptor
-depending on when poll is performed. If the poll is performed before the
-exec of the subthread has concluded an exit notification is generated
-for the old thread-group leader. If the poll is performed after the exec
-of the subthread has concluded no exit notification is generated for the
-old thread-group leader.
-
-The correct behavior would be to simply not generate an exit
-notification on the struct pid of a subhthread exec because the struct
-pid is taken over by the subthread and thus remains alive.
-
-But this is difficult to handle because a thread-group may exit
-prematurely as mentioned in (2). In that case an exit notification is
-reliably generated but the subthreads may continue to run for an
-indeterminate amount of time and thus also may exec at some point.
-
-So far there was no way to distinguish between (1) and (2) internally.
-This tiny series tries to address this problem by discarding
-PIDFD_THREAD notification on premature thread-group leader exit.
-
-If that works correctly then no exit notifications are generated for a
-PIDFD_THREAD pidfd for a thread-group leader until all subthreads have
-been reaped. If a subthread should exec aftewards no exit notification
-will be generated until that task exits or it creates subthreads and
-repeates the cycle.
-
-Co-Developed-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250320-work-pidfs-thread_group-v4-1-da678ce805bf@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20250309125014.37166-5-wahrenst@gmx.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pidfs.c      | 9 +++++----
- kernel/exit.c   | 6 +++---
- kernel/signal.c | 3 +--
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ .../interface/vchiq_arm/vchiq_arm.c           | 69 +++++++++----------
+ 1 file changed, 34 insertions(+), 35 deletions(-)
 
-diff --git a/fs/pidfs.c b/fs/pidfs.c
-index c0478b3c55d9f..9aa4c705776dd 100644
---- a/fs/pidfs.c
-+++ b/fs/pidfs.c
-@@ -188,20 +188,21 @@ static void pidfd_show_fdinfo(struct seq_file *m, struct file *f)
- static __poll_t pidfd_poll(struct file *file, struct poll_table_struct *pts)
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+index 0c7ea2d0ee85e..64f9536f12329 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_arm.c
+@@ -280,29 +280,6 @@ static int vchiq_platform_init(struct platform_device *pdev, struct vchiq_state
+ 	return 0;
+ }
+ 
+-int
+-vchiq_platform_init_state(struct vchiq_state *state)
+-{
+-	struct vchiq_arm_state *platform_state;
+-
+-	platform_state = devm_kzalloc(state->dev, sizeof(*platform_state), GFP_KERNEL);
+-	if (!platform_state)
+-		return -ENOMEM;
+-
+-	rwlock_init(&platform_state->susp_res_lock);
+-
+-	init_completion(&platform_state->ka_evt);
+-	atomic_set(&platform_state->ka_use_count, 0);
+-	atomic_set(&platform_state->ka_use_ack_count, 0);
+-	atomic_set(&platform_state->ka_release_count, 0);
+-
+-	platform_state->state = state;
+-
+-	state->platform_state = (struct opaque_platform_state *)platform_state;
+-
+-	return 0;
+-}
+-
+ static struct vchiq_arm_state *vchiq_platform_get_arm_state(struct vchiq_state *state)
  {
- 	struct pid *pid = pidfd_pid(file);
--	bool thread = file->f_flags & PIDFD_THREAD;
- 	struct task_struct *task;
- 	__poll_t poll_flags = 0;
+ 	return (struct vchiq_arm_state *)state->platform_state;
+@@ -1011,6 +988,39 @@ vchiq_keepalive_thread_func(void *v)
+ 	return 0;
+ }
  
- 	poll_wait(file, &pid->wait_pidfd, pts);
- 	/*
--	 * Depending on PIDFD_THREAD, inform pollers when the thread
--	 * or the whole thread-group exits.
-+	 * Don't wake waiters if the thread-group leader exited
-+	 * prematurely. They either get notified when the last subthread
-+	 * exits or not at all if one of the remaining subthreads execs
-+	 * and assumes the struct pid of the old thread-group leader.
- 	 */
- 	guard(rcu)();
- 	task = pid_task(pid, PIDTYPE_PID);
- 	if (!task)
- 		poll_flags = EPOLLIN | EPOLLRDNORM | EPOLLHUP;
--	else if (task->exit_state && (thread || thread_group_empty(task)))
-+	else if (task->exit_state && !delay_group_leader(task))
- 		poll_flags = EPOLLIN | EPOLLRDNORM;
++int
++vchiq_platform_init_state(struct vchiq_state *state)
++{
++	struct vchiq_arm_state *platform_state;
++	char threadname[16];
++
++	platform_state = devm_kzalloc(state->dev, sizeof(*platform_state), GFP_KERNEL);
++	if (!platform_state)
++		return -ENOMEM;
++
++	snprintf(threadname, sizeof(threadname), "vchiq-keep/%d",
++		 state->id);
++	platform_state->ka_thread = kthread_create(&vchiq_keepalive_thread_func,
++						   (void *)state, threadname);
++	if (IS_ERR(platform_state->ka_thread)) {
++		dev_err(state->dev, "couldn't create thread %s\n", threadname);
++		return PTR_ERR(platform_state->ka_thread);
++	}
++
++	rwlock_init(&platform_state->susp_res_lock);
++
++	init_completion(&platform_state->ka_evt);
++	atomic_set(&platform_state->ka_use_count, 0);
++	atomic_set(&platform_state->ka_use_ack_count, 0);
++	atomic_set(&platform_state->ka_release_count, 0);
++
++	platform_state->state = state;
++
++	state->platform_state = (struct opaque_platform_state *)platform_state;
++
++	return 0;
++}
++
+ int
+ vchiq_use_internal(struct vchiq_state *state, struct vchiq_service *service,
+ 		   enum USE_TYPE_E use_type)
+@@ -1331,7 +1341,6 @@ void vchiq_platform_conn_state_changed(struct vchiq_state *state,
+ 				       enum vchiq_connstate newstate)
+ {
+ 	struct vchiq_arm_state *arm_state = vchiq_platform_get_arm_state(state);
+-	char threadname[16];
  
- 	return poll_flags;
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 6bb59b16e33e1..a9960dd6d0aa0 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -744,10 +744,10 @@ static void exit_notify(struct task_struct *tsk, int group_dead)
+ 	dev_dbg(state->dev, "suspend: %d: %s->%s\n",
+ 		state->id, get_conn_state_name(oldstate), get_conn_state_name(newstate));
+@@ -1346,17 +1355,7 @@ void vchiq_platform_conn_state_changed(struct vchiq_state *state,
  
- 	tsk->exit_state = EXIT_ZOMBIE;
- 	/*
--	 * sub-thread or delay_group_leader(), wake up the
--	 * PIDFD_THREAD waiters.
-+	 * Ignore thread-group leaders that exited before all
-+	 * subthreads did.
- 	 */
--	if (!thread_group_empty(tsk))
-+	if (!delay_group_leader(tsk))
- 		do_notify_pidfd(tsk);
+ 	arm_state->first_connect = 1;
+ 	write_unlock_bh(&arm_state->susp_res_lock);
+-	snprintf(threadname, sizeof(threadname), "vchiq-keep/%d",
+-		 state->id);
+-	arm_state->ka_thread = kthread_create(&vchiq_keepalive_thread_func,
+-					      (void *)state,
+-					      threadname);
+-	if (IS_ERR(arm_state->ka_thread)) {
+-		dev_err(state->dev, "suspend: Couldn't create thread %s\n",
+-			threadname);
+-	} else {
+-		wake_up_process(arm_state->ka_thread);
+-	}
++	wake_up_process(arm_state->ka_thread);
+ }
  
- 	if (unlikely(tsk->ptrace)) {
-diff --git a/kernel/signal.c b/kernel/signal.c
-index 875e97f6205a2..b2e5c90f29602 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -2180,8 +2180,7 @@ bool do_notify_parent(struct task_struct *tsk, int sig)
- 	WARN_ON_ONCE(!tsk->ptrace &&
- 	       (tsk->group_leader != tsk || !thread_group_empty(tsk)));
- 	/*
--	 * tsk is a group leader and has no threads, wake up the
--	 * non-PIDFD_THREAD waiters.
-+	 * Notify for thread-group leaders without subthreads.
- 	 */
- 	if (thread_group_empty(tsk))
- 		do_notify_pidfd(tsk);
+ static const struct of_device_id vchiq_of_match[] = {
 -- 
 2.39.5
 
